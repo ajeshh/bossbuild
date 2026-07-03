@@ -97,8 +97,13 @@
   const idea = $("idea"), go = $("go"), out = $("out"), body = $("body"), err = $("err");
 
   // Savoia skin-in-the-game ladder — client half. Fire-and-forget beacons, no identity.
+  // Send a typed Blob (not a bare string): sendBeacon with a string sets text/plain, which
+  // some serverless body parsers drop — and the ladder is the whole point, so it must not
+  // silently undercount. A Blob with an explicit type guarantees the server parses JSON.
   function ladder(event) {
-    try { navigator.sendBeacon("/api/event", JSON.stringify({ event })); } catch (_) {}
+    try {
+      navigator.sendBeacon("/api/event", new Blob([JSON.stringify({ event })], { type: "application/json" }));
+    } catch (_) {}
   }
 
   async function run() {

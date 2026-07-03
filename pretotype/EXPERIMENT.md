@@ -75,3 +75,13 @@ Hard monthly ceiling: **$50** at the platform level (Vercel spend limit). Each p
 Haiku call (~600 output tokens max) — a fraction of a cent — so $50 comfortably covers thousands of real
 attempts. If spend approaches the cap, that itself is a strong demand signal worth surfacing, not just a
 bill to pay. Per-request `max_tokens` is also capped in code as a second guard.
+
+**Honest limit on the abuse posture (from the pre-ship red-team):** the $50 cap is a **billing
+kill-switch, not a rate limiter** — when it trips it can pause the deployment, so an abuser can't run up an
+unbounded bill but *can* knock the page offline for real users (a cheap DoS), and organic traffic can hit
+it too. There are two real guards: (1) per-call cost is bounded (`max_tokens` 600 + 2000-char input cap);
+(2) a coarse per-IP sliding-window limiter in `api/pressure-test.js` (8 req/min/IP) raises the cost of
+casual scripted abuse. That limiter is **best-effort** — serverless instances don't share memory, so a
+determined abuser spreading across instances gets past it. Before any high-traffic exposure, add a **Vercel
+WAF / platform rate rule on `/api/*`** as the robust layer. For a throwaway demand-measurement page behind
+a spend cap, this is an accepted, stated posture — not an omission.

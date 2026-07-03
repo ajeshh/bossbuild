@@ -21,6 +21,29 @@ const MODEL = "claude-haiku-4-5";
 const MAX_IDEA_CHARS = 2000;
 const MAX_TOKENS = 600;
 
+// Coarse per-IP rate limit — a SECOND backstop, not the primary one. The platform
+// spend cap (EXPERIMENT.md) is a billing kill-switch: it stops an unbounded bill but,
+// when it trips, takes the page offline (a cheap DoS) — so it must not be the only guard.
+// This in-memory sliding window raises the cost of casual scripted abuse by orders of
+// magnitude for ~15 lines and no dependency. It is BEST-EFFORT: serverless instances
+// don't share memory, so a determined abuser spreading across instances gets past it —
+// the honest robust answer is a Vercel WAF / platform rate rule on /api/*, noted in
+// EXPERIMENT.md. Good enough for a throwaway demand-measurement page.
+const RATE_MAX = 8; // requests
+const RATE_WINDOW_MS = 60_000; // per minute, per IP
+const hits = new Map(); // ip -> number[] (timestamps within the window)
+
+function rateLimited(ip, now) {
+  const arr = (hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);
+  arr.push(now);
+  hits.set(ip, arr);
+  // Bound memory: evict the oldest keys if the map grows (abuse or organic spread).
+  if (hits.size > 5000) {
+    for (const k of hits.keys()) { hits.delete(k); if (hits.size <= 4000) break; }
+  }
+  return arr.length > RATE_MAX;
+}
+
 // BOSS's voice, distilled: the seasoned hand who's built many things and doesn't need
 // the credit; assume intelligence, never assume knowledge; humor over performed warmth.
 // A conscience makes a cost visible; it never makes the choice. (conscience-voicing.md)
@@ -50,6 +73,14 @@ export default async function handler(req, res) {
   if (!process.env.ANTHROPIC_API_KEY) {
     // Fail honestly rather than pretend — the operator forgot to set the key.
     res.status(500).json({ error: "Not configured yet. (Server is missing its API key.)" });
+    return;
+  }
+
+  // Coarse abuse guard before we spend a token (see rateLimited above). Vercel sets
+  // x-forwarded-for; fall back to a shared bucket if it's absent.
+  const ip = String(req.headers["x-forwarded-for"] || "unknown").split(",")[0].trim();
+  if (rateLimited(ip, Date.now())) {
+    res.status(429).json({ error: "Easy — one at a time. Give it a minute and try again." });
     return;
   }
 
