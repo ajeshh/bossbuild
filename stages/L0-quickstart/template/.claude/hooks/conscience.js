@@ -16,7 +16,7 @@
 //
 // Always exits 0. Empty output = no signal = stay silent.
 
-import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity } from './lib/loop-runtime.js';
+import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity } from './lib/loop-runtime.js';
 
 const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
@@ -56,7 +56,12 @@ try {
   // Learning (the relationship half): how recent nudges landed, so the conscience
   // calibrates instead of repeating. null when no relationship log yet.
   const relationship = readRelationshipContext(projectDir);
-  const additionalContext = composeContext(signals, { cohort, brain, relationship });
+  // Evidence (IDEA-045): the conscience gets eyes on docs/evidence/ — a cheap
+  // frontmatter projection (counts by grade + most recent). Read only once a moment
+  // is already firing (past the silent early-exit), same as brain/relationship.
+  // null when no evidence yet → additionalContext byte-identical to before.
+  const evidence = readEvidenceContext(projectDir);
+  const additionalContext = composeContext(signals, { cohort, brain, relationship, evidence });
 
   // Frequency ledger (v0.34) — correctness-invisible side effect; only fires
   // reach here (past the silent early-exit). Records facts (moments, judge-bool,

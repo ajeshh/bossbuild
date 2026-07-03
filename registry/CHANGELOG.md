@@ -2,6 +2,66 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.100.0 — 2026-07-02
+
+- **`/research` — turn a transcript into product context + graded evidence (IDEA-054, the validation-
+  toolkit keystone).** The natural next question after `/interview`: you talked to people, now you have a
+  transcript — and it rots in a doc nobody re-reads. `/research` digests it. Drop in an interview
+  recording's transcript, a sales call, a support thread, a batch of user messages, and BOSS: (1)
+  **extracts graded `EVID` at scale** (many signals from one long transcript, each on the fixed ladder,
+  grade inflation pushed back on — the IDEA-045 spine run over paragraphs); (2) **synthesizes product
+  context** — the pain *in the user's verbatim words*, the job they're hiring for, the workarounds they
+  use today (the strongest signal there is), objections and non-needs, whether the real person matches
+  the target segment — offering to write it into the canvas and seed the venture brain; (3) **flags the
+  epistemics** — where the founder led the witness or recorded a compliment as validation (Fitzpatrick's
+  fluff taxonomy at transcript scale); (4) **points at the cheapest next test**. **The one rule: BOSS
+  analyzes what's in the transcript and never fabricates** — no invented quotes, no inferred commitment.
+  The sibling of `/interview` (that preps + debriefs one call; this digests a whole transcript). Not a
+  CRM, not a qualitative-coding tool — signals → grades → product context → the next test. Skill layer;
+  `boss map` lists it. **The design decision behind the whole cluster (captured in IDEA-054): teach the
+  study *loop*, not a research textbook** — survey / usability-observation / recruiting are captured as
+  JIT-gated siblings, not built speculatively.
+
+## 0.99.0 — 2026-07-02
+
+- **`/interview` — the Mom-Test bridge (IDEA-046).** The conscience's best line is *"a 15-minute call
+  with the right person beats `/canvas`"* — and then BOSS used to abandon the founder at the exact moment
+  they took the advice. `/interview` is the bridge into validation-world, and the tool for real
+  founder-conversations on day one. Two movements, one L0 skill: **PREP** reads the canvas riskiest
+  assumption + existing `EVID` records and drafts one printable page of 5–7 Mom-Test questions (past
+  behavior, their life, no future hypotheticals, no pitching) with a commitment-ask closer and the
+  anti-pitch warning up top; **DEBRIEF** takes pasted notes → extracts candidate evidence with honest
+  grades and writes `EVID-NNN` files via the IDEA-045 schema, flags **at most one** pitched-instead-of-
+  listened moment (Fitzpatrick's compliment/fluff/deflection taxonomy — observe, don't scold), and names
+  the one follow-up commitment to ask for if the pain looked real. **BOSS preps and debriefs; it never
+  simulates the interview** (personas may rehearse questions — pre-filter only). No CRM ambitions; no
+  `src/` change. Fitzpatrick cited by name (house rule: cite practitioners, never impersonate). The
+  conscience's caution + drift voicings and `/canvas` now point at `/interview`. `boss map` lists it.
+  **Voice-frame note:** the caution and drift frames gained a one-clause `/interview` pointer → their
+  voice-hashes changed → the judgment transcripts went STALE. **Regrade DONE (keyless, in-session):**
+  isolated reasoned sub-agents re-judged all 17 cases (10 drift + 7 caution) blind against the new
+  frames; every case reproduced its human label (the pointer only adds a target to the fire branch, it
+  moves no fire-vs-silent boundary), transcripts re-stamped with the new hashes → `replay.js` now shows
+  **drift 10 + caution 7 GRADED, 0 STALE, 0 REGRESSION.** Gate remains 122/0.
+
+## 0.98.0 — 2026-07-02
+
+- **`EVID-NNN` — evidence becomes a first-class object (IDEA-045, the validation-tooling keystone).**
+  BOSS had an ID for ideas, features, decisions, practices, and verdicts — but *evidence*, the thing the
+  whole thesis centers on, had no object, so a signal from a real conversation evaporated into memory.
+  Now it lands in `docs/evidence/` as one file per signal, graded on a **fixed 3-rung ladder** —
+  `stated-pain` → `observed-behavior` → `commitment` (the only grade that cost the other person
+  something). New **`/evidence`** skill (L0): paste your notes → BOSS drafts the `EVID-NNN` with an
+  **honest grade**, pushing back on inflation ("'I'd totally use this' is stated-pain, not a receipt").
+  **The conscience gets eyes:** its drift/caution bounded read now includes a cheap frontmatter
+  projection of the ledger (counts by grade + the most recent one), so its voicing sharpens from generic
+  ("will anyone pay?") to specific ("three stated-pain, zero commitments — what's the commitment test?")
+  **and goes quieter when real commitment-grade evidence exists** — evidence is how the conscience earns
+  silence. Byte-identical when `docs/evidence/` is empty (the relationship.md precedent); eval gate green.
+  `/canvas` now cites the `EVID` ids bearing on its riskiest assumption. Never a score, never a
+  dashboard-of-shame; the 3 grades stay fixed and few. Registered in `docs/IDS.md`; `boss map` lists
+  `/evidence`; substrate for `/interview` (IDEA-046), `/sunset` (044), and portfolio memory (049).
+
 ## 0.97.0 — 2026-06-23
 
 - **Rebrand: "BlueprintOS" → BOSS (Build Out Solid Stuff).** The name "BlueprintOS" collided with

@@ -306,6 +306,47 @@ export function readRelationshipContext(projectDir) {
   }
 }
 
+// Read a cheap frontmatter PROJECTION of docs/evidence/ (IDEA-045, EVID) — the
+// conscience finally gets eyes on the thing the whole thesis centers on. Same
+// pattern as `boss board`: never a second source of truth, just a projection of
+// the EVID files' frontmatter. Returns { counts: {stated-pain, observed-behavior,
+// commitment}, total, recent: {id, grade, title} } or null when docs/evidence/ is
+// absent/empty — so the conscience speaks generically and output is byte-identical
+// to before (the relationship.md precedent). Bounded: counts + ONE most-recent
+// one-liner, never the whole ledger.
+export function readEvidenceContext(projectDir) {
+  try {
+    const dir = join(projectDir, 'docs', 'evidence');
+    if (!existsSync(dir)) return null;
+    const files = readdirSync(dir).filter((n) => /^EVID-\d+.*\.md$/.test(n));
+    if (files.length === 0) return null;
+    const GRADES = ['stated-pain', 'observed-behavior', 'commitment'];
+    const counts = { 'stated-pain': 0, 'observed-behavior': 0, commitment: 0 };
+    let recent = null; // { date, id, grade, title }
+    for (const n of files) {
+      let fm, text;
+      try {
+        text = readFileSync(join(dir, n), 'utf8');
+        fm = parseFrontmatter(text);
+      } catch { continue; }
+      if (!fm || fm.type !== 'evidence') continue;
+      if (fm.status === 'superseded') continue;
+      const grade = GRADES.includes(fm.grade) ? fm.grade : null;
+      if (grade) counts[grade] += 1;
+      const date = typeof fm.date === 'string' ? fm.date : '';
+      if (!recent || date > recent.date) {
+        const titleLine = (text.split('\n').find((l) => /^#\s+EVID-/.test(l)) || '').replace(/^#\s+/, '').trim();
+        recent = { date, id: fm.id || n.replace(/\.md$/, ''), grade: grade || 'ungraded', title: titleLine };
+      }
+    }
+    const total = counts['stated-pain'] + counts['observed-behavior'] + counts.commitment;
+    if (total === 0) return null;
+    return { counts, total, recent };
+  } catch {
+    return null;
+  }
+}
+
 // Read the conscience pause state from .boss/config.json (v0.23.0+, IDEA-011).
 // Returns { mode, since, expires, reason } or null. Mode is 'paused' or 'active'
 // (or null when never set). When paused, the hook exits silent if not expired.
@@ -462,11 +503,38 @@ export function composeContext(signals, opts = {}) {
   const relationshipLine = opts.relationship
     ? `\n\nWhat happened last time (from the relationship log — what you said and what they did): use this to *calibrate*, not repeat. If you've already raised this and they moved past it for a stated reason, don't say it again the same way (lighten it, or stay silent). If a past nudge landed, you can build on it rather than restart:\n${opts.relationship}`
     : '';
+  // Evidence (IDEA-045 — the conscience gets eyes on the ledger it's been asking
+  // for). Counts by grade + the most recent one-liner, projected from docs/evidence/.
+  // The calibration rule is asymmetric ON PURPOSE: real commitment-grade evidence
+  // should make the conscience QUIETER (validation is happening), while all-stated-
+  // pain-and-no-commitment lets it get SPECIFIC ("three said it hurts, none paid —
+  // what's the commitment test?"). Added only when evidence exists → byte-identical
+  // when docs/evidence/ is empty/absent.
+  const evidenceLine = opts.evidence
+    ? `\n\nEvidence on record (projected from docs/evidence/ — the ledger you've been asking for): ${evidenceSummary(opts.evidence)}. Use it to calibrate, not to lecture: (a) if there's recent COMMITMENT-grade evidence (someone gave up time/money/a slot), the founder is validating — say LESS, or stay silent; validation earns quiet. (b) If it's all stated-pain with no commitments, you may get SPECIFIC instead of generic — name the gap ("N said it hurts, zero commitments — what would a commitment test look like?") rather than a vague "will anyone pay?". (c) Never read the ledger back as a scoreboard or a number to hit — it's a fact that sharpens one line, not a meter.`
+    : '';
   if (signals.length === 1) {
-    return signalAsContext(signals[0]) + cohortLine + brainLine + relationshipLine;
+    return signalAsContext(signals[0]) + cohortLine + brainLine + relationshipLine + evidenceLine;
   }
   const parts = signals.map((s, i) => `(${i + 1}) ${signalAsContext(s)}`);
-  return `[BOSS conscience — ${signals.length} signals]\n` + parts.join('\n') + cohortLine + brainLine + relationshipLine;
+  return `[BOSS conscience — ${signals.length} signals]\n` + parts.join('\n') + cohortLine + brainLine + relationshipLine + evidenceLine;
+}
+
+// One-line human summary of the evidence projection for the voicing frame.
+// e.g. "3 signals — 2 stated-pain, 1 commitment; most recent: EVID-003 (commitment) …"
+function evidenceSummary(e) {
+  const c = e.counts || {};
+  const parts = [];
+  if (c['stated-pain']) parts.push(`${c['stated-pain']} stated-pain`);
+  if (c['observed-behavior']) parts.push(`${c['observed-behavior']} observed-behavior`);
+  if (c.commitment) parts.push(`${c.commitment} commitment`);
+  const breakdown = parts.join(', ') || 'none graded';
+  let out = `${e.total} signal${e.total === 1 ? '' : 's'} — ${breakdown}`;
+  if (e.recent) {
+    out += `; most recent: ${e.recent.id} (${e.recent.grade})`;
+    if (e.recent.title) out += ` — ${e.recent.title.replace(/^EVID-\d+\s*[—-]\s*/, '')}`;
+  }
+  return out;
 }
 
 function signalAsContext(s) {
@@ -477,7 +545,7 @@ function signalAsContext(s) {
   // consistently. Indie-hacker persona caught the prior Fitzpatrick/Maurya mix; this
   // chooses the cohort-portable version.
   if (moment === 'caution') {
-    return `[BOSS conscience — ${loopId} stalled · ${s.confidence} confidence] The ${loopId} is open: ≥3 ideas/captures exist but no canvas names a real riskiest assumption yet. Before voicing, do the judgment the predicate can't (v0.33): silently read the active idea's capture log. If the captures are ONE idea getting sharper — each entry refining the same bet, narrowing the user, finding the real pain, or wrestling the same hard question — that's DEPTH, not avoidance, and convergence toward a canvas. Stay silent; firing here punishes exactly the thinking caution should encourage. Fire only if the captures are scattered or accumulating without converging on a bet: idea-hopping (each capture a different product), feature-piling (scope growing, no customer or risk named), or market/competitor-watching with no bet of their own forming — the capturing-lots / validating-nothing drift. If it does fit: name the *specific* pattern you read in one spare line (not a generic "you should validate"), ask *what they'd want to learn* before going further (or *who they'd ask first* — Fitzpatrick-style), point at \`/canvas\`, and hand the decision back. Say it at most once; if you've already raised it this session or the user is clearly mid-other-work, stay silent. It's a nudge, never a gate.`;
+    return `[BOSS conscience — ${loopId} stalled · ${s.confidence} confidence] The ${loopId} is open: ≥3 ideas/captures exist but no canvas names a real riskiest assumption yet. Before voicing, do the judgment the predicate can't (v0.33): silently read the active idea's capture log. If the captures are ONE idea getting sharper — each entry refining the same bet, narrowing the user, finding the real pain, or wrestling the same hard question — that's DEPTH, not avoidance, and convergence toward a canvas. Stay silent; firing here punishes exactly the thinking caution should encourage. Fire only if the captures are scattered or accumulating without converging on a bet: idea-hopping (each capture a different product), feature-piling (scope growing, no customer or risk named), or market/competitor-watching with no bet of their own forming — the capturing-lots / validating-nothing drift. If it does fit: name the *specific* pattern you read in one spare line (not a generic "you should validate"), ask *what they'd want to learn* before going further (or *who they'd ask first* — Fitzpatrick-style), point at \`/canvas\` (or \`/interview\` if they're ready to actually talk to that person — it preps a Mom-Test call and debriefs it into evidence), and hand the decision back. Say it at most once; if you've already raised it this session or the user is clearly mid-other-work, stay silent. It's a nudge, never a gate.`;
   }
   if (moment === 'restraint') {
     return `[BOSS conscience — ${loopId} premature · ${s.confidence} confidence] The founder is reaching for ${loopId} but an upstream artifact is missing. If it fits the moment, surface BOSS's restraint nudge in your own voice: name what's missing in one line, offer to back up, hand the decision back. Never block.`;
@@ -498,7 +566,7 @@ function signalAsContext(s) {
     return `[BOSS conscience — ${loopId} unread · ${s.confidence} confidence] The founder declared an AI cost budget (\`docs/ai-cost-budget.md\` exists) but hasn't recorded a cost review yet. Declaring is half the discipline; reading the ledger is the other half. If it fits the moment, surface BOSS's nudge in your own voice: name the unread-ledger gap in one line (cohort decides framing — indie-hacker wants the calm-company "%-of-revenue" frame, returning-founder wants unit-economics, eng-builder wants the inspectable numbers, domain-expert wants the privacy-first confirmation first). **Don't sound like a productivity-reward.** Point at \`/cost-review\`, hand the decision back. Never block.`;
   }
   if (moment === 'drift') {
-    return `[BOSS conscience — ${loopId} adrift · ${s.confidence} confidence] The founder named a riskiest assumption on the canvas but hasn't recorded a validation plan for it (no real "Experiment this week" line), and work has been accumulating (≥3 devlog entries). This is the moment to check the work *against the named bet* — the comparison predicates can't make and you can. If — and ONLY if — it fits this moment: silently read the riskiest-assumption line on the canvas (\`docs/ideas/*-canvas.md\`), then the most recent ~5 entries of \`docs/devlog.md\`, plus the open FEAT/spec if there is one. Read only that — not the whole project. Then judge: is that recent work actually *testing* the named risk, or building *around* it? If it has drifted, name the specific gap in one spare line — "you said X is the bet that could sink this; the last sessions built Y and Z; neither tests X" — and ask what the smallest experiment on the risk would be (point at \`/canvas\` to write it, or \`/pretotype\` to run it; if they want the full whole-project audit rather than this bounded read, \`/drift-deep\`). If the work IS engaging the risk, stay silent — silence is the correct output when they're on-aim. This is not a "you've been productive!" reward and not a generic "you should validate" line; the value is the specific stated-vs-actual comparison. Cohort decides framing — returning-founder wants the harder "is your conviction here where it needs to be for 12 months" cut, first-product wants "here's what 'test your riskiest bet' means" taught plainly, domain-expert wants the who-could-be-harmed lens on the named risk. Say it at most once this session; never block.`;
+    return `[BOSS conscience — ${loopId} adrift · ${s.confidence} confidence] The founder named a riskiest assumption on the canvas but hasn't recorded a validation plan for it (no real "Experiment this week" line), and work has been accumulating (≥3 devlog entries). This is the moment to check the work *against the named bet* — the comparison predicates can't make and you can. If — and ONLY if — it fits this moment: silently read the riskiest-assumption line on the canvas (\`docs/ideas/*-canvas.md\`), then the most recent ~5 entries of \`docs/devlog.md\`, plus the open FEAT/spec if there is one. Read only that — not the whole project. Then judge: is that recent work actually *testing* the named risk, or building *around* it? If it has drifted, name the specific gap in one spare line — "you said X is the bet that could sink this; the last sessions built Y and Z; neither tests X" — and ask what the smallest experiment on the risk would be (point at \`/canvas\` to write it, \`/pretotype\` to run it, or \`/interview\` if the cheapest test is talking to the right person — it preps the Mom-Test call and debriefs it into graded evidence; if they want the full whole-project audit rather than this bounded read, \`/drift-deep\`). If the work IS engaging the risk, stay silent — silence is the correct output when they're on-aim. This is not a "you've been productive!" reward and not a generic "you should validate" line; the value is the specific stated-vs-actual comparison. Cohort decides framing — returning-founder wants the harder "is your conviction here where it needs to be for 12 months" cut, first-product wants "here's what 'test your riskiest bet' means" taught plainly, domain-expert wants the who-could-be-harmed lens on the named risk. Say it at most once this session; never block.`;
   }
   if (moment === 'coordination') {
     return `[BOSS conscience — ${loopId} open · ${s.confidence} confidence] A founding-team seam signal (IDEA-037 slice 5b): this is a *team* (a cofounder is on the roster), real work has happened (devlog ≥3), and **not one decision has been recorded together** (\`docs/decisions/\` is empty). The evidence behind this is that AI erodes the human-to-human seam *invisibly* — a pair can feel productive while building in parallel, each in their own AI session, never deciding together. But ≥0 DECs is only the gate, and it's WEAK-transfer evidence — before voicing, do the judgment the predicate can't: silently read the bounded slice — \`docs/decisions/\` (empty), \`boss board\` (who's building what), \`boss team\` (who's on the venture). Fire ONLY if it reads like a real seam: work flowing through one founder's agent while the shared log sits untouched by the other, divergence with nothing decided jointly. If the deciding is plausibly happening *off-repo* (a distributed pair who talk on calls and just haven't written a \`DEC\`), **stay silent** — a quiet log is NOT proof of a problem, and firing there punishes a healthy team. If it DOES fit: name the *specific* structural observation in one spare line (building a while, nothing decided together — not a generic "communicate more"), and ask the *coordination* question — are you two actually deciding this jointly, or in parallel? Point at \`/decide\` (record one together) and \`mentor-cofounder\` (the deeper coaching). **Serve the partnership as the unit; NEVER take a side** — surface the seam, never say whose fault it is. Cohort decides framing — non-tech-founder wants plain "are you and your cofounder on the same page on the big calls?", eng-builder wants the terse structural read, returning-founder wants the blunt "you've shipped for weeks and not one joint decision — is one of you actually driving alone?". Say it at most once this session; never block — recording a single decision together silences it.`;

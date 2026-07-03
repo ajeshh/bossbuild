@@ -24,7 +24,11 @@ is ready to `boss unlock mvp`.
    answers from the idea's "Current shape" + capture log; only ask what's missing.
 4. Leave `_(not yet)_` on anything unknown — blanks are honest signal, not failure. Re-run anytime.
 5. After each pass, name the **single riskiest assumption** and propose **one experiment this week**
-   to test it. Write both in. That's the heartbeat of incubation.
+   to test it. Write both in. That's the heartbeat of incubation. If any `EVID-NNN` records in
+   `docs/evidence/` bear on this assumption (`/evidence` captures them; `/interview` debriefs into
+   them), **cite their ids in the riskiest-assumption cell** — the bet should argue from receipts, not
+   vibes, and their grades (stated-pain → observed-behavior → commitment) show how far it's really been
+   tested.
 6. When most cells are filled + the top risk has a validation plan, mark it **Done!** (below) — name
    what became real — then offer `boss unlock mvp`.
 
@@ -74,7 +78,7 @@ _Impact, risks, and the values that guide decisions._
 
 ## Incubation heartbeat
 - **Riskiest assumption:** _(the one most likely to be fatal and least proven)_
-- **Experiment this week:** _(the smallest test to prove/disprove it)_
+- **Experiment this week:** _(the smallest test to prove/disprove it — often a 15-minute call with the right person; `/interview` preps it and debriefs it into graded evidence)_
 - **What result would change the plan?** _(decide before you run it)_
 ```
 

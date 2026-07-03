@@ -85,6 +85,22 @@ Capture an idea, shape it, pressure-test whether it's real. Almost no ceremony.
   what could kill it), `/persona` (your target user as a consultable voice — guide *and* QA, never a
   replacement for talking to a real one), `/import` (bring existing material in — a doc, a folder, or
   a URL becomes durable context in `docs/source/` that BOSS builds from).
+- **Talk to someone:** `/interview` is the bridge the conscience keeps pointing at. Run it before a
+  customer call and it hands you one printable page of Mom-Test questions (past behavior, their life,
+  no pitching); run `/interview debrief` after and paste your notes — it pulls out the real signals,
+  grades them, flags the one moment you pitched instead of listened, and names the next commitment to
+  ask for. BOSS preps and debriefs; it never fakes the conversation.
+- **Already have a transcript?** `/research` digests a whole one — an interview recording, a sales
+  call, a support thread — into graded `EVID` at scale plus synthesized product context (the pain in
+  your users' own words, the job they're hiring for, the workarounds they use today, what they *didn't*
+  care about), and flags the spots where you led the witness. It analyzes what's actually there; it
+  never invents a quote. The sibling of `/interview`, at transcript scale.
+- **Where evidence lives:** when you actually talk to someone (the conscience will tell you a
+  15-minute call beats another canvas pass), the result lands in `docs/evidence/` as an `EVID-NNN`
+  — one signal per file, graded `stated-pain` → `observed-behavior` → `commitment`. Capture one with
+  `/evidence` (paste your notes; BOSS grades it honestly and pushes back on inflation). The conscience
+  reads that ledger: it gets *specific* when you have only stated pain and no commitments, and it goes
+  *quiet* once real commitments show up — evidence is how you earn its silence.
 - **Ask:** `mentor-venture` — is this worth building, what's the riskiest assumption.
 - **Ready to climb when:** you're done capturing and ready to *build* one of these for real.
   → `boss unlock mvp`
