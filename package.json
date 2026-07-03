@@ -41,7 +41,8 @@
     "eval:gate": "node docs/architecture/conscience-evals/runner.js",
     "eval:judgment": "node docs/architecture/conscience-evals/judgment/replay.js",
     "eval": "npm run eval:gate && npm run eval:judgment",
-    "regrade": "node docs/architecture/conscience-evals/judgment/regrade.js"
+    "regrade": "node docs/architecture/conscience-evals/judgment/regrade.js",
+    "regrade:keyless": "node docs/architecture/conscience-evals/judgment/regrade-keyless.js"
   },
   "engines": {
     "node": ">=18"
