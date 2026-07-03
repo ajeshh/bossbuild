@@ -1,0 +1,11 @@
+{
+  "name": "boss-pretotype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "BOSS pretotypes itself — a 60-second browser taste that measures demand (IDEA-047). NOT part of the zero-dep CLI; a separate experiment surface.",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0"
+  }
+}
