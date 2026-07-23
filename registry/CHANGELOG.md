@@ -2,6 +2,40 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.114.0 — 2026-07-23
+
+- **Retrieval — a ladder, not a vector database (2026-07-23 sweep, BUILD 5b; UP → `library/practices/retrieval.md`).**
+  Thread F's "one thing to build" — the practice a founder most needs in order to *not* over-build. Its value is
+  subtraction: **"RAG is dead" is a myth** (the naive version is dying, retrieval isn't), and the honest decision
+  line is Anthropic's — **< ~200k tokens & static → skip RAG, put it in the prompt**; above ~500k, or needs
+  frequent queries / low latency / citations → retrieve. Anchored on **context rot** (Chroma: usable window ≈
+  60–70%, so long context ≠ free retrieval). **Rung 0 = "can Claude Code just grep this?"** (agentic retrieval
+  in-repo, no vector DB — many founders' RAG need is smaller than they think). The ladder (dense → hybrid
+  BM25+vector/RRF → rerank → graph/agentic, each earned on a real miss), the unglamorous defaults
+  (**recursive-512 chunking**, **pgvector-until-it-hurts**, **recall@k before you optimize** — Jason Liu's
+  inventory-vs-capability split), Anthropic's Contextual Retrieval as the standout, and **agent memory as the
+  same ladder** (prompt → summarize → Claude's native memory tool → a framework only on a named wall; don't pick
+  one off a gameable leaderboard). Library only; `src/` untouched. **Not committed at write time** (committed
+  with this batch).
+
+## 0.113.0 — 2026-07-23
+
+- **Post-ship validation — `/measure` + analytics-for-ai-products (2026-07-23 sweep, BUILD 5; UP practice +
+  DOWN L1 skill).** BOSS owned *pre-build* validation (`/pretotype`/`/evidence`/`/interview`/`/research`); this
+  is the *post-ship* half. **UP** = `library/practices/analytics-for-ai-products.md`: the doctrine that classic
+  analytics assumes deterministic output, an AI product violates it, so **model accuracy ≠ user success** — the
+  metric vocabulary (Task Completion Rate = the AI north star, retained-character rate, edit distance,
+  regeneration, containment, frustration index, **cost-per-*successful*-outcome**), the product-analytics ↔
+  eval-loop convergence (traces → evals → product metrics; online evals on a sample of live traffic), and the
+  **anti-surveillance clause** (measure graduation/loop-closure, NOT engagement/DAU — the humane differentiator;
+  measure the product, don't surveil the human — [[IDEA-021]]). **DOWN** = a thin **`/measure`** skill (the
+  `/pretotype` counterpart): a hard **n<10 gate** ("close this, go talk to your users"), ONE activation metric +
+  ONE retention curve, **≤10 events** (kills analytics theater), the AI-specific metrics, and free/OSS/no-lock-in
+  tooling (PostHog / Plausible / Langfuse-Phoenix; print+JSONL+spreadsheet for a first app). Extends `/evals` +
+  `/ai-cost` toward online/product metrics, doesn't duplicate them; post-ship retention =
+  `observed-behavior`/`commitment` **EVID**. Registered in the L1 manifest. Skill + library; `src/` untouched.
+  **Not committed at write time** (committed with this batch).
+
 ## 0.112.0 — 2026-07-23
 
 - **`/landing` — get a founder's first landing page out the block, on-brand and honest (2026-07-23 sweep,
