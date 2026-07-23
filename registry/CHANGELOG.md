@@ -2,6 +2,23 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.103.0 — 2026-07-03
+
+- **`/sunset` — projects can end honestly (IDEA-044).** BOSS had birth (`boss new`) and life (modes)
+  but no death — so projects went *undead*, never killed, never learned from. Now they can end well.
+  New L0 **`/sunset`** skill (deliberate-invoke; the conscience **never** suggests quitting unprompted)
+  walks three movements: the **honest post-mortem** (reads the canvas / ideas / devlog / EVID ledger,
+  asks 3 Mom-Test questions — the bet, what evidence *actually* came in, what it taught the next
+  project — framed as a real experiment that returned an answer, never failure); the **harvest** (offer
+  to route reusable patterns UP via `/boss-learn`; write a one-page `docs/POSTMORTEM.md`); and the
+  **clean close** — new **`boss retire`** CLI verb flips the project to a `retired` status (with
+  `retired_on`) in both the local stamp and the registry. `boss board` shows a quiet retired banner,
+  `boss list` folds retired projects to the bottom, and **`boss insights` gains kill-speed** — bets
+  run vs. retired + median idea→retire days (Camuffo's "quit faster" made measurable; facts from real
+  dates, never a score). **Retiring ≠ deleting** — nothing on disk is touched and `boss retire --undo`
+  reopens it. Zero-dep (`src/registry.js` + `cli.js` + `insights.js`); gate 122/0; `/tmp`-verified
+  end-to-end (retire → board fold → list fold → kill-speed → undo).
+
 ## 0.102.0 — 2026-07-03
 
 - **Conscience judgment evals — Fable regrade pass (IDEA-014 routing follow-on).** A stronger judge

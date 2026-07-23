@@ -78,6 +78,14 @@ function assess(p, nowMs) {
     ? Math.round((Date.parse(t.firstFeat) - Date.parse(t.firstIdea)) / DAY)
     : null;
 
+  // Kill-speed (IDEA-044 — /sunset): days from the first captured idea to retirement.
+  // Camuffo's metric — validation's payoff is deciding (and quitting) faster. Real dates
+  // only (the registry's retired_on), omitted when absent. Never a score, never a judgment.
+  const retired = p.status === 'retired';
+  const toRetireDays = (retired && t.firstIdea && p.retired_on && p.retired_on >= t.firstIdea)
+    ? Math.round((Date.parse(p.retired_on) - Date.parse(t.firstIdea)) / DAY)
+    : null;
+
   // Loop-closure signal — NOT activity. Where did the venture get stuck, if anywhere?
   let signal = 'flowing', note = '';
   if (t.ideas === 0 && t.features === 0) {
@@ -95,7 +103,7 @@ function assess(p, nowMs) {
     mode: stamp?.mode || p.mode || p.stage || '?',
     pin: stamp?.bossVersion || p.bossVersion || '?',
     depth, ideas: t.ideas, canvassed: t.canvassed, features: t.features, ageDays, signal, note,
-    toBuildDays,
+    toBuildDays, retired, retiredOn: p.retired_on || null, toRetireDays,
   };
 }
 
@@ -134,9 +142,25 @@ export function insights(cwd) {
     console.log(`    flow:        idea→build median ${median}d  (across ${cycles.length} graduated · cycle time, not throughput)`);
   }
 
+  // Kill-speed (IDEA-044): the honest count of bets run vs. retired, and how fast the dead
+  // ones were killed — Camuffo's "quit faster" made measurable. Only appears once you've
+  // ended a project on purpose. Facts from real dates; never a score.
+  const retiredRows = rows.filter((r) => r.retired);
+  if (retiredRows.length) {
+    const kills = retiredRows.map((r) => r.toRetireDays).filter((d) => d != null).sort((a, b) => a - b);
+    const medKill = kills.length ? kills[Math.floor((kills.length - 1) / 2)] : null;
+    console.log(`    kill-speed:  ${rows.length} bet(s) run · ${retiredRows.length} retired${medKill != null ? ` · median idea→retire ${medKill}d` : ''}  (deciding faster is the payoff, not a score)`);
+  }
+
   console.log(`\n  where each loop stands — idea → canvas → build`);
   for (const r of rows) {
     const here = cwd && r.path === cwd ? ' (here)' : '';
+    if (r.retired) {
+      // A closed loop reads honestly, not as a stalled one: no stale/untested note.
+      const kill = r.toRetireDays != null ? ` · idea→retire ${r.toRetireDays}d` : '';
+      console.log(`    ⊘ ${String(r.name + here).padEnd(20)} ${String('retired').padEnd(11)} retired ${r.retiredOn || '—'}${kill}`);
+      continue;
+    }
     const stat = `${r.ideas} idea${r.ideas === 1 ? '' : 's'} · ${r.canvassed} canvassed${r.features ? ` · ${r.features} building` : ''}${r.toBuildDays != null ? ` · built in ${r.toBuildDays}d` : ''}`;
     console.log(`    ${MARK[r.signal] || ' '} ${String(r.name + here).padEnd(20)} ${String(r.mode).padEnd(11)} ${stat}`);
     if (r.note) console.log(`      ${''.padEnd(22)}${r.note}`);

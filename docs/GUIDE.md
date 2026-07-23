@@ -133,6 +133,15 @@ The design layer turns on, plus the next tier of mentors.
 ### Scale — *grow it*
 Not authored yet. The ladder is real through V1 today.
 
+### Ending well — *a project can end at any rung*
+Not every bet works, and that's the point — validation's payoff is deciding faster, including
+quitting faster. When a project is done (validated-no, out of runway, or just not the thing anymore),
+`/sunset` closes the loop honestly: one page, three questions — what was the bet, what evidence
+actually came in, what this taught the next project — then it harvests any reusable patterns UP and
+marks the project **retired** (`boss retire`; reversible, nothing deleted). `boss insights` then knows
+your **kill-speed** — how fast you kill the dead ones. A real experiment that returned an answer, not
+a failure. It only ever runs when *you* run it; the conscience never suggests quitting on its own.
+
 ---
 
 ## When you're stuck, ask a mentor

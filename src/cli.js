@@ -3,7 +3,7 @@ import { join, resolve, basename } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
-import { registerProject, listProjects, findByPath } from './registry.js';
+import { registerProject, listProjects, findByPath, retireProject, reviveProject } from './registry.js';
 import { planSync, applySync, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
@@ -14,6 +14,9 @@ import { insights } from './insights.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 
 const STAMP = '.boss/manifest.json';
+
+// Quiet text for the terminal (matches brain.js/conscience.js). No-op when not a TTY.
+const dim = (s) => (process.stdout.isTTY ? `\x1b[90m${s}\x1b[0m` : s);
 
 function stageVars(name, stageId, mode) {
   return {
@@ -301,6 +304,11 @@ function cmdBoard(args = []) {
     try { spawn(opener, [out], { stdio: 'ignore', detached: true, shell: process.platform === 'win32' }).unref(); } catch { /* path already printed */ }
     return;
   }
+  // A retired project's board still reads honestly (nothing is deleted) — just note it once,
+  // quietly, so the board isn't mistaken for a live one (IDEA-044 — /sunset).
+  if (stamp.status === 'retired') {
+    console.log(dim(`\n  ⊘ ${stamp.name} was retired ${stamp.retired_on || ''} — this is the record, not a live board. \`boss retire --undo\` to reopen.`));
+  }
   // Owner lens (founder layer slice 2b): show `@owner` on cards only when this is a
   // team (dormant-solo); `--mine` narrows to the cards I own.
   const me = args.includes('--mine') ? resolveIdentity().handle : null;
@@ -373,16 +381,50 @@ function cmdTeam(args) {
   }
 }
 
+// `boss retire` (IDEA-044 — /sunset movement 3). Flips the current project to `retired`
+// in both the local stamp and the registry. Reversible (`--undo`); nothing is deleted.
+// The model half — the honest post-mortem + the harvest — lives in the /sunset skill;
+// this is only the clean state change (predicate/runner split).
+function cmdRetire(args) {
+  const stamp = readStamp(process.cwd());
+  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  const f = parseArgs(args || []);
+  if (f.undo) {
+    delete stamp.status; delete stamp.retired_on;
+    writeStamp(process.cwd(), stamp);
+    reviveProject(process.cwd());
+    console.log(`\n  ✦ ${stamp.name} is active again. Nothing was ever deleted.\n`);
+    return;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  stamp.status = 'retired';
+  stamp.retired_on = today;
+  writeStamp(process.cwd(), stamp);
+  retireProject(process.cwd(), today);
+  console.log(`\n  ✦ ${stamp.name} retired ${today}. A real experiment that returned an answer.`);
+  console.log(`    The repo stays; only the status changed. Run \`boss retire --undo\` to reopen it.\n`);
+}
+
 function cmdList() {
   const projects = listProjects();
   if (!projects.length) {
     console.log('\n  No projects registered yet. Run `boss new <name>`.\n');
     return;
   }
-  console.log(`\n  ${projects.length} connected project(s):\n`);
-  for (const p of projects) {
+  // Retired projects (IDEA-044) fold to the bottom, quiet — the shipped_on archive pattern
+  // applied at the portfolio level. Active projects read first; retired ones are honest, not hidden.
+  const active = projects.filter((p) => p.status !== 'retired');
+  const retired = projects.filter((p) => p.status === 'retired');
+  console.log(`\n  ${active.length} connected project(s):\n`);
+  for (const p of active) {
     console.log(`    ${p.name.padEnd(20)} ${(p.mode || p.stage || '?').padEnd(12)} BOSS@${p.bossVersion || '?'}`);
     console.log(`    ${''.padEnd(20)} ${p.path}`);
+  }
+  if (retired.length) {
+    console.log(`\n  ${retired.length} retired:`);
+    for (const p of retired) {
+      console.log(`    ${dim(p.name.padEnd(20) + ' retired ' + (p.retired_on || '—'))}`);
+    }
   }
   console.log('');
 }
@@ -508,6 +550,7 @@ export function run(argv) {
     case 'insights': return cmdInsights();
     case 'team': return cmdTeam(args);
     case 'list': return cmdList();
+    case 'retire': return cmdRetire(args);
     case 'sync': return cmdSync(args);
     case 'learn': return cmdLearn(args);
     case 'conscience': return cmdConscience(args);
@@ -529,6 +572,7 @@ export function run(argv) {
       console.log('  boss insights            read your own projects\' trace: where each loop stands (local · nothing sent)');
       console.log('  boss team [add @user|remove @user]   who\'s on the venture (solo by default; add a cofounder to light up the team layer)');
       console.log('  boss list                all connected projects');
+      console.log('  boss retire [--undo]     end a project honestly: mark it retired (reversible; the /sunset skill runs the post-mortem)');
       console.log('  boss sync [--apply]      pull current BOSS skills/agents/hooks into this project (DOWN)');
       console.log(`  boss learn <p> --as <c>  promote a pattern UP into the library (${LIBRARY_CATEGORIES.join('|')})`);
       console.log('  boss conscience pause    silence the conscience for a bounded session [--for 8h|--until-resume]');

@@ -32,3 +32,27 @@ export function registerProject(entry) {
 export function findByPath(absPath) {
   return load().projects.find((p) => p.path === absPath);
 }
+
+// Mark a project retired (IDEA-044 — /sunset). Retiring ≠ deleting: nothing on disk
+// is touched here; only the registry status flips, and it flips back (see reviveProject).
+// Returns the updated entry, or null if the project isn't registered.
+export function retireProject(absPath, retiredOn) {
+  const data = load();
+  const p = data.projects.find((p) => p.path === absPath);
+  if (!p) return null;
+  p.status = 'retired';
+  p.retired_on = retiredOn;
+  save(data);
+  return p;
+}
+
+// Reverse a retirement (the guardrail: retiring is reversible). Returns the entry or null.
+export function reviveProject(absPath) {
+  const data = load();
+  const p = data.projects.find((p) => p.path === absPath);
+  if (!p) return null;
+  delete p.status;
+  delete p.retired_on;
+  save(data);
+  return p;
+}
