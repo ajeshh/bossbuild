@@ -2,6 +2,25 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.112.0 — 2026-07-23
+
+- **`/landing` — get a founder's first landing page out the block, on-brand and honest (2026-07-23 sweep,
+  BUILD 3; UP practice + DOWN L1 skill).** BOSS uniquely holds the inputs (BRAND.md voice/positioning, the
+  design tokens, the canvas Promises cell) and the founder is already *inside Claude Code*, so an on-brand page
+  in-repo is the lowest-lock-in option in the 2026 landscape. **UP** = new `library/practices/landing-page.md`:
+  the minimum-that-converts (descriptive headline = value prop, two-job subhead, one repeated CTA, proof in the
+  eye-path, no nav, clarity-over-cleverness — Shapiro / CXL / Harry Dry / 37signals), the **product-page vs
+  demand-page** split (the demand page *is* `/pretotype`'s fake door; a signup measures curiosity, not intent),
+  the **anti-slop mechanism** (BRAND.md→copy, tokens-by-semantic-name→visuals, Promises→value-prop; beat the
+  indigo-default; spend the saved hours on the 5% that's the brand), and the **persuasion-vs-manipulation** line
+  (say-it-out-loud test; real deadlines only; the honest version *is* the high-converting one). **DOWN** = a
+  thin **`/landing`** L1 skill that composes those surfaces — reads the brief (refuses blank generation), asks
+  product-vs-demand, generates a real page in-repo, runs **`/red-team --humane`** by default (now scans the
+  generated markup for injected dark patterns), hands off to **`/ship`**, and **hands off** CMS/visual-editing
+  to Framer/Carrd/Webflow (BOSS gets the first honest page out the block, then points onward — not a website
+  builder, not a CRO tool). Registered in the L1 manifest. Skill-layer + library; `src/` untouched. **Not
+  committed at write time** (committed with this batch).
+
 ## 0.111.0 — 2026-07-23
 
 - **Feature flags — "flag the model, not just the feature" + the finishing twin (2026-07-23 sweep, BUILD 6
