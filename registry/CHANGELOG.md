@@ -2,6 +2,26 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.107.0 — 2026-07-03
+
+- **Scale mode (L3) — unstubbed, slices 1–2 (SCALE-MODE design).** Scale is where the product has
+  customers, the founder has help, and **coordination — not code — is the bottleneck** (the founder's
+  rung: leader). The old dhun-generalized stub (PM org, product councils, `/saturday` cadences,
+  EXP/AUDIT id proliferation) is **demoted, not deleted**. Scale is the mode most tempted by premature
+  ceremony — the disease BOSS treats — so everything is **symptom-gated** and the unlock **names its own
+  evidence bar first**: `boss unlock scale` prints the three-legged test (recurring revenue · a
+  non-founder in the work · a nameable coordination symptom), never blocks, records the deviation as
+  yours. Authored: `stages/L3-scale/manifest.json` (lists only what ships — `/incident` + `operate-loop`;
+  deferred surfaces named, not faked into the roster); `template/claude-append.md` (Scale working rules:
+  **high-risk paths** get the human tier, **DRI** on decisions, the conscience's **hard line** — it never
+  fires at / evaluates / reports on a non-founder — and the recorded refusals); **`/incident`** (the
+  blameless one-page outage post-mortem — fix-first, one systemic learning routed UP); the **`/triage
+  --feedback`** customer register (bug / friction / feature-request-as-`EVID`-not-spec / churn); plus the
+  leader role-shift paragraph at unlock. **Slices 3–5 stay trigger-gated and unbuilt** (`/economics`,
+  collaborator roles + `mentor-operations`, `/code-health`, `/refactor-wave`, `RFC-NNN`, and the
+  give-away-your-Legos conscience moment — the careful piece, last). Zero-dep; gate 122/0;
+  `/tmp`-verified across the full L0→L3 unlock chain.
+
 ## 0.106.0 — 2026-07-03
 
 - **Mentors read state before they speak — the earned mentor-layer depth slice (IDEA-003).** A mentor

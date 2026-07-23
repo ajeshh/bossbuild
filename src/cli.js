@@ -247,6 +247,19 @@ function cmdUnlock(args) {
   if (!target) return fail(`unknown mode '${layer}'. options: ${STAGE_ORDER.join(', ')}`);
   if (stamp.installedLayers.includes(target)) return fail(`${target} already installed.`);
 
+  // Scale names its bar before you cross it (IDEA-040 trigger discipline, made a moment). It never
+  // blocks — the house rule — but Scale is the mode most tempted by premature ceremony, so it says
+  // out loud what earns the ceremony. Missing a leg is fine; carrying unearned ceremony is the cost.
+  if (target === 'L3-scale') {
+    console.log('\n  Scale-mode discipline pays for itself when three things are true:');
+    console.log('    · revenue that recurs (a first-dollar EVID or better)');
+    console.log('    · at least one non-founder in the work (`boss team` roster)');
+    console.log('    · a coordination symptom you can name (a dropped handoff, a decision nobody');
+    console.log('      owned, a 3am incident)');
+    console.log(dim('  Missing one? That\'s fine — but you\'ll be carrying ceremony you haven\'t earned.'));
+    console.log(dim('  Unlocking anyway (BOSS never blocks); the deviation is yours to own.'));
+  }
+
   let m, applied;
   try {
     m = readStageManifest(target);

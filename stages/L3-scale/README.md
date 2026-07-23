@@ -1,13 +1,35 @@
-# L3 · Scale — NOT YET AUTHORED
+# L3 · Scale — authored (slices 1–2); the rest is trigger-gated
 
-The full agentic-org mode — "a fully blown-out, complex app." Planned contents (generalized from dhun):
+Scale is the mode where the product has customers, the founder has help, and **coordination — not
+code — is the bottleneck.** The founder's rung is **leader** (give away your Legos). Full design:
+[`docs/design/SCALE-MODE.md`](../../docs/design/SCALE-MODE.md).
 
-- PM org: Chief of Staff (`pm`) + Principal-PM pattern, `/pm`, `/pm-roundup`, `/product-council`
-- lab governance tiers (3-tier change control for algorithm-like subsystems)
-- `/refactor-wave` (Saaf/Dabba wave decomposition) + rollback
-- `/code-health`, `/perf-check`
-- `/saturday` cadence chain, `/reflect`
-- full IDS: `RFC-NNN`, `DEC-...`, `EXP-NNN`, `AUDIT-NNN`
-- agents: `historian`, `code-health-lead`, `release-manager`, Principal PMs
+Scale is the mode most tempted by premature ceremony — the exact disease BOSS treats — so everything
+here is **symptom-gated**, and the unlock names its own evidence bar before you cross it.
 
-To author: add `manifest.json` + `template/` here.
+## Authored (slices 1–2, v0.107.0)
+
+- **`manifest.json`** — lists only what ships now (the `/incident` skill + `operate-loop`); deferred
+  surfaces are named in the summary, not faked into the roster.
+- **`template/claude-append.md`** — the Scale working rules: high-risk paths (the human tier), DRI on
+  decisions, the conscience's hard line (never fires at / evaluates / reports on a non-founder), and
+  the demotions Scale *refuses* (no PM-org cosplay, no unearned IDs, no calendar ceremony).
+- **The unlock gate** (in `src/cli.js`) — names the three-legged bar (recurring revenue · a non-founder
+  in the work · a nameable coordination symptom). Never blocks; records the deviation as yours.
+- **The leader paragraph** at unlock (the role-shift ladder, IDEA-053).
+- **`/incident`** — the blameless one-page outage post-mortem (fix-first; one systemic learning UP).
+- **`/triage --feedback`** — the customer register on the existing `/triage` verb (bug / friction /
+  feature-request-as-`EVID` / churn).
+
+## Trigger-gated — NOT authored (slices 3–5)
+
+Each waits on a real project's symptom, same discipline as every rung:
+
+- `/economics` (unit economics at real volume) · collaborator roles + `mentor-operations` + onboarding
+  briefs (IDEA-052) · `/code-health` · `/refactor-wave` · `RFC-NNN` (only when two builders disagree in
+  writing) · the **give-away-your-Legos** conscience moment (a new detector + eval cases through the
+  gate — the careful piece, authored last).
+
+The old dhun-generalized stub (PM org, product councils, `/saturday` cadences, EXP/AUDIT id
+proliferation) was **demoted, not deleted** — its kernel survives where it maps to a real symptom; its
+ceremony does not. See `docs/design/SCALE-MODE.md` for the full pillar design and the recorded refusals.
