@@ -2,6 +2,25 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.111.0 — 2026-07-23
+
+- **Feature flags — "flag the model, not just the feature" + the finishing twin (2026-07-23 sweep, BUILD 6
+  core; UP → `library/practices/feature-flags.md`).** Answers the founder's ask about toggling AI features and
+  not drowning in half-built work. The spine is the AI-specific idea: with an AI feature the risky change is a
+  model ID / prompt / temperature, which CI/CD can't see or roll back — so **put the model config in the
+  flag** and get a **kill switch** that flips in seconds (AI fails non-deterministically, in prod, on the whole
+  user base at once). Plus percentage-rollout-as-the-test, flags-as-the-prompt/model-A/B mechanism, rollout-as-
+  cost-discovery (pairs `/ai-cost`), and **flag debt = unfinished work wearing a toggle** (retire-at-creation).
+  The **JIT ladder is env-var-first** (a kill switch is one `if (env)`; a platform earns its place only for
+  remote-toggle/user-bucketing — a 0-user founder needs neither). Names the **flags↔finishing** connection: a
+  flag lets you ship a *thin done slice* instead of a 70%-done branch (the antidote to the vibe-coding
+  graveyard), but a flag stuck at 5% forever is WIP wearing a toggle → *ship the slice, then roll to 100% or
+  `/sunset` it*; and **"done" ≠ "the happy path runs."** Cross-links `git-workflow` (flags = how trunk merges
+  unfinished work) + `ship-it-live` (the fast app-layer rollback). **DEFERRED (careful piece):** the `/ship`
+  ship-dark/kill-switch *offer* and the `focus`-moment **finish-or-sunset circuit breaker** (touches the
+  conscience voicing → needs judgment-eval cases; the gate-touching slice, deferred like other conscience-
+  moment changes). Practice only; `src/` untouched. **Not committed at write time** (committed with this batch).
+
 ## 0.110.0 — 2026-07-23
 
 - **Harness engineering + context engineering — the architecture story BOSS was missing (2026-07-23 sweep,
