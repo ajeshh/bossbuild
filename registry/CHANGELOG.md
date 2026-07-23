@@ -2,6 +2,21 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.106.0 — 2026-07-03
+
+- **Mentors read state before they speak — the earned mentor-layer depth slice (IDEA-003).** A mentor
+  is only worth more than a fresh Claude tab if it already knows the venture. Every shipped mentor
+  template now carries a standing **"Before you advise — read the state first"** block: read the canvas,
+  a bounded slice of the venture brain (`.boss/brain/read.md`, the same bound the conscience uses), the
+  3 most recent `DEC-*.md`, and the mentor's own prior dossier artifact — anchor advice in what was
+  found, and **name any contradiction with recorded state** (a `DEC`, the canvas bet) before answering.
+  Paired with an **"After a consequential session"** step: the mentor *offers* (never silently) to
+  append its position + date to its dossier artifact — so **the dossier doubles as mentor memory**, with
+  no new file type or lifecycle. `docs/MENTORS.md` documents it. Mentors stay **pull-only**; the
+  conscience remains the only push surface. Deferred with explicit triggers (IDEA-003): `/consult`
+  multi-mentor convening, a dedicated advice ledger, JIT routing (rejected as a hook). Prompt-text on
+  files that already ship; gate 122/0; `/tmp`-verified.
+
 ## 0.105.0 — 2026-07-03
 
 - **The role-shift ladder — mode unlocks name what each stage asks of the founder (IDEA-053).** BOSS

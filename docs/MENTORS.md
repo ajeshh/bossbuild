@@ -84,6 +84,18 @@ conversations, authored *with* the founder, not generated behind their back:
 
 Dossier artifacts live in `docs/` (likely `docs/dossier/`), under the founder's ownership.
 
+### Mentors read state before they speak (v0.106.0, IDEA-003)
+
+A mentor is only worth more than a fresh Claude tab if it already knows the venture. Every shipped
+mentor template now carries a standing **"Before you advise — read the state first"** block: read the
+canvas, a bounded slice of the venture brain (`.boss/brain/read.md`, same bound the conscience uses),
+the 3 most recent `DEC-*.md`, and the mentor's own prior dossier artifact — then anchor advice in what
+was found, and name any contradiction with recorded state before answering. Paired with an **"After a
+consequential session"** step: the mentor *offers* to append its position + date to its dossier
+artifact. **The dossier artifact doubles as the mentor's memory** — no separate advice-ledger substrate
+(that's captured NOT-YET in IDEA-003; the artifact carries the thread until a real founder outgrows it).
+Mentors stay **pull-only** (the founder invokes them); the conscience remains the only push surface.
+
 ## Encoding real people
 
 Mentor voices and heuristics are seeded from **real practitioners' best-practices**, deduplicated and
