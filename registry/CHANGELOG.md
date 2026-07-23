@@ -2,6 +2,22 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.105.0 — 2026-07-03
+
+- **The role-shift ladder — mode unlocks name what each stage asks of the founder (IDEA-053).** BOSS
+  develops the venture (modes), the craft (`PRAC`), the product — and said nothing about the founder's
+  own transformation, the thing real incubators actually sell. Each rung quietly asks the founder to
+  become someone slightly different: **builder → seller → operator → leader** (Quickstart → MVP → V1 →
+  Scale). Most transition failure isn't tooling — it's continuing the previous rung's comfortable job
+  (the vibe-virtuoso: 50 repos, zero users). Now `boss unlock mvp|v1|scale` prints **one honest
+  paragraph** of what that rung tends to ask *of you*, alongside "here's what you get." New
+  `library/practices/founder-role-shifts.md` names the ladder, the classic failure at each transition,
+  and the BOSS verbs + mentors serving each; `mentor-venture` cites it when "what should I be doing
+  next?" is really about the founder, not the feature. **Describes the situation, never the person
+  (IDEA-019); never a hook, an assessment, or a "founder level"; staying at a rung is legitimate** —
+  the dignity the README extends to projects, extended to people. Static template text (zero-dep);
+  gate 122/0; `/tmp`-verified.
+
 ## 0.104.0 — 2026-07-03
 
 - **The learning pulse — `/close` asks one question (IDEA-048).** The thesis cares about one ratio —

@@ -266,8 +266,35 @@ function cmdUnlock(args) {
   registerProject({ name: stamp.name, path: process.cwd(), stage: target, mode: m.name, bossVersion: bossVersion() });
   console.log(`\n  ✦ Unlocked ${m.name} mode (${target}).`);
   if (applied.appendedClaude) console.log(`    + appended ${m.name} working rules to CLAUDE.md`);
+  const note = ROLE_SHIFT[target];
+  if (note) {
+    console.log(`\n  ${dim('— what this rung tends to ask of you —')}`);
+    for (const line of note) console.log(`  ${line}`);
+  }
   console.log('');
 }
+
+// The role-shift ladder (IDEA-053). Each rung quietly asks the founder to become someone slightly
+// different — builder → seller → operator → leader. Named once, at the founder's own invoked unlock;
+// never a hook, never an assessment, never a "level." Describes the SITUATION, never the person
+// (IDEA-019). Staying at a rung forever is legitimate — the same dignity the README extends to
+// projects extends to people. Full ladder + failure modes: library/practices/founder-role-shifts.md.
+const ROLE_SHIFT = {
+  'L1-mvp': [
+    "This rung's hardest work isn't in the editor. What tends to move an MVP is afternoons spent",
+    "talking to strangers about their problem — the tool half is /interview and /pretotype; the",
+    "personal half is that asking feels worse than building, and matters more. Builder → seller.",
+  ],
+  'L2-v1': [
+    "You're about to have users — which means support, incidents, and churn. The operator's question",
+    "tends to replace the builder's here: not \"what should I make?\" but \"is what I made working for",
+    "the people paying for it?\" Seller → operator.",
+  ],
+  'L3-scale': [
+    "This rung is about becoming dispensable in the right places — giving away your Legos. The work",
+    "shifts from doing to setting up the conditions for others to do. Operator → leader.",
+  ],
+};
 
 function cmdStatus(args) {
   const stamp = readStamp(process.cwd());
