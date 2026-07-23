@@ -21,6 +21,11 @@ It's the security counterpart to `/evals`: `/evals` asks *is the AI part correct
 - `--self`: red-team BOSS's *own* conscience hook + skills against injection (it reads the founder's
   prompts — it's an attack surface too).
 
+> **Model routing (recalibration):** when you delegate the attack run to a subagent, spawn it with
+> the Agent tool's `model: "fable"` — pay for the strongest attacker; the output is a findings list,
+> not a build, so the judgment premium is trivial. If Fable declines (a `refusal` stop reason), fall
+> back to the session model and say so. See `.boss/model-profile.json` / `/recalibrate`.
+
 ## How to run it — the OWASP 2025 LLM Top 10
 
 For the target (a FEAT's AI path, or `--self`), attempt each category and record **binary pass/fail**

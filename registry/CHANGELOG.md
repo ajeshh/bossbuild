@@ -2,6 +2,22 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.101.0 — 2026-07-02
+
+- **Model recalibration phase 2 — the model curve becomes a routed discipline (IDEA-014).** A second
+  model (Fable 5, `claude-fable-5`, $10/$50, always-on thinking) now exists, so IDEA-014's deferred
+  pieces are earned. New **`.boss/model-profile.json`** — a declarative capability profile (model
+  table + pricing + routing map + `last_recalibrated` + `reopen_on`) read by skills, **not** by the
+  CLI (`src/` stays zero-dep and model-free). New **`/recalibrate`** skill — the standing pass:
+  refresh pricing/availability from `/claude-api` → re-run the keyless judgment regrade on the new
+  model and report flipped calls → review each `model:`-annotated agent + routing row for
+  leverage-up/degrade-down → read the frequency ledger → rewrite routing, bump `profile_version`,
+  CHANGELOG. Fires on an event, like `/humane-refresh`. **Fable routed at the subagent seam:** all
+  `mentor-*` carry `model: fable`; `/vet` verdict + `/red-team` attack subagents spawn on Fable.
+  Hooks and volume work (main loop, `/deep-research`, `/spec`, codegen) stay on the session model
+  (Opus 4.8) — the host can't swap per-hook anyway. Compressed rule: *verdicts on Fable, volumes on
+  Opus, hooks stay host.* Host-degrade machinery stays deferred until a second host ships (IDEA-006).
+
 ## 0.100.0 — 2026-07-02
 
 - **`/research` — turn a transcript into product context + graded evidence (IDEA-054, the validation-
