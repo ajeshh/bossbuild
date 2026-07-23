@@ -112,6 +112,22 @@ ahead to what's next.
      conscience reads this next session (bounded) to *calibrate* — it won't re-nag a point you've
      already answered, and it can build on a nudge that landed. View it: `boss brain --relationship`.
 
+3c. **The learning pulse** — ask **one** question, once:
+
+   > *"What did this stretch teach you that a conversation — not a commit — taught you?"*
+
+   The thesis cares about one ratio — build vs. learn — and nothing else in BOSS makes it visible. A
+   cadence *hook* would be the over-fire trap the conscience has correctly refused (Red-Light,
+   distribution, presence); the honest form is this one question on a surface the founder already runs.
+
+   - **If they have an answer** — offer to capture it: an `EVID-NNN` (via `/evidence`) if it's a real
+     signal about a user or the market, or a one-line brain note otherwise. Ten seconds; their call.
+   - **If the answer is "nothing"** — that's an acceptable answer, recorded **plainly** in the
+     standing-summary revision above, without comment: *"built all week, learned from no one"* is a
+     fact, not a judgment. The conscience's existing drift moment already reads the brain — give it one
+     more honest fact to see. No new hook, no counter, no threshold.
+   - **Ask it once per close, never re-ask in-session, never block.** The pulse observes; it never grades.
+
 4. **Check the working tree.** If there are uncommitted changes the user wants to keep but isn't
    committing now, mention them in RESUME's *State* so next-you isn't surprised. Don't auto-commit.
 

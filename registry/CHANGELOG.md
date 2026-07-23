@@ -2,6 +2,18 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.104.0 — 2026-07-03
+
+- **The learning pulse — `/close` asks one question (IDEA-048).** The thesis cares about one ratio —
+  build vs. learn — and nothing in BOSS made it visible. A cadence *hook* is the over-fire trap the
+  conscience has refused three times; the honest form is a single question on a surface the founder
+  already runs. `/close` now asks, once: *"What did this stretch teach you that a conversation — not a
+  commit — taught you?"* An answer → offer to capture it as an `EVID` or a one-line brain note.
+  "Nothing" → recorded plainly in the brain's standing summary (*"built all week, learned from no
+  one"* is a fact, not a judgment) — which the conscience's existing drift moment already reads. **No
+  new hook, predicate, counter, threshold, streak, or moment** — the build/learn ratio just becomes
+  one more honest fact the brain already carries. Skill-text only; gate 122/0.
+
 ## 0.103.0 — 2026-07-03
 
 - **`/sunset` — projects can end honestly (IDEA-044).** BOSS had birth (`boss new`) and life (modes)
