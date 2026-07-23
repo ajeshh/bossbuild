@@ -105,6 +105,30 @@ Claude Code glob syntax (`./` = relative to cwd; `**` = any depth):
 A **PostToolUse hook** can compress a 10k-line build/test log to a short error summary before it
 reaches the model — the model reasons over the summary, not the firehose.
 
+## Context engineering — the discipline these four moves serve
+
+The four moves above are the *mechanics* on this host; the discipline they serve got a name in 2026 —
+**context engineering** ("the load-bearing skill of the year," Anthropic; see also
+[`harness-engineering`](harness-engineering.md), the environment this sits inside). Four findings sharpen the
+moves with numbers and named failure modes:
+
+- **The dumb zone — don't fill the window.** More context is not better. Reliability degrades *well before*
+  the advertised limit — effective usable context is often ~60–70% of the window, and quality drops **even on
+  simple tasks** as input grows ("context rot," Chroma 2026). Past roughly ~300–400K tokens on a 1M-token
+  model (far less on smaller ones) you're in the dumb zone. *Token smarter, not harder* (Dex Horthy). This is
+  the quality reason under move #1's "keep it lean," now with a number.
+- **Intentional compaction over accretion.** When a working session gets long, don't keep appending —
+  **compress the useful state into a short markdown artifact and start a fresh session that references it.**
+  (That's what `/close` + the recency-window in move #1 already do; name it so it's deliberate.) A handoff
+  note beats a 200-turn scrollback the model half-ignores.
+- **Trajectory poisoning — restart, don't correct.** Once a session has gone wrong and the model starts
+  agreeing with your corrections ("you're right to push back"), the trajectory is poisoned — the bad context
+  is now load-bearing and steering it straight rarely works. Restart from the compacted state.
+- **Five criteria to judge a context by** (borrow the vocabulary): **relevance · sufficiency · isolation ·
+  economy · provenance.** *Provenance* is the one that also does security work — *where did this context come
+  from, can I trust it?* is the same question as the tool-layer memory-poisoning defense in
+  [`agent-security`](agent-security.md).
+
 ## The test
 *Would this token survive an experienced dev asking "does the model actually need this, here, every
 turn?"* If not, cut it, scope it, or block it. Lean context is faster, cheaper, **and sharper**.

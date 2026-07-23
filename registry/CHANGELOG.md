@@ -2,6 +2,65 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.110.0 — 2026-07-23
+
+- **Harness engineering + context engineering — the architecture story BOSS was missing (2026-07-23 sweep,
+  BUILD 2; UP → practices + roster).** Two research threads independently flagged **harness engineering** as
+  BOSS's biggest architecture gap, from Anthropic-primary sources. New **`library/practices/harness-
+  engineering.md`**: the harness (init script, a failing-feature-list as the definition of done, self-
+  verification before "done," a progress-log handoff, well-shaped tools / the Agent-Computer Interface) is an
+  *artifact you design*, not a prompt — and BOSS already ships the rungs (`CLAUDE.md` → `/smoke` → `/spec`
+  acceptance criteria → `RESUME`/`/close` → `/evals`+`/red-team`), so the win is naming the shape. Carries
+  three durable stances: **the model is a dependency you don't control** (build assuming it improves; delete
+  scaffolding it outgrew — ties [[IDEA-014]]/[[IDEA-028]]); **spec-driven development** (BOSS's `/spec` already
+  *is* SDD — adopt the stance, reject Spec-Kit's multi-file ceremony); **Karpathy's verifiability thesis**
+  (build the features with a verification signal first; the harness's job is to expand what's verifiable).
+  **`context-discipline.md` promoted** from host-mechanics to the named discipline it serves — the **dumb
+  zone** (~60–70% of the window is usable; context rot degrades even simple tasks — Chroma 2026), **intentional
+  compaction**, **trajectory-poisoning restart**, the **five criteria** (relevance/sufficiency/isolation/
+  economy/**provenance** — provenance doubles as the memory-poisoning defense). **Roster:** Dex Horthy +
+  Shreya Shankar → `mentor-architect` (Shankar owed — the "Gulf of Specification" BOSS cites is hers).
+  Practices + roster; `src/` untouched. **Not committed** (same parallel-session reconcile note).
+
+## 0.109.0 — 2026-07-23
+
+- **MCP decision practice — teach *whether MCP matters yet*, before wiring anything (2026-07-23 sweep, BUILD 4;
+  UP → `library/practices/mcp.md`).** MCP became a durable standard in 2026 (Linux Foundation / AAIF, Dec 2025;
+  every major vendor), but its security lags and the biggest-ever spec revision lands 2026-07-28. BOSS's
+  differentiator isn't an integration guide — it's the JIT judgment a founder needs *first*: the **three
+  unrelated shapes** (consume a server / **expose your product AS a server = a distribution decision** /
+  build-on internally in the dev loop), each with its JIT trigger and "premature when," a `mentor-gtm` pointer
+  for the expose-as-channel case, and the honest "a founder in Claude Code already has agentic retrieval for
+  free — your MCP need is smaller than you think." Its security half **points at** `agent-security.md` (the
+  confused-deputy mechanic shipped v0.108.0), doesn't restate it. **Updates RVW-019** (NOT-YET → the *standard*
+  is durable; the registry + spec are not) and **defers the `/mcp` scaffolding skill** past the 2026-07-28
+  spec. Practice only; `src/` untouched. **Not committed** (same parallel-session reconcile note as v0.108.0).
+
+## 0.108.0 — 2026-07-23
+
+- **Research-sweep hardening bundle — the humane + security catalog caught up to mid-2026 (2026-07-23
+  sweep; UP into practices + `/red-team`).** Occasioned by a broad "rescan the experts + dark patterns +
+  MCP + security + architecture" pass (7 research threads, adversarially verified). First routed increment,
+  all judgment-aids, **no new gates**. **The headline:** AI code generators inject dark patterns into the
+  components they write *unprompted* (Vaccaro et al., *Deception at Scale*, CHI 2026) — a vibe-coder ships a
+  fake countdown / pre-ticked opt-in / confirmshaming they never designed and can't see. So
+  `ai-ux-patterns.md` gains a **generated-code surface** ("your AI writes the dark pattern *for* you") and
+  **`/red-team --humane` now scans the generated UI/markup, not just runtime behavior**. Plus a **dev-tool
+  metering** dark pattern (the Cursor repricing-apology shape — opaque token metering / non-rollover credits
+  / telemetry-default, aimed at a developer). **`agent-security.md` hardened for mid-2026:** the **MCP
+  confused-deputy / token-passthrough** mechanic (the one MCP-specific auth bug the doc lacked; MCP is a
+  Linux-Foundation standard now) + registry-as-untrusted-supply-chain; **tool-layer memory-poisoning
+  defense** (delayed-trigger attacks near-99% on stateful agents — only bounding what the agent may
+  write/read at the tool layer held); **AI-code iteration-degradation** (re-prompting the same file makes it
+  *less* secure — the pre-ship scan isn't one-and-done); **Veracode Spring-2026 refresh** (still ~45% flawed
+  across GPT-5.x / Gemini-3 / Claude-4.5-6). **Citation upgrades** (evidence-hardening, no new patterns):
+  sycophancy → *Science* 2026 (Cheng et al., causal — cuts conflict-repair, raises self-righteousness) in
+  `ai-ux-patterns` + `harm-taxonomy`; DECEPTICON → precise cite (Cuvin/Zhu/Yang, arXiv 2512.22894); EU AI
+  Act Art.5 enforcement dates + EC Guidelines + EDPB 3/2025 + the $2.5B Amazon Prime roach-motel settlement.
+  **Roster:** Julian De Freitas (HBS — quantified AI-companion manipulation) added to `mentor-humane`.
+  Practices + one skill + roster; `src/` untouched (zero-dep). Staged onto the parallel session's
+  v0.105–0.107 — **not committed** (review + reconcile the number if the parallel stream lands first).
+
 ## 0.107.0 — 2026-07-03
 
 - **Scale mode (L3) — unstubbed, slices 1–2 (SCALE-MODE design).** Scale is where the product has

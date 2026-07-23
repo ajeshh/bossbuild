@@ -4,7 +4,7 @@ type: practice
 owner: mentor-architect
 status: active
 host: claude-code
-provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2)
+provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep)
 ---
 
 # Practice — Agent security (a deterministic guard around a non-deterministic model)
@@ -81,6 +81,20 @@ opens — the **agent itself** going wrong. Two things to hold:
   send) get an explicit gate — and the gate is a real stop, not a sentence in a system prompt. Where a
   human can't be in the loop, put a *cheaper, trusted check* in front of the autonomous one (Redwood's
   control framing: a small reliable model can screen a big autonomous model's destructive calls).
+- **If you connect MCP servers, close the confused-deputy hole.** MCP is durable now (a Linux-Foundation
+  standard as of Dec 2025), but its one signature auth bug is **token passthrough** — a server forwarding
+  your token upstream so a downstream service trusts a token never minted for it. The mid-2025 spec banned
+  it; older servers still do it. Defaults: OAuth 2.1 + PKCE, **validate the token audience** (accept only
+  tokens minted for *you*), and let each server authenticate downstream with its *own* scoped credential —
+  never forward. Treat every registry server as an unpinned, untrusted dependency (30+ MCP CVEs in an
+  early-2026 window; the postmark-mcp rug-pull that behaved for 15 versions, then BCC'd all mail to an
+  attacker). This is ASI04 made concrete.
+- **Treat agent "memory" as a persistence channel, and bound it at the tool layer.** The moment your app
+  gives its agent memory, a *one-time* injection can plant a durable instruction that fires in a *later*
+  session (the delayed-trigger attack — near-99% success on stateful agents in 2026 testing). In-context
+  "watch out" warnings, retrieval-time filtering, and provenance tags each failed *alone*; the one defense
+  that held was **restricting what the agent may write to and read from memory at the tool layer** — same
+  shape as the mount tiers above, bound the capability rather than trust the prompt. (OWASP ASI06.)
 
 ## The app you ship is an attack surface too
 
@@ -88,9 +102,11 @@ The trifecta and the ASI list are about the *agent on your machine*. But the **c
 for your product** is its own risk — and a distinct one a founder is far more likely to ship by
 accident:
 
-- **AI defaults to insecure when a secure option exists.** Veracode found ~45% of AI-generated code
-  ships with an OWASP-Top-10 vulnerability, and it does *not* improve as models get bigger. Treat
-  generated code as *unreviewed*, not *done*.
+- **AI defaults to insecure when a secure option exists.** Veracode's Spring-2026 update found only
+  ~55% of AI generation tasks produce secure code — ~45% still ship an OWASP-Top-10 vulnerability —
+  measured across GPT-5.x, Gemini 3, and Claude 4.5/4.6, and it *still* does not improve as models get
+  bigger (86% failed to defend against XSS, 88% against log injection). Treat generated code as
+  *unreviewed*, not *done*.
 - **Client-side key exposure is the classic vibe-coded leak.** API keys baked into frontend JS, an
   open storage bucket, a secret committed to the repo — the 2025 incidents (the Tea breach, ~25k
   secrets found across vibe-coded sites, a 1.5M-key exposure) are nearly all this one shape.
@@ -100,6 +116,10 @@ accident:
   in the bundle or the repo) plus the OWASP web basics. `/red-team` carries this pass. For a
   non-technical founder it's the single security gate that matters most — they can't spot the vuln
   themselves, so the scan has to.
+- **Re-iterating the same file makes it *less* secure, not more.** A 2026 study found each round of an AI
+  refining the same code introduces new vulnerabilities faster than it fixes old ones — context drift, the
+  model losing the original security constraints. So the pre-ship scan is **not one-and-done**: the more
+  times a file was re-prompted, the *more* likely a vuln crept in. Re-scan after heavy iteration, not once.
 
 ## Altitude / JIT (don't scare a day-one founder)
 

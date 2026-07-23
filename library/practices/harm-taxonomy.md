@@ -26,7 +26,10 @@ past both before you say "no harm":
 
 **manipulation · emotional dependence · anthropomorphism · overreliance** — the diffuse,
 relationship-level harms conventional product-safety thinking misses, and the ones most live for a
-founder building a companion / affective AI product.
+founder building a companion / affective AI product. The evidence has hardened: sycophancy — telling the
+user what they want to hear — was shown to *causally* raise emotional dependence and reduce a user's
+willingness to repair a real-world conflict, while the user trusts the model *more* (Cheng et al.,
+*Science* 2026). So these are measured harms, not soft worries.
 
 ## How to use it
 
