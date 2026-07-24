@@ -116,6 +116,19 @@ deferred AI feature."_
 - **By FEAT** (top 3): FEAT-NNN $X, FEAT-MMM $Y, FEAT-PPP $Z
 - **By model** (top 3): <model> $X (<%>), <model> $Y (<%>), <model> $Z (<%>)
 
+## Gross margin (when a price/ARPU is known — the margin-trap check)
+_Only when a price is set (skip pre-revenue). This is the section that answers the **margin-trap
+conscience moment**: cost against the *price*, not just the budget. In an AI product, cost-per-user
+scales with engagement, so your heaviest users can be your least profitable (AI gross margins run
+50–65% vs SaaS 70–85%)._
+- **Cost-per-active-user:** $X.XX  vs  **price/ARPU:** $Y.YY
+- **Gross margin:** ~Z%  (flag if cost is **>10–15% of ARPU** — the margin-trap heuristic; name the
+  heaviest users if they're the ones below margin)
+- **Evergreen-Ratio (cached ÷ total input tokens):** W%  (prompt-caching leverage — low = a cheap
+  margin win is on the table; see `/ai-cost` caching)
+- **Struggle check (humane):** what share of spend is retries/regenerations? A big share = you're
+  paid more when the product works *less* — design it out, don't monetize it (PRINCIPLE #6).
+
 ## Variance against budget
 - <line for each declared budget item: under / at / over + delta>
 

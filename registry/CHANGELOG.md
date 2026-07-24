@@ -2,6 +2,30 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.126.0 — 2026-07-23
+
+- **`monetization-in-practice` practice + `/monetize` skill + `/cost-review` gross-margin band (POST-LAUNCH build
+  #7b, JOB 4 — completes build #7, and closes the margin-trap loop).** The layer nobody owned: `mentor-business`
+  is the pricing *menu*, `/first-dollar` is the *first sale*, and this is **running the money once customers
+  exist.** **UP — `library/practices/monetization-in-practice.md` + DOWN — `/monetize` skill (L1)**, four moves,
+  premature pre-revenue: **behavior-triggered upgrades** (surface at a moment of *value* — a limit hit while
+  succeeding — not an ever-present nag), **dunning/involuntary-churn recovery** (20–40% of churn and the cheapest
+  revenue — the customer already chose to stay; *plumbing, point at Stripe Smart Retries, don't build a billing
+  system*; the same bucket `/retain` flags as "the curve dies at the wallet"), **the humane price-raise** (raise
+  on *new value*, with an **escape clause** — grandfather or real 30–60-day notice + a downgrade/opt-out/leave-
+  with-data path, communicated plainly by you; never a stealth raise), and **expansion only when usage tracks the
+  customer's success** (never lock-in or struggle — the margin-trap's cousin, the PRINCIPLE #6 line). **`/cost-
+  review` now writes a gross-margin band** — cost-per-active-user vs price, gross margin % (flag >10–15% of ARPU),
+  the **Evergreen-Ratio** (cached ÷ total input tokens = prompt-caching leverage), and the humane struggle check
+  (share of spend that's retries) — which **answers and closes the margin-trap conscience moment** (its exit is a
+  cost review that examines margin; now the tool writes exactly that). Humane (PRINCIPLE #6): dunning not
+  dark-patterns; **graceful offboarding** (one-click cancel, clean data export, no roach-motel — ties to
+  `/trust`); expansion aligned to the customer's success; honest price changes. Refuses a billing/dunning system,
+  an MRR dashboard, upsell-nag mechanics, dark-pattern cancellation, and engagement-punishing usage pricing — each
+  named. Registered in the L1 manifest; skill+practice+template layer only → **gate holds 129/0**, judgment 0
+  STALE. `/tmp`-verified (`/monetize` + the gross-margin band land, mapped, 0 placeholders; registry pruned).
+  **Build #7 (monetization-in-practice + IDEA-050) complete.**
+
 ## 0.125.0 — 2026-07-23
 
 - **`/first-dollar` (IDEA-050) — from "will anyone pay?" to "someone is paying" (POST-LAUNCH build #7a, JOB 4).**
