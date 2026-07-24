@@ -4,7 +4,7 @@ type: loop
 stage: L1-mvp
 runner_type: hook
 attributed_to: [Ajesh Shah (PRINCIPLES — "compress the loop from idea to evidence")]
-also_relevant: [David J. Anderson (Kanban — limit work-in-progress), Jim Benson (Personal Kanban — "stop starting, start finishing"), Eric Ries (validated learning over motion)]
+also_relevant: [David J. Anderson (Kanban — limit work-in-progress), Jim Benson (Personal Kanban — "stop starting, start finishing"), Eric Ries (validated learning over motion), Ryan Singer / Basecamp (Shape Up — the circuit-breaker + fixed appetite: finish-or-kill on the aged item, no default extension)]
 entry:
   - count_at_least:
       path_glob: docs/ideas/FEAT-*.md
@@ -69,7 +69,11 @@ outcome of a focus nudge is a FEAT crossing into Shipped.
 conscience emits the `focus` moment. The model composes the voice (per `boss-voice`: seasoned hand,
 assume intelligence), reads only the board, and judges before speaking — **not** a "you're so busy!"
 reward and **not** a generic "limit your WIP" lecture; the value is the specific *which one would you
-finish first* cut. Cohort-aware: returning-founder gets the blunt "you've started five things and
+finish first* cut. And for the *oldest* item still stuck in build (the board's `⌛` aged flag), the moment
+now offers the Shape-Up **circuit-breaker**: *finish it this session, or `/sunset` it honestly* — a thing
+perpetually 70%-done is WIP, not a plan (and a flag left at 5% forever is the same trap). It **offers**
+`/sunset`, never pushes it — IDEA-044's guardrail holds: the conscience points at the honest ending from inside
+a moment that already fired; the founder chooses. Cohort-aware: returning-founder gets the blunt "you've started five things and
 shipped none — which one is real?"; first-product gets "finishing one beats starting three, here's
 why" taught plainly; indie-hacker gets the calm "small and done beats big and open" frame.
 
@@ -102,5 +106,6 @@ own aging flag (`⌛ Nw in build`) already surfaces the stuck items visually in 
 ## Cite
 
 PRINCIPLES.md (compress idea→evidence). Benson (*Personal Kanban* — stop starting, start finishing),
-Anderson (Kanban WIP limits), Ries (validated learning over motion). The loop is the *when*; the
-model's judgment + `boss board` + `/close` (ship one) are the *how*.
+Anderson (Kanban WIP limits), Ries (validated learning over motion), Singer/Basecamp (*Shape Up* — the
+circuit-breaker: finish-or-kill on the aged item, no default extension). The loop is the *when*; the
+model's judgment + `boss board` + `/close` (ship one) or `/sunset` (end the oldest one honestly) are the *how*.

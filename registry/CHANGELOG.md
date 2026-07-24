@@ -2,6 +2,22 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.115.0 — 2026-07-23
+
+- **The `focus` moment gains a finish-or-sunset circuit breaker (2026-07-23 sweep, BUILD 6 deferred slice — the
+  careful conscience piece).** Closes the gap thread H named: `focus` caught the *pile* (≥4 building, 0 shipped)
+  and asked "which one would you finish first?" — but had no forcing function for the *oldest stuck* item. Now,
+  for the oldest item still aging in build (the board's `⌛` flag), the moment offers Shape Up's **circuit-breaker**
+  cut — *finish it this session, or `/sunset` it honestly* — because a thing perpetually 70%-done is WIP, not a
+  plan (and a feature flag left at 5% forever is the same trap; ties `feature-flags.md`). It **offers** `/sunset`,
+  never pushes it — **IDEA-044's guardrail holds** (the conscience points at the honest ending from inside a
+  moment that already fired; the founder chooses). Voicing-only: the `focus` frame in `loop-runtime.js` + the
+  `focus-loop.md` Drift/Cite sections + Ryan Singer/Basecamp (Shape Up) added to attribution. **Predicate
+  untouched → gate stays 122/0; `focus` has no judgment transcripts → no regrade** (drift/caution/capture/humane
+  all GRADED, 0 STALE). No new hook, no new predicate (the aging flag is the trigger, finish-or-sunset is the
+  response, `/sunset` receives it). **Still deferred:** the `/ship` ship-dark/kill-switch offer (BUILD 6's other
+  slice).
+
 ## 0.114.0 — 2026-07-23
 
 - **Retrieval — a ladder, not a vector database (2026-07-23 sweep, BUILD 5b; UP → `library/practices/retrieval.md`).**
