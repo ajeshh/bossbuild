@@ -2,6 +2,29 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.122.0 — 2026-07-23
+
+- **`activation` practice + `/onboard` skill — designing the path to the aha-moment (POST-LAUNCH build #4, JOB 1;
+  completes Tier 1).** BOSS *read* the activation metric (`/measure`) but was silent on *designing* activation —
+  the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at
+  once — Winters). The UP/DOWN pair, and the top-of-curve fix `/retain` already routes to. **UP —
+  `library/practices/activation.md`:** activation = the **first-session success rate** (not signup, not
+  "engaged"). **Derive the aha-moment from data** (Bangaly Kaba's best-retained-vs-churned method — not a
+  whiteboard guess; the Facebook "friends in N days" number is an *illustration of the method*, not a template;
+  for an AI product the aha is a first *successful* output the user keeps, tied to TCR). **Shrink time-to-value**
+  (cut every step signup→value; seed a **"magic first run"** so the first output is good before the user works —
+  the empty state is where activation dies). **Concierge onboarding shamelessly** (Superhuman white-glove;
+  do-things-that-don't-scale — Graham; it doubles as `/interview`, and the scalable flow is *extracted from* the
+  hand-done one). **DOWN — `/onboard` skill (L1):** the runner — n<10 gate ("watch them by hand"), derive-the-aha,
+  TTV-shrink + magic-first-run, the concierge plan, a dated `docs/onboard/ONBOARD-<date>.md`, one activation metric
+  handed to `/measure`. **Humane (PRINCIPLE #6): activation = getting them to *success* fast, not *hooked* fast** —
+  refuses fake progress bars, gamified "complete your profile" nags, forced tutorials, streaks bolted onto
+  first-run, guilt at the skip button (the `ai-ux-patterns` catalog), and names them. Ties: activation-failure is
+  `/retain`'s top-of-curve decay; the activated cohort is exactly who `/pmf-check`'s 40% test surveys. Registered
+  in the L1 manifest; skill+practice layer only → **gate holds 129/0**, judgment unaffected. `/tmp`-verified
+  (lands on unlock, mapped, 0 placeholders; registry pruned). **This completes Tier 1 of the post-launch program**
+  (#0 `/pmf-check`, #1 margin-trap, #2 loud≠important, #3 retention/`retain`, #4 activation/`onboard`).
+
 ## 0.121.0 — 2026-07-23
 
 - **`retention` practice + `/retain` skill — fixing the decaying curve, not just reading it (POST-LAUNCH build #3,
