@@ -88,6 +88,19 @@ So shipping reversibly means two separate disciplines:
   [`scalable-architecture.md`](scalable-architecture.md)'s "schema = the one-way door" — **deploy is
   *when* it pays off.** Cross-reference for the migration mechanics; the deploy-time teeth are here.
 
+## A feature flag is the fast rollback the app layer gives you
+
+Code rollback restores the app but not the database, and it takes a redeploy (minutes). For a **risky or
+AI-mediated feature** that's too slow — an AI feature failing non-deterministically hits your whole user base at
+once. A **feature flag is the faster, finer rollback the app layer gives you**: flip it off in *seconds*, no
+deploy, and roll out gradually (1% → 5% → 100%) so a problem shows at 5% exposure, not 100%. For an AI feature,
+put the model/prompt/params *in* the flag ("flag the model, not just the feature") so a bad model swap — which
+CI/CD never sees — rolls back with a toggle. **Env-var-first** (a kill switch is one `if (env)`; a platform only
+earns its place for remote-toggle or user-bucketing). And it's how you *finish*: ship the thin done slice behind
+a flag rather than holding a half-built branch — but a flag left off forever is WIP wearing a toggle (retire it
+or promote it). Full ladder: [`feature-flags`](feature-flags.md). This is the `/ship` step-4b offer — a check,
+never a gate.
+
 ## The honesty anchor (don't sell yourself the safe deploy)
 
 **DORA 2024 [EVIDENCE]: AI adoption correlated with *worse* software-delivery stability *and*

@@ -2,6 +2,20 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.116.0 — 2026-07-23
+
+- **`/ship` gains a ship-dark / kill-switch offer — BUILD 6 complete (2026-07-23 sweep).** The other half of the
+  feature-flags work: at the deploy moment, if the feature is **risky or AI-mediated**, `/ship` now *offers*
+  (never imposes) to ship it **behind a flag** — dark or at a small %, with a **kill switch** that flips in
+  seconds. Why it lives in `/ship`: a flag is the **fast application-layer rollback** a code-deploy rollback
+  *doesn't* give — an AI feature failing non-deterministically for the whole user base needs a toggle (seconds),
+  not a redeploy (minutes). **Env-var-first** (a kill switch is one `if (env)`; no platform required), and "flag
+  the model, not just the feature" so a bad model swap CI/CD never sees rolls back without a deploy. A
+  check/offer, once, situation-not-person — skip for a plain static ship; never a gate (conscience-not-censor,
+  consistent with `/ship`'s pre-flight shape). `ship-it-live.md` gains a "flag = the fast rollback the app layer
+  gives you" subsection. Skill + practice; `src/` untouched; gate 122/0. **BUILD 6 (feature flags + finishing) is
+  now complete** — the practice (v0.111), the `focus` circuit breaker (v0.115), and this `/ship` offer (v0.116).
+
 ## 0.115.0 — 2026-07-23
 
 - **The `focus` moment gains a finish-or-sunset circuit breaker (2026-07-23 sweep, BUILD 6 deferred slice — the

@@ -54,6 +54,18 @@ includes a schema change, it should be backward-compatible (expand-migrate-contr
 [`scalable-architecture`](../../../library/practices/scalable-architecture.md)) so a code rollback never
 strands the data.
 
+### 4b. Risky or AI-mediated? Offer the kill switch (a check, not a gate)
+If this deploy is a **risky or AI-mediated feature** — an LLM in the user path, a payment flow, anything that
+fails non-deterministically in production — *offer* (never impose) to ship it **behind a flag**: dark (off), or
+to a small % of users, with a **kill switch** you can flip in seconds. Why it belongs here: a flag is the
+**fast application-layer rollback step 4 says a code-deploy rollback doesn't give you** — an AI feature
+hallucinating for your whole user base needs a *toggle* (seconds), not a redeploy (minutes). **Zero-ceremony
+first:** the honest version is an env var / a `const FLAGS = {…}` boolean and one `if` — not a platform. For an
+AI feature, put the model/prompt/params *in* the flag so a bad model swap (which CI/CD never sees) rolls back
+without a deploy — "flag the model, not just the feature." Full judgment + the env-var-first ladder:
+[`feature-flags`](../../../library/practices/feature-flags.md). Offer once, suggestive; a founder shipping a
+plain static page doesn't need it — skip.
+
 ### 5. Capture the recipe (feed the loop)
 First ship of a new stack? The host + deploy command + rollback path + env boundary is a stack-profile
 output worth keeping — offer to capture it as a `PRAC-NNN` (`/practice`) so the next project of this kind
@@ -95,6 +107,9 @@ distributing yet hears it and moves on. Never a gate.
 - **Hand back the real URL.** "It deployed" is not the result. The URL a user can hit is.
 - **Reversibility is part of shipping.** No deploy without a named revert path, and an honest word that the
   database isn't part of it.
+- **Offer the flag, don't impose it.** For a risky/AI-mediated deploy, offer to ship it dark / behind a kill
+  switch (env-var-first) — the fast app-layer rollback a code-deploy rollback doesn't give. A check/offer, once;
+  never a gate, and skip it for a plain static ship. (See `feature-flags`.)
 - **JIT.** Don't deploy a `/prototype` sketch. Reachability discipline turns on at MVP, when validation
   needs an artifact a real user can reach.
 - **Graceful when there's nothing to ship.** If the project has no deployable artifact yet, say so and point
