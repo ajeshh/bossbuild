@@ -12,6 +12,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
+import { bold } from './ui.js';
 
 const CONFIG = '.boss/config.json';
 
@@ -79,7 +80,7 @@ export function renderTeam(dir) {
   const team = roster(dir);
   const out = [''];
   if (team.length === 0) {
-    out.push('  ▸ Solo venture');
+    out.push(`  ▸ ${bold('Solo venture')}`);
     out.push(`    You: ${meLabel}`);
     out.push('');
     out.push('    Building with a cofounder? Add them so BOSS keeps you both in the loop:');
@@ -87,7 +88,7 @@ export function renderTeam(dir) {
     out.push('');
     out.push('    Solo, the team layer stays out of your way — nothing changes until someone joins.');
   } else {
-    out.push(`  ▸ Founding team (${team.length + 1})`);
+    out.push(`  ▸ ${bold('Founding team')} (${team.length + 1})`);
     out.push(`    ${meLabel}   (you)`);
     for (const m of team) {
       out.push(`    ${m.handle}${m.name ? '   ' + m.name : ''}${m.added ? '   · since ' + m.added : ''}`);

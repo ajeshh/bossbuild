@@ -13,6 +13,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { loadLoops, classifyLoop, readPauseState, readMuteState } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
+import { dim, bold, ok, warn } from './ui.js';
 
 // Parse a duration spec for `boss conscience pause --for <spec>`.
 // Accepted: <N>m / <N>h / <N>d (minutes / hours / days). Returns ms or throws.
@@ -61,7 +62,7 @@ export function consciencePause(flags) {
   };
   writeConfig(path, cfg);
 
-  console.log(`\n  ✦ Conscience paused.`);
+  console.log(`\n  ${ok('✦')} Conscience paused.`);
   if (expires) {
     console.log(`    auto-resumes: ${expires}`);
   } else {
@@ -81,7 +82,7 @@ export function conscienceResume() {
   }
   cfg.conscience = { mode: 'active' };
   writeConfig(path, cfg);
-  console.log(`\n  ✦ Conscience resumed.\n`);
+  console.log(`\n  ${ok('✦')} Conscience resumed.\n`);
 }
 
 // The moments this project can actually fire — derived from the loops present
@@ -121,7 +122,7 @@ export function conscienceMute(flags) {
   cfg.conscienceMutes[moment] = { until, since: new Date().toISOString(), reason };
   writeConfig(path, cfg);
 
-  console.log(`\n  ✦ Muted the '${moment}' moment.`);
+  console.log(`\n  ${ok('✦')} Muted the '${moment}' moment.`);
   if (until) console.log(`    auto-unmutes: ${until}`);
   else console.log(`    no expiry — \`boss conscience unmute ${moment}\` to end.`);
   if (reason) console.log(`    reason: ${reason}`);
@@ -140,7 +141,7 @@ export function conscienceUnmute(flags) {
     if (Object.keys(mutes).length === 0) { console.log('\n  No moments are muted.\n'); return; }
     delete cfg.conscienceMutes;
     writeConfig(path, cfg);
-    console.log('\n  ✦ Unmuted all moments.\n');
+    console.log(`\n  ${ok('✦')} Unmuted all moments.\n`);
     return;
   }
   if (!moment) throw new Error('which moment? e.g. `boss conscience unmute drift` (or `--all`).');
@@ -150,7 +151,7 @@ export function conscienceUnmute(flags) {
   if (Object.keys(mutes).length === 0) delete cfg.conscienceMutes;
   else cfg.conscienceMutes = mutes;
   writeConfig(path, cfg);
-  console.log(`\n  ✦ Unmuted the '${moment}' moment.\n`);
+  console.log(`\n  ${ok('✦')} Unmuted the '${moment}' moment.\n`);
 }
 
 // Read the optional cohort declaration from .boss/config.json. Returns null if
@@ -281,7 +282,7 @@ export function conscienceActivity(projectDir = process.cwd(), { asCost = false 
     if (typeof r.injected_chars === 'number') chars.push(r.injected_chars);
   }
 
-  console.log(`\n  conscience activity  (.boss/conscience-log.jsonl)`);
+  console.log(`\n  ${bold('conscience activity')}  ${dim('(.boss/conscience-log.jsonl)')}`);
   console.log(`    fires:          ${total}   ${first.slice(0, 10)} → ${last.slice(0, 10)}`);
   console.log(`    judge-moments:  ${judgeFires}/${total} fires induced a model bounded-read (drift / caution)`);
   console.log(`    injected ctx:   ${median(chars)} chars median per fire  ${dim('(chars are a fact; tokens would be a guess)')}`);
@@ -300,7 +301,7 @@ export function conscienceActivity(projectDir = process.cwd(), { asCost = false 
   for (const [m, n] of Object.entries(last24h)) if (n >= 8 && !(last1h[m] >= 4)) smells.push(`${m} fired ${n}× in the last 24h`);
   console.log('');
   if (smells.length) {
-    console.log(`    ⚠ over-fire smell — the conscience may be talking too often:`);
+    console.log(`    ${warn('⚠')} over-fire smell — the conscience may be talking too often:`);
     for (const s of smells) console.log(`      • ${s}`);
     console.log(`      ${dim('A moment firing this often erodes trust like a false alarm. Worth a look —')}`);
     console.log(`      ${dim('tune the loop, `boss conscience mute <moment>` to turn down just that one,')}`);
@@ -316,7 +317,7 @@ export function conscienceActivity(projectDir = process.cwd(), { asCost = false 
     console.log('');
     console.log(`    acted-on:       ${out.actedOnRate}%  of nudges landed or were engaged  ${dim(`(${out.landed} landed · ${out.overrode} overrode · ${out.pushedBack} pushed-back · ${out.ignored} ignored)`)}`);
     if (out.actedOnRate < 50 && out.total >= 4) {
-      console.log(`      ${dim('⚠ a low acted-on rate is the real over-fire smell — the conscience is talking past you.')}`);
+      console.log(`      ${warn('⚠')} ${dim('a low acted-on rate is the real over-fire smell — the conscience is talking past you.')}`);
       console.log(`      ${dim('This beats a hard cap: tune the loops that get ignored, don\'t silence the ones that land.')}`);
     } else {
       console.log(`      ${dim('the nudges are landing — measured from .boss/brain/relationship.md, not a guess.')}`);
@@ -325,9 +326,7 @@ export function conscienceActivity(projectDir = process.cwd(), { asCost = false 
   console.log('');
 }
 
-const dim = (s) => (process.stdout.isTTY ? `\x1b[90m${s}\x1b[0m` : s);
-
-export function statusConscience(projectDir = process.cwd()) {
+export function statusConscience(projectDir = process.cwd(), { verbose = false } = {}) {
   const loops = loadLoops(projectDir);
   if (loops.length === 0) {
     console.log('\n  No loops in this project — `docs/loops/` is empty or absent.');
@@ -338,17 +337,18 @@ export function statusConscience(projectDir = process.cwd()) {
   const cohort = readCohort(projectDir);
   const pause = readPauseState(projectDir);
   const overrides = readOverrides(projectDir);
+  const isPaused = pause && pause.mode === 'paused' && !(pause.expires && new Date(pause.expires) <= new Date());
 
-  console.log(`\n  conscience state`);
+  console.log(`\n  ${bold('conscience state')}   ${isPaused ? warn('⏸ paused') : dim('active')}`);
   // Pause state surfaces FIRST and LOUDLY when active (IDEA-011 v0.23.0+) — a
   // founder who paused the conscience needs to remember they did, otherwise the
   // pause silently lingers and the override discipline gets less honest.
   if (pause && pause.mode === 'paused') {
     const expired = pause.expires && new Date(pause.expires) <= new Date();
     if (expired) {
-      console.log(`    ⏸ PAUSED  (EXPIRED — will auto-resume on next prompt)`);
+      console.log(`    ${warn('⏸')} PAUSED  (EXPIRED — will auto-resume on next prompt)`);
     } else {
-      console.log(`    ⏸ PAUSED`);
+      console.log(`    ${warn('⏸')} PAUSED`);
       if (pause.since) console.log(`       since:        ${pause.since}`);
       if (pause.expires) {
         console.log(`       auto-resumes: ${pause.expires}`);
@@ -383,7 +383,7 @@ export function statusConscience(projectDir = process.cwd()) {
     let line = `    fires:   ${activity.length} logged`;
     if (recent) line += `; ${recent} in last 24h${top ? ` (most: ${top[0]} ×${top[1]})` : ''}`;
     const smell = top && top[1] >= 8;
-    console.log(smell ? `${line}  ⚠ over-fire smell — see \`boss conscience activity\`` : `${line}  ${dim('(`boss conscience activity` for detail)')}`);
+    console.log(smell ? `${line}  ${warn('⚠ over-fire smell')} — see \`boss conscience activity\`` : `${line}  ${dim('(`boss conscience activity` for detail)')}`);
   }
   console.log('');
 
@@ -391,9 +391,29 @@ export function statusConscience(projectDir = process.cwd()) {
   const classified = loops.map((l) => ({ loop: l, ...classifyLoop(l, projectDir) }));
   const order = { open: 0, closed: 1, unopenable: 2 };
   classified.sort((a, b) => order[a.state] - order[b.state]);
+  const markFor = (state) => (state === 'closed' ? ok('✓') : state === 'open' ? warn('⚠') : dim('·'));
+  const counts = { open: 0, closed: 0, unopenable: 0 };
+  for (const c of classified) counts[c.state]++;
 
+  // Progressive disclosure (IDEA-055): the default is a one-line loop summary +
+  // any open loops named — the calm surface. `--verbose` opens the full per-loop
+  // "would close when" breakdown + the override history. Pause/mutes/cohort/fires
+  // above always show (a forgotten pause has to stay loud).
+  if (!verbose) {
+    const openIds = classified.filter((c) => c.state === 'open').map((c) => c.loop.id);
+    console.log(`    loops:   ${warn(counts.open + ' open')} · ${counts.closed} closed${counts.unopenable ? ` · ${dim(counts.unopenable + ' waiting')}` : ''}`);
+    if (openIds.length) console.log(`             ${dim('open:')} ${openIds.join(', ')}`);
+    console.log(`    overrides: ${overrides.length} recorded`);
+    console.log(`\n    ${dim('boss status --conscience --verbose')} — every loop, and what you've overridden`);
+    console.log('');
+    return;
+  }
+
+  console.log('');
+  // Founder-facing label: the internal `unopenable` state reads as "waiting" here,
+  // matching the summary line above (one word for one thing — voice-keeper).
+  const label = (s) => (s === 'unopenable' ? 'waiting' : s);
   for (const { loop, state, entry, exit } of classified) {
-    const mark = state === 'closed' ? '✓' : state === 'open' ? '⚠' : '·';
     const padded = loop.id.padEnd(22);
     let line2;
     if (state === 'closed') {
@@ -407,9 +427,9 @@ export function statusConscience(projectDir = process.cwd()) {
         line2 += `\n              drift moment: ${loop.drift_moment}`;
       }
     } else {
-      line2 = '    unopenable — entry artifact not yet present (upstream dependency).';
+      line2 = '    waiting — its entry artifact isn\'t present yet (an upstream dependency).';
     }
-    console.log(`    ${mark} ${padded}  ${state}`);
+    console.log(`    ${markFor(state)} ${padded}  ${label(state)}`);
     console.log(line2);
   }
 
@@ -419,7 +439,7 @@ export function statusConscience(projectDir = process.cwd()) {
   } else {
     console.log(`    Recent overrides (${overrides.length}):`);
     for (const o of overrides.slice(-5)) {
-      console.log(`      • ${o.action} \`${o.loop}\` — ${o.rationale}`);
+      console.log(`      ${dim('•')} ${o.action} \`${o.loop}\` — ${o.rationale}`);
     }
   }
   console.log('');

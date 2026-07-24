@@ -27,8 +27,7 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-
-const dim = (s) => (process.stdout.isTTY ? `\x1b[90m${s}\x1b[0m` : s);
+import { dim, bold, ok, err } from './ui.js';
 
 function brainDir(projectDir) {
   return join(projectDir, '.boss', 'brain');
@@ -184,7 +183,7 @@ export function forgetBrain(projectDir, { before, id } = {}) {
 export function renderBrain(projectDir, stamp) {
   const lines = [];
   lines.push('');
-  lines.push(`  ${stamp.name} · brain`);
+  lines.push(`  ${bold(stamp.name + ' · brain')}`);
   lines.push(`  ${dim('the conscience\'s read on this venture — its POV, not the facts (canvas/RESUME hold those)')}`);
   lines.push('');
 
@@ -230,7 +229,7 @@ export function renderBrain(projectDir, stamp) {
 // what the founder did with it. This is the loop the frequency ledger (IDEA-013)
 // only counts: did the nudge land? The conscience reads this to learn (Track 4).
 export function renderRelationship(projectDir, stamp) {
-  const lines = [`\n  ${stamp.name} · brain · relationship`,
+  const lines = [`\n  ${bold(stamp.name + ' · brain · relationship')}`,
     `  ${dim('what the conscience said — and what you did with it (the outcome of its nudges)')}`, ''];
   const rf = relationshipPath(projectDir);
   if (!existsSync(rf) || !readFileSync(rf, 'utf8').trim()) {
@@ -256,7 +255,7 @@ export function brain(projectDir, stamp, args = []) {
     }
     const entry = recordBrainEntry(projectDir, { headline: flags.headline, id: flags.id, kind: flags.kind });
     const file = entry.kind === 'relationship' ? 'relationship.md' : 'read.md';
-    console.log(`\n  ✦ Brain entry recorded — ${entry.id} (${entry.kind})`);
+    console.log(`\n  ${ok('✦')} Brain entry recorded — ${entry.id} (${entry.kind})`);
     console.log(`    ${entry.headline}`);
     console.log(`    ${dim(`(the prose lives in .boss/brain/${file}; this stamps the index)`)}\n`);
     return;
@@ -267,7 +266,7 @@ export function brain(projectDir, stamp, args = []) {
       if (rest[i].startsWith('--')) { flags[rest[i].slice(2)] = rest[i + 1]; i++; }
     }
     const r = forgetBrain(projectDir, { before: flags.before, id: flags.id });
-    console.log(`\n  ✦ Brain pruned (${r.mode}) — ${r.evictedBlocks} read(s) + ${r.evictedEntries} index entr${r.evictedEntries === 1 ? 'y' : 'ies'} evicted`);
+    console.log(`\n  ${ok('✦')} Brain pruned (${r.mode}) — ${r.evictedBlocks} read(s) + ${r.evictedEntries} index entr${r.evictedEntries === 1 ? 'y' : 'ies'} evicted`);
     console.log(`    ${dim('the preamble + recent reads are kept; this is yours to do, never automatic')}\n`);
     return;
   }
@@ -280,7 +279,7 @@ export function brain(projectDir, stamp, args = []) {
     return;
   }
   if (sub) {
-    console.error(`  boss: unknown subcommand 'brain ${sub}'. options: (none) | --diff | --relationship | record | forget`);
+    console.error(`  ${err('Error')} unknown subcommand 'brain ${sub}'. options: (none) | --diff | --relationship | record | forget`);
     process.exitCode = 1;
     return;
   }

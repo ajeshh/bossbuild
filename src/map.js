@@ -8,6 +8,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { STAGE_ORDER } from './paths.js';
 import { loadModes, packageSkillMd, skillGloss, modeWord } from './modes.js';
+import { dim, bold } from './ui.js';
 
 function projectSkillMd(projectDir, name) {
   return join(projectDir, '.claude', 'skills', name, 'SKILL.md');
@@ -34,31 +35,49 @@ export function renderMap(projectDir, stamp) {
 
   // Scannable, single-line glosses. Substitute the project name into any
   // not-yet-installed (package) gloss so the "one unlock away" preview reads as
-  // what the founder would actually get; cap width so a long sentence can't
-  // dominate the terminal.
+  // what the founder would actually get. skillGloss already hands us the first
+  // sentence; only cap runaway ones, and cap at a WORD boundary so we never cut
+  // mid-word (IDEA-055 — the old 64-char slice left "...as a…" dangling).
+  const CAP = 78;
   const fit = (g) => {
-    let t = (g || '').replace(/\{\{PROJECT_NAME\}\}/g, stamp.name).replace(/\{\{[^}]+\}\}/g, '');
-    if (t.length > 64) t = t.slice(0, 63).trimEnd() + '…';
-    return t;
+    let t = (g || '').replace(/\{\{PROJECT_NAME\}\}/g, stamp.name).replace(/\{\{[^}]+\}\}/g, '').trim();
+    if (t.length <= CAP) return t;
+    const cut = t.slice(0, CAP);
+    const sp = cut.lastIndexOf(' ');
+    return (sp > CAP * 0.6 ? cut.slice(0, sp) : cut).trimEnd() + '…';
   };
 
   const lines = [];
   lines.push('');
-  lines.push(`  ${stamp.name} · map`);
-  lines.push(`  ▸ You are here: ${stamp.mode || stamp.stage}  (${installed.join(' → ')})`);
+  lines.push(`  ${bold(stamp.name + ' · map')}`);
+  // The ladder, drawn as a line you can see yourself on — the "train line" a real
+  // founder asked for (EVID-001, facet 1: "which stage am I on?"). Climbed rungs read
+  // plain, the current rung is marked + bold, the rungs ahead are dim. Composed from
+  // state that already exists (STAGE_ORDER + installedLayers) — no new surface.
+  // Three visual states, no new glyph: climbed rungs read plain, the current rung is
+  // bold, the rungs ahead are dim. (Bold alone marks "here" — the ▸ You-are-here line
+  // right above already names it; a second ● marker would double-signal — designer.)
+  const rung = (id) => {
+    const nm = (byId[id] && byId[id].name) || id.replace(/^L\d+-/, '');
+    if (id === deepest) return bold(nm);
+    return installed.includes(id) ? nm : dim(nm);
+  };
+  lines.push(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
+  lines.push(`    ${STAGE_ORDER.map(rung).join(dim(' → '))}`);
   lines.push('');
 
   // Available now — grouped by the rung that unlocked each skill, ladder order.
-  lines.push('  Available now');
+  // These are /skills — they run INSIDE Claude Code, not the shell (IDEA-055 cue).
+  lines.push(`  ${bold('Available now')}  ${dim('— /skills, run inside Claude Code')}`);
   for (const layerId of STAGE_ORDER) {
     if (!installed.includes(layerId)) continue;
     const mode = byId[layerId];
     const skillsHere = (stamp.skills || []).filter((s) => skillStage[s] === layerId).sort();
     if (!skillsHere.length) continue;
-    lines.push(`    ${mode.name}`);
+    lines.push(`    ${bold(mode.name)}`);
     for (const s of skillsHere) {
       const { gloss } = installedGloss(projectDir, s, layerId);
-      lines.push(`      /${s.padEnd(18)} ${fit(gloss)}`);
+      lines.push(`      ${'/' + s.padEnd(18)} ${dim(fit(gloss))}`);
     }
   }
   lines.push('');
@@ -70,30 +89,32 @@ export function renderMap(projectDir, stamp) {
   if (nextId) {
     const next = byId[nextId];
     if (next && next.authored) {
-      lines.push(`  One unlock away: ${next.name}   →  boss unlock ${modeWord(nextId)}`);
+      lines.push(`  ${bold('One unlock away: ' + next.name)}   ${dim('→  boss unlock ' + modeWord(nextId))}`);
       for (const s of next.skills || []) {
         const { gloss } = skillGloss(packageSkillMd(nextId, s));
-        lines.push(`      /${s.padEnd(18)} ${fit(gloss)}`);
+        lines.push(`      ${'/' + s.padEnd(18)} ${dim(fit(gloss))}`);
       }
-      if (next.graduationHint) lines.push(`    ${next.graduationHint}`);
+      if (next.graduationHint) lines.push(`    ${dim(next.graduationHint)}`);
     } else if (next) {
-      lines.push(`  One unlock away: ${next.name} — not authored yet.`);
+      lines.push(`  ${bold('One unlock away: ' + next.name)} ${dim('— not authored yet.')}`);
     }
     lines.push('');
   }
 
   // Standing controls — always available, mode-independent (the git-cheatsheet core).
-  lines.push('  Anytime');
-  lines.push('    boss board [--html]              what\'s in flight (captured → shipped); --html = visual kanban');
-  lines.push('    boss brain                       the conscience\'s read on this venture');
-  lines.push('    boss insights                    how far your ventures have gotten (local)');
-  lines.push('    boss team [add @user]            who\'s on the venture — add a cofounder (solo by default)');
-  lines.push('    boss status --conscience         loop states + cohort + recent overrides');
-  lines.push('    boss conscience pause --for 8h   silence the whole conscience for a sprint');
-  lines.push('    boss conscience mute <moment>    turn down just one nudge (drift|caution|…)');
-  lines.push('    /boss-sync                       pull the latest BOSS practices into this project');
+  // These are `boss …` shell commands (except /boss-sync, which runs in Claude).
+  lines.push(`  ${bold('Anytime')}  ${dim('— boss … commands, run in your terminal')}`);
+  lines.push(`    boss board [--html]              ${dim('what\'s in flight (captured → shipped); --html = visual kanban')}`);
+  lines.push(`    boss brain                       ${dim('the conscience\'s read on this venture')}`);
+  lines.push(`    boss insights                    ${dim('how far your ventures have gotten (local)')}`);
+  lines.push(`    boss team [add @user]            ${dim('who\'s on the venture — add a cofounder (solo by default)')}`);
+  lines.push(`    boss status --conscience         ${dim('loop states + cohort + recent overrides')}`);
+  lines.push(`    boss conscience pause --for 8h   ${dim('silence the whole conscience for a sprint')}`);
+  lines.push(`    boss conscience mute <moment>    ${dim('turn down just one nudge (drift|caution|…)')}`);
+  lines.push(`    /boss-sync                       ${dim('pull the latest BOSS practices into this project (in Claude)')}`);
   lines.push('');
-  lines.push('  The map is a read of your install. To change it, climb a rung: boss unlock <mode>.');
+  lines.push(`  ${dim('The map is a read of your install. To change it, climb a rung: boss unlock <mode>.')}`);
+  lines.push(`  ${dim('boss help symbols for the glyph legend · boss help <command> for detail')}`);
   lines.push('');
   return lines.join('\n');
 }

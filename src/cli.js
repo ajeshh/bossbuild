@@ -12,11 +12,9 @@ import { map } from './map.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
+import { dim, bold, ok, warn, err } from './ui.js';
 
 const STAMP = '.boss/manifest.json';
-
-// Quiet text for the terminal (matches brain.js/conscience.js). No-op when not a TTY.
-const dim = (s) => (process.stdout.isTTY ? `\x1b[90m${s}\x1b[0m` : s);
 
 function stageVars(name, stageId, mode) {
   return {
@@ -106,13 +104,14 @@ function cmdNew(args) {
     createdAt: stamp.createdAt,
   });
 
-  console.log(`\n  ✦ Created ${name} — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
+  console.log(`\n  ${ok('✦')} Created ${bold(name)} — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
   console.log(`    agents: ${stamp.agents.join(', ') || '—'}`);
   console.log(`    skills: ${stamp.skills.join(', ') || '—'}`);
-  console.log(`\n  Next:`);
+  console.log(`\n  ${bold('Next')} ${dim('(these run in your terminal)')}`);
   console.log(`    cd ${name}`);
   console.log(`    code ${name}        # or open the folder in your editor (Cursor, etc.)`);
   console.log(`    claude              # open Claude Code (works in the terminal or the editor panel)`);
+  console.log(`    ${dim('then, inside Claude:')}`);
   console.log(`    > /boss <your idea>     # spin up — a sentence, a doc, a deck, or a link`);
   console.log(`                            #   (first time? /welcome · already written it down? /import <file|url>)`);
   if (aiNative) {
@@ -224,16 +223,16 @@ function cmdAdopt(args) {
     bossVersion: bossVersion(), createdAt: stamp.createdAt,
   });
 
-  console.log(`\n  ✦ Adopted ${name} into BOSS — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
+  console.log(`\n  ${ok('✦')} Adopted ${bold(name)} into BOSS — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
   console.log(`    ${copied.length} file(s) added · ${skipped.length} of yours left untouched${claudePreexisted ? ' · CLAUDE.md preserved (BOSS block appended)' : ''}`);
   console.log(`    skills: ${stamp.skills.join(', ') || '—'}`);
-  console.log(`\n  Next:`);
-  console.log(`    claude              # open Claude Code here`);
-  console.log(`    > /welcome              # what BOSS added + how the conscience works`);
+  console.log(`\n  ${bold('Next')}`);
+  console.log(`    claude              # open Claude Code here ${dim('(terminal)')}`);
+  console.log(`    > /welcome              # what BOSS added + how the conscience works ${dim('(inside Claude)')}`);
   if (flags.ai) {
     console.log(`    > /comprehend           # AI-native: read this repo, tailor the scaffold + seed the venture brain`);
   }
-  console.log(`    boss map                # what's available · boss unlock <mode> to grow`);
+  console.log(`    boss map                # what's available · boss unlock <mode> to grow ${dim('(terminal)')}`);
   console.log('');
 }
 
@@ -277,8 +276,8 @@ function cmdUnlock(args) {
   stamp.loops = [...new Set([...(stamp.loops || []), ...(m.loops || [])])];
   writeStamp(process.cwd(), stamp);
   registerProject({ name: stamp.name, path: process.cwd(), stage: target, mode: m.name, bossVersion: bossVersion() });
-  console.log(`\n  ✦ Unlocked ${m.name} mode (${target}).`);
-  if (applied.appendedClaude) console.log(`    + appended ${m.name} working rules to CLAUDE.md`);
+  console.log(`\n  ${ok('✦')} Unlocked ${bold(m.name + ' mode')} (${target}).`);
+  if (applied.appendedClaude) console.log(`    ${ok('+')} appended ${m.name} working rules to CLAUDE.md`);
   const note = ROLE_SHIFT[target];
   if (note) {
     console.log(`\n  ${dim('— what this rung tends to ask of you —')}`);
@@ -317,17 +316,17 @@ function cmdStatus(args) {
   // (asked-for by eng-builder / indie-hacker / vibe-virtuoso personas in
   // v0.19 reactions: "I want to see what fired and why").
   if (f.conscience) {
-    console.log(`\n  ${stamp.name}`);
-    return statusConscience(process.cwd());
+    console.log(`\n  ${bold(stamp.name)}`);
+    return statusConscience(process.cwd(), { verbose: !!(f.verbose || f.v) });
   }
   const current = bossVersion();
-  console.log(`\n  ${stamp.name}`);
+  console.log(`\n  ${bold(stamp.name)}`);
   console.log(`    mode:         ${stamp.mode || stamp.stage}  (${stamp.stage})`);
   console.log(`    layers:       ${stamp.installedLayers.join(' → ')}`);
   console.log(`    BOSS pinned:  ${stamp.bossVersion}`);
   console.log(`    BOSS current: ${current}`);
   if (stamp.bossVersion !== current) {
-    console.log(`    ⟳ newer practices available — run /boss-sync to review the diff`);
+    console.log(`    ${warn('⟳')} newer practices available — run ${bold('/boss-sync')} to review the diff ${dim('(inside Claude)')}`);
   }
   console.log('');
 }
@@ -337,7 +336,7 @@ function cmdBoard(args = []) {
   if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
   if (args.includes('--html')) {
     const out = boardHtml(process.cwd(), stamp.name);
-    console.log(`\n  ✦ Visual board → ${out}`);
+    console.log(`\n  ${ok('✦')} Visual board → ${out}`);
     console.log('    A read of your files. Re-run `boss board --html` to refresh.\n');
     // Best-effort open in the default browser; printing the path is the contract.
     const opener = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
@@ -397,7 +396,7 @@ function cmdTeam(args) {
       if (!handle) return fail('usage: boss team add <@github-username> ["Name"]');
       const firstCofounder = !isTeam(process.cwd()); // solo → team transition
       const r = addCollaborator(process.cwd(), handle, name);
-      const msg = r.added ? `\n  ✦ Added ${r.handle} to the venture.`
+      const msg = r.added ? `\n  ${ok('✦')} Added ${r.handle} to the venture.`
         : r.self ? `\n  ${r.handle} is you — you're already on the venture.`
         : `\n  ${r.handle} is already on the venture.`;
       console.log(msg);
@@ -411,7 +410,7 @@ function cmdTeam(args) {
     } else if (sub === 'remove') {
       if (!handle) return fail('usage: boss team remove <@github-username>');
       const r = removeCollaborator(process.cwd(), handle);
-      console.log(r.removed ? '\n  ✦ Removed from the venture.' : '\n  Not on the roster.');
+      console.log(r.removed ? `\n  ${ok('✦')} Removed from the venture.` : '\n  Not on the roster.');
     } else if (sub && sub !== 'list') {
       return fail(`unknown subcommand 'team ${sub}'. options: (none) | add | remove`);
     }
@@ -433,7 +432,7 @@ function cmdRetire(args) {
     delete stamp.status; delete stamp.retired_on;
     writeStamp(process.cwd(), stamp);
     reviveProject(process.cwd());
-    console.log(`\n  ✦ ${stamp.name} is active again. Nothing was ever deleted.\n`);
+    console.log(`\n  ${ok('✦')} ${bold(stamp.name)} is active again. Nothing was ever deleted.\n`);
     return;
   }
   const today = new Date().toISOString().slice(0, 10);
@@ -441,7 +440,7 @@ function cmdRetire(args) {
   stamp.retired_on = today;
   writeStamp(process.cwd(), stamp);
   retireProject(process.cwd(), today);
-  console.log(`\n  ✦ ${stamp.name} retired ${today}. A real experiment that returned an answer.`);
+  console.log(`\n  ${ok('✦')} ${bold(stamp.name)} retired ${today}. A real experiment that returned an answer.`);
   console.log(`    The repo stays; only the status changed. Run \`boss retire --undo\` to reopen it.\n`);
 }
 
@@ -455,7 +454,7 @@ function cmdList() {
   // applied at the portfolio level. Active projects read first; retired ones are honest, not hidden.
   const active = projects.filter((p) => p.status !== 'retired');
   const retired = projects.filter((p) => p.status === 'retired');
-  console.log(`\n  ${active.length} connected project(s):\n`);
+  console.log(`\n  ${bold(active.length + ' connected project(s)')}:\n`);
   for (const p of active) {
     console.log(`    ${p.name.padEnd(20)} ${(p.mode || p.stage || '?').padEnd(12)} BOSS@${p.bossVersion || '?'}`);
     console.log(`    ${''.padEnd(20)} ${p.path}`);
@@ -496,20 +495,20 @@ function cmdSync(args) {
   const changed = plan.entries.filter((e) => e.status !== 'ok');
   const settingsChanged = !!(plan.settings && plan.settings.changed);
 
-  console.log(`\n  ${stamp.name} — sync`);
+  console.log(`\n  ${bold(stamp.name + ' — sync')}`);
   console.log(`    pin:    ${plan.pin}${plan.drift ? `  →  current ${plan.current}` : '  (current)'}`);
   console.log(`    layers: ${plan.layers.join(' → ')}\n`);
 
   if (!changed.length && !settingsChanged) {
-    console.log('    ✓ BOSS-managed skills/agents/hooks are up to date.');
+    console.log(`    ${ok('✓')} BOSS-managed skills/agents/hooks are up to date.`);
     if (plan.drift && !apply) console.log('    (run `boss sync --apply` to bump the pin to current.)');
   } else {
     for (const e of changed) {
-      const mark = e.status === 'new' ? '+ new    ' : `~ changed (${e.delta} lines)`;
+      const mark = e.status === 'new' ? ok('+ new    ') : warn(`~ changed (${e.delta} lines)`);
       console.log(`    ${mark}  ${e.kind}/${e.name}  →  ${e.rel}`);
     }
     if (settingsChanged) {
-      console.log(`    ~ merge    settings/hooks  →  ${plan.settings.rel}  (additive — keeps your permissions)`);
+      console.log(`    ${warn('~ merge')}    settings/hooks  →  ${plan.settings.rel}  (additive — keeps your permissions)`);
     }
   }
 
@@ -524,7 +523,7 @@ function cmdSync(args) {
   registerProject({
     name: next.name, path: process.cwd(), stage: next.stage, mode: next.mode, bossVersion: next.bossVersion,
   });
-  console.log(`\n  ✦ Synced ${written.length} file(s); pin now ${next.bossVersion}.`);
+  console.log(`\n  ${ok('✦')} Synced ${written.length} file(s); pin now ${bold(next.bossVersion)}.`);
   if (written.length) console.log('    Review the changes with `git diff` before committing.\n');
   else console.log('');
 }
@@ -544,7 +543,7 @@ function cmdLearn(args) {
   } catch (e) {
     return fail(e.message);
   }
-  console.log(`\n  ✦ Learned ${res.name} UP into ${res.dest}`);
+  console.log(`\n  ${ok('✦')} Learned ${bold(res.name)} UP into ${res.dest}`);
   console.log(`    BOSS ${res.prev} → ${res.next}  (VERSION + package.json + CHANGELOG updated)`);
   console.log(`    in ${res.root}`);
   console.log('    Review, then commit. Connected projects pull it via `boss sync` / `/boss-sync`.\n');
@@ -563,8 +562,8 @@ function cmdConscience(args) {
     if (sub === 'status' || !sub) {
       const stamp = readStamp(process.cwd());
       if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
-      console.log(`\n  ${stamp.name}`);
-      return statusConscience(process.cwd());
+      console.log(`\n  ${bold(stamp.name)}`);
+      return statusConscience(process.cwd(), { verbose: !!(flags.verbose || flags.v) });
     }
     return fail(`unknown subcommand 'conscience ${sub}'. options: pause | resume | mute | unmute | status | activity | cost`);
   } catch (e) {
@@ -573,8 +572,220 @@ function cmdConscience(args) {
 }
 
 function fail(msg) {
-  console.error(`  boss: ${msg}`);
+  console.error(`  ${err('Error')} ${msg}`);
   process.exitCode = 1;
+}
+
+// --- Help (IDEA-055) ------------------------------------------------------
+// Grouped so a first-timer isn't handed a 20-line wall at uniform weight:
+// Start here / Everyday / Conscience / Keeping current. `boss help <command>`
+// drills in; `boss help symbols` explains the glyph vocabulary. The two command
+// LANGUAGES are cued explicitly — `boss …` is the shell, `/…` runs inside Claude.
+
+const KNOWN_COMMANDS = [
+  'new', 'adopt', 'unlock', 'status', 'board', 'map', 'brain', 'insights',
+  'team', 'list', 'retire', 'sync', 'learn', 'conscience', 'version', 'help',
+];
+
+// Per-command detail for `boss help <command>`. Kept tight — a usage line, a
+// sentence of what/why, then examples. The grouped overview is the front door;
+// this is the second click.
+const HELP = {
+  new: {
+    usage: 'boss new <name> [--ai]',
+    what: 'Scaffold a fresh project in the lightest mode (Quickstart) and register it. Adds a screen-sized CLAUDE.md, the capture surfaces, and the conscience hook; git-inits.',
+    examples: ['boss new my-app', 'boss new my-app --ai   # let /comprehend tailor the scaffold'],
+    see: ['adopt', 'unlock', 'map'],
+  },
+  adopt: {
+    usage: 'boss adopt [--mode <m>] [--ai]',
+    what: 'Bring BOSS into an already-started repo, non-destructively — your files are untouched, BOSS lands at the lightest register that fits. --mode mvp adopts higher when the app has earned it.',
+    examples: ['boss adopt', 'boss adopt --mode mvp   # already has real users'],
+    see: ['new', 'unlock'],
+  },
+  unlock: {
+    usage: 'boss unlock <mode>   (quickstart | mvp | v1 | scale)',
+    what: 'Add the next mode\'s skills/agents/loops. Additive — nothing is ever removed, and each unlock is your call. Modes scale ceremony to evidence; a project that stays in Quickstart forever is legitimate.',
+    examples: ['boss unlock mvp', 'boss unlock v1'],
+    see: ['map', 'status'],
+  },
+  status: {
+    usage: 'boss status [--conscience] [--verbose]',
+    what: 'This project at a glance: mode, installed layers, pinned vs current BOSS version, and any drift. --conscience shows the loop states, cohort, and recent overrides; add --verbose for the full ledger.',
+    examples: ['boss status', 'boss status --conscience', 'boss status --conscience --verbose'],
+    see: ['map', 'sync', 'conscience'],
+  },
+  board: {
+    usage: 'boss board [--html] [--next|--blocked|--json] [--all] [--mine]',
+    what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',
+    examples: ['boss board', 'boss board --next', 'boss board --html'],
+    see: ['insights', 'brain'],
+  },
+  map: {
+    usage: 'boss map',
+    what: 'The live cheatsheet for THIS project: where you are on the ladder, what each installed skill does, and what the next unlock would add. A pure read of your install — nothing to maintain, nothing to drift.',
+    examples: ['boss map'],
+    see: ['status', 'unlock'],
+  },
+  brain: {
+    usage: 'boss brain [--diff|--relationship]   ·   boss brain forget --before <date>',
+    what: 'The conscience\'s persistent read on this venture (its POV, in plain English). --diff shows how it evolved; --relationship shows what it said and what you did with it. forget evicts old reads (living memory, founder-invoked).',
+    examples: ['boss brain', 'boss brain --relationship'],
+    see: ['status', 'conscience'],
+  },
+  insights: {
+    usage: 'boss insights',
+    what: 'Read the honest trace your own work already leaves, across every project on this machine: where each loop stands (idea → canvas → build), cycle time, kill-speed. Measures graduation, never activity. Local-only — nothing is sent.',
+    examples: ['boss insights'],
+    see: ['board', 'list'],
+  },
+  team: {
+    usage: 'boss team [add @user ["Name"] | remove @user]',
+    what: 'Who\'s on the venture. Solo by default and dormant — adding a cofounder lights up the team layer (shared decisions, the partnership mentor). Keyed on GitHub identity; never fabricated.',
+    examples: ['boss team', 'boss team add @octocat "Mona"'],
+    see: ['board', 'list'],
+  },
+  list: {
+    usage: 'boss list',
+    what: 'Every BOSS project connected on this machine, active first, retired ones folded quietly at the bottom.',
+    examples: ['boss list'],
+    see: ['insights', 'status'],
+  },
+  retire: {
+    usage: 'boss retire [--undo]',
+    what: 'End a project honestly — mark it retired (reversible; nothing is deleted). The /sunset skill inside Claude runs the post-mortem and harvest; this is just the clean state change.',
+    examples: ['boss retire', 'boss retire --undo'],
+    see: ['list', 'insights'],
+  },
+  sync: {
+    usage: 'boss sync [--apply]',
+    what: 'Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. For a reviewed, narrated update, use /boss-sync inside Claude instead.',
+    examples: ['boss sync', 'boss sync --apply'],
+    see: ['status', 'learn'],
+  },
+  learn: {
+    usage: `boss learn <path> --as <category>   (${LIBRARY_CATEGORIES.join(' | ')})`,
+    what: 'Promote a proven pattern UP into the BOSS library so every future project inherits it. The judgment layer over this is /boss-learn inside Claude (a two-way UP/DOWN router).',
+    examples: ['boss learn ./my-practice.md --as practices'],
+    see: ['sync'],
+  },
+  conscience: {
+    usage: 'boss conscience <pause|resume|mute|unmute|status|activity>',
+    what: 'Control and inspect the conscience. pause silences everything for a bounded sprint; mute turns down one nudge (say, drift) while the rest keep speaking; activity is the over-fire check; status shows what\'s open and any recorded overrides.',
+    examples: [
+      'boss conscience pause --for 8h',
+      'boss conscience mute drift --for 7d',
+      'boss conscience resume',
+      'boss conscience activity',
+    ],
+    see: ['status', 'brain'],
+  },
+  version: { usage: 'boss version', what: 'Print the installed BOSS version.', examples: ['boss version'], see: [] },
+};
+
+// The glyph vocabulary, in one place (`boss help symbols`). Every surface uses
+// these; nowhere else explained them (IDEA-055).
+const SYMBOLS = [
+  [ok('✦'), 'done — a thing happened and it worked'],
+  [ok('✓'), 'passing / closed / up to date'],
+  [warn('⚠'), 'worth a look — a soft warning, not a failure'],
+  [warn('⟳'), 'newer BOSS practices available (drift)'],
+  ['▸', 'you are here / a section heading'],
+  [dim('·'), 'quiet — dormant, stale, or nothing to report'],
+  [dim('⊘'), 'retired (the record stays; only the status changed)'],
+  ['⏸', 'the conscience is paused'],
+  ['🔇', 'a single muted moment'],
+  ['⌛', 'aging in build — open a while; finish it or /revalidate'],
+  ['↻', 'review due (a paused item\'s next_review date has passed)'],
+  ['⬆', 'priority: high'],
+  ['→', 'next / points to'],
+];
+
+function printSymbols() {
+  console.log(`\n  ${bold('Symbols')}  ${dim('— the glyph vocabulary, shared across boss map / board / status')}\n`);
+  for (const [g, meaning] of SYMBOLS) console.log(`    ${g}   ${meaning}`);
+  console.log('');
+}
+
+function printCommandHelp(name) {
+  const h = HELP[name];
+  if (!h) return printHelp(); // unknown topic → the overview
+  console.log(`\n  ${bold(h.usage)}\n`);
+  console.log(`    ${h.what}`);
+  if (h.examples?.length) {
+    console.log(`\n    ${dim('examples')}`);
+    for (const ex of h.examples) console.log(`      ${ex}`);
+  }
+  if (h.see?.length) console.log(`\n    ${dim('see also:')} ${h.see.map((s) => 'boss help ' + s).join(' · ')}`);
+  console.log('');
+}
+
+// The grouped overview. Group headers are bold so the eye has anchors; the two
+// command languages are cued in the footer.
+function printHelp() {
+  const row = (cmd, desc) => `    ${cmd.padEnd(30)} ${dim(desc)}`;
+  console.log(`\n  ${bold('BOSS')} ${bossVersion()}   ${dim('· a just-in-time startup incubator. Make it real.')}\n`);
+
+  console.log(`  ${bold('Start here')}`);
+  console.log(row('boss new <name> [--ai]', 'scaffold a new project (Quickstart) + register it'));
+  console.log(row('boss adopt [--mode <m>] [--ai]', 'bring BOSS into an already-started repo, non-destructively'));
+  console.log(row('boss map', 'live cheatsheet: where you are + what\'s one unlock away'));
+
+  console.log(`\n  ${bold('Everyday')}`);
+  console.log(row('boss board [--html]', 'what\'s in flight (captured → shipped); --html = kanban'));
+  console.log(row('boss board --next|--blocked|--json', 'what to pick up · what\'s stuck · JSON (agent-readable)'));
+  console.log(row('boss status [--conscience]', 'mode + pinned version + drift (--conscience: loop states)'));
+  console.log(row('boss unlock <mode>', 'climb a rung: quickstart → mvp → v1 → scale'));
+  console.log(row('boss brain [--diff|--relationship]', 'the conscience\'s read on this venture'));
+  console.log(row('boss insights', 'how far your ventures have gotten (local · nothing sent)'));
+  console.log(row('boss team [add @user]', 'who\'s on the venture (solo by default)'));
+
+  console.log(`\n  ${bold('Conscience')}`);
+  console.log(row('boss conscience pause [--for 8h]', 'silence everything for a bounded sprint'));
+  console.log(row('boss conscience mute <moment>', 'turn down one nudge (drift|caution|…)'));
+  console.log(row('boss conscience activity', 'how often it fires (over-fire check)'));
+  console.log(`    ${dim('resume · unmute · status round it out — boss help conscience')}`);
+
+  console.log(`\n  ${bold('Keeping current')}`);
+  console.log(row('boss sync [--apply]', 'pull current BOSS practices into this project (DOWN)'));
+  console.log(row('boss learn <p> --as <c>', 'promote a pattern UP into the library'));
+  console.log(row('boss list', 'all connected projects'));
+  console.log(row('boss retire [--undo]', 'end a project honestly (reversible)'));
+  console.log(row('boss version', 'the installed BOSS version'));
+
+  console.log(`\n  ${dim('modes:')} Quickstart ${dim('(capture)')} · MVP ${dim('(build)')} · V1 ${dim('(ship)')} · Scale ${dim('(grow)')}`);
+  console.log(`  ${dim('boss help <command>')} for detail  ·  ${dim('boss help symbols')} for the glyph legend`);
+  console.log(`  ${dim('Commands starting with / (e.g. /boss, /canvas) run inside Claude Code, not the shell.')}\n`);
+}
+
+function cmdHelp(args) {
+  const topic = args.find((a) => !a.startsWith('-'));
+  if (!topic) return printHelp();
+  if (topic === 'symbols' || topic === 'symbol' || topic === 'legend') return printSymbols();
+  return printCommandHelp(topic);
+}
+
+// Levenshtein for the did-you-mean nudge — tiny, zero-dep.
+function editDistance(a, b) {
+  const m = a.length, n = b.length;
+  const d = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+  for (let j = 0; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+    }
+  }
+  return d[m][n];
+}
+
+function nearestCommand(input) {
+  let best = null, bestD = Infinity;
+  for (const c of KNOWN_COMMANDS) {
+    const d = editDistance(input, c);
+    if (d < bestD) { bestD = d; best = c; }
+  }
+  return bestD <= 3 ? best : null; // only suggest when it's plausibly a typo
 }
 
 export function run(argv) {
@@ -596,31 +807,15 @@ export function run(argv) {
     case 'conscience': return cmdConscience(args);
     case 'version': case '--version': case '-v':
       return console.log(bossVersion());
-    default:
-      console.log(`BOSS ${bossVersion()}\n`);
-      console.log('  boss new <name> [--ai]   scaffold a new project in Quickstart mode + register it (--ai: tailor via /comprehend)');
-      console.log('  boss adopt [--mode <m>] [--ai]  bring BOSS into an already-started repo, non-destructively (--ai: comprehend it)');
-      console.log('  boss unlock <mode>       level up: quickstart → mvp → v1 → scale');
-      console.log('  boss status              this project: mode, pinned version, drift');
-      console.log('  boss status --conscience this project: loop states + cohort + recent overrides');
-      console.log('  boss map                 live cheatsheet: where you are + what\'s one unlock away');
-      console.log('  boss board [--html]      a live read of what\'s in flight (captured → shipped); --html opens a visual kanban');
-      console.log('  boss board --next|--blocked|--json   what to pick up next · what\'s not moving · the projection as JSON (agent-readable)');
-      console.log('  boss board --mine        (team) narrow the board to the cards you own (owner: @you)');
-      console.log('  boss brain [--diff|--relationship]  the conscience\'s read (POV); --diff = how it evolved; --relationship = what it said & what you did');
-      console.log('  boss brain forget --before <date>   evict old reads (living memory; founder-invoked)');
-      console.log('  boss insights            read your own projects\' trace: where each loop stands (local · nothing sent)');
-      console.log('  boss team [add @user|remove @user]   who\'s on the venture (solo by default; add a cofounder to light up the team layer)');
-      console.log('  boss list                all connected projects');
-      console.log('  boss retire [--undo]     end a project honestly: mark it retired (reversible; the /sunset skill runs the post-mortem)');
-      console.log('  boss sync [--apply]      pull current BOSS skills/agents/hooks into this project (DOWN)');
-      console.log(`  boss learn <p> --as <c>  promote a pattern UP into the library (${LIBRARY_CATEGORIES.join('|')})`);
-      console.log('  boss conscience pause    silence the conscience for a bounded session [--for 8h|--until-resume]');
-      console.log('  boss conscience resume   re-enable the conscience');
-      console.log('  boss conscience mute     silence ONE moment (drift|caution|…) [--for 7d|--until-resume]');
-      console.log('  boss conscience unmute   un-silence a moment (or --all)');
-      console.log('  boss conscience activity how often the conscience fires (over-fire check; alias: cost)');
-      console.log('  boss version             BOSS version\n');
-      console.log('  modes: Quickstart (capture an idea) · MVP (build it) · V1 (ship it) · Scale (grow it)\n');
+    case undefined: case 'help': case '--help': case '-h':
+      return cmdHelp(args);
+    default: {
+      // An unknown command shouldn't silently dump the manual — say so first, offer
+      // the nearest match, then point at help. Exit non-zero (IDEA-055 P0.3).
+      const guess = nearestCommand(cmd);
+      console.error(`  ${err('Error')} unknown command ${bold("'" + cmd + "'")}.${guess ? ` Did you mean ${bold('boss ' + guess)}?` : ''}`);
+      console.error(`  Run ${bold('boss help')} to see everything boss can do.`);
+      process.exitCode = 1;
+    }
   }
 }

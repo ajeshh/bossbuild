@@ -15,6 +15,7 @@
 
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { dim, bold } from './ui.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -276,7 +277,7 @@ export function renderBoardText(projectName, data, opts = {}) {
   if (opts.mine) cards = cards.filter((c) => c.owner && c.owner.toLowerCase() === opts.mine.toLowerCase());
   const lines = [];
   lines.push('');
-  lines.push(`  ${projectName} · board${opts.mine ? ' · ' + opts.mine : ''}`);
+  lines.push(`  ${bold(projectName + ' · board')}${opts.mine ? dim(' · ' + opts.mine) : ''}`);
 
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
@@ -296,9 +297,9 @@ export function renderBoardText(projectName, data, opts = {}) {
     const { shown, hidden } = col === 'Shipped'
       ? shippedView(inCol, showAll)
       : { shown: inCol, hidden: 0 };
-    lines.push(`  ${col} (${inCol.length})`);
+    lines.push(`  ${bold(col)} ${dim('(' + inCol.length + ')')}`);
     if (!inCol.length) {
-      lines.push('    —');
+      lines.push(`    ${dim('—')}`);
     } else {
       for (const c of shown) {
         // `⬆` gutter marks priority: high; the status flag (blocked/aging/review) is

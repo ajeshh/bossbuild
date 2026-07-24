@@ -2,6 +2,8 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { listProjects } from './registry.js';
 import { bossVersion, STAGE_ORDER } from './paths.js';
+import { collectBoard } from './board.js';
+import { dim, bold, ok, warn } from './ui.js';
 
 // `boss insights` — the honest-trace lens (IDEA-021).
 //
@@ -24,6 +26,21 @@ function createdDate(text) {
 // Count IDEA-*.md docs and how many have been pressure-tested (carry a canvas), plus any FEAT-*.md
 // (a feature in build = graduation past the canvas gate). Also reads the earliest IDEA and FEAT
 // `created:` dates so insights can report idea→build cycle time. Reads files; never writes.
+// "In build" and "shipped" are read from the SAME projection the board uses
+// (collectBoard — frontmatter is truth), so `boss insights` and `boss board` can
+// never disagree again (IDEA-055 — insights used to call every FEAT file "building",
+// even shipped ones). building = the board's Building column; shipped = shipped
+// FEATs only (a shipped *idea* isn't a shipped feature — that stays the graduation
+// signal, not board's Shipped column which also folds in shipped ideas).
+function buildCounts(dir) {
+  try {
+    const { cards } = collectBoard(dir);
+    const building = cards.filter((c) => c.column === 'Building').length;
+    const shipped = cards.filter((c) => c.column === 'Shipped' && /^FEAT/i.test(c.id)).length;
+    return { building, shipped };
+  } catch { return { building: 0, shipped: 0 }; }
+}
+
 function readProjectTrace(dir) {
   const ideasDir = join(dir, 'docs', 'ideas');
   let ideas = 0, canvassed = 0, features = 0, newest = 0;
@@ -54,7 +71,7 @@ function readProjectTrace(dir) {
     }
   }
   if (seenCanvas && canvassed === 0) canvassed = 1;
-  return { ideas, canvassed, features, newest, firstIdea, firstFeat };
+  return { ideas, canvassed, features, ...buildCounts(dir), newest, firstIdea, firstFeat };
 }
 
 // One honest read on where a project's loop stands. Returns null if the project is gone from disk.
@@ -102,12 +119,13 @@ function assess(p, nowMs) {
     ...p, missing: false,
     mode: stamp?.mode || p.mode || p.stage || '?',
     pin: stamp?.bossVersion || p.bossVersion || '?',
-    depth, ideas: t.ideas, canvassed: t.canvassed, features: t.features, ageDays, signal, note,
+    depth, ideas: t.ideas, canvassed: t.canvassed, features: t.features,
+    building: t.building, shipped: t.shipped, ageDays, signal, note,
     toBuildDays, retired, retiredOn: p.retired_on || null, toRetireDays,
   };
 }
 
-const MARK = { flowing: '✓', untested: '⚠', empty: '⚠', stale: '·', missing: '·' };
+const MARK = { flowing: ok('✓'), untested: warn('⚠'), empty: warn('⚠'), stale: dim('·'), missing: dim('·') };
 
 export function insights(cwd) {
   const nowMs = Date.now();
@@ -121,8 +139,8 @@ export function insights(cwd) {
   const gone = projects.length - rows.length;
   const current = bossVersion();
 
-  console.log(`\n  insights · your BOSS portfolio        (local · nothing sent)\n`);
-  console.log(`  ${rows.length} project(s) on this machine${gone ? `  (+${gone} registered but not on disk)` : ''}`);
+  console.log(`\n  ${bold('insights · your BOSS portfolio')}        ${dim('(local · nothing sent)')}\n`);
+  console.log(`  ${rows.length} project(s) on this machine${gone ? `  ${dim(`(+${gone} registered but not on disk)`)}` : ''}`);
 
   // Graduation distribution across the mode ladder — the real "how far have ventures gotten".
   const byMode = {};
@@ -152,20 +170,31 @@ export function insights(cwd) {
     console.log(`    kill-speed:  ${rows.length} bet(s) run · ${retiredRows.length} retired${medKill != null ? ` · median idea→retire ${medKill}d` : ''}  (deciding faster is the payoff, not a score)`);
   }
 
-  console.log(`\n  where each loop stands — idea → canvas → build`);
+  console.log(`\n  ${bold('where each loop stands')} ${dim('— idea → canvas → build')}`);
+  let mostStuck = null; // the first project carrying a note — the honest "do this next"
   for (const r of rows) {
     const here = cwd && r.path === cwd ? ' (here)' : '';
     if (r.retired) {
       // A closed loop reads honestly, not as a stalled one: no stale/untested note.
       const kill = r.toRetireDays != null ? ` · idea→retire ${r.toRetireDays}d` : '';
-      console.log(`    ⊘ ${String(r.name + here).padEnd(20)} ${String('retired').padEnd(11)} retired ${r.retiredOn || '—'}${kill}`);
+      console.log(`    ${dim('⊘')} ${dim(String(r.name + here).padEnd(20) + ' ' + String('retired').padEnd(11) + ' retired ' + (r.retiredOn || '—') + kill)}`);
       continue;
     }
-    const stat = `${r.ideas} idea${r.ideas === 1 ? '' : 's'} · ${r.canvassed} canvassed${r.features ? ` · ${r.features} building` : ''}${r.toBuildDays != null ? ` · built in ${r.toBuildDays}d` : ''}`;
+    const stat = `${r.ideas} idea${r.ideas === 1 ? '' : 's'} · ${r.canvassed} canvassed${r.building ? ` · ${r.building} building` : ''}${r.shipped ? ` · ${r.shipped} shipped` : ''}${r.toBuildDays != null ? ` · built in ${r.toBuildDays}d` : ''}`;
     console.log(`    ${MARK[r.signal] || ' '} ${String(r.name + here).padEnd(20)} ${String(r.mode).padEnd(11)} ${stat}`);
-    if (r.note) console.log(`      ${''.padEnd(22)}${r.note}`);
+    if (r.note) {
+      console.log(`      ${''.padEnd(22)}${dim(r.note)}`);
+      if (!mostStuck) mostStuck = r;
+    }
   }
 
-  console.log(`\n  Measures graduation, not activity (idea→canvas→build→ship).`);
-  console.log(`  Local-only. Cross-user learning is opt-in (shareUp); send something deliberately with /feedback.\n`);
+  // End on a next action, not a mission statement (IDEA-055). If something's stuck,
+  // name the cheapest move on it; otherwise the loops are flowing — say so.
+  console.log('');
+  if (mostStuck) {
+    console.log(`  ${bold('Next')}  → ${mostStuck.name}: ${mostStuck.note}`);
+  } else {
+    console.log(`  ${ok('✓')} all loops flowing — nothing stalled.`);
+  }
+  console.log(`  ${dim('Measures graduation, not activity. Local-only; share deliberately with /feedback (inside Claude).')}\n`);
 }
