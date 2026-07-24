@@ -14,6 +14,22 @@ function projectSkillMd(projectDir, name) {
   return join(projectDir, '.claude', 'skills', name, 'SKILL.md');
 }
 
+// The mode ladder as one styled "you are here" line — the train line a real founder
+// asked for (EVID-001, facet 1). Climbed rungs read plain, the current rung is bold,
+// the rungs ahead are dim. Shared by `boss map` and `boss status` so both orient the
+// founder identically. Composed from state that already exists (STAGE_ORDER + the
+// installed layers) — no new surface.
+export function renderLadder(installedLayers, deepestId) {
+  const byId = Object.fromEntries(loadModes().map((m) => [m.id, m]));
+  const installed = (installedLayers && installedLayers.length) ? installedLayers : [deepestId];
+  const rung = (id) => {
+    const nm = (byId[id] && byId[id].name) || id.replace(/^L\d+-/, '');
+    if (id === deepestId) return bold(nm);
+    return installed.includes(id) ? nm : dim(nm);
+  };
+  return STAGE_ORDER.map(rung).join(dim(' → '));
+}
+
 // Gloss for an installed skill: prefer the project's OWN copy (truthful about
 // local edits), fall back to the package stage that defines it.
 function installedGloss(projectDir, name, definedIn) {
@@ -50,20 +66,8 @@ export function renderMap(projectDir, stamp) {
   const lines = [];
   lines.push('');
   lines.push(`  ${bold(stamp.name + ' · map')}`);
-  // The ladder, drawn as a line you can see yourself on — the "train line" a real
-  // founder asked for (EVID-001, facet 1: "which stage am I on?"). Climbed rungs read
-  // plain, the current rung is marked + bold, the rungs ahead are dim. Composed from
-  // state that already exists (STAGE_ORDER + installedLayers) — no new surface.
-  // Three visual states, no new glyph: climbed rungs read plain, the current rung is
-  // bold, the rungs ahead are dim. (Bold alone marks "here" — the ▸ You-are-here line
-  // right above already names it; a second ● marker would double-signal — designer.)
-  const rung = (id) => {
-    const nm = (byId[id] && byId[id].name) || id.replace(/^L\d+-/, '');
-    if (id === deepest) return bold(nm);
-    return installed.includes(id) ? nm : dim(nm);
-  };
   lines.push(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
-  lines.push(`    ${STAGE_ORDER.map(rung).join(dim(' → '))}`);
+  lines.push(`    ${renderLadder(installed, deepest)}`);
   lines.push('');
 
   // Available now — grouped by the rung that unlocked each skill, ladder order.

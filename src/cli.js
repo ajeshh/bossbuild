@@ -7,8 +7,8 @@ import { registerProject, listProjects, findByPath, retireProject, reviveProject
 import { planSync, applySync, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
-import { board, boardHtml } from './board.js';
-import { map } from './map.js';
+import { board, boardHtml, collectBoard, computeNext } from './board.js';
+import { map, renderLadder } from './map.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
@@ -308,6 +308,36 @@ const ROLE_SHIFT = {
   ],
 };
 
+// The orientation core of `boss status` (EVID-001): what you're building right now,
+// and that you're making headway. Reads the same board projection so status, board,
+// and insights all agree on "in flight." Prints nothing it can't derive honestly.
+function printFocusAndHeadway(projectDir) {
+  let cards;
+  try { ({ cards } = collectBoard(projectDir)); } catch { return; }
+  const { finish, start, pressure } = computeNext(cards);
+  console.log('');
+  if (finish.length) {
+    const f = finish[0];
+    const more = finish.length > 1 ? dim(`   (+${finish.length - 1} more in flight)`) : '';
+    console.log(`    ▸ ${bold('Building now:')}    ${f.id} — ${f.title}${more}`);
+  } else if (start.length) {
+    console.log(`    ▸ ${bold('Ready to build:')}  ${start[0].id} — ${start[0].title}   ${dim('→ /spec')}`);
+  } else if (pressure.length) {
+    console.log(`    ▸ ${bold('Next:')}            pressure-test ${pressure[0].id}   ${dim('→ /canvas')}`);
+  } else {
+    console.log(`    ▸ ${dim('Nothing in flight yet — /boss or /triage to capture an idea.')}`);
+  }
+  // Headway — the positive register BOSS lacks: the most recently shipped FEAT and how
+  // long ago. Real shipped_on dates only; omitted (never guessed) when absent.
+  const shipped = cards
+    .filter((c) => c.column === 'Shipped' && /^FEAT/i.test(c.id) && c.shippedAgeDays != null)
+    .sort((a, b) => a.shippedAgeDays - b.shippedAgeDays)[0];
+  if (shipped) {
+    const when = shipped.shippedAgeDays === 0 ? 'today' : `${shipped.shippedAgeDays}d ago`;
+    console.log(`    ${ok('✓')} ${bold('Recent headway:')}  shipped ${shipped.id} ${dim(`(${when})`)}`);
+  }
+}
+
 function cmdStatus(args) {
   const stamp = readStamp(process.cwd());
   if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
@@ -321,10 +351,16 @@ function cmdStatus(args) {
   }
   const current = bossVersion();
   console.log(`\n  ${bold(stamp.name)}`);
-  console.log(`    mode:         ${stamp.mode || stamp.stage}  (${stamp.stage})`);
-  console.log(`    layers:       ${stamp.installedLayers.join(' → ')}`);
-  console.log(`    BOSS pinned:  ${stamp.bossVersion}`);
-  console.log(`    BOSS current: ${current}`);
+  // Lead with orientation, not version metadata: where you are on the ladder, what
+  // you're building right now, and whether you're moving (EVID-001 — a founder can't
+  // tell any of these three today). Composed from the board projection; degrades
+  // silently if the board can't be read.
+  console.log(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
+  console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
+  printFocusAndHeadway(process.cwd());
+  console.log('');
+  console.log(`    ${dim('layers:')}       ${stamp.installedLayers.join(' → ')}`);
+  console.log(`    ${dim('BOSS pinned:')}  ${stamp.bossVersion}   ${dim('current:')} ${current}`);
   if (stamp.bossVersion !== current) {
     console.log(`    ${warn('⟳')} newer practices available — run ${bold('/boss-sync')} to review the diff ${dim('(inside Claude)')}`);
   }

@@ -283,6 +283,12 @@ export function renderBoardText(projectName, data, opts = {}) {
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
 
   lines.push(`  ▸ ${evidenceLine(counts, cards.length)}`);
+  // The one thing you're on now, surfaced at the top — on a long board the Building
+  // column sits below a wall of Captured cards, so a founder who lost the thread has
+  // to hunt for it (EVID-001, facet 3: "I forget what feature I'm building"). Longest-
+  // open in-build item = the thing to finish. Silent when nothing's in build.
+  const onNow = sortColumn(cards.filter((c) => c.column === 'Building' && !c.blocked), 'Building')[0];
+  if (onNow) lines.push(`  ${dim('▸ on now:')} ${bold(onNow.id)} — ${onNow.title}`);
   lines.push('');
 
   if (!hasIdeasDir) {
