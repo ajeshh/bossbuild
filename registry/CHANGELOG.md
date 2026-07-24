@@ -2,6 +2,26 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.124.0 — 2026-07-23
+
+- **Feature-level `/sunset` — kill one zombie feature honestly (POST-LAUNCH build #6, JOB 5).** Extends the
+  existing whole-project `/sunset` (IDEA-044) with a second scope on the *same verb* — "end something honestly" at
+  both scales. **`/sunset`** (no arg) = the project post-mortem as before; **`/sunset FEAT-007`** = end one
+  feature. The failure mode it treats: products accrete features and never shed them, so a *zombie* (shipped, then
+  quietly unused) sits costing maintenance, widening the attack surface, and confusing new users — *subtraction is
+  a feature*. Four moves: **(1) usage-validate it's actually dead** (kill on `/measure` data, not a hunch — quiet
+  ≠ dead; and the stuck-in-build FEAT case ends because it's *not finishing*, not because it's unused); **(2)
+  guard the segment/commitment exception** (the load-bearing check — a low-usage feature can be a *contract*, or
+  the workflow the one enterprise account depends on; low usage ≠ safe to remove; migrate first or don't kill);
+  **(3) draft the honest user message** (real notice period, a path out, no "we're improving your experience"
+  euphemism, no data-hostage removal — the `ai-ux-patterns` anti-patterns, refused); **(4) harvest UP + remove**
+  (mark the FEAT `retired` with the usage evidence + reason; small reversible commit; nothing hidden). This is
+  exactly what the **`focus` circuit-breaker** points at when it offers to end a stuck FEAT rather than leave it
+  70%-done — the offer now resolves precisely. Humane (PRINCIPLE #6): honest deprecation, guard the quiet-but-
+  critical cohort, subtraction as care for everyone left. Skill extension (already manifest-registered); no hook
+  change → **gate holds 129/0**, judgment unaffected. `/tmp`-verified (feature-level section lands, 0 placeholders;
+  registry pruned).
+
 ## 0.123.0 — 2026-07-23
 
 - **`/roadmap` — weigh what to build next into a small bet-list + a mandatory NO-list (POST-LAUNCH build #5, JOB 5;
