@@ -2,6 +2,28 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.121.0 — 2026-07-23
+
+- **`retention` practice + `/retain` skill — fixing the decaying curve, not just reading it (POST-LAUNCH build #3,
+  JOB 2 — the #1 post-launch job).** The map's sharpest gap: `/measure` + `analytics-for-ai-products` *read* the
+  retention curve; **nothing helped *fix* it.** This closes it with the UP/DOWN pair. **UP —
+  `library/practices/retention.md`:** the judgment that there is **no retention hack** — the fix is always the
+  product, and *where the curve dies* tells you *which part*. Read the curve's **shape** first (decaying-to-zero =
+  a `/pmf-check` fit problem, not a retention one; flattening = the shape of fit, raise the plateau); **rebase past
+  the week-2–5 AI-tourist wave to the Month-3 cohort** before diagnosing; then the **three decays** — activation-
+  failure (dies at the top → `/onboard`, the highest-leverage lever), engagement-decay (dies in the middle → the
+  product + roadmap + `/interview` the churned, fed by *churn* not the loudest survivor — ties to `/spec`'s "loud ≠
+  important"), involuntary/mechanical (dies at the wallet → **dunning: point at Stripe, don't build billing**;
+  20–40% of churn and the most recoverable). **Quality + roadmap ARE the retention strategy** (for an AI product:
+  output quality + the eval loop). **DOWN — `/retain` skill (L1):** the runner over that diagnosis — n<10 gate
+  ("go talk to them"), shape read, cohort rebase, the where-does-it-die decision tree, the routed fix, dated
+  `docs/retain/RETAIN-<date>.md`. **Humane (PRINCIPLE #6): a user who succeeded and left is a *win*; resurrection
+  is invitation, never winback-by-dark-pattern; involuntary-churn recovery is the one pure-gain move.** Refuses
+  churn-prediction ML, retention dashboards, streaks/guilt-nags, and building a billing system — names each. A
+  pointer from `/measure` hands off to `/retain` on a sliding curve. Registered in the L1 manifest; skill+practice
+  layer only → **gate holds 129/0**, judgment unaffected. `/tmp`-verified (lands on unlock, mapped, 0 placeholders;
+  registry pruned).
+
 ## 0.120.0 — 2026-07-23
 
 - **`/pmf-check` — the product-market-fit verdict, the organizing gate the whole journey turns on (POST-LAUNCH

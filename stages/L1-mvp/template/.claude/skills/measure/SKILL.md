@@ -23,6 +23,10 @@ terms, e.g. "sent first summary," "shipped first page") and one retention curve 
 or weekly, whichever matches the use). **5–10 events maximum**, each tied to activation or retention. Anything
 else is analytics theater — refuse it, and say why.
 
+If the retention curve you read is **decaying** (a cohort coming back less than the last, no plateau forming),
+that's not a measurement job anymore — point at **`/retain`**, which diagnoses *where* the curve dies (activation
+/ engagement / involuntary) and routes to the one real fix. `/measure` reads the curve; `/retain` fixes it.
+
 ## Step 2 — for an AI product, add what classic analytics misses
 
 If the product is AI-mediated, plain funnels miss the truth (**model accuracy ≠ user success**). Add the few
