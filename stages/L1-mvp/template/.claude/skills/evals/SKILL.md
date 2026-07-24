@@ -127,6 +127,23 @@ The 2026 update to the eval discipline, from the people who teach it. Fold these
   signal. Zero-dependency: a loop around the case you already wrote. (τ-bench / UK AISI Inspect are the
   graduate-grade harnesses to point at when you outgrow it, never a CLI dependency.)
 
+## Online evals — the production half (not just a pre-ship gate)
+
+Everything above is *offline* (pre-ship correctness). The 2026 addition is the *online* half: once the FEAT is
+live with real traffic, **score a sample of production traffic continuously** — shadow-run your evaluators on,
+say, ~5% of live sessions, alert on quality/drift, and **auto-curate the failing traces back into the eval set**
+(they become tomorrow's regression cases). The loop is **traces → evals → product metrics**, joined on the
+user/session. Offline `/evals` catches *known* failure modes; online eval catches the *novel* ones and the
+distribution shift a model/prompt change introduces.
+
+- **JIT:** turns on only when the FEAT is live with enough traffic that you can't hand-read every output —
+  before that, offline is correct and sufficient (don't build production-eval machinery for n<10).
+- **Offline eval can lie.** A documented case had the *lower*-offline-scoring variant win on business results —
+  so treat offline as a *filter*, not a green light; the live A/B on a real outcome metric is the real signal.
+- **Tooling is a pointer, not a dependency:** self-hosted Langfuse/Phoenix (OSS) for the inner loop, PostHog for
+  the product-outcome loop. See [`/measure`](../measure/SKILL.md) + `analytics-for-ai-products` for the
+  post-ship metric vocabulary (task-completion, cost-per-successful-outcome) this feeds.
+
 ## Structured outputs (Liu discipline) — strongly recommended
 
 If the LLM call's output drives subsequent code (control flow, data routing, decisions), **schema

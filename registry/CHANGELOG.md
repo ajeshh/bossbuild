@@ -2,6 +2,21 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.117.0 — 2026-07-23
+
+- **Three JIT skill extensions — the sweep's small tail, closed (2026-07-23 sweep).** Small, non-ceremony
+  additions to existing L1 skills; the last deferred items. **`/ai-cost`** gains the **prompt-caching mechanics**
+  (the highest-ROI lever): cache-read ≈0.1× (90% off), break-even ~2 reads, the static-first-then-dynamic
+  ordering the mechanism forces, and verify-via-`usage.cache_read_input_tokens` — reach for it before
+  downgrading models. **`ai-first-init`** Step 2 gains the **2026 native-strict-outputs update**: all three
+  providers (incl. Anthropic) ship constrained-decoding structured outputs now, so the "re-prompt until it
+  parses" reask loop is obsolete — prefer native `output_format`/`strict`, keep Pydantic/Zod for typed/semantic
+  validation; plus a pointer to `mcp.md` for external tools. **`/evals`** gains the **online / production half**:
+  score a sample of live traffic continuously, auto-curate failing traces into the set, the traces→evals→
+  product-metrics loop — with the honest "offline eval can lie" caveat and a pointer to `/measure` +
+  `analytics-for-ai-products`. Skill-layer only; `src/` untouched; gate 122/0. **This closes the entire
+  2026-07-23 research sweep — nothing left deferred.**
+
 ## 0.116.0 — 2026-07-23
 
 - **`/ship` gains a ship-dark / kill-switch offer — BUILD 6 complete (2026-07-23 sweep).** The other half of the

@@ -86,6 +86,22 @@ The most common cost win is **downgrading non-load-bearing calls** to cheaper mo
 second most common is **caching** (Anthropic prompt caching, response caching). The third is
 **batching** (Anthropic batch API; OpenAI batch). Each gets a line in the budget doc.
 
+### 4a. Prompt caching — the highest-ROI cost lever (the mechanics, not just a checkbox)
+
+Of the levers, prompt caching is the cheapest to adopt and the biggest early win — but only if you know the
+mechanics:
+- **Cache-read is ~0.1× input (≈90% off); cache-write is 1.25× (5-min TTL) or 2× (1-hour).** Break-even is
+  ~2 reads — so it pays the moment any stable prefix is hit repeatedly (a chat loop, an agent, a RAG system
+  with a fixed system prompt).
+- **The design pattern is forced by the mechanism: static content first, dynamic content last.** Order
+  tools → system prompt → context/examples (stable) *before* the user's turn (changing), and set the cache
+  breakpoint on the last stable block. A stray early timestamp defeats the whole cache.
+- **Verify it's actually working** via `usage.cache_read_input_tokens` in the response — it's a silent no-op
+  below the ~1k-token minimum. Mostly automatic in the SDK / Claude Code.
+
+JIT: the first feature with a ≥~1k-token stable prefix hit repeatedly. For most AI apps this is the single
+highest-ROI / lowest-effort lever on the list — reach for it before downgrading models.
+
 ### 5. Wire the logger
 
 A ~30-line wrapper around the LLM SDK that records each call. Stack-agnostic shape:

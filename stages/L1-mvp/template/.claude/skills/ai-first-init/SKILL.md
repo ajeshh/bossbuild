@@ -113,6 +113,16 @@ export type FeatureOutput = z.infer<typeof FeatureOutputSchema>;
 The schema becomes the **contract** between the model and the rest of the code. Evals assert
 on the schema; failure-state handler #1 (garbage) IS schema-validation-failure.
 
+**2026 update — native strict outputs first.** All three major providers (including Anthropic) now ship
+**native strict structured outputs / strict tool-use** — constrained decoding compiles your schema to a grammar
+the model literally *cannot* violate (a mathematical guarantee, >99.8% conformance). So on current models the
+"re-prompt until it parses" reask loop is obsolete: reach for the provider's native `output_format` / `strict:
+true` first. Keep Pydantic/Zod for what native strict can't express — *typed + semantic* validation (ranges,
+enums, cross-field rules) and provider-portability. Net: "get valid JSON" is a solved provider feature; "get
+*correct* data" is still your eval set's job. (And if a feature needs external tools, **MCP is the durable
+cross-vendor standard** now — see `library/practices/mcp.md` for the consume/expose/build decision before you
+wire one in.)
+
 ### Step 3 — Seed the eval set early (Husain)
 
 Don't wait for production. Run `/evals --new <feature-name>` (creates `docs/evals/FEAT-NNN.yml`)
