@@ -87,9 +87,9 @@ build it (a strategic account, a load-bearing workflow); the nudge just makes th
 protect the silent majority who actually drive the value** — the anti-pattern is a roadmap captured by
 whoever shouts, which quietly degrades the product for everyone who doesn't.
 
-_(Post-launch, the fuller version of this weighing — signal vs. behavior across the whole register into
-a small bet-list — is the `/roadmap` job; captured for Tier 2 of the post-launch program. Until then,
-this decide-time check + `/measure` + `mentor-venture` are the whole story.)_
+_(This fires on a *single* request at decide-time. The fuller version — weighing *all* the signal, behavior
+vs. requests, across the whole register into a small bet-list + a mandatory NO-list — is **`/roadmap`**. Run
+that when you're choosing among many candidates, not just reacting to one.)_
 
 ## How to run it
 

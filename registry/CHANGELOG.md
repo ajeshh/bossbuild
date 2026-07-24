@@ -2,6 +2,26 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.123.0 — 2026-07-23
+
+- **`/roadmap` — weigh what to build next into a small bet-list + a mandatory NO-list (POST-LAUNCH build #5, JOB 5;
+  Tier 2 begins).** The fuller version of `/spec`'s "loud ≠ important" check: that fires on a *single* request at
+  decide-time; this weighs *all* the signal at once. Deliberately **not** a persistent roadmap — BOSS refuses the
+  Gantt/backlog-you-tend; this produces a dated snapshot you *use and discard*. Weighs **what users say** (the
+  `--feedback` register — `stated-pain`, the weakest grade) against **what users do** (`/measure`, retention,
+  churn via `/retain` — `observed-behavior`/`commitment`), and **behavior wins when they disagree.** Scores each
+  candidate by **Confidence = the EVID grade** (Itamar Gilad's Confidence Meter mapped onto BOSS's
+  stated-pain→observed-behavior→commitment ladder), with **RICE-reach OFF by default** (reach-weighting optimizes
+  for the loud majority-of-noise over the right users). Produces a **small Shape-Up bet-list** (2–4 bets, fixed
+  appetite — Singer) plus a **mandatory NO-list** ("no is the default; the NO-list is the load-bearing half, and
+  where the silent-majority discipline lives"). Pre-PMF it defers to `/pmf-check` — the only honest roadmap before
+  fit is "find fit" (Perri's build trap). Humane (PRINCIPLE #6): serves the users who drive value, not whoever
+  shouts; kill honestly (a zombie feature is a `/sunset` candidate, not a roadmap item); never an engagement
+  roadmap. Writes a dated `docs/roadmap/ROADMAP-<date>.md` (snapshot, re-run when signal moves — **not** a
+  scheduled cadence); promote a bet with `/spec`. `/spec`'s loud≠important note now points forward to it.
+  Registered in the L1 manifest; skill-layer only → **gate holds 129/0**, judgment unaffected. `/tmp`-verified
+  (lands on unlock, mapped, 0 placeholders; registry pruned).
+
 ## 0.122.0 — 2026-07-23
 
 - **`activation` practice + `/onboard` skill — designing the path to the aha-moment (POST-LAUNCH build #4, JOB 1;
