@@ -2,6 +2,29 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.118.0 — 2026-07-23
+
+- **The `margin-trap` conscience moment — the post-launch cost→price bridge (POST-LAUNCH build #1, JOB 4).**
+  First build of the post-launch program (the operator→leader arc). BOSS's cost loops all watched spend against
+  a *budget*; none watched it against the *price*. This moment closes that. It fires when a project has a real
+  per-call cost ledger (`.boss/cost-log.jsonl`) **and** the founder is operating — ≥1 cost review with real
+  spend on file — but **no review has looked at the margin yet**. A cheap predicate gate (ledger exists + a
+  review with `Total spend:`) fronts a judgment the regex can't make: the model reads a bounded slice (the
+  latest review, a tail of the ledger, and wherever a price/ARPU lives — the canvas WTP cell, a pricing `DEC`,
+  or `docs/ai-cost-budget.md`) and judges **two axes** — (a) *margin*: is cost-per-active-user a dangerous
+  fraction of the price (~10–15%-of-ARPU heuristic), with the heaviest users driving it (a16z/Tunguz: AI GM
+  50–65% vs SaaS 70–85%; Copilot $10 price / ~$20 cost)? and (b) *humane (PRINCIPLE #6)*: is a big share of the
+  cost **retries/regenerations** — the product working *less*, the business paid *more* when the user
+  struggles? If neither, it **stays silent** (a healthy margin earns quiet, like a validated risk quiets
+  `drift`); pre-revenue it never opens (no price to compare against — Principle #2). Points at `/cost-review`
+  (the gross-margin band) and `mentor-business`; suggestive, once/session, never a gate. Exit: a review that
+  examines the margin closes it. New `margin-trap-loop` (L1) + moment frame in the conscience runtime (a JUDGE
+  moment — bounded read). Predicate-only at the gate: no prior fixture creates `.boss/cost-log.jsonl`, so the
+  **122 baseline held byte-identical; +7 new margin-trap cases → gate 129/0**. Judgment evals unaffected (new
+  moment, no transcripts → **0 STALE**). Registered `margin-trap-loop` (and the previously-omitted `focus-loop`)
+  in the L1 manifest. Zero-dep; skills/hooks-layer only. **The honest line still holds: none of this moves the
+  riskiest assumption — only founder contact does.**
+
 ## 0.117.0 — 2026-07-23
 
 - **Three JIT skill extensions — the sweep's small tail, closed (2026-07-23 sweep).** Small, non-ceremony
