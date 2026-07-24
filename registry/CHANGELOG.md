@@ -2,6 +2,28 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.119.0 — 2026-07-23
+
+- **The "loud ≠ important" conscience voicing — the `drift` twin at decide-time (POST-LAUNCH build #2, JOB 5).**
+  Restraint (`/spec`'s Moment #4) is the *pre-launch* "is it worth building?" check; this is its **post-launch
+  sibling**, firing on a different symptom: **the source of a FEAT is a user request.** Post-launch the trap flips
+  from "no evidence" to "the *wrong* evidence" — building around the **loudest few** while the **silent majority**
+  (who never wrote in) and the **quiet churn** (who just left) go unheard. Wired into `/spec` as a voicing (not a
+  hook — the "vocal minority" predicate doesn't cleanly exist, so an auto-firing hook would over-fire; the IDEA-041
+  `/ship` precedent, and the SESSION doc says explicitly "fires at `/spec`"). **Gated on two symptoms** — real
+  users exist (a `--feedback` register / EVID ledger / live `/measure` read) AND this FEAT traces to a
+  request/complaint, not a founder-named bet (if it's the canvas riskiest-assumption backed by broad evidence,
+  that's `drift`'s job — stay silent). Asks the specific version of *how many actually asked, are they your active
+  core or a vocal few?*, reframes a request as a **`stated-pain` EVID** (the weakest grade; the quiet majority's
+  observed behavior outranks a loud request), and points at the two cheaper reads before the build — `/measure`
+  (behavior over volume) and `/interview` (talk to the silent + the churned) — plus `mentor-venture`. Suggestive,
+  once, never a gate; cohort-aware. **Enforces the rule the `/triage --feedback` register already states** ("a
+  feature request → a stated-pain EVID, *never* a spec") — the register now forward-points to the `/spec` check,
+  so the rule has teeth at decide-time. **Humane (PRINCIPLE #6): protect the silent majority who drive the value**
+  — the anti-pattern is a roadmap captured by whoever shouts. Skill-layer only (no hook, no gate eval change —
+  **gate holds 129/0**; judgment unaffected). The fuller signal-vs-behavior weighing into a bet-list is the
+  `/roadmap` job, captured for Tier 2. **Honest line unchanged: only founder contact moves the risk.**
+
 ## 0.118.0 — 2026-07-23
 
 - **The `margin-trap` conscience moment — the post-launch cost→price bridge (POST-LAUNCH build #1, JOB 4).**
