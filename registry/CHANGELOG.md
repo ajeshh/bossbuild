@@ -2,6 +2,29 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.120.0 — 2026-07-23
+
+- **`/pmf-check` — the product-market-fit verdict, the organizing gate the whole journey turns on (POST-LAUNCH
+  build #0, JOB 2; the highest-leverage post-launch verb).** BOSS measured the *inputs* to PMF everywhere
+  (`/measure` reads the retention curve, `/interview` + `/evidence` hold the demand signal, `/ai-cost` holds the
+  economics) but **never rendered the verdict** — the single biggest post-launch gap. This new L1 skill reads what
+  BOSS already holds and calls it: **pre-PMF / at-PMF / post-PMF**, from three cheap lenses — the **Sean-Ellis
+  40%-test** (*only* on users who reached core value — the detail founders skip), **retention-curve flattening**
+  (a plateau = fit; decay-to-zero = none; rebase past the week-2–5 AI-tourist wave to the Month-3 cohort), and the
+  **pull-vs-push gut-check** (the one you can't fake). **It DEFAULTS to pre-PMF** — you earn your way off it, and
+  ambiguity resolves to "not yet, keep talking to users, don't scale" — because **scaling before PMF is the #1 way
+  startups die** (~70% premature-scale; Startup Genome). The verdict is **voiced through the seller→operator→leader
+  role ladder** (`founder-role-shifts`): pre-PMF you're still a *seller* (the job is fit, not growth), at-PMF is the
+  *seller→operator* transition, post-PMF is the *operator* — **and only post-PMF licenses the leader's work** (scale/
+  hire/raise). At **n<10 it says no** ("you can't measure fit yet — go talk to them", points at `/interview`).
+  Humane (PRINCIPLE #6): PMF is measured on user *success* not engagement (the 40% means losing it would *hurt*
+  them — a high-DAU thing they can't quit is a hook, not fit); don't scale a thing that isn't yet helping people.
+  A **verdict, not a dashboard** — no PMF-score-over-time meter, no second source of truth; writes one dated
+  `docs/pmf/PMF-<date>.md`. Registered in the L1 manifest; `mentor-venture` now points at it for the *"are we there
+  yet / should we scale?"* question. Skill-layer only → **gate holds 129/0**, judgment unaffected. `/tmp`-verified
+  (scaffolds on `boss unlock mvp`, `boss map` lists it, 0 placeholders). **The honest line holds: only founder
+  contact moves the risk — and this verb's entire job is to send you back to that contact until the fit is real.**
+
 ## 0.119.0 — 2026-07-23
 
 - **The "loud ≠ important" conscience voicing — the `drift` twin at decide-time (POST-LAUNCH build #2, JOB 5).**
