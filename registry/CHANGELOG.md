@@ -2,6 +2,28 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.125.0 — 2026-07-23
+
+- **`/first-dollar` (IDEA-050) — from "will anyone pay?" to "someone is paying" (POST-LAUNCH build #7a, JOB 4).**
+  The conscience's founding question is *"will anyone pay?"* — and BOSS had **nothing for the moment someone
+  actually will.** This closes it: the sharpest JIT moment in the lifecycle, and the **highest-grade evidence
+  event BOSS ever sees** (a paying customer is `commitment`-grade EVID *by definition*). **UP —
+  `library/practices/first-dollar.md` + DOWN — `/first-dollar` skill (L1).** Fires only when **someone has
+  actually said yes** (a real WTP signal) — pre-revenue it sends you to `/interview` to *get* the yes, not build a
+  rail for a customer who doesn't exist. Walks **five deferrable moves**, detecting + skipping what exists:
+  **entity** (lawfully invoice — pointer to counsel), **ToS + privacy** (hands off to `/trust`), **payment rail**
+  (the `/ship` pattern applied to money — *cheapest reversible: a payment link before a billing system*; don't
+  build subscriptions before ~3 customers), **refund posture** (decided *before* the first request, calm), and
+  **the first price** (one number said out loud — forces it now so free-forever-creep fear doesn't defer it;
+  `mentor-business` owns the menu). Records price + refund as `/decide` DECs, then **writes the commitment-grade
+  EVID** so the first dollar doesn't evaporate like the interviews did — after which the conscience shifts
+  register **validate → deliver** (no new hook; the IDEA-045 evidence eye already reads the ledger). **Bright
+  line: pointers to professionals, never legal/tax advice; records the EVENT (evidence), never the STREAM (no MRR
+  dashboard — the payment provider's job).** Humane (PRINCIPLE #6): charge honestly from the first dollar (no
+  hidden fees / fake discounts / dark-pattern checkout — the precedent compounds); the refund posture is respect.
+  Registered in the L1 manifest; skill+practice layer only → **gate holds 129/0**, judgment unaffected.
+  `/tmp`-verified (lands on unlock, mapped, 0 placeholders; registry pruned).
+
 ## 0.124.0 — 2026-07-23
 
 - **Feature-level `/sunset` — kill one zombie feature honestly (POST-LAUNCH build #6, JOB 5).** Extends the

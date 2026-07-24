@@ -1,6 +1,6 @@
 {
   "name": "bossbuild",
-  "version": "0.124.0",
+  "version": "0.125.0",
   "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
