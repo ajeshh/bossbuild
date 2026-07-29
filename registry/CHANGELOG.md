@@ -2,6 +2,28 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.127.0 — 2026-07-23
+
+- **`/trust` skill + a privacy pre-flight in `/ship` — earn trust honestly, without the SOC2 theater (POST-LAUNCH
+  build #8, JOB 8; closes the IDEA-012 privacy backlog).** The AI-specific, load-bearing trust set, in the order
+  that actually matters. **Binding:** a `/trust` skill (L1, the runner) + the privacy/compliance *conscience
+  moment* delivered as a **pre-flight bullet in `/ship`** (alongside secrets + authz) — going live is the moment
+  user data starts flowing, often *to a model provider*, so the deploy gate is the strongest JIT point; skill-
+  layer, so **no hook, no gate eval change** (the IDEA-041 precedent; a privacy *hook* would need a gate-safe
+  artifact, and `.boss/cost-log.jsonl` is now taken by margin-trap's own fixtures). **`/trust`** walks: a
+  **data-minimization privacy policy** (what/why/how-long/how-to-delete — always load-bearing once PII flows), a
+  **subprocessor list auto-derived** from what the app actually uses (LLM provider, vector DB, observability), the
+  **config act founders skip** — *"did you actually turn on the provider's training opt-out?"* (an act, not a
+  promise — writing "we don't train on your data" while the provider default does is the breach-headline gap;
+  **"the AI did it" is not a legal defense**, Air-Canada), and a **public trust-page stub**. **Explicitly DEFERS
+  SOC2 / ISO / DPIA** until a *named* enterprise deal demands them (the ~6–9-month clock — not for a 50-user app;
+  points at Vanta/Drata only *when* SOC2 is real). Bright line: pointers to a real lawyer, never legal advice.
+  Humane (PRINCIPLE #6): privacy as respect; data minimization as the cheapest *and* kindest posture (the data you
+  don't collect can't leak); the trust page as honesty. `/first-dollar` hands off ToS/privacy here; `/monetize`'s
+  data-export offboarding lives here. Registered in the L1 manifest; skill-layer only → **gate holds 129/0**,
+  judgment unaffected. `/tmp`-verified (`/trust` + the `/ship` privacy bullet land, mapped, 0 placeholders;
+  registry pruned).
+
 ## 0.126.0 — 2026-07-23
 
 - **`monetization-in-practice` practice + `/monetize` skill + `/cost-review` gross-margin band (POST-LAUNCH build

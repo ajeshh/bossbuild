@@ -38,6 +38,12 @@ block the founder's deploy (conscience-not-censor). Surface, then proceed if the
 - **Authz at the boundary.** If the app talks to a database with a public/anon key, are the row-level
   security / access rules actually on? The agent does **not** configure them by default — this is the
   CVE-2025-48757 / MoltBook trap (170+ apps, 1.5M credentials, founders who wrote no code).
+- **Privacy posture.** Going live is the moment user data starts flowing — often *to a model provider*. If the
+  app collects PII or sends user input to an LLM, two questions before the URL: is there a **privacy policy**
+  (what you collect, why, how long, how to delete), and did you **actually configure the provider's training
+  opt-out** (a config *act*, not a promise — "the AI did it" is not a legal defense, Air-Canada)? Don't restate
+  it here — point at **`/trust`** (the data-min policy + ToS + subprocessor list + the opt-out check). SOC2/DPIA
+  stay deferred until a *named* enterprise deal demands them; the privacy policy + opt-out do not.
 - **Don't restate the security pass — run it.** This pre-flight is the *trigger*; the depth lives in
   **`/red-team`**'s pre-ship app-security pass (the shipped-secret scan `secrets-guard` doesn't cover)
   and [`agent-security`](../../../library/practices/agent-security.md). A `fail` here is a `/spec` fix
