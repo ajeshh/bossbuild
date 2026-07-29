@@ -329,8 +329,8 @@ export function conscienceActivity(projectDir = process.cwd(), { asCost = false 
 export function statusConscience(projectDir = process.cwd(), { verbose = false } = {}) {
   const loops = loadLoops(projectDir);
   if (loops.length === 0) {
-    console.log('\n  No loops in this project — `docs/loops/` is empty or absent.');
-    console.log('  Quickstart loops install via `boss new` or `boss sync --apply`.\n');
+    console.log('\n  No conscience loops in this project yet.');
+    console.log(`  ${dim('They install with a mode — boss new, or boss sync --apply to add them here.')}\n`);
     return;
   }
 
@@ -364,7 +364,7 @@ export function statusConscience(projectDir = process.cwd(), { verbose = false }
   const mutes = readMuteState(projectDir);
   const liveMutes = Object.entries(mutes).filter(([, m]) => !m.until || new Date(m.until) > new Date());
   if (liveMutes.length) {
-    console.log(`    🔇 muted moments:`);
+    console.log(`    ${warn('muted moments:')}`);
     for (const [moment, m] of liveMutes) {
       const when = m.until ? `until ${m.until.slice(0, 10)}` : 'until unmuted';
       console.log(`       ${moment.padEnd(12)} ${when}${m.reason ? `  — ${m.reason}` : ''}`);

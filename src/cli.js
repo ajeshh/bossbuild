@@ -730,7 +730,6 @@ const SYMBOLS = [
   [dim('·'), 'quiet — dormant, stale, or nothing to report'],
   [dim('⊘'), 'retired (the record stays; only the status changed)'],
   ['⏸', 'the conscience is paused'],
-  ['🔇', 'a single muted moment'],
   ['⌛', 'aging in build — open a while; finish it or /revalidate'],
   ['↻', 'review due (a paused item\'s next_review date has passed)'],
   ['⬆', 'priority: high'],
