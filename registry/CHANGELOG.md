@@ -2,6 +2,32 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.128.0 — 2026-07-23
+
+- **CLI usability + visual encoding (IDEA-055) — legibility, wayfinding, and a "you are here" orientation
+  home.** The visual-encoding + wayfinding layer that [[EVID-001]] (BOSS's first real external founder signal)
+  named as core to the offering — *"I can't tell where I am / did it work / what now."* **Composes and
+  subtracts the existing surface; adds no new command or skill.** Conscience gate held **129/0** throughout
+  (runtime untouched); reviewed by `designer` (encoding) + `voice-keeper` (strings). Four commits
+  (`dd70947` · `f3fa1e4` · `5dc93a3` · this bump).
+  - **New `src/ui.js`** — the one terminal-styling module (`dim/bold/ok/warn/err`), zero-dep raw ANSI, TTY +
+    `NO_COLOR` + `FORCE_COLOR` aware. Replaced the `dim` helper that was defined 3× byte-identical.
+  - **Colored the three states that matter** — success green, warnings yellow, errors a red `Error` frame;
+    **bold section headers** across map/board/status/insights/brain/team. One accent per state, and color is
+    always the *third* channel (glyph + word stay), so `NO_COLOR` / a pipe / a screen reader loses nothing.
+  - **Grouped `boss help`** (Start here / Everyday / Conscience / Keeping current) + **`boss help <command>`**
+    per-command detail + **`boss help symbols`** glyph legend. **Unknown command → did-you-mean + exit 1**
+    (was: a silent full-manual dump). `(in Claude)` / `(in terminal)` cues distinguish the two command languages.
+  - **`boss status` is now the orientation home** — leads with a **"you are here" ladder** (Quickstart → MVP →
+    V1 → Scale) + **`Building now:`** (the one thing in flight) + **`Recent headway:`** (last shipped FEAT +
+    how long ago — the *positive/progress register* BOSS lacked), then version metadata. **`boss map`** shares
+    the same ladder; **`boss board`** gained a top **`on now:`** anchor. Map glosses now break at word
+    boundaries (no more mid-word cuts).
+  - **`boss status --conscience`** got progressive disclosure (a calm summary + `--verbose` for the full
+    per-loop breakdown) and an honest empty-state; the muted-moments surface dropped its lone color-emoji.
+  - **Fixed `boss board` vs `boss insights` disagreeing on "building"** — insights now reads the *same* board
+    projection (frontmatter is truth), so the two can never diverge again.
+
 ## 0.127.0 — 2026-07-23
 
 - **`/trust` skill + a privacy pre-flight in `/ship` — earn trust honestly, without the SOC2 theater (POST-LAUNCH
