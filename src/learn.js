@@ -18,14 +18,28 @@ function looksLikeSource(dir) {
   return !!dir && existsSync(join(dir, 'VERSION')) && existsSync(join(dir, 'library'));
 }
 
-export function bossSourceRoot() {
+// Returns { root, how } so the caller can SAY which checkout it picked before writing to
+// it. `boss learn` bumps a VERSION, rewrites a package.json and prepends to a CHANGELOG —
+// in a repo that is usually NOT the one you're standing in. Resolving that by name-matching
+// the registry and then writing silently is the surprise REVIEW-2026-07-28 §D4 flagged: a
+// founder who happens to name a project "boss" would get their own repo version-bumped.
+// The `selfHosted` flag is preferred over the name regex for exactly that reason.
+export function resolveBossSource() {
   if (process.env.BOSS_SRC && looksLikeSource(process.env.BOSS_SRC)) {
-    return process.env.BOSS_SRC;
+    return { root: process.env.BOSS_SRC, how: '$BOSS_SRC' };
   }
-  const self = listProjects().find((p) => p.selfHosted || /^(boss|bossbuild|blueprintos)$/i.test(p.name || ''));
-  if (self && looksLikeSource(self.path)) return self.path;
-  if (existsSync(join(BOSS_ROOT, '.git')) && looksLikeSource(BOSS_ROOT)) return BOSS_ROOT;
-  return null;
+  const flagged = listProjects().find((p) => p.selfHosted);
+  if (flagged && looksLikeSource(flagged.path)) return { root: flagged.path, how: 'registry (selfHosted)' };
+  const named = listProjects().find((p) => /^(boss|bossbuild|blueprintos)$/i.test(p.name || ''));
+  if (named && looksLikeSource(named.path)) return { root: named.path, how: `registry (name '${named.name}')` };
+  if (existsSync(join(BOSS_ROOT, '.git')) && looksLikeSource(BOSS_ROOT)) {
+    return { root: BOSS_ROOT, how: 'running from a source checkout' };
+  }
+  return { root: null, how: null };
+}
+
+export function bossSourceRoot() {
+  return resolveBossSource().root;
 }
 
 function bump(version, kind) {
@@ -46,7 +60,7 @@ function prependChangelog(file, version, date, lines) {
 
 // Route a proven pattern UP into the BOSS library + record the version bump.
 // Returns a result object; throws Error (with a usage-friendly message) on misuse.
-export function learn({ srcPath, category, note, versionKind = 'minor', explicitVersion }) {
+export function learn({ srcPath, category, note, versionKind = 'minor', explicitVersion, confirmed = false }) {
   if (!srcPath) throw new Error('usage: boss learn <path> --as <category> [--note "..."]');
   if (!LIBRARY_CATEGORIES.includes(category)) {
     throw new Error(`--as must be one of: ${LIBRARY_CATEGORIES.join(', ')}`);
@@ -54,11 +68,23 @@ export function learn({ srcPath, category, note, versionKind = 'minor', explicit
   const abs = resolve(process.cwd(), srcPath);
   if (!existsSync(abs)) throw new Error(`source not found: ${srcPath}`);
 
-  const root = bossSourceRoot();
+  const { root, how } = resolveBossSource();
   if (!root) {
     throw new Error(
       'cannot locate the BOSS source repo. Set BOSS_SRC=/path/to/bossbuild, or run from the checkout.',
     );
+  }
+  // Writing into another repo is not something to discover afterwards from a git diff.
+  // Name the target and require a confirmation, unless the caller already got one.
+  if (!confirmed && root !== process.cwd()) {
+    const e = new Error(
+      `this writes into a DIFFERENT repo:\n      ${root}\n      (resolved via ${how})\n`
+      + '      It will copy the pattern in, bump that repo\'s VERSION + package.json, and\n'
+      + '      prepend to its CHANGELOG. Re-run with --yes to confirm, or set BOSS_SRC to\n'
+      + '      point somewhere else.',
+    );
+    e.needsConfirm = true;
+    throw e;
   }
 
   // Place it in library/<category>/<basename> (file or directory).
@@ -88,5 +114,5 @@ export function learn({ srcPath, category, note, versionKind = 'minor', explicit
   const changelog = join(root, 'registry', 'CHANGELOG.md');
   if (existsSync(changelog)) prependChangelog(changelog, next, date, lines);
 
-  return { root, dest: relDest, prev, next, category, name };
+  return { root, how, dest: relDest, prev, next, category, name };
 }

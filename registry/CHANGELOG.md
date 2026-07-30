@@ -2,6 +2,44 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.133.0 — 2026-07-30
+
+- **Consolidation + two surprises removed (audit §D1, §D4, §E2).** No behaviour change a founder
+  sees, except that one command now asks before it writes. Gate **129/0**, 59 unit, judgment 0 STALE.
+  - **Finished the job `ui.js` started.** That module exists because `dim` had been defined
+    byte-identically three times; four other helpers had drifted the same way. Now one each:
+    **`src/frontmatter.js`** (was 4 near-identical parsers — `board.js`, `modes.js`,
+    `insights.js`'s bare regex, each subtly different about quotes and blank keys) ·
+    **`src/config.js`** (was 3 — `conscience.js` even re-implemented a `readCohort` that the hook
+    runtime already exported *to that same file*) · **`src/args.js`** (was 3 flag parsers).
+    Deliberately **not** merged with the hook lib's `yaml.js`: that one ships into a founder's repo
+    and runs on every prompt, so it stays self-contained. Two implementations across a package
+    boundary is a seam; four inside one package was an accident.
+  - **`src/args.js` is its own module, not an export from `cli.js`.** The obvious move — export
+    `parseArgs` from `cli.js` — created a real `cli → brain → cli` cycle that survived only on
+    function hoisting. Caught before commit; small shared utilities belong at the leaves.
+    The shared parser also fixes brain.js's copy, which assigned `undefined` to a trailing valueless
+    flag, so `boss brain forget --before` degraded into a confusing error instead of a usage line.
+  - **🔴 `boss learn` no longer writes into another repo silently.** It resolves the BOSS source
+    checkout by name-matching the registry, then bumps *that* repo's VERSION, rewrites its
+    package.json and prepends to its CHANGELOG — with no confirmation and no mention of which
+    checkout it picked. A founder who names a project `boss` would have had their own repo
+    version-bumped. It now **names the target and how it was resolved, and refuses without
+    `--yes`** when the target isn't the directory you're standing in; the `selfHosted` registry
+    flag is preferred over the name regex. Verified: from an unrelated directory it refuses and
+    BOSS's VERSION and `library/` are untouched.
+  - **Model profile recalibrated to Opus 5** (`.boss/model-profile.json`, profile_version 2). It had
+    been pinned to `claude-opus-4-8` since 2026-07-02 while its own `reopen_on` list leads with
+    *"new same-vendor model"* — caught by the audit, **not** by the standing discipline, which is
+    the same root cause as the doc drift: a good loop wired to nothing. Model ids verified against
+    the live session; routing shape unchanged (the judgment/volume split still holds). **Two things
+    deliberately left open rather than guessed**, recorded in the file: per-token **pricing** was
+    *removed* rather than carried forward stale or invented (this project's settings deny the
+    claude-api skill, so no current price could be read from a real source), and whether the bare
+    alias `model: fable` resolves on every Claude Code version a founder might run — it resolves
+    here, and 8 shipped mentors depend on it, so a silent mis-resolution would quietly change which
+    model coaches them. No regrade was needed or run: v0.132.0's voice extraction was byte-identical.
+
 ## 0.132.0 — 2026-07-30
 
 - **The conscience-architecture release — one file that is only voice, and the CLI finally reads the

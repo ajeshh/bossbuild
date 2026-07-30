@@ -4,6 +4,7 @@ import { listProjects } from './registry.js';
 import { bossVersion, STAGE_ORDER } from './paths.js';
 import { collectBoard, canvassedIdeas } from './board.js';
 import { dim, bold, ok, warn } from './ui.js';
+import { dateField } from './frontmatter.js';
 
 // `boss insights` — the honest-trace lens (IDEA-021).
 //
@@ -14,14 +15,6 @@ import { dim, bold, ok, warn } from './ui.js';
 // humane half of "learn how it's used": read the trace, don't instrument the human.
 
 const DAY = 86400000;
-
-// Pull the `created:` date (YYYY-MM-DD) from a doc's frontmatter, or null. Used for
-// the honest time-to-graduation metric (IDEA-034 Track C): real recorded dates only,
-// never a guess from mtime.
-function createdDate(text) {
-  const m = text.match(/^created:\s*(\d{4}-\d{2}-\d{2})/m);
-  return m ? m[1] : null;
-}
 
 // Count IDEA-*.md docs and how many have been pressure-tested (carry a canvas), plus any FEAT-*.md
 // (a feature in build = graduation past the canvas gate). Also reads the earliest IDEA and FEAT
@@ -56,13 +49,13 @@ function readProjectTrace(dir) {
       if (/^IDEA-\d+/.test(f)) {
         ideas++;
         try {
-          const d = createdDate(readFileSync(full, 'utf8'));
+          const d = dateField(readFileSync(full, 'utf8'), 'created');
           if (d && (!firstIdea || d < firstIdea)) firstIdea = d;
         } catch { /* unreadable — don't guess */ }
       } else if (/^FEAT-\d+/.test(f)) {
         features++;
         try {
-          const d = createdDate(readFileSync(full, 'utf8'));
+          const d = dateField(readFileSync(full, 'utf8'), 'created');
           if (d && (!firstFeat || d < firstFeat)) firstFeat = d;
         } catch { /* unreadable — don't guess */ }
       }

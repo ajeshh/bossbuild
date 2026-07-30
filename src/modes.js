@@ -8,6 +8,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { STAGES_DIR, STAGE_ORDER } from './paths.js';
 import { readStageManifest } from './scaffold.js';
+import { field } from './frontmatter.js';
 
 // Display name for a rung even when it isn't authored yet (no manifest.json).
 const STAGE_NAMES = {
@@ -60,23 +61,12 @@ export function packageSkillMd(stageId, name) {
   return join(STAGES_DIR, stageId, 'template', '.claude', 'skills', name, 'SKILL.md');
 }
 
-function frontmatterDescription(text) {
-  const m = text.match(/^---\n([\s\S]*?)\n---/);
-  if (!m) return '';
-  for (const line of m[1].split('\n')) {
-    const i = line.indexOf(':');
-    if (i === -1) continue;
-    if (line.slice(0, i).trim() === 'description') return line.slice(i + 1).trim();
-  }
-  return '';
-}
-
 // Split a SKILL.md description into a one-line gloss + a usage hint. Descriptions
 // follow the house format "<gloss sentence>. … Usage - /name <args>". Returns
 // { gloss, usage } — empty strings when the file is missing or has no description.
 export function skillGloss(skillMdPath) {
   if (!existsSync(skillMdPath)) return { gloss: '', usage: '' };
-  const desc = frontmatterDescription(readFileSync(skillMdPath, 'utf8'));
+  const desc = field(readFileSync(skillMdPath, 'utf8'), 'description');
   if (!desc) return { gloss: '', usage: '' };
   const u = desc.search(/\bUsage\s*[-:]/i);
   const body = (u === -1 ? desc : desc.slice(0, u)).trim();

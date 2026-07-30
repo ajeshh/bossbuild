@@ -16,6 +16,7 @@
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { dim, bold } from './ui.js';
+import { frontmatter, unquote } from './frontmatter.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -35,21 +36,6 @@ const AGING_DAYS = 21;
 const SHIPPED_RECENT = 6;
 const SHIPPED_WINDOW_DAYS = 30;
 
-// Parse the first `--- ... ---` frontmatter block. Zero-dep, tolerant of the
-// flat `key: value` frontmatter BOSS's templates use.
-function frontmatter(text) {
-  const m = text.match(/^---\n([\s\S]*?)\n---/);
-  if (!m) return {};
-  const out = {};
-  for (const line of m[1].split('\n')) {
-    const i = line.indexOf(':');
-    if (i === -1) continue;
-    const k = line.slice(0, i).trim();
-    if (k) out[k] = line.slice(i + 1).trim();
-  }
-  return out;
-}
-
 function firstHeading(text) {
   const m = text.match(/^#\s+(.+)$/m);
   return m ? m[1].trim() : '';
@@ -61,9 +47,7 @@ function firstHeading(text) {
 // deliberately NOT aggregated into a per-person count (that's the credit-score line
 // mentor-humane drew — provenance, never a leaderboard).
 const personOwner = (o) => {
-  // Strip surrounding quotes first — a leading `@` is reserved in YAML, so the
-  // convention writes `owner: "@handle"` (quoted). Both forms resolve the same.
-  const v = (o || '').trim().replace(/^["']|["']$/g, '');
+  const v = unquote(o);
   return v.startsWith('@') ? v : null;
 };
 

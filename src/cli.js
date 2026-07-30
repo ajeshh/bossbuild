@@ -14,6 +14,7 @@ import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { dim, bold, ok, warn, err } from './ui.js';
+import { parseArgs } from './args.js';
 
 const STAMP = '.boss/manifest.json';
 
@@ -510,23 +511,6 @@ function cmdList() {
   console.log('');
 }
 
-// Minimal flag parser: returns { _: [positionals], flag: value|true }.
-function parseArgs(args) {
-  const out = { _: [] };
-  for (let i = 0; i < args.length; i++) {
-    const a = args[i];
-    if (a.startsWith('--')) {
-      const key = a.slice(2);
-      const next = args[i + 1];
-      if (next !== undefined && !next.startsWith('--')) { out[key] = next; i++; }
-      else out[key] = true;
-    } else {
-      out._.push(a);
-    }
-  }
-  return out;
-}
-
 function cmdSync(args) {
   const { _: pos, apply } = parseArgs(args);
   void pos;
@@ -581,13 +565,14 @@ function cmdLearn(args) {
       note: typeof f.note === 'string' ? f.note : undefined,
       versionKind,
       explicitVersion: typeof f.version === 'string' ? f.version : undefined,
+      confirmed: f.yes === true,
     });
   } catch (e) {
     return fail(e.message);
   }
   console.log(`\n  ${ok('✦')} Learned ${bold(res.name)} UP into ${res.dest}`);
   console.log(`    BOSS ${res.prev} → ${res.next}  (VERSION + package.json + CHANGELOG updated)`);
-  console.log(`    in ${res.root}`);
+  console.log(`    in ${res.root}   ${dim('(' + res.how + ')')}`);
   console.log('    Review, then commit. Connected projects pull it via `boss sync` / `/boss-sync`.\n');
 }
 
@@ -709,9 +694,9 @@ const HELP = {
     see: ['status', 'learn'],
   },
   learn: {
-    usage: `boss learn <path> --as <category>   (${LIBRARY_CATEGORIES.join(' | ')})`,
-    what: 'Promote a proven pattern UP into the BOSS library so every future project inherits it. The judgment layer over this is /boss-learn inside Claude (a two-way UP/DOWN router).',
-    examples: ['boss learn ./my-practice.md --as practices'],
+    usage: `boss learn <path> --as <category> [--yes]   (${LIBRARY_CATEGORIES.join(' | ')})`,
+    what: 'Promote a proven pattern UP into the BOSS library so every future project inherits it. This writes into the BOSS SOURCE checkout — usually not the repo you\'re standing in — bumping its VERSION and CHANGELOG, so it names the target and asks before writing unless you pass --yes. Set BOSS_SRC to point it somewhere specific. The judgment layer over this is /boss-learn inside Claude (a two-way UP/DOWN router).',
+    examples: ['boss learn ./my-practice.md --as practices', 'BOSS_SRC=~/code/bossbuild boss learn ./p.md --as practices --yes'],
     see: ['sync'],
   },
   conscience: {

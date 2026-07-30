@@ -9,24 +9,11 @@
 // Identity = the GitHub login, resolved the same way /decide does (the principal id the
 // whole team layer keys on). Never fabricated: a null handle is honest.
 
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import { bold } from './ui.js';
+import { readConfig, writeConfig } from './config.js';
 
-const CONFIG = '.boss/config.json';
-
-function configPath(dir) { return join(dir, CONFIG); }
-
-export function readConfig(dir) {
-  const p = configPath(dir);
-  if (!existsSync(p)) return {};
-  try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return {}; }
-}
-
-function writeConfig(dir, cfg) {
-  writeFileSync(configPath(dir), JSON.stringify(cfg, null, 2) + '\n');
-}
+export { readConfig };
 
 function sh(cmd) {
   try { return execSync(cmd, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim() || null; }

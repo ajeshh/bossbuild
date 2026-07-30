@@ -28,6 +28,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { dim, bold, ok, err } from './ui.js';
+import { parseArgs } from './args.js';
 
 function brainDir(projectDir) {
   return join(projectDir, '.boss', 'brain');
@@ -249,10 +250,7 @@ export function renderRelationship(projectDir, stamp) {
 export function brain(projectDir, stamp, args = []) {
   const [sub, ...rest] = args;
   if (sub === 'record') {
-    const flags = {};
-    for (let i = 0; i < rest.length; i++) {
-      if (rest[i].startsWith('--')) { flags[rest[i].slice(2)] = rest[i + 1]; i++; }
-    }
+    const flags = parseArgs(rest);
     const entry = recordBrainEntry(projectDir, { headline: flags.headline, id: flags.id, kind: flags.kind });
     const file = entry.kind === 'relationship' ? 'relationship.md' : 'read.md';
     console.log(`\n  ${ok('✦')} Brain entry recorded — ${entry.id} (${entry.kind})`);
@@ -261,10 +259,7 @@ export function brain(projectDir, stamp, args = []) {
     return;
   }
   if (sub === 'forget') {
-    const flags = {};
-    for (let i = 0; i < rest.length; i++) {
-      if (rest[i].startsWith('--')) { flags[rest[i].slice(2)] = rest[i + 1]; i++; }
-    }
+    const flags = parseArgs(rest);
     const r = forgetBrain(projectDir, { before: flags.before, id: flags.id });
     console.log(`\n  ${ok('✦')} Brain pruned (${r.mode}) — ${r.evictedBlocks} read(s) + ${r.evictedEntries} index entr${r.evictedEntries === 1 ? 'y' : 'ies'} evicted`);
     console.log(`    ${dim('the preamble + recent reads are kept; this is yours to do, never automatic')}\n`);

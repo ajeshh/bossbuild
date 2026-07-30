@@ -22,6 +22,7 @@ import { pathToFileURL } from 'node:url';
 import * as packageRuntime from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { readPauseState, readMuteState } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { dim, bold, ok, warn } from './ui.js';
+import { readConfigOrFail, writeConfig, readCohort } from './config.js';
 
 // Resolve the runtime a given project will actually run. Returns { rt, source } where
 // source is 'project' | 'package'. Falls back on any load failure — an inspect command
@@ -44,18 +45,6 @@ function parseDuration(spec) {
   const n = parseInt(m[1], 10);
   const mult = { m: 60e3, h: 3600e3, d: 86400e3 }[m[2]];
   return n * mult;
-}
-
-function readConfigOrFail(projectDir) {
-  const f = join(projectDir, '.boss', 'config.json');
-  if (!existsSync(f)) {
-    throw new Error('not a BOSS project (no .boss/config.json here).');
-  }
-  return { path: f, cfg: JSON.parse(readFileSync(f, 'utf8')) };
-}
-
-function writeConfig(path, cfg) {
-  writeFileSync(path, JSON.stringify(cfg, null, 2) + '\n');
 }
 
 // `boss conscience pause [--for <duration> | --until-resume] [--reason "..."]`
@@ -174,18 +163,6 @@ export function conscienceUnmute(flags) {
   else cfg.conscienceMutes = mutes;
   writeConfig(path, cfg);
   console.log(`\n  ${ok('✦')} Unmuted the '${moment}' moment.\n`);
-}
-
-// Read the optional cohort declaration from .boss/config.json. Returns null if
-// no config or no cohort field — Claude composes the conscience voice generically
-// when cohort is null.
-function readCohort(projectDir) {
-  const f = join(projectDir, '.boss', 'config.json');
-  if (!existsSync(f)) return null;
-  try {
-    const cfg = JSON.parse(readFileSync(f, 'utf8'));
-    return cfg.cohort || null;
-  } catch { return null; }
 }
 
 // Recent override entries in docs/devlog.md, per IDEA-008's grammar:
