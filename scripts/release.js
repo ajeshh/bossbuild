@@ -55,6 +55,17 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
     pkg.version === VERSION ? VERSION : `VERSION ${VERSION} vs package.json ${pkg.version}`);
 }
 
+// --- 1b. the unit suite ---------------------------------------------------
+// Cheap (<1s) and it locks every bug this audit found, so it runs early — a red suite
+// makes the rest of the gate's output noise.
+{
+  const r = run('node', ['--test', 'test/board.test.js', 'test/conscience.test.js', 'test/scaffold.test.js', 'test/cli.test.js']);
+  const pass = (r.out.match(/^. pass (\d+)/m) || [, '?'])[1];
+  const fail = (r.out.match(/^. fail (\d+)/m) || [, '?'])[1];
+  record('unit tests', r.code === 0 && fail === '0', `${pass} passed · ${fail} failed`);
+  if (r.code !== 0) console.log(r.out.split('\n').filter((l) => /^✖|AssertionError|at Test/.test(l)).slice(0, 20).join('\n'));
+}
+
 // --- 2. manifest wiring ---------------------------------------------------
 // Caught: L3's phantom `operate-loop`, and the `coherence` moment shipped with no frame.
 {
@@ -177,12 +188,20 @@ if (!fast) {
     gatePassed != null ? `${gatePassed} passed · ${failed} failed` : 'could not parse runner output');
   if (r.code !== 0 || failed !== '0') console.log(r.out.split('\n').slice(-25).join('\n'));
 
-  // README's eval-count claim vs the actual number.
-  const readme = readFileSync(join(BOSS_ROOT, 'README.md'), 'utf8');
-  const claim = readme.match(/gate-eval suite \((\d+) passing\)/);
-  if (claim && gatePassed != null) {
-    record('README eval-count claim', Number(claim[1]) === gatePassed,
-      `README says ${claim[1]}, gate says ${gatePassed}`);
+  // Every doc that quotes the gate's number, checked against the number. Both README and
+  // PATTERNS.md had drifted (105 vs the real 129) — a claim about your own rigour is the
+  // worst one to leave stale, so the gate verifies it rather than trusting a memory.
+  if (gatePassed != null) {
+    const claims = [
+      ['README.md', /gate-eval suite \((\d+) passing\)/],
+      ['docs/PATTERNS.md', /\*\*(\d+) cases \/ 0 failures\*\*/],
+    ];
+    for (const [f, re] of claims) {
+      const m = readFileSync(join(BOSS_ROOT, f), 'utf8').match(re);
+      if (!m) continue;
+      record(`${f} eval-count claim`, Number(m[1]) === gatePassed,
+        `says ${m[1]}, gate says ${gatePassed}`);
+    }
   }
 } else {
   console.log(`  ${dim('· conscience eval gate skipped (--fast)')}`);

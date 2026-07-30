@@ -2,6 +2,41 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.131.0 — 2026-07-30
+
+- **The unit suite — 3,414 lines of CLI finally get a deterministic floor (audit §D3).** BOSS ran two
+  eval surfaces for the *conscience* (129 gate cases + a judgment replay) and **zero tests for `src/`**,
+  which is why every bug in the v0.128.0 audit was one a dozen assertions would have caught. **57 cases,
+  zero-dep** (`node:test` + `node:assert`, PRINCIPLE #4 intact), `npm test`, and wired into
+  `npm run release` **first** — a red suite makes the rest of the gate's output noise. Not shipped to
+  npm (`files` allowlist unchanged).
+  - **Four files, chosen by where the bugs actually were.** `board.test.js` (the projection every other
+    surface reads state through) · `conscience.test.js` (predicates, classification, and the voicing
+    contract) · `scaffold.test.js` (the ladder + the non-destructive `adopt`/sync guarantees, where a
+    break costs trust) · `cli.test.js` (exit codes and the cross-surface invariant — shelled out through
+    `bin/boss`, because an assertion on an internal function would *not* have caught the headline bug:
+    two surfaces each individually "correct", disagreeing with each other).
+  - **Three cases are marked `REGRESSION` and name the shipped bug they lock**, and each was verified to
+    actually catch it rather than merely assumed to. **§A1** — the old `/canvas/i` body match returns
+    **1** on a fixture whose only canvas reference is the prose "run /canvas someday"; the new
+    `canvassedIdeas()` returns **0**, and the CLI test additionally asserts board and insights resolve to
+    the same *set*, not merely the same count. **§A2** — every manifest entry resolves to a file.
+    **§A3** — injecting a loop with `drift_moment: totally-unvoiced` turns the suite red *and* fails the
+    release gate; removing it goes green again (both layers demonstrated, not assumed).
+  - **The invariants worth naming**, all of which the code already claimed in a comment and none of which
+    was enforced: a loop with no `drift_moment` is structural and never fires · a non-`hook` runner never
+    auto-fires · **an empty project is silent** (the most important case) · a malformed predicate fails
+    closed rather than throwing · `composeContext` is byte-identical with no brain/evidence/cohort (the
+    property that keeps the judgment evals stable) · `appendMarkedBlock` and the settings merge are
+    idempotent · `applyStageSafe` never clobbers a founder's file · no unsubstituted `{{PLACEHOLDER}}`
+    may ship · `NO_COLOR` leaves no escape sequence in a pipe · help columns share one start column.
+  - **Found while writing them:** `docs/PATTERNS.md` carried the same stale eval count the README did
+    (**105**, actual **129**) and undercounted the judgment surface (**24**, actual **43**) — the exact
+    §B1 drift class, in the doc that describes BOSS's *engineering rigour* to other builders. Corrected
+    to three surfaces, and the release gate now checks **every** doc that quotes the gate's number rather
+    than just the README. PATTERNS.md also gained the honest limit it was missing: *coverage is not the
+    same as a loop that runs* — 56 releases of good evals with no gate wiring them to the release.
+
 ## 0.130.0 — 2026-07-29
 
 - **The legibility release — every surface a founder actually reads, and the wall that contradicted

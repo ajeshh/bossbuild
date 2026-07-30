@@ -23,19 +23,27 @@ wider — and asks it to judge in a clean context. The doer (the session doing t
 judgment is the model's, in isolation. ([Anthropic on hooks](https://code.claude.com/docs/en/best-practices):
 *"use hooks for actions that must happen every time… hooks are deterministic."*)
 
-## 2. Two eval surfaces, with numbers, transcripts read
+## 2. Three eval surfaces, with numbers, transcripts read
 
-*"Every probabilistic system starts with a specification of correctness."* BOSS runs two channels:
+*"Every probabilistic system starts with a specification of correctness."* BOSS runs three channels:
 
-- **Gate evals — deterministic.** **105 cases / 0 failures**, asserting the predicate machinery fires
-  (and stays silent) exactly when it should. Pure structural facts, no model.
-- **Judgment evals — LLM-as-judge, calibrated, GRADED.** **24 golden-transcript cases** across the
-  semantic moments (drift / caution / capture), each judged by a *separate* model pass with examples of
-  the judge being wrong, and recorded as `GRADED` against human labels. The judge never sees the
-  conscience's own reasoning — only the transcript. ([demystifying evals](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents): *"read the transcripts!"*)
+- **Unit tests — the deterministic floor.** **57 cases**, zero-dep (`node:test`), covering the state
+  projections, the scaffold's non-destructive guarantees, and the CLI contract. Several are marked
+  `REGRESSION` and name the shipped bug they lock. Cheapest of the three; runs first.
+- **Gate evals — deterministic, conscience-specific.** **129 cases / 0 failures**, asserting the
+  predicate machinery fires (and stays silent) exactly when it should. Pure structural facts, no model.
+- **Judgment evals — LLM-as-judge, calibrated, GRADED.** **43 golden-transcript cases** across the
+  semantic moments (drift / caution / capture / humane), each judged by a *separate* model pass with
+  examples of the judge being wrong, and recorded as `GRADED` against human labels. The judge never sees
+  the conscience's own reasoning — only the transcript. ([demystifying evals](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents): *"read the transcripts!"*)
 
 The split mirrors the field's 60/30/10 guidance (deterministic / judge / human) and the error-analysis
 discipline (Hamel Husain): cases come from real failure modes, sorted binary pass/fail, not Likert.
+
+**The honest limit, learned the hard way.** For 56 releases BOSS had good eval surfaces and *no gate
+wiring them to the release*, so the doc generator and the drift checker reported real problems into an
+empty room. Coverage is not the same as a loop that runs. `npm run release` is the loop; the numbers
+above are checked by it, against reality, rather than transcribed from memory.
 
 ## 3. Trace-native error analysis
 
