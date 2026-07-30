@@ -36,6 +36,13 @@ export function loadModes() {
         summary: m.summary || '',
         agents: m.agents || [],
         skills: m.skills || [],
+        // The few skills worth naming when previewing a rung you haven't unlocked yet
+        // (REVIEW-2026-07-28 §C1: `boss map` printed all 28 of MVP's skills to a founder
+        // with an empty Quickstart project — a 45-line wall, 64% of it unavailable, which
+        // is premature ceremony rendered as text and a direct hit on EVID-001's "I can't
+        // tell where I am / I'm worried about bloat"). Empty = show them all (fine for a
+        // rung with 1–3 skills). `boss map --next` always shows the full list.
+        headline: m.headline || [],
         loops: m.loops || [],
         hooks: m.hooks || [],
         requires: m.requires || null,

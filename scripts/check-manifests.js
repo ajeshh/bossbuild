@@ -69,6 +69,15 @@ function checkStage(stageId) {
     }
   }
 
+  // `headline` names the few skills `boss map` previews for a rung you haven't unlocked.
+  // It's a hand-kept subset, so it can rot when a skill is renamed or dropped — and a
+  // headline pointing at nothing would silently shrink the preview to nothing.
+  for (const h of manifest.headline || []) {
+    if (!(manifest.skills || []).includes(h)) {
+      errors.push(`headline lists '${h}' which is not in this stage's skills (boss map would silently drop it)`);
+    }
+  }
+
   // Reverse: a file present but unclaimed by the manifest never syncs (managedFiles
   // iterates the manifest), so it silently rots in every existing project.
   const dir = (p) => (existsSync(p) ? readdirSync(p) : []);

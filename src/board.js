@@ -604,7 +604,8 @@ export function renderBoardNext(projectName, { cards, hasIdeasDir }) {
     for (const it of items) {
       const prio = it.priority === 'high' ? '⬆ ' : '  ';
       const age = withAge && it.age != null && it.age >= AGING_DAYS ? `  ⌛ ${ageLabel(it.age)}` : '';
-      lines.push(`  ${prio}${it.id.padEnd(10)} ${it.title.padEnd(40)} → ${it.action}${age}`);
+      const t = it.title.length > 40 ? it.title.slice(0, 39).trimEnd() + '…' : it.title.padEnd(40);
+      lines.push(`  ${prio}${it.id.padEnd(10)} ${t} → ${it.action}${age}`);
     }
     lines.push('');
   };
@@ -624,10 +625,13 @@ export function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
     return lines.join('\n');
   }
   lines.push('');
+  // Titles are capped at 52 chars by cardTitle, so padEnd(40) let long ones push the flag
+  // column out of alignment. Clamp to the column width instead of padding to it (§C10).
+  const col = (t, w) => (t.length > w ? t.slice(0, w - 1).trimEnd() + '…' : t.padEnd(w));
   const block = (label, items, flag) => {
     if (!items.length) return;
     lines.push(`  ${label} (${items.length})`);
-    for (const c of items) lines.push(`    ${c.id.padEnd(10)} ${c.title.padEnd(40)} ${flag(c)}`);
+    for (const c of items) lines.push(`    ${c.id.padEnd(10)} ${col(c.title, 40)} ${flag(c)}`);
     lines.push('');
   };
   block('Blocked', blocked, () => '— status: blocked');

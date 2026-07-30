@@ -413,24 +413,26 @@ export function statusConscience(projectDir = process.cwd(), { verbose = false }
   // Founder-facing label: the internal `unopenable` state reads as "waiting" here,
   // matching the summary line above (one word for one thing — voice-keeper).
   const label = (s) => (s === 'unopenable' ? 'waiting' : s);
+  // One loop = one headed line + its indented detail. The state word appears ONCE (it used
+  // to print on both lines) and the detail is indented UNDER the id rather than starting at
+  // the same column as the glyph, so a 14-loop project reads as structure instead of 28
+  // flat lines (REVIEW-2026-07-28 §C4).
   for (const { loop, state, entry, exit } of classified) {
-    const padded = loop.id.padEnd(22);
-    let line2;
+    const detail = [];
     if (state === 'closed') {
-      line2 = '    closed — exit artifact present.';
+      detail.push('exit artifact present.');
     } else if (state === 'open') {
       const unmetEntry = (entry.results || []).filter((r) => !r.ok);
       const unmetExit = (exit.results || []).filter((r) => !r.ok);
-      const summaries = unmetExit.map(exitSummary).join('; ') || 'exit artifact missing';
-      line2 = `    open  — would close when: ${summaries}`;
+      detail.push(`would close when: ${unmetExit.map(exitSummary).join('; ') || 'exit artifact missing'}`);
       if (unmetEntry.length === 0 && loop.drift_moment) {
-        line2 += `\n              drift moment: ${loop.drift_moment}`;
+        detail.push(`drift moment: ${loop.drift_moment}`);
       }
     } else {
-      line2 = '    waiting — its entry artifact isn\'t present yet (an upstream dependency).';
+      detail.push('its entry artifact isn\'t present yet (an upstream dependency).');
     }
-    console.log(`    ${markFor(state)} ${padded}  ${label(state)}`);
-    console.log(line2);
+    console.log(`    ${markFor(state)} ${loop.id.padEnd(22)}  ${label(state)}`);
+    for (const d of detail) console.log(`        ${dim(d)}`);
   }
 
   console.log('');

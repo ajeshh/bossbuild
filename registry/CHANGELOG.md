@@ -2,6 +2,40 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.130.0 — 2026-07-29
+
+- **The legibility release — every surface a founder actually reads, and the wall that contradicted
+  PRINCIPLE #2.** Second pass from the v0.128.0 audit (REVIEW-2026-07-28 §C). Composes and subtracts;
+  **adds no new command or skill.** Gate **129/0**, judgment **0 STALE**.
+  - **🎯 `boss map` no longer hands an empty Quickstart project a wall of 29 verbs it can't run.**
+    The "One unlock away" block printed *every* skill of the next rung — for MVP that was 29 entries,
+    making the map **68 lines, ~2/3 of it unavailable**. That is premature ceremony rendered as text
+    (PRINCIPLE #2 inverted, on the surface whose whole job is orientation) and a direct hit on
+    [[EVID-001]]: *"hard to gauge where I am"* and *"worried about bloating my app."* A rung now
+    declares a **`headline`** in its manifest — the few skills worth naming at the transition (MVP:
+    `/spec` `/smoke` `/pretotype` `/close`) — and the rest fold into `… +24 more when you get there`.
+    **`boss map --next` opens the full list** whenever the founder actually wants it. Map: **68 → 45
+    lines**; nothing removed, only deferred to the moment it's asked for. `check-manifests.js` guards
+    `headline` against drift (a stale entry would silently shrink the preview to nothing).
+  - **`boss status --conscience --verbose`** printed the state word twice (`⚠ capture-loop  open` /
+    `open — would close when: …`) with the detail line starting at the same column as the glyph, so a
+    14-loop project read as 28 flat lines. State appears once; detail is indented under its loop.
+  - **`boss help`** column alignment: three rows overran the 30-wide command column, so their
+    descriptions started one space in while every other row's started at column 35 — in the first
+    thing a new user sees. Now 34.
+  - **`boss unlock v9`** answered with internal stage ids (`L0-quickstart, L1-mvp, …`) while
+    `boss help unlock` documents the words it actually takes. Now `quickstart | mvp | v1 | scale`.
+  - **`boss board --blocked` / `--next`** clamp long titles to the column instead of padding to it,
+    so the flag column stops drifting on a 52-char title.
+  - **`.boss/board.html` is now gitignored in the scaffold** — a generated projection was committing
+    and churning a 200-line diff every time the board moved.
+  - **`/judge-traces`** told founders to enable `auto-log` by consulting `library/hooks/auto-log.js`
+    — a path that exists only in the BOSS package, never in their project. Points at
+    `.claude/hooks/auto-log.js`, which is actually there.
+  - **Two dead links in `registry/CHANGELOG.md`** pointed into the gitignored `docs/dossier/` and
+    shipped to npm as 404s (CHANGELOG is in `package.json#files`). Delinked to plain paths marked
+    local-only; the prose is unchanged. Public-doc link integrity now verifies clean end to end.
+
 ## 0.129.0 — 2026-07-29
 
 - **The release gate, and the four shipped bugs it immediately caught (from a full start-to-finish audit at
@@ -2756,7 +2790,7 @@ Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's ne
   explicitly the positioning pass, not a feature release. The Dunford exercise was first
   recommended in the v0.15 advisory pass and deferred through 8 capability releases; finally
   executed.
-- **Output:** [`docs/dossier/positioning-pass-001.md`](docs/dossier/positioning-pass-001.md) —
+- **Output:** `docs/dossier/positioning-pass-001.md` _(local-only)_ —
   full Dunford exercise: target cohort (the founder using Cursor/Claude Code 3+ months with
   2+ unfinished projects), 8 competitive alternatives, 8 unique attributes that survive
   scrutiny, attributes mapped to value, 7 market-frame options, **8 candidate killer one-
@@ -3020,7 +3054,7 @@ Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's ne
     `docs/dossier/persona-reactions/<feature>.md` doc with structured reactions + synthesis +
     design changes + real-founder questions the reactions sharpen.
   - **First reactions pass complete** at
-    [`docs/dossier/persona-reactions/conscience-moment-1.md`](docs/dossier/persona-reactions/conscience-moment-1.md).
+    `docs/dossier/persona-reactions/conscience-moment-1.md` _(local-only)_.
     All 8 personas reacting to the conscience moment-1 firing scenario.
   - **Three concrete design changes the reactions argue for** (ordered, with priorities):
     1. **Cohort-aware conscience** — the model composing the conscience voice should know what

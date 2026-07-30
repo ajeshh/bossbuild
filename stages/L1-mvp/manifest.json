@@ -6,6 +6,7 @@
   "agents": ["tester", "program-manager", "mentor-architect", "mentor-gtm", "mentor-cofounder"],
   "skills": ["spec", "smoke", "log", "close", "evals", "pretotype", "design-tokens-init", "ai-cost", "cost-review", "ai-first-init", "ai-failure-states", "extract", "drift-deep", "revalidate", "judge-traces", "consult", "red-team", "practice", "ship", "landing", "measure", "pmf-check", "retain", "onboard", "roadmap", "first-dollar", "monetize", "trust"],
   "hooks": [],
+  "headline": ["spec", "smoke", "pretotype", "close"],
   "loops": ["spec-loop", "pretotype-loop", "design-tokens-loop", "cost-budget-loop", "ai-failure-state-loop", "extraction-loop", "cost-review-loop", "drift-loop", "coordination-loop", "focus-loop", "margin-trap-loop"],
   "unlocksNext": "L2-v1",
   "graduationHint": "When you have real users and the app needs design rigor, a real db, and prototypes — boss unlock v1."

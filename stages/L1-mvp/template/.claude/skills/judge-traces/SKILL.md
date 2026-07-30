@@ -19,7 +19,8 @@ kept apart on purpose — collection is never judgment.
 Reads `.boss/trace.jsonl`. If it doesn't exist or is empty, say so plainly and stop — don't invent
 data:
 > *"No trace yet. `auto-log` is dormant by default (a SubagentStop hook has a per-subagent cost). Turn
-> it on in `.claude/settings.json` (see `library/hooks/auto-log.js`) and the trace will accumulate as
+> it on in `.claude/settings.json` — the registration block to paste is in the header of
+> `.claude/hooks/auto-log.js`, already in this project — and the trace will accumulate as
 > agents do work. Come back here once there's something to read."*
 
 Never fabricate a taxonomy from no data. An honest "nothing to judge yet" is the correct output.

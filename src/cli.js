@@ -9,6 +9,7 @@ import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
+import { modeWord } from './modes.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
@@ -243,7 +244,10 @@ function cmdUnlock(args) {
   if (!layer) return fail(`usage: boss unlock <mode>   (current: ${stamp.mode || stamp.stage})`);
 
   const target = resolveStageId(layer);
-  if (!target) return fail(`unknown mode '${layer}'. options: ${STAGE_ORDER.join(', ')}`);
+  // Speak the words `unlock` actually accepts, not the internal stage ids — `boss help
+  // unlock` already documents `quickstart | mvp | v1 | scale`, and an error that answers in
+  // a different vocabulary than the one it takes is its own small betrayal (§C6).
+  if (!target) return fail(`unknown mode '${layer}'. options: ${STAGE_ORDER.map(modeWord).join(' | ')}`);
   if (stamp.installedLayers.includes(target)) return fail(`${target} already installed.`);
 
   // Scale names its bar before you cross it (IDEA-040 trigger discipline, made a moment). It never
@@ -397,10 +401,12 @@ function cmdBoard(args = []) {
   });
 }
 
-function cmdMap() {
+function cmdMap(args = []) {
   const stamp = readStamp(process.cwd());
   if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
-  map(process.cwd(), stamp);
+  // `--next` expands the next rung's full skill list; the default keeps the preview
+  // to that rung's headline few (IDEA-055 follow-on / REVIEW-2026-07-28 §C1).
+  map(process.cwd(), stamp, { next: args.includes('--next') });
 }
 
 function cmdBrain(args) {
@@ -658,9 +664,9 @@ const HELP = {
     see: ['insights', 'brain'],
   },
   map: {
-    usage: 'boss map',
-    what: 'The live cheatsheet for THIS project: where you are on the ladder, what each installed skill does, and what the next unlock would add. A pure read of your install — nothing to maintain, nothing to drift.',
-    examples: ['boss map'],
+    usage: 'boss map [--next]',
+    what: 'The live cheatsheet for THIS project: where you are on the ladder, what each installed skill does, and a short preview of what the next unlock adds. A pure read of your install — nothing to maintain, nothing to drift. --next expands the full list of what the next rung would add.',
+    examples: ['boss map', 'boss map --next   # everything the next rung adds'],
     see: ['status', 'unlock'],
   },
   brain: {
@@ -758,13 +764,16 @@ function printCommandHelp(name) {
 // The grouped overview. Group headers are bold so the eye has anchors; the two
 // command languages are cued in the footer.
 function printHelp() {
-  const row = (cmd, desc) => `    ${cmd.padEnd(30)} ${dim(desc)}`;
+  // 34, not 30: three rows (`boss board --next|--blocked|--json` and friends) overran a
+  // 30-wide column, so their descriptions started one space in while every other row's
+  // started at column 35 — visible in the very first thing a new user sees (§C5).
+  const row = (cmd, desc) => `    ${cmd.padEnd(34)} ${dim(desc)}`;
   console.log(`\n  ${bold('BOSS')} ${bossVersion()}   ${dim('· a just-in-time startup incubator. Make it real.')}\n`);
 
   console.log(`  ${bold('Start here')}`);
   console.log(row('boss new <name> [--ai]', 'scaffold a new project (Quickstart) + register it'));
   console.log(row('boss adopt [--mode <m>] [--ai]', 'bring BOSS into an already-started repo, non-destructively'));
-  console.log(row('boss map', 'live cheatsheet: where you are + what\'s one unlock away'));
+  console.log(row('boss map [--next]', 'live cheatsheet: where you are + what\'s one unlock away'));
 
   console.log(`\n  ${bold('Everyday')}`);
   console.log(row('boss board [--html]', 'what\'s in flight (captured → shipped); --html = kanban'));
@@ -831,7 +840,7 @@ export function run(argv) {
     case 'unlock': return cmdUnlock(args);
     case 'status': return cmdStatus(args);
     case 'board': return cmdBoard(args);
-    case 'map': return cmdMap();
+    case 'map': return cmdMap(args);
     case 'brain': return cmdBrain(args);
     case 'insights': return cmdInsights();
     case 'team': return cmdTeam(args);

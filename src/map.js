@@ -39,7 +39,8 @@ function installedGloss(projectDir, name, definedIn) {
   return { gloss: '', usage: '' };
 }
 
-export function renderMap(projectDir, stamp) {
+export function renderMap(projectDir, stamp, opts = {}) {
+  const showAllNext = opts.next === true;
   const modes = loadModes();
   const byId = Object.fromEntries(modes.map((m) => [m.id, m]));
   // skill name -> the stage id that first introduces it (ladder order).
@@ -86,17 +87,28 @@ export function renderMap(projectDir, stamp) {
   }
   lines.push('');
 
-  // One unlock away — read the next rung's skills from the package (not yet
-  // installed here), so the founder sees what they'd gain before committing.
+  // One unlock away — read the next rung's skills from the package (not yet installed
+  // here), so the founder sees what they'd gain before committing. PREVIEW, not inventory:
+  // show the rung's `headline` skills and fold the rest behind a count, because a founder
+  // who hasn't captured an idea yet does not need all 28 of MVP's verbs read to them
+  // (§C1). `boss map --next` opens the full list when they actually want it.
   const idx = STAGE_ORDER.indexOf(deepest);
   const nextId = idx >= 0 ? STAGE_ORDER[idx + 1] : null;
   if (nextId) {
     const next = byId[nextId];
     if (next && next.authored) {
       lines.push(`  ${bold('One unlock away: ' + next.name)}   ${dim('→  boss unlock ' + modeWord(nextId))}`);
-      for (const s of next.skills || []) {
+      const all = next.skills || [];
+      const headline = showAllNext || !next.headline.length
+        ? all
+        : next.headline.filter((s) => all.includes(s));
+      for (const s of headline) {
         const { gloss } = skillGloss(packageSkillMd(nextId, s));
         lines.push(`      ${'/' + s.padEnd(18)} ${dim(fit(gloss))}`);
+      }
+      const hidden = all.length - headline.length;
+      if (hidden > 0) {
+        lines.push(`      ${dim(`… +${hidden} more when you get there  (\`boss map --next\` to see them now)`)}`);
       }
       if (next.graduationHint) lines.push(`    ${dim(next.graduationHint)}`);
     } else if (next) {
@@ -123,6 +135,6 @@ export function renderMap(projectDir, stamp) {
   return lines.join('\n');
 }
 
-export function map(projectDir, stamp) {
-  console.log(renderMap(projectDir, stamp));
+export function map(projectDir, stamp, opts = {}) {
+  console.log(renderMap(projectDir, stamp, opts));
 }
