@@ -130,7 +130,7 @@ export function renderMap(projectDir, stamp, opts = {}) {
   lines.push(`    /boss-sync                       ${dim('pull the latest BOSS practices into this project (in Claude)')}`);
   lines.push('');
   lines.push(`  ${dim('The map is a read of your install. To change it, climb a rung: boss unlock <mode>.')}`);
-  lines.push(`  ${dim('boss help symbols for the glyph legend · boss help <command> for detail')}`);
+  lines.push(`  ${dim('boss help symbols glyphs · boss help hooks optional hooks (off by default) · boss help <command>')}`);
   lines.push('');
   return lines.join('\n');
 }

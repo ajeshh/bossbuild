@@ -2,6 +2,44 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.134.0 — 2026-07-30
+
+- **The dormant hooks stop rotting, and start being findable (audit §C7) — plus RESUME splits from
+  its own history (§B4).** Closes every engineering item from the v0.128.0 audit. Gate **129/0**,
+  60 unit, judgment 0 STALE.
+  - **🔴 `secrets-guard`, `memory-cue` and `auto-log` were never updated after scaffold.** They ship
+    **unregistered on purpose** — a `PreToolUse` hook fires a process on every tool call, so the
+    founder turns one on deliberately — and that decision is right. What was wrong is that they were
+    in no manifest list, so `managedFiles` never saw them: written once at `boss new`, then frozen
+    forever. **A security fix to `secrets-guard.js` would never have reached an existing project.**
+    New **`optionalHooks`** manifest key syncs the FILE while leaving the registration alone, because
+    the registration *is* the on-switch. Verified end to end: a deliberately-staled
+    `secrets-guard.js` is repaired by `boss sync --apply` and is still not registered afterwards.
+  - **Three new guards, each demonstrated to fire**: an `optionalHooks` entry must resolve to a real
+    file; a hook that ships dormant but isn't declared is an error (*"boss sync will never update
+    it"*); and a dormant hook that the template's `settings.json` **does** register is an error
+    (a registered "dormant" hook fires on every prompt — the opposite of the design).
+  - **`boss help hooks` — they were documented only inside the JavaScript.** The rationale, the cost,
+    and the paste-in block lived in a comment header, which a non-technical founder (an explicitly
+    targeted cohort) will never open. Worse, `/judge-traces` was advertised in `boss map` while its
+    only data source stayed off with no discoverable way to know. Now a help **topic** — not a new
+    command; BOSS has 48 skills and the standing instruction is compose, don't add — naming each
+    hook's event, what it does, **what it costs**, and when it's worth it. Echoed in `boss map`'s
+    footer and a new GUIDE.md section.
+  - **`docs/RESUME.md`: 1,171 → 133 lines.** CLAUDE.md rule #1 says read it at the start of every
+    session; at 1,171 append-only lines it cost more than the state it carried, so it had stopped
+    being a briefing and become a log — and it had not been updated with v0.129 → v0.133 at all.
+    Rewritten as current state + next tasks + open decisions + the standing procedure. **Nothing was
+    deleted:** the release-by-release history and the completed roadmap moved verbatim to
+    `RESUME-ARCHIVE.md` (gitignored dev workspace, like RESUME itself). The release gate's advisory
+    length check now passes instead of nagging.
+  - **4.4 (decoupling `src/` from `stages/*/template/`) was DECLINED, with the reasoning recorded**
+    in the checklist rather than silently dropped. The harm it named — the CLI and hook disagreeing —
+    was fixed at v0.132.0; what remains is a fallback path that announces itself and is tested. The
+    only real decoupling would mean templates stop being literal files copied verbatim, and that
+    literalness is what makes the scaffold inspectable. Trading it for one removed import is the
+    speculative abstraction AGENTS.md rule #6 refuses. Re-open if a second consumer appears.
+
 ## 0.133.0 — 2026-07-30
 
 - **Consolidation + two surprises removed (audit §D1, §D4, §E2).** No behaviour change a founder

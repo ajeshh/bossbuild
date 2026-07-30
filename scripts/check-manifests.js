@@ -19,9 +19,11 @@
 //                   runtime — probed by CALLING it, never by a parallel list (a
 //                   hand-kept list of moment names is the same drift bug one level up)
 //
-// Deliberately NOT checked: `optionalHooks` files ship dormant on purpose (secrets-guard,
-// memory-cue, auto-log) — they're exempted by name below, and the exemption is PRINTED
-// so an exemption gone wrong stays visible (the check-wayfinding-drift precedent).
+// `optionalHooks` (secrets-guard, memory-cue, auto-log) ship DORMANT on purpose, so they get
+// their own three rules rather than a blanket exemption: the file must exist, the stage must
+// declare it (or `boss sync` will never update it — the §C7 finding), and the template's
+// settings.json must NOT register it (a registered "dormant" hook fires on every prompt).
+// The exemption is PRINTED so one gone wrong stays visible (the check-wayfinding precedent).
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -32,9 +34,11 @@ import {
 } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
 
-// Hook scripts that ship DORMANT by design (documented in each file's header): they're
-// present but unregistered in settings.json, so they cost nothing until a founder opts
-// in. Not manifest-registered, therefore not orphans. Keep this list short and earned.
+// Hook scripts that ship DORMANT by design (documented in each file's header): present but
+// unregistered in settings.json, so they cost nothing until a founder opts in. They are now
+// declared per-stage under `optionalHooks` so `boss sync` keeps them current (v0.134.0) —
+// this list is only the fallback for a stage that hasn't declared them yet, and any hook
+// file matching neither is a real error.
 const DORMANT_HOOKS = new Set(['memory-cue', 'secrets-guard', 'auto-log']);
 
 const tplDir = (stageId) => join(BOSS_ROOT, 'stages', stageId, 'template');
@@ -62,6 +66,9 @@ function checkStage(stageId) {
     const js = join(claude, 'hooks', `${h}.js`);
     const sh = join(claude, 'hooks', `${h}.sh`);
     want.push({ kind: 'hook', name: h, file: existsSync(js) ? js : sh });
+  }
+  for (const h of manifest.optionalHooks || []) {
+    want.push({ kind: 'optional hook', name: h, file: join(claude, 'hooks', `${h}.js`) });
   }
   for (const w of want) {
     if (!existsSync(w.file)) {
@@ -96,12 +103,28 @@ function checkStage(stageId) {
       errors.push(`loop file '${n}' is not in the manifest (the hook reads it; sync won't update it)`);
     }
   }
+  const optional = new Set(manifest.optionalHooks || []);
   for (const n of dir(join(claude, 'hooks'))) {
     if (!n.endsWith('.js') && !n.endsWith('.sh')) continue; // skip lib/
     const stem = n.replace(/\.(js|sh)$/, '');
     if ((manifest.hooks || []).includes(stem)) continue;
-    if (DORMANT_HOOKS.has(stem)) { exempt.push(`${stageId}/${stem}`); continue; }
-    errors.push(`hook file '${n}' is neither manifest-registered nor a known dormant hook`);
+    if (optional.has(stem)) { exempt.push(`${stageId}/${stem}`); continue; }
+    if (DORMANT_HOOKS.has(stem)) {
+      errors.push(`hook '${stem}' ships dormant but isn't in this stage's optionalHooks — boss sync will never update it`);
+      continue;
+    }
+    errors.push(`hook file '${n}' is neither manifest-registered nor declared as an optionalHook`);
+  }
+  // A dormant hook that is ALSO registered in the template's settings.json isn't dormant.
+  const settingsFile = join(claude, 'settings.json');
+  if (optional.size && existsSync(settingsFile)) {
+    let registered = '';
+    try { registered = readFileSync(settingsFile, 'utf8'); } catch { /* ignore */ }
+    for (const h of optional) {
+      if (registered.includes(`${h}.js`)) {
+        errors.push(`'${h}' is declared optional (dormant) but the template's settings.json registers it — it would fire on every prompt`);
+      }
+    }
   }
 
   return { stageId, authored: true, errors, exempt };

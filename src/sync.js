@@ -53,6 +53,21 @@ function managedFiles(stageId, manifest) {
       rel: join('.claude', 'hooks', `${h}.${ext}`),
     });
   }
+  // Dormant, opt-in hooks (secrets-guard, memory-cue, auto-log). They ship UNREGISTERED
+  // by design — a PreToolUse/SubagentStop hook costs latency on every call, so the founder
+  // turns one on deliberately by adding it to settings.json. But because they were in no
+  // manifest list, `managedFiles` never saw them: they were written once at scaffold and
+  // then NEVER updated again, including if a security fix landed in secrets-guard.js
+  // (REVIEW-2026-07-28 §C7). `optionalHooks` syncs the FILE without registering it — the
+  // registration stays the founder's on-switch, which is the whole point of dormant.
+  for (const h of manifest.optionalHooks || []) {
+    out.push({
+      kind: 'optional-hook',
+      name: h,
+      src: join(base, 'hooks', `${h}.js`),
+      rel: join('.claude', 'hooks', `${h}.js`),
+    });
+  }
   // Hook library files (helpers like loop-runtime, yaml parser) — non-manifest;
   // discovered by scanning the template's hooks/lib/ dir if present.
   const libDir = join(base, 'hooks', 'lib');

@@ -730,6 +730,58 @@ const SYMBOLS = [
   ['→', 'next / points to'],
 ];
 
+// `boss help hooks` — the three dormant hooks, what each costs, and how to turn one on.
+//
+// These ship into every project UNREGISTERED on purpose (a PreToolUse hook fires a process
+// on every tool call), and that decision is right. What was wrong is that the only place
+// it was written down was a comment INSIDE the JavaScript file (§C7) — so a non-technical
+// founder, an explicitly targeted cohort, could never find them, and `/judge-traces` was
+// advertised in `boss map` while its data source stayed off with no way to know.
+//
+// A help TOPIC, not a new command: BOSS has 48 skills and the standing instruction is
+// compose, don't add.
+const OPTIONAL_HOOKS = [
+  {
+    name: 'secrets-guard',
+    event: 'PreToolUse',
+    does: 'Stops a tool from reading a secret\'s CONTENTS into the model\'s context — denies Read/Edit of .env and secrets/, asks before a Bash command or MCP call that references one.',
+    cost: 'a process on EVERY tool call',
+    worth: 'regulated / PHI / high-stakes work, where the deny-list floor in settings.json isn\'t enough',
+  },
+  {
+    name: 'memory-cue',
+    event: 'UserPromptSubmit',
+    does: 'Notices when you say something durable ("from now on…", "no, don\'t…", "perfect, keep doing…") and nudges Claude to save it to project memory. It never writes the memory itself.',
+    cost: 'a process per prompt, silent unless a pattern matches',
+    worth: 'you keep repeating the same correction across sessions',
+  },
+  {
+    name: 'auto-log',
+    event: 'SubagentStop',
+    does: 'Appends one honest line per writer-subagent to .boss/trace.jsonl — what it touched, when. Local-only, append-only, never sent anywhere. This is the substrate /judge-traces reads.',
+    cost: 'a process after every subagent',
+    worth: 'you want /judge-traces to have anything to read (it is empty until this is on)',
+  },
+];
+
+function printHooks() {
+  console.log(`\n  ${bold('Optional hooks')}  ${dim('— shipped with your project, switched OFF')}\n`);
+  console.log('  Three hooks land in `.claude/hooks/` and do nothing until you register them.');
+  console.log(`  That is deliberate: a hook runs a process on every matching event, and BOSS won't`);
+  console.log(`  spend your latency without you asking. ${dim('An unregistered script costs nothing.')}\n`);
+  for (const h of OPTIONAL_HOOKS) {
+    console.log(`  ${bold('/' + h.name.padEnd(15))} ${dim(h.event)}`);
+    console.log(`    ${h.does}`);
+    console.log(`    ${dim('costs:')} ${h.cost}`);
+    console.log(`    ${dim('worth it when:')} ${h.worth}\n`);
+  }
+  console.log(`  ${bold('To turn one on')}`);
+  console.log('    Each file\'s header has the exact settings.json block to paste — open');
+  console.log(`    ${dim('.claude/hooks/<name>.js')} and copy the "TO TURN IT ON" snippet into`);
+  console.log(`    ${dim('.claude/settings.json')}. The registration IS the on-switch.`);
+  console.log(`\n  ${dim('`boss sync` keeps these files current whether or not you\'ve turned them on.')}\n`);
+}
+
 function printSymbols() {
   console.log(`\n  ${bold('Symbols')}  ${dim('— the glyph vocabulary, shared across boss map / board / status')}\n`);
   for (const [g, meaning] of SYMBOLS) console.log(`    ${g}   ${meaning}`);
@@ -786,7 +838,7 @@ function printHelp() {
   console.log(row('boss version', 'the installed BOSS version'));
 
   console.log(`\n  ${dim('modes:')} Quickstart ${dim('(capture)')} · MVP ${dim('(build)')} · V1 ${dim('(ship)')} · Scale ${dim('(grow)')}`);
-  console.log(`  ${dim('boss help <command>')} for detail  ·  ${dim('boss help symbols')} for the glyph legend`);
+  console.log(`  ${dim('boss help <command>')} for detail · ${dim('boss help symbols')} glyphs · ${dim('boss help hooks')} optional hooks`);
   console.log(`  ${dim('Commands starting with / (e.g. /boss, /canvas) run inside Claude Code, not the shell.')}\n`);
 }
 
@@ -794,6 +846,7 @@ function cmdHelp(args) {
   const topic = args.find((a) => !a.startsWith('-'));
   if (!topic) return printHelp();
   if (topic === 'symbols' || topic === 'symbol' || topic === 'legend') return printSymbols();
+  if (topic === 'hooks' || topic === 'hook') return printHooks();
   return printCommandHelp(topic);
 }
 

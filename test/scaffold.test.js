@@ -168,6 +168,25 @@ test('planSync marks missing files new, edited files changed, identical files ok
   assert.ok(edited.delta > 0, 'a changed file reports a line delta');
 });
 
+test('dormant hooks are synced but never auto-registered', () => {
+  // §C7: they shipped once at scaffold and were then never updated again, because no
+  // manifest list claimed them — a security fix to secrets-guard.js would never have
+  // reached an existing project. `optionalHooks` syncs the FILE; the registration stays
+  // the founder's on-switch, so syncing must NOT turn anything on.
+  const dir = project({});
+  const plan = planSync(dir, {
+    name: 'p', bossVersion: '0.0.1', stage: 'L0-quickstart', installedLayers: ['L0-quickstart'],
+  });
+  const optional = plan.entries.filter((e) => e.kind === 'optional-hook').map((e) => e.name);
+  assert.ok(optional.includes('secrets-guard'), 'secrets-guard must be sync-managed');
+  assert.ok(optional.includes('memory-cue'), 'memory-cue must be sync-managed');
+
+  const registered = JSON.stringify(plan.settings.merged);
+  for (const h of optional) {
+    assert.ok(!registered.includes(`${h}.js`), `${h} must stay unregistered — dormant means dormant`);
+  }
+});
+
 test('planSync canonicalises and dedupes installed layers', () => {
   const dir = project({});
   const plan = planSync(dir, {

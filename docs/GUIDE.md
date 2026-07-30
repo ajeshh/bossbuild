@@ -228,6 +228,25 @@ cross — it never takes a side, never scores your equity).
 
 ---
 
+## Three hooks that ship switched off
+
+Every BOSS project gets three extra hooks in `.claude/hooks/` that **do nothing until you turn
+them on**. A hook runs a process on every matching event, so BOSS won't spend your latency without
+you asking — an unregistered script costs exactly zero.
+
+- **`secrets-guard`** — stops a tool from reading a secret's *contents* into the model's context.
+  The `permissions.deny` block in your settings is the free floor; this is the ceiling, for
+  regulated or high-stakes work.
+- **`memory-cue`** — notices when you say something durable ("from now on…", "no, don't…") and
+  nudges Claude to save it. Worth it once you're repeating the same correction across sessions.
+- **`auto-log`** — writes one honest line per writer-subagent to a local `.boss/trace.jsonl`.
+  **`/judge-traces` reads this file and will be empty until you switch this on.**
+
+Run **`boss help hooks`** for what each costs and when it's worth it; each file's header has the
+exact block to paste into `.claude/settings.json`. `boss sync` keeps them current either way.
+
+---
+
 ## Two things worth remembering
 
 - **The conscience is on your side, not on your back.** It speaks when the work drifts from the bet
