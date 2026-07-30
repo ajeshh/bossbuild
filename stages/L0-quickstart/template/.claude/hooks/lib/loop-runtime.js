@@ -42,7 +42,7 @@ import { parseFrontmatter } from './yaml.js';
 // (judgment past the predicate gate) — drift (v0.31), caution (v0.33). The rest
 // are predicate-only (they point at a skill; no induced read). Used by the
 // frequency ledger (v0.34) to flag which fires carry induced-judgment overhead.
-export const JUDGE_MOMENTS = new Set(['drift', 'caution', 'capture', 'focus', 'coordination', 'margin-trap']);
+export const JUDGE_MOMENTS = new Set(['drift', 'caution', 'capture', 'focus', 'coordination', 'margin-trap', 'coherence']);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -197,7 +197,7 @@ export function detectSignals(projectDir) {
     const { state, entry, exit } = classifyLoop(loop, projectDir);
     if (state !== 'open') continue;
 
-    const confidence = computeConfidence(loop, entry, exit);
+    const confidence = computeConfidence(loop, entry);
     signals.push({
       loop_id: loop.id,
       type: 'stalled',
@@ -537,7 +537,15 @@ function evidenceSummary(e) {
   return out;
 }
 
-function signalAsContext(s) {
+// The generic tail of the moment chain below. A moment with no authored frame falls
+// through to it — which is silent, content-free, and exactly the failure REVIEW-2026-07-28
+// §A3 caught (a loop can declare `drift_moment: X`, pass the gate, and inject this).
+// The runtime KEEPS the fallback (a founder must never lose the conscience mid-session
+// over an authoring mistake), but `scripts/check-manifests.js` probes this function for
+// every declared moment and fails the release when one lands here. Exported for that probe.
+export const GENERIC_FRAME_TAIL = 'signal warrants attention.';
+
+export function signalAsContext(s) {
   const moment = s.moment || 'attention';
   const loopId = s.loop_id || 'loop';
   // Per-moment phrasing — gives the model a starting frame; it composes the voice.
@@ -564,6 +572,23 @@ function signalAsContext(s) {
   }
   if (moment === 'cost-stale') {
     return `[BOSS conscience — ${loopId} unread · ${s.confidence} confidence] The founder declared an AI cost budget (\`docs/ai-cost-budget.md\` exists) but hasn't recorded a cost review yet. Declaring is half the discipline; reading the ledger is the other half. If it fits the moment, surface BOSS's nudge in your own voice: name the unread-ledger gap in one line (cohort decides framing — indie-hacker wants the calm-company "%-of-revenue" frame, returning-founder wants unit-economics, eng-builder wants the inspectable numbers, domain-expert wants the privacy-first confirmation first). **Don't sound like a productivity-reward.** Point at \`/cost-review\`, hand the decision back. Never block.`;
+  }
+  if (moment === 'coherence') {
+    // PRINCIPLE #3's moment — "nothing valuable gets locked into code," at the one place a
+    // founder actually feels it. Serves BOTH design loops: `design-tokens-loop` (MVP — UI is
+    // accumulating, no token system yet) and `design-drift-loop` (V1 — tokens exist but raw
+    // hex is reappearing). Same tension, two stages, so the frame branches on which fired.
+    const v1 = /design-drift/.test(loopId);
+    const situation = v1
+      ? 'Tokens exist (`docs/design/DESIGN_TOKENS.md`) but raw hex codes are back in the source — the token system is no longer authoritative.'
+      : 'UI is accumulating in the code (several files styling by hand) and no token system has been scaffolded yet.';
+    const judgment = v1
+      ? 'Then judge: is this the 47-blues pattern re-forming — near-duplicate values drifting from the tokens, new screens deriving their own palette — or is it a legitimate one-off (a brand illustration, a chart series, a third-party embed) that was never going to be a token? A handful of deliberate exceptions is not drift.'
+      : 'Then judge: is a real interface actually forming — several screens or components, styles starting to repeat and diverge — or is this ONE component, a spike, or a `/prototype` the founder intends to throw away? Tokens for a throwaway sketch are exactly the premature ceremony PRINCIPLE #2 refuses, and scaffolding a design system around a prototype is worse than 47 blues.';
+    const pointer = v1
+      ? '`/design-review` (before the next component) or `/ux-check` (after) — and `/design-tokens-init` again if the token file itself has gone stale'
+      : '`/design-tokens-init` — it scaffolds the minimal three-layer set, not a design system';
+    return `[BOSS conscience — ${loopId} incoherent · ${s.confidence} confidence] The design-coherence moment (PRINCIPLE #3 — nothing valuable gets locked into code). ${situation} This is the most common AI-generated-UI failure mode: each new screen the model generates derives its own colors, spacing and components, so the styling grows linearly with screens and every value becomes a snowflake — the 47-blues problem. But the file count is only the gate — before voicing, do the judgment the predicate can't: silently read a couple of the matched files and the tokens file if there is one. Read only that, not the whole project. ${judgment} If it does NOT fit, stay silent — an early sketch earns quiet, and firing on a prototype trains the founder to tune the conscience out. If it DOES fit: name the *specific* thing you saw in one spare line — "three screens, three different greys" or "the tokens say one blue; \`Button\` and \`Card\` each hardcode a different one" — never a generic "you should use design tokens." The value is the concrete duplication you can point at. Then point at ${pointer}, and hand the decision back. Cohort decides framing — first-product wants "here's why this bites you at screen 10" taught plainly with the term defined, eng-builder wants the terse maintenance-cost read, vibe-virtuoso wants the architecture cut (the system is the artifact, not the screen), indie-hacker wants the calm "small and consistent beats big and bespoke," non-tech-founder wants "your app will start looking like it was made by five different people." **Don't sound like a design scold**, and never propose a rewrite — the fix is the next component, not the last ten. Say it at most once this session; never block — it's a nudge, and a token file the code actually uses silences it.`;
   }
   if (moment === 'drift') {
     return `[BOSS conscience — ${loopId} adrift · ${s.confidence} confidence] The founder named a riskiest assumption on the canvas but hasn't recorded a validation plan for it (no real "Experiment this week" line), and work has been accumulating (≥3 devlog entries). This is the moment to check the work *against the named bet* — the comparison predicates can't make and you can. If — and ONLY if — it fits this moment: silently read the riskiest-assumption line on the canvas (\`docs/ideas/*-canvas.md\`), then the most recent ~5 entries of \`docs/devlog.md\`, plus the open FEAT/spec if there is one. Read only that — not the whole project. Then judge: is that recent work actually *testing* the named risk, or building *around* it? If it has drifted, name the specific gap in one spare line — "you said X is the bet that could sink this; the last sessions built Y and Z; neither tests X" — and ask what the smallest experiment on the risk would be (point at \`/canvas\` to write it, \`/pretotype\` to run it, or \`/interview\` if the cheapest test is talking to the right person — it preps the Mom-Test call and debriefs it into graded evidence; if they want the full whole-project audit rather than this bounded read, \`/drift-deep\`). If the work IS engaging the risk, stay silent — silence is the correct output when they're on-aim. This is not a "you've been productive!" reward and not a generic "you should validate" line; the value is the specific stated-vs-actual comparison. Cohort decides framing — returning-founder wants the harder "is your conviction here where it needs to be for 12 months" cut, first-product wants "here's what 'test your riskiest bet' means" taught plainly, domain-expert wants the who-could-be-harmed lens on the named risk. Say it at most once this session; never block.`;

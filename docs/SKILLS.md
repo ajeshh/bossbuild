@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.72.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.129.0**.
 
 ## Quickstart
 
@@ -13,6 +13,11 @@
 - **`/triage`** — Capture an idea — and keep adding to it  _(/triage <thought>  (run again anytime to add more))_
 - **`/prototype`** — Get the idea out of your head and onto the screen — fast  _(/prototype [IDEA-NNN | rough idea text])_
 - **`/canvas`** — Pressure-test an idea as a humane business — Ajesh Shah's Humane Product Canvas as the spine, with Lean/Lenny-style commercial prompts folded into each cell  _(/canvas [IDEA-NNN])_
+- **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)  _(/evidence [paste notes | describe what happened])_
+- **`/interview`** — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence  _(/interview [prep | debrief | paste your notes])_
+- **`/research`** — Turn a real research transcript into product context and graded evidence  _(/research [transcript file | paste the transcript])_
+- **`/decide`** — Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is  _(/decide <the decision, or describe it>)_
+- **`/sunset`** — End something honestly — a whole project, or one zombie feature  _(validating it's actually dead (not just quiet), guarding the segment/commitment exception (a low-usage feature can be the reason a key account stays), and drafting the HONEST user-facing deprecation notice (real notice period, a path out, no "we're improving your experience" euphemism). Subtraction is a feature; a bloated product serves no one. Framed as an experiment that returned an answer, never as failure. Deliberate-invoke only; the conscience never suggests it unprompted (it may only point at it from inside a moment that already fired — e.g. the focus circuit-breaker). Usage - /sunset [FEAT-NNN | feature name])_
 - **`/persona`** — Build your app's target-user persona from your idea, grow it from what you know + online research + any real user research you drop in, and consult it as an agent voice — both to guide product decisions ("would my user want this?") and to QA your builds ("how would she react to this screen?")  _(/persona [derive | enrich <slug> | consult <slug> "question"])_
 - **`/comprehend`** — AI-native scaffold tailoring — read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tailor the scaffold to it non-destructively, plus seed the venture brain with an honest first read so the conscience has continuity from day one  _(/comprehend)_
 - **`/feedback`** — Send feedback about BOSS itself back to the people who build it — a bug, a confusion, a wish, a "this got in my way." User-initiated and transparent: it shows you exactly what it will send (and the small bit of context attached) before anything leaves your machine, then files it as a GitHub issue upstream (or gives you a prefilled link to paste)  _(/feedback [what's on your mind])_
@@ -37,13 +42,28 @@
 - **`/revalidate`** — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature  _(/revalidate [ID or paused item])_
 - **`/judge-traces`** — Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work  _(/judge-traces [last N | all])_
 - **`/consult`** — Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, and synthesize the answer with the disagreements kept visible (not averaged away)  _(/consult <question>)_
-- **`/red-team`** — Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook) against the OWASP 2025 LLM Top 10 — prompt injection, sensitive-info disclosure, excessive agency, unbounded consumption, system-prompt leakage, and the rest  _(/red-team [FEAT-NNN | --self])_
+- **`/red-team`** — Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest  _(/red-team [FEAT-NNN | --self | --humane])_
+- **`/practice`** — Capture a craft learning — a better way to build with AI you found — as a shared, attributed PRAC-NNN record your cofounder gets too  _(/practice <what you learned>)_
+- **`/ship`** — Put your app where a real user can hit it — the CD half of building  _(/ship [--preview | --rollback])_
+- **`/landing`** — Generate the founder's FIRST landing page — on-brand, honest, out the block to scale  _(/landing [--demand | --product])_
+- **`/measure`** — The post-ship counterpart to /pretotype  _(/measure)_
+- **`/pmf-check`** — The product-market-fit verdict — the one gate the whole post-launch journey turns on  _(/pmf-check)_
+- **`/retain`** — The decaying-curve doctor  _(/retain)_
+- **`/onboard`** — Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once)  _(/onboard)_
+- **`/roadmap`** — Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list  _(/roadmap)_
+- **`/first-dollar`** — Take the first dollar — the sharpest JIT moment in the lifecycle and the highest-grade evidence event BOSS ever sees (a paying customer is commitment-grade EVID by definition)  _(/first-dollar)_
+- **`/monetize`** — Run the money once customers exist — the layer after /first-dollar  _(/monetize [upgrade | dunning | price-raise | expansion])_
+- **`/trust`** — Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater  _(/trust)_
 
 ## V1
 
 - **`/board`** — The cross-FEAT sequencing surface for your app  _(/board  (or /board --next, /board --blocked, /board --by-cohort))_
 - **`/design-review`** — Before-code design review for your app  _(/design-review [FEAT-NNN | path-to-component-spec])_
 - **`/ux-check`** — After-code UX review for your app  _(/ux-check [route-or-component-path | FEAT-NNN])_
+
+## Scale
+
+- **`/incident`** — The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production  _(/incident [what broke])_
 
 ---
 

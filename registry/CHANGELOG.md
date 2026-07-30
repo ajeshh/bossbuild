@@ -2,6 +2,75 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.129.0 — 2026-07-29
+
+- **The release gate, and the four shipped bugs it immediately caught (from a full start-to-finish audit at
+  v0.128.0 — code · UX · docs · helpers).** The audit's central finding wasn't code quality; it was that
+  **BOSS already had the right de-rot loops and none of them were wired to anything.** `gen-docs.js` and
+  `check-wayfinding-drift.js` both worked, both were manual npm scripts, and both had therefore been
+  reporting real drift into an empty room for **56 consecutive releases**. That is precisely the failure
+  BOSS exists to catch in a founder's project — a system growing faster than the loops that check it — so
+  this release turns the conscience inward before adding anything else. Gate **129/0** throughout.
+  - **New `npm run release`** (`scripts/release.js`) — the one gate a release has to pass: VERSION ↔
+    package.json · manifest wiring · generated docs regenerated *and* current · GUIDE.md wayfinding
+    (strict) · no stale "not authored yet" claim about an authored mode · the README's own eval-count claim
+    checked against the actual gate output · the eval gate. Plus two advisory reports it refuses to gate on:
+    the **standing context budget** (≈8,140 tokens of skill/agent descriptions at full unlock — BOSS ships
+    `context-discipline.md`, so it measures itself against it) and **RESUME.md length**. `--fast` skips the
+    eval gate. Every check here earns its place by having already caught a real shipped bug — no lint theater.
+  - **New `npm run check:manifests`** (`scripts/check-manifests.js`) — asserts every manifest
+    agent/skill/hook/loop entry resolves to a real file, that no template file is unclaimed (an unclaimed
+    file never syncs), and that **every loop's `drift_moment` has an authored voicing frame** — probed by
+    *calling* the runtime, never against a hand-kept list of moment names (a parallel list is the same drift
+    bug one level up). `check-wayfinding-drift.js` gained `--strict`; interactive runs stay a nudge, because
+    a check that fails a commit is the ceremony BOSS refuses — only the release path gets teeth.
+  - **🔴 FIXED: the `coherence` conscience moment had no voicing frame at all** — caught by the new check
+    within a minute of it existing. `design-tokens-loop` (MVP) and `design-drift-loop` (V1) both declare
+    `drift_moment: coherence`, both are `runner_type: hook`, and the moment fell through to the generic
+    tail — so a founder whose design was drifting got the literal string *"signal warrants attention."*
+    injected into their session. **This is the 47-blues failure the README leads with**, and PRINCIPLE #3's
+    only hook moment. Frame now authored, branching on which loop fired (MVP = no token system yet; V1 =
+    tokens exist but raw hex is back), with the judgment the predicate can't make — *is a real interface
+    forming, or is this one component / a `/prototype` you'll throw away?* — restraint-first, cohort-aware,
+    and explicitly refusing to propose a rewrite (the fix is the next component, not the last ten).
+    Added to `JUDGE_MOMENTS`. The runtime **keeps** its generic fallback deliberately: a founder must never
+    lose the conscience mid-session over an authoring mistake. The release gate is where that fails now.
+  - **🔴 FIXED: `boss insights` reported a fabricated "canvassed" count.** It counted an idea as
+    pressure-tested on a bare `/canvas/i` substring match against the file *body*, so the near-universal
+    "next step: run `/canvas`" counted. On this repo it reported **38 canvassed of 55 ideas where 0 canvases
+    exist**, and disagreed with `boss board` on the same files in the same second. Now derived from a single
+    exported `canvassedIdeas()` in `board.js` — the same bar the Taking-shape column uses (a real
+    `IDEA-NNN-canvas.md` whose riskiest-assumption line is actually filled in). Same fix caught **a second
+    inflation**: `-canvas.md` files matched `/^IDEA-\d+/` and were counted as ideas. A project-level
+    `CANVAS.md` now reads as its own `+venture canvas` marker instead of being fudged into the count —
+    "the project has a canvas" and "N ideas were each pressure-tested" are different claims.
+    This mattered more than its line count: `insights` is the surface that prints *"measures graduation,
+    not activity"* and *"facts from real dates; never a score."*
+  - **🔴 FIXED: L3-scale declared an `operate-loop` that did not exist.** `boss unlock scale` stamped it into
+    every project's `.boss/manifest.json`, and it failed silently in both directions (`planSync` skips
+    missing sources; `loadLoops` only reads files that exist). **Dropped rather than authored** — a
+    conscience moment needs a real predicate from a real symptom, and no project has hit one, so Scale now
+    ships **zero hook loops on purpose** and the moment is demoted to trigger-gated alongside slices 3–5.
+    The L3 README had claimed "deferred surfaces are named in the summary, not faked into the roster";
+    it now says what actually happened.
+  - **Docs honesty pass.** README: the *"they never drift"* claim about the generated docs corrected (with
+    the 56-release story kept, not buried) · *"Scale is stubbed"* → all four modes authored, Scale's later
+    surfaces trigger-gated · *"105 passing"* → **129** (and the gate now checks this claim itself) · install
+    leads with `npx bossbuild` / `npm i -g bossbuild` / `brew install ajeshh/boss/boss`, live since v0.97.0
+    but never written down, with the clone path moved to a contributor note. **GUIDE.md** gained a real
+    **Scale** rung and a new **"After you ship"** section covering the 11 post-launch skills that shipped
+    v0.112→v0.127 into no walkthrough at all (`/ship` `/landing` `/measure` `/pmf-check` `/retain`
+    `/onboard` `/roadmap` `/first-dollar` `/monetize` `/trust` `/incident`) — grouped as their own arc
+    rather than padding the MVP rung, since operating a shipped product is a different job from building it.
+    `docs/CHEATSHEET.md` + `docs/SKILLS.md` regenerated from v0.72.0 → current.
+  - **Smaller:** `computeConfidence` was called with three arguments and declared with two (`exit` silently
+    dropped) · `.js` edit permissions added to the local settings.
+  - **Full audit + the remaining prioritized checklist** live in `docs/architecture/REVIEW-2026-07-28-full-audit.md`
+    and `CHECKLIST-2026-07-28-improvements.md` (gitignored dev workspace). Still open and deliberately not
+    bundled here: the `boss map` 29-skill wall (the highest-leverage [[EVID-001]] fix), moving conscience
+    voice frames out of JS string literals into the loop specs, unit tests for `src/`, `/recalibrate` for
+    Opus 5, and the subtraction pass on 48 skills.
+
 ## 0.128.0 — 2026-07-23
 
 - **CLI usability + visual encoding (IDEA-055) — legibility, wayfinding, and a "you are here" orientation

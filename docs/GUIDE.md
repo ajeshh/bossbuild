@@ -131,7 +131,61 @@ The design layer turns on, plus the next tier of mentors.
 - **Ready to climb when:** the team grows and the org needs to be a thing. → `boss unlock scale`
 
 ### Scale — *grow it*
-Not authored yet. The ladder is real through V1 today.
+Customers are real, someone besides you is in the work, and **coordination — not code — is the
+bottleneck.** The rung most tempted by premature ceremony, so everything here is symptom-gated and
+`boss unlock scale` names its own evidence bar *before* you cross it (recurring revenue · a
+non-founder in the work · a coordination symptom you can name). It never blocks; missing a leg is
+fine, it just says out loud what you'd be carrying unearned.
+- **You'll actually use:** `/incident` (the blameless one-page post-mortem when something breaks in
+  production — fix first, then one systemic learning routed UP), and `/triage --feedback` (the
+  customer register: bug · friction · feature-request-as-evidence-not-spec · churn).
+- **Deliberately not built yet:** unit economics at volume, `/code-health`, refactor waves, RFCs,
+  collaborator roles, and the give-away-your-Legos conscience moment. Each waits on a real project
+  hitting the symptom — the same discipline as every other rung.
+- **Ready to climb when:** there is no next unlock. From here the loop is operate honestly,
+  delegate deliberately, and let `/boss-learn` carry what you've proven back UP.
+
+---
+
+## After you ship — *the post-launch arc*
+
+Shipping is the middle of the story, not the end. These live in MVP mode (you don't unlock anything
+new for them), but they belong to a different job than *building* the MVP — so they're grouped here
+rather than padding the rung above. **None of them are a cadence you owe anybody**; each fires when
+its moment actually arrives, and most of them will say "not yet, go talk to your users."
+
+- **Get it in front of someone.** `/ship` puts the app where a real user can hit it — the deploy half
+  of building, with a pre-flight against the leak that keeps burning vibe-coded apps (client-bundled
+  secrets, row-level security nobody actually switched on). `localhost` is not a product; the URL is
+  the proof. `/landing` writes the first honest landing page from your brand voice, tokens, and the
+  canvas's Promises cell — it will refuse fake urgency and confirmshaming.
+- **Find out if it's working.** `/measure` picks ONE activation metric and ONE retention curve —
+  ten events, not an analytics department — plus the numbers classic tools miss for AI products
+  (task-completion rate, edit-rate, cost per *successful* outcome). At fewer than ten users it tells
+  you to go talk to them instead.
+- **The one verdict that matters.** `/pmf-check` reads what BOSS already holds and calls it:
+  pre-PMF, at-PMF, or post-PMF. It **defaults to "you're probably still pre-PMF, don't scale yet,"**
+  because scaling early is the single most reliable way to kill a startup — and only post-PMF
+  licenses the leader's work (hiring, raising, scaling).
+- **Fix the curve, don't hack it.** `/retain` diagnoses *where* retention dies — the top (people
+  never reach the value → `/onboard`), the middle (the product isn't worth returning to → roadmap),
+  or the wallet (cards failing → dunning). There is no retention hack; the fix is always the
+  product, and this tells you which part. `/onboard` is the top-of-curve fix: derive the aha-moment
+  from your *data* (best-retained vs churned), then cut every step between signup and it.
+- **Decide what's next.** `/roadmap` weighs requests against behavior — behavior wins — into a small
+  bet-list with a mandatory NO-list. A dated snapshot you use and discard, never a backlog you tend.
+- **Get paid, honestly.** `/first-dollar` runs the five deferrable moves when someone has actually
+  said yes (entity · terms · the cheapest reversible payment rail · refund posture · the price said
+  out loud), then records the first paying customer as commitment-grade evidence. `/monetize` is the
+  layer after: upgrades triggered by a moment of value rather than a nag, recovering involuntary
+  churn, and raising a price the honest way (on value, with a real path out).
+- **Earn trust.** `/trust` covers the load-bearing privacy set without the compliance theater — a
+  data-minimization policy, the subprocessor list derived from what your app actually calls, and the
+  step founders skip: *did you actually turn on your AI provider's training opt-out?* It explicitly
+  defers SOC 2 until a named enterprise deal asks for it. Pointers to a real lawyer, never legal
+  advice.
+- **Subtract.** `/sunset FEAT-NNN` ends one zombie feature — usage-validated, with the honest
+  deprecation notice written for you. A bloated product serves no one.
 
 ### Ending well — *a project can end at any rung*
 Not every bet works, and that's the point — validation's payoff is deciding faster, including

@@ -104,6 +104,36 @@ function featColumn(status) {
   return 'Building'; // building / drafting / blocked — all in-flight
 }
 
+// Which IDEAs have actually been pressure-tested — THE one definition, exported so
+// `boss board` and `boss insights` can never disagree about it (REVIEW-2026-07-28 §A1:
+// insights counted an idea as canvassed on a bare `/canvas/i` substring match against the
+// file body, so "next step: run /canvas" counted, and it reported 38 canvassed on this
+// repo where 0 canvases exist). The bar is the same one the Taking-shape column uses:
+// an `IDEA-NNN-canvas.md` file exists AND its riskiest-assumption line is really filled in.
+// Counts ideas that have already GRADUATED past the canvas too — being promoted to a FEAT
+// doesn't un-pressure-test an idea.
+//
+// Separately reports `projectCanvas`: a single project-level `docs/ideas/CANVAS.md` (how BOSS
+// itself works — one venture canvas rather than one per idea). Kept as its own fact instead of
+// being folded into the count, because "the project has a canvas" and "N ideas were each
+// pressure-tested" are different claims and the old code fudged the first into the second.
+export function canvassedIdeas(projectDir) {
+  const ideasDir = join(projectDir, 'docs', 'ideas');
+  const projectCanvas = existsSync(join(ideasDir, 'CANVAS.md'));
+  if (!existsSync(ideasDir)) return { ids: [], projectCanvas: false };
+  let files;
+  try { files = readdirSync(ideasDir).filter((f) => f.endsWith('.md')); } catch { return { ids: [], projectCanvas }; }
+  const ids = [];
+  for (const f of files) {
+    const m = f.match(/^(IDEA-\d+)-canvas\.md$/);
+    if (!m) continue;
+    try {
+      if (riskiestNamed(readFileSync(join(ideasDir, f), 'utf8'))) ids.push(m[1]);
+    } catch { /* unreadable — don't guess */ }
+  }
+  return { ids, projectCanvas };
+}
+
 // Build the card list from the project's docs/ideas directory. Returns
 // { cards: [{id, title, column, blocked}], hasIdeasDir }.
 export function collectBoard(projectDir) {

@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { listProjects } from './registry.js';
 import { bossVersion, STAGE_ORDER } from './paths.js';
-import { collectBoard } from './board.js';
+import { collectBoard, canvassedIdeas } from './board.js';
 import { dim, bold, ok, warn } from './ui.js';
 
 // `boss insights` — the honest-trace lens (IDEA-021).
@@ -43,12 +43,12 @@ function buildCounts(dir) {
 
 function readProjectTrace(dir) {
   const ideasDir = join(dir, 'docs', 'ideas');
-  let ideas = 0, canvassed = 0, features = 0, newest = 0;
+  let ideas = 0, features = 0, newest = 0;
   let firstIdea = null, firstFeat = null; // earliest created: dates (lexical ISO compare)
-  const seenCanvas = existsSync(join(dir, 'docs', 'ideas', 'CANVAS.md'));
   if (existsSync(ideasDir)) {
     for (const f of readdirSync(ideasDir)) {
       if (!f.endsWith('.md')) continue;
+      if (f.includes('-canvas')) continue; // a canvas is state, not an idea (matches the board)
       const full = join(ideasDir, f);
       let mtime = 0;
       try { mtime = statSync(full).mtimeMs; } catch { /* skip */ }
@@ -56,9 +56,7 @@ function readProjectTrace(dir) {
       if (/^IDEA-\d+/.test(f)) {
         ideas++;
         try {
-          const txt = readFileSync(full, 'utf8');
-          if (/canvas/i.test(txt)) canvassed++;
-          const d = createdDate(txt);
+          const d = createdDate(readFileSync(full, 'utf8'));
           if (d && (!firstIdea || d < firstIdea)) firstIdea = d;
         } catch { /* unreadable — don't guess */ }
       } else if (/^FEAT-\d+/.test(f)) {
@@ -70,8 +68,14 @@ function readProjectTrace(dir) {
       }
     }
   }
-  if (seenCanvas && canvassed === 0) canvassed = 1;
-  return { ideas, canvassed, features, ...buildCounts(dir), newest, firstIdea, firstFeat };
+  // Pressure-tested count comes from the SHARED definition in board.js — a real
+  // `IDEA-NNN-canvas.md` with a real riskiest assumption, exactly the Taking-shape bar.
+  // Never a substring match on the body (REVIEW-2026-07-28 §A1).
+  const { ids: canvassedIds, projectCanvas } = canvassedIdeas(dir);
+  return {
+    ideas, canvassed: canvassedIds.length, projectCanvas, features,
+    ...buildCounts(dir), newest, firstIdea, firstFeat,
+  };
 }
 
 // One honest read on where a project's loop stands. Returns null if the project is gone from disk.
@@ -107,7 +111,7 @@ function assess(p, nowMs) {
   let signal = 'flowing', note = '';
   if (t.ideas === 0 && t.features === 0) {
     signal = 'empty'; note = 'nothing captured yet — point /boss or /import at your idea';
-  } else if (t.canvassed === 0 && t.features === 0) {
+  } else if (t.canvassed === 0 && !t.projectCanvas && t.features === 0) {
     signal = 'untested';
     note = `captured, never pressure-tested${ageDays != null ? ` (${ageDays}d)` : ''} — try /canvas`;
   } else if (ageDays != null && ageDays >= 14) {
@@ -119,7 +123,7 @@ function assess(p, nowMs) {
     ...p, missing: false,
     mode: stamp?.mode || p.mode || p.stage || '?',
     pin: stamp?.bossVersion || p.bossVersion || '?',
-    depth, ideas: t.ideas, canvassed: t.canvassed, features: t.features,
+    depth, ideas: t.ideas, canvassed: t.canvassed, projectCanvas: t.projectCanvas, features: t.features,
     building: t.building, shipped: t.shipped, ageDays, signal, note,
     toBuildDays, retired, retiredOn: p.retired_on || null, toRetireDays,
   };
@@ -180,7 +184,11 @@ export function insights(cwd) {
       console.log(`    ${dim('⊘')} ${dim(String(r.name + here).padEnd(20) + ' ' + String('retired').padEnd(11) + ' retired ' + (r.retiredOn || '—') + kill)}`);
       continue;
     }
-    const stat = `${r.ideas} idea${r.ideas === 1 ? '' : 's'} · ${r.canvassed} canvassed${r.building ? ` · ${r.building} building` : ''}${r.shipped ? ` · ${r.shipped} shipped` : ''}${r.toBuildDays != null ? ` · built in ${r.toBuildDays}d` : ''}`;
+    // `canvassed` = ideas with a real canvas naming a real riskiest assumption (the board's
+    // Taking-shape bar). A project-level CANVAS.md is a DIFFERENT claim, so it reads as its own
+    // marker instead of being counted as an idea — the fudge that made this number fiction before.
+    const pc = r.projectCanvas ? dim(' +venture canvas') : '';
+    const stat = `${r.ideas} idea${r.ideas === 1 ? '' : 's'} · ${r.canvassed} canvassed${pc}${r.building ? ` · ${r.building} building` : ''}${r.shipped ? ` · ${r.shipped} shipped` : ''}${r.toBuildDays != null ? ` · built in ${r.toBuildDays}d` : ''}`;
     console.log(`    ${MARK[r.signal] || ' '} ${String(r.name + here).padEnd(20)} ${String(r.mode).padEnd(11)} ${stat}`);
     if (r.note) {
       console.log(`      ${''.padEnd(22)}${dim(r.note)}`);

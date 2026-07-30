@@ -13,8 +13,14 @@
 // THE TRAP (read before "fixing" a warning): most prose is drift-resistant *by
 // design* (IDEA-018). README/`/welcome` deliberately DON'T enumerate skills — they
 // point at `boss map`. So this check guards ONLY GUIDE.md (the comprehensive doc),
-// never blanket coverage. And it NUDGES, never blocks — exit 0 always. The
+// never blanket coverage. And it NUDGES, never blocks — exit 0 by default. The
 // maintainer decides; a drift check that fails a commit is the ceremony BOSS refuses.
+//
+// `--strict` exits 1 on drift. That is NOT a reversal of the restraint above — it's
+// the maintainer deciding, once, at the one moment where the decision is actually
+// theirs to make: `npm run release`. Interactive runs stay a nudge. (The 56 releases
+// this check spent reporting into an empty room are why the release path needs teeth
+// the working path doesn't — REVIEW-2026-07-28 §E3.)
 
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -67,8 +73,13 @@ export function reportWayfindingDrift() {
   return flagged.length;
 }
 
-// Run as CLI. Exit 0 ALWAYS — nudge, never enforce (IDEA-035 restraint).
+// Run as CLI. Exit 0 by default — nudge, never enforce (IDEA-035 restraint).
+// `--strict` (used by `npm run release`) exits 1 on drift.
 if (import.meta.url === `file://${process.argv[1]}`) {
-  reportWayfindingDrift();
-  process.exit(0);
+  const drift = reportWayfindingDrift();
+  const strict = process.argv.includes('--strict');
+  if (strict && drift) {
+    console.log('    --strict: failing the release. Name them in GUIDE.md, or exempt them.');
+  }
+  process.exit(strict && drift ? 1 : 0);
 }
