@@ -342,7 +342,7 @@ function printFocusAndHeadway(projectDir) {
   }
 }
 
-function cmdStatus(args) {
+async function cmdStatus(args) {
   const stamp = readStamp(process.cwd());
   if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
   const f = parseArgs(args || []);
@@ -351,7 +351,7 @@ function cmdStatus(args) {
   // v0.19 reactions: "I want to see what fired and why").
   if (f.conscience) {
     console.log(`\n  ${bold(stamp.name)}`);
-    return statusConscience(process.cwd(), { verbose: !!(f.verbose || f.v) });
+    return await statusConscience(process.cwd(), { verbose: !!(f.verbose || f.v) });
   }
   const current = bossVersion();
   console.log(`\n  ${bold(stamp.name)}`);
@@ -591,13 +591,16 @@ function cmdLearn(args) {
   console.log('    Review, then commit. Connected projects pull it via `boss sync` / `/boss-sync`.\n');
 }
 
-function cmdConscience(args) {
+// Async because the conscience surface now resolves the PROJECT's loop-runtime (§A4) —
+// `await` matters here: without it a thrown error becomes an unhandled rejection instead
+// of the clean one-line failure `boss conscience mute drfit` is supposed to produce.
+async function cmdConscience(args) {
   const [sub, ...rest] = args;
   const flags = parseArgs(rest);
   try {
     if (sub === 'pause') return consciencePause(flags);
     if (sub === 'resume') return conscienceResume();
-    if (sub === 'mute') return conscienceMute(flags);
+    if (sub === 'mute') return await conscienceMute(flags);
     if (sub === 'unmute') return conscienceUnmute(flags);
     if (sub === 'activity') return conscienceActivity(process.cwd());
     if (sub === 'cost') return conscienceActivity(process.cwd(), { asCost: true });
@@ -605,7 +608,7 @@ function cmdConscience(args) {
       const stamp = readStamp(process.cwd());
       if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
       console.log(`\n  ${bold(stamp.name)}`);
-      return statusConscience(process.cwd(), { verbose: !!(flags.verbose || flags.v) });
+      return await statusConscience(process.cwd(), { verbose: !!(flags.verbose || flags.v) });
     }
     return fail(`unknown subcommand 'conscience ${sub}'. options: pause | resume | mute | unmute | status | activity | cost`);
   } catch (e) {
@@ -832,7 +835,7 @@ function nearestCommand(input) {
   return bestD <= 3 ? best : null; // only suggest when it's plausibly a typo
 }
 
-export function run(argv) {
+export async function run(argv) {
   const [cmd, ...args] = argv;
   switch (cmd) {
     case 'new': return cmdNew(args);

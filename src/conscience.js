@@ -6,14 +6,35 @@
 // overrides recorded in the devlog. Asked-for by eng-builder / indie-hacker /
 // vibe-virtuoso personas (v0.19 reactions) — "I want to see what fired and why."
 //
-// The runtime is the same one the hook uses — imported from the Quickstart
-// template's hook lib so there's one source of truth. The path is awkward but
-// the alternative (duplicating ~250 lines) is worse.
+// WHICH RUNTIME THIS READS (REVIEW-2026-07-28 §A4). The hook that actually fires runs the
+// PROJECT's copy at `.claude/hooks/lib/loop-runtime.js`, written at scaffold time and only
+// refreshed by `boss sync --apply`. This CLI surface used to always import the PACKAGE's
+// copy — so in any project behind its pin (4 of 5 on this machine when the audit ran),
+// `boss status --conscience` described loop states using newer predicate semantics than the
+// hook was actually evaluating, and quietly disagreed with the thing it claims to explain.
+//
+// Now it loads the project's own runtime when there is one and falls back to the package's
+// (with a visible note) when there isn't — so what you're shown is what will fire.
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { loadLoops, classifyLoop, readPauseState, readMuteState } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
+import { pathToFileURL } from 'node:url';
+import * as packageRuntime from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
+import { readPauseState, readMuteState } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { dim, bold, ok, warn } from './ui.js';
+
+// Resolve the runtime a given project will actually run. Returns { rt, source } where
+// source is 'project' | 'package'. Falls back on any load failure — an inspect command
+// must never be the thing that breaks.
+async function runtimeFor(projectDir) {
+  const own = join(projectDir, '.claude', 'hooks', 'lib', 'loop-runtime.js');
+  if (existsSync(own)) {
+    try {
+      return { rt: await import(pathToFileURL(own).href), source: 'project' };
+    } catch { /* fall through to the package copy */ }
+  }
+  return { rt: packageRuntime, source: 'package' };
+}
 
 // Parse a duration spec for `boss conscience pause --for <spec>`.
 // Accepted: <N>m / <N>h / <N>d (minutes / hours / days). Returns ms or throws.
@@ -89,9 +110,10 @@ export function conscienceResume() {
 // (each hook-loop's `drift_moment`), so mute validates against reality rather than
 // a hardcoded list that rots as moments are added. Used to catch typos and to show
 // the founder what's muteable.
-function availableMoments(projectDir) {
+async function availableMoments(projectDir) {
   try {
-    return [...new Set(loadLoops(projectDir).map((l) => l.drift_moment).filter(Boolean))].sort();
+    const { rt } = await runtimeFor(projectDir);
+    return [...new Set(rt.loadLoops(projectDir).map((l) => l.drift_moment).filter(Boolean))].sort();
   } catch { return []; }
 }
 
@@ -100,13 +122,13 @@ function availableMoments(projectDir) {
 // the whole conscience. This is "voice the tension, never filter the menu" made
 // operational: the founder consents to (or declines) each moment individually.
 // Stored under `conscienceMutes` so pause/resume never clobber it (orthogonal).
-export function conscienceMute(flags) {
+export async function conscienceMute(flags) {
   const { path, cfg } = readConfigOrFail(process.cwd());
   const moment = (flags._ && flags._[0]) || '';
   if (!moment) {
     throw new Error('which moment? e.g. `boss conscience mute drift`. `boss conscience status` lists what can fire.');
   }
-  const moments = availableMoments(process.cwd());
+  const moments = await availableMoments(process.cwd());
   if (moments.length && !moments.includes(moment)) {
     throw new Error(`no '${moment}' moment in this project's loops. Available: ${moments.join(', ')}.`);
   }
@@ -326,8 +348,9 @@ export function conscienceActivity(projectDir = process.cwd(), { asCost = false 
   console.log('');
 }
 
-export function statusConscience(projectDir = process.cwd(), { verbose = false } = {}) {
-  const loops = loadLoops(projectDir);
+export async function statusConscience(projectDir = process.cwd(), { verbose = false } = {}) {
+  const { rt, source } = await runtimeFor(projectDir);
+  const loops = rt.loadLoops(projectDir);
   if (loops.length === 0) {
     console.log('\n  No conscience loops in this project yet.');
     console.log(`  ${dim('They install with a mode — boss new, or boss sync --apply to add them here.')}\n`);
@@ -340,6 +363,12 @@ export function statusConscience(projectDir = process.cwd(), { verbose = false }
   const isPaused = pause && pause.mode === 'paused' && !(pause.expires && new Date(pause.expires) <= new Date());
 
   console.log(`\n  ${bold('conscience state')}   ${isPaused ? warn('⏸ paused') : dim('active')}`);
+  // Say so when we're describing the package's runtime rather than the one this project
+  // will actually run — otherwise the fallback is a silent second source of truth, which
+  // is the bug this whole change exists to close.
+  if (source === 'package') {
+    console.log(`    ${dim('(reading BOSS\'s bundled runtime — this project has no .claude/hooks/lib/loop-runtime.js; `boss sync --apply` installs it)')}`);
+  }
   // Pause state surfaces FIRST and LOUDLY when active (IDEA-011 v0.23.0+) — a
   // founder who paused the conscience needs to remember they did, otherwise the
   // pause silently lingers and the override discipline gets less honest.
@@ -388,7 +417,7 @@ export function statusConscience(projectDir = process.cwd(), { verbose = false }
   console.log('');
 
   // Sort: open first (they need attention), then closed, then unopenable.
-  const classified = loops.map((l) => ({ loop: l, ...classifyLoop(l, projectDir) }));
+  const classified = loops.map((l) => ({ loop: l, ...rt.classifyLoop(l, projectDir) }));
   const order = { open: 0, closed: 1, unopenable: 2 };
   classified.sort((a, b) => order[a.state] - order[b.state]);
   const markFor = (state) => (state === 'closed' ? ok('✓') : state === 'open' ? warn('⚠') : dim('·'));

@@ -2,6 +2,46 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.132.0 — 2026-07-30
+
+- **The conscience-architecture release — one file that is only voice, and the CLI finally reads the
+  runtime that will actually fire.** Audit §D2 + §A4. Gate **129/0**, judgment **0 STALE**, 59 unit.
+  - **`moment-frames.js` — every word the conscience says, in one place.** `loop-runtime.js` had grown
+    to 603 lines mixing three concerns: predicate evaluation, project-state I/O, and ~200 lines of
+    authored prose in template literals. The prose is the one surface `voice-keeper` owns and the
+    judgment evals voice-hash, and it was the hardest thing in the repo to find. Split out: **runtime
+    603 → 453 lines**, voice in its own 179-line module that **imports nothing** (so it can never
+    introduce a cycle and can be probed in isolation, which is exactly what `check-manifests.js` does).
+    `JUDGE_MOMENTS` moved with it — *"does this frame ask the model to go read something?"* is a
+    property of the frame, not of the predicate machinery. The runtime **re-exports** the voice, so
+    every existing import site (the hook, the CLI, the eval runner, the manifest check) is unchanged;
+    `boss sync` picks the new file up automatically (`managedFiles` already scans `hooks/lib/`).
+  - **Proven byte-identical, not assumed.** A 50-string baseline (every moment × loop variant, the
+    full cohort/brain/evidence matrix, the multi-signal path, `JUDGE_MOMENTS`) was captured before the
+    split and diffed after: **zero differences → no voice-hash moved, no regrade needed.** That is the
+    whole reason the extraction was done as a verbatim line-move rather than a retype.
+  - **Recorded, not silently decided: why the frames stay JavaScript** rather than becoming markdown
+    beside each loop spec (the audit's suggestion). Moments are **many-to-one** with loops (`coherence`
+    is declared by both design loops), so per-loop markdown would duplicate the frame or need a lookup
+    layer anyway; a per-project `docs/moments/*.md` would add 11 files to every scaffolded repo at
+    exactly the moment the evidence says **subtract**, and would make founder-editable the text the
+    judgment evals hash — a founder tuning their conscience would silently invalidate BOSS's own
+    grading. And the frames interpolate, so they are functions, not documents. The rationale is in the
+    module header; revisit if a founder ever needs to author a moment.
+  - **🔴 `boss status --conscience` was describing a runtime the project doesn't run.** It always
+    imported the **package's** `loop-runtime.js`, while the hook that actually fires runs the
+    **project's** copy (written at scaffold, refreshed only by `boss sync --apply`). In any project
+    behind its pin — **4 of 5 on this machine when the audit ran** — the command explaining the
+    conscience was using newer predicate semantics than the conscience. It now loads the project's own
+    runtime, falls back to the bundled one **and says so on screen** when a project has none, and
+    never lets a load failure break an inspect command. Verified by patching a project's copy and
+    confirming the CLI's output changed while the package's was untouched.
+  - **`run()` and the conscience commands are async now**, so `bin/boss` awaits and converts any
+    escaped rejection into a one-line error + exit 1 — without that, `boss conscience mute <typo>`
+    would have degraded from a clean message into an unhandled rejection.
+  - Two new tests lock the split: the voice module imports nothing, and the runtime still re-exports
+    the voice.
+
 ## 0.131.0 — 2026-07-30
 
 - **The unit suite — 3,414 lines of CLI finally get a deterministic floor (audit §D3).** BOSS ran two

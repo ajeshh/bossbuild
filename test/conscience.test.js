@@ -75,6 +75,23 @@ test('an unknown moment degrades to the generic frame rather than throwing', () 
   assert.ok(out.includes(GENERIC_FRAME_TAIL));
 });
 
+test('the voice module imports nothing — it can never introduce a cycle', async () => {
+  // moment-frames.js is prose only. If it ever grows an import of the runtime (or fs),
+  // the "probe it in isolation" guarantee check-manifests.js relies on breaks.
+  const src = readFileSync(
+    join(STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'hooks', 'lib', 'moment-frames.js'),
+    'utf8',
+  );
+  assert.ok(!/^\s*import\s/m.test(src), 'moment-frames.js must not import anything');
+});
+
+test('the runtime still re-exports the voice, so every existing import site works', async () => {
+  const rt = await import('../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js');
+  for (const k of ['signalAsContext', 'composeContext', 'GENERIC_FRAME_TAIL', 'JUDGE_MOMENTS']) {
+    assert.ok(k in rt, `loop-runtime must re-export ${k}`);
+  }
+});
+
 // --- classification -------------------------------------------------------
 
 test('entry unmet → unopenable; entry met + exit unmet → open; both met → closed', () => {
