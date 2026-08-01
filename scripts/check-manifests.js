@@ -130,6 +130,48 @@ function checkStage(stageId) {
   return { stageId, authored: true, errors, exempt };
 }
 
+// --- 2c. no model name is hardcoded in a shipped surface -----------------
+// v0.135.0. A model name in a template is the most perishable fact in the repo: it rots on a
+// vendor's clock, fails SILENTLY when it doesn't resolve, overrides a choice the founder already
+// made, and welds BOSS to one host. It is also PRINCIPLE #3 violated in miniature — the reusable
+// thing is the intent ("this work wants deliberation"), not the name. Shipped artifacts name the
+// SHAPE in prose; only `.boss/model-profile.json` (local, operator-owned, gitignored) may bind one.
+// See library/practices/model-routing.md.
+
+const MODEL_PIN = /^\s*model:\s*\S/m;
+
+// Deliberately checks ONE thing: a `model:` key in a shipped artifact's FRONTMATTER. That is the
+// actual routing mechanism — unambiguous, machine-readable, and the thing that silently rots.
+//
+// It does NOT scan prose for model names, and that restraint is the point. A first draft did, and
+// flagged twelve files: `CLAUDE.md`, `claude-code` as a host, and — worst — `/ai-cost` teaching a
+// founder to record which model THEIR app calls, which is exactly right and none of BOSS's
+// business. A check that cries wolf is a check someone disables, which is how the de-rot scripts
+// got ignored for 56 releases in the first place. Narrow and true beats broad and noisy.
+function checkModelPins() {
+  const errors = [];
+  const walk = (d, out = []) => {
+    if (!existsSync(d)) return out;
+    for (const n of readdirSync(d)) {
+      const f = join(d, n);
+      if (statSync(f).isDirectory()) walk(f, out);
+      else if (n.endsWith('.md')) out.push(f);
+    }
+    return out;
+  };
+  for (const f of [...walk(join(BOSS_ROOT, 'stages')), ...walk(join(BOSS_ROOT, 'library'))]) {
+    const rel = f.replace(BOSS_ROOT + '/', '');
+    const fm = (readFileSync(f, 'utf8').match(/^---\n([\s\S]*?)\n---/) || [, ''])[1];
+    if (MODEL_PIN.test(fm)) {
+      errors.push(
+        `${rel} pins a model in frontmatter. Shipped artifacts name the capability SHAPE in prose `
+        + '(see library/practices/model-routing.md); only .boss/model-profile.json may bind one.',
+      );
+    }
+  }
+  return errors;
+}
+
 // --- 3. every declared drift_moment has an authored voicing frame ---------
 // Probes the REAL function rather than comparing against a hand-kept list of moment
 // names — a parallel list is the same class of drift this check exists to catch.
@@ -177,7 +219,11 @@ function checkVoicing() {
 export function checkManifests() {
   const stages = STAGE_ORDER.map(checkStage);
   const voicing = checkVoicing();
-  const errors = [...stages.flatMap((s) => s.errors.map((e) => `${s.stageId}: ${e}`)), ...voicing.errors];
+  const errors = [
+    ...stages.flatMap((s) => s.errors.map((e) => `${s.stageId}: ${e}`)),
+    ...voicing.errors,
+    ...checkModelPins(),
+  ];
   return { stages, voicing, errors };
 }
 

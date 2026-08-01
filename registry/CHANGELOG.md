@@ -2,6 +2,45 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.137.0 — 2026-08-01
+
+- **BOSS stops naming models. Route by capability, never by name (PRINCIPLE #3 applied to itself).**
+  Eight shipped agents pinned `model: fable`, and `.boss/model-profile.json` enumerated model ids,
+  tiers and per-token prices. Within four weeks the pin was stale, the prices couldn't be re-verified
+  from a real source, and nobody could confirm the alias even *resolved* in a founder's install —
+  while `/recalibrate`, the discipline built to catch exactly this, never fired.
+  - **The root cause is BOSS's own PRINCIPLE #3**: *"anything reusable should live as decoupled,
+    nameable structure, not buried in implementation… could a sibling project reuse this without
+    copy-pasting? If not, it's locked."* A model name in an agent file fails that test — there's
+    nothing to reuse but a string that will be wrong soon. **The intent is what's reusable**
+    ("this work wants deliberation"); it has been true for three years and will stay true.
+  - **New `library/practices/model-routing.md`** names the three capability **shapes** —
+    `deliberation` (rare, high-stakes, ambiguous), `volume` (frequent, well-specified, the default),
+    `cheap-bulk` (high-frequency or public-facing at scale) — each with the *question* that selects
+    it, not a model that satisfies it. Four costs of pinning, stated plainly: it rots on a clock you
+    don't control · **it fails silently** (an unrecognised name doesn't throw) · it overrides a
+    choice the founder already made when they opened their host · it welds BOSS to one host (every
+    pin is a line of the IDEA-006 port). Keeps one honest exception: pin a concrete model when the
+    *behaviour* is the fact you're recording (a reproducible eval), next to the result, as provenance.
+  - **Every `model:` pin removed from all 17 shipped agents/library copies**, and the Fable prose
+    note replaced with a capability sentence that is true on any host in any year. Mentors now
+    **inherit the founder's model** — which is the correct default, costs nothing to maintain, and
+    stops second-guessing a choice they already made.
+  - **`model-profile.json` → profile_version 3, capability-shaped.** It names shapes and the tests
+    that select them; the concrete `binding` is **null by default**, local, operator-owned and
+    explicitly *safe to be wrong*. `reopen_on` no longer lists "a new model" — the trigger that
+    fired constantly and still went stale between runs — and now lists only the rarer, meaningful
+    event: **the shape of the tradeoff moving.**
+  - **`/recalibrate` narrowed to match.** It no longer chases names, tables or prices. A new model
+    shipping is **no longer a trigger, because nothing rots when one ships.**
+  - **New gate check** so pins can't come back: any `model:` key in shipped frontmatter fails the
+    release. Deliberately checks **only** frontmatter — a first draft scanned prose too and flagged
+    twelve files including `CLAUDE.md`, `claude-code` as a host, and `/ai-cost` teaching a founder to
+    record which model *their own app* calls, which is correct and none of BOSS's business. A check
+    that cries wolf is one someone disables; narrow and true beats broad and noisy.
+  - The practice carries `curve: craft` (365d), **not** `curve: model` — a practice arguing that
+    routing-by-capability doesn't move when a model ships shouldn't sit on the model curve.
+
 ## 0.136.0 — 2026-07-31
 
 - **The first live run of `/practice-refresh` — one wrong practice corrected, three pieces of knowledge
