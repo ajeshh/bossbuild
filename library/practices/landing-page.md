@@ -5,6 +5,9 @@ owner: mentor-gtm
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (landing-page thread) — Julian Shapiro (value-prop table), Demand Curve / CXL (above-the-fold, clarity-over-cleverness), Harry Dry / MarketingExamples ("write with the delete key", back a bold claim with proof), 37signals (clarity not cleverness), Amelie Pollak (persuasion vs manipulation), the Tailwind "indigo apology" (AI-default sameness). Pairs with design-system.md (look), ai-ux-patterns.md (honest conversion), /pretotype (the demand page) and /ship (deploy). BOSS v0.112.0.
+last_reviewed: 2026-07-23
+review_by: 2027-01-19
+curve: market
 ---
 
 # Practice — The first landing page (get it out the block, on-brand, honest — don't become a CRO shop)

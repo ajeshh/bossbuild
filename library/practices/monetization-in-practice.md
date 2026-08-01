@@ -5,6 +5,9 @@ owner: mentor-business
 status: active
 host: stack-neutral
 provenance: post-launch program (2026-07-23 SESSION, JOB 4, Tier 2). The gap the map found — mentor-business has the pricing *menu*, /first-dollar has the *first sale*, but nobody owned *running the money live*: upgrades, dunning, the price-raise, the margin trap. Distilled from Patrick Campbell / ProfitWell (dunning + involuntary churn is 20–40% and the cheapest revenue) + Kyle Poyar (usage-based + expansion when usage tracks value) + the margin-trap thread (a16z/Tunguz — cost scales with engagement). Pairs with mentor-business (the menu), /first-dollar (the first sale), /monetize (the runner), retention.md (the involuntary-churn bucket), the margin-trap conscience moment + /cost-review's gross-margin band (JOB 4 build #1), /trust (offboarding + data export). BOSS v0.126.0.
+last_reviewed: 2026-07-23
+review_by: 2027-01-19
+curve: market
 ---
 
 # Practice — Monetization in practice (running the money once customers exist)

@@ -5,6 +5,9 @@ owner: mentor-business
 status: active
 host: stack-neutral
 provenance: IDEA-050 (fable-campaign lifecycle pass, Fable 5 2026-07-02 — "what about the first paid customer?"), built in the post-launch program (2026-07-23 SESSION, JOB 4, Tier 2). The conscience's founding question is "will anyone pay?" — BOSS had nothing for the moment someone actually will. A paid customer is a commitment-grade EVID by definition (the highest-grade evidence event BOSS ever sees). Pairs with /first-dollar (the runner), mentor-business (the pricing menu), the EVID ladder (/evidence), /ship (the cheapest-reversible pattern, applied to money), /trust (ToS/privacy, build #8), /decide (record the pricing/refund calls). BOSS v0.125.0.
+last_reviewed: 2026-07-23
+review_by: 2027-01-19
+curve: market
 ---
 
 # Practice — The first dollar (from "will anyone pay?" to "someone is paying")

@@ -75,6 +75,19 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   if (r.code !== 0) console.log(r.out.trimEnd());
 }
 
+// --- 2b. the shelf is legible to the refresh disciplines ------------------
+// Caught: `design-system.md` and `skill-authoring.md` shipped with NO frontmatter, so no
+// refresh discipline could see them — design-system sat 40 days past its own AI-failure
+// catalog with nothing able to say so. Only the STRUCTURAL half gates (a doc nothing can
+// see); being due or overdue is information, not a reason to block a release — the script
+// exits 0 for those on purpose.
+{
+  const r = run('node', [join('scripts', 'check-freshness.js')]);
+  record('practice freshness legible', r.code === 0,
+    r.code === 0 ? 'every practice carries curve + review dates' : 'see output below');
+  if (r.code !== 0) console.log(r.out.trimEnd());
+}
+
 // --- 3. generated docs are current ---------------------------------------
 // Regenerate, then ask git whether that changed anything. If it did, the COMMITTED versions
 // were stale — the 56-release bug — and they are now fixed ON DISK, so this release cannot

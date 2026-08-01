@@ -5,6 +5,9 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (feature-flags + finishing thread) — GrowthBook ("flag the model, not just the feature"; A/B-testing non-deterministic LLMs), ConfigCat (flags as a vibe-coding safety net), Unleash/LaunchDarkly (trunk-based flags + flag-debt hygiene), Shape Up (circuit-breaker/appetite), Osmani (the 70%→80% problem). Pairs with git-workflow.md, ship-it-live.md, and the `focus` conscience moment / `/sunset` (IDEA-044). BOSS v0.111.0.
+last_reviewed: 2026-07-23
+review_by: 2027-07-23
+curve: craft
 ---
 
 # Practice — Feature flags (decouple deploy from release — and flag the *model*, not just the feature)

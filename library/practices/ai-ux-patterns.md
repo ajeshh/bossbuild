@@ -5,6 +5,9 @@ owner: designer
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-20 AI-UX scan (Shape of AI, Microsoft HAX, Google PAIR, IBM Carbon, LangChain HITL, NN/g 2026, Apple HIG GenAI) — BOSS v0.49.0, IDEA-029 · dark-pattern checklist + humane alternatives added v0.82.0 (RVW-031, from CDT *Dark Patterns in AI Chatbots* 2026, CC-BY) · classic-web pattern families + regulatory teeth (effect-not-intent, symmetry-in-choice) added v0.95.0 (RVW-056/057, first /humane-refresh sweep, IDEA-042) · cohort & frontier patterns (accessibility, minors, agentic, algorithmic-management) + junk-fees teeth added v0.96.0 (RVW-059/060/061/062/063, sweep pass 2) · generated-code-injects-dark-patterns (Vaccaro CHI'26) + dev-tool metering surface + citation upgrades (sycophancy→*Science* 2026, DECEPTICON precise cite, EU AI Act/EDPB-3-2025/Amazon-Prime teeth) added v0.108.0 (2026-07-23 research sweep)
+last_reviewed: 2026-07-23
+review_by: 2026-10-21
+curve: humane
 ---
 
 # Practice — AI-native interface patterns (2026)

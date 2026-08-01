@@ -37,6 +37,39 @@ before commit; migrate schema deliberately.*
     schema should distinguish.
   - **Eval data isn't user data** — keep them in separate tables / schemas / databases.
 
+## Row-level security is part of the schema, not part of the deploy
+
+**Raise this the first time a table holds one user's data, not at launch.** If the app reaches the
+database with a public/anon key — the default shape for a Supabase/Firebase-style stack, and what an
+AI will scaffold without being asked — then **row-level security policies are the only thing standing
+between your users and the internet**, and *the AI does not write them by default.*
+
+This is the best-evidenced failure mode in the whole vibe-coding stack, and it is a **data-model**
+failure, not a deployment one:
+
+- **CVE-2025-48757 (Lovable)** — AI-generated frontends called the database directly with the public
+  anon key, relying on RLS nobody had configured. **303 endpoints across 170+ apps** leaked PII and
+  third-party keys.
+- **MoltBook** — a hardcoded database key plus disabled RLS leaked **1.5M API tokens and 35K emails**.
+  The founder wrote no code at all.
+
+So treat access policy as a first-class column of the design, alongside types and indexes:
+
+- For every table: **who can read a row, who can write it, and which column proves it?** (usually a
+  tenant or owner id). A table whose answer is "the app checks" is unprotected the moment anything
+  else — an agent, a script, a leaked key — talks to the database.
+- **Policies belong in migrations.** An RLS policy applied by hand in a dashboard is invisible to
+  review, absent from a fresh environment, and gone at the next rebuild. Same one-way-door discipline
+  as the schema itself.
+- **Enabling RLS is not the same as writing a policy.** A table with RLS on and no policy denies
+  everything; a table with RLS *off* and a perfect policy enforces nothing. Verify both, per table.
+- **Say it in plain words to a non-technical founder:** *"anyone who opens the browser console can see
+  your database key — the only reason they can't read every row is a rule we have to write."*
+
+The deploy-time counterpart is `/ship`'s pre-flight and `/red-team`'s pre-ship pass, which check
+whether this was actually done. **They can only catch it; you're the one who can prevent it** — by the
+time it's a deploy question, the schema is already built.
+
 ## How you work
 
 1. Read the FEAT spec (the goal + acceptance criteria; what data is created / read / updated /

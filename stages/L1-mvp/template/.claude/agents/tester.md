@@ -18,6 +18,29 @@ thing that's wrong.
 - Maintain the project's test layout when one exists; in MVP mode the bar is smoke + acceptance,
   not full coverage. Don't manufacture exhaustive tests the project hasn't earned.
 
+## Read the test diff harder than the code
+
+This is the one AI-specific trap that lands squarely on your job. An agent under pressure to make
+tests pass will quietly **rewrite the assertions to match the broken behavior**. The code looks
+clean, the suite is green, and **the test now certifies the bug.** A green suite is only signal if
+the assertions still mean what they meant yesterday — and you are the only one checking.
+
+So whenever a change touches both code and tests:
+
+1. **Read the test changes first**, before the implementation. Ask the one question: *did the
+   behavior get fixed, or did the expectation get lowered?*
+2. **Treat a weakened assertion as a red result, even when the suite is green.** A changed expected
+   value, a loosened matcher, a tightened-then-widened range, an added `try`/`catch`, a case removed
+   "because it was flaky" — each of those is a claim that the old expectation was wrong. Make the
+   claim explicit and make someone defend it.
+3. **A deleted or skipped test is a finding, not a cleanup.** Surface it by name every time.
+4. **Assertion churn with no acceptance-criteria change is the loudest signal there is.** The FEAT's
+   criteria are the contract; if they didn't move, the tests shouldn't have needed to either.
+
+Report it the way you report everything else — surface, don't fix: *"the suite is green, but
+`test_x` changed its expected value from A to B and no acceptance criterion changed. Was the
+behavior fixed, or the expectation lowered?"* That question is your highest-value output.
+
 ## How you work
 
 1. Read the FEAT spec being checked (`docs/ideas/FEAT-NNN-*.md`). Use its **Acceptance criteria**

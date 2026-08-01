@@ -5,6 +5,9 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B5 — dev process / git workflow) — DORA/Accelerate [EVIDENCE], Addy Osmani on AI code review, METR n=16 perception-gap [EVIDENCE], the worktree-as-parallelism-primitive practitioner pattern — BOSS v0.87.0, FEAT-023 thread 1
+last_reviewed: 2026-06-20
+review_by: 2027-06-20
+curve: craft
 ---
 
 # Practice — Git workflow for AI-native building (trunk-based, review-bounded)

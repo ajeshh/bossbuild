@@ -5,6 +5,9 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0.
+last_reviewed: 2026-07-23
+review_by: 2026-10-21
+curve: model
 ---
 
 # Practice — Harness engineering (design the thing *around* the model, not just the prompt)

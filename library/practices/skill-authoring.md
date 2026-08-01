@@ -1,3 +1,15 @@
+---
+id: PRACTICE-skill-authoring
+type: practice
+owner: pm
+status: active
+host: claude-code
+provenance: adapted from Anthropic's own skill-creator skill via /vet RVW-013 — the wisdom, not the harness (the with/without eval machinery is deferred; see "What's left out"). Ground for anyone authoring a skill — BOSS authoring its own, and (UP candidate) a founder authoring one in a scaffolded project. Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.
+last_reviewed: 2026-06-20
+review_by: 2026-09-18
+curve: host
+---
+
 # Practice: Skill authoring — write skills the model actually triggers and follows
 
 > Adapted from Anthropic's own `skill-creator` skill via [RVW-013](../../docs/research/verdicts/RVW-013-skill-creator-authoring-discipline.md).

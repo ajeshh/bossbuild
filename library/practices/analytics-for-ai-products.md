@@ -5,6 +5,9 @@ owner: mentor-gtm
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (post-ship validation thread) — the "model accuracy != user success" doctrine (iamprayerson 2026), AI product metrics (TianPan 2026 — TCR, retained-character rate, frustration index), PostHog LLM analytics (product+observability convergence), Hamel Husain & Shreya Shankar (online evals on production traffic), the Camuffo RCT (validation buys faster quitting). Pairs with /measure (the runner), /evals + /judge-traces (correctness), /ai-cost + /cost-review (spend), the EVID ladder, and the humane lens (ai-ux-patterns.md). BOSS v0.113.0.
+last_reviewed: 2026-07-23
+review_by: 2027-01-19
+curve: market
 ---
 
 # Practice — Analytics for products that ARE AI (measure the right thing; don't surveil the human)

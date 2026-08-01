@@ -5,6 +5,9 @@ owner: mentor-humane
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-20 thread on dignity-cost / over-censoring — "voice the tension, never filter the menu" + how Claude voices concern without blocking. Drove the mentor-business metering-axis fix (RVW-023 → ADAPT) and the mentor-humane "name, never override" reframe. BOSS v0.67.x.
+last_reviewed: 2026-06-21
+review_by: 2027-06-21
+curve: craft
 ---
 
 # Practice — conscience voicing (voice the tension, never filter the menu)

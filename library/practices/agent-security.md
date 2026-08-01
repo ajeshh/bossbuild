@@ -5,6 +5,9 @@ owner: mentor-architect
 status: active
 host: claude-code
 provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep)
+last_reviewed: 2026-07-23
+review_by: 2026-10-21
+curve: threat
 ---
 
 # Practice — Agent security (a deterministic guard around a non-deterministic model)

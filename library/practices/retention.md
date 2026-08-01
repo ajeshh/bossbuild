@@ -5,6 +5,9 @@ owner: mentor-gtm
 status: active
 host: stack-neutral
 provenance: post-launch program (2026-07-23 SESSION, JOB 2). The gap the map found — /measure *reads* the retention curve; nothing helped *fix* it. Distilled from Casey Winters (activation > acquisition; the retention curve must flatten) + Bangaly Kaba (best-retained-users method) + Brian Balfour (retention is the engine, not a metric) + a16z/ChartMogul (the AI-"tourist" churn wave; rebase to Month 3) + Lincoln Murphy / ProfitWell-Campbell (involuntary churn is 20–40% of the total and the most recoverable) + Lenny Rachitsky (there is no retention silver bullet — it's the product). Pairs with analytics-for-ai-products.md (the measuring half), /retain (the runner), /onboard + activation (build #4), /pmf-check (a flattening curve IS a PMF lens), the humane lens (ai-ux-patterns.md). BOSS v0.121.0.
+last_reviewed: 2026-07-23
+review_by: 2027-01-19
+curve: market
 ---
 
 # Practice — Fixing the retention curve (there is no hack; the fix is always the product — the question is *which part*)

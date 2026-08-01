@@ -2,6 +2,104 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.136.0 — 2026-07-31
+
+- **The first live run of `/practice-refresh` — one wrong practice corrected, three pieces of knowledge
+  moved to the roles that needed them.** The v0.135.0 audit produced findings; this ships the fixes.
+  - **🔴 `mcp.md` corrected against the SHIPPED 2026-07-28 spec, read from the primary changelog** (not a
+    summary — this doc goes to founders). It had described the revision as forthcoming and the ground as
+    "still moving." **What actually changed is the judgment, not the date.** The revision's headline isn't
+    any feature — it's that the protocol **acquired rules for how it changes**: a formal feature-lifecycle
+    policy with a **minimum twelve-month deprecation window** and a public deprecated-features registry,
+    plus an extensions framework so new capability (Tasks, MCP Apps) arrives *outside* the core. So the
+    advice inverts: MCP is no longer ground to merely build *against* — the core is stable enough to build
+    *on*, and the lifecycle policy is the insurance. **The honest counterweight is now stated too:** this
+    revision was substantially breaking (sessions and the `initialize` handshake removed, `ping` /
+    `logging/setLevel` / SSE resumability gone, server-initiated requests replaced by Multi-Round-Trip
+    Requests, and Roots/Sampling/Logging deprecated outright) — if you built against the prior revision you
+    have migration work, and the twelve-month window is what makes it manageable.
+  - **Shape (b) re-costed.** The **stateless core means an MCP server can be a plain serverless function**
+    — a real cost-floor drop for exposing one. **The auth cliff did not move**, and got more precise
+    (`iss` validation per RFC 9207, credentials keyed to their issuing authorization server, Dynamic Client
+    Registration deprecated in favor of Client ID Metadata Documents). Cheaper to stand up ≠ safe to open.
+  - **The `/mcp` deferral was re-decided instead of left to rot.** Its stated condition — *"premature until
+    the 2026-07-28 spec settles"* — had silently expired, and **a deferral whose condition has expired is
+    not a decision, it's a stale note.** Split explicitly: the *spec* half of RVW-019's re-open condition is
+    **met**; the *demand* half (a real founder hitting the wall) is **not**, and that was always the
+    load-bearing half. Re-open on demand alone.
+  - **RLS is now part of schema design, not just the deploy checklist** (`db-architect`, L2). The agent that
+    owns the data model never mentioned row-level security, while `ship-it-live.md` named it as *the*
+    signature vibe-coded breach class (CVE-2025-48757/Lovable — 303 endpoints across 170+ apps; MoltBook —
+    1.5M tokens, founder wrote no code). Added as a design-time discipline: per table, *who can read a row,
+    who can write it, which column proves it*; **policies belong in migrations**, not a dashboard; enabling
+    RLS ≠ writing a policy; and the plain-words version for a non-technical founder. `/ship` and `/red-team`
+    can only *catch* this — `db-architect` is the one who can *prevent* it.
+  - **The test-diff discipline moved to `tester`** (L1). `git-workflow.md` carried BOSS's sharpest
+    AI-testing line — *an agent under pressure will rewrite the assertions to match the broken behavior, so
+    the suite goes green certifying the bug* — and the one role whose entire job is trustworthy signal
+    didn't hold it. Now concrete: read the test diff first, treat a weakened assertion as red **even when
+    the suite is green**, a deleted/skipped test is a finding, and assertion churn with no
+    acceptance-criteria change is the loudest signal there is.
+  - **The spec named as the non-technical cofounder's review surface** (`mentor-cofounder`, L1). Pure
+    composition — no new surface. The commonest way a non-technical founder goes quiet is that "staying in
+    the loop" gets defined as reviewing code they can't read, so they stop reviewing anything; agent-written
+    volume widens that fast. `/spec` already writes goal + acceptance criteria + smoke check, and *"what
+    this must do and how we'll know"* is a product judgment — the half they own. Labeled in-text as BOSS's
+    own judgment, not a cited finding.
+  - **Practice re-stamped**: `mcp.md` `last_reviewed` → 2026-07-31, `review_by` → 2026-10-29. The
+    discipline's own rule — stamp what you swept, even when nothing changed.
+
+## 0.135.0 — 2026-07-30
+
+- **The build craft stops rotting silently — BOSS's third standing refresh discipline (IDEA-056).**
+  BOSS had two anti-rot disciplines — `/humane-refresh` for the dark-pattern curve, `/recalibrate`
+  for the model curve — and **none** for the thing it mostly is: agents, MCP, the host surface,
+  security, data, testing, design process, deploy. Twenty-five practices, written in two big sweeps,
+  carrying no date, no owner, and no trigger.
+  - **🔴 The finding that forced it: BOSS ships a staleness discipline to founders and never applied
+    it to itself.** `/practice` writes a `review_by:` onto a founder's craft record and warns them the
+    AI craft moves fast enough to go quietly out of date. BOSS's own shelf had no such field, and
+    `design-system.md` + `skill-authoring.md` had **no frontmatter at all** — invisible to any
+    maintenance that could ever be written.
+  - **🔴 `mcp.md` was wrong at seven days old.** It described the 2026-07-28 MCP spec revision as
+    forthcoming and the ground as "still moving." That revision shipped — stateless core (the
+    `initialize` handshake and protocol session removed), a formal extensions framework, OAuth/OIDC
+    hardening — and settled *in order to* stop moving. It also silently opened the `/mcp` skill
+    deferral, whose stated condition was "until the 2026-07-28 spec settles."
+  - **Freshness is now machine-readable.** Every practice carries `last_reviewed:` / `review_by:` /
+    `curve:`. `review_by:` is deliberately the *same field* `/practice` writes for founders — one
+    discipline at two altitudes, not two inventions. `curve:` is the load-bearing idea: **a doc doesn't
+    rot because time passed, it rots because the ground under it moved**, so the curve sets the cadence
+    (`host`/`protocol`/`threat`/`model`/`humane` 90d · `market` 180d · `craft` 365d) *and* names which
+    discipline owns the sweep.
+  - **`npm run check:freshness`** — zero-dep, reuses the existing `parseFrontmatter` + `BOSS_ROOT`
+    helpers. Prints what's overdue, how long since each was swept, and which skill to run. It errors
+    **only** on unreadable metadata (a doc no discipline can see); being overdue is information, not a
+    reason to block a release. Added to the release gate on the gate's own "must have caught a real
+    shipped bug" terms — it found the two frontmatter-less practices.
+  - **`/practice-refresh` + `docs/research/watchlists/build-craft.md`** (10 domains, their taps, their
+    event triggers). Orchestrates what already exists: `check:freshness` schedules → `/deep-research`
+    finds → `/vet` judges → `/boss-learn` routes → re-stamp.
+  - **Cadence alone provably fails, so events are first-class.** The checker's first run reported
+    *25 fresh, 0 overdue* while `mcp.md` was already wrong; a quarterly cadence would have caught it in
+    October. Each domain carries event triggers (a spec revision, a new frontier model, a breach, a host
+    deprecation) that fire a refresh regardless of the date.
+  - **This sweep hunts for what's WRONG, not just what's missing** — the real difference from
+    `/humane-refresh`, which mostly adds to a catalog. `boss sync` pushes stale guidance into live
+    projects continuously, so *"we said X and X is now wrong"* is the highest-value finding a sweep can
+    return. `/vet`'s NO-bias applies to **additions, not reversals**; skepticism that only protects the
+    status quo is how a shelf rots. And practices get re-stamped **even when nothing changed** —
+    "checked, still correct" is the deliverable.
+  - **Internal-only**, alongside `/vet` and `/humane-refresh`. Nothing added to the founder-facing
+    surface, which is under an explicit compose-and-subtract mandate (EVID-001).
+  - **Named, not fixed** (queued in the audit): no `data-and-schema` or `testing` practice exists — that
+    knowledge lives only inside the `db-architect` / `tester` agent prompts, which carry no provenance,
+    no `/vet` pass, and no dates. Plus two cross-doc holes where BOSS already owns the answer: RLS is
+    named as the signature vibe-coded breach class by `ship-it-live.md` and never mentioned by
+    `db-architect`; *read the test diff harder than the code* lives in `git-workflow.md` and not in
+    `tester`. Full audit: `docs/research/sessions/SESSION-2026-07-30-craft-staleness-audit.md`.
+
+
 ## 0.134.0 — 2026-07-30
 
 - **The dormant hooks stop rotting, and start being findable (audit §C7) — plus RESUME splits from

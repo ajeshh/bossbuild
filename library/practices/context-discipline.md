@@ -5,6 +5,9 @@ owner: pm
 status: active
 host: claude-code
 provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0
+last_reviewed: 2026-07-23
+review_by: 2026-10-21
+curve: host
 ---
 
 # Practice — Context discipline

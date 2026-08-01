@@ -4,6 +4,9 @@ type: practice
 owner: mentor-humane (with mentor-talent)
 status: active
 provenance: distilled via /vet RVW-038 from Stanford WORKBank / Human Agency Scale (arXiv 2506.06576, 2025) · Amy Edmondson, psychological safety · Ethan Mollick, "secret cyborgs" (2024) · BetterUp Labs × Stanford "workslop" (HBR 2025). Numbers graded per docs/research/SOURCES.md two-lane rule. BOSS v0.80.0; feeds IDEA-037.
+last_reviewed: 2026-06-20
+review_by: 2027-06-20
+curve: craft
 ---
 
 # Practice — AI adoption culture (bring AI to a team without breeding resentment)

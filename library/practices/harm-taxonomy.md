@@ -5,6 +5,9 @@ owner: mentor-humane
 status: active
 host: stack-neutral
 provenance: distilled via /vet RVW-045 from Anthropic's Unified Harm Framework (5 dimensions) + Ada Lovelace Institute's advanced-AI-assistant harms (4 relationship-harms). Re-homed from a BOSS-local agent edit into a shippable practice per the mentor-architect boundary verdict (2026-06-20) — the humane lens is cross-cutting, so it belongs in a practice every mentor + the conscience can cite, not inside one agent. BOSS v0.84.0.
+last_reviewed: 2026-07-23
+review_by: 2026-10-21
+curve: humane
 ---
 
 # Practice — Harm taxonomy (name the axis, don't improvise)

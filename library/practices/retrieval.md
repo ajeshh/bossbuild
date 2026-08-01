@@ -5,6 +5,9 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (vector/RAG/frontier thread) — Anthropic (contextual retrieval; the ~200k-token skip-RAG line; the native memory tool), Chroma (context rot), Jason Liu (systematically improving RAG — recall@k first, inventory-vs-capability), the hybrid-search/RRF + recursive-512 chunking consensus. The whole value is telling a founder what NOT to build yet. Pairs with ai-first-init, context-discipline, harness-engineering. BOSS v0.114.0.
+last_reviewed: 2026-07-23
+review_by: 2026-10-21
+curve: model
 ---
 
 # Practice — Retrieval (a ladder, not a vector database — climb only when it hurts)

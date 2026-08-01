@@ -5,6 +5,9 @@ owner: pm
 status: active
 host: stack-neutral
 provenance: ported UP from the dhun dogfood (docs/workflows/lifecycles/REVALIDATION.md) via the 2026-06-20 method scan — BOSS v0.48.0
+last_reviewed: 2026-06-20
+review_by: 2027-06-20
+curve: craft
 ---
 
 # Practice — Revalidation (the 3-line gate before paused work re-enters build)
