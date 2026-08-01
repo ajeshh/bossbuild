@@ -2,6 +2,41 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.138.0 — 2026-08-01
+
+- **`/pretotype` can publish the fake door in one turn — and says out loud what it can't do.**
+  The first host-capability integration, folded into an existing verb. **No new skill**: if Artifacts
+  needed their own command the integration would have failed ([[EVID-001]] — compose, never add).
+  - **The gap it closes.** Savoia's whole argument is that a demand test must be *cheap and fast*.
+    BOSS asked for "a landing page with a sign-up button" and then left the founder to design, build
+    and host it — so **the most important discipline BOSS teaches was the one most likely to be
+    skipped.** The page is now composed from what BOSS already holds (the canvas's People / Problem /
+    Promises, plus `BRAND.md` voice and design tokens when they exist) and published as a real
+    shareable URL: no deploy, no host account, no cost.
+  - **🔴 The optimistic version of this idea was dead on arrival, and that's recorded.** The design
+    hinged on whether a published page could hold shared state — visit, click, leave an email,
+    founder reads the count. **It cannot.** The available runtime capabilities are `downloads` and
+    `mcp`; there is no persistence, and `mcp` runs with the *viewer's* credentials on a page that
+    can't be shared publicly at all — the one thing a fake door must be. Verified before building,
+    not assumed; the brief that speculated has been corrected rather than quietly deleted.
+  - **So the limitation is a spoken line, not a footnote.** The skill instructs BOSS to tell the
+    founder, in their hearing, that *the page stores nothing* and to point capture at a free form
+    (Tally / Formspark / a Google Form) the CTA links out to. **A fake door that silently drops
+    signups is worse than no test** — the founder reads a zero and kills a good bet over a plumbing
+    bug. Also named as real steps: the page is **private until they share it**, and the count lives
+    in the form tool, not in BOSS.
+  - **The humane line a fake door doesn't cross** (`ai-ux-patterns.md`, PRINCIPLE #6). Testing demand
+    for something that doesn't exist is honest; impersonating a real company, implying the thing is
+    live and purchasable, fabricated social proof ("join 10,000 others"), manufactured urgency and
+    confirmshaming are not. The test given is the one a founder can actually apply: **could you
+    follow up honestly?** If the "you're on the list" email wouldn't match what the page implied,
+    the page is lying — and the signal is worthless anyway.
+  - **Not extended to `/landing` or `boss board`, deliberately.** Both would benefit and both are
+    easy, which is exactly why they wait. `/pretotype` is the one where the artifact removes a step
+    that currently stops the discipline happening at all. If a real founder runs a published fake
+    door and it produces signal, extend it; if nobody runs one, extending it would be three unused
+    features instead of one. **The compose-and-subtract mandate applies to good ideas too.**
+
 ## 0.137.0 — 2026-08-01
 
 - **BOSS stops naming models. Route by capability, never by name (PRINCIPLE #3 applied to itself).**
