@@ -85,6 +85,15 @@ function checkStage(stageId) {
     }
   }
 
+  // `postLaunch` folds a rung's after-you-ship skills in `boss map` until a FEAT ships. A stale
+  // entry would silently fold nothing (harmless) or, worse, name a skill that no longer exists and
+  // make the count lie about what's behind the fold.
+  for (const s of manifest.postLaunch || []) {
+    if (!(manifest.skills || []).includes(s)) {
+      errors.push(`postLaunch lists '${s}' which is not in this stage's skills (the fold count would lie)`);
+    }
+  }
+
   // Reverse: a file present but unclaimed by the manifest never syncs (managedFiles
   // iterates the manifest), so it silently rots in every existing project.
   const dir = (p) => (existsSync(p) ? readdirSync(p) : []);

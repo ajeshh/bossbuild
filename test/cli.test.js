@@ -137,6 +137,32 @@ test('NO_COLOR is honoured — no ANSI escapes reach a pipe', () => {
   assert.ok(!/\x1b\[/.test(out), 'NO_COLOR must strip every escape sequence');
 });
 
+test('the post-launch arc folds until something ships, then opens by itself', () => {
+  // §C1/§E1: at MVP a founder with one idea was read 44 skills, 9 of them about retention,
+  // pricing and trust — for a product with no users. Nothing is removed or disabled; the fold
+  // is a read of real state (a FEAT in the Shipped column), so it opens without being asked.
+  const mvp = {
+    '.boss/manifest.json': JSON.stringify({
+      name: 'p', bossVersion: '0.0.1', stage: 'L1-mvp', mode: 'MVP',
+      installedLayers: ['L0-quickstart', 'L1-mvp'],
+      agents: [], hooks: [], loops: [],
+      skills: ['triage', 'spec', 'smoke', 'measure', 'pmf-check', 'retain', 'trust'],
+    }),
+    '.boss/config.json': '{}',
+  };
+
+  const preLaunch = project({ ...mvp, 'docs/ideas/IDEA-001.md': idea('IDEA-001') });
+  const folded = boss(['map'], preLaunch).out;
+  assert.match(folded, /for after you ship/, 'post-launch skills must fold before launch');
+  assert.ok(!/^ +\/measure/m.test(folded), '/measure must not be listed pre-launch');
+  assert.match(boss(['map', '--all'], preLaunch).out, /^ +\/measure/m, '--all must open the fold');
+
+  const shipped = project({ ...mvp, 'docs/ideas/FEAT-001.md': feat('FEAT-001', { status: 'shipped', shipped_on: '2026-08-01' }) });
+  const open = boss(['map'], shipped).out;
+  assert.ok(!/for after you ship/.test(open), 'a shipped FEAT must open the fold with no flag');
+  assert.match(open, /^ +\/measure/m, '/measure is the work once something is live');
+});
+
 test('boss map previews the next rung without dumping it', () => {
   // §C1: the preview used to print all 28 of MVP's skills to an empty Quickstart project.
   const dir = bossProject();

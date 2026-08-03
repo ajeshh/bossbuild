@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import { STAGE_ORDER } from './paths.js';
 import { loadModes, packageSkillMd, skillGloss, modeWord } from './modes.js';
 import { dim, bold } from './ui.js';
+import { collectBoard } from './board.js';
 
 function projectSkillMd(projectDir, name) {
   return join(projectDir, '.claude', 'skills', name, 'SKILL.md');
@@ -39,14 +40,26 @@ function installedGloss(projectDir, name, definedIn) {
   return { gloss: '', usage: '' };
 }
 
+// Has this project actually shipped anything? The honest predicate behind folding the
+// post-launch arc — frontmatter-true (a FEAT in the board's Shipped column), never guessed.
+// Degrades to `false` if the board can't be read, which errs toward the calmer surface.
+function hasShipped(projectDir) {
+  try {
+    return collectBoard(projectDir).cards
+      .some((c) => c.column === 'Shipped' && /^FEAT/i.test(c.id));
+  } catch { return false; }
+}
+
 export function renderMap(projectDir, stamp, opts = {}) {
   const showAllNext = opts.next === true;
+  const showAll = opts.all === true;
   const modes = loadModes();
   const byId = Object.fromEntries(modes.map((m) => [m.id, m]));
   // skill name -> the stage id that first introduces it (ladder order).
   const skillStage = {};
   for (const m of modes) for (const s of m.skills || []) if (!(s in skillStage)) skillStage[s] = m.id;
 
+  const shipped = hasShipped(projectDir);
   const installed = stamp.installedLayers || [stamp.stage];
   const deepest = installed[installed.length - 1];
 
@@ -79,10 +92,18 @@ export function renderMap(projectDir, stamp, opts = {}) {
     const mode = byId[layerId];
     const skillsHere = (stamp.skills || []).filter((s) => skillStage[s] === layerId).sort();
     if (!skillsHere.length) continue;
+    // Fold this rung's post-launch skills until something has shipped. `--all` opens them; once a
+    // FEAT ships they appear on their own under their own heading, because then they're the work.
+    const post = new Set(shipped || showAll ? [] : (mode.postLaunch || []));
+    const now = skillsHere.filter((s) => !post.has(s));
+    const later = skillsHere.filter((s) => post.has(s));
     lines.push(`    ${bold(mode.name)}`);
-    for (const s of skillsHere) {
+    for (const s of now) {
       const { gloss } = installedGloss(projectDir, s, layerId);
       lines.push(`      ${'/' + s.padEnd(18)} ${dim(fit(gloss))}`);
+    }
+    if (later.length) {
+      lines.push(`      ${dim(`… +${later.length} for after you ship — measuring, retention, pricing, trust  (\`boss map --all\`)`)}`);
     }
   }
   lines.push('');

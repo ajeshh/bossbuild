@@ -2,6 +2,32 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.139.0 — 2026-08-03
+
+- **The post-launch arc folds until you've shipped something — the reversible half of the
+  subtraction question (checklist 5.3, option C).** At MVP a founder with one idea was read **44
+  skills, nine of them about measuring, retention, pricing and trust** — for a product with no
+  users. That is [[EVID-001]]'s *"worried about bloating my app"* rendered as a menu.
+  **44 → 35 listed; 72 → 64 lines.**
+  - **Nothing is removed, disabled, or made harder to run.** The nine still install, still work, and
+    are one flag away (`boss map --all`). This is the `headline` pattern from v0.130.0 applied to
+    *installed* skills instead of previewed ones.
+  - **The fold is a read of real state, so it opens without being asked.** The predicate is a FEAT in
+    the board's **Shipped** column — frontmatter-true, never guessed, degrading to the calmer surface
+    if the board can't be read. Ship one feature and the post-launch arc appears on its own, because
+    at that point it *is* the work. Verified both directions in a throwaway and locked with a test.
+  - **It mirrors the grouping GUIDE.md already uses.** v0.134.0 gave these eleven skills their own
+    "After you ship" section rather than padding the MVP rung; this makes `boss map` agree with the
+    doc instead of contradicting it. Declared per-rung as `postLaunch` in the manifest — BOSS's own
+    file, not SKILL.md frontmatter (which the host parses) — and gate-checked as a real subset, so a
+    stale entry can't make the fold count lie about what's behind it.
+  - **Why option C and not the merge.** The brief recommended composing `/measure` + `/pmf-check` +
+    `/retain` + `/onboard` + `/roadmap` into one verb, and that may still be right — five of them
+    carry the same `n < 10` gate and route to each other 3–5 ways. But this is half a day and fully
+    reversible, and it answers the cheaper question first: *does the surface feel smaller?* If it
+    does, the merge may be unnecessary. If it doesn't, the merge is earned rather than assumed.
+    **The decision itself stays a founder call.**
+
 ## 0.138.0 — 2026-08-01
 
 - **`/pretotype` can publish the fake door in one turn — and says out loud what it can't do.**

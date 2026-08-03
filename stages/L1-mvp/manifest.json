@@ -50,6 +50,17 @@
     "pretotype",
     "close"
   ],
+  "postLaunch": [
+    "landing",
+    "measure",
+    "pmf-check",
+    "retain",
+    "onboard",
+    "roadmap",
+    "first-dollar",
+    "monetize",
+    "trust"
+  ],
   "loops": [
     "spec-loop",
     "pretotype-loop",

@@ -4,7 +4,12 @@
   "summary": "Customers are real, the team is growing, and coordination — not code — is the bottleneck. The founder's rung is leader (give away your Legos). Everything Scale adds is symptom-gated: present when earned, dormant until its trigger, exactly like the team layer is dormant-solo. Authored so far (slices 1–2): the operate loop's core — /incident (the blameless one-page post-mortem for an outage) and the /triage --feedback customer register (bug / friction / feature-request-as-EVID-not-spec / churn) — plus the Scale working rules (high-risk paths, DRI on decisions, and the demotions Scale refuses) and an unlock that names its own evidence bar first. Trigger-gated, NOT yet authored (slices 3–5, each waiting on a real project's symptom): /economics, collaborator roles + mentor-operations + onboarding briefs, /code-health, /refactor-wave, RFC-NNN, the operate-loop conscience moment, and the give-away-your-Legos conscience moment. Scale ships ZERO hook loops on purpose — a conscience moment needs a real predicate, and no project has yet hit the symptom that would design one.",
   "requires": "L2-v1",
   "agents": [],
-  "skills": ["incident"],
+  "skills": [
+    "incident"
+  ],
+  "postLaunch": [
+    "incident"
+  ],
   "hooks": [],
   "loops": [],
   "unlocksNext": null,

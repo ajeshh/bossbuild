@@ -44,6 +44,12 @@ export function loadModes() {
         // tell where I am / I'm worried about bloat"). Empty = show them all (fine for a
         // rung with 1–3 skills). `boss map --next` always shows the full list.
         headline: m.headline || [],
+        // Skills whose moment only arrives once something is LIVE — the "After you ship" arc
+        // (GUIDE.md groups them the same way). `boss map` folds these to a single line until the
+        // project has actually shipped a FEAT, so a founder at MVP with one idea isn't read a menu
+        // of nine verbs about retention and pricing (REVIEW-2026-07-28 §C1 / §E1). Nothing is
+        // removed or disabled — they install, they run, they're one flag away.
+        postLaunch: m.postLaunch || [],
         loops: m.loops || [],
         hooks: m.hooks || [],
         requires: m.requires || null,
