@@ -2,6 +2,57 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.150.0 — 2026-08-17
+
+- **The research inbox cleared — four claims vetted, two adopted, two rejected. The vets found more
+  defects in BOSS than in the claims.** Every one of the four carried a "verify before adopting" flag
+  written by the scan that captured it. Honoring those flags is what produced the release: **three of
+  the four claims changed shape or died on verification**, and the two things worth shipping were
+  drift in BOSS's own shelf that the vetting exposed on the way past.
+  - **[[RVW-073]] workslop antecedents — ADAPT (narrow).** The ask was to restructure
+    `ai-adoption-culture.md` around a causal chain. **Rejected on its own premise:** the practice does
+    not present four independent sections — its preamble already *is* that spine ("the failure isn't
+    the tool, it's the rollout"). What survived is that the spine had been **asserted without a
+    citation for a year**, and the 2026 follow-on (n=962, OSF preprint) is its first evidence — added
+    as an **association, never a cause**, because a cross-sectional self-report cannot say a mandate
+    *produced* the slop. Plus the half the practice never had: it was written entirely from the
+    receiving end. **52.7% admit sending; 55% of recipients got it from a manager; 85% say it damaged
+    their trust in leadership.** On a two-person team the founder is the highest-leverage sender and
+    the least likely to be told — so the norm now points **down**, not just sideways.
+  - **[[RVW-074]] pickup latency — REJECT**, and the review sandwich rejected separately (an AI
+    blessing the AI's diff so the human reads *less* erodes *whoever clicks merge owns what the agent
+    wrote*). Batch size was **already** `git-workflow.md`'s organizing frame five times over, and the
+    pickup stat was already in the file. **A solo founder has no pickup queue** — a 400-line agent PR
+    doesn't wait, it gets merged unread — so the reframe would have made the practice *less* true for
+    the only cohort BOSS has validated.
+  - **[[RVW-075]] AGENTS.md — ADAPT (narrow).** The claim duplicates a scaffold BOSS shipped in
+    **v0.58.0**; its team framing serves a cohort of zero. But the vet caught real drift:
+    `context-discipline.md` was **swept 2026-08-11, seven weeks after that split shipped**, and still
+    told founders to put project constraints in `CLAUDE.md` while never mentioning `AGENTS.md`.
+    Followed literally, BOSS's own context practice **forked the shared layer BOSS's own scaffold
+    creates.** Now stated, primary-verified: *Claude Code reads `CLAUDE.md`, not `AGENTS.md`* — the
+    import is the bridge, and the "keep it tight" budget applies to **both files combined**, because
+    the split saves exactly zero tokens.
+  - **[[RVW-076]] spec-as-shared-artifact — REJECT, already shipped.** The entire suggested routing
+    landed in v0.136.0 and sits committed at HEAD, judgment-labeled and citation-clean. The inbox item
+    was a leftover of work already done.
+- **Two second-hand attributions failed verification in one session, and that is the finding.**
+  [[RVW-072]]'s "Karpathy shared this" arrived half-right (the lecture is real; the second video was an
+  unrelated older explainer), and **"DORA 2026 says the bottleneck moves to specification"** does not
+  verify at all — DORA's actual 2026 publication is *ROI of AI-Assisted Software Development
+  (2026.01)*, an ROI report; the phrasing traces to blog summaries and preprints. Both are now
+  quarantined in their verdicts. **An attribution is a citation's load-bearing half, and BOSS had been
+  grading evidence without checking who actually said it.**
+- **The hygiene fix that came out of a REJECT.** `git-workflow.md` read "(DORA names it directly;
+  agentic PRs already sit ~5.3× longer before pickup)" — an unverified vendor multiplier standing next
+  to a DORA attribution, so it read as DORA's. Exactly the lane-blend `SOURCES.md` forbids. **Fixed by
+  subtraction:** the number is gone, the direction kept and correctly sourced; the header's `~4×` and
+  `~12%` now state the gap with their grade named instead of pretending to precision. **A REJECT that
+  repairs the practice it declined to change is the ledger doing its job.**
+- **Nothing was added to the founder surface.** Three practice files edited, four verdicts recorded,
+  four inbox items resolved. No new skill, agent, hook, or section — EVID-001's compose-and-subtract
+  holds, and two of the four edits are subtractions.
+
 ## 0.149.0 — 2026-08-17
 
 - **`npm run check:refs` — the standing answer to "does everything BOSS points at actually exist?"**

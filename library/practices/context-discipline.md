@@ -4,7 +4,7 @@ type: practice
 owner: pm
 status: active
 host: claude-code
-provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0
+provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file.
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
 curve: host
@@ -56,7 +56,22 @@ curve: host
   auto-memory first and let `CLAUDE.md` hold only what auto-memory structurally can't — the
   repo-shaped gotchas that are true regardless of who is working or what they're doing.
 - `<!-- HTML comments -->` are stripped before injection (zero-token notes for humans).
-- `@path` imports are organizational only — all imported files still load at startup (no token saving).
+- **Which file the words go in is a two-file split — and it's the one BOSS has scaffolded since
+  v0.58.0.** *Verified against the primary docs 2026-08-17:* **Claude Code reads `CLAUDE.md`, not
+  `AGENTS.md`** — *"If your repository already uses `AGENTS.md` for other coding agents, create a
+  `CLAUDE.md` that imports it so both tools read the same instructions without duplicating them."*
+  That's exactly the shape BOSS ships: host-neutral working rules and conventions live in `AGENTS.md`
+  (read directly by Codex, Cursor, Copilot and the rest); `CLAUDE.md` opens with `@AGENTS.md` and adds
+  only the Claude-specific layer. **Keep new rules on the right side of that cut** — a host-neutral
+  convention written into `CLAUDE.md` is invisible to every other tool you or a collaborator use.
+  (A symlink works when there's no Claude-specific layer, but needs Admin/Developer Mode on Windows —
+  prefer the import.) Adopting a repo that already has one: `/init` (with `CLAUDE_CODE_NEW_INIT=1`)
+  reads it, and `/import` appends a **one-time copy** — one-time means it can drift, so the live
+  import is the better default.
+- **The split saves zero tokens.** `@path` imports are organizational only — every imported file,
+  `AGENTS.md` included, still loads at startup. So the "keep it tight" budget above applies to
+  **`CLAUDE.md` + `AGENTS.md` together**, and `/context` shows you both. One source of truth across
+  tools, not context economy.
 - `CLAUDE.local.md` (gitignored) holds personal/local notes. Edits to `CLAUDE.md` apply on
   restart/`/compact`, not mid-session. Run `/context` and `/memory` to see what actually loaded.
 

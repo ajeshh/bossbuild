@@ -3,7 +3,7 @@ id: PRACTICE-ai-adoption-culture
 type: practice
 owner: mentor-humane (with mentor-talent)
 status: active
-provenance: distilled via /vet RVW-038 from Stanford WORKBank / Human Agency Scale (arXiv 2506.06576, 2025) · Amy Edmondson, psychological safety · Ethan Mollick, "secret cyborgs" (2024) · BetterUp Labs × Stanford "workslop" (HBR 2025). Numbers graded per docs/research/SOURCES.md two-lane rule. BOSS v0.80.0; feeds IDEA-037.
+provenance: distilled via /vet RVW-038 from Stanford WORKBank / Human Agency Scale (arXiv 2506.06576, 2025) · Amy Edmondson, psychological safety · Ethan Mollick, "secret cyborgs" (2024) · BetterUp Labs × Stanford "workslop" (HBR 2025). Numbers graded per docs/research/SOURCES.md two-lane rule. BOSS v0.80.0; feeds IDEA-037. Sharpened via /vet RVW-073 (2026-08-17) with the 2026 workslop follow-on (OSF preprint 10.31234/osf.io/5f78h_v1, n=962, 2026-02-05) — [EVIDENCE]-pending, associational; the restructure that claim proposed was REJECTED (the spine was already here).
 last_reviewed: 2026-06-20
 review_by: 2027-06-20
 curve: craft
@@ -13,7 +13,12 @@ curve: craft
 
 > **The shape of the risk.** A founder who forces AI on a team top-down gets the opposite of what they
 > wanted: people **hide** their AI use, **ship each other sloppy AI output**, and quietly **resent** the
-> mandate. The failure isn't the tool — it's the rollout. The whole point of this practice: a small
+> mandate. The failure isn't the tool — it's the rollout. *(That last line was asserted here for a year;
+> the 2026 workslop follow-on is its first evidence — sending workslop was **more common among** workers
+> with high trust in AI, low agency over their own AI use, an org mandate to use it, and low psychological
+> safety. n=962, preprint, self-report: those are **associations, not causes** — the study cannot say the
+> mandate produced the slop. Note what the four are, though: §1 and §2 of this practice, standing next to
+> §4.)* The whole point of this practice: a small
 > founding team adopts AI so people **opt in**, not comply. (This is the humane lens turned on the
 > founder's *own* team — BOSS has to walk it, not just preach it.)
 
@@ -66,10 +71,24 @@ BetterUp × Stanford ("workslop," HBR 2025, n=1,150): ~40% of workers received A
 done but isn't in the last month, costing ~2 hours of rework each — and, the part that bites, recipients
 rated the **sender** less trustworthy (42%), less intelligent (37%). *([EVIDENCE], vendor-co-authored —
 treat the dollar figures as illustrative, the trust-erosion as solid.)* Bad AI use doesn't just waste
-time; **it costs you your team's respect.** The norm that prevents it is one sentence:
+time; **it costs you your team's respect.**
+
+The 2026 follow-on adds the half that points *at you*. Everything above is written from the receiving
+end; the sending end is where a founder actually stands. **52.7% admit sending** some — and **55% of
+people who received it got it from a manager or supervisor**, with **85% saying it damaged their trust in
+leadership.** *(n=962, preprint, self-report — directionally consistent with the 2025 figures above.)* On
+a two-person team that arithmetic is unkind: the person with the most leverage to send workslop is the
+founder, and they're the person least likely to be told. *(That last clause is BOSS's inference, not a
+finding — but ask yourself who on your team would tell you.)* So the norm points **down**, not just
+sideways:
 
 > **"Would I be proud to hand this to my cofounder?"** AI output is a draft *you own*, not a thing you
 > forward.
+
+*(Why "high trust in AI" belongs on that list: it rhymes with the **competence gate** — AI advice
+amplifies the judgment you already have, and helps least whoever can least grade it ([[RVW-039]],
+[`conscience-voicing`](conscience-voicing.md)). Uncalibrated trust looks like the shared shape. The two
+studies measure different things, so treat it as a rhyme worth noticing, not a mechanism worth citing.)*
 
 ## 5. How to run it — the cofounder AI consent + norms conversation
 

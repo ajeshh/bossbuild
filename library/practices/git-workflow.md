@@ -4,7 +4,7 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B5 — dev process / git workflow) — DORA/Accelerate [EVIDENCE], Addy Osmani on AI code review, METR n=16 perception-gap [EVIDENCE], the worktree-as-parallelism-primitive practitioner pattern — BOSS v0.87.0, FEAT-023 thread 1
+provenance: distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B5 — dev process / git workflow) — DORA/Accelerate [EVIDENCE], Addy Osmani on AI code review, METR n=16 perception-gap [EVIDENCE], the worktree-as-parallelism-primitive practitioner pattern — BOSS v0.87.0, FEAT-023 thread 1. Citation-hygiene pass 2026-08-17 (spun off from /vet RVW-074): unverified vendor multipliers were sitting next to a DORA attribution — numbers cut, direction kept and correctly sourced to DORA's *ROI of AI-Assisted Software Development* (2026.01).
 last_reviewed: 2026-06-20
 review_by: 2027-06-20
 curve: craft
@@ -13,8 +13,10 @@ curve: craft
 # Practice — Git workflow for AI-native building (trunk-based, review-bounded)
 
 > **The shape of the problem.** AI didn't change what good version control is — it changed which part
-> hurts. The bottleneck used to be *writing* the code; now an agent writes it ~4× faster and you deliver
-> maybe ~12% more, because the new bottleneck is **review**. So the whole discipline reorients around one
+> hurts. The bottleneck used to be *writing* the code; now an agent writes it several times faster and
+> you deliver only a little more, because the new bottleneck is **review**. *(That gap is the finding;
+> the specific multipliers floating around it are vendor- and practitioner-grade, and none of them were
+> measured on your team.)* So the whole discipline reorients around one
 > question: *how much can two humans actually read and stand behind in a day?* Everything below is in
 > service of keeping the batches small enough, and the ownership clear enough, that the answer stays
 > honest. (DORA's 2025 line: **AI amplifies what's already there** — install the fundamentals *before*
@@ -54,8 +56,12 @@ limit. More agents than you can review isn't throughput; it's unreviewed code wi
 
 ## Risk-tiered review, not blanket gates
 
-Blanket multi-approver review is what *kills* small batches (DORA names it directly; agentic PRs already
-sit ~5.3× longer before pickup). The answer isn't less review — it's review **proportioned to risk**.
+Blanket multi-approver review is what *kills* small batches (DORA names it directly). And the wait is
+the expensive part: DORA's 2026 ROI reading is that when review can't keep pace, the gains resurface
+downstream as costs — **more changes waiting for review**, more rework, more risk reaching production.
+*(Delivery-analytics vendors publish hard multipliers for that wait; they're unverified and every such
+vendor profits from the conclusion, so take the direction and leave the numbers.)* The answer isn't less
+review — it's review **proportioned to risk**.
 
 - **Whoever clicks merge owns what the agent wrote** (Addy Osmani). This is the load-bearing line. The
   agent is not accountable; the human who merged it is. That ownership is what keeps "the AI wrote it"
