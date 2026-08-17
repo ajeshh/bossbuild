@@ -137,6 +137,13 @@ list of what each mode includes lives where it can't go stale:
 **Prerequisites:** [Node.js](https://nodejs.org) 18+ and [Claude Code](https://claude.com/claude-code)
 (BOSS runs *inside* Claude Code — the CLI scaffolds, the skills run in Claude).
 
+> **Installs clean under npm v12's new security defaults.** As of npm v12, dependency lifecycle
+> scripts, git dependencies and remote-URL dependencies are all off unless you explicitly allow
+> them — so most CLIs now need an approval step. BOSS needs none: **zero dependencies, zero dev
+> dependencies, and no `preinstall`/`install`/`postinstall` script.** There's nothing to approve and
+> nothing to build. (Not a reaction to the change — Principle #4 has required a dependency-free
+> `src/` since the beginning. It just happens to be exactly what the new defaults reward.)
+
 ```bash
 # pick one — all three put `boss` on your PATH (zero runtime deps)
 npx bossbuild new my-app        # no install; try it first

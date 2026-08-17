@@ -2,6 +2,19 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.158.0 — 2026-08-17
+
+- **README: BOSS installs clean under npm v12's new security defaults, and that is worth saying out
+  loud right now.** npm v12 turns off dependency lifecycle scripts, git dependencies and remote-URL
+  dependencies unless explicitly allowed — so most CLIs now need an `npm approve-scripts` step on the
+  way in. **BOSS needs none: 0 dependencies, 0 devDependencies, and no `preinstall`/`install`/
+  `postinstall`/`prepare` script.** Nothing to approve, nothing to build. Stated as what it is —
+  **not** a reaction to the change: Principle #4 has required a dependency-free `src/` since the
+  beginning, and it simply happens to be what the new defaults reward. A rule that was about
+  evolvability turning out to be a security posture is worth one honest sentence, not a boast.
+- Verified against the real package, not asserted: `dependencies: 0 · devDependencies: 0 ·
+  lifecycle scripts: none`.
+
 ## 0.157.0 — 2026-08-17
 
 - **The subtraction pass — the first time BOSS has ever removed a skill.** [[EVID-001]]'s mandate was
