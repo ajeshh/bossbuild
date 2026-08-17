@@ -95,7 +95,7 @@ nobody wants to be the one who kills it. Removing it well is a real improvement.
 ## Move 1 — usage-validate that it's actually dead (don't kill on a hunch)
 
 **A feature you *feel* is unused and a feature that *is* unused are different things.** Before anything, read the
-evidence: `/measure` / analytics for this feature's usage, the retention/`/retain` read, the `--feedback`
+evidence: `/measure` / analytics for this feature's usage, the retention/`/health` read, the `--feedback`
 register. Kill it on **data**, not vibes.
 - **Genuinely near-zero usage across a real window** → a real zombie; proceed.
 - **Quiet but not dead** (a small, steady, or high-value cohort uses it) → this is *not* a sunset; it's a

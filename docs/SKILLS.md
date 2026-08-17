@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.156.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.157.0**.
 
 ## Quickstart
 
@@ -47,13 +47,11 @@
 - **`/ship`** — Put your app where a real user can hit it — the CD half of building  _(/ship [--preview | --rollback])_
 - **`/landing`** — Generate the founder's FIRST landing page — on-brand, honest, out the block to scale  _(/landing [--demand | --product])_
 - **`/measure`** — The post-ship counterpart to /pretotype  _(/measure)_
-- **`/pmf-check`** — The product-market-fit verdict — the one gate the whole post-launch journey turns on  _(/pmf-check)_
-- **`/retain`** — The decaying-curve doctor  _(/retain)_
 - **`/onboard`** — Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once)  _(/onboard)_
 - **`/roadmap`** — Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list  _(/roadmap)_
-- **`/first-dollar`** — Take the first dollar — the sharpest JIT moment in the lifecycle and the highest-grade evidence event BOSS ever sees (a paying customer is commitment-grade EVID by definition)  _(/first-dollar)_
-- **`/monetize`** — Run the money once customers exist — the layer after /first-dollar  _(/monetize [upgrade | dunning | price-raise | expansion])_
 - **`/trust`** — Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater  _(/trust)_
+- **`/health`** — The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix  _(/health)_
+- **`/money`** — The money verb, from the first dollar to operating it  _(/money [upgrade | dunning | price-raise | expansion])_
 
 ## V1
 

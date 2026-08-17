@@ -2,6 +2,43 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.157.0 — 2026-08-17
+
+- **The subtraction pass — the first time BOSS has ever removed a skill.** [[EVID-001]]'s mandate was
+  *compose and subtract, never add*, and the surface had grown from 22 to 48 skills since it was
+  written. **48 → 46**, and the post-launch block a live founder actually faces goes **9 → 7**.
+- **`/pmf-check` + `/retain` → `/health`.** They read the same retention curve, sat behind the same
+  n<10 gate, and both rebased past the same AI-tourist wave — **duplicated text, not just adjacent
+  scope.** The founder had to know whether they had a *fit* problem or a *retention* problem in order
+  to pick the verb that would have told them. `/health` renders the verdict first (Sean-Ellis 40% +
+  curve flattening + pull-vs-push, defaulting to pre-PMF), then — if the curve sags — says where it
+  dies and routes. **The split was also costing accuracy:** `/pmf-check` still told founders to use
+  `/retain` and `/onboard` *"when built"*, months after both shipped.
+- **`/first-dollar` + `/monetize` → `/money`.** Sequential stages of one job where **each one's honest
+  output, when it didn't apply, was "go run the other one"** — `/monetize`'s gate literally said *"if
+  there's no first dollar, that's `/first-dollar`'s job."* `/money` reads where you are and routes: no
+  yes yet → `/interview`; a yes but no rail → the five deferrable moves ending in the commitment-grade
+  EVID; paying customers → operating it.
+- **Two candidate merges were REJECTED, and that matters as much as the two that shipped.**
+  **`/measure` + `/judge-traces`** share the word "analysis" and nothing else — `/measure` is about
+  the founder's *users*, `/judge-traces` about their *AI agents'* behaviour, from a different data
+  source. **`/onboard` stays separate** from `/health`: it's the design *fix* the diagnosis routes to,
+  and burying a substantial design workflow inside a diagnostic would have made both worse. **Two
+  honest merges beat four forced ones**; subtraction that damages the thing is not a win.
+- **The first real use of v0.155.0's supersede machinery, and it worked end-to-end.** Four ledger
+  entries, and an existing project now gets told what went, what replaced it, why, and what changes —
+  *"your `docs/pmf/` files stay where they are"* — with nothing deleted until `--remove`. The two
+  releases were built a day apart and this is what the first was for.
+- **🔴 The gate learned the reference class it was still missing.** `check:refs` gained agent names in
+  v0.151.0; the first retirement proved **skills are the same class** and were uncovered —
+  **14 files still pointed at the four dead verbs**, including `mentor-venture`, `/sunset`,
+  `/roadmap`, `/measure`, `/trust`, four practices and the L1 manifest. Class 4 now reads the
+  supersede ledger, so **a retiring release has to clean up after itself**. Scoped to the ledger
+  rather than "any `/name`" so it can't cry wolf on `/tmp`. Two scope bugs it caught in itself on the
+  way: the successor must be allowed to name what it replaced (that's the signpost, not a dangling
+  pointer), and excluding all of `docs/` was wrong — `GUIDE.md` is as live as a shipped file, and it
+  was still sending founders to all four.
+
 ## 0.156.0 — 2026-08-17
 
 - **`boss update` — the half of the two-hop trap nothing could answer.** `boss status` compares a

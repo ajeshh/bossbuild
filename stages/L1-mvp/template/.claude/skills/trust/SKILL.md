@@ -6,8 +6,8 @@ description: Earn trust honestly — the AI-specific privacy/compliance load-bea
 # /trust — earn it honestly (privacy + compliance, JIT, no theater)
 
 The load-bearing trust set for an AI product, in the order that actually matters — and pointedly *without* the
-compliance theater a 50-user app doesn't need. `/ship`'s pre-flight points here; `/first-dollar` hands off the
-ToS/privacy piece here; `/monetize`'s graceful-offboarding (data export) lives here too.
+compliance theater a 50-user app doesn't need. `/ship`'s pre-flight points here; `/money` hands off the
+ToS/privacy piece here; `/money`'s graceful-offboarding (data export) lives here too.
 
 > **Bright line:** every legal item is a **pointer at a real lawyer** with the questions to ask — never advice.
 > BOSS prepares the founder for counsel; it never plays counsel.

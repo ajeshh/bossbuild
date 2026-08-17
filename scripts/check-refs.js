@@ -138,11 +138,6 @@ const BOSS_ONLY_AGENTS = new Set(
 // side of the line each sits on, is its entire job. Exempting it is the same call
 // `check-wayfinding-drift` makes for its three internal skills.
 const AGENT_EXEMPT = new Set([join('docs', 'MENTORS.md')]);
-const FOUNDER_FACING = new Set([
-  'README.md', 'PRINCIPLES.md',
-  join('docs', 'GUIDE.md'), join('docs', 'GUIDE-teams.md'),
-  join('docs', 'CHEATSHEET.md'), join('docs', 'SKILLS.md'),
-]);
 
 // Backticks required: `mentor-humane` is a reference a founder can act on; the same word loose in a
 // sentence is usually the concept, not the agent.
@@ -151,6 +146,51 @@ const FOUNDER_FACING = new Set([
 // `mentor-operations` in `stages/L3-scale/README.md` (outside template/). Both ship. The unit test
 // in test/scaffold.test.js walks the same ground; two checkers that disagree about scope is how the
 // gap reopens.
+// RETIRED SKILLS (added v0.157.0). The agent check below was built when a phantom AGENT bit; the
+// first real retirement — four skills merged into two — proved skills are the same class and the
+// gate didn't cover them. **Fourteen** shipped files and practices still pointed at `/pmf-check`,
+// `/retain`, `/first-dollar` and `/monetize` after they were deleted.
+//
+// Scoped to the supersede ledger rather than "any /name that isn't a shipped skill": the ledger is
+// exactly the set BOSS knows it retired, which makes this precise and false-positive-free. A broad
+// pattern would flag `/tmp`, `/dev/null` and every `/verb` in ordinary prose — and a checker that
+// cries wolf is one people learn to skip, which is how BOSS's last three checkers died.
+// **The retiring release has to clean up after itself. That is the whole point of the check.**
+const FOUNDER_FACING = new Set([
+  'README.md', 'PRINCIPLES.md',
+  join('docs', 'GUIDE.md'), join('docs', 'GUIDE-teams.md'),
+  join('docs', 'CHEATSHEET.md'), join('docs', 'SKILLS.md'),
+]);
+
+const RETIRED = (() => {
+  try {
+    const led = JSON.parse(readFileSync(join(ROOT, 'registry', 'supersedes.json'), 'utf8'));
+    return (led.supersedes || []).filter((e) => e.kind === 'skill')
+      .map((e) => ({ name: e.removed, by: e.replacedBy }));
+  } catch { return []; }
+})();
+for (const f of files.filter((x) => /\.(md|json)$/.test(x))) {
+  const r = rel(f);
+  // History may name them: the ledger does by definition, and CHANGELOG / RESUME / decisions /
+  // research record things that actually happened. But the FOUNDER-FACING docs under `docs/` are
+  // exactly as live as a shipped file — excluding all of `docs/` was a scope error in this check's
+  // first cut, and it would have let `docs/GUIDE.md` keep pointing at a verb nobody has.
+  const historyDoc = r.startsWith(`registry${sep}`)
+    || (r.startsWith(`docs${sep}`) && !FOUNDER_FACING.has(r));
+  if (historyDoc) continue;
+  const text = readFileSync(f, 'utf8');
+  for (const { name, by } of RETIRED) {
+    // `/name` as a VERB — deliberately not `docs/name/`, which is where a founder's existing
+    // artifacts live. The retirement promises those files stay exactly where they are.
+    // The SUCCESSOR is allowed to name what it replaced — that isn't a dangling pointer, it's the
+    // signpost. A founder who knew `/retain` searches for it and must land on `/health`.
+    if (by && r.includes(`${sep}skills${sep}${by}${sep}`)) continue;
+    if (new RegExp(`(?<![\\w/])/${name}\\b`).test(text)) {
+      findings.agents.push([r, `/${name} — retired skill${by ? `, now /${by}` : ''}`]);
+    }
+  }
+}
+
 const AGENT_REF = /`([a-z][a-z0-9-]*)`/g;
 for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
   const r = rel(f);

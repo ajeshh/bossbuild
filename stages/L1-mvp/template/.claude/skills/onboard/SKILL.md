@@ -1,13 +1,13 @@
 ---
 name: onboard
-description: Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once). Derives the aha-moment from data (the behavior that separates your best-retained cohort from the churned — not a whiteboard guess), shrinks time-to-value (cut every step between signup and first value; seed a "magic first run" so the first output is good before the user works), and sets up concierge onboarding you do BY HAND for the first users (Superhuman-style; do-things-that-don't-scale — it doubles as /interview). Humane by construction — activation means getting them to SUCCESS fast, not HOOKED fast; refuses fake-progress/gamified/forced-tutorial dark patterns. The top-of-curve fix /retain routes to. At n<10, don't model it — watch them onboard by hand. Usage - /onboard
+description: Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once). Derives the aha-moment from data (the behavior that separates your best-retained cohort from the churned — not a whiteboard guess), shrinks time-to-value (cut every step between signup and first value; seed a "magic first run" so the first output is good before the user works), and sets up concierge onboarding you do BY HAND for the first users (Superhuman-style; do-things-that-don't-scale — it doubles as /interview). Humane by construction — activation means getting them to SUCCESS fast, not HOOKED fast; refuses fake-progress/gamified/forced-tutorial dark patterns. The top-of-curve fix /health routes to. At n<10, don't model it — watch them onboard by hand. Usage - /onboard
 ---
 
 # /onboard — get new users to the aha-moment, fast (and honestly)
 
 The runner over `boss craft activation`. Activation is the **first-session success rate** — the % of
 new users who reach real value — and it's the highest-leverage number you have, because it's the *top of the
-retention curve*. This is the fix `/retain` routes to when the curve dies at the D0→D1 cliff.
+retention curve*. This is the fix `/health` routes to when the curve dies at the D0→D1 cliff.
 
 ## Step 0 — the JIT gate
 
@@ -76,4 +76,4 @@ plan** for the next N users. Name the ONE activation metric so `/measure` can tr
 - **Concierge first, automate second** — extract the scalable flow from the hand-done one; it doubles as
   `/interview`.
 - **Success fast, not hooked fast.** Refuse fake-progress / gamified / forced-tutorial dark patterns by name.
-- **One activation metric**, handed to `/measure`. This is `/retain`'s top-of-curve fix — close that loop.
+- **One activation metric**, handed to `/measure`. This is `/health`'s top-of-curve fix — close that loop.

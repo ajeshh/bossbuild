@@ -4,7 +4,7 @@ type: practice
 owner: mentor-gtm
 status: active
 host: stack-neutral
-provenance: post-launch program (2026-07-23 SESSION, JOB 2). The gap the map found — /measure *reads* the retention curve; nothing helped *fix* it. Distilled from Casey Winters (activation > acquisition; the retention curve must flatten) + Bangaly Kaba (best-retained-users method) + Brian Balfour (retention is the engine, not a metric) + a16z/ChartMogul (the AI-"tourist" churn wave; rebase to Month 3) + Lincoln Murphy / ProfitWell-Campbell (involuntary churn is 20–40% of the total and the most recoverable) + Lenny Rachitsky (there is no retention silver bullet — it's the product). Pairs with analytics-for-ai-products.md (the measuring half), /retain (the runner), /onboard + activation (build #4), /pmf-check (a flattening curve IS a PMF lens), the humane lens (ai-ux-patterns.md). BOSS v0.121.0.
+provenance: post-launch program (2026-07-23 SESSION, JOB 2). The gap the map found — /measure *reads* the retention curve; nothing helped *fix* it. Distilled from Casey Winters (activation > acquisition; the retention curve must flatten) + Bangaly Kaba (best-retained-users method) + Brian Balfour (retention is the engine, not a metric) + a16z/ChartMogul (the AI-"tourist" churn wave; rebase to Month 3) + Lincoln Murphy / ProfitWell-Campbell (involuntary churn is 20–40% of the total and the most recoverable) + Lenny Rachitsky (there is no retention silver bullet — it's the product). Pairs with analytics-for-ai-products.md (the measuring half), /health (the runner), /onboard + activation (build #4), /health (a flattening curve IS a PMF lens), the humane lens (ai-ux-patterns.md). BOSS v0.121.0.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
 curve: market
@@ -32,7 +32,7 @@ doesn't need a cohort to justify it.
 Retention curves come in three shapes, and the shape *is* the diagnosis's first bit:
 
 - **Decaying to zero** — every cohort eventually flatlines at ~0%. **You do not have product-market fit**;
-  this is not a retention problem to fix with tactics, it's a fit problem to solve with `/pmf-check` +
+  this is not a retention problem to fix with tactics, it's a fit problem to solve with `/health` +
   `/interview`. Retention work on a zero-bound curve is rearranging deck chairs.
 - **Flattening to a plateau** — the curve drops, then *holds* at some stable % that keeps coming back forever.
   **This is the shape of fit** (Balfour/Winters). The plateau's *height* is your ceiling; the work is raising
@@ -107,8 +107,8 @@ dunning *system* (point at Stripe — it's plumbing, not a product you build).
 ## Ties + altitude
 
 Silent until a project is live with a real, decaying curve past n≥~30–50 (involuntary-churn plumbing earlier,
-at first paying user). Surfaces via **`/retain`** (the runner) and a pointer from `/measure` when it reads a
-sliding curve. Feeds `/pmf-check` (a flattening curve is one of its three fit lenses) and [[IDEA-051]]
+at first paying user). Surfaces via **`/health`** (the runner) and a pointer from `/measure` when it reads a
+sliding curve. Feeds `/health` (a flattening curve is one of its three fit lenses) and [[IDEA-051]]
 (operate-mode customer loop). Post-ship retention is `observed-behavior` / `commitment` **EVID** — record the
 real signal. Cite: Winters (activation > acquisition; the curve must flatten), Bangaly Kaba (best-retained-
 users), Balfour (retention is the engine), a16z/ChartMogul (AI-tourist wave; rebase to Month 3), Murphy/Campbell

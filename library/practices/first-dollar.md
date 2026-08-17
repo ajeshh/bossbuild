@@ -4,7 +4,7 @@ type: practice
 owner: mentor-business
 status: active
 host: stack-neutral
-provenance: IDEA-050 (fable-campaign lifecycle pass, Fable 5 2026-07-02 — "what about the first paid customer?"), built in the post-launch program (2026-07-23 SESSION, JOB 4, Tier 2). The conscience's founding question is "will anyone pay?" — BOSS had nothing for the moment someone actually will. A paid customer is a commitment-grade EVID by definition (the highest-grade evidence event BOSS ever sees). Pairs with /first-dollar (the runner), mentor-business (the pricing menu), the EVID ladder (/evidence), /ship (the cheapest-reversible pattern, applied to money), /trust (ToS/privacy, build #8), /decide (record the pricing/refund calls). BOSS v0.125.0.
+provenance: IDEA-050 (fable-campaign lifecycle pass, Fable 5 2026-07-02 — "what about the first paid customer?"), built in the post-launch program (2026-07-23 SESSION, JOB 4, Tier 2). The conscience's founding question is "will anyone pay?" — BOSS had nothing for the moment someone actually will. A paid customer is a commitment-grade EVID by definition (the highest-grade evidence event BOSS ever sees). Pairs with /money (the runner), mentor-business (the pricing menu), the EVID ladder (/evidence), /ship (the cheapest-reversible pattern, applied to money), /trust (ToS/privacy, build #8), /decide (record the pricing/refund calls). BOSS v0.125.0.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
 curve: market
@@ -82,6 +82,6 @@ the presence of `commitment` EVID is what quiets the "will anyone pay?" line and
 
 Legal/tax advice (pointer to a professional, always); a **revenue dashboard / MRR tracking** (that's the payment
 provider's job — BOSS records the *event* as evidence, never the *stream* as analytics); a billing/subscription
-system (point at Stripe — payment link first; the system is a much-later problem). Ties: `/first-dollar` (runner),
+system (point at Stripe — payment link first; the system is a much-later problem). Ties: `/money` (runner),
 `mentor-business` (pricing menu), `/trust` (ToS/privacy), `/decide` (record the price + refund calls as DECs),
 the monetization-in-practice practice (what happens *after* the first dollar — upgrades, dunning, the price-raise).

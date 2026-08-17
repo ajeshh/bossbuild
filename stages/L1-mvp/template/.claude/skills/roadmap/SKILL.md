@@ -1,6 +1,6 @@
 ---
 name: roadmap
-description: Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list. Not a Gantt, not a backlog to tend: a Shape-Up-style handful of bets with a fixed appetite, produced periodically and thrown away, never a persistent planning surface. Confidence on each bet = the EVID grade behind it (Gilad's Confidence Meter mapped onto BOSS's stated-pain → observed-behavior → commitment ladder), so a bet's rank comes from evidence, not volume or a HiPPO. RICE-reach is OFF by default (reach-weighting optimizes for the loud majority-of-noise). Pre-PMF, the only honest roadmap is "find fit" — it defers to /pmf-check. Humane — serves the silent majority who drive value, not whoever shouts, and the NO-list is where that discipline lives. At n<10 the honest output is "go talk to them." Usage - /roadmap
+description: Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list. Not a Gantt, not a backlog to tend: a Shape-Up-style handful of bets with a fixed appetite, produced periodically and thrown away, never a persistent planning surface. Confidence on each bet = the EVID grade behind it (Gilad's Confidence Meter mapped onto BOSS's stated-pain → observed-behavior → commitment ladder), so a bet's rank comes from evidence, not volume or a HiPPO. RICE-reach is OFF by default (reach-weighting optimizes for the loud majority-of-noise). Pre-PMF, the only honest roadmap is "find fit" — it defers to /health. Humane — serves the silent majority who drive value, not whoever shouts, and the NO-list is where that discipline lives. At n<10 the honest output is "go talk to them." Usage - /roadmap
 ---
 
 # /roadmap — what's worth building next (a small bet-list + an honest NO-list)
@@ -13,7 +13,7 @@ dated bet-list you *use and discard*, then re-run when the picture has genuinely
 ## Step 0 — the JIT gate + the PMF check
 
 - **n<10 → stop. There's nothing to weigh yet** — the honest output is `/interview`, not a bet-list.
-- **Pre-PMF (run `/pmf-check` if unsure) → the roadmap is one item: *find fit.*** Adding features before fit is
+- **Pre-PMF (run `/health` if unsure) → the roadmap is one item: *find fit.*** Adding features before fit is
   the build trap (Perri) — a longer roadmap pre-PMF is usually avoidance of the fit question. Say so plainly.
 - **At/post-PMF with real usage → proceed** — now weighing bets is the actual work.
 
@@ -22,7 +22,7 @@ dated bet-list you *use and discard*, then re-run when the picture has genuinely
 Read two columns, and keep them apart:
 - **What users *say*** — the `--feedback` register (feature requests, friction), support threads, `/interview`
   notes. Requests are `stated-pain` — the *weakest* evidence grade.
-- **What users *do*** — `/measure` (where they succeed/stall), the retention curve and *churn* (`/retain` — who
+- **What users *do*** — `/measure` (where they succeed/stall), the retention curve and *churn* (`/health` — who
   left and where), usage concentration. Behavior is `observed-behavior` / `commitment` — the *stronger* grade.
 
 **When they disagree, behavior wins.** The loudest requesters are rarely the median user; the churn you can't
@@ -85,7 +85,7 @@ becomes a FEAT).
   backlog; finishing one bet beats shaping ten.
 
 ## Rules
-- **Say no at n<10; defer to `/pmf-check` pre-PMF** — the roadmap pre-fit is "find fit."
+- **Say no at n<10; defer to `/health` pre-PMF** — the roadmap pre-fit is "find fit."
 - **Behavior outranks requests.** Requests are `stated-pain` (weak); usage/churn is the strong grade.
 - **Confidence = the EVID grade**, not reach, not a HiPPO. **RICE-reach OFF by default.**
 - **A small bet-list with fixed appetites, never a Gantt/backlog you tend.** Snapshot, use, discard.

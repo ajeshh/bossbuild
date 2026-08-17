@@ -25,5 +25,38 @@
     "  - Never remove something a founder EDITED without saying so \u2014 sync flags local edits by name first.",
     "  - Removal is never automatic. `boss sync --apply` reports it; `--remove` is the founder's consent."
   ],
-  "supersedes": []
+  "supersedes": [
+    {
+      "since": "0.157.0",
+      "kind": "skill",
+      "removed": "pmf-check",
+      "replacedBy": "health",
+      "why": "/pmf-check rendered the fit verdict and /retain diagnosed the decaying curve \u2014 from the same retention curve, behind the same n<10 gate, both rebasing past the same AI-tourist wave. Two skills for one question.",
+      "migrate": "`/health` does both: the verdict first, then where the curve dies. Your docs/pmf/ files stay where they are."
+    },
+    {
+      "since": "0.157.0",
+      "kind": "skill",
+      "removed": "retain",
+      "replacedBy": "health",
+      "why": "Same reason as /pmf-check \u2014 you had to know whether you had a fit problem or a retention problem before picking the verb that would have told you.",
+      "migrate": "`/health` renders the verdict, then routes the diagnosis (activation \u2192 /onboard, engagement \u2192 the product + /roadmap, wallet \u2192 dunning via /money). Your docs/retain/ files stay where they are."
+    },
+    {
+      "since": "0.157.0",
+      "kind": "skill",
+      "removed": "first-dollar",
+      "replacedBy": "money",
+      "why": "/first-dollar took the first sale, /monetize ran the money after it \u2014 and each one's honest output, when it didn't apply, was 'go run the other one'.",
+      "migrate": "`/money` reads where you are and routes: no yes yet \u2192 /interview; a yes but no rail \u2192 the first-dollar path; paying customers \u2192 operating it. Your docs/first-dollar/ files stay where they are."
+    },
+    {
+      "since": "0.157.0",
+      "kind": "skill",
+      "removed": "monetize",
+      "replacedBy": "money",
+      "why": "Same pair. Splitting them made the founder identify their own revenue stage before choosing a skill.",
+      "migrate": "`/money` covers upgrades, dunning, price raises and expansion \u2014 pass the move as an argument (`/money dunning`) or let it ask. Your docs/monetize/ files stay where they are."
+    }
+  ]
 }

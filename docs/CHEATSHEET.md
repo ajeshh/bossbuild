@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.156.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.157.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -78,13 +78,11 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/ship` — Put your app where a real user can hit it — the CD half of building
 - `/landing` — Generate the founder's FIRST landing page — on-brand, honest, out the block to scale
 - `/measure` — The post-ship counterpart to /pretotype
-- `/pmf-check` — The product-market-fit verdict — the one gate the whole post-launch journey turns on
-- `/retain` — The decaying-curve doctor
 - `/onboard` — Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once)
 - `/roadmap` — Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list
-- `/first-dollar` — Take the first dollar — the sharpest JIT moment in the lifecycle and the highest-grade evidence event BOSS ever sees (a paying customer is commitment-grade EVID by definition)
-- `/monetize` — Run the money once customers exist — the layer after /first-dollar
 - `/trust` — Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater
+- `/health` — The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix
+- `/money` — The money verb, from the first dollar to operating it
 
 **Agents:** tester, program-manager, mentor-architect, mentor-gtm, mentor-cofounder  
 **Loops:** spec-loop, pretotype-loop, design-tokens-loop, cost-budget-loop, ai-failure-state-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop  

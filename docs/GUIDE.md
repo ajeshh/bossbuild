@@ -57,7 +57,7 @@ things actually get lost:
 |---|---|
 | *How do I build this?* Write it, fix it, refactor it, explain it. | **Just Claude.** No skill, no ceremony. |
 | *Should I build this?* Is the bet real, who's it for, what would prove it? | **BOSS** — `/canvas`, `/pretotype`, `/interview` |
-| *Is this working?* Did anyone use it, is it worth continuing? | **BOSS** — `/evidence`, `/measure`, `/pmf-check` |
+| *Is this working?* Did anyone use it, is it worth continuing? | **BOSS** — `/evidence`, `/measure`, `/health` |
 | *What did I decide, and why?* The thing future-you will have forgotten. | **BOSS** — `/decide`, `/log`, `/close` |
 
 You don't have to memorize any of it. `boss map` lists what *this* project has; the conscience points
@@ -197,22 +197,24 @@ its moment actually arrives, and most of them will say "not yet, go talk to your
   ten events, not an analytics department — plus the numbers classic tools miss for AI products
   (task-completion rate, edit-rate, cost per *successful* outcome). At fewer than ten users it tells
   you to go talk to them instead.
-- **The one verdict that matters.** `/pmf-check` reads what BOSS already holds and calls it:
+- **The verdict, and where it's breaking.** `/health` reads what BOSS already holds and calls it:
   pre-PMF, at-PMF, or post-PMF. It **defaults to "you're probably still pre-PMF, don't scale yet,"**
   because scaling early is the single most reliable way to kill a startup — and only post-PMF
-  licenses the leader's work (hiring, raising, scaling).
-- **Fix the curve, don't hack it.** `/retain` diagnoses *where* retention dies — the top (people
-  never reach the value → `/onboard`), the middle (the product isn't worth returning to → roadmap),
-  or the wallet (cards failing → dunning). There is no retention hack; the fix is always the
-  product, and this tells you which part. `/onboard` is the top-of-curve fix: derive the aha-moment
-  from your *data* (best-retained vs churned), then cut every step between signup and it.
+  licenses the leader's work (hiring, raising, scaling). Then, if the curve is sagging, the same
+  read says *where* it dies: the top (people never reach the value → `/onboard`), the middle (the
+  product isn't worth returning to → `/roadmap`), or the wallet (cards failing → dunning, via
+  `/money`). **There is no retention hack; the fix is always the product, and this tells you which
+  part.** `/onboard` is the top-of-curve fix: derive the aha-moment from your *data* (best-retained
+  vs churned), then cut every step between signup and it.
 - **Decide what's next.** `/roadmap` weighs requests against behavior — behavior wins — into a small
   bet-list with a mandatory NO-list. A dated snapshot you use and discard, never a backlog you tend.
-- **Get paid, honestly.** `/first-dollar` runs the five deferrable moves when someone has actually
-  said yes (entity · terms · the cheapest reversible payment rail · refund posture · the price said
-  out loud), then records the first paying customer as commitment-grade evidence. `/monetize` is the
-  layer after: upgrades triggered by a moment of value rather than a nag, recovering involuntary
-  churn, and raising a price the honest way (on value, with a real path out).
+- **Get paid, honestly.** `/money` reads where you are and routes. Nobody's said yes yet? It sends
+  you to `/interview` rather than building a payment rail for a customer who doesn't exist. Someone
+  *has*? It walks five deferrable moves (entity · terms · the cheapest reversible payment rail ·
+  refund posture · **the price said out loud**) and records that first paying customer as
+  commitment-grade evidence — the highest-grade signal BOSS ever sees. Already earning? The same
+  verb operates it: upgrades triggered by a moment of value rather than a nag, recovering
+  involuntary churn, and raising a price the honest way — on value, with a real path out.
 - **Earn trust.** `/trust` covers the load-bearing privacy set without the compliance theater — a
   data-minimization policy, the subprocessor list derived from what your app actually calls, and the
   step founders skip: *did you actually turn on your AI provider's training opt-out?* It explicitly
