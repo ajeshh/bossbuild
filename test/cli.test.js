@@ -11,6 +11,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
+import { updateNote, installKind, updateCommand } from '../src/update.js';
 import { project, cleanup, idea, feat, canvas } from './helpers.js';
 
 after(cleanup);
@@ -19,11 +20,11 @@ const BIN = join(BOSS_ROOT, 'bin', 'boss');
 
 // Run boss in a dir. Returns { code, out }. NO_COLOR so assertions match plain text,
 // and HOME redirected so tests never touch the real ~/.boss registry.
-function boss(args, cwd, home) {
+function boss(args, cwd, home, extraEnv = {}) {
   try {
     const out = execFileSync('node', [BIN, ...args], {
       cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, NO_COLOR: '1', HOME: home || cwd },
+      env: { ...process.env, NO_COLOR: '1', HOME: home || cwd, ...extraEnv },
     });
     return { code: 0, out };
   } catch (e) {
@@ -217,4 +218,63 @@ test('boss changelog --since overrides the pin, and --all ignores both', () => {
   assert.doesNotMatch(since.out, /^\s+0\.148\.0/m, '--since should exclude older releases');
   const all = boss(['changelog', '--all'], p);
   assert.match(all.out, /0\.1\.0|0\.2\.0/, '--all should reach the earliest releases');
+});
+
+// --- boss update ----------------------------------------------------------
+//
+// v0.156.0 — the two-hop trap's second half. `boss status` compares a project against the
+// INSTALLED package, so "up to date" only ever meant "your project matches your install", never
+// "your install is current". A founder who never updated the tool got told they were fine forever,
+// and the more stale they were the more confident the reassurance.
+//
+// No test here touches the network. The fetch is deliberately the only impure part; everything
+// that decides what a founder SEES is pure and pinned below.
+
+test('updateNote never claims currency it has not checked', () => {
+  // The default state for every founder who has never run `boss update`. Saying nothing would
+  // reproduce exactly the silence this feature exists to break.
+  assert.equal(updateNote('0.150.0', null).state, 'unknown');
+  assert.equal(updateNote('0.150.0', {}).state, 'unknown');
+  assert.equal(updateNote('0.150.0', { checked: 'garbage', latest: null }).state, 'unknown');
+});
+
+test('REGRESSION: a behind install is reported as behind, with the right upgrade command', () => {
+  const n = updateNote('0.150.0', { checked: new Date().toISOString(), latest: '0.199.0' });
+  assert.equal(n.state, 'behind');
+  assert.equal(n.latest, '0.199.0');
+  assert.ok(n.cmd, 'must name how to fix it, not just that it is broken');
+});
+
+test('a check older than a week decays back to unknown, not to current', () => {
+  // A stale "you were current 8 months ago" is indistinguishable from a fresh one to a reader,
+  // and it is the same false reassurance wearing a timestamp.
+  const old = { checked: '2026-01-01T00:00:00.000Z', latest: '0.150.0' };
+  assert.equal(updateNote('0.150.0', old, Date.parse('2026-08-17T00:00:00.000Z')).state, 'unknown');
+  const fresh = { checked: '2026-08-16T00:00:00.000Z', latest: '0.150.0' };
+  assert.equal(updateNote('0.150.0', fresh, Date.parse('2026-08-17T00:00:00.000Z')).state, 'current');
+});
+
+test('being AHEAD of the registry is never reported as behind', () => {
+  // The maintainer-and-source-checkout case. It must not nag, and `printUpdate` says the useful
+  // thing instead: everything since the published version is invisible to everyone else.
+  const n = updateNote('0.155.0', { checked: new Date().toISOString(), latest: '0.97.0' });
+  assert.equal(n.state, 'current');
+});
+
+test('the upgrade command matches how BOSS was actually installed', () => {
+  // Telling a Homebrew user to run `npm i -g` is advice that fails silently — they run it, nothing
+  // changes, and they conclude the check is broken.
+  assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/boss/0.1.0')), 'brew upgrade boss');
+  assert.equal(updateCommand(installKind('/usr/local/lib/node_modules/bossbuild')), 'npm i -g bossbuild@latest');
+  assert.match(updateCommand(installKind('/Users/x/Projects/bossbuild')), /git pull/);
+});
+
+test('boss update is offline-safe — it never exits non-zero for lack of network', () => {
+  // A founder on a plane gets a shrug, not a failure. Forced offline via a bogus proxy so no
+  // request can succeed regardless of the machine running the suite.
+  const p = bossProject();
+  const r = boss(['update'], p, undefined, {
+    HTTPS_PROXY: 'http://127.0.0.1:9', HTTP_PROXY: 'http://127.0.0.1:9', NO_PROXY: '',
+  });
+  assert.equal(r.code, 0, `must exit 0 offline:\n${r.out}`);
 });

@@ -9,6 +9,7 @@ import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog } from './changelog.js';
 import { detectStage } from './detect.js';
+import { printUpdate, updateNote } from './update.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
@@ -401,11 +402,16 @@ async function cmdStatus(args) {
     console.log(`    ${warn('⟳')} newer practices available — ${bold('boss changelog')} ${dim('to read what changed,')}`);
     console.log(`      ${bold('/boss-sync')} ${dim('to review the diff and apply it (inside Claude)')}`);
   } else {
-    // The two-hop trap: this compares the project against the INSTALLED package, never against
-    // what's published. Silence here means those two agree — not that the install is current.
-    // Unsaid, a founder can sit fifty releases behind and be told they're fine every time.
-    console.log(`    ${dim('up to date with the BOSS installed here. Updating the tool is a separate step:')}`);
-    console.log(`      ${dim('npm i -g bossbuild@latest')}  ${dim('(or brew upgrade boss), then boss changelog')}`);
+    console.log(`    ${dim('up to date with the BOSS installed here.')}`);
+  }
+  // Hop 1, answered from cache only — `boss status` must never make a network call (see
+  // src/update.js). "Up to date with your install" is a different claim from "your install is
+  // current", and conflating them is how a founder sits fifty releases behind feeling fine.
+  const u = updateNote();
+  if (u.state === 'behind') {
+    console.log(`    ${warn('⟳')} your INSTALL is behind too — ${bold(u.latest)} is published. ${bold(u.cmd)}`);
+  } else if (u.state === 'unknown') {
+    console.log(`    ${dim(`whether the install itself is current: unchecked${u.age ? ` for ${u.age}d` : ''} — ${'boss update'}`)}`);
   }
   console.log('');
 }
@@ -678,7 +684,7 @@ function fail(msg) {
 
 const KNOWN_COMMANDS = [
   'new', 'adopt', 'unlock', 'status', 'board', 'map', 'brain', 'insights',
-  'team', 'list', 'retire', 'sync', 'learn', 'craft', 'changelog', 'conscience', 'version', 'help',
+  'team', 'list', 'retire', 'sync', 'learn', 'craft', 'changelog', 'update', 'conscience', 'version', 'help',
 ];
 
 // Per-command detail for `boss help <command>`. Kept tight — a usage line, a
@@ -756,6 +762,12 @@ const HELP = {
     what: "Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. It also lists anything BOSS installed here and has since RETIRED, with what replaced it and why — but `--apply` never deletes: removal is a separate, explicit `--remove`, and something you edited is never removed at all. Only files BOSS itself stamped are ever candidates; your own skills and agents are invisible to sync. For a reviewed, narrated update — and the actual migration to whatever replaced a retired verb — use /boss-sync inside Claude instead.",
     examples: ['boss sync', 'boss sync --apply', 'boss sync --apply --remove'],
     see: ['status', 'changelog', 'learn'],
+  },
+  update: {
+    usage: 'boss update',
+    what: "Check whether the BOSS you have INSTALLED is the latest published one, and print the exact upgrade command for how you installed it (npm, Homebrew, or a git checkout). This is the one thing `boss status` cannot tell you on its own: it compares a project against your installed package, so 'up to date' has always meant 'your project matches your install' — never 'your install is current'. Runs a single public version lookup, ONLY when you invoke it: no project data leaves your machine, and `boss status` reads the cached result rather than ever making a call itself. Offline is fine — it shrugs and tells you the last thing it knew.",
+    examples: ['boss update'],
+    see: ['status', 'changelog', 'sync'],
   },
   changelog: {
     usage: 'boss changelog [--since X.Y.Z] [--full] [--all]',
@@ -916,6 +928,7 @@ function printHelp() {
   console.log(`\n  ${bold('Keeping current')}`);
   console.log(row('boss sync [--apply]', 'pull current BOSS practices into this project (DOWN)'));
   console.log(row('boss changelog [--full]', "what's changed in BOSS since this project's pin"));
+  console.log(row('boss update', 'is the BOSS you have installed the latest one?'));
   console.log(row('boss learn <p> --as <c>', 'promote a pattern UP into the library'));
   console.log(row('boss craft [name]', "read BOSS's practice shelf (the craft behind the skills)"));
   console.log(row('boss list', 'all connected projects'));
@@ -989,6 +1002,7 @@ export async function run(argv) {
         pin: readStamp(process.cwd())?.bossVersion || null,
       }));
     }
+    case 'update': case 'outdated': return void printUpdate().then((c) => { process.exitCode = c; });
     case 'conscience': return cmdConscience(args);
     case 'version': case '--version': case '-v':
       return console.log(bossVersion());

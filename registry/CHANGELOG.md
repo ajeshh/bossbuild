@@ -2,6 +2,34 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.156.0 — 2026-08-17
+
+- **`boss update` — the half of the two-hop trap nothing could answer.** `boss status` compares a
+  project's pin against the **installed** package, so *"up to date"* only ever meant *"your project
+  matches your install"* — never *"your install is current."* A founder who never ran
+  `npm i -g bossbuild@latest` got reassured **forever**, and **the more stale they were, the more
+  confident the reassurance.** v0.152.0 named the trap in prose; this answers it.
+- **It is a command, not something `boss status` does behind your back — and that's the design.**
+  BOSS promises no telemetry and local-only state. A registry lookup sends no project data (it's a
+  public GET for a version string) but it is still an outbound request the founder didn't ask for,
+  and a tool that quietly phones anywhere on every `status` has spent trust it can't get back. So the
+  fetch happens **only when invoked**; `boss status` reads the cached result and never makes a call
+  itself. If nobody ever runs it, BOSS says *"unchecked"* rather than checking on the sly.
+- **It never claims currency it hasn't verified.** No cache → `unknown`, not silence. A check older
+  than a week **decays back to unknown**, because a stale *"you were current 8 months ago"* is the
+  same false reassurance wearing a timestamp. And the upgrade command matches how BOSS was actually
+  installed — npm, Homebrew, or a git checkout — since telling a Homebrew user to run `npm i -g` is
+  advice that fails silently and makes them conclude the check is broken.
+- **🔴 The first thing it found, pointed at BOSS itself: npm has `0.97.0`. This repo is at `0.156.0`
+  — 58 released versions the public has never been able to install.** Everything since the June
+  rebrand — the release gate, the unit suite, the conscience architecture, the freshness discipline,
+  and this entire finessing arc — exists only on `main`. The first draft of the check called that
+  *"you're on the latest,"* which was false in the direction that matters most; it now says **ahead**
+  and names the consequence: *"worth knowing if you expected others to have this: they don't yet."*
+- **Six tests (96 now)**, none touching the network — the fetch is deliberately the only impure part,
+  and everything that decides what a founder *sees* is pure. Includes an offline-safety case (forced
+  through a dead proxy) proving a founder on a plane gets a shrug, not a non-zero exit.
+
 ## 0.155.0 — 2026-08-17
 
 - **`boss sync` can finally subtract — the constraint that was quietly gating three other things.**
