@@ -9,6 +9,7 @@ import { resolveStageId, STAGE_ORDER, STAGES_DIR } from '../src/paths.js';
 import { loadModes, modeWord, skillGloss } from '../src/modes.js';
 import { readStageManifest, appendMarkedBlock, applyStageSafe } from '../src/scaffold.js';
 import { canonicalLayer, computeSettingsMerge, planSync } from '../src/sync.js';
+import { detectStage } from '../src/detect.js';
 import { project, cleanup } from './helpers.js';
 
 after(cleanup);
@@ -360,4 +361,53 @@ test('planSync canonicalises and dedupes installed layers', () => {
     installedLayers: ['L0-sketch', 'L0-quickstart', 'L1-mvp'],
   });
   assert.deepEqual(plan.layers, ['L0-quickstart', 'L1-mvp']);
+});
+
+// --- adopt: reading how far along a repo already is -----------------------
+//
+// v0.153.0 — adopt always defaulted to Quickstart, so a half-built app with real users got the
+// idea-capture scaffold and an arc it finished months ago. The detector is deliberately cheap and
+// CONSERVATIVE: it caps at MVP and never auto-climbs to V1, because ceremony added is ceremony
+// sync cannot yet remove (`planSync` has no removal concept), so over-shooting is the expensive
+// direction and the tie goes to less.
+
+test('a barely-started repo still adopts at Quickstart', () => {
+  const p = project({ 'try.js': 'console.log(1)\n' });
+  const d = detectStage(p);
+  assert.equal(d.stage, 'L0-quickstart');
+  assert.ok(d.why.length, 'must say WHAT it read — an inference you cannot audit is the thing BOSS warns about');
+});
+
+test('a real build (manifest + source) adopts at MVP', () => {
+  const files = { 'package.json': '{"name":"x"}' };
+  for (let i = 0; i < 7; i++) files[`src/mod${i}.js`] = `export const f${i} = ${i}\n`;
+  const d = detectStage(project(files));
+  assert.equal(d.stage, 'L1-mvp');
+  assert.match(d.why.join(' '), /package\.json/);
+  assert.equal(d.beyond, false, 'no tests and no deploy — nothing to report beyond MVP');
+});
+
+test('REGRESSION: a shipped, tested, CI-d repo REPORTS past-MVP but never auto-climbs to V1', () => {
+  const files = {
+    'package.json': '{"name":"x"}', 'Dockerfile': 'FROM node\n',
+    'tests/a.test.js': "test('x',()=>{})\n", '.github/workflows/ci.yml': 'on: push\n',
+  };
+  for (let i = 0; i < 7; i++) files[`src/m${i}.js`] = `export const f${i} = ${i}\n`;
+  const d = detectStage(project(files));
+  // V1 means committing to a design system and a db discipline. BOSS does not get to decide that
+  // from the presence of a Dockerfile — it reports, the founder climbs.
+  assert.equal(d.stage, 'L1-mvp', 'must cap at MVP');
+  assert.equal(d.beyond, true, 'but must SAY it looks further along');
+});
+
+test('a manifest with no real source is not a build', () => {
+  const d = detectStage(project({ 'package.json': '{"name":"x"}', 'README.md': '# hi\n' }));
+  assert.equal(d.stage, 'L0-quickstart');
+});
+
+test('node_modules never makes an empty repo look like a real build', () => {
+  const files = { 'package.json': '{"name":"x"}' };
+  for (let i = 0; i < 40; i++) files[`node_modules/dep${i}/index.js`] = 'module.exports = 1\n';
+  const d = detectStage(project(files));
+  assert.equal(d.stage, 'L0-quickstart', 'dependencies are not the founder\'s work');
 });

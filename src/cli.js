@@ -8,6 +8,7 @@ import { planSync, applySync, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog } from './changelog.js';
+import { detectStage } from './detect.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
@@ -39,6 +40,15 @@ function readStamp(dir) {
   const file = join(dir, STAMP);
   if (!existsSync(file)) return null;
   return JSON.parse(readFileSync(file, 'utf8'));
+}
+
+// A mode's skill list is a wall the moment you adopt above Quickstart — MVP is 44 names, which is
+// the exact Principle #2 inversion v0.130.0 fixed for `boss map` (68 lines → 45). Name the few a
+// founder acts on first, count the rest, and point at the surface that exists to list them.
+function skillsLine(skills, limit = 8) {
+  if (!skills.length) return '—';
+  if (skills.length <= limit) return skills.join(', ');
+  return `${skills.slice(0, limit).join(', ')} … +${skills.length - limit} more (\`boss map\`)`;
 }
 
 function cmdNew(args) {
@@ -110,7 +120,7 @@ function cmdNew(args) {
 
   console.log(`\n  ${ok('✦')} Created ${bold(name)} — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
   console.log(`    agents: ${stamp.agents.join(', ') || '—'}`);
-  console.log(`    skills: ${stamp.skills.join(', ') || '—'}`);
+  console.log(`    skills: ${skillsLine(stamp.skills)}`);
   console.log(`\n  ${bold('Next')} ${dim('(these run in your terminal)')}`);
   console.log(`    cd ${name}`);
   console.log(`    code ${name}        # or open the folder in your editor (Cursor, etc.)`);
@@ -134,9 +144,13 @@ function cmdAdopt(args) {
   if (existsSync(join(targetDir, STAMP))) {
     return fail('already a BOSS project (.boss/manifest.json here). Use `boss sync` to update or `boss unlock <mode>` to add a mode.');
   }
-  // Default to the lightest register (Quickstart); `--mode mvp` etc. adopts higher
-  // when the app has already earned it (real users, a real build).
-  const stageId = flags.mode ? resolveStageId(flags.mode) : STAGE_ORDER[0];
+  // Read how far along the repo already is, unless the founder named a mode. Adopting a
+  // half-built app at Quickstart hands it the idea-capture arc it finished months ago; the old
+  // default did that every time and told the founder to figure the mode out themselves. The
+  // detection is deliberately cheap and SHOWN (see src/detect.js) — it caps at MVP and never
+  // auto-climbs to V1, because ceremony added is ceremony sync cannot yet remove.
+  const detected = flags.mode ? null : detectStage(targetDir);
+  const stageId = flags.mode ? resolveStageId(flags.mode) : detected.stage;
   if (!stageId) return fail(`unknown mode '${flags.mode}'.`);
   let manifest;
   try { manifest = readStageManifest(stageId); }
@@ -228,6 +242,13 @@ function cmdAdopt(args) {
   });
 
   console.log(`\n  ${ok('✦')} Adopted ${bold(name)} into BOSS — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
+  if (detected) {
+    console.log(`    ${dim('read from your repo:')} ${detected.why.join(' · ')}`);
+    if (detected.beyond) {
+      console.log(`    ${warn('▸')} this looks past MVP — shipped and tested. ${bold('boss unlock v1')} adds the design`);
+      console.log(`      system, db and board discipline ${dim("when you want it; BOSS won't climb there on its own.")}`);
+    }
+  }
   // `skipped` counts COLLISIONS — files BOSS declined to overwrite because you already had them.
   // Printing it unconditionally produced "0 of yours left untouched" on a clean adopt, which reads
   // as "we touched everything" — the exact opposite of adopt's promise, at the moment of maximum
@@ -238,13 +259,12 @@ function cmdAdopt(args) {
     claudePreexisted ? 'CLAUDE.md preserved (BOSS block appended)' : null,
   ].filter(Boolean);
   console.log(`    ${copied.length} file(s) added · nothing of yours overwritten${preserved.length ? ` · ${preserved.join(' · ')}` : ''}`);
-  console.log(`    skills: ${stamp.skills.join(', ') || '—'}`);
+  console.log(`    skills: ${skillsLine(stamp.skills)}`);
   console.log(`\n  ${bold('Next')}`);
   console.log(`    claude              # open Claude Code here ${dim('(terminal)')}`);
   console.log(`    > /welcome              # what BOSS added + how the conscience works ${dim('(inside Claude)')}`);
-  if (flags.ai) {
-    console.log(`    > /comprehend           # AI-native: read this repo, tailor the scaffold + seed the venture brain`);
-  }
+  console.log(`    > /comprehend           # have BOSS read this repo${flags.ai ? '' : ' (optional)'} — tailor the scaffold + seed`);
+  console.log(`                            #   the venture brain. Additive and reversible; diff or revert anything.`);
   console.log(`    boss map                # what's available · boss unlock <mode> to grow ${dim('(terminal)')}`);
   console.log('');
 }

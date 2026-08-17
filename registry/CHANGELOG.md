@@ -2,6 +2,49 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.153.0 — 2026-08-17
+
+- **`boss adopt` now reads how far along your repo already is, instead of assuming square one.**
+  It always defaulted to Quickstart — so a half-built app with real users got the **idea-capture**
+  scaffold and a `CLAUDE.md` whose arc is *capture → canvas → unlock MVP*, an arc they finished
+  months ago. The old answer was *"add `--mode mvp` if it already has real users"*, which asks the
+  founder to make the one judgment call they're least equipped to make **before BOSS has read a
+  single file**. Most people who try BOSS arrive with a repo, so the weakest path in the product was
+  wearing the strongest path's clothes.
+- **The detection is deliberately dumb, and shown.** A few signals a founder can check by eye — a
+  build manifest, source-file count, tests, CI, a deploy config — printed as evidence next to the
+  conclusion (`read from your repo: package.json · 34 source files · tests · CI`). Deep understanding
+  is `/comprehend`'s job; it has the model and the wide context. **An inference you can't audit is
+  exactly what BOSS warns founders against**, so the reasoning goes on screen or the feature doesn't
+  ship. `node_modules` and friends are skipped, the walk is file-capped, and a manifest with no real
+  source is not a build.
+- **It caps at MVP and never auto-climbs to V1 — and that restraint has a reason beyond taste.** V1
+  means committing to a design system and a db discipline; Scale is org ceremony. Both want a human.
+  More pointedly: **`planSync` has no removal concept**, so ceremony added is ceremony BOSS cannot
+  take back. Over-shooting is the expensive direction, so the tie goes to less. A shipped, tested,
+  CI'd repo gets *told* it looks past MVP — *"`boss unlock v1` adds the design system, db and board
+  discipline when you want it; BOSS won't climb there on its own"* — and the founder climbs.
+- **`/comprehend` stops being hidden behind a flag you'd have to already know about.** It printed
+  only when `--ai` was already passed — so the one thing that actually reads a founder's repo was
+  invisible to anyone who ran plain `boss adopt` (which is what the README's one-liner shows). An
+  adopted repo is that skill's own strongest input. Offered every time now, framed as optional and
+  reversible.
+- **`/welcome` gets an adopted-repo branch.** It was written for an empty folder — *"`docs/ideas/` —
+  empty now; fills as you capture"* — said to someone with forty files of working code, which reads
+  as a tool that didn't look. The branch leads with **what BOSS just added to their repo** (the
+  anxious question, answered first), skips the capture arc entirely, names the inferred mode and how
+  to change it, and carries one explicit prohibition: **don't audit their code.** They didn't ask for
+  a review, and an unrequested critique of work they already shipped is the fastest way to lose them.
+- **The legibility bug inferring MVP exposed.** Adopting at MVP printed **44 skill names** in one
+  unreadable line — the same Principle #2 inversion v0.130.0 fixed for `boss map` (68 lines → 45).
+  Capped to the first eight plus a count and a pointer, for both `new` and `adopt`.
+- **Two prose overclaims the v0.151.0 sweep missed** because the new gate only matches backticked
+  names: the README still sold *"the proto-personas pre-filter what to ask real founders"* (they ship
+  to nobody — that's `/persona`, and it's a different tool), and GUIDE still listed the humane lens as
+  a mentor among mentors. Both corrected.
+- **Nothing added to the founder surface.** One new internal module (`src/detect.js`), five new tests
+  (**80** now) including a REGRESSION pinning the never-auto-climb-to-V1 rule. Gate green throughout.
+
 ## 0.152.0 — 2026-08-17
 
 - **The update path was two hops and BOSS only ever mentioned one.** Updating the **tool**

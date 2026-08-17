@@ -34,10 +34,11 @@ Three mechanics carry it:
   bet you named, it says one thing, hands the decision back, and goes quiet. It never blocks. You
   can pause the whole thing (`boss conscience pause --for 8h`) or turn down a single nudge
   (`boss conscience mute <moment>`), and every override is recorded, never punished.
-- **A board of advisors** — *mentors* coach you on the founder-craft code can't teach (business,
-  architecture, GTM, fundraising, pitch, talent, and a humane lens that can override the *other
-  mentors* — though never you). *Builders*
-  (PM, coder, tester, designers) make the thing.
+- **A board of advisors** — *mentors* coach you on the founder-craft code can't teach (venture,
+  architecture, GTM, cofounder, business, fundraising, pitch, talent), seated as the project earns
+  them. *Builders* (PM, coder, tester, designers) make the thing. The **humane lens has no chair on
+  purpose** — an ethics advisor is a door you can decline to open, so it's wired across the surface
+  instead, and it overrides the other lenses (never you).
 
 ---
 
@@ -94,10 +95,14 @@ nothing else. (In a project, `/welcome` asks you this and tunes itself; you can 
   slower on any claim your product makes.
 
 - **You already started — there's a repo.** You built something before you found BOSS. → Don't start
-  over: `cd` into it and run **`boss adopt`** (add `--mode mvp` if it already has real users). It lays
-  BOSS down *non-destructively* — your files are untouched — at the lightest register that fits, and
-  you `unlock` up from there. Add `--ai` to have BOSS read the repo and tailor the scaffold
-  (`/comprehend`).
+  over: `cd` into it and run **`boss adopt`**. It reads how far along you already are — a build
+  manifest, source files, tests, CI, a deploy config — prints what it found, and starts you at the
+  mode that matches. *Non-destructive throughout:* your files are untouched, and an existing
+  `CLAUDE.md` / `AGENTS.md` gets a marked block appended rather than replaced. It **caps its guess at
+  MVP** on purpose (V1 is a design-system and db commitment — your call), so if it reads low,
+  `boss unlock <mode>` is one command; `--mode <m>` overrides it outright. Then run **`/comprehend`**
+  inside Claude — that's the adopted repo's version of `/boss`: BOSS reads the actual code, tailors
+  the scaffold, and seeds the venture brain so the conscience starts with real context.
 
 ---
 

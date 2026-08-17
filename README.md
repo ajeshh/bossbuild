@@ -121,9 +121,9 @@ list of what each mode includes lives where it can't go stale:
 
 - **Not a framework you have to learn.** First hour: `boss new`, `/boss`, `/triage`. That's
   the whole vocabulary you need.
-- **Not a replacement for talking to real users.** The proto-personas pre-filter what to ask
-  real founders; they don't replace the conversations. BOSS's own advisory pass and v1 playbook
-  are explicit about this.
+- **Not a replacement for talking to real users.** `/persona` sharpens the questions you take to
+  a real one; it never answers for them. A synthetic user likes your idea more than a real person
+  will, and can't know what it wasn't told. BOSS says this once, then gets out of the way.
 - **Not a YC.** Doesn't take equity. Doesn't push toward venture-scale. Defaults to *"you
   should probably not raise; you should probably not hire; you should probably stay right-
   sized"* until evidence says otherwise.
@@ -157,9 +157,13 @@ claude                          # open Claude Code (terminal or editor panel)
 pass.
 
 **Already started building?** You don't have to start over. `cd` into your existing repo and run
-`boss adopt` (add `--mode mvp` if it already has real users) — it lays BOSS down *non-destructively*,
-your files untouched, at the lightest register that fits. Add `--ai` to have BOSS read the repo and
-tailor the scaffold.
+`boss adopt` — it **reads how far along you already are** (a build manifest, source files, tests, CI,
+a deploy config), tells you what it found, and starts you at the mode that matches instead of
+assuming you're at square one. It lays BOSS down *non-destructively*: your files are untouched, and
+an existing `CLAUDE.md` gets a marked block appended, never replaced. It caps its own guess at MVP —
+V1 means committing to a design system and a db discipline, and that's your call, not a Dockerfile's.
+`--mode <m>` overrides it outright. Then run `/comprehend` inside Claude to have BOSS read the repo
+properly and tailor the scaffold to it.
 
 After that:
 
