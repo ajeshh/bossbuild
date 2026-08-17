@@ -1,0 +1,29 @@
+{
+  "_readme": [
+    "The supersede ledger \u2014 how BOSS tells a project that one of its OWN ways of doing something changed.",
+    "",
+    "WHY THIS EXISTS: `boss sync` could add and modify, and its stated policy was 'nothing is removed'.",
+    "So a skill BOSS retired stayed in every project that ever synced, forever, alongside its replacement.",
+    "That inverts EVID-001's compose-and-subtract mandate at the exact moment it is meant to be honoured,",
+    "and it made DEC-003's fourth step ('if yes, BOSS does the migration') a promise the sync layer could",
+    "not keep. planSync can now detect an orphan on disk; this file is what lets it say WHY.",
+    "",
+    "A removal without a reason is just a deletion. Every entry must be able to answer, to a founder who",
+    "never read the changelog: what went, what replaced it, why, and what they should do about it.",
+    "",
+    "FIELDS",
+    "  since       BOSS version the change landed in. sync only surfaces entries newer than the project's pin.",
+    "  kind        skill | agent | hook",
+    "  removed     the name as it appeared in the stage manifest (and on disk).",
+    "  replacedBy  the name that takes over, or null when it was simply retired.",
+    "  why         one honest founder-facing line. Not 'deprecated' \u2014 the actual reason.",
+    "  migrate     what changes for the founder. Written to them, not about them.",
+    "",
+    "RULES",
+    "  - Append only. An entry describes a release that shipped; editing it rewrites history a project",
+    "    may already have acted on.",
+    "  - Never remove something a founder EDITED without saying so \u2014 sync flags local edits by name first.",
+    "  - Removal is never automatic. `boss sync --apply` reports it; `--remove` is the founder's consent."
+  ],
+  "supersedes": []
+}

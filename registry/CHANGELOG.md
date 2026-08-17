@@ -2,6 +2,52 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.155.0 — 2026-08-17
+
+- **`boss sync` can finally subtract — the constraint that was quietly gating three other things.**
+  Its policy was literally *"nothing is removed."* `planSync` classified files `new`/`changed`/`ok`
+  and had no concept of something BOSS used to ship and doesn't any more. Consequences, all
+  structural: **(1)** the subtraction pass EVID-001 mandates could never reach a founder — merging
+  `/retain` + `/onboard` + `/pmf-check` would deliver the new verb and leave all three originals, so
+  syncing could only ever *grow* a project's surface; **(2)** v0.153.0's adopt detection had to cap at
+  MVP because ceremony added was ceremony BOSS couldn't take back; **(3)** [[DEC-003]]'s fourth step —
+  *"if they say yes, BOSS does the migration"* — was a promise the sync layer could not keep across a
+  change in **BOSS's own** way of working.
+- **`registry/supersedes.json` — the ledger that lets a removal explain itself.** `planSync` finds the
+  orphan; the ledger says what replaced it, **why**, and what changes for the founder. **A removal
+  without a reason is just a deletion**, and a founder who never read the changelog is exactly who
+  this has to answer to. Entries are append-only and version-stamped, so sync can show only what a
+  project hasn't been told yet. It ships **empty** — there are no retirements yet, and a placeholder
+  entry would be a claim BOSS hasn't earned.
+- **🔴 The safety boundary, which is the whole design: an orphan must have been STAMPED by BOSS.**
+  `.boss/manifest.json` is the install ledger — a name that isn't in it was put there by the founder.
+  Walking `.claude/skills/` and diffing against the manifest is the obvious implementation, and it
+  would eventually propose deleting someone's own work. Pinned by a REGRESSION test.
+- **Removal is opt-in, twice over.** `boss sync --apply` writes and **deletes nothing**; `--remove` is
+  a separate, explicit act. A sync that silently deleted a skill would be the one place BOSS decided
+  *for* the founder, in a repo it was invited into.
+- **`edited` is a TRUE / FALSE / UNKNOWN tri-state, and the third value is the honest one.** An edited
+  orphan is *theirs* and is never removed, even with `--remove`. But when BOSS deletes a template it
+  also destroys the only thing it could compare against — **which is the normal case for a real
+  retirement**, not an edge case. The first cut returned `false` there, quietly asserting *"you didn't
+  change this"* at exactly the moment BOSS cannot know, and would then have deleted a customisation on
+  consent. It now says so and points at `git log`. (The durable fix is a content hash in the stamp;
+  noted, not built — it changes the stamp format, and honest uncertainty plus consent covers it today.)
+- **A latent stamp bug the work exposed.** `applySync` reconciled the stamp to the current manifest
+  union, so a retired skill would vanish from the ledger **while its files stayed on disk** — after
+  which the safety boundary above would refuse to touch it, because BOSS no longer had any record of
+  installing it. Unexplained, forever. An orphan that isn't removed now stays stamped until it's gone.
+- **`/boss-sync` gets the conversation, not just the flag.** A new step 2.5 walks each retirement:
+  say what changed and why (or admit BOSS has no record, rather than inventing a rationale) → say what
+  it means for **this** project (did they actually use it? what happens to the artifacts?) → **ask, and
+  accept "no"** as a complete answer, recorded via `/decide` so it isn't re-litigated → and if yes, **do
+  the migration**: point their habits at the replacement and update references, because *deleting the
+  file and leaving them to figure out the new way is not a migration.*
+- **Nine new tests (90 now)**, five of them REGRESSION, covering the boundary, both consent gates, the
+  edited guard, the tri-state, the stamp-preservation bug, and a "doesn't cry wolf" case — because a
+  flag that fires on every file is a flag everyone learns to ignore, which is how BOSS's last three
+  checkers died. **Nothing added to the founder surface.**
+
 ## 0.154.0 — 2026-08-17
 
 - **[[DEC-003]] — position, not verdict.** The open question v0.153.0's mechanics couldn't answer:

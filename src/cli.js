@@ -550,7 +550,7 @@ function cmdList() {
 }
 
 function cmdSync(args) {
-  const { _: pos, apply } = parseArgs(args);
+  const { _: pos, apply, remove } = parseArgs(args);
   void pos;
   const stamp = readStamp(process.cwd());
   if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
@@ -558,6 +558,8 @@ function cmdSync(args) {
   const plan = planSync(process.cwd(), stamp);
   const changed = plan.entries.filter((e) => e.status !== 'ok');
   const settingsChanged = !!(plan.settings && plan.settings.changed);
+  // An orphan the founder already deleted is history, not work. Only surface what's still here.
+  const orphans = (plan.orphans || []).filter((o) => o.present);
 
   console.log(`\n  ${bold(stamp.name + ' — sync')}`);
   console.log(`    pin:    ${plan.pin}${plan.drift ? `  →  current ${plan.current}` : '  (current)'}`);
@@ -578,19 +580,41 @@ function cmdSync(args) {
     }
   }
 
+  // Retired by BOSS, still on disk. Reported ALWAYS, removed only on explicit `--remove`
+  // (DEC-003: BOSS names what changed, the founder decides, then BOSS does the work). A removal
+  // with no reason attached is just a deletion, so each one carries what replaced it and why.
+  if (orphans.length) {
+    console.log(`\n  ${bold('No longer shipped by BOSS')} ${dim('— still in your project')}`);
+    for (const o of orphans) {
+      const s = o.supersede;
+      const arrow = s?.replacedBy ? `  →  now ${bold(`/${s.replacedBy}`)}` : '';
+      console.log(`    ${warn('−')} ${o.kind}/${bold(o.name)}${arrow}   ${dim(o.rel)}`);
+      if (s?.why) console.log(`        ${dim(s.why)}`);
+      if (s?.migrate) console.log(`        ${dim(`what changes: ${s.migrate}`)}`);
+      if (!s) console.log(`        ${dim("BOSS has no record of why this went — review it before removing.")}`);
+      if (o.edited === true) console.log(`        ${warn('you edited this')} ${dim("— kept even with --remove; it's yours now.")}`);
+      else if (o.edited === null) console.log(`        ${dim("BOSS can no longer tell whether you changed this (its template is gone) — check `git log` on it first.")}`);
+    }
+    const removable = orphans.filter((o) => o.edited !== true).length;
+    if (!remove) {
+      console.log(`\n    ${dim(`Nothing is deleted without asking. \`boss sync --apply --remove\` removes ${removable === orphans.length ? 'these' : `the ${removable} unedited one(s)`};`)}`);
+      console.log(`    ${dim('`/boss-sync` in Claude walks the migration with you first.')}`);
+    }
+  }
+
   if (!apply) {
     console.log('\n  Preview only. Run `boss sync --apply` to write these and bump the pin,');
     console.log('  or use `/boss-sync` in Claude for a reviewed, narrated update.\n');
     return;
   }
 
-  const { written, stamp: next } = applySync(process.cwd(), plan, stamp);
+  const { written, removed, stamp: next } = applySync(process.cwd(), plan, stamp, { remove });
   writeStamp(process.cwd(), next);
   registerProject({
     name: next.name, path: process.cwd(), stage: next.stage, mode: next.mode, bossVersion: next.bossVersion,
   });
-  console.log(`\n  ${ok('✦')} Synced ${written.length} file(s); pin now ${bold(next.bossVersion)}.`);
-  if (written.length) console.log('    Review the changes with `git diff` before committing.\n');
+  console.log(`\n  ${ok('✦')} Synced ${written.length} file(s)${removed.length ? `, removed ${removed.length}` : ''}; pin now ${bold(next.bossVersion)}.`);
+  if (written.length || removed.length) console.log('    Review the changes with `git diff` before committing.\n');
   else console.log('');
 }
 
@@ -728,10 +752,10 @@ const HELP = {
     see: ['list', 'insights'],
   },
   sync: {
-    usage: 'boss sync [--apply]',
-    what: 'Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. For a reviewed, narrated update, use /boss-sync inside Claude instead.',
-    examples: ['boss sync', 'boss sync --apply'],
-    see: ['status', 'learn'],
+    usage: 'boss sync [--apply] [--remove]',
+    what: "Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. It also lists anything BOSS installed here and has since RETIRED, with what replaced it and why — but `--apply` never deletes: removal is a separate, explicit `--remove`, and something you edited is never removed at all. Only files BOSS itself stamped are ever candidates; your own skills and agents are invisible to sync. For a reviewed, narrated update — and the actual migration to whatever replaced a retired verb — use /boss-sync inside Claude instead.",
+    examples: ['boss sync', 'boss sync --apply', 'boss sync --apply --remove'],
+    see: ['status', 'changelog', 'learn'],
   },
   changelog: {
     usage: 'boss changelog [--since X.Y.Z] [--full] [--all]',

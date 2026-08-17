@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { resolveStageId, STAGE_ORDER, STAGES_DIR } from '../src/paths.js';
 import { loadModes, modeWord, skillGloss } from '../src/modes.js';
 import { readStageManifest, appendMarkedBlock, applyStageSafe } from '../src/scaffold.js';
-import { canonicalLayer, computeSettingsMerge, planSync } from '../src/sync.js';
+import { canonicalLayer, computeSettingsMerge, planSync, applySync, orphanEdited } from '../src/sync.js';
 import { detectStage } from '../src/detect.js';
 import { project, cleanup } from './helpers.js';
 
@@ -428,4 +428,137 @@ test('REGRESSION: /comprehend reports POSITION and is forbidden from grading (DE
   // Naming a problem and leaving the founder with it is a critique; the migration is what makes it help.
   assert.match(text, /^## When an approach should probably be abandoned/m, 'the abandonment sequence must be present');
   assert.match(text, /it is the founder's call/i, 'abandonment is named, then decided by the founder — never auto-applied');
+});
+
+// --- sync: supersede + removal (v0.155.0) --------------------------------
+//
+// `boss sync` could add and modify; its policy was literally "nothing is removed." So a skill BOSS
+// retired stayed in every project that ever synced, beside its replacement — meaning the
+// subtraction pass EVID-001 mandates could never reach a founder, and syncing could only ever GROW
+// their surface. It also made DEC-003's fourth step ("if yes, BOSS does the migration") a promise
+// the sync layer couldn't keep.
+//
+// The removal path is the most dangerous code in BOSS: it deletes files in a repo it was invited
+// into. These pin the guards, not the feature.
+
+const stampedProject = (extra = {}, stampPatch = {}) => project({
+  '.boss/manifest.json': JSON.stringify({
+    name: 'p', bossVersion: '0.0.1', stage: 'L0-quickstart', mode: 'Quickstart',
+    installedLayers: ['L0-quickstart'], agents: [], skills: [], hooks: [], loops: [],
+    ...stampPatch,
+  }),
+  ...extra,
+});
+
+test('REGRESSION: sync never proposes removing a file BOSS did not install', () => {
+  // THE safety boundary. `.boss/manifest.json` is the install ledger — a name that isn't in it was
+  // put there by the founder. Walking `.claude/skills/` and diffing against the manifest is the
+  // obvious implementation, and it would eventually propose deleting someone's own work.
+  const dir = stampedProject({ '.claude/skills/my-own-thing/SKILL.md': '# mine\n' });
+  const plan = planSync(dir, JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8')));
+  assert.deepEqual(plan.orphans.filter((o) => o.name === 'my-own-thing'), [],
+    "a founder's own skill must be invisible to sync");
+});
+
+test('an orphan BOSS stamped but no longer ships is reported, with its file path', () => {
+  const dir = stampedProject(
+    { '.claude/skills/legacy-verb/SKILL.md': '# legacy\n' },
+    { skills: ['legacy-verb'] },
+  );
+  const plan = planSync(dir, JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8')));
+  const o = plan.orphans.find((x) => x.name === 'legacy-verb');
+  assert.ok(o, 'a stamped-but-unshipped skill must be reported');
+  assert.equal(o.present, true);
+  assert.equal(o.rel, join('.claude', 'skills', 'legacy-verb'));
+});
+
+test('an orphan the founder already deleted is resolved, not work', () => {
+  const dir = stampedProject({}, { skills: ['legacy-verb'] });
+  const plan = planSync(dir, JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8')));
+  assert.equal(plan.orphans.find((x) => x.name === 'legacy-verb').present, false);
+});
+
+test('REGRESSION: --apply alone removes NOTHING; removal needs explicit consent', () => {
+  // DEC-003 — BOSS names what changed, the founder decides. A sync that silently deleted a skill
+  // would be the one place BOSS decided for them, in a repo it was invited into.
+  const dir = stampedProject(
+    { '.claude/skills/legacy-verb/SKILL.md': '# legacy\n' },
+    { skills: ['legacy-verb'] },
+  );
+  const stamp = JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8'));
+  const plan = planSync(dir, stamp);
+  const res = applySync(dir, plan, stamp);
+  assert.deepEqual(res.removed, [], '--apply must not remove');
+  assert.ok(existsSync(join(dir, '.claude/skills/legacy-verb/SKILL.md')), 'the file must survive');
+  // And it must STAY stamped — reconciling the stamp to the manifest union alone would drop it
+  // while its files remain, so the next sync would have no record BOSS installed it and the
+  // safety boundary above would refuse to touch it. Unexplained, forever.
+  assert.ok(res.stamp.skills.includes('legacy-verb'), 'an un-removed orphan stays in the ledger');
+});
+
+test('REGRESSION: --remove deletes the orphan and unstamps it, leaving the rest alone', () => {
+  const dir = stampedProject({
+    '.claude/skills/legacy-verb/SKILL.md': '# legacy\n',
+    '.claude/skills/my-own-thing/SKILL.md': '# mine\n',
+  }, { skills: ['legacy-verb'] });
+  const stamp = JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8'));
+  const res = applySync(dir, planSync(dir, stamp), stamp, { remove: true });
+  assert.equal(res.removed.length, 1);
+  assert.ok(!existsSync(join(dir, '.claude/skills/legacy-verb')), 'the orphan is gone');
+  assert.ok(!res.stamp.skills.includes('legacy-verb'), 'and unstamped');
+  assert.ok(existsSync(join(dir, '.claude/skills/my-own-thing/SKILL.md')), "the founder's own survives");
+});
+
+test('REGRESSION: an edited orphan is never removed, even with --remove', () => {
+  // Tested against orphanEdited directly. The true-branch needs a name that is stamped, absent
+  // from every live manifest, and whose TEMPLATE still exists — the deprecate-then-delete
+  // intermediate state, which planSync's layer logic can't be coaxed into producing from a
+  // fixture. Comparing a real shipped template against a doctored copy exercises the same code.
+  const dir = stampedProject({ '.claude/skills/welcome/SKILL.md': '# not what BOSS shipped\n' });
+  assert.equal(orphanEdited(dir, 'skill', 'welcome', ['L0-quickstart']), true,
+    'a changed file must read as edited');
+
+  // And the guard that consumes it: an edited orphan survives --remove.
+  const stamp = JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8'));
+  const plan = planSync(dir, stamp);
+  plan.orphans = [{ kind: 'skill', name: 'welcome', rel: join('.claude', 'skills', 'welcome'), present: true, edited: true, supersede: null }];
+  const res = applySync(dir, plan, stamp, { remove: true });
+  assert.deepEqual(res.removed, [], 'an edited orphan is never removed');
+  assert.ok(existsSync(join(dir, '.claude/skills/welcome/SKILL.md')), 'the file survives');
+});
+
+test('an untouched file matches its template — the flag does not cry wolf', () => {
+  // If a freshly-scaffolded file read as "edited", every orphan would carry the warning and the
+  // warning would stop meaning anything. Placeholders and whitespace are normalised for exactly
+  // this reason.
+  const dir = project({});
+  applyStageSafe('L0-quickstart', dir, {
+    PROJECT_NAME: 'p', DATE: '2026-01-01', BOSS_VERSION: '0.0.0', STAGE: 'L0-quickstart', MODE: 'Quickstart',
+  });
+  assert.equal(orphanEdited(dir, 'skill', 'welcome', ['L0-quickstart']), false);
+});
+
+test('edited is null — not false — when BOSS can no longer compare', () => {
+  // The NORMAL case for a real retirement: the release that stops shipping a skill also deletes
+  // its template, so the comparison basis is gone by the time a founder syncs. Reporting `false`
+  // there would assert "you didn't change this" at exactly the moment BOSS cannot know.
+  const dir = stampedProject(
+    { '.claude/skills/legacy-verb/SKILL.md': '# legacy\n' },
+    { skills: ['legacy-verb'] },
+  );
+  const plan = planSync(dir, JSON.parse(readFileSync(join(dir, '.boss/manifest.json'), 'utf8')));
+  assert.equal(plan.orphans.find((x) => x.name === 'legacy-verb').edited, null);
+});
+
+test('the supersede ledger ships, parses, and every entry can explain itself', () => {
+  const raw = JSON.parse(readFileSync(join(process.cwd(), 'registry', 'supersedes.json'), 'utf8'));
+  assert.ok(Array.isArray(raw.supersedes), 'the ledger must always expose an array');
+  for (const e of raw.supersedes) {
+    // A removal without a reason is just a deletion.
+    for (const f of ['since', 'kind', 'removed', 'why', 'migrate']) {
+      assert.ok(e[f], `supersede entry for '${e.removed}' is missing '${f}'`);
+    }
+    assert.match(e.since, /^\d+\.\d+\.\d+$/, `'${e.removed}' has an unparseable since`);
+    assert.ok(['skill', 'agent', 'hook'].includes(e.kind), `'${e.removed}' has an unknown kind`);
+  }
 });

@@ -1,11 +1,12 @@
 import {
-  readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync,
+  readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync,
 } from 'node:fs';
 import { join, dirname } from 'node:path';
 import {
   STAGES_DIR, bossVersion, resolveStageId,
 } from './paths.js';
 import { readStageManifest } from './scaffold.js';
+import { readSupersedes, findSupersede } from './supersede.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
 // canonical current stage id by its level prefix. Returns undefined if it
@@ -265,6 +266,91 @@ function lineDelta(oldText, newText) {
 
 // Compute what a sync would do for a project, without writing anything.
 // Returns { entries, layers, pin, current, drift }.
+// Orphans — things BOSS installed into this project and no longer ships.
+//
+// THE SAFETY BOUNDARY, and it is the whole design: an orphan candidate must have been STAMPED by
+// BOSS. `.boss/manifest.json` is the install ledger — if a name isn't in it, BOSS never put it
+// there, which means it is the founder's own skill or agent and is none of sync's business. Walking
+// `.claude/skills/` and diffing against the manifest would be the obvious implementation and it
+// would eventually propose deleting a founder's work. It is not worth the convenience.
+//
+// Two further guards, because a wrong removal costs trust that a wrong ADD never does:
+//   - `edited: true` when the file on disk differs from what BOSS last shipped. A founder who
+//     changed a skill has adopted it; that gets said out loud before anything is proposed.
+//   - `present: false` when they already deleted it themselves. Report it as resolved, not as work.
+function planOrphans(projectDir, stamp, layers) {
+  const live = { agent: new Set(), skill: new Set(), hook: new Set() };
+  for (const stageId of layers) {
+    let m;
+    try { m = readStageManifest(stageId); } catch { continue; }
+    (m.agents || []).forEach((a) => live.agent.add(a));
+    (m.skills || []).forEach((s) => live.skill.add(s));
+    [...(m.hooks || []), ...(m.optionalHooks || [])].forEach((h) => live.hook.add(h));
+  }
+
+  const ledger = readSupersedes();
+  const out = [];
+  const consider = (kind, names) => {
+    for (const name of names || []) {
+      if (live[kind].has(name)) continue;
+      const rel = kind === 'agent' ? join('.claude', 'agents', `${name}.md`)
+        : kind === 'skill' ? join('.claude', 'skills', name)
+          : join('.claude', 'hooks', `${name}.js`);
+      const abs = join(projectDir, rel);
+      const present = existsSync(abs);
+      out.push({
+        kind,
+        name,
+        rel,
+        present,
+        // Tri-state on purpose: true / false / null-for-unknowable. See orphanEdited.
+        edited: present ? orphanEdited(projectDir, kind, name, layers) : false,
+        supersede: findSupersede(kind, name, ledger),
+      });
+    }
+  };
+  consider('agent', stamp.agents);
+  consider('skill', stamp.skills);
+  consider('hook', stamp.hooks);
+  return out;
+}
+
+// Did the founder change this after BOSS shipped it? THREE answers, and the third is the honest one:
+//   true   — differs from the template BOSS still has. Theirs now; never removed.
+//   false  — matches. Safe to remove on request.
+//   null   — UNKNOWABLE. BOSS deleted the template, so there is nothing left to compare against.
+//
+// That third case is not an edge case, it is the NORMAL case for a real retirement: the release
+// that stops shipping a skill also deletes its template, so by the time a founder syncs, the
+// comparison basis is gone. Returning `false` there — which the first cut did — would quietly
+// assert "you didn't change this" at exactly the moment BOSS cannot know, and then delete
+// a customisation on `--remove`. Unknown is reported as unknown and shown to the founder before
+// they consent. (The durable fix is a content hash in the stamp at write time; noted, not built —
+// it changes the stamp format, and consent plus an honest "I can't tell" covers the risk today.)
+export function orphanEdited(projectDir, kind, name, layers) {
+  const rel = kind === 'agent' ? join('.claude', 'agents', `${name}.md`)
+    : kind === 'skill' ? join('.claude', 'skills', name, 'SKILL.md')
+      : join('.claude', 'hooks', `${name}.js`);
+  const abs = join(projectDir, rel);
+  if (!existsSync(abs)) return null;
+  for (const stageId of layers) {
+    const base = join(STAGES_DIR, stageId, 'template', '.claude');
+    const src = kind === 'agent' ? join(base, 'agents', `${name}.md`)
+      : kind === 'skill' ? join(base, 'skills', name, 'SKILL.md')
+        : join(base, 'hooks', `${name}.js`);
+    if (!existsSync(src)) continue;
+    try {
+      // Compare ignoring substituted placeholders and whitespace — a scaffolded file never
+      // byte-matches its template, and flagging every file as "edited" would train everyone to
+      // ignore the flag, which is how the last three checkers died.
+      const cur = readFileSync(abs, 'utf8').replace(/\s+/g, ' ').trim();
+      const tpl = readFileSync(src, 'utf8').replace(/\{\{[A-Z_]+\}\}/g, '').replace(/\s+/g, ' ').trim();
+      return cur !== tpl;
+    } catch { return null; }
+  }
+  return null;
+}
+
 export function planSync(projectDir, stamp) {
   const current = bossVersion();
   const vars = {
@@ -310,12 +396,13 @@ export function planSync(projectDir, stamp) {
     current,
     drift: stamp.bossVersion !== current,
     settings: computeSettingsMerge(projectDir, layers),
+    orphans: planOrphans(projectDir, stamp, layers),
   };
 }
 
 // Apply a plan: write new/changed files and return the canonicalized stamp
 // fields the caller should persist (it owns writeStamp + registry).
-export function applySync(projectDir, plan, stamp) {
+export function applySync(projectDir, plan, stamp, opts = {}) {
   const written = [];
   for (const e of plan.entries) {
     if (e.status === 'ok') continue;
@@ -323,6 +410,22 @@ export function applySync(projectDir, plan, stamp) {
     mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, e.next);
     written.push(e);
+  }
+
+  // Removal is OPT-IN, always. `--apply` writes and reports; only `--remove` deletes. DEC-003:
+  // BOSS names what changed, the founder decides, and then BOSS does the work — a sync that
+  // silently deleted a skill would be the one place BOSS decided for them, and it would do it to
+  // files in a repo it was invited into. An edited orphan is never removed even with --remove;
+  // the founder changed it, which makes it theirs.
+  const removed = [];
+  if (opts.remove) {
+    for (const o of plan.orphans || []) {
+      if (!o.present || o.edited === true) continue; // null (unknowable) removes on consent; true never does
+      try {
+        rmSync(join(projectDir, o.rel), { recursive: true, force: true });
+        removed.push(o);
+      } catch { /* a removal that fails is reported as not-removed, never as done */ }
+    }
   }
 
   // Merge BOSS-owned hook registrations into settings.json (additive — preserves
@@ -353,16 +456,33 @@ export function applySync(projectDir, plan, stamp) {
   let topMode = stamp.mode;
   try { topMode = readStageManifest(top).name; } catch { /* keep */ }
 
+  // The stamp must keep naming what is actually ON DISK. Reconciling it to the current manifest
+  // union alone — which is what this did before orphans existed — would drop a retired skill from
+  // the ledger while its files stayed in `.claude/`. The next sync would then have no record BOSS
+  // ever installed it, so the safety boundary above ("only remove what BOSS stamped") would refuse
+  // to touch it, and it would sit there unexplained forever. An orphan we chose not to remove is
+  // still installed, so it stays stamped until it's gone.
+  const stillInstalled = new Set(
+    (plan.orphans || [])
+      .filter((o) => o.present && !removed.some((r) => r.kind === o.kind && r.name === o.name))
+      .map((o) => `${o.kind}:${o.name}`),
+  );
+  const keep = (kind, set, prev) => {
+    for (const n of prev || []) if (stillInstalled.has(`${kind}:${n}`)) set.add(n);
+    return [...set];
+  };
+
   return {
     written,
+    removed,
     stamp: {
       ...stamp,
       stage: top,
       mode: topMode,
       installedLayers: plan.layers,
-      agents: [...agents],
-      skills: [...skills],
-      hooks: [...hooks],
+      agents: keep('agent', agents, stamp.agents),
+      skills: keep('skill', skills, stamp.skills),
+      hooks: keep('hook', hooks, stamp.hooks),
       loops: [...loops],
       bossVersion: plan.current,
     },
