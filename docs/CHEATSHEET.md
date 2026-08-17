@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.153.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.154.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -42,7 +42,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/decide` — Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is
 - `/sunset` — End something honestly — a whole project, or one zombie feature
 - `/persona` — Build your app's target-user persona from your idea, grow it from what you know + online research + any real user research you drop in, and consult it as an agent voice — both to guide product decisions ("would my user want this?") and to QA your builds ("how would she react to this screen?")
-- `/comprehend` — AI-native scaffold tailoring — read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tailor the scaffold to it non-destructively, plus seed the venture brain with an honest first read so the conscience has continuity from day one
+- `/comprehend` — Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work
 - `/feedback` — Send feedback about BOSS itself back to the people who build it — a bug, a confusion, a wish, a "this got in my way." User-initiated and transparent: it shows you exactly what it will send (and the small bit of context attached) before anything leaves your machine, then files it as a GitHub issue upstream (or gives you a prefilled link to paste)
 - `/boss-sync` — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin
 - `/boss-learn` — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality

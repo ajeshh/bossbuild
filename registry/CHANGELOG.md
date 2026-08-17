@@ -2,6 +2,53 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.154.0 — 2026-08-17
+
+- **[[DEC-003]] — position, not verdict.** The open question v0.153.0's mechanics couldn't answer:
+  what should BOSS actually *say* to a founder about work they already built? The tempting answer was
+  a **report card** — read the repo, grade it, hand back recommendations. It demos well. It also
+  collides head-on with the README's own promise (*"Refuses to nag. **Refuses to grade.**"*), lands as
+  a first impression on work the founder is likely defensive about, and — grading someone's unpaid,
+  unfinished, personal work to create the motivation to adopt your tool — **would make BOSS the thing
+  it warns against.** Ajesh's call, and the reason is the better half of it: *"I like position, because
+  it makes the founder think, vs just blind assessment; it provides them with options and how to
+  integrate, vs force."* **A verdict invites agreement or defensiveness. Neither is thinking.**
+- **`/comprehend` gains a Position read, given BEFORE any write.** Four parts: **where the work
+  actually is** (with the evidence, and the gap from the installed mode named as information rather
+  than error — adopt caps at MVP on purpose, so a further-along repo *should* read ahead); **what BOSS
+  can't see** — the honest half, and the part that makes it useful rather than flattering: it read
+  files, it did *not* see whether anyone uses this, whether they return, what it costs, or what the
+  founder already tried and abandoned; **two or three options** with what each would change *about
+  their week* and what it costs, always including the legitimate *"nothing yet — keep building"*; and
+  **how the working model changes**, honestly. Then it **stops and waits** — the read is a conversation
+  opener, not a preamble.
+- **No quantified gain claims, ever — and this one is load-bearing.** BOSS has **n=1, `stated-pain`,
+  no observed session.** Promising *"you'll ship faster"* would be BOSS committing the exact
+  self-fooling it exists to prevent, on its own front porch, to the first founder who might check.
+  *"Here's what changes"* is honest; *"here's what you'll gain"* is not.
+- **The abandonment sequence — the second half of Ajesh's principle.** *"There are times where a
+  specific approach might need to be abandoned, but it should be the founder's call and then refactor
+  and update to the new way."* Encoded as a fixed order: **name it once with the evidence** (not
+  *"this is bad practice"* but *"nine files import from `utils.js`, which is why your last three edits
+  touched more than you expected"*) → **say what the alternative costs**, including that it may not be
+  worth it yet → **stop; it's the founder's call**, don't refactor to prove the point, don't ask twice,
+  record a "no" in `/decide` so it isn't re-litigated → **if yes, BOSS does the migration.** That last
+  step is what makes it fair: *naming a problem and leaving them with it is a critique; naming it and
+  then doing the work is help.* Kept deliberately **out** of the option menu — abandoning something you
+  built is a different weight of decision than turning on a discipline.
+- **The decision is pinned by a test, not just a doc.** A decision recorded only in `docs/` is one the
+  next edit quietly undoes, and the pull toward a scorecard here is strong. A REGRESSION case (**81**
+  now) asserts the shipped skill still carries the position section, the no-grade rule, the
+  can't-see half, the no-measured-gain rule, and the founder's-call sequence.
+- **Caught while wiring it:** the skill's own gate still read *"run only when `aiNative` is set"* —
+  v0.153.0 made `boss adopt` offer `/comprehend` every time, so the CLI and the skill disagreed about
+  when it may run. Aligned: expected first move on an adopted repo, opt-in on a fresh one.
+- **The honest cost, accepted:** BOSS reads as *less impressive in a demo* than a tool that hands back
+  a scorecard. Recorded in DEC-003 with a falsifier — if a real founder asks for a straight verdict
+  twice, the no-grade rule is serving BOSS's principles at the user's expense and gets revisited.
+- **Nothing added to the founder surface.** No new skill, agent or hook — two sections in a skill that
+  already shipped.
+
 ## 0.153.0 — 2026-08-17
 
 - **`boss adopt` now reads how far along your repo already is, instead of assuming square one.**

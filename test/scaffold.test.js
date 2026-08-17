@@ -411,3 +411,21 @@ test('node_modules never makes an empty repo look like a real build', () => {
   const d = detectStage(project(files));
   assert.equal(d.stage, 'L0-quickstart', 'dependencies are not the founder\'s work');
 });
+
+// v0.154.0 — DEC-003 (position, not verdict). A decision recorded only in docs/ is a decision the
+// next edit can quietly undo. `/comprehend` is the one skill that speaks to a founder about work
+// they already built, and the pull toward a scorecard there is strong: it demos well. These pin the
+// two guarantees that make it humane rather than clever — no grade, and no invented payoff.
+test('REGRESSION: /comprehend reports POSITION and is forbidden from grading (DEC-003)', () => {
+  const p = join(STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'skills', 'comprehend', 'SKILL.md');
+  const text = readFileSync(p, 'utf8');
+  assert.match(text, /^## Position/m, 'the position read must be a named section, not a buried aside');
+  assert.match(text, /Position, never a grade/, 'the no-grade rule must be stated where the model reads it');
+  assert.match(text, /What BOSS can't see/, "the honest half — the unknowns — is what makes it a position rather than a verdict");
+  // The other half of DEC-003: BOSS has n=1 stated-pain and no observed session, so a quantified
+  // benefit claim would be BOSS committing the exact self-fooling it exists to prevent.
+  assert.match(text, /[Nn]ever claim a\s+measured gain/, 'the no-quantified-gain rule must survive edits');
+  // Naming a problem and leaving the founder with it is a critique; the migration is what makes it help.
+  assert.match(text, /^## When an approach should probably be abandoned/m, 'the abandonment sequence must be present');
+  assert.match(text, /it is the founder's call/i, 'abandonment is named, then decided by the founder — never auto-applied');
+});
