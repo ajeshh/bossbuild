@@ -11,8 +11,8 @@ shared place, they stay trapped in one person's head, and a cofounder re-learns 
 way (or keeps doing it the outdated, expensive way).
 
 A **practice** is one such learning, written down once and **shared** with the whole team: *"use streaming
-for the long generations — it cut perceived latency in half"*, *"`claude-haiku-4-5` is plenty for the
-classification step, ~10× cheaper than Opus"*, *"this prompt structure stopped the JSON drift."* The point
+for the long generations — it cut perceived latency in half"*, *"the cheap model is plenty for the
+classification step, ~10× cheaper than the deliberate one"*, *"this prompt structure stopped the JSON drift."* The point
 isn't ceremony — it's that **you both get current together and can focus on building**, not on worrying
 whether you're behind or overspending.
 

@@ -10,6 +10,12 @@ export const BOSS_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 export const STAGES_DIR = join(BOSS_ROOT, 'stages');
 
+// The practice shelf ships INSIDE the package (`files` in package.json), so it is on
+// every founder's disk — just not at a path anything in their project could name. That
+// is what `boss craft` exists to bridge: 25 shipped agents/skills/hooks pointed at
+// `library/practices/*` from projects that have no `library/` (v0.147.0).
+export const PRACTICES_DIR = join(BOSS_ROOT, 'library', 'practices');
+
 // Mutable, machine-local state lives in the user's home — NOT in the package.
 // This keeps the published package immutable and keeps a user's project list
 // (with absolute paths) out of the repo.

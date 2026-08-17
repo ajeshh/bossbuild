@@ -6,8 +6,8 @@ description: Establish AI spend discipline for {{PROJECT_NAME}} — declare per-
 # /ai-cost — name the bill before it surprises you
 
 The cost of an AI-mediated app is the single most-load-bearing operating decision you make once
-your code reaches the model. Token math is small per call and large per cohort. *"Just call GPT-5
-and see"* is a perfectly fine demo posture and a perfectly destructive production posture.
+your code reaches the model. Token math is small per call and large per cohort. *"Just call the
+biggest model and see"* is a perfectly fine demo posture and a perfectly destructive production one.
 
 This skill is the gate between *"the app calls an LLM"* and *"the app is in front of users."* It
 makes you declare the budget BEFORE the bill, wire a logger so you can SEE the bill, and pair
@@ -44,7 +44,8 @@ Scan `src/` for LLM SDK call sites (`anthropic`, `openai`, `@anthropic-ai/sdk`, 
 `chat.completions.create`, `generateText`, `streamText`, `Anthropic(`, `OpenAI(`, etc.). For each
 hit, identify:
 - **Which FEAT** it serves (link to a `FEAT-NNN`).
-- **Which model** it uses (e.g., `claude-sonnet-4-6`, `gpt-5-mini`, `claude-haiku-4-5`).
+- **Which model** it uses — the id you actually call, and which of the three shapes it is
+  (`deliberation` / `volume` / `cheap-bulk`; see the model-routing practice).
 - **Per-call shape** — prompt size order-of-magnitude (small / medium / large), expected outputs.
 - **Call frequency** — once per session? Per user action? Per page render?
 
@@ -104,123 +105,22 @@ highest-ROI / lowest-effort lever on the list — reach for it before downgradin
 
 ### 5. Wire the logger
 
-A ~30-line wrapper around the LLM SDK that records each call. Stack-agnostic shape:
+A ~30-line wrapper around the LLM SDK that records each call, so the ledger `/cost-review` reads
+actually fills. TypeScript and Python implementations, the wiring rules, and the privacy constraint
+for regulated work: **[`templates/cost-logger.md`](templates/cost-logger.md)** — open it now.
 
-```typescript
-// src/lib/ai-cost-logger.ts
-import { appendFileSync } from 'node:fs';
-import { join } from 'node:path';
-
-const LEDGER = join(process.cwd(), '.boss', 'cost-log.jsonl');
-
-// Model price table — UPDATE WHEN YOU SWAP MODELS. The math is wrong otherwise.
-const PRICE_PER_M_TOKENS = {
-  'claude-sonnet-4-6':   { input: 3.00, output: 15.00 },
-  'claude-haiku-4-5':    { input: 1.00, output:  5.00 },
-  'claude-opus-4-7':     { input: 15.00, output: 75.00 },
-  'gpt-5-mini':          { input: 0.25, output:  2.00 },
-  // add yours
-};
-
-export function logCall({ feat, model, inputTokens, outputTokens, userId }) {
-  const p = PRICE_PER_M_TOKENS[model] || { input: 0, output: 0 };
-  const usd = (inputTokens * p.input + outputTokens * p.output) / 1_000_000;
-  const entry = {
-    ts: new Date().toISOString(),
-    feat, model, userId,
-    input_tokens: inputTokens,
-    output_tokens: outputTokens,
-    estimated_usd: Number(usd.toFixed(6)),
-  };
-  appendFileSync(LEDGER, JSON.stringify(entry) + '\n');
-  return entry;
-}
-```
-
-```python
-# src/ai_cost_logger.py
-import json, os, datetime
-
-LEDGER = os.path.join(os.getcwd(), ".boss", "cost-log.jsonl")
-
-PRICE_PER_M = {
-    "claude-sonnet-4-6":   {"input": 3.00, "output": 15.00},
-    "claude-haiku-4-5":    {"input": 1.00, "output":  5.00},
-    "claude-opus-4-7":     {"input": 15.00, "output": 75.00},
-    "gpt-5-mini":          {"input": 0.25, "output":  2.00},
-}
-
-def log_call(feat, model, input_tokens, output_tokens, user_id=None):
-    p = PRICE_PER_M.get(model, {"input": 0, "output": 0})
-    usd = (input_tokens * p["input"] + output_tokens * p["output"]) / 1_000_000
-    entry = {
-        "ts": datetime.datetime.utcnow().isoformat() + "Z",
-        "feat": feat, "model": model, "user_id": user_id,
-        "input_tokens": input_tokens, "output_tokens": output_tokens,
-        "estimated_usd": round(usd, 6),
-    }
-    with open(LEDGER, "a") as f:
-        f.write(json.dumps(entry) + "\n")
-    return entry
-```
-
-Wrap each LLM call. The wrapper is the *only* path to the SDK — make it impossible to bypass:
-add a lint rule or a code review note that says *"if you imported `@anthropic-ai/sdk` directly,
-this is a bug — go through `lib/ai-cost-logger`."*
-
-**Privacy note (domain-expert and any health/legal/financial project):** the logger above
-records token counts and metadata, NOT prompt or response content. Keep it that way. If you
-need to log content for debugging, do it in a separate file with explicit consent + retention,
-and exclude it from any shared logs.
+The one thing to carry into that file: **the founder fills the price table from the provider's current
+pricing page, at wire-time.** Not from the template, not from your memory — both are stale by
+construction, and a cost log that quietly under-reports is worse than none.
 
 ### 6. Write `docs/ai-cost-budget.md`
 
-The contract doc. Use this skeleton (frontmatter included so it's discoverable like every other
-BOSS doc):
+The contract doc — budgets, one row per call site, the cost levers, the review cadence and the breach
+grammar. Skeleton: **[`templates/budget-doc.md`](templates/budget-doc.md)**.
 
-```markdown
----
-id: ai-cost-budget
-type: budget
-owner: pm
-status: declared
-updated: {{DATE}}
----
-
-# AI cost budget — {{PROJECT_NAME}}
-
-## Cohort + posture
-- Cohort: <cohort name from .boss/config.json>
-- Posture: <strict cap | inspect-only | BYO | % of revenue>
-
-## Budgets
-- **Per user, per day:** $X.XX  (alert at 80% — $X.XX)
-- **Per user, per month:** $X.XX
-- **Monthly cap (all users):** $X.XX  (hard ceiling: pause the feature, don't quietly overrun)
-
-## Model choices (one row per call site)
-| Call site / FEAT | Model | Why this model | Cheaper-model A/B status |
-|---|---|---|---|
-| <FEAT-001 / classify-intent> | <claude-haiku-4-5> | <quality requires it: classifier fails below this> | <tested 2026-MM-DD; haiku 92%, sonnet 96% — kept sonnet> |
-
-## Cost levers (revisit when budget breached)
-- [ ] Prompt caching (Anthropic prompt caching for stable system prompts)
-- [ ] Response caching (identical prompts in <N> minutes)
-- [ ] Batch API (non-realtime calls)
-- [ ] Downgrade to cheaper model for non-load-bearing calls
-- [ ] Truncate context (do you really need the whole document?)
-- [ ] Structured outputs (Liu) — smaller schemas = smaller responses
-
-## Review cadence
-- Weekly during MVP — read `.boss/cost-log.jsonl`, total by FEAT + by user, sanity-check.
-- Monthly during V1 — daily totals; cohort cost-per-user; cost-as-%-of-revenue.
-
-## Breach grammar (per IDEA-008)
-- When per-user/day exceeds budget by <Y%>, hook should surface the `cost` moment.
-- Override (when legitimate): record in `docs/devlog.md`:
-  - **OVERRIDE:** `cost-budget-loop` overrun on <date> — rationale: <e.g., one power user
-    running a long workflow; not representative; expected to come back into budget by week-end>.
-```
+Push on the *"why this model"* column when you fill it. *"It's what the example used"* is the most
+common answer and it isn't one — if the founder can't say what breaks on a cheaper model, that's the
+A/B they haven't run.
 
 ### 7. Set the review cadence
 

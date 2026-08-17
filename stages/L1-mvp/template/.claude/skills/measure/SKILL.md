@@ -5,7 +5,7 @@ description: The post-ship counterpart to /pretotype. /pretotype asks "will anyo
 
 # /measure — is the shipped thing working, and are they staying?
 
-The post-ship half of validation. Full judgment: `library/practices/analytics-for-ai-products.md`. This is a
+The post-ship half of validation. Full judgment: `boss craft analytics-for-ai-products`. This is a
 runner with a spine of restraint — its main job is to stop a founder from instrumenting 200 events and analyzing
 none.
 

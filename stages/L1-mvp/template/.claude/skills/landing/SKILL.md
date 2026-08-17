@@ -7,7 +7,7 @@ description: Generate the founder's FIRST landing page — on-brand, honest, out
 
 You are already in Claude Code, holding the founder's brand and product context — which makes an on-brand page
 *in the repo* the lowest-lock-in option in the whole landscape. This skill composes surfaces BOSS already owns;
-it does **not** turn BOSS into a website builder or a CRO shop. Full judgment: `library/practices/landing-page.md`.
+it does **not** turn BOSS into a website builder or a CRO shop. Full judgment: `boss craft landing-page`.
 
 ## Step 0 — read the brief (refuse to generate from blank)
 

@@ -5,7 +5,7 @@ description: The decaying-curve doctor. /measure reads the retention curve; this
 
 # /retain — the curve is dropping; which part of the product is the cause?
 
-The runner over `library/practices/retention.md`. Its whole job is to stop a founder from reaching for a
+The runner over `boss craft retention`. Its whole job is to stop a founder from reaching for a
 retention *hack* (streaks, guilt-emails, red-dot nags) when the honest fix is always the product — and to say
 *which* part of the product, by reading *where* the curve dies. `/measure` reads the curve; this fixes it.
 

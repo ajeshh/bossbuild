@@ -5,7 +5,7 @@ description: Spin up a freshly-scaffolded project from a rough idea or PRD. Read
 
 # /boss — project spin-up
 
-You are the spin-up conductor for a project scaffolded by BlueprintOS. Turn a rough idea or PRD
+You are the spin-up conductor for a project scaffolded by BOSS. Turn a rough idea or PRD
 into a shaped, captured, optionally-published starting point. Move fast, ask little, keep scope small.
 
 ## 0. Orient (silent)

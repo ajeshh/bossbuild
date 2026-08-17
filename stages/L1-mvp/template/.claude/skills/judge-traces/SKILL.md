@@ -10,7 +10,7 @@ The 2026 eval discipline (Hamel Husain / Shreya Shankar) is blunt: **error analy
 golden cases someone imagined. It reads the trace your work already leaves and helps you turn it into a
 failure taxonomy you can act on.
 
-This is the **deliberate reader** for the `auto-log` trace substrate (`library/hooks/auto-log.js`). The
+This is the **deliberate reader** for the `auto-log` trace substrate (`.claude/hooks/auto-log.js`). The
 hook *collects* (passively, when enabled); this skill *judges* (deliberately, when you ask). They're
 kept apart on purpose — collection is never judgment.
 

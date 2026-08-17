@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Put {{PROJECT_NAME}} where a real user can hit it — the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz/RLS actually on — the signature vibe-coded-leak surface), picks or confirms the cheapest reversible host, deploys, and hands back the live URL + the rollback path. Stack-neutral (no baked-in target — Vercel / Fly / Railway / Cloudflare / Render / a VPS, learned per project). The pre-flight is a check, not a gate. "localhost is not shipped" — reachability is what turns a pseudo app into one a user can prove. And at the live moment it voices the one leg the conscience otherwise skips — reachable isn't found: "who's the first real user, and how do they hit this?" (once, situation-not-person, points at mentor-gtm — never a marketing nag). Full depth - library/practices/ship-it-live.md. Usage - /ship [--preview | --rollback]
+description: Put {{PROJECT_NAME}} where a real user can hit it — the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz/RLS actually on — the signature vibe-coded-leak surface), picks or confirms the cheapest reversible host, deploys, and hands back the live URL + the rollback path. Stack-neutral (no baked-in target — Vercel / Fly / Railway / Cloudflare / Render / a VPS, learned per project). The pre-flight is a check, not a gate. "localhost is not shipped" — reachability is what turns a pseudo app into one a user can prove. And at the live moment it voices the one leg the conscience otherwise skips — reachable isn't found: "who's the first real user, and how do they hit this?" (once, situation-not-person, points at mentor-gtm — never a marketing nag). Full depth - `boss craft ship-it-live`. Usage - /ship [--preview | --rollback]
 ---
 
 # /ship — localhost is not shipped
@@ -8,7 +8,7 @@ description: Put {{PROJECT_NAME}} where a real user can hit it — the CD half o
 An app only you can reach is a pseudo app — you can't prove pain, fit, or willingness-to-pay on a thing
 no real user can hit. `/smoke` asks *is it alive?*; `/evals` asks *is the AI part correct?*; **`/ship`
 asks *can a real user reach it?*** It's the CD half of the build process (`git-workflow` shipped the CI
-half). Full discipline: [`ship-it-live`](../../../library/practices/ship-it-live.md).
+half). Full discipline: `boss craft ship-it-live`.
 
 This is **not** a deploy tutorial. It carries the *judgment* (deploy early, cheap, reversible; don't leak
 secrets; know your revert path) and runs the deterministic verbs. The *target* is the project's call.
@@ -46,7 +46,7 @@ block the founder's deploy (conscience-not-censor). Surface, then proceed if the
   stay deferred until a *named* enterprise deal demands them; the privacy policy + opt-out do not.
 - **Don't restate the security pass — run it.** This pre-flight is the *trigger*; the depth lives in
   **`/red-team`**'s pre-ship app-security pass (the shipped-secret scan `secrets-guard` doesn't cover)
-  and [`agent-security`](../../../library/practices/agent-security.md). A `fail` here is a `/spec` fix
+  and `boss craft agent-security`. A `fail` here is a `/spec` fix
   *before* the public URL, not a backlog item — especially for a non-technical founder who can't spot it.
 
 ### 3. Deploy → hand back the URL
@@ -57,7 +57,7 @@ it cost (free tier vs. paid) so the founder keeps optionality in view.
 State the one command/click that restores the last-good build — and the honest caveat: **rollback restores
 the app, not the database.** A migration that already ran does not un-run on rollback. If this deploy
 includes a schema change, it should be backward-compatible (expand-migrate-contract — see
-[`scalable-architecture`](../../../library/practices/scalable-architecture.md)) so a code rollback never
+`boss craft scalable-architecture`) so a code rollback never
 strands the data.
 
 ### 4b. Risky or AI-mediated? Offer the kill switch (a check, not a gate)
@@ -69,7 +69,7 @@ hallucinating for your whole user base needs a *toggle* (seconds), not a redeplo
 first:** the honest version is an env var / a `const FLAGS = {…}` boolean and one `if` — not a platform. For an
 AI feature, put the model/prompt/params *in* the flag so a bad model swap (which CI/CD never sees) rolls back
 without a deploy — "flag the model, not just the feature." Full judgment + the env-var-first ladder:
-[`feature-flags`](../../../library/practices/feature-flags.md). Offer once, suggestive; a founder shipping a
+`boss craft feature-flags`. Offer once, suggestive; a founder shipping a
 plain static page doesn't need it — skip.
 
 ### 5. Capture the recipe (feed the loop)

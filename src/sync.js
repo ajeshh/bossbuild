@@ -18,7 +18,25 @@ export function canonicalLayer(layerId) {
   );
 }
 
-// The files BOSS manages for a stage: one .md per agent, one SKILL.md per skill.
+// Every file under a skill's directory EXCEPT its SKILL.md body, as paths relative
+// to that directory. Recursive, so reference/deeper.md and templates/x/y.md both come
+// back. Returns [] for a skill that is still a single file (the common case).
+function walkSkillResources(skillDir, prefix = '') {
+  if (!existsSync(skillDir)) return [];
+  const out = [];
+  for (const entry of readdirSync(skillDir, { withFileTypes: true })) {
+    const rel = prefix ? join(prefix, entry.name) : entry.name;
+    if (entry.isDirectory()) {
+      out.push(...walkSkillResources(join(skillDir, entry.name), rel));
+    } else if (entry.name !== 'SKILL.md') {
+      out.push(rel);
+    }
+  }
+  return out;
+}
+
+// The files BOSS manages for a stage: one .md per agent, one SKILL.md per skill,
+// plus any resources the skill bundles alongside it.
 // Each entry maps a source template file → its path inside the project.
 function managedFiles(stageId, manifest) {
   const stageRoot = join(STAGES_DIR, stageId, 'template');
@@ -39,6 +57,20 @@ function managedFiles(stageId, manifest) {
       src: join(base, 'skills', s, 'SKILL.md'),
       rel: join('.claude', 'skills', s, 'SKILL.md'),
     });
+    // Bundled resources — anything else under the skill's directory (reference/,
+    // templates/, examples/). Progressive disclosure means a skill is increasingly a
+    // TREE, not one file: the SKILL.md body stays short and defers the rarely-needed
+    // material to files loaded on demand. Those files are just as managed as the body,
+    // and syncing only SKILL.md reproduces exactly the dormant-hook bug fixed below —
+    // shipped once at scaffold, never updated again. Same fix, same reason.
+    for (const rel of walkSkillResources(join(base, 'skills', s))) {
+      out.push({
+        kind: 'skill-resource',
+        name: `${s}/${rel}`,
+        src: join(base, 'skills', s, rel),
+        rel: join('.claude', 'skills', s, rel),
+      });
+    }
   }
   for (const h of manifest.hooks || []) {
     // Hook scripts may be .js (v0.18.0+ Node-based) or .sh (legacy). Prefer .js
@@ -98,11 +130,29 @@ function managedFiles(stageId, manifest) {
 // Hook *scripts* sync like any managed file (above). Their *registration* lives in
 // settings.json — a user-editable file — so we merge it in additively instead of
 // overwriting: BOSS owns the hook entries it ships, the user owns everything else
-// (permissions, their own hooks). Matched by command, so re-syncing is idempotent.
+// (their own hooks, `allow`, `defaultMode`). Matched by command, so re-syncing is idempotent.
 function templateHooks(stageId) {
   const f = join(STAGES_DIR, stageId, 'template', '.claude', 'settings.json');
   if (!existsSync(f)) return {};
   try { return JSON.parse(readFileSync(f, 'utf8')).hooks || {}; } catch { return {}; }
+}
+
+// The `permissions.deny` floor is the ONE permission key BOSS also merges (v0.141.0).
+// Everything else under `permissions` stays user-owned.
+//
+// Why deny is the exception: a deny entry is *monotonically safe* — adding one can only
+// ever restrict what the agent may do, never grant. So merging it additively can't break a
+// project or widen its surface, which is exactly the property `allow` and `defaultMode`
+// lack (both would silently grant). Before this, the floor shipped only via `boss new`, so
+// a hardening fix could never reach a project already in the wild — a security floor that
+// can't be updated is not a floor. Never removes an entry; the founder can always delete
+// one and it will come back on the next sync, which is the intended nag.
+function templateDenies(stageId) {
+  const f = join(STAGES_DIR, stageId, 'template', '.claude', 'settings.json');
+  if (!existsSync(f)) return [];
+  try {
+    return JSON.parse(readFileSync(f, 'utf8')).permissions?.deny || [];
+  } catch { return []; }
 }
 
 function eventCommands(entries) {
@@ -175,6 +225,19 @@ export function computeSettingsMerge(projectDir, layers) {
         if (cmds.length && cmds.every((c) => present.has(c))) continue; // already registered
         merged.hooks[event].push(JSON.parse(JSON.stringify(entry)));
         cmds.forEach((c) => present.add(c));
+        changed = true;
+      }
+    }
+    // The deny floor — additive only (see templateDenies above).
+    const denies = templateDenies(stageId);
+    if (denies.length) {
+      merged.permissions ||= {};
+      merged.permissions.deny ||= [];
+      const have = new Set(merged.permissions.deny);
+      for (const pattern of denies) {
+        if (have.has(pattern)) continue;
+        merged.permissions.deny.push(pattern);
+        have.add(pattern);
         changed = true;
       }
     }

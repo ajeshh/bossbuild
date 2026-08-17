@@ -21,7 +21,7 @@ drift_moment: coherence
 
 # Loop: design-tokens (MVP)
 
-The discipline that **prevents the 47 blues** ([IDEA-010](../../ideas/IDEA-010-scalable-ai-design.md)).
+The discipline that **prevents the 47 blues** (`boss craft design-system`).
 The most-common AI-generated-UI failure mode: each new screen Claude generates derives its own
 colors, spacing, components — and the codebase grows linearly with screens. This loop catches
 that early, JIT, *only when UI is actually accumulating.*
@@ -29,7 +29,7 @@ that early, JIT, *only when UI is actually accumulating.*
 `runner_type: hook` — the conscience hook evaluates this loop on every UserPromptSubmit. But the
 loop is structured so it **doesn't fire on fresh projects** (the entry predicate requires ≥3
 style declarations across `src/`; a brand-new repo has 0). It opens only when the founder has
-started accumulating UI — *the first UI commit inflection* (IDEA-010's "early-start JIT").
+started accumulating UI — *the first UI commit inflection* (the early-start JIT rule).
 
 When open, the conscience surfaces a `coherence` moment (new in v0.21.0 — a flavor of caution
 specific to system-vs-code drift): *"You're putting style into code without a token system. The
@@ -83,8 +83,8 @@ hand the decision back. Override is recorded in devlog per IDEA-008.
   ```
 - **Swap discipline:** Frost-Atomic-Design lineage vs. Curtis-tokens-layer-cake vs. a stack-
   native pattern (e.g., Mantine's theme tokens; Chakra's theme; Tailwind's config). The loop's
-  exit predicate checks for token *consumption*, not a specific tool. Stack-aware adapters can
-  live in `library/practices/scalable-ai-design/<stack>.md` (v0.24+).
+  exit predicate checks for token *consumption*, not a specific tool. If a stack needs its own adapter,
+  author it as a project practice via `/practice` — BOSS ships no per-stack token adapters.
 - **Author your own:** a domain-specific scaling discipline (e.g., a `data-vocabulary-loop` for
   a project where the load-bearing standardization is API field names, not visual style).
 

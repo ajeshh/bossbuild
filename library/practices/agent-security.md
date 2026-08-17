@@ -5,8 +5,8 @@ owner: mentor-architect
 status: active
 host: claude-code
 provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep)
-last_reviewed: 2026-07-23
-review_by: 2026-10-21
+last_reviewed: 2026-08-11
+review_by: 2026-11-09
 curve: threat
 ---
 
@@ -70,6 +70,28 @@ opens — the **agent itself** going wrong. Two things to hold:
   **deterministic guard**; the model's own judgment (and any safety *classifier*) is
   **non-deterministic** — never let the classifier be the only thing between untrusted text and a
   destructive action. See [`context-discipline.md`](context-discipline.md).
+  **This got sharper in 2026-08 — see the next bullet, which limits what the list half can buy you.**
+- **An allow/deny list of *command names* is a filter, not a boundary (2026-08, CVE-2026-22708).**
+  In Cursor, with auto-run + allowlist mode on, shell **built-ins** (`export`, `typeset`, `declare`)
+  ran **without appearing in the allowlist and without approval** — `typeset` abusing zsh expansion
+  flags to force evaluation of an embedded command substitution. Arbitrary code, no prompt, reachable
+  by indirect prompt injection; **Cursor's own guidance now discourages relying on allowlists as a
+  security barrier.** Claude Code shipped matching hardening the same month (commands can no longer
+  hide part of themselves from permission checks; tab/invisible-Unicode padding no longer hides a
+  command from the approval dialog; PreToolUse auto-allow hooks no longer bypass tool restrictions in
+  internal side tasks; worktree isolation extended to Bash and git redirects).
+  **The generalization worth keeping:** any defense that enumerates *how* something might be reached
+  loses to an unbounded surface. Defend on the **thing being protected** — the path, the credential,
+  the egress destination — not on the verb. That is the same shape as the mount tiers and the
+  tool-layer memory bound below: *bound the capability, don't enumerate the route.* Concretely, this
+  is why `secrets-guard` (path-matched) is the boundary and the deny-list (command-matched) is the
+  speed bump — **turn the hook on once the project holds a real credential**, not only for regulated
+  work.
+- **Trusted ≠ safe: an allowlisted command can be turned against you.** The Cursor bug worked by
+  **poisoning the environment** the trusted command runs in, not by smuggling an untrusted command
+  past the check. So the review question is not only *"is this command on the list?"* but *"can
+  anything the agent already did change what this command does?"* Environment variables, shell
+  config, `PATH`, and a repo's own tooling are all in scope.
 - **Sandbox by default** for steps that read untrusted input. Untrusted-content reads shouldn't run
   with full filesystem + network.
 - **Match isolation to your oversight** (Anthropic's containment principle: the less you can watch a

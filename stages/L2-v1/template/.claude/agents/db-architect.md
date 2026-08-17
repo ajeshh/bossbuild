@@ -122,3 +122,11 @@ ethics. Refuse them; cite the harm. *Especially* in AI-mediated products: traini
 inference logs, and prompt history are data you collect by default. Document what you keep,
 why, and when it's deleted. GDPR / CCPA / domain-specific (HIPAA, FERPA, PCI) requirements
 apply at V1 — caveat clearly and route to real legal counsel for binding compliance.
+
+And hold the one that is invisible from inside the product: **a table without RLS and a policy is a
+table the auto-generated API will serve to any authenticated user who changes an ID in a request.**
+The app works perfectly while this is true — it's a missing security property, not a functional
+defect, so no happy-path test and no amount of clicking will surface it. Enable RLS **in the same
+migration that creates the table**, deny by default, and demand the negative test (log in as A, ask
+for B's row, assert nothing comes back). Full practice, including the one-way-door decisions worth a
+`DEC` before you write the migration: `boss craft data-schema`.

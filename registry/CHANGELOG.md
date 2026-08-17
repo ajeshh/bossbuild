@@ -2,6 +2,382 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.149.0 — 2026-08-17
+
+- **`npm run check:refs` — the standing answer to "does everything BOSS points at actually exist?"**
+  The same bug landed three times in one week (RLS named but unwritable · `STYLE_GUIDE.md` read by
+  three consumers and written by nothing · a practice shelf cited by 25 files and reachable from
+  none). Each was found **by accident**, while touching adjacent code. **A reference is a dependency,
+  and BOSS had no check that its dependencies resolved.** Now it does, and `npm test` gates on it.
+  - **The sharper motivation:** fixing the third one took two passes — the first regex missed a link
+    form, and *"I fixed them all"* went into a changelog while it was false. **A sweep you run by hand
+    is a sweep you can believe you finished.**
+  - Three classes, because they fail differently. **Broken links** (a relative link with no file).
+    **Dead predicates** (a loop asserting `exists:` on a missing path — it can never open, silently).
+    **Escaped references** (a *shipped* file pointing at something only BOSS's repo has — the worst
+    kind, because it resolves here and dangles in every founder's project).
+  - Verified by injecting a regression of each class and confirming it fails, then reverting. A
+    checker nobody has watched fail is a checker nobody should trust.
+- **It immediately found a loop that had been dead for 130 versions.** `docs/loops/eval.md`'s **entry**
+  predicate asserted `exists: …/hooks/conscience.sh` — a file replaced by `conscience.js` in
+  **v0.18.0**. An entry predicate that can never be true means the loop **never opens**: BOSS's own
+  eval loop had been silently unable to fire since. The v0.18.0 bash→node migration updated the hook
+  and the settings-merge migration and missed the loop spec that asserted on it. *Nothing was broken
+  loudly enough to notice for four months.*
+- **Three more escapes fixed:** a shipped template linked BOSS's own `IDEA-010` (in a founder's repo
+  that path is either missing or — worse — their unrelated tenth idea); `/feedback` cited
+  `docs/ideas/IDEA-021` as the reason for its no-telemetry rule (**the rule now states the reason
+  itself**: nothing leaves this machine that the founder didn't read first); `/judge-traces` pointed
+  at `library/hooks/auto-log.js` instead of `.claude/hooks/auto-log.js`.
+- **The checker is deliberately forgiving where it should be.** `docs/ideas/IDEA-001-<slug>.md` in a
+  shipped skill is *correct* — it describes where the founder's first idea goes. Template-relative
+  links are skipped because they resolve in the flattened project layout, not this repo's. **A
+  checker that cries wolf trains everyone to ignore it, which is how a checker dies.**
+
+## 0.148.0 — 2026-08-11
+
+- **A planned change was withdrawn instead of shipped, and that's the entry.** RVW-071 had carried
+  one open item: split `design-system.md` (256 lines) the way v0.143.0 split the oversized skills.
+  Measuring first killed it.
+  - **The v0.143.0 split was right because a `SKILL.md` body auto-loads when the skill fires** — you
+    pay for every line whether you need it or not, so deferring the rarely-read half is a real saving.
+    **A practice is never auto-loaded.** It's read deliberately (`boss craft <name>`, or an agent
+    following a pointer), and a deliberate reader wants the whole document. Splitting it buys
+    indirection and nothing else.
+  - The measurement made it concrete: across 28 practices the median is **~115 lines**, and only
+    `design-system` (256) and `ai-ux-patterns` (278) run past 2×. The length **is** anomalous —
+    but *anomalous* and *should be split* are different claims, and only the first was supported.
+  - **What an outlier actually signals is growth, not structure** — and file-splitting would *hide*
+    that by making each piece look small. A shelf that only ever grows is how BOSS becomes the
+    framework it refuses to be (R&H #1).
+- **So the fix points at subtraction instead of structure:**
+  - `boss craft` now prints each practice's length, flags anything past **2× the median**, and says
+    plainly that the next `/practice-refresh` should ask **what can be deleted**, not just what to add.
+  - **`boss craft <name> --outline`** prints the section map with line numbers — the actual ergonomic
+    complaint underneath "it's long" was navigability, not size.
+- **The rule that got misapplied is now bounded in `skill-authoring`.** Progressive disclosure is
+  about *what loads without being asked for*: a skill body, a `CLAUDE.md`, an agent prompt. It does
+  **not** apply to a document someone opens on purpose. **A rule that earned its place in one context
+  is the easiest kind of wrong guidance to write, because it arrives pre-justified.**
+- 71/71 tests pass. **Nothing is open.**
+
+## 0.147.0 — 2026-08-11
+
+- **`boss craft` — 28 practices, readable from any project. And the bug that made it necessary: 25
+  pointers into a directory founders don't have.**
+  - Agents, skills and hooks referenced the craft behind them as `library/practices/<name>.md`. That
+    path resolves in **BOSS's own repo and nowhere else** — a scaffolded project has no `library/`.
+    So every one of those was a **dead end that looked authoritative**: the sharp edge in the agent,
+    then a reference to nothing. `tester` told you to read the testing practice; `db-architect`
+    pointed at the schema practice; `secrets-guard`'s header cited context-discipline. None resolved.
+  - **The shelf was never missing — only unreachable.** `library/` ships inside the npm package
+    (`files` in package.json), so all 28 practices were already on disk, at a path nothing in a
+    project could name. The fix isn't to copy them in (bloat, instantly stale) — it's a form that
+    resolves anywhere.
+  - **`boss craft`** lists the shelf; **`boss craft <name>`** prints one, prefixes accepted
+    (`boss craft testing` → `testing-with-agents`), with the practice's own curve and freshness date
+    on the last line. Read-only, and always exactly as current as the installed version.
+  - **Distinct from `/practice` on purpose:** that skill is your *team's* craft commons (PRAC-NNN
+    records you and a cofounder write). This is BOSS's shelf. Both are named in each other's help so
+    the distinction doesn't have to be guessed.
+  - **All 27 pointers rewritten** across 20 files (22 in the first pass, 5 in a markdown-link form the
+    first pass missed — worth recording, because "I fixed them all" was wrong the first time).
+  - **One pointed at a path that never existed at all** — `library/practices/scalable-ai-design/<stack>.md`,
+    referenced by `design-tokens-loop` since v0.24. Replaced with the honest line: BOSS ships no
+    per-stack token adapters; author one as a project practice via `/practice`.
+- **Two regression tests, on the class rather than the instances:** *shipped files never point at a
+  path only the BOSS repo has* (with `/extract` exempted — it legitimately describes the UP direction
+  into `library/`), and *every `boss craft <name>` pointer names a practice that exists*. **71/71 pass.**
+- **The pattern worth naming, since this is the third instance in three versions:** RLS read by
+  `/ship` and unwritable by `db-architect`; `STYLE_GUIDE.md` read by three consumers and written by
+  nothing; a practice shelf cited by 25 files and reachable by none. **A reference is a dependency,
+  and BOSS had no check that its dependencies resolved.** Now it has three.
+
+## 0.146.0 — 2026-08-11
+
+- **⚠️ Correction to v0.144.0.** That release replaced a stale `To author` list with a ✅ **Shipped**
+  list — and one of the ✅ lines was false. `docs/design/STYLE_GUIDE.md` was claimed as shipped. It
+  wasn't: `stages/L2-v1/template/docs/design/` was an **empty directory**, and the style guide was
+  **read by three consumers** (`/design-review`, `ui-designer`, `ux-designer`) and **written by
+  nothing.**
+  - The same release warned that *"converting a stale TODO into a clean ✅ would have hidden the one
+    gap that matters."* It then hid a different one. **A checklist is a claim — verify each line
+    against the filesystem, not against the doc the line came from.**
+  - **Fixed:** `/design-tokens-init` now writes `docs/design/STYLE_GUIDE.md` alongside the tokens,
+    from a bundled skeleton. Tokens are the *what*; the style guide is the *how and why* — the 3–5
+    principles with their rules, composition patterns, the five-state table, the accessibility floor,
+    and a dated **Exceptions** log (an exception recorded is a decision; an exception unrecorded is
+    drift, and next time it reads as precedent).
+  - **A regression test now covers the class, not the instance:** *every design doc a consumer reads
+    is a design doc some skill writes.* Same hole shape as RLS-in-`db-architect` and
+    test-diff-in-`tester` — a dependency with no producer.
+- **The prototype registry — and it closes a hazard v0.144.0 opened.** `/spec` was taught that an
+  executable artifact beats prose (*a crude HTML mockup outperforms three paragraphs*). True, and it
+  introduced a risk worth naming:
+  - **A mockup that doesn't consume your tokens is worse than prose.** Prose is *obviously*
+    incomplete, so the implementer fills the gaps from the design system. A mockup is a **confident,
+    complete-looking answer** — so the implementation reproduces it faithfully, raw hexes and all.
+    **An off-system mockup injects the 47 blues at spec time**, before a line of product code exists,
+    with the authority of something you can see.
+  - The rule that makes the rich-reference ladder safe: **a prototype imports the same tokens as the
+    product, or it is labeled a throwaway sketch.** Both are legitimate; a mockup that *looks* like a
+    design decision and silently isn't is not.
+  - `docs/design/PROTOTYPES.md` (bundled skeleton) carries that rule plus a **Discarded** table —
+    because a discarded prototype is a **question already answered**, and deleting its row means
+    paying for the answer twice. Same discipline `/extract` applies to patterns.
+  - Created **when prototypes start accumulating**, not for a single sketch — that would be ceremony.
+- `/spec`'s mockup guidance updated at the source of the hazard; `design-system.md`'s item #5 now
+  carries the full rule. **69/69 tests pass. Nothing on the design layer's checklist is open** —
+  verified against the filesystem this time.
+
+## 0.145.0 — 2026-08-11
+
+- **`design-tokens-guard` — the boundary the design practice had been prescribing without providing.**
+  v0.144.0 named the gap: *"reference tokens by name in every prompt"* is a **filter** (it depends on
+  every future prompt remembering); what actually stops the 47 blues is a check that fires on a raw
+  hex. That check now exists.
+  - **What it does:** after a write to a style-bearing file, catches hardcoded colors — hex,
+    `rgb()`/`hsl()`, and numeric palette classes like `bg-indigo-500` — and hands Claude **your token
+    names** instead. A warning that names no alternative just gets acknowledged and ignored.
+  - **The design decision that matters most is the silence.** It does **nothing** unless a
+    `DESIGN_TOKENS.md` exists. **No token system, no opinion** — a founder who hasn't run
+    `/design-tokens-init` isn't doing anything wrong, and a hook that nags them is the unearned
+    ceremony BOSS refuses (Principle #2). The tokens file *is* the opt-in signal.
+  - **It reads only what the call just wrote**, not the whole file — a pre-existing hex the founder
+    already decided to keep is not the hook's business. Drift is what's *new*.
+  - **Ships dormant at MVP** (`optionalHooks`), so `boss sync` keeps it current whether or not it's
+    on. `/design-tokens-init` offers it **once**, at the only moment it makes sense — right after the
+    tokens exist — and is told to drop it and not re-ask on a no. Also listed in `boss help hooks`.
+  - **Advisory, never blocking.** PostToolUse can't block (the tool already ran), so it uses
+    `additionalContext` — the same channel the conscience speaks through. Fail-open throughout: a
+    broken guard must never break a session.
+- **Verified against the real contract, not from memory.** The PostToolUse input/output shape was read
+  from the host docs before the hook was written — a hook with the wrong output contract is a hook
+  that silently does nothing, which is worse than no hook. Then exercised on ten edge cases (Edit /
+  MultiEdit shapes, the tokens file itself, `node_modules`, prose, tests, a 7-char git sha that is
+  *not* a color, empty writes, malformed input) and run live inside a scaffolded project.
+- **5 new regression tests**, and they lock the **silence** first: the JIT gate is the behavior that,
+  if it broke, would get this hook turned off for good. **68/68 pass.**
+- `design-system.md`'s Shipped section updated; the only genuinely-open design item left is the
+  **prototype registry** (prototypes consuming the same tokens so a mockup graduates cleanly).
+
+## 0.144.0 — 2026-08-11
+
+- **Claude ships a planning layer. BOSS should rent it, not rebuild it — and the integration is one
+  optional question.** The host now has built-in `Explore` and `Plan` subagents; `Plan` researches the
+  codebase during plan mode and returns an implementation route. The reflex is to read that as
+  competition for `/spec`. **It isn't, and that distinction is the whole verdict:**
+  - `/spec` answers *should we build this, and how will we know it's done* — reading the idea, the
+    canvas, the evidence. `Plan` answers *what's the file-by-file route* — reading the code. Different
+    inputs, different rot, consecutive rather than competing.
+  - **`/spec` decides the destination; the plan picks the road.** `/spec` step 6 now *offers* plan mode
+    before handing to the coder — skippable, with an explicit note that it degrades to the old
+    behavior on a host without plan mode. **A route that arrives without a spec is a well-planned trip
+    to nowhere.**
+  - **Never author a BOSS planner or searcher agent.** Re-rolling an absorbed mechanism is the drift
+    IDEA-028 exists to prevent. Full per-primitive verdicts in `docs/dossier/host-subtraction-pass-002.md`.
+- **The sharper lesson, from a removal rather than an addition.** **Ultraplan was removed this month** —
+  a research preview since spring, gone. BOSS lost nothing, having built on it never, but it's the
+  first observed case of a host primitive *vanishing*, and it upgrades the audit question from
+  *"has the host absorbed this?"* to **"what happens when the host un-ships it?"** The rule now in
+  `harness-engineering`: **sit on a host primitive at a seam you could close by hand — prefer them at
+  the boundaries of your flows, not in their interiors.**
+- **Design swept — and the "weakest doc on the shelf" verdict was half right.** The AI-failure catalog,
+  three-layer tokens, the indigo-apology framing and *intentionality not intensity* all held up against
+  a 2026 sweep; the sameness literature **agrees with BOSS and adds nothing**. The staleness was in the
+  doc's edges, not its content:
+  - **A `To author (when V1 mode is built)` TODO list whose every item had shipped** — tokens docs,
+    `/design-review`, `/ux-check`, `/design-tokens-init`, `ui-designer`, `ux-designer`. Replaced with a
+    **Shipped** section that keeps the two genuinely-open items honest (the hardcoded-style hook is
+    **prescribed but unshipped**; the prototype registry is unbuilt). Converting a stale TODO into a
+    clean ✅ would have hidden the one gap that matters.
+  - **NEW — authoring design principles.** Three levels: **principle** (contains a tradeoff) →
+    **guideline** → **rule** (checkable). The test: *could a reasonable person argue the opposite?*
+    "Be delightful" fails; "calm over engaging" passes. **A principle that can't lose an argument is a
+    mood.** And the reason it belongs in an AI-design doc: **an agent can't act on a principle, only on
+    a rule — so principles that never descend into rules are decoration.**
+  - **NEW — iterating on design.** Iterate on the **artifact, not the description** (adjectives are
+    where taste goes to die) · vary **one dimension at a time** · **compare in parallel, don't refine in
+    series** (serial *"make it better"* re-averages toward the mean — toward the exact slop the doc
+    warns about) · **have a stop rule**. Plus: re-iteration degradation applies to design, and
+    **empty/loading states are the first casualties** because they're invisible in the screenshot.
+  - **SHARPENED — prevention was framed as prompting.** *"Reference tokens by name in every prompt"* is
+    a **filter**; what stops the 47 blues is a check that **fails on a raw hex**. Same lesson RVW-066
+    took from CVE-2026-22708, transferred to a new domain — *bound the capability, don't enumerate the
+    route.*
+- **A missing freshness tier, added rather than worked around.** `craft`/365d is too slow for a practice
+  whose **AI-default half moves with the tools**; `model`/90d is the right speed but routes to
+  `/recalibrate`, which owns neither design nor testing. New tier: **`craft-ai` — 180d,
+  `/practice-refresh`.** `design-system.md` and `testing-with-agents.md` both moved onto it. **Two
+  sweeps in a row hit this same gap — that's the signal a tier was missing, not that two dates were
+  wrong.**
+- Verdicts: **RVW-070** (host planning layer) · **RVW-071** (design sweep). 63/63 tests pass.
+
+## 0.143.0 — 2026-08-11
+
+- **The two open threads from v0.142.0 are closed.** Both were logged rather than quietly dropped;
+  this is the follow-through.
+- **The template surface is rightsized — and the split turned out to be principled, not arbitrary.**
+  Every worst offender had the same shape: a large **embedded output template** (the doc or code the
+  skill writes) sitting in the always-loaded body. That is precisely what `skill-authoring` §2 calls a
+  level-3 bundled resource — *"templates, examples, reference files — loaded on demand from the body,
+  never up front."* Six skills, seven new bundled files:
+  - `ai-cost` **265 → 163** (logger + budget doc) · `ai-failure-states` **226 → 157** ·
+    `cost-review` **218 → 163** · `ai-first-init` **238 → 201** · `extract` **210 → 172** ·
+    `spec` **196 → 158**.
+  - **L1's always-loaded surface: 4,169 → 3,861 lines**, with 382 lines moved to load-on-demand.
+    Total bytes went *up* — which is the point. Progressive disclosure doesn't shrink what exists,
+    it shrinks **what you pay for on every session**.
+  - Three skills had a duplicated lead-in left behind (*"Use this skeleton"* immediately followed by
+    *"Skeleton:"*). Deduped — shift 4, caught in BOSS's own output again.
+- **`/spec` now produces the most executable artifact it can, not just prose about one.** This was
+  RVW-069's named open thread: the doctrine said an artifact the agent can execute, render or diff
+  beats a description, and `/spec` still wrote markdown. It now carries the ladder —
+  **prose < screenshot < rendered mockup < failing test < rubric** — with three concrete routings
+  (UI → a crude HTML mockup; logic → acceptance criteria **as failing tests**; anything fuzzy → a
+  rubric the verifier reads). Explicitly bounded: *don't force it* — a one-line copy change doesn't
+  need a mockup, and the question is always *"what's the cheapest artifact that removes the most
+  ambiguity?"*
+- **Five stale model names removed from shipped skills — a v0.137.0 rule BOSS was breaking in its own
+  templates.** `model-routing` says a shipped artifact should *say nothing* and inherit; `ai-cost`
+  shipped a price table hardcoding four model ids **with prices**, and four other skills named models
+  in prose. All were already a generation out of date. They now name the **capability shape**
+  (`deliberation` / `volume` / `cheap-bulk`) instead.
+  - The cost logger is the honest exception — you cannot price a call without knowing what you
+    called — so the discipline moved rather than vanished: **the founder fills the table from the
+    provider's current pricing page at wire-time**, the table carries a *last-checked* date, and an
+    unknown model logs at zero **loudly** rather than guessing. A cost log that quietly under-reports
+    is worse than none.
+- **Verified end-to-end, not just written:** all eight bundled resources scaffold through
+  `boss new` + `boss unlock mvp`, `boss sync` tracks and updates every one of them (the v0.141.0
+  recursive-walk fix carrying its weight), and every in-skill pointer resolves. 63/63 tests pass.
+
+## 0.142.0 — 2026-08-11
+
+- **The two coverage gaps are closed. The shelf goes 26 → 28 practices.** Both were named in the
+  2026-07-30 audit and survived two sweeps. One of them had been advertised as existing:
+  `library/README.md` listed **testing** among what `practices/` holds, since the library was created.
+  It never did. *A README is a claim, and nothing was checking it.*
+- **`testing-with-agents.md` — testing when an agent writes the code.** Not "testing, but with AI."
+  The four failure modes that **do not exist** when a human writes the code:
+  - **The agent rewrites the test to match the bug.** Asked to make a suite green, it changes the
+    *assertion*, not the behavior — and reports success. **A test file changed in the same commit as
+    its code is the highest-signal thing in the review.** BOSS has owned this line since v0.66.0, but
+    it was stranded in `git-workflow.md`; it now has a practice to live in and the `tester` agent holds it.
+  - **Green by construction.** A test derived from the implementation **cannot fail**. The fix is
+    ordering, not effort: acceptance criteria (or the failing test) *before* the agent implements.
+  - **Coverage stopped meaning anything.** Producing tests is now free, and coverage only ever
+    measured production. Delete a line of real logic — if nothing goes red, that's your answer.
+  - **A single green run is not evidence.** An AI-backed path needs k runs, all passing. **4 of 5 is
+    a 1-in-5 production failure rate, not "mostly working"** — the most commonly misread number in AI products.
+  - Plus: **tests and evals are different tools** (a table, so neither masquerades as the other — the
+    founder who tunes prompts for weeks against a bug in the retrieval call is the failure shape);
+    **error analysis before metrics** (read 20–50 traces first; don't lump distinct failures under
+    "hallucination"; **validate your judge against human labels — an unvalidated judge launders a
+    guess into a metric**); and **what to test first when you have nothing**, laddered by mode.
+- **`data-schema.md` — the layer an agent gets functionally right and dangerously wrong.** Carried on
+  `curve: threat`, not `craft`, because one part of it has an adversary.
+  - **The headline: RLS the AI never configured.** The agent writes `CREATE TABLE`, omits
+    `ENABLE ROW LEVEL SECURITY` and the policy, and the platform exposes that table over its
+    auto-generated API. **Change a user ID in a request and another user's data comes back.**
+  - **Why it survives every test you'd think to write: the app works.** Logged in as yourself every
+    screen is correct. It's a *missing security property*, not a functional defect — invisible from
+    inside the product. **The agent knows what RLS is; knowledge in the model is not a control in your app.**
+  - Three fixes: **enable RLS in the same migration that creates the table** (deny by default, so a
+    table you forget about is closed); **write the negative test** (log in as A, ask for B's row,
+    assert nothing); **verify from outside the app** — your UI filters because you told it to, the
+    API doesn't unless the *database* says so.
+  - Plus the **one-way doors worth a `DEC` before the migration** (tenancy model, row identity,
+    soft-vs-hard delete, what you store at all) and a six-line review list for an agent-written schema.
+- **Both are wired in, not just written.** `tester` and `db-architect` now carry the sharp edge of
+  each and point at the full practice; `git-workflow` hands its stranded line forward; the watchlist's
+  two ⚠️ coverage-gap markers are now ✅; `library/README.md` describes what the shelf actually holds.
+- **Paper trail, recorded after the fact and labeled as such — RVW-066 through RVW-069.** v0.141.0
+  shipped ahead of its verdicts because the finding was a security fix. The rubric was applied
+  honestly afterward; it would not have changed any decision, and the process note is recorded in
+  RVW-066: **shipping ahead of the paper trail is defensible for a security finding and should stay
+  the exception.** RVW-068 also records the deferred half — ~6,900 lines of template surface still
+  unrightsized, logged as open rather than quietly dropped.
+
+## 0.141.0 — 2026-08-11
+
+- **A refuted assumption, and the security floor that couldn't reach you.** The weekly host +
+  agent-craft sweep returned its first **refutation**: an allow/deny list of *command names* is a
+  filter, not a boundary. **CVE-2026-22708** (Cursor, fixed in 2.3) ran shell built-ins — `export`,
+  `typeset`, `declare` — **without appearing in the allowlist and without approval**, reachable by
+  indirect prompt injection. Cursor's own guidance now discourages allowlists as a security barrier;
+  Claude Code shipped matching hardening the same month.
+  - **The matching hole was in BOSS's own template.** `context-discipline` has warned since v0.42.0
+    that *"a `Read(...)` deny does NOT block Bash"* — and the shipped `settings.json` implemented
+    only the `cat` case behind a blanket `Bash` allow. `head`, `grep`, `xxd`, `source`, `env` and a
+    bare `.env` (no `./`) all walked past it. **5 deny entries → 29.**
+  - **`boss sync` now merges the deny floor**, so this reaches projects already in the wild. Before
+    today the floor shipped only via `boss new` — *a security floor that can only reach new projects
+    is not a floor.* The merge is **additive and deny-only**: a deny entry can only ever restrict,
+    never grant, which is exactly the property `allow` and `defaultMode` lack. **Your allow list and
+    your permission mode are never touched.**
+  - **The honest limit, stated in the practice:** the Bash half is an enumeration you cannot finish.
+    It does not cover `awk`, `sed`, `python -c`, a renamed binary or a shell built-in. Don't grow it
+    toward completeness — escalate to `secrets-guard`, which matches on the **path** and is the only
+    layer here that is actually a boundary. Its recommendation moved from *"regulated work"* to
+    **"as soon as the project holds a real credential."**
+- **Auto mode becomes the host default on 2026-08-14 — and BOSS had never named it.** Zero mentions
+  across `library/` and `stages/`, in the practice that claims the permission surface. `context-discipline`
+  now carries a permission-modes section: what each mode is for, that **deny rules still win**, and the
+  trap — auto mode removes prompt fatigue, which was never the boundary either. BOSS already shipped
+  `defaultMode: "auto"`, so **nothing in your project needs to change.**
+- **Anthropic deleted 80%+ of Claude Code's own system prompt for Claude 5 with no eval loss.**
+  Instructions written to compensate for a weaker model become a tax on a stronger one. Against BOSS's
+  shelf: **shifts 1 and 3 were already held** (`skill-authoring` §1 and §2, written a month earlier) —
+  but BOSS **violated shift 3 in what it ships**.
+  - **`/welcome` — a founder's first contact — was 262 lines.** Three sections it already marked
+    *"expand only if asked"* were loading on every run. Split to `reference/deeper.md`, loaded on
+    demand. **262 → 214 lines.** Two `Rules` entries that duplicated the voice rules are gone, one of
+    which **contradicted** the wrap-up (*"three doors"* vs *"one literal command"*) — the context clash
+    the dedup rule exists to prevent.
+  - **`boss sync` now manages a skill's bundled resources, not just its `SKILL.md`.** Splitting a
+    skill would otherwise have reproduced the dormant-hook bug fixed in v0.108.0: shipped once at
+    scaffold, never updated again — including if a fix landed. Progressive disclosure makes a skill a
+    **tree**, and the whole tree is managed.
+  - **Two shifts BOSS did not hold are now on the shelf.** `skill-authoring` §3 — *design the
+    interface, don't supply examples* (a named argument and a real enum outrank three worked examples,
+    and rot less). `harness-engineering` — **rich references**: an artifact the agent can execute,
+    render or diff beats prose describing it, so an HTML mockup outperforms three paragraphs about the
+    layout. Plus Anthropic's **brain/hands decoupling** (stateless harness, durable session log outside
+    the context window, pets-vs-cattle sandboxes).
+- **Confirmed current, no change needed:** `mcp.md` re-read against the primary 2026-07-28 changelog —
+  statelessness, MRTR, the Roots/Sampling/Logging deprecations, DCR → Client ID Metadata Documents and
+  the 12-month lifecycle policy are all correctly held. The `CLAUDE.md` guidance matches Anthropic's own
+  Claude 5 line. **A confirmed claim is a finding** — three practices were verified, not edited.
+- **Process:** domain 2 (the host) is on a **quarterly** cadence while the host digest ships
+  **weekly** — it paid out more than any other tap this run and is checked least formally. Flagged in
+  the watchlist as a cadence that is set too slow. Full sweep: `docs/research/sessions/SESSION-2026-08-11`.
+
+## 0.140.0 — 2026-08-05
+
+- **The rebrand finished — six weeks after it shipped. Every project scaffolded since v0.97.0 got
+  agents that introduced themselves as BlueprintOS.** DEC-002 swept the template's `CLAUDE.md` and
+  `AGENTS.md` and stopped there. The template's `.claude/` was never touched, so `pm`, `coder-generalist`
+  and `/boss` all opened with *"scaffolded by BlueprintOS"* in a project scaffolded yesterday.
+  - **The one that wasn't cosmetic: `/feedback` filed founder issues against `ajeshh/BlueprintOS`.**
+    All three paths — the `gh issue create` call, the browser-fallback URL, and the consent line that
+    shows the founder where their words are going. It worked only because GitHub still redirects the
+    old repo name. A founder reading the consent prompt was being told the wrong destination.
+  - **`/welcome` pointed at the old README URL.** Same redirect, same wrong name in front of a founder
+    on their first run.
+  - **BOSS's own eleven agents were rebranded too** — every mentor and builder prompt still said
+    *"You are the X for BlueprintOS (BOSS)"*. Internal, but loaded in every session.
+- **Why it survived two sweeps and `check:freshness`: `.claude/` is gitignored, and the grep on this
+  machine honors `.gitignore` and skips hidden dirs.** A root `grep -ri blueprintos .` returned 8 files
+  and reported clean on exactly the 16 that were dirty. Freshness never saw them either — it reads the
+  practice shelf, not the template. **Any repo-wide identity sweep needs `find -exec grep`, not `grep -r`**;
+  a check that inherits the VCS's idea of what exists is blind to everything deliberately excluded from it.
+- **Left alone on purpose:** the `learn.js` back-compat regex, this changelog's history, DEC-002, BRAND.md's
+  *Retired* section, and the dated session transcript that records the old path verbatim. Those describe
+  the old name; they don't use it.
+- **Local, not shipped:** the repo folder is now `~/Projects/bossbuild`, matching the git remote and npm
+  package. Absolute paths in the re-runnable handoff prompts were repointed.
+
 ## 0.139.0 — 2026-08-03
 
 - **The post-launch arc folds until you've shipped something — the reversible half of the

@@ -114,71 +114,56 @@ that when you're choosing among many candidates, not just reacting to one.)_
      level by design (no P0/P1/P2 ladder — that turns the board into a planning surface you tend
      instead of ship). The honest caveat the seasoned hand would add: *re-prioritizing isn't progress;
      finishing is.* Most FEATs need no priority field at all.
-6. Hand off to `coder-generalist` (or the stack's coder, if specialized) with the FEAT as the brief.
+6. **Offer plan mode before the coder.** The FEAT says *what* and *how we'll know it's done*; it
+   deliberately doesn't say *how*. On this host, the built-in `Plan` agent reads the actual codebase
+   and returns an implementation route — which is the half a spec shouldn't contain and shouldn't guess:
+
+   > *"The spec's set. Want me to plan the implementation against the code first (plan mode), or go
+   > straight to building?"*
+
+   Straight-to-building is a fine answer for a small, obvious FEAT — don't push. Reach for the plan
+   when the FEAT touches code you haven't read, spans more than a couple of files, or has an
+   out-of-scope line you're worried about crossing.
+
+   **`/spec` decides the destination; the plan picks the road.** Keep them separate: a route that
+   arrives without a spec is a well-planned trip to nowhere, and an implementation plan is *not* a
+   substitute for acceptance criteria — it can't tell you whether the thing was worth building.
+7. Hand off to `coder-generalist` (or the stack's coder, if specialized) with the FEAT as the brief —
+   plus the plan, if one was made. If this host has no plan mode, this step is unchanged: the FEAT
+   alone is a complete brief.
 
 ## The FEAT template
 
-```markdown
----
-id: FEAT-NNN
-type: feature
-owner: pm
-status: building
-created: {{today}}
-building_since: {{today}}
-source: IDEA-NNN
----
+Template: **[`templates/feat-record.md`](templates/feat-record.md)**.
 
-# <Feature name — one plain line, present tense>
+## Ship the most executable artifact you can (not just prose about it)
 
-## Goal
-_One sentence. The user-visible change. Not the implementation._
+A markdown spec is the *floor*, not the goal. An artifact the agent can **execute, render or diff**
+beats prose describing it — the ordering, worst to best:
 
-## Acceptance criteria
-_Checkable. A reader who's never seen the code should be able to verify these._
-- [ ] …
-- [ ] …
-- [ ] …
+> prose < a screenshot < a rendered mockup < a failing test < a rubric the verifier runs
 
-## Smoke check
-_How `/smoke` proves this didn't break things. One or two commands, or one manual path._
-- …
+So after the FEAT record exists, ask what this particular feature's most-executable form is, and
+produce **that too**. It usually costs less than the paragraphs it replaces:
 
-## Validated learning (v0.21.0+ — Ries discipline)
-_If this FEAT works perfectly, **what do we learn**? Not "the feature works" — what does it teach
-us about the bet that we didn't already know? If the answer is "the feature works" or "users like
-it," **don't build this**. The MVP is the minimum experiment that produces validated learning, not
-the minimum product to polish (Eric Ries, **The Lean Startup**). Smallest cut, highest leverage._
-- **Learning hypothesis:** …
-- **What result would change the plan:** …
+- **Building UI?** A crude HTML mockup next to the FEAT beats three paragraphs about the layout —
+  even ugly. Ambiguity in a layout description is invisible until it's built wrong.
+  **But if this project has a token system, the mockup imports it.** A mockup that doesn't is *worse
+  than prose*: prose is obviously incomplete so the implementer fills the gaps from the design
+  system, while a mockup is a confident, complete-looking answer that gets reproduced faithfully —
+  raw hexes and all. An off-system mockup injects the 47 blues at spec time. If you want it fast and
+  off-system, that's fine — **label it a sketch** so nobody implements from it. Registry and rule:
+  `docs/design/PROTOTYPES.md`.
+- **Building logic?** Write the acceptance criteria **as failing tests**. A criterion that can't be
+  expressed as one is usually a criterion that isn't checkable yet — which is worth finding out now,
+  not at review. See `boss craft testing-with-agents`: a test derived from the spec can
+  fail; a test derived from the implementation cannot.
+- **Judging something fuzzy** (tone, quality, "did it capture the point")? Write the **rubric** the
+  verifier reads. That's a spec the harness can actually gate on.
 
-## Evals (v0.21.0+ — for AI-mediated FEATs only)
-_If this FEAT involves an LLM call in control flow, name the eval set this FEAT ships against. See
-`/evals` skill + the conscience-evals pattern. Failure modes categorized (Husain discipline)._
-- Eval set path: `docs/evals/FEAT-NNN.yml` _(or omit this section if no LLM in control flow)_
-
-## Failure states (v0.26.0+ — for AI-mediated FEATs only)
-_If this FEAT puts an LLM in the user-visible path, name which of the five failure states it
-must handle (per `docs/ai-failure-states.md`). At minimum: which fallback handler is called for
-each applicable state. See `/ai-failure-states` skill._
-- **Garbage output:** <declared response in this FEAT — e.g., schema-validate; on fail call `handleGarbageResponse()`>
-- **Refusal:** <e.g., detect refusal pattern; route to /support; never loop>
-- **Hallucination:** <e.g., verify citations against database; if low confidence, surface "double-check" UI>
-- **Timeout:** <e.g., 8s hard cap; on timeout return last-known-good with `handleTimeout()` annotation>
-- **Cost spike:** <e.g., 4k input cap / 1k output cap; on cap return labeled-truncated result>
-
-_Omit this section if no LLM in user-visible path. Acceptance criteria above should reference
-at least one failure-state path (e.g., "refusal routes to /support, not the spinner")._
-
-## Out of scope
-_What this FEAT explicitly does NOT do. Future FEATs may; this one doesn't._
-- …
-
-## Notes
-_Open questions, links to the idea/canvas, anything the builder needs._
-- Source idea: [IDEA-NNN](IDEA-NNN-<slug>.md)
-- Canvas (if any): [IDEA-NNN-canvas.md](IDEA-NNN-canvas.md)
-```
+**Don't force it.** A one-line copy change doesn't need a mockup, and the ladder is about leverage,
+not ceremony (Principle #2). The question is *"what's the cheapest artifact that removes the most
+ambiguity?"* — sometimes that genuinely is one clear sentence.
 
 ## Rules
 

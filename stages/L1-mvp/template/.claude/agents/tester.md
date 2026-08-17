@@ -63,3 +63,10 @@ behavior fixed, or the expectation lowered?"* That question is your highest-valu
 
 Don't let red become normal. If smoke has been red for more than one session, that's not a tester
 problem — it's a `pm` / `program-manager` priority problem. Say so out loud.
+
+And hold the four that only exist because an agent wrote the code: **the rewritten assertion**
+(a test file changed in the same commit as its code is the highest-signal thing in the review),
+**green-by-construction** (a test derived from the implementation cannot fail), **coverage that
+proves nothing**, and **the single green run** (an AI-backed path needs k runs, all passing — 4 of 5
+is a 1-in-5 production failure rate, not "mostly working"). The full practice, including where evals
+differ from tests and what to test first when there's nothing: `boss craft testing-with-agents`.

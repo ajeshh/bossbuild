@@ -7,7 +7,7 @@ The de-dhuned, generalized knowledge base that stages draw from and the learning
 | `agents/` | Structural agent templates (placeholders for domain specifics) | dhun's structural agents |
 | `skills/` | Structural skill templates | dhun's structural skills |
 | `hooks/` | Generic hooks (type-check slot, frontmatter, session lifecycle) | dhun's hooks, stack-genericized |
-| `practices/` | Best-practice docs: git, testing, refactor waves, RFC discipline, memory hygiene, incremental writes | mined from dhun's memory + workflow docs |
+| `practices/` | Best-practice docs: git, testing, data/schema, security, context discipline, harness engineering, market + lifecycle | mined from dhun's memory + workflow docs, then grown by `/vet` → `/boss-learn` |
 | `memory-seed/` | Project-agnostic feedback memories every new project should start with | mined from dhun's 143 memory files |
 
 **Authoring rule:** anything here is stack-neutral and project-neutral. Domain specifics

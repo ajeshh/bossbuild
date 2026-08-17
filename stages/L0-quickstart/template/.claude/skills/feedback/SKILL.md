@@ -34,7 +34,7 @@ Compose a short issue. Title = a tight one-liner. Body =
   <OS>`. Nothing else — no file contents, no paths, no transcript.
 
 Then **show the founder the full title + body** and ask: *"Send this to BOSS's repo as a public GitHub
-issue? It'll be visible at github.com/ajeshh/BlueprintOS. Yes / edit / keep it local."*
+issue? It'll be visible at github.com/ajeshh/bossbuild. Yes / edit / keep it local."*
 
 - **Yes** → step 3.
 - **Edit** → take their changes, re-show, re-ask.
@@ -46,20 +46,20 @@ issue? It'll be visible at github.com/ajeshh/BlueprintOS. Yes / edit / keep it l
 Try the direct path first:
 
 ```bash
-gh issue create --repo ajeshh/BlueprintOS --title "<title>" --body "<body>"
+gh issue create --repo ajeshh/bossbuild --title "<title>" --body "<body>"
 ```
 
 - **Success** → give them the issue URL. Done. Thank them in one line, no fawning.
 - **`gh` missing or unauthed** → don't block. **Fall back:** print a ready-to-paste link —
-  `https://github.com/ajeshh/BlueprintOS/issues/new?title=<urlencoded>&body=<urlencoded>` — and the
+  `https://github.com/ajeshh/bossbuild/issues/new?title=<urlencoded>&body=<urlencoded>` — and the
   plain body, so they can open it in a browser and submit with one click. Also append to
   `.boss/feedback.log` so they keep a copy either way.
 
 ## Rules
 
 - **User-initiated only. Never automatic.** There is no hook, no loop, no background send. If you ever
-  feel tempted to "just collect a bit of telemetry," that's the line BOSS exists not to cross
-  (`docs/ideas/IDEA-021`). Don't.
+  feel tempted to "just collect a bit of telemetry," that's the line BOSS exists not to cross:
+  **nothing leaves this machine that the founder didn't read first.** Don't.
 - **Show before send. Consent is the gate.** The founder sees the exact title + body + the one line of
   context before anything is filed. No silent attachment of paths, code, or transcript.
 - **Public issue = say so.** Filing on a public repo means the text is public. State that plainly so

@@ -5,9 +5,9 @@ owner: designer
 status: active
 host: stack-neutral
 provenance: generalized from the dhun dogfood design system (DESIGN_TOKENS as single source of truth, central badge/pill style utils, the "no raw Tailwind colors" enforcement hook, the prototype REGISTRY), de-dhuned for reuse — BOSS v0.20.x. The AI-failure-mode catalog was added in the same pass; IDEA-010 carries the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns). Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.
-last_reviewed: 2026-06-20
-review_by: 2027-06-20
-curve: craft
+last_reviewed: 2026-08-11
+review_by: 2027-02-07
+curve: craft-ai
 ---
 
 # Practice: Design system — style never locked into code
@@ -142,23 +142,114 @@ sibling project reuse this design approach without copy-pasting component code? 
    pill governance, 4-colour ceiling per surface.)
 4. **Five-state requirement.** Every component specifies default / hover / active / disabled /
    empty (and loading where relevant). Missing states are the most common drift.
-5. **Prototype reuse.** Prototypes import the *same* tokens + a component registry, so a mockup
-   looks like the product and graduates to code cleanly. (dhun: prototype `REGISTRY.md`.)
+5. **Prototype reuse.** Prototypes import the *same* tokens and are listed in a registry
+   (`docs/design/PROTOTYPES.md`), so a mockup looks like the product and graduates to code cleanly.
+   (dhun: prototype `REGISTRY.md`.)
+
+   > **This is what makes the rich-reference ladder safe.** `/spec` now says an executable artifact
+   > beats prose — a crude HTML mockup outperforms three paragraphs about the layout. True, and it
+   > carries a hazard: **a mockup that doesn't consume your tokens is worse than prose.** Prose is
+   > obviously incomplete, so the implementer fills the gaps from the design system; a mockup is a
+   > *confident, complete-looking answer*, so the implementation reproduces it faithfully — raw hexes
+   > and all. **An off-system mockup injects the 47 blues at spec time**, before a line of product
+   > code exists, with the authority of something you can see. So: a prototype imports the tokens, or
+   > it is labeled a throwaway sketch. Both are fine; a mockup that *looks* like a decision and
+   > silently isn't is not.
+   >
+   > The registry's second job is subtraction: **a discarded prototype is a question already
+   > answered**, and deleting its row means paying for the answer twice.
+
+## Authoring your design principles (added 2026-08-11)
+
+Founders are told to "have design principles" and produce a list of words nobody consults. The fix is
+a **three-level hierarchy**, because each level does a different job and only the last one is
+enforceable:
+
+| Level | What it is | Example | Who it steers |
+|---|---|---|---|
+| **Principle** | a direction that *contains a tradeoff* | *"Calm over engaging."* | you, in an argument |
+| **Guideline** | how to approach the principle | *"Notifications are opt-in and batched daily."* | you and the agent, in a decision |
+| **Rule** | a direct, checkable instruction | *"No unread-count badges. No red dots."* | the agent, and a lint rule |
+
+> **The test for a principle: could a reasonable person argue the opposite?** *"Be delightful"* fails
+> — nobody argues for undelightful, so it decides nothing. *"Calm over engaging"* passes, because
+> "engaging" is a real thing you're giving up. **A principle that can't lose an argument isn't a
+> principle; it's a mood.** (Same shape as `/decide`'s falsifier and BOSS's own `PRINCIPLES.md`.)
+
+**The three levels are a ladder from taste to enforcement, and that's why it matters here.** An agent
+cannot act on *"calm over engaging"* — it has no way to check itself against it. It *can* act on
+*"no unread-count badges."* So if you want AI-generated UI to carry your design intent, **you have to
+get down to rules**, and the rules are the artifact the model actually consumes. Principles that never
+descend into rules are decoration.
+
+Three to five principles, maximum. A dozen is a list nobody remembers, which is the same as none.
+
+## Iterating on design (added 2026-08-11)
+
+The first output is always a draft — the model returns the mean of its training data, and the mean is
+the slop. Iteration is where the distinctiveness pass actually happens. Four rules that make it
+converge instead of wander:
+
+- **Iterate on the artifact, not the description.** Change the mockup and look at it; don't write
+  another paragraph of adjectives. This is the rich-reference ladder from
+  [`harness-engineering`](harness-engineering.md) pointed at design — *an HTML mockup generally beats
+  a description of the design or a screenshot of it.* Adjectives are where taste goes to die.
+- **Vary one dimension at a time.** Type, or color, or spacing, or density — not three at once. Change
+  three and you've learned nothing about which one worked.
+- **Compare in parallel, don't refine in series.** Generate three variants and pick, rather than
+  saying *"make it better"* five times. Serial refinement **drifts toward the mean** (each pass
+  re-averages); parallel comparison forces an actual decision, which is the one thing the model can't
+  do for you.
+- **Have a stop rule.** Stop when the next change isn't visible to someone who isn't you. Design
+  iteration has no natural terminator, and "one more pass" is how a week disappears.
+
+> **Re-check the states after heavy iteration.** The same degradation
+> [`agent-security`](agent-security.md) documents for code applies here: each pass over the same file
+> can quietly drop what an earlier pass established — and **empty and loading states are the first
+> casualties**, because they're invisible in the screenshot you're staring at. The five-state
+> requirement is not one-and-done; re-run it after a redesign, not just at first build.
 
 ## Enforcement — just-in-time
+
+> **A prompt convention is a filter; a check in the harness is a boundary.** The failure table above
+> prescribes *"reference tokens by name in every prompt"* — worth doing, and **not** a boundary: it
+> depends on every future prompt remembering. The same lesson [`agent-security`](agent-security.md)
+> took from CVE-2026-22708 applies to design — *bound the capability, don't enumerate the route.* The
+> thing that actually stops the 47 blues is a check that **fails on a raw hex**, not a sentence asking
+> nicely. Ship the convention; know it's a speed bump; put the hook in as soon as the UI is worth keeping.
 
 - **Quickstart / MVP:** no design enforcement. Hardcoded styles in a throwaway are fine; don't
   impose ceremony unearned. But the *moment* a UI is worth keeping, create the tokens file so style
   is decoupled from the very first commit that matters.
-- **V1:** enforcement turns on. A `PostToolUse` hook flags hardcoded style values (e.g. raw colour
-  classes) and points at the token instead. `/design-review` before code, `/ux-check` after.
+- **The moment tokens exist (MVP):** `design-tokens-guard` — a `PostToolUse` hook that catches a
+  hardcoded hex / `rgb()` / palette class the instant it's written and hands the model your token
+  names instead. **Ships dormant at L1 and is offered once by `/design-tokens-init`**, because the
+  tokens file is the opt-in signal: *no token system, no opinion.* This is the boundary the note
+  above asks for — the check that doesn't depend on the next prompt remembering.
+- **V1:** the rest of enforcement turns on. `/design-review` before code, `/ux-check` after.
   Agents `ui-designer` (token/visual authority) + `ux-designer` (flows, the 5 states) unlock here.
 - **Scale:** design drift audits, token versioning, multi-surface theming.
 
-## To author (when V1 mode is built)
+## Shipped (this section was a TODO until 2026-08-11)
 
-- `template/docs/design/DESIGN_TOKENS.md` (+ a tokens file in the chosen stack's format)
-- `template/docs/design/STYLE_GUIDE.md`, component-audit + state checklist
-- `template/.claude/skills/design-review/`, `ux-check/`, hook for hardcoded-style detection
-- `ui-designer` + `ux-designer` agents
-- a prototype registry + the rule that prototypes consume the token system
+Everything the V1 design layer needed now exists — the list below was carried as *"to author"* long
+after it was built, which is exactly the rot the build-craft watchlist predicted for this doc:
+
+- ✅ `/design-review` (before code) · `/ux-check` (after code) · `/design-tokens-init` (L1, at the
+  first UI commit) — the latter **writes** `docs/design/DESIGN_TOKENS.md` at runtime, which is right:
+  tokens are project-specific, not template-shippable.
+- ✅ `ui-designer` (token/visual authority) + `ux-designer` (flows, the five states)
+- ✅ `docs/design/STYLE_GUIDE.md` — **written by `/design-tokens-init` from v0.146.0.**
+  ⚠️ **Correction:** v0.144.0's version of this list claimed the style guide already shipped. It did
+  not. `docs/design/` was an **empty directory**, and `STYLE_GUIDE.md` was **read by three consumers**
+  (`/design-review`, `ui-designer`, `ux-designer`) and **written by nothing.** The stale-TODO fix
+  introduced a false ✅ in the same pass that warned against exactly that — *"converting a stale TODO
+  into a clean ✅ would have hidden the one gap that matters."* It hid a different one. **A checklist
+  is a claim; verify each line against the filesystem, not against the doc it came from.**
+
+- ✅ `design-tokens-guard` — the hardcoded-style hook (shipped v0.145.0, dormant at L1, offered by
+  `/design-tokens-init`). It was the one gap that actually mattered: the doc prescribed a boundary it
+  didn't provide.
+- ✅ `docs/design/PROTOTYPES.md` — the prototype registry (v0.146.0), with the token-consumption rule.
+
+**Nothing on this list is open.** Verified against the filesystem, not against this doc.

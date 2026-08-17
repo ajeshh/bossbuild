@@ -5,7 +5,7 @@ description: Take the first dollar — the sharpest JIT moment in the lifecycle 
 
 # /first-dollar — someone will pay; here's how to let them (without stalling)
 
-The runner over `library/practices/first-dollar.md`. The conscience's founding question is *"will anyone pay?"*
+The runner over `boss craft first-dollar`. The conscience's founding question is *"will anyone pay?"*
 This is the moment someone actually will — and founders stall right here, at maximum validation, because the
 money mechanics feel like a different universe from the code. They're just unfamiliar. Five moves, most
 deferrable, ~20 minutes.

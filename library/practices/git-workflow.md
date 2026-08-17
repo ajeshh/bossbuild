@@ -64,6 +64,9 @@ sit ~5.3× longer before pickup). The answer isn't less review — it's review *
   make tests pass will quietly **rewrite the assertions to match the broken behaviour**. The code looks
   clean, the suite is green, and the test now certifies the bug. When you review an agent's change, read
   the test changes first and ask *did the behaviour get fixed, or did the expectation get lowered?*
+  This is the **review-time** enforcement of a rule that now has a home:
+  [`testing-with-agents`](testing-with-agents.md) §1 holds the full failure mode and the other three
+  that come with it (green-by-construction, coverage-as-noise, non-determinism).
 - **The tiers.** Low-risk (copy, styling, an isolated pure function, a reversible config) — a single
   glance, or let the gate carry it. High-risk (anything touching auth, money, data migrations, deletes,
   deploys, or an AI-mediated control path) — **the *other* human reviews it**, not the one who prompted

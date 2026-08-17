@@ -5,7 +5,7 @@ description: Run the money once customers exist — the layer after /first-dolla
 
 # /monetize — operating the money machine (after the first dollar)
 
-The runner over `library/practices/monetization-in-practice.md`. `/first-dollar` got you the first sale; this is
+The runner over `boss craft monetization-in-practice`. `/first-dollar` got you the first sale; this is
 what you do with the machine once it's running — and the whole job is doing it *without* becoming the
 dark-pattern SaaS the humane lens exists to catch.
 

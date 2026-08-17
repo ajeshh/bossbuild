@@ -6,6 +6,7 @@ import { applyStage, applyStageSafe, appendClaudeBlock, appendMarkedBlock, readS
 import { registerProject, listProjects, findByPath, retireProject, reviveProject } from './registry.js';
 import { planSync, applySync, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
+import { printCraft } from './craft.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
@@ -534,7 +535,9 @@ function cmdSync(args) {
       console.log(`    ${mark}  ${e.kind}/${e.name}  →  ${e.rel}`);
     }
     if (settingsChanged) {
-      console.log(`    ${warn('~ merge')}    settings/hooks  →  ${plan.settings.rel}  (additive — keeps your permissions)`);
+      console.log(`    ${warn('~ merge')}    settings/hooks + deny floor  →  ${plan.settings.rel}`);
+      console.log(`    ${dim('              (additive — adds hook registrations and secret-path denies;')}`);
+      console.log(`    ${dim('               never touches your allow list or defaultMode)')}`);
     }
   }
 
@@ -693,6 +696,12 @@ const HELP = {
     examples: ['boss sync', 'boss sync --apply'],
     see: ['status', 'learn'],
   },
+  craft: {
+    usage: 'boss craft [name] [--outline]',
+    what: "Read BOSS's practice shelf — the craft the skills and agents are built on. The shelf ships inside the package, so it works from any project and is always exactly as current as your installed version. With no argument it lists every practice; with a name (prefixes work) it prints that one. This is BOSS's shelf, read-only — your own team's craft notes live in /practice as PRAC-NNN records. The shelf listing shows each practice's length and flags anything past 2\u00d7 the median \u2014 a shelf that only ever grows is how a toolkit becomes a framework, so those are subtraction candidates for the next refresh, and --outline maps a long one before you pull it whole.",
+    examples: ['boss craft', 'boss craft testing-with-agents', 'boss craft testing', 'boss craft design-system --outline'],
+    see: ['sync', 'learn'],
+  },
   learn: {
     usage: `boss learn <path> --as <category> [--yes]   (${LIBRARY_CATEGORIES.join(' | ')})`,
     what: 'Promote a proven pattern UP into the BOSS library so every future project inherits it. This writes into the BOSS SOURCE checkout — usually not the repo you\'re standing in — bumping its VERSION and CHANGELOG, so it names the target and asks before writing unless you pass --yes. Set BOSS_SRC to point it somewhere specific. The judgment layer over this is /boss-learn inside Claude (a two-way UP/DOWN router).',
@@ -762,15 +771,22 @@ const OPTIONAL_HOOKS = [
     cost: 'a process after every subagent',
     worth: 'you want /judge-traces to have anything to read (it is empty until this is on)',
   },
+  {
+    name: 'design-tokens-guard',
+    event: 'PostToolUse',
+    does: 'Catches hardcoded colors (hex, rgb()/hsl(), palette classes like bg-blue-500) the moment they\'re written, and hands Claude your token names instead. Silent until a DESIGN_TOKENS.md exists — no token system, no opinion.',
+    cost: 'a process after each file write',
+    worth: 'you have a token system and want it to actually hold — a prompt convention is a filter, this is the check',
+  },
 ];
 
 function printHooks() {
   console.log(`\n  ${bold('Optional hooks')}  ${dim('— shipped with your project, switched OFF')}\n`);
-  console.log('  Three hooks land in `.claude/hooks/` and do nothing until you register them.');
+  console.log(`  ${OPTIONAL_HOOKS.length} hooks land in \`.claude/hooks/\` and do nothing until you register them.`);
   console.log(`  That is deliberate: a hook runs a process on every matching event, and BOSS won't`);
   console.log(`  spend your latency without you asking. ${dim('An unregistered script costs nothing.')}\n`);
   for (const h of OPTIONAL_HOOKS) {
-    console.log(`  ${bold('/' + h.name.padEnd(15))} ${dim(h.event)}`);
+    console.log(`  ${bold('/' + h.name.padEnd(20))} ${dim(h.event)}`);
     console.log(`    ${h.does}`);
     console.log(`    ${dim('costs:')} ${h.cost}`);
     console.log(`    ${dim('worth it when:')} ${h.worth}\n`);
@@ -833,6 +849,7 @@ function printHelp() {
   console.log(`\n  ${bold('Keeping current')}`);
   console.log(row('boss sync [--apply]', 'pull current BOSS practices into this project (DOWN)'));
   console.log(row('boss learn <p> --as <c>', 'promote a pattern UP into the library'));
+  console.log(row('boss craft [name]', "read BOSS's practice shelf (the craft behind the skills)"));
   console.log(row('boss list', 'all connected projects'));
   console.log(row('boss retire [--undo]', 'end a project honestly (reversible)'));
   console.log(row('boss version', 'the installed BOSS version'));
@@ -889,6 +906,10 @@ export async function run(argv) {
     case 'retire': return cmdRetire(args);
     case 'sync': return cmdSync(args);
     case 'learn': return cmdLearn(args);
+    case 'craft': return void (process.exitCode = printCraft(
+      args.find((a) => !a.startsWith('--')),
+      { outline: args.includes('--outline') },
+    ));
     case 'conscience': return cmdConscience(args);
     case 'version': case '--version': case '-v':
       return console.log(bossVersion());

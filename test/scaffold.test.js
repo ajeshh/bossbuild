@@ -3,9 +3,9 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { resolveStageId, STAGE_ORDER } from '../src/paths.js';
+import { resolveStageId, STAGE_ORDER, STAGES_DIR } from '../src/paths.js';
 import { loadModes, modeWord, skillGloss } from '../src/modes.js';
 import { readStageManifest, appendMarkedBlock, applyStageSafe } from '../src/scaffold.js';
 import { canonicalLayer, computeSettingsMerge, planSync } from '../src/sync.js';
@@ -118,7 +118,7 @@ test('settings merge is additive and idempotent — a founder keeps their own co
   });
   const first = computeSettingsMerge(dir, ['L0-quickstart']);
   assert.equal(first.changed, true);
-  assert.deepEqual(first.merged.permissions.allow, ['Bash(my-tool:*)'], 'permissions untouched');
+  assert.deepEqual(first.merged.permissions.allow, ['Bash(my-tool:*)'], 'the allow list is never widened');
   const cmds = first.merged.hooks.UserPromptSubmit.flatMap((e) => e.hooks.map((h) => h.command));
   assert.ok(cmds.includes('my-own-hook.sh'), "the founder's hook survives");
   assert.ok(cmds.some((c) => c.includes('conscience.js')), "BOSS's hook is registered");
@@ -144,7 +144,131 @@ test('a corrupt settings.json does not crash the merge', () => {
   assert.doesNotThrow(() => computeSettingsMerge(dir, ['L0-quickstart']));
 });
 
+// v0.141.0 — the deny floor reaches projects already in the wild. A security floor that
+// only ships via `boss new` is not a floor (CVE-2026-22708 / allowlist-is-not-a-boundary).
+test('the deny floor merges into an existing project without touching allow or defaultMode', () => {
+  const dir = project({
+    '.claude/settings.json': JSON.stringify({
+      permissions: {
+        defaultMode: 'acceptEdits',
+        allow: ['Read', 'MyCustomTool'],
+        deny: ['Read(./.env)', 'Read(./my-private-notes/**)'],
+      },
+    }, null, 2),
+  });
+  const { merged, changed } = computeSettingsMerge(dir, ['L0-quickstart']);
+  assert.equal(changed, true);
+  assert.equal(merged.permissions.defaultMode, 'acceptEdits', "a founder's mode choice is theirs");
+  assert.deepEqual(merged.permissions.allow, ['Read', 'MyCustomTool'], 'allow is never widened');
+  assert.ok(merged.permissions.deny.includes('Read(./my-private-notes/**)'), "the founder's own deny survives");
+  assert.ok(merged.permissions.deny.includes('Read(.env)'), 'the bare-path form is added, not just ./');
+  assert.ok(merged.permissions.deny.includes('Bash(source *.env*)'), 'readers beyond cat are covered');
+  assert.equal(
+    merged.permissions.deny.length, new Set(merged.permissions.deny).size,
+    'merging must not duplicate an entry already present',
+  );
+
+  writeFileSync(join(dir, '.claude', 'settings.json'), JSON.stringify(merged, null, 2));
+  assert.equal(computeSettingsMerge(dir, ['L0-quickstart']).changed, false, 're-merging the floor is a no-op');
+});
+
 // --- sync planning --------------------------------------------------------
+
+// v0.147.0 — nothing BOSS ships into a founder's project may point at a path only BOSS's own
+// repo has. 25 agents/skills/hooks referenced `library/practices/*`; a scaffolded project has no
+// `library/`, so every one was a dead end that LOOKED authoritative — the sharp edge in the
+// agent, then a reference to nothing. The reachable form is `boss craft <name>`.
+test('shipped files never point at a path only the BOSS repo has', () => {
+  const offenders = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) { walk(p); continue; }
+      if (!/\.(md|js|json)$/.test(e.name)) continue;
+      const text = readFileSync(p, 'utf8');
+      for (const m of text.matchAll(/library\/practices\/([a-z0-9-]+)\.md/g)) {
+        // `/extract` legitimately names library/ — it documents the UP direction, promoting
+        // a pattern INTO BOSS's library. That's a description of BOSS's repo, not a pointer.
+        if (p.includes(join('skills', 'extract'))) continue;
+        offenders.push(`${p} -> ${m[0]}`);
+      }
+    }
+  };
+  walk(STAGES_DIR);
+  assert.deepEqual(
+    offenders, [],
+    `these resolve only inside BOSS's repo; use \`boss craft <name>\` instead:\n  ${offenders.join('\n  ')}`,
+  );
+});
+
+test('every `boss craft <name>` pointer names a practice that exists', () => {
+  const shelf = new Set(
+    readdirSync(join(process.cwd(), 'library', 'practices'))
+      .filter((f) => f.endsWith('.md')).map((f) => f.replace(/\.md$/, '')),
+  );
+  const missing = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) { walk(p); continue; }
+      if (!/\.(md|js|json)$/.test(e.name)) continue;
+      for (const m of readFileSync(p, 'utf8').matchAll(/boss craft ([a-z0-9-]{3,})/g)) {
+        if (!shelf.has(m[1])) missing.push(`${p} -> ${m[1]}`);
+      }
+    }
+  };
+  walk(STAGES_DIR);
+  assert.deepEqual(missing, [], `pointers to practices that do not exist:\n  ${missing.join('\n  ')}`);
+});
+
+// v0.146.0 — the "read by three, written by nothing" bug. `/design-review`, `ui-designer` and
+// `ux-designer` all read `docs/design/STYLE_GUIDE.md`; no skill ever wrote it, and `docs/design/`
+// shipped as an empty directory. A doc that consumers depend on and no producer creates is a
+// silent hole — the same class as RLS-in-db-architect and the test-diff-in-tester holes.
+test('every design doc a consumer reads is a design doc some skill writes', () => {
+  const read = (p) => readFileSync(join(STAGES_DIR, p), 'utf8');
+  const consumers = [
+    'L2-v1/template/.claude/skills/design-review/SKILL.md',
+    'L2-v1/template/.claude/agents/ui-designer.md',
+    'L2-v1/template/.claude/agents/ux-designer.md',
+  ].map(read).join('\n');
+
+  // Whatever docs/design/*.md the consumers name, something must produce.
+  const wanted = new Set([...consumers.matchAll(/docs\/design\/\s*([A-Z_]+\.md)/g)].map((m) => m[1]));
+  assert.ok(wanted.size >= 2, 'expected the design consumers to name at least tokens + style guide');
+
+  const producerDir = join(STAGES_DIR, 'L1-mvp/template/.claude/skills/design-tokens-init');
+  const producer = [
+    readFileSync(join(producerDir, 'SKILL.md'), 'utf8'),
+    ...readdirSync(join(producerDir, 'templates')).map((f) =>
+      readFileSync(join(producerDir, 'templates', f), 'utf8')),
+  ].join('\n');
+
+  for (const doc of wanted) {
+    assert.ok(
+      producer.includes(doc),
+      `${doc} is read by a design consumer but nothing in /design-tokens-init produces it`,
+    );
+  }
+});
+
+// v0.141.0 — progressive disclosure makes a skill a TREE, not one file. If sync only
+// tracked SKILL.md, every bundled resource would ship once and then never update again —
+// the same bug already fixed for dormant hooks.
+test('a skill\'s bundled resources are managed, not just its SKILL.md', () => {
+  const dir = project({});
+  mkdirSync(join(dir, '.boss'), { recursive: true });
+  const stamp = { name: 'p', bossVersion: '0.0.1', stage: 'L0-quickstart', installedLayers: ['L0-quickstart'] };
+  const entries = planSync(dir, stamp).entries;
+
+  const resource = entries.find((e) => e.rel.endsWith(join('welcome', 'reference', 'deeper.md')));
+  assert.ok(resource, "welcome's bundled reference file must be a managed file");
+  assert.equal(resource.kind, 'skill-resource');
+  assert.ok(
+    entries.some((e) => e.rel.endsWith(join('welcome', 'SKILL.md'))),
+    'the skill body is still managed alongside its resources',
+  );
+});
 
 test('planSync marks missing files new, edited files changed, identical files ok', () => {
   const dir = project({});

@@ -138,6 +138,19 @@ also honors the canvas's "don't monetize lock-in" line.
 
 ## After scaffolding
 
+0. **Write the style guide alongside the tokens.** `DESIGN_TOKENS.md` is the *what* (values and their
+   names); `docs/design/STYLE_GUIDE.md` is the *how and why* — how tokens compose into patterns, the
+   3–5 design principles with their rules, the five-state table, the accessibility floor. **Skeleton:
+   [`templates/style-guide.md`](templates/style-guide.md).**
+
+   Ship it now, even mostly-empty with the headings and two filled principles. `/design-review`,
+   `ui-designer` and `ux-designer` all *read* this file — it is not optional scaffolding, it's the
+   half of the system those three consume.
+
+   Push hardest on the principles section: **each principle must contain a tradeoff** (if nobody
+   could argue the opposite, it's a mood, not a principle), and **each must descend into rules**,
+   because an agent can't act on "calm over engaging" — it can act on "no unread-count badges."
+
 1. Update the project's CLAUDE.md (or claude-append.md) to declare the token discipline:
 
    ```markdown
@@ -177,7 +190,26 @@ also honors the canvas's "don't monetize lock-in" line.
 - **Brand-anchor the primitives.** Don't default to internet-aesthetic. Canvas Promises cell IS
   the brief.
 - **Tokens file LIVES in the prompt context.** When asking AI for UI work, *always* pass
-  `DESIGN_TOKENS.md` as context. This single discipline prevents 80% of the drift.
+  `DESIGN_TOKENS.md` as context. This single discipline prevents 80% of the drift — **and the
+  remaining 20% is where the 47 blues actually live**, because a prompt convention is a *filter*
+  (it depends on every future prompt remembering), not a boundary.
+- **Prototypes consume the tokens, or they're labeled sketches.** Once this project has tokens *and*
+  more than one mockup, start `docs/design/PROTOTYPES.md` —
+  **[`templates/prototypes-registry.md`](templates/prototypes-registry.md)**. The rule it carries is
+  what makes `/spec`'s mockup guidance safe: **a mockup that doesn't import your tokens is worse than
+  prose**, because prose is obviously incomplete while a mockup is a confident, complete-looking
+  answer the implementation will reproduce faithfully — raw hexes and all. Don't create the registry
+  for a single sketch; that's ceremony. Create it when prototypes start accumulating.
+- **Offer the guard once, here, at the end.** The moment the tokens file exists is the moment a
+  check has something to point at — so this is the JIT on-switch, not a V1 afterthought:
+
+  > *"Tokens are in. Want me to turn on `design-tokens-guard`? It's a hook that catches a hardcoded
+  > color the moment it's written and hands Claude your token names instead. It stays silent unless
+  > this tokens file exists, and it costs a process per file write."*
+
+  If yes, add the `PostToolUse` block from the header of `.claude/hooks/design-tokens-guard.js` to
+  `.claude/settings.json`. If no, **drop it and don't re-ask** — the tokens file alone is a real
+  choice, and `boss hooks` will still list it whenever they want it.
 - **JIT — only scaffold when needed.** Don't init tokens before there's UI to use them. The
   loop's entry predicate is the trigger; don't pre-empt it.
 - **Override is recorded, not blocked.** A founder skipping this skill is legitimate; record
@@ -189,4 +221,4 @@ also honors the canvas's "don't monetize lock-in" line.
 - **Cite the field.** Brad Frost (Atomic Design), Nathan Curtis (layer-cake + purpose-naming), W3C
   Design Tokens Community Group (DTCG stable). 2026 distinctiveness tactic per the AI-UX scan. Not
   BOSS's inventions — applied with build-integration. Interaction-layer companion:
-  [`library/practices/ai-ux-patterns.md`](../../../../../library/practices/ai-ux-patterns.md).
+  `boss craft ai-ux-patterns`.

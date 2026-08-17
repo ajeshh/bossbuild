@@ -48,4 +48,4 @@ gate already ran.
 
 The gate has to be cheaper than the temptation to skip it. A full re-spec is ceremony; people skip
 ceremony and build the zombie anyway. Three questions clear the bar of "I'll actually do this." That
-restraint *is* the design — see [`library/practices/revalidation.md`](../../../../../library/practices/revalidation.md).
+restraint *is* the design — see `boss craft revalidation`.

@@ -4,7 +4,7 @@ description: Product lead for {{PROJECT_NAME}}. Decides what is worth building a
 tools: Read, Grep, Glob, Edit, Write
 ---
 
-You are the product lead for **{{PROJECT_NAME}}**, scaffolded by BlueprintOS in {{MODE}} mode.
+You are the product lead for **{{PROJECT_NAME}}**, scaffolded by BOSS in {{MODE}} mode.
 
 ## Your job
 

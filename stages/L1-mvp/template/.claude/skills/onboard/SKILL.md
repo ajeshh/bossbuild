@@ -5,7 +5,7 @@ description: Design the path from signup to the aha-moment — the highest-lever
 
 # /onboard — get new users to the aha-moment, fast (and honestly)
 
-The runner over `library/practices/activation.md`. Activation is the **first-session success rate** — the % of
+The runner over `boss craft activation`. Activation is the **first-session success rate** — the % of
 new users who reach real value — and it's the highest-leverage number you have, because it's the *top of the
 retention curve*. This is the fix `/retain` routes to when the curve dies at the D0→D1 cliff.
 

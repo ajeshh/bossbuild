@@ -7,7 +7,7 @@
 // (Bash bypasses beyond `cat`, MCP tools, skills added later) for contexts where the stakes justify
 // the cost — regulated / PHI / `domain-expert` cohort work. Registering it everywhere by default
 // would be the always-on machinery BOSS warns founders against (PRINCIPLE #2 / R&H #1). See
-// library/practices/context-discipline.md.
+// `boss craft context-discipline`.
 //
 // TO TURN IT ON — add this to .claude/settings.json (the registration IS the on-switch; an
 // unregistered script costs nothing):

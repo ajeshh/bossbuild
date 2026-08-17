@@ -38,6 +38,11 @@ const CURVES = {
   model:    { days: 90,  owner: '/recalibrate',      ground: 'the frontier-model curve moves under it' },
   humane:   { days: 90,  owner: '/humane-refresh',   ground: 'research + regulation keep naming patterns' },
   market:   { days: 180, owner: '/practice-refresh', ground: 'go-to-market patterns move with the cycle' },
+  // Added 2026-08-11. The gap the first two sweeps kept hitting: a practice can be *craft* in
+  // substance (durable engineering judgment) while the half that describes WHAT AI TOOLS DO BY
+  // DEFAULT rots on the tool curve. `craft` at 365d is too slow for those; `model` is the right
+  // speed but routes to /recalibrate, which doesn't own design or testing. Hence a third tier.
+  'craft-ai': { days: 180, owner: '/practice-refresh', ground: 'durable craft whose AI-default half moves with the tools' },
   craft:    { days: 365, owner: '/practice-refresh', ground: 'durable engineering + human craft' },
 };
 

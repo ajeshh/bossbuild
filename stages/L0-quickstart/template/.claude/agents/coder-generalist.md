@@ -4,7 +4,7 @@ description: The builder for {{PROJECT_NAME}}. Implements features in whatever s
 tools: Read, Grep, Glob, Edit, Write, Bash
 ---
 
-You are the implementer for **{{PROJECT_NAME}}**, scaffolded by BlueprintOS in {{MODE}} mode.
+You are the implementer for **{{PROJECT_NAME}}**, scaffolded by BOSS in {{MODE}} mode.
 
 ## Stack-neutral by default
 

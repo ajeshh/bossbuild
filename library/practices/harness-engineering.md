@@ -5,8 +5,8 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0.
-last_reviewed: 2026-07-23
-review_by: 2026-10-21
+last_reviewed: 2026-08-11
+review_by: 2026-11-09
 curve: model
 ---
 
@@ -59,6 +59,65 @@ durable artifact, the code is regenerable output*) — is a strong form of what 
 truth an agent regenerates against) and **reject the ceremony** — the multi-file `specify → plan → tasks →
 implement` scaffold is premature for a day-one founder (Principle #2). A one-page FEAT spec with acceptance
 criteria *is* the executable artifact; you don't need the framework to get the discipline.
+
+### The spec's *format* is a lever too (2026-08)
+
+Adopting the stance says nothing about what a spec is made of, and BOSS's default — a markdown page —
+is leaving quality on the table. Anthropic's Claude 5 guidance: prefer **rich references** over
+descriptions, because *"an HTML mockup of a design will generally produce better results than a
+description of the design or a screenshot."*
+
+The rule: **an artifact the agent can execute, render or diff beats prose describing it.** In
+ascending order of leverage — prose < a screenshot < a rendered mockup < a failing test < a rubric the
+verifier runs. So for a FEAT spec, spend the effort on whatever is *most executable* about it:
+
+- Building UI? A crude HTML mockup in the spec folder outperforms three paragraphs about the layout.
+- Building logic? Acceptance criteria written as **failing tests** are the spec, not a restatement.
+- Judging something fuzzy? A **rubric** the verifier reads is a spec the harness can actually gate on.
+
+This is the same claim as *"the spec is the durable artifact"* taken one step further: the more
+executable the artifact, the less of it the model has to guess at.
+
+## Decouple the brain from the hands (Anthropic, Managed Agents)
+
+The structural version of *"the model is a dependency you don't control."* Anthropic's Managed Agents
+architecture separates **Claude + its harness (the brain)** from **execution environments and tools
+(the hands)**, joined by a **durable session log that lives outside the context window**:
+
+- **The harness goes stateless** — it runs outside the container and calls it through one narrow
+  interface (`execute(name, input) → string`).
+- **The session becomes an external, queryable store** rather than something the context window has
+  to hold. Context is *retrieved* from it, not accumulated in it.
+- **The hands become interchangeable** — sandboxes, custom tools and MCP servers all present the same
+  shape, so any of them can be replaced after a failure.
+
+Their framing is **pets vs. cattle**: a coupled container is a pet you nurse back to health; a
+stateless one is cattle you replace and move on. What a founder should take from this well before
+they need the architecture: **anything you can't afford to lose belongs in the session log, not in
+the agent's context** — which is the same instinct as `/close` and `RESUME.md`, and the reason a
+crashed session should cost you a restart rather than the work.
+
+## Don't author what the host ships — name the seam instead
+
+The harness is yours; a growing amount of its *plumbing* isn't. Claude Code now ships built-in
+subagents (`Explore` for read-only fan-out search, `Plan` for a codebase-aware implementation plan),
+plan mode, `/doctor`, dynamic workflows. **When the host absorbs a mechanism, re-rolling it stops
+being differentiation and becomes drift** (Mollick's corollary).
+
+The rule, in two halves:
+
+- **Compose at the layer above.** A planning agent answers *how to build it*. It cannot answer
+  *whether to build it* — it has no access to your bet, your evidence, or your riskiest assumption.
+  So the composition is `spec (judgment) → plan (route) → build → verify`, and the piece worth owning
+  is the first one. **A planning agent can tell you the best way to build the wrong thing.**
+- **Sit on a host primitive at a seam you could close by hand.** The test: *if this vanished
+  tomorrow, what breaks?* If the answer is "one optional step becomes a direct handoff," that's a
+  seam. If it's "a flow the founder depends on," that's a dependency — and dependencies on a
+  preview-heavy host are how a harness rots.
+
+> **This is not hypothetical.** Ultraplan — a research preview since spring 2026 — was **removed** in
+> August. Nothing was lost because nothing had been built on it. Prefer host primitives at the
+> **boundaries** of your flows, not in their interiors.
 
 ## Verifiability decides what to build first (Karpathy)
 

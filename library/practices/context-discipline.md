@@ -5,8 +5,8 @@ owner: pm
 status: active
 host: claude-code
 provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0
-last_reviewed: 2026-07-23
-review_by: 2026-10-21
+last_reviewed: 2026-08-11
+review_by: 2026-11-09
 curve: host
 ---
 
@@ -42,9 +42,19 @@ curve: host
   non-obvious build/test commands, against-default architecture decisions, project constraints. Cut
   anything the model already knows from training (framework syntax, generic preambles) or could learn
   by reading the code for 20 minutes. Rule of thumb: keep it tight (compliance drops past ~200 lines).
+  *Confirmed 2026-08-11:* Anthropic's own guidance for the Claude 5 generation lands in the same
+  place — *"keep your CLAUDE.md lightweight and briefly describe what your repo is for, but spend
+  most of the tokens on gotchas inside of the codebase."* This line needs no change.
 - **Session-state docs** (e.g. a `RESUME.md`): keep a **recency window** of the most recent few
   entries; let the full history live in the changelog it already maintains. Don't let an
   append-forever log become the file you read at every session start.
+- **Don't hand-tend what the host now remembers for you.** The `#` hotkey era — *prompt the user to
+  save that to CLAUDE.md* — is over; Claude saves durable facts to **auto-memory** on its own. The
+  cut BOSS already draws in [`library/memory-seed/README.md`](../memory-seed/README.md) is the one
+  that matters, and it survives: **durable facts → auto-memory · working state → a path-scoped rule
+  (move #2) · what surprises a new dev → `CLAUDE.md`.** What changes is the *default*: reach for
+  auto-memory first and let `CLAUDE.md` hold only what auto-memory structurally can't — the
+  repo-shaped gotchas that are true regardless of who is working or what they're doing.
 - `<!-- HTML comments -->` are stripped before injection (zero-token notes for humans).
 - `@path` imports are organizational only — all imported files still load at startup (no token saving).
 - `CLAUDE.local.md` (gitignored) holds personal/local notes. Edits to `CLAUDE.md` apply on
@@ -74,20 +84,52 @@ is the correct key (not Cursor's `globs:`); path-scoped rules load when Claude r
 not at session start.
 
 ### 3. Enforce no-read boundaries in the harness, not the prompt
+
+> **⚠️ Read this before the JSON: a command list is a filter, not a boundary.**
+> **CVE-2026-22708** (Cursor, disclosed 2026-08, fixed in 2.3) is the proof. With auto-run + allowlist
+> mode on, shell **built-ins** — `export`, `typeset`, `declare` — executed **without appearing in the
+> allowlist and without user approval**; `typeset` abused zsh expansion flags to force evaluation of an
+> embedded command substitution. Arbitrary code, zero prompts, reachable by indirect prompt injection.
+> **Cursor's own hardening guidance now discourages relying on allowlists as a security barrier.**
+> Claude Code shipped matching fixes the same month (a Bash command can no longer hide part of itself
+> from permission checks; tab/invisible-Unicode padding no longer hides a command from the approval
+> dialog; PreToolUse auto-allow hooks no longer bypass tool restrictions in internal side tasks).
+>
+> The lesson is **not** "lists are useless." It's that a list of *command names* is an enumeration, and
+> **an enumeration of an unbounded surface is a speed bump.** So: ship the list (it's free and it stops
+> the common accident), and know exactly what it buys you. When the stakes are real, the boundary is the
+> **path-based hook** below — it matches on the *secret*, not on the command that reaches for it.
+
 Secrets and noise get a **hard block** via `permissions.deny` in `.claude/settings.json` — verified
 Claude Code glob syntax (`./` = relative to cwd; `**` = any depth):
 ```json
 {
   "permissions": {
     "deny": [
-      "Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)",
-      "Bash(cat ./.env*)", "Bash(cat ./secrets/*)",
+      "Read(./.env)", "Read(./.env.*)", "Read(.env)", "Read(.env.*)",
+      "Read(**/.env)", "Read(**/.env.*)",
+      "Read(./secrets/**)", "Read(**/secrets/**)",
+      "Read(**/*.pem)", "Read(**/*.key)", "Read(**/id_rsa*)",
+      "Read(**/.ssh/**)", "Read(**/.aws/**)",
+      "Bash(cat ./.env*)", "Bash(cat .env*)", "Bash(cat ./secrets/*)",
+      "Bash(head *.env*)", "Bash(tail *.env*)", "Bash(less *.env*)", "Bash(more *.env*)",
+      "Bash(grep * .env*)", "Bash(xxd *.env*)", "Bash(od *.env*)", "Bash(strings *.env*)",
+      "Bash(base64 *.env*)", "Bash(source *.env*)", "Bash(. *.env*)",
+      "Bash(printenv)", "Bash(env)",
       "Read(./node_modules/**)", "Read(./dist/**)", "Read(./build/**)", "Read(*.lock)"
     ]
   }
 }
 ```
+- **Write the bare path *and* the `./` form.** `Read(./.env)` and `Read(.env)` are different patterns;
+  shipping only one leaves the other open. Same for `**/` (a `.env` in a subdirectory).
 - **A `Read(...)` deny does NOT block Bash** (`cat .env` still works) — add the `Bash(...)` rules too.
+- **The Bash half is the enumeration you can't finish.** The list above covers the frequent readers.
+  It does not cover `awk`, `sed`, `python -c`, `node -e`, a shell built-in, or anything an attacker
+  renames. Don't grow this list toward completeness — it has no end. Escalate to the hook instead.
+- **BOSS merges this floor on `boss sync`** (v0.141.0), because a security floor that only reaches
+  *new* projects is not a floor. The merge is **additive and deny-only** — a deny entry can only ever
+  restrict, never grant, so merging it can't break a project. `allow` and `defaultMode` stay yours.
 - **There is no `.claudeignore` file** in Claude Code (a common myth). `permissions.deny` is the
   mechanism; `.gitignore` is separate and only stops commits, not reads.
 - For coverage that also catches MCP tools and skills added later, a **PreToolUse hook** can reject
@@ -98,6 +140,13 @@ Claude Code glob syntax (`./` = relative to cwd; `**` = any depth):
   regulated/PHI work or make it opt-in, don't impose per-call overhead on every project by default.
   A real secret manager is beyond both. (Cost discipline: don't add always-on machinery for marginal
   coverage — the framework BOSS warns founders against becoming.)
+  - **The trigger for turning it on moved (2026-08).** This bullet used to read as "nice-to-have
+    breadth." CVE-2026-22708 reframes it: the hook matches on the **path**, so it catches `head`,
+    `grep`, `xxd`, `source`, a renamed binary and a shell built-in alike — the exact surface the
+    command list structurally cannot reach. It is no longer "broader coverage"; it is **the only
+    layer here that is actually a boundary.** The per-call latency argument still stands, so it
+    stays opt-in — but the honest recommendation is now: **turn it on as soon as the project holds a
+    real credential**, not only for regulated work.
   - **BOSS ships this hook dormant** as `.claude/hooks/secrets-guard.js` (canonical in
     `library/hooks/secrets-guard.js`): Read/Edit of a secrets file → **deny**, Bash/MCP referencing
     one → **ask**, else allow; fail-open. It is **not registered by default** (an unregistered hook
@@ -107,6 +156,42 @@ Claude Code glob syntax (`./` = relative to cwd; `**` = any depth):
 ### 4. Filter noisy tool output before it enters context
 A **PostToolUse hook** can compress a 10k-line build/test log to a short error summary before it
 reaches the model — the model reasons over the summary, not the firehose.
+
+## Permission modes — the surface all four moves sit on
+
+> Added 2026-08-11. This practice claimed the permission surface for a year and never named the
+> **mode** that surface runs in — while the host quietly made a classifier the default.
+
+**From 2026-08-14, `auto` is the default permission mode** for new Claude Code sessions on Pro, Max
+and Team plans. (A default you set yourself, or one your organization manages, is left alone.) In auto
+mode a classifier answers the permission prompts: safe actions run uninterrupted, risky ones are
+blocked. The classifier calls don't count against usage limits.
+
+What a founder needs to know, in order:
+
+- **BOSS already ships `"defaultMode": "auto"`** in the L0 template — this change makes the host agree
+  with a call BOSS made earlier, and nothing in a scaffolded project needs to move.
+- **Deny rules still win.** Hard deny is unconditional; it is not something the classifier weighs and
+  can decide to allow. The floor in move #3 is exactly as load-bearing under auto mode as under
+  prompts — which is why it is worth hardening.
+- **But a classifier is non-deterministic, and that is the whole point of move #3.** `agent-security`
+  puts it plainly: *never let the classifier be the only thing between untrusted text and a
+  destructive action.* Auto mode is a **convenience** layer that removes prompt fatigue. It is not a
+  security layer, and reading it as one is the trap — prompt fatigue was never the boundary either,
+  it was just a human in the loop often enough to notice.
+- **The modes, and when each is right:** `auto` (default — classifier-mediated) · `plan` (read-only
+  until you approve a plan; the right mode for "explore this codebase and tell me") ·
+  `acceptEdits` (file edits land without asking; Bash still gated) · `default` (prompt on everything —
+  the mode to fall back to when you're doing something you don't fully trust yet).
+- **Switch any time**, and set your standing preference explicitly rather than inheriting a default
+  that can change under you:
+  ```json
+  { "permissions": { "defaultMode": "auto" } }
+  ```
+
+> **Host-bound, and on the fastest curve BOSS tracks.** Permission modes are a Claude Code mechanism
+> and they moved three times in 2026 (research preview in March → Pro in May → third-party providers
+> in June → default in August). Re-verify on host change; see the build-craft watchlist, domain 2.
 
 ## Context engineering — the discipline these four moves serve
 

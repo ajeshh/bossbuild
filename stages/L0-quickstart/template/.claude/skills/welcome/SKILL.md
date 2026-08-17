@@ -179,53 +179,9 @@ Two paths. Name both; let the founder pick.
 > > conscience nudges, how modes unlock as you go, where to get help — but none of it blocks you.
 > > Want any of it now, or shall we get going with `/boss` or `/triage`?"*
 >
-> Expand a topic **only if they ask.** The sections below are the material you draw on then — not
-> a script to read top-to-bottom. Either way, end on the action (section 5).
-
-### How the conscience works _(reference — expand only if asked)_
-
-> *"The **conscience** is the most BOSS-specific thing here. It watches for a few specific
-> drift patterns — for example: capturing three ideas in a row without filling out a canvas
-> for any of them. When it sees one, it adds a short signal to my context (not a popup, not
-> a block) — and I decide whether to surface it in my own voice. It's never canned text;
-> it's never a gate.*
->
-> *There are a handful of these drift patterns — each one is a **moment** (drift, caution,
-> capture, focus…). You don't have to take all of them. Three controls, from broadest to
-> most surgical:*
-> - *`boss conscience pause --for 8h` — silences the **whole** conscience for a build session.
->   Auto-resumes after 8 hours (or use `--until-resume` for indefinite + `boss conscience
->   resume` later).*
-> - *`boss conscience mute <moment> --for 7d` — turns down **one** moment (e.g.
->   `boss conscience mute capture`) while the others keep speaking. Auto-unmutes when it
->   expires, or `boss conscience unmute <moment>` / `--all`. Use this when one nudge keeps
->   landing wrong but the rest are useful. (`boss conscience status` shows what's muted.)*
-> - *In your devlog or commit, write `- **OVERRIDE:** <decision> — rationale: <why>`. BOSS
->   records the override; it doesn't argue.*
->
-> *The pattern is: deviation conscious, recorded, never blocked, never forgotten. If a moment
-> isn't for you, mute it — that's a feature, not a fight."*
-
-### How modes level up _(reference — expand only if asked)_
-
-> *"You're in Quickstart now. As the project earns more structure, you unlock the next mode:*
-> - *`boss unlock mvp` — when the canvas holds up and you're ready to actually build. Adds
->   spec discipline (`/spec` → `FEAT-NNN`), a smoke check (`/smoke`), evals (`/evals`), AI
->   cost budgets (`/ai-cost`), failure-state design (`/ai-failure-states`), a devlog, a
->   session-end ritual (`/close`).*
-> - *`boss unlock v1` — when MVP is real and you need design system rigor, prototypes, a
->   real database, an admin board.*
-> - *Scale is on the roadmap; not authored yet — only earn it when you actually have one.*
->
-> *Levels are **additive** — unlocking MVP keeps everything Quickstart added. You're not
-> jumping; you're growing the system."*
-
-### Where to look for help _(reference — expand only if asked)_
-
-> *"`boss --help` for CLI commands; `boss status` for what mode you're in; `boss list` for
-> every project you've registered. In Claude, list available skills by typing `/`. The
-> [README](https://github.com/ajeshh/BlueprintOS) and `PRINCIPLES.md` are the canonical
-> references — short by design."*
+> Expand a topic **only if they ask** — and when they do, read the matching section of
+> [`reference/deeper.md`](reference/deeper.md). Don't load it otherwise; it's reference, not a script.
+> Either way, end on the action (section 5).
 
 ## 5. Wrap up — end on ONE exact next step
 
@@ -256,7 +212,3 @@ parenthetical, not equal billing. The founder should be able to act without re-r
 - **Don't oversell.** BOSS is a build tool, not a religion. If the founder says "this
   is overkill for what I'm doing," they may be right — point at `boss conscience pause`,
   point at the override grammar, point at the JIT principle. Don't argue.
-- **Plain language wins.** The phrase *"just-in-time agentic ceremony"* doesn't belong in
-  this skill. The phrase *"BOSS lays down what you need when you need it"* does.
-- **End with one clear next step.** The founder leaves /welcome with one of: a `/boss` run,
-  a `/triage` run, or a clear "I'll come back later." Three doors, no decision-paralysis.
