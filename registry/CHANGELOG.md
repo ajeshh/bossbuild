@@ -2,6 +2,46 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.160.0 — 2026-08-17
+
+- **The widest uncovered rot surface is covered: the 66 skills, agents and hooks BOSS ships into
+  every project.** BOSS ships `review_by:` staleness-awareness to founders via `/practice`, applied
+  it to its own 28-practice shelf in v0.135.0 — **and left the surface it actually ships with nothing
+  that could ever report it stale.** The same don't-eat-your-own-dogfood gap, one level down.
+- **🔴 Deliberately NOT inline frontmatter, and this was the load-bearing call.** The obvious move
+  was to copy the practice shelf and add `curve:` / `last_reviewed:` to each `SKILL.md`. It's wrong:
+  a shipped `SKILL.md` carries exactly `name` + `description` (an agent adds `tools`) and that
+  frontmatter is **host-consumed**. Introducing unknown keys into files Claude Code parses, in every
+  founder's project, to solve a maintenance problem **only BOSS has**, puts all the risk on them and
+  all the benefit here. The ledger (`registry/surface-freshness.json`) is deliberately excluded from
+  the npm package for the same reason. A practice can do it inline precisely because nothing but
+  BOSS reads that frontmatter.
+- **The first cut of the curve assignment was a regex over the file text, and it was wrong — so it
+  was thrown away.** Keyword matching put `/boss`, `/import` and `/cost-review` on the **threat**
+  curve and `/prototype` and `/money` on the **model** curve, because "credential" and "token"
+  appear in passing. **Arbitrary assignments dressed as method are worse than none:** they'd send
+  quarterly sweeps at 30 files that don't move, skip the ones that do, and the first person to read
+  the table would stop trusting all of it. Replaced with a **stated judgment** — default by kind,
+  every deviation named — so each call is arguable on its own instead of the whole table being
+  suspect.
+- **The default is `craft` (365d), and the reasoning matters.** Most of this surface is *method* —
+  how to pressure-test an idea, run an interview, record a decision. That prose doesn't rot when the
+  host ships. What rots fast is the layer touching the **host** (11) and the layer describing what
+  **AI tools do by default** (6), plus threat (4), market (8) and humane (1). **Putting all 66 on a
+  90-day clock would produce a 66-file quarterly sweep — the exact ceremony BOSS exists to refuse.**
+- **`last_reviewed` is seeded from git's last-touch date and then never auto-derived again.** Honest
+  starting point; and touching a file is not reviewing it, so a typo fix must not reset the clock.
+  `review_by` is *derived* from curve + stamp rather than stored — one clock, so the two can't drift
+  apart, which is the exact correction the practice shelf needed in v0.150.0.
+- **The REVERSE sweep is now a standing check, not a memory.** The forward question is *"is this
+  overdue?"*; the reverse is **"is any practice claimed by nobody?"** — an unclaimed doc can never
+  come due at all, and `check:freshness` was reporting *28 fresh, 0 overdue* while two had no domain
+  that would ever fire. **Running it by hand immediately proved why it belongs in a script: the
+  RESUME note naming three orphans was stale** — all three had since been claimed, and two entirely
+  different practices (`model-routing`, `revalidation`) were the real ones. Both now claimed;
+  verified by temporarily un-claiming one and watching the check fail.
+- **Nothing added to the founder surface** — one ledger and one generator, neither shipped.
+
 ## 0.159.0 — 2026-08-17
 
 - **`/vet` now verifies who actually said it — before it grades what they said.** The queue's n=3

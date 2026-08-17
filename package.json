@@ -1,6 +1,6 @@
 {
   "name": "bossbuild",
-  "version": "0.159.0",
+  "version": "0.160.0",
   "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
@@ -48,7 +48,8 @@
     "eval:judgment": "node docs/architecture/conscience-evals/judgment/replay.js",
     "eval": "npm run eval:gate && npm run eval:judgment",
     "regrade": "node docs/architecture/conscience-evals/judgment/regrade.js",
-    "regrade:keyless": "node docs/architecture/conscience-evals/judgment/regrade-keyless.js"
+    "regrade:keyless": "node docs/architecture/conscience-evals/judgment/regrade-keyless.js",
+    "gen:surface-freshness": "node scripts/gen-surface-freshness.js"
   },
   "engines": {
     "node": ">=18"

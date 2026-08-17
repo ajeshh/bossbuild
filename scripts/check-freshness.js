@@ -109,14 +109,72 @@ export function readPractices(asof) {
     });
 }
 
+
+// --- the TEMPLATE SURFACE (v0.160.0) ------------------------------------------------------
+// The 46 skills / 15 agents / 6 hooks BOSS ships into every project. Metadata lives in a ledger
+// (registry/surface-freshness.json), NOT inline: those files' frontmatter is host-consumed, and
+// adding unknown keys to every founder's SKILL.md to solve BOSS's maintenance problem puts the
+// risk on them and the benefit here. See scripts/gen-surface-freshness.js.
+//
+// The gap this closes: BOSS ships `review_by:` staleness-awareness to founders via `/practice`,
+// applied it to its own 28-practice shelf in v0.135.0, and left the surface it actually SHIPS
+// with nothing that could ever report it stale.
+const SURFACE_LEDGER = join(BOSS_ROOT, 'registry', 'surface-freshness.json');
+
+function readSurface(asof) {
+  if (!existsSync(SURFACE_LEDGER)) return [];
+  let entries;
+  try { entries = JSON.parse(readFileSync(SURFACE_LEDGER, 'utf8')).surface || []; } catch { return []; }
+  return entries.map((e) => {
+    const rec = { ...e, name: e.rel.endsWith('SKILL.md')
+      ? e.rel.split('/').slice(-2)[0]
+      : e.rel.split('/').pop().replace(/\.(md|js)$/, ''), problems: [] };
+    if (!CURVES[e.curve]) rec.problems.push(`unknown curve \`${e.curve}\``);
+    if (!isDate(e.last_reviewed)) rec.problems.push('last_reviewed is not a YYYY-MM-DD date');
+    if (rec.problems.length) { rec.state = 'UNREADABLE'; return rec; }
+    // review_by is DERIVED here rather than stored — one clock, no chance of the two disagreeing,
+    // which is the drift the practice shelf had to be corrected for in v0.150.0.
+    rec.age = daysBetween(e.last_reviewed, asof);
+    rec.daysLeft = CURVES[e.curve].days - rec.age;
+    rec.state = rec.daysLeft < 0 ? 'OVERDUE' : rec.daysLeft <= 30 ? 'DUE SOON' : 'FRESH';
+    return rec;
+  });
+}
+
+
+// --- the REVERSE sweep (v0.160.0) ---------------------------------------------------------
+// The forward question is "is this practice overdue?". The reverse one is "is any practice
+// claimed by NOBODY?" — because a watchlist built from the practices that existed when it was
+// written inherits their blind spots, and an unclaimed doc can never come due at all. It is the
+// silent failure the cadence check cannot see: `check:freshness` said *28 fresh, 0 overdue* while
+// two practices had no domain that would ever fire for them.
+//
+// Run by hand it found the RESUME note was already stale — the three practices recorded as
+// unclaimed had since been claimed, and two different ones were the real orphans. That is exactly
+// why it belongs in a script and not in a memory.
+//
+// Watchlists live under docs/research/, which is gitignored (BOSS's dev workspace), so absence is
+// normal in a clone or the published package — report nothing rather than failing.
+function readUnclaimed() {
+  const wDir = join(BOSS_ROOT, 'docs', 'research', 'watchlists');
+  if (!existsSync(wDir) || !existsSync(PRACTICES_DIR)) return null;
+  const claims = readdirSync(wDir).filter((f) => f.endsWith('.md'))
+    .map((f) => readFileSync(join(wDir, f), 'utf8')).join('\n');
+  return readdirSync(PRACTICES_DIR)
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => f.replace(/\.md$/, ''))
+    .filter((name) => !claims.includes(name));
+}
+
 function report() {
   const asof = argValue('--asof') || new Date().toISOString().slice(0, 10);
   const all = process.argv.includes('--all');
   const practices = readPractices(asof);
-  const unreadable = practices.some((p) => p.state === 'UNREADABLE');
+  const unreadable = practices.some((p) => p.state === 'UNREADABLE')
+    || readSurface(asof).some((s) => s.state === 'UNREADABLE');
 
   if (process.argv.includes('--json')) {
-    console.log(JSON.stringify({ asof, curves: CURVES, practices }, null, 2));
+    console.log(JSON.stringify({ asof, curves: CURVES, practices, surface: readSurface(asof) }, null, 2));
     return unreadable ? 1 : 0;
   }
 
@@ -144,6 +202,35 @@ function report() {
   const counts = practices.reduce((acc, p) => ({ ...acc, [p.state]: (acc[p.state] || 0) + 1 }), {});
   const summary = ORDER.filter((k) => counts[k]).map((k) => `${counts[k]} ${k.toLowerCase()}`).join(' · ');
   console.log(`\n  ${summary}${all ? '' : '   (--all to list the fresh ones too)'}`);
+
+  // --- the shipped surface -----------------------------------------------------------------
+  const surface = readSurface(asof);
+  if (surface.length) {
+    surface.sort((a, b) => ORDER.indexOf(a.state) - ORDER.indexOf(b.state) || (b.age ?? 0) - (a.age ?? 0));
+    const sShown = all ? surface : surface.filter((s) => s.state !== 'FRESH');
+    const sPad = Math.max(...surface.map((s) => s.name.length));
+    console.log(`\nBOSS · shipped-surface freshness — ${surface.length} skills/agents/hooks, as of ${asof}\n`);
+    if (!sShown.length) console.log('  Nothing due. Every shipped skill, agent and hook is inside its window.');
+    for (const s of sShown) {
+      if (s.state === 'UNREADABLE') {
+        console.log(`  ✗ ${s.name.padEnd(sPad)}  ${s.rel}`);
+        for (const problem of s.problems) console.log(`    ${' '.repeat(sPad)}  → ${problem}`);
+        continue;
+      }
+      const mark = s.state === 'OVERDUE' ? '!' : s.state === 'DUE SOON' ? '·' : ' ';
+      const when = s.daysLeft < 0 ? `${-s.daysLeft}d overdue` : `due in ${s.daysLeft}d`;
+      console.log(`  ${mark} ${s.name.padEnd(sPad)}  ${String(s.curve).padEnd(8)}  ${when.padEnd(13)}  last swept ${s.last_reviewed}  ${CURVES[s.curve].owner}`);
+    }
+    const sCounts = surface.reduce((acc, s) => ({ ...acc, [s.state]: (acc[s.state] || 0) + 1 }), {});
+    console.log(`\n  ${ORDER.filter((k) => sCounts[k]).map((k) => `${sCounts[k]} ${k.toLowerCase()}`).join(' · ')}${all ? '' : '   (--all to list the fresh ones too)'}`);
+  }
+
+  const unclaimed = readUnclaimed();
+  if (unclaimed && unclaimed.length) {
+    console.log(`\n  ${unclaimed.length} practice(s) claimed by NO watchlist domain — nothing will ever fire for these:`);
+    for (const n of unclaimed) console.log(`    ✗ ${n}`);
+    console.log('    Add each to a domain in docs/research/watchlists/, or say why it needs no tap.');
+  }
 
   const due = practices.filter((p) => p.state === 'OVERDUE' || p.state === 'DUE SOON');
   if (due.length) {

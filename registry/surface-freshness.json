@@ -1,0 +1,483 @@
+{
+  "_readme": [
+    "Rot ledger for the TEMPLATE SURFACE — the skills, agents and hooks BOSS ships into every project.",
+    "",
+    "Deliberately NOT inline frontmatter: a shipped SKILL.md carries only `name` + `description` and an",
+    "agent adds `tools`, all host-consumed. Adding unknown keys to files Claude Code parses, in every",
+    "founder's project, to solve a maintenance problem only BOSS has, puts the risk on them and the",
+    "benefit here. The practice shelf can do it inline because nothing but BOSS reads that frontmatter.",
+    "",
+    "  curve         a JUDGMENT — which ground moves under this file. Seeded by a stated rule in",
+    "                scripts/gen-surface-freshness.js, then owned by hand. Disagree per-entry.",
+    "  last_reviewed a FACT — seeded from git last-touch, then set BY A SWEEP. Never auto-derived",
+    "                afterwards: touching a file is not reviewing it, and a typo fix must not reset",
+    "                the clock. Same reason the practice shelf stores it instead of reading mtime.",
+    "",
+    "Regenerate with `npm run gen:surface-freshness` — idempotent; adds new files, drops deleted ones,",
+    "and never clobbers a curve or a stamp you set. Read by `npm run check:freshness`."
+  ],
+  "surface": [
+    {
+      "kind": "agent",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/agents/coder-generalist.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/agents/mentor-venture.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/agents/pm.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "hook",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/hooks/conscience.js",
+      "curve": "host",
+      "last_reviewed": "2026-07-02"
+    },
+    {
+      "kind": "hook",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/hooks/memory-cue.js",
+      "curve": "host",
+      "last_reviewed": "2026-06-20"
+    },
+    {
+      "kind": "hook",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/hooks/secrets-guard.js",
+      "curve": "threat",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/boss-learn/SKILL.md",
+      "curve": "host",
+      "last_reviewed": "2026-05-21"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/boss-sync/SKILL.md",
+      "curve": "host",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/boss/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/canvas/SKILL.md",
+      "curve": "humane",
+      "last_reviewed": "2026-07-02"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/comprehend/SKILL.md",
+      "curve": "host",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/decide/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-06-20"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/evidence/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-07-02"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/feedback/SKILL.md",
+      "curve": "host",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/import/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-06-20"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/interview/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-07-02"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/persona/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-06-20"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/prototype/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-06-21"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/research/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-07-02"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/sunset/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/triage/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-07-23"
+    },
+    {
+      "kind": "skill",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/skills/welcome/SKILL.md",
+      "curve": "host",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/mentor-architect.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-01"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/mentor-cofounder.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/mentor-gtm.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-01"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/program-manager.md",
+      "curve": "craft",
+      "last_reviewed": "2026-05-22"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/tester.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "hook",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/hooks/auto-log.js",
+      "curve": "host",
+      "last_reviewed": "2026-06-20"
+    },
+    {
+      "kind": "hook",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/hooks/design-tokens-guard.js",
+      "curve": "host",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/ai-cost/SKILL.md",
+      "curve": "model",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/ai-failure-states/SKILL.md",
+      "curve": "model",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/ai-first-init/SKILL.md",
+      "curve": "model",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/close/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-07-23"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/consult/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/cost-review/SKILL.md",
+      "curve": "model",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/design-tokens-init/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/drift-deep/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-06-01"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/evals/SKILL.md",
+      "curve": "model",
+      "last_reviewed": "2026-07-23"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/extract/SKILL.md",
+      "curve": "host",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/health/SKILL.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/judge-traces/SKILL.md",
+      "curve": "model",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/landing/SKILL.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/log/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-05-22"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/measure/SKILL.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/money/SKILL.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/onboard/SKILL.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/practice/SKILL.md",
+      "curve": "host",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/pretotype/SKILL.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-01"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/red-team/SKILL.md",
+      "curve": "threat",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/revalidate/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/roadmap/SKILL.md",
+      "curve": "market",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/ship/SKILL.md",
+      "curve": "threat",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/smoke/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-05-22"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/spec/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/trust/SKILL.md",
+      "curve": "threat",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/agents/db-architect.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/agents/mentor-business.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-01"
+    },
+    {
+      "kind": "agent",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/agents/mentor-fundraising.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-01"
+    },
+    {
+      "kind": "agent",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/agents/mentor-pitch.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/agents/mentor-talent.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-01"
+    },
+    {
+      "kind": "agent",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/agents/ui-designer.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "agent",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/agents/ux-designer.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/skills/board/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-05-22"
+    },
+    {
+      "kind": "skill",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/skills/design-review/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-05-22"
+    },
+    {
+      "kind": "skill",
+      "stage": "L2-v1",
+      "rel": "stages/L2-v1/template/.claude/skills/ux-check/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-05-22"
+    },
+    {
+      "kind": "skill",
+      "stage": "L3-scale",
+      "rel": "stages/L3-scale/template/.claude/skills/incident/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-07-23"
+    }
+  ]
+}
