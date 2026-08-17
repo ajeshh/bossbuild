@@ -201,6 +201,48 @@ test('shipped files never point at a path only the BOSS repo has', () => {
   );
 });
 
+// v0.151.0 — the same class as the test above, for the reference type nothing checked: AGENT
+// NAMES. The release-readiness pass found seven shipped files routing founders to agents that
+// live only in BOSS's gitignored `/.claude/` dev workspace. The worst was `/consult`, whose
+// step-4 "humane override" — Principle #6's one enforcement point in the mentor board — told the
+// model to consult `mentor-humane`, which ships in no mode. A founder running `/consult` got the
+// override silently skipped or hallucinated. `check:refs` gates this repo-wide; this pins the
+// shipped surface specifically, because that's the half that lands in someone else's project.
+test('REGRESSION: shipped files never name an agent the founder will not have', () => {
+  const agentsIn = (dir) => (existsSync(dir)
+    ? readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => f.replace(/\.md$/, ''))
+    : []);
+  const shipped = new Set(
+    STAGE_ORDER.flatMap((id) => agentsIn(join(STAGES_DIR, id, 'template', '.claude', 'agents'))),
+  );
+  const bossOnly = new Set(
+    agentsIn(join(process.cwd(), '.claude', 'agents')).filter((n) => !shipped.has(n)),
+  );
+  assert.ok(shipped.size > 0, 'no shipped agents found — the test would pass vacuously');
+
+  const offenders = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) { walk(p); continue; }
+      if (!/\.(md|js|json)$/.test(e.name)) continue;
+      // Backticks only: `mentor-humane` is a name the model will try to route to; the same word
+      // in prose is the concept. Matching prose would flag `persona-cohort` in /board and
+      // `persona-reaction` in /ux-check, and a check that cries wolf is a check nobody runs.
+      for (const m of readFileSync(p, 'utf8').matchAll(/`([a-z][a-z0-9-]*)`/g)) {
+        const n = m[1];
+        if (shipped.has(n)) continue;
+        if (bossOnly.has(n) || /^mentor-/.test(n)) offenders.push(`${p} -> ${n}`);
+      }
+    }
+  };
+  walk(STAGES_DIR);
+  assert.deepEqual(
+    offenders, [],
+    `these route a founder to an agent their install has no file for:\n  ${[...new Set(offenders)].join('\n  ')}`,
+  );
+});
+
 test('every `boss craft <name>` pointer names a practice that exists', () => {
   const shelf = new Set(
     readdirSync(join(process.cwd(), 'library', 'practices'))

@@ -2,6 +2,48 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.151.0 — 2026-08-17
+
+- **BOSS was selling its own gitignored dev workspace as founder features.** A release-readiness pass
+  before putting BOSS in front of the public checked the one thing no gate checked: *does the founder
+  actually receive what the docs say they receive?* **They did not.** `/.claude/` — BOSS's private
+  workspace — holds **19 agents that ship to nobody**, and the front door advertised them:
+  - `README.md` claimed **"Nine advisors … humane"** (eight ship; **`mentor-humane` ships in no mode**),
+    **"a builder team (designer, voice-keeper, prompt-coach)"** (**none** ship), and **"eight
+    proto-personas … you can show features to"** (**none** ship — those react to *BOSS*, not to a
+    founder's app; founders get `/persona`, which builds *their app's target user* — a different tool).
+  - `docs/GUIDE.md` sent founders to `mentor-humane` from the **health / legal / money / safety**
+    branch — the highest-stakes page in the guide — and from the "who to ask" table.
+- **The worst one was functional, not cosmetic: `/consult` promised a humane override that nothing
+  could execute.** Its step 2 seated `mentor-humane` as "always gets a voice," and step 4 — *"the
+  humane override … that lens wins regardless of the viability case"* — told the model to consult an
+  agent that exists in no mode. **Principle #6 has exactly one enforcement point inside the mentor
+  board, and it dead-ended.** A founder running `/consult` got the override silently skipped or
+  hallucinated. It now runs **in the skill itself**, grounded in the canvas's Risks & Harms cell and
+  `boss craft harm-taxonomy` — no chair to route to, because an ethics advisor is a door you can
+  decline to open. Nine shipped files fixed in total.
+- **`npm run check:refs` gains a fourth class: PHANTOM AGENTS.** Classes 1–3 check paths;
+  `check-wayfinding-drift` checks skills. **Nothing checked agent names** — so an agent named in
+  public docs and existing nowhere passed every gate. Same principle the script already ships (*a
+  reference is a dependency*), applied to the one reference class it skipped. The vocabulary is built
+  from agents that exist **on disk**, never a regex over prose, because `persona-cohort` and
+  `persona-reaction` are hyphenated English in two shipped skills and a pattern-matching version would
+  cry wolf on both. Paired with a **REGRESSION unit test** (72 now), verified to fail before the fix —
+  and it immediately found two the first scope missed: a `voice-keeper` mention in the **shipped
+  conscience runtime** (`moment-frames.js`) and `mentor-operations` in `stages/L3-scale/README.md`.
+- **`boss adopt` printed the opposite of its own promise.** `35 file(s) added · **0 of yours left
+  untouched**` — because `skipped` counts *collisions*, not your files, so a clean adopt (no
+  collisions) reported the scariest possible number at the moment of maximum trust anxiety. Adopt's
+  entire pitch is non-destructive. Now: `nothing of yours overwritten`, with the collision count added
+  only when there were collisions.
+- **The direction of the leak is the durable finding.** `/.claude/` is gitignored by design, which
+  makes it invisible to `grep` **and** to every checker — and it has now leaked **both** ways: stale
+  `BlueprintOS` names hid *inside* it through the rebrand, and here it got advertised *as* product.
+  Invisible-to-tooling is not the same as internal.
+- **Nothing added to the founder surface** — no new skill, agent, hook or mode. Every edit is a
+  correction or a subtraction (EVID-001's compose-and-subtract holds). Gate: **72 unit · 129/0 evals ·
+  check:refs clean · manifests + wayfinding + freshness green**.
+
 ## 0.150.0 — 2026-08-17
 
 - **The research inbox cleared — four claims vetted, two adopted, two rejected. The vets found more

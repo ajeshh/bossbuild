@@ -43,5 +43,5 @@
   - `/triage --feedback` — the customer register on the existing `/triage` verb (bug / friction /
     feature-request-as-`EVID` / churn), writing into the evidence ledger.
 - **Trigger-gated, not yet authored** (each waits on a real project's symptom, same discipline as
-  ever): `/economics`, collaborator roles + `mentor-operations` + onboarding briefs, `/code-health`,
+  ever): `/economics`, collaborator roles + an operations mentor + onboarding briefs, `/code-health`,
   `/refactor-wave`, and the give-away-your-Legos conscience moment. See `docs/design/SCALE-MODE.md`.

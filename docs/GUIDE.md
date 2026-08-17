@@ -61,8 +61,9 @@ nothing else. (In a project, `/welcome` asks you this and tunes itself; you can 
   aren't engineering. Move fast through the unlocks.
 
 - **You're building somewhere being wrong has real costs.** Health, legal, money, safety. → Same
-  path, but turn the harm lens on early: `/ai-failure-states` from the start, and lean on
-  `mentor-humane` (it can override the other mentors). Go slower on any claim your product makes.
+  path, but turn the harm lens on early: `/ai-failure-states` from the start, `/canvas`'s Risks & Harms
+  cell taken seriously rather than filled in, and `/red-team --humane` before anyone relies on it. Go
+  slower on any claim your product makes.
 
 - **You already started — there's a repo.** You built something before you found BOSS. → Don't start
   over: `cd` into it and run **`boss adopt`** (add `--mode mvp` if it already has real users). It lays
@@ -213,7 +214,13 @@ financial advice (they point you at the real expert and caveat hard).
 | Should I raise? When? | `mentor-fundraising` |
 | How do I explain this? Is the deck working? | `mentor-pitch` |
 | Should I hire? Who first? | `mentor-talent` |
-| Who could this harm? Is this dark-pattern-y? | `mentor-humane` *(can override the others)* |
+
+**"Who could this harm? Is this dark-pattern-y?"** is the one question with no advisor to ask —
+deliberately. An ethics mentor is a door you can decline to open, so the humane lens is wired across the
+whole surface instead: the conscience speaks it unprompted, `/canvas`'s **Risks & Harms** cell demands
+it before an idea graduates, `boss craft harm-taxonomy` names the harm classes, and `/red-team --humane`
+turns it into evidence by probing your own AI product for dark patterns (Principle #6 — *humane before
+viable*).
 
 ---
 

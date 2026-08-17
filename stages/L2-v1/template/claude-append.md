@@ -34,8 +34,8 @@
   - `/ux-check` — after-code review of flows, interaction patterns, Nielsen heuristics
 - **Builder agents:**
   - `ui-designer` — token + visual authority. Cites Brad Frost (Atomic Design), Nathan Curtis
-    (layer-cake tokens), Jina Anne (W3C DTCG). Refuses raw hex unless overridden; pairs with
-    `voice-keeper` (BOSS-internal) when copy is involved.
+    (layer-cake tokens), Jina Anne (W3C DTCG). Refuses raw hex unless overridden; flags copy to
+    whoever owns the words.
   - `ux-designer` — flows + states + interactions. Cites Don Norman (affordances), Jakob
     Nielsen (10 heuristics), Steve Krug (clarity), Luke Wroblewski (forms/mobile).
   - `db-architect` — schema design, indexes, query patterns. Cites the AI-native data voices

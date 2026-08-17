@@ -13,7 +13,7 @@
 // confidently, in a changelog. A sweep you run by hand is a sweep you can believe you finished.
 // This is the standing version of that sweep.
 //
-// Three classes, because they fail differently:
+// Four classes, because they fail differently:
 //   1. LINKS      — a relative markdown link with no file behind it.
 //   2. PREDICATES — a loop spec asserting `exists:` on a path that doesn't. A loop whose ENTRY
 //                   predicate can never be true is silently dead, not loud. (`docs/loops/eval.md`
@@ -21,6 +21,21 @@
 //   3. ESCAPES    — a SHIPPED file pointing at something only BOSS's own repo has. It resolves
 //                   here and dangles in every founder's project, which is the worst kind: it
 //                   passes every check run from this directory.
+//   4. AGENTS     — a founder-facing file naming an agent the founder's install does not contain.
+//                   Added v0.151.0, after the release-readiness pass found the README selling
+//                   BOSS's gitignored `/.claude/` dev workspace as founder features: "nine
+//                   advisors ... humane" (eight ship, `mentor-humane` ships nowhere), a "builder
+//                   team (designer, voice-keeper, prompt-coach)" (none ship), and "eight
+//                   proto-personas you can show features to" (none ship — they react to BOSS).
+//                   `docs/GUIDE.md` sent founders to `mentor-humane` from the *health/legal/money/
+//                   safety* branch, the highest-stakes page in the guide.
+//                   THE HOLE THIS PLUGS: classes 1-3 check paths, and `check-wayfinding-drift`
+//                   checks skills. Nothing checked AGENT names — so an agent named in public docs
+//                   and existing nowhere passed every gate. Same principle as class 3 ("a
+//                   reference is a dependency"), applied to the one reference class it skipped.
+//                   Note the direction: `/.claude/` is gitignored, so it is invisible to `grep`
+//                   AND to every checker. It has now leaked BOTH ways — stale names hid inside it
+//                   during the rebrand, then it got advertised as product here.
 //
 // Zero-dep by rule. Exit 1 on any finding so CI and `npm test` can gate on it.
 
@@ -48,7 +63,7 @@ function walk(dir, out = []) {
 const files = walk(ROOT);
 const md = files.filter((f) => f.endsWith('.md'));
 const rel = (p) => relative(ROOT, p);
-const findings = { links: [], predicates: [], escapes: [] };
+const findings = { links: [], predicates: [], escapes: [], agents: [] };
 
 // --- 1. relative markdown links --------------------------------------------------------
 const LINK = /\[[^\]]*\]\(([^)#\s]+)(?:#[^)]*)?\)/g;
@@ -93,6 +108,62 @@ for (const f of files.filter((x) => rel(x).startsWith(`stages${sep}`) && /\.(md|
   }
 }
 
+// --- 4. agents named in founder-facing files -------------------------------------------
+// The vocabulary is built from agents that ACTUALLY EXIST on disk, never from a regex over prose —
+// `persona-cohort` and `persona-reaction` are hyphenated English in two shipped skills, and a
+// pattern-matching version of this check would flag both. A checker that cries wolf gets ignored,
+// which is how the last three checkers died.
+const agentNames = (dir) => (existsSync(dir)
+  ? readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3))
+  : []);
+
+const SHIPPED_AGENTS = new Set(
+  readdirSync(join(ROOT, 'stages'), { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .flatMap((e) => agentNames(join(ROOT, 'stages', e.name, 'template', '.claude', 'agents'))),
+);
+const BOSS_ONLY_AGENTS = new Set(
+  agentNames(join(ROOT, '.claude', 'agents')).filter((n) => !SHIPPED_AGENTS.has(n)),
+);
+
+// `docs/MENTORS.md` is the roster/boundary doc — naming the BOSS-only agents, and saying which
+// side of the line each sits on, is its entire job. Exempting it is the same call
+// `check-wayfinding-drift` makes for its three internal skills.
+const AGENT_EXEMPT = new Set([join('docs', 'MENTORS.md')]);
+const FOUNDER_FACING = new Set([
+  'README.md', 'PRINCIPLES.md',
+  join('docs', 'GUIDE.md'), join('docs', 'GUIDE-teams.md'),
+  join('docs', 'CHEATSHEET.md'), join('docs', 'SKILLS.md'),
+]);
+
+// Backticks required: `mentor-humane` is a reference a founder can act on; the same word loose in a
+// sentence is usually the concept, not the agent.
+// Scope note: EVERYTHING under stages/, not just `template/*.md`. The narrower first cut missed two
+// — a `voice-keeper` mention in the shipped conscience runtime (`moment-frames.js`, a .js file) and
+// `mentor-operations` in `stages/L3-scale/README.md` (outside template/). Both ship. The unit test
+// in test/scaffold.test.js walks the same ground; two checkers that disagree about scope is how the
+// gap reopens.
+const AGENT_REF = /`([a-z][a-z0-9-]*)`/g;
+for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
+  const r = rel(f);
+  if (AGENT_EXEMPT.has(r)) continue;
+  const shipped = r.startsWith(`stages${sep}`);
+  if (!shipped && !FOUNDER_FACING.has(r)) continue;
+  const seen = new Set();
+  for (const m of readFileSync(f, 'utf8').matchAll(AGENT_REF)) {
+    const n = m[1];
+    if (seen.has(n) || SHIPPED_AGENTS.has(n)) continue;
+    // Two ways to be wrong: it lives only in BOSS's private workspace, or it exists nowhere at all.
+    // The `mentor-` namespace is unambiguous enough to police for typos and never-built advisors.
+    const why = BOSS_ONLY_AGENTS.has(n) ? "BOSS-only (gitignored /.claude/) — ships to nobody"
+      : /^mentor-/.test(n) ? 'exists nowhere — not shipped, not even in BOSS\'s workspace'
+        : null;
+    if (!why) continue;
+    seen.add(n);
+    findings.agents.push([r, `${n} — ${why}`]);
+  }
+}
+
 const total = Object.values(findings).reduce((n, a) => n + a.length, 0);
 const plural = (n, s) => `${n} ${s}${n === 1 ? '' : 's'}`;
 
@@ -120,6 +191,8 @@ report('predicates', 'DEAD PREDICATES',
   'a loop asserting on a missing path — it can never open or never close, silently.');
 report('escapes', 'ESCAPED REFERENCES',
   "a SHIPPED file pointing at something only BOSS's repo has; it dangles in every project.\n  Use `boss craft <name>` for practices; drop or restate references to BOSS's own IDEA files.");
+report('agents', 'PHANTOM AGENTS',
+  "a founder-facing file naming an agent the founder's install does not contain.\n  Either ship it under stages/<id>/template/.claude/agents/, or name the mechanism that\n  actually delivers the job (a skill, the conscience, a practice) instead.");
 
 console.log(`  ${total} total. Exit 1.\n`);
 process.exit(1);

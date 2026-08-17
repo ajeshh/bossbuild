@@ -227,7 +227,16 @@ function cmdAdopt(args) {
   });
 
   console.log(`\n  ${ok('✦')} Adopted ${bold(name)} into BOSS — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
-  console.log(`    ${copied.length} file(s) added · ${skipped.length} of yours left untouched${claudePreexisted ? ' · CLAUDE.md preserved (BOSS block appended)' : ''}`);
+  // `skipped` counts COLLISIONS — files BOSS declined to overwrite because you already had them.
+  // Printing it unconditionally produced "0 of yours left untouched" on a clean adopt, which reads
+  // as "we touched everything" — the exact opposite of adopt's promise, at the moment of maximum
+  // trust anxiety. Nothing of yours is ever written; say that, and only count collisions when there
+  // were some.
+  const preserved = [
+    skipped.length ? `${skipped.length} of yours kept as-is` : null,
+    claudePreexisted ? 'CLAUDE.md preserved (BOSS block appended)' : null,
+  ].filter(Boolean);
+  console.log(`    ${copied.length} file(s) added · nothing of yours overwritten${preserved.length ? ` · ${preserved.join(' · ')}` : ''}`);
   console.log(`    skills: ${stamp.skills.join(', ') || '—'}`);
   console.log(`\n  ${bold('Next')}`);
   console.log(`    claude              # open Claude Code here ${dim('(terminal)')}`);

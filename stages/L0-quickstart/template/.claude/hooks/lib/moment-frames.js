@@ -2,7 +2,7 @@
 //
 // Split out of `loop-runtime.js`, which had grown to 603 lines mixing three concerns:
 // predicate evaluation, project-state I/O, and ~200 lines of authored prose in template
-// literals. The prose is the one surface `voice-keeper` owns and the judgment evals
+// literals. The prose is the one surface BOSS's voice review owns and the judgment evals
 // voice-hash, and it was the hardest thing in the repo to find.
 //
 // THE RULE: this file contains voice and nothing else. No fs, no predicates, no state —
@@ -22,7 +22,7 @@
 //   · The frames interpolate (`loop_id`, confidence, the MVP/V1 branch in `coherence`),
 //     so they are functions, not documents.
 // What the audit actually wanted — one file that is only voice, findable by a
-// voice-keeper — this delivers. Revisit if a founder ever needs to author a moment.
+// the voice review — this delivers. Revisit if a founder ever needs to author a moment.
 
 // Per-cohort framing directives (v0.20.0+). Added to additionalContext so the
 // model composes the conscience voice appropriately for the founder's cohort.

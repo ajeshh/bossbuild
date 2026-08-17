@@ -29,7 +29,7 @@ here is **symptom-gated**, and the unlock names its own evidence bar before you 
 
 Each waits on a real project's symptom, same discipline as every rung:
 
-- `/economics` (unit economics at real volume) · collaborator roles + `mentor-operations` + onboarding
+- `/economics` (unit economics at real volume) · collaborator roles + an operations mentor + onboarding
   briefs (IDEA-052) · `/code-health` · `/refactor-wave` · `RFC-NNN` (only when two builders disagree in
   writing) · the **`operate-loop`** conscience moment (what *should* fire when a Scale-stage product is
   running unhealthily — needs a real predicate from a real project's symptom, plus a voicing frame and

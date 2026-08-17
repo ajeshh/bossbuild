@@ -28,11 +28,13 @@ time and holding the threads in your head, `/consult` runs the panel and compose
 **2. Pick the mentors who have a stake** — only the relevant ones, not the whole roster (convening
 mentors who have nothing to add is noise). Read which mentors are installed (`.boss/manifest.json`
 `agents`, the `mentor-*` ones) — the board grows by mode, so consult what's seated:
-- MVP seats `mentor-architect` + `mentor-gtm`; V1+ adds `mentor-business`, `mentor-fundraising`,
-  `mentor-talent`; `mentor-humane` + `mentor-venture` are seated early and **always** get a voice on a
-  real decision.
-- Map the question to lenses: a raise question → fundraising + business + venture (+ humane); a
-  build-speed question → architect + venture (+ humane); a pricing question → business + gtm.
+- MVP seats `mentor-architect` + `mentor-gtm` + `mentor-cofounder`; V1+ adds `mentor-business`,
+  `mentor-fundraising`, `mentor-pitch`, `mentor-talent`. `mentor-venture` is seated from Quickstart and
+  **always** gets a voice on a real decision.
+- Map the question to lenses: a raise question → fundraising + business + venture; a build-speed
+  question → architect + venture; a pricing question → business + gtm.
+- **The humane lens has no chair, on purpose** — an ethics advisor is a door you can decline to open.
+  *You* carry it, in step 4, on every panel. Don't route it to an agent; there isn't one.
 
 **3. Get each mentor's take in their own voice.** Consult each relevant mentor (their agent), with the
 *same* question + enough context (read the canvas / RESUME / the relevant FEAT so they're grounded).
@@ -44,8 +46,11 @@ not consensus.
 - **Where they diverge** — name it plainly: *"fundraising says raise now to fund the GTM motion;
   business says your unit economics aren't ready and a raise just buys time you'll burn."* The
   divergence is the actual decision — don't paper over it with an average.
-- **The humane override** — `mentor-humane` has explicit override authority. If it flags a real
-  agency/dignity/attention harm, that lens wins regardless of the viability case, and say so.
+- **The humane override — you run it, every panel, before you synthesize.** No mentor holds this
+  lens, so ask it yourself: *who could this harm, who gets excluded, what does it cost them in
+  attention, agency or dignity?* Ground it in the canvas's **Risks & Harms** cell and
+  `boss craft harm-taxonomy`. If a real harm surfaces, **that lens wins regardless of the viability
+  case** — say so plainly, and say which mentor it overrules (Principle #6, *humane before viable*).
 - **The riskiest assumption** — tie the decision back to the canvas's named bet where relevant.
 
 **5. Hand the decision back.** End with the call that's *yours* to make, framed: *"the board's split is

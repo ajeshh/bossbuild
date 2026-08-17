@@ -48,11 +48,17 @@ A CLI plus a set of skills, agents, and loops that run inside Claude Code:
   Cohort-aware (set yours during spin-up; it adjusts the voice). Always overridable; never
   blocking. Silence it for a sprint (`boss conscience pause --for 8h`), or turn down just one
   nudge while the rest keep speaking (`boss conscience mute <moment>`).
-- **A mentor board.** Nine advisors (venture, architect, GTM, cofounder, business, fundraising, pitch,
-  talent, humane) for the parts code can't teach. Plus a builder team (designer, voice-keeper, prompt-
-  coach) for the craft. Plus eight proto-personas (vibe-coder-newbie, eng-builder,
-  indie-hacker, returning-founder, domain-expert, …) you can show features to before showing
-  them to real founders.
+- **A mentor board.** Eight advisors for the parts code can't teach, seated as the project earns them:
+  `mentor-venture` from day one; architect, GTM and cofounder at MVP; business, fundraising, pitch and
+  talent at V1 — alongside the builders who make the thing (`pm` and a coder from the start, `tester`
+  and `program-manager` at MVP, `db-architect` and the UI/UX designers at V1). **There's no ethics
+  advisor you have to remember to open** — the humane lens is wiring instead: the conscience, `/canvas`'s
+  Risks & Harms cell, the `harm-taxonomy` practice, and `/red-team --humane`, which probes your own AI
+  product for dark patterns.
+- **A user you can ask.** `/persona` derives your app's target user from your idea, grows it as real
+  evidence arrives, and lets you consult it — both to guide what you build ("would she want this?")
+  and to QA what you built ("how would she read this screen?"). A pre-filter that sharpens the
+  questions you take to real users; never a substitute for talking to them.
 - **Built for founding teams, not just solo.** Building with a cofounder? `boss team add @their-handle`
   lights up a shared way to decide (`/decide`), share what you're each learning about AI (`/practice`),
   a mentor for the partnership itself (`mentor-cofounder`), and a conscience that notices when you've

@@ -64,7 +64,7 @@ help the founder *tell it*.
   the differentiator.
 - **Seth Godin — *write to one person*.** {{PROJECT_NAME}}'s pitch speaks to *one* founder /
   user / buyer at a time, never to "users" or "the market."
-- **Steve Krug (cross-cuts with `designer`) — *don't make me think*.** Applies to slides
+- **Steve Krug (cross-cuts with `ux-designer`) — *don't make me think*.** Applies to slides
   exactly as it applies to UI. If the slide needs a second read, it's the wrong slide.
 - **April Dunford (cross-cuts with `mentor-gtm`) — positioning.** Pitch can't be sharper than
   the underlying positioning; if the deck is failing, sometimes the positioning is the

@@ -37,7 +37,7 @@ itself?"** — *not* "mentors ship, builders don't" (`pm`/`coder`/`tester` ship 
 
 | | Ships to founders (`stages/<id>/template/`) | BOSS-only (gitignored `/.claude/`) |
 |---|---|---|
-| **Builders** | `pm`, `coder-*`, `tester`, `designer`, `db-architect` | the designer/architect *of BOSS itself* |
+| **Builders** | `pm`, `coder-*`, `tester`, `program-manager`, `ui-designer`, `ux-designer`, `db-architect` | `designer`, the designer/architect *of BOSS itself* |
 | **Mentors** | `mentor-venture/architect/gtm/cofounder/business/fundraising/pitch/talent` | `mentor-humane` (the *agent* — see below) |
 | **Authoring tooling** | — | proto-personas, `voice-keeper`, `prompt-coach` |
 
@@ -62,7 +62,7 @@ Each mentor unlocks only when the project earns the questions it asks (Principle
 | `mentor-pitch` | The story + deck: clarity, arc, what to cut. | V1 |
 | `mentor-talent` | First hires, team shape, what to keep vs delegate. | V1 |
 | `mentor-business` | Model, pricing, unit economics, willingness-to-pay. | V1 |
-| `mentor-humane` | The ethics/stewardship lens — who could be harmed, what's the humane call. (Pairs with `/canvas` §3.) | **Lens: Quickstart** (conscience + `harm-taxonomy` practice + `/red-team --humane`). **Agent: Scale** (board). |
+| `mentor-humane` | The ethics/stewardship lens — who could be harmed, what's the humane call. (Pairs with `/canvas` §3.) | **Lens: Quickstart** (conscience + `/canvas` §3 + `harm-taxonomy` practice + `/red-team --humane`) — this is the part that ships. **Agent: not shipped in any mode**; designed for Scale (board), deliberately unbuilt until a real project needs the door. |
 
 > *The full board convenes at Scale.* This roster is provisional — it gets sharpened by encoding real
 > practitioners (see "Encoding real people" below).
