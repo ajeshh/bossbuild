@@ -2,6 +2,32 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.159.0 — 2026-08-17
+
+- **`/vet` now verifies who actually said it — before it grades what they said.** The queue's n=3
+  item, promoted under Principle #1. The rubric's question 2 rewards *"a named practitioner BOSS
+  already respects,"* and the skill **never checked whether the practitioner said it.** Three of four
+  claims bent exactly there in one session: [[RVW-072]]'s *"Karpathy shared this"* was half-right (the
+  lecture is real; the second video was an unrelated older explainer) **and the evidence grade swung
+  on the verification**; [[RVW-076]]'s *"DORA 2026 says the bottleneck moves to specification"* does
+  not verify at all (DORA's real 2026 publication is an ROI report; the phrasing traces to blog
+  summaries); and the review-sandwich claim rested on a second-hand GitHub number nobody could trace.
+- **Placed as step 3 — before the rubric, not inside it.** Grading first and checking later means the
+  grade is already anchored when the truth arrives. **An unverified attribution isn't a citation,
+  it's borrowed authority**, and it does its persuading before any rubric runs. Unverified → the
+  grade drops to what the claim proves on its own merits. Contradicted → usually REJECT or NOT-YET on
+  its own, because a claim whose headline citation is wrong has told you how carefully the rest was
+  assembled.
+- **It also names the adjacent failure: the lane blend.** `git-workflow.md` carried an unverified
+  vendor multiplier (`~5.3×`) sitting directly beside a DORA attribution, so it read as DORA's. Easy
+  to reproduce by accident, and `SOURCES.md` already forbids it.
+- **Wired so it can't quietly lapse:** rubric Q2 now reads *"grade only what step 3 verified,"* the
+  verdict template gains a required **`## Attribution`** section (*verified / partly verified — say
+  which half / does not verify*), and the Rules list carries it where a fast reader scans. A check
+  whose result isn't recorded is a check that happened and evaporated.
+- Internal tooling only — `/vet` is BOSS-curating-BOSS and ships in no stage manifest. **Nothing
+  added to the founder surface.**
+
 ## 0.158.0 — 2026-08-17
 
 - **README: BOSS installs clean under npm v12's new security defaults, and that is worth saying out
