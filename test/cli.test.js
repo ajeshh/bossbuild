@@ -7,6 +7,7 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
@@ -172,4 +173,48 @@ test('boss map previews the next rung without dumping it', () => {
   assert.match(short, /\+\d+ more when you get there/, 'the preview must fold');
   assert.ok(full.split('\n').length > short.split('\n').length, '--next must show more');
   assert.ok(!full.includes('more when you get there'), '--next must not fold');
+});
+
+// --- boss changelog -------------------------------------------------------
+//
+// v0.152.0 — `/boss-sync`'s narration step pointed at `registry/CHANGELOG.md` "from the BOSS
+// source repo", which no founder project has. Without a reachable form, sync degrades from
+// "here's what's new and why" to "14 files changed" — the blind sync the skill exists to
+// prevent. These pin the reachability and the two-hop honesty.
+
+test('boss changelog defaults to the cut since THIS project pin', () => {
+  const p = bossProject();
+  const r = boss(['changelog'], p);
+  assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /this project: 0\.0\.1/, 'should name the pin it is cutting from');
+  assert.match(r.out, /0\.151\.0/, 'a release newer than the pin should be listed');
+  assert.doesNotMatch(r.out, /registry\/CHANGELOG\.md/, 'never expose BOSS-repo-only paths');
+});
+
+test('REGRESSION: a pin equal to the install says so WITHOUT claiming BOSS is current', () => {
+  const cur = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
+  const p = bossProject({
+    '.boss/manifest.json': JSON.stringify({
+      name: 'testproj', bossVersion: cur, stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], agents: [], skills: [], hooks: [], loops: [],
+    }),
+  });
+  const r = boss(['changelog'], p);
+  assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /Nothing new/, 'should say there is nothing since the pin');
+  // The two-hop trap: "nothing new" only means the INSTALL and the PROJECT agree. If BOSS
+  // lets a founder read that as "I am up to date", they can sit 50 releases behind forever
+  // and be told they are current every single time.
+  assert.match(r.out, /install/i, 'must distinguish install-current from project-current');
+  assert.match(r.out, /npm i -g bossbuild@latest|brew upgrade/, 'must name how to update the TOOL');
+});
+
+test('boss changelog --since overrides the pin, and --all ignores both', () => {
+  const p = bossProject();
+  const since = boss(['changelog', '--since', '0.149.0'], p);
+  assert.equal(since.code, 0, since.out);
+  assert.match(since.out, /0\.150\.0/);
+  assert.doesNotMatch(since.out, /^\s+0\.148\.0/m, '--since should exclude older releases');
+  const all = boss(['changelog', '--all'], p);
+  assert.match(all.out, /0\.1\.0|0\.2\.0/, '--all should reach the earliest releases');
 });

@@ -107,7 +107,11 @@ If cohort is `eng-builder`, `vibe-virtuoso`, `indie-hacker`, or `returning-found
 > a copy into `docs/source/` and shapes it. `/import` adds more material to an idea later.
 > The conscience (`UserPromptSubmit` hook) will nudge if it sees drift; `boss conscience pause`
 > silences all of it, or `boss conscience mute <moment>` turns down just one (drift|caution|…)
-> if a single nudge keeps missing. That's it. Ready when you are."*
+> if a single nudge keeps missing.*
+>
+> *Nothing about how you work with me changes — BOSS adds verbs for the seams between building,
+> not a layer in front of it. `boss status` when you come back; `boss map` for the whole surface.
+> That's it. Ready when you are."*
 
 Then **stop**. Don't elaborate. They'll ask if they want more.
 
@@ -132,6 +136,31 @@ new to building — pace accordingly.
 > 3. *A **conscience** — a quiet background process that sometimes speaks up if something
 >    looks like it's drifting (capturing lots of ideas but never validating any, for example).
 >    It's a **nudge, never a block.** You can override or pause anytime."*
+
+### When do I use BOSS, and when do I just talk to you?
+
+**Ask this before they do.** It is the first real question every founder has, it is genuinely
+ambiguous — BOSS lives *inside* Claude Code — and if it goes unanswered they either avoid the
+skills entirely or stop and wonder before every message. Keep it to roughly this shape:
+
+> *"One thing worth settling now, because it trips everyone up: **BOSS doesn't sit between us.**
+> You talk to me exactly the way you would in any other project — describe what you want, ask me
+> to build it, argue with the result. Nothing about that changes.*
+>
+> *BOSS adds verbs for the **seams** — the moments between building, where things usually get
+> lost:*
+> - ***"how do I build this?"** → just ask me. No skill needed.*
+> - ***"should I build this?"** / **"is this working?"** / **"what did I decide, and why?"** →
+>   that's a BOSS verb (`/canvas`, `/evidence`, `/decide`).*
+>
+> *And you don't have to memorize any of them. `boss map` lists what this project has; the
+> conscience points at the right one when it's relevant. When you come back after a few days,
+> **`boss status`** tells you where you are and what's next — that's the one worth remembering."*
+
+If they push — *"so what does BOSS actually do while I'm working?"* — the honest answer is: mostly
+nothing, on purpose. It speaks when the work drifts from the bet they named, maybe once or twice a
+day, and hands the decision straight back. **Don't oversell the conscience here.** A founder who
+expects constant guidance and gets silence will read it as broken.
 
 ### What's already in this folder
 

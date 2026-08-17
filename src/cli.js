@@ -7,6 +7,7 @@ import { registerProject, listProjects, findByPath, retireProject, reviveProject
 import { planSync, applySync, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
+import { printChangelog } from './changelog.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
@@ -377,7 +378,14 @@ async function cmdStatus(args) {
   console.log(`    ${dim('layers:')}       ${stamp.installedLayers.join(' → ')}`);
   console.log(`    ${dim('BOSS pinned:')}  ${stamp.bossVersion}   ${dim('current:')} ${current}`);
   if (stamp.bossVersion !== current) {
-    console.log(`    ${warn('⟳')} newer practices available — run ${bold('/boss-sync')} to review the diff ${dim('(inside Claude)')}`);
+    console.log(`    ${warn('⟳')} newer practices available — ${bold('boss changelog')} ${dim('to read what changed,')}`);
+    console.log(`      ${bold('/boss-sync')} ${dim('to review the diff and apply it (inside Claude)')}`);
+  } else {
+    // The two-hop trap: this compares the project against the INSTALLED package, never against
+    // what's published. Silence here means those two agree — not that the install is current.
+    // Unsaid, a founder can sit fifty releases behind and be told they're fine every time.
+    console.log(`    ${dim('up to date with the BOSS installed here. Updating the tool is a separate step:')}`);
+    console.log(`      ${dim('npm i -g bossbuild@latest')}  ${dim('(or brew upgrade boss), then boss changelog')}`);
   }
   console.log('');
 }
@@ -626,7 +634,7 @@ function fail(msg) {
 
 const KNOWN_COMMANDS = [
   'new', 'adopt', 'unlock', 'status', 'board', 'map', 'brain', 'insights',
-  'team', 'list', 'retire', 'sync', 'learn', 'conscience', 'version', 'help',
+  'team', 'list', 'retire', 'sync', 'learn', 'craft', 'changelog', 'conscience', 'version', 'help',
 ];
 
 // Per-command detail for `boss help <command>`. Kept tight — a usage line, a
@@ -704,6 +712,12 @@ const HELP = {
     what: 'Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. For a reviewed, narrated update, use /boss-sync inside Claude instead.',
     examples: ['boss sync', 'boss sync --apply'],
     see: ['status', 'learn'],
+  },
+  changelog: {
+    usage: 'boss changelog [--since X.Y.Z] [--full] [--all]',
+    what: "What changed in BOSS. Inside a project it defaults to the cut that matters — everything since THIS project's pin, which is the question you have the moment `boss status` says newer practices are available. The changelog ships inside the package, so this works from any project and is always exactly as current as your installed version. `/boss-sync` narrates from these entries; this is where they come from. Note what it can and can't tell you: it compares your project against the BOSS you have INSTALLED, so \"nothing new\" means your install and your project agree — not that your install is current. Updating the tool (`npm i -g bossbuild@latest`, or `brew upgrade boss`) is a separate step from updating a project.",
+    examples: ['boss changelog', 'boss changelog --full', 'boss changelog --since 0.140.0', 'boss changelog --all'],
+    see: ['sync', 'status'],
   },
   craft: {
     usage: 'boss craft [name] [--outline]',
@@ -857,6 +871,7 @@ function printHelp() {
 
   console.log(`\n  ${bold('Keeping current')}`);
   console.log(row('boss sync [--apply]', 'pull current BOSS practices into this project (DOWN)'));
+  console.log(row('boss changelog [--full]', "what's changed in BOSS since this project's pin"));
   console.log(row('boss learn <p> --as <c>', 'promote a pattern UP into the library'));
   console.log(row('boss craft [name]', "read BOSS's practice shelf (the craft behind the skills)"));
   console.log(row('boss list', 'all connected projects'));
@@ -919,6 +934,17 @@ export async function run(argv) {
       args.find((a) => !a.startsWith('--')),
       { outline: args.includes('--outline') },
     ));
+    case 'changelog': case 'whatsnew': {
+      const f = parseArgs(args || []);
+      return void (process.exitCode = printChangelog({
+        since: typeof f.since === 'string' ? f.since : null,
+        all: !!f.all,
+        full: !!f.full,
+        // In a BOSS project the interesting cut is "since MY pin" — the question a founder has
+        // the moment `boss status` says newer practices are available.
+        pin: readStamp(process.cwd())?.bossVersion || null,
+      }));
+    }
     case 'conscience': return cmdConscience(args);
     case 'version': case '--version': case '-v':
       return console.log(bossVersion());

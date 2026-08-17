@@ -41,6 +41,34 @@ Three mechanics carry it:
 
 ---
 
+## When do I use BOSS, and when do I just talk to Claude?
+
+The question everyone has on day one, and the one thing nowhere else answers. BOSS lives *inside*
+Claude Code, so it's fair to wonder whether it's now standing between you and the model.
+
+**It isn't.** You talk to Claude exactly as you would in any other project — describe what you want,
+have it built, argue with the result. Nothing about how you build changes.
+
+What BOSS adds is a set of verbs for the **seams** — the moments *between* building, which is where
+things actually get lost:
+
+| What you're asking | Who answers |
+|---|---|
+| *How do I build this?* Write it, fix it, refactor it, explain it. | **Just Claude.** No skill, no ceremony. |
+| *Should I build this?* Is the bet real, who's it for, what would prove it? | **BOSS** — `/canvas`, `/pretotype`, `/interview` |
+| *Is this working?* Did anyone use it, is it worth continuing? | **BOSS** — `/evidence`, `/measure`, `/pmf-check` |
+| *What did I decide, and why?* The thing future-you will have forgotten. | **BOSS** — `/decide`, `/log`, `/close` |
+
+You don't have to memorize any of it. `boss map` lists what *this* project has; the conscience points
+at the right verb when it's relevant. **The one command worth remembering is `boss status`** — run it
+when you come back after a few days and it tells you where you are and what's next.
+
+And what does BOSS do while you're heads-down building? **Mostly nothing, on purpose.** The conscience
+speaks when the work drifts from the bet you named — once or twice a day at most — then hands the
+decision back and goes quiet. If you were expecting a copilot chiming in, that silence is the feature.
+
+---
+
 ## Start where you are
 
 Pick the line that matches your situation. It changes where you start and how fast you climb —

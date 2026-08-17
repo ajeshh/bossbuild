@@ -14,8 +14,9 @@ own permissions or hooks.
 ## 0. Orient (silent)
 
 - `boss status` — current mode, the project's BOSS pin, and whether newer practices exist.
-- Read `registry/CHANGELOG.md` from the BOSS source repo for **what changed since this project's pin** —
-  this is the narration you'll give the user (not just a file list).
+- `boss changelog --full` — **what changed since this project's pin**, straight from the installed
+  package. This is the narration you'll give the user (not just a file list); without it you are
+  describing files moving, which is the blind sync this skill exists to prevent.
 
 ## 1. Preview
 

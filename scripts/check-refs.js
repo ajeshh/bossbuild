@@ -99,9 +99,17 @@ for (const f of md.filter((x) => rel(x).startsWith(`docs${sep}loops${sep}`))) {
 // is describing where the FOUNDER's first idea goes — correct, and not an escape. Requiring an
 // extension is what separates "names a file" from "names a numbering convention"; without it the
 // match stops at the `<` and the placeholder guard never sees the pattern that would clear it.
-const ESCAPE = /\b(library\/(?:practices|skills|agents|hooks)\/[A-Za-z0-9._/-]+\.\w+|docs\/ideas\/IDEA-\d+[A-Za-z0-9._-]*\.md)/g;
+// `registry/` added v0.152.0. The regex covered `library/` and `docs/ideas/` but not the
+// changelog — so `/boss-sync`'s narration step ("read `registry/CHANGELOG.md` from the BOSS source
+// repo") escaped the v0.149.0 gate untouched. That step is the whole reason sync is *reviewed*
+// rather than blind, and it pointed at a directory no founder project has.
+// `/boss-learn` joins `/extract` on the allowlist: both DESCRIBE what `boss learn` writes into
+// BOSS's own repo (it bumps a VERSION and prepends a CHANGELOG entry there). That's a description
+// of the UP direction, not a pointer the founder is meant to follow.
+const ESCAPE = /\b(library\/(?:practices|skills|agents|hooks)\/[A-Za-z0-9._/-]+\.\w+|docs\/ideas\/IDEA-\d+[A-Za-z0-9._-]*\.md|registry\/CHANGELOG\.md)/g;
+const ESCAPE_OK = [`skills${sep}extract${sep}`, `skills${sep}boss-learn${sep}`];
 for (const f of files.filter((x) => rel(x).startsWith(`stages${sep}`) && /\.(md|js|json)$/.test(x))) {
-  if (rel(f).includes(`skills${sep}extract${sep}`)) continue;
+  if (ESCAPE_OK.some((s) => rel(f).includes(s))) continue;
   for (const m of readFileSync(f, 'utf8').matchAll(ESCAPE)) {
     if (PLACEHOLDER.test(m[1])) continue;
     findings.escapes.push([rel(f), m[1]]);

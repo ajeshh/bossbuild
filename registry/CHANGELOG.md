@@ -2,6 +2,52 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.152.0 — 2026-08-17
+
+- **The update path was two hops and BOSS only ever mentioned one.** Updating the **tool**
+  (`npm i -g bossbuild@latest` / `brew upgrade boss`) and updating a **project** (`/boss-sync`) are
+  separate acts, and nothing said so. Founders will assume the first is the whole thing — it is for
+  every other CLI they own — and end up with a newer tool that changed nothing about the repo they're
+  standing in.
+- **🔴 Worse, the silence was self-confirming.** `boss status` compares the project's pin against the
+  **installed** package, never against what's published. So a founder who never runs hop 1 has a pin
+  that equals their install, and BOSS reports *"up to date"* — **forever**, while they sit fifty
+  releases behind. The more stale you were, the more confidently BOSS told you you were fine. That is
+  the exact failure BOSS spent v0.129.0 fixing in itself (*a check nobody runs isn't a check*), still
+  live in every founder's project. **Now named at the point of use:** `boss status` says the quiet
+  part — *up to date with the BOSS installed here; updating the tool is a separate step* — and prints
+  the command. A real published-version check is still open; this stops the false reassurance.
+- **`boss changelog` — the reachable form of "what changed since my pin."** `/boss-sync`'s step 0
+  told the model to *"read `registry/CHANGELOG.md` from the BOSS source repo."* **No founder project
+  has a `registry/`.** That step is the entire reason sync is *reviewed* rather than blind — it's
+  where "14 files changed" becomes "here's what's new and why" — and it dead-ended. Same escape class
+  `boss craft` fixed for the practice shelf in v0.147.0, sitting in the one place that most needed to
+  resolve. The changelog already shipped inside the package; it just had no door. Inside a project it
+  defaults to the useful cut (everything after **your** pin), with `--since` / `--full` / `--all`.
+- **The gate that should have caught it, extended.** `check:refs`'s ESCAPES regex covered `library/`
+  and `docs/ideas/` but not `registry/` — so the `/boss-sync` escape passed the v0.149.0 gate
+  untouched. Added, and it caught the offending line on the first run. `/boss-learn` joins `/extract`
+  on the allowlist: both *describe* what `boss learn` writes into BOSS's own repo, which is a
+  description of the UP direction, not a pointer a founder is meant to follow. Three new tests
+  (**75** now), including a REGRESSION pinning that "nothing new" must never read as "BOSS is
+  current."
+- **"When do I use BOSS, and when do I just talk to Claude?" — answered, for the first time.** It is
+  the first real question every founder has, it is genuinely ambiguous (BOSS lives *inside* Claude
+  Code), and a sweep of every founder-facing surface found **zero** answers. Now in `/welcome` (asked
+  *before* the founder does, since the ones who wonder silently just avoid the skills), `docs/GUIDE.md`
+  as a routing table, and the README. The model: **BOSS doesn't sit between you and Claude — it adds
+  verbs for the seams.** *How do I build this?* → just Claude. *Should I build this / is it working /
+  what did I decide?* → a BOSS verb. Plus the pointer that was missing: **`boss status` is the one
+  command worth remembering** when you come back after a few days. And the anti-oversell, stated
+  plainly in all three places: while you're heads-down BOSS does almost nothing, on purpose — a
+  founder expecting a copilot will read the silence as broken.
+- **One claim withdrawn on inspection, and no code written for it.** The release-readiness pass had
+  called Quickstart's missing check-in verb a defect (`/close` and `/log` are MVP-only). Tested against
+  a real project, it isn't: `boss status` already prints *"Next: pressure-test IDEA-001 → /canvas"*
+  plus the ladder, `boss board` shows captured-vs-tested, and `/triage`'s living docs are the record.
+  Session-start orientation is covered; the gap was **discoverability**, so it was fixed with a pointer
+  in prose instead of a 49th skill. **Nothing added to the founder surface** (EVID-001 holds).
+
 ## 0.151.0 — 2026-08-17
 
 - **BOSS was selling its own gitignored dev workspace as founder features.** A release-readiness pass

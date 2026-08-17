@@ -68,6 +68,23 @@ A CLI plus a set of skills, agents, and loops that run inside Claude Code:
 Built on Node — zero dependencies. Markdown + YAML everywhere a human reads; predicate-based
 loops everywhere a machine evaluates. Lives in Claude Code. Everything runs locally.
 
+## Does BOSS get between me and Claude?
+
+No. You build with Claude exactly as you do now — describe it, have it built, argue with the result.
+BOSS doesn't intercept any of that.
+
+What it adds is verbs for the **seams**, the moments between building where things get lost:
+
+- ***How* do I build this?"** → just ask Claude. No skill, no ceremony.
+- ***Should* I build this? Is it working? What did I decide?"** → that's a BOSS verb (`/canvas`,
+  `/evidence`, `/decide`).
+
+You don't memorize them — `boss map` lists what your project has, and the conscience points at the
+right one when it's relevant. The one worth remembering is **`boss status`**: run it when you come
+back after a few days and it tells you where you are and what's next.
+
+While you're heads-down, BOSS does almost nothing, deliberately. That's the design, not a gap.
+
 ## A concrete moment
 
 You've used `/triage` four times this week capturing ideas. You haven't run `/canvas` on any.
