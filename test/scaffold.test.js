@@ -726,3 +726,45 @@ test('REGRESSION: after unlock, files keep matching the layer that WROTE them', 
   assert.ok(!existsSync(join(dir, 'CLAUDE.md')), 'CLAUDE.md must not survive a multi-layer removal');
   assert.ok(!existsSync(join(dir, '.claude', 'agents')), 'no agents may be left behind');
 });
+
+test('REGRESSION: a big repo still finds its root build manifest', () => {
+  // The walk is file-capped, and subdirectories sort before `package.json` (`d0/` < `p…`). So a
+  // large monorepo exhausted the cap before the root was ever read, reported "no build manifest",
+  // and adopted at Quickstart — the half-built-app-gets-the-idea-capture-scaffold failure that
+  // detection exists to prevent, reappearing for large repos only. Root files are read first now.
+  const files = { 'package.json': '{"name":"big"}' };
+  for (let i = 0; i < 4200; i++) files[`d${Math.floor(i / 100)}/f${i}.js`] = 'x\n';
+  const d = detectStage(project(files));
+  assert.equal(d.stage, 'L1-mvp', 'a manifest at the root must be seen even past the file cap');
+  assert.match(d.why.join(' '), /package\.json/);
+  assert.equal(d.scan.truncated, true, 'and the walk must still be bounded');
+});
+
+test('REGRESSION: a real edit is always detected — the false-negative direction', () => {
+  // For a DESTRUCTIVE command the dangerous direction is the false negative: failing to notice an
+  // edit means deleting someone's work. Whitespace-only is deliberately ignored (cosmetic), but
+  // every content change must be caught.
+  const vars = { PROJECT_NAME: 'p', DATE: '2026-01-01', BOSS_VERSION: '0.0.0', STAGE: 'L0-quickstart', MODE: 'Quickstart' };
+  const cases = [
+    ['append', (s) => `${s}\n## my note\n`, true],
+    ['reword', (s) => s.replace('Capture an idea', 'Capture a THING'), true],
+    ['delete a content line', (s) => s.split('\n').filter((l) => !l.startsWith('ceremony. Each idea')).join('\n'), true],
+    ['one character', (s) => s.replace('# /triage', '# /triage!'), true],
+    ['whitespace only', (s) => s.replace(/\n/g, '\n '), false],
+    ['untouched', (s) => s, false],
+  ];
+  for (const [label, mutate, expected] of cases) {
+    const dir = project({});
+    applyStageSafe('L0-quickstart', dir, vars);
+    mkdirSync(join(dir, '.boss'), { recursive: true });
+    const stamp = {
+      name: 'p', stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], skills: [], agents: [], hooks: [],
+    };
+    writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify(stamp));
+    const f = join(dir, '.claude', 'skills', 'triage', 'SKILL.md');
+    writeFileSync(f, mutate(readFileSync(f, 'utf8')));
+    const flagged = planRemove(dir, stamp).edited.some((e) => e.rel.includes('triage'));
+    assert.equal(flagged, expected, `"${label}" should ${expected ? '' : 'not '}read as edited`);
+  }
+});

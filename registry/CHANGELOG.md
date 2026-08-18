@@ -2,6 +2,35 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.163.0 — 2026-08-18
+
+**An adversarial pass over everything this arc shipped, applying v0.162.0's lesson: test the shapes
+you did NOT design for.** One real bug, and confirmation on the rest.
+
+- **🔴 A large repo could not find its own build manifest.** The walk is file-capped at 4000, and
+  subdirectories sort before `package.json` (`d0/` < `p…`) — so on a 5000-file monorepo the cap was
+  exhausted **before the root was ever read**. It reported *"no build manifest"* and adopted at
+  **Quickstart**. That is precisely the half-built-app-gets-the-idea-capture-scaffold failure
+  v0.153.0 was built to prevent, reappearing **for large repos only** — and silently, because the
+  output looked like a confident, well-reasoned read. Root files are now scanned before the walk.
+- **The false-negative direction of `boss remove`, tested properly.** For a destructive command the
+  dangerous failure isn't crying wolf, it's the opposite: **failing to notice an edit means deleting
+  someone's work.** Appends, rewordings, deleted content lines and single-character changes are all
+  caught; whitespace-only is deliberately ignored as cosmetic. Pinned as a regression.
+- **Hostile inputs, all handled correctly already** — `remove` outside a BOSS project · a corrupt
+  `.boss/manifest.json` · `adopt` with no git · `adopt` on an empty directory · `adopt` where the
+  founder already has their own `.claude/` (their skill and settings both survived a later `remove`)
+  · symlink loops, unreadable subdirectories and a 15-deep tree in detection.
+- **The real upgrade path verified end to end:** a project pinned at 0.156.0 with all four retired
+  verbs syncs forward, is told what changed and why, removes them on consent, and lands with
+  `/health` + `/money` and its pin bumped. That exercises v0.155.0's supersede machinery, v0.157.0's
+  merge and v0.162.0's signature change together, on a live project rather than a fixture.
+- **Worth recording honestly: three of the "failures" in this pass were bugs in the TEST, not the
+  product** — a mutation that deleted a blank line, a regex anchored to line-start that matched
+  nothing, and a substitution that never applied. Each looked like a real false negative. Checking
+  the fixture before believing the finding is the discipline the `/vet` attribution rule already
+  encodes for claims; it applies to test results too.
+
 ## 0.162.0 — 2026-08-18
 
 **Four bugs in `boss remove`, found by testing the paths v0.161.0 didn't.** It was verified against an

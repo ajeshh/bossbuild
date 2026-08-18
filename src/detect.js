@@ -83,14 +83,26 @@ export function scanRepo(dir) {
         found.sourceFiles++;
         if (isTestFile(e.name)) found.testFiles++;
       }
-      if (depth === 0) {
-        if (MANIFESTS.includes(e.name)) found.manifests.push(e.name);
-        if (DEPLOY.includes(e.name)) found.deploy.push(e.name);
-      }
+
     }
   };
 
   try { if (!statSync(dir).isDirectory()) return found; } catch { return found; }
+
+  // Read the ROOT's own files before recursing. The signals that decide the mode — a build
+  // manifest, a deploy config — all live at the root, and the walk is file-capped. In a big repo
+  // the subdirectories sort first (`d0/` before `package.json`), so the cap was exhausted before
+  // the root was ever read: a 5000-file monorepo with a package.json reported "no build manifest"
+  // and adopted at Quickstart. That is exactly the half-built-app-gets-the-idea-capture-scaffold
+  // failure v0.153.0 exists to prevent, reappearing for large repos only.
+  try {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.isDirectory()) continue;
+      if (MANIFESTS.includes(e.name)) found.manifests.push(e.name);
+      if (DEPLOY.includes(e.name)) found.deploy.push(e.name);
+    }
+  } catch { /* unreadable root — the walk below reports what it can */ }
+
   walk(dir, 0);
   return found;
 }
