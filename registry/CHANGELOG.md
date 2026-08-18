@@ -2,6 +2,43 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.162.0 — 2026-08-18
+
+**Four bugs in `boss remove`, found by testing the paths v0.161.0 didn't.** It was verified against an
+*adopted* repo only. Every other shape was broken, and each failure was silent.
+
+- **🔴 It marked the project RETIRED instead of deregistering it.** `retire` is a **venture outcome** —
+  `boss insights` reads it and reports time-to-retire alongside time-to-build. So removing BOSS from a
+  *thriving* project would have BOSS reporting a death that never happened, in the one surface that
+  tells a founder how their ventures have actually gone. **BOSS falsifying the founder's own record is
+  the exact self-fooling it exists to prevent, committed by BOSS about them.** New
+  `deregisterProject()`: BOSS has no business tracking a project it is no longer installed in.
+- **🔴 A one-letter project name corrupted the edited-check.** `boss new a` flagged three untouched
+  agents as *"you edited this"* — the comparison erased the project **name** by regex, so every letter
+  "a" became a sentinel and the stage-id and mode-word rules that ran afterwards stopped matching
+  their own patterns. **Any short or common name — `app`, `api`, `test` — had the same shape of bug,
+  silently.** Fixed by **rendering** the template with the real values instead of erasing them; only
+  the genuinely unknowable stamps (scaffold date, version at write time) are still blanked by shape,
+  because those patterns can't collide with prose the way a name can.
+- **🔴 After `boss unlock`, files stopped matching the layer that wrote them.** The stamp records the
+  project's *current* stage; after unlocking MVP that's `L1-mvp`/`MVP` — but L0's agents were rendered
+  with `L0-quickstart`/`Quickstart`. Comparing them against an L1-rendered template can never match,
+  so **three agents and `CLAUDE.md` survived every single removal.** Now resolved per file, from the
+  layer the template actually came from.
+- **Leftovers on the way out.** Excising a marked block from `CLAUDE.md` left BOSS's own L0 template
+  behind as a stray file (L0 wrote the whole file; L1 appended the block). And `.claude/settings.json`
+  always survived. Now: if what remains after excision is still BOSS's template, the file goes; and an
+  **untouched** `settings.json` goes with BOSS, because leaving config from a tool you just removed is
+  clutter. **An edited one is kept** — hooks un-merged, permissions, the founder's own hooks and the
+  secret-path deny floor all intact.
+- **And one bug in `boss sync`, exposed in passing:** its orphan-edited check was being handed the
+  **orphan's** name where the **project's** belonged. Wrong value, invisible, because the comparison
+  still mostly worked.
+- **Verified across all 9 combinations** — `a` / `app` / `myproject` × Quickstart / MVP / V1 — every
+  one now removes to **zero** leftover files while the founder's work survives. **Four new REGRESSION
+  tests (105 now)**, one per bug, because every one of these was silent and none would have been
+  caught by the adopted-repo path alone.
+
 ## 0.161.0 — 2026-08-18
 
 - **`boss remove` — the exit. Adoption stops being a one-way door.** Adopting BOSS into an existing

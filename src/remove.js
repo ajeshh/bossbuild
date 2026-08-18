@@ -23,7 +23,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, rmSync, statSync 
 import { join, relative, sep } from 'node:path';
 import { homedir } from 'node:os';
 import { STAGES_DIR } from './paths.js';
-import { sameAsTemplate } from './scaffold.js';
+import { sameAsTemplate, readStageManifest } from './scaffold.js';
 
 const MARKER = /<!-- boss:[^>]*? start -->[\s\S]*?<!-- boss:[^>]*? end -->\n?/g;
 
@@ -48,16 +48,27 @@ function templatePaths(layers) {
 }
 
 
+// Which layer's template a project file came from, and the vars IT was rendered with.
+//
+// The stamp records the project's CURRENT stage. After `boss unlock mvp` that's `L1-mvp`/`MVP` —
+// but L0's agents were written when it was `L0-quickstart`/`Quickstart`, so comparing them against
+// an L1-rendered template can never match. Three untouched agents and CLAUDE.md survived every
+// removal because of it. Per-file layer, not per-project.
 function templateSource(layers, rel) {
   for (const stageId of [...layers].reverse()) {
     const p = join(STAGES_DIR, stageId, 'template', rel);
-    if (existsSync(p)) return p;
+    if (existsSync(p)) {
+      let mode = stageId;
+      try { mode = readStageManifest(stageId).name; } catch { /* fall back to the id */ }
+      return { path: p, stageId, mode };
+    }
   }
   return null;
 }
 
 export function planRemove(projectDir, stamp) {
-  const pname = stamp.name;
+  // Render each template with the values IT was scaffolded with — see templateSource.
+  const varsFor = (src) => ({ PROJECT_NAME: stamp.name, STAGE: src?.stageId || stamp.stage, MODE: src?.mode || stamp.mode });
   const layers = stamp.installedLayers || [stamp.stage];
   const paths = templatePaths(layers);
 
@@ -74,8 +85,11 @@ export function planRemove(projectDir, stamp) {
     // goes if nothing but whitespace is left, which is derivable rather than guessed.
     if (rel === 'CLAUDE.md' || rel === 'AGENTS.md') {
       const body = readFileSync(abs, 'utf8');
-      if (MARKER.test(body)) { MARKER.lastIndex = 0; blocks.push({ rel, abs }); }
-      else if (sameAsTemplate(body, readFileSync(templateSource(layers, rel) || abs, 'utf8'), pname)) {
+      const csrc = templateSource(layers, rel);
+      if (MARKER.test(body)) {
+        MARKER.lastIndex = 0;
+        blocks.push({ rel, abs, vars: varsFor(csrc), tplRest: csrc ? readFileSync(csrc.path, 'utf8') : null });
+      } else if (csrc && sameAsTemplate(body, readFileSync(csrc.path, 'utf8'), varsFor(csrc))) {
         files.push({ rel, kind: 'file' });
       } else {
         edited.push({ rel, kind: 'file' });
@@ -85,7 +99,7 @@ export function planRemove(projectDir, stamp) {
 
     const src = templateSource(layers, rel);
     let changed = false;
-    try { changed = src ? !sameAsTemplate(readFileSync(abs, 'utf8'), readFileSync(src, 'utf8'), pname) : false; }
+    try { changed = src ? !sameAsTemplate(readFileSync(abs, 'utf8'), readFileSync(src.path, 'utf8'), varsFor(src)) : false; }
     catch { changed = false; }
     (changed ? edited : files).push({ rel, kind: 'file' });
   }
@@ -154,6 +168,12 @@ function planSettings(projectDir, layers) {
     }
     if (keptEntries.length) hooks[event] = keptEntries;
   }
+  // Untouched since BOSS wrote it? Then it's BOSS's file, and removal takes it back.
+  const tpl = layers.map((s) => join(STAGES_DIR, s, 'template', '.claude', 'settings.json'))
+    .reverse().find((x) => existsSync(x));
+  const untouched = tpl && sameAsTemplate(JSON.stringify(cur, null, 2), readFileSync(tpl, 'utf8'), {});
+  if (untouched) return { rel, drop: true, removed };
+
   if (!removed) return null;
   const merged = { ...cur };
   if (Object.keys(hooks).length) merged.hooks = hooks; else delete merged.hooks;
@@ -169,14 +189,23 @@ export function applyRemove(projectDir, plan) {
     try {
       const body = readFileSync(b.abs, 'utf8').replace(MARKER, '');
       // Only BOSS's block was in there — nothing of the founder's to preserve.
-      if (!body.trim()) { rmSync(b.abs, { force: true }); done.push(`${b.rel} (removed — it was all BOSS)`); }
-      else { writeFileSync(b.abs, body.replace(/\n{3,}/g, '\n\n')); done.push(`${b.rel} (BOSS block excised, your content kept)`); }
+      const rest = body.replace(/\n{3,}/g, '\n\n');
+      // Nothing left, or what IS left is still BOSS's own template — a `boss new` project that
+      // later unlocked a mode has L0's whole CLAUDE.md plus L1's marked block, so excising the
+      // block alone left the template behind as a stray file.
+      if (!rest.trim() || (b.tplRest && sameAsTemplate(rest, b.tplRest, b.vars))) {
+        rmSync(b.abs, { force: true }); done.push(`${b.rel} (removed — it was all BOSS)`);
+      } else { writeFileSync(b.abs, rest); done.push(`${b.rel} (BOSS block excised, your content kept)`); }
     } catch { /* skip */ }
   }
   if (plan.settings) {
+    const abs = join(projectDir, plan.settings.rel);
     try {
-      writeFileSync(join(projectDir, plan.settings.rel), JSON.stringify(plan.settings.merged, null, 2) + '\n');
-      done.push(`${plan.settings.rel} (${plan.settings.removed} BOSS hook registration(s) removed)`);
+      if (plan.settings.drop) { rmSync(abs, { force: true }); done.push(`${plan.settings.rel} (removed — BOSS wrote it and you never changed it)`); }
+      else {
+        writeFileSync(abs, JSON.stringify(plan.settings.merged, null, 2) + '\n');
+        done.push(`${plan.settings.rel} (${plan.settings.removed} BOSS hook registration(s) removed)`);
+      }
     } catch { /* skip */ }
   }
   if (plan.bossDir) {

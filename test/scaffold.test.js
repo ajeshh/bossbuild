@@ -643,16 +643,86 @@ test("removing excises BOSS's block from CLAUDE.md and keeps the founder's own r
   assert.ok(!body.includes('BOSS says things'), "BOSS's block is excised");
 });
 
-test('remove un-merges BOSS hooks from settings.json but keeps permissions and the deny floor', () => {
+test('an UNTOUCHED settings.json goes with BOSS — leaving config from a removed tool is clutter', () => {
+  const dir = adopted();
+  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  assert.ok(!existsSync(join(dir, '.claude', 'settings.json')),
+    "BOSS wrote it and the founder never changed it, so removal takes it back");
+});
+
+test('REGRESSION: an EDITED settings.json is kept — hooks un-merged, permissions and deny floor intact', () => {
   // Removing a deny entry on the way out would quietly WIDEN what an agent may do — a parting
   // gift nobody asked for. Denies are monotonically safe, so they stay.
   const dir = adopted();
   const sPath = join(dir, '.claude', 'settings.json');
   const before = JSON.parse(readFileSync(sPath, 'utf8'));
-  assert.ok(before.hooks, 'the fixture should start with BOSS hooks registered');
+  before.permissions.allow.push('Bash(my-tool:*)');
+  before.hooks.Stop = [{ matcher: '', hooks: [{ type: 'command', command: 'my-own.sh' }] }];
+  writeFileSync(sPath, JSON.stringify(before, null, 2));
+
   applyRemove(dir, planRemove(dir, stampOf(dir)));
+  assert.ok(existsSync(sPath), 'a settings.json the founder touched is theirs and survives');
   const after = JSON.parse(readFileSync(sPath, 'utf8'));
-  assert.ok(!after.hooks, "BOSS's hook registrations are gone");
-  assert.deepEqual(after.permissions.allow, before.permissions.allow, 'the allow list is untouched');
-  assert.deepEqual(after.permissions.deny, before.permissions.deny, 'the deny floor stays — removing it would widen access');
+  assert.ok(!after.hooks?.UserPromptSubmit, "BOSS's hook registration is gone");
+  assert.ok(after.hooks?.Stop, 'their own hook survives');
+  assert.ok(after.permissions.allow.includes('Bash(my-tool:*)'), 'their allow entry survives');
+  assert.ok(after.permissions.deny.length > 0, 'the deny floor stays — removing it would widen access');
+});
+
+test('REGRESSION: a one-letter project name does not corrupt the edited-check', () => {
+  // `boss new a` used to flag three untouched agents as edited: the comparison erased the project
+  // NAME by regex, so every letter "a" became a sentinel and the stage-id/mode-word rules that ran
+  // afterwards stopped matching their own patterns. Any short or common name (app, api, test) has
+  // the same shape of bug, silently. The fix renders the template with the real values instead.
+  for (const name of ['a', 'app', 'test']) {
+    const dir = project({});
+    applyStageSafe('L0-quickstart', dir, {
+      PROJECT_NAME: name, DATE: '2026-01-01', BOSS_VERSION: '0.0.0', STAGE: 'L0-quickstart', MODE: 'Quickstart',
+    });
+    mkdirSync(join(dir, '.boss'), { recursive: true });
+    writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({
+      name, bossVersion: '0.0.0', stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], agents: [], skills: [], hooks: [], loops: [],
+    }));
+    const plan = planRemove(dir, stampOf(dir));
+    assert.deepEqual(plan.edited, [],
+      `project named "${name}" falsely flagged: ${plan.edited.map((e) => e.rel).join(', ')}`);
+  }
+});
+
+test('REGRESSION: nothing of BOSS is left behind after a full remove', () => {
+  // The leftovers that motivated this: a `boss new` project that later unlocked a mode kept its
+  // CLAUDE.md (L0 wrote the whole file, L1 appended a marked block, and excising the block left
+  // the template behind) plus a stray settings.json.
+  const dir = adopted();
+  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  for (const p of ['CLAUDE.md', 'AGENTS.md', '.boss', '.claude/agents', '.claude/hooks', 'docs/loops']) {
+    assert.ok(!existsSync(join(dir, p)), `${p} should be gone`);
+  }
+  assert.ok(existsSync(join(dir, 'src', 'a.js')), "and the founder's code is still there");
+});
+
+test('REGRESSION: after unlock, files keep matching the layer that WROTE them', () => {
+  // The stamp records the project's CURRENT stage. After `boss unlock mvp` that's L1-mvp/MVP — but
+  // L0's agents were rendered with L0-quickstart/Quickstart. Comparing them against an L1-rendered
+  // template can never match, so three untouched agents and CLAUDE.md survived every removal.
+  // Per-file layer, not per-project.
+  const dir = project({});
+  applyStageSafe('L0-quickstart', dir, {
+    PROJECT_NAME: 'p', DATE: '2026-01-01', BOSS_VERSION: '0.0.0', STAGE: 'L0-quickstart', MODE: 'Quickstart',
+  });
+  applyStageSafe('L1-mvp', dir, {
+    PROJECT_NAME: 'p', DATE: '2026-01-01', BOSS_VERSION: '0.0.0', STAGE: 'L1-mvp', MODE: 'MVP',
+  });
+  mkdirSync(join(dir, '.boss'), { recursive: true });
+  writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({
+    name: 'p', bossVersion: '0.0.0', stage: 'L1-mvp', mode: 'MVP',
+    installedLayers: ['L0-quickstart', 'L1-mvp'], agents: [], skills: [], hooks: [], loops: [],
+  }));
+  const plan = planRemove(dir, stampOf(dir));
+  const l0Agents = plan.edited.filter((e) => /agents\/(pm|coder-generalist|mentor-venture)\.md$/.test(e.rel));
+  assert.deepEqual(l0Agents, [], `L0 agents falsely flagged after unlock: ${l0Agents.map((e) => e.rel).join(', ')}`);
+  applyRemove(dir, plan);
+  assert.ok(!existsSync(join(dir, 'CLAUDE.md')), 'CLAUDE.md must not survive a multi-layer removal');
+  assert.ok(!existsSync(join(dir, '.claude', 'agents')), 'no agents may be left behind');
 });

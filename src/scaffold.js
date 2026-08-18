@@ -23,22 +23,31 @@ function isTextFile(name) {
 
 // Compare a scaffolded file against the template it came from.
 //
-// THE TRAP THIS EXISTS FOR: a scaffolded file NEVER byte-matches its template — placeholders are
-// substituted at write time, so `{{PROJECT_NAME}}` is now "myapp" and the dates and versions are
-// stamped. Naively normalising only the template side reports every file as edited: `boss remove`'s
-// first run flagged 30 untouched agents as "you edited this" when the founder had changed exactly
-// one. A flag that fires on everything is a flag nobody reads, which is how BOSS's last three
-// checkers died — so blank the substituted SHAPES on both sides rather than guessing values.
-export function sameAsTemplate(projectText, templateText, projectName) {
+// THE TRAP: a scaffolded file NEVER byte-matches its template — placeholders are substituted at
+// write time. Normalising only the template side reports every file as edited; `boss remove`'s
+// first run flagged 30 untouched agents as "you edited this", and a flag that fires on everything
+// is a flag nobody reads.
+//
+// THE SECOND TRAP, which the first fix walked straight into: blanking the project NAME by regex
+// looks equivalent and isn't. A one-letter project (`boss new a`) turns every letter "a" in both
+// files into a sentinel, and the stage-id and mode-word rules that run afterwards then fail to
+// match their own patterns — three untouched agents came back as edited. Any short or common name
+// (`app`, `api`, `test`) has the same shape of bug, silently.
+//
+// So: RENDER the template with the real values instead of erasing them. That's exact, and only the
+// genuinely unknowable stamps (the scaffold date, the version at write time) get blanked by shape —
+// patterns safe to blank because they can't collide with prose the way a name can.
+export function sameAsTemplate(projectText, templateText, vars = {}) {
+  let rendered = templateText;
+  for (const [k, v] of Object.entries(vars)) {
+    if (v != null) rendered = rendered.replaceAll(`{{${k}}}`, String(v));
+  }
   const norm = (s) => s
-    .replace(/\{\{[A-Z_]+\}\}/g, '\u0000')          // unsubstituted placeholder
-    .replace(/\d{4}-\d{2}-\d{2}/g, '\u0000')         // any stamped date
-    .replace(/\d+\.\d+\.\d+/g, '\u0000')            // any stamped version
-    .replace(projectName ? new RegExp(projectName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g') : /$^/g, '\u0000')
-    .replace(/L\d-[a-z]+/g, '\u0000')                // stage id
-    .replace(/\b(Quickstart|MVP|V1|Scale)\b/g, '\u0000') // mode word
+    .replace(/\{\{[A-Z_]+\}\}/g, '\u0000')   // any placeholder we weren't given a value for
+    .replace(/\d{4}-\d{2}-\d{2}/g, '\u0000')  // the scaffold date
+    .replace(/\d+\.\d+\.\d+/g, '\u0000')     // the version stamped at write time
     .replace(/\s+/g, ' ').trim();
-  return norm(projectText) === norm(templateText);
+  return norm(projectText) === norm(rendered);
 }
 
 export function readStageManifest(stageId) {

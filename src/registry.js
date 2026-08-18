@@ -36,6 +36,24 @@ export function findByPath(absPath) {
 // Mark a project retired (IDEA-044 — /sunset). Retiring ≠ deleting: nothing on disk
 // is touched here; only the registry status flips, and it flips back (see reviveProject).
 // Returns the updated entry, or null if the project isn't registered.
+// Drop a project from the registry entirely — used by `boss remove`, and deliberately NOT
+// `retireProject`.
+//
+// The two mean opposite things and conflating them corrupts the founder's own record. `retire` is a
+// VENTURE OUTCOME — an honest ending, and `boss insights` reads it as one (it reports time-to-retire
+// alongside time-to-build). `remove` is "I'm taking BOSS out of this repo", which says nothing about
+// whether the venture is alive; it may be thriving. Marking it retired would have BOSS reporting a
+// death that didn't happen, in the one surface that tells a founder how their ventures have gone.
+// BOSS has no business tracking a project it is no longer installed in.
+export function deregisterProject(absPath) {
+  const data = load();
+  const before = data.projects.length;
+  data.projects = data.projects.filter((p) => p.path !== absPath);
+  if (data.projects.length === before) return false;
+  save(data);
+  return true;
+}
+
 export function retireProject(absPath, retiredOn) {
   const data = load();
   const p = data.projects.find((p) => p.path === absPath);

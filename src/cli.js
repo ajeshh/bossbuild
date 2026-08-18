@@ -3,7 +3,7 @@ import { join, resolve, basename } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
-import { registerProject, listProjects, findByPath, retireProject, reviveProject } from './registry.js';
+import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject } from './registry.js';
 import { planSync, applySync, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
@@ -597,7 +597,8 @@ function cmdRemove(args) {
   if (plan.files.length > head.length) console.log(`    ${dim(`… +${plan.files.length - head.length} more`)}`);
   if (plan.bossDir) console.log(`    ${warn('−')} .boss/   ${dim("(mode, config, the conscience's private notes)")}`);
   for (const b of plan.blocks) console.log(`    ${warn('~')} ${b.rel}   ${dim('— BOSS block excised, the rest of the file kept')}`);
-  if (plan.settings) console.log(`    ${warn('~')} ${plan.settings.rel}   ${dim(`— ${plan.settings.removed} BOSS hook registration(s); your permissions and hooks untouched`)}`);
+  if (plan.settings?.drop) console.log(`    ${warn('−')} ${plan.settings.rel}   ${dim("— BOSS wrote it and you never changed it, so it goes with BOSS")}`);
+  else if (plan.settings) console.log(`    ${warn('~')} ${plan.settings.rel}   ${dim(`— ${plan.settings.removed} BOSS hook registration(s) only; your permissions, your own hooks and the secret-path deny floor all stay`)}`);
 
   // The half that makes this safe to run: say what SURVIVES, by name.
   console.log(`\n  ${bold('Would keep')}`);
@@ -619,7 +620,10 @@ function cmdRemove(args) {
   }
 
   const done = applyRemove(process.cwd(), plan);
-  try { retireProject(process.cwd(), new Date().toISOString().slice(0, 10)); } catch { /* registry is best-effort */ }
+  // Deregister, never retire: `retire` is a VENTURE OUTCOME that `boss insights` reports on, and
+  // removing BOSS says nothing about whether the venture is alive. Marking it retired would have
+  // BOSS reporting a death that didn't happen.
+  try { deregisterProject(process.cwd()); } catch { /* registry is best-effort */ }
   console.log(`\n  ${ok('✦')} BOSS removed — ${done.length} path(s). Your work is untouched.`);
   console.log(`    ${dim('`git status` shows exactly what changed. `boss adopt` any time you want it back.')}\n`);
   void total;

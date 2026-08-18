@@ -304,7 +304,10 @@ function planOrphans(projectDir, stamp, layers) {
         rel,
         present,
         // Tri-state on purpose: true / false / null-for-unknowable. See orphanEdited.
-        edited: present ? orphanEdited(projectDir, kind, name, layers) : false,
+        edited: present
+          ? orphanEdited(projectDir, kind, name, layers,
+            { PROJECT_NAME: stamp.name, STAGE: stamp.stage, MODE: stamp.mode })
+          : false,
         supersede: findSupersede(kind, name, ledger),
       });
     }
@@ -327,7 +330,7 @@ function planOrphans(projectDir, stamp, layers) {
 // a customisation on `--remove`. Unknown is reported as unknown and shown to the founder before
 // they consent. (The durable fix is a content hash in the stamp at write time; noted, not built —
 // it changes the stamp format, and consent plus an honest "I can't tell" covers the risk today.)
-export function orphanEdited(projectDir, kind, name, layers) {
+export function orphanEdited(projectDir, kind, name, layers, vars = {}) {
   const rel = kind === 'agent' ? join('.claude', 'agents', `${name}.md`)
     : kind === 'skill' ? join('.claude', 'skills', name, 'SKILL.md')
       : join('.claude', 'hooks', `${name}.js`);
@@ -340,9 +343,10 @@ export function orphanEdited(projectDir, kind, name, layers) {
         : join(base, 'hooks', `${name}.js`);
     if (!existsSync(src)) continue;
     try {
-      // Shared with `boss remove` (src/scaffold.js) — the first cut normalised only the template
-      // side, so every substituted file read as edited. One normaliser, both call sites.
-      return !sameAsTemplate(readFileSync(abs, 'utf8'), readFileSync(src, 'utf8'), name);
+      // Shared with `boss remove` (src/scaffold.js). NOTE `vars`, not `name`: the first cut passed
+      // the ORPHAN's name where the PROJECT's belonged — wrong value, and invisible because the
+      // comparison still mostly worked.
+      return !sameAsTemplate(readFileSync(abs, 'utf8'), readFileSync(src, 'utf8'), vars);
     } catch { return null; }
   }
   return null;
