@@ -5,7 +5,7 @@ import { join, dirname } from 'node:path';
 import {
   STAGES_DIR, bossVersion, resolveStageId,
 } from './paths.js';
-import { readStageManifest } from './scaffold.js';
+import { readStageManifest, sameAsTemplate } from './scaffold.js';
 import { readSupersedes, findSupersede } from './supersede.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
@@ -340,12 +340,9 @@ export function orphanEdited(projectDir, kind, name, layers) {
         : join(base, 'hooks', `${name}.js`);
     if (!existsSync(src)) continue;
     try {
-      // Compare ignoring substituted placeholders and whitespace — a scaffolded file never
-      // byte-matches its template, and flagging every file as "edited" would train everyone to
-      // ignore the flag, which is how the last three checkers died.
-      const cur = readFileSync(abs, 'utf8').replace(/\s+/g, ' ').trim();
-      const tpl = readFileSync(src, 'utf8').replace(/\{\{[A-Z_]+\}\}/g, '').replace(/\s+/g, ' ').trim();
-      return cur !== tpl;
+      // Shared with `boss remove` (src/scaffold.js) — the first cut normalised only the template
+      // side, so every substituted file read as edited. One normaliser, both call sites.
+      return !sameAsTemplate(readFileSync(abs, 'utf8'), readFileSync(src, 'utf8'), name);
     } catch { return null; }
   }
   return null;

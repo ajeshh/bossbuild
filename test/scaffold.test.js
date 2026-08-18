@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { resolveStageId, STAGE_ORDER, STAGES_DIR } from '../src/paths.js';
 import { loadModes, modeWord, skillGloss } from '../src/modes.js';
 import { readStageManifest, appendMarkedBlock, applyStageSafe } from '../src/scaffold.js';
+import { planRemove, applyRemove } from '../src/remove.js';
 import { canonicalLayer, computeSettingsMerge, planSync, applySync, orphanEdited } from '../src/sync.js';
 import { detectStage } from '../src/detect.js';
 import { project, cleanup } from './helpers.js';
@@ -561,4 +562,97 @@ test('the supersede ledger ships, parses, and every entry can explain itself', (
     assert.match(e.since, /^\d+\.\d+\.\d+$/, `'${e.removed}' has an unparseable since`);
     assert.ok(['skill', 'agent', 'hook'].includes(e.kind), `'${e.removed}' has an unknown kind`);
   }
+});
+
+// --- boss remove: the exit (v0.161.0) -------------------------------------
+//
+// Adopting BOSS into an existing repo writes ~91 files and nothing took them back out. "Non-
+// destructive" answered *will you break my stuff?*, never *can I get out?* — and PRINCIPLE #5 is
+// optionality by default. A clean exit is what makes the entrance safe to try.
+//
+// This is the most destructive code in BOSS: it deletes files in a repo it was invited into,
+// where the founder's own work sits in the SAME directories as BOSS's scaffold. These pin the
+// guards, not the feature.
+
+const adopted = () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}', 'src/a.js': 'export const a = 1\n' });
+  const vars = {
+    PROJECT_NAME: 'myapp', DATE: '2026-01-01', BOSS_VERSION: '0.0.0',
+    STAGE: 'L0-quickstart', MODE: 'Quickstart',
+  };
+  applyStageSafe('L0-quickstart', dir, vars);
+  mkdirSync(join(dir, '.boss'), { recursive: true });
+  writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({
+    name: 'myapp', bossVersion: '0.0.0', stage: 'L0-quickstart', mode: 'Quickstart',
+    installedLayers: ['L0-quickstart'], agents: [], skills: [], hooks: [], loops: [], adopted: true,
+  }), { flag: 'w' });
+  return dir;
+};
+const stampOf = (dir) => JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8'));
+
+test('REGRESSION: remove never touches a file BOSS did not write', () => {
+  // The founder's ideas and decisions live in docs/ — the SAME tree as BOSS's scaffold. A naive
+  // `rm -rf docs` on the way out destroys the work BOSS was there to help produce.
+  const dir = adopted();
+  mkdirSync(join(dir, 'docs', 'ideas'), { recursive: true });
+  writeFileSync(join(dir, 'docs', 'ideas', 'IDEA-001.md'), '# mine\n');
+  mkdirSync(join(dir, '.claude', 'skills', 'my-own'), { recursive: true });
+  writeFileSync(join(dir, '.claude', 'skills', 'my-own', 'SKILL.md'), '# mine\n');
+
+  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  assert.ok(existsSync(join(dir, 'docs', 'ideas', 'IDEA-001.md')), "the founder's idea must survive");
+  assert.ok(existsSync(join(dir, '.claude', 'skills', 'my-own', 'SKILL.md')), 'their own skill must survive');
+  assert.ok(existsSync(join(dir, 'src', 'a.js')), 'their code must survive');
+  assert.ok(!existsSync(join(dir, '.boss')), "BOSS's own state should be gone");
+});
+
+test('REGRESSION: a BOSS file the founder edited is theirs, and is never removed', () => {
+  const dir = adopted();
+  const mine = join(dir, '.claude', 'skills', 'triage', 'SKILL.md');
+  writeFileSync(mine, readFileSync(mine, 'utf8') + '\n## My customisation\n');
+  const plan = planRemove(dir, stampOf(dir));
+  assert.ok(plan.edited.some((e) => e.rel.includes('triage')), 'the edited file must be detected');
+  applyRemove(dir, plan);
+  assert.ok(existsSync(mine), 'an edited BOSS file survives removal');
+  assert.match(readFileSync(mine, 'utf8'), /My customisation/);
+});
+
+test('REGRESSION: substituted placeholders never make an untouched file read as edited', () => {
+  // The bug this pins: a scaffolded file NEVER byte-matches its template, so normalising only the
+  // template side reported 30 untouched agents as "you edited this" on the first run. A flag that
+  // fires on everything is a flag nobody reads.
+  const dir = adopted();
+  const plan = planRemove(dir, stampOf(dir));
+  assert.deepEqual(plan.edited, [], `nothing was edited, yet these were flagged: ${plan.edited.map((e) => e.rel).join(', ')}`);
+  assert.ok(plan.files.length > 20, 'and the files should still be recognised as removable');
+});
+
+test("removing excises BOSS's block from CLAUDE.md and keeps the founder's own rules", () => {
+  const dir = project({ 'CLAUDE.md': '# My App\n\nMY OWN RULES\n' });
+  applyStageSafe('L0-quickstart', dir, {
+    PROJECT_NAME: 'myapp', DATE: '2026-01-01', BOSS_VERSION: '0.0.0', STAGE: 'L0-quickstart', MODE: 'Quickstart',
+  });
+  appendMarkedBlock(join(dir, 'CLAUDE.md'), 'adopt', 'BOSS says things');
+  mkdirSync(join(dir, '.boss'), { recursive: true });
+  writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({
+    name: 'myapp', stage: 'L0-quickstart', installedLayers: ['L0-quickstart'], skills: [], agents: [], hooks: [],
+  }));
+  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  const body = readFileSync(join(dir, 'CLAUDE.md'), 'utf8');
+  assert.match(body, /MY OWN RULES/, "the founder's rules survive");
+  assert.ok(!body.includes('BOSS says things'), "BOSS's block is excised");
+});
+
+test('remove un-merges BOSS hooks from settings.json but keeps permissions and the deny floor', () => {
+  // Removing a deny entry on the way out would quietly WIDEN what an agent may do — a parting
+  // gift nobody asked for. Denies are monotonically safe, so they stay.
+  const dir = adopted();
+  const sPath = join(dir, '.claude', 'settings.json');
+  const before = JSON.parse(readFileSync(sPath, 'utf8'));
+  assert.ok(before.hooks, 'the fixture should start with BOSS hooks registered');
+  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  const after = JSON.parse(readFileSync(sPath, 'utf8'));
+  assert.ok(!after.hooks, "BOSS's hook registrations are gone");
+  assert.deepEqual(after.permissions.allow, before.permissions.allow, 'the allow list is untouched');
+  assert.deepEqual(after.permissions.deny, before.permissions.deny, 'the deny floor stays — removing it would widen access');
 });

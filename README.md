@@ -163,6 +163,11 @@ claude                          # open Claude Code (terminal or editor panel)
 && npm install -g .` links your checkout globally. `npm run release` is the gate every change has to
 pass.
 
+**Changed your mind?** `boss remove` takes BOSS back out — preview first, `--apply` to do it. It
+removes only what BOSS wrote: your code, your ideas and decisions under `docs/`, your own skills, and
+any BOSS file you edited all stay; your `CLAUDE.md` keeps everything except BOSS's marked block. A
+clean exit is what makes the entrance safe to try. (`boss remove --global` for the machine.)
+
 **Already started building?** You don't have to start over. `cd` into your existing repo and run
 `boss adopt` — it **reads how far along you already are** (a build manifest, source files, tests, CI,
 a deploy config), tells you what it found, and starts you at the mode that matches instead of

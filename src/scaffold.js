@@ -21,6 +21,26 @@ function isTextFile(name) {
   return dot >= 0 && TEXT_EXT.has(name.slice(dot));
 }
 
+// Compare a scaffolded file against the template it came from.
+//
+// THE TRAP THIS EXISTS FOR: a scaffolded file NEVER byte-matches its template — placeholders are
+// substituted at write time, so `{{PROJECT_NAME}}` is now "myapp" and the dates and versions are
+// stamped. Naively normalising only the template side reports every file as edited: `boss remove`'s
+// first run flagged 30 untouched agents as "you edited this" when the founder had changed exactly
+// one. A flag that fires on everything is a flag nobody reads, which is how BOSS's last three
+// checkers died — so blank the substituted SHAPES on both sides rather than guessing values.
+export function sameAsTemplate(projectText, templateText, projectName) {
+  const norm = (s) => s
+    .replace(/\{\{[A-Z_]+\}\}/g, '\u0000')          // unsubstituted placeholder
+    .replace(/\d{4}-\d{2}-\d{2}/g, '\u0000')         // any stamped date
+    .replace(/\d+\.\d+\.\d+/g, '\u0000')            // any stamped version
+    .replace(projectName ? new RegExp(projectName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g') : /$^/g, '\u0000')
+    .replace(/L\d-[a-z]+/g, '\u0000')                // stage id
+    .replace(/\b(Quickstart|MVP|V1|Scale)\b/g, '\u0000') // mode word
+    .replace(/\s+/g, ' ').trim();
+  return norm(projectText) === norm(templateText);
+}
+
 export function readStageManifest(stageId) {
   const file = join(STAGES_DIR, stageId, 'manifest.json');
   if (!existsSync(file)) {

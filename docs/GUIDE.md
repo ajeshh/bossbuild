@@ -104,6 +104,13 @@ nothing else. (In a project, `/welcome` asks you this and tunes itself; you can 
   inside Claude — that's the adopted repo's version of `/boss`: BOSS reads the actual code, tailors
   the scaffold, and seeds the venture brain so the conscience starts with real context.
 
+- **Don't like it? Take it back out.** `boss adopt` is reversible: **`boss remove`** previews exactly
+  what would go, and `--apply` does it. It only removes what BOSS *wrote* — your code, the ideas and
+  decisions you captured under `docs/`, your own skills, and any BOSS file you edited all survive, and
+  your `CLAUDE.md` keeps everything except BOSS's marked block. `boss remove --global` takes BOSS off
+  the machine instead (your projects keep working — the conscience hook runs from the project, not the
+  CLI).
+
 ---
 
 ## The walk, rung by rung

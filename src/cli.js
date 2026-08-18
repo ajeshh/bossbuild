@@ -9,7 +9,8 @@ import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog } from './changelog.js';
 import { detectStage } from './detect.js';
-import { printUpdate, updateNote } from './update.js';
+import { printUpdate, updateNote, installKind, updateCommand } from './update.js';
+import { planRemove, applyRemove, machineState, removeMachineState } from './remove.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
@@ -555,6 +556,75 @@ function cmdList() {
   console.log('');
 }
 
+// `boss remove` — the exit. Preview by default; `--apply` is the consent.
+function cmdRemove(args) {
+  const f = parseArgs(args || []);
+
+  // `--global` is the OTHER exit: BOSS off the machine, not out of a project. Different act,
+  // different blast radius, so it never happens as a side effect of the project one.
+  if (f.global) {
+    const { dir, files } = machineState();
+    const cmd = updateCommand(installKind()).replace(/^npm i -g bossbuild@latest$/, 'npm uninstall -g bossbuild')
+      .replace(/^brew upgrade boss$/, 'brew uninstall boss').replace(/^git pull && npm i -g \.$/, 'npm uninstall -g bossbuild');
+    console.log(`\n  ${bold('Remove BOSS from this machine')}\n`);
+    console.log(`    ${bold(cmd)}   ${dim('— removes the CLI')}`);
+    console.log(`\n  ${dim('Machine-local state BOSS keeps outside any project:')} ${dim(dir)}`);
+    for (const x of files) console.log(`    ${dim('·')} ${x}`);
+    if (!files.length) console.log(`    ${dim('(none)')}`);
+    // The non-obvious, reassuring half.
+    console.log(`\n  ${dim('Your projects keep working either way — the conscience hook runs from the project')}`);
+    console.log(`  ${dim("(node .claude/hooks/conscience.js) and doesn't call this CLI. You'd lose the `boss`")}`);
+    console.log(`  ${dim('verbs, not the in-project experience. To take BOSS out of a project, run `boss remove` there.')}`);
+    if (files.length && !f.apply) {
+      console.log(`\n  ${dim('`boss remove --global --apply` deletes that state dir. The CLI itself is npm/brew\'s to remove.')}\n`);
+    } else if (files.length && f.apply) {
+      console.log(`\n  ${removeMachineState() ? ok('✦') + ` removed ${dir}` : err('✗') + ` could not remove ${dir}`}\n`);
+    } else console.log('');
+    return;
+  }
+
+  const stamp = readStamp(process.cwd());
+  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  const plan = planRemove(process.cwd(), stamp);
+  const total = plan.files.length + plan.blocks.length + (plan.bossDir ? 1 : 0);
+
+  console.log(`\n  ${bold(stamp.name + ' — remove BOSS')}`);
+  console.log(`    ${dim('layers:')} ${plan.layers.join(' → ')}\n`);
+
+  console.log(`  ${bold('Would remove')} ${dim(`— ${plan.files.length} file(s) BOSS wrote, unchanged since`)}`);
+  const head = plan.files.slice(0, 6).map((x) => x.rel);
+  for (const r of head) console.log(`    ${warn('−')} ${r}`);
+  if (plan.files.length > head.length) console.log(`    ${dim(`… +${plan.files.length - head.length} more`)}`);
+  if (plan.bossDir) console.log(`    ${warn('−')} .boss/   ${dim("(mode, config, the conscience's private notes)")}`);
+  for (const b of plan.blocks) console.log(`    ${warn('~')} ${b.rel}   ${dim('— BOSS block excised, the rest of the file kept')}`);
+  if (plan.settings) console.log(`    ${warn('~')} ${plan.settings.rel}   ${dim(`— ${plan.settings.removed} BOSS hook registration(s); your permissions and hooks untouched`)}`);
+
+  // The half that makes this safe to run: say what SURVIVES, by name.
+  console.log(`\n  ${bold('Would keep')}`);
+  console.log(`    ${ok('✓')} everything BOSS didn't write — your code, and anything you authored`);
+  if (plan.kept.length) {
+    console.log(`    ${ok('✓')} ${bold(String(plan.kept.length))} file(s) you made under docs/ and .claude/ — e.g. ${plan.kept.slice(0, 3).join(', ')}${plan.kept.length > 3 ? ' …' : ''}`);
+  }
+  if (plan.edited.length) {
+    console.log(`    ${ok('✓')} ${plan.edited.length} BOSS file(s) ${bold('you edited')} — yours now, never removed:`);
+    for (const e of plan.edited.slice(0, 4)) console.log(`        ${e.rel}`);
+    if (plan.edited.length > 4) console.log(`        ${dim(`… +${plan.edited.length - 4} more`)}`);
+  }
+
+  if (!f.apply) {
+    console.log(`\n  Preview only. ${bold('boss remove --apply')} does it.`);
+    console.log(`  ${dim('Commit first if you want a one-command undo — then `git checkout .` restores everything.')}`);
+    console.log(`  ${dim('Taking BOSS off the machine instead? `boss remove --global`.')}\n`);
+    return;
+  }
+
+  const done = applyRemove(process.cwd(), plan);
+  try { retireProject(process.cwd(), new Date().toISOString().slice(0, 10)); } catch { /* registry is best-effort */ }
+  console.log(`\n  ${ok('✦')} BOSS removed — ${done.length} path(s). Your work is untouched.`);
+  console.log(`    ${dim('`git status` shows exactly what changed. `boss adopt` any time you want it back.')}\n`);
+  void total;
+}
+
 function cmdSync(args) {
   const { _: pos, apply, remove } = parseArgs(args);
   void pos;
@@ -684,7 +754,7 @@ function fail(msg) {
 
 const KNOWN_COMMANDS = [
   'new', 'adopt', 'unlock', 'status', 'board', 'map', 'brain', 'insights',
-  'team', 'list', 'retire', 'sync', 'learn', 'craft', 'changelog', 'update', 'conscience', 'version', 'help',
+  'team', 'list', 'retire', 'remove', 'sync', 'learn', 'craft', 'changelog', 'update', 'conscience', 'version', 'help',
 ];
 
 // Per-command detail for `boss help <command>`. Kept tight — a usage line, a
@@ -768,6 +838,12 @@ const HELP = {
     what: "Check whether the BOSS you have INSTALLED is the latest published one, and print the exact upgrade command for how you installed it (npm, Homebrew, or a git checkout). This is the one thing `boss status` cannot tell you on its own: it compares a project against your installed package, so 'up to date' has always meant 'your project matches your install' — never 'your install is current'. Runs a single public version lookup, ONLY when you invoke it: no project data leaves your machine, and `boss status` reads the cached result rather than ever making a call itself. Offline is fine — it shrugs and tells you the last thing it knew.",
     examples: ['boss update'],
     see: ['status', 'changelog', 'sync'],
+  },
+  remove: {
+    usage: 'boss remove [--apply]   ·   boss remove --global [--apply]',
+    what: "Take BOSS back out. Without --apply it previews only. It removes what BOSS WROTE and nothing else: files you authored are never touched, a BOSS file you EDITED is yours and is kept, your CLAUDE.md keeps everything except BOSS's marked block, and settings.json loses only BOSS's hook registrations — your permissions, your own hooks and the secret-path deny floor all stay (removing a deny would widen access on the way out). That boundary matters most in docs/, where your ideas and decisions sit in the same tree as BOSS's scaffold. `--global` is the OTHER exit: it prints the uninstall command for how you installed BOSS and lists the machine-local state in ~/.boss. Note your projects keep working after a global uninstall — the conscience hook runs from the project and doesn't call this CLI.",
+    examples: ['boss remove', 'boss remove --apply', 'boss remove --global'],
+    see: ['adopt', 'retire', 'sync'],
   },
   changelog: {
     usage: 'boss changelog [--since X.Y.Z] [--full] [--all]',
@@ -933,6 +1009,7 @@ function printHelp() {
   console.log(row('boss craft [name]', "read BOSS's practice shelf (the craft behind the skills)"));
   console.log(row('boss list', 'all connected projects'));
   console.log(row('boss retire [--undo]', 'end a project honestly (reversible)'));
+  console.log(row('boss remove [--apply]', 'take BOSS back out of this project · --global for the machine'));
   console.log(row('boss version', 'the installed BOSS version'));
 
   console.log(`\n  ${dim('modes:')} Quickstart ${dim('(capture)')} · MVP ${dim('(build)')} · V1 ${dim('(ship)')} · Scale ${dim('(grow)')}`);
@@ -985,6 +1062,7 @@ export async function run(argv) {
     case 'team': return cmdTeam(args);
     case 'list': return cmdList();
     case 'retire': return cmdRetire(args);
+    case 'remove': case 'uninstall': return cmdRemove(args);
     case 'sync': return cmdSync(args);
     case 'learn': return cmdLearn(args);
     case 'craft': return void (process.exitCode = printCraft(

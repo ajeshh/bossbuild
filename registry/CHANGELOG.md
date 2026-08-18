@@ -2,6 +2,44 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.161.0 — 2026-08-18
+
+- **`boss remove` — the exit. Adoption stops being a one-way door.** Adopting BOSS into an existing
+  repo writes **~91 files** and nothing took them back out; `boss retire` sounds like the answer and
+  isn't (it ends a *venture* and says so: *"the repo stays; only the status changed"*). **"Non-
+  destructive" answered *will you break my stuff?* — it never answered *can I get out?***, and for a
+  founder standing in a codebase they care about, the second is the bigger question. PRINCIPLE #5 is
+  optionality by default; adoption being irreversible in practice contradicted it however reversible
+  each individual write was. **A clean exit is what makes the entrance safe to try.**
+- **The boundary is DERIVED, not listed** — the union of the installed stages' template trees is
+  exactly what BOSS can ever write; everything else in the repo is the founder's. That matters most
+  in `docs/`, where after a week of use their ideas and decisions sit in the *same tree* as BOSS's
+  scaffold: **a naive `rm -rf docs` on the way out would destroy the very work BOSS was there to help
+  produce.** Same three guards as sync's orphan removal: only what BOSS wrote · never what the
+  founder edited · consent is a separate act (`--apply`).
+- **The preview says what SURVIVES, by name** — *"3 file(s) you made under docs/ and .claude/"*, and
+  every BOSS file you edited listed individually. That half is what makes it safe to run.
+- **`CLAUDE.md` is never deleted** — BOSS's marked block is excised and the founder's rules kept; the
+  file only goes if nothing but whitespace remains, which is derivable rather than guessed.
+  `settings.json` loses only BOSS's hook registrations. **The secret-path `deny` floor deliberately
+  STAYS**: a deny entry can only ever restrict, so removing it would quietly widen what an agent may
+  do on the way out — a parting gift nobody asked for.
+- **🔴 The first run flagged 30 untouched agents as "you edited this."** A scaffolded file never
+  byte-matches its template (placeholders are substituted), and the comparison normalised only the
+  template side. **A flag that fires on everything is a flag nobody reads** — how BOSS's last three
+  checkers died. Fixed by extracting **one** normaliser (`sameAsTemplate`, in the module that owns
+  substitution) and pointing both call sites at it — **because `boss sync`'s orphan-edited check had
+  the identical latent bug**, and two copies would have drifted.
+- **`boss remove --global` is the other exit, kept separate on purpose.** It prints the uninstall
+  command for how BOSS was actually installed (npm / Homebrew / a git checkout) and lists the
+  machine-local state in `~/.boss`. It also states the non-obvious, reassuring half: **uninstalling
+  the CLI does not break your projects** — the conscience hook runs
+  `node "$CLAUDE_PROJECT_DIR/.claude/hooks/conscience.js"` and imports only from `./lib/`. You lose
+  the `boss` verbs, not the in-project experience.
+- **Documented next to the entrance**, in the README and GUIDE — an exit nobody can find when they
+  want it isn't an exit. **Five new tests (101 now)**, all REGRESSION, pinning the guards rather than
+  the feature: this is the most destructive code in BOSS, deleting files in a repo it was invited into.
+
 ## 0.160.0 — 2026-08-17
 
 - **The widest uncovered rot surface is covered: the 66 skills, agents and hooks BOSS ships into
