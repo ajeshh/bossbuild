@@ -23,14 +23,13 @@ boss board --next   # just: what should I pick up?
 table here to keep in sync — a hand-maintained index and the frontmatter it copies will eventually
 disagree, and nothing tells you which one is lying. One home per fact: the file.
 
-## Status values (set in each idea's frontmatter)
+## Status values
 
-- `seedling` — captured, not yet examined
-- `exploring` — being thought through
-- `ready` — scoped, ready to build (promote to `FEAT` in MVP mode)
-- `building` — in progress
-- `shipped` — done
-- `dropped` — decided against (keep the file; record why)
+Set in each idea's frontmatter. **Seven words, and the list is closed** —
+see [`docs/IDS.md`](../IDS.md) for what each one means.
+
+They are not restated here on purpose. A second copy of a vocabulary is a second thing to
+keep in sync, and this whole folder is built on there being one home per fact.
 
 > Allocating the next free `IDEA-NNN` or `FEAT-NNN`? Read the **files**, not this page —
 > see [`docs/IDS.md`](../IDS.md).

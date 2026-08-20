@@ -102,7 +102,7 @@ The intervention *shape* varies per cohort (per `.boss/config.json` cohort decla
 
 ## Aesthetic ambition — past the slop default (added v0.61.0)
 
-> Adapted from Anthropic's own `frontend-design` skill via [RVW-014](../../docs/research/verdicts/RVW-014-frontend-design-aesthetic-ambition.md).
+> Adapted from Anthropic's own `frontend-design` skill, vetted into BOSS's practice shelf (RVW-014).
 > The failure-mode catalog above is the *discipline* axis — don't drift. This is the *taste* axis —
 > don't be generic. They are different failures: "the 47 blues" is drift; "AI slop" is genericness.
 > A codebase can be perfectly token-disciplined and still look like every other AI-built app.

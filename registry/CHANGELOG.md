@@ -9,6 +9,112 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.181.0 — 2026-08-20
+
+> **For you:** **Three record types were missing or misfiled in your `docs/IDS.md`.** `DEC-NNN`
+> (decisions) and `EVID-NNN` (evidence) ship at Quickstart and weren't listed — `DEC` was filed under
+> V1 with a format `/decide` doesn't write. `PRAC-NNN` was missing from MVP. `FIX-NNN`/`BUG-NNN` are
+> **removed**: no skill has ever written one. Your status vocabulary is now a **closed list of seven**
+> (adding `deferred` — deliberately not building this, *with a written re-open trigger*), documented
+> where the rule can be checked. `/boss-sync` picks it up.
+
+**The record system was BOSS's most distinctive thing and its least described.** Ajesh, on the
+website: *"we don't surface it much there, like under the product aspect."* The count was worse than
+that — `IDEA-`, `FEAT-`, `DEC-`, frontmatter and `docs/ideas/` appeared **zero times across the whole
+site**. The verbs showed up in command tables; nothing said a durable, addressable file comes out the
+other end. The site sold the staffing half of BOSS and never claimed the memory half.
+
+- **New page: `keeping-track.html`**, under *The product* and directly after *The team* — the two
+  halves as a pair. The team is who shows up; the records are what survives the session. Typed
+  records, the rendered board, the closed status vocabulary, the ID ladder, and the retirement verbs
+  (`review_by:`, `/revalidate`, `/sunset`, `dropped`).
+- **The ID table and the status list are PARSED from the shipped `docs/IDS.md`**, not retyped. That
+  is what caught the drift: rendering the founder's own file next to the page's prose made three
+  wrong rows visible immediately. A page that restates a claim can be wrong quietly; a page that
+  derives it cannot.
+- **Sorted UP into the scaffold (PRINCIPLE #1):** BOSS had been running a seven-word closed status
+  vocabulary and a *file-is-truth, index-is-a-view* rule in its own repo while shipping six words and
+  no rule. Both now ship. The shipped `INDEX.md` **stopped restating the vocabulary** and points at
+  `IDS.md` instead — a second copy of a vocabulary is a second thing to keep in sync, which is the
+  exact failure the page is about.
+- **`documentation.md` had no registered sources** — so it rendered unattributed on the engineering
+  page. Michael Nygard (ADRs, 2011 — the direct ancestor of `DEC`), Marty Cagan, and the Spec Growth
+  Engine paper are now in `sources.json`. The page says plainly what's borrowed and what isn't; the
+  narrow claim is that *ceremony is rationed by mode* and *some docs execute*, not that any of the
+  parts are new.
+- **Two generator bugs:** `documentation` was classified into two engineering groups, so it rendered
+  twice and inflated the practice count. `gen:site` now **hard-fails** on a duplicate — unlike a
+  stale or unclassified id, there is no reading where that is what someone meant.
+
+**The honest paragraph on the page is about BOSS's own failure.** Two files claimed `IDEA-059` on the
+same day and every `[[IDEA-059]]` reference became ambiguous. Allocating the next number is the one
+step in this system a human still holds in their head — everything else is derived. The page says so
+rather than selling around it, and the never-reuse rule now ships in the scaffold.
+
+## 0.181.0 — 2026-08-20
+
+- **The record of what BOSS had built disagreed with itself in 21 places, and every one of them
+  pointed the same way: finished work filed as unfinished.** A three-way sweep — each idea file's
+  `status:` frontmatter, its row in the backlog index, and the artifacts actually on disk — found
+  **21 of 64 records in conflict, 18 of them under-reporting shipped work.** `IDEA-001` still read
+  *"ready — next build"* while `/boss-learn` and `/boss-sync` had shipped in the L0 template at
+  **v0.2.0**. `IDEA-032` read *"the clearest 2026 miss, verified in-repo"* next to a shipped
+  `AGENTS.md`. `boss adopt` and `boss board` were live CLI commands filed under *exploring* and
+  *building*. **This is the expensive direction for a backlog to rot in** — a founder who trusts it
+  rebuilds what they already have, and BOSS's whole first principle is about not doing that.
+- **The root cause was vocabulary, not diligence.** `docs/IDS.md` declared six statuses. The files
+  used fifteen — `implemented`, `built`, `keystone-shipped`, `resolved` and `adopted-as-backlog` all
+  meant *shipped*, spelled five different ways. No reader could sort them at a glance and **no
+  checker could compare them at all**. The vocabulary is now closed to seven words (`seedling ·
+  exploring · ready · building · shipped · deferred · dropped`), and a status must *start* with one
+  — everything after stays free-form, so `shipped (v0.106 read-state slice)` still says what it said.
+- **`npm run check:backlog`** — new, in `npm test` **and the release gate** (step 2d). Five classes:
+  undeclared status · duplicate id · index-disagrees-with-record · missing row · orphan row. **Each
+  provoked and watched to fire**, per the standing rule that a gate proven only by passing is not
+  proven. The rule it encodes is **frontmatter is truth, INDEX is a view** — which `IDEA-015` wrote
+  down for `boss board` and the index then drifted from anyway. *A rule stated in one record and
+  enforced nowhere is a preference.*
+- **🔴 And agreement is not correctness — the sweep nearly shipped that mistake.** Syncing the index
+  to the files blindly corrupted two rows: `IDEA-048` and `IDEA-053` had `status: ready` in
+  frontmatter while their artifacts (`/close`'s learning pulse, `founder-role-shifts.md`) had been on
+  disk since v0.104/v0.105 — there, the *file* was the stale side. **Disk is the arbiter; the
+  frontmatter rule only decides who to believe when both are plausible.** Four records were corrected
+  against disk rather than against each other.
+- **Also found by the same sweep:** two records both claiming `IDEA-059`, which made every
+  `[[IDEA-059]]` link ambiguous — including one in BOSS's own RESUME. Four records absent from the
+  index entirely (`FEAT-020`, `IDEA-024`, `IDEA-038`, `IDEA-039`). And **`FEAT-022` — the venture
+  brain — cited by name in a SHIPPED practice (`conscience-voicing.md`) and twice in this changelog,
+  including the sentence *"FEAT-022 is now complete,"* with no record anywhere behind the id.** Its
+  record is now written, 60 releases late. *A reference is a dependency* — including a reference to
+  BOSS's own reasoning.
+
+- **🔴 `check:refs` printed *"Everything BOSS points at exists"* across 485 files while a file
+  scaffolded into EVERY MVP project pointed a founder's repo at a file that was never in it.**
+  [`coordination-loop.md`](../stages/L1-mvp/template/docs/loops/coordination-loop.md) cited
+  `docs/research/IDEA-037-...md`. Class 3 hard-coded the one subdirectory that had bitten it
+  (`docs/ideas/IDEA-*.md`) and class 3b only read `docs/*.md` at the top level, so the whole middle
+  tier — `docs/research/`, `docs/dossier/`, `docs/architecture/`, `docs/source/` — was uncovered.
+  **Seven shipped files were in it**, including two source comments and four practice-shelf
+  provenance lines. *A check reading green for the exact reason it should not* — the third time that
+  shape has appeared (v0.171.0 resolved against the wrong tree; v0.179.0's gate enumerated its tests).
+- **`check:refs` class 3c**, and the discriminator is the whole design: **does the path resolve in
+  BOSS's own repo?** `docs/<sub>/` names are overwhelmingly *runtime conventions* in a founder's
+  project — `/red-team` writes `docs/red-team/`, `db-architect` writes `docs/architecture/schema.md`.
+  Those must never be flagged, and they aren't, because the founder's file does not exist here. A
+  path that *does* resolve here, inside a directory `.gitignore` declares local and no template
+  ships, is by construction BOSS's own. Membership is computed from `.gitignore` + the templates,
+  never listed. **One documented exception**: `docs/design/BRAND.md` is a name both repos own — the
+  same naming-coincidence trap class 3b already wrote up for `RESUME.md`, and nothing on disk can
+  tell the two apart.
+- **`red-team/SKILL.md` no longer names a model.** The last prose residue of the eight pins
+  `model-routing.md` was written to forbid: an adversarial pass is **deliberation** work, so it now
+  says that, and lets the host bind it. Capability shapes, never names.
+
+> **For you:** two fixes you'd have hit. A file scaffolded into every MVP project pointed at a
+> research doc that was never in your repo — gone, along with six more of the same shape. And
+> `/red-team` no longer tells you to run a model your host may not have; it names the *kind* of model
+> the job wants and leaves the choice where it belongs.
+
 ## 0.180.0 — 2026-08-20
 
 > **For you:** **`boss credit`** — if you want to say you built with BOSS, there's now one command for

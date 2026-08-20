@@ -113,4 +113,4 @@ and fires conservatively.
 PRINCIPLES.md (the conscience holds the seam). Ju & Aral 2025 (invisible human-AI team drift — the
 motivating evidence), Wasserman (cofounder dynamics), Edmondson (psychological safety). The loop is the
 *when*; the model's judgment + `boss board` + `/decide` (record one together) + `mentor-cofounder` are the
-*how*. Research design input: `docs/research/IDEA-037-founding-teams-ai-design-input.md`.
+*how*.

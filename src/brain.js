@@ -2,7 +2,7 @@
 //
 // The brain is the conscience's persistent, first-person *read on the venture* —
 // what makes continuity (and "feels like its own AI") real. Two homes, one
-// owner each (mentor-architect's hard split, docs/architecture/venture-brain.md):
+// owner each (mentor-architect's hard split):
 //
 //   .boss/brain/read.md    model-owned. The POV, in plain English, sectioned by
 //                          date. The conscience writes it at /close; the founder

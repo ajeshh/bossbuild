@@ -180,6 +180,66 @@ for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
   }
 }
 
+// --- 3c. shipped files pointing INTO a repo-only docs SUBDIRECTORY ---------------------
+// Class 3 hard-coded the one subdirectory that had bitten it (`docs/ideas/IDEA-*.md`) and class 3b
+// only ever read `docs/*.md` at the top level. So the whole middle tier — `docs/research/`,
+// `docs/dossier/`, `docs/architecture/`, `docs/source/`, `docs/business/` — was uncovered, and
+// SEVEN shipped files pointed into it. The worst sat in `stages/L1-mvp/template/docs/loops/
+// coordination-loop.md`, which is scaffolded into EVERY MVP project: it sent a founder's repo to
+// `docs/research/IDEA-037-...md`, a file that has never been in their repo. `check:refs` printed
+// "Everything BOSS points at exists" across 485 files the whole time. A check reading green for
+// the exact reason it should not — the third time that shape has shown up (v0.171.0 resolved
+// against the wrong tree; v0.179.0's release gate enumerated four test files by hand).
+//
+// THE DISCRIMINATOR, and it has to be this one: **does the path resolve in BOSS's own repo?**
+// `docs/<sub>/` names are overwhelmingly RUNTIME conventions in a founder's project — `/red-team`
+// writes `docs/red-team/`, `db-architect` writes `docs/architecture/schema.md`, `/decide` writes
+// `docs/decisions/DEC-NNN.md`. Those are correct and must never be flagged. What separates them
+// from the bug is that the founder's file does not exist HERE. A path that resolves here, inside a
+// directory `.gitignore` declares local and no template ships, is by construction BOSS's own file —
+// and it dangles in every install. That is class 3's original sentence, applied to subdirectories.
+//
+// Membership is computed from `.gitignore` + the templates, never listed, for the same reason as
+// 3b: add `docs/foo/` to a template tomorrow and this stops flagging it with no edit here.
+const shippedDocDirs = new Set(
+  walk(join(ROOT, 'stages'))
+    .map((f) => rel(f))
+    .filter((r) => r.includes(`template${sep}docs${sep}`))
+    .map((r) => r.split(`template${sep}docs${sep}`)[1].split(sep)[0]),
+);
+const repoOnlyDocDirs = readFileSync(join(ROOT, '.gitignore'), 'utf8').split('\n')
+  .map((l) => l.trim())
+  .filter((l) => l.startsWith('docs/') && l.endsWith('/'))
+  .map((l) => l.slice('docs/'.length, -1))
+  .filter((d) => !shippedDocDirs.has(d));
+
+// ONE exception, and it is the trap class 3b already documented in its own words: a name can
+// belong to BOTH repos. `docs/design/BRAND.md` is BOSS's own brand doc AND the founder-supplied
+// brand doc `/landing` and `/pretotype` read — both hedge in the same breath ("or the project's
+// brand doc", "if they exist"), because no shipped capability creates it. Resolving here is a
+// coincidence of naming, not a reference, exactly as `RESUME.md` is for `/close`. It is listed
+// rather than computed because nothing on disk can tell the two apart: BOSS having the file is
+// the very thing that makes it look like a bug. Keep this list at the length you can justify —
+// every entry is a hole, and the reason must survive being read out loud.
+const SHARED_NAMES = new Set(['docs/design/BRAND.md']);
+
+if (repoOnlyDocDirs.length) {
+  const SUBDIR = new RegExp(`\\bdocs/(${repoOnlyDocDirs.join('|')})/[A-Za-z0-9._/-]+\\.\\w+`, 'g');
+  for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
+    const r = rel(f);
+    if (!SHIPPED_ROOTS_DOCS.some((x) => r.startsWith(x))) continue;
+    const seen = new Set();
+    for (const m of readFileSync(f, 'utf8').matchAll(SUBDIR)) {
+      const p = m[0];
+      if (PLACEHOLDER.test(p) || seen.has(p) || SHARED_NAMES.has(p)) continue;
+      // Resolves here = BOSS's own file. Does not resolve = the founder's, written at runtime.
+      if (!existsSync(join(ROOT, p))) continue;
+      seen.add(p);
+      findings.escapes.push([r, `${p} — resolves in BOSS's repo only (docs/${m[1]}/ is gitignored and no template ships it)`]);
+    }
+  }
+}
+
 // --- 4. agents named in founder-facing files -------------------------------------------
 // The vocabulary is built from agents that ACTUALLY EXIST on disk, never from a regex over prose —
 // `persona-cohort` and `persona-reaction` are hyphenated English in two shipped skills, and a

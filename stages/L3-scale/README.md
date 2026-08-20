@@ -1,8 +1,7 @@
 # L3 · Scale — authored (slices 1–2); the rest is trigger-gated
 
 Scale is the mode where the product has customers, the founder has help, and **coordination — not
-code — is the bottleneck.** The founder's rung is **leader** (give away your Legos). Full design:
-[`docs/design/SCALE-MODE.md`](../../docs/design/SCALE-MODE.md).
+code — is the bottleneck.** The founder's rung is **leader** (give away your Legos).
 
 Scale is the mode most tempted by premature ceremony — the exact disease BOSS treats — so everything
 here is **symptom-gated**, and the unlock names its own evidence bar before you cross it.
@@ -38,4 +37,4 @@ Each waits on a real project's symptom, same discipline as every rung:
 
 The old dhun-generalized stub (PM org, product councils, `/saturday` cadences, EXP/AUDIT id
 proliferation) was **demoted, not deleted** — its kernel survives where it maps to a real symptom; its
-ceremony does not. See `docs/design/SCALE-MODE.md` for the full pillar design and the recorded refusals.
+ceremony does not — each surviving pillar names the symptom that earns it, below.

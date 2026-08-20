@@ -13,7 +13,7 @@ curve: host
 
 # Practice: Skill authoring — write skills the model actually triggers and follows
 
-> Adapted from Anthropic's own `skill-creator` skill via [RVW-013](../../docs/research/verdicts/RVW-013-skill-creator-authoring-discipline.md).
+> Adapted from Anthropic's own `skill-creator` skill, vetted into BOSS's practice shelf (RVW-013).
 > The wisdom, not the harness: the with/without eval machinery is deferred (see *What's left out*).
 > This is ground for anyone authoring a skill — BOSS authoring its own, and (UP candidate) a founder
 > authoring one in their scaffolded project.

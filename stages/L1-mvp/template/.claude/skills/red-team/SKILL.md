@@ -28,10 +28,11 @@ product isn't AI-mediated; there's no reason to sit through the LLM battery to p
 - `--self`: red-team BOSS's *own* conscience hook + skills against injection (it reads the founder's
   prompts — it's an attack surface too).
 
-> **Model routing (recalibration):** when you delegate the attack run to a subagent, spawn it with
-> the Agent tool's `model: "fable"` — pay for the strongest attacker; the output is a findings list,
-> not a build, so the judgment premium is trivial. If Fable declines (a `refusal` stop reason), fall
-> back to the session model and say so. See `.boss/model-profile.json`.
+> **Model routing.** An adversarial pass is **deliberation** work — rare, high-stakes, and the
+> output is a findings list rather than a build, so the premium is trivial in absolute terms. If your
+> host lets you choose per-subagent, spawn the attack run on your most deliberate model. If it
+> declines the task (a `refusal` stop reason), fall back to the session model and say so. Your local
+> binding lives in `.boss/model-profile.json` — `boss craft model-routing`.
 
 ## How to run it — the OWASP 2025 LLM Top 10
 

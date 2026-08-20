@@ -7,7 +7,7 @@
 //   - scalars: bare string, quoted string, int, true/false, null
 //   - comments (# ...) and blank lines
 // NOT supported: anchors, aliases, multi-line scalars, flow-style mixing.
-// Lifted from docs/architecture/conscience-evals/runner.js so the same parser
+// Lifted from BOSS's own conscience-eval runner so the same parser
 // is available to the project-side hook.
 
 export function parseYaml(text) {

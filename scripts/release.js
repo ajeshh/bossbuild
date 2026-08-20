@@ -111,6 +111,23 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   if (r.code !== 0) console.log(r.out.trimEnd());
 }
 
+// --- 2d. the backlog agrees with itself -----------------------------------
+// Caught (2026-08-20, the sweep that added it): 21 of 64 records had a status that disagreed
+// with their own file, and in 18 of them the INDEX under-reported work that had ALREADY
+// SHIPPED — `IDEA-001` still read "ready — next build" while `/boss-learn` and `/boss-sync`
+// had been in the L0 template since v0.2.0. That is the expensive direction to rot in: it
+// makes finished work look unfinished, and finished work gets rebuilt.
+// The root cause was vocabulary — `docs/IDS.md` declared six statuses and the files used
+// fifteen, with four spellings of "shipped" that no reader could sort and no checker could
+// compare. Also caught: two records claiming `IDEA-059`, and `FEAT-022` cited by a SHIPPED
+// practice with no record anywhere behind the id.
+{
+  const r = run('node', [join('scripts', 'check-backlog.js')]);
+  record('backlog integrity', r.code === 0,
+    r.code === 0 ? 'every record has a declared status, one id, and an index row that agrees' : 'see output below');
+  if (r.code !== 0) console.log(r.out.trimEnd());
+}
+
 // --- 3. generated docs are current ---------------------------------------
 // Regenerate, then ask git whether that changed anything. If it did, the COMMITTED versions
 // were stale — the 56-release bug — and they are now fixed ON DISK, so this release cannot

@@ -391,7 +391,7 @@ const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 // Columns are a MONOCHROME progression, not four hues — and that is a design
-// decision, not a simplification. `docs/design/VISUAL.md` locks hi-vis as the
+// decision, not a simplification. BOSS's visual language locks hi-vis as the
 // BRAND, never a state, and signage colour as semantic (ISO 3864: stop / caution
 // / safe). A four-colour kanban spends the whole palette on pipeline position,
 // which is not a hazard and does not warrant colour. So position is carried by
@@ -481,7 +481,7 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(projectName)} · board</title>
 <style>
-  /* BOSS board — the site-and-signage world (docs/design/VISUAL.md).
+  /* BOSS board — the site-and-signage world.
      Concrete ground, graphite ink, ONE hi-vis mark at ~2% coverage. Straight
      cuts (2-3px radii), not soft cards. Display type is the mono stack, because
      the tool is the product. Signage colour is reserved for real states. */

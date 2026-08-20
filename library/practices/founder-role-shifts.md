@@ -48,7 +48,7 @@ fixes and the part that matters most.
 - **Seller → operator (→ V1):** the customer-loop verbs as they arrive (support/incidents/churn);
   `mentor-business` (model, pricing), `mentor-talent` (first help).
 - **Operator → leader (→ Scale):** the extended-team + give-away-your-Legos work ([[IDEA-040]]);
-  `mentor-talent`, `mentor-cofounder`. (Scale is being authored — see docs/design/SCALE-MODE.md.)
+  `mentor-talent`, `mentor-cofounder`. (Scale mode ships — `boss unlock scale`.)
 
 `mentor-venture` cites this ladder when the founder asks *"what should I be doing next?"* — the answer
 is often not another feature but the next rung's job.
