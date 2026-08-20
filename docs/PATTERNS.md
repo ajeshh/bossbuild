@@ -30,7 +30,7 @@ judgment is the model's, in isolation. ([Anthropic on hooks](https://code.claude
 - **Unit tests — the deterministic floor.** **57 cases**, zero-dep (`node:test`), covering the state
   projections, the scaffold's non-destructive guarantees, and the CLI contract. Several are marked
   `REGRESSION` and name the shipped bug they lock. Cheapest of the three; runs first.
-- **Gate evals — deterministic, conscience-specific.** **136 cases / 0 failures**, asserting the
+- **Gate evals — deterministic, conscience-specific.** **143 cases / 0 failures**, asserting the
   predicate machinery fires (and stays silent) exactly when it should. Pure structural facts, no model.
 - **Judgment evals — LLM-as-judge, calibrated, GRADED.** **43 golden-transcript cases** across the
   semantic moments (drift / caution / capture / humane), each judged by a *separate* model pass with

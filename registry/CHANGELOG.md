@@ -46,6 +46,14 @@ and know where it should fit, or add a kernel of it as a seed and then scale."*
   can't reconstruct, the failing output you deleted, the key that's in git history now. **A seam is a
   column, a stub, a folder, or a habit** — if it needs a document, a decision, or a dependency, it's
   the practice wearing a seam's clothes. Every entry carries a `seamNot` so the boundary can't erode.
+- **🔴 The ledger did not ship, and it failed silently.** `src/cli.js` and `src/sync.js` read
+  `registry/surface-ladder.json` at runtime, but it was never added to `package.json`'s `files`, so
+  the published tarball had no copy of it — and `readLadder()` catches the missing file and returns
+  `{}`. Every founder's `boss status` would simply never print *"Already built"* and `nextSeam` would
+  never fire: **the feature dies without an error.** Caught by unpacking a real `npm pack` tarball and
+  diffing its output against the repo build — a fresh project showed nothing, so the proof needed a
+  project with `docs/ideas/CANVAS.md` in it. Same escape class as v0.134.0's dormant hooks and
+  v0.152.0's `boss changelog`: **shipped code reading a repo-only path.**
 - **`registry/surface-ladder.json`** — 16 durable capabilities with rung + detection + seam;
   **5 say `seam: null` on purpose**, because inventing a seam to look helpful is how a just-in-time
   tool becomes a checklist. *"Nothing to plant here, and here's why"* is a complete answer.
@@ -581,6 +589,8 @@ design-system hat.
 
 ## 0.170.0 — 2026-08-20
 
+> **For you:** The conscience now speaks about **testing** — if you've shipped a feature and nothing guards it, it says so once. A deliberately low bar: does *anything* test it, not is your coverage good.
+
 **The conscience learns to speak about testing — the one craft domain it never mentioned.**
 
 Ajesh: *"how do we from seed to scale integrate and develop testing… triaging, self healing,
@@ -835,6 +845,8 @@ only a live run could expose.
 
 ## 0.166.0 — 2026-08-20
 
+> **For you:** **`/design-library`** — a design system you can actually look at. Generates a gallery of your components (every variant, all five states) *from your code*, so it can't drift, plus a reuse index the agent reads before writing a new component.
+
 **Design gets the surface it never had: the system you can actually look at.**
 
 Ajesh: *"a lot of people need visual, to assess… the main thing is to capture any drift from
@@ -908,6 +920,8 @@ it doesn't redraw them** — an off-library mockup injects a whole *component* a
 > and ones nothing uses. Hand the page to a designer instead of a repo.
 
 ## 0.165.0 — 2026-08-20
+
+> **For you:** New practices your project inherits: **automation** (rent the runner, own the decision — and the three questions before anything runs unattended) and a refreshed **MCP** read.
 
 **MCP and automation: the decision existed, the route to a founder didn't.**
 

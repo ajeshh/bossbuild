@@ -32,7 +32,8 @@
     "VERSION",
     "PRINCIPLES.md",
     "registry/CHANGELOG.md",
-    "registry/supersedes.json"
+    "registry/supersedes.json",
+    "registry/surface-ladder.json"
   ],
   "scripts": {
     "link": "npm install -g .",

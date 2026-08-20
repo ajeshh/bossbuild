@@ -219,7 +219,7 @@ the exact current release, see [`VERSION`](VERSION) + the [changelog](registry/C
 Self-hosted (BOSS itself runs in MVP mode, using BOSS). All discipline patterns demonstrated
 by BOSS-on-BOSS before they ship anywhere else.
 
-**This is alpha.** The conscience runs a gate-eval suite (136 passing) plus a model-verified
+**This is alpha.** The conscience runs a gate-eval suite (143 passing) plus a model-verified
 judgment surface — its drift / caution / capture calls are graded against labeled sets, not
 just vibes. But it's been pressure-tested mostly against synthetic personas; real-founder
 validation hasn't happened yet (a deliberate, recorded override).
