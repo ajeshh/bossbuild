@@ -62,6 +62,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.188.0</span><span class="when">2026-08-20</span></div>
+        <p>if you skip <code>/close</code>, the conscience is no longer blind. It now reads the facts your repo already carries — what's in flight, what shipped, and what it has already said to you recently — so it can stop repeating a nudge that didn't land. <code>/close</code> still writes the part that matters most: what those facts <em>mean</em>. Nothing about running it changes.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.187.0</span><span class="when">2026-08-20</span></div>
         <p>if you keep a single venture canvas at <code>docs/ideas/CANVAS.md</code> — which <code>/canvas</code> tells you to — the conscience has been telling you your canvas loop is stalled when it isn't. Fixed. And if you already test under another name (<code>npm test</code>, CI), record it with <code>/smoke</code> so the verification nudge stops; it was never meant to fire at someone who is already verified.</p>
       </li>
@@ -105,10 +109,6 @@
         <div class="rel"><span class="ver">v0.177.0</span><span class="when">2026-08-20</span></div>
         <p>the install command changed — <code>npm i -g oyeboss</code> (was <code>bossbuild</code>), and <code>npx oyeboss new my-app</code>. The <code>boss</code> command itself is unchanged and nothing in your project moves. <strong>If you already have the old package, you must uninstall it first</strong> — both provide <code>boss</code>, so installing over it fails with a bare <code>EEXIST</code>: <code>npm uninstall -g bossbuild &amp;&amp; npm i -g oyeboss</code></p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.176.0</span><span class="when">2026-08-20</span></div>
-        <p><code>/measure</code> no longer sends a founder away empty-handed. Below ~10 users it still says <em>&quot;close this and go talk to them&quot;</em> — but it now checks the <strong>seam</strong> first: a <code>created_at</code> on your user and core rows, and one <code>track()</code> stub. The timestamp is the only thing on the page you cannot buy back later. Depth: <code>boss craft analytics-for-ai-products</code>.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -137,7 +137,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.187.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.188.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

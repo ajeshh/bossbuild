@@ -12,7 +12,7 @@
       "path": ".boss/brain/read.md",
       "capability": "the venture brain — /close, /comprehend",
       "verdict": "owed",
-      "why": "ROOT CAUSE FOUND AND FIXED 2026-08-20: the conscience hook was never installed in BOSS's own repo (no .claude/hooks/, no hooks block, manifest pinned at 0.6.0), so nothing that writes the brain had ever run here. The mechanism is now wired and the frequency ledger is already populating. This file is written by `/close` at the end of a real working session, which is a thing a person does, not a thing a build can fabricate — so it stays owed until that happens."
+      "why": "Root cause fixed 2026-08-20 (the conscience hook had never been installed here), and the DEPENDENCE is now fixed too: `deriveBrainFacts` gives the conscience a factual floor from the records and the frequency ledger, so a skipped /close no longer means no memory. This file stays owed on purpose — it holds the POV, and a POV is the one thing that cannot be derived. It is written by a person at the end of a real session."
     },
     {
       "path": ".boss/brain/relationship.md",
@@ -101,8 +101,8 @@
     {
       "path": "docs/design/library/manifest.json",
       "capability": "/design-library",
-      "verdict": "owed",
-      "why": "BOSS has a real design system, a public website and a brand doc — it is exactly the project this was built for, and it has never run it on itself. The v0.164.0 visual-identity work built the surface without producing the library that is supposed to keep it honest."
+      "verdict": "exercised",
+      "why": "Run for the first time at v0.187.0. BOSS is not a component app, so it catalogs what BOSS actually has: 108 tokens in 25 groups, 8 CSS class families across three real surfaces, with content hashes. It caught one genuine drift on its first run — a hardcoded #16181A in the board's hi-vis chip, now `--ink-on-hivis`. It also caught a false positive in its own detector (`--stage-0` has a digit, so a `[a-z-]+` name pattern missed it and flagged a token definition as raw drift)."
     },
     {
       "path": "docs/design/ux-check-summary.md",
@@ -125,8 +125,8 @@
     {
       "path": "docs/extractions/EXTR-NNN",
       "capability": "/extract + extraction-loop",
-      "verdict": "owed",
-      "why": "The sharpest one in this file. /extract encodes PRINCIPLE #1 — BOSS's FIRST principle, the UP/DOWN router that defines what BOSS is — and BOSS has produced ZERO EXTR records in 156 releases while routing patterns UP and DOWN constantly. The discipline is real and the record of it is missing, so nobody can audit the one decision BOSS says matters most."
+      "verdict": "exercised",
+      "why": "EXTR-001 (derive-don't-stamp) and EXTR-002 (agreement is not truth) written 2026-08-20, 156 releases late. Both route UP, both name what did NOT make the cut — `proof:` and `program:` are held at NOT-YET on n=1, because promoting a one-week-old convention into library/ on a single repo's evidence is how the shelf fills with things nobody validated."
     },
     {
       "path": "docs/rfcs/RFC-NNN",

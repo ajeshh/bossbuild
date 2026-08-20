@@ -622,7 +622,7 @@ function shippedTimeline(cards) {
     color-scheme: light dark;
     --bg: #E8E6E1; --panel: #F2F1EE; --sunk: #DCDAD4;
     --ink: #16181A; --muted: #5F656B; --line: #CBC9C3;
-    --hivis: #FF5C00; --hivis-text: #B33900;
+    --hivis: #FF5C00; --hivis-text: #B33900; --ink-on-hivis: #16181A;
     --caution: #7F5800; --stop: #C01818;
     --stage-0: #9AA0A6; --stage-1: #5F656B; --stage-2: #2E3236; --stage-3: #16181A;
     --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -645,7 +645,7 @@ function shippedTimeline(cards) {
   /* The one hi-vis mark on the page — a stencilled block, the way site signage
      marks the thing that matters. Brand, not state. */
   .kicker { display: inline-block; font: 700 10px/1 var(--mono); text-transform: uppercase;
-            letter-spacing: .18em; color: #16181A; background: var(--hivis);
+            letter-spacing: .18em; color: var(--ink-on-hivis); background: var(--hivis);
             padding: 5px 8px 4px; border-radius: var(--r, 2px); margin: 0 0 10px; }
   h1 { font: 650 24px/1.2 var(--mono); letter-spacing: -.02em; margin: 0; }
   .evidence { color: var(--muted); font-size: 13.5px; margin: 8px 0 0; max-width: 64ch; }

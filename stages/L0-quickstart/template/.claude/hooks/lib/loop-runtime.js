@@ -291,12 +291,62 @@ export function readCohort(projectDir) {
 // not the whole history (structured-output discipline on the input side, same as
 // drift-loop's bounded read). Returns null when there's no brain yet, so the
 // conscience speaks generically and the output is byte-identical to before.
+// THE FLOOR UNDER THE RITUAL. `read.md` is written by /close, and people forget /close — so the
+// conscience's memory was one skipped ritual away from nothing, forever. That is the same failure
+// as `shipped_on:` dates nobody stamped and `proof:` fields nobody filled: **a rule that depends
+// on someone remembering is not a mechanism.**
+//
+// So the repo speaks when the founder hasn't. These are FACTS, derived from files that already
+// exist, and they are labelled as facts — the conscience must never be handed a machine-assembled
+// summary while believing it is reading a considered POV. /close still writes the judgment; this
+// is the floor it lands on, not a replacement for it. If /close never runs, the conscience still
+// knows what you have been doing. If it does run, it gets both.
+//
+// Cheap by construction: it only runs once a moment is already firing (past the silent
+// early-exit), reads at most a few small files, and no subprocess.
+function deriveBrainFacts(projectDir) {
+  const bits = [];
+  try {
+    const ideas = join(projectDir, 'docs', 'ideas');
+    if (existsSync(ideas)) {
+      const files = readdirSync(ideas).filter((f) => /^[A-Z]{3,4}-\d+.*\.md$/.test(f));
+      const open = [];
+      let shipped = 0;
+      for (const f of files) {
+        const m = readFileSync(join(ideas, f), 'utf8').match(/^status:\s*(\S+)/m);
+        const s = (m ? m[1] : '').toLowerCase();
+        if (s.startsWith('shipped')) shipped++;
+        else if (s.startsWith('building')) open.push(f.replace(/\.md$/, '').split('-').slice(0, 2).join('-'));
+      }
+      if (open.length) bits.push(`in flight: ${open.slice(0, 3).join(', ')}${open.length > 3 ? ` +${open.length - 3}` : ''}`);
+      if (shipped) bits.push(`${shipped} record${shipped === 1 ? '' : 's'} shipped`);
+    }
+  } catch { /* facts are best-effort; never break the hook */ }
+  try {
+    // What the conscience has ALREADY been saying — the closest thing to memory it can derive.
+    const log = join(projectDir, '.boss', 'conscience-log.jsonl');
+    if (existsSync(log)) {
+      const lines = readFileSync(log, 'utf8').trim().split('\n').filter(Boolean).slice(-25);
+      const counts = {};
+      for (const l of lines) {
+        try {
+          for (const m of (JSON.parse(l).moments || [])) counts[m.moment] = (counts[m.moment] || 0) + 1;
+        } catch { /* a torn line is not a reason to go silent */ }
+      }
+      const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+      if (top) bits.push(`you have raised "${top[0]}" ${top[1]}x recently — if it did not land, say it differently or not at all`);
+    }
+  } catch { /* ignore */ }
+  if (!bits.length) return null;
+  return `[derived from the repo — FACTS, not a considered read. No /close has been run, so the conscience has no POV on this venture yet.]\n${bits.map((b) => `- ${b}`).join('\n')}`;
+}
+
 export function readBrainContext(projectDir) {
   try {
     const f = join(projectDir, '.boss', 'brain', 'read.md');
-    if (!existsSync(f)) return null;
+    if (!existsSync(f)) return deriveBrainFacts(projectDir);
     const text = readFileSync(f, 'utf8');
-    if (!text.trim()) return null;
+    if (!text.trim()) return deriveBrainFacts(projectDir);
     // Line-based split (robust): preamble = everything before the first dated
     // `## YYYY-MM-DD` header; keep only the LAST dated block.
     const dateRe = /^##\s+\d{4}-\d{2}-\d{2}\b/;

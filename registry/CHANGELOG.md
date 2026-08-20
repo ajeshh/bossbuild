@@ -9,6 +9,52 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.188.0 — 2026-08-20
+
+- **🔴 The conscience's memory was one skipped ritual away from nothing, forever.** `.boss/brain/read.md`
+  is written by `/close`, and Ajesh named the hole exactly: *"people can forget close — how do we work
+  around that, and when we get a close, then great but not be hampered."* This is the third time in
+  one week the same shape has appeared: `shipped_on:` dates nobody stamped, `proof:` fields nobody
+  filled, and now a brain nobody wrote. **A rule that depends on someone remembering is not a
+  mechanism, it is a preference with good intentions.**
+- **So the repo speaks when the founder hasn't.** `deriveBrainFacts` gives the conscience a **factual
+  floor** — what is in flight, how much has shipped, and *what the conscience has already been saying*
+  (read from the frequency ledger: *"you have raised 'unverified' 3x recently — if it did not land,
+  say it differently or not at all"*). That last one is the self-calibration `relationship.md` was
+  built for, **derived instead of stamped.** `boss brain` shows the same under an absent read.
+- **`/close` is not hampered and not replaced.** An authored read always renders first and in full;
+  the derived layer is the floor it lands on. **And it is labelled as derived, every time** — the
+  conscience is handed *"[derived from the repo — FACTS, not a considered read]"*. A machine-assembled
+  summary a reader mistakes for judgment is worse than an empty file, because an empty file is honest
+  about being empty. **The POV stays the one thing only a person writes.**
+
+- **`/design-library` run on BOSS for the first time.** BOSS is not a component app, so it catalogs
+  what BOSS actually has: **108 tokens in 25 groups, 8 CSS class families across three real surfaces**,
+  with content hashes so a moved surface shows as stale. **It caught one genuine drift on its first
+  run** — a hardcoded `#16181A` in the board's hi-vis chip, now `--ink-on-hivis`. It also caught a
+  false positive *in its own detector*: `--stage-0` has a digit, so a `[a-z-]+` name pattern read a
+  token definition as raw drift. **The rule it exists to enforce, broken by its own first
+  implementation** — third time in this arc.
+- **`/extract` run for the first time, 156 releases late.** The sharpest item in the dogfood ledger:
+  the skill encodes **PRINCIPLE #1**, the UP/DOWN router that defines what BOSS *is*, and had produced
+  zero records while BOSS routed patterns constantly. **EXTR-001 — *derive-don't-stamp***, the rule
+  that decided four builds this week, routed UP with the boundary that stops it overreaching (derive
+  facts, never judgment; always label the derived layer). **EXTR-002 — *agreement is not truth***: a
+  checker comparing two documents proves they agree, not that either is right, which is why v0.181.0's
+  gate would have passed all 21 records it was built to catch.
+- **Both records name what did NOT make the cut, because a pass that promotes everything it looked at
+  was collecting, not sorting.** `proof:` and `program:` are held at **NOT-YET on n=1** — promoting a
+  one-week-old convention into `library/` on a single repo's evidence is how the shelf fills with
+  things nobody validated. The fail-open `try/catch` trap is logged as DOWN with a counter: **third
+  occurrence** (`readLadder`, `readBrainContext`, `gitFirst`); a fourth sends it UP.
+- **Dogfood ledger: 4 exercised · 15 exempt · 3 owed.** The venture brain stays `owed` **on purpose** —
+  its dependence is fixed, but the file holds the POV, and that is the one thing that cannot be derived.
+
+> **For you:** if you skip `/close`, the conscience is no longer blind. It now reads the facts your
+> repo already carries — what's in flight, what shipped, and what it has already said to you recently —
+> so it can stop repeating a nudge that didn't land. `/close` still writes the part that matters most:
+> what those facts *mean*. Nothing about running it changes.
+
 ## 0.187.0 — 2026-08-20
 
 **BOSS's conscience had never once fired on BOSS. The dogfood audit went looking for missing logs

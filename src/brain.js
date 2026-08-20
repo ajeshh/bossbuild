@@ -25,10 +25,55 @@
 // skill needs); `--diff` / `--forget` are the next increment, per the v1 line in
 // the architecture note.
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { dim, bold, ok, err } from './ui.js';
 import { parseArgs } from './args.js';
+
+
+// --- the floor under the ritual --------------------------------------------------------------
+// Ajesh: *"people can forget close — how do we work around that, and when we get a close, then
+// great but not be hampered."* Exactly right, and it is the same failure as `shipped_on:` dates
+// nobody stamped: **a rule that depends on someone remembering is not a mechanism.** The brain was
+// one skipped ritual away from being empty forever.
+//
+// So the repo speaks when the founder hasn't. These are FACTS derived from files that already
+// exist, and they are LABELLED as facts — the point of the brain is a considered POV, and a
+// machine-assembled summary must never be mistaken for one. /close still writes the judgment; this
+// is the floor it lands on. Nothing about /close changes, and it is never "hampered" by this: an
+// authored read always renders first and in full.
+export function derivedFacts(projectDir) {
+  const bits = [];
+  try {
+    const ideas = join(projectDir, 'docs', 'ideas');
+    if (existsSync(ideas)) {
+      const files = readdirSync(ideas).filter((f) => /^[A-Z]{3,4}-\d+.*\.md$/.test(f));
+      const open = []; let shipped = 0;
+      for (const f of files) {
+        const m = readFileSync(join(ideas, f), 'utf8').match(/^status:\s*(\S+)/m);
+        const s = (m ? m[1] : '').toLowerCase();
+        if (s.startsWith('shipped')) shipped++;
+        else if (s.startsWith('building')) open.push(f.replace(/\.md$/, '').split('-').slice(0, 2).join('-'));
+      }
+      if (open.length) bits.push(`In flight: ${open.slice(0, 4).join(' · ')}${open.length > 4 ? ` +${open.length - 4}` : ''}`);
+      if (shipped) bits.push(`${shipped} record${shipped === 1 ? '' : 's'} recorded as shipped`);
+    }
+  } catch { /* best-effort */ }
+  try {
+    const log = join(projectDir, '.boss', 'conscience-log.jsonl');
+    if (existsSync(log)) {
+      const lines = readFileSync(log, 'utf8').trim().split('\n').filter(Boolean);
+      const counts = {};
+      for (const l of lines.slice(-25)) {
+        try { for (const m of (JSON.parse(l).moments || [])) counts[m.moment] = (counts[m.moment] || 0) + 1; }
+        catch { /* a torn line is not a reason to go silent */ }
+      }
+      const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+      bits.push(`The conscience has spoken ${lines.length}x${top ? `, most often "${top[0]}"` : ''}`);
+    }
+  } catch { /* best-effort */ }
+  return bits;
+}
 
 function brainDir(projectDir) {
   return join(projectDir, '.boss', 'brain');
@@ -190,9 +235,18 @@ export function renderBrain(projectDir, stamp) {
 
   const rf = readPath(projectDir);
   if (!existsSync(rf)) {
-    lines.push('  The brain is empty — the conscience hasn\'t formed a read yet.');
-    lines.push('  It writes one at /close, once there\'s a session of work to look at.');
-    lines.push(`  ${dim('Nothing to show after 0 sessions. This is the honest empty state, not a bug.')}`);
+    lines.push('  No considered read yet — that is written at /close, and only a person can write it.');
+    const facts = derivedFacts(projectDir);
+    if (facts.length) {
+      lines.push('');
+      lines.push(`  ${bold('What the repo can say on its own')} ${dim('— facts, not a read:')}`);
+      for (const f of facts) lines.push(`    ▸ ${f}`);
+      lines.push('');
+      lines.push(`  ${dim('The conscience is given these when it speaks, so it is never working blind')}`);
+      lines.push(`  ${dim('just because a /close was skipped. A read still says what the facts MEAN.')}`);
+    } else {
+      lines.push(`  ${dim('And nothing on disk to derive from yet. This is the honest empty state, not a bug.')}`);
+    }
     if (existsSync(relationshipPath(projectDir)) && readFileSync(relationshipPath(projectDir), 'utf8').trim()) {
       lines.push(`  ${dim('(a relationship log exists, though — `boss brain --relationship`)')}`);
     }
