@@ -9,6 +9,46 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.184.0 — 2026-08-20
+
+- **🔴 The gate shipped yesterday would not have caught the bug it was built for.** v0.181.0's
+  `check:backlog` compared each record to its INDEX row — **document against document**. All 21
+  drifted records would have passed it if the index had simply agreed with the wrong files.
+  **Agreement is not truth.** Ajesh, on reading the result: *"the whole point of us managing the docs
+  was to avoid this — it broke what BOSS is about from a managing-docs perspective."* He was right,
+  and the fix is not a stricter version of the same idea.
+- **A status is a claim about the code, so it is now checked against the code.** Every record names
+  `proof:` — the path that would not exist if the thing were not done — and the rule runs **both
+  ways**:
+  **`shipped` + proof missing** → the record claims something the repo cannot show.
+  **not shipped + proof present** → *you built it and never said so.* **That second direction is the
+  disease**, all 18 instances of it, and nothing in BOSS had ever looked for it.
+- **Declaring `proof:` on something UNBUILT is the point, not busywork — it is a tripwire laid in
+  advance.** Name the file now; the day someone creates it, the gate fails until the record is
+  updated. **Drift survives one release instead of a hundred.** All 67 records stamped; the new class
+  immediately caught two more the reconciliation had missed (`IDEA-037`, `IDEA-055`).
+- **Two honest states are declared, never silent.** `proof: none` + `proof_note:` for a record whose
+  output was a *decision* rather than a file (IDEA-012's catalog became the backlog). And a
+  `proof_note:` on a non-shipped record whose proof exists anyway — **built-but-unreachable**
+  (IDEA-047 needs a bought domain, which is not a build task) or **completes-on-a-condition**
+  (IDEA-058 ends when citation debt hits zero, which is not a file). **The note is the price of the
+  exception: you may hold the state, you may not hold it silently.**
+- **🔴 And it ships DOWN, because the rule without the mechanism is decoration.** BOSS shipped a
+  founder `docs/IDS.md` — the closed status vocabulary, *file-is-truth* — and shipped **no way to
+  tell when either had stopped being true.** That is precisely the condition BOSS's own repo was in
+  while it drifted. **`boss records`** applies the same check to a founder's `docs/ideas/`,
+  `decisions/`, `evidence/`, `practices/`, `features/`, and **`boss status` carries one line** —
+  only the good-news direction (*work you've already finished*), because status is orientation, not
+  a chore list. `proof:` is **opt-in** for a founder: BOSS does not fail someone's project for
+  declining a convention they never asked for, so records without it are silent until
+  `boss records --all`.
+
+> **For you:** **`boss records`** — new. Your docs make claims about your code (`shipped` means the
+> thing exists), and nothing ever checked them. Add `proof: <path>` to a record and BOSS will tell
+> you when the two stop agreeing — in both directions. The one that costs you is a finished feature
+> whose record still says *"exploring"*: that is a thing you might build twice, or hand to an agent
+> that rebuilds it, because the agent believes your docs. `boss status` now says so in one line.
+
 ## 0.183.0 — 2026-08-20
 
 - **🔴 A capability shipped three releases ago and was never announced, so no existing project could

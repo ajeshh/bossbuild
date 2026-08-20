@@ -19,6 +19,7 @@ import { map, renderLadder } from './map.js';
 import { modeWord } from './modes.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
+import { recordDrift, driftLine } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
@@ -365,6 +366,14 @@ function printBuiltAndSeam(projectDir, stamp) {
     const rest = names.length > 4 ? dim(`  +${names.length - 4} more`) : '';
     console.log(`    ▸ ${bold('Already built:')}   ${shown}${rest}`);
   }
+  // Record drift, and ONLY the direction that is good news: work they finished and did not write
+  // down. The other findings are real but they are chores, and `boss status` is not a chore list —
+  // `boss records` is where someone goes to look. This is the same restraint as the seam below.
+  try {
+    const d = driftLine(projectDir);
+    if (d) console.log(`    ${dim('▸ Records:')}        ${d.head} — ${dim('boss records')}`);
+  } catch { /* never let a malformed record break status */ }
+
   // ONE seam, never a list — see nextSeam. Phrased as the cheap thing, not as a chore, because
   // this is the only case where "not yet" would otherwise cost them something unrecoverable.
   if (seam) {
@@ -491,6 +500,48 @@ function cmdBrain(args) {
   } catch (e) {
     return fail(e.message);
   }
+}
+
+// `boss records` — the deliberate reader for record drift. See src/records.js for why this
+// ships at all: BOSS shipped the rules for keeping a project's memory and shipped no way to tell
+// when they stopped being true, which is exactly how BOSS's own memory got 21 records wrong.
+function cmdRecords(args) {
+  const all = args.includes('--all');
+  const dir = process.cwd();
+  let found = [];
+  try { found = recordDrift(dir); } catch { /* fall through to the empty case */ }
+  const shown = all ? found : found.filter((f) => !f.quiet);
+
+  console.log(`\n  ${bold('BOSS records')}   ${dim(dir)}\n`);
+  if (!shown.length) {
+    console.log(`  ${ok('✦')} Your records still match your repo.\n`);
+    console.log(dim("  A status is a claim about your code. This is the check that they agree —"));
+    console.log(dim("  mostly so that work you already finished doesn't sit there looking undone."));
+    if (!all && found.length) console.log(dim(`\n  ${found.length} record(s) carry no \`proof:\` to check — boss records --all`));
+    console.log('');
+    return;
+  }
+  const LABEL = {
+    'built-not-recorded': 'ALREADY BUILT, NOT RECORDED',
+    'claimed-not-built': 'CLAIMED, NOT THERE',
+    'duplicate-id': 'DUPLICATE ID',
+    'off-vocabulary': 'OFF-VOCABULARY STATUS',
+    'no-proof': 'NOTHING TO CHECK AGAINST',
+  };
+  let last = null;
+  for (const f of shown) {
+    if (f.kind !== last) {
+      last = f.kind;
+      console.log(`  ${bold(LABEL[f.kind] || f.kind)}`);
+      if (f.kind === 'built-not-recorded') {
+        console.log(dim('  You finished these and the record still says otherwise. Left alone, this is'));
+        console.log(dim('  how a thing gets built twice.'));
+      }
+    }
+    console.log(`      ${f.id}  ${dim(f.file)}\n        ${f.what}`);
+  }
+  console.log(`\n  ${shown.length} finding(s). Update the record, or add a \`proof_note:\` saying why`);
+  console.log(`  it is built and still not done (blocked, partial, waiting on someone).\n`);
 }
 
 function cmdInsights() {
@@ -855,6 +906,12 @@ const HELP = {
     examples: ['boss insights'],
     see: ['board', 'list'],
   },
+  records: {
+    usage: 'boss records [--all]',
+    what: "Check what your docs CLAIM against what your repo actually has. A status is a claim — `shipped` means the thing exists. This reads each record's `proof:` path and says where the two stopped agreeing, in both directions: something you finished and never wrote down, or something a record says you shipped that isn't there. --all also lists records with no `proof:` to check.",
+    examples: ['boss records', 'boss records --all'],
+    see: ['status', 'board'],
+  },
   team: {
     usage: 'boss team [add @user ["Name"] | remove @user]',
     what: 'Who\'s on the venture. Solo by default and dormant — adding a cofounder lights up the team layer (shared decisions, the partnership mentor). Keyed on GitHub identity; never fabricated.',
@@ -1111,6 +1168,7 @@ export async function run(argv) {
     case 'map': return cmdMap(args);
     case 'brain': return cmdBrain(args);
     case 'insights': return cmdInsights();
+    case 'records': return cmdRecords(args);
     case 'team': return cmdTeam(args);
     case 'list': return cmdList();
     case 'retire': return cmdRetire(args);

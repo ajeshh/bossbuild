@@ -62,6 +62,37 @@ one project, four words mean *shipped* and no reader — you, a teammate, or an 
 apart. Your board quietly disagrees with your files and nothing announces it. A vocabulary nobody can
 enumerate is not a vocabulary.
 
+## `proof:` — how a status stays honest (optional, and worth it)
+
+A status is a **claim about your code**. `shipped` means the thing exists. Nothing checks that for
+you unless you say what "exists" looks like:
+
+```
+status: building
+proof:  src/checkout.ts       # the path that would not exist if this were done
+```
+
+Then `boss records` reads it both ways:
+
+| Your record says | The proof is | What it tells you |
+|---|---|---|
+| `shipped` | not there | the record claims something your repo can't show |
+| not shipped | **there** | **you built it and never wrote it down** |
+
+The second row is the one that costs you. A finished thing that still reads *"exploring"* is a
+finished thing you might build again — or hand to an agent that rebuilds it, because the agent
+believes your docs.
+
+**Naming `proof:` before you build is the point**, not extra work: it's a tripwire. The day that
+file appears, `boss records` tells you the record is stale. Two states are declared rather than
+hidden — `proof: none` with a `proof_note:` when a record's output was a *decision* rather than a
+file, and a `proof_note:` on something built-but-blocked ("done, waiting on the domain").
+
+> BOSS learned this on itself. It audited its own records and found **21 of 64 wrong — 18 claiming
+> work was unbuilt that had shipped**, one of them for a hundred releases. The rules were all
+> written down and nothing checked them, which made them preferences. `boss records` is the half
+> that was missing.
+
 ## Numbering
 
 Allocate the next free integer per prefix. Before reserving one, grep all of `docs/` — not just an

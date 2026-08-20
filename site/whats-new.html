@@ -62,6 +62,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.184.0</span><span class="when">2026-08-20</span></div>
+        <p><strong><code>boss records</code></strong> — new. Your docs make claims about your code (<code>shipped</code> means the thing exists), and nothing ever checked them. Add <code>proof: &lt;path&gt;</code> to a record and BOSS will tell you when the two stop agreeing — in both directions. The one that costs you is a finished feature whose record still says <em>&quot;exploring&quot;</em>: that is a thing you might build twice, or hand to an agent that rebuilds it, because the agent believes your docs. <code>boss status</code> now says so in one line.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.183.0</span><span class="when">2026-08-20</span></div>
         <p>if you have been using BOSS since before v0.179.0, <code>/spec</code> gained something you have not been told about: it now asks for <strong>the three paths that must not break</strong> — the money path, the destructive path, and the negative path (<em>can user A reach user B's data</em>). <code>/red-team --paths</code> proves them, and needs no LLM in your product at all. Name them while you are still deciding what &quot;done&quot; means; they are close to impossible to retrofit once the feature exists.</p>
       </li>
@@ -105,10 +109,6 @@
         <div class="rel"><span class="ver">v0.171.0</span><span class="when">2026-08-20</span></div>
         <p>if you're early, BOSS now asks you for one thing — pick the words for your two or three main concepts and stay consistent. The voice-and-tone table waits until you've watched real people read your screens. Unless you're building somewhere high-stakes, in which case how your product talks when it's <em>unsure</em> comes first.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.170.0</span><span class="when">2026-08-20</span></div>
-        <p>The conscience now speaks about <strong>testing</strong> — if you've shipped a feature and nothing guards it, it says so once. A deliberately low bar: does <em>anything</em> test it, not is your coverage good.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -137,7 +137,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.183.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.184.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

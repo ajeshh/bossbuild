@@ -46,6 +46,41 @@ checker could tell, so the index quietly disagreed with the files for ~80 releas
 noticed. A vocabulary nobody can enumerate is not a vocabulary. `npm run check:backlog` enforces
 this, the ID↔file mapping, and index agreement.
 
+## `proof:` — the field that makes a status checkable
+
+**A status is a claim about the code, so every record names the artifact that would settle it.**
+
+```
+status: building
+proof:  src/fleet.js          # the path that would not exist if this were done
+```
+
+`npm run check:backlog` reads it both ways, and the second direction is the one that cost ~80
+releases of drift:
+
+| The record says | The proof is | Verdict |
+|---|---|---|
+| `shipped` | not on disk | 🔴 the record claims something the repo cannot show |
+| not shipped | **on disk** | 🔴 **you built it and never said so** |
+
+**Naming `proof:` on something you have NOT built is the point.** It is a tripwire laid in advance:
+the day that file appears, the gate fails until the record is updated. Drift then survives one
+release instead of a hundred.
+
+Two honest states are **declared, never silent**:
+- `proof: none` + `proof_note:` — the record produced a *decision*, not a file (IDEA-012's catalog
+  became the backlog; IDEA-028's audit produced retire/keep calls).
+- `proof_note:` on a non-shipped record whose proof exists anyway — built-but-unreachable
+  (IDEA-047 needs a bought domain, which is not a build task) or completes-on-a-condition
+  (IDEA-058 ends when citation debt hits zero, which is not a file).
+
+**The note is the price of the exception.** You may hold the state; you may not hold it silently.
+
+**Why this exists rather than just a rule.** The first version of `check:backlog` compared each
+record to its INDEX row — document against document. All 21 drifted records would have passed it if
+the index had simply agreed with the wrong files. **Agreement is not truth.** Ajesh, on reading the
+result: *"the whole point of us managing the docs was to avoid this."*
+
 **IDs are never reused.** Two files claimed `IDEA-059` at once, which made every `[[IDEA-059]]`
 link ambiguous — including the one in `RESUME.md`. Take the next free number; a gap is free and a
 collision is not.
