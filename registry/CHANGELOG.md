@@ -9,6 +9,51 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches boss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.173.0 — 2026-08-20
+
+**The back-office gap, answered with routing instead of surface.**
+
+Ajesh: *"boss is there to help with early finance and HR, onboarding new employees, sharing culture
+support… where are we weak or could further extend boss? do we need to add mentors?"* The gap is
+real and mostly unbuilt. The first move is **two lines on agents that already exist**, not a 48th skill.
+
+### What the sweep found
+
+Grep the shipped surface: `payroll` 0 · `bookkeep` 0 · `compensation` 0 · `handbook` 0 ·
+`performance review` 0 · `board meeting` 0. **"Early finance" today means the LLM bill**
+(`/ai-cost` + `/cost-review`) **and the first dollar** (`/money`) — the operating middle (runway,
+books, business/personal separation) has nothing. Employee onboarding has nothing. Culture has one
+practice scoped to AI rollout. [[IDEA-052]] already designed the answer — briefs-as-interface · **one**
+`mentor-operations` seat, not four · collaborator classes — and it is still unbuilt. [[IDEA-004]],
+the values table Ajesh's own vision doc calls the differentiator, has been `exploring` since 2026-05-21.
+
+### 🔴 `/onboard` was a false friend
+
+A founder who hires someone and types `/onboard` got an **activation-funnel** skill with no signal
+they were in the wrong place — and the description is what routes the founder *and the model*.
+v0.157.0 deliberately kept `/onboard` separate from `/health`, so this is a **scope line, not a
+rename**: *your USERS' first run — not a new teammate's first week.*
+
+### The routing half, on mentors that already exist
+
+v0.165.0's finding was that `mentor-architect` **owned** `mcp.md` and named MCP nowhere in the
+decision set it walked a founder through. **This domain has the identical shape.** `mentor-talent`
+and `mentor-business` both already say *"point to a real lawyer / accountant"* — the disclaimer
+without the tool. Both now carry the other half: **hand off well.** Before the call, write down what
+the company is in two lines, what's already decided (`DEC-*.md` — entity, splits, pricing), and the
+three questions — *an hourly professional is the most expensive place to think out loud.*
+
+**Zero new skills (47 → 47.)** It's a **posture**, not professional-domain content — which is why it
+needs no real engagement to shape it.
+
+### Recorded, not earned
+
+`/brief` was scoped and **not built.** IDEA-052's handoff prompt carries a hard stop — *"confirm a
+real professional engagement exists to shape it against; if not, stop"* — which Ajesh **overrode**
+this session. The build was then pulled back on **scope**, not on the gate. So the override stands
+unspent and the stop stands unmet, and both are recorded in IDEA-052 rather than left for the next
+session to read as a green light it already earned.
+
 ## 0.172.0 — 2026-08-20
 
 **Documentation becomes a practice — and the discipline BOSS had shipped for 167 releases finally
