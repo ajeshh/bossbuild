@@ -186,10 +186,10 @@ export function collectBoard(projectDir) {
       feats.push({ id, title, status: fm.status, nextReview: fm.next_review,
         buildingSince: fm.building_since || gitFirst(projectDir, `docs/ideas/${f}`),
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
-        priority, owner: fm.owner, progress: criteriaProgress(text) });
+        priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text) });
     } else {
       ideas.push({ id, title, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
-        shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof) });
+        shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof), program: fm.program || null });
     }
   }
 
@@ -237,6 +237,7 @@ export function collectBoard(projectDir) {
       aging: ageDays != null && ageDays >= AGING_DAYS,
       shippedAgeDays,
       shippedOn: ft.shippedOn || null,
+      program: ft.program || null,
       archived: shippedAgeDays != null && shippedAgeDays > SHIPPED_WINDOW_DAYS,
       priority: ft.priority,
       owner: personOwner(ft.owner),
@@ -259,6 +260,7 @@ export function collectBoard(projectDir) {
       priority: id.priority,
       owner: personOwner(id.owner),
       shippedOn: id.shippedOn || null,
+      program: id.program || null,
     });
   }
 
@@ -503,6 +505,46 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
     ? `<div class="banner aging-banner">⌛ ${agingCards.length} aging in build — <code>${esc(agingCards[0].id)}</code> open ${esc(ageLabel(agingCards[0].ageDays))} <span class="muted">finish it, or</span> <code>/revalidate ${esc(agingCards[0].id)}</code></div>`
     : '';
 
+// --- programs: the umbrella roll-up ---------------------------------------------------------
+// Ajesh, thinking the shape through out loud: *"there might be a log or notes that roll up all the
+// features under it."* This is that roll-up at its cheapest — a bar per program, shipped vs open,
+// derived from one frontmatter line. It answers the question a column board structurally cannot:
+// not "what is in flight" but "which of the things I decided to do is actually stuck."
+//
+// Same restraint as the timeline: this is not a completion percentage and not a burndown. An
+// umbrella with nothing shipped is a fact worth seeing, not a failing grade — BOSS's own
+// `public-surface` sat at 0-of-5 while `ai-native-boss` finished 6-of-6, and both are just true.
+function programRollup(cards) {
+  const by = new Map();
+  for (const c of cards) {
+    if (!c.program) continue;
+    if (!by.has(c.program)) by.set(c.program, []);
+    by.get(c.program).push(c);
+  }
+  if (!by.size) return '';
+  const rows = [...by.entries()]
+    .map(([name, members]) => ({
+      name,
+      shipped: members.filter((m) => m.column === 'Shipped').length,
+      total: members.length,
+    }))
+    .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
+    .map((p) => {
+      const pct = p.total ? Math.round((p.shipped / p.total) * 100) : 0;
+      const stuck = p.shipped === 0 && p.total > 1;
+      return `<div class="prog${stuck ? ' stuck' : ''}">
+          <div class="prog-name">${esc(p.name)}</div>
+          <div class="prog-bar"><i style="width:${pct}%"></i></div>
+          <div class="prog-n">${p.shipped}<span class="muted">/${p.total}</span></div>
+        </div>`;
+    }).join('');
+  return `<section class="programs">
+      <h2><span class="label">Programs</span> <span class="n">${by.size}</span></h2>
+      <div class="progs">${rows}</div>
+      <p class="tl-foot"><span class="muted">One frontmatter line — <code>program:</code> — grouping records that belong together.</span></p>
+    </section>`;
+}
+
 // --- the shipped timeline -------------------------------------------------------------------
 // Ajesh: *"there should be a timeline view of when features get shipped, so that there is a
 // visual way of seeing progress."* This is EVID-001's ask in its most literal form — *"knowing
@@ -561,6 +603,7 @@ function shippedTimeline(cards) {
 }
 
   const timelineHtml = shippedTimeline(cards);
+  const programHtml = programRollup(cards);
 
   const pills = COLUMNS.map((col) =>
     `<span class="pill" style="--hue:var(--stage-${COLUMN_INDEX[col]})"><i></i>${esc(col)} <b>${counts[col] || 0}</b></span>`
@@ -614,6 +657,21 @@ function shippedTimeline(cards) {
   .pill i { width: 7px; height: 7px; background: var(--hue); flex: none; }
   .pill b { color: var(--ink); font-weight: 650; }
 
+
+  /* Programs — which umbrella is moving, which is stuck. Not a burndown: an umbrella
+     with nothing shipped is a fact worth seeing, not a failing grade. */
+  .programs { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
+  .programs h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px;
+    font: 600 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  .programs h2 .n { font-weight: 700; color: var(--ink); }
+  .progs { display: grid; gap: 7px; }
+  .prog { display: grid; grid-template-columns: minmax(120px, 200px) 1fr auto; gap: 12px; align-items: center; }
+  .prog-name { font: 12px/1 var(--mono); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .prog-bar { height: 8px; background: var(--sunk); border-radius: 2px; overflow: hidden; }
+  .prog-bar i { display: block; height: 100%; background: var(--stage-3); }
+  .prog.stuck .prog-bar { box-shadow: inset 0 0 0 1px var(--caution); }
+  .prog-n { font: 11px/1 var(--mono); color: var(--ink); min-width: 34px; text-align: right; }
+  .prog-n .muted { color: var(--muted); }
   /* Shipped over time — cadence, never a scoreboard. One mark per shipped item,
      stacked in its month. No intensity ramp and no empty-square guilt: a quiet
      month is a fact about the month, not a verdict on the founder. */
@@ -699,6 +757,7 @@ function shippedTimeline(cards) {
     <div class="board">
 ${columnHtml}
     </div>
+    ${programHtml}
     ${timelineHtml}
     <footer>
       A read of the files — to change the board, change the work (<code>/triage</code> · <code>/canvas</code> · <code>/spec</code>).

@@ -87,6 +87,7 @@ function readRecords(projectDir) {
           note: field(text, 'proof_note'),
           from: field(text, 'from'),
           promotedTo: field(text, 'promoted_to'),
+          program: field(text, 'program'),
         });
       } catch { /* unreadable record is not a drift finding */ }
     }
@@ -306,4 +307,47 @@ export function timeline(projectDir) {
     rows.push({ id: r.id, file: r.file, status: baseStatus(r.status), captured, shipped, lagDays });
   }
   return rows.sort((a, b) => String(a.captured).localeCompare(String(b.captured)));
+}
+
+
+// --- programs: the umbrella, at its seed rung ------------------------------------------------
+// Ajesh: *"I thought we also did projects, where ideas or features get grouped if it's under the
+// same umbrella?"* We didn't — and had improvised one 60+ times ("Phase 1" x24, "Phase 2" x22,
+// slices, threads, Tracks) without ever naming it. A pattern proven that many times and never
+// sorted UP is exactly what PRINCIPLE #1 exists to catch.
+//
+// His own instinct on the shape was the right one: *"as it gets more complex, eventually the
+// program, if it stays frontmatter, will get complex, and there might be a log or notes that roll
+// up all the features under it."* Correct — and the two are not alternatives, they are a LADDER,
+// which is BOSS's own seed-to-scale practice pointed at itself:
+//
+//   SEED        `program: <slug>` — one frontmatter line. Groups records. Costs nothing.
+//   GRADUATION  a `PROG-NNN` record, when there is something to write down that belongs to NO
+//               SINGLE MEMBER: why these belong together, what got decided across them, what was
+//               refused. The frontmatter field never changes shape — its value goes from a slug
+//               to an id (`program: PROG-001`), so nothing migrates.
+//
+// The trigger is NOT a member count. "Three or more records" is arbitrary ceremony, and ceremony
+// you don't need is what makes people stop keeping records at all. It is the seam test from
+// seed-to-scale.md: skip six months — what is GONE versus merely UNDONE? For a program, the thing
+// that goes is the cross-member reasoning. Nothing else holds it.
+//
+// Only the seed ships here. The graduation is documented so it is legible when it is earned, and
+// deliberately unbuilt until a real program needs it.
+export function programs(projectDir) {
+  const byName = new Map();
+  for (const r of readRecords(projectDir)) {
+    if (!r.program) continue;
+    if (!byName.has(r.program)) byName.set(r.program, []);
+    byName.get(r.program).push(r);
+  }
+  return [...byName.entries()]
+    .map(([name, members]) => ({
+      name,
+      graduated: /^[A-Z]{3,4}-\d+$/.test(name),   // the value is an id, not a slug
+      members: members.sort((a, b) => a.id.localeCompare(b.id)),
+      shipped: members.filter((m) => baseStatus(m.status) === 'shipped').length,
+      open: members.filter((m) => !['shipped', 'dropped'].includes(baseStatus(m.status))).length,
+    }))
+    .sort((a, b) => b.members.length - a.members.length);
 }

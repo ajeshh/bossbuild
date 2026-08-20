@@ -19,7 +19,7 @@ import { map, renderLadder } from './map.js';
 import { modeWord } from './modes.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
-import { recordDrift, driftLine, nextId, idCensus, timeline } from './records.js';
+import { recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
@@ -557,10 +557,40 @@ function recordTimeline(dir) {
   console.log(dim('  Nobody stamps these, so they cannot drift from what actually happened.\n'));
 }
 
+// The umbrella view, at its seed rung. See src/records.js for why this is a frontmatter field
+// and not a record type yet — the graduation is real, and it is earned by having something to say
+// that belongs to no single member, never by a member count.
+function recordPrograms(dir) {
+  let progs = [];
+  try { progs = programs(dir); } catch { progs = []; }
+  console.log(`\n  ${bold('BOSS records')} ${dim('· programs')}   ${dim(dir)}\n`);
+  if (!progs.length) {
+    console.log(dim('  No programs yet. Add `program: <a-short-slug>` to records that belong together —'));
+    console.log(dim('  it costs one line and nothing has to be created first.\n'));
+    return;
+  }
+  for (const p of progs) {
+    const bar = `${'▮'.repeat(p.shipped)}${dim('▯'.repeat(p.open))}`;
+    console.log(`    ${bold(p.name.padEnd(22))} ${bar}  ${dim(`${p.shipped} shipped · ${p.open} open`)}`);
+    for (const m of p.members) {
+      const done = (m.status || '').startsWith('shipped');
+      console.log(`      ${done ? dim(m.id) : m.id}  ${dim((m.status || '').split('(')[0].trim())}`);
+    }
+  }
+  const stuck = progs.filter((p) => p.open && !p.shipped);
+  if (stuck.length) {
+    console.log(`\n  ${bold(`${stuck[0].name}`)} has ${stuck[0].open} open and nothing shipped — the umbrella to look at first.`);
+  }
+  console.log(dim('\n  A program is one frontmatter line until it earns a file. When there is something to'));
+  console.log(dim('  write down that belongs to NO single member — why these go together, what got'));
+  console.log(dim('  decided across them — give it a PROG record and point `program:` at that id.\n'));
+}
+
 function cmdRecords(args) {
   const all = args.includes('--all');
   const dir = process.cwd();
   if (args.includes('--timeline')) return recordTimeline(dir);
+  if (args.includes('--programs')) return recordPrograms(dir);
   let found = [];
   try { found = recordDrift(dir); } catch { /* fall through to the empty case */ }
   const shown = all ? found : found.filter((f) => !f.quiet);
@@ -967,7 +997,7 @@ const HELP = {
     see: ['records', 'board'],
   },
   records: {
-    usage: 'boss records [--all | --timeline]',
+    usage: 'boss records [--all | --timeline | --programs]',
     what: "Check what your docs CLAIM against what your repo actually has. A status is a claim — `shipped` means the thing exists. This reads each record's `proof:` path and says where the two stopped agreeing, in both directions: something you finished and never wrote down, or something a record says you shipped that isn't there. --all also lists records with no `proof:` to check.",
     examples: ['boss records', 'boss records --all'],
     see: ['status', 'board'],

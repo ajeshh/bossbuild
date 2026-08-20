@@ -62,6 +62,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.186.0</span><span class="when">2026-08-20</span></div>
+        <p><strong><code>boss records --programs</code></strong> groups records that belong together (<code>program: &lt;slug&gt;</code> — one line, nothing to create first) and shows which umbrella is moving and which is stuck. It's on <code>boss board --html</code> too. Promote a program to its own record only when it has something to say that belongs to no single member — not when it hits some number of items.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.185.0</span><span class="when">2026-08-20</span></div>
         <p><strong><code>boss id</code></strong> gives you the next free record number, computed rather than counted — use it before creating an IDEA or FEAT. <strong><code>boss records --timeline</code></strong> shows when each idea was captured and when it actually got built, derived from your own git history, with a median. And <code>boss board --html</code> now has a <strong>Shipped over time</strong> strip so there is something to look at that is <em>behind</em> you. Promote an idea to a FEAT when it has named slices or spans more than one release — not before.</p>
       </li>
@@ -105,10 +109,6 @@
         <div class="rel"><span class="ver">v0.175.0</span><span class="when">2026-08-20</span></div>
         <p><code>/ship</code> now asks, once and only when it can name the actual confusion, whether an arriving user can work out what to do — and points at the fix <em>upstream</em> (an empty state, a clearer label) before it points at an article. Depth: <code>boss craft documentation</code> §7.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.172.0</span><span class="when">2026-08-20</span></div>
-        <p><code>/spec</code> now says back what it had to <strong>assume</strong> before you build, and asks for one worked example and what &quot;wrong&quot; looks like — the corrections are the best documentation you'll get. A FEAT gains a <strong>Build log</strong> so a feature's story stays whole across releases. <code>boss board</code> shows <strong>how far</strong> through a feature you are, not just that it's in flight. And <code>docs/ideas/INDEX.md</code> is no longer a table you maintain.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -137,7 +137,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.185.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.186.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

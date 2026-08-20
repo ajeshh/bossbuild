@@ -114,6 +114,28 @@ conversation with a customer, never from a captured idea. Say so in `from_note:`
 > then 46 of its ideas shipped without one. Every FEAT that actually got written was a multi-slice
 > build. The rule was wrong, not the people.
 
+## `program:` — grouping things that belong together
+
+When several records are really one effort, give them one line:
+
+```
+program: checkout-rebuild
+```
+
+`boss records --programs` and `boss board --html` roll it up — shipped vs open per umbrella. That
+answers something a column board can't: not *what am I working on* but **which of the things I
+committed to is actually stuck**. An umbrella sitting at 0-of-5 is worth seeing early.
+
+Use a short slug. Don't create anything first — the program exists because records point at it.
+
+**When it outgrows a line.** Eventually a program has something to say that belongs to *no single
+member*: why these go together, what you decided across them, what you deliberately refused. That's
+when it earns its own record — take a number, write it down, and point `program:` at that id
+instead. The field doesn't change shape, so nothing you already wrote has to be rewritten.
+
+**Don't graduate on a count.** "Three or more" is a rule that generates paperwork. Graduate when you
+notice you're about to lose the reasoning that spans them — that's the thing a slug can't hold.
+
 ## Numbering
 
 Allocate the next free integer per prefix. Before reserving one, grep all of `docs/` — not just an

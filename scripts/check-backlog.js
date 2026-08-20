@@ -57,7 +57,7 @@ const field = (text, name) => {
 // the check fire on prose edits, and a checker that cries wolf gets switched off.
 const base = (status) => (status || '').trim().split(/[\s(]/)[0].toLowerCase();
 
-const findings = { vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [] };
+const findings = { vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [], proof: [], unproven: [] };
 
 // --- the records on disk -----------------------------------------------------------------
 const records = new Map(); // id -> [{file, status}]
@@ -80,6 +80,57 @@ for (const f of readdirSync(IDEAS).filter((n) => RECORD.test(n))) {
 // open work. Ids are cheap and gaps are free; collisions are neither.
 for (const [id, rows] of records) {
   if (rows.length > 1) findings.collisions.push([id, rows.map((r) => r.file).join('  +  ')]);
+}
+
+// --- 1b. THE STATUS IS A CLAIM ABOUT THE CODE. CHECK IT AGAINST THE CODE. -----------------
+// This is the class that actually caused the damage, and the first cut of this script MISSED it.
+// Everything above compares a record to another record — frontmatter against an index row. All 21
+// drifted records would have sailed through a consistency check if the index had simply agreed
+// with the (wrong) files. **Agreement is not truth.** Eighteen records said `exploring`/`ready`/
+// `building` while the thing they described was sitting on disk, shipped, sometimes for a hundred
+// releases. Nothing compared the claim to the artifact, because nothing knew which artifact.
+//
+// So every record names one: `proof:` — the path that would not exist if this were not done.
+// The rule runs in BOTH directions, and the second direction is the fix:
+//   · `shipped` and the proof is NOT on disk  -> the record claims something the repo cannot show.
+//   · NOT shipped and the proof IS on disk    -> **you built it and never said so.** The disease.
+//
+// The point of declaring `proof:` on an UNBUILT record is that it is a tripwire laid in advance:
+// name the file now, and on the day someone creates it, this gate fails until the record is
+// updated. Drift can then survive at most one release, instead of a hundred.
+//
+// Two honest states are not failures and must not be forced to lie about themselves, so they are
+// DECLARED instead: `proof: none` for a record whose output was a decision rather than a file
+// (IDEA-012's catalog became the backlog; IDEA-028's audit produced retire/keep calls), and a
+// `proof_note:` on a non-shipped record whose proof exists anyway — built-but-unreachable
+// (IDEA-047 needs a bought domain, not a build) or completes-on-a-condition (IDEA-058 ends when
+// citation debt hits zero, which is not a file). **The note is the price of the exception**: you
+// may hold the state, you may not hold it silently.
+{
+  const SHIPPED = 'shipped';
+  for (const [id, rows] of records) {
+    const { file, status } = rows[0];
+    const text = readFileSync(join(IDEAS, file), 'utf8');
+    const proof = field(text, 'proof');
+    const note = field(text, 'proof_note');
+    const b = base(status);
+    if (b === 'seedling' || b === 'dropped') continue;
+
+    if (!proof) {
+      findings.proof.push([id, `${file} — no \`proof:\`. Name the path that would not exist if this were done (or \`proof: none\` with a \`proof_note:\`).`]);
+      continue;
+    }
+    if (proof === 'none') {
+      if (!note) findings.proof.push([id, `${file} — \`proof: none\` needs a \`proof_note:\` saying why this record has no artifact.`]);
+      continue;
+    }
+    const onDisk = existsSync(join(ROOT, proof));
+    if (b === SHIPPED && !onDisk) {
+      findings.unproven.push([id, `says "${status}" but \`${proof}\` is NOT on disk — the record claims something the repo cannot show.`]);
+    } else if (b !== SHIPPED && onDisk && !note) {
+      findings.unproven.push([id, `says "${status}" but \`${proof}\` IS on disk — built and never recorded. Set it to shipped, or add a \`proof_note:\` saying why it is built and still not done.`]);
+    }
+  }
 }
 
 // --- 2. the index rows -------------------------------------------------------------------
@@ -142,6 +193,10 @@ report('collisions', 'DUPLICATE IDS',
   'two records claiming one id — every [[link]] to it is ambiguous. Take the next free number.');
 report('disagreements', 'INDEX DISAGREES WITH THE RECORD',
   'the file is truth. Correct the row, not the file — unless the file is what is stale.');
+report('unproven', 'THE RECORD DISAGREES WITH THE CODE',
+  `the expensive one, and the reason this script exists. A status is a claim about the repo;\n  these are the claims the repo does not support — in EITHER direction.`);
+report('proof', 'NO PROOF DECLARED',
+  'a record with no `proof:` cannot be checked against reality — it can only be checked against\n  another document, which is how 21 records drifted for ~80 releases.');
 report('missingRows', 'MISSING FROM THE INDEX',
   'a record nobody browsing the backlog can see. Add the row.');
 report('orphanRows', 'ORPHAN INDEX ROWS',

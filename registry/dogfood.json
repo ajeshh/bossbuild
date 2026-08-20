@@ -1,0 +1,144 @@
+{
+  "_what": "Every artifact or log a SHIPPED capability tells someone to write, and whether BOSS — its own first project — actually has one.",
+  "_why": "BOSS ships 9 record types and 5 machine logs. A 2026-08-20 audit found its own repo exercises 4 record types and 0 logs. FEAT-022 declared the venture brain 'complete' at v0.65.0 and BOSS has never written one. /extract encodes PRINCIPLE #1 — BOSS's FIRST principle — and has produced zero records in 156 releases. The disease is the one this whole arc is about: BOSS instructs, and nothing verifies the instruction was followed. A capability nobody has ever run is not shipped, it is published.",
+  "_verdicts": {
+    "exercised": "BOSS's own repo has one. The capability has been run for real at least once.",
+    "exempt": "Legitimately not applicable to BOSS, with the reason written down. Most are for a FOUNDER'S APP — BOSS is a zero-dep CLI with no users, no signup funnel and no LLM in the product.",
+    "owed": "Applies to BOSS, and BOSS has never done it. A real gap, named rather than hidden. Does NOT fail the gate — a gate that is red forever is a gate you bypass, and a bypassed gate is a dead one. It is counted and printed every release until someone acts."
+  },
+  "_enforced_by": "npm run check:dogfood — in `npm test` and the release gate. UNCLASSIFIED fails. A new artifact-writing capability cannot ship without someone deciding which of the three it is.",
+  "artifacts": [
+    {
+      "path": ".boss/brain/read.md",
+      "capability": "the venture brain — /close, /comprehend",
+      "verdict": "owed",
+      "why": "FEAT-022 shipped v0.65.0 and its changelog entry says 'the venture brain is now complete'. BOSS has never written one, 120 releases later. The conscience that is supposed to remember this venture remembers nothing about the venture it was built inside."
+    },
+    {
+      "path": ".boss/brain/relationship.md",
+      "capability": "the venture brain — what the conscience said and what the founder did",
+      "verdict": "owed",
+      "why": "Same build as read.md. This is the half that closes the loop IDEA-013 only counts — did the nudge LAND? BOSS has no answer for its own conscience, which is the one conscience it has the most data about."
+    },
+    {
+      "path": ".boss/conscience-log.jsonl",
+      "capability": "the frequency ledger — IDEA-013",
+      "verdict": "owed",
+      "why": "Shipped v0.34.0 to answer 'how often does the conscience actually fire?' honestly, with facts rather than estimates. BOSS has 151 releases of its own conscience firing and zero recorded."
+    },
+    {
+      "path": ".boss/trace.jsonl",
+      "capability": "the auto-log substrate — read by /judge-traces",
+      "verdict": "owed",
+      "why": "The deliberate reader (/judge-traces) shipped at v0.53 on top of this substrate. With no trace, error analysis on real sessions is unrunnable here — so the one project that could most easily prove the feature works never has."
+    },
+    {
+      "path": "docs/devlog.md",
+      "capability": "/log",
+      "verdict": "exempt",
+      "why": "Substituted, not skipped: registry/CHANGELOG.md is the per-version record and docs/RESUME.md is the session state. Both are richer than a devlog and both are actually maintained. Naming the substitute is the point — an unexplained absence and a deliberate one look identical from outside."
+    },
+    {
+      "path": "docs/board.md",
+      "capability": "boss board (markdown output)",
+      "verdict": "exempt",
+      "why": "The terminal read and .boss/board.html are both exercised constantly. The markdown projection is an output format, not a separate discipline."
+    },
+    {
+      "path": ".boss/smoke.json",
+      "capability": "/smoke",
+      "verdict": "exempt",
+      "why": "BOSS's build gate is `npm run release` — 21 checks, 155 unit tests, a 143-case conscience eval gate. /smoke exists to give a founder rung 1 when they have nothing; BOSS is well past it. The substitute is louder than the original."
+    },
+    {
+      "path": ".boss/cost-log.jsonl",
+      "capability": "/ai-cost",
+      "verdict": "exempt",
+      "why": "BOSS is a zero-dependency CLI that never calls a model. There is no per-call spend to log. The conscience runs inside the founder's own Claude session, on their subscription — which is why IDEA-013 reframed BOSS's own version from cost to FREQUENCY in the first place."
+    },
+    {
+      "path": "docs/ai-first.md",
+      "capability": "/ai-first-init",
+      "verdict": "exempt",
+      "why": "For a founder's AI product. BOSS has no LLM in the product."
+    },
+    {
+      "path": "docs/ai-failure-states.md",
+      "capability": "/ai-failure-states",
+      "verdict": "exempt",
+      "why": "For a founder's AI product — the five failure modes are UX states in an app with users."
+    },
+    {
+      "path": "docs/ai-cost-budget.md",
+      "capability": "/ai-cost budget",
+      "verdict": "exempt",
+      "why": "For a founder's AI product. No model calls, no budget."
+    },
+    {
+      "path": "docs/architecture/schema.md",
+      "capability": "db-architect (L2)",
+      "verdict": "exempt",
+      "why": "BOSS has no database. Machine state is JSON on disk by rule (CLAUDE.md #4)."
+    },
+    {
+      "path": "docs/activation.md",
+      "capability": "/onboard",
+      "verdict": "exempt",
+      "why": "For a founder's app funnel. BOSS's activation question is a real founder running `boss new`, and its honest answer is EVID-001 — a person, not a metric."
+    },
+    {
+      "path": "docs/onboarding.md",
+      "capability": "/onboard",
+      "verdict": "exempt",
+      "why": "Same as activation.md — signup-to-aha is a product-with-users concept."
+    },
+    {
+      "path": "docs/operating-cadence.md",
+      "capability": "L3-scale cadence",
+      "verdict": "exempt",
+      "why": "Scale-mode artifact. BOSS is at MVP and the V1→Scale rung is deliberately trigger-gated (IDEA-040)."
+    },
+    {
+      "path": "docs/design/library/manifest.json",
+      "capability": "/design-library",
+      "verdict": "owed",
+      "why": "BOSS has a real design system, a public website and a brand doc — it is exactly the project this was built for, and it has never run it on itself. The v0.164.0 visual-identity work built the surface without producing the library that is supposed to keep it honest."
+    },
+    {
+      "path": "docs/design/ux-check-summary.md",
+      "capability": "/ux-check",
+      "verdict": "exempt",
+      "why": "Aimed at a founder's app UI. BOSS's user surface is a CLI and a static site; the site is covered by check:site, which is a stricter and automated equivalent."
+    },
+    {
+      "path": "docs/loops/spec-loop.md",
+      "capability": "MVP loop set",
+      "verdict": "exempt",
+      "why": "BOSS's own docs/loops/ is the gitignored dogfood workspace and carries the loops it actually runs. The MVP loop set ships in stages/L1-mvp/template/ and is exercised by every scaffold test."
+    },
+    {
+      "path": "docs/practices/PRAC-NNN",
+      "capability": "/practice",
+      "verdict": "exempt",
+      "why": "PRAC-NNN is a craft learning shared with a COFOUNDER. BOSS is solo by construction, and the same learnings go UP into library/practices/ (31 of them) via /boss-learn, which is the richer path. If BOSS ever has a second builder this flips to owed."
+    },
+    {
+      "path": "docs/extractions/EXTR-NNN",
+      "capability": "/extract + extraction-loop",
+      "verdict": "owed",
+      "why": "The sharpest one in this file. /extract encodes PRINCIPLE #1 — BOSS's FIRST principle, the UP/DOWN router that defines what BOSS is — and BOSS has produced ZERO EXTR records in 156 releases while routing patterns UP and DOWN constantly. The discipline is real and the record of it is missing, so nobody can audit the one decision BOSS says matters most."
+    },
+    {
+      "path": "docs/rfcs/RFC-NNN",
+      "capability": "L3-scale",
+      "verdict": "exempt",
+      "why": "Unlocks at Scale, and Scale's own rung is deliberately trigger-gated (IDEA-040) on a real project hitting a coordination symptom. BOSS is one person at MVP; an RFC process here would be the premature ceremony BOSS exists to refuse."
+    },
+    {
+      "path": "docs/experiments/EXP-NNN",
+      "capability": "L3-scale",
+      "verdict": "exempt",
+      "why": "Unlocks at Scale. BOSS runs experiments as evals and /vet verdicts (143 eval cases, 82 RVW records) rather than as EXP files — the substitute is exercised heavily and the original would duplicate it."
+    }
+  ]
+}

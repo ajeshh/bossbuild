@@ -68,6 +68,40 @@ A `FEAT` that cannot name its idea is an orphan; an idea pointing at a `FEAT` th
 the duplicate-ID problem wearing a different hat. `from: none` is a valid answer — FEAT-024 came
 straight from a conversation, and says so in `from_note:`.
 
+## `program:` — the umbrella, and the ladder it climbs
+
+Records that belong together carry one line:
+
+```
+program: ai-native-boss
+```
+
+That is the whole seed. It groups records across types (`IDEA` and `FEAT` alike), needs nothing
+created first, and `boss records --programs` / `boss board --html` roll it up — shipped vs open per
+umbrella. **It answers the question a column board structurally cannot: not *what is in flight* but
+*which of the things I decided to do is actually stuck*.** BOSS's own first run: `ai-native-boss`
+6-of-6 done, `public-surface` **0-of-5**.
+
+**The graduation, when it is earned.** A slug becomes a `PROG-NNN` record when there is something to
+write down that **belongs to no single member** — why these belong together, what got decided across
+them, what was refused. Then `program:` points at that id instead:
+
+```
+program: PROG-001
+```
+
+**The field never changes shape; only its value does.** Nothing migrates, no member is rewritten.
+
+**The trigger is not a member count.** *"Three or more records"* is arbitrary ceremony, and ceremony
+you don't need is what makes people stop keeping records at all. It is the seam test from
+[`seed-to-scale`](../library/practices/seed-to-scale.md): **skip six months — what is *gone* versus
+merely *undone*?** For a program, the thing that goes is the cross-member reasoning. Nothing else
+holds it. Until then, a slug is enough.
+
+**Why this exists at all:** BOSS improvised this umbrella **60+ times** — *"Phase 1"* ×24, *"Phase 2"*
+×22, plus slices, threads and Tracks — and never named it. A pattern proven that often and never
+sorted UP is exactly what PRINCIPLE #1 exists to catch.
+
 ## `proof:` — the field that makes a status checkable
 
 **A status is a claim about the code, so every record names the artifact that would settle it.**

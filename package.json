@@ -1,6 +1,6 @@
 {
   "name": "oyeboss",
-  "version": "0.185.0",
+  "version": "0.186.0",
   "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
@@ -45,7 +45,7 @@
     "check:refs": "node scripts/check-refs.js",
     "check:boundary": "node scripts/check-boundary.js",
     "check:site": "node scripts/check-site.js",
-    "test": "node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node --test test/*.test.js",
+    "test": "node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node --test test/*.test.js",
     "release": "node scripts/release.js",
     "pack:preview": "npm pack --dry-run",
     "eval:gate": "node docs/architecture/conscience-evals/runner.js",
@@ -55,7 +55,8 @@
     "regrade:keyless": "node docs/architecture/conscience-evals/judgment/regrade-keyless.js",
     "gen:surface-freshness": "node scripts/gen-surface-freshness.js",
     "check:ladder": "node scripts/check-ladder.js",
-    "check:backlog": "node scripts/check-backlog.js"
+    "check:backlog": "node scripts/check-backlog.js",
+    "check:dogfood": "node scripts/check-dogfood.js"
   },
   "engines": {
     "node": ">=18"

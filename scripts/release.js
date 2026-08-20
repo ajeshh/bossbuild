@@ -128,6 +128,21 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   if (r.code !== 0) console.log(r.out.trimEnd());
 }
 
+// --- 2e. BOSS runs what BOSS ships ----------------------------------------
+// Caught (2026-08-20): BOSS ships 9 record types and 5 machine logs and its own repo — 185
+// releases in — exercised 4 record types and ZERO logs. FEAT-022 declared the venture brain
+// "complete" and BOSS has never written one; /extract encodes PRINCIPLE #1 and has produced zero
+// records in 156 releases. A capability nobody has ever run is not shipped, it is published.
+// UNCLASSIFIED fails; `owed` prints but passes, because a gate that is red forever is a gate you
+// bypass — and this repo has already killed three checkers that way.
+{
+  const r = run('node', [join('scripts', 'check-dogfood.js')]);
+  const owed = (r.out.match(/(\d+) owed/) || [])[1];
+  record('dogfood coverage', r.code === 0,
+    r.code === 0 ? `every shipped artifact is exercised, exempt, or owed${owed && owed !== '0' ? ` (${owed} owed)` : ''}` : 'see output below');
+  if (r.code !== 0) console.log(r.out.trimEnd());
+}
+
 // --- 3. generated docs are current ---------------------------------------
 // Regenerate, then ask git whether that changed anything. If it did, the COMMITTED versions
 // were stale — the 56-release bug — and they are now fixed ON DISK, so this release cannot

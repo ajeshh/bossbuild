@@ -9,6 +9,57 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.186.0 — 2026-08-20
+
+**Two things, and the second is the uncomfortable one.**
+
+- **Programs — the umbrella BOSS had improvised 60+ times without ever naming.** Ajesh: *"I thought
+  we also did projects, where ideas or features get grouped if it's under the same umbrella?"* We
+  didn't. But *"Phase 1"* appears **24** times across the records, *"Phase 2"* **22**, plus slices,
+  threads and Tracks. **A pattern proven that many times and never sorted UP is exactly what
+  PRINCIPLE #1 exists to catch.** Now one frontmatter line: `program: <slug>`.
+- **It answers what a column board structurally cannot** — not *what is in flight* but **which of the
+  things I decided to do is actually stuck.** BOSS's own first run: `ai-native-boss` **6-of-6 done**,
+  `public-surface` **0-of-5**. `boss records --programs`, and a roll-up on `boss board --html`.
+- **The seed/graduation ladder, because Ajesh named the tension before it bit:** *"as it gets more
+  complex, eventually the program, if it stays frontmatter, will get complex, and there might be a
+  log or notes that roll up all the features under it."* Correct — and they are not alternatives,
+  they are a **ladder**, which is BOSS's own `seed-to-scale` practice pointed at itself. A slug
+  becomes a `PROG-NNN` record when there is something to write down that **belongs to no single
+  member** — why these go together, what got decided across them, what was refused. `program:` then
+  points at that id. **The field never changes shape; only its value does, so nothing migrates.**
+  **The trigger is not a member count** — *"three or more"* is arbitrary ceremony, and ceremony you
+  don't need is what makes people stop keeping records at all. Only the seed ships; the graduation is
+  documented so it is legible when earned, and deliberately unbuilt until a real program needs it.
+
+- **🔴 The wider audit Ajesh asked for, and it is worse than the backlog was.** *"The problem seems
+  more widespread."* It is. **BOSS ships 9 record types and 5 machine logs. Its own repo — 185
+  releases in, its first and only real project — exercises 4 record types and ZERO logs.**
+  - **`FEAT-022` declared the venture brain *"now complete"* at v0.65.0. BOSS has never written one.**
+    The conscience built to remember a venture remembers nothing about the venture it was built inside.
+  - **`/extract` encodes PRINCIPLE #1** — the UP/DOWN router that defines what BOSS *is* — and has
+    produced **zero** records in 156 releases, while BOSS routed patterns UP and DOWN constantly.
+    **The discipline is real and the record of it is missing**, so the one decision BOSS says matters
+    most is the one nobody can audit.
+  - Also owed: the frequency ledger (`IDEA-013`, 151 releases of its own conscience firing, zero
+    recorded), the trace substrate `/judge-traces` reads, and `/design-library` — which BOSS has never
+    run despite having the design system, the website and the brand doc it was built for.
+- **`registry/dogfood.json` + `npm run check:dogfood`**, in `npm test` and the release gate (2e).
+  Every artifact a shipped capability writes is `exercised`, `exempt` (with a reason) or `owed` (with
+  a reason). **Unclassified fails; `owed` prints but passes** — a gate that is red forever is a gate
+  you bypass, and this repo has already killed three checkers that way. **22 artifacts: 3 exercised ·
+  13 exempt · 6 owed.** The forcing function is `check:ladder`'s: a new artifact-writing capability
+  cannot ship without someone deciding which it is. **It caught two of its own entries on first run**
+  for reasons short enough to have been inherited rather than re-read — the same failure v0.178.0's
+  boundary ledger caught in itself.
+- **The honest framing this produced, now written into the ledger:** *a capability nobody has ever
+  run is not shipped, it is published* — and the gap shows up first in a founder's project, not here.
+
+> **For you:** **`boss records --programs`** groups records that belong together (`program: <slug>` —
+> one line, nothing to create first) and shows which umbrella is moving and which is stuck. It's on
+> `boss board --html` too. Promote a program to its own record only when it has something to say that
+> belongs to no single member — not when it hits some number of items.
+
 ## 0.185.0 — 2026-08-20
 
 - **Allocation stopped being an instruction and became a computation.** BOSS's own site said this
