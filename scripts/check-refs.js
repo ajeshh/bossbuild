@@ -410,6 +410,20 @@ for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
 // they were just given and it says someone owns it who was never installed. Same words, different
 // act. Giving both the same exemption is how the second one hid behind the first.
 const OWNER_FIELD = /^owner:\s*([a-z][a-z0-9-]*)\s*$/m;
+// SCOPE, the hole this closes: the loop below stops at `stages/`, but `library/` SHIPS TOO
+// (package.json `files:`) and a founder reaches it by name via `boss craft <practice>`. Four
+// practices were found owned by agents a founder never gets — `db-architect` (retired in
+// v0.189.0) and `mentor-humane` (ruled `internal` in boundary.json, so it ships to NOBODY).
+// They survived because every owner check ever written scanned one directory. There is no rung
+// to check against here — library ships whole — so the rule is simply: the owner must be an
+// agent that EXISTS somewhere in stages/.
+for (const f of files.filter((x) => /\.md$/.test(x))) {
+  const r = rel(f);
+  if (r.split(sep)[0] !== 'library') continue;
+  const m = readFileSync(f, 'utf8').match(OWNER_FIELD);
+  if (!m || SHIPPED_AGENTS.has(m[1])) continue;
+  findings.agents.push([r, `owner: ${m[1]} — a shipped practice owned by an agent no founder gets`]);
+}
 for (const f of files.filter((x) => /\.md$/.test(x))) {
   const r = rel(f);
   const parts = r.split(sep);

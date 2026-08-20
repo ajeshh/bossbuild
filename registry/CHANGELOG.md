@@ -113,6 +113,12 @@ no to the merge. BOSS shipped **two** architects — one advisory (`mentor-archi
 - **The build-craft watchlist's "specific hole" is re-marked closed** — and the lesson generalised:
   *a hole filled inside one agent's prompt is filled only for whoever opens that agent.*
 
+> **For you:** `db-architect` is gone and you don't need to remember to open anything in its place.
+> `/spec` now asks the data questions while your feature is still a paragraph, and `schema-guard`
+> (turn it on in `.claude/settings.json`) tells you when a migration creates a table without the
+> rule that decides who can read its rows. Ask `mentor-architect` the judgment calls. Your
+> `docs/architecture/` files stay where they are.
+
 **Seven agents renamed — and the check that gated it killed one of the eight proposals.**
 Graded against BOSS's own voice rule — *assume intelligence, never assume knowledge* — 10 of 15
 agent names failed. Two of those were count problems (fixed above). The other eight went to the

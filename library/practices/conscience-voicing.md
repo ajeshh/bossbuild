@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-conscience-voicing
 type: practice
-owner: mentor-humane
+owner: mentor-founder
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-20 thread on dignity-cost / over-censoring — "voice the tension, never filter the menu" + how Claude voices concern without blocking. Drove the mentor-money metering-axis fix (RVW-023 → ADAPT) and the mentor-humane "name, never override" reframe. BOSS v0.67.x.

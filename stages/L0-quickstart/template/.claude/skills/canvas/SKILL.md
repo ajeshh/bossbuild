@@ -66,7 +66,7 @@ _Who you serve, the tension they carry, the value you promise._
 
 | Cell | Humane prompt | Sharpen with |
 |---|---|---|
-| **People** | Who are you designing for & what matters to them? | Who *exactly* has the painful problem? Be specific — not "everyone." |
+| **People** | Who are you designing for & what matters to them? | Who *exactly* has the painful problem? Be specific — not "everyone." And **who feels it worst, today** — the early adopters you could actually reach this month, not the market you'd eventually serve. |
 | **Problem** | What real human tension are you solving? | Is it urgent, frequent, expensive, or emotionally painful? What do they use *today* instead (current alternatives)? |
 | **Promises** | What emotional / relational value will it deliver? | The sharp promise: "We help X do Y without Z." |
 
@@ -76,8 +76,17 @@ _How it shows up in a life, how people engage, how it sustains itself._
 | Cell | Humane prompt | Sharpen with |
 |---|---|---|
 | **Story** | How does your product show up in someone's life? | What changed that makes this newly possible or urgent (insight / why now)? What's the smallest compelling workflow that solves it (solution)? |
-| **Modes of Engagement** | How do people interact with your product in a humane way? | Does it respect time, attention, autonomy, data? Why are you the right team/product to win (unique advantage)? |
-| **Business Model** | How will you sustain this without compromising your promise? | Who pays, how much, why is it worth it? How do the first 100 find you (acquisition)? What makes usage compound (growth loop)? |
+| **Modes of Engagement** | How do people interact with your product in a humane way? | Does it respect time, attention, autonomy, data? Why are you the right team/product to win (unique advantage)? What **kind of relationship** is this — self-serve, hands-on, community, a tool they forget they're using? Name it, because it sets what you'll owe them later. |
+| **Business Model** | How will you sustain this without compromising your promise? | Who pays, how much, why is it worth it? How do the first 100 find you (acquisition)? What makes usage compound (growth loop)? And once the first 100 are in — **which channels keep working**, and which were just you hustling? (The two are different, and only one of them scales.) |
+| **Cost Structure** _(live once there's a price, or a real cost)_ | What does it actually cost to serve one person well — and does that cost hold as more arrive? | Fixed vs. variable. For an AI product the variable cost is the one that bites: **cost per active user** and **cost per successful outcome** (`/ai-cost` computes both). Revenue without cost isn't a model, it's a price. |
+| **What it takes to deliver** _(live when the answer isn't "just me and a laptop")_ | What do you need to *have*, and to *do*, for this to work at all? | The few resources and repeated activities the promise depends on — the data you need access to, the thing you must do every week, the skill you can't outsource. Keep it to what is genuinely load-bearing. |
+| **Key Partnerships** _(live only if someone else is load-bearing)_ | Is there anyone whose cooperation this cannot work without? | A supplier, a platform, a regulator, a distribution partner, a data source. **Most ventures have none — `_(not yet)_` is the common and correct answer.** Ask only when the domain implies one (regulated, marketplace, hardware, embedded).|
+
+> **These four are additive and mostly dormant.** They exist so the canvas can answer a conventional
+> reader (a Lean or BMC audience, an operator, an investor) without a second artifact — see
+> [[DEC-004]]. **Do not walk a founder through them at Quickstart.** Each carries the condition that
+> makes it live; until that condition holds, `_(not yet)_` is the honest answer and the canvas is not
+> less complete for it. The frame layer will formalise this gating; until then, judgement does.
 
 ## 3 · Stewardship
 _Impact, risks, and the values that guide decisions._

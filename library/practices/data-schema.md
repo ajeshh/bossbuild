@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-data-schema
 type: practice
-owner: db-architect
+owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: written 2026-08-11 (v0.142.0) to close the coverage gap named in the 2026-07-30 craft-staleness audit — the knowledge lived ONLY inside the `db-architect` agent prompt (V1) and the migrations section of `scalable-architecture.md`, so nothing could sweep it and no mode below V1 could see it. Sources - CVE-2025-48757 (Lovable/Supabase RLS class), the MoltBook 1.5M-credential exposure, OX Security 2026 (62% of AI-built apps ship a critical vuln), Postgres RLS docs, Kleppmann (DDIA) on schema evolution. Sibling of `agent-security.md` (same adversary) and `testing-with-agents.md` (the negative path is where this gets caught).

@@ -229,14 +229,19 @@ blocks.WHATS_NEW = () => {
     // "there's now one command for" and stopped. The changelog's own header tells authors to write
     // these as prose, and prose wraps. Take the `> ` continuation lines too, and stop at the first
     // line that is not a quote.
-    const block = chunk.match(/^>\s*\*\*For you:\*\*\s*(.+(?:\n>.*)*)/m);
-    if (!block) continue;
-    const forYou = [block[1].split('\n').map((l) => l.replace(/^>\s?/, '').trim()).join(' ').trim()];
+    // And there can be MORE THAN ONE. `.match()` without /g returns the first hit only, so a
+    // release that changed three things for founders published one of them and silently dropped
+    // the rest — v0.189.0 shipped a merged designer, a retired agent with a new guard hook, and
+    // seven renames, and the feed showed the designer. The array below was always plural; only
+    // the reader was singular.
+    const blocks = [...chunk.matchAll(/^>\s*\*\*For you:\*\*\s*(.+(?:\n>.*)*)/gm)];
+    if (!blocks.length) continue;
+    const forYou = blocks.map((b) => b[1].split('\n').map((l) => l.replace(/^>\s?/, '').trim()).join(' ').trim());
     const head = chunk.split('\n')[0].trim();
     const m = head.match(/^([\d.]+)\s+\u2014\s+(.+)$/);
     out.push(`      <li>
         <div class="rel"><span class="ver">v${esc(m ? m[1] : head)}</span><span class="when">${esc(m ? m[2] : '')}</span></div>
-        <p>${md(forYou[0])}</p>
+        ${forYou.map((t) => `<p>${md(t)}</p>`).join('\n        ')}
       </li>`);
     if (out.length >= 12) break;
   }

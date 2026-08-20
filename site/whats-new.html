@@ -64,6 +64,9 @@
       <li>
         <div class="rel"><span class="ver">v0.189.0</span><span class="when">2026-08-20</span></div>
         <p>if you're at MVP, you now have a <code>designer</code> — one agent for how it looks, how it behaves, and how it reads — plus <code>/design-review</code> before code and <code>/ux-check</code> after. If you're already at V1, <code>ui-designer</code> and <code>ux-designer</code> are superseded by it; <code>boss sync</code> will say so, and anything you edited stays yours.</p>
+        <p><code>db-architect</code> is gone and you don't need to remember to open anything in its place. <code>/spec</code> now asks the data questions while your feature is still a paragraph, and <code>schema-guard</code> (turn it on in <code>.claude/settings.json</code>) tells you when a migration creates a table without the rule that decides who can read its rows. Ask <code>mentor-architect</code> the judgment calls. Your <code>docs/architecture/</code> files stay where they are.</p>
+        <p>every agent now says what it does in words you already know. <code>boss sync</code> will walk the renames; your own edits are flagged by name first, and removal is never automatic.</p>
+        <p>the business-model mentor now arrives at <strong>MVP</strong> instead of V1, so <code>/money</code>'s first-price step finally has the mentor it already named as its owner — if you took a first dollar at MVP before this, the handoff it offered you pointed at an agent your project didn't have. The talent mentor now arrives at <strong>Scale</strong> instead of V1. Run <code>/boss-sync</code> to pick both up. Nothing you already have is removed, and no command changes.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.188.0</span><span class="when">2026-08-20</span></div>
