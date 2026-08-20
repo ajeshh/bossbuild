@@ -236,12 +236,20 @@ nav: keeping-track
         </div>
         <div class="note">
           <p>
-            <strong>Where it still leans on a person: allocating the number.</strong> Everything else
-            here is derived, but picking the next free ID is a human reading the folder — and it broke in
-            BOSS's own repo, which is built by the people who wrote this rule. Two files claimed the same
-            number on the same day, and every reference to it became ambiguous until someone noticed.
-            The rule is now written into the scaffold you get — <em>IDs are never reused, and a gap is
-            free</em> — but the honest version of this page says the rule is a rule, not a mechanism.
+            <strong>Two of these are rules in your project, not yet mechanisms.</strong> You don't
+            allocate the number — <code>/triage</code> reads the folder and takes the next free one. But
+            that's a <em>sentence in a skill file telling an agent to count</em>, not code that computes,
+            and the difference is invisible right up until it isn't. It broke in BOSS's own repo: two
+            files claimed the same number on the same day, and every reference to it was ambiguous until
+            a person spotted it. The closed status vocabulary has the same shape — closed by rule, with
+            nothing rejecting a word that isn't on the list.
+          </p>
+          <p>
+            Both rules ship in your scaffold today. <strong>Neither is enforced in it yet</strong> — the
+            checker that catches a duplicate ID and an off-list status was written for BOSS's own repo
+            the same week the collision happened, and it hasn't been sorted down into what you get.
+            That's the honest state: the mechanism exists one level up, and this page would rather say so
+            than let you find out.
           </p>
         </div>
       </div>

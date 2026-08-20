@@ -9,7 +9,54 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
-## 0.181.0 — 2026-08-20
+## 0.183.0 — 2026-08-20
+
+- **🔴 A capability shipped three releases ago and was never announced, so no existing project could
+  learn it exists.** `/spec` step 4 names **the three paths that must not break** and
+  `/red-team --paths` proves them — rungs 2–4 of the testing ladder, the band BOSS had been jumping
+  over from *does it run* straight to *is the AI good*. The code landed at **v0.179.0**. The words
+  never did: `"money path"`, `"negative path"` and `"--paths"` appear **zero times** in this
+  changelog before this line. **`registry/CHANGELOG.md` is what `boss sync` reads to tell a project
+  what's new** — so the release existed for a fresh install and was invisible to every project that
+  already had BOSS. *Distribution without adoption, which is the exact failure v0.179.0 was itself
+  built to fix, committed by the release that fixed it.*
+- **Announced here rather than backdated into v0.179.0.** Published history stays published; `boss
+  sync` reads forward from a project's pin, so putting it in *this* entry is what actually reaches
+  the projects that missed it. **Rung 4 is the one the practice calls non-negotiable** — *can user A
+  reach user B's data* — and it is the test nobody writes, because the happy path looks perfect.
+- **The cause was the squash, and it has now cost something twice.** `f6515a2` carried v0.177.0,
+  v0.178.0 and v0.179.0 in one commit; `7ead4b4` did the same to the design and testing releases.
+  RESUME flagged the pattern both times as a readability problem. It is not — **a squashed release is
+  a release whose changelog entry nobody writes**, and the changelog is a distribution mechanism, not
+  a diary. v0.180.0 and v0.181.0 were deliberately committed separately for this reason.
+- **The stale-note twin, in BOSS's own briefing.** `docs/RESUME.md` recorded *"`/spec` is the natural
+  home for the rung-2–4 gap and this release did NOT touch it"* — written about a release that **had
+  touched it**, in the same file, on the same day. Corrected. This is the same defect the v0.181.0
+  sweep found 21 times in the backlog index, now found once more in the file that is read first
+  every session. **The lesson generalises past the fix: a note that says "still open" is a claim
+  about the code, and nothing was checking it.**
+- **[[IDEA-060]] item 6 — the `site-drift-loop` — is SUPERSEDED, not built.** Its proposed predicate
+  was *"the page hasn't been touched since N FEATs closed."* `check:site` already does strictly
+  better: each page declares `covers:`, and the check compares the **actual change time of those
+  sources** against the page's `reviewed:` date, so it names *what* fell behind rather than counting
+  events. Building the loop would have added a second, blinder watcher over the same surface —
+  **compose and subtract, per [[EVID-001]]**. Recorded as superseded so the reasoning survives.
+
+- **🔴 Every multi-line release note BOSS has ever published to the web was truncated mid-sentence.**
+  `gen:site` captured the `> **For you:**` block with `(.+)$` — one line — so v0.180.0 went out to the
+  public feed reading *"there's now one command for"* and stopped. The changelog's own header tells
+  authors to write these as prose, and prose wraps. **The one page written for people who do not have
+  BOSS yet was the page cutting its own sentences in half.** Continuation lines are now taken until
+  the first non-quote line. Note the pairing with the find above: one release could not reach existing
+  projects, and every release reached new ones half-said.
+
+> **For you:** if you have been using BOSS since before v0.179.0, `/spec` gained something you have
+> not been told about: it now asks for **the three paths that must not break** — the money path, the
+> destructive path, and the negative path (*can user A reach user B's data*). `/red-team --paths`
+> proves them, and needs no LLM in your product at all. Name them while you are still deciding what
+> "done" means; they are close to impossible to retrofit once the feature exists.
+
+## 0.182.0 — 2026-08-20
 
 > **For you:** **Three record types were missing or misfiled in your `docs/IDS.md`.** `DEC-NNN`
 > (decisions) and `EVID-NNN` (evidence) ship at Quickstart and weren't listed — `DEC` was filed under
@@ -46,10 +93,18 @@ other end. The site sold the staffing half of BOSS and never claimed the memory 
   twice and inflated the practice count. `gen:site` now **hard-fails** on a duplicate — unlike a
   stale or unclassified id, there is no reading where that is what someone meant.
 
-**The honest paragraph on the page is about BOSS's own failure.** Two files claimed `IDEA-059` on the
-same day and every `[[IDEA-059]]` reference became ambiguous. Allocating the next number is the one
-step in this system a human still holds in their head — everything else is derived. The page says so
-rather than selling around it, and the never-reuse rule now ships in the scaffold.
+**The honest paragraph on the page is about BOSS's own failure, and it took a correction to get
+right.** A first draft said allocating the ID "is a human reading the folder." It isn't — `/triage`
+does it. The accurate and sharper point: **it is an instruction to a model, not a computation.**
+Nothing in `src/` allocates IDs; `next free number` is a sentence in a skill file telling an agent to
+count, which is indistinguishable from a mechanism until it miscounts. Two files claimed `IDEA-059`
+here on the same day and every reference to it was ambiguous until a person noticed. The closed
+status vocabulary has the same shape — closed by rule, nothing rejecting an off-list word.
+
+`check:backlog` (v0.181.0, built the same week by the sweep that found 21 records in conflict) gates
+both — **but only in BOSS's own repo.** Nothing in `stages/` references it, so a founder inherits the
+rules without the checker. The page discloses that rather than claiming enforcement they don't have:
+**the mechanism exists one level up and hasn't been sorted DOWN yet.** Principle #1, mid-flight.
 
 ## 0.181.0 — 2026-08-20
 

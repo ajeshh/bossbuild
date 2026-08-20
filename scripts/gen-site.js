@@ -224,13 +224,19 @@ blocks.WHATS_NEW = () => {
     // OPT-IN: a release reaches the public feed only if it carries a "For you:" line.
     // Most releases are internal — audits, refactors, doc sweeps — and a feed that
     // lists those is a commit log, not a reason for anyone to care.
-    const forYou = chunk.match(/^>\s*\*\*For you:\*\*\s*(.+)$/m);
-    if (!forYou) continue;
+    // The block is MULTI-LINE. `(.+)$` captured only the first line, so every release note
+    // longer than ~100 chars was published to the world truncated mid-sentence — v0.180.0's read
+    // "there's now one command for" and stopped. The changelog's own header tells authors to write
+    // these as prose, and prose wraps. Take the `> ` continuation lines too, and stop at the first
+    // line that is not a quote.
+    const block = chunk.match(/^>\s*\*\*For you:\*\*\s*(.+(?:\n>.*)*)/m);
+    if (!block) continue;
+    const forYou = [block[1].split('\n').map((l) => l.replace(/^>\s?/, '').trim()).join(' ').trim()];
     const head = chunk.split('\n')[0].trim();
     const m = head.match(/^([\d.]+)\s+\u2014\s+(.+)$/);
     out.push(`      <li>
         <div class="rel"><span class="ver">v${esc(m ? m[1] : head)}</span><span class="when">${esc(m ? m[2] : '')}</span></div>
-        <p>${md(forYou[1].trim())}</p>
+        <p>${md(forYou[0])}</p>
       </li>`);
     if (out.length >= 12) break;
   }

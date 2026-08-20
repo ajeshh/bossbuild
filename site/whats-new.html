@@ -62,52 +62,52 @@
       <div class="body">
         <ol class="releases">
       <li>
-        <div class="rel"><span class="ver">v0.181.0</span><span class="when">2026-08-20</span></div>
-        <p><strong>Three record types were missing or misfiled in your <code>docs/IDS.md</code>.</strong> <code>DEC-NNN</code></p>
+        <div class="rel"><span class="ver">v0.183.0</span><span class="when">2026-08-20</span></div>
+        <p>if you have been using BOSS since before v0.179.0, <code>/spec</code> gained something you have not been told about: it now asks for <strong>the three paths that must not break</strong> — the money path, the destructive path, and the negative path (<em>can user A reach user B's data</em>). <code>/red-team --paths</code> proves them, and needs no LLM in your product at all. Name them while you are still deciding what &quot;done&quot; means; they are close to impossible to retrofit once the feature exists.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.182.0</span><span class="when">2026-08-20</span></div>
+        <p><strong>Three record types were missing or misfiled in your <code>docs/IDS.md</code>.</strong> <code>DEC-NNN</code> (decisions) and <code>EVID-NNN</code> (evidence) ship at Quickstart and weren't listed — <code>DEC</code> was filed under V1 with a format <code>/decide</code> doesn't write. <code>PRAC-NNN</code> was missing from MVP. <code>FIX-NNN</code>/<code>BUG-NNN</code> are <strong>removed</strong>: no skill has ever written one. Your status vocabulary is now a <strong>closed list of seven</strong> (adding <code>deferred</code> — deliberately not building this, <em>with a written re-open trigger</em>), documented where the rule can be checked. <code>/boss-sync</code> picks it up.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.181.0</span><span class="when">2026-08-20</span></div>
-        <p>two fixes you'd have hit. A file scaffolded into every MVP project pointed at a</p>
+        <p>two fixes you'd have hit. A file scaffolded into every MVP project pointed at a research doc that was never in your repo — gone, along with six more of the same shape. And <code>/red-team</code> no longer tells you to run a model your host may not have; it names the <em>kind</em> of model the job wants and leaves the choice where it belongs.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.180.0</span><span class="when">2026-08-20</span></div>
-        <p><strong><code>boss credit</code></strong> — if you want to say you built with BOSS, there's now one command for</p>
+        <p><strong><code>boss credit</code></strong> — if you want to say you built with BOSS, there's now one command for it. Never automatic, never in your product UI, one command to undo. And <code>/welcome</code> now tells you about the marked comment BOSS leaves in your <code>CLAUDE.md</code>, because it's findable in public repos and you should hear that from BOSS rather than discover it.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.179.0</span><span class="when">2026-08-20</span></div>
-        <p><code>boss sync</code> now tells you when a skill that changed makes something **you already</p>
+        <p><code>boss sync</code> now tells you when a skill that changed makes something <strong>you already built</strong> — <code>↳ you already have the landing page — app/page.tsx</code>. And <code>boss status</code> gained an <strong>Already built</strong> line (what's real in your repo, not what's missing) plus, when you're earlier than a practice, the one cheap thing worth doing now anyway. Skills look for their own output before generating: point <code>/landing</code> at a repo that already has a page and it reads yours instead of writing a second one.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.178.0</span><span class="when">2026-08-20</span></div>
-        <p>four commands your practices told you to run don't exist outside BOSS's own repo —</p>
+        <p>four commands your practices told you to run don't exist outside BOSS's own repo — <code>/vet</code>, <code>/recalibrate</code>, <code>/practice-refresh</code>, <code>/humane-refresh</code>. The practices now name something you actually have. Nothing in your project moves.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.177.0</span><span class="when">2026-08-20</span></div>
-        <p>the install command changed — <code>npm i -g oyeboss</code> (was <code>bossbuild</code>), and `npx oyeboss</p>
+        <p>the install command changed — <code>npm i -g oyeboss</code> (was <code>bossbuild</code>), and <code>npx oyeboss new my-app</code>. The <code>boss</code> command itself is unchanged and nothing in your project moves. <strong>If you already have the old package, you must uninstall it first</strong> — both provide <code>boss</code>, so installing over it fails with a bare <code>EEXIST</code>: <code>npm uninstall -g bossbuild &amp;&amp; npm i -g oyeboss</code></p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.176.0</span><span class="when">2026-08-20</span></div>
-        <p><code>/measure</code> no longer sends a founder away empty-handed. Below ~10 users it still says</p>
+        <p><code>/measure</code> no longer sends a founder away empty-handed. Below ~10 users it still says <em>&quot;close this and go talk to them&quot;</em> — but it now checks the <strong>seam</strong> first: a <code>created_at</code> on your user and core rows, and one <code>track()</code> stub. The timestamp is the only thing on the page you cannot buy back later. Depth: <code>boss craft analytics-for-ai-products</code>.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.175.0</span><span class="when">2026-08-20</span></div>
-        <p><code>/ship</code> now asks, once and only when it can name the actual confusion, whether an</p>
+        <p><code>/ship</code> now asks, once and only when it can name the actual confusion, whether an arriving user can work out what to do — and points at the fix <em>upstream</em> (an empty state, a clearer label) before it points at an article. Depth: <code>boss craft documentation</code> §7.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.172.0</span><span class="when">2026-08-20</span></div>
-        <p><code>/spec</code> now says back what it had to <strong>assume</strong> before you build, and asks for one</p>
+        <p><code>/spec</code> now says back what it had to <strong>assume</strong> before you build, and asks for one worked example and what &quot;wrong&quot; looks like — the corrections are the best documentation you'll get. A FEAT gains a <strong>Build log</strong> so a feature's story stays whole across releases. <code>boss board</code> shows <strong>how far</strong> through a feature you are, not just that it's in flight. And <code>docs/ideas/INDEX.md</code> is no longer a table you maintain.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.171.0</span><span class="when">2026-08-20</span></div>
-        <p>if you're early, BOSS now asks you for one thing — pick the words for your two or three</p>
+        <p>if you're early, BOSS now asks you for one thing — pick the words for your two or three main concepts and stay consistent. The voice-and-tone table waits until you've watched real people read your screens. Unless you're building somewhere high-stakes, in which case how your product talks when it's <em>unsure</em> comes first.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.170.0</span><span class="when">2026-08-20</span></div>
         <p>The conscience now speaks about <strong>testing</strong> — if you've shipped a feature and nothing guards it, it says so once. A deliberately low bar: does <em>anything</em> test it, not is your coverage good.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.169.0</span><span class="when">2026-08-20</span></div>
-        <p><code>/design-library</code> now writes a designer handoff — what's decided, what's fixed vs.</p>
       </li>
     </ol>
         <p class="small">
@@ -137,7 +137,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.181.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.183.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>
