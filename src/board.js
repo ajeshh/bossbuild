@@ -14,6 +14,7 @@
 //   diagnostic.
 
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { dim, bold } from './ui.js';
 import { frontmatter, unquote } from './frontmatter.js';
@@ -138,6 +139,30 @@ export function canvassedIdeas(projectDir) {
 }
 
 // Build the card list from the project's docs/ideas directory. Returns
+// --- when it actually shipped, derived ------------------------------------------------------
+// The board had `shipped_on:` and `building_since:` from IDEA-034 and almost nothing carried
+// them, because a date someone has to remember to stamp is a rule with no mechanism — the same
+// failure that let 21 records drift. Git already knows: the first commit that ADDED a record is
+// when it was captured, and the first commit that added its `proof:` artifact is when the thing
+// actually appeared. Frontmatter still wins when present (a founder may know better than the
+// repo — work done before `git init`, or a ship date that is a launch rather than a merge); this
+// only fills the silence. Fails open: no git, no dates, no invented ones.
+const gitFirst = (projectDir, path) => {
+  if (!path || path === 'none') return null;
+  try {
+    return execFileSync('git', ['log', '--diff-filter=A', '--format=%as', '-1', '--', path],
+      { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null;
+  } catch (e) {
+    // Expected: not a git checkout, git not installed, path never committed. NOT expected: a
+    // ReferenceError from a missing import — which is exactly how this shipped broken the first
+    // time, silently turning every derived date into null with no symptom but an empty strip.
+    // Same failure as v0.179.0's readLadder() swallowing a parse error. Re-throw the ones that
+    // mean the code is wrong.
+    if (e instanceof ReferenceError || e instanceof TypeError) throw e;
+    return null;
+  }
+};
+
 // { cards: [{id, title, column, blocked}], hasIdeasDir }.
 export function collectBoard(projectDir) {
   const ideasDir = join(projectDir, 'docs', 'ideas');
@@ -158,9 +183,13 @@ export function collectBoard(projectDir) {
     const priority = (fm.priority || '').trim().toLowerCase() === 'high' ? 'high' : null;
     if (/^FEAT/i.test(id)) {
       if (fm.source) featSources.add(fm.source);
-      feats.push({ id, title, status: fm.status, nextReview: fm.next_review, buildingSince: fm.building_since, shippedOn: fm.shipped_on, priority, owner: fm.owner, progress: criteriaProgress(text) });
+      feats.push({ id, title, status: fm.status, nextReview: fm.next_review,
+        buildingSince: fm.building_since || gitFirst(projectDir, `docs/ideas/${f}`),
+        shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
+        priority, owner: fm.owner, progress: criteriaProgress(text) });
     } else {
-      ideas.push({ id, title, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner });
+      ideas.push({ id, title, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+        shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof) });
     }
   }
 
@@ -207,6 +236,7 @@ export function collectBoard(projectDir) {
       ageDays,
       aging: ageDays != null && ageDays >= AGING_DAYS,
       shippedAgeDays,
+      shippedOn: ft.shippedOn || null,
       archived: shippedAgeDays != null && shippedAgeDays > SHIPPED_WINDOW_DAYS,
       priority: ft.priority,
       owner: personOwner(ft.owner),
@@ -228,6 +258,7 @@ export function collectBoard(projectDir) {
       reviewDue: reviewDue(id.nextReview, id.status),
       priority: id.priority,
       owner: personOwner(id.owner),
+      shippedOn: id.shippedOn || null,
     });
   }
 
@@ -472,6 +503,65 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
     ? `<div class="banner aging-banner">⌛ ${agingCards.length} aging in build — <code>${esc(agingCards[0].id)}</code> open ${esc(ageLabel(agingCards[0].ageDays))} <span class="muted">finish it, or</span> <code>/revalidate ${esc(agingCards[0].id)}</code></div>`
     : '';
 
+// --- the shipped timeline -------------------------------------------------------------------
+// Ajesh: *"there should be a timeline view of when features get shipped, so that there is a
+// visual way of seeing progress."* This is EVID-001's ask in its most literal form — *"knowing
+// exactly where I am, like a train line, seeing my progress"* — and it is the first thing on this
+// board that looks BACKWARD. Every other element answers "what now?"; this one answers "look what
+// already happened," which is the positive register the founder said was missing.
+//
+// It is deliberately NOT a contribution graph. `boardLine` above carries the rule this inherits —
+// plain and factual, never gamified. So: no streaks, no intensity ramp, no empty-square guilt for
+// a quiet fortnight. A month with one ship and a month with six are both just months with ships
+// in them. The thing being shown is CADENCE, not volume, and certainly not effort.
+//
+// The dates are derived (see gitFirst) rather than stamped, which is the only reason this is
+// worth rendering at all: a timeline built from `shipped_on:` fields nobody fills in would have
+// been an empty strip pretending to be a feature.
+function shippedTimeline(cards) {
+  const shipped = cards
+    .filter((c) => c.column === 'Shipped' && c.shippedOn)
+    .sort((a, b) => a.shippedOn.localeCompare(b.shippedOn));
+  if (shipped.length < 2) return '';   // one dot is not a timeline
+
+  const monthKey = (d) => d.slice(0, 7);
+  const months = [];
+  const cursor = new Date(`${monthKey(shipped[0].shippedOn)}-01T00:00:00Z`);
+  const end = new Date(`${monthKey(shipped[shipped.length - 1].shippedOn)}-01T00:00:00Z`);
+  while (cursor <= end && months.length < 60) {
+    months.push(cursor.toISOString().slice(0, 7));
+    cursor.setUTCMonth(cursor.getUTCMonth() + 1);
+  }
+
+  const byMonth = new Map(months.map((m) => [m, []]));
+  for (const c of shipped) {
+    const k = monthKey(c.shippedOn);
+    if (byMonth.has(k)) byMonth.get(k).push(c);
+  }
+
+  const cols = months.map((m) => {
+    const items = byMonth.get(m) || [];
+    const label = new Date(`${m}-01T00:00:00Z`)
+      .toLocaleDateString('en', { month: 'short', timeZone: 'UTC' });
+    const marks = items.map((c) =>
+      `<i title="${esc(c.id)} — ${esc(c.title)} · shipped ${esc(c.shippedOn)}"></i>`).join('');
+    return `<div class="tl-m${items.length ? '' : ' quiet'}">
+        <div class="tl-marks">${marks}</div>
+        <div class="tl-label">${esc(label)}</div>
+      </div>`;
+  }).join('');
+
+  const first = shipped[0].shippedOn;
+  const last = shipped[shipped.length - 1].shippedOn;
+  return `<section class="timeline">
+      <h2><span class="label">Shipped over time</span> <span class="n">${shipped.length}</span></h2>
+      <div class="tl">${cols}</div>
+      <p class="tl-foot">${esc(first)} → ${esc(last)} <span class="muted">· dates derived from your repo, not stamped by hand</span></p>
+    </section>`;
+}
+
+  const timelineHtml = shippedTimeline(cards);
+
   const pills = COLUMNS.map((col) =>
     `<span class="pill" style="--hue:var(--stage-${COLUMN_INDEX[col]})"><i></i>${esc(col)} <b>${counts[col] || 0}</b></span>`
   ).join('');
@@ -523,6 +613,26 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
           border-radius: 2px; padding: 6px 10px; }
   .pill i { width: 7px; height: 7px; background: var(--hue); flex: none; }
   .pill b { color: var(--ink); font-weight: 650; }
+
+  /* Shipped over time — cadence, never a scoreboard. One mark per shipped item,
+     stacked in its month. No intensity ramp and no empty-square guilt: a quiet
+     month is a fact about the month, not a verdict on the founder. */
+  .timeline { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
+  .timeline h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px;
+    font: 600 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  .timeline h2 .n { font-weight: 700; color: var(--ink); }
+  .tl { display: flex; gap: 3px; align-items: flex-end; overflow-x: auto; padding-bottom: 2px; }
+  .tl-m { flex: 1 0 26px; min-width: 26px; display: flex; flex-direction: column;
+    justify-content: flex-end; gap: 5px; }
+  .tl-marks { display: flex; flex-direction: column-reverse; gap: 2px; min-height: 8px;
+    background: var(--sunk); padding: 2px; border-radius: 2px; }
+  .tl-m.quiet .tl-marks { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+  .tl-marks i { display: block; height: 6px; background: var(--stage-3); border-radius: 1px; }
+  /* The most recent month is the only hi-vis mark on the strip — where you are now. */
+  .tl-m:last-child .tl-marks i { background: var(--hivis); }
+  .tl-label { font: 10px/1 var(--mono); color: var(--muted); text-align: center;
+    white-space: nowrap; overflow: hidden; }
+  .tl-foot { margin: 10px 0 0; font: 11px/1.5 var(--mono); color: var(--muted); }
   .banner { margin: 0 0 14px; padding: 11px 14px; font-size: 13px; border-radius: 2px;
             border: 1px solid var(--bar); border-left-width: 3px;
             background: color-mix(in srgb, var(--bar) 8%, var(--panel)); }
@@ -589,6 +699,7 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
     <div class="board">
 ${columnHtml}
     </div>
+    ${timelineHtml}
     <footer>
       A read of the files — to change the board, change the work (<code>/triage</code> · <code>/canvas</code> · <code>/spec</code>).
       Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` &middot; ${esc(stampedAt)}` : ''}

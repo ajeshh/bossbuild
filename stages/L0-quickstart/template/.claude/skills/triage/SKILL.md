@@ -13,7 +13,11 @@ thought lands — the first run creates the doc, every later run adds to it.
 
 1. Skim existing `docs/ideas/IDEA-*.md` titles (the files are the record — there is no index to read).
 2. If the user's thought clearly extends an existing idea → **append** to that doc (don't make a new one).
-3. Otherwise → **create** a new `IDEA-NNN` (next free number).
+3. Otherwise → **create** a new `IDEA-NNN`. **Get the number by running `boss id IDEA`** — it prints
+   the next free one, computed from every `.md` under `docs/` (filenames *and* prose, because a
+   number reserved in an index is taken even when no file exists yet). Do not count by hand: two
+   files claiming one number makes every reference to it ambiguous, and it is invisible until it
+   isn't.
 
 ## Create (first capture)
 

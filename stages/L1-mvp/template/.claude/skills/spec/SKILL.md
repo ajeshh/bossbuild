@@ -102,6 +102,11 @@ that when you're choosing among many candidates, not just reacting to one.)_
 
 ## How to run it
 
+0. **Should this be a FEAT at all?** Promote only if the build has **named slices** or **spans more
+   than one release** (`boss craft` · `docs/IDS.md`). A one-release change stays an IDEA and goes
+   straight to `shipped` — a second document for it is ceremony. If you promote, **run `boss id FEAT`**
+   for the number, and link both ways: the IDEA gets `promoted_to: FEAT-NNN`, the FEAT gets
+   `from: IDEA-NNN`. `boss records` checks both directions.
 1. Pick the source: `[IDEA-NNN]` if given, else the idea the user names, else the most active idea
    currently in `building` status.
 2. Allocate the next free `FEAT-NNN` (parallel numbering to IDEA — same N if it's a clean promotion,

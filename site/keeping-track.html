@@ -266,7 +266,7 @@
     <td><strong>day one</strong></td></tr>
     <tr><td><code>DEC-NNN</code></td><td>A load-bearing or hard-to-reverse call, with a falsifier. Supersede, don't edit</td>
     <td><strong>day one</strong></td></tr>
-    <tr><td><code>FEAT-NNN</code></td><td>A scoped feature with a spec</td>
+    <tr><td><code>FEAT-NNN</code></td><td>An idea that earned a <strong>build contract</strong> — named slices, or a build spanning more than one release</td>
     <td>MVP</td></tr>
     <tr><td><code>PRAC-NNN</code></td><td>A craft learning worth keeping — and sharing with a cofounder</td>
     <td>MVP</td></tr>
@@ -351,21 +351,28 @@
         </div>
         <div class="note">
           <p>
-            <strong>Two of these are rules in your project, not yet mechanisms.</strong> You don't
-            allocate the number — <code>/triage</code> reads the folder and takes the next free one. But
-            that's a <em>sentence in a skill file telling an agent to count</em>, not code that computes,
-            and the difference is invisible right up until it isn't. It broke in BOSS's own repo: two
-            files claimed the same number on the same day, and every reference to it was ambiguous until
-            a person spotted it. The closed status vocabulary has the same shape — closed by rule, with
-            nothing rejecting a word that isn't on the list.
-          </p>
-          <p>
-            Both rules ship in your scaffold today. <strong>Neither is enforced in it yet</strong> — the
-            checker that catches a duplicate ID and an off-list status was written for BOSS's own repo
-            the same week the collision happened, and it hasn't been sorted down into what you get.
-            That's the honest state: the mechanism exists one level up, and this page would rather say so
-            than let you find out.
-          </p>
+        Two of these were rules in your project and not yet mechanisms, and one still is. You don't
+        allocate the number by hand any more — <code>boss id IDEA</code> computes it, reading every
+        <code>.md</code> under <code>docs/</code>, filenames <em>and</em> prose, because a number
+        reserved in an index is taken even when no file exists yet. That closes the hole this page
+        was written to disclose: two files claimed the same number in BOSS's own repo on the same
+        day, and every reference to it was ambiguous until a person spotted it.
+      </p>
+      <p>
+        <code>boss records</code> now ships the other half — the checker that catches a duplicate ID,
+        an off-list status, and a broken promotion link. It also asks the question the rules never
+        could: a status is a claim about your code, so <code>proof:</code> names the file that would
+        not exist if the thing weren't done, and the check runs both ways. The expensive direction is
+        a finished feature whose record still reads <em>exploring</em> — a thing you might build
+        twice, or hand to an agent that rebuilds it, because the agent believes your docs.
+      </p>
+      <p>
+        <strong>What is still a rule and not a mechanism:</strong> nothing stops you writing a status
+        by hand that isn't on the list, or skipping <code>boss id</code> and typing a number. The
+        checker tells you afterwards. Detection is not prevention, and this page would rather say so
+        than let you find out. <em>This paragraph was itself stale for four releases after the
+        checker shipped — which is the whole subject of the page, arriving on time.</em>
+      </p>
         </div>
       </div>
     </section>
@@ -412,7 +419,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.184.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.185.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

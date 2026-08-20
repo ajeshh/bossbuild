@@ -9,6 +9,71 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.185.0 — 2026-08-20
+
+- **Allocation stopped being an instruction and became a computation.** BOSS's own site said this
+  out loud and it was true: *"you don't allocate the number — `/triage` reads the folder and takes
+  the next free one. But that's a sentence in a skill file telling an agent to count, not code that
+  computes, and the difference is invisible right up until it isn't."* It broke exactly that way.
+  **`boss id [PREFIX]`** computes it from every `.md` under `docs/` — filenames **and prose**,
+  because a number reserved in an index is taken even when no file exists yet. `/triage` and `/spec`
+  now call it instead of counting. **`boss records` detects a collision; this prevents one.**
+  - **Which prefixes count is READ FROM `docs/IDS.md`, never guessed by shape.** The first cut swept
+    `/[A-Z]{3,4}-\d+/` and confidently offered `CVE-2027` and `SHA-257` as next free numbers, having
+    found a vulnerability id and a hash algorithm in the prose.
+  - **🔴 Caught on a real fresh scaffold, not by reasoning: a brand-new project was offered
+    `IDEA-045` as its first idea.** BOSS's own shipped docs use example ids to explain the system
+    (`docs/IDS.md` shows IDEA-014 → FEAT-003), and the census counted them as taken. **Illustrations
+    in documentation are not reservations.** Prose now counts only inside record folders; filenames
+    still count anywhere. Rule 6 paid for itself again — this passed every unit test.
+- **IDEA → FEAT: the rule was wrong, and the repo had been telling us for 46 records.** IDS.md said
+  *"an idea in active build"* becomes a FEAT; **46 IDEAs went `building`/`shipped` without one**,
+  while all 5 FEATs that exist are multi-slice, multi-release build contracts. **The rule that got
+  followed was narrower than the rule that got written**, so the rule changed: promote when the build
+  has **named slices or spans more than one release**. A second document for a one-release change is
+  the ceremony Principle #2 refuses. **What IS enforced is the link, both ways** — `promoted_to:` ↔
+  `from:`, with `from: none` a valid answer. BOSS had 5 FEATs and not one link in either direction.
+- **🔴 `boss records` was crying wolf at three record types, and would have in every founder's
+  project.** The seven-word ladder is the **lifecycle** vocabulary; `DEC` is decided|superseded,
+  `PRAC` is active|stale|retired, `EVID` carries a grade, not a status. Applying the seven to every
+  prefix reported BOSS's own three decisions and its one evidence file as broken on the first run.
+  Per-type vocabularies are now read from IDS.md. *A checker that cries wolf gets switched off, which
+  is how the last three checkers died.*
+- **The transition is DERIVED, not stamped.** Ajesh: *"we aren't tracking ideas moving into building
+  or when it ships."* True — 2 of 67 records carried a date. The reflex fix is to ask people to stamp
+  one, which is another rule with no mechanism that rots the same way. **Git already knows**: a
+  record's first commit is when it was captured, its `proof:` artifact's first commit is when the
+  thing appeared. **`boss records --timeline`** reports it, with a median idea→built. Nobody
+  remembers anything and the dates cannot drift, because they *are* what happened.
+- **`boss board --html` gained a "Shipped over time" strip**, which is EVID-001's ask in its most
+  literal form — *"knowing exactly where I am, like a train line, seeing my progress."* It is the
+  first element on the board that looks **backward**; everything else answers *what now?*. It is
+  deliberately **not a contribution graph**: no streaks, no intensity ramp, no empty-square guilt for
+  a quiet fortnight. A month with one ship and a month with six are both just months with ships in
+  them. **Cadence, not volume, and certainly not effort.** The board's `shipped_on:`/`building_since:`
+  fields now fall back to the derived dates — they had existed since IDEA-034 and almost nothing
+  carried them, so a timeline built from them would have been an empty strip pretending to be a
+  feature.
+- **🔴 And it shipped broken first, in the same hour, in the exact shape this whole arc is about.**
+  The `execFileSync` import never landed (the edit matched a different argument order), so `gitFirst`
+  threw `ReferenceError`, **the `try/catch` swallowed it, and every derived date silently became
+  null.** The only symptom was an empty strip — indistinguishable from "nothing has shipped yet."
+  Same failure as v0.179.0's `readLadder()` returning `{}` on a parse error. The catch now re-throws
+  `ReferenceError`/`TypeError`: **a missing git is expected, a missing import is not.** Two
+  regression tests, one of which asserts on the import line itself.
+- **The website's disclosure was corrected, and it had gone stale in four releases** — it still said
+  the checker *"hasn't been sorted down into what you get"* after `boss records` shipped at v0.184.0.
+  The page about documentation going stale, gone stale. It now says which half is mechanism and which
+  half is still only a rule: **nothing stops you typing a status by hand that isn't on the list.
+  Detection is not prevention**, and the page would rather say so.
+
+> **For you:** **`boss id`** gives you the next free record number, computed rather than counted —
+> use it before creating an IDEA or FEAT. **`boss records --timeline`** shows when each idea was
+> captured and when it actually got built, derived from your own git history, with a median. And
+> `boss board --html` now has a **Shipped over time** strip so there is something to look at that is
+> *behind* you. Promote an idea to a FEAT when it has named slices or spans more than one release —
+> not before.
+
 ## 0.184.0 — 2026-08-20
 
 - **🔴 The gate shipped yesterday would not have caught the bug it was built for.** v0.181.0's

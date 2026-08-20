@@ -8,6 +8,10 @@ import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { collectBoard, canvassedIdeas, computeNext, computeStuck, boardJson } from '../src/board.js';
 import { project, cleanup, idea, feat, canvas, daysAgo } from './helpers.js';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 after(cleanup);
 
@@ -182,4 +186,39 @@ test('boardJson is a stable machine contract', () => {
   for (const k of ['id', 'title', 'column', 'priority', 'owner', 'blocked', 'reviewDue', 'aging']) {
     assert.ok(k in j.cards[0], `card missing ${k}`);
   }
+});
+
+// --- derived ship dates + the timeline ------------------------------------------------------
+// SHIPPED BROKEN ONCE, in the same session it was written: the `execFileSync` import never landed
+// (the replace matched a different argument order), so `gitFirst` threw ReferenceError, the
+// try/catch swallowed it, and EVERY derived date silently became null. The only symptom was an
+// empty timeline strip — the same failure shape as v0.179.0's readLadder() returning {}. These
+// assert the dates are real, because "it renders" was exactly what was true while it was broken.
+test('a shipped FEAT with no shipped_on: still gets a date, derived from the repo', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'boss-board-tl-'));
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  execFileSync('git', ['config', 'user.email', 't@t.t'], { cwd: dir });
+  execFileSync('git', ['config', 'user.name', 't'], { cwd: dir });
+  mkdirSync(join(dir, 'docs', 'ideas'), { recursive: true });
+  mkdirSync(join(dir, 'src'), { recursive: true });
+  writeFileSync(join(dir, 'src', 'thing.js'), 'export const x = 1;\n');
+  writeFileSync(join(dir, 'docs', 'ideas', 'FEAT-001-thing.md'),
+    '---\nid: FEAT-001\nstatus: shipped\nproof: src/thing.js\n---\n\n# The thing\n');
+  execFileSync('git', ['add', '-A'], { cwd: dir });
+  execFileSync('git', ['commit', '-qm', 'thing'], { cwd: dir });
+
+  const card = collectBoard(dir).cards.find((c) => c.id === 'FEAT-001');
+  assert.ok(card, 'the FEAT should be on the board');
+  assert.match(card.shippedOn || '', /^\d{4}-\d{2}-\d{2}$/,
+    'no shipped_on: in frontmatter — the date must come from the proof artifact\'s first commit');
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('REGRESSION: a coding error in date derivation throws instead of silently nulling', async () => {
+  // The catch must not swallow ReferenceError/TypeError — that is how it shipped broken.
+  const src = readFileSync(new URL('../src/board.js', import.meta.url), 'utf8');
+  assert.match(src, /if \(e instanceof ReferenceError \|\| e instanceof TypeError\) throw e;/,
+    'gitFirst must re-throw programming errors, not fail open on them');
+  assert.match(src, /^import \{ execFileSync \} from 'node:child_process';$/m,
+    'the import that was missing the first time');
 });

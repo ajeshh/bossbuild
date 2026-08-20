@@ -10,7 +10,7 @@ status: active
 | Prefix | Means | Lives in |
 |---|---|---|
 | `IDEA-NNN` | A raw idea / planned capability | `docs/ideas/` |
-| `FEAT-NNN` | An idea in active build (promoted from IDEA) | `docs/ideas/` (or a `docs/features/` folder if it grows) |
+| `FEAT-NNN` | An idea that earned a **build contract** — named slices, or a build spanning more than one release | `docs/ideas/` |
 | `DEC-NNN` | A load-bearing / hard-to-reverse decision record (ADR-lite; `status: decided \| superseded`, supersede-don't-edit) | `docs/decisions/` |
 | `PRAC-NNN` | A shared craft learning — a better way to build with AI (`status: active \| stale \| retired`, staleness-aware via `review_by:`) | `docs/practices/` |
 | `EVID-NNN` | A single piece of evidence bearing on a canvas assumption — one signal per file, graded on a fixed 3-rung ladder (`stated-pain` → `observed-behavior` → `commitment`) | `docs/evidence/` |
@@ -45,6 +45,28 @@ well-formed and both say more than the base word alone.
 checker could tell, so the index quietly disagreed with the files for ~80 releases and nothing
 noticed. A vocabulary nobody can enumerate is not a vocabulary. `npm run check:backlog` enforces
 this, the ID↔file mapping, and index agreement.
+
+## IDEA → FEAT — when to promote, and the link that proves you did
+
+**Not every idea becomes a FEAT.** The rule used to read *"an idea in active build"*, and the repo
+violated it 46 times: 46 IDEAs went `building` or `shipped` and never became one, while only 5 FEATs
+ever existed. That is not sloppiness — it is the rule being wrong. **All 5 real FEATs are multi-slice,
+multi-release build contracts.** The rule that got followed was narrower than the rule that got written.
+
+> **Promote when the build has named slices, or spans more than one release.** Otherwise the IDEA
+> carries it to `shipped` on its own. A second document for a one-release change is the ceremony
+> Principle #2 exists to refuse.
+
+**A promotion is legible from both ends, and that part IS enforced** (`npm run check:backlog`):
+
+```
+IDEA-020                    FEAT-020
+  promoted_to: FEAT-020  ←→   from: IDEA-020
+```
+
+A `FEAT` that cannot name its idea is an orphan; an idea pointing at a `FEAT` that does not exist is
+the duplicate-ID problem wearing a different hat. `from: none` is a valid answer — FEAT-024 came
+straight from a conversation, and says so in `from_note:`.
 
 ## `proof:` — the field that makes a status checkable
 

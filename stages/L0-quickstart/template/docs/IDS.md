@@ -21,7 +21,7 @@ Stable IDs make work addressable across sessions and docs. New types unlock as t
 
 | Prefix | Means | Unlocks in mode |
 |---|---|---|
-| `FEAT-NNN` | A scoped feature with a spec | MVP |
+| `FEAT-NNN` | An idea that earned a **build contract** — named slices, or a build spanning more than one release | MVP |
 | `PRAC-NNN` | A craft learning worth keeping — and sharing with a cofounder | MVP |
 | `EXTR-NNN` | A pattern extraction decision (UP into the library / DOWN into app core; PRINCIPLE #1) | MVP |
 | `RFC-NNN` | A decision document | Scale |
@@ -92,6 +92,27 @@ file, and a `proof_note:` on something built-but-blocked ("done, waiting on the 
 > work was unbuilt that had shipped**, one of them for a hundred releases. The rules were all
 > written down and nothing checked them, which made them preferences. `boss records` is the half
 > that was missing.
+
+## IDEA → FEAT — promote when it earns a contract
+
+**Most ideas never become a FEAT, and that's correct.** Promote when the build has **named slices**
+or **spans more than one release** — otherwise the IDEA carries itself to `shipped`. A second
+document for a one-afternoon change is ceremony, and ceremony you don't need is the thing that makes
+people stop keeping records at all.
+
+When you do promote, link it **both ways** so either end tells you the whole story:
+
+```
+IDEA-014                    FEAT-003
+  promoted_to: FEAT-003  ←→   from: IDEA-014
+```
+
+`boss records` checks both directions. `from: none` is valid — some features come straight from a
+conversation with a customer, never from a captured idea. Say so in `from_note:`.
+
+> BOSS got this wrong on itself: its own rule said *"an idea in active build"* becomes a FEAT, and
+> then 46 of its ideas shipped without one. Every FEAT that actually got written was a multi-slice
+> build. The rule was wrong, not the people.
 
 ## Numbering
 

@@ -62,6 +62,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.185.0</span><span class="when">2026-08-20</span></div>
+        <p><strong><code>boss id</code></strong> gives you the next free record number, computed rather than counted — use it before creating an IDEA or FEAT. <strong><code>boss records --timeline</code></strong> shows when each idea was captured and when it actually got built, derived from your own git history, with a median. And <code>boss board --html</code> now has a <strong>Shipped over time</strong> strip so there is something to look at that is <em>behind</em> you. Promote an idea to a FEAT when it has named slices or spans more than one release — not before.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.184.0</span><span class="when">2026-08-20</span></div>
         <p><strong><code>boss records</code></strong> — new. Your docs make claims about your code (<code>shipped</code> means the thing exists), and nothing ever checked them. Add <code>proof: &lt;path&gt;</code> to a record and BOSS will tell you when the two stop agreeing — in both directions. The one that costs you is a finished feature whose record still says <em>&quot;exploring&quot;</em>: that is a thing you might build twice, or hand to an agent that rebuilds it, because the agent believes your docs. <code>boss status</code> now says so in one line.</p>
       </li>
@@ -105,10 +109,6 @@
         <div class="rel"><span class="ver">v0.172.0</span><span class="when">2026-08-20</span></div>
         <p><code>/spec</code> now says back what it had to <strong>assume</strong> before you build, and asks for one worked example and what &quot;wrong&quot; looks like — the corrections are the best documentation you'll get. A FEAT gains a <strong>Build log</strong> so a feature's story stays whole across releases. <code>boss board</code> shows <strong>how far</strong> through a feature you are, not just that it's in flight. And <code>docs/ideas/INDEX.md</code> is no longer a table you maintain.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.171.0</span><span class="when">2026-08-20</span></div>
-        <p>if you're early, BOSS now asks you for one thing — pick the words for your two or three main concepts and stay consistent. The voice-and-tone table waits until you've watched real people read your screens. Unless you're building somewhere high-stakes, in which case how your product talks when it's <em>unsure</em> comes first.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -137,7 +137,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.184.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.185.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

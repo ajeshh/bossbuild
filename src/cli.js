@@ -19,7 +19,7 @@ import { map, renderLadder } from './map.js';
 import { modeWord } from './modes.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
-import { recordDrift, driftLine } from './records.js';
+import { recordDrift, driftLine, nextId, idCensus, timeline } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
@@ -505,9 +505,62 @@ function cmdBrain(args) {
 // `boss records` — the deliberate reader for record drift. See src/records.js for why this
 // ships at all: BOSS shipped the rules for keeping a project's memory and shipped no way to tell
 // when they stopped being true, which is exactly how BOSS's own memory got 21 records wrong.
+// `boss id` — the allocation half. `boss records` catches a collision after the fact; this stops
+// one happening. See src/records.js: BOSS's own site called this gap out by name, and it had
+// already bitten (two files claimed IDEA-059 on the same day).
+function cmdId(args) {
+  const dir = process.cwd();
+  const prefix = args.find((a) => /^[A-Za-z]{3,4}$/.test(a));
+  if (prefix) {
+    const id = nextId(dir, prefix);
+    if (!id) { console.log(`\n  Not a record prefix: ${prefix}\n`); process.exitCode = 1; return; }
+    console.log(id);   // bare, so a skill or a script can use it directly
+    return;
+  }
+  const census = idCensus(dir);
+  console.log(`\n  ${bold('Next free record numbers')}   ${dim(dir)}\n`);
+  if (!census.size) {
+    console.log(dim('  No records yet. Your first one is IDEA-001.\n'));
+    return;
+  }
+  for (const [p, highest] of [...census].sort()) {
+    console.log(`    ${bold(`${p}-${String(highest + 1).padStart(3, '0')}`)}   ${dim(`highest in use: ${p}-${String(highest).padStart(3, '0')}`)}`);
+  }
+  console.log(dim('\n  Computed from every .md under docs/ — filenames and prose both, because a'));
+  console.log(dim('  number reserved in an index is taken even when no file exists yet.\n'));
+}
+
+// The transition half of Ajesh's ask, and the reason it is DERIVED rather than stamped: a date
+// someone has to remember to write is another rule with no mechanism, and it rots exactly the way
+// every other rule here rotted. Git already knows. See src/records.js.
+function recordTimeline(dir) {
+  let rows = [];
+  try { rows = timeline(dir); } catch { rows = []; }
+  const dated = rows.filter((r) => r.captured);
+  console.log(`\n  ${bold('BOSS records')} ${dim('· timeline')}   ${dim(dir)}\n`);
+  if (!dated.length) {
+    console.log(dim('  No dates to derive — this needs a git history, and records that are committed.\n'));
+    return;
+  }
+  for (const r of dated) {
+    const ship = r.shipped
+      ? `${r.shipped}${r.lagDays !== null ? dim(`  (${r.lagDays}d)`) : ''}`
+      : dim(r.status === 'shipped' ? 'shipped — no date derivable' : '—');
+    console.log(`    ${bold(r.id.padEnd(9))} ${dim('captured')} ${r.captured}   ${dim('built')} ${ship}`);
+  }
+  const shipped = dated.filter((r) => r.lagDays !== null);
+  if (shipped.length) {
+    const med = shipped.map((r) => r.lagDays).sort((a, b) => a - b)[Math.floor(shipped.length / 2)];
+    console.log(`\n  ${shipped.length} of ${dated.length} have a build date. ${bold(`Median idea → built: ${med} days.`)}`);
+  }
+  console.log(dim('\n  Derived from git: a record\'s first commit, and its proof: artifact\'s first commit.'));
+  console.log(dim('  Nobody stamps these, so they cannot drift from what actually happened.\n'));
+}
+
 function cmdRecords(args) {
   const all = args.includes('--all');
   const dir = process.cwd();
+  if (args.includes('--timeline')) return recordTimeline(dir);
   let found = [];
   try { found = recordDrift(dir); } catch { /* fall through to the empty case */ }
   const shown = all ? found : found.filter((f) => !f.quiet);
@@ -526,6 +579,7 @@ function cmdRecords(args) {
     'claimed-not-built': 'CLAIMED, NOT THERE',
     'duplicate-id': 'DUPLICATE ID',
     'off-vocabulary': 'OFF-VOCABULARY STATUS',
+    'unlinked-promotion': 'BROKEN PROMOTION LINK',
     'no-proof': 'NOTHING TO CHECK AGAINST',
   };
   let last = null;
@@ -906,8 +960,14 @@ const HELP = {
     examples: ['boss insights'],
     see: ['board', 'list'],
   },
+  id: {
+    usage: 'boss id [PREFIX]',
+    what: "The next free record number, computed — not counted by hand. Scans every .md under docs/ (filenames AND prose, because a number reserved in an index is taken even if no file exists yet) and returns the next one. Use it before you create a record; two files claiming one number makes every reference to it ambiguous.",
+    examples: ['boss id', 'boss id IDEA'],
+    see: ['records', 'board'],
+  },
   records: {
-    usage: 'boss records [--all]',
+    usage: 'boss records [--all | --timeline]',
     what: "Check what your docs CLAIM against what your repo actually has. A status is a claim — `shipped` means the thing exists. This reads each record's `proof:` path and says where the two stopped agreeing, in both directions: something you finished and never wrote down, or something a record says you shipped that isn't there. --all also lists records with no `proof:` to check.",
     examples: ['boss records', 'boss records --all'],
     see: ['status', 'board'],
@@ -1169,6 +1229,7 @@ export async function run(argv) {
     case 'brain': return cmdBrain(args);
     case 'insights': return cmdInsights();
     case 'records': return cmdRecords(args);
+    case 'id': return cmdId(args);
     case 'team': return cmdTeam(args);
     case 'list': return cmdList();
     case 'retire': return cmdRetire(args);
