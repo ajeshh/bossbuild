@@ -91,6 +91,26 @@ it's about the work's path to a user, never a judgment that the founder hasn't h
 `mentor-gtm` for the depth, and drop it — a founder who's already got a first user or who's deliberately not
 distributing yet hears it and moves on. Never a gate.
 
+### 6b. Will they understand it? (only if the answer is already no)
+
+Step 6 asks who *finds* it. This is the quieter sibling: **once they arrive, can they work out what to
+do?** BOSS has no help-docs skill and shouldn't grow one — the honest first move is almost never an
+article.
+
+**Say something only if you can already point at the specific confusion** — a screen with no empty
+state, a concept the product names but never explains, a step you had to talk the last user through by
+hand. If you can't name one, say nothing; a generic *"have you written docs?"* is the checklist nag
+this skill refuses everywhere else.
+
+When you can name one, name **the fix upstream first**: an empty state that explains itself, a clearer
+label, a worked example in the product. Those beat an article, and they're usually smaller. An article
+is right when the thing is genuinely complex or is reference material someone keeps open in another tab.
+
+If the founder does write docs, one line worth saying once: **publish clean markdown and keep the
+whole corpus small** — the assistants their users ask *"how do I do X in this product"* read those docs
+too, and a small current corpus beats a big one with good search. Depth is in `boss craft documentation`
+(§7). Never a gate.
+
 ## Cohort-aware
 
 - `first-product` / `vibe-coder-newbie` — plain language; the pre-flight is **non-negotiable** (they can't

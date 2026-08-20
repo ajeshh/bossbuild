@@ -9,6 +9,67 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches boss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.175.0 — 2026-08-20
+
+**The docs your *users* read — the half BOSS had no coverage of at all.**
+
+> **For you:** `/ship` now asks, once and only when it can name the actual confusion, whether an
+> arriving user can work out what to do — and points at the fix *upstream* (an empty state, a clearer
+> label) before it points at an article. Depth: `boss craft documentation` §7.
+
+Ajesh, clarifying a question answered at the wrong altitude: *"I meant for app documentation for
+someone creating a new app via BOSS… like a help guide or such in an app."*
+
+### 🔴 The gap was total
+
+Grep the shipped surface: `help guide` **0** · `help center` **0** · `user documentation` **0** ·
+`docs site` **0** · `FAQ` **0** · `support article` **0** · `tooltip` **0**. The near-misses all scope
+it out explicitly — **`/onboard`'s own description** says *"Scope: your USERS' first run — not a new
+teammate's first week"*; `activation.md` mentions help only in its **refuses** list (forced tutorials);
+`landing-page.md` and `ship-it-live.md` have nothing. v0.172.0's `documentation.md` was **entirely
+inward-facing**.
+
+BOSS ran capture → canvas → spec → build → ship → activate → measure with nothing for *"your users
+need to understand how to use this."*
+
+### The answer is subtraction, not a docs feature
+
+`documentation.md` **§7 — The docs your users read**, whose load-bearing line is **ask first whether
+the doc should exist**: a help article is often a defect report about the interface, written by the
+team that shipped the defect. Empty state > article; better label > FAQ entry; worked example
+in-product > tutorial.
+
+- **The two-reader cut, re-aimed.** §2's second reader was the model working in your repo. Here it is
+  **an assistant answering "how do I do X in your product" for someone who never opened your site** —
+  so name the objects in the prose, one page per task with the answer near the top, publish clean
+  markdown, and date what's version-specific.
+- **`llms.txt` — cheap, worth doing, do not oversell.** Recorded with its honest status: **no major
+  model provider has publicly committed to reading it in production** as of early 2026, yet Stripe /
+  Vercel / Cloudflare / Anthropic / Cursor ship it because their users' coding agents consume it today.
+  A **content-authority** play, not access control, and **not** a growth channel. Flagged in
+  `provenance:` as the fastest-moving claim in the doc — re-check it on every refresh.
+- **A knowledge base / graph over the docs was weighed and DECLINED**, and the published guidance is
+  itself the argument: *fit the whole corpus in one context window*. That is the docs-side statement of
+  `retrieval.md` **rung 0** — a corpus small enough to read whole needs no index, no embeddings, no
+  graph. The discipline is pruning, not infrastructure. Measured before deciding: a fresh L1 project is
+  **17 files / ~20k tokens**; BOSS's own *tracked* docs are **8 files / ~20k**.
+
+### Also — a time-bomb test, defused
+
+`boss changelog --since` was tested by asserting the **oldest included release** appeared in the
+output. The list is capped for readability and folds its tail into *"… +N older"*, so that assertion
+passed until enough releases shipped to push `0.150.0` into the fold — **then failed for a reason
+unrelated to the behaviour under test.** This release is the one that tipped it (26 since `0.149.0`).
+Rewritten to assert the **contract**: the `--since` base is honoured, the newest release (read from
+`VERSION`) is shown, older ones are excluded. None of those depend on how many rows fit on screen.
+
+### `/ship` step 6b — gated hard, on purpose
+
+Step 6 asks who *finds* it; 6b asks whether they can *use* it. It fires **only when it can point at a
+specific confusion** — a screen with no empty state, a concept named but never explained, a step the
+founder talked the last user through by hand. If it cannot name one it says nothing, because a generic
+*"have you written docs?"* is the checklist nag this skill refuses everywhere else. Never a gate.
+
 ## 0.174.0 — 2026-08-20
 
 **The eval gate could lose cases and still print "passed."**

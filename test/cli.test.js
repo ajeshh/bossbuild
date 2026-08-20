@@ -214,7 +214,15 @@ test('boss changelog --since overrides the pin, and --all ignores both', () => {
   const p = bossProject();
   const since = boss(['changelog', '--since', '0.149.0'], p);
   assert.equal(since.code, 0, since.out);
-  assert.match(since.out, /0\.150\.0/);
+  // REGRESSION: this used to assert the OLDEST included release (`0.150.0`) appeared in the
+  // list. The list is capped for readability and folds the tail into "… +N older", so that
+  // assertion was a time bomb — it passed until enough releases shipped to push 0.150.0 into
+  // the fold, then failed for a reason unrelated to the behaviour under test. Assert the
+  // CONTRACT instead: the --since base is honoured, something newer than it is shown, and
+  // anything older is excluded. None of those depend on how many releases fit on screen.
+  assert.match(since.out, /since 0\.149\.0/, '--since should override the project pin');
+  const current = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
+  assert.match(since.out, new RegExp(current.replace(/\./g, '\\.')), 'the newest release is always shown');
   assert.doesNotMatch(since.out, /^\s+0\.148\.0/m, '--since should exclude older releases');
   const all = boss(['changelog', '--all'], p);
   assert.match(all.out, /0\.1\.0|0\.2\.0/, '--all should reach the earliest releases');

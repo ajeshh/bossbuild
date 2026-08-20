@@ -4,7 +4,7 @@ type: practice
 owner: pm
 status: active
 host: stack-neutral
-provenance: consolidated from BOSS's own shipped discipline — the seven capture artifacts (/triage, /canvas, /evidence, /decide, /spec, /log, /close) had been distributed across eight skills and zero practices since v0.1, so nothing could refresh, cite, or hold them to a standard. Assessment - docs/dossier/documentation-and-progress-pass-001.md (2026-08-20). Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction · structured note-taking · JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored / code-coupled / drift-enforced), and Marty Cagan's *Discovery vs. Documentation* (SVPG). The formatting layer is new and unvetted by anyone outside BOSS.
+provenance: consolidated from BOSS's own shipped discipline — the seven capture artifacts (/triage, /canvas, /evidence, /decide, /spec, /log, /close) had been distributed across eight skills and zero practices since v0.1, so nothing could refresh, cite, or hold them to a standard. Assessment - docs/dossier/documentation-and-progress-pass-001.md (2026-08-20). Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction · structured note-taking · JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored / code-coupled / drift-enforced), and Marty Cagan's *Discovery vs. Documentation* (SVPG). The formatting layer is new and unvetted by anyone outside BOSS. §7 (user-facing docs) added 2026-08-20 from the llms.txt / AI-readable-docs sweep — the llms.txt adoption status is explicitly caveated in the text and MUST be re-checked on refresh; it is the fastest-moving claim in this doc.
 last_reviewed: 2026-08-20
 review_by: 2027-02-16
 curve: craft-ai
@@ -241,6 +241,67 @@ render, keep the open bet visible next to it. Four columns of movement above an 
 should read as a warning, not an achievement.
 
 ---
+
+## 7. The docs your users read (the outward half)
+
+Everything above is **inward-facing** — the record you keep so the project can be built. This section
+is the other half, and it fails differently: an internal doc that goes stale costs you a bad
+afternoon, a user-facing one that goes stale costs you a user who concluded the product was broken.
+
+### Ask first whether the doc should exist
+
+**The best help doc is the one nobody needed.** A help article is often a defect report about the
+interface, written by the team that shipped the defect. Before writing one, check whether the honest
+fix is upstream:
+
+- **An empty state that explains itself** beats an article on what to do first.
+- **A better label or an inline hint** beats an FAQ entry about what a control means.
+- **A worked example in the product** beats a tutorial about the product.
+
+Write the article when the thing genuinely is complex, irreducible, or reference material someone
+needs open in another tab. Don't write it to compensate for a screen you could fix. And **never
+write docs as a substitute for the activation path** — that's the same *documentation-instead-of-the-work*
+failure this practice opens with, wearing a user-facing hat.
+
+### Your docs now have two readers, and only one of them can file a bug
+
+The two-audience cut from section 2 applies harder here, because the second reader changed. It is no
+longer only the model working in your repo — it is **an assistant answering "how do I do X in your
+product" for a person who never opened your site.** On many documentation sites, agent traffic
+already exceeds human traffic.
+
+What that changes, concretely:
+
+- **Say the product's name and the exact object names** in the text, not just in the nav. A model
+  quoting your docs needs the noun; a human had the page title for context and the model may not.
+- **One page per task, with the answer near the top.** A page that buries the procedure under
+  positioning is a page that gets summarized into something wrong.
+- **Publish clean markdown, not just rendered HTML.** It is what both readers parse best.
+- **Version and date what's version-specific.** A model has no way to know your screenshot is from
+  eighteen months ago; a stale doc becomes a confidently wrong answer at scale.
+
+### `llms.txt` — cheap, worth doing, and don't oversell it
+
+A markdown file at your domain root linking your canonical pages with one-line descriptions. **The
+honest status matters:** as of early 2026 **no major model provider has publicly committed to reading
+it in production.** It is shipped by Stripe, Vercel, Cloudflare, Anthropic and Cursor anyway, because
+the coding agents their users run consume it *today*.
+
+**Treat it as a content-authority play, not access control** — you're pointing models at what's
+canonically true about your product so they invent less. It costs an afternoon and it cannot hurt.
+It is not a growth channel, and anyone selling it as one is selling something.
+
+### Keep the corpus small enough that retrieval never becomes the plan
+
+The published guidance converges on **fitting the whole corpus in one context window** — practically,
+staying under a couple hundred thousand tokens. That is worth reading as what it is: the docs-side
+statement of [`retrieval.md`](retrieval.md)'s rung 0. **A corpus small enough to be read whole needs
+no index, no embeddings, and no graph** — and a small, current corpus beats a large one with good
+search, for both readers.
+
+So the discipline is **subtraction, not infrastructure**: prune dead pages, merge near-duplicates,
+delete anything describing a version nobody runs. If you genuinely outgrow one context window, climb
+`retrieval.md`'s ladder on a metric — one rung at a time — rather than reaching for the top of it.
 
 ## Self-check before writing a doc
 
