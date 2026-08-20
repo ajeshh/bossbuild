@@ -73,6 +73,13 @@ Worth a `/decide` → `DEC-NNN` before the agent writes the migration:
 - **What you store at all.** The cheapest way to not leak something is to not have it. An agent will
   happily add columns you never asked for; every one is a liability with no offsetting value unless
   a feature needs it.
+- **Whether a row remembers *when* it happened.** A `created_at` on user rows and core object rows is the
+  one-way door nobody notices closing — it's not a leak or a migration risk, it's *lost history*. Add the
+  column in month six and you can query forward from month six; the first five months are gone, and with them
+  every cohort, activation rate, and retention curve you might later want. Two lines of schema now buys the
+  entire measurement past ([`analytics-for-ai-products`](analytics-for-ai-products.md) — "leave the seam").
+  Note this is the **opposite** direction from the bullet above: store *less* of the user, but do store *when
+  their own rows happened.* Timestamping a record the user asked you to create is not surveillance.
 
 ## Migrations are the reviewable history
 
@@ -104,7 +111,9 @@ A short read, not a ceremony:
 **Quickstart:** none of this. A prototype with no users and no real data doesn't have a data layer
 worth governing — and demanding one is the ceremony that makes founders quit.
 **MVP, the moment real user data exists:** RLS on + the negative test. That's it — two things,
-non-negotiable, and they're 90% of the risk.
+non-negotiable, and they're 90% of the risk. (Plus `created_at` on user + core rows — listed under the
+one-way doors above, but it belongs *here* in effort: it costs one line, needs no decision, and is the only
+item on this page that gets strictly more expensive every day you don't do it.)
 **V1:** the tenancy `DEC`, migrations discipline, the review list, `db-architect`.
 **Scale:** retention, PII classification, access review.
 
@@ -116,4 +125,5 @@ If you don't know the answer with certainty, that's the next thing to find out.
 [`agent-security`](agent-security.md) (the same adversary, the app-you-ship surface) ·
 [`testing-with-agents`](testing-with-agents.md) (the negative path) ·
 [`scalable-architecture`](scalable-architecture.md) (migrations at scale) ·
-[`ship-it-live`](ship-it-live.md) (the pre-flight where this gets caught last).
+[`ship-it-live`](ship-it-live.md) (the pre-flight where this gets caught last) ·
+[`analytics-for-ai-products`](analytics-for-ai-products.md) (why `created_at` is the seam you cannot backfill).

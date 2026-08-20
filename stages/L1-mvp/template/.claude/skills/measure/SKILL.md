@@ -1,6 +1,6 @@
 ---
 name: measure
-description: The post-ship counterpart to /pretotype. /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship. Picks ONE activation metric + ONE retention curve, names 5-10 events max (kills analytics theater), defaults to the free/OSS/no-lock-in path, and for an AI product adds the metrics that classic analytics misses (task-completion, edit rate, cost-per-successful-outcome). Humane by construction — measures graduation/loop-closure, NOT engagement/DAU. At n<10 its honest output is "close this, go talk to your users." Usage - /measure
+description: The post-ship counterpart to /pretotype. /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship. Picks ONE activation metric + ONE retention curve, names 5-10 events max (kills analytics theater), defaults to the free/OSS/no-lock-in path, and for an AI product adds the metrics that classic analytics misses (task-completion, edit rate, cost-per-successful-outcome). Humane by construction — measures graduation/loop-closure, NOT engagement/DAU. At n<10 its honest output is "close this, go talk to your users" — but never empty-handed: it leaves the SEAM (a `created_at` on user + core rows, and one `track()` stub), because you can add a tracking call any day and you can never add the past. Usage - /measure
 ---
 
 # /measure — is the shipped thing working, and are they staying?
@@ -15,6 +15,19 @@ Check the real user count (ask, or read `/ship` context / the EVID ledger). **If
 the correct output is: close this and go talk to them.** Analytics on ten users is noise; a conversation isn't.
 Do not instrument. Point at `/interview`. Instrument only at roughly **n≥30–50** — when you can no longer eyeball
 every session by hand.
+
+**But don't leave empty-handed — check the seam before you close.** Saying "not yet" is only honest if
+starting later is cheap, and one half of it *cannot be bought back*:
+
+- **`created_at` on user rows and core object rows.** You can add a tracking call any day; you cannot add the
+  past. With timestamps you can reconstruct cohorts and a retention curve for the months *before* anyone
+  thought about analytics — without them, the day you finally measure is day zero. Missing? That's a one-line
+  migration now, and the single highest-value thing this skill can hand a founder at n<10.
+- **One `track(event, props)` stub** that console-logs or no-ops. Turns "adopt a tool later" into implementing
+  one function instead of editing forty call sites.
+
+That's the whole seam: **a timestamp column and a stub function.** If you find yourself naming events or
+designing an `events` table, stop — that's the instrumentation step 0 just refused.
 
 ## Step 1 — pick ONE activation metric + ONE retention curve
 
@@ -74,6 +87,8 @@ retention is `observed-behavior` / `commitment` **EVID** — record the real sig
 
 ## Rules
 - **Say no at n<10.** The honest output is a conversation, not a dashboard.
+- **Say no — but leave the seam.** `created_at` + a `track()` stub, nothing more. The timestamp is the one
+  piece that cannot be bought back later; refusing instrumentation without it costs the founder their history.
 - **≤10 events. Refuse analytics theater.** More instrumentation is not more insight.
 - **Measure success/graduation, never engagement-as-goal.** Humane by construction.
 - **Extend `/evals` + `/ai-cost`, don't duplicate them.** Online/product metrics are the missing half, not a new silo.

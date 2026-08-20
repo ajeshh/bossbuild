@@ -4,7 +4,7 @@ type: practice
 owner: mentor-gtm
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (post-ship validation thread) — the "model accuracy != user success" doctrine (iamprayerson 2026), AI product metrics (TianPan 2026 — TCR, retained-character rate, frustration index), PostHog LLM analytics (product+observability convergence), Hamel Husain & Shreya Shankar (online evals on production traffic), the Camuffo RCT (validation buys faster quitting). Pairs with /measure (the runner), /evals + /judge-traces (correctness), /ai-cost + /cost-review (spend), the EVID ladder, and the humane lens (ai-ux-patterns.md). BOSS v0.113.0.
+provenance: distilled from the 2026-07-23 research sweep (post-ship validation thread) — the "model accuracy != user success" doctrine (iamprayerson 2026), AI product metrics (TianPan 2026 — TCR, retained-character rate, frustration index), PostHog LLM analytics (product+observability convergence), Hamel Husain & Shreya Shankar (online evals on production traffic), the Camuffo RCT (validation buys faster quitting). Pairs with /measure (the runner), /evals + /judge-traces (correctness), /ai-cost + /cost-review (spend), the EVID ladder, and the humane lens (ai-ux-patterns.md). BOSS v0.113.0. · **the seam section added 2026-08-20 (v0.176.0)** — not a refresh, so the freshness clock is deliberately HELD (the v0.150.0 correction: one section is not a sweep). The gap: the JIT boundary said "don't instrument" and never said what to leave behind, so the no was only half-honest — a founder who obeyed it correctly still lost the history they already had. The load-bearing half (`created_at` as the un-backfillable seam) belonged in data-schema.md's one-way doors and wasn't there either.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
 curve: market
@@ -25,6 +25,35 @@ The correct output of `/measure` at n<10 is *"close this and go talk to them."* 
 (when you can no longer eyeball every session), and even then: **one activation metric, one retention curve,
 ≤10 events.** Dashboards, 200-event taxonomies, a "North Star committee," paid tiers, warehouse analytics —
 all premature ceremony before you have a retention curve worth reading (Principle #2).
+
+## But leave the seam (the half that makes the "no" honest)
+
+Telling a founder *"don't instrument"* is only honest if starting later is genuinely cheap. Usually it
+isn't — and the reason is not the code. **Two seams, in order of how expensive they are to skip:**
+
+**1. The history seam — the one you cannot backfill.** You can add a tracking call any day you like. You
+cannot add *the past*. If your user rows and your core object rows carry a **`created_at`**, then on the day
+you finally care you can reconstruct signup cohorts, an activation rate, and a real retention curve **for the
+months before analytics ever crossed your mind**. Without them, the day you decide to measure is day zero and
+your first readable curve is another 30–90 days out — a founder who did everything right still waits a quarter
+to learn something their own database already knew. This is a schema one-way door
+([`data-schema`](data-schema.md)), and it is the *cheapest* thing in this entire practice.
+
+It is also the humane version by construction: you are timestamping **your own rows**, not watching a person.
+The work already leaves an honest trace — read the trace, don't instrument the human ([[IDEA-021]]). A
+`created_at` on a record the user asked you to create is not surveillance; a session recorder on a user who
+didn't is.
+
+**2. The call seam — one function, not forty call sites.** The real cost of instrumenting later is *finding
+every place a meaningful thing happens* and editing it. One `track(event, props)` that console-logs (or
+no-ops) costs nothing to leave in and turns "adopt PostHog" into implementing a single function. Same rule
+`scalable-architecture` uses for services: you cut along a seam that already exists rather than carving one
+under pressure.
+
+**What the seam is NOT.** Not an event taxonomy, not a tool account, not a dashboard, not an `events` table
+for events you have never needed. The seam is *a timestamp column and a stub function.* Anything past that is
+the instrumentation the JIT boundary just told you not to build — and if you catch yourself designing event
+names, you have crossed back over.
 
 ## Why classic analytics breaks on an AI product
 

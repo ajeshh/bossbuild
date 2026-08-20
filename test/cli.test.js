@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
-import { updateNote, installKind, updateCommand } from '../src/update.js';
+import { updateNote, installKind, updateCommand, PKG } from '../src/update.js';
 import { project, cleanup, idea, feat, canvas } from './helpers.js';
 
 after(cleanup);
@@ -188,7 +188,11 @@ test('boss changelog defaults to the cut since THIS project pin', () => {
   const r = boss(['changelog'], p);
   assert.equal(r.code, 0, r.out);
   assert.match(r.out, /this project: 0\.0\.1/, 'should name the pin it is cutting from');
-  assert.match(r.out, /0\.151\.0/, 'a release newer than the pin should be listed');
+  // Assert the BEHAVIOUR, not a fixed version. This pinned 0.151.0 when written (v0.152.0);
+  // the list caps at 25, so that number aged out of the window and the test failed on an
+  // unrelated release. What it means is "the newest release is in the cut" — which stays true.
+  const newest = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
+  assert.ok(r.out.includes(newest), `the newest release (${newest}) should be listed`);
   assert.doesNotMatch(r.out, /registry\/CHANGELOG\.md/, 'never expose BOSS-repo-only paths');
 });
 
@@ -207,7 +211,7 @@ test('REGRESSION: a pin equal to the install says so WITHOUT claiming BOSS is cu
   // lets a founder read that as "I am up to date", they can sit 50 releases behind forever
   // and be told they are current every single time.
   assert.match(r.out, /install/i, 'must distinguish install-current from project-current');
-  assert.match(r.out, /npm i -g bossbuild@latest|brew upgrade/, 'must name how to update the TOOL');
+  assert.match(r.out, /npm i -g oyeboss@latest|brew upgrade/, 'must name how to update the TOOL');
 });
 
 test('boss changelog --since overrides the pin, and --all ignores both', () => {
@@ -273,8 +277,18 @@ test('the upgrade command matches how BOSS was actually installed', () => {
   // Telling a Homebrew user to run `npm i -g` is advice that fails silently — they run it, nothing
   // changes, and they conclude the check is broken.
   assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/boss/0.1.0')), 'brew upgrade boss');
-  assert.equal(updateCommand(installKind('/usr/local/lib/node_modules/bossbuild')), 'npm i -g bossbuild@latest');
+  assert.equal(updateCommand(installKind('/usr/local/lib/node_modules/oyeboss')), 'npm i -g oyeboss@latest');
   assert.match(updateCommand(installKind('/Users/x/Projects/bossbuild')), /git pull/);
+});
+
+test('REGRESSION: the package name BOSS checks is the package name BOSS tells you to install', () => {
+  // v0.177.0 renamed npm `bossbuild` → `oyeboss`. The name lives in two places that must agree:
+  // the registry URL `boss update` polls, and the command it prints. Change one and not the other
+  // and the failure is SILENT — BOSS cheerfully checks a package nobody can install, or tells you
+  // to install one it never looks at. Neither throws; both are wrong.
+  assert.equal(PKG, JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).name,
+    'src/update.js PKG must equal package.json name');
+  assert.ok(updateCommand('npm').includes(PKG), 'the printed npm install command must name PKG');
 });
 
 test('boss update is offline-safe — it never exits non-zero for lack of network', () => {

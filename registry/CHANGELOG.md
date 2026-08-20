@@ -6,8 +6,70 @@ Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's ne
 changes something a BOSS user *does, sees, or can rely on* — a command, a fix they'd have hit, a
 behaviour change — **or** if it integrates a new/updated best practice their project now inherits.
 Everything else (audits, refactors, doc sweeps, internal tooling, this repo's own website) gets **no
-line and never reaches boss.build/whats-new.html**. Most releases should have no line. A release feed
+line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
+
+## 0.176.0 — 2026-08-20
+
+**"Don't instrument yet" was only half-honest — the half it never said was what to leave behind.**
+
+> **For you:** `/measure` no longer sends a founder away empty-handed. Below ~10 users it still says
+> *"close this and go talk to them"* — but it now checks the **seam** first: a `created_at` on your user
+> and core rows, and one `track()` stub. The timestamp is the only thing on the page you cannot buy back
+> later. Depth: `boss craft analytics-for-ai-products`.
+
+Ajesh: *"how about BOSS's approach to analytics, app usage and such — should we research best practices
+for embedding analytics into new app ideas, and how to take it from seed to scale?"*
+
+### The research was already done — the answer was a gap inside it
+
+The shelf was in good shape: `analytics-for-ai-products.md` (v0.113.0), `activation.md` (v0.122.0),
+`retention.md` (v0.121.0), `/measure`, `/onboard`, `/health`, `/evals`, `/judge-traces`, `/ai-cost`. A
+fresh sweep would have rediscovered the 2026-07-23 research, and the practice is not due until
+2027-01-19. **No research was run.**
+
+And the premise needed correcting rather than serving: *embedding analytics into new app ideas* is the
+thing this practice explicitly **refuses** — the JIT boundary (n<10 → talk to them; instrument at n≥30–50)
+is its strongest line.
+
+### 🔴 But the refusal had a hole, and it cost the founder something real
+
+The boundary said *don't instrument* and **never said what to leave behind** — so a founder who obeyed it
+*correctly* still lost history they already had. You can add a tracking call any day. **You cannot add the
+past.** Without `created_at` on user + core rows, the day you finally measure is day zero and your first
+readable retention curve is another 30–90 days out — for data your own database would have had all along.
+
+- **`analytics-for-ai-products.md` § "But leave the seam"** — the two seams in cost order: the **history
+  seam** (`created_at`, un-backfillable) and the **call seam** (one `track()` stub vs. forty call sites,
+  `scalable-architecture`'s cut-along-an-existing-seam rule applied to measurement). Plus the boundary that
+  keeps this from re-growing the thing it refuses: **the seam is a timestamp column and a stub function** —
+  naming events means you crossed back over.
+- **The humane read is what makes it shippable.** You are timestamping **your own rows**, not watching a
+  person — the [[IDEA-021]] contract exactly (*the work already leaves an honest trace*). A `created_at` on
+  a record the user asked you to create is not surveillance; a session recorder on a user who didn't is.
+- **`/measure` step 0 + a new rule** — says no, then hands back the seam. Description updated so the routing
+  carries it.
+
+### The load-bearing half was missing from `data-schema.md` too
+
+That practice already had **"Schema decisions are one-way doors"** and the missing timestamp is one — just
+not the kind it was watching for. Every other door there is a *leak or migration* risk; this one is **lost
+history**, which is why it stayed invisible. Added as a one-way door (with the note that it runs *opposite*
+to the store-less bullet above it: store less of the **user**, but do store **when their own rows
+happened**), and reconciled into Altitude/JIT — it sits at MVP next to RLS, not at V1, because it costs one
+line and needs no decision.
+
+**The freshness clock on both practices is deliberately HELD.** A section is not a sweep — the v0.150.0
+correction, applied to itself.
+
+### What was deliberately NOT built
+
+The measurement ladder **stops at MVP**: L2-V1 ships 4 skills (sequencing + design, zero measurement), L3-Scale
+ships `/incident`, and `/economics` is named in the manifest as trigger-gated and unauthored. That is a
+real gap — and it stays open. It has already been deferred twice on purpose ([[IDEA-051]], `/economics`),
+both waiting on a real project's symptom, and [[EVID-001]] is explicit that post-launch surface for
+operators BOSS has **zero** of is the pattern to stop repeating. **0 new skills (47 → 47), 0 new
+practices (30 → 30)** — three sections on files that already existed.
 
 ## 0.175.0 — 2026-08-20
 
