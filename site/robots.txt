@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://boss.build/sitemap.xml

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}" />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="{{CANONICAL}}" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="{{TITLE}}" />
+<meta property="og:description" content="{{DESCRIPTION}}" />
+<meta property="og:url" content="{{CANONICAL}}" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{{TITLE}}" />
+<meta name="twitter:description" content="{{DESCRIPTION}}" />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html">{{MARK}}<span>BOSS</span></a>
+    <ul>{{NAV}}</ul>
+  </div>
+</nav>
+{{SUBNAV}}
+
+<div class="shell">
+{{CONTENT}}
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v{{VERSION}}, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

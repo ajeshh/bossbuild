@@ -12,7 +12,7 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT, bossVersion } from '../src/paths.js';
-import { loadModes, packageSkillMd, skillGloss, modeWord } from '../src/modes.js';
+import { loadModes, packageSkillMd, skillGloss, modeWord, STANDING_COMMANDS } from '../src/modes.js';
 import { reportWayfindingDrift } from './check-wayfinding-drift.js';
 
 const V = bossVersion();
@@ -21,19 +21,9 @@ const banner = (cmd) =>
 
 const modes = loadModes();
 
-// Standing commands — true in every mode (the git-cheatsheet core).
-const STANDING = [
-  ['boss new <name>', 'scaffold a new project (Quickstart mode)'],
-  ['boss map', 'live cheatsheet: where you are + what’s one unlock away'],
-  ['boss board', 'what’s in flight (captured → shipped)'],
-  ['boss status [--conscience]', 'mode / pinned version / drift (+ loop states)'],
-  ['boss unlock <mode>', 'climb a rung: quickstart → mvp → v1 → scale'],
-  ['boss conscience pause --for 8h', 'silence the whole conscience for a bounded sprint'],
-  ['boss conscience resume', 're-enable the conscience'],
-  ['boss conscience mute <moment>', 'turn down ONE moment (drift|caution|…); unmute to bring it back'],
-  ['/boss-sync', 'pull the latest BOSS practices into this project (DOWN)'],
-  ['/boss-learn', 'route a proven pattern UP into the library or DOWN into the app'],
-];
+// Standing commands now live in src/modes.js so the website's quick guide and this
+// cheatsheet cannot disagree. Same reason the per-mode lists are generated at all.
+const STANDING = STANDING_COMMANDS;
 
 // Package SKILL.md files carry scaffold-time placeholders ({{PROJECT_NAME}}) that
 // only get substituted at `boss new`. In the generic cheatsheet they read wrong,

@@ -18,6 +18,24 @@ const STAGE_NAMES = {
   'L3-scale': 'Scale',
 };
 
+// The standing commands — true in every mode (the git-cheatsheet core). Lives here
+// rather than in a generator because BOTH generators need it (docs/CHEATSHEET.md and
+// the website's quick guide); two copies is how the cheatsheet drifted the first time.
+export const STANDING_COMMANDS = [
+  ['boss new <name>', 'scaffold a new project (Quickstart mode)'],
+  ['boss adopt', 'bring BOSS into a repo you already started'],
+  ['boss map', 'live cheatsheet: where you are + what\u2019s one unlock away'],
+  ['boss status [--conscience]', 'mode / pinned version / drift (+ loop states)'],
+  ['boss board', 'what\u2019s in flight (captured \u2192 shipped)'],
+  ['boss unlock <mode>', 'climb a rung: quickstart \u2192 mvp \u2192 v1 \u2192 scale'],
+  ['boss team [add @user]', 'who\u2019s on the venture (solo by default)'],
+  ['boss conscience pause --for 8h', 'silence the whole conscience for a bounded sprint'],
+  ['boss conscience mute <moment>', 'turn down ONE moment; unmute to bring it back'],
+  ['boss remove', 'take BOSS back out \u2014 preview first, --apply to do it'],
+  ['/boss-sync', 'pull the latest BOSS practices into this project'],
+  ['/boss-learn', 'route a proven pattern UP into the library or DOWN into the app'],
+];
+
 // The mode word a user types into `boss unlock` (strips the L#- level prefix).
 export function modeWord(stageId) {
   return stageId.replace(/^l\d+-/i, '');

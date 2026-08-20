@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design — how BOSS approaches UI and UX</title>
+<meta name="description" content="What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation." />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://boss.build/design.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="Design — how BOSS approaches UI and UX" />
+<meta property="og:description" content="What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation." />
+<meta property="og:url" content="https://boss.build/design.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Design — how BOSS approaches UI and UX" />
+<meta name="twitter:description" content="What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation." />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html" aria-current="page">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+  </div>
+</nav>
+<div class="subnav"><div class="subnav-in"><span class="subnav-label">How it works</span><ul><li><a href="engineering.html">For engineers</a></li><li><a href="design.html" aria-current="page">Design</a></li><li><a href="conscience.html">The conscience</a></li></ul></div></div>
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Design</p>
+      <h1>AI will give you the average of the internet<span class="dot">.</span></h1>
+      <p class="lede">
+        Ask a model for UI without design discipline and it ships the mean of its training data:
+        Inter, a purple gradient, a centred card, three feature boxes. It looks <em>fine</em> on one
+        screen and forgettable by the third — and, worse, <strong>indistinguishable from every
+        competitor your user tried this week.</strong> BOSS treats that as two separate problems, because
+        they have two separate fixes.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>two failures</span></div>
+      <div class="body">
+        <div class="duo">
+          <div class="prose">
+            <h3>Drift — the 47 blues</h3>
+            <p>
+              Each new screen, the model derives slightly different colours. <code>bg-blue-500</code>,
+              <code>#3B82F6</code>, <code>blue-600</code>, a custom variable — all in one codebase,
+              none of them agreeing. Components multiply the same way:
+              <code>Button</code> → <code>CTAButton</code> → <code>PrimaryButton</code>, near-identical,
+              because nothing searched for the existing one.
+            </p>
+            <p><strong>The fix is structural:</strong> a token file before the second screen, and
+              prompts that name tokens semantically rather than by value.</p>
+          </div>
+          <div class="prose">
+            <h3>Sameness — the slop default</h3>
+            <p>
+              A codebase can be perfectly token-disciplined and still look like every other AI-built
+              app. That's a different failure: not drift, but <em>the absence of a decision.</em>
+            </p>
+            <p><strong>The fix is a choice:</strong> intentionality, not intensity. Bold maximalism and
+              refined minimalism both work; what fails is defaulting. For a first build, minimalism done
+              precisely beats maximalism done loosely — restraint hides fewer mistakes.</p>
+          </div>
+        </div>
+        <div class="note">
+          <p class="q">Spend the hours the AI just saved you on the 5% that's actually yours.</p>
+          <p class="small">The brand, the voice, the one memorable thing. Banking the speed and shipping
+            the mean is how "build faster" quietly becomes "build sameness."</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the discipline</span></div>
+      <div class="body">
+        <p class="stencil">three layers, not two</p>
+        <div class="prose">
+          <p>
+            Tokens go <strong>primitives → semantic → component</strong>. Two layers is fragile under AI
+            generation: the model takes the easier path and hex codes escape. Three gives it a semantic
+            name to grab — <code>color.action.primary</code>, never <code>indigo-600</code> — so the
+            system survives being generated against.
+          </p>
+          <p>
+            BOSS scaffolds this the moment your project grows real UI (<code>/design-tokens-init</code>),
+            not before. Style is the canonical case of Principle 3: <strong>nothing valuable gets locked
+            into code.</strong> The test is whether a prototype or a sibling project could reuse it
+            without copy-pasting.
+          </p>
+        </div>
+        <p class="stencil">the floors</p>
+        <ul class="plain">
+          <li><strong>Five states on everything.</strong> Default, hover, active, disabled, focus — plus
+            empty and loading wherever data lands. At least one is always missing by default, and it's
+            usually empty or loading, which are the most user-facing failures there are.</li>
+          <li><strong>Accessibility is a floor, not a trade-off.</strong> Contrast measured rather than
+            asserted, visible focus, real landmarks, and colour never the only signal.</li>
+          <li><strong>Performance counts as design.</strong> A page that jumps while a webfont loads is
+            a design decision someone didn't make.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>who does it</span></div>
+      <div class="body">
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">ui-designer · ux-designer</span>
+            <span>Arrive at V1, when a project has earned real interface work. One owns how it looks and
+              holds together; the other owns whether a person can actually get through it.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/design-tokens-init</span>
+            <span>Scaffolds the three-layer token system and refactors one component as the worked
+              example. Lands at MVP, the moment UI appears.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/design-review · /ux-check</span>
+            <span>The V1 pass: token enforcement, the five states, and the flow read end-to-end rather
+              than screen-by-screen.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/red-team --humane</span>
+            <span>Probes your <em>built</em> product for dark patterns — including the ones that emerge
+              from the model itself, like sycophancy, rather than only the ones designed on purpose.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="band">
+      <div class="band-in">
+        <h2>Persuasion gives someone a reason and lets them decide. Manipulation exploits <em>how</em> they decide.</h2>
+        <p class="lede">
+          That line is the whole of BOSS's conversion ethic, and it's testable. <strong>The
+          say-it-out-loud test:</strong> would you say that decline sentence to the person's face, in a
+          shop? If it exposes a sneer, cut it. <strong>The urgency-honesty rule:</strong> a real deadline
+          is a fact you can state — the manipulation is only ever in the falsity.
+        </p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="rail">▸<span>a worked example</span></div>
+      <div class="body prose">
+        <h2>This site failed its own test first</h2>
+        <p>
+          The first draft of BOSS's visual identity was warm cream, a serif display face, a terracotta
+          accent, hairline rules and a decorative <code>01 / 02 / 03</code> rail. That is, precisely, a
+          named 2026 AI-default cluster — <strong>BOSS walked straight into the failure its own practice
+          exists to prevent.</strong>
+        </p>
+        <p>
+          The lesson is the transferable part, and it's the opposite of what you'd guess: <strong>you
+          can't escape a cluster by swapping the palette. You break it by deriving the choices from the
+          subject.</strong> The ground and accent stayed. The display face became the mono stack, because
+          BOSS is a terminal and its headlines should come from the same world as its proof. The
+          numbered rail became the <code>▸</code> the CLI actually prints, because the sections were
+          never a sequence.
+        </p>
+        <p>
+          It also exposed something worse than a bad page: the practice that warns about AI-default
+          still named the <em>2025</em> tell — purple gradient, Inter, centred card — while reporting
+          itself fresh. <strong>A practice naming last year's default is worse than no practice, because
+          it certifies the current one as safe.</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>sources</span></div>
+      <div class="body">
+        <div class="practices">
+                  <div class="practice">
+          <h4>Design system — style never locked into code</h4>
+          <p class="meta"><code>design-system</code> · <span class="curve">craft-ai curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Brad Frost — Atomic Design</span> <span class="ref">Nathan Curtis — design tokens</span> <span class="ref">W3C Design Tokens Community Group</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>generalized from the dhun dogfood design system (DESIGN_TOKENS as single source of truth, central badge/pill style utils, the &quot;no raw Tailwind colors&quot; enforcement hook, the prototype REGISTRY), de-dhuned for reuse — BOSS v0.20.x. The AI-failure-mode catalog was added in the same pass; IDEA-010 carries the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns). Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.</p></details>
+        </div>
+        <div class="practice">
+          <h4>AI-native interface patterns (2026)</h4>
+          <p class="meta"><code>ai-ux-patterns</code> · <span class="curve">humane curve</span> ·
+            last checked 2026-07-23</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Shape of AI</span> <span class="ref">Microsoft HAX guidelines</span> <span class="ref">Google PAIR</span> <span class="ref">Nielsen Norman Group (2026)</span> <span class="ref">Apple HIG — generative AI</span> <span class="ref">CDT — Dark Patterns in AI Chatbots (2026)</span> <span class="ref">Vaccaro et al., CHI'26</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-06-20 AI-UX scan (Shape of AI, Microsoft HAX, Google PAIR, IBM Carbon, LangChain HITL, NN/g 2026, Apple HIG GenAI) — BOSS v0.49.0, IDEA-029 · dark-pattern checklist + humane alternatives added v0.82.0 (RVW-031, from CDT <em>Dark Patterns in AI Chatbots</em> 2026, CC-BY) · classic-web pattern families + regulatory teeth (effect-not-intent, symmetry-in-choice) added v0.95.0 (RVW-056/057, first /humane-refresh sweep, IDEA-042) · cohort &amp; frontier patterns (accessibility, minors, agentic, algorithmic-management) + junk-fees teeth added v0.96.0 (RVW-059/060/061/062/063, sweep pass 2) · generated-code-injects-dark-patterns (Vaccaro CHI'26) + dev-tool metering surface + citation upgrades (sycophancy→<em>Science</em> 2026, DECEPTICON precise cite, EU AI Act/EDPB-3-2025/Amazon-Prime teeth) added v0.108.0 (2026-07-23 research sweep)</p></details>
+        </div>
+        </div>
+        <p class="small"><a href="engineering.html">The rest of the technical practices →</a> ·
+          <a href="charter.html">the humane line →</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

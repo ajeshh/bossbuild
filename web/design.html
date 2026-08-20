@@ -1,0 +1,170 @@
+<!--
+title: Design — how BOSS approaches UI and UX
+description: What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the design-system and ai-ux-patterns practices, the design agents and skills
+nav: design
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Design</p>
+      <h1>AI will give you the average of the internet<span class="dot">.</span></h1>
+      <p class="lede">
+        Ask a model for UI without design discipline and it ships the mean of its training data:
+        Inter, a purple gradient, a centred card, three feature boxes. It looks <em>fine</em> on one
+        screen and forgettable by the third — and, worse, <strong>indistinguishable from every
+        competitor your user tried this week.</strong> BOSS treats that as two separate problems, because
+        they have two separate fixes.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>two failures</span></div>
+      <div class="body">
+        <div class="duo">
+          <div class="prose">
+            <h3>Drift — the 47 blues</h3>
+            <p>
+              Each new screen, the model derives slightly different colours. <code>bg-blue-500</code>,
+              <code>#3B82F6</code>, <code>blue-600</code>, a custom variable — all in one codebase,
+              none of them agreeing. Components multiply the same way:
+              <code>Button</code> → <code>CTAButton</code> → <code>PrimaryButton</code>, near-identical,
+              because nothing searched for the existing one.
+            </p>
+            <p><strong>The fix is structural:</strong> a token file before the second screen, and
+              prompts that name tokens semantically rather than by value.</p>
+          </div>
+          <div class="prose">
+            <h3>Sameness — the slop default</h3>
+            <p>
+              A codebase can be perfectly token-disciplined and still look like every other AI-built
+              app. That's a different failure: not drift, but <em>the absence of a decision.</em>
+            </p>
+            <p><strong>The fix is a choice:</strong> intentionality, not intensity. Bold maximalism and
+              refined minimalism both work; what fails is defaulting. For a first build, minimalism done
+              precisely beats maximalism done loosely — restraint hides fewer mistakes.</p>
+          </div>
+        </div>
+        <div class="note">
+          <p class="q">Spend the hours the AI just saved you on the 5% that's actually yours.</p>
+          <p class="small">The brand, the voice, the one memorable thing. Banking the speed and shipping
+            the mean is how "build faster" quietly becomes "build sameness."</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the discipline</span></div>
+      <div class="body">
+        <p class="stencil">three layers, not two</p>
+        <div class="prose">
+          <p>
+            Tokens go <strong>primitives → semantic → component</strong>. Two layers is fragile under AI
+            generation: the model takes the easier path and hex codes escape. Three gives it a semantic
+            name to grab — <code>color.action.primary</code>, never <code>indigo-600</code> — so the
+            system survives being generated against.
+          </p>
+          <p>
+            BOSS scaffolds this the moment your project grows real UI (<code>/design-tokens-init</code>),
+            not before. Style is the canonical case of Principle 3: <strong>nothing valuable gets locked
+            into code.</strong> The test is whether a prototype or a sibling project could reuse it
+            without copy-pasting.
+          </p>
+        </div>
+        <p class="stencil">the floors</p>
+        <ul class="plain">
+          <li><strong>Five states on everything.</strong> Default, hover, active, disabled, focus — plus
+            empty and loading wherever data lands. At least one is always missing by default, and it's
+            usually empty or loading, which are the most user-facing failures there are.</li>
+          <li><strong>Accessibility is a floor, not a trade-off.</strong> Contrast measured rather than
+            asserted, visible focus, real landmarks, and colour never the only signal.</li>
+          <li><strong>Performance counts as design.</strong> A page that jumps while a webfont loads is
+            a design decision someone didn't make.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>who does it</span></div>
+      <div class="body">
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">ui-designer · ux-designer</span>
+            <span>Arrive at V1, when a project has earned real interface work. One owns how it looks and
+              holds together; the other owns whether a person can actually get through it.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/design-tokens-init</span>
+            <span>Scaffolds the three-layer token system and refactors one component as the worked
+              example. Lands at MVP, the moment UI appears.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/design-review · /ux-check</span>
+            <span>The V1 pass: token enforcement, the five states, and the flow read end-to-end rather
+              than screen-by-screen.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/red-team --humane</span>
+            <span>Probes your <em>built</em> product for dark patterns — including the ones that emerge
+              from the model itself, like sycophancy, rather than only the ones designed on purpose.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="band">
+      <div class="band-in">
+        <h2>Persuasion gives someone a reason and lets them decide. Manipulation exploits <em>how</em> they decide.</h2>
+        <p class="lede">
+          That line is the whole of BOSS's conversion ethic, and it's testable. <strong>The
+          say-it-out-loud test:</strong> would you say that decline sentence to the person's face, in a
+          shop? If it exposes a sneer, cut it. <strong>The urgency-honesty rule:</strong> a real deadline
+          is a fact you can state — the manipulation is only ever in the falsity.
+        </p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="rail">▸<span>a worked example</span></div>
+      <div class="body prose">
+        <h2>This site failed its own test first</h2>
+        <p>
+          The first draft of BOSS's visual identity was warm cream, a serif display face, a terracotta
+          accent, hairline rules and a decorative <code>01 / 02 / 03</code> rail. That is, precisely, a
+          named 2026 AI-default cluster — <strong>BOSS walked straight into the failure its own practice
+          exists to prevent.</strong>
+        </p>
+        <p>
+          The lesson is the transferable part, and it's the opposite of what you'd guess: <strong>you
+          can't escape a cluster by swapping the palette. You break it by deriving the choices from the
+          subject.</strong> The ground and accent stayed. The display face became the mono stack, because
+          BOSS is a terminal and its headlines should come from the same world as its proof. The
+          numbered rail became the <code>▸</code> the CLI actually prints, because the sections were
+          never a sequence.
+        </p>
+        <p>
+          It also exposed something worse than a bad page: the practice that warns about AI-default
+          still named the <em>2025</em> tell — purple gradient, Inter, centred card — while reporting
+          itself fresh. <strong>A practice naming last year's default is worse than no practice, because
+          it certifies the current one as safe.</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>sources</span></div>
+      <div class="body">
+        <div class="practices">
+          {{DESIGN_PRACTICES}}
+        </div>
+        <p class="small"><a href="engineering.html">The rest of the technical practices →</a> ·
+          <a href="charter.html">the humane line →</a></p>
+      </div>
+    </section>
+
+  </main>

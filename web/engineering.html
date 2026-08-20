@@ -1,0 +1,174 @@
+<!--
+title: For engineers — how BOSS approaches agentic development
+description: The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from.
+reviewed: 2026-08-20
+review_by: 2026-11-18
+describes: the technical practices and their sources
+nav: engineering
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">For engineers</p>
+      <h1>The positions it actually holds<span class="dot">.</span></h1>
+      <p class="lede">
+        BOSS ships opinions about building with agents, and you should be able to interrogate them
+        before you install anything. So: the load-bearing technical calls, stated plainly — and for
+        every one, <strong>who it was learned from, when it was last checked, and how fast that ground
+        moves.</strong>
+      </p>
+      <p class="small">
+        None of it is welded to BOSS. Every practice below is a plain MIT-licensed Markdown file in
+        <code>library/practices/</code> — readable, forkable, and arguable without installing the tool.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the calls</span></div>
+      <div class="body">
+        <p class="stencil">what BOSS believes</p>
+        <div class="duo">
+          <div class="prose">
+            <h3>The harness is the architecture</h3>
+            <p>
+              For long-running agent work, the thing that determines whether it succeeds isn't the
+              prompt — it's the <strong>agent-computer interface</strong>: what tools exist, what they
+              return, how failure is surfaced, what gets verified. BOSS treats harness design as an
+              architecture decision with an owner, not as prompt-tuning.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Verifiability decides what to automate</h3>
+            <p>
+              Work whose output can be <em>checked</em> automates well; work that can't be checked
+              doesn't, no matter how good the demo looks. That line — not model capability — is how
+              BOSS decides where an agent belongs and where a human stays in the loop.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Capability shapes, never model names</h3>
+            <p>
+              BOSS pins no model name anywhere it ships. It routes by <em>shape</em> — cheap and
+              mechanical, deliberate and hard, fast and interactive — so a new model release doesn't
+              rot anything. A new <em>tier</em> that changes what "cheap" means is what triggers a
+              re-look.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Green is not the same as right</h3>
+            <p>
+              The failure mode that matters with coding agents: <strong>they rewrite assertions to
+              match broken behaviour.</strong> So a weakened assertion is a red flag <em>even when the
+              suite passes</em>, and assertion churn with no change to acceptance criteria is the
+              loudest signal on a diff.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Most teams should not build RAG yet</h3>
+            <p>
+              The practice's whole value is telling you what <em>not</em> to build. Long context has
+              eaten a lot of what retrieval used to be for; recall@k comes before anything clever; and
+              context rot is real, so more stuffed context is not linearly better.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>CLAUDE.md and AGENTS.md do different jobs</h3>
+            <p>
+              The split is not cosmetic. <strong>Host-neutral rules — how this repo is built, tested and
+              shipped — belong in <code>AGENTS.md</code></strong>, where any agent can read them.
+              <code>CLAUDE.md</code> is for what's genuinely Claude-specific. Steering neutral rules into
+              the Claude-only file is the common mistake, and it quietly locks your project to one host.
+            </p>
+            <p>
+              Both stay short. A context file that has grown past a screen isn't documentation — it's
+              budget you're spending on every single turn.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>A skill is a trigger before it's instructions</h3>
+            <p>
+              Most skills that don't work aren't badly written — they're never <em>invoked</em>. The
+              description is the load-bearing part: it decides whether the model reaches for the skill at
+              the right moment. Name the trigger phrases explicitly, keep one skill to one job, and put
+              the judgment in the skill rather than expecting the caller to supply it.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Agent security is its own discipline</h3>
+            <p>
+              Not web security with a chatbot on top. The lethal trifecta — private data, untrusted
+              content, and a way to exfiltrate — is the shape to design against, and classifiers are
+              non-deterministic, so they are mitigation and never a boundary.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>where it lands</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>You never have to read any of this</h2>
+          <p>
+            The practices aren't a library you're expected to study. Each one is <strong>distilled into
+            the prompt of the agent whose job it is</strong> — so the knowledge is already in the room
+            when the work happens, not sitting in a file you'd have to remember to open.
+          </p>
+        </div>
+        {{DIAGRAM_PRACTICE_FLOW}}
+        <p class="stencil">what each builder already knows</p>
+        {{AGENT_PRACTICES}}
+      </div>
+    </section>
+
+    <div class="band">
+      <div class="band-in">
+        <h2>Every one of these has a receipt.</h2>
+        <p class="lede">
+          <strong>{{COUNT_ENG_PRACTICES}}</strong> technical practices, each carrying who it was
+          learned from, the date it was last checked against reality, and the <em>curve</em> that says
+          how fast its ground moves. The table below is generated from those files — attribution that
+          has to be retyped is attribution that goes stale.
+        </p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="rail">▸<span>attribution</span></div>
+      <div class="body">
+        {{ENGINEERING_PRACTICES}}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>how it stays true</span></div>
+      <div class="body prose">
+        <h2>What happens when this goes out of date</h2>
+        <p>
+          It will. The interesting question is whether anything catches it. Each practice's
+          <strong>curve</strong> routes it to a discipline that owns re-checking it — the model curve,
+          the protocol curve, the threat curve, the craft curve — and reviews fire on
+          <strong>events</strong>, not just dates: a spec revision, a new frontier model, a breach, a
+          ruling.
+        </p>
+        <p>
+          That matters because cadence alone provably misses. On the first freshness run everything
+          reported fresh while the MCP practice was already <em>wrong</em> — seven days after it was
+          written, because the spec had shipped in the meantime and the doc still described it as
+          forthcoming. A calendar would not have flagged it until October.
+        </p>
+        <p>
+          And because <code>boss sync</code> pushes this guidance into live projects, a stale practice
+          isn't inert — it actively ships bad advice. So the sweep hunts for what's <strong>wrong</strong>,
+          not just what's missing.
+        </p>
+        <p class="small"><a href="governance.html">How a claim gets in here in the first place →</a> ·
+          <a href="conscience.html">how BOSS decides when to speak →</a></p>
+      </div>
+    </section>
+
+  </main>

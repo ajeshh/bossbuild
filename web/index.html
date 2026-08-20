@@ -1,0 +1,224 @@
+<!--
+title: BOSS — the team you hire, just in time
+description: You are one person with an AI. BOSS gives you the team a real company would have around the build — builders who make it, mentors who coach you — hired just in time as the project earns them.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the pitch, the modes, the conscience
+nav: home
+-->
+<header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Build Out Solid Stuff</p>
+      <h1>A startup incubator that runs inside Claude&nbsp;Code<span class="dot">.</span></h1>
+      <p class="lede">
+        Everyone can build now. Almost no one can tell a real business from a convincing demo.
+        BOSS puts the structure of a startup around your code — how to decide what to build, when
+        to ship, and when the discipline should get out of your way — and it speaks up when you're
+        drifting. Free, MIT, zero dependencies, runs entirely on your machine.
+      </p>
+
+      <div class="cta">
+        <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span id="install-cmd">npx bossbuild new my-app</span></div>
+        <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+      </div>
+      <p class="small">Needs <a href="https://nodejs.org">Node 18+</a> and
+        <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>. The CLI sets the project up; the skills run inside Claude.</p>
+
+      <div class="terminal breakout">
+        <span class="cap">what that actually prints</span>
+<pre><span class="line"><span class="t-cmd">boss new my-app</span></span>
+<span class="line"><span class="t-ok">  ✦ Created my-app</span> — Quickstart mode (L0-quickstart, BOSS 0.164.0)</span>
+<span class="line"><span class="t-dim">    agents: pm, coder-generalist, mentor-venture</span></span>
+<span class="line"><span class="t-dim">    skills: welcome, boss, import, triage, prototype, canvas, evidence, interview … +8 more (`boss map`)</span></span>
+<span class="line"> </span>
+<span class="line">  Next (these run in your terminal)</span>
+<span class="line">    cd my-app</span>
+<span class="line">    claude              <span class="t-dim"># open Claude Code (terminal or editor panel)</span></span>
+<span class="line">    then, inside Claude:</span>
+<span class="line">    <span class="t-accent">&gt; /boss &lt;your idea&gt;</span>     <span class="t-dim"># a sentence, a doc, a deck, or a link</span></span>
+</pre>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the problem</span></div>
+      <div class="body prose">
+        <h2>Building got cheap. Being wrong didn't.</h2>
+        <p>
+          AI made a polished prototype nearly free, which created a new trap: confusing a
+          <strong>pseudo app</strong> — an impressive demo with no proven pain, no workflow fit, no
+          willingness to pay — with a <strong>real business value app</strong>.
+        </p>
+        <p>
+          You've been using Claude Code for a few months. You shipped one project this year. There
+          are two more in <code>~/projects/</code> you didn't finish, and a folder of ideas you never
+          started. Each time you rebuild the same scaffolding from scratch, and somewhere around screen three the
+          design drifts into 47 different blues — or you realize you never pressure-tested whether the
+          bet was real at all.
+        </p>
+        <p>
+          Cheap AI lowers the cost of <em>building</em>, not the cost of <em>being wrong</em>. So the
+          cheaper building gets, the more the loop matters.
+        </p>
+        <div class="note">
+          <p class="q">BOSS helps you build faster without fooling yourself.</p>
+          <p class="small">Not a guarantee you'll win — a way to decide faster, including
+            <strong>quitting faster</strong>. That's the honest claim, and it's the only one on this page.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the idea</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>What “scaffolding” means here</h2>
+          <p>
+            It's the construction word, used literally. <strong>Scaffolding is the temporary structure
+            that goes up around a building while it's being built.</strong> You don't live in it. It
+            holds things steady while the real thing takes shape, it gets added to as the building
+            gets taller, and it comes down when it's no longer holding anything up.
+          </p>
+          <p>
+            The thing a startup actually needs around the code is the same shape: a way to decide what
+            to build, someone to tell you when the bet looks thin, a record of what you already chose
+            and why. A funded company gets that from a process, a board, and a team. Solo with an AI,
+            you get none of it — so you either invent it from scratch every project, or you skip it and
+            find out later.
+          </p>
+          <p>
+            <strong>BOSS is that structure, and it goes up one level at a time.</strong> A one-evening
+            idea gets almost nothing. A thing with real users gets more. You never pay for ceremony the
+            project hasn't earned, and nothing gets bolted on that you can't take back off.
+          </p>
+        </div>
+
+        <div class="prose">
+          <h3>What it puts around you</h3>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">a process that fits right now</span>
+            <span>Four modes. The lightest one is five seconds and a file you can read in a minute.</span>
+          </div>
+          <div class="pair">
+            <span class="k">people to ask</span>
+            <span>Eight mentors for the parts code can't teach, plus builders who do the work.</span>
+          </div>
+          <div class="pair">
+            <span class="k">a memory</span>
+            <span>What you decided, what you learned, what you tried. Kept in your repo, in plain files.</span>
+          </div>
+          <div class="pair">
+            <span class="k">someone who'll tell you the truth</span>
+            <span>The conscience. It speaks when you're drifting, then stops. You can pause it.</span>
+          </div>
+        </div>
+
+        <p class="small prose">
+          And when it's holding nothing up, it comes down: <code>boss remove</code>.
+        </p>
+      </div>
+    </section>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <section class="section">
+      <div class="rail">▸<span>go on</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>The rest of it</h2>
+          <p>This page is the pitch. Everything under it has its own page.</p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k"><a href="start.html">Start →</a></span>
+            <span>Install, then either start something new or bring BOSS into a repo you already have.
+              Both paths, the real output, and how to take it back out.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="team.html">The team →</a></span>
+            <span>All {{COUNT_AGENTS}} of them — {{COUNT_BUILDERS}} builders who make the product,
+              {{COUNT_MENTORS}} mentors who coach you — and which rung each one arrives on.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="guide.html">Guide →</a></span>
+            <span>When to use a BOSS verb and when to just talk to Claude, the ladder rung by rung, and
+              what happens after you ship.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="teams.html">Cofounders →</a></span>
+            <span>AI makes you both faster, which left alone makes a team drift apart. Dormant when
+              you're solo.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="engineering.html">For engineers →</a></span>
+            <span>The technical positions BOSS holds on harnesses, context, agent security and testing —
+              and who each one was learned from.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="charter.html">Charter →</a></span>
+            <span>A conscience makes a cost visible; a censor makes a choice unavailable. The line, and
+              the mechanism under it.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the name</span></div>
+      <div class="body prose">
+        <h2>Yeah. It's called BOSS. We know.</h2>
+        <p>
+          Everyone's had a bad boss — the one who hovered, took the credit, and never once told you the
+          truth. This is the opposite of that one. BOSS stays quiet until you actually need it. It never
+          puts its name on your work: you ship it, your name's on it. And it won't blow smoke up your
+          skirt — its entire job is telling you when you're fooling yourself.
+        </p>
+        <p><strong>You're the boss. BOSS just has your back. The name's a joke. The conscience isn't.</strong></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. There is no analytics, no
+          telemetry, and no phone-home; the check never runs unless you ask for it. It's ~30 lines in
+          <code>src/update.js</code> and you can read them.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it. If that sounds
+          like a reason to wait, that's a fair read.
+        </p>
+      </div>
+    </div>
+  </footer>

@@ -120,6 +120,52 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   }
 }
 
+// --- 3b. the website ------------------------------------------------------
+// Same discipline as the generated docs, pointed at site/. The roster, the skill
+// reference and every count on the site are derived from the stage manifests, so a
+// release can never ship a website that disagrees with the product. (Typing "15 agents"
+// into a page by hand is precisely how CHEATSHEET.md drifted for 56 releases.)
+// Soft on staleness (it regenerates on disk — commit it), HARD on the generator
+// erroring or the version stamp being wrong.
+{
+  const r = run('node', [join('scripts', 'gen-site.js')]);
+  if (r.code !== 0) {
+    record('generated site', false, 'gen-site.js failed');
+    console.log(r.out.trimEnd());
+  } else {
+    let dirty = '';
+    try { dirty = execSync('git diff --name-only -- site/ web/', { cwd: BOSS_ROOT, encoding: 'utf8' }).trim(); }
+    catch { /* not a git checkout — skip */ }
+    record('generated site current', !dirty,
+      dirty ? `was stale — regenerated ${dirty.split('\n').length} file(s) on disk; include them in this commit` : 'site/ up to date',
+      true);
+  }
+  const dataPath = join(BOSS_ROOT, 'web', '_data.json');
+  if (!existsSync(dataPath)) {
+    record('site/_data.json present', false, 'missing');
+  } else {
+    const d = JSON.parse(readFileSync(dataPath, 'utf8'));
+    record('site version stamp', d.version === VERSION, d.version ? `v${d.version}` : 'no version');
+    // A website that quietly reports zero agents is worse than one that is a release behind.
+    record('site roster non-empty', d.agents > 0 && d.skills > 0, `${d.agents} agents · ${d.skills} skills`);
+  }
+}
+
+// --- 3c. the public website still describes the product --------------------
+// The roster and counts are generated and cannot drift; this checks the half a human
+// wrote — claims about commands that may no longer exist, practices added to the
+// library that no page mentions, and prose past its review date. HARD on a broken
+// claim (a site promising a command that isn't there is worse than a stale one),
+// soft on overdue prose.
+{
+  const r = run('node', [join('scripts', 'check-site.js'), '--strict']);
+  const broken = (r.out.match(/^\s*(\d+) broken claim/m) || [, '?'])[1];
+  record('website claims hold', r.code === 0, r.code === 0 ? 'every command and agent the site names exists' : `${broken} broken claim(s) — see npm run check:site`);
+  const overdue = (r.out.match(/(\d+) page\(s\) overdue/) || [, '0'])[1];
+  if (overdue !== '0') record('website prose fresh', true, `${overdue} page(s) past review_by — not a blocker`, true);
+  if (r.code !== 0) console.log(r.out.trimEnd());
+}
+
 // --- 4. wayfinding prose -------------------------------------------------
 {
   const r = run('node', [join('scripts', 'check-wayfinding-drift.js'), '--strict']);

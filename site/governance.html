@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Governance — how BOSS decides what it believes</title>
+<meta name="description" content="Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught." />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://boss.build/governance.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="Governance — how BOSS decides what it believes" />
+<meta property="og:description" content="Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught." />
+<meta property="og:url" content="https://boss.build/governance.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Governance — how BOSS decides what it believes" />
+<meta name="twitter:description" content="Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught." />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html" aria-current="page">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+  </div>
+</nav>
+<div class="subnav"><div class="subnav-in"><span class="subnav-label">Trust</span><ul><li><a href="charter.html">Charter</a></li><li><a href="governance.html" aria-current="page">Governance</a></li><li><a href="credits.html">Credits</a></li></ul></div></div>
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Governance</p>
+      <h1>Where every opinion in here came from<span class="dot">.</span></h1>
+      <p class="lede">
+        A tool that coaches you is only as good as the advice inside it — and “built on best practices”
+        is the cheapest sentence in software. So BOSS treats its own beliefs as an asset that can rot:
+        <strong>28</strong> practice files, every one carrying who it came from, when it
+        was last checked, and what would make it wrong. <strong>77</strong> outside claims
+        have been through the filter.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the filter</span></div>
+      <div class="body">
+        <div class="stat">
+          <span class="n">77</span>
+          <span class="of">outside claims put through the filter. Adopting one as-is is the
+            <em>rare</em> outcome — most that survive are modified, and a large share are turned down
+            or held.</span>
+        </div>
+        <div class="stat">
+          <span class="n">28</span>
+          <span class="of">practice files, every one carrying its provenance, the date it was last
+            checked, and the curve that says how fast its ground moves.</span>
+        </div>
+        <hr class="hazard" />
+        <div class="prose">
+          <h2>A claim from a stranger has earned nothing</h2>
+          <p>
+            A Reddit thread, a blog post, a conference talk, a “you must do X” best-practice — none of it
+            gets into BOSS by being popular. It goes through <code>/vet</code>, which is deliberately
+            <strong>biased toward NO</strong> and scores against a fixed rubric.
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">who actually said it?</span>
+            <span>Attribution is checked <em>before</em> the claim is graded. This step exists because
+              three claims in a row turned out to be bent on exactly that: a half-right quote, a study
+              that didn't say what it was cited for, and a second-hand number. An attribution is a
+              citation's load-bearing half.</span>
+          </div>
+          <div class="pair">
+            <span class="k">does it contradict a principle?</span>
+            <span>The six operating principles win. A popular practice that violates one is rejected on
+              those grounds and the reason is recorded.</span>
+          </div>
+          <div class="pair">
+            <span class="k">what grade is the evidence?</span>
+            <span>A vendor blog post and a controlled trial are not the same input. Direction over
+              multipliers; vendor-graded findings are labeled as such.</span>
+          </div>
+          <div class="pair">
+            <span class="k">who does it serve — and who does it harm?</span>
+            <span>Named explicitly, both directions, before any adoption.</span>
+          </div>
+          <div class="pair">
+            <span class="k">is it a duplicate, or does it sharpen something?</span>
+            <span>Sharpening an existing practice beats adding a new one. Surface area is a cost.</span>
+          </div>
+          <div class="pair">
+            <span class="k">how much ceremony does it add?</span>
+            <span>Anything that adds founder-facing ceremony has to earn it against Principle 2. Most
+              things don't.</span>
+          </div>
+        </div>
+        <div class="prose">
+          <p>
+            Four outcomes: <strong>ADOPT</strong> · <strong>ADAPT</strong> (taken, but changed and the
+            change reasoned) · <strong>REJECT</strong> (with the reason, logged, so it isn't re-litigated
+            every time it trends) · <strong>NOT-YET</strong> (a real condition that would re-open it).
+            <strong>Adopting as-is is the rare outcome, not the common one</strong> — most claims that
+            survive are modified, and a large share are turned down or held.
+          </p>
+          <p class="small">
+            A deferral whose condition has expired is not a decision — it's a stale note. Those get
+            re-decided, not left to rot.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>attribution</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Nobody's name is on an agent</h2>
+          <p>
+            BOSS's mentors are <strong>archetypes seeded by named, attributed practices</strong> — never
+            impersonations. The rule, kept in writing: <strong>no agent impersonates a person; mentors
+            cite the practice.</strong> A named thinker's transferable heuristic is distilled into a
+            practice file with the attribution attached; the agent then reasons from the practice.
+          </p>
+          <p>
+            The one-line lens recorded next to a practitioner is a study pointer — <em>not</em> that
+            person's endorsement, and not their verbatim view. Which is why you'll never see a
+            <code>mentor-</code> agent claiming to be anybody.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>staleness</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>A doc rots because the ground moved, not because time passed</h2>
+          <p>
+            So every practice carries a <strong>curve</strong> — how fast its ground actually moves — and
+            the curve routes it to whichever discipline owns it. Cadence alone provably misses: the first
+            freshness run reported everything fresh while one practice was already <em>wrong</em>, seven
+            days after it was written, because a spec had shipped in the meantime.
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">the sweep hunts for what's WRONG, not just missing</span>
+            <span>Because the tool pushes its guidance into live projects, a stale practice isn't inert —
+              it actively ships bad advice. Reversals count as findings.</span>
+          </div>
+          <div class="pair">
+            <span class="k">events fire the review, not just the calendar</span>
+            <span>A spec revision, a new frontier model, a breach, a regulatory ruling. Those trigger the
+              relevant discipline directly instead of waiting for a date.</span>
+          </div>
+          <div class="pair">
+            <span class="k">a finding is not a build</span>
+            <span>Sweeps produce findings; what gets built is a separate, deliberate decision. Most
+              findings are logged and left.</span>
+          </div>
+        </div>
+        <div class="note">
+          <p class="q">This site is held to the same rule.</p>
+          <p class="small">
+            The team roster, the skill reference and every count on these pages are
+            <strong>generated at build time</strong> from the same stage manifests the CLI reads, and the
+            build runs in the release gate. Nobody can type “15 agents” into a page and let it quietly
+            become false. That fix exists because BOSS's own cheatsheet drifted for 56 releases while its
+            generator was wired to nothing — <strong>a check nobody runs isn't a check.</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the honest part</span></div>
+      <div class="body prose">
+        <h2>What this doesn't prove</h2>
+        <p>
+          A rigorous filter on incoming advice is not the same as evidence that the advice
+          <em>works</em>. BOSS has one external founder's reaction on record and no long-run outcome data
+          — so what's claimed here is process, not proof. The pipeline stops bad claims getting in. It
+          does not establish that the good ones made anyone's company better. That would take users and
+          time, and BOSS has very little of either yet.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

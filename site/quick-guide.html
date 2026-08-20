@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quick guide — the whole surface on one page</title>
+<meta name="description" content="The commands that always work, what to reach for when, and every skill by mode. Generated from the stage manifests." />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://boss.build/quick-guide.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="Quick guide — the whole surface on one page" />
+<meta property="og:description" content="The commands that always work, what to reach for when, and every skill by mode. Generated from the stage manifests." />
+<meta property="og:url" content="https://boss.build/quick-guide.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Quick guide — the whole surface on one page" />
+<meta name="twitter:description" content="The commands that always work, what to reach for when, and every skill by mode. Generated from the stage manifests." />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html" aria-current="page">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+  </div>
+</nav>
+<div class="subnav"><div class="subnav-in"><span class="subnav-label">The product</span><ul><li><a href="team.html">The team</a></li><li><a href="guide.html">Guide</a></li><li><a href="teams.html">Cofounders</a></li><li><a href="quick-guide.html" aria-current="page">Quick guide</a></li></ul></div></div>
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Quick guide</p>
+      <h1>Everything, on one page<span class="dot">.</span></h1>
+      <p class="lede">
+        You don't memorize any of this. Inside a project, <code>boss map</code> lists what
+        <em>you</em> have and what's one unlock away, and the conscience points at the right verb when
+        it's relevant. This page is for scanning before you install — and for the one week you forget
+        a command.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>always works</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>The commands that don't change</h2>
+          <p>True in every mode. If you remember one, make it <code>boss status</code>.</p>
+        </div>
+        <div class="tablewrap">
+      <table class="skills">
+        <tbody>
+          <tr><th scope="row"><code>boss new &lt;name&gt;</code></th><td>scaffold a new project (Quickstart mode)</td></tr>
+          <tr><th scope="row"><code>boss adopt</code></th><td>bring BOSS into a repo you already started</td></tr>
+          <tr><th scope="row"><code>boss map</code></th><td>live cheatsheet: where you are + what’s one unlock away</td></tr>
+          <tr><th scope="row"><code>boss status [--conscience]</code></th><td>mode / pinned version / drift (+ loop states)</td></tr>
+          <tr><th scope="row"><code>boss board</code></th><td>what’s in flight (captured → shipped)</td></tr>
+          <tr><th scope="row"><code>boss unlock &lt;mode&gt;</code></th><td>climb a rung: quickstart → mvp → v1 → scale</td></tr>
+          <tr><th scope="row"><code>boss team [add @user]</code></th><td>who’s on the venture (solo by default)</td></tr>
+          <tr><th scope="row"><code>boss conscience pause --for 8h</code></th><td>silence the whole conscience for a bounded sprint</td></tr>
+          <tr><th scope="row"><code>boss conscience mute &lt;moment&gt;</code></th><td>turn down ONE moment; unmute to bring it back</td></tr>
+          <tr><th scope="row"><code>boss remove</code></th><td>take BOSS back out — preview first, --apply to do it</td></tr>
+          <tr><th scope="row"><code>/boss-sync</code></th><td>pull the latest BOSS practices into this project</td></tr>
+          <tr><th scope="row"><code>/boss-learn</code></th><td>route a proven pattern UP into the library or DOWN into the app</td></tr>
+        </tbody>
+      </table>
+    </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>reach for</span></div>
+      <div class="body">
+        <p class="stencil">I want to…</p>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">…get an idea out of my head</span>
+            <span><code>/boss &lt;idea&gt;</code> to spin up · <code>/triage</code> to capture without
+              committing · <code>/import &lt;file|url&gt;</code> if it's already written down</span>
+          </div>
+          <div class="pair">
+            <span class="k">…find out whether it's real</span>
+            <span><code>/canvas</code> pressure-tests it · <code>/interview</code> preps the
+              conversation with a human · <code>/pretotype</code> builds a fake door ·
+              <code>/evidence</code> records what you actually learned</span>
+          </div>
+          <div class="pair">
+            <span class="k">…see something move today</span>
+            <span><code>/prototype</code> — the smallest clickable version to react to</span>
+          </div>
+          <div class="pair">
+            <span class="k">…build the thing properly</span>
+            <span><code>/spec</code> writes the feature down · <code>/smoke</code> is the gate ·
+              <code>/log</code> and <code>/close</code> end the loop</span>
+          </div>
+          <div class="pair">
+            <span class="k">…not get hacked or embarrass myself</span>
+            <span><code>/red-team</code> (add <code>--humane</code> to probe your own product for dark
+              patterns) · <code>/ai-failure-states</code> · <code>/trust</code></span>
+          </div>
+          <div class="pair">
+            <span class="k">…put it in front of someone</span>
+            <span><code>/landing</code> writes the page · <code>/ship</code> deploys it ·
+              <code>/onboard</code> is the first-run experience</span>
+          </div>
+          <div class="pair">
+            <span class="k">…know if it's working</span>
+            <span><code>/measure</code> · <code>/retention</code> · <code>/money</code> ·
+              <code>/health</code></span>
+          </div>
+          <div class="pair">
+            <span class="k">…remember what I decided</span>
+            <span><code>/decide</code> writes it down with a falsifier · <code>boss board</code> shows
+              what's in flight</span>
+          </div>
+          <div class="pair">
+            <span class="k">…ask someone who's done this</span>
+            <span><code>/consult</code> convenes the mentors · or address one directly, e.g.
+              <code>mentor-gtm</code></span>
+          </div>
+          <div class="pair">
+            <span class="k">…stop</span>
+            <span><code>/sunset</code> — ending a project well is a skill, and BOSS treats it as one</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>by mode</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Every skill, and the rung it arrives on</h2>
+          <p class="small">
+            Generated from the stage manifests, current as of v0.164.0. If this page and the tool
+            ever disagree, the tool is right and the release gate is broken.
+          </p>
+        </div>
+              <h3>Quickstart <span class="count">16 skills</span></h3>
+      <div class="tablewrap">
+        <table class="skills">
+          <tbody>
+          <tr>
+            <th scope="row"><code>/welcome</code></th>
+            <td>First time using BOSS? Start here <span class="usage">/welcome</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/boss</code></th>
+            <td>Spin up a freshly-scaffolded project from a rough idea or PRD <span class="usage">/boss [path-to-PRD | rough idea text]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/import</code></th>
+            <td>Bring existing material into this project — point at a file, a folder, or a URL (Word doc, Google Doc, Obsidian note, PDF, slide deck, online reference) and BOSS pulls a durable copy into docs/source/ and folds it into your idea <span class="usage">/import &lt;path-or-url&gt; [more paths/urls] [IDEA-NNN]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/triage</code></th>
+            <td>Capture an idea — and keep adding to it <span class="usage">/triage &lt;thought&gt;  (run again anytime to add more)</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/prototype</code></th>
+            <td>Get the idea out of your head and onto the screen — fast <span class="usage">/prototype [IDEA-NNN | rough idea text]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/canvas</code></th>
+            <td>Pressure-test an idea as a humane business — Ajesh Shah's Humane Product Canvas as the spine, with Lean/Lenny-style commercial prompts folded into each cell <span class="usage">/canvas [IDEA-NNN]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/evidence</code></th>
+            <td>Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment) <span class="usage">/evidence [paste notes | describe what happened]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/interview</code></th>
+            <td>The bridge from the conscience's best advice (&quot;a 15-minute call with the right person beats another canvas pass&quot;) to captured evidence <span class="usage">/interview [prep | debrief | paste your notes]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/research</code></th>
+            <td>Turn a real research transcript into product context and graded evidence <span class="usage">/research [transcript file | paste the transcript]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/decide</code></th>
+            <td>Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is <span class="usage">/decide &lt;the decision, or describe it&gt;</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/sunset</code></th>
+            <td>End something honestly — a whole project, or one zombie feature <span class="usage">validating it's actually dead (not just quiet), guarding the segment/commitment exception (a low-usage feature can be the reason a key account stays), and drafting the HONEST user-facing deprecation notice (real notice period, a path out, no &quot;we're improving your experience&quot; euphemism). Subtraction is a feature; a bloated product serves no one. Framed as an experiment that returned an answer, never as failure. Deliberate-invoke only; the conscience never suggests it unprompted (it may only point at it from inside a moment that already fired — e.g. the focus circuit-breaker). Usage - /sunset [FEAT-NNN | feature name]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/persona</code></th>
+            <td>Build your app's target-user persona from your idea, grow it from what you know + online research + any real user research you drop in, and consult it as an agent voice — both to guide product decisions (&quot;would my user want this?&quot;) and to QA your builds (&quot;how would she react to this screen?&quot;) <span class="usage">/persona [derive | enrich &lt;slug&gt; | consult &lt;slug&gt; &quot;question&quot;]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/comprehend</code></th>
+            <td>Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work <span class="usage">/comprehend</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/feedback</code></th>
+            <td>Send feedback about BOSS itself back to the people who build it — a bug, a confusion, a wish, a &quot;this got in my way.&quot; User-initiated and transparent: it shows you exactly what it will send (and the small bit of context attached) before anything leaves your machine, then files it as a GitHub issue upstream (or gives you a prefilled link to paste) <span class="usage">/feedback [what's on your mind]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/boss-sync</code></th>
+            <td>Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin <span class="usage">/boss-sync</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/boss-learn</code></th>
+            <td>Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality <span class="usage">/boss-learn [what to promote]</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>MVP <span class="count">26 skills</span></h3>
+      <div class="tablewrap">
+        <table class="skills">
+          <tbody>
+          <tr>
+            <th scope="row"><code>/spec</code></th>
+            <td>Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, and a smoke check <span class="usage">/spec [IDEA-NNN]  (or describe the feature inline)</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/smoke</code></th>
+            <td>Run the project's smoke check — &quot;is the app even working right now?&quot; Stack-configured <span class="usage">/smoke</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/log</code></th>
+            <td>Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you <span class="usage">/log &lt;one-line summary or detailed entry&gt;</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/close</code></th>
+            <td>Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/) <span class="usage">/close</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/evals</code></th>
+            <td>Build and run the eval set for an AI-mediated FEAT — &quot;is it correct?&quot; paired with /smoke's &quot;is it alive?&quot; Husain's discipline applied to LLM-mediated control-flow in your app — look at your data, build the eval set FIRST, categorize failures by mode, vibes-based eval is only a starting point <span class="usage">/evals [FEAT-NNN | --new &lt;feat&gt;]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/pretotype</code></th>
+            <td>Test demand BEFORE you build <span class="usage">/pretotype [IDEA-NNN]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/design-tokens-init</code></th>
+            <td>Scaffold the minimal three-layer design token system at the first UI commit <span class="usage">/design-tokens-init</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/ai-cost</code></th>
+            <td>Establish AI spend discipline for your app — declare per-user / per-feature / monthly budgets, name the model choices, wire a per-call cost logger, set a review cadence <span class="usage">/ai-cost</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/cost-review</code></th>
+            <td>Read the AI cost ledger and produce a dated review <span class="usage">/cost-review</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/ai-first-init</code></th>
+            <td>Bake the AI-first discipline into your app from day one <span class="usage">/ai-first-init</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/ai-failure-states</code></th>
+            <td>Design what your app does when the AI fails — the five failure states (garbage / refusal / hallucination / timeout / cost-spike) and the declared response for each <span class="usage">/ai-failure-states</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/extract</code></th>
+            <td>Pause and sort patterns — PRINCIPLE #1's discipline as a skill <span class="usage">/extract</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/drift-deep</code></th>
+            <td>The deep, whole-project version of the conscience's drift check — &quot;am I fooling myself across EVERYTHING I've built?&quot; Reads the entire project (canvas, all devlog, all FEAT specs, the actual code, the ideas) and judges, honestly, whether the body of work is validating the named riskiest assumption or building around it <span class="usage">/drift-deep</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/revalidate</code></th>
+            <td>The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature <span class="usage">/revalidate [ID or paused item]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/judge-traces</code></th>
+            <td>Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work <span class="usage">/judge-traces [last N | all]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/consult</code></th>
+            <td>Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, and synthesize the answer with the disagreements kept visible (not averaged away) <span class="usage">/consult &lt;question&gt;</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/red-team</code></th>
+            <td>Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest <span class="usage">/red-team [FEAT-NNN | --self | --humane]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/practice</code></th>
+            <td>Capture a craft learning — a better way to build with AI you found — as a shared, attributed PRAC-NNN record your cofounder gets too <span class="usage">/practice &lt;what you learned&gt;</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/ship</code></th>
+            <td>Put your app where a real user can hit it — the CD half of building <span class="usage">/ship [--preview | --rollback]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/landing</code></th>
+            <td>Generate the founder's FIRST landing page — on-brand, honest, out the block to scale <span class="usage">/landing [--demand | --product]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/measure</code></th>
+            <td>The post-ship counterpart to /pretotype <span class="usage">/measure</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/onboard</code></th>
+            <td>Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation &gt; acquisition; fix it and every downstream cohort lifts at once) <span class="usage">/onboard</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/roadmap</code></th>
+            <td>Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list <span class="usage">/roadmap</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/trust</code></th>
+            <td>Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater <span class="usage">/trust</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/health</code></th>
+            <td>The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix <span class="usage">/health</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/money</code></th>
+            <td>The money verb, from the first dollar to operating it <span class="usage">/money [upgrade | dunning | price-raise | expansion]</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>V1 <span class="count">3 skills</span></h3>
+      <div class="tablewrap">
+        <table class="skills">
+          <tbody>
+          <tr>
+            <th scope="row"><code>/board</code></th>
+            <td>The cross-FEAT sequencing surface for your app <span class="usage">/board  (or /board --next, /board --blocked, /board --by-cohort)</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/design-review</code></th>
+            <td>Before-code design review for your app <span class="usage">/design-review [FEAT-NNN | path-to-component-spec]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/ux-check</code></th>
+            <td>After-code UX review for your app <span class="usage">/ux-check [route-or-component-path | FEAT-NNN]</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Scale <span class="count">1 skills</span></h3>
+      <div class="tablewrap">
+        <table class="skills">
+          <tbody>
+          <tr>
+            <th scope="row"><code>/incident</code></th>
+            <td>The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production <span class="usage">/incident [what broke]</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

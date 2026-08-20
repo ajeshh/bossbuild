@@ -1,0 +1,181 @@
+/* =============================================================================
+   BOSS — design tokens
+   Canonical guide: docs/design/VISUAL.md · Voice: docs/design/BRAND.md
+
+   Three layers, per library/practices/design-system.md: primitives → semantic →
+   component. Two layers is fragile under AI generation — the model takes the
+   easier path and hex codes escape. Three gives it a semantic name to grab.
+
+   THE ONE RULE: nothing outside this file writes a hex. If site.css contains a
+   `#`, that's a bug — it's the 47-blues failure starting.
+
+   WORLD: site & signage. Build Out Solid Stuff, taken literally — concrete and
+   graphite, with ONE hi-vis construction accent used at roughly 2% coverage.
+   Colour is semantic the way site signage is semantic (ISO 3864: red stops you,
+   amber warns you, green says safe). Hi-vis is the BRAND, never a state.
+
+   The terminal renderer is deliberately NOT bound to these hexes — src/ui.js
+   uses basic ANSI so a founder's own terminal theme resolves it. Shared names,
+   different bindings. See VISUAL.md.
+   ========================================================================== */
+
+/* --- Layer 1 · primitives -------------------------------------------------
+   Raw values. Never referenced by a component. Named for what they ARE. */
+:root {
+  /* Ground: cool poured concrete — deliberately NOT warm cream. */
+  --concrete:        #E8E6E1;
+  --concrete-raised: #F2F1EE;
+  --concrete-sunk:   #DCDAD4;
+
+  --graphite:        #16181A;
+  --graphite-raised: #1F2225;
+  --graphite-sunk:   #101214;
+  --graphite-soft:   #2E3236;
+
+  --bone:            #E6E4DF;   /* text on graphite */
+  --slate:           #5F656B;   /* muted on concrete */
+  --slate-light:     #9AA0A6;   /* muted on graphite */
+  --rule-light:      #CBC9C3;
+  --rule-dark:       #2E3236;
+
+  /* Hi-vis — the one loud thing. A FILL colour: graphite sits on it (5.75:1).
+     Never small text on concrete; that's what --hivis-ink is for. */
+  --hivis:           #FF5C00;
+  --hivis-bright:    #FF7A2E;   /* text weight, on graphite */
+  --hivis-ink:       #B33900;   /* text weight, on concrete */
+
+  /* Signage states. Two variants each: one that survives concrete, one graphite. */
+  --safe-ink:        #1A6B3D;   --safe-bright:    #4FBF7F;
+  --caution-ink:     #7F5800;   --caution-bright: #E8A200;
+  --stop-ink:        #C01818;   --stop-bright:    #FF6B5A;
+
+  /* Type — two stacks, zero network requests. See VISUAL.md.
+     Display is the MONO stack used editorially: BOSS's headlines are set in the
+     tool's own face, because the tool is the product. */
+  --stack-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --stack-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --step--1: clamp(0.82rem, 0.79rem + 0.14vw, 0.9rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --step-1:  clamp(1.2rem, 1.12rem + 0.4vw, 1.45rem);
+  --step-2:  clamp(1.5rem, 1.34rem + 0.8vw, 2rem);
+  --step-3:  clamp(2rem, 1.66rem + 1.7vw, 3.1rem);
+  --step-4:  clamp(2.5rem, 1.9rem + 3vw, 4.4rem);
+
+  --space-1: 0.35rem;  --space-2: 0.7rem;   --space-3: 1.1rem;
+  --space-4: 1.8rem;   --space-5: 2.8rem;   --space-6: 4.5rem;
+  --space-7: 7rem;
+
+  /* Signage is built from straight cuts and stencils, not soft cards. */
+  --radius-sm: 2px;  --radius-md: 3px;  --radius-lg: 4px;
+  --measure: 64ch;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --- Layer 2 · semantic ---------------------------------------------------
+   What a thing MEANS. Everything else references this layer, and this is the
+   layer that flips wholesale between themes. Named for ROLE, never for hue. */
+:root {
+  --font-display:          var(--stack-mono);
+  --font-prose:            var(--stack-sans);
+  --font-mono:             var(--stack-mono);
+
+  --color-ground:          var(--concrete);
+  --color-surface:         var(--concrete-raised);
+  --color-surface-sunk:    var(--concrete-sunk);
+  --color-text:            var(--graphite);
+  --color-text-secondary:  var(--slate);
+  --color-rule:            var(--rule-light);
+
+  /* The brand mark and every deliberate accent. A fill, used sparingly. */
+  --color-brand:           var(--hivis);
+  --color-on-brand:        var(--graphite);
+  --color-link:            var(--hivis-ink);
+  --color-link-hover:      var(--graphite);
+
+  --color-signal-safe:     var(--safe-ink);
+  --color-signal-caution:  var(--caution-ink);
+  --color-signal-stop:     var(--stop-ink);
+
+  /* The terminal inset — graphite in BOTH themes. It's the product, not a theme. */
+  --color-terminal-ground: var(--graphite-sunk);
+  --color-terminal-text:   var(--bone);
+  --color-terminal-dim:    var(--slate-light);
+  --color-terminal-accent: var(--hivis-bright);
+  --color-terminal-safe:   var(--safe-bright);
+  --color-terminal-caution:var(--caution-bright);
+
+  --focus-ring: 2px solid var(--color-brand);
+  --shadow-lift:  0 1px 0 rgba(22, 24, 26, 0.06), 0 10px 24px -16px rgba(22, 24, 26, 0.30);
+  --shadow-inset: 0 1px 0 rgba(0, 0, 0, 0.35), 0 20px 44px -24px rgba(0, 0, 0, 0.55);
+}
+
+/* Dark theme, defined in BOTH directions so an explicit toggle wins either way,
+   and never as the sole definition of any colour. Designed, not inverted:
+   graphite is a real ground with its own signal set, not the light one flipped. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-ground:          var(--graphite);
+    --color-surface:         var(--graphite-raised);
+    --color-surface-sunk:    var(--graphite-sunk);
+    --color-text:            var(--bone);
+    --color-text-secondary:  var(--slate-light);
+    --color-rule:            var(--rule-dark);
+
+    --color-link:            var(--hivis-bright);
+    --color-link-hover:      var(--bone);
+
+    --color-signal-safe:     var(--safe-bright);
+    --color-signal-caution:  var(--caution-bright);
+    --color-signal-stop:     var(--stop-bright);
+
+    --color-terminal-ground: #0B0D0E;
+    --shadow-lift:  0 1px 0 rgba(0, 0, 0, 0.5), 0 10px 24px -16px rgba(0, 0, 0, 0.8);
+    --shadow-inset: 0 1px 0 rgba(0, 0, 0, 0.6), 0 20px 44px -24px rgba(0, 0, 0, 0.9);
+  }
+}
+:root[data-theme="dark"] {
+  --color-ground:          var(--graphite);
+  --color-surface:         var(--graphite-raised);
+  --color-surface-sunk:    var(--graphite-sunk);
+  --color-text:            var(--bone);
+  --color-text-secondary:  var(--slate-light);
+  --color-rule:            var(--rule-dark);
+
+  --color-link:            var(--hivis-bright);
+  --color-link-hover:      var(--bone);
+
+  --color-signal-safe:     var(--safe-bright);
+  --color-signal-caution:  var(--caution-bright);
+  --color-signal-stop:     var(--stop-bright);
+
+  --color-terminal-ground: #0B0D0E;
+  --shadow-lift:  0 1px 0 rgba(0, 0, 0, 0.5), 0 10px 24px -16px rgba(0, 0, 0, 0.8);
+  --shadow-inset: 0 1px 0 rgba(0, 0, 0, 0.6), 0 20px 44px -24px rgba(0, 0, 0, 0.9);
+}
+
+/* --- Layer 3 · component --------------------------------------------------
+   Per-component handles, so a component can be re-skinned without touching the
+   semantic layer — and so AI generation has an obvious name to reach for
+   instead of inventing one. */
+:root {
+  --cta-bg:          var(--color-brand);
+  --cta-text:        var(--color-on-brand);
+  --cta-bg-hover:    var(--color-text);
+  --cta-text-hover:  var(--color-ground);
+  --cta-radius:      var(--radius-md);
+
+  --mark-size:       1.15em;
+  --rail-width:      7.5rem;
+  --rail-label:      var(--color-text-secondary);
+
+  --hairline:        1px solid var(--color-rule);
+  --hivis-rule:      3px solid var(--color-brand);
+
+  --terminal-radius: var(--radius-lg);
+  --terminal-pad:    var(--space-4);
+
+  --station-on:      var(--color-brand);
+  --station-off:     var(--color-rule);
+}

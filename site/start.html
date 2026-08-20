@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Start — your first hour with BOSS</title>
+<meta name="description" content="Install, then either start something new or bring BOSS into a repo you already have. Both paths, the real output, and how to take it back out." />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://boss.build/start.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="Start — your first hour with BOSS" />
+<meta property="og:description" content="Install, then either start something new or bring BOSS into a repo you already have. Both paths, the real output, and how to take it back out." />
+<meta property="og:url" content="https://boss.build/start.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Start — your first hour with BOSS" />
+<meta name="twitter:description" content="Install, then either start something new or bring BOSS into a repo you already have. Both paths, the real output, and how to take it back out." />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html" aria-current="page">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+  </div>
+</nav>
+
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Start</p>
+      <h1>Your first hour<span class="dot">.</span></h1>
+      <p class="lede">
+        Two ways in: a fresh idea, or a repo you already started. Both take about five seconds of setup.
+        Everything after that happens inside Claude Code.
+      </p>
+      <p class="small">
+        <strong>You'll need</strong> <a href="https://nodejs.org">Node 18+</a> and
+        <a href="https://claude.com/claude-code">Claude Code</a>. The CLI sets the project up; the
+        skills run inside Claude. Nothing else to install — zero dependencies, and no
+        <code>postinstall</code> script to approve.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>install</span></div>
+      <div class="body">
+        <div class="terminal breakout">
+          <span class="cap">pick one — all three put `boss` on your PATH</span>
+<pre><span class="line"><span class="t-cmd">npx bossbuild new my-app</span>        <span class="t-dim"># no install; try it first</span></span>
+<span class="line"><span class="t-cmd">npm install -g bossbuild</span>        <span class="t-dim"># the usual</span></span>
+<span class="line"><span class="t-cmd">brew install ajeshh/boss/boss</span>   <span class="t-dim"># macOS, via the tap</span></span>
+</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>path A</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Something new</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h3>Scaffold it</h3>
+            <p><code>boss new my-app</code> creates the project, git-inits it, registers it, and starts
+              you in Quickstart with three agents and sixteen skills.</p>
+          </div>
+          <div class="step">
+            <h3>Open Claude Code</h3>
+            <p><code>cd my-app</code> then <code>claude</code> — terminal or editor panel. First time?
+              <code>/welcome</code> is about a minute, and it asks where you're starting from so the tone
+              fits.</p>
+          </div>
+          <div class="step">
+            <h3>Point it at the idea</h3>
+            <p><code>/boss &lt;your idea&gt;</code> — a sentence, a doc, a Google Doc, an Obsidian note, a
+              PDF, or a URL. Already written it down? <code>/import &lt;file|url&gt;</code>. Just want to
+              see something move? <code>/prototype</code> builds the smallest clickable version to react to.</p>
+          </div>
+          <div class="step">
+            <h3>Come back later and run <code>boss status</code></h3>
+            <p>The one command worth remembering. After a few days away it tells you where you are and
+              what's next.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>path B</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>A repo you already started</h2>
+          <p>
+            Don't start over. <code>cd</code> into it and run <code>boss adopt</code> — it reads how far
+            along you already are (a build manifest, source files, tests, CI, a deploy config), prints
+            what it found, and starts you at the mode that matches.
+          </p>
+          <p>
+            Non-destructive throughout: your files are untouched, and an existing <code>CLAUDE.md</code>
+            or <code>AGENTS.md</code> gets a marked block appended rather than replaced. It
+            <strong>caps its own guess at MVP</strong> on purpose — V1 is a design-system and database
+            commitment, and that's your call, not a machine's. If it reads low,
+            <code>boss unlock &lt;mode&gt;</code> is one command.
+          </p>
+          <p>
+            Then run <code>/comprehend</code> inside Claude. That's the adopted repo's version of
+            <code>/boss</code>: BOSS reads the actual code, tailors the scaffold, and seeds the venture
+            brain so the conscience starts with real context instead of guessing.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>where you're starting from</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>It tunes itself to you</h2>
+          <p><code>/welcome</code> asks this once. It changes where you start and how fast you climb — nothing else.</p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">this is the first thing you've built</span>
+            <span>Stay in Quickstart a while. Capture ideas, pressure-test one, let the conscience teach
+              you the rhythm. Don't rush to unlock — the next mode will still be there.</span>
+          </div>
+          <div class="pair">
+            <span class="k">you've shipped a couple of small things</span>
+            <span>Building feels possible; what's-worth-finishing less so. Capture freely with
+              <code>/triage</code> — the payoff is <code>/canvas</code>. Unlock MVP when you're actually
+              building, not before.</span>
+          </div>
+          <div class="pair">
+            <span class="k">you've shipped real products before</span>
+            <span>Skip the tour. Your value isn't the scaffolding — it's the conscience catching drift
+              you'd rationalize, and the mentors for the parts that aren't engineering. Move fast through
+              the unlocks.</span>
+          </div>
+          <div class="pair">
+            <span class="k">being wrong has real costs</span>
+            <span>Health, legal, money, safety. Same path, harm lens on early:
+              <code>/ai-failure-states</code> from the start, the canvas's Risks &amp; Harms cell taken
+              seriously, <code>/red-team --humane</code> before anyone relies on it.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the way out</span></div>
+      <div class="body prose">
+        <h2>Changed your mind?</h2>
+        <p>
+          <code>boss remove</code> previews exactly what would go; <code>--apply</code> does it. It only
+          removes what BOSS <em>wrote</em> — your code, the ideas and decisions you captured, your own
+          skills, and any BOSS file you edited all survive, and your <code>CLAUDE.md</code> keeps
+          everything except BOSS's marked block. <code>boss remove --global</code> takes it off the
+          machine instead; your projects keep working, since the conscience hook runs from the project,
+          not the CLI.
+        </p>
+        <p class="small"><strong>A clean exit is what makes the entrance safe to try.</strong></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

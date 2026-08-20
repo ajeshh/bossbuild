@@ -1,0 +1,50 @@
+{
+  "version": "0.164.0",
+  "generated_from": "stages/*/manifest.json via src/modes.js",
+  "agents": 15,
+  "skills": 46,
+  "mentors": 8,
+  "builders": 7,
+  "modes": [
+    {
+      "word": "quickstart",
+      "name": "Quickstart",
+      "agents": 3,
+      "skills": 16,
+      "cumAgents": 3,
+      "cumSkills": 16
+    },
+    {
+      "word": "mvp",
+      "name": "MVP",
+      "agents": 5,
+      "skills": 26,
+      "cumAgents": 8,
+      "cumSkills": 42
+    },
+    {
+      "word": "v1",
+      "name": "V1",
+      "agents": 7,
+      "skills": 3,
+      "cumAgents": 15,
+      "cumSkills": 45
+    },
+    {
+      "word": "scale",
+      "name": "Scale",
+      "agents": 0,
+      "skills": 1,
+      "cumAgents": 15,
+      "cumSkills": 46
+    }
+  ],
+  "practices": 28,
+  "verdicts": {
+    "total": 77,
+    "ADOPT": 9,
+    "ADAPT": 45,
+    "REJECT": 12,
+    "NOT-YET": 11
+  }
+}

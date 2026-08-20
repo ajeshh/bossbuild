@@ -1,0 +1,314 @@
+{
+  "_note": "The named sources behind BOSS's practices, lifted from each practice's `provenance:` field so the website can show compact references instead of a wall of prose. URLs are DELIBERATELY null until someone verifies them — BOSS's own /vet step 3 checks who actually said a thing before grading it, so inventing a plausible link here would be the exact failure that step exists to catch. Fill a url in and the website turns that name into a link on the next `npm run gen:site`; leave it null and the name renders as plain text. Nothing breaks either way. Each source also carries a `kind` (person | org | research | standard) so the credits page can group them.",
+  "sources": {
+    "anthropic-engineering": {
+      "name": "Anthropic engineering",
+      "url": null,
+      "for": "effective harnesses for long-running agents; scaling managed agents; the agent-computer interface; contextual retrieval",
+      "kind": "org"
+    },
+    "dex-horthy": {
+      "name": "Dex Horthy — 12-factor agents",
+      "url": null,
+      "kind": "person"
+    },
+    "karpathy": {
+      "name": "Andrej Karpathy — the verifiability thesis",
+      "url": null,
+      "kind": "person"
+    },
+    "spec-driven": {
+      "name": "GitHub Spec Kit / AWS Kiro",
+      "url": null,
+      "for": "the spec-driven-development lineage",
+      "kind": "org"
+    },
+    "simon-willison": {
+      "name": "Simon Willison",
+      "url": null,
+      "for": "the lethal trifecta; Agents Rule of Two; classifiers are non-deterministic; MCP prompt injection",
+      "kind": "person"
+    },
+    "owasp": {
+      "name": "OWASP — Agentic ASI Top 10 / LLM Top 10",
+      "url": null,
+      "kind": "standard"
+    },
+    "veracode": {
+      "name": "Veracode (Spring 2026)",
+      "url": null,
+      "for": "insecure AI-generated code",
+      "kind": "org"
+    },
+    "redwood-control": {
+      "name": "Anthropic containment + Redwood control",
+      "url": null,
+      "kind": "org"
+    },
+    "hamel-shreya": {
+      "name": "Hamel Husain + Shreya Shankar",
+      "url": null,
+      "for": "error analysis, evals-as-spec, judge validation",
+      "kind": "person"
+    },
+    "coding-agents-fail": {
+      "name": "How Coding Agents Fail Their Users (arXiv 2605.29442)",
+      "url": null,
+      "for": "20,574-session misalignment analysis",
+      "kind": "research"
+    },
+    "devs-dont-vibe": {
+      "name": "Professional Software Developers Don't Vibe, They Control (arXiv 2512.14012)",
+      "url": null,
+      "kind": "research"
+    },
+    "metr": {
+      "name": "METR",
+      "url": null,
+      "for": "the developer perception gap",
+      "kind": "org"
+    },
+    "dora": {
+      "name": "DORA / Accelerate",
+      "url": null,
+      "for": "ROI of AI-Assisted Software Development (2026.01)",
+      "kind": "research"
+    },
+    "addy-osmani": {
+      "name": "Addy Osmani",
+      "url": null,
+      "for": "AI code review; the 70%-to-80% problem",
+      "kind": "person"
+    },
+    "fowler": {
+      "name": "Martin Fowler",
+      "url": null,
+      "for": "ParallelChange; MonolithFirst",
+      "kind": "person"
+    },
+    "chroma": {
+      "name": "Chroma — context rot",
+      "url": null,
+      "kind": "org"
+    },
+    "jason-liu": {
+      "name": "Jason Liu — systematically improving RAG",
+      "url": null,
+      "for": "recall@k first; inventory vs capability",
+      "kind": "person"
+    },
+    "mcp-spec": {
+      "name": "MCP specification (2026-07-28)",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
+      "kind": "standard"
+    },
+    "mcp-deprecated": {
+      "name": "MCP deprecated-features registry",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/deprecated",
+      "kind": "standard"
+    },
+    "cve-lovable": {
+      "name": "CVE-2025-48757 (Lovable/Supabase RLS class)",
+      "url": null,
+      "kind": "research"
+    },
+    "moltbook": {
+      "name": "The MoltBook credential exposure",
+      "url": null,
+      "kind": "research"
+    },
+    "ox-security": {
+      "name": "OX Security 2026",
+      "url": null,
+      "for": "62% of AI-built apps ship a critical vuln",
+      "kind": "org"
+    },
+    "kleppmann": {
+      "name": "Martin Kleppmann — DDIA",
+      "url": null,
+      "for": "schema evolution",
+      "kind": "person"
+    },
+    "postgres-rls": {
+      "name": "PostgreSQL row-level-security docs",
+      "url": null,
+      "kind": "standard"
+    },
+    "growthbook": {
+      "name": "GrowthBook",
+      "url": null,
+      "for": "flag the model, not just the feature",
+      "kind": "org"
+    },
+    "configcat": {
+      "name": "ConfigCat",
+      "url": null,
+      "for": "flags as a vibe-coding safety net",
+      "kind": "org"
+    },
+    "unleash-ld": {
+      "name": "Unleash / LaunchDarkly",
+      "url": null,
+      "for": "trunk-based flags; flag-debt hygiene",
+      "kind": "org"
+    },
+    "shape-up": {
+      "name": "Shape Up",
+      "url": null,
+      "for": "circuit-breaker / appetite",
+      "kind": "org"
+    },
+    "shopify-monolith": {
+      "name": "Shopify's modular monolith",
+      "url": null,
+      "kind": "org"
+    },
+    "factory-ai": {
+      "name": "Factory.ai",
+      "url": null,
+      "for": "documented conventions rot; enforced conventions compound",
+      "kind": "org"
+    },
+    "anthropic-skills": {
+      "name": "Anthropic's skill-creator skill",
+      "url": null,
+      "kind": "org"
+    },
+    "shape-of-ai": {
+      "name": "Shape of AI",
+      "url": null,
+      "kind": "org"
+    },
+    "microsoft-hax": {
+      "name": "Microsoft HAX guidelines",
+      "url": null,
+      "kind": "org"
+    },
+    "google-pair": {
+      "name": "Google PAIR",
+      "url": null,
+      "kind": "org"
+    },
+    "nngroup": {
+      "name": "Nielsen Norman Group (2026)",
+      "url": null,
+      "kind": "org"
+    },
+    "apple-hig": {
+      "name": "Apple HIG — generative AI",
+      "url": null,
+      "kind": "standard"
+    },
+    "cdt-dark-patterns": {
+      "name": "CDT — Dark Patterns in AI Chatbots (2026)",
+      "url": null,
+      "kind": "research"
+    },
+    "vaccaro-chi": {
+      "name": "Vaccaro et al., CHI'26",
+      "url": null,
+      "for": "generated code injects dark patterns",
+      "kind": "research"
+    },
+    "brad-frost": {
+      "name": "Brad Frost — Atomic Design",
+      "url": null,
+      "kind": "person"
+    },
+    "nathan-curtis": {
+      "name": "Nathan Curtis — design tokens",
+      "url": null,
+      "kind": "person"
+    },
+    "w3c-tokens": {
+      "name": "W3C Design Tokens Community Group",
+      "url": null,
+      "kind": "standard"
+    }
+  },
+  "practices": {
+    "harness-engineering": [
+      "anthropic-engineering",
+      "dex-horthy",
+      "karpathy",
+      "spec-driven"
+    ],
+    "agent-security": [
+      "simon-willison",
+      "owasp",
+      "veracode",
+      "redwood-control"
+    ],
+    "testing-with-agents": [
+      "hamel-shreya",
+      "coding-agents-fail",
+      "devs-dont-vibe",
+      "veracode",
+      "metr",
+      "karpathy"
+    ],
+    "retrieval": [
+      "anthropic-engineering",
+      "chroma",
+      "jason-liu"
+    ],
+    "mcp": [
+      "mcp-spec",
+      "mcp-deprecated",
+      "simon-willison"
+    ],
+    "data-schema": [
+      "cve-lovable",
+      "moltbook",
+      "ox-security",
+      "postgres-rls",
+      "kleppmann"
+    ],
+    "git-workflow": [
+      "dora",
+      "addy-osmani",
+      "metr"
+    ],
+    "ship-it-live": [
+      "dora",
+      "fowler",
+      "simon-willison",
+      "owasp",
+      "cve-lovable",
+      "moltbook"
+    ],
+    "feature-flags": [
+      "growthbook",
+      "configcat",
+      "unleash-ld",
+      "shape-up",
+      "addy-osmani"
+    ],
+    "scalable-architecture": [
+      "fowler",
+      "shopify-monolith",
+      "factory-ai"
+    ],
+    "skill-authoring": [
+      "anthropic-skills"
+    ],
+    "design-system": [
+      "brad-frost",
+      "nathan-curtis",
+      "w3c-tokens"
+    ],
+    "ai-ux-patterns": [
+      "shape-of-ai",
+      "microsoft-hax",
+      "google-pair",
+      "nngroup",
+      "apple-hig",
+      "cdt-dark-patterns",
+      "vaccaro-chi"
+    ],
+    "model-routing": [],
+    "quality-ratchet": [],
+    "revalidation": [],
+    "context-discipline": []
+  }
+}

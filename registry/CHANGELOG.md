@@ -2,7 +2,199 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.164.0 — 2026-08-19
+
+> **For you:** BOSS has a website — what it is, who it staffs, a quick guide, and the sources behind every practice it ships.
+
+**BOSS gets a front door: a brand, and the ten-page site it makes possible.**
+
+### The brand: site & signage
+
+**BOSS had no mark.** Ten pages opened with the letters "B.O.S.S." and nothing else — a bigger gap
+than the palette, and the fix was already shipping in the product: **`✦` is what the CLI prints on
+every success line** (`✦ Created my-app`). Most brands invent a mark; BOSS was already using one, on
+the happiest moment it has, and nobody had noticed. It's now drawn properly — a four-point spark with
+concave sides that holds at favicon size and hero size — and used for the lockup and the favicon
+**only**. A mark used everywhere is a texture, not a mark.
+
+- **World: site & signage.** *Build Out Solid Stuff*, taken literally — poured **concrete** `#E8E6E1`
+  and **graphite** `#16181A`, with ONE **hi-vis** `#FF5C00` used at roughly 2% coverage. Chosen over
+  ink-and-spark, blueprint-dark, and refining the old paper world. Two reasons worth keeping: it's
+  **derived from the name** rather than a mood board (the only reliable way out of an AI cluster), and
+  it **escapes on the ground colour** — concrete is *cool* grey, a different family from the warm-cream
+  cluster rather than a nudged version of it.
+- **🔴 Signage colour is semantic, which fixed a flaw the old palette could only write around.** ISO
+  3864: red stops you, amber warns, green says safe. The previous system's accent and error colour sat
+  **4° of hue apart** and had to be contained by a written rule; now `safe / caution / stop` are
+  distinct families and **hi-vis is never a state** — it's brand, action and emphasis only.
+- **Hi-vis is a FILL, not a text colour.** `#FF5C00` on concrete is 2.48:1 and fails as body text —
+  which is correct signage behaviour: you paint a bar with it and put graphite **on** it (5.75:1).
+  Links use a darker `--color-link`. Getting that wrong is the likeliest way to break the system, so
+  it's stated at the top of the palette.
+- **Dark is designed, not inverted** — graphite is a real ground with its own signal set. **Every pair
+  in both themes measured at AA** (worst case 4.73:1); two candidate values failed on first measure and
+  were darkened rather than re-described.
+- **The ladder is now a train line, not a table.** EVID-001's founder asked in as many words for *"a
+  train line where I can see where I am and that I'm moving"* — and the roster count is what grows
+  along it (3 → 8 → 15). It had been sitting there rendered as a spreadsheet.
+- **Ten pages no longer share one rhythm.** Added per-page devices — a hi-vis `band`, a `stencil`
+  section label, a `stat` for where a number *is* the argument, a `hazard` rule for the charter, `duo`
+  columns — with the rule that each page uses one or two, never all.
+- **The whole re-skin was a token edit.** Every colour changed and no page markup had to be rewritten,
+  because `site.css` still contains **zero raw hex**. That's Principle 3 paying for itself, on BOSS's
+  own surface, one day after the tokens were written.
+
+### For engineers — and the attribution layer
+
+Ajesh: *"there needs to be an engineer or AI specific page… and we should reference when possible to
+who we learnt the best practices for agentic development."*
+
+- **`/engineering`** states the load-bearing technical calls plainly (the harness is the architecture ·
+  verifiability decides what to automate · capability shapes never model names · green ≠ right ·
+  most teams shouldn't build RAG yet · agent security is its own discipline), then backs each with
+  **generated attribution**. Every practice already carries `provenance:`, `curve:` and
+  `last_reviewed:`, so the page **renders that metadata rather than restating it** — Anthropic
+  engineering, Dex Horthy, Karpathy, Simon Willison, Hamel Husain + Shreya Shankar, OWASP, Veracode,
+  Chroma, Jason Liu, the Spec Kit / Kiro lineage. Attribution that has to be retyped is attribution
+  that goes stale.
+- **Two diagrams, each making one claim.** Hand-authored inline SVG — no library, `currentColor` so
+  both themes work, one hi-vis element carrying the point. *(1)* **The conscience:** a mechanical hook
+  evaluates a named condition against files on disk; only once it fires is a model asked to compose
+  anything — **the model never decides whether to speak.** *(2)* **The practice flow:** the shelf is
+  distilled into the prompt of the agent whose job it is, so `db-architect` already knows about RLS and
+  `tester` already knows agents rewrite assertions to match broken behaviour. You never have to read
+  the shelf; `boss craft <name>` is there if you want to.
+- **🔴 Building the agent↔practice map surfaced a real integrity gap: 6 of 28 practices are owned by
+  roles that don't ship.** `designer` (3) and `mentor-humane` (3) exist only in the gitignored dev
+  workspace — the founder-facing roster has `ui-designer`/`ux-designer` and, by design, no ethics
+  advisor. So a founder can't reach the role that owns their design guidance. **The generator now
+  validates every `owner:` against the shipped roster, prints the gap on every build, and the page
+  states it in plain sight** rather than rendering a plausible org chart. Deliberate for the humane
+  three (the lens is wiring — the conscience, the canvas, `/red-team --humane`); **worth questioning
+  for the design three.** This is the third sighting of the same pattern — *the dev workspace described
+  as shipped* — which is why it's now a build-time check and not a note.
+- **`/reference` → `/quick-guide`**, reworked from a dump into something usable: the standing commands
+  that work in every mode (absent from the site entirely until now), an **“I want to…” → verb** map,
+  then the full per-mode list. `STANDING_COMMANDS` moved into `src/modes.js` so the cheatsheet and the
+  website read one list — two copies is how the cheatsheet drifted the first time.
+- **Fixed: the preview builder had silently degraded to previewing one page** while four were added
+  around it, because its page list was hardcoded. It now derives pages and labels from the built nav,
+  so it cannot go stale again — the same class of bug the site generator exists to prevent, in the tool
+  that checks the site generator.
+
+### Three more pages
+
+`/conscience` (the mechanism, the off switches, and how it could be wrong — *the failure mode isn't
+speaking harshly, it's speaking too often*), `/teams` (cofounders, promoted out of a section in the
+guide), and **`/whats-new`, generated from `registry/CHANGELOG.md`** — the same file `boss sync` reads
+to tell a project what changed since its pin. One source, two audiences.
+
+### The site
+
+**The positioning got sharpened first, because the site was going to inherit whatever muddle it
+started with.** The copy sold the conscience; the product is mostly a *staffed build system* — 15
+agents and 46 skills, of which only four (`/canvas`, `/evidence`, `/pretotype`, `/interview`) are
+validation. So the page promised a validation tool while the product delivered a company. **New
+spine (Ajesh): BOSS staffs your project** — builders who make the thing, mentors who coach the
+founder, hired *just in time* as the project earns them. Validation becomes one department instead
+of the whole pitch, and "scaffolding" finally means the right thing: **the team that goes up around
+the build and grows as the building gets taller.**
+
+- **Seven pages** — `/` (landing, standalone) · `/team` (who you hire, and when — the new spine's
+  hero) · `/start` · `/guide` · `/reference` · `/charter` · `/governance`.
+- **🔴 `scripts/gen-site.js` — no number on the website is ever typed by hand.** The roster, the
+  ladder table, the skill reference and every count are derived at build time from
+  `stages/*/manifest.json` **via `src/modes.js` — the same source `boss map` and `gen:docs` read**, so
+  the site and the tool cannot disagree. Wired into `npm run release` next to the generated docs:
+  soft on staleness (it regenerates on disk — commit it), **hard** on the generator erroring, the
+  version stamp mismatching, or the roster coming back empty. A website that quietly reports zero
+  agents is worse than one that's a release behind. This is IDEA-018's lesson applied to a new
+  surface: CHEATSHEET.md drifted for 56 releases because its generator was wired to nothing.
+- **An unknown `{{TOKEN}}` in a page fragment is a hard error**, not a silent literal shipped to the
+  web. Dev-workspace counts (practices, verdicts) carry forward from the committed `site/_data.json`
+  when their gitignored sources aren't present, so the site still builds correctly from a clean clone.
+- **`/charter`** publishes the humane line as a page: *a conscience makes a cost visible, a censor
+  makes a choice unavailable* — the six rules, the deliberate third-party/self-regarding asymmetry,
+  the machinery, and an explicit section on what's still weak (does it know when to shut up).
+- **`/governance` — the method, not the verdicts** (Ajesh's call). The `/vet` pipeline with its
+  NO-bias rubric, attribution checked *before* the claim is graded, the four outcomes, the rule that
+  **no agent impersonates a person — mentors cite the practice**, and the `curve:`-based staleness
+  discipline. It closes by naming what none of it proves: a rigorous filter on incoming advice is not
+  evidence the advice *works*, and BOSS has one external reaction and no outcome data.
+
+### The visual identity
+
+**BOSS gets the half of its own brand it never had — and finds its anti-slop practice going stale
+while doing it.** After 163 releases, `BRAND.md` locked the name, the slogan, the bad-boss story and
+the distribution surfaces, and said **nothing** about color, type or layout. The consequence was
+concrete, not cosmetic: **BOSS could not run its own `/landing` skill**, whose step 0 refuses to
+generate from blank and reads BRAND + the canvas Promises cell + *the design tokens* — which did not
+exist. Its own honest fallback ("generate a plainer page and name what's missing") was the only path
+available.
+
+- **`docs/design/VISUAL.md` — the visual identity**, the missing other half of `BRAND.md`. The brief
+  in one line: **calm where it talks, literal where it proves.** Prose on warm paper; every claim
+  about what BOSS *does* discharged by an inset dark terminal showing the bytes the CLI actually
+  prints. The aesthetic is the honesty argument in layout form — the only kind of brand a conscience
+  is allowed to have.
+- **Two renderers, one palette.** BOSS's product is a terminal and its front door is a browser, so
+  every color is named **once** and carries **both** bindings — a CSS custom property *and* an ANSI
+  truecolor/256 pair. A color chosen for the web and re-derived for the CLI later is the 47-blues
+  failure at brand scale. Four signals (rust · moss · ochre · oxblood) answer [[IDEA-055]]'s sharpest
+  finding — that today *a warning looks exactly like a success*. The ANSI column is **documented, not
+  wired**: `src/` is untouched, no behavior change, nothing added to the founder surface.
+- **`site/styles/tokens.css` — three-layer tokens** (primitives → semantic → component), because two
+  layers is fragile under AI generation. The rule that makes it hold: **nothing outside that file
+  writes a hex** (`site.css` verified at zero). Principle 3, finally applied to BOSS itself — the
+  palette had been sitting hardcoded in `pretotype/index.html` since July, unnamed and unreusable,
+  which is precisely the "locked into code" failure that principle exists to prevent.
+- **`site/index.html` — the first landing page.** What BOSS is, what it does, and a quickstart for
+  both directions: `boss new` for a fresh idea, `boss adopt` for a repo you've already started —
+  plus `boss remove`, documented rather than buried, because **a clean exit is what makes the
+  entrance safe to try**. Every transcript on the page is **real captured output**, not a plausible
+  transcript; every factual claim was verified against the source, which downgraded a vague "no
+  telemetry" into the precise and checkable *"the only network call BOSS makes is when you type
+  `boss update`"*. And with **one** external reaction on record and zero customers, the page carries
+  no testimonials, no counts, no waitlist and no urgency — it says plainly that very few people have
+  used it. A conscience that manufactured social proof would just be marketing.
+- **Two sections added on Ajesh's read of the draft, both closing real gaps.** *(1)* **"What
+  'scaffolding' means here"** — the word was doing load-bearing work on the page and had never been
+  defined for anyone who doesn't already know it. It's now explained as the construction word used
+  literally (*the temporary structure around a building: you don't live in it, it goes up as the
+  building gets taller, and it comes down when it's holding nothing up*), which is also the clearest
+  statement of what modes ARE and why ceremony is graduated — and it ends on `boss remove`. That
+  section doubles as the mental model the page was missing: what BOSS puts around you (a process that
+  fits, people to ask, a memory, someone who'll tell you the truth). *(2)* **"Building this with
+  someone else"** — the whole team layer (`boss team add`, `/decide`, `/practice`,
+  `mentor-cofounder`, the coordination nudge) was shipped and **entirely absent from the front door**.
+  Its argument is the sharpest on the page: AI makes each of you faster, which left alone makes a
+  two-person team *drift apart* — and that erosion is invisible from the inside, since drifted teams
+  still rate their teamwork as fine. Dormant-when-solo is stated plainly, as is what never travels
+  (the conscience's notes about *you*).
+- **🔴 The finding that outlives the page: `design-system.md` is going stale in the exact way it
+  warns about.** The first draft of this system was warm-cream + serif display + terracotta accent +
+  broadsheet hairlines + a decorative `01 / 02 / 03` rail — which is, precisely, a named **2026**
+  AI-default cluster. BOSS walked straight into the failure its own practice prevents. The practice's
+  anti-slop section still names the **2025** tell (purple gradient, Inter, centered card) and reports
+  `fresh` until 2027-02-07. **A practice that names last year's default is worse than no practice: it
+  certifies the current default as safe** — and `boss sync` pushes that certification into every
+  connected project. Same shape as v0.135.0's *`mcp.md` was wrong at 7 days old*: the doc rotted
+  because the **ground** moved, not because time passed, and the cadence could not see it. **Routed
+  to `/practice-refresh`, not built** — finding ≠ build. The candidate fix is to stop enumerating
+  tells and ship the *test* instead ("what would a model produce unprompted for this brief? don't
+  ship that"), since any enumerated list starts rotting the day it's written.
+- **The resolution, which is the transferable lesson:** you can't escape a cluster by swapping the
+  palette — you break it by **deriving the choices from the subject**. The ground and accent stayed
+  (chosen, and already shipped); the display face became the **mono stack**, because BOSS is a
+  terminal and its headlines should come from the same world as its proof; the numbered rail became
+  the `▸` glyph `boss status` actually prints, since the sections were never a sequence.
+- Captured as [IDEA-057](../docs/ideas/IDEA-057-visual-identity-and-landing-page.md) before any code,
+  per working rule 3. Contrast measured rather than asserted (worst case 4.74:1, AA throughout, both
+  themes); two tokens failed on first measurement and were **fixed rather than re-described**.
+
 ## 0.163.0 — 2026-08-18
+
+> **For you:** Fixed: adopting a large repo could misread it as a fresh idea and start you at the wrong mode.
 
 **An adversarial pass over everything this arc shipped, applying v0.162.0's lesson: test the shapes
 you did NOT design for.** One real bug, and confirmation on the rest.
@@ -32,6 +224,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   encodes for claims; it applies to test results too.
 
 ## 0.162.0 — 2026-08-18
+
+> **For you:** `boss remove` got four fixes — the exit is now safe on the paths the first version missed.
 
 **Four bugs in `boss remove`, found by testing the paths v0.161.0 didn't.** It was verified against an
 *adopted* repo only. Every other shape was broken, and each failure was silent.
@@ -70,6 +264,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 
 ## 0.161.0 — 2026-08-18
 
+> **For you:** **`boss remove`** — adoption is no longer a one-way door. Preview what would go, `--apply` to do it; your own work always survives.
+
 - **`boss remove` — the exit. Adoption stops being a one-way door.** Adopting BOSS into an existing
   repo writes **~91 files** and nothing took them back out; `boss retire` sounds like the answer and
   isn't (it ends a *venture* and says so: *"the repo stays; only the status changed"*). **"Non-
@@ -107,6 +303,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   the feature: this is the most destructive code in BOSS, deleting files in a repo it was invited into.
 
 ## 0.160.0 — 2026-08-17
+
+> **For you:** The 66 skills and agents BOSS installs into your project can now report themselves stale, so `boss sync` stops pushing you guidance that has quietly rotted.
 
 - **The widest uncovered rot surface is covered: the 66 skills, agents and hooks BOSS ships into
   every project.** BOSS ships `review_by:` staleness-awareness to founders via `/practice`, applied
@@ -148,6 +346,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 
 ## 0.159.0 — 2026-08-17
 
+> **For you:** `/vet` now checks *who actually said it* before grading a claim — so the practices you inherit are attributed, not just plausible.
+
 - **`/vet` now verifies who actually said it — before it grades what they said.** The queue's n=3
   item, promoted under Principle #1. The rubric's question 2 rewards *"a named practitioner BOSS
   already respects,"* and the skill **never checked whether the practitioner said it.** Three of four
@@ -173,6 +373,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   added to the founder surface.**
 
 ## 0.158.0 — 2026-08-17
+
+> **For you:** BOSS installs clean under npm v12’s stricter defaults: zero dependencies, no install scripts, nothing to approve.
 
 - **README: BOSS installs clean under npm v12's new security defaults, and that is worth saying out
   loud right now.** npm v12 turns off dependency lifecycle scripts, git dependencies and remote-URL

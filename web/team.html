@@ -1,0 +1,97 @@
+<!--
+title: The team — who BOSS hires, and when
+description: BOSS staffs your project. Builders who make the thing, mentors who coach you — and they arrive just in time, as the project earns them.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the agent roster and the ladder
+mentions-absent: mentor-humane
+nav: team
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">The team</p>
+      <h1>You're one person. BOSS staffs the project<span class="dot">.</span></h1>
+      <p class="lede">
+        A funded company puts a team around the build: someone deciding what's worth making, someone
+        testing it, designers, a database person — and a board to tell the founder the truth. Solo with
+        an AI you get none of that, so you either invent it every project or skip it and find out later.
+        BOSS brings <strong>{{COUNT_AGENTS}}</strong> of them, in two classes, and <strong>hires them
+        just in time</strong> — never all at once.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>two classes</span></div>
+      <div class="body">
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">{{COUNT_BUILDERS}} builders — they make the product</span>
+            <span>A product lead, coders, a tester, a program manager, designers, a database architect.
+              They do work: write the spec, write the code, catch the regression, review the screen.</span>
+          </div>
+          <div class="pair">
+            <span class="k">{{COUNT_MENTORS}} mentors — they coach <em>you</em></span>
+            <span>Advisory only. They never write product code. They pressure-test the bet, name the
+              riskiest assumption, and tell you when the honest answer is “not yet.” This class is the
+              part almost nothing else ships.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          The difference matters: a builder makes the thing better, a mentor makes <em>your decision</em>
+          better. Most tools give you the first kind and call it a team.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the ladder</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>They arrive when the project earns them</h2>
+          <p>
+            A one-evening idea does not need a database architect, and a product with real users should
+            not be missing one. So the roster grows with the work — <strong>you</strong> unlock each rung,
+            nothing is ever taken away, and a project that stays in Quickstart forever is a legitimate
+            project.
+          </p>
+        </div>
+        {{LADDER_LINE}}
+        {{LADDER_TABLE}}
+        <p class="small prose">
+          Generated from the stage manifests at build time — the same source <code>boss map</code> reads,
+          so this table and the tool cannot disagree.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the roster</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Everyone you get</h2>
+          <p>Each one is a plain Markdown file in your repo. You can read it, edit it, or delete it.</p>
+        </div>
+        {{ROSTER}}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the one that isn't an agent</span></div>
+      <div class="body prose">
+        <h2>There's no ethics advisor to remember to open</h2>
+        <p>
+          You'll notice no <code>mentor-humane</code> in that roster, and that's deliberate. An ethics
+          advisor you have to remember to consult is one you won't. So the humane lens is
+          <strong>wiring instead</strong>: it's in the conscience, in the canvas's Risks &amp; Harms cell,
+          in the <code>harm-taxonomy</code> practice, and in <code>/red-team --humane</code>, which probes
+          your own AI product for dark patterns.
+        </p>
+        <p class="small"><a href="charter.html">Why that's the design →</a></p>
+      </div>
+    </section>
+
+  </main>

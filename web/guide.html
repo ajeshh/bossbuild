@@ -1,0 +1,137 @@
+<!--
+title: Guide — using the team, rung by rung
+description: What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the mode ladder and the post-launch arc
+nav: guide
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Guide</p>
+      <h1>Using the team, rung by rung<span class="dot">.</span></h1>
+      <p class="lede">
+        Each mode is additive — unlocking the next never removes what you had, and
+        <code>boss unlock &lt;mode&gt;</code> is always your call. You don't memorize any of this:
+        <code>boss map</code> lists what your project has and what's one unlock away.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the one idea</span></div>
+      <div class="body prose">
+        <h2>When to use BOSS, and when to just talk to Claude</h2>
+        <p>
+          BOSS doesn't sit between you and Claude. You build exactly as you do now. The split is simple:
+        </p>
+        <ul class="plain">
+          <li><strong>“How do I build this?”</strong> — just ask Claude. No skill, no ceremony. That's
+            most of your day, and BOSS stays out of it.</li>
+          <li><strong>“Should I build this? Is it working? What did I decide?”</strong> — that's a BOSS
+            verb. Those are the seams between building, where things get lost.</li>
+        </ul>
+        <p>While you're heads-down, BOSS does almost nothing. That's the design, not a gap.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the walk</span></div>
+      <div class="body">
+        {{LADDER_LINE}}
+        <div class="prose">
+          <h3>Quickstart — get the idea out of your head</h3>
+          <p>
+            Capture freely with <code>/triage</code>. Pressure-test one with <code>/canvas</code> — the
+            Humane Product Canvas, filled a few cells at a time rather than all at once. Record what you
+            actually learn with <code>/evidence</code>, and what you chose with <code>/decide</code>. A
+            project that lives here forever is a legitimate project.
+          </p>
+          <h3>MVP — build the first working version</h3>
+          <p>
+            Adds the spec discipline (<code>/spec</code>, with validated-learning and evals fields), the
+            smoke gate, and the demand test — <code>/pretotype</code>, which builds a fake door before you
+            build the real thing. Design tokens get scaffolded here too, the moment there's real UI, so
+            style never gets locked into code.
+          </p>
+          <h3>V1 — make it shippable</h3>
+          <p>
+            Full design review (<code>/design-review</code>, <code>/ux-check</code>, token enforcement),
+            cross-feature sequencing with <code>/board</code>, and the next tier of mentors. This is where
+            a database architect and real designers arrive.
+          </p>
+          <h3>Scale — grow it</h3>
+          <p>Adds <code>/incident</code>. Deliberately thin: most projects should never need this rung.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>after you ship</span></div>
+      <div class="body prose">
+        <h2>The post-launch arc</h2>
+        <p>
+          A second set of verbs whose moment only arrives once something is <em>live</em> — retention,
+          pricing, measurement, health, the first dollar. They install with MVP but stay folded away
+          until you've actually shipped a feature, so a founder with one idea isn't read a menu of nine
+          verbs about pricing.
+        </p>
+        <p>
+          <strong>And a project can end at any rung.</strong> <code>/sunset</code> exists because quitting
+          well is a skill, and a tool that only knows how to grow things is lying to you about how this
+          usually goes.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>with a cofounder</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Building with someone else</h2>
+          <p>
+            AI made each of you faster — which, left alone, makes a two-person team <strong>drift
+            apart.</strong> You each work in your own AI session, ship in parallel, and quietly stop
+            deciding things together. The uncomfortable part: that erosion is invisible from the inside.
+            Teams that have already drifted still rate their teamwork as fine.
+          </p>
+          <p>
+            <code>boss team add @their-handle</code> lights up a shared place to decide
+            (<code>/decide</code>), a shared craft commons (<code>/practice</code>), and
+            <code>mentor-cofounder</code> — the one mentor that coaches the <em>relationship</em>:
+            dividing work across different skill sets, decision rights, and the hard conversations about
+            roles, pace and equity. It serves the partnership as a unit and never takes a side.
+          </p>
+          <p>
+            All of it is <strong>dormant when you're solo.</strong> Keyed to GitHub handles — no accounts,
+            no seats, no server, no hierarchy.
+          </p>
+          <p class="small">
+            <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE-teams.md">The full teams guide →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>worth remembering</span></div>
+      <div class="body prose">
+        <h2>Two things</h2>
+        <ul class="plain">
+          <li><strong><code>boss status</code> is the one command to remember.</strong> Come back after a
+            week and it tells you where you are and what's next.</li>
+          <li><strong>The conscience is always overridable.</strong> <code>boss conscience pause --for
+            8h</code> for a sprint, or <code>mute &lt;moment&gt;</code> to turn down one nudge while the
+            rest keep speaking. It never blocks.</li>
+        </ul>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE.md">The full guide →</a> ·
+          <a href="quick-guide.html">every skill →</a>
+        </p>
+      </div>
+    </section>
+
+  </main>

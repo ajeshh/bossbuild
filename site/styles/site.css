@@ -1,0 +1,395 @@
+/* BOSS — landing page styles.
+   Consumes site/styles/tokens.css BY SEMANTIC NAME ONLY. A raw hex in this file
+   is a bug (see the header of tokens.css). Guide: docs/design/VISUAL.md */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--color-ground);
+  color: var(--color-text);
+  font-family: var(--font-prose);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Paper grain — atmosphere, not decoration. Cheap, inline, no request. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.35; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::before { mix-blend-mode: screen; opacity: 0.16; }
+}
+:root[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: 0.16; }
+
+/* --- layout: a margin rail, not a centered card -------------------------- */
+.shell { position: relative; z-index: 1; max-width: 78rem; margin: 0 auto; padding: 0 var(--space-4); }
+.section { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); padding: var(--space-6) 0; }
+.section + .section { border-top: 1px solid var(--color-rule); }
+.rail { font-family: var(--font-mono); font-size: var(--step--1); color: var(--rail-label); letter-spacing: 0.04em; padding-top: 0.55rem; }
+.rail span { display: block; color: var(--color-text-secondary); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.72rem; }
+.body { min-width: 0; }
+.prose { max-width: var(--measure); }
+@media (max-width: 46rem) {
+  .section { grid-template-columns: 1fr; gap: var(--space-3); padding: var(--space-5) 0; }
+  .rail { padding-top: 0; }
+  .rail span { display: inline; margin-left: var(--space-2); }
+}
+
+/* --- type ---------------------------------------------------------------- */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.08; letter-spacing: -0.035em; text-wrap: balance; margin: 0 0 var(--space-3); }
+h1 { font-size: var(--step-4); letter-spacing: -0.045em; }
+h1 .dot { color: var(--color-brand); }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-1); letter-spacing: -0.005em; }
+p { margin: 0 0 var(--space-3); }
+.lede { font-size: var(--step-1); line-height: 1.5; color: var(--color-text-secondary); max-width: var(--measure); }
+.small { font-size: var(--step--1); color: var(--color-text-secondary); }
+strong { font-weight: 650; color: var(--color-text); }
+a { color: var(--color-link); text-underline-offset: 3px; }
+a:hover { color: var(--color-link-hover); }
+:focus-visible { outline: var(--focus-ring); outline-offset: 3px; border-radius: 2px; }
+
+.kicker {
+  font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--color-text); margin: 0 0 var(--space-3);
+  display: inline-block; padding: 0.2rem 0.5rem 0.22rem;
+  background: var(--color-brand); color: var(--color-on-brand); font-weight: 600;
+}
+
+/* --- hero ---------------------------------------------------------------- */
+.hero { padding: var(--space-7) 0 var(--space-5); display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); }
+@media (max-width: 46rem) { .hero { grid-template-columns: 1fr; padding-top: var(--space-5); } }
+.wordmark { font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; letter-spacing: 0.02em; }
+.wordmark em { font-style: normal; color: var(--color-brand); }
+
+/* --- the CTA: a real command, copyable ----------------------------------- */
+.cta { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2); }
+.cmd {
+  display: flex; align-items: center; gap: var(--space-2);
+  background: var(--color-surface); border: 1px solid var(--color-rule);
+  border-radius: var(--cta-radius); padding: 0.7rem 0.9rem;
+  font-family: var(--font-mono); font-size: var(--step--1); color: var(--color-text);
+}
+.cmd .prompt { color: var(--color-accent); user-select: none; }
+button.copy {
+  font: inherit; font-family: var(--font-prose); font-weight: 600; font-size: var(--step--1);
+  background: var(--cta-bg); color: var(--cta-text); border: 1px solid transparent;
+  border-radius: var(--cta-radius); padding: 0.7rem 1.15rem; cursor: pointer;
+  transition: background-color 0.15s var(--ease), transform 0.08s var(--ease);
+}
+button.copy:hover:not(:disabled) { background: var(--cta-bg-hover); color: var(--cta-text-hover); }
+button.copy:active:not(:disabled) { transform: translateY(1px); }
+button.copy:disabled { opacity: 0.55; cursor: default; }
+button.copy[data-done="true"] { background: var(--color-signal-safe); color: var(--color-ground); }
+
+/* --- the terminal inset: proof, physically wider than the claim ---------- */
+.terminal {
+  background: var(--color-terminal-ground); color: var(--color-terminal-text);
+  border-radius: var(--terminal-radius); padding: var(--terminal-pad);
+  box-shadow: var(--shadow-inset); margin: var(--space-4) 0;
+  font-family: var(--font-mono); font-size: var(--step--1); line-height: 1.65;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.terminal.breakout { width: min(100%, 54rem); }
+.terminal pre { margin: 0; white-space: pre; }
+.terminal .cap {
+  display: block; font-family: var(--font-prose); font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--color-terminal-dim); margin-bottom: var(--space-3);
+}
+.t-cmd { color: var(--color-terminal-text); }
+.t-cmd::before { content: "$ "; color: var(--color-terminal-accent); }
+.t-ok { color: var(--color-terminal-safe); }
+.t-accent { color: var(--color-terminal-accent); }
+.t-dim { color: var(--color-terminal-dim); }
+.terminal .line { display: block; }
+
+/* Motion: one moment, staggered reveal, once. Never load-bearing. */
+.terminal .line { opacity: 0; animation: rise 0.45s var(--ease) forwards; }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .terminal .line { opacity: 1; animation: none; transform: none; }
+}
+
+/* --- lists, notes, grids -------------------------------------------------- */
+.stack { display: grid; gap: var(--space-4); }
+.pairs { display: grid; gap: var(--space-3); max-width: var(--measure); }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-1); padding-left: var(--space-3); border-left: 2px solid var(--color-rule); }
+.pair:hover { border-left-color: var(--color-brand); }
+.pair b { font-weight: 650; }
+.pair .k { font-family: var(--font-mono); font-size: var(--step--1); color: var(--color-text); font-weight: 650; }
+
+.modes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size: var(--step--1); margin: var(--space-3) 0 var(--space-4); }
+.modes b { background: var(--color-brand); color: var(--color-on-brand); padding: 0.28rem 0.6rem; border-radius: var(--radius-sm); font-weight: 600; }
+.modes span { color: var(--color-text-secondary); padding: 0.28rem 0.6rem; border: 1px solid var(--color-rule); border-radius: var(--radius-sm); }
+.modes i { font-style: normal; color: var(--color-text-secondary); }
+
+.note {
+  max-width: var(--measure); margin: var(--space-5) 0;
+  padding-top: var(--space-3); border-top: var(--hivis-rule);
+}
+.note p:last-child { margin-bottom: 0; }
+.note .q { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.03em; margin-bottom: var(--space-2); }
+
+ul.plain { list-style: none; padding: 0; margin: 0 0 var(--space-3); max-width: var(--measure); }
+ul.plain li { padding-left: 1.5rem; position: relative; margin-bottom: var(--space-2); }
+ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.75rem; height: 2px; background: var(--color-brand); }
+
+code {
+  font-family: var(--font-mono); font-size: 0.88em;
+  background: var(--color-surface-sunk); border: 1px solid var(--color-rule);
+  border-radius: var(--radius-sm); padding: 0.08em 0.35em;
+}
+
+/* --- steps --------------------------------------------------------------- */
+.steps { counter-reset: step; display: grid; gap: var(--space-4); max-width: var(--measure); }
+.step { counter-increment: step; position: relative; padding-left: 2.6rem; }
+.step::before {
+  content: counter(step); position: absolute; left: 0; top: 0.05rem;
+  font-family: var(--font-mono); font-size: var(--step--1); font-weight: 700;
+  color: var(--color-on-brand); background: var(--color-brand); border-radius: var(--radius-sm);
+  width: 1.8rem; height: 1.8rem; display: grid; place-items: center;
+}
+.step h3 { margin-bottom: var(--space-1); }
+
+/* --- footer -------------------------------------------------------------- */
+footer { border-top: 1px solid var(--color-rule); padding: var(--space-5) 0 var(--space-6); }
+footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); }
+@media (max-width: 46rem) { footer .cols { grid-template-columns: 1fr; } }
+.skip {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--color-text); color: var(--color-ground); padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm); z-index: 10;
+}
+.skip:focus { left: var(--space-4); top: var(--space-2); }
+
+/* The conscience block — it is not a testimonial card, it is the tool talking. */
+.terminal .voice { color: var(--color-terminal-text); white-space: pre-wrap; display: block; }
+.terminal .voice-mark { color: var(--color-terminal-accent); }
+.terminal .after { color: var(--color-terminal-dim); white-space: pre-wrap; display: block; margin-top: 0.9rem; }
+
+/* --- site nav (a landing page has no nav; a site does) -------------------- */
+.sitenav {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--color-ground); border-bottom: 1px solid var(--color-rule);
+}
+.sitenav-in {
+  max-width: 78rem; margin: 0 auto; padding: 0 var(--space-4);
+  display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;
+  min-height: 3.2rem;
+}
+.sitenav .brand {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--step-0);
+  letter-spacing: 0.06em; color: var(--color-text); text-decoration: none;
+}
+.sitenav ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; }
+.sitenav a {
+  font-size: var(--step--1); color: var(--color-text-secondary); text-decoration: none;
+  padding: 0.2rem 0; border-bottom: 2px solid transparent;
+}
+.sitenav a:hover { color: var(--color-text); }
+.sitenav a[aria-current="page"] { color: var(--color-text); border-bottom-color: var(--color-brand); }
+.sitenav .brand:hover .mark { color: var(--color-text); }
+
+/* --- tables (ladder + reference) ----------------------------------------- */
+.tablewrap { overflow-x: auto; margin: var(--space-4) 0; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
+table caption { text-align: left; color: var(--color-text-secondary); font-size: var(--step--1); padding-bottom: var(--space-2); }
+th, td { text-align: left; vertical-align: top; padding: 0.6rem 0.9rem 0.6rem 0; border-bottom: 1px solid var(--color-rule); }
+thead th { font-family: var(--font-prose); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600; }
+tbody th[scope="row"] { font-weight: 650; white-space: nowrap; padding-right: var(--space-4); }
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ladder tbody th { font-family: var(--font-display); letter-spacing: -0.02em; }
+.t-none { color: var(--color-text-secondary); }
+table code { background: none; border: 0; padding: 0; color: var(--color-text-secondary); }
+.ladder td code { display: inline-block; margin-right: 0.35rem; }
+.skills th[scope="row"] code { color: var(--color-link); background: none; border: 0; padding: 0; }
+.skills .usage { display: block; color: var(--color-text-secondary); font-family: var(--font-mono); font-size: 0.92em; margin-top: 0.15rem; }
+.count { font-family: var(--font-prose); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600; margin-left: var(--space-2); }
+
+/* --- agent cards ---------------------------------------------------------- */
+.agents { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: var(--space-3); margin: var(--space-3) 0 var(--space-5); }
+.agent { border-top: 2px solid var(--color-rule); padding-top: var(--space-2); }
+.agent.mentor { border-top-color: var(--color-brand); }
+.agent h4 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
+.agent h4 code { background: none; border: 0; padding: 0; }
+.agent .tag { font-family: var(--font-prose); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600; }
+.agent.mentor .tag { color: var(--color-link); }
+.agent p { font-size: var(--step--1); margin: 0 0 var(--space-1); }
+.agent .triggers { color: var(--color-text-secondary); font-size: 0.82rem; }
+.agent .triggers span { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.62rem; font-weight: 600; margin-right: 0.3rem; }
+
+/* =========================================================================
+   SIGNAGE — the mark, the train line, and the devices that break the
+   seven-page monotony. Everything below is new in the site-and-signage pass.
+   ========================================================================= */
+
+/* --- the mark ------------------------------------------------------------
+   `✦` is what the CLI prints on every success line; this is that, drawn. */
+.mark { width: var(--mark-size); height: var(--mark-size); display: inline-block; vertical-align: -0.14em; color: var(--color-brand); flex: none; }
+.mark-lg { --mark-size: 2.6em; }
+.sitenav .brand { display: inline-flex; align-items: center; gap: 0.45rem; }
+.wordmark { display: flex; align-items: center; gap: 0.5rem; }
+.wordmark .mark { --mark-size: 1.05em; }
+
+/* --- the train line ------------------------------------------------------
+   The mode ladder as a line you can locate yourself on, not a table. */
+.line-wrap { margin: var(--space-4) 0 var(--space-3); }
+.trainline {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0;
+}
+.station { position: relative; padding: 2.1rem 0.6rem 0 0; }
+/* the rail itself */
+.station::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0.44rem; height: 3px;
+  background: var(--color-rule);
+}
+.station:first-child::before { left: 0.44rem; border-radius: 2px 0 0 2px; }
+.station:last-child::before  { right: auto; width: 0.44rem; border-radius: 0 2px 2px 0; }
+/* the live segment — filled up to the last authored stop */
+.station:not(.thin)::before { background: var(--color-brand); }
+.station .dot {
+  position: absolute; left: 0; top: 0; width: 0.9rem; height: 0.9rem;
+  border-radius: 50%; background: var(--station-off);
+  box-shadow: 0 0 0 3px var(--color-ground);
+}
+.station:not(.thin) .dot { background: var(--station-on); }
+.station .stop {
+  display: block; font-family: var(--font-display); font-weight: 650;
+  font-size: var(--step-0); letter-spacing: -0.02em;
+}
+.station .crew { display: block; font-size: var(--step--1); color: var(--color-text-secondary); margin-top: 0.15rem; }
+.station .crew b { color: var(--color-text); font-variant-numeric: tabular-nums; }
+.station .verbs { display: block; font-size: 0.78rem; color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.station.thin .stop { color: var(--color-text-secondary); }
+.line-note { font-size: var(--step--1); color: var(--color-text-secondary); margin: var(--space-2) 0 0; }
+@media (max-width: 44rem) {
+  .trainline { grid-auto-flow: row; grid-auto-columns: auto; }
+  .station { padding: 0 0 var(--space-3) 1.7rem; }
+  .station::before { left: 0.44rem; right: auto; top: 0; bottom: 0; width: 3px; height: auto; }
+  .station:last-child::before { height: 0.44rem; bottom: auto; width: 3px; }
+  .station .dot { top: 0.15rem; }
+}
+
+/* --- section variety -----------------------------------------------------
+   Seven pages of the same rhythm reads as a template. These are the breaks. */
+
+/* A full-width hi-vis band: used once per page, maximum, for the turn. */
+.band {
+  background: var(--color-brand); color: var(--color-on-brand);
+  margin: var(--space-6) 0; padding: var(--space-5) 0;
+}
+.band .band-in { max-width: 78rem; margin: 0 auto; padding: 0 var(--space-4); }
+.band .lede, .band .small, .band p { color: var(--color-on-brand); }
+.band h2 { max-width: 24ch; }
+.band a { color: var(--color-on-brand); }
+
+/* A tight two-column measure for reference-style prose. */
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: var(--space-4) var(--space-5); }
+.duo > * { min-width: 0; }
+
+/* Stencil label — the site-signage device, for section turns. */
+.stencil {
+  font-family: var(--font-display); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-text-secondary);
+  display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-3);
+}
+.stencil::after { content: ""; flex: 1; height: 1px; background: var(--color-rule); }
+
+/* A big pull statistic — used where a number IS the argument. */
+.stat { display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; margin: var(--space-3) 0; }
+.stat .n { font-family: var(--font-display); font-size: var(--step-3); font-weight: 700; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.stat .of { color: var(--color-text-secondary); font-size: var(--step--1); max-width: 34ch; }
+
+/* Hazard rule — the humane charter's one visual device. */
+.hazard { height: 6px; border: 0; margin: var(--space-5) 0;
+  background: repeating-linear-gradient(135deg, var(--color-brand) 0 10px, transparent 10px 20px); }
+
+/* --- releases (what's new) ----------------------------------------------- */
+.releases { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); max-width: var(--measure); }
+.releases li { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
+.releases .rel { display: flex; flex-direction: column; gap: 0.1rem; }
+.releases .ver { font-family: var(--font-display); font-weight: 700; font-variant-numeric: tabular-nums; }
+.releases .when { font-size: 0.75rem; color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.releases p { margin: 0; }
+.releases li:first-child .ver { color: var(--color-link); }
+@media (max-width: 40rem) { .releases li { grid-template-columns: 1fr; gap: var(--space-1); } }
+
+/* --- practice attribution (the engineering page) -------------------------- */
+.practices { display: grid; gap: var(--space-4); margin: var(--space-3) 0 var(--space-5); }
+.practice { border-top: var(--hairline); padding-top: var(--space-2); }
+.practice h4 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
+.practice .meta { font-size: 0.78rem; color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
+.practice .meta code { background: none; border: 0; padding: 0; }
+.practice .curve { color: var(--color-link); }
+.practice .prov { font-size: var(--step--1); margin: 0; color: var(--color-text-secondary); }
+.practice .prov span {
+  display: inline-block; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 700; color: var(--color-on-brand); background: var(--color-brand);
+  padding: 0.1rem 0.35rem; margin-right: 0.4rem; vertical-align: 0.08em;
+}
+.practice .prov code { font-size: 0.9em; }
+
+/* --- figures (diagrams) --------------------------------------------------- */
+.fig { margin: var(--space-4) 0 var(--space-5); }
+.fig svg { display: block; width: 100%; max-width: 52rem; height: auto; color: var(--color-text); }
+.fig figcaption { max-width: var(--measure); margin-top: var(--space-3); font-size: var(--step--1); color: var(--color-text-secondary); padding-top: var(--space-2); border-top: var(--hairline); }
+.fig figcaption strong { color: var(--color-text); }
+
+/* --- agent → practice map ------------------------------------------------- */
+.agentmap th[scope="row"] code { color: var(--color-text); font-weight: 650; }
+.chip {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.76rem;
+  border: var(--hairline); border-radius: var(--radius-sm);
+  padding: 0.1rem 0.4rem; margin: 0 0.25rem 0.3rem 0; color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+.orphan-note { border-left: var(--hivis-rule); padding-left: var(--space-3); margin-top: var(--space-3); max-width: var(--measure); }
+
+/* --- source references (compact, replace the provenance wall) -------------- */
+.ref {
+  display: inline-block; font-size: 0.78rem; line-height: 1.35;
+  border: var(--hairline); border-radius: var(--radius-sm);
+  padding: 0.12rem 0.42rem; margin: 0 0.25rem 0.3rem 0;
+  color: var(--color-text); white-space: normal;
+}
+a.ref { text-decoration: none; border-color: var(--color-brand); }
+a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
+.prov-full { margin-top: var(--space-2); }
+.prov-full summary {
+  cursor: pointer; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-text-secondary); font-weight: 600;
+}
+.prov-full summary:hover { color: var(--color-text); }
+.prov-full p { font-size: var(--step--1); color: var(--color-text-secondary); margin: var(--space-2) 0 0; max-width: var(--measure); }
+
+/* --- sub-navigation ------------------------------------------------------- */
+.subnav { background: var(--color-surface); border-bottom: var(--hairline); }
+.subnav-in {
+  max-width: 78rem; margin: 0 auto; padding: 0.55rem var(--space-4);
+  display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap;
+}
+.subnav-label {
+  font-family: var(--font-display); font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary);
+}
+.subnav ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; }
+.subnav a { font-size: var(--step--1); color: var(--color-text-secondary); text-decoration: none; }
+.subnav a:hover { color: var(--color-text); }
+.subnav a[aria-current="page"] { color: var(--color-text); font-weight: 650; box-shadow: inset 0 -2px 0 var(--color-brand); }
+
+/* --- credits -------------------------------------------------------------- */
+.credits { list-style: none; margin: 0 0 var(--space-5); padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: var(--space-3) var(--space-4); }
+.credit { border-top: var(--hairline); padding-top: var(--space-2); }
+.credit-name { font-family: var(--font-display); font-size: var(--step-0); font-weight: 650; letter-spacing: -0.02em; margin: 0 0 0.15rem; }
+.credit-name a { text-decoration: none; box-shadow: inset 0 -1px 0 var(--color-brand); }
+.credit-for { display: block; font-size: var(--step--1); color: var(--color-text-secondary); margin-bottom: var(--space-2); }
+.credit-in { margin: 0; }
+.credit-in .chip { font-size: 0.7rem; }

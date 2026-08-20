@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>For engineers — how BOSS approaches agentic development</title>
+<meta name="description" content="The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from." />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://boss.build/engineering.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="For engineers — how BOSS approaches agentic development" />
+<meta property="og:description" content="The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from." />
+<meta property="og:url" content="https://boss.build/engineering.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="For engineers — how BOSS approaches agentic development" />
+<meta name="twitter:description" content="The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from." />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html" aria-current="page">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+  </div>
+</nav>
+<div class="subnav"><div class="subnav-in"><span class="subnav-label">How it works</span><ul><li><a href="engineering.html" aria-current="page">For engineers</a></li><li><a href="design.html">Design</a></li><li><a href="conscience.html">The conscience</a></li></ul></div></div>
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">For engineers</p>
+      <h1>The positions it actually holds<span class="dot">.</span></h1>
+      <p class="lede">
+        BOSS ships opinions about building with agents, and you should be able to interrogate them
+        before you install anything. So: the load-bearing technical calls, stated plainly — and for
+        every one, <strong>who it was learned from, when it was last checked, and how fast that ground
+        moves.</strong>
+      </p>
+      <p class="small">
+        None of it is welded to BOSS. Every practice below is a plain MIT-licensed Markdown file in
+        <code>library/practices/</code> — readable, forkable, and arguable without installing the tool.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the calls</span></div>
+      <div class="body">
+        <p class="stencil">what BOSS believes</p>
+        <div class="duo">
+          <div class="prose">
+            <h3>The harness is the architecture</h3>
+            <p>
+              For long-running agent work, the thing that determines whether it succeeds isn't the
+              prompt — it's the <strong>agent-computer interface</strong>: what tools exist, what they
+              return, how failure is surfaced, what gets verified. BOSS treats harness design as an
+              architecture decision with an owner, not as prompt-tuning.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Verifiability decides what to automate</h3>
+            <p>
+              Work whose output can be <em>checked</em> automates well; work that can't be checked
+              doesn't, no matter how good the demo looks. That line — not model capability — is how
+              BOSS decides where an agent belongs and where a human stays in the loop.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Capability shapes, never model names</h3>
+            <p>
+              BOSS pins no model name anywhere it ships. It routes by <em>shape</em> — cheap and
+              mechanical, deliberate and hard, fast and interactive — so a new model release doesn't
+              rot anything. A new <em>tier</em> that changes what "cheap" means is what triggers a
+              re-look.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Green is not the same as right</h3>
+            <p>
+              The failure mode that matters with coding agents: <strong>they rewrite assertions to
+              match broken behaviour.</strong> So a weakened assertion is a red flag <em>even when the
+              suite passes</em>, and assertion churn with no change to acceptance criteria is the
+              loudest signal on a diff.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Most teams should not build RAG yet</h3>
+            <p>
+              The practice's whole value is telling you what <em>not</em> to build. Long context has
+              eaten a lot of what retrieval used to be for; recall@k comes before anything clever; and
+              context rot is real, so more stuffed context is not linearly better.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>CLAUDE.md and AGENTS.md do different jobs</h3>
+            <p>
+              The split is not cosmetic. <strong>Host-neutral rules — how this repo is built, tested and
+              shipped — belong in <code>AGENTS.md</code></strong>, where any agent can read them.
+              <code>CLAUDE.md</code> is for what's genuinely Claude-specific. Steering neutral rules into
+              the Claude-only file is the common mistake, and it quietly locks your project to one host.
+            </p>
+            <p>
+              Both stay short. A context file that has grown past a screen isn't documentation — it's
+              budget you're spending on every single turn.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>A skill is a trigger before it's instructions</h3>
+            <p>
+              Most skills that don't work aren't badly written — they're never <em>invoked</em>. The
+              description is the load-bearing part: it decides whether the model reaches for the skill at
+              the right moment. Name the trigger phrases explicitly, keep one skill to one job, and put
+              the judgment in the skill rather than expecting the caller to supply it.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Agent security is its own discipline</h3>
+            <p>
+              Not web security with a chatbot on top. The lethal trifecta — private data, untrusted
+              content, and a way to exfiltrate — is the shape to design against, and classifiers are
+              non-deterministic, so they are mitigation and never a boundary.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>where it lands</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>You never have to read any of this</h2>
+          <p>
+            The practices aren't a library you're expected to study. Each one is <strong>distilled into
+            the prompt of the agent whose job it is</strong> — so the knowledge is already in the room
+            when the work happens, not sitting in a file you'd have to remember to open.
+          </p>
+        </div>
+        <figure class="fig">
+  <svg viewBox="0 0 860 250" role="img" aria-label="The practice shelf is distilled into the agent prompts, which apply it while your code is written. You can also read the shelf directly with boss craft, but you never have to."
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar2)">
+      <line x1="242" y1="76" x2="312" y2="76"/>
+      <line x1="560" y1="76" x2="630" y2="76"/>
+      <path d="M129 108 V186 H312" stroke-dasharray="5 4"/>
+    </g>
+    <g stroke="currentColor" stroke-width="1.5" fill="none">
+      <rect x="16" y="44" width="226" height="64" rx="3"/>
+      <rect x="630" y="44" width="214" height="64" rx="3"/>
+      <rect x="312" y="158" width="268" height="56" rx="3" stroke-dasharray="5 4"/>
+    </g>
+    <rect x="312" y="44" width="248" height="64" rx="3" fill="var(--color-brand)" stroke="none"/>
+    <g font-family="system-ui, sans-serif" font-size="13.5" fill="currentColor" text-anchor="middle">
+      <text x="129" y="72">the practice shelf</text>
+      <text x="129" y="93" font-size="11.5" opacity="0.72">attributed · dated · versioned</text>
+      <text x="737" y="72">your code, your screens,</text>
+      <text x="737" y="93">your schema</text>
+      <text x="446" y="184" font-size="12.5">boss craft &lt;name&gt;</text>
+      <text x="446" y="202" font-size="11.5" opacity="0.72">read the source yourself — optional</text>
+    </g>
+    <g font-family="system-ui, sans-serif" font-size="13.5" fill="var(--color-on-brand)" text-anchor="middle">
+      <text x="436" y="72">the agents that do the work</text>
+      <text x="436" y="93" font-size="11.5" opacity="0.85">carry it distilled, in their prompts</text>
+    </g>
+    <g font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.72" text-anchor="middle">
+      <text x="277" y="66">distilled into</text>
+      <text x="595" y="66">applied while</text>
+    </g>
+  </svg>
+  <figcaption><strong>You never have to read the shelf.</strong> The practice is distilled into the
+    prompt of the agent whose job it is, so <code>db-architect</code> already knows about row-level
+    security and <code>tester</code> already knows that agents rewrite assertions to match broken
+    behaviour. <code>boss craft &lt;name&gt;</code> is there if you want the full reasoning.</figcaption>
+</figure>
+        <p class="stencil">what each builder already knows</p>
+        <div class="tablewrap">
+      <table class="skills agentmap">
+        <thead><tr><th scope="col">Agent</th><th scope="col">Already carries</th></tr></thead>
+        <tbody>
+        <tr>
+          <th scope="row"><code>mentor-architect</code></th>
+          <td><span class="chip">agent-security</span> <span class="chip">feature-flags</span> <span class="chip">git-workflow</span> <span class="chip">harness-engineering</span> <span class="chip">mcp</span> <span class="chip">model-routing</span> <span class="chip">retrieval</span> <span class="chip">scalable-architecture</span> <span class="chip">ship-it-live</span></td>
+        </tr>
+        <tr>
+          <th scope="row"><code>mentor-gtm</code></th>
+          <td><span class="chip">activation</span> <span class="chip">analytics-for-ai-products</span> <span class="chip">landing-page</span> <span class="chip">retention</span></td>
+        </tr>
+        <tr>
+          <th scope="row"><code>pm</code></th>
+          <td><span class="chip">context-discipline</span> <span class="chip">quality-ratchet</span> <span class="chip">revalidation</span> <span class="chip">skill-authoring</span></td>
+        </tr>
+        <tr>
+          <th scope="row"><code>mentor-business</code></th>
+          <td><span class="chip">first-dollar</span> <span class="chip">monetization-in-practice</span></td>
+        </tr>
+        <tr>
+          <th scope="row"><code>db-architect</code></th>
+          <td><span class="chip">data-schema</span></td>
+        </tr>
+        <tr>
+          <th scope="row"><code>mentor-venture</code></th>
+          <td><span class="chip">founder-role-shifts</span></td>
+        </tr>
+        <tr>
+          <th scope="row"><code>tester</code></th>
+          <td><span class="chip">testing-with-agents</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small orphan-note"><strong>Not every practice has a founder-facing owner, and the site
+    says so.</strong> 6 of them
+    (<code>ai-adoption-culture</code>, <code>conscience-voicing</code>, <code>harm-taxonomy</code>, <code>ai-ux-patterns</code>, <code>celebration-of-done</code>, <code>design-system</code>) are owned by
+    internal roles that don’t ship as agents. Their content reaches you as <em>wiring</em> instead — the
+    conscience, the canvas’s Risks &amp; Harms cell, <code>/design-review</code>,
+    <code>/red-team --humane</code> — which is deliberate for the humane ones, and worth questioning for
+    the design ones.</p>
+      </div>
+    </section>
+
+    <div class="band">
+      <div class="band-in">
+        <h2>Every one of these has a receipt.</h2>
+        <p class="lede">
+          <strong>17</strong> technical practices, each carrying who it was
+          learned from, the date it was last checked against reality, and the <em>curve</em> that says
+          how fast its ground moves. The table below is generated from those files — attribution that
+          has to be retyped is attribution that goes stale.
+        </p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="rail">▸<span>attribution</span></div>
+      <div class="body">
+              <h3>Building with agents</h3>
+      <p class="small">The harness, the context window, and which model does what.</p>
+      <div class="practices">
+        <div class="practice">
+          <h4>Harness engineering (design the thing <em>around</em> the model, not just the prompt)</h4>
+          <p class="meta"><code>harness-engineering</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">model curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Anthropic engineering</span> <span class="ref">Dex Horthy — 12-factor agents</span> <span class="ref">Andrej Karpathy — the verifiability thesis</span> <span class="ref">GitHub Spec Kit / AWS Kiro</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering (&quot;Effective harnesses for long-running agents&quot;; &quot;Scaling managed agents&quot;; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0.</p></details>
+        </div>
+        <div class="practice">
+          <h4>Context discipline</h4>
+          <p class="meta"><code>context-discipline</code> · owned by <code>pm</code> ·
+            <span class="curve" title="how fast this ground moves">host curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
+          <details class="prov-full"><summary>full provenance</summary><p>vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file.</p></details>
+        </div>
+        <div class="practice">
+          <h4>Skill authoring — write skills the model actually triggers and follows</h4>
+          <p class="meta"><code>skill-authoring</code> · owned by <code>pm</code> ·
+            <span class="curve" title="how fast this ground moves">host curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Anthropic's skill-creator skill</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>adapted from Anthropic's own skill-creator skill via /vet RVW-013 — the wisdom, not the harness (the with/without eval machinery is deferred; see &quot;What's left out&quot;). Ground for anyone authoring a skill — BOSS authoring its own, and (UP candidate) a founder authoring one in a scaffolded project. Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.</p></details>
+        </div>
+        <div class="practice">
+          <h4>Route by capability, never by model name</h4>
+          <p class="meta"><code>model-routing</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">craft curve</span> ·
+            last checked 2026-08-01</p>
+          <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
+          <details class="prov-full"><summary>full provenance</summary><p>Extracted at v0.135.0 from a real mistake. BOSS pinned <code>model: fable</code> in 8 shipped agent files + hardcoded model ids and per-token prices in <code>.boss/model-profile.json</code>. Within four weeks the pin was stale (the session model moved on), the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install — while <code>/recalibrate</code>, the discipline built to catch exactly this, never fired. The audit (REVIEW-2026-07-28 §E2) caught it instead. Root cause named by BOSS's own PRINCIPLE #3 - a model name buried in an agent file is <em>locked into code</em>; the reusable thing is the INTENT, which is stable, not the name, which is not.</p></details>
+        </div>
+      </div>
+
+      <h3>Security</h3>
+      <p class="small">The failure modes specific to agentic systems, and the ones AI-written code introduces.</p>
+      <div class="practices">
+        <div class="practice">
+          <h4>Agent security (a deterministic guard around a non-deterministic model)</h4>
+          <p class="meta"><code>agent-security</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">threat curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Simon Willison</span> <span class="ref">OWASP — Agentic ASI Top 10 / LLM Top 10</span> <span class="ref">Veracode (Spring 2026)</span> <span class="ref">Anthropic containment + Redwood control</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; &quot;Agents Rule of Two&quot;; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code &amp; client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep) · <strong>sharpened v0.165.0 (2026-08-20), clock deliberately NOT moved</strong> — the MCP-and-automation assessment added the pre-install pass (tool descriptions as untrusted input; poisoned descriptions are ASI01 goal-hijack, not supply-chain; registry still preview; re-read on update). One bullet is not a threat sweep, and per the v0.150.0 correction &quot;freshened a little&quot; is not a claimable state — the next real sweep still owns 2026-11-09.</p></details>
+        </div>
+        <div class="practice">
+          <h4>Data &amp; schema (the layer an agent gets functionally right and dangerously wrong)</h4>
+          <p class="meta"><code>data-schema</code> · owned by <code>db-architect</code> ·
+            <span class="curve" title="how fast this ground moves">threat curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>learned from</span> <span class="ref">CVE-2025-48757 (Lovable/Supabase RLS class)</span> <span class="ref">The MoltBook credential exposure</span> <span class="ref">OX Security 2026</span> <span class="ref">PostgreSQL row-level-security docs</span> <span class="ref">Martin Kleppmann — DDIA</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>written 2026-08-11 (v0.142.0) to close the coverage gap named in the 2026-07-30 craft-staleness audit — the knowledge lived ONLY inside the <code>db-architect</code> agent prompt (V1) and the migrations section of <code>scalable-architecture.md</code>, so nothing could sweep it and no mode below V1 could see it. Sources - CVE-2025-48757 (Lovable/Supabase RLS class), the MoltBook 1.5M-credential exposure, OX Security 2026 (62% of AI-built apps ship a critical vuln), Postgres RLS docs, Kleppmann (DDIA) on schema evolution. Sibling of <code>agent-security.md</code> (same adversary) and <code>testing-with-agents.md</code> (the negative path is where this gets caught).</p></details>
+        </div>
+      </div>
+
+      <h3>Testing &amp; quality</h3>
+      <p class="small">Why an agent going green is not the same as the code being right.</p>
+      <div class="practices">
+        <div class="practice">
+          <h4>Testing when an agent writes the code</h4>
+          <p class="meta"><code>testing-with-agents</code> · owned by <code>tester</code> ·
+            <span class="curve" title="how fast this ground moves">craft-ai curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Hamel Husain + Shreya Shankar</span> <span class="ref">How Coding Agents Fail Their Users (arXiv 2605.29442)</span> <span class="ref">Professional Software Developers Don't Vibe, They Control (arXiv 2512.14012)</span> <span class="ref">Veracode (Spring 2026)</span> <span class="ref">METR</span> <span class="ref">Andrej Karpathy — the verifiability thesis</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>written 2026-08-11 (v0.142.0) to close the coverage gap the 2026-07-30 craft-staleness audit named and the 2026-08-11 sweep re-confirmed — <code>library/README.md</code> had advertised a testing practice in <code>practices/</code> since the library was created, and none existed. Sources - Hamel Husain + Shreya Shankar (error analysis, evals-as-spec, judge validation), &quot;How Coding Agents Fail Their Users&quot; (20,574-session misalignment analysis, arXiv 2605.29442), &quot;Professional Software Developers Don't Vibe, They Control&quot; (arXiv 2512.14012), Veracode Spring-2026, METR, Karpathy's verifiability thesis. The seed line — <em>agents rewrite assertions to match broken behavior</em> — was already BOSS's, stranded in <code>git-workflow.md</code>.</p></details>
+        </div>
+        <div class="practice">
+          <h4>The quality ratchet (a baseline that only moves the right way)</h4>
+          <p class="meta"><code>quality-ratchet</code> · owned by <code>pm</code> ·
+            <span class="curve" title="how fast this ground moves">craft curve</span> ·
+            last checked 2026-06-20</p>
+          <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
+          <details class="prov-full"><summary>full provenance</summary><p>ported UP from the dhun dogfood (.ratchet/ + /code-health gate) via the 2026-06-20 method scan — BOSS v0.48.0</p></details>
+        </div>
+        <div class="practice">
+          <h4>Git workflow for AI-native building (trunk-based, review-bounded)</h4>
+          <p class="meta"><code>git-workflow</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">craft curve</span> ·
+            last checked 2026-06-20</p>
+          <p class="prov"><span>learned from</span> <span class="ref">DORA / Accelerate</span> <span class="ref">Addy Osmani</span> <span class="ref">METR</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B5 — dev process / git workflow) — DORA/Accelerate [EVIDENCE], Addy Osmani on AI code review, METR n=16 perception-gap [EVIDENCE], the worktree-as-parallelism-primitive practitioner pattern — BOSS v0.87.0, FEAT-023 thread 1. Citation-hygiene pass 2026-08-17 (spun off from /vet RVW-074): unverified vendor multipliers were sitting next to a DORA attribution — numbers cut, direction kept and correctly sourced to DORA's <em>ROI of AI-Assisted Software Development</em> (2026.01).</p></details>
+        </div>
+        <div class="practice">
+          <h4>Revalidation (the 3-line gate before paused work re-enters build)</h4>
+          <p class="meta"><code>revalidation</code> · owned by <code>pm</code> ·
+            <span class="curve" title="how fast this ground moves">craft curve</span> ·
+            last checked 2026-06-20</p>
+          <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
+          <details class="prov-full"><summary>full provenance</summary><p>ported UP from the dhun dogfood (docs/workflows/lifecycles/REVALIDATION.md) via the 2026-06-20 method scan — BOSS v0.48.0</p></details>
+        </div>
+      </div>
+
+      <h3>Data, retrieval &amp; protocols</h3>
+      <p class="small">What NOT to build yet, mostly.</p>
+      <div class="practices">
+        <div class="practice">
+          <h4>Retrieval (a ladder, not a vector database — climb only when it hurts)</h4>
+          <p class="meta"><code>retrieval</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">model curve</span> ·
+            last checked 2026-07-23</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Anthropic engineering</span> <span class="ref">Chroma — context rot</span> <span class="ref">Jason Liu — systematically improving RAG</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-07-23 research sweep (vector/RAG/frontier thread) — Anthropic (contextual retrieval; the ~200k-token skip-RAG line; the native memory tool), Chroma (context rot), Jason Liu (systematically improving RAG — recall@k first, inventory-vs-capability), the hybrid-search/RRF + recursive-512 chunking consensus. The whole value is telling a founder what NOT to build yet. Pairs with ai-first-init, context-discipline, harness-engineering. BOSS v0.114.0.</p></details>
+        </div>
+        <div class="practice">
+          <h4>MCP (decide <em>whether it matters yet</em>, before you wire anything)</h4>
+          <p class="meta"><code>mcp</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">protocol curve</span> ·
+            last checked 2026-08-20</p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://modelcontextprotocol.io/specification/2026-07-28/changelog" rel="noopener">MCP specification (2026-07-28)</a> <a class="ref" href="https://modelcontextprotocol.io/specification/2026-07-28/deprecated" rel="noopener">MCP deprecated-features registry</a> <span class="ref">Simon Willison</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-07-23 research sweep (MCP thread) — MCP donated to the Linux Foundation / Agentic AI Foundation (Dec 2025), WorkOS/Anthropic ecosystem reads, Willison on MCP prompt-injection. Updates RVW-019 (NOT-YET → the standard is now durable). Security half lives in agent-security.md, not here (don't duplicate). BOSS v0.109.0 · <strong>refreshed 2026-07-31 (v0.136.0) against the SHIPPED 2026-07-28 revision, read from the primary changelog</strong> — the first event-fired run of /practice-refresh. What changed here is the <em>judgment</em>, not just the date: this doc called the ground &quot;still moving&quot; and said build against-not-toward; the revision landed with a formal feature-lifecycle + 12-month deprecation policy, which is the ground acquiring rules for how it moves. Caught by IDEA-056's audit at 7 days old — cadence would not have flagged it until October. · <strong>swept again 2026-08-20 (v0.165.0)</strong> — the prior pass read the revision as <em>governance</em> and treated the extensions framework as a footnote, which under-read the two extensions that change decisions rather than plumbing: MCP Apps (GA Jan 2026) makes shape (b) a product-surface call, not only a distribution one, and Tasks is the long-running seam that ties this doc to automation.md. Registry maturity (still preview) was never stated. Nothing here was found <em>wrong</em>; it was found under-weighted.</p></details>
+        </div>
+      </div>
+
+      <h3>Shipping &amp; scale</h3>
+      <p class="small">Getting it live, and what to do when it grows.</p>
+      <div class="practices">
+        <div class="practice">
+          <h4>Ship it live (the CD half: localhost is not shipped)</h4>
+          <p class="meta"><code>ship-it-live</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">craft curve</span> ·
+            last checked 2026-07-23</p>
+          <p class="prov"><span>learned from</span> <span class="ref">DORA / Accelerate</span> <span class="ref">Martin Fowler</span> <span class="ref">Simon Willison</span> <span class="ref">OWASP — Agentic ASI Top 10 / LLM Top 10</span> <span class="ref">CVE-2025-48757 (Lovable/Supabase RLS class)</span> <span class="ref">The MoltBook credential exposure</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-06-21 CD/deploy deep-research pass (SESSION-2026-06-20-cd-deploy-research — 21 sources, 25 claims adversarially verified 3-vote, 22 confirmed / 3 killed) — DORA/Accelerate 2022-2024 [EVIDENCE], Fowler ParallelChange [EVIDENCE], Willison lethal-trifecta + OWASP LLM Top 10, CVE-2025-48757 (Lovable) + the MoltBook breach as the named vibe-coded incidents — BOSS v0.92.0, FEAT-024</p></details>
+        </div>
+        <div class="practice">
+          <h4>Feature flags (decouple deploy from release — and flag the <em>model</em>, not just the feature)</h4>
+          <p class="meta"><code>feature-flags</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">craft curve</span> ·
+            last checked 2026-07-23</p>
+          <p class="prov"><span>learned from</span> <span class="ref">GrowthBook</span> <span class="ref">ConfigCat</span> <span class="ref">Unleash / LaunchDarkly</span> <span class="ref">Shape Up</span> <span class="ref">Addy Osmani</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-07-23 research sweep (feature-flags + finishing thread) — GrowthBook (&quot;flag the model, not just the feature&quot;; A/B-testing non-deterministic LLMs), ConfigCat (flags as a vibe-coding safety net), Unleash/LaunchDarkly (trunk-based flags + flag-debt hygiene), Shape Up (circuit-breaker/appetite), Osmani (the 70%→80% problem). Pairs with git-workflow.md, ship-it-live.md, and the <code>focus</code> conscience moment / <code>/sunset</code> (IDEA-044). BOSS v0.111.0.</p></details>
+        </div>
+        <div class="practice">
+          <h4>Architecture that survives the climb (defer the tax, enforce the conventions)</h4>
+          <p class="meta"><code>scalable-architecture</code> · owned by <code>mentor-architect</code> ·
+            <span class="curve" title="how fast this ground moves">craft curve</span> ·
+            last checked 2026-06-20</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Martin Fowler</span> <span class="ref">Shopify's modular monolith</span> <span class="ref">Factory.ai</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B7 — technical scaffolding that survives the climb) — Fowler MonolithFirst, Shopify's 2.8M-line modular monolith [EVIDENCE], Bezos one-way/two-way doors, Factory.ai &quot;documented conventions rot; enforced conventions compound&quot;, Notion's eslint ratchet — BOSS v0.89.0, FEAT-023 thread 2</p></details>
+        </div>
+      </div>
+
+      <h3>Design &amp; interface</h3>
+      <p class="small">The failure modes that appear by default when AI writes your UI.</p>
+      <div class="practices">
+        <div class="practice">
+          <h4>Design system — style never locked into code</h4>
+          <p class="meta"><code>design-system</code> · owned by <code>designer</code> ·
+            <span class="curve" title="how fast this ground moves">craft-ai curve</span> ·
+            last checked 2026-08-11</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Brad Frost — Atomic Design</span> <span class="ref">Nathan Curtis — design tokens</span> <span class="ref">W3C Design Tokens Community Group</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>generalized from the dhun dogfood design system (DESIGN_TOKENS as single source of truth, central badge/pill style utils, the &quot;no raw Tailwind colors&quot; enforcement hook, the prototype REGISTRY), de-dhuned for reuse — BOSS v0.20.x. The AI-failure-mode catalog was added in the same pass; IDEA-010 carries the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns). Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.</p></details>
+        </div>
+        <div class="practice">
+          <h4>AI-native interface patterns (2026)</h4>
+          <p class="meta"><code>ai-ux-patterns</code> · owned by <code>designer</code> ·
+            <span class="curve" title="how fast this ground moves">humane curve</span> ·
+            last checked 2026-07-23</p>
+          <p class="prov"><span>learned from</span> <span class="ref">Shape of AI</span> <span class="ref">Microsoft HAX guidelines</span> <span class="ref">Google PAIR</span> <span class="ref">Nielsen Norman Group (2026)</span> <span class="ref">Apple HIG — generative AI</span> <span class="ref">CDT — Dark Patterns in AI Chatbots (2026)</span> <span class="ref">Vaccaro et al., CHI'26</span></p>
+          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-06-20 AI-UX scan (Shape of AI, Microsoft HAX, Google PAIR, IBM Carbon, LangChain HITL, NN/g 2026, Apple HIG GenAI) — BOSS v0.49.0, IDEA-029 · dark-pattern checklist + humane alternatives added v0.82.0 (RVW-031, from CDT <em>Dark Patterns in AI Chatbots</em> 2026, CC-BY) · classic-web pattern families + regulatory teeth (effect-not-intent, symmetry-in-choice) added v0.95.0 (RVW-056/057, first /humane-refresh sweep, IDEA-042) · cohort &amp; frontier patterns (accessibility, minors, agentic, algorithmic-management) + junk-fees teeth added v0.96.0 (RVW-059/060/061/062/063, sweep pass 2) · generated-code-injects-dark-patterns (Vaccaro CHI'26) + dev-tool metering surface + citation upgrades (sycophancy→<em>Science</em> 2026, DECEPTICON precise cite, EU AI Act/EDPB-3-2025/Amazon-Prime teeth) added v0.108.0 (2026-07-23 research sweep)</p></details>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>how it stays true</span></div>
+      <div class="body prose">
+        <h2>What happens when this goes out of date</h2>
+        <p>
+          It will. The interesting question is whether anything catches it. Each practice's
+          <strong>curve</strong> routes it to a discipline that owns re-checking it — the model curve,
+          the protocol curve, the threat curve, the craft curve — and reviews fire on
+          <strong>events</strong>, not just dates: a spec revision, a new frontier model, a breach, a
+          ruling.
+        </p>
+        <p>
+          That matters because cadence alone provably misses. On the first freshness run everything
+          reported fresh while the MCP practice was already <em>wrong</em> — seven days after it was
+          written, because the spec had shipped in the meantime and the doc still described it as
+          forthcoming. A calendar would not have flagged it until October.
+        </p>
+        <p>
+          And because <code>boss sync</code> pushes this guidance into live projects, a stale practice
+          isn't inert — it actively ships bad advice. So the sweep hunts for what's <strong>wrong</strong>,
+          not just what's missing.
+        </p>
+        <p class="small"><a href="governance.html">How a claim gets in here in the first place →</a> ·
+          <a href="conscience.html">how BOSS decides when to speak →</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!--
+title: Charter — a conscience, not a censor
+description: The humane line BOSS holds itself to: name the cost, hand the decision back, never remove the option. The mechanism, and the honest limits.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the humane line and its mechanism
+nav: charter
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Charter</p>
+      <h1>A conscience, not a censor<span class="dot">.</span></h1>
+      <p class="lede">
+        BOSS has an opinion about how software should be built, and it will occasionally say so. That
+        is a power worth constraining in public. This is the line it holds itself to — written for
+        people who care about humane technology and can smell ethics-washing from a mile off. So:
+        mechanism first, honesty about the stage, and credit to the work it's built on.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the line</span></div>
+      <div class="body">
+        <hr class="hazard" />
+        <p class="stencil">the line</p>
+        <div class="note">
+          <p class="q">A conscience makes a cost <em>visible</em>. A censor makes a choice <em>unavailable</em>.</p>
+        </div>
+        <div class="prose">
+          <p>
+            BOSS names the cost — who could be harmed, what it would cost their attention, agency or
+            dignity — <strong>once, in the moment, in plain language</strong> — and then hands the
+            decision back. It never removes the option. It never blocks. <strong>You are
+            sovereign.</strong> That sounds like a small distinction. It is the entire difference
+            between a tool that respects you and a tool that manages you.
+          </p>
+          <p class="stencil">the six rules</p>
+          <ul class="plain">
+            <li><strong>Voice the tension, never filter the menu.</strong> Withholding an option “to
+              protect you” is itself a dignity cost — it makes the choice for you. Show the full menu;
+              annotate the one we'd think twice about.</li>
+            <li><strong>Once, briefly, no sermon.</strong> The moment a concern becomes a paragraph it's
+              a lecture, and a lecture says <em>I don't trust you.</em></li>
+            <li><strong>Fill the knowledge gap, never imply an intelligence gap.</strong> Surface the
+              second-order consequence you might not know. Never explain the obvious to a competent adult.</li>
+            <li><strong>Proportionality.</strong> Friction scales to stakes. A reversible, self-regarding
+              choice gets a feather touch or silence; real weight is reserved for the hard-to-undo,
+              other-harming ones.</li>
+            <li><strong>Honor prior consent.</strong> Once you've heard it and decided, it's settled.
+              Re-raising is how care curdles into control.</li>
+            <li><strong>Hand the decision back.</strong> End on your agency, not our verdict.</li>
+          </ul>
+        </div>
+
+        <div class="note">
+          <p class="q">One asymmetry, on purpose.</p>
+          <p class="small">
+            A <strong>third-party</strong> harm — someone not in the room who could be hurt: a user, a
+            patient, a vulnerable cohort — gets named <strong>once even if it's unwelcome</strong>,
+            because the person who'd be harmed never consented to being muted. A
+            <strong>self-regarding</strong> risk, mostly to your own venture, is fully muteable — it's
+            your company. Naming is not blocking, in either case.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the mechanism</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Not vibes — machinery, in the open</h2>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">a just-in-time conscience</span>
+            <span>A lightweight hook watches the <em>state of the work</em> and surfaces a named “moment”
+              only when one is earned; a model then composes the voice. <strong>Detection is mechanical;
+              tact is the model's job.</strong> Pausable for the all-night sprint, muteable moment by moment.</span>
+          </div>
+          <div class="pair">
+            <span class="k">a harm taxonomy it reasons against</span>
+            <span>So “who could this harm?” gets a checklist instead of a guess — five harm dimensions
+              (physical, psychological, economic, societal, individual-autonomy) plus the four
+              relationship-harms of personalized AI: manipulation, dependence, anthropomorphism, overreliance.</span>
+          </div>
+          <div class="pair">
+            <span class="k">a dark-pattern check on <em>your</em> product</span>
+            <span>A 37-pattern, five-family map of manipulative design with the humane alternative named
+              beside each — and <code>/red-team --humane</code>, which probes the <em>built</em> product for
+              patterns that emerge from the model itself (sycophancy especially), not just the ones
+              designed on purpose.</span>
+          </div>
+          <div class="pair">
+            <span class="k">the voicing discipline, written down</span>
+            <span>The behavioral spine under every place BOSS speaks with an opinion, kept as a practice
+              file rather than buried in prompts.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          All of it is MIT-licensed and project-neutral. <strong>Take any of it into your own thing;
+          none of it is welded to BOSS.</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the hard part</span></div>
+      <div class="body prose">
+        <h2>Does it know when to shut up?</h2>
+        <p>
+          That's the question separating a real conscience from a nagging one, and it's the part most
+          likely to be wrong. BOSS's answer is structural rather than confident: the conscience is
+          <strong>silent by default</strong> and speaks only on a named, earned moment; every firing is
+          logged so over-speaking is measurable rather than a matter of opinion; and the whole thing has
+          an off switch you don't have to justify — <code>boss conscience pause --for 8h</code>, or
+          <code>mute</code> for a single moment while the rest keep speaking.
+        </p>
+        <p>
+          <strong>The honest status:</strong> this is judged by evals that are re-graded when the model
+          curve moves, and it is still a young instrument. If it talks too much, that's a bug — and the
+          frequency ledger exists so it's a bug you can prove rather than one you have to argue about.
+        </p>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/HUMANE.md">The full essay — where this came from, the bet under the bet, and who it's built on →</a>
+        </p>
+      </div>
+    </section>
+
+  </main>

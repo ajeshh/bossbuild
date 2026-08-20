@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>What's new in BOSS</title>
+<meta name="description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://boss.build/whats-new.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="What's new in BOSS" />
+<meta property="og:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
+<meta property="og:url" content="https://boss.build/whats-new.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="What's new in BOSS" />
+<meta name="twitter:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html" aria-current="page">What's new</a></li></ul>
+  </div>
+</nav>
+
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">What's new</p>
+      <h1>Every release, in the open<span class="dot">.</span></h1>
+      <p class="lede">
+        BOSS is built in public and moves fast. This page is generated from
+        <code>registry/CHANGELOG.md</code> — the <strong>same file <code>boss sync</code> reads</strong>
+        when it tells a project what's changed since its pinned version. One source, two audiences.
+      </p>
+      <p class="small">
+        Inside a project: <code>boss status</code> shows your pin against what's installed, and
+        <code>/boss-sync</code> brings you forward as a reviewed, narrated diff — never a silent update.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section">
+      <div class="rail">▸<span>releases</span></div>
+      <div class="body">
+        <ol class="releases">
+      <li>
+        <div class="rel"><span class="ver">v0.164.0</span><span class="when">2026-08-19</span></div>
+        <p>BOSS has a website — what it is, who it staffs, a quick guide, and the sources behind every practice it ships.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.163.0</span><span class="when">2026-08-18</span></div>
+        <p>Fixed: adopting a large repo could misread it as a fresh idea and start you at the wrong mode.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.162.0</span><span class="when">2026-08-18</span></div>
+        <p><code>boss remove</code> got four fixes — the exit is now safe on the paths the first version missed.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.161.0</span><span class="when">2026-08-18</span></div>
+        <p><strong><code>boss remove</code></strong> — adoption is no longer a one-way door. Preview what would go, <code>--apply</code> to do it; your own work always survives.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.160.0</span><span class="when">2026-08-17</span></div>
+        <p>The 66 skills and agents BOSS installs into your project can now report themselves stale, so <code>boss sync</code> stops pushing you guidance that has quietly rotted.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.159.0</span><span class="when">2026-08-17</span></div>
+        <p><code>/vet</code> now checks <em>who actually said it</em> before grading a claim — so the practices you inherit are attributed, not just plausible.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.158.0</span><span class="when">2026-08-17</span></div>
+        <p>BOSS installs clean under npm v12’s stricter defaults: zero dependencies, no install scripts, nothing to approve.</p>
+      </li>
+    </ol>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

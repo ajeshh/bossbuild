@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Guide — using the team, rung by rung</title>
+<meta name="description" content="What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder." />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://boss.build/guide.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="Guide — using the team, rung by rung" />
+<meta property="og:description" content="What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder." />
+<meta property="og:url" content="https://boss.build/guide.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Guide — using the team, rung by rung" />
+<meta name="twitter:description" content="What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder." />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html" aria-current="page">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+  </div>
+</nav>
+<div class="subnav"><div class="subnav-in"><span class="subnav-label">The product</span><ul><li><a href="team.html">The team</a></li><li><a href="guide.html" aria-current="page">Guide</a></li><li><a href="teams.html">Cofounders</a></li><li><a href="quick-guide.html">Quick guide</a></li></ul></div></div>
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Guide</p>
+      <h1>Using the team, rung by rung<span class="dot">.</span></h1>
+      <p class="lede">
+        Each mode is additive — unlocking the next never removes what you had, and
+        <code>boss unlock &lt;mode&gt;</code> is always your call. You don't memorize any of this:
+        <code>boss map</code> lists what your project has and what's one unlock away.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the one idea</span></div>
+      <div class="body prose">
+        <h2>When to use BOSS, and when to just talk to Claude</h2>
+        <p>
+          BOSS doesn't sit between you and Claude. You build exactly as you do now. The split is simple:
+        </p>
+        <ul class="plain">
+          <li><strong>“How do I build this?”</strong> — just ask Claude. No skill, no ceremony. That's
+            most of your day, and BOSS stays out of it.</li>
+          <li><strong>“Should I build this? Is it working? What did I decide?”</strong> — that's a BOSS
+            verb. Those are the seams between building, where things get lost.</li>
+        </ul>
+        <p>While you're heads-down, BOSS does almost nothing. That's the design, not a gap.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the walk</span></div>
+      <div class="body">
+        <div class="line-wrap">
+    <ol class="trainline">
+      <li class="station">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="stop">Quickstart</span>
+        <span class="crew"><b>3</b> on the team</span>
+        <span class="verbs">16 skills</span>
+      </li>
+      <li class="station">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="stop">MVP</span>
+        <span class="crew"><b>8</b> on the team</span>
+        <span class="verbs">42 skills</span>
+      </li>
+      <li class="station">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="stop">V1</span>
+        <span class="crew"><b>15</b> on the team</span>
+        <span class="verbs">45 skills</span>
+      </li>
+      <li class="station">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="stop">Scale</span>
+        <span class="crew"><b>15</b> on the team</span>
+        <span class="verbs">46 skills</span>
+      </li>
+    </ol>
+    <p class="line-note">You unlock each stop. Nothing is ever removed — the roster only grows.</p>
+  </div>
+        <div class="prose">
+          <h3>Quickstart — get the idea out of your head</h3>
+          <p>
+            Capture freely with <code>/triage</code>. Pressure-test one with <code>/canvas</code> — the
+            Humane Product Canvas, filled a few cells at a time rather than all at once. Record what you
+            actually learn with <code>/evidence</code>, and what you chose with <code>/decide</code>. A
+            project that lives here forever is a legitimate project.
+          </p>
+          <h3>MVP — build the first working version</h3>
+          <p>
+            Adds the spec discipline (<code>/spec</code>, with validated-learning and evals fields), the
+            smoke gate, and the demand test — <code>/pretotype</code>, which builds a fake door before you
+            build the real thing. Design tokens get scaffolded here too, the moment there's real UI, so
+            style never gets locked into code.
+          </p>
+          <h3>V1 — make it shippable</h3>
+          <p>
+            Full design review (<code>/design-review</code>, <code>/ux-check</code>, token enforcement),
+            cross-feature sequencing with <code>/board</code>, and the next tier of mentors. This is where
+            a database architect and real designers arrive.
+          </p>
+          <h3>Scale — grow it</h3>
+          <p>Adds <code>/incident</code>. Deliberately thin: most projects should never need this rung.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>after you ship</span></div>
+      <div class="body prose">
+        <h2>The post-launch arc</h2>
+        <p>
+          A second set of verbs whose moment only arrives once something is <em>live</em> — retention,
+          pricing, measurement, health, the first dollar. They install with MVP but stay folded away
+          until you've actually shipped a feature, so a founder with one idea isn't read a menu of nine
+          verbs about pricing.
+        </p>
+        <p>
+          <strong>And a project can end at any rung.</strong> <code>/sunset</code> exists because quitting
+          well is a skill, and a tool that only knows how to grow things is lying to you about how this
+          usually goes.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>with a cofounder</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Building with someone else</h2>
+          <p>
+            AI made each of you faster — which, left alone, makes a two-person team <strong>drift
+            apart.</strong> You each work in your own AI session, ship in parallel, and quietly stop
+            deciding things together. The uncomfortable part: that erosion is invisible from the inside.
+            Teams that have already drifted still rate their teamwork as fine.
+          </p>
+          <p>
+            <code>boss team add @their-handle</code> lights up a shared place to decide
+            (<code>/decide</code>), a shared craft commons (<code>/practice</code>), and
+            <code>mentor-cofounder</code> — the one mentor that coaches the <em>relationship</em>:
+            dividing work across different skill sets, decision rights, and the hard conversations about
+            roles, pace and equity. It serves the partnership as a unit and never takes a side.
+          </p>
+          <p>
+            All of it is <strong>dormant when you're solo.</strong> Keyed to GitHub handles — no accounts,
+            no seats, no server, no hierarchy.
+          </p>
+          <p class="small">
+            <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE-teams.md">The full teams guide →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>worth remembering</span></div>
+      <div class="body prose">
+        <h2>Two things</h2>
+        <ul class="plain">
+          <li><strong><code>boss status</code> is the one command to remember.</strong> Come back after a
+            week and it tells you where you are and what's next.</li>
+          <li><strong>The conscience is always overridable.</strong> <code>boss conscience pause --for
+            8h</code> for a sprint, or <code>mute &lt;moment&gt;</code> to turn down one nudge while the
+            rest keep speaking. It never blocks.</li>
+        </ul>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE.md">The full guide →</a> ·
+          <a href="quick-guide.html">every skill →</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/bossbuild">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

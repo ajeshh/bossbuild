@@ -1,0 +1,125 @@
+<!--
+title: The conscience — how it decides to speak
+description: BOSS's most distinctive mechanism: a hook watches the state of the work, a model composes the voice, and it hands the decision back. Always overridable, never blocking.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the hook/model split and the off switches
+nav: conscience
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">The conscience</p>
+      <h1>It speaks once, then gets out of the way<span class="dot">.</span></h1>
+      <p class="lede">
+        This is the part of BOSS people either love or want to switch off — so it's worth being
+        precise about what it does, what it can't do, and every way you can shut it up.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>a real moment</span></div>
+      <div class="body">
+        <div class="terminal breakout">
+          <span class="cap">you've captured four ideas and tested none</span>
+<pre><span class="line"><span class="t-dim">… you submit a prompt — anything — and it speaks once:</span></span>
+<span class="line"> </span>
+<span class="line"><span class="voice"><span class="voice-mark">▸ </span>That's the fourth thing you've added here, and none of it's</span></span>
+<span class="line"><span class="voice">  been tested. Who would you talk to first to find out if any</span></span>
+<span class="line"><span class="voice">  of them are real? <span class="t-accent">/canvas</span> is one way to pressure-test it —</span></span>
+<span class="line"><span class="voice">  but a 15-minute call with the right person beats it.</span></span>
+<span class="line"> </span>
+<span class="line"><span class="after">Then it goes quiet. You decide.</span></span>
+</pre>
+        </div>
+        <p class="small prose">
+          Note what it didn't do: it didn't block the prompt, didn't repeat itself, didn't grade you,
+          and it pointed at something <em>better</em> than its own feature.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>mechanism</span></div>
+      <div class="body">
+        <p class="stencil">how it works</p>
+        {{DIAGRAM_CONSCIENCE}}
+        <div class="duo">
+          <div class="prose">
+            <h3>Detection is mechanical</h3>
+            <p>
+              A lightweight hook watches the <em>state of the work</em> — how many ideas are captured,
+              how many are tested, whether a spec traces to anything the canvas validated. When a named
+              moment's condition is met, it fires. No model is asked “is this person drifting?”
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Tact is the model's job</h3>
+            <p>
+              Only once a moment is earned does a model compose the actual words — cohort-aware, so the
+              same moment reads differently for a first-time builder and someone who's shipped three
+              products. The judgment about <em>whether</em> to speak is never the model's.
+            </p>
+          </div>
+        </div>
+        <p class="small prose">
+          That split is the whole design. A model deciding when to interrupt you would interrupt you
+          constantly, and it would be unfalsifiable. A hook's condition can be read, argued with, and
+          turned off.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>control</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Every way to make it stop</h2>
+          <p>None of these require a reason, and none of them are grudging.</p>
+        </div>
+        <div class="terminal breakout">
+          <span class="cap">the off switches</span>
+<pre><span class="line"><span class="t-cmd">boss conscience pause --for 8h</span>   <span class="t-dim"># the whole thing, bounded</span></span>
+<span class="line"><span class="t-cmd">boss conscience mute drift</span>       <span class="t-dim"># ONE moment; the rest keep speaking</span></span>
+<span class="line"><span class="t-cmd">boss conscience resume</span>           <span class="t-dim"># bring it back</span></span>
+<span class="line"><span class="t-cmd">boss status --conscience</span>         <span class="t-dim"># what's open, what would close it,</span></span>
+<span class="line">                                  <span class="t-dim"># and every override you've recorded</span></span>
+</pre>
+        </div>
+        <div class="prose">
+          <ul class="plain">
+            <li><strong>It never blocks.</strong> Not once, anywhere. It has no mechanism to stop you
+              doing a thing — only to name a cost before you do it.</li>
+            <li><strong>It honors prior consent.</strong> Once you've heard a moment and decided,
+              it's settled. Re-raising is how care curdles into control.</li>
+            <li><strong>Overrides are recorded, not scored.</strong> <code>/decide</code> captures what
+              you chose and why. Nothing counts them against you.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the honest part</span></div>
+      <div class="body prose">
+        <h2>How it could be wrong</h2>
+        <p>
+          The failure mode isn't speaking harshly — it's speaking <em>too often</em>, which turns a
+          conscience into a nag and trains you to ignore it. BOSS treats that as a measurable bug rather
+          than a matter of taste: every firing is logged, so over-speaking shows up in a frequency
+          ledger you can look at instead of a feeling you have to argue about.
+        </p>
+        <p>
+          The judgment itself is graded by evals that get re-run when the model curve moves. It is still
+          a young instrument, and it has been tuned mostly against one person's projects. If it talks too
+          much for you, that's worth reporting — <code>/feedback</code> — and it's worth muting in the
+          meantime rather than enduring.
+        </p>
+        <p class="small"><a href="charter.html">The line it holds itself to →</a></p>
+      </div>
+    </section>
+
+  </main>

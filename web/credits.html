@@ -1,0 +1,65 @@
+<!--
+title: Credits — everyone BOSS learned from
+description: BOSS is a distillation of other people's published thinking. This is the roll call: the practitioners, labs, papers and specs behind every practice it ships.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the aggregated source roster behind the practice shelf
+nav: credits
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Credits</p>
+      <h1>Almost none of this is original<span class="dot">.</span></h1>
+      <p class="lede">
+        BOSS is mostly a <strong>distillation of other people's published thinking</strong>, arranged so
+        it arrives at the moment a founder needs it. That's the honest description of the product, and
+        it means the people below are load-bearing rather than decorative.
+        <strong>{{COUNT_SOURCES}}</strong> named sources sit behind the practice shelf.
+      </p>
+      <p class="small">
+        The one-line note beside a name is <em>what BOSS took from them</em> — a study pointer, not their
+        endorsement and not their verbatim view. <strong>No agent in BOSS impersonates a person</strong>;
+        mentors are archetypes that cite the practice, never someone's name.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the roll call</span></div>
+      <div class="body">
+        {{CREDITS}}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>citation debt</span></div>
+      <div class="body prose">
+        <h2>{{COUNT_UNLINKED}} of these still have no link, and that's a bug</h2>
+        <p>
+          Every practice BOSS ships records <em>who</em> a claim came from. Far fewer record
+          <em>where</em>. That gap is real and it's ours: the verification work was done — BOSS's
+          <code>/vet</code> pass goes to the primary source before it grades anything — and then the URL
+          was thrown away.
+        </p>
+        <p>
+          <strong>An attribution without a URL is half a citation.</strong> It can't be re-checked when
+          the practice comes up for review, the person can't be credited properly, and the next reader
+          has to redo a search someone already did.
+        </p>
+        <p>
+          So the rule now sits inside <code>/vet</code> itself: <em>write down the URL you actually
+          opened — not the thread that pointed at it.</em> Sources are stored in one registry, and each
+          name here becomes a link the moment its URL is filled in. Currently
+          <strong>{{COUNT_LINKED}} linked, {{COUNT_UNLINKED}} outstanding.</strong>
+        </p>
+        <p class="small">
+          <a href="governance.html">How a claim gets in here →</a> ·
+          <a href="engineering.html">the technical practices →</a>
+        </p>
+      </div>
+    </section>
+
+  </main>

@@ -1,0 +1,36 @@
+<!--
+title: What's new in BOSS
+description: Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the release feed
+nav: whats-new
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">What's new</p>
+      <h1>Every release, in the open<span class="dot">.</span></h1>
+      <p class="lede">
+        BOSS is built in public and moves fast. This page is generated from
+        <code>registry/CHANGELOG.md</code> — the <strong>same file <code>boss sync</code> reads</strong>
+        when it tells a project what's changed since its pinned version. One source, two audiences.
+      </p>
+      <p class="small">
+        Inside a project: <code>boss status</code> shows your pin against what's installed, and
+        <code>/boss-sync</code> brings you forward as a reviewed, narrated diff — never a silent update.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section">
+      <div class="rail">▸<span>releases</span></div>
+      <div class="body">
+        {{WHATS_NEW}}
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
+        </p>
+      </div>
+    </section>
+  </main>

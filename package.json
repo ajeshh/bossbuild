@@ -1,6 +1,6 @@
 {
   "name": "bossbuild",
-  "version": "0.163.0",
+  "version": "0.164.0",
   "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
@@ -37,10 +37,12 @@
   "scripts": {
     "link": "npm install -g .",
     "gen:docs": "node scripts/gen-docs.js",
+    "gen:site": "node scripts/gen-site.js",
     "check:wayfinding": "node scripts/check-wayfinding-drift.js",
     "check:manifests": "node scripts/check-manifests.js",
     "check:freshness": "node scripts/check-freshness.js",
     "check:refs": "node scripts/check-refs.js",
+    "check:site": "node scripts/check-site.js",
     "test": "node scripts/check-refs.js && node --test test/*.test.js",
     "release": "node scripts/release.js",
     "pack:preview": "npm pack --dry-run",
