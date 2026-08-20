@@ -1,6 +1,8 @@
 # `/spec` — the FEAT record template (bundled resource)
 
-> Loaded **on demand** from `SKILL.md`. Write this to `docs/features/FEAT-NNN-<slug>.md`.
+> Loaded **on demand** from `SKILL.md`. Write this to `docs/ideas/FEAT-NNN-<slug>.md` —
+> **the same folder as the ideas**, which is where `boss board` reads FEATs from. A FEAT written
+> anywhere else is invisible to the board and to every skill that looks for one.
 > The Evals and Failure-states sections apply **only** to FEATs with an LLM in the control flow —
 > omit them entirely otherwise rather than filling them with `n/a`.
 

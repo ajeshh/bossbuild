@@ -84,6 +84,15 @@ founder's project, the one visual surface BOSS puts there. Now on the locked tok
 spending the palette on pipeline position misreads the whole system. Hi-vis is reserved for the one
 line that says *captured, nothing proven* — the humane-lens override, made visual.
 
+### 🔴 A shipped bug the pass turned up: a FEAT could be written where nothing reads it
+
+`/spec`'s SKILL.md said write the FEAT to `docs/ideas/`; **its own bundled template said
+`docs/features/`** — and `boss board` only ever read `docs/ideas/`. A founder whose model followed the
+template (the more recent instruction, loaded on demand at write time) got a FEAT that was invisible to
+the board and to every skill that looks for one — the board reported *"nothing captured yet"* with the
+spec sitting right there on disk. Template corrected, and it now says **why** the folder matters.
+`check:refs` didn't catch it because a write-target is not a link — noted as a real limit of that sweep.
+
 ### Also
 
 - **Spec-anchored, not spec-first.** `/revalidate` gains a post-ship mode — *does this FEAT still
