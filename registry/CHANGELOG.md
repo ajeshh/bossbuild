@@ -9,6 +9,51 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.187.0 — 2026-08-20
+
+**BOSS's conscience had never once fired on BOSS. The dogfood audit went looking for missing logs
+and found a missing mechanism.**
+
+- **🔴 The root cause of four of the six `owed` items was not "nobody ran it."** BOSS's own
+  `.claude/` had **no `hooks/` directory and no `hooks` block in `settings.json`**, and its
+  `.boss/manifest.json` was pinned at **`bossVersion: 0.6.0` — 180 releases stale.** `boss sync`,
+  the command whose entire purpose is keeping a project current, **had never been run on BOSS's own
+  first project.** So the conscience — the single most distinctive thing BOSS ships — had never
+  fired on the project building it, across 185 releases, while `CLAUDE.md` said *"it eats the
+  dogfood it serves."* Now installed: the hook, its runtime lib, and the **12 MVP loop specs BOSS
+  ships and had never installed** (4 → 16).
+- **It fired on the first prompt it ever saw, and it was right twice.**
+  - **🔴 A permanent false positive that ships to founders, and this is the fix worth shipping.**
+    `canvas-loop`'s exit predicate globbed only `docs/ideas/*-canvas.md` — while **`/canvas` step 1
+    tells the founder to keep a venture-level `docs/ideas/CANVAS.md`**, and `boss board` reads one
+    (`projectCanvas`). **A founder who followed the skill's own instruction had the canvas-loop
+    reporting "stalled" forever.** A conscience that is permanently wrong about you is one you mute,
+    which is the worst outcome this system has. Exits are AND-ed so a second predicate could not
+    express *"either of these"* — the glob had to, so `path_glob` now accepts a comma-separated list.
+  - **`verification-loop` fired, and BOSS was the case its own guidance describes.** The loop's first
+    branch reads *"do they already have verification under another name? — if so, the gap is BOSS's
+    blindness, not their discipline."* BOSS has `npm run release`: 22 checks, 155 unit tests, a
+    143-case eval gate. **The honest fix was to record the command, not to exempt the artifact** —
+    `.boss/smoke.json` had been marked `exempt` on reasoning that was wrong in an instructive way.
+- **And BOSS's own canvas could not close its own loop.** BOSS ships a canvas template whose gating
+  cell is `**Riskiest assumption:**` and had written its venture canvas as prose tables without it.
+  The conscience reported *"no canvas names a real riskiest assumption"* — **correctly.** Now
+  written, and it is the one this whole arc keeps circling: *will a real founder return, and will
+  BOSS change a decision they'd otherwise make worse?* **n=0 observed.**
+- **Two `owed` items resolved themselves the moment the mechanism was wired.** The frequency ledger
+  (`IDEA-013`, shipped v0.34.0, **151 releases with zero entries**) began recording on the first
+  fire. `registry/dogfood.json` is now **2 exercised · 15 exempt · 5 owed**, and the remaining
+  reasons are honest about *why*: the venture brain needs a real `/close` at the end of a real
+  session — a thing a person does, not a thing a build can fabricate — and `.boss/trace.jsonl` is
+  written by the `auto-log` hook, which `check:manifests` lists as **dormant by design**. That last
+  one deserves its own decision rather than a silent `owed`: turn it on, or admit `/judge-traces`
+  has never had real input **anywhere**, including in a founder's project.
+
+> **For you:** if you keep a single venture canvas at `docs/ideas/CANVAS.md` — which `/canvas` tells
+> you to — the conscience has been telling you your canvas loop is stalled when it isn't. Fixed. And
+> if you already test under another name (`npm test`, CI), record it with `/smoke` so the
+> verification nudge stops; it was never meant to fire at someone who is already verified.
+
 ## 0.186.0 — 2026-08-20
 
 **Two things, and the second is the uncomfortable one.**

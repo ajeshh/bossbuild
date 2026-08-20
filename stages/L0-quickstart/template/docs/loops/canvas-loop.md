@@ -14,7 +14,7 @@ entry:
       min: 3
 exit:
   - any_file_matches:
-      path_glob: docs/ideas/*-canvas.md
+      path_glob: docs/ideas/*-canvas.md, docs/ideas/CANVAS.md
       pattern: 'Riskiest assumption:\*\*\s+[^_].*[a-zA-Z0-9]{3,}'
       related_idea_not_matching: '^status:\s+dropped'
 drift_moment: caution

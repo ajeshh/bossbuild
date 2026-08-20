@@ -57,7 +57,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // Examples: `docs/ideas/IDEA-*.md`, `docs/loops/*.md`.
 // ---------------------------------------------------------------------------
 
+// A `path_glob` may name MORE THAN ONE shape, comma-separated. This exists because of a real
+// permanent false positive: `canvas-loop` globbed only `docs/ideas/*-canvas.md`, while `/canvas`
+// itself tells the founder to keep a venture-level `docs/ideas/CANVAS.md` and `boss board` reads
+// one. So a founder who followed the skill's own instruction had the canvas-loop reporting
+// "stalled" forever — and a conscience that is permanently wrong about you is one you mute, which
+// is the worst outcome this system has. Exits are AND-ed, so a second predicate could not express
+// "either of these"; the glob had to.
 function expandGlob(pattern, projectDir) {
+  if (typeof pattern === 'string' && pattern.includes(',')) {
+    const seen = new Set();
+    return pattern.split(',').flatMap((p) => expandGlob(p.trim(), projectDir))
+      .filter((f) => (seen.has(f) ? false : seen.add(f)));
+  }
   const fullPattern = join(projectDir, pattern);
   const dir = dirname(fullPattern);
   const fileGlob = basename(fullPattern);

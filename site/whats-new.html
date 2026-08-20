@@ -62,6 +62,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.187.0</span><span class="when">2026-08-20</span></div>
+        <p>if you keep a single venture canvas at <code>docs/ideas/CANVAS.md</code> — which <code>/canvas</code> tells you to — the conscience has been telling you your canvas loop is stalled when it isn't. Fixed. And if you already test under another name (<code>npm test</code>, CI), record it with <code>/smoke</code> so the verification nudge stops; it was never meant to fire at someone who is already verified.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.186.0</span><span class="when">2026-08-20</span></div>
         <p><strong><code>boss records --programs</code></strong> groups records that belong together (<code>program: &lt;slug&gt;</code> — one line, nothing to create first) and shows which umbrella is moving and which is stuck. It's on <code>boss board --html</code> too. Promote a program to its own record only when it has something to say that belongs to no single member — not when it hits some number of items.</p>
       </li>
@@ -105,10 +109,6 @@
         <div class="rel"><span class="ver">v0.176.0</span><span class="when">2026-08-20</span></div>
         <p><code>/measure</code> no longer sends a founder away empty-handed. Below ~10 users it still says <em>&quot;close this and go talk to them&quot;</em> — but it now checks the <strong>seam</strong> first: a <code>created_at</code> on your user and core rows, and one <code>track()</code> stub. The timestamp is the only thing on the page you cannot buy back later. Depth: <code>boss craft analytics-for-ai-products</code>.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.175.0</span><span class="when">2026-08-20</span></div>
-        <p><code>/ship</code> now asks, once and only when it can name the actual confusion, whether an arriving user can work out what to do — and points at the fix <em>upstream</em> (an empty state, a clearer label) before it points at an article. Depth: <code>boss craft documentation</code> §7.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -137,7 +137,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.186.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.187.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

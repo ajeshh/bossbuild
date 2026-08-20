@@ -12,25 +12,25 @@
       "path": ".boss/brain/read.md",
       "capability": "the venture brain — /close, /comprehend",
       "verdict": "owed",
-      "why": "FEAT-022 shipped v0.65.0 and its changelog entry says 'the venture brain is now complete'. BOSS has never written one, 120 releases later. The conscience that is supposed to remember this venture remembers nothing about the venture it was built inside."
+      "why": "ROOT CAUSE FOUND AND FIXED 2026-08-20: the conscience hook was never installed in BOSS's own repo (no .claude/hooks/, no hooks block, manifest pinned at 0.6.0), so nothing that writes the brain had ever run here. The mechanism is now wired and the frequency ledger is already populating. This file is written by `/close` at the end of a real working session, which is a thing a person does, not a thing a build can fabricate — so it stays owed until that happens."
     },
     {
       "path": ".boss/brain/relationship.md",
       "capability": "the venture brain — what the conscience said and what the founder did",
       "verdict": "owed",
-      "why": "Same build as read.md. This is the half that closes the loop IDEA-013 only counts — did the nudge LAND? BOSS has no answer for its own conscience, which is the one conscience it has the most data about."
+      "why": "Same root cause and same fix as read.md. This one additionally requires the conscience to have FIRED during a session and the founder to have responded, which is now possible for the first time — it was not, before 2026-08-20. Fabricating entries about nudges that never happened would be the exact dishonesty this ledger exists to prevent."
     },
     {
       "path": ".boss/conscience-log.jsonl",
       "capability": "the frequency ledger — IDEA-013",
-      "verdict": "owed",
-      "why": "Shipped v0.34.0 to answer 'how often does the conscience actually fire?' honestly, with facts rather than estimates. BOSS has 151 releases of its own conscience firing and zero recorded."
+      "verdict": "exercised",
+      "why": "Populating since 2026-08-20, when the conscience hook was installed into BOSS's own repo for the first time. THE ROOT CAUSE was never 'nobody ran it': BOSS's `.claude/` had no hooks directory and no `hooks` block in settings.json, and its `.boss/manifest.json` was pinned at bossVersion 0.6.0 — 180 releases stale. The conscience had never fired on the project building it."
     },
     {
       "path": ".boss/trace.jsonl",
       "capability": "the auto-log substrate — read by /judge-traces",
       "verdict": "owed",
-      "why": "The deliberate reader (/judge-traces) shipped at v0.53 on top of this substrate. With no trace, error analysis on real sessions is unrunnable here — so the one project that could most easily prove the feature works never has."
+      "why": "Written by the `auto-log` hook, which `check:manifests` lists as DORMANT BY DESIGN — unregistered on purpose in the shipped manifests. So this is not the same failure as the others: the substrate is deliberately off, and /judge-traces has therefore never had real input anywhere, including in a founder's project. That is worth its own decision (turn it on for BOSS, or admit /judge-traces is unproven), not a silent 'owed'."
     },
     {
       "path": "docs/devlog.md",
@@ -47,8 +47,8 @@
     {
       "path": ".boss/smoke.json",
       "capability": "/smoke",
-      "verdict": "exempt",
-      "why": "BOSS's build gate is `npm run release` — 21 checks, 155 unit tests, a 143-case conscience eval gate. /smoke exists to give a founder rung 1 when they have nothing; BOSS is well past it. The substitute is louder than the original."
+      "verdict": "exercised",
+      "why": "Records `npm run release` — 22 checks, 155 unit tests, a 143-case eval gate. Previously marked exempt on the grounds that BOSS was 'well past' rung 1. That reasoning was wrong in an instructive way: verification-loop fired correctly the moment the conscience was installed, and its own first branch says so — 'if they already have verification under another name, the gap is BOSS's blindness, not their discipline.' The honest fix was to record the command, not to exempt the artifact."
     },
     {
       "path": ".boss/cost-log.jsonl",
