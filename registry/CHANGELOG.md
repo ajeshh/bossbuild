@@ -2,6 +2,489 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+**The `> **For you:**` line is opt-in, and the bar is high on purpose.** Add one ONLY if the release
+changes something a BOSS user *does, sees, or can rely on* — a command, a fix they'd have hit, a
+behaviour change — **or** if it integrates a new/updated best practice their project now inherits.
+Everything else (audits, refactors, doc sweeps, internal tooling, this repo's own website) gets **no
+line and never reaches boss.build/whats-new.html**. Most releases should have no line. A release feed
+that lists every version is a commit log, and a commit log is not useful to anyone building a company.
+
+## 0.172.0 — 2026-08-20
+
+**Documentation becomes a practice — and the discipline BOSS had shipped for 167 releases finally
+gets written down.**
+
+> **For you:** `/spec` now says back what it had to **assume** before you build, and asks for one
+> worked example and what "wrong" looks like — the corrections are the best documentation you'll get.
+> A FEAT gains a **Build log** so a feature's story stays whole across releases. `boss board` shows
+> **how far** through a feature you are, not just that it's in flight. And `docs/ideas/INDEX.md` is no
+> longer a table you maintain.
+
+Ajesh: *"see how BOSS recommends and captures documentation for a new app — can we fortify it from
+our leaders in AI, and PM leaders… a better way to store, access, record… surface up progress?"* Then:
+*"what about design, organization, fonts and readability"*, *"an internal blog… a living journal"*, and
+*"how do we capture as many details before going and building?"* The assessment is
+`docs/dossier/documentation-and-progress-pass-001.md`.
+
+### 🔴 The finding was the absence
+
+BOSS's capture spine — `/triage` · `/canvas` · `/evidence` · `/decide` · `/spec` · `/log` · `/close` —
+lived across **eight skills and zero practices.** So it could not be `/practice-refresh`ed, could not
+carry a `curve:`, could not be cited, and no watchlist domain could claim it. Everything else BOSS
+knows has a practice. The one it uses most did not.
+
+`library/practices/documentation.md` (`curve: craft-ai`) closes it, and **watchlist domain 13** now
+claims it. That is **n=3** on the same failure mode (domains 11, 12, 13 all added this way): a
+watchlist assembled from the practices that exist inherits their blind spots. The v0.160.0 reverse
+sweep caught this one within a minute of the practice existing — it closes the has-practice-no-domain
+half fast and stays blind to the neither-exists half.
+
+### The plan-time step: say back what you guessed
+
+A model asked to spec a feature completes every gap fluently, and **a founder cannot correct a guess
+they never saw.** `/spec` step 3 now separates what it was told from what it filled in: assumptions as
+one-line rejectable claims, one concrete worked example (the highest-yield question available), what
+"wrong" looks like, and an explicit *didn't guess* list. The FEAT template gains `## Assumptions` and
+`## What "wrong" looks like` to hold the answers.
+
+**The corrections are the documentation** — the sentence a founder writes to replace a wrong assumption
+is by construction the thing non-obvious enough that a competent reader got it wrong.
+
+### The per-feature journal, on an artifact that already exists
+
+The devlog is per **session**; this changelog is per **release**. A feature landing across several of
+either has its story shattered with nothing joining the pieces. The FEAT record already spans versions,
+so it gains an append-only `## Build log` — **the decision and the surprise, never the narration.**
+Two guards, because this is the artifact most likely to rot into theater: *would you write it if
+nobody read it*, and *it never gates a ship*.
+
+### Progress that was always there, never read
+
+`/spec` has shipped acceptance criteria as `- [ ]` checkboxes since MVP mode existed and **nothing ever
+ticked them** — a FEAT one criterion from done and one nobody had started rendered identically.
+`/log` now ticks them; `boss board` renders `[3/4 criteria]` in the terminal and a segmented meter in
+`--html`, scoped to the *Acceptance criteria* section only (counting the smoke list would inflate it —
+a progress number that flatters is worse than none). Untouched FEATs show nothing rather than a
+discouraging `0/5`.
+
+### Subtracted: the index table BOSS did not believe
+
+`src/board.js` has always carried a comment calling `docs/ideas/INDEX.md` *"a hand-maintained table
+that can drift… a board that trusts a drifting source lies"* — and `docs/IDS.md` already told everyone
+to grep the files instead. **BOSS shipped a file it told founders to maintain and then refused to
+read.** The table is gone; INDEX.md is now a pointer at `boss board` and the files. Ten skill/agent
+instructions to "add a row" were removed — every one of them a step deleted, not added.
+
+### `boss board --html` looks like BOSS again
+
+The visual identity locked on 2026-08-18 (concrete · graphite · one hi-vis mark, straight cuts, the
+mono stack). `board.js` predated it and shipped **indigo `#4b54c6` with a generic sans** — into the
+founder's project, the one visual surface BOSS puts there. Now on the locked tokens, with columns as a
+**monochrome weight progression** rather than four hues: hi-vis is the brand and never a state, so
+spending the palette on pipeline position misreads the whole system. Hi-vis is reserved for the one
+line that says *captured, nothing proven* — the humane-lens override, made visual.
+
+### Also
+
+- **Spec-anchored, not spec-first.** `/revalidate` gains a post-ship mode — *does this FEAT still
+  describe what the code does?* — reusing the existing `next_review:` machinery. Opt-in, never on a
+  cadence BOSS chose. `/log` offers the stamp at ship only for specs someone will actually rely on.
+- **A compaction rule** in `context-discipline.md`: window, archive, canonical. BOSS learned this on
+  itself — `RESUME.md` was hand-split twice and several releases' state sections were never written.
+- **Verified primaries** (`/vet` step 3): Anthropic *Effective context engineering* — BOSS already had
+  3 of its 4 patterns, **compaction** was the miss; Grabowski *Spec Growth Engine* (arXiv 2606.27045);
+  Cagan/SVPG *Discovery vs. Documentation*, which **confirms** restraint moment #4 rather than adding
+  to it. **Rejected:** the "~50% error reduction from human-refined specs" figure — secondary source
+  only, primary never read.
+
+## 0.171.0 — 2026-08-20
+
+**The content layer finally gets vetted — and the vet found the thing that shipped wrong.**
+
+[RVW-077](../docs/research/verdicts/RVW-077-content-design-half.md). Four releases of design work were
+built on a research capture that had **never been through `/vet`**. Running it changed the shipped
+surface, which is the argument for running it.
+
+### 🔴 Two process failures the verdict records about itself
+
+**It's retrospective.** The content half already shipped across v0.167.0 and v0.168.0. BOSS's order is
+capture → `/vet` → `/boss-learn`, and it was inverted. A verdict written after the code exists is a
+**weaker check** — the sunk work biases toward approval. **And it's self-authored:** the same agent
+wrote the capture and graded it, so the adversarial distance `/vet` exists to provide was absent. An
+independent pass is recorded as **still owed**.
+
+### What the vet actually changed
+
+**Verdict: ADAPT, not ADOPT** — matching both design precedents ([[RVW-014]], [[RVW-052]]), which
+landed the same way for the same reason: *outside design advice is sound in substance and wrong in
+dose for a green founder.*
+
+- **Attribution: the zeroheight numbers DO NOT VERIFY and are quarantined.** Tokens 56%→84%, "8% very
+  stable", "56% using AI / 15% living up to the hype" — all taken from search summaries, **the report
+  body was never read.** Vendor-run, self-selected, enterprise-skewed. They appear in no shipped doc,
+  and they must not.
+- **The "practitioner consensus" is vendor-blog tier** — Glean sells search, uxwritinghub sells a
+  workshop. Strip the borrowed authority and the *external* case is thin. **What the claim actually
+  earns on is BOSS's own dogfood evidence:** it built `voice-keeper` for itself and ships founders
+  nothing. That's PRINCIPLE #1 pointing at a hole, and it's worth more than the literature.
+- **The capture overstated the gap.** `ai-ux-patterns.md` §6 and §8 already *are* content rules; the
+  style-guide template already had a Voice section. It **sharpens**, it doesn't fill. Noted as a
+  pattern to watch: *overstating a gap is how unearned building gets justified.*
+
+### 🔴 The modification that was missing, now shipped
+
+Rubric Q4 caps a cohort-split claim at *"ADAPT-with-scoping at best"* — and **the content half was
+not cohort-scoped at all**, while the token half of the same skill is meticulous about it. Fixed:
+
+- **`first-product` / `vibe-coder-newbie` — terminology ONLY**, three rows, voice and tone
+  **deferred**. Someone who hasn't shipped can't tell *"plain over clever"* from *"friendly over
+  formal"*, and **a table filled in because it was asked for steers nothing.**
+- **`domain-expert` — tone FIRST, not terminology.** In a high-stakes domain, how the product speaks
+  when it's *uncertain or wrong* outranks vocabulary consistency.
+- `eng-builder` / `returning-founder` terse full set · `vibe-virtuoso` gets the checkable-vs-not
+  asymmetry explained · `indie-hacker` right-sized · `non-tech-founder` one concrete example.
+
+The style guide's Voice section now says plainly that **deferring it is a real choice**, and points
+at Terminology first.
+
+**The general rule this encodes:** ship the **checkable** content rule to everyone; ship the
+**judgment-shaped** ones only to founders with enough product to judge against. Content discipline
+arriving before there is copy to be inconsistent about is PRINCIPLE #2's premature ceremony wearing a
+design-system hat.
+
+> **For you:** if you're early, BOSS now asks you for one thing — pick the words for your two or three
+> main concepts and stay consistent. The voice-and-tone table waits until you've watched real people
+> read your screens. Unless you're building somewhere high-stakes, in which case how your product
+> talks when it's *unsure* comes first.
+
+## 0.170.0 — 2026-08-20
+
+**The conscience learns to speak about testing — the one craft domain it never mentioned.**
+
+Ajesh: *"how do we from seed to scale integrate and develop testing… triaging, self healing,
+rca, ensuring failures is getting caught?"* The audit is captured as IDEA-059. The short version:
+BOSS's **pre-ship** testing craft is strong and lands entirely on **one rung** — L0 has nothing
+(correct), **L1 has all of it**, **L2 has none**, L3 has a post-mortem. Testing arrives
+fully-formed at MVP and stops growing.
+
+### 🔴 Fourteen loops across four modes, and not one was about testing
+
+That is the finding this release acts on. BOSS's whole differentiator is the **unprompted**
+judgment layer, and the domain where an agent most reliably fools the person it works for is
+**tests the agent wrote itself** — BOSS's own named failure mode, written down in `tester` and
+`testing-with-agents.md`. It was the only craft area with no unprompted moment. The sharpest line
+in the product fired **only if the founder already thought to ask.**
+
+### `verification-loop` (L1) → moment `unverified`
+
+- **Entry is deliberately `focus-loop`'s exit** — at least one FEAT at `status: shipped|done` —
+  **plus a non-empty `src/`.** Both halves matter: a shipped spec with no code is a plan, and code
+  with no shipped FEAT is a prototype. Neither has earned the question (PRINCIPLE #2).
+- **Exit is one file: `.boss/smoke.json`.** A deliberately low bar — the loop asks whether
+  *anything at all* can tell you the thing you shipped still works, not for coverage or a suite.
+- **The frame carries the judgment the predicate can't**, in order: (1) do they already have
+  verification under another name — a real `npm test`, a CI job — in which case **the gap is
+  BOSS's blindness, not their discipline**, and it says so instead of lecturing; (2) if tests
+  exist, were they written against the acceptance criteria or against whatever the code already
+  did (`tester`'s line, finally firing unprompted); (3) if there is genuinely nothing, name the
+  *specific* criterion nothing checks — never a generic "you should add tests."
+- **Refusals stated in the loop, not left to drift.** Self-healing *assertions* is BOSS
+  automating its own named failure mode and is refused outright; self-healing *infrastructure*
+  (retry, reseed, restart) is fine — **the environment may heal itself, the expectation may not.**
+  No coverage percentage, ever. Silent at Quickstart.
+
+### The gate grew by 7 and proved three things
+
+**129 → 136 cases, 0 failures.** Two of the new cases exist purely to pin **no cross-talk**:
+`moment-focus.yml` materializes FEAT files in 30 cases but creates no `src/`, and the
+cost/failure-mode sets create `src/` but no FEATs — so the two-predicate entry means neither can
+satisfy this loop. That was designed for, then tested, not assumed.
+
+- **Confidence is `low` at one shipped FEAT and `high` at three**, and the case says why:
+  `computeConfidence` reads whichever count-style entry predicate comes **first**. Ordering the
+  `src/**` character-count first would have made every fire "high" off nothing but file size —
+  a latent trap for any future loop author, now documented in a test rather than a comment.
+- **Two authoring traps hit in the process, both silent.** The eval YAML parser supports neither
+  multi-line scalars nor `\n` escapes: wrapped `why:` values made **6 of 7 cases vanish** while the
+  suite still reported green, and inline `content:` strings wrote literal backslash-n so
+  `^status:` never matched. Fixtures exist for exactly this reason; the new ones say so.
+- `unverified` added to `JUDGE_MOMENTS` — the frame induces a bounded read, and the frequency
+  ledger under-reports cost if that set is wrong.
+- README + PATTERNS eval-count claims re-stamped **by the gate catching them**, not by memory.
+
+**Not built, and gated on a real signal:** post-ship failure *detection* (nothing in `library/` or
+any stage covers error tracking — `/ship` still has no opinion on how you learn it broke) and the
+L2 rung. Both **n=0**; a market read is not the demand half. See IDEA-059.
+
+## 0.169.0 — 2026-08-20
+
+**The designer handoff, and a claim of BOSS's own that didn't survive checking.**
+
+### 🔴 The overclaim, caught before a founder saw it
+
+v0.166.0 told founders the design library *"uploads as cards with no extra work"* to a host
+design-system pane. **Verified against the published Claude Code system-prompt mirror: wrong.**
+
+`/design-sync` pins a project, detects a **Storybook or package** layout, runs **its own deterministic
+converters**, grades previews against a rubric, and emits a *bundle* — `_ds_bundle.js`, a `styles.css`
+transitive `@import` closure, `components/<group>/<Name>/{.html,.jsx,.d.ts,.prompt.md}`, and
+`_ds_sync.json` recording content hashes. First import on a large repo *"potentially takes hours."*
+**One matching marker is not format compatibility.**
+
+What survived: the **`@dsCard` first-line marker is correct** — BOSS's templates match. And
+`_ds_sync.json`'s content-hash anchoring is the **same mechanism** as this library's `sourceHash`,
+arrived at independently, which is weak evidence the approach is right and strong evidence BOSS
+shouldn't build the other half.
+
+The skill now says the honest thing: the two are **complementary, not interchangeable** — the gallery
+is what a *person* looks at, the bundle is what a *design tool* consumes. **This is the third
+overclaim this arc has corrected** (the drift-loop predicate, the terminology check, now this). The
+pattern is stable enough to state: *this practice's claims rot faster than its ideas, and the only
+defense is checking each one against the thing it describes.*
+
+> The useful convergence: a host sync reads your **real components**, and so does `/design-library`.
+> Both work for the same reason — element-shaped components in a conventional layout. That's the
+> *component boundaries* row of the seed-that-scales test paying off twice. A codebase of page-shaped
+> components has nothing for either one to read.
+
+### The designer handoff — `docs/design/HANDOFF.md`
+
+Ajesh: *"when they do bring in a designer… help bridge the divide, or help with onboarding a designer
+thru boss?"* The library **is** the handoff artifact, so the brief is mostly assembly: what the
+product is · what's decided **and its tradeoff** (a designer who doesn't know *"calm over engaging"*
+was a decision will helpfully propose engaging) · **what's fixed vs. open** (the accessibility floor
+and five states aren't negotiable; type and color mostly are — say which up front or relitigate it in
+review) · where the system lives, **DTCG export first**, because tokens are the one layer that
+round-trips cleanly · **what's actually wrong** — the open findings, the most useful page in the brief
+and the one founders skip out of embarrassment · and a **scoped** ask, since the five-state table is a
+ready-made work order.
+
+**Deliberately not a `/brief designer`.** [[IDEA-052]]'s brief slice carries a hard gate — *don't
+author brief content without a real engagement* — and it's right, because knowing what an accountant
+needs is knowledge you can only get by having done it. **The designer case has no such dependency:**
+it composes entirely from artifacts BOSS already generates, so it isn't imagined, it's assembled. It
+lives next to the system it hands over rather than inheriting a gate it doesn't need.
+
+**And the population finding IDEA-052 was missing:** its three-way split puts professionals-you-engage
+(*"will never use BOSS, and shouldn't"*) opposite people-you-hire. **A designer is the second who also
+arrives carrying their own tool that must interoperate with the repo** — neither model fits alone, and
+the interop half is what neither anticipated. Recorded there.
+
+### States get structural names
+
+From the DESIGN.md spec's one genuinely better idea: name a state `button-primary-hover`, not "the
+hover state of the primary button." **A prose checklist is something a reviewer must remember to look
+for; a naming convention makes a missing state something you can enumerate.** The five-state
+requirement, moved from filter to boundary, for the price of a naming rule.
+
+> **For you:** `/design-library` now writes a designer handoff — what's decided, what's fixed vs.
+> open, where your tokens are, and an honest list of what's currently broken. Hand it over with the
+> library URL instead of a repo checkout. If you use a design tool, start at the token layer; that's
+> the part that actually syncs both directions.
+
+## 0.168.0 — 2026-08-20
+
+**The content layer gets a reader and its one real boundary.**
+
+v0.167.0 gave the content half an **author** — voice traits, a tone table, terminology — and no
+**reader.** Nothing checked any of it, which is the same shape as every other finding in this arc:
+a declaration with nobody on the other end.
+
+### 🔴 `content-terminology-guard` — shipped in the same release that claimed it was possible
+
+v0.167.0 states, twice, that *"terminology is the one content rule a check can actually enforce."*
+**Shipping that claim without the check would have been the third time this practice described a
+mechanism it didn't provide** — after the prompt-convention-as-boundary and `design-drift-loop`'s
+overstated predicate. Twice is a slip. Three times is a pattern, and this doc has now been given a
+rule about exactly that.
+
+- **Terminology only, and it says so in its own header.** *"Do not extend this hook to tone — it
+  cannot be done with a regex, and a check that pretends otherwise is worse than no check."*
+  Voice and tone stay filters, named as filters. This is the whole boundary the content layer gets.
+- **Copy only, never identifiers.** It reads string literals and JSX/HTML text nodes, and skips
+  imports, paths, URLs and class strings — enforcing the style guide's own rule that *the product
+  says `team` while the code can say whatever it likes.* A hook that renamed variables would be
+  enforcing a rule nobody wrote.
+- **A skeleton table is not a decision.** The JIT gate needs at least one *filled* row; unfilled
+  `<placeholder>` rows are skipped, so a founder who hasn't authored terminology is never nagged.
+- Dormant by default, offered once by `/design-tokens-init`, fail-open on any surprise.
+- Verified across seven cases including the negatives: fires on JSX copy and on string literals,
+  **silent** on identifiers, on clean copy, on a missing style guide, on a skeleton-only table, and
+  exits 0 on malformed input.
+
+### The reviewers learn to read
+
+- **`/design-review`** (before code) gains a content pass — terminology first because it's the most
+  checkable, then error/confirm/empty-state copy, then on-voice. **And for AI-mediated FEATs, the
+  copy the model will generate at runtime is explicitly in scope.**
+- **`/ux-check`** (after code) reads the copy that actually *shipped* — which diverges from the spec
+  more often than the layout does, because strings get written inline and never reviewed. Includes
+  triggering a real refusal and a real rate limit to hear what the product sounds like when it fails.
+- **`ux-designer`** gains content authority. It owned one line about empty-state copy; it now owns
+  terminology, error copy, destructive confirms and voice — *copy is your surface, not the coder's
+  leftovers.*
+
+### `/ai-failure-states` claims the copy nobody reviewed
+
+Every one of the five failure states ends in **words a user reads**, and a designed failure state
+with default copy is only half designed: the founder specified the behavior and let the model write
+the sentence. Four surfaces now named with what ships if nobody decides — refusal/hedge, retry/rate
+limit, streaming/latency, pre-action confirm.
+
+**The load-bearing line: the system prompt is product copy.** It's the one user-facing text that
+never appears as a literal in your source, so **no check will ever catch it** — including the one
+this release ships. If the style guide says the product says *team*, a system prompt saying
+*workspace* drifts silently forever. Review it by hand against voice and terminology, or don't
+pretend it's covered.
+
+> **For you:** turn on `content-terminology-guard` and Claude gets told the moment it writes *"org"*
+> in a button where you decided on *"team"* — copy only, your variable names are your own.
+> `/design-review` and `/ux-check` now read your copy against your voice, not just your layout. And
+> if you ship an AI feature, `/ai-failure-states` now makes you write the actual words for refusals,
+> retries and confirmations — the moments where a product most sounds like nobody wrote it.
+
+## 0.167.0 — 2026-08-20
+
+**The design system gets its content half — and the library gets something to render.**
+
+v0.166.0 shipped `/design-library`, which renders do/don't pairs and a terminology table. The
+authoring template had **neither section.** A renderer without an author is a seam, and it was one I
+opened in the same release — so this closes it, and takes the three other cheap items with it.
+
+### `STYLE_GUIDE.md` grows the half BOSS never shipped
+
+The design layer had eight sections and all of them were about how things look. A grep of the entire
+shipped surface for microcopy / voice / tone / content design used to return **one line** (an
+empty-state note in `ux-designer`). Now:
+
+- **Do / Don't as pairs** — the **rule** rung of the ladder, and the only rung an agent can act on.
+  With the test attached: *if a principle never produced a row here, it isn't steering anything yet.*
+- **Terminology — one word per concept.** Cheapest content rule to write, most expensive to change
+  late (renaming a core noun hits copy, routes, schema, tests and every prompt at once), and **the
+  one content rule that is mechanically checkable** — which is why it's the first one worth having.
+  Rule of thumb: the user's word beats the internal one; the code can say whatever it likes.
+- **Voice split from tone.** Voice is constant (3 traits, each with a tradeoff — same falsifier as
+  the principles); tone shifts by context (success / error / warning / destructive confirm / empty /
+  loading), each with a **real string**, because an agent cannot act on an adjective.
+
+### The `CLAUDE.md` inlining trick, pointed at words
+
+`/design-tokens-init` already inlines the semantic→primitive token map so *"the agent inherits the
+brand for free on every turn."* It now does the same for voice traits + the terminology list + four
+rules for any user-facing string.
+
+**Copy needs this more than color does.** The model reverts to the mean harder on words than on
+values — nobody has to prompt an LLM into writing *"Oops! Something went wrong."*; that **is** the
+mean. It's the 47 blues, in sentences. Stated honestly: **there is no regex for off-voice**, so the
+guard-hook boundary that saves the token system does not transfer. This layer is filters, and worth
+shipping as filters — *except terminology*, which is a word list and therefore checkable.
+
+And the part the content-design field isn't covering: **in an AI product most copy is generated at
+runtime, not authored here** — system prompts, refusal and hedge language, retry messages, the words
+before a destructive agent action. That's product copy in whoever's voice the model defaults to,
+which is nobody's. Set it, or the model sets it for you in the moments that matter most: the failures.
+
+### Retirement — the other half of the library's ⚪ unused badge
+
+The badge existed; nothing said what to do about it, which makes it trivia. Now: **a component
+nobody uses isn't neutral — it's a wrong answer sitting in the reuse index where the next search
+will find it.** The prototype registry's subtraction rule, one level up, and it bites harder under AI
+generation because **components accumulate faster than anyone prunes them** (billion-line drift, seen
+from the other end — the generation side has been documented since v0.20.x, the pruning side never
+was). Founder-scale means one habit, not a process: when the library shows unused, delete it in the
+same pass. No deprecation window, no SemVer, no RFC — those are real for teams with consuming teams
+and unearned ceremony for one person.
+
+### 🔴 A watchlist trigger the last sweep proved was missing
+
+Build-craft domain 2 (the host surface) now fires on **"a tool BOSS has never seen appears in the
+session toolbelt."** It was added because the documented taps missed one: `DesignSync` — host sync
+for a component library — was found by *reading the session's own tool list*, while BOSS had zero
+references to it and was building an overlapping artifact. **The taps watch publications; the toolbelt
+is ground truth and arrives first.** Read the tool list at the start of a sweep, not just the release
+notes. This is the same class of finding that created the discipline: the mechanism had a blind spot
+only a live run could expose.
+
+> **For you:** your style guide now covers what your product *says*, not just how it looks — voice
+> traits, a tone table for errors and confirmations, and a terminology list. `/design-tokens-init`
+> inlines them into `CLAUDE.md`, so Claude writes your buttons and error messages in your voice
+> instead of the internet's default. If you have an AI feature, that includes the copy it generates
+> at runtime — refusals, retries, and the words before something irreversible.
+
+## 0.166.0 — 2026-08-20
+
+**Design gets the surface it never had: the system you can actually look at.**
+
+Ajesh: *"a lot of people need visual, to assess… the main thing is to capture any drift from
+implementation vs style guide vs prototyping from the component library."* A field sweep first
+(four claims captured to `docs/research/inbox/`, all pending `/vet`), then the build. The sweep's
+verdict on BOSS's existing design layer was **better than expected on taste and discipline, and
+blind in exactly two places** — components, and words.
+
+### `/design-library` (V1) — foundations + **rule sets** + components, generated from the code
+
+`DESIGN_TOKENS.md`, `STYLE_GUIDE.md` and `PROTOTYPES.md` are the right artifacts and **all three are
+unlookable.** Markdown cannot show you a button, so the question a founder actually asks — *"what do
+I already have, and does it still match what I said?"* — had no surface that answers it.
+
+- **Generated, never authored.** The code is the source of truth. A gallery authored *beside* the
+  code is the two-sources-of-truth trap. This also dissolves the question people ask first — *"how do
+  I update it centrally so the change flows back everywhere?"* **You don't, because you never had
+  to:** `Button.tsx` *is* the button, every use site imports it. That propagation isn't a feature to
+  build; it's what a component already is. **The library's job was never propagation — it's
+  visibility, reuse, and drift.**
+- **Not just components — the rule sets are half of it.** Principles with their tradeoffs, **do/don't
+  pairs rendered side by side**, terminology, voice, the five-state table. A rule in prose is a
+  sentence you skim; the same rule rendered is a thing you *see*. A component-only library teaches
+  founder and agent that design *is* components — it isn't, and the rules are the half that survives
+  a rewrite.
+- **Drift renders ON the component, not in a report nobody reopens** — *off-token · missing state ·
+  near-duplicate · stale · unused*. A clean library is a page with no badges, which is a **positive**
+  signal as much as a warning: it shows what you've built, not only what's wrong.
+- **`manifest.json` is the reuse index the system never had.** *Reuse first, extend second, create
+  last* was always a prompt convention — a filter. Name · purpose · import line · variants gives the
+  agent something to look at, and a **source hash per component** makes staleness mechanically
+  checkable. That's the boundary the practice kept asking for.
+- **Zero-dep, self-contained HTML.** No build step, no service, no account — a file in the repo.
+  `@dsCard` markers mean it drops into a host design-system pane for free if the founder ever syncs;
+  **BOSS builds no sync engine and no hosting surface** (host-seam rule).
+
+### 🔴 A shipped-guidance bug, fixed
+
+`design-drift-loop.md` claimed it watched *"near-duplicate components multiplying"* and a staling
+tokens file. **Its predicate is a single hex regex over `src/**` and always was.** A loop doc that
+overstates its predicate is worse than one admitting a gap — the founder stops looking for the
+failure it silently isn't catching. **A predicate is the claim; prose must not exceed it.** This is
+the *third* doc-vs-filesystem mismatch in this practice's history (after the stale TODO list and the
+`STYLE_GUIDE.md` false ✅), which is no longer a coincidence: **this doc's claims rot faster than its
+ideas.**
+
+### `design-system.md` — two additions the sweep earned
+
+- **The seed-that-scales test.** *"Just enough at the start, not over-engineered"* becomes decidable:
+  **decide it at seed if reversing it gets more expensive as the app grows; defer everything else.**
+  With the sorted list — and the row BOSS was missing: **component boundaries (element-shaped, not
+  page-shaped)**, which is the *upstream cause* of two failure modes the catalog already named as
+  symptoms. Ask an AI for a screen and you get `DashboardPage.tsx` with the buttons inline; every one
+  is a primitive that never got extracted. One sentence at seed; a cross-screen refactor at V1.
+- **Drift is a one-way problem, not a three-way one.** If the library is generated from code it *is*
+  the implementation, and if prototypes compose library components they are too — leaving only
+  **declared rules vs. actual system.** Bounded honestly: that comparison only reaches as far down
+  the ladder as you went, so **the principle→guideline→rule ladder is what makes drift detectable at
+  all**, not just what makes the agent actionable.
+
+### Wiring, not new surface
+
+`/design-review` and `/ux-check` now read the manifest instead of asking the model to remember to
+check · the prototype registry gains the level-up rule (**a prototype composes existing components,
+it doesn't redraw them** — an off-library mockup injects a whole *component* at spec time) ·
+`/design-tokens-init` points forward and no longer implies the drift loop catches component failures.
+
+> **For you:** at V1, `/design-library` renders your whole design system — colors, type, spacing, your
+> principles and do/don'ts, and every component in all five states — as one HTML page generated from
+> your code, so it can't drift. It flags off-token values, missing states, near-duplicate components
+> and ones nothing uses. Hand the page to a designer instead of a repo.
+
 ## 0.165.0 — 2026-08-20
 
 **MCP and automation: the decision existed, the route to a founder didn't.**
@@ -91,8 +574,6 @@ release. Renders to the site's engineering page (`gen-site.js` group renamed to 
 & automation* — the new practice forced the decision rather than vanishing).
 
 ## 0.164.0 — 2026-08-19
-
-> **For you:** BOSS has a website — what it is, who it staffs, a quick guide, and the sources behind every practice it ships.
 
 **BOSS gets a front door: a brand, and the ten-page site it makes possible.**
 
@@ -313,8 +794,6 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 
 ## 0.162.0 — 2026-08-18
 
-> **For you:** `boss remove` got four fixes — the exit is now safe on the paths the first version missed.
-
 **Four bugs in `boss remove`, found by testing the paths v0.161.0 didn't.** It was verified against an
 *adopted* repo only. Every other shape was broken, and each failure was silent.
 
@@ -433,8 +912,6 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 - **Nothing added to the founder surface** — one ledger and one generator, neither shipped.
 
 ## 0.159.0 — 2026-08-17
-
-> **For you:** `/vet` now checks *who actually said it* before grading a claim — so the practices you inherit are attributed, not just plausible.
 
 - **`/vet` now verifies who actually said it — before it grades what they said.** The queue's n=3
   item, promoted under Principle #1. The rubric's question 2 rewards *"a named practitioner BOSS

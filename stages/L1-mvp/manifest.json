@@ -41,6 +41,7 @@
   "hooks": [],
   "optionalHooks": [
     "auto-log",
+    "content-terminology-guard",
     "design-tokens-guard"
   ],
   "headline": [
@@ -64,6 +65,7 @@
     "design-tokens-loop",
     "cost-budget-loop",
     "ai-failure-state-loop",
+    "verification-loop",
     "extraction-loop",
     "cost-review-loop",
     "drift-loop",

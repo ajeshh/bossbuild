@@ -71,6 +71,11 @@ and they're the two users hit first on a slow network or a fresh account.
 > Re-check this table after a redesign. Iteration passes drop states quietly, because a missing
 > empty state is invisible in the screenshot you're looking at.
 
+**Name states structurally** — `button-primary-hover`, not "the hover state of the primary button".
+A prose checklist is something a reviewer has to remember to check; a naming convention makes a
+missing state something you can **enumerate**. Same requirement, moved from filter to boundary, for
+the price of a naming rule.
+
 ## Density & rhythm
 
 - **Spacing scale in use:** <which steps — a scale you use 4 of beats a scale you defined 9 of>
@@ -84,11 +89,77 @@ and they're the two users hit first on a slow network or a fresh account.
 - `prefers-reduced-motion` honored by every animation
 - Nothing communicated by color alone
 
+## Do / Don't
+
+The rules from your principles above, as **pairs**. `/design-library` renders these side by side —
+a rule in prose is a sentence you skim; the same rule as two rendered examples is a thing you *see*.
+
+Only write pairs you'd actually enforce. Three real ones beat twelve aspirational ones.
+
+| Do | Don't | Because |
+|---|---|---|
+| one primary action per view | two buttons competing for the same weight | a second primary means the view has two jobs |
+| disabled controls say *why* they're disabled | a greyed-out button with no explanation | the user can't act on a dead end they can't diagnose |
+| <your rule> | <the specific thing you keep seeing> | <the principle it serves> |
+
+> These are the **rule** rung of the ladder — the only rung an agent can act on. If a principle
+> above never produced a row here, it isn't steering anything yet.
+
+## Terminology
+
+**One word per concept.** The cheapest content rule to write, the most expensive to change late —
+renaming a core noun hits copy, routes, schema, tests and every prompt at once. It is also the one
+content rule that is **mechanically checkable**, which makes it the first one worth having.
+
+| Use | Never | Because |
+|---|---|---|
+| <the word> | <the synonyms that keep creeping in> | <what the distinction protects> |
+
+Pick the user's word over the internal one. If the team says "org" and users say "team", the product
+says **team** — and the code can say whatever it likes.
+
 ## Voice in the interface
+
+**Voice is constant** (the personality — it doesn't change between screens). **Tone shifts by
+context** (how that voice sounds when things go well vs. badly). Get both down to real strings; an
+agent can't act on an adjective.
+
+> **This section is deferrable, and deferring it is a real choice.** If you haven't watched people
+> use the product yet, you can't tell "plain over clever" from "friendly over formal" — and a table
+> filled in because it was asked for steers nothing. **Do the Terminology section above first**; it's
+> checkable and it pays off immediately. Come back here once there's enough copy to be inconsistent
+> about. (High-stakes domains are the exception: how the product speaks when it's *uncertain or
+> wrong* is load-bearing on day one — fill the Error and Warning rows before anything else.)
+
+**Voice — 3 traits, each with a tradeoff** (same test as the principles: could someone argue the
+opposite?):
+
+- <trait — e.g. "plain over clever"> — giving up: <e.g. personality in themicrocopy>
+- <trait> — giving up: <what>
+- <trait> — giving up: <what>
+
+**Tone by context:**
+
+| Context | How the voice shifts | Real string |
+|---|---|---|
+| Success | <brief, no confetti?> | <"Saved."> |
+| Error | what to do next, not what failed | <"That file's too big — try under 10MB."> |
+| Warning | <how much friction?> | <> |
+| Destructive confirm | name the consequence, not "are you sure" | <"Delete 14 records. This can't be undone."> |
+| Empty state | what to do next, not "nothing here" | <"No projects yet — start one."> |
+| Loading | <what's happening, if it's slow> | <> |
+
+**Surfaces:**
 
 - **Buttons:** <verb-first? sentence case?>
 - **Errors:** <what the user should do, not what the system failed at>
 - **Empty states:** <what to do next, not "nothing here">
+
+> **If this product has an AI feature, most of its copy is generated at runtime, not written here.**
+> System prompts, refusal and hedge language, retry and rate-limit messages, the words before a
+> destructive agent action — that's product copy in whoever's voice the model defaults to, which is
+> nobody's. Set the voice for those surfaces too, or the model sets it for you in exactly the moments
+> that matter most: the failures.
 
 ## Exceptions
 

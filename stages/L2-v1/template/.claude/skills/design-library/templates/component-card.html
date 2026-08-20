@@ -1,0 +1,98 @@
+<!-- @dsCard group="Components" -->
+<!-- BUNDLED RESOURCE for /design-library. Copy to docs/design/library/components/<slug>.html.
+     The @dsCard marker MUST be the first line — a host design-system pane reads it to build its
+     card index. If the founder never syncs, it's an inert comment that costs nothing.
+     Rendered from token values, not executed from component code. Honest approximation. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{Name}} — {{PROJECT_NAME}} design library</title>
+<style>
+  :root {
+    {{SEMANTIC_TOKENS_AS_CSS_VARS}}
+    --ui-bg:#fbfbfa; --ui-fg:#1a1a19; --ui-muted:#6b6b68; --ui-line:#e4e4e1; --ui-card:#fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ui-bg:#141413; --ui-fg:#f0efec; --ui-muted:#8f8f8a; --ui-line:#2a2a28; --ui-card:#1c1c1a; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ui-bg); color:var(--ui-fg);
+         font:16px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  .wrap { max-width:900px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+  a.back { font-size:.85rem; color:var(--ui-muted); text-decoration:none; }
+  h1 { font-size:1.5rem; margin:.75rem 0 .25rem; letter-spacing:-.02em; }
+  .mono { font:12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--ui-muted); }
+  .purpose { color:var(--ui-muted); margin:.5rem 0 1rem; }
+  .imp { background:var(--ui-card); border:1px solid var(--ui-line); border-radius:8px;
+         padding:.65rem .8rem; margin:1rem 0 2rem; }
+  .imp .mono { color:var(--ui-fg); font-size:13px; }
+  h2 { font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ui-muted);
+       margin:2.5rem 0 .75rem; }
+  .states { display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); }
+  .state { background:var(--ui-card); border:1px solid var(--ui-line); border-radius:10px; padding:1rem; }
+  .state .lbl { font-size:.7rem; text-transform:uppercase; letter-spacing:.07em;
+                color:var(--ui-muted); margin-bottom:.75rem; }
+  .stage { display:flex; align-items:center; justify-content:center; min-height:64px;
+           padding:.75rem; background:var(--ui-bg); border-radius:6px; }
+  /* A missing state renders as a visible gap. Never omit it silently. */
+  .state.missing { border-style:dashed; }
+  .state.missing .stage { color:#8a5a10; font-size:.8rem; font-style:italic; }
+  .badge { display:inline-block; font-size:.7rem; padding:.15rem .45rem; border-radius:4px;
+           border:1px solid var(--ui-line); margin:0 .3rem .3rem 0; }
+  .b-off{background:#fdecea;color:#8c2f22;border-color:#f3c4bd}
+  .b-state{background:#fef4e5;color:#8a5a10;border-color:#f5ddb4}
+  .b-dupe{background:#fef4e5;color:#8a5a10;border-color:#f5ddb4}
+  .b-stale{background:#fdf8e3;color:#7a6512;border-color:#efe3ae}
+  .b-unused{background:var(--ui-bg);color:var(--ui-muted)}
+  .b-clean{background:#eaf5ee;color:#256b41;border-color:#c3e2ce}
+  .finding { border-left:3px solid #f5ddb4; padding:.5rem .8rem; margin:.5rem 0;
+             background:var(--ui-card); border-radius:0 6px 6px 0; font-size:.88rem; }
+  .finding.serious { border-left-color:#f3c4bd; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="../index.html">← design library</a>
+  <h1>{{Name}}</h1>
+  <div class="mono">{{source path}} · used {{n}}× · variants: {{variants}}</div>
+  <p class="purpose">{{one-line purpose}}{{ · inferred, not documented — if inferred}}</p>
+
+  <div>{{BADGES — or <span class="badge b-clean">clean</span>}}</div>
+
+  <!-- The copy-me line. This is what makes the library a reuse surface rather than a picture. -->
+  <div class="imp"><span class="mono">{{import line}}</span></div>
+
+  <!-- ── VARIANTS ── -->
+  <h2>Variants</h2>
+  <div class="states">
+    <!-- repeat per variant -->
+    <div class="state">
+      <div class="lbl">{{variant}}</div>
+      <div class="stage">{{RENDERED_VARIANT}}</div>
+    </div>
+  </div>
+
+  <!-- ── THE FIVE STATES ── -->
+  <h2>States</h2>
+  <div class="states">
+    <div class="state"><div class="lbl">default</div><div class="stage">{{RENDERED}}</div></div>
+    <div class="state"><div class="lbl">hover</div><div class="stage">{{RENDERED}}</div></div>
+    <div class="state"><div class="lbl">active</div><div class="stage">{{RENDERED}}</div></div>
+    <div class="state"><div class="lbl">disabled</div><div class="stage">{{RENDERED}}</div></div>
+    <!-- missing state — render the hole, don't hide it -->
+    <div class="state missing">
+      <div class="lbl">empty / loading</div>
+      <div class="stage">not implemented</div>
+    </div>
+  </div>
+
+  <!-- ── FINDINGS — drift lives here, on the component, not in a report file ── -->
+  <h2>Findings</h2>
+  <div class="finding serious">{{severity}} · {{kind}} — {{detail}}</div>
+
+</div>
+</body>
+</html>

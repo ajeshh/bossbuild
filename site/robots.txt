@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://boss.build/sitemap.xml
+Sitemap: https://oyeboss.build/sitemap.xml

@@ -36,7 +36,7 @@ Read, in order:
   `adopted`** — if `true`, this is an existing codebase BOSS was laid onto, not a fresh project.
 - `.boss/config.json` — `cohort`, `github`, `visibility`, `license`, any pause state.
 - `CLAUDE.md` — the project's working rules.
-- `docs/ideas/INDEX.md` — empty in a fresh project; lists ideas in a working one.
+- `docs/ideas/` — empty in a fresh project; one file per idea in a working one.
 
 Don't announce these reads. Just orient.
 

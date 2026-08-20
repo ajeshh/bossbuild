@@ -11,7 +11,7 @@ thought lands — the first run creates the doc, every later run adds to it.
 
 ## Decide: new idea or add to an existing one?
 
-1. Read `docs/ideas/INDEX.md` and skim existing `docs/ideas/IDEA-*.md` titles.
+1. Skim existing `docs/ideas/IDEA-*.md` titles (the files are the record — there is no index to read).
 2. If the user's thought clearly extends an existing idea → **append** to that doc (don't make a new one).
 3. Otherwise → **create** a new `IDEA-NNN` (next free number).
 
@@ -47,7 +47,8 @@ _Append-only. Newest at the bottom. Don't edit old entries._
 _Not started. When this has legs, run `/canvas` to pressure-test it as a business._
 ```
 
-Add a row to `docs/ideas/INDEX.md`.
+That's the whole capture — **nothing else to update.** `boss board` renders the idea from its own
+frontmatter, so there is no index table to keep in sync.
 
 ## Add (every later run)
 

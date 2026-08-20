@@ -12,6 +12,7 @@
 // Soft by default (reports and exits 0) — HARD on a broken claim, because a site
 // promising a command that doesn't exist is worse than a site that's a bit stale.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadModes, STANDING_COMMANDS } from '../src/modes.js';
@@ -91,6 +92,44 @@ let debt = 0, sourceTotal = 0;
   }
 }
 
+// ---- 2c. has the product moved since the page was written? ----------------
+// THE POINT OF THIS FILE. BOSS ships most days; the website is hand-written prose
+// that silently stops being true. Each page declares `covers:` — the paths it
+// documents — and this compares the last commit touching those paths against the
+// page's `reviewed:` date. A practice refreshed, a command changed, a new agent:
+// the page that documents it gets named, at the moment it falls behind, instead of
+// six weeks later when someone notices the site is describing an older product.
+const behind = [];
+const inflight = [];
+function lastChanged(paths) {
+  try {
+    const out = execSync(`git log -1 --format=%cs -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
+    return out || null;
+  } catch { return null; }
+}
+// Committed history only tells you what already landed. The moment that matters is
+// while the work is happening — that's when the docs are cheap to update and when
+// you still remember what changed. So uncommitted edits to a page's sources count too.
+function changingNow(paths) {
+  try {
+    const out = execSync(`git status --porcelain -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
+    return out ? out.split('\n').length : 0;
+  } catch { return 0; }
+}
+for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsWith('_'))) {
+  const head = (readFileSync(join(WEB, f), 'utf8').match(/^<!--\n([\s\S]*?)\n-->/) || [, ''])[1];
+  const covers = (head.match(/^covers:\s*(.*)$/m) || [, ''])[1].trim();
+  const reviewed = (head.match(/^reviewed:\s*(\S+)/m) || [])[1];
+  if (!covers) { problems.push(`${f} declares no \`covers:\` — nothing can tell when it falls behind`); continue; }
+  if (!reviewed) continue;
+  const now = changingNow(covers);
+  if (now) inflight.push(`${f.replace(/\.html$/, '')} — ${now} uncommitted change(s) under ${covers.split(' ').slice(0, 2).join(', ')}`);
+  const changed = lastChanged(covers);
+  if (changed && changed > reviewed) {
+    behind.push(`${f.replace(/\.html$/, '')} — reviewed ${reviewed}, but ${covers.split(' ')[0]}… changed ${changed}`);
+  }
+}
+
 // ---- 3. prose past its review date ----------------------------------------
 const overdue = [];
 for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsWith('_'))) {
@@ -104,15 +143,25 @@ for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsW
 // ---- report ---------------------------------------------------------------
 console.log(`\n  BOSS · website freshness — ${practices.length} practices, ${skills.size} skills, ${agents.size} agents, as of ${today}\n`);
 for (const p of problems) console.log(`  ✗ ${p}`);
+for (const b of behind) console.log(`  ! may be behind: ${b}`);
+for (const i of inflight) console.log(`  ~ changing now: ${i}`);
 for (const o of overdue) console.log(`  · overdue: ${o}`);
 for (const n of notes) console.log(`  · ${n}`);
-if (!problems.length && !overdue.length) console.log('  Everything the site claims exists, and nothing is past review.');
+if (!problems.length && !overdue.length && !behind.length && !inflight.length) console.log('  Everything the site claims exists, nothing is past review, and no page trails its source.');
+if (inflight.length) {
+  console.log(`\n  ${inflight.length} page(s) document something you are editing RIGHT NOW.`);
+  console.log('  This is the cheap moment to update them — while you still remember what changed.');
+}
+if (behind.length) {
+  console.log(`\n  ${behind.length} page(s) document something that changed after they were last reviewed.`);
+  console.log('  Re-read them, fix what moved, then bump `reviewed:` in the fragment header.');
+}
 if (debt) {
   console.log(`\n  · citation debt: ${debt} of ${sourceTotal} named sources have no URL.`);
   console.log('    /vet now requires recording the primary-source URL; these predate that rule.');
   console.log('    Fill a `url` in library/sources.json and the credits page links it automatically.');
 }
-console.log(`\n  ${problems.length} broken claim(s) · ${overdue.length} page(s) overdue\n`);
+console.log(`\n  ${problems.length} broken claim(s) · ${inflight.length} in flight · ${behind.length} trailing · ${overdue.length} overdue\n`);
 console.log('  The roster and the counts are GENERATED and cannot drift. This checks the half a');
 console.log('  human wrote: claims about commands, coverage of new practices, and review dates.\n');
 

@@ -1,8 +1,8 @@
 {
-  "version": "0.165.0",
+  "version": "0.172.0",
   "generated_from": "stages/*/manifest.json via src/modes.js",
   "agents": 15,
-  "skills": 46,
+  "skills": 47,
   "mentors": 8,
   "builders": 7,
   "modes": [
@@ -26,9 +26,9 @@
       "word": "v1",
       "name": "V1",
       "agents": 7,
-      "skills": 3,
+      "skills": 4,
       "cumAgents": 15,
-      "cumSkills": 45
+      "cumSkills": 46
     },
     {
       "word": "scale",
@@ -36,15 +36,15 @@
       "agents": 0,
       "skills": 1,
       "cumAgents": 15,
-      "cumSkills": 46
+      "cumSkills": 47
     }
   ],
-  "practices": 29,
+  "practices": 30,
   "verdicts": {
-    "total": 77,
+    "total": 81,
     "ADOPT": 9,
-    "ADAPT": 45,
+    "ADAPT": 47,
     "REJECT": 12,
-    "NOT-YET": 11
+    "NOT-YET": 13
   }
 }

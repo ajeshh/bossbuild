@@ -44,6 +44,36 @@ item's own framing, which was written in the old world.
 leave a one-line trace of the decision (devlog / RESUME). The point is that the next person sees the
 gate already ran.
 
+## The other direction — a SHIPPED FEAT, re-read against the code (v0.172.0+)
+
+Everything above is the **pre-build** gate: paused work, checked before it revives. This is the same
+gate pointed the other way, at work that already **shipped** — and it asks one question instead of
+three:
+
+> **Does this FEAT still describe what the code does?**
+
+**Why it exists.** A spec written before the build and never re-read afterwards is *spec-first* —
+scaffolding, discarded at ship. A spec that stays true is *spec-anchored*, and it's the only kind
+worth keeping, because the whole value of a spec after ship is that someone can trust it without
+reading the code. Nothing decays more quietly: the FEAT still sits there, still looks authoritative,
+and has been wrong for two months.
+
+**How to run it.** Read the FEAT's acceptance criteria and *"What wrong looks like"*, then look at
+what the code actually does now. Route the same way the table above does:
+
+| Finding | Do this |
+|---|---|
+| Criteria still true | **Say so and stop.** Stamp a fresh `next_review`. A confirmed spec is a real result, not a wasted pass. |
+| Code moved past the spec | **Update the FEAT to what's true now**, and put the *why* in its `## Build log`. The drift is usually a decision nobody wrote down. |
+| Criteria were quietly abandoned | **Untick them and say which.** A criterion silently dropped is the most useful thing this pass can find — it's a scope change that never got made explicitly. |
+| The feature is gone or absorbed | `status: folded`, one-line reason. Don't leave a spec for something that no longer exists. |
+
+**Keep it rare and opt-in.** This fires when *you* run it, or when a `next_review:` you set has
+passed — never on a schedule BOSS chose. Re-reading every shipped spec on a cadence is the
+maintenance ceremony BOSS refuses; re-reading the two or three that are **load-bearing for someone
+else** is just honest. If a FEAT would never be read by anyone again, it doesn't need this pass, and
+saying so is a legitimate outcome.
+
 ## Why three lines and not a re-spec
 
 The gate has to be cheaper than the temptation to skip it. A full re-spec is ceremony; people skip

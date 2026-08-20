@@ -362,8 +362,8 @@ const byId = Object.fromEntries(practiceDocs.map((p) => [p.id, p]));
 // so adding a practice to the library forces a decision here instead of silently
 // vanishing from the site. (It has already caught one: automation.md, added mid-flight.)
 const ENG_GROUPS = [
-  ['Building with agents', 'The harness, the context window, which model does what — and what stays deterministic.',
-   ['harness-engineering', 'context-discipline', 'skill-authoring', 'model-routing', 'automation']],
+  ['Building with agents', 'The harness, the context window, what gets written down — and what stays deterministic.',
+   ['harness-engineering', 'context-discipline', 'documentation', 'skill-authoring', 'model-routing', 'automation']],
   ['Security', 'The failure modes specific to agentic systems, and the ones AI-written code introduces.',
    ['agent-security', 'data-schema']],
   ['Testing & quality', 'Why an agent going green is not the same as the code being right.',
@@ -628,7 +628,10 @@ let built = 0;
 // and the sitemap both read it, so a domain change is a one-line edit rather than a
 // hunt through generated HTML. index.html canonicalizes to the bare root — two URLs
 // serving one page is the oldest self-inflicted SEO bug there is.
-const SITE_URL = 'https://boss.build';
+// Canonical base. Changed 2026-08-20 → oyeboss.build (BRAND.md): boss.build was never
+// available — registered 2026-01-16, five months before it was chosen. SELECTED, NOT YET
+// REGISTERED, so these URLs are aspirational until someone buys it.
+const SITE_URL = 'https://oyeboss.build';
 const canonical = (f) => (f === 'index.html' ? `${SITE_URL}/` : `${SITE_URL}/${f}`);
 
 for (const f of pages) {

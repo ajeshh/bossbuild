@@ -7,7 +7,7 @@
 
 ## Working rules (read first)
 
-1. **Capture before you build.** Every idea, bug, or ask becomes an `IDEA-NNN` before code. See `docs/ideas/INDEX.md`.
+1. **Capture before you build.** Every idea, bug, or ask becomes an `IDEA-NNN` file in `docs/ideas/` before code. Its frontmatter `status` is the only record of where it stands; `boss board` renders the rest.
 2. **Stack-neutral until decided.** This project has no assumed stack. The first real build decision picks one; record it in an idea/spec, not in your head.
 3. **Source of truth is the docs, not the chat.** Decisions go in `docs/`. If code and a doc disagree, surface it before changing either.
 4. **Small, reversible steps.** One concern at a time. Prefer editing existing files to adding new ones.

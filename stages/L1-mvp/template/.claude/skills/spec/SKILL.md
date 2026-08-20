@@ -96,11 +96,41 @@ that when you're choosing among many candidates, not just reacting to one.)_
 1. Pick the source: `[IDEA-NNN]` if given, else the idea the user names, else the most active idea
    currently in `building` status.
 2. Allocate the next free `FEAT-NNN` (parallel numbering to IDEA — same N if it's a clean promotion,
-   otherwise next free integer; check `docs/ideas/INDEX.md` for existing FEATs).
-3. Create `docs/ideas/FEAT-NNN-<slug>.md` from the template below.
-4. Update the source IDEA's `status` to `building` and add a one-line pointer at the top:
+   otherwise next free integer; grep the **files** under `docs/` for existing FEATs, per `docs/IDS.md`).
+3. **The elicitation pass — say back what you had to guess (v0.172.0+).** Draft the spec from what
+   you actually have, then **before you show it, separate what you were told from what you filled
+   in.** This is the cheapest step in the whole skill and the one that decides whether the build
+   matches the founder's head: a model asked to spec a feature will complete every gap fluently,
+   and the founder cannot correct a guess they never saw. Ask, in one short pass — never an
+   interrogation, and never more than fits on a screen:
+
+   - **"Here's what I had to assume."** List every gap you filled without being told, each phrased
+     so it can be rejected in one word. Put them in the FEAT's **Assumptions** section with the
+     founder's answer recorded next to each. If you assumed nothing, say so — that's a real signal
+     the idea was already sharp.
+   - **"Walk me through one concrete instance."** One real example, start to finish, in their words.
+     **This is the highest-yield question in the skill** — a single worked example surfaces
+     constraints, states, and vocabulary that no checklist thinks to ask for.
+   - **"What would make you say this is broken even if it technically works?"** The inverse question.
+     Most real acceptance criteria come from here, not from restating the goal. Record it under
+     **What "wrong" looks like**.
+   - **Name what you deliberately did NOT guess** and leave it under *Still unknown*. A blank is
+     honest signal; a confident invention is the failure this step exists to catch.
+
+   > **Corrections are the documentation.** When the founder rejects an assumption, the sentence
+   > they replace it with is the most valuable line in the file — it's exactly the thing that was
+   > non-obvious enough that a competent reader got it wrong. Keep their wording. Those lines are
+   > what a guide, a README gotcha, or a piece of positioning later gets written from.
+   >
+   > **Keep it proportional.** One pass, then build. If this starts to feel like a requirements
+   > interview, you've turned a spec into a PRD written *instead of* the thinking — which is the
+   > exact failure Cagan names and the one BOSS's restraint check above already guards.
+
+4. Create `docs/ideas/FEAT-NNN-<slug>.md` from the template below.
+5. Update the source IDEA's `status` to `building` and add a one-line pointer at the top:
    `> Building as [FEAT-NNN](FEAT-NNN-<slug>.md).`
-5. Add a FEAT row to `docs/ideas/INDEX.md` so it shows alongside ideas.
+6. Nothing else to register — `boss board` picks the FEAT up from its frontmatter and shows it
+   alongside the ideas.
    - `building_since:` anchors the board's time-in-build aging (`boss board` flags a FEAT that's sat
      in Building past ~3 weeks — the zombie-feature smell). It's **frontmatter-true, never guessed**:
      set it to today when the FEAT enters `building`, and refresh it if a paused FEAT is re-opened
@@ -114,7 +144,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
      level by design (no P0/P1/P2 ladder — that turns the board into a planning surface you tend
      instead of ship). The honest caveat the seasoned hand would add: *re-prioritizing isn't progress;
      finishing is.* Most FEATs need no priority field at all.
-6. **Offer plan mode before the coder.** The FEAT says *what* and *how we'll know it's done*; it
+7. **Offer plan mode before the coder.** The FEAT says *what* and *how we'll know it's done*; it
    deliberately doesn't say *how*. On this host, the built-in `Plan` agent reads the actual codebase
    and returns an implementation route — which is the half a spec shouldn't contain and shouldn't guess:
 
@@ -128,7 +158,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
    **`/spec` decides the destination; the plan picks the road.** Keep them separate: a route that
    arrives without a spec is a well-planned trip to nowhere, and an implementation plan is *not* a
    substitute for acceptance criteria — it can't tell you whether the thing was worth building.
-7. Hand off to `coder-generalist` (or the stack's coder, if specialized) with the FEAT as the brief —
+8. Hand off to `coder-generalist` (or the stack's coder, if specialized) with the FEAT as the brief —
    plus the plan, if one was made. If this host has no plan mode, this step is unchanged: the FEAT
    alone is a complete brief.
 

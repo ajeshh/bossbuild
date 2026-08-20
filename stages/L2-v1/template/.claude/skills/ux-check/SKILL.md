@@ -57,8 +57,20 @@ accumulates. `/ux-check` catches that.
    - **Undo / edit / regenerate** on AI outputs
    - **Deliberate failure states** — what does the user get when the AI is unavailable / wrong /
      slow?
-7. **Capture findings** in `docs/design/ux-check-<feat-or-date>.md`. Each issue: severity
-   (blocking / serious / minor / nit), the specific scene, the proposed fix.
+7. **Read the copy that actually shipped.** The spec's copy and the shipped copy diverge more often
+   than the spec's layout does, because strings get written inline at 2am and never reviewed:
+   - **Terminology** — one word per concept across the whole flow. Two words for one thing reads as
+     two different products. (`content-terminology-guard` catches this at write time if it's on;
+     this is the cross-confirm, and it also catches what landed before the hook was enabled.)
+   - **Errors** say what to do next · **destructive confirms** name the consequence ·
+     **empty states** say what to do next
+   - **On-voice** against the style guide's voice traits — quote the offenders, don't summarize them
+   - **For AI features, read the generated copy too** — trigger a refusal, a rate limit, a failure.
+     That copy is in your product, in whoever's voice the model defaulted to. `/judge-traces` reads
+     the same surface for correctness; this reads it for voice.
+
+8. **Capture findings** in `docs/design/ux-check-<feat-or-date>.md`. Each issue: severity
+   Each issue: severity (blocking / serious / minor / nit), the specific scene, the proposed fix.
 
 ## What this skill does NOT do
 
@@ -71,10 +83,13 @@ accumulates. `/ux-check` catches that.
 
 ## How findings feed back
 
-- **Token violations** (raw hex in shipped code) → `design-drift-loop` is detecting this; this
-  skill cross-confirms
-- **Pattern reinvention** (new component that duplicates existing) → flag the duplicate;
-  propose consolidation
+- **Token violations** (raw hex in shipped code) → `design-drift-loop` detects this (and *only*
+  this — it's a hex regex, nothing more); this skill cross-confirms
+- **Pattern reinvention** (new component that duplicates existing) → **`/design-library --check`
+  is the mechanical version of this check** and the drift loop cannot see it. Run it before the
+  walk; flag the duplicate pair, propose consolidation, let the founder decide
+- **Run `/design-library` after the fixes land.** The library is generated, so it only tells the
+  truth if it's regenerated — a stale card is the drift it exists to catch
 - **Missing states** → these are the most common shipped-UX failures; track them as a category
   in `docs/design/ux-check-summary.md` so you can see if a particular state-category is your
   pattern weakness

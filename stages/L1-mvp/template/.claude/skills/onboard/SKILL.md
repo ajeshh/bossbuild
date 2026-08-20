@@ -1,9 +1,12 @@
 ---
 name: onboard
-description: Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once). Derives the aha-moment from data (the behavior that separates your best-retained cohort from the churned — not a whiteboard guess), shrinks time-to-value (cut every step between signup and first value; seed a "magic first run" so the first output is good before the user works), and sets up concierge onboarding you do BY HAND for the first users (Superhuman-style; do-things-that-don't-scale — it doubles as /interview). Humane by construction — activation means getting them to SUCCESS fast, not HOOKED fast; refuses fake-progress/gamified/forced-tutorial dark patterns. The top-of-curve fix /health routes to. At n<10, don't model it — watch them onboard by hand. Usage - /onboard
+description: Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once). Derives the aha-moment from data (the behavior that separates your best-retained cohort from the churned — not a whiteboard guess), shrinks time-to-value (cut every step between signup and first value; seed a "magic first run" so the first output is good before the user works), and sets up concierge onboarding you do BY HAND for the first users (Superhuman-style; do-things-that-don't-scale — it doubles as /interview). Humane by construction — activation means getting them to SUCCESS fast, not HOOKED fast; refuses fake-progress/gamified/forced-tutorial dark patterns. The top-of-curve fix /health routes to. At n<10, don't model it — watch them onboard by hand. Scope: your USERS' first run — not a new teammate's first week. Usage - /onboard
 ---
 
 # /onboard — get new users to the aha-moment, fast (and honestly)
+
+> **This is about your users, not your team.** Getting a new *teammate* productive is a different
+> job with different stakes. This skill is the first-session success rate of the people who sign up.
 
 The runner over `boss craft activation`. Activation is the **first-session success rate** — the % of
 new users who reach real value — and it's the highest-leverage number you have, because it's the *top of the

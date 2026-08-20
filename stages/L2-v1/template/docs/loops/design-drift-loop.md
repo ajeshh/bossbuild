@@ -19,10 +19,25 @@ drift_moment: coherence
 # Loop: design-drift (V1)
 
 The V1-stage counterpart to `design-tokens-loop` (MVP). MVP-stage gates *whether the tokens
-exist*; V1-stage gates *whether the tokens are still authoritative.* The drift signal: raw hex
-codes appearing in source files, near-duplicate components multiplying, the tokens file going
-stale while components grow. The IDEA-010 failure mode catalog (47 blues, pattern
-reinvention, billion-line drift) materializing despite the MVP-stage discipline.
+exist*; V1-stage gates *whether the tokens are still authoritative.*
+
+**What this loop actually detects: raw hex codes in source files. That is all.** The exit
+predicate below is a single regex over `src/**`. It catches the *47 blues* and nothing else.
+
+**What it does NOT detect, despite the failure catalog naming them:** near-duplicate components
+multiplying (**pattern reinvention**), code growing linearly with screens (**billion-line
+drift**), or the tokens file going stale while components grow. Those are component-shaped
+failures, and a hex regex cannot see them.
+
+> ⚠️ **This paragraph used to claim otherwise.** It listed near-duplicate components and a
+> staling tokens file as drift signals this loop watches. It never did. A loop doc that
+> overstates its predicate is worse than one that admits a gap — the founder stops looking for
+> the failure the loop silently isn't catching. Corrected in v0.166.0. **A predicate is the
+> claim; the prose must not exceed it.**
+
+The component-shaped half is covered by [`/design-library`](../../.claude/skills/design-library/SKILL.md),
+which reads every component into a manifest and reports duplicates, missing states and off-token
+values that this regex structurally cannot reach.
 
 `runner_type: hook` — the conscience hook evaluates this on every UserPromptSubmit at V1. The
 entry predicate (tokens file exists) is met for any project that has unlocked V1 with the

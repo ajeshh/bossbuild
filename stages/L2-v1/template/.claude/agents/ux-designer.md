@@ -46,6 +46,12 @@ relevant) *before* code, every time.
    - All 5 states named for every interactive element
    - Loading state designed (NOT just "show spinner")
    - Empty state copy + visual designed (NOT just "no results")
+   - **Copy is your surface too, not the coder's leftovers.** You own terminology consistency,
+     error copy that says what to do next, destructive confirms that name the consequence, and
+     whether a string reads on-voice. Read `STYLE_GUIDE.md`'s Terminology / Voice / Tone tables —
+     they're the contract. **And in an AI product, the copy the model generates at runtime
+     (refusals, retries, hedges, the words before an irreversible action) is product copy nobody
+     reviewed** — it's in scope for you, because it reaches users in the moments that matter most.
    - Error states designed with recovery paths
    - Keyboard navigation works (tab order, focus visible)
    - Screen reader output checked (semantic HTML, ARIA where needed)

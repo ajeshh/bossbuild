@@ -5,8 +5,8 @@ owner: designer
 status: active
 host: stack-neutral
 provenance: generalized from the dhun dogfood design system (DESIGN_TOKENS as single source of truth, central badge/pill style utils, the "no raw Tailwind colors" enforcement hook, the prototype REGISTRY), de-dhuned for reuse — BOSS v0.20.x. The AI-failure-mode catalog was added in the same pass; IDEA-010 carries the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns). Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.
-last_reviewed: 2026-08-11
-review_by: 2027-02-07
+last_reviewed: 2026-08-20
+review_by: 2027-02-16
 curve: craft-ai
 ---
 
@@ -35,6 +35,35 @@ discipline, these failure modes appear by default. Naming them is half the fix:
 | **Billion-line drift** | Code grows linearly with screens instead of approximately constant after primitives are built. AI never generalizes across requests. | Token system + reuse-first prompting *together*. Either alone is insufficient. |
 | **Missing states** | Default/hover/active/disabled/empty/loading — at least one always missing. Especially empty + loading (the most user-facing failures). | Five-state requirement enforced at prompt level — name the states before AI gets a chance to skip them. |
 | **Brand-default problem** | AI defaults to generic-internet aesthetics because that's the training data. Your brand voice never makes it in unless you bring it. | Canvas Promises cell becomes the design brief, not "make it pretty." |
+
+### The seed-that-scales test (added 2026-08-20)
+
+*"Embed the design principles just enough from the start — seed form that scales, so there's less
+rework, but not over-engineered."* The instinct is right and it needs a decision rule, or "just
+enough" is a vibe you re-argue every week. The rule:
+
+> **Decide it at seed if reversing it gets more expensive as the app grows. Defer everything else.**
+
+Same shape as *cheapest-reversible* and `/decide`'s falsifier, pointed at design. It sorts cleanly:
+
+| Seed decision | Cost of deferring it | Ceremony? |
+|---|---|---|
+| Semantic tokens named by **purpose**, not hue | every use site changes on a retheme | no — one file |
+| **Component boundaries: element-shaped, not page-shaped** | extracting primitives later is a rewrite | no — it's a naming habit |
+| **Five states as structure**, not a review checklist | retrofitting empty/loading/error touches every component | low |
+| **Terminology: one word per concept** | renaming a core noun later hits copy, routes, schema, tests | no — it's a list |
+| Motion, theming, density, versioning, a component library | cheap to add when earned | **yes — defer** |
+
+**Component boundaries is the one most often missed, and it's the most expensive.** Ask an AI for a
+screen and you get a page-shaped component — `DashboardPage.tsx` with its own buttons, cards and
+inputs defined inline. Every one of those is a primitive that never got extracted, and the next
+screen re-invents it. **This is the upstream cause of two failure modes the catalog above names as
+symptoms** — *pattern reinvention* and *billion-line drift* both start here, at the first component,
+before any token has drifted.
+
+The seed-time fix is one sentence in the prompt and costs nothing: *build the button, then use it on
+the page — don't build the page and leave the button inside it.* The V1-time fix is a refactor across
+every screen you've shipped. Same decision, two prices.
 
 ### The field's published understanding (2025-2026)
 
@@ -123,6 +152,97 @@ the eye but skip the pre-pass — OFFER the design-thinking prompt, skip the lec
 
 Lands at **V1**, with the rest of the design layer — the moment a UI is worth keeping is the moment
 genericness starts to cost.
+
+## Making the system visible — the design library (added 2026-08-20)
+
+Everything above is markdown, and **markdown cannot show you a button.** `DESIGN_TOKENS.md`,
+`STYLE_GUIDE.md` and `PROTOTYPES.md` are the right artifacts and all three are *unlookable*, which
+leaves the question a founder actually asks — *"what do I already have, and does it still match what
+I said?"* — with no surface that answers it. Most people need to see it to assess it.
+
+`/design-library` (V1) generates that surface: one self-contained HTML library, no build step, no
+service, no account.
+
+**The load-bearing rule: generated, never authored.** The code is the source of truth; the library is
+derived from it. A gallery authored *beside* the code is the two-sources-of-truth trap — the same
+battle every design-tool sync loses, ending in two definitions of a button and a permanent
+reconciliation problem.
+
+> This also answers the question people ask first — *"how do I update it centrally so the change
+> flows back to everywhere the component is used?"* **You don't, because you never had to.**
+> `Button.tsx` *is* the button; every use site imports it; editing it updates all of them. That
+> propagation isn't a feature to build — it's what a component already is. **The library's job was
+> never propagation. It's visibility, reuse, and drift.**
+
+**And it is not just components — the rule sets are half of it.** A library of components with no
+principles, no rendered do/don't pairs and no terminology teaches both the founder and the agent that
+design *is* components. It isn't; the rules are the part that survives a rewrite. Three sections:
+foundations (tokens made visible), **rules** (principles with their tradeoffs, do/don't rendered side
+by side, terminology, voice, the five-state table), components (every variant, all five states, with
+gaps rendered *as* gaps).
+
+**A rendered rule is a different object than a written one.** *"No unread-count badges"* in prose is
+a sentence you skim; the same rule as two rendered examples is a thing you see. That's the SHOW
+delivery the cohort guidance already prescribes, made structural instead of conversational.
+
+Three consequences worth naming:
+
+1. **Drift renders on the component, not in a report.** `/ux-check` writes findings to
+   `docs/design/ux-check-*.md`; those files are correct and nobody opens them twice. A badge on the
+   card — *off-token · missing state · near-duplicate · stale · unused* — puts the finding where the
+   eye already is. A clean library is a page with no badges, which is a **positive** signal as much
+   as a warning: it shows what you've built, not only what's wrong.
+2. **The manifest is the reuse index the system never had.** *Reuse first, extend second, create
+   last* has always been a prompt convention — a filter that depends on every future prompt
+   remembering. `manifest.json` (name · purpose · import line · variants) gives the agent something
+   to actually look at. And a **source hash per component** makes staleness mechanically checkable,
+   which is the boundary the enforcement section below keeps asking for.
+3. **Drift collapses from a three-way problem to a one-way one.** Implementation, style guide and
+   prototypes look like three surfaces to reconcile. But if the library is *generated* from code it
+   **is** the implementation, and if prototypes *compose* library components they are too. The only
+   axis left is **declared rules vs. actual system** — one comparison, not three.
+
+   ⚠️ **With a hard bound: that comparison only reaches as far down the ladder as you went.** A
+   principle can't be diffed against code; a *rule* can. So the principle→guideline→rule ladder isn't
+   only about making the agent actionable — **it's what makes drift detectable at all.** A principle
+   that never descended into a rule is one you can never audit against.
+
+### Retirement is the other half (added 2026-08-20)
+
+The library flags ⚪ **unused** components. Say what to do about them, or the badge is trivia.
+
+> **A component nobody uses is drift you're paying to maintain** — and worse, it's a decision the
+> agent will keep re-encountering and re-applying. An unused variant isn't neutral; it's a wrong
+> answer sitting in the reuse index where something looking for a pattern will find it.
+
+This is the prototype registry's subtraction rule, one level up — *a discarded prototype is a
+question already answered, and deleting its row means paying for the answer twice.* Same logic,
+higher stakes, because a component ships.
+
+It lands harder under AI generation than it ever did for a human team: **components accumulate faster
+than anyone prunes them** (that's the billion-line drift failure mode, seen from the other end). The
+generation side of that has been documented since v0.20.x. The pruning side never was.
+
+The founder-scale version is one habit, not a process: **when the library shows unused, delete it in
+the same pass.** Not a deprecation window, not SemVer, not an RFC — those are real for teams with
+consuming teams, and unearned ceremony for one person. Just: it's dead, and you can see that it's
+dead, so remove it while you're looking at it.
+
+### The designer seam
+
+The library is also the handoff artifact, already built: a designer gets a **URL, not a repo
+checkout.** Two seams, in order of how real they are:
+
+- **Tokens are genuinely two-way.** They're structured data with stable IDs, which is why this is the
+  one layer where design-tool sync actually works — and why emitting **DTCG** (above) is already the
+  bridge. Push to the tool's variables, pull their edits back.
+- **Components are one-way, each direction, by a different mechanism.** Design→code mapping is
+  mature. Code→editable-design-file round-trip is **not** well established; treat any claim that it
+  is as unproven until you've watched it work on your own components.
+
+If the host offers a design-system pane, the library's `@dsCard` markers mean it uploads as cards for
+free. **Don't build a sync engine or a hosting surface** — that's the host's job, and building a
+second one is how this discipline becomes the thing it exists to prevent.
 
 ## The principle (PRINCIPLES.md #3)
 
@@ -221,6 +341,20 @@ converge instead of wander:
 - **Quickstart / MVP:** no design enforcement. Hardcoded styles in a throwaway are fine; don't
   impose ceremony unearned. But the *moment* a UI is worth keeping, create the tokens file so style
   is decoupled from the very first commit that matters.
+- **Cohort-scope the content layer, don't hand everyone the matrix (RVW-077).** Ship the
+  **checkable** content rule (terminology) to everyone; ship the **judgment-shaped** ones (voice
+  traits, tone-by-context) only to founders with enough product to judge against. A green founder
+  cannot yet tell *"plain over clever"* from *"friendly over formal"*, and a table filled in because
+  it was asked for steers nothing. Content discipline arriving before there is copy to be
+  inconsistent about is PRINCIPLE #2's premature ceremony wearing a design-system hat. The one
+  inversion: in **high-stakes domains**, how the product speaks when it is *uncertain or wrong*
+  outranks vocabulary consistency — tone first there.
+- **The moment a terminology table has real rows (MVP):** `content-terminology-guard` — the content
+  layer's only boundary, and deliberately its only one. **Voice and tone cannot be regexed and the
+  hook doesn't pretend otherwise**; terminology can, because it's a word list. It watches the
+  *strings the UI shows* — never identifiers, imports or paths, per the style guide's own rule that
+  the product says `team` while the code can say whatever it likes. Everything else in the content
+  layer is a filter, shipped as a filter, and named as one.
 - **The moment tokens exist (MVP):** `design-tokens-guard` — a `PostToolUse` hook that catches a
   hardcoded hex / `rgb()` / palette class the instant it's written and hands the model your token
   names instead. **Ships dormant at L1 and is offered once by `/design-tokens-init`**, because the
@@ -251,5 +385,21 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
   `/design-tokens-init`). It was the one gap that actually mattered: the doc prescribed a boundary it
   didn't provide.
 - ✅ `docs/design/PROTOTYPES.md` — the prototype registry (v0.146.0), with the token-consumption rule.
+
+- ✅ `/design-library` + `docs/design/library/` — the visual surface, the rendered rule sets, the
+  reuse manifest and the source-hash staleness check (v0.166.0).
+- ✅ The content half — Do/Don't pairs, a terminology list, voice-vs-tone with real strings, inlined
+  into `CLAUDE.md` (v0.167.0) — and `content-terminology-guard`, the one boundary it can have
+  (v0.168.0). **Shipped in the same pass that claimed it was possible**, because this doc has twice
+  described a mechanism it didn't provide (the prompt-convention-as-boundary, then
+  `design-drift-loop`'s overstated predicate). A third time would have been a pattern, not a slip.
+- ⚠️ **Corrected in the same pass:** `design-drift-loop.md` claimed it watched *"near-duplicate
+  components multiplying"* and a staling tokens file. Its predicate is a single hex regex over
+  `src/**` and always was. **A predicate is the claim; prose must not exceed it** — a loop doc that
+  overstates what it catches is worse than one admitting a gap, because the founder stops looking for
+  the failure it silently isn't catching. This is the third doc-vs-filesystem mismatch found in this
+  practice's history (after the stale TODO list and the `STYLE_GUIDE.md` false ✅). **The pattern is
+  now unmistakable: this doc's claims rot faster than its ideas.** Verify each line against the
+  filesystem every sweep.
 
 **Nothing on this list is open.** Verified against the filesystem, not against this doc.

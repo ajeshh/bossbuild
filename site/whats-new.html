@@ -6,12 +6,12 @@
 <title>What's new in BOSS</title>
 <meta name="description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
 <meta name="color-scheme" content="light dark" />
-<link rel="canonical" href="https://boss.build/whats-new.html" />
+<link rel="canonical" href="https://oyeboss.build/whats-new.html" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
 <meta property="og:title" content="What's new in BOSS" />
 <meta property="og:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
-<meta property="og:url" content="https://boss.build/whats-new.html" />
+<meta property="og:url" content="https://oyeboss.build/whats-new.html" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="What's new in BOSS" />
 <meta name="twitter:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
@@ -34,15 +34,24 @@
     <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
       <p class="kicker">What's new</p>
-      <h1>Every release, in the open<span class="dot">.</span></h1>
+      <h1>Only the ones that change something for you<span class="dot">.</span></h1>
       <p class="lede">
-        BOSS is built in public and moves fast. This page is generated from
-        <code>registry/CHANGELOG.md</code> — the <strong>same file <code>boss sync</code> reads</strong>
-        when it tells a project what's changed since its pinned version. One source, two audiences.
+        BOSS ships most days, and <strong>almost none of it belongs on this page.</strong> A release
+        appears here only if it changes something you'd actually <em>do, see, or rely on</em> — or if
+        BOSS integrated a best practice your project now inherits. Refactors, audits, internal tooling
+        and this website's own releases get no entry.
       </p>
       <p class="small">
-        Inside a project: <code>boss status</code> shows your pin against what's installed, and
-        <code>/boss-sync</code> brings you forward as a reviewed, narrated diff — never a silent update.
+        Which makes this list deliberately short. A feed listing every version is a commit log, and a
+        commit log is not useful to someone building a company — so the default is <em>not shown</em>,
+        and a release has to earn a line.
+      </p>
+      <p class="small">
+        Generated from <code>registry/CHANGELOG.md</code> — the <strong>same file
+        <code>boss sync</code> reads</strong> when it tells your project what changed since its pin.
+        Inside a project, <code>boss status</code> shows your pin against what's installed, and
+        <code>/boss-sync</code> brings you forward as a reviewed, narrated diff, never a silent update.
+        The full engineering changelog is on GitHub if you want everything.
       </p>
     </div>
   </header>
@@ -53,16 +62,32 @@
       <div class="body">
         <ol class="releases">
       <li>
-        <div class="rel"><span class="ver">v0.164.0</span><span class="when">2026-08-19</span></div>
-        <p>BOSS has a website — what it is, who it staffs, a quick guide, and the sources behind every practice it ships.</p>
+        <div class="rel"><span class="ver">v0.172.0</span><span class="when">2026-08-20</span></div>
+        <p><code>/spec</code> now says back what it had to <strong>assume</strong> before you build, and asks for one</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.171.0</span><span class="when">2026-08-20</span></div>
+        <p>if you're early, BOSS now asks you for one thing — pick the words for your two or three</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.169.0</span><span class="when">2026-08-20</span></div>
+        <p><code>/design-library</code> now writes a designer handoff — what's decided, what's fixed vs.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.168.0</span><span class="when">2026-08-20</span></div>
+        <p>turn on <code>content-terminology-guard</code> and Claude gets told the moment it writes <em>&quot;org&quot;</em></p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.167.0</span><span class="when">2026-08-20</span></div>
+        <p>your style guide now covers what your product <em>says</em>, not just how it looks — voice</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.166.0</span><span class="when">2026-08-20</span></div>
+        <p>at V1, <code>/design-library</code> renders your whole design system — colors, type, spacing, your</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.163.0</span><span class="when">2026-08-18</span></div>
         <p>Fixed: adopting a large repo could misread it as a fresh idea and start you at the wrong mode.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.162.0</span><span class="when">2026-08-18</span></div>
-        <p><code>boss remove</code> got four fixes — the exit is now safe on the paths the first version missed.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.161.0</span><span class="when">2026-08-18</span></div>
@@ -71,10 +96,6 @@
       <li>
         <div class="rel"><span class="ver">v0.160.0</span><span class="when">2026-08-17</span></div>
         <p>The 66 skills and agents BOSS installs into your project can now report themselves stale, so <code>boss sync</code> stops pushing you guidance that has quietly rotted.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.159.0</span><span class="when">2026-08-17</span></div>
-        <p><code>/vet</code> now checks <em>who actually said it</em> before grading a claim — so the practices you inherit are attributed, not just plausible.</p>
       </li>
       <li>
         <div class="rel"><span class="ver">v0.158.0</span><span class="when">2026-08-17</span></div>
@@ -108,7 +129,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.165.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.172.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

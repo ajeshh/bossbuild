@@ -165,8 +165,11 @@ your product leans on a model.
 
 ### V1 — *make it shippable*
 The design layer turns on, plus the next tier of mentors.
-- **You'll actually use:** `/design-review` (before you code), `/ux-check` (after), `/board`
-  (sequence work across features).
+- **You'll actually use:** `/design-library` (your whole design system as one page you can look at —
+  colors, type, your principles and do/don'ts, and every component in all five states, generated from
+  your code so it can't drift; it flags off-token values, missing states and near-duplicate
+  components, and it's the thing you hand a designer instead of a repo), `/design-review` (before you
+  code), `/ux-check` (after), `/board` (sequence work across features).
 - **Ask:** `mentor-business` (model, pricing), `mentor-fundraising`, `mentor-pitch`, `mentor-talent`
   — promoted in here because these questions get real at V1.
 - **Ready to climb when:** the team grows and the org needs to be a thing. → `boss unlock scale`

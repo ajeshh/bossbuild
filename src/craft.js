@@ -1,12 +1,12 @@
 // `boss craft` — read BOSS's practice shelf from inside any project.
 //
-// WHY THIS EXISTS: the shelf ships in the npm package, so all 28 practices are already on
+// WHY THIS EXISTS: the shelf ships in the npm package, so every practice is already on
 // the founder's disk. But 25 shipped agents, skills and hooks referenced them as
 // `library/practices/<name>.md` — a path that resolves in BOSS's own repo and nowhere else.
 // A founder's project has no `library/`. Every one of those pointers was a dead end that
 // *looked* authoritative: the sharp edge in the agent, then a reference to nothing.
 //
-// The fix is not to copy 28 practices into every project (bloat, and instantly stale). It's
+// The fix is not to copy the whole shelf into every project (bloat, and instantly stale). It's
 // to give the pointer a form that resolves anywhere: `boss craft <name>`.
 //
 // Distinct from the `/practice` skill: that is the FOUNDER's own craft commons (PRAC-NNN

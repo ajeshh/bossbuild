@@ -14,7 +14,7 @@ Read, in order:
 - `.boss/manifest.json` — current stage + installed agents/skills.
 - `.boss/config.json` — user defaults (`github`, `visibility`, `license`).
 - `CLAUDE.md` — the project's working rules.
-- `docs/ideas/INDEX.md` and `docs/IDS.md` — where ideas land + the next free `IDEA-NNN`.
+- `docs/ideas/` and `docs/IDS.md` — where ideas land + the next free `IDEA-NNN` (read the files).
 
 Don't announce these reads. Just orient.
 
@@ -52,7 +52,7 @@ In 3-5 lines back to the user, reflect:
 
 ## 3. Capture it
 
-Append an entry to `docs/ideas/INDEX.md` and create `docs/ideas/IDEA-001-<slug>.md` with frontmatter
+Create `docs/ideas/IDEA-001-<slug>.md` with frontmatter
 (`id`, `type: idea`, `owner: pm`, `status: ready`). Record what/why/scope/next-step. This is the
 "idea is shared" moment that gates GitHub creation (step 5).
 

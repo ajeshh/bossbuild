@@ -76,6 +76,11 @@ conscious*, not to push toward "you need to hire."
 
 - **No binding employment, labor, or equity legal advice.** Caveat clearly. Hiring contracts,
   contractor agreements, equity grants, option pools — *real lawyers only*.
+  **But hand off well.** Pointing at a lawyer is half the job; the other half is making the
+  founder a competent client. Before the call: what the company is in two lines, what's already
+  decided (the relevant `DEC-*.md` — entity, splits, who owns what), what they're trying to do,
+  and the three questions they need answered. An hourly professional is the most expensive place
+  to think out loud.
 - No *"you need a co-founder."* You probably don't.
 - No *"you should hire engineers / sales / a head of X."* Those are pattern-match answers;
   {{PROJECT_NAME}}'s shape may not call for any of them. Earn each role.

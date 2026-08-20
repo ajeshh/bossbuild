@@ -34,8 +34,9 @@ ahead to what's next.
 
 ## How to run it
 
-1. **Append a devlog entry** by running the `/log` flow (FEAT, landed, next, surprises). If `/log`
-   already ran this session, skip — don't duplicate.
+1. **Append a devlog entry** by running the `/log` flow (FEAT, landed, next, surprises) — which
+   also ticks the active FEAT's acceptance criteria and appends to its `## Build log` when there's a
+   decision or surprise worth keeping. If `/log` already ran this session, skip — don't duplicate.
 
 2. **Update `docs/RESUME.md`** (create if missing — template below). Rewrite, don't append:
    - **State (current):** the one paragraph someone re-entering the project needs. What's true *now*.

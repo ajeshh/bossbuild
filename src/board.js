@@ -36,6 +36,25 @@ const AGING_DAYS = 21;
 const SHIPPED_RECENT = 6;
 const SHIPPED_WINDOW_DAYS = 30;
 
+// Acceptance-criteria progress (v0.171.0+). `/spec` has always shipped criteria as
+// `- [ ]` checkboxes and nothing ever ticked them, so a FEAT one criterion from done
+// and a FEAT nobody had started rendered identically — the "how far am I" half of
+// EVID-001. `/log` ticks them; this reads them.
+//
+// Scoped to the "## Acceptance criteria" section ONLY. Other sections carry
+// checkboxes too (a smoke list, a failure-state list), and counting those would
+// silently inflate the fraction — a progress number that flatters is worse than none.
+function criteriaProgress(text) {
+  // NOTE: no `m` flag on the outer match — under /m, `$` means end-of-LINE, so the
+  // lazy body stopped at the first criterion and every FEAT reported "1/1".
+  const m = text.match(/(?:^|\n)##[ \t]+Acceptance criteria\b[^\n]*\n([\s\S]*?)(?=\n##[ \t]|$)/);
+  if (!m) return null;
+  const boxes = m[1].match(/^\s*[-*]\s+\[[ xX]\]/gm);
+  if (!boxes || !boxes.length) return null;
+  const done = boxes.filter((b) => /\[[xX]\]/.test(b)).length;
+  return { done, total: boxes.length };
+}
+
 function firstHeading(text) {
   const m = text.match(/^#\s+(.+)$/m);
   return m ? m[1].trim() : '';
@@ -139,7 +158,7 @@ export function collectBoard(projectDir) {
     const priority = (fm.priority || '').trim().toLowerCase() === 'high' ? 'high' : null;
     if (/^FEAT/i.test(id)) {
       if (fm.source) featSources.add(fm.source);
-      feats.push({ id, title, status: fm.status, nextReview: fm.next_review, buildingSince: fm.building_since, shippedOn: fm.shipped_on, priority, owner: fm.owner });
+      feats.push({ id, title, status: fm.status, nextReview: fm.next_review, buildingSince: fm.building_since, shippedOn: fm.shipped_on, priority, owner: fm.owner, progress: criteriaProgress(text) });
     } else {
       ideas.push({ id, title, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner });
     }
@@ -191,6 +210,9 @@ export function collectBoard(projectDir) {
       archived: shippedAgeDays != null && shippedAgeDays > SHIPPED_WINDOW_DAYS,
       priority: ft.priority,
       owner: personOwner(ft.owner),
+      // Only meaningful while in flight — a shipped FEAT is 100% by definition,
+      // and an unstarted one shows nothing rather than a discouraging 0/5.
+      progress: column === 'Building' && ft.progress && ft.progress.done > 0 ? ft.progress : null,
     });
   }
   for (const id of ideas) {
@@ -302,7 +324,10 @@ export function renderBoardText(projectName, data, opts = {}) {
   // to hunt for it (EVID-001, facet 3: "I forget what feature I'm building"). Longest-
   // open in-build item = the thing to finish. Silent when nothing's in build.
   const onNow = sortColumn(cards.filter((c) => c.column === 'Building' && !c.blocked), 'Building')[0];
-  if (onNow) lines.push(`  ${dim('▸ on now:')} ${bold(onNow.id)} — ${onNow.title}`);
+  if (onNow) {
+    const p = onNow.progress ? dim(`  [${onNow.progress.done}/${onNow.progress.total} criteria]`) : '';
+    lines.push(`  ${dim('▸ on now:')} ${bold(onNow.id)} — ${onNow.title}${p}`);
+  }
   lines.push('');
 
   if (!hasIdeasDir) {
@@ -365,17 +390,28 @@ export function renderBoardText(projectName, data, opts = {}) {
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-const COLUMN_HUE = {
-  Captured: '#8a8f98',
-  'Taking shape': '#b8862b',
-  Building: '#2f6f4f',
-  Shipped: '#3a5a9b',
-};
+// Columns are a MONOCHROME progression, not four hues — and that is a design
+// decision, not a simplification. `docs/design/VISUAL.md` locks hi-vis as the
+// BRAND, never a state, and signage colour as semantic (ISO 3864: stop / caution
+// / safe). A four-colour kanban spends the whole palette on pipeline position,
+// which is not a hazard and does not warrant colour. So position is carried by
+// WEIGHT (faint → full ink, left to right) and colour is kept for things that
+// genuinely mean something: blocked (stop), aging/past-review (caution), and the
+// one hi-vis mark that says "BOSS is pointing at this."
+//
+// Values are inlined from site/styles/tokens.css — that file is the source of
+// truth but does not ship in the npm package, and this render must be a single
+// self-contained file in the founder's project. Keep them in step by hand.
+const COLUMN_INDEX = Object.fromEntries(COLUMNS.map((c, i) => [c, i]));
 
 export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) {
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
   const evidence = hasIdeasDir ? evidenceLine(counts, cards.length) : 'no docs/ideas/ here — is this a BOSS project?';
+  // Hi-vis is BOSS pointing, never decoration (VISUAL.md). The only line that
+  // earns it here is the humane-lens override: motion captured, nothing proven.
+  const pointing = hasIdeasDir && cards.length > 0
+    && counts.Captured > 0 && counts['Taking shape'] === 0 && counts.Building === 0;
   const due = cards.filter((c) => c.reviewDue).sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
 
   const cardHtml = (c) => {
@@ -389,9 +425,17 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
           ? `<span class="flag aging">⌛ ${esc(ageLabel(c.ageDays))} in build</span>`
           : '';
     const prio = c.priority === 'high' ? '<span class="prio" title="priority: high">⬆ high</span>' : '';
+    // One segment per acceptance criterion — countable at a glance, and honest
+    // about the denominator. A continuous bar would imply a precision the ticks
+    // don't have; five boxes say "five things, two done" and nothing more.
+    const prog = c.progress
+      ? `<div class="prog" title="${c.progress.done} of ${c.progress.total} acceptance criteria">`
+        + Array.from({ length: c.progress.total }, (_, i) => `<i${i < c.progress.done ? ' class="on"' : ''}></i>`).join('')
+        + `<b>${c.progress.done}/${c.progress.total}</b></div>`
+      : '';
     return `<div class="card${cls}">
             <div class="id">${esc(c.id)}${prio}</div>
-            <div class="title">${esc(c.title)}</div>${flag}
+            <div class="title">${esc(c.title)}</div>${prog}${flag}
           </div>`;
   };
 
@@ -413,7 +457,7 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
     } else {
       cardsHtml = inCol.map(cardHtml).join('\n');
     }
-    return `<section class="col" style="--hue:${COLUMN_HUE[col]}">
+    return `<section class="col" style="--hue:var(--stage-${COLUMN_INDEX[col]})">
         <h2><span class="label">${esc(col)}</span> <span class="n">${inCol.length}</span></h2>
         <div class="cards">${cardsHtml}</div>
       </section>`;
@@ -429,7 +473,7 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
     : '';
 
   const pills = COLUMNS.map((col) =>
-    `<span class="pill" style="--hue:${COLUMN_HUE[col]}"><i></i>${esc(col)} <b>${counts[col] || 0}</b></span>`
+    `<span class="pill" style="--hue:var(--stage-${COLUMN_INDEX[col]})"><i></i>${esc(col)} <b>${counts[col] || 0}</b></span>`
   ).join('');
 
   return `<!doctype html>
@@ -437,90 +481,107 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(projectName)} · board</title>
 <style>
+  /* BOSS board — the site-and-signage world (docs/design/VISUAL.md).
+     Concrete ground, graphite ink, ONE hi-vis mark at ~2% coverage. Straight
+     cuts (2-3px radii), not soft cards. Display type is the mono stack, because
+     the tool is the product. Signage colour is reserved for real states. */
   :root {
     color-scheme: light dark;
-    --bg: #f6f7f9; --panel: #ffffff; --ink: #1b1c20; --muted: #767b85;
-    --line: #e7e9ee; --accent: #4b54c6; --shadow: 0 1px 2px rgba(20,22,40,.06), 0 4px 14px rgba(20,22,40,.05);
+    --bg: #E8E6E1; --panel: #F2F1EE; --sunk: #DCDAD4;
+    --ink: #16181A; --muted: #5F656B; --line: #CBC9C3;
+    --hivis: #FF5C00; --hivis-text: #B33900;
+    --caution: #7F5800; --stop: #C01818;
+    --stage-0: #9AA0A6; --stage-1: #5F656B; --stage-2: #2E3236; --stage-3: #16181A;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #0e0f12; --panel: #17191e; --ink: #e7e8ec; --muted: #8a909b;
-            --line: #25282f; --accent: #8b93ff; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.35); }
+    :root {
+      --bg: #16181A; --panel: #1F2225; --sunk: #101214;
+      --ink: #E6E4DF; --muted: #9AA0A6; --line: #2E3236;
+      --hivis: #FF5C00; --hivis-text: #FF7A2E;
+      --caution: #E8A200; --stop: #FF6B5A;
+      --stage-0: #5F656B; --stage-1: #9AA0A6; --stage-2: #CBC9C3; --stage-3: #E6E4DF;
+    }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-         background: var(--bg); color: var(--ink); padding: 40px 24px 64px;
-         -webkit-font-smoothing: antialiased; }
+  body { margin: 0; font: 15px/1.55 var(--sans); background: var(--bg); color: var(--ink);
+         padding: 40px 24px 64px; -webkit-font-smoothing: antialiased; }
   .wrap { max-width: 1160px; margin: 0 auto; }
   header { margin: 0 0 6px; }
-  .kicker { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .16em;
-            color: var(--accent); margin: 0 0 5px; }
-  h1 { font-size: 24px; font-weight: 680; letter-spacing: -.018em; margin: 0; display: flex; align-items: center; gap: 10px; }
-  h1::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none;
-               box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); }
-  .evidence { color: var(--muted); font-size: 13.5px; margin: 7px 0 0; }
-  .pills { display: flex; gap: 7px; flex-wrap: wrap; margin: 18px 0 22px; }
-  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted);
-          background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; }
-  .pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--hue); }
-  .pill b { color: var(--ink); font-weight: 600; }
-  .banner { margin: 0 0 14px; padding: 11px 15px; border-radius: 10px; font-size: 13px;
-            border: 1px solid color-mix(in srgb, var(--bar) 38%, var(--line)); background: color-mix(in srgb, var(--bar) 11%, var(--panel)); }
-  .review-banner { --bar: #b8862b; } .aging-banner { --bar: #c2792f; }
-  .banner code { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace;
-                 background: color-mix(in srgb, var(--bar) 16%, transparent); padding: 1.5px 6px; border-radius: 5px; }
+  /* The one hi-vis mark on the page — a stencilled block, the way site signage
+     marks the thing that matters. Brand, not state. */
+  .kicker { display: inline-block; font: 700 10px/1 var(--mono); text-transform: uppercase;
+            letter-spacing: .18em; color: #16181A; background: var(--hivis);
+            padding: 5px 8px 4px; border-radius: var(--r, 2px); margin: 0 0 10px; }
+  h1 { font: 650 24px/1.2 var(--mono); letter-spacing: -.02em; margin: 0; }
+  .evidence { color: var(--muted); font-size: 13.5px; margin: 8px 0 0; max-width: 64ch; }
+  .evidence.points { color: var(--hivis-text); font-weight: 600; }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 24px; }
+  .pill { display: inline-flex; align-items: center; gap: 7px; font: 12px/1 var(--mono);
+          color: var(--muted); background: var(--panel); border: 1px solid var(--line);
+          border-radius: 2px; padding: 6px 10px; }
+  .pill i { width: 7px; height: 7px; background: var(--hue); flex: none; }
+  .pill b { color: var(--ink); font-weight: 650; }
+  .banner { margin: 0 0 14px; padding: 11px 14px; font-size: 13px; border-radius: 2px;
+            border: 1px solid var(--bar); border-left-width: 3px;
+            background: color-mix(in srgb, var(--bar) 8%, var(--panel)); }
+  .review-banner { --bar: var(--caution); } .aging-banner { --bar: var(--caution); }
+  .banner code { font: 12px var(--mono); background: color-mix(in srgb, var(--bar) 15%, transparent);
+                 padding: 2px 6px; border-radius: 2px; }
   .banner .muted { color: var(--muted); }
   .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: start; }
   @media (max-width: 820px) { .board { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 480px) { .board { grid-template-columns: 1fr; } }
   .col { min-width: 0; }
+  /* Position is weight, not hue: the rule and the label gain ink left to right. */
   .col h2 { display: flex; align-items: center; justify-content: space-between; gap: 8px;
-            font-size: 11.5px; font-weight: 650; text-transform: uppercase; letter-spacing: .07em;
-            color: var(--hue); margin: 0 0 12px; padding: 0 2px 9px; border-bottom: 1.5px solid color-mix(in srgb, var(--hue) 55%, var(--line)); }
-  .col h2 .n { color: var(--muted); font-weight: 600; font-size: 11px;
-               background: color-mix(in srgb, var(--hue) 12%, var(--panel)); border-radius: 999px; padding: 1px 8px; }
-  .cards { display: flex; flex-direction: column; gap: 9px; }
+            font: 650 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .1em;
+            color: var(--hue); margin: 0 0 12px; padding: 0 1px 9px;
+            border-bottom: 2px solid var(--hue); }
+  .col h2 .n { color: var(--muted); font-weight: 650; font-size: 11px; }
+  .cards { display: flex; flex-direction: column; gap: 8px; }
   .card { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--hue);
-          border-radius: 9px; padding: 10px 13px 11px; box-shadow: var(--shadow);
-          transition: transform .12s ease, box-shadow .12s ease; }
-  .card:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(20,22,40,.08), 0 10px 26px rgba(20,22,40,.10); }
+          border-radius: 2px; padding: 11px 13px 12px; }
   .card .id { display: flex; align-items: center; justify-content: space-between; gap: 6px;
-              font: 600 10px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
-              color: color-mix(in srgb, var(--muted) 85%, transparent); letter-spacing: .04em; text-transform: uppercase; }
-  /* Title carries the weight now — bold and a touch larger; the id is the quiet label. */
-  .card .title { font-size: 14px; font-weight: 600; line-height: 1.38; letter-spacing: -.005em; margin-top: 4px; }
-  .card .prio { font-size: 9.5px; font-weight: 700; letter-spacing: .03em; color: var(--accent);
-                background: color-mix(in srgb, var(--accent) 13%, transparent); border-radius: 999px; padding: 1px 7px; }
-  /* Stuck cards pull the eye: tinted panel + a heavier left bar, not just a hairline. */
-  .card.is-review  { border-left-color: #b8862b; background: color-mix(in srgb, #b8862b 6%, var(--panel)); }
-  .card.is-blocked { border-left-color: #b3434a; background: color-mix(in srgb, #b3434a 7%, var(--panel)); }
-  .card.is-aging   { border-left-color: #c2792f; background: color-mix(in srgb, #c2792f 6%, var(--panel)); }
-  .card.is-priority { border-left-color: var(--accent); }
-  .flag { display: inline-flex; align-items: center; margin-top: 9px; font-size: 11px; font-weight: 600;
-          padding: 2px 9px; border-radius: 999px; }
-  .flag.review { background: rgba(184,134,43,.16); color: #9a6a14; }
-  .flag.blocked { background: rgba(179,67,74,.16); color: #b3434a; }
-  .flag.aging  { background: rgba(194,121,47,.16); color: #a5641f; }
-  @media (prefers-color-scheme: dark) {
-    .flag.review { color: #e0b35a; } .flag.blocked { color: #e88a90; } .flag.aging { color: #e0a566; }
-  }
-  .empty { color: color-mix(in srgb, var(--muted) 55%, transparent); font-size: 18px; padding: 6px 2px; }
+              font: 650 10px/1.3 var(--mono); color: var(--muted); letter-spacing: .06em;
+              text-transform: uppercase; }
+  .card .title { font-size: 14px; font-weight: 600; line-height: 1.4; margin-top: 5px; }
+  .card .prio { font: 700 9.5px/1 var(--mono); letter-spacing: .06em; color: var(--hivis-text);
+                border: 1px solid color-mix(in srgb, var(--hivis) 45%, transparent);
+                border-radius: 2px; padding: 3px 6px; }
+  /* Stuck cards pull the eye with signage, which is what signage is for. */
+  .card.is-review  { border-left-color: var(--caution); }
+  .card.is-aging   { border-left-color: var(--caution); }
+  .card.is-blocked { border-left-color: var(--stop); background: color-mix(in srgb, var(--stop) 6%, var(--panel)); }
+  .prog { display: flex; align-items: center; gap: 3px; margin-top: 9px; }
+  .prog i { width: 13px; height: 4px; background: var(--line); flex: none; }
+  .prog i.on { background: var(--hue); }
+  .prog b { font: 650 10px/1 var(--mono); color: var(--muted); margin-left: 5px; letter-spacing: .04em; }
+  .flag { display: inline-flex; align-items: center; margin-top: 9px;
+          font: 650 10.5px/1 var(--mono); text-transform: uppercase; letter-spacing: .07em;
+          padding: 4px 7px; border-radius: 2px; }
+  .flag.review, .flag.aging { color: var(--caution); border: 1px solid color-mix(in srgb, var(--caution) 40%, transparent); }
+  .flag.blocked { color: var(--stop); border: 1px solid color-mix(in srgb, var(--stop) 45%, transparent); }
+  /* The empty cell is the diagnostic — keep it legible, not decorative. */
+  .empty { color: var(--muted); font: 12px/1 var(--mono); padding: 10px 2px; opacity: .6; }
   details.more { margin-top: 2px; }
-  details.more > summary { cursor: pointer; list-style: none; font-size: 12px; color: var(--muted);
-                           padding: 7px 2px; user-select: none; }
+  details.more > summary { cursor: pointer; list-style: none; font: 11.5px var(--mono);
+                           color: var(--muted); padding: 8px 2px; user-select: none; }
   details.more > summary::-webkit-details-marker { display: none; }
-  details.more > summary::before { content: "▸ "; }
-  details.more[open] > summary::before { content: "▾ "; }
-  details.more .rest { margin-top: 9px; opacity: .82; }
-  footer { color: var(--muted); font-size: 12px; margin: 34px 0 0; padding-top: 18px; border-top: 1px solid var(--line); }
-  footer code { font: 11.5px ui-monospace, SFMono-Regular, Menlo, monospace;
-                background: color-mix(in srgb, var(--muted) 14%, transparent); padding: 1.5px 6px; border-radius: 5px; }
+  details.more > summary::before { content: "+ "; }
+  details.more[open] > summary::before { content: "− "; }
+  details.more .rest { margin-top: 8px; opacity: .8; }
+  footer { color: var(--muted); font-size: 12px; margin: 34px 0 0; padding-top: 18px;
+           border-top: 1px solid var(--line); max-width: 64ch; }
+  footer code { font: 11.5px var(--mono); background: var(--sunk); padding: 2px 6px; border-radius: 2px; }
 </style></head>
 <body>
   <div class="wrap">
     <header>
       <div class="kicker">Board</div>
       <h1>${esc(projectName)}</h1>
-      <p class="evidence">${esc(evidence)}</p>
+      <p class="evidence${pointing ? ' points' : ''}">${esc(evidence)}</p>
     </header>
     <div class="pills">${pills}</div>
     ${dueBanner}

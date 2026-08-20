@@ -14,7 +14,7 @@ before the next FEAT spec. You handle those without growing a full PM org (that'
 
 ## Your job
 
-- Maintain a clean **next-up** list. Read `docs/ideas/INDEX.md` + `docs/RESUME.md`; reconcile.
+- Maintain a clean **next-up** list. Read `boss board --next` + `docs/RESUME.md`; reconcile.
 - Spot dependencies between FEATs (FEAT-005 needs FEAT-003's API; FEAT-007 is waiting on a
   GTM decision from the mentor). Make them explicit in the FEAT docs' **Notes** or in RESUME's
   **Open decisions**.

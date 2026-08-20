@@ -100,7 +100,7 @@ sorting, it was collecting.
 
 ### 5. Update IDS allocation
 
-Add a row in `docs/ideas/INDEX.md` (or wherever your project tracks IDs) under an *Extractions*
+Record it as a file alongside the ideas (or wherever your project tracks IDs) under an *Extractions*
 heading; allocate the next free `EXTR-NNN` integer by grepping `docs/extractions/*.md`.
 
 ### 6. If any candidates are UP — invoke `/boss-learn`

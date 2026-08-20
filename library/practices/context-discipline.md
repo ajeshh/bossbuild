@@ -48,6 +48,22 @@ curve: host
 - **Session-state docs** (e.g. a `RESUME.md`): keep a **recency window** of the most recent few
   entries; let the full history live in the changelog it already maintains. Don't let an
   append-forever log become the file you read at every session start.
+
+  **Decide the compaction rule while the file is still small — this is the move that gets skipped.**
+  *Compaction* is one of the four patterns Anthropic names for long-running agents: preserve the
+  decisions and the unresolved problems, discard the redundant detail. It applies to a file exactly
+  as it applies to a context window, and the failure mode when it's unstated is specific and ugly:
+  the doc grows until someone splits it **under pressure**, and entries get dropped in the split
+  because nobody agreed beforehand what was safe to drop. Write the rule into the file itself:
+
+  1. **The window** — how much stays (the last N releases, the last M sessions). A number, not "recent."
+  2. **Where the rest goes** — a named archive file, so rolling something out is a move, not a delete.
+  3. **What stays canonical** — the one file that holds the *complete* history (usually the changelog).
+     The state doc is a **briefing**; it is allowed to be lossy precisely because that other file isn't.
+
+  BOSS learned this on itself: `docs/RESUME.md` was hand-split twice, the second time when a gate
+  flagged 592 lines, and several releases' state sections were **never written at all** — the split
+  happened faster than the record could keep up. A stated rule would have cost one paragraph.
 - **Don't hand-tend what the host now remembers for you.** The `#` hotkey era — *prompt the user to
   save that to CLAUDE.md* — is over; Claude saves durable facts to **auto-memory** on its own. The
   cut BOSS already draws in [`library/memory-seed/README.md`](../memory-seed/README.md) is the one

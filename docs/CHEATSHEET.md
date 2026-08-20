@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.165.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.172.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -87,7 +87,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/money` — The money verb, from the first dollar to operating it
 
 **Agents:** tester, program-manager, mentor-architect, mentor-gtm, mentor-cofounder  
-**Loops:** spec-loop, pretotype-loop, design-tokens-loop, cost-budget-loop, ai-failure-state-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop  
+**Loops:** spec-loop, pretotype-loop, design-tokens-loop, cost-budget-loop, ai-failure-state-loop, verification-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop  
 
 > _When to unlock next:_ When you have real users and the app needs design rigor, a real db, and prototypes — boss unlock v1.
 
@@ -96,6 +96,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 **Skills**
 
 - `/board` — The cross-FEAT sequencing surface for your app
+- `/design-library` — Generate the visual design library for your app — a self-contained HTML gallery of foundations (color/type/spacing), components (every variant, all five states) AND the rule sets (principles, do/don't pairs, terminology, voice), rendered from the code and tokens so it cannot drift
 - `/design-review` — Before-code design review for your app
 - `/ux-check` — After-code UX review for your app
 

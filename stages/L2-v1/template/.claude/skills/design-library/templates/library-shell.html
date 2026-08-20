@@ -1,0 +1,164 @@
+<!-- BUNDLED RESOURCE for /design-library. Copy to docs/design/library/index.html and fill.
+     Replace every {{...}}. Delete sections that don't apply — an empty section is worse than none,
+     EXCEPT the rules section, which should stay and say "not yet authored" so the gap is visible.
+     Keep this self-contained: no CDN, no build step, no external font. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{PROJECT_NAME}} — design library</title>
+<style>
+  /* Token values are injected here from DESIGN_TOKENS.md so this page renders in the real brand.
+     Semantic layer only — the cards reference these names, never raw hex. */
+  :root {
+    {{SEMANTIC_TOKENS_AS_CSS_VARS}}
+    /* library chrome — deliberately neutral so it never competes with the brand being shown */
+    --ui-bg: #fbfbfa; --ui-fg: #1a1a19; --ui-muted: #6b6b68; --ui-line: #e4e4e1; --ui-card: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ui-bg:#141413; --ui-fg:#f0efec; --ui-muted:#8f8f8a; --ui-line:#2a2a28; --ui-card:#1c1c1a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--ui-bg); color:var(--ui-fg);
+         font:16px/1.6 ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+  header { border-bottom:1px solid var(--ui-line); padding-bottom:1.5rem; margin-bottom:2.5rem; }
+  h1 { font-size:1.75rem; margin:0 0 .35rem; letter-spacing:-.02em; }
+  .sub { color:var(--ui-muted); font-size:.9rem; }
+  h2 { font-size:1.15rem; margin:3.5rem 0 .25rem; letter-spacing:-.01em; }
+  h2:first-of-type { margin-top:2rem; }
+  .note { color:var(--ui-muted); font-size:.85rem; margin:0 0 1.5rem; }
+  .grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
+  .card { background:var(--ui-card); border:1px solid var(--ui-line); border-radius:10px; padding:1rem; }
+  .swatch { height:60px; border-radius:6px; border:1px solid var(--ui-line); margin-bottom:.6rem; }
+  .mono { font:12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--ui-muted); }
+  .name { font-weight:600; font-size:.9rem; }
+  /* do / don't — the highest-value block on the page */
+  .dd { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); margin:1rem 0 2rem; }
+  .dd > div { border:1px solid var(--ui-line); border-radius:10px; padding:1rem; background:var(--ui-card); }
+  .dd .do  { border-left:3px solid #2f7d4f; }
+  .dd .dont{ border-left:3px solid #b3402f; }
+  .dd h4 { margin:0 0 .75rem; font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; }
+  .dd .do h4 { color:#2f7d4f; } .dd .dont h4 { color:#b3402f; }
+  .demo { padding:1rem; border-radius:6px; background:var(--ui-bg); margin-bottom:.6rem; }
+  .why { font-size:.85rem; color:var(--ui-muted); margin:0; }
+  /* health badges — drift lives on the component, not in a report */
+  .badge { display:inline-block; font-size:.7rem; padding:.15rem .45rem; border-radius:4px;
+           border:1px solid var(--ui-line); margin-right:.3rem; white-space:nowrap; }
+  .b-off { background:#fdecea; color:#8c2f22; border-color:#f3c4bd; }
+  .b-state { background:#fef4e5; color:#8a5a10; border-color:#f5ddb4; }
+  .b-dupe { background:#fef4e5; color:#8a5a10; border-color:#f5ddb4; }
+  .b-stale{ background:#fdf8e3; color:#7a6512; border-color:#efe3ae; }
+  .b-unused{ background:var(--ui-bg); color:var(--ui-muted); }
+  .b-clean{ background:#eaf5ee; color:#256b41; border-color:#c3e2ce; }
+  table { border-collapse:collapse; width:100%; font-size:.88rem; margin:1rem 0 2rem; }
+  th,td { text-align:left; padding:.5rem .6rem; border-bottom:1px solid var(--ui-line); vertical-align:top; }
+  th { font-size:.75rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ui-muted); }
+  a { color:inherit; }
+  .princ { border-left:3px solid var(--ui-line); padding-left:1rem; margin:1.25rem 0; }
+  .princ .trade { color:var(--ui-muted); font-size:.9rem; }
+  .empty { color:var(--ui-muted); font-style:italic; }
+  .scroll { overflow-x:auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>{{PROJECT_NAME}} — design library</h1>
+  <div class="sub">
+    {{N}} components · {{FINDINGS}} findings · generated {{DATE}} ·
+    <span class="mono">docs/design/library/</span>
+  </div>
+  <p class="note" style="margin-top:.75rem">
+    Generated from the code and <span class="mono">DESIGN_TOKENS.md</span> — not hand-maintained.
+    Components are rendered from token values, so this is a faithful approximation, not a live render.
+    Re-run <span class="mono">/design-library</span> after changing a component.
+  </p>
+</header>
+
+<!-- ─────────── 1. FOUNDATIONS ─────────── -->
+<h2>Colors</h2>
+<p class="note">Named by role, not by hue. Contrast ratios are for the paired text token.</p>
+<div class="grid">
+  <!-- repeat per semantic color token -->
+  <div class="card">
+    <div class="swatch" style="background:var({{--token-var}})"></div>
+    <div class="name">{{token.semantic.name}}</div>
+    <div class="mono">{{primitive}} · contrast {{ratio}}:1 {{PASS_OR_FAIL}}</div>
+  </div>
+</div>
+
+<h2>Type</h2>
+<p class="note">Real specimens at real sizes. If two levels look the same here, you have one level.</p>
+<div class="card">
+  <!-- repeat per type level -->
+  <div style="font:var({{--type-var}}); margin-bottom:.75rem">
+    {{SPECIMEN_TEXT}} <span class="mono">{{token.name}} · {{size}}/{{leading}}</span>
+  </div>
+</div>
+
+<h2>Spacing &amp; shape</h2>
+<div class="grid">
+  <div class="card">
+    <div style="height:{{value}}px; background:var(--ui-line); border-radius:2px; margin-bottom:.6rem"></div>
+    <div class="name">{{space.token}}</div><div class="mono">{{value}}px</div>
+  </div>
+</div>
+
+<!-- ─────────── 2. RULES (the half everyone forgets) ─────────── -->
+<h2>Principles</h2>
+<p class="note">Three to five. Each contains a tradeoff — if nobody could argue the opposite, it's a mood.</p>
+<!-- repeat per principle; if STYLE_GUIDE.md is still skeleton, keep the section and say so -->
+<div class="princ">
+  <div class="name">{{PRINCIPLE}}</div>
+  <div class="trade">Giving up: {{THE_TRADEOFF}}</div>
+  <div class="trade">Rule the agent can check: <span class="mono">{{THE_RULE}}</span></div>
+</div>
+
+<h2>Do / Don't</h2>
+<p class="note">A rule you can see beats a rule you can read. Render both sides.</p>
+<div class="dd">
+  <div class="do">
+    <h4>Do</h4>
+    <div class="demo">{{RENDERED_GOOD_EXAMPLE}}</div>
+    <p class="why">{{WHY}}</p>
+  </div>
+  <div class="dont">
+    <h4>Don't</h4>
+    <div class="demo">{{RENDERED_BAD_EXAMPLE}}</div>
+    <p class="why">{{WHY_NOT}}</p>
+  </div>
+</div>
+
+<h2>Terminology</h2>
+<p class="note">One word per concept. The most checkable content rule you own — and the most expensive to change late.</p>
+<div class="scroll"><table>
+  <tr><th>Use</th><th>Never</th><th>Because</th></tr>
+  <tr><td>{{TERM}}</td><td>{{ALIASES}}</td><td>{{WHY}}</td></tr>
+</table></div>
+
+<h2>Voice in the interface</h2>
+<div class="scroll"><table>
+  <tr><th>Surface</th><th>The rule</th><th>Real string</th></tr>
+  <tr><td>Buttons</td><td>{{RULE}}</td><td class="mono">{{EXAMPLE}}</td></tr>
+  <tr><td>Errors</td><td>what to do next, not what failed</td><td class="mono">{{EXAMPLE}}</td></tr>
+  <tr><td>Empty states</td><td>what to do next, not "nothing here"</td><td class="mono">{{EXAMPLE}}</td></tr>
+</table></div>
+
+<!-- ─────────── 3. COMPONENTS ─────────── -->
+<h2>Components</h2>
+<p class="note">Every variant, all five states. A gap is rendered as a gap — you can't skim past a hole.</p>
+<div class="grid">
+  <!-- repeat per component; links to components/<name>.html -->
+  <div class="card">
+    <div class="name"><a href="components/{{slug}}.html">{{Name}}</a></div>
+    <div class="mono" style="margin:.3rem 0 .5rem">{{source path}} · used {{n}}×</div>
+    <div>{{BADGES}}</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

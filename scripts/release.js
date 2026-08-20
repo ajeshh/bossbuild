@@ -161,7 +161,15 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   const r = run('node', [join('scripts', 'check-site.js'), '--strict']);
   const broken = (r.out.match(/^\s*(\d+) broken claim/m) || [, '?'])[1];
   record('website claims hold', r.code === 0, r.code === 0 ? 'every command and agent the site names exists' : `${broken} broken claim(s) — see npm run check:site`);
-  const overdue = (r.out.match(/(\d+) page\(s\) overdue/) || [, '0'])[1];
+  const trailing = (r.out.match(/(\d+) trailing/) || [, '0'])[1];
+  const overdue = (r.out.match(/(\d+) overdue/) || [, '0'])[1];
+  // A release is exactly the moment the website goes stale: something shipped, and
+  // the page describing it didn't move. Soft (never block a release on prose) but
+  // named loudly, because the whole failure mode is that nobody notices.
+  record('website keeps up', trailing === '0',
+    trailing === '0' ? 'no page trails what it documents'
+      : `${trailing} page(s) document something that changed since they were reviewed — npm run check:site`,
+    true);
   if (overdue !== '0') record('website prose fresh', true, `${overdue} page(s) past review_by — not a blocker`, true);
   if (r.code !== 0) console.log(r.out.trimEnd());
 }

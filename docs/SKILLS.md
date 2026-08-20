@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.165.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.172.0**.
 
 ## Quickstart
 
@@ -56,6 +56,7 @@
 ## V1
 
 - **`/board`** — The cross-FEAT sequencing surface for your app  _(/board  (or /board --next, /board --blocked, /board --by-cohort))_
+- **`/design-library`** — Generate the visual design library for your app — a self-contained HTML gallery of foundations (color/type/spacing), components (every variant, all five states) AND the rule sets (principles, do/don't pairs, terminology, voice), rendered from the code and tokens so it cannot drift  _(/design-library [--check])_
 - **`/design-review`** — Before-code design review for your app  _(/design-review [FEAT-NNN | path-to-component-spec])_
 - **`/ux-check`** — After-code UX review for your app  _(/ux-check [route-or-component-path | FEAT-NNN])_
 

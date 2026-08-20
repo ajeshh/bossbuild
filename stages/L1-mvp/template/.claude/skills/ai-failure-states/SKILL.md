@@ -116,6 +116,34 @@ For each `docs/ideas/FEAT-NNN.md` that puts an LLM in the user-visible path:
 - Update **Acceptance criteria** to include at least one failure-state path (e.g., *"refusal
   routes to /support, not the spinner"*).
 
+## The copy nobody reviewed (added v0.168.0)
+
+Every failure state above ends in **words a user reads**, and those words are the least-reviewed
+copy in an AI product. A designed failure state with default copy is only half designed — the founder
+specified the *behavior* and let the model write the *sentence*.
+
+Four surfaces that reach users and usually pass through no review at all:
+
+| Surface | What ships if nobody decides | What it should do |
+|---|---|---|
+| **Refusal / hedge** | the model's stock decline, in the model's voice | say what it *won't* do and what the user *can* do instead |
+| **Retry / rate limit** | *"Something went wrong. Try again."* | say whether waiting helps, and how long |
+| **Streaming / latency** | a bare spinner | say what's happening if it's slow enough to worry about |
+| **Pre-action confirm** | *"Are you sure?"* | name the consequence — what changes, and whether it's reversible |
+
+**This is where the model's default voice does the most damage**, because it lands in the moments a
+user is already frustrated — and it's the moment the product sounds least like itself. It is also the
+copy no content review catches, because it isn't in the codebase as a string: it's generated at
+runtime from a system prompt somebody wrote once.
+
+**So the system prompt is product copy.** Write it against `STYLE_GUIDE.md`'s voice traits and
+terminology table, the same as a button label. If the style guide says the product says *team*, a
+system prompt that says *workspace* ships an inconsistency the terminology guard structurally cannot
+see — it never appears as a literal in your source.
+
+For each failure state, write the actual string, not a description of it. *"Tell them it failed"* is
+not a decision; *"That's longer than I can read in one go — try under 50 pages."* is.
+
 ## Connection to other loops
 
 - **Upstream:** `cost-budget-loop` closed (budget exists; cost-spike has a number to compare
@@ -155,3 +183,8 @@ For each `docs/ideas/FEAT-NNN.md` that puts an LLM in the user-visible path:
   feature; no user-facing path). Record the override in devlog per IDEA-008.
 - **The doc is a living artifact.** When a new failure mode shows up in production, add it as
   a sixth (and seventh, etc.) — the five are the floor, not the ceiling.
+- **Write the string, not a description of the string.** Every failure state ends in words a user
+  reads. *"Handle it gracefully"* leaves the sentence to the model, and the model writes the mean.
+- **The system prompt is product copy.** It's the one user-facing text that never appears as a
+  literal in your source, so no check will ever catch it. Review it against the style guide's voice
+  and terminology by hand, or it drifts silently forever.

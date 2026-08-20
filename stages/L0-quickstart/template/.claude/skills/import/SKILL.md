@@ -16,7 +16,7 @@ Run `/import` anytime — including well after the idea is captured — to add m
 
 Read, in order:
 - `.boss/manifest.json` — current stage.
-- `docs/ideas/INDEX.md` and `docs/IDS.md` — existing ideas + the next free `IDEA-NNN`.
+- `docs/ideas/` and `docs/IDS.md` — existing ideas + the next free `IDEA-NNN` (read the files).
 - If the founder named an `IDEA-NNN`, read that idea doc — you're adding to it, not starting over.
 
 Don't announce these reads.
@@ -52,8 +52,8 @@ goes offline. **Snapshot first, interpret second** — don't paraphrase away the
   the snapshot paths under `docs/source/`.
 - **No idea yet** (a fresh project, founder ran `/import` instead of `/boss`): this is really spin-up —
   hand off to `/boss`'s shaping. Read all sources, then create `docs/ideas/IDEA-001-<slug>.md` (frontmatter
-  `id`, `type: idea`, `owner: pm`, `status: ready`) seeded from the material, and update
-  `docs/ideas/INDEX.md`. Don't make the founder run a second command to see their idea captured.
+  `id`, `type: idea`, `owner: pm`, `status: ready`) seeded from the material. Don't make the founder
+  run a second command to see their idea captured.
 
 ## 4. Wrap up — and point at the next step
 

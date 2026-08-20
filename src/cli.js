@@ -183,7 +183,7 @@ function cmdAdopt(args) {
   if (agentsPreexisted) {
     appendMarkedBlock(join(targetDir, 'AGENTS.md'), 'adopt',
       `## BOSS working rules — adopted ${stageVars(name, stageId, manifest.name).DATE}\n\n` +
-      `1. **Capture before you build** (every idea → \`IDEA-NNN\`; see \`docs/ideas/INDEX.md\`).\n` +
+      `1. **Capture before you build** (every idea → an \`IDEA-NNN\` file in \`docs/ideas/\`).\n` +
       `2. **Stack-neutral until decided.** 3. **Docs are source of truth, not chat.**\n` +
       `4. **Small, reversible steps.** 5. **Ask before irreversible actions.** 6. **Don't over-build.**\n` +
       `7. **Grow through modes** (Quickstart → MVP → V1 → Scale): \`boss unlock <mode>\`.`);
