@@ -4,7 +4,7 @@ type: practice
 owner: mentor-architect
 status: active
 host: claude-code
-provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep)
+provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep) · **sharpened v0.165.0 (2026-08-20), clock deliberately NOT moved** — the MCP-and-automation assessment added the pre-install pass (tool descriptions as untrusted input; poisoned descriptions are ASI01 goal-hijack, not supply-chain; registry still preview; re-read on update). One bullet is not a threat sweep, and per the v0.150.0 correction "freshened a little" is not a claimable state — the next real sweep still owns 2026-11-09.
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
 curve: threat
@@ -114,6 +114,15 @@ opens — the **agent itself** going wrong. Two things to hold:
   never forward. Treat every registry server as an unpinned, untrusted dependency (30+ MCP CVEs in an
   early-2026 window; the postmark-mcp rug-pull that behaved for 15 versions, then BCC'd all mail to an
   attacker). This is ASI04 made concrete.
+- **Before you connect a server, read its tool *descriptions* as untrusted input — because that's what they
+  are.** A tool description is attacker-controlled text that enters your context looking like something you
+  wrote; hidden instructions in one are indirect prompt injection wearing a schema, and OWASP files it under
+  **ASI01 (agent goal hijack)**, not under supply chain. Most published servers are unreviewed, and the
+  registry is still **preview** — an entry is a lead, not a vetting. The pre-install pass, in order:
+  **verify the publisher · read every tool description and every parameter description · pin the version ·
+  scope the token to the minimum · require approval for anything destructive · re-read the descriptions on
+  update** (a rug-pull is a *later* version, which is exactly how postmark-mcp worked). Scanners for poisoned
+  descriptions exist and are worth running, but they are a second pair of eyes, not the first pair.
 - **Treat agent "memory" as a persistence channel, and bound it at the tool layer.** The moment your app
   gives its agent memory, a *one-time* injection can plant a durable instruction that fires in a *later*
   session (the delayed-trigger attack — near-99% success on stateful agents in 2026 testing). In-context

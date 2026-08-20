@@ -93,6 +93,49 @@ reactions, comparable across versions). Synthetic shrinks as real evidence grows
 consult ends with "go ask a real one" (the Mom Test). Never validation — a pre-filter that sharpens the
 questions.
 
+## 9. A fast-moving domain, handled on purpose (MCP + automation, worked)
+
+Most agent tooling handles a hot domain by *shipping a scaffold for it*. That looks like coverage and
+ages like milk. BOSS's stance is the opposite — **own the decision, rent the execution** — and it runs on
+a loop with a date on it:
+
+```
+outside claim → docs/research/inbox/ → /vet (NO-biased, verifies the attribution first)
+             → RVW-NNN verdict (ADOPT / ADAPT / REJECT / NOT-YET)
+             → /boss-learn routes it UP (a practice) or DOWN (a skill or an agent)
+             → the practice carries curve: + review_by: → npm run check:freshness
+             → /practice-refresh sweeps it, on cadence OR on an event
+```
+
+MCP is the worked example, and the honest version of it is not flattering:
+
+- **The refusal held.** A `/mcp` server-scaffolding skill has been deferred since RVW-019 and re-decided
+  twice rather than left to rot — because *"a deferral whose stated condition has expired is not a
+  decision, it's a stale note."* When the spec settled in July 2026 the deferral was split: **spec half
+  met, demand half not**, and demand was always the load-bearing half.
+- **The cadence failed, and it's recorded.** `mcp.md` was **wrong seven days after it was written** — a
+  spec landed on a Tuesday — while the freshness check reported *25 fresh, 0 overdue*. That single miss is
+  why every practice now carries an **event trigger**, not just a date, and why the sweep hunts for what's
+  **WRONG**, not only what's missing.
+- **The second sweep found under-weighting, not error.** A 2026-08 pass didn't overturn the doc; it found
+  MCP Apps sitting in a parenthesis when GA'd server-rendered UI turns *"expose your product as a server"*
+  from a distribution decision into a product-surface one. **Under-weighted is a finding.** So is *"still
+  current"* — a confirmed claim gets recorded, or the shelf only ever grows.
+- **The gap was delivery, not knowledge.** `mentor-architect` **owned** the MCP practice in its own
+  frontmatter and named MCP nowhere in the decisions it walks a founder through. A good doc with no route
+  to a human is not a feature. The fix was **two rows on an existing agent and one sharpened step — zero
+  new skills**, which is the standing mandate after the first real founder said the surface was already
+  hard to navigate.
+- **The reverse sweep refused the new practice.** Adding `automation.md` made `check:freshness` fail on
+  the spot: *"1 practice claimed by NO watchlist domain — nothing will ever fire for these."* A doc nobody
+  watches can never come due, so the tooling won't let one exist. It also can't see the case where
+  *neither* the practice nor the domain exists — which is how this gap and the teams gap were both found,
+  by someone asking a question the watchlist had no row to answer. **n=2, recorded, not papered over.**
+
+The generalizable part: a domain doesn't rot because time passed, it rots because **the ground moved** —
+so the metadata that matters is *which curve is this on and what event invalidates it*, not *when did I
+last touch it*.
+
 ## The honest limits
 
 - **No real users.** Everything above is internal rigor. The thing that turns "clever" into "matters"

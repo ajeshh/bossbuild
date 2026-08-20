@@ -360,10 +360,10 @@ const byId = Object.fromEntries(practiceDocs.map((p) => [p.id, p]));
 
 // Topic groups for the engineering page. Explicit on purpose — and CHECKED below,
 // so adding a practice to the library forces a decision here instead of silently
-// vanishing from the site.
+// vanishing from the site. (It has already caught one: automation.md, added mid-flight.)
 const ENG_GROUPS = [
-  ['Building with agents', 'The harness, the context window, and which model does what.',
-   ['harness-engineering', 'context-discipline', 'skill-authoring', 'model-routing']],
+  ['Building with agents', 'The harness, the context window, which model does what — and what stays deterministic.',
+   ['harness-engineering', 'context-discipline', 'skill-authoring', 'model-routing', 'automation']],
   ['Security', 'The failure modes specific to agentic systems, and the ones AI-written code introduces.',
    ['agent-security', 'data-schema']],
   ['Testing & quality', 'Why an agent going green is not the same as the code being right.',

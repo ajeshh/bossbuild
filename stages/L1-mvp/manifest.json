@@ -52,12 +52,10 @@
   "postLaunch": [
     "landing",
     "measure",
-    "pmf-check",
-    "retain",
+    "health",
     "onboard",
     "roadmap",
-    "first-dollar",
-    "monetize",
+    "money",
     "trust"
   ],
   "loops": [

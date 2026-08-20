@@ -2,6 +2,94 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+## 0.165.0 — 2026-08-20
+
+**MCP and automation: the decision existed, the route to a founder didn't.**
+
+Ajesh: *"MCP and automation building is becoming huge… see where we are, what are the best
+practices, make it more formal, and document our approach."* The assessment found the shelf in
+better shape than the delivery. `mcp.md` was **under-weighted, not wrong**; automation had **no
+practice at all**; and the agent that owns both subjects in its own frontmatter walked founders
+through an AI-MVP decision set that named **neither**.
+
+### `automation.md` — the practice that backs a line BOSS already ships
+
+`/ai-first-init` step 1 has been asking founders *"what's explicitly deterministic?"* and calling it
+*"the hardest line to fill honestly"* — which is the entire 2026 automation consensus (deterministic
+core, agentic surface) shipping unnamed, with no ladder under it. Same shape as
+`testing-with-agents.md`: **a stranded load-bearing line gets a home.**
+
+- **A four-rung ladder, earned upward.** RVW-008's three categories are right and **start one rung
+  too high** — most of what a founder means by "automate this" is **rung 0: a script and a
+  schedule**. Then a fixed path with one schema'd model *step*, then a real agent loop, then
+  multiple agents (earn last, mostly don't). Climb on a failure you actually hit.
+- **Three questions before anything runs unattended** — what breaks if it runs wrong at 3am
+  (blast radius before capability), is there a pass/fail signal without a human reading it
+  (Karpathy's verifiability line, applied), and **who gets told when it fails** (a loop with no
+  failure channel is silent, and silence reads as success until it's expensive).
+- **Rent the runner.** `harness-engineering.md`'s host-seam rule — *don't author what the host
+  ships* — applied to automation for the first time, and this is its largest instance: hooks,
+  the host's scheduled/triggered agents, CI and the no-code tier all already exist. BOSS names the
+  **rung**, never the vendor (PRINCIPLE #4 — the rule that killed RVW-011).
+- Retries, backoff and state belong to the orchestrator, never the model. `curve: craft-ai` (180d).
+
+### `mcp.md` swept — under-weighted, not wrong
+
+- **MCP Apps (GA Jan 2026) was a parenthesis.** Server-rendered UI inside ChatGPT/Claude/VS Code
+  turns shape (b) from *"expose your tools"* into **"part of your interface runs in a client you
+  don't control"** — a product-surface decision with a support burden, on someone else's release
+  cadence. Honest ordering added: **read-only tools → write tools (the auth cliff) → an App**, and
+  most founders should stop after the first.
+- **Tasks named as the automation seam** (a durable server-minted handle you poll, not a held
+  connection) and cross-linked to the ladder — the prior question is which rung, not which protocol.
+- **The registry is still preview**, which this doc had never said. An entry is a lead, not a vetting.
+- **`agent-security.md` gains the pre-install pass** — a tool *description* is attacker-controlled
+  text entering your context as if you wrote it, and OWASP files that under **ASI01 goal-hijack**,
+  not supply chain. Verify publisher · read every description · pin · scope the token · approve
+  destructive actions · **re-read on update** (a rug-pull is a later version). **Its clock was
+  deliberately not moved** — one bullet is not a threat sweep, per the v0.150.0 correction.
+
+### The fix was composition — 0 new skills (46 → 46)
+
+- **`mentor-architect` gains two rows** in the AI-MVP decision set: **automation shape** (which
+  rung, the three unattended questions, rent the runner) and **integration shape** (MCP's three
+  blurred decisions — consume / expose / use internally — with the auth gate and the
+  `mentor-gtm` handoff). It owned both practices in frontmatter and surfaced neither.
+- **`/ai-first-init` step 1 sharpened**, not extended — the ladder under the line it already ships.
+- **The `/mcp` skill stays deferred, re-decided a third time.** The trigger that arrived was a
+  *market* read, not the demand half (a real founder at the wall), which is unchanged. And the
+  thing the skill was meant to deliver now ships without it, which **raises** the bar for building it.
+
+### Watchlist domain 12 — and the failure mode it makes n=2
+
+`build-craft.md` had 11 domains and none for automation. Domain 11 (teams) was added the same way on
+2026-07-31 with the note that *a watchlist assembled from the practices that exist inherits their
+blind spots*. **That is now twice.** The v0.160.0 reverse sweep closes the half where a practice
+exists unclaimed — **it fired on the first run here and refused `automation.md` until domain 12
+existed** — but it structurally cannot see the half where *neither* exists. The only known detector
+is someone asking a question the file has no row to answer. Recorded, not papered over.
+
+### Caught in passing: the release gate has been red since v0.157.0
+
+Unrelated to this work, found because the gate had to pass. **`stages/L1-mvp/manifest.json`'s
+`postLaunch` list still named all four verbs v0.157.0 retired** — `pmf-check`, `retain`,
+`first-dollar`, `monetize`. The subtraction pass cleaned `skills` and the prose (that's what
+`check:refs` class 4 was built for) and **left the fold array**, which is neither a file path nor
+prose, so nothing covered it. `boss map` was telling every MVP project *"+9 for after you ship"*
+while four of the nine did not exist. Now **+7**, and the manifest checker — which has had this
+validation since v0.139.0 — passes.
+
+The uncomfortable half: **v0.158.0 → v0.163.0 each recorded "all gates green."** They were not.
+`npm run release` is only a gate if it is actually run before the claim is written.
+
+### Documented for showcase
+
+`docs/PATTERNS.md` §9 — the inbox → `/vet` → verdict → `/boss-learn` → practice → freshness loop,
+with MCP as the worked example **including the unflattering parts**: the doc that was wrong at seven
+days old, the deferral re-decided rather than left to rot, and the reverse sweep blocking this very
+release. Renders to the site's engineering page (`gen-site.js` group renamed to *Retrieval, protocols
+& automation* — the new practice forced the decision rather than vanishing).
+
 ## 0.164.0 — 2026-08-19
 
 > **For you:** BOSS has a website — what it is, who it staffs, a quick guide, and the sources behind every practice it ships.

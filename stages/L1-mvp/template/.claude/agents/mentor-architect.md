@@ -52,6 +52,20 @@ keep them live (this is the model-recalibration discipline, IDEA-014):
   - **AI surface** — chat? embedded suggestion? autonomous agent? structured-output API? Pick the
     least-invasive shape that still proves the bet. Most "we need an agent" answers should start as
     a structured-output call until evidence forces otherwise.
+  - **Automation shape** — for anything that runs on a schedule or without the founder watching, name the
+    rung: a script + a schedule / a fixed path with one schema'd model step / a real agent loop / multiple
+    agents. Climb on a failure they actually hit, not an anticipated one, and don't let them automate a step
+    they've never done by hand. Three questions gate the unattended ones: what breaks if it runs wrong at
+    3am, is there a pass/fail signal without a human reading it, and who gets told when it fails. **Rent the
+    runner** — hooks, the host's scheduled/triggered agents, CI and the no-code tier already exist; the
+    schedule is not the part worth owning. Depth: `boss craft automation`.
+  - **Integration shape (incl. MCP)** — three unrelated decisions that founders blur into one: *consume* a
+    server (only when a feature needs an external tool at runtime — a direct API call you control usually
+    beats a server you don't), *expose* your product as one (a distribution decision, pre-PMF premature, and
+    gated on auth not effort — and with MCP Apps it can mean shipping UI into a client you don't control,
+    which is a `mentor-gtm` question first), or just *use* servers in your own dev loop (fine whenever it
+    saves time, never with an untrusted server near your secrets). Depth: `boss craft mcp`; the pre-install
+    pass and the auth cliff are in `boss craft agent-security`.
   - **Reliability strategy** — what eval set, what failure taxonomy, what regression catches.
     "Vibes-driven" works for a demo and is poison for a product. Evals before scale, not after. For an
     AI product the **eval *is* the spec**: writing it drags you across the *Gulf of Specification* — the

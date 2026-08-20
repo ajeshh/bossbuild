@@ -50,6 +50,14 @@ Template: **[`templates/ai-first-declaration.md`](templates/ai-first-declaration
 The hardest line to fill honestly is *what stays deterministic* — the instinct is to route everything
 through the model. Every row on that side is a row that can't hallucinate.
 
+**That line has a ladder under it.** "Deterministic core, model only where the path genuinely branches" is
+the same judgment whether you're designing a feature or something that runs on a schedule — and the rungs
+go: a script + a schedule → a fixed path with one schema'd model *step* → a real agent loop → multiple
+agents. Climb on a failure you actually hit, never on one you anticipate. If any row on the AI-mediated side
+is there because enumerating the branches felt like work, it belongs one rung lower. Full depth, including
+the three questions to answer before anything runs unattended (blast radius / verification signal / who gets
+told): `boss craft automation`.
+
 
 ### Step 2 — Seed structured outputs (Liu)
 
