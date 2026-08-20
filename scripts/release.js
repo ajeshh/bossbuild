@@ -58,8 +58,17 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
 // --- 1b. the unit suite ---------------------------------------------------
 // Cheap (<1s) and it locks every bug this audit found, so it runs early — a red suite
 // makes the rest of the gate's output noise.
+//
+// DISCOVERED, never listed. This was a hardcoded four-file list, so `design-tokens-guard.test.js`
+// and `ladder.test.js` were both invisible to the release gate while `npm test` ran them — the gate
+// reported 107 passing out of 131. A gate that silently covers a subset is the same defect class as
+// a check resolving against the wrong surface: it reads green for the exact reason it should not.
 {
-  const r = run('node', ['--test', 'test/board.test.js', 'test/conscience.test.js', 'test/scaffold.test.js', 'test/cli.test.js']);
+  const files = readdirSync(join(BOSS_ROOT, 'test'))
+    .filter((f) => f.endsWith('.test.js'))
+    .sort()
+    .map((f) => join('test', f));
+  const r = run('node', ['--test', ...files]);
   const pass = (r.out.match(/^. pass (\d+)/m) || [, '?'])[1];
   const fail = (r.out.match(/^. fail (\d+)/m) || [, '?'])[1];
   record('unit tests', r.code === 0 && fail === '0', `${pass} passed · ${fail} failed`);
@@ -85,6 +94,20 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   const r = run('node', [join('scripts', 'check-freshness.js')]);
   record('practice freshness legible', r.code === 0,
     r.code === 0 ? 'every practice carries curve + review dates' : 'see output below');
+  if (r.code !== 0) console.log(r.out.trimEnd());
+}
+
+// --- 2c. every shipped capability is classified on the ladder -------------
+// Caught (v0.179.0, the release that added it): ~47 skills shipped and only four ever asked
+// whether the founder already HAD the thing they generate. Nothing forced the question at
+// authoring time, so nothing asked it. This gate is that forcing function — a new capability
+// cannot ship without someone deciding whether it produces something durable, and if so what
+// rung it sits on and what seam it leaves. It also fails LOUDLY on a malformed ledger, which
+// otherwise disables artifact-awareness across sync and status in total silence.
+{
+  const r = run('node', [join('scripts', 'check-ladder.js')]);
+  record('ladder classification', r.code === 0,
+    r.code === 0 ? 'every shipped skill is durable-with-a-rung or exempt-with-a-reason' : 'see output below');
   if (r.code !== 0) console.log(r.out.trimEnd());
 }
 

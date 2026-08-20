@@ -12,6 +12,14 @@ you've earned the right to ask deeper questions (which the `tester` agent handle
 Smoke is **stack-specific** — there's no universal command. This skill's job is to find the
 project's smoke command and run it; if there isn't one yet, help configure it (once).
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for the build-health gate before you make one** — `.boss/smoke.json`. A project can have a smoke gate under another name — a `verify`/`check` make target, a `test` script that actually boots the app, a pre-commit hook. If they have one, the gap is BOSS's blindness, not their discipline; say so and wire to it rather than adding a second. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: A gate costs the same to add later. What is genuinely lost belongs to `spec` above — the criterion, not the runner.
+
 ## How to run it
 
 1. Look for the smoke command, in this order:
@@ -32,6 +40,10 @@ project's smoke command and run it; if there isn't one yet, help configure it (o
 
 - **Is:** does the app start, build, or run its happiest path without exploding.
 - **Isn't:** does the feature work correctly. That's acceptance criteria, owned by `tester`.
+- **Isn't:** the whole ladder. Smoke is **rung 1** of six (`boss craft testing-with-agents`).
+  Rungs 2–4 — the money path, the destructive path, and *can user A reach user B's data* — are named
+  in the FEAT by `/spec` and proved by `/red-team --paths`. Green smoke means you've earned the right
+  to ask those, not that they've been answered.
 - **Isn't:** a CI replacement. CI runs the full suite; smoke is the human-loop gate.
 - **Isn't:** flaky. If smoke is intermittent, fix the smoke — it has one job, and being trustworthy is it.
 

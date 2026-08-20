@@ -84,7 +84,7 @@ export function printChangelog({ since, all = false, full = false, pin = null } 
     if (cmpVersion(floor, installed) >= 0) {
       console.log(`  ${ok('✦')} Nothing new — this project is on the installed version (${installed}).\n`);
       console.log(`  ${dim('That only means your INSTALL and your PROJECT agree. To find out whether the')}`);
-      console.log(`  ${dim('install itself is behind, update the tool:')}  ${bold('npm i -g bossbuild@latest')}`);
+      console.log(`  ${dim('install itself is behind, update the tool:')}  ${bold('npm i -g oyeboss@latest')}`);
       console.log(`  ${dim('(or')} ${bold('brew upgrade boss')}${dim('), then run this again.')}\n`);
     } else {
       console.log(`  ${warn('⟳')} No entries after ${floor} in this install (${installed}).`);

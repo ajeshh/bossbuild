@@ -13,6 +13,14 @@ This skill is the design step that costs an hour and saves the next ten. Five fa
 One declared response per state. Cohort-aware delivery. Recorded in `docs/ai-failure-states.md`
 so the next FEAT inherits the discipline.
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for designed AI failure states before you make one** — `docs/ai-failure-states.md`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** Applies only when the project makes its first LLM call. If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: A failure-state design costs the same written later. The recoverable-only-now half is the specific weird output you saw and closed the tab on — that seam belongs to `evals`, and duplicating it here would be a second ask for the same habit.
+
 ## The five failure states
 
 These are the failure modes that **always exist** in AI-mediated code. Naming each one + its

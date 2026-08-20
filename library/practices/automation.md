@@ -5,6 +5,7 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: written 2026-08-20 (v0.165.0) to close a coverage gap found by the MCP-and-automation assessment — 28 practices and none about automation, while `/ai-first-init` step 1 has been shipping the load-bearing line ("the hardest line to fill honestly is what stays deterministic") with nothing backing it. Same shape as testing-with-agents.md: a stranded line gets a home. Rung 0 + the four-rung ladder extend RVW-008's three categories downward (most founder "automation" is a cron job; the categories start one rung too high). RVW-011 governs the vendor tier — name the rung, never the stack (PRINCIPLE #4). The rent-don't-author rule is harness-engineering.md's host-seam rule applied to automation for the first time.
+provenance_public: Written to close a coverage gap: BOSS had been shipping the load-bearing line — *the hardest line to fill honestly is what stays deterministic* — with no practice behind it. The four-rung ladder deliberately starts one rung lower than the usual categories, because most founder "automation" is a cron job. The vendor tier follows PRINCIPLE #4: name the rung, never the stack.
 last_reviewed: 2026-08-20
 review_by: 2027-02-16
 curve: craft-ai

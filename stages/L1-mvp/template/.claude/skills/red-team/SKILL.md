@@ -1,6 +1,6 @@
 ---
 name: red-team
-description: Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest. Plus a pre-ship app-security pass (no secrets/keys in the shipped bundle — the vibe-coded-leak surface secrets-guard does NOT cover). Turns BOSS's prevention (deny-list, secrets-guard, lethal-trifecta, containment) into *evidence*: binary pass/fail per category, with the attack that proved it. And `--humane` probes the founder's *own* AI product for dark patterns (esp. emergent ones like sycophancy). Pairs with /evals (correctness) and the agent-security practice (prevention). Usage - /red-team [FEAT-NNN | --self | --humane]
+description: Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest. Plus a pre-ship app-security pass that needs NO LLM in the product at all — `--paths` proves the three paths a FEAT named as must-not-break (rungs 2-4 of the testing ladder): the money path, the destructive path, and the negative path (can user A reach user B's data — the headline vibe-coded breach class), alongside the secrets/keys scan of the shipped bundle that secrets-guard does NOT cover. Turns BOSS's prevention (deny-list, secrets-guard, lethal-trifecta, containment) into *evidence*: binary pass/fail per category, with the attack that proved it. And `--humane` probes the founder's *own* AI product for dark patterns (esp. emergent ones like sycophancy). Pairs with /evals (correctness) and the agent-security practice (prevention). Usage - /red-team [FEAT-NNN | --paths | --self | --humane]
 ---
 
 # /red-team — turn your defenses into evidence
@@ -13,6 +13,13 @@ honest, measured, and stated with its false-negative behavior — not theater.)
 It's the security counterpart to `/evals`: `/evals` asks *is the AI part correct?*; `/red-team` asks
 *can the AI part be made to do something it shouldn't?*
 
+**And one part of it has nothing to do with AI.** The pre-ship pass below — `/red-team --paths` —
+proves the paths a FEAT said must not break, in a project that may not call a model at all. That
+half exists because *turning a defense into evidence* is the same discipline whether the thing being
+defended is a prompt or a database row, and rung 4 of the testing ladder (*can user A reach user B's
+data?*) is the single highest-value probe a founder will ever run. Run `--paths` on its own when the
+product isn't AI-mediated; there's no reason to sit through the LLM battery to prove an authz rule.
+
 ## When to run it
 
 - A FEAT puts an LLM in a path that reads **untrusted input** (web pages, user text, files, emails,
@@ -24,7 +31,7 @@ It's the security counterpart to `/evals`: `/evals` asks *is the AI part correct
 > **Model routing (recalibration):** when you delegate the attack run to a subagent, spawn it with
 > the Agent tool's `model: "fable"` — pay for the strongest attacker; the output is a findings list,
 > not a build, so the judgment premium is trivial. If Fable declines (a `refusal` stop reason), fall
-> back to the session model and say so. See `.boss/model-profile.json` / `/recalibrate`.
+> back to the session model and say so. See `.boss/model-profile.json`.
 
 ## How to run it — the OWASP 2025 LLM Top 10
 
@@ -84,11 +91,38 @@ pass/fail + the attack that proved it):
 Gate the irreversible behind a human or a cheaper trusted check (agent-security containment), and
 verify it holds here.
 
-## Pre-ship app-security pass (the vibe-coded-leak surface)
+## `--paths` — the pre-ship pass on the code the agent wrote (no LLM required)
 
 Distinct from everything above: the **code the agent wrote for the product** is its own risk, and the
 one a founder most often ships by accident. Before the first deploy, run a quick pass — this is the
-single most valuable gate for a non-technical founder, who can't spot the vuln themselves:
+single most valuable gate for a non-technical founder, who can't spot the vuln themselves.
+
+**Start from the FEATs, not from a checklist.** `/spec` writes a *Paths that must not break* section
+into each FEAT record — the money path, the destructive path, the negative path. Those are the
+founder's own words about what would hurt, so they are the brief. Read every FEAT at
+`shipped`/`done`, collect the paths, and prove each one the same way you prove an attack: **run it,
+don't review it.**
+
+### The three paths (rungs 2–4 of `boss craft testing-with-agents`)
+
+- **Rung 4 — the negative path. Run this one first; it is the reason this pass exists.**
+  *Can user A reach user B's data?* Create two real accounts (or two tenants), have A ask for B's
+  record by its identifier — the API call, the direct URL, the exported file, the shared link — and
+  record what came back. **Do it as user A, against the running app.** Reading the policy, the query,
+  or the middleware is *not* this test: the failure mode here is a **missing security property**, not
+  a broken behaviour, so every screen renders correctly and every click succeeds right up until
+  someone else's row appears. If identifiers are sequential integers, that *is* the enumeration
+  attack — try `id+1` and say so. Cross-check the schema side with `boss craft data-schema`: RLS
+  enabled **and** a policy present, per table (either one alone enforces nothing).
+- **Rung 3 — the destructive path.** Anything that deletes, charges, sends, or publishes. Two
+  questions, both answered by doing: does it have a test that proves it does the right thing, and is
+  there a **human gate** in front of the irreversible version? Try to reach the destructive call
+  without passing the gate — a background job, a retry, an admin route, a webhook replay.
+- **Rung 2 — the money path.** The flow that, broken, means there's no product. Run it end to end
+  against the real thing. **A money path verified against mocks is verifying the mocks** — if the
+  only proof it works is a suite where the payment provider is stubbed, that is not a result.
+
+### The rest of the pass
 
 - **No secrets in the shipped bundle or the repo.** API keys in frontend JS, an open storage bucket, a
   committed `.env`. **`secrets-guard` does NOT cover this** — it stops the *agent* reading secrets into
@@ -96,6 +130,11 @@ single most valuable gate for a non-technical founder, who can't spot the vuln t
 - **OWASP web basics** on any AI-generated code (Veracode: ~45% of AI-generated code ships an
   OWASP-Top-10 vuln — XSS, injection, auth gaps). Treat generated code as unreviewed, not done.
 - A `fail` here is a `/spec` fix before deploy, not a backlog item.
+
+**If a FEAT named no paths at all**, don't invent them — say which FEATs you read and that they
+declared none, and run the secrets + OWASP half. A founder with a genuinely single-user tool has an
+honest answer to rung 4, and manufacturing one to look thorough is how a security pass becomes
+theatre. **Name what you did not test**, every time.
 
 ## `--humane` — test the built product for dark patterns (esp. emergent ones)
 
@@ -122,6 +161,12 @@ surface; skip for a purely functional internal tool (say why).
 
 A dated report — `docs/red-team/RT-YYYY-MM-DD.md` (or inline for `--self`):
 - **Per category:** `pass` / `fail` / `n/a` + the attack attempted + (on fail) the fix.
+- **For `--paths`, one line per rung, by name** — `**Negative path:** pass — as user A, GET
+  /api/orders/8812 (user B's) returned 403` — the attempt included, never just the verdict. Write the
+  **Negative path** line even when the result is `n/a` (single-user product, no user-owned data), with
+  the reason. That line is also what `verification-loop` reads to stop asking: the conscience treats a
+  recorded *result* as verification and an intention as nothing, which is the same standard the rest
+  of this skill holds.
 - **Failures are findings** — each becomes a `/spec` fix or an `/evals` case (a `should-fail` case that
   asserts the guard now catches it). Defense → test → regression-proof.
 - **Honest scope line:** what was *not* tested, and that red-teaming reduces risk, it doesn't eliminate
@@ -135,7 +180,10 @@ A dated report — `docs/red-team/RT-YYYY-MM-DD.md` (or inline for `--self`):
   app-security pass is non-negotiable** for this cohort — they can't spot a leaked key or an insecure
   default themselves, so the scan is the gate that protects them.
 - `eng-builder` / `returning-founder` — terse; lead with LLM05/06 (the ones their own code most likely
-  fumbles).
+  fumbles). For `--paths`, skip the explanation entirely and just report the attempts and results.
+- **Any founder whose product has no LLM in it** — `--paths` is the whole skill for them, and it is
+  not a lesser version. Don't apologize for the missing battery or imply they're getting a subset;
+  the negative path is the highest-value test in the product either way.
 
 ## Rules
 
@@ -145,4 +193,7 @@ A dated report — `docs/red-team/RT-YYYY-MM-DD.md` (or inline for `--self`):
   — testing an undefended surface just confirms it's undefended. See `boss craft agent-security`.
 - **`--self` is fair game.** BOSS's conscience reads untrusted prompts; red-team it too. A conscience
   that can be prompt-injected into staying silent is a real finding.
+- **Run it, don't read it.** A negative path "verified" by reading the access-control code is the
+  exact failure this pass exists to catch — the code an agent wrote to enforce a rule is written by
+  the same agent that forgot the rule. Two accounts and one request beat any amount of review.
 - **Honest about limits.** Say what you didn't test. Red-teaming lowers risk; it doesn't certify safety.

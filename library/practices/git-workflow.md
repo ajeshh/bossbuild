@@ -5,6 +5,7 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B5 — dev process / git workflow) — DORA/Accelerate [EVIDENCE], Addy Osmani on AI code review, METR n=16 perception-gap [EVIDENCE], the worktree-as-parallelism-primitive practitioner pattern — BOSS v0.87.0, FEAT-023 thread 1. Citation-hygiene pass 2026-08-17 (spun off from /vet RVW-074): unverified vendor multipliers were sitting next to a DORA attribution — numbers cut, direction kept and correctly sourced to DORA's *ROI of AI-Assisted Software Development* (2026.01).
+provenance_public: Distilled from founding-teams research on dev process — DORA/Accelerate, Addy Osmani on AI code review, the METR n=16 perception-gap study, and the worktree-as-parallelism-primitive practitioner pattern. A later citation-hygiene pass found unverified vendor multipliers sitting next to a DORA attribution: the numbers were cut, the direction kept and correctly sourced to DORA's *ROI of AI-Assisted Software Development* (2026.01).
 last_reviewed: 2026-06-20
 review_by: 2027-06-20
 curve: craft

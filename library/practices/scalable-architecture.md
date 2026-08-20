@@ -5,6 +5,7 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B7 — technical scaffolding that survives the climb) — Fowler MonolithFirst, Shopify's 2.8M-line modular monolith [EVIDENCE], Bezos one-way/two-way doors, Factory.ai "documented conventions rot; enforced conventions compound", Notion's eslint ratchet — BOSS v0.89.0, FEAT-023 thread 2
+provenance_public: Distilled from founding-teams research on technical scaffolding that survives the climb — Fowler's MonolithFirst, Shopify's 2.8M-line modular monolith, Bezos's one-way and two-way doors, Factory.ai ("documented conventions rot; enforced conventions compound"), and Notion's eslint ratchet.
 last_reviewed: 2026-06-20
 review_by: 2027-06-20
 curve: craft

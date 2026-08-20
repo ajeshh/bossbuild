@@ -83,7 +83,9 @@
 - **Builder agents:** `tester` (owns the smoke gate + acceptance checks for FEATs);
   `program-manager` (sequencing — the *when*, distinct from `pm`'s *what*).
 - **Mentor agents:** `mentor-architect` (AI-native stack/architecture, advisory);
-  `mentor-gtm` (first 100, channels, positioning).
+  `mentor-gtm` (first 100, channels, positioning); `mentor-cofounder` (a founding *team* working
+  across different skill sets — the seam AI widens by making you both faster separately; dormant
+  and irrelevant if you're solo, `boss team add` is what makes it earn its place).
 - **Loops** (on the v0.18 generic loop primitive, MVP-stage):
   - `spec-loop` — gates spec writing on canvas-loop closure (encodes moment #4 restraint;
     skill-side detection via `/spec`)

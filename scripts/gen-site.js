@@ -335,10 +335,22 @@ blocks.DIAGRAM_PRACTICE_FLOW = () => `<figure class="fig">
 
 
 // ---- practices: the attribution layer ------------------------------------
-// Every practice file carries `provenance:` (who we learned it from), `curve:`
-// (how fast its ground moves) and `last_reviewed:`. The engineering page renders
-// that metadata rather than restating it by hand — attribution that has to be
-// retyped is attribution that goes stale.
+// Every practice file carries `curve:` (how fast its ground moves), `last_reviewed:`,
+// and TWO provenance fields. The engineering page renders that metadata rather than
+// restating it by hand — attribution that has to be retyped is attribution that goes stale.
+//
+// WHY TWO FIELDS (v0.178.0). `provenance:` is the internal build record: how BOSS came to
+// believe a thing, in BOSS's own filing vocabulary — review numbers, idea numbers, the audit
+// that caught the mistake, the dogfooded product a pattern was ported up from. It is the most
+// honest field in the repo and it is written for us. It was also being piped verbatim into a
+// public page, which published 43 identifiers pointing at gitignored directories no reader can
+// open, and named an unrelated product of the author's six times.
+//
+// `provenance_public:` is the half a reader can actually use: who we learned it from, and what
+// it cost us to find out. The site renders ONLY that. A practice with no `provenance_public:`
+// gets no provenance block — silence beats a leak, and the omission is visible on the page,
+// which is what makes it get written. The guard below enforces the boundary rather than
+// trusting whoever writes the next one.
 function loadPractices() {
   const dir = join(ROOT, 'library', 'practices');
   if (!existsSync(dir)) return [];
@@ -352,10 +364,28 @@ function loadPractices() {
     const title = (raw.match(/^#\s+(.+)$/m) || [, f.replace(/\.md$/, '')])[1]
       .replace(/^Practice\s*[:—–-]\s*/i, '').replace(/^PRACTICE-\S+\s*/i, '').trim();
     return { id: f.replace(/\.md$/, ''), title, owner: get('owner'),
-             curve: get('curve'), reviewed: get('last_reviewed'), provenance: get('provenance') };
+             curve: get('curve'), reviewed: get('last_reviewed'),
+             provenance: get('provenance_public') };
   });
 }
+// The boundary, enforced at generation. BOSS's internal ids resolve in a gitignored directory
+// and nowhere else; publishing one is a citation to a filing system the reader cannot open.
+// Hard failure, not a warning: a warning in a build script is a warning nobody reads.
+const PRIVATE_ID = /\b(IDEA|FEAT|RVW|EVID|REVIEW|SESSION|RESEARCH-COMPENDIUM)-\d|\bdhun\b|docs\/(research|ideas|decisions|dossier|design|business|evidence)\//i;
+
 const practiceDocs = loadPractices();
+for (const p of practiceDocs) {
+  const hit = p.provenance.match(PRIVATE_ID);
+  if (hit) {
+    console.error(`\n  gen:site — INTERNAL REFERENCE IN A PUBLIC FIELD\n`);
+    console.error(`      library/practices/${p.id}.md`);
+    console.error(`        provenance_public: names "${hit[0]}"\n`);
+    console.error(`  That field is rendered on the public site. BOSS's own ids (IDEA/FEAT/RVW/...),`);
+    console.error(`  the dogfood product names, and links into gitignored docs/ belong in`);
+    console.error(`  \`provenance:\` — the internal record, which is not published.\n`);
+    process.exit(1);
+  }
+}
 const byId = Object.fromEntries(practiceDocs.map((p) => [p.id, p]));
 
 // Topic groups for the engineering page. Explicit on purpose — and CHECKED below,
@@ -437,7 +467,7 @@ blocks.ENGINEERING_PRACTICES = () => ENG_GROUPS.map(([name, blurb, ids]) => {
             <span class="curve" title="how fast this ground moves">${esc(p.curve)} curve</span> ·
             last checked ${esc(p.reviewed)}</p>
           ${refs(p.id)}
-          <details class="prov-full"><summary>full provenance</summary><p>${md(p.provenance)}</p></details>
+          ${p.provenance ? `<details class="prov-full"><summary>where this came from</summary><p>${md(p.provenance)}</p></details>` : ''}
         </div>`).join('\n');
   return `      <h3>${esc(name)}</h3>
       <p class="small">${esc(blurb)}</p>
@@ -456,7 +486,7 @@ blocks.DESIGN_PRACTICES = () => {
           <p class="meta"><code>${esc(p.id)}</code> · <span class="curve">${esc(p.curve)} curve</span> ·
             last checked ${esc(p.reviewed)}</p>
           ${refs(p.id)}
-          <details class="prov-full"><summary>full provenance</summary><p>${md(p.provenance)}</p></details>
+          ${p.provenance ? `<details class="prov-full"><summary>where this came from</summary><p>${md(p.provenance)}</p></details>` : ''}
         </div>`).join('\n');
 };
 

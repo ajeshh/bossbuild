@@ -5,6 +5,7 @@ owner: mentor-architect
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-21 CD/deploy deep-research pass (SESSION-2026-06-20-cd-deploy-research — 21 sources, 25 claims adversarially verified 3-vote, 22 confirmed / 3 killed) — DORA/Accelerate 2022-2024 [EVIDENCE], Fowler ParallelChange [EVIDENCE], Willison lethal-trifecta + OWASP LLM Top 10, CVE-2025-48757 (Lovable) + the MoltBook breach as the named vibe-coded incidents — BOSS v0.92.0, FEAT-024
+provenance_public: Distilled from a CD/deploy deep-research pass — 21 sources, 25 claims adversarially verified by 3-vote, 22 confirmed and 3 killed. DORA/Accelerate 2022–2024, Fowler's ParallelChange, Willison's lethal trifecta and the OWASP LLM Top 10, with CVE-2025-48757 (Lovable) and the MoltBook breach as the named vibe-coded incidents.
 last_reviewed: 2026-07-23
 review_by: 2027-07-23
 curve: craft

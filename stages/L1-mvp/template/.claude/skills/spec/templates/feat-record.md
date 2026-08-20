@@ -4,7 +4,9 @@
 > **the same folder as the ideas**, which is where `boss board` reads FEATs from. A FEAT written
 > anywhere else is invisible to the board and to every skill that looks for one.
 > The Evals and Failure-states sections apply **only** to FEATs with an LLM in the control flow —
-> omit them entirely otherwise rather than filling them with `n/a`.
+> omit them entirely otherwise rather than filling them with `n/a`. The same rule governs the three
+> lines under **Paths that must not break**: omit a path this FEAT doesn't have. `n/a` in a template
+> is noise; a missing line is an answer.
 
 ```markdown
 ---
@@ -44,6 +46,28 @@ _Tick them as they land — `/close` does this, and `boss board` renders the fra
 _The inverse of the criteria, and where most of the real ones come from: what would make you say
 this is broken **even though it technically works**? Failure modes, not missing features._
 - …
+
+## Paths that must not break (v0.179.0+ — rungs 2–4 of the testing ladder)
+_The three paths that, broken, cost more than a bug. `/spec` asks for these when it writes the
+criteria; each one is a **checkable line**, not a category label. **Omit any line that genuinely
+doesn't apply** — an empty line is worse than a missing one, and a FEAT with none of the three is a
+real and common answer (a settings toggle, a copy change, an internal report)._
+- **Money path:** _the flow that, broken, means there is no product — signup, checkout, the core
+  action. Tested for real, not with everything mocked._
+- **Destructive path:** _anything that deletes, charges, sends, or publishes. Needs a test **and** a
+  human gate — name both._
+- **Negative path:** _who must **not** be able to see or do this, and what stops them. Write the
+  actual pair — "user A cannot read user B's orders" — not "auth works."_
+
+> **The negative path is the one nobody writes, because the happy path looks perfect.** It is also
+> the one BOSS's own practice calls **non-negotiable once there are two users**, and the failure it
+> catches is the headline vibe-coded breach class — not a bug, a *missing security property*, which
+> no amount of clicking will surface. `/red-team --paths` turns it into evidence.
+>
+> **Writing this line is what turns rung 4 on.** `verification-loop` reads these FEAT records: name a
+> negative path and the conscience stops accepting one smoke command as enough. Leave it out honestly
+> and nothing changes. That is deliberate — the bar rises because *you* described a risk, not because
+> BOSS guessed you had one.
 
 ## Smoke check
 _How `/smoke` proves this didn't break things. One or two commands, or one manual path._

@@ -37,6 +37,17 @@
 //                   AND to every checker. It has now leaked BOTH ways — stale names hid inside it
 //                   during the rebrand, then it got advertised as product here.
 //
+//   5. WORKSPACE  — a shipped file naming a SKILL that lives only in BOSS's gitignored /.claude/.
+//                   Added v0.178.0, after a boundary review found `/vet`, `/recalibrate`,
+//                   `/practice-refresh` and `/humane-refresh` named in fifteen shipped files and
+//                   installed for nobody. `src/craft.js` printed one to a founder's terminal.
+//                   Classes 3 and 4 both nearly caught this and both missed, for reasons worth
+//                   keeping: class 3 had the right idea ("a reference is a dependency") but scanned
+//                   only `stages/`, while `library/` and `src/` ship too; class 4 had the right
+//                   scope but polices agent names only. The direction is the same one already
+//                   noted above — /.claude/ is invisible to grep AND to every checker, so it
+//                   leaks both ways.
+//
 // Zero-dep by rule. Exit 1 on any finding so CI and `npm test` can gate on it.
 
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
@@ -63,7 +74,7 @@ function walk(dir, out = []) {
 const files = walk(ROOT);
 const md = files.filter((f) => f.endsWith('.md'));
 const rel = (p) => relative(ROOT, p);
-const findings = { links: [], predicates: [], escapes: [], agents: [] };
+const findings = { links: [], predicates: [], escapes: [], agents: [], workspaceSkills: [] };
 
 // --- 1. relative markdown links --------------------------------------------------------
 const LINK = /\[[^\]]*\]\(([^)#\s]+)(?:#[^)]*)?\)/g;
@@ -113,6 +124,59 @@ for (const f of files.filter((x) => rel(x).startsWith(`stages${sep}`) && /\.(md|
   for (const m of readFileSync(f, 'utf8').matchAll(ESCAPE)) {
     if (PLACEHOLDER.test(m[1])) continue;
     findings.escapes.push([rel(f), m[1]]);
+  }
+}
+
+const SHIPPED_ROOTS_DOCS = [`stages${sep}`, `library${sep}`, `src${sep}`, `bin${sep}`];
+
+// --- 3b. shipped files pointing at docs that never leave this repo ----------------------
+// The same principle as class 3, aimed at the tier nobody declared. `docs/*.md` splits in two:
+// `IDS.md` is copied into every scaffold and resolves in a founder's project; `MENTORS.md`,
+// `GUIDE.md`, `CHEATSHEET.md`, `SKILLS.md`, `HUMANE.md`, `PATTERNS.md` and `GUIDE-teams.md` are
+// tracked here, published to the website, and installed NOWHERE — they are absent from the npm
+// `files:` list and from every template.
+//
+// WHAT THIS CAUGHT ON ITS FIRST RUN: six shipped files sent founders to `docs/MENTORS.md`.
+// Four V1 mentor agents said "create it from the artifact mapping in docs/MENTORS.md if absent"
+// and `stages/L0-quickstart/template/CLAUDE.md` — the file EVERY project gets — said "more
+// mentors unlock per mode (see docs/MENTORS.md)". None of those projects has the file.
+//
+// Membership is computed, not listed: a doc is repo-only when no template ships a file of that
+// name. Add `docs/FOO.md` to a template tomorrow and this check stops flagging it, with no edit
+// here — the same reason class 4 reads its vocabulary off disk.
+const templateDocs = new Set(
+  walk(join(ROOT, 'stages'))
+    .filter((f) => rel(f).includes(`template${sep}docs${sep}`))
+    .map((f) => f.slice(f.lastIndexOf(sep) + 1)),
+);
+//
+// TWO ways a `docs/*.md` is NOT this bug, and both must be excluded or the check cries wolf:
+//   · a template ships it (`IDS.md`) — it resolves in the founder's project;
+//   · `.gitignore` hides it (`RESUME.md`, `mentor-practitioners.md`) — that name belongs to the
+//     FOUNDER's own file, written at runtime by `/close`. BOSS's private copy is a coincidence of
+//     naming, not a reference. The first cut of this check flagged four `/close` and `/log` call
+//     sites for pointing at the file they themselves create.
+// `.gitignore` is the tier-1 declaration this repo already has, so it is the discriminator rather
+// than a hand-kept exclusion list — one fewer place to forget.
+const gitignored = new Set(
+  readFileSync(join(ROOT, '.gitignore'), 'utf8').split('\n')
+    .map((l) => l.trim()).filter((l) => l.startsWith('docs/'))
+    .map((l) => l.slice('docs/'.length).replace(/\/$/, '')),
+);
+const REPO_ONLY_DOCS = existsSync(join(ROOT, 'docs'))
+  ? readdirSync(join(ROOT, 'docs'))
+    .filter((f) => f.endsWith('.md') && !templateDocs.has(f) && !gitignored.has(f))
+  : [];
+
+for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
+  const r = rel(f);
+  if (!SHIPPED_ROOTS_DOCS.some((x) => r.startsWith(x))) continue;
+  const text = readFileSync(f, 'utf8');
+  const seen = new Set();
+  for (const d of REPO_ONLY_DOCS) {
+    if (seen.has(d) || !new RegExp(`docs/${d.replace('.', '\\.')}`).test(text)) continue;
+    seen.add(d);
+    findings.escapes.push([r, `docs/${d} — tracked here, installed nowhere (no template ships it)`]);
   }
 }
 
@@ -212,6 +276,63 @@ for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
   }
 }
 
+// --- 5. workspace-only skills named in shipped files ------------------------------------
+// THE HOLE THIS PLUGS: class 4 polices AGENT names and the retired-skill ledger polices verbs
+// BOSS deliberately removed. Neither covers the third way a name can dangle — a skill that was
+// never retired and never shipped, because it was authored in BOSS's own gitignored `/.claude/`
+// and stayed there. `/vet`, `/recalibrate`, `/practice-refresh` and `/humane-refresh` were named
+// in fifteen shipped files while existing for nobody but BOSS.
+//
+// Two scope corrections this check makes, and both are why the earlier classes missed it:
+//   · SURFACE. Class 3 scans `stages/` only. But `library/` and `src/` ship too (package.json
+//     `files:`), and that is where most of these lived — `src/craft.js` printed "/practice-refresh"
+//     to a founder's real terminal, and nine practices a founder reads via `boss craft` named
+//     `/vet`. A checker scoped to the templates cannot see the shelf or the CLI.
+//   · LINK FORM. Class 1 resolves relative links with existsSync — so a link into
+//     `../../.claude/skills/humane-refresh/SKILL.md` PASSES here and dangles in every install.
+//     That is class 3's own stated failure mode ("it resolves here and dangles"), reached by a
+//     path class 3's regex doesn't match. Hence form (b) below.
+//
+// Vocabulary from disk, never a regex over prose — same rule as class 4, same reason.
+const skillDirs = (dir) => (existsSync(dir)
+  ? readdirSync(dir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name)
+  : []);
+
+const SHIPPED_SKILLS = new Set(
+  readdirSync(join(ROOT, 'stages'), { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .flatMap((e) => skillDirs(join(ROOT, 'stages', e.name, 'template', '.claude', 'skills'))),
+);
+const WORKSPACE_SKILLS = skillDirs(join(ROOT, '.claude', 'skills'))
+  .filter((n) => !SHIPPED_SKILLS.has(n));
+
+// Everything a founder can end up holding: the templates, the practice shelf, and the CLI itself.
+const SHIPPED_ROOTS = [`stages${sep}`, `library${sep}`, `src${sep}`, `bin${sep}`];
+
+// `provenance:` is the internal build record BY DECLARATION — it says how BOSS came to believe a
+// practice, and "vetted via /vet RVW-005" is a true statement about BOSS's own history. That field
+// is not published (gen-site renders `provenance_public:`), so it is the one place these names are
+// allowed to stand. Strip those lines rather than exempting whole files: the same practice's BODY
+// must still be clean, because the body is what `boss craft` prints.
+const stripProvenance = (t) => t.replace(/^provenance:[\s\S]*?(?=\n[a-z_]+:|\n---)/m, '');
+
+for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
+  const r = rel(f);
+  if (r.startsWith(`stages${sep}`) && r.includes(`${sep}skills${sep}boss-learn${sep}`)) continue;
+  if (!SHIPPED_ROOTS.some((s) => r.startsWith(s)) && !FOUNDER_FACING.has(r)) continue;
+  const text = stripProvenance(readFileSync(f, 'utf8'));
+  const seen = new Set();
+  for (const n of WORKSPACE_SKILLS) {
+    if (seen.has(n)) continue;
+    // (a) the verb, and (b) any path into a workspace skill's directory.
+    const verb = new RegExp(`(?<![\\w/])/${n}\\b`).test(text);
+    const path = new RegExp(`\\.claude/skills/${n}\\b`).test(text);
+    if (!verb && !path) continue;
+    seen.add(n);
+    findings.workspaceSkills.push([r, `/${n} — BOSS-only (gitignored /.claude/skills/) — ships to nobody${path ? ', linked by path' : ''}`]);
+  }
+}
+
 const total = Object.values(findings).reduce((n, a) => n + a.length, 0);
 const plural = (n, s) => `${n} ${s}${n === 1 ? '' : 's'}`;
 
@@ -241,6 +362,9 @@ report('escapes', 'ESCAPED REFERENCES',
   "a SHIPPED file pointing at something only BOSS's repo has; it dangles in every project.\n  Use `boss craft <name>` for practices; drop or restate references to BOSS's own IDEA files.");
 report('agents', 'PHANTOM AGENTS',
   "a founder-facing file naming an agent the founder's install does not contain.\n  Either ship it under stages/<id>/template/.claude/agents/, or name the mechanism that\n  actually delivers the job (a skill, the conscience, a practice) instead.");
+
+report('workspaceSkills', 'WORKSPACE-ONLY SKILLS',
+  "a SHIPPED file naming a skill that exists only in BOSS's gitignored /.claude/ workspace.\n  It resolves when you run it from here and dangles in every founder's install. Either ship it\n  under stages/<id>/template/.claude/skills/, or say what the founder actually does instead.");
 
 console.log(`  ${total} total. Exit 1.\n`);
 process.exit(1);

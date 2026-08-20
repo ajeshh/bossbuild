@@ -19,6 +19,16 @@ Read the new-user count (`/measure`, `/ship` context, the EVID ledger).
   the practice — Step 3). Point at `/interview`.
 - **n≥~30 (a readable activation rate) → proceed** — you can see what fraction reach value and derive the aha.
 
+**Look before you design.** Most products already have *something* — a signup screen, a sample project, an
+empty state with a hint, a welcome email. Read it first; naming what already works is more useful than a flow
+that replaces it. If `docs/onboarding.md` or `docs/activation.md` exists, that is the thing to edit, not redo.
+
+**And at n<10, don't leave empty-handed — the seam.** When one of your first ten users tries the thing, write
+down what they actually said and where they stalled. **Their words, not your summary.** You can redesign
+onboarding any day; you cannot re-hear someone's first five minutes — after their second session they are no
+longer a person who has never seen your product, so the observation is unrepeatable by construction. That is
+the whole seam: a file with quotes in it. Not a flow, not a checklist, not an aha-moment definition.
+
 ## Step 1 — derive the aha-moment from data (don't guess it)
 
 The **aha-moment** is the first action that reliably predicts retention. Derive it, don't whiteboard it

@@ -5,6 +5,7 @@ owner: pm
 status: active
 host: stack-neutral
 provenance: consolidated from BOSS's own shipped discipline — the seven capture artifacts (/triage, /canvas, /evidence, /decide, /spec, /log, /close) had been distributed across eight skills and zero practices since v0.1, so nothing could refresh, cite, or hold them to a standard. Assessment - docs/dossier/documentation-and-progress-pass-001.md (2026-08-20). Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction · structured note-taking · JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored / code-coupled / drift-enforced), and Marty Cagan's *Discovery vs. Documentation* (SVPG). The formatting layer is new and unvetted by anyone outside BOSS. §7 (user-facing docs) added 2026-08-20 from the llms.txt / AI-readable-docs sweep — the llms.txt adoption status is explicitly caveated in the text and MUST be re-checked on refresh; it is the fastest-moving claim in this doc.
+provenance_public: Consolidated from BOSS's own shipped capture discipline: seven artifacts spread across eight skills and no practice, so nothing could refresh, cite, or hold them to a standard. Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction, structured note-taking, JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored, code-coupled, drift-enforced), and Marty Cagan's *Discovery vs. Documentation*. The formatting layer is new and unvetted by anyone outside BOSS; the llms.txt adoption claim is the fastest-moving thing in the doc and is caveated in the text.
 last_reviewed: 2026-08-20
 review_by: 2027-02-16
 curve: craft-ai
@@ -321,5 +322,9 @@ delete anything describing a version nobody runs. If you genuinely outgrow one c
   behavior this practice exists to discourage.
 - **Externally-standardized spec formats.** If a project already has a spec artifact with an ID and
   acceptance criteria, importing a second format buys nothing and costs a translation layer.
-- **Model-facing site conventions** (`llms.txt` and kin). Those serve *websites* answering models;
-  a repo's agent-facing contract is its instructions file. Different problem.
+- ⚠️ **Model-facing site conventions** (`llms.txt` and kin) — **this exclusion is superseded by §7
+  (2026-08-20) and is kept here only so the reversal is visible.** The distinction it drew is still
+  true: those conventions serve *websites* answering models, and a repo's agent-facing contract is its
+  instructions file. The conclusion was wrong, because a project ships **both** — §7 owns the website
+  half, sections 1–6 own the repo half. Left standing for one release after §7 landed, which is exactly
+  long enough for a reader to get two answers from one file.

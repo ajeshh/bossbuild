@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.175.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.179.0**.
 
 ## Quickstart
 
@@ -26,7 +26,7 @@
 
 ## MVP
 
-- **`/spec`** — Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, and a smoke check  _(/spec [IDEA-NNN]  (or describe the feature inline))_
+- **`/spec`** — Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, a smoke check, and the three paths that must not break (the money path, the destructive path, and the negative path — who must NOT be able to see this)  _(/spec [IDEA-NNN]  (or describe the feature inline))_
 - **`/smoke`** — Run the project's smoke check — "is the app even working right now?" Stack-configured  _(/smoke)_
 - **`/log`** — Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you  _(/log <one-line summary or detailed entry>)_
 - **`/close`** — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)  _(/close)_
@@ -42,7 +42,7 @@
 - **`/revalidate`** — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature  _(/revalidate [ID or paused item])_
 - **`/judge-traces`** — Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work  _(/judge-traces [last N | all])_
 - **`/consult`** — Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, and synthesize the answer with the disagreements kept visible (not averaged away)  _(/consult <question>)_
-- **`/red-team`** — Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest  _(/red-team [FEAT-NNN | --self | --humane])_
+- **`/red-team`** — Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest  _(/red-team [FEAT-NNN | --paths | --self | --humane])_
 - **`/practice`** — Capture a craft learning — a better way to build with AI you found — as a shared, attributed PRAC-NNN record your cofounder gets too  _(/practice <what you learned>)_
 - **`/ship`** — Put your app where a real user can hit it — the CD half of building  _(/ship [--preview | --rollback])_
 - **`/landing`** — Generate the founder's FIRST landing page — on-brand, honest, out the block to scale  _(/landing [--demand | --product])_

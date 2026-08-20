@@ -4,7 +4,7 @@ type: practice
 owner: mentor-gtm
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (landing-page thread) — Julian Shapiro (value-prop table), Demand Curve / CXL (above-the-fold, clarity-over-cleverness), Harry Dry / MarketingExamples ("write with the delete key", back a bold claim with proof), 37signals (clarity not cleverness), Amelie Pollak (persuasion vs manipulation), the Tailwind "indigo apology" (AI-default sameness). Pairs with design-system.md (look), ai-ux-patterns.md (honest conversion), /pretotype (the demand page) and /ship (deploy). BOSS v0.112.0.
+provenance: distilled from the 2026-07-23 research sweep (landing-page thread) — Julian Shapiro (value-prop table), Demand Curve / CXL (above-the-fold, clarity-over-cleverness), Harry Dry / MarketingExamples ("write with the delete key", back a bold claim with proof), 37signals (clarity not cleverness), Amelie Pollak (persuasion vs manipulation), the Tailwind "indigo apology" (AI-default sameness). Pairs with design-system.md (look), ai-ux-patterns.md (honest conversion), /pretotype (the demand page) and /ship (deploy). BOSS v0.112.0. The share-card section was added 2026-08-20 from IDEA-060 — the practice had ZERO coverage of og:/meta/preview while BOSS's own site shipped the tags, the classic never-sorted-UP shape.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
 curve: market
@@ -33,6 +33,7 @@ proof, cut the rest.**
 - **Proof in the eye-path** (headline → subhead → hero visual → proof → CTA). Real testimonials / counts only.
 - **A hero that shows the product working** (screenshot/GIF) — removes uncertainty.
 - **No nav** (a landing page has one job; nav is an escape hatch), **fast, mobile-first**.
+- **A share card** — `og:title`, `og:description`, `og:image`, `twitter:card`, `canonical`.
 - **Clarity over cleverness** — the most-supported, least-glamorous finding (Shapiro's *Desire − (Labor +
   Confusion)*; CXL's simpler-copy A/B lifts; 37signals; Harry Dry's "write with the delete key"). Use Shapiro's
   value-prop table — *Bad Alternative → Better Solution → Action Statement* — to birth the headline from the
@@ -50,6 +51,32 @@ proof, cut the rest.**
 The demand page **is** `/pretotype`'s fake door — a `/landing` demand page is the tool that builds the door
 `/pretotype` designs. Set the threshold before running (Savoia/YODA); a signup measures the *communication*,
 not the problem. The trap to name: "a survey with a hero image."
+
+## The page most people see first is the card, not the page
+
+Every rule above assumes a visitor who *arrived*. Most don't — they meet the page as a **link preview**:
+pasted into Slack, sent in iMessage, quoted in a group chat, unfurled in a DM. That preview is rendered
+from four meta tags, and if they're absent the founder's carefully-built hero renders as **a bare grey
+URL** — the one impression they never tested, on the path most of their early traffic actually takes.
+
+This is not SEO and it is not growth-hacking. It is the same job as the headline, one layer earlier:
+
+- **`og:title` is the value prop**, not the slogan and not the company name. Same test as the headline —
+  if they read only this, do they know what you sell?
+- **`og:description` is the subhead**, not the tagline. One sentence.
+- **`og:image`** decides whether the card is looked at. Show the product working, same as the hero. Use
+  `twitter:card: summary_large_image` **only if you actually have one** — `summary` is the honest default
+  without an image, and a `summary_large_image` pointing at nothing renders worse than no card at all.
+- **`canonical`** — one page, one URL. Two URLs serving the same page is the oldest self-inflicted bug
+  in this whole area.
+
+Four tags, an afternoon at the outside, and it is the cheapest distribution work available on the page.
+The reason it's missing from most first landing pages is simply that **nobody sees it while building** —
+it renders somewhere else, in someone else's client. Check it before you ship, not after someone shares it.
+
+> ⚠️ **BOSS's own front door fails this**, which is how the gap was found: `web/_shell.html` ships
+> `og:title`, `og:description`, `og:url` and `canonical` and **no `og:image`**, so every BOSS link
+> unfurls text-only. Fixing it needs an asset and a registered domain — recorded, not hidden.
 
 ## Leverage the brand you already have (this is the anti-slop mechanism)
 

@@ -189,14 +189,14 @@
           <p class="meta"><code>design-system</code> · <span class="curve">craft-ai curve</span> ·
             last checked 2026-08-20</p>
           <p class="prov"><span>learned from</span> <span class="ref">Brad Frost — Atomic Design</span> <span class="ref">Nathan Curtis — design tokens</span> <span class="ref">W3C Design Tokens Community Group</span></p>
-          <details class="prov-full"><summary>full provenance</summary><p>generalized from the dhun dogfood design system (DESIGN_TOKENS as single source of truth, central badge/pill style utils, the &quot;no raw Tailwind colors&quot; enforcement hook, the prototype REGISTRY), de-dhuned for reuse — BOSS v0.20.x. The AI-failure-mode catalog was added in the same pass; IDEA-010 carries the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns). Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.</p></details>
+          <details class="prov-full"><summary>where this came from</summary><p>Generalized from a dogfooded design system — design tokens as the single source of truth, central badge and pill style utilities, an enforcement hook that rejects raw framework colors, and a prototype registry — then stripped of everything product-specific so it would transfer. The AI-failure-mode catalog was written in the same pass.</p></details>
         </div>
         <div class="practice">
           <h4>AI-native interface patterns (2026)</h4>
           <p class="meta"><code>ai-ux-patterns</code> · <span class="curve">humane curve</span> ·
             last checked 2026-07-23</p>
           <p class="prov"><span>learned from</span> <span class="ref">Shape of AI</span> <span class="ref">Microsoft HAX guidelines</span> <span class="ref">Google PAIR</span> <span class="ref">Nielsen Norman Group (2026)</span> <span class="ref">Apple HIG — generative AI</span> <span class="ref">CDT — Dark Patterns in AI Chatbots (2026)</span> <span class="ref">Vaccaro et al., CHI'26</span></p>
-          <details class="prov-full"><summary>full provenance</summary><p>distilled from the 2026-06-20 AI-UX scan (Shape of AI, Microsoft HAX, Google PAIR, IBM Carbon, LangChain HITL, NN/g 2026, Apple HIG GenAI) — BOSS v0.49.0, IDEA-029 · dark-pattern checklist + humane alternatives added v0.82.0 (RVW-031, from CDT <em>Dark Patterns in AI Chatbots</em> 2026, CC-BY) · classic-web pattern families + regulatory teeth (effect-not-intent, symmetry-in-choice) added v0.95.0 (RVW-056/057, first /humane-refresh sweep, IDEA-042) · cohort &amp; frontier patterns (accessibility, minors, agentic, algorithmic-management) + junk-fees teeth added v0.96.0 (RVW-059/060/061/062/063, sweep pass 2) · generated-code-injects-dark-patterns (Vaccaro CHI'26) + dev-tool metering surface + citation upgrades (sycophancy→<em>Science</em> 2026, DECEPTICON precise cite, EU AI Act/EDPB-3-2025/Amazon-Prime teeth) added v0.108.0 (2026-07-23 research sweep)</p></details>
+          <details class="prov-full"><summary>where this came from</summary><p>Distilled from an AI-UX scan across Shape of AI, Microsoft HAX, Google PAIR, IBM Carbon, LangChain HITL, NN/g 2026 and Apple's HIG for generative AI. The dark-pattern checklist and its humane alternatives come from CDT's <em>Dark Patterns in AI Chatbots</em> (2026, CC-BY); the classic web pattern families and their regulatory teeth (effect-not-intent, symmetry-in-choice) from the first humane sweep; the cohort and frontier patterns — accessibility, minors, agentic, algorithmic management — plus junk-fee teeth from the second. Later additions: generated code injects dark patterns (Vaccaro, CHI'26), the dev-tool metering surface, and citation upgrades (sycophancy to <em>Science</em> 2026, a precise DECEPTICON cite, EU AI Act, EDPB 3-2025, Amazon Prime).</p></details>
         </div>
         </div>
         <p class="small"><a href="engineering.html">The rest of the technical practices →</a> ·
@@ -211,8 +211,8 @@
       <div class="rail"><span>make it real.</span></div>
       <div class="body prose">
         <div class="cta">
-          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx bossbuild new my-app</span></div>
-          <button class="copy" type="button" data-copy="npx bossbuild new my-app">Copy</button>
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx oyeboss new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
         </div>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
@@ -226,7 +226,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.175.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.179.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

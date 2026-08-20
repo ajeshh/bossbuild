@@ -12,6 +12,14 @@ right artifacts and they are all *unlookable* — which means the one question a
 This builds that surface: one self-contained HTML library, generated from the code and the tokens,
 that a founder, a designer, a stakeholder **and the agent** can all read.
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for the visual design library before you make one** — `docs/design/library/**`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: V1.** If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: It costs the same at V1 as it would have at MVP, minus the components that did not exist yet. The rung below it is the tokens file, and that seam is already `design-tokens-init`'s.
+
 ## The load-bearing rule: GENERATED, never authored
 
 **The code is the source of truth. This library is derived from it.**
@@ -144,6 +152,13 @@ warning. It shows what you've built, not only what's wrong.
 2. **Find the components.** Detect the stack, then scan the conventional location
    (`src/components/**`, `app/components/**`, `lib/components/**`, `components/**`). Skip tests,
    stories and index barrels.
+
+   **Then scan the public surface** — the landing page, the marketing routes, whatever `/landing`
+   generated. It is usually *not* in the component tree: it was written at MVP, before the token
+   layer existed, often as one standalone page. That makes it simultaneously the surface most likely
+   to be off-token and **the only one a stranger ever sees**. A drift check scoped to `src/` covers
+   everything except the front door. These are pages, not components, so they get no cards — they get
+   a **surfaces** row on the shell, carrying the same off-token and stale badges.
 3. **Read each component.** Extract: exported name, the props that create variants, which states it
    handles, the import path, and any raw style values. One line of purpose — from a doc comment if
    there is one, otherwise inferred and marked as inferred.
@@ -173,6 +188,23 @@ implementation will faithfully reproduce, raw hexes and all.
 components that already exist, not redraw them.** A mockup that invents a new button injects a new
 *component* at spec time, and a component is far more expensive than a color. Same hazard, bigger
 blast radius.
+
+## So does the landing page
+
+The same rule, pointed at the surface with the widest blast radius of all. `/landing` runs at MVP and
+generates from the brand and the tokens — correct at the time, and it means the page was built *before*
+this library existed. Once it does exist, the landing page composes from it rather than carrying its own
+private copy of the button.
+
+Two reasons this one matters more than a prototype drifting:
+
+- **It is the only surface judged by someone who has never seen the product.** An internal screen that
+  drifts costs you a slightly incoherent app. A front door that drifts costs you the first impression,
+  and the visitor never files the bug — they just leave.
+- **It drifts on claims, not only on style.** A prototype can only look wrong. A landing page can be
+  *false* — naming a feature that shipped differently, a price that changed, an integration that was
+  removed. Style drift is a badge; **a false claim is the thing to actually fix**, and it is the one
+  kind of drift a token check will never catch.
 
 This also makes prototyping faster, which is the honest selling point: the library is a pile of
 working, on-brand HTML. Copy from it. A prototype built out of real components is a genuine preview

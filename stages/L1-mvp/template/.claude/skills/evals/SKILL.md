@@ -14,6 +14,15 @@ The MVP rule: **20 examples beats 0.** Even an unsophisticated eval set caught v
 no eval set ever could. Categorize failures so the next iteration can target a category, not just
 "make it better."
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for eval sets before you make one** — `docs/evals/**`, `evals/**`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** Applies only when the project has an LLM in control flow. If this project is **earlier** than that, don't run this — leave the seam instead:
+**Keep the bad outputs. One folder, paste the failure in, no format. That is eval case #1 and it exists for about thirty seconds before someone closes the tab.** That is the whole ask; it is *not* an eval harness, a judge, a rubric, a ci gate, a scoring loop. Every eval set is built from real failures you actually saw. You can write the harness any day; you cannot recover the weird output you deleted, and reproducing it on demand is exactly the thing a non-deterministic system will not do for you.
+
 ## Correctness ≠ safety — the adversarial half
 
 A clean `/evals` pass means the AI part is *correct* — not that it's *safe*. Safety holds under normal

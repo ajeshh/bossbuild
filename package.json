@@ -1,7 +1,7 @@
 {
-  "name": "bossbuild",
-  "version": "0.176.0",
-  "description": "BOSS (Build Out Solid Stuff) \u2014 a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart \u2192 MVP \u2192 V1 \u2192 Scale), and mentors the founder. Make it real.",
+  "name": "oyeboss",
+  "version": "0.179.0",
+  "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
     "framework",
@@ -42,8 +42,9 @@
     "check:manifests": "node scripts/check-manifests.js",
     "check:freshness": "node scripts/check-freshness.js",
     "check:refs": "node scripts/check-refs.js",
+    "check:boundary": "node scripts/check-boundary.js",
     "check:site": "node scripts/check-site.js",
-    "test": "node scripts/check-refs.js && node --test test/*.test.js",
+    "test": "node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node --test test/*.test.js",
     "release": "node scripts/release.js",
     "pack:preview": "npm pack --dry-run",
     "eval:gate": "node docs/architecture/conscience-evals/runner.js",
@@ -51,7 +52,8 @@
     "eval": "npm run eval:gate && npm run eval:judgment",
     "regrade": "node docs/architecture/conscience-evals/judgment/regrade.js",
     "regrade:keyless": "node docs/architecture/conscience-evals/judgment/regrade-keyless.js",
-    "gen:surface-freshness": "node scripts/gen-surface-freshness.js"
+    "gen:surface-freshness": "node scripts/gen-surface-freshness.js",
+    "check:ladder": "node scripts/check-ladder.js"
   },
   "engines": {
     "node": ">=18"

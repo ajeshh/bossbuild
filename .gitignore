@@ -6,9 +6,24 @@ node_modules/
 # Ignore any stray legacy copy so local project paths never get committed again.
 registry/projects.json
 
-# ── Development workspace — BOSS building BOSS. Kept LOCAL, not published. ──
-# The public repo ships the *usable* tool (bin/ src/ stages/ library/) + user-facing
-# docs (README, PRINCIPLES, GUIDE, CHEATSHEET, SKILLS, MENTORS, IDS, CHANGELOG).
+# ── THREE tiers. Only two were ever declared, so the third became the default sink. ──
+#
+#   1. LOCAL       — everything listed below. The dogfood workspace: roadmap, research,
+#                    strategy, design, evals. Never leaves this machine.
+#   2. PUBLIC REPO — tracked here and rendered to the website, installed NOWHERE:
+#                    docs/GUIDE.md, GUIDE-teams, CHEATSHEET, SKILLS, MENTORS, HUMANE,
+#                    PATTERNS — plus site/, web/ and registry/boundary.json.
+#   3. INSTALLED   — what a founder actually receives: package.json `files:` (bin/ src/
+#                    stages/ library/ VERSION PRINCIPLES.md registry/CHANGELOG.md
+#                    registry/supersedes.json) plus README.md, which npm always includes.
+#
+# THIS COMMENT USED TO BE WRONG, and the error was load-bearing. It said the repo shipped
+# "GUIDE, CHEATSHEET, SKILLS, MENTORS, IDS" as user-facing docs. Six of those are tier 2 and
+# have never been in the tarball. Only IDS.md reaches a founder, and it does so as a scaffold
+# template — not as a package file. Nine shipped mentor agents sent founders to MENTORS.md on
+# the strength of this sentence. `check:refs` class 3b now fails on that, so the tiers cannot
+# quietly disagree again; `check:boundary` does the same for agents and skills.
+#
 # Everything below is the dogfood workspace — roadmap, research, strategy, design.
 docs/business/
 docs/RESUME.md

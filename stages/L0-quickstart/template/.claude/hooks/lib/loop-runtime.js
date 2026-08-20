@@ -15,6 +15,11 @@
 //                                       optional related-idea filter for canvas → idea
 //                                       cross-file checks
 //
+// Any predicate may also carry a sibling `when: [<predicate>, ...]` guard. The
+// predicate applies only if every guard predicate holds; otherwise it is treated as
+// satisfied. Use it for a bar that should only exist for projects that earned it —
+// see `evalPredicate` below, and verification-loop's rung-4 exit for the live example.
+//
 // Loop spec frontmatter:
 //   id: <slug>
 //   type: loop
@@ -121,14 +126,37 @@ const PREDICATES = {
         if (re.test(readFileSync(f, 'utf8'))) matchedCount++;
       } catch { /* ignore */ }
     }
-    return { ok: matchedCount >= 1, evidence: { matched_files: matchedCount, total_files: files.length } };
+    return { ok: matchedCount >= 1, evidence: { path_glob, matched_files: matchedCount, total_files: files.length } };
   },
 };
 
 // Evaluate a single predicate. Always returns { ok, evidence }.
+//
+// A predicate may carry a `when:` guard — a list of predicates that must ALL hold
+// for this one to apply at all. If the guard is unmet the predicate is **vacuously
+// satisfied**. That is how a loop expresses a bar which only turns on once the
+// project has earned it (PRINCIPLE #2 in the *exit* list rather than the entry one),
+// and the two are genuinely different questions: an entry predicate asks *has this
+// loop opened?*, a guard asks *does this rung apply to this project at all?* Encoding
+// the second as an entry predicate would close the loop for everyone it doesn't apply
+// to, which is the opposite of the intent.
+//
+// Every mechanism BOSS owned for calibrating ceremony was subtractive; this is the
+// additive one — a bar that arrives when earned instead of one that never arrives.
+// Guards are cheap and quiet on purpose: no existing loop uses `when`, so every loop
+// shipped before it evaluates byte-identically.
 function evalPredicate(pred, projectDir) {
   const type = Object.keys(pred).find((k) => PREDICATES[k]);
   if (!type) return { ok: false, evidence: { error: `unknown predicate: ${JSON.stringify(pred)}` } };
+  if (Array.isArray(pred.when)) {
+    const guard = evalList(pred.when, projectDir);
+    if (!guard.all_ok) {
+      return {
+        ok: true,
+        evidence: { type, guard: 'unmet', guard_results: guard.results.map((r) => r.evidence) },
+      };
+    }
+  }
   try {
     const res = PREDICATES[type](pred[type] || pred, projectDir);
     // exists returns a bare boolean; normalize to { ok, evidence }.
@@ -206,7 +234,12 @@ export function detectSignals(projectDir) {
       confidence,
       evidence: {
         entry: entry.results.map((r) => r.evidence),
-        exit: exit.results.map((r) => r.evidence),
+        // Exit evidence carries `ok` (entry does not) because a loop with more than one
+        // exit artifact needs the FRAME to know WHICH one is missing — a conscience that
+        // says "no smoke command recorded" to a founder who recorded one months ago is
+        // the overclaim that gets it muted. Entry stays untouched: `computeConfidence`
+        // reads it, and so do the eval assertions.
+        exit: exit.results.map((r) => ({ ok: r.ok, ...r.evidence })),
       },
       suppress_if: [],
     });

@@ -93,5 +93,5 @@ canvas bet — name the contradiction before you answer; don't quietly advise ar
 ## After a consequential session
 
 If the session moved something real, **offer** (don't silently do) to append your position + the date to
-your dossier artifact in `docs/dossier/` — create it from the artifact mapping in `docs/MENTORS.md` if
+your dossier artifact (`docs/dossier/fundraising-<date>.md`) — create it if
 absent. The artifact *is* your memory across sessions; the founder owns the file.

@@ -186,10 +186,16 @@ function exitSummary(result) {
     return `count: ${e.count} / threshold: ${e.min}${e.count >= e.min ? ' (met)' : ` (need ${e.min - e.count} more)`}`;
   }
   if (typeof e.matched_files === 'number') {
-    return `${e.matched_files} / ${e.total_files} file(s) match`;
+    // Name the glob, not just the tally. "0 / 0 file(s) match" is technically true and
+    // tells a founder nothing about what to go and do.
+    const where = e.path_glob ? ` in ${e.path_glob}` : '';
+    return `${e.matched_files} / ${e.total_files} file(s) match${where}`;
   }
   if (e.type === 'exists') {
     return `expects: ${e.path}`;
+  }
+  if (e.guard === 'unmet') {
+    return `n/a for this project (${e.type} — guard not met)`;
   }
   return JSON.stringify(e);
 }

@@ -15,6 +15,15 @@ This skill is **JIT**: ships in MVP mode, but only runs when `design-tokens-loop
 the project starts accumulating UI without a tokens file). For a backend-only project, this skill
 never runs. For a UI-heavy project, it runs at the first UI commit.
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for a design token system before you make one** — `docs/design/DESIGN_TOKENS.md`, `tokens.json`, `design-tokens/**`, `src/styles/tokens.css`, `src/tokens.ts`, `app/tokens.css`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** Applies only when the project starts accumulating UI. If this project is **earlier** than that, don't run this — leave the seam instead:
+**Name the first color for what it MEANS, not what it looks like — `action.primary`, not `indigo-600`. One habit, zero files.** That is the whole ask; it is *not* a three-layer token architecture, a style dictionary pipeline, a semantic layer, a component library. Nothing is technically lost — but the cost is the only one on this list that compounds per screen. Retrofitting is linear in UI you already generated, and an agent generating screen forty has forty precedents telling it to invent a new blue.
+
 ## When to run it
 
 - `design-tokens-loop` is open (UI exists, no tokens file).

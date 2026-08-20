@@ -25,7 +25,30 @@ Run `boss sync` (no flags). It lists each BOSS-managed file (skills, agents, hoo
 hook registrations need adding to `.claude/settings.json`; and reconciles any stale mode label (e.g. an
 old `L0-sketch` pin → `L0-quickstart`).
 
-## 2. Review (the judgment)
+## 2. The artifact question — the one a file diff can't answer
+
+`boss sync` now flags any changed or new skill whose **output you already have**:
+`↳ you already have the landing page — app/page.tsx`. That line is the whole reason this step exists.
+
+**The unit of an update is the artifact, not the file.** "The landing skill changed by 40 lines"
+tells the founder nothing. For each flagged entry, read the CHANGELOG for what actually changed and
+answer one question: **would this have altered the thing they already built?**
+
+- **No** → say so in one clause and move on. Most changes are refinements to how the skill *generates*,
+  which is irrelevant to a page that already exists. Re-running a generator over work that already
+  works is churn, and churn dressed as an update is worse than silence.
+- **Yes** → name the *specific* gap in *their* artifact, not the diff. *"The share-card section is new
+  — your page has no `og:image`, so it renders as a bare grey URL when anyone pastes it. Four tags."*
+  Then offer that edit alone. Never "want me to re-run /landing?" — that discards their work and asks
+  them to approve it.
+
+If BOSS **just installed** a skill onto a repo that already has the artifact (the `+ new` + flag case),
+that founder adopted an existing project. Say what the skill is *for* and that they already have one,
+so it reads as recognition rather than a tool about to overwrite them.
+
+The discipline: `boss craft seed-to-scale`.
+
+## 3. Review the changed files (the judgment)
 
 Before applying, for each **changed** file:
 - Read the project's current copy and the incoming version. Summarize what actually changes.
@@ -33,7 +56,7 @@ Before applying, for each **changed** file:
   out by name and ask before clobbering. (v1 syncs BOSS-managed skills/agents only — see scope below.)
 - Tie changes back to the CHANGELOG entries so the user understands *why*, not just *what*.
 
-## 2.5 Retired — the part that needs a real conversation
+## 4. Retired — the part that needs a real conversation
 
 `boss sync` lists anything under **"No longer shipped by BOSS — still in your project"**: things BOSS
 installed here and has since retired. Each carries what replaced it and why, from the supersede
@@ -61,12 +84,12 @@ never removed, and you should ask what they changed — that edit is a signal ab
 wrong. When BOSS says it **can no longer tell** whether they edited it, treat it as possibly-theirs
 and tell them to check `git log` on that path first.
 
-## 3. Apply
+## 5. Apply
 
 - `boss sync --apply` — writes the new/changed files and bumps the project's `.boss` pin to current.
   **It removes nothing**, by design.
 - `boss sync --apply --remove` — the same, plus removes the retired files they agreed to drop.
-  Only after step 2.5.
+  Only after step 4.
 - Then show `git diff` and let the user review and commit. The project is the source of truth for its
   own history; BOSS just proposes the update.
 

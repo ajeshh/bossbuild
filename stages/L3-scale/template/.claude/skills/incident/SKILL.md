@@ -13,6 +13,15 @@ It's `/sunset`'s shape (a real event that returned an answer) scoped to an outag
 loop's counterpart to `/smoke` ("is it alive?") and `/red-team` ("can it be attacked?"): *when it
 wasn't alive, what did that teach?*
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for incident runbooks before you make one** — `docs/runbooks/**`, `RUNBOOK.md`, `docs/incidents/**`, `docs/postmortems/**`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: Scale.** If this project is **earlier** than that, don't run this — leave the seam instead:
+**Log errors with a timestamp somewhere you can read later. Not a service — a file is fine.** That is the whole ask; it is *not* a runbook, an on-call rotation, an slo, alerting, a status page, a postmortem template. A runbook genuinely costs the same written later, and pretending otherwise would be ceremony. But you cannot investigate an outage you have no record of, and the first real one is exactly when you find out which it was.
+
 ## The one rule
 
 **Blameless.** The post-mortem names systems and gaps, never people. "Whoever clicks merge owns what

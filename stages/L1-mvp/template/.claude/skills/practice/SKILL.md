@@ -20,7 +20,8 @@ whether you're behind or overspending.
 
 - You found a genuinely better/cheaper/newer way to do something with AI and your cofounder would benefit.
 - You hit a sharp edge (a model quirk, a cost trap, an agent failure mode) and worked out how to handle it.
-- A `/vet` verdict or outside best-practice proved itself in *your* build — capture what actually held.
+- An outside best-practice — a thread, a post, a "you must do X" — proved itself in *your* build;
+  capture what actually held, not what it claimed.
 
 Skip it for one-off trivia or anything that belongs in the code as a comment. A practice is a *transferable*
 lesson, not a changelog line.

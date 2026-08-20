@@ -114,7 +114,7 @@ export function printCraft(query, opts = {}) {
     if (outliers) {
       console.log(`\n  ${warn(`${outliers} practice(s) run past 2\u00d7 the median (${median}L)`)} ${dim('\u2014 not a bug, a subtraction')}`);
       console.log(`  ${dim('candidate: a practice that only ever grows is how a shelf becomes a framework.')}`);
-      console.log(`  ${dim('The next /practice-refresh should ask what can be deleted, not just what to add.')}`);
+      console.log(`  ${dim('The next refresh should ask what can be deleted, not just what to add.')}`);
     }
     console.log(`  ${dim('This is BOSS\'s shelf. Your own team\'s craft notes live in /practice → PRAC-NNN.')}\n`);
     return 0;

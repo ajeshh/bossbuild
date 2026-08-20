@@ -13,6 +13,15 @@ half). Full discipline: `boss craft ship-it-live`.
 This is **not** a deploy tutorial. It carries the *judgment* (deploy early, cheap, reversible; don't leak
 secrets; know your revert path) and runs the deterministic verbs. The *target* is the project's call.
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for a deploy config before you make one** — `vercel.json`, `fly.toml`, `netlify.toml`, `render.yaml`, `railway.json`, `Procfile`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** If this project is **earlier** than that, don't run this — leave the seam instead:
+**Read config from the environment from the first commit — `process.env.X`, even when X is a placeholder you also hardcode nowhere.** That is the whole ask; it is *not* a host, a pipeline, a rollback runbook, a staging environment, secret management. A key committed once is in git history forever. Moving it to `.env` later does not remove it — it is a rotate-and-purge job, not an edit, and this is the signature vibe-coded leak (CVE-2025-48757 / MoltBook). The one-way door here is not the deploy, it is the history.
+
 ## When to run it
 
 - The first time {{PROJECT_NAME}} is real enough to put in front of someone — at **MVP**, not at launch.

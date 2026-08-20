@@ -1,6 +1,6 @@
 // `boss update` — is the BOSS you have installed actually current?
 //
-// WHY THIS EXISTS: updating is two hops — the TOOL (`npm i -g bossbuild@latest`) and the PROJECT
+// WHY THIS EXISTS: updating is two hops — the TOOL (`npm i -g oyeboss@latest`) and the PROJECT
 // (`/boss-sync`) — and `boss status` could only ever see the second. It compares the project's pin
 // against the INSTALLED package, so a founder who never runs hop 1 has a pin equal to their install
 // and gets told "up to date" forever, while sitting fifty releases behind. **The silence was
@@ -23,7 +23,13 @@ import { cmpVersion } from './changelog.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 
 const CACHE = join(homedir(), '.boss', 'update-check.json');
-const REGISTRY = 'https://registry.npmjs.org/bossbuild/latest';
+// Renamed bossbuild → oyeboss (v0.177.0, BRAND.md). An install predating the rename keeps
+// polling the OLD name and would be told "current" forever while oyeboss moves on — the two-hop
+// trap wearing a new hat. `npm deprecate bossbuild` is what actually reaches those installs.
+// The package name is written ONCE: the registry URL and the update command must never disagree,
+// because a rename that lands in one and not the other is silent. Pinned by a REGRESSION test.
+export const PKG = 'oyeboss';
+const REGISTRY = `https://registry.npmjs.org/${PKG}/latest`;
 const TIMEOUT_MS = 4000;
 const STALE_DAYS = 7;
 
@@ -57,7 +63,7 @@ export function installKind(root = BOSS_ROOT) {
 export function updateCommand(kind = installKind()) {
   return kind === 'brew' ? 'brew upgrade boss'
     : kind === 'source' ? 'git pull && npm i -g .'
-      : 'npm i -g bossbuild@latest';
+      : 'npm i -g oyeboss@latest';
 }
 
 async function fetchLatest() {
@@ -66,6 +72,10 @@ async function fetchLatest() {
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
     const res = await fetch(REGISTRY, { signal: ctrl.signal, headers: { accept: 'application/json' } });
+    // 404 is NOT a transport failure, and calling it one is the false reassurance this file exists
+    // to prevent: the registry answered, and its answer was "no such package." After a rename that
+    // is the single most useful thing BOSS can say, so it gets its own branch.
+    if (res.status === 404) return { error: 'no such package', notFound: true };
     if (!res.ok) return { error: `registry returned ${res.status}` };
     const body = await res.json();
     if (!body?.version) return { error: 'registry response had no version' };
@@ -86,7 +96,14 @@ export async function printUpdate({ quiet = false } = {}) {
 
   if (!quiet) console.log(`\n  ${bold('BOSS update check')}   ${dim(`installed: ${installed}`)}\n`);
 
-  const { latest, error } = await fetchLatest();
+  const { latest, error, notFound } = await fetchLatest();
+  if (notFound) {
+    console.log(`  ${warn('▸')} npm has no package called ${bold(PKG)}, so this check can't answer.`);
+    console.log(`  ${dim("It isn't published yet, or this install predates the rename from `bossbuild`.")}`);
+    console.log(`\n    ${bold(`npm uninstall -g bossbuild && npm i -g ${PKG}`)}`);
+    console.log(`  ${dim('Both packages provide `boss`, so installing over the old one fails with EEXIST.')}\n`);
+    return 0;
+  }
   if (error) {
     console.log(`  ${dim(`Couldn't reach the npm registry (${error}).`)}`);
     const cache = readCache();

@@ -5,6 +5,7 @@ owner: tester
 status: active
 host: stack-neutral
 provenance: written 2026-08-11 (v0.142.0) to close the coverage gap the 2026-07-30 craft-staleness audit named and the 2026-08-11 sweep re-confirmed — `library/README.md` had advertised a testing practice in `practices/` since the library was created, and none existed. Sources - Hamel Husain + Shreya Shankar (error analysis, evals-as-spec, judge validation), "How Coding Agents Fail Their Users" (20,574-session misalignment analysis, arXiv 2605.29442), "Professional Software Developers Don't Vibe, They Control" (arXiv 2512.14012), Veracode Spring-2026, METR, Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was already BOSS's, stranded in `git-workflow.md`.
+provenance_public: Written after BOSS's own library README had advertised a testing practice that did not exist. Sources: Hamel Husain and Shreya Shankar (error analysis, evals-as-spec, judge validation), *How Coding Agents Fail Their Users* (20,574-session misalignment analysis, arXiv 2605.29442), *Professional Software Developers Don't Vibe, They Control* (arXiv 2512.14012), Veracode Spring-2026, METR, and Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was BOSS's own, stranded in the git practice until it had a home.
 last_reviewed: 2026-08-11
 review_by: 2027-02-07
 curve: craft-ai
@@ -129,18 +130,56 @@ In order, each earned by the one before:
 
 1. **Does it run?** One smoke path, end to end. BOSS ships `/smoke` for exactly this. *(Quickstart)*
 2. **The money path.** The one flow that, broken, means you have no product — signup, checkout, the
-   core action. Test it for real, not with everything mocked. *(MVP)*
+   core action. Test it for real, not with everything mocked. *(MVP — named in `/spec`, proved by
+   `/red-team --paths`)*
 3. **The destructive path.** Anything that deletes, charges, sends, or publishes. These need a test
-   *and* a human gate — see [`agent-security`](agent-security.md). *(MVP)*
+   *and* a human gate — see [`agent-security`](agent-security.md). *(MVP — named in `/spec`, proved
+   by `/red-team --paths`)*
 4. **The negative path.** Can user A reach user B's data? This is the test that catches the headline
    vibe-coded breach, and it is the one nobody writes because the happy path looks perfect. See
-   [`data-schema`](data-schema.md). *(MVP — non-negotiable once there are two users)*
-5. **Evals on the AI paths**, once there's a real trace to read. *(V1)*
-6. **Judge validation**, once an eval is steering decisions. *(V1)*
+   [`data-schema`](data-schema.md). *(MVP — non-negotiable once there are two users. Named in
+   `/spec`; proved by `/red-team --paths`; and naming it is what raises `verification-loop`'s bar
+   past rung 1 for this project)*
+5. **Evals on the AI paths**, once there's a real trace to read. *(V1 — `/evals`)*
+6. **Judge validation**, once an eval is steering decisions. *(V1 — `/judge-traces`)*
+
+**Rungs 2–4 are named at spec time and proved before ship, and that order is the point.** A path is
+almost free to name while you're still deciding what "done" means, and close to impossible to
+retrofit once the feature exists — by then the only honest way to find the negative path is for
+somebody else to find it first.
 
 Everything past #4 is premature for most projects. Principle #2 — the right ceremony at the right
 time — applies to test discipline exactly as it applies to everything else. **A founder with no users
 who has a judge-validation pipeline has built the wrong thing.**
+
+### "But what about unit tests? Integration? End-to-end?"
+
+Fair question, and the ladder above deliberately doesn't answer it — so here is the mapping, once.
+Unit / integration / end-to-end describe **how wide a test reaches**. The rungs describe **what is
+worth reaching for**. They are different axes, and only one of them is worth ordering by:
+
+- A **unit** test isolates one function with everything around it faked. Cheap, fast, and it can
+  only tell you a piece behaves — never that the product works. Most useful where the logic is
+  genuinely gnarly and genuinely yours: a pricing calculation, a date rule, a permission check, a
+  parser. **Test the deterministic parts deterministically** — the model is expensive to debug
+  through, so anything that can be settled without a model call should be.
+- An **integration** test runs a few real pieces together — your code against a real database, a real
+  queue, a real HTTP layer. This is usually where rungs 2 and 3 actually land, because the money path
+  and the destructive path are *seams*, and seams are exactly what a unit test mocks away.
+- An **end-to-end** test drives the whole thing the way a user does. Slow, flaky if you build a wall
+  of them, and irreplaceable for one or two paths. Rung 1 is an E2E test wearing a smaller hat.
+- Rung 4 is the odd one out: it's shaped like an integration or E2E test but it is asking a
+  **security** question, and it is the only rung where a *passing happy path proves nothing at all*.
+
+**The band nobody writes is the middle one**, and this is the honest reason: unit tests are what an
+agent volunteers to write, because they're the easiest thing to generate and the easiest to make
+green. That's also why they're the ones most likely to be green by construction. Ask for a rung, not
+a percentage or a layer, and you'll get the test you actually needed.
+
+**Name the rung, not the tool.** Which runner, which assertion library, which browser driver — those
+are stack decisions, made once when the stack is picked, and captured back through Principle #1 if
+they prove out. A practice that recommends a specific framework is a practice with a shelf life
+measured in months.
 
 ## The test
 *If this suite went green on a build that was actually broken, which test would have failed?*

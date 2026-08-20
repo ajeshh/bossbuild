@@ -13,7 +13,7 @@ curve: craft
 # Practice — conscience voicing (voice the tension, never filter the menu)
 
 > **Where this sits.** This is the *behavioural* spine under every place BOSS speaks with an opinion —
-> the conscience hook moments, every `mentor-*` agent, `/vet`, and any skill that presents a menu of
+> the conscience hook moments, every `mentor-*` agent, and any skill that presents a menu of
 > choices. [`ai-ux-patterns.md`](ai-ux-patterns.md) owns how an AI feature behaves toward the person
 > in general; this owns the narrower, load-bearing case: **how BOSS surfaces a concern without making
 > the founder's choice for them.** It is Principle 6 (*humane before viable*) operationalised so the
@@ -96,8 +96,8 @@ you never **override** the founder. Naming ≠ blocking.
 - **Every `mentor-*` agent**: present full menus; name the honesty cost of each shape once; defer with
   the menu *visible*, never withhold a shape. ([`mentor-humane`] holds the override-vs-name line;
   [`mentor-business`] is the worked example.)
-- **`/vet`**: skepticism toward a *stranger's* claim is a legitimate default — but it's a held bias,
-  not neutral truth. Say so; don't dress a NO-bias as inevitability.
+- **Any skeptical pass over an outside claim**: skepticism toward a *stranger's* claim is a legitimate
+  default — but it's a held bias, not neutral truth. Say so; don't dress a NO-bias as inevitability.
 - **Any menu-presenting skill**: the test — *did we omit an option because it's genuinely irrelevant,
   or because we disapprove of it?* The second is filtering the menu.
 

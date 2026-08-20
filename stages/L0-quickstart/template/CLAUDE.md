@@ -46,6 +46,30 @@ Run `boss status` to see your mode and whether newer BOSS practices are availabl
 
 ---
 
+## Before you generate anything durable — three questions
+
+> Applies to every skill that makes something lasting (a page, a schema, a policy, a token file, a
+> deploy config). Costs three seconds; skipping it is what's expensive. Depth: `boss craft seed-to-scale`.
+
+1. **Does it already exist?** Look for the *output*, not just the inputs. Most projects arrive with
+   some of this already built, and generating a second one says *what you built doesn't count*.
+   Four honest answers: nothing there → generate · it's there and it's fine → **say so and stop, that
+   is a complete outcome** · it's there and it's behind → name the *specific* gap and offer the
+   *specific* edit (never "want me to regenerate it?") · it's there under another name or outside the
+   repo → then the gap is BOSS's blindness, not their discipline. Say that, and work from what they have.
+
+2. **What rung is this project on, and what rung does this belong to?** At its rung → run it. Above
+   it (they're further along) → run it and drop the 101. Below it → don't run it; go to 3. The mode
+   installed and the rung the *work* is at are different numbers, and the gap is information.
+
+3. **If it's above their rung — what's the seam?** The one question: *skip this for six months —
+   what is **gone**, versus merely **undone**?* Undone is fine, that's what "not yet" means. Gone is
+   the history a missing `created_at` can't reconstruct, the failing output you deleted, the key
+   that's in git history now. **Plant only the thing that stops it going** — a column, a stub, a
+   folder, a habit. If your seam needs a document, a decision, or a dependency, it's the practice
+   wearing a seam's clothes. And often there is no seam: *"nothing to do here, and here's why nothing
+   is the right answer"* buys more trust than a seam nobody needed.
+
 ## Reference
 
 ### Agent roster (Quickstart)
@@ -54,4 +78,4 @@ Run `boss status` to see your mode and whether newer BOSS practices are availabl
 |---|---|
 | `pm` | What's worth building, scope, priority. Not a coder. |
 | `coder-generalist` | Implementation in the chosen stack. Configured when the stack is decided. |
-| `mentor-venture` | Coaches the founder: is this worth it, riskiest assumption, next step. Advisory only — no code. More mentors unlock per mode (see `docs/MENTORS.md`). |
+| `mentor-venture` | Coaches the founder: is this worth it, riskiest assumption, next step. Advisory only — no code. More mentors arrive in `.claude/agents/` as you unlock modes. |

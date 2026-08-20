@@ -11,6 +11,7 @@ import { printChangelog } from './changelog.js';
 import { detectStage } from './detect.js';
 import { printUpdate, updateNote, installKind, updateCommand } from './update.js';
 import { planRemove, applyRemove, machineState, removeMachineState } from './remove.js';
+import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
@@ -346,6 +347,31 @@ const ROLE_SHIFT = {
   ],
 };
 
+// What you've already BUILT, and the one seam that's open (library/practices/seed-to-scale.md).
+// The positive half of orientation: not "here's what you're missing" but "here's what's real."
+// Both halves stay silent when they can't be derived honestly — an empty repo gets neither line.
+function printBuiltAndSeam(projectDir, stamp) {
+  let have = [];
+  let seam = null;
+  try {
+    have = built(projectDir, stamp);
+    seam = nextSeam(projectDir, stamp);
+  } catch { return; }
+
+  if (have.length) {
+    const names = have.map((h) => h.what);
+    const shown = names.slice(0, 4).join(dim(' · '));
+    const rest = names.length > 4 ? dim(`  +${names.length - 4} more`) : '';
+    console.log(`    ▸ ${bold('Already built:')}   ${shown}${rest}`);
+  }
+  // ONE seam, never a list — see nextSeam. Phrased as the cheap thing, not as a chore, because
+  // this is the only case where "not yet" would otherwise cost them something unrecoverable.
+  if (seam) {
+    console.log(`    ${dim(`▸ Not yet (${seam.rung}):`)}  ${seam.what} — ${dim('but the cheap half is worth it now:')}`);
+    console.log(`      ${seam.seam}`);
+  }
+}
+
 // The orientation core of `boss status` (EVID-001): what you're building right now,
 // and that you're making headway. Reads the same board projection so status, board,
 // and insights all agree on "in flight." Prints nothing it can't derive honestly.
@@ -396,6 +422,7 @@ async function cmdStatus(args) {
   console.log(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
   console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
   printFocusAndHeadway(process.cwd());
+  printBuiltAndSeam(process.cwd(), stamp);
   console.log('');
   console.log(`    ${dim('layers:')}       ${stamp.installedLayers.join(' → ')}`);
   console.log(`    ${dim('BOSS pinned:')}  ${stamp.bossVersion}   ${dim('current:')} ${current}`);
@@ -564,8 +591,8 @@ function cmdRemove(args) {
   // different blast radius, so it never happens as a side effect of the project one.
   if (f.global) {
     const { dir, files } = machineState();
-    const cmd = updateCommand(installKind()).replace(/^npm i -g bossbuild@latest$/, 'npm uninstall -g bossbuild')
-      .replace(/^brew upgrade boss$/, 'brew uninstall boss').replace(/^git pull && npm i -g \.$/, 'npm uninstall -g bossbuild');
+    const cmd = updateCommand(installKind()).replace(/^npm i -g oyeboss@latest$/, 'npm uninstall -g oyeboss')
+      .replace(/^brew upgrade boss$/, 'brew uninstall boss').replace(/^git pull && npm i -g \.$/, 'npm uninstall -g oyeboss');
     console.log(`\n  ${bold('Remove BOSS from this machine')}\n`);
     console.log(`    ${bold(cmd)}   ${dim('— removes the CLI')}`);
     console.log(`\n  ${dim('Machine-local state BOSS keeps outside any project:')} ${dim(dir)}`);
@@ -652,6 +679,13 @@ function cmdSync(args) {
     for (const e of changed) {
       const mark = e.status === 'new' ? ok('+ new    ') : warn(`~ changed (${e.delta} lines)`);
       console.log(`    ${mark}  ${e.kind}/${e.name}  →  ${e.rel}`);
+      // The unit of an update is the ARTIFACT, not the file — a founder who has the thing this
+      // skill makes is the only one for whom "it changed" means anything.
+      if (e.affects) {
+        const evidence = e.affects.evidence.join(', ')
+          + (e.affects.more ? ` +${e.affects.more} more` : '');
+        console.log(`    ${dim('           ↳ you already have')} ${bold(e.affects.what)} ${dim(`— ${evidence}`)}`);
+      }
     }
     if (settingsChanged) {
       console.log(`    ${warn('~ merge')}    settings/hooks + deny floor  →  ${plan.settings.rel}`);
@@ -680,6 +714,13 @@ function cmdSync(args) {
       console.log(`\n    ${dim(`Nothing is deleted without asking. \`boss sync --apply --remove\` removes ${removable === orphans.length ? 'these' : `the ${removable} unedited one(s)`};`)}`);
       console.log(`    ${dim('`/boss-sync` in Claude walks the migration with you first.')}`);
     }
+  }
+
+  const affecting = changed.filter((e) => e.affects);
+  if (affecting.length) {
+    console.log(`\n    ${dim(`${affecting.length} of these make something you already built. Syncing the skill does NOT`)}`);
+    console.log(`    ${dim('change your work — `/boss-sync` reads what actually changed and tells you')}`);
+    console.log(`    ${dim("whether any of it is worth applying to what's already there.")}`);
   }
 
   if (!apply) {
@@ -851,7 +892,7 @@ const HELP = {
   },
   changelog: {
     usage: 'boss changelog [--since X.Y.Z] [--full] [--all]',
-    what: "What changed in BOSS. Inside a project it defaults to the cut that matters — everything since THIS project's pin, which is the question you have the moment `boss status` says newer practices are available. The changelog ships inside the package, so this works from any project and is always exactly as current as your installed version. `/boss-sync` narrates from these entries; this is where they come from. Note what it can and can't tell you: it compares your project against the BOSS you have INSTALLED, so \"nothing new\" means your install and your project agree — not that your install is current. Updating the tool (`npm i -g bossbuild@latest`, or `brew upgrade boss`) is a separate step from updating a project.",
+    what: "What changed in BOSS. Inside a project it defaults to the cut that matters — everything since THIS project's pin, which is the question you have the moment `boss status` says newer practices are available. The changelog ships inside the package, so this works from any project and is always exactly as current as your installed version. `/boss-sync` narrates from these entries; this is where they come from. Note what it can and can't tell you: it compares your project against the BOSS you have INSTALLED, so \"nothing new\" means your install and your project agree — not that your install is current. Updating the tool (`npm i -g oyeboss@latest`, or `brew upgrade boss`) is a separate step from updating a project.",
     examples: ['boss changelog', 'boss changelog --full', 'boss changelog --since 0.140.0', 'boss changelog --all'],
     see: ['sync', 'status'],
   },

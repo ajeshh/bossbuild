@@ -5,6 +5,7 @@ owner: pm
 status: active
 host: claude-code
 provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file.
+provenance_public: Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
 curve: host
@@ -253,7 +254,7 @@ moves with numbers and named failure modes:
 turn?"* If not, cut it, scope it, or block it. Lean context is faster, cheaper, **and sharper**.
 
 ## Sources / how this was vetted
-Vetted via `/vet` (the skeptical inbox), not adopted on popularity — see `docs/research/verdicts/`
+Vetted against BOSS's principles before adoption, not adopted on popularity
 RVW-005 (deny secrets), RVW-010 (token optimization), with RVW-002 (lean session docs), RVW-009
 (context-engineering failure modes), RVW-012 (enforce-in-harness). The `.claudeignore` claim was
 **rejected at verification** — it does not exist. Re-verify all Claude Code syntax on host change.

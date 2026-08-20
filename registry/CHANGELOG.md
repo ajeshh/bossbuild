@@ -9,6 +9,221 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.179.0 — 2026-08-20
+
+**BOSS could distribute a better practice and never ask whether you already had the thing it makes.**
+
+> **For you:** `boss sync` now tells you when a skill that changed makes something **you already
+> built** — `↳ you already have the landing page — app/page.tsx`. And `boss status` gained an
+> **Already built** line (what's real in your repo, not what's missing) plus, when you're earlier
+> than a practice, the one cheap thing worth doing now anyway. Skills look for their own output
+> before generating: point `/landing` at a repo that already has a page and it reads yours instead
+> of writing a second one.
+
+Ajesh: *"when we have new features in BOSS for new idea, how do they get adopted into existing
+folder… like landing pages, say we implement new one — for existing, shouldn't we ask, hey do you
+already have a landing page?"* Then, on the fuller shape: *"it's not just the new features, but
+ongoing… it should always assess new or existing, but also where in the seed to scale the app is,
+and know where it should fit, or add a kernel of it as a seed and then scale."*
+
+- **🔴 The gap was structural, not a missing feature.** `boss sync` compared **file to file** — it
+  could report that `.claude/skills/landing/SKILL.md` changed by 40 lines, and had no way to say the
+  founder *has* a landing page that is now behind the practice. Distribution without adoption: every
+  improvement BOSS made to a capability was **unreachable by everyone who had already used it**. And
+  skills read their **inputs** (BRAND.md, tokens, the canvas) and never their **output** — so
+  `/landing` on an adopted repo generated a second page. Across 47 skills, **4 files** mentioned
+  existing work at all. Worst on the path most people arrive by: `detect.js` says in its own header
+  *"most people who try BOSS arrive with a repo"* — that got fixed for **mode selection** in v0.153.0
+  and never for **artifacts**.
+- **The answer was already on the shelf, in one place, unnamed.** v0.176.0's *"But leave the seam"*
+  (a `created_at` you cannot backfill, a `track()` stub) was the general pattern wearing one domain's
+  clothes — and the same shape was live in `data-schema.md`'s one-way doors and in `design-tokens-loop`
+  without anyone calling them the same thing. **`seed-to-scale.md`** is that generalization: three
+  questions asked every time a capability meets a project — *does it already exist · what rung is this
+  project on versus this practice · if it's above their rung, what's the seam?*
+- **The seam test, and its guard.** *Skip this for six months — what is **gone**, versus merely
+  **undone**?* Undone is fine; that's what "not yet" means. Gone is the history a missing timestamp
+  can't reconstruct, the failing output you deleted, the key that's in git history now. **A seam is a
+  column, a stub, a folder, or a habit** — if it needs a document, a decision, or a dependency, it's
+  the practice wearing a seam's clothes. Every entry carries a `seamNot` so the boundary can't erode.
+- **`registry/surface-ladder.json`** — 16 durable capabilities with rung + detection + seam;
+  **5 say `seam: null` on purpose**, because inventing a seam to look helpful is how a just-in-time
+  tool becomes a checklist. *"Nothing to plant here, and here's why"* is a complete answer.
+- **`npm run check:ladder`, wired into `test` and the release gate — this is the ONGOING half.**
+  Every skill in every manifest must be **durable (on the ladder)** or **exempt (with a written
+  reason)**; a new capability cannot ship without someone deciding which. The test is *append-only vs
+  durable*: a DEC-NNN writes a new record every run, a privacy policy exists and should be read. It
+  also fails loudly on a malformed ledger — `readLadder()` swallows a parse error and returns `{}`,
+  which silently disables artifact-awareness everywhere. That bit during this build.
+- **0 new skills (47 → 47), 1 new practice (30 → 31).** Compose + subtract per [[EVID-001]] — the
+  three questions live in the always-loaded `CLAUDE.md`, and each skill only names its own specifics.
+  **`boss status`'s "Already built" line is the positive register EVID-001 asked for**: ~120 releases
+  spoke only in the conscience's caution voice, and a founder who said *"I can't tell where I am"* now
+  gets told what's real, derived from evidence on disk, never a grade.
+
+### Three things the build caught on itself
+
+- **A fresh scaffold was being offered a seam for a feature that doesn't exist.** "Below the rung"
+  only means something once there's work for the seam to attach to — an empty project isn't *below*
+  MVP, it's *at* Quickstart doing Quickstart's work. Seams are now gated on real work on disk, and
+  the scaffold's own shipped `docs/ideas/README.md` deliberately doesn't count as the founder's.
+  This is the over-shooting the new practice warns about, caught by dogfooding it within the hour.
+- **🔴 The release gate was silently covering a subset of the tests.** Its unit-test step listed four
+  test files by hand, so `design-tokens-guard.test.js` and this release's `ladder.test.js` were
+  invisible to it — `npm test` ran **131**, the gate reported **107** and printed a green tick. Same
+  defect class as v0.171.0's `check:refs` resolving against the wrong tree: *a check that reads green
+  for the exact reason it should not.* The list is now discovered from `test/`, never enumerated.
+- **BOSS's own freshness gate rejected the new practice twice** — a `review_by` 180 days out when
+  `curve: craft` wants 365, and no watchlist domain claiming it (so nothing would ever re-check it).
+  Both fixed; `build-craft.md` gained **domain 14 — Adoption & the ladder**, whose standing question
+  is whether the seam column is still honest in *both* directions.
+
+## 0.178.0 — 2026-08-20
+
+**Two products share this repo — the workspace that builds BOSS and the BOSS a founder installs — and nothing marked the line. It leaked in both directions.**
+
+> **For you:** four commands your practices told you to run don't exist outside BOSS's own repo —
+> `/vet`, `/recalibrate`, `/practice-refresh`, `/humane-refresh`. The practices now name something
+> you actually have. Nothing in your project moves.
+
+Ajesh, opening a boundary review: *"there are some decisions in how we are building boss, that never
+make it into front even though it was intended for boss… some of it should not be in public facing
+repo but only in dev repo."* Both halves were true, and each had a mechanical cause.
+
+- **🔴 Fifteen shipped files named skills that ship to nobody.** `/vet`, `/recalibrate`,
+  `/practice-refresh` and `/humane-refresh` live only in BOSS's gitignored `/.claude/`. Nine practices
+  a founder reads through `boss craft` pointed at them, `/practice` and `/red-team` told founders to
+  run them, and **`src/craft.js` printed one to a founder's real terminal** — *"The next
+  /practice-refresh should ask what can be deleted."* Every one now names a mechanism the founder
+  actually has, or says nothing.
+- **New: `check:refs` class 5 — WORKSPACE-ONLY SKILLS.** Two classes nearly caught this and both
+  missed, for reasons worth keeping. Class 3 had the right idea — *a reference is a dependency* — but
+  scanned `stages/` only, while `library/` and `src/` ship too. Class 4 had the right scope but polices
+  **agent** names; a skill authored in the workspace and never retired is a third way a name dangles.
+  The vocabulary is read off disk, never regexed out of prose, so it cannot cry wolf.
+- **🔴 A relative link into a gitignored directory passes every existing check**, because
+  `existsSync` resolves it *here*. `ai-ux-patterns.md` linked `../../.claude/skills/humane-refresh/SKILL.md`
+  and would have dangled in every install. Class 5 matches the path form as well as the verb.
+- **🔴 The website was publishing BOSS's internal filing.** `gen-site.js` piped each practice's
+  `provenance:` field verbatim into a public page: **43 identifiers** (`IDEA-`, `RVW-`, `FEAT-`, a
+  named internal audit, a research compendium) pointing at directories no reader can open — and the
+  name of an unrelated product of the author's, **six times**, with its implementation detail.
+- **Provenance is now two fields.** `provenance:` stays the internal build record — the most honest
+  field in the repo, written for us, in our own vocabulary. `provenance_public:` is the half a reader
+  can use: who we learned it from and what it cost to find out. The site renders only the second, and
+  **a practice without one gets no provenance block at all** — silence beats a leak, and the gap is
+  visible on the page, which is what makes it get written.
+- **The boundary is enforced at generation, not trusted.** `gen:site` exits 1 if an internal id
+  reaches a public field, with the file and the offending token named. Verified by poisoning a field
+  and watching the build die. A warning in a build script is a warning nobody reads.
+
+- **🔴 The undeclared middle tier was not cosmetic — it was breaking the mentor layer.** `.gitignore`
+  claimed the repo shipped *"GUIDE, CHEATSHEET, SKILLS, MENTORS, IDS"* as user-facing docs. Six of
+  those have never been in the npm tarball, and **nine shipped mentor agents plus the root `CLAUDE.md`
+  every project gets sent founders to `docs/MENTORS.md` on the strength of that sentence.** Four of
+  them said *"create it from the artifact mapping in `docs/MENTORS.md` if absent"* — the mapping was
+  real, and it was the one place the artifact names existed. Each mentor now names its own
+  (`docs/dossier/gtm-<date>.md`, `architecture-<date>.md`, …), so the instruction resolves where it is
+  read. Verified on a real scaffold, which is how the *first* fix got caught: it pointed at `boss team`,
+  and `boss team` is the human-cofounder command, not the mentor roster. A valid command, just not that
+  one — and it passed every checker.
+- **`check:refs` class 3b — repo-only docs.** Membership is computed, not listed: a `docs/*.md` is
+  repo-only when no template ships it and `.gitignore` doesn't hide it. That second clause matters —
+  the first cut flagged four `/close` and `/log` call sites for naming `docs/RESUME.md`, which is the
+  founder's own file, written at runtime by the very skill being flagged.
+- **`.gitignore` now declares all three tiers** instead of two, and says which docs are tier 2. The
+  comment that was wrong is left in, marked wrong, with what it cost.
+- **New: `registry/boundary.json` + `npm run check:boundary` — the crossing ledger.** Every one of the
+  26 artifacts in BOSS's workspace now carries a verdict and a reason: **9 crossed, 12 internal, 5
+  not-yet.** `/boss-learn` routes a crossing; nothing watched what never got routed, and 17 artifacts
+  had sat unruled. **`not-yet` is a legitimate answer and most of these should keep it. `nobody asked`
+  is the state this gate makes impossible.** It fails on an unexamined artifact, on a `crossed` verdict
+  whose file doesn't exist, and on a `not-yet` one that quietly shipped — all three verified by
+  provoking them. It also caught its own ledger on the first run: four verdicts read "Ships at L2." and
+  a reason that short is one that gets inherited instead of re-read.
+- **🔴 `mentor-cofounder` shipped invisible, and the boundary work is what surfaced it.** It has been
+  installed at MVP and named nowhere in `CLAUDE.md` — so a founding *team* unlocking MVP got the one
+  agent built for their exact problem without being told, in the file Claude reads to learn who's on
+  the team. **`check:manifests` now fails when a manifest agent is named in no CLAUDE.md
+  contribution** — the inverse of `check-refs` class 4, which catches a name with no agent behind it.
+  Shipping an agent and telling the project it exists are two acts; only the first was ever gated.
+
+- **The five `not-yet` calls, on the record.** `/vet` is the clearest miss — a founder meets *"some
+  thread says you must do X"* constantly and has nothing for it, while nine practices pointed at it by
+  name. `prompt-coach`'s own description says *"outward-facing"*; it was authored for founders and
+  never left. `/practice-refresh` should exist for a founder's own PRAC records, but as a smaller
+  skill, not this one ported. `designer` and `voice-keeper` guard **BOSS's** surface and voice; the
+  discipline transfers, the agent doesn't. The other twelve are internal on purpose, and now say why.
+
+*The ledger is tier 2 by construction — tracked here, absent from `files:`, never installed. It
+describes the boundary from the side that can afford to name what's on both.*
+
+## 0.177.0 — 2026-08-20
+
+**The name held; the domain never existed. `boss.build` was registered five months before BOSS chose it.**
+
+> **For you:** the install command changed — `npm i -g oyeboss` (was `bossbuild`), and `npx oyeboss
+> new my-app`. The `boss` command itself is unchanged and nothing in your project moves. **If you
+> already have the old package, you must uninstall it first** — both provide `boss`, so installing
+> over it fails with a bare `EEXIST`:
+> `npm uninstall -g bossbuild && npm i -g oyeboss`
+
+Ajesh, opening a naming review: *"i'm thinking if we should find a better name than boss… we have
+grown past."* The review ran its full course and **kept the name.** What it found instead was that
+the domain under it was never real.
+
+- **🔴 `boss.build` has been registered since 2026-01-16** — five months *before* DEC-002
+  selected it. `BRAND.md` recorded it as *"unregistered last checked"*; that came from a WebFetch
+  seeing no server, which DEC-002 itself flagged as *"promising but not proof."* It sat as the
+  rebrand's only open item for eight weeks and the answer was already no. Both named backups
+  (`boss.sh`, `getboss.dev`) are gone too. **A domain is registered or it isn't — check the registry,
+  not the web server.**
+- **New primary: `oyeboss.build`**, verified at the registry, **selected and not yet bought** — the
+  record says so on purpose, because writing an unowned domain down as fact is the exact mistake being
+  corrected here. The vocative is the point: **"BOSS" alone is a title; "oye boss" is a greeting
+  between equals**, and non-hierarchy is the ethos's whole hidden agenda. The disarming used to live
+  in prose you only reached on the About page; now it's in the URL. The TLD is the acronym's own
+  verb — *"Oye boss. Build out solid stuff."*
+- **npm `bossbuild` → `oyeboss`, and the CLI stays `boss`.** That takes three names down to two: the
+  install line and the website finally match. `package ≠ command` was never a virtue, it was a
+  workaround for `boss` being taken — keeping it while the domain moved would have left the mismatch
+  worse. **The command does not become `oye boss`:** a greeting is for arrivals, and one stamped on
+  every invocation is the performed warmth the voice spec rules out.
+- **🔴 The rename's own two-hop trap.** `boss update` polls the registry *by package name*, so an
+  install predating the rename keeps checking `bossbuild`, gets a valid answer, and is told it's
+  current forever — the v0.152.0 failure wearing a new hat. `npm deprecate bossbuild` is the only
+  thing that reaches those installs; noted in `src/update.js` beside the constant.
+- **🔴 Found by testing the migration instead of assuming it: `npm i -g oyeboss` over an existing
+  install DIES with `EEXIST`.** Both packages claim the `boss` bin, so npm refuses rather than
+  relinking, and the founder gets a raw npm stack trace at the exact moment they're trying to follow
+  an upgrade instruction. The uninstall-first line is now stated everywhere the rename is mentioned.
+  *(Caught the same way v0.162.0's four bugs were: run the shape you did not design for.)*
+- **A lie the rename exposed in `boss update`.** A 404 was being reported as *"Couldn't reach the npm
+  registry… Nothing is wrong — this check needs network."* **A 404 is not a transport failure** — the
+  registry answered, and its answer was "no such package," which after a rename is the single most
+  useful thing BOSS could say. It now gets its own branch naming the likely cause and the fix. The
+  old copy was false reassurance, the precise failure class v0.156.0 exists to prevent.
+- **`PKG` is now written once** and pinned by a REGRESSION test (**112**), verified to fail when the
+  two disagree: the registry URL `boss update` polls and the command it prints must name the same
+  package. Change one and not the other and nothing throws — BOSS just checks a package nobody can
+  install, or names one it never looks at.
+- **What did NOT move**, and the distinction that made the sweep safe: `bossbuild` is *three* things —
+  the npm package, the GitHub repo, and the local directory. Only the package changed. Repo URLs,
+  `BOSS_SRC` paths and `learn.js`'s source-detection regex are untouched by design.
+- **The name survived its own written falsifier.** DEC-002's test was *"boss.build unavailable **and**
+  no acceptable on-brand domain exists."* First half fired, second half didn't. Three independent
+  sweeps — this decision's ~21 craft words, plus ~38 trueness words and a person/role pass — produced
+  **two clean survivors in ~75 candidates**, both rejected as *"boring, not as catchy as BOSS."* Four
+  strong candidates died on in-lane collision (BELAY Solutions · Reckon · Honcho · HeyBoss AI, the
+  last an OpenAI-Startup-Fund-backed no-code app builder), and **all four were the legible ones.** The
+  durable finding, logged in DEC-002 so nobody re-runs it: instantly-readable words are taken *because*
+  they are readable, so availability-first sweeps return only what nobody wanted.
+- **Repairs v0.176.0**, which shipped that test without the source half — `test/cli.test.js` imported
+  `PKG` from a `src/update.js` that didn't export it, so HEAD asserted against `undefined`. Two
+  sessions were writing this repo at once; the test landed and the source didn't.
+- Swept with `find -exec grep`, never bare `grep` — the gitignored `.claude/` tree has hidden stale
+  names through two prior identity sweeps. 111 unit · 136 evals · all gates green.
+
 ## 0.176.0 — 2026-08-20
 
 **"Don't instrument yet" was only half-honest — the half it never said was what to leave behind.**

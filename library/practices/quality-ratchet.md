@@ -5,6 +5,7 @@ owner: pm
 status: active
 host: stack-neutral
 provenance: ported UP from the dhun dogfood (.ratchet/ + /code-health gate) via the 2026-06-20 method scan — BOSS v0.48.0
+provenance_public: Ported up from a dogfooded product's own code-health gate: a ratchet file plus a check that is only ever allowed to tighten.
 last_reviewed: 2026-06-20
 review_by: 2027-06-20
 curve: craft

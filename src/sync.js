@@ -7,6 +7,7 @@ import {
 } from './paths.js';
 import { readStageManifest, sameAsTemplate } from './scaffold.js';
 import { readSupersedes, findSupersede } from './supersede.js';
+import { readLadder, assess } from './ladder.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
 // canonical current stage id by its level prefix. Returns undefined if it
@@ -367,6 +368,7 @@ export function planSync(projectDir, stamp) {
     if (c && !layers.includes(c)) layers.push(c);
   }
 
+  const ladder = readLadder();
   const entries = [];
   for (const stageId of layers) {
     let manifest;
@@ -386,7 +388,23 @@ export function planSync(projectDir, stamp) {
       let status = 'ok';
       if (!exists) status = 'new';
       else if (cur !== next) status = 'changed';
-      entries.push({ ...f, stageId, status, next, delta: exists ? lineDelta(cur, next) : 0 });
+      // THE ADOPTION HALF (see library/practices/seed-to-scale.md). A file diff can say this skill
+      // changed by 40 lines; it cannot say the founder HAS a landing page and it is now behind the
+      // practice. Both directions matter and they are different founders:
+      //   `changed` + artifact → the practice moved under work they already shipped.
+      //   `new`     + artifact → adopt just installed a generator onto a repo that already has one.
+      // Reported as a CANDIDATE, never a conclusion — /boss-sync reads the CHANGELOG and judges
+      // whether the change is worth their attention. Silent when the artifact isn't there.
+      let affects = null;
+      if (f.kind === 'skill' && status !== 'ok') {
+        const a = assess(projectDir, f.name, stamp, ladder);
+        if (a && a.exists) {
+          affects = {
+            what: a.what, evidence: a.evidence, more: a.more, alsoLookFor: a.alsoLookFor,
+          };
+        }
+      }
+      entries.push({ ...f, stageId, status, next, delta: exists ? lineDelta(cur, next) : 0, affects });
     }
   }
 

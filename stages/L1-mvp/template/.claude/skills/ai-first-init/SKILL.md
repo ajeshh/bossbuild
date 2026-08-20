@@ -14,6 +14,14 @@ spine instead of inventing one under pressure.
 It's the move that earns BOSS its name. Cursor + a folder is "AI-native." BOSS + this skill
 is *"AI-first with discipline from day one."*
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for the AI-first declaration before you make one** — `docs/ai-first.md`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** Applies only when the project is AI-native. If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: A conductor over capabilities that carry their own seams. It has none of its own, and giving it one would ask for the same thing twice.
+
 ## What "AI-first" means here
 
 A project is **AI-first** when the model is *load-bearing* — the product doesn't work without

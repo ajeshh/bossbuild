@@ -146,9 +146,12 @@ list of what each mode includes lives where it can't go stale:
 
 ```bash
 # pick one — all three put `boss` on your PATH (zero runtime deps)
-npx bossbuild new my-app        # no install; try it first
-npm install -g bossbuild        # the usual
+npx oyeboss new my-app        # no install; try it first
+npm install -g oyeboss        # the usual
 brew install ajeshh/boss/boss   # macOS, via the tap
+
+# already have the old package? uninstall first — both provide `boss`, so npm refuses to relink
+npm uninstall -g bossbuild && npm i -g oyeboss
 
 boss new my-app                 # 5 seconds — scaffolds + git-inits + registers
 cd my-app

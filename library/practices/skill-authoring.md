@@ -5,6 +5,7 @@ owner: pm
 status: active
 host: claude-code
 provenance: adapted from Anthropic's own skill-creator skill via /vet RVW-013 — the wisdom, not the harness (the with/without eval machinery is deferred; see "What's left out"). Ground for anyone authoring a skill — BOSS authoring its own, and (UP candidate) a founder authoring one in a scaffolded project. Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.
+provenance_public: Adapted from Anthropic's own skill-creator skill — the wisdom, not the harness. The with/without eval machinery is deliberately left out; see "What's left out".
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
 curve: host
@@ -103,7 +104,7 @@ descriptions.
 **The BOSS adaptation:** pushy ≠ shouting. A description earns its triggers by being *concrete*
 ("when the user asks X, or is doing Y, or says any of …"), not by adding urgency words. List the
 real trigger phrases; name what it is *not* for (the boundary is as load-bearing as the trigger).
-Look at the existing skills — `/vet`, `/boss-learn`, `/consult` — for the pattern: a one-line *what*,
+Look at the existing skills — `/boss-learn`, `/consult` — for the pattern: a one-line *what*,
 then a precise *when*, then the inverse it's distinct from.
 
 ## Self-check before shipping a skill
@@ -124,6 +125,6 @@ A short read, not a harness:
 
 The source skill ships a **with-skill vs without-skill eval harness** (`workspace/iteration-N/eval-ID/`,
 parallel runs, scored comparison). BOSS does **not** adopt that yet — it's real ceremony, and it
-duplicates the question `/vet` and `conscience-evals/` already ask ("does this beat the baseline?").
+duplicates the question BOSS already asks before it adopts anything ("does this beat the baseline?").
 **Re-open** when a shipped skill's value is genuinely disputed and a careful read can't settle it;
 then a with/without comparison earns its weight. Logged in [IDEA-033](../../docs/ideas/IDEA-033-2026-rigor-and-bestpractice-gaps.md).

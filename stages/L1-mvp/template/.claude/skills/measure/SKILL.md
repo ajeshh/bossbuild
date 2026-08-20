@@ -11,6 +11,11 @@ none.
 
 ## Step 0 — the JIT gate (say no when the answer is no)
 
+**First, look for what's already there.** A `posthog-js` / `plausible` / `@vercel/analytics` / `mixpanel`
+dependency, a `track(` call in `src/`, a `created_at` column in the schema. A project that arrived with
+analytics does not need them installed again — read what it already collects and work from that. If the
+seam below is already planted, say so; that is a complete outcome.
+
 Check the real user count (ask, or read `/ship` context / the EVID ledger). **If fewer than ~10 real users,
 the correct output is: close this and go talk to them.** Analytics on ten users is noise; a conversation isn't.
 Do not instrument. Point at `/interview`. Instrument only at roughly **n≥30–50** — when you can no longer eyeball

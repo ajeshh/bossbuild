@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.175.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.179.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -59,7 +59,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 
 **Skills**
 
-- `/spec` — Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, and a smoke check
+- `/spec` — Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, a smoke check, and the three paths that must not break (the money path, the destructive path, and the negative path — who must NOT be able to see this)
 - `/smoke` — Run the project's smoke check — "is the app even working right now?" Stack-configured
 - `/log` — Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you
 - `/close` — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)

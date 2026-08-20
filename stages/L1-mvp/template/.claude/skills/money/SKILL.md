@@ -20,7 +20,12 @@ Look before asking: is there a payment link in the repo, a Stripe key in the env
 record, an EVID graded `commitment`?
 
 - **No real willingness-to-pay signal — nobody has said yes.** → **Stop. Don't build a payment rail
-  for a customer who doesn't exist.** The move is `/interview` or `/pretotype` to *get* the yes. Say
+  for a customer who doesn't exist.** But don't close empty-handed — **the seam is one sentence: in a
+  conversation you are already having, say a number out loud and watch the face.** Not an entity, not a
+  pricing page, not ToS — a number, said aloud. You will talk to a finite number of early users and each
+  one is a single-use willingness-to-pay probe; every conversation you finish without naming a price is a
+  data point you cannot re-collect, because going back later changes the question — by then they know you.
+  The move is `/interview` or `/pretotype` to *get* the yes. Say
   so plainly.
 - **Someone has said yes, but there's no way to pay you.** → **Part A.** This is the sharpest
   just-in-time moment in the lifecycle.

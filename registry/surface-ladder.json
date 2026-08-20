@@ -1,0 +1,299 @@
+{
+  "_readme": [
+    "The LADDER ledger — for each capability that produces something durable in a founder's project:",
+    "what it produces, which rung it belongs to, and what seam it leaves if the project is below that rung.",
+    "",
+    "WHY THIS EXISTS: `boss sync` compared FILE to FILE. It could tell a founder that `.claude/skills/",
+    "landing/SKILL.md` changed by 40 lines; it could not tell them that they HAVE a landing page and it is",
+    "now behind the practice. Distribution without adoption — every improvement BOSS makes to a capability",
+    "was unreachable by everyone who had already used it. And skills themselves read their INPUTS (brand,",
+    "tokens, canvas) and never looked for their OUTPUT, so pointing /landing at a repo that already had a",
+    "landing page generated a second one.",
+    "",
+    "The discipline is `library/practices/seed-to-scale.md`. This file is its machine-readable half.",
+    "",
+    "  rung        Quickstart | MVP | V1 | Scale — where this capability genuinely belongs. NOT where it",
+    "              ships. /landing ships in MVP mode and its demand-page half belongs at Quickstart; the",
+    "              rung is about the WORK, not the install.",
+    "  produces.what  reads in TWO sentences and must work in both: \"you already have ___\" (sync)",
+    "              and \"Already built: ___\" (status). A short noun phrase, not a feature blurb.",
+    "  produces    what the founder ends up with, and how to look for it. `files` are path patterns",
+    "              (`*` = one segment, `**` = any depth); `deps` are package.json dependency names.",
+    "              DELIBERATELY TIGHT. A false 'you already have this' costs more than a miss — the loose",
+    "              half (a smoke gate called `verify`, a landing page in Framer) is the MODEL's job at",
+    "              step 0, not a path list's. Same split as detect.js: cheap and legible here, judgment there.",
+    "  seam        what to plant when the project is BELOW the rung — or null, honestly, when there is",
+    "              nothing worth planting. A seam is a column, a stub, a folder, or a habit. If it needs a",
+    "              document, a decision, or a dependency, it is the practice wearing a seam's clothes.",
+    "              The test: skip this for six months — what is GONE, versus merely UNDONE?",
+    "  seamNot     the thing it keeps being mistaken for. Present so the boundary can't erode quietly.",
+    "",
+    "A `seam: null` entry is COMPLETE, not unfinished. Most practices cost the same written later, and",
+    "inventing a seam to look helpful is how a just-in-time tool turns into a checklist.",
+    "",
+    "Enforced by `npm run check:ladder` — a capability that produces a durable artifact and is missing",
+    "here fails BOSS's own build. That gate is what makes this ongoing rather than a one-time sweep."
+  ],
+
+  "canvas": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "Quickstart",
+    "produces": {
+      "what": "the venture canvas",
+      "files": ["docs/ideas/CANVAS.md"]
+    },
+    "seam": null,
+    "seamWhy": "There is no rung below this one. The canvas IS the seed."
+  },
+
+  "spec": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "produces": {
+      "what": "feature specs",
+      "files": ["docs/features/FEAT-*.md", "docs/specs/**"]
+    },
+    "seam": "Write down what 'working' means for the feature while you are building it — one sentence, in the commit or a comment. It costs nothing now and it is the only thing that makes a test writable later.",
+    "seamNot": "A spec convention, an ID scheme, acceptance-criteria fields, a template.",
+    "seamWhy": "You can write a spec any day. You cannot reconstruct what you MEANT by 'correct' six months after you built it — and an agent asked to test that feature later will happily write assertions against whatever the code already does."
+  },
+
+  "smoke": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "produces": {
+      "what": "the build-health gate",
+      "files": [".boss/smoke.json"]
+    },
+    "alsoLookFor": "A project can have a smoke gate under another name — a `verify`/`check` make target, a `test` script that actually boots the app, a pre-commit hook. If they have one, the gap is BOSS's blindness, not their discipline; say so and wire to it rather than adding a second.",
+    "seam": null,
+    "seamWhy": "A gate costs the same to add later. What is genuinely lost belongs to `spec` above — the criterion, not the runner."
+  },
+
+  "evals": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "appliesWhen": "the project has an LLM in control flow",
+    "produces": {
+      "what": "eval sets",
+      "files": ["docs/evals/**", "evals/**"]
+    },
+    "seam": "Keep the bad outputs. One folder, paste the failure in, no format. That is eval case #1 and it exists for about thirty seconds before someone closes the tab.",
+    "seamNot": "An eval harness, a judge, a rubric, a CI gate, a scoring loop.",
+    "seamWhy": "Every eval set is built from real failures you actually saw. You can write the harness any day; you cannot recover the weird output you deleted, and reproducing it on demand is exactly the thing a non-deterministic system will not do for you."
+  },
+
+  "ai-cost": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "appliesWhen": "the project makes its first LLM call",
+    "produces": {
+      "what": "an AI spend budget",
+      "files": ["docs/ai-cost-budget.md", ".boss/cost-log.jsonl"]
+    },
+    "seam": "One line per call: model, tokens in/out, timestamp. Append to a file. Nothing reads it yet.",
+    "seamNot": "A budget, a review cadence, alerts, a dashboard, a per-user attribution scheme.",
+    "seamWhy": "Same shape as the analytics history seam — you cannot backfill what past calls cost, so the day you finally care about margin, your ledger starts at day zero and the whole build you already paid for is invisible."
+  },
+
+  "ai-failure-states": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "appliesWhen": "the project makes its first LLM call",
+    "produces": {
+      "what": "designed AI failure states",
+      "files": ["docs/ai-failure-states.md"]
+    },
+    "seam": null,
+    "seamWhy": "A failure-state design costs the same written later. The recoverable-only-now half is the specific weird output you saw and closed the tab on — that seam belongs to `evals`, and duplicating it here would be a second ask for the same habit."
+  },
+
+  "ai-first-init": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "appliesWhen": "the project is AI-native",
+    "produces": {
+      "what": "the AI-first declaration",
+      "files": ["docs/ai-first.md"]
+    },
+    "seam": null,
+    "seamWhy": "A conductor over capabilities that carry their own seams. It has none of its own, and giving it one would ask for the same thing twice."
+  },
+
+  "design-tokens-init": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "appliesWhen": "the project starts accumulating UI",
+    "produces": {
+      "what": "a design token system",
+      "files": [
+        "docs/design/DESIGN_TOKENS.md", "tokens.json", "design-tokens/**",
+        "src/styles/tokens.css", "src/tokens.ts", "app/tokens.css"
+      ]
+    },
+    "seam": "Name the first color for what it MEANS, not what it looks like — `action.primary`, not `indigo-600`. One habit, zero files.",
+    "seamNot": "A three-layer token architecture, a Style Dictionary pipeline, a semantic layer, a component library.",
+    "seamWhy": "Nothing is technically lost — but the cost is the only one on this list that compounds per screen. Retrofitting is linear in UI you already generated, and an agent generating screen forty has forty precedents telling it to invent a new blue."
+  },
+
+  "ship": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "MVP",
+    "produces": {
+      "what": "a deploy config",
+      "files": [
+        "vercel.json", "fly.toml", "netlify.toml", "render.yaml", "railway.json",
+        "Procfile", "Dockerfile", "docker-compose.yml", "wrangler.toml", "app.yaml",
+        ".github/workflows/deploy.yml", ".github/workflows/deploy.yaml"
+      ]
+    },
+    "seam": "Read config from the environment from the first commit — `process.env.X`, even when X is a placeholder you also hardcode nowhere.",
+    "seamNot": "A host, a pipeline, a rollback runbook, a staging environment, secret management.",
+    "seamWhy": "A key committed once is in git history forever. Moving it to `.env` later does not remove it — it is a rotate-and-purge job, not an edit, and this is the signature vibe-coded leak (CVE-2025-48757 / MoltBook). The one-way door here is not the deploy, it is the history."
+  },
+
+  "landing": {
+    "stepZeroMarker": "Step 0a \u2014 does a page already exist?",
+    "rung": "MVP",
+    "rungNote": "The PRODUCT page is MVP. The DEMAND page is Quickstart — that is /pretotype's fake door, and it is the rung below.",
+    "produces": {
+      "what": "the landing page",
+      "files": [
+        "app/page.tsx", "app/page.jsx", "src/app/page.tsx", "src/app/page.jsx",
+        "pages/index.tsx", "pages/index.jsx", "src/pages/index.tsx",
+        "app/routes/_index.tsx", "src/routes/+page.svelte",
+        "index.html", "public/index.html", "site/index.html", "www/index.html",
+        "landing/**"
+      ]
+    },
+    "alsoLookFor": "A landing page often lives OUTSIDE the repo — Framer, Carrd, Webflow, a Notion page, a GitHub Pages branch. Ask before generating; a page you cannot see is still a page they have.",
+    "seam": "If anything of yours is public — a page, a repo, a post — leave one way for a stranger to reach you. An email field, a link, anything.",
+    "seamNot": "A landing page, a waitlist product, a CRM, an email tool, a form service, copy.",
+    "seamWhy": "You can rewrite a page any day. You cannot go back and ask the people who already showed up and left — and at this rung those are the only people who found you without being told to."
+  },
+
+  "measure": {
+    "stepZeroMarker": "First, look for what's already there.",
+    "rung": "V1",
+    "rungNote": "Genuinely post-first-users. Below ~10 users the honest answer is 'go talk to them', which /measure says itself.",
+    "produces": {
+      "what": "analytics instrumentation",
+      "deps": ["posthog-js", "posthog-node", "mixpanel", "mixpanel-browser", "amplitude-js", "@amplitude/analytics-browser", "plausible-tracker", "@vercel/analytics", "analytics", "@segment/analytics-node", "rudder-sdk-js"],
+      "files": ["docs/metrics.md", "docs/measurement.md"]
+    },
+    "seam": "A `created_at` on user rows and core object rows, plus one `track(event, props)` that console-logs and goes nowhere.",
+    "seamNot": "An event taxonomy, a tool account, a dashboard, an `events` table, a funnel.",
+    "seamWhy": "The history seam — the only thing on this entire ladder that gets strictly more expensive every single day it is skipped. You can add a tracking call any day; you cannot add the past. Full treatment in analytics-for-ai-products.md § 'But leave the seam'."
+  },
+
+  "onboard": {
+    "stepZeroMarker": "you cannot re-hear someone's first five minutes",
+    "rung": "V1",
+    "rungNote": "The top-of-curve fix /health routes to. Needs real users to have a curve at all.",
+    "produces": {
+      "what": "an onboarding flow",
+      "files": ["docs/onboarding.md", "docs/activation.md"]
+    },
+    "seam": "When one of your first ten users tries the thing, write down what they actually said and where they stalled. Their words, not your summary.",
+    "seamNot": "An onboarding flow, a checklist, a product tour, a concierge process, an aha-moment definition.",
+    "seamWhy": "You can redesign onboarding any day. You cannot re-hear someone's first five minutes — and after their second session they are no longer a person who has never seen your product, so that observation is unrepeatable by construction."
+  },
+
+  "money": {
+    "stepZeroMarker": "say a number out loud and watch the face",
+    "rung": "V1",
+    "rungNote": "Not a mode so much as an event: someone said yes.",
+    "produces": {
+      "what": "the payment rail",
+      "deps": ["stripe", "@stripe/stripe-js", "@lemonsqueezy/lemonsqueezy.js", "@paddle/paddle-js", "paddle-sdk"],
+      "files": ["docs/pricing.md"]
+    },
+    "seam": "In any conversation you are already having, say a number out loud and watch the face.",
+    "seamNot": "An entity, a payment rail, a pricing page, ToS, a billing system, a refund policy.",
+    "seamWhy": "You will talk to a finite number of early users and each one is a single-use willingness-to-pay probe. Every conversation you finish without naming a price is a data point you cannot re-collect — going back later to ask changes the question, because by then they know you."
+  },
+
+  "trust": {
+    "stepZeroMarker": "turn on your model provider's training opt-out",
+    "rung": "V1",
+    "rungNote": "Fires when real users' real data arrives, which can be well before V1 by mode.",
+    "produces": {
+      "what": "a privacy policy + ToS",
+      "files": [
+        "PRIVACY.md", "privacy.md", "TERMS.md", "terms.md", "docs/legal/**",
+        "app/privacy/**", "app/terms/**", "public/privacy.html", "docs/trust.md"
+      ]
+    },
+    "seam": "Two acts, both one-time. Don't store what no feature reads. And turn on your model provider's training opt-out — in the console, today.",
+    "seamNot": "A privacy policy, ToS, a subprocessor list, a trust page, a DPIA, SOC2.",
+    "seamWhy": "Both are one-way doors and neither is a document. You cannot un-collect data, and a policy written later cannot cover what you already gathered under no policy at all. You cannot un-train a model on prompts you already sent — the opt-out is an ACT, not a promise, and 'the AI did it' has already failed as a defense (Air Canada)."
+  },
+
+  "design-library": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "V1",
+    "produces": {
+      "what": "the visual design library",
+      "files": ["docs/design/library/**"]
+    },
+    "seam": null,
+    "seamWhy": "It costs the same at V1 as it would have at MVP, minus the components that did not exist yet. The rung below it is the tokens file, and that seam is already `design-tokens-init`'s."
+  },
+
+  "incident": {
+    "stepZeroMarker": "## Step 0 \u2014 does it already exist, and is this the right rung?",
+    "rung": "Scale",
+    "produces": {
+      "what": "incident runbooks",
+      "files": ["docs/runbooks/**", "RUNBOOK.md", "docs/incidents/**", "docs/postmortems/**"]
+    },
+    "seam": "Log errors with a timestamp somewhere you can read later. Not a service — a file is fine.",
+    "seamNot": "A runbook, an on-call rotation, an SLO, alerting, a status page, a postmortem template.",
+    "seamWhy": "A runbook genuinely costs the same written later, and pretending otherwise would be ceremony. But you cannot investigate an outage you have no record of, and the first real one is exactly when you find out which it was."
+  },
+
+  "_exempt": {
+    "_why": [
+      "Skills that produce NOTHING a founder would later want updated. Every skill in every stage",
+      "manifest must be in this list or in the ladder above — `npm run check:ladder` fails otherwise.",
+      "That is the forcing function: a new capability cannot ship without someone deciding which it is.",
+      "",
+      "The test is APPEND-ONLY vs DURABLE. A DEC-NNN, an EVID-NNN, a devlog entry — each run writes a",
+      "NEW record and never revisits an old one, so \"do you already have one?\" is not a question that",
+      "means anything. A landing page, a schema, a privacy policy — one exists, and the next run should",
+      "read it. If you are unsure, ask whether a founder would ever say \"update mine\" rather than",
+      "\"make another\"; if they would, it belongs in the ladder."
+    ],
+    "boss": "the entry point; captures an idea into a new IDEA-NNN record",
+    "boss-learn": "BOSS's own learning loop, not a project artifact",
+    "boss-sync": "BOSS's own distribution loop, not a project artifact",
+    "comprehend": "the assessor itself \u2014 reads the repo, never produces a competing artifact",
+    "welcome": "orientation; writes nothing durable",
+    "triage": "routes an input to the right verb",
+    "import": "pulls source material in; the source is the founder's, not BOSS's output",
+    "decide": "append-only record (DEC-NNN) \u2014 every run adds one, never updates an existing",
+    "evidence": "append-only record (EVID-NNN)",
+    "feedback": "append-only record",
+    "interview": "append-only record of one conversation",
+    "persona": "append-only record",
+    "practice": "append-only record (PRAC-NNN)",
+    "log": "append-only devlog entry",
+    "research": "append-only research note",
+    "close": "session ritual; updates RESUME, which is BOSS's own convention not a founder artifact",
+    "prototype": "throwaway by design \u2014 a prototype you'd 'update' has stopped being one",
+    "pretotype": "the fake door is deliberately disposable; its durable half is /landing",
+    "sunset": "retires a project",
+    "consult": "advisory only \u2014 mentors never write product code",
+    "extract": "routes a pattern UP or DOWN; the record is append-only",
+    "revalidate": "a gate; the output is a routing decision",
+    "red-team": "a check; findings are append-only",
+    "cost-review": "a reader over the cost ledger; the review file is append-only",
+    "health": "a verdict, not an artifact",
+    "judge-traces": "a reader over trace data",
+    "drift-deep": "an audit; append-only",
+    "roadmap": "explicitly a snapshot you use and discard, never a plan you tend",
+    "board": "a reader over the project's own files",
+    "design-review": "a check over an existing design",
+    "ux-check": "a check over an existing flow"
+  }
+}

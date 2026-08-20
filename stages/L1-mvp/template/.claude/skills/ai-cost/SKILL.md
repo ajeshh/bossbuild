@@ -13,6 +13,15 @@ This skill is the gate between *"the app calls an LLM"* and *"the app is in fron
 makes you declare the budget BEFORE the bill, wire a logger so you can SEE the bill, and pair
 the cost shape with the right mentor (architecture for shape; business for unit economics).
 
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for an AI spend budget before you make one** — `docs/ai-cost-budget.md`, `.boss/cost-log.jsonl`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** Applies only when the project makes its first LLM call. If this project is **earlier** than that, don't run this — leave the seam instead:
+**One line per call: model, tokens in/out, timestamp. Append to a file. Nothing reads it yet.** That is the whole ask; it is *not* a budget, a review cadence, alerts, a dashboard, a per-user attribution scheme. Same shape as the analytics history seam — you cannot backfill what past calls cost, so the day you finally care about margin, your ledger starts at day zero and the whole build you already paid for is invisible.
+
 ## When to run it
 
 - A FEAT puts an LLM call in the user-facing control flow (not a one-off dev script).

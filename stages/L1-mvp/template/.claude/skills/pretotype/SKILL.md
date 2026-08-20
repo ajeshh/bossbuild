@@ -68,6 +68,20 @@ form tool → they bring it back and you write it into the pretotype log below.
 **What this is not.** It is not a host. The moment someone says yes, the product needs a real home —
 that's `/ship`, and the handoff should be explicit so demand-testing and delivery stay separate.
 
+**And it is not the only page BOSS builds — know which one you want.** `/landing --demand` builds the
+same door *in the repo*: version-controlled, on-brand from the token system, deployed through `/ship`.
+The split is about what the page has to survive, not about which is better:
+
+| | **Publish here (Artifact)** | **`/landing --demand`** |
+|---|---|---|
+| Cost to first URL | this turn — no host, no account | a deploy |
+| Lives in | the artifact, not the repo | the repo, under version control |
+| Best when | you are testing and expect to throw it away | the page will outlive the test, or the brand matters |
+
+**Default to publishing here for the test.** A demand test that waits on a deploy is the delay Savoia's
+whole argument is about, and most fake doors *should* be thrown away. Reach for `/landing` when the page
+is going to stick around.
+
 **The line a fake door does not cross** (`ai-ux-patterns.md`, PRINCIPLE #6). Testing demand for
 something that doesn't exist yet is honest. These are not:
 - impersonating a real company, or borrowing one's branding to seem legitimate;

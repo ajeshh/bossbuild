@@ -8,6 +8,7 @@ curve: craft
 last_reviewed: 2026-08-01
 review_by: 2027-08-01
 provenance: Extracted at v0.135.0 from a real mistake. BOSS pinned `model: fable` in 8 shipped agent files + hardcoded model ids and per-token prices in `.boss/model-profile.json`. Within four weeks the pin was stale (the session model moved on), the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install — while `/recalibrate`, the discipline built to catch exactly this, never fired. The audit (REVIEW-2026-07-28 §E2) caught it instead. Root cause named by BOSS's own PRINCIPLE #3 - a model name buried in an agent file is *locked into code*; the reusable thing is the INTENT, which is stable, not the name, which is not.
+provenance_public: Extracted from a real mistake. BOSS pinned a model alias in eight shipped agent files and hardcoded model ids and per-token prices. Within four weeks the pin was stale, the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install. Root cause is BOSS's own PRINCIPLE #3 — a model name buried in an agent file is locked into code; the reusable thing is the intent, which is stable, not the name, which is not.
 ---
 
 # Practice — Route by capability, never by model name
@@ -81,9 +82,9 @@ a template that ships to strangers.
 
 - `.boss/model-profile.json` — the local, operator-owned binding (capability shapes → whatever you
   actually use). Not shipped; regenerable; safe to be wrong.
-- `/recalibrate` — the standing pass. Since v0.135.0 it no longer chases model names; it asks whether
-  the *shape of the tradeoff* moved (did a new tier change what "cheap" means?), which is a much
-  rarer and more meaningful event.
+- **What actually dates this practice.** Not a model launch — nothing here rots when one ships. It's a
+  new *tier* that moves the shape of the tradeoff (did "cheap" or "deliberate" come to mean something
+  else?), which is a much rarer and more meaningful event. Watch for that; ignore the launches.
 - `context-discipline.md` — the sibling cost lever. Routing is what you pay per call; context is how
   much you pay each time.
 - **PRINCIPLE #3** (nothing valuable gets locked into code) and **#4** (stack-neutral; stacks are

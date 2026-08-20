@@ -1,6 +1,6 @@
 ---
 name: spec
-description: Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, and a smoke check. The point at which "we should build this" turns into "here's how we'll know it's done." Usage - /spec [IDEA-NNN]  (or describe the feature inline)
+description: Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, a smoke check, and the three paths that must not break (the money path, the destructive path, and the negative path — who must NOT be able to see this). The point at which "we should build this" turns into "here's how we'll know it's done." Usage - /spec [IDEA-NNN]  (or describe the feature inline)
 ---
 
 # /spec — promote an idea into a buildable feature
@@ -9,6 +9,15 @@ In Quickstart, ideas live in `docs/ideas/IDEA-NNN.md` as living capture docs. In
 to *actually be built*, `/spec` lifts it into a **FEAT** — same number space, but now with a goal you
 can measure, criteria you can check, and a smoke that proves it landed. The IDEA stays; the FEAT is
 the build contract.
+
+## Step 0 — does it already exist, and is this the right rung?
+
+**Look for feature specs before you make one** — `docs/features/FEAT-*.md`, `docs/specs/**`. If it's there: say so and stop
+when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
+*specific* edit when it's behind. Never quietly generate a second one.
+
+**Rung: MVP.** If this project is **earlier** than that, don't run this — leave the seam instead:
+**Write down what 'working' means for the feature while you are building it — one sentence, in the commit or a comment. It costs nothing now and it is the only thing that makes a test writable later.** That is the whole ask; it is *not* a spec convention, an id scheme, acceptance-criteria fields, a template. You can write a spec any day. You cannot reconstruct what you MEANT by 'correct' six months after you built it — and an agent asked to test that feature later will happily write assertions against whatever the code already does.
 
 ## When to run
 
@@ -126,10 +135,48 @@ that when you're choosing among many candidates, not just reacting to one.)_
    > interview, you've turned a spec into a PRD written *instead of* the thinking — which is the
    > exact failure Cagan names and the one BOSS's restraint check above already guards.
 
-4. Create `docs/ideas/FEAT-NNN-<slug>.md` from the template below.
-5. Update the source IDEA's `status` to `building` and add a one-line pointer at the top:
+4. **The three paths — rungs 2–4 of the testing ladder (v0.179.0+).** Acceptance criteria say what
+   *should* happen. This asks the other half: **which paths must not break, and what would it cost
+   if they did?** `boss craft testing-with-agents` carries a six-rung ladder of what to test
+   first when you have nothing; `/smoke` delivers rung 1 and `/evals` + `/judge-traces` deliver 5
+   and 6. Rungs 2–4 are the band in between — the ordinary, non-AI, *is-my-logic-actually-right*
+   band — and this is where they get named, because a path is cheapest to name at the moment you're
+   deciding what "done" means, and nearly impossible to retrofit once the feature is built.
+
+   Ask three questions, in one short pass. Each answer becomes a **line under "Paths that must not
+   break"** in the FEAT, phrased as something a person could actually check:
+
+   - **The money path.** *Is this on the flow that, broken, means there's no product?* Signup,
+     checkout, the core action. If yes, say which flow and note that it gets tested **for real, not
+     with everything mocked** — a money path verified against mocks is verifying the mocks.
+   - **The destructive path.** *Does this delete, charge, send, or publish?* If yes, it needs a test
+     **and** a human gate — name both. "Irreversible" is also exactly what step 8's out-of-the-agent's-
+     authority line is for, so these two usually get written together.
+   - **The negative path.** *Who must **not** be able to see or do this — and what stops them?*
+     Write the concrete pair ("user A cannot read user B's orders"), never the abstraction ("auth
+     works"). This is the test nobody writes, because the happy path looks perfect — and it is the
+     one BOSS's own practice calls **non-negotiable once there are two users**, because what it
+     catches is not a bug but a **missing security property**: every screen renders correctly, every
+     click succeeds, and the data is readable by the wrong person. No amount of clicking finds it.
+
+   **Silence is a real answer, and the common one.** A settings toggle, a copy change, an internal
+   report — plenty of FEATs touch none of the three. Omit the lines that don't apply rather than
+   writing `n/a`, and don't manufacture a path to look thorough; a fabricated negative path is worse
+   than none, because it turns on a bar this project hasn't earned (below).
+
+   > **Two things follow from writing the negative-path line, and the founder should know both.**
+   > `/red-team --paths` is what turns it into evidence — the probe actually attempts the read as the
+   > wrong user rather than reviewing the code that should prevent it. And `verification-loop` reads
+   > these FEAT records: once any FEAT names a negative path, the conscience stops accepting one
+   > recorded smoke command as enough verification for this project. **That bar rises because the
+   > founder described a risk, not because BOSS inferred one** — which is why the honest answer to
+   > "who must not see this?" being *"nobody, it's single-user"* costs nothing and should be given
+   > freely.
+
+5. Create `docs/ideas/FEAT-NNN-<slug>.md` from the template below.
+6. Update the source IDEA's `status` to `building` and add a one-line pointer at the top:
    `> Building as [FEAT-NNN](FEAT-NNN-<slug>.md).`
-6. Nothing else to register — `boss board` picks the FEAT up from its frontmatter and shows it
+7. Nothing else to register — `boss board` picks the FEAT up from its frontmatter and shows it
    alongside the ideas.
    - `building_since:` anchors the board's time-in-build aging (`boss board` flags a FEAT that's sat
      in Building past ~3 weeks — the zombie-feature smell). It's **frontmatter-true, never guessed**:
@@ -144,7 +191,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
      level by design (no P0/P1/P2 ladder — that turns the board into a planning surface you tend
      instead of ship). The honest caveat the seasoned hand would add: *re-prioritizing isn't progress;
      finishing is.* Most FEATs need no priority field at all.
-7. **Offer plan mode before the coder.** The FEAT says *what* and *how we'll know it's done*; it
+8. **Offer plan mode before the coder.** The FEAT says *what* and *how we'll know it's done*; it
    deliberately doesn't say *how*. On this host, the built-in `Plan` agent reads the actual codebase
    and returns an implementation route — which is the half a spec shouldn't contain and shouldn't guess:
 
@@ -158,7 +205,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
    **`/spec` decides the destination; the plan picks the road.** Keep them separate: a route that
    arrives without a spec is a well-planned trip to nowhere, and an implementation plan is *not* a
    substitute for acceptance criteria — it can't tell you whether the thing was worth building.
-8. Hand off to `coder-generalist` (or the stack's coder, if specialized) with the FEAT as the brief —
+9. Hand off to `coder-generalist` (or the stack's coder, if specialized) with the FEAT as the brief —
    plus the plan, if one was made. If this host has no plan mode, this step is unchanged: the FEAT
    alone is a complete brief.
 

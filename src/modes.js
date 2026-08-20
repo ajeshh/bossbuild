@@ -19,8 +19,8 @@ const STAGE_NAMES = {
 };
 
 // The standing commands — true in every mode (the git-cheatsheet core). Lives here
-// rather than in a generator because BOTH generators need it (docs/CHEATSHEET.md and
-// the website's quick guide); two copies is how the cheatsheet drifted the first time.
+// rather than in a generator because BOTH generators need it (the cheatsheet and the
+// website's quick guide); two copies is how the cheatsheet drifted the first time.
 export const STANDING_COMMANDS = [
   ['boss new <name>', 'scaffold a new project (Quickstart mode)'],
   ['boss adopt', 'bring BOSS into a repo you already started'],

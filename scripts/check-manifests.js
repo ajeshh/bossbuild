@@ -107,6 +107,26 @@ function checkStage(stageId) {
       errors.push(`skill dir '${n}' is not in the manifest (it will never sync)`);
     }
   }
+
+  // AGENT VISIBILITY (v0.178.0). Shipping an agent and TELLING the project it exists are two
+  // different acts, and only the first was gated. `mentor-cofounder` shipped at MVP and was named
+  // nowhere in CLAUDE.md — so every founding team that unlocked MVP got the one agent built for
+  // their exact problem, silently, and the file Claude reads to learn who is on the team never
+  // mentioned it. An agent nobody is told about is an agent nobody invokes.
+  //
+  // The stage's contribution to CLAUDE.md is `template/CLAUDE.md` at L0 (the base file) and
+  // `template/claude-append.md` at every stage after (folded in on unlock). Backticks required,
+  // matching check-refs class 4: `tester` is a reference a founder can act on, the bare word is
+  // usually English. This is the inverse of that check — it catches an agent that EXISTS and is
+  // invisible, where class 4 catches a name with no agent behind it.
+  const claudeDoc = ['CLAUDE.md', 'claude-append.md']
+    .map((f) => join(base, f)).filter(existsSync)
+    .map((f) => readFileSync(f, 'utf8')).join('\n');
+  for (const n of (manifest.agents || [])) {
+    if (!claudeDoc.includes(`\`${n}\``)) {
+      errors.push(`agent '${n}' ships but is named nowhere in this stage's CLAUDE.md contribution — it will never be invoked`);
+    }
+  }
   for (const n of dir(join(base, 'docs', 'loops'))) {
     if (n.endsWith('.md') && !(manifest.loops || []).includes(n.slice(0, -3))) {
       errors.push(`loop file '${n}' is not in the manifest (the hook reads it; sync won't update it)`);
