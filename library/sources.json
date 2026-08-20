@@ -1,229 +1,291 @@
 {
-  "_note": "The named sources behind BOSS's practices, lifted from each practice's `provenance:` field so the website can show compact references instead of a wall of prose. URLs are DELIBERATELY null until someone verifies them — BOSS checks who actually said a thing before grading it, so inventing a plausible link here would be the exact failure that step exists to catch. Fill a url in and the website turns that name into a link on the next `npm run gen:site`; leave it null and the name renders as plain text. Nothing breaks either way. Each source also carries a `kind` (person | org | research | standard) so the credits page can group them.",
+  "_note": "The named sources behind BOSS's practices, lifted from each practice's `provenance:` field so the website can show compact references instead of a wall of prose. URLs are DELIBERATELY null until someone verifies them — BOSS checks who actually said a thing before grading it, so inventing a plausible link here would be the exact failure that step exists to catch. Fill a url in and the website turns that name into a link on the next `npm run gen:site`; leave it null and the name renders as plain text. Nothing breaks either way. Each source carries a `kind` (person | org | research | standard) for grouping, and `key: true` when it is a named practitioner whose thinking is distilled here or a primary spec a reviewer would re-open. ONLY key sources carry a URL obligation — everything else is credited by name and that is enough. Naming everyone is right; linking everyone is busywork.",
   "sources": {
     "anthropic-engineering": {
       "name": "Anthropic engineering",
       "url": null,
       "for": "effective harnesses for long-running agents; scaling managed agents; the agent-computer interface; contextual retrieval",
-      "kind": "org"
+      "kind": "org",
+      "key": true
     },
     "dex-horthy": {
       "name": "Dex Horthy — 12-factor agents",
       "url": null,
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "karpathy": {
       "name": "Andrej Karpathy — the verifiability thesis",
       "url": null,
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "spec-driven": {
       "name": "GitHub Spec Kit / AWS Kiro",
       "url": null,
       "for": "the spec-driven-development lineage",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "simon-willison": {
       "name": "Simon Willison",
       "url": null,
       "for": "the lethal trifecta; Agents Rule of Two; classifiers are non-deterministic; MCP prompt injection",
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "owasp": {
       "name": "OWASP — Agentic ASI Top 10 / LLM Top 10",
       "url": null,
-      "kind": "standard"
+      "kind": "standard",
+      "key": true
     },
     "veracode": {
       "name": "Veracode (Spring 2026)",
       "url": null,
       "for": "insecure AI-generated code",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "redwood-control": {
       "name": "Anthropic containment + Redwood control",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "hamel-shreya": {
       "name": "Hamel Husain + Shreya Shankar",
       "url": null,
       "for": "error analysis, evals-as-spec, judge validation",
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "coding-agents-fail": {
       "name": "How Coding Agents Fail Their Users (arXiv 2605.29442)",
       "url": null,
       "for": "20,574-session misalignment analysis",
-      "kind": "research"
+      "kind": "research",
+      "key": false
     },
     "devs-dont-vibe": {
       "name": "Professional Software Developers Don't Vibe, They Control (arXiv 2512.14012)",
       "url": null,
-      "kind": "research"
+      "kind": "research",
+      "key": false
     },
     "metr": {
       "name": "METR",
       "url": null,
       "for": "the developer perception gap",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "dora": {
       "name": "DORA / Accelerate",
       "url": null,
       "for": "ROI of AI-Assisted Software Development (2026.01)",
-      "kind": "research"
+      "kind": "research",
+      "key": false
     },
     "addy-osmani": {
       "name": "Addy Osmani",
       "url": null,
       "for": "AI code review; the 70%-to-80% problem",
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "fowler": {
       "name": "Martin Fowler",
       "url": null,
       "for": "ParallelChange; MonolithFirst",
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "chroma": {
       "name": "Chroma — context rot",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": true
     },
     "jason-liu": {
       "name": "Jason Liu — systematically improving RAG",
       "url": null,
       "for": "recall@k first; inventory vs capability",
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "mcp-spec": {
       "name": "MCP specification (2026-07-28)",
       "url": "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
-      "kind": "standard"
+      "kind": "standard",
+      "key": true
     },
     "mcp-deprecated": {
       "name": "MCP deprecated-features registry",
       "url": "https://modelcontextprotocol.io/specification/2026-07-28/deprecated",
-      "kind": "standard"
+      "kind": "standard",
+      "key": true
     },
     "cve-lovable": {
       "name": "CVE-2025-48757 (Lovable/Supabase RLS class)",
       "url": null,
-      "kind": "research"
+      "kind": "research",
+      "key": false
     },
     "moltbook": {
       "name": "The MoltBook credential exposure",
       "url": null,
-      "kind": "research"
+      "kind": "research",
+      "key": false
     },
     "ox-security": {
       "name": "OX Security 2026",
       "url": null,
       "for": "62% of AI-built apps ship a critical vuln",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "kleppmann": {
       "name": "Martin Kleppmann — DDIA",
       "url": null,
       "for": "schema evolution",
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "postgres-rls": {
       "name": "PostgreSQL row-level-security docs",
       "url": null,
-      "kind": "standard"
+      "kind": "standard",
+      "key": true
     },
     "growthbook": {
       "name": "GrowthBook",
       "url": null,
       "for": "flag the model, not just the feature",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "configcat": {
       "name": "ConfigCat",
       "url": null,
       "for": "flags as a vibe-coding safety net",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "unleash-ld": {
       "name": "Unleash / LaunchDarkly",
       "url": null,
       "for": "trunk-based flags; flag-debt hygiene",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "shape-up": {
       "name": "Shape Up",
       "url": null,
       "for": "circuit-breaker / appetite",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "shopify-monolith": {
       "name": "Shopify's modular monolith",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "factory-ai": {
       "name": "Factory.ai",
       "url": null,
       "for": "documented conventions rot; enforced conventions compound",
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "anthropic-skills": {
       "name": "Anthropic's skill-creator skill",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": true
     },
     "shape-of-ai": {
       "name": "Shape of AI",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "microsoft-hax": {
       "name": "Microsoft HAX guidelines",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "google-pair": {
       "name": "Google PAIR",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "nngroup": {
       "name": "Nielsen Norman Group (2026)",
       "url": null,
-      "kind": "org"
+      "kind": "org",
+      "key": false
     },
     "apple-hig": {
       "name": "Apple HIG — generative AI",
       "url": null,
-      "kind": "standard"
+      "kind": "standard",
+      "key": false
     },
     "cdt-dark-patterns": {
       "name": "CDT — Dark Patterns in AI Chatbots (2026)",
       "url": null,
-      "kind": "research"
+      "kind": "research",
+      "key": false
     },
     "vaccaro-chi": {
       "name": "Vaccaro et al., CHI'26",
       "url": null,
       "for": "generated code injects dark patterns",
-      "kind": "research"
+      "kind": "research",
+      "key": false
     },
     "brad-frost": {
       "name": "Brad Frost — Atomic Design",
       "url": null,
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "nathan-curtis": {
       "name": "Nathan Curtis — design tokens",
       "url": null,
-      "kind": "person"
+      "kind": "person",
+      "key": true
     },
     "w3c-tokens": {
       "name": "W3C Design Tokens Community Group",
       "url": null,
-      "kind": "standard"
+      "kind": "standard",
+      "key": true
+    },
+    "nygard-adr": {
+      "name": "Michael Nygard — Documenting Architecture Decisions",
+      "url": null,
+      "for": "the architecture decision record (2011) — the direct ancestor of BOSS's DEC-NNN: short, dated, superseded rather than edited",
+      "kind": "person",
+      "key": true
+    },
+    "cagan-svpg": {
+      "name": "Marty Cagan (SVPG)",
+      "url": null,
+      "for": "discovery vs documentation — why a written artifact is a means of deciding, not a deliverable",
+      "kind": "person",
+      "key": true
+    },
+    "spec-growth-engine": {
+      "name": "Hartwig Grabowski — Spec Growth Engine",
+      "url": null,
+      "for": "spec-anchored / code-coupled / drift-enforced documentation for AI-written systems",
+      "kind": "paper",
+      "key": false
     }
   },
   "practices": {
@@ -309,6 +371,14 @@
     "model-routing": [],
     "quality-ratchet": [],
     "revalidation": [],
-    "context-discipline": []
+    "context-discipline": [],
+    "automation": [],
+    "documentation": [
+      "nygard-adr",
+      "cagan-svpg",
+      "anthropic-engineering",
+      "spec-growth-engine"
+    ],
+    "seed-to-scale": []
   }
 }

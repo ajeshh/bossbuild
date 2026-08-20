@@ -3,7 +3,7 @@ title: Design — how BOSS approaches UI and UX
 description: What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation.
 reviewed: 2026-08-20
 review_by: 2027-02-16
-describes: the design-system and ai-ux-patterns practices, the design agents and skills
+describes: the design-system and ai-ux-patterns practices, /design-library, the design agents and skills
 covers: library/practices/design-system.md library/practices/ai-ux-patterns.md
 nav: design
 -->
@@ -91,6 +91,50 @@ nav: design
     </section>
 
     <section class="section">
+      <div class="rail">▸<span>the library</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>A design system you can actually look at</h2>
+          <p>
+            Most design systems are a document describing components, kept beside the code. That's the
+            failure: <strong>a gallery authored next to the implementation starts drifting the moment
+            either one moves</strong>, and nobody notices until a screen looks wrong.
+          </p>
+          <p>
+            <code>/design-library</code> generates the thing instead — a self-contained HTML gallery of
+            your foundations (colour, type, spacing) and every component in <strong>every variant and
+            all five states</strong>, rendered <em>from the code and tokens</em>. The code stays the
+            source of truth, so the library cannot disagree with the product. Re-run it any time; it's
+            idempotent.
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">the rule sets are half of it</span>
+            <span>Not just components — the principles with their tradeoffs, do/don't pairs,
+              terminology and voice. The parts a model needs in order to extend your system rather than
+              invent beside it.</span>
+          </div>
+          <div class="pair">
+            <span class="k">drift renders ON the component</span>
+            <span>Off-token colour, a missing state, an inconsistency — shown on the component itself,
+              not filed in a report nobody reopens. <code>--check</code> makes it a gate.</span>
+          </div>
+          <div class="pair">
+            <span class="k">the manifest is the reuse index</span>
+            <span>The answer to “pattern reinvention”: a machine-readable index the agent reads
+              <em>before</em> writing a component. <strong>Reuse first, extend second, create
+              last</strong> stops being a hopeful instruction in a prompt.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          Which closes the loop on the two failures above: tokens stop the 47 blues, the manifest stops
+          pattern reinvention, and the gallery makes both <em>visible</em> instead of theoretical.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>who does it</span></div>
       <div class="body">
         <div class="pairs">
@@ -103,6 +147,11 @@ nav: design
             <span class="k">/design-tokens-init</span>
             <span>Scaffolds the three-layer token system and refactors one component as the worked
               example. Lands at MVP, the moment UI appears.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/design-library</span>
+            <span>Generates the gallery + the reuse manifest from your code. <code>--check</code> turns
+              drift into a gate.</span>
           </div>
           <div class="pair">
             <span class="k">/design-review · /ux-check</span>

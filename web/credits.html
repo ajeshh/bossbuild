@@ -16,7 +16,9 @@ nav: credits
         BOSS is mostly a <strong>distillation of other people's published thinking</strong>, arranged so
         it arrives at the moment a founder needs it. That's the honest description of the product, and
         it means the people below are load-bearing rather than decorative.
-        <strong>{{COUNT_SOURCES}}</strong> named sources sit behind the practice shelf.
+        <strong>{{COUNT_SOURCES}}</strong> named sources sit behind the practice shelf, and
+        <strong>{{COUNT_KEY}}</strong> of them are load-bearing enough to be marked
+        <span class="key-src">key</span>.
       </p>
       <p class="small">
         The one-line note beside a name is <em>what BOSS took from them</em> — a study pointer, not their
@@ -36,25 +38,63 @@ nav: credits
     </section>
 
     <section class="section">
+      <div class="rail">▸<span>the other direction</span></div>
+      <div class="body prose">
+        <h2>Crediting BOSS is optional, and it stays optional</h2>
+        <p>
+          BOSS's own promise is that <strong>it never puts its name on your work — you ship it, your
+          name's on it.</strong> That's a promise about <em>taking</em> credit, not about refusing to
+          let anyone give it. So nothing is ever added automatically, and nothing appears anywhere your
+          users see.
+        </p>
+        <p>
+          If you want to say it anyway, <code>boss credit</code> shows you one line for your README and
+          <code>--apply</code> adds it. <code>--remove</code> takes it back out and leaves your own
+          words exactly as they were.
+        </p>
+        <div class="terminal breakout">
+          <span class="cap">what it adds — nothing more than this</span>
+<pre><span class="line"><span class="t-dim">&lt;!-- Builds, Or Stays Silent. ✦ --&gt;</span></span>
+<span class="line">Made with [BOSS](https://oyeboss.build) — <span class="t-dim">*Build Out Solid Stuff.*</span></span>
+</pre>
+        </div>
+        <p class="small">
+          The comment is one of BOSS's alternate full forms — a wink for whoever reads the source,
+          rather than a badge.
+        </p>
+        <p>
+          <strong>And one thing worth saying out loud:</strong> BOSS writes a marked
+          <code>&lt;!-- boss: --&gt;</code> comment into your <code>CLAUDE.md</code> so it can remove
+          itself cleanly later. That marker is also findable by searching public repositories, which is
+          honestly how anyone would know BOSS is being used at all. <code>/welcome</code> says so when
+          you start, and <code>boss remove</code> takes it out along with everything else. Counting
+          people who never agreed to be counted is surveillance, however public the data — so it's
+          disclosed rather than discovered.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>citation debt</span></div>
       <div class="body prose">
-        <h2>{{COUNT_UNLINKED}} of these still have no link, and that's a bug</h2>
+        <h2>Naming everyone is right. Linking everyone is busywork.</h2>
         <p>
-          Every practice BOSS ships records <em>who</em> a claim came from. Far fewer record
-          <em>where</em>. That gap is real and it's ours: the verification work was done — BOSS's
-          <code>/vet</code> pass goes to the primary source before it grades anything — and then the URL
-          was thrown away.
+          Everybody above is credited by name. Only the <strong>{{COUNT_KEY}} marked
+          <span class="key-src">key</span></strong> owe a link — a named practitioner whose thinking is
+          distilled directly into a practice, or a primary spec a reviewer would re-open. A supporting
+          citation sitting behind one claim doesn't need a URL to have been honest.
         </p>
         <p>
-          <strong>An attribution without a URL is half a citation.</strong> It can't be re-checked when
-          the practice comes up for review, the person can't be credited properly, and the next reader
-          has to redo a search someone already did.
+          For the key ones it matters, because <strong>an attribution without a URL is half a
+          citation</strong>: it can't be cheaply re-checked when the practice comes up for review, the
+          person can't be credited properly, and the next reader redoes a search someone already did.
+          The verification work was already done — <code>/vet</code> goes to the primary source before
+          it grades anything — and then the URL was thrown away.
         </p>
         <p>
-          So the rule now sits inside <code>/vet</code> itself: <em>write down the URL you actually
-          opened — not the thread that pointed at it.</em> Sources are stored in one registry, and each
-          name here becomes a link the moment its URL is filled in. Currently
-          <strong>{{COUNT_LINKED}} linked, {{COUNT_UNLINKED}} outstanding.</strong>
+          So the rule now sits inside <code>/vet</code>: <em>write down the URL you actually opened —
+          not the thread that pointed at it.</em> Each name becomes a link the moment its URL lands.
+          Currently <strong>{{COUNT_LINKED}} of {{COUNT_KEY}} key sources linked.</strong>
         </p>
         <p class="small">
           <a href="governance.html">How a claim gets in here →</a> ·

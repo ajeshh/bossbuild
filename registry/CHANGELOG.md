@@ -9,6 +9,44 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.180.0 — 2026-08-20
+
+> **For you:** **`boss credit`** — if you want to say you built with BOSS, there's now one command for
+> it. Never automatic, never in your product UI, one command to undo. And `/welcome` now tells you
+> about the marked comment BOSS leaves in your `CLAUDE.md`, because it's findable in public repos and
+> you should hear that from BOSS rather than discover it.
+
+**Acknowledgement, built against the brand's own promise rather than around it.** Ajesh: *"should we
+add a 'Made with BOSS' into the code… something unique enough that we can suss out via a deep search
+on GitHub?"* The immediate tension: `BRAND.md`'s central story is **"it never puts its name on your
+work — you ship it, your name's on it,"** and that line is what disarms the name. Auto-inserting a
+badge would contradict the one promise the brand is built on.
+
+The resolution is that these were **two asks wearing one coat**, and they have different answers.
+
+- **Counting already worked, undisclosed — so disclose it.** `src/scaffold.js` has always written a
+  `<!-- boss:… -->` marked block into `CLAUDE.md`/`AGENTS.md`; `boss remove` depends on it to know what
+  to excise. That marker is *already* findable by public code search, at zero cost to anyone. Nothing
+  was added — **`/welcome` now names it in one sentence**, unprompted, including *why* it's there and
+  that `boss remove` takes it out. **Counting people who never agreed to be counted is surveillance,
+  however public the data;** the marker is load-bearing so it stays, but a founder hears it from BOSS
+  instead of finding it.
+- **`boss credit` — the opt-in half.** Previews by default (same posture as `boss remove`), `--apply`
+  adds one line to the README, `--remove` restores it exactly. **Never automatic, never offered
+  unprompted, never anywhere a founder's users see it.** `/welcome` is explicitly forbidden from
+  pitching it — it exists for someone who *asks*.
+- **The line carries a wink, not a badge:** `<!-- Builds, Or Stays Silent. ✦ -->` above
+  `Made with [BOSS](https://oyeboss.build)`. The comment is one of BRAND.md's alternate full forms, so
+  whoever reads the source gets the joke; the phrase is distinctive enough to have a near-zero
+  false-positive rate in a code search, which is the only reason it's findable at all.
+- **The promise is about taking credit, not about refusing to let anyone give it** — that distinction
+  is what makes this compatible with the brand instead of a hole in it.
+- Four tests, including the two that matter for anything that edits a founder's file:
+  **`--apply` twice is a no-op *success*** (already-in-desired-state is not failure — it should be safe
+  to script, like `mkdir -p`; the first cut returned exit 1 and was wrong), and **removal restores the
+  README exactly**, with the founder's own prose untouched.
+- Site: `/credits` now documents both directions — who BOSS learned from, and how to credit it back.
+
 ## 0.179.0 — 2026-08-20
 
 **BOSS could distribute a better practice and never ask whether you already had the thing it makes.**

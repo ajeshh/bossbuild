@@ -10,6 +10,7 @@ import { printCraft } from './craft.js';
 import { printChangelog } from './changelog.js';
 import { detectStage } from './detect.js';
 import { printUpdate, updateNote, installKind, updateCommand } from './update.js';
+import { printCredit } from './credit.js';
 import { planRemove, applyRemove, machineState, removeMachineState } from './remove.js';
 import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
@@ -860,6 +861,12 @@ const HELP = {
     examples: ['boss team', 'boss team add @octocat "Mona"'],
     see: ['board', 'list'],
   },
+  credit: {
+    usage: 'boss credit [--apply | --remove]',
+    what: "Optional acknowledgement, and genuinely optional. BOSS never adds its name to anything you ship — that promise is the whole point of the name — so this exists only for a founder who wants to say it anyway. Previews by default; --apply adds one line to your README, --remove takes it back out. Never automatic, never offered unprompted, and never anywhere your users see it.",
+    examples: ['boss credit', 'boss credit --apply'],
+    see: ['remove'],
+  },
   list: {
     usage: 'boss list',
     what: 'Every BOSS project connected on this machine, active first, retired ones folded quietly at the bottom.',
@@ -1107,6 +1114,7 @@ export async function run(argv) {
     case 'team': return cmdTeam(args);
     case 'list': return cmdList();
     case 'retire': return cmdRetire(args);
+    case 'credit': return void (process.exitCode = printCredit(args));
     case 'remove': case 'uninstall': return cmdRemove(args);
     case 'sync': return cmdSync(args);
     case 'learn': return cmdLearn(args);

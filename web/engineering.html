@@ -3,7 +3,7 @@ title: For engineers — how BOSS approaches agentic development
 description: The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from.
 reviewed: 2026-08-20
 review_by: 2026-11-18
-describes: the technical practices and their sources
+describes: the technical practices, their sources, and the positions BOSS holds
 covers: library/practices library/sources.json
 nav: engineering
 -->
@@ -95,6 +95,29 @@ nav: engineering
               description is the load-bearing part: it decides whether the model reaches for the skill at
               the right moment. Name the trigger phrases explicitly, keep one skill to one job, and put
               the judgment in the skill rather than expecting the caller to supply it.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Rent the runner, own the decision</h3>
+            <p>
+              Most founder "automation" is a cron job, and the categories most advice starts from are a
+              rung too high. So it's a <strong>four-rung ladder climbed upward</strong>, and the rule at
+              every rung is the same host-seam rule: <strong>don't author what the host already
+              runs.</strong> Rent the execution; keep the judgment.
+            </p>
+            <p>
+              Three questions before anything runs unattended: <em>what breaks if it runs wrong at
+              3am, who finds out, and how do you turn it off?</em> If those don't have answers, it isn't
+              ready to be unattended — it's ready to be a command you run.
+            </p>
+          </div>
+          <div class="prose">
+            <h3>Docs have two readers now</h3>
+            <p>
+              One is your user. The other is <strong>the model working in your repo</strong>, and it
+              reads differently — it needs structure, canonical paths and unambiguous naming more than
+              it needs prose. Writing for only one of them is why AI-built projects end up with docs
+              that are simultaneously too long for a human and useless to an agent.
             </p>
           </div>
           <div class="prose">

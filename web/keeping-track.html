@@ -1,0 +1,270 @@
+<!--
+title: Keeping track — what BOSS writes down, so you don't have to
+description: Twelve ideas, three half-finished specs, and a decision you can't remember making. BOSS gives every one of them a file, a status, and a place — and renders the board from the files so nothing can drift.
+reviewed: 2026-08-20
+review_by: 2027-02-16
+describes: the record system — typed IDs, status in frontmatter, the rendered board
+covers: library/practices/documentation.md stages/L0-quickstart/template/docs
+nav: keeping-track
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Keeping track</p>
+      <h1>Twelve ideas, three half-specs, and a decision you can't remember making<span class="dot">.</span></h1>
+      <p class="lede">
+        The build isn't usually what breaks. What breaks is the <em>bookkeeping around</em> the build —
+        which idea you dropped and why, what that spec was actually supposed to do, whether you already
+        decided this six weeks ago. BOSS gives every one of those a file, a status, and a place to live,
+        and then <strong>renders your progress out of those files</strong> instead of asking you to keep
+        a second list up to date.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the records</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Every capture leaves an object behind</h2>
+          <p>
+            Talking to an AI produces a transcript, and a transcript is not a record — you can't grep it,
+            link to it, or hand it to someone. So the verbs that matter write files instead. Not a
+            summary of the conversation: a durable, addressable thing with an ID.
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">/triage → IDEA-014.md</span>
+            <span>A <strong>living</strong> idea doc, not an inbox entry. Run it again next week and it
+              sharpens the shape at the top and appends to the log below. The half-thought you had in the
+              shower ends up in the same place as the one you've been circling for a month.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/spec → FEAT-003.md</span>
+            <span>The idea, promoted: a goal, acceptance criteria you can tick, a smoke check, and the
+              three paths it could take. This is the moment "I should build X" becomes something you can
+              tell whether you finished.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/decide → DEC-007.md</span>
+            <span>Context, decision, why, consequences, who decided — and <strong>a falsifier</strong>:
+              what would prove this wrong, and by when. Superseded, never edited, so the reasoning you
+              had at the time survives the fact that you changed your mind.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/evidence · /interview · /research → EVID-002.md</span>
+            <span>One real signal per file, graded honestly on a fixed three-rung ladder — said it hurts
+              → did something about it → committed money or time. The thing your whole plan rests on
+              finally gets an object instead of evaporating into memory.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/close → RESUME.md + devlog</span>
+            <span>The end-of-session ritual: where the work stands, what's next, what's still undecided.
+              Written for the version of you who opens this in three weeks with no memory of any of it.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          <code>/triage</code>, <code>/decide</code> and the evidence verbs are there on day one;
+          <code>/spec</code> arrives with MVP mode. {{COUNT_ID_TYPES}} record types exist in total and
+          you're handed {{COUNT_ID_DAY_ONE}} — see <a href="#ladder">the ladder</a> below.
+        </p>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>the board</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Progress is derived, never maintained</h2>
+          <p>
+            <em>"Where am I?"</em> is the question a founder asks most often and documentation answers
+            worst — because the obvious fix is a status document, and a status document is a second
+            source of truth that starts lying in about a week. You update the files, you forget the
+            board; or you update the board, and now two things disagree and nothing tells you which one
+            is wrong.
+          </p>
+          <p>
+            So BOSS doesn't keep one. <strong>Status lives in the frontmatter of the file the work is
+            actually about</strong>, and the board is drawn from the folder when you ask for it.
+          </p>
+        </div>
+        {{DIAGRAM_RECORDS}}
+        <div class="terminal breakout">
+          <span class="cap">the whole mechanism, in the file itself</span>
+<pre><span class="line"><span class="t-cmd">head -6 docs/ideas/IDEA-014.md</span></span>
+<span class="line"><span class="t-dim">---</span></span>
+<span class="line">id: IDEA-014</span>
+<span class="line">type: idea</span>
+<span class="line">owner: pm</span>
+<span class="line">status: <span class="t-accent">exploring</span>          <span class="t-dim"># the only place this is recorded</span></span>
+<span class="line"><span class="t-dim">---</span></span>
+<span class="line"></span>
+<span class="line"><span class="t-cmd">boss board</span>                    <span class="t-dim"># reads the folder, draws the columns, keeps nothing</span></span>
+</pre>
+        </div>
+        <p class="small prose">
+          If the board looks wrong, the fix is to change the work — never the view. There is no view to
+          fix.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>status</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>{{COUNT_STATUS}} words, and the list is closed</h2>
+          <p>
+            Left alone, a project grows four words that all mean <em>shipped</em> —
+            <code>implemented</code>, <code>built</code>, <code>done</code>, <code>resolved</code> — and
+            once it does, nobody can tell them apart. Not you, not a teammate, and not the agent reading
+            your repo to work out what's left. A vocabulary nobody can enumerate is not a vocabulary.
+          </p>
+        </div>
+        {{STATUS_VOCAB}}
+        <div class="prose">
+          <p class="small">
+            The status has to <strong>start</strong> with one of those words; everything after is
+            free-form and encouraged — <code>shipped (v0.4, read-only slice)</code> and
+            <code>building (steps 1–3 done, 4 open)</code> both say more than the bare word.
+          </p>
+        </div>
+        <div class="note">
+          <p>
+            <strong><code>deferred</code> is the one most systems are missing.</strong> It means
+            deliberately not being built, <em>with a written re-open trigger</em> — a decision, not a
+            backlog item. It's the difference between a thing you chose to leave and a thing that just
+            sank. <code>/revalidate</code> checks it back against a world that moved before it re-enters
+            the build.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section" id="ladder">
+      <div class="rail">▸<span>the ladder</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>You don't get the whole filing system on day one</h2>
+          <p>
+            This is the part that's genuinely unlike other approaches. Most documentation systems hand
+            you the complete taxonomy up front and leave discipline to decide how much of it you use —
+            which is how a weekend project ends up with an RFC template. BOSS <strong>rations the
+            vocabulary itself</strong>. In Quickstart you get {{COUNT_ID_DAY_ONE}} of the
+            {{COUNT_ID_TYPES}} — enough to capture an idea, record a signal, and log a decision you
+            can't easily undo. The rest arrive as the project climbs, and until then they're listed
+            where you can see them coming without being asked to use them.
+          </p>
+        </div>
+        {{ID_LADDER}}
+        <p class="small prose">
+          Parsed at build time from the <code>docs/IDS.md</code> that ships in the scaffold — this table
+          and the file in your project are the same source.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>stopping</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Going stale and giving up are both first-class</h2>
+          <p>
+            Nearly every documentation system is optimised for writing and has no verb at all for the
+            two things that actually happen most: a document quietly stopped being true, or you stopped
+            working on the thing. Both get handled here, which is most of why the pile stays navigable.
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">review_by:</span>
+            <span>Practices carry an expiry date. Ground that moves fast gets a short one. A doc past its
+              date is flagged as stale rather than silently trusted — being old is a fact about a
+              document, so it belongs in the document.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/revalidate</span>
+            <span>Three lines, run before anything paused comes back: still relevant, still true, still
+              the right size? Work you shelved in March is not the same bet in September, and the usual
+              failure is resuming it as though it is.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/sunset</span>
+            <span>Ending something honestly — a whole project, or one zombie feature. The post-mortem
+              nobody ships: what it was for, what actually happened, what's worth keeping. Framed as an
+              experiment that returned an answer, because that's what it is.</span>
+          </div>
+          <div class="pair">
+            <span class="k">status: dropped</span>
+            <span>Decided against — <strong>and the file stays.</strong> Deleting it destroys the only
+              record of the reasoning, which is exactly what you need in eight months when the same idea
+              arrives looking brand new.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>honestly</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>What's borrowed, and where this still leans on you</h2>
+          <p>
+            Very little here is invented. <code>DEC</code> records are architecture decision records,
+            which <strong>Michael Nygard</strong> wrote down in 2011 — short, dated, superseded rather
+            than edited. Rendering a view out of file frontmatter is what note tools and project
+            databases have done for years. Treating a written artifact as a means of deciding rather
+            than a deliverable is <strong>Marty Cagan</strong>'s point about discovery, and it predates
+            all of this. Everyone we learned from is on the <a href="credits.html">credits page</a>.
+          </p>
+          <p>
+            What's actually ours is narrower and worth stating plainly: <strong>the ceremony is rationed
+            by mode</strong> rather than issued all at once, and some of these documents are read by the
+            tool at runtime rather than only by people — a loop file in <code>docs/loops/</code> isn't a
+            description of a process, it's the thing that makes BOSS speak up. That's the composition,
+            not the parts.
+          </p>
+        </div>
+        <div class="note">
+          <p>
+            <strong>Where it still leans on a person: allocating the number.</strong> Everything else
+            here is derived, but picking the next free ID is a human reading the folder — and it broke in
+            BOSS's own repo, which is built by the people who wrote this rule. Two files claimed the same
+            number on the same day, and every reference to it became ambiguous until someone noticed.
+            The rule is now written into the scaffold you get — <em>IDs are never reused, and a gap is
+            free</em> — but the honest version of this page says the rule is a rule, not a mechanism.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>next</span></div>
+      <div class="body">
+        <div class="prose">
+          <p>
+            None of this is set up. It's in the folder from the first command, and it's plain Markdown —
+            readable, editable, deletable, and yours whether or not you keep using BOSS.
+          </p>
+        </div>
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx oyeboss new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
+        </div>
+        <p class="small prose">
+          Then <a href="team.html">who shows up to help</a>, or <a href="guide.html">the guide</a> for
+          what to do rung by rung.
+        </p>
+      </div>
+    </section>
+
+  </main>

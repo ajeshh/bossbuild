@@ -11,7 +11,7 @@
 //
 // Soft by default (reports and exits 0) — HARD on a broken claim, because a site
 // promising a command that doesn't exist is worse than a site that's a bit stale.
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -77,6 +77,31 @@ if (unmentioned.length) {
   problems.push(`${unmentioned.length} practice(s) exist but appear nowhere on the site: ${unmentioned.join(', ')}`);
 }
 
+// ---- 2a. does the site name the right package and repo? -------------------
+// The install line is the single most consequential string on the site, and it is
+// the one most likely to go quietly wrong: the npm package was renamed bossbuild →
+// oyeboss and every `npx …` line, the npm link and the docs links all had to move.
+// A stale install command doesn't look broken — it looks fine and installs nothing.
+{
+  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
+  const repo = (pkg.repository?.url || '').replace(/^git\+/, '').replace(/\.git$/, '');
+  for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html'))) {
+    const raw = readFileSync(join(WEB, f), 'utf8');
+    // Any npx/npm install line must name the real published package.
+    for (const m of raw.matchAll(/(?:npx|npm i(?:nstall)? -g)\s+([a-z][a-z0-9-]*)/g)) {
+      if (m[1] !== pkg.name && m[1] !== 'uninstall') {
+        problems.push(`${f} installs "${m[1]}" — the published package is "${pkg.name}"`);
+      }
+    }
+    for (const m of raw.matchAll(/npmjs\.com\/package\/([a-z0-9-]+)/g)) {
+      if (m[1] !== pkg.name) problems.push(`${f} links npm package "${m[1]}" — it is "${pkg.name}"`);
+    }
+    if (repo) for (const m of raw.matchAll(/https:\/\/github\.com\/([\w-]+\/[\w-]+)/g)) {
+      if (!repo.endsWith(m[1])) problems.push(`${f} links github.com/${m[1]} — the repo is ${repo}`);
+    }
+  }
+}
+
 // ---- 2b. citation debt -----------------------------------------------------
 // Every named source should carry the URL of the primary document someone actually
 // opened. `/vet` verifies attributions before grading them, so the work is already
@@ -86,7 +111,11 @@ let debt = 0, sourceTotal = 0;
   const f = join(ROOT, 'library', 'sources.json');
   if (existsSync(f)) {
     const reg = JSON.parse(readFileSync(f, 'utf8'));
-    const all = Object.values(reg.sources || {});
+    // Only KEY sources owe a URL — a named practitioner whose thinking is distilled
+    // here, or a primary spec a reviewer would re-open. Supporting citations are
+    // credited by name and that is enough. Chasing a link for all 41 was busywork
+    // that made the real number invisible.
+    const all = Object.values(reg.sources || {}).filter((x) => x.key);
     sourceTotal = all.length;
     debt = all.filter((x) => !x.url).length;
   }
@@ -101,12 +130,29 @@ let debt = 0, sourceTotal = 0;
 // six weeks later when someone notices the site is describing an older product.
 const behind = [];
 const inflight = [];
-function lastChanged(paths) {
+// Timestamps, not dates. BOSS shipped FIFTEEN releases in one day — day-granularity
+// silently reports "fresh" for everything that changed since this morning, which is
+// exactly the rot this file exists to catch. Compare the source's last COMMIT time
+// against when the page itself was last edited.
+function lastChangedAt(paths) {
   try {
-    const out = execSync(`git log -1 --format=%cs -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
-    return out || null;
-  } catch { return null; }
+    const out = execSync(`git log -1 --format=%ct -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
+    return out ? Number(out) * 1000 : 0;
+  } catch { return 0; }
 }
+// The LATER of the last commit and the working-tree mtime. Preferring git alone
+// reports a page as stale while you are actively fixing it; preferring mtime alone
+// misses that a checkout resets timestamps. Take whichever says "more recently".
+function pageTouchedAt(file) {
+  let git = 0, disk = 0;
+  try {
+    const c = execSync(`git log -1 --format=%ct -- ${file}`, { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (c) git = Number(c) * 1000;
+  } catch { /* untracked */ }
+  try { disk = statSync(join(ROOT, file)).mtimeMs; } catch { /* gone */ }
+  return Math.max(git, disk);
+}
+const fmt = (ms) => new Date(ms).toISOString().slice(0, 10);
 // Committed history only tells you what already landed. The moment that matters is
 // while the work is happening — that's when the docs are cheap to update and when
 // you still remember what changed. So uncommitted edits to a page's sources count too.
@@ -124,9 +170,10 @@ for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsW
   if (!reviewed) continue;
   const now = changingNow(covers);
   if (now) inflight.push(`${f.replace(/\.html$/, '')} — ${now} uncommitted change(s) under ${covers.split(' ').slice(0, 2).join(', ')}`);
-  const changed = lastChanged(covers);
-  if (changed && changed > reviewed) {
-    behind.push(`${f.replace(/\.html$/, '')} — reviewed ${reviewed}, but ${covers.split(' ')[0]}… changed ${changed}`);
+  const srcAt = lastChangedAt(covers);
+  const pageAt = pageTouchedAt(`web/${f}`);
+  if (srcAt && pageAt && srcAt > pageAt) {
+    behind.push(`${f.replace(/\.html$/, '')} — ${covers.split(' ')[0]}… changed ${fmt(srcAt)}, page last touched ${fmt(pageAt)}`);
   }
 }
 
@@ -157,7 +204,7 @@ if (behind.length) {
   console.log('  Re-read them, fix what moved, then bump `reviewed:` in the fragment header.');
 }
 if (debt) {
-  console.log(`\n  · citation debt: ${debt} of ${sourceTotal} named sources have no URL.`);
+  console.log(`\n  · citation debt: ${debt} of ${sourceTotal} KEY sources have no URL.`);
   console.log('    /vet now requires recording the primary-source URL; these predate that rule.');
   console.log('    Fill a `url` in library/sources.json and the credits page links it automatically.');
 }

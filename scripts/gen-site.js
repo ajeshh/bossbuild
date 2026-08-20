@@ -334,6 +334,133 @@ blocks.DIAGRAM_PRACTICE_FLOW = () => `<figure class="fig">
 </figure>`;
 
 
+// ---- the record system ----------------------------------------------------
+// Parsed out of the IDS.md a founder actually receives, not out of BOSS's own. The
+// two have drifted before (BOSS ran a seven-word closed status vocabulary while the
+// template still shipped six and called the list open), and a page describing the
+// private version would be selling something nobody installs. Parse the shipped file
+// and the claim is true by construction.
+const SHIPPED_IDS = join(ROOT, 'stages', 'L0-quickstart', 'template', 'docs', 'IDS.md');
+
+function idsTables() {
+  const md = readFileSync(SHIPPED_IDS, 'utf8');
+  const ids = [];
+  const status = [];
+  let section = '';
+  for (const raw of md.split('\n')) {
+    const h = /^##\s+(.+?)\s*$/.exec(raw);
+    if (h) { section = h[1]; continue; }
+    if (!raw.startsWith('|')) continue;
+    const cells = raw.split('|').slice(1, -1).map((c) => c.trim());
+    // Only rows whose first cell is a code span are data — this skips the header
+    // row ("Prefix", "Status") and the |---| separator without hardcoding either.
+    if (!/^`.+`$/.test(cells[0])) continue;
+    if (/^Status/i.test(section) && cells.length === 2) {
+      status.push({ word: cells[0].replace(/`/g, ''), means: cells[1] });
+    } else if (cells.length === 3) {
+      const active = /^Active in/i.test(section);
+      ids.push({
+        prefix: cells[0].replace(/`/g, ''),
+        means: cells[1],
+        mode: active ? (/Active in (.+?) mode/i.exec(section) || [, 'Quickstart'])[1] : cells[2],
+        active,
+      });
+    }
+  }
+  if (!ids.length || !status.length) {
+    console.error(`  ✗ could not parse the shipped IDS.md (${ids.length} ids, ${status.length} statuses)`);
+    process.exitCode = 1;
+  }
+  return { ids, status };
+}
+const IDS = idsTables();
+
+// Inline code spans are the only markdown these cells carry; anything else is a sign
+// the template grew a construct this parser would silently flatten.
+const md1 = (s) => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>')
+  .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+blocks.ID_LADDER = () => `<div class="tablewrap"><table>
+  <thead><tr><th>ID</th><th>What it holds</th><th>You get it at</th></tr></thead>
+  <tbody>${IDS.ids.map((r) => `
+    <tr><td><code>${esc(r.prefix)}</code></td><td>${md1(r.means)}</td>
+    <td>${r.active ? '<strong>day one</strong>' : md1(r.mode)}</td></tr>`).join('')}
+  </tbody></table></div>`;
+
+blocks.COUNT_ID_TYPES = () => String(IDS.ids.length);
+blocks.COUNT_ID_DAY_ONE = () => String(IDS.ids.filter((r) => r.active).length);
+blocks.COUNT_STATUS = () => String(IDS.status.length);
+
+blocks.STATUS_VOCAB = () => `<div class="pairs">${IDS.status.map((s) => `
+  <div class="pair"><span class="k">${esc(s.word)}</span><span>${md1(s.means)}</span></div>`).join('')}
+</div>`;
+
+blocks.DIAGRAM_RECORDS = () => `<figure class="fig">
+  <svg viewBox="0 0 860 330" role="img" aria-label="Each record file carries its own status in frontmatter. The boss board command reads those files and renders a view of them. There is no board file and no status document — the view is produced on demand and thrown away, so there is nothing that can disagree with the files."
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.5" fill="none">
+      <rect x="16" y="34" width="176" height="54" rx="3"/>
+      <rect x="16" y="110" width="176" height="54" rx="3"/>
+      <rect x="16" y="186" width="176" height="54" rx="3"/>
+      <rect x="292" y="110" width="152" height="54" rx="3"/>
+    </g>
+    <g fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M192 61 H236" /><path d="M192 137 H236" /><path d="M192 213 H236" />
+      <path d="M236 61 V213" />
+    </g>
+    <g fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar3)">
+      <path d="M236 137 H286" />
+      <path d="M444 137 H494" />
+    </g>
+    <rect x="494" y="34" width="350" height="206" rx="3" fill="var(--color-brand)" stroke="none"/>
+    <g font-family="system-ui, sans-serif" font-size="13" fill="currentColor" text-anchor="middle">
+      <text x="104" y="57">IDEA-014.md</text>
+      <text x="104" y="133">FEAT-003.md</text>
+      <text x="104" y="209">DEC-007.md</text>
+      <text x="368" y="133">boss board</text>
+    </g>
+    <g font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.72" text-anchor="middle">
+      <text x="104" y="76">status: exploring</text>
+      <text x="104" y="152">status: building</text>
+      <text x="104" y="228">status: shipped</text>
+      <text x="368" y="152">reads the folder</text>
+      <text x="264" y="128">status</text>
+      <text x="469" y="128">render</text>
+    </g>
+    <g font-family="system-ui, sans-serif" fill="var(--color-on-brand)">
+      <text x="518" y="62" font-size="12.5" font-weight="600">Captured</text>
+      <text x="518" y="84" font-size="11" opacity="0.85">IDEA-014</text>
+      <text x="518" y="127" font-size="12.5" font-weight="600">Taking shape</text>
+      <text x="518" y="149" font-size="11" opacity="0.85">— empty —</text>
+      <text x="686" y="62" font-size="12.5" font-weight="600">Building</text>
+      <text x="686" y="84" font-size="11" opacity="0.85">FEAT-003</text>
+      <text x="686" y="127" font-size="12.5" font-weight="600">Shipped</text>
+      <text x="686" y="149" font-size="11" opacity="0.85">DEC-007</text>
+      <text x="518" y="206" font-size="11" opacity="0.85">rendered on read,</text>
+      <text x="518" y="222" font-size="11" opacity="0.85">never written down</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.4" stroke-dasharray="5 4">
+      <rect x="292" y="256" width="152" height="48" rx="3"/>
+      <path d="M368 164 V256" />
+    </g>
+    <g font-family="system-ui, sans-serif" fill="currentColor" text-anchor="middle" opacity="0.55">
+      <text x="368" y="280" font-size="12.5">a status doc</text>
+      <text x="368" y="297" font-size="11">does not exist</text>
+    </g>
+  </svg>
+  <figcaption><strong>The view is a render, never a record.</strong> Status lives in one place — the
+    frontmatter of the file the work is about. <code>boss board</code> reads the folder and draws the
+    columns on demand. There is no board file and no status doc to update, which is why nothing here
+    can quietly disagree with anything else. <strong>The empty column is drawn on purpose</strong> — a
+    stage with nothing in it is the most useful cell on the board.</figcaption>
+</figure>`;
+
+
 // ---- practices: the attribution layer ------------------------------------
 // Every practice file carries `curve:` (how fast its ground moves), `last_reviewed:`,
 // and TWO provenance fields. The engineering page renders that metadata rather than
@@ -401,7 +528,10 @@ const ENG_GROUPS = [
   ['Data, retrieval & protocols', 'What NOT to build yet, mostly.',
    ['retrieval', 'mcp']],
   ['Shipping & scale', 'Getting it live, and what to do when it grows.',
-   ['ship-it-live', 'feature-flags', 'scalable-architecture']],
+   ['ship-it-live', 'feature-flags', 'scalable-architecture', 'seed-to-scale']],
+  // NOTE: `documentation` sits in "Building with agents" ONLY — it was listed here a
+  // second time under its own heading, so it rendered twice and inflated the practice
+  // count. One practice, one group. Its founder-facing half is keeping-track.html.
   ['Design & interface', 'The failure modes that appear by default when AI writes your UI.',
    ['design-system', 'ai-ux-patterns']],
 ];
@@ -415,7 +545,17 @@ const NON_ENG = new Set(['activation', 'ai-adoption-culture', 'analytics-for-ai-
   // practice: a stale reference is skipped, and an unclassified one is CARRIED into
   // a catch-all group so it still gets credited. Both are reported so the grouping
   // can be corrected deliberately rather than by a build failure.
-  const claimed = new Set(ENG_GROUPS.flatMap(([, , ids]) => ids));
+  // A practice listed in two groups renders twice and inflates COUNT_ENG_PRACTICES.
+  // That shipped undetected once (documentation.md), so it fails the build now: unlike
+  // a stale or unclassified id, there is no reading where this is what someone meant.
+  const all = ENG_GROUPS.flatMap(([, , ids]) => ids);
+  const dupes = [...new Set(all.filter((id, i) => all.indexOf(id) !== i))];
+  if (dupes.length) {
+    console.error(`  ✗ practice(s) classified into more than one group: ${dupes.join(', ')}`);
+    process.exitCode = 1;
+  }
+
+  const claimed = new Set(all);
   const stale = [...claimed].filter((id) => !byId[id]);
   if (stale.length) console.log(`  note: group references a practice not currently in library/: ${stale.join(', ')} — skipped.`);
 
@@ -517,10 +657,11 @@ blocks.CREDITS = () => {
       const name = v.url
         ? `<a href="${esc(v.url)}" rel="noopener">${esc(v.name)}</a>`
         : esc(v.name);
+      const flag = v.key ? '<span class="key-src" title="a named practitioner or primary spec BOSS distils directly">key</span>' : '';
       const forWhat = v.for ? `<span class="credit-for">${esc(v.for)}</span>` : '';
       const ps = (informs[key] || []).map((x) => `<span class="chip">${esc(x)}</span>`).join(' ');
       return `        <li class="credit">
-          <p class="credit-name">${name}</p>
+          <p class="credit-name">${name}${flag}</p>
           ${forWhat}
           ${ps ? `<p class="credit-in">${ps}</p>` : ''}
         </li>`;
@@ -533,8 +674,9 @@ ${items}
   }).filter(Boolean).join('\n\n');
 };
 
-blocks.COUNT_LINKED = () => String(Object.values(SOURCES.sources || {}).filter((s) => s.url).length);
-blocks.COUNT_UNLINKED = () => String(Object.values(SOURCES.sources || {}).filter((s) => !s.url).length);
+blocks.COUNT_LINKED = () => String(Object.values(SOURCES.sources || {}).filter((s) => s.key && s.url).length);
+blocks.COUNT_UNLINKED = () => String(Object.values(SOURCES.sources || {}).filter((s) => s.key && !s.url).length);
+blocks.COUNT_KEY = () => String(Object.values(SOURCES.sources || {}).filter((s) => s.key).length);
 
 blocks.COUNT_SOURCES = () => String(Object.keys(SOURCES.sources || {}).length);
 blocks.COUNT_ENG_PRACTICES = () => String(ENG_GROUPS.flatMap(([, , ids]) => ids).length);
@@ -591,6 +733,10 @@ ${rows}
 };
 
 
+// Quickstart's own numbers — hardcoded English numerals in prose ("three agents and
+// sixteen skills") are a rot class the generated tables don't have.
+blocks.Q_AGENTS = () => String(data.modes[0].agents);
+blocks.Q_SKILLS = () => String(data.modes[0].skills);
 blocks.COUNT_AGENTS = () => String(data.agents);
 blocks.COUNT_SKILLS = () => String(data.skills);
 blocks.COUNT_MENTORS = () => String(data.mentors);
@@ -609,6 +755,7 @@ const NAV = [
   { id: 'start', href: 'start.html', label: 'Start' },
   { label: 'The product', href: 'team.html', children: [
     { id: 'team', href: 'team.html', label: 'The team' },
+    { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
     { id: 'guide', href: 'guide.html', label: 'Guide' },
     { id: 'teams', href: 'teams.html', label: 'Cofounders' },
     { id: 'quick-guide', href: 'quick-guide.html', label: 'Quick guide' },
@@ -658,9 +805,9 @@ let built = 0;
 // and the sitemap both read it, so a domain change is a one-line edit rather than a
 // hunt through generated HTML. index.html canonicalizes to the bare root — two URLs
 // serving one page is the oldest self-inflicted SEO bug there is.
-// Canonical base. Changed 2026-08-20 → oyeboss.build (BRAND.md): boss.build was never
-// available — registered 2026-01-16, five months before it was chosen. SELECTED, NOT YET
-// REGISTERED, so these URLs are aspirational until someone buys it.
+// Canonical base. oyeboss.build — REGISTERED 2026-08-20 (Cloudflare), so these URLs
+// are real. Changed from boss.build, which was never available: registered 2026-01-16,
+// five months before BOSS chose it. One constant; change it here if the domain moves.
 const SITE_URL = 'https://oyeboss.build';
 const canonical = (f) => (f === 'index.html' ? `${SITE_URL}/` : `${SITE_URL}/${f}`);
 
@@ -712,6 +859,11 @@ for (const f of pages) {
 
 // robots.txt + sitemap.xml are generated from the same page list that was just built,
 // so a sitemap can never advertise a page that isn't there.
+// Cloudflare Pages picks these up automatically; generated so a rebuild can't drop them.
+writeFileSync(join(SITE, '_headers'),
+  '# Cloudflare Pages. Static site, no build step — serve site/ as-is.\n' +
+  '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n' +
+  '  X-Frame-Options: SAMEORIGIN\n/styles/*\n  Cache-Control: public, max-age=3600\n');
 writeFileSync(join(SITE, 'robots.txt'),
   `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 writeFileSync(join(SITE, 'sitemap.xml'),

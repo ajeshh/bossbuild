@@ -72,6 +72,25 @@ Then rejoin at section 2 (cohort) and continue — but throughout, **swap the "w
 options** (section 4's Path A / Path B) for: `/comprehend` first, then `/canvas` if the bet has
 never been pressure-tested, then `/spec` when the next feature starts.
 
+## 0.7 Say what BOSS leaves behind (once, plainly, unprompted)
+
+BOSS writes a **marked block** into `CLAUDE.md` / `AGENTS.md`, wrapped in an HTML comment that starts
+`<!-- boss:`. That marker is how `boss remove` knows exactly what to take back out — and it is also,
+unavoidably, **a fingerprint that can be found by searching public repositories.**
+
+Say so. Once, in a sentence, without ceremony:
+
+> *"BOSS leaves a marked comment in your `CLAUDE.md` so it can cleanly remove itself later. It's also
+> findable if someone searches public repos — that's how I'd know anyone's using this at all. `boss
+> remove` takes it out with everything else."*
+
+**Why this is stated rather than left implicit:** counting people who never agreed to be counted is
+surveillance, however public the data. The marker is load-bearing (removal depends on it) so it stays
+— but a founder learns about it from BOSS, not from discovering it.
+
+**Do not turn this into a pitch.** No "and if you'd like to support us…". `boss credit` exists for a
+founder who *asks* how to credit BOSS; it is never offered here.
+
 ## 1. Open with a small introduction
 
 > *"Welcome. This is BOSS — a tool that helps you build by nudging when something looks like
