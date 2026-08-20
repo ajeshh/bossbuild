@@ -9,6 +9,36 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches boss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.174.0 — 2026-08-20
+
+**The eval gate could lose cases and still print "passed."**
+
+Found while authoring v0.170.0's eval set, fixed here because it undermines every
+other guarantee in the repo. The conscience eval suite is one of BOSS's three quality
+channels and the one its own README leads with — **it was capable of reporting green
+on a file it had only half-read.**
+
+- **🔴 The parser is a deliberate subset, and on a construct it can't represent it
+  stopped early and returned what it had — without failing.** A `why:` value wrapped
+  onto a second line **dropped 6 of 7 cases while the suite still printed
+  `passed`**. Separately, an inline `content: "…\n…"` parsed to a *literal*
+  backslash-n, so a `^status:` predicate could never match and the case failed for a
+  reason nothing reported.
+- **The fix is reconciliation, not a bigger parser.** Growing the parser risks
+  changing how 170+ existing cases parse, for no gain. `reconcileCases()` instead
+  compares what the **file declares** (`^- id:`) against what came **back**, and
+  names the cases that vanished. That catches any future silent drop regardless of
+  which construct caused it — including ones nobody has hit yet.
+- **It names the fix, not just the fault.** The `\n` diagnostic points at the
+  FIXTURES registry, which exists for exactly this and whose own comment had said so
+  since v0.27.0 — the trap was documented and still cost two hours.
+- **4 new unit tests (102 → 106), three marked REGRESSION and each verified to fail
+  before the guard existed.** The fourth asserts every *shipped* eval file reconciles
+  today, so this can't quietly regress.
+
+*A gate that quietly loses cases reports confidence it hasn't earned — which is worse
+than no gate, because you stop looking.*
+
 ## 0.173.0 — 2026-08-20
 
 **The back-office gap, answered with routing instead of surface.**

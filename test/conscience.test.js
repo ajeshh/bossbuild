@@ -15,6 +15,7 @@ import {
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
 import { STAGES_DIR, STAGE_ORDER } from '../src/paths.js';
 import { project, cleanup, idea } from './helpers.js';
+import { parseYaml as parseEvalYaml, reconcileCases } from '../docs/architecture/conscience-evals/lib/yaml-eval.js';
 
 after(cleanup);
 
@@ -189,4 +190,52 @@ test('superseded evidence is excluded from the ledger projection', () => {
     'docs/evidence/EVID-001-x.md': '---\nid: EVID-001\ntype: evidence\ngrade: commitment\nstatus: superseded\ndate: 2026-05-01\n---\n\n# EVID-001 — Old\n',
   });
   assert.equal(readEvidenceContext(dir), null);
+});
+
+// --- the eval harness itself (v0.174.0) ------------------------------------
+// REGRESSION: the eval YAML parser is a deliberate subset and, on a construct it
+// can't represent, stopped early and returned what it had — WITHOUT failing. While
+// authoring moment-unverified.yml this dropped 6 of 7 cases and the suite still
+// printed "passed". A gate that quietly loses cases reports confidence it hasn't
+// earned, which is worse than no gate. Both shapes below failed silently before
+// reconcileCases existed.
+test('REGRESSION: a wrapped scalar drops cases, and the guard catches it', () => {
+  const wrapped = [
+    '- id: a-001',
+    '  category: should-fire',
+    '  why: "a value that wraps',
+    '    onto a second line"',
+    '',
+    '- id: a-002',
+    '  category: should-fire',
+    '  why: "fine"',
+    '',
+  ].join('\n');
+  const parsed = parseEvalYaml(wrapped);
+  assert.equal(parsed.length, 1, 'parser still silently drops — that is the bug being guarded');
+  const problems = reconcileCases(wrapped, parsed, 'test.yml');
+  assert.equal(problems.length, 1);
+  assert.match(problems[0], /a-002/, 'names the case that vanished, not just a count');
+});
+
+test('REGRESSION: an inline \\n escape parses literally, and the guard catches it', () => {
+  const raw = '- id: b-001\n  project_state:\n    docs_files:\n'
+    + '      - { path: docs/x.md, content: "---\\nstatus: shipped\\n---" }\n';
+  const problems = reconcileCases(raw, parseEvalYaml(raw), 'test.yml');
+  assert.equal(problems.length, 1);
+  assert.match(problems[0], /FIXTURES/, 'points at the fix, not just the fault');
+});
+
+test('the guard stays quiet on a well-formed eval file', () => {
+  const good = '- id: c-001\n  category: should-fire\n  why: "one line"\n';
+  assert.deepEqual(reconcileCases(good, parseEvalYaml(good), 'test.yml'), []);
+});
+
+test('every shipped eval file reconciles — no case is silently missing today', () => {
+  const dir = join(process.cwd(), 'docs/architecture/conscience-evals');
+  if (!existsSync(dir)) return; // gitignored dev workspace on a clean clone
+  for (const f of readdirSync(dir).filter((n) => n.startsWith('moment-') && n.endsWith('.yml'))) {
+    const raw = readFileSync(join(dir, f), 'utf8');
+    assert.deepEqual(reconcileCases(raw, parseEvalYaml(raw), f), [], `${f} loses cases`);
+  }
 });
