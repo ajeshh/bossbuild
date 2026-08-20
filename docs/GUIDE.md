@@ -142,7 +142,7 @@ Capture an idea, shape it, pressure-test whether it's real. Almost no ceremony.
   `/evidence` (paste your notes; BOSS grades it honestly and pushes back on inflation). The conscience
   reads that ledger: it gets *specific* when you have only stated pain and no commitments, and it goes
   *quiet* once real commitments show up — evidence is how you earn its silence.
-- **Ask:** `mentor-venture` — is this worth building, what's the riskiest assumption.
+- **Ask:** `mentor-founder` — is this worth building, what's the riskiest assumption.
 - **Ready to climb when:** you're done capturing and ready to *build* one of these for real.
   → `boss unlock mvp`
 
@@ -157,7 +157,7 @@ your product leans on a model.
   budget), `/evals`, `/ai-failure-states`,
   `/judge-traces` (error-analysis on your real sessions), `/red-team` (test your defenses against the
   OWASP LLM Top-10 — turns prevention into evidence).
-- **Ask:** `mentor-architect` (load-bearing tradeoffs, what to defer), `mentor-gtm` (first users,
+- **Ask:** `mentor-architect` (load-bearing tradeoffs, what to defer), `mentor-customers` (first users,
   channels), or **`/consult`** to convene several mentors on one cross-cutting decision (it keeps the
   disagreement visible instead of averaging it away).
 - **Ready to climb when:** you have real users and the app needs design rigor, a real database, and
@@ -170,7 +170,7 @@ The design layer turns on, plus the next tier of mentors.
   your code so it can't drift; it flags off-token values, missing states and near-duplicate
   components, and it's the thing you hand a designer instead of a repo), `/design-review` (before you
   code), `/ux-check` (after), `/board` (sequence work across features).
-- **Ask:** `mentor-business` (model, pricing), `mentor-fundraising`, `mentor-pitch`, `mentor-talent`
+- **Ask:** `mentor-money` (model, pricing), `mentor-fundraising`, `mentor-pitch`, `mentor-hiring`
   — promoted in here because these questions get real at V1.
 - **Ready to climb when:** the team grows and the org needs to be a thing. → `boss unlock scale`
 
@@ -251,14 +251,14 @@ financial advice (they point you at the real expert and caveat hard).
 
 | The question on your mind | Who to ask |
 |---|---|
-| Is this worth building? What's the riskiest assumption? | `mentor-venture` |
+| Is this worth building? What's the riskiest assumption? | `mentor-founder` |
 | What's the load-bearing technical call? What can I defer? | `mentor-architect` |
-| How do I get the first users? What's the positioning? | `mentor-gtm` |
+| How do I get the first users? What's the positioning? | `mentor-customers` |
 | How do I work with my cofounder? Are we deciding together? | `mentor-cofounder` *(dormant when solo)* |
-| What's the model? Should this be free? What would someone pay? | `mentor-business` |
+| What's the model? Should this be free? What would someone pay? | `mentor-money` |
 | Should I raise? When? | `mentor-fundraising` |
 | How do I explain this? Is the deck working? | `mentor-pitch` |
-| Should I hire? Who first? | `mentor-talent` |
+| Should I hire? Who first? | `mentor-hiring` |
 
 **"Who could this harm? Is this dark-pattern-y?"** is the one question with no advisor to ask —
 deliberately. An ethics mentor is a door you can decline to open, so the humane lens is wired across the

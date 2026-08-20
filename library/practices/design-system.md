@@ -361,8 +361,11 @@ converge instead of wander:
   names instead. **Ships dormant at L1 and is offered once by `/design-tokens-init`**, because the
   tokens file is the opt-in signal: *no token system, no opinion.* This is the boundary the note
   above asks for — the check that doesn't depend on the next prompt remembering.
-- **V1:** the rest of enforcement turns on. `/design-review` before code, `/ux-check` after.
-  Agents `ui-designer` (token/visual authority) + `ux-designer` (flows, the 5 states) unlock here.
+- **MVP:** `designer` unlocks, with `/design-review` before code and `/ux-check` after — moved
+  down from V1 in v0.189.0 (DEC-005). AI-generated UI nails the happy path and skips
+  empty/loading/disabled/error, and that lands the first week someone builds a screen.
+- **V1:** the enforcement that needs a real component set to exist first — `/design-library`
+  rendered from the code, and `design-drift-loop`.
 - **Scale:** design drift audits, token versioning, multi-surface theming.
 
 ## Shipped (this section was a TODO until 2026-08-11)
@@ -373,11 +376,13 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
 - ✅ `/design-review` (before code) · `/ux-check` (after code) · `/design-tokens-init` (L1, at the
   first UI commit) — the latter **writes** `docs/design/DESIGN_TOKENS.md` at runtime, which is right:
   tokens are project-specific, not template-shippable.
-- ✅ `ui-designer` (token/visual authority) + `ux-designer` (flows, the five states)
+- ✅ `designer` — both halves in one agent (visual system + flows/states). Superseded the
+  `ui-designer`/`ux-designer` split in v0.189.0; BOSS had been shipping a two-agent split while
+  running a single designer itself.
 - ✅ `docs/design/STYLE_GUIDE.md` — **written by `/design-tokens-init` from v0.146.0.**
   ⚠️ **Correction:** v0.144.0's version of this list claimed the style guide already shipped. It did
   not. `docs/design/` was an **empty directory**, and `STYLE_GUIDE.md` was **read by three consumers**
-  (`/design-review`, `ui-designer`, `ux-designer`) and **written by nothing.** The stale-TODO fix
+  (`/design-review` and the designers, as they were then named) and **written by nothing.** The stale-TODO fix
   introduced a false ✅ in the same pass that warned against exactly that — *"converting a stale TODO
   into a clean ✅ would have hidden the one gap that matters."* It hid a different one. **A checklist
   is a claim; verify each line against the filesystem, not against the doc it came from.**

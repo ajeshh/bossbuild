@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-seed-to-scale
 type: practice
-owner: pm
+owner: product-lead
 status: active
 host: stack-neutral
 provenance: generalized 2026-08-20 from the one place BOSS had already solved it — the "But leave the seam" section of analytics-for-ai-products.md (v0.176.0), which named a history seam and a call seam for measurement and stopped there. The same shape was already live in three other places and never named as one thing: data-schema.md's one-way doors (a `created_at` you cannot backfill), design-tokens-loop (the tokens file that gets exponentially more expensive per screen), and /design-tokens-init's "refactor one existing component so you see the pattern." The existing-artifact half comes from the v0.177.0 finding that `boss sync` distributes FILES and never asks whether the founder already built the THING — /landing read BRAND.md, tokens and the canvas (its inputs) and never looked for a landing page. Pairs with modes (PRINCIPLES #2), analytics-for-ai-products.md, data-schema.md.

@@ -7,7 +7,7 @@
 ---
 id: ai-cost-budget
 type: budget
-owner: pm
+owner: product-lead
 status: declared
 updated: {{DATE}}
 ---

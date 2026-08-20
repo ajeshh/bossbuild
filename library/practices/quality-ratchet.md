@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-quality-ratchet
 type: practice
-owner: pm
+owner: product-lead
 status: active
 host: stack-neutral
 provenance: ported UP from the dhun dogfood (.ratchet/ + /code-health gate) via the 2026-06-20 method scan — BOSS v0.48.0

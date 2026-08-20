@@ -20,23 +20,23 @@
     {
       "kind": "agent",
       "stage": "L0-quickstart",
-      "rel": "stages/L0-quickstart/template/.claude/agents/coder-generalist.md",
+      "rel": "stages/L0-quickstart/template/.claude/agents/coder.md",
       "curve": "craft",
-      "last_reviewed": "2026-08-17"
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "agent",
       "stage": "L0-quickstart",
-      "rel": "stages/L0-quickstart/template/.claude/agents/mentor-venture.md",
+      "rel": "stages/L0-quickstart/template/.claude/agents/mentor-founder.md",
       "curve": "craft",
-      "last_reviewed": "2026-08-17"
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "agent",
       "stage": "L0-quickstart",
-      "rel": "stages/L0-quickstart/template/.claude/agents/pm.md",
+      "rel": "stages/L0-quickstart/template/.claude/agents/product-lead.md",
       "curve": "craft",
-      "last_reviewed": "2026-08-17"
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "hook",
@@ -174,6 +174,13 @@
     {
       "kind": "agent",
       "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/designer.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-20"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
       "rel": "stages/L1-mvp/template/.claude/agents/mentor-architect.md",
       "curve": "craft",
       "last_reviewed": "2026-08-01"
@@ -188,16 +195,23 @@
     {
       "kind": "agent",
       "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/agents/mentor-gtm.md",
+      "rel": "stages/L1-mvp/template/.claude/agents/mentor-customers.md",
       "curve": "market",
-      "last_reviewed": "2026-08-01"
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "agent",
       "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/agents/program-manager.md",
+      "rel": "stages/L1-mvp/template/.claude/agents/mentor-money.md",
       "curve": "craft",
-      "last_reviewed": "2026-05-22"
+      "last_reviewed": "2026-08-20"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/planner.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "agent",
@@ -216,9 +230,23 @@
     {
       "kind": "hook",
       "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/hooks/content-terminology-guard.js",
+      "curve": "host",
+      "last_reviewed": "2026-08-20"
+    },
+    {
+      "kind": "hook",
+      "stage": "L1-mvp",
       "rel": "stages/L1-mvp/template/.claude/hooks/design-tokens-guard.js",
       "curve": "host",
       "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "hook",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/hooks/schema-guard.js",
+      "curve": "host",
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "skill",
@@ -261,6 +289,13 @@
       "rel": "stages/L1-mvp/template/.claude/skills/cost-review/SKILL.md",
       "curve": "model",
       "last_reviewed": "2026-08-17"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/design-review/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "skill",
@@ -403,18 +438,11 @@
       "last_reviewed": "2026-08-17"
     },
     {
-      "kind": "agent",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/agents/db-architect.md",
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/ux-check/SKILL.md",
       "curve": "craft",
-      "last_reviewed": "2026-08-17"
-    },
-    {
-      "kind": "agent",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/agents/mentor-business.md",
-      "curve": "craft",
-      "last_reviewed": "2026-08-01"
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "agent",
@@ -431,27 +459,6 @@
       "last_reviewed": "2026-08-17"
     },
     {
-      "kind": "agent",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/agents/mentor-talent.md",
-      "curve": "craft",
-      "last_reviewed": "2026-08-01"
-    },
-    {
-      "kind": "agent",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/agents/ui-designer.md",
-      "curve": "craft",
-      "last_reviewed": "2026-08-17"
-    },
-    {
-      "kind": "agent",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/agents/ux-designer.md",
-      "curve": "craft",
-      "last_reviewed": "2026-08-17"
-    },
-    {
       "kind": "skill",
       "stage": "L2-v1",
       "rel": "stages/L2-v1/template/.claude/skills/board/SKILL.md",
@@ -461,16 +468,16 @@
     {
       "kind": "skill",
       "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/skills/design-review/SKILL.md",
+      "rel": "stages/L2-v1/template/.claude/skills/design-library/SKILL.md",
       "curve": "craft",
-      "last_reviewed": "2026-05-22"
+      "last_reviewed": "2026-08-20"
     },
     {
-      "kind": "skill",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/skills/ux-check/SKILL.md",
+      "kind": "agent",
+      "stage": "L3-scale",
+      "rel": "stages/L3-scale/template/.claude/agents/mentor-hiring.md",
       "curve": "craft",
-      "last_reviewed": "2026-05-22"
+      "last_reviewed": "2026-08-20"
     },
     {
       "kind": "skill",

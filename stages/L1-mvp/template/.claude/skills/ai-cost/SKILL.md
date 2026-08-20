@@ -142,8 +142,8 @@ After writing the budget doc, optionally:
 - **`mentor-architect`** — when the cost shape implies an architectural decision (batching vs.
   realtime, caching layer, model fallback strategy). Hand off with: *"`mentor-architect`, the
   cost shape says X — what architecture decisions does that imply?"*
-- **`mentor-business`** — when unit economics get load-bearing (cost-per-acquired-user, cost
-  vs. willingness-to-pay, pricing implications). Hand off with: *"`mentor-business`, our
+- **`mentor-money`** — when unit economics get load-bearing (cost-per-acquired-user, cost
+  vs. willingness-to-pay, pricing implications). Hand off with: *"`mentor-money`, our
   cost-per-active-user is X; what should the pricing carry?"*
 
 Don't auto-invoke either. Surface the question; let the founder decide whether to consult.

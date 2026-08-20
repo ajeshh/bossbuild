@@ -62,6 +62,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.189.0</span><span class="when">2026-08-20</span></div>
+        <p>if you're at MVP, you now have a <code>designer</code> — one agent for how it looks, how it behaves, and how it reads — plus <code>/design-review</code> before code and <code>/ux-check</code> after. If you're already at V1, <code>ui-designer</code> and <code>ux-designer</code> are superseded by it; <code>boss sync</code> will say so, and anything you edited stays yours.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.188.0</span><span class="when">2026-08-20</span></div>
         <p>if you skip <code>/close</code>, the conscience is no longer blind. It now reads the facts your repo already carries — what's in flight, what shipped, and what it has already said to you recently — so it can stop repeating a nudge that didn't land. <code>/close</code> still writes the part that matters most: what those facts <em>mean</em>. Nothing about running it changes.</p>
       </li>
@@ -105,10 +109,6 @@
         <div class="rel"><span class="ver">v0.178.0</span><span class="when">2026-08-20</span></div>
         <p>four commands your practices told you to run don't exist outside BOSS's own repo — <code>/vet</code>, <code>/recalibrate</code>, <code>/practice-refresh</code>, <code>/humane-refresh</code>. The practices now name something you actually have. Nothing in your project moves.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.177.0</span><span class="when">2026-08-20</span></div>
-        <p>the install command changed — <code>npm i -g oyeboss</code> (was <code>bossbuild</code>), and <code>npx oyeboss new my-app</code>. The <code>boss</code> command itself is unchanged and nothing in your project moves. <strong>If you already have the old package, you must uninstall it first</strong> — both provide <code>boss</code>, so installing over it fails with a bare <code>EEXIST</code>: <code>npm uninstall -g bossbuild &amp;&amp; npm i -g oyeboss</code></p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -137,7 +137,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.188.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

@@ -9,7 +9,7 @@ naming the eval case that actually exercises a handler turns a declaration into 
 ---
 id: ai-failure-states
 type: design-decisions
-owner: pm
+owner: product-lead
 status: declared
 updated: {{DATE}}
 ---

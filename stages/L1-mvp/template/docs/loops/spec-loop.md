@@ -40,7 +40,7 @@ canvas-loop's exit predicate, reused as spec-loop's entry.
 
 Turn validated ideas into buildable features. The FEAT spec captures: goal, acceptance criteria,
 smoke check, validated learning (Ries — v0.21.0+), evals (Husain — if AI-mediated), out-of-scope.
-A clean handoff to `coder-generalist`.
+A clean handoff to `coder`.
 
 ## Exit artifact
 

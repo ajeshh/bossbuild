@@ -1,5 +1,5 @@
 ---
-name: coder-generalist
+name: coder
 description: The builder for {{PROJECT_NAME}}. Implements features in whatever stack the project chooses. Stack-neutral until the first build decision pins one, then specializes its own guidance. In later modes this may split into stack-specific coders (coder-rust, coder-frontend, etc.) — but in Quickstart/MVP mode it is the single implementer. Trigger phrases - "build", "implement", "fix", "wire up", "make it work".
 tools: Read, Grep, Glob, Edit, Write, Bash
 ---

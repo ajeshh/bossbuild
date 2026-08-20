@@ -30,6 +30,11 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 2. Open (or create) `docs/ideas/IDEA-NNN-canvas.md` from the template below.
 3. **Don't interrogate.** Ask about 2-4 cells at a time, starting with the most uncertain. Pull
    answers from the idea's "Current shape" + capture log; only ask what's missing.
+   **On an adopted repo, also read `.boss/brain/read.md`** — `/comprehend` put its read of the
+   existing codebase there, and several cells (People, Problem, Story, Business Model) often have a
+   partial answer sitting in what's already built. Propose those as *drafts to correct*, never as
+   filled cells: code tells you what someone decided to build, not whether anyone wanted it. A cell
+   answered from the repo alone is still `_(not yet)_` on the evidence that matters.
 4. Leave `_(not yet)_` on anything unknown — blanks are honest signal, not failure. Re-run anytime.
 5. After each pass, name the **single riskiest assumption** and propose **one experiment this week**
    to test it. Write both in. That's the heartbeat of incubation. If any `EVID-NNN` records in
@@ -46,7 +51,7 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 ---
 id: IDEA-NNN-canvas
 type: canvas
-owner: pm
+owner: product-lead
 status: drafting
 version: 0.1
 updated: {{today}}

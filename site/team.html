@@ -39,7 +39,7 @@
         A funded company puts a team around the build: someone deciding what's worth making, someone
         testing it, designers, a database person — and a board to tell the founder the truth. Solo with
         an AI you get none of that, so you either invent it every project or skip it and find out later.
-        BOSS brings <strong>15</strong> of them, in two classes, and <strong>hires them
+        BOSS brings <strong>13</strong> of them, in two classes, and <strong>hires them
         just in time</strong> — never all at once.
       </p>
     </div>
@@ -52,7 +52,7 @@
       <div class="body">
         <div class="pairs">
           <div class="pair">
-            <span class="k">7 builders — they make the product</span>
+            <span class="k">5 builders — they make the product</span>
             <span>A product lead, coders, a tester, a program manager, designers, a database architect.
               They do work: write the spec, write the code, catch the regression, review the screen.</span>
           </div>
@@ -93,19 +93,19 @@
       <li class="station">
         <span class="dot" aria-hidden="true"></span>
         <span class="stop">MVP</span>
-        <span class="crew"><b>8</b> on the team</span>
-        <span class="verbs">42 skills</span>
+        <span class="crew"><b>10</b> on the team</span>
+        <span class="verbs">44 skills</span>
       </li>
       <li class="station">
         <span class="dot" aria-hidden="true"></span>
         <span class="stop">V1</span>
-        <span class="crew"><b>15</b> on the team</span>
+        <span class="crew"><b>12</b> on the team</span>
         <span class="verbs">46 skills</span>
       </li>
       <li class="station">
         <span class="dot" aria-hidden="true"></span>
         <span class="stop">Scale</span>
-        <span class="crew"><b>15</b> on the team</span>
+        <span class="crew"><b>13</b> on the team</span>
         <span class="verbs">47 skills</span>
       </li>
     </ol>
@@ -118,30 +118,30 @@
       <tbody>
       <tr>
         <th scope="row">Quickstart</th>
-        <td><code>pm</code> <code>coder-generalist</code></td>
-        <td><code>venture</code></td>
+        <td><code>product-lead</code> <code>coder</code></td>
+        <td><code>founder</code></td>
         <td class="num"><b>3</b></td>
         <td class="num">16</td>
       </tr>
       <tr>
         <th scope="row">MVP</th>
-        <td>+ <code>tester</code> <code>program-manager</code></td>
-        <td>+ <code>architect</code> <code>gtm</code> <code>cofounder</code></td>
-        <td class="num"><b>8</b></td>
-        <td class="num">42</td>
+        <td>+ <code>tester</code> <code>planner</code> <code>designer</code></td>
+        <td>+ <code>architect</code> <code>customers</code> <code>cofounder</code> <code>money</code></td>
+        <td class="num"><b>10</b></td>
+        <td class="num">44</td>
       </tr>
       <tr>
         <th scope="row">V1</th>
-        <td>+ <code>ui-designer</code> <code>ux-designer</code> <code>db-architect</code></td>
-        <td>+ <code>business</code> <code>fundraising</code> <code>pitch</code> <code>talent</code></td>
-        <td class="num"><b>15</b></td>
+        <td><span class="t-none">—</span></td>
+        <td>+ <code>fundraising</code> <code>pitch</code></td>
+        <td class="num"><b>12</b></td>
         <td class="num">46</td>
       </tr>
       <tr>
         <th scope="row">Scale</th>
         <td><span class="t-none">—</span></td>
-        <td><span class="t-none">—</span></td>
-        <td class="num"><b>15</b></td>
+        <td>+ <code>hiring</code></td>
+        <td class="num"><b>13</b></td>
         <td class="num">47</td>
       </tr>
       </tbody>
@@ -164,17 +164,17 @@
               <h3>Arrives at Quickstart</h3>
       <div class="agents">
         <div class="agent builder">
-          <h4><code>pm</code> <span class="tag">builder</span></h4>
+          <h4><code>product-lead</code> <span class="tag">builder</span></h4>
           <p>Product lead for your app.</p>
           <p class="triggers"><span>ask it</span> &quot;what should we build&quot;, &quot;is this worth it&quot;, &quot;scope this&quot;, &quot;prioritize&quot;, &quot;does this fit&quot;.</p>
         </div>
         <div class="agent builder">
-          <h4><code>coder-generalist</code> <span class="tag">builder</span></h4>
+          <h4><code>coder</code> <span class="tag">builder</span></h4>
           <p>The builder for your app.</p>
           <p class="triggers"><span>ask it</span> &quot;build&quot;, &quot;implement&quot;, &quot;fix&quot;, &quot;wire up&quot;, &quot;make it work&quot;.</p>
         </div>
         <div class="agent mentor">
-          <h4><code>mentor-venture</code> <span class="tag">mentor</span></h4>
+          <h4><code>mentor-founder</code> <span class="tag">mentor</span></h4>
           <p>Venture mentor for your app — coaches the FOUNDER, not the codebase.</p>
           <p class="triggers"><span>ask it</span> &quot;is this worth doing&quot;, &quot;should I build this&quot;, &quot;what's my biggest risk&quot;, &quot;how do I start a company&quot;, &quot;talk me through this idea&quot;.</p>
         </div>
@@ -188,8 +188,8 @@
           <p class="triggers"><span>ask it</span> &quot;run smoke&quot;, &quot;is this working&quot;, &quot;did the feature land&quot;, &quot;what broke&quot;, &quot;verify FEAT-NNN&quot;.</p>
         </div>
         <div class="agent builder">
-          <h4><code>program-manager</code> <span class="tag">builder</span></h4>
-          <p>Sequences the work for your app — the WHEN, distinct from `pm`'s WHAT.</p>
+          <h4><code>planner</code> <span class="tag">builder</span></h4>
+          <p>Sequences the work for your app — the WHEN, distinct from `product-lead`'s WHAT.</p>
           <p class="triggers"><span>ask it</span> &quot;what should I work on next&quot;, &quot;is this blocked&quot;, &quot;in what order&quot;, &quot;can these run in parallel&quot;, &quot;ship plan&quot;.</p>
         </div>
         <div class="agent mentor">
@@ -198,7 +198,7 @@
           <p class="triggers"><span>ask it</span> &quot;what stack&quot;, &quot;where does AI fit&quot;, &quot;is this the right boundary&quot;, &quot;should we use an agent here&quot;, &quot;what about evals&quot;, &quot;should we split this&quot;, &quot;where does this data live&quot;, &quot;is this premature&quot;.</p>
         </div>
         <div class="agent mentor">
-          <h4><code>mentor-gtm</code> <span class="tag">mentor</span></h4>
+          <h4><code>mentor-customers</code> <span class="tag">mentor</span></h4>
           <p>GTM mentor for your app — coaches the FOUNDER on getting in front of the first real users.</p>
           <p class="triggers"><span>ask it</span> &quot;how do I find users&quot;, &quot;how do I get the first 100&quot;, &quot;what's the channel&quot;, &quot;messaging&quot;, &quot;should I launch&quot;, &quot;should I post this&quot;.</p>
         </div>
@@ -207,30 +207,20 @@
           <p>Cofounder/team mentor for your app — coaches a founding TEAM (not a single founder) on working together across different skill sets: the non-technical founder learning to work with an engineer cofounder, the first-time-full-stack CTO, dividing the work, staying in the loop, and the hard cofounder conversations (roles, decision rights, pace, equity).</p>
           <p class="triggers"><span>ask it</span> &quot;how do I work with my cofounder&quot;, &quot;we have different skill sets&quot;, &quot;how should we divide this&quot;, &quot;my cofounder is technical and I'm not&quot;, &quot;how do I work with a non-technical cofounder&quot;, &quot;are we aligned&quot;, &quot;cofounder tension&quot;, &quot;who should own this&quot;, &quot;how do we make this decision together&quot;.</p>
         </div>
+        <div class="agent mentor">
+          <h4><code>mentor-money</code> <span class="tag">mentor</span></h4>
+          <p>Business model mentor for your app ( mode) — coaches the founder on model, pricing, packaging, willingness-to-pay, unit economics.</p>
+          <p class="triggers"><span>ask it</span> &quot;how should this make money&quot;, &quot;what's the model&quot;, &quot;should this be free&quot;, &quot;what would someone pay for&quot;, &quot;open core vs hosted&quot;, &quot;willingness to pay&quot;, &quot;is the price right&quot;.</p>
+        </div>
+        <div class="agent builder">
+          <h4><code>designer</code> <span class="tag">builder</span></h4>
+          <p>Design authority for your app — both halves.</p>
+          <p class="triggers"><span>ask it</span> &quot;design this component&quot;, &quot;what's the flow here&quot;, &quot;what states does this need&quot;, &quot;does this match our tokens&quot;, &quot;is this accessible&quot;, &quot;review the design of X&quot;, &quot;what about the empty state / loading state / error state&quot;, &quot;should this be a new pattern or reuse existing&quot;.</p>
+        </div>
       </div>
 
       <h3>Arrives at V1</h3>
       <div class="agents">
-        <div class="agent builder">
-          <h4><code>ui-designer</code> <span class="tag">builder</span></h4>
-          <p>Token + visual authority for your app.</p>
-          <p class="triggers"><span>ask it</span> &quot;design this component&quot;, &quot;review the visual choices&quot;, &quot;does this match our tokens&quot;, &quot;should this be a new pattern or reuse existing&quot;, &quot;what's the right color/spacing/type here&quot;.</p>
-        </div>
-        <div class="agent builder">
-          <h4><code>ux-designer</code> <span class="tag">builder</span></h4>
-          <p>Flow + state + interaction authority for your app.</p>
-          <p class="triggers"><span>ask it</span> &quot;what's the flow here&quot;, &quot;what states does this need&quot;, &quot;is this accessible&quot;, &quot;is this usable&quot;, &quot;review the UX of X&quot;, &quot;what about the empty state / loading state / error state&quot;.</p>
-        </div>
-        <div class="agent builder">
-          <h4><code>db-architect</code> <span class="tag">builder</span></h4>
-          <p>Schema + data-shape authority for your app.</p>
-          <p class="triggers"><span>ask it</span> &quot;design the schema&quot;, &quot;review the data model&quot;, &quot;what's the right shape for X&quot;, &quot;should this be one table or two&quot;, &quot;is this query going to scale&quot;, &quot;migration plan&quot;, &quot;I'm about to add a column&quot;.</p>
-        </div>
-        <div class="agent mentor">
-          <h4><code>mentor-business</code> <span class="tag">mentor</span></h4>
-          <p>Business model mentor for your app ( mode) — coaches the founder on model, pricing, packaging, willingness-to-pay, unit economics.</p>
-          <p class="triggers"><span>ask it</span> &quot;how should this make money&quot;, &quot;what's the model&quot;, &quot;should this be free&quot;, &quot;what would someone pay for&quot;, &quot;open core vs hosted&quot;, &quot;willingness to pay&quot;, &quot;is the price right&quot;.</p>
-        </div>
         <div class="agent mentor">
           <h4><code>mentor-fundraising</code> <span class="tag">mentor</span></h4>
           <p>Fundraising mentor for your app ( mode) — coaches the founder on whether/when to raise, what narrative would land, what investors will probe, what the data room needs.</p>
@@ -241,14 +231,16 @@
           <p>Pitch mentor for your app ( mode) — coaches the founder on the story, the deck, the live-explanation arc, the 60-second-version, the demo.</p>
           <p class="triggers"><span>ask it</span> &quot;how do I explain this&quot;, &quot;is this deck working&quot;, &quot;what's the opening line&quot;, &quot;what should I cut&quot;, &quot;is this slide carrying weight&quot;, &quot;how do I demo this&quot;.</p>
         </div>
+      </div>
+
+      <h3>Arrives at Scale</h3>
+      <div class="agents">
         <div class="agent mentor">
-          <h4><code>mentor-talent</code> <span class="tag">mentor</span></h4>
+          <h4><code>mentor-hiring</code> <span class="tag">mentor</span></h4>
           <p>Talent / org mentor for your app ( mode) — coaches the founder on first hires, contractors vs employees, what to keep vs delegate, operating cadence.</p>
           <p class="triggers"><span>ask it</span> &quot;should I hire&quot;, &quot;who's the first hire&quot;, &quot;should I delegate this&quot;, &quot;what should I keep doing myself&quot;, &quot;what would a team look like&quot;, &quot;co-founder&quot;.</p>
         </div>
       </div>
-
-
       </div>
     </section>
 
@@ -289,7 +281,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.188.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

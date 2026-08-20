@@ -81,11 +81,22 @@
   - `/log` — devlog
   - `/close` — session-end RESUME update
 - **Builder agents:** `tester` (owns the smoke gate + acceptance checks for FEATs);
-  `program-manager` (sequencing — the *when*, distinct from `pm`'s *what*).
+  `planner` (sequencing — the *when*, distinct from `product-lead`'s *what*); `designer`
+  (the whole surface — how it looks *and* how it behaves: tokens, the 5 states, empty/loading/
+  error, accessibility, and the copy inside all of it. Runs `/design-review` before code and
+  `/ux-check` after. One designer, not a visual/interaction split — that split is an org chart,
+  not a seam in the work).
 - **Mentor agents:** `mentor-architect` (AI-native stack/architecture, advisory);
-  `mentor-gtm` (first 100, channels, positioning); `mentor-cofounder` (a founding *team* working
-  across different skill sets — the seam AI widens by making you both faster separately; dormant
-  and irrelevant if you're solo, `boss team add` is what makes it earn its place).
+  `mentor-customers` (first 100, channels, positioning); `mentor-money` (model, pricing, what someone
+  would actually pay — it owns `/money`'s first-price step); `mentor-cofounder` (a founding *team*
+  working across different skill sets — the seam AI widens by making you both faster separately;
+  dormant and irrelevant if you're solo, `boss team add` is what makes it earn its place).
+- **You don't have to pick one.** `/consult` is the door: ask your question once, and it routes to
+  the mentors who actually have a stake, gives you each lens in its own voice, and **keeps the
+  disagreement visible** rather than averaging it into one confident answer — *"fundraising says
+  raise now; business says your unit economics aren't ready"* is the useful output, not a bug in
+  it. The split is the decision. Use it for anything cross-cutting; ask a single mentor directly
+  when you already know whose question it is.
 - **Loops** (on the v0.18 generic loop primitive, MVP-stage):
   - `spec-loop` — gates spec writing on canvas-loop closure (encodes moment #4 restraint;
     skill-side detection via `/spec`)

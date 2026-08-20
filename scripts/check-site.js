@@ -54,8 +54,13 @@ for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsW
       problems.push(`${page}.html names /${name} — no such skill in any stage manifest`);
     }
   }
-  // Agent references.
-  for (const m of body.matchAll(/<code>((?:mentor-|db-|ui-|ux-)[a-z-]+|coder-generalist|tester|program-manager|pm)<\/code>/g)) {
+  // Agent references. `persona-` is in this list for a specific reason: the eight
+  // persona-* agents are BOSS's OWN instruments for pretotyping founder reactions and
+  // `registry/boundary.json` rules every one of them `internal`. They are also the
+  // single most tempting thing to put on a page about /persona — README and GUIDE have
+  // already described dev-workspace agents as founder features once. The prefix list
+  // used to omit persona-, so the site could have named one and nothing would have said so.
+  for (const m of body.matchAll(/<code>((?:mentor-|persona-|db-|ui-|ux-)[a-z-]+|coder|tester|planner|pm)<\/code>/g)) {
     if (!agents.has(m[1]) && !absent.has(m[1])) problems.push(`${page}.html names agent ${m[1]} — not in any stage manifest`);
   }
   // `boss <verb>` references.
@@ -75,6 +80,34 @@ const siteText = readdirSync(SITE).filter((f) => f.endsWith('.html'))
 const unmentioned = practices.filter((p) => !siteText.includes(p));
 if (unmentioned.length) {
   problems.push(`${unmentioned.length} practice(s) exist but appear nowhere on the site: ${unmentioned.join(', ')}`);
+}
+
+// Coverage was ONE-DIRECTIONAL for everything except practices, and the asymmetry hid
+// behind the generated table. Section 1 fails hard when the site CLAIMS a skill that
+// doesn't exist; nothing ever asked the reverse. And the reverse looks answered, because
+// `{{REFERENCE}}` expands into a row for every skill in the manifests — so grepping the
+// built site finds all 47 and reports full coverage.
+//
+// That table is why nobody noticed. `/persona` ships at Quickstart with a full lifecycle
+// (derive → enrich → consult, with a synthetic%/real% evidence ledger) and has never been
+// described by a single hand-written sentence anywhere on the site; the same holds for the
+// money mentors. Listed in a reference table is not the same as claimed, positioned, or
+// explained — and only the second kind tells a founder the capability exists.
+//
+// So this measures `web/` (the half a human wrote), never `site/` (the half a generator
+// wrote). Deliberately a NOTE, not a problem: an omission is not a broken claim, and this
+// file's contract is soft-on-stale / hard-on-false. The point is that the number gets SAID
+// on every run instead of being rediscovered by hand every few months.
+const proseText = readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsWith('_'))
+  .map((f) => readFileSync(join(WEB, f), 'utf8')).join('\n')
+  .replace(/\{\{[A-Z_]+\}\}/g, '');
+const quietSkills = [...skills].filter((s) => !new RegExp(`/${s}(?![a-z0-9-])`).test(proseText)).sort();
+const quietAgents = [...agents].filter((a) => !proseText.includes(a)).sort();
+if (quietSkills.length) {
+  notes.push(`${quietSkills.length}/${skills.size} shipped skill(s) are in the generated table but in no hand-written sentence: ${quietSkills.join(', ')}`);
+}
+if (quietAgents.length) {
+  notes.push(`${quietAgents.length}/${agents.size} shipped agent(s) are named nowhere in the site's prose: ${quietAgents.join(', ')}`);
 }
 
 // ---- 2a. does the site name the right package and repo? -------------------

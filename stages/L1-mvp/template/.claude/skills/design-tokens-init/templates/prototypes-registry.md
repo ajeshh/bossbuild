@@ -30,7 +30,7 @@ the ones that did**, because without them you re-explore the same dead end in si
 ---
 id: prototypes
 type: design
-owner: ui-designer
+owner: designer
 status: active
 updated: {{DATE}}
 ---

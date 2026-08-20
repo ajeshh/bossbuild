@@ -221,7 +221,16 @@ const repoOnlyDocDirs = readFileSync(join(ROOT, '.gitignore'), 'utf8').split('\n
 // rather than computed because nothing on disk can tell the two apart: BOSS having the file is
 // the very thing that makes it look like a bug. Keep this list at the length you can justify —
 // every entry is a hole, and the reason must survive being read out loud.
-const SHARED_NAMES = new Set(['docs/design/BRAND.md']);
+const SHARED_NAMES = new Set([
+  'docs/design/BRAND.md',
+  // Same class, second instance. `/design-library` (L2) WRITES `docs/design/library/` into the
+  // founder's project — its own SKILL.md documents the tree — and `/design-review` (L2) reads the
+  // manifest from there. Same rung, so the reference is always satisfiable where it is made. It
+  // resolves here only because BOSS dogfoods /design-library on itself, which is the very thing
+  // that makes a correct reference look like a dangle. Unlike BRAND.md, a shipped capability DOES
+  // create this one — so it is the stronger of the two entries, not the weaker.
+  'docs/design/library/manifest.json',
+]);
 
 if (repoOnlyDocDirs.length) {
   const SUBDIR = new RegExp(`\\bdocs/(${repoOnlyDocDirs.join('|')})/[A-Za-z0-9._/-]+\\.\\w+`, 'g');
@@ -334,6 +343,92 @@ for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
     seen.add(n);
     findings.agents.push([r, `${n} — ${why}`]);
   }
+}
+
+// --- 4b. rung-aware: an agent named at a rung whose install does not have it yet --------
+// Class 4 asks "does this agent exist?" and builds its vocabulary by flat-mapping EVERY stage
+// into one set — so an L1 file naming an L2 agent passes. The check's own header (top of this
+// file) states the intent it was silently missing: "an agent the founder's install does not
+// contain." A founder at MVP has L0+L1. They do not have L2.
+//
+// What the gap cost, found 2026-08-20: SIX L1-MVP files named `mentor-money` while it
+// installed at L2 — /money (whose central step, the first price, says the mentor owns it),
+// /ai-cost, /cost-review, auto-log.js, cost-budget-loop and margin-trap-loop. TWO of them handed
+// the founder a scripted sentence to go consult an agent their project did not contain. The
+// mentor was re-runged to L1 in v0.189.0; this check is what stops the class from reopening.
+//
+// Cumulative because modes unlock additively: available(L2) = L0 + L1 + L2.
+// A file may name a later-rung agent ON PURPOSE — describing the ladder is some files' actual job.
+// Declared per (file, agent) rather than per file, so a genuine break in a declared file still bites,
+// and the exception stays readable instead of becoming a blanket skip. Same call check-site.js makes
+// with its `mentions-absent:` header.
+const FORWARD_OK = new Map([
+  // The mentor router. Naming who is seated at which rung IS its function.
+  [join('stages', 'L1-mvp', 'template', '.claude', 'skills', 'consult', 'SKILL.md'),
+    new Set(['mentor-fundraising', 'mentor-pitch', 'mentor-hiring'])],
+  // Post-PMF verdict: names the mentor AND the rung that seats it, which is the honest form.
+  [join('stages', 'L1-mvp', 'template', '.claude', 'skills', 'health', 'SKILL.md'),
+    new Set(['mentor-hiring'])],
+]);
+const STAGE_IDS = readdirSync(join(ROOT, 'stages'), { withFileTypes: true })
+  .filter((e) => e.isDirectory()).map((e) => e.name).sort();
+const AVAILABLE_AT = new Map();
+{
+  const acc = new Set();
+  for (const id of STAGE_IDS) {
+    for (const n of agentNames(join(ROOT, 'stages', id, 'template', '.claude', 'agents'))) acc.add(n);
+    AVAILABLE_AT.set(id, new Set(acc));
+  }
+}
+for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
+  const r = rel(f);
+  if (AGENT_EXEMPT.has(r)) continue;
+  const parts = r.split(sep);
+  if (parts[0] !== 'stages') continue;
+  const avail = AVAILABLE_AT.get(parts[1]);
+  if (!avail) continue;
+  const seen = new Set();
+  for (const m of readFileSync(f, 'utf8').matchAll(AGENT_REF)) {
+    const n = m[1];
+    // Only SHIPPED agents: one that exists nowhere is class 4's job, not this one.
+    if (seen.has(n) || !SHIPPED_AGENTS.has(n) || avail.has(n)) continue;
+    if (FORWARD_OK.get(r)?.has(n)) continue;
+    seen.add(n);
+    findings.agents.push([r, `${n} — ships at a LATER rung; a ${parts[1]} install does not contain it`]);
+  }
+}
+
+// --- 4c. rung-aware: a scaffolded artifact whose declared `owner:` does not exist yet ---------
+// 4b only sees BACKTICKED names (`AGENT_REF`), and a frontmatter `owner:` is not backticked — so a
+// template can ship into a founder's project declaring an owner their install does not contain, and
+// 4b is structurally blind to it. Found by inspection, not by the checker, which is the tell.
+//
+// Deliberately NOT exemptible via FORWARD_OK, and that is the whole point of separating it. A skill
+// naming a later-rung agent in PROSE is usually explaining the ladder ("the V1 design layer is what
+// consumes these tokens") — legitimate, declarable. An artifact ASSIGNING ownership to an agent that
+// does not exist yet is not an explanation, it is a dangling assignment: the founder opens the file
+// they were just given and it says someone owns it who was never installed. Same words, different
+// act. Giving both the same exemption is how the second one hid behind the first.
+const OWNER_FIELD = /^owner:\s*([a-z][a-z0-9-]*)\s*$/m;
+for (const f of files.filter((x) => /\.md$/.test(x))) {
+  const r = rel(f);
+  const parts = r.split(sep);
+  if (parts[0] !== 'stages') continue;
+  const avail = AVAILABLE_AT.get(parts[1]);
+  if (!avail) continue;
+  const m = readFileSync(f, 'utf8').match(OWNER_FIELD);
+  if (!m) continue;
+  const owner = m[1];
+  if (avail.has(owner)) continue;
+  // TWO ways an owner can be wrong, and the second was a hole in the first cut of this check.
+  // Scoping to SHIPPED_AGENTS deferred "exists nowhere" to class 4 — but class 4 needs BACKTICKS
+  // and only calls out the `mentor-` namespace, so a deleted non-mentor owner was caught by
+  // nothing at all. The check went QUIET exactly as the situation got worse: a later-rung owner
+  // was reported, a deleted one was not. Retiring an agent is precisely when this must bite.
+  const why = SHIPPED_AGENTS.has(owner)
+    ? `ships at a LATER rung; a ${parts[1]} install does not contain it`
+    : 'exists nowhere — the agent was renamed or retired and this artifact still names it';
+  findings.agents.push([r, `owner: ${owner} — ${why}`]);
 }
 
 // --- 5. workspace-only skills named in shipped files ------------------------------------

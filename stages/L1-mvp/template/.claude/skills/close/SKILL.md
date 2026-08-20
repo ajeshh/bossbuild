@@ -142,7 +142,7 @@ ahead to what's next.
 ---
 id: RESUME
 type: resume
-owner: pm
+owner: product-lead
 status: active
 updated: {{today}}
 ---

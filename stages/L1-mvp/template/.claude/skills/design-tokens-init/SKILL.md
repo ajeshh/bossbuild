@@ -152,8 +152,7 @@ also honors the canvas's "don't monetize lock-in" line.
    3–5 design principles with their rules, the five-state table, the accessibility floor. **Skeleton:
    [`templates/style-guide.md`](templates/style-guide.md).**
 
-   Ship it now, even mostly-empty with the headings and two filled principles. `/design-review`,
-   `ui-designer` and `ux-designer` all *read* this file — it is not optional scaffolding, it's the
+   Ship it now, even mostly-empty with the headings and two filled principles. `/design-review` and `designer` both *read* this file — it is not optional scaffolding, it's the
    half of the system those three consume.
 
    Push hardest on the principles section: **each principle must contain a tradeoff** (if nobody

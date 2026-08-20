@@ -7,7 +7,7 @@ The frontmatter and the `Route` line are what make the file detectable by `extra
 ---
 id: EXTR-NNN
 type: extraction
-owner: pm
+owner: product-lead
 status: recorded
 created: {{DATE}}
 trigger: <devlog-3-entries | FEAT-NNN-shipped | mode-unlock | third-repetition | manual>

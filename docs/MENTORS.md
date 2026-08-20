@@ -1,7 +1,7 @@
 ---
 id: MENTORS
 type: design
-owner: pm
+owner: product-lead
 status: drafting
 updated: 2026-05-21
 ---
@@ -16,8 +16,8 @@ updated: 2026-05-21
 
 | Class | Job | Lives | Examples |
 |---|---|---|---|
-| **Builders** | Make the app. Decide *what/how* to build and build it. | `.claude/agents/` | `pm`, `coder-generalist`, `tester`, `designer`, `db-architect` |
-| **Mentors** (`mentor-*`) | Coach the *founder*, not the codebase. Ask hard questions, give counsel, help shape concepts (business, architecture strategy, GTM, fundraising, hiring, pitch). | `.claude/agents/` with a `mentor-` prefix | `mentor-venture`, `mentor-business`, `mentor-architect`, … |
+| **Builders** | Make the app. Decide *what/how* to build and build it. | `.claude/agents/` | `product-lead`, `coder`, `tester`, `planner`, `designer` |
+| **Mentors** (`mentor-*`) | Coach the *founder*, not the codebase. Ask hard questions, give counsel, help shape concepts (business, architecture strategy, GTM, fundraising, hiring, pitch). | `.claude/agents/` with a `mentor-` prefix | `mentor-founder`, `mentor-money`, `mentor-architect`, … |
 
 Mentors sit **outside** the product. They never write production code or own specs — they push the
 founder's *thinking* forward and leave a paper trail (the dossier) that compounds toward something
@@ -32,17 +32,17 @@ Project `.claude/agents/`, `mentor-` prefixed (decided: keeps them discoverable 
 ## Internal vs. shipped (the boundary that prevents misroutes)
 
 The real axis is **"is this an artifact a founder's *project* consumes, or tooling for authoring BOSS
-itself?"** — *not* "mentors ship, builders don't" (`pm`/`coder`/`tester` ship too). Name it so a
+itself?"** — *not* "mentors ship, builders don't" (`product-lead`/`coder`/`tester` ship too). Name it so a
 `/boss-learn` routing lands in a shippable container, not BOSS's gitignored `/.claude/`.
 
 | | Ships to founders (`stages/<id>/template/`) | BOSS-only (gitignored `/.claude/`) |
 |---|---|---|
-| **Builders** | `pm`, `coder-*`, `tester`, `program-manager`, `ui-designer`, `ux-designer`, `db-architect` | `designer`, the designer/architect *of BOSS itself* |
-| **Mentors** | `mentor-venture/architect/gtm/cofounder/business/fundraising/pitch/talent` | `mentor-humane` (the *agent* — see below) |
+| **Builders** | `product-lead`, `coder-*`, `tester`, `planner`, `designer` | the architect *of BOSS itself* |
+| **Mentors** | `mentor-founder/architect/gtm/cofounder/business/fundraising/pitch/talent` | `mentor-humane` (the *agent* — see below) |
 | **Authoring tooling** | — | proto-personas, `voice-keeper`, `prompt-coach` |
 
 **The humane case (the one that bit, RVW-045):** the humane *lens* ships from Quickstart (conscience +
-`mentor-venture` + `/canvas` §3 + the dark-pattern checklist + `/red-team --humane` + the
+`mentor-founder` + `/canvas` §3 + the dark-pattern checklist + `/red-team --humane` + the
 [`harm-taxonomy`](../library/practices/harm-taxonomy.md) practice). The standalone `mentor-humane` *agent*
 stays Scale — ethics wants a cross-cutting / hook shape, not an opt-in door you might never open. See
 `docs/architecture/2026-06-20-mentor-internal-vs-shipped-boundary.md` + IDEA-038/039.
@@ -50,18 +50,18 @@ stays Scale — ethics wants a cross-cutting / hook shape, not an opt-in door yo
 ## Roster + JIT-per-mode
 
 Each mentor unlocks only when the project earns the questions it asks (Principle 2). The cornerstone,
-`mentor-venture`, ships in Quickstart; the rest arrive as modes unlock.
+`mentor-founder`, ships in Quickstart; the rest arrive as modes unlock.
 
 | Mentor | Coaches on | Arrives at |
 |---|---|---|
-| `mentor-venture` | The whole arc: is this worth pursuing, what's the riskiest assumption, what's the next real step. Owns the canvas conversation. **Cornerstone.** | **Quickstart** |
+| `mentor-founder` | The whole arc: is this worth pursuing, what's the riskiest assumption, what's the next real step. Owns the canvas conversation. **Cornerstone.** | **Quickstart** |
 | `mentor-architect` | Technical strategy (advisory, not implementation): stack trade-offs, what to defer, scaling shape. | MVP |
-| `mentor-gtm` | Go-to-market: first users, distribution, positioning, the wedge. | MVP |
+| `mentor-customers` | Go-to-market: first users, distribution, positioning, the wedge. | MVP |
 | `mentor-cofounder` | The founding-team *relationship*: working together across skill sets (non-tech ↔ eng), dividing the work, decision rights, the hard conversations. Serves the partnership-as-unit; **never takes a side.** Dormant when solo. | MVP |
 | `mentor-fundraising` | Whether/when to raise, narrative, what investors will probe, the data room. | V1 |
 | `mentor-pitch` | The story + deck: clarity, arc, what to cut. | V1 |
-| `mentor-talent` | First hires, team shape, what to keep vs delegate. | V1 |
-| `mentor-business` | Model, pricing, unit economics, willingness-to-pay. | V1 |
+| `mentor-hiring` | First hires, team shape, what to keep vs delegate. | V1 |
+| `mentor-money` | Model, pricing, unit economics, willingness-to-pay. | V1 |
 | `mentor-humane` | The ethics/stewardship lens — who could be harmed, what's the humane call. (Pairs with `/canvas` §3.) | **Lens: Quickstart** (conscience + `/canvas` §3 + `harm-taxonomy` practice + `/red-team --humane`) — this is the part that ships. **Agent: not shipped in any mode**; designed for Scale (board), deliberately unbuilt until a real project needs the door. |
 
 > *The full board convenes at Scale.* This roster is provisional — it gets sharpened by encoding real
@@ -74,12 +74,12 @@ conversations, authored *with* the founder, not generated behind their back:
 
 | Artifact | From | Becomes |
 |---|---|---|
-| Humane Product Canvas | `/canvas` + `mentor-venture` | The shared snapshot of the bet |
-| Business proposal / one-pager | `mentor-business` | Investor/partner intro |
+| Humane Product Canvas | `/canvas` + `mentor-founder` | The shared snapshot of the bet |
+| Business proposal / one-pager | `mentor-money` | Investor/partner intro |
 | Architecture brief | `mentor-architect` | Build plan + risk register |
-| GTM plan | `mentor-gtm` | First-users experiment log |
+| GTM plan | `mentor-customers` | First-users experiment log |
 | Pitch / deck outline | `mentor-pitch` | The raise narrative |
-| Hiring plan | `mentor-talent` | First-team shape |
+| Hiring plan | `mentor-hiring` | First-team shape |
 | Fundraising one-pager / data room | `mentor-fundraising` | The actual raise |
 
 Dossier artifacts live in `docs/` (likely `docs/dossier/`), under the founder's ownership.
@@ -119,7 +119,7 @@ From the canvas's Risks & Harms: a mentor is a **thinking partner, not a license
 
 ## Status / next
 
-- [ ] Seed `mentor-venture` into Quickstart (template agent + `library/agents/` + manifest). *(in progress)*
+- [ ] Seed `mentor-founder` into Quickstart (template agent + `library/agents/` + manifest). *(in progress)*
 - [ ] Get Ajesh's list of people; encode their practices UP via `/boss-learn`.
 - [ ] Author the remaining roster as their modes get built (architect/GTM with MVP, etc.).
 - [ ] Define `docs/dossier/` artifact templates.

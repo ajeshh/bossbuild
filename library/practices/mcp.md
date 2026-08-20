@@ -93,7 +93,7 @@ hand-coding the integration.
 **(b) Expose your product AS a server** — ship an MCP server so *every* agent (ChatGPT, Claude, Cursor…) can
 drive your product. **This is the genuinely strategic one, and it's a distribution decision, not a dev one.**
 - *JIT trigger:* you already have a product with users and an API surface, and "usable from inside
-  ChatGPT/Claude" is a real acquisition or retention channel. → coordinate with **`mentor-gtm`** (it's a channel).
+  ChatGPT/Claude" is a real acquisition or retention channel. → coordinate with **`mentor-customers`** (it's a channel).
 - *Premature when:* pre-PMF. And **dangerous before you can do the auth correctly** — a read-only server is
   easy and safe; a real one means OAuth 2.1 + PKCE, audience validation, per-tenant scoping, plus (since
   2026-07-28) `iss` validation and credentials keyed to their issuing authorization server. Don't expose a
@@ -106,7 +106,7 @@ drive your product. **This is the genuinely strategic one, and it's a distributi
   a client you don't control — so the honest ordering is **read-only tools → write tools (auth cliff) → an
   App**, and most founders should stop after the first. An App is a second front end to maintain, on someone
   else's release cadence, and it earns its keep only when *"used from inside the assistant"* is the actual
-  channel — which is a `mentor-gtm` question before it is an engineering one.
+  channel — which is a `mentor-customers` question before it is an engineering one.
 
 **(c) Build on it internally** — use MCP servers in *your own* Claude-Code/Cursor dev loop (talk to your DB,
 docs, issue tracker while you build).

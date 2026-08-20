@@ -83,6 +83,15 @@ The founder pastes raw notes or brain-dumps what happened. Do three things — i
    observed-behavior, not just stated pain."*). If the pain didn't show up, say so honestly — that's a
    useful result too, not a failure.
 
+4. **Offer to fold it back into the persona.** You just talked to a real one. If `docs/personas/`
+   holds a persona for this user, offer `/persona enrich <slug>` with what the call actually showed —
+   this is the source that shrinks the synthetic share fastest, and it is the *whole point* of having
+   gone. Note the direction: the persona may have **rehearsed your questions** beforehand, and this
+   is the return leg. A persona that only ever feeds interviews and never learns from them is a guess
+   that never gets corrected.
+
+   Offer it, don't do it. The founder should see which parts of their assumed user just got contradicted.
+
 ---
 
 ## Guardrails

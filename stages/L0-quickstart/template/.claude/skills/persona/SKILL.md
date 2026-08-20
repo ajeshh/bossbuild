@@ -19,8 +19,21 @@ persona is **a mom managing a household** — and most product decisions get eas
 ## Modes
 
 ### `derive` (default when no persona exists yet)
-Read the captured idea (`docs/ideas/*.md`) + its canvas if one exists. Propose the **one primary
-target user** (start with one; secondary users come later). Write `docs/personas/<slug>.md`:
+Read the captured idea (`docs/ideas/*.md`) + its canvas if one exists.
+
+**If those are thin or empty — which is the normal case in a repo BOSS adopted rather than
+scaffolded — read `.boss/brain/read.md` too.** `/comprehend` writes its read of an existing
+codebase there: what the app does, who it appears to be for, what's already built. Deriving a
+persona from a blank page while BOSS holds a whole-repo read it never handed over is the version
+of this that wastes the founder's time.
+
+⚠️ **Grade it honestly: a repo read is `synthetic`.** It is inferred from *code*, not from a
+person — arguably further from real evidence than your own knowledge of your user, because a
+codebase tells you what someone decided to build, never whether anyone wanted it. Mark it in the
+body as *derived from your repo, not from a person*, and let it start the ledger, never lift it.
+
+Propose the **one primary target user** (start with one; secondary users come later). Write
+`docs/personas/<slug>.md`:
 
 ```
 who         — one line ("a working mom, 30s-40s, running a household of 4")
@@ -41,8 +54,9 @@ guide for when you talk to a real one.
 Offer the four sources; fold in what they choose; **shift the ledger** (real grows, synthetic shrinks):
 - **Q&A with you** — ask what *you* already know about this user (you chose this problem for a reason —
   you often know a lot). Your knowledge is real evidence (n≥1).
-- **Online research** — run `deep-research` to ground the archetype in real-world data about this
-  group. Better than a guess; still averaged, so mark it synthetic-leaning.
+- **Online research** — have your host search the web for real-world data about this group, and
+  ground the archetype in what comes back. Better than a guess; still averaged, so mark it
+  synthetic-leaning.
 - **Drop in real research** — point at interviews / surveys / notes (a file, folder, or URL); ingest
   via `/import` and fold the real signal in. **This is the strongest source** — it shrinks the
   synthetic share fastest. (A UX researcher dropping a study here is the ideal case.)

@@ -265,16 +265,19 @@ test('every `boss craft <name>` pointer names a practice that exists', () => {
   assert.deepEqual(missing, [], `pointers to practices that do not exist:\n  ${missing.join('\n  ')}`);
 });
 
-// v0.146.0 — the "read by three, written by nothing" bug. `/design-review`, `ui-designer` and
-// `ux-designer` all read `docs/design/STYLE_GUIDE.md`; no skill ever wrote it, and `docs/design/`
-// shipped as an empty directory. A doc that consumers depend on and no producer creates is a
-// silent hole — the same class as RLS-in-db-architect and the test-diff-in-tester holes.
+// v0.146.0 — the "read by three, written by nothing" bug. `/design-review` and the designers all
+// read `docs/design/STYLE_GUIDE.md`; no skill ever wrote it, and `docs/design/` shipped as an
+// empty directory. A doc that consumers depend on and no producer creates is a silent hole — the
+// same class as the RLS-in-one-agent's-prompt and test-diff-in-tester holes.
+// v0.189.0 (DEC-005) — the consumers moved DOWN to L1 and the two designers merged into one, so
+// consumer and producer now sit at the SAME rung. That makes the hole cheaper to open, not harder:
+// nothing about co-location produces a file. The test still asks the only question that matters.
 test('every design doc a consumer reads is a design doc some skill writes', () => {
   const read = (p) => readFileSync(join(STAGES_DIR, p), 'utf8');
   const consumers = [
-    'L2-v1/template/.claude/skills/design-review/SKILL.md',
-    'L2-v1/template/.claude/agents/ui-designer.md',
-    'L2-v1/template/.claude/agents/ux-designer.md',
+    'L1-mvp/template/.claude/skills/design-review/SKILL.md',
+    'L1-mvp/template/.claude/skills/ux-check/SKILL.md',
+    'L1-mvp/template/.claude/agents/designer.md',
   ].map(read).join('\n');
 
   // Whatever docs/design/*.md the consumers name, something must produce.
@@ -720,7 +723,7 @@ test('REGRESSION: after unlock, files keep matching the layer that WROTE them', 
     installedLayers: ['L0-quickstart', 'L1-mvp'], agents: [], skills: [], hooks: [], loops: [],
   }));
   const plan = planRemove(dir, stampOf(dir));
-  const l0Agents = plan.edited.filter((e) => /agents\/(pm|coder-generalist|mentor-venture)\.md$/.test(e.rel));
+  const l0Agents = plan.edited.filter((e) => /agents\/(pm|coder|mentor-founder)\.md$/.test(e.rel));
   assert.deepEqual(l0Agents, [], `L0 agents falsely flagged after unlock: ${l0Agents.map((e) => e.rel).join(', ')}`);
   applyRemove(dir, plan);
   assert.ok(!existsSync(join(dir, 'CLAUDE.md')), 'CLAUDE.md must not survive a multi-layer removal');

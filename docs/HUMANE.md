@@ -1,7 +1,7 @@
 ---
 id: HUMANE
 type: essay
-owner: pm
+owner: product-lead
 status: published
 updated: 2026-06-21
 ---

@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-analytics-for-ai-products
 type: practice
-owner: mentor-gtm
+owner: mentor-customers
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (post-ship validation thread) — the "model accuracy != user success" doctrine (iamprayerson 2026), AI product metrics (TianPan 2026 — TCR, retained-character rate, frustration index), PostHog LLM analytics (product+observability convergence), Hamel Husain & Shreya Shankar (online evals on production traffic), the Camuffo RCT (validation buys faster quitting). Pairs with /measure (the runner), /evals + /judge-traces (correctness), /ai-cost + /cost-review (spend), the EVID ladder, and the humane lens (ai-ux-patterns.md). BOSS v0.113.0. · **the seam section added 2026-08-20 (v0.176.0)** — not a refresh, so the freshness clock is deliberately HELD (the v0.150.0 correction: one section is not a sweep). The gap: the JIT boundary said "don't instrument" and never said what to leave behind, so the no was only half-honest — a founder who obeyed it correctly still lost the history they already had. The load-bearing half (`created_at` as the un-backfillable seam) belonged in data-schema.md's one-way doors and wasn't there either.
@@ -117,5 +117,5 @@ just shipping faster into the dark. Feeds [[IDEA-051]] (operate-mode customer lo
 Silent until a project is AI-mediated **and** live with real users past the n<10 boundary. Surfaces via
 `/measure` (the runner) and around `/ship`'s "who's the first real user?" voicing. The A/B / experimentation
 half (nondeterminism = test a *distribution*, randomize on users, bigger variance-aware samples, offline-eval-
-can-lie) is a `mentor-gtm` pointer for *later* — real conversion volume (~100+ per arm) is far off for most.
+can-lie) is a `mentor-customers` pointer for *later* — real conversion volume (~100+ per arm) is far off for most.
 Multivariate stays premature for essentially every BOSS founder.

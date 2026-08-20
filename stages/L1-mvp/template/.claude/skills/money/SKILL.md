@@ -56,7 +56,7 @@ saying so is the point.
    because it teaches you the terms. **Don't build subscriptions or dunning before ~3 customers.**
 4. **Refund posture** — decide it **now**, calm, before the first request arrives. A clear, slightly
    generous default (no-questions within N days) beats an ad-hoc panic and buys trust cheaply.
-5. **The first price** — **one number, said out loud.** `mentor-business` owns the *menu* (tiers,
+5. **The first price** — **one number, said out loud.** `mentor-money` owns the *menu* (tiers,
    metering, on-ramp); this forces the *first number*, so fear doesn't defer it forever. Name it. You
    can change it.
 

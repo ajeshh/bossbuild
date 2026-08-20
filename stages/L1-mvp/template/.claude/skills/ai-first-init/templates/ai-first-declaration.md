@@ -6,7 +6,7 @@
 ---
 id: ai-first
 type: declaration
-owner: pm
+owner: product-lead
 status: declared
 updated: {{DATE}}
 ---

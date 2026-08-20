@@ -1,7 +1,7 @@
 ---
 id: IDS
 type: index
-owner: pm
+owner: product-lead
 status: active
 ---
 

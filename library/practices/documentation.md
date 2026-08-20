@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-documentation
 type: practice
-owner: pm
+owner: product-lead
 status: active
 host: stack-neutral
 provenance: consolidated from BOSS's own shipped discipline — the seven capture artifacts (/triage, /canvas, /evidence, /decide, /spec, /log, /close) had been distributed across eight skills and zero practices since v0.1, so nothing could refresh, cite, or hold them to a standard. Assessment: BOSS's own documentation-and-progress pass 001 (2026-08-20). Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction · structured note-taking · JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored / code-coupled / drift-enforced), and Marty Cagan's *Discovery vs. Documentation* (SVPG). The formatting layer is new and unvetted by anyone outside BOSS. §7 (user-facing docs) added 2026-08-20 from the llms.txt / AI-readable-docs sweep — the llms.txt adoption status is explicitly caveated in the text and MUST be re-checked on refresh; it is the fastest-moving claim in this doc.

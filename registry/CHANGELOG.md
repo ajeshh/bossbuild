@@ -9,6 +9,301 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.189.0 — 2026-08-20
+
+**The mentor ladder was lumpy, and the product had been voting against it for releases.**
+Asked why four mentors all land on the V1 rung, the honest answer was: no reason. The
+distribution was **1 / 3 / 4 / 0** — one at Quickstart, three at MVP, **four arriving at V1 at
+once**, and **zero at Scale**. Two of the four (`mentor-fundraising`, `mentor-talent`) arrive
+pre-defaulted to *"not yet"*, so half the V1 intake was ceremony landing on a rung that hadn't
+asked for it.
+
+- 🔴 **`mentor-business` moved DOWN to MVP.** `boundary.json` justified V1 as *"pricing and
+  packaging are V1-era questions."* That reasoning went stale in v0.157.0, when `/first-dollar`
+  and `/monetize` merged into **`/money` — which ships at L1**. BOSS had already decided taking
+  the first dollar is an MVP-era activity; the mentor's rung was the half that didn't move.
+  **Six L1 files had been quietly voting for L1 ever since** — `/money` (whose central step,
+  *the first price said out loud*, names the mentor as its owner), `/ai-cost`, `/cost-review`,
+  `auto-log.js`, `cost-budget-loop`, `margin-trap-loop`. **Two of them handed the founder a
+  scripted sentence** telling them to go consult an agent their install did not contain.
+- **`mentor-talent` moved UP to Scale**, still defaulting to *"not yet"*. First-hire questions at
+  MVP are a delegation instinct firing early — but V1 was barely later, and **Scale's own framing
+  is "give away your Legos."** The org mentor belongs where an org exists. **Scale now has its
+  first agent**; it had none.
+- V1 keeps the two whose moment it actually is: `mentor-fundraising` + `mentor-pitch`.
+
+**The enforcement hole underneath it — a checker whose comment described a check it wasn't
+doing.** `check-refs` class 4's header states its intent as *"a founder-facing file naming an
+agent **the founder's install does not contain**."* Its implementation built the vocabulary by
+**flat-mapping every stage into one set**, so it only ever answered *"does this exist anywhere?"*
+An L1 file naming an L2 agent passed green, for as long as that has been true.
+
+- **New class 4b — rung-aware agent references.** Availability is cumulative (`available(L2) =
+  L0+L1+L2`), matching how modes actually unlock. It found **fifteen** cross-rung references on
+  first run.
+- **Two were real breaks.** `/health` pointed a founder "forward" to `mentor-talent` (already
+  dangling before this release; two rungs away after it) — now names the rung that seats it.
+  `stages/L2-v1/claude-append.md` listed `mentor-talent` in V1's own "what you get" — removed.
+- **The rest are deliberate**, and are now **declared per (file, agent)** rather than waved
+  through per file, so a genuine break inside a declared file still bites: `/consult` (naming who
+  sits at which rung *is* its function) and `/health`. The `/design-tokens-init` pair was declared
+  too — then **resolved instead**, later in this same release, by moving the designer down to meet
+  its own tokens. **A declaration that stops being true is worse than no check**: it silences a
+  gate at the moment the gate turns correct.
+- **Class 4b then grew a second reader: frontmatter `owner:`.** The name-matching regex requires
+  **backticks**, so `owner: ui-designer` in a scaffolded template was invisible to it. Two MVP
+  templates carried exactly that, and one of them — `prototypes-registry.md` — had **never been
+  examined at all**, because it names no agent in prose. A doc BOSS *writes into a founder's
+  project* declaring an owner they don't have is the same bug as a sentence naming one; only the
+  syntax differed.
+- `/consult`'s seating line was corrected — it still taught the old ladder.
+
+**One designer, and it arrives when the design does.** Asked whether the agent names were clear,
+the honest answer for two of them was that they weren't a naming problem at all. `ui-designer`
+and `ux-designer` shipped as a pair whose descriptions needed a gloss **every time they were
+named** — *"what things look like"* vs *"what things do"* — and BOSS ran **one** `designer` in its
+own workspace the whole time. See `DEC-005`.
+
+- 🔴 **Merged into one `designer`, moved DOWN from V1 to MVP.** It owns both halves: the token
+  system (three-layer, no raw hex) and flow/state/interaction (the five states, empty, loading,
+  error, accessibility) — **plus the copy inside all of it**, which the old split had each agent
+  flagging to the other and neither owning. `/design-review` and `/ux-check` came down with it.
+- **The apparatus had been a rung ahead of its owner since v0.21.0.** MVP already shipped
+  `/design-tokens-init`, the `design-tokens-guard` hook, `design-tokens-loop` and `/landing` —
+  all of it scaffolding a system whose authority didn't install until the next mode. The two
+  failures a designer exists to catch — **a screen with no empty state, a colour that never
+  entered the system** — arrive the first week a founder builds a screen, not at V1.
+- **V1 keeps what needs a real component set to exist first:** `design-drift-loop` enforcement,
+  `/design-library`, `/board`, and `db-architect`.
+- **`supersedes.json` gets its first `kind: "agent"` entries** — two of them. The field had been
+  documented since v0.157.0 and **never once exercised**; every prior entry was a skill.
+
+> **For you:** if you're at MVP, you now have a `designer` — one agent for how it looks, how it
+> behaves, and how it reads — plus `/design-review` before code and `/ux-check` after. If you're
+> already at V1, `ui-designer` and `ux-designer` are superseded by it; `boss sync` will say so,
+> and anything you edited stays yours.
+
+**One architect, and the schema chair became a gate.** Asked whether `db-architect` should be
+"elevated into just one architect — it's kinda like a CTO role," the answer was yes to the count and
+no to the merge. BOSS shipped **two** architects — one advisory (`mentor-architect`), one building
+(`db-architect`) — so the founder had to guess which to ask. See `DEC-005`.
+
+- 🔴 **`db-architect` is retired, and it is not a rename.** The obvious move was merging it into
+  `mentor-architect`, which collapses the one line `docs/MENTORS.md` calls hard: **a mentor that
+  owns the schema is being asked "is this premature?" by someone with a stake in the answer being
+  no.** The other tempting move — folding it into the coder — is **self-review**, the failure
+  `testing-with-agents` names outright. So the judgment went to the mentor, the artifact to `/spec`,
+  and the enforcement to a hook.
+- **`/spec` gains a data-shape step** — entities, indexes, types, additive-vs-destructive, and the
+  three access questions (*who reads a row, who writes it, **which column proves it***) — answered
+  while the FEAT is still prose, which is the last moment schema is cheap.
+- **New `schema-guard` hook (L1, opt-in).** It fires on a migration that runs `CREATE TABLE`
+  without a row-level policy **in the same migration**, and reports the two failures separately,
+  because they are different: RLS never enabled (a perfect policy enforces nothing) vs. RLS on with
+  no policy — which **denies everything, reads as a broken app, and gets "fixed" by turning RLS back
+  off.** It sharpens the wording when it detects a stack that reaches the database from the client
+  with a publishable key. That is CVE-2025-48757 (303 endpoints, 170+ apps) and MoltBook (1.5M
+  tokens, 35K emails) — a **data-model** failure, not a deployment one.
+- 🔴 **The coverage got WIDER by deleting the agent, not narrower.** `db-architect` arrived at
+  **V1** and had to be opened. The step and the hook arrive at **MVP** and one of them fires on its
+  own. The founders in those two breaches were nowhere near V1. The craft was already extracted to
+  `boss craft data-schema` in **v0.142.0** — whose own provenance says it was written because *"the
+  knowledge lived ONLY inside the `db-architect` agent prompt (V1), so nothing could sweep it and no
+  mode below V1 could see it."* **That note was the case for this change, filed 178 releases early.**
+- **The build-craft watchlist's "specific hole" is re-marked closed** — and the lesson generalised:
+  *a hole filled inside one agent's prompt is filled only for whoever opens that agent.*
+
+**Seven agents renamed — and the check that gated it killed one of the eight proposals.**
+Graded against BOSS's own voice rule — *assume intelligence, never assume knowledge* — 10 of 15
+agent names failed. Two of those were count problems (fixed above). The other eight went to the
+two proto-personas whose job is exactly this: `first-product` (cannot read an acronym) and
+`indie-hacker` (spots venture-shaped language in the first paragraph).
+
+| was | now | why |
+|---|---|---|
+| `mentor-venture` | `mentor-founder` | "Venture" reads as venture capital — on the **cornerstone**, the first mentor every project gets |
+| `mentor-gtm` | `mentor-customers` | An acronym you must already know |
+| `mentor-business` | `mentor-money` | "Business" covers everything, so it names nothing |
+| `mentor-talent` | `mentor-hiring` | HR language for a question asked in plain words |
+| `program-manager` | `planner` | Collided by initialism with `pm`, and shipped beside it |
+| `coder-generalist` | `coder` | "Generalist" described BOSS's roadmap, not the founder's need |
+| `pm` | `product-lead` | Ambiguous even to people who know it; it is what its own description always called it |
+
+- 🔴 **The check rejected `mentor-cofounder` → `mentor-partnership`.** The proposal was that
+  "cofounder" over-promises an *AI cofounder*. Read as a topic — the way `mentor-fundraising` and
+  `mentor-pitch` are read — it is simply *the mentor about cofounders*, which is what it is. And its
+  own trigger phrases are the founder's literal words (*"how do I work with my cofounder"*), so the
+  rename would have made it **less findable for the exact query it serves**. Kept.
+- 🔴 **Two proposals were changed by the collision check, not by taste.** `coder-generalist` →
+  `builder` was rejected: **"Builders" is one of BOSS's two agent classes** (59 uses as a bare word),
+  so a `builder` agent would collide with the class that contains `tester` and `designer`. And
+  `pm` → `product` was rejected: "product" appears **352 times** as an ordinary noun. **BOSS's own
+  prose had already voted for the survivor** — it says *"a PM + a coder"* where it speaks plainly.
+- **The `mentor-` prefix stays.** It earns its keep by marking the exception (advisory). Prefixing
+  builders too would add ceremony to make a distinction that the absence of a prefix already makes.
+- **Kept as-is:** `tester`, `designer`, `mentor-architect`, `mentor-cofounder`, `mentor-fundraising`,
+  `mentor-pitch` — plain, exact, and nobody needs them glossed.
+- **Seven more `kind: "agent"` supersede entries** (ten this release, from a field never once
+  exercised before it). Each carries the honest reason and what changes for you — nothing about any
+  mentor's job, rung, or defaults moved. **If you edited one of these agents, `boss sync` names your
+  edit before it touches anything.**
+
+> **For you:** every agent now says what it does in words you already know. `boss sync` will walk
+> the renames; your own edits are flagged by name first, and removal is never automatic.
+
+**Website: coverage was one-directional, and the generated table hid it.** `check-site` fails
+hard when a page *claims* a command that doesn't exist. Nothing asked the reverse — and the
+reverse *looked* answered, because `{{REFERENCE}}` expands into a row for every skill, so
+grepping the built site finds all 47 and reports full coverage.
+
+- **Now measured against `web/` (what a human wrote), never `site/` (what a generator wrote):**
+  **10 of 47 skills and 7 of 15 agents appear in no hand-written sentence.** Among them
+  `/persona` — which ships at Quickstart with a full derive → enrich → consult lifecycle and a
+  visible `synthetic% · real%` evidence ledger — and every business-side mentor. A **note**, not
+  a failure: an omission isn't a false claim, and this file's contract is soft-on-stale,
+  hard-on-false. The point is the number gets said out loud on every run.
+- 🔴 **Corrects an earlier audit** that reported `/persona` at "0 site mentions." It's **one
+  generated-table row and zero prose sentences** — and that distinction is exactly why nobody
+  noticed for 188 releases. *Listed in a generated table* is not *claimed*.
+- **`check-site`'s agent regex was missing the `persona-` prefix.** The eight `persona-*` agents
+  are ruled `internal` in `boundary.json` and are the single most tempting thing to put on a page
+  about `/persona` — README and GUIDE have described dev-workspace agents as founder features
+  before. The site could have named one and nothing would have said so. Fixed and test-verified.
+- **`web/guide.html` now describes what it ships:** the Humane Product Canvas named with the two
+  questions conventional canvases don't ask (who this could harm; the principles you'll hold when
+  holding them costs you), and `/persona` with its ledger and its *sharpen-don't-skip* caveat.
+
+**The mentor board had a door and nobody was told.** Asked whether four business mentors should
+just be merged into one, the honest answer was no — `/consult`'s whole mechanism is putting a
+question to several lenses and **keeping the disagreement visible**, and its own worked example is
+*"fundraising says raise now to fund the GTM motion; business says your unit economics aren't ready"*
+— the exact pair a merge would collapse. They also hold deliberately contradictory defaults, which
+one agent cannot.
+
+But the instinct was right about something real: **`/consult` was named in no shipped file except its
+own, and by no mentor at all.** The router existed and was invisible from both sides, so a founder
+met N mentors and no door.
+
+- **The mode doc now announces it.** `stages/L1-mvp/claude-append.md` — what a founder reads on
+  `boss unlock mvp` — introduces `/consult` as *the* door, says the split IS the decision, and adds
+  the guidance to ask one mentor directly when you already know whose question it is. It also lists
+  `mentor-business`, which it had never mentioned.
+- **All eight mentors now route back to it**, under a shared *"When the question isn't only yours"*
+  section: point the founder at the board when your lens is only part of the answer, because *"this
+  is bigger than my seat"* is a good answer rather than a dodge. `mentor-venture` names the rung
+  (`/consult` arrives with MVP) rather than pointing a Quickstart founder at a skill they don't have.
+- **`check-refs`: a second shared-name exemption.** `/design-review` names
+  `docs/design/library/manifest.json` — which `/design-library` WRITES into the founder's project at
+  the same rung. It resolved only because BOSS dogfoods the skill on itself, which is precisely what
+  makes a correct reference look like a dangle. Declared, with the reason, alongside `BRAND.md`.
+
+- **Class 4c — a scaffolded artifact whose declared `owner:` does not exist yet.** 4b matches only
+  BACKTICKED names, and a frontmatter `owner:` is not backticked, so it was structurally blind to
+  the case. Two MVP templates shipped `owner: ui-designer` — a V1 agent — into a founder's project,
+  and one of them (`prototypes-registry.md`) had no backticked agent name at all, so nothing ever
+  asked the question about it. **Deliberately not exemptible via `FORWARD_OK`:** a skill naming a
+  later-rung agent in *prose* is usually explaining the ladder and is declarable; an artifact
+  *assigning ownership* to an agent that does not exist is a dangling assignment the founder opens
+  and reads. Same words, different act — and giving both the same exemption is how the second hid
+  behind the first. Found by inspection rather than by the checker, which is the tell.
+  **Covers two failures, and the second was a hole in this check's own first cut:** scoping to
+  shipped agents deferred *"exists nowhere"* to class 4 — which needs backticks and only calls out
+  the `mentor-` namespace — so a **deleted** non-mentor owner was caught by nothing. The check went
+  quiet exactly as the situation got worse: a later-rung owner reported, a retired one not. Agent
+  retirement is the moment this most needs to bite.
+
+**A phantom skill, named in a shipped instruction.** Asked whether BOSS had researched startup
+funding, pitching and revenue-model design, the audit found the answer was structural rather than
+incidental: **`/deep-research` does not exist.** It is named as a runnable step by three BOSS-local
+skills (`/vet`, `/practice-refresh`, `/humane-refresh`) and — the part that reached founders — by
+`/persona`, which told them to *"run `deep-research`"* to ground a persona in real-world data. No
+check caught it: `check-refs`'s retired-skill gate is scoped to the supersedes ledger (deliberately,
+to avoid crying wolf), and a bare backticked name in an instruction matches nothing else.
+
+- **`/persona` now describes the act, not a phantom verb** — *have your host search the web* — which
+  is also the host-neutral form `AGENTS.md` asks for. The remaining `deep-research` mentions in
+  `library/practices/ship-it-live.md` are **provenance** (*"distilled from the 2026-06-21 CD/deploy
+  deep-research pass — 21 sources"*) and are legitimate: they record a pass that happened.
+- **The research method is real even though the skill isn't** — `docs/research/` holds the passes and
+  83 `/vet` verdicts. What is missing is the runnable step the standing disciplines assume.
+
+**What the research audit actually found, stated more precisely than "we haven't done it."**
+Monetization IS researched — two practices (`first-dollar`, `monetization-in-practice`) and four
+verdicts (RVW-023, 030, 036, 037). **Fundraising and the pitch are not.** Of 31 practices, none
+covers the raise, the deck, or business-model design; four of the five venture mentors cite no
+`boss craft` practice at all (only `mentor-venture` does). And because a practitioner list lives
+*inside an agent's prompt*, it is invisible to the freshness machinery: `check:freshness` tracks 31
+practices and 66 shipped surfaces, and **zero agents**. The venture lens cannot go stale, because
+nothing watches it.
+
+- **Three entries added to `docs/research/inbox/`**, pending `/vet`: HBR's Bingham & Uparna finding
+  that candidly acknowledging setbacks raised funding rates across 30,000+ loan requests (**fetched
+  and verified**, and flagged as *adjacent* evidence — peer-to-peer lending is not a VC pitch); HBR
+  2017 on VCs weighting character over competence (**unverified, search-snippet only**); and the
+  HBS work on pitch-evaluation bias (**unverified, venue unconfirmed**). Verification status is
+  recorded per claim, because guessing a venue is the exact failure `/vet` step 3 exists to catch.
+
+- **`/deep-research` now exists** (`.claude/skills/`, verdict `internal` in `boundary.json`). The
+  method was never missing — **ten passes ran by hand**, and `docs/research/sessions/` holds their
+  records. What was missing was the writing-down, so each pass was reconstructed from memory of the
+  last one. The skill encodes what those sessions actually did: 3–6 genuinely different angles (not
+  one query reworded), **fetch the primary source** rather than trust a snippet, extract claims, then
+  put only the load-bearing ones to **three independent skeptics instructed to refute**, majority-refute
+  = killed.
+  **Its signature rule, taken straight from the 2026-06-20 CD pass** (*"the value here is as much in
+  the 3 killed claims as the 22 confirmed — they tell us what NOT to write"*): **killed claims are
+  first-class output, never an appendix, and a session with zero of them did not verify hard enough.**
+  It finds and does not judge — grading BOSS's response stays `/vet`'s job, because a finder that
+  pre-argues the adoption case has corrupted the judge's input.
+
+**The artifacts accreted individually and never fed each other.** Asked whether the persona and the
+business/product artifacts keep building as more data is uncovered, the audit found the property is
+real *per artifact* — the persona's `synthetic% · real%` ledger and dated Notable refactors,
+`/triage`'s append-only capture log, the canvas's version bumps and honest `_(not yet)_` blanks,
+append-only `EVID`, supersede-don't-edit `DEC`, mentors appending dated positions — and **entirely
+absent between them.**
+
+- 🔴 **`/research` had never mentioned `/persona`. Zero times.** It is the skill that turns a whole
+  transcript into graded `EVID` *plus* synthesized pains, jobs, verbatim words and objections — while
+  `/persona` names dropped-in real research **"the strongest source — it shrinks the synthetic share
+  fastest."** The two skills producing real evidence at scale did not know the artifact that most
+  wants it existed. `/research` now offers `/persona enrich` (or `derive`) with what it synthesized.
+- **`/interview` referenced the persona only in the outbound direction** — personas may *rehearse
+  your questions*. Results never came back. It now offers the **return leg**: a persona that only ever
+  feeds interviews and never learns from them is a guess that never gets corrected.
+- **Both OFFER; neither writes silently.** The ledger moving from synthetic toward real is the most
+  meaningful thing that happens to a persona, and it is worth something only because a human watched
+  it move. Auto-editing on evidence is how a synthetic read gets laundered into a real one.
+
+**Brownfield: the reverse-mining worked and the delivery didn't.** `/comprehend` reads an adopted
+repo's code, README, structure and deps, forms a real position, and writes it to `.boss/brain/read.md`
+— then *recommends* `/persona`. But `/persona`, `/canvas` and `/triage` mentioned the brain **zero
+times each**: two writers, zero readers. So a founder ran `/persona derive` against empty
+`docs/ideas/` **minutes after BOSS read their entire application.**
+
+- **`/persona derive` and `/canvas` now read `.boss/brain/read.md`** when the idea docs are thin,
+  which is the normal case in an adopted repo.
+- **Graded honestly as `synthetic`, and marked *derived from your repo, not from a person*.** A repo
+  read is inferred from code — arguably further from real evidence than the founder's own knowledge,
+  because **a codebase tells you what someone decided to build, never whether anyone wanted it.** It
+  starts the ledger; it never lifts it. The canvas proposes such cells as *drafts to correct*, and a
+  cell answered from the repo alone stays `_(not yet)_` on the evidence that matters.
+
+🔴 **And the reason no loop watches staleness: the runtime cannot express it.** `loop-runtime.js`
+supports exactly two predicates — `exists` and `count_at_least`. Every conscience moment BOSS has is
+therefore an **absence** predicate ("an idea exists and no canvas does"); none can say *"evidence
+landed and the artifact hasn't moved."* **BOSS's conscience watches for what was never made, not for
+what stopped being true.** Harvesting needs a staleness predicate, and that is a new runtime
+primitive rather than a loop someone forgot to author. **Not built** — recorded in [[FEAT-025]]
+Layer 4 with the proposed shape (N new `EVID` since the artifact's mtime; two mtimes and a count,
+never inferred from age, so `board.js`'s standing refusal to guess staleness holds).
+
+> **For you:** the business-model mentor now arrives at **MVP** instead of V1, so `/money`'s
+> first-price step finally has the mentor it already named as its owner — if you took a first dollar
+> at MVP before this, the handoff it offered you pointed at an agent your project didn't have. The
+> talent mentor now arrives at **Scale** instead of V1. Run `/boss-sync` to pick both up. Nothing you
+> already have is removed, and no command changes.
+
 ## 0.188.0 — 2026-08-20
 
 - **🔴 The conscience's memory was one skipped ritual away from nothing, forever.** `.boss/brain/read.md`

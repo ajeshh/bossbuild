@@ -121,4 +121,4 @@ the high-converting version — clarity + one honest CTA + real proof *is* the p
 - **The brief is mandatory.** Never generate a brand the founder didn't choose (that's the slop default).
 - **Humane by default, never a gate.** Name the cost, offer the alternative, record a crossing — don't block.
 - **Generate the simple case; hand off the CMS/visual-editor case.** BOSS is not a website builder or a CRO tool.
-- **Point at `/ship` for deploy and `mentor-gtm` for positioning/CRO depth** — don't reinvent them here.
+- **Point at `/ship` for deploy and `mentor-customers` for positioning/CRO depth** — don't reinvent them here.

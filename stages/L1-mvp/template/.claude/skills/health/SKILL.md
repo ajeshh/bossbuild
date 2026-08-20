@@ -77,8 +77,8 @@ founder doing the leader's job before they've done the operator's.
   a second and third cohort before treating it as won.
 - **🟢 post-PMF.** They clearly agree, across cohorts, over time. **Now the leader's work — scaling,
   hiring, delegation — has finally earned its place.** This is the one verdict that *licenses* the
-  growth machinery the earlier rungs correctly refuse. Point forward: `mentor-gtm`, `mentor-business`,
-  `mentor-talent`. Watch the margin trap — scaling a thin-margin product is how post-PMF companies
+  growth machinery the earlier rungs correctly refuse. Point forward: `mentor-customers` and `mentor-money`, both seated here — and `mentor-hiring` once you
+  unlock Scale, which is the rung that seats it. Watch the margin trap — scaling a thin-margin product is how post-PMF companies
   still die.
 
 **When the read is genuinely ambiguous, call it pre-PMF and say why.** The asymmetry is the whole

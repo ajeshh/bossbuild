@@ -1,132 +1,18 @@
 {
-  "_what": "Every artifact authored in BOSS's gitignored /.claude/ workspace, and whether it has crossed into the product a founder installs. THIS FILE IS TIER 2 \u2014 tracked here, absent from package.json `files:`, so it never reaches a founder's project.",
-  "_why": "BOSS is self-hosted, so every agent and skill gets authored in the workspace first. Crossing is a deliberate act (/boss-learn routes it) and nothing caught what never got routed: 12 agents and 5 skills sat uncrossed and unexamined while shipped files pointed at four of them by name. `not-yet` is a legitimate verdict and always will be. `unexamined` is not \u2014 that is the only state this ledger exists to make impossible.",
+  "_what": "Every artifact authored in BOSS's gitignored /.claude/ workspace, and whether it has crossed into the product a founder installs. THIS FILE IS TIER 2 — tracked here, absent from package.json `files:`, so it never reaches a founder's project.",
+  "_why": "BOSS is self-hosted, so every agent and skill gets authored in the workspace first. Crossing is a deliberate act (/boss-learn routes it) and nothing caught what never got routed: 12 agents and 5 skills sat uncrossed and unexamined while shipped files pointed at four of them by name. `not-yet` is a legitimate verdict and always will be. `unexamined` is not — that is the only state this ledger exists to make impossible.",
   "_verdicts": {
     "crossed": "Ships under stages/*/template/ or library/. Verified to exist by check:boundary.",
     "not-yet": "Belongs to founders in principle; has not earned the port yet. Carries a reason, and the reason is re-read, not inherited.",
     "internal": "Examined, and the answer is no. Serves BOSS's own construction and would not survive contact with a founder's project."
   },
-  "_enforced_by": "scripts/check-boundary.js \u2014 fails on an unexamined artifact, on a `crossed` verdict whose file does not exist, and on an `internal` or `not-yet` artifact that a shipped file names anyway.",
+  "_enforced_by": "scripts/check-boundary.js — fails on an unexamined artifact, on a `crossed` verdict whose file does not exist, and on an `internal` or `not-yet` artifact that a shipped file names anyway.",
   "artifacts": [
-    {
-      "name": "designer",
-      "kind": "agent",
-      "verdict": "not-yet",
-      "why": "Designs BOSS's own interaction surface \u2014 when it speaks, what a skill feels like. A founder designing their product's surface is a different job, already held by ux-designer and ui-designer at L2. Would be rewritten, not ported."
-    },
-    {
-      "name": "mentor-architect",
-      "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L1 \u2014 architecture decisions start mattering the moment there's a real build."
-    },
-    {
-      "name": "mentor-business",
-      "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L2. Pricing and packaging are V1-era questions \u2014 asked earlier they invite a founder to monetize something nobody has used yet."
-    },
-    {
-      "name": "mentor-fundraising",
-      "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L2, and defaults to \"not yet\" even there. Seated late on purpose: most projects reaching V1 still haven't earned the raise question."
-    },
-    {
-      "name": "mentor-gtm",
-      "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L1 \u2014 distribution is an MVP-era question, not a V1 one."
-    },
-    {
-      "name": "mentor-humane",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Deliberate, and already explained in public on site/team.html: an ethics mentor a founder can decline to open is weaker than a conscience they can't. The humane lens is cross-cutting \u2014 it lives in practices every mentor cites, not in one agent."
-    },
-    {
-      "name": "mentor-pitch",
-      "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L2. The story is worth shaping once there is something to tell it about; before that it is rehearsal for a demo that doesn't exist."
-    },
-    {
-      "name": "mentor-talent",
-      "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L2, defaulting to \"not yet\". First-hire questions arriving at MVP are almost always a delegation instinct firing early."
-    },
-    {
-      "name": "mentor-venture",
-      "kind": "agent",
-      "verdict": "crossed",
-      "why": "The cornerstone. Ships at L0 and in library/, so every project has one mentor from the first minute."
-    },
-    {
-      "name": "persona-domain-expert",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "persona-eng-builder",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "persona-first-product",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "persona-indie-hacker",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "persona-non-tech-founder",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "persona-returning-founder",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "persona-vibe-coder-newbie",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "persona-vibe-virtuoso",
-      "kind": "agent",
-      "verdict": "internal",
-      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea \u2014 the right shape for them, and not this."
-    },
-    {
-      "name": "prompt-coach",
-      "kind": "agent",
-      "verdict": "not-yet",
-      "why": "Its OWN description says \"outward-facing counterpart to voice-keeper\" \u2014 authored for founders and never left the workspace. The smallest real port on this list."
-    },
-    {
-      "name": "voice-keeper",
-      "kind": "agent",
-      "verdict": "not-yet",
-      "why": "Guards BOSS's voice specifically. The discipline transfers; the agent doesn't. If it crosses, it crosses as a practice."
-    },
     {
       "name": "boss-learn",
       "kind": "skill",
       "verdict": "crossed",
-      "why": "Ships at L0 and in library/. The router itself \u2014 a founder promoting a pattern UP is the same move BOSS makes."
+      "why": "Ships at L0 and in library/. The router itself — a founder promoting a pattern UP is the same move BOSS makes."
     },
     {
       "name": "boss-sync",
@@ -135,16 +21,130 @@
       "why": "Ships at L0 and in library/. The other half of the loop."
     },
     {
+      "name": "deep-research",
+      "kind": "skill",
+      "verdict": "internal",
+      "why": "The finder behind BOSS's own refresh disciplines (/practice-refresh, /humane-refresh, /vet). Authored 2026-08-20 after the audit found four skills had been naming it as a runnable step while it existed nowhere — ten passes had been run by hand. It serves BOSS curating BOSS; a founder needs no skill for this, because their host already searches the web and /persona now says so directly."
+    },
+    {
+      "name": "designer",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "Ships at MVP as of v0.189.0 (DEC-005). The old reason — \"already held by ux-designer and ui-designer at L2\" — stopped being true when those two merged into this one and moved down a rung. ⚠️ UNRESOLVED: BOSS's internal .claude/agents/designer.md still shares this name, so this ledger row cannot distinguish the founder-facing designer from the one that designs BOSS's own CLI surface. DEC-005 rules that the INTERNAL one gets renamed (the founder-facing name is the one that has to be plain); the new name is not chosen yet and the rename touches 10 workspace files."
+    },
+    {
       "name": "humane-refresh",
       "kind": "skill",
       "verdict": "internal",
-      "why": "Keeping the dark-pattern canon current is BOSS's job, not the founder's \u2014 now stated in library/practices/ai-ux-patterns.md so the practice and this ledger agree."
+      "why": "Keeping the dark-pattern canon current is BOSS's job, not the founder's — now stated in library/practices/ai-ux-patterns.md so the practice and this ledger agree."
+    },
+    {
+      "name": "mentor-architect",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "Ships at L1 — architecture decisions start mattering the moment there's a real build."
+    },
+    {
+      "name": "mentor-money",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "Ships at MVP as of v0.189.0, moved DOWN from V1. The old reason — pricing is a V1-era question — was contradicted by BOSS's own product: /money ships at L1 and its central step (the first price) says mentor-money owns it. Six L1 files named this agent while it installed at L2, two of them handing the founder a scripted line to consult someone their install did not contain."
+    },
+    {
+      "name": "mentor-fundraising",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "Ships at L2, and defaults to \"not yet\" even there. Seated late on purpose: most projects reaching V1 still haven't earned the raise question."
+    },
+    {
+      "name": "mentor-customers",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "Ships at L1 — distribution is an MVP-era question, not a V1 one."
+    },
+    {
+      "name": "mentor-humane",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Deliberate, and already explained in public on site/team.html: an ethics mentor a founder can decline to open is weaker than a conscience they can't. The humane lens is cross-cutting — it lives in practices every mentor cites, not in one agent."
+    },
+    {
+      "name": "mentor-pitch",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "Ships at L2. The story is worth shaping once there is something to tell it about; before that it is rehearsal for a demo that doesn't exist."
+    },
+    {
+      "name": "mentor-hiring",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "Ships at Scale as of v0.189.0, moved UP from V1, still defaulting to \"not yet\". First-hire questions arriving at MVP are a delegation instinct firing early — but arriving at V1 was barely later, and Scale is the rung whose own framing is \"give away your Legos\". The org mentor belongs where an org exists."
+    },
+    {
+      "name": "mentor-founder",
+      "kind": "agent",
+      "verdict": "crossed",
+      "why": "The cornerstone. Ships at L0 and in library/, so every project has one mentor from the first minute."
+    },
+    {
+      "name": "persona-domain-expert",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
+    },
+    {
+      "name": "persona-eng-builder",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
+    },
+    {
+      "name": "persona-first-product",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
+    },
+    {
+      "name": "persona-indie-hacker",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
+    },
+    {
+      "name": "persona-non-tech-founder",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
+    },
+    {
+      "name": "persona-returning-founder",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
+    },
+    {
+      "name": "persona-vibe-coder-newbie",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
+    },
+    {
+      "name": "persona-vibe-virtuoso",
+      "kind": "agent",
+      "verdict": "internal",
+      "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
     },
     {
       "name": "practice-refresh",
       "kind": "skill",
       "verdict": "not-yet",
-      "why": "Refreshes BOSS's shelf, which is BOSS's job. But a founder's `/practice` PRAC records rot exactly the same way and nothing sweeps them. The founder version is a different, smaller skill \u2014 scoped to their records, not this one ported."
+      "why": "Refreshes BOSS's shelf, which is BOSS's job. But a founder's `/practice` PRAC records rot exactly the same way and nothing sweeps them. The founder version is a different, smaller skill — scoped to their records, not this one ported."
+    },
+    {
+      "name": "prompt-coach",
+      "kind": "agent",
+      "verdict": "not-yet",
+      "why": "Its OWN description says \"outward-facing counterpart to voice-keeper\" — authored for founders and never left the workspace. The smallest real port on this list."
     },
     {
       "name": "recalibrate",
@@ -162,7 +162,13 @@
       "name": "vet",
       "kind": "skill",
       "verdict": "not-yet",
-      "why": "THE CLEAREST MISS. A founder faces \"some thread says you must do X\" constantly, and has nothing for it \u2014 while nine shipped practices were still pointing at this skill by name (fixed v0.178.0). 270 lines, so porting is real work, and the NO-biased rubric is tuned to BOSS's principles rather than a founder's. Port it scoped to the founder's own build, or don't; do not leave it unexamined."
+      "why": "THE CLEAREST MISS. A founder faces \"some thread says you must do X\" constantly, and has nothing for it — while nine shipped practices were still pointing at this skill by name (fixed v0.178.0). 270 lines, so porting is real work, and the NO-biased rubric is tuned to BOSS's principles rather than a founder's. Port it scoped to the founder's own build, or don't; do not leave it unexamined."
+    },
+    {
+      "name": "voice-keeper",
+      "kind": "agent",
+      "verdict": "not-yet",
+      "why": "Guards BOSS's voice specifically. The discipline transfers; the agent doesn't. If it crosses, it crosses as a practice."
     }
   ]
 }

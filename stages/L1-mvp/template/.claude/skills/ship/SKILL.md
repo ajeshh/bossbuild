@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Put {{PROJECT_NAME}} where a real user can hit it — the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz/RLS actually on — the signature vibe-coded-leak surface), picks or confirms the cheapest reversible host, deploys, and hands back the live URL + the rollback path. Stack-neutral (no baked-in target — Vercel / Fly / Railway / Cloudflare / Render / a VPS, learned per project). The pre-flight is a check, not a gate. "localhost is not shipped" — reachability is what turns a pseudo app into one a user can prove. And at the live moment it voices the one leg the conscience otherwise skips — reachable isn't found: "who's the first real user, and how do they hit this?" (once, situation-not-person, points at mentor-gtm — never a marketing nag). Full depth - `boss craft ship-it-live`. Usage - /ship [--preview | --rollback]
+description: Put {{PROJECT_NAME}} where a real user can hit it — the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz/RLS actually on — the signature vibe-coded-leak surface), picks or confirms the cheapest reversible host, deploys, and hands back the live URL + the rollback path. Stack-neutral (no baked-in target — Vercel / Fly / Railway / Cloudflare / Render / a VPS, learned per project). The pre-flight is a check, not a gate. "localhost is not shipped" — reachability is what turns a pseudo app into one a user can prove. And at the live moment it voices the one leg the conscience otherwise skips — reachable isn't found: "who's the first real user, and how do they hit this?" (once, situation-not-person, points at mentor-customers — never a marketing nag). Full depth - `boss craft ship-it-live`. Usage - /ship [--preview | --rollback]
 ---
 
 # /ship — localhost is not shipped
@@ -97,7 +97,7 @@ Keep it the *demand* question, not a marketing checklist. Ask *who specifically*
 to them* — that's the n=0 risk itself. Do **not** turn it into "have you posted on Product Hunt?" (that's the
 growth-hacking nag that repels the founders BOSS most wants). **Describe the situation, never the person** —
 it's about the work's path to a user, never a judgment that the founder hasn't hustled. Say it once, point at
-`mentor-gtm` for the depth, and drop it — a founder who's already got a first user or who's deliberately not
+`mentor-customers` for the depth, and drop it — a founder who's already got a first user or who's deliberately not
 distributing yet hears it and moves on. Never a gate.
 
 ### 6b. Will they understand it? (only if the answer is already no)
@@ -150,6 +150,6 @@ too, and a small current corpus beats a big one with good search. Depth is in `b
 - **Graceful when there's nothing to ship.** If the project has no deployable artifact yet, say so and point
   at what's missing — don't invent a deploy.
 - **The demand voicing is once, suggestive, and situation-not-person.** Reachable → discoverable: name the
-  first-user question at the live moment, point at `mentor-gtm`, drop it. It's the demand question, not a
+  first-user question at the live moment, point at `mentor-customers`, drop it. It's the demand question, not a
   marketing checklist, and never a judgment of the founder. (Closes the distribution-leg asymmetry IDEA-041
   named — voiced at the `/ship` moment rather than as an unprompted hook.)

@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.188.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.189.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -49,7 +49,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/boss-sync` — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin
 - `/boss-learn` — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality
 
-**Agents:** pm, coder-generalist, mentor-venture  
+**Agents:** product-lead, coder, mentor-founder  
 **Loops:** capture-loop, canvas-loop  
 **Hooks:** conscience  
 
@@ -85,8 +85,10 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/trust` — Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater
 - `/health` — The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix
 - `/money` — The money verb, from the first dollar to operating it
+- `/design-review` — Before-code design review for your app
+- `/ux-check` — After-code UX review for your app
 
-**Agents:** tester, program-manager, mentor-architect, mentor-gtm, mentor-cofounder  
+**Agents:** tester, planner, mentor-architect, mentor-customers, mentor-cofounder, mentor-money, designer  
 **Loops:** spec-loop, pretotype-loop, design-tokens-loop, cost-budget-loop, ai-failure-state-loop, verification-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop  
 
 > _When to unlock next:_ When you have real users and the app needs design rigor, a real db, and prototypes — boss unlock v1.
@@ -97,10 +99,8 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 
 - `/board` — The cross-FEAT sequencing surface for your app
 - `/design-library` — Generate the visual design library for your app — a self-contained HTML gallery of foundations (color/type/spacing), components (every variant, all five states) AND the rule sets (principles, do/don't pairs, terminology, voice), rendered from the code and tokens so it cannot drift
-- `/design-review` — Before-code design review for your app
-- `/ux-check` — After-code UX review for your app
 
-**Agents:** ui-designer, ux-designer, db-architect, mentor-business, mentor-fundraising, mentor-pitch, mentor-talent  
+**Agents:** mentor-fundraising, mentor-pitch  
 **Loops:** design-drift-loop  
 
 > _When to unlock next:_ When the team grows, the org gets real, and the product council needs to be a thing — boss unlock scale.
@@ -111,6 +111,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 
 - `/incident` — The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production
 
+**Agents:** mentor-hiring  
 
 > _When to unlock next:_ There is no next unlock. From here the loop is: operate honestly, delegate deliberately, and let /boss-learn carry what you've proven back UP.
 

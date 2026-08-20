@@ -224,8 +224,8 @@ Read the manifest. Name what's there in plain language:
 > - *`.claude/skills/` — the skills you can run with `/<name>`. Today: `/boss` (spin up an idea),
 >    `/triage` (capture one), `/prototype` (hit go — see it running), `/canvas` (pressure-test it),
 >    `/persona` (your user's voice), `/welcome` (you're here), and a few more (`boss map` lists them all).*
-> - *`.claude/agents/` — specialized helpers BOSS can hand work off to: `pm` (decides what's
->    worth building), `coder-generalist` (builds it once the stack is chosen), `mentor-
+> - *`.claude/agents/` — specialized helpers BOSS can hand work off to: `product-lead` (decides what's
+>    worth building), `coder` (builds it once the stack is chosen), `mentor-
 >    venture` (advisory only — coaches on whether the bet is worth taking).*
 > - *`docs/ideas/` — where ideas live as living docs. Empty now; fills as you capture."*
 

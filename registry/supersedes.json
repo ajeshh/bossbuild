@@ -57,6 +57,86 @@
       "replacedBy": "money",
       "why": "Same pair. Splitting them made the founder identify their own revenue stage before choosing a skill.",
       "migrate": "`/money` covers upgrades, dunning, price raises and expansion \u2014 pass the move as an argument (`/money dunning`) or let it ask. Your docs/monetize/ files stay where they are."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "ui-designer",
+      "replacedBy": "designer",
+      "why": "BOSS shipped a ui/ux split to founders while running a SINGLE designer on itself \u2014 the project with the most opinionated interaction surface in the repo. The split's two descriptions (\"what things look like\" vs \"what things do\") had to be glossed every time they were named, and when the gloss is mandatory the name is not what's broken. One agent now owns both halves.",
+      "migrate": "`designer` replaces both, and arrives at MVP rather than V1. `/design-review` now runs it in two passes \u2014 the visual system first, then flows, states and content \u2014 so the review order you had is preserved. Your existing docs/design/ files are untouched."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "ux-designer",
+      "replacedBy": "designer",
+      "why": "BOSS shipped a ui/ux split to founders while running a SINGLE designer on itself \u2014 the project with the most opinionated interaction surface in the repo. The split's two descriptions (\"what things look like\" vs \"what things do\") had to be glossed every time they were named, and when the gloss is mandatory the name is not what's broken. One agent now owns both halves.",
+      "migrate": "`designer` replaces both, and arrives at MVP rather than V1. `/design-review` now runs it in two passes \u2014 the visual system first, then flows, states and content \u2014 so the review order you had is preserved. Your existing docs/design/ files are untouched."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "db-architect",
+      "replacedBy": "mentor-architect",
+      "why": "BOSS shipped TWO architects \u2014 one advisory (mentor-architect), one building (db-architect) \u2014 so the founder had to guess which to ask, and the one holding the best-evidenced security material in the whole product was the one you had to remember to open before writing a migration. That is exactly when you are least likely to. The chair became a gate.",
+      "migrate": "Ask `mentor-architect` the judgment questions it used to answer \u2014 one table or two, will this query scale, is this a one-way door, who can read a row. The mechanical half now fires on its own: `/spec` has a data-shape step that runs while the FEAT is still prose, and `schema-guard` (opt-in, `.claude/hooks/`) flags a CREATE TABLE whose migration has no row-level policy. The craft it carried was already extracted to `boss craft data-schema` in v0.142.0 \u2014 nothing was lost with the agent. Your docs/architecture/ files stay where they are."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "mentor-venture",
+      "replacedBy": "mentor-founder",
+      "why": "\"Venture\" reads as venture capital, and this is the cornerstone \u2014 the first and only mentor a project gets at Quickstart. For a founder who is deliberately building something right-sized, the very first advisor BOSS seats was named after the funding path they had already declined. Its job was never the raise; it is whether the idea is worth pursuing at all.",
+      "migrate": "`mentor-founder` is the same mentor with the same job \u2014 the whole arc, the riskiest assumption, the next real step, and the canvas conversation. It is the generalist; the others are the specialists (money, customers, hiring). Nothing about when it arrives or what it asks has changed."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "mentor-gtm",
+      "replacedBy": "mentor-customers",
+      "why": "GTM is an acronym you have to already know. The cohorts BOSS most needs to reach \u2014 someone building their first product ever, or coming from a non-technical trade \u2014 cannot read it, and BOSS's own rule is assume intelligence, never assume knowledge. It is also mildly enterprise-shaped language for a job that is mostly \"go find the first people who want this.\"",
+      "migrate": "`mentor-customers` is the same mentor: first users, channels, positioning, the actual first 100. If you have no customers yet, that is exactly when to open it \u2014 it is the mentor for getting them, not for managing them."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "mentor-business",
+      "replacedBy": "mentor-money",
+      "why": "\"Business\" covers everything, so it names nothing. This mentor has one subject \u2014 the model, the price, what someone will actually pay, and whether the unit economics hold \u2014 and it already sits beside `/money`, whose central step is the first price said out loud.",
+      "migrate": "`mentor-money` is the same mentor, still at MVP, still the owner of `/money`'s first-price step. Same defaults, including \"nobody has used this yet \u2014 go get a yes first.\""
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "mentor-talent",
+      "replacedBy": "mentor-hiring",
+      "why": "\"Talent\" is HR-department language for a question a founder asks in plain words: should I hire someone, and who first. It is also the vocabulary of the org this mentor exists to help you avoid building prematurely.",
+      "migrate": "`mentor-hiring` is the same mentor at Scale, still defaulting to *not yet* \u2014 first hires, contractors vs employees, what to keep, what to delegate, operating cadence."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "program-manager",
+      "replacedBy": "planner",
+      "why": "It collided by initialism with `pm`, and the two shipped side by side. A founder reading the roster saw two names that abbreviate identically and had to guess which owned sequencing. \"Program manager\" is also enterprise-org language for a job that is simply: what should I work on next, and is anything blocked.",
+      "migrate": "`planner` owns the same thing \u2014 the WHEN. What order, what is blocked, what can run in parallel, what this session should look like. `product-lead` still owns the WHAT."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "coder-generalist",
+      "replacedBy": "coder",
+      "why": "\"Generalist\" described BOSS's own roadmap \u2014 that this agent would later split into stack-specific coders \u2014 not anything the founder needed to know. BOSS's own prose had already voted: it says \"a PM + a coder\" and \"pm + coder\" in the places where it speaks plainly.",
+      "migrate": "`coder` is the same implementer, still stack-neutral until your first build decision pins a stack. When it does split later, the family stays legible: `coder-rust`, `coder-frontend`."
+    },
+    {
+      "since": "0.189.0",
+      "kind": "agent",
+      "removed": "pm",
+      "replacedBy": "product-lead",
+      "why": "An abbreviation that is ambiguous even to people who know it \u2014 product, project or program manager \u2014 and unreadable to the cohort BOSS's mode ladder exists to serve. It also collided by initialism with `program-manager`, which shipped alongside it.",
+      "migrate": "`product-lead` is the same agent, and it is what its own description always called it: the product lead. It decides what is worth building and why; `planner` decides when. Your `docs/ideas/` files are untouched; frontmatter that read `owner: pm` now reads `owner: product-lead`."
     }
   ]
 }

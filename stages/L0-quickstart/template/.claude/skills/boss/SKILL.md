@@ -60,7 +60,7 @@ Create `docs/ideas/IDEA-001-<slug>.md` with frontmatter
 
 - **Stack:** If the idea implies a stack (web app, CLI, mobile, backend service), propose it in one
   line and, on agreement, record the decision in the IDEA doc and specialize
-  `.claude/agents/coder-generalist.md` (fill in its build/test/run commands). If unclear, stay
+  `.claude/agents/coder.md` (fill in its build/test/run commands). If unclear, stay
   stack-neutral and say the decision is pending the first build step. Never silently assume a stack.
 - **Mode:** Default is Quickstart (L0). If the PRD is rich and clearly a real product to build now,
   *recommend* `boss unlock mvp` (specs + `/smoke` gate) — but don't run it for them; suggest the command.

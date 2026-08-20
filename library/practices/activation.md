@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-activation
 type: practice
-owner: mentor-gtm
+owner: mentor-customers
 status: active
 host: stack-neutral
 provenance: post-launch program (2026-07-23 SESSION, JOB 1). The gap the map found — BOSS *reads* the activation metric (/measure) but was silent on *designing* activation. Distilled from Casey Winters (activation > acquisition — the highest-leverage retention lever) + Bangaly Kaba (find the behavior that predicts retention — the "best-retained-users" method) + the aha-moment / time-to-value canon (Chamath's magic-moment framing; the Facebook "friends in N days" illustration, treated as illustration not template) + Superhuman (concierge onboarding, do-it-shamelessly) + Paul Graham (do things that don't scale). Pairs with retention.md (activation-failure is its top-of-curve decay), /onboard (the runner), /measure (reads the activation metric), /health (the 40% test surveys the *activated* core), /interview (concierge onboarding IS talking to your first users). BOSS v0.122.0.

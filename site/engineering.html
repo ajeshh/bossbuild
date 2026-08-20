@@ -203,7 +203,7 @@
     </g>
   </svg>
   <figcaption><strong>You never have to read the shelf.</strong> The practice is distilled into the
-    prompt of the agent whose job it is, so <code>db-architect</code> already knows about row-level
+    prompt of the agent whose job it is, so <code>mentor-architect</code> already knows about row-level
     security and <code>tester</code> already knows that agents rewrite assertions to match broken
     behaviour. <code>boss craft &lt;name&gt;</code> is there if you want the full reasoning.</figcaption>
 </figure>
@@ -217,23 +217,23 @@
           <td><span class="chip">agent-security</span> <span class="chip">automation</span> <span class="chip">feature-flags</span> <span class="chip">git-workflow</span> <span class="chip">harness-engineering</span> <span class="chip">mcp</span> <span class="chip">model-routing</span> <span class="chip">retrieval</span> <span class="chip">scalable-architecture</span> <span class="chip">ship-it-live</span></td>
         </tr>
         <tr>
-          <th scope="row"><code>pm</code></th>
+          <th scope="row"><code>product-lead</code></th>
           <td><span class="chip">context-discipline</span> <span class="chip">documentation</span> <span class="chip">quality-ratchet</span> <span class="chip">revalidation</span> <span class="chip">seed-to-scale</span> <span class="chip">skill-authoring</span></td>
         </tr>
         <tr>
-          <th scope="row"><code>mentor-gtm</code></th>
+          <th scope="row"><code>mentor-customers</code></th>
           <td><span class="chip">activation</span> <span class="chip">analytics-for-ai-products</span> <span class="chip">landing-page</span> <span class="chip">retention</span></td>
         </tr>
         <tr>
-          <th scope="row"><code>mentor-business</code></th>
+          <th scope="row"><code>designer</code></th>
+          <td><span class="chip">ai-ux-patterns</span> <span class="chip">celebration-of-done</span> <span class="chip">design-system</span></td>
+        </tr>
+        <tr>
+          <th scope="row"><code>mentor-money</code></th>
           <td><span class="chip">first-dollar</span> <span class="chip">monetization-in-practice</span></td>
         </tr>
         <tr>
-          <th scope="row"><code>db-architect</code></th>
-          <td><span class="chip">data-schema</span></td>
-        </tr>
-        <tr>
-          <th scope="row"><code>mentor-venture</code></th>
+          <th scope="row"><code>mentor-founder</code></th>
           <td><span class="chip">founder-role-shifts</span></td>
         </tr>
         <tr>
@@ -244,8 +244,8 @@
       </table>
     </div>
     <p class="small orphan-note"><strong>Not every practice has a founder-facing owner, and the site
-    says so.</strong> 6 of them
-    (<code>ai-adoption-culture</code>, <code>conscience-voicing</code>, <code>harm-taxonomy</code>, <code>ai-ux-patterns</code>, <code>celebration-of-done</code>, <code>design-system</code>) are owned by
+    says so.</strong> 4 of them
+    (<code>ai-adoption-culture</code>, <code>conscience-voicing</code>, <code>harm-taxonomy</code>, <code>data-schema</code>) are owned by
     internal roles that don’t ship as agents. Their content reaches you as <em>wiring</em> instead — the
     conscience, the canvas’s Risks &amp; Harms cell, <code>/design-review</code>,
     <code>/red-team --humane</code> — which is deliberate for the humane ones, and worth questioning for
@@ -281,7 +281,7 @@
         </div>
         <div class="practice">
           <h4>Context discipline</h4>
-          <p class="meta"><code>context-discipline</code> · owned by <code>pm</code> ·
+          <p class="meta"><code>context-discipline</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">host curve</span> ·
             last checked 2026-08-11</p>
           <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
@@ -289,7 +289,7 @@
         </div>
         <div class="practice">
           <h4>Documentation for a project built with AI</h4>
-          <p class="meta"><code>documentation</code> · owned by <code>pm</code> ·
+          <p class="meta"><code>documentation</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">craft-ai curve</span> ·
             last checked 2026-08-20</p>
           <p class="prov"><span>learned from</span> <span class="ref">Michael Nygard — Documenting Architecture Decisions</span> <span class="ref">Marty Cagan (SVPG)</span> <span class="ref">Anthropic engineering</span> <span class="ref">Hartwig Grabowski — Spec Growth Engine</span></p>
@@ -297,7 +297,7 @@
         </div>
         <div class="practice">
           <h4>Skill authoring — write skills the model actually triggers and follows</h4>
-          <p class="meta"><code>skill-authoring</code> · owned by <code>pm</code> ·
+          <p class="meta"><code>skill-authoring</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">host curve</span> ·
             last checked 2026-08-11</p>
           <p class="prov"><span>learned from</span> <span class="ref">Anthropic's skill-creator skill</span></p>
@@ -355,7 +355,7 @@
         </div>
         <div class="practice">
           <h4>The quality ratchet (a baseline that only moves the right way)</h4>
-          <p class="meta"><code>quality-ratchet</code> · owned by <code>pm</code> ·
+          <p class="meta"><code>quality-ratchet</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">craft curve</span> ·
             last checked 2026-06-20</p>
           <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
@@ -371,7 +371,7 @@
         </div>
         <div class="practice">
           <h4>Revalidation (the 3-line gate before paused work re-enters build)</h4>
-          <p class="meta"><code>revalidation</code> · owned by <code>pm</code> ·
+          <p class="meta"><code>revalidation</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">craft curve</span> ·
             last checked 2026-06-20</p>
           <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
@@ -429,7 +429,7 @@
         </div>
         <div class="practice">
           <h4>Seed to scale: does it exist, what rung is it on, and what seam does it leave?</h4>
-          <p class="meta"><code>seed-to-scale</code> · owned by <code>pm</code> ·
+          <p class="meta"><code>seed-to-scale</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">craft curve</span> ·
             last checked 2026-08-20</p>
           <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
@@ -509,7 +509,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.188.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

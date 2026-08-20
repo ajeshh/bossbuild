@@ -42,8 +42,8 @@ mechanically — the grade says exactly how strong each signal is.
    yield several EVIDs — that's expected; don't force one.
 
 3. **Synthesize product context — what it all means.** Above the individual signals, pull the picture
-   together in a short, plain summary (offer to write it into the canvas and/or seed the venture brain's
-   `read.md` so the conscience carries it forward):
+   together in a short, plain summary (offer to write it into the canvas, seed the venture brain's
+   `read.md` so the conscience carries it forward, and — see step 5 — fold it into the persona):
    - **The pain, in their words** — quote *verbatim*. The exact phrasing is the copy you'll write later and
      the language your user actually uses; don't paraphrase it into marketing-speak.
    - **The job they're hiring for** — what were they actually trying to get done?
@@ -65,6 +65,17 @@ mechanically — the grade says exactly how strong each signal is.
 5. **Point at the next test.** If a pain looks real but under-proven (all stated-pain, no commitment), name
    the one cheapest test that would raise the grade — often a follow-up commitment ask, sometimes a
    `/prototype` to watch them use. Hand the decision back.
+
+5. **Offer to fold it into the persona.** If `docs/personas/` holds one, this transcript is the
+   **strongest enrichment source that exists** — `/persona` says so itself: dropped-in real research
+   outweighs your own knowledge, which outweighs online averages, which outweigh pure derivation.
+   Offer `/persona enrich <slug>`, carrying what you just synthesized (the pains in their words, the
+   job, the workarounds, the objections). No persona yet, but the transcript clearly describes one
+   kind of person? Offer `/persona derive` instead.
+
+   **Offer it; never do it silently.** The ledger moving from *synthetic* toward *real* is the single
+   most meaningful thing that happens to a persona, and it is only worth anything if the founder
+   watched it move. Say what would shift and by roughly how much, then let them choose.
 
 ## Guardrails
 

@@ -128,7 +128,7 @@
           <div class="pair">
             <span class="k">…ask someone who's done this</span>
             <span><code>/consult</code> convenes the mentors · or address one directly, e.g.
-              <code>mentor-gtm</code></span>
+              <code>mentor-customers</code></span>
           </div>
           <div class="pair">
             <span class="k">…stop</span>
@@ -144,7 +144,7 @@
         <div class="prose">
           <h2>Every skill, and the rung it arrives on</h2>
           <p class="small">
-            Generated from the stage manifests, current as of v0.188.0. If this page and the tool
+            Generated from the stage manifests, current as of v0.189.0. If this page and the tool
             ever disagree, the tool is right and the release gate is broken.
           </p>
         </div>
@@ -220,7 +220,7 @@
         </table>
       </div>
 
-      <h3>MVP <span class="count">26 skills</span></h3>
+      <h3>MVP <span class="count">28 skills</span></h3>
       <div class="tablewrap">
         <table class="skills">
           <tbody>
@@ -328,11 +328,19 @@
             <th scope="row"><code>/money</code></th>
             <td>The money verb, from the first dollar to operating it <span class="usage">/money [upgrade | dunning | price-raise | expansion]</span></td>
           </tr>
+          <tr>
+            <th scope="row"><code>/design-review</code></th>
+            <td>Before-code design review for your app <span class="usage">/design-review [FEAT-NNN | path-to-component-spec]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/ux-check</code></th>
+            <td>After-code UX review for your app <span class="usage">/ux-check [route-or-component-path | FEAT-NNN]</span></td>
+          </tr>
           </tbody>
         </table>
       </div>
 
-      <h3>V1 <span class="count">4 skills</span></h3>
+      <h3>V1 <span class="count">2 skills</span></h3>
       <div class="tablewrap">
         <table class="skills">
           <tbody>
@@ -343,14 +351,6 @@
           <tr>
             <th scope="row"><code>/design-library</code></th>
             <td>Generate the visual design library for your app — a self-contained HTML gallery of foundations (color/type/spacing), components (every variant, all five states) AND the rule sets (principles, do/don't pairs, terminology, voice), rendered from the code and tokens so it cannot drift <span class="usage">/design-library [--check]</span></td>
-          </tr>
-          <tr>
-            <th scope="row"><code>/design-review</code></th>
-            <td>Before-code design review for your app <span class="usage">/design-review [FEAT-NNN | path-to-component-spec]</span></td>
-          </tr>
-          <tr>
-            <th scope="row"><code>/ux-check</code></th>
-            <td>After-code UX review for your app <span class="usage">/ux-check [route-or-component-path | FEAT-NNN]</span></td>
           </tr>
           </tbody>
         </table>
@@ -392,7 +392,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.188.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

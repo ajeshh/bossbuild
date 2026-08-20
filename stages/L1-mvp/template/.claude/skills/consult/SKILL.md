@@ -28,9 +28,9 @@ time and holding the threads in your head, `/consult` runs the panel and compose
 **2. Pick the mentors who have a stake** — only the relevant ones, not the whole roster (convening
 mentors who have nothing to add is noise). Read which mentors are installed (`.boss/manifest.json`
 `agents`, the `mentor-*` ones) — the board grows by mode, so consult what's seated:
-- MVP seats `mentor-architect` + `mentor-gtm` + `mentor-cofounder`; V1+ adds `mentor-business`,
-  `mentor-fundraising`, `mentor-pitch`, `mentor-talent`. `mentor-venture` is seated from Quickstart and
-  **always** gets a voice on a real decision.
+- MVP seats `mentor-architect` + `mentor-customers` + `mentor-cofounder` + `mentor-money` (it sits with
+  /money, whose first-price step is its own); V1 adds `mentor-fundraising` + `mentor-pitch`; Scale adds
+  `mentor-hiring`. `mentor-founder` is seated from Quickstart and **always** gets a voice on a real decision.
 - Map the question to lenses: a raise question → fundraising + business + venture; a build-speed
   question → architect + venture; a pricing question → business + gtm.
 - **The humane lens has no chair, on purpose** — an ethics advisor is a door you can decline to open.

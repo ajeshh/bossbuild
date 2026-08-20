@@ -76,9 +76,9 @@
     },
     {
       "path": "docs/architecture/schema.md",
-      "capability": "db-architect (L2)",
+      "capability": "/spec data-shape step + schema-guard (L1)",
       "verdict": "exempt",
-      "why": "BOSS has no database. Machine state is JSON on disk by rule (CLAUDE.md #4)."
+      "why": "BOSS has no database. Machine state is JSON on disk by rule (CLAUDE.md #4). Was `db-architect (L2)` until v0.189.0 retired the agent (DEC-005); the exemption reason is unchanged by that."
     },
     {
       "path": "docs/activation.md",

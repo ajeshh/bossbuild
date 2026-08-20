@@ -334,7 +334,7 @@ blocks.DIAGRAM_PRACTICE_FLOW = () => `<figure class="fig">
     </g>
   </svg>
   <figcaption><strong>You never have to read the shelf.</strong> The practice is distilled into the
-    prompt of the agent whose job it is, so <code>db-architect</code> already knows about row-level
+    prompt of the agent whose job it is, so <code>mentor-architect</code> already knows about row-level
     security and <code>tester</code> already knows that agents rewrite assertions to match broken
     behaviour. <code>boss craft &lt;name&gt;</code> is there if you want the full reasoning.</figcaption>
 </figure>`;

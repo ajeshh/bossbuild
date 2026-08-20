@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-context-discipline
 type: practice
-owner: pm
+owner: product-lead
 status: active
 host: claude-code
 provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file.

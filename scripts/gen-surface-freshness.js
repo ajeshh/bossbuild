@@ -64,7 +64,7 @@ const EXCEPTIONS = {
   // Research + regulation keep naming new patterns; /humane-refresh owns the sweep.
   humane: ['canvas'],
   // GTM patterns move with the cycle — slower than the host, faster than craft.
-  market: ['landing', 'pretotype', 'health', 'money', 'onboard', 'roadmap', 'measure', 'mentor-gtm'],
+  market: ['landing', 'pretotype', 'health', 'money', 'onboard', 'roadmap', 'measure', 'mentor-customers'],
 };
 
 function assignCurve(kind, rel) {

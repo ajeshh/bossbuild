@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-founder-role-shifts
 type: practice
-owner: mentor-venture
+owner: mentor-founder
 status: draft
 host: stack-neutral
 provenance: fable-campaign lifecycle pass (Fable 5, 2026-07-02 — "help the entrepreneur keep developing THEMSELVES"). BOSS develops the venture (modes), the craft (PRAC), the product (everything else) — and until now said nothing about the founder's own transformation, the thing real incubators actually sell. IDEA-053. BOSS v0.10x.
@@ -43,14 +43,14 @@ fixes and the part that matters most.
 
 ## Which BOSS verbs + mentors serve each shift
 
-- **Builder → seller (→ MVP):** `/interview`, `/pretotype`, `/evidence`, `/research`; `mentor-gtm`
-  (positioning, first users), `mentor-venture` (is this worth building, what's the riskiest assumption).
+- **Builder → seller (→ MVP):** `/interview`, `/pretotype`, `/evidence`, `/research`; `mentor-customers`
+  (positioning, first users), `mentor-founder` (is this worth building, what's the riskiest assumption).
 - **Seller → operator (→ V1):** the customer-loop verbs as they arrive (support/incidents/churn);
-  `mentor-business` (model, pricing), `mentor-talent` (first help).
+  `mentor-money` (model, pricing), `mentor-hiring` (first help).
 - **Operator → leader (→ Scale):** the extended-team + give-away-your-Legos work ([[IDEA-040]]);
-  `mentor-talent`, `mentor-cofounder`. (Scale mode ships — `boss unlock scale`.)
+  `mentor-hiring`, `mentor-cofounder`. (Scale mode ships — `boss unlock scale`.)
 
-`mentor-venture` cites this ladder when the founder asks *"what should I be doing next?"* — the answer
+`mentor-founder` cites this ladder when the founder asks *"what should I be doing next?"* — the answer
 is often not another feature but the next rung's job.
 
 ## Delivery

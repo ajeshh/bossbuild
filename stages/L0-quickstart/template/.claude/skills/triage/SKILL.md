@@ -27,7 +27,7 @@ Make `docs/ideas/IDEA-NNN-<slug>.md`:
 ---
 id: IDEA-NNN
 type: idea
-owner: pm
+owner: product-lead
 status: seedling
 created: {{today}}
 ---

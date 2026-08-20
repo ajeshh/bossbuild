@@ -36,7 +36,7 @@ willingness to repair a real-world conflict, while the user trusts the model *mo
 
 ## How to use it
 
-- **mentor-venture / `/canvas`:** at the Risks & Harms cell, walk both lists — name the *worst-served*
+- **mentor-founder / `/canvas`:** at the Risks & Harms cell, walk both lists — name the *worst-served*
   person, not an abstraction.
 - **The conscience:** when a moment fires on a harm, name *which axis* it's on (specific beats "this
   seems bad").

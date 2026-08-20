@@ -12,7 +12,7 @@
 ---
 id: FEAT-NNN
 type: feature
-owner: pm
+owner: product-lead
 status: building
 created: {{today}}
 building_since: {{today}}

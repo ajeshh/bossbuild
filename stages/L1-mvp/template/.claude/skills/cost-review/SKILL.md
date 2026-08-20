@@ -107,8 +107,8 @@ When the review shows overages > 10% of monthly cap:
 - `mentor-architect` for **shape**: is this a batching/caching/cheaper-fallback issue?
   *"`mentor-architect`, our cost shape is breaking the budget; what architecture decisions
   does that imply?"*
-- `mentor-business` for **economics**: does the cost-per-active-user fit the pricing?
-  *"`mentor-business`, our cost-per-active-user is $X; what should the pricing carry?"*
+- `mentor-money` for **economics**: does the cost-per-active-user fit the pricing?
+  *"`mentor-money`, our cost-per-active-user is $X; what should the pricing carry?"*
 
 Don't auto-invoke either. Surface the question; let the founder decide whether to consult.
 

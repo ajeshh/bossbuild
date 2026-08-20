@@ -12,7 +12,7 @@ a spinner instead of the designed skeleton; the error state shows raw stack trac
 the recovery path was an afterthought.
 
 This is also where AI-generated drift becomes visible. Even with `/design-review` upstream, the
-`coder-generalist` (or AI doing the same role) sometimes ships a slight variant that
+`coder` (or AI doing the same role) sometimes ships a slight variant that
 accumulates. `/ux-check` catches that.
 
 ## When to run it
@@ -74,7 +74,7 @@ accumulates. `/ux-check` catches that.
 
 ## What this skill does NOT do
 
-- Doesn't fix the code. Findings route to `coder-generalist` (or stack-specific coder) for
+- Doesn't fix the code. Findings route to `coder` (or stack-specific coder) for
   fixes.
 - Doesn't replace usability testing with real users (Erika Hall's discipline — *Just Enough
   Research*). Heuristic walkthroughs catch a lot but miss what real users do.

@@ -6,7 +6,7 @@
 ---
 id: REVIEW-{{DATE}}
 type: cost-review
-owner: pm
+owner: product-lead
 status: recorded
 created: {{DATE}}
 budget_version: <date the budget doc was last updated>

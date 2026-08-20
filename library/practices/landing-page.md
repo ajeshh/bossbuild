@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-landing-page
 type: practice
-owner: mentor-gtm
+owner: mentor-customers
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-07-23 research sweep (landing-page thread) — Julian Shapiro (value-prop table), Demand Curve / CXL (above-the-fold, clarity-over-cleverness), Harry Dry / MarketingExamples ("write with the delete key", back a bold claim with proof), 37signals (clarity not cleverness), Amelie Pollak (persuasion vs manipulation), the Tailwind "indigo apology" (AI-default sameness). Pairs with design-system.md (look), ai-ux-patterns.md (honest conversion), /pretotype (the demand page) and /ship (deploy). BOSS v0.112.0. The share-card section was added 2026-08-20 from IDEA-060 — the practice had ZERO coverage of og:/meta/preview while BOSS's own site shipped the tags, the classic never-sorted-UP shape.
@@ -123,5 +123,5 @@ first honest, on-brand page **out the block**, then points onward.
 
 Fires at two moments, never as ceremony: at **demand-page time** (inside `/pretotype`, to build the fake door)
 and around **`/ship`** for a real product (`/ship`'s "who's the first real user?" voicing lands here perfectly).
-Silent otherwise. The CRO machinery (A/B, funnels) is a `mentor-gtm` pointer for *later*, once real traffic
+Silent otherwise. The CRO machinery (A/B, funnels) is a `mentor-customers` pointer for *later*, once real traffic
 exists — never a BOSS capability (Principle #2).

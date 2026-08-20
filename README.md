@@ -49,9 +49,9 @@ A CLI plus a set of skills, agents, and loops that run inside Claude Code:
   blocking. Silence it for a sprint (`boss conscience pause --for 8h`), or turn down just one
   nudge while the rest keep speaking (`boss conscience mute <moment>`).
 - **A mentor board.** Eight advisors for the parts code can't teach, seated as the project earns them:
-  `mentor-venture` from day one; architect, GTM and cofounder at MVP; business, fundraising, pitch and
-  talent at V1 — alongside the builders who make the thing (`pm` and a coder from the start, `tester`
-  and `program-manager` at MVP, `db-architect` and the UI/UX designers at V1). **There's no ethics
+  `mentor-founder` from day one; architect, GTM and cofounder at MVP; business, fundraising, pitch and
+  talent at V1 — alongside the builders who make the thing (`product-lead` and a coder from the start, `tester`
+  `planner` and `designer` at MVP). **There's no ethics
   advisor you have to remember to open** — the humane lens is wiring instead: the conscience, `/canvas`'s
   Risks & Harms cell, the `harm-taxonomy` practice, and `/red-team --humane`, which probes your own AI
   product for dark patterns.

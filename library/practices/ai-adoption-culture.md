@@ -1,7 +1,7 @@
 ---
 id: PRACTICE-ai-adoption-culture
 type: practice
-owner: mentor-humane (with mentor-talent)
+owner: mentor-humane (with mentor-hiring)
 status: active
 provenance: distilled via /vet RVW-038 from Stanford WORKBank / Human Agency Scale (arXiv 2506.06576, 2025) · Amy Edmondson, psychological safety · Ethan Mollick, "secret cyborgs" (2024) · BetterUp Labs × Stanford "workslop" (HBR 2025). Numbers graded per BOSS's two-lane source rule (measured vs. claimed). BOSS v0.80.0; feeds IDEA-037. Sharpened via /vet RVW-073 (2026-08-17) with the 2026 workslop follow-on (OSF preprint 10.31234/osf.io/5f78h_v1, n=962, 2026-02-05) — [EVIDENCE]-pending, associational; the restructure that claim proposed was REJECTED (the spine was already here).
 last_reviewed: 2026-06-20

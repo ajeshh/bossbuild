@@ -113,7 +113,7 @@ For each UP-routed candidate, after the founder confirms:
 
 ### 7. If any candidates are DOWN — name the refactor
 
-Don't execute the refactor inside `/extract` (that's `coder-generalist`'s job). Just:
+Don't execute the refactor inside `/extract` (that's `coder`'s job). Just:
 - Name the target file path and the smallest valuable cut.
 - Add a TODO to `docs/RESUME.md`'s Next-tasks: *"Refactor <name> per EXTR-NNN."*
 - Hand off if the founder wants to start the refactor now.
@@ -152,7 +152,7 @@ honestly; nothing was extractable yet."* That's the principle working.
 ## What this skill is NOT
 
 - **Not a one-time ritual.** Re-run after each FEAT, each mode unlock, each *"third time"* signal.
-- **Not an automatic refactor.** The skill names the route; the founder (or `coder-generalist`)
+- **Not an automatic refactor.** The skill names the route; the founder (or `coder`)
   owns the actual code change.
 - **Not a quality gate.** Skipping extraction doesn't fail anything. The override grammar
   applies — record in devlog if you deliberately skip.

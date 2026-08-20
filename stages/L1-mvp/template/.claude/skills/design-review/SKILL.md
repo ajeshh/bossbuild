@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed UI through `ui-designer` (token + visual authority) and `ux-designer` (flows + 5-state requirement) in sequence. Reads `docs/design/DESIGN_TOKENS.md` + `docs/design/STYLE_GUIDE.md` + the relevant FEAT spec. Outputs concrete diffs or numbered issues. Catches token violations + missing states + brand drift BEFORE code commits. Pairs with `/ux-check` (after-code review). Usage - /design-review [FEAT-NNN | path-to-component-spec]
+description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed UI through `designer` in two passes — the visual system, then flows and states (flows + 5-state requirement) in sequence. Reads `docs/design/DESIGN_TOKENS.md` + `docs/design/STYLE_GUIDE.md` + the relevant FEAT spec. Outputs concrete diffs or numbered issues. Catches token violations + missing states + brand drift BEFORE code commits. Pairs with `/ux-check` (after-code review). Usage - /design-review [FEAT-NNN | path-to-component-spec]
 ---
 
 # /design-review — before-code design review
@@ -12,7 +12,7 @@ review. After-code review (`/ux-check`) is the second gate; this is the first.
 
 ## When to run it
 
-- A FEAT introduces or significantly modifies UI — *before* `coder-generalist` writes the code.
+- A FEAT introduces or significantly modifies UI — *before* `coder` writes the code.
 - A new component is being added — *before* the file lands.
 - The founder wants a second look on a design decision they made — anytime.
 
@@ -24,7 +24,8 @@ review. After-code review (`/ux-check`) is the second gate; this is the first.
    STYLE_GUIDE.md` (how tokens compose into patterns), `docs/ideas/CANVAS.md` (Promises cell —
    the brand anchor), and **`docs/design/library/manifest.json`** (what already exists — the
    reuse index).
-3. **Run `ui-designer` first** — pass the spec + the design system; ask for review against:
+3. **Run `designer` — pass one, the visual system.** Pass the spec + the design system; ask for
+   review against:
    - Token compliance (no raw hex; no raw spacing; no font-family inlined)
    - Three-layer architecture preserved (semantic tokens used, not primitives)
    - Brand-anchored choices (matches canvas Promises voice, not internet-default)
@@ -33,7 +34,10 @@ review. After-code review (`/ux-check`) is the second gate; this is the first.
      component, which is the difference between actually checking and asking the model to
      remember to check. No manifest yet? Run `/design-library` first; reviewing reuse without an
      index is how `CTAButton` gets born.
-4. **Run `ux-designer` next** — pass the spec + ui-designer's notes; ask for review against:
+4. **Then pass two — flow, state and content.** Same agent, second lens: pass the spec **plus its
+   own pass-one notes**. Two passes rather than one prompt on purpose — a single sweep reliably
+   trades depth on the second half for fluency on the first, and the content check at the end of
+   this list is the one that gets dropped. Ask for review against:
    - All 5 states named (default / hover / active / disabled / empty) — plus loading + error
      for async / interactive elements
    - Affordances clear (Norman's lens — the user can tell what's interactive)
@@ -66,7 +70,7 @@ review. After-code review (`/ux-check`) is the second gate; this is the first.
 
 ## What this skill does NOT do
 
-- Doesn't write the implementation. After review passes, `coder-generalist` writes the code.
+- Doesn't write the implementation. After review passes, `coder` writes the code.
 - Doesn't run on existing shipped code. That's `/ux-check`'s job.
 - Doesn't approve when an override is recorded. The founder can override a finding (record in
   the review doc with substantive rationale); the review respects.

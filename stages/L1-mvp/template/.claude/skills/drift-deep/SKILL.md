@@ -92,7 +92,7 @@ If on-aim: name what to keep doing, and the next checkpoint where drift could cr
 ---
 id: DRIFT-YYYY-MM-DD
 type: drift-audit
-owner: pm
+owner: product-lead
 status: recorded
 created: {{DATE}}
 verdict: on-aim | drifting | mixed
