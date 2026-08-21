@@ -27,6 +27,7 @@ registry/projects.json
 # Everything below is the dogfood workspace — roadmap, research, strategy, design.
 docs/business/
 docs/RESUME.md
+docs/devlog.md
 docs/RESUME-ARCHIVE.md
 docs/evidence/
 docs/ideas/

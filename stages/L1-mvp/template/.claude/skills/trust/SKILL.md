@@ -62,6 +62,46 @@ into a breach headline. This is a **config act** — go turn it on (the provider
 no-training setting), confirm it, and note *where* it's configured. **"The AI did it" is not a legal defense**
 (Air-Canada) — the posture has to be real, not stated.
 
+## Step 3.5 — the consent surface and what actually leaves the machine
+
+Steps 1–3 make the *policy* honest. This step makes the *product under it* honest — the half a
+founder ships without ever deciding to, because the model wrote it and there was nothing to look at.
+
+**This surface owns what `/ux-check` cannot see.** A pixel, an SDK, a session-replay recorder and a
+training-data default have no UI. Nobody catches them by opening the page. Pull the rows:
+
+```
+boss craft deceptive-patterns --surface consent-ui
+boss craft deceptive-patterns --surface tracking-and-telemetry
+```
+
+Then answer these, by **doing**, not by reading the code — same standard as the opt-out above:
+
+- **Is Reject as easy as Accept?** One click, same weight, same screen. The privacy-protective path
+  must be no longer, harder or slower than the other one (11 CCR § 7004). If declining takes two
+  screens and accepting takes one, that is the finding.
+- **Does anything fire before the click?** Open the network tab, load the page, and look *before*
+  you touch the banner. If the analytics and ad tags already went out, the banner is decorative and
+  the consent is not consent.
+- **Open the network tab on your most sensitive route** — the health form, the payment step, the
+  onboarding questionnaire — and read every outbound request by hand. A third-party tag on a
+  sensitive flow quietly shipping URLs, form values and identifiers is the pattern behind the FTC's
+  GoodRx and BetterHelp actions, and the founder almost never knows it's there. **The model pasted
+  the snippet; nobody read what it sends.**
+- **Is telemetry opt-in, with a symmetric off?** If you default it on, say so on first run, in one
+  line.
+- **Does your deletion path actually run?** Delete a real test account, then go look in the
+  database, the backups, and the analytics warehouse. If the row is flagged rather than gone, that
+  is a soft delete — name the retention period or stop calling it deletion. And if you have
+  embeddings, a vector index, or a fine-tune, **check whether it still holds what the deleted row
+  said.** Deletion that leaves the derived copy behind is the AI-native version of a promise you
+  didn't keep, and BOSS ships both a delete promise and a retrieval practice, so this is the seam
+  where they meet.
+
+A `no` here is a fix before launch, not a backlog item — these are the ones with named enforcement
+behind them. Record the load-bearing calls (retention period, what you track, what you decided not
+to) as a `DEC`.
+
 ## Step 4 — the public trust-page stub
 
 A single honest page a user or buyer can read: what you collect, your subprocessors, your security posture in

@@ -166,6 +166,43 @@ function readUnclaimed() {
     .filter((name) => !claims.includes(name));
 }
 
+// --- the MARKER sweep (v0.190.0) ----------------------------------------------------------
+// The third silent failure, and the one that actually happened. `/humane-refresh` stamps a
+// `last_refresh` on its watchlist; the practices it edits carry their own `last_reviewed`. Nothing
+// compared the two. On 2026-07-23 a real sweep ran, edited `ai-ux-patterns.md`, bumped that
+// practice to 2026-07-23 — and never stamped the watchlist, which kept reading 2026-06-21 for a
+// month. Both checks above were green throughout: the practice was fresh, and it was claimed.
+//
+// So: a watchlist whose marker is OLDER than the newest practice it claims is a sweep that
+// happened and was never recorded. That matters because the marker is what scopes the NEXT sweep
+// ("published since {last_refresh}") — a stale marker silently re-asks for a month of research
+// that was already done, and an over-advanced one silently skips a month that wasn't.
+function readMarkers(asof) {
+  const wDir = join(BOSS_ROOT, 'docs', 'research', 'watchlists');
+  if (!existsSync(wDir) || !existsSync(PRACTICES_DIR)) return null;
+  const practices = readdirSync(PRACTICES_DIR).filter((f) => f.endsWith('.md')).map((f) => {
+    const fm = parseFrontmatter(readFileSync(join(PRACTICES_DIR, f), 'utf8')) || {};
+    return { name: f.replace(/\.md$/, ''), reviewed: fm.last_reviewed || '', curve: fm.curve || '?' };
+  });
+  return readdirSync(wDir).filter((f) => f.endsWith('.md')).map((f) => {
+    const text = readFileSync(join(wDir, f), 'utf8');
+    const fm = parseFrontmatter(text) || {};
+    const claimed = practices.filter((pr) => text.includes(pr.name) && pr.reviewed);
+    const lr = fm.last_refresh || '';
+    const ahead = claimed.filter((c) => lr && c.reviewed > lr).sort((a, b) => b.reviewed.localeCompare(a.reviewed));
+    // Name the practice that caused the drift. The claim test is a substring match, so a watchlist
+    // can over-claim a doc from another curve — showing WHICH practice is what lets a reader tell a
+    // real unstamped sweep from a loose mention, instead of trusting a bare date.
+    return {
+      name: f.replace(/\.md$/, ''),
+      lastRefresh: lr,
+      nextReview: fm.next_review || '',
+      behindBy: ahead.length ? ahead : null,
+      overdue: fm.next_review ? fm.next_review < asof : false,
+    };
+  });
+}
+
 function report() {
   const asof = argValue('--asof') || new Date().toISOString().slice(0, 10);
   const all = process.argv.includes('--all');
@@ -238,6 +275,26 @@ function report() {
     for (const p of due) (byOwner[CURVES[p.curve].owner] ||= []).push(p.name);
     console.log('\n  Run:');
     for (const [owner, names] of Object.entries(byOwner)) console.log(`    ${owner.padEnd(18)} → ${names.join(', ')}`);
+  }
+
+  const markers = readMarkers(asof);
+  if (markers && markers.length) {
+    const drifted = markers.filter((m) => m.behindBy);
+    const due = markers.filter((m) => m.overdue);
+    if (drifted.length || due.length) {
+      console.log(`\nBOSS · watchlist markers — the marker that scopes the NEXT sweep, as of ${asof}\n`);
+      for (const m of drifted) {
+        console.log(`  ! ${m.name.padEnd(14)}  last_refresh ${m.lastRefresh} — ${m.behindBy.length} claimed practice(s) reviewed since:`);
+        for (const c of m.behindBy.slice(0, 5)) console.log(`  ${' '.repeat(16)}    ${c.reviewed}  ${c.name.padEnd(22)} curve: ${c.curve}`);
+        if (m.behindBy.length > 5) console.log(`  ${' '.repeat(16)}    … +${m.behindBy.length - 5} more`);
+        console.log(`  ${' '.repeat(16)}  A sweep ran and never stamped the marker; the next one re-asks for research already done.`);
+        console.log(`  ${' '.repeat(16)}  Check the curves — a practice from another curve is just a mention, not this watchlist's work.`);
+      }
+      for (const m of due) {
+        console.log(`  ! ${m.name.padEnd(14)}  past next_review (${m.nextReview}) — a sweep is due`);
+      }
+      console.log(`\n  ${drifted.length} unstamped · ${due.length} due`);
+    }
   }
 
   console.log('\n  Cadence only catches SLOW rot. A practice also goes stale on an event — a spec');

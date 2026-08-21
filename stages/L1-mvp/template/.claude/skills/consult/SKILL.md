@@ -28,11 +28,17 @@ time and holding the threads in your head, `/consult` runs the panel and compose
 **2. Pick the mentors who have a stake** — only the relevant ones, not the whole roster (convening
 mentors who have nothing to add is noise). Read which mentors are installed (`.boss/manifest.json`
 `agents`, the `mentor-*` ones) — the board grows by mode, so consult what's seated:
-- MVP seats `mentor-architect` + `mentor-customers` + `mentor-cofounder` + `mentor-money` (it sits with
-  /money, whose first-price step is its own); V1 adds `mentor-fundraising` + `mentor-pitch`; Scale adds
+- MVP seats `mentor-architect` + `mentor-customers` + `mentor-cofounder` + `mentor-capital`. **V1 seats
+  no new mentors** — `mentor-capital` is the single venture coach and its remit *widens* there (the raise
+  question and the investor story become live), which is the point of DEC-006. Scale adds
   `mentor-hiring`. `mentor-founder` is seated from Quickstart and **always** gets a voice on a real decision.
-- Map the question to lenses: a raise question → fundraising + business + venture; a build-speed
-  question → architect + venture; a pricing question → business + gtm.
+- Map the question to lenses: a raise question → `mentor-capital` + `mentor-founder`; a build-speed
+  question → `mentor-architect` + `mentor-founder`; a pricing question → `mentor-capital` +
+  `mentor-customers`; a growth-vs-margin question → `mentor-customers` + `mentor-capital`.
+- **One seat can still hold a split.** `mentor-capital` covers the model, the raise and the story, and
+  is required to surface its *own* internal tension rather than resolve it quietly. On a raise
+  question, expect a divided answer from it — and put that division on the panel as though it came
+  from two mentors, because it did until v0.189.0.
 - **The humane lens has no chair, on purpose** — an ethics advisor is a door you can decline to open.
   *You* carry it, in step 4, on every panel. Don't route it to an agent; there isn't one.
 
@@ -43,9 +49,14 @@ not consensus.
 
 **4. Synthesize — keep the disagreement visible.** Compose the panel's answer:
 - **Where they converge** — the points all (or most) lenses agree on. Usually the safe ground.
-- **Where they diverge** — name it plainly: *"fundraising says raise now to fund the GTM motion;
-  business says your unit economics aren't ready and a raise just buys time you'll burn."* The
+- **Where they diverge** — name it plainly: *"`mentor-customers` says the channel only works if you
+  can spend to acquire; `mentor-capital` says the margin doesn't survive paid acquisition yet."* The
   divergence is the actual decision — don't paper over it with an average.
+  **A split inside one mentor counts.** `mentor-capital` holds the model and the raise together, so its
+  honest answer to *"should we raise?"* is often two-sided — *"the raise case says X, the economics
+  say Y."* Render that on the panel exactly as you would a disagreement between two chairs. If it
+  ever comes back one-sided on a question that plainly has both, that is the merge failing and worth
+  saying out loud (DEC-006's falsifier).
 - **The humane override — you run it, every panel, before you synthesize.** No mentor holds this
   lens, so ask it yourself: *who could this harm, who gets excluded, what does it cost them in
   attention, agency or dignity?* Ground it in the canvas's **Risks & Harms** cell and

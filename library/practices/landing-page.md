@@ -13,7 +13,7 @@ curve: market
 # Practice — The first landing page (get it out the block, on-brand, honest — don't become a CRO shop)
 
 > **Where this sits.** [`design-system`](design-system.md) owns how it *looks* (tokens, the anti-slop 5%);
-> [`ai-ux-patterns`](ai-ux-patterns.md) owns *honest* conversion (the dark patterns a landing page breeds).
+> [`deceptive-patterns`](deceptive-patterns.md) owns *honest* conversion (the patterns a landing page breeds).
 > This owns the one job: a founder's *first* page, clear enough that a stranger gets it in five seconds and
 > on-brand enough not to look like every other AI-built site. BOSS's edge here is structural — it already
 > holds the brand (`BRAND.md`), the tokens, and the canvas Promises, and the founder is already *inside Claude
@@ -96,7 +96,8 @@ AI"). BOSS already holds every input to beat it — so *feed them into generatio
 
 ## Convert honestly (persuasion, not manipulation)
 
-Landing pages are the densest breeding ground for the dark patterns in [`ai-ux-patterns`](ai-ux-patterns.md) —
+Landing pages are the densest breeding ground for the patterns in [`deceptive-patterns`](deceptive-patterns.md) —
+(`boss craft deceptive-patterns --shape marketing-site` is the four surfaces that apply) —
 fake countdowns, "127 viewing," confirmshaming ("No thanks, I like paying full price"), the pre-ticked box, the
 card-required-at-a-free-trial. The line, quotable: **persuasion gives someone a reason and lets them decide;
 manipulation exploits *how* they decide.** Two field tests:

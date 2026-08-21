@@ -31,14 +31,14 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { STATUS_VOCAB, baseStatus } from '../src/frontmatter.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const IDEAS = join(ROOT, 'docs', 'ideas');
 
-// The seven words, declared in docs/IDS.md. A status must START with one of them; anything after
-// is free-form detail and is encouraged — `shipped (v0.106 read-state slice)` says more than
-// `shipped`. Ordered longest-first so `deferred` cannot shadow a longer word added later.
-const VOCAB = ['seedling', 'exploring', 'ready', 'building', 'shipped', 'deferred', 'dropped'];
+// The seven words, declared in docs/IDS.md — now read from the one shared parser rather than a
+// third private copy of the same list (src/frontmatter.js).
+const VOCAB = STATUS_VOCAB;
 
 // The gitignored dogfood workspace is not present in a fresh clone or a CI checkout of the
 // tarball. Nothing to check is not a failure — the same posture `check-freshness` takes.
@@ -52,10 +52,7 @@ const field = (text, name) => {
   const m = text.match(new RegExp(`^${name}:\\s*(.+)$`, 'm'));
   return m ? m[1].trim() : null;
 };
-// The base word is what the vocabulary governs and what INDEX must agree with. Detail after it
-// is deliberately NOT compared — requiring the index to echo a parenthetical verbatim would make
-// the check fire on prose edits, and a checker that cries wolf gets switched off.
-const base = (status) => (status || '').trim().split(/[\s(]/)[0].toLowerCase();
+const base = baseStatus;
 
 const findings = { vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [], proof: [], unproven: [] };
 

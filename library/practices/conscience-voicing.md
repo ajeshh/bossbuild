@@ -4,7 +4,7 @@ type: practice
 owner: mentor-founder
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-06-20 thread on dignity-cost / over-censoring — "voice the tension, never filter the menu" + how Claude voices concern without blocking. Drove the mentor-money metering-axis fix (RVW-023 → ADAPT) and the mentor-humane "name, never override" reframe. BOSS v0.67.x.
+provenance: distilled from the 2026-06-20 thread on dignity-cost / over-censoring — "voice the tension, never filter the menu" + how Claude voices concern without blocking. Drove the mentor-capital metering-axis fix (RVW-023 → ADAPT) and the mentor-humane "name, never override" reframe. BOSS v0.67.x.
 last_reviewed: 2026-06-21
 review_by: 2027-06-21
 curve: craft
@@ -30,7 +30,7 @@ The two failure modes this prevents:
 
 - **Filtering the menu** — omitting an option BOSS disapproves of (a pricing model, a stack, a path).
   Withholding it "to protect them" is itself a *dignity cost*: it makes the choice for them. Present
-  the full menu; annotate the one you're wary of. (See the [`mentor-money`] metering axis: every
+  the full menu; annotate the one you're wary of. (See the [`mentor-capital`] metering axis: every
   model is shown, each with its tension named — none withheld.)
 - **Nagging** — raising a concern the founder has already heard and moved past. Repetition reads as
   *I don't trust you*.
@@ -95,7 +95,7 @@ you never **override** the founder. Naming ≠ blocking.
   this practice when adding or tuning a moment.
 - **Every `mentor-*` agent**: present full menus; name the honesty cost of each shape once; defer with
   the menu *visible*, never withhold a shape. ([`mentor-humane`] holds the override-vs-name line;
-  [`mentor-money`] is the worked example.)
+  [`mentor-capital`] is the worked example.)
 - **Any skeptical pass over an outside claim**: skepticism toward a *stranger's* claim is a legitimate
   default — but it's a held bias, not neutral truth. Say so; don't dress a NO-bias as inevitability.
 - **Any menu-presenting skill**: the test — *did we omit an option because it's genuinely irrelevant,
@@ -119,6 +119,6 @@ you never **override** the founder. Naming ≠ blocking.
 
 - [`ai-ux-patterns.md`](ai-ux-patterns.md) — the broader AI-behaviour patterns (interrupt registers,
   risk-tiered gates) this specialises.
-- `mentor-humane` / `mentor-money` agents — where the rule is enforced in the mentor layer.
+- `mentor-humane` / `mentor-capital` agents — where the rule is enforced in the mentor layer.
 - Voice: the `boss-voice` memory (seasoned hand, doesn't need the credit) — voicing tone must match it;
   `voice-keeper` is the reviewer.

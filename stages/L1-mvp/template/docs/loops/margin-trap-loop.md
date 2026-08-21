@@ -106,14 +106,14 @@ per-outcome economics have to hold).
   never the whole project.
 - The model fires **at most once per session** and stays silent when the margin is healthy and the
   cost isn't struggle-driven. It **points**, never gates: `/cost-review` (the margin band) and
-  `mentor-money` (price/packaging) do the work; this only makes the cost visible.
+  `mentor-capital` (price/packaging) do the work; this only makes the cost visible.
 
 ## Known limitation (documented, like cost-review-loop's)
 
 The gate keys on `/cost-review` having run (a review with real spend on file). A founder operating a
 priced AI product who never runs `/cost-review` — reviewing spend elsewhere, or not at all — won't get
 the auto-nudge; they reach the same judgment by running `/cost-review` (which now carries the
-gross-margin band) or asking `mentor-money` directly. This is the deliberate Principle-#2 trade:
+gross-margin band) or asking `mentor-capital` directly. This is the deliberate Principle-#2 trade:
 better to stay quiet until there's real operating evidence than to fire on a milestone. The predicate
 vocabulary also can't compute the ratio itself — that's the model's job by design, the same split
 `drift-loop` and `focus-loop` make.

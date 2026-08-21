@@ -19,6 +19,15 @@ a product you'd ship.
 Look before asking: is there a payment link in the repo, a Stripe key in the env, a `docs/first-dollar/`
 record, an EVID graded `commitment`?
 
+- 🔴 **This project isn't trying to earn.** → **Stop, and don't route.** Open source, Creative
+  Commons, a research tool, something built for friends or for fun. **Read the canvas's Business
+  Model cell before assuming: a project that has answered it with hours-and-maintainers rather than a
+  price is not "pre-revenue," it is outside this arc.** The branch below is for a founder who intends
+  to charge and hasn't yet — offering it to someone who never intended to is BOSS selling, and
+  *"some tools should stay free"* is `mentor-capital`'s own standing position. Say plainly that this
+  verb doesn't apply, name the one thing that does — **sustaining it is a real question and it lives
+  in the canvas, not here** — and stop. Do not offer `/interview` or `/pretotype` as a way to "find
+  out if people would pay."
 - **No real willingness-to-pay signal — nobody has said yes.** → **Stop. Don't build a payment rail
   for a customer who doesn't exist.** But don't close empty-handed — **the seam is one sentence: in a
   conversation you are already having, say a number out loud and watch the face.** Not an entity, not a
@@ -56,7 +65,7 @@ saying so is the point.
    because it teaches you the terms. **Don't build subscriptions or dunning before ~3 customers.**
 4. **Refund posture** — decide it **now**, calm, before the first request arrives. A clear, slightly
    generous default (no-questions within N days) beats an ad-hoc panic and buys trust cheaply.
-5. **The first price** — **one number, said out loud.** `mentor-money` owns the *menu* (tiers,
+5. **The first price** — **one number, said out loud.** `mentor-capital` owns the *menu* (tiers,
    metering, on-ramp); this forces the *first number*, so fear doesn't defer it forever. Name it. You
    can change it.
 
@@ -123,6 +132,9 @@ fired. **Expanding below margin just loses money faster.**
   in trust.
 - **A price said plainly is honest; free-forever-because-asking-is-scary is avoidance** — and it denies
   you the one piece of evidence that matters most.
+- **The rows for this surface:** `boss craft deceptive-patterns --surface checkout-and-pricing`
+  (drip pricing, reference-price inflation, security-behind-a-paywall, forced continuity). This list
+  is the short version; the catalog is the current one.
 - **Dunning, not dark patterns** — recover the *accidental* churn; never manufacture friction to trap
   the deliberate kind.
 - **Graceful offboarding** — one-click cancel, clean data export, no roach motel, no "are you *sure*?"

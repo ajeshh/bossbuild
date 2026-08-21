@@ -25,6 +25,17 @@ The grade is the load-bearing field. Its power is its bluntness — resist growi
 - **`stated-pain`** — someone *said* it hurts. Weakest. The Mom Test warns talk is nearly free.
 - **`observed-behavior`** — you *watched* them struggle, reach for a workaround, or bounce. Behavior
   beats opinion.
+> 🔴 **Desk research is not evidence, and there is no rung for it.** All three grades describe **what
+> a person did** — so a competitor's pricing page, a market-size estimate or an industry article has
+> no honest place on this ladder ([[DEC-008]]). It is not a loose fit; there is no rung it could
+> occupy. **And the reason it matters is downstream: the conscience reads this ledger and goes quieter
+> when commitments exist** — so filing research here would let an afternoon of googling silence the
+> exact nudge that exists to push you toward a real conversation, while the riskiest assumption stayed
+> untested. Research lives in the artifact it informs (`docs/competition/`, a canvas cell) with a
+> **source URL and the date you checked it**. It can *motivate* an `EVID` — "three rivals charge $40,
+> so go ask someone what they'd pay" — but it never becomes one. If research raised a real question,
+> the honest next step is `/interview`.
+
 - **`commitment`** — they gave up something real: **time, money, reputation, a calendar slot.** The only
   grade that cost the other person something.
 

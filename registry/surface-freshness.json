@@ -202,7 +202,7 @@
     {
       "kind": "agent",
       "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/agents/mentor-money.md",
+      "rel": "stages/L1-mvp/template/.claude/agents/mentor-capital.md",
       "curve": "craft",
       "last_reviewed": "2026-08-20"
     },

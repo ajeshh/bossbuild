@@ -62,7 +62,7 @@ opens — the **agent itself** going wrong. Two things to hold:
   insufficient** in testing. So **recognition ≠ protection** — defend it the structural way: narrow
   permissions, an explicit confirm before any purchase/commitment, and inspect what a page is steering the
   agent to *do*, the same as inspecting a poisoned tool return. (This is the security face of
-  [`ai-ux-patterns.md`](ai-ux-patterns.md)'s agentic dark patterns — the agent there is the *victim*.)
+  [`deceptive-patterns.md`](deceptive-patterns.md)'s `agent-actions` surface — the agent there is the *victim*.)
 
 ## Concrete defaults (what to actually do)
 

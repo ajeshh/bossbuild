@@ -807,6 +807,16 @@ for (const f of readdirSync(join(SRC, 'styles'))) {
   copyFileSync(join(SRC, 'styles', f), join(SITE, 'styles', f));
 }
 
+// Static assets that sit at the site root. Today that is the share card — the page
+// most people see first is the CARD, not the page, and a text-only preview is the
+// one part of the front door a stranger judges before deciding to click. Its recipe
+// is scripts/og-card.html, kept as source so the card can be re-rendered rather
+// than re-invented. Copied, never generated: this is a binary the build must not touch.
+const ROOT_ASSETS = ['og.png'];
+for (const f of ROOT_ASSETS) {
+  if (existsSync(join(SRC, f))) copyFileSync(join(SRC, f), join(SITE, f));
+}
+
 const shell = readFileSync(join(PAGES, '_shell.html'), 'utf8');
 // Files starting with _ are layout, not pages — the shell must never be served.
 const pages = readdirSync(PAGES).filter((f) => f.endsWith('.html') && !f.startsWith('_'));
@@ -850,6 +860,10 @@ for (const f of pages) {
     .replace(/\{\{TITLE\}\}/g, () => esc(meta.title || 'BOSS'))
     .replace(/\{\{DESCRIPTION\}\}/g, () => esc(meta.description || ''))
     .replace(/\{\{CANONICAL\}\}/g, () => esc(canonical(f)))
+    // Absolute, always: every crawler resolves og:image against its own origin, and
+    // a relative path silently yields no card at all. One image for the whole site —
+    // a per-page card is a generator nobody asked for.
+    .replace(/\{\{OGIMAGE\}\}/g, () => esc(`${SITE_URL}/og.png`))
     .replace('{{NAV}}', nav)
     .replace('{{SUBNAV}}', subnav)
     .replace('{{CONTENT}}', content.trim())

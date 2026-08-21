@@ -40,7 +40,7 @@ import { join } from 'node:path';
 // Read-only agent types never write files — skip them (no trace to record).
 const READ_ONLY = new Set([
   'Explore', 'Plan', 'claude-code-guide', 'general-purpose-readonly',
-  'mentor-founder', 'mentor-architect', 'mentor-customers', 'mentor-money',
+  'mentor-founder', 'mentor-architect', 'mentor-customers', 'mentor-capital',
   'mentor-fundraising', 'mentor-hiring', 'mentor-humane', 'mentor-pitch',
 ]);
 

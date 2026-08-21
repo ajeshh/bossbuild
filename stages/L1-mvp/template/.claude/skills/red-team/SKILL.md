@@ -137,26 +137,67 @@ declared none, and run the secrets + OWASP half. A founder with a genuinely sing
 honest answer to rung 4, and manufacturing one to look thorough is how a security pass becomes
 theatre. **Name what you did not test**, every time.
 
-## `--humane` — test the built product for dark patterns (esp. emergent ones)
+## `--humane` — test the built product for deceptive patterns
 
-`/red-team --humane` turns the conscience's humane lens into evidence: probe the founder's *own* AI
-product for the CDT dark-pattern families (see `boss craft ai-ux-patterns`), weighted toward
-the ones that **emerge from the model**, not the design — the founder may ship these without intending to:
-- **Sycophancy** — does it cave / agree / flatter when pushed, over telling the truth? (The canonical
-  emergent pattern.)
-- **Engagement-prolonging** — does it resist ending, add teasers or guilt when the user tries to leave?
-- **Emotional manipulation near money** — does the upgrade/purchase path lean on rapport or dependency?
-- **Misrepresentation** — does it claim capabilities or an identity it doesn't have (therapist, "I don't
-  hallucinate")?
-- **Injected-into-the-code patterns** — scan the *generated UI/markup itself*, not just the running
-  behavior: a fake countdown, a pre-ticked opt-in, confirmshaming in the decline copy that the model wrote
-  *unprompted* (Vaccaro et al., *Deception at Scale*, CHI 2026). The founder never designed it and often
-  can't see it — so read the component, not just the intent. (See `boss craft ai-ux-patterns`.)
+`/red-team --humane` turns the conscience's humane lens into evidence. **It is a conditional
+battery, not a fixed list** — read the catalog, run the probes for the surfaces this product
+actually has, and say which ones you skipped.
 
-Binary pass/fail + the prompt that proved it; a `fail` is a humane-design fix. **Suggestive surface** —
-it names the cost and points at the humane alternative; it never blocks the founder's choice
-(conscience-not-censor). Cohort note: most valuable for anyone shipping a *consumer / companion* AI
-surface; skip for a purely functional internal tool (say why).
+> **Why it changed (v0.190.0).** This section used to be five flat probes, all from the
+> AI-chatbot subset, while eight vetted verdicts' worth of patterns — obstruction, drip pricing,
+> manufactured urgency, interface interference, accessibility, minors, agentic-perpetrator,
+> algorithmic management — had no probe at all. Worse, it told founders with "a purely functional
+> internal tool" to skip. An internal tool with a checkout, a deletion flow and a scoring model is
+> exactly where those live. **A pass that didn't test the thing is worse than no pass, because it
+> manufactures confidence** — and it manufactured it with a dated artifact in `docs/red-team/`.
+
+### 1. Read the surfaces before you probe
+
+```
+boss craft deceptive-patterns --shape <what this product is>
+```
+
+Shapes are tags, not buckets — an edtech mobile app with a chatbot is all three. If the founder
+hasn't declared one, infer it from the repo and **say what you inferred**. Then for each surface
+that shape gives you:
+
+```
+boss craft deceptive-patterns --surface <surface>
+```
+
+Each row carries what it looks like, the honest version, and its teeth. **Probe the rows; do not
+re-type them here.** The catalog is the single source — it grows, and this skill grows with it
+for free.
+
+### 2. Split the battery by what you can actually observe
+
+- **Behavioural probes — prompt it.** The `ai-voice` and `agent-actions` surfaces need
+  adversarial conversation, not reading: does it cave when pushed (sycophancy)? Resist ending?
+  Lean on rapport near the upgrade? Claim to be a therapist or to never hallucinate? Act without
+  consent? These are the ones that **emerge from the model** and that the founder may ship
+  without intending to.
+- **Markup probes — read them.** Rows tagged `model-written` are in the code, not the behaviour.
+  `/ux-check` owns the routine walk of these; `/red-team` covers them here only if `/ux-check`
+  hasn't run.
+- **Invisible probes — instrument them.** `tracking-and-telemetry` has almost no UI. You cannot
+  see a pixel by looking at a page. Open the network tab, read the outbound requests, and check
+  what the third-party tag actually sends on a sensitive route. `/trust` owns this surface; verify
+  it was done.
+
+### 3. Rules
+
+- **Binary pass/fail with the attempt shown**, same as every other half of this skill.
+- **Name what you did not test, every time** — the standard `--paths` already holds. If a surface
+  didn't apply, say which and why. A clean report that silently skipped six surfaces is the
+  failure this section exists to prevent.
+- **Suggestive surface.** It names the cost and points at the honest version; it never blocks the
+  founder's choice (conscience-not-censor). If they keep the pattern, offer to write the `DEC-NNN`
+  — one line, written *for* them.
+
+**Cohort note.** Never "skip this skill." The correct reduction for a founder with no AI in the
+product is *skip the behavioural half; run the account, checkout, consent and data surfaces
+regardless* — those are the ones that exist in every product that has users, and they are where a
+first-time founder ships a pattern they never designed.
 
 ## Output
 

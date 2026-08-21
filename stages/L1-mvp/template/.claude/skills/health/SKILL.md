@@ -77,7 +77,7 @@ founder doing the leader's job before they've done the operator's.
   a second and third cohort before treating it as won.
 - **🟢 post-PMF.** They clearly agree, across cohorts, over time. **Now the leader's work — scaling,
   hiring, delegation — has finally earned its place.** This is the one verdict that *licenses* the
-  growth machinery the earlier rungs correctly refuse. Point forward: `mentor-customers` and `mentor-money`, both seated here — and `mentor-hiring` once you
+  growth machinery the earlier rungs correctly refuse. Point forward: `mentor-customers` and `mentor-capital`, both seated here — and `mentor-hiring` once you
   unlock Scale, which is the rung that seats it. Watch the margin trap — scaling a thin-margin product is how post-PMF companies
   still die.
 
@@ -115,7 +115,8 @@ reachable from `/money`, which operates this once revenue exists.
 - **Fit is measured on user *success*, not engagement.** The 40% matters precisely because losing it
   would *hurt* them. A high-DAU product people can't quit is not PMF; it might be a hook.
 - **A user who succeeded and left is a win.** Don't pathologize a healthy exit into "churn."
-- **Resurrection is an invitation, never a winback dark pattern.** *"Here's what's new, come see if
+- **Resurrection is an invitation, never a winback dark pattern.** (The exit rows in full:
+  `boss craft deceptive-patterns --surface cancel-and-delete`.) *"Here's what's new, come see if
   it's useful now"* is fine; guilt-trips, fake scarcity, confirmshaming the cancel and roach-motel
   cancellation are refused by name (`boss craft ai-ux-patterns`).
 - **Don't scale a thing that isn't yet helping people.** Scaling before fit multiplies a product that

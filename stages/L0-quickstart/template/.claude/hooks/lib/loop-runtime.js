@@ -14,6 +14,11 @@
 //                                     — at least one globbed file matches the regex;
 //                                       optional related-idea filter for canvas → idea
 //                                       cross-file checks
+//   - outpaced_by: { path_glob, behind, min }
+//                                     — N+ files under `path_glob` are NEWER than the newest
+//                                       file under `behind`. The only TEMPORAL predicate, and
+//                                       the only one that can express "this stopped being true"
+//                                       rather than "this was never made".
 //
 // Any predicate may also carry a sibling `when: [<predicate>, ...]` guard. The
 // predicate applies only if every guard predicate holds; otherwise it is treated as
@@ -139,6 +144,36 @@ const PREDICATES = {
       } catch { /* ignore */ }
     }
     return { ok: matchedCount >= 1, evidence: { path_glob, matched_files: matchedCount, total_files: files.length } };
+  },
+
+  // THE ONLY TEMPORAL PREDICATE, added because its absence was structural rather than an
+  // oversight. `exists`, `count_at_least` and `any_file_matches` all test CONTENT or EXISTENCE,
+  // so every conscience moment BOSS could express was an ABSENCE one — "an idea exists and no
+  // canvas does." Nothing could say *"evidence landed and the artifact hasn't moved since."*
+  // BOSS watched for what was never made, and never for what stopped being true.
+  //
+  // NOT an age guess, and the distinction is load-bearing. `src/board.js` deliberately refuses to
+  // infer staleness from age — "a guessed signal would add noise" — and that refusal stands. This
+  // asserts a RELATIONAL fact instead: B changed after A, therefore A has not accounted for B.
+  // No threshold, no opinion about how old is too old.
+  //
+  // Fresh-clone caveat, and it fails SAFE: a clone resets mtimes, so everything looks the same
+  // age and this under-fires. Under-firing is the correct direction for a conscience — a missed
+  // nudge costs nothing, a false one spends trust.
+  outpaced_by({ path_glob, behind, min }, projectDir) {
+    const mtime = (f) => { try { return statSync(f).mtimeMs; } catch { return 0; } };
+    const behindFiles = expandGlob(behind, projectDir);
+    // Nothing to be behind = nothing to report. An artifact that does not exist yet is an
+    // ABSENCE problem, which the other predicates already own.
+    if (!behindFiles.length) return { ok: false, evidence: { behind, reason: 'no artifact to fall behind' } };
+    const newestBehind = Math.max(...behindFiles.map(mtime));
+    const newer = expandGlob(path_glob, projectDir).filter((f) => mtime(f) > newestBehind);
+    const need = min || 1;
+    return {
+      ok: newer.length >= need,
+      evidence: { path_glob, behind, newer: newer.length, min: need,
+                  names: newer.slice(0, 4).map((f) => f.split('/').pop()) },
+    };
   },
 };
 

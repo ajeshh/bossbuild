@@ -12,9 +12,14 @@
 <meta property="og:title" content="Quick guide — the whole surface on one page" />
 <meta property="og:description" content="The commands that always work, what to reach for when, and every skill by mode. Generated from the stage manifests." />
 <meta property="og:url" content="https://oyeboss.build/quick-guide.html" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://oyeboss.build/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BOSS — Build Out Solid Stuff. Make it real." />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Quick guide — the whole surface on one page" />
 <meta name="twitter:description" content="The commands that always work, what to reach for when, and every skill by mode. Generated from the stage manifests." />
+<meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -86,9 +91,10 @@
           </div>
           <div class="pair">
             <span class="k">…find out whether it's real</span>
-            <span><code>/canvas</code> pressure-tests it · <code>/interview</code> preps the
-              conversation with a human · <code>/pretotype</code> builds a fake door ·
-              <code>/evidence</code> records what you actually learned</span>
+            <span><code>/canvas</code> pressure-tests it · <code>/persona</code> works out who it's
+              for · <code>/comp-eval</code> finds out who else is already solving it ·
+              <code>/interview</code> preps the conversation with a human · <code>/pretotype</code>
+              builds a fake door · <code>/evidence</code> records what you actually learned</span>
           </div>
           <div class="pair">
             <span class="k">…see something move today</span>
@@ -102,8 +108,8 @@
           <div class="pair">
             <span class="k">…keep the design from drifting</span>
             <span><code>/design-tokens-init</code> lays the tokens · <code>/design-library</code>
-              generates the gallery and the reuse index from your code ·
-              <code>/design-review</code> and <code>/ux-check</code> are the V1 pass</span>
+              generates the gallery and the reuse index from your code (V1) ·
+              <code>/design-review</code> and <code>/ux-check</code> are the review pass</span>
           </div>
           <div class="pair">
             <span class="k">…not get hacked or embarrass myself</span>
@@ -144,7 +150,7 @@
         <div class="prose">
           <h2>Every skill, and the rung it arrives on</h2>
           <p class="small">
-            Generated from the stage manifests, current as of v0.189.0. If this page and the tool
+            Generated from the stage manifests, current as of v0.195.0. If this page and the tool
             ever disagree, the tool is right and the release gate is broken.
           </p>
         </div>
@@ -174,7 +180,7 @@
           </tr>
           <tr>
             <th scope="row"><code>/canvas</code></th>
-            <td>Pressure-test an idea as a humane business — Ajesh Shah's Humane Product Canvas as the spine, with Lean/Lenny-style commercial prompts folded into each cell <span class="usage">/canvas [IDEA-NNN]</span></td>
+            <td>Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them <span class="usage">/canvas [IDEA-NNN] [--frame humane|lean|bmc]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/evidence</code></th>
@@ -220,7 +226,7 @@
         </table>
       </div>
 
-      <h3>MVP <span class="count">28 skills</span></h3>
+      <h3>MVP <span class="count">29 skills</span></h3>
       <div class="tablewrap">
         <table class="skills">
           <tbody>
@@ -336,6 +342,10 @@
             <th scope="row"><code>/ux-check</code></th>
             <td>After-code UX review for your app <span class="usage">/ux-check [route-or-component-path | FEAT-NNN]</span></td>
           </tr>
+          <tr>
+            <th scope="row"><code>/comp-eval</code></th>
+            <td>Find out who else is solving this, and keep knowing <span class="usage">/comp-eval [&lt;space or problem&gt; | add &lt;name&gt; | recheck [&lt;name&gt;]]</span></td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -392,7 +402,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.195.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

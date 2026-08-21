@@ -12,9 +12,14 @@
 <meta property="og:title" content="Governance — how BOSS decides what it believes" />
 <meta property="og:description" content="Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught." />
 <meta property="og:url" content="https://oyeboss.build/governance.html" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://oyeboss.build/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BOSS — Build Out Solid Stuff. Make it real." />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Governance — how BOSS decides what it believes" />
 <meta name="twitter:description" content="Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught." />
+<meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -38,7 +43,7 @@
       <p class="lede">
         A tool that coaches you is only as good as the advice inside it — and “built on best practices”
         is the cheapest sentence in software. So BOSS treats its own beliefs as an asset that can rot:
-        <strong>31</strong> practice files, every one carrying who it came from, when it
+        <strong>32</strong> practice files, every one carrying who it came from, when it
         was last checked, and what would make it wrong. <strong>83</strong> outside claims
         have been through the filter.
       </p>
@@ -57,7 +62,7 @@
             or held.</span>
         </div>
         <div class="stat">
-          <span class="n">31</span>
+          <span class="n">32</span>
           <span class="of">practice files, every one carrying its provenance, the date it was last
             checked, and the curve that says how fast its ground moves.</span>
         </div>
@@ -113,6 +118,34 @@
           <p class="small">
             A deferral whose condition has expired is not a decision — it's a stale note. Those get
             re-decided, not left to rot.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the other door</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>The second way something gets in: you proved it</h2>
+          <p>
+            Everything above is the filter on claims from <em>outside</em>. There's a second door, and
+            it's the one BOSS's first operating principle is about: <strong>when work pauses, sort what
+            you just learned.</strong> Most of what's worth keeping isn't a blog post — it's a pattern
+            you used three times without noticing.
+          </p>
+          <p>
+            <code>/extract</code> is that pause made into a verb. It reads your recent work — the commit
+            log, the devlog, the code — and proposes one to three candidates, each routed one of two
+            ways: <strong>UP</strong> into BOSS's library as a practice other projects inherit, or
+            <strong>DOWN</strong> into your own app as hardened code that stops being a pattern you have
+            to remember. <code>/boss-learn</code> is the judgment step over that routing, because those
+            two destinations are not interchangeable and guessing wrong is how a library fills with
+            things nobody needed.
+          </p>
+          <p class="small">
+            It proposes; you decide. Nothing enters the library because a machine thought it was clever
+            — the same standard the outside door is held to.
           </p>
         </div>
       </div>
@@ -216,7 +249,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.195.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

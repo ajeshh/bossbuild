@@ -468,17 +468,24 @@ function cmdBoard(args = []) {
   }
   // A retired project's board still reads honestly (nothing is deleted) — just note it once,
   // quietly, so the board isn't mistaken for a live one (IDEA-044 — /sunset).
-  if (stamp.status === 'retired') {
+  // ...but never in front of `--json`, which is a machine contract: one courtesy line printed
+  // above the object makes every consumer's JSON.parse throw.
+  if (stamp.status === 'retired' && !args.includes('--json')) {
     console.log(dim(`\n  ⊘ ${stamp.name} was retired ${stamp.retired_on || ''} — this is the record, not a live board. \`boss retire --undo\` to reopen.`));
   }
   // Owner lens (founder layer slice 2b): show `@owner` on cards only when this is a
   // team (dormant-solo); `--mine` narrows to the cards I own.
   const me = args.includes('--mine') ? resolveIdentity().handle : null;
+  // A bare argument is a card id — `boss board IDEA-004`, or just `boss board 4`. The terminal's
+  // equivalent of hovering one card: what is this, where is it, what does its status actually say.
+  const card = args.find((a) => !a.startsWith('-')) || null;
   board(process.cwd(), stamp.name, {
+    card,
     next: args.includes('--next'),
     blocked: args.includes('--blocked'),
     json: args.includes('--json'),
     all: args.includes('--all'),
+    detail: args.includes('--detail') || args.includes('-d'),
     owners: isTeam(process.cwd()),
     mine: me ? '@' + me : null,
   });
@@ -758,7 +765,10 @@ function cmdRemove(args) {
   const head = plan.files.slice(0, 6).map((x) => x.rel);
   for (const r of head) console.log(`    ${warn('−')} ${r}`);
   if (plan.files.length > head.length) console.log(`    ${dim(`… +${plan.files.length - head.length} more`)}`);
-  if (plan.bossDir) console.log(`    ${warn('−')} .boss/   ${dim("(mode, config, the conscience's private notes)")}`);
+  if (plan.bossDir) console.log(`    ${warn('−')} .boss/   ${dim("(mode, config, the conscience's log)")}`);
+  if (plan.brainProse && plan.brainProse.length) {
+    console.log(`    ${ok('→')} docs/venture-brain.md   ${dim(`(the venture brain, exported first — ${plan.brainProse.length} file(s); it was yours to edit, so it leaves with you)`)}`);
+  }
   for (const b of plan.blocks) console.log(`    ${warn('~')} ${b.rel}   ${dim('— BOSS block excised, the rest of the file kept')}`);
   if (plan.settings?.drop) console.log(`    ${warn('−')} ${plan.settings.rel}   ${dim("— BOSS wrote it and you never changed it, so it goes with BOSS")}`);
   else if (plan.settings) console.log(`    ${warn('~')} ${plan.settings.rel}   ${dim(`— ${plan.settings.removed} BOSS hook registration(s) only; your permissions, your own hooks and the secret-path deny floor all stay`)}`);
@@ -967,9 +977,9 @@ const HELP = {
     see: ['map', 'sync', 'conscience'],
   },
   board: {
-    usage: 'boss board [--html] [--next|--blocked|--json] [--all] [--mine]',
-    what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',
-    examples: ['boss board', 'boss board --next', 'boss board --html'],
+    usage: 'boss board [<ID>] [--detail] [--html] [--next|--blocked|--json] [--all] [--mine]',
+    what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. Pass an ID for one card in full, or --detail for a line under every card. Deferred and dropped work is folded into Parked — decided, not queued. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',
+    examples: ['boss board', 'boss board --detail', 'boss board IDEA-004', 'boss board --next', 'boss board --html'],
     see: ['insights', 'brain'],
   },
   map: {
@@ -1053,7 +1063,7 @@ const HELP = {
   craft: {
     usage: 'boss craft [name] [--outline]',
     what: "Read BOSS's practice shelf — the craft the skills and agents are built on. The shelf ships inside the package, so it works from any project and is always exactly as current as your installed version. With no argument it lists every practice; with a name (prefixes work) it prints that one. This is BOSS's shelf, read-only — your own team's craft notes live in /practice as PRAC-NNN records. The shelf listing shows each practice's length and flags anything past 2\u00d7 the median \u2014 a shelf that only ever grows is how a toolkit becomes a framework, so those are subtraction candidates for the next refresh, and --outline maps a long one before you pull it whole.",
-    examples: ['boss craft', 'boss craft testing-with-agents', 'boss craft testing', 'boss craft design-system --outline'],
+    examples: ['boss craft', 'boss craft testing-with-agents', 'boss craft testing', 'boss craft design-system --outline', 'boss craft deceptive-patterns --shape mobile-app', 'boss craft deceptive-patterns --surface checkout-and-pricing'],
     see: ['sync', 'learn'],
   },
   learn: {
@@ -1187,6 +1197,7 @@ function printHelp() {
 
   console.log(`\n  ${bold('Everyday')}`);
   console.log(row('boss board [--html]', 'what\'s in flight (captured → shipped); --html = kanban'));
+  console.log(row('boss board <ID> | --detail', 'one card in full · a line under every card'));
   console.log(row('boss board --next|--blocked|--json', 'what to pick up · what\'s stuck · JSON (agent-readable)'));
   console.log(row('boss status [--conscience]', 'mode + pinned version + drift (--conscience: loop states)'));
   console.log(row('boss unlock <mode>', 'climb a rung: quickstart → mvp → v1 → scale'));
@@ -1267,10 +1278,16 @@ export async function run(argv) {
     case 'remove': case 'uninstall': return cmdRemove(args);
     case 'sync': return cmdSync(args);
     case 'learn': return cmdLearn(args);
-    case 'craft': return void (process.exitCode = printCraft(
-      args.find((a) => !a.startsWith('--')),
-      { outline: args.includes('--outline') },
-    ));
+    case 'craft': {
+      const f = parseArgs(args || []);
+      return void (process.exitCode = printCraft(f._[0], {
+        outline: !!f.outline,
+        prose: !!f.prose,
+        shape: f.shape,
+        surface: f.surface,
+        minors: !!f.minors,
+      }));
+    }
     case 'changelog': case 'whatsnew': {
       const f = parseArgs(args || []);
       return void (process.exitCode = printChangelog({

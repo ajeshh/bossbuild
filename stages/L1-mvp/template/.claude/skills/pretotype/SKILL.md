@@ -88,6 +88,7 @@ something that doesn't exist yet is honest. These are not:
 - implying the thing is **live and purchasable** when it isn't, or taking money for it;
 - fabricated social proof — invented testimonials, fake user counts, "join 10,000 others";
 - manufactured urgency, fake scarcity, or confirmshaming the decline ("no thanks, I like wasting time").
+- The full set for a fake door: `boss craft deceptive-patterns --surface social-proof-and-claims`.
 
 The test is whether you could **follow up honestly**: if someone signs up and you email them "we're
 building this, you're on the list" — does that match what the page led them to believe? If not, the

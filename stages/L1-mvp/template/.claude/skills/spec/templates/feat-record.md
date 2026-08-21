@@ -14,6 +14,7 @@ id: FEAT-NNN
 type: feature
 owner: product-lead
 status: building
+gist: <one plain sentence — what this feature IS, for the board>
 created: {{today}}
 building_since: {{today}}
 source: IDEA-NNN

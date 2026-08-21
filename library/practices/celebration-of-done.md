@@ -96,7 +96,7 @@ roadmap. Build fast, mark the threshold, start the next. That rhythm *is* the re
 
 - `conscience-voicing.md` — proportionality + no-sermon + the seasoned-hand voice all govern *how* a
   celebration is voiced (it's a conscience moment with the polarity flipped: same restraint, opposite sign).
-- `ai-ux-patterns.md` — the dark-patterns line that keeps celebration from curdling into a streak/engagement
+- `deceptive-patterns.md` — the `notifications-and-engagement` rows that keep celebration from curdling into a streak/engagement
   mechanic.
 - Voice: the `boss-voice` memory (no performed warmth) — `voice-keeper` is the reviewer for any celebration
   copy that ships.

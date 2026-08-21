@@ -1,7 +1,7 @@
 <!--
 title: The team — who BOSS hires, and when
 description: BOSS staffs your project. Builders who make the thing, mentors who coach you — and they arrive just in time, as the project earns them.
-reviewed: 2026-08-20
+reviewed: 2026-08-21
 review_by: 2027-02-16
 describes: the agent roster and the ladder
 mentions-absent: mentor-humane
@@ -31,7 +31,8 @@ nav: team
         <div class="pairs">
           <div class="pair">
             <span class="k">{{COUNT_BUILDERS}} builders — they make the product</span>
-            <span>A product lead, coders, a tester, a program manager, designers, a database architect.
+            <span>A <code>product-lead</code> who decides what's worth building, a <code>coder</code>,
+              a <code>designer</code>, a <code>planner</code> who sequences it, a <code>tester</code>.
               They do work: write the spec, write the code, catch the regression, review the screen.</span>
           </div>
           <div class="pair">
@@ -54,8 +55,8 @@ nav: team
         <div class="prose">
           <h2>They arrive when the project earns them</h2>
           <p>
-            A one-evening idea does not need a database architect, and a product with real users should
-            not be missing one. So the roster grows with the work — <strong>you</strong> unlock each rung,
+            A one-evening idea does not need someone sequencing the work, and a product with real users
+            should not be missing a <code>tester</code>. So the roster grows with the work — <strong>you</strong> unlock each rung,
             nothing is ever taken away, and a project that stays in Quickstart forever is a legitimate
             project.
           </p>
@@ -77,6 +78,49 @@ nav: team
           <p>Each one is a plain Markdown file in your repo. You can read it, edit it, or delete it.</p>
         </div>
         {{ROSTER}}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>saying no</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Some of them exist mainly to tell you “not yet”</h2>
+          <p>
+            The roster above gives you names and one-liners. What it can't show you is the part that
+            makes a mentor worth having: <strong>a default answer that isn't the flattering one.</strong>
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">mentor-capital — one seat, not three</span>
+            <span>How the thing sustains itself, whether to raise, and how the story lands. Most tools
+              would make that three advisors; a real incubator makes it one partner who gets deeper as
+              you do. So its <em>remit</em> grows by rung rather than new chairs arriving: what you
+              charge at MVP, the raise question at V1, all three at depth by Scale. It defaults to
+              <strong>don't raise yet</strong> — and it won't draft a pitch deck while that question is
+              still open, because the half of it that would help you raise shouldn't get to answer
+              whether you should.</span>
+          </div>
+          <div class="pair">
+            <span class="k">mentor-hiring — arrives last, and usually says wait</span>
+            <span>First hires, contractors versus employees, what to delegate and what you should keep
+              doing yourself. It shows up at Scale and its opening position is <strong>don't hire
+              yet</strong>, because “we need a person for this” is the most expensive way to discover
+              you hadn't defined the work.</span>
+          </div>
+          <div class="pair">
+            <span class="k">mentor-architect — leads with the AI question</span>
+            <span>Which decisions are load-bearing and which are fine to defer — starting with what
+              actually needs a model, and what you're about to make non-deterministic for no reason.
+              It holds the data and schema calls too. There's no separate database agent: that
+              judgment moved into this one, and the parts a checker can enforce moved into
+              <code>/spec</code> and a migration guard.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          A builder that says “not yet” is being unhelpful. A mentor that never does isn't a mentor.
+        </p>
       </div>
     </section>
 

@@ -18,10 +18,13 @@
    (the *when*, not the *what*). What's blocked, what's parallelizable, what's next.
 4. **Data shape is a decision, not an accident.** You settled this at MVP — `/spec`'s data-shape step reviews schema before code, even
    in solo-builder mode. Schema migrations are first-class; ad-hoc column adds are flagged.
-5. **The mentor board has full V1 quorum.** `mentor-money` (model + pricing — Patrick Campbell,
-   Madhavan Ramanujam, the right-sized voices). `mentor-fundraising` (Janz, Skok — defaulting to
-   "don't raise" unless earned). `mentor-pitch` (Raskin spine, Miller story-driven, Neumeier
-   simplicity). All advisory; never
+5. **The venture coach's remit widens here — no new mentor arrives.** `mentor-capital` has been
+   seated since MVP for the model and the price. At V1 real users make two more questions
+   answerable, so they become live for the *same* agent: **should you raise** (Janz, Skok —
+   defaulting to *don't*, and it says so out loud) and **how do you tell this** (Raskin spine,
+   Miller story-driven, Neumeier simplicity). One seat that deepens, rather than three that arrive
+   — DEC-006. It is required to surface its own money-vs-raise tension rather than resolve it
+   quietly, and it won't draft a deck while the raise question is still open. All advisory; never
    binding legal/financial/medical.
 6. **The conscience still runs.** Every prior moment (caution, Done, restraint, coherence) keeps
    firing — V1 doesn't replace earlier discipline, it adds the V1-specific surface.
@@ -30,9 +33,7 @@
 
 - **Skills:**
   - `/board` — cross-FEAT sequencing surface (`planner`'s authoritative view)
-- **Mentor agents** (promoted from BOSS-local in v0.15 to template here):
-  - `mentor-fundraising` — whether / when / how to raise; defaults to *don't*
-  - `mentor-pitch` — story + deck + 60-second-version + demo arc
+- **Mentor agents:** none new. V1 is a skills rung — `mentor-capital`'s remit widens instead (above).
 - **Loops:**
   - `design-drift-loop` — V1-stage; emits the `coherence` moment when system-vs-code drift
     exceeds threshold (raw hex codes appearing, near-duplicate components, tokens file

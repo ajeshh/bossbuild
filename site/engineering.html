@@ -12,9 +12,14 @@
 <meta property="og:title" content="For engineers — how BOSS approaches agentic development" />
 <meta property="og:description" content="The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from." />
 <meta property="og:url" content="https://oyeboss.build/engineering.html" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://oyeboss.build/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BOSS — Build Out Solid Stuff. Make it real." />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="For engineers — how BOSS approaches agentic development" />
 <meta name="twitter:description" content="The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from." />
+<meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -226,14 +231,14 @@
         </tr>
         <tr>
           <th scope="row"><code>designer</code></th>
-          <td><span class="chip">ai-ux-patterns</span> <span class="chip">celebration-of-done</span> <span class="chip">design-system</span></td>
+          <td><span class="chip">ai-ux-patterns</span> <span class="chip">celebration-of-done</span> <span class="chip">deceptive-patterns</span> <span class="chip">design-system</span></td>
         </tr>
         <tr>
           <th scope="row"><code>mentor-founder</code></th>
           <td><span class="chip">conscience-voicing</span> <span class="chip">founder-role-shifts</span> <span class="chip">harm-taxonomy</span></td>
         </tr>
         <tr>
-          <th scope="row"><code>mentor-money</code></th>
+          <th scope="row"><code>mentor-capital</code></th>
           <td><span class="chip">first-dollar</span> <span class="chip">monetization-in-practice</span></td>
         </tr>
         <tr>
@@ -250,11 +255,55 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="rail">▸<span>when the product is the AI</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>“It works” is not a claim you can make about a model</h2>
+          <p>
+            If the thing you're shipping is itself AI-mediated, the usual build gates stop being enough:
+            a smoke test proves the endpoint answered, not that it answered <em>correctly</em>, and
+            nothing in your CI has an opinion about what a good answer looks like. So MVP carries a set
+            of verbs for exactly that gap.
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">/ai-first-init — decide what's AI-mediated, on purpose</span>
+            <span>Write down which parts of the product actually route through a model, and seed the
+              structured outputs and schemas underneath them. Cheap on day one; archaeology later.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/evals — “is it correct?” beside /smoke's “is it alive?”</span>
+            <span>An eval set per AI-mediated feature, built from your own data rather than from
+              imagined inputs. Evals-as-spec, after Hamel Husain and Shreya Shankar.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/judge-traces — error analysis on what actually happened</span>
+            <span>Reads the real trace log of what the agents did and helps you sort the failures into a
+              <strong>binary pass/fail taxonomy</strong> — not a vibes rating. The discipline is theirs
+              too, and the binary part is the load-bearing half of it.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/ai-cost and /cost-review — the invoice is a product decision</span>
+            <span><code>/ai-cost</code> sets per-user and per-feature budgets and wires a per-call
+              ledger; <code>/cost-review</code> reads that ledger back and produces a dated review against
+              the budget. An AI product whose unit cost you first meet on the bill has already made the
+              pricing decision for you.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          None of these pin a model name — same rule as everywhere else. They pin the
+          <em>discipline</em>, which outlives the model.
+        </p>
+      </div>
+    </section>
+
     <div class="band">
       <div class="band-in">
         <h2>Every one of these has a receipt.</h2>
         <p class="lede">
-          <strong>20</strong> technical practices, each carrying who it was
+          <strong>21</strong> technical practices, each carrying who it was
           learned from, the date it was last checked against reality, and the <em>curve</em> that says
           how fast its ground moves. The table below is generated from those files — attribution that
           has to be retyped is attribution that goes stale.
@@ -273,7 +322,7 @@
           <p class="meta"><code>harness-engineering</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">model curve</span> ·
             last checked 2026-08-11</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Anthropic engineering</span> <span class="ref">Dex Horthy — 12-factor agents</span> <span class="ref">Andrej Karpathy — the verifiability thesis</span> <span class="ref">GitHub Spec Kit / AWS Kiro</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://www.anthropic.com/engineering" rel="noopener">Anthropic engineering</a> <a class="ref" href="https://github.com/humanlayer/12-factor-agents" rel="noopener">Dex Horthy — 12-factor agents</a> <span class="ref">Andrej Karpathy — the verifiability thesis</span> <span class="ref">GitHub Spec Kit / AWS Kiro</span></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (GitHub Spec Kit, AWS Kiro). Two independent research threads named the harness as the biggest gap in how BOSS was building.</p></details>
         </div>
         <div class="practice">
@@ -289,7 +338,7 @@
           <p class="meta"><code>documentation</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">craft-ai curve</span> ·
             last checked 2026-08-20</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Michael Nygard — Documenting Architecture Decisions</span> <span class="ref">Marty Cagan (SVPG)</span> <span class="ref">Anthropic engineering</span> <span class="ref">Hartwig Grabowski — Spec Growth Engine</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" rel="noopener">Michael Nygard — Documenting Architecture Decisions</a> <a class="ref" href="https://www.svpg.com/" rel="noopener">Marty Cagan (SVPG)</a> <a class="ref" href="https://www.anthropic.com/engineering" rel="noopener">Anthropic engineering</a> <span class="ref">Hartwig Grabowski — Spec Growth Engine</span></p>
           <details class="prov-full"><summary>where this came from</summary><p>Consolidated from BOSS's own shipped capture discipline: seven artifacts spread across eight skills and no practice, so nothing could refresh, cite, or hold them to a standard. Externally grounded in Anthropic's <em>Effective context engineering for AI agents</em> (compaction, structured note-taking, JIT retrieval), Hartwig Grabowski's <em>Spec Growth Engine</em> (arXiv 2606.27045, June 2026 — spec-anchored, code-coupled, drift-enforced), and Marty Cagan's <em>Discovery vs. Documentation</em>. The formatting layer is new and unvetted by anyone outside BOSS; the llms.txt adoption claim is the fastest-moving thing in the doc and is caveated in the text.</p></details>
         </div>
         <div class="practice">
@@ -297,7 +346,7 @@
           <p class="meta"><code>skill-authoring</code> · owned by <code>product-lead</code> ·
             <span class="curve" title="how fast this ground moves">host curve</span> ·
             last checked 2026-08-11</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Anthropic's skill-creator skill</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://github.com/anthropics/skills" rel="noopener">Anthropic — the Agent Skills spec and template</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Adapted from Anthropic's own skill-creator skill — the wisdom, not the harness. The with/without eval machinery is deliberately left out; see &quot;What's left out&quot;.</p></details>
         </div>
         <div class="practice">
@@ -326,7 +375,7 @@
           <p class="meta"><code>agent-security</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">threat curve</span> ·
             last checked 2026-08-11</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Simon Willison</span> <span class="ref">OWASP — Agentic ASI Top 10 / LLM Top 10</span> <span class="ref">Veracode (Spring 2026)</span> <span class="ref">Anthropic containment + Redwood control</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/" rel="noopener">Simon Willison</a> <a class="ref" href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" rel="noopener">OWASP — Agentic ASI Top 10 / LLM Top 10</a> <span class="ref">Veracode (Spring 2026)</span> <span class="ref">Anthropic containment + Redwood control</span></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from Simon Willison's agentic-security writing (the lethal trifecta; &quot;Agents Rule of Two&quot;; classifiers are non-deterministic), then hardened against the 2026 agent-native surface: OWASP's Agentic ASI Top 10, agentic misalignment, Anthropic containment and Redwood control, insecure AI-generated code and client-side key exposure, MCP confused-deputy and token-passthrough, tool-layer memory poisoning, AI-code iteration degradation, and Veracode's Spring-2026 refresh. UI dark patterns are treated here as an injection surface, not only an ethics problem, and a poisoned tool description is goal-hijack rather than supply-chain.</p></details>
         </div>
         <div class="practice">
@@ -334,7 +383,7 @@
           <p class="meta"><code>data-schema</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">threat curve</span> ·
             last checked 2026-08-11</p>
-          <p class="prov"><span>learned from</span> <span class="ref">CVE-2025-48757 (Lovable/Supabase RLS class)</span> <span class="ref">The MoltBook credential exposure</span> <span class="ref">OX Security 2026</span> <span class="ref">PostgreSQL row-level-security docs</span> <span class="ref">Martin Kleppmann — DDIA</span></p>
+          <p class="prov"><span>learned from</span> <span class="ref">CVE-2025-48757 (Lovable/Supabase RLS class)</span> <span class="ref">The MoltBook credential exposure</span> <span class="ref">OX Security 2026</span> <a class="ref" href="https://www.postgresql.org/docs/current/ddl-rowsecurity.html" rel="noopener">PostgreSQL row-level-security docs</a> <a class="ref" href="https://dataintensive.net/" rel="noopener">Martin Kleppmann — DDIA</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Written to close a gap where the knowledge lived only inside one V1 agent's prompt and a migrations section — so nothing could sweep it and no earlier mode could see it. Sources: CVE-2025-48757 (the Lovable/Supabase RLS class), the MoltBook 1.5M-credential exposure, OX Security 2026 (62% of AI-built apps ship a critical vulnerability), the Postgres RLS documentation, and Kleppmann (DDIA) on schema evolution.</p></details>
         </div>
       </div>
@@ -347,7 +396,7 @@
           <p class="meta"><code>testing-with-agents</code> · owned by <code>tester</code> ·
             <span class="curve" title="how fast this ground moves">craft-ai curve</span> ·
             last checked 2026-08-11</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Hamel Husain + Shreya Shankar</span> <span class="ref">How Coding Agents Fail Their Users (arXiv 2605.29442)</span> <span class="ref">Professional Software Developers Don't Vibe, They Control (arXiv 2512.14012)</span> <span class="ref">Veracode (Spring 2026)</span> <span class="ref">METR</span> <span class="ref">Andrej Karpathy — the verifiability thesis</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://hamel.dev/blog/posts/field-guide/" rel="noopener">Hamel Husain + Shreya Shankar</a> <span class="ref">How Coding Agents Fail Their Users (arXiv 2605.29442)</span> <span class="ref">Professional Software Developers Don't Vibe, They Control (arXiv 2512.14012)</span> <span class="ref">Veracode (Spring 2026)</span> <span class="ref">METR</span> <span class="ref">Andrej Karpathy — the verifiability thesis</span></p>
           <details class="prov-full"><summary>where this came from</summary><p>Written after BOSS's own library README had advertised a testing practice that did not exist. Sources: Hamel Husain and Shreya Shankar (error analysis, evals-as-spec, judge validation), <em>How Coding Agents Fail Their Users</em> (20,574-session misalignment analysis, arXiv 2605.29442), <em>Professional Software Developers Don't Vibe, They Control</em> (arXiv 2512.14012), Veracode Spring-2026, METR, and Karpathy's verifiability thesis. The seed line — <em>agents rewrite assertions to match broken behavior</em> — was BOSS's own, stranded in the git practice until it had a home.</p></details>
         </div>
         <div class="practice">
@@ -363,7 +412,7 @@
           <p class="meta"><code>git-workflow</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">craft curve</span> ·
             last checked 2026-06-20</p>
-          <p class="prov"><span>learned from</span> <span class="ref">DORA / Accelerate</span> <span class="ref">Addy Osmani</span> <span class="ref">METR</span></p>
+          <p class="prov"><span>learned from</span> <span class="ref">DORA / Accelerate</span> <a class="ref" href="https://addyosmani.com/agentic-engineering/the-70-percent-problem/" rel="noopener">Addy Osmani</a> <span class="ref">METR</span></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from founding-teams research on dev process — DORA/Accelerate, Addy Osmani on AI code review, the METR n=16 perception-gap study, and the worktree-as-parallelism-primitive practitioner pattern. A later citation-hygiene pass found unverified vendor multipliers sitting next to a DORA attribution: the numbers were cut, the direction kept and correctly sourced to DORA's <em>ROI of AI-Assisted Software Development</em> (2026.01).</p></details>
         </div>
         <div class="practice">
@@ -384,7 +433,7 @@
           <p class="meta"><code>retrieval</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">model curve</span> ·
             last checked 2026-07-23</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Anthropic engineering</span> <span class="ref">Chroma — context rot</span> <span class="ref">Jason Liu — systematically improving RAG</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://www.anthropic.com/engineering" rel="noopener">Anthropic engineering</a> <a class="ref" href="https://www.trychroma.com/research/context-rot" rel="noopener">Chroma — context rot</a> <a class="ref" href="https://jxnl.co/writing/2024/05/22/systematically-improving-your-rag/" rel="noopener">Jason Liu — systematically improving RAG</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from Anthropic (contextual retrieval; the ~200k-token skip-RAG line; the native memory tool), Chroma on context rot, Jason Liu on systematically improving RAG (recall@k first; inventory versus capability), and the hybrid-search/RRF plus recursive-512 chunking consensus. The whole value of this one is telling a founder what NOT to build yet.</p></details>
         </div>
         <div class="practice">
@@ -392,7 +441,7 @@
           <p class="meta"><code>mcp</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">protocol curve</span> ·
             last checked 2026-08-20</p>
-          <p class="prov"><span>learned from</span> <a class="ref" href="https://modelcontextprotocol.io/specification/2026-07-28/changelog" rel="noopener">MCP specification (2026-07-28)</a> <a class="ref" href="https://modelcontextprotocol.io/specification/2026-07-28/deprecated" rel="noopener">MCP deprecated-features registry</a> <span class="ref">Simon Willison</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://modelcontextprotocol.io/specification/2026-07-28/changelog" rel="noopener">MCP specification (2026-07-28)</a> <a class="ref" href="https://modelcontextprotocol.io/specification/2026-07-28/deprecated" rel="noopener">MCP deprecated-features registry</a> <a class="ref" href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/" rel="noopener">Simon Willison</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from the protocol's own record — MCP donated to the Linux Foundation / Agentic AI Foundation (Dec 2025), WorkOS and Anthropic ecosystem reads, Willison on MCP prompt injection — then refreshed against the shipped 2026-07-28 revision, read from the primary changelog. What changed on that pass was the judgment, not just the date: this doc had called the ground &quot;still moving&quot; and said build against it rather than toward it, and then the revision landed with a formal feature-lifecycle and a 12-month deprecation policy, which is the ground acquiring rules for how it moves. A later sweep found the extensions under-weighted rather than wrong — MCP Apps (GA Jan 2026) makes the integration shape a product-surface call and not only a distribution one, and Tasks is the long-running seam. The registry is still preview. The security half lives in agent-security.md, deliberately not duplicated here.</p></details>
         </div>
       </div>
@@ -405,7 +454,7 @@
           <p class="meta"><code>ship-it-live</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">craft curve</span> ·
             last checked 2026-07-23</p>
-          <p class="prov"><span>learned from</span> <span class="ref">DORA / Accelerate</span> <span class="ref">Martin Fowler</span> <span class="ref">Simon Willison</span> <span class="ref">OWASP — Agentic ASI Top 10 / LLM Top 10</span> <span class="ref">CVE-2025-48757 (Lovable/Supabase RLS class)</span> <span class="ref">The MoltBook credential exposure</span></p>
+          <p class="prov"><span>learned from</span> <span class="ref">DORA / Accelerate</span> <a class="ref" href="https://martinfowler.com/bliki/MonolithFirst.html" rel="noopener">Martin Fowler</a> <a class="ref" href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/" rel="noopener">Simon Willison</a> <a class="ref" href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" rel="noopener">OWASP — Agentic ASI Top 10 / LLM Top 10</a> <span class="ref">CVE-2025-48757 (Lovable/Supabase RLS class)</span> <span class="ref">The MoltBook credential exposure</span></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from a CD/deploy deep-research pass — 21 sources, 25 claims adversarially verified by 3-vote, 22 confirmed and 3 killed. DORA/Accelerate 2022–2024, Fowler's ParallelChange, Willison's lethal trifecta and the OWASP LLM Top 10, with CVE-2025-48757 (Lovable) and the MoltBook breach as the named vibe-coded incidents.</p></details>
         </div>
         <div class="practice">
@@ -413,7 +462,7 @@
           <p class="meta"><code>feature-flags</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">craft curve</span> ·
             last checked 2026-07-23</p>
-          <p class="prov"><span>learned from</span> <span class="ref">GrowthBook</span> <span class="ref">ConfigCat</span> <span class="ref">Unleash / LaunchDarkly</span> <span class="ref">Shape Up</span> <span class="ref">Addy Osmani</span></p>
+          <p class="prov"><span>learned from</span> <span class="ref">GrowthBook</span> <span class="ref">ConfigCat</span> <span class="ref">Unleash / LaunchDarkly</span> <span class="ref">Shape Up</span> <a class="ref" href="https://addyosmani.com/agentic-engineering/the-70-percent-problem/" rel="noopener">Addy Osmani</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from GrowthBook (&quot;flag the model, not just the feature&quot;; A/B-testing non-deterministic LLMs), ConfigCat (flags as a vibe-coding safety net), Unleash and LaunchDarkly (trunk-based flags plus flag-debt hygiene), Shape Up (the circuit-breaker and appetite), and Addy Osmani on the 70%-to-80% problem.</p></details>
         </div>
         <div class="practice">
@@ -421,7 +470,7 @@
           <p class="meta"><code>scalable-architecture</code> · owned by <code>mentor-architect</code> ·
             <span class="curve" title="how fast this ground moves">craft curve</span> ·
             last checked 2026-06-20</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Martin Fowler</span> <span class="ref">Shopify's modular monolith</span> <span class="ref">Factory.ai</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://martinfowler.com/bliki/MonolithFirst.html" rel="noopener">Martin Fowler</a> <span class="ref">Shopify's modular monolith</span> <span class="ref">Factory.ai</span></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from founding-teams research on technical scaffolding that survives the climb — Fowler's MonolithFirst, Shopify's 2.8M-line modular monolith, Bezos's one-way and two-way doors, Factory.ai (&quot;documented conventions rot; enforced conventions compound&quot;), and Notion's eslint ratchet.</p></details>
         </div>
         <div class="practice">
@@ -442,16 +491,29 @@
           <p class="meta"><code>design-system</code> · owned by <code>designer</code> ·
             <span class="curve" title="how fast this ground moves">craft-ai curve</span> ·
             last checked 2026-08-20</p>
-          <p class="prov"><span>learned from</span> <span class="ref">Brad Frost — Atomic Design</span> <span class="ref">Nathan Curtis — design tokens</span> <span class="ref">W3C Design Tokens Community Group</span></p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://atomicdesign.bradfrost.com/" rel="noopener">Brad Frost — Atomic Design</a> <a class="ref" href="https://eightshapes.com/articles/tokens-in-design-systems/" rel="noopener">Nathan Curtis — design tokens</a> <a class="ref" href="https://www.w3.org/community/design-tokens/" rel="noopener">W3C Design Tokens Community Group</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Generalized from a dogfooded design system — design tokens as the single source of truth, central badge and pill style utilities, an enforcement hook that rejects raw framework colors, and a prototype registry — then stripped of everything product-specific so it would transfer. The AI-failure-mode catalog was written in the same pass.</p></details>
         </div>
         <div class="practice">
           <h4>AI-native interface patterns (2026)</h4>
           <p class="meta"><code>ai-ux-patterns</code> · owned by <code>designer</code> ·
             <span class="curve" title="how fast this ground moves">humane curve</span> ·
-            last checked 2026-07-23</p>
+            last checked 2026-08-20</p>
           <p class="prov"><span>learned from</span> <span class="ref">Shape of AI</span> <span class="ref">Microsoft HAX guidelines</span> <span class="ref">Google PAIR</span> <span class="ref">Nielsen Norman Group (2026)</span> <span class="ref">Apple HIG — generative AI</span> <span class="ref">CDT — Dark Patterns in AI Chatbots (2026)</span> <span class="ref">Vaccaro et al., CHI'26</span></p>
-          <details class="prov-full"><summary>where this came from</summary><p>Distilled from an AI-UX scan across Shape of AI, Microsoft HAX, Google PAIR, IBM Carbon, LangChain HITL, NN/g 2026 and Apple's HIG for generative AI. The dark-pattern checklist and its humane alternatives come from CDT's <em>Dark Patterns in AI Chatbots</em> (2026, CC-BY); the classic web pattern families and their regulatory teeth (effect-not-intent, symmetry-in-choice) from the first humane sweep; the cohort and frontier patterns — accessibility, minors, agentic, algorithmic management — plus junk-fee teeth from the second. Later additions: generated code injects dark patterns (Vaccaro, CHI'26), the dev-tool metering surface, and citation upgrades (sycophancy to <em>Science</em> 2026, a precise DECEPTICON cite, EU AI Act, EDPB 3-2025, Amazon Prime).</p></details>
+          <details class="prov-full"><summary>where this came from</summary><p>Distilled from an AI-UX scan across Shape of AI, Microsoft HAX, Google PAIR, IBM Carbon, LangChain HITL, NN/g 2026 and Apple's HIG for generative AI. The dark-pattern checklist and its humane alternatives come from CDT's <em>Dark Patterns in AI Chatbots</em> (2026, CC-BY); the classic web pattern families and their regulatory teeth (effect-not-intent, symmetry-in-choice) from the first humane sweep; the cohort and frontier patterns — accessibility, minors, agentic, algorithmic management — plus junk-fee teeth from the second. Later additions: generated code injects dark patterns (Vaccaro, CHI'26) and the dev-tool metering surface. The dark-pattern catalog has since moved to its own practice and data file so it can grow without growing what any one founder reads.</p></details>
+        </div>
+      </div>
+
+      <h3>Also on the shelf</h3>
+      <p class="small">Practices that ship but have not been sorted into a group above yet.</p>
+      <div class="practices">
+        <div class="practice">
+          <h4>Deceptive patterns (the catalog is data; this is the judgment)</h4>
+          <p class="meta"><code>deceptive-patterns</code> · owned by <code>designer</code> ·
+            <span class="curve" title="how fast this ground moves">humane curve</span> ·
+            last checked 2026-08-20</p>
+          <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
+          <details class="prov-full"><summary>where this came from</summary><p>The named patterns come from CDT's <em>Dark Patterns in AI Chatbots</em> (2026, CC-BY), Brignull's deceptive.design, Mathur et al.'s <em>Dark Patterns at Scale</em>, Gray et al.'s CHI-2024 ontology, and successive research sweeps covering accessibility, minors, agentic products, algorithmic management, and the patterns a model writes into generated code (Vaccaro et al., CHI 2026).</p></details>
         </div>
       </div>
       </div>
@@ -506,7 +568,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.195.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

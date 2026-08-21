@@ -45,16 +45,16 @@
       "why": "Ships at L1 — architecture decisions start mattering the moment there's a real build."
     },
     {
-      "name": "mentor-money",
+      "name": "mentor-capital",
       "kind": "agent",
       "verdict": "crossed",
-      "why": "Ships at MVP as of v0.189.0, moved DOWN from V1. The old reason — pricing is a V1-era question — was contradicted by BOSS's own product: /money ships at L1 and its central step (the first price) says mentor-money owns it. Six L1 files named this agent while it installed at L2, two of them handing the founder a scripted line to consult someone their install did not contain."
+      "why": "Ships at MVP as of v0.189.0 and is now the SINGLE venture coach (DEC-006): model + pricing, the raise question, and the investor story, with the remit widening by rung rather than new agents arriving. It moved down from V1 because /money ships at L1 and its first-price step names this agent as its owner."
     },
     {
       "name": "mentor-fundraising",
       "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L2, and defaults to \"not yet\" even there. Seated late on purpose: most projects reaching V1 still haven't earned the raise question."
+      "verdict": "internal",
+      "why": "Merged into `mentor-capital` in v0.189.0 (DEC-006) — one venture coach whose remit scales by rung instead of three chairs arriving. The LENS still ships; it no longer ships as its own agent. Kept in the ledger rather than deleted, because a retired crossing is history worth reading."
     },
     {
       "name": "mentor-customers",
@@ -71,8 +71,8 @@
     {
       "name": "mentor-pitch",
       "kind": "agent",
-      "verdict": "crossed",
-      "why": "Ships at L2. The story is worth shaping once there is something to tell it about; before that it is rehearsal for a demo that doesn't exist."
+      "verdict": "internal",
+      "why": "Merged into `mentor-capital` in v0.189.0 (DEC-006) — one venture coach whose remit scales by rung instead of three chairs arriving. The LENS still ships; it no longer ships as its own agent. Kept in the ledger rather than deleted, because a retired crossing is history worth reading."
     },
     {
       "name": "mentor-hiring",

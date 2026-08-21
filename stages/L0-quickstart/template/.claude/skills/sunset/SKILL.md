@@ -120,7 +120,7 @@ doubt, `/interview` the users who still touch it before you remove it.
 
 For whoever still uses it, write the **honest deprecation notice**: *what* is ending, *when* (a real notice
 period, not a surprise), and *what to do instead* (the path out — export, migrate, alternative). Plainly. The
-anti-patterns to refuse (`ai-ux-patterns.md`): the "we're improving your experience" euphemism for "we removed
+anti-patterns to refuse (`boss craft deceptive-patterns --surface cancel-and-delete`): the "we're improving your experience" euphemism for "we removed
 what you relied on," the silent removal, the sunset with no export path (data hostage). Respect > spin.
 
 ## Move 4 — harvest, then remove

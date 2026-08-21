@@ -60,7 +60,7 @@ founder through:
 - Per-call-site model choice with explicit *why*
 - A wrapper logger so every call writes to `.boss/cost-log.jsonl`
 - Review cadence + breach grammar
-- Optional handoff to `mentor-architect` (cost shape → architecture) or `mentor-money`
+- Optional handoff to `mentor-architect` (cost shape → architecture) or `mentor-capital`
   (cost-per-user → pricing)
 
 ## Exit artifact

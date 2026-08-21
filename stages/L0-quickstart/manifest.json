@@ -35,7 +35,8 @@
   ],
   "loops": [
     "capture-loop",
-    "canvas-loop"
+    "canvas-loop",
+    "harvest-loop"
   ],
   "unlocksNext": "L1-mvp",
   "graduationHint": "When you're ready to actually build, switch to MVP mode: boss unlock mvp."

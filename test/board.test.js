@@ -6,7 +6,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { collectBoard, canvassedIdeas, computeNext, computeStuck, boardJson } from '../src/board.js';
+import { collectBoard, canvassedIdeas, computeNext, computeStuck, boardJson, renderBoardCard } from '../src/board.js';
 import { project, cleanup, idea, feat, canvas, daysAgo } from './helpers.js';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -221,4 +221,143 @@ test('REGRESSION: a coding error in date derivation throws instead of silently n
     'gitFirst must re-throw programming errors, not fail open on them');
   assert.match(src, /^import \{ execFileSync \} from 'node:child_process';$/m,
     'the import that was missing the first time');
+});
+
+// --- the status ladder (v0.192.0) --------------------------------------------
+// docs/IDS.md declares the vocabulary as `<base-word> (free-form detail)` and calls the detail
+// ENCOURAGED. The board compared the whole string, so every well-formed detailed status fell
+// through into Captured — 12 of BOSS's own cards, 8 shipped and 4 in build, filed as raw ideas.
+
+test('REGRESSION: a status with free-form detail lands in the right column', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'shipped (v0.104.0 — the one question in `/close`)' }),
+    'docs/ideas/IDEA-002.md': idea('IDEA-002', { status: 'building (items 1-4 done, unreleased; 5-7 open)' }),
+    'docs/ideas/FEAT-001.md': feat('FEAT-001', { status: 'shipped (keystone)' }),
+  });
+  const { cards } = collectBoard(dir);
+  assert.equal(col(cards, 'IDEA-001'), 'Shipped', 'detail after the base word must not demote it');
+  assert.equal(col(cards, 'IDEA-002'), 'Building');
+  assert.equal(col(cards, 'FEAT-001'), 'Shipped');
+});
+
+test('deferred and dropped are parked — out of the flow, never deleted', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'deferred (trigger-gated)' }),
+    'docs/ideas/IDEA-002.md': idea('IDEA-002', { status: 'dropped' }),
+    'docs/ideas/IDEA-003.md': idea('IDEA-003', { status: 'exploring' }),
+  });
+  const { cards } = collectBoard(dir);
+  assert.equal(cards.find((c) => c.id === 'IDEA-001').parked, true);
+  assert.equal(cards.find((c) => c.id === 'IDEA-002').parked, true);
+  assert.equal(cards.find((c) => c.id === 'IDEA-003').parked, false);
+  // still present — the reasoning is the point
+  assert.equal(cards.length, 3);
+});
+
+test('parked work is never offered as the next thing to pick up', () => {
+  // The failure this prevents: `--next` telling the agent to /canvas an idea whose own record
+  // says the deferral is settled and DO-NOT-REHASH.
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'deferred (trigger-gated)' }),
+  });
+  const { cards } = collectBoard(dir);
+  const { pressure, finish, start } = computeNext(cards);
+  assert.deepEqual([...pressure, ...finish, ...start], []);
+  assert.deepEqual(computeStuck(cards).reviewDue, []);
+});
+
+test('the JSON contract counts what the board renders, parked reported separately', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'deferred' }),
+    'docs/ideas/IDEA-002.md': idea('IDEA-002', { status: 'exploring' }),
+  });
+  const j = boardJson(dir, 'p');
+  assert.equal(j.counts.Captured, 1, 'a parked card must not inflate a column count');
+  assert.equal(j.total, 1);
+  assert.equal(j.parked.length, 1);
+  assert.equal(j.cards.length, 1, 'parked cards are reported in `parked`, not smuggled into a column');
+});
+
+// --- the gist -----------------------------------------------------------------
+// The card was an id and a title, and after sixty records a title is not a reminder.
+
+test('an authored `gist:` wins over anything derivable', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { gist: 'The authored line.', body: 'Some other opening prose that is long enough to be chosen.' }),
+  });
+  assert.equal(collectBoard(dir).cards[0].gist, 'The authored line.');
+});
+
+test('with no `gist:`, the record\'s own opening prose fills the silence', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { body: 'A board that shows what is in flight, so the arc is visible at a glance.' }),
+  });
+  assert.equal(collectBoard(dir).cards[0].gist, 'A board that shows what is in flight, so the arc is visible at a glance.');
+});
+
+test('the gist skips headings, banners and throat-clearing', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', {
+      body: '## The gap\n\n> Capture, don\'t build (CLAUDE.md #3). BOSS has no way to end a project honestly, harvest what it taught, and mark it retired.',
+    }),
+  });
+  const g = collectBoard(dir).cards[0].gist;
+  assert.ok(!g.startsWith('The gap'), 'a section heading names a section, not the idea');
+  assert.ok(!/Capture, don't build/.test(g), 'the boilerplate opener is not a reminder');
+  assert.ok(g.startsWith('BOSS has no way to end a project'), g);
+});
+
+test('the gist does not split a sentence on an abbreviation', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', {
+      body: 'Define the minimum host contract a different agent (e.g. Codex) would have to satisfy before it could host the conscience.',
+    }),
+  });
+  assert.ok(/Codex/.test(collectBoard(dir).cards[0].gist), 'e.g. is not a sentence break');
+});
+
+test('a title is no longer truncated at collect time — the page wraps, the terminal clips', () => {
+  const long = 'Temple culture layer — human-agent collaboration as decision infrastructure';
+  const dir = project({ 'docs/ideas/IDEA-001.md': idea('IDEA-001', { title: long }) });
+  assert.equal(collectBoard(dir).cards[0].title, long);
+});
+
+test('REGRESSION: a PARKED banner must not become the card\'s gist', () => {
+  // Introduced and caught in the same release: parking a record puts a banner at the top of the
+  // file, which became the first prose block — four cards stopped saying what they were and
+  // started saying "PARKED 2026-08-20". The disposition is in `status:`; the gist is the subject.
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', {
+      body: '> **PARKED 2026-08-20** (Ajesh: "park it"). `deferred` is the deliberate status — a\n'
+        + '> decision, not a backlog item — and the re-open trigger is at the foot of this file.\n>\n'
+        + '> **The record already said this.** Its own open questions close with "not yet".\n\n'
+        + '## Current shape\n\nA way to end a project honestly, harvest what it taught, and mark it retired.',
+    }),
+  });
+  const g = collectBoard(dir).cards[0].gist;
+  assert.ok(!/PARKED|deferred is the deliberate/i.test(g), `banner leaked into the gist: ${g}`);
+  assert.ok(g.startsWith('A way to end a project honestly'), g);
+});
+
+test('a leading blockquote that is NOT a banner is still the best gist available', () => {
+  // The other half of the same rule: several records open by quoting the founder, and that quote
+  // is the sharpest sentence in the file. Only a disposition word triggers the skip.
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', {
+      body: '> *"I may have jotted the idea anywhere — a doc, an Obsidian note. I wish I could\n'
+        + '> just point at a file and have it brought in."*\n\n## Current shape\n\nLater prose.',
+    }),
+  });
+  const g = collectBoard(dir).cards[0].gist;
+  assert.ok(/jotted the idea anywhere/.test(g), g);
+});
+
+test('a card that has not shipped never shows a shipped date', () => {
+  // `shippedOn` is derived from the `proof:` artifact's first commit, which exists for plenty of
+  // in-flight records. Printing it on a Building card claims the thing shipped.
+  const dir = project({ 'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'building', shipped_on: '2026-01-01' }) });
+  const { cards } = collectBoard(dir);
+  const out = renderBoardCard('p', { cards, hasIdeasDir: true }, 'IDEA-001');
+  assert.ok(!/shipped\s+2026-01-01/.test(out), out);
+  assert.ok(/column\s+Building/.test(out));
 });

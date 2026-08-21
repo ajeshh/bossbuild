@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.189.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.195.0**.
 
 ## Quickstart
 
@@ -12,7 +12,7 @@
 - **`/import`** — Bring existing material into this project — point at a file, a folder, or a URL (Word doc, Google Doc, Obsidian note, PDF, slide deck, online reference) and BOSS pulls a durable copy into docs/source/ and folds it into your idea  _(/import <path-or-url> [more paths/urls] [IDEA-NNN])_
 - **`/triage`** — Capture an idea — and keep adding to it  _(/triage <thought>  (run again anytime to add more))_
 - **`/prototype`** — Get the idea out of your head and onto the screen — fast  _(/prototype [IDEA-NNN | rough idea text])_
-- **`/canvas`** — Pressure-test an idea as a humane business — Ajesh Shah's Humane Product Canvas as the spine, with Lean/Lenny-style commercial prompts folded into each cell  _(/canvas [IDEA-NNN])_
+- **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc])_
 - **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)  _(/evidence [paste notes | describe what happened])_
 - **`/interview`** — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence  _(/interview [prep | debrief | paste your notes])_
 - **`/research`** — Turn a real research transcript into product context and graded evidence  _(/research [transcript file | paste the transcript])_
@@ -54,6 +54,7 @@
 - **`/money`** — The money verb, from the first dollar to operating it  _(/money [upgrade | dunning | price-raise | expansion])_
 - **`/design-review`** — Before-code design review for your app  _(/design-review [FEAT-NNN | path-to-component-spec])_
 - **`/ux-check`** — After-code UX review for your app  _(/ux-check [route-or-component-path | FEAT-NNN])_
+- **`/comp-eval`** — Find out who else is solving this, and keep knowing  _(/comp-eval [<space or problem> | add <name> | recheck [<name>]])_
 
 ## V1
 

@@ -87,7 +87,7 @@
   `/ux-check` after. One designer, not a visual/interaction split — that split is an org chart,
   not a seam in the work).
 - **Mentor agents:** `mentor-architect` (AI-native stack/architecture, advisory);
-  `mentor-customers` (first 100, channels, positioning); `mentor-money` (model, pricing, what someone
+  `mentor-customers` (first 100, channels, positioning); `mentor-capital` (model, pricing, what someone
   would actually pay — it owns `/money`'s first-price step); `mentor-cofounder` (a founding *team*
   working across different skill sets — the seam AI widens by making you both faster separately;
   dormant and irrelevant if you're solo, `boss team add` is what makes it earn its place).

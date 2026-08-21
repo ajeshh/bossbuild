@@ -12,9 +12,14 @@
 <meta property="og:title" content="What's new in BOSS" />
 <meta property="og:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
 <meta property="og:url" content="https://oyeboss.build/whats-new.html" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://oyeboss.build/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BOSS — Build Out Solid Stuff. Make it real." />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="What's new in BOSS" />
 <meta name="twitter:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
+<meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -62,6 +67,18 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.195.0</span><span class="when">2026-08-21</span></div>
+        <p>If your project isn't trying to make money — open source, Creative Commons, a research tool, something you're building for friends or for fun — BOSS was quietly making you lie. The canvas's <strong>Business Model</strong> cell was the only one in its group with no condition on it, so it counted toward leaving Quickstart for every project, and its follow-up questions were <em>&quot;who pays, how much.&quot;</em> You had two bad options: invent a revenue line, or leave it blank and read as permanently unfinished. <strong>Now the cell asks the question it always meant to ask.</strong> Its actual prompt — <em>&quot;how will you sustain this without compromising your promise?&quot;</em> — was already right for a maintainer; only the follow-ups assumed money. There's a second set now: what keeps this alive, who else could carry it, what happens when you get bored or busy or hit by a bus, and what would make you stop. <strong><code>/money</code> also stops routing you.</strong> It used to read <em>where you are</em> in the money arc with no branch for <em>not being in it</em>, so it would point you at <code>/interview</code> to go get a yes you never wanted. It now says the verb doesn't apply, and stops. <strong>None of this makes the question softer</strong> — most open-source projects die of maintainer exhaustion, not of a missing business model.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.192.0</span><span class="when">2026-08-20</span></div>
+        <p>Your board was probably lying to you. A status like <code>shipped (v0.3.0 — the pull half)</code> is well-formed BOSS — the vocabulary doc <em>encourages</em> the detail — but the board compared the whole string, so any status with a parenthetical fell through into <strong>Captured</strong>. On BOSS's own board that was <strong>12 of 31 cards</strong>: eight shipped and four in build, all filed as raw ideas nobody had touched. Fixed. Two more things came with it: every card now carries a one-line <strong>gist</strong> (<code>boss board --detail</code>, hover on <code>--html</code>, or <code>boss board &lt;ID&gt;</code> for one card in full), and <code>deferred</code>/<code>dropped</code> work folds into <strong>Parked</strong> instead of sitting in Captured looking like a decision you still owe. On BOSS's own backlog that second change took Captured from <strong>31 cards to 1</strong>.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.190.0</span><span class="when">2026-08-20</span></div>
+        <p>The deceptive-pattern catalog is now filtered by <strong>what you're building</strong>. <code>boss craft deceptive-patterns --shape mobile-app</code> (or <code>cli</code>, <code>edtech</code>, <code>chatbot</code>, <code>marketplace</code>… 14 shapes) shows only the surfaces you actually have; <code>--surface checkout-and-pricing</code> gives you the rows for the thing you're on right now, each with the honest version. Four surfaces are new — consent banners, tracking &amp; telemetry, device permissions, and install/update — and <code>/red-team --humane</code> now tests all of them instead of five chatbot probes.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.189.0</span><span class="when">2026-08-20</span></div>
         <p>if you're at MVP, you now have a <code>designer</code> — one agent for how it looks, how it behaves, and how it reads — plus <code>/design-review</code> before code and <code>/ux-check</code> after. If you're already at V1, <code>ui-designer</code> and <code>ux-designer</code> are superseded by it; <code>boss sync</code> will say so, and anything you edited stays yours.</p>
         <p><code>db-architect</code> is gone and you don't need to remember to open anything in its place. <code>/spec</code> now asks the data questions while your feature is still a paragraph, and <code>schema-guard</code> (turn it on in <code>.claude/settings.json</code>) tells you when a migration creates a table without the rule that decides who can read its rows. Ask <code>mentor-architect</code> the judgment calls. Your <code>docs/architecture/</code> files stay where they are.</p>
@@ -100,18 +117,6 @@
         <div class="rel"><span class="ver">v0.181.0</span><span class="when">2026-08-20</span></div>
         <p>two fixes you'd have hit. A file scaffolded into every MVP project pointed at a research doc that was never in your repo — gone, along with six more of the same shape. And <code>/red-team</code> no longer tells you to run a model your host may not have; it names the <em>kind</em> of model the job wants and leaves the choice where it belongs.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.180.0</span><span class="when">2026-08-20</span></div>
-        <p><strong><code>boss credit</code></strong> — if you want to say you built with BOSS, there's now one command for it. Never automatic, never in your product UI, one command to undo. And <code>/welcome</code> now tells you about the marked comment BOSS leaves in your <code>CLAUDE.md</code>, because it's findable in public repos and you should hear that from BOSS rather than discover it.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.179.0</span><span class="when">2026-08-20</span></div>
-        <p><code>boss sync</code> now tells you when a skill that changed makes something <strong>you already built</strong> — <code>↳ you already have the landing page — app/page.tsx</code>. And <code>boss status</code> gained an <strong>Already built</strong> line (what's real in your repo, not what's missing) plus, when you're earlier than a practice, the one cheap thing worth doing now anyway. Skills look for their own output before generating: point <code>/landing</code> at a repo that already has a page and it reads yours instead of writing a second one.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.178.0</span><span class="when">2026-08-20</span></div>
-        <p>four commands your practices told you to run don't exist outside BOSS's own repo — <code>/vet</code>, <code>/recalibrate</code>, <code>/practice-refresh</code>, <code>/humane-refresh</code>. The practices now name something you actually have. Nothing in your project moves.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -140,7 +145,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.195.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

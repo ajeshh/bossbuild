@@ -70,7 +70,11 @@ Worth a `/decide` → `DEC-NNN` before the agent writes the migration:
 - **Identity of a row.** UUID vs. sequential integer — sequential IDs in a URL are enumerable, which
   is how the RLS hole above gets *found*.
 - **Soft vs. hard delete.** Ties directly to what you promised users about deletion, and to
-  regulation. `harm-taxonomy` has the humane half.
+  regulation. **Say which one you do** — a soft delete presented as deletion is a named pattern
+  (`boss craft deceptive-patterns --surface cancel-and-delete`), not a shortcut. And if you have
+  embeddings, a vector index, or a fine-tune, deleting the row does not delete what it *said*:
+  re-index and evict, or stop calling it deletion. `/trust` Step 3.5 is where that gets verified
+  by actually running it.
 - **What you store at all.** The cheapest way to not leak something is to not have it. An agent will
   happily add columns you never asked for; every one is a liability with no offsetting value unless
   a feature needs it.

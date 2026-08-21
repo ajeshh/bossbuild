@@ -136,6 +136,13 @@ Capture an idea, shape it, pressure-test whether it's real. Almost no ceremony.
   your users' own words, the job they're hiring for, the workarounds they use today, what they *didn't*
   care about), and flags the spots where you led the witness. It analyzes what's actually there; it
   never invents a quote. The sibling of `/interview`, at transcript scale.
+- **Who else solves this?** `/comp-eval` surveys the field — including the rows that usually win and
+  never appear on a competitor grid: a spreadsheet, an agency, and doing nothing at all. Name a space
+  and it goes looking; name a rival you heard about and it evaluates that one into the same table.
+  **Every claim carries a source URL and the date it was checked, or it is marked unverified** —
+  a confidently invented price is the failure mode here. It builds a *living* set under
+  `docs/competition/` you add rivals to over time, never a scoreboard you win. And what it finds is
+  context, not evidence: research can send you to `/interview`, it can never stand in for one.
 - **Where evidence lives:** when you actually talk to someone (the conscience will tell you a
   15-minute call beats another canvas pass), the result lands in `docs/evidence/` as an `EVID-NNN`
   — one signal per file, graded `stated-pain` → `observed-behavior` → `commitment`. Capture one with
@@ -170,7 +177,7 @@ The design layer turns on, plus the next tier of mentors.
   your code so it can't drift; it flags off-token values, missing states and near-duplicate
   components, and it's the thing you hand a designer instead of a repo), `/design-review` (before you
   code), `/ux-check` (after), `/board` (sequence work across features).
-- **Ask:** `mentor-money` (model, pricing), `mentor-fundraising`, `mentor-pitch`, `mentor-hiring`
+- **Ask:** `mentor-capital` — one venture coach whose remit widens here: model and pricing since MVP, plus the raise question and the investor story now that real users make them answerable. `mentor-hiring` arrives at Scale.
   — promoted in here because these questions get real at V1.
 - **Ready to climb when:** the team grows and the org needs to be a thing. → `boss unlock scale`
 
@@ -255,9 +262,9 @@ financial advice (they point you at the real expert and caveat hard).
 | What's the load-bearing technical call? What can I defer? | `mentor-architect` |
 | How do I get the first users? What's the positioning? | `mentor-customers` |
 | How do I work with my cofounder? Are we deciding together? | `mentor-cofounder` *(dormant when solo)* |
-| What's the model? Should this be free? What would someone pay? | `mentor-money` |
-| Should I raise? When? | `mentor-fundraising` |
-| How do I explain this? Is the deck working? | `mentor-pitch` |
+| What's the model? Should this be free? What would someone pay? | `mentor-capital` |
+| Should I raise? When? | `mentor-capital` (defaults to *not yet*, and says so) |
+| How do I explain this? Is the deck working? | `mentor-capital` |
 | Should I hire? Who first? | `mentor-hiring` |
 
 **"Who could this harm? Is this dark-pattern-y?"** is the one question with no advisor to ask —

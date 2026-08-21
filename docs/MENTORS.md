@@ -17,7 +17,7 @@ updated: 2026-05-21
 | Class | Job | Lives | Examples |
 |---|---|---|---|
 | **Builders** | Make the app. Decide *what/how* to build and build it. | `.claude/agents/` | `product-lead`, `coder`, `tester`, `planner`, `designer` |
-| **Mentors** (`mentor-*`) | Coach the *founder*, not the codebase. Ask hard questions, give counsel, help shape concepts (business, architecture strategy, GTM, fundraising, hiring, pitch). | `.claude/agents/` with a `mentor-` prefix | `mentor-founder`, `mentor-money`, `mentor-architect`, … |
+| **Mentors** (`mentor-*`) | Coach the *founder*, not the codebase. Ask hard questions, give counsel, help shape concepts (business, architecture strategy, GTM, fundraising, hiring, pitch). | `.claude/agents/` with a `mentor-` prefix | `mentor-founder`, `mentor-capital`, `mentor-architect`, … |
 
 Mentors sit **outside** the product. They never write production code or own specs — they push the
 founder's *thinking* forward and leave a paper trail (the dossier) that compounds toward something
@@ -61,7 +61,7 @@ Each mentor unlocks only when the project earns the questions it asks (Principle
 | `mentor-fundraising` | Whether/when to raise, narrative, what investors will probe, the data room. | V1 |
 | `mentor-pitch` | The story + deck: clarity, arc, what to cut. | V1 |
 | `mentor-hiring` | First hires, team shape, what to keep vs delegate. | V1 |
-| `mentor-money` | Model, pricing, unit economics, willingness-to-pay. | V1 |
+| `mentor-capital` | Model, pricing, unit economics, willingness-to-pay. | V1 |
 | `mentor-humane` | The ethics/stewardship lens — who could be harmed, what's the humane call. (Pairs with `/canvas` §3.) | **Lens: Quickstart** (conscience + `/canvas` §3 + `harm-taxonomy` practice + `/red-team --humane`) — this is the part that ships. **Agent: not shipped in any mode**; designed for Scale (board), deliberately unbuilt until a real project needs the door. |
 
 > *The full board convenes at Scale.* This roster is provisional — it gets sharpened by encoding real
@@ -75,7 +75,7 @@ conversations, authored *with* the founder, not generated behind their back:
 | Artifact | From | Becomes |
 |---|---|---|
 | Humane Product Canvas | `/canvas` + `mentor-founder` | The shared snapshot of the bet |
-| Business proposal / one-pager | `mentor-money` | Investor/partner intro |
+| Business proposal / one-pager | `mentor-capital` | Investor/partner intro |
 | Architecture brief | `mentor-architect` | Build plan + risk register |
 | GTM plan | `mentor-customers` | First-users experiment log |
 | Pitch / deck outline | `mentor-pitch` | The raise narrative |

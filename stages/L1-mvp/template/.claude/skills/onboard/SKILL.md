@@ -88,5 +88,9 @@ plan** for the next N users. Name the ONE activation metric so `/measure` can tr
   empty state.
 - **Concierge first, automate second** — extract the scalable flow from the hand-done one; it doubles as
   `/interview`.
-- **Success fast, not hooked fast.** Refuse fake-progress / gamified / forced-tutorial dark patterns by name.
+- **Success fast, not hooked fast.** Refuse the three by name, with the honest version of each:
+  **fake progress** (a bar that isn't measuring anything → show real steps, or show nothing),
+  **streaks and variable rewards** (→ measure whether they got what they came for, not how long they
+  stayed), **the forced tutorial** (→ let them skip it and reach the thing they came for). Full rows:
+  `boss craft deceptive-patterns --surface notifications-and-engagement`.
 - **One activation metric**, handed to `/measure`. This is `/health`'s top-of-curve fix — close that loop.

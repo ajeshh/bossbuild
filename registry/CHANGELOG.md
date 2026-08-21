@@ -9,6 +9,506 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.195.0 — 2026-08-21
+
+> **For you:** If your project isn't trying to make money — open source, Creative Commons, a research
+> tool, something you're building for friends or for fun — BOSS was quietly making you lie. The
+> canvas's **Business Model** cell was the only one in its group with no condition on it, so it
+> counted toward leaving Quickstart for every project, and its follow-up questions were *"who pays,
+> how much."* You had two bad options: invent a revenue line, or leave it blank and read as
+> permanently unfinished. **Now the cell asks the question it always meant to ask.** Its actual
+> prompt — *"how will you sustain this without compromising your promise?"* — was already right for a
+> maintainer; only the follow-ups assumed money. There's a second set now: what keeps this alive, who
+> else could carry it, what happens when you get bored or busy or hit by a bus, and what would make
+> you stop. **`/money` also stops routing you.** It used to read *where you are* in the money arc with
+> no branch for *not being in it*, so it would point you at `/interview` to go get a yes you never
+> wanted. It now says the verb doesn't apply, and stops. **None of this makes the question softer** —
+> most open-source projects die of maintainer exhaustion, not of a missing business model.
+
+**BOSS is an incubator. It should not have been assuming a business** — and those turned out to be
+different things, with only the second a defect ([[DEC-009]]).
+
+- 🔴 **The audit's good news is most of it.** Commercial intent was *not* baked in everywhere.
+  Licensing is handled **and argued** — `/boss` offers MIT / Apache-2.0 / AGPL-3.0, and the
+  proprietary default rests on a reversibility argument (*a permissive grant, once published, cannot
+  be revoked*), which is the correct way round. `mentor-capital` already holds *"open-source / free…
+  OR not monetized at all (some tools should stay free)"* as a first-class structure. `/money` was
+  already stage-gated, `margin-trap-loop` already dormant pre-revenue, and `/sunset` is the standing
+  precedent that not every project must grow. **Naming what was already fine is what kept the fix
+  small enough to be worth making.**
+- 🔴 **The cell never needed re-framing — its *sharpen* needed a second branch.** The humane prompt
+  was intent-neutral the whole time; the commercial assumption lived one column to the right. That is
+  composition over an existing prompt, and the gating idea it leans on ([[DEC-004]]: a dormant cell
+  never counts against graduation) was already load-bearing under three neighbouring cells.
+- **`/money` was giving actively wrong advice, not merely staying silent.** *"Stop. Don't build a
+  payment rail for a customer who doesn't exist… the move is `/interview` or `/pretotype` to get the
+  yes"* is correct for a founder who intends to charge and hasn't yet. Aimed at someone who never
+  intended to, it is BOSS selling. The new branch refuses it by name and points at the canvas instead.
+- **BOSS is its own n=1.** It is MIT-licensed, and its own canvas answers that cell with
+  *"calm-company / OSS / patronage… no pricing decision is honest before then"* — **a well-written
+  deferral in a cell with no honest way to hold one.** Same family as [[DEC-006]] (BOSS shipped a
+  heavier org than the incubator it models): the gap was visible from inside its own repo.
+- **The structural finding, captured and deliberately not built.** All eight cohorts answer *"how much
+  do you already know?"*; **none answers *"what is this for?"*** Intent is a real second axis
+  ([[IDEA-067]] rung 2) and it stays **`deferred` at n=0**, along with the non-commercial support that
+  would sit on it — maintainer burnout, contributor pipeline, governance-as-succession,
+  funding-for-sustenance. ⚠️ **The positioning does not change either**, and DEC-009 states the cost
+  that buys: a CC/OSS founder evaluating BOSS has no way to know they won't be pushed toward a
+  business model. Accepted, because claiming support that isn't built is the worse failure.
+- ⚠️ **`check:refs` caught the first draft.** The canvas note attributed *"some tools should stay
+  free"* to `mentor-capital` — an **L1** agent quoted from an **L0** skill, so a Quickstart founder
+  would have been pointed at someone they don't have. Re-attributed to BOSS itself, whose position it
+  is anyway.
+
+## 0.194.0 — 2026-08-20
+
+**Four things that were built and left half-attached — plus a release that numbered itself twice.**
+Nothing here is new surface: 0 new skills, 0 new practices, 0 new commands. Every item is a
+finishing move on work that already existed and was one step short of counting.
+
+- 🔴 **Two different releases both called `0.191.0`.** Two sessions wrote this repo the same
+  afternoon and each cut a version: the board-classification fix and the canvas-frames release,
+  same number, neither a superset. This is the **second occurrence** — v0.177.0 was written twice
+  the same way — and last time it was caught by reading, not by a check. Renumbered by content
+  rather than merged, because they are genuinely two releases: canvas frames keeps `0.191.0` (the
+  number the website and the following entry already cite), the board fix becomes `0.192.0`, and
+  the website-roster release becomes `0.193.0`. That entry was also **dated 2026-08-21** — a day
+  that had not happened yet.
+- 🔴 **The demand page's one call to action installed a package that no longer exists.**
+  `pretotype/index.html` — the fake door whose entire job is measuring whether anyone wants this —
+  read `npx bossbuild` right through the rename to `oyeboss`. It survived because `check:site`
+  scans `web/`, and this public page lives outside it. **The check's own header promises to catch a
+  page naming something we removed**; it simply could not see this page. Now it does — the scan
+  takes a surface list, not a directory. *(Seventh instance of header-states-an-intent-the-code-misses,
+  and the second in two releases to be a scope gap rather than a logic bug.)*
+- **BOSS's front door had no share card, and the practice it ships teaches one.** `og:image`
+  appeared **0 times** in the shell for the site's whole life, so every link BOSS posted previewed
+  as text — on the surface whose first impression *is* the card. It had been deferred on two
+  blockers, both now gone: the domain was registered 2026-08-20, and the asset now exists as
+  `web/og.png`, rendered from `scripts/og-card.html` so it can be **re-rendered rather than
+  re-invented**. Shell ships `og:image`, its dimensions, alt text and `summary_large_image`.
+  Guarded in **both** directions — a page declaring no card fails, and so does a page pointing at an
+  asset the deploy does not carry, because a broken card reads as a site that does not work.
+- **Citation debt: 18 of 20 → 1 of 20.** Every URL was **fetched and read before it was written
+  down**, never recalled — the rule `/vet` step 3 already stated, applied to the backlog that
+  predated it. Two attributions bent under that check and were corrected rather than filed:
+  **`ParallelChange` is Danilo Sato's**, not Fowler's, though it sits on Fowler's bliki (the credit
+  is now split and the link points at `MonolithFirst`, which is his); and **`anthropics/skills`
+  holds the Agent Skills spec and template, not a skill named `skill-creator`** — the source is now
+  named for what is actually there. *(n=5 on "verify the attribution, not just the claim".)*
+- **The last citation is a decision, not debt.** Karpathy's verifiability line — *traditional
+  software automates what you can specify; LLMs automate what you can verify* — resolves only to
+  secondary write-ups; the primary is an X post and a conference talk, neither confirmable as the
+  source of that wording. It stays `url: null` with the search recorded in `url_note`. **Zero would
+  have required inventing a plausible link, which is the exact failure the rule exists to catch** —
+  so the honest floor here is one, not zero.
+- **Two release-gate blockers cleared, both left by a rename that stopped one file short.**
+  `mentor-hiring` **ships at Scale and was named nowhere in Scale's `CLAUDE.md` contribution** — so
+  every founder who unlocked the mode got the one mentor built for their bottleneck and was never
+  told, in the file Claude reads to learn who is on the team. *(Exactly the `mentor-cofounder` bug
+  from v0.178.0, in a different stage — the gate written then is what caught it.)* And `/comp-eval`
+  had shipped in v0.190.0 without ever reaching `GUIDE.md`, the one doc meant to walk the whole
+  ladder; it is now named where a founder would look for it, with the boundary [[DEC-008]] drew —
+  **research is context, never evidence** — stated in the same breath.
+
+## 0.193.0 — 2026-08-20
+
+**The website described a roster that hasn't existed since v0.164.0, and the check written to catch
+exactly that was looking in the wrong half of the page.**
+
+- 🔴 **Three retired names, live on the public site.** The homepage terminal mock — captioned *"what
+  that actually prints"* — printed `agents: pm, coder, mentor-founder`; `pm` was superseded by
+  `product-lead` 27 releases ago. `/keeping-track`'s record mock showed `owner: pm`. `/team` and
+  `/guide` both described *"a database architect"* arriving at V1, an agent **`/whats-new` announces
+  the removal of on the same site**. `boss new` was run to capture the real output rather than
+  retyping it from memory.
+- 🔴 **Why `check:site` missed all of it, in its own words.** Its header promises to catch *"a page
+  that names a skill we removed"*, and it does own an agent-name scan — scoped to `<code>` tags. Every
+  stale name was somewhere else: two inside `<pre>` terminal mocks, two in plain English. **The mock
+  is the strongest claim on the site** — it is presented as literal output — and it was the one place
+  the check could not see. The scan now runs over `<pre>` blocks too, feeds the same `--strict`
+  release gate, and was verified to fire and to block in both directions. *(Sixth instance of
+  header-states-an-intent-the-code-misses.)*
+- **V1 hires nobody, and the site said the opposite.** [[DEC-005]] and [[DEC-006]] left L2 with
+  **zero agents**, and moved `/design-review` + `/ux-check` down to MVP. `/guide` and `/quick-guide`
+  still told founders the next tier of mentors and *"real designers"* arrived there. Corrected, and
+  the emptiness is now stated as the deliberate thing it is: the rung that adds two ways to *see*
+  what you built rather than more people to build it.
+- **The canvas is no longer described as one framework.** `/guide` still presented the Humane Product
+  Canvas as *the* canvas — the exact inheritance [[DEC-004]] overturned. It now says what shipped in
+  v0.191.0: you answer questions, the frame is a view you switch (`--frame lean|bmc`), switching
+  re-renders rather than re-interviews, and **Risks & Harms and Principles render in every frame** —
+  un-defaulting the framework was never meant to make those optional.
+- **The prose gap closed to zero.** v0.189.0 measured it: **10 of 48 skills and 5 of 11 agents
+  appeared in the generated reference table and in no hand-written sentence anywhere.** Both counts
+  are now **0**, and the omissions were as telling as the number — `mentor-capital`, the coach the
+  last two releases were about, plus the entire AI-product engineering set. New prose:
+  `/engineering` on why *"it works"* isn't a claim you can make about a model (`/ai-first-init`,
+  `/evals`, `/judge-traces`, `/ai-cost`, `/cost-review`); `/governance` on the second door into the
+  library — `/extract` and `/boss-learn`, the pattern you proved rather than the claim you read;
+  `/team` on the mentors that exist mainly to say *not yet*; `/conscience` on the harvest moment and
+  `/drift-deep`; `/guide` on `/comp-eval` and `/roadmap`.
+- **Two shipped CLI behaviours nobody had claimed.** `boss board <ID>` / `--detail` on
+  `/keeping-track`, and on `/start` — the page whose argument is *"a clean exit is what makes the
+  entrance safe to try"* — that `boss remove` **exports the venture brain to
+  `docs/venture-brain.md` before deleting anything.** Both were run against a throwaway project
+  before being written down.
+- `reviewed:` bumped on the four pages actually re-read end to end, and **not** on the four edited in
+  one section only. A review date is a claim like any other.
+
+## 0.192.0 — 2026-08-20
+
+> **For you:** Your board was probably lying to you. A status like `shipped (v0.3.0 — the pull half)`
+> is well-formed BOSS — the vocabulary doc *encourages* the detail — but the board compared the whole
+> string, so any status with a parenthetical fell through into **Captured**. On BOSS's own board that
+> was **12 of 31 cards**: eight shipped and four in build, all filed as raw ideas nobody had touched.
+> Fixed. Two more things came with it: every card now carries a one-line **gist** (`boss board
+> --detail`, hover on `--html`, or `boss board <ID>` for one card in full), and `deferred`/`dropped`
+> work folds into **Parked** instead of sitting in Captured looking like a decision you still owe.
+> On BOSS's own backlog that second change took Captured from **31 cards to 1**.
+
+**A board that miscounts its own columns is worse than no board — it makes finished work look
+unfinished, and finished work gets rebuilt.**
+
+- 🔴 **The classification bug.** [`docs/IDS.md`](../docs/IDS.md) declares a closed seven-word
+  vocabulary and says a status must *start* with one of them, with free-form detail after it
+  "encouraged". `src/board.js` tested `status === 'shipped'`. Every well-formed detailed status
+  missed. The board's own header comment has said **"Frontmatter is truth"** since v0.36.0 — the
+  header stated an intent the code did not enforce, which is now a four-for-five pattern in this
+  repo's audits. `src/records.js` had the correct `baseStatus()` parser the whole time and the board
+  never imported it.
+- **Three copies of that parser became one.** `check-backlog.js`, `records.js` and (missing) the
+  board each owned the rule. `baseStatus` / `STATUS_VOCAB` / `isParked` now live in
+  `src/frontmatter.js` — the module that exists *because* frontmatter parsing had already drifted
+  into four implementations (REVIEW-2026-07-28 §D1). A fourth reader with no copy at all is the same
+  failure wearing the opposite clothes.
+- **Parked is a lane, not a column.** `deferred` and `dropped` are decisions with written re-open
+  triggers, not backlog. They fold below the board, are never deleted (the reasoning is the point),
+  and are excluded from `--next`/`--blocked` — which previously offered to `/canvas` an idea whose
+  own record says the deferral is settled and DO-NOT-REHASH.
+- **The gist — the answer to "what IS this again?"** A card was an id and a title, and after sixty
+  records a title is a name, not a reminder. `gist:` is one plain sentence in frontmatter; where it
+  is absent the board reads the record's own opening prose instead, so nothing goes blank. Authored
+  wins, derived fills the silence — the same posture `shipped_on:` takes with its git fallback.
+  `/triage` and `/spec` now scaffold the field.
+- **Hover and expansion on the visual board.** Each card shows its gist clamped to two lines and
+  opens on hover *or keyboard focus* (cards are focusable — a disclosure only a mouse can reach is a
+  disclosure half the readers don't have). No script: this page has never had one. The status's
+  free-form half, thrown away for the board's whole life, is shown alongside it.
+- **Titles stopped being cut at 52 characters before the page ever saw them.** The terminal clips;
+  the page wraps. "Temple culture layer — human-agent collaboration as…" was truncated by a
+  terminal's width inside a card with room to spare.
+- **`boss board --json` no longer prints a courtesy line above the object** on a retired project —
+  one line of prose in front of a machine contract makes every consumer's `JSON.parse` throw. The
+  JSON counts now match what the board renders, too; they disagreed by six.
+- **BOSS's own backlog: 31 captured → 1.** The projection fix accounted for the first 19 (they were
+  never captured, just misfiled). The rest is the same drift one level up: 12 real captures → 1. The same drift as
+  the column bug, one level up: `exploring` means *being thought about*, `deferred` means *not being
+  built, with a written re-open trigger* — and ten records carried the trigger in their own bodies
+  while their frontmatter still said `exploring`. Two of them (**IDEA-017**, **IDEA-019**) say
+  *"until then this stays exploring"* in so many words, written before `deferred` had a lane to go
+  to. **IDEA-043** had already graded itself `NOT-YET`; **IDEA-066** already had a `## Gate`.
+  Parked: **004** · **006** · **007** · **009** · **017** · **019** · **021** · **033** · **036** ·
+  **043** · **052** · **066**. Nothing deleted — the reasoning is the point, and every one names
+  what re-opens it.
+  IDEA-007's load-bearing half already shipped into the ethos and voice notes and is explicitly
+  *not* parked with it. **IDEA-038 is the only thing left in Captured** — a live internal defect
+  (`library/` is read by nothing) with no external trigger, and parking a bug behind no trigger is
+  how bugs get lost.
+- **Two of those parks are worth reading twice.** **IDEA-036** was parked *despite* this session
+  arguing it was the best fit on the board — it is positioning copy for a front door that is built
+  and waiting on a URL, and copy written before the page gets rewritten. **IDEA-052 was parked with
+  its trigger already FIRED**: `mentor-operations` gated on *"first-dollar exists"* and `/money`
+  shipped in v0.157.0. It is parked anyway because building it means **adding a seat**, against
+  [[EVID-001]]'s compose-and-subtract mandate from a founder whose own stated fear was app bloat.
+  ***A fired trigger is a fact, not an obligation*** — and that is a distinction the board had no
+  way to express until `deferred` had a lane.
+- **IDEA-055 re-graded, and it says something about the hold.** [[EVID-001]] said *build nothing
+  yet* on the orientation axis pending a second signal. No second signal has arrived — and v0.179.0
+  and this release have both put real work on that exact axis, each arriving as a status line or a
+  **bug fix** rather than as a program. Marked `building` because that is what is true; the hold
+  stopped describing reality, which is the same failure this release fixed in the columns. What kept
+  it harmless is that every piece **corrected or subtracted** surface and none added.
+- **BOSS un-retired itself.** `.boss/manifest.json` carried `status: retired 2026-08-12` — a stray
+  from `/tmp`-testing `boss retire` that landed on the real project. The per-machine registry was
+  fixed on 2026-08-20; the repo's own stamp wasn't, so **every `boss board` run printed a
+  tombstone.** Cleared through `boss retire --undo` rather than by hand. Its `bossVersion` pin is
+  **left at 0.6.0 on purpose** — that is a true statement `boss status` uses to report drift, and
+  editing it forward would claim a `/boss-sync` that never ran.
+- **Two bugs this release introduced and caught before it landed.** Parking a record puts a banner
+  at the top of its file, which became the first prose block — **four cards stopped saying what they
+  were and started saying "PARKED 2026-08-20"**, a gist describing its own disposition when `status:`
+  already carries that. Now a leading blockquote opening with a disposition word is skipped *whole*
+  (its later paragraphs are boilerplate too), while a leading blockquote that is the founder's own
+  words — often the sharpest sentence in the file — is untouched. Separately, `boss board <ID>`
+  printed a **shipped date on unshipped cards**: `shipped_on` is derived from the `proof:` artifact's
+  first commit, which exists for plenty of in-flight records. Claiming a thing shipped is the exact
+  lie this release went and fixed in the columns.
+- 13 new tests (154 → **167** passing), and `npm test` exits **0** — the 3 dead predicates open
+  since v0.190.0 were cleared by a concurrent session during this work, not by it.
+
+## 0.191.0 — 2026-08-20
+
+**Canvas frames — the answer store gets its views, and the floor holds.** [[DEC-004]] settled in
+v0.189.0 that the Humane Product Canvas was one frame rather than the spine — it had become the sole
+spine by inheritance from a **v0.4.0 release note**, never by decision, and was carried unexamined
+through ~180 releases. The cells it had been missing landed that release. **This is the other half:
+the views.**
+
+- **One set of answers, three frames** — `humane` (default), `lean` (Maurya), `bmc` (Osterwalder).
+  **The founder never picks a framework.** They answer questions; the frame is a view they switch.
+- 🔴 **The floor holds, and this is the whole point of the decision.** **Risks & Harms and Principles
+  render in EVERY frame, including Lean and BMC** — appended under a plain *"two questions this canvas
+  asks that Lean doesn't"*, never hidden and never apologised for. If a conventional frame could drop
+  them, "humane" would become a preference a founder can decline — the argument BOSS already settled
+  against an opt-in ethics mentor. **Un-defaulting the frame is not un-defaulting the ethics.**
+- **A full answer→cell mapping ships with it**, so switching frames **never asks anything twice**. A
+  founder who switches views and gets re-interviewed will not switch again.
+- **`--frame` on an existing canvas is a RENDER, not an interview** — read, project, stop.
+- **Empty cells render `_(not yet)_` in every frame.** Quietly omitting a blank to make a
+  conventional view look complete is the same dishonesty as a filled-in guess, in a different layout.
+- **Attribution is now per frame** — Humane Product Canvas by Ajesh Shah · Lean Canvas by Ash Maurya ·
+  Business Model Canvas by Osterwalder & Pigneur. With three frames a single blanket credit would be
+  wrong on two of them.
+
+**[[DEC-008]] — desk research is context, not evidence, and never becomes an `EVID`.** This was the
+blocker gating [[IDEA-066]]'s remaining Tier-1 research items, and the reason it had to be settled
+before building any of them.
+
+- **`EVID`'s ladder does not measure confidence in general — it measures what a PERSON did**
+  (`stated-pain` → `observed-behavior` → `commitment`). A competitor's pricing page did none of those
+  things. Filing it there is not a loose fit; **there is no rung it could honestly occupy.**
+- 🔴 **The consequence that actually decided it: the conscience reads the evidence ledger and goes
+  quieter when commitments exist.** So if desk research counted as `EVID`, **a founder could raise
+  their evidence grade by googling** — an afternoon of competitor research would silence the exact
+  nudge that exists to push them toward a real conversation, while the riskiest assumption stayed
+  completely untested. And it would look legitimate while doing it.
+- **Findings live in the artifact they inform** — `docs/competition/`, a canvas cell — **with a source
+  URL and a `checked` date**, or marked `unverified`. That is `/comp-eval`'s rule generalised: it was
+  written for the case where fabrication is most tempting, and turns out to be right everywhere.
+  **No new ID type, no new ladder, no parallel store.**
+- **Research can MOTIVATE an `EVID`, never substitute for one.** *"Three rivals charge $40, so go ask
+  someone what they'd pay"* — the honest next step is `/interview`.
+- **`/evidence` now names the boundary out loud**, because a founder who just ran `/comp-eval` will
+  reasonably try to file a finding as evidence, and silence would accept it.
+- **The honest cost:** research findings are not *countable* the way `EVID` records are. Accepted —
+  a count is precisely what would make them feel like evidence.
+
+**Also:** `check:refs` reached **zero findings** — the three loops asserting on `docs/devlog.md` came
+good once BOSS started keeping one. The full suite is green for the first time in several releases.
+
+## 0.190.0 — 2026-08-20
+
+> **For you:** The deceptive-pattern catalog is now filtered by **what you're building**. `boss craft
+> deceptive-patterns --shape mobile-app` (or `cli`, `edtech`, `chatbot`, `marketplace`… 14 shapes)
+> shows only the surfaces you actually have; `--surface checkout-and-pricing` gives you the rows for
+> the thing you're on right now, each with the honest version. Four surfaces are new — consent
+> banners, tracking & telemetry, device permissions, and install/update — and `/red-team --humane`
+> now tests all of them instead of five chatbot probes.
+
+**"Are we still missing a bunch?" Yes — but the coverage gap was the third-biggest problem.**
+
+Asked to audit the dark-pattern catalog across design, tech, marketing, opt-in, cookies, tracking,
+security and data, three reviewers (the humane lens, the practice's owner, and a vibe-coder persona)
+converged on a different answer than the question expected.
+
+- 🔴 **`/red-team --humane` was manufacturing false confidence.** It ran **five** probes, all from
+  the AI-chatbot subset, while everything RVW-056 → RVW-063 adopted — obstruction, drip pricing,
+  manufactured urgency, interface interference, accessibility, minors, agentic-perpetrator,
+  algorithmic management — had **no probe at all**. Worse, it told founders with "a purely
+  functional internal tool" to skip; an internal tool with a checkout, a deletion flow and a scoring
+  model is exactly where those live. A founder could get a clean pass and a dated artifact in
+  `docs/red-team/` while shipping a roach-motel cancellation. **A pass that didn't test the thing is
+  worse than no pass.** Now a conditional battery keyed to the product's real surfaces, with
+  `--paths`' honesty rule (*name what you did not test, every time*) applied to it.
+- 🔴 **The catalog is now DATA.** `library/deceptive-patterns.json` — 89 patterns indexed by
+  **product shape × surface** — with the judgment split into `deceptive-patterns.md`. The old
+  279-line prose file was `boss craft`'s one 2×-median outlier, and every consumer read it whole, so
+  each pattern added made a founder *likelier* to skim past the four rows that were about their
+  build. **The catalog can now grow without bound because the dose is filtered, not because the
+  catalog is small** — `npm run check:patterns` warns if any single surface passes 12 rows.
+- **Four surfaces BOSS never had**, because five sweeps had all been AI-product-shaped: `consent-ui`
+  (the cookie-banner family — EDPB's six were *cited* since RVW-057 and never enumerated),
+  `tracking-and-telemetry` (third-party pixel leakage on sensitive routes, session replay,
+  training-on-user-data-by-default, fingerprinting after refusal), `device-permissions`, and
+  `install-and-update`. Plus **Nagging** and **Forced Action** — two canonical families BOSS had
+  pinned in its references and never actually held.
+- **A `deception` conscience moment + `deception-loop`** — the first moment about code the founder
+  may not have written. It watches for the shapes a model injects unprompted (a countdown with no
+  deadline, a pre-ticked opt-in, confirmshaming) and asks one four-second question: *"There's a
+  countdown in `Checkout.tsx:42`. Is there a real deadline behind it, or did the model write the
+  countdown?"* Recording a `DEC` that you **kept** it closes the loop as cleanly as removing it.
+- **`/ux-check` gets the markup walk**; **`/trust` gets Step 3.5** (the consent surface and what
+  actually leaves the machine — the family with no UI, which `/ux-check` structurally cannot see);
+  **`/canvas`** gets six surface questions that decide which families are live at all.
+- **`harm-taxonomy` grows a third axis: the bystander** — the person who is not a user and never
+  agreed to anything. Both existing frameworks ask what happens to *the user*; neither had a place
+  for the harvested contact, the face in an upload, or the second party on a recorded call. Also
+  makes `physical` reachable, which had been listed with zero patterns pointing at it.
+- **`/humane-refresh --coverage`** — the sweep that asks what's **missing**, not what's **new**.
+  Three consecutive what's-new sweeps shipped a catalog with no cookie-banner entry while the
+  watchlist's own standing query claimed privacy/consent as a lane. A sweep scoped to "since June"
+  cannot find what was already absent in June.
+- Fixes: `data-schema.md` pointed at a "humane half" of `harm-taxonomy` that did not exist;
+  `/onboard` promised to refuse three patterns "by name" and named none of their honest versions;
+  the humane-lens watchlist never recorded the 2026-07-23 sweep (`check:freshness` reads practice
+  frontmatter, not watchlist markers, so nothing caught it).
+- Honest note: `consent-or-pay` and `ai-washing` ship marked `status: candidate` and render as
+  **UNVETTED** — they are named because a founder meeting them deserves the name, and queued for
+  `/vet` rather than quietly presented as settled. Two surfaces (`minors`,
+  `content-and-moderation`) are flagged **thin** by the coverage checker and deliberately left thin;
+  an empty cell is a research question, not a row to invent.
+
+### `outpaced_by` — the conscience can finally notice something that stopped being true
+
+**BOSS watched for what was never made, and never for what stopped being true.** Every conscience
+moment it had was an *absence* predicate — *"you made an idea and no canvas exists"*, *"you shipped a
+FEAT and no smoke check is recorded."* Nothing could say **"evidence landed and the artifact hasn't
+moved since."**
+
+That was **structural, not an authoring oversight**, which is why no amount of writing better loops
+would have fixed it: `loop-runtime.js` had a closed vocabulary of three predicates — `exists`,
+`count_at_least`, `any_file_matches` — and **all three test content or existence. None compares two
+timestamps.**
+
+- **`outpaced_by: { path_glob, behind, min }`** — N+ files under `path_glob` are newer than the
+  newest file under `behind`. The runtime's **only temporal predicate**, and the first that can
+  express decay rather than absence.
+- 🔴 **It is not an age guess, and that distinction is load-bearing.** `src/board.js` deliberately
+  refuses to infer staleness from age — *"a guessed signal would add noise"* — and **that refusal
+  stands.** This asserts a *relational* fact instead: **B changed after A, so A has not accounted for
+  B.** No threshold, no opinion about how old is too old, nothing to tune.
+- **Fails safe.** A fresh clone resets mtimes, so everything looks the same age and the predicate
+  under-fires. That is the correct direction for a conscience: a missed nudge costs nothing, a false
+  one spends trust.
+
+### `harvest-loop` — the first loop that uses it
+
+The founder derived a persona (honestly labelled mostly guesswork), then did the harder thing: talked
+to someone, or dropped in a transcript, and `EVID` records landed. **The persona was supposed to get
+smarter from that** — `/persona enrich` exists precisely so it can — and nothing noticed when it
+didn't. This is the runtime half of the accretion gap found earlier this week: the artifacts accreted
+individually and nothing watched whether they kept up with each other.
+
+- **Entry:** a persona exists, and ≥2 `EVID` records are newer than it. **Exit:** the persona is
+  newer than the newest evidence — it caught up.
+- **The exit is the same predicate with the arguments swapped**, which is why this needed no extra
+  machinery. It is also **self-silencing**: run `/persona enrich` and the persona becomes the newest
+  file, entry stops holding, and the loop goes quiet with nothing recorded anywhere.
+- **Judgment-gated (`JUDGE_MOMENTS`).** The predicate compares file times and **cannot tell whether
+  the new evidence is even about the user** — a signal about pricing or a competitor has nothing to
+  say about who the persona is. So the model reads the new records first and **silence is a common
+  correct output.** The frame ranks what it finds: *contradicts* the artifact is worth interrupting
+  for; *merely adds* usually isn't; *unrelated* is silence.
+- **It never offers to update the artifact silently.** The synthetic/real ledger is worth something
+  only because a human watched it move; a background refresh is a synthetic read laundered into a
+  real one, which is exactly what the ledger exists to prevent.
+- **The canvas is deliberately NOT wired to this yet.** Evidence about a person bears unambiguously
+  on the picture of that person; evidence bearing on a *canvas cell* is a looser mapping, and a
+  looser mapping means more false fires on the one loop whose entire risk is crying wolf. Add it once
+  this one has proven quiet.
+
+Verified on a real scaffold and across four states: fires when evidence outpaces, goes quiet after an
+enrich, respects the `min: 2` threshold, and **stays silent when no persona exists at all** — absence
+is the other loops' job, not this one's.
+
+### `/comp-eval` — the one business question you can't answer from your own head
+
+Seed: Ajesh — *"if i say find me all the competition for x, features, pricing, differentiators. then
+help do research and organize… and i can add names of new comp, and have it do the eval."*
+
+This **narrows** the standing recommendation rather than overturning it. [[IDEA-066]] argued BOSS
+should *structure and grade, not fetch* — the founder's host searches better than BOSS ever will, and
+`/interview` and `/pretotype` both prep-but-don't-perform. That holds for market sizing, why-now and
+channels. **It fails for competition, for one reason those don't share: you cannot list the
+competitors you don't know exist.** Every other question on the canvas is answerable from the
+founder's own head; this one has a tail they are structurally blind to, and the tail is where the
+surprise lives.
+
+It is also the only one with **a durable artifact that has a lifecycle** — rows get added, rows go
+stale, rows get re-evaluated — which is what earns it a verb instead of a method attached to a cell.
+
+- **Ships at MVP.** At Quickstart the canvas's *"what do they use today"* is the right-sized version.
+- **`docs/competition/`** — a README table plus a file per rival, committing with the repo like
+  `docs/personas/`. Add a rival and the others keep their own verification dates; **re-running never
+  silently refreshes rows it didn't check.**
+- 🔴 **The honesty bar is the whole skill, because the failure mode is so easy to hit.** A model will
+  produce plausible tier names and dollar figures for a product it half-remembers, and a founder will
+  paste them into a deck. So: **every factual cell carries a source URL and a `checked` date or it
+  says `unverified`** — no "approximately," no remembered pricing, and **if you did not open the
+  page, you do not know the price.** "Contact sales" is recorded as *not public*, which is itself a
+  fact about who they sell to.
+- **Every rival gets an honest `why they might win`.** If you can't write a real one, that's a
+  finding — you don't understand them yet, or they aren't a competitor. *If every row ends in "…but
+  we're better," you drew the landscape instead of looking at it.*
+- **The rows founders leave off the slide are required**: a spreadsheet, an agency, an intern, a
+  WhatsApp group — and **"doing nothing" is always a row**, and is often the incumbent.
+- **It names what it did not find** — the spaces it couldn't search, the rivals it couldn't verify.
+  The `--paths` honesty line, applied to research.
+- **Refused:** composite scores or a leader quadrant (*a number that ranks rivals is a judgement
+  wearing arithmetic*), and any tracking daemon — no pipelines, no alerts. Build the view, refuse the app.
+
+**The ladder gate did real work here.** `check:ladder` refuses any new skill that hasn't declared
+durable-vs-append-only, then refused again because a `seam` without a `seamNot` *"grows into the
+practice."* Both are right: the seam is **write the rival's name and today's date, one line** —
+because a pricing page carries no history and the survey can always be run later, while the
+observation cannot be recovered. The `seamNot` is the folder, the matrix, and the survey.
+
+
+**The follow-up pass — reviewing what the first pass left open, which found three more.**
+
+- 🔴 **`boss remove` was tripping BOSS's own new catalog row.** Writing `exit-no-export` ("the work
+  is real and there is no export") sent us to audit BOSS's own exit. Most of it was already right —
+  the boundary is derived, the founder's files are counted and named, `docs/evidence/` is pruned
+  only if empty. But `.boss/brain/*.md` is model-owned prose that `boss brain` explicitly tells the
+  founder is **theirs to edit**, and remove deleted it as "the conscience's private notes." Now it
+  **exports to `docs/venture-brain.md` first**, and the preview says so. Machine state goes; the
+  reasoning trail leaves with you.
+- 🔴 **`npm test` is green for the first time.** It had been exiting 1 on three dead predicates:
+  `drift-loop`, `extraction-loop` and `coordination-loop` all assert on `docs/devlog.md`, and BOSS —
+  which ships `/log` and tells founders a devlog is *"the thing future-you reads before starting
+  work"* — kept none itself for 190 releases. **Three of BOSS's own most important loops were
+  structurally unopenable on the project building BOSS.** Seeded the devlog; the predicates are
+  alive. (And `.gitignore` gained `docs/devlog.md`, joining `RESUME.md` in the local tier — the
+  `check-refs` comment had already worked out why that discriminator is the right one.)
+- **`check:freshness` grew a third sweep: watchlist markers.** The cadence check asks "is this
+  practice overdue?" and the reverse check asks "is any practice claimed by nobody?" Neither could
+  see the failure that actually happened — a sweep runs, edits a practice, bumps *its* date, and
+  never stamps the watchlist marker that scopes the **next** sweep. It found one on its first run:
+  `build-craft`'s marker has been stale across two sweeps.
+- Softened `install-postinstall-telemetry` from hard-named to contextual — a version or licence
+  check on install is ordinary; only silent collection is the pattern, and a hard-name that fires on
+  ordinary behaviour is the false-positive that gets a conscience muted.
+- The two `status: candidate` rows and the two thin surfaces are now written up as one-claim files
+  in `docs/research/inbox/` rather than left as notes, so `/vet` has something to rule on.
+
+**And the third pass — working the open list, which answered a structural question.**
+
+- 🔴 **`minors` was never a surface, and its thinness was the signal.** It sat at two rows while every
+  minors-related pattern kept wanting to live somewhere else — because **every other surface is a
+  PLACE in the product, and "minors" is a property of the USER.** Dissolved into a modifier: eight
+  rows now carry a *stricter when a minor may be present* line, read where you actually build, and
+  `boss craft deceptive-patterns --minors` lists them together. An edtech founder gets the rule and
+  its stricter version in one place instead of meeting the same pattern twice.
+  **The general lesson, now in the practice: when a cell stays thin, check the shape before you fill
+  it.** A thin cell is sometimes a hole and sometimes a category that does not exist.
+- **`build-craft`'s watchlist marker reconciled** — 2026-07-30 → 2026-08-20, matching its own log's
+  newest row. No research ran; the sweeps had happened and never stamped the frontmatter, so the
+  marker was scoping every next sweep to "since July 30" and re-asking for three weeks of recorded
+  work. Found by the new marker sweep on its first run.
+- **Five skills that inline their own short pattern list now point at the catalog too** (`/landing`,
+  `/money`, `/pretotype`, `/health`, `/sunset`). The inline line stays — three lines at the right
+  moment beats a command — but each now says which surface it is a subset of, and that the catalog
+  wins if the two disagree. That is the drift guard the split needed.
+- Softened `engage-addictive-defaults-on` from hard-named to contextual and moved its minors-only
+  teeth into the modifier where they apply.
+- `/vet`'s local rubric is pre-resolved on both candidates so the eventual pass is cheap: **AI
+  washing is confirmed NOT a duplicate** (checked against `landing-page.md`'s honesty rules and
+  `claims-capability-misrepresentation` — opposite direction, different surface), and consent-or-pay
+  clears principle-fit, duplication and ceremony. **Both remain open on evidence grade only**, which
+  is the half that needs sources — and for AI washing it is the *whole* question, since RVW-058's
+  NOT-YET was purely about evidence.
+
 ## 0.189.0 — 2026-08-20
 
 **The mentor ladder was lumpy, and the product had been voting against it for releases.**
@@ -31,6 +531,11 @@ asked for it.
   is "give away your Legos."** The org mentor belongs where an org exists. **Scale now has its
   first agent**; it had none.
 - V1 keeps the two whose moment it actually is: `mentor-fundraising` + `mentor-pitch`.
+- ℹ️ **Same release, two changes to the same agents — read them together.** The re-rung above uses
+  the names these mentors had when it happened; the rename pass further down this entry then moved
+  `mentor-business` → **`mentor-capital`** and `mentor-talent` → **`mentor-hiring`**. The rungs are
+  what changed here and they survived the rename: `mentor-capital` ships at MVP, `mentor-hiring` at
+  Scale. `supersedes.json` carries both renames, so a synced project is told.
 
 **The enforcement hole underneath it — a checker whose comment described a check it wasn't
 doing.** `check-refs` class 4's header states its intent as *"a founder-facing file naming an
@@ -129,7 +634,7 @@ two proto-personas whose job is exactly this: `first-product` (cannot read an ac
 |---|---|---|
 | `mentor-venture` | `mentor-founder` | "Venture" reads as venture capital — on the **cornerstone**, the first mentor every project gets |
 | `mentor-gtm` | `mentor-customers` | An acronym you must already know |
-| `mentor-business` | `mentor-money` | "Business" covers everything, so it names nothing |
+| `mentor-business` | `mentor-capital` | "Business" covers everything, so it names nothing |
 | `mentor-talent` | `mentor-hiring` | HR language for a question asked in plain words |
 | `program-manager` | `planner` | Collided by initialism with `pm`, and shipped beside it |
 | `coder-generalist` | `coder` | "Generalist" described BOSS's roadmap, not the founder's need |
@@ -296,13 +801,128 @@ times each**: two writers, zero readers. So a founder ran `/persona derive` agai
   cell answered from the repo alone stays `_(not yet)_` on the evidence that matters.
 
 🔴 **And the reason no loop watches staleness: the runtime cannot express it.** `loop-runtime.js`
-supports exactly two predicates — `exists` and `count_at_least`. Every conscience moment BOSS has is
+supports three predicates — `exists`, `count_at_least`, `any_file_matches` — and **all three test
+content or existence; none can compare two timestamps.** Every conscience moment BOSS has is
 therefore an **absence** predicate ("an idea exists and no canvas does"); none can say *"evidence
 landed and the artifact hasn't moved."* **BOSS's conscience watches for what was never made, not for
 what stopped being true.** Harvesting needs a staleness predicate, and that is a new runtime
 primitive rather than a loop someone forgot to author. **Not built** — recorded in [[FEAT-025]]
 Layer 4 with the proposed shape (N new `EVID` since the artifact's mtime; two mtimes and a count,
 never inferred from age, so `board.js`'s standing refusal to guess staleness holds).
+
+**The canvas gains the four cells the single spine never asked for** ([[DEC-004]] item: *conventional
+cells are additions, not replacements*). **Cost Structure** first, because it is the only cell present
+in both Lean Canvas and the BMC with no home in the humane one — *revenue without cost isn't a model,
+it's a price* — and because its absence is what left BOSS with no unit-economics record at all. Plus
+**What it takes to deliver** (Key Resources + Key Activities, folded into one question because for a
+solo founder they are one question), **Key Partnerships**, and sharpened prompts on three existing
+cells: **Early Adopters** into People (*who feels it worst today, that you could reach this month*),
+**Customer Relationships** into Modes of Engagement, and **ongoing Channels** into Business Model
+(*which channels keep working, and which were just you hustling*).
+
+- **All four are dormant by default and carry their own trigger** — Cost Structure goes live once
+  there is a price or a real cost; Key Partnerships only if someone else is load-bearing, and *most
+  ventures have none.* `/canvas`'s own rule is **"Don't interrogate"**, and four new cells would have
+  broken it.
+- 🔴 **The second-order break, caught before it shipped: the graduation gate said "most cells
+  filled."** Adding four dormant cells would have quietly raised the bar for leaving Quickstart —
+  every time the canvas learned to answer a new audience, graduating would get harder, which is the
+  exact inversion the mode ladder exists to prevent. Both statements of the gate are now scoped to
+  the **live** cells, and a dormant cell left `_(not yet)_` **never counts against graduation.**
+- Verified nothing else counts canvas cells: `canvas-loop`'s exit is a regex on the riskiest
+  assumption having content, and `board.js`'s "cell" references are kanban columns.
+
+⚠️ **A correction to this release's own notes.** An earlier draft of the entry above claimed
+`loop-runtime.js` supports *"exactly two predicates."* It supports **three** — `exists`,
+`count_at_least`, `any_file_matches`. The conclusion is unchanged and the reason is now stated
+properly: all three test **content or existence**, and **none compares two timestamps**, which is why
+staleness is not expressible. The wrong count had been written into three records and is corrected in
+all of them.
+
+**Three money-and-story mentors become one venture coach whose remit SCALES** ([[DEC-006]]).
+Seed: *"i really feel like mentor-money, fundraising, and pitch could be baked into vc or incubator
+coach role… it just continues to scale in what they have as their skill set."*
+
+- 🔴 **A reversal, recorded as one.** Asked earlier the same day *"why 4 mentors?"*, the answer was
+  *don't merge* — `/consult`'s only worked divergence example is literally *"fundraising says raise
+  now; business says your unit economics aren't ready."* **That was partly right and stated too
+  strongly.** The merge costs **one pair**, not the mechanism: `architect ↔ founder` and
+  `customers ↔ money` both survive.
+- **What changed the answer is the second framing.** BOSS calls itself *a just-in-time startup
+  incubator*, and a real incubator does not staff a pricing specialist, a fundraising specialist and
+  a pitch coach — **one partner covers all three and gets deeper as the company does.** Same shape as
+  the [[DEC-005]] designer finding: BOSS shipped a split it did not itself run. And needing `/consult`
+  to *find a mentor* is a smell about the roster, not a feature of the router.
+- **Capability that grows INSIDE an agent is new for BOSS.** The ladder was otherwise entirely
+  arrival-based, which is what produced the 1/3/4/0 lumpiness fixed earlier in this same release.
+  `mentor-capital` now reads the project's mode and works at the depth it has earned: the model at MVP,
+  **the raise question and the investor story becoming live at V1 — where nothing installs.**
+- **V1 now seats ZERO agents, deliberately.** It is a skills rung (`/board`, `/design-library`,
+  `design-drift-loop`) and its mode doc says so rather than leaving a hole where a roster used to be.
+- 🔴 **The independence guard, and it is DEC-005's own reasoning.** That decision refused to fold
+  schema into the architect because *"an agent that also owns the schema is being asked 'is this
+  premature?' by someone with a stake in the answer being no."* The same pressure exists here, weaker
+  but real: `mentor-fundraising`'s whole value was **defaulting to "not yet,"** and the merged coach
+  also owns the deck. Three rules ship in the prompt: *not yet* is **a stance it names, never one it
+  averages**; it must **surface its own money-vs-raise tension out loud** (the sentence two mentors
+  used to produce by disagreeing); and **no deck while the raise question is open** — story work for
+  customers and hires is always fine, a pitch deck is downstream of a decided raise.
+- **`/consult` rewired in three places** — seating, lens map, and the worked divergence example,
+  which *was* this exact pair. Its replacement comes from a pair that still exists
+  (`customers` ↔ `money`, channel spend vs. margin), and the skill now states that **a split inside
+  one mentor counts** and must be rendered on the panel as though it came from two chairs.
+- **`supersedes.json` gains two more `kind: "agent"` entries** (12 total), each with a `migrate:` line.
+- **`docs/GUIDE.md` was still routing founders to both names** — caught by `check-refs` class 4, which
+  correctly reclassified them as BOSS-only the moment they stopped shipping. That is the
+  dev-workspace-described-as-shipped error, caught by a gate this time instead of by hand.
+- **`auto-log.js` deliberately keeps both names** in its read-only allowlist: a founder who synced
+  before this release still has those agents installed, and dropping them would make the hook treat
+  their agents as writers. A backward-compat allowlist is not a roster claim.
+
+**The record layer closes: three investor facts land as SHARPENS, not new cells.** The canvas gained
+no rows — `/canvas`'s own rule is *"don't interrogate,"* and the coverage was achievable by asking the
+existing cells better:
+
+- **Market sizing → People.** *How many are there, and how do you know?* Counted bottom-up — a list, a
+  forum, a job title you can filter on. **"$50B market" is not an answer; "about 4,000 exist and I can
+  name where they gather" is** — and a number whose source you can't say out loud doesn't go in the
+  cell. This is the anti-TAM-calculator refusal made operational rather than declared.
+- **Competitive landscape → Problem.** Who else sells a fix — including the spreadsheet, the agency,
+  the intern, and doing nothing — and **for each real one, why they might win.** *A competitive
+  picture where everyone else is dismissed is a picture you drew rather than looked at.*
+- **Team background → Modes of Engagement.** A bio isn't a venture fact, but credibility is: **what
+  makes your unique advantage believable to someone who doesn't know you?** Not a CV — the specific
+  thing you've seen, built, sold or lived that most people attempting this haven't.
+- **`mentor-capital` now reads all five data-room-bearing cells** (Cost Structure, People, Problem,
+  Modes of Engagement, Business Model) **before asking the founder for anything.** Most of what a data
+  room wants is already written down by the time the raise question is live; asking for it again is
+  how a tool teaches a founder that their own records don't count.
+
+**Layer 1 of [[FEAT-025]] is now three items from done, and all three are correctly held open:**
+CAC/LTV (gated on real customers), the ask + use of funds (gated behind the coach's *not yet*), and
+the traction timeline — **closed as won't-build-as-a-record**, because it is fully derivable from
+`EVID` dates + CHANGELOG + `/measure` and a field would duplicate truth.
+
+**The merged coach is `mentor-capital`, and the rename that got it there left no two-hop.** Ajesh, on
+seeing the merged seat: *"shd it be named something more apt. money sounds lame."* He was right, and
+for a reason stronger than taste — **the remit had tripled that afternoon and the name still described
+a third of it.**
+
+- **Two obvious candidates were mechanically unavailable.** `supersedes.json` is append-only and a
+  promise to anyone who synced; it already routes `mentor-venture → mentor-founder` and
+  `mentor-business → …`. Reusing either would tell a founder their agent became something it isn't.
+  So the two best-fitting words for a seat that now covers the raise were **burnt names.**
+- **`mentor-money` never shipped.** It was born in the rename pass and renamed again before release,
+  both inside v0.189.0 — so the ledger records **`mentor-business → mentor-capital` directly, with no
+  intermediate hop.** A ledger row pointing at a name no founder ever had would be a promise about a
+  thing that never existed, and this repo has already logged one *"rename's own two-hop trap."*
+- 🔴 **The sweep rewrote a verbatim quotation, and that was caught and reverted.** A global
+  find-and-replace edited Ajesh's own quoted words inside [[DEC-006]] and this changelog, making him
+  say "mentor-capital" in a sentence where he said "mentor-money." **A record that silently edits what
+  someone said is worse than a stale name** — the quote is evidence, the name around it is only
+  commentary. Both restored; the surrounding prose keeps the new name.
+- `IDEA-064`'s rename table carried the old justification (*"it already pairs with `/money`"*), which
+  stopped being true the moment the name stopped being money. Rewritten, with the full path recorded.
 
 > **For you:** the business-model mentor now arrives at **MVP** instead of V1, so `/money`'s
 > first-price step finally has the mentor it already named as its owner — if you took a first dollar

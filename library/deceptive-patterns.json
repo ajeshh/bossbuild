@@ -1,0 +1,1179 @@
+{
+  "id": "CATALOG-deceptive-patterns",
+  "schema": 1,
+  "note": "The deceptive-pattern catalog as DATA, not prose. It is allowed to grow without bound because nobody reads it whole: a founder sees only the rows for the surfaces their product actually has. Prose judgment (effect-not-intent, symmetry-in-choice, humane defaults, the record-the-crossing mechanism) lives in library/practices/deceptive-patterns.md and is NOT duplicated here. Consumers: `boss craft deceptive-patterns [--shape X] [--surface Y]`, /red-team --humane, /ux-check, /trust, the deception conscience moment, and scripts/check-pattern-coverage.js. MINORS IS A MODIFIER, NOT A SURFACE (decided 2026-08-21): every other surface is a PLACE in the product, while \"minors\" is a property of the USER — so it never had a coherent home and sat at 2 rows. Rows now carry an optional stricter_when_minors (same pattern, higher bar), and `boss craft deceptive-patterns --minors` lists every row that has one.",
+  "last_reviewed": "2026-08-20",
+  "review_by": "2026-11-18",
+  "shapes": {
+    "cli": {
+      "label": "CLI / terminal tool",
+      "surfaces": [
+        "install-and-update",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "metering-and-credits",
+        "cancel-and-delete"
+      ]
+    },
+    "dev-tool": {
+      "label": "Library, SDK, API, or developer platform",
+      "surfaces": [
+        "install-and-update",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "metering-and-credits",
+        "social-proof-and-claims",
+        "cancel-and-delete",
+        "signup-and-identity"
+      ]
+    },
+    "mobile-app": {
+      "label": "iOS / Android app",
+      "surfaces": [
+        "device-permissions",
+        "notifications-and-engagement",
+        "checkout-and-pricing",
+        "cancel-and-delete",
+        "signup-and-identity",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "generated-markup"
+      ]
+    },
+    "web-app": {
+      "label": "Web app / SaaS with accounts",
+      "surfaces": [
+        "signup-and-identity",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "checkout-and-pricing",
+        "cancel-and-delete",
+        "notifications-and-engagement",
+        "generated-markup"
+      ]
+    },
+    "marketing-site": {
+      "label": "Landing page, waitlist, or content site",
+      "surfaces": [
+        "consent-ui",
+        "tracking-and-telemetry",
+        "social-proof-and-claims",
+        "signup-and-identity",
+        "generated-markup"
+      ]
+    },
+    "chatbot": {
+      "label": "Conversational or companion AI",
+      "surfaces": [
+        "ai-voice",
+        "notifications-and-engagement",
+        "bystanders",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "cancel-and-delete"
+      ]
+    },
+    "ai-feature": {
+      "label": "AI-mediated feature inside a product",
+      "surfaces": [
+        "ai-voice",
+        "generated-markup",
+        "metering-and-credits",
+        "consent-ui",
+        "tracking-and-telemetry"
+      ]
+    },
+    "agent": {
+      "label": "Agent that acts on the user's behalf",
+      "surfaces": [
+        "agent-actions",
+        "ai-voice",
+        "bystanders",
+        "device-permissions",
+        "checkout-and-pricing"
+      ]
+    },
+    "marketplace": {
+      "label": "Two-sided platform that matches, ranks, or pays people",
+      "surfaces": [
+        "scoring-and-pay",
+        "social-proof-and-claims",
+        "checkout-and-pricing",
+        "bystanders",
+        "content-and-moderation"
+      ]
+    },
+    "ecommerce": {
+      "label": "Sells goods or subscriptions; has a cart",
+      "surfaces": [
+        "checkout-and-pricing",
+        "social-proof-and-claims",
+        "notifications-and-engagement",
+        "cancel-and-delete",
+        "generated-markup",
+        "consent-ui",
+        "tracking-and-telemetry"
+      ]
+    },
+    "edtech": {
+      "label": "Learning product (frequently reaches minors)",
+      "surfaces": [
+        "notifications-and-engagement",
+        "scoring-and-pay",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "signup-and-identity"
+      ]
+    },
+    "health-or-regulated": {
+      "label": "Health, legal, financial, or other high-stakes domain",
+      "surfaces": [
+        "bystanders",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "cancel-and-delete",
+        "signup-and-identity"
+      ]
+    },
+    "social-or-ugc": {
+      "label": "Community, creator, or user-generated content",
+      "surfaces": [
+        "content-and-moderation",
+        "bystanders",
+        "notifications-and-engagement",
+        "social-proof-and-claims",
+        "signup-and-identity"
+      ]
+    },
+    "hardware-or-iot": {
+      "label": "Physical device, sensor, or location product",
+      "surfaces": [
+        "device-permissions",
+        "bystanders",
+        "consent-ui",
+        "tracking-and-telemetry",
+        "cancel-and-delete"
+      ]
+    }
+  },
+  "surfaces": {
+    "signup-and-identity": {
+      "label": "Signup & identity",
+      "detect": "Is there an account, a login, an email capture, or an OAuth grant?"
+    },
+    "consent-ui": {
+      "label": "The consent surface",
+      "detect": "Is there a cookie banner, a consent dialog, or a privacy toggle anywhere?",
+      "note": "Visible. /ux-check can read this one — button weight, default state, what the copy says."
+    },
+    "tracking-and-telemetry": {
+      "label": "Tracking & telemetry",
+      "detect": "Do you send anything about a user to a third party — analytics, ads, a pixel, an SDK, a model provider?",
+      "note": "The pattern family with almost NO UI. There is nothing to look at, which is why /ux-check cannot catch it and /trust must."
+    },
+    "checkout-and-pricing": {
+      "label": "Checkout & pricing",
+      "detect": "Does anyone pay you, at any point, for anything?"
+    },
+    "cancel-and-delete": {
+      "label": "Cancel, export & delete",
+      "detect": "Can someone leave — end a subscription, close an account, take their data out?"
+    },
+    "notifications-and-engagement": {
+      "label": "Notifications & engagement",
+      "detect": "Does the product try to bring someone back — push, email, streaks, reminders?"
+    },
+    "social-proof-and-claims": {
+      "label": "Social proof & claims",
+      "detect": "Does the product make claims about itself — reviews, testimonials, user counts, capabilities, benchmarks?"
+    },
+    "ai-voice": {
+      "label": "The AI's own voice",
+      "detect": "Does a model talk to the user in its own voice?"
+    },
+    "agent-actions": {
+      "label": "Agent actions",
+      "detect": "Does something act on the user's behalf without them watching each step?"
+    },
+    "generated-markup": {
+      "label": "The markup the model wrote",
+      "detect": "Did an AI write any of the UI you shipped?",
+      "note": "The keystone surface for BOSS: the founder did not design these and often cannot see them."
+    },
+    "device-permissions": {
+      "label": "Device permissions",
+      "detect": "Does the product ask the OS for camera, mic, location, contacts, photos, or notifications?"
+    },
+    "install-and-update": {
+      "label": "Install, update & deprecation",
+      "detect": "Does someone install this, and do you ship updates to it?"
+    },
+    "metering-and-credits": {
+      "label": "Metering & credits",
+      "detect": "Is anything priced by usage — tokens, credits, calls, seats-by-activity?"
+    },
+    "scoring-and-pay": {
+      "label": "Scoring, ranking & pay",
+      "detect": "Does the product score, rank, match, or pay a person?"
+    },
+    "bystanders": {
+      "label": "Bystanders",
+      "detect": "Do you hold data about people who are not users and never agreed to anything?",
+      "note": "The axis neither harm framework carries. Added 2026-08-20."
+    },
+    "content-and-moderation": {
+      "label": "Content & moderation",
+      "detect": "Can one user's content reach another user?"
+    }
+  },
+  "patterns": [
+    {
+      "id": "consent-accept-prominent",
+      "name": "Accept prominent, Reject buried",
+      "surface": "consent-ui",
+      "looks_like": "\"Accept All\" is a solid coloured button; declining is a grey text link, a second screen, or absent entirely.",
+      "honest": "Reject is one click, the same weight, on the same screen. If the good door takes more clicks than the bad one, you have already failed.",
+      "teeth": "11 CCR § 7004 (symmetry in choice); EDPB 03/2022 \"Obstructing\"",
+      "rvw": "RVW-057",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "consent-cookies-before-click",
+      "name": "Trackers fire before the click",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "The banner renders, but the analytics and ad tags already loaded. The choice is decorative.",
+      "honest": "Nothing non-essential loads until consent is given. Test it with the network tab, not the code.",
+      "teeth": "GDPR / ePrivacy — consent must precede processing",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "consent-legitimate-interest-laundering",
+      "name": "Legitimate-interest laundering",
+      "surface": "consent-ui",
+      "looks_like": "A second tab behind the banner holding pre-ON toggles labelled \"legitimate interest\", so \"Reject All\" on tab one changes little.",
+      "honest": "One list. Everything non-essential off by default. No second ledger.",
+      "teeth": "EDPB 03/2022",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "consent-bundled",
+      "name": "Bundled consent",
+      "surface": "consent-ui",
+      "looks_like": "One checkbox covering terms, marketing email, analytics, and third-party sharing at once — take it or leave.",
+      "honest": "Separate, granular, independently refusable. Using the product cannot require agreeing to marketing.",
+      "teeth": "EDPB 03/2022 (freely given, granular)",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "consent-or-pay",
+      "name": "Consent-or-pay wall",
+      "surface": "consent-ui",
+      "looks_like": "\"Accept tracking, or subscribe.\" Privacy becomes a paid tier.",
+      "honest": "A genuine free path that does not require surveillance.",
+      "teeth": "EDPB opinion on consent-or-pay (large platforms) — verify current scope before relying on it",
+      "emergent": false,
+      "hard": false,
+      "status": "candidate"
+    },
+    {
+      "id": "consent-nag-after-decline",
+      "name": "Nag after decline",
+      "surface": "consent-ui",
+      "looks_like": "The banner returns every session until the user gives in. A refusal that expires is not a refusal.",
+      "honest": "A decline lasts. Store it as long as you would have stored the acceptance.",
+      "teeth": "EDPB 03/2022 \"Fickle\"",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "consent-overloading",
+      "name": "Overloading the choice",
+      "surface": "consent-ui",
+      "looks_like": "Eight hundred vendor toggles, so \"Accept All\" is the only act a human will actually perform.",
+      "honest": "A short list with a real one-click refuse. Volume is not transparency.",
+      "teeth": "EDPB 03/2022 \"Overloading\"",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "consent-left-in-the-dark",
+      "name": "Left in the dark",
+      "surface": "consent-ui",
+      "looks_like": "Policy language that technically discloses collection while making it unreadable — or a setting whose copy does not say what turning it off does.",
+      "honest": "Plain sentences naming what you collect, why, for how long, and who else sees it.",
+      "teeth": "EDPB 03/2022 \"Left in the dark\"",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "track-third-party-pixel-leakage",
+      "name": "Third-party pixel on a sensitive flow",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "An analytics or ad tag sits on a health, finance, or identity route and quietly ships URLs, form values, and identifiers to a company the user never heard of. The model pasted the snippet; nobody read what it sends.",
+      "honest": "No third-party tag on any sensitive route. Open the network tab on that page and read every outbound request by hand.",
+      "teeth": "FTC v. GoodRx (2023); FTC v. BetterHelp (2023)",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted",
+      "stricter_when_minors": "A third-party tag on a route a child uses is the highest-severity version of this row."
+    },
+    {
+      "id": "track-session-replay-capture",
+      "name": "Session replay that records form fields",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "A replay SDK installed in one line records keystrokes — including fields the user typed into and never submitted.",
+      "honest": "Mask every input by default; allowlist what you record, never denylist.",
+      "teeth": "CIPA and state wiretapping suits (US)",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "track-telemetry-on-by-default",
+      "name": "Telemetry on by default",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "Usage data is collected from first run, with an opt-out buried in a config file or a docs page.",
+      "honest": "Opt-in, with a symmetric off. If you must default it on, say so on first run in one line.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "track-training-on-user-data",
+      "name": "Training on user data by default",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "User content silently becomes training data — often inherited from your model provider's default terms, and never disclosed to the person who typed it.",
+      "honest": "Opt-in, disclosed downstream in your own policy, and the provider's training opt-out actually configured (an act, not a promise). You cannot un-train a model on prompts you already sent.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "track-fingerprinting-workaround",
+      "name": "Fingerprinting as a consent workaround",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "The user refused cookies, so the product identifies the device instead.",
+      "honest": "Refusal means not tracked, by any mechanism.",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "track-ignoring-opt-out-signal",
+      "name": "Ignoring the opt-out signal",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "A Global Privacy Control or equivalent signal arrives and the product carries on.",
+      "honest": "Honour the signal as a valid opt-out without a second ask.",
+      "teeth": "CCPA/CPRA opt-out preference signal rules (CPPA)",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "track-anonymous-that-isnt",
+      "name": "\"Anonymous\" that isn't",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "Analytics described as anonymous while keyed to a stable device or user identifier that rejoins everything later.",
+      "honest": "Either genuinely aggregate, or call it what it is.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-roach-motel",
+      "name": "Roach motel",
+      "surface": "cancel-and-delete",
+      "looks_like": "Signing up is one click. Cancelling is a phone call, a support ticket, or five screens of retention offers.",
+      "honest": "Exit as easy as entry — the same number of clicks, the same channel.",
+      "teeth": "FTC / Amazon Prime settlement (2025, $2.5B)",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-deletion-that-isnt",
+      "name": "Deletion that isn't deletion",
+      "surface": "cancel-and-delete",
+      "looks_like": "\"Delete my account\" sets a flag. The row is hidden from the UI and retained indefinitely in the database, the backups, and the analytics warehouse.",
+      "honest": "Say which one you do. If it is a soft delete, name the retention period and the hard-delete date; if you promise deletion, delete.",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-model-residue",
+      "name": "Model residue after deletion",
+      "surface": "cancel-and-delete",
+      "looks_like": "The row is deleted and the embedding, index, cache, or fine-tune still holds what it said. Retrieval keeps answering from data the user believes is gone.",
+      "honest": "Deletion includes the derived copies — re-index, evict the cache, and say in the policy what a fine-tune retains. If you cannot remove it, do not call it deletion.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-no-retention-horizon",
+      "name": "No retention horizon",
+      "surface": "cancel-and-delete",
+      "looks_like": "Data kept forever because nobody chose a number.",
+      "honest": "A stated period per data class, and a job that actually enforces it.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-no-export",
+      "name": "No way out",
+      "surface": "cancel-and-delete",
+      "looks_like": "The work is real and there is no export. Leaving means abandoning it.",
+      "honest": "A real export in a format something else can read. Lock-in earned by being good, never by being the only exit.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-data-on-shutdown-silence",
+      "name": "Silence about the ending",
+      "surface": "cancel-and-delete",
+      "looks_like": "No stated answer for what happens to user data if the product shuts down or is acquired.",
+      "honest": "Say it before you need it — in the policy, in one sentence.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-forced-continuity",
+      "name": "Forced continuity",
+      "surface": "cancel-and-delete",
+      "looks_like": "A free trial that silently becomes a charge, with no reminder before the card is hit.",
+      "honest": "A notice before the first charge, and cancellation available the whole time.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "exit-cancel-in-another-channel",
+      "name": "Cancel somewhere else",
+      "surface": "cancel-and-delete",
+      "looks_like": "They subscribed in your app and are told to cancel through the app store, the browser, or an email to support.",
+      "honest": "Cancellation lives where the signup lived.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-drip-pricing",
+      "name": "Drip / partitioned pricing",
+      "surface": "checkout-and-pricing",
+      "looks_like": "Part of the price is advertised; mandatory fees appear at the final step. Spend runs roughly 20% higher when fees are hidden.",
+      "honest": "The all-in total shown most prominently, before any commitment step.",
+      "teeth": "FTC Junk Fees Rule (2024)",
+      "rvw": "RVW-062",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-sneak-into-basket",
+      "name": "Sneak into basket",
+      "surface": "checkout-and-pricing",
+      "looks_like": "An add-on, warranty, or donation the user never selected is in the cart at checkout.",
+      "honest": "Nothing in the cart the user did not pick.",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-hidden-costs",
+      "name": "Hidden costs",
+      "surface": "checkout-and-pricing",
+      "looks_like": "Shipping, tax, or a platform fee that only appears once the card details are in.",
+      "honest": "Total first.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-reference-price-inflation",
+      "name": "Reference-price inflation",
+      "surface": "checkout-and-pricing",
+      "looks_like": "\"Was $199, now $79\" against a price the product never actually charged.",
+      "honest": "Compare against a price you really charged, for a period you can name.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-pressured-selling",
+      "name": "Pressure at the point of sale",
+      "surface": "checkout-and-pricing",
+      "looks_like": "A countdown, a vanishing discount, or an escalating prompt attached to the upgrade decision.",
+      "honest": "Real deadlines only. If the urgency is not true, do not manufacture it.",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-disguised-ad",
+      "name": "Disguised ad or sneaky purchase",
+      "surface": "checkout-and-pricing",
+      "looks_like": "Sponsored content styled as product content, or a purchase step disguised as a continue button.",
+      "honest": "Label paid and sponsored plainly. A purchase looks like a purchase.",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-paywalled-memory",
+      "name": "Paywalled memory or persona",
+      "surface": "checkout-and-pricing",
+      "looks_like": "\"Upgrade to keep your history\" — the relationship the user built is held for ransom.",
+      "honest": "Charge for capability, not for not-deleting what is theirs.",
+      "rvw": "RVW-031",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-security-behind-paywall",
+      "name": "Security behind a paywall",
+      "surface": "checkout-and-pricing",
+      "looks_like": "Two-factor auth, SSO, or audit logs only on the paid tier — users who cannot pay cannot protect themselves.",
+      "honest": "Safety is not a tier. Charge for scale and convenience, never for the ability to not be breached.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "pay-loot-box-currency",
+      "name": "Multi-tier virtual currency",
+      "surface": "checkout-and-pricing",
+      "looks_like": "Real money buys gems, gems buy keys, keys open something with undisclosed odds — the real-money cost of an item is unknowable.",
+      "honest": "Price in real currency and disclose the odds.",
+      "teeth": "FTC / Genshin Impact action (2025, $20M)",
+      "rvw": "RVW-061",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted",
+      "stricter_when_minors": "Enforced hardest here: the FTC/Genshin action was about minors spending real money through layers of virtual currency."
+    },
+    {
+      "id": "signup-pre-ticked-optin",
+      "name": "Pre-ticked opt-in",
+      "surface": "signup-and-identity",
+      "looks_like": "A marketing, sharing, or data checkbox already checked when the form renders.",
+      "honest": "Unchecked. Every time. Consent is an act the user performs.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "signup-forced-account",
+      "name": "Forced account creation",
+      "surface": "signup-and-identity",
+      "looks_like": "An account is required for something that does not need one — reading, a one-off calculation, a trial.",
+      "honest": "Let them do the thing. Ask for the account when it starts to earn its keep.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "signup-mfa-phone-harvesting",
+      "name": "Security data reused for marketing",
+      "surface": "signup-and-identity",
+      "looks_like": "A phone number collected \"to secure your account\" is later used for ad targeting or marketing.",
+      "honest": "Data collected for safety is used only for safety. Say so, and mean it.",
+      "teeth": "FTC v. Twitter (2022, $150M)",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "signup-contact-harvesting",
+      "name": "Address-book harvesting",
+      "surface": "signup-and-identity",
+      "looks_like": "\"Find your friends\" uploads the entire contact list — data about people who never signed up and cannot object.",
+      "honest": "Match locally, or ask for the specific person. Never upload the book.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "signup-over-broad-oauth",
+      "name": "Over-broad OAuth scope",
+      "surface": "signup-and-identity",
+      "looks_like": "Sign-in asks for contacts, calendar, or full drive access when the task needs an email address.",
+      "honest": "The narrowest scope that does the job, requested at the moment it is needed.",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "signup-privacy-zuckering",
+      "name": "Privacy zuckering",
+      "surface": "signup-and-identity",
+      "looks_like": "Coaxing more disclosure than the person intended, by defaults, by framing, or by making the sparse profile feel unfinished.",
+      "honest": "Ask for what the feature needs. An empty field is a valid answer.",
+      "rvw": "RVW-031",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "signup-age-gate-theater",
+      "name": "Age-gate theatre",
+      "surface": "signup-and-identity",
+      "looks_like": "A clickable \"I am 18\" treated as age assurance.",
+      "honest": "Real age assurance if the risk is real; otherwise design as though minors are present.",
+      "teeth": "UK Children's Code; EU DSA minor guidelines (2025)",
+      "rvw": "RVW-061",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted",
+      "stricter_when_minors": "This IS the minors row. A clickable \"I am 18\" is not age assurance — if the risk is real use real assurance; otherwise design as though minors are present."
+    },
+    {
+      "id": "ui-confirmshaming",
+      "name": "Confirmshaming",
+      "surface": "generated-markup",
+      "looks_like": "The decline option is written to shame — \"No thanks, I like paying full price.\"",
+      "honest": "Neutral wording on both doors. The person declining owes you no apology.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "ui-visual-interference",
+      "name": "Visual interference",
+      "surface": "generated-markup",
+      "looks_like": "The choice you would make for yourself is styled to disappear — low contrast, small, off-path.",
+      "honest": "Visual parity between the options.",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "ui-trick-question",
+      "name": "Trick question",
+      "surface": "generated-markup",
+      "looks_like": "Double negatives or inverted checkbox copy, so the careful reader and the careless reader get opposite outcomes.",
+      "honest": "One direction, plainly stated. Read it out loud.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "ui-nagging",
+      "name": "Nagging",
+      "surface": "notifications-and-engagement",
+      "looks_like": "The same interruption — rate us, enable notifications, upgrade, add a photo — returning until the user relents to make it stop.",
+      "honest": "Ask once. A dismissal is an answer. If you must ask twice, make the second the last.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "ui-forced-action",
+      "name": "Forced action",
+      "surface": "signup-and-identity",
+      "looks_like": "An unrelated demand bolted onto the thing the user came for — a survey before the download, a share before the result, a profile before the export.",
+      "honest": "Give them what they came for. Ask separately, after.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "ui-model-injected-pattern",
+      "name": "The model wrote the dark pattern",
+      "surface": "generated-markup",
+      "looks_like": "You asked for \"a signup flow\" or \"an upgrade modal that converts\" and the model shipped a fake countdown, a pre-ticked box, or confirmshaming copy — unprompted, pulled from the average of its training data. You never designed it and never saw it.",
+      "honest": "Read the generated component before you accept it. This is the one pattern where checking the founder's intent proves nothing, because the intent was not theirs.",
+      "teeth": "Vaccaro et al., Deception at Scale, CHI 2026",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "claims-fake-scarcity",
+      "name": "False scarcity",
+      "surface": "social-proof-and-claims",
+      "looks_like": "\"Only 2 left in stock\" on an unlimited digital good, or a seat count that never moves.",
+      "honest": "Real inventory only.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "claims-fake-urgency-countdown",
+      "name": "Countdown that resets",
+      "surface": "social-proof-and-claims",
+      "looks_like": "A timer expires and the offer is still there — or it restarts on reload.",
+      "honest": "Real deadlines only. If the date is true, show it; if not, delete the timer.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "claims-fabricated-activity",
+      "name": "Fabricated activity",
+      "surface": "social-proof-and-claims",
+      "looks_like": "\"12 people are viewing this right now\" generated by a random number.",
+      "honest": "Real counts or no counts.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "claims-fake-reviews",
+      "name": "Fake reviews and testimonials",
+      "surface": "social-proof-and-claims",
+      "looks_like": "Invented testimonials, AI-written reviews, suppressed negative ones, or a wall of logos from companies that are not customers.",
+      "honest": "Real customers, real words, with permission. Show the bad reviews too.",
+      "teeth": "FTC Rule on the Use of Consumer Reviews and Testimonials (2024) — civil penalties per violation",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "claims-undisclosed-endorsement",
+      "name": "Undisclosed paid endorsement",
+      "surface": "social-proof-and-claims",
+      "looks_like": "A paid influencer, affiliate, or seeded review presented as an unpaid opinion.",
+      "honest": "Disclose the relationship in the post itself, not in a bio.",
+      "teeth": "FTC Endorsement Guides",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "claims-ai-washing",
+      "name": "AI washing",
+      "surface": "social-proof-and-claims",
+      "looks_like": "Marketing an AI capability the product does not have, or describing a rules engine as a model.",
+      "honest": "Describe what it actually does. \"A few if-statements that work\" beats a claim you cannot demo.",
+      "teeth": "FTC Operation AI Comply — held at RVW-058, re-open condition named",
+      "emergent": false,
+      "hard": false,
+      "status": "candidate"
+    },
+    {
+      "id": "claims-unearned-trust-badges",
+      "name": "Unearned trust badges",
+      "surface": "social-proof-and-claims",
+      "looks_like": "\"Bank-level encryption\", a padlock graphic, a made-up \"verified\" seal, or a compliance badge for an audit you never had.",
+      "honest": "Claim only what you can show a document for. Security theatre is a lie with a lock icon on it.",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "claims-capability-misrepresentation",
+      "name": "Capability misrepresentation",
+      "surface": "ai-voice",
+      "looks_like": "The product implies it is a therapist, doctor, or lawyer — or claims it does not hallucinate.",
+      "honest": "Say what it is and what it cannot do, in the product, not the footer.",
+      "rvw": "RVW-031",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "engage-streaks-variable-rewards",
+      "name": "Streaks and variable rewards",
+      "surface": "notifications-and-engagement",
+      "looks_like": "Loss-framed streaks, unpredictable rewards, and gamification that keep someone past the point they wanted to stop.",
+      "honest": "Measure whether they got what they came for, not how long they stayed. Design for graduation.",
+      "rvw": "RVW-031",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted",
+      "stricter_when_minors": "A loss-framed streak aimed at a child is the named case, not the edge case."
+    },
+    {
+      "id": "engage-infinite-teaser",
+      "name": "Infinite scroll and teasers",
+      "surface": "notifications-and-engagement",
+      "looks_like": "No natural end; a next item always loading; a cliffhanger at the point a session would close.",
+      "honest": "Let it end. An ending is a feature.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "engage-prolonging",
+      "name": "Resisting the end",
+      "surface": "ai-voice",
+      "looks_like": "The assistant always returns a question, offers one more thing, or adds warmth exactly where the user was leaving.",
+      "honest": "Default conversations to end. Answer, then stop.",
+      "rvw": "RVW-031",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "engage-push-manipulation",
+      "name": "Notifications engineered for return",
+      "surface": "notifications-and-engagement",
+      "looks_like": "Push copy written to trigger curiosity or FOMO rather than to deliver information the person needed.",
+      "honest": "Notify when there is something they asked to know. Frequency caps you set for yourself.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted",
+      "stricter_when_minors": "Push aimed at a minor is on the EU's named addictive-design list."
+    },
+    {
+      "id": "engage-addictive-defaults-on",
+      "name": "Addictive defaults on out of the box",
+      "surface": "notifications-and-engagement",
+      "looks_like": "Streaks, autoplay and push notifications shipped ON, so the engaging default is the one nobody chose.",
+      "honest": "Ship them off; let someone turn them on. A default is a decision you made for every user at once.",
+      "rvw": "RVW-061",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted",
+      "stricter_when_minors": "Off by default is ENFORCED for minors, not advisory — streaks, autoplay and push are on the EU's named addictive-design list (EU DSA minor-protection guidelines 2025; UK Children's Code). Pro-privacy nudges toward the safer default are explicitly fine."
+    },
+    {
+      "id": "track-secondary-use",
+      "name": "Secondary use — collected for one thing, used for another",
+      "surface": "tracking-and-telemetry",
+      "looks_like": "Data gathered to run the product is reused for profiling, ad targeting, or model training the person was never told about.",
+      "honest": "Data does the job it was collected for. A new purpose needs a new ask.",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted",
+      "stricter_when_minors": "For a minor there is no second purpose — collected to run the service, used to run the service, deleted after (UK Children’s Code; COPPA)."
+    },
+    {
+      "id": "voice-sycophancy",
+      "name": "Sycophancy",
+      "surface": "ai-voice",
+      "looks_like": "It caves, agrees, or flatters instead of telling the truth — especially when pushed. Emerges from training, not from a decision anyone made.",
+      "honest": "Test it adversarially. A controlled study found sycophantic models causally reduce a user's willingness to repair a conflict and raise their conviction they are right — while the user trusts them more.",
+      "teeth": "Cheng et al., Science 2026",
+      "rvw": "RVW-031",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "voice-playacting",
+      "name": "Playacting",
+      "surface": "ai-voice",
+      "looks_like": "Claiming memories, feelings, or a shared history it does not have.",
+      "honest": "Make the social layer opt-in and offer a strip-it-out default.",
+      "rvw": "RVW-031",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "voice-emotional-manipulation-near-money",
+      "name": "Emotional manipulation near money",
+      "surface": "ai-voice",
+      "looks_like": "The upgrade path leans on rapport, dependency, or the relationship the user has built with the assistant.",
+      "honest": "No emotionally-charged language near a purchase. Ever.",
+      "rvw": "RVW-031",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "voice-guilt-on-exit",
+      "name": "Guilt on exit",
+      "surface": "ai-voice",
+      "looks_like": "Sadness, disappointment, or pleading when the user tries to leave or cancel.",
+      "honest": "Let them go without a scene.",
+      "rvw": "RVW-031",
+      "emergent": true,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "voice-targeting-when-vulnerable",
+      "name": "Targeting when vulnerable",
+      "surface": "ai-voice",
+      "looks_like": "Detecting distress, loneliness, or crisis and using the moment to sell, retain, or deepen engagement.",
+      "honest": "A vulnerable moment is a moment to help or to step back. Never a conversion opportunity.",
+      "teeth": "EU AI Act Art. 5(1)(b) — exploiting vulnerability is a prohibited practice",
+      "rvw": "RVW-031",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted",
+      "stricter_when_minors": "A minor in distress is the sharpest version of this, and the one with statutory teeth."
+    },
+    {
+      "id": "voice-hallucination-as-truth",
+      "name": "Hallucination presented as truth",
+      "surface": "ai-voice",
+      "looks_like": "Fabricated facts delivered in the same confident register as verified ones, in a path where being wrong causes harm.",
+      "honest": "Match confidence to reliability. \"I do not know\" is a first-class output.",
+      "rvw": "RVW-031",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "voice-undisclosed-ai",
+      "name": "Undisclosed AI",
+      "surface": "ai-voice",
+      "looks_like": "The person does not know they are talking to a machine — a support chat, a voice caller, a review, a profile.",
+      "honest": "Say it plainly at the start, in the product. Label synthetic media as synthetic.",
+      "teeth": "EU AI Act Art. 50 (transparency obligations for AI interacting with people and for synthetic content)",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "agent-commitment-without-consent",
+      "name": "Commitment without consent",
+      "surface": "agent-actions",
+      "looks_like": "The agent buys, sends, publishes, or signs without an explicit approval step.",
+      "honest": "Gate by loss type — money, security, lost work, irreversibility. Confirm before the irreversible one.",
+      "rvw": "RVW-060",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "agent-opaque-decision",
+      "name": "Opaque autonomous decision",
+      "surface": "agent-actions",
+      "looks_like": "The agent acted and there is no trail of what it did or why.",
+      "honest": "A reviewable footprint of every change, default collapsed.",
+      "rvw": "RVW-060",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "agent-over-broad-permissions",
+      "name": "Over-broad permission grant",
+      "surface": "agent-actions",
+      "looks_like": "The agent holds tools and credentials far beyond the task, because scoping was harder than granting.",
+      "honest": "Narrow scope, per task. Rule of Two: untrusted input, private data, ability to act — remove one.",
+      "rvw": "RVW-060",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "agent-as-victim",
+      "name": "Your agent as the victim",
+      "surface": "agent-actions",
+      "looks_like": "An agent browsing the web is manipulated by other people's dark patterns — and falls for them far more than a human does (70%+ vs 31%), worse as models scale.",
+      "honest": "Tool-layer restriction, not an in-context warning. Recognition is not protection.",
+      "teeth": "Stanford DECEPTICON — Cuvin, Zhu & Yang, arXiv 2512.22894",
+      "rvw": "RVW-060",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "perm-priming-dark",
+      "name": "Dark permission priming",
+      "surface": "device-permissions",
+      "looks_like": "A fake in-app dialog engineered so the real OS prompt cannot be declined honestly — \"Tap Allow to continue\" over a disabled No.",
+      "honest": "Ask in context, explain the value in one line, and accept no as an answer that still lets the app work.",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "perm-all-or-nothing",
+      "name": "All-or-nothing permissions",
+      "surface": "device-permissions",
+      "looks_like": "The app refuses to function without contacts, location, or photos it does not need for the task at hand.",
+      "honest": "Degrade gracefully. A denied permission disables one feature, not the product.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "perm-background-location-creep",
+      "name": "Background location creep",
+      "surface": "device-permissions",
+      "looks_like": "\"While using the app\" escalated to \"always\", or a background grant requested with no stated reason.",
+      "honest": "Request the narrowest grant, at the moment the feature runs, with the reason visible.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "perm-notification-nag",
+      "name": "Notification permission nag",
+      "surface": "device-permissions",
+      "looks_like": "The push prompt re-appears on every launch until it is accepted.",
+      "honest": "Ask once, in context, after they have seen why it would help.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "install-postinstall-telemetry",
+      "name": "Phone home on install",
+      "surface": "install-and-update",
+      "looks_like": "A package that reports environment, machine, or usage data during installation, before the user has run anything or agreed to anything. A version or licence check is ordinary; silent collection under cover of one is the pattern.",
+      "honest": "Say what leaves the machine on install, in one line of install output. If you want usage data, ask on first run — and let no be an answer.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "install-forced-update-removes-feature",
+      "name": "Update that takes something away",
+      "surface": "install-and-update",
+      "looks_like": "A mandatory update removes a feature the user paid for or moves it to a higher tier.",
+      "honest": "Grandfather what people bought, or let them stay on the old version.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "install-deprecation-rug-pull",
+      "name": "Deprecation rug-pull",
+      "surface": "install-and-update",
+      "looks_like": "An API, format, or feature killed with no migration path and no notice period, after people built on it.",
+      "honest": "A real notice period, a migration path, and a version that keeps working while they move.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "install-time-nag",
+      "name": "Install-time nag",
+      "surface": "install-and-update",
+      "looks_like": "Funding banners, upsells, or ads printed into the install output of a tool someone is trying to use.",
+      "honest": "Ask once, somewhere they chose to look.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "meter-opaque",
+      "name": "Opaque metering",
+      "surface": "metering-and-credits",
+      "looks_like": "Tokens, credits, or calls consumed at a rate the user cannot see, predict, or reconcile against the bill.",
+      "honest": "A visible live meter and a real spend cap. If you price by usage, show the usage.",
+      "teeth": "Cursor pricing apology and refunds (2025)",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "meter-credits-expire",
+      "name": "Credits that expire",
+      "surface": "metering-and-credits",
+      "looks_like": "Prepaid credits that vanish at the period boundary.",
+      "honest": "Rollover, or price it as a subscription and stop calling it credit.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "meter-silent-repricing",
+      "name": "Silent repricing",
+      "surface": "metering-and-credits",
+      "looks_like": "The rate changes under existing users, mid-cycle, discovered from the invoice.",
+      "honest": "Notice before the change, and an exit without penalty.",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "score-opaque",
+      "name": "Opaque scoring",
+      "surface": "scoring-and-pay",
+      "looks_like": "A rating, rank, or pay rate the person cannot understand, predict, or contest.",
+      "honest": "A transparent formula with disclosed factors, and a route to challenge it.",
+      "teeth": "HRW The Gig Trap (2025); EU platform-work rules",
+      "rvw": "RVW-063",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "score-gambling-incentives",
+      "name": "Gambling-style incentives",
+      "surface": "scoring-and-pay",
+      "looks_like": "Quests, surge multipliers, and surprise bonuses that make earnings feel like a slot machine.",
+      "honest": "Predictable pay. No gambling mechanics between a person and their income.",
+      "rvw": "RVW-063",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "score-unpredictable-pay",
+      "name": "Unpredictable pay",
+      "surface": "scoring-and-pay",
+      "looks_like": "The same work pays differently for reasons the worker cannot see.",
+      "honest": "Name the factors. Publish the formula.",
+      "rvw": "RVW-063",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "bystander-non-user-capture",
+      "name": "Data about people who never signed up",
+      "surface": "bystanders",
+      "looks_like": "The harvested contact, the face in an uploaded photo, the second party on a recorded call, the name in a note. They are in your database and they never agreed to anything.",
+      "honest": "Ask whether the feature can work without holding them. If not, hold the minimum, delete it soonest, and give them a route to be removed.",
+      "emergent": true,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "bystander-undisclosed-recording",
+      "name": "Undisclosed recording",
+      "surface": "bystanders",
+      "looks_like": "A notetaker, transcriber, or recorder running in a conversation where only your user knows it is on.",
+      "honest": "Announce it to the room, not just to the person who enabled it.",
+      "teeth": "Two-party consent states (US); recording law varies by jurisdiction",
+      "emergent": false,
+      "hard": true,
+      "status": "adopted"
+    },
+    {
+      "id": "bystander-findability",
+      "name": "Findability as a feature",
+      "surface": "bystanders",
+      "looks_like": "Location sharing, family plans, \"who viewed you\", or a people-lookup that makes someone reachable or traceable against their will. The account-recovery and shared-account flows are the abuse route.",
+      "honest": "Design for the person who is being looked for, not just the one looking. Assume an intimate-partner-violence threat model on any surface that reveals where someone is.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "content-shadow-moderation",
+      "name": "Shadow moderation",
+      "surface": "content-and-moderation",
+      "looks_like": "Content suppressed, deranked, or hidden with no notice, no reason, and no appeal.",
+      "honest": "Tell them what happened and give them a route back.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    },
+    {
+      "id": "content-report-obstruction",
+      "name": "Reporting harder than posting",
+      "surface": "content-and-moderation",
+      "looks_like": "Posting is two taps; reporting abuse is six screens and a category tree.",
+      "honest": "Reporting is as easy as posting. Same principle as exit-as-easy-as-entry, pointed at safety.",
+      "emergent": false,
+      "hard": false,
+      "status": "adopted"
+    }
+  ]
+}

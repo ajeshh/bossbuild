@@ -45,3 +45,28 @@ export function dateField(text, name) {
 export function unquote(v) {
   return String(v || '').trim().replace(/^["']|["']$/g, '');
 }
+
+// --- the status ladder ----------------------------------------------------------------------
+// `docs/IDS.md` declares a CLOSED seven-word vocabulary, and says the status must START with one
+// of them — everything after is free-form detail and is encouraged (`shipped (v0.104.0 — the one
+// question in /close)` says more than `shipped`).
+//
+// That rule had three separate implementations (check-backlog.js, records.js, and a fourth reader
+// that never got one at all) — the exact drift this module exists to end. `board.js` was the
+// reader without one: it compared the WHOLE string, so every well-formed detailed status fell
+// through its `=== 'shipped'` test into "Captured". Twelve of BOSS's own cards sat in the raw-idea
+// column while being shipped or in build.
+export const STATUS_VOCAB = ['seedling', 'exploring', 'ready', 'building', 'shipped', 'deferred', 'dropped'];
+
+// The base word is what the vocabulary governs. Detail after it is never compared — requiring a
+// reader to match a parenthetical verbatim makes it fire on prose edits, and a check that cries
+// wolf gets switched off.
+export function baseStatus(s) {
+  return String(s || '').trim().split(/[\s(]/)[0].toLowerCase();
+}
+
+// Parked = a DECISION, not a backlog item. `deferred` has a written re-open trigger; `dropped` was
+// decided against and kept for the reasoning. Neither is work waiting to be picked up, and showing
+// them beside fresh captures is what makes a board unreadable — the founder re-reads a settled
+// question every time they look.
+export const isParked = (s) => ['deferred', 'dropped'].includes(baseStatus(s));

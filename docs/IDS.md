@@ -17,7 +17,8 @@ status: active
 | `RVW-NNN` | A `/vet` verdict on an unproven outside claim (ADOPT/ADAPT/REJECT/NOT-YET) | `docs/research/verdicts/` |
 | `vX.Y.Z` | A released BOSS version | `registry/CHANGELOG.md` |
 
-Frontmatter on every doc: `id`, `type`, `owner`, `status`.
+Frontmatter on every doc: `id`, `type`, `owner`, `status`. On `IDEA`/`FEAT`, add a one-line
+`gist:` — see below.
 
 ## Status — the declared vocabulary
 
@@ -67,6 +68,28 @@ IDEA-020                    FEAT-020
 A `FEAT` that cannot name its idea is an orphan; an idea pointing at a `FEAT` that does not exist is
 the duplicate-ID problem wearing a different hat. `from: none` is a valid answer — FEAT-024 came
 straight from a conversation, and says so in `from_note:`.
+
+## `gist:` — the one line that makes a record findable again
+
+**A title is a name. After twenty records, a name stops being a reminder.**
+
+```
+gist: A way to end a project honestly, harvest what it taught, and mark it retired.
+```
+
+One plain sentence saying what the record *is*. `boss board --detail`, the `--html` board's hover,
+`boss board <ID>` and the `--json` contract all read it. Write what the thing *does*, not what kind
+of record it is — *"a way to point BOSS at a doc you already jotted the idea in"* beats *"an import
+feature."*
+
+**Omitting it is legal and the board still works.** With no `gist:`, the board reads the record's
+own opening prose instead — always something, never better than the first paragraph happens to be.
+That fallback is deliberate: a field with no mechanism behind it goes unfilled, and a board that
+goes blank for most of its cards is worse than one that reads well most of the time. Authored wins;
+derived fills the silence. Same posture as `shipped_on:` and its git-derived fallback.
+
+**Rewrite the gist when the record's shape changes.** A gist describing a superseded shape is worse
+than none — it is the one field that can lie quietly, because nothing can check it against the body.
 
 ## `program:` — the umbrella, and the ladder it climbs
 

@@ -3,14 +3,14 @@
   "sources": {
     "anthropic-engineering": {
       "name": "Anthropic engineering",
-      "url": null,
+      "url": "https://www.anthropic.com/engineering",
       "for": "effective harnesses for long-running agents; scaling managed agents; the agent-computer interface; contextual retrieval",
       "kind": "org",
       "key": true
     },
     "dex-horthy": {
       "name": "Dex Horthy — 12-factor agents",
-      "url": null,
+      "url": "https://github.com/humanlayer/12-factor-agents",
       "kind": "person",
       "key": true
     },
@@ -18,7 +18,8 @@
       "name": "Andrej Karpathy — the verifiability thesis",
       "url": null,
       "kind": "person",
-      "key": true
+      "key": true,
+      "url_note": "Searched 2026-08-20; every candidate was SECONDARY (blogs about the thesis). The line traces to a Karpathy X post and the Sequoia AI Ascent 2026 talk, neither verifiable as the primary for this exact wording. Left null on purpose per this file s own rule."
     },
     "spec-driven": {
       "name": "GitHub Spec Kit / AWS Kiro",
@@ -29,14 +30,14 @@
     },
     "simon-willison": {
       "name": "Simon Willison",
-      "url": null,
+      "url": "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
       "for": "the lethal trifecta; Agents Rule of Two; classifiers are non-deterministic; MCP prompt injection",
       "kind": "person",
       "key": true
     },
     "owasp": {
       "name": "OWASP — Agentic ASI Top 10 / LLM Top 10",
-      "url": null,
+      "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
       "kind": "standard",
       "key": true
     },
@@ -55,7 +56,7 @@
     },
     "hamel-shreya": {
       "name": "Hamel Husain + Shreya Shankar",
-      "url": null,
+      "url": "https://hamel.dev/blog/posts/field-guide/",
       "for": "error analysis, evals-as-spec, judge validation",
       "kind": "person",
       "key": true
@@ -89,27 +90,27 @@
     },
     "addy-osmani": {
       "name": "Addy Osmani",
-      "url": null,
+      "url": "https://addyosmani.com/agentic-engineering/the-70-percent-problem/",
       "for": "AI code review; the 70%-to-80% problem",
       "kind": "person",
       "key": true
     },
     "fowler": {
       "name": "Martin Fowler",
-      "url": null,
-      "for": "ParallelChange; MonolithFirst",
+      "url": "https://martinfowler.com/bliki/MonolithFirst.html",
+      "for": "MonolithFirst (Fowler); ParallelChange (Danilo Sato, on Fowler's bliki)",
       "kind": "person",
       "key": true
     },
     "chroma": {
       "name": "Chroma — context rot",
-      "url": null,
+      "url": "https://www.trychroma.com/research/context-rot",
       "kind": "org",
       "key": true
     },
     "jason-liu": {
       "name": "Jason Liu — systematically improving RAG",
-      "url": null,
+      "url": "https://jxnl.co/writing/2024/05/22/systematically-improving-your-rag/",
       "for": "recall@k first; inventory vs capability",
       "kind": "person",
       "key": true
@@ -147,14 +148,14 @@
     },
     "kleppmann": {
       "name": "Martin Kleppmann — DDIA",
-      "url": null,
+      "url": "https://dataintensive.net/",
       "for": "schema evolution",
       "kind": "person",
       "key": true
     },
     "postgres-rls": {
       "name": "PostgreSQL row-level-security docs",
-      "url": null,
+      "url": "https://www.postgresql.org/docs/current/ddl-rowsecurity.html",
       "kind": "standard",
       "key": true
     },
@@ -200,8 +201,8 @@
       "key": false
     },
     "anthropic-skills": {
-      "name": "Anthropic's skill-creator skill",
-      "url": null,
+      "name": "Anthropic — the Agent Skills spec and template",
+      "url": "https://github.com/anthropics/skills",
       "kind": "org",
       "key": true
     },
@@ -250,32 +251,32 @@
     },
     "brad-frost": {
       "name": "Brad Frost — Atomic Design",
-      "url": null,
+      "url": "https://atomicdesign.bradfrost.com/",
       "kind": "person",
       "key": true
     },
     "nathan-curtis": {
       "name": "Nathan Curtis — design tokens",
-      "url": null,
+      "url": "https://eightshapes.com/articles/tokens-in-design-systems/",
       "kind": "person",
       "key": true
     },
     "w3c-tokens": {
       "name": "W3C Design Tokens Community Group",
-      "url": null,
+      "url": "https://www.w3.org/community/design-tokens/",
       "kind": "standard",
       "key": true
     },
     "nygard-adr": {
       "name": "Michael Nygard — Documenting Architecture Decisions",
-      "url": null,
+      "url": "https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions",
       "for": "the architecture decision record (2011) — the direct ancestor of BOSS's DEC-NNN: short, dated, superseded rather than edited",
       "kind": "person",
       "key": true
     },
     "cagan-svpg": {
       "name": "Marty Cagan (SVPG)",
-      "url": null,
+      "url": "https://www.svpg.com/",
       "for": "discovery vs documentation — why a written artifact is a means of deciding, not a deliverable",
       "kind": "person",
       "key": true

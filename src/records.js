@@ -27,6 +27,7 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
+import { STATUS_VOCAB, baseStatus } from './frontmatter.js';
 
 const RECORD = /^([A-Z]{3,4})-(\d+)[-.].*\.md$/;
 // The seven-word ladder governs the LIFECYCLE types only. `DEC` is decided|superseded, `PRAC` is
@@ -34,7 +35,7 @@ const RECORD = /^([A-Z]{3,4})-(\d+)[-.].*\.md$/;
 // cut of this applied the seven to every prefix and immediately reported BOSS's own three
 // decisions and its one evidence file as broken — a checker that cries wolf gets switched off,
 // which is how the last three checkers died. Membership is read from IDS.md, never assumed.
-const VOCAB = ['seedling', 'exploring', 'ready', 'building', 'shipped', 'deferred', 'dropped'];
+const VOCAB = STATUS_VOCAB;
 const LIFECYCLE = ['IDEA', 'FEAT'];
 const prefixOf = (id) => String(id || '').split('-')[0].toUpperCase();
 
@@ -58,10 +59,6 @@ const field = (text, name) => {
   const m = text.match(new RegExp(`^${name}:\\s*(.+)$`, 'm'));
   return m ? m[1].trim() : null;
 };
-// The base word is what the vocabulary governs. Detail after it is free-form and never compared —
-// requiring an index to echo a parenthetical verbatim makes a check fire on prose edits, and a
-// check that cries wolf gets switched off, which is worse than not having one.
-const baseStatus = (s) => (s || '').trim().split(/[\s(]/)[0].toLowerCase();
 
 // Every folder a BOSS project keeps typed records in. Missing folders are normal — a Quickstart
 // project has ideas and evidence and nothing else yet.

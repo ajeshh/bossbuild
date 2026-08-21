@@ -149,6 +149,50 @@ nav: engineering
       </div>
     </section>
 
+    <section class="section">
+      <div class="rail">▸<span>when the product is the AI</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>“It works” is not a claim you can make about a model</h2>
+          <p>
+            If the thing you're shipping is itself AI-mediated, the usual build gates stop being enough:
+            a smoke test proves the endpoint answered, not that it answered <em>correctly</em>, and
+            nothing in your CI has an opinion about what a good answer looks like. So MVP carries a set
+            of verbs for exactly that gap.
+          </p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">/ai-first-init — decide what's AI-mediated, on purpose</span>
+            <span>Write down which parts of the product actually route through a model, and seed the
+              structured outputs and schemas underneath them. Cheap on day one; archaeology later.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/evals — “is it correct?” beside /smoke's “is it alive?”</span>
+            <span>An eval set per AI-mediated feature, built from your own data rather than from
+              imagined inputs. Evals-as-spec, after Hamel Husain and Shreya Shankar.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/judge-traces — error analysis on what actually happened</span>
+            <span>Reads the real trace log of what the agents did and helps you sort the failures into a
+              <strong>binary pass/fail taxonomy</strong> — not a vibes rating. The discipline is theirs
+              too, and the binary part is the load-bearing half of it.</span>
+          </div>
+          <div class="pair">
+            <span class="k">/ai-cost and /cost-review — the invoice is a product decision</span>
+            <span><code>/ai-cost</code> sets per-user and per-feature budgets and wires a per-call
+              ledger; <code>/cost-review</code> reads that ledger back and produces a dated review against
+              the budget. An AI product whose unit cost you first meet on the bill has already made the
+              pricing decision for you.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          None of these pin a model name — same rule as everywhere else. They pin the
+          <em>discipline</em>, which outlives the model.
+        </p>
+      </div>
+    </section>
+
     <div class="band">
       <div class="band-in">
         <h2>Every one of these has a receipt.</h2>

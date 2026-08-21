@@ -104,8 +104,23 @@ export function planRemove(projectDir, stamp) {
     (changed ? edited : files).push({ rel, kind: 'file' });
   }
 
-  // BOSS's own state dir. Always BOSS's — the manifest, config, and the conscience's private notes.
+  // BOSS's own state dir. Mostly BOSS's — the manifest, config, the conscience's log.
   const bossDir = existsSync(join(projectDir, '.boss'));
+
+  // ...but NOT all of it. `.boss/brain/*.md` is model-owned PROSE about the founder's venture, and
+  // `boss brain` tells them in as many words: "This is yours to correct — edit .boss/brain/read.md
+  // if the read is wrong." Deleting a thing you told someone was theirs, with no way to take it
+  // with them, is the `exit-no-export` row of BOSS's own deceptive-pattern catalog — and it
+  // contradicts this file's own opening claim that a clean exit is what makes the entrance safe.
+  // So the prose is EXPORTED into `docs/`, which the boundary above already protects, and only
+  // then is the state dir removed. Machine state goes; the reasoning trail stays.
+  const brainProse = [];
+  const brainDir = join(projectDir, '.boss', 'brain');
+  if (existsSync(brainDir)) {
+    try {
+      for (const e of readdirSync(brainDir)) if (e.endsWith('.md')) brainProse.push(e);
+    } catch { /* skip */ }
+  }
 
   // Founder content that shares a directory with BOSS's scaffold. Counted so the preview can SAY
   // what survives — "your 12 files under docs/ stay" is the sentence that makes this safe to run.
@@ -127,7 +142,7 @@ export function planRemove(projectDir, stamp) {
   countKept(join('.claude', 'skills'));
   countKept(join('.claude', 'agents'));
 
-  return { layers, files, edited, blocks, bossDir, kept, settings: planSettings(projectDir, layers) };
+  return { layers, files, edited, blocks, bossDir, brainProse, kept, settings: planSettings(projectDir, layers) };
 }
 
 // Un-merge only the hook registrations BOSS added. The founder's own hooks, their permissions and
@@ -207,6 +222,27 @@ export function applyRemove(projectDir, plan) {
         done.push(`${plan.settings.rel} (${plan.settings.removed} BOSS hook registration(s) removed)`);
       }
     } catch { /* skip */ }
+  }
+  if (plan.brainProse && plan.brainProse.length) {
+    try {
+      const parts = [
+        '# Venture brain — exported on the way out',
+        '',
+        "BOSS wrote this read of your venture over time, and it was always yours to correct. It is",
+        'plain markdown and depends on nothing — keep it, edit it, or delete it.',
+        '',
+      ];
+      for (const name of plan.brainProse) {
+        parts.push(`## ${name}`, '');
+        try { parts.push(readFileSync(join(projectDir, '.boss', 'brain', name), 'utf8').trim(), ''); }
+        catch { /* skip an unreadable one rather than lose the rest */ }
+      }
+      const out = join(projectDir, 'docs', 'venture-brain.md');
+      if (existsSync(join(projectDir, 'docs'))) {
+        writeFileSync(out, parts.join('\n') + '\n');
+        done.push(`docs/venture-brain.md (exported — ${plan.brainProse.length} brain file(s) kept as plain markdown)`);
+      }
+    } catch { /* an export that fails must never block the removal */ }
   }
   if (plan.bossDir) {
     try { rmSync(join(projectDir, '.boss'), { recursive: true, force: true }); done.push('.boss/'); } catch { /* skip */ }

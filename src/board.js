@@ -17,7 +17,7 @@ import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { dim, bold } from './ui.js';
-import { frontmatter, unquote } from './frontmatter.js';
+import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -61,6 +61,118 @@ function firstHeading(text) {
   return m ? m[1].trim() : '';
 }
 
+// --- the gist: one line saying what the card actually IS -------------------------------------
+// Ajesh: *"its hard to see what it is… right now its a bit hard to remember ideas."* A card is an
+// id and a title, and a title is a name — after sixty records, a name is not a reminder. This is
+// the one line of recall the board was missing.
+//
+// Authored wins, derived fills the silence — the same posture `gitFirst` takes for dates, and for
+// the same reason: a field someone has to remember to fill in is a rule with no mechanism, and a
+// board that goes blank for 62 of 72 records is worse than one that guesses well. A `gist:` line
+// in frontmatter is always preferred when present; otherwise the record's own opening prose is
+// read, because every record already has one and it is the sentence its author wrote FIRST.
+//
+// Deliberately NOT read from `docs/ideas/INDEX.md`: the index is a hand-maintained view that
+// drifted from the files in 21 rows, which is the whole reason this module reads frontmatter.
+const GIST_MAX = 200;
+
+// Markdown → one plain line. Keeps backticks (a path or a command IS the clearest half of many
+// of these sentences) and drops everything that only means something to a renderer.
+function flatten(md) {
+  return String(md)
+    .replace(/\[\[([^\]]+)\]\]/g, '$1')            // [[wiki-link]] → wiki-link
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')        // [text](url) → text
+    .replace(/\*\*([^*]+)\*\*/g, '$1')               // bold
+    .replace(/(^|\s)\*([^*\n]+)\*/g, '$1$2')        // italic
+    .replace(/\*\*?/g, '')                          // stray markers from an unbalanced pair
+    // The attribution prefix on a seed line ("Seed: Ajesh, 2026-06-20 — ") is provenance, and
+    // provenance is not a reminder. The founder's own words after the dash are.
+    .replace(/^(Seed|Source|Occasioned by|Captured from|From)\b[^—\n]{0,60}—\s*/i, '')
+    // BOSS's own throat-clearing. These openers say what KIND of record this is, which the id
+    // already said; the sentence after them says what it IS.
+    .replace(/^(?:Capture,? don'?t build(?:\s*\([^)]*\))?|The read in one line|In one line|One line)\.\s*/i, '')
+
+    // A stripped prefix must not leave a lowercase start — but `v0.189.0` and `src/board.js` are
+    // lowercase on purpose and must not be "corrected" into something that does not exist.
+    .replace(/^[a-z](?![0-9./])/, (c) => c.toUpperCase())
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// The first sentence, or the whole thing if it is already short. Sentence-splitting stops at a
+// period followed by whitespace and a capital — which keeps `v0.104.0`, `src/board.js` and an
+// ellipsis intact, the three things a naive split on '.' destroys in this corpus.
+const ABBREV = /(?:^|[\s(])(?:e\.g|i\.e|vs|etc|cf|approx|no|fig|Dr|Mr|Ms|St|[A-Z])\.$/;
+// A sentence too short to be a reminder is a lead-in — these records open with "The read in one
+// line." and "Capture, don't build (CLAUDE.md #3)." often enough that stopping at the first period
+// reports the throat-clearing and drops the idea. Keep taking sentences until there's a sentence's
+// worth of meaning.
+const MIN_SENTENCE = 60;
+function firstSentence(line) {
+  let out = line;
+  for (const m of line.matchAll(/[.!?]\s+(?=[A-Z(`"'])/g)) {
+    const end = m.index + 1;
+    if (ABBREV.test(line.slice(0, end))) continue;   // "e.g. Cursor" is not a sentence break
+    if (end < MIN_SENTENCE) continue;
+    out = line.slice(0, end);
+    break;
+  }
+  if (out.length > GIST_MAX) out = out.slice(0, GIST_MAX - 1).replace(/\s+\S*$/, '') + '…';
+  return out;
+}
+
+export function cardGist(text, fm = {}) {
+  if (fm.gist) return flatten(unquote(fm.gist));
+
+  // Everything after the H1. Before it is frontmatter and the title itself.
+  const h1 = text.search(/^#\s+/m);
+  const body = h1 === -1 ? text.replace(/^---\n[\s\S]*?\n---\n/, '') : text.slice(h1).replace(/^#[^\n]*\n/, '');
+
+  // A disposition banner is the record's STATUS, not its subject — and `status:` already carries
+  // that. Parking a record used to rewrite its own gist, because the banner becomes the first prose
+  // block in the file; four cards went from saying what they were to saying "PARKED 2026-08-20".
+  // Dropped whole, not sentence-by-sentence: the banner's SECOND sentence is boilerplate too.
+  const BANNER = /^(?:PARKED|RE-?GRADED|RESOLVED|SUPERSEDED|ARCHIVED|DEFERRED|DECIDED|CORRECTION)\b/i;
+
+  // A paragraph too short to say anything is a lead-in, not a gist — "The read in one line.",
+  // "Capture, don't build." Skip to the next one rather than reporting the label as the answer.
+  const MIN = 45;
+  const paras = [];
+  let para = [];
+  let quoted = false;                     // is the paragraph being built inside a blockquote?
+  const flush = () => { if (para.length) paras.push({ text: para.join(' '), quoted }); para = []; };
+  for (const raw of body.split('\n')) {
+    const isQuote = /^\s*>/.test(raw);
+    const line = raw.replace(/^\s*>\s?/, '').trim();      // a blockquote can be prose, not chrome
+    if (!para.length) {
+      if (!line) continue;
+      quoted = isQuote;
+      if (/^#{1,6}\s/.test(line)) continue;                // section headings name a section, not the idea
+      if (/^(\||-{3,}|```|<)/.test(line)) continue;        // table rows, rules, fences, raw HTML
+      // A bullet counts, but strip its marker and any `**What:**`-style lead-in label.
+      para.push(line.replace(/^[-*+]\s+/, '').replace(/^\*\*(What|The ask|Seed|Source):\*\*\s*/i, ''));
+      continue;
+    }
+    if (!line || /^#{1,6}\s/.test(line)) { flush(); continue; }   // paragraph ends
+    para.push(line);
+  }
+  flush();
+  // A banner is a whole leading BLOCKQUOTE, not one paragraph: BOSS's park banners run several
+  // paragraphs and the later ones ("two things a future session must not misread…") are as much
+  // about the disposition as the first. Only a quoted opener that starts with a disposition word
+  // triggers this — a leading blockquote is often the idea itself (a founder's own words), and
+  // dropping those would delete the best gist in the file.
+  let rest = paras;
+  if (rest.length && rest[0].quoted && BANNER.test(flatten(rest[0].text))) {
+    let i = 0;
+    while (i < rest.length && rest[i].quoted) i++;
+    rest = rest.slice(i);
+  }
+  const flat = rest.map((x) => flatten(x.text)).filter((t) => t && !BANNER.test(t));
+  const best = flat.find((t) => t.length >= MIN) || flat[0];
+  return best ? firstSentence(best) : '';
+}
+
 // Owner-as-person (founder layer slice 2b, IDEA-037/FEAT-021): only a `@handle`
 // counts as a founder owner for the team lens — role owners (`pm`) and blanks are
 // ignored here. This is provenance (who's the DRI), surfaced ONLY when it's a team;
@@ -78,9 +190,14 @@ function cardTitle(heading, id) {
   let t = (heading || '').trim();
   if (!t || t.startsWith('<')) return id;
   t = t.replace(/^(IDEA|FEAT|EXTR)-\d+\s*[—:-]\s*/i, '').trim();
-  if (t.length > 52) t = t.slice(0, 51).trimEnd() + '…';
   return t || id;
 }
+
+// Clipping moved to the renderers. A title truncated at collect time reached the HTML board too,
+// where nothing needed it — "Temple culture layer — human-agent collaboration as…" was cut by a
+// terminal's width inside a card that had room to wrap. The terminal clips; the page wraps.
+const clip = (t, n) => (t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t);
+const TITLE_COLS = 52;
 
 // Is the canvas's riskiest assumption actually named, or still the placeholder?
 // Mirrors the conscience hook's read: the line is
@@ -94,8 +211,14 @@ function riskiestNamed(canvasText) {
   return true;
 }
 
+// Both readers compare the status's BASE WORD, never the whole string. `docs/IDS.md` declares the
+// vocabulary as `<word> (free-form detail)` and says the detail is encouraged — so `shipped
+// (v0.104.0 — the one question in /close)` is well-formed, and an `=== 'shipped'` test misses it.
+// That is exactly how it shipped: twelve of BOSS's own cards — eight shipped, four in build — sat
+// in the Captured column looking like raw ideas nobody had touched, and the header comment three
+// screens up said "frontmatter is truth" the whole time.
 function ideaColumn(status, hasRisk) {
-  const s = (status || '').toLowerCase();
+  const s = baseStatus(status);
   if (s === 'shipped') return 'Shipped';
   if (s === 'building') return 'Building'; // promoted but no FEAT file yet
   if (hasRisk) return 'Taking shape';
@@ -103,7 +226,7 @@ function ideaColumn(status, hasRisk) {
 }
 
 function featColumn(status) {
-  const s = (status || '').toLowerCase();
+  const s = baseStatus(status);
   if (s === 'shipped' || s === 'done') return 'Shipped';
   return 'Building'; // building / drafting / blocked — all in-flight
 }
@@ -181,14 +304,15 @@ export function collectBoard(projectDir) {
     const id = fm.id || f.replace(/\.md$/, '');
     const title = cardTitle(firstHeading(text), id);
     const priority = (fm.priority || '').trim().toLowerCase() === 'high' ? 'high' : null;
+    const gist = cardGist(text, fm);
     if (/^FEAT/i.test(id)) {
       if (fm.source) featSources.add(fm.source);
-      feats.push({ id, title, status: fm.status, nextReview: fm.next_review,
+      feats.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review,
         buildingSince: fm.building_since || gitFirst(projectDir, `docs/ideas/${f}`),
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
         priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text) });
     } else {
-      ideas.push({ id, title, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+      ideas.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof), program: fm.program || null });
     }
   }
@@ -199,8 +323,8 @@ export function collectBoard(projectDir) {
   // noise the founder learns to ignore. No date → not due. (IDEA-027.)
   const today = new Date().toISOString().slice(0, 10);
   const reviewDue = (nextReview, status) => {
-    const s = (status || '').toLowerCase();
-    if (s === 'shipped' || s === 'done' || s === 'killed') return false;
+    const s = baseStatus(status);
+    if (s === 'shipped' || s === 'done' || s === 'killed' || isParked(status)) return false;
     const d = (nextReview || '').trim();
     return /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= today; // YYYY-MM-DD lexical compare
   };
@@ -230,6 +354,10 @@ export function collectBoard(projectDir) {
     cards.push({
       id: ft.id,
       title: ft.title,
+      gist: ft.gist,
+      file: ft.file,
+      status: ft.status || '',
+      parked: isParked(ft.status),
       column,
       blocked: (ft.status || '').toLowerCase() === 'blocked',
       reviewDue: reviewDue(ft.nextReview, ft.status),
@@ -254,6 +382,10 @@ export function collectBoard(projectDir) {
     cards.push({
       id: id.id,
       title: id.title,
+      gist: id.gist,
+      file: id.file,
+      status: id.status || '',
+      parked: isParked(id.status),
       column: ideaColumn(id.status, hasRisk),
       blocked: false,
       reviewDue: reviewDue(id.nextReview, id.status),
@@ -323,6 +455,29 @@ function shippedView(sorted, showAll) {
   return { shown, hidden: sorted.length - shown.length };
 }
 
+// Soft-wrap a gist to the terminal's comfortable width. Word-boundary only — a gist cut
+// mid-word is the truncation problem this line exists to solve, reproduced one level down.
+function wrap(text, width) {
+  const out = [];
+  let line = '';
+  for (const word of String(text).split(/\s+/)) {
+    if (line && (line + ' ' + word).length > width) { out.push(line); line = word; }
+    else line = line ? `${line} ${word}` : word;
+  }
+  if (line) out.push(line);
+  return out;
+}
+
+// The free-form half of a status — `shipped (v0.104.0 — the one question in /close)` → the
+// parenthetical. The board threw this away for its whole life while the vocabulary doc called it
+// "encouraged", and it is often the most specific thing the record says about where it stands.
+function statusDetail(status) {
+  const m = String(status || '').trim().match(/^[a-z]+\s*[({]?\s*(.+?)\)?$/i);
+  if (!m) return '';
+  const rest = m[1].trim();
+  return rest && rest.toLowerCase() !== baseStatus(status) ? rest : '';
+}
+
 // Days → a compact "3w" / "5d" age string for the in-build flag.
 function ageLabel(days) {
   const w = Math.floor(days / 7);
@@ -344,6 +499,11 @@ export function renderBoardText(projectName, data, opts = {}) {
   // I on the hook for." A team lens; harmless solo (matches nothing until @owners exist).
   let cards = data.cards;
   if (opts.mine) cards = cards.filter((c) => c.owner && c.owner.toLowerCase() === opts.mine.toLowerCase());
+  // Parked work leaves the flow. A `deferred`/`dropped` record is a decision that was already
+  // made, and standing it beside fresh captures asks the founder to re-read a settled question
+  // every time they look at the board. It is folded, never deleted — the reasoning is the point.
+  const parked = cards.filter((c) => c.parked);
+  cards = cards.filter((c) => !c.parked);
   const lines = [];
   lines.push('');
   lines.push(`  ${bold(projectName + ' · board')}${opts.mine ? dim(' · ' + opts.mine) : ''}`);
@@ -351,7 +511,7 @@ export function renderBoardText(projectName, data, opts = {}) {
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
 
-  lines.push(`  ▸ ${evidenceLine(counts, cards.length)}`);
+  lines.push(`  ▸ ${evidenceLine(counts, cards.length)}${parked.length ? dim(` · ${parked.length} parked`) : ''}`);
   // The one thing you're on now, surfaced at the top — on a long board the Building
   // column sits below a wall of Captured cards, so a founder who lost the thread has
   // to hunt for it (EVID-001, facet 3: "I forget what feature I'm building"). Longest-
@@ -359,7 +519,7 @@ export function renderBoardText(projectName, data, opts = {}) {
   const onNow = sortColumn(cards.filter((c) => c.column === 'Building' && !c.blocked), 'Building')[0];
   if (onNow) {
     const p = onNow.progress ? dim(`  [${onNow.progress.done}/${onNow.progress.total} criteria]`) : '';
-    lines.push(`  ${dim('▸ on now:')} ${bold(onNow.id)} — ${onNow.title}${p}`);
+    lines.push(`  ${dim('▸ on now:')} ${bold(onNow.id)} — ${clip(onNow.title, TITLE_COLS)}${p}`);
   }
   lines.push('');
 
@@ -384,7 +544,8 @@ export function renderBoardText(projectName, data, opts = {}) {
         // orthogonal and still shown as a suffix, so a high+aging card carries both.
         const prio = c.priority === 'high' ? '⬆ ' : '  ';
         const owner = (opts.owners && c.owner) ? `   ${c.owner}` : '';
-        lines.push(`  ${prio}${c.id.padEnd(10)} ${c.title}${cardFlagText(c)}${owner}`);
+        lines.push(`  ${prio}${c.id.padEnd(10)} ${clip(c.title, TITLE_COLS)}${cardFlagText(c)}${owner}`);
+        if (opts.detail && c.gist) for (const l of wrap(c.gist, 74)) lines.push(dim(`               ${l}`));
       }
       if (hidden > 0) lines.push(`    … +${hidden} shipped earlier  (\`boss board --all\`)`);
     }
@@ -408,8 +569,18 @@ export function renderBoardText(projectName, data, opts = {}) {
     lines.push('');
   }
 
+  if (parked.length) {
+    lines.push(`  ${bold('Parked')} ${dim('(' + parked.length + ')')} ${dim('— decided, not queued; each carries a written re-open trigger')}`);
+    for (const c of [...parked].sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }))) {
+      lines.push(dim(`    ${c.id.padEnd(10)} ${clip(c.title, TITLE_COLS)}  · ${baseStatus(c.status)}`));
+      if (opts.detail && c.gist) for (const l of wrap(c.gist, 74)) lines.push(dim(`               ${l}`));
+    }
+    lines.push('');
+  }
+
   lines.push('  The board is a read of the files. To change it, change the work:');
   lines.push('  `/triage` to capture · `/canvas` to pressure-test · `/spec` to build.');
+  if (!opts.detail) lines.push(dim('  `boss board --detail` for a line on each · `boss board <ID>` for one in full.'));
   lines.push('');
   return lines.join('\n');
 }
@@ -437,10 +608,14 @@ const esc = (s) =>
 // self-contained file in the founder's project. Keep them in step by hand.
 const COLUMN_INDEX = Object.fromEntries(COLUMNS.map((c, i) => [c, i]));
 
-export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) {
+export function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt) {
+  // Same rule as the terminal board: parked work leaves the flow but is never deleted.
+  const parked = allCards.filter((c) => c.parked);
+  const cards = allCards.filter((c) => !c.parked);
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
-  const evidence = hasIdeasDir ? evidenceLine(counts, cards.length) : 'no docs/ideas/ here — is this a BOSS project?';
+  const evidence = (hasIdeasDir ? evidenceLine(counts, cards.length) : 'no docs/ideas/ here — is this a BOSS project?')
+    + (parked.length ? ` · ${parked.length} parked` : '');
   // Hi-vis is BOSS pointing, never decoration (VISUAL.md). The only line that
   // earns it here is the humane-lens override: motion captured, nothing proven.
   const pointing = hasIdeasDir && cards.length > 0
@@ -466,9 +641,20 @@ export function renderBoardHtml(projectName, { cards, hasIdeasDir }, stampedAt) 
         + Array.from({ length: c.progress.total }, (_, i) => `<i${i < c.progress.done ? ' class="on"' : ''}></i>`).join('')
         + `<b>${c.progress.done}/${c.progress.total}</b></div>`
       : '';
-    return `<div class="card${cls}">
+    // The gist — the line that answers "what IS this again?" (Ajesh: *"its a bit hard to remember
+    // ideas"*). Always rendered, clamped to two lines so a column of cards stays scannable, and
+    // opened on hover or keyboard focus. CSS-only: this page has no script and is not getting one
+    // for a disclosure triangle. The `title` attribute carries the same text so a real tooltip
+    // fires too, and so it survives being read by something that isn't a browser.
+    const detail = statusDetail(c.status);
+    const peek = [c.gist, detail && `(${detail})`].filter(Boolean).join(' ');
+    const gist = c.gist
+      ? `<p class="gist">${esc(c.gist)}${detail ? ` <span class="muted">(${esc(detail)})</span>` : ''}</p>`
+      : '';
+    const tip = esc(`${c.id} — ${c.title}${peek ? `\n\n${peek}` : ''}`);
+    return `<div class="card${cls}" tabindex="0" title="${tip}">
             <div class="id">${esc(c.id)}${prio}</div>
-            <div class="title">${esc(c.title)}</div>${prog}${flag}
+            <div class="title">${esc(c.title)}</div>${gist}${prog}${flag}
           </div>`;
   };
 
@@ -604,6 +790,14 @@ function shippedTimeline(cards) {
 
   const timelineHtml = shippedTimeline(cards);
   const programHtml = programRollup(cards);
+  const parkedHtml = parked.length
+    ? `<section class="parked">
+      <details><summary>Parked <b>${parked.length}</b> <span class="muted">— decided, not queued; each carries a written re-open trigger</span></summary>
+      <div class="cards">${[...parked]
+        .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }))
+        .map(cardHtml).join('\n')}</div></details>
+    </section>`
+    : '';
 
   const pills = COLUMNS.map((col) =>
     `<span class="pill" style="--hue:var(--stage-${COLUMN_INDEX[col]})"><i></i>${esc(col)} <b>${counts[col] || 0}</b></span>`
@@ -714,7 +908,30 @@ function shippedTimeline(cards) {
   .card .id { display: flex; align-items: center; justify-content: space-between; gap: 6px;
               font: 650 10px/1.3 var(--mono); color: var(--muted); letter-spacing: .06em;
               text-transform: uppercase; }
-  .card .title { font-size: 14px; font-weight: 600; line-height: 1.4; margin-top: 5px; }
+  .card { transition: border-color .12s ease; }
+  .card:hover, .card:focus-visible { border-color: var(--muted); outline: none; }
+  .card .title { font-size: 14px; font-weight: 600; line-height: 1.4; margin-top: 5px;
+                 overflow-wrap: anywhere; }
+  /* The gist — two lines at rest, all of it on hover or keyboard focus. The card is focusable so
+     this is reachable by Tab, not only by a pointer; a disclosure you can only reach with a mouse
+     is a disclosure half the readers do not have. */
+  .card .gist { font-size: 12.5px; line-height: 1.45; color: var(--muted); margin: 7px 0 0;
+                overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2; line-clamp: 2; overflow-wrap: anywhere; }
+  .card:hover .gist, .card:focus-within .gist, .card:focus-visible .gist { -webkit-line-clamp: unset; line-clamp: unset; }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  /* Parked — folded by default. Present, subordinate, never gone: the reasoning is the point. */
+  .parked { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
+  .parked summary { cursor: pointer; list-style: none; user-select: none;
+    font: 600 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  .parked summary::-webkit-details-marker { display: none; }
+  .parked summary::before { content: "+ "; }
+  .parked details[open] summary::before { content: "− "; }
+  .parked summary b { color: var(--ink); font-weight: 700; }
+  .parked summary .muted { text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .parked .cards { margin-top: 12px; display: grid; gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); opacity: .75; }
+  .parked .card { border-left-color: var(--line); }
   .card .prio { font: 700 9.5px/1 var(--mono); letter-spacing: .06em; color: var(--hivis-text);
                 border: 1px solid color-mix(in srgb, var(--hivis) 45%, transparent);
                 border-radius: 2px; padding: 3px 6px; }
@@ -759,6 +976,7 @@ ${columnHtml}
     </div>
     ${programHtml}
     ${timelineHtml}
+    ${parkedHtml}
     <footer>
       A read of the files — to change the board, change the work (<code>/triage</code> · <code>/canvas</code> · <code>/spec</code>).
       Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` &middot; ${esc(stampedAt)}` : ''}
@@ -778,7 +996,10 @@ ${columnHtml}
 // before starting new (the focus discipline), then build what's pressure-tested,
 // then pressure-test what's only captured. Blocked work is called out separately —
 // it can't move without clearing the blocker first.
-export function computeNext(cards) {
+export function computeNext(allCards) {
+  // Parked work is not work waiting to be picked up. Without this, `--next` cheerfully told the
+  // agent to `/canvas` an idea whose own record says the deferral is settled and DO-NOT-REHASH.
+  const cards = allCards.filter((c) => !c.parked);
   const building = cards.filter((c) => c.column === 'Building');
   const finish = sortColumn(building.filter((c) => !c.blocked), 'Building')
     .map((c) => ({ id: c.id, title: c.title, group: 'finish', action: 'finish it', age: c.ageDays, priority: c.priority || null }));
@@ -796,7 +1017,8 @@ export function computeNext(cards) {
 }
 
 // "What's not moving?" — blocked, aging-in-build, and past-review, in one place.
-export function computeStuck(cards) {
+export function computeStuck(allCards) {
+  const cards = allCards.filter((c) => !c.parked);   // deliberately stopped is not stuck
   return {
     blocked: cards.filter((c) => c.blocked),
     aging: cards.filter((c) => c.aging).sort((a, b) => b.ageDays - a.ageDays),
@@ -819,7 +1041,7 @@ export function renderBoardNext(projectName, { cards, hasIdeasDir }) {
     for (const it of items) {
       const prio = it.priority === 'high' ? '⬆ ' : '  ';
       const age = withAge && it.age != null && it.age >= AGING_DAYS ? `  ⌛ ${ageLabel(it.age)}` : '';
-      const t = it.title.length > 40 ? it.title.slice(0, 39).trimEnd() + '…' : it.title.padEnd(40);
+      const t = it.title.length > 40 ? clip(it.title, 40) : it.title.padEnd(40);
       lines.push(`  ${prio}${it.id.padEnd(10)} ${t} → ${it.action}${age}`);
     }
     lines.push('');
@@ -859,7 +1081,11 @@ export function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
 // machine-parseable; an agent (or the `/board` skill) reads this instead of
 // re-deriving state from the files.
 export function boardJson(projectDir, projectName) {
-  const { cards, hasIdeasDir } = collectBoard(projectDir);
+  const { cards: allCards, hasIdeasDir } = collectBoard(projectDir);
+  // The counts must be the ones the board RENDERS, or the agent and the founder are looking at
+  // two different boards. Parked is its own number, never folded into a column total.
+  const cards = allCards.filter((c) => !c.parked);
+  const parked = allCards.filter((c) => c.parked);
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
   const { finish, start, unblock, pressure } = computeNext(cards);
@@ -867,14 +1093,19 @@ export function boardJson(projectDir, projectName) {
   // Present cards in display order (by column, then priority/age within) so a JSON
   // consumer reads them the same way the board renders.
   const ordered = COLUMNS.flatMap((col) => sortColumn(cards.filter((c) => c.column === col), col));
+  // (parked cards are reported above, not smuggled back into a column)
   return {
     project: projectName,
     hasIdeasDir,
     columns: COLUMNS,
     counts,
     total: cards.length,
+    parked: parked.map((c) => ({ id: c.id, title: c.title, gist: c.gist || '', status: c.status || '' })),
     cards: ordered.map((c) => ({
       id: c.id, title: c.title, column: c.column,
+      gist: c.gist || '',
+      status: c.status || '',
+      parked: c.parked || false,
       priority: c.priority || null,
       owner: c.owner || null,
       blocked: c.blocked, reviewDue: c.reviewDue,
@@ -890,12 +1121,55 @@ export function boardJson(projectDir, projectName) {
   };
 }
 
+// One card, in full — the terminal's answer to "let me hover over that." A founder who has lost
+// the thread on a single record should not have to open the file, and should not have to read the
+// whole board again to find the one line they wanted (EVID-001, facet 3).
+export function renderBoardCard(projectName, { cards, hasIdeasDir }, id) {
+  const want = String(id || '').trim().toUpperCase();
+  const lines = [''];
+  if (!hasIdeasDir) return lines.concat('  (no docs/ideas/ here — is this a BOSS project?)', '').join('\n');
+  // Bare numbers are what a founder actually types after reading a column of ids.
+  const norm = /^\d+$/.test(want) ? want.padStart(3, '0') : want;
+  const hits = cards.filter((c) => c.id.toUpperCase() === norm
+    || (/^\d+$/.test(norm) && c.id.split('-')[1] === norm));
+  if (!hits.length) {
+    lines.push(`  ${bold(want)} ${dim('— no such card on this board.')}`);
+    lines.push(dim('  `boss board` lists them; `boss board --all` includes everything shipped.'));
+    return lines.concat('').join('\n');
+  }
+  for (const c of hits) {
+    lines.push(`  ${bold(c.id)} ${dim('·')} ${c.title}`);
+    lines.push('');
+    if (c.gist) for (const l of wrap(c.gist, 74)) lines.push(`  ${l}`);
+    lines.push('');
+    const facts = [
+      ['status', c.status || dim('(none)')],
+      ['column', c.parked ? `${dim('parked')} ${dim('— decided, not queued')}` : c.column],
+    ];
+    if (c.program) facts.push(['program', c.program]);
+    if (c.owner) facts.push(['owner', c.owner]);
+    if (c.progress) facts.push(['criteria', `${c.progress.done}/${c.progress.total} ticked`]);
+    if (c.ageDays != null) facts.push(['in build', `${ageLabel(c.ageDays)}`]);
+    // Only in the Shipped column. `shippedOn` is derived from the `proof:` artifact's first commit,
+    // which exists for plenty of in-flight records — printing it on a Building card claims the
+    // thing shipped, which is the exact lie this release went and fixed in the columns.
+    if (c.column === 'Shipped' && c.shippedOn) facts.push(['shipped', c.shippedOn]);
+    for (const [k, v] of facts) lines.push(`  ${dim(k.padEnd(9))} ${v}`);
+    lines.push('');
+    if (c.file) lines.push(dim(`  ${c.file}`));
+    lines.push(dim('  The record says more than any card can — this is the line that reminds you which one it is.'));
+    lines.push('');
+  }
+  return lines.join('\n');
+}
+
 export function board(projectDir, projectName, opts = {}) {
   const data = collectBoard(projectDir);
+  if (opts.card) return console.log(renderBoardCard(projectName, data, opts.card));
   if (opts.next) return console.log(renderBoardNext(projectName, data));
   if (opts.blocked) return console.log(renderBoardBlocked(projectName, data));
   if (opts.json) return console.log(JSON.stringify(boardJson(projectDir, projectName), null, 2));
-  console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine }));
+  console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine, detail: opts.detail }));
 }
 
 // Write the visual kanban to .boss/board.html and return its path.

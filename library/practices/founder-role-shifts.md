@@ -46,7 +46,7 @@ fixes and the part that matters most.
 - **Builder → seller (→ MVP):** `/interview`, `/pretotype`, `/evidence`, `/research`; `mentor-customers`
   (positioning, first users), `mentor-founder` (is this worth building, what's the riskiest assumption).
 - **Seller → operator (→ V1):** the customer-loop verbs as they arrive (support/incidents/churn);
-  `mentor-money` (model, pricing), `mentor-hiring` (first help).
+  `mentor-capital` (model, pricing), `mentor-hiring` (first help).
 - **Operator → leader (→ Scale):** the extended-team + give-away-your-Legos work ([[IDEA-040]]);
   `mentor-hiring`, `mentor-cofounder`. (Scale mode ships — `boss unlock scale`.)
 

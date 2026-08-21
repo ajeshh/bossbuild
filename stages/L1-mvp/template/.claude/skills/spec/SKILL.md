@@ -191,6 +191,10 @@ that when you're choosing among many candidates, not just reacting to one.)_
      board archives a shipped FEAT older than ~30 days into the "shipped earlier" fold (a true date
      window, not just the recent-count cap), so the Shipped column shows what landed *lately* instead
      of every ship forever. Frontmatter-true: no `shipped_on:` → it falls back to the count cap.
+   - `gist:` is **one plain sentence saying what the feature is**, and it is what the board shows
+     under the card (`boss board --detail`, the `--html` hover, `boss board <ID>`). Write what the
+     thing *does*, not what kind of record it is. Omitted, the board falls back to the record's
+     opening prose — workable, never as good. Rewrite it if the goal changes.
    - `priority: high` is **optional** — add it only when a FEAT genuinely jumps the queue. The board
      floats it to the top of its column with a `⬆` marker and leads `boss board --next` with it. One
      level by design (no P0/P1/P2 ladder — that turns the board into a planning surface you tend

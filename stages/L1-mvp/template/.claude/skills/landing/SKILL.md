@@ -101,6 +101,11 @@ say-it-out-loud test on any decline copy. Surface → name the cost → offer th
 crosses anyway, **record it as a `DEC-NNN`** — conscience-not-censor, never a block. (The honest version is also
 the high-converting version — clarity + one honest CTA + real proof *is* the playbook.)
 
+The full rows for a page like this — with the honest version of each — are
+`boss craft deceptive-patterns --shape marketing-site`. The list above is the handful that bite
+hardest here; the catalog is where they stay current, so trust it over this line if the two ever
+disagree.
+
 ## Step 4 — hand off to /ship (and know when to hand off entirely)
 
 - Deploy via **`/ship`** — its "who's the first real user, and how do they hit this?" voicing lands here.

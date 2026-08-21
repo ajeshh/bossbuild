@@ -29,6 +29,7 @@ id: IDEA-NNN
 type: idea
 owner: product-lead
 status: seedling
+gist: <one plain sentence — what this IS, in their words where you can>
 created: {{today}}
 ---
 
@@ -50,6 +51,18 @@ _Append-only. Newest at the bottom. Don't edit old entries._
 ## Canvas
 _Not started. When this has legs, run `/canvas` to pressure-test it as a business._
 ```
+
+**`gist:` is the line that makes the idea findable later.** A title is a name, and after twenty
+records a name stops being a reminder — `boss board --detail`, the visual board's hover, and
+`boss board <ID>` all read this field. Write it as *what the thing is*, not what kind of record it
+is: "a way to point BOSS at a doc you already jotted the idea in" beats "an import feature." One
+sentence. Their words where you have them. It costs nothing now and is most of what a founder
+needs six weeks from now, when they open the board and cannot remember which idea this was.
+
+If you leave it out, the board falls back to reading the record's opening prose — which works, and
+is why this is never a blocker, but it will only ever be as good as the first paragraph happens to
+be. Rewrite the gist when **Current shape** is rewritten; a gist that describes a superseded shape
+is worse than none.
 
 That's the whole capture — **nothing else to update.** `boss board` renders the idea from its own
 frontmatter, so there is no index table to keep in sync.

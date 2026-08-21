@@ -12,9 +12,14 @@
 <meta property="og:title" content="Keeping track — what BOSS writes down, so you don't have to" />
 <meta property="og:description" content="Twelve ideas, three half-finished specs, and a decision you can't remember making. BOSS gives every one of them a file, a status, and a place — and renders the board from the files so nothing can drift." />
 <meta property="og:url" content="https://oyeboss.build/keeping-track.html" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://oyeboss.build/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BOSS — Build Out Solid Stuff. Make it real." />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Keeping track — what BOSS writes down, so you don't have to" />
 <meta name="twitter:description" content="Twelve ideas, three half-finished specs, and a decision you can't remember making. BOSS gives every one of them a file, a status, and a place — and renders the board from the files so nothing can drift." />
+<meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -186,7 +191,7 @@
 <span class="line"><span class="t-dim">---</span></span>
 <span class="line">id: IDEA-014</span>
 <span class="line">type: idea</span>
-<span class="line">owner: pm</span>
+<span class="line">owner: product-lead</span>
 <span class="line">status: <span class="t-accent">exploring</span>          <span class="t-dim"># the only place this is recorded</span></span>
 <span class="line"><span class="t-dim">---</span></span>
 <span class="line"></span>
@@ -195,7 +200,9 @@
         </div>
         <p class="small prose">
           If the board looks wrong, the fix is to change the work — never the view. There is no view to
-          fix.
+          fix. When a card's one-line summary isn't enough, <code>boss board &lt;ID&gt;</code> opens that
+          one in full and <code>boss board --detail</code> puts a line under every card — still a read of
+          the files, just a closer one.
         </p>
       </div>
     </section>
@@ -419,7 +426,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.195.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

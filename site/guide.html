@@ -12,9 +12,14 @@
 <meta property="og:title" content="Guide — using the team, rung by rung" />
 <meta property="og:description" content="What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder." />
 <meta property="og:url" content="https://oyeboss.build/guide.html" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://oyeboss.build/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BOSS — Build Out Solid Stuff. Make it real." />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Guide — using the team, rung by rung" />
 <meta name="twitter:description" content="What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder." />
+<meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -77,19 +82,19 @@
         <span class="dot" aria-hidden="true"></span>
         <span class="stop">MVP</span>
         <span class="crew"><b>10</b> on the team</span>
-        <span class="verbs">44 skills</span>
+        <span class="verbs">45 skills</span>
       </li>
       <li class="station">
         <span class="dot" aria-hidden="true"></span>
         <span class="stop">V1</span>
-        <span class="crew"><b>12</b> on the team</span>
-        <span class="verbs">46 skills</span>
+        <span class="crew"><b>10</b> on the team</span>
+        <span class="verbs">47 skills</span>
       </li>
       <li class="station">
         <span class="dot" aria-hidden="true"></span>
         <span class="stop">Scale</span>
-        <span class="crew"><b>13</b> on the team</span>
-        <span class="verbs">47 skills</span>
+        <span class="crew"><b>11</b> on the team</span>
+        <span class="verbs">48 skills</span>
       </li>
     </ol>
     <p class="line-note">You unlock each stop. Nothing is ever removed — the roster only grows.</p>
@@ -97,12 +102,21 @@
         <div class="prose">
           <h3>Quickstart — get the idea out of your head</h3>
           <p>
-            Capture freely with <code>/triage</code>. Pressure-test one with <code>/canvas</code> — the
-            Humane Product Canvas, filled a few cells at a time rather than all at once. Commercial
-            prompts are folded into every cell (who <em>exactly</em> has the problem, what they use
-            instead, who pays and why), alongside two questions the conventional canvases don't ask:
-            <strong>who this could harm or exclude</strong>, and the principles you'll hold when
-            holding them costs you something.
+            Capture freely with <code>/triage</code>. Pressure-test one with <code>/canvas</code>,
+            filled a few cells at a time rather than all at once. <strong>You never pick a
+            framework</strong> — you answer questions, and the frame is a view you switch. The same
+            answers render as the Humane Product Canvas (the default), a <em>Lean Canvas</em>, or a
+            <em>Business Model Canvas</em>; <code>/canvas --frame lean</code> re-renders what you've
+            already said rather than interviewing you again, and a cell you haven't answered shows as
+            <code>_(not yet)_</code> in every frame instead of quietly disappearing to make a view look
+            complete.
+          </p>
+          <p>
+            Commercial prompts are folded into every cell (who <em>exactly</em> has the problem, what
+            they use instead, who pays and why). And two questions ride along in <em>all three</em>
+            frames, not just the humane one: <strong>who this could harm or exclude</strong>, and the
+            principles you'll hold when holding them costs you something. Un-defaulting the framework
+            was never meant to make those optional.
           </p>
           <p>
             Work out who it's for with <code>/persona</code> — your target user as a voice you can
@@ -118,16 +132,25 @@
             Adds the spec discipline (<code>/spec</code>, with validated-learning and evals fields), the
             smoke gate, and the demand test — <code>/pretotype</code>, which builds a fake door before you
             build the real thing. Design tokens get scaffolded here too, the moment there's real UI, so
-            style never gets locked into code.
+            style never gets locked into code, and the <code>designer</code> arrives with them —
+            one designer for both halves, what it looks like and what it does
+            (<code>/design-review</code>, <code>/ux-check</code>).
+          </p>
+          <p>
+            It's also where the questions start pointing <em>outward</em>. <code>/comp-eval</code> goes
+            and finds out who else is solving this — features, pricing, and the honest “why they might
+            win” — then keeps it as a living set you add names to, rather than a slide you drew once.
+            <code>/roadmap</code> weighs what to build next into a short bet-list with a
+            <strong>mandatory no-list</strong>, because a roadmap that only says yes isn't a decision.
           </p>
           <h3>V1 — make it shippable</h3>
           <p>
-            The design system becomes something you can look at: <code>/design-library</code> generates
-            a gallery of your components — every variant, all five states — <em>from your code</em>, plus
-            a reuse index the agent reads before writing a new one. Alongside it, full design review
-            (<code>/design-review</code>, <code>/ux-check</code>, token enforcement), cross-feature
-            sequencing with <code>/board</code>, and the next tier of mentors. This is where a database
-            architect and real designers arrive.
+            <strong>V1 hires nobody.</strong> It's the one rung that adds no agents at all, and that's
+            deliberate — by now you have the team; what you don't have is a way to see what you've
+            already made. So it adds two views. <code>/design-library</code> generates a gallery of your
+            components — every variant, all five states — <em>from your code</em>, plus a reuse index the
+            agent reads before writing a new one. <code>/board</code> sequences work across features
+            instead of within one.
           </p>
           <h3>Scale — grow it</h3>
           <p>Adds <code>/incident</code>. Deliberately thin: most projects should never need this rung.</p>
@@ -222,7 +245,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.189.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.195.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

@@ -34,7 +34,7 @@ By default (`/board` with no flags):
     ◯ FEAT-010  hover-state-microinteractions  deps: design-tokens-loop closed
 
   Blocked (1):
-    ▣ FEAT-006  team-permissions           blocked: needs mentor-money call (pricing tier shape)
+    ▣ FEAT-006  team-permissions           blocked: needs mentor-capital call (pricing tier shape)
 
   Deferred (1):
     ⌀ FEAT-011  ai-suggest-completion      override: skipped — rationale: re-open after FEAT-007 evals stabilize

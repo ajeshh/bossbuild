@@ -1,7 +1,7 @@
 <!--
 title: Guide — using the team, rung by rung
 description: What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder.
-reviewed: 2026-08-20
+reviewed: 2026-08-21
 review_by: 2027-02-16
 describes: the mode ladder and the post-launch arc
 covers: docs/GUIDE.md stages
@@ -46,12 +46,21 @@ nav: guide
         <div class="prose">
           <h3>Quickstart — get the idea out of your head</h3>
           <p>
-            Capture freely with <code>/triage</code>. Pressure-test one with <code>/canvas</code> — the
-            Humane Product Canvas, filled a few cells at a time rather than all at once. Commercial
-            prompts are folded into every cell (who <em>exactly</em> has the problem, what they use
-            instead, who pays and why), alongside two questions the conventional canvases don't ask:
-            <strong>who this could harm or exclude</strong>, and the principles you'll hold when
-            holding them costs you something.
+            Capture freely with <code>/triage</code>. Pressure-test one with <code>/canvas</code>,
+            filled a few cells at a time rather than all at once. <strong>You never pick a
+            framework</strong> — you answer questions, and the frame is a view you switch. The same
+            answers render as the Humane Product Canvas (the default), a <em>Lean Canvas</em>, or a
+            <em>Business Model Canvas</em>; <code>/canvas --frame lean</code> re-renders what you've
+            already said rather than interviewing you again, and a cell you haven't answered shows as
+            <code>_(not yet)_</code> in every frame instead of quietly disappearing to make a view look
+            complete.
+          </p>
+          <p>
+            Commercial prompts are folded into every cell (who <em>exactly</em> has the problem, what
+            they use instead, who pays and why). And two questions ride along in <em>all three</em>
+            frames, not just the humane one: <strong>who this could harm or exclude</strong>, and the
+            principles you'll hold when holding them costs you something. Un-defaulting the framework
+            was never meant to make those optional.
           </p>
           <p>
             Work out who it's for with <code>/persona</code> — your target user as a voice you can
@@ -67,16 +76,25 @@ nav: guide
             Adds the spec discipline (<code>/spec</code>, with validated-learning and evals fields), the
             smoke gate, and the demand test — <code>/pretotype</code>, which builds a fake door before you
             build the real thing. Design tokens get scaffolded here too, the moment there's real UI, so
-            style never gets locked into code.
+            style never gets locked into code, and the <code>designer</code> arrives with them —
+            one designer for both halves, what it looks like and what it does
+            (<code>/design-review</code>, <code>/ux-check</code>).
+          </p>
+          <p>
+            It's also where the questions start pointing <em>outward</em>. <code>/comp-eval</code> goes
+            and finds out who else is solving this — features, pricing, and the honest “why they might
+            win” — then keeps it as a living set you add names to, rather than a slide you drew once.
+            <code>/roadmap</code> weighs what to build next into a short bet-list with a
+            <strong>mandatory no-list</strong>, because a roadmap that only says yes isn't a decision.
           </p>
           <h3>V1 — make it shippable</h3>
           <p>
-            The design system becomes something you can look at: <code>/design-library</code> generates
-            a gallery of your components — every variant, all five states — <em>from your code</em>, plus
-            a reuse index the agent reads before writing a new one. Alongside it, full design review
-            (<code>/design-review</code>, <code>/ux-check</code>, token enforcement), cross-feature
-            sequencing with <code>/board</code>, and the next tier of mentors. This is where a database
-            architect and real designers arrive.
+            <strong>V1 hires nobody.</strong> It's the one rung that adds no agents at all, and that's
+            deliberate — by now you have the team; what you don't have is a way to see what you've
+            already made. So it adds two views. <code>/design-library</code> generates a gallery of your
+            components — every variant, all five states — <em>from your code</em>, plus a reuse index the
+            agent reads before writing a new one. <code>/board</code> sequences work across features
+            instead of within one.
           </p>
           <h3>Scale — grow it</h3>
           <p>Adds <code>/incident</code>. Deliberately thin: most projects should never need this rung.</p>

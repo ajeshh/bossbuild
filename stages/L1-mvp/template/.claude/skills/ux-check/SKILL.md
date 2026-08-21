@@ -69,7 +69,44 @@ accumulates. `/ux-check` catches that.
      That copy is in your product, in whoever's voice the model defaulted to. `/judge-traces` reads
      the same surface for correctness; this reads it for voice.
 
-8. **Capture findings** in `docs/design/ux-check-<feat-or-date>.md`. Each issue: severity
+8. **The deceptive-pattern walk — read the markup, not the intent.** This is the one check where
+   the founder's intention proves nothing, because **the pattern may not be theirs**: ask a model
+   for a signup flow or an upgrade modal and it frequently ships a fake countdown, a pre-ticked
+   opt-in, or confirmshaming in the decline copy — unprompted, from the average of its training
+   data (Vaccaro et al., *Deception at Scale*, CHI 2026). The founder never designed it and often
+   can't see it. `/ux-check` is the routine that catches it, because this skill is already
+   standing in front of the shipped page.
+
+   Pull the rows for the surfaces this flow touches — don't work from memory:
+
+   ```
+   boss craft deceptive-patterns --shape <what this product is>
+   boss craft deceptive-patterns --surface <the one this flow is on>
+   ```
+
+   Then check the **shipped markup** for each row tagged `model-written`, in this order:
+   - **Is any checkbox pre-ticked?** Marketing, sharing, terms-plus-something. `defaultChecked`,
+     `checked={true}`, `checked` in the HTML.
+   - **Is there a countdown or a scarcity claim, and is it true?** A timer that resets on reload,
+     "only 2 left" on a digital good, "12 people viewing" from a random number.
+   - **Read the decline copy out loud.** "No thanks, I like paying full price" is confirmshaming.
+     The person declining owes you no apology.
+   - **Weigh the two buttons.** Accept vs. Reject, Subscribe vs. Not now, Allow vs. Deny — same
+     visual weight, same number of clicks, same screen? *If the good door takes more clicks than
+     the bad one, it's already failed* (11 CCR § 7004).
+   - **Find the way out.** Cancel, unsubscribe, delete account — does it exist, is it reachable
+     from here, and is it as easy as the way in? A deletion flow you never built is a named
+     pattern, not a to-do.
+
+   **What this walk cannot see:** anything on the `tracking-and-telemetry` surface. A pixel, an
+   SDK, a session-replay recorder, and a training-data default have no UI at all — there is
+   nothing to look at. Say so in the findings and point at `/trust`, which owns that surface.
+   Don't let an invisible family read as a clean pass.
+
+   Founder framing, once: *"You didn't design these. Check whether the model did."* Then the
+   finding, specific and short — the file, the line, and the honest version. Never a lecture.
+
+9. **Capture findings** in `docs/design/ux-check-<feat-or-date>.md`. Each issue: severity
    Each issue: severity (blocking / serious / minor / nit), the specific scene, the proposed fix.
 
 ## What this skill does NOT do

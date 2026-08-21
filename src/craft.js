@@ -17,6 +17,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { PRACTICES_DIR } from './paths.js';
 import { dim, bold, ok, warn, err } from './ui.js';
+import { printPatterns } from './patterns.js';
 
 // Minimal frontmatter read — same shape the freshness script uses. Zero-dep by rule.
 function frontmatter(text) {
@@ -99,7 +100,7 @@ export function printCraft(query, opts = {}) {
   if (!query) {
     console.log(`\n  ${bold('BOSS craft shelf')}  ${dim(`— ${all.length} practices, read-only, from the installed package`)}\n`);
     const width = Math.max(...all.map((p) => p.name.length));
-    // Median, not mean — one 278-line outlier shouldn't move the bar it's being judged against.
+    // Median, not mean — a couple of long outliers shouldn't move the bar they're judged against.
     const lens = all.map((p) => p.lines).sort((a, b) => a - b);
     const median = lens[Math.floor(lens.length / 2)];
     let outliers = 0;
@@ -130,6 +131,13 @@ export function printCraft(query, opts = {}) {
       console.log(`\n  ${warn(`No practice matches "${query}".`)}  Run ${bold('boss craft')} to see the shelf.\n`);
     }
     return 1;
+  }
+
+  // The deceptive-pattern catalog is the one practice with a DATA half, because it is the one
+  // that has promised to keep growing. Printing it whole is the failure mode it was split to
+  // avoid, so the default here is the filtered dose; `--prose` gets the judgment document.
+  if (hit.name === 'deceptive-patterns' && !opts.prose && !opts.outline) {
+    return printPatterns({ shape: opts.shape, surface: opts.surface, minors: opts.minors });
   }
 
   const text = readFileSync(hit.file, 'utf8');

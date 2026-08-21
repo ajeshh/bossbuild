@@ -1,12 +1,9 @@
 {
   "id": "L2-v1",
   "name": "V1",
-  "summary": "Ready for a real, shippable v1. The design layer MATURES here (PRINCIPLES.md #3) — it now turns on at MVP, where `designer`, /design-review and /ux-check moved in v0.189.0 (DEC-005). What V1 adds is the part that needs a real component set to exist first: design-drift-loop enforcement, /board for cross-FEAT sequencing, and /design-library — the visual system you can actually look at: one self-contained HTML page with the foundations, the RULE SETS (principles+tradeoffs, rendered do/don't pairs, terminology, voice) and every component in all five states, generated from the code so it cannot drift, with a manifest that doubles as the agent's reuse index and a source-hash staleness check; drift renders ON the component instead of in a report nobody reopens. Plus the raise-and-story mentors: fundraising (whether/when/how — defaults to “not yet”) and pitch (story + deck), promoted from BOSS-local in v0.15.0. Two others used to land here and were re-runged in v0.189.0: business went DOWN to MVP (it belongs beside /money), talent went UP to Scale (first-hire questions belong where an org exists). The V1 intake had been four mentors arriving at once, half of them pre-defaulted to “not yet”.",
+  "summary": "Ready for a real, shippable v1. The design layer MATURES here (PRINCIPLES.md #3) — it now turns on at MVP, where `designer`, /design-review and /ux-check moved in v0.189.0 (DEC-005). What V1 adds is the part that needs a real component set to exist first: design-drift-loop enforcement, /board for cross-FEAT sequencing, and /design-library — the visual system you can actually look at: one self-contained HTML page with the foundations, the RULE SETS (principles+tradeoffs, rendered do/don't pairs, terminology, voice) and every component in all five states, generated from the code so it cannot drift, with a manifest that doubles as the agent's reuse index and a source-hash staleness check; drift renders ON the component instead of in a report nobody reopens. V1 seats NO agents, and that is deliberate rather than a gap (DEC-006, v0.189.0): the raise-and-story mentors merged into `mentor-capital` at MVP, whose remit WIDENS here instead — the raise question and the investor story become live at V1 because real users finally make them answerable. Nothing installs; the coach you already have gets deeper. V1 is a skills rung. Two others used to land here and were re-runged in v0.189.0: business went DOWN to MVP (it belongs beside /money), talent went UP to Scale (first-hire questions belong where an org exists). The V1 intake had been four mentors arriving at once, half of them pre-defaulted to “not yet”.",
   "requires": "L1-mvp",
-  "agents": [
-    "mentor-fundraising",
-    "mentor-pitch"
-  ],
+  "agents": [],
   "skills": [
     "board",
     "design-library"

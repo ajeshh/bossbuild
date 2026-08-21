@@ -1,10 +1,10 @@
 ---
 id: PRACTICE-monetization-in-practice
 type: practice
-owner: mentor-money
+owner: mentor-capital
 status: active
 host: stack-neutral
-provenance: post-launch program (2026-07-23 SESSION, JOB 4, Tier 2). The gap the map found — mentor-money has the pricing *menu*, /money has the *first sale*, but nobody owned *running the money live*: upgrades, dunning, the price-raise, the margin trap. Distilled from Patrick Campbell / ProfitWell (dunning + involuntary churn is 20–40% and the cheapest revenue) + Kyle Poyar (usage-based + expansion when usage tracks value) + the margin-trap thread (a16z/Tunguz — cost scales with engagement). Pairs with mentor-money (the menu), /money (the first sale), /money (the runner), retention.md (the involuntary-churn bucket), the margin-trap conscience moment + /cost-review's gross-margin band (JOB 4 build #1), /trust (offboarding + data export). BOSS v0.126.0.
+provenance: post-launch program (2026-07-23 SESSION, JOB 4, Tier 2). The gap the map found — mentor-capital has the pricing *menu*, /money has the *first sale*, but nobody owned *running the money live*: upgrades, dunning, the price-raise, the margin trap. Distilled from Patrick Campbell / ProfitWell (dunning + involuntary churn is 20–40% and the cheapest revenue) + Kyle Poyar (usage-based + expansion when usage tracks value) + the margin-trap thread (a16z/Tunguz — cost scales with engagement). Pairs with mentor-capital (the menu), /money (the first sale), /money (the runner), retention.md (the involuntary-churn bucket), the margin-trap conscience moment + /cost-review's gross-margin band (JOB 4 build #1), /trust (offboarding + data export). BOSS v0.126.0.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
 curve: market
@@ -12,7 +12,7 @@ curve: market
 
 # Practice — Monetization in practice (running the money once customers exist)
 
-> **Where this sits.** `mentor-money` is the *menu* (what to charge, tiers, metering basis). `/money`
+> **Where this sits.** `mentor-capital` is the *menu* (what to charge, tiers, metering basis). `/money`
 > is the *first sale*. This is the layer nobody owned: **what you do with the money machine once it's running** —
 > upgrades, involuntary churn, the price-raise, and the margin underneath it all. `/money` is its runner.
 
@@ -85,6 +85,6 @@ user just loses money faster.
 A billing/subscription/dunning *system* (point at Stripe — plumbing, not a product you build); an MRR/revenue
 *dashboard* (the payment provider owns the stream; BOSS records evidence *events*); aggressive upsell-nag
 mechanics; dark-pattern cancellation / roach-motel flows; surprise or stealth price hikes; usage-based pricing
-that punishes engagement (the margin trap in reverse). Ties: `/money` (runner), `mentor-money` (menu),
+that punishes engagement (the margin trap in reverse). Ties: `/money` (runner), `mentor-capital` (menu),
 `/money` (first sale), `retention.md` (the involuntary bucket), the margin-trap moment + `/cost-review`
 (the margin), `/trust` (offboarding + data export).
