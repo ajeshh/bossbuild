@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.195.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.198.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -90,7 +90,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/comp-eval` — Find out who else is solving this, and keep knowing
 
 **Agents:** tester, planner, mentor-architect, mentor-customers, mentor-cofounder, mentor-capital, designer  
-**Loops:** spec-loop, pretotype-loop, design-tokens-loop, deception-loop, cost-budget-loop, ai-failure-state-loop, verification-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop  
+**Loops:** spec-loop, pretotype-loop, design-tokens-loop, deception-loop, cost-budget-loop, ai-failure-state-loop, verification-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop, canvas-drift-loop  
 
 > _When to unlock next:_ When you have real users and the app needs design rigor, a real db, and prototypes — boss unlock v1.
 

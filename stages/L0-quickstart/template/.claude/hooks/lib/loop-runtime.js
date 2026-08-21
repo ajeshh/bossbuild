@@ -14,7 +14,7 @@
 //                                     — at least one globbed file matches the regex;
 //                                       optional related-idea filter for canvas → idea
 //                                       cross-file checks
-//   - outpaced_by: { path_glob, behind, min }
+//   - outpaced_by: { path_glob, behind, min, pattern? }
 //                                     — N+ files under `path_glob` are NEWER than the newest
 //                                       file under `behind`. The only TEMPORAL predicate, and
 //                                       the only one that can express "this stopped being true"
@@ -160,18 +160,33 @@ const PREDICATES = {
   // Fresh-clone caveat, and it fails SAFE: a clone resets mtimes, so everything looks the same
   // age and this under-fires. Under-firing is the correct direction for a conscience — a missed
   // nudge costs nothing, a false one spends trust.
-  outpaced_by({ path_glob, behind, min }, projectDir) {
+  //
+  // `pattern` (optional) narrows the NEWER side to files whose content matches — the same
+  // per-file test `any_file_matches` runs, and the reason this predicate can be pointed at a
+  // second artifact without crying wolf. Untouched mtimes say only "a file changed"; the canvas
+  // is not out of date because three specs were DRAFTED (that is building), it is out of date
+  // because three of them SHIPPED. Match the base status word, never the whole string — a
+  // well-formed `status: shipped (v0.3 — the pull half)` is the common case, and comparing the
+  // full value is the exact bug that mis-filed 12 of 31 cards on BOSS's own board.
+  outpaced_by({ path_glob, behind, min, pattern }, projectDir) {
     const mtime = (f) => { try { return statSync(f).mtimeMs; } catch { return 0; } };
     const behindFiles = expandGlob(behind, projectDir);
     // Nothing to be behind = nothing to report. An artifact that does not exist yet is an
     // ABSENCE problem, which the other predicates already own.
     if (!behindFiles.length) return { ok: false, evidence: { behind, reason: 'no artifact to fall behind' } };
     const newestBehind = Math.max(...behindFiles.map(mtime));
-    const newer = expandGlob(path_glob, projectDir).filter((f) => mtime(f) > newestBehind);
+    let newer = expandGlob(path_glob, projectDir).filter((f) => mtime(f) > newestBehind);
+    if (pattern) {
+      const re = new RegExp(pattern, 'm');
+      newer = newer.filter((f) => {
+        try { return re.test(readFileSync(f, 'utf8')); } catch { return false; }
+      });
+    }
     const need = min || 1;
     return {
       ok: newer.length >= need,
       evidence: { path_glob, behind, newer: newer.length, min: need,
+                  ...(pattern ? { pattern } : {}),
                   names: newer.slice(0, 4).map((f) => f.split('/').pop()) },
     };
   },

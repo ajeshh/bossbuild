@@ -1,6 +1,6 @@
 {
   "name": "oyeboss",
-  "version": "0.195.0",
+  "version": "0.198.0",
   "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
@@ -57,7 +57,8 @@
     "check:ladder": "node scripts/check-ladder.js",
     "check:backlog": "node scripts/check-backlog.js",
     "check:dogfood": "node scripts/check-dogfood.js",
-    "check:patterns": "node scripts/check-pattern-coverage.js"
+    "check:patterns": "node scripts/check-pattern-coverage.js",
+    "check": "node scripts/check-manifests.js --strict && node scripts/check-site.js --strict && node scripts/check-wayfinding-drift.js --strict && node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node scripts/check-freshness.js && node scripts/check-pattern-coverage.js"
   },
   "engines": {
     "node": ">=18"

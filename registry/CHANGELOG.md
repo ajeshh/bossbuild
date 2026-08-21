@@ -9,6 +9,170 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.198.0 — 2026-08-21
+
+> **For you:** The **Humane Product Canvas** is now a free thing you can just take —
+> [a page](https://oyeboss.build/canvas.html) and a Markdown template, **CC BY-SA 4.0**, no install, no
+> signup, no email. It's the one-page canvas BOSS's `/canvas` skill is built on: everything Lean and
+> the Business Model Canvas cover, plus two questions neither of them asks — **who this could harm or
+> exclude**, and **the principles you'll hold when holding them costs you something.** Print it, fork
+> it, teach from it. The tool is for when you want something to keep asking; the framework is yours
+> either way.
+
+**The only thing BOSS has that works without installing BOSS — so it is given away on purpose.**
+
+- **Ships as a page plus a template**, not an app. `web/canvas.html` sits at **top level in the nav,
+  a peer of Start**, because a free front door buried under "The product" isn't a front door.
+  ⛔ **No interactive state** — build the view, refuse the app ([[IDEA-034]]). A fill-in-the-boxes
+  page with saved answers brings accounts, sync and a support burden; *"if you want it to remember
+  your answers, that's what BOSS is for"* is honest rather than coy.
+- **The frames were deliberately left out.** Rendering one set of answers as Lean or BMC is **BOSS's
+  feature, not the canvas.** Publishing the humane canvas is the offer; multi-frame rendering is the
+  reason to install the tool. Everything else came off too — `EVID` ids, skill references, the
+  graduation gate, the live/dormant cell machinery. **Keep the questions, drop the machinery: if the
+  standalone version needs BOSS to make sense, it isn't standalone.**
+- **CC BY-SA 4.0, by precedent.** Both the Lean Canvas and the Business Model Canvas are offered
+  under it, and a humane canvas published under something more restrictive would be conspicuous.
+  Neatly consistent, too: **v0.195.0 was the release that stopped assuming every project is a
+  business and made room for Creative Commons work** — this is BOSS doing that rather than
+  recommending it. The template carries the v0.195.0 **two-branch business-model cell**, so a
+  non-commercial reader gets the sustaining questions rather than a revenue prompt.
+- 🔴 **It was blocked for one round on attribution, and that was the right call.** The canvas is
+  credited *"Humane Product Canvas by Ajesh Shah"*, and a standing note on its lineage described a
+  hackathon he built **with** someone — enough ambiguity that publishing would have staked a public
+  byline on a possibly-shared work. **Asked directly rather than assumed. Sole authorship
+  confirmed**; the hackathon is the *venue and the network*, not co-authorship, and the lineage note
+  now says which is which. **The cost of asking was one question; the cost of being wrong would have
+  been a correction, not an edit** — which is the standard `/governance` already holds everyone else
+  to (*"an attribution is a citation's load-bearing half"*).
+- 🔴 **Caught before it landed: the announcement above pointed at a domain BOSS does not own.**
+  This entry's own `For you:` line — the release whose whole point is *"here is a free thing, go
+  take it"* — linked **`boss.build/canvas.html`**. `boss.build` has been registered to someone
+  else **since 2026-01-16**, five months before BOSS chose the name; it is why the domain moved to
+  `oyeboss.build` ([[DEC-002]]). Not a 404 — a founder following the one link in the giveaway
+  release lands on a stranger's site. **And it would not have been clickable either:**
+  `gen-site.js`'s inline renderer handled code, bold and italic and **not links** for the site's
+  whole life, which held only because no `For you:` line had ever used one. This was the first, and
+  it published the literal string `[a page](https://boss.build/canvas.html)` into the public feed.
+- **Both are now mechanisms, not corrections** — `check:site` gained an **origin** rule (the same
+  class of load-bearing string as the install line it already guards, with the nastier failure mode)
+  and a **raw-Markdown** rule, and its surface scan now reads the **built `site/`** as well as the
+  `web/` source. That last part is why it could not have caught this before: **the release feed is
+  injected from this file at generation time and exists in no source fragment**, so every generated
+  claim was outside the checker's reach — *the same scope gap that let `npx bossbuild` sit on the
+  demand page* (v0.194.0). ⚠️ **Widening it also exposed that the existing GitHub rule was too
+  strict** — it read every `github.com` link as BOSS's own repo, and the credits and engineering
+  pages cite other people's by design. Now it flags only *our* repo name under the wrong owner. The
+  raw-Markdown rule skips mocks for the same reason v0.193.0 had to see into them: `credits.html`
+  shows the literal line `boss credit` writes into a README, where raw Markdown is correct.
+  *(Eighth instance of [[checkers-state-intents-they-dont-enforce]] — and the second running where
+  the gap was SCOPE rather than logic.)*
+- ✅ **The licence was decided before the door closed, not after** ([[DEC-010]]). BOSS's own argument
+  applies to its own artifact — *"a permissive open-source grant, once published, cannot be
+  revoked"* — so it was confirmed while the site is still undeployed and the grant is still
+  theoretical. 🔴 **And BY-SA turns out to be the reversible-in-the-useful-direction pick:** as sole
+  copyright holder Ajesh can offer the same work under a *more* permissive licence any day, but no
+  licence can claw back copies already distributed. **Of the two credible open options, BY-SA
+  preserves optionality and BY spends it** — the same reasoning `/boss` uses to default a founder's
+  project to proprietary, one notch along the same axis. Share-alike is the point rather than a
+  hedge: adaptations return to the commons instead of being enclosed. Commercial use stays allowed,
+  because NC would block the consultancies, accelerators and educators who actually spread a canvas.
+
+## 0.197.0 — 2026-08-21
+
+> **For you:** If you have ever edited a skill or agent BOSS installed, `boss sync --apply` used to
+> overwrite it without asking. It no longer does — a managed file you changed is **left alone** and
+> reported by name, and `/boss-sync` (or `--force`) decides what to do with it. Files that predate
+> this release get copied to `.boss/backups/` before being written, because BOSS genuinely cannot
+> tell whether you touched them.
+
+**BOSS would not delete your work, and would replace it — three functions apart, in the same file.**
+
+Found by running `/boss-sync` on BOSS's own repo and reading the plan before applying it.
+
+- 🔴 **The asymmetry.** `--remove` already refused to delete an edited file, with a comment saying
+  why: *"the founder changed it, which makes it theirs."* `applySync` overwrote that same file with
+  an unconditional `writeFileSync`. Same file, same edit, opposite treatment.
+- 🔴 **And the help text promised otherwise** — *"Only files BOSS itself stamped are ever candidates;
+  your own skills and agents are invisible to sync."* Half true: `planSync` matched on **path plus
+  content**, with no provenance check anywhere. A file whose *name* isn't in a stage manifest is
+  genuinely invisible; a file you wrote that happens to share a name with a shipped artifact was
+  fully visible and first in line to be replaced. Seventh instance of the house pattern — read the
+  comment, then test the code against it.
+- **Why it was worse than it looks:** plenty of projects gitignore `.claude/`. BOSS's own repo does
+  (`.gitignore:50`). So the overwrite left no `git diff` and no history to revert from — and
+  `/boss-sync`'s own step 3 is *"show `git diff` and let the user review."* The review mechanism did
+  not exist for the directory being written.
+- **The fix is a provenance ledger** (`src/managed.js`, `.boss/managed.json`): a `{ path: sha256 }`
+  record of what BOSS wrote, stamped at scaffold, unlock and sync. It makes answerable the one
+  question that decides whether an overwrite is safe — *did you change this, or did BOSS move on?* —
+  which a `changed` status alone cannot answer, being true in both cases and meaning opposite things.
+- **Tri-state, and the third value is the honest one** (the same shape `orphanEdited` already used):
+  `false` → BOSS wrote it, untouched, written. `true` → yours, **never** written, reported by name.
+  `null` → unknowable, because BOSS wrote it before the ledger existed. Null is the *normal* case
+  for a while, so it is neither refused (that would break updates for every existing project) nor
+  overwritten blind (that is the bug) — it is **backed up, then written**.
+- **The re-break it would have caused, avoided:** stamping the whole tree after a sync would record
+  the *founder's* bytes for a file BOSS deliberately skipped, so the next run would read it as
+  untouched and overwrite it silently. Skipped files are excluded from stamping, and there is a test
+  that fails if that ever stops being true.
+- **The ledger is never back-filled.** A file that merely exists on disk gets no provenance. That is
+  what keeps BOSS's own hand-built `.claude/` safe: it shares filenames with shipped templates and
+  BOSS wrote none of it.
+- `.boss/backups/` is gitignored in the scaffold — local recovery, not project history.
+- **BOSS's own manifest corrected.** It claimed five agents (`pm`, `coder-generalist`,
+  `mentor-venture`, `tester`, `program-manager`) and nine skills, and **not one of them exists on
+  disk**; meanwhile `.claude/` holds 19 agents the manifest never mentions. The arrays were
+  aspirational at creation — the note said so — and then outlived the names, four of which were
+  retired in v0.189.0. Now empty, which is the truth, with a note saying what that directory
+  actually is and that `sync --apply` is the wrong operation for it. **The 0.6.0 pin is left
+  standing**: it is the vintage of a hand-retrofit that really did happen, and `boss status`
+  reporting drift against it is correct rather than noise.
+- 9 new tests (167 → **176**).
+
+## 0.196.0 — 2026-08-21
+
+> **For you:** BOSS now notices when your **canvas** has fallen behind your own product. If three or
+> more features you marked `shipped` are newer than the canvas, it says so once — because a canvas
+> describes a product, and when things have shipped and it hasn't moved since, it describes a product
+> that no longer exists. It fires on **shipped**, not on drafting: writing three specs is building,
+> and building is not drift. Touching the canvas silences it. It never rewrites the canvas for you.
+
+**BOSS's conscience could see what was never made, and half of what stopped being true. This closes
+the other half — and BOSS's own repo is the reason it exists.**
+
+- 🔴 **The n=1 was BOSS.** Its own canvas sat at **v0.3 for 80 days while ~154 releases shipped.** By
+  the time anyone looked, its roster cell named **eight retired agents** and listed three
+  internal-only surfaces as founder features. **Nothing in BOSS noticed**, because nothing was
+  watching that relationship — it was found by hand, twice, on two surfaces, in two consecutive
+  releases. `outpaced` is that discovery turned into a predicate.
+- **A tighter mapping than the one `harvest` deferred.** v0.190.0's `harvest-loop` deliberately left
+  the canvas alone: *"evidence bearing on a canvas cell is a looser mapping, and a looser mapping
+  means more false fires on the one loop whose whole risk is crying wolf."* That reasoning stands.
+  **This loop watches a different relationship** — not evidence outpacing the canvas, but **shipped
+  work** outpacing it. Whether shipping bears on "what is this product" is not ambiguous; it
+  definitionally does.
+- **`outpaced_by` gained an optional `pattern`, and it is the part that keeps the loop honest.**
+  Without it the entry reads *"three FEAT files changed"*, which fires when a founder **drafts** three
+  specs. **Verified end to end on a throwaway project:** three `shipped` FEATs newer than the canvas
+  → the loop **opens**; touch the canvas → **silent**; flip the same three to `building` and make
+  them newest again → **still silent.** The filter matches the base status word, never the whole
+  value — `shipped (v0.1 — slice 2)` is well-formed, and comparing the full string is the bug that
+  mis-filed 12 of 31 cards on BOSS's own board.
+- 🔴 **`npm run check` did not exist, and its absence caused a real error in this session.** Ten check
+  scripts, no single entry point — so verification was hand-rolled as a loop over exit codes, and
+  **three of the ten (`manifests`, `site`, `wayfinding-drift`) print errors and exit 0 unless passed
+  `--strict`.** A hand-rolled loop reads those as passes. It did not mask anything this time (every
+  check was re-run in hard mode and is genuinely green), but **the method could not have told the
+  difference.** `npm run check` now runs all ten in the mode that matters, and was verified to exit 1
+  on a real failure and 0 when clean. *(The release gate was never affected — `release.js` already
+  passes `--strict`.)*
+- ⚠️ **And the gap was found the same way it always is.** The new loop file was added without being
+  declared in the stage manifest, and `check:manifests` reported **PASS** — the reverse check exists
+  and is an error, but the soft exit meant the hand-rolled harness never saw it. **The check was
+  right; the way it was being run was wrong.** Which is the eighth instance of the pattern, pointed
+  at the runner instead of the checker for the first time.
+
 ## 0.195.0 — 2026-08-21
 
 > **For you:** If your project isn't trying to make money — open source, Creative Commons, a research
@@ -48,6 +212,16 @@ different things, with only the second a defect ([[DEC-009]]).
   *"calm-company / OSS / patronage… no pricing decision is honest before then"* — **a well-written
   deferral in a cell with no honest way to hold one.** Same family as [[DEC-006]] (BOSS shipped a
   heavier org than the incubator it models): the gap was visible from inside its own repo.
+  **And it was the first thing run through the new branch.** BOSS's own canvas (v0.4) now answers
+  both halves: the earning deferral stands, and the sustaining half is filled from evidence rather
+  than assertion — **196 of 196 commits from one human**, bursty with four zero-commit weeks, **bus
+  factor 1**, and a stopping condition dated to [[DEC-009]]'s own `revisit_by`. 🔴 **The succession
+  question came back "haven't decided" and is recorded as a live hole, not filled** — an MIT project
+  other people can install, one maintainer, no archive-or-handover decision. **A named hole was the
+  correct output; a plausible plan would have been the failure the branch exists to prevent.**
+  ⚠️ Correcting that canvas also surfaced **eight retired agent names and three internal-only
+  surfaces listed as founder features** in its own roster cell — the same two drifts swept off the
+  public site one release earlier, still sitting in BOSS's own record.
 - **The structural finding, captured and deliberately not built.** All eight cohorts answer *"how much
   do you already know?"*; **none answers *"what is this for?"*** Intent is a real second axis
   ([[IDEA-067]] rung 2) and it stays **`deferred` at n=0**, along with the non-commercial support that

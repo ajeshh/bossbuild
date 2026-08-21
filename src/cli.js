@@ -4,7 +4,7 @@ import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject } from './registry.js';
-import { planSync, applySync, computeSettingsMerge } from './sync.js';
+import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog } from './changelog.js';
@@ -67,6 +67,7 @@ function cmdNew(args) {
   const manifest = readStageManifest(stageId);
   mkdirSync(targetDir, { recursive: true });
   applyStage(stageId, targetDir, stageVars(name, stageId, manifest.name));
+  stampManaged(targetDir, [stageId]);   // provenance from the first write, not from the first sync
 
   const stamp = {
     name,
@@ -176,6 +177,7 @@ function cmdAdopt(args) {
   for (const s of chain) {
     const m = readStageManifest(s);
     const r = applyStageSafe(s, targetDir, stageVars(name, s, m.name));
+    stampManaged(targetDir, [s]);
     copied.push(...r.copied);
     skipped.push(...r.skipped);
   }
@@ -304,6 +306,7 @@ function cmdUnlock(args) {
   try {
     m = readStageManifest(target);
     applied = applyStage(target, process.cwd(), stageVars(stamp.name, target, m.name));
+    stampManaged(process.cwd(), [target]);
   } catch (e) {
     return fail(`${target} not authored yet — ${e.message}`);
   }
@@ -803,7 +806,7 @@ function cmdRemove(args) {
 }
 
 function cmdSync(args) {
-  const { _: pos, apply, remove } = parseArgs(args);
+  const { _: pos, apply, remove, force } = parseArgs(args);
   void pos;
   const stamp = readStamp(process.cwd());
   if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
@@ -869,20 +872,43 @@ function cmdSync(args) {
     console.log(`    ${dim("whether any of it is worth applying to what's already there.")}`);
   }
 
+  // Files the founder shaped. Named before anything is written, because the whole point is that
+  // they get a say — and a list that appears only AFTER the write is a receipt, not a choice.
+  const yours = changed.filter((e) => e.edited === true);
+  if (yours.length) {
+    console.log(`\n    ${warn('⚠')}  ${yours.length} of these you changed after BOSS wrote them:`);
+    for (const e of yours) console.log(`         ${e.kind}/${e.name}  ${dim('→ ' + e.rel)}`);
+    console.log(`    ${dim('Not overwritten. `/boss-sync` in Claude reads both versions and merges;')}`);
+    console.log(`    ${dim('`boss sync --apply --force` takes BOSS\'s version (a copy is kept in .boss/backups/).')}`);
+  }
+  const unknown = changed.filter((e) => e.edited === null);
+  if (unknown.length) {
+    console.log(`\n    ${dim(`${unknown.length} predate the provenance ledger — BOSS cannot tell whether you`)}`);
+    console.log(`    ${dim('changed them, so each is copied to `.boss/backups/` before being written.')}`);
+  }
+
   if (!apply) {
     console.log('\n  Preview only. Run `boss sync --apply` to write these and bump the pin,');
     console.log('  or use `/boss-sync` in Claude for a reviewed, narrated update.\n');
     return;
   }
 
-  const { written, removed, stamp: next } = applySync(process.cwd(), plan, stamp, { remove });
+  const { written, skipped, backupDir, removed, stamp: next } = applySync(process.cwd(), plan, stamp, { remove, force });
   writeStamp(process.cwd(), next);
   registerProject({
     name: next.name, path: process.cwd(), stage: next.stage, mode: next.mode, bossVersion: next.bossVersion,
   });
   console.log(`\n  ${ok('✦')} Synced ${written.length} file(s)${removed.length ? `, removed ${removed.length}` : ''}; pin now ${bold(next.bossVersion)}.`);
-  if (written.length || removed.length) console.log('    Review the changes with `git diff` before committing.\n');
-  else console.log('');
+  if (skipped.length) {
+    console.log(`    ${warn('⚠')}  ${skipped.length} left alone — you changed them: ${skipped.map((e) => e.name).join(', ')}`);
+    console.log(`    ${dim('`/boss-sync` merges them; `--force` takes BOSS\'s version.')}`);
+  }
+  if (backupDir) console.log(`    ${dim(`previous versions kept in ${backupDir}`)}`);
+  if (written.length || removed.length) {
+    console.log(`    ${dim('Review with `git diff` — and note `.claude/` is gitignored in some projects,')}`);
+    console.log(`    ${dim('in which case the backup above is the only way back.')}`);
+  }
+  console.log('');
 }
 
 function cmdLearn(args) {
@@ -1037,9 +1063,9 @@ const HELP = {
     see: ['list', 'insights'],
   },
   sync: {
-    usage: 'boss sync [--apply] [--remove]',
-    what: "Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. It also lists anything BOSS installed here and has since RETIRED, with what replaced it and why — but `--apply` never deletes: removal is a separate, explicit `--remove`, and something you edited is never removed at all. Only files BOSS itself stamped are ever candidates; your own skills and agents are invisible to sync. For a reviewed, narrated update — and the actual migration to whatever replaced a retired verb — use /boss-sync inside Claude instead.",
-    examples: ['boss sync', 'boss sync --apply', 'boss sync --apply --remove'],
+    usage: 'boss sync [--apply] [--remove] [--force]',
+    what: "Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. It also lists anything BOSS installed here and has since RETIRED, with what replaced it and why — but `--apply` never deletes: removal is a separate, explicit `--remove`, and something you edited is never removed at all. Only files BOSS itself stamped are ever candidates; your own skills and agents are invisible to sync — and a MANAGED file you edited after BOSS wrote it is now left alone too, reported by name rather than overwritten (`--force` takes BOSS's version, keeping a copy in `.boss/backups/`). Files predating the provenance ledger are backed up before being written, because BOSS cannot tell whether you changed them. For a reviewed, narrated update — and the actual migration to whatever replaced a retired verb — use /boss-sync inside Claude instead.",
+    examples: ['boss sync', 'boss sync --apply', 'boss sync --apply --remove', 'boss sync --apply --force'],
     see: ['status', 'changelog', 'learn'],
   },
   update: {

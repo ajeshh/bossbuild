@@ -90,6 +90,10 @@ and tell them to check `git log` on that path first.
   **It removes nothing**, by design.
 - `boss sync --apply --remove` — the same, plus removes the retired files they agreed to drop.
   Only after step 4.
+- **Check `git diff` actually shows the writes before you promise it will.** Many projects gitignore
+  `.claude/` — run `git check-ignore .claude` first. If it is ignored, the diff is EMPTY and there is
+  no history to revert from, so say that plainly and point at `.boss/backups/` instead, which is then
+  the only way back.
 - Then show `git diff` and let the user review and commit. The project is the source of truth for its
   own history; BOSS just proposes the update.
 
@@ -107,4 +111,9 @@ and tell them to check `git log` on that path first.
 
 - Review before `--apply`. Never overwrite a locally-edited managed file without flagging it first.
 - Narrate from the CHANGELOG — the user should learn what's new, not just see files move.
-- Don't commit for the user; hand them a clean `git diff` to review.
+- Don't commit for the user; hand them a clean `git diff` to review — after confirming the diff can
+  see the files at all (see step 3).
+- **Anything `boss sync` reports as edited-by-the-founder is yours to merge, not BOSS's to
+  overwrite.** The CLI leaves those files alone by design and names them. Read both versions, tell
+  the user what actually differs, and let them choose — `--force` exists but is a last resort, and it
+  only ever means "take BOSS's version, keep mine in `.boss/backups/`".

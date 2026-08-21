@@ -43,7 +43,12 @@ const MARK = (cls = 'mark') =>
 const md = (s) => esc(s)
   .replace(/`([^`]+)`/g, '<code>$1</code>')
   .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-  .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+  // Links, http(s) or site-relative only. This renderer handled code/bold/italic and NOT
+  // links for the site's whole life, which held while no "For you:" line used one —
+  // v0.198.0's canvas announcement was the first, and shipped literal [a page](https://…)
+  // to the public feed. A release feed is the one surface whose whole job is pointing.
+  .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/g, '<a href="$2">$1</a>');
 
 const esc = (s) => String(s || '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -764,6 +769,7 @@ blocks.MARK = () => MARK('mark mark-lg');
 const NAV = [
   { id: 'index', href: 'index.html', label: 'Home' },
   { id: 'start', href: 'start.html', label: 'Start' },
+  { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
   { label: 'The product', href: 'team.html', children: [
     { id: 'team', href: 'team.html', label: 'The team' },
     { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
@@ -812,7 +818,7 @@ for (const f of readdirSync(join(SRC, 'styles'))) {
 // one part of the front door a stranger judges before deciding to click. Its recipe
 // is scripts/og-card.html, kept as source so the card can be re-rendered rather
 // than re-invented. Copied, never generated: this is a binary the build must not touch.
-const ROOT_ASSETS = ['og.png'];
+const ROOT_ASSETS = ['og.png', 'humane-product-canvas.md'];
 for (const f of ROOT_ASSETS) {
   if (existsSync(join(SRC, f))) copyFileSync(join(SRC, f), join(SITE, f));
 }

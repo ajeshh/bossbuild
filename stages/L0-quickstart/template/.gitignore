@@ -15,6 +15,10 @@ secrets/
 # nobody reads from git.
 .boss/board.html
 
+# Copies BOSS keeps of files it was about to overwrite (`boss sync`). Local recovery, not
+# project history — and the reason an overwrite is never the end of the story.
+.boss/backups/
+
 # Per-person conscience state — stays local, never shared with a cofounder (DEC-001).
 # Everything else BOSS writes (docs/ ideas, canvas, decisions, RESUME, and the venture
 # brain's read.md) DOES commit — so pushing backs up your thinking AND keeps your

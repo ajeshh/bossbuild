@@ -8,6 +8,7 @@ import {
 import { readStageManifest, sameAsTemplate } from './scaffold.js';
 import { readSupersedes, findSupersede } from './supersede.js';
 import { readLadder, assess } from './ladder.js';
+import { provenance, recordManaged, backupManaged } from './managed.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
 // canonical current stage id by its level prefix. Returns undefined if it
@@ -353,6 +354,30 @@ export function orphanEdited(projectDir, kind, name, layers, vars = {}) {
   return null;
 }
 
+// Stamp the provenance ledger for a fresh install (scaffold / unlock). Derived from the SAME
+// `managedFiles()` the plan walks, deliberately: two lists of "what BOSS manages" would drift,
+// and a ledger that disagrees with the planner is worse than none — it would confidently report
+// "you edited this" about a file BOSS never wrote.
+export function stampManaged(projectDir, layers, exclude = []) {
+  const skip = new Set(exclude);
+  const entries = [];
+  for (const stageId of layers || []) {
+    let manifest;
+    try { manifest = readStageManifest(stageId); } catch { continue; }
+    for (const f of managedFiles(stageId, manifest)) {
+      // A file BOSS deliberately did NOT write — because the founder had edited it — must never
+      // be stamped: recording their bytes as BOSS's would report the file as untouched next run
+      // and hand the overwrite straight back to the bug this ledger exists to close.
+      if (skip.has(f.rel)) continue;
+      const abs = join(projectDir, f.rel);
+      if (!existsSync(abs)) continue;
+      try { entries.push({ rel: f.rel, text: readFileSync(abs, 'utf8') }); } catch { /* skip */ }
+    }
+  }
+  recordManaged(projectDir, entries);
+  return entries.length;
+}
+
 export function planSync(projectDir, stamp) {
   const current = bossVersion();
   const vars = {
@@ -388,6 +413,9 @@ export function planSync(projectDir, stamp) {
       let status = 'ok';
       if (!exists) status = 'new';
       else if (cur !== next) status = 'changed';
+      // Did the founder shape this, or did BOSS move on? A `changed` status alone cannot say —
+      // it is true in both cases and means opposite things. `null` where BOSS has no record.
+      const edited = status === 'changed' ? provenance(projectDir, f.rel, cur) : false;
       // THE ADOPTION HALF (see library/practices/seed-to-scale.md). A file diff can say this skill
       // changed by 40 lines; it cannot say the founder HAS a landing page and it is now behind the
       // practice. Both directions matter and they are different founders:
@@ -404,7 +432,7 @@ export function planSync(projectDir, stamp) {
           };
         }
       }
-      entries.push({ ...f, stageId, status, next, delta: exists ? lineDelta(cur, next) : 0, affects });
+      entries.push({ ...f, stageId, status, next, edited, delta: exists ? lineDelta(cur, next) : 0, affects });
     }
   }
 
@@ -422,14 +450,39 @@ export function planSync(projectDir, stamp) {
 // Apply a plan: write new/changed files and return the canonicalized stamp
 // fields the caller should persist (it owns writeStamp + registry).
 export function applySync(projectDir, plan, stamp, opts = {}) {
+  // BOSS refused to DELETE a file the founder had edited — *"the founder changed it, which makes
+  // it theirs"* — and then overwrote that same file without asking, three functions down. Same
+  // file, same edit, opposite treatment, and on a `.claude/` that plenty of projects gitignore
+  // the overwrite is not even recoverable. The remove path's ethic now governs both:
+  //
+  //   edited === true  → never written. Reported, and `/boss-sync` (or --force) does the merge.
+  //   edited === null  → BOSS has no record (every project scaffolded before the ledger). Backed
+  //                      up, then written: refusing would break updates for every existing
+  //                      project, and overwriting blind is the bug.
+  //   edited === false → BOSS wrote it and nobody touched it. Written.
   const written = [];
+  const skipped = [];
+  const toBackUp = [];
+  const force = opts.force === true;
   for (const e of plan.entries) {
     if (e.status === 'ok') continue;
+    if (e.status === 'changed' && e.edited === true && !force) { skipped.push(e); continue; }
+    if (e.status === 'changed' && (e.edited === null || (e.edited === true && force))) toBackUp.push(e.rel);
+  }
+  const backupDir = backupManaged(projectDir, toBackUp);
+  for (const e of plan.entries) {
+    if (e.status === 'ok') continue;
+    if (skipped.includes(e)) continue;
     const dest = join(projectDir, e.rel);
     mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, e.next);
     written.push(e);
   }
+  // Record what BOSS just wrote — AND every managed file that was already up to date. Recording
+  // only the writes leaves the untouched majority permanently `null`, so the first time any of
+  // them changes upstream it gets backed up as "provenance unknown" forever. A sync is the moment
+  // BOSS knows the whole tree; stamp the whole tree. Skipped files are excluded by name.
+  stampManaged(projectDir, plan.layers, skipped.map((e) => e.rel));
 
   // Removal is OPT-IN, always. `--apply` writes and reports; only `--remove` deletes. DEC-003:
   // BOSS names what changed, the founder decides, and then BOSS does the work — a sync that
@@ -493,6 +546,8 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
 
   return {
     written,
+    skipped,
+    backupDir,
     removed,
     stamp: {
       ...stamp,

@@ -29,7 +29,7 @@
 <nav class="sitenav" aria-label="Site">
   <div class="sitenav-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
-    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html" aria-current="page">What's new</a></li></ul>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="canvas.html">The canvas</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html" aria-current="page">What's new</a></li></ul>
   </div>
 </nav>
 
@@ -66,6 +66,18 @@
       <div class="rail">▸<span>releases</span></div>
       <div class="body">
         <ol class="releases">
+      <li>
+        <div class="rel"><span class="ver">v0.198.0</span><span class="when">2026-08-21</span></div>
+        <p>The <strong>Humane Product Canvas</strong> is now a free thing you can just take — <a href="https://oyeboss.build/canvas.html">a page</a> and a Markdown template, <strong>CC BY-SA 4.0</strong>, no install, no signup, no email. It's the one-page canvas BOSS's <code>/canvas</code> skill is built on: everything Lean and the Business Model Canvas cover, plus two questions neither of them asks — <strong>who this could harm or exclude</strong>, and <strong>the principles you'll hold when holding them costs you something.</strong> Print it, fork it, teach from it. The tool is for when you want something to keep asking; the framework is yours either way.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.197.0</span><span class="when">2026-08-21</span></div>
+        <p>If you have ever edited a skill or agent BOSS installed, <code>boss sync --apply</code> used to overwrite it without asking. It no longer does — a managed file you changed is <strong>left alone</strong> and reported by name, and <code>/boss-sync</code> (or <code>--force</code>) decides what to do with it. Files that predate this release get copied to <code>.boss/backups/</code> before being written, because BOSS genuinely cannot tell whether you touched them.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.196.0</span><span class="when">2026-08-21</span></div>
+        <p>BOSS now notices when your <strong>canvas</strong> has fallen behind your own product. If three or more features you marked <code>shipped</code> are newer than the canvas, it says so once — because a canvas describes a product, and when things have shipped and it hasn't moved since, it describes a product that no longer exists. It fires on <strong>shipped</strong>, not on drafting: writing three specs is building, and building is not drift. Touching the canvas silences it. It never rewrites the canvas for you.</p>
+      </li>
       <li>
         <div class="rel"><span class="ver">v0.195.0</span><span class="when">2026-08-21</span></div>
         <p>If your project isn't trying to make money — open source, Creative Commons, a research tool, something you're building for friends or for fun — BOSS was quietly making you lie. The canvas's <strong>Business Model</strong> cell was the only one in its group with no condition on it, so it counted toward leaving Quickstart for every project, and its follow-up questions were <em>&quot;who pays, how much.&quot;</em> You had two bad options: invent a revenue line, or leave it blank and read as permanently unfinished. <strong>Now the cell asks the question it always meant to ask.</strong> Its actual prompt — <em>&quot;how will you sustain this without compromising your promise?&quot;</em> — was already right for a maintainer; only the follow-ups assumed money. There's a second set now: what keeps this alive, who else could carry it, what happens when you get bored or busy or hit by a bus, and what would make you stop. <strong><code>/money</code> also stops routing you.</strong> It used to read <em>where you are</em> in the money arc with no branch for <em>not being in it</em>, so it would point you at <code>/interview</code> to go get a yes you never wanted. It now says the verb doesn't apply, and stops. <strong>None of this makes the question softer</strong> — most open-source projects die of maintainer exhaustion, not of a missing business model.</p>
@@ -105,18 +117,6 @@
         <div class="rel"><span class="ver">v0.184.0</span><span class="when">2026-08-20</span></div>
         <p><strong><code>boss records</code></strong> — new. Your docs make claims about your code (<code>shipped</code> means the thing exists), and nothing ever checked them. Add <code>proof: &lt;path&gt;</code> to a record and BOSS will tell you when the two stop agreeing — in both directions. The one that costs you is a finished feature whose record still says <em>&quot;exploring&quot;</em>: that is a thing you might build twice, or hand to an agent that rebuilds it, because the agent believes your docs. <code>boss status</code> now says so in one line.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.183.0</span><span class="when">2026-08-20</span></div>
-        <p>if you have been using BOSS since before v0.179.0, <code>/spec</code> gained something you have not been told about: it now asks for <strong>the three paths that must not break</strong> — the money path, the destructive path, and the negative path (<em>can user A reach user B's data</em>). <code>/red-team --paths</code> proves them, and needs no LLM in your product at all. Name them while you are still deciding what &quot;done&quot; means; they are close to impossible to retrofit once the feature exists.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.182.0</span><span class="when">2026-08-20</span></div>
-        <p><strong>Three record types were missing or misfiled in your <code>docs/IDS.md</code>.</strong> <code>DEC-NNN</code> (decisions) and <code>EVID-NNN</code> (evidence) ship at Quickstart and weren't listed — <code>DEC</code> was filed under V1 with a format <code>/decide</code> doesn't write. <code>PRAC-NNN</code> was missing from MVP. <code>FIX-NNN</code>/<code>BUG-NNN</code> are <strong>removed</strong>: no skill has ever written one. Your status vocabulary is now a <strong>closed list of seven</strong> (adding <code>deferred</code> — deliberately not building this, <em>with a written re-open trigger</em>), documented where the rule can be checked. <code>/boss-sync</code> picks it up.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.181.0</span><span class="when">2026-08-20</span></div>
-        <p>two fixes you'd have hit. A file scaffolded into every MVP project pointed at a research doc that was never in your repo — gone, along with six more of the same shape. And <code>/red-team</code> no longer tells you to run a model your host may not have; it names the <em>kind</em> of model the job wants and leaves the choice where it belongs.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -145,7 +145,7 @@
           phone-home; the check never runs unless you ask for it.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.195.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.198.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it.
         </p>

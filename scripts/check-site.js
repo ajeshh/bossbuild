@@ -21,6 +21,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const WEB = join(ROOT, 'web');
 const SITE = join(ROOT, 'site');
 const strict = process.argv.includes('--strict');
+// gen-site.js is a top-level script (it generates on import), so the origin is read from its
+// source rather than imported. Its own comment calls that line "the one place the public
+// origin is written down" — this reads it there instead of keeping a second copy here.
+const SITE_URL = (readFileSync(join(ROOT, 'scripts', 'gen-site.js'), 'utf8')
+  .match(/^const SITE_URL = '([^']+)'/m) || [])[1];
+if (!SITE_URL) throw new Error('check:site cannot find SITE_URL in scripts/gen-site.js');
 const today = process.env.BOSS_TODAY || new Date().toISOString().slice(0, 10);
 
 const problems = [];
@@ -140,6 +146,15 @@ if (quietAgents.length) {
   if (existsSync(join(ROOT, 'pretotype', 'index.html'))) {
     surfaces.push(['pretotype/index.html', join(ROOT, 'pretotype', 'index.html')]);
   }
+  // ...and the BUILT pages. web/ is the hand-written source, but the release feed is injected
+  // from registry/CHANGELOG.md at generation time — it exists in site/whats-new.html and in no
+  // source fragment. Scanning source only made every generated claim unreachable, which is the
+  // same scope gap that let `npx bossbuild` sit on the demand page (v0.194.0).
+  if (existsSync(SITE)) {
+    for (const f of readdirSync(SITE).filter((f) => f.endsWith('.html'))) {
+      surfaces.push([`site/${f}`, join(SITE, f)]);
+    }
+  }
   for (const [f, path] of surfaces) {
     const raw = readFileSync(path, 'utf8');
     // Any npx/npm install line must name the real published package.
@@ -151,8 +166,36 @@ if (quietAgents.length) {
     for (const m of raw.matchAll(/npmjs\.com\/package\/([a-z0-9-]+)/g)) {
       if (m[1] !== pkg.name) problems.push(`${f} links npm package "${m[1]}" — it is "${pkg.name}"`);
     }
+    // Only OUR repo link, gone stale — not every GitHub link on the page. The credits and
+    // engineering pages cite other people's repos by design (12-factor-agents, anthropics/skills),
+    // and they are generated from library/sources.json, so they were invisible while this scan
+    // read web/ only. Discriminator: the repo NAME matches ours and the owner doesn't.
     if (repo) for (const m of raw.matchAll(/https:\/\/github\.com\/([\w-]+\/[\w-]+)/g)) {
-      if (!repo.endsWith(m[1])) problems.push(`${f} links github.com/${m[1]} — the repo is ${repo}`);
+      const ours = repo.split('/').pop();
+      if (m[1].split('/').pop() === ours && !repo.endsWith(m[1])) {
+        problems.push(`${f} links github.com/${m[1]} — the repo is ${repo}`);
+      }
+    }
+    // The origin is the same class of load-bearing string as the package name, and it has
+    // the nastier failure: `boss.build` is not ours and never was — it has been registered
+    // to someone else since 2026-01-16, five months before BOSS chose the name (DEC-002 is
+    // why the domain moved to oyeboss.build). A link there doesn't 404, it lands a founder
+    // on a stranger's site. v0.198.0's release feed shipped exactly that.
+    for (const m of raw.matchAll(/https?:\/\/([a-z0-9.-]*boss\.build)/g)) {
+      if (`https://${m[1]}` !== SITE_URL) {
+        problems.push(`${f} links ${m[1]} — the public origin is ${SITE_URL.replace('https://', '')}`);
+      }
+    }
+    // Generated-only markup: a Markdown link that never became an <a>. The feed is built
+    // from registry/CHANGELOG.md at generation time, so this shape cannot exist in web/.
+    // ...but NOT inside a mock. `web/credits.html` shows the literal line `boss credit` writes
+    // into a founder's README, and raw Markdown is exactly right there — it is what the file
+    // will contain. Same distinction v0.193.0 drew for terminal mocks: a mock is quoted output,
+    // not a claim the page is making.
+    const prose = raw.replace(/<pre[\s\S]*?<\/pre>/g, '')
+      .replace(/<span class="line">[\s\S]*?<\/span>/g, '');
+    for (const m of prose.matchAll(/\[[^\]]{1,80}\]\((?:https?:|\/)[^)\s]{1,200}\)/g)) {
+      problems.push(`${f} renders raw Markdown link ${m[0].slice(0, 60)} — md() left it unlinked`);
     }
   }
 }

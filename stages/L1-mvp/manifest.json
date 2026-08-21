@@ -78,7 +78,8 @@
     "drift-loop",
     "coordination-loop",
     "focus-loop",
-    "margin-trap-loop"
+    "margin-trap-loop",
+    "canvas-drift-loop"
   ],
   "unlocksNext": "L2-v1",
   "graduationHint": "When you have real users and the app needs design rigor, a real db, and prototypes — boss unlock v1."
