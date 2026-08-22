@@ -9,6 +9,30 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.211.0 — 2026-08-21
+
+**Found by a pre-publish smoke test: `/boss`'s own one-line description still said BOSS picks your
+licence.** v0.200.0 rewrote the licence step, rewrote the Rules line to *"never decide the licence
+for them, in either direction"* — and left the frontmatter untouched, still promising *"a private
+GitHub repo with the right license."*
+
+**The two lines sat 157 lines apart in the same file, saying opposite things.** The false one is the
+one that gets read first and most often: a skill's `description` is what Claude Code renders in the
+listing and what the model routes on. The corrected body was three screens down.
+
+- **This is the fourth instance of the same shape this week** — a rule enforced on one surface and
+  unwritten on another (`check-refs` reading `<code>` and not `<pre>`; the site's one-directional
+  coverage; the README roster typed by hand). Here the two surfaces were *the same file*.
+- **Only the false line changed.** `/welcome` says *"create a private GitHub repo"* and that is still
+  true — `visibility` really does scaffold as `private`, that default is reversible in a click, and
+  the line never claimed BOSS chose the licence. Correcting accurate copy to sound more on-message
+  would be the addition [[EVID-001]] exists to refuse.
+- **Nothing mechanical caught it, and nothing here pretends to.** A frontmatter description
+  contradicting its own body is a judgment call, not a grep. Named rather than gated.
+
+Scaffolded from the packed tarball and verified end to end: `license: null` reaches
+`.boss/config.json`, `sustaining-loop.md` scaffolds, and 201 files / 870 kB is what a founder gets.
+
 ## 0.210.0 — 2026-08-21
 
 **Work-order 1d, and the last open item in Phase 1. `check:roster` — the README can no longer claim
