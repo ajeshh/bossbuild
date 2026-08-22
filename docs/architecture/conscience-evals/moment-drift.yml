@@ -1,0 +1,304 @@
+# Conscience eval set — moment: drift (drift-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/drift-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (v0.31.0+)
+#
+# drift-loop is the closest loop to why BOSS exists (PRINCIPLES.md, the why:
+# "build faster without fooling themselves"). It fires when a riskiest
+# assumption is NAMED on the canvas, work has ACCUMULATED (≥3 devlog entries),
+# and NO validation plan ("Experiment this week") exists yet. It sits in the gap
+# between moment #1 (caution — no risk named) and the done moment (graduation —
+# risk has a validation plan).
+#
+# SCOPE OF THESE CASES — read before adding more.
+# The hook does *predicate-gate* detection only. These cases test that the gate
+# opens at the right structural moments and stays shut otherwise. The actual
+# *judgment* — "is the recent work testing the named risk, or building around
+# it?" — is the model's, performed in the live turn from the bounded read the
+# signal instructs (same split as extraction-loop / `/extract`).
+#
+# THE COMPLEMENT (v0.32.0): judgment-quality — does the model correctly call
+# drift vs. on-aim — now has its own surface at
+# `docs/architecture/conscience-evals/judgment/` (labeled set + zero-dep
+# replay.js voice-hash tripwire + out-of-band regrade.js). This gate file proves
+# the door opens; judgment/ proves the call past the door. Two surfaces, two
+# cadences — see judgment/README.md.
+#
+# Cases isolate `drift` by closing extraction-loop (an EXTR record) wherever
+# devlog ≥3 would otherwise co-fire `capture`, and by using 0 capture-log
+# entries so canvas-loop's `caution` never opens. One case deliberately tests
+# the drift+capture co-fire.
+
+# =============================================================================
+# SHOULD FIRE — risk named, work accumulating, no validation plan
+# =============================================================================
+
+- id: m-drift-001
+  category: should-fire
+  scenario: "Canvas has a real riskiest assumption; 3 devlog entries; no experiment line; extraction closed (isolates drift)."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "teams will switch from spreadsheets to this for weekly planning"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: true
+    moment: drift
+  why: "Gate met: risk filled, ≥3 devlog entries, no `Experiment this week` validation plan. confidence low (3/3 ratio). The named bet exists but nothing records how it'll be tested."
+
+- id: m-drift-002
+  category: should-fire
+  scenario: "Same as 001 but 5 devlog entries (overshoot) — louder signal."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "clinicians will trust an AI-drafted summary enough to sign it"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_5_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: true
+    moment: drift
+  why: "More sessions deep with the risk still unvalidated. confidence medium (5/3 ratio ≥ 1.33). Same moment, higher confidence."
+
+- id: m-drift-003
+  category: should-fire
+  scenario: "Risk filled; an `Experiment this week` line EXISTS but is the `_(placeholder)_` stub; 3 devlog; extraction closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "buyers will pay $30/mo before we build the integrations"
+          experiment_placeholder: true
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: true
+    moment: drift
+  why: "The exit predicate requires a REAL experiment ([^_] rejects `_(the smallest test…)_`). A placeholder is not a validation plan — the loop stays open. Mirrors the riskiest-assumption `[^_]` tightening on the entry side."
+
+- id: m-drift-004
+  category: should-fire
+  scenario: "Risk filled; 3 devlog; no experiment; extraction NOT recorded — drift AND capture co-fire."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "people will finish onboarding without a human walkthrough"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+  expected_detection:
+    fires: true
+    moments: [drift, capture]
+  why: "Real multi-moment co-fire (like cost + failure-mode at the first LLM call): ≥3 devlog with no EXTR opens capture; named-risk-with-no-plan opens drift. Both are legitimately true; the model voices the most-load-bearing one. Documents the interaction explicitly."
+
+# =============================================================================
+# SHOULD NOT FIRE — plan recorded, not enough work, no named risk, or pre-MVP
+# =============================================================================
+
+- id: m-drift-101
+  category: should-not-fire
+  scenario: "Risk filled AND `Experiment this week` filled with a real plan; 3 devlog; extraction closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "teams will switch from spreadsheets to this"
+          experiment_text: "fake-door landing + 20 outreach DMs this week; ship if ≥5 book a call"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "Exit satisfied: the named risk has a validation plan. The good outcome — the founder recorded how they'll test the bet. Loop closed."
+
+- id: m-drift-102
+  category: should-not-fire
+  scenario: "Risk filled; no experiment; only 2 devlog entries — under the work threshold."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "users will return weekly without notifications"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_2_entries }
+  expected_detection:
+    fires: false
+  why: "Entry needs ≥3 devlog entries. Two sessions in is still first-build motion, not the inflection where 'have I been building toward the bet?' becomes fair to ask."
+
+- id: m-drift-103
+  category: should-not-fire
+  scenario: "Riskiest assumption is the `_(placeholder)_` stub (unfilled); 3 devlog; 0 captures; extraction closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: ""
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "No named risk → drift's entry is unmet. An unnamed risk is moment #1's (caution) territory, not drift's. Drift only asks 'is the work testing the bet' once a bet exists."
+
+- id: m-drift-104
+  category: should-not-fire
+  scenario: "No canvas at all; 3 devlog; extraction closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "No canvas → no filled riskiest assumption → entry unmet. Building without any canvas is a different (earlier) gap."
+
+- id: m-drift-105
+  category: should-not-fire
+  scenario: "Empty project — nothing at all."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-work state. The loop must not fire on a fresh project."
+
+- id: m-drift-106
+  category: should-not-fire
+  scenario: "Risk filled AND experiment filled; 5 devlog (overshoot) — still closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "clinicians will sign an AI-drafted summary"
+          experiment_text: "wizard-of-oz: 10 real summaries reviewed by 3 clinicians; pass if ≥8 signed unedited"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_5_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "A recorded validation plan closes the loop regardless of how much work accumulated. Overshoot doesn't re-open a closed loop."
+
+- id: m-drift-107
+  category: should-not-fire
+  scenario: "Risk filled with no experiment, but the idea is status: dropped; 3 devlog; extraction closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        status: dropped
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "abandoned bet we walked away from"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "`related_idea_not_matching: ^status:\\s+dropped` filters dropped ideas out of the entry. A drifted bet on an idea you've walked away from isn't drift you need nudging about."
+
+- id: m-drift-108
+  category: should-not-fire
+  scenario: "Quickstart-shaped: canvas with a named risk, but NO devlog yet (no MVP work)."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "small teams will pay for this before enterprise"
+  expected_detection:
+    fires: false
+  why: "Devlog is an MVP discipline; a Quickstart project has none. Entry needs ≥3 devlog entries → unmet. No over-fire on pre-MVP projects (the risk-was-just-named, no-build-yet state)."
+
+- id: m-drift-110
+  category: should-not-fire
+  scenario: "Risk filled; no experiment; devlog file exists but is empty (0 dated entries); extraction closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "the integration is the wedge, not the dashboard"
+    docs_files:
+      - { path: docs/devlog.md, fixture: empty }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "Entry counts `^## YYYY-MM-DD` date headers; an empty devlog has zero. No accumulated work → no drift question."
+
+- id: m-drift-111
+  category: should-not-fire
+  scenario: "Two ideas — one graduated (risk + experiment filled), one drifting (risk filled, no plan); 3 devlog; extraction closed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "graduated idea: buyers pay before integrations"
+          experiment_text: "fake-door pricing page; pass if ≥5 checkout attempts in a week"
+      - file: IDEA-002-bar.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "drifting idea: users return weekly unprompted"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "Documents the KNOWN any-file-matches limitation (shared with canvas-loop): one graduated idea's experiment line satisfies the exit and masks a second drifting idea. Accepted for the common single-active-idea case; the model catches the masked case when the loop is open on a single idea. A per-idea pairing predicate is deferred until evidence it matters."
+
+# =============================================================================
+# EVIDENCE LEDGER (IDEA-045, v0.98) — detection must stay BYTE-IDENTICAL when a
+# project has accumulated EVID records. The evidence projection sharpens the
+# drift/caution VOICING (specific when stated-pain-only; quieter when a commitment
+# exists) but the gate is predicate-only, so `fires`/`moment` are unchanged. These
+# cases lock that invariant — the "byte-identical when present" guard, the mirror
+# of the empty-directory guarantee every other case already exercises.
+# =============================================================================
+
+- id: m-drift-120
+  category: should-fire
+  scenario: "Drift is open (risk named, 3 devlog, no plan, extraction closed) AND a stated-pain EVID exists. Gate unchanged."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "teams will switch from spreadsheets for weekly planning"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+      - { path: docs/evidence/EVID-001-spreadsheet-pain.md, fixture: evid_stated_pain }
+  expected_detection:
+    fires: true
+    moment: drift
+  why: "Evidence is predicate-invisible: the gate opens on the same structural facts. A stated-pain signal on the record doesn't close drift (nothing's been VALIDATED). The projection only lets the model get SPECIFIC in-turn ('one said it hurts, zero commitments') — a voicing sharpen, not a detection change."
+
+- id: m-drift-121
+  category: should-fire
+  scenario: "Drift is open AND a commitment-grade EVID exists. Gate STILL unchanged — quieter is judgment, not gating."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "teams will switch from spreadsheets for weekly planning"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+      - { path: docs/evidence/EVID-002-pilot-commitment.md, fixture: evid_commitment }
+  expected_detection:
+    fires: true
+    moment: drift
+  why: "The deliberate design boundary: real commitment-grade evidence makes the conscience go QUIETER, but quiet is a VOICING choice the model makes from the projection — NOT a gate that suppresses the signal. A commitment on one assumption while the canvas still records no validation plan is exactly the state where the model should say less, not where the hook should fire nothing. Gate stays open; the model decides how loud. (If this ever hard-suppresses at the gate, that's a regression — evidence must never silently muzzle drift.)"

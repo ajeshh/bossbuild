@@ -1,0 +1,120 @@
+# Conscience eval set — moment: cost-stale (cost-review-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/cost-review-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (v0.30.0+)
+#
+# cost-review-loop is the second time-of-work entry pattern. Entry is
+# *budget declared* (docs/ai-cost-budget.md exists); exit is *first review
+# recorded* (≥1 file in docs/cost-reviews/REVIEW-*.md with a "Total spend"
+# line). The loop ensures the founder reads the ledger they wired.
+#
+# Cases isolate cost-stale by closing cost-budget-loop and ai-failure-state-
+# loop where relevant (so cost-stale fires alone, not multi-moment).
+
+# =============================================================================
+# SHOULD FIRE — budget exists, no review on record
+# =============================================================================
+
+- id: m-cs-001
+  category: should-fire
+  scenario: "Budget doc exists; no cost-reviews/ directory."
+  project_state:
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+  expected_detection:
+    fires: true
+    moment: cost-stale
+  why: "Budget declared, ledger unread. The half of the discipline that /ai-cost only named."
+
+- id: m-cs-002
+  category: should-fire
+  scenario: "Budget exists; cost-reviews/ directory present but empty."
+  project_state:
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/cost-reviews/.gitkeep, fixture: empty }
+  expected_detection:
+    fires: true
+    moment: cost-stale
+  why: "An empty cost-reviews/ directory doesn't satisfy the exit predicate — it requires a REVIEW-*.md file with the 'Total spend' line."
+
+- id: m-cs-003
+  category: should-fire
+  scenario: "Budget exists; review file exists but lacks the 'Total spend' line."
+  project_state:
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/cost-reviews/REVIEW-stub.md, fixture: empty }
+  expected_detection:
+    fires: true
+    moment: cost-stale
+  why: "A review file without the canonical 'Total spend:' line is a stub, not a review. Predicate gates on real content."
+
+# =============================================================================
+# SHOULD-FIRE — multi-moment with cost-budget-loop (budget declared but
+# logger still missing; both halves of cost discipline still open)
+# =============================================================================
+
+- id: m-cs-004
+  category: should-fire-multi
+  scenario: "Budget doc exists; logger not yet wired in src/; no review either."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moments: [cost, cost-stale]
+  why: "Budget declared (closes cost-budget-loop entry-only condition); logger missing (cost-budget-loop still open); review missing (cost-stale open). Both fire. failure-mode closed by handlers + doc."
+
+# =============================================================================
+# SHOULD NOT FIRE — closure, no-entry, or pre-budget state
+# =============================================================================
+
+- id: m-cs-101
+  category: should-not-fire
+  scenario: "Budget exists AND a real review file exists."
+  project_state:
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/cost-reviews/REVIEW-2026-05-27.md, fixture: cost_review_record }
+  expected_detection:
+    fires: false
+  why: "Both halves of cost discipline closed. Zero signals."
+
+- id: m-cs-102
+  category: should-not-fire
+  scenario: "No budget doc — entry predicate not met."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "cost-review-loop only opens after the founder has run /ai-cost and a budget exists. Pre-budget projects don't get nudged about reviews."
+
+- id: m-cs-103
+  category: should-not-fire
+  scenario: "Project has LLM calls but no budget declared yet (cost-budget-loop fires, not cost-review-loop)."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: cost
+  why: "Confirms cost-review-loop entry is gated on the budget doc, not on LLM calls. cost-budget-loop fires; cost-review-loop stays closed."
+
+- id: m-cs-104
+  category: should-not-fire
+  scenario: "Quickstart-shaped project (ideas + canvas; no MVP discipline yet)."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "users will sign up after seeing the landing page; metric = 100 signups in week 1; experiment = paid ad to landing page; deadline = 2026-06-01"
+  expected_detection:
+    fires: false
+  why: "Pre-MVP projects don't have budgets. cost-review-loop must not over-fire on Quickstart-shape projects."

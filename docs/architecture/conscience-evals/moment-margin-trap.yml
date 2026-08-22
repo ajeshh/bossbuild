@@ -1,0 +1,107 @@
+# Conscience eval set — moment: margin-trap (margin-trap-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/margin-trap-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (post-launch JOB 4, v0.118)
+#
+# margin-trap-loop is the post-launch cost→price bridge. It fires when a real
+# per-call cost ledger (.boss/cost-log.jsonl) exists AND the founder is operating
+# (≥1 cost review with real spend) but no review has looked at the *margin* yet.
+# A review that examines margin (gross margin / cost-as-%-of-price) closes it.
+#
+# SCOPE — predicate-gate only. These cases prove the door opens at the right
+# structural moment and stays shut otherwise. The judgment — "is cost-per-user a
+# dangerous fraction of the price, or is the cost driven by the user's struggle?"
+# — is the model's, performed in the live turn from the bounded ledger read the
+# signal instructs (same split as drift / focus / caution). Fixtures carry only a
+# cost log + cost review(s) — no src / ideas / FEATs / budget doc — so ONLY
+# margin-trap can open. Clean isolation, like the focus evals.
+#
+# Gate-safety note: NO prior fixture creates .boss/cost-log.jsonl, so requiring it
+# in the entry keeps all 122 baseline cases byte-identical — margin-trap never
+# opens in them.
+
+# =============================================================================
+# SHOULD FIRE — real ledger + operating, no margin looked at yet
+# =============================================================================
+
+- id: m-margin-001
+  category: should-fire
+  scenario: "Cost ledger + one cost review with real spend, but no review has examined the margin."
+  project_state:
+    other_files:
+      - { path: .boss/cost-log.jsonl, fixture: cost_log_sample }
+    docs_files:
+      - { path: docs/cost-reviews/REVIEW-2026-07-15.md, fixture: cost_review_record }
+  expected_detection:
+    fires: true
+    moment: margin-trap
+  why: "Entry met (raw ledger exists AND a review with `Total spend:` exists) and exit unmet (the review never looked at margin). The door opens; the model judges cost-vs-price + struggle from the bounded read."
+
+- id: m-margin-002
+  category: should-fire
+  scenario: "Cost ledger + two cost reviews, neither examining margin — operating a while, still no margin read."
+  project_state:
+    other_files:
+      - { path: .boss/cost-log.jsonl, fixture: cost_log_sample }
+    docs_files:
+      - { path: docs/cost-reviews/REVIEW-2026-07-08.md, fixture: cost_review_record }
+      - { path: docs/cost-reviews/REVIEW-2026-07-15.md, fixture: cost_review_record }
+  expected_detection:
+    fires: true
+    moment: margin-trap
+  why: "Multiple reviews with real spend, none of which looks at the margin — the founder is watching cost against budget but never against price. Still open."
+
+# =============================================================================
+# SHOULD NOT FIRE — margin examined, not operating yet, no raw ledger, empty
+# =============================================================================
+
+- id: m-margin-101
+  category: should-not-fire
+  scenario: "A cost review that HAS examined the margin (gross-margin line) — the trap has been seen."
+  project_state:
+    other_files:
+      - { path: .boss/cost-log.jsonl, fixture: cost_log_sample }
+    docs_files:
+      - { path: docs/cost-reviews/REVIEW-2026-07-20.md, fixture: cost_review_with_margin }
+  expected_detection:
+    fires: false
+  why: "Exit satisfied — a review contains a `Gross margin` line. Once the margin has been looked at, the loop closes; the conscience doesn't re-nag a founder who's already watching it."
+
+- id: m-margin-102
+  category: should-not-fire
+  scenario: "Alternate margin phrasing — '% of revenue' — also closes the loop (exit pattern breadth)."
+  project_state:
+    other_files:
+      - { path: .boss/cost-log.jsonl, fixture: cost_log_sample }
+    docs_files:
+      - { path: docs/cost-reviews/REVIEW-2026-07-21.md, fixture: cost_review_margin_pct }
+  expected_detection:
+    fires: false
+  why: "The exit marker isn't hard-coded to 'gross margin' — a review that frames cost as '% of revenue' has also examined the margin. Loop closed."
+
+- id: m-margin-103
+  category: should-not-fire
+  scenario: "Cost ledger exists but no cost review yet — instrumented but not operating/reviewing."
+  project_state:
+    other_files:
+      - { path: .boss/cost-log.jsonl, fixture: cost_log_sample }
+  expected_detection:
+    fires: false
+  why: "Entry needs BOTH a ledger AND a review with real spend. A ledger alone is a founder who wired the logger but isn't yet operating — cost-vs-price is premature (Principle #2). Stays shut."
+
+- id: m-margin-104
+  category: should-not-fire
+  scenario: "A cost review exists but no raw ledger — no per-call trail to judge margin or struggle from."
+  project_state:
+    docs_files:
+      - { path: docs/cost-reviews/REVIEW-2026-07-15.md, fixture: cost_review_record }
+  expected_detection:
+    fires: false
+  why: "Entry needs `.boss/cost-log.jsonl` too. A review summary with no raw ledger has nothing to compute cost-per-user or spot retries from. (cost-review-loop also stays shut here — no ai-cost-budget.md — so nothing fires.)"
+
+- id: m-margin-105
+  category: should-not-fire
+  scenario: "Empty project — nothing at all."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-work state. The loop must not fire on a fresh project."

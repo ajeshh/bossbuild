@@ -9,6 +9,115 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.213.0 — 2026-08-21
+
+> **For you:** `/boss` now says your idea back and asks whether you want to keep shaping it or start
+> building — *before* it asks about repos and licences. Either way your idea doc is a living
+> document: `/triage <a thought>` adds to it whenever more lands.
+
+**A founder emptied their head into `/boss`, and BOSS filed it and moved on.** [[EVID-003]], relayed
+2026-08-21 — BOSS's third external signal and the first from someone who actually ran the tool:
+
+> *"it's almost like the idea was stream of the idea, just a run on, but then now that it's outta
+> their system they have more insights or want to keep contouring the idea… boss jumped straight into
+> building, rather than checking or giving feedback or saying back what the idea was."*
+
+**That is not a tone complaint — it is the skill's control flow.** Once the idea arrived, every
+question `/boss` asked was administrative: repo? · private or public? · licence? · cohort? Step 2
+reflected the idea back in 3–5 lines and moved on without stopping; step 7 closed on *"start
+building."* BOSS's first conversation with a founder asked them about paperwork, not about their idea.
+
+🔴 **Underneath it, a coupling nothing checked.** `/triage` writes a living doc — `Current shape`, an
+append-only `Capture log`, `Open questions`, a `gist:`. `/boss` wrote "what/why/scope/next-step" with
+none of them. `capture-loop` exits on a `^- YYYY-MM-DD` capture-log line and `canvas-loop` *enters* at
+three of them — so the founder steered to `/boss`, the path `/welcome` bolds as **the** next step, got
+a document the conscience cannot see. capture-loop never closes, canvas-loop never opens, and **the
+`caution` moment can never fire for them.** The one mechanism built to come back and ask *"what does
+this prove?"* was unreachable from the path BOSS recommends. Measured, not inferred: the old doc shape
+leaves capture-loop `open`; the new one closes it.
+
+- **`/boss` gains the check (step 3.5) — an opt-in, not a stop.** *"Ready to build from that — or want
+  to share more on the idea first?"* Asked **once**, before repo/visibility/licence/cohort, and ordered
+  by cohort: build-first for the experienced, shape-first for beginners whose first articulation is
+  usually a run-on draft. Say build and it never comes up again — a second ask is nagging.
+- **The "more" branch is `/triage`'s add loop — no new machinery, and no 23rd skill.** Append to the
+  capture log, sharpen `Current shape`, then offer two or three ways further: keep talking · name
+  what's missing · a user's-eye view (`/persona`) · the smallest running version (`/prototype`) ·
+  `mentor-founder` for a founder who wants to be pushed. Gaps are named as **absences, at most three**
+  — *"you said who it's for, never what happens if they don't"* — because a twelve-question intake form
+  is the ceremony BOSS exists to refuse.
+- **One doc shape.** `/boss` and `/import` now write exactly what `/triage` writes, take the number from
+  `boss id IDEA` instead of hardcoding `IDEA-001`, and capture at `status: seedling` rather than
+  `ready` — a thought ten minutes old has not been decided on.
+- **The return path is stated once**, in the wrap-up. It never was, which is precisely why the insights
+  that arrived after the dump had nowhere to go.
+- 🔴 **`/welcome` introduced beginners to an agent that does not exist.** The one place a new founder
+  meets the roster called it **`mentor-venture`** — retired in `supersedes.json` long ago. It survived
+  because it is line-wrapped across a blockquote (`mentor-` / `>    venture`) and is invisible to grep.
+  The real agent, `mentor-founder`, carries *"talk me through this idea"* in its own trigger phrases and
+  **no skill anywhere routed to it**: the idea-partner this founder asked for was installed in their
+  project and never mentioned. Ninth instance of the standing audit heuristic — and this time the
+  checker names its own hole, `check:roster` stating in its header that *"prose that ENUMERATES a roster
+  without counting it is still unguarded."*
+- `owner: pm` → `product-lead` in `/boss`, `/import`, and L1 `/log`'s devlog seed. There is no `pm` agent.
+- **A test for the coupling** (183 unit tests): every skill that captures an idea must write a doc the
+  real `capture-loop` spec can see, and the two capture paths must agree on `status`, `gist:`, and an
+  `owner` naming an agent the mode actually ships.
+
+**What this release deliberately did NOT do.** [[EVID-003]] is n=1–2 at `stated-pain`, and per
+[[EVID-001]]'s standing instruction the move is compose-and-subtract, not add. No new skill: four of
+the founder's asks map onto surfaces that already existed and were simply never surfaced at the moment
+they would have helped. No new loop for a stalled idea either — canvas-loop may well cover it now that
+captures actually register, and adding a loop to compensate for a broken predicate is how a conscience
+gets noisy. **What justified acting on weak feedback is the measurement, not the opinion** — the same
+reasoning as [[EVID-002]].
+
+⚠️ **Still open:** is EVID-003's founder the same person as [[EVID-001]]? If yes, n is still 1 — but
+they came back, which is worth more than the words. Three questions would raise this to
+observed-behavior at no cost; they are written at the foot of the evidence file.
+
+## 0.213.0 — 2026-08-21
+
+**The conscience eval suite stops being private. [[DEC-013]] — work-order 2e, held for three
+sessions and decided once the question got smaller.**
+
+BOSS has claimed for months that its conscience is verified — *"a model-verified judgment surface,
+graded against labeled sets, not just vibes."* **The evidence was gitignored.** Nobody outside this
+machine could open a single case, and v0.212.0 found the predictable result: four of the numbers
+advertising that rigour were wrong, one of them justifying an *exemption* in
+`registry/dogfood.json`. A reason not to do something, resting on a number nobody had checked in
+nine releases.
+
+**Tracked: 30 files, ~320KB** — `runner.js`, 14 `moment-*.yml` gate suites, `lib/yaml-eval.js`, the
+5 `*.judgment.yml` case sets, `replay.js`, `regrade.js`, `regrade-keyless.js`, `moments.js`, the
+fixtures, both READMEs. **Not tracked: `judgment/transcripts/`** — 50 files, 200KB.
+
+- **The transcripts are excluded on a mechanism, not on size.** They carry a voice-hash, and the
+  suite's own tripwire marks them **STALE the moment a frame is edited** — deliberately, because a
+  frozen transcript otherwise asserts a decision the model would no longer make and *passes green*.
+  Tracking artifacts the system declares expired is carrying dead weight in a history that cannot
+  be un-written. `npm run regrade:keyless` regenerates them.
+- **What this buys, stated narrowly:** *"152 passing"* becomes exactly as verifiable as *"181 tests
+  pass"* — the bar this repo already holds for `test/`. **Not** that any historical grade is
+  auditable; that needs the transcripts. The standard is the ordinary one: **you ship the tests, not
+  the console log proving they passed.**
+- 🔴 **Two of the newly-tracked files lied about the boundary and were fixed before being
+  committed.** `regrade.js` printed *"Commit the transcripts"* and `judgment/README.md` called them
+  *"the committed dataset."* Both were true when written and false the moment this landed — caught
+  by grepping the incoming files for references to the directory being left behind.
+- **The asymmetry argument was sized wrong, and that is why this took three sessions.** *"80 files
+  / 564K, and history can't be un-written"* described the whole directory, which was never the right
+  unit. The durable half is 30 files that change when the conscience changes; the 200KB that
+  genuinely should not be carried forever is exactly the half left out.
+- ⚠️ **Knowingly accepted:** `docs/decisions/` stays local, so DEC-013 itself is not readable by
+  someone reading the code it authorises. The tracked tier note in `conscience-evals/README.md`
+  carries the substance inline so the `[[DEC-013]]` reference is supplementary rather than
+  load-bearing. Named in the decision as the trigger to revisit, not waved past.
+
+Serves [[DEC-012]] clause 3 — *"any future change that makes the mission less inspectable breaks
+this decision"* — and is the first change that **adds** inspectable evidence rather than only
+declining to remove it.
+
 ## 0.212.0 — 2026-08-21
 
 **BOSS advertised four verification numbers, and all four were wrong.** README told founders the

@@ -1,0 +1,232 @@
+# JUDGMENT eval set — moment: drift (the model's call, not the predicate gate)
+# Surface: docs/architecture/conscience-evals/judgment/
+# Replay (zero-dep, every commit): replay.js   ·   Re-grade (paid, out-of-band): regrade.js
+#
+# This is the COMPLEMENT to moment-drift.yml. That file tests the GATE (does the
+# hook fire on the right structural state). THIS file tests the JUDGMENT the
+# model makes once the gate is open: given a named risk + accumulated work with
+# no validation plan, is the recent work TESTING the risk (→ stay silent) or
+# building AROUND it (→ fire + name the specific gap)?
+#
+# Every case below is a genuine OPEN-GATE state (risk filled, ≥3 devlog entries,
+# no "Experiment this week" line) — that's not under test here; replay.js asserts
+# well-formedness statically and moment-drift.yml proves the gate opens on this
+# exact shape. What's under test is the model's drift-vs-on-aim call.
+#
+# `expected_judgment` is the HUMAN-AUTHORED label (ground truth). `must_reference`
+# / `must_not` is the rubric a future LLM-judge (regrade.js) grades against.
+#
+# COVERAGE NOTE (no silent caps): the should-NOT-fire / on-aim class is the
+# trust-critical one — a judge that cries drift when the founder is on-target
+# erodes trust exactly like a false caution. This starter set has 5; it SHOULD
+# grow toward ≥10. replay.js enforces the current floor and prints the target.
+
+# =============================================================================
+# SHOULD FIRE + NAME THE GAP — work is building AROUND the named risk
+# =============================================================================
+
+- id: j-drift-001
+  category: should-fire-and-name-gap
+  scenario: "Risk is teams-switch-from-spreadsheets; last 4 sessions built export, dark mode, OAuth, roles — none touches switching behavior."
+  project_state:
+    ideas:
+      - file: IDEA-001-plan.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "teams will switch from spreadsheets to this for weekly planning"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: drift_spreadsheet }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - the named risk about teams switching from spreadsheets
+      - at least one specific recent build item that is not about switching
+    must_not:
+      - generic you-should-validate with no stated-vs-actual comparison
+      - praise framing such as you-have-been-productive
+  why: "Four sessions of orthogonal feature work; nothing tests whether teams actually switch. Textbook build-around-the-risk."
+
+- id: j-drift-002
+  category: should-fire-and-name-gap
+  scenario: "Risk is clinicians-trust-AI-summary-enough-to-sign; work was billing, search UI, theming, roles — never the trust/sign-off path."
+  project_state:
+    ideas:
+      - file: IDEA-001-summary.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "clinicians will trust an AI-drafted summary enough to sign it"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: drift_clinical }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - the named risk about clinicians trusting and signing the summary
+      - that the recent work was billing or search or theming rather than the sign-off path
+    must_not:
+      - generic validate-your-idea with no reference to the clinical trust risk
+  why: "High-stakes risk left entirely untested while peripheral infrastructure got built."
+
+- id: j-drift-003
+  category: should-fire-and-name-gap
+  scenario: "Risk is users-return-weekly-without-push; work was onboarding animations, profile customization, referrals — no retention measurement."
+  project_state:
+    ideas:
+      - file: IDEA-001-habit.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "users will return weekly without push notifications"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: drift_retention }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - the named risk about weekly return without notifications
+      - that no retention cohort or holdout was measured
+    must_not:
+      - praise framing
+  why: "Retention is the bet; none of the work instruments or tests return behavior."
+
+- id: j-drift-004
+  category: should-fire-and-name-gap
+  scenario: "Risk is buyers-pay-before-integrations; the work built the integration framework — the exact thing the risk says to DEFER."
+  project_state:
+    ideas:
+      - file: IDEA-001-pay.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "buyers will pay $30/mo before we build the integrations"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: drift_wtp }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - the named risk about buyers paying before integrations exist
+      - that the recent work built the integrations the risk explicitly defers
+    must_not:
+      - generic validate-demand with no reference to the integration inversion
+  why: "Sharpest drift: building the precise thing the riskiest assumption says to defer. The judge should name the inversion."
+
+# =============================================================================
+# SHOULD NOT FIRE — work IS engaging the risk; silence is the correct output
+# (the trust-critical class; the predicate gate cannot tell these from drift)
+# =============================================================================
+
+- id: j-aim-101
+  category: should-not-fire-on-aim
+  scenario: "Risk is teams-switch-from-spreadsheets; work built the import wizard, ran 4 migration sessions, instrumented week-2 return, interviewed teams about switching."
+  project_state:
+    ideas:
+      - file: IDEA-001-plan.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "teams will switch from spreadsheets to this for weekly planning"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: aim_spreadsheet }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing a drift nudge when the work directly tests switching behavior
+  why: "Every recent entry is about switching: import wizard, migration sessions, return instrumentation, switching interviews. The experiment line is blank but the validation is happening. Silence is correct."
+
+- id: j-aim-102
+  category: should-not-fire-on-aim
+  scenario: "Risk is clinicians-trust-and-sign; work built the review queue + sign-off audit trail and ran 10 summaries past 3 clinicians."
+  project_state:
+    ideas:
+      - file: IDEA-001-summary.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "clinicians will trust an AI-drafted summary enough to sign it"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: aim_clinical }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when the clinician trust risk is being measured directly
+  why: "The sign-off path, the edit-distance audit, and real clinician sign sessions ARE the risk test. Informal (no experiment line) but unmistakably on-aim."
+
+- id: j-aim-103
+  category: should-not-fire-on-aim
+  scenario: "Risk is weekly-return-without-push; work built D1/D7/D28 cohorts and a 2-week no-notification holdout."
+  project_state:
+    ideas:
+      - file: IDEA-001-habit.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "users will return weekly without push notifications"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: aim_retention }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when a retention holdout is literally running
+  why: "A no-notification holdout is the cleanest possible test of return-without-push. Firing here would be the conscience crying wolf."
+
+- id: j-aim-104
+  category: should-not-fire-on-aim
+  scenario: "Risk is buyers-pay-before-integrations; work shipped a fake-door $30 pricing page and ran outreach to count checkout intent."
+  project_state:
+    ideas:
+      - file: IDEA-001-pay.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "buyers will pay $30/mo before we build the integrations"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: aim_wtp }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when the willingness-to-pay risk is being tested via a fake door
+  why: "Fake-door pricing + outreach + checkout-intent counting is exactly the WTP test the risk calls for — and notably NOT building the integrations. On-aim."
+
+- id: j-aim-105
+  category: should-not-fire-on-aim
+  scenario: "Risk is small-teams-adopt-self-serve-without-a-sales-call; work removed the demo gate and watched 8 teams onboard unattended via session replay."
+  project_state:
+    ideas:
+      - file: IDEA-001-selfserve.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "small teams will adopt self-serve without a sales call"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: aim_informal_selfserve }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when self-serve adoption is being observed directly with no sales touch
+  why: "The hard case the architect named: gate is open (no experiment line) but the work — removing the demo gate, watching unattended onboarding, logging drop-off — IS the validation. The model must read the prose and stay silent."
+
+# =============================================================================
+# AMBIGUOUS — a reasonable model could fire OR stay silent; don't punish either
+# =============================================================================
+
+- id: j-amb-201
+  category: ambiguous
+  scenario: "Risk is the-integration-is-the-wedge; work built a thin real Linear integration and demoed it to one partner who loved it — building toward the wedge, or building-not-testing?"
+  project_state:
+    ideas:
+      - file: IDEA-001-wedge.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "the integration is the wedge, not the dashboard"
+    docs_files:
+      - { path: docs/devlog.md, content_ref: ambiguous_integration }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_judgment:
+    acceptable: [fires, silent]
+    must_not:
+      - asserting with false confidence that the founder is clearly drifting or clearly on-aim
+  why: "One partner reaction is a signal but not a test; a thin integration slice is plausibly building-toward-the-wedge. Either a gentle drift nudge OR silence is defensible. Label both acceptable so the grader does not punish a reasonable call."

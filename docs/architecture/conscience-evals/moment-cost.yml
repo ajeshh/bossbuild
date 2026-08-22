@@ -1,0 +1,178 @@
+# Conscience eval set — moment: cost (cost-budget-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/cost-budget-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (v0.27.0+)
+#
+# Each case materializes a synthetic project (src/ + docs/) and invokes the
+# hook. Cases isolate the cost moment by also closing ai-failure-state-loop's
+# exit (both loops share an entry — the first LLM SDK call site). When BOTH
+# moments are expected, use `moments: [cost, failure-mode]` (multi-moment
+# assertion, v0.27.0+).
+
+# =============================================================================
+# SHOULD FIRE — the bill exists, no budget declared
+# =============================================================================
+
+- id: m-cost-001
+  category: should-fire
+  scenario: "Anthropic SDK call, no budget doc, failure-mode closed (isolated cost test)."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: cost
+    confidence: high
+  why: "Anthropic SDK call site exists; cost budget missing. Cost fires; failure-mode closed because both its exits are satisfied."
+
+- id: m-cost-002
+  category: should-fire
+  scenario: "OpenAI SDK call, no budget doc, failure-mode closed."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: openai_call }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: cost
+    confidence: high
+  why: "OpenAI SDK fires the entry pattern (openai / OpenAI() / chat.completions.create)."
+
+- id: m-cost-003
+  category: should-fire
+  scenario: "Vercel AI SDK generateText, no budget, failure-mode closed."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: vercel_ai_call }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: cost
+  why: "Vercel AI SDK is in the entry regex; the loop opens at first LLM call regardless of provider."
+
+- id: m-cost-004
+  category: should-fire
+  scenario: "Vercel AI SDK streamText, no budget."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: vercel_ai_stream }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: cost
+  why: "streamText fires the entry regex even though it's not a 'messages.create' shape."
+
+- id: m-cost-005
+  category: should-fire
+  scenario: "Budget doc exists but no cost-logger reference in src/."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: cost
+  why: "Exit predicate is *both* doc exists AND logger ref present. Doc alone isn't enough — declaration without instrumentation is theater."
+
+- id: m-cost-006
+  category: should-fire
+  scenario: "Cost-logger reference exists but no budget doc."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: cost
+  why: "Wrapper code without a declared budget is observability without a target. Loop stays open."
+
+# =============================================================================
+# SHOULD-FIRE-MULTI — both cost AND failure-mode (the natural state at first call)
+# =============================================================================
+
+- id: m-cost-007
+  category: should-fire-multi
+  scenario: "Anthropic SDK call, neither budget NOR failure-states declared — the day-one inflection."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+  expected_detection:
+    fires: true
+    moments: [cost, failure-mode]
+  why: "The natural state when a founder first reaches for an LLM. Both loops open simultaneously; cohort-aware framing should mention BOTH gaps in one nudge."
+
+- id: m-cost-008
+  category: should-fire-multi
+  scenario: "OpenAI SDK call, no discipline declared at all."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: openai_call }
+  expected_detection:
+    fires: true
+    moments: [cost, failure-mode]
+  why: "Same as m-cost-007, with a different provider — both moments fire."
+
+# =============================================================================
+# SHOULD NOT FIRE — closure or no-entry
+# =============================================================================
+
+- id: m-cost-101
+  category: should-not-fire
+  scenario: "Full discipline declared — budget doc + logger ref + failure-states + handlers + cost review on record (v0.30+)."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+      - { path: docs/cost-reviews/REVIEW-2026-05-27.md, fixture: cost_review_record }
+  expected_detection:
+    fires: false
+  why: "All AI-first loops closed (cost-budget + failure-mode + cost-review). v0.30+ adds the third loop on this surface — zero signals expected only when all three are closed."
+
+- id: m-cost-102
+  category: should-not-fire
+  scenario: "No LLM SDK calls anywhere — entry predicate not met."
+  project_state:
+    src_files:
+      - { path: src/util.ts, fixture: no_llm_code }
+  expected_detection:
+    fires: false
+  why: "The cost-budget-loop must not over-fire on non-AI projects. Entry predicate is the JIT gate."
+
+- id: m-cost-103
+  category: should-not-fire
+  scenario: "Empty project — no src/ files at all."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Fresh project, no code, no drift. The loop's entry pattern requires actual call sites."
+
+- id: m-cost-104
+  category: should-not-fire
+  scenario: "Pre-MVP project — no LLM calls; only ideas + canvases (closed)."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "users will sign up after seeing the landing page; metric = 100 signups in week 1; experiment = paid ad to landing page; deadline = 2026-06-01"
+  expected_detection:
+    fires: false
+  why: "A canvas-closed Quickstart project with no code shouldn't see a cost moment. Confirms the entry isolation."

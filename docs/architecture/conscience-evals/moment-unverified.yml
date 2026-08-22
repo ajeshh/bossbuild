@@ -1,0 +1,236 @@
+# Conscience eval set — moment: unverified (verification-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/verification-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js
+#
+# Entry is TWO predicates, on purpose:
+#   (a) >=1 FEAT at `status: shipped|done`  — focus-loop's exit, reused as this loop's entry
+#   (b) a non-empty src/                    — a shipped SPEC is a plan; code is the thing to verify
+# Exit is TWO predicates as of v0.179.0: `.boss/smoke.json` (what /smoke records once), plus a
+# `Negative path` result in docs/red-team/ — the second GUARDED by `when:`, so it only applies to a
+# project whose own shipped FEAT names a negative path. See the rung-4 block at the bottom.
+#
+# The two-predicate entry is also what keeps this moment OUT of the other sets:
+# moment-focus.yml materializes FEAT-*.md in 30 cases but creates NO src_files, and the
+# cost/failure-mode sets create src_files but no FEATs. Neither satisfies both halves, so
+# adding this loop cross-talks with nothing. The should-not-fire cases below pin that.
+
+# =============================================================================
+# SHOULD FIRE — shipped, real code, nothing that says "it's alive"
+# =============================================================================
+
+- id: m-unver-001
+  category: should-fire
+  scenario: "A FEAT is shipped and src/ has code, but no .boss/smoke.json exists."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-001-signup.md, fixture: feat_shipped }
+  expected_detection:
+    fires: true
+    moment: unverified
+    confidence: low
+  why: "Both entry predicates satisfied; exit artifact absent. This is the loop's whole purpose. Confidence is LOW by design at exactly one shipped FEAT — computeConfidence reads the FIRST count-style entry predicate (count/min = 1/1), and one shipped thing is the weakest honest version of this signal."
+
+- id: m-unver-002
+  category: should-fire
+  scenario: "`status: done` is accepted as shipped — the vocabulary isn't one word."
+  project_state:
+    src_files:
+      - { path: src/index.js, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-004-billing.md, fixture: feat_done }
+  expected_detection:
+    fires: true
+    moment: unverified
+    confidence: low
+  why: "A founder who writes `done` instead of `shipped` has the same unverified surface."
+
+- id: m-unver-003
+  category: should-fire
+  scenario: "Three shipped FEATs, still nothing verifying any of them — confidence escalates."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-001-signup.md, fixture: feat_shipped }
+      - { path: docs/ideas/FEAT-002-login.md, fixture: feat_shipped_2 }
+      - { path: docs/ideas/FEAT-003-billing.md, fixture: feat_done }
+  expected_detection:
+    fires: true
+    moment: unverified
+    confidence: high
+  why: "Three shipped, none verified — ratio 3/1 >= 2 => high. Pins that confidence tracks the amount of UNVERIFIED SHIPPED SURFACE, which is why the FEAT count is deliberately the FIRST entry predicate: computeConfidence reads whichever count predicate comes first, so ordering the src/** character-count first would have made every fire 'high' off nothing but file size."
+
+# =============================================================================
+# SHOULD NOT FIRE — the exit artifact exists
+# =============================================================================
+
+- id: m-unver-101
+  category: should-not-fire
+  scenario: "Shipped FEAT + code, and /smoke has recorded a command."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-001-signup.md, fixture: feat_shipped }
+    other_files:
+      - { path: .boss/smoke.json, fixture: smoke_config }
+  expected_detection:
+    fires: false
+  why: "Recording one smoke command closes the loop. The bar is deliberately low."
+
+# =============================================================================
+# SHOULD NOT FIRE — entry not satisfied (each half, independently)
+# =============================================================================
+
+- id: m-unver-102
+  category: should-not-fire
+  scenario: "A shipped FEAT but NO source on disk — a plan, not a product."
+  project_state:
+    docs_files:
+      - { path: docs/ideas/FEAT-001-signup.md, fixture: feat_shipped }
+  expected_detection:
+    fires: false
+  why: "PRINCIPLE #2 — a spec marked shipped with no code has nothing to verify. This case also pins the no-cross-talk guarantee for moment-focus.yml, which materializes FEAT files and no src/."
+
+- id: m-unver-103
+  category: should-not-fire
+  scenario: "Real source, but every FEAT is still `building` — nothing has shipped."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-001-signup.md, fixture: feat_building }
+  expected_detection:
+    fires: false
+  why: "Mid-build is not the moment. Firing here is the premature nag PRINCIPLE #2 refuses — and it pins the other half of the no-cross-talk guarantee (the cost/failure-mode sets have src/, no FEATs)."
+
+- id: m-unver-104
+  category: should-not-fire
+  scenario: "Empty project — no FEATs, no source."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "A Quickstart sketch earns silence. Nothing shipped, nothing to regress."
+
+# =============================================================================
+# RUNG 4 (v0.179.0) — the guarded second exit.
+#
+# Exit is now TWO predicates, and the second carries a `when:` guard:
+#   1. `.boss/smoke.json`                         — rung 1, unconditional
+#   2. a `Negative path` result in docs/red-team/ — rung 4, ONLY when a FEAT names one
+#
+# The guard is the whole design. `feat_shipped` (used by every case above) has no Paths
+# section, so the guard is unmet, the predicate is vacuously satisfied, and cases 001-104
+# evaluate byte-identically to before this shipped. The bar rises because the FOUNDER
+# wrote down a risk — never because BOSS inferred one from the shape of their code.
+# =============================================================================
+
+- id: m-unver-201
+  category: should-fire
+  scenario: "Smoke IS recorded, but a shipped FEAT names a negative path and nothing proves it."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-005-order-history.md, fixture: feat_shipped_negative_path }
+    other_files:
+      - { path: .boss/smoke.json, fixture: smoke_config }
+  expected_detection:
+    fires: true
+    moment: unverified
+    confidence: low
+  why: "The case this rung exists for, and the one v0.170.0 could not express — before the guard, recording one smoke command closed this loop permanently while the test BOSS's own practice calls non-negotiable stayed unwritten. The founder said user A must not read user B's orders; no red-team report says anyone ever tried it."
+
+- id: m-unver-202
+  category: should-fire
+  scenario: "A red-team report exists but only ran the secrets half — no negative-path result."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-005-order-history.md, fixture: feat_shipped_negative_path }
+    other_files:
+      - { path: .boss/smoke.json, fixture: smoke_config }
+      - { path: docs/red-team/RT-2026-08-19.md, fixture: rt_secrets_only }
+  expected_detection:
+    fires: true
+    moment: unverified
+    confidence: low
+  why: "Pins that the exit is a RESULT, not a file — a report that scanned for secrets and never attempted the read as the wrong user has not answered rung 4, and the predicate must not accept the folder's existence as the answer."
+
+- id: m-unver-203
+  category: should-fire
+  scenario: "A FEAT names a negative path and there is no smoke either — both exits open at once."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-005-order-history.md, fixture: feat_shipped_negative_path }
+  expected_detection:
+    fires: true
+    moment: unverified
+    confidence: low
+  why: "Both exits unmet. The predicate fires once either way; the FRAME is what decides which rung to speak about, and it leads with rung 1 because one ask at a time is the rule — smoke is cheaper and it is the rung everything else hangs off."
+
+- id: m-unver-204
+  category: should-not-fire
+  scenario: "Smoke recorded AND a red-team report carries the negative-path result."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-005-order-history.md, fixture: feat_shipped_negative_path }
+    other_files:
+      - { path: .boss/smoke.json, fixture: smoke_config }
+      - { path: docs/red-team/RT-2026-08-20.md, fixture: rt_negative_path_pass }
+  expected_detection:
+    fires: false
+  why: "Both exits satisfied — the founder named the risk and then produced evidence against it. This is the loop closing at rung 4, which nothing in BOSS could reach before."
+
+- id: m-unver-205
+  category: should-not-fire
+  scenario: "A FEAT has a Paths section but honestly declares no negative path — the guard stays unmet."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-006-export-csv.md, fixture: feat_shipped_paths_no_negative }
+    other_files:
+      - { path: .boss/smoke.json, fixture: smoke_config }
+  expected_detection:
+    fires: false
+  why: "The single most important should-not-fire in this set: a founder whose product has no data one user must not see gets the pre-v0.178 behaviour exactly — one smoke command, silence. Answering \"nobody, it's single-user\" has to stay free, or the honest answer becomes the expensive one and founders learn to leave the line blank."
+
+- id: m-unver-206
+  category: should-not-fire
+  scenario: "A FEAT still `building` names a negative path; the shipped one names none."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-006-export-csv.md, fixture: feat_shipped_paths_no_negative }
+      - { path: docs/ideas/FEAT-007-workspaces.md, fixture: feat_building_negative_path }
+    other_files:
+      - { path: .boss/smoke.json, fixture: smoke_config }
+  expected_detection:
+    fires: false
+  why: "The guard requires `shipped|done` and the negative-path line in the SAME file, and this case is why — a first draft of the guard matched any FEAT, so specifying a feature you have not built yet would have opened rung 4 against surface that does not exist. Nothing is exposed until it ships, which is the same logic the entry predicate already uses to refuse a shipped spec with no code."
+
+- id: m-unver-207
+  category: should-fire
+  scenario: "Two FEATs: one shipped with a negative path, one building without — the shipped one is what counts."
+  project_state:
+    src_files:
+      - { path: src/app.ts, fixture: app_source }
+    docs_files:
+      - { path: docs/ideas/FEAT-005-order-history.md, fixture: feat_shipped_negative_path }
+      - { path: docs/ideas/FEAT-001-signup.md, fixture: feat_building }
+    other_files:
+      - { path: .boss/smoke.json, fixture: smoke_config }
+  expected_detection:
+    fires: true
+    moment: unverified
+    confidence: low
+  why: "The mirror of 206, so the pair pins the guard from both sides rather than only proving it can stay quiet — a guard that never opens is indistinguishable from a guard that is broken."

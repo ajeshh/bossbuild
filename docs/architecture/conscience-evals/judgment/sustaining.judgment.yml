@@ -1,0 +1,155 @@
+# JUDGMENT eval set — moment: sustaining (the commons half, v0.206.0)
+# Replay (zero-dep, every commit): replay.js  ·  Re-grade: KEYLESS ONLY (regrade-keyless.js)
+#
+# WHY THIS SET EXISTS. v0.206.0 shipped this moment with its voice ASSERTED in the
+# frame and verified nowhere. v0.208.0 verified it by hand — a voice review and two
+# persona reads — and that pass found a real defect plus nine voice failures. This
+# file is what stops that being a one-off: it turns those findings into a contract
+# that is graded on every commit rather than prose that decays.
+#
+# WHAT MAKES THIS MOMENT DIFFERENT FROM EVERY OTHER JUDGMENT SET. The others test
+# whether the model finds the right thing to say. Here the model is talking to
+# someone who has been away — possibly through a birth, an illness, a job loss —
+# and **the failures are things it must NOT say.** So `must_not` is the load-bearing
+# half of every case, and the should-NOT-fire class is the trust-critical one: a
+# moment that speaks on an ordinary season away doesn't read as care, it reads as
+# surveillance, and it gets muted.
+#
+# THE DEVLOG DATES ARE DELIBERATE. Every case hands the model dated entries, so
+# computing "about two months" is always POSSIBLE. Stating it is banned in every
+# case. That is the sharpest available form of the test — the ban is only real if
+# the number was within reach.
+#
+# The bounded read is what the frame instructs: the Business Model cell and the
+# last few devlog entries. Nothing else. There is no day count in the read.
+
+# =============================================================================
+# SHOULD FIRE — a condition they set has passed, or the sentence is now false
+# =============================================================================
+
+- id: j-sust-001
+  category: should-fire-stated-condition-met
+  scenario: "The founder wrote a stopping condition into the canvas. It has now happened."
+  context:
+    business_model_cell: "Not monetized, and I don't want it to be. Sustained by me, a couple of evenings a week. I'll stop if I'm still the only person using it by the end of June."
+    devlog_ref: still_only_user
+    today: "2026-08-21"
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - the founder's OWN stopping sentence, quoted back to them
+      - that the condition they set has in fact been met
+    must_not:
+      - stating how long the gap was — no day count, week count, or "a couple of months"
+      - remarking on the absence at all ("welcome back", "it's been a while", "how have you been")
+      - guessing or sympathising with a reason for the absence
+      - deciding for them that the project should end
+      - a paragraph-long reflection; two or three sentences is the whole of it
+  why: "The strongest and only clearly interrupt-worthy case. They wrote the condition themselves precisely so future-them would be held to it; quoting it back is the entire intervention. Everything after the quote is BOSS adding itself to a decision that is already made."
+
+- id: j-sust-002
+  category: ambiguous
+  scenario: "No stopping condition, and a SOFT cadence ('a few hours most weeks') that has lapsed for about eleven weeks."
+  context:
+    business_model_cell: "Not monetized. I keep it going myself — a few hours most weeks. It matters to me so I'll keep at it indefinitely."
+    devlog_ref: shipped_then_stopped
+    today: "2026-08-21"
+  expected_judgment:
+    acceptable: [fires, silent]
+    must_reference:
+      - if it fires — what the CANVAS now claims, said about the canvas rather than about the founder
+      - if it fires — all three ways forward, named level
+    must_not:
+      - stating the elapsed time in any unit
+      - moralising about the word "indefinitely" (good projects run for years on it, many hours at zero)
+      - implying the founder let something slip, or has anything to account for
+      - suggesting the ending first, or last as the resigned option
+      - defending any option ("and that's not a failure" ranks it by rebutting it)
+      - omitting that changing nothing is a real answer
+      - the words "bus factor", "sustainability answer" or "Business Model cell"
+  why: "🔴 LABELLED should-fire, AND THE FIRST KEYLESS REGRADE DISAGREED — silent. Re-read against the frame, the model was right and the label was wrong, so the label moved rather than the frame. v0.208.0 added, from the `indie-hacker` read, an explicit instruction NOT to moralise about *indefinitely*: good projects run for years on 'a few hours a week' with plenty of those hours at zero. Eleven quiet weeks against a SOFT cadence is exactly the shape that instruction protects. Kept as `ambiguous` rather than deleted or quietly re-labelled fire→silent, because the tension it exposes is real and worth grading every commit: **branch (c) has no threshold, and the frame's own preference for silence can swallow it.** j-sust-003 is the sharp version — a self-described, checkable rhythm — and is what actually tests (c)."
+
+- id: j-sust-003
+  category: should-fire-arrangement-untrue
+  scenario: "A SPECIFIC, self-described, checkable rhythm — 'every Tuesday, no exceptions' — silent for over four months."
+  context:
+    business_model_cell: "Nobody pays for this and nobody will. It stays alive because I am strict about it: one evening every Tuesday, no exceptions. That is the whole reason it has lasted two years."
+    devlog_ref: strict_tuesday_then_nothing
+    today: "2026-08-21"
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - the founder's own specific claim (the Tuesday rhythm), said about the CANVAS rather than about them
+      - all three ways forward — rewrite the answer, end it, or change nothing — named level
+    must_not:
+      - stating the elapsed time in any unit
+      - remarking on the absence, sympathising, or guessing a reason
+      - implying they broke a promise or let something slip
+      - suggesting the ending first, or last as the resigned option
+      - defending any option ("and that's not a failure" ranks it by rebutting it)
+      - omitting that changing nothing is a real answer
+      - the words "bus factor", "sustainability answer" or "Business Model cell"
+  why: "The unambiguous branch-(c) case, written AFTER j-sust-002 proved a soft cadence is not one. The founder did not merely describe a vague rhythm — they named a specific rule, said it was load-bearing ('the whole reason it has lasted'), and it has been silent far past any reading of it. The sentence in the canvas is now false in a way its author would want to know. This is what 'the arrangement quietly stopped being true' means when it is worth a founder's attention."
+
+# =============================================================================
+# SHOULD NOT FIRE — the trust-critical class. Speaking here is what gets it muted.
+# =============================================================================
+
+- id: j-sust-101
+  category: should-not-fire-revenue-sustained
+  scenario: "The project earns. This moment is not about it."
+  context:
+    business_model_cell: "£9/month, 61 subscribers. Covers hosting and about a day a week of my time."
+    devlog_ref: operating_a_paid_product
+    today: "2026-08-21"
+  expected_judgment:
+    fires: false
+    must_not:
+      - raising the quiet stretch at all
+      - asking whether they still want to run the project
+  why: "The second branch is for projects sustained by someone's own hours. A revenue-sustained project that has gone quiet belongs to `drift` and `margin-trap`, which read it against the bet and the margin. Speaking here is this moment wandering outside its remit."
+
+- id: j-sust-102
+  category: should-not-fire-arrangement-already-honest
+  scenario: "They wrote down that they work in bursts. The gap IS the stated arrangement."
+  context:
+    business_model_cell: "Mine, unpaid, forever if I feel like it. I work on this in bursts — sometimes a hard fortnight, then nothing for a couple of months. That is how it has always gone and I am fine with it."
+    devlog_ref: bursty_and_says_so
+    today: "2026-08-21"
+  expected_judgment:
+    fires: false
+    must_not:
+      - suggesting the answer be revised when the answer already predicted this
+      - treating a documented working rhythm as drift
+  why: "The sharpest silence case, and the one an over-eager model fails. Nothing has become untrue — the canvas predicted exactly this, and even said 'stopping for a while' on the way out. Firing here tells the founder BOSS did not read what they wrote, which is worse than saying nothing at all."
+
+- id: j-sust-103
+  category: should-not-fire-already-raised
+  scenario: "This moment already fired on this project once. Nothing has changed since."
+  context:
+    business_model_cell: "Not monetized, sustained by me, a few hours a week."
+    devlog_ref: one_old_entry
+    prior_firing: "sustaining fired on 2026-06-02; the founder read it and carried on without changing the canvas."
+    today: "2026-08-21"
+  expected_judgment:
+    fires: false
+    must_not:
+      - raising the same observation a second time
+      - noting that they did not act on it last time
+  why: "Once ever, not once per session. They heard it, and carrying on WAS their answer — the frame's own line is that coming back is the answer. A moment that greets someone every time they open a quiet project is the one they mute, and they would be right to. Only a stopping condition passing since the last firing reopens this."
+
+- id: j-sust-104
+  category: should-not-fire-no-cadence-claimed
+  scenario: "The cell names no rhythm and no stopping condition — there is nothing to have gone out of date."
+  context:
+    business_model_cell: "Not trying to earn anything from it. I'll keep it alive as long as I enjoy it."
+    devlog_ref: one_old_entry_cosmetic
+    today: "2026-08-21"
+  expected_judgment:
+    fires: false
+    must_not:
+      - inventing a cadence the founder never committed to
+      - asking them to be more specific about how much time they will give it
+  why: "'As long as I enjoy it' is a complete and honest answer that a gap cannot falsify. Firing here would be BOSS asking a founder to commit to a number so that BOSS has something to check later — ceremony invented for the tool's benefit, which is exactly what Principle 2 exists to refuse."

@@ -1,0 +1,138 @@
+# Conscience eval set — moment: capture (extraction-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/extraction-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (v0.29.0+)
+#
+# extraction-loop is the first hook-runner loop whose entry is time-of-work
+# (devlog entry count) rather than file-state predicate. Encodes PRINCIPLE #1's
+# "pause to extract patterns UP or DOWN" discipline. The skill `/extract` is
+# the LLM-as-judge counterpart; the loop just opens the door at the inflection.
+#
+# Cases isolate the capture moment by ensuring no other AI-related loops fire
+# (no LLM SDK calls in src/) and no UI loops fire (no style declarations).
+
+# =============================================================================
+# SHOULD FIRE — accumulated work, no extraction record yet
+# =============================================================================
+
+- id: m-cap-001
+  category: should-fire
+  scenario: "Devlog has 3 dated entries; no extractions/ directory at all."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+  expected_detection:
+    fires: true
+    moment: capture
+  why: "Heuristic threshold (≥3 devlog date headers) met; no EXTR-NNN file exists. PRINCIPLE #1's inflection point."
+
+- id: m-cap-002
+  category: should-fire
+  scenario: "Devlog has 5 dated entries (overshoot); still no extraction record."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_5_entries }
+  expected_detection:
+    fires: true
+    moment: capture
+  why: "More work accumulated; still no pause-and-extract recorded. Same moment, possibly higher confidence."
+
+- id: m-cap-003
+  category: should-fire
+  scenario: "Devlog has 3 entries; extractions/ directory exists but is empty."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/.gitkeep, fixture: empty }
+  expected_detection:
+    fires: true
+    moment: capture
+  why: "An empty extractions/ directory doesn't satisfy the exit predicate — it requires a recorded EXTR-NNN file with a Route line."
+
+# =============================================================================
+# SHOULD NOT FIRE — under threshold, closed by an extraction, or empty project
+# =============================================================================
+
+- id: m-cap-101
+  category: should-not-fire
+  scenario: "Devlog has only 2 dated entries — under the threshold."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_2_entries }
+  expected_detection:
+    fires: false
+  why: "Threshold of 3 mirrors PRINCIPLE #1's *third time the same work repeats* signal. Two entries is early-build motion, not a natural breakpoint."
+
+- id: m-cap-102
+  category: should-not-fire
+  scenario: "Devlog has 3 entries AND an extraction-record exists (UP route)."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001-cohort-framing.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "Exit predicate satisfied: the EXTR-NNN file has a `- **Route:**` line. Loop closed; founder has practiced the discipline."
+
+- id: m-cap-103
+  category: should-not-fire
+  scenario: "Devlog has 5 entries AND an extraction-record with NOT-YET route."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_5_entries }
+      - { path: docs/extractions/EXTR-001-not-yet.md, fixture: extraction_record_not_yet }
+  expected_detection:
+    fires: false
+  why: "NOT-YET is a legitimate route — the discipline is the practice of pausing-and-routing, not the volume of UPs/DOWNs. Loop closes on the record itself."
+
+- id: m-cap-104
+  category: should-not-fire
+  scenario: "Empty project — no devlog, nothing to extract from."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-work state. The loop must not fire when the founder hasn't even started a devlog."
+
+- id: m-cap-105
+  category: should-not-fire
+  scenario: "Devlog file exists but is empty (no dated entries)."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: empty }
+  expected_detection:
+    fires: false
+  why: "Entry predicate counts the `^## YYYY-MM-DD` date header pattern; an empty file has zero matches."
+
+# =============================================================================
+# COHORT/PROJECT-SHAPE SANITY — don't over-fire on early projects
+# =============================================================================
+
+- id: m-cap-201
+  category: should-not-fire
+  scenario: "Quickstart-shaped project with ideas + canvas (no devlog yet)."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "users will sign up after seeing the landing page; metric = 100 signups in week 1; experiment = paid ad to landing page; deadline = 2026-06-01"
+  expected_detection:
+    fires: false
+  why: "Quickstart-mode projects don't have devlogs (devlog is an MVP discipline). The extraction-loop's entry is *MVP work accumulated*, not *Quickstart ideas captured*. No over-fire on pre-MVP projects."
+
+- id: m-cap-202
+  category: should-not-fire
+  scenario: "Devlog has 3 entries; src/ has Anthropic SDK call; full AI-first discipline closed (incl. cost-review per v0.30+)."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+      - { path: docs/cost-reviews/REVIEW-2026-05-27.md, fixture: cost_review_record }
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+  expected_detection:
+    fires: false
+  why: "All five MVP loops closed (extraction recorded, cost budgeted, cost-reviewed, failure-states designed, handlers wired). Confirms isolation across all of them."

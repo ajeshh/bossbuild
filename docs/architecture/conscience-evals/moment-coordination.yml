@@ -1,0 +1,114 @@
+# Conscience eval set — moment: coordination (coordination-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/coordination-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (IDEA-037 / FEAT-021 slice 5b)
+#
+# coordination-loop is the founder-layer conscience moment. It fires when a venture
+# is a TEAM (a cofounder is on the roster — `.boss/config.json` carries a `"handle"`),
+# real work has happened (devlog ≥3 dated entries), and NOT ONE decision has been
+# recorded together (`docs/decisions/DEC-*.md` is empty). Recording a single shared
+# DEC closes it (exit). Dormant-solo by construction (solo never matches `"handle"`).
+#
+# SCOPE — predicate-gate only. These cases prove the door opens at the right structural
+# moment (team + work + no joint decision) and stays shut otherwise. The judgment —
+# "is this a real seam, or are they deciding off-repo on a call?" — is the model's, in
+# the live turn from the bounded read the signal instructs (same split as drift / focus).
+#
+# ISOLATION — every case with devlog ≥3 also materializes an extraction record
+# (docs/extractions/EXTR-001.md) so the capture-loop (which shares the devlog≥3 gate)
+# stays CLOSED, and includes NO canvas (so drift-loop stays unopenable) and NO ideas
+# (so caution-loop stays unopenable). That leaves coordination as the only loop whose
+# state the case is testing — a clean "fires:false means coordination didn't fire."
+
+# =============================================================================
+# SHOULD FIRE — a team, real work, zero decisions together
+# =============================================================================
+
+- id: m-coord-001
+  category: should-fire
+  scenario: "A cofounder on the roster, 3 devlog entries of real work, not one DEC recorded together."
+  project_state:
+    other_files:
+      - { path: .boss/config.json, fixture: team_config }
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001-x.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: true
+    moment: coordination
+  why: "Entry met (team `\"handle\"` present + devlog 3 ≥ 3) and exit unmet (0 DECs). The never-decided-together seam. (capture closed by the EXTR record; no canvas → drift unopenable.)"
+
+- id: m-coord-002
+  category: should-fire
+  scenario: "Deeper — a team with 5 devlog entries and still no shared decision."
+  project_state:
+    other_files:
+      - { path: .boss/config.json, fixture: team_config }
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_5_entries }
+      - { path: docs/extractions/EXTR-001-x.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: true
+    moment: coordination
+  why: "More work has accumulated (5/3 ratio → medium confidence) with still no joint decision — the seam is louder. Capture stays closed (EXTR present)."
+
+# =============================================================================
+# SHOULD NOT FIRE — solo, decided-together, too-early, no team, empty
+# =============================================================================
+
+- id: m-coord-101
+  category: should-not-fire
+  scenario: "SOLO venture (empty team) with the same work — dormant-solo."
+  project_state:
+    other_files:
+      - { path: .boss/config.json, fixture: solo_config }
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001-x.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "Entry unmet — solo_config has `\"team\": []`, no `\"handle\"`. A solo founder has no seam to watch; the loop is unopenable. (capture closed by EXTR.)"
+
+- id: m-coord-102
+  category: should-not-fire
+  scenario: "A team that HAS decided together — one DEC recorded."
+  project_state:
+    other_files:
+      - { path: .boss/config.json, fixture: team_config }
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001-x.md, fixture: extraction_record_up }
+      - { path: docs/decisions/DEC-001-x.md, fixture: dec_record }
+  expected_detection:
+    fires: false
+  why: "Exit satisfied (≥1 DEC). The founders have proven they decide jointly; the never-decided-together smell no longer applies. Recording one DEC is the good outcome that silences it."
+
+- id: m-coord-103
+  category: should-not-fire
+  scenario: "A brand-new team — only 2 devlog entries; too early to nag."
+  project_state:
+    other_files:
+      - { path: .boss/config.json, fixture: team_config }
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_2_entries }
+  expected_detection:
+    fires: false
+  why: "Entry unmet — devlog 2 < 3. A team that just formed and barely started isn't expected to have decided together yet. No premature fire. (devlog<3 also keeps capture unopenable.)"
+
+- id: m-coord-104
+  category: should-not-fire
+  scenario: "No team declared at all (no .boss/config.json) — same as solo."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001-x.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "Entry unmet — no `.boss/config.json` to match `\"handle\"`. Without a declared cofounder the loop can't open. (capture closed by EXTR.)"
+
+- id: m-coord-105
+  category: should-not-fire
+  scenario: "Empty project — nothing at all."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-work state. The loop must not fire on a fresh project."

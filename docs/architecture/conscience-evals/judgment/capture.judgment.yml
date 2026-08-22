@@ -1,0 +1,127 @@
+# JUDGMENT eval set — moment: capture (the extractable-vs-nothing-yet call)
+# Surface: docs/architecture/conscience-evals/judgment/
+# Replay (zero-dep, every commit): replay.js   ·   Re-grade (paid, out-of-band): regrade.js
+#
+# capture (moment #3) is PRINCIPLE #1's own moment. Its GATE (extraction-loop)
+# opens on ≥3 dated devlog entries with no recorded extraction decision. But the
+# predicate CANNOT tell the two open-gate shapes apart:
+#
+#   EXTRACTABLE — the work holds a real candidate: a pattern built twice
+#                 (reusable practice → UP), a fix/guard hand-applied in several
+#                 places (hardening → DOWN), or a manual ritual repeated enough
+#                 to deserve a skill/loop. → the judge FIRES.
+#   NOTHING-YET — one-off distinct features, deep focus on a single
+#                 still-in-progress thing, or early throwaway spikes. Nothing has
+#                 generalized; nudging /extract earns a NOT-YET every time and
+#                 trains the founder to tune the conscience out. → stay SILENT.
+#
+# v0.39 makes capture judge-backed (third moment to get this, after drift v0.31
+# and caution v0.33): the gate still opens, but the model reads the recent
+# devlog and judges extractable-vs-nothing-yet before voicing — STRICTLY MORE
+# RESTRAINT (capture can now only fire LESS). The silent class is the
+# trust-critical one: firing on nothing-yet is the premature ceremony PRINCIPLE
+# #2 warns against, and it's how the conscience trains itself to be ignored.
+#
+# `expected_judgment` is the HUMAN label. `must_reference`/`must_not` is the
+# rubric for the LLM-judge (regrade.js). Every case is a genuine open-gate state
+# (≥3 dated devlog entries, no extraction record); replay.js asserts that
+# statically.
+
+# =============================================================================
+# SHOULD FIRE — a real extraction candidate is present
+# =============================================================================
+
+- id: j-cap-001
+  category: should-fire-extractable
+  scenario: "Cohort-aware default blocks written twice (cost flow, then failure-states flow) — the same branching shape, a reusable practice (UP candidate)."
+  project_state:
+    devlog_ref: extract_practice_twice
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - that the same cohort-branching shape was built twice across two features (a reusable practice)
+    must_not:
+      - generic you-should-extract-patterns with no read of what actually repeated
+      - praise framing such as great-momentum or productivity-reward
+  why: "PRINCIPLE #1's literal 'what did you do twice?' — the cohort-default shape recurs across two features. A real UP candidate; naming it is the value."
+
+- id: j-cap-002
+  category: should-fire-extractable
+  scenario: "The same empty-value guard hand-patched in three call sites (triage, gate runner, canvas) — a hardening that belongs in core (DOWN candidate)."
+  project_state:
+    devlog_ref: extract_guard_multiplace
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - that the same guard/fix was re-applied in several places and likely belongs in one shared place (DOWN)
+    must_not:
+      - praise framing
+  why: "Re-patching the same root cause per call site is the DOWN signal — the guard should be hardened into core. The judge should name the repetition, not just say 'extract something'."
+
+- id: j-cap-003
+  category: should-fire-extractable
+  scenario: "A manual /tmp-test-then-prune-registry ritual done by hand three times — a repeated ritual that deserves a skill/loop."
+  project_state:
+    devlog_ref: extract_ritual_repeated
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - that the same manual multi-step ritual has been repeated and could be automated (a skill/loop)
+    must_not:
+      - generic validate/extract advice with no read of the repeated ritual
+  why: "Third hand-run of the same five-step cleanup is a textbook automate-this candidate. The repetition is explicit in the log; the nudge should name it."
+
+# =============================================================================
+# SHOULD NOT FIRE — nothing has generalized yet; silence is correct
+# =============================================================================
+
+- id: j-cap-101
+  category: should-not-fire-nothing-yet
+  scenario: "Three distinct one-off features (CSV export, OAuth login, scaffold) — nothing repeats, nothing generalizes."
+  project_state:
+    devlog_ref: nothing_oneoff
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when the work is distinct one-off features with no repeated pattern
+  why: "Normal early-build motion: each entry is a different feature, none done twice. There's no candidate — nudging /extract here earns a NOT-YET and teaches the founder to ignore the conscience."
+
+- id: j-cap-102
+  category: should-not-fire-nothing-yet
+  scenario: "Three entries all on ONE still-in-progress feature (billing: schema → UI → webhook) — deep focus, nothing stabilized."
+  project_state:
+    devlog_ref: nothing_single_inprogress
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing mid-build on a single unfinished feature where nothing has repeated
+  why: "Sequential progress on one feature is not a repeated pattern. Extracting now would be premature ceremony — the work isn't done, let alone done twice."
+
+- id: j-cap-103
+  category: should-not-fire-nothing-yet
+  scenario: "Three throwaway spikes (prompt-chaining, pgvector, Linear API poke) — all exploratory, too unsettled to extract."
+  project_state:
+    devlog_ref: nothing_spikes
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing on exploratory spikes that may be thrown away
+  why: "Spikes are deliberately disposable. There's nothing settled enough to pull UP or DOWN. Silence respects the explore phase PRINCIPLE #2 protects."
+
+# =============================================================================
+# AMBIGUOUS — built twice, but maybe not a pattern yet. Don't punish either call.
+# =============================================================================
+
+- id: j-cap-201
+  category: ambiguous
+  scenario: "A retry-with-backoff wrapper written for the OpenAI call, then a similar one for the Stripe call — similar shape, but configs differ and it might be coincidence."
+  project_state:
+    devlog_ref: ambiguous_twice_maybe
+  expected_judgment:
+    acceptable: [fires, silent]
+    must_not:
+      - asserting with false confidence that this is clearly a reusable pattern or clearly a coincidence
+  why: "Two similar wrappers is right at the 'what did you do twice?' line — a gentle 'you've written a retry wrapper twice now, worth pulling out?' is defensible; so is silence (two ≠ a proven pattern, and the founder flagged the configs differ). Label both acceptable."

@@ -1,0 +1,721 @@
+# Conscience eval set — moment #2: "Done!" (the /canvas graduation moment)
+# Detector: lives in the /canvas skill prompt today (not a hook). The runner
+# tests *expected skill behavior* given a canvas state — i.e., would the
+# skill correctly identify "Done!" or would it keep filling cells.
+# Spec: ../README.md
+# First cut by Claude on 2026-05-22. NEEDS AJESH SHARPENING PASS.
+#
+# Criteria for Done! (per /canvas SKILL.md, v0.11.0):
+#   1. Most cells filled with real answers (≥7 of 9 non-placeholder)
+#   2. Riskiest assumption has a VALIDATION PLAN:
+#        a) an experiment this week, AND
+#        b) what result would change the plan
+#
+# When both are met → Done! fires (Arrival + Next doorway).
+# When either is missing → continue the canvas-filling conversation.
+
+# =============================================================================
+# SHOULD FIRE (~20)
+# Canvas holds up + the riskiest assumption has a real validation plan.
+# =============================================================================
+
+- id: m2-sf-001
+  category: should-fire
+  scenario: "All 9 cells filled with real text, riskiest-assumption has experiment + change-the-plan."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "Whether founders will actually finish a /canvas in one sitting or bounce off."
+      experiment_this_week: "Show /canvas to 5 founders for 20 min each; count how many complete >= 5 cells."
+      what_would_change_plan: "If <2 of 5 complete it, the cell-prompts are wrong (or the cohort is wrong) — revisit cells or audience."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Textbook Done! — canvas holds up, riskiest assumption has a real bet + a real test + a real disconfirmation rule."
+
+- id: m2-sf-002
+  category: should-fire
+  scenario: "8 of 9 cells filled, riskiest-assumption complete with plan."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Will calm-company founders pay $20/mo for hosted mentor sessions?"
+      experiment_this_week: "DM 10 calm-company-discord founders with a pricing-page mockup; ask 'would you pay this?' Mom-Test-style follow-ups."
+      what_would_change_plan: "If 0-2 of 10 register interest, the willingness-to-pay isn't there — bootstrap-only path."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "One placeholder is fine; the gating criteria (riskiest + plan) are met. The /canvas skill says 'most cells' not 'all.'"
+
+- id: m2-sf-003
+  category: should-fire
+  scenario: "7 of 9 real, riskiest assumption + plan complete."
+  project_state:
+    canvas:
+      cells_filled_real: 7
+      cells_placeholder: 2
+      riskiest_assumption: "Whether the conscience nudges feel like care or nagging in real founder use."
+      experiment_this_week: "Record 60s screen demo of moment #1 firing; show to 5 founders; capture first emotional reaction."
+      what_would_change_plan: "If 3+ of 5 read it as nagging, the trigger is too sensitive or the voice is wrong — redesign before moments #3/#4."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "At the threshold — 7 real cells = 78%. Riskiest + plan both real. The graduation threshold is earned."
+
+- id: m2-sf-004
+  category: should-fire
+  scenario: "All cells filled, riskiest plan is humane-lens-honest."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "Whether the conscience's cumulative pressure across projects feels like care or chronic shaming."
+      experiment_this_week: "Trial run BOSS on 3 of Ajesh's existing projects for two weeks; instrument the hook firing count + Ajesh's felt response."
+      what_would_change_plan: "If felt-response trends negative across projects, redesign suppress_if to add cross-project dial-back."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Real plan includes instrumentation and felt-response capture — Husain discipline applied to the founder's experience."
+
+- id: m2-sf-005
+  category: should-fire
+  scenario: "Canvas filled tightly — short answers but real."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      cells_avg_length: short
+      riskiest_assumption: "Demand for the eval-loop primitive itself."
+      experiment_this_week: "Ship eval-loop to 2 alpha founders running their own AI MVPs; see if they author their own loops."
+      what_would_change_plan: "If neither founder authors a loop, the primitive is too abstract — needs more concrete defaults."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Brevity ≠ unfilled. Short, sharp answers are the goal."
+
+- id: m2-sf-006
+  category: should-fire
+  scenario: "Canvas just crossed threshold this session — riskiest assumption was filled minutes ago."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether MVP-mode founders prefer the conscience-evals discipline or skip-with-override."
+      riskiest_assumption_filled_minutes_ago: 8
+      experiment_this_week: "Watch the next 3 MVP unlocks; count override-rate on conscience-evals predicate."
+      what_would_change_plan: "If 3/3 override, the discipline is too heavy at MVP stage — make optional or move to V1."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Just-crossed-the-threshold IS the moment. The skill should name it: 'worth stopping here a second.'"
+
+- id: m2-sf-007
+  category: should-fire
+  scenario: "Riskiest assumption + plan written in markdown emphasis."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "**That a founder finishing a canvas is a useful proxy for being ready to build.**"
+      experiment_this_week: "Track the 5 most-recent canvas-completing founders for 4 weeks; do they actually start building? Do they ship anything?"
+      what_would_change_plan: "If <3 of 5 ship anything, the canvas-complete signal is vanity — sharpen what 'real graduation' means."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Markdown formatting is fine; substance is what matters."
+
+- id: m2-sf-008
+  category: should-fire
+  scenario: "Canvas was edited earlier; this session is the first time it crosses threshold."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      version: 0.4
+      previous_versions_crossed_threshold: false
+      riskiest_assumption: "Will the loop-graph primitive feel natural to a founder reading docs/loops/?"
+      experiment_this_week: "Author 3 loops; ask 2 founders to read them cold and describe what they'd do."
+      what_would_change_plan: "If neither founder describes a coherent workflow, loop spec is too abstract — add a 'how to use' section."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "First-time crossing matters — this is when arrival lands. Subsequent edits at-threshold don't re-fire."
+
+- id: m2-sf-009
+  category: should-fire
+  scenario: "Riskiest assumption is a clear-eyed harm question."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether the conscience inadvertently shames first-time founders who are still learning what good looks like."
+      experiment_this_week: "Read the moment #1 signal text aloud to 3 first-time founders; ask 'how would you feel if your code editor said this to you mid-session?'"
+      what_would_change_plan: "If any of them flinch or use words like 'judged' or 'patronizing,' rewrite the signal language before broader use."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Riskiest-as-harm-question is the humane lens working. Good Done! candidate."
+
+- id: m2-sf-010
+  category: should-fire
+  scenario: "Canvas + plan + plan includes the disconfirmation explicitly (Ries discipline)."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "That right-sized founders prefer BOSS's JIT pacing to enterprise scaffolders."
+      experiment_this_week: "Interview 5 indie-hacker founders; describe BOSS without naming it; ask what their dream tool would do."
+      what_would_change_plan: "If 0 of 5 describe something BOSS-shaped (modes, mentors, conscience), the cohort isn't right — pivot audience."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Disconfirmation rule is explicit and would actually change the bet. That's the discipline /canvas exists to enforce."
+
+- id: m2-sf-011
+  category: should-fire
+  scenario: "Canvas with experimental + ambitious risks named."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      risks_and_harms_filled: true
+      riskiest_assumption: "Whether founders see the alter-ego easter egg (BOSS.DK) as funny or off-putting."
+      experiment_this_week: "Write 10 exemplar lines + show in a 'preview' to 5 founders; capture cringe-vs-laugh ratio."
+      what_would_change_plan: "If >2 of 5 cringe at lines that should land as funny, the line is wrong (or alter-ego is wrong)."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Hard humane question + real test + clear disconfirmation. Earns the Done!"
+
+- id: m2-sf-012
+  category: should-fire
+  scenario: "Riskiest assumption is technical (architect's territory)."
+  project_state:
+    canvas:
+      cells_filled_real: 7
+      cells_placeholder: 2
+      riskiest_assumption: "Whether the predicate vocabulary in IDEA-008 actually covers what real loops need."
+      experiment_this_week: "Author 3 different loops (eval, pretotype, conversation) and inventory which predicates each needs."
+      what_would_change_plan: "If any loop needs a predicate type not in the 4-type vocabulary, the abstraction is wrong — refine."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Architect-flavored riskiest assumption is fine; the gating criteria are met."
+
+- id: m2-sf-013
+  category: should-fire
+  scenario: "Lower bound — exactly 7/9 cells real, riskiest assumption complete."
+  project_state:
+    canvas:
+      cells_filled_real: 7
+      cells_placeholder: 2
+      riskiest_assumption: "Whether mentor-board sessions feel valuable or feel like LLM-roleplay."
+      experiment_this_week: "Run 3 mentor sessions on a non-BOSS project; have Ajesh self-rate value 1-10 each."
+      what_would_change_plan: "If avg <6/10, redesign mentors (system prompts? practitioners cited? format?)."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: medium
+  why: "At the threshold; confidence drops to medium because there's less margin."
+
+- id: m2-sf-014
+  category: should-fire
+  scenario: "Risks & Harms cell named real harms (not optional)."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      risks_and_harms_includes_real_harm: true
+      riskiest_assumption: "That founders will use BOSS *with* its conscience rather than ripping it out."
+      experiment_this_week: "Survey 5 BOSS users (alpha): how often does the conscience speak? How many would disable it if they could?"
+      what_would_change_plan: "If >2 of 5 want to disable, the conscience needs a humane-default-off mode."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Risks cell taken seriously per the /canvas skill's explicit instructions. Earned."
+
+- id: m2-sf-015
+  category: should-fire
+  scenario: "Canvas done; mode is currently MVP (BOSS itself)."
+  project_state:
+    project_mode: MVP
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "Whether IDEA-008's loop primitive actually generalizes across moments #3 and #4."
+      experiment_this_week: "Sketch entry/exit/drift for moments #3 (capture) and #4 (restraint); see if predicate vocabulary holds."
+      what_would_change_plan: "If either needs a predicate not in the 4-type list, the loop primitive needs a 5th type or a different shape."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Done! works at any mode; not gated to Quickstart graduation only."
+
+- id: m2-sf-016
+  category: should-fire
+  scenario: "Canvas previously short — was iterated through several sessions."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      version: 0.6
+      version_history: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
+      riskiest_assumption: "Whether founders care about practitioner attribution or just want results."
+      experiment_this_week: "Run two cohort variations: one shows practitioner names in mentor responses, one doesn't. Compare felt-value."
+      what_would_change_plan: "If no difference, practitioner attribution is internal-only documentation — remove from user-facing surfaces."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Iteration history doesn't disqualify; the threshold-crossing in this version is what matters."
+
+- id: m2-sf-017
+  category: should-fire
+  scenario: "Riskiest assumption + plan with what-success-looks-like explicitly named."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Will the v1 playbook's practitioner heuristics survive when reorganized as loop-attached practices?"
+      experiment_this_week: "Pick 3 practices from the v1 playbook; attach each to a specific loop; re-read in context — does it make more sense or less?"
+      what_would_change_plan: "If practices feel less useful when loop-attached, the loop primitive is wrong shape — practices may want to be independent."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Tests the meta-design (loop primitive itself) with a concrete experiment. Earned."
+
+- id: m2-sf-018
+  category: should-fire
+  scenario: "User just finished filling the canvas; this is the first prompt after."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      just_completed_in_session: true
+      riskiest_assumption: "That a founder needs both mentors AND a conscience, vs. either alone."
+      experiment_this_week: "Ablation test on 3 founders: 2 weeks with mentors only, 2 weeks with conscience only, 2 weeks with both. Felt-value compared."
+      what_would_change_plan: "If 'both' isn't materially better than the best single, one of them is redundant — simplify."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "First prompt after canvas completion is THE moment for the graduation beat."
+
+- id: m2-sf-019
+  category: should-fire
+  scenario: "Canvas done; plan involves real human conversations."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "Will calm-company founders pay for hosted advisory sessions with BOSS's mentor board?"
+      experiment_this_week: "5 Mom-Test calls with Walling/Fried/Jarvis-style indie founders; ask 'tell me about the last time you got paid expert advice.'"
+      what_would_change_plan: "If no one in 5 calls describes paying anyone for advice in the last year, the willingness-to-pay isn't there."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Real-conversation-based test is the gold standard for the experiment cell."
+
+- id: m2-sf-020
+  category: should-fire
+  scenario: "Canvas done; assumption frames the riskiest item as a cohort question."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "That the 'founder using Claude Code for 3+ months with 2+ unfinished projects' cohort actually exists in meaningful numbers."
+      experiment_this_week: "Search reddit/HN/cursor-discord/claude-code-discord for posts matching the cohort signal; count unique founders."
+      what_would_change_plan: "If <30 unique posters in 30 days across surfaces, the cohort might be too narrow — sharpen or broaden."
+  expected_detection:
+    fires: true
+    moment: done
+    confidence: high
+  why: "Cohort-existence is the deepest riskiest — without the cohort, nothing else matters. Earns the Done!"
+
+# =============================================================================
+# SHOULD NOT FIRE (~22, categorized)
+# =============================================================================
+
+# --- fires-too-early (6) ---
+
+- id: m2-snf-001
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "Canvas exists but only 3 cells are real; rest are placeholders."
+  project_state:
+    canvas:
+      cells_filled_real: 3
+      cells_placeholder: 6
+      riskiest_assumption: "_(the one most likely to be fatal and least proven)_"
+  expected_detection:
+    fires: false
+  why: "Below the 'most cells filled' threshold AND riskiest is still placeholder. Skill should keep filling cells."
+
+- id: m2-snf-002
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "All cells filled but most are `_(not yet)_` placeholders."
+  project_state:
+    canvas:
+      cells_filled_real: 1
+      cells_placeholder: 8
+      riskiest_assumption: "_(not yet)_"
+  expected_detection:
+    fires: false
+  why: "Placeholders are honest blanks; they don't count as filled. Don't graduate on emptiness."
+
+- id: m2-snf-003
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "Cells real but riskiest assumption is missing entirely."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: null
+      experiment_this_week: null
+      what_would_change_plan: null
+  expected_detection:
+    fires: false
+  why: "All cells filled but heartbeat is empty. The skill's gating is BOTH conditions — riskiest + plan are non-negotiable."
+
+- id: m2-snf-004
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "Riskiest assumption filled but no experiment named."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether founders will tolerate the conscience interrupting them."
+      experiment_this_week: "_(not yet)_"
+      what_would_change_plan: "_(not yet)_"
+  expected_detection:
+    fires: false
+  why: "Riskiest is named, plan is not. Skill should ask what experiment would test it."
+
+- id: m2-snf-005
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "Experiment named but no disconfirmation rule."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether the loop primitive holds across moments."
+      experiment_this_week: "Try authoring 3 different loops."
+      what_would_change_plan: "_(not yet)_"
+  expected_detection:
+    fires: false
+  why: "No 'what result would change the plan' = no real test — just an activity. Ries: validated *learning*, not validated *busy-work*."
+
+- id: m2-snf-006
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "Experiment is vague — 'talk to users.'"
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether founders use BOSS."
+      experiment_this_week: "Talk to some founders."
+      what_would_change_plan: "See what they say."
+  expected_detection:
+    fires: false
+  why: "Vague experiment + vague disconfirmation = no real test. Skill should sharpen, not graduate. (Hard to detect mechanically — flag-target.)"
+
+# --- riskiest-assumption-stale (3) ---
+
+- id: m2-snf-007
+  category: should-not-fire
+  failure_mode: riskiest-assumption-stale
+  scenario: "Plan filled weeks ago but never run — no devlog evidence it happened."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether founders complete the canvas."
+      experiment_this_week: "Show /canvas to 5 founders."
+      what_would_change_plan: "If <3 complete it, the cell-prompts are wrong."
+      riskiest_filled_days_ago: 21
+      devlog_mentions_experiment: false
+  expected_detection:
+    fires: false
+  why: "Plan exists but was never actioned. Done! shouldn't fire just because a plan is *written* — it should fire when the *learning* is in. (Implementation-tricky: requires devlog inspection. Flag-target.)"
+
+- id: m2-snf-008
+  category: should-not-fire
+  failure_mode: riskiest-assumption-stale
+  scenario: "Plan was run; result came back disconfirming; canvas not yet updated."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether founders complete the canvas."
+      experiment_this_week: "Show /canvas to 5 founders."
+      what_would_change_plan: "If <3 complete it, the cell-prompts are wrong."
+      riskiest_filled_days_ago: 14
+    devlog:
+      - "Ran the canvas test; 1 of 5 completed it. Cell prompts need work."
+  expected_detection:
+    fires: false
+  why: "The plan disconfirmed the assumption. Done! shouldn't fire — the canvas isn't done; it needs revision. Skill should surface the disconfirmation instead."
+
+- id: m2-snf-009
+  category: should-not-fire
+  failure_mode: riskiest-assumption-stale
+  scenario: "Plan was run but result is ambiguous — neither confirm nor disconfirm."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      riskiest_assumption: "Whether founders use the conscience."
+      experiment_this_week: "Trial run on 3 founders for two weeks."
+      what_would_change_plan: "If felt-response trends negative, redesign."
+    devlog:
+      - "Ran trial on 2 of 3 (third dropped out). Results mixed — one positive, one neutral."
+  expected_detection:
+    fires: false
+  why: "Ambiguous result = the experiment didn't actually test the assumption. Re-design the test before graduating."
+
+# --- triggered-by-trivial-change (3) ---
+
+- id: m2-snf-010
+  category: should-not-fire
+  failure_mode: triggered-by-trivial-change
+  scenario: "Canvas already at threshold; user just fixed a typo."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      previous_versions_crossed_threshold: true
+      latest_change_was_typo: true
+  expected_detection:
+    fires: false
+  why: "Done! is a *first-crossing* event. Trivial edits to an already-crossed canvas don't re-trigger."
+
+- id: m2-snf-011
+  category: should-not-fire
+  failure_mode: triggered-by-trivial-change
+  scenario: "Canvas previously crossed; user added one bullet point to risks-and-harms."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      previous_versions_crossed_threshold: true
+      latest_change_was_addition: true
+      latest_change_size_chars: 80
+  expected_detection:
+    fires: false
+  why: "Already-graduated canvases evolve; that's the point of the snapshot-not-blueprint design. Don't re-fire on minor improvements."
+
+- id: m2-snf-012
+  category: should-not-fire
+  failure_mode: triggered-by-trivial-change
+  scenario: "Canvas at version 0.4, user updated `version` field but no substance change."
+  project_state:
+    canvas:
+      cells_filled_real: 8
+      cells_placeholder: 1
+      previous_versions_crossed_threshold: true
+      latest_change_was_metadata_only: true
+  expected_detection:
+    fires: false
+  why: "Bumping the version field isn't crossing a threshold. Substance is what matters."
+
+# --- removes-agency (3) ---
+
+- id: m2-snf-013
+  category: should-not-fire
+  failure_mode: removes-agency
+  scenario: "Done! signal would push `boss unlock mvp` as the obvious next step (rather than offering)."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "..."
+      experiment_this_week: "..."
+      what_would_change_plan: "..."
+    detector_output_under_test:
+      next_doorway: "You should run `boss unlock mvp` now."
+  expected_detection:
+    fires: true
+    moment: done
+    signal_text_violation: removes-agency
+  why: "Fires *correctly* on triggering criteria. Detector output VIOLATES the voice rule (skill says offer, never push). This is a signal-text eval, not a trigger eval — but we flag here too because the trigger and the bad signal arrive together. Separate signal-language pass will cover this in depth."
+
+- id: m2-snf-014
+  category: should-not-fire
+  failure_mode: removes-agency
+  scenario: "Done! signal frames unlock as the canvas's purpose (it isn't)."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "..."
+      experiment_this_week: "..."
+      what_would_change_plan: "..."
+    detector_output_under_test:
+      next_doorway: "The canvas exists to get you to MVP — unlock now."
+  expected_detection:
+    fires: true
+    moment: done
+    signal_text_violation: removes-agency
+  why: "Same as above — trigger is correct; signal text contradicts the skill's explicit 'threshold, not a finish line; never force it' instruction."
+
+- id: m2-snf-015
+  category: should-not-fire
+  failure_mode: removes-agency
+  scenario: "User says they want to sit with the canvas; signal would push past that."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "..."
+      experiment_this_week: "..."
+      what_would_change_plan: "..."
+    user_prompt: "I want to sit with this for a few days before deciding."
+    detector_output_under_test:
+      next_doorway: "Don't sit too long — momentum matters! `boss unlock mvp` is right there."
+  expected_detection:
+    fires: true
+    moment: done
+    signal_text_violation: removes-agency
+  why: "User explicitly stated their pace. Signal must honor that ('No rush — the canvas keeps,' per the skill's exemplar)."
+
+# --- performed-warmth (3) ---
+
+- id: m2-snf-016
+  category: should-not-fire
+  failure_mode: performed-warmth
+  scenario: "Detector output uses scripted-positive language ('Amazing job!')."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "..."
+      experiment_this_week: "..."
+      what_would_change_plan: "..."
+    detector_output_under_test:
+      arrival: "Amazing job! You've nailed it! 🎉"
+  expected_detection:
+    fires: true
+    moment: done
+    signal_text_violation: performed-warmth
+  why: "Voice memory explicitly bans performed warmth. The seasoned hand doesn't say 'amazing job.' Signal-text eval."
+
+- id: m2-snf-017
+  category: should-not-fire
+  failure_mode: performed-warmth
+  scenario: "Detector output is overly congratulatory generic."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "..."
+      experiment_this_week: "..."
+      what_would_change_plan: "..."
+    detector_output_under_test:
+      arrival: "Great work on completing the canvas! This is huge progress!"
+  expected_detection:
+    fires: true
+    moment: done
+    signal_text_violation: performed-warmth
+  why: "Generic praise. Skill says name *what became real* — specifics, not vibes."
+
+- id: m2-snf-018
+  category: should-not-fire
+  failure_mode: performed-warmth
+  scenario: "Output adds emoji garnish."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "..."
+      experiment_this_week: "..."
+      what_would_change_plan: "..."
+    detector_output_under_test:
+      arrival: "✨ The canvas is done! 🎯 Time to ship!"
+  expected_detection:
+    fires: true
+    moment: done
+    signal_text_violation: performed-warmth
+  why: "Voice doesn't do emoji. The seasoned-hand register is restrained."
+
+# --- premature / not-actually-done (3) ---
+
+- id: m2-snf-019
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "Canvas just opened, only the People cell filled."
+  project_state:
+    canvas:
+      cells_filled_real: 1
+      cells_placeholder: 8
+      riskiest_assumption: "_(the one most likely to be fatal and least proven)_"
+      session_first_canvas_open: true
+  expected_detection:
+    fires: false
+  why: "Just started. Continue filling cells, don't graduate-fire."
+
+- id: m2-snf-020
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "5 of 9 cells filled — not enough to be 'most.'"
+  project_state:
+    canvas:
+      cells_filled_real: 5
+      cells_placeholder: 4
+      riskiest_assumption: "Possibly the demand side."
+      experiment_this_week: "_(not yet)_"
+      what_would_change_plan: "_(not yet)_"
+  expected_detection:
+    fires: false
+  why: "5/9 = 56%. Below the 'most cells' threshold. The skill should keep filling, not graduate."
+
+- id: m2-snf-021
+  category: should-not-fire
+  failure_mode: fires-too-early
+  scenario: "All cells filled, riskiest is a question with no commitment."
+  project_state:
+    canvas:
+      cells_filled_real: 9
+      cells_placeholder: 0
+      riskiest_assumption: "What's the riskiest assumption?"
+      experiment_this_week: "Figure out the riskiest assumption."
+      what_would_change_plan: "When we know."
+  expected_detection:
+    fires: false
+  why: "The riskiest cell is a meta-question, not an assumption. Plan is recursive. This is filling-with-words; not filling-with-thinking."
+
+# =============================================================================
+# Notes for next pass
+# =============================================================================
+# - Moment #2 lives in the /canvas skill prompt today. Many failure modes
+#   (performed-warmth, removes-agency) test signal *text*, not trigger criteria.
+#   These are flagged with `signal_text_violation` and need a separate
+#   signal-language eval pass — possibly LLM-as-judge with examples of the
+#   judge being wrong (Husain's discipline) once the trigger evals stabilize.
+# - riskiest-assumption-stale + ambiguous-result cases (m2-snf-007 through 09)
+#   require devlog inspection — implementation-tricky but high-value.
+# - triggered-by-trivial-change cases require diff/state-comparison since the
+#   last fire. Requires session-state or first-crossing tracking.
+# - The 7-of-9 threshold is current Claude-reading of "most cells filled."
+#   Ajesh may want sharper threshold (8/9? 6/9?) — easy to retune.

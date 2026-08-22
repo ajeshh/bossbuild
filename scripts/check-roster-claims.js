@@ -26,11 +26,14 @@
 //
 // The two classes have DIFFERENT truth sources and that difference is the finding:
 //   · unit tests are TRACKED (`test/`), so the count is derivable and this file guards it.
-//   · the eval suites are tier-1 LOCAL (.gitignore: "the dogfood workspace ... evals"), so
-//     NOTHING IN THE REPO CAN VERIFY AN EVAL COUNT. Those claims are listed every run as
-//     unverifiable rather than checked. That is not a limitation to route around — it is the
-//     open question (work-order 2e) printed where it will actually be seen, in the same shape
-//     `registry/dogfood.json` uses for `owed`: counted, printed, and never failing the gate.
+//   · the eval counts need the suite RUN, which this gate deliberately does not do (it is the
+//     fast one). `npm run release` runs it and checks all five phrasings. Listed here, not
+//     checked here — so a clean run of this file is never mistaken for eval coverage.
+//
+// v0.213.0 — the suite is now TRACKED (DEC-013), so those claims became verifiable from a fresh
+// clone for the first time. Before that they were unverifiable by anyone, which is what made
+// four of them wrong for nine releases. The cases and runners are tests and are tracked; the
+// recorded transcripts stay local, because a voice-hash marks them STALE when a frame is edited.
 //
 // The file keeps its v0.210.0 name so the changelog entry that introduced it stays navigable.
 //
@@ -214,20 +217,16 @@ if (units == null) {
 }
 
 if (unverifiable.length) {
-  console.log(`\n  ${warn(`${unverifiable.length} eval claim${unverifiable.length > 1 ? 's' : ''} in tracked prose — none verifiable from TRACKED FILES:`)}\n`);
+  console.log(`\n  ${dim(`${unverifiable.length} eval claim${unverifiable.length > 1 ? 's' : ''} in tracked prose — checked by \`npm run release\`, not here:`)}\n`);
   for (const f of unverifiable) {
     console.log(`      ${f.file}:${f.line}  ${dim('·')} "${f.claim}" ${dim(`(${f.key})`)}` +
       (f.rel ? ` ${dim('— npm run release checks this')}` : ` ${bold('— unguarded everywhere')}`));
   }
   const bare = unverifiable.filter((f) => !f.rel).length;
-  console.log(`\n  ${dim('The eval suites are tier-1 LOCAL (.gitignore: "the dogfood workspace ... evals"),')}`);
-  console.log(`  ${dim('so NO READER and no fresh clone can check any of these from tracked files.')}`);
-  console.log(`  ${dim('`npm run release` can — it runs the local suite — but it is not what sessions run,')}`);
-  console.log(`  ${dim('which is how these drifted for nine releases while a correct guard sat in release.js.')}`);
-  console.log(`  ${dim(bare ? `${bare} of ${unverifiable.length} are unguarded even there.`
-    : `All ${unverifiable.length} are covered by release as of v0.212.0 — it knew only 2 phrasings before.`)}`);
-  console.log(`  ${dim('Does NOT fail the gate: a gate that is red forever is a gate you bypass. Printed')}`);
-  console.log(`  ${dim('every run until the tier question (work-order 2e) is actually decided.')}`);
+  console.log(`\n  ${dim('Verifying these needs the suite RUN, which this gate does not do — it is the fast one.')}`);
+  console.log(`  ${dim('The suite is TRACKED as of v0.213.0 (DEC-013), so a fresh clone can now check them;')}`);
+  console.log(`  ${dim('before that nobody could, which is how four went wrong for nine releases.')}`);
+  if (bare) console.log(`  ${warn(`${bare} of ${unverifiable.length} are unguarded in release.js too — add the phrasing there.`)}`);
 }
 
 console.log(`\n  ${dim('Counts only. Prose that ENUMERATES without counting is still unguarded — see the header.')}\n`);

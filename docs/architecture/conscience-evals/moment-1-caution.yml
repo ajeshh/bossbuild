@@ -1,0 +1,716 @@
+# Conscience eval set — moment #1: caution ("what does this prove?")
+# Detector: docs/architecture/conscience-evals/runner.js → invokes the hook
+# Spec: ../README.md
+# First cut by Claude on 2026-05-22. NEEDS AJESH SHARPENING PASS.
+#
+# Each entry's project_state describes a synthetic docs/ideas/ tree the runner
+# materializes in a temp dir; the runner invokes the hook against it and
+# asserts the parsed JSON output matches expected_detection.
+
+# =============================================================================
+# SHOULD FIRE (~22)
+# Classic validation drift — multiple captures, nothing has crossed the
+# canvas's riskiest-assumption threshold.
+# =============================================================================
+
+- id: m1-sf-001
+  category: should-fire
+  scenario: "Three ideas captured, no canvas anywhere — bare threshold drift."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 1
+        canvas: false
+      - file: IDEA-002-bar.md
+        capture_log_entries: 1
+        canvas: false
+      - file: IDEA-003-baz.md
+        capture_log_entries: 1
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: medium
+  why: "Total captures = 3 (threshold), zero canvases. Honest drift signal."
+
+- id: m1-sf-002
+  category: should-fire
+  scenario: "One idea with five capture-log entries, no canvas."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 5
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Single idea but accumulating captures with no validation — the moment fires on idea-level drift too, not just project-level."
+
+- id: m1-sf-003
+  category: should-fire
+  scenario: "Multiple ideas, one canvas exists but riskiest-assumption is the default placeholder."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 3
+        canvas: false
+      - file: IDEA-002-bar.md
+        capture_log_entries: 3
+        canvas:
+          riskiest_assumption_text: "_(the one most likely to be fatal and least proven)_"
+      - file: IDEA-003-baz.md
+        capture_log_entries: 3
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+    evidence:
+      capture_count: 9
+      canvases_with_filled_assumption: 0
+  why: "Canvas exists but the riskiest-assumption line is the literal template placeholder — not a filled answer."
+
+- id: m1-sf-004
+  category: should-fire
+  scenario: "Canvas exists, riskiest-assumption line is empty after the bold marker."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: ""
+      - file: IDEA-002-bar.md
+        capture_log_entries: 5
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Empty after `Riskiest assumption:**` doesn't count as filled. The user created the canvas but never filled the gating cell."
+
+- id: m1-sf-005
+  category: should-fire
+  scenario: "Five ideas with two captures each — sustained drift across many bets."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-003-c.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-004-d.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-005-e.md, capture_log_entries: 2, canvas: false }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "10 captures, zero canvases — spreading thin without validating any."
+
+- id: m1-sf-006
+  category: should-fire
+  scenario: "Canvas's riskiest-assumption uses the `_(not yet)_` explicit placeholder."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "_(not yet)_"
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "`_(not yet)_` is the explicit honest-blank placeholder from the canvas template — honest but unfilled."
+
+- id: m1-sf-007
+  category: should-fire
+  scenario: "Eight ideas, one capture each — survey-mode drift."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-003-c.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-004-d.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-005-e.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-006-f.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-007-g.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-008-h.md, capture_log_entries: 1, canvas: false }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Lots of one-shot captures — classic shotgun-then-walk-away pattern."
+
+- id: m1-sf-008
+  category: should-fire
+  scenario: "Three deep ideas with many captures each, no canvas."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 4, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 4, canvas: false }
+      - { file: IDEA-003-c.md, capture_log_entries: 4, canvas: false }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "12 captures, deep iteration but no validation gate — the classic build-trap shape Cagan warns about."
+
+- id: m1-sf-009
+  category: should-fire
+  scenario: "Canvas has no riskiest-assumption section at all — malformed."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 6
+        canvas:
+          riskiest_assumption_line_present: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "User created a canvas but stripped out the gating cell. The detector should treat missing-cell same as unfilled."
+
+- id: m1-sf-010
+  category: should-fire
+  scenario: "Canvas riskiest-assumption uses a custom placeholder (`_TBD_`)."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 3
+        canvas:
+          riskiest_assumption_text: "_TBD_"
+      - file: IDEA-002-bar.md
+        capture_log_entries: 3
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: medium
+  why: "Other placeholder phrases should also count as unfilled. (Current hook may miss this — regex only checks `_(...)_` style. Fix-target.)"
+
+- id: m1-sf-011
+  category: should-fire
+  scenario: "Two canvases exist, both with placeholder riskiest-assumptions."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 3
+        canvas:
+          riskiest_assumption_text: "_(the one most likely to be fatal and least proven)_"
+      - file: IDEA-002-bar.md
+        capture_log_entries: 3
+        canvas:
+          riskiest_assumption_text: "_(not yet)_"
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Multiple canvases attempted but none has crossed the validation gate — sophisticated drift."
+
+- id: m1-sf-012
+  category: should-fire
+  scenario: "Exactly at threshold — three ideas, one capture each — JUST crosses the line."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-003-c.md, capture_log_entries: 1, canvas: false }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: low
+  why: "Boundary case. Total captures = 3 (= threshold). Confidence is low — could be early exploration; the model decides whether to actually speak."
+
+- id: m1-sf-013
+  category: should-fire
+  scenario: "Aged drift — first capture months ago, no validation since."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 7
+        capture_log_dates: ["2026-02-15", "2026-02-20", "2026-03-04", "2026-03-22", "2026-04-10", "2026-05-01", "2026-05-22"]
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Long-running idea, accumulating thoughts over months, zero validation work. Higher confidence because duration compounds the drift."
+
+- id: m1-sf-014
+  category: should-fire
+  scenario: "Five ideas + new capture just added — fresh entry on top of existing drift."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-003-c.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-004-d.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-005-e.md, capture_log_entries: 3, canvas: false, just_appended: true }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "The just-appended capture is the trigger moment — the user just added to drift."
+
+- id: m1-sf-015
+  category: should-fire
+  scenario: "Four ideas all marked status: seedling, no canvases."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, status: seedling, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-002-b.md, status: seedling, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-003-c.md, status: seedling, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-004-d.md, status: seedling, capture_log_entries: 2, canvas: false }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Status `seedling` on everything = nothing has graduated. Drift is the project's resting state."
+
+- id: m1-sf-016
+  category: should-fire
+  scenario: "User just ran `/triage` to add a new capture to an already-thick idea."
+  project_state:
+    ideas:
+      - { file: IDEA-001-foo.md, capture_log_entries: 6, canvas: false, just_appended: true }
+    user_prompt: "/triage add: thinking about a B2B angle for this"
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "/triage on top of existing depth without validating — exactly the drift the moment is for."
+
+- id: m1-sf-017
+  category: should-fire
+  scenario: "Several ideas, none with canvas, devlog mentions canvas was 'tried' but file doesn't exist."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 3, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 3, canvas: false }
+    devlog:
+      - "tried opening canvas for IDEA-001 but felt overwhelming, came back to capture mode"
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Devlog reveals the founder is avoiding the canvas — the moment exists to catch exactly this."
+
+- id: m1-sf-018
+  category: should-fire
+  scenario: "Three ideas, all with canvases — but every canvas riskiest-assumption is a placeholder variant."
+  project_state:
+    ideas:
+      - file: IDEA-001-a.md
+        capture_log_entries: 2
+        canvas:
+          riskiest_assumption_text: "_(the one most likely to be fatal and least proven)_"
+      - file: IDEA-002-b.md
+        capture_log_entries: 2
+        canvas:
+          riskiest_assumption_text: "_TBD_"
+      - file: IDEA-003-c.md
+        capture_log_entries: 2
+        canvas:
+          riskiest_assumption_text: "_(not yet)_"
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Canvas discipline is technically being attempted everywhere but never *finished* anywhere — different drift, same family."
+
+- id: m1-sf-019
+  category: should-fire
+  scenario: "Canvas riskiest-assumption text is a question mark only."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "?"
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: medium
+  why: "Single `?` is filling-with-nothing. (Current hook may treat as filled — fix-target.)"
+
+- id: m1-sf-020
+  category: should-fire
+  scenario: "Many small ideas, one filled canvas — but for a dropped idea."
+  project_state:
+    ideas:
+      - file: IDEA-001-old.md
+        status: dropped
+        capture_log_entries: 3
+        canvas:
+          riskiest_assumption_text: "Will users pay $X for Y on a monthly basis?"
+      - { file: IDEA-002-a.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-003-b.md, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-004-c.md, capture_log_entries: 2, canvas: false }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: medium
+  why: "Filled canvas exists but for a dropped idea — doesn't count as active validation. (Current hook fires UNLESS any canvas is filled — this case may be a false-negative under current logic. Fix-target.)"
+
+- id: m1-sf-021
+  category: should-fire
+  scenario: "Capture activity is recent (this week) and growing — not historical."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 3
+        capture_log_dates: ["2026-05-20", "2026-05-21", "2026-05-22"]
+        canvas: false
+      - file: IDEA-002-bar.md
+        capture_log_entries: 2
+        capture_log_dates: ["2026-05-21", "2026-05-22"]
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "Active drift right now — 5 captures across 3 days, no validation. Recency strengthens the signal."
+
+- id: m1-sf-022
+  category: should-fire
+  scenario: "User has been using BOSS for a while; ideas in `building` status but no canvas."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, status: building, capture_log_entries: 4, canvas: false }
+      - { file: IDEA-002-b.md, status: building, capture_log_entries: 3, canvas: false }
+  expected_detection:
+    fires: true
+    moment: caution
+    confidence: high
+  why: "`status: building` with no canvas = jumped the validation step. The moment fires harder here — the founder is *acting* on un-validated bets."
+
+# =============================================================================
+# SHOULD NOT FIRE (~24, categorized by failure_mode)
+# =============================================================================
+
+# --- over-fires-on-fresh-project (4) ---
+
+- id: m1-snf-001
+  category: should-not-fire
+  failure_mode: over-fires-on-fresh-project
+  scenario: "Brand-new repo, no idea docs."
+  project_state:
+    ideas: []
+  expected_detection:
+    fires: false
+  why: "Empty docs/ideas/ → nothing to drift from."
+
+- id: m1-snf-002
+  category: should-not-fire
+  failure_mode: over-fires-on-fresh-project
+  scenario: "Single idea, single capture entry."
+  project_state:
+    ideas:
+      - { file: IDEA-001-foo.md, capture_log_entries: 1, canvas: false }
+  expected_detection:
+    fires: false
+  why: "Below threshold (1 < 3). Founder is just starting; firing here is patronizing."
+
+- id: m1-snf-003
+  category: should-not-fire
+  failure_mode: over-fires-on-fresh-project
+  scenario: "Two ideas, one capture each."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 1, canvas: false }
+  expected_detection:
+    fires: false
+  why: "Total = 2, under threshold."
+
+- id: m1-snf-004
+  category: should-not-fire
+  failure_mode: over-fires-on-fresh-project
+  scenario: "docs/ideas/ doesn't exist at all."
+  project_state:
+    ideas_dir_exists: false
+  expected_detection:
+    fires: false
+  why: "Hook returns early when the dir is missing — must remain true."
+
+# --- fires-mid-other-work (3) — these test suppress_if behavior, not the trigger ---
+
+- id: m1-snf-005
+  category: should-not-fire
+  failure_mode: fires-mid-other-work
+  scenario: "Drift criteria met, but user prompt is a debugging question."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 3, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 3, canvas: false }
+    user_prompt: "why is this function returning undefined when I pass null?"
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["user_in_unrelated_work"]
+  why: "The drift exists; the hook should still return the signal — but with `suppress_if: user_in_unrelated_work` so the model knows to defer. This is the structured-output benefit: detection and decision are separated."
+
+- id: m1-snf-006
+  category: should-not-fire
+  failure_mode: fires-mid-other-work
+  scenario: "Drift met, user is mid-git operation."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 5, canvas: false }
+    user_prompt: "/git status — what should I include in this commit?"
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["user_in_unrelated_work"]
+  why: "Same shape — surface the signal with suppression metadata; let the model honor it."
+
+- id: m1-snf-007
+  category: should-not-fire
+  failure_mode: fires-mid-other-work
+  scenario: "Drift met, user asking a configuration question."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 3, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 3, canvas: false }
+    user_prompt: "how do I update the .claude/settings.json to add a permission?"
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["user_in_unrelated_work"]
+  why: "Config/ops question — not the moment to surface validation drift."
+
+# --- repeats-itself (3) ---
+
+- id: m1-snf-008
+  category: should-not-fire
+  failure_mode: repeats-itself
+  scenario: "Drift exists, devlog has OVERRIDE acknowledging it."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 4, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 3, canvas: false }
+    devlog:
+      - "**OVERRIDE:** skipped `canvas-loop` on IDEA-001 — rationale: still in exploration; will canvas when one bet sharpens."
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["acknowledged_in_devlog"]
+  why: "Founder explicitly logged the deviation. Conscience surfaces but defers — the override is the contract."
+
+- id: m1-snf-009
+  category: should-not-fire
+  failure_mode: repeats-itself
+  scenario: "Hook already fired in this session within last 5 prompts."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 5, canvas: false }
+    recent_fires:
+      - prompts_ago: 3
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["recently_fired_in_session"]
+  why: "Detector still returns the signal; suppress_if tells the model to stay quiet. (Requires session-state tracking — implementation TBD.)"
+
+- id: m1-snf-010
+  category: should-not-fire
+  failure_mode: repeats-itself
+  scenario: "Project state unchanged since last fire."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 5, canvas: false }
+    last_fire_state_hash_matches_current: true
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["state_unchanged_since_last_fire"]
+  why: "Nothing new since the last nudge — repeating the same nudge is nagging."
+
+# --- false-positive-canvas-exists (3) ---
+
+- id: m1-snf-011
+  category: should-not-fire
+  failure_mode: false-positive-canvas-exists
+  scenario: "Canvas filled with a real riskiest-assumption sentence."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 5
+        canvas:
+          riskiest_assumption_text: "Will founders actually pay for the hosted version after using the OSS CLI for a month?"
+  expected_detection:
+    fires: false
+  why: "Filled canvas = validation discipline is happening. Don't fire."
+
+- id: m1-snf-012
+  category: should-not-fire
+  failure_mode: false-positive-canvas-exists
+  scenario: "Canvas riskiest-assumption uses bold/emphasis around the answer."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "**That a founder will tolerate the conscience interrupting them.**"
+  expected_detection:
+    fires: false
+  why: "Markdown emphasis on the answer is still an answer. (Current hook's regex `[^_[:space:]]` should match — verify.)"
+
+- id: m1-snf-013
+  category: should-not-fire
+  failure_mode: false-positive-canvas-exists
+  scenario: "Multiple canvases, at least one has a real answer."
+  project_state:
+    ideas:
+      - file: IDEA-001-a.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "Whether power-users find /triage feels right or naggy."
+      - file: IDEA-002-b.md
+        capture_log_entries: 4
+        canvas:
+          riskiest_assumption_text: "_(not yet)_"
+  expected_detection:
+    fires: false
+  why: "Current hook stops at first filled canvas — accepted simplification. (Argument exists for finer-grained per-idea drift detection; deferred to a separate moment, not this one.)"
+
+# --- false-positive-not-drift (3) ---
+
+- id: m1-snf-014
+  category: should-not-fire
+  failure_mode: false-positive-not-drift
+  scenario: "All ideas marked `dropped` — deliberate survey, not drift."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, status: dropped, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-002-b.md, status: dropped, capture_log_entries: 2, canvas: false }
+      - { file: IDEA-003-c.md, status: dropped, capture_log_entries: 2, canvas: false }
+  expected_detection:
+    fires: false
+  why: "Founder explicitly walked away from these. Firing on dropped ideas is meaningless. (Current hook may fire — counts captures across all statuses. Fix-target: skip dropped ideas.)"
+
+- id: m1-snf-015
+  category: should-not-fire
+  failure_mode: false-positive-not-drift
+  scenario: "Captures + active canvas-filling in same session."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 5
+        canvas:
+          riskiest_assumption_text: "_(still working on this — see capture log)_"
+          last_edited_minutes_ago: 5
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["canvas_actively_being_edited"]
+    confidence: low
+  why: "Canvas is being worked on right now — surface the signal but suppress; founder is in the middle of doing the thing the moment wants."
+
+- id: m1-snf-016
+  category: should-not-fire
+  failure_mode: false-positive-not-drift
+  scenario: "All captures from same day — single brainstorm session, not drift over time."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 5
+        capture_log_dates: ["2026-05-22", "2026-05-22", "2026-05-22", "2026-05-22", "2026-05-22"]
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["single_session_brainstorm"]
+    confidence: low
+  why: "Drift over time is the worry, not depth in one sitting. Surface with low confidence; let the model judge."
+
+# --- acknowledged-already (3) ---
+
+- id: m1-snf-017
+  category: should-not-fire
+  failure_mode: acknowledged-already
+  scenario: "Devlog override for the current drift state."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 4, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 4, canvas: false }
+    devlog:
+      - "**OVERRIDE:** skipped `canvas-loop` — rationale: in deliberate exploration; will canvas after picking the winner."
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["acknowledged_in_devlog"]
+  why: "Override is the contract; conscience respects it but tracks the signal for if/when conditions change."
+
+- id: m1-snf-018
+  category: should-not-fire
+  failure_mode: acknowledged-already
+  scenario: "Multiple overrides — founder has been consciously navigating this drift."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 6, canvas: false }
+    devlog:
+      - "**OVERRIDE:** skipped `canvas-loop` — rationale: prior similar product validated."
+      - "**OVERRIDE:** proceeded with `prototype-loop` on IDEA-001 without canvas — rationale: see prior."
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["acknowledged_in_devlog"]
+  why: "Founder is treating BOSS as the type-system, not the curriculum. Conscience surfaces; user's overrides hold."
+
+- id: m1-snf-019
+  category: should-not-fire
+  failure_mode: acknowledged-already
+  scenario: "Project-level CLAUDE.md amendment opts out of moment-1."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 4, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 4, canvas: false }
+    claude_md_amendments:
+      - "**BOSS conscience config:** moment-1 caution disabled until 2026-06-30 (in capture-mode this month)."
+  expected_detection:
+    fires: false
+  why: "Explicit project-level override. Conscience never fires; the founder has opted out cleanly. (Requires project-config recognition — implementation TBD.)"
+
+# --- edge / threshold (2) ---
+
+- id: m1-snf-020
+  category: should-not-fire
+  failure_mode: over-fires-on-fresh-project
+  scenario: "Exactly 2 captures across 2 ideas — just under threshold."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, capture_log_entries: 1, canvas: false }
+      - { file: IDEA-002-b.md, capture_log_entries: 1, canvas: false }
+  expected_detection:
+    fires: false
+  why: "Threshold is 3. Boundary must be honored."
+
+- id: m1-snf-021
+  category: should-not-fire
+  failure_mode: false-positive-not-drift
+  scenario: "Three captures in ONE idea, deepening — not breadth-spreading."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 3
+        canvas: false
+  expected_detection:
+    fires: true
+    moment: caution
+    suppress_if: ["single_idea_deepening"]
+    confidence: low
+  why: "The gate (predicate) counts total captures, so it CANNOT tell depth from breadth-drift — it surfaces with low confidence + a suppress hint and lets the model judge. RESOLVED in v0.33: caution is now judge-backed (reads the capture log; stays silent on depth). This exact ambiguity is now covered by the judgment surface — see docs/architecture/conscience-evals/judgment/caution.judgment.yml (j-caut-101/102/103 = depth/silent). The gate keeps skipping it because no predicate can make this call; the judgment eval is where it's tested."
+
+# =============================================================================
+# Notes for the next pass
+# =============================================================================
+# - The current hook's regex for "filled riskiest-assumption" is:
+#     'Riskiest assumption:\*\*[[:space:]]+[^_[:space:]]'
+#   This catches `_(...)` placeholders but not `_TBD_` or `?` — see m1-sf-010, m1-sf-019.
+# - The current hook does not distinguish status (active vs dropped) — see m1-sf-020, m1-snf-014.
+# - The suppress_if cases (mid-other-work, recently_fired, acknowledged) all require
+#   structured-output support — the hook needs to ship `{moment, confidence, evidence, suppress_if}`.
+# - Single-idea-deepening (m1-snf-021): RESOLVED in v0.33 — caution is now judge-backed and the
+#   depth-vs-avoidance call is covered in judgment/caution.judgment.yml (the gate still skips it
+#   because no predicate can make the call; the judgment surface is where it lives).
+# - Shame-tone failures aren't testable from the trigger alone — they test the signal *text*.
+#   Add a separate signal-language eval pass once the trigger evals stabilize.

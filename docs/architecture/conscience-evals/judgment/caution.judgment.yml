@@ -1,0 +1,128 @@
+# JUDGMENT eval set — moment: caution (the depth-vs-avoidance call)
+# Surface: docs/architecture/conscience-evals/judgment/
+# Replay (zero-dep, every commit): replay.js   ·   Re-grade (paid, out-of-band): regrade.js
+#
+# caution (moment #1) is the conscience's flagship. Its GATE (canvas-loop) opens
+# on ≥3 dated captures with no filled riskiest assumption. But the predicate
+# CANNOT tell the two open-gate shapes apart — and the difference is the whole
+# `m1-snf-021` question the gate runner has SKIPPED since v0.16:
+#
+#   DEPTH     — one idea getting sharper (each capture refines the same bet) →
+#               healthy convergence; the judge stays SILENT.
+#   AVOIDANCE — capturing-lots / validating-nothing (idea-hopping, feature-
+#               piling, market-notes) → the judge fires the caution nudge.
+#
+# v0.33 makes caution judge-backed: the gate still opens, but the model reads the
+# capture log and judges depth-vs-avoidance before voicing. This file is that
+# judgment's labeled set — the case the GATE had to skip is now COVERED here.
+#
+# `expected_judgment` is the HUMAN label. `must_reference`/`must_not` is the
+# rubric for the future LLM-judge (regrade.js). Every case is a genuine open-gate
+# state (≥3 captures, no filled risk); replay.js asserts that statically.
+
+# =============================================================================
+# SHOULD FIRE — capturing-lots / validating-nothing (no bet converging)
+# =============================================================================
+
+- id: j-caut-001
+  category: should-fire-avoidance
+  scenario: "Four captures, each a different unrelated idea (habit tracker → show notes → dog-walker marketplace → cold-email AI). Classic idea-hopping."
+  project_state:
+    ideas:
+      - { file: IDEA-001-x.md, capture_log_ref: scatter_hopping }
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - that the captures are different unrelated ideas rather than one bet sharpening
+    must_not:
+      - generic you-should-validate with no read of what was actually captured
+      - praise framing such as great-momentum
+  why: "Four sessions, four different products. No bet is forming — the canvas can't even start. This is the capturing-lots/validating-nothing drift caution exists for."
+
+- id: j-caut-002
+  category: should-fire-avoidance
+  scenario: "Four captures piling features onto a vague 'second brain' vision (notes → AI summaries → graph view + calendar → collaboration + sharing) with no user or bet named."
+  project_state:
+    ideas:
+      - { file: IDEA-001-x.md, capture_log_ref: scatter_featurepiling }
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - that the captures add features without naming who it is for or what bet is riskiest
+    must_not:
+      - praise framing
+  why: "Breadth, not depth. Feature-piling on a vision with no customer and no riskiest assumption is the avoidance shape — more scope is not more validation."
+
+- id: j-caut-003
+  category: should-fire-avoidance
+  scenario: "Five captures of competitor/market observations (raises, TAM, integrations, inbound) with no commitment to a bet of their own."
+  project_state:
+    ideas:
+      - { file: IDEA-001-x.md, capture_log_ref: scatter_marketnotes }
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - that the captures are market/competitor notes rather than a bet the founder is committing to test
+    must_not:
+      - generic validate-the-market advice
+  why: "Market-watching can feel like progress while validating nothing. No riskiest assumption of their own is forming — the nudge should name that."
+
+# =============================================================================
+# SHOULD NOT FIRE — one idea getting sharper (DEPTH); silence is correct
+# (this is m1-snf-021 — the case the GATE runner skips, now covered)
+# =============================================================================
+
+- id: j-caut-101
+  category: should-not-fire-depth
+  scenario: "Four captures, same idea narrowing (late-invoice tool → only >$5k contractors → the pain is awkwardness not reminders → 'get paid without being the bad guy')."
+  project_state:
+    ideas:
+      - { file: IDEA-001-x.md, capture_log_ref: depth_narrowing }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when each capture is sharpening the same bet
+  why: "m1-snf-021 made concrete: every entry refines ONE idea — narrowing the user, finding the real pain, sharpening the promise. That's convergence toward a canvas, not avoidance. Silence is correct."
+
+- id: j-caut-102
+  category: should-not-fire-depth
+  scenario: "Four captures wrestling the same hard question about a med-student study tool (answers vs quizzing → active recall → what's different → build quiz from THEIR notes)."
+  project_state:
+    ideas:
+      - { file: IDEA-001-x.md, capture_log_ref: depth_wrestling }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when the founder is productively wrestling one question toward a wedge
+  why: "Circling the same hard question from different angles IS the work of finding the bet. Firing here would punish exactly the thinking caution is supposed to encourage."
+
+- id: j-caut-103
+  category: should-not-fire-depth
+  scenario: "Four captures on a Shopify-copy idea converging — the last entry explicitly names the forming riskiest assumption and says 'canvas time'."
+  project_state:
+    ideas:
+      - { file: IDEA-001-x.md, capture_log_ref: depth_converging }
+  expected_judgment:
+    fires: false
+    must_not:
+      - firing when the founder is one step from naming the riskiest assumption themselves
+  why: "The captures are converging and the founder is already reaching for /canvas. Nudging now would be the conscience talking over someone who's already on the path."
+
+# =============================================================================
+# AMBIGUOUS — depth-with-a-detour, or scatter? Don't punish either call.
+# =============================================================================
+
+- id: j-caut-201
+  category: ambiguous
+  scenario: "Meal-planner idea sharpening, but a cafe-market tangent keeps recurring; the founder names two bets and hasn't picked."
+  project_state:
+    ideas:
+      - { file: IDEA-001-x.md, capture_log_ref: ambiguous_detour }
+  expected_judgment:
+    acceptable: [fires, silent]
+    must_not:
+      - asserting with false confidence that this is clearly focus or clearly scatter
+  why: "Two captures sharpen one bet; two chase a tangent the founder admits is nagging. A gentle 'which of the two are you betting on?' is defensible; so is silence (they're aware and circling productively). Label both acceptable."

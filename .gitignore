@@ -9,7 +9,12 @@ registry/projects.json
 # ── THREE tiers. Only two were ever declared, so the third became the default sink. ──
 #
 #   1. LOCAL       — everything listed below. The dogfood workspace: roadmap, research,
-#                    strategy, design, evals. Never leaves this machine.
+#                    strategy, design. Never leaves this machine.
+#                    EXCEPT the conscience EVAL SUITE, moved to tier 2 by DEC-013 (v0.213.0):
+#                    the cases and runners are TESTS, not strategy, and four public claims about
+#                    BOSS's own rigour were resting on evidence no reader could open. The
+#                    recorded transcripts stay LOCAL — the voice-hash already marks them STALE
+#                    when a frame is edited, so tracking them means carrying expiring output.
 #   2. PUBLIC REPO — tracked here and rendered to the website, installed NOWHERE:
 #                    docs/GUIDE.md, GUIDE-teams, CHEATSHEET, SKILLS, MENTORS, HUMANE,
 #                    PATTERNS — plus site/, web/ and registry/boundary.json.
@@ -38,7 +43,9 @@ docs/source/
 docs/dossier/
 docs/design/
 docs/fable-campaign/
-docs/architecture/
+docs/architecture/*
+!docs/architecture/conscience-evals/
+docs/architecture/conscience-evals/judgment/transcripts/
 docs/exports/
 docs/loops/
 docs/mentor-practitioners.md

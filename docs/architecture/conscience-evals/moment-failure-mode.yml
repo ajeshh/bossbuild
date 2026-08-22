@@ -1,0 +1,122 @@
+# Conscience eval set — moment: failure-mode (ai-failure-state-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/ai-failure-state-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (v0.27.0+)
+#
+# Each case isolates failure-mode by also closing cost-budget-loop (the two
+# loops share an entry — the first LLM SDK call site). The `category` field
+# is organizational; the runner only reads `expected_detection`.
+
+# =============================================================================
+# SHOULD FIRE — LLM call exists, no failure-states design
+# =============================================================================
+
+- id: m-fm-001
+  category: should-fire
+  scenario: "Anthropic SDK call, no failure-states doc, cost-budget closed (isolated failure-mode test)."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+  expected_detection:
+    fires: true
+    moment: failure-mode
+    confidence: high
+  why: "LLM call site exists; failure-states design missing. Failure-mode fires; cost closed."
+
+- id: m-fm-002
+  category: should-fire
+  scenario: "OpenAI SDK call, cost closed, no failure-states design."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: openai_call }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+  expected_detection:
+    fires: true
+    moment: failure-mode
+  why: "Same shape, different provider — failure-mode fires regardless of vendor."
+
+- id: m-fm-003
+  category: should-fire
+  scenario: "Failure-states doc exists, but NO handler references in src/."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+  expected_detection:
+    fires: true
+    moment: failure-mode
+  why: "Exit predicate is BOTH doc + at least one handler reference. Doc alone is a declaration without contract."
+
+- id: m-fm-004
+  category: should-fire
+  scenario: "Handler references exist in src/, but NO failure-states design doc."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+  expected_detection:
+    fires: true
+    moment: failure-mode
+  why: "Handlers without a doc is code without rationale. The doc is the contract; both halves required."
+
+- id: m-fm-005
+  category: should-fire
+  scenario: "Vercel AI SDK streamText call, cost closed, failure-mode wide open."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: vercel_ai_stream }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+  expected_detection:
+    fires: true
+    moment: failure-mode
+  why: "streamText fires the entry. Failure-mode fires because no failure-states design exists."
+
+# =============================================================================
+# SHOULD NOT FIRE — closure or no-entry
+# =============================================================================
+
+- id: m-fm-101
+  category: should-not-fire
+  scenario: "Full AI-first discipline declared — every artifact present (incl. cost-review per v0.30+)."
+  project_state:
+    src_files:
+      - { path: src/api.ts, fixture: anthropic_call }
+      - { path: src/logger.ts, fixture: cost_logger_ref }
+      - { path: src/handlers.ts, fixture: failure_handlers_ref }
+    docs_files:
+      - { path: docs/ai-cost-budget.md, fixture: cost_budget_doc }
+      - { path: docs/ai-failure-states.md, fixture: failure_states_doc }
+      - { path: docs/cost-reviews/REVIEW-2026-05-27.md, fixture: cost_review_record }
+  expected_detection:
+    fires: false
+  why: "All three AI-first loops closed (cost-budget + failure-mode + cost-review). The v0.30 cost-review-loop on this surface also needs satisfying for zero signals."
+
+- id: m-fm-102
+  category: should-not-fire
+  scenario: "No LLM calls in code; failure-mode entry not met."
+  project_state:
+    src_files:
+      - { path: src/util.ts, fixture: no_llm_code }
+  expected_detection:
+    fires: false
+  why: "Failure-mode is a JIT loop tied to the AI-mediated boundary. No boundary = no nudge."
+
+- id: m-fm-103
+  category: should-not-fire
+  scenario: "Empty project (fresh boss new before any code)."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-code state must not fire failure-mode."

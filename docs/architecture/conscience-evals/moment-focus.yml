@@ -1,0 +1,129 @@
+# Conscience eval set — moment: focus (focus-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/focus-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (IDEA-034 Track D)
+#
+# focus-loop is the board → conscience bridge. It fires when the board's Building
+# column has piled up (≥4 FEATs in building/drafting/blocked) and NOTHING has
+# shipped yet — the "stop starting, start finishing" smell. Shipping anything
+# closes it (exit: ≥1 shipped/done FEAT).
+#
+# SCOPE — predicate-gate only. These cases prove the door opens at the right
+# structural moment and stays shut otherwise. The judgment — "is this scattered
+# abandonment or honest parallel work?" — is the model's, performed in the live
+# turn from the bounded board read the signal instructs (same split as drift/
+# caution). The runner materializes FEAT-*.md files via `ideas:` entries (the
+# builder writes `status:` from each entry); they carry no canvas / devlog / src,
+# so only focus-loop can open — clean isolation.
+
+# =============================================================================
+# SHOULD FIRE — pile in Building, nothing Shipped
+# =============================================================================
+
+- id: m-focus-001
+  category: should-fire
+  scenario: "Four FEATs in Building, none shipped — the minimal WIP-overload pile."
+  project_state:
+    ideas:
+      - { file: FEAT-001-a.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-002-b.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-003-c.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-004-d.md, status: building, capture_log_entries: 0 }
+  expected_detection:
+    fires: true
+    moment: focus
+  why: "Entry met (4 in-flight ≥ 4) and exit unmet (0 shipped). confidence low (4/4 ratio). Four started, none finished."
+
+- id: m-focus-002
+  category: should-fire
+  scenario: "Six FEATs in Building, none shipped — deeper pile, louder signal."
+  project_state:
+    ideas:
+      - { file: FEAT-001-a.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-002-b.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-003-c.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-004-d.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-005-e.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-006-f.md, status: building, capture_log_entries: 0 }
+  expected_detection:
+    fires: true
+    moment: focus
+  why: "Overshoot past the threshold (6/4 ratio ≥ 1.33) → confidence medium. The deeper the unfinished pile, the louder."
+
+- id: m-focus-003
+  category: should-fire
+  scenario: "Mixed in-flight statuses — building / drafting / blocked all count toward the pile."
+  project_state:
+    ideas:
+      - { file: FEAT-001-a.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-002-b.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-003-c.md, status: drafting, capture_log_entries: 0 }
+      - { file: FEAT-004-d.md, status: blocked, capture_log_entries: 0 }
+  expected_detection:
+    fires: true
+    moment: focus
+  why: "The Building column is building + drafting + blocked (board's featColumn); the entry pattern matches all three. Four in-flight, none shipped → fires."
+
+# =============================================================================
+# SHOULD NOT FIRE — something shipped, pile too small, ideas (not FEATs), empty
+# =============================================================================
+
+- id: m-focus-101
+  category: should-not-fire
+  scenario: "Four in Building AND one shipped — the founder has proven they can finish."
+  project_state:
+    ideas:
+      - { file: FEAT-001-a.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-002-b.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-003-c.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-004-d.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-005-e.md, status: shipped, capture_log_entries: 0 }
+  expected_detection:
+    fires: false
+  why: "Exit satisfied (≥1 shipped). Shipping anything closes the never-finished-pile loop — the good outcome of a focus nudge."
+
+- id: m-focus-102
+  category: should-not-fire
+  scenario: "Only three FEATs in Building — under the WIP threshold."
+  project_state:
+    ideas:
+      - { file: FEAT-001-a.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-002-b.md, status: building, capture_log_entries: 0 }
+      - { file: FEAT-003-c.md, status: building, capture_log_entries: 0 }
+  expected_detection:
+    fires: false
+  why: "Entry needs ≥4 in flight. Three concurrent builds isn't yet the pile-up smell; below the threshold the conscience stays quiet."
+
+- id: m-focus-103
+  category: should-not-fire
+  scenario: "Four ideas in 'building' status but they're IDEA-*.md, not FEAT-*.md."
+  project_state:
+    ideas:
+      - { file: IDEA-001-a.md, status: building, capture_log_entries: 0 }
+      - { file: IDEA-002-b.md, status: building, capture_log_entries: 0 }
+      - { file: IDEA-003-c.md, status: building, capture_log_entries: 0 }
+      - { file: IDEA-004-d.md, status: building, capture_log_entries: 0 }
+  expected_detection:
+    fires: false
+  why: "Focus is a FEAT-level (MVP) flow signal; its entry globs `FEAT-*.md`. Ideas don't count — a Quickstart project with many captured ideas isn't carrying WIP. No over-fire pre-MVP."
+
+- id: m-focus-104
+  category: should-not-fire
+  scenario: "Five FEATs, all shipped — nothing in flight."
+  project_state:
+    ideas:
+      - { file: FEAT-001-a.md, status: shipped, capture_log_entries: 0 }
+      - { file: FEAT-002-b.md, status: shipped, capture_log_entries: 0 }
+      - { file: FEAT-003-c.md, status: shipped, capture_log_entries: 0 }
+      - { file: FEAT-004-d.md, status: shipped, capture_log_entries: 0 }
+      - { file: FEAT-005-e.md, status: shipped, capture_log_entries: 0 }
+  expected_detection:
+    fires: false
+  why: "Entry unmet — 0 in-flight FEATs. A finished portfolio is the opposite of the pile-up; no signal."
+
+- id: m-focus-105
+  category: should-not-fire
+  scenario: "Empty project — nothing at all."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-work state. The loop must not fire on a fresh project."

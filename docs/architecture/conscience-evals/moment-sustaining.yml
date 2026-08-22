@@ -1,0 +1,132 @@
+# Conscience eval set — moment: sustaining (sustaining-loop)
+# Loop spec: stages/L0-quickstart/template/docs/loops/sustaining-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (v0.206.0, the commons half)
+#
+# sustaining-loop is the only loop in BOSS that watches for SILENCE. The canvas's
+# Business Model cell has a second branch (DEC-009) for projects sustained by
+# someone's own hours rather than revenue — what keeps this alive, who else could
+# carry it, what would make you stop — and until v0.206.0 nothing ever looked at
+# those answers again, while the money half was watched continuously.
+#
+# THE HARNESS COULD NOT REACH THIS MOMENT UNTIL v0.208.0, and that is worth stating
+# plainly: every fixture is materialized NOW, so every file is zero days old, and
+# `quiet_for` measures days since last change. A clean sweep would have been reported
+# on a door the runner structurally could not open — the exact failure this surface
+# exists to prevent. `age_days:` on a fixture file backdates its mtime; these are its
+# first consumers, and any future time-based predicate needs it too.
+#
+# SCOPE — predicate-gate only. These prove the door opens after a real silence and
+# stays shut otherwise. The judgment — "is this project sustained by hours or by
+# revenue, has a stated stopping condition actually fired, or is this simply a
+# holiday?" — is the model's, and is the highest-silence-bar judgment in BOSS.
+# The predicate counts days and knows nothing about WHY.
+#
+# Gate-safety note: entry needs docs/devlog.md AND a canvas containing "Business
+# Model" AND 45+ days of quiet. Prior fixtures never backdate anything, so
+# sustaining cannot open in any of the 143 baseline cases.
+
+# =============================================================================
+# SHOULD FIRE — a real silence, over a canvas that named how this stays alive
+# =============================================================================
+
+- id: m-sust-001
+  category: should-fire
+  scenario: "Canvas with a Business Model cell, devlog untouched for 60 days — the founder is back after two months."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_worked_then_stopped, age_days: 60 }
+      - { path: docs/ideas/my-canvas.md, fixture: canvas_sustained_by_hours, age_days: 90 }
+  expected_detection:
+    fires: true
+    moment: sustaining
+  why: "Entry met (devlog exists, canvas names a Business Model, 60 days ≥ 45) and exit unmet (the canvas is OLDER than the devlog, so they have not come back and revisited the answer). The door opens; the model judges whether the stated arrangement has become untrue."
+
+- id: m-sust-002
+  category: should-fire
+  scenario: "A much longer silence — six months — with the canvas still older than the devlog."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_worked_then_stopped, age_days: 180 }
+      - { path: docs/ideas/CANVAS.md, fixture: canvas_sustained_by_hours, age_days: 200 }
+  expected_detection:
+    fires: true
+    moment: sustaining
+  why: "Same shape at a longer horizon, and via the CANVAS.md filename rather than the *-canvas.md glob — both are in the loop's path_glob. Six months is not a holiday."
+
+# =============================================================================
+# SHOULD NOT FIRE — back at work, a short gap, no canvas, or the answer revisited
+# =============================================================================
+
+- id: m-sust-101
+  category: should-not-fire
+  scenario: "They came back and resumed work — the devlog moved today."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_worked_then_stopped }
+      - { path: docs/ideas/my-canvas.md, fixture: canvas_sustained_by_hours, age_days: 90 }
+  expected_detection:
+    fires: false
+  why: "Entry fails — the devlog is not quiet. Resuming work IS the answer, and it closes the loop on its own without the founder doing anything about it."
+
+- id: m-sust-102
+  category: should-not-fire
+  scenario: "A 30-day gap — under the 45-day bar. This is a holiday, not a pattern."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_worked_then_stopped, age_days: 30 }
+      - { path: docs/ideas/my-canvas.md, fixture: canvas_sustained_by_hours, age_days: 60 }
+  expected_detection:
+    fires: false
+  why: "Three weeks is a holiday; six is a pattern. The bar is deliberately high because the cost of firing on someone's ordinary break is the whole moment's credibility."
+
+- id: m-sust-103
+  category: should-not-fire
+  scenario: "Long silence but no canvas at all — nothing ever named how this stays alive."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_worked_then_stopped, age_days: 120 }
+  expected_detection:
+    fires: false
+  why: "Entry needs a canvas naming a Business Model. With no stated sustaining arrangement there is nothing to have become untrue — and asking a founder who never answered the question to account for a gap would be a pure productivity nag."
+
+- id: m-sust-104
+  category: should-not-fire
+  scenario: "They came back, did not resume work, but DID revisit the canvas — the answer was updated."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_worked_then_stopped, age_days: 60 }
+      - { path: docs/ideas/my-canvas.md, fixture: canvas_sustained_revised }
+  expected_detection:
+    fires: false
+  why: "Exit satisfied — the canvas is newer than the devlog. Revising the sustaining answer to what is actually true is the OUTCOME this moment wants, so having done it must silence it. `touching the canvas silences it` is the loop's stated and only intended close."
+
+- id: m-sust-105
+  category: should-not-fire
+  scenario: "A canvas but no devlog — captured an idea, never actually worked on it."
+  project_state:
+    docs_files:
+      - { path: docs/ideas/my-canvas.md, fixture: canvas_sustained_by_hours, age_days: 90 }
+  expected_detection:
+    fires: false
+  why: "Entry needs a devlog: real work has to have happened before a silence means anything. An idea captured and never started is an unstarted idea, not a stalling project — `/sunset IDEA-NNN` owns that, not the conscience."
+
+- id: m-sust-107
+  category: should-not-fire
+  scenario: "The devlog is six months stale but the REPO has commits from last week — they never write devlog entries, they just work."
+  project_state:
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_worked_then_stopped, age_days: 180 }
+      - { path: docs/ideas/my-canvas.md, fixture: canvas_sustained_by_hours, age_days: 200 }
+    other_files:
+      - { path: .git/logs/HEAD, fixture: git_reflog_line, age_days: 6 }
+  expected_detection:
+    fires: false
+  why: "🔴 REGRESSION — v0.206.0 shipped this wrong. The sensor keyed on `docs/devlog.md` alone, so a founder who commits most weekends and writes a devlog entry twice a year would be told they had gone quiet WHILE WORKING. That does not read as tactlessness; it reads as a tool that cannot see the project, and it costs the install rather than the moment. Found by the `indie-hacker` persona before any founder saw it. The sensor is now the newest of the devlog OR `.git/logs/HEAD`."
+
+- id: m-sust-106
+  category: should-not-fire
+  scenario: "Empty project — nothing at all."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-work state. The loop must not fire on a fresh project."

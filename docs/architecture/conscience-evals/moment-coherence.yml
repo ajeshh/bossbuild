@@ -1,0 +1,128 @@
+# Conscience eval set — moment: coherence (design-tokens-loop)
+# Loop spec: stages/L1-mvp/template/docs/loops/design-tokens-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js (v0.27.0+)
+#
+# The design-tokens-loop opens when ≥3 inline style declarations exist in src/**
+# (the "first UI commit" inflection — IDEA-010) and closes when a design-tokens
+# doc exists AND code references tokens. No overlap with cost/failure-mode
+# (different regex patterns); these tests don't need to close other loops.
+
+# =============================================================================
+# SHOULD FIRE — style declarations accumulating without tokens discipline
+# =============================================================================
+
+- id: m-coh-001
+  category: should-fire
+  scenario: "Three className= declarations in one src/ file; no tokens doc."
+  project_state:
+    src_files:
+      - { path: src/components.tsx, fixture: style_decls_low }
+  expected_detection:
+    fires: true
+    moment: coherence
+    confidence: low
+  why: "Entry threshold (≥3) just met; one or two files. Low confidence (might still be exploratory)."
+
+- id: m-coh-002
+  category: should-fire
+  scenario: "12+ style declarations — high-confidence drift."
+  project_state:
+    src_files:
+      - { path: src/components.tsx, fixture: style_decls_high }
+  expected_detection:
+    fires: true
+    moment: coherence
+    confidence: high
+  why: "Confidence scales with overshoot past entry threshold (per loop-runtime computeConfidence: ratio ≥ 2 → high)."
+
+- id: m-coh-003
+  category: should-fire
+  scenario: "styled-components syntax (different pattern, same drift)."
+  project_state:
+    src_files:
+      - { path: src/styled.tsx, fixture: style_styled_components }
+  expected_detection:
+    fires: true
+    moment: coherence
+  why: "Loop's entry regex covers styled-components syntax; the discipline is stack-agnostic."
+
+- id: m-coh-004
+  category: should-fire
+  scenario: "Inline style={{...}} objects (the most common AI-generated UI pattern)."
+  project_state:
+    src_files:
+      - { path: src/views.tsx, fixture: style_inline_objects }
+  expected_detection:
+    fires: true
+    moment: coherence
+  why: "Inline style objects fire the entry. Loops catches this whether or not Tailwind is involved."
+
+- id: m-coh-005
+  category: should-fire
+  scenario: "Design-tokens doc exists, but no token references in code."
+  project_state:
+    src_files:
+      - { path: src/components.tsx, fixture: style_decls_low }
+    docs_files:
+      - { path: docs/design/DESIGN_TOKENS.md, fixture: design_tokens_doc }
+  expected_detection:
+    fires: true
+    moment: coherence
+  why: "A tokens file without any code consuming it is theater. Exit predicate requires BOTH halves."
+
+- id: m-coh-006
+  category: should-fire
+  scenario: "Token references in code, but no design-tokens doc."
+  project_state:
+    src_files:
+      - { path: src/components.tsx, fixture: style_decls_low }
+      - { path: src/tokens-use.ts, fixture: token_refs }
+  expected_detection:
+    fires: true
+    moment: coherence
+  why: "Token usage without a declared doc is design-by-archeology. Loop keeps open."
+
+# =============================================================================
+# SHOULD NOT FIRE — under threshold or closure
+# =============================================================================
+
+- id: m-coh-101
+  category: should-not-fire
+  scenario: "Only 2 style declarations (under threshold)."
+  project_state:
+    src_files:
+      - { path: src/components.tsx, fixture: style_decls_two }
+  expected_detection:
+    fires: false
+  why: "Threshold is ≥3 by design (IDEA-010: 'the first UI commit'). Two is exploratory; not drift yet."
+
+- id: m-coh-102
+  category: should-not-fire
+  scenario: "Style declarations + design tokens doc + token references → loop closed."
+  project_state:
+    src_files:
+      - { path: src/components.tsx, fixture: style_decls_low }
+      - { path: src/tokens-use.ts, fixture: token_refs }
+    docs_files:
+      - { path: docs/design/DESIGN_TOKENS.md, fixture: design_tokens_doc }
+  expected_detection:
+    fires: false
+  why: "Both halves of exit satisfied. Loop closed; no coherence moment."
+
+- id: m-coh-103
+  category: should-not-fire
+  scenario: "No UI code at all — fresh CLI-shaped project."
+  project_state:
+    src_files:
+      - { path: src/main.ts, fixture: no_llm_code }
+  expected_detection:
+    fires: false
+  why: "No style declarations → entry not met. Loop must not over-fire on backend/CLI projects."
+
+- id: m-coh-104
+  category: should-not-fire
+  scenario: "Empty project."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Pre-code state must not fire any UI-discipline moment."
