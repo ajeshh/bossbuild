@@ -9,6 +9,38 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.210.0 — 2026-08-21
+
+**Work-order 1d, and the last open item in Phase 1. `check:roster` — the README can no longer claim
+a headcount the manifests disagree with.**
+
+v0.203.0 fixed the README selling *"eight advisors"* when six ship. This is the mechanism so it
+cannot come back. **Every existing check looked straight past that bug**, and the reason is the
+useful part: `check-refs` class 4 matches agent **names** (`mentor-fundraising`), and the README said
+the same thing in **prose** — *"business, fundraising, pitch and talent"* — with no `mentor-` to
+match on. Meanwhile `check-site` guards a surface that **cannot drift**: `gen-site` derives every
+roster count from `stages/*/manifest.json`, *"never typed by hand"*. **README.md is the one roster
+surface still typed by hand, and nothing was reading it.**
+
+- **No second word list.** The truth comes from `loadModes()`, and the builder/mentor split from the
+  `mentor-` prefix — which `docs/MENTORS.md` already calls the marker that *"keeps the two classes
+  legible."* Deriving beats maintaining, because a second list drifts from the first.
+- **It scans README.md and nothing else, and that narrowness is the finding.** The first run over
+  `web/` returned two results and **both were false**: one page *quotes* "15 agents" as the
+  hypothetical it exists to prevent, and another says *"most tools would make that three advisors"*
+  about other people's tools. No regex reliably separates a claim from a quotation or a
+  counterfactual, and **a check that cries wolf is a check somebody switches off.**
+- **Plural nouns only** — *"one mentor"* mid-sentence is English, not a headcount. Under-firing is the
+  right direction, the same argument the conscience's own predicates make.
+- ⛔ **What it does NOT catch, said plainly so a clean run is not read as more than it is:** prose that
+  *enumerates* a roster without counting it (*"architect, GTM and cofounder at MVP"*) is still
+  unguarded. **The count is the half that is mechanical; the enumeration is not** — catching it needs
+  either a hand-maintained vocabulary or real judgment about whether "business" is naming an agent or
+  just being English.
+- **Verified against the real bug**: restoring the v0.202.0 README makes it exit 1 with *"Eight
+  advisors → 8 claimed, 6 actual"*; the current README exits 0. Wired into `npm run check` as the
+  eleventh gate.
+
 ## 0.209.0 — 2026-08-21
 
 **Work-order 1b, closed. `sustaining` is now the fifth moment with model-verified judgment — and the
