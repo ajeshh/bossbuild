@@ -169,6 +169,14 @@ Each row carries what it looks like, the honest version, and its teeth. **Probe 
 re-type them here.** The catalog is the single source — it grows, and this skill grows with it
 for free.
 
+> **If the founder's answer is that the rule behind a row is outdated, don't wave it through and
+> don't overrule them.** A rule can be a safety floor or a moat, and a `teeth` citation cannot tell
+> you which. Run the three-question test in `boss craft deceptive-patterns --prose` (§ *The other
+> limit*) — who benefits from the rule as written, who bears the cost if they're wrong, and would
+> that person agree. **Question two is the tell: reform absorbs its own downside, rationalisation
+> exports it.** Three good answers and the row is inert — offer to record it as a `DEC-NNN` with the
+> answers in it. This is a test, not a permission slip, and it is not a gate either way.
+
 ### 2. Split the battery by what you can actually observe
 
 - **Behavioural probes — prompt it.** The `ai-voice` and `agent-actions` surfaces need

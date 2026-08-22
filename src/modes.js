@@ -27,6 +27,8 @@ export const STANDING_COMMANDS = [
   ['boss map', 'live cheatsheet: where you are + what\u2019s one unlock away'],
   ['boss status [--conscience]', 'mode / pinned version / drift (+ loop states)'],
   ['boss board', 'what\u2019s in flight (captured \u2192 shipped)'],
+  ['boss id [TYPE]', 'the next free record number \u2014 computed, never counted by hand'],
+  ['boss records', 'check the record set: duplicate IDs, off-vocabulary status, broken promotions'],
   ['boss unlock <mode>', 'climb a rung: quickstart \u2192 mvp \u2192 v1 \u2192 scale'],
   ['boss team [add @user]', 'who\u2019s on the venture (solo by default)'],
   ['boss conscience pause --for 8h', 'silence the whole conscience for a bounded sprint'],

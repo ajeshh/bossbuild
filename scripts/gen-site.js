@@ -769,7 +769,6 @@ blocks.MARK = () => MARK('mark mark-lg');
 const NAV = [
   { id: 'index', href: 'index.html', label: 'Home' },
   { id: 'start', href: 'start.html', label: 'Start' },
-  { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
   { label: 'The product', href: 'team.html', children: [
     { id: 'team', href: 'team.html', label: 'The team' },
     { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
@@ -784,6 +783,7 @@ const NAV = [
   ] },
   { label: 'Trust', href: 'charter.html', children: [
     { id: 'charter', href: 'charter.html', label: 'Charter' },
+    { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
     { id: 'governance', href: 'governance.html', label: 'Governance' },
     { id: 'credits', href: 'credits.html', label: 'Credits' },
   ] },
@@ -850,6 +850,14 @@ for (const f of pages) {
 
   // Expand generated blocks. An unknown token is a hard error — a silent
   // {{TYPO}} shipping to the website is exactly the failure this file prevents.
+  // The shell owns the footer. A fragment that declares its own gets TWO on the page —
+  // which shipped: the landing page carried a full duplicate whose version was typed by
+  // hand and sat 35 releases stale, directly under the rule that no number on this site
+  // is ever typed by hand. Cheap to state, so state it rather than trusting the next author.
+  if (/<footer[\s>]/.test(content)) {
+    console.error(`  ✗ ${f}: fragments must not declare <footer> — the shell renders it (and stamps {{VERSION}})`);
+    process.exitCode = 1;
+  }
   content = content.replace(/\{\{([A-Z_]+)\}\}/g, (m0, key) => {
     if (!blocks[key]) { console.error(`  ✗ ${f}: unknown block {{${key}}}`); process.exitCode = 1; return m0; }
     return blocks[key]();
@@ -891,10 +899,17 @@ for (const f of pages) {
 // robots.txt + sitemap.xml are generated from the same page list that was just built,
 // so a sitemap can never advertise a page that isn't there.
 // Cloudflare Pages picks these up automatically; generated so a rebuild can't drop them.
+// The canvas template is a DOWNLOAD, and `download` on the anchor only covers the click. Someone
+// who copies the link, shares it, or opens it directly gets whatever the host decides `.md` is —
+// and with `nosniff` set globally that is a coin-flip between a save dialog and a wall of raw
+// Markdown. Say it explicitly instead, so the artifact behaves the same however it is reached.
 writeFileSync(join(SITE, '_headers'),
   '# Cloudflare Pages. Static site, no build step — serve site/ as-is.\n' +
   '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n' +
-  '  X-Frame-Options: SAMEORIGIN\n/styles/*\n  Cache-Control: public, max-age=3600\n');
+  '  X-Frame-Options: SAMEORIGIN\n/styles/*\n  Cache-Control: public, max-age=3600\n' +
+  '/humane-product-canvas.md\n  Content-Type: text/markdown; charset=utf-8\n' +
+  '  Content-Disposition: attachment; filename="humane-product-canvas.md"\n' +
+  '  Cache-Control: public, max-age=3600\n');
 writeFileSync(join(SITE, 'robots.txt'),
   `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 writeFileSync(join(SITE, 'sitemap.xml'),

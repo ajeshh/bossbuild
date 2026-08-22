@@ -40,18 +40,19 @@ A CLI plus a set of skills, agents, and loops that run inside Claude Code:
 - **`boss unlock mvp`** — adds the spec discipline (`/spec` with validated-learning + evals
   fields), the smoke gate, the demand-test step (`/pretotype` — Savoia), and JIT design-tokens
   scaffolding when your project earns it.
-- **`boss unlock v1`** — adds full design review (`/design-review` + `/ux-check` + token
-  enforcement), cross-FEAT sequencing (`/board`), and the next-tier mentors (business,
-  fundraising, pitch, talent).
+- **`boss unlock v1`** — adds design-drift enforcement, cross-FEAT sequencing (`/board`), and
+  `/design-library` (your visual system as one page, generated from the code so it can't drift).
+  **V1 seats no new mentors** — `mentor-capital`'s remit widens there instead, to the raise
+  question and the investor story.
 - **A conscience that nudges.** When you've captured three ideas and tested none, it speaks
   once. When you're spec'ing a feature your canvas never validated, it surfaces restraint.
   Cohort-aware (set yours during spin-up; it adjusts the voice). Always overridable; never
   blocking. Silence it for a sprint (`boss conscience pause --for 8h`), or turn down just one
   nudge while the rest keep speaking (`boss conscience mute <moment>`).
-- **A mentor board.** Eight advisors for the parts code can't teach, seated as the project earns them:
-  `mentor-founder` from day one; architect, GTM and cofounder at MVP; business, fundraising, pitch and
-  talent at V1 — alongside the builders who make the thing (`product-lead` and a coder from the start, `tester`
-  `planner` and `designer` at MVP). **There's no ethics
+- **A mentor board.** Six advisors for the parts code can't teach, seated as the project earns them:
+  `mentor-founder` from day one; architect, customers, capital and cofounder at MVP; **V1 adds none**
+  (capital's remit widens instead); hiring at Scale — alongside the builders who make the thing
+  (`product-lead` and a coder from the start, `tester` `planner` and `designer` at MVP). **There's no ethics
   advisor you have to remember to open** — the humane lens is wiring instead: the conscience, `/canvas`'s
   Risks & Harms cell, the `harm-taxonomy` practice, and `/red-team --humane`, which probes your own AI
   product for dark patterns.

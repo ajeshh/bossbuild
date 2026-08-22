@@ -53,6 +53,18 @@ block the founder's deploy (conscience-not-censor). Surface, then proceed if the
   opt-out** (a config *act*, not a promise — "the AI did it" is not a legal defense, Air-Canada)? Don't restate
   it here — point at **`/trust`** (the data-min policy + ToS + subprocessor list + the opt-out check). SOC2/DPIA
   stay deferred until a *named* enterprise deal demands them; the privacy policy + opt-out do not.
+- **Licence — the one BOSS deliberately left open, and the one moment it stops being free to leave open.**
+  `.boss/config.json` carries `license`, and it scaffolds as `null` on purpose: BOSS does not pick this
+  for you. **But going live is when "not yet" stops being neutral.** Code with no LICENSE reads as
+  *all rights reserved* to everyone who finds it — so an undecided project ships as a **closed** one,
+  and the enclosing outcome gets reached by silence rather than by anyone choosing it. If `license` is
+  `null`, ask **once**, put both costs in one breath — *an open grant can't be taken back; a project
+  nobody ever opened stays closed, because nobody comes back to it* — then write the answer and
+  proceed either way. **"Still not yet" is a real answer**: record `license: "undecided"` so it is a
+  decision on file rather than a blank, say plainly that shipping without a LICENSE means all-rights-
+  reserved, and **never raise it again.** `null` means nobody asked; `"undecided"` means they were
+  asked and chose to wait. This is not a gate, and it is not paperwork — it is the one asymmetric
+  choice in the scaffold, arriving at the one moment it becomes real.
 - **Don't restate the security pass — run it.** This pre-flight is the *trigger*; the depth lives in
   **`/red-team`**'s pre-ship app-security pass (the shipped-secret scan `secrets-guard` doesn't cover)
   and `boss craft agent-security`. A `fail` here is a `/spec` fix

@@ -58,10 +58,15 @@ BOSS assumes no tech stack. The first build decision picks one. Proven stack too
 via Principle 1 (UP) so the next project of that kind starts from it — stack profiles are an
 *output* of the learning loop, not a pre-baked input.
 
-## 5. Optionality by default
+## 5. Optionality by default — and BOSS doesn't hold the option
 
-Defaults preserve future choices rather than foreclosing them: private repos, proprietary license
-(relicense to OSS later — not the reverse), snapshot-not-blueprint canvases. Decide late, on evidence.
+Defaults preserve future choices rather than foreclosing them: reversible scaffolds, stack picked at
+the first build decision, snapshot-not-blueprint canvases. Decide late, on evidence.
+
+**Where a choice is asymmetric, BOSS asks rather than assumes** — and names the asymmetry in *both*
+directions. A permissive licence, once published, cannot be revoked; a project that was never opened
+quietly stays closed. Both are real losses. Preserving optionality means the founder makes that call
+out loud, not that BOSS picks the enclosing side and calls it neutral ([[DEC-011]]).
 
 ## 6. Humane before viable
 

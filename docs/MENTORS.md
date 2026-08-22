@@ -20,8 +20,9 @@ updated: 2026-05-21
 | **Mentors** (`mentor-*`) | Coach the *founder*, not the codebase. Ask hard questions, give counsel, help shape concepts (business, architecture strategy, GTM, fundraising, hiring, pitch). | `.claude/agents/` with a `mentor-` prefix | `mentor-founder`, `mentor-capital`, `mentor-architect`, … |
 
 Mentors sit **outside** the product. They never write production code or own specs — they push the
-founder's *thinking* forward and leave a paper trail (the dossier) that compounds toward something
-fundable/hireable, **if the founder chooses** that path. Mentoring is opt-in, never forced (Principle 2).
+founder's *thinking* forward and leave a paper trail (the dossier) that compounds toward whatever this
+becomes — **fundable, hireable, forkable, or handed to the people it serves.** Which one is the
+founder's call ([[DEC-011]]); mentoring is opt-in, never forced (Principle 2).
 
 ## Where mentors live
 

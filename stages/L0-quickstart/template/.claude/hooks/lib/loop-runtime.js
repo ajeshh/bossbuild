@@ -16,9 +16,15 @@
 //                                       cross-file checks
 //   - outpaced_by: { path_glob, behind, min, pattern? }
 //                                     — N+ files under `path_glob` are NEWER than the newest
-//                                       file under `behind`. The only TEMPORAL predicate, and
-//                                       the only one that can express "this stopped being true"
+//                                       file under `behind`. The first TEMPORAL predicate, and
+//                                       the one that expresses "this stopped being true"
 //                                       rather than "this was never made".
+//   - quiet_for: { path_glob, days }   — NOTHING under `path_glob` has changed in `days`. The
+//                                       first ABSOLUTE-time predicate; every other member of
+//                                       this set is a relation between two files, and SILENCE
+//                                       cannot be written as one. Added v0.206.0 for the
+//                                       commons half of the canvas, which is falsified by
+//                                       absence rather than by activity.
 //
 // Any predicate may also carry a sibling `when: [<predicate>, ...]` guard. The
 // predicate applies only if every guard predicate holds; otherwise it is treated as
@@ -188,6 +194,39 @@ const PREDICATES = {
       evidence: { path_glob, behind, newer: newer.length, min: need,
                   ...(pattern ? { pattern } : {}),
                   names: newer.slice(0, 4).map((f) => f.split('/').pop()) },
+    };
+  },
+
+  // quiet_for: NOTHING under `path_glob` has changed in `days`. The FIFTH predicate, and the
+  // first ABSOLUTE-time one — every other member of this set is a relation between two files.
+  //
+  // WHY IT HAD TO EXIST: `outpaced_by` is temporal but it detects PRESENCE — N files newer than
+  // an artifact. The commons half of the canvas (DEC-009's second sustainability branch: what
+  // keeps this alive, who else could carry it, what would make you stop) is falsified by
+  // ABSENCE. A maintainer running out of road does not ship three FEATs; they go quiet. You
+  // cannot express silence as a relation between two files, so the closed set could not say it.
+  //
+  // THE REFRAME THAT MAKES IT HUMANE AND ALSO MAKES IT WORK: the conscience is a hook, so it
+  // only ever runs while the founder is HERE. It can never observe an absence in real time —
+  // if they are gone, nothing is running. So this does not fire AT someone who is away. It
+  // fires when they COME BACK, which is both the only observable moment and the only kind one.
+  //
+  // Fails SAFE in the same direction as `outpaced_by`: a fresh clone resets mtimes, so
+  // everything looks new and this UNDER-fires. A missed nudge costs nothing; a false one spends
+  // trust — and on this moment, more trust than any other.
+  quiet_for({ path_glob, days }, projectDir) {
+    const mtime = (f) => { try { return statSync(f).mtimeMs; } catch { return 0; } };
+    const files = expandGlob(path_glob, projectDir);
+    // No files at all is an ABSENCE problem, which `exists` already owns. Never report it here:
+    // a project with no devlog has not gone quiet, it has not started.
+    if (!files.length) return { ok: false, evidence: { path_glob, reason: 'nothing to have gone quiet' } };
+    const newest = Math.max(...files.map(mtime));
+    if (!newest) return { ok: false, evidence: { path_glob, reason: 'no readable mtime' } };
+    const quietDays = Math.floor((Date.now() - newest) / 86400000);
+    const need = days || 21;
+    return {
+      ok: quietDays >= need,
+      evidence: { path_glob, quietDays, days: need },
     };
   },
 };

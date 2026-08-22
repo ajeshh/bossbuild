@@ -24,7 +24,7 @@
       "path": ".boss/conscience-log.jsonl",
       "capability": "the frequency ledger — IDEA-013",
       "verdict": "exercised",
-      "why": "Populating since 2026-08-20, when the conscience hook was installed into BOSS's own repo for the first time. THE ROOT CAUSE was never 'nobody ran it': BOSS's `.claude/` had no hooks directory and no `hooks` block in settings.json, and its `.boss/manifest.json` was pinned at bossVersion 0.6.0 — 180 releases stale. The conscience had never fired on the project building it."
+      "why": "RESET 2026-08-21 — the file exists and the hook is wired, but it is EMPTY and its history is gone: an assistant ran `boss remove --apply` from this directory by mistake and .boss/ is gitignored, so nothing could restore it. It had been populating since 2026-08-20, when the conscience hook was installed into BOSS own repo for the first time. THE ORIGINAL ROOT CAUSE is still worth keeping: it was never \"nobody ran it\" — BOSS .claude/ had no hooks directory and no `hooks` block in settings.json, and .boss/manifest.json was pinned at bossVersion 0.6.0, 180 releases stale. The conscience had never fired on the project building it. Frequency data restarts from 2026-08-21; do not read this log as continuous."
     },
     {
       "path": ".boss/trace.jsonl",

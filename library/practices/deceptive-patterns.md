@@ -4,8 +4,8 @@ type: practice
 owner: designer
 status: active
 host: stack-neutral
-provenance: split out of ai-ux-patterns.md at v0.190.0 (2026-08-20). That file had absorbed five sweeps of catalog growth (RVW-031 CDT taxonomy · RVW-056/057 classic-web families + regulatory teeth · RVW-059/060/061/062/063 cohort & frontier · the 2026-07-23 generated-code and metering pass) until 46% of an AI-interaction practice was a bad-pattern list, and `boss craft` was flagging it as the shelf's one 2x-median outlier. The catalog now lives as DATA (library/deceptive-patterns.json) so it can grow without growing the dose; this file is the judgment that data cannot carry.
-provenance_public: The named patterns come from CDT's *Dark Patterns in AI Chatbots* (2026, CC-BY), Brignull's deceptive.design, Mathur et al.'s *Dark Patterns at Scale*, Gray et al.'s CHI-2024 ontology, and successive research sweeps covering accessibility, minors, agentic products, algorithmic management, and the patterns a model writes into generated code (Vaccaro et al., CHI 2026).
+provenance: "The other limit — a rule is evidence, not a verdict" added v0.202.0 (2026-08-21) from FOUNDER JUDGMENT, not a research sweep. No RVW backs it and it must not be cited as one; its three questions are modelled on the `deception` moment's effect-not-narrative shape and on the canvas's "name the worst-served person, not an abstraction." (Note: `boss craft --prose` prints this field to founders — see v0.202.0 notes; keep it publicly readable until that is fixed.) · split out of ai-ux-patterns.md at v0.190.0 (2026-08-20). That file had absorbed five sweeps of catalog growth (RVW-031 CDT taxonomy · RVW-056/057 classic-web families + regulatory teeth · RVW-059/060/061/062/063 cohort & frontier · the 2026-07-23 generated-code and metering pass) until 46% of an AI-interaction practice was a bad-pattern list, and `boss craft` was flagging it as the shelf's one 2x-median outlier. The catalog now lives as DATA (library/deceptive-patterns.json) so it can grow without growing the dose; this file is the judgment that data cannot carry.
+provenance_public: The three-question test under *The other limit* is BOSS's own judgment — no research backs it, and it should not be read as though any did. The named patterns come from CDT's *Dark Patterns in AI Chatbots* (2026, CC-BY), Brignull's deceptive.design, Mathur et al.'s *Dark Patterns at Scale*, Gray et al.'s CHI-2024 ontology, and successive research sweeps covering accessibility, minors, agentic products, algorithmic management, and the patterns a model writes into generated code (Vaccaro et al., CHI 2026).
 last_reviewed: 2026-08-20
 review_by: 2026-11-18
 curve: humane
@@ -138,6 +138,45 @@ appendix. That placement is deliberate: a founder who reads a paragraph of statu
 does not give legal advice. Verify status before relying on any of it — enforcement moves, and it
 moves in both directions (the FTC's click-to-cancel Negative Option Rule was *vacated* by the 8th
 Circuit in 2025, RVW-064).
+
+### The other limit — a rule is evidence, not a verdict
+
+The teeth run one way. They say *someone regulated this*. They do not say the rule is right, and they
+never say the rule is the ceiling. There are two ways to misread them and this practice has only
+been guarding one:
+
+- **Too frightening** — a founder reads statute numbers and freezes. Guarded above.
+- **Too conservative** — the catalog reads "regulated" as "settled," a founder building something
+  that genuinely challenges an outdated arrangement hears BOSS telling them not to, and **humane
+  quietly comes to mean *don't disturb anything*.** That is the opposite of what this practice is for.
+
+Rules are written by people — sometimes the people a rule protects, sometimes the people it protects
+**from competition**. A licensing regime can be a safety floor or a moat, and both exist. A `teeth`
+field cannot tell you which one you are looking at, and neither can BOSS.
+
+**But "the rule is outdated" is also the oldest cover story in this industry** — said about taxi
+medallions, about laboratory certification, about tobacco marketing. Each was a real company with a
+real argument, and the argument was doing the same job a countdown timer does: making a cost somebody
+else absorbs feel like progress. So this is not a permission slip, and BOSS will not write you one.
+
+**The test is the one the rest of this practice already uses: effect, not narrative.** Before setting
+a row aside because the rule behind it is outdated, answer three questions out loud.
+
+1. **Who benefits from the rule as written? Name them, not an abstraction.** A named incumbent with a
+   named advantage is a real answer. If the only beneficiary you can name is "users," you are looking
+   at a rule that protects users.
+2. **Who bears the cost if you are wrong — you, or the person the rule protects?** The sharpest of the
+   three. **Reform absorbs its own downside; rationalisation exports it.**
+3. **Would that person agree with you? Have you asked one?** Not a persona, not an average. One.
+
+**Three good answers and the row is genuinely inert for you.** Record it as a `DEC-NNN` with the
+answers in it — that is a decision worth being able to re-read in a year, and worth handing to
+whoever asks you about it later. **A weak answer to question 2 is the tell,** and it outweighs the
+other two together.
+
+⛔ **What BOSS does with your answer: nothing.** No gate, no block, no score. This exists so a founder
+doing the harder, better thing is not mistaken for one doing the easy, worse thing — and so the
+conscience can hold both without pretending they are the same.
 
 ## Canon (pinned, not enumerated)
 

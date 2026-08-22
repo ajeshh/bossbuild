@@ -9,6 +9,324 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.206.0 — 2026-08-21
+
+> **For you:** **The conscience now watches the half of the canvas it had been ignoring.** If your
+> project is sustained by your own hours rather than by revenue, the canvas asks how — *what keeps
+> this alive, who else could carry it, what would make you stop* — and until now **nothing ever looked
+> at those answers again**, while the money questions were watched continuously. The `sustaining`
+> moment closes that. It offers two doors and means both: **revise the answer to what's actually
+> true** (*"a weekend a month"* beats *"indefinitely"*), or **end it on purpose**.
+
+**The asymmetry, stated plainly: the canvas asked both halves and the conscience watched one.** Across
+15 moments and 18 loops there was **zero** mention of maintainer burnout, bus factor, contributor
+pipeline or succession — while `drift` watched the bet, `margin-trap` the price against the cost,
+`outpaced` the canvas against shipped work, and `cost`/`cost-stale` the spend. That quietly made BOSS
+a tool for one kind of project while [[DEC-011]] and [[DEC-012]] claimed otherwise.
+
+**It required the fifth predicate, and that is the load-bearing part.** The four existing predicates
+are all relations between two files. `outpaced_by` is temporal but it detects **presence** — N files
+newer than an artifact. **The commons half is falsified by absence**: a maintainer running out of road
+doesn't ship three FEATs, they go quiet, and **silence cannot be written as a relation between two
+files**. So `quiet_for: { path_glob, days }` joins a set whose own header says *"closed set; extend
+deliberately."* First absolute-time predicate in BOSS.
+
+**Why it is not cruel, structurally rather than by promise.** The conscience is a hook — **it only
+runs while the founder is here.** Nothing observes them while they're away. So this never fires *at*
+an absent person; it fires when they **come back**, which is both the only observable moment and the
+only kind one. That's a property of the architecture, not a line in the copy.
+
+- ⛔ **Not a productivity nudge, and it must never sound like one.** No streaks, no *"let's get back on
+  track"*, no encouragement-shaped scolding. **A gap is data, not a verdict** — and it is the single
+  most *predicted* thing about this kind of project, which is why the second branch exists at all.
+- **45 days, not 21.** Three weeks is a holiday; six is a pattern. And the bar for speaking is the
+  highest of any moment: it stays silent unless the project is sustained by someone's own hours *and*
+  either a stated stopping condition has actually fired or the written arrangement has plainly become
+  untrue. **The predicate counts days and knows nothing about why** — a baby, a job, an illness and a
+  fortnight in the sun are identical to `mtime`.
+- ⛔ **The bus factor is never raised as a criticism.** *"Nobody else could carry this"* is the ordinary
+  condition of almost every good small project.
+- **Verified firing and silent, on a real scaffold:** fires at 60 days quiet with a canvas and a
+  devlog; silent when work resumes, silent at 30 days, silent with no canvas, and silent once the
+  canvas is revised — *"touching the canvas silences it"* is the intended and only outcome.
+
+## 0.205.0 — 2026-08-21
+
+> **For you:** **BOSS asked about your licence once and then went quiet forever — which meant the
+> closed answer won by default.** v0.200.0 stopped BOSS picking `proprietary` for you and made
+> `license` start undecided. What it didn't do was ever come back. A project with no LICENSE file
+> reads as *all rights reserved* to everyone who finds it, so *"not yet"* quietly became *"closed"* —
+> **the exact failure that change existed to prevent.** `/ship` now asks, once, at the only moment it
+> becomes real: the moment your code goes where other people can find it.
+
+**A defect introduced three releases ago by the change that was supposed to fix it.** [[DEC-011]]
+named the failure mode in its own words — *"a project that was never opened quietly stays closed,
+because nobody comes back to it"* — and then shipped a mechanism that never came back. The ask was
+built; the silence was left.
+
+- **It lives in `/ship`'s pre-flight, which is already the right shape** — *"the check with teeth (NOT
+  a gate)"*, whose privacy bullet is the exact precedent: *"going live is the moment user data starts
+  flowing."* The licence counterpart is that going live is the moment your code becomes something
+  other people can read and build on. **Just-in-time, not paperwork:** at Quickstart a licence is
+  genuinely premature, which is why this arrives at MVP with deploy and not at spin-up.
+- **Both costs in one breath, still leaning nowhere:** an open grant can't be taken back; a project
+  nobody ever opened stays closed because nobody comes back to it.
+- **`null` and `"undecided"` are now two different states**, and the distinction is the whole reason
+  the question stops. `null` = **nobody asked**. `"undecided"` = **asked at the moment it mattered and
+  chose to wait** — a decision on file rather than a blank, and BOSS never raises it again. Same shape
+  as `dropped` vs `deferred` in v0.204.0, which is not a coincidence: *"decided against"* and *"never
+  got to it"* are different facts, and a tool that conflates them is lying about its own state.
+- ⛔ **Not a gate, and never a nag.** Once per project, then silence — whichever way they answer.
+
+🔴 **Found alongside it and NOT fixed: the conscience watches the venture half and not the commons
+half.** [[DEC-009]] gave the canvas a second sustainability branch — *what keeps this alive · who else
+could carry it · what happens if you're hit by a bus · what would make you stop* — and **nothing ever
+watches those answers again.** Across 15 conscience moments and 18 loops, zero mention of maintainer
+burnout, bus factor, contributor pipeline or succession, while the venture half is watched
+continuously (`drift` on the bet, `margin-trap` on price-vs-cost, `outpaced` on the canvas falling
+behind, `cost`/`cost-stale` on spend). **The canvas asks both halves; the conscience watches one.**
+That asymmetry is the open-source conscience gap, it is structural rather than speculative, and
+closing it means a 16th moment — which is a decision about surface, not a patch.
+
+## 0.204.0 — 2026-08-21
+
+> **For you:** **`/sunset` now goes as far as it needs to.** It ended whole projects and zombie
+> features; it could not end **an idea** — the cheapest and most common ending there is. `/sunset
+> IDEA-012` closes one captured idea honestly, and it opens with the question that comes first:
+> ***"did you decide against this, or did you just never get to it?"*** Only the first is a sunset.
+> The second gets left alone — **BOSS will not talk you into closing an idea to tidy your backlog.**
+
+**A status promised to keep something and nothing kept it.** `docs/IDS.md` defines `dropped` as
+*"Decided against. **Kept for the reasoning**"* — and no verb ever captured the reasoning, so the word
+was a hand-flip that kept whatever you happened to type. The ceremony shrinks as the thing gets
+smaller; the honesty doesn't.
+
+- **The idea scope is the lightest of the three** and subtracts more than it adds: no usage
+  validation (nothing shipped), no deprecation notice (no users), no `boss retire` (not a project),
+  and ⛔ **no `/boss-learn` harvest** — the other scopes harvest because something was *built* and a
+  pattern was *proven*; an unbuilt idea has proven nothing, and routing it UP is how a practice shelf
+  fills with things that merely sounded good. **The harvest doesn't shrink to this scale, it
+  disappears.**
+- 🔴 **Caught during the build, and it changed the design: the third question was about to collapse
+  two statuses.** The draft asked *"what would bring it back?"* — but `deferred` is already defined as
+  *"deliberately NOT being built, **with a written re-open trigger**"*, so a `dropped` idea carrying a
+  trigger is a `deferred` idea wearing the wrong word. The question is now a **router**: name a
+  condition → `deferred`; name none → `dropped`, decided on the merits. `docs/IDS.md` exists because
+  this vocabulary once had six words in the spec and fifteen in practice; adding a fifteenth would
+  have been a poor way to celebrate it.
+- **Evidence the gap was real, from BOSS's own backlog:** across **67 ideas, `dropped` has been used
+  exactly zero times** — while `deferred` (which [[DEC-009]] gave a written re-open-trigger practice)
+  has 17. A status with no mechanism behind it doesn't get used; the one with a practice does. The
+  router now makes that choice explicit instead of instinctive.
+- **Ambiguous arguments get one question, not a guess.** A `FEAT` was built and has users; an `IDEA`
+  was only ever thought about. Confusing them yields a deprecation notice for something nobody shipped,
+  or a silent delete of something people depend on.
+
+⛔ **Explicitly not built: a "program" scope.** BOSS has no epic/initiative record — the types are
+IDEA, FEAT, DEC, EVID, PRAC, EXTR, RFC, EXP — so sunsetting one would mean a new spine through
+`/board`, `/roadmap` and the backlog checker. That is a record-type decision and wants its own DEC,
+not a quiet addition inside a scope release.
+
+## 0.203.0 — 2026-08-21
+
+> **For you:** **The README was selling a mentor board that doesn't exist.** It promised *"eight
+> advisors"* and named **business, fundraising, pitch and talent arriving at V1**. Six ship,
+> `mentor-fundraising` and `mentor-pitch` were absorbed into `mentor-capital` fourteen releases ago
+> ([[DEC-006]]), and **V1 seats nobody at all** — that's deliberate, not a gap. Corrected: founder at
+> Quickstart; architect, customers, capital and cofounder at MVP; **V1 adds none** (capital's remit
+> widens instead); hiring at Scale.
+
+**The stale-roster bug again, one surface out — and the check that exists to catch it looked straight
+past this one.** `check-refs` class 4 was built after the release-readiness pass found the README
+selling BOSS's gitignored dev workspace as founder features, and v0.192.0 widened it again when three
+retired agent names sat in `<pre>` mocks on the public site for 27 releases. It matches **agent
+names** (`mentor-fundraising`). The README says *"business, fundraising, pitch and talent"* — the same
+claim in **prose**, with no `mentor-` prefix to match on. Third instance of one rule with an
+under-read surface.
+
+- **The site was already clean.** v0.193.0 swept it, and `gen-site` derives its roster counts from
+  `stages/*/manifest.json` via `src/modes.js` — *"never typed by hand."* The README is hand-typed, so
+  it is the one roster surface that can still drift silently. Filed as the obvious next mechanism:
+  **derive the README's counts the way the site derives its own, or check them.**
+- The V1 bullet was wrong in the same paragraph and is corrected too: V1 adds design-drift
+  enforcement, `/board`, and `/design-library` — not mentors.
+- ⛔ **The README's positioning lines are deliberately untouched** — *"tell a real business from a
+  convincing demo"*, *"the discipline on top gets you a business."* Those still assume the destination
+  the telos dropped in v0.200.0, and they are covered by the standing decision to leave outward-facing
+  positioning alone until it's settled ([[DEC-012]] §5). **They are not drift; do not sweep them.**
+
+**Charter recorded:** [[DEC-012]] — the range widens but the methodology doesn't; BOSS holds both the
+Silicon Valley and the ancient ways of building without resolving them; the mission to build more good
+is **unadvertised, never enforced, and never hidden from the founder** (an unstated goal shaping a
+tool's nudges is a deceptive pattern by BOSS's own catalog — it stays honest only because BOSS is
+inspectable by construction). Written *after* three releases of mechanism, per DEC-011's ordering.
+[[IDEA-069]] filed and **not built**: every time-shaped question BOSS asks a founder points at *now* or
+*how it ends*; nothing asks what a thing is meant to **outlast**.
+
+## 0.202.0 — 2026-08-21
+
+> **For you:** **A regulation is evidence, not a verdict — and the catalog now says so.** Every
+> deceptive-pattern row with regulatory weight carries a `teeth` citation, and BOSS only ever limited
+> those in one direction: *don't be frightened, this isn't legal advice.* It never said the other
+> half — **a rule can be a safety floor or a moat, and a citation can't tell you which.** If you're
+> genuinely challenging an outdated arrangement rather than hiding behind a rationalisation, BOSS now
+> has a way to tell the difference **with you**, instead of quietly reading "regulated" as "settled."
+
+**The humane lens had one failure mode guarded and the opposite one wide open.** Too-frightening was
+handled. Too-conservative was not — and unguarded, *humane* drifts into *don't disturb anything*,
+which is the opposite of what the practice is for.
+
+**It is a test, not a permission slip, and that distinction is the whole design.** *"The rule is
+outdated"* is the oldest cover story in this industry — said about taxi medallions, laboratory
+certification, tobacco marketing. Shipping a paragraph that says *"rules can protect incumbents"*
+would hand every founder a pre-written dismissal **in BOSS's voice**. So instead, three questions in
+the shape the `deception` conscience moment already uses (**effect, not narrative**):
+
+1. **Who benefits from the rule as written — named, not an abstraction?** If the only beneficiary you
+   can name is "users," it's a rule that protects users.
+2. **Who bears the cost if you're wrong — you, or the person the rule protects?** ⭐ The tell.
+   **Reform absorbs its own downside; rationalisation exports it.**
+3. **Would that person agree? Have you asked one?** Not a persona. One.
+
+Three good answers and the row is inert for you — record it as a `DEC-NNN` with the answers in it.
+⛔ **BOSS does nothing with the answer**: no gate, no block, no score. It exists so a founder doing the
+harder, better thing isn't mistaken for one doing the easy, worse thing.
+
+- **Reachability was checked, not assumed.** `/red-team --humane` says *"probe the rows; do not
+  re-type them here"* and points only at `--surface`, which renders rows — so the judgment would have
+  sat in a file that pass never opens. `/red-team` now points at it by name at the moment a founder
+  says a rule is outdated.
+- **Attribution is stated, not implied** ([[vet-verify-attribution]]): this is **founder judgment, no
+  RVW behind it**, and both `provenance` and `provenance_public` now say so. The catalog's 89 rows are
+  research-backed; these three questions are not, and the file must not blur that.
+- **Nothing else moved** — no row edits, no new cell, no conscience-moment change (the live
+  `deception` moment was already effect-based and already says *"if they keep it, that is their
+  call"*), no website change.
+
+🔴 **Found while verifying reachability, NOT fixed here:** `boss craft <practice>` prints the raw file,
+so the **internal `provenance:` frontmatter renders into a founder's terminal** — on all 32 practices
+that carry one, many naming `IDEA-NNN` / `REVIEW-NNN` records a founder's project does not contain.
+`gen-site.js` enforces exactly this boundary for the website (*"the site renders ONLY
+`provenance_public`"*, with a check that errors when the public field names internal things);
+`check-refs.js` even documents the internal field as *"not published."* **The boundary is stated and
+enforced on one surface and unenforced on the other** — the same one-directional-coverage shape this
+repo keeps catching. Filed, not patched, so it gets its own release and its own check.
+
+## 0.201.0 — 2026-08-21
+
+> **For you:** **The canvas asks the planet question it had been promising.** The Metrics cell has
+> always been headed *"meaningful success — for people and planet"* and then never asked about the
+> planet: every sharpen under it was about people and the venture. It now asks the other half —
+> *what does one unit of this consume, and does that grow with users or with success?* — with
+> ***"very little, and here's why"* as a complete, honest answer.** Don't manufacture a footprint to
+> look serious. If your growth loop **is** inference, `/ai-cost`'s cost-per-successful-outcome is
+> already most of the measurement: read it once for the wallet, once for the world.
+
+**A cell stated an intent it did not enforce — and the free giveaway had quietly dropped the intent
+altogether.** The same cell said three different things across three surfaces:
+
+- `stages/L0-quickstart/…/canvas/SKILL.md` — *"for people **and planet**"*, with a sharpen covering
+  well-being, learning and resilience. **The planet is named in the prompt and absent from the ask.**
+- `web/humane-product-canvas.md` — the **CC BY-SA 4.0 template given away one release ago**
+  ([[DEC-010]], v0.198.0) — read *"for people as well as **the business**."* The planet was not
+  softened, it was **replaced, by the business**, on the public artifact BOSS calls its front door.
+- `web/canvas.html` — asked neither, leading with *"what people gain."*
+
+All three now carry the same question and the same second half. **This is composition, not a new
+cell** — the prompt already promised it; only the sharpen was missing ([[EVID-001]]: compose and
+subtract). No new ceremony: a "negligible" answer is explicitly the common and correct one, the same
+discipline the six shape questions already use.
+
+- **Why it matters more here than on a generic canvas:** BOSS's founders are building AI products,
+  where the footprint is not a fixed overhead but the variable cost — it scales with the thing you're
+  trying to grow. The measurement already existed (`/ai-cost`) and was pointed only at the wallet.
+- **Found by audit, in the [[DEC-011]] family:** the values layer said the right thing and the
+  mechanism underneath it didn't. Fix the mechanism, don't restate the value.
+
+## 0.200.0 — 2026-08-21
+
+> **For you:** **BOSS stops picking your licence.** New projects used to scaffold as
+> `proprietary / All Rights Reserved`, and `/boss` pitched it — *"so you keep both paid and
+> open-source options open."* Now `license` starts as **undecided**, and `/boss` asks a question with
+> both costs on it: an open licence is a grant you can't take back, **and** a project nobody ever
+> opened quietly stays closed. Pick one, or say *not yet* and get no LICENSE file rather than an
+> argument. Existing projects keep whatever they already chose.
+
+**The default was doing a second job as the answer.** The reversibility argument behind
+`proprietary` is true — a permissive grant, once published, cannot be revoked — and it is exactly
+why this release does **not** flip the default to MIT: defaulting someone into an irrevocable public
+grant is the same defect pointed the other way. So the argument stays and the answer goes. `license`
+scaffolds as `null` in `boss new` and `boss adopt`; `/boss` puts the two failure modes side by side
+and picks neither; its Rules line changes from *"never publish a permissive license by default"* to
+*"never decide the licence for them, in either direction"*; the open options are listed first; and
+the proprietary LICENSE template loses the paragraph that argued for itself — a LICENSE states
+terms, it doesn't lobby. `visibility` keeps `private` as the *starting state* (nobody has checked a
+minutes-old repo for a stray key) and `/boss` now offers public as a peer rather than an exception.
+
+**And BOSS names a second destination.** *"…mentors the founder from idea to fundable/hireable
+venture"* → **a thing that stands on its own: a company, a co-op, or a commons.** `CLAUDE.md` and
+`docs/MENTORS.md`. **Principle 5** keeps *decide late, on evidence* and loses the pre-loaded *"private
+repos, proprietary license"* — it now names the asymmetry in both directions.
+
+- ⛔ **What is deliberately NOT built.** No co-op mentor, no commons mode, no `intent` axis.
+  [[IDEA-067]] rungs 2 and 3 stay `deferred` on their existing triggers. **n=0 is still n=0** —
+  cooperative-structure counsel built for a founder who hasn't appeared is the charter-widening
+  [[DEC-009]] refused, in a better hat. And **the website is untouched**: mechanism first, claim
+  second. BOSS doesn't get to say *"co-ops, commons, tech for good"* on a landing page in the same
+  release it changes four defaults.
+- **The falsifier that matters** ([[DEC-011]]): if **n ≥ 1** founder open-sources through the new
+  prompt, later needs to earn from the work and can't, BOSS caused the harm the old default
+  prevented. One occurrence is enough to revisit.
+- **Supersedes [[DEC-009]] §5 only.** DEC-009 — the same day — fixed a real defect (a founder who
+  would never charge had to fabricate a revenue line) and then held the positioning fixed. The
+  positioning is what changed here; DEC-009's canvas branch and `/money` stop are untouched.
+
+## 0.199.0 — 2026-08-21
+
+> **For you:** **`boss id` and `boss records` were invisible.** Both shipped, neither was registered
+> in the one list `boss map`, `docs/CHEATSHEET.md` and the quick guide all read — so two working
+> commands existed and nothing told you about them. They're in all three now.
+
+**Two shipped commands were missing from the single list that exists to prevent exactly that.**
+`STANDING_COMMANDS` in `src/modes.js` is the one place both generators read, and its own comment
+says *"two copies is how the cheatsheet drifted the first time."* `boss id` (next free record number,
+computed) and `boss records` (duplicate IDs, off-list status, broken promotion links) were added to
+`src/cli.js` without a line there. `check:site` caught them as unknown verbs on the website — a soft
+note, because an unrecognised verb *may* still be valid — which is the right severity and also the
+reason they sat unnoticed.
+
+**The landing page now shows BOSS working instead of describing it.** Feedback via Ajesh: *"people
+are struggling with which kind of projects they could use this to… the value is not being seen."*
+Graded as [[EVID-002]] — **stated-pain, n=1-2, solicited**, which is the weakest form of signal there
+is and close to the anti-pattern `/interview` exists to prevent. **The audit it prompted was the part
+that justified acting:** zero example projects anywhere on the site (`my-app`, 14 times, was the only
+project name), zero audience statement, and 14 of 14 pages describing BOSS's machinery rather than a
+founder's project — facts about the site, true whether or not anyone complained.
+
+- Home opens with **three concrete shapes** it fits (two people cleaning houses · the spreadsheet
+  twelve people fight over · something already live getting an AI feature) and — new — **who it is
+  NOT for**: a codebase that already has a product team, and a weekend throwaway where `git init` is
+  enough.
+- Then **one worked example, copied from a real terminal**: `boss new`, the `IDEA-001` file `/triage`
+  writes, and `boss board` rendering *"2 captured, nothing pressure-tested yet — what would you learn
+  first?"* Nothing on the site had ever shown BOSS doing its job.
+- Two paragraphs of the scaffolding metaphor **cut** — the example does that work by showing.
+- ⛔ **Deliberately NOT done: no nav restructure and no new page.** n=2 solicited does not earn it,
+  and the session's own habit of answering every gap with another page is what a 14-page site
+  strangers cannot parse is made of.
+
+🔴 **Found while verifying the above: the landing page had TWO footers, and the second one carried a
+hand-typed version 35 releases stale** (`v0.164.0` against a live `v0.199.0`) — sitting directly under
+`gen-site.js`'s own headline rule, *no number on the website is ever typed by hand*. Every visitor read
+the honesty note twice, once wrong. The fragment held a full copy of the shell's footer; deleted, with
+its two better sentences ported UP into the shell so all 15 pages gained them instead of one page
+keeping them. **`gen:site` now hard-fails on a fragment that declares `<footer>`** — the rule existed
+and nothing enforced it, which is the eighth time that shape has shown up here.
+
+**Also:** `npm test` was red on a dangling link to `.boss/model-profile.json` — runtime state
+`/recalibrate` writes, hard-linked from a dated audit. Un-linked rather than exempted: one occurrence
+repo-wide, and a blanket `.boss/` exemption would be a real hole in `check:refs` for n=1.
+
 ## 0.198.0 — 2026-08-21
 
 > **For you:** The **Humane Product Canvas** is now a free thing you can just take —

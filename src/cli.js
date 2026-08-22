@@ -89,8 +89,18 @@ function cmdNew(args) {
     join(targetDir, '.boss', 'config.json'),
     JSON.stringify({
       github: 'ask',          // ask | always | never — create a remote when an idea lands
-      visibility: 'private',  // private | public
-      license: 'proprietary', // proprietary | MIT | Apache-2.0 | AGPL-3.0
+      visibility: 'private',  // private | public — the STARTING state, not the answer. A repo minutes
+                              // old, before anyone has looked for a key in it, isn't published by reflex.
+                              // /boss offers public as a peer option at repo-creation time.
+      // null = UNDECIDED, and BOSS does not decide it (DEC-011). It used to scaffold as
+      // 'proprietary' on a correct argument — a permissive grant, once published, cannot be
+      // revoked — that was quietly doing a second job as the ANSWER. The argument survives in
+      // /boss's ask, next to its counterpart (a project never opened quietly stays closed).
+      // Options: MIT | Apache-2.0 | AGPL-3.0 | CC-BY-SA-4.0 | proprietary | "undecided" | null
+      // `null` means NOBODY HAS ASKED; "undecided" means they were asked at the moment it became
+      // real (`/ship`'s pre-flight) and chose to wait. Two states, because otherwise the question
+      // either never returns or returns forever. Same distinction as dropped-vs-deferred (v0.204.0).
+      license: null,
       // Optional founder-cohort declaration (v0.20.0+). When set, the conscience
       // hook includes the cohort in its additionalContext so Claude composes the
       // voice appropriately for the cohort — first-product gets teaching;
@@ -228,7 +238,8 @@ function cmdAdopt(args) {
   const cfgPath = join(targetDir, '.boss', 'config.json');
   if (!existsSync(cfgPath)) {
     writeFileSync(cfgPath, JSON.stringify({
-      github: 'ask', visibility: 'private', license: 'proprietary', cohort: null, shareUp: false,
+      // license: null — undecided, and BOSS doesn't decide it (DEC-011). See `boss new` above.
+      github: 'ask', visibility: 'private', license: null, cohort: null, shareUp: false,
       aiNative: !!flags.ai, // IDEA-022 Track 3 — `/comprehend` reads the adopted repo to tailor + seed the brain
     }, null, 2) + '\n');
   }

@@ -29,7 +29,7 @@
 <nav class="sitenav" aria-label="Site">
   <div class="sitenav-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
-    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="canvas.html">The canvas</a></li><li><a href="team.html" aria-current="page">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html" aria-current="page">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
   </div>
 </nav>
 <div class="subnav"><div class="subnav-in"><span class="subnav-label">The product</span><ul><li><a href="team.html">The team</a></li><li><a href="keeping-track.html">Keeping track</a></li><li><a href="guide.html">Guide</a></li><li><a href="teams.html">Cofounders</a></li><li><a href="quick-guide.html" aria-current="page">Quick guide</a></li></ul></div></div>
@@ -66,6 +66,8 @@
           <tr><th scope="row"><code>boss map</code></th><td>live cheatsheet: where you are + what’s one unlock away</td></tr>
           <tr><th scope="row"><code>boss status [--conscience]</code></th><td>mode / pinned version / drift (+ loop states)</td></tr>
           <tr><th scope="row"><code>boss board</code></th><td>what’s in flight (captured → shipped)</td></tr>
+          <tr><th scope="row"><code>boss id [TYPE]</code></th><td>the next free record number — computed, never counted by hand</td></tr>
+          <tr><th scope="row"><code>boss records</code></th><td>check the record set: duplicate IDs, off-vocabulary status, broken promotions</td></tr>
           <tr><th scope="row"><code>boss unlock &lt;mode&gt;</code></th><td>climb a rung: quickstart → mvp → v1 → scale</td></tr>
           <tr><th scope="row"><code>boss team [add @user]</code></th><td>who’s on the venture (solo by default)</td></tr>
           <tr><th scope="row"><code>boss conscience pause --for 8h</code></th><td>silence the whole conscience for a bounded sprint</td></tr>
@@ -150,7 +152,7 @@
         <div class="prose">
           <h2>Every skill, and the rung it arrives on</h2>
           <p class="small">
-            Generated from the stage manifests, current as of v0.198.0. If this page and the tool
+            Generated from the stage manifests, current as of v0.206.0. If this page and the tool
             ever disagree, the tool is right and the release gate is broken.
           </p>
         </div>
@@ -200,7 +202,7 @@
           </tr>
           <tr>
             <th scope="row"><code>/sunset</code></th>
-            <td>End something honestly — a whole project, or one zombie feature <span class="usage">validating it's actually dead (not just quiet), guarding the segment/commitment exception (a low-usage feature can be the reason a key account stays), and drafting the HONEST user-facing deprecation notice (real notice period, a path out, no &quot;we're improving your experience&quot; euphemism). Subtraction is a feature; a bloated product serves no one. Framed as an experiment that returned an answer, never as failure. Deliberate-invoke only; the conscience never suggests it unprompted (it may only point at it from inside a moment that already fired — e.g. the focus circuit-breaker). Usage - /sunset [FEAT-NNN | feature name]</span></td>
+            <td>End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against <span class="usage">validating it's actually dead (not just quiet), guarding the segment/commitment exception (a low-usage feature can be the reason a key account stays), and drafting the HONEST user-facing deprecation notice (real notice period, a path out, no &quot;we're improving your experience&quot; euphemism). Subtraction is a feature; a bloated product serves no one. Framed as an experiment that returned an answer, never as failure. Deliberate-invoke only; the conscience never suggests it unprompted (it may only point at it from inside a moment that already fired — e.g. the focus circuit-breaker). With an IDEA (e.g. /sunset IDEA-012), closes ONE CAPTURED IDEA — the lightest scope: asks the one question that comes first (did you decide against this, or just never get to it?), keeps the reasoning the `dropped` status has always promised to keep, and writes the condition that would bring it back, so `dropped` is a 'not now' rather than a graveyard. Never harvests an unbuilt idea UP. Usage - /sunset [FEAT-NNN | IDEA-NNN | name]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/persona</code></th>
@@ -399,12 +401,14 @@
           <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
           you type <code>boss update</code> — a GET to the public npm registry asking for a version
           number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
-          phone-home; the check never runs unless you ask for it.
+          phone-home; the check never runs unless you ask for it. It’s ~30 lines in
+          <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.198.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.206.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
-          modes, files its own ideas, and its conscience nudges the person building it.
+          modes, files its own ideas, and its conscience nudges the person building it. If that sounds
+          like a reason to wait, that’s a fair read.
         </p>
       </div>
     </div>

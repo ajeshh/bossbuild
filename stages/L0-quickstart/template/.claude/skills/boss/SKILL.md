@@ -75,19 +75,38 @@ Create `docs/ideas/IDEA-001-<slug>.md` with frontmatter
 
 ## 5. GitHub repo (the gated step)
 
-Read `github` from `.boss/config.json`:
-- `never` → skip.
-- `ask` (default) → prompt: *"Spin up a **private** GitHub repo for this? I'll add a LICENSE —
-  default is **proprietary / All Rights Reserved** so you keep both paid and open-source options open
-  (you can relicense later). Say 'open source' if you'd rather pick MIT / Apache-2.0 / AGPL-3.0 now."*
-- `always` → proceed with the configured `visibility` + `license` without asking.
+Read `github`, `visibility` and `license` from `.boss/config.json`.
+
+- `never` → skip this whole section.
+- `ask` (default) → *"Want a GitHub repo for this? **Private or public** — private is where I'd start,
+  only because nobody's checked this for a stray API key yet, and you can flip it the day you want."*
+- `always` → proceed with the configured `visibility` without asking.
+
+**Then the licence — and ask it straight.** `license` scaffolds as `null`, which means *undecided*.
+**BOSS does not pick this for you** ([[DEC-011]]): a licence is the one scaffold decision that can be
+irreversible, so it is the last one to make on someone's behalf. Put both costs on the table in one
+breath and don't lean:
+
+> *"Licence? Two things are true and they point opposite ways. **Open** — MIT, Apache-2.0, AGPL-3.0,
+> or CC BY-SA for non-code — is a grant you can't take back: once it's out it's out, even if you later
+> need this thing to feed you. **All Rights Reserved** keeps every option open including opening it
+> later — and it's also how something that should have been shared quietly never is, because nobody
+> comes back to it. Pick one, or say **not yet** and I'll leave it undecided."*
+
+- **They pick one** → write it to `.boss/config.json` and use it below.
+- **They say not yet** → leave `license: null`, create the repo with **no LICENSE file**, and say so
+  once: *"No LICENSE means all-rights-reserved by default. Edit `.boss/config.json` or ask me when you
+  want to decide."* Then drop it — this is not a thing to nag about.
 
 On a yes, do this **in order**:
 
 1. **Write the LICENSE file locally** (must exist before push — `gh` won't add it to an existing repo):
-   - `proprietary` (default): write the All-Rights-Reserved text from the appendix below, filling the year and the user's name.
    - `MIT` / `Apache-2.0` / `AGPL-3.0`: fetch canonical text with
      `gh api /licenses/<key> --jq .body` (keys: `mit`, `apache-2.0`, `agpl-3.0`) and fill placeholders.
+   - `CC-BY-SA-4.0` (a canvas, a curriculum, a template set — things that aren't software): write the
+     one-line grant + a link to the canonical deed rather than pasting the legal code.
+   - `proprietary`: write the All-Rights-Reserved text from the appendix below, filling the year and the user's name.
+   - `null` (undecided): **write no LICENSE file.** Don't invent one to fill the gap.
 2. **Prevent the email-privacy block (GH007).** Derive the user's GitHub noreply address and set it
    **repo-locally only** (global config untouched), then tell the user you did so:
    ```bash
@@ -95,9 +114,9 @@ On a yes, do this **in order**:
    git -C . config user.email "$NR"
    ```
 3. **Commit** the scaffold (include LICENSE) if there are uncommitted files.
-4. **Create + push** as a private repo from the existing local repo:
+4. **Create + push** from the existing local repo, at the visibility they chose:
    ```bash
-   gh repo create <project-name> --private --source . --remote origin --push
+   gh repo create <project-name> --private --source . --remote origin --push   # or --public
    ```
    (`--source .` publishes the local history; do NOT pass `--license`/`--gitignore` here — those only
    apply to empty repos created server-side, which would conflict with the local history.)
@@ -138,7 +157,8 @@ it's pending), the mode, the cohort (if set), and the repo URL if created. Then 
 ## Rules
 
 - Capture before code. Don't start implementing inside `/boss` — this is spin-up only.
-- Never create a public repo by default. Never publish a permissive license by default.
+- **Never decide the licence for them, in either direction** — ask, name both costs, accept "not yet".
+- Never create a public repo without asking.
 - Never touch global git config. Repo-local email only, and say so.
 - Prefer one well-placed question over an interrogation.
 
@@ -153,9 +173,8 @@ This software and its source code are proprietary and confidential. No license,
 express or implied, is granted to any person to use, copy, modify, merge, publish,
 distribute, sublicense, or sell copies of this software, in whole or in part,
 without the prior written permission of the copyright holder.
-
-This default is intentional: it preserves the option to later release this project
-under an open-source license (e.g. MIT, Apache-2.0, AGPL-3.0) OR to commercialize it.
-A permissive open-source grant, once published, cannot be revoked — so the path is
-kept open until deliberately chosen.
 ```
+
+*(No self-justifying paragraph in the file — a LICENSE states terms, it doesn't argue for itself. The
+argument for and against this choice lives in the ask above, where its counterpart is standing next
+to it.)*

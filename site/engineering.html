@@ -29,7 +29,7 @@
 <nav class="sitenav" aria-label="Site">
   <div class="sitenav-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
-    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="canvas.html">The canvas</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html" aria-current="page">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html" aria-current="page">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
   </div>
 </nav>
 <div class="subnav"><div class="subnav-in"><span class="subnav-label">How it works</span><ul><li><a href="engineering.html" aria-current="page">For engineers</a></li><li><a href="design.html">Design</a></li><li><a href="conscience.html">The conscience</a></li></ul></div></div>
@@ -513,7 +513,7 @@
             <span class="curve" title="how fast this ground moves">humane curve</span> ·
             last checked 2026-08-20</p>
           <p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>
-          <details class="prov-full"><summary>where this came from</summary><p>The named patterns come from CDT's <em>Dark Patterns in AI Chatbots</em> (2026, CC-BY), Brignull's deceptive.design, Mathur et al.'s <em>Dark Patterns at Scale</em>, Gray et al.'s CHI-2024 ontology, and successive research sweeps covering accessibility, minors, agentic products, algorithmic management, and the patterns a model writes into generated code (Vaccaro et al., CHI 2026).</p></details>
+          <details class="prov-full"><summary>where this came from</summary><p>The three-question test under <em>The other limit</em> is BOSS's own judgment — no research backs it, and it should not be read as though any did. The named patterns come from CDT's <em>Dark Patterns in AI Chatbots</em> (2026, CC-BY), Brignull's deceptive.design, Mathur et al.'s <em>Dark Patterns at Scale</em>, Gray et al.'s CHI-2024 ontology, and successive research sweeps covering accessibility, minors, agentic products, algorithmic management, and the patterns a model writes into generated code (Vaccaro et al., CHI 2026).</p></details>
         </div>
       </div>
       </div>
@@ -565,12 +565,14 @@
           <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
           you type <code>boss update</code> — a GET to the public npm registry asking for a version
           number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
-          phone-home; the check never runs unless you ask for it.
+          phone-home; the check never runs unless you ask for it. It’s ~30 lines in
+          <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.198.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.206.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
-          modes, files its own ideas, and its conscience nudges the person building it.
+          modes, files its own ideas, and its conscience nudges the person building it. If that sounds
+          like a reason to wait, that’s a fair read.
         </p>
       </div>
     </div>

@@ -29,7 +29,7 @@
 <nav class="sitenav" aria-label="Site">
   <div class="sitenav-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
-    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="canvas.html">The canvas</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
   </div>
 </nav>
 
@@ -57,7 +57,7 @@
       <div class="terminal breakout">
         <span class="cap">what that actually prints</span>
 <pre><span class="line"><span class="t-cmd">boss new my-app</span></span>
-<span class="line"><span class="t-ok">  ✦ Created my-app</span> — Quickstart mode (L0-quickstart, BOSS 0.198.0)</span>
+<span class="line"><span class="t-ok">  ✦ Created my-app</span> — Quickstart mode (L0-quickstart, BOSS 0.206.0)</span>
 <span class="line"><span class="t-dim">    agents: product-lead, coder, mentor-founder</span></span>
 <span class="line"><span class="t-dim">    skills: welcome, boss, import, triage, prototype, canvas, evidence, interview … +8 more (`boss map`)</span></span>
 <span class="line"> </span>
@@ -101,6 +101,141 @@
       </div>
     </section>
 
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>is this you?</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Three shapes this actually fits</h2>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">two people who clean houses</span>
+            <span>Forty regulars, a WhatsApp thread and a paper diary. Sunday nights go on rebuilding
+              the rota by hand and someone still turns up at the wrong address. Neither of them has
+              written code before. → <code>boss new</code></span>
+          </div>
+          <div class="pair">
+            <span class="k">the spreadsheet twelve people fight over</span>
+            <span>It runs a real part of the business and nobody trusts it. Someone inside the company
+              is going to rebuild it properly this quarter, and they can build now — the hard part is
+              knowing what to leave out. → <code>boss new</code></span>
+          </div>
+          <div class="pair">
+            <span class="k">something already live, already paying</span>
+            <span>The repo exists and works. An AI feature is going into it, and the real question
+              isn't how to build the feature — it's whether it's a good idea and what it costs per
+              user. → <code>boss adopt</code></span>
+          </div>
+        </div>
+        <div class="note">
+          <p>
+            <strong>Not for two cases, and it'll say so.</strong> A codebase that already has a product
+            team around it — you have the structure; this would be a second one arguing with the first.
+            And a weekend throwaway you'll delete on Monday — <code>git init</code> is enough, and
+            anything more is the ceremony BOSS exists to prevent.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the first hour</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>What happens, on one real idea</h2>
+          <p>
+            Take the cleaning business. This is the actual output, not a mock-up — every line below is
+            copied from a terminal.
+          </p>
+        </div>
+
+        <div class="terminal breakout">
+          <span class="cap">1 · five seconds</span>
+<pre><span class="line"><span class="t-cmd">boss new tidy-rota</span></span>
+<span class="line"></span>
+<span class="line">  <span class="t-ok">✦</span> Created tidy-rota — Quickstart mode (L0-quickstart, BOSS 0.206.0)</span>
+<span class="line">    agents: product-lead, coder, mentor-founder</span>
+<span class="line">    skills: welcome, boss, import, triage, prototype, canvas, evidence, interview … +8 more</span>
+</pre>
+        </div>
+
+        <div class="prose">
+          <p class="small">
+            That's 3 agents and 16 skills — the whole Quickstart rung, and
+            deliberately not more. Forty files land, and only five of them are yours to read:
+            <code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>docs/IDS.md</code>,
+            <code>docs/ideas/INDEX.md</code>, and a <code>docs/evidence/</code> folder that's still
+            empty. The rest is the team.
+          </p>
+        </div>
+
+        <div class="terminal breakout">
+          <span class="cap">2 · you say the thing out loud, twice that week</span>
+<pre><span class="line"><span class="t-cmd">/triage every sunday we redo the whole thing from scratch</span></span>
+<span class="line"><span class="t-dim">              and someone still turns up at the wrong house</span></span>
+<span class="line"></span>
+<span class="line">  <span class="t-ok">✦</span> docs/ideas/IDEA-001-weekly-rota-that-texts-itself.md</span>
+<span class="line"></span>
+<span class="line"><span class="t-dim">---</span></span>
+<span class="line">id: IDEA-001</span>
+<span class="line">status: <span class="t-accent">seedling</span></span>
+<span class="line">gist: Sam and Priya lose an hour every Sunday rebuilding the rota in</span>
+<span class="line">      WhatsApp; the rota should send itself.</span>
+<span class="line"><span class="t-dim">---</span></span>
+<span class="line"><span class="t-dim">## Current shape</span></span>
+<span class="line">- <b>What:</b> One page that texts each cleaner their own list on Sunday.</span>
+<span class="line">- <b>Who it's for:</b> Two-person cleaning business, currently WhatsApp.</span>
+<span class="line">- <b>Smallest version that proves it:</b> One week, one cleaner, one text</span>
+<span class="line">  sent by hand.</span>
+</pre>
+        </div>
+
+        <div class="prose">
+          <p class="small">
+            <strong>That last line is the whole job.</strong> You arrived with "build me a scheduling
+            app" and left with something you can test on Sunday without writing any code.
+          </p>
+        </div>
+
+        <div class="terminal breakout">
+          <span class="cap">3 · a week later, two ideas in</span>
+<pre><span class="line"><span class="t-cmd">boss board</span></span>
+<span class="line"></span>
+<span class="line">  tidy-rota · board</span>
+<span class="line">  <span class="t-accent">▸ 2 captured, nothing pressure-tested yet — what would you learn first? (/canvas)</span></span>
+<span class="line"></span>
+<span class="line">  Captured (2)</span>
+<span class="line">    IDEA-001   The weekly rota should text itself</span>
+<span class="line">    IDEA-002   Customers book their own slot</span>
+<span class="line"></span>
+<span class="line">  Taking shape (0)</span>
+<span class="line">    <span class="t-dim">—</span></span>
+<span class="line">  Building (0)</span>
+<span class="line">    <span class="t-dim">—</span></span>
+<span class="line">  Shipped (0)</span>
+<span class="line">    <span class="t-dim">—</span></span>
+</pre>
+        </div>
+
+        <div class="prose">
+          <p>
+            <strong>Nobody configured that nudge.</strong> BOSS read the folder, saw two ideas and no
+            pressure-test, and said so — and it shows you the three empty columns rather than hiding
+            them, because two captured ideas and nothing tested is the honest picture of where you are.
+          </p>
+          <p class="small">
+            That's the whole loop, and it's the same at every size: you say what you're thinking, it
+            becomes a file, and the file is what BOSS reads back to you when you're kidding yourself.
+            <a href="start.html">Start →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
     <section class="section">
       <div class="rail">▸<span>the idea</span></div>
       <div class="body">
@@ -113,16 +248,11 @@
             gets taller, and it comes down when it's no longer holding anything up.
           </p>
           <p>
-            The thing a startup actually needs around the code is the same shape: a way to decide what
-            to build, someone to tell you when the bet looks thin, a record of what you already chose
-            and why. A funded company gets that from a process, a board, and a team. Solo with an AI,
-            you get none of it — so you either invent it from scratch every project, or you skip it and
-            find out later.
-          </p>
-          <p>
-            <strong>BOSS is that structure, and it goes up one level at a time.</strong> A one-evening
-            idea gets almost nothing. A thing with real users gets more. You never pay for ceremony the
-            project hasn't earned, and nothing gets bolted on that you can't take back off.
+            <strong>BOSS is that structure, and it goes up one level at a time.</strong> A funded
+            company gets it from a process, a board and a team; solo with an AI you get none of it. A
+            one-evening idea gets almost nothing here. A thing with real users gets more. You never pay
+            for ceremony the project hasn't earned, and nothing gets bolted on that you can't take back
+            off.
           </p>
         </div>
 
@@ -245,43 +375,15 @@
         <p class="small">
           <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
           you type <code>boss update</code> — a GET to the public npm registry asking for a version
-          number. Nothing is sent about you, your code, or your ideas. There is no analytics, no
-          telemetry, and no phone-home; the check never runs unless you ask for it. It's ~30 lines in
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it. It’s ~30 lines in
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.164.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.206.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
-          like a reason to wait, that's a fair read.
-        </p>
-      </div>
-    </div>
-  </footer>
-
-  <footer>
-    <div class="cols">
-      <div class="rail"><span>make it real.</span></div>
-      <div class="body prose">
-        <div class="cta">
-          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx oyeboss new my-app</span></div>
-          <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
-        </div>
-        <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
-          <a href="https://www.npmjs.com/package/oyeboss">npm</a> ·
-          MIT licensed · zero dependencies · no account.
-        </p>
-        <p class="small">
-          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
-          you type <code>boss update</code> — a GET to the public npm registry asking for a version
-          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
-          phone-home; the check never runs unless you ask for it.
-        </p>
-        <p class="small">
-          <strong>Where this actually is:</strong> v0.198.0, built in the open and used daily by its
-          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
-          modes, files its own ideas, and its conscience nudges the person building it.
+          like a reason to wait, that’s a fair read.
         </p>
       </div>
     </div>

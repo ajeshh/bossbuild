@@ -115,11 +115,18 @@ the common and correct answer.
 
 *Impact, risks, and the values that guide decisions.*
 
-### Metrics — what does meaningful success look like, for people as well as the business?
+### Metrics — what does meaningful success look like, for people and planet?
 
 Real pull: activation, retention, conversion, willingness to pay. **And the regenerative
 ones, weighted as seriously:** what people *learn* or gain in well-being, and what makes
 the venture more resilient over time — growth that renews rather than extracts.
+
+**Then the planet half.** What does one unit of this consume — compute, storage, egress, a
+device someone had to buy — and does it grow with *users* or with *success*? For most
+software *"very little, and here's why"* is a complete and honest answer; don't manufacture
+a footprint to look serious. It stops being complete when the growth loop *is* inference:
+an AI feature's footprint is its variable cost wearing a different hat. Read that number
+twice — once for the wallet, once for the world.
 
 >
 
