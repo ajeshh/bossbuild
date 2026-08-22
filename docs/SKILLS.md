@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.210.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.216.0**.
 
 ## Quickstart
 

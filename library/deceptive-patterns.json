@@ -278,7 +278,7 @@
       "surface": "consent-ui",
       "looks_like": "\"Accept tracking, or subscribe.\" Privacy becomes a paid tier.",
       "honest": "A genuine free path that does not require surveillance.",
-      "teeth": "EDPB opinion on consent-or-pay (large platforms) — verify current scope before relying on it",
+      "teeth": "EDPB Opinion 08/2024 — scoped to LARGE ONLINE PLATFORMS only (DSA VLOPs, DMA gatekeepers, or a case-by-case 'large number of data subjects' test). It does not reach a solo founder; guidance for smaller platforms was promised and is unconfirmed. Cite the principle, never the opinion, to a small team",
       "emergent": false,
       "hard": false,
       "status": "candidate"
@@ -761,7 +761,7 @@
       "surface": "social-proof-and-claims",
       "looks_like": "Marketing an AI capability the product does not have, or describing a rules engine as a model.",
       "honest": "Describe what it actually does. \"A few if-statements that work\" beats a claim you cannot demo.",
-      "teeth": "FTC Operation AI Comply — held at RVW-058, re-open condition named",
+      "teeth": "FTC \"Operation AI Comply\" (announced 2024-09-25, five actions) — DoNotPay final order approved 5-0 on 2025-01-16: $193,000, notice to 2021–2023 subscribers, and no \"performs like a real lawyer\" claims without substantiation",
       "emergent": false,
       "hard": false,
       "status": "candidate"

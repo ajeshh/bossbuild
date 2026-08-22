@@ -84,7 +84,11 @@ accumulates. `/ux-check` catches that.
    boss craft deceptive-patterns --surface <the one this flow is on>
    ```
 
-   Then check the **shipped markup** for each row tagged `model-written`, in this order:
+   Then check the **shipped markup** — the `generated-markup` surface plus the visible rows on
+   `consent-ui`, `signup-and-identity` and `checkout-and-pricing`. **Go by surface, not by the
+   `[model-written]` tag**: that tag means *the model decided this, not you*, and it sits on
+   behavioural rows too (sycophancy, guilt on exit) that no amount of reading markup can catch.
+   In this order:
    - **Is any checkbox pre-ticked?** Marketing, sharing, terms-plus-something. `defaultChecked`,
      `checked={true}`, `checked` in the HTML.
    - **Is there a countdown or a scarcity claim, and is it true?** A timer that resets on reload,
@@ -98,10 +102,12 @@ accumulates. `/ux-check` catches that.
      from here, and is it as easy as the way in? A deletion flow you never built is a named
      pattern, not a to-do.
 
-   **What this walk cannot see:** anything on the `tracking-and-telemetry` surface. A pixel, an
-   SDK, a session-replay recorder, and a training-data default have no UI at all — there is
-   nothing to look at. Say so in the findings and point at `/trust`, which owns that surface.
-   Don't let an invisible family read as a clean pass.
+   **What this walk cannot see**, and must say so in the findings rather than let read as a clean pass:
+   - **`tracking-and-telemetry`** — a pixel, an SDK, a session-replay recorder, a training-data
+     default. No UI at all, nothing to look at. `/trust` §3.5 owns it.
+   - **`ai-voice` and `agent-actions`** — whether the assistant caves when pushed, resists ending, or
+     leans on rapport near the upgrade is a property of a *conversation*, not of a page.
+     `/red-team --humane` owns it. A markup walk that reported on these reported on nothing.
 
    Founder framing, once: *"You didn't design these. Check whether the model did."* Then the
    finding, specific and short — the file, the line, and the honest version. Never a lecture.

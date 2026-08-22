@@ -9,6 +9,85 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.216.0 — 2026-08-21
+
+**`/red-team --humane` was routing its own headline probes out of the skill — and the OWASP list it
+pins moved on 2026-08-04. A deep review of the adversarial surface, four false passes deep.**
+
+> **For you:** `/red-team` was skipping the entire behavioural dark-pattern battery — sycophancy,
+> guilt on exit, emotional manipulation near money — for anyone who had run `/ux-check` first, and
+> skipping `--humane` altogether for anyone whose product has no AI in it. Both are fixed. Its OWASP
+> IDs are now the 2026 list (eight of ten changed), `--paths` gained a known-vulnerable-dependency
+> check, and `--self` finally says what it actually runs. Re-run it if you have a report on file.
+
+**Four false passes, all the same shape: a runner certifying a pass it never ran.**
+
+- 🔴 **The `[model-written]` tag was routing work, and it means the wrong thing.** It answers *who
+  decided this* — the model, not you — and it sits on **28 rows across 9 surfaces**, including seven
+  of the nine `ai-voice` rows. `--humane` read it as *"lives in the markup"* and handed those rows to
+  `/ux-check`, whose entire procedure is five checks against a shipped page. **Nothing can see
+  sycophancy by reading markup.** So a founder who ran `/ux-check` on Tuesday got a clean `--humane`
+  report on Wednesday for a probe nobody ran. The lanes now split by **surface**; the tag is defined
+  once in the practice with *never route on this* said out loud.
+- 🔴 **The cohort block sent no-LLM founders past `--humane`, 27 lines after `--humane` forbade it.**
+  *"`--paths` is the whole skill for them"* was written in v0.177.0 at 12:35; *"Never skip this
+  skill"* landed in v0.190.0 later the same day. **The rewrite never swept the cohort block.** A
+  Stripe-billed SaaS with no model in it was routed away from the checkout and cancellation surfaces —
+  17 rows, and the exact patterns that product ships. The frontmatter said "AI product" too.
+- 🔴 **`--self` was advertised in the frontmatter and defined nowhere** — five mentions, no section.
+  It ran the stateless LLM battery against a *stateful agent*: `.boss/brain/read.md` is model-written
+  and injected into a later session's context as the conscience's own standing read, guarded only by
+  an in-context "trust what you see now" — the exact class OWASP ASI06 says fails alone. It now has a
+  section, runs the ASI battery, and names three probes including that one.
+- 🔴 **Any `--humane` report closed the `deception` conscience loop, including one that skipped
+  everything.** The exit matched the bare word `deceptive`, which is in the section's own heading, and
+  `docs/red-team/RT-*.md` is written by all five modes. The exit now matches a **shape**
+  (`pre-ticked`, `countdown`, `scarcity`, `confirmsham`, `urgency`) — something the walk would have
+  found, including to report it clean. The failure direction is now *ask once more*, not *go quiet*.
+
+**Three of four load-bearing citations were off. The fourth held.**
+
+- **The OWASP LLM Top 10 revised on 2026-08-04 — five days before `agent-security`'s last review.**
+  Eight of ten IDs moved; System Prompt Leakage became **LLM08 Hidden Context Exposure**, widened to
+  cover developer instructions, policy text and **every tool schema** — which closes a probe gap from
+  OWASP's own side. The cohort lines cited IDs, not names, so *"LLM10 cost"* pointed at Improper
+  Output Handling. All renumbered. **Match on the name, not the number** is now said in the skill.
+- **"near-99% success on stateful agents" was the memory-*injection* rate wearing the attack rate's
+  clothes.** The sources split it: ~95–98% injection, **60–77% end-to-end**, and a follow-up found
+  realistic pre-existing memories degrade it further. The recommendation is untouched — bound memory
+  at the tool layer — but the number now says what the source says.
+- **Veracode's Spring-2026 figures were superseded 14 days *before* the review that cited them.** The
+  2026 annual report (2026-07-28) reads 56% pass / ~44% fail across 100+ models, and still no
+  improvement with scale. **A cadence date does not catch a source that moved inside the window.**
+- **DECEPTICON's 70%/31% held exactly, attribution and all** — but a clause claiming *human oversight*
+  was shown insufficient came out. The paper tests in-context prompting and guardrail models. It never
+  tested human oversight. The recognition-without-compliance finding **is** in the body, verified, and
+  stays.
+
+**One coverage hole, one shape error left alone.**
+
+- **Nothing BOSS ships ever checked for a known-vulnerable dependency.** Zero hits across `stages/`
+  and `library/` for `npm audit`, `dependabot`, `SBOM`, `lockfile`. LLM04 asks whether deps are
+  *pinned*; nothing asked whether the pinned one is *already broken*. Added to `--paths` — the mode
+  sold to the non-technical cohort as the gate that protects them. The *re-scan after heavy
+  iteration* trigger was also stated in two practices and carried by no skill; now it is.
+- **`content-and-moderation` stays THIN at 2 rows, deliberately.** The proposed appeal-flow row is
+  `exit-roach-motel`'s asymmetry a third time on a two-row surface — `content-shadow-moderation`
+  already says *"no appeal"*, and `content-report-obstruction` already says *"same principle as
+  exit-as-easy-as-entry, pointed at safety."* **Check the shape before you fill it.** Engagement-bait
+  ranking is genuinely missing and needs a source, so it stays missing.
+
+**Two teeth citations verified; neither row was promoted.** FTC *Operation AI Comply* is real —
+announced 2024-09-25, five actions, DoNotPay final order 5-0 on 2025-01-16 ($193k + subscriber
+notice). EDPB Opinion 08/2024 is scoped to **large online platforms only** (DSA VLOPs, DMA
+gatekeepers), which is an argument *against* aiming it at a solo founder — the row now says so.
+Both stay `candidate`: `/vet` owns the promotion, and verifying a citation is not the same as
+clearing the rubric.
+
+**Net +42 lines on a 249-line skill**, paid down partly by deleting a v0.190.0 changelog entry that
+was living inside the skill and a three-times-stated intro. Most of the growth is `--self`, which
+went from advertised-and-undefined to defined. That is a trade worth naming rather than hiding.
+
 ## 0.215.0 — 2026-08-21
 
 **The website stops assuming you're building a company. [[DEC-014]] — work-order 2b, and the end of

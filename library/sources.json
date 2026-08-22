@@ -36,14 +36,14 @@
       "key": true
     },
     "owasp": {
-      "name": "OWASP — Agentic ASI Top 10 / LLM Top 10",
+      "name": "OWASP — LLM Top 10 (2026) + Top 10 for Agentic Applications",
       "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
       "kind": "standard",
       "key": true
     },
     "veracode": {
-      "name": "Veracode (Spring 2026)",
-      "url": null,
+      "name": "Veracode (2026 GenAI Code Security Report)",
+      "url": "https://www.veracode.com/blog/2026-genai-code-security-report-ai-risk/",
       "for": "insecure AI-generated code",
       "kind": "org",
       "key": false

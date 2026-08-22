@@ -13,7 +13,7 @@ entry:
 exit:
   - any_file_matches:
       path_glob: docs/design/ux-check-*.md,docs/red-team/RT-*.md,docs/decisions/DEC-*.md
-      pattern: '(deceptive|dark.?pattern|countdown|pre-tick|confirmsham)'
+      pattern: '(defaultChecked|pre-tick|pre-ticked|countdown|scarcity|confirmsham|urgency)'
 drift_moment: deception
 ---
 
@@ -63,6 +63,15 @@ A **recorded result** — a `docs/design/ux-check-*.md`, a `docs/red-team/RT-*.m
 `docs/decisions/DEC-*.md` that actually mentions the walk. Same standard `verification-loop` holds:
 **a result counts, an intention counts for nothing.** Reading the file and thinking "that's fine"
 does not close this; writing down what you found does.
+
+**The exit matches a SHAPE, not the topic — and that is the whole point of the pattern.** It used to
+accept the bare words `deceptive` and `dark pattern`, which every `/red-team --humane` report contains
+in its own heading. So a report that *skipped* the walk closed the loop just as cleanly as one that
+did it, and `docs/red-team/RT-*.md` is written by all five `/red-team` modes, including `--paths`,
+which never looks at markup at all. Requiring `pre-ticked`, `countdown`, `scarcity`, `confirmsham` or
+`urgency` means the artifact has to name something the walk would actually have found — including to
+report it clean. The failure direction is now "the conscience asks once more", not "the conscience
+goes quiet on a pass nobody ran".
 
 Note what the exit deliberately *allows*: a `DEC` recording that the founder **kept** the pattern
 closes the loop just as cleanly as removing it. That is conscience-not-censor working as designed —

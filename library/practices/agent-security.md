@@ -4,8 +4,8 @@ type: practice
 owner: mentor-architect
 status: active
 host: claude-code
-provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep) · **sharpened v0.165.0 (2026-08-20), clock deliberately NOT moved** — the MCP-and-automation assessment added the pre-install pass (tool descriptions as untrusted input; poisoned descriptions are ASI01 goal-hijack, not supply-chain; registry still preview; re-read on update). One bullet is not a threat sweep, and per the v0.150.0 correction "freshened a little" is not a claimable state — the next real sweep still owns 2026-11-09.
-provenance_public: Distilled from Simon Willison's agentic-security writing (the lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic), then hardened against the 2026 agent-native surface: OWASP's Agentic ASI Top 10, agentic misalignment, Anthropic containment and Redwood control, insecure AI-generated code and client-side key exposure, MCP confused-deputy and token-passthrough, tool-layer memory poisoning, AI-code iteration degradation, and Veracode's Spring-2026 refresh. UI dark patterns are treated here as an injection surface, not only an ethics problem, and a poisoned tool description is goal-hijack rather than supply-chain.
+provenance: distilled from Simon Willison's 2026 agentic-security writing (lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic) — BOSS v0.48.0, IDEA-026 Part B · hardened v0.79.0 with the 2026 agent-native surface — OWASP Agentic ASI Top 10 (RVW-042), agentic misalignment (RVW-032), Anthropic containment + Redwood control (RVW-044), insecure AI-generated code & client-side key exposure (RVW-054) · UI-dark-patterns-as-injection-surface added v0.96.0 (RVW-060, /humane-refresh sweep pass 2) · MCP confused-deputy/token-passthrough + tool-layer memory-poisoning defense + AI-code iteration-degradation + Veracode Spring-2026 refresh added v0.108.0 (2026-07-23 research sweep) · **sharpened v0.165.0 (2026-08-20), clock deliberately NOT moved** — the MCP-and-automation assessment added the pre-install pass (tool descriptions as untrusted input; poisoned descriptions are ASI01 goal-hijack, not supply-chain; registry still preview; re-read on update). One bullet is not a threat sweep, and per the v0.150.0 correction "freshened a little" is not a claimable state — the next real sweep still owns 2026-11-09. · **corrected v0.216.0 (2026-08-21), clock again deliberately NOT moved** — the /red-team deep review verified four load-bearing citations and three were off: the OWASP LLM list revised 2026-08-04 (five days before this practice's last review) and renumbered eight of ten; Veracode's Spring-2026 figures were superseded by the 2026 annual report published 2026-07-28, fourteen days *before* that same review; and "near-99% on stateful agents" was the memory-*injection* rate reported as if it were the attack rate. A clause claiming human oversight was tested against dark patterns was removed as unsupported by the source. Corrections are not a sweep.
+provenance_public: Distilled from Simon Willison's agentic-security writing (the lethal trifecta; "Agents Rule of Two"; classifiers are non-deterministic), then hardened against the 2026 agent-native surface: OWASP's Agentic ASI Top 10, agentic misalignment, Anthropic containment and Redwood control, insecure AI-generated code and client-side key exposure, MCP confused-deputy and token-passthrough, tool-layer memory poisoning, AI-code iteration degradation, and Veracode's 2026 code-security measurements. UI dark patterns are treated here as an injection surface, not only an ethics problem, and a poisoned tool description is goal-hijack rather than supply-chain.
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
 curve: threat
@@ -46,20 +46,24 @@ opens — the **agent itself** going wrong. Two things to hold:
   autonomy plus access to sensitive context — taking harmful, self-preserving actions under goal
   conflict (insider-threat-shaped). The lesson isn't "the model is evil"; it's *don't grant standing
   autonomy + sensitive access and assume good behaviour — bound both, and gate what can't be undone.*
-- **For an agent, the threat model is the OWASP Agentic ASI Top 10 (Dec 2025), not the stateless LLM
-  list.** An agent's real attack surface: goal hijack, **tool misuse**, identity/privilege abuse,
+- **For an agent, the threat model is the OWASP Top 10 for Agentic Applications (ASI, published Dec
+  2025), not the stateless LLM list.** An agent's real attack surface: goal hijack, **tool misuse**, identity/privilege abuse,
   **agentic supply chain** (a poisoned MCP server or tool), unexpected code execution, **memory /
   context poisoning**, insecure inter-agent comms, cascading failures, human-agent trust exploitation,
   rogue agents. Each has a real 2025 incident behind it (EchoLeak, the GitHub-MCP exploit, the Replit
   production-DB wipe). If you ship an agent, this is the list to defend — and the one to `/red-team`
-  against. The stateless LLM Top 10 still covers a plain prompt-in/text-out path.
+  against. The stateless LLM Top 10 still covers a plain prompt-in/text-out path — **note its 2026
+  edition (2026-08-04) renumbered eight of ten entries and renamed System Prompt Leakage to LLM08
+  *Hidden Context Exposure*, widening it to cover developer instructions, policy text and every tool
+  schema.** That widening is the same point as the pre-install pass below, arriving from OWASP's side.
 - **UI dark patterns are an injection surface (RVW-060).** An agent that browses or acts on the web is
   manipulated by the *same* dark patterns built for humans — Sneaking, Urgency, Forced-Action — and it's
   **worse off than a person**: Stanford's DECEPTICON steered agents to the manipulated outcome in **70%+ of
   tasks vs a 31% human average**, and it **gets worse as models scale**. The trap is assuming awareness is a
-  defence: agents that noticed a pre-ticked box still didn't deselect it (goal-driven optimization), and
-  **in-context "watch out for tricks" prompting, guardrail models, and even human oversight were each shown
-  insufficient** in testing. So **recognition ≠ protection** — defend it the structural way: narrow
+  defence: agents that acknowledged the dark pattern still proceeded with it, the reasoning trace calling it
+  necessary or helpful, and **in-context "watch out for tricks" prompting and guardrail models both failed to
+  consistently reduce the success rate.** (Those two are what the paper tested; human oversight was not
+  evaluated — don't claim it was.) So **recognition ≠ protection** — defend it the structural way: narrow
   permissions, an explicit confirm before any purchase/commitment, and inspect what a page is steering the
   agent to *do*, the same as inspecting a poisoned tool return. (This is the security face of
   [`deceptive-patterns.md`](deceptive-patterns.md)'s `agent-actions` surface — the agent there is the *victim*.)
@@ -126,7 +130,10 @@ opens — the **agent itself** going wrong. Two things to hold:
   descriptions exist and are worth running, but they are a second pair of eyes, not the first pair.
 - **Treat agent "memory" as a persistence channel, and bound it at the tool layer.** The moment your app
   gives its agent memory, a *one-time* injection can plant a durable instruction that fires in a *later*
-  session (the delayed-trigger attack — near-99% success on stateful agents in 2026 testing). In-context
+  session (the delayed-trigger attack). **Read the number carefully:** 2026 testing puts *injection* success
+  at ~95–98% but end-to-end *attack* success at 60–77%, under idealized conditions that a follow-up study
+  found realistic pre-existing memories degrade further. Getting the payload into the store is close to
+  free; making it fire is the part that varies — high-likelihood, not certain. In-context
   "watch out" warnings, retrieval-time filtering, and provenance tags each failed *alone*; the one defense
   that held was **restricting what the agent may write to and read from memory at the tool layer** — same
   shape as the mount tiers above, bound the capability rather than trust the prompt. (OWASP ASI06.)
@@ -137,11 +144,12 @@ The trifecta and the ASI list are about the *agent on your machine*. But the **c
 for your product** is its own risk — and a distinct one a founder is far more likely to ship by
 accident:
 
-- **AI defaults to insecure when a secure option exists.** Veracode's Spring-2026 update found only
-  ~55% of AI generation tasks produce secure code — ~45% still ship an OWASP-Top-10 vulnerability —
-  measured across GPT-5.x, Gemini 3, and Claude 4.5/4.6, and it *still* does not improve as models get
-  bigger (86% failed to defend against XSS, 88% against log injection). Treat generated code as
-  *unreviewed*, not *done*.
+- **AI defaults to insecure when a secure option exists.** Veracode's **2026 GenAI Code Security Report
+  (2026-07-28)** puts the average security pass rate at **56%** across 100+ models — ~44% of generation
+  tasks still ship an OWASP-Top-10 vulnerability — with 85% failing to defend against XSS and 88% against
+  log injection. It does **not** improve with scale: large models averaged 53%, medium and small 51%, and
+  coding-specialised models 51% against general-purpose models' 52%. Treat generated code as *unreviewed*,
+  not *done*.
 - **Client-side key exposure is the classic vibe-coded leak.** API keys baked into frontend JS, an
   open storage bucket, a secret committed to the repo — the 2025 incidents (the Tea breach, ~25k
   secrets found across vibe-coded sites, a 1.5M-key exposure) are nearly all this one shape.

@@ -48,6 +48,16 @@ checkout."* So the catalog is indexed by **the thing the founder is standing on*
   checkout, the delete flow, the permission prompt, the install path, the AI's own voice, the markup
   the model wrote. Each surface carries its own rows and its own honest version.
 
+**The `[model-written]` tag answers "who decided this?", never "where does it live?"** A row carries
+it when the pattern arrives without anyone choosing it — the model emitted it, from the average of
+its training data. That happens in the markup (a pre-ticked box in a generated form) *and* in the
+behaviour (sycophancy, guilt on exit), so the tag spans surfaces and **must never be used to route
+work between skills.** Route on the **surface**: `ai-voice` and `agent-actions` are probed by
+conversation (`/red-team --humane`), `generated-markup` and the visible rows are read off the page
+(`/ux-check`), `tracking-and-telemetry` is read off the network tab (`/trust`). Routing on the tag
+instead sends the entire behavioural battery to a skill that can only read markup, which is how a
+clean report comes back for a probe nobody ran.
+
 **A surface is a PLACE in the product — and that rule earns its keep by what it excludes.** The
 catalog briefly carried a `minors` surface, and it never worked: it stalled at two rows while every
 minors-related pattern kept wanting to live somewhere else. The reason was structural. "Minors" is a
