@@ -18,6 +18,22 @@
 // "6 mentors", "five builders". Those are checkable against the manifests with no judgment and
 // no second word list to maintain.
 //
+// SECOND CLASS, added v0.212.0 — VERIFICATION claims. The same disease at a different noun:
+// README told founders the gate-eval suite was "143 passing" when it was 152, and
+// docs/PATTERNS.md advertised "57 cases" of unit tests against a real 181 and "43
+// golden-transcript cases" against 50. registry/dogfood.json justified an EXEMPTION with
+// "143 eval cases". Four surfaces, all hand-typed, all drifted, none read by anything.
+//
+// The two classes have DIFFERENT truth sources and that difference is the finding:
+//   · unit tests are TRACKED (`test/`), so the count is derivable and this file guards it.
+//   · the eval suites are tier-1 LOCAL (.gitignore: "the dogfood workspace ... evals"), so
+//     NOTHING IN THE REPO CAN VERIFY AN EVAL COUNT. Those claims are listed every run as
+//     unverifiable rather than checked. That is not a limitation to route around — it is the
+//     open question (work-order 2e) printed where it will actually be seen, in the same shape
+//     `registry/dogfood.json` uses for `owed`: counted, printed, and never failing the gate.
+//
+// The file keeps its v0.210.0 name so the changelog entry that introduced it stays navigable.
+//
 // WHAT IT DOES NOT CHECK, stated so nobody reads a clean run as more than it is: prose that
 // ENUMERATES a roster without counting it ("architect, GTM and cofounder at MVP") is still
 // unguarded. Catching that needs either a hand-maintained vocabulary — which is the thing this
@@ -25,7 +41,7 @@
 // whether a bare word like "business" or "pitch" is naming an agent or just being English.
 // The count is the half that is mechanical. The enumeration is the half that is not.
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { loadModes } from '../src/modes.js';
@@ -94,20 +110,127 @@ for (const rel of surfaces()) {
   });
 }
 
-console.log(`\n  ${bold('BOSS · roster claims')} ${dim(`— ${real.agents} agents (${real.builders} builders · ${real.mentors} mentors), from stages/*/manifest.json`)}\n`);
+// ── SECOND CLASS: verification claims ───────────────────────────────────────────────
+//
+// Truth for unit tests is derivable from TRACKED files and is exact: every test in this repo
+// is declared at column 0 as `test(`, none nested, so the static count equals the runtime
+// pass count. Verified at v0.212.0 — 181 both ways. If nested tests ever appear this goes
+// wrong QUIETLY, so it asserts the shape rather than trusting it.
+function unitTestTruth() {
+  const dir = join(BOSS_ROOT, 'test');
+  if (!existsSync(dir)) return null;
+  let total = 0;
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.test.js'))) {
+    const body = readFileSync(join(dir, f), 'utf8');
+    total += (body.match(/^test\(/gm) || []).length;
+    // `[ \t]` not `\s`: in JS `\s` matches \n, so `^\s+test\(` fires on any blank line
+    // before a top-level test — which it did, on the first run, reporting 181 as UNCOUNTABLE.
+    if (/^[ \t]+test\(/m.test(body)) return null;   // nested — the static count is no longer exact
+  }
+  return total;
+}
+
+// Phrasings taken from the four surfaces as actually written, not invented. A novel phrasing
+// is invisible here, which is the same honest limit the roster half declares above.
+const VERIFIED_CLAIMS = [
+  { key: 'unitTests', label: 'unit tests', re: /\b(\d{1,4})\s+unit tests?\b/gi },
+  { key: 'unitTests', label: 'unit tests', re: /unit tests[^\n]*?\*\*(\d{1,4}) cases?\*\*/gi },
+];
+
+// Same shape, no truth source in TRACKED files. Listed, never failed.
+//
+// `release` is the one thing that can check these, because it RUNS the local suite — but it
+// only ever matched two phrasings, and it is not what sessions actually run (that is `npm test`
+// and `npm run check`). The two it does cover are mirrored here so this report can say which
+// claims are merely local-only and which are unguarded everywhere. Keep the pair in sync: if
+// release.js grows a claim regex, add it here.
+const RELEASE_GUARDED = [
+  /gate-eval suite \((\d+) passing\)/,
+  /\*\*(\d+) cases \/ 0 failures\*\*/,
+  /(\d+)-case eval gate/,
+  /(\d+) eval cases/,
+  /(\d+) golden-transcript cases/,
+];
+
+const UNVERIFIABLE_CLAIMS = [
+  { label: 'gate-eval cases',  re: /\b(\d{1,4})[- ]case eval gate\b/gi },
+  { label: 'gate-eval cases',  re: /gate-eval suite \((\d{1,4}) passing\)/gi },
+  { label: 'gate-eval cases',  re: /\b(\d{1,4}) eval cases?\b/gi },
+  { label: 'gate-eval cases',  re: /\*\*(\d{1,4}) cases? \/ 0 failures\*\*/gi },
+  { label: 'judgment cases',   re: /\b(\d{1,4}) golden-transcript cases?\b/gi },
+];
+
+const VERIFY_SURFACES = ['README.md', 'docs/PATTERNS.md', 'registry/dogfood.json']
+  .filter((f) => existsSync(join(BOSS_ROOT, f)));
+
+const units = unitTestTruth();
+const verifyFindings = [];
+const unverifiable = [];
+
+for (const rel of VERIFY_SURFACES) {
+  const lines = readFileSync(join(BOSS_ROOT, rel), 'utf8').split('\n');
+  lines.forEach((line, i) => {
+    for (const c of VERIFIED_CLAIMS) {
+      for (const m of line.matchAll(c.re)) {
+        const claimed = Number(m[1]);
+        const actual = c.key === 'unitTests' ? units : null;
+        if (actual != null && claimed !== actual) {
+          verifyFindings.push({ file: rel, line: i + 1, claim: m[0].trim(), claimed, actual, key: c.label });
+        }
+      }
+    }
+    for (const c of UNVERIFIABLE_CLAIMS) {
+      for (const m of line.matchAll(c.re)) {
+        unverifiable.push({ file: rel, line: i + 1, claim: m[0].trim(), key: c.label,
+          rel: RELEASE_GUARDED.some((g) => g.test(m[0])) });
+      }
+    }
+  });
+}
+
+// ── report ──────────────────────────────────────────────────────────────────────────
+console.log(`\n  ${bold('BOSS · counted claims')} ${dim(`— ${real.agents} agents (${real.builders} builders · ${real.mentors} mentors) from stages/*/manifest.json · ${units == null ? 'unit tests UNCOUNTABLE' : `${units} unit tests`} from test/`)}\n`);
 
 if (!findings.length) {
-  console.log(`  ${ok('Every counted roster claim matches the manifests.')}\n`);
-  console.log(`  ${dim('Counts only. Prose that ENUMERATES a roster without counting it is still')}`);
-  console.log(`  ${dim('unguarded — see this file\'s header for why that half is not mechanical.')}\n`);
-  process.exit(0);
+  console.log(`  ${ok('Every counted roster claim matches the manifests.')}`);
+} else {
+  console.log(`  ${err(`${findings.length} roster finding${findings.length > 1 ? 's' : ''} — a hand-typed count disagrees with the manifests.`)}\n`);
+  for (const f of findings) {
+    console.log(`      ${f.file}:${f.line}`);
+    console.log(`        "${f.claim}" ${dim('→')} ${f.claimed} claimed, ${bold(String(f.actual))} actual ${dim(`(${f.key})`)}`);
+  }
 }
 
-console.log(`  ${err(`${findings.length} finding${findings.length > 1 ? 's' : ''} — a hand-typed count disagrees with the manifests.`)}\n`);
-for (const f of findings) {
-  console.log(`      ${f.file}:${f.line}`);
-  console.log(`        "${f.claim}" ${dim('→')} ${f.claimed} claimed, ${bold(String(f.actual))} actual ${dim(`(${f.key})`)}`);
+if (units == null) {
+  console.log(`  ${warn('Unit-test count skipped — a nested test() appeared, so the static count is no longer exact.')}`);
+} else if (!verifyFindings.length) {
+  console.log(`  ${ok('Every counted unit-test claim matches test/.')}`);
+} else {
+  console.log(`\n  ${err(`${verifyFindings.length} verification finding${verifyFindings.length > 1 ? 's' : ''} — advertised test counts disagree with test/.`)}\n`);
+  for (const f of verifyFindings) {
+    console.log(`      ${f.file}:${f.line}`);
+    console.log(`        "${f.claim}" ${dim('→')} ${f.claimed} claimed, ${bold(String(f.actual))} actual ${dim(`(${f.key})`)}`);
+  }
 }
-console.log(`\n  ${dim('The site cannot drift here — gen-site derives these from the manifests.')}`);
-console.log(`  ${dim('README.md is the one roster surface still typed by hand.')}\n`);
-process.exit(STRICT ? 1 : 0);
+
+if (unverifiable.length) {
+  console.log(`\n  ${warn(`${unverifiable.length} eval claim${unverifiable.length > 1 ? 's' : ''} in tracked prose — none verifiable from TRACKED FILES:`)}\n`);
+  for (const f of unverifiable) {
+    console.log(`      ${f.file}:${f.line}  ${dim('·')} "${f.claim}" ${dim(`(${f.key})`)}` +
+      (f.rel ? ` ${dim('— npm run release checks this')}` : ` ${bold('— unguarded everywhere')}`));
+  }
+  const bare = unverifiable.filter((f) => !f.rel).length;
+  console.log(`\n  ${dim('The eval suites are tier-1 LOCAL (.gitignore: "the dogfood workspace ... evals"),')}`);
+  console.log(`  ${dim('so NO READER and no fresh clone can check any of these from tracked files.')}`);
+  console.log(`  ${dim('`npm run release` can — it runs the local suite — but it is not what sessions run,')}`);
+  console.log(`  ${dim('which is how these drifted for nine releases while a correct guard sat in release.js.')}`);
+  console.log(`  ${dim(bare ? `${bare} of ${unverifiable.length} are unguarded even there.`
+    : `All ${unverifiable.length} are covered by release as of v0.212.0 — it knew only 2 phrasings before.`)}`);
+  console.log(`  ${dim('Does NOT fail the gate: a gate that is red forever is a gate you bypass. Printed')}`);
+  console.log(`  ${dim('every run until the tier question (work-order 2e) is actually decided.')}`);
+}
+
+console.log(`\n  ${dim('Counts only. Prose that ENUMERATES without counting is still unguarded — see the header.')}\n`);
+
+const hard = findings.length + verifyFindings.length;
+process.exit(hard && STRICT ? 1 : 0);

@@ -143,6 +143,18 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   if (r.code !== 0) console.log(r.out.trimEnd());
 }
 
+// Counted claims — the roster half (agents/mentors/builders vs the manifests) and the
+// unit-test half (advertised counts vs `test/`). Shipped at v0.210.0 wired ONLY into
+// `npm run check`, which is a different gate from this one; v0.212.0 found it missing here
+// while auditing why four advertised counts had drifted. A checker in one gate is a checker
+// half-installed.
+{
+  const r = run('node', [join('scripts', 'check-roster-claims.js'), '--strict']);
+  record('counted claims hold', r.code === 0,
+    r.code === 0 ? 'roster + unit-test counts match their sources' : 'see output below');
+  if (r.code !== 0) console.log(r.out.trimEnd());
+}
+
 // --- 3. generated docs are current ---------------------------------------
 // Regenerate, then ask git whether that changed anything. If it did, the COMMITTED versions
 // were stale — the 56-release bug — and they are now fixed ON DISK, so this release cannot
@@ -313,17 +325,35 @@ if (!fast) {
   // Every doc that quotes the gate's number, checked against the number. Both README and
   // PATTERNS.md had drifted (105 vs the real 129) — a claim about your own rigour is the
   // worst one to leave stale, so the gate verifies it rather than trusting a memory.
-  if (gatePassed != null) {
-    const claims = [
-      ['README.md', /gate-eval suite \((\d+) passing\)/],
-      ['docs/PATTERNS.md', /\*\*(\d+) cases \/ 0 failures\*\*/],
-    ];
-    for (const [f, re] of claims) {
-      const m = readFileSync(join(BOSS_ROOT, f), 'utf8').match(re);
-      if (!m) continue;
-      record(`${f} eval-count claim`, Number(m[1]) === gatePassed,
-        `says ${m[1]}, gate says ${gatePassed}`);
+  //
+  // v0.212.0 — this guard was CORRECT and still let four numbers rot, because it only knew
+  // two phrasings. README said "143 passing" and PATTERNS "143 cases / 0 failures" — both
+  // matched — while `registry/dogfood.json` said "a 143-case eval gate" and "143 eval cases"
+  // in the same breath, and PATTERNS advertised "43 golden-transcript cases" against 50.
+  // Three surfaces the regex could not see. Truth for the judgment half is a case count, not
+  // a run, so it is derived separately.
+  const judgmentTruth = (() => {
+    const d = join(BOSS_ROOT, 'docs', 'architecture', 'conscience-evals', 'judgment');
+    if (!existsSync(d)) return null;
+    let n = 0;
+    for (const f of readdirSync(d).filter((x) => x.endsWith('.judgment.yml'))) {
+      n += (readFileSync(join(d, f), 'utf8').match(/^\s*- id:/gm) || []).length;
     }
+    return n || null;
+  })();
+
+  const claims = [
+    ['README.md', /gate-eval suite \((\d+) passing\)/, gatePassed],
+    ['docs/PATTERNS.md', /\*\*(\d+) cases \/ 0 failures\*\*/, gatePassed],
+    ['registry/dogfood.json', /(\d+)-case eval gate/, gatePassed],
+    ['registry/dogfood.json', /(\d+) eval cases/, gatePassed],
+    ['docs/PATTERNS.md', /(\d+) golden-transcript cases/, judgmentTruth],
+  ];
+  for (const [f, re, truth] of claims) {
+    if (truth == null) continue;
+    const m = readFileSync(join(BOSS_ROOT, f), 'utf8').match(re);
+    if (!m) continue;
+    record(`${f} — "${m[0]}"`, Number(m[1]) === truth, `says ${m[1]}, truth is ${truth}`);
   }
 } else {
   console.log(`  ${dim('· conscience eval gate skipped (--fast)')}`);

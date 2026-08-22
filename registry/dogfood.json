@@ -48,7 +48,7 @@
       "path": ".boss/smoke.json",
       "capability": "/smoke",
       "verdict": "exercised",
-      "why": "Records `npm run release` — 22 checks, 155 unit tests, a 143-case eval gate. Previously marked exempt on the grounds that BOSS was 'well past' rung 1. That reasoning was wrong in an instructive way: verification-loop fired correctly the moment the conscience was installed, and its own first branch says so — 'if they already have verification under another name, the gap is BOSS's blindness, not their discipline.' The honest fix was to record the command, not to exempt the artifact."
+      "why": "Records `npm run release` — 22 checks, 181 unit tests, a 152-case eval gate. Previously marked exempt on the grounds that BOSS was 'well past' rung 1. That reasoning was wrong in an instructive way: verification-loop fired correctly the moment the conscience was installed, and its own first branch says so — 'if they already have verification under another name, the gap is BOSS's blindness, not their discipline.' The honest fix was to record the command, not to exempt the artifact."
     },
     {
       "path": ".boss/cost-log.jsonl",
@@ -138,7 +138,7 @@
       "path": "docs/experiments/EXP-NNN",
       "capability": "L3-scale",
       "verdict": "exempt",
-      "why": "Unlocks at Scale. BOSS runs experiments as evals and /vet verdicts (143 eval cases, 82 RVW records) rather than as EXP files — the substitute is exercised heavily and the original would duplicate it."
+      "why": "Unlocks at Scale. BOSS runs experiments as evals and /vet verdicts (152 eval cases, 82 RVW records) rather than as EXP files — the substitute is exercised heavily and the original would duplicate it."
     }
   ]
 }

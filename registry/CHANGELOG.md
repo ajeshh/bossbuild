@@ -9,6 +9,45 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.212.0 — 2026-08-21
+
+**BOSS advertised four verification numbers, and all four were wrong.** README told founders the
+gate-eval suite was *"143 passing"* when it was **152**. `docs/PATTERNS.md` claimed **57** unit
+tests against a real **181**, and **43** golden-transcript cases against **50**.
+`registry/dogfood.json` justified an exemption with *"143 eval cases"* — an exemption resting on a
+number nobody had checked in nine releases.
+
+🔴 **A correct guard already existed, and had already caught this exact bug once.** `release.js`
+carries a check whose comment reads *"both README and PATTERNS.md had drifted (105 vs the real
+129) — a claim about your own rigour is the worst one to leave stale."* It was right, it was
+well-written, and the numbers rotted anyway. **Two reasons, and both are the finding:**
+
+- **It lives in `npm run release`, which is not what sessions run.** They run `npm test` and
+  `npm run check`. A guard in the gate nobody runs is a guard nobody has.
+- **It knew two phrasings out of five.** `gate-eval suite (N passing)` and `**N cases / 0
+  failures**` matched. *"a 143-case eval gate"*, *"143 eval cases"* and *"43 golden-transcript
+  cases"* did not — three surfaces the regex could not see, two of them in the same JSON value.
+
+**Fixed on both axes.** `check-roster-claims.js` grows a second class — verification claims — and
+guards the half with a tracked truth source: every test in this repo is declared at column 0, so
+the static count is exact (181 statically, 181 at runtime, asserted rather than assumed). It runs
+in `npm run check`, so the fast gate now catches it. `release.js` learns the other three phrasings
+and derives the judgment count from the case files. **And `check:roster` itself was missing from
+`release.js` entirely** — shipped at v0.210.0 wired into one gate of two. A checker in one gate is
+a checker half-installed.
+
+**The eval counts still have no tracked truth source, and the report now says so every run.**
+The suites are tier-1 LOCAL by declaration (`.gitignore`: *"the dogfood workspace ... evals"*), so
+no reader and no fresh clone can check them. That is printed, never failed — the `owed` shape
+`registry/dogfood.json` already uses — until the tier question is actually decided rather than
+worked around.
+
+Two self-inflicted bugs worth recording, both caught by running the thing: the nested-test guard
+used `^\s+test\(` and **`\s` matches `\n` in JS**, so any blank line before a top-level test read
+as nested and the count reported UNCOUNTABLE; and the report's own heading said *"nothing can
+verify"* directly above five lines saying `npm run release` verifies them — a header contradicting
+its body, which is the defect v0.211.0 had just fixed one file over.
+
 ## 0.211.0 — 2026-08-21
 
 **Found by a pre-publish smoke test: `/boss`'s own one-line description still said BOSS picks your
