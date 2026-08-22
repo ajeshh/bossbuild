@@ -48,7 +48,7 @@
       </p>
       <p class="small">
         Which makes this list deliberately short. A feed listing every version is a commit log, and a
-        commit log is not useful to someone building a company — so the default is <em>not shown</em>,
+        commit log is not useful to someone building the thing — so the default is <em>not shown</em>,
         and a release has to earn a line.
       </p>
       <p class="small">
@@ -66,6 +66,10 @@
       <div class="rail">▸<span>releases</span></div>
       <div class="body">
         <ol class="releases">
+      <li>
+        <div class="rel"><span class="ver">v0.214.0</span><span class="when">2026-08-21</span></div>
+        <p><code>/boss</code> now says your idea back and asks whether you want to keep shaping it or start building — <em>before</em> it asks about repos and licences. Either way your idea doc is a living document: <code>/triage &lt;a thought&gt;</code> adds to it whenever more lands.</p>
+      </li>
       <li>
         <div class="rel"><span class="ver">v0.208.0</span><span class="when">2026-08-21</span></div>
         <p><strong>The <code>sustaining</code> moment was watching your diary, not your project — and it would have told you that you had gone quiet while you were working.</strong> If you commit most weekends and write a devlog entry twice a year, v0.206.0 would have opened with a note about your absence. That does not read as a tool being tactless; it reads as a tool that <strong>cannot see your project</strong>. Fixed before any founder met it: the sensor is now the newest of your devlog <strong>or</strong> your git history. Plus a third way forward it was missing — <strong>change nothing, dormant is fine</strong> — and it will never tell you how long you were gone.</p>
@@ -110,10 +114,6 @@
         <div class="rel"><span class="ver">v0.198.0</span><span class="when">2026-08-21</span></div>
         <p>The <strong>Humane Product Canvas</strong> is now a free thing you can just take — <a href="https://oyeboss.build/canvas.html">a page</a> and a Markdown template, <strong>CC BY-SA 4.0</strong>, no install, no signup, no email. It's the one-page canvas BOSS's <code>/canvas</code> skill is built on: everything Lean and the Business Model Canvas cover, plus two questions neither of them asks — <strong>who this could harm or exclude</strong>, and <strong>the principles you'll hold when holding them costs you something.</strong> Print it, fork it, teach from it. The tool is for when you want something to keep asking; the framework is yours either way.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.197.0</span><span class="when">2026-08-21</span></div>
-        <p>If you have ever edited a skill or agent BOSS installed, <code>boss sync --apply</code> used to overwrite it without asking. It no longer does — a managed file you changed is <strong>left alone</strong> and reported by name, and <code>/boss-sync</code> (or <code>--force</code>) decides what to do with it. Files that predate this release get copied to <code>.boss/backups/</code> before being written, because BOSS genuinely cannot tell whether you touched them.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -143,7 +143,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.210.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.215.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

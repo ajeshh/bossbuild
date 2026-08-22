@@ -9,6 +9,45 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.215.0 — 2026-08-21
+
+**The website stops assuming you're building a company. [[DEC-014]] — work-order 2b, and the end of
+a standing constraint.**
+
+*"Website stays untouched till we solve this"* held for **four consecutive decisions.** The
+mechanism is built now, so the claim was finally allowed — and the claim turned out to be a
+**subtraction**: five phrases across three pages, every one of them removing a word.
+
+- **The thesis line was the one that filtered.** *"Almost no one can tell a real **business** from a
+  convincing demo"* → *"...a thing **people actually need** from a convincing demo."* The underlying
+  claim is universal — real pull versus a convincing demo — and it is as true for a neighbourhood
+  tool as a startup. **Name the test, not the destination.**
+- *"an impressive demo with no proven pain, no workflow fit, **no willingness to pay**"* → *"...and
+  **nobody who would miss it**"*, and *"a real **business value app**"* → *"a **real one**."* WTP as
+  a defining symptom made every non-commercial project a pseudo app by definition.
+- *"it's **your company**"* → *"it's **yours**"* — that one sat inside the muting RULE on
+  `/charter`, the page a commons-minded reader is most likely to check.
+
+🔴 **"startup" stays, and that is what keeps the diff honest.** `CLAUDE.md` kept *"a just-in-time
+**startup incubator**"* when [[DEC-011]] moved the telos to *"a company, a co-op, or a commons"* —
+the category word survived that edit deliberately. Changing the homepage `<h1>` would be the site
+getting **ahead of the repo's own recorded decision**, which is the exact failure this arc exists to
+prevent.
+
+**Nothing is claimed about commons, co-ops or social good, and that is deliberate.** No rungs exist
+— [[IDEA-067]] rungs 2–3 are deferred at n=0, there is no co-op mentor and no `intent` axis.
+Advertising support that is not built is the described-as-shipped failure at the most public surface
+BOSS has. The change is visible by the **absence of a filter**, never by a promise.
+
+**The audit is as much the deliverable as the edit.** Seven lines that looked wrong were checked and
+deliberately KEPT with reasons: the cleaning-business demo (a worked example is allowed to be
+specific), `start.html`'s *"venture brain"* (a real filename), `team.html`'s *"whether to raise"*
+(an accurate description of `mentor-capital`), and `canvas.html`'s *"does this work as a business?"*
+(describing what the Business Model Canvas asks). **A sweep would have taken all of them.**
+
+Regenerating the site also un-staled its **version stamp, four releases behind at v0.210.0** —
+nobody had run `npm run release` for v0.211.0 → v0.214.0, and that check is advisory by design.
+
 ## 0.214.0 — 2026-08-21
 
 > **For you:** `/boss` now says your idea back and asks whether you want to keep shaping it or start
