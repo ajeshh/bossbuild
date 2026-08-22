@@ -9,6 +9,129 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.209.0 — 2026-08-21
+
+**Work-order 1b, closed. `sustaining` is now the fifth moment with model-verified judgment — and the
+re-grade disagreed with its author, which is the whole reason to run one.**
+
+The conscience's judgment surface had four graded moments (drift, caution, capture, humane) and
+`sustaining` had **zero**. Seven cases, graded through the **keyless** in-session path — no API key,
+no credits — with an independent grader that did not write what it graded. **GRADED 7, no blocking
+failures, zero label mismatches.**
+
+- 🔴 **The regrade overturned a human label, and the label moved rather than the frame.** `j-sust-002`
+  was written as *should-fire*: a soft cadence (*"a few hours most weeks… indefinitely"*) gone quiet
+  for about eleven weeks. The model stayed **silent** — correctly. v0.208.0 had added, from the
+  `indie-hacker` read, an explicit instruction *not* to moralise about *"indefinitely"*: good projects
+  run for years on "a few hours a week" with plenty of those hours at zero. **Eleven quiet weeks
+  against a soft cadence is exactly the shape that instruction protects.** The case is now
+  `ambiguous` rather than deleted or quietly flipped, because **the tension it exposes is real and
+  worth grading every commit: branch (c) has no threshold, and the frame's own preference for silence
+  can swallow it.**
+- **So the set gained the sharp branch-(c) case it was missing** (`j-sust-003`): a founder who named a
+  *specific, checkable* rule — *"one evening every Tuesday, no exceptions… the whole reason it has
+  lasted two years"* — silent for four months. It fires, and it says the right thing: *"That sentence
+  has gone out of date."* **Silent on the soft cadence, firing on the specific claim** is the
+  discrimination the moment needs, and it is now pinned by two cases rather than asserted in prose.
+- **Both nudges passed an independent strict grader** on `names_specific_gap`, `references_required`
+  and `violates_must_not` — so every rule the v0.208.0 voice pass added holds **under real
+  generation**, not just in the instruction. That was the `indie-hacker`'s actual ask: *"show me the
+  transcript, not the spec."*
+- **`must_not` is mandatory on every `sustaining` case**, enforced by the case checker — the only
+  moment where the prohibitions are required, because on this one the failures are things it must not
+  SAY, and that half is what shipped unverified in v0.206.0.
+- **The frame is fingerprinted.** Editing it changes the voice-hash and marks all seven transcripts
+  STALE, demanding a re-grade — which is exactly right for the most prohibition-dense instruction
+  BOSS ships, where every prohibition was earned by a reviewer or a persona catching a bad sentence.
+- Harness plumbing: `sustaining` registered in `MOMENTS` (regrade), `MOMENT_SIGNALS` (voice-hash) and
+  the replay registry; devlog tails moved into `fixtures-sustaining.js` because the minimal YAML
+  parser does not read `|` block scalars — it silently kept 1 case of 6 until they moved.
+
+## 0.208.0 — 2026-08-21
+
+> **For you:** **The `sustaining` moment was watching your diary, not your project — and it would have
+> told you that you had gone quiet while you were working.** If you commit most weekends and write a
+> devlog entry twice a year, v0.206.0 would have opened with a note about your absence. That does not
+> read as a tool being tactless; it reads as a tool that **cannot see your project**. Fixed before any
+> founder met it: the sensor is now the newest of your devlog **or** your git history. Plus a third
+> way forward it was missing — **change nothing, dormant is fine** — and it will never tell you how
+> long you were gone.
+
+**Work-order Phase 1a + 1b. The moment shipped one release ago with its tenderness ASSERTED and
+verified nowhere; this is the verification, and it found a defect, not a tone problem.**
+
+**🔴 The sensor was wrong.** `quiet_for` keyed on `docs/devlog.md` alone. Found by the `indie-hacker`
+persona on the pre-ship read — *"I go months without a devlog entry while committing most weekends. If
+this fires while I have commits from last Tuesday, I don't mute the moment, I stop believing the tool
+can see the project."* The sensor is now `docs/devlog.md, .git/logs/HEAD` — the reflog is touched on
+every commit and is stack-neutral (Principle 4), so no `src/` glob. A project without git falls back to
+the old behaviour, which is right for that case. **Locked out by `m-sust-107`, verified to go red
+against the v0.206.0 sensor.**
+
+**🔴 The eval harness could not reach this moment AT ALL, and would have reported a clean sweep.**
+Every fixture is materialized *now*, so every file is zero days old, and `quiet_for` measures days
+since last change. Three fixes: **`age_days:`** on a fixture backdates its mtime (any future
+time-based predicate needs it); **eval sets are now DISCOVERED from disk** rather than a hand-listed
+twelve `loadMoment()` calls — a new set used to be invisible until someone remembered to register it,
+and it had already drifted (`moment-unverified.yml` was loaded but missing from the printed counts, so
+the per-set numbers never added up to the total anyone read); and the YAML guard **caught the author
+mid-mistake**, refusing inline `\n` escapes it stores literally and naming the fix. **143 → 152 gate
+cases passing.**
+
+**The voice pass found the failure nobody was guarding.** The frame banned the *scolding* register
+loudly and left the *sympathy* register entirely to inference — while supplying the raw material for
+it (*"they may have had a baby, a job, an illness"*, which teaches a model to reach for exactly that).
+And nothing told it how to **open**, so the default was "Welcome back!" — the wellness-app register,
+forbidden everywhere else in the same frame.
+
+- ⛔ **It never remarks on the absence and never states its length.** The seasoned hand picks the
+  conversation up mid-sentence. **An elapsed-time figure is a streak wearing a coat.**
+- ⛔ **It does not sympathise.** A new baby and a fortnight in the sun look identical from here.
+- **A third way forward: change nothing.** Both personas asked for it independently — every previous
+  option required changing something, so the moment silently preferred *resolve this*. **Dormant is a
+  real answer**, and it has to be said aloud: a founder who doesn't know they may decline will invent
+  an answer to satisfy the tool, and **an invented canvas answer is worse than a stale one — it
+  corrupts the artifact the moment came to protect.**
+- ⛔ **It defends none of them.** *"And that's not a failure"* tells someone you think it looks like
+  one. Four such rebuttals removed.
+- **Ending is reversible and says so** (`boss retire --undo`) — fear of a one-way door is what makes
+  someone pick the other one dishonestly. And **a thing can simply be finished**: not every ending is
+  an experiment returning an answer.
+- ⛔ **Once ever, not once per session** — it reads `.boss/conscience-log.jsonl` first. A moment that
+  greets you every time you open a quiet project is one you will mute, rightly.
+- ⛔ **No jargon at a founder**: never "bus factor", "sustainability answer" or "Business Model cell" —
+  say the sentence they actually wrote.
+- **Length is the tell.** The frame had grown to a 3× median outlier; rewritten tight at 4353 chars
+  with **all 17 rules retained**, and the output ceiling is now stated: two or three sentences.
+
+## 0.207.0 — 2026-08-21
+
+> **For you:** **`boss craft` was printing BOSS's internal filing ledger into your terminal.** Every
+> practice you opened led with a block of BOSS's own bookkeeping — record IDs, sweep numbers, review
+> dates, `IDEA-029`, `RVW-057`, `REVIEW-2026-07-28` — none of which exist in your project and none of
+> which you can act on. It now prints the practice, and ends with **`sources`**: who the ideas came
+> from and what it cost to find out. Same line the website shows.
+
+**The boundary was already stated, already enforced, and already correct — on the other surface.**
+`gen-site.js` renders `provenance_public` and nothing else (*"the site renders ONLY
+`provenance_public`"*), with a check that errors when the public field names internal things.
+`check-refs.js` documents the internal `provenance:` as *"not published"* and treats it as the one
+place those record names are allowed to live. Meanwhile `boss craft` printed the raw file.
+**One rule, two surfaces, one of them unread** — across **all 32 practices** that carry the field.
+
+- **Third instance of that shape this session**, which is why it now has a test rather than a fix:
+  `check-refs` matched agent NAMES but not the README's prose roster (v0.203.0); the canvas Metrics
+  cell promised *"and planet"* and asked only about people (v0.201.0); this one. **A rule enforced on
+  one surface is a rule half-written.**
+- **`test/craft.test.js` is the second reader.** Five assertions, and **two of them fail against the
+  pre-fix code** — verified by restoring the old behaviour and watching them go red. The other three
+  guard the fix from over-reaching: the body must still render whole (a truncating bug would drop the
+  tail silently), the freshness stamp must survive (it is a reader's only staleness signal), and
+  `provenance_public` must still cross.
+- **Swept all 32 practices** through the CLI: zero leaking.
+- Removes the interim note left inside `deceptive-patterns.md`'s own `provenance:` field in v0.202.0
+  (*"keep it publicly readable until that is fixed"*) — it existed only because of this bug.
+
 ## 0.206.0 — 2026-08-21
 
 > **For you:** **The conscience now watches the half of the canvas it had been ignoring.** If your

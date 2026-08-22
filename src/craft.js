@@ -31,6 +31,20 @@ function frontmatter(text) {
   return out;
 }
 
+// Strip the frontmatter before printing. `provenance:` is INTERNAL — it names IDEA / REVIEW /
+// RVW records that exist only in BOSS's own repo, and every one of them rendered straight into a
+// founder's terminal, on all 32 practices that carry one.
+//
+// THE SHAPE OF THE BUG, because it is the one this repo keeps finding: the boundary was already
+// STATED and already ENFORCED — on the other surface. `gen-site.js` renders `provenance_public`
+// and nothing else (*"the site renders ONLY provenance_public"*), with a check that errors when
+// the public field names internal things; `check-refs.js` documents the internal field as "not
+// published" and treats it as the one place those names are allowed. One rule, two surfaces, one
+// of them unread. Fixed v0.207.0.
+function body(text) {
+  return text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '').trim();
+}
+
 // The title line is the practice's own one-liner — better than a hand-maintained gloss,
 // because it cannot drift from the doc it describes.
 function headline(text) {
@@ -152,9 +166,15 @@ export function printCraft(query, opts = {}) {
     return 0;
   }
 
-  // Print the doc as-is. The reader is usually Claude following a pointer from an agent
-  // prompt — it wants the practice, not a summary of it.
-  console.log(`\n${text.trim()}\n`);
+  // Print the doc, minus the frontmatter. The reader is usually Claude following a pointer from
+  // an agent prompt — it wants the practice, not a summary of it, and it never wanted the ledger.
+  console.log(`\n${body(text)}\n`);
+
+  // `provenance_public` is the half a reader can actually use: who we learned it from, and what
+  // it cost to find out. Same field the website renders, and the only one that crosses.
+  const fm = frontmatter(text);
+  if (fm.provenance_public) console.log(`  ${dim('sources')}  ${dim(fm.provenance_public)}\n`);
+
   const stale = hit.reviewBy && hit.reviewBy < new Date().toISOString().slice(0, 10);
   const stamp = hit.reviewBy
     ? (stale ? warn(`review overdue (${hit.reviewBy})`) : ok(`fresh until ${hit.reviewBy}`))

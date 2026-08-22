@@ -11,7 +11,7 @@ entry:
       path_glob: docs/ideas/*-canvas.md, docs/ideas/CANVAS.md
       pattern: 'Business Model'
   - quiet_for:
-      path_glob: docs/devlog.md
+      path_glob: docs/devlog.md, .git/logs/HEAD
       days: 45
 exit:
   - outpaced_by:
@@ -23,8 +23,8 @@ drift_moment: sustaining
 
 # Loop: sustaining (Quickstart)
 
-**The only loop in BOSS that watches for silence, and the only one whose subject is the person
-rather than the product.**
+**The only loop in BOSS that watches for silence, and the only one whose subject is the
+arrangement rather than the product.**
 
 ## The asymmetry it closes
 
@@ -47,7 +47,7 @@ maintainer running out of road does not ship three FEATs, they go quiet. **Silen
 as a relation between two files**, so `quiet_for` is the fifth member of a deliberately closed set,
 and the first absolute-time one.
 
-## Why it is not cruel, structurally
+## Why it can only fire when you're here
 
 The conscience is a hook. **It only runs while the founder is here** — nothing observes them while
 they are away. So this never fires *at* an absent person. It fires when they **come back**, which is
@@ -56,9 +56,19 @@ promise in the copy.
 
 ## What it watches
 
-**Entry** — a devlog exists (real work happened), the canvas has a Business Model cell, and the
-devlog has not moved in **45 days**. Forty-five, not twenty-one: three weeks is a holiday, six is a
-pattern.
+**Entry** — a devlog exists (real work happened), the canvas has a Business Model cell, and
+**neither the devlog nor the repository** has moved in **45 days**. Forty-five, not twenty-one:
+three weeks is a holiday, six is a pattern.
+
+> 🔴 **Watch the repo, not the diary — and this was shipped wrong for one release.** v0.206.0 keyed
+> `quiet_for` on `docs/devlog.md` alone. A founder who commits most weekends and writes a devlog
+> entry twice a year would have been told they had gone quiet **while they were working**, which
+> does not read as a tool being tactless — it reads as a tool that **cannot see the project**, and
+> that costs the whole install rather than the one moment. Found by the `indie-hacker` persona on
+> the pre-ship read, v0.208.0. The sensor is now the newest of the devlog **or** `.git/logs/HEAD`,
+> which the reflog touches on every commit. Stack-neutral (Principle 4) — no `src/` glob, because
+> BOSS assumes no layout; git activity catches every stack at once. A project with no git falls
+> back to the devlog alone, which is the old behaviour and correct for that case.
 **Exit** — the canvas is newer than the devlog. They came back and revisited the answer rather than
 only resuming work. (Resuming work alone also closes the loop — it fails the entry.)
 
@@ -77,10 +87,22 @@ untrue.
 track", no encouragement-shaped scolding. A gap is data, not a verdict — and it is the most
 *predicted* thing about this kind of project.
 
-⛔ **Two doors, weighted equally.** Revise the answer to what is actually true (*"a weekend a month"*
-beats *"indefinitely"*, and writing it down is a win) → `/canvas`. Or end it on purpose → `/sunset`,
-which frames an ending as an experiment that returned an answer. **Never suggest the second first,
-and never imply it is the disappointing one.**
+⛔ **It never remarks on the absence, and never states how long it was.** No "welcome back", no "it's
+been a while", no asking where you went — and no sympathy for a reason it invented, because 45 days
+of a new baby and 45 days in the sun look identical from here. It picks the conversation up
+mid-sentence and talks about the sentence you wrote, not the time that passed. An elapsed-time figure
+is a streak wearing a coat.
+
+⛔ **Once ever, not once per session.** It checks `.boss/conscience-log.jsonl` before speaking. A
+moment that greets you every time you open a quiet project is one you will mute, and you would be
+right to.
+
+⛔ **Three ways forward, and it argues for none of them.** Rewrite the answer so it is true again
+(`/canvas`). End it on purpose (`/sunset`). **Or change nothing at all** — dormant is a real answer
+and often the right one, and it has to be said out loud: a founder who does not know they may decline
+will invent an answer to satisfy the tool, and **an invented canvas answer is worse than a stale
+one.** Never suggest the ending first, never tack it on last as the resigned option — and **never
+defend any of them.** Arguing that a door isn't a failure is how you tell someone it looks like one.
 
 ⛔ **The bus factor is never raised as a criticism.** *"Nobody else could carry this"* is the ordinary
 condition of almost every good small project.
