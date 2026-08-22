@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 
 import { join } from 'node:path';
 import { resolveStageId, STAGE_ORDER, STAGES_DIR } from '../src/paths.js';
 import { loadModes, modeWord, skillGloss } from '../src/modes.js';
-import { readStageManifest, appendMarkedBlock, applyStageSafe } from '../src/scaffold.js';
+import { readStageManifest, appendMarkedBlock, appendGitignoreBlock, applyStageSafe } from '../src/scaffold.js';
 import { planRemove, applyRemove } from '../src/remove.js';
 import { canonicalLayer, computeSettingsMerge, planSync, applySync, orphanEdited } from '../src/sync.js';
 import { detectStage } from '../src/detect.js';
@@ -87,6 +87,47 @@ test('appendMarkedBlock is idempotent — re-applying is a no-op', () => {
   const body = readFileSync(f, 'utf8');
   assert.match(body, /# Mine/, "the founder's content survives");
   assert.equal((body.match(/boss:adopt start/g) || []).length, 1);
+});
+
+test('REGRESSION: adopt merges BOSS ignore rules into a .gitignore the founder already has', () => {
+  // The bug: applyStageSafe copies only non-colliding files, every started repo has a
+  // .gitignore, so BOSS's was skipped in full — and DEC-001's guarantee that per-person
+  // conscience state never travels to a cofounder was enforced only by that file.
+  const dir = project({ '.gitignore': 'node_modules/\n.env\n' });
+  const r = appendGitignoreBlock(['L0-quickstart'], dir);
+  const body = readFileSync(join(dir, '.gitignore'), 'utf8');
+
+  assert.ok(r.applied, 'the merge must actually write');
+  assert.ok(body.includes('.boss/brain/relationship.md'), 'DEC-001: per-person state left committable');
+  assert.ok(r.added.includes('.boss/brain/relationship.md'));
+
+  assert.ok(body.startsWith('node_modules/\n.env\n'), "the founder's own rules stay first, untouched");
+  assert.equal(body.split('\n').filter((l) => l.trim() === 'node_modules/').length, 1, 'no duplicated rule');
+  assert.ok(!r.added.includes('.env'), 'a rule they already had must not be re-added');
+
+  // The comment travels WITH its rule — it is how a founder decides to drop one rather than obey it.
+  assert.ok(body.slice(0, body.indexOf('.boss/brain/relationship.md')).includes('DEC-001'),
+    'the rule arrived without the reason for it');
+
+  // `<!--` is not a comment in .gitignore, it is a pattern. appendMarkedBlock cannot be reused here.
+  assert.ok(!body.includes('<!--'), 'an HTML marker in a .gitignore is two literal patterns');
+  for (const line of body.split('\n')) {
+    if (line.trim() && !line.trim().startsWith('#')) {
+      assert.ok(!line.includes(' #'), `inline comment is not a gitignore comment: ${line}`);
+    }
+  }
+
+  const second = appendGitignoreBlock(['L0-quickstart'], dir);
+  assert.equal(second.applied, false, 'adopting twice must be a no-op');
+  assert.equal(readFileSync(join(dir, '.gitignore'), 'utf8'), body);
+});
+
+test('the gitignore merge adds nothing when the founder already has every rule', () => {
+  const template = readFileSync(join(STAGES_DIR, 'L0-quickstart', 'template', '.gitignore'), 'utf8');
+  const dir = project({ '.gitignore': template });
+  const r = appendGitignoreBlock(['L0-quickstart'], dir);
+  assert.equal(r.applied, false, 'a no-op merge must not append an empty marked block');
+  assert.equal(readFileSync(join(dir, '.gitignore'), 'utf8'), template);
 });
 
 test('applyStageSafe never clobbers a file the founder already has', () => {

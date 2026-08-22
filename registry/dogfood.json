@@ -48,7 +48,7 @@
       "path": ".boss/smoke.json",
       "capability": "/smoke",
       "verdict": "exercised",
-      "why": "Records `npm run release` — 22 checks, 183 unit tests, a 152-case eval gate. Previously marked exempt on the grounds that BOSS was 'well past' rung 1. That reasoning was wrong in an instructive way: verification-loop fired correctly the moment the conscience was installed, and its own first branch says so — 'if they already have verification under another name, the gap is BOSS's blindness, not their discipline.' The honest fix was to record the command, not to exempt the artifact."
+      "why": "Records `npm run release` — 22 checks, 186 unit tests, a 152-case eval gate. Previously marked exempt on the grounds that BOSS was 'well past' rung 1. That reasoning was wrong in an instructive way: verification-loop fired correctly the moment the conscience was installed, and its own first branch says so — 'if they already have verification under another name, the gap is BOSS's blindness, not their discipline.' The honest fix was to record the command, not to exempt the artifact."
     },
     {
       "path": ".boss/cost-log.jsonl",

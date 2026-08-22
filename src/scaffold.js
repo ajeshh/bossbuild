@@ -94,6 +94,80 @@ export function appendClaudeBlock(stageId, targetDir, body) {
   return appendMarkedBlock(join(targetDir, 'CLAUDE.md'), stageId, body);
 }
 
+// Split a .gitignore into { comments, patterns } groups, so a rule can be carried across
+// WITH the comment that explains it. A blank line ends a group; a comment after a pattern
+// starts the next one.
+function gitignoreGroups(body) {
+  const groups = [];
+  let comments = [];
+  let patterns = [];
+  const flush = () => {
+    if (patterns.length) { groups.push({ comments, patterns }); comments = []; patterns = []; }
+  };
+  for (const raw of body.split('\n')) {
+    const line = raw.trim();
+    if (!line) { flush(); continue; }
+    if (line.startsWith('#')) { if (patterns.length) flush(); comments.push(raw.trimEnd()); }
+    else patterns.push(line);
+  }
+  flush();
+  return groups;
+}
+
+// Merge a stage template's ignore rules into a .gitignore the founder ALREADY has.
+//
+// WHY IT EXISTS: `boss adopt` copies only files that don't collide, and every already-started
+// repo has a .gitignore — so BOSS's ignore rules were skipped in full, silently, on every
+// brownfield adopt. The rule that matters is `.boss/brain/relationship.md`: per-person
+// conscience state that DEC-001 says never travels to a cofounder. That guarantee was being
+// enforced by a file the brownfield path never installed.
+//
+// WHY NOT appendMarkedBlock: its marker is an HTML comment, and .gitignore has no HTML
+// comments — `<!-- boss:adopt start -->` would land as two literal PATTERNS. The comment
+// character here is `#`, and gitignore has no INLINE comments either, so every rule stays
+// on its own line.
+//
+// Only rules the founder doesn't already have are added, each with the template comment that
+// explains it — those comments are how a founder decides to REMOVE a line rather than obey it.
+// Idempotent by marker, like appendMarkedBlock: adopting twice is a no-op. Carrying a LATER
+// version's new rules in is `boss sync`'s job, not adopt's.
+export function appendGitignoreBlock(stageIds, targetDir) {
+  const filePath = join(targetDir, '.gitignore');
+  const startMark = '# ── BOSS — what stays on this machine (delete a line to commit that file) ──';
+  const endMark = '# ── end BOSS ──';
+  const existing = existsSync(filePath) ? readFileSync(filePath, 'utf8') : '';
+  if (existing.includes(startMark)) return { added: [], applied: false };
+
+  // Exact (trimmed) match. A near-miss — theirs `node_modules`, ours `node_modules/` — adds a
+  // harmless duplicate rather than guessing at gitignore semantics we'd get subtly wrong.
+  const have = new Set(
+    existing.split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')),
+  );
+
+  const out = [];
+  const added = [];
+  for (const stageId of stageIds) {
+    const src = join(STAGES_DIR, stageId, 'template', '.gitignore');
+    if (!existsSync(src)) continue;
+    for (const g of gitignoreGroups(readFileSync(src, 'utf8'))) {
+      const fresh = g.patterns.filter((p) => !have.has(p));
+      if (!fresh.length) continue;       // they have all of it already — drop the comment too
+      fresh.forEach((p) => have.add(p)); // a chain can repeat a rule across stages
+      if (out.length) out.push('');
+      out.push(...g.comments, ...fresh);
+      added.push(...fresh);
+    }
+  }
+  if (!added.length) return { added: [], applied: false };
+
+  const block = `${startMark}\n${out.join('\n')}\n${endMark}\n`;
+  const sep = existing && !existing.endsWith('\n\n')
+    ? (existing.endsWith('\n') ? '\n' : '\n\n')
+    : '';
+  writeFileSync(filePath, existing + sep + block);
+  return { added, applied: true };
+}
+
 // Recursive copy-if-absent: copy every template file that doesn't already exist
 // in the target, skipping (never clobbering) any the founder already has. The
 // non-destructive half of `boss adopt`. Records copied + skipped paths.

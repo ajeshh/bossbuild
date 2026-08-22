@@ -60,6 +60,22 @@ test('running outside a BOSS project fails clearly rather than half-working', ()
   }
 });
 
+test('REGRESSION: adopting a repo that already has a .gitignore still protects DEC-001 state', () => {
+  // The wiring half. appendGitignoreBlock being correct is worth nothing if `boss adopt`
+  // does not call it — which is exactly how the rules went missing for every brownfield
+  // repo in the first place (a non-destructive copy silently skipping the one file that
+  // keeps per-person conscience state out of a shared repo).
+  const dir = project({ '.gitignore': 'node_modules/\ndist/\n', 'package.json': '{"name":"mine"}\n' });
+  const r = boss(['adopt'], dir);
+  assert.equal(r.code, 0, r.out);
+
+  const ignore = readFileSync(join(dir, '.gitignore'), 'utf8');
+  assert.ok(ignore.startsWith('node_modules/\ndist/\n'), "the founder's own rules stay first");
+  assert.ok(ignore.includes('.boss/brain/relationship.md'), 'DEC-001: per-person state left committable');
+  assert.ok(ignore.includes('.boss/conscience-log.jsonl'));
+  assert.match(r.out, /\.gitignore merged/, 'a merge into the founder\'s file must be reported, not silent');
+});
+
 test('unlock rejects an unknown mode in the vocabulary it accepts', () => {
   const r = boss(['unlock', 'v9'], bossProject());
   assert.equal(r.code, 1);

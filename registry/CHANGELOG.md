@@ -9,6 +9,48 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.217.0 — 2026-08-22
+
+**`boss adopt` never installed BOSS's `.gitignore`. On every already-started repo, the per-person
+conscience state [[DEC-001]] says never travels to a cofounder has been committable.**
+
+> **For you:** If you brought BOSS into an existing repo with `boss adopt`, open your `.gitignore`.
+> BOSS's rules were skipped **in full**, silently — precisely *because* you already had one — so
+> `.boss/brain/relationship.md` (what the conscience said to you, and what you did about it),
+> `.boss/conscience-log.jsonl`, `.boss/trace.jsonl` and `.boss/backups/` were all committable, and on
+> a shared repo they travel. Adopt now merges in the rules you lack as a marked `#` block, leaving
+> your own rules first and untouched, adding nothing twice. **Already adopted?** This release cannot
+> reach you — `adopt` refuses to run on a BOSS project and `sync` never touches your files. Copy the
+> block from `stages/L0-quickstart/template/.gitignore`, or ask BOSS to.
+
+- 🔴 **The guarantee was enforced by a file the brownfield path never installed.** `applyStageSafe`
+  copies only files that don't collide — that is adopt's whole promise, and it is right. But every
+  already-started repo has a `.gitignore`, so BOSS's landed in `skipped` on every single adopt.
+  Confirmed by running the function against a two-line ignore file: `skipped: [.gitignore]`,
+  `copied: []`, file unchanged.
+- **The merge primitive already existed, and adopt already used it — twice.** `appendMarkedBlock`
+  folds BOSS's rules into a pre-existing `AGENTS.md`; `appendClaudeBlock` does it for `CLAUDE.md`.
+  Three collision files worth merging, two wired. The same one-function-over asymmetry as
+  *`sync --force` grew a backup and `remove` never did*.
+- **It could not simply reuse that primitive**, which is likely why it never got one:
+  `appendMarkedBlock`'s marker is an HTML comment, and `.gitignore` has no HTML comments —
+  `<!-- boss:adopt start -->` lands as two literal **patterns**. `appendGitignoreBlock` uses `#`
+  markers, and because gitignore has no *inline* comments either, every rule stays on its own line.
+- **Adopt was reporting the miss as reassurance.** It prints `N of yours kept as-is` — wording chosen
+  deliberately to answer trust anxiety at the moment of maximum trust anxiety. For `.gitignore`, the
+  file kept as-is was the one meant to protect them. It now says `.gitignore merged (N rule(s) added)`.
+- **Only rules you lack are added, each with the comment that explains it** — those comments are how
+  a founder decides to *delete* a line rather than obey it. A rule you already have is never
+  duplicated and never re-explained.
+- **The line held is unchanged: per-person state local, venture state tracked.** `.boss/manifest.json`
+  and `docs/` still commit on purpose — verified with `git check-ignore` on a real adopt.
+- **Tenth instance of *checkers state intents they don't enforce*, and the purest yet:** the ignore
+  file *states* the DEC-001 intent in prose directly above the pattern, and on the adopt path nothing
+  carried it. **Two tests, both verified to fail without the fix** — one on the merge (dedupe,
+  comment-carrying, idempotence, no HTML marker) and one end-to-end through `bin/boss`, because a
+  correct function wired into nothing is how this went missing in the first place. 183 → 186; the two
+  prose claims about that count were updated by the same gate that caught them in v0.212.0.
+
 ## 0.216.0 — 2026-08-21
 
 **`/red-team --humane` was routing its own headline probes out of the skill — and the OWASP list it

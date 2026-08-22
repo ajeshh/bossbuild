@@ -2,7 +2,7 @@ import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, basename } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
-import { applyStage, applyStageSafe, appendClaudeBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
+import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
@@ -182,6 +182,7 @@ function cmdAdopt(args) {
     .filter((s) => { try { readStageManifest(s); return true; } catch { return false; } });
   const claudePreexisted = existsSync(join(targetDir, 'CLAUDE.md'));
   const agentsPreexisted = existsSync(join(targetDir, 'AGENTS.md'));
+  const gitignorePreexisted = existsSync(join(targetDir, '.gitignore'));
   const copied = [];
   const skipped = [];
   for (const s of chain) {
@@ -216,6 +217,12 @@ function cmdAdopt(args) {
       `Run **\`/welcome\`** to orient, **\`/boss\`** to spin up an idea, or **\`boss map\`** to see what's available.\n` +
       `Grow ceremony as the project earns it: \`boss unlock <mode>\`.`);
   }
+
+  // 2c. If the repo already had a .gitignore, we skipped the template's — and that file is
+  //     what keeps `.boss/brain/relationship.md` (per-person conscience state, DEC-001) out of
+  //     a shared repo. Merge BOSS's rules in as a marked `#` block instead of shipping the
+  //     guarantee in a file this path never installs. Only rules they lack are added.
+  const ignored = gitignorePreexisted ? appendGitignoreBlock(chain, targetDir) : { added: [], applied: false };
 
   // 3. Stamp .boss/ (mode + not-self-hosted) so it's a real BOSS project. Agents /
   //    skills / hooks / loops are the UNION across the installed chain.
@@ -275,6 +282,7 @@ function cmdAdopt(args) {
   const preserved = [
     skipped.length ? `${skipped.length} of yours kept as-is` : null,
     claudePreexisted ? 'CLAUDE.md preserved (BOSS block appended)' : null,
+    ignored.applied ? `.gitignore merged (${ignored.added.length} rule(s) added)` : null,
   ].filter(Boolean);
   console.log(`    ${copied.length} file(s) added · nothing of yours overwritten${preserved.length ? ` · ${preserved.join(' · ')}` : ''}`);
   console.log(`    skills: ${skillsLine(stamp.skills)}`);
