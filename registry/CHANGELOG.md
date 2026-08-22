@@ -9,11 +9,15 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
-## 0.213.0 — 2026-08-21
+## 0.214.0 — 2026-08-21
 
 > **For you:** `/boss` now says your idea back and asks whether you want to keep shaping it or start
 > building — *before* it asks about repos and licences. Either way your idea doc is a living
 > document: `/triage <a thought>` adds to it whenever more lands.
+
+**Numbering note:** this work was authored as 0.213.0 and renumbered on landing — a peer session
+committed a different 0.213.0 (the conscience eval suite going public, work-order 2e) while this was in
+the working tree, and swept the version files into it. Nothing was lost; the two releases are unrelated.
 
 **A founder emptied their head into `/boss`, and BOSS filed it and moved on.** [[EVID-003]], relayed
 2026-08-21 — BOSS's third external signal and the first from someone who actually ran the tool:
@@ -72,9 +76,13 @@ captures actually register, and adding a loop to compensate for a broken predica
 gets noisy. **What justified acting on weak feedback is the measurement, not the opinion** — the same
 reasoning as [[EVID-002]].
 
-⚠️ **Still open:** is EVID-003's founder the same person as [[EVID-001]]? If yes, n is still 1 — but
-they came back, which is worth more than the words. Three questions would raise this to
-observed-behavior at no cost; they are written at the foot of the evidence file.
+✅ **Provenance settled the same day: a DIFFERENT founder — n=2 INDEPENDENT.** That meets
+[[EVID-001]]'s standing condition ("hold until a second signal") on its own terms. Three sources now
+converge on one axis — **BOSS emits and never mirrors**: [[EVID-002]] couldn't see what they'd get,
+[[EVID-001]] couldn't see where they were, EVID-003 couldn't get their idea reflected back. ⚠️ That is a
+hypothesis with convergence, **not a raised grade** — everything is still `stated-pain`, nobody has been
+observed, nobody has committed. Three questions would move it, and they cost nothing; they are written at
+the foot of the evidence file.
 
 ## 0.213.0 — 2026-08-21
 

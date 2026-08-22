@@ -27,7 +27,7 @@ judgment is the model's, in isolation. ([Anthropic on hooks](https://code.claude
 
 *"Every probabilistic system starts with a specification of correctness."* BOSS runs three channels:
 
-- **Unit tests — the deterministic floor.** **181 cases**, zero-dep (`node:test`), covering the state
+- **Unit tests — the deterministic floor.** **183 cases**, zero-dep (`node:test`), covering the state
   projections, the scaffold's non-destructive guarantees, and the CLI contract. Several are marked
   `REGRESSION` and name the shipped bug they lock. Cheapest of the three; runs first.
 - **Gate evals — deterministic, conscience-specific.** **152 cases / 0 failures**, asserting the

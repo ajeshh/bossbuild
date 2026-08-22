@@ -147,6 +147,54 @@ test('a malformed predicate fails closed (no signal), never throws', () => {
   assert.deepEqual(detectSignals(dir), []);
 });
 
+// --- the skill→predicate coupling (v0.213.0) -------------------------------
+//
+// The bug this locks (EVID-003): `/boss` — the path `/welcome` bolds as THE next step — wrote an
+// idea doc with no dated capture-log entry, while `capture-loop` exits on exactly that line and
+// `canvas-loop` enters at three of them. So a founder who came in the front door was mechanically
+// indistinguishable from one who had captured nothing, and the `caution` moment could never fire
+// for them. Two surfaces agreed on a contract in prose and disagreed in fact; nothing read both.
+
+const CAPTURE_TEMPLATE_SKILLS = ['boss', 'triage'];
+
+// Pull the fenced ```markdown block a skill tells the model to write.
+function ideaTemplateFrom(skill) {
+  const src = readFileSync(
+    join(STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'skills', skill, 'SKILL.md'), 'utf8');
+  const blocks = [...src.matchAll(/```markdown\n([\s\S]*?)\n```/g)].map((m) => m[1]);
+  const tpl = blocks.find((b) => b.includes('## Capture log'));
+  assert.ok(tpl, `/${skill} ships no idea-doc template with a Capture log`);
+  return tpl.replaceAll('{{today}}', '2026-01-02');
+}
+
+test('REGRESSION: every skill that captures an idea writes a doc capture-loop can SEE', () => {
+  const spec = readFileSync(
+    join(STAGES_DIR, 'L0-quickstart', 'template', 'docs', 'loops', 'capture-loop.md'), 'utf8');
+  for (const skill of CAPTURE_TEMPLATE_SKILLS) {
+    const dir = project({
+      'docs/loops/capture-loop.md': spec,
+      'docs/ideas/IDEA-001-a-thing.md': ideaTemplateFrom(skill),
+    });
+    const { state } = classifyLoop(loadLoops(dir)[0], dir);
+    assert.equal(state, 'closed',
+      `an idea captured by /${skill} does not satisfy capture-loop — the conscience cannot see it`);
+  }
+});
+
+test('the two capture paths agree on the fields the rest of BOSS reads', () => {
+  // Divergence here is invisible until something downstream goes quiet: `gist:` is what
+  // `boss board` falls back from, and `owner:` must name an agent that actually ships.
+  const agents = readdirSync(join(STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'agents'))
+    .map((f) => f.replace(/\.md$/, ''));
+  for (const skill of CAPTURE_TEMPLATE_SKILLS) {
+    const fm = parseFrontmatter(ideaTemplateFrom(skill));
+    assert.equal(fm.status, 'seedling', `/${skill} captures at the wrong status`);
+    assert.ok(fm.gist, `/${skill} writes no gist: — boss board loses its label`);
+    assert.ok(agents.includes(fm.owner),
+      `/${skill} sets owner: ${fm.owner}, which is not an agent this mode ships (${agents.join(', ')})`);
+  }
+});
+
 // --- mutes ----------------------------------------------------------------
 
 test('a mute silences until it expires, then the moment speaks again on its own', () => {

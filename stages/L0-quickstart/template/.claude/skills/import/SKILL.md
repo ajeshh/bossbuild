@@ -51,9 +51,11 @@ goes offline. **Snapshot first, interpret second** — don't paraphrase away the
   Update the "current shape" at the top if the new material genuinely sharpens or shifts it. Reference
   the snapshot paths under `docs/source/`.
 - **No idea yet** (a fresh project, founder ran `/import` instead of `/boss`): this is really spin-up —
-  hand off to `/boss`'s shaping. Read all sources, then create `docs/ideas/IDEA-001-<slug>.md` (frontmatter
-  `id`, `type: idea`, `owner: pm`, `status: ready`) seeded from the material. Don't make the founder
-  run a second command to see their idea captured.
+  hand off to `/boss`'s shaping. Read all sources, get the number with `boss id IDEA`, then create
+  `docs/ideas/IDEA-NNN-<slug>.md` seeded from the material — **in `/boss` step 3's living-doc shape**
+  (`owner: product-lead`, `status: seedling`, a `gist:`, and a dated `Capture log` bullet). The dated
+  bullet is not optional: without it the idea is invisible to `capture-loop` and the conscience never
+  comes back to it. Don't make the founder run a second command to see their idea captured.
 
 ## 4. Wrap up — and point at the next step
 

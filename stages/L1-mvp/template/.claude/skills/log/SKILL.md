@@ -20,7 +20,7 @@ If you only read one thing when picking the project back up, read the last devlo
    ---
    id: DEVLOG
    type: devlog
-   owner: pm
+   owner: product-lead
    status: active
    ---
 

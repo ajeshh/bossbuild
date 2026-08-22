@@ -225,8 +225,8 @@ Read the manifest. Name what's there in plain language:
 >    `/triage` (capture one), `/prototype` (hit go — see it running), `/canvas` (pressure-test it),
 >    `/persona` (your user's voice), `/welcome` (you're here), and a few more (`boss map` lists them all).*
 > - *`.claude/agents/` — specialized helpers BOSS can hand work off to: `product-lead` (decides what's
->    worth building), `coder` (builds it once the stack is chosen), `mentor-
->    venture` (advisory only — coaches on whether the bet is worth taking).*
+>    worth building), `coder` (builds it once the stack is chosen), `mentor-founder` (advisory only —
+>    the one to ask when you want to talk an idea through, or hear whether the bet is worth taking).*
 > - *`docs/ideas/` — where ideas live as living docs. Empty now; fills as you capture."*
 
 ### What to do next
@@ -235,9 +235,12 @@ Two paths. Name both; let the founder pick.
 
 > *"**Path A — you have a rough idea or PRD already.** Run `/boss` next. Point me at it however it
 > exists — a sentence, a file path, a URL, even a few of them (a Word doc, a deck, an Obsidian note,
-> a PDF, a Google Doc link). I'll pull a copy into the project, shape it, capture it as `IDEA-001`,
-> recommend a stack and mode, and (with your OK) create a private GitHub repo. That's the **spin-up**
-> flow. (Already captured the idea and want to add more material later? That's `/import`.)*
+> a PDF, a Google Doc link). I'll pull a copy into the project, say back what I heard, and ask whether
+> you want to keep shaping it or start building. Then I capture it as a **living** idea doc, recommend
+> a stack and mode, and (with your OK) create a private GitHub repo. That's the **spin-up** flow.*
+>
+> *Living means what it says: the idea doc is somewhere you keep adding, not a form you filled in once.
+> `/triage <a thought>` adds to it whenever more lands; `/import` adds a whole document.*
 >
 > *Path B — you have a fragment, a hunch, or just a topic to noodle on. Run `/triage <one
 > sentence about it>`. I'll create a living idea doc you can keep adding to. Re-run `/triage`

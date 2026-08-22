@@ -1,6 +1,6 @@
 ---
 name: boss
-description: Spin up a freshly-scaffolded project from a rough idea or PRD. Reads the idea, shapes it through the pm lens, captures it as an IDEA, recommends a stack and starting stage, and (with your OK) creates a GitHub repo — private unless you say otherwise, and it asks about the licence rather than picking one. Run this right after `boss new`. Usage - /boss [path-to-PRD | rough idea text]
+description: Spin up a freshly-scaffolded project from a rough idea or PRD. Reads the idea, says it back, and asks whether you want to keep shaping it or start building — then captures it as a living idea doc, recommends a stack and starting stage, and (with your OK) creates a GitHub repo — private unless you say otherwise, and it asks about the licence rather than picking one. Run this right after `boss new`. Usage - /boss [path-to-PRD | rough idea text]
 ---
 
 # /boss — project spin-up
@@ -42,7 +42,7 @@ deck, a URL — not just a tidy PRD. **Pull it in; don't make the founder retype
 > If the founder is mid-flow and wants to *add* material to an already-captured idea later, that's
 > `/import` — same ingest, pointed at an existing `IDEA-NNN`.
 
-## 2. Shape it (pm lens)
+## 2. Shape it (product-lead lens)
 
 In 3-5 lines back to the user, reflect:
 - **What** it is, in plain language.
@@ -50,11 +50,111 @@ In 3-5 lines back to the user, reflect:
 - **The smallest version that proves it** (the L0/L1 target — not the full vision).
 - If the idea clearly spans multiple features, name them but don't over-plan.
 
-## 3. Capture it
+**Say it back in their words where you can, and don't smooth it.** A founder corrects a wrong
+reflection far more readily than they answer an open question — *"no, it's actually…"* is the
+cheapest thinking tool in this skill. Reflect what you actually heard, rough edges included; a
+tidied-up version gives them nothing to push against.
 
-Create `docs/ideas/IDEA-001-<slug>.md` with frontmatter
-(`id`, `type: idea`, `owner: pm`, `status: ready`). Record what/why/scope/next-step. This is the
-"idea is shared" moment that gates GitHub creation (step 5).
+## 3. Capture it — as a LIVING doc
+
+**Get the number by running `boss id IDEA`.** Don't assume `001`: a founder may have run `/triage`
+before `/boss`, and two files claiming one number makes every reference to it ambiguous.
+
+Create `docs/ideas/IDEA-NNN-<slug>.md` in **exactly the shape `/triage` writes**. The two capture
+paths produce one document — a founder must not get the lesser record for having come in the front
+door:
+
+```markdown
+---
+id: IDEA-NNN
+type: idea
+owner: product-lead
+status: seedling
+gist: <one plain sentence — what this IS, in their words where you can>
+created: {{today}}
+---
+
+# <Title — one plain line>
+
+## Current shape
+_The best articulation so far. Rewrite this as the idea sharpens._
+- **What:** …
+- **Who it's for:** …
+- **Smallest version that proves it:** …
+
+## Capture log
+_Append-only. Newest at the bottom. Don't edit old entries._
+- {{today}} — <what they said, in their words>
+
+## Open questions
+- <what's still fuzzy>
+
+## Canvas
+_Not started. When this has legs, run `/canvas` to pressure-test it as a business._
+```
+
+Three of those are load-bearing, and none is decoration:
+
+- 🔴 **The dated `Capture log` bullet is what makes the idea legible to the conscience.**
+  `capture-loop` exits on `^- YYYY-MM-DD` in an active idea file, and `canvas-loop` *enters* at three
+  of them. Write the doc without it and the founder is mechanically indistinguishable from someone who
+  captured nothing: the `caution` moment can never fire for them, and BOSS never comes back to the idea
+  on its own. This is not bookkeeping — it is the whole of how a captured idea stays alive.
+- **`gist:`** is what `boss board` reads six weeks from now, when the title has stopped being a reminder.
+- **`status: seedling`**, not `ready` — a thought that arrived ten minutes ago hasn't been decided on,
+  and `seedling` is what keeps it out of the backlog until it has.
+
+This is the "idea is shared" moment that gates GitHub creation (step 5).
+
+## 3.5 The check — ready to build, or is there more?
+
+**Stop here and hand the turn back.** This is the one beat the founder gets to spend on the idea
+itself, and it goes **before** the setup questions. Repo, visibility, licence and cohort are
+paperwork; asking paperwork straight after someone has emptied their head is exactly what makes BOSS
+feel like it filed the idea and moved on.
+
+Ask **once**, in one line. Order it by cohort (read `cohort` from `.boss/config.json`):
+
+- **Experienced** (`returning-founder`, `eng-builder`, `vibe-virtuoso`, `indie-hacker`) — build first.
+  They usually are ready; the offer only needs to exist.
+  > *"Ready to build from that — or want to share more on the idea first?"*
+- **Beginner or unset** (`first-product`, `vibe-coder-newbie`, `non-tech-founder`, `domain-expert`,
+  `null`) — shape first. A first articulation is usually a run-on draft, and getting it out is what
+  generates the next round of thinking.
+  > *"Anything you'd add or correct before we set this up?"*
+
+### If they say build
+
+Say nothing more about it and go to step 4. **Do not re-offer.** The return path gets one line in the
+wrap-up and that is the whole of it; a second ask is nagging, which is the conscience's known failure
+mode wearing a different hat.
+
+### If they have more
+
+You are now running `/triage`'s add loop against the doc you just created — same behavior, no new
+machinery:
+
+- Append a dated bullet to **Capture log**, in their words. Don't sanitize the spark.
+- Rewrite **Current shape** if the thought sharpened it.
+- Move resolved items out of **Open questions**; add whatever surfaced.
+
+Then offer ways to go further — **a short line, not a tour of everything BOSS owns.** Pick the two or
+three that actually fit what they said:
+
+> *"Want to keep talking it through, or shall I point at what's missing? I can also show you a
+> user's-eye view (`/persona`), or build the smallest running version so you can react to something
+> real instead of a blank page (`/prototype`)."*
+
+- **"point at what's missing"** — name **at most three absences**, each answerable in a sentence, each
+  skippable. Absences, not questions: *"you said who it's for, but never what happens to them if they
+  don't use it"* beats *"who is your target market?"* A twelve-question intake form is the ceremony
+  BOSS exists to refuse.
+- **A hard conversation about whether the bet is worth taking** is `mentor-founder` — the venture
+  mentor already installed in this project. Offer it by name to a founder who wants to be pushed;
+  don't route them there for a light question.
+
+Loop as long as they want; leave the moment they say so. Every pass through here makes the doc more
+theirs and, incidentally, opens `canvas-loop` — which is how BOSS earns the right to come back later.
 
 ## 4. Stack + stage
 
@@ -150,13 +250,25 @@ cohort, real use will reveal it; the file is editable.
 
 ## 7. Wrap up
 
-Give a tight summary: what the idea is, where it's captured (`IDEA-001`), the stack decision (or that
-it's pending), the mode, the cohort (if set), and the repo URL if created. Then the single best next step
-(usually: start building the smallest version, or `boss unlock mvp` if it's clearly a real build).
+Give a tight summary: what the idea is, where it's captured (`IDEA-NNN`), the stack decision (or that
+it's pending), the mode, the cohort (if set), and the repo URL if created.
+
+**Then say the return path — once, in one line.** The idea doc is *living*, and if nobody says so, the
+insights that arrive tomorrow have nowhere to go. That is the gap this line exists to close:
+
+> *"`docs/ideas/IDEA-NNN` is a living doc, not a filing. When more lands — and it usually does, once
+> it's out of your head — `/triage <the thought>` adds to it."*
+
+Then the single best next step (usually: start building the smallest version, or `boss unlock mvp` if
+it's clearly a real build).
 
 ## Rules
 
 - Capture before code. Don't start implementing inside `/boss` — this is spin-up only.
+- **Ask about the idea before you ask about paperwork.** The step 3.5 check comes before repo,
+  visibility, licence and cohort — and it is asked once, never re-offered.
+- **Write the living doc shape, always.** A capture with no dated log entry is invisible to the
+  conscience; see step 3.
 - **Never decide the licence for them, in either direction** — ask, name both costs, accept "not yet".
 - Never create a public repo without asking.
 - Never touch global git config. Repo-local email only, and say so.
