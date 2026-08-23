@@ -4,8 +4,8 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B5 — dev process / git workflow) — DORA/Accelerate [EVIDENCE], Addy Osmani on AI code review, METR n=16 perception-gap [EVIDENCE], the worktree-as-parallelism-primitive practitioner pattern — BOSS v0.87.0, FEAT-023 thread 1. Citation-hygiene pass 2026-08-17 (spun off from /vet RVW-074): unverified vendor multipliers were sitting next to a DORA attribution — numbers cut, direction kept and correctly sourced to DORA's *ROI of AI-Assisted Software Development* (2026.01).
-provenance_public: Distilled from founding-teams research on dev process — DORA/Accelerate, Addy Osmani on AI code review, the METR n=16 perception-gap study, and the worktree-as-parallelism-primitive practitioner pattern. A later citation-hygiene pass found unverified vendor multipliers sitting next to a DORA attribution: the numbers were cut, the direction kept and correctly sourced to DORA's *ROI of AI-Assisted Software Development* (2026.01).
+provenance: distilled from the 2026-06-20 founding-teams research (RESEARCH-COMPENDIUM-2026-06-20 Part B5 — dev process / git workflow) — DORA/Accelerate [EVIDENCE], Addy Osmani on AI code review, METR n=16 perception-gap [EVIDENCE], the worktree-as-parallelism-primitive practitioner pattern — BOSS v0.87.0, FEAT-023 thread 1. Citation-hygiene pass 2026-08-17 (spun off from /vet RVW-074): unverified vendor multipliers were sitting next to a DORA attribution — numbers cut, direction kept and correctly sourced to DORA's *ROI of AI-Assisted Software Development* (2026.01). The commit/local/public tiers section is NOT from that research: it is a sort-UP of BOSS's own practice (Principle #1), banked after v0.217.0 — BOSS runs the three tiers on itself, got the boundary wrong long enough that nine shipped mentor agents pointed founders at a doc which had never been in the package, and now holds it with `check:refs` class 3b + `check:boundary`. IDEA-070 F3.
+provenance_public: Distilled from founding-teams research on dev process — DORA/Accelerate, Addy Osmani on AI code review, the METR n=16 perception-gap study, and the worktree-as-parallelism-primitive practitioner pattern. A later citation-hygiene pass found unverified vendor multipliers sitting next to a DORA attribution: the numbers were cut, the direction kept and correctly sourced to DORA's *ROI of AI-Assisted Software Development* (2026.01). The commit/local/public tiers section comes from BOSS's own repo practice rather than that research — BOSS runs the same three tiers on itself, and got the boundary wrong for long enough to be worth writing down.
 last_reviewed: 2026-06-20
 review_by: 2027-06-20
 curve: craft
@@ -111,6 +111,34 @@ shares verbatim with the founding-team layer (FEAT-021's `/decide` and credit wo
 > party to blame — which is the entire point of writing it down.
 
 State it once; both this practice and the team layer reference it.
+
+## What commits, what stays local, what goes public
+
+Three tiers, not two. Most ignore-file advice stops at the first line; the second is the one that
+bites, because it only shows up the day a private repo goes public.
+
+| tier | what lives there | what holds the line |
+|---|---|---|
+| **local** | secrets, per-person tool state, generated projections, caches | `.gitignore` |
+| **tracked** | the working record — decisions, evidence, roadmap, canvas. Committing is what makes it survive a laptop and reach a cofounder | the repo |
+| **public** | README, LICENSE, the landing page, the published package | a deliberate act, every time |
+
+- **Ignore per-person state; track venture state.** The split BOSS holds on itself: what the conscience
+  said to *you* stays on your machine, while the canvas, the ideas and the decisions commit — a record
+  only one person can read isn't a record. Apply the same test to anything a tool writes into your repo.
+- **"Private repo" is not a tier, it's a switch.** Flipping it publishes everything ever committed —
+  including the commit that added a key and the commit that removed it. Decide what a file is *for*
+  before you decide what the repo is set to.
+- **`.gitignore` stops commits, not reads.** An agent opens an ignored file happily. Anything secret
+  needs a deny rule as well as an ignore rule — see [`agent-security.md`](agent-security.md).
+- **Write the reason beside the rule.** A bare pattern is a rule nobody can safely delete: the next
+  person can't tell whether it's load-bearing or leftover, so it lives forever. One comment line is the
+  difference between a rule you can revisit and one you can only obey.
+- **Grow the file when the stack lands, not on day one.** A starter list guessing your language is noise
+  you learn to scroll past, and noise is where a real rule goes to hide.
+- **Don't ignore what you'd need to restore.** An ignored file is one bad `rm` from gone, and git has no
+  copy of it. If it took months to accumulate and lives only on your machine, either track it or back it
+  up on purpose.
 
 ## Altitude / JIT (don't front-load it)
 

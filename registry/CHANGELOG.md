@@ -9,6 +9,45 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.219.0 — 2026-08-23
+
+**The three tiers BOSS runs on its own repo — local, tracked, public — were never written down for
+anyone else. And the citation pass that cut an unverified multiplier from the practice never swept
+the copy your project actually reads.**
+
+> **For you:** Two corrections to the git guidance your MVP project inherits. **A number you were
+> told was wrong:** your working rules said *"the agent writes code ~4× faster."* Nobody measured
+> that — it was a vendor figure, and the practice it was distilled from had already cut it for
+> exactly that reason. It now says what's actually supported: an agent writes several times faster
+> and you deliver only a little more, because review is the bottleneck. **And a gap:** ignore-file
+> advice stops at "commit or don't," which leaves out the tier that bites — the record you commit on
+> purpose but haven't decided to publish. `git-workflow` now carries local / tracked / public, and
+> your working rules carry the short version. Run `boss sync` to pick both up.
+
+- **The tiers are a sort-UP of BOSS's own practice, not new advice** (Principle #1). BOSS's repo has
+  run three tiers on itself for a long time, got the boundary wrong for long enough that **nine
+  shipped mentor agents pointed founders at a doc which had never been in the package**, and now
+  holds it with `check:refs` class 3b + `check:boundary`. The founder-shaped version is six rules,
+  and the two that carry the weight are *"private repo is a switch, not a tier"* (flipping it
+  publishes the commit that added the key **and** the one that removed it) and *"`.gitignore` stops
+  commits, not reads"* — an agent opens an ignored file happily, so a secret needs a deny rule too.
+- **Its provenance says where it came from.** The doc's `provenance` attributed everything to the
+  2026-06-20 founding-teams research; a section sourced elsewhere inheriting that citation is the
+  precise bug `/vet` step 3 exists to catch. Both provenance fields now name the sort-UP separately.
+- 🔴 **The v0.159.0 citation-hygiene pass fixed the UP and never swept the DOWN.** That pass cut the
+  unverified vendor multipliers from `git-workflow.md` — its own `provenance` field records the cut,
+  and the practice now says *"none of them were measured on your team."* The MVP working rules kept
+  shipping `~4×` as fact for 60 releases. Single instance, verified by grep. **Same shape as
+  v0.217.0 and v0.216.0 before it: the right fix, applied to one surface of two** — which is now
+  frequent enough to be the thing to look for first, not a coincidence to note.
+- **Found while placing the new section, not by looking for it.** The tiers had to go somewhere, and
+  reading the DOWN to find the spot is what surfaced the number.
+- **Observed and deliberately NOT fixed:** the same Veracode figure ships three ways — `~45%`
+  (`testing-with-agents.md`, "Spring 2026") and `~44%` twice (`agent-security.md` at "2026-07-28"
+  from a 56% pass rate; `red-team/SKILL.md` at "Veracode's 2026 report"). Two dates, two numbers,
+  v0.212.0's exact shape. Resolving it means reading the report — a `/vet` job, not an edit, and
+  guessing which number is right would be the same error one level down.
+
 ## 0.218.0 — 2026-08-23
 
 **BOSS writes your permission file, and one line in it had been wrong about the host since
