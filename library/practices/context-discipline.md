@@ -4,10 +4,10 @@ type: practice
 owner: product-lead
 status: active
 host: claude-code
-provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file.
+provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned.
 provenance_public: Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.
-last_reviewed: 2026-08-11
-review_by: 2026-11-09
+last_reviewed: 2026-08-22
+review_by: 2026-11-20
 curve: host
 ---
 
@@ -201,8 +201,20 @@ blocked. The classifier calls don't count against usage limits.
 
 What a founder needs to know, in order:
 
-- **BOSS already ships `"defaultMode": "auto"`** in the L0 template — this change makes the host agree
-  with a call BOSS made earlier, and nothing in a scaffolded project needs to move.
+- 🔴 **`auto` only works from *your* settings file, not the project's — and this practice got it
+  wrong for eleven days.** From **Claude Code v2.1.142**, an `"auto"` value in a project's
+  `.claude/settings.json` or `.claude/settings.local.json` **does not take effect** — *and* its
+  presence makes the host fall back to its built-in default **instead of reading the `defaultMode`
+  you set in `~/.claude/settings.json`**. So a project file that sets `auto` doesn't give you auto
+  mode; it quietly drops whatever standing preference you chose for yourself. Every other value
+  (`plan`, `acceptEdits`, `default`) does apply from a project file. **BOSS shipped that exact line
+  in the L0 template until v0.218.0 and has now removed it** — the host's own precedence (your
+  `~/.claude/settings.json`, then the built-in default) is the behavior you want, and a scaffolded
+  project should not be silently outranking you. Set your standing preference in
+  **`~/.claude/settings.json`**, and nowhere else.
+- **The VS Code extension doesn't read project settings for the starting mode at all** — it keeps
+  its own list. Anything a project file says about `defaultMode` is invisible there, which is a
+  second, independent reason not to put it in one.
 - **Deny rules still win.** Hard deny is unconditional; it is not something the classifier weighs and
   can decide to allow. The floor in move #3 is exactly as load-bearing under auto mode as under
   prompts — which is why it is worth hardening.
@@ -215,15 +227,76 @@ What a founder needs to know, in order:
   until you approve a plan; the right mode for "explore this codebase and tell me") ·
   `acceptEdits` (file edits land without asking; Bash still gated) · `default` (prompt on everything —
   the mode to fall back to when you're doing something you don't fully trust yet).
-- **Switch any time**, and set your standing preference explicitly rather than inheriting a default
-  that can change under you:
+- **Switch any time** (`Shift+Tab` cycles), and set your standing preference explicitly rather than
+  inheriting a default that can change under you. **In `~/.claude/settings.json` — see the first
+  bullet; this does nothing in a project file:**
   ```json
   { "permissions": { "defaultMode": "auto" } }
   ```
+- **`allow` rules wait for trust; `deny` rules don't.** A project's `permissions.allow` entries (and
+  `additionalDirectories`) only apply after you accept the workspace-trust dialog for that folder,
+  because they *grant*. `deny` and `ask` apply immediately, because they only restrict. This is the
+  same asymmetry that decides what `boss sync` will merge into your file (the deny floor, and
+  nothing else) — and it is why BOSS ships you a floor rather than an allow list.
+- **A bare tool name in `allow` means *every* use of that tool.** `"Bash"` allows every shell
+  command; `"Bash(npm run test:*)"` allows one. Reads inside your working directory are already
+  free, and so is a built-in set of read-only shell commands (`ls`, `cat`, `head`, `tail`, `grep`,
+  `find`, `wc`, `which`, `diff`, `stat`, `du`, `cd`, and read-only forms of `git`) that no rule
+  configures. So a blanket `allow` list mostly buys you the two grants worth reading — and hands you
+  them in a trust dialog before you've run anything. **Add a scoped rule when a specific prompt has
+  actually annoyed you twice; don't pre-grant the tool.** `/permissions` writes them for you.
+
+### The sandbox — the one that actually removes the prompts
+
+Permission modes decide *whether the agent asks*. The **Bash sandbox** decides *what a command can
+reach once it runs* — and because the boundary is enforced by the operating system rather than by a
+prompt, commands inside it can be approved automatically. Anthropic's own measurement, on their
+internal usage: **sandboxing "safely reduces permission prompts by 84%."** It is the largest
+prompt-reduction move on this host, and the only one that is *more* enforced rather than less.
+
+Run **`/sandbox`** to turn it on and see what's missing on your machine. It's built in — Seatbelt on
+macOS, bubblewrap on Linux/WSL2, no native Windows (run it inside WSL2). Two independent layers:
+
+- **Filesystem** — by default a sandboxed command may write only to your working directory and the
+  session temp dir; it may still *read* widely, so name your credential files.
+- **Network** — **no domains are pre-allowed.** The first connection to a new host prompts (or, in
+  auto mode, goes to the classifier); `allowedDomains` pre-approves the ones your build needs.
+
+Both, or neither. Anthropic is explicit about why: *"effective sandboxing requires both filesystem
+and network isolation. Without network isolation, a compromised agent could exfiltrate sensitive
+files like SSH keys; without filesystem isolation, a compromised agent could easily escape the
+sandbox and gain network access."*
+
+```json
+{
+  "sandbox": {
+    "enabled": true,
+    "filesystem": { "allowWrite": ["~/.npm", "/tmp/build"] },
+    "network": { "allowedDomains": ["github.com", "*.npmjs.org"] },
+    "credentials": {
+      "files": [{ "path": "~/.aws/credentials", "mode": "deny" }, { "path": "~/.ssh", "mode": "deny" }],
+      "envVars": [{ "name": "GITHUB_TOKEN", "mode": "deny" }]
+    }
+  }
+}
+```
+
+> **BOSS does not ship this block, on purpose.** `allowWrite` and `allowedDomains` are *stack-specific*
+> — a Node project needs `~/.npm`, a Python one doesn't, and a default that breaks `npm install` on
+> day one costs a founder more than the prompts it saved. This practice is where the move lives until
+> a project has a stack to write it against; add it when you have one, at `/spec` time or when the
+> prompts start to bite. **The deny floor BOSS does ship works in every mode and needs no stack.**
+>
+> And keep move #3's line in view: the sandbox is a *boundary*, auto mode is a *convenience*. The
+> sandbox is the one of the two that `agent-security`'s "deterministic guardrails around a
+> nondeterministic core" is actually describing. Even inside it, explicit `deny` rules still win, and
+> `rm` against a critical path still goes through the normal flow.
 
 > **Host-bound, and on the fastest curve BOSS tracks.** Permission modes are a Claude Code mechanism
-> and they moved three times in 2026 (research preview in March → Pro in May → third-party providers
-> in June → default in August). Re-verify on host change; see the build-craft watchlist, domain 2.
+> and they moved four times in 2026 (research preview in March → Pro in May → third-party providers
+> in June → default in August), and the *file a value is legal in* moved with them (v2.1.142). **Pin a
+> version, not a date, when you record a host fact here** — a date says when someone looked, a version
+> says what the claim is true of. Re-verify on host change; see the build-craft watchlist, domain 2.
 
 ## Context engineering — the discipline these four moves serve
 

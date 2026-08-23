@@ -215,9 +215,27 @@ export function computeSettingsMerge(projectDir, layers) {
     try { merged = JSON.parse(readFileSync(dest, 'utf8')); } catch { merged = {}; }
   }
   let changed = false;
+  const migrated = [];
   // Apply hook-command migrations first (e.g. v0.18.0 bash→node) so stale entries
   // don't masquerade as already-present and block the new entry from being added.
   if (applyHookMigrations(merged)) changed = true;
+  // v0.218.0 — the ONE permission key BOSS will remove, and only at one exact value.
+  //
+  // BOSS shipped `"defaultMode": "auto"` in the L0 template from v0.141.0. From Claude Code
+  // v2.1.142, `auto` does not take effect in a PROJECT settings file at all — and its presence
+  // makes the host fall back to its built-in default INSTEAD of reading the founder's own
+  // `~/.claude/settings.json`. So the line BOSS wrote does nothing it claims and silently
+  // outranks a standing choice the founder made for their whole machine.
+  //
+  // Every other value (`plan`, `acceptEdits`, `default`) IS honored from a project file, and is
+  // the founder's to keep — so the predicate is exact-match on `auto`, never a blanket delete.
+  // Removing it can only move behavior TOWARD what they actually configured, which is the same
+  // monotonic property that makes the deny floor safe to merge. Reported, never silent.
+  if (merged.permissions?.defaultMode === 'auto') {
+    delete merged.permissions.defaultMode;
+    migrated.push('defaultMode: "auto" (inert in a project file since Claude Code v2.1.142, and it was overriding your own ~/.claude setting)');
+    changed = true;
+  }
   for (const stageId of layers) {
     for (const [event, tEntries] of Object.entries(templateHooks(stageId))) {
       merged.hooks ||= {};
@@ -245,7 +263,7 @@ export function computeSettingsMerge(projectDir, layers) {
       }
     }
   }
-  return { changed, merged, rel };
+  return { changed, merged, rel, migrated };
 }
 
 function substitute(body, vars) {

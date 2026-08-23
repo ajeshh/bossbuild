@@ -9,6 +9,77 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.218.0 — 2026-08-23
+
+**BOSS writes your permission file, and one line in it had been wrong about the host since
+Claude Code v2.1.142 — inert where BOSS put it, and quietly overriding the mode preference you set
+for yourself.**
+
+> **For you:** BOSS's scaffold shipped `"defaultMode": "auto"` in your project's
+> `.claude/settings.json`. The host stopped honouring `auto` **in a project file** at v2.1.142 — and
+> its presence makes Claude Code fall back to its built-in default **instead of reading the
+> `defaultMode` you set in `~/.claude/settings.json`**. So the line did nothing it claimed, and if
+> you had deliberately chosen a mode for your whole machine, a BOSS project silently ignored it.
+> **`boss sync` now removes that line** (only at the exact value `auto` — `plan`, `acceptEdits` and
+> `default` all work from a project file and are yours to keep), and says so out loud when it does.
+> Set your standing preference in **`~/.claude/settings.json`**. New scaffolds don't ship the line at
+> all, and no longer ship a blanket `allow` list either — see below. Your deny floor is unchanged.
+
+- 🔴 **The line was worse than dead — it displaced the founder.** Not "a setting that does nothing":
+  the host's precedence is *flag → `permissions.defaultMode` from a settings file → built-in default*,
+  and an `auto` in a **project** file spends that slot without filling it, so the founder's own
+  `~/.claude/settings.json` value is never consulted. The direction of harm depends on what they
+  chose, which is exactly why BOSS should not be in that slot at all. Removed from the template.
+- **The practice taught it too.** `library/practices/context-discipline.md` claimed the permission
+  surface for a year, finally named permission *modes* on 2026-08-11 — and in the same breath
+  recommended the wrong file, with a snippet that never said which file it went in, the one fact
+  that decides whether it works. Corrected, and the VS Code seam named: the extension keeps its own
+  starting-mode list and **doesn't read project settings for it at all**, a second independent reason
+  the line was doing nothing.
+- **The blanket `allow` list is gone, and it was never buying much.** Every entry was a **bare tool
+  name**, which grants *every* use of that tool — `"Bash"` is every shell command. But reads inside
+  the working directory are already free, and so is a built-in set of read-only shell commands
+  (`ls`, `cat`, `head`, `tail`, `grep`, `find`, `wc`, `which`, `diff`, `stat`, `du`, `cd`, read-only
+  `git`) that no rule configures. So the list bought almost nothing — while handing the founder two
+  real grants (`Bash`, `Write`/`Edit`) to approve, unread, in the **workspace-trust dialog** on day
+  one, before they had run anything. Project `allow` rules wait for that dialog precisely because
+  they *grant*; `deny` and `ask` apply immediately because they only restrict. **BOSS ships the half
+  that needs no dialog.** A scoped rule was always fine and still is — `/permissions` writes them.
+- **The sandbox is finally named.** The host's largest prompt-reduction mechanism — OS-enforced
+  filesystem + network isolation, auto-approving what runs inside it, *"safely reduces permission
+  prompts by 84%"* on Anthropic's own internal usage — was absent from BOSS's practice entirely.
+  It is now documented in `context-discipline`, with the honest caveat about why BOSS **does not
+  ship the block**: `allowWrite` and `allowedDomains` are stack-specific, and a default that breaks
+  `npm install` on day one costs more than the prompts it saves (Principle #4). Voicing before
+  mechanism, the same order used for the distribution and schema moments.
+- **This class of bug has no local checker, and that is the finding.** Every previous
+  *checker-states-an-intent-it-doesn't-enforce* instance had a truth source inside the repo. This one
+  is a **vendor doc**, so nothing in `npm run check` could ever have caught it, and the practice's
+  cadence (`review_by: 2026-11-09`) hadn't fired. The build-craft watchlist had already named
+  `stages/*/template/.claude/` as *"the widest uncovered rot surface BOSS has"* — that risk is now
+  recorded as **realized**, with two working conclusions: **pin a version, not a date**, when
+  recording a host fact (a date says when someone looked; a version says what the claim is true of),
+  and treat **shipping less host config** as a real mitigation. This release took that option.
+- **The fix reaches projects already scaffolded.** Same reasoning as the v0.141.0 deny floor, pointed
+  the other way: a fix that only ships via `boss new` helps nobody who already started. `boss sync`
+  performs the **one subtraction it will ever make** — exact-match on `auto`, never a blanket delete —
+  and reports it as a named line rather than folding it into "additive". Removing it can only move
+  behavior *toward* what the founder actually configured, which is the same monotonic property that
+  makes the deny floor safe to merge.
+- **Guards.** Two tests (188 total): a shipped `settings.json` may never set `defaultMode`, never
+  carry a bare-tool-name `allow` entry, must keep its `$schema` line and must keep a non-empty deny
+  floor — verified **non-vacuous** by reintroducing each defect and confirming the guard goes red;
+  and the sync migration is tested in both directions, including that `acceptEdits`/`plan`/`default`
+  survive untouched. Verified end-to-end on a throwaway scaffold, not by grep: fresh project has the
+  right shape, a simulated pre-upgrade project migrates once, reports it, and re-runs clean.
+- Also: the scaffolded `settings.json` gains a `$schema` line, so the file BOSS writes validates and
+  autocompletes in the founder's editor. One line, and the most literal possible answer to *"BOSS
+  should be great at setting up the editor environment."*
+
+Captured as `IDEA-071` (local). Its unbuilt half stays unbuilt and gated: no sandbox default (needs a
+stack), no `init.sh` (same), and **no writing to the founder's `~/.claude/settings.json`** — BOSS has
+never written outside a project, and `boss remove` could not take it back.
+
 ## 0.217.0 — 2026-08-22
 
 **`boss adopt` never installed BOSS's `.gitignore`. On every already-started repo, the per-person

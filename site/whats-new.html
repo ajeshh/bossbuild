@@ -67,6 +67,14 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.218.0</span><span class="when">2026-08-23</span></div>
+        <p>BOSS's scaffold shipped <code>&quot;defaultMode&quot;: &quot;auto&quot;</code> in your project's <code>.claude/settings.json</code>. The host stopped honouring <code>auto</code> <strong>in a project file</strong> at v2.1.142 — and its presence makes Claude Code fall back to its built-in default <strong>instead of reading the <code>defaultMode</code> you set in <code>~/.claude/settings.json</code></strong>. So the line did nothing it claimed, and if you had deliberately chosen a mode for your whole machine, a BOSS project silently ignored it. <strong><code>boss sync</code> now removes that line</strong> (only at the exact value <code>auto</code> — <code>plan</code>, <code>acceptEdits</code> and <code>default</code> all work from a project file and are yours to keep), and says so out loud when it does. Set your standing preference in <strong><code>~/.claude/settings.json</code></strong>. New scaffolds don't ship the line at all, and no longer ship a blanket <code>allow</code> list either — see below. Your deny floor is unchanged.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.217.0</span><span class="when">2026-08-22</span></div>
+        <p>If you brought BOSS into an existing repo with <code>boss adopt</code>, open your <code>.gitignore</code>. BOSS's rules were skipped <strong>in full</strong>, silently — precisely <em>because</em> you already had one — so <code>.boss/brain/relationship.md</code> (what the conscience said to you, and what you did about it), <code>.boss/conscience-log.jsonl</code>, <code>.boss/trace.jsonl</code> and <code>.boss/backups/</code> were all committable, and on a shared repo they travel. Adopt now merges in the rules you lack as a marked <code>#</code> block, leaving your own rules first and untouched, adding nothing twice. <strong>Already adopted?</strong> This release cannot reach you — <code>adopt</code> refuses to run on a BOSS project and <code>sync</code> never touches your files. Copy the block from <code>stages/L0-quickstart/template/.gitignore</code>, or ask BOSS to.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.216.0</span><span class="when">2026-08-21</span></div>
         <p><code>/red-team</code> was skipping the entire behavioural dark-pattern battery — sycophancy, guilt on exit, emotional manipulation near money — for anyone who had run <code>/ux-check</code> first, and skipping <code>--humane</code> altogether for anyone whose product has no AI in it. Both are fixed. Its OWASP IDs are now the 2026 list (eight of ten changed), <code>--paths</code> gained a known-vulnerable-dependency check, and <code>--self</code> finally says what it actually runs. Re-run it if you have a report on file.</p>
       </li>
@@ -106,14 +114,6 @@
         <div class="rel"><span class="ver">v0.201.0</span><span class="when">2026-08-21</span></div>
         <p><strong>The canvas asks the planet question it had been promising.</strong> The Metrics cell has always been headed <em>&quot;meaningful success — for people and planet&quot;</em> and then never asked about the planet: every sharpen under it was about people and the venture. It now asks the other half — <em>what does one unit of this consume, and does that grow with users or with success?</em> — with **<em>&quot;very little, and here's why&quot;</em> as a complete, honest answer.<strong> Don't manufacture a footprint to look serious. If your growth loop </strong>is** inference, <code>/ai-cost</code>'s cost-per-successful-outcome is already most of the measurement: read it once for the wallet, once for the world.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.200.0</span><span class="when">2026-08-21</span></div>
-        <p><strong>BOSS stops picking your licence.</strong> New projects used to scaffold as <code>proprietary / All Rights Reserved</code>, and <code>/boss</code> pitched it — <em>&quot;so you keep both paid and open-source options open.&quot;</em> Now <code>license</code> starts as <strong>undecided</strong>, and <code>/boss</code> asks a question with both costs on it: an open licence is a grant you can't take back, <strong>and</strong> a project nobody ever opened quietly stays closed. Pick one, or say <em>not yet</em> and get no LICENSE file rather than an argument. Existing projects keep whatever they already chose.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.199.0</span><span class="when">2026-08-21</span></div>
-        <p><strong><code>boss id</code> and <code>boss records</code> were invisible.</strong> Both shipped, neither was registered in the one list <code>boss map</code>, <code>docs/CHEATSHEET.md</code> and the quick guide all read — so two working commands existed and nothing told you about them. They're in all three now.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -143,7 +143,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.216.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.218.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

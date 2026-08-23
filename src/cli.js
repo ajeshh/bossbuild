@@ -858,7 +858,14 @@ function cmdSync(args) {
     if (settingsChanged) {
       console.log(`    ${warn('~ merge')}    settings/hooks + deny floor  →  ${plan.settings.rel}`);
       console.log(`    ${dim('              (additive — adds hook registrations and secret-path denies;')}`);
-      console.log(`    ${dim('               never touches your allow list or defaultMode)')}`);
+      console.log(`    ${dim('               never touches your allow list)')}`);
+      // The one subtraction sync will ever make, so it gets named in full rather than folded
+      // into "additive". A line BOSS wrote and got wrong is BOSS's to take back — out loud.
+      for (const m of plan.settings.migrated || []) {
+        console.log(`    ${warn('− fix')}      removes a line BOSS itself shipped:`);
+        console.log(`    ${dim(`               ${m}`)}`);
+        console.log(`    ${dim('               your mode preference is yours again — set it in ~/.claude/settings.json')}`);
+      }
     }
   }
 

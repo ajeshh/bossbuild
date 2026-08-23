@@ -836,7 +836,11 @@ let built = 0;
 // are real. Changed from boss.build, which was never available: registered 2026-01-16,
 // five months before BOSS chose it. One constant; change it here if the domain moves.
 const SITE_URL = 'https://oyeboss.build';
-const canonical = (f) => (f === 'index.html' ? `${SITE_URL}/` : `${SITE_URL}/${f}`);
+// Cloudflare Pages serves the EXTENSIONLESS path and 307s `/start.html` → `/start`.
+// So the canonical — and the sitemap, which shares this function — must name the URL
+// that answers 200, never the one that redirects to it. Pointing a canonical at a
+// redirect is the same self-inflicted bug as two URLs serving one page, one level in.
+const canonical = (f) => (f === 'index.html' ? `${SITE_URL}/` : `${SITE_URL}/${f.replace(/\.html$/, '')}`);
 
 for (const f of pages) {
   const raw = readFileSync(join(PAGES, f), 'utf8');

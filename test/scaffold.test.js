@@ -187,6 +187,39 @@ test('a corrupt settings.json does not crash the merge', () => {
   assert.doesNotThrow(() => computeSettingsMerge(dir, ['L0-quickstart']));
 });
 
+// v0.218.0 — the fix has to reach projects already scaffolded, or it only ever helps people who
+// hadn't started yet. Same reasoning as the deny floor below, pointed the other way: a subtraction.
+test('sync takes back the defaultMode line BOSS shipped — and ONLY at the value the host ignores', () => {
+  // "auto" in a project file: inert since Claude Code v2.1.142, and its presence makes the host
+  // skip the founder's own ~/.claude value. Removing it hands their choice back.
+  const stale = project({
+    '.claude/settings.json': JSON.stringify({
+      permissions: { defaultMode: 'auto', deny: ['Read(./.env)'] },
+    }, null, 2),
+  });
+  const first = computeSettingsMerge(stale, ['L0-quickstart']);
+  assert.equal(first.merged.permissions.defaultMode, undefined, 'the dead line is removed');
+  assert.equal(first.changed, true);
+  assert.ok(first.migrated.some((m) => m.includes('defaultMode')),
+    'and it is REPORTED — the one subtraction sync makes is never silent');
+
+  writeFileSync(join(stale, '.claude', 'settings.json'), JSON.stringify(first.merged, null, 2));
+  const second = computeSettingsMerge(stale, ['L0-quickstart']);
+  assert.equal(second.changed, false, 'idempotent — it does not re-fire on an already-fixed project');
+  assert.deepEqual(second.migrated, [], 'and does not re-report a migration it already made');
+
+  // The negative half, which is the whole reason the predicate is exact-match: every OTHER value
+  // IS honored from a project file and is the founder's deliberate choice. Never a blanket delete.
+  for (const mode of ['acceptEdits', 'plan', 'default']) {
+    const theirs = project({
+      '.claude/settings.json': JSON.stringify({ permissions: { defaultMode: mode, deny: [] } }, null, 2),
+    });
+    const out = computeSettingsMerge(theirs, ['L0-quickstart']);
+    assert.equal(out.merged.permissions.defaultMode, mode, `${mode} is theirs and survives`);
+    assert.deepEqual(out.migrated, [], `${mode} is not a migration`);
+  }
+});
+
 // v0.141.0 — the deny floor reaches projects already in the wild. A security floor that
 // only ships via `boss new` is not a floor (CVE-2026-22708 / allowlist-is-not-a-boundary).
 test('the deny floor merges into an existing project without touching allow or defaultMode', () => {
@@ -700,7 +733,9 @@ test('REGRESSION: an EDITED settings.json is kept — hooks un-merged, permissio
   const dir = adopted();
   const sPath = join(dir, '.claude', 'settings.json');
   const before = JSON.parse(readFileSync(sPath, 'utf8'));
-  before.permissions.allow.push('Bash(my-tool:*)');
+  // BOSS ships no `allow` list (v0.218.0 — see the defaultMode test below), so the founder
+  // creating one is exactly the realistic case: the allow list is theirs, start to finish.
+  before.permissions.allow = ['Bash(my-tool:*)'];
   before.hooks.Stop = [{ matcher: '', hooks: [{ type: 'command', command: 'my-own.sh' }] }];
   writeFileSync(sPath, JSON.stringify(before, null, 2));
 
@@ -711,6 +746,42 @@ test('REGRESSION: an EDITED settings.json is kept — hooks un-merged, permissio
   assert.ok(after.hooks?.Stop, 'their own hook survives');
   assert.ok(after.permissions.allow.includes('Bash(my-tool:*)'), 'their allow entry survives');
   assert.ok(after.permissions.deny.length > 0, 'the deny floor stays — removing it would widen access');
+});
+
+test('a shipped settings.json never sets defaultMode and never pre-grants a whole tool', () => {
+  // The host-config guard (v0.218.0, IDEA-071). Both halves failed silently for months, and
+  // NEITHER could be caught by reading this repo — the truth source is Claude Code's own docs.
+  // This test is the closest local stand-in: it locks the two conclusions, so the next person to
+  // "helpfully" re-add either line has to delete a test that says why.
+  //
+  //   1. `defaultMode` — an "auto" value in a PROJECT settings file has not taken effect since
+  //      Claude Code v2.1.142, AND its presence makes the host fall back to its built-in default
+  //      instead of reading the founder's own ~/.claude/settings.json. So BOSS shipping any
+  //      defaultMode is at best inert and at worst silently outranks a deliberate choice the
+  //      founder made for their whole machine. Their mode is theirs; `boss sync` already agrees.
+  //   2. `allow` — a BARE tool name means EVERY use of that tool ("Bash" = every shell command).
+  //      Reads inside the working directory and the built-in read-only shell set are already free,
+  //      so a blanket list buys almost nothing and hands the founder two real grants to approve,
+  //      unread, in the workspace-trust dialog on day one. A scoped rule (`Bash(npm run test:*)`)
+  //      is fine and always was; a whole-tool grant is not BOSS's to make on someone's behalf.
+  const shipped = STAGE_ORDER
+    .map((id) => ({ id, f: join(STAGES_DIR, id, 'template', '.claude', 'settings.json') }))
+    .filter(({ f }) => existsSync(f));
+  assert.ok(shipped.length, 'at least one stage ships a settings.json, or this guard is vacuous');
+
+  for (const { id, f } of shipped) {
+    const cfg = JSON.parse(readFileSync(f, 'utf8'));
+    const perms = cfg.permissions || {};
+    assert.equal(perms.defaultMode, undefined,
+      `${id}: a project settings.json must not set defaultMode — inert since Claude Code v2.1.142, and it drops the founder's own ~/.claude value`);
+    for (const rule of perms.allow || []) {
+      assert.ok(rule.includes('('),
+        `${id}: "${rule}" is a bare tool name, which grants EVERY use of that tool — scope it, e.g. Bash(npm run test:*)`);
+    }
+    assert.ok(cfg.$schema, `${id}: keep the $schema line — it is what validates this file in the founder's editor`);
+    assert.ok((perms.deny || []).length > 0,
+      `${id}: the deny floor is the one permission key BOSS ships, and the only one sync merges forward`);
+  }
 });
 
 test('REGRESSION: a one-letter project name does not corrupt the edited-check', () => {
