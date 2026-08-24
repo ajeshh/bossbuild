@@ -40,7 +40,7 @@ This project is in **{{MODE}}** mode. Modes level up as the project earns it:
 | **Quickstart** _(here)_ | idea capture, `/boss` spin-up, `/triage`, `/prototype`, pm + coder | you have an idea to capture |
 | **MVP** | `/spec` + `FEAT-NNN`, `/smoke` build gate, devlog, `/close` + RESUME.md, tester | you're ready to build the first working version |
 | **V1** | design-system *enforcement*, prototypes, `/board`, `/design-library`, doc-placement contract | ready for a real, shippable v1 |
-| **Scale** | PM org, refactor automation, code-health, product council | a fully blown-out, complex app |
+| **Scale** | `/incident` post-mortems, `/triage --feedback` customer register, the org mentor | customers are real and coordination is the bottleneck |
 
 Run `boss status` to see your mode and whether newer BOSS practices are available. Run `boss unlock <mode>` (e.g. `boss unlock mvp`) to level up.
 

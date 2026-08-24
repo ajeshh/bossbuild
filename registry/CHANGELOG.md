@@ -9,6 +9,72 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.222.0 — 2026-08-24
+
+**"With AI you need a refactoring cadence" is the most reasonable-sounding advice in the build world
+right now, and it fails on its own sources. What's true underneath is better: the boy-scout rule
+didn't get abandoned — it lost its host. `mentor-architect` now says so. Separately, the mode ladder
+every founder reads on day one promised three Scale features that do not exist.**
+
+> **For you:** two corrections you inherit. `mentor-architect` can now tell you why refactoring
+> stopped happening by itself in an AI build — and why answering that with a scheduled refactor
+> block is the wrong fix. And the mode table in your `CLAUDE.md` no longer advertises Scale features
+> BOSS hasn't built; it names the two it has.
+
+- **The claim was vetted and half of it died** ([[RVW-083]], ADAPT). Fowler's position has been
+  settled for twenty years and it is the opposite of a schedule — *"a team that's using refactoring
+  well should hardly ever need to plan refactoring."* He names a scheduled refactor block as the
+  **symptom** of having skipped the opportunities. Beck's unit of rhythm is per-feature, not
+  per-quarter. **The strongest refutation was inside the authority the claim was leaning on**, which
+  is the argument for `/vet` fetching primaries before it grades anything.
+- **What survives is a mechanism, and it is the new paragraph in `mentor-architect`.** Fowler's
+  *"as regular and indivisible a part of programming as typing if statements"* has a hidden
+  dependency: **a human typing the if statements.** Tidying was never a discipline anyone planned —
+  it was a by-product of reading a file in order to change it. Agents change files nobody read, so
+  the by-product stops. GitClear's moved-code share, their refactoring proxy, fell **13% of changed
+  lines in 2023 → 3.8% in 2026** across 623M analyzed changes. Refactoring didn't decline; its host
+  died. In an agent build the replacement host is a **breakpoint, not a calendar** — a shipped FEAT,
+  a mode transition, the third repeat — which is exactly where `/extract` already stops. The mentor's
+  useful question became *what did nobody read?*, never *how often should we refactor?*
+- **The register guard matters more than the finding.** The paragraph ends by telling the mentor to
+  check who is asking: for a founder with no users, "go tidy" is the pseudo-app trap wearing an
+  engineering hat, and it is a legitimate-sounding reason not to ship. Debt is worth naming once the
+  code is what's slowing them down — not before. Suggestive, never a gate, same as the 70%-problem
+  marker it sits beside.
+- **The 70%-problem citation was three years stale.** It carried GitClear's 2024 vintage
+  (*"copy-paste overtook refactor in 2024"*) from [[RVW-053]]. Refreshed to the 2026 slope — copy/paste
+  9.4% of changed lines in 2022 → 15.7% in 2026, duplication +81% since 2023. Same finding, sharper.
+- 🔴 **`stages/L0-quickstart/template/CLAUDE.md` sold three Scale features that do not exist.** The
+  mode ladder — the table a founder reads in their first five minutes — said Scale adds *"PM org,
+  refactor automation, code-health, product council."* `/code-health` and `/refactor-wave` are
+  trigger-gated and unauthored; the PM org and product council were demoted long ago. **The L3
+  `manifest.json`, `stages/L3-scale/README.md` and `docs/GUIDE.md` all say so correctly** — the row
+  was the one surface still selling them. It now names what Scale actually ships: `/incident`,
+  `/triage --feedback`, and `mentor-hiring`. The other three rows were checked against their
+  manifests and are accurate.
+- **17th instance of a check stating an intent it does not enforce — and the first in this shape.**
+  A feature-preview table reads like marketing copy, not an assertion, so no gate and no sweep ever
+  treated it as a claim. `check:refs` structurally cannot catch it either: `/code-health` is not a
+  broken link, it is a real name for an unreal thing. **The generalization: grep for every skill name
+  you advertise and confirm a file exists for it.**
+- **What was deliberately NOT built.** The gap the research actually found is that BOSS can grow a
+  codebase and can end one, but cannot shrink one — every reduction-shaped surface it ships is
+  additive (`/extract`), holds-the-line (`quality-ratchet`), or terminal (`/sunset`). That verb is
+  **held at n=0 founder demand** ([[IDEA-074]]): the only repo with the symptom is BOSS's own, and
+  building a founder feature from BOSS's own itch is the inversion [[EVID-001]] flagged. If it is ever
+  earned it is a second question inside `/extract`'s existing pass, never a new skill.
+- ⚠️ **`library/sources.json` was left untouched on purpose.** It indexes the sources behind
+  `library/practices/*`, and this landed on a `stages/` agent. The verified URLs live in RVW-083's
+  `sources:` block; adding a `gitclear` entry nothing references would be the drift this file exists
+  to prevent.
+- ⚠️ **The schema half of the question was not researched at all.** The prompt asked about redesigning
+  a database; zero sources were gathered on it. `data-schema.md` says schema decisions are one-way
+  doors — whether the AI era changes that is unexamined and stays open.
+- ⚠️ **DORA would not verify, for the second time.** Only *"AI's primary role is as an amplifier"*
+  came off `dora.dev`; the instability and rework-rate figures everyone repeats are secondary-only.
+  [[RVW-076]] quarantined a DORA attribution once already. Treat that primary as effectively
+  unfetchable and cite the framing, never the numbers.
+
 ## 0.221.0 — 2026-08-24
 
 **`boss remove` deleted `.boss/` with no copy, while promising an undo that could not reach it —
