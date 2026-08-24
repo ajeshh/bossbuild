@@ -9,6 +9,58 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.229.0 — 2026-08-24
+
+**The citation-debt number said "1 of 20 KEY sources have no URL." The honest number was 14 of 37 —
+because 12 of 32 practices had no entry in `sources.json` at all, so their unlinked sources were not
+counted as debt, they were not counted at all. A metric that improves when you forget something is
+worse than no metric.**
+
+- 🔴 **The gauge was measuring only what someone had remembered to enter.** `library/sources.json`
+  exists to close a specific hole BOSS found in itself — *"41 named sources across its practice shelf
+  and URLs for two of them."* It closed it for **20 of 32 practices and stopped**, and nothing
+  noticed, because the only thing watching was a ratio computed over the sources already in the file.
+  The 12 missing practices name real, linkable people and primaries in their `provenance:` —
+  Casey Winters, Bangaly Kaba, Brian Balfour, Patrick Campbell, Kyle Poyar, Julian Shapiro, Harry
+  Dry, Amy Edmondson, Ethan Mollick, Anthropic's Unified Harm Framework, the Ada Lovelace Institute,
+  Stanford WORKBank — **and every one of them reached no reader.** Now **32/32 mapped, 70 sources**,
+  and the reported debt rose to its true value.
+- **An empty array is now a real answer, and that is what makes the check possible.** Four practices
+  (`first-dollar`, `founder-role-shifts`, `celebration-of-done`, `conscience-voicing`) have genuinely
+  no external source — their provenance is an internal IDEA, a Fable pass, or Ajesh's own corpus.
+  They map to `[]`: *mapped, nothing to credit.* **Absent and empty used to look identical**; now
+  only one of them is legal.
+- **Today's three verified primaries carried into the file, which is the rule that was broken.**
+  `/vet` step 3 says an adopted claim's URL goes into `sources.json` *"so the name can become a
+  link."* v0.228.0 put the URLs in the verdicts and **stopped there** — the obligation was discharged
+  hours after invoking the skill that states it. Now recorded: **FTC Operation AI Comply**, **EDPB
+  Opinion 08/2024**, **Brooks et al. PNAS 2014** (recording the HBS-hosted PDF actually opened —
+  `doi.org` is Cloudflare-gated, and the rule is *the URL you opened*, not the one you would cite).
+  Also resolved **Stanford WORKBank**: the arXiv id was already sitting in the practice's own
+  provenance, so the link was mechanical, not a guess — confirmed as `2506.06576`.
+- **Everything else stays `url: null`, on purpose.** The file's own rule is that a URL is written only
+  when someone has opened the document; a plausible-looking link is the exact failure the rule
+  exists to catch. Adding 26 names with null URLs is what *raised* the debt figure — the debt was
+  always there, and this is the first release in which it is countable.
+- **Three verdicts pointed at agents that no longer exist, and one nearly caused a re-litigation.**
+  [[RVW-023]], [[RVW-030]] and [[RVW-037]] all `route:` into L2-v1 seats (`mentor-business`,
+  `mentor-pitch`) removed when the mentor ladder consolidated at v0.189.0–v0.195.0. **Checked
+  line-by-line: all three verdicts' adopted content SURVIVES in the shipped `mentor-capital` —
+  nothing was lost in the merge, only the routing records rotted.** Each now carries a consolidation
+  note; the `route:` fields are left as written because they record the decision as it was made.
+  Found while vetting [[RVW-089]], which nearly re-argued RVW-037's claim without noticing the file
+  it named was gone. `docs/RESUME.md` had the same stale seat name and is fixed.
+- **Guards (4 new, each verified non-vacuous):** every practice on disk must be mapped · no mapped
+  practice may lack a file · no dangling source key · **a `url` must be an https URL or `null`** —
+  nothing url-shaped may sit in the slot. Plus `check:site` now *reports* unmapped practices instead
+  of silently excluding them from its own denominator, verified by dropping a probe practice in and
+  watching it fire. Tests **227 → 231**.
+- ⚠️ **Named, not fixed: `sources.json` maps practices only.** The Brooks/PNAS citation adopted in
+  v0.228.0 lives in an **agent** (`mentor-capital`), and agents have no place in this file — so it is
+  parked under `harm-taxonomy`, the shipped practice for the humane lens, which does not itself cite
+  it. **A citation added to an agent still has nowhere to be recorded.** Left as a known gap rather
+  than papered over with a fake mapping.
+
 ## 0.228.0 — 2026-08-24
 
 **The last two rows in the dark-pattern catalog rendered `UNVETTED` to every founder who met them.

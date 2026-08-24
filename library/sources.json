@@ -287,14 +287,198 @@
       "for": "spec-anchored / code-coupled / drift-enforced documentation for AI-written systems",
       "kind": "paper",
       "key": false
+    },
+    "ftc-ai-comply": {
+      "name": "FTC — Operation AI Comply",
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2024/09/ftc-announces-crackdown-deceptive-ai-claims-schemes",
+      "for": "AI washing as an enforced deceptive pattern — five actions, 2024-09-25; the DoNotPay final order (5-0, 2025-01-16)",
+      "kind": "org",
+      "key": true
+    },
+    "edpb-consent-or-pay": {
+      "name": "EDPB — Opinion 08/2024 (consent or pay)",
+      "url": "https://www.edpb.europa.eu/system/files/2024-04/edpb_opinion_202408_consentorpay_en.pdf",
+      "for": "the consent-or-pay binary; 'an equivalent alternative that does not entail the payment of a fee'. Scoped to large online platforms — cite the principle, not the statute, to a small team",
+      "kind": "standard",
+      "key": true
+    },
+    "brooks-pnas": {
+      "name": "Brooks, Huang, Kearney & Murray — PNAS 2014",
+      "url": "https://www.hbs.edu/ris/Publication%20Files/Brooks%20Huang%20Kearney%20Murray_59b551a9-8218-4b84-be15-eaff58009767.pdf",
+      "for": "investors preferred an identical pitch from a man; attractiveness moderated for men only",
+      "kind": "research",
+      "key": true,
+      "url_note": "doi 10.1073/pnas.1321202111 — doi.org is Cloudflare-gated, so this records the HBS-hosted PDF actually opened and read (2026-08-24)."
+    },
+    "stanford-workbank": {
+      "name": "Stanford WORKBank / Human Agency Scale",
+      "url": "https://arxiv.org/abs/2506.06576",
+      "for": "which tasks workers want automated vs augmented",
+      "kind": "research",
+      "key": true,
+      "url_note": "arXiv id was already in the practice's provenance; resolved and confirmed 2026-08-24 as 'Future of Work with AI Agents'."
+    },
+    "anthropic-harm-framework": {
+      "name": "Anthropic — Unified Harm Framework",
+      "url": null,
+      "for": "the 5 harm dimensions",
+      "kind": "org",
+      "key": true
+    },
+    "ada-lovelace": {
+      "name": "Ada Lovelace Institute",
+      "url": null,
+      "for": "advanced-AI-assistant relationship harms",
+      "kind": "org",
+      "key": true
+    },
+    "julian-shapiro": {
+      "name": "Julian Shapiro",
+      "url": null,
+      "for": "the value-prop table",
+      "kind": "person",
+      "key": true
+    },
+    "harry-dry": {
+      "name": "Harry Dry — MarketingExamples",
+      "url": null,
+      "for": "'write with the delete key'; back a bold claim with proof",
+      "kind": "person",
+      "key": true
+    },
+    "demand-curve-cxl": {
+      "name": "Demand Curve / CXL",
+      "url": null,
+      "for": "above-the-fold, clarity over cleverness",
+      "kind": "org",
+      "key": false
+    },
+    "37signals": {
+      "name": "37signals",
+      "url": null,
+      "for": "clarity, not cleverness",
+      "kind": "org",
+      "key": false
+    },
+    "casey-winters": {
+      "name": "Casey Winters",
+      "url": null,
+      "for": "activation > acquisition; the retention curve must flatten",
+      "kind": "person",
+      "key": true
+    },
+    "bangaly-kaba": {
+      "name": "Bangaly Kaba",
+      "url": null,
+      "for": "the best-retained-users method",
+      "kind": "person",
+      "key": true
+    },
+    "brian-balfour": {
+      "name": "Brian Balfour",
+      "url": null,
+      "for": "retention is the engine, not a metric",
+      "kind": "person",
+      "key": true
+    },
+    "lenny-rachitsky": {
+      "name": "Lenny Rachitsky",
+      "url": null,
+      "for": "there is no retention silver bullet — it's the product",
+      "kind": "person",
+      "key": false
+    },
+    "profitwell-campbell": {
+      "name": "Patrick Campbell / ProfitWell",
+      "url": null,
+      "for": "involuntary churn is 20-40% of the total and the most recoverable",
+      "kind": "person",
+      "key": true
+    },
+    "kyle-poyar": {
+      "name": "Kyle Poyar",
+      "url": null,
+      "for": "usage-based pricing and expansion when usage tracks value",
+      "kind": "person",
+      "key": true
+    },
+    "a16z-tunguz": {
+      "name": "a16z / Tomasz Tunguz",
+      "url": null,
+      "for": "the margin trap — cost scales with engagement; the AI-'tourist' churn wave",
+      "kind": "org",
+      "key": false
+    },
+    "paul-graham": {
+      "name": "Paul Graham",
+      "url": null,
+      "for": "do things that don't scale",
+      "kind": "person",
+      "key": true
+    },
+    "superhuman-concierge": {
+      "name": "Superhuman — concierge onboarding",
+      "url": null,
+      "for": "onboarding done by hand for the first users",
+      "kind": "org",
+      "key": false
+    },
+    "amy-edmondson": {
+      "name": "Amy Edmondson",
+      "url": null,
+      "for": "psychological safety",
+      "kind": "person",
+      "key": true
+    },
+    "ethan-mollick": {
+      "name": "Ethan Mollick",
+      "url": null,
+      "for": "'secret cyborgs' (2024)",
+      "kind": "person",
+      "key": true
+    },
+    "betterup-workslop": {
+      "name": "BetterUp Labs x Stanford — 'workslop'",
+      "url": null,
+      "for": "HBR 2025 + the 2026 OSF follow-on (n=962)",
+      "kind": "research",
+      "key": false
+    },
+    "tianpan": {
+      "name": "TianPan — AI product metrics",
+      "url": null,
+      "for": "TCR, retained-character rate, frustration index",
+      "kind": "person",
+      "key": false
+    },
+    "posthog": {
+      "name": "PostHog — LLM analytics",
+      "url": null,
+      "for": "product + observability convergence",
+      "kind": "org",
+      "key": false
+    },
+    "camuffo": {
+      "name": "Camuffo et al. — the scientific-approach RCT",
+      "url": null,
+      "for": "validation buys faster quitting",
+      "kind": "research",
+      "key": true
+    },
+    "lincoln-murphy": {
+      "name": "Lincoln Murphy",
+      "url": null,
+      "for": "involuntary churn",
+      "kind": "person",
+      "key": false
     }
   },
   "practices": {
-    "harness-engineering": [
-      "anthropic-engineering",
-      "dex-horthy",
-      "karpathy",
-      "spec-driven"
+    "activation": [
+      "casey-winters",
+      "bangaly-kaba",
+      "superhuman-concierge",
+      "paul-graham"
     ],
     "agent-security": [
       "simon-willison",
@@ -302,63 +486,11 @@
       "veracode",
       "redwood-control"
     ],
-    "testing-with-agents": [
-      "hamel-shreya",
-      "coding-agents-fail",
-      "devs-dont-vibe",
-      "veracode",
-      "metr",
-      "karpathy"
-    ],
-    "retrieval": [
-      "anthropic-engineering",
-      "chroma",
-      "jason-liu"
-    ],
-    "mcp": [
-      "mcp-spec",
-      "mcp-deprecated",
-      "simon-willison"
-    ],
-    "data-schema": [
-      "cve-lovable",
-      "moltbook",
-      "ox-security",
-      "postgres-rls",
-      "kleppmann"
-    ],
-    "git-workflow": [
-      "dora",
-      "addy-osmani",
-      "metr"
-    ],
-    "ship-it-live": [
-      "dora",
-      "fowler",
-      "simon-willison",
-      "owasp",
-      "cve-lovable",
-      "moltbook"
-    ],
-    "feature-flags": [
-      "growthbook",
-      "configcat",
-      "unleash-ld",
-      "shape-up",
-      "addy-osmani"
-    ],
-    "scalable-architecture": [
-      "fowler",
-      "shopify-monolith",
-      "factory-ai"
-    ],
-    "skill-authoring": [
-      "anthropic-skills"
-    ],
-    "design-system": [
-      "brad-frost",
-      "nathan-curtis",
-      "w3c-tokens"
+    "ai-adoption-culture": [
+      "stanford-workbank",
+      "amy-edmondson",
+      "ethan-mollick",
+      "betterup-workslop"
     ],
     "ai-ux-patterns": [
       "shape-of-ai",
@@ -369,17 +501,123 @@
       "cdt-dark-patterns",
       "vaccaro-chi"
     ],
-    "model-routing": [],
-    "quality-ratchet": [],
-    "revalidation": [],
-    "context-discipline": [],
+    "analytics-for-ai-products": [
+      "hamel-shreya",
+      "tianpan",
+      "posthog",
+      "camuffo"
+    ],
     "automation": [],
+    "celebration-of-done": [],
+    "conscience-voicing": [],
+    "context-discipline": [],
+    "data-schema": [
+      "cve-lovable",
+      "moltbook",
+      "ox-security",
+      "postgres-rls",
+      "kleppmann"
+    ],
+    "deceptive-patterns": [
+      "ftc-ai-comply",
+      "edpb-consent-or-pay",
+      "cdt-dark-patterns",
+      "vaccaro-chi"
+    ],
+    "design-system": [
+      "brad-frost",
+      "nathan-curtis",
+      "w3c-tokens"
+    ],
     "documentation": [
       "nygard-adr",
       "cagan-svpg",
       "anthropic-engineering",
       "spec-growth-engine"
     ],
-    "seed-to-scale": []
+    "feature-flags": [
+      "growthbook",
+      "configcat",
+      "unleash-ld",
+      "shape-up",
+      "addy-osmani"
+    ],
+    "first-dollar": [],
+    "founder-role-shifts": [],
+    "git-workflow": [
+      "dora",
+      "addy-osmani",
+      "metr"
+    ],
+    "harm-taxonomy": [
+      "anthropic-harm-framework",
+      "ada-lovelace",
+      "brooks-pnas"
+    ],
+    "harness-engineering": [
+      "anthropic-engineering",
+      "dex-horthy",
+      "karpathy",
+      "spec-driven"
+    ],
+    "landing-page": [
+      "julian-shapiro",
+      "harry-dry",
+      "demand-curve-cxl",
+      "37signals"
+    ],
+    "mcp": [
+      "mcp-spec",
+      "mcp-deprecated",
+      "simon-willison"
+    ],
+    "model-routing": [],
+    "monetization-in-practice": [
+      "profitwell-campbell",
+      "kyle-poyar",
+      "a16z-tunguz",
+      "edpb-consent-or-pay"
+    ],
+    "quality-ratchet": [],
+    "retention": [
+      "casey-winters",
+      "bangaly-kaba",
+      "brian-balfour",
+      "profitwell-campbell",
+      "lincoln-murphy",
+      "lenny-rachitsky",
+      "a16z-tunguz"
+    ],
+    "retrieval": [
+      "anthropic-engineering",
+      "chroma",
+      "jason-liu"
+    ],
+    "revalidation": [],
+    "scalable-architecture": [
+      "fowler",
+      "shopify-monolith",
+      "factory-ai"
+    ],
+    "seed-to-scale": [],
+    "ship-it-live": [
+      "dora",
+      "fowler",
+      "simon-willison",
+      "owasp",
+      "cve-lovable",
+      "moltbook"
+    ],
+    "skill-authoring": [
+      "anthropic-skills"
+    ],
+    "testing-with-agents": [
+      "hamel-shreya",
+      "coding-agents-fail",
+      "devs-dont-vibe",
+      "veracode",
+      "metr",
+      "karpathy"
+    ]
   }
 }

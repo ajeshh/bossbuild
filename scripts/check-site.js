@@ -227,6 +227,7 @@ if (quietAgents.length) {
 // opened. `/vet` verifies attributions before grading them, so the work is already
 // done — losing the URL throws it away. Reported, never fatal.
 let debt = 0, sourceTotal = 0;
+const unmapped = [];
 {
   const f = join(ROOT, 'library', 'sources.json');
   if (existsSync(f)) {
@@ -238,6 +239,21 @@ let debt = 0, sourceTotal = 0;
     const all = Object.values(reg.sources || {}).filter((x) => x.key);
     sourceTotal = all.length;
     debt = all.filter((x) => !x.url).length;
+
+    // COVERAGE, and it is the half that used to be missing. The debt above is computed
+    // only over sources someone remembered to ENTER — so a practice nobody mapped
+    // contributed nothing to it, and the ratio got BETTER as coverage got worse. It read
+    // "1 of 20 KEY sources have no URL" while 12 of 32 practices had no entry at all;
+    // the honest number was 14 of 37. A metric that improves when you forget something is
+    // worse than no metric. An empty array is a valid, deliberate answer — it means the
+    // practice has no external source to credit (an internal IDEA, a founder's own corpus).
+    // Absent from the map is different, and that is what this reports.
+    const known = new Set(Object.keys(reg.practices || {}));
+    for (const file of readdirSync(join(ROOT, 'library', 'practices'))) {
+      if (!file.endsWith('.md')) continue;
+      const id = file.slice(0, -3);
+      if (!known.has(id)) unmapped.push(id);
+    }
   }
 }
 
@@ -327,6 +343,13 @@ if (debt) {
   console.log(`\n  · citation debt: ${debt} of ${sourceTotal} KEY sources have no URL.`);
   console.log('    /vet now requires recording the primary-source URL; these predate that rule.');
   console.log('    Fill a `url` in library/sources.json and the credits page links it automatically.');
+}
+if (unmapped.length) {
+  console.log(`\n  · ${unmapped.length} practice(s) have NO entry in library/sources.json:`);
+  for (const id of unmapped) console.log(`      ${id}`);
+  console.log('    Their provenance names sources that reach no reader, and they are invisible to');
+  console.log('    the citation-debt count above — which makes that number read better than it is.');
+  console.log('    Add the names (url null is fine and honest), or map to [] if there is nothing to credit.');
 }
 console.log(`\n  ${problems.length} broken claim(s) · ${inflight.length} in flight · ${behind.length} trailing · ${overdue.length} overdue\n`);
 console.log('  The roster and the counts are GENERATED and cannot drift. This checks the half a');
