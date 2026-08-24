@@ -52,7 +52,8 @@ A CLI plus a set of skills, agents, and loops that run inside Claude Code:
 - **A mentor board.** Six advisors for the parts code can't teach, seated as the project earns them:
   `mentor-founder` from day one; architect, customers, capital and cofounder at MVP; **V1 adds none**
   (capital's remit widens instead); hiring at Scale — alongside the builders who make the thing
-  (`product-lead` and a coder from the start, `tester` `planner` and `designer` at MVP). **There's no ethics
+  (`product-lead`, a coder and `prompt-coach` from the start, `tester` `planner` and `designer` at MVP).
+  **There's no ethics
   advisor you have to remember to open** — the humane lens is wiring instead: the conscience, `/canvas`'s
   Risks & Harms cell, the `harm-taxonomy` practice, and `/red-team --humane`, which probes your own AI
   product for dark patterns.

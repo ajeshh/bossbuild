@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.235.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.236.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -51,7 +51,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/boss-sync` — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin
 - `/boss-learn` — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality
 
-**Agents:** product-lead, coder, mentor-founder  
+**Agents:** product-lead, coder, mentor-founder, prompt-coach  
 **Loops:** capture-loop, canvas-loop, harvest-loop, sustaining-loop  
 **Hooks:** conscience  
 

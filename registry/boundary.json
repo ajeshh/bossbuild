@@ -143,8 +143,8 @@
     {
       "name": "prompt-coach",
       "kind": "agent",
-      "verdict": "not-yet",
-      "why": "Its OWN description says \"outward-facing counterpart to voice-keeper\" — authored for founders and never left the workspace. The smallest real port on this list."
+      "verdict": "crossed",
+      "why": "Ships at Quickstart as of v0.236.0. Its own description had said \"outward-facing counterpart to voice-keeper\" — it was AUTHORED for founders and never left the workspace, so crossing it delivered something already written for them rather than adding something new. Landed at L0 rather than MVP because asking well is load-bearing from the first prompt, and the cohorts it helps most (`first-product`, `vibe-coder-newbie`) meet Claude on day one; L0 seated three agents. Two things were WRONG in the workspace copy and fixed on the way over: `tools: Read, Edit` could not create the pattern library the agent promises to \"create on first use\" (Edit needs an existing file) — now the house line, `Read, Grep, Glob, Edit, Write`; and it told the founder it does not replace `voice-keeper`, an agent that ships to nobody."
     },
     {
       "name": "recalibrate",

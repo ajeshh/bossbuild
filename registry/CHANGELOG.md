@@ -9,6 +9,41 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.236.0 — 2026-08-24
+
+**`prompt-coach`'s own description said it was "outward-facing" — written for founders, and it never
+left BOSS's private workspace.** It has been sitting there since it was authored, helping nobody,
+while the skill it teaches — asking well — became the most load-bearing thing a founder does all day.
+Crossing it is not an addition; it is delivering something already written for them.
+
+> **For you:** Quickstart now seats `prompt-coach`. Show it a prompt you're about to send and it hands
+> back a sharpened version side-by-side with the one pattern the change illustrates — so you need it
+> less over time, not more. Say *"help me ask this better."* It keeps your own pattern library as you
+> go (`docs/dossier/founder-prompt-patterns.md`), so what you end up with is your playbook, not a
+> generic one.
+
+- **Quickstart, not MVP.** Asking well is load-bearing from the first prompt, and the cohorts it helps
+  most — `first-product`, `vibe-coder-newbie` — meet Claude on day one, not at the build unlock. L0
+  seated three agents; it now seats four.
+- **An agent, not a skill — and that is the whole reason this one crosses while three others don't.**
+  [[EVID-001]]'s compose-and-subtract mandate is about the 48-skill wall a founder has to read. An
+  agent is a role Claude takes on when you describe a problem; it adds nothing to that wall. **Nothing
+  was added to the skill surface.**
+- 🔴 **Two things were WRONG in the workspace copy, and crossing it is what surfaced them.**
+  `tools: Read, Edit` could not create the pattern library the agent promises to *"create on first
+  use"* — **Edit needs a file that already exists.** Every shipped agent declares
+  `Read, Grep, Glob, Edit, Write`; this one now does too. That is the [[checkers-state-intents-they-dont-enforce]]
+  n=21 shape — *grep an agent's `tools:` against the verbs in what it owns* — caught on the way over
+  rather than after shipping.
+- **And it told the founder it does not replace `voice-keeper`** — an agent that ships to nobody, the
+  exact defect v0.235.0 had just swept out of the practices. Replaced with the line that is actually
+  true for a founder: it sharpens what you *ask*, not what your app *says* (that is `/design-review`,
+  and the voice should be yours).
+- **The manifest gate earned its keep.** `check:manifests` refused the release until the agent was
+  named in the stage's `CLAUDE.md` contribution — *"it ships but is named nowhere … it will never be
+  invoked."* A roster entry with no invocation path is a claim without a thing.
+- Roster is generated, so it moved on its own: **12 agents (6 builders · 6 mentors)**. 259 tests.
+
 ## 0.235.0 — 2026-08-24
 
 **`mentor-humane` ships to nobody — that is a deliberate design call — and two shipped practices named
