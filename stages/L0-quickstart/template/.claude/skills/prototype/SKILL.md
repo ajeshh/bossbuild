@@ -17,15 +17,15 @@ The conscience stays out of the way until the thing is on the screen.
 
 > **This is BOSS's one licensed play space.** A prototype is a *magic circle* — bounded, safe-to-fail,
 > nothing precious, nothing shipped. Build it badly, build three of them, build the wrong one on purpose;
-> the only job here is to learn by doing. The walls of the circle (it's labelled a sketch, it gets thrown
-> away when it earns a real build, the conscience waits outside until you step out) are exactly what make
-> playing safe. Play isn't the warm-up to the work — for an idea you can't yet see, it *is* the work.
+> the only job here is to learn by doing. The walls of the circle (it's labelled a sketch, it graduates
+> deliberately when it earns a real build, the conscience waits outside until you step out) are exactly
+> what make playing safe. Play isn't the warm-up to the work — for an idea you can't yet see, it *is*
+> the work.
 
-> **The frame, plainly (Marty Cagan, 2026):** this is *building to **learn*** — a throwaway to discover
-> whether the idea's worth it. Building it *for real* is *building to **earn*** — the `/spec` path, with
-> a build you'll keep. Cheap building made delivery easy, which made *fooling yourself* easy too; the
-> two modes stay separate on purpose. `/prototype` is build-to-learn; `boss unlock mvp` → `/spec` is
-> build-to-earn.
+> **The frame, plainly (Jeff Patton's phrase, via Marty Cagan, 2026):** this is *building to **learn***
+> — a sketch to think with, to discover whether the idea's worth it. Building it *for real* is
+> *building to **earn*** — the `/spec` path, a build you'll stand behind. `/prototype` is
+> build-to-learn; `boss unlock mvp` → `/spec` is build-to-earn.
 
 ## When to run it
 
@@ -64,6 +64,11 @@ an `eng-builder`/design-minded cohort asks) reach for the 5-token distinctivenes
 `/design-tokens-init`. Keep it in a clearly-a-sketch place (`prototype/` if the repo has other code;
 root if it's empty).
 
+**4.5. Commit it, before you run it.** `git init` if the folder isn't a repo yet, then commit the
+sketch. One line, no lecture: *"committed — you can always get back to this version."* This is the
+only real undo here: `/rewind` restores files written with the editing tools, but **not** changes made
+by shell commands, **not** a subagent's edits, and it does not rewind the conversation. Git does.
+
 **5. Run it.** Use `/run` (or just open the file). Get it on the screen. This is the moment — don't
 bury it in narration.
 
@@ -81,6 +86,25 @@ when they get there.
 
 That's the whole conscience touch: *after* the tangible thing, a concrete action first and the
 vocabulary later, never a gate before.
+
+**If showing someone is the next move** — they say so, or that's why the sketch exists — offer one
+cheap trick before they go, **once**: *"Take two rough versions, not your one best. With one, people
+protect your feelings; with two, they compare — you'll hear what's actually off."* Build the second
+only if they want it: minutes, still rough, differing in the one thing they're unsure about. One
+sketch stays the default output — this is for **showing**, never for building. (Thin but real — one
+study, Tohidi et al. 2006 — and it buys candour, not ideas. A compliment on either version still
+isn't evidence.)
+
+## Coming back to it
+
+A sketch is something you return to, so the second run is not the first one again.
+
+- **Read what's there first.** If a sketch for this idea already exists, open it and **change that** —
+  don't regenerate from the idea text. Say which file you changed.
+- **Commit before each round**, same as step 4.5. That's what makes *"actually, go back"* real.
+- **Trying a different direction rather than fixing this one?** Copy the current one aside before you
+  change it. The version you walk away from is a question already answered — and at MVP,
+  `docs/design/PROTOTYPES.md` is where those answers get kept.
 
 ## Cohort-aware delivery
 
@@ -101,8 +125,10 @@ Read `cohort` from `.boss/config.json`:
 
 - **Tangible beats complete.** A rough thing that runs beats a polished thing that doesn't. Ship the
   click, not the codebase.
-- **Mock freely.** Sample data, hardcoded values, fake responses — all fine for a sketch. Don't build
-  a backend to prove an idea.
+- **Mock freely — and make fake data look fake.** Hardcoded values, canned responses, no backend —
+  that's the point of a sketch. Keep the values unmistakably synthetic (`example.com`, `555-0155`,
+  "Pat Placeholder"); never invent a plausible domain fact — a lab value, a dosage, a citation, a
+  price. Mock data that looks real fools people, starting with you.
 - **Name it as a sketch — once.** "See-it, not sell-it." Say it one time (cohort-appropriate), then
   let them play. Don't moralize.
 - **Conscience after, never before.** No "have you validated this?" gate in front of the build. The
@@ -110,5 +136,9 @@ Read `cohort` from `.boss/config.json`:
   there's something to react to.
 - **Don't quietly become the MVP.** The real failure isn't abstract — it's the sketch that picked up
   4 real users and is now getting auth and a database bolted onto throwaway code nobody meant to keep.
-  When the sketch earns a real build, *restart it* on the deliberate path (`boss unlock mvp` → `/spec`
-  → `/evals`), don't grow the sketch into production. Fast to *see*; rebuild to *keep*.
+  When the sketch earns a real build, graduate it deliberately — `boss unlock mvp` → `/spec` — with
+  the sketch in hand as the tangible reference for what to build. **Keep or rebuild is the founder's
+  call, piece by piece**; the honest test for any piece is whether someone can say what it does — and
+  *"walk me through it"* is a one-minute ask, not a failing grade. The sketch's shortcuts around auth
+  and other people's data are exactly what the deliberate path exists to catch. Fast to *see*;
+  deliberate to *keep*.

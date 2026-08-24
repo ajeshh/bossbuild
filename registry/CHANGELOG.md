@@ -9,6 +9,60 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.223.0 — 2026-08-24
+
+**`/prototype` told every founder to throw their sketch away and rebuild it. That instruction cited
+Marty Cagan, who says the opposite; the phrase it borrowed is Jeff Patton's; and the throw-it-away
+doctrine underneath is Fred Brooks 1975 — which Brooks publicly retracted in 1995. No verdict ever
+authorized it.**
+
+> **For you:** if your sketch earns a real build, BOSS no longer tells you to start over. Keep or
+> rebuild is your call, piece by piece — and the sketch comes with you into `/spec` as the reference
+> for what to build. `/prototype` also commits before it runs now, so "actually, go back" is real.
+
+- 🔴 **Three claims in one blockquote, none of them right.** [[RVW-016]] approved **one line** —
+  *"a sketch to think with"* — and **five shipped**, swapping in *"a throwaway"*, stamping
+  **"(Marty Cagan, 2026)"** on a phrase Cagan credits to **Jeff Patton** *in the very article the
+  verdict cites*, and adding *"the two modes stay separate on purpose"*, which contradicts Cagan's
+  own footnote (*"not to think of discovery and delivery as phases"*). Shipped since v0.67.0.
+- 🔴 **The `restart it` mandate was never vetted at all.** `git log -S` puts it at **v0.55.0** —
+  twelve versions *before* RVW-016 landed. Unvetted text that the later drifted blockquote then
+  appeared to corroborate. **No RCT, quasi-experiment or matched-cohort comparing rewrite against
+  incremental hardening exists in either direction**; the taproot citation (Brodie & Stonebraker
+  1993) rests on one uncited sentence. So BOSS may not mandate *keep* either — the call is the
+  founder's (Principle #5), with *"walk me through it"* offered as a one-minute test, never a gate.
+- **Mock data now has to look fake.** *"Fake responses — all fine"* licensed speed but constrained
+  nothing about **plausibility**, and the model's documented default is to fabricate
+  seemingly-authentic domain data. Values must be unmistakably synthetic; **never invent a plausible
+  domain fact** — a lab value, a dosage, a citation, a price. Aligns this one sentence with two
+  patterns BOSS already adopted (`claims-fabricated-activity`, `voice-hallucination-as-truth`). The
+  `domain-expert` guardrail is untouched — it covers real data going *in*; this covers fake data
+  coming *out*.
+- **`/prototype` commits before it runs.** Claude Code checkpointing tracks Write/Edit only —
+  *"changes made through Bash commands are not tracked"*, subagent edits aren't either, and it does
+  not rewind the conversation. **Git is the only real undo, and the skill never mentioned it.**
+- **A second visit is no longer a first one.** New *"Coming back to it"* step: read the existing
+  sketch and change *that*, don't regenerate; commit each round; keep the version you walk away from,
+  because it is a question already answered.
+- **Two versions, but only at showing time.** Tohidi et al. (CHI 2006, N=48) is the only literal
+  1-vs-3 study and its mechanism is *social* — it removes the viewer's reluctance to disappoint. So
+  it fires when a human is about to look, never as default generation. **Refused on the evidence:**
+  generating N variants (Dow 2010 held prototype count *constant*; divergence did not predict
+  quality; AI-generated examples measurably *increase* design fixation) and sketchy/ugly styling
+  (the doctrine is **N=1**, a 1992 poster; Landay's own lab failed to confirm it).
+- **Guards (verified non-vacuous by reintroducing each defect, including a reworded one):** six tests
+  lock the doctrine out by meaning rather than phrasing, require Patton in the frame line, require
+  the plausibility constraint *and* the surviving `domain-expert` guardrail, require commit-before-run,
+  and sweep every L0 skill for the mandate. **The first draft of the sibling-sweep test was vacuous
+  and was caught by mutation, not by review.**
+- **18th [[checkers-state-intents-they-dont-enforce]], and a new flavour: shipped text vs the verdict
+  that authorized it.** No gate in BOSS can see that drift — the contract lives in prose across two
+  directories. An ADAPT approved as one line shipped as five, and the added material was the
+  unsupported part.
+
+Records: `SESSION-2026-08-24-prototype-generation-craft` (6 angles, 35 sources, 12 skeptics),
+[[RVW-084]] / [[RVW-085]] / [[RVW-086]], and an addendum on [[RVW-016]].
+
 ## 0.222.0 — 2026-08-24
 
 **"With AI you need a refactoring cadence" is the most reasonable-sounding advice in the build world
