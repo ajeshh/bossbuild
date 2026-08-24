@@ -203,12 +203,26 @@ founder the other's list is how a catalog teaches people to skim.
    `health-or-regulated` · `social-or-ugc` · `hardware-or-iot`. **Pick every one that fits** — they
    are tags, not buckets, and most products are several.
 
-Write the shape tags into the cell. `/red-team --humane`, `/ux-check` and `/trust` all read them, so
-this is the one answer that saves work three times later:
+**Write the tags into the cell AND into `.boss/config.json`** — the config is what makes them
+durable. Add or update a `shape` key holding the tags as an array (leave every other key alone):
+
+```json
+"shape": ["mobile-app", "edtech"]
+```
+
+That is the one answer that saves work three times later — `/red-team --humane`, `/ux-check` and
+`/trust` each read `shape` from the config and skip what doesn't apply to you. Then see your rows:
 
 ```
 boss craft deceptive-patterns --shape <the tags you just picked>
 ```
+
+> ⚠️ **This paragraph used to claim those three skills already read the tags. They did not.**
+> The tags went into a prose cell and nowhere else; `/trust` contained no reference to shape at
+> all, and the other two re-asked or inferred. `cohort` — *who the founder is* — had been
+> persisted in the config and read everywhere for a hundred releases, while `shape` — *what they
+> are building* — was asked and thrown away. A producer/consumer contract that lives only in
+> prose is a claim, not a mechanism.
 
 **A "no" is a real answer and the common one.** Four noes and a shape of `cli` is a complete,
 honest pass — it means most of the catalog is inert for you, which is exactly what you wanted to

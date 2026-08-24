@@ -23,7 +23,7 @@
 - **Mob the hard problems.** With an AI as your pair, you question its suggestions *less*. For genuinely novel/risky work, put both humans + the agent on it together rather than one founder solo in a worktree.
 - **Honesty anchor (METR, n=16):** experienced devs on mature repos were 19% *slower* with AI while *believing* they were 20% faster. Trust the green `main` and the merged diff, not the feeling of speed.
 
-## Shipping (localhost is not shipped)
+## Shipping (localhost is not shipped — whatever "shipped" means for what you're building)
 
 > The CI half above keeps `main` green; this is the **CD** half — *is this where a real user can hit it, or just you?* An app only you can reach is a pseudo app: you can't prove pain, fit, or willingness-to-pay on it. Full depth: `ship-it-live` practice; the runner: `/ship`.
 

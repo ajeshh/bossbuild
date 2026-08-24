@@ -162,12 +162,14 @@ actually has, and say which ones you skipped.
 ### 1. Read the surfaces before you probe
 
 ```
-boss craft deceptive-patterns --shape <what this product is>
+boss craft deceptive-patterns --shape <the tags from .boss/config.json>
 ```
 
-Shapes are tags, not buckets — an edtech mobile app with a chatbot is all three. If the founder
-hasn't declared one, infer it from the repo and **say what you inferred**. Then for each surface
-that shape gives you:
+**Read `shape` from `.boss/config.json` first** — `/canvas` writes it there, and using it is what
+stops this skill asking a founder the same question every run. Shapes are tags, not buckets — an
+edtech mobile app with a chatbot is all three. Only if the key is absent, infer from the repo and
+**say what you inferred** (and offer to write it back, so the next run is cheaper). Then for each
+surface that shape gives you:
 
 ```
 boss craft deceptive-patterns --surface <surface>

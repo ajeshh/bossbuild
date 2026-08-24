@@ -11,7 +11,9 @@ import { join } from 'node:path';
 import {
   loadLoops, classifyLoop, detectSignals, signalAsContext, composeContext,
   GENERIC_FRAME_TAIL, JUDGE_MOMENTS, isMomentMuted, readEvidenceContext,
+  DEFAULT_SOURCE_GLOBS,
 } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
+import { inferSourceGlobs } from '../src/detect.js';
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
 import { STAGES_DIR, STAGE_ORDER } from '../src/paths.js';
 import { project, cleanup, idea } from './helpers.js';
@@ -285,5 +287,154 @@ test('every shipped eval file reconciles — no case is silently missing today',
   for (const f of readdirSync(dir).filter((n) => n.startsWith('moment-') && n.endsWith('.yml'))) {
     const raw = readFileSync(join(dir, f), 'utf8');
     assert.deepEqual(reconcileCases(raw, parseEvalYaml(raw), f), [], `${f} loses cases`);
+  }
+});
+
+// --- where the founder's code lives, and whether BOSS can see it ----------
+//
+// Every test below locks a defect that shipped, was verified by running the real runtime
+// against real trees, and emitted NOTHING while it was wrong. That is the common thread:
+// each failure mode here is silent, so only a test can hold it.
+
+const SHIPPED_LOOP = (stage, name) =>
+  parseFrontmatter(readFileSync(join(STAGES_DIR, stage, 'template', 'docs', 'loops', `${name}.md`), 'utf8'));
+
+test('REGRESSION: `**` actually recurses — it used to silently mean `*`', () => {
+  // The bug: expandGlob was single-level and SAID SO in its own header, while five shipped
+  // loop specs wrote `src/**` anyway. So every code-reading loop scanned exactly the top of
+  // `src/` and classified `unopenable` — which emits nothing. This was never mobile-only: any
+  // project keeping components in subdirectories (every real one) had a dead conscience.
+  const nested = project({
+    '.boss/config.json': JSON.stringify({ sourceGlobs: ['src/**'] }),
+    'src/components/Button.tsx': 'const a=<b className="a"/>;\nconst b=<b className="b"/>;\nconst c=<b className="c"/>;\n',
+    'docs/loops/l.md': '',
+  });
+  const spec = SHIPPED_LOOP('L1-mvp', 'design-tokens-loop');
+  assert.equal(classifyLoop(spec, nested).state, 'open',
+    'a component one directory down must be visible to `$source`');
+});
+
+test('REGRESSION: a glob returns FILES, never directory entries', () => {
+  // Directories used to come back as "files", throw inside readFileSync, and still be counted
+  // in the `files:` evidence — so a src/ holding only subdirectories reported "1 file scanned,
+  // 0 matches" and looked examined rather than unread.
+  const p = project({
+    '.boss/config.json': JSON.stringify({ sourceGlobs: ['src/*'] }),
+    'src/components/Button.tsx': 'const a=<b className="a"/>;\n',
+    'docs/loops/l.md': '',
+  });
+  const spec = SHIPPED_LOOP('L1-mvp', 'design-tokens-loop');
+  const r = classifyLoop(spec, p);
+  assert.equal(r.entry.results[0].evidence.files, 0,
+    '`src/*` must report zero files read, not one unreadable directory');
+});
+
+test('REGRESSION: design-drift fires on DRIFT and stays silent when clean (it was inverted)', () => {
+  // Verified backwards before the fix: a clean project sat permanently open emitting
+  // `coherence`, and a project full of raw hex — the 47 blues the loop exists to catch —
+  // classified CLOSED and said nothing. The loop doc declared its exit predicate "inverted"
+  // and claimed the runtime supported that; classifyLoop has never had an inversion.
+  const spec = SHIPPED_LOOP('L2-v1', 'design-drift-loop');
+  const base = {
+    'docs/design/DESIGN_TOKENS.md': '# tokens\n',
+    '.boss/config.json': JSON.stringify({ sourceGlobs: ['src/**'] }),
+    'docs/loops/l.md': '',
+  };
+  const clean = project({ ...base, 'src/App.tsx': 'const a = tokens.color.action;\n' });
+  const drifty = project({ ...base, 'src/App.tsx': 'const a = "#3B82F6";\n' });
+
+  assert.equal(classifyLoop(spec, clean).state, 'closed', 'clean tokens must NOT emit coherence');
+  assert.equal(classifyLoop(spec, drifty).state, 'open', 'a raw hex MUST emit coherence');
+  assert.equal(detectSignals(clean).filter((s) => s.loop_id === 'design-drift-loop').length, 0);
+});
+
+test('an exit predicate states the HEALTHY condition — no loop ships a prose-only inversion', () => {
+  // The generalisable rule from that bug. If a loop's healthy state is an absence, it says so
+  // with count_at_most; it must never rely on a paragraph claiming the runtime flips it.
+  for (const stage of STAGE_ORDER) {
+    const dir = join(STAGES_DIR, stage, 'template', 'docs', 'loops');
+    if (!existsSync(dir)) continue;
+    for (const f of readdirSync(dir).filter((n) => n.endsWith('.md'))) {
+      const text = readFileSync(join(dir, f), 'utf8');
+      const fm = parseFrontmatter(text);
+      if (fm?.type !== 'loop') continue;
+      const claimsInversion = /exit predicate is \*\*inverted\*\*/.test(text);
+      assert.equal(claimsInversion, false,
+        `${f}: declares an inverted exit predicate — the runtime has no inversion. Use count_at_most.`);
+    }
+  }
+});
+
+test('REGRESSION: a $source glob that matches nothing is BLIND, not "waiting"', () => {
+  // The naming failure that hid all the rest: `unopenable` renders to the founder as
+  // "waiting", BOSS's word for "you have not earned this rung yet". A Swift founder whose
+  // code sits in Sources/ was told 5 loops hadn't been earned when BOSS simply could not see
+  // the repo. Blind is a separate axis so a consumer that ignores it behaves as before.
+  const swift = project({
+    'Sources/App/V.swift': 'Toggle("Marketing", isOn: .constant(true))\n',
+    'docs/ideas/FEAT-001-x.md': 'status: shipped\n',
+    'docs/loops/l.md': '',
+  });
+  const spec = SHIPPED_LOOP('L1-mvp', 'verification-loop');
+  const blindRes = classifyLoop(spec, swift);
+  assert.equal(blindRes.blind, true, 'no source found must be reported as blind');
+
+  const seeing = project({
+    '.boss/config.json': JSON.stringify({ sourceGlobs: ['Sources/**'] }),
+    'Sources/App/V.swift': 'Toggle("Marketing", isOn: .constant(true))\n',
+    'docs/ideas/FEAT-001-x.md': 'status: shipped\n',
+    'docs/loops/l.md': '',
+  });
+  const seeingRes = classifyLoop(spec, seeing);
+  assert.equal(seeingRes.blind, false, 'configured sourceGlobs must clear blindness');
+  assert.equal(seeingRes.state, 'open', 'and the loop must then actually evaluate');
+});
+
+test('a blind loop never speaks — under-firing is the correct direction', () => {
+  // BOSS has no standing to judge code it cannot find. It stays quiet AND says so elsewhere
+  // (`boss conscience` reports "not evaluated here"); silence alone is how the old bug hid.
+  const blind = project({
+    'docs/design/DESIGN_TOKENS.md': '# tokens\n',
+    'Sources/App/V.swift': 'let c = "#3B82F6"\n',
+    'docs/loops/design-drift-loop.md': readFileSync(
+      join(STAGES_DIR, 'L2-v1', 'template', 'docs', 'loops', 'design-drift-loop.md'), 'utf8'),
+  });
+  assert.equal(detectSignals(blind).length, 0, 'a blind loop must emit no signal');
+});
+
+test('the deception conscience sees a pre-ticked box that is not JSX', () => {
+  // BOSS's only auto-firing humane leg matched `defaultChecked`/`checked={true}` and globbed a
+  // non-recursive Next.js layout — so it was React-only, on the one mechanism the whole humane
+  // differentiator rests on. This is the widened pattern set, not per-shape authoring.
+  const spec = SHIPPED_LOOP('L1-mvp', 'deception-loop');
+  for (const [label, files] of Object.entries({
+    swiftui: { '.boss/config.json': JSON.stringify({ sourceGlobs: ['Sources/**'] }),
+               'Sources/App/V.swift': 'Toggle("Marketing", isOn: .constant(true))\n' },
+    android: { '.boss/config.json': JSON.stringify({ sourceGlobs: ['app/**'] }),
+               'app/src/main/res/layout/m.xml': '<CheckBox android:checked="true"/>\n' },
+    flutter: { '.boss/config.json': JSON.stringify({ sourceGlobs: ['lib/**'] }),
+               'lib/main.dart': 'Checkbox(value: true, onChanged: null);\n' },
+  })) {
+    const p = project({ ...files, 'docs/loops/l.md': '' });
+    assert.equal(classifyLoop(spec, p).state, 'open', `${label}: a pre-ticked box must be seen`);
+  }
+});
+
+test('inferSourceGlobs reads the tree and refuses to guess when it recognises nothing', () => {
+  const swift = project({ 'Package.swift': '// swift-tools-version:5.9\n', 'Sources/App/A.swift': 'let a=1\n' });
+  assert.deepEqual(inferSourceGlobs(swift), ['Sources/**']);
+
+  const go = project({ 'go.mod': 'module x\n', 'cmd/api/main.go': 'package main\n', 'internal/a/a.go': 'package a\n' });
+  assert.deepEqual(inferSourceGlobs(go), ['cmd/**', 'internal/**']);
+
+  // Nothing recognised => null, so adopt writes NO key. An absent key means "nobody has said"
+  // and the conscience reports honestly; a key written as a guess would look like a decision.
+  const odd = project({ 'Makefile': 'all:\n', 'weird-root/x.c': 'int main(){}\n' });
+  assert.equal(inferSourceGlobs(odd), null);
+});
+
+test('DEFAULT_SOURCE_GLOBS covers the layouts BOSS claims to support', () => {
+  for (const g of ['src/**', 'app/**', 'lib/**']) {
+    assert.ok(DEFAULT_SOURCE_GLOBS.includes(g), `${g} must be a default source glob`);
   }
 });

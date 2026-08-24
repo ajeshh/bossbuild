@@ -10,6 +10,13 @@
 //   - exists: { path }                — a file/dir exists at the project-relative path
 //   - count_at_least: { path_glob, pattern, min, exclude_files_matching?, not_path_glob? }
 //                                     — N+ regex matches across globbed files
+//   - count_at_most:  { path_glob, pattern, max, exclude_files_matching?, not_path_glob? }
+//                                     — NO MORE THAN N matches. The mirror, so a loop whose
+//                                       healthy state is an ABSENCE ("no raw hex codes in the
+//                                       code") can say so as a positive exit predicate instead
+//                                       of a prose note claiming the runtime inverts. It does
+//                                       not invert; design-drift-loop believed it did for 55
+//                                       releases and fired backwards the whole time.
 //   - any_file_matches: { path_glob, pattern, related_idea_not_matching? }
 //                                     — at least one globbed file matches the regex;
 //                                       optional related-idea filter for canvas → idea
@@ -64,10 +71,23 @@ export { signalAsContext, composeContext, GENERIC_FRAME_TAIL, JUDGE_MOMENTS } fr
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ---------------------------------------------------------------------------
-// Glob expansion (single-`*`, single-level — no `**`).
-// Examples: `docs/ideas/IDEA-*.md`, `docs/loops/*.md`.
-// ---------------------------------------------------------------------------
-
+// Glob expansion. `*` matches inside one path segment; `**` crosses segments.
+//
+// 🔴 `**` USED TO BE A LIE, and this header is where it was told. The expander was
+// single-level by design and SAID SO here — while five shipped loop specs wrote `src/**`
+// anyway, where it silently degraded to `src/*`. The damage was never mobile-only: ANY
+// project that keeps code in subdirectories (every real one) had `design-tokens-loop`,
+// `verification-loop`, `design-drift-loop`, `cost-budget-loop` and `ai-failure-state-loop`
+// reading exactly the top level of `src/`, finding nothing, and classifying `unopenable`.
+// Unopenable emits NO signal — so a conscience that could not see the code was
+// indistinguishable from one with nothing to say. `deception-loop`'s hand-enumerated glob
+// list (`src/*,src/components/*,src/app/*,app/*,…`) is the workaround someone wrote instead
+// of fixing this, and it still missed `src/app/(marketing)/`.
+//
+// Recorded, because it is the sharpest instance of a pattern this repo keeps finding: a
+// vocabulary that documents its own limit does not ENFORCE it. The data files ignored this
+// comment for as long as it existed.
+//
 // A `path_glob` may name MORE THAN ONE shape, comma-separated. This exists because of a real
 // permanent false positive: `canvas-loop` globbed only `docs/ideas/*-canvas.md`, while `/canvas`
 // itself tells the founder to keep a venture-level `docs/ideas/CANVAS.md` and `boss board` reads
@@ -75,23 +95,112 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // "stalled" forever — and a conscience that is permanently wrong about you is one you mute, which
 // is the worst outcome this system has. Exits are AND-ed, so a second predicate could not express
 // "either of these"; the glob had to.
+//
+// `$source` resolves to the founder's code — `sourceGlobs` in `.boss/config.json`, or
+// DEFAULT_SOURCE_GLOBS below. It exists so a loop spec can say "their code" without asserting
+// WHERE that lives: `src/` is a JavaScript convention, not a fact. Swift keeps `Sources/`,
+// Flutter `lib/`, Go `cmd/` + `internal/`, Rails and Android `app/`.
+//
+// `$source` also carries the honesty half. A source glob resolving to ZERO files means BOSS is
+// BLIND here — a different fact from "looked and found nothing", and the two were previously
+// indistinguishable. A blind predicate never fires a moment (under-firing is the correct
+// direction: a missed nudge costs nothing, a false one spends trust) and `boss conscience`
+// reports it as "not evaluated here" instead of "waiting".
+// ---------------------------------------------------------------------------
+
+export const DEFAULT_SOURCE_GLOBS = ['src/**', 'app/**', 'lib/**', 'components/**', 'pages/**'];
+
+// Never the founder's own work. Skipping these is what keeps a per-prompt hook cheap.
+// `bin`/`obj` are deliberately NOT here though `detect.js` skips them: a founder may legitimately
+// point `sourceGlobs` at `bin/`, and a skip-list that silently eats a configured root is the same
+// class of invisible failure this whole change exists to remove.
+const GLOB_SKIP_DIRS = new Set([
+  '.git', 'node_modules', 'dist', 'build', 'out', 'target', 'vendor', 'coverage',
+  '.next', '.nuxt', '.svelte-kit', '.venv', 'venv', '__pycache__', '.cache', '.turbo',
+  'Pods', 'DerivedData', '.gradle', '.boss', '.claude',
+]);
+
+// This walk runs on EVERY UserPromptSubmit. The cap is not tidiness — it is the difference
+// between a conscience and a stall. A tree big enough to hit it has already answered the question.
+const GLOB_FILE_CAP = 1500;
+
+function readSourceGlobs(projectDir) {
+  try {
+    const cfg = JSON.parse(readFileSync(join(projectDir, '.boss', 'config.json'), 'utf8'));
+    const g = cfg.sourceGlobs;
+    if (Array.isArray(g) && g.length && g.every((x) => typeof x === 'string' && x.trim())) return g;
+  } catch { /* absent, or hand-edited into invalid JSON — the default is the honest fallback */ }
+  return DEFAULT_SOURCE_GLOBS;
+}
+
+export const isSourceGlob = (g) => typeof g === 'string' && g.trim() === '$source';
+
+// Project-relative glob -> anchored regex. `**` crosses `/`, a single `*` does not.
+function globToRegex(rel) {
+  let out = '';
+  for (let i = 0; i < rel.length; i++) {
+    const c = rel[i];
+    if (c === '*') {
+      if (rel[i + 1] === '*') { out += '.*'; i++; if (rel[i + 1] === '/') i++; }
+      else out += '[^/]*';
+    } else if ('.+?^${}()|[]\\'.includes(c)) { out += '\\' + c; }
+    else { out += c; }
+  }
+  return new RegExp(`^${out}$`);
+}
+
+// FILES only. The old expander returned directory entries too, which then threw inside
+// `readFileSync` and were counted in the `files:` evidence — so a project whose `src/` held
+// nothing but subdirectories reported "1 file scanned, 0 matches" and looked examined.
+function walkFiles(dir, out, depth = 0) {
+  if (out.length >= GLOB_FILE_CAP || depth > 12) return;
+  let entries;
+  try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return; }
+  for (const e of entries) {
+    if (out.length >= GLOB_FILE_CAP) return;
+    if (e.isDirectory()) {
+      if (GLOB_SKIP_DIRS.has(e.name)) continue;
+      walkFiles(join(dir, e.name), out, depth + 1);
+    } else out.push(join(dir, e.name));
+  }
+}
+
 function expandGlob(pattern, projectDir) {
-  if (typeof pattern === 'string' && pattern.includes(',')) {
-    const seen = new Set();
-    return pattern.split(',').flatMap((p) => expandGlob(p.trim(), projectDir))
-      .filter((f) => (seen.has(f) ? false : seen.add(f)));
+  if (typeof pattern !== 'string') return [];
+  const dedupe = (files) => { const seen = new Set(); return files.filter((f) => (seen.has(f) ? false : seen.add(f))); };
+
+  if (pattern.includes(',')) {
+    return dedupe(pattern.split(',').flatMap((p) => expandGlob(p.trim(), projectDir)));
   }
-  const fullPattern = join(projectDir, pattern);
-  const dir = dirname(fullPattern);
-  const fileGlob = basename(fullPattern);
-  if (!existsSync(dir)) return [];
-  if (!fileGlob.includes('*')) {
-    return existsSync(fullPattern) ? [fullPattern] : [];
+  const rel = pattern.trim();
+  if (isSourceGlob(rel)) {
+    return dedupe(readSourceGlobs(projectDir).flatMap((g) => expandGlob(g, projectDir)));
   }
-  const regex = new RegExp(`^${fileGlob.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`);
-  return readdirSync(dir)
-    .filter((name) => regex.test(name))
-    .map((name) => join(dir, name));
+  if (!rel.includes('*')) {
+    const full = join(projectDir, rel);
+    return existsSync(full) ? [full] : [];
+  }
+
+  const segs = rel.split('/');
+  const firstGlob = segs.findIndex((s) => s.includes('*'));
+  const baseDir = firstGlob > 0 ? join(projectDir, segs.slice(0, firstGlob).join('/')) : projectDir;
+  if (!existsSync(baseDir)) return [];
+
+  const re = globToRegex(rel);
+  const files = [];
+  // Recurse when the glob spans segments; otherwise read the one directory, which is exactly
+  // the old behaviour minus the directory entries.
+  if (rel.includes('**') || firstGlob < segs.length - 1) {
+    walkFiles(baseDir, files);
+  } else {
+    try {
+      for (const e of readdirSync(baseDir, { withFileTypes: true })) {
+        if (!e.isDirectory()) files.push(join(baseDir, e.name));
+      }
+    } catch { return []; }
+  }
+  const cut = projectDir.endsWith('/') ? projectDir.length : projectDir.length + 1;
+  return files.filter((f) => re.test(f.slice(cut)));
 }
 
 function matchesGlob(filePath, pattern, projectDir) {
@@ -102,31 +211,66 @@ function matchesGlob(filePath, pattern, projectDir) {
 // Predicate evaluators.
 // ---------------------------------------------------------------------------
 
+// Shared by count_at_least / count_at_most. Returns the match count, how many files were
+// actually read, and whether the glob was a `$source` one that found NOTHING — the "blind"
+// case, which is not the same fact as "found nothing" and must not be reported as one.
+//
+// Files larger than MAX_FILE_BYTES are skipped: a minified bundle or a checked-in dataset is
+// not what any of these patterns are looking for, and reading one on every prompt is the stall
+// the file cap exists to prevent.
+const MAX_FILE_BYTES = 512 * 1024;
+
+function countMatches({ path_glob, pattern, exclude_files_matching, not_path_glob }, projectDir) {
+  let files = expandGlob(path_glob, projectDir);
+  const blind = isSourceGlob(path_glob) && files.length === 0;
+  if (not_path_glob) {
+    files = files.filter((f) => !matchesGlob(f, not_path_glob, projectDir));
+  }
+  if (exclude_files_matching) {
+    const exclRe = new RegExp(exclude_files_matching, 'm');
+    files = files.filter((f) => {
+      try { return !exclRe.test(readFileSync(f, 'utf8')); } catch { return true; }
+    });
+  }
+  const re = new RegExp(pattern, 'gm');
+  let count = 0;
+  let read = 0;
+  for (const f of files) {
+    try {
+      if (statSync(f).size > MAX_FILE_BYTES) continue;
+      count += (readFileSync(f, 'utf8').match(re) || []).length;
+      read++;
+    } catch { /* ignore unreadable */ }
+  }
+  return { count, files: read, blind };
+}
+
 const PREDICATES = {
   exists({ path }, projectDir) {
     return existsSync(join(projectDir, path));
   },
 
-  count_at_least({ path_glob, pattern, min, exclude_files_matching, not_path_glob }, projectDir) {
-    let files = expandGlob(path_glob, projectDir);
-    if (not_path_glob) {
-      files = files.filter((f) => !matchesGlob(f, not_path_glob, projectDir));
-    }
-    if (exclude_files_matching) {
-      const exclRe = new RegExp(exclude_files_matching, 'm');
-      files = files.filter((f) => {
-        try { return !exclRe.test(readFileSync(f, 'utf8')); } catch { return true; }
-      });
-    }
-    const re = new RegExp(pattern, 'gm');
-    let count = 0;
-    for (const f of files) {
-      try {
-        const content = readFileSync(f, 'utf8');
-        count += (content.match(re) || []).length;
-      } catch { /* ignore unreadable */ }
-    }
-    return { ok: count >= min, evidence: { count, min, files: files.length } };
+  count_at_least(args, projectDir) {
+    const { count, files, blind } = countMatches(args, projectDir);
+    return { ok: count >= args.min, evidence: { count, min: args.min, files, ...(blind ? { blind: true } : {}) } };
+  },
+
+  // The MIRROR of count_at_least, and the reason design-drift-loop stopped lying.
+  //
+  // That loop's exit predicate was `count_at_least: { pattern: '#[0-9a-f]{3,8}', min: 1 }` with a
+  // paragraph explaining it was "inverted" — that finding raw hex meant STALLED. The runtime has
+  // never had an inversion: `entry.all_ok && exit.all_ok` is CLOSED and closed is silent. So the
+  // V1 design conscience fired `coherence` at every project with NO raw hex (the good state) and
+  // went quiet on every project full of it (the 47 blues it exists to catch). Verified by running
+  // it, both directions.
+  //
+  // The fix is this predicate rather than an `invert:` flag, because a flag would make loop state
+  // conditional — "closed" would stop meaning healthy — and every reader of every other loop would
+  // have to check. An exit predicate should state the HEALTHY condition. "At most zero raw hex
+  // codes" is that condition, positively.
+  count_at_most(args, projectDir) {
+    const { count, files, blind } = countMatches(args, projectDir);
+    return { ok: count <= args.max, evidence: { count, max: args.max, files, ...(blind ? { blind: true } : {}) } };
   },
 
   any_file_matches({ path_glob, pattern, related_idea_not_matching }, projectDir) {
@@ -149,7 +293,11 @@ const PREDICATES = {
         if (re.test(readFileSync(f, 'utf8'))) matchedCount++;
       } catch { /* ignore */ }
     }
-    return { ok: matchedCount >= 1, evidence: { path_glob, matched_files: matchedCount, total_files: files.length } };
+    const blind = isSourceGlob(path_glob) && files.length === 0;
+    return {
+      ok: matchedCount >= 1,
+      evidence: { path_glob, matched_files: matchedCount, total_files: files.length, ...(blind ? { blind: true } : {}) },
+    };
   },
 
   // THE ONLY TEMPORAL PREDICATE, added because its absence was structural rather than an
@@ -295,6 +443,11 @@ export function loadLoops(projectDir) {
     .filter(Boolean);
 }
 
+// `blind` is a SEPARATE axis from state, deliberately. A loop can be blind and open, blind and
+// closed, or blind and unopenable — what blindness says is "at least one predicate pointed at the
+// founder's code and found no code to point at", i.e. the answer is unreliable rather than known.
+// Folding it into `state` would have made it a fourth state that every consumer had to learn;
+// as a flag, a consumer that ignores it behaves exactly as before.
 export function classifyLoop(loop, projectDir) {
   const entry = evalList(loop.entry, projectDir);
   const exit = evalList(loop.exit, projectDir);
@@ -302,7 +455,8 @@ export function classifyLoop(loop, projectDir) {
   if (!entry.all_ok) state = 'unopenable';
   else if (entry.all_ok && exit.all_ok) state = 'closed';
   else state = 'open';
-  return { state, entry, exit };
+  const blind = [...(entry.results || []), ...(exit.results || [])].some((r) => r.evidence?.blind);
+  return { state, entry, exit, blind };
 }
 
 // ---------------------------------------------------------------------------
@@ -324,8 +478,16 @@ export function detectSignals(projectDir) {
     // over-fires-on-fresh-project failure mode the moment-1 evals catch.)
     if (!loop.drift_moment) continue;
 
-    const { state, entry, exit } = classifyLoop(loop, projectDir);
+    const { state, entry, exit, blind } = classifyLoop(loop, projectDir);
     if (state !== 'open') continue;
+
+    // A blind loop is one whose `$source` glob matched no files — BOSS is looking at the wrong
+    // place for this project's code, so it has no standing to say anything about it. Staying
+    // quiet is the correct direction (this file's own rule: "a missed nudge costs nothing, a
+    // false one spends trust"), but silence is exactly how the old `src/**` bug hid, so the
+    // state is NOT swallowed: `boss conscience` reports it as "not evaluated here" and names
+    // the globs that missed.
+    if (blind) continue;
 
     const confidence = computeConfidence(loop, entry);
     signals.push({

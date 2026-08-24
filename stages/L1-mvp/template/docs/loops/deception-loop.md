@@ -7,8 +7,8 @@ attributed_to: [Harry Brignull, Colin Gray, Kari Vaccaro, Ajesh Shah]
 also_relevant: [Arunesh Mathur, Center for Democracy & Technology]
 entry:
   - count_at_least:
-      path_glob: src/*,src/components/*,src/app/*,app/*,components/*,pages/*,lib/*
-      pattern: '(defaultChecked|checked=\{true\}|countdown|expires? in|only \d+ left|\d+ (people|others) (are )?viewing|No thanks, I)'
+      path_glob: $source
+      pattern: '(defaultChecked|checked=\{true\}|isOn:\s*\.constant\(true\)|android:checked="true"|Checkbox\([^)]*value:\s*true|<input[^>]*\schecked|countdown|expires? in|only \d+ left|\d+ (people|others) (are )?viewing|No thanks, I)'
       min: 1
 exit:
   - any_file_matches:

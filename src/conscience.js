@@ -22,7 +22,17 @@ import { pathToFileURL } from 'node:url';
 import * as packageRuntime from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { readPauseState, readMuteState } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { dim, bold, ok, warn } from './ui.js';
-import { readConfigOrFail, writeConfig, readCohort } from './config.js';
+import { readConfigOrFail, writeConfig, readCohort, readSourceGlobs, DEFAULT_SOURCE_GLOBS } from './config.js';
+
+// What to SHOW a founder when a loop could not be evaluated. Prefers the running hook's own
+// default over this package's, so the globs named are the globs that actually ran — a project
+// pinned to an older BOSS is told the truth about itself, not about this version.
+function sourceGlobList(projectDir, rt) {
+  const configured = readSourceGlobs(projectDir);
+  const isDefault = configured === DEFAULT_SOURCE_GLOBS;
+  const globs = isDefault && Array.isArray(rt?.DEFAULT_SOURCE_GLOBS) ? rt.DEFAULT_SOURCE_GLOBS : configured;
+  return globs.join(', ') + (isDefault ? ' (the default — nothing set)' : '');
+}
 
 // Resolve the runtime a given project will actually run. Returns { rt, source } where
 // source is 'project' | 'package'. Falls back on any load failure — an inspect command
@@ -406,6 +416,11 @@ export async function statusConscience(projectDir = process.cwd(), { verbose = f
   const markFor = (state) => (state === 'closed' ? ok('✓') : state === 'open' ? warn('⚠') : dim('·'));
   const counts = { open: 0, closed: 0, unopenable: 0 };
   for (const c of classified) counts[c.state]++;
+  // BLIND is orthogonal to state: a loop can be blind and open, closed, or unopenable. It means
+  // at least one predicate pointed at the founder's code via `$source` and found no code there.
+  // Counting it separately is the whole point — it used to be indistinguishable from `waiting`,
+  // so a founder on a layout BOSS could not see was told a loop hadn't been earned yet.
+  const blindLoops = classified.filter((c) => c.blind);
 
   // Progressive disclosure (IDEA-055): the default is a one-line loop summary +
   // any open loops named — the calm surface. `--verbose` opens the full per-loop
@@ -413,8 +428,14 @@ export async function statusConscience(projectDir = process.cwd(), { verbose = f
   // above always show (a forgotten pause has to stay loud).
   if (!verbose) {
     const openIds = classified.filter((c) => c.state === 'open').map((c) => c.loop.id);
-    console.log(`    loops:   ${warn(counts.open + ' open')} · ${counts.closed} closed${counts.unopenable ? ` · ${dim(counts.unopenable + ' waiting')}` : ''}`);
+    const blindTail = blindLoops.length ? ` · ${warn(blindLoops.length + ' not evaluated here')}` : '';
+    console.log(`    loops:   ${warn(counts.open + ' open')} · ${counts.closed} closed${counts.unopenable ? ` · ${dim(counts.unopenable + ' waiting')}` : ''}${blindTail}`);
     if (openIds.length) console.log(`             ${dim('open:')} ${openIds.join(', ')}`);
+    if (blindLoops.length) {
+      console.log(`             ${dim('not evaluated:')} ${blindLoops.map((c) => c.loop.id).join(', ')}`);
+      console.log(`             ${dim('nothing matched your source globs — looked in ' + sourceGlobList(projectDir, rt))}`);
+      console.log(`             ${dim('set `sourceGlobs` in .boss/config.json to where your code lives.')}`);
+    }
     console.log(`    overrides: ${overrides.length} recorded`);
     console.log(`\n    ${dim('boss status --conscience --verbose')} — every loop, and what you've overridden`);
     console.log('');
@@ -429,7 +450,7 @@ export async function statusConscience(projectDir = process.cwd(), { verbose = f
   // to print on both lines) and the detail is indented UNDER the id rather than starting at
   // the same column as the glyph, so a 14-loop project reads as structure instead of 28
   // flat lines (REVIEW-2026-07-28 §C4).
-  for (const { loop, state, entry, exit } of classified) {
+  for (const { loop, state, entry, exit, blind } of classified) {
     const detail = [];
     if (state === 'closed') {
       detail.push('exit artifact present.');
@@ -443,7 +464,12 @@ export async function statusConscience(projectDir = process.cwd(), { verbose = f
     } else {
       detail.push('its entry artifact isn\'t present yet (an upstream dependency).');
     }
-    console.log(`    ${markFor(state)} ${loop.id.padEnd(22)}  ${label(state)}`);
+    console.log(`    ${markFor(state)} ${loop.id.padEnd(22)}  ${blind ? warn('not evaluated here') : label(state)}`);
+    if (blind) {
+      console.log(`        ${dim('this loop reads your code and found none — looked in ' + sourceGlobList(projectDir, rt))}`);
+      console.log(`        ${dim('set `sourceGlobs` in .boss/config.json to where your code actually lives.')}`);
+      console.log(`        ${dim('until then BOSS stays quiet here rather than guess — it has nothing to judge.')}`);
+    }
     for (const d of detail) console.log(`        ${dim(d)}`);
   }
 

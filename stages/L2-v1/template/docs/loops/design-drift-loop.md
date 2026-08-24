@@ -8,10 +8,10 @@ also_relevant: [Dan Mall, Jina Anne, Ajesh Shah]
 entry:
   - exists: { path: docs/design/DESIGN_TOKENS.md }
 exit:
-  - count_at_least:
-      path_glob: src/**
+  - count_at_most:
+      path_glob: $source
       pattern: '#[0-9a-fA-F]{3,8}\b'
-      min: 1
+      max: 0
       exclude_files_matching: '\.tokens?\.|\.theme\.|DESIGN_TOKENS'
 drift_moment: coherence
 ---
@@ -41,14 +41,26 @@ values that this regex structurally cannot reach.
 
 `runner_type: hook` — the conscience hook evaluates this on every UserPromptSubmit at V1. The
 entry predicate (tokens file exists) is met for any project that has unlocked V1 with the
-MVP-stage `/design-tokens-init` having been run. The exit predicate is **inverted** — when the
-exit predicate *fires* (≥1 raw hex code in code, excluding the tokens-file itself), the loop
-is "stalled" and the conscience emits `coherence`.
+MVP-stage `/design-tokens-init` having been run. The exit predicate says the **healthy**
+condition — *at most zero* raw hex codes outside the tokens file — so the loop is closed when
+the tokens are authoritative and open (emitting `coherence`) when raw hex has crept back in.
 
-This is a subtle pattern worth naming: most loops have *positive* exit predicates ("the
-artifact exists"). This loop's exit predicate is *the bad signal* — "raw hex codes exist" —
-and the loop is "drift-emitting" when that bad-signal is present. The IDEA-008 primitive
-supports this without modification (predicate ok-ness is just boolean state).
+> 🔴 **This loop fired BACKWARDS from v0.166.0 until it was fixed.** The frontmatter used
+> `count_at_least: { min: 1 }` and the paragraph here declared the exit predicate "**inverted**",
+> asserting *"the IDEA-008 primitive supports this without modification."* **It does not.**
+> `classifyLoop` has no inversion: `entry.all_ok && exit.all_ok` → CLOSED → silent. So finding
+> ≥1 raw hex CLOSED the loop and said nothing, while a project with clean tokens sat permanently
+> open emitting `coherence`. Verified in both directions before the fix.
+>
+> The repair is the new `count_at_most` predicate rather than an `invert:` flag, because a flag
+> makes loop state conditional — "closed" would stop meaning healthy, and every reader of every
+> other loop would have to check which kind this was. **An exit predicate states the healthy
+> condition.** Nothing else in the vocabulary needed to change.
+>
+> Note what this cost and where: the correction directly below was written in v0.166.0 to stop
+> this file's prose from exceeding its predicate, and the very next paragraph then described a
+> mechanism the runtime had never implemented. *Prose can overstate a predicate in both
+> directions — by claiming it catches more, and by claiming it inverts.*
 
 ## Entry artifact
 

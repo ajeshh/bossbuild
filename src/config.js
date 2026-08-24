@@ -40,3 +40,39 @@ export function writeConfig(pathOrDir, cfg) {
 export function readCohort(projectDir) {
   return readConfig(projectDir).cohort || null;
 }
+
+// WHERE THE FOUNDER'S CODE LIVES. `src/` is a JavaScript convention, not a fact — Swift keeps
+// `Sources/`, Flutter `lib/`, Go `cmd/` + `internal/`, Rails and Android `app/`. Five shipped loop
+// predicates hardcoded `src/**` (which the glob expander did not even treat as recursive), so a
+// project laid out any other way had its conscience silently classify every code-reading loop as
+// `unopenable` — a state that emits nothing and rendered to the founder as "waiting".
+//
+// Kept deliberately as a LIST rather than a single root: a monorepo has several, and a Next.js app
+// legitimately has both `src/` and `app/`.
+//
+// ⚠️ The hook has its OWN copy of this default (`loop-runtime.js`), and must: it ships into the
+// founder's project and cannot import from `src/`. This copy is for DISPLAY and for the CLI;
+// `boss conscience` prefers the running hook's value when that copy exports one, so what a founder
+// is shown is what actually got evaluated rather than what this file believes.
+export const DEFAULT_SOURCE_GLOBS = ['src/**', 'app/**', 'lib/**', 'components/**', 'pages/**'];
+
+export function readSourceGlobs(projectDir) {
+  const g = readConfig(projectDir).sourceGlobs;
+  if (Array.isArray(g) && g.length && g.every((x) => typeof x === 'string' && x.trim())) return g;
+  return DEFAULT_SOURCE_GLOBS;
+}
+
+// WHAT THE FOUNDER IS BUILDING — the shape tags from the deceptive-pattern catalog, as an array.
+// `cohort` (who they are) has been persisted and read everywhere since early on; `shape` was asked
+// by `/canvas`, printed into a canvas cell, and then thrown away — so BOSS knew how to talk to a
+// founder and not what they were making. Tags, never one bucket: an edtech mobile app with a
+// chatbot is all three.
+//
+// An empty array is a legitimate state and means "not declared", never "none apply". Skills that
+// read this must degrade to asking, not to assuming web.
+export function readShape(projectDir) {
+  const sh = readConfig(projectDir).shape;
+  if (Array.isArray(sh)) return sh.filter((x) => typeof x === 'string' && x.trim());
+  if (typeof sh === 'string' && sh.trim()) return [sh.trim()];
+  return [];
+}

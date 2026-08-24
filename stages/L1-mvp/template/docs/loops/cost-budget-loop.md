@@ -7,13 +7,13 @@ attributed_to: [Husain (look-at-your-data, applied to spend), Liu (structured ou
 also_relevant: [Karpathy, Willison, Rauch]
 entry:
   - count_at_least:
-      path_glob: src/**
+      path_glob: $source
       pattern: '(anthropic|@anthropic-ai/sdk|openai|OpenAI\(|Anthropic\(|messages\.create|chat\.completions\.create|generateText|streamText)'
       min: 1
 exit:
   - exists: { path: docs/ai-cost-budget.md }
   - count_at_least:
-      path_glob: src/**
+      path_glob: $source
       pattern: '(logCall|log_call|ai-cost-logger|ai_cost_logger|costLogger)'
       min: 1
 drift_moment: cost

@@ -136,6 +136,32 @@ export function suggestStage(scan) {
   return { stage: 'L1-mvp', why, beyond };
 }
 
+// WHERE THIS REPO KEEPS ITS CODE — the second thing adopt can read off a tree, and the one that
+// decides whether the conscience can see anything at all.
+//
+// Five loop predicates ask about the founder's source. They used to hardcode `src/**`, which is a
+// JavaScript convention and not a fact: Swift keeps `Sources/`, Flutter `lib/`, Go `cmd/`, Rails
+// and Android `app/`. A repo laid out any other way had every code-reading loop classify
+// `unopenable` — a state that emits nothing, so a blind conscience was indistinguishable from a
+// calm one. The runtime now REPORTS that blindness; this makes it rare instead of routine.
+//
+// Same rule as `suggestStage`: cheap, legible, and SHOWN rather than asserted. It reports the
+// directories that exist, so a founder can read the answer off their own tree and disagree. It
+// never invents a root, and returns null when it recognises nothing — the default (plus the
+// blindness report) is the honest outcome then, not a guess.
+const SOURCE_ROOTS = [
+  'src', 'app', 'lib', 'components', 'pages',   // JS/TS, Rails, Flutter/Elixir, Android (app/src/main)
+  'Sources',                                     // Swift Package Manager
+  'cmd', 'internal', 'pkg',                      // Go
+];
+
+export function inferSourceGlobs(dir) {
+  const found = SOURCE_ROOTS.filter((r) => {
+    try { return statSync(join(dir, r)).isDirectory(); } catch { return false; }
+  });
+  return found.length ? found.map((r) => `${r}/**`) : null;
+}
+
 export function detectStage(dir) {
   const scan = scanRepo(dir);
   return { ...suggestStage(scan), scan };

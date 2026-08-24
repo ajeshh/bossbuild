@@ -23,6 +23,29 @@ accumulates. `/ux-check` catches that.
 - A new persona-reaction (v0.19) surfaced a UX concern — `/ux-check` validates whether the
   persona's read matches the shipped reality.
 
+## Step 0 — read the shape, and be willing to stop
+
+Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags).
+
+**This skill is written for a graphical interface, and says so instead of pretending otherwise.**
+Hover states, focus rings, tab order and contrast ratios are properties of a GUI. Walking a
+founder through them because a checklist exists is the ceremony BOSS is supposed to prevent.
+
+- **`cli` / `dev-tool` and no GUI shape alongside** — say so and run the short version: is
+  `--help` the first thing a lost user finds; do errors go to stderr with a non-zero exit; is
+  there a `--json`/quiet path for scripts; does colour degrade under `NO_COLOR` or a pipe; is
+  destructive work preview-first. Then stop. Do **not** narrate the five visual states.
+- **`agent` / `chatbot` with no screen** — the surface is the *transcript*: can the person tell
+  what it did from what it said, is there a refusal/uncertainty path, can they interrupt and undo.
+  `boss craft deceptive-patterns --surface ai-voice` is the row set that applies.
+- **`mobile-app`** — the checks below hold, the mechanics don't. Focus ring → VoiceOver/TalkBack
+  focus order; tab through → rotor and swipe order; contrast → the platform's own audit; and add
+  touch-target size plus Dynamic Type / font-scale reflow, which have no web equivalent.
+- **No shape declared** — ask one line (*"is there a screen to walk, or is this a CLI/API?"*)
+  rather than assuming a browser. Don't send them to `/canvas` to find out.
+
+Everything below assumes a GUI. If step 0 sent you elsewhere, you are already done.
+
 ## How to run it
 
 1. **Pick the surface.** A specific route, a component, or the FEAT-NNN whose UI is being
@@ -80,7 +103,7 @@ accumulates. `/ux-check` catches that.
    Pull the rows for the surfaces this flow touches — don't work from memory:
 
    ```
-   boss craft deceptive-patterns --shape <what this product is>
+   boss craft deceptive-patterns --shape <the tags from .boss/config.json>
    boss craft deceptive-patterns --surface <the one this flow is on>
    ```
 

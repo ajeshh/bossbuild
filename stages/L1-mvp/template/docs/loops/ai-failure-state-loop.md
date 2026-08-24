@@ -7,13 +7,13 @@ attributed_to: [Husain (failure-mode categorization), Liu (structured outputs ma
 also_relevant: [Mollick, Rauch, Willison]
 entry:
   - count_at_least:
-      path_glob: src/**
+      path_glob: $source
       pattern: '(anthropic|@anthropic-ai/sdk|openai|OpenAI\(|Anthropic\(|messages\.create|chat\.completions\.create|generateText|streamText)'
       min: 1
 exit:
   - exists: { path: docs/ai-failure-states.md }
   - count_at_least:
-      path_glob: src/**
+      path_glob: $source
       pattern: '(handleGarbageResponse|handleRefusal|handleHallucination|handleTimeout|handleCostSpike|ai-handlers|aiHandlers|on_refusal|on_hallucination|on_timeout)'
       min: 1
 drift_moment: failure-mode

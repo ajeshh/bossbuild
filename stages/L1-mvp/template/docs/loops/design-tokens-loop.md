@@ -7,14 +7,14 @@ attributed_to: [Brad Frost, Nathan Curtis, Ajesh Shah]
 also_relevant: [Jina Anne, Diana Mounter, Dan Mall, John Maeda]
 entry:
   - count_at_least:
-      path_glob: src/**
-      pattern: '(className=|style={|css`|styled\.)'
+      path_glob: $source
+      pattern: '(className=|style={|css`|styled\.|class="|<style|\.foregroundColor\(|\.font\(\.|Modifier\.|MaterialTheme\.|TextStyle\(|BoxDecoration\(|EdgeInsets\.|android:textColor|android:layout_)'
       min: 3
 exit:
   - exists: { path: docs/design/DESIGN_TOKENS.md }
   - count_at_least:
-      path_glob: src/**
-      pattern: '(token\.|var\(--|colors\.|tokens\.|theme\.)'
+      path_glob: $source
+      pattern: '(token\.|var\(--|colors\.|tokens\.|theme\.|MaterialTheme\.|Theme\.of\(|AppColors\.|DesignTokens\.|R\.color\.)'
       min: 3
 drift_moment: coherence
 ---

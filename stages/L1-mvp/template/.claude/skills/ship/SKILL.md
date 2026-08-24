@@ -32,11 +32,35 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 
 ## How to run it
 
-### 1. Detect the stack (don't assume it)
+### 1. Detect the stack, and ask what *reachable* means here (don't assume a URL)
 Read the project — framework, build command, where it expects to run, whether it has a server, a database,
 env vars. BOSS bakes in no deploy target (Principle #4). If a host is already chosen (a `PRAC-NNN` /
 stack-profile from a past ship, a config file), use it. Otherwise propose the **cheapest reversible** fit
 and confirm with the founder before doing anything irreversible.
+
+**A live URL is one shape of reachable, not the definition of it.** Read `shape` from
+`.boss/config.json`; if the answer isn't obvious from the repo, ask one line — *"what's the thing a
+stranger gets, and how do they get it?"* — and record the answer as a stack profile so no later
+session asks again. The reachable artifact is:
+
+| shape | what "shipped" hands back |
+|---|---|
+| web app, marketing site | a live URL |
+| `cli`, `dev-tool` | a published package + the one-line install (`npm i -g`, `brew install`, `pipx`, `cargo install`) |
+| `mobile-app` | a build a stranger can install — TestFlight / Play internal testing first, the store when it's real |
+| a service or API | a reachable endpoint **plus** the minimum a caller needs: auth, one worked example, versioning |
+| a library | a version tag on a registry, and a changelog entry that says what changed |
+| desktop | a signed, notarised, downloadable build (unsigned is a scary dialog, not a ship) |
+
+**BOSS ships no recipe table for these on purpose (Principle #4).** It does not know your signing
+identity, your registry, or your review timeline, and a wrong app-store checklist is worse than
+none. What it does is the same thing it does for hosts: work it out with you once, then **write it
+down as a `PRAC-NNN` stack profile** so the second ship starts from a known-good recipe.
+
+**One asymmetry worth naming out loud, once, for the non-web shapes:** a URL is reversible in
+minutes and a *distribution* often is not. A published package version cannot be unpublished
+cleanly, and a store build takes review time to replace. Step 4's rollback story is weaker for you
+than it is for the web — which is an argument for shipping a smaller first slice, not for waiting.
 
 ### 2. Pre-flight — the check with teeth (NOT a gate)
 Before handing back a URL, refuse to be *silent* about the #1 way AI-built apps fail at deploy — but never
@@ -70,9 +94,11 @@ block the founder's deploy (conscience-not-censor). Surface, then proceed if the
   and `boss craft agent-security`. A `fail` here is a `/spec` fix
   *before* the public URL, not a backlog item — especially for a non-technical founder who can't spot it.
 
-### 3. Deploy → hand back the URL
-Run the deploy. Hand back the **live URL** plainly — that's the proof the work is now reachable. Note what
-it cost (free tier vs. paid) so the founder keeps optionality in view.
+### 3. Ship → hand back the reachable thing
+Run it. Hand back **the artifact from step 1's table** plainly — the live URL, the install line, the
+TestFlight link, the endpoint plus its example. That's the proof the work is now reachable, and the
+proof is the *thing a stranger can use*, never "it deployed". Note what it cost (free tier vs. paid)
+so the founder keeps optionality in view.
 
 ### 4. Name the rollback path (every time)
 State the one command/click that restores the last-good build — and the honest caveat: **rollback restores
@@ -151,7 +177,8 @@ too, and a small current corpus beats a big one with good search. Depth is in `b
   learned per project, captured UP, never assumed.
 - **The pre-flight is a check, not a gate.** It surfaces the secrets/authz risk and points at the fix; it
   never blocks the deploy. (Conscience-not-censor.)
-- **Hand back the real URL.** "It deployed" is not the result. The URL a user can hit is.
+- **Hand back the real artifact.** "It deployed" is not the result. The thing a stranger can
+  actually use is — a URL, an install line, a TestFlight build, an endpoint with an example.
 - **Reversibility is part of shipping.** No deploy without a named revert path, and an honest word that the
   database isn't part of it.
 - **Offer the flag, don't impose it.** For a risky/AI-mediated deploy, offer to ship it dark / behind a kill

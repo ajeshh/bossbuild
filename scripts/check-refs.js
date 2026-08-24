@@ -94,12 +94,22 @@ for (const f of md) {
 // --- 2. loop-spec predicates -----------------------------------------------------------
 // Only BOSS's OWN loops: a template loop's paths are relative to a founder's repo.
 const PRED = /^\s*(?:-\s*)?(?:exists|path|path_glob):\s*(\S+)\s*$/gm;
+// A value starting with `$` is a RUNTIME TOKEN, not a path — `loop-runtime.js` resolves it before
+// it globs, so `existsSync` on it is meaningless. Tokens are LISTED rather than skipped by prefix
+// on purpose: a typo like `$sources` resolves to nothing at runtime and leaves a loop that can
+// never open, which is exactly the silent failure this check exists to catch. Adding a token here
+// is the deliberate half of adding one to the runtime.
+const PRED_TOKENS = new Set(['$source']);
 for (const f of md.filter((x) => rel(x).startsWith(`docs${sep}loops${sep}`))) {
   const seen = new Set();
   for (const m of readFileSync(f, 'utf8').matchAll(PRED)) {
     const t = m[1];
     if (PLACEHOLDER.test(t) || t.includes('*') || seen.has(t)) continue;
     seen.add(t);
+    if (t.startsWith('$')) {
+      if (!PRED_TOKENS.has(t)) findings.predicates.push([rel(f), t + ' (unknown runtime token)']);
+      continue;
+    }
     if (!existsSync(join(ROOT, t))) findings.predicates.push([rel(f), t]);
   }
 }

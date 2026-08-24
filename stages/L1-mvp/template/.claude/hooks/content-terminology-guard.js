@@ -52,7 +52,9 @@ const STYLE_GUIDE_CANDIDATES = [
 ];
 
 // Files that can carry user-facing copy.
-const COPY_EXT = /\.(tsx|jsx|ts|js|mjs|vue|svelte|astro|html|md|mdx|json|ya?ml)$/i;
+// Copy lives outside the web too: Android keeps it in `strings.xml`, iOS in `.strings`, and
+// SwiftUI/Compose/Flutter inline it in source. This guard saw none of that.
+const COPY_EXT = /\.(tsx|jsx|ts|js|mjs|vue|svelte|astro|html|md|mdx|json|ya?ml|swift|kt|kts|dart|xml|strings)$/i;
 const SKIP_PATH = /(^|[\\/])(node_modules|dist|build|out|coverage|\.next|\.svelte-kit)[\\/]|STYLE_GUIDE|DESIGN_TOKENS|\.(test|spec|stories)\./i;
 
 const out = (additionalContext) => {

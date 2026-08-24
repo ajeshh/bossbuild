@@ -11,7 +11,7 @@ entry:
       pattern: '^status:\s*(shipped|done)'
       min: 1
   - count_at_least:
-      path_glob: src/**
+      path_glob: $source
       pattern: '\S'
       min: 1
 exit:

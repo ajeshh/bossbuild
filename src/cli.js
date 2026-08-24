@@ -8,7 +8,7 @@ import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog } from './changelog.js';
-import { detectStage } from './detect.js';
+import { detectStage, inferSourceGlobs } from './detect.js';
 import { printUpdate, updateNote, installKind, uninstallCommand } from './update.js';
 import { printCredit } from './credit.js';
 import { planRemove, applyRemove, machineState, removeMachineState } from './remove.js';
@@ -244,9 +244,15 @@ function cmdAdopt(args) {
   // config.json only if absent — never clobber a founder's prefs.
   const cfgPath = join(targetDir, '.boss', 'config.json');
   if (!existsSync(cfgPath)) {
+    // `sourceGlobs` is written ONLY when the tree actually shows us where the code is. A null
+    // inference stays absent rather than being stamped with the default: an absent key means
+    // "nobody has said", and the conscience can then report honestly that it could not look.
+    // A key written as a guess would make a wrong answer look like the founder's own decision.
+    const sourceGlobs = inferSourceGlobs(targetDir);
     writeFileSync(cfgPath, JSON.stringify({
       // license: null — undecided, and BOSS doesn't decide it (DEC-011). See `boss new` above.
       github: 'ask', visibility: 'private', license: null, cohort: null, shareUp: false,
+      ...(sourceGlobs ? { sourceGlobs } : {}),
       aiNative: !!flags.ai, // IDEA-022 Track 3 — `/comprehend` reads the adopted repo to tailor + seed the brain
     }, null, 2) + '\n');
   }

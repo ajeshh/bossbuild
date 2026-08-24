@@ -75,8 +75,12 @@ applause. The rules:
 
 ## Where it applies (the real thresholds)
 
-- **`/ship` hands back a live URL** — the cleanest threshold there is. "localhost is not shipped" → *it's
-  shipped.* A real user can reach it now. (Composes with FEAT-024's `/ship`.)
+- **`/ship` hands back something a stranger can reach** — the cleanest threshold there is.
+  "localhost is not shipped" → *it's shipped.* A real user can get to it now. **What that artifact
+  is depends on what they built** — a live URL for a web app, an install line for a CLI, a
+  TestFlight build for a mobile app, an endpoint with a worked example for a service. Marking the
+  URL as *the* threshold quietly told every founder who wasn't building a web app that their ship
+  didn't count. (Composes with FEAT-024's `/ship`.)
 - **`/close` (session end)** — mark what the session actually crossed, not just log it. The difference
   between "session recorded" and "you got the thing working that was blocking you."
 - **Mode graduation (`boss unlock`)** — Quickstart→MVP→V1 is a genuine rung crossed; the founder earned the

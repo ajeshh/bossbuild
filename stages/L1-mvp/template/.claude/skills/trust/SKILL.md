@@ -34,6 +34,32 @@ Each piece has its own trigger; do the one that's live, defer the rest:
 If none of these is true yet (no PII, no users, purely local), say so — this is premature, come back at the
 first real user-data flow.
 
+## Step 0.5 — read the shape (it decides which obligations are even yours)
+
+Read `shape` from `.boss/config.json` (`/canvas` writes it). Privacy obligations are not uniform —
+they attach to *what you built*, and naming the wrong ones is how a trust pass becomes theater:
+
+- **`mobile-app`** — you have two disclosures nobody else has, and both are filed with a store
+  rather than published on a page: **App Store privacy "nutrition labels"** and **Google Play's
+  Data safety form**. They must match what the app actually does, and a wrong answer is a review
+  rejection or a takedown, not a lawyer letter. Add the platform permission prompts (`Step 3.5`
+  covers what fires before consent) and **App Tracking Transparency** if anything tracks across apps.
+- **`cli` / `dev-tool`** — the surface is telemetry, and the bar is *default-off or first-run
+  disclosed*. A crash reporter or usage ping that nobody was told about is the whole risk. There
+  is often no PII and no page to publish — say so and stop, rather than generating a privacy
+  policy for a tool that collects nothing.
+- **`chatbot` / `ai-feature` / `agent`** — conversation content IS the personal data, and the
+  provider training opt-out (Step 3) is the load-bearing act, not the policy text.
+- **`health-or-regulated`** — the deferral in Step 5 does **not** apply to your sector's own floor
+  (HIPAA, financial, legal privilege). Name it, then point at a real lawyer; do not draft it.
+- **`edtech`, or minors plausibly present** — a stricter bar across the board, and the consent
+  surface is the parent's, not the user's. `boss craft deceptive-patterns --minors`.
+- **No shape declared** — ask, or run the general pass and say which parts you could not scope.
+
+> ⚠️ `/canvas` claimed for a long time that this skill read those tags. **It contained no
+> reference to shape at all** — the claim lived in the other skill's prose, which is exactly the
+> kind of contract this repo keeps finding: stated in one file, enforced in none.
+
 ## Step 1 — the data-minimization privacy policy (the one that's always load-bearing)
 
 The moment you collect PII or send user input to a model provider, you need a **privacy policy** — and the honest

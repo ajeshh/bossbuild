@@ -43,9 +43,13 @@ const TOKENS_CANDIDATES = [
 ];
 
 // Style-bearing files only. A hex in a README or a JSON fixture is not design drift.
-const STYLE_EXT = /\.(css|scss|sass|less|styl|tsx|jsx|ts|js|mjs|vue|svelte|astro|html)$/i;
+// The non-web extensions are here because a design system is not a web idea: SwiftUI, Compose
+// and Flutter all hardcode colour just as readily, and this guard was silent for all three.
+const STYLE_EXT = /\.(css|scss|sass|less|styl|tsx|jsx|ts|js|mjs|vue|svelte|astro|html|swift|kt|kts|dart|xml)$/i;
 // Never lint the token system itself, generated output, or tests.
-const SKIP_PATH = /(^|[\\/])(node_modules|dist|build|out|coverage|\.next|\.svelte-kit)[\\/]|DESIGN_TOKENS|tokens\.(css|js|ts|json)$|\.(test|spec|stories)\./i;
+// `colors.xml` / `themes.xml` are Android's tokens FILE — flagging a hex there is flagging the
+// answer, which is the mistake the `DESIGN_TOKENS` exclusion already exists to avoid on the web.
+const SKIP_PATH = /(^|[\\/])(node_modules|dist|build|out|coverage|\.next|\.svelte-kit)[\\/]|DESIGN_TOKENS|tokens\.(css|js|ts|json)$|(^|[\\/])(colors|themes|attrs)\.xml$|\.(test|spec|stories)\./i;
 
 const TAILWIND_UTIL = 'bg|text|border|ring|fill|stroke|from|via|to|divide|outline|shadow|decoration|accent|caret|placeholder';
 const TAILWIND_HUE = 'slate|gray|grey|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose';
@@ -54,6 +58,10 @@ const CHECKS = [
   { label: 'hex color',        re: new RegExp(`#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\\b`, 'g') },
   { label: 'rgb()/hsl()',      re: /\b(?:rgba?|hsla?)\s*\(/g },
   { label: 'palette class',    re: new RegExp(`\\b(?:${TAILWIND_UTIL})-(?:${TAILWIND_HUE})-(?:50|100|200|300|400|500|600|700|800|900|950)\\b`, 'g') },
+  // Flutter and Compose write colour as a packed int, which no `#` pattern can see. Scoped to
+  // `Color(0x…)` on purpose: a bare `0xFF0000` is a bitmask far more often than it is a colour,
+  // and a guard that cries wolf on masks is one the founder turns off.
+  { label: 'packed color int', re: /\bColor\(\s*0x[0-9a-fA-F]{6,8}\s*\)/g },
 ];
 
 const out = (additionalContext) => {
