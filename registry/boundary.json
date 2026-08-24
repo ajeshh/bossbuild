@@ -138,7 +138,7 @@
       "name": "practice-refresh",
       "kind": "skill",
       "verdict": "not-yet",
-      "why": "Refreshes BOSS's shelf, which is BOSS's job. But a founder's `/practice` PRAC records rot exactly the same way and nothing sweeps them. The founder version is a different, smaller skill — scoped to their records, not this one ported."
+      "why": "Refreshes BOSS's shelf, which is BOSS's job — 32 practices behind a freshness gate. A founder's `/practice` PRAC records rot the same way, but a sweep discipline over three records is ceremony, and `/revalidate` (MVP) is already the founder-scale version of the instinct. RE-OPEN CONDITION, added v0.237.0 because a reason with no test gets re-read forever and can never resolve: a real project passes ~10 PRAC records AND one is found stale in practice — not predicted stale, found. Until both, this stays `not-yet` and nobody needs to re-argue it."
     },
     {
       "name": "prompt-coach",
@@ -162,13 +162,13 @@
       "name": "vet",
       "kind": "skill",
       "verdict": "not-yet",
-      "why": "THE CLEAREST MISS. A founder faces \"some thread says you must do X\" constantly, and has nothing for it — while nine shipped practices were still pointing at this skill by name (fixed v0.178.0). 270 lines, so porting is real work, and the NO-biased rubric is tuned to BOSS's principles rather than a founder's. Port it scoped to the founder's own build, or don't; do not leave it unexamined."
+      "why": "SPLIT at v0.237.0, and the split is the verdict. The judgment half CROSSED as the `outside-claims` practice — verify the attribution before grading, what kind of evidence you have, default-NO-and-say-so, who it serves, and the re-open condition — plus a step 0 in `/decide`, which is where a founder already goes when an outside claim is about to change something load-bearing. The MACHINERY stays internal and always will: the RVW-NNN ledger, `docs/research/inbox/`, the batch sweep, and a rubric scored against BOSS's PRINCIPLES.md — a file no scaffolded project has, which is the concrete reason the skill was never portable as written. A founder needs the judgment, not the filing cabinet. This row stays `not-yet` rather than `crossed` because the SKILL did not cross; if the practice proves insufficient in real use, the re-open is a founder-scoped skill, never this one ported."
     },
     {
       "name": "voice-keeper",
       "kind": "agent",
-      "verdict": "not-yet",
-      "why": "Guards BOSS's voice specifically. The discipline transfers; the agent doesn't. If it crosses, it crosses as a practice."
+      "verdict": "internal",
+      "why": "EXAMINED AND ANSWERED at v0.237.0 — this sat at `not-yet` while its own reason already contained the answer (\"the discipline transfers; the agent doesn't. If it crosses, it crosses as a practice\"). It guards BOSS's voice specifically, and a founder's voice is theirs, not a house style they inherit. The discipline crossed as prose rather than as a seat: v0.227.0 removed it from three practices and named surfaces a founder actually has, and v0.235.0 finished the job — `BRAND.md` hedged to *if you have one*, the read-it-aloud fallback that needs no file, and `/design-review` for interface copy. Nothing is pending. A verdict left at `not-yet` after its condition is met is an open item that can never close."
     }
   ]
 }

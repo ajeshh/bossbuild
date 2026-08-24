@@ -1,17 +1,17 @@
 {
-  "version": "0.234.0",
+  "version": "0.237.0",
   "generated_from": "stages/*/manifest.json via src/modes.js",
-  "agents": 11,
+  "agents": 12,
   "skills": 48,
   "mentors": 6,
-  "builders": 5,
+  "builders": 6,
   "modes": [
     {
       "word": "quickstart",
       "name": "Quickstart",
-      "agents": 3,
+      "agents": 4,
       "skills": 16,
-      "cumAgents": 3,
+      "cumAgents": 4,
       "cumSkills": 16
     },
     {
@@ -19,7 +19,7 @@
       "name": "MVP",
       "agents": 7,
       "skills": 29,
-      "cumAgents": 10,
+      "cumAgents": 11,
       "cumSkills": 45
     },
     {
@@ -27,7 +27,7 @@
       "name": "V1",
       "agents": 0,
       "skills": 2,
-      "cumAgents": 10,
+      "cumAgents": 11,
       "cumSkills": 47
     },
     {
@@ -35,11 +35,11 @@
       "name": "Scale",
       "agents": 1,
       "skills": 1,
-      "cumAgents": 11,
+      "cumAgents": 12,
       "cumSkills": 48
     }
   ],
-  "practices": 32,
+  "practices": 33,
   "verdicts": {
     "total": 94,
     "ADOPT": 10,

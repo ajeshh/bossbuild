@@ -626,6 +626,7 @@
       "veracode",
       "metr",
       "karpathy"
-    ]
+    ],
+    "outside-claims": []
   }
 }

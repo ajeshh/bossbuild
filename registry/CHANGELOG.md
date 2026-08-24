@@ -9,6 +9,47 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.237.0 — 2026-08-24
+
+**A founder meets *"some thread says you must do X"* constantly and had nothing for it.** BOSS has had
+`/vet` for that since v0.42.0 — 270 lines, 94 written verdicts — and its own boundary ledger called it
+*"THE CLEAREST MISS."* It does not cross. **The judgment does; the filing cabinet does not.**
+
+> **For you:** `boss craft outside-claims` — the two-minute discipline for a claim that is about to
+> change what you do. The six ways an attribution goes wrong, how to grade what kind of evidence you
+> actually have, why a default-NO has to be *said out loud* to stay honest, and the re-open condition
+> that stops a `no` being re-argued every month. `/decide` now asks the one question first: **did this
+> come from outside, and did you check who actually said it?**
+
+- 🔴 **The skill was never portable, and the reason is concrete rather than aesthetic:** `/vet`'s
+  rubric opens by scoring a claim against **`PRINCIPLES.md` — a file no scaffolded project has.** Its
+  first question had no referent. It also needs `docs/research/inbox/`, a `verdicts/` tree and an
+  `RVW-NNN` record type: BOSS's curation apparatus, built for BOSS's 94 verdicts. **A founder needs
+  the judgment, not the filing cabinet.**
+- **The attribution step is the half worth handing over, and it is not theory.** BOSS added it to its
+  own rubric at v0.159.0 after getting attribution wrong **thirteen separate times while grading other
+  people's claims** — half-right attributions, a real paper's *injection* rate quoted as its *attack*
+  rate, a false clause bolted to a true citation, a manufactured publisher, a claim its own author
+  retracted and that still circulates. **The six failure modes in the practice are those thirteen, not
+  invented examples.** No shipped practice covered any of it; all 32 were checked.
+- **`/decide` is the host, because it is where a founder already goes** when an outside claim is about
+  to change something load-bearing — and a `DEC-NNN` makes the inheritance durable, so a wrong
+  attribution stops being a bad afternoon and becomes the thing a future decision cites. Step 0, skipped
+  unless the decision came from outside. **No new skill: the surface is 48, exactly as it was.**
+- **Ledger hygiene, because a verdict that cannot close is not a verdict.**
+  · **`voice-keeper` → `internal`.** It sat at `not-yet` while its own reason already contained the
+  answer (*"the discipline transfers; the agent doesn't"*) — and v0.227.0 + v0.235.0 had already
+  crossed that discipline as prose. **A verdict left open after its condition is met is an open item
+  that can never close.**
+  · **`practice-refresh` keeps `not-yet` and gains a testable re-open condition** — a real project past
+  ~10 PRAC records AND one found stale *in practice*, not predicted. A reason with no test gets
+  re-read forever.
+  · **`not-yet` is now 2, not 5.** `designer` crossed at v0.189.0 and the count had never been redone.
+- **The site gate earned its keep**: a new practice that appears nowhere on the site fails the build,
+  so classification is a decision rather than an omission. Filed under a new one-practice group,
+  **Judgment**, rather than into *Testing & quality*, whose own description is about code being right.
+  A thin honest group beats a plausible wrong one.
+
 ## 0.236.0 — 2026-08-24
 
 **`prompt-coach`'s own description said it was "outward-facing" — written for founders, and it never

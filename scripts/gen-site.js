@@ -580,6 +580,12 @@ const ENG_GROUPS = [
   // count. One practice, one group. Its founder-facing half is keeping-track.html.
   ['Design & interface', 'The failure modes that appear by default when AI writes your UI.',
    ['design-system', 'ai-ux-patterns']],
+  // A group of one, deliberately, rather than filed under a heading it does not belong to. The
+  // alternative was "Testing & quality", whose own description is about code being right — and a
+  // practice about weighing somebody else's advice is not that. A thin honest group beats a
+  // plausible wrong one; the next practice of this kind has somewhere to land.
+  ['Judgment', 'What to do when a stranger tells you how to build.',
+   ['outside-claims']],
 ];
 const NON_ENG = new Set(['activation', 'ai-adoption-culture', 'analytics-for-ai-products',
   'celebration-of-done', 'conscience-voicing', 'first-dollar', 'founder-role-shifts',

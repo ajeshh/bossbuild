@@ -26,6 +26,21 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
 
 ## How to run it
 
+0. **Did this come from outside?** *(Skip unless it did — most decisions are your own.)* If the reason
+   you are making this call is that somebody said you should — a thread, a talk, a post with a number
+   in the headline — **check the attribution before you write the record.** Who actually said it, and
+   is the claim the thing they actually said? A decision inherits the authority of whatever it was
+   built on, and a `DEC-NNN` makes that inheritance durable: the wrong attribution stops being a bad
+   afternoon and becomes the reason a future decision cites this one.
+
+   Two minutes: `boss craft outside-claims`. It names the six ways an attribution goes wrong (each one
+   real — BOSS got them wrong itself), how to grade what kind of evidence you actually have, and why
+   naming the re-open condition is what stops a `no` being re-argued every month.
+
+   Then write what you found into **Why** below — *"adopted from X, primary checked"* or *"the
+   attribution did not verify; decided on our own reasoning instead."* The second is a fine answer and
+   a much more useful record than a citation nobody re-opened.
+
 1. **Resolve the decider** (the one named accountable person — the "DRI"). Get their GitHub handle:
 
    ```bash
