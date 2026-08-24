@@ -16,7 +16,7 @@ import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { map, renderLadder } from './map.js';
-import { modeWord } from './modes.js';
+import { modeWord, loadModes } from './modes.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
@@ -305,7 +305,7 @@ function cmdAdopt(args) {
 function cmdUnlock(args) {
   const layer = args[0];
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   if (!layer) return fail(`usage: boss unlock <mode>   (current: ${stamp.mode || stamp.stage})`);
 
   const target = resolveStageId(layer);
@@ -328,6 +328,32 @@ function cmdUnlock(args) {
     console.log(dim('  Unlocking anyway (BOSS never blocks); the deviation is yours to own.'));
   }
 
+  // A SKIPPED rung, named before you cross it — the same shape as Scale's bar above, for the same
+  // reason. Every stage manifest declares `requires:` (L2-v1 requires L1-mvp) and until now NOTHING
+  // read it: `modes.js` parsed the field into the mode object and no consumer ever looked. So
+  // `boss unlock v1` from Quickstart succeeded in silence and left a project with `/board` — the
+  // cross-FEAT sequencing surface — and no `/spec` to make a FEAT with, no `/smoke`, no `/log`, no
+  // `/close`. The whole build loop, skipped, with no signal that anything had been.
+  //
+  // It still doesn't block: BOSS never blocks, and a founder who adopted a half-built repo may
+  // genuinely want V1's design surface without MVP's spec ceremony. But "never blocks" is not the
+  // same as "never mentions", and Scale has had the honest version of this since IDEA-040.
+  const missing = STAGE_ORDER.slice(0, STAGE_ORDER.indexOf(target))
+    .filter((id) => !stamp.installedLayers.includes(id));
+  if (missing.length) {
+    const names = missing.map((id) => modeWord(id));
+    console.log(`\n  ${warn('⚠')} This skips ${names.join(' and ')}.`);
+    for (const id of missing) {
+      let skipped = [];
+      try { skipped = readStageManifest(id).skills || []; } catch { /* unauthored rung, nothing to name */ }
+      if (skipped.length) {
+        console.log(`    ${modeWord(id)} is where ${skillsLine(skipped.slice(0, 4), 4).replace(/ \(`boss map`\)$/, '')} live.`);
+      }
+    }
+    console.log(dim('  Unlocking anyway (BOSS never blocks); the deviation is yours to own.'));
+    console.log(dim(`  Want them too? \`boss unlock ${names[0]}\` — additive, and it will not move you back down.`));
+  }
+
   let m, applied;
   try {
     m = readStageManifest(target);
@@ -337,9 +363,18 @@ function cmdUnlock(args) {
     return fail(`${target} not authored yet — ${e.message}`);
   }
 
-  stamp.stage = target;
-  stamp.mode = m.name;
   stamp.installedLayers.push(target);
+  // The DEEPEST rung installed, never simply the one just unlocked. This used to be
+  // `stamp.stage = target` unconditionally, which meant unlocking a lower rung you had skipped
+  // moved you BACKWARDS: a founder at V1 who realised they were missing `/spec` ran
+  // `boss unlock mvp` — the only recovery available — and `boss status` then reported
+  // "You are here: MVP" with V1 still installed underneath. The one action that repaired the skip
+  // was also the action that misreported where they were, which is the worst possible pairing:
+  // the recovery path silently corrupted the thing a founder consults to know if it worked.
+  // `installedLayers` is now the source of truth and its ORDER of arrival is not its depth.
+  const deepest = STAGE_ORDER.filter((id) => stamp.installedLayers.includes(id)).pop() || target;
+  stamp.stage = deepest;
+  stamp.mode = deepest === target ? m.name : (readStageManifest(deepest).name || deepest);
   stamp.agents = [...new Set([...(stamp.agents || []), ...(m.agents || [])])];
   stamp.skills = [...new Set([...(stamp.skills || []), ...(m.skills || [])])];
   stamp.hooks = [...new Set([...(stamp.hooks || []), ...(m.hooks || [])])];
@@ -478,7 +513,7 @@ function printFocusAndHeadway(projectDir) {
 
 async function cmdStatus(args) {
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   const f = parseArgs(args || []);
   // `boss status --conscience` — drill into the conscience-state surface
   // (asked-for by eng-builder / indie-hacker / vibe-virtuoso personas in
@@ -529,7 +564,7 @@ async function cmdStatus(args) {
 
 function cmdBoard(args = []) {
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   if (args.includes('--html')) {
     const out = boardHtml(process.cwd(), stamp.name);
     console.log(`\n  ${ok('✦')} Visual board → ${out}`);
@@ -566,7 +601,7 @@ function cmdBoard(args = []) {
 
 function cmdMap(args = []) {
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   // `--next` expands the next rung's full skill list; the default keeps the preview
   // to that rung's headline few (IDEA-055 follow-on / REVIEW-2026-07-28 §C1).
   map(process.cwd(), stamp, { next: args.includes('--next'), all: args.includes('--all') });
@@ -574,7 +609,7 @@ function cmdMap(args = []) {
 
 function cmdBrain(args) {
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   try {
     brain(process.cwd(), stamp, args);
   } catch (e) {
@@ -718,7 +753,7 @@ function cmdTeam(args) {
   // The venture's people (founder layer slice 2, IDEA-037/FEAT-021). Dormant-solo:
   // an empty roster reads as a solo venture and changes nothing else.
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   const [sub, ...rest] = args;
   const handle = rest.find((a) => !a.startsWith('--'));
   const name = rest.filter((a) => a !== handle && !a.startsWith('--')).join(' ').trim() || null;
@@ -757,7 +792,7 @@ function cmdTeam(args) {
 // this is only the clean state change (predicate/runner split).
 function cmdRetire(args) {
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   const f = parseArgs(args || []);
   if (f.undo) {
     delete stamp.status; delete stamp.retired_on;
@@ -826,7 +861,7 @@ function cmdRemove(args) {
   }
 
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
   // BOSS is self-hosted, so its own repo IS a BOSS project and `remove` works on it perfectly —
   // which is the problem. On 2026-08-21 an assistant cleaning up after a throwaway test ran
   // `--apply` here instead of in /tmp and took BOSS's own state dir with it. Nothing was wrong
@@ -916,7 +951,7 @@ function cmdSync(args) {
   const { _: pos, apply, remove, force } = parseArgs(args);
   void pos;
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  if (!stamp) return failNotAProject();
 
   const plan = planSync(process.cwd(), stamp);
   const changed = plan.entries.filter((e) => e.status !== 'ok');
@@ -1062,7 +1097,7 @@ async function cmdConscience(args) {
     if (sub === 'cost') return conscienceActivity(process.cwd(), { asCost: true });
     if (sub === 'status' || !sub) {
       const stamp = readStamp(process.cwd());
-      if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+      if (!stamp) return failNotAProject();
       console.log(`\n  ${bold(stamp.name)}`);
       return await statusConscience(process.cwd(), { verbose: !!(flags.verbose || flags.v) });
     }
@@ -1074,6 +1109,31 @@ async function cmdConscience(args) {
 
 function fail(msg) {
   console.error(`  ${err('Error')} ${msg}`);
+  process.exitCode = 1;
+}
+
+// The most common error BOSS can produce, and it used to be a dead end. Ten commands each said
+// `not a BOSS project (no .boss/manifest.json here).` — which names an internal path a
+// non-technical founder has never heard of, states a fact, and stops. The overwhelmingly likely
+// cause is mundane and recoverable: they ran `boss new demo` and never `cd demo`, or they are one
+// directory up from the project they mean. BOSS already knows every project on this machine — it
+// keeps a registry and `boss list` reads it — so the recovery was always computable and simply
+// never offered. An error that knows the answer and withholds it is the least forgivable kind.
+function failNotAProject() {
+  console.error(`  ${err('Error')} this folder isn't a BOSS project.`);
+  let projects = [];
+  try { projects = (listProjects() || []).filter((p) => p && p.path && p.status !== 'retired'); } catch { /* registry optional */ }
+  if (projects.length) {
+    const here = projects.filter((p) => p.path.startsWith(process.cwd() + '/'));
+    if (here.length) {
+      // The single likeliest case: they are standing one level above the project they mean.
+      console.error(dim(`  ${here.length === 1 ? 'It looks like it is' : 'They look like they are'} just below you:`));
+      for (const p of here.slice(0, 3)) console.error(`    cd ${basename(p.path)}`);
+    } else {
+      console.error(dim(`  You have ${projects.length} project${projects.length === 1 ? '' : 's'} on this machine — \`boss list\` shows where.`));
+    }
+  }
+  console.error(dim('  Starting something new? `boss new <name>`. Already have a repo? `boss adopt` inside it.'));
   process.exitCode = 1;
 }
 
@@ -1308,9 +1368,39 @@ function printSymbols() {
   console.log('');
 }
 
+// Every skill name BOSS ships, across all rungs — for `boss help <skill>`, which is the single most
+// likely help query a founder types and was the one that silently failed.
+function allSkillNames() {
+  try { return [...new Set(loadModes().flatMap((m) => m.skills || []))]; } catch { return []; }
+}
+
 function printCommandHelp(name) {
   const h = HELP[name];
-  if (!h) return printHelp(); // unknown topic → the overview
+  // An unknown topic used to fall through to `printHelp()` — the full overview, with no error, no
+  // acknowledgement that anything had been asked, and exit 0. The same unknown word typed one
+  // position to the left (`boss frobnicate`) got a real error WITH a did-you-mean, from a
+  // Levenshtein helper defined a few lines below this one. Help was the surface least willing to
+  // admit it had not understood, which is exactly backwards: it is where someone goes when they
+  // are already lost.
+  if (!h) {
+    // The likeliest case by far. `/canvas`, `/spec`, `/triage` are the names a founder sees most —
+    // in `boss map`, in `boss status`, in every conscience nudge — so `boss help canvas` is the
+    // natural thing to type, and the two command LANGUAGES are the thing they have not yet learned.
+    const bare = name.replace(/^\//, '');
+    if (allSkillNames().includes(bare)) {
+      console.error(`\n  ${warn('⚠')} ${bold('/' + bare)} is a ${bold('skill')}, not a ${bold('boss')} command.`);
+      console.error(`    Skills run ${bold('inside Claude Code')}: open the project with \`claude\`, then type ${bold('/' + bare)}.`);
+      console.error(dim(`    \`boss map\` lists every skill you have and what each one is for.`));
+      console.error('');
+      process.exitCode = 1;
+      return;
+    }
+    const near = nearestCommand(bare);
+    fail(`no help topic '${name}'.${near ? ` Did you mean ${bold('boss help ' + near)}?` : ''}`);
+    console.error(dim(`  Topics: a command name · ${bold('symbols')} (the glyphs) · ${bold('hooks')} (the optional ones).`));
+    console.error(dim(`  \`boss help\` on its own lists every command.`));
+    return;
+  }
   console.log(`\n  ${bold(h.usage)}\n`);
   console.log(`    ${h.what}`);
   if (h.examples?.length) {

@@ -54,9 +54,14 @@ test('an unknown command exits non-zero with a did-you-mean, not a manual dump',
 test('running outside a BOSS project fails clearly rather than half-working', () => {
   const empty = project({});
   for (const cmd of [['status'], ['board'], ['map'], ['sync']]) {
-    const r = boss(cmd, empty);
+    const r = boss(cmd, empty, empty);
     assert.equal(r.code, 1, `${cmd[0]} should exit 1`);
-    assert.match(r.out, /not a BOSS project/);
+    // Every one of these ten call sites used to print the same sentence, naming
+    // `.boss/manifest.json` — an internal path — and stopping there. The contract is no longer the
+    // WORDING but the SHAPE: say what is wrong in words a founder owns, and name a way out.
+    assert.match(r.out, /isn't a BOSS project/, `${cmd[0]} should say what is wrong`);
+    assert.doesNotMatch(r.out, /manifest\.json/, `${cmd[0]} should not answer with an internal path`);
+    assert.match(r.out, /boss new|boss adopt|boss list|cd /, `${cmd[0]} should name a way out`);
   }
 });
 
@@ -395,4 +400,61 @@ test('the preview never promises an undo git cannot deliver', () => {
   assert.ok(!/restores everything/.test(out), 'the false reassurance must be gone');
   assert.match(out, /TRACKED file/, 'it must scope the git undo to what git actually has');
   assert.match(out, /cannot bring back/, 'and say plainly what it does not cover');
+});
+
+// --- unlock: the ladder is additive, and additive must not mean "backwards" -------------------
+// `boss unlock` set `stamp.stage = target` unconditionally. Nothing enforced the manifests'
+// `requires:` field, so Quickstart → V1 succeeded in silence; the only recovery, `boss unlock mvp`,
+// then reported the founder as being at MVP with V1 still installed underneath. The action that
+// repaired the skip was the action that misreported where they were.
+
+test('REGRESSION: unlocking a rung you skipped never moves you back down', () => {
+  const home = project({});
+  const p = bossProject();
+  assert.equal(boss(['unlock', 'v1', '--yes'], p, home).code, 0);
+  const afterSkip = JSON.parse(readFileSync(join(p, '.boss', 'manifest.json'), 'utf8'));
+  assert.equal(afterSkip.stage, 'L2-v1', 'the skip itself lands where it says');
+
+  assert.equal(boss(['unlock', 'mvp', '--yes'], p, home).code, 0);
+  const afterFix = JSON.parse(readFileSync(join(p, '.boss', 'manifest.json'), 'utf8'));
+  assert.ok(afterFix.installedLayers.includes('L1-mvp'), 'MVP is now installed');
+  assert.equal(afterFix.stage, 'L2-v1', 'still V1 — the deepest rung installed, not the last one unlocked');
+  assert.equal(afterFix.mode, 'V1');
+
+  // The cross-surface half: `boss status` must agree with the stamp, not with arrival order.
+  assert.match(boss(['status'], p, home).out, /You are here: V1/);
+});
+
+test('skipping a rung says so, names what is being skipped, and proceeds anyway', () => {
+  const home = project({});
+  const r = boss(['unlock', 'v1', '--yes'], bossProject(), home);
+  assert.equal(r.code, 0, 'BOSS never blocks');
+  assert.match(r.out, /skips mvp/i);
+  assert.match(r.out, /spec/, 'names what the skipped rung is where you get');
+  assert.match(r.out, /Unlocked V1 mode/, 'and still does the thing');
+});
+
+// --- help: the surface someone reaches for when already lost ----------------------------------
+
+test('`boss help <skill>` explains the two command languages instead of dumping the overview', () => {
+  const r = boss(['help', 'canvas'], bossProject());
+  assert.equal(r.code, 1, 'it did not find a help topic — say so');
+  assert.match(r.out, /is a skill, not a/);
+  assert.match(r.out, /inside Claude Code/);
+  assert.doesNotMatch(r.out, /Start here/, 'the full overview is not an answer to a specific question');
+});
+
+test('an unknown help topic errors with a did-you-mean, like every other unknown word', () => {
+  const r = boss(['help', 'stauts'], bossProject());
+  assert.equal(r.code, 1);
+  assert.match(r.out, /no help topic/);
+  assert.match(r.out, /Did you mean.*status/);
+});
+
+test('`not a BOSS project` names a way out, not just a missing file', () => {
+  const empty = project({});
+  const r = boss(['status'], empty, empty);
+  assert.equal(r.code, 1);
+  assert.doesNotMatch(r.out, /manifest\.json/, 'an internal path is not a recovery');
+  assert.match(r.out, /boss new|boss adopt/, 'offers the two ways to become one');
 });

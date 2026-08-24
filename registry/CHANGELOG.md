@@ -9,6 +9,55 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.233.0 — 2026-08-24
+
+**Every stage manifest declares `requires:`. Nothing read it.** So `boss unlock v1` from Quickstart
+succeeded in silence and left a project holding `/board` — the cross-FEAT sequencing surface — with
+no `/spec` to make a FEAT with, no `/smoke`, no `/log`, no `/close`. **The entire build loop, skipped,
+with no signal that anything had been.** Then the only recovery made it worse. Found by walking the
+error paths the way v0.232.0 walked the status surface: type the wrong thing on purpose.
+
+> **For you:** skipping a rung now says so and names what you're skipping — and still lets you do it.
+> Unlocking a rung you skipped no longer moves you *backwards*. `boss help canvas` explains that
+> `/canvas` is a skill you run inside Claude rather than silently printing the whole manual. And
+> "not a BOSS project" now tells you how to become one — usually just `cd` into the folder you made.
+
+- 🔴 **`requires:` was declared on every stage and consumed by nobody — 23rd
+  [[checkers-state-intents-they-dont-enforce]].** `modes.js` parsed the field into the mode object
+  (`requires: m.requires || null`) and no caller ever looked at it. `L2-v1` has said
+  `"requires": "L1-mvp"` since it was authored. **It still doesn't block** — BOSS never blocks, and a
+  founder who adopted a half-built repo may genuinely want V1's design surface without MVP's spec
+  ceremony — but *never blocks* is not *never mentions*, and Scale has had the honest version of this
+  since IDEA-040. Same register, same shape, one rung over: name the bar, name the cost, proceed.
+- 🔴 **The recovery path silently corrupted the thing you consult to see whether it worked.**
+  `cmdUnlock` set `stamp.stage = target` unconditionally. So a founder at V1 who noticed `/spec` was
+  missing ran `boss unlock mvp` — the only repair available — and `boss status` then reported
+  **"You are here: MVP"** with V1 still installed underneath. **The one action that fixed the skip
+  was the action that misreported where they were.** `installedLayers` is now the source of truth and
+  its order of ARRIVAL is no longer read as its DEPTH.
+- 🔴 **`boss help <anything>` was the surface least willing to admit it hadn't understood.** An
+  unknown topic fell through to the full overview — no error, no did-you-mean, exit 0 — while the
+  same unknown word typed one position to the left (`boss frobnicate`) got a proper error from a
+  Levenshtein helper defined a few lines below. **And the likeliest query of all was the one that
+  failed:** `/canvas`, `/spec`, `/triage` are the names a founder sees most — in `boss map`, in
+  `boss status`, in every conscience nudge — so `boss help canvas` is the natural thing to type, and
+  the two command *languages* are precisely what they have not learned yet. It now says so.
+- **The most common error BOSS can produce was a dead end, ten times over.** Ten call sites printed
+  `not a BOSS project (no .boss/manifest.json here).` — an internal path a non-technical founder has
+  never heard of, a fact, and a full stop. **The likeliest cause is `boss new demo` followed by
+  forgetting to `cd demo`,** and BOSS already knows every project on the machine because it keeps a
+  registry. The recovery was always computable and simply never offered: it now checks whether a
+  project is sitting directly below you and says `cd <that>`, falls back to `boss list`, and names
+  `boss new` / `boss adopt` for someone genuinely starting out. **An error that knows the answer and
+  withholds it is the least forgivable kind.**
+- **What was already right and stayed untouched**, because a review that only finds faults is not a
+  review: `ui.js`'s colour discipline (one accent per semantic state, `NO_COLOR` honoured, colour as
+  the *third* channel so a pipe or a screen reader loses nothing) · did-you-mean on unknown commands ·
+  `boss help <command>`'s usage/what/examples/see-also · `boss help symbols` · `boss board NOPE-999`
+  naming two ways to look · `boss unlock foo` answering in the vocabulary it accepts.
+- 253 unit tests (+5), including the demotion regression and the four error paths above.
+  ⚠️ **`site/` and `web/` still deliberately untouched** — the standing 22-file fix needs its own yes.
+
 ## 0.232.0 — 2026-08-24
 
 **`boss status` is the where-am-I command. On a project you had been away from, it answered with
