@@ -9,6 +9,48 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.226.0 — 2026-08-24
+
+**The conscience could not see code in subdirectories. Five loops were scanning only the top of
+`src/` and finding nothing, on every project that keeps code in folders — which is every real one.**
+
+> **For you:** if BOSS's loops have been quiet, this is likely why. `src/**` in a loop spec silently
+> meant `src/*`, so anything nested was invisible. And if you build for mobile, CLI or a service
+> rather than the web, BOSS now says so out loud instead of going silent on you.
+
+⚠️ **Ledger note, recorded rather than tidied away:** this work shipped in commit `8b108d6` on
+2026-08-24 **with no version bump and no entry** — a concurrent session held `VERSION` and this file
+mid-release, and the staged entry never got applied. It is written up here so `boss sync` can surface
+it, which is the whole job of this file. The code has been in the tree since `8b108d6`.
+
+- 🔴 **`**` was never supported.** `loop-runtime.js`'s own header said so, while five shipped loop
+  specs used `src/**`. Any project with code in subdirectories had **`design-tokens`,
+  `verification`, `design-drift`, `cost-budget` and `ai-failure-state`** scanning only the top level
+  and classifying `unopenable` — which emits nothing. **A vocabulary that documents its own limit
+  does not enforce it.**
+- 🔴 **`design-drift-loop` fired BACKWARDS for 55 releases.** Its prose declared the exit predicate
+  *"inverted"* and claimed the runtime supported that; `classifyLoop` has no inversion. **Clean
+  projects emitted `coherence`; drifting ones stayed silent.** Fixed with a new **`count_at_most`**
+  predicate rather than an `invert:` flag — a flag would make "closed" stop meaning healthy for every
+  other loop.
+- **Blind is not "waiting".** `unopenable` rendered as *"waiting"* — BOSS's words for *not yet
+  earned* — to founders whose code BOSS simply could not find. Now **"not evaluated here"**, naming
+  the globs that missed. A blind loop never fires but is never swallowed; silence alone is how the
+  original bug hid.
+- **`deception-loop` — BOSS's only auto-firing humane leg — was React-only.** It now reads SwiftUI,
+  Compose, Flutter, Android and plain-HTML idioms. The existing list extended; **not** per-shape
+  authoring, which stays gated at n=0.
+- **`shape` is persisted and SUBTRACTS:** `/ux-check` stops on a `cli` shape instead of walking hover
+  states, `/trust` scopes to store privacy labels vs telemetry defaults, `/red-team` reads config
+  instead of re-asking. `/canvas` had claimed all three already read the tags; `/trust` contained
+  zero references to shape.
+- **`/ship` stopped equating "shipped" with a URL.** Guards read `.swift`/`.kt`/`.dart`/`.xml`/
+  `.strings`; `check-refs` learned `$source` and catches token typos.
+- **Guards:** 9 new tests, each verified non-vacuous by reintroducing its defect. One bans the class
+  outright — **no loop may declare an inverted exit predicate in prose.**
+- ⚠️ **Unbuilt on purpose:** no mobile mode, no per-platform skills, no app-store recipes, no new
+  skill (n=0 non-web founders — the compose-and-subtract mandate).
+
 ## 0.225.0 — 2026-08-24
 
 **`mentor-architect` shipped four GitClear figures as founder-facing facts this morning. They are the
