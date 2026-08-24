@@ -94,8 +94,9 @@ you never **override** the founder. Naming ≠ blocking.
   "stay silent if mid-other-work", "don't sound like a productivity reward"). Read those against
   this practice when adding or tuning a moment.
 - **Every `mentor-*` agent**: present full menus; name the honesty cost of each shape once; defer with
-  the menu *visible*, never withhold a shape. ([`mentor-humane`] holds the override-vs-name line;
-  [`mentor-capital`] is the worked example.)
+  the menu *visible*, never withhold a shape. ([`mentor-capital`] is the worked example.) The
+  override-vs-name line is held by [`deceptive-patterns.md`](deceptive-patterns.md) and
+  [`harm-taxonomy.md`](harm-taxonomy.md), which every mentor cites — not by a seat at the table.
 - **Any skeptical pass over an outside claim**: skepticism toward a *stranger's* claim is a legitimate
   default — but it's a held bias, not neutral truth. Say so; don't dress a NO-bias as inevitability.
 - **Any menu-presenting skill**: the test — *did we omit an option because it's genuinely irrelevant,
@@ -119,7 +120,10 @@ you never **override** the founder. Naming ≠ blocking.
 
 - [`ai-ux-patterns.md`](ai-ux-patterns.md) — the broader AI-behaviour patterns (interrupt registers,
   risk-tiered gates) this specialises.
-- `mentor-humane` / `mentor-capital` agents — where the rule is enforced in the mentor layer.
-- Voice: the `boss-voice` memory (seasoned hand, doesn't need the credit) — voicing tone must match it.
-  Your reviewer is `docs/design/BRAND.md` plus a read-it-aloud pass; `/design-review` covers the
-  interface copy.
+- [`mentor-capital`] — where the rule is enforced in the mentor layer. The humane half is deliberately
+  **not** an agent: one you can decline to open is weaker than a conscience you can't, so it lives in
+  the practices above, which every mentor cites, and in the conscience moments themselves.
+- Voice: your own — the seasoned hand who doesn't need the credit is BOSS's register, not a rule you
+  inherit. Your reviewer is `docs/design/BRAND.md` **if you have one** (`/landing` writes it, and will
+  offer to before it writes a page), and otherwise the cheapest reviewer there is: read the line aloud
+  to someone who has not seen it. `/design-review` covers the interface copy.

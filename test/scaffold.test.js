@@ -929,3 +929,33 @@ test('REGRESSION: a real edit is always detected — the false-negative directio
     assert.equal(flagged, expected, `"${label}" should ${expected ? '' : 'not '}read as edited`);
   }
 });
+
+// --- the boundary, in the surface that actually ships --------------------------------------------
+// `library/` is in package.json `files:` and `boss craft` prints a practice straight to a founder's
+// terminal — so a practice naming a BOSS-only agent is exactly as live as a shipped skill doing it.
+// check-refs class 4 scanned `stages/` plus six named docs and stopped, which let `mentor-humane`
+// (verdict `internal`, ships to nobody) sit backticked twice in `conscience-voicing.md`, once as the
+// holder of the override-vs-name line. v0.227.0 had just fixed this exact defect for `voice-keeper`
+// in three practices BY HAND, without widening the gate that should have caught it.
+test('REGRESSION: a shipped practice never names an agent that lives only in BOSS workspace', () => {
+  const agentsIn = (d) => (existsSync(d) ? readdirSync(d).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)) : []);
+  const shipped = new Set(readdirSync(join(BOSS_ROOT, 'stages'), { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .flatMap((e) => agentsIn(join(BOSS_ROOT, 'stages', e.name, 'template', '.claude', 'agents'))));
+  const workspace = join(BOSS_ROOT, '.claude', 'agents');
+  if (!existsSync(workspace)) return; // gitignored — absent in CI and in any other clone
+  const bossOnly = new Set(agentsIn(workspace).filter((n) => !shipped.has(n)));
+  if (!bossOnly.size) return;
+
+  const practices = join(BOSS_ROOT, 'library', 'practices');
+  const offenders = [];
+  for (const f of readdirSync(practices).filter((x) => x.endsWith('.md'))) {
+    const text = readFileSync(join(practices, f), 'utf8');
+    for (const m of text.matchAll(/`([a-z][a-z0-9-]*)`/g)) {
+      // Backticks only — the same rule check-refs uses. A bare word in prose is the concept.
+      if (bossOnly.has(m[1])) offenders.push(`${f} -> ${m[1]}`);
+    }
+  }
+  assert.deepEqual([...new Set(offenders)], [],
+    'a founder runs `boss craft` and gets pointed at an agent that ships to nobody');
+});

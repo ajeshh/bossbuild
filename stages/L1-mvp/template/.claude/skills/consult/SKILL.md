@@ -80,8 +80,10 @@ sharpen the brain; the brain grounds the board. (Skip silently if it isn't there
   *this* question.
 - **Disagreement is the product.** Never average seasoned advisors into mush. The split is where the
   decision is — surface it.
-- **Humane can override.** A real humane concern outranks the viability case (mentor-humane's standing
-  authority). Say when it's been invoked.
+- **Humane can override.** A real humane concern outranks the viability case. That authority does not
+  sit with one mentor — it sits in the practices every mentor here cites (`boss craft
+  deceptive-patterns`, `boss craft harm-taxonomy`), so no lens gets to be the one that skips it. Say
+  when it's been invoked, and which reading triggered it.
 - **Advisory, never a gate.** `/consult` informs; it never blocks or decides. The founder decides and
   records the call.
 - **Ground them.** Mentors reading nothing give generic advice. Feed each the canvas + relevant

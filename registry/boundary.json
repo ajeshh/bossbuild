@@ -6,7 +6,7 @@
     "not-yet": "Belongs to founders in principle; has not earned the port yet. Carries a reason, and the reason is re-read, not inherited.",
     "internal": "Examined, and the answer is no. Serves BOSS's own construction and would not survive contact with a founder's project."
   },
-  "_enforced_by": "scripts/check-boundary.js — fails on an unexamined artifact, on a `crossed` verdict whose file does not exist, and on an `internal` or `not-yet` artifact that a shipped file names anyway.",
+  "_enforced_by": "TWO gates, and this line used to claim ONE did both. `scripts/check-boundary.js` fails on an unexamined artifact and on a `crossed` verdict whose file does not exist — it has never contained a naming check, and the sentence asserting it did was corrected 2026-08-24 (v0.235.0). NAMING is `scripts/check-refs.js` class 4: a shipped file naming an `internal` or `not-yet` AGENT in backticks. Its scope was `stages/` + six named docs until v0.235.0, which added `library/` — practices ship in package.json `files:` and `boss craft` prints them to a founder's terminal, so `mentor-humane` sat backticked twice in `conscience-voicing.md` and no gate could see it. Two limits that remain, stated rather than implied: backticks are required (a bare word in prose is usually the concept), and SKILLS are covered only via the supersedes ledger, not this file — so a `not-yet` skill named in shipped prose is still caught by nothing here.",
   "artifacts": [
     {
       "name": "boss-learn",

@@ -338,7 +338,18 @@ const AGENT_REF = /`([a-z][a-z0-9-]*)`/g;
 for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
   const r = rel(f);
   if (AGENT_EXEMPT.has(r)) continue;
-  const shipped = r.startsWith(`stages${sep}`);
+  // `library/` SHIPS. It is in package.json `files:`, and `boss craft` prints a practice straight
+  // to a founder's terminal — so a practice naming a BOSS-only agent is exactly as live as a
+  // shipped skill doing it. This check scanned `stages/` plus six named docs and stopped, which is
+  // the SAME scope error class 5's own comment diagnoses for class 3 ("Class 3 scans `stages/`
+  // only. But `library/` and `src/` ship too") — written down, and never applied to its sibling.
+  //
+  // What the gap cost, found 2026-08-24: `mentor-humane` — verdict `internal`, ships to NOBODY —
+  // sat backticked twice in `library/practices/conscience-voicing.md`, once as the holder of the
+  // override-vs-name line and once as "where the rule is enforced in the mentor layer." Both reach
+  // every founder who runs `boss craft`. v0.227.0 had just fixed this exact defect for
+  // `voice-keeper` in three practices, by hand, without widening the gate that should have caught it.
+  const shipped = r.startsWith(`stages${sep}`) || r.startsWith(`library${sep}`);
   if (!shipped && !FOUNDER_FACING.has(r)) continue;
   const seen = new Set();
   for (const m of readFileSync(f, 'utf8').matchAll(AGENT_REF)) {

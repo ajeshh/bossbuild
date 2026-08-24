@@ -9,6 +9,50 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.235.0 — 2026-08-24
+
+**`mentor-humane` ships to nobody — that is a deliberate design call — and two shipped practices named
+it as the agent holding the humane override.** `library/` is in `package.json` `files:` and `boss craft`
+prints a practice straight to a founder's terminal, so this reached every founder who read it. Found
+while reviewing the four `not-yet` boundary verdicts, not by a gate — because the gate could not see
+the surface it was on.
+
+> **For you:** the craft shelf no longer hands the humane override to an advisor you don't have. It
+> names the practices that actually carry it — `boss craft deceptive-patterns`, `boss craft
+> harm-taxonomy` — which every mentor cites, so no lens gets to be the one that skips it. And where a
+> practice used to say "check this against your `BRAND.md`", it now says *if you have one*, with the
+> cheapest reviewer there is as the fallback: read the line aloud to someone who hasn't seen it.
+
+- 🔴 **The gate that should have caught it scanned the wrong surface.** `check-refs` class 4 —
+  *"a founder-facing file naming an agent the founder's install does not contain"* — scanned `stages/`
+  plus six named docs and stopped. **`library/` ships.** This is the SAME scope error class 5's own
+  comment diagnoses for class 3 (*"Class 3 scans `stages/` only. But `library/` and `src/` ship
+  too"*) — written down in this file, and never applied to its sibling. Scope widened; the widened
+  check found exactly one offender and no false positives.
+- 🔴 **`registry/boundary.json` claimed an enforcement that did not exist — 24th
+  [[checkers-state-intents-they-dont-enforce]].** Its `_enforced_by` said `check-boundary.js` *"fails
+  on … an `internal` or `not-yet` artifact that a shipped file names anyway."* **check-boundary has
+  never contained a naming check** — the only occurrences of the word are in its own comments, where
+  it correctly describes that job as belonging to `check-refs` class 4. The ledger's own enforcement
+  claim was the lie. Rewritten to name **both** gates and, more usefully, **the two limits that
+  remain**: backticks are required, and SKILLS are covered only through the supersedes ledger — so a
+  `not-yet` SKILL named in shipped prose is still caught by nothing.
+- 🔴 **v0.227.0 fixed this exact defect by hand and left the mechanism alone.** It removed
+  `voice-keeper` from three practices — correctly — but did not widen the gate, so the sibling case
+  four lines away survived. **A hand-fix that does not move the gate is a fix with a half-life.**
+- **And its replacement pointed somewhere else a founder has nothing.** *"Your reviewer is
+  `docs/design/BRAND.md`"* — **nothing creates `BRAND.md`.** `/landing` offers to, at MVP, on request;
+  `docs/design/` does not exist as a template directory until **V1**. Both practices now hedge it
+  correctly and name a fallback that needs no file. The adjacent line was worse and had never been
+  read: both told the founder their voice reference was *"the `boss-voice` memory"* — **BOSS's own
+  private memory file.** Cut; the register is described instead of pointed at.
+- **Two unbackticked instructional leaks fixed too**, which the gate exempts by design (a bare word in
+  prose is usually the concept, and a checker that cries wolf gets switched off): `/consult`'s
+  *"mentor-humane's standing authority"* and `/drift-deep`'s *"mentor-humane has override authority"* —
+  both are instructions to a founder, not concepts, and both named a seat that does not exist.
+- 259 unit tests (+1) — a regression pinning the widened surface, verified to fire by reintroducing
+  the defect before trusting it.
+
 ## 0.234.0 — 2026-08-24
 
 **`boss help symbols` explained the glyphs. `boss help <command>` explained the commands. Nothing

@@ -135,7 +135,7 @@ verdict: on-aim | drifting | mixed
 | `vibe-virtuoso` | This is the cohort the deep audit serves most — they ship a lot and validate little. Be direct: of N things built, how many test the bet? Sharper question, not praise. |
 | `indie-hacker` | Calm-company framing. "Is the work earning its keep against the bet?" Understatement; "this is fine" is high praise. |
 | `returning-founder` | Skip the 101. The harder cut: "is the body of work at the level of conviction this bet needs — or are you busy?" They can take it straight. |
-| `domain-expert` | High-stakes: an *un-validated* risk in a regulated domain is a who-could-be-harmed question, not just a business one. Lead with the humane lens — mentor-humane has override authority. Name the real-world stakes of the bet being wrong, conservatively. |
+| `domain-expert` | High-stakes: an *un-validated* risk in a regulated domain is a who-could-be-harmed question, not just a business one. Lead with the humane lens — it outranks the viability read here, and that authority sits in the practices (`boss craft harm-taxonomy`), not in any one advisor. Name the real-world stakes of the bet being wrong, conservatively. |
 
 ## Connection to the conscience
 
