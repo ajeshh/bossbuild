@@ -9,6 +9,50 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.238.0 — 2026-08-24
+
+**`check:published` covers npm and the Homebrew tap. Nothing covered the third public surface.** The
+website went **sixteen releases** stale without a gate noticing — and on the day it was finally
+redeployed it went stale again inside the hour: two releases regenerated `site/`, and the zip sitting
+ready to upload predated both. **Uploading it would have redeployed the same version and looked
+exactly like a successful deploy.**
+
+> **For you:** nothing to run — this is BOSS's own release gate. (`check:deployed` checks BOSS's
+> website against BOSS's repo; a founder's `/ship` already hands back the live URL.)
+
+- 🔴 **The gap is structural, not forgetfulness.** `check:site` validates the built output in `site/`
+  and is **completely correct while the deployed copy is months old** — it never leaves the
+  filesystem. The deploy is a hand action into Cloudflare with no CI, the same shape as the npm and
+  tap publishes `check:published` exists for. *The absence of automation IS the bug*, and the same
+  sentence applies here.
+- **The stale copy lies in the flattering direction.** A stale site does not look broken — it looks
+  *finished*. Every page renders, every link resolves, and the only symptom is that the thing it
+  describes is not the thing that ships. `docs/RESUME.md` learned this and wrote the rule **three
+  separate times**: *never describe the live site from a file — look at the URL.* **This is that rule
+  with a runner behind it.**
+- **It derives both facts rather than hardcoding either.** The DOMAIN comes from the built site's own
+  `<link rel="canonical">` — not a second copy of `SITE_URL`, so the artifact's own claim about where
+  it lives is what gets tested, and a domain change follows with no edit here. The VERSION comes from
+  a new `<meta name="generator" content="BOSS x.y.z">` in the shell, **added because the only version
+  on the page was PROSE** (*"Where this actually is: v0.237.0"*) — and a gate that scrapes a sentence
+  someone is free to reword has a hidden expiry date.
+- 🔴 **Its own first run reported a pass it had not verified, and that is now the thing it refuses to
+  do.** Against a live copy with no stamp (the deploy predating this release) it found zero findings
+  and printed *"the site a stranger loads is the site this repo built"* — **while the deploy was three
+  releases behind.** Zero findings is not the same as verified. It now prints **`NOT CHECKED`** and
+  says plainly that this is not a pass — the [[checkers-state-intents-they-dont-enforce]] discipline
+  v0.230.0 named (*unrenderable = `not checked`, never a pass*), applied to the check being written
+  rather than to one found later.
+- **Thresholds match `check:published` exactly**: ONE behind is normal mid-release, TWO or more is a
+  finding. **Offline is never a failure** — no network, a timeout, or an unresolvable host all exit 0
+  with a visible note, because a check that fails on a plane is a check that gets deleted.
+- **It also catches a domain mismatch**: if the live page's canonical disagrees with the built one,
+  the deploy landed somewhere the build does not believe in — every crawler sent to the wrong place
+  while both pages look correct.
+- 260 unit tests (+1) — pinning the stamp in the BUILT output, since that is what gets uploaded.
+  Deliberately **not** asserted against `VERSION`: that would conflate *"the stamp exists"* with
+  *"site/ was rebuilt this second"* and hold the suite red through every release window.
+
 ## 0.237.0 — 2026-08-24
 
 **A founder meets *"some thread says you must do X"* constantly and had nothing for it.** BOSS has had

@@ -6,6 +6,11 @@
 <title>What's new in BOSS</title>
 <meta name="description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
 <meta name="color-scheme" content="light dark" />
+<!-- The one machine-readable answer to "what is actually serving right now?". `check:deployed`
+     fetches the live page and reads this; without it the only version on the page is prose
+     ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
+     free to reword. Every page carries it, so any URL answers the question. -->
+<meta name="generator" content="BOSS 0.238.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +75,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.238.0</span><span class="when">2026-08-24</span></div>
+        <p>nothing to run — this is BOSS's own release gate. (<code>check:deployed</code> checks BOSS's website against BOSS's repo; a founder's <code>/ship</code> already hands back the live URL.)</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.237.0</span><span class="when">2026-08-24</span></div>
         <p><code>boss craft outside-claims</code> — the two-minute discipline for a claim that is about to change what you do. The six ways an attribution goes wrong, how to grade what kind of evidence you actually have, why a default-NO has to be <em>said out loud</em> to stay honest, and the re-open condition that stops a <code>no</code> being re-argued every month. <code>/decide</code> now asks the one question first: <strong>did this come from outside, and did you check who actually said it?</strong></p>
       </li>
@@ -113,10 +122,6 @@
         <div class="rel"><span class="ver">v0.226.0</span><span class="when">2026-08-24</span></div>
         <p>if BOSS's loops have been quiet, this is likely why. <code>src/*<em></code> in a loop spec silently meant <code>src/</em></code>, so anything nested was invisible. And if you build for mobile, CLI or a service rather than the web, BOSS now says so out loud instead of going silent on you.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.225.0</span><span class="when">2026-08-24</span></div>
-        <p>the architecture mentor no longer quotes telemetry you cannot check. It makes the same point from Peter Naur's <em>Programming as Theory Building</em> — and the &quot;70/30&quot; rule of thumb is now labelled as a rule of thumb, not a statistic.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -146,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.237.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.238.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

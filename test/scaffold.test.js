@@ -959,3 +959,30 @@ test('REGRESSION: a shipped practice never names an agent that lives only in BOS
   assert.deepEqual([...new Set(offenders)], [],
     'a founder runs `boss craft` and gets pointed at an agent that ships to nobody');
 });
+
+// --- the stamp `check:deployed` depends on ------------------------------------------------------
+// The whole check rests on one line in the shell. If a template edit drops it, the check does not
+// fail — it degrades to "NOT CHECKED" forever, which is the quietest possible way for a gate to
+// stop working. This pins it in the built output, not the template, because the built output is
+// what actually gets uploaded.
+test('every built page carries the generator stamp check:deployed reads', () => {
+  const site = join(BOSS_ROOT, 'site');
+  if (!existsSync(site)) return; // site/ is build output; a fresh clone may not have run gen:site
+  // Deliberately NOT asserted against VERSION. That would conflate two different things — "the
+  // stamp exists and is well-formed" (this test's job, and a template edit can silently break it)
+  // with "site/ was rebuilt since the last bump" (check:site's job, which reports it as advisory).
+  // Tying it to VERSION makes the suite red for the whole window between bumping and running
+  // gen:site, and a test that is red during every release is one people learn to run last.
+  const pages = readdirSync(site).filter((f) => f.endsWith('.html'));
+  assert.ok(pages.length > 5, 'expected the built site');
+  const stamps = new Set();
+  for (const p of pages) {
+    const html = readFileSync(join(site, p), 'utf8');
+    const stamped = html.match(/<meta\s+name="generator"\s+content="BOSS\s+(\d+\.\d+\.\d+)"/i)?.[1];
+    assert.ok(stamped, `${p} must carry the generator stamp check:deployed reads`);
+    stamps.add(stamped);
+  }
+  // One build, one version. Mixed stamps mean a partial regeneration, which would make the deployed
+  // check answer differently depending on which page it happened to fetch.
+  assert.equal(stamps.size, 1, `pages disagree about the build version: ${[...stamps].join(', ')}`);
+});

@@ -1,6 +1,6 @@
 {
   "name": "oyeboss",
-  "version": "0.237.0",
+  "version": "0.238.0",
   "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
@@ -48,6 +48,7 @@
     "test": "node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node --test test/*.test.js",
     "release": "node scripts/release.js",
     "check:published": "node scripts/check-published.js",
+    "check:deployed": "node scripts/check-deployed.js",
     "bump:formula": "node scripts/bump-formula.js",
     "pack:preview": "npm pack --dry-run",
     "eval:gate": "node docs/architecture/conscience-evals/runner.js",
@@ -60,7 +61,7 @@
     "check:backlog": "node scripts/check-backlog.js",
     "check:dogfood": "node scripts/check-dogfood.js",
     "check:patterns": "node scripts/check-pattern-coverage.js",
-    "check": "node scripts/check-manifests.js --strict && node scripts/check-site.js --strict && node scripts/check-wayfinding-drift.js --strict && node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node scripts/check-freshness.js && node scripts/check-pattern-coverage.js && node scripts/check-roster-claims.js --strict && node scripts/check-published.js --strict",
+    "check": "node scripts/check-manifests.js --strict && node scripts/check-site.js --strict && node scripts/check-wayfinding-drift.js --strict && node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node scripts/check-freshness.js && node scripts/check-pattern-coverage.js && node scripts/check-roster-claims.js --strict && node scripts/check-published.js --strict && node scripts/check-deployed.js --strict",
     "check:roster": "node scripts/check-roster-claims.js"
   },
   "engines": {

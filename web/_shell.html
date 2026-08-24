@@ -6,6 +6,11 @@
 <title>{{TITLE}}</title>
 <meta name="description" content="{{DESCRIPTION}}" />
 <meta name="color-scheme" content="light dark" />
+<!-- The one machine-readable answer to "what is actually serving right now?". `check:deployed`
+     fetches the live page and reads this; without it the only version on the page is prose
+     ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
+     free to reword. Every page carries it, so any URL answers the question. -->
+<meta name="generator" content="BOSS {{VERSION}}" />
 <link rel="canonical" href="{{CANONICAL}}" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
