@@ -9,6 +9,62 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.231.0 — 2026-08-24
+
+**`boss status` could tell you where you are on the ladder and what you were building — but not how
+long you'd been gone, what you last landed, or what any of the work had actually taught you.** Two
+reads added, both composed entirely from records BOSS was already writing and never reading back.
+
+> **For you:** `boss status` now opens with the bridge back when you've been away — how many days,
+> what you last landed, and the *next* you wrote down before you stopped — and it renders what you've
+> learned as the evidence ladder (`stated-pain · observed · commitment`), beside the shipped-feature
+> line it always had. Nothing new to run.
+
+- 🔴 **The re-entry instruction already existed. It had no runner, and it was filed in the wrong
+  place.** MVP rule 4 — the rule about `/close`, a session-*END* ritual — ended with the sentence
+  *"Read RESUME first thing next session."* So the one instruction aimed at the founder opening a
+  session was only ever read by the founder closing one, and nothing made it happen either way.
+  `/close` has been writing the answer into `docs/devlog.md` and `docs/RESUME.md` all along;
+  **nothing ever read it back.** Now `boss status` does, and the sentence moved out to a rule **0** —
+  *open the session before you work in it* — which is also what makes rule 5's loop honest:
+  **open → spec → build → smoke → log → close.**
+- **The gap is read from CONTENT, not mtime.** Dates come from the devlog's own `## YYYY-MM-DD`
+  headings, so a fresh clone — which resets every mtime on disk — still tells the founder the truth
+  about when they last worked. The newest heading wins wherever it sits in the file: newest-at-the-top
+  is a convention `/log` states, not a guarantee the file carries.
+- **It fires on RETURN, never at an absence — the shape inherited from `quiet_for` (v0.206.0).**
+  A CLI only ever runs while the founder is *here*; it can never observe someone being away. That
+  makes the only observable moment the same as the only kind one. Silent under 3 days, silent with no
+  devlog to bridge from (**a project with no devlog has not gone quiet, it has not started**), and a
+  missing `Next:` is named plainly rather than papered over.
+- 🔴 **The evidence ladder had exactly one consumer, and it wasn't the founder.** `/evidence` grades
+  every signal `stated-pain → observed-behavior → commitment`, and the only thing that has ever read
+  those grades is the conscience hook — and only once a moment is already firing. **A founder could
+  not see their own evidence state at all.** `boss status` renders it next to "Recent headway", which
+  counts shipped features: *shipping is motion; this is the half that can be wrong.*
+- **Every rung prints, zeros included — and an ungraded EVID is counted, not dropped.** This is
+  v0.229.0's denominator lesson applied before the fact rather than after: the runtime's evidence read
+  counts only *graded* files, so a founder who forgets the `grade:` field would have made their own
+  ledger look tidier. **A metric that improves when you forget something is a comfort device.** So the
+  ladder shows `· N ungraded` when there are any, and *no ledger* / *ungraded ledger* / *graded zero*
+  now read as three different sentences instead of one silence. Superseded records stay excluded, and
+  are not miscounted as ungraded.
+- **No percentage, no total, no streak.** A progress surface that can only go up is the thing
+  `engage-streaks-variable-rewards` names in BOSS's own dark-pattern catalog. The honest register here
+  is orientation, not dopamine — so when the ladder is bottom-heavy it says so: *"nothing observed yet
+  — a compliment is not a receipt."*
+- **Composition, not addition — the standing [[EVID-001]] mandate holds.** No new skill, no new loop,
+  no new command; the 20th loop would have been surface, and `boss status` is already the where-am-I
+  command, so where-am-I answers go where the question is asked. One new module (`src/orientation.js`),
+  14 tests, and one relocated sentence. **The founder's own stated fear is app bloat.**
+
+**The evidence behind this, stated honestly:** [[EVID-001]] (2026-07-23) and [[EVID-003]] (2026-08-21)
+are two independent founders who each described losing the thread — *"hard to gauge where I am… I
+forget what I'm building"* and *"it jumped straight into building rather than saying back what the
+idea was."* That is **n=2, and all of it is `stated-pain`. Nobody has been observed using BOSS, and
+nobody has committed.** Convergence raises conviction, not the grade. This release is aimed by that
+evidence; it is not proof the aim was right.
+
 ## 0.230.0 — 2026-08-24
 
 **`/ux-check` ordered a review it had no way to run.** Step 2 said *"Open the page; click through;

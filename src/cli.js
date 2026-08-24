@@ -21,6 +21,7 @@ import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
+import { printReentry, printEvidenceHeadway } from './orientation.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
 
@@ -453,13 +454,22 @@ async function cmdStatus(args) {
   }
   const current = bossVersion();
   console.log(`\n  ${bold(stamp.name)}`);
-  // Lead with orientation, not version metadata: where you are on the ladder, what
+  // The bridge back comes FIRST when there is one. A founder returning after a week
+  // needs "what was I doing" before they need "which rung am I on" — and this is the
+  // only moment BOSS can ever observe the gap (see src/orientation.js). Silent when
+  // they were here yesterday, and silent when there's no devlog to bridge from.
+  printReentry(process.cwd());
+  // Then orientation, not version metadata: where you are on the ladder, what
   // you're building right now, and whether you're moving (EVID-001 — a founder can't
   // tell any of these three today). Composed from the board projection; degrades
   // silently if the board can't be read.
   console.log(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
   console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
   printFocusAndHeadway(process.cwd());
+  // Ticket headway is what printFocusAndHeadway just rendered (the last shipped FEAT).
+  // This is the other half, and the half that can be wrong: what the work actually
+  // taught you. Shipping is motion; evidence is the part that moves the bet.
+  printEvidenceHeadway(process.cwd());
   printBuiltAndSeam(process.cwd(), stamp);
   console.log('');
   console.log(`    ${dim('layers:')}       ${stamp.installedLayers.join(' → ')}`);

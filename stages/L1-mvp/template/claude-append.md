@@ -3,11 +3,12 @@
 > {{MODE}} mode adds the smallest spine that lets you actually build: a spec, a smoke gate, a devlog, a
 > session-end ritual. Same conscience — capture and validate still come first. Don't out-ceremony the work.
 
+0. **Open the session before you work in it.** Run `boss status` and read `docs/RESUME.md`. `/close` wrote down where you stopped and what you said was next; starting without reading it is how a session spends its first twenty minutes re-deriving what you already knew. `boss status` answers it in one read — how long you've been away, what you last landed, what you said was next, and what the work has actually taught you. If you've been away a while, that line comes first on purpose.
 1. **Spec before code.** Any non-trivial change starts with `/spec` — promotes an idea to `FEAT-NNN` with a goal, acceptance criteria, and a smoke check. Throwaway one-liners don't need it.
 2. **Smoke before commit.** `/smoke` runs the stack's "is the app even working" gate. Green before the commit, red is information — fix or document the regression.
 3. **Devlog every session.** `/log` appends a dated entry to `docs/devlog.md` — what landed, what's next, what surprised you. Lighter than commits, denser than `CHANGELOG`. Future-you reads it before starting work.
-4. **`/close` at session end.** Updates `docs/RESUME.md` (state + next tasks + open decisions) and writes a `/log` entry. Read RESUME first thing next session.
-5. **Spec → build → smoke → log → close.** That's the loop. When you find yourself skipping a step often, ask whether it's the wrong step or the wrong moment — don't paper over it with more ceremony.
+4. **`/close` at session end.** Updates `docs/RESUME.md` (state + next tasks + open decisions) and writes a `/log` entry — including the **Next** line, which is what rule 0 reads back.
+5. **Open → spec → build → smoke → log → close.** That's the loop. When you find yourself skipping a step often, ask whether it's the wrong step or the wrong moment — don't paper over it with more ceremony.
 6. **The conscience still runs.** Quickstart's nudges (validation drift, "Done!" graduation) keep firing — MVP doesn't replace the front of the funnel, it sits behind it.
 
 ## Git workflow (trunk-based, review-bounded)
