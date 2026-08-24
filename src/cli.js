@@ -3,11 +3,11 @@ import { join, resolve, basename } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from './paths.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
-import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject } from './registry.js';
+import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
-import { printChangelog } from './changelog.js';
+import { printChangelog, cmpVersion } from './changelog.js';
 import { detectStage, inferSourceGlobs } from './detect.js';
 import { printUpdate, updateNote, installKind, uninstallCommand } from './update.js';
 import { printCredit } from './credit.js';
@@ -381,7 +381,15 @@ function cmdUnlock(args) {
   stamp.hooks = [...new Set([...(stamp.hooks || []), ...(m.hooks || [])])];
   stamp.loops = [...new Set([...(stamp.loops || []), ...(m.loops || [])])];
   writeStamp(process.cwd(), stamp);
-  registerProject({ name: stamp.name, path: process.cwd(), stage: target, mode: m.name, bossVersion: bossVersion() });
+  // THE PIN IS THE PROJECT'S, NOT THE INSTALL'S. Unlocking installs ONE new layer at the current
+  // vintage; every layer already here keeps whatever vintage it was last synced at, and
+  // `stamp.bossVersion` — which unlock deliberately never touches — is that older, honest number.
+  // Writing `bossVersion()` here (as this did until v0.239.0) told the registry the WHOLE project
+  // was current the moment a founder climbed a rung, and `boss list` printed it: a project pinned
+  // at 0.6.0 reporting as 0.180.0 because someone unlocked MVP. That is the self-confirming
+  // silence `boss update` exists to break — the more layers you had behind, the more confidently
+  // the portfolio said you were fine. The manifest was right the whole time; only the copy lied.
+  registerProject({ name: stamp.name, path: process.cwd(), stage: target, mode: m.name, bossVersion: stamp.bossVersion });
   console.log(`\n  ${ok('✦')} Unlocked ${bold(m.name + ' mode')} (${target}).`);
   if (applied.appendedClaude) console.log(`    ${ok('+')} appended ${m.name} working rules to CLAUDE.md`);
 
@@ -811,28 +819,100 @@ function cmdRetire(args) {
   console.log(`    The repo stays; only the status changed. Run \`boss retire --undo\` to reopen it.\n`);
 }
 
-function cmdList() {
+// `boss list` — the portfolio view, and the one that has to be honest about two things it used
+// to get wrong for a founder running several projects at once.
+//
+// It printed the REGISTRY's copy of each pin, which `boss unlock` could set to a version the
+// project had never taken (fixed above), and it never compared that number to the installed BOSS
+// — so the command billed as "all connected projects" was the one surface that could not tell you
+// any of them were behind. `boss insights` had computed exactly that for releases, in a view about
+// venture graduation, where nobody looks for it. Same fact, two renderings, ONE reader
+// (`projectPin`): this is composition, not a second implementation.
+//
+// It also listed rows for projects that are no longer on disk as though they were live, because a
+// registry keyed by absolute path cannot see a `mv`. Those are named now, and `--prune` is the exit.
+function cmdList(args = []) {
   const projects = listProjects();
   if (!projects.length) {
     console.log('\n  No projects registered yet. Run `boss new <name>`.\n');
     return;
   }
+  const current = bossVersion();
+  const rows = projects.map((p) => ({ ...p, pin: projectPin(p), here: onDisk(p) }));
+  const ghosts = rows.filter((r) => !r.here);
+  if (args.includes('--prune')) return listPrune(ghosts, args.includes('--apply'));
+
+  const live = rows.filter((r) => r.here);
   // Retired projects (IDEA-044) fold to the bottom, quiet — the shipped_on archive pattern
   // applied at the portfolio level. Active projects read first; retired ones are honest, not hidden.
-  const active = projects.filter((p) => p.status !== 'retired');
-  const retired = projects.filter((p) => p.status === 'retired');
+  const active = live.filter((p) => p.status !== 'retired');
+  const retired = live.filter((p) => p.status === 'retired');
   console.log(`\n  ${bold(active.length + ' connected project(s)')}:\n`);
   for (const p of active) {
-    console.log(`    ${p.name.padEnd(20)} ${(p.mode || p.stage || '?').padEnd(12)} BOSS@${p.bossVersion || '?'}`);
+    // A pin equal to the install is NOT marked. Restraint is the point (IDEA-055): the glyph
+    // means "there is something to do here", so putting one on every row would mean nothing.
+    const behind = p.pin && cmpVersion(p.pin, current) < 0;
+    // Ahead of the install is a real state too — a source checkout, or a project synced by a
+    // newer BOSS than the one now installed. Saying "behind" there would be false in the
+    // direction that matters, so it gets its own mark rather than being folded into current.
+    const ahead = p.pin && cmpVersion(p.pin, current) > 0;
+    const mark = behind ? `  ${warn('⟳')}` : ahead ? `  ${dim('↑')}` : '';
+    console.log(`    ${p.name.padEnd(20)} ${(p.mode || p.stage || '?').padEnd(12)} BOSS@${p.pin || '?'}${mark}`);
     console.log(`    ${''.padEnd(20)} ${p.path}`);
   }
+
+  const behind = active.filter((p) => p.pin && cmpVersion(p.pin, current) < 0);
+  if (behind.length) {
+    console.log(`\n  ${warn('⟳')} ${behind.length} of ${active.length} behind the installed ${bold(current)}: ${behind.map((p) => p.name).join(', ')}`);
+    console.log(`    ${dim('`boss changelog` in one to read what changed, `/boss-sync` inside Claude to')}`);
+    console.log(`    ${dim('review the diff and apply it. Each project is its own decision — there is no')}`);
+    console.log(`    ${dim('sync-all, on purpose.')}`);
+  }
+  if (active.some((p) => p.pin && cmpVersion(p.pin, current) > 0)) {
+    console.log(`    ${dim('↑ pinned ahead of the BOSS you have installed — update the tool: `boss update`.')}`);
+  }
+
   if (retired.length) {
     console.log(`\n  ${retired.length} retired:`);
     for (const p of retired) {
       console.log(`    ${dim(p.name.padEnd(20) + ' retired ' + (p.retired_on || '—'))}`);
     }
   }
+  if (ghosts.length) {
+    console.log(`\n  ${ghosts.length} registered but not on disk:`);
+    for (const g of ghosts) console.log(`    ${dim(g.name.padEnd(20) + ' ' + g.path)}`);
+    console.log(`    ${dim('Moved or deleted. `boss list --prune` drops the rows; nothing on disk is touched.')}`);
+  }
   console.log('');
+}
+
+// Drop registry rows whose project is gone. Preview by default, `--apply` is the consent — the
+// same shape as every other destructive verb in BOSS.
+//
+// This deletes NOTHING on disk, because by definition there is nothing there to delete: it edits
+// one machine-local JSON file. That is also why it is not `boss remove`, which is the exit for a
+// project you can still stand inside — the whole problem with a ghost is that you cannot.
+function listPrune(ghosts, apply) {
+  if (!ghosts.length) {
+    console.log(`\n  ${ok('✦')} Every registered project is on disk. Nothing to prune.\n`);
+    return;
+  }
+  console.log(`\n  ${bold(`${ghosts.length} registered project(s) not on disk`)}:\n`);
+  for (const g of ghosts) {
+    console.log(`    ${g.name.padEnd(20)} ${(g.mode || g.stage || '?').padEnd(12)} BOSS@${g.pin || '?'}`);
+    console.log(`    ${''.padEnd(20)} ${dim(g.path)}`);
+  }
+  if (!apply) {
+    console.log(`\n  Preview only. ${bold('boss list --prune --apply')} ${dim('drops these rows from')}`);
+    console.log(`  ${dim(`${BOSS_HOME}/registry.json. Nothing on disk is touched.`)}`);
+    console.log(`\n  ${dim('If one of these is on a drive that is merely unmounted, leave it — the row is')}`);
+    console.log(`  ${dim('the only record that project was ever connected.')}\n`);
+    return;
+  }
+  let n = 0;
+  for (const g of ghosts) { if (deregisterProject(g.path)) n++; }
+  console.log(`\n  ${ok('✦')} Dropped ${n} row(s) from the registry.`);
+  console.log(`  ${dim('A project you bring back re-registers on the next `boss adopt` or `boss sync --apply` there.')}\n`);
 }
 
 // `boss remove` — the exit. Preview by default; `--apply` is the consent.
@@ -1226,10 +1306,10 @@ const HELP = {
     see: ['remove'],
   },
   list: {
-    usage: 'boss list',
-    what: 'Every BOSS project connected on this machine, active first, retired ones folded quietly at the bottom.',
-    examples: ['boss list'],
-    see: ['insights', 'status'],
+    usage: 'boss list [--prune]',
+    what: "Every BOSS project connected on this machine, active first, retired ones folded quietly at the bottom. Each row's pin is read from that project's own `.boss/manifest.json` — the number `boss sync` will actually act on — and marked ⟳ when it is behind the BOSS you have installed, ↑ when it is ahead of it. Projects the registry still lists but that are no longer on disk are named separately rather than shown as live: a registry keyed by absolute path cannot see a folder being moved or deleted. `--prune` drops those leftover rows (preview first; `--apply` is the consent). It edits only the machine registry — nothing on disk is touched, because there is nothing there to touch.",
+    examples: ['boss list', 'boss list --prune', 'boss list --prune --apply'],
+    see: ['insights', 'status', 'changelog', 'sync'],
   },
   retire: {
     usage: 'boss retire [--undo]',
@@ -1469,7 +1549,7 @@ function printHelp() {
   console.log(row('boss update', 'is the BOSS you have installed the latest one?'));
   console.log(row('boss learn <p> --as <c>', 'promote a pattern UP into the library'));
   console.log(row('boss craft [name]', "read BOSS's practice shelf (the craft behind the skills)"));
-  console.log(row('boss list', 'all connected projects'));
+  console.log(row('boss list [--prune]', 'every project on this machine · which are behind'));
   console.log(row('boss retire [--undo]', 'end a project honestly (reversible)'));
   console.log(row('boss remove [--apply]', 'take BOSS back out of this project · --global for the machine'));
   console.log(row('boss version', 'the installed BOSS version'));
@@ -1558,7 +1638,7 @@ export async function run(argv) {
     case 'records': return cmdRecords(args);
     case 'id': return cmdId(args);
     case 'team': return cmdTeam(args);
-    case 'list': return cmdList();
+    case 'list': return cmdList(args);
     case 'retire': return cmdRetire(args);
     case 'credit': return void (process.exitCode = printCredit(args));
     case 'remove': case 'uninstall': return cmdRemove(args);

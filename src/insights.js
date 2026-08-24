@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { listProjects } from './registry.js';
+import { listProjects, readProjectStamp, projectPin, onDisk } from './registry.js';
 import { bossVersion, STAGE_ORDER } from './paths.js';
 import { collectBoard, canvassedIdeas } from './board.js';
 import { dim, bold, ok, warn } from './ui.js';
@@ -73,12 +73,11 @@ function readProjectTrace(dir) {
 
 // One honest read on where a project's loop stands. Returns null if the project is gone from disk.
 function assess(p, nowMs) {
-  if (!p.path || !existsSync(p.path)) return { ...p, missing: true };
-  const stampFile = join(p.path, '.boss', 'manifest.json');
-  let stamp = null;
-  if (existsSync(stampFile)) {
-    try { stamp = JSON.parse(readFileSync(stampFile, 'utf8')); } catch { /* tolerate */ }
-  }
+  if (!onDisk(p)) return { ...p, missing: true };
+  // Shared with `boss list` (src/registry.js) on purpose. Both surfaces render a pin; when they
+  // each read it their own way, they disagree — and the founder has no way to know which number
+  // to believe. One reader, one precedence, two renderings.
+  const stamp = readProjectStamp(p.path);
   const t = readProjectTrace(p.path);
   const depth = (stamp?.installedLayers || []).length || 1;
   const lastTouch = t.newest || (stamp?.createdAt ? Date.parse(stamp.createdAt) : 0);
@@ -115,7 +114,7 @@ function assess(p, nowMs) {
   return {
     ...p, missing: false,
     mode: stamp?.mode || p.mode || p.stage || '?',
-    pin: stamp?.bossVersion || p.bossVersion || '?',
+    pin: projectPin(p, stamp) || '?',
     depth, ideas: t.ideas, canvassed: t.canvassed, projectCanvas: t.projectCanvas, features: t.features,
     building: t.building, shipped: t.shipped, ageDays, signal, note,
     toBuildDays, retired, retiredOn: p.retired_on || null, toRetireDays,

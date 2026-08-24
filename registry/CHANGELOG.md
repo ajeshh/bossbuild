@@ -9,6 +9,34 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.239.0 — 2026-08-24
+
+**A founder running several projects was told they were current by the one command that lists them
+all.** `boss unlock` installs ONE new layer at the current vintage, and then wrote the *installed*
+version into the machine registry as if the whole project had synced. `boss list` printed that copy.
+So climbing a rung made a project pinned at 0.6.0 report as `BOSS@0.180.0`, while its Quickstart
+skills, hooks and loops sat hundreds of releases behind — **the same self-confirming silence
+`boss update` exists to break, one command over.** The manifest was right the whole time; only the
+registry copy lied, and only the portfolio view read it.
+
+Three fixes, all subtraction or composition — no new verb:
+
+- **`unlock` writes the project's pin, not the install's.** One value changed; the manifest, which
+  `planSync` actually reads, was never wrong and is now what the registry echoes.
+- **One reader for the pin** (`projectPin` in `src/registry.js`), with the precedence stated once:
+  **the manifest wins, the registry copy is the fallback for a manifest that won't parse.** `boss
+  list` and `boss insights` had each computed it their own way; `insights` was right and lived in a
+  view about venture graduation, where nobody looks for a version.
+- **`boss list` now says what it knows** — which projects are behind the installed BOSS (and which
+  are pinned *ahead*, a real state for a source checkout), and which registered projects are **no
+  longer on disk**. A registry keyed by absolute path cannot see a `mv`, so those rows outlive the
+  project; `boss list --prune` drops them (preview first, `--apply` is the consent, nothing on disk
+  is touched).
+
+> **For you:** `boss list` now shows which of your projects are behind and names them. If you've ever
+> moved or deleted a project folder, `boss list --prune` clears the leftover rows. Updating each
+> project is still one deliberate `/boss-sync` per project — there is no sync-all, on purpose.
+
 ## 0.238.0 — 2026-08-24
 
 **`check:published` covers npm and the Homebrew tap. Nothing covered the third public surface.** The

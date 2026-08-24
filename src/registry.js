@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import { REGISTRY_FILE } from './paths.js';
 
 function load() {
@@ -31,6 +31,41 @@ export function registerProject(entry) {
 
 export function findByPath(absPath) {
   return load().projects.find((p) => p.path === absPath);
+}
+
+// ── WHICH COPY OF THE PIN IS TRUE ──────────────────────────────────────────────────────────
+//
+// A project's BOSS vintage is written TWICE: in the project's own `.boss/manifest.json`, and
+// again here in the machine registry so the portfolio surfaces can render without opening every
+// project on disk. Two copies of one fact is the setup for exactly one bug, and it shipped:
+// `boss unlock` wrote the INSTALLED version into the registry while installing a single new
+// layer, so a project whose OTHER layers were hundreds of releases behind reported as current
+// in `boss list` — the same self-confirming silence `boss update` exists to break, one command
+// over. (v0.239.0 fixed the write; this is the read that stops the class.)
+//
+// The manifest wins, and not as a preference: `planSync` reads the manifest to decide what an
+// update would even DO, so a number that disagrees with it is a number no command will act on.
+// The registry copy is the fallback for a manifest that is missing or unreadable, nothing more.
+export function readProjectStamp(absPath) {
+  if (!absPath) return null;
+  const file = join(absPath, '.boss', 'manifest.json');
+  if (!existsSync(file)) return null;
+  // A project whose manifest we cannot parse is not a project whose pin we may guess.
+  try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return null; }
+}
+
+// The vintage a project is actually pinned to, or null when neither copy can say. `stamp` is a
+// parameter so a caller that has already read the manifest doesn't read it twice — and so the
+// PRECEDENCE lives here once, rather than being re-typed at every surface that renders a pin.
+export function projectPin(entry, stamp = readProjectStamp(entry?.path)) {
+  return stamp?.bossVersion || entry?.bossVersion || null;
+}
+
+// Is this registered project still where the registry says it is? A registry keyed by absolute
+// path cannot notice a `mv`, so a moved or deleted project leaves behind a row that outlives it.
+// Reported by `boss list` and droppable with `--prune`; never inferred as a retirement.
+export function onDisk(entry) {
+  return !!entry?.path && existsSync(entry.path);
 }
 
 // Mark a project retired (IDEA-044 — /sunset). Retiring ≠ deleting: nothing on disk

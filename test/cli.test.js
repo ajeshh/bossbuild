@@ -7,7 +7,7 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
@@ -32,6 +32,14 @@ function boss(args, cwd, home, extraEnv = {}) {
   } catch (e) {
     return { code: e.status ?? 1, out: (e.stdout || '') + (e.stderr || '') };
   }
+}
+
+// The machine registry lives at ~/.boss/registry.json — and every test redirects HOME, so this
+// is how a test states "these are the projects this machine knows about."
+const registryPath = (home) => join(home, '.boss', 'registry.json');
+function seedRegistry(home, projects) {
+  mkdirSync(join(home, '.boss'), { recursive: true });
+  writeFileSync(registryPath(home), JSON.stringify({ projects }, null, 2) + '\n');
 }
 
 const bossProject = (extra = {}) => project({
@@ -125,6 +133,69 @@ test('REGRESSION §A1: boss board and boss insights never disagree about the sam
   assert.deepEqual(takingShape, ['IDEA-002']);
   assert.deepEqual(canvassedIdeas(dir).ids, ['IDEA-002'],
     'the two surfaces must resolve to the same set, not merely the same count');
+});
+
+// ── The portfolio pin: two copies, one truth ──────────────────────────────────────────────
+//
+// The shipped bug had two halves and needed both to be visible. `boss unlock` wrote the INSTALLED
+// version into the machine registry while installing a single new layer, and `boss list` printed
+// that copy — so climbing a rung made a project pinned at 0.6.0 report as 0.180.0, and the founder
+// was told they were current by the one command that lists everything they have.
+
+test('REGRESSION: boss list reports the MANIFEST pin, never a registry copy that disagrees', () => {
+  const home = project({});
+  const dir = bossProject(); // manifest pins 0.0.1
+  seedRegistry(home, [{ name: 'testproj', path: dir, stage: 'L0-quickstart', mode: 'Quickstart', bossVersion: '9.9.9' }]);
+  const out = boss(['list'], dir, home).out;
+  assert.match(out, /BOSS@0\.0\.1/, 'the pin sync will act on is the manifest pin');
+  assert.ok(!/9\.9\.9/.test(out), 'a stale registry copy must never be rendered as the pin');
+});
+
+test('REGRESSION: unlock does not write the installed version as the project pin', () => {
+  const home = project({});
+  const dir = bossProject(); // manifest pins 0.0.1; unlock installs L1 at the CURRENT vintage
+  boss(['unlock', 'mvp'], dir, home);
+  const reg = JSON.parse(readFileSync(registryPath(home), 'utf8'));
+  // The registry keys on the path the CHILD resolved: on macOS tmpdir() hands back a /var
+  // symlink and process.cwd() reports /private/var. Same directory, different string.
+  const entry = reg.projects.find((p) => p.path === realpathSync(dir));
+  assert.ok(entry, 'unlock registers the project');
+  assert.equal(entry.bossVersion, '0.0.1',
+    'unlock installs ONE layer — the other layers keep their vintage, so the pin must not jump');
+  const stamp = JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8'));
+  assert.equal(stamp.bossVersion, '0.0.1', 'and the manifest, which sync reads, is untouched');
+});
+
+test('boss list and boss insights never disagree about how many projects are behind', () => {
+  const home = project({});
+  const dir = bossProject();
+  seedRegistry(home, [{ name: 'testproj', path: dir, stage: 'L0-quickstart', mode: 'Quickstart', bossVersion: '9.9.9' }]);
+  assert.match(boss(['list'], dir, home).out, /1 of 1 behind/);
+  assert.match(boss(['insights'], dir, home).out, /0 current · 1 behind/);
+});
+
+test('a registered project that is gone is named as gone, and --prune is preview-first', () => {
+  const home = project({});
+  const dir = bossProject();
+  const registry = registryPath(home);
+  seedRegistry(home, [
+    { name: 'testproj', path: dir, stage: 'L0-quickstart', mode: 'Quickstart', bossVersion: '0.0.1' },
+    { name: 'moved', path: join(home, 'gone-elsewhere'), stage: 'L0-quickstart', mode: 'Quickstart', bossVersion: '0.0.1' },
+  ]);
+
+  const listed = boss(['list'], dir, home).out;
+  assert.match(listed, /1 registered but not on disk/);
+  assert.match(listed, /1 connected project/, 'a ghost is not counted among the connected');
+
+  // Preview writes nothing.
+  const before = readFileSync(registry, 'utf8');
+  boss(['list', '--prune'], dir, home);
+  assert.equal(readFileSync(registry, 'utf8'), before, '--prune without --apply must not edit the registry');
+
+  boss(['list', '--prune', '--apply'], dir, home);
+  const after = JSON.parse(readFileSync(registry, 'utf8'));
+  assert.deepEqual(after.projects.map((p) => p.name), ['testproj'], 'only the ghost row goes');
+  assert.ok(existsSync(join(dir, '.boss', 'manifest.json')), 'prune touches no project on disk');
 });
 
 test('with no docs/ideas at all, the board says so instead of faking columns', () => {
