@@ -9,6 +9,71 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.228.0 — 2026-08-24
+
+**The last two rows in the dark-pattern catalog rendered `UNVETTED` to every founder who met them.
+Both are now checked against the primary — and one of them, as written, would have fired on an honest
+business model. Also: `package.json` had been six versions behind `VERSION` since v0.221.0, so the
+next `npm publish` would have shipped a build labelled 0.221.0.**
+
+> **For you:** two patterns in `boss craft deceptive-patterns` stop saying "UNVETTED" — they're
+> verified now, against the FTC's own orders and the EU regulator's own opinion. And the
+> consent-or-pay row no longer reads as though charging for an ad-free plan is manipulation; it
+> isn't, and `monetization-in-practice` now says so plainly.
+
+- 🔴 **`consent-or-pay`, as shipped, would have fired on a legitimate business model.** It condemned
+  *"privacy becomes a paid tier"* full stop — but a paid ad-free plan is a normal, often *pro*-user way
+  to fund software, and it is how a lot of calm companies stay independent. The primary (EDPB Opinion
+  08/2024, read in full) locates the defect somewhere else: **in the binary.** The holding is that a
+  controller should offer *"a further alternative, free of charge, without behavioural advertising."*
+  So the test a founder can actually apply is **count the doors** — two is the pattern, three is a
+  business model. The row now says that, and **the counterweight ships with it**: `monetization-in-
+  practice.md` had *zero* guidance on ad-free tiers, so the catalog was BOSS's only voice on the
+  subject and stated only the manipulative reading. [[RVW-088]].
+- **`claims-ai-washing` verified to the digit and promoted.** [[RVW-058]] ruled NOT-YET in June 2026
+  purely on evidence grade, naming its own re-open condition — FTC "Operation AI Comply". Both
+  primaries fetched from ftc.gov: the sweep (**2024-09-25, five actions**) and the DoNotPay final
+  order — *"the Commission voted 5-0 on January 16, 2025"*, **$193,000**, notice to 2021–2023
+  subscribers, no *"performs like a real lawyer"* without substantiation. Every figure in the shipped
+  `teeth` checks out. The catalog is now **89/89 adopted**; nothing renders `UNVETTED`. [[RVW-087]].
+  **BOSS passes the row reflexively** — zero AI-capability claims across README and all 15 site pages.
+- **The funding filter is not neutral, and `mentor-capital` now says so once.** Brooks, Huang, Kearney
+  & Murray, *PNAS* 2014 — an identical pitch was preferred from a man, across a field study of 90
+  pitches judged by **angel investors** at three US competitions plus two controlled experiments. Two
+  halves that get dropped in retelling are shipped and now guarded: attractiveness moderated **for men
+  only**, and the causal experiments used laypeople, not investors. It lands on the existing
+  *"right-sized is good, not a fallback"* line — if the filter is biased, right-sized stops being a
+  consolation and becomes, for some founders, the better-reasoned call. Said when the raise question
+  is live, **never** as a forecast about them. [[RVW-091]].
+- **Two claims REFUSED, which is the point of running the sweep.** *"Candour about setbacks raises
+  more"* (HBR 2025) — real, but duplicate-in-effect of the already-shipped [[RVW-037]] heuristic in
+  the same paragraph, and measured on **peer-to-peer lending, not equity**; bolting it on would have
+  made an argument that rests on Principle #6 *look* more evidenced while becoming more attackable
+  ([[RVW-089]]). *"VCs assess character over competence"* — primary paywalled and unread, the record
+  named no author, and the population is **angels, not VCs** ([[RVW-090]]).
+- 🔴 **`package.json` sat at 0.221.0 while `VERSION` reached 0.227.0 — six releases of committed
+  drift.** `npm publish` reads `package.json`, so the standing "npm is behind" action would have
+  published a build **labelled six versions below its own contents**, and burned the 0.221.0 slot.
+  **`scripts/release.js` checks exactly this and has since forever** — its own comment says *"They have
+  drifted before"* — so the gate did not miss it: six releases were committed over a red gate. The
+  19th [[checkers-state-intents-they-dont-enforce]], and the first where the checker was right, ran,
+  and was simply not heeded. **Corroborated independently:** `docs/CHEATSHEET.md` and `docs/SKILLS.md`
+  are regenerated *by* `release.js` and both still read *"current as of v0.221.0"* — so the gate had
+  not run since v0.221.0 either. Two unrelated artifacts froze at the same version, which is what a
+  skipped step looks like from the outside. Repaired here; all four now read 0.228.0.
+- **Guards (all six verified non-vacuous by reintroducing the defect):** the consent-or-pay copy must
+  name the binary *and* concede that charging is legitimate · shipping the row **requires** the
+  monetization counterweight (a condition nothing enforces is a wish) · the `teeth` figures are pinned
+  to what ftc.gov says · the PNAS bullet keeps its venue, its author list and its men-only moderation,
+  and **may not call angel investors VCs** · a row parked as `candidate` must leave a claim file for
+  `/vet`. Tests **219 → 227**. The counted-claims gate caught the two stale 219s unprompted, again.
+- ⚠️ **A search summary tried to reverse a finding, and the primary caught it.** Asked whether the
+  EDPB's broader-scope guidance had landed, search said the guidelines *"were already adopted in their
+  version for public consultation."* In the actual Work Programme 2026-2027 that sentence is a
+  **footnote on an asterisk**, and consent-or-pay carries no asterisk — the summary had read the
+  footnote onto a neighbouring bullet. **n=11 for `vet-verify-attribution`, and a new flavour: the
+  misattribution was committed by the search layer, not by the source.**
+
 ## 0.227.0 — 2026-08-24
 
 **Three shipped practices told founders to hand their copy to `voice-keeper` — an agent that ships to

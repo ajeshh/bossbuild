@@ -79,6 +79,16 @@ user just loses money faster.
 - **Expansion aligned to the customer's success, never their entrapment.** If the extra revenue doesn't track
   extra value for *them*, it's extraction.
 - **Honest price changes, always.** Communicated by you, with an escape clause.
+- **Charging for an ad-free tier is fine. Charging for the only way not to be tracked is not.** This one
+  needs saying plainly, because the catalog's `consent-or-pay` row names the manipulative shape and would
+  otherwise be BOSS's only voice on it. A paid tier that removes ads is a normal — often *pro*-user — way
+  to fund software, and it is how a lot of calm companies stay independent. What turns it is the **binary**:
+  when "accept tracking" and "pay" are the only two doors, privacy has become a feature people buy rather
+  than a right they have. The honest shape is a third door — the same service, free, with contextual ads
+  that process less (or no) personal data. The EU regulator reasons the same way and is worth borrowing
+  for the sentence, not the statute: *"personal data cannot be considered as a tradeable commodity"*
+  (EDPB Opinion 08/2024, 17 Apr 2024). **That opinion binds large online platforms, not you** — take the
+  principle, leave the compliance theatre.
 
 ## What BOSS refuses here (name it, don't build it)
 
