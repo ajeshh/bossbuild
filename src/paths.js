@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 
 // BOSS install root — resolves correctly even when `boss` is globally linked,
@@ -21,6 +21,25 @@ export const PRACTICES_DIR = join(BOSS_ROOT, 'library', 'practices');
 // (with absolute paths) out of the repo.
 export const BOSS_HOME = join(homedir(), '.boss');
 export const REGISTRY_FILE = join(BOSS_HOME, 'registry.json');
+
+// Is this directory BOSS's OWN source checkout — the repo that SHIPS BOSS, rather than a
+// project BOSS was installed into? Derived from the filesystem on purpose.
+//
+// The obvious basis is the `selfHosted` flag, and it is the wrong one: that flag lives in
+// `~/.boss/registry.json`, which is MACHINE-LOCAL, keyed by absolute path, and written only
+// when this machine registered the checkout. A fresh clone on another machine has no entry,
+// so a guard resting on it would silently not fire — a check that states an intent it cannot
+// enforce. (`docs/RESUME.md` records the flag as living in `.boss/manifest.json`; it does
+// not, and never has.)
+//
+// These four paths are the package's own `files` list in package.json, so they are present in
+// a source checkout and in the published package alike — and no project BOSS scaffolds has
+// any of them.
+const BOSS_REPO_SIGNATURE = ['VERSION', 'library', 'stages', 'PRINCIPLES.md'];
+
+export function isBossRepo(dir) {
+  return !!dir && BOSS_REPO_SIGNATURE.every((rel) => existsSync(join(dir, rel)));
+}
 
 export function bossVersion() {
   return readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();

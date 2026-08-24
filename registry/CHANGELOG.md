@@ -9,6 +9,60 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.221.0 — 2026-08-24
+
+**`boss remove` deleted `.boss/` with no copy, while promising an undo that could not reach it —
+and BOSS's own repo was a valid target. On 2026-08-21 those two gaps met: an assistant cleaning up
+after a throwaway ran `--apply` one directory too far up and took BOSS's own conscience log with it,
+permanently. Nothing was wrong with the command.**
+
+> **For you:** `boss remove --apply` now copies `.boss/` into `~/.boss/removed/` before deleting it,
+> and tells you the path. It matters because the undo BOSS used to offer — *"commit first, then
+> `git checkout .` restores everything"* — was false about that one directory: BOSS's own
+> `.gitignore` hides the conscience log, the cost log, the trace and your per-person brain state
+> from git, so git never had them to give back. The preview says so now, in those words.
+
+- 🔴 **The reassurance was false where it mattered most.** Six of the paths under `.boss/` are in the
+  `.gitignore` BOSS itself ships — `conscience-log.jsonl`, `cost-log.jsonl`, `trace.jsonl`,
+  `brain/relationship.md`, `backups/`, `board.html`. `git checkout .` restores none of them, and the
+  exit printed *"restores everything"* directly above the line announcing `.boss/` was going. A
+  promise that is wrong about the one directory git cannot see is worse than no promise.
+- **The same asymmetry as v0.217.0 and v0.219.0, and the third instance named in as many releases:
+  the right fix applied to one surface of two.** `sync --force` grew a backup in v0.197.0 *because
+  overwriting without one is the bug*; `remove` kept deleting without one, one function over. The
+  2026-08-21 incident note called this out and it stayed open for three days.
+- **The copy lands in `~/.boss/removed/`, deliberately NOT in the project.**
+  `.boss/brain/relationship.md` is per-person conscience state that [[DEC-001]] says never travels to
+  a cofounder, and BOSS ships a `.gitignore` rule saying exactly that. A `.boss-removed-…/` parked in
+  the repo would not be covered by that rule, so the first `git add -A` after an exit would commit
+  the one file BOSS promised would stay local — a safety net that leaks the thing it saves. The
+  machine dir is per-person by construction, and `boss remove --global` already walks and **names**
+  every file under it, so the parked copy appears in the other exit's preview with no new code.
+- 🔴 **`boss remove --apply` now refuses inside BOSS's own source checkout**, overridable with
+  `--yes` — the same consent `boss learn` asks for when it is about to write to a checkout you are
+  not standing in. BOSS is self-hosted, so its repo *is* a BOSS project and `remove` worked on it
+  perfectly. That was the problem: the command was correct and pointed one directory too high.
+- **The guard reads the filesystem, not the registry, and that is the load-bearing choice.** The
+  obvious basis is the `selfHosted` flag — and it lives in `~/.boss/registry.json`, which is
+  **machine-local and keyed by absolute path**, so a fresh clone on another machine has no entry and
+  a guard resting on it would silently never fire. That is a check stating an intent it cannot
+  enforce, which is the failure this repo has now caught fifteen times. `isBossRepo()` tests the four
+  paths in package.json's own `files` list (`VERSION`, `library/`, `stages/`, `PRINCIPLES.md`) —
+  present in a checkout and in the published package alike, and in no project BOSS scaffolds.
+  ⚠️ **`docs/RESUME.md` records that flag as living in `.boss/manifest.json`. It does not, and never
+  has** — the manifest has no such field. A guard written from that note would have been vacuous.
+- **One predicate, not two.** `boss learn` carried its own `looksLikeSource()` answering the same
+  question with two signals instead of four; it now calls `isBossRepo` from `paths.js`. A second
+  local copy of *"is this BOSS's repo?"* is the divergence this repo keeps finding, and the leaf
+  module is where small shared utilities belong (the `args.js`/`ui.js` pattern).
+- **Tests 190 → 194, each verified to FAIL by reintroducing its defect** (guard removed → 1 fail ·
+  backup call removed → 2 fails · false undo line restored → 1 fail). The removal suite also routes
+  its backups into a throwaway home: a test run that writes to the real `~/.boss/` is one people
+  stop running. Smoke-tested end to end on a `/tmp` scaffold, and the refusal was confirmed against
+  **this repo** with a safety copy in hand — the exact command from the incident, now declined.
+- **Left open on purpose:** a failed copy does not block the exit. Refusing to let someone leave
+  because a safety net failed would trap them in the tool; it says so instead, by name.
+
 ## 0.220.0 — 2026-08-24
 
 **One of the three install paths on the front page was handing out a build from 38 releases earlier,

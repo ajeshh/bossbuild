@@ -7,7 +7,7 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
@@ -344,4 +344,55 @@ test('boss update is offline-safe — it never exits non-zero for lack of networ
     HTTPS_PROXY: 'http://127.0.0.1:9', HTTP_PROXY: 'http://127.0.0.1:9', NO_PROXY: '',
   });
   assert.equal(r.code, 0, `must exit 0 offline:\n${r.out}`);
+});
+
+// --- the exit's two guards, end to end -----------------------------------------------------
+//
+// 2026-08-21, in BOSS's own repo: an assistant cleaning up after a /tmp smoke test ran
+// `boss remove --apply` one directory too far up. BOSS is self-hosted, so its repo IS a valid
+// BOSS project and the command worked perfectly — it deleted BOSS's own `.boss/`. Gitignored,
+// so `git status` stayed clean and git could restore nothing; the conscience log was lost.
+// Nothing was wrong with the command. Two things were missing around it.
+
+const fakeBossRepo = () => project({
+  // The four paths package.json's own `files` list ships — the signature isBossRepo reads.
+  'VERSION': '9.9.9\n',
+  'PRINCIPLES.md': '# Principles\n',
+  'library/practices/example.md': '# a practice\n',
+  'stages/L0-quickstart/manifest.json': '{"id":"L0-quickstart","name":"Quickstart"}',
+  '.boss/manifest.json': JSON.stringify({
+    name: 'BOSS', bossVersion: '0.0.1', stage: 'L0-quickstart', mode: 'Quickstart',
+    installedLayers: ['L0-quickstart'], agents: [], skills: [], hooks: [], loops: [],
+  }),
+  '.boss/conscience-log.jsonl': '{"at":"2026-08-20","said":"caution"}\n',
+});
+
+test("REGRESSION: `remove --apply` refuses inside BOSS's own checkout, and says why", () => {
+  const dir = fakeBossRepo();
+  const home = project({ 'keep': '' });   // a HOME that is not the project being removed
+
+  const r = boss(['remove', '--apply'], dir, home);
+  assert.match(r.out, /Refusing/, 'it must refuse rather than proceed');
+  assert.match(r.out, /own source checkout/, 'and name what it noticed');
+  assert.ok(existsSync(join(dir, '.boss', 'conscience-log.jsonl')),
+    "a refusal must leave BOSS's own state exactly where it was");
+
+  // A guard with no way through is a trap, not a guard — same `--yes` consent `boss learn`
+  // asks for when it is about to write to a checkout you are not standing in.
+  const y = boss(['remove', '--apply', '--yes'], dir, home);
+  assert.ok(!existsSync(join(dir, '.boss')), '--yes must go through');
+  assert.match(y.out, /copied to/, 'and must say where the copy of .boss/ landed');
+  assert.ok(existsSync(join(home, '.boss', 'removed')),
+    'the copy lands in the machine state dir, outside the project');
+});
+
+test('the preview never promises an undo git cannot deliver', () => {
+  // The line this replaces said `git checkout .` "restores everything". It cannot restore
+  // `.boss/` — BOSS's own shipped .gitignore hides the conscience log, cost log, trace,
+  // per-person brain state, backups and board.html from git entirely.
+  const dir = fakeBossRepo();
+  const out = boss(['remove'], dir, project({ 'keep': '' })).out;
+  assert.ok(!/restores everything/.test(out), 'the false reassurance must be gone');
+  assert.match(out, /TRACKED file/, 'it must scope the git undo to what git actually has');
+  assert.match(out, /cannot bring back/, 'and say plainly what it does not cover');
 });

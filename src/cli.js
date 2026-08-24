@@ -1,7 +1,7 @@
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, basename } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
-import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
+import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from './paths.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
@@ -776,6 +776,11 @@ function cmdRemove(args) {
 
   const stamp = readStamp(process.cwd());
   if (!stamp) return fail('not a BOSS project (no .boss/manifest.json here).');
+  // BOSS is self-hosted, so its own repo IS a BOSS project and `remove` works on it perfectly —
+  // which is the problem. On 2026-08-21 an assistant cleaning up after a throwaway test ran
+  // `--apply` here instead of in /tmp and took BOSS's own state dir with it. Nothing was wrong
+  // with the command; it was pointed one directory too far up.
+  const selfHosted = isBossRepo(process.cwd());
   const plan = planRemove(process.cwd(), stamp);
   const total = plan.files.length + plan.blocks.length + (plan.bossDir ? 1 : 0);
 
@@ -806,10 +811,35 @@ function cmdRemove(args) {
     if (plan.edited.length > 4) console.log(`        ${dim(`… +${plan.edited.length - 4} more`)}`);
   }
 
+  // The undo, stated accurately. This line used to promise that `git checkout .` "restores
+  // everything" — and it cannot restore `.boss/`, because the .gitignore BOSS itself ships tells
+  // git to forget the conscience log, the cost log, the trace, per-person brain state and the
+  // backups. A reassurance that is false about the one directory git cannot see is worse than none.
+  const sayUndo = () => {
+    console.log(`  ${dim('Commit first and `git checkout .` brings back every TRACKED file.')}`);
+    console.log(`  ${dim('It cannot bring back `.boss/` — BOSS gitignores its own logs and per-person state,')}`);
+    console.log(`  ${dim(`so git never saw them. --apply copies .boss/ to ${BOSS_HOME}/removed/ first;`)}`);
+    console.log(`  ${dim('that copy is the only undo those files have.')}`);
+  };
+
+  if (selfHosted) {
+    console.log(`\n  ${warn('!')} ${bold("This is BOSS's own source checkout")} ${dim('— the repo that ships BOSS, not a project')}`);
+    console.log(`    ${dim('BOSS was installed into. `--apply` here deletes BOSS\'s own state. It refuses')}`);
+    console.log(`    ${dim('without `--yes`, which is the same consent `boss learn` asks for when it is')}`);
+    console.log(`    ${dim('about to write to a checkout you are not standing in.')}`);
+  }
+
   if (!f.apply) {
     console.log(`\n  Preview only. ${bold('boss remove --apply')} does it.`);
-    console.log(`  ${dim('Commit first if you want a one-command undo — then `git checkout .` restores everything.')}`);
+    sayUndo();
     console.log(`  ${dim('Taking BOSS off the machine instead? `boss remove --global`.')}\n`);
+    return;
+  }
+
+  if (selfHosted && !f.yes) {
+    console.log(`\n  ${err('✗')} ${bold('Refusing')} ${dim('— that would remove BOSS from BOSS.')}`);
+    console.log(`    ${dim('If you meant a throwaway, you are one directory too far up: `cd` there first.')}`);
+    console.log(`    ${dim('If you really mean this repo, `boss remove --apply --yes`.')}\n`);
     return;
   }
 
@@ -819,6 +849,14 @@ function cmdRemove(args) {
   // BOSS reporting a death that didn't happen.
   try { deregisterProject(process.cwd()); } catch { /* registry is best-effort */ }
   console.log(`\n  ${ok('✦')} BOSS removed — ${done.length} path(s). Your work is untouched.`);
+  if (plan.backup) {
+    console.log(`    ${ok('→')} ${plan.backup.files} file(s) from .boss/ copied to ${plan.backup.dir}`);
+    console.log(`      ${dim('git could not have restored those — delete the copy whenever you like.')}`);
+  } else if (plan.bossDir) {
+    // Said out loud rather than swallowed: a silent failure here is how you find out the net
+    // was missing only when you reach for it.
+    console.log(`    ${warn('!')} ${dim('.boss/ could not be copied aside — it is gone and git never had it.')}`);
+  }
   console.log(`    ${dim('`git status` shows exactly what changed. `boss adopt` any time you want it back.')}\n`);
   void total;
 }
@@ -1100,8 +1138,8 @@ const HELP = {
     see: ['status', 'changelog', 'sync'],
   },
   remove: {
-    usage: 'boss remove [--apply]   ·   boss remove --global [--apply]',
-    what: "Take BOSS back out. Without --apply it previews only. It removes what BOSS WROTE and nothing else: files you authored are never touched, a BOSS file you EDITED is yours and is kept, your CLAUDE.md keeps everything except BOSS's marked block, and settings.json loses only BOSS's hook registrations — your permissions, your own hooks and the secret-path deny floor all stay (removing a deny would widen access on the way out). That boundary matters most in docs/, where your ideas and decisions sit in the same tree as BOSS's scaffold. `--global` is the OTHER exit: it prints the uninstall command for how you installed BOSS and lists the machine-local state in ~/.boss. Note your projects keep working after a global uninstall — the conscience hook runs from the project and doesn't call this CLI.",
+    usage: 'boss remove [--apply] [--yes]   ·   boss remove --global [--apply]',
+    what: "Take BOSS back out. Without --apply it previews only. It removes what BOSS WROTE and nothing else: files you authored are never touched, a BOSS file you EDITED is yours and is kept, your CLAUDE.md keeps everything except BOSS's marked block, and settings.json loses only BOSS's hook registrations — your permissions, your own hooks and the secret-path deny floor all stay (removing a deny would widen access on the way out). That boundary matters most in docs/, where your ideas and decisions sit in the same tree as BOSS's scaffold. `--global` is the OTHER exit: it prints the uninstall command for how you installed BOSS and lists the machine-local state in ~/.boss. Note your projects keep working after a global uninstall — the conscience hook runs from the project and doesn't call this CLI. Two things about the undo, because the honest version is not the obvious one: `git checkout .` brings back every TRACKED file, but it cannot bring back `.boss/` — BOSS gitignores its own conscience log, cost log, trace and per-person brain state, so git never saw them. `--apply` therefore copies `.boss/` into ~/.boss/removed/ first and tells you where. And because BOSS is self-hosted, its own repo is a valid target: `--apply` refuses there without `--yes`, so cleaning up after a throwaway one directory too far up can't take BOSS out of BOSS.",
     examples: ['boss remove', 'boss remove --apply', 'boss remove --global'],
     see: ['adopt', 'retire', 'sync'],
   },

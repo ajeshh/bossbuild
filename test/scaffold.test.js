@@ -5,7 +5,7 @@ import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { resolveStageId, STAGE_ORDER, STAGES_DIR } from '../src/paths.js';
+import { resolveStageId, STAGE_ORDER, STAGES_DIR, isBossRepo, BOSS_ROOT } from '../src/paths.js';
 import { loadModes, modeWord, skillGloss } from '../src/modes.js';
 import { readStageManifest, appendMarkedBlock, appendGitignoreBlock, applyStageSafe } from '../src/scaffold.js';
 import { planRemove, applyRemove } from '../src/remove.js';
@@ -667,6 +667,13 @@ const adopted = () => {
 };
 const stampOf = (dir) => JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8'));
 
+// `applyRemove` now copies `.boss/` aside before deleting it, and its default destination is the
+// REAL ~/.boss/removed/. Every removal test routes that copy into its own throwaway tree instead —
+// a test suite that litters the user's home is a test suite people stop running.
+const homeOf = (dir) => join(dir, '.test-home');
+const removeOpts = (dir) => ({ root: homeOf(dir), when: '2026-08-21T12:00:00' });
+const removeAll = (dir, plan) => applyRemove(dir, plan || planRemove(dir, stampOf(dir)), removeOpts(dir));
+
 test('REGRESSION: remove never touches a file BOSS did not write', () => {
   // The founder's ideas and decisions live in docs/ — the SAME tree as BOSS's scaffold. A naive
   // `rm -rf docs` on the way out destroys the work BOSS was there to help produce.
@@ -676,11 +683,50 @@ test('REGRESSION: remove never touches a file BOSS did not write', () => {
   mkdirSync(join(dir, '.claude', 'skills', 'my-own'), { recursive: true });
   writeFileSync(join(dir, '.claude', 'skills', 'my-own', 'SKILL.md'), '# mine\n');
 
-  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  removeAll(dir);
   assert.ok(existsSync(join(dir, 'docs', 'ideas', 'IDEA-001.md')), "the founder's idea must survive");
   assert.ok(existsSync(join(dir, '.claude', 'skills', 'my-own', 'SKILL.md')), 'their own skill must survive');
   assert.ok(existsSync(join(dir, 'src', 'a.js')), 'their code must survive');
   assert.ok(!existsSync(join(dir, '.boss')), "BOSS's own state should be gone");
+});
+
+test('REGRESSION: removal copies .boss/ aside first — git cannot restore what BOSS gitignored', () => {
+  // 2026-08-21, in this repo: `boss remove --apply` deleted `.boss/` and BOSS's own conscience
+  // log went with it. `.boss/` is gitignored, so `git status` stayed clean and git could restore
+  // nothing — while the preview was promising `git checkout .` "restores everything".
+  //
+  // Six of the paths BOSS deletes here are in the `.gitignore` BOSS ITSELF ships: conscience-log,
+  // cost-log, trace, brain/relationship.md, backups/, board.html. Those are exactly the files git
+  // was told to forget, so the copy is the only undo they have.
+  const dir = adopted();
+  writeFileSync(join(dir, '.boss', 'conscience-log.jsonl'), '{"at":"2026-08-20","said":"caution"}\n');
+  mkdirSync(join(dir, '.boss', 'brain'), { recursive: true });
+  writeFileSync(join(dir, '.boss', 'brain', 'relationship.md'), '# per-person state\n');
+
+  const plan = planRemove(dir, stampOf(dir));
+  removeAll(dir, plan);
+
+  assert.ok(!existsSync(join(dir, '.boss')), '.boss/ is still removed — this is an exit, not a refusal');
+  assert.ok(plan.backup, 'the removal must report where the copy went, or nobody can reach for it');
+  const saved = join(plan.backup.dir, 'conscience-log.jsonl');
+  assert.ok(existsSync(saved), 'the gitignored conscience log must survive in the copy');
+  assert.match(readFileSync(saved, 'utf8'), /caution/, 'and survive with its contents');
+  assert.ok(existsSync(join(plan.backup.dir, 'brain', 'relationship.md')), 'per-person brain state too');
+
+  // It lands in the MACHINE state dir, never in the project: `.boss-removed-.../relationship.md`
+  // sitting in the repo is not covered by the .gitignore rule that keeps per-person conscience
+  // state off a cofounder's machine (DEC-001), so the first `git add -A` after an exit would
+  // commit the one file BOSS promised would stay local.
+  assert.ok(plan.backup.dir.startsWith(join(homeOf(dir), 'removed')),
+    `the copy belongs under ~/.boss/removed/, not in the project — got ${plan.backup.dir}`);
+});
+
+test("REGRESSION: a project never looks like BOSS's own checkout, and BOSS's does", () => {
+  // The basis of `boss remove`'s self-hosted guard. Derived from the filesystem on purpose: the
+  // `selfHosted` flag lives in ~/.boss/registry.json, which is machine-local, so a fresh clone
+  // elsewhere has no entry and a guard resting on it would silently not fire.
+  assert.equal(isBossRepo(BOSS_ROOT), true, "BOSS's own checkout must be recognised");
+  assert.equal(isBossRepo(adopted()), false, 'a scaffolded project must never be mistaken for it');
 });
 
 test('REGRESSION: a BOSS file the founder edited is theirs, and is never removed', () => {
@@ -689,7 +735,7 @@ test('REGRESSION: a BOSS file the founder edited is theirs, and is never removed
   writeFileSync(mine, readFileSync(mine, 'utf8') + '\n## My customisation\n');
   const plan = planRemove(dir, stampOf(dir));
   assert.ok(plan.edited.some((e) => e.rel.includes('triage')), 'the edited file must be detected');
-  applyRemove(dir, plan);
+  removeAll(dir, plan);
   assert.ok(existsSync(mine), 'an edited BOSS file survives removal');
   assert.match(readFileSync(mine, 'utf8'), /My customisation/);
 });
@@ -714,7 +760,7 @@ test("removing excises BOSS's block from CLAUDE.md and keeps the founder's own r
   writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({
     name: 'myapp', stage: 'L0-quickstart', installedLayers: ['L0-quickstart'], skills: [], agents: [], hooks: [],
   }));
-  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  removeAll(dir);
   const body = readFileSync(join(dir, 'CLAUDE.md'), 'utf8');
   assert.match(body, /MY OWN RULES/, "the founder's rules survive");
   assert.ok(!body.includes('BOSS says things'), "BOSS's block is excised");
@@ -722,7 +768,7 @@ test("removing excises BOSS's block from CLAUDE.md and keeps the founder's own r
 
 test('an UNTOUCHED settings.json goes with BOSS — leaving config from a removed tool is clutter', () => {
   const dir = adopted();
-  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  removeAll(dir);
   assert.ok(!existsSync(join(dir, '.claude', 'settings.json')),
     "BOSS wrote it and the founder never changed it, so removal takes it back");
 });
@@ -739,7 +785,7 @@ test('REGRESSION: an EDITED settings.json is kept — hooks un-merged, permissio
   before.hooks.Stop = [{ matcher: '', hooks: [{ type: 'command', command: 'my-own.sh' }] }];
   writeFileSync(sPath, JSON.stringify(before, null, 2));
 
-  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  removeAll(dir);
   assert.ok(existsSync(sPath), 'a settings.json the founder touched is theirs and survives');
   const after = JSON.parse(readFileSync(sPath, 'utf8'));
   assert.ok(!after.hooks?.UserPromptSubmit, "BOSS's hook registration is gone");
@@ -810,7 +856,7 @@ test('REGRESSION: nothing of BOSS is left behind after a full remove', () => {
   // CLAUDE.md (L0 wrote the whole file, L1 appended a marked block, and excising the block left
   // the template behind) plus a stray settings.json.
   const dir = adopted();
-  applyRemove(dir, planRemove(dir, stampOf(dir)));
+  removeAll(dir);
   for (const p of ['CLAUDE.md', 'AGENTS.md', '.boss', '.claude/agents', '.claude/hooks', 'docs/loops']) {
     assert.ok(!existsSync(join(dir, p)), `${p} should be gone`);
   }
@@ -837,7 +883,7 @@ test('REGRESSION: after unlock, files keep matching the layer that WROTE them', 
   const plan = planRemove(dir, stampOf(dir));
   const l0Agents = plan.edited.filter((e) => /agents\/(pm|coder|mentor-founder)\.md$/.test(e.rel));
   assert.deepEqual(l0Agents, [], `L0 agents falsely flagged after unlock: ${l0Agents.map((e) => e.rel).join(', ')}`);
-  applyRemove(dir, plan);
+  removeAll(dir, plan);
   assert.ok(!existsSync(join(dir, 'CLAUDE.md')), 'CLAUDE.md must not survive a multi-layer removal');
   assert.ok(!existsSync(join(dir, '.claude', 'agents')), 'no agents may be left behind');
 });

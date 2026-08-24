@@ -2,7 +2,7 @@ import {
   cpSync, readFileSync, writeFileSync, existsSync, mkdirSync, statSync,
 } from 'node:fs';
 import { join, basename, resolve } from 'node:path';
-import { BOSS_ROOT } from './paths.js';
+import { BOSS_ROOT, isBossRepo } from './paths.js';
 import { listProjects } from './registry.js';
 
 // The library/ subfolders a pattern can be routed UP into.
@@ -14,9 +14,10 @@ export const LIBRARY_CATEGORIES = ['agents', 'skills', 'hooks', 'practices', 'me
 //   1. $BOSS_SRC (explicit override)
 //   2. the self-hosted project in the registry (BOSS dogfoods itself)
 //   3. BOSS_ROOT, if we're running straight from a source checkout (.git + library/)
-function looksLikeSource(dir) {
-  return !!dir && existsSync(join(dir, 'VERSION')) && existsSync(join(dir, 'library'));
-}
+// One predicate, shared with `boss remove`'s self-hosted guard — a second local copy of
+// "is this BOSS's repo?" is exactly the divergence this repo keeps catching. It is stricter
+// than the two-signal version it replaces (VERSION + library/), which only narrows what
+// `boss learn` will write into.
 
 // Returns { root, how } so the caller can SAY which checkout it picked before writing to
 // it. `boss learn` bumps a VERSION, rewrites a package.json and prepends to a CHANGELOG —
@@ -25,14 +26,14 @@ function looksLikeSource(dir) {
 // founder who happens to name a project "boss" would get their own repo version-bumped.
 // The `selfHosted` flag is preferred over the name regex for exactly that reason.
 export function resolveBossSource() {
-  if (process.env.BOSS_SRC && looksLikeSource(process.env.BOSS_SRC)) {
+  if (process.env.BOSS_SRC && isBossRepo(process.env.BOSS_SRC)) {
     return { root: process.env.BOSS_SRC, how: '$BOSS_SRC' };
   }
   const flagged = listProjects().find((p) => p.selfHosted);
-  if (flagged && looksLikeSource(flagged.path)) return { root: flagged.path, how: 'registry (selfHosted)' };
+  if (flagged && isBossRepo(flagged.path)) return { root: flagged.path, how: 'registry (selfHosted)' };
   const named = listProjects().find((p) => /^(boss|bossbuild|blueprintos)$/i.test(p.name || ''));
-  if (named && looksLikeSource(named.path)) return { root: named.path, how: `registry (name '${named.name}')` };
-  if (existsSync(join(BOSS_ROOT, '.git')) && looksLikeSource(BOSS_ROOT)) {
+  if (named && isBossRepo(named.path)) return { root: named.path, how: `registry (name '${named.name}')` };
+  if (existsSync(join(BOSS_ROOT, '.git')) && isBossRepo(BOSS_ROOT)) {
     return { root: BOSS_ROOT, how: 'running from a source checkout' };
   }
   return { root: null, how: null };

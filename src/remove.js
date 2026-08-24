@@ -19,10 +19,9 @@
 // Same three guards as sync's orphan removal (v0.155.0), for the same reason:
 //   · only what BOSS wrote        · never what the founder edited        · consent is a separate act
 
-import { readFileSync, writeFileSync, existsSync, readdirSync, rmSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, rmSync, statSync, mkdirSync, cpSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
-import { homedir } from 'node:os';
-import { STAGES_DIR } from './paths.js';
+import { STAGES_DIR, BOSS_HOME } from './paths.js';
 import { sameAsTemplate, readStageManifest } from './scaffold.js';
 
 const MARKER = /<!-- boss:[^>]*? start -->[\s\S]*?<!-- boss:[^>]*? end -->\n?/g;
@@ -142,7 +141,7 @@ export function planRemove(projectDir, stamp) {
   countKept(join('.claude', 'skills'));
   countKept(join('.claude', 'agents'));
 
-  return { layers, files, edited, blocks, bossDir, brainProse, kept, settings: planSettings(projectDir, layers) };
+  return { name: stamp.name, layers, files, edited, blocks, bossDir, brainProse, kept, settings: planSettings(projectDir, layers) };
 }
 
 // Un-merge only the hook registrations BOSS added. The founder's own hooks, their permissions and
@@ -195,7 +194,53 @@ function planSettings(projectDir, layers) {
   return { rel, merged, removed };
 }
 
-export function applyRemove(projectDir, plan) {
+// Copy `.boss/` aside before removal deletes it — and NOT into the project.
+//
+// WHY THIS EXISTS: the preview's own reassurance was false. `boss remove` printed *"commit first
+// if you want a one-command undo — then `git checkout .` restores everything"*, and `git checkout .`
+// restores none of `.boss/conscience-log.jsonl`, `cost-log.jsonl`, `trace.jsonl`,
+// `brain/relationship.md`, `backups/` or `board.html` — because the `.gitignore` BOSS itself ships
+// tells git to forget exactly those. The undo BOSS offered on the way out did not cover the files
+// BOSS had told git not to see. On 2026-08-21 that cost this repo its own conscience log,
+// permanently, when an assistant ran `--apply` in the wrong directory.
+//
+// It is the same asymmetry `sync --force` closed in v0.197.0, one function over: sync grew a
+// backup before it overwrote, and remove kept deleting without one.
+//
+// WHY THE MACHINE DIR AND NOT `.boss-removed-…/` IN THE PROJECT: `brain/relationship.md` is
+// per-person conscience state that [[DEC-001]] says never travels to a cofounder, and BOSS ships a
+// `.gitignore` rule saying so. A copy parked in the project is NOT covered by that rule, so the
+// first `git add -A` after an exit would commit the one file BOSS promised would stay local —
+// a safety net that leaks the thing it was saving. `~/.boss/` is per-person by construction, and
+// `boss remove --global` already walks and NAMES every file under it, so the parked copy shows up
+// in the other exit's preview without a line of new code.
+export function backupStateDir(projectDir, name, { root = BOSS_HOME, when } = {}) {
+  const src = join(projectDir, '.boss');
+  if (!existsSync(src)) return null;
+  const stamp = (when || new Date().toISOString()).slice(0, 19).replace(/[:T]/g, '-');
+  const slug = String(name || 'project').replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'project';
+  const dir = join(root, 'removed', `${slug}-${stamp}`);
+  // A copy inside the directory about to be deleted is not a copy. Only reachable when the
+  // project IS the home dir, but backupManaged's rule is absolute: a backup that did not
+  // survive must never be reported as done.
+  if (dir === src || dir.startsWith(src + sep)) return null;
+  try {
+    mkdirSync(dir, { recursive: true });
+    cpSync(src, dir, { recursive: true });
+  } catch {
+    return null;   // a backup that fails must never be reported as done — backupManaged's rule
+  }
+  let files = 0;
+  const walk = (d) => {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      if (e.isDirectory()) walk(join(d, e.name)); else files++;
+    }
+  };
+  try { walk(dir); } catch { /* counted best-effort; the copy is what matters */ }
+  return files ? { dir, files } : null;
+}
+
+export function applyRemove(projectDir, plan, opts = {}) {
   const done = [];
   for (const f of plan.files) {
     try { rmSync(join(projectDir, f.rel), { force: true }); done.push(f.rel); } catch { /* report as not-done */ }
@@ -245,6 +290,10 @@ export function applyRemove(projectDir, plan) {
     } catch { /* an export that fails must never block the removal */ }
   }
   if (plan.bossDir) {
+    // Backup FIRST, and record it on the plan so the caller can name the path it printed a
+    // promise about. A failed copy returns null and the removal still proceeds — refusing to
+    // exit because a safety net failed would trap the founder in the tool.
+    plan.backup = backupStateDir(projectDir, plan.name, opts);
     try { rmSync(join(projectDir, '.boss'), { recursive: true, force: true }); done.push('.boss/'); } catch { /* skip */ }
   }
   // Prune directories BOSS emptied — but never one that still holds the founder's files.
@@ -265,7 +314,7 @@ export function applyRemove(projectDir, plan) {
 // uninstalling the CLI does NOT break projects that still have BOSS in them. You lose the `boss`
 // verbs; the in-project experience keeps working.
 export function machineState() {
-  const dir = join(homedir(), '.boss');
+  const dir = BOSS_HOME;
   if (!existsSync(dir)) return { dir, files: [] };
   const files = [];
   const walk = (d) => {
