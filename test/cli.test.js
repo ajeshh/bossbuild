@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
-import { updateNote, installKind, updateCommand, PKG } from '../src/update.js';
+import { updateNote, installKind, updateCommand, uninstallCommand, PKG, TAP } from '../src/update.js';
 import { project, cleanup, idea, feat, canvas } from './helpers.js';
 
 after(cleanup);
@@ -292,9 +292,38 @@ test('being AHEAD of the registry is never reported as behind', () => {
 test('the upgrade command matches how BOSS was actually installed', () => {
   // Telling a Homebrew user to run `npm i -g` is advice that fails silently — they run it, nothing
   // changes, and they conclude the check is broken.
-  assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/boss/0.1.0')), 'brew upgrade boss');
+  assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/boss/0.1.0')), `brew upgrade ${TAP}/boss`);
   assert.equal(updateCommand(installKind('/usr/local/lib/node_modules/oyeboss')), 'npm i -g oyeboss@latest');
   assert.match(updateCommand(installKind('/Users/x/Projects/bossbuild')), /git pull/);
+});
+
+test('REGRESSION: the Homebrew commands are TAP-QUALIFIED, because a bare `boss` resolves elsewhere', () => {
+  // This test previously asserted `brew upgrade boss` — and so PINNED A COMMAND THAT CANNOT RUN.
+  // homebrew-cask ships its own `boss` (Risa Labs), and a bare name resolves to the cask, so for
+  // two months BOSS told every Homebrew user to run something that exits non-zero with
+  // "Cask 'boss' is not installed". The assertion was green the whole time: it checked that the
+  // string matched the string, which is the one thing that was never in doubt.
+  //
+  // A version-qualified assertion would rot the same way, so this asserts the SHAPE that makes the
+  // command resolve — a user/tap prefix — rather than any literal.
+  for (const cmd of [updateCommand('brew'), uninstallCommand('brew')]) {
+    assert.match(cmd, /^brew (upgrade|uninstall) \S+\/\S+\/boss$/,
+      `\`${cmd}\` must name the tap — a bare \`boss\` loses to the homebrew-cask formula of the same name`);
+  }
+});
+
+test('REGRESSION: the uninstall command is derived, not reverse-engineered from the upgrade string', () => {
+  // `boss remove --global` used to build the uninstall line by running three regex replaces over
+  // updateCommand()'s output, each matching an exact literal. When the brew command gained its tap
+  // prefix, `/^brew upgrade boss$/` stopped matching and the exit would have told a Homebrew user
+  // to UPGRADE as the way to remove BOSS — silently, because a failed .replace() is just the input.
+  assert.match(uninstallCommand('brew'), /^brew uninstall /);
+  assert.equal(uninstallCommand('npm'), `npm uninstall -g ${PKG}`);
+  assert.equal(uninstallCommand('source'), `npm uninstall -g ${PKG}`);
+  for (const kind of ['brew', 'npm', 'source']) {
+    assert.doesNotMatch(uninstallCommand(kind), /upgrade|i -g|git pull/,
+      'an uninstall command that still says "upgrade" is the regex chain failing open');
+  }
 });
 
 test('REGRESSION: the package name BOSS checks is the package name BOSS tells you to install', () => {

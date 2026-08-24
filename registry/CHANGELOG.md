@@ -9,6 +9,75 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.220.0 — 2026-08-24
+
+**One of the three install paths on the front page was handing out a build from 38 releases earlier,
+and the upgrade command BOSS printed for it could never have run. Neither was broken. Neither
+existed — nothing in this repo had ever written to the tap, and the release gate's own closing
+instructions stopped one step before publishing.**
+
+> **For you:** Only if you installed with Homebrew — and if you did, you have been on **0.179.0
+> since July** while npm users moved on. Two things were wrong. The tap was stale, which is fixed.
+> And the upgrade command BOSS told you to run, `brew upgrade boss`, **exits with an error**:
+> homebrew-cask ships an unrelated product also called `boss`, and a bare formula name loses to it.
+> The command that works is tap-qualified — `brew upgrade ajeshh/boss/boss` — and that is what
+> `boss update` prints now. Run it once and you will jump 38 releases.
+
+- 🔴 **`brew upgrade boss` was never a working command, and a test pinned it.** homebrew-cask has
+  its own `boss` (Risa Labs, a commercial product), so brew resolves the bare name to the cask and
+  answers *"Cask 'boss' is not installed"* with a non-zero exit. `src/update.js` shipped that string
+  for two months as the fix-it advice for the one install path least able to self-diagnose. The unit
+  test asserted `updateCommand(...) === 'brew upgrade boss'` and was green the entire time: it
+  checked that the string equalled the string, which was the one thing never in doubt. Both the
+  update and uninstall commands are tap-qualified now, and the replacement regression asserts the
+  **shape that resolves** (`user/tap/boss`) rather than a literal that would rot the same way.
+- 🔴 **The stale half was actively lying.** `boss update` exists because staleness is
+  self-confirming — *"the more stale you were, the more confidently BOSS said you were fine."* Against
+  a formula pinned at 0.179.0 the command it printed did nothing and reported success. The exact trap
+  that file was written to close, arriving through the one door it could not see.
+- **Nothing was automated, and that absence was the whole bug.** No CI, **zero git tags**, no publish
+  script, and the formula lives in a second repo (`ajeshh/homebrew-boss`) nothing here has ever
+  written to. Both publish steps were hand-typed from memory: npm got remembered most times, the tap
+  got remembered twice in two months. The tap is also structurally downstream — the formula's `url`
+  **is** the npm tarball, so it can never be fresher than npm, and grading it against `VERSION` would
+  demand a 404.
+- 🔴 **The release gate is what let it last.** `release.js` calls itself *"the one command that has to
+  pass before a release"*, verifies eleven things about a release's content, and signs off with
+  *"Remaining by hand: CHANGELOG entry · smoke-test · commit."* It stops at `commit`. Someone
+  following its own closing line ships a green check and never publishes. **That is this file's
+  header comment happening to this file** — *"Both worked. Both were manual npm scripts wired to
+  nothing."* The line now names `npm publish` and the tap.
+- **`npm run bump:formula`** — the hand step, made one command. A bump means three fields that must
+  agree (`url`, `sha256`, the version inside `test do`) with nothing computing the sha256 and nothing
+  checking afterwards. It fetches the tarball, hashes the exact bytes Homebrew will download (not the
+  registry's sha1/sha512), moves all three, and **re-reads the file to verify** rather than trusting
+  its own regexes. It refuses a version npm does not have, and it **does not push** — what a
+  stranger's `brew install` resolves stays a human keystroke.
+- **`npm run check:published`** — can a stranger install what this repo says it is? The thresholds
+  are the design: npm is **soft at a gap of 1**, because this runs *before* you publish and being one
+  ahead is what a release looks like — failing there would be the unsatisfiable gate `release.js`
+  already refuses to build. The tap is graded **against npm, hard at any gap**, because there is no
+  by-construction lag. It also catches a formula that disagrees with itself (installing one version,
+  asserting another). Offline exits 0 and checks nothing.
+- **Wired into `npm run check` AND `npm run release`**, which is v0.212.0's lesson applied without
+  having to relearn it: sessions run one gate, releases run the other, and *a checker in one gate is
+  a checker half-installed.*
+- **A latent fail-open, fixed on the way past.** `boss remove --global` built its uninstall line by
+  running three regex replaces over `updateCommand()`'s output, each matching an exact literal. A
+  failed `.replace()` returns its input, so the moment the brew command gained its tap prefix the
+  exit would have told a Homebrew user to **upgrade** as the way to remove BOSS. It derives from the
+  same constants now, and `uninstallCommand()` is asserted never to contain "upgrade".
+- 🔴 **The new check caught a bug in itself on its first live run.** Immediately after the tap was
+  pushed, `check:published` reported the fix as still broken: it read the formula from
+  `raw.githubusercontent.com`, which is CDN-cached for ~5 minutes, so it saw the *previous* file.
+  Harmless in that direction — but the same window runs the other way, and a gate that can report a
+  stale **PASS** for five minutes after someone reverts a formula is worse than no gate. It reads
+  the contents API now, with raw kept as a labelled fallback for the rate-limited case, so a cached
+  read is never mistaken for a fresh one.
+- **Swept:** a directory literally named `{{HOMEBREW_PREFIX}}` in the repo root — an unexpanded
+  template variable used as a real path, left by hand-testing the formula, untracked, un-ignored and
+  one `git add -A` from being committed. Removed and added to `.gitignore`.
+
 ## 0.219.0 — 2026-08-23
 
 **The three tiers BOSS runs on its own repo — local, tracked, public — were never written down for

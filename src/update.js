@@ -29,6 +29,13 @@ const CACHE = join(homedir(), '.boss', 'update-check.json');
 // The package name is written ONCE: the registry URL and the update command must never disagree,
 // because a rename that lands in one and not the other is silent. Pinned by a REGRESSION test.
 export const PKG = 'oyeboss';
+// The tap, written once for the same reason PKG is. `brew upgrade boss` — the command BOSS shipped
+// for two months — DOES NOT WORK: homebrew-cask has its own `boss` (Risa Labs, an unrelated
+// commercial product), and a bare formula name loses to it. brew answers "Cask 'boss' is not
+// installed" and exits non-zero, so the one install path that most needed a working upgrade command
+// had one that could never run. Fully qualified is not belt-and-braces here; it is the only form
+// that resolves. Pinned by a REGRESSION test.
+export const TAP = 'ajeshh/boss';
 const REGISTRY = `https://registry.npmjs.org/${PKG}/latest`;
 const TIMEOUT_MS = 4000;
 const STALE_DAYS = 7;
@@ -61,9 +68,18 @@ export function installKind(root = BOSS_ROOT) {
 }
 
 export function updateCommand(kind = installKind()) {
-  return kind === 'brew' ? 'brew upgrade boss'
+  return kind === 'brew' ? `brew upgrade ${TAP}/boss`
     : kind === 'source' ? 'git pull && npm i -g .'
-      : 'npm i -g oyeboss@latest';
+      : `npm i -g ${PKG}@latest`;
+}
+
+// The exit, derived from the same three facts rather than reverse-engineered from the string above.
+// `boss remove --global` used to build this by running THREE regex replaces over updateCommand()'s
+// output — a chain that matched exact literals, so the moment the brew command changed here it
+// would have silently emitted "brew upgrade …" as the way to UNINSTALL. Two strings that must agree
+// with nothing checking is the defect this file already names about PKG; it applied to the exit too.
+export function uninstallCommand(kind = installKind()) {
+  return kind === 'brew' ? `brew uninstall ${TAP}/boss` : `npm uninstall -g ${PKG}`;
 }
 
 async function fetchLatest() {

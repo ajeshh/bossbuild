@@ -57,3 +57,9 @@ docs/mentor-practitioners.md
 /.claude/
 /.boss/
 /bossbuild.code-workspace
+
+# Fallout from hand-testing the Homebrew formula: an unexpanded template variable used as a real
+# path. `npm install --prefix '{{HOMEBREW_PREFIX}}'` creates it as a literal directory, complete
+# with lib/node_modules and share/man, in whatever cwd you ran it from. Empty, untracked and one
+# `git add -A` from being committed. `npm run bump:formula` exists so nobody hand-runs that again.
+{{HOMEBREW_PREFIX}}/

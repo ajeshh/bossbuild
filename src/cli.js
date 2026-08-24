@@ -9,7 +9,7 @@ import { learn, LIBRARY_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog } from './changelog.js';
 import { detectStage } from './detect.js';
-import { printUpdate, updateNote, installKind, updateCommand } from './update.js';
+import { printUpdate, updateNote, installKind, uninstallCommand } from './update.js';
 import { printCredit } from './credit.js';
 import { planRemove, applyRemove, machineState, removeMachineState } from './remove.js';
 import { built, nextSeam } from './ladder.js';
@@ -756,8 +756,7 @@ function cmdRemove(args) {
   // different blast radius, so it never happens as a side effect of the project one.
   if (f.global) {
     const { dir, files } = machineState();
-    const cmd = updateCommand(installKind()).replace(/^npm i -g oyeboss@latest$/, 'npm uninstall -g oyeboss')
-      .replace(/^brew upgrade boss$/, 'brew uninstall boss').replace(/^git pull && npm i -g \.$/, 'npm uninstall -g oyeboss');
+    const cmd = uninstallCommand(installKind());
     console.log(`\n  ${bold('Remove BOSS from this machine')}\n`);
     console.log(`    ${bold(cmd)}   ${dim('— removes the CLI')}`);
     console.log(`\n  ${dim('Machine-local state BOSS keeps outside any project:')} ${dim(dir)}`);

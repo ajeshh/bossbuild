@@ -359,6 +359,28 @@ if (!fast) {
   console.log(`  ${dim('· conscience eval gate skipped (--fast)')}`);
 }
 
+// --- 9. can a stranger install what this repo says it is? ----------------
+// Added 2026-08-23, after the tap was found serving a build from 38 releases earlier for over two
+// weeks — `brew install ajeshh/boss/boss` handing out 0.179.0 while this file signed off "Ready to
+// release v0.217.0" every time. THIS GATE IS WHY IT LASTED. It verified the CONTENT of a release
+// exhaustively and then closed with a hand-step list that stopped at `commit`, so a releaser doing
+// exactly what it said never reached `npm publish` and never touched the formula at all.
+//
+// Both thresholds live in check-published.js and are the whole design (npm soft at a gap of 1,
+// because this gate runs BEFORE you publish; the tap graded against npm rather than VERSION,
+// because a formula cannot reference an unpublished tarball). Offline exits 0 and checks nothing —
+// a release must never be blocked by a plane.
+{
+  const r = run('node', [join('scripts', 'check-published.js'), '--strict']);
+  const offline = /No network/.test(r.out);
+  record('published state', r.code === 0,
+    offline ? 'skipped — no network'
+      : r.code === 0 ? 'npm and the Homebrew tap serve this repo'
+        : 'an advertised install path is stale — see output below',
+    offline);
+  if (r.code !== 0) console.log(r.out.trimEnd());
+}
+
 // --- verdict -------------------------------------------------------------
 const hard = results.filter((r) => !r.pass && !r.soft);
 const soft = results.filter((r) => !r.pass && r.soft);
@@ -369,4 +391,8 @@ if (hard.length) {
   process.exit(1);
 }
 console.log(`  ${ok('✦')} ${bold('Ready to release v' + VERSION)}${soft.length ? dim(`  (${soft.length} advisory note(s) above)`) : ''}`);
-console.log(`  ${dim('Remaining by hand: registry/CHANGELOG.md entry · /tmp scaffold smoke-test · commit.')}\n`);
+console.log(`  ${dim('Remaining by hand: registry/CHANGELOG.md entry · /tmp scaffold smoke-test · commit,')}`);
+// Publishing was missing from this list for the whole life of the gate, and the omission was the
+// bug: everything above verifies a release that, followed literally, never leaves the machine.
+console.log(`  ${dim('then')} ${bold('npm publish')} ${dim('·')} ${bold('npm run bump:formula')} ${dim('· push the tap.')}`);
+console.log(`  ${dim('Those last three are what a stranger actually installs. `npm run check:published` grades them.')}\n`);
