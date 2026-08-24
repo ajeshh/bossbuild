@@ -33,6 +33,12 @@
     "secrets-guard",
     "memory-cue"
   ],
+  "coreLoop": [
+    "boss",
+    "triage",
+    "canvas",
+    "evidence"
+  ],
   "loops": [
     "capture-loop",
     "canvas-loop",

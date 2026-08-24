@@ -204,3 +204,46 @@ test('REGRESSION: example ids in documentation are illustrations, not reservatio
   assert.equal(nextId(d, 'IDEA'), 'IDEA-010');
   rmSync(d, { recursive: true, force: true });
 });
+
+// --- what reaches `boss status`, and what stays in `boss records` -----------------------------
+// `cmdStatus` said it carried "ONLY the direction that is good news" while `driftLine` fell back to
+// "N records no longer match your repo" whenever there was no good news — so the orientation surface
+// grew the chore line it promised not to carry. Observed on a project whose only findings were
+// missing `from:` fields. These pin the boundary in both directions.
+
+test('REGRESSION: a chore-only project is silent on `boss status` — chores live in `boss records`', () => {
+  // A FEAT with no `from:` is a real finding (`unlinked-promotion`) and a real chore. It is exactly
+  // the shape that used to print "3 records no longer match your repo" above a founder's board.
+  const d = project([
+    ['FEAT-001-a.md', 'id: FEAT-001\nstatus: building\nproof: none\nproof_note: x'],
+    ['FEAT-002-b.md', 'id: FEAT-002\nstatus: building\nproof: none\nproof_note: x'],
+  ]);
+  assert.ok(recordDrift(d).length > 0, 'the findings still exist — this is about WHERE they surface');
+  assert.equal(driftLine(d), null, 'boss status is not a chore list');
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('a duplicate id DOES reach status — it is not untidy, it makes every reference ambiguous', () => {
+  const d = project([
+    ['IDEA-059-a.md', 'id: IDEA-059\nstatus: shipped\nproof: none\nproof_note: x'],
+    ['IDEA-059-b.md', 'id: IDEA-059\nstatus: shipped\nproof: none\nproof_note: x'],
+  ]);
+  const line = driftLine(d);
+  assert.ok(line, 'a claimed-twice id is worth interrupting for');
+  assert.match(line.head, /IDEA-059/, 'names the id, so it can be acted on without a second command');
+  assert.match(line.head, /ambiguous/, 'phrased as the consequence, not the count');
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('good news still outranks a duplicate id — the positive register leads when there is one', () => {
+  const d = project(
+    [
+      ['IDEA-001-x.md', 'id: IDEA-001\nstatus: exploring\nproof: src/done.ts'],
+      ['IDEA-059-a.md', 'id: IDEA-059\nstatus: shipped\nproof: none\nproof_note: x'],
+      ['IDEA-059-b.md', 'id: IDEA-059\nstatus: shipped\nproof: none\nproof_note: x'],
+    ],
+    ['src/done.ts'],
+  );
+  assert.match(driftLine(d).head, /already finished/);
+  rmSync(d, { recursive: true, force: true });
+});

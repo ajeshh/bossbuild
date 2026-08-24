@@ -175,16 +175,52 @@ export function recordDrift(projectDir) {
   return findings.sort((a, b) => (rank[a.kind] ?? 9) - (rank[b.kind] ?? 9));
 }
 
-/** The `boss status` line. One line, only for findings a founder would want interrupted for. */
+/** The `boss status` line. One line, only for findings a founder would want interrupted for.
+ *
+ * This function and its one caller used to disagree about what "worth interrupting for" meant, and
+ * the caller was the honest one. `cmdStatus` said *"ONLY the direction that is good news"* while
+ * this fell back to `N records no longer match your repo` whenever there was no good news — so a
+ * founder opening `boss status` got a chore line the surface had promised not to carry. Observed on
+ * a project whose only findings were missing `from:` fields.
+ *
+ * Two things reach status now, and nothing else:
+ *
+ *   1. `built-not-recorded` — work they FINISHED and did not write down. The positive register, and
+ *      the reason this line exists at all.
+ *   2. `duplicate-id` — two files claiming one number. This is the one finding that is not a chore:
+ *      it does not describe a record being untidy, it makes every REFERENCE to that id ambiguous,
+ *      including the ones in other records. It corrupts the vocabulary the rest of the board reads.
+ *
+ * Everything else — `claimed-not-built`, `unlinked-promotion`, `off-vocabulary` — is real, stays in
+ * `recordDrift`, and is what `boss records` is for. A founder goes there to tidy; they come to
+ * `boss status` to find out where they are.
+ */
 export function driftLine(projectDir) {
   const loud = recordDrift(projectDir).filter((f) => !f.quiet);
   if (!loud.length) return null;
-  const built = loud.filter((f) => f.kind === 'built-not-recorded').length;
+
   // Lead with the positive-register finding when there is one: this is work they DID.
-  const head = built
-    ? `${built} record${built === 1 ? '' : 's'} describe${built === 1 ? 's' : ''} work you've already finished`
-    : `${loud.length} record${loud.length === 1 ? '' : 's'} no longer match${loud.length === 1 ? 'es' : ''} your repo`;
-  return { head, count: loud.length };
+  const built = loud.filter((f) => f.kind === 'built-not-recorded').length;
+  if (built) {
+    return {
+      head: `${built} record${built === 1 ? '' : 's'} describe${built === 1 ? 's' : ''} work you've already finished`,
+      count: built,
+    };
+  }
+
+  // The one non-chore. Phrased as the CONSEQUENCE, not the count, because the count is not the
+  // problem — a founder who reads "2 findings" tidies later, and one who reads "every reference to
+  // it is ambiguous" understands why it cannot wait.
+  const dupes = loud.filter((f) => f.kind === 'duplicate-id');
+  if (dupes.length) {
+    const ids = [...new Set(dupes.map((f) => f.id))];
+    return {
+      head: `${ids.join(', ')} ${ids.length === 1 ? 'is claimed by two files' : 'are each claimed by two files'} — every reference to ${ids.length === 1 ? 'it' : 'them'} is ambiguous`,
+      count: ids.length,
+    };
+  }
+
+  return null;
 }
 
 

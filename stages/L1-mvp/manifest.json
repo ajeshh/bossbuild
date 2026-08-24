@@ -50,6 +50,12 @@
     "design-tokens-guard",
     "schema-guard"
   ],
+  "coreLoop": [
+    "spec",
+    "smoke",
+    "log",
+    "close"
+  ],
   "headline": [
     "spec",
     "smoke",

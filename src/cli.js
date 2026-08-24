@@ -348,11 +348,36 @@ function cmdUnlock(args) {
   registerProject({ name: stamp.name, path: process.cwd(), stage: target, mode: m.name, bossVersion: bossVersion() });
   console.log(`\n  ${ok('✦')} Unlocked ${bold(m.name + ' mode')} (${target}).`);
   if (applied.appendedClaude) console.log(`    ${ok('+')} appended ${m.name} working rules to CLAUDE.md`);
+
+  // Say what actually arrived, and where to go next — the parity `boss new` has always had and this
+  // did not. `boss new` installs 3 agents and 16 skills and prints both plus an explicit Next block;
+  // `boss unlock mvp` installs 7 agents, 28 skills and 14 loops and used to print two lines. The
+  // BIGGER change was the quieter one, and a founder was left to discover a doubled surface on their
+  // own. Counts come from the mode's own manifest, so this is the delta that just landed — not the
+  // cumulative install, which is what `boss map` is for.
+  const arrived = [
+    [(m.agents || []).length, 'agent'],
+    [(m.skills || []).length, 'skill'],
+    [(m.loops || []).length, 'loop'],
+  ].filter(([n]) => n > 0).map(([n, w]) => `${n} ${w}${n === 1 ? '' : 's'}`);
+  if (arrived.length) {
+    console.log(`\n  ${bold('Now available')} ${dim(`(${arrived.join(' · ')})`)}`);
+    if ((m.agents || []).length) console.log(`    agents: ${skillsLine(m.agents)}`);
+    if ((m.skills || []).length) console.log(`    skills: ${skillsLine(m.skills)}`);
+  }
+
   const note = ROLE_SHIFT[target];
   if (note) {
     console.log(`\n  ${dim('— what this rung tends to ask of you —')}`);
     for (const line of note) console.log(`  ${line}`);
   }
+
+  // Two reads, not a first move. Which command actually comes next depends on what this project
+  // already has captured, and `boss status` is the surface that computes that — so point at it
+  // rather than hardcoding a per-rung guess that is wrong for any founder who arrived mid-stream.
+  console.log(`\n  ${bold('Next')}`);
+  console.log(`    boss map              ${dim('# everything this rung just added')}`);
+  console.log(`    boss status           ${dim('# where that leaves you, and what to pick up')}`);
   console.log('');
 }
 
@@ -395,9 +420,12 @@ function printBuiltAndSeam(projectDir, stamp) {
     const rest = names.length > 4 ? dim(`  +${names.length - 4} more`) : '';
     console.log(`    ▸ ${bold('Already built:')}   ${shown}${rest}`);
   }
-  // Record drift, and ONLY the direction that is good news: work they finished and did not write
-  // down. The other findings are real but they are chores, and `boss status` is not a chore list —
-  // `boss records` is where someone goes to look. This is the same restraint as the seam below.
+  // Record drift — but only what a founder would want interrupted for: work they finished and did
+  // not write down (the good news), or an id claimed by two files (the one finding that is not a
+  // chore, because it makes every reference to that id ambiguous). Everything else is real and
+  // lives in `boss records`; `boss status` is not a chore list. This restraint is now ENFORCED in
+  // `driftLine`, not just described here — it used to fall back to a chore line whenever there was
+  // no good news, which is how this surface grew the thing this comment says it doesn't carry.
   try {
     const d = driftLine(projectDir);
     if (d) console.log(`    ${dim('▸ Records:')}        ${d.head} — ${dim('boss records')}`);
@@ -422,7 +450,14 @@ function printFocusAndHeadway(projectDir) {
   if (finish.length) {
     const f = finish[0];
     const more = finish.length > 1 ? dim(`   (+${finish.length - 1} more in flight)`) : '';
-    console.log(`    ▸ ${bold('Building now:')}    ${f.id} — ${f.title}${more}`);
+    // Every other branch of this if-chain ends in a command, and this one — the branch a founder
+    // in build hits every single day — used to end in a full stop. So the highest-priority line on
+    // the surface was the only one with nothing to DO, while three lower-priority lines below it
+    // each carried a pointer. That is the exact complaint EVID-001 filed: *"I forget what feature
+    // I'm building."* Being told the id is not the same as being told how to get back into it.
+    // The card is the answer — goal, acceptance criteria, the paths that must not break — and it
+    // is a read of a file that already exists, not a new surface.
+    console.log(`    ▸ ${bold('Building now:')}    ${f.id} — ${f.title}${more}   ${dim(`→ boss board ${f.id}`)}`);
   } else if (start.length) {
     console.log(`    ▸ ${bold('Ready to build:')}  ${start[0].id} — ${start[0].title}   ${dim('→ /spec')}`);
   } else if (pressure.length) {

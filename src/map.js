@@ -95,9 +95,22 @@ export function renderMap(projectDir, stamp, opts = {}) {
     // Fold this rung's post-launch skills until something has shipped. `--all` opens them; once a
     // FEAT ships they appear on their own under their own heading, because then they're the work.
     const post = new Set(shipped || showAll ? [] : (mode.postLaunch || []));
-    const now = skillsHere.filter((s) => !post.has(s));
     const later = skillsHere.filter((s) => post.has(s));
+    // The rung's own loop first, IN ORDER, then the rest alphabetically. This list used to be
+    // sorted end-to-end, which put `/ai-cost`, `/ai-failure-states` and `/ai-first-init` at the top
+    // of MVP and scattered the loop the rung actually runs — `/close` 4th, `/log` 14th, `/smoke`
+    // 20th, `/spec` 21st of 21. So the first thing a freshly-unlocked founder read was AI-cost
+    // infrastructure, and the sequence they were meant to repeat was invisible. Alphabetical order
+    // is what a list looks like when nothing is sequencing it; a rung is a loop, not an index.
+    const loop = (mode.coreLoop || []).filter((s) => skillsHere.includes(s) && !post.has(s));
+    const inLoop = new Set(loop);
+    const now = [...loop, ...skillsHere.filter((s) => !post.has(s) && !inLoop.has(s))];
     lines.push(`    ${bold(mode.name)}`);
+    // Name the sequence before listing it — the order alone reads as an accident unless something
+    // says it isn't. One dim line, and only when there is a loop to name.
+    if (loop.length > 1) {
+      lines.push(`      ${dim('the loop:')} ${dim(loop.join(' → '))}`);
+    }
     for (const s of now) {
       const { gloss } = installedGloss(projectDir, s, layerId);
       lines.push(`      ${'/' + s.padEnd(18)} ${dim(fit(gloss))}`);

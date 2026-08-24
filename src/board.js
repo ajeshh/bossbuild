@@ -404,7 +404,12 @@ export function collectBoard(projectDir) {
 // (voice-keeper). When there's motion but nothing pressure-tested, it says so:
 // that's the humane point of the surface.
 function evidenceLine(counts, total) {
-  if (total === 0) return 'Nothing captured yet — `/triage <thought>` starts the board.';
+  // Same state, same first command as `boss status` says. These two surfaces used to disagree —
+  // status offered `/boss or /triage`, this offered only `/triage` — so a founder who ran both in
+  // their first ten minutes was given two different places to start, on the one screen where they
+  // have the least basis for choosing. On an empty project `/boss` genuinely is the front door
+  // (it is what `boss new` hands you); `/triage` is the one that keeps working forever.
+  if (total === 0) return 'Nothing captured yet — `/boss <your idea>` to spin up, or `/triage <thought>` to capture one.';
   if (counts.Captured > 0 && counts['Taking shape'] === 0 && counts.Building === 0) {
     const n = counts.Captured;
     return `${n} captured, nothing pressure-tested yet — what would you learn first? (\`/canvas\`)`;

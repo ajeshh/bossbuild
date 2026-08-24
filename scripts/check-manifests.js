@@ -85,6 +85,25 @@ function checkStage(stageId) {
     }
   }
 
+  // `coreLoop` is the ORDERED spine `boss map` renders first for a rung you're standing in. It rots
+  // the same way `headline` does — a renamed or dropped skill — but it fails WORSE and more quietly:
+  // a headline that loses an entry shows a shorter preview, while a coreLoop that loses one silently
+  // drops that step out of the sequence the founder is being told to repeat. The rendered arrow line
+  // ("spec → smoke → log → close") would still look complete and would be missing a station.
+  for (const s of manifest.coreLoop || []) {
+    if (!(manifest.skills || []).includes(s)) {
+      errors.push(`coreLoop lists '${s}' which is not in this stage's skills (the loop would render with a step missing)`);
+    }
+  }
+  // A skill can't be both the loop you repeat and an after-you-ship skill folded out of sight —
+  // `boss map` filters postLaunch out of the loop, so this would be a silent no-op, not an error a
+  // founder could see.
+  for (const s of manifest.coreLoop || []) {
+    if ((manifest.postLaunch || []).includes(s)) {
+      errors.push(`coreLoop lists '${s}' which is also postLaunch (it would be folded out of the loop it defines)`);
+    }
+  }
+
   // `postLaunch` folds a rung's after-you-ship skills in `boss map` until a FEAT ships. A stale
   // entry would silently fold nothing (harmless) or, worse, name a skill that no longer exists and
   // make the count lie about what's behind the fold.

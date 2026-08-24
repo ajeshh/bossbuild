@@ -9,6 +9,71 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.232.0 — 2026-08-24
+
+**`boss status` is the where-am-I command. On a project you had been away from, it answered with
+five next actions — and the one thing you were actually building was the only line with no way back
+into it.** Found by WALKING the surface instead of reading it: scaffold a throwaway, unlock MVP,
+populate it with real work, come back after twelve days. Every finding below is observed output, not
+a read of the source — which matters, because v0.230.0's own UP finding says an AI design review
+moves feedback and scannability and catches flow problems at approximately zero. This is the flow.
+
+> **For you:** `boss status` now tells you how to get back INTO the thing you were building
+> (`→ boss board FEAT-002`), and no longer prints record chores — those stay in `boss records`, which
+> is where you go to tidy. `boss unlock` finally says what just arrived and where to go next, the way
+> `boss new` always has. `boss map` leads each rung with the loop you actually repeat
+> (`the loop: spec → smoke → log → close`) instead of an alphabetical list that opened on `/ai-cost`.
+
+- 🔴 **The most important line on the surface was the only one without a verb.** `printFocusAndHeadway`
+  has four branches. `Ready to build:` ends in `→ /spec`; `Next:` ends in `→ /canvas`; the empty state
+  names `/boss` and `/triage`. `Building now:` — **the branch a founder in build hits every single
+  day** — ended in a full stop, while three lower-priority lines below it each carried a pointer.
+  Being told the id is not the same as being told how to get back in. It now points at the card
+  (`boss board FEAT-NNN`): goal, acceptance criteria, the paths that must not break. **This is
+  [[EVID-001]]'s *"I forget what feature I'm building"* answered on the surface that had already
+  computed the answer** — a read of a file that exists, not a new skill.
+- 🔴 **`boss status` grew the chore line its own comment forbade — 22nd
+  [[checkers-state-intents-they-dont-enforce]], and a new flavour: the intent statement sat three
+  lines above the code that violated it.** `cmdStatus` said it carried *"ONLY the direction that is
+  good news"*; `driftLine` fell back to `N records no longer match your repo` whenever there was no
+  good news. Observed firing on a project whose every finding was a missing `from:` field. **The two
+  files disagreed about what the surface was for, and the caller was the honest one.** Now enforced,
+  not described — with one deliberate exception: a **`duplicate-id` still reaches status**, because it
+  is not an untidy record, it makes every *reference* to that id ambiguous, including the ones inside
+  other records. Phrased as the consequence, never the count.
+- **The biggest state change BOSS makes was its quietest moment.** `boss new` installs 3 agents and
+  16 skills and prints both plus an explicit `Next` block with exact commands. `boss unlock mvp`
+  installs **7 agents, 29 skills and 14 loops** and printed two lines and a paragraph — no inventory,
+  no next step. **The bigger change got less guidance**, and a founder was left to discover a doubled
+  surface alone. It now names what arrived (from the mode's own manifest, so it is the delta, not the
+  cumulative install) and points at `boss map` + `boss status` — two reads, not a hardcoded first move
+  that would be wrong for anyone who arrived mid-stream.
+- **Alphabetical order is what a list looks like when nothing is sequencing it.** `boss map` sorted
+  each rung end-to-end, so MVP opened on `/ai-cost`, `/ai-failure-states`, `/ai-first-init` and
+  scattered the loop the rung actually runs — `/close` 4th, `/log` 14th, `/smoke` 20th, `/spec` 21st
+  of 21. **The first thing a freshly-unlocked founder read was AI-cost infrastructure, and the
+  sequence they were meant to repeat was invisible.** New `coreLoop` manifest field: the ordered spine,
+  rendered first, under a dim `the loop:` line that names the sequence — because order alone reads as
+  an accident unless something says it is not. **Taken from each rung's own authored working rules,
+  never invented** (MVP's from `claude-append.md` rule 5, Quickstart's from its CLAUDE.md). It is not
+  `headline`, and the difference is the point: `headline` is a preview subset curated to entice and its
+  order means nothing; `coreLoop` is a sequence for someone standing in the rung, where order IS the
+  content. `/pretotype` is a compelling preview and not part of the loop; `/log` is a dull preview and
+  is. **`check:manifests` validates it in both directions** — a renamed skill would otherwise drop a
+  station out of the arrow line while it still looked complete.
+- **Two surfaces disagreed about where to start.** `boss status` offered `/boss or /triage`;
+  `boss board` offered only `/triage` — the same state, two different front doors, on the one screen
+  where a founder has the least basis for choosing. Aligned.
+- **Captured, not built — [[IDEA-076]].** The remaining half of EVID-001's *"train line"*: the ladder
+  renders four mode names with the current one bolded and **never shows position WITHIN a rung**,
+  which is where a founder spends weeks. Nothing computes readiness either — `graduationHint` is a
+  static manifest string, and only `unlock scale` names a bar (the two rungs people actually climb
+  do not). That is a real build with a real risk of inventing a progress bar BOSS has not earned, and
+  it gets a spec, not a drive-by. **A progress surface that cannot go down is a comfort device.**
+- 248 unit tests (+3). ⚠️ **`site/` and `web/` deliberately untouched** — Ajesh's standing 22-file fix
+  is still uncommitted in that tree and needs its own yes, so `gen:site` was not run and this entry
+  has not reached `whats-new.html`.
+
 ## 0.231.0 — 2026-08-24
 
 **`boss status` could tell you where you are on the ladder and what you were building — but not how

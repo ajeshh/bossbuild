@@ -64,6 +64,23 @@ export function loadModes() {
         // tell where I am / I'm worried about bloat"). Empty = show them all (fine for a
         // rung with 1–3 skills). `boss map --next` always shows the full list.
         headline: m.headline || [],
+        // The ORDERED spine of this rung — the sequence a founder actually repeats here, in the
+        // order they repeat it. `boss map` renders these first, in this order, ahead of the
+        // alphabetical remainder, so the rung's loop is visible instead of buried.
+        //
+        // NOT the same field as `headline` above, and the difference is the whole point:
+        //   · `headline` is a PREVIEW subset — the few skills most worth naming to someone who
+        //     has not unlocked this rung yet. Curated to entice; order is not meaningful.
+        //   · `coreLoop` is a SEQUENCE for someone standing IN the rung. Order IS the content.
+        // MVP's differ for exactly that reason: `/pretotype` is a compelling preview and is not
+        // part of the repeating loop; `/log` is a dull preview and is.
+        //
+        // Each rung's loop is TAKEN FROM ITS OWN AUTHORED WORKING RULES, never invented here —
+        // MVP's from `claude-append.md` rule 5 ("open → spec → build → smoke → log → close"),
+        // Quickstart's from its CLAUDE.md ("capture → keep adding → canvas"), with `/evidence` as
+        // the step `/canvas` hands its one-week experiment to. Empty = no declared loop, render
+        // alphabetically as before; V1 and Scale ship 2 skills and 1, where ordering earns nothing.
+        coreLoop: m.coreLoop || [],
         // Skills whose moment only arrives once something is LIVE — the "After you ship" arc
         // (GUIDE.md groups them the same way). `boss map` folds these to a single line until the
         // project has actually shipped a FEAT, so a founder at MVP with one idea isn't read a menu
