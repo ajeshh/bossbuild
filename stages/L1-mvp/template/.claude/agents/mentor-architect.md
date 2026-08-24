@@ -38,18 +38,21 @@ keep them live (this is the model-recalibration discipline, IDEA-014):
   don't assume last quarter's answer holds. (A heuristic, not a law — the evidence is on consultants.)
 - **The 70% problem — the `/prototype`→MVP boundary.** AI gets you ~70% fast (the part you already
   understand) and stalls on the last 30% (the part you don't). That 30% is the skill you still have to
-  own (Osmani; GitClear telemetry, 623M changes: copy-paste overtook refactor in 2024 and kept going —
-  copy/paste 9.4% of changed lines in 2022 → 15.7% in 2026, duplication +81% since 2023). It marks the
-  line between `/prototype` (sketch freely, AI drives) and `/spec`/MVP (now you must actually understand
-  what ships). A founder who can't shape the last 30% is the signal to slow down, not ship. Suggestive,
-  never a gate.
+  own. ⚠️ **Say it as a shape, never as a number** — "70/30" is Addy Osmani's *framing*, not a
+  measurement, and no study sits behind it. It marks the line between `/prototype` (sketch freely, AI
+  drives) and `/spec`/MVP (now you must actually understand what ships). A founder who can't shape the
+  last stretch is the signal to slow down, not ship. Suggestive, never a gate.
 - **The boy-scout rule lost its host — don't answer that with a refactor cadence.** Fowler's advice has
   been settled for twenty years and it is the opposite of a schedule: refactoring is *"something you do
   continuously, as regular and indivisible a part of programming as typing if statements."* That has a
   hidden dependency — **a human typing the if statements.** Tidying was never a discipline anyone
   planned; it was a by-product of reading a file in order to change it. Agents change files nobody read,
-  so the by-product stops: GitClear's moved-code share (their refactoring proxy) fell **13% of changed
-  lines in 2023 → 3.8% in 2026**. Refactoring didn't decline — its host died. **The wrong fix is the
+  so the by-product stops. **Peter Naur named the mechanism forty years before these tools existed**
+  (*Programming as Theory Building*, 1985): what a program really carries is the **theory** its builders
+  hold, and *"reestablishing the theory of a program merely from the documentation is strictly
+  impossible."* In an agent build **nobody ever held that theory** — so there is nothing for tidying to
+  fall out of, and "we'll refactor it later" is a bigger promise than it sounds. Refactoring didn't
+  decline; its host died. **The wrong fix is the
   popular one.** Fowler names a scheduled refactor block as the *symptom* of having skipped the
   opportunities — *"a team that's using refactoring well should hardly ever need to plan refactoring."*
   The rule needs a new host, and in an agent build that host is a **breakpoint, not a calendar**: a

@@ -9,6 +9,38 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.225.0 — 2026-08-24
+
+**`mentor-architect` shipped four GitClear figures as founder-facing facts this morning. They are the
+same class as the 62% removed an hour ago — a vendor slope measured on a sample that churns. The
+argument they were propping up is fine; it just needed a better foundation, and there is one from 1985.**
+
+> **For you:** the architecture mentor no longer quotes telemetry you cannot check. It makes the same
+> point from Peter Naur's *Programming as Theory Building* — and the "70/30" rule of thumb is now
+> labelled as a rule of thumb, not a statistic.
+
+- 🔴 **Four GitClear figures removed from founder-facing text** — 623M changes, copy/paste 9.4% → 15.7%,
+  duplication +81%, moved-code 13% → 3.8%. A full read of the GitClear PDF finds the sample is *"about
+  two-thirds private corporations that have opted in"* — its own paying customers, a population that
+  **churns**, which is a direct attack on a claim whose entire content is a **slope**. The 2025 data
+  carries **no AI/human attribution**, so the causal half was inference over a time series. An
+  independent **1,356-repo** study (arXiv:2607.05677) finds *"no broad deterioration."*
+- ✅ **The argument survives, better grounded.** Peter Naur, *Programming as Theory Building* (1985):
+  *"reestablishing the theory of a program merely from the documentation is strictly impossible."* In
+  an agent build **nobody ever held that theory** — so there is nothing for tidying to fall out of.
+  Same conclusion, a primary source, forty years older than the tools. Refactoring didn't decline; its
+  host died.
+- 🔴 **The "70% problem" is framing, not measurement.** No study sits behind it; it is Addy Osmani's
+  figure of speech, and BOSS was shipping it as a number *next to* a vendor slope. Now marked **"say it
+  as a shape, never as a number."** A frame that arrives wearing a percentage is a number nobody has to
+  defend.
+- **Guard:** a test now fails if any GitClear slope figure returns to founder-facing craft text, and
+  requires both the Naur grounding and the framing caveat to stay. Verified non-vacuous. 211 tests.
+
+**The session's real finding, in one line:** four vendor statistics failed verification today —
+**GitClear, CHAOS, DORA, OX Security** — plus a misattributed phrase, a retracted doctrine, and a rule
+no verdict ever authorized. **Cite the framing, never the figures.**
+
 ## 0.224.0 — 2026-08-24
 
 **Two corrections. `/prototype` shipped a "keep iterating" step this morning with no stopping point,

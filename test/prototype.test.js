@@ -23,6 +23,9 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { STAGES_DIR } from '../src/paths.js';
 
+const ARCHITECT = join(
+  STAGES_DIR, 'L1-mvp', 'template', '.claude', 'agents', 'mentor-architect.md');
+
 const SKILL = join(
   STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'skills', 'prototype', 'SKILL.md');
 const src = () => readFileSync(SKILL, 'utf8');
@@ -136,4 +139,22 @@ test('/prototype caps unsupervised iteration and does not cite the number that f
       `/prototype cites an unverified iterative-degradation figure (matched ${re}). `
       + 'The primary supports the authors\' cap of 3, not that number.');
   }
+});
+
+test('founder-facing craft text carries no unsourced vendor slope figures', () => {
+  // 2026-08-24: four vendor statistics failed verification in one session — GitClear (sample is its
+  // own churning paying customers, no AI/human attribution, and the claim is a SLOPE), CHAOS
+  // ("meaningless figures", Eveleens & Verhoef), DORA (silent on what it was cited for), and OX
+  // Security (62%, an unattributed marketing headline). The substrate argument stands on Naur 1985,
+  // a primary that needs no vendor telemetry. Osmani's "70%" is framing, not measurement.
+  const text = readFileSync(ARCHITECT, 'utf8');
+  for (const re of [/GitClear/i, /623M/, /9\.4%/, /15\.7%/, /\+81%/, /3\.8% in 2026/]) {
+    assert.ok(!re.test(text),
+      `mentor-architect re-acquired a vendor slope figure (matched ${re}). `
+      + 'Cite the framing, never the figures — see SESSION-2026-08-24-schema-practice-refresh.');
+  }
+  assert.match(text, /Naur/,
+    'the substrate argument lost its primary source and is standing on nothing');
+  assert.match(text, /never as a number/i,
+    'the 70/30 figure must be marked as framing, not measurement');
 });
