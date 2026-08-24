@@ -6,12 +6,12 @@
 <title>Design — how BOSS approaches UI and UX</title>
 <meta name="description" content="What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation." />
 <meta name="color-scheme" content="light dark" />
-<link rel="canonical" href="https://oyeboss.build/design.html" />
+<link rel="canonical" href="https://oyeboss.build/design" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
 <meta property="og:title" content="Design — how BOSS approaches UI and UX" />
 <meta property="og:description" content="What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation." />
-<meta property="og:url" content="https://oyeboss.build/design.html" />
+<meta property="og:url" content="https://oyeboss.build/design" />
 <meta property="og:image" content="https://oyeboss.build/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -20,6 +20,9 @@
 <meta name="twitter:title" content="Design — how BOSS approaches UI and UX" />
 <meta name="twitter:description" content="What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation." />
 <meta name="twitter:image" content="https://oyeboss.build/og.png" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF5C00' d='M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z'/%3E%3C/svg%3E" />
+<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#16181A" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -28,7 +31,7 @@
 
 <nav class="sitenav" aria-label="Site">
   <div class="sitenav-in">
-    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>BOSS</span></a>
     <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html" aria-current="page">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html">What's new</a></li></ul>
   </div>
 </nav>
@@ -36,7 +39,7 @@
 
 <div class="shell">
 <header class="hero">
-    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
       <p class="kicker">Design</p>
       <h1>AI will give you the average of the internet<span class="dot">.</span></h1>
@@ -185,8 +188,10 @@
           </div>
           <div class="pair">
             <span class="k">/design-review · /ux-check</span>
-            <span>The V1 pass: token enforcement, the five states, and the flow read end-to-end rather
-              than screen-by-screen.</span>
+            <span>The MVP pass, before code and after it: token enforcement, the five states, and the
+              flow read end-to-end rather than screen-by-screen. Findings say whether they were
+              <em>observed</em> or <em>inferred</em> — a review can only walk what it can run, and it
+              tells you which it did.</span>
           </div>
           <div class="pair">
             <span class="k">/red-team --humane</span>
@@ -244,8 +249,8 @@
           <h4>Design system — style never locked into code</h4>
           <p class="meta"><code>design-system</code> · <span class="curve">craft-ai curve</span> ·
             last checked 2026-08-20</p>
-          <p class="prov"><span>learned from</span> <a class="ref" href="https://atomicdesign.bradfrost.com/" rel="noopener">Brad Frost — Atomic Design</a> <a class="ref" href="https://eightshapes.com/articles/tokens-in-design-systems/" rel="noopener">Nathan Curtis — design tokens</a> <a class="ref" href="https://www.w3.org/community/design-tokens/" rel="noopener">W3C Design Tokens Community Group</a></p>
-          <details class="prov-full"><summary>where this came from</summary><p>Generalized from a dogfooded design system — design tokens as the single source of truth, central badge and pill style utilities, an enforcement hook that rejects raw framework colors, and a prototype registry — then stripped of everything product-specific so it would transfer. The AI-failure-mode catalog was written in the same pass.</p></details>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://atomicdesign.bradfrost.com/" rel="noopener">Brad Frost — Atomic Design</a> <a class="ref" href="https://eightshapes.com/articles/tokens-in-design-systems/" rel="noopener">Nathan Curtis — design tokens</a> <a class="ref" href="https://www.w3.org/community/design-tokens/" rel="noopener">W3C Design Tokens Community Group</a> <a class="ref" href="https://arxiv.org/abs/2606.16262" rel="noopener">UXBench (Wang et al.)</a></p>
+          <details class="prov-full"><summary>where this came from</summary><p>The limits of an AI-run design review — it reliably improves feedback and scannability, and barely moves whether the flow itself is right — come from UXBench (2026), read as direction rather than magnitude. Generalized from a dogfooded design system — design tokens as the single source of truth, central badge and pill style utilities, an enforcement hook that rejects raw framework colors, and a prototype registry — then stripped of everything product-specific so it would transfer. The AI-failure-mode catalog was written in the same pass.</p></details>
         </div>
         <div class="practice">
           <h4>AI-native interface patterns (2026)</h4>
@@ -283,7 +288,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.218.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.234.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

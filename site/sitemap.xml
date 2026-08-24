@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://oyeboss.build/canvas.html</loc></url>
-  <url><loc>https://oyeboss.build/charter.html</loc></url>
-  <url><loc>https://oyeboss.build/conscience.html</loc></url>
-  <url><loc>https://oyeboss.build/credits.html</loc></url>
-  <url><loc>https://oyeboss.build/design.html</loc></url>
-  <url><loc>https://oyeboss.build/engineering.html</loc></url>
-  <url><loc>https://oyeboss.build/governance.html</loc></url>
-  <url><loc>https://oyeboss.build/guide.html</loc></url>
+  <url><loc>https://oyeboss.build/canvas</loc></url>
+  <url><loc>https://oyeboss.build/charter</loc></url>
+  <url><loc>https://oyeboss.build/conscience</loc></url>
+  <url><loc>https://oyeboss.build/credits</loc></url>
+  <url><loc>https://oyeboss.build/design</loc></url>
+  <url><loc>https://oyeboss.build/engineering</loc></url>
+  <url><loc>https://oyeboss.build/governance</loc></url>
+  <url><loc>https://oyeboss.build/guide</loc></url>
   <url><loc>https://oyeboss.build/</loc></url>
-  <url><loc>https://oyeboss.build/keeping-track.html</loc></url>
-  <url><loc>https://oyeboss.build/quick-guide.html</loc></url>
-  <url><loc>https://oyeboss.build/start.html</loc></url>
-  <url><loc>https://oyeboss.build/team.html</loc></url>
-  <url><loc>https://oyeboss.build/teams.html</loc></url>
-  <url><loc>https://oyeboss.build/whats-new.html</loc></url>
+  <url><loc>https://oyeboss.build/keeping-track</loc></url>
+  <url><loc>https://oyeboss.build/quick-guide</loc></url>
+  <url><loc>https://oyeboss.build/start</loc></url>
+  <url><loc>https://oyeboss.build/team</loc></url>
+  <url><loc>https://oyeboss.build/teams</loc></url>
+  <url><loc>https://oyeboss.build/whats-new</loc></url>
 </urlset>

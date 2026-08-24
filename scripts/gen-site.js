@@ -32,12 +32,42 @@ const modes = loadModes().filter((m) => m.authored);
 
 
 // The BOSS mark. It is not invented: `✦` is what the CLI already prints on every
-// success line (`✦ Created my-app`). Drawn properly here as a four-point spark with
-// concave sides, so it holds at favicon size and at hero size. currentColor so it
-// inherits whatever it sits in.
+// success line (`✦ Created my-app`), so the terminal keeps printing the mark and the two can
+// never drift. Cut with STRAIGHT edges — a setting-out star, not a sparkle. The concave
+// version read as the "AI did something" glyph every product now ships — the one cluster this
+// world was picked to escape — and its tapered points dissolved at favicon size. Straight cuts
+// are also what tokens.css already says this world is built from: "signage is built from
+// straight cuts and stencils, not soft cards." currentColor so it inherits whatever it sits in.
+// Re-cut 2026-08-24. The glyph did NOT change, so `✦` still prints and the lineage holds.
+const MARK_PATH = 'M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z';
 const MARK = (cls = 'mark') =>
   `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">` +
-  `<path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg>`;
+  `<path fill="currentColor" d="${MARK_PATH}"/></svg>`;
+
+// The favicon is the same mark, and the ONE place the site needs a literal hex —
+// so it is READ from tokens.css rather than typed. A <link> and a <meta> cannot
+// reference a CSS custom property, and a second copy of the brand colour is
+// exactly the 47-blues failure tokens.css's header forbids.
+const TOKENS = readFileSync(join(SRC, 'styles', 'tokens.css'), 'utf8');
+const token = (name) => {
+  const m = TOKENS.match(new RegExp(`^\\s*--${name}:\\s*(#[0-9A-Fa-f]{3,8})`, 'm'));
+  if (!m) throw new Error(`gen:site cannot read --${name} from tokens.css`);
+  return m[1];
+};
+// Inline SVG favicon: no request, no binary, scales to any tab density, and it is
+// the mark the CLI already prints. Only `#` and the angle brackets need escaping.
+const favicon = () => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">`
+    + `<path fill="${token('hivis')}" d="${MARK_PATH}"/></svg>`;
+  return `data:image/svg+xml,${svg.replace(/#/g, '%23').replace(/</g, '%3C').replace(/>/g, '%3E').replace(/"/g, "'")}`;
+};
+// Painted before first paint, so the browser chrome matches the ground instead of
+// flashing white into a graphite page. Two values, one per scheme — same split as
+// the stylesheet, read from the same file.
+const HEAD_ICONS = () =>
+  `<link rel="icon" href="${favicon()}" />\n`
+  + `<meta name="theme-color" content="${token('concrete')}" media="(prefers-color-scheme: light)" />\n`
+  + `<meta name="theme-color" content="${token('graphite')}" media="(prefers-color-scheme: dark)" />`;
 
 // Inline markdown → HTML, escape-first so nothing user-authored can inject markup.
 const md = (s) => esc(s)
@@ -882,6 +912,7 @@ for (const f of pages) {
     // a relative path silently yields no card at all. One image for the whole site —
     // a per-page card is a generator nobody asked for.
     .replace(/\{\{OGIMAGE\}\}/g, () => esc(`${SITE_URL}/og.png`))
+    .replace('{{HEAD_ICONS}}', HEAD_ICONS)
     .replace('{{NAV}}', nav)
     .replace('{{SUBNAV}}', subnav)
     .replace('{{CONTENT}}', content.trim())

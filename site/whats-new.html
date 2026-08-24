@@ -6,12 +6,12 @@
 <title>What's new in BOSS</title>
 <meta name="description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
 <meta name="color-scheme" content="light dark" />
-<link rel="canonical" href="https://oyeboss.build/whats-new.html" />
+<link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
 <meta property="og:title" content="What's new in BOSS" />
 <meta property="og:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
-<meta property="og:url" content="https://oyeboss.build/whats-new.html" />
+<meta property="og:url" content="https://oyeboss.build/whats-new" />
 <meta property="og:image" content="https://oyeboss.build/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -20,6 +20,9 @@
 <meta name="twitter:title" content="What's new in BOSS" />
 <meta name="twitter:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
 <meta name="twitter:image" content="https://oyeboss.build/og.png" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF5C00' d='M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z'/%3E%3C/svg%3E" />
+<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#16181A" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
 </head>
@@ -28,7 +31,7 @@
 
 <nav class="sitenav" aria-label="Site">
   <div class="sitenav-in">
-    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>BOSS</span></a>
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>BOSS</span></a>
     <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="team.html">The product</a></li><li><a href="engineering.html">How it works</a></li><li><a href="charter.html">Trust</a></li><li><a href="whats-new.html" aria-current="page">What's new</a></li></ul>
   </div>
 </nav>
@@ -36,7 +39,7 @@
 
 <div class="shell">
 <header class="hero">
-    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 C56 32 68 44 100 50 C68 56 56 68 50 100 C44 68 32 56 0 50 C32 44 44 32 50 0 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
       <p class="kicker">What's new</p>
       <h1>Only the ones that change something for you<span class="dot">.</span></h1>
@@ -67,52 +70,52 @@
       <div class="body">
         <ol class="releases">
       <li>
-        <div class="rel"><span class="ver">v0.218.0</span><span class="when">2026-08-23</span></div>
-        <p>BOSS's scaffold shipped <code>&quot;defaultMode&quot;: &quot;auto&quot;</code> in your project's <code>.claude/settings.json</code>. The host stopped honouring <code>auto</code> <strong>in a project file</strong> at v2.1.142 — and its presence makes Claude Code fall back to its built-in default <strong>instead of reading the <code>defaultMode</code> you set in <code>~/.claude/settings.json</code></strong>. So the line did nothing it claimed, and if you had deliberately chosen a mode for your whole machine, a BOSS project silently ignored it. <strong><code>boss sync</code> now removes that line</strong> (only at the exact value <code>auto</code> — <code>plan</code>, <code>acceptEdits</code> and <code>default</code> all work from a project file and are yours to keep), and says so out loud when it does. Set your standing preference in <strong><code>~/.claude/settings.json</code></strong>. New scaffolds don't ship the line at all, and no longer ship a blanket <code>allow</code> list either — see below. Your deny floor is unchanged.</p>
+        <div class="rel"><span class="ver">v0.234.0</span><span class="when">2026-08-24</span></div>
+        <p><code>boss help &lt;word&gt;</code> now explains any word BOSS uses — <code>boss help cohort</code>, <code>boss help pretotype</code>, <code>boss help stated-pain</code>. <code>boss help glossary</code> lists them all. Words that are also skills answer both halves: what a canvas <em>is</em>, then where to run it.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.217.0</span><span class="when">2026-08-22</span></div>
-        <p>If you brought BOSS into an existing repo with <code>boss adopt</code>, open your <code>.gitignore</code>. BOSS's rules were skipped <strong>in full</strong>, silently — precisely <em>because</em> you already had one — so <code>.boss/brain/relationship.md</code> (what the conscience said to you, and what you did about it), <code>.boss/conscience-log.jsonl</code>, <code>.boss/trace.jsonl</code> and <code>.boss/backups/</code> were all committable, and on a shared repo they travel. Adopt now merges in the rules you lack as a marked <code>#</code> block, leaving your own rules first and untouched, adding nothing twice. <strong>Already adopted?</strong> This release cannot reach you — <code>adopt</code> refuses to run on a BOSS project and <code>sync</code> never touches your files. Copy the block from <code>stages/L0-quickstart/template/.gitignore</code>, or ask BOSS to.</p>
+        <div class="rel"><span class="ver">v0.233.0</span><span class="when">2026-08-24</span></div>
+        <p>skipping a rung now says so and names what you're skipping — and still lets you do it. Unlocking a rung you skipped no longer moves you <em>backwards</em>. <code>boss help canvas</code> explains that <code>/canvas</code> is a skill you run inside Claude rather than silently printing the whole manual. And &quot;not a BOSS project&quot; now tells you how to become one — usually just <code>cd</code> into the folder you made.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.216.0</span><span class="when">2026-08-21</span></div>
-        <p><code>/red-team</code> was skipping the entire behavioural dark-pattern battery — sycophancy, guilt on exit, emotional manipulation near money — for anyone who had run <code>/ux-check</code> first, and skipping <code>--humane</code> altogether for anyone whose product has no AI in it. Both are fixed. Its OWASP IDs are now the 2026 list (eight of ten changed), <code>--paths</code> gained a known-vulnerable-dependency check, and <code>--self</code> finally says what it actually runs. Re-run it if you have a report on file.</p>
+        <div class="rel"><span class="ver">v0.232.0</span><span class="when">2026-08-24</span></div>
+        <p><code>boss status</code> now tells you how to get back INTO the thing you were building (<code>→ boss board FEAT-002</code>), and no longer prints record chores — those stay in <code>boss records</code>, which is where you go to tidy. <code>boss unlock</code> finally says what just arrived and where to go next, the way <code>boss new</code> always has. <code>boss map</code> leads each rung with the loop you actually repeat (<code>the loop: spec → smoke → log → close</code>) instead of an alphabetical list that opened on <code>/ai-cost</code>.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.214.0</span><span class="when">2026-08-21</span></div>
-        <p><code>/boss</code> now says your idea back and asks whether you want to keep shaping it or start building — <em>before</em> it asks about repos and licences. Either way your idea doc is a living document: <code>/triage &lt;a thought&gt;</code> adds to it whenever more lands.</p>
+        <div class="rel"><span class="ver">v0.231.0</span><span class="when">2026-08-24</span></div>
+        <p><code>boss status</code> now opens with the bridge back when you've been away — how many days, what you last landed, and the <em>next</em> you wrote down before you stopped — and it renders what you've learned as the evidence ladder (<code>stated-pain · observed · commitment</code>), beside the shipped-feature line it always had. Nothing new to run.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.208.0</span><span class="when">2026-08-21</span></div>
-        <p><strong>The <code>sustaining</code> moment was watching your diary, not your project — and it would have told you that you had gone quiet while you were working.</strong> If you commit most weekends and write a devlog entry twice a year, v0.206.0 would have opened with a note about your absence. That does not read as a tool being tactless; it reads as a tool that <strong>cannot see your project</strong>. Fixed before any founder met it: the sensor is now the newest of your devlog <strong>or</strong> your git history. Plus a third way forward it was missing — <strong>change nothing, dormant is fine</strong> — and it will never tell you how long you were gone.</p>
+        <div class="rel"><span class="ver">v0.230.0</span><span class="when">2026-08-24</span></div>
+        <p><code>/ux-check</code> now tells you <em>how</em> it reviewed — which findings it saw running and which it read out of your source — and it will say <strong>&quot;not checked&quot;</strong> for anything needing a rendered page instead of quietly passing it. If you build a CLI or an agent with no screen, <code>/design-review</code> now stops instead of walking you through hover states. And if you use <code>/persona</code> to QA a flow, remember the persona likes your work more than a real user will: their confusion is signal, their approval isn't.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.207.0</span><span class="when">2026-08-21</span></div>
-        <p><strong><code>boss craft</code> was printing BOSS's internal filing ledger into your terminal.</strong> Every practice you opened led with a block of BOSS's own bookkeeping — record IDs, sweep numbers, review dates, <code>IDEA-029</code>, <code>RVW-057</code>, <code>REVIEW-2026-07-28</code> — none of which exist in your project and none of which you can act on. It now prints the practice, and ends with <strong><code>sources</code></strong>: who the ideas came from and what it cost to find out. Same line the website shows.</p>
+        <div class="rel"><span class="ver">v0.228.0</span><span class="when">2026-08-24</span></div>
+        <p>two patterns in <code>boss craft deceptive-patterns</code> stop saying &quot;UNVETTED&quot; — they're verified now, against the FTC's own orders and the EU regulator's own opinion. And the consent-or-pay row no longer reads as though charging for an ad-free plan is manipulation; it isn't, and <code>monetization-in-practice</code> now says so plainly.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.206.0</span><span class="when">2026-08-21</span></div>
-        <p><strong>The conscience now watches the half of the canvas it had been ignoring.</strong> If your project is sustained by your own hours rather than by revenue, the canvas asks how — <em>what keeps this alive, who else could carry it, what would make you stop</em> — and until now <strong>nothing ever looked at those answers again</strong>, while the money questions were watched continuously. The <code>sustaining</code> moment closes that. It offers two doors and means both: <strong>revise the answer to what's actually true</strong> (<em>&quot;a weekend a month&quot;</em> beats <em>&quot;indefinitely&quot;</em>), or <strong>end it on purpose</strong>.</p>
+        <div class="rel"><span class="ver">v0.227.0</span><span class="when">2026-08-24</span></div>
+        <p>the craft shelf no longer points you at a reviewer you don't have. Where it used to say &quot;hand this to <code>voice-keeper</code>&quot;, it now names something you actually own — your <code>BRAND.md</code>, or reading the line aloud to someone who hasn't seen it.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.205.0</span><span class="when">2026-08-21</span></div>
-        <p><strong>BOSS asked about your licence once and then went quiet forever — which meant the closed answer won by default.</strong> v0.200.0 stopped BOSS picking <code>proprietary</code> for you and made <code>license</code> start undecided. What it didn't do was ever come back. A project with no LICENSE file reads as <em>all rights reserved</em> to everyone who finds it, so <em>&quot;not yet&quot;</em> quietly became <em>&quot;closed&quot;</em> — <strong>the exact failure that change existed to prevent.</strong> <code>/ship</code> now asks, once, at the only moment it becomes real: the moment your code goes where other people can find it.</p>
+        <div class="rel"><span class="ver">v0.226.0</span><span class="when">2026-08-24</span></div>
+        <p>if BOSS's loops have been quiet, this is likely why. <code>src/*<em></code> in a loop spec silently meant <code>src/</em></code>, so anything nested was invisible. And if you build for mobile, CLI or a service rather than the web, BOSS now says so out loud instead of going silent on you.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.204.0</span><span class="when">2026-08-21</span></div>
-        <p><strong><code>/sunset</code> now goes as far as it needs to.</strong> It ended whole projects and zombie features; it could not end <strong>an idea</strong> — the cheapest and most common ending there is. <code>/sunset IDEA-012</code> closes one captured idea honestly, and it opens with the question that comes first: <em><strong>&quot;did you decide against this, or did you just never get to it?&quot;</strong></em> Only the first is a sunset. The second gets left alone — <strong>BOSS will not talk you into closing an idea to tidy your backlog.</strong></p>
+        <div class="rel"><span class="ver">v0.225.0</span><span class="when">2026-08-24</span></div>
+        <p>the architecture mentor no longer quotes telemetry you cannot check. It makes the same point from Peter Naur's <em>Programming as Theory Building</em> — and the &quot;70/30&quot; rule of thumb is now labelled as a rule of thumb, not a statistic.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.203.0</span><span class="when">2026-08-21</span></div>
-        <p><strong>The README was selling a mentor board that doesn't exist.</strong> It promised <em>&quot;eight advisors&quot;</em> and named <strong>business, fundraising, pitch and talent arriving at V1</strong>. Six ship, <code>mentor-fundraising</code> and <code>mentor-pitch</code> were absorbed into <code>mentor-capital</code> fourteen releases ago ([[DEC-006]]), and <strong>V1 seats nobody at all</strong> — that's deliberate, not a gap. Corrected: founder at Quickstart; architect, customers, capital and cofounder at MVP; <strong>V1 adds none</strong> (capital's remit widens instead); hiring at Scale.</p>
+        <div class="rel"><span class="ver">v0.224.0</span><span class="when">2026-08-24</span></div>
+        <p>when you keep asking for changes to a sketch, BOSS now says <em>stop after about three rounds and actually look at it</em> — not a gate, just the point where unreviewed edits start costing more than they add. And the security numbers in <code>boss craft data-schema</code> are now ones you can check.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.202.0</span><span class="when">2026-08-21</span></div>
-        <p><strong>A regulation is evidence, not a verdict — and the catalog now says so.</strong> Every deceptive-pattern row with regulatory weight carries a <code>teeth</code> citation, and BOSS only ever limited those in one direction: <em>don't be frightened, this isn't legal advice.</em> It never said the other half — <strong>a rule can be a safety floor or a moat, and a citation can't tell you which.</strong> If you're genuinely challenging an outdated arrangement rather than hiding behind a rationalisation, BOSS now has a way to tell the difference <strong>with you</strong>, instead of quietly reading &quot;regulated&quot; as &quot;settled.&quot;</p>
+        <div class="rel"><span class="ver">v0.223.0</span><span class="when">2026-08-24</span></div>
+        <p>if your sketch earns a real build, BOSS no longer tells you to start over. Keep or rebuild is your call, piece by piece — and the sketch comes with you into <code>/spec</code> as the reference for what to build. <code>/prototype</code> also commits before it runs now, so &quot;actually, go back&quot; is real.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.201.0</span><span class="when">2026-08-21</span></div>
-        <p><strong>The canvas asks the planet question it had been promising.</strong> The Metrics cell has always been headed <em>&quot;meaningful success — for people and planet&quot;</em> and then never asked about the planet: every sharpen under it was about people and the venture. It now asks the other half — <em>what does one unit of this consume, and does that grow with users or with success?</em> — with **<em>&quot;very little, and here's why&quot;</em> as a complete, honest answer.<strong> Don't manufacture a footprint to look serious. If your growth loop </strong>is** inference, <code>/ai-cost</code>'s cost-per-successful-outcome is already most of the measurement: read it once for the wallet, once for the world.</p>
+        <div class="rel"><span class="ver">v0.222.0</span><span class="when">2026-08-24</span></div>
+        <p>two corrections you inherit. <code>mentor-architect</code> can now tell you why refactoring stopped happening by itself in an AI build — and why answering that with a scheduled refactor block is the wrong fix. And the mode table in your <code>CLAUDE.md</code> no longer advertises Scale features BOSS hasn't built; it names the two it has.</p>
       </li>
     </ol>
         <p class="small">
@@ -143,7 +146,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.218.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.234.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

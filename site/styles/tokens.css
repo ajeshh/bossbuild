@@ -93,6 +93,10 @@
   --color-on-brand:        var(--graphite);
   --color-link:            var(--hivis-ink);
   --color-link-hover:      var(--graphite);
+  /* Text-weight accent for non-link marks — the `$` in a command box. Same
+     concrete/graphite split as --color-link and for the same reason:
+     --color-brand is a FILL and fails as small text on concrete. */
+  --color-accent:          var(--hivis-ink);
 
   --color-signal-safe:     var(--safe-ink);
   --color-signal-caution:  var(--caution-ink);
@@ -125,6 +129,7 @@
 
     --color-link:            var(--hivis-bright);
     --color-link-hover:      var(--bone);
+    --color-accent:          var(--hivis-bright);
 
     --color-signal-safe:     var(--safe-bright);
     --color-signal-caution:  var(--caution-bright);
@@ -145,6 +150,7 @@
 
   --color-link:            var(--hivis-bright);
   --color-link-hover:      var(--bone);
+  --color-accent:          var(--hivis-bright);
 
   --color-signal-safe:     var(--safe-bright);
   --color-signal-caution:  var(--caution-bright);

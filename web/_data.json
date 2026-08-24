@@ -1,5 +1,5 @@
 {
-  "version": "0.218.0",
+  "version": "0.234.0",
   "generated_from": "stages/*/manifest.json via src/modes.js",
   "agents": 11,
   "skills": 48,
@@ -41,10 +41,10 @@
   ],
   "practices": 32,
   "verdicts": {
-    "total": 83,
-    "ADOPT": 9,
-    "ADAPT": 49,
-    "REJECT": 12,
-    "NOT-YET": 13
+    "total": 94,
+    "ADOPT": 10,
+    "ADAPT": 56,
+    "REJECT": 14,
+    "NOT-YET": 14
   }
 }
