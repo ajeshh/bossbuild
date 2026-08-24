@@ -119,3 +119,21 @@ test('no L0 skill still tells the founder to throw the sketch away', () => {
       .test(flat), `/${skill} still repeats the retracted throw-it-away mandate`);
   }
 });
+
+test('/prototype caps unsupervised iteration and does not cite the number that failed', () => {
+  const text = src();
+  // v0.223.0 shipped "Coming back to it" — iterate on the sketch — with no cap. Shukla, Joshi & Syed
+  // (IEEE-ISTAS 2025) measured security defects accumulating across unsupervised edit chains
+  // (2.1 -> 6.2 per sample by iteration 8-10) and recommend at most THREE consecutive AI-only
+  // iterations. That is the citable finding.
+  assert.match(text, /three rounds/i,
+    'the "Coming back to it" step lets a founder iterate forever with no look-at-it checkpoint');
+  // The widely-repeated "37% more critical vulns after 5 iterations / modified up to 40 times"
+  // version DOES NOT VERIFY: longest chain was 10, the 37.6% appears once (abstract only) and is
+  // never derived, and the baseline was zero-vulnerability code. Never ship those numbers.
+  for (const re of [/37(\.6)?%/, /\b40 times\b/i]) {
+    assert.ok(!re.test(text),
+      `/prototype cites an unverified iterative-degradation figure (matched ${re}). `
+      + 'The primary supports the authors\' cap of 3, not that number.');
+  }
+});

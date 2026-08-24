@@ -105,6 +105,12 @@ A sketch is something you return to, so the second run is not the first one agai
 - **Trying a different direction rather than fixing this one?** Copy the current one aside before you
   change it. The version you walk away from is a question already answered — and at MVP,
   `docs/design/PROTOTYPES.md` is where those answers get kept.
+- **After about three rounds of "change this, now change that," stop and look at it yourself.**
+  Security defects accumulate across unsupervised edit chains — measured at 2.1 → 6.2 per sample by
+  the eighth round, and the researchers' own advice is a cap of three consecutive AI-only iterations
+  (Shukla et al., IEEE-ISTAS 2025). Not a gate and not a lecture: open the thing, click it, read one
+  file. Then keep going. A sketch nobody has looked at in ten rounds is not a sketch you can trust to
+  tell you anything.
 
 ## Cohort-aware delivery
 

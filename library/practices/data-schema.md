@@ -4,8 +4,8 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: written 2026-08-11 (v0.142.0) to close the coverage gap named in the 2026-07-30 craft-staleness audit — the knowledge lived ONLY inside the `db-architect` agent prompt (V1) and the migrations section of `scalable-architecture.md`, so nothing could sweep it and no mode below V1 could see it. Sources - CVE-2025-48757 (Lovable/Supabase RLS class), the MoltBook 1.5M-credential exposure, OX Security 2026 (62% of AI-built apps ship a critical vuln), Postgres RLS docs, Kleppmann (DDIA) on schema evolution. Sibling of `agent-security.md` (same adversary) and `testing-with-agents.md` (the negative path is where this gets caught).
-provenance_public: Written to close a gap where the knowledge lived only inside one V1 agent's prompt and a migrations section — so nothing could sweep it and no earlier mode could see it. Sources: CVE-2025-48757 (the Lovable/Supabase RLS class), the MoltBook 1.5M-credential exposure, OX Security 2026 (62% of AI-built apps ship a critical vulnerability), the Postgres RLS documentation, and Kleppmann (DDIA) on schema evolution.
+provenance: written 2026-08-11 (v0.142.0) to close the coverage gap named in the 2026-07-30 craft-staleness audit — the knowledge lived ONLY inside the `db-architect` agent prompt (V1) and the migrations section of `scalable-architecture.md`, so nothing could sweep it and no mode below V1 could see it. Sources - CVE-2025-48757 (Lovable RLS class; CVSS 9.3, vendor-DISPUTED — the CVE names Lovable only, NOT Supabase), the MoltBook exposure (~4.75M records / 1.5M agent tokens, Wiz 2026-02-02), Veracode 2025 GenAI Code Security Report (45% of AI-generated samples fail OWASP Top 10, flat across model generations), Postgres RLS docs, Kleppmann (DDIA) on schema evolution. ⚠️ 2026-08-24 - the previous 'OX Security 2026 - 62% of AI-built apps ship a critical vuln' was REMOVED: traced to an OX marketing post with no source and no methodology for its own headline, and the wording had drifted twice (code->apps, vulnerabilities->critical). See SESSION-2026-08-24-schema-practice-refresh. Sibling of `agent-security.md` (same adversary) and `testing-with-agents.md` (the negative path is where this gets caught).
+provenance_public: Written to close a gap where the knowledge lived only inside one V1 agent's prompt and a migrations section — so nothing could sweep it and no earlier mode could see it. Sources: CVE-2025-48757 (the Lovable RLS class — rated critical, and disputed by the vendor), the MoltBook exposure (~4.75M records including 1.5M agent API tokens), the Veracode 2025 GenAI Code Security Report (45% of AI-generated code samples fail security tests against the OWASP Top 10, and that rate has stayed flat as models improved), the Postgres RLS documentation, and Kleppmann (DDIA) on schema evolution.
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
 curve: threat
@@ -30,9 +30,17 @@ The shape, precisely, because the precision is the useful part:
 4. **Any authenticated user can now read every row of every other user's data** by asking for it.
    Change a user ID in a request and the data comes back.
 
-This is CVE-2025-48757 and the class behind the 2025–26 exposures (~25k secrets found across
-vibe-coded sites; a 1.5M-credential incident). OX Security put **62% of AI-built applications
-shipping a critical vulnerability** in 2026.
+This is CVE-2025-48757 — CVSS 9.3, *disputed by the vendor* — and the class behind the 2025–26
+exposures. The magnitude, measured: **303 vulnerable endpoints across 170 applications in a scan of
+1,645 Lovable apps — roughly 10% of the platform's publicly reachable sites**; and the MoltBook
+incident exposed **~4.75M records (1.5M agent API tokens, 35,000 user emails)** from a founder who
+said *"I didn't write a single line of code."* On the generator itself, Veracode tested 100+ models
+across 80 curated tasks: **45% of AI-generated samples failed security tests against the OWASP Top
+10** — and that rate is **flat across model generations**, so waiting for a better model is not a
+plan.
+
+> **The root cause is the tool's default, not any one app.** Lovable did not apply RLS unless
+> explicitly instructed, and the people shipping on it did not know it was required.
 
 > **Why it survives every test you'd think to write:** the app *works*. Logged in as yourself, every
 > screen is correct. RLS-off is not a functional defect — it is a **missing security property**, and

@@ -9,6 +9,49 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.224.0 — 2026-08-24
+
+**Two corrections. `/prototype` shipped a "keep iterating" step this morning with no stopping point,
+and the data & schema practice cited a number that turns out to have no source — an unattributed
+headline on a security vendor's marketing post.**
+
+> **For you:** when you keep asking for changes to a sketch, BOSS now says *stop after about three
+> rounds and actually look at it* — not a gate, just the point where unreviewed edits start costing
+> more than they add. And the security numbers in `boss craft data-schema` are now ones you can
+> check.
+
+- 🔴 **Same-day gap, closed.** v0.223.0 added *"Coming back to it"* — read the sketch, change it,
+  commit each round — with **no cap and no checkpoint**. Shukla, Joshi & Syed (IEEE-ISTAS 2025)
+  measured security defects accumulating across unsupervised edit chains, **2.1 → 6.2 per sample by
+  the eighth round**, and recommend at most **three consecutive AI-only iterations**. That is now in
+  the skill, as a look-at-it prompt rather than a gate.
+- 🔴 **`data-schema.md` cited a statistic that does not exist.** *"OX Security 2026 — 62% of AI-built
+  apps ship a critical vuln"* was in both `provenance` and `provenance_public`, so founders saw it.
+  Traced to the primary: an **OX Security marketing post with no attributed source and no methodology
+  for its own headline**, promoting their product. The wording had also drifted twice — OX says
+  *"AI-generated **code** ships with **vulnerabilities**"*; BOSS said *"AI-built **apps** ship a
+  **critical** vuln."* **Fourth vendor statistic to fail verification today** (GitClear, CHAOS, DORA,
+  OX) and the third *which-half-of-the-number* case.
+- **Replaced with better, verified evidence** — Veracode's 2025 GenAI Code Security Report: 100+
+  models, 80 curated tasks, **45% of AI-generated samples fail security tests against the OWASP Top
+  10**, and *flat across model generations*, so waiting for a better model is not a plan. Plus the
+  real Lovable magnitude (**303 vulnerable endpoints across 170 apps in a scan of 1,645 — ~10% of the
+  platform's public sites**) and MoltBook's true size (**~4.75M records**, not just the 1.5M tokens).
+- **The CVE is now labelled honestly.** CVE-2025-48757 is **CVSS 9.3 and disputed by the vendor** —
+  BOSS said neither. And it named it *"the Lovable/Supabase RLS class"* when **the CVE names Lovable
+  only**; Supabase is not in it. A vendor's name attached to a CVE that does not carry it is the
+  lane-blend `SOURCES.md` forbids. Kept, because it is the sharpest framing available: *the root
+  cause was the tool's default, not any one app.*
+- **Guards:** a 7th `/prototype` test requires the cap **and forbids the unverified figure** — the
+  circulating *"37% more critical vulns after 5 iterations, modified up to 40 times"* does not verify
+  (longest chain was **10**; the 37.6% appears once, in the abstract, and is never derived; the
+  baseline was zero-vulnerability code, so a percentage over it is undefined). Verified non-vacuous
+  by mutation in both directions. 210 tests.
+- ⚠️ **`last_reviewed` on the practice deliberately NOT re-stamped.** Only its citations were swept,
+  not its body — re-dating it would claim a fuller review than happened.
+
+Record: `SESSION-2026-08-24-schema-practice-refresh` (5 angles, 40+ sources, 2 citations killed).
+
 ## 0.223.0 — 2026-08-24
 
 **`/prototype` told every founder to throw their sketch away and rebuild it. That instruction cited
