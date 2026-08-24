@@ -9,6 +9,44 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.234.0 — 2026-08-24
+
+**`boss help symbols` explained the glyphs. `boss help <command>` explained the commands. Nothing
+explained the words.** So a founder who met *cohort* in a config file, *seam* in a status line, or
+*stated-pain* in an evidence grade had nowhere to go — and BOSS uses about thirty such words on
+surfaces it prints unprompted. `/welcome` defines them inline, once, if you run it; after that the
+vocabulary was closed.
+
+> **For you:** `boss help <word>` now explains any word BOSS uses — `boss help cohort`,
+> `boss help pretotype`, `boss help stated-pain`. `boss help glossary` lists them all. Words that are
+> also skills answer both halves: what a canvas *is*, then where to run it.
+
+- **The gap was widest for exactly the cohorts BOSS claims to serve.** `first-product` and
+  `non-tech-founder` are the least likely to have met "pretotype" and the least likely to ask. The
+  house rule is *assume intelligence, never assume knowledge* — and the second half of that sentence
+  had no mechanism behind it once `/welcome` had been run and closed.
+- **Not a skill and not a new command.** It is `boss help` answering a kind of question it already
+  looked like it would answer — the third topic beside `symbols` and `hooks`. [[EVID-001]]'s
+  compose-and-subtract holds: nothing was added to the 49-skill surface, and the founder's own stated
+  fear is bloat.
+- **Terms that are also skills print both halves.** `boss help canvas` used to say only *"it runs
+  inside Claude Code"* — an answer to a question nobody asked. Someone typing it wants to know what a
+  canvas **is**. Now: the idea, then where to run it, then where they met it.
+- **`pretotype` vs `prototype` gets its own entry**, because it is the one pair in BOSS's vocabulary
+  where guessing from the word produces the wrong answer: a prototype tests whether you *can* build
+  it, a pretotype tests whether you *should* (Savoia).
+- **The evidence ladder is three entries, not one.** `stated-pain` · `observed-behavior` ·
+  `commitment` — each defined by what it actually proves, including why the weakest one *feels*
+  stronger than it is ("people are generous in conversation").
+- **Misremembered words get a did-you-mean too.** `boss help conscence` → *"Did you mean boss help
+  conscience?"* — the same Levenshtein that has always caught mistyped commands, pointed at the
+  vocabulary. Aliases handle the rest (`stage` → mode, `observed` → observed-behavior, plurals).
+- **A pointer that rots is caught.** Every glossary entry names where you actually meet the term, and
+  a test asserts every `/skill` it points at is one BOSS still ships — the same guard
+  `check:manifests` gained for `coreLoop` in v0.232.0. A definition sending a founder to a
+  slash-command that no longer exists is worse than no definition.
+- 258 unit tests (+5).
+
 ## 0.233.0 — 2026-08-24
 
 **Every stage manifest declares `requires:`. Nothing read it.** So `boss unlock v1` from Quickstart

@@ -24,6 +24,7 @@ import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentit
 import { printReentry, printEvidenceHeadway } from './orientation.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
+import { lookup, terms } from './glossary.js';
 
 const STAMP = '.boss/manifest.json';
 
@@ -1383,11 +1384,31 @@ function printCommandHelp(name) {
   // admit it had not understood, which is exactly backwards: it is where someone goes when they
   // are already lost.
   if (!h) {
-    // The likeliest case by far. `/canvas`, `/spec`, `/triage` are the names a founder sees most —
-    // in `boss map`, in `boss status`, in every conscience nudge — so `boss help canvas` is the
-    // natural thing to type, and the two command LANGUAGES are the thing they have not yet learned.
     const bare = name.replace(/^\//, '');
-    if (allSkillNames().includes(bare)) {
+    const isSkill = allSkillNames().includes(bare);
+
+    // The WORD before the command. `boss help symbols` explained the glyphs and `boss help <command>`
+    // explained the commands, and neither explained the vocabulary — so a founder who met "cohort" or
+    // "seam" or "stated-pain" in a status line had nowhere to go. That gap is widest for the cohorts
+    // BOSS says it serves: the ones least likely to have met "pretotype", and least likely to ask.
+    // Checked BEFORE the skill branch, because someone typing `boss help canvas` usually wants to know
+    // what a canvas IS — being told only where to run it answers a question they did not ask.
+    const g = lookup(bare);
+    if (g) {
+      console.log(`\n  ${bold(g.term)}\n`);
+      console.log(`    ${g.what}`);
+      if (g.more) console.log(`\n    ${dim(g.more)}`);
+      // Both halves when the term is also a skill: the idea, then where to run it.
+      if (isSkill) console.log(`\n    ${dim('Run it')} ${bold('/' + bare)} ${dim('— inside Claude Code, not the shell.')}`);
+      if (g.see) console.log(`\n    ${dim('you meet it at:')} ${g.see}`);
+      console.log('');
+      return;
+    }
+
+    // A skill with no glossary entry: still better than the overview. `/canvas`, `/spec`, `/triage`
+    // are the names a founder sees most — in `boss map`, in `boss status`, in every conscience nudge
+    // — so `boss help <skill>` is natural, and the two command LANGUAGES are what is not yet learned.
+    if (isSkill) {
       console.error(`\n  ${warn('⚠')} ${bold('/' + bare)} is a ${bold('skill')}, not a ${bold('boss')} command.`);
       console.error(`    Skills run ${bold('inside Claude Code')}: open the project with \`claude\`, then type ${bold('/' + bare)}.`);
       console.error(dim(`    \`boss map\` lists every skill you have and what each one is for.`));
@@ -1395,9 +1416,10 @@ function printCommandHelp(name) {
       process.exitCode = 1;
       return;
     }
-    const near = nearestCommand(bare);
+
+    const near = nearestCommand(bare) || nearestTerm(bare);
     fail(`no help topic '${name}'.${near ? ` Did you mean ${bold('boss help ' + near)}?` : ''}`);
-    console.error(dim(`  Topics: a command name · ${bold('symbols')} (the glyphs) · ${bold('hooks')} (the optional ones).`));
+    console.error(dim(`  Topics: a command name · a ${bold('word')} you ran into (\`boss help glossary\`) · ${bold('symbols')} · ${bold('hooks')}.`));
     console.error(dim(`  \`boss help\` on its own lists every command.`));
     return;
   }
@@ -1453,7 +1475,9 @@ function printHelp() {
   console.log(row('boss version', 'the installed BOSS version'));
 
   console.log(`\n  ${dim('modes:')} Quickstart ${dim('(capture)')} · MVP ${dim('(build)')} · V1 ${dim('(ship)')} · Scale ${dim('(grow)')}`);
-  console.log(`  ${dim('boss help <command>')} for detail · ${dim('boss help symbols')} glyphs · ${dim('boss help hooks')} optional hooks`);
+  // `glossary` sits second on purpose: after "a command you saw", the next thing someone needs is
+  // "a word you saw", and that was the one this footer never offered.
+  console.log(`  ${dim('boss help <command>')} for detail · ${dim('boss help glossary')} what a word means · ${dim('boss help symbols')} glyphs · ${dim('boss help hooks')} optional hooks`);
   console.log(`  ${dim('Commands starting with / (e.g. /boss, /canvas) run inside Claude Code, not the shell.')}\n`);
 }
 
@@ -1462,7 +1486,39 @@ function cmdHelp(args) {
   if (!topic) return printHelp();
   if (topic === 'symbols' || topic === 'symbol' || topic === 'legend') return printSymbols();
   if (topic === 'hooks' || topic === 'hook') return printHooks();
+  if (topic === 'glossary' || topic === 'terms' || topic === 'words') return printGlossary();
   return printCommandHelp(topic);
+}
+
+// The index, not the content — one line each, and the definition is one command away. Printing 30
+// full definitions would be the wall `boss map` was fixed for in v0.130.0.
+function printGlossary() {
+  console.log(`\n  ${bold('Words')}  ${dim('— what BOSS means by them. `boss help <word>` for any of these.')}\n`);
+  const list = terms();
+  const width = Math.max(...list.map((t) => t.length));
+  for (const t of list) {
+    const g = lookup(t);
+    // Truncate the WHOLE definition at a word boundary rather than taking the first sentence: several
+    // entries open with a short one ("The first mode.", "A captured thought, `IDEA-NNN`.") and a
+    // sentence-cut index line told the reader nothing they could not guess from the word itself.
+    const cap = 66;
+    const w = g.what;
+    const gloss = w.length > cap ? w.slice(0, w.lastIndexOf(' ', cap)).trimEnd() + '…' : w;
+    console.log(`    ${t.padEnd(width + 2)} ${dim(gloss)}`);
+  }
+  console.log(`\n  ${dim('Not here? `boss help <command>` for a command, `boss help symbols` for the glyphs.')}`);
+  console.log('');
+}
+
+// Did-you-mean across the vocabulary, same Levenshtein as commands. A founder misremembering a WORD
+// is at least as likely as one mistyping a command, and was the case with no suggestion at all.
+function nearestTerm(input) {
+  let best = null, bestD = Infinity;
+  for (const t of terms()) {
+    const d = editDistance(input, t);
+    if (d < bestD) { bestD = d; best = t; }
+  }
+  return bestD <= 3 ? best : null;
 }
 
 // Levenshtein for the did-you-mean nudge — tiny, zero-dep.

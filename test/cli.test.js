@@ -13,6 +13,8 @@ import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
 import { updateNote, installKind, updateCommand, uninstallCommand, PKG, TAP } from '../src/update.js';
 import { project, cleanup, idea, feat, canvas } from './helpers.js';
+import { loadModes } from '../src/modes.js';
+import { lookup, terms } from '../src/glossary.js';
 
 after(cleanup);
 
@@ -437,7 +439,9 @@ test('skipping a rung says so, names what is being skipped, and proceeds anyway'
 // --- help: the surface someone reaches for when already lost ----------------------------------
 
 test('`boss help <skill>` explains the two command languages instead of dumping the overview', () => {
-  const r = boss(['help', 'canvas'], bossProject());
+  // A skill with no glossary entry of its own — the branch that answers "where do I run this?"
+  // when there is no concept to define. (`canvas` has an entry and takes the richer path above.)
+  const r = boss(['help', 'interview'], bossProject());
   assert.equal(r.code, 1, 'it did not find a help topic — say so');
   assert.match(r.out, /is a skill, not a/);
   assert.match(r.out, /inside Claude Code/);
@@ -457,4 +461,52 @@ test('`not a BOSS project` names a way out, not just a missing file', () => {
   assert.equal(r.code, 1);
   assert.doesNotMatch(r.out, /manifest\.json/, 'an internal path is not a recovery');
   assert.match(r.out, /boss new|boss adopt/, 'offers the two ways to become one');
+});
+
+// --- the glossary: `boss help <word>` ---------------------------------------------------------
+// `boss help symbols` covered the glyphs and `boss help <command>` covered the commands; nothing
+// covered the WORDS. A founder who met "cohort" or "seam" or "stated-pain" in a status line had
+// nowhere to go, and that gap is widest for the cohorts BOSS says it serves.
+
+test('a word BOSS uses can be looked up, and says where you meet it', () => {
+  const r = boss(['help', 'cohort'], bossProject());
+  assert.equal(r.code, 0);
+  assert.match(r.out, /kind of founder/);
+  assert.match(r.out, /you meet it at/);
+});
+
+test('a term that is ALSO a skill answers both halves — what it is, then where to run it', () => {
+  const r = boss(['help', 'canvas'], bossProject());
+  assert.equal(r.code, 0, 'a real answer, not the "unknown topic" exit');
+  assert.match(r.out, /pressure-test/, 'the idea');
+  assert.match(r.out, /inside Claude Code/, 'and where to run it');
+});
+
+test('a misremembered WORD gets a did-you-mean, like a misremembered command', () => {
+  const r = boss(['help', 'conscence'], bossProject());
+  assert.equal(r.code, 1);
+  assert.match(r.out, /Did you mean.*conscience/);
+});
+
+test('`boss help glossary` is an index, not a wall — one line per term', () => {
+  const r = boss(['help', 'glossary'], bossProject());
+  assert.equal(r.code, 0);
+  assert.match(r.out, /stated-pain/);
+  assert.match(r.out, /pretotype/);
+  for (const line of r.out.split('\n')) assert.ok(line.length < 120, `index line too long: ${line}`);
+});
+
+test('every glossary pointer at a /skill names a skill BOSS actually ships', () => {
+  // The same rot `check:manifests` guards for `headline` and `coreLoop`: a renamed or dropped skill
+  // would leave a definition sending a founder to a slash-command that does not exist.
+  const shipped = new Set(loadModes().flatMap((m) => m.skills || []));
+  for (const t of terms()) {
+    const g = lookup(t);
+    // Standalone slash-commands only — `.boss/config.json` is a path, and its `/config` is not a
+    // skill reference. Anchoring on start-or-whitespace is what separates the two.
+    for (const ref of (g.see || '').match(/(?:^|\s)(\/[a-z-]+)/g) || []) {
+      const name = ref.trim().slice(1);
+      assert.ok(shipped.has(name), `glossary '${t}' points at /${name}, which BOSS does not ship`);
+    }
+  }
 });
