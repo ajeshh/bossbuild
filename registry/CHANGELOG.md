@@ -9,6 +9,41 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.227.0 — 2026-08-24
+
+**Three shipped practices told founders to hand their copy to `voice-keeper` — an agent that ships to
+nobody. And a guard whose CHANGELOG said "verified across seven cases" had no test at all.**
+
+> **For you:** the craft shelf no longer points you at a reviewer you don't have. Where it used to say
+> "hand this to `voice-keeper`", it now names something you actually own — your `BRAND.md`, or reading
+> the line aloud to someone who hasn't seen it.
+
+- 🔴 **`voice-keeper` was named in three shipped practices** (`conscience-voicing.md`,
+  `skill-authoring.md`, `celebration-of-done.md`) — and the craft shelf ships **all** of
+  `library/practices/`. It lives in this repo's gitignored `.claude/`, so it reaches **no founder,
+  ever**. The standing `dev-workspace-described-as-shipped` defect, leaking into text written after it
+  was recorded. Each now names a surface the founder actually has.
+- 🔴 **`content-terminology-guard` had no test.** v0.168.0's entry claimed *"Verified across seven
+  cases including the negatives"* — those cases were ephemeral, and it shipped in the same arc as
+  v0.170.0, whose entire subject is *does anything actually test the thing you shipped.* Now 8 durable
+  cases locking what its own header promises: the JIT gate (no filled-in Terminology table → no
+  opinion), a skeleton row is **not** a decision, copy-only scope (it never touches identifiers,
+  imports or paths), the banned list splits on commas so the **tail** is checked and not just the head,
+  the style guide is exempt from its own rule, and it fails open on garbage.
+- **Fixed a typo in the shipped style-guide template** — *"personality in themicrocopy"*.
+
+**Found by discharging a standing debt, which is the point of keeping one.** `docs/RESUME.md` had
+carried *"an independent pass on RVW-077 is still owed — self-authored, so `/vet`'s adversarial
+distance was absent"* since 2026-08-20. Run cold, it upheld the verdict and then found that its **one
+external "verified from primary" receipt was a fabricated quotation** — a sentence attributed to
+Google's DESIGN.md spec that does not exist in it, stamped *"read directly"*, inside the very step
+that exists to prevent this. Re-fetched raw and confirmed: the file has been unchanged since
+2026-07-27, so it was never there. **The substance survives on the spec's actual scope line; the quote
+does not.** Sixth citation failure of the day, and the first BOSS authored itself.
+
+*(Also closed the same session: the 5 `seam: null` entries, pressured in both directions — **all five
+correctly null**, every candidate seam turning out to be a neighbour's under a different name.)*
+
 ## 0.226.0 — 2026-08-24
 
 **The conscience could not see code in subdirectories. Five loops were scanning only the top of

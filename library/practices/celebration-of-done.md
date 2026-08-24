@@ -102,6 +102,6 @@ roadmap. Build fast, mark the threshold, start the next. That rhythm *is* the re
   celebration is voiced (it's a conscience moment with the polarity flipped: same restraint, opposite sign).
 - `deceptive-patterns.md` — the `notifications-and-engagement` rows that keep celebration from curdling into a streak/engagement
   mechanic.
-- Voice: the `boss-voice` memory (no performed warmth) — `voice-keeper` is the reviewer for any celebration
-  copy that ships.
+- Voice: the `boss-voice` memory (no performed warmth) — check any celebration copy that ships against
+  `docs/design/BRAND.md`, and cut anything that performs enthusiasm you do not feel.
 - `ship-it-live.md` (FEAT-024) — the technical threshold this marks.

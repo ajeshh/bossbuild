@@ -118,8 +118,8 @@ A short read, not a harness:
   description that belongs in the body? Would `/doctor` call this file oversized?
 - **Interface test:** for every example in the file — could a better-named argument or a real enum
   have carried it instead?
-- **Voice test:** does it assume intelligence and never assume knowledge? (Hand to `voice-keeper` if
-  unsure.)
+- **Voice test:** does it assume intelligence and never assume knowledge? (Unsure? Read it aloud to
+  someone who has not seen it — that catches more than any checklist.)
 
 ## What's left out (deliberately)
 

@@ -120,5 +120,6 @@ you never **override** the founder. Naming ≠ blocking.
 - [`ai-ux-patterns.md`](ai-ux-patterns.md) — the broader AI-behaviour patterns (interrupt registers,
   risk-tiered gates) this specialises.
 - `mentor-humane` / `mentor-capital` agents — where the rule is enforced in the mentor layer.
-- Voice: the `boss-voice` memory (seasoned hand, doesn't need the credit) — voicing tone must match it;
-  `voice-keeper` is the reviewer.
+- Voice: the `boss-voice` memory (seasoned hand, doesn't need the credit) — voicing tone must match it.
+  Your reviewer is `docs/design/BRAND.md` plus a read-it-aloud pass; `/design-review` covers the
+  interface copy.

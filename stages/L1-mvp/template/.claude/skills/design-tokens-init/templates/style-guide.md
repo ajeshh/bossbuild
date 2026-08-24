@@ -134,7 +134,7 @@ agent can't act on an adjective.
 **Voice — 3 traits, each with a tradeoff** (same test as the principles: could someone argue the
 opposite?):
 
-- <trait — e.g. "plain over clever"> — giving up: <e.g. personality in themicrocopy>
+- <trait — e.g. "plain over clever"> — giving up: <e.g. personality in the microcopy>
 - <trait> — giving up: <what>
 - <trait> — giving up: <what>
 
