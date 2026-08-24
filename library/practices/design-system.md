@@ -4,8 +4,8 @@ type: practice
 owner: designer
 status: active
 host: stack-neutral
-provenance: generalized from the dhun dogfood design system (DESIGN_TOKENS as single source of truth, central badge/pill style utils, the "no raw Tailwind colors" enforcement hook, the prototype REGISTRY), de-dhuned for reuse — BOSS v0.20.x. The AI-failure-mode catalog was added in the same pass; IDEA-010 carries the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns). Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.
-provenance_public: Generalized from a dogfooded design system — design tokens as the single source of truth, central badge and pill style utilities, an enforcement hook that rejects raw framework colors, and a prototype registry — then stripped of everything product-specific so it would transfer. The AI-failure-mode catalog was written in the same pass.
+provenance: the AI-design-review ceiling (feedback/scannability move, flow efficiency does not) added 2026-08-24 from [[RVW-092]] (UXBench, arXiv:2606.16262 — preprint, direction only) · generalized from the dhun dogfood design system (DESIGN_TOKENS as single source of truth, central badge/pill style utils, the "no raw Tailwind colors" enforcement hook, the prototype REGISTRY), de-dhuned for reuse — BOSS v0.20.x. The AI-failure-mode catalog was added in the same pass; IDEA-010 carries the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns). Frontmatter added 2026-07-30 (v0.135.0) — this doc predated the practice frontmatter convention, which is why no refresh discipline could see it.
+provenance_public: The limits of an AI-run design review — it reliably improves feedback and scannability, and barely moves whether the flow itself is right — come from UXBench (2026), read as direction rather than magnitude. Generalized from a dogfooded design system — design tokens as the single source of truth, central badge and pill style utilities, an enforcement hook that rejects raw framework colors, and a prototype registry — then stripped of everything product-specific so it would transfer. The AI-failure-mode catalog was written in the same pass.
 last_reviewed: 2026-08-20
 review_by: 2027-02-16
 curve: craft-ai
@@ -36,6 +36,34 @@ discipline, these failure modes appear by default. Naming them is half the fix:
 | **Billion-line drift** | Code grows linearly with screens instead of approximately constant after primitives are built. AI never generalizes across requests. | Token system + reuse-first prompting *together*. Either alone is insufficient. |
 | **Missing states** | Default/hover/active/disabled/empty/loading — at least one always missing. Especially empty + loading (the most user-facing failures). | Five-state requirement enforced at prompt level — name the states before AI gets a chance to skip them. |
 | **Brand-default problem** | AI defaults to generic-internet aesthetics because that's the training data. Your brand voice never makes it in unless you bring it. | Canvas Promises cell becomes the design brief, not "make it pretty." |
+
+### What an AI design review catches — and what it structurally doesn't (added 2026-08-24)
+
+The catalog above is what AI gets wrong when it *builds* UI. This is what AI gets wrong when it
+*reviews* it — because the obvious fix for the table above is "have the model review its own work,"
+and that fix has a measured ceiling.
+
+**The shape of it:** an LLM UX critique reliably improves **action feedback** and **scannability** —
+the missing loading state, the buried confirmation, the wall of undifferentiated text. It moves
+**flow efficiency** by almost nothing. Whether the *sequence of steps is wrong* — whether the person
+should have been asked this at all, whether two screens are one screen — survives the review intact.
+The same work also found no model that leads across surface types: strength on a chatbot surface
+predicts nothing about strength on a pricing page.
+
+Two consequences, and they are the whole point of writing this down:
+
+- **Don't read a clean design review as a validated flow.** It is evidence about states and
+  legibility. It is close to no evidence about whether the flow is right. That judgment is still the
+  founder's, and it is the expensive half.
+- **A review is worth what someone can repair from it.** The useful question about any critique —
+  human or model — is *could a competent implementer act on this without asking a follow-up?* A
+  finding that names the file, the state and the honest version is worth ten that name a heuristic.
+
+⚠️ **Grade this as direction, not magnitude.** The source is a June 2026 arXiv preprint (UXBench,
+Wang et al.), not peer-reviewed; its absolute effects are small and its headline metric is scored by
+another model. The *relative* pattern — feedback and scannability move, flow doesn't — is the part
+worth planning around, and it matches what BOSS already ships: `/design-review` and `/ux-check` are
+both **checkers**, and no amount of checking produces a flow nobody designed.
 
 ### The seed-that-scales test (added 2026-08-20)
 

@@ -471,6 +471,13 @@
       "for": "involuntary churn",
       "kind": "person",
       "key": false
+    },
+    "uxbench": {
+      "name": "UXBench (Wang et al.)",
+      "url": "https://arxiv.org/abs/2606.16262",
+      "for": "what an LLM UX critique measurably repairs — feedback and scannability move, flow efficiency does not; preprint, grade as direction not magnitude",
+      "kind": "research",
+      "key": true
     }
   },
   "practices": {
@@ -527,7 +534,8 @@
     "design-system": [
       "brad-frost",
       "nathan-curtis",
-      "w3c-tokens"
+      "w3c-tokens",
+      "uxbench"
     ],
     "documentation": [
       "nygard-adr",

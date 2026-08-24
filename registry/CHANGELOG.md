@@ -9,6 +9,70 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.230.0 — 2026-08-24
+
+**`/ux-check` ordered a review it had no way to run.** Step 2 said *"Open the page; click through;
+trigger every state."* The `designer` agent's tools are `Read, Grep, Glob, Edit, Write` — no Bash —
+and **no BOSS template ships a browser, an MCP config, or anything that can render a pixel.** So the
+after-code UX gate has been reporting contrast ratios, focus visibility and screen-reader output it
+structurally could not have measured. **n=21 of the checkers-state-intents-they-don't-enforce
+pattern — and the first one surfaced by reading an outside paper rather than BOSS's own tree.**
+
+- 🔴 **The fix is a split, not a browser.** Every `/ux-check` finding is now marked **`observed`**
+  (the thing was running and you drove it — name the interaction) or **`inferred`** (you read the
+  source and reasoned about what it renders). Inferred is honest work and usually all that's
+  available; **an inferred review written in the voice of a walkthrough is not.** The record now
+  opens with `Evidence: observed <N> · inferred <N> · not checked <N>`. This is
+  [[RVW-092]]'s ADAPT, and it is deliberately **composition, not addition** — `/persona`'s
+  `synthetic % · real %` ledger already proved the shape, so no new skill was created (the standing
+  [[EVID-001]] mandate: compose and subtract, never add a 23rd skill).
+- 🔴 **What needs rendering is now `not checked`, never a pass.** Contrast ratios, focus order and
+  screen-reader sequence moved into their own list with the honest label attached — *"eyeballing hex
+  pairs is not a check."* **Retiring an accessibility question you never asked is worse than leaving
+  it open, because nobody comes back to it.** Same lesson as v0.229.0's denominator, one surface over:
+  absent and passed must not look alike.
+- **`/design-review` had no shape gate at all — and its twin has had one for versions.** `/ux-check`
+  step 0 asks *"is there a screen to walk, or is this a CLI?"* and stops rather than narrating hover
+  states at a terminal. The before-code gate asked nothing, so a `cli` / `dev-tool` founder got
+  walked through the token layer-cake and the 5 states — **the exact ceremony Principle #2 exists to
+  prevent, sitting inside the design surface for however long.** Now gated: CLI, agent-with-no-screen,
+  mobile, and undeclared each get the review that applies, or an early stop.
+- **The persona discount now travels to the skill that consumes personas.** `/persona` ships the
+  guard — *"a synthetic persona will tend to like your idea more than a real person would"* — and
+  `/ux-check`'s *"pair with personas"* line carried none of it. **A persona's approval is not a pass;
+  their confusion still is.** ([[RVW-093]]; the finding is NN/g 2024, not the 2026 wave that re-dates it.)
+- **A shipped copy-paste defect, fixed in passing:** `/ux-check` step 9 read *"Each issue: severity /
+  Each issue: severity (blocking / serious / minor / nit)…"* — a duplicated fragment that had been
+  going out to founders.
+- **UP into `library/practices/design-system.md`:** what an AI design review *structurally* doesn't
+  catch. An LLM critique reliably improves **action feedback** and **scannability**; it moves
+  **flow efficiency** by close to nothing — *whether the sequence of steps is wrong survives the
+  review intact.* Recorded as **direction, not magnitude** (the source is a June 2026 arXiv preprint,
+  not peer-reviewed, with small absolute effects and a model-scored headline metric). **Don't read a
+  clean design review as a validated flow.** `library/sources.json` → 71 sources.
+- **Two verdicts recorded, and the second is a REJECT.** [[RVW-092]] ADAPT (evidence-gated critique).
+  [[RVW-093]] **REJECT** — *AI-generated users can stand in for real research*: contradicted by its
+  own field (Lewis & Sauro's 12-paper review, Apr 2026 — 9 encouraging vs 14 discouraging), and
+  **already shipped better inside BOSS** than the wave describes. [[RVW-082]]'s refusal of the
+  code→editable-design round-trip was re-checked and **stands** — the 2026 "agents write to Figma"
+  claims are still secondary-blog-only.
+- ⚠️ **Attribution caught, recorded so it isn't repeated:** *"NN/g's State of UX 2026"* **does not
+  verify** — *The State of UX* is **UX Collective** (Teixeira & Braga). A new flavour of the
+  verify-the-attribution heuristic (n=12): **the misattribution was manufactured by the search
+  summary itself**, blending three blogs into one confident "NN/g found." A search summary is a
+  hypothesis about a document; this one invented a publisher.
+- **Deliberately NOT done:** no browser, MCP or Playwright added to any template (that trade is worse
+  than the review is good, and it lands hardest on `first-product` and `non-tech-founder`); no new
+  skill; `designer` stays read-only; `last_reviewed` on `design-system.md` **not** bumped — this was a
+  vet addition, not a sweep, and resetting the rot clock would be the metric-that-improves-when-you-
+  forget failure this repo just spent a release fixing.
+
+> **For you:** `/ux-check` now tells you *how* it reviewed — which findings it saw running and which
+> it read out of your source — and it will say **"not checked"** for anything needing a rendered page
+> instead of quietly passing it. If you build a CLI or an agent with no screen, `/design-review` now
+> stops instead of walking you through hover states. And if you use `/persona` to QA a flow, remember
+> the persona likes your work more than a real user will: their confusion is signal, their approval isn't.
+
 ## 0.229.0 — 2026-08-24
 
 **The citation-debt number said "1 of 20 KEY sources have no URL." The honest number was 14 of 37 —

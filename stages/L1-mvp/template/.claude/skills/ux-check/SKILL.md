@@ -50,23 +50,56 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
 
 1. **Pick the surface.** A specific route, a component, or the FEAT-NNN whose UI is being
    reviewed.
-2. **Walk the actual flow.** Not the spec — the SHIPPED experience. Open the page; click
-   through; trigger every state.
+2. **Walk the actual flow — and record how you walked it.** Not the spec — the SHIPPED
+   experience. Open the page, click through, trigger every state.
+
+   **Check what you can actually do before you promise that.** BOSS ships no browser and no
+   renderer: the `designer` agent's tools are Read/Grep/Glob/Edit/Write, and no BOSS template
+   installs Playwright, an MCP server, or anything that can draw a pixel. Your *host* may have
+   more — a Bash tool that can start the dev server, a browser you added yourself. Look, then
+   pick your lane:
+
+   - **Observed** — it was running and you drove it. Name the interaction: what you clicked and
+     what came back.
+   - **Inferred from source** — you read the code and reasoned about what it renders. Legitimate,
+     usually all that's available, and **not the same thing.**
+
+   **Mark every finding with which one it is.** A review that blends them silently is a plausible
+   essay: the founder can't tell which parts you saw, so they can't tell which parts to trust.
+
+   If nothing is running and you can't start it, say so in one line and run the inferred version.
+   **Don't send a founder to install a browser stack to receive a design review** — that trade is
+   worse than the review is good.
+
 3. **Check the 5 states are real:**
-   - Default — does it look like the design?
-   - Hover — feedback visible?
-   - Active — feedback during the action?
+   - Default — does it look like the design?  *(observable only)*
+   - Hover — feedback visible?  *(observable only)*
+   - Active — feedback during the action?  *(observable only)*
    - Disabled — *and the reason for disabled* (so the user can act on it)?
    - Empty — designed copy + visual, not "no results"
    - Loading — skeleton (almost always) not spinner
    - Error — recovery path, not just error text
-4. **Accessibility heuristics:**
-   - Tab through every interactive element; focus visible at each step?
-   - Read with screen reader (or use semantic HTML inspection); does the announced output
-     make sense in isolation?
+
+   From source you can prove a state **exists** (the branch is there, the copy is written) and
+   never that it **looks right**. Report the half you did.
+
+4. **Accessibility heuristics.** Split them honestly — this list is where an inferred review most
+   often reports a pass it did not earn:
+
+   *Checkable from source:*
    - Color isn't the only signal (red alone for error, green alone for success — fail)
-   - Contrast ratios meet WCAG 2 AA
-   - Touch targets ≥ 44×44 px on mobile / responsive
+   - Semantic markup: does each control announce as something, with a name?
+   - Touch targets ≥ 44×44 px on mobile / responsive — if the size is a token, not a computed layout
+
+   *Requires rendering — if you didn't render, these are **not checked**, never "pass":*
+   - Tab through every interactive element; focus visible at each step?
+   - Screen-reader output: does the announced sequence make sense in isolation?
+   - Contrast ratios meet WCAG 2 AA — a computed value; **eyeballing hex pairs is not a check**
+   - Touch targets where the size comes out of layout rather than a token
+
+   **A check that didn't run must not look like a check that passed.** Write *not checked — needs a
+   rendered page*, and say what would run it. Retiring an accessibility question you never asked is
+   worse than leaving it open, because nobody comes back to it.
 5. **Nielsen heuristics walk:**
    - **#1 Visibility of system status** — does the user always know what's happening?
    - **#3 User control and freedom** — is undo / cancel / back available where consequential?
@@ -136,7 +169,18 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    finding, specific and short — the file, the line, and the honest version. Never a lecture.
 
 9. **Capture findings** in `docs/design/ux-check-<feat-or-date>.md`. Each issue: severity
-   Each issue: severity (blocking / serious / minor / nit), the specific scene, the proposed fix.
+   (blocking / serious / minor / nit), the specific scene, the proposed fix — and **`observed` or
+   `inferred`**, per step 2.
+
+   Open the file with one line naming how the review was run, so the next reader doesn't have to
+   guess and the *next* review can tell whether coverage improved:
+
+   ```
+   Evidence:  observed <N> · inferred <N> · not checked <N>   (ran against: <what, or "source only">)
+   ```
+
+   **`not checked` is a real category and it must appear**, or the unrenderable checks quietly
+   read as passes. Same discipline as `/persona`'s synthetic/real ledger: the count is the honesty.
 
 ## What this skill does NOT do
 
@@ -166,9 +210,15 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
 
 - **Walk the actual flow.** The spec might say the empty state is designed; the shipped
   reality might say "No results." Trust the experience, not the spec.
+- **Say which flow you actually walked.** The rule above is the goal, not a description of what
+  happened. An inferred review is honest work; an inferred review presented as a walk is not.
 - **Severity matters.** A blocking accessibility issue is not the same as a polish issue;
   don't flatten the list.
 - **Capture every check.** Without `docs/design/ux-check-*.md` files, the discipline doesn't
   compound.
-- **Pair with personas (v0.19) where relevant.** A persona's reaction to a flow can surface
-  cohort-specific UX failures that the heuristic walk misses.
+- **Pair with personas (v0.19) where relevant** — *carrying `/persona`'s discount with them.* A
+  persona's reaction can surface cohort-specific failures the heuristic walk misses. It can also
+  like your flow more than a real person would: synthetic readers skew agreeable, and the research
+  on this is consistent enough to plan around (NN/g, 2024). **A persona's approval is not a pass.**
+  Their *confusion*, on the other hand, is worth taking straight — it costs nothing to fix a
+  stumble that a synthetic reader found and a real one would have hit too.

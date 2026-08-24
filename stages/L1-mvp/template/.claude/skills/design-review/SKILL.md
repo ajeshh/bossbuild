@@ -16,6 +16,30 @@ review. After-code review (`/ux-check`) is the second gate; this is the first.
 - A new component is being added — *before* the file lands.
 - The founder wants a second look on a design decision they made — anytime.
 
+## Step 0 — read the shape, and be willing to stop
+
+Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). **`/ux-check`
+has always done this and this skill never did** — so the before-code gate has been walking CLI
+founders through hover states and token layer-cakes, which is the exact ceremony BOSS exists to
+prevent (Principle #2).
+
+Everything in *How to run it* assumes a graphical interface. If that's not what's being specced:
+
+- **`cli` / `dev-tool` and no GUI shape alongside** — there is no token layer-cake for terminal
+  output and no hover state to design. Review the surface that *does* exist: is the first thing a
+  lost user finds `--help`; is there one verb per concept across every command; do errors go to
+  stderr with a non-zero exit and say what to do next; is there a `--json`/quiet path; does colour
+  degrade under `NO_COLOR` or a pipe; is destructive work preview-first. Then stop.
+- **`agent` / `chatbot` with no screen** — the surface is the *transcript*. Review what it says
+  when it's uncertain, when it refuses, and before it does something irreversible; whether the
+  person can tell what it did; whether they can interrupt and undo. Pass two's AI-specific UX list
+  is the whole review here, not a sub-bullet.
+- **`mobile-app`** — the 5-state requirement and the token discipline hold; the mechanics don't.
+  Focus ring → VoiceOver/TalkBack focus order; tab order → rotor and swipe order; and add touch
+  targets plus Dynamic Type / font-scale reflow, which have no web equivalent.
+- **No shape declared** — ask one line (*"is there a screen here, or is this a CLI/API?"*) rather
+  than assuming a browser. Don't send them to `/canvas` to find out.
+
 ## How to run it
 
 1. **Read the spec.** The FEAT being reviewed, the proposed component (sketch / mockup /

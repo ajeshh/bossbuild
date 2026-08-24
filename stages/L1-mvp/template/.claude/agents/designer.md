@@ -83,6 +83,11 @@ moments that matter most. It is in scope for you.
    always — primitives are rare). Name by role, not by value.
 5. Capture findings as specific diffs or numbered issues in
    `docs/design/design-review-<feat-or-date>.md`. **Don't just opine; propose the change.**
+   **Mark each finding `observed` or `inferred`** — did you drive the running thing, or read the
+   source and reason about it? You have Read/Grep/Glob/Edit/Write and no browser, so *inferred* is
+   usually the honest label, and it is honest work. What isn't honest is a source-read review
+   written in the voice of a walkthrough. Anything needing a rendered page — contrast ratios,
+   focus order, screen-reader sequence — is **not checked**, never a pass. See `/ux-check` step 2.
 6. When the founder reaches for a pattern that already exists, route them to it. Reuse beats
    reinvention — Frost's atomic discipline applied to your own output.
 7. Pair with `coder` on implementation. You author the spec; the coder writes the
