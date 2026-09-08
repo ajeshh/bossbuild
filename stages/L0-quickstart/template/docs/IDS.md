@@ -62,6 +62,25 @@ one project, four words mean *shipped* and no reader — you, a teammate, or an 
 apart. Your board quietly disagrees with your files and nothing announces it. A vocabulary nobody can
 enumerate is not a vocabulary.
 
+**When you move a record INTO `building`, stamp `building_since:` with today's date. When it reaches
+`shipped`, drop that and stamp `shipped_on:`.**
+
+```
+status: building
+building_since: 2026-03-04     # what `boss board` ages a card by
+```
+
+Two dates, and they are the only reason your board can tell *in flight* from *stalled*. Past about
+three weeks in Building, the card gets a ⌛ and `boss board --blocked` lists it — the zombie-feature
+flag, which is worth more than it looks: work nobody killed and nobody finished is the most expensive
+thing on any board.
+
+**Skip it and the board still works** — it falls back to the last commit that touched the record and
+says `untouched 3w` instead of `3w in build`. That is a *different claim*, honestly labelled, and it
+is why the two are never merged into one sentence: the day you started is something only you know.
+Re-stamp `building_since:` if you pause a record and pick it up again, so the age reflects *this*
+run rather than the original.
+
 ## `proof:` — how a status stays honest (optional, and worth it)
 
 A status is a **claim about your code**. `shipped` means the thing exists. Nothing checks that for

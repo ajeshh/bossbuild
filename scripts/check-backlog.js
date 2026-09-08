@@ -40,10 +40,64 @@ const IDEAS = join(ROOT, 'docs', 'ideas');
 // third private copy of the same list (src/frontmatter.js).
 const VOCAB = STATUS_VOCAB;
 
+// --- the vocabulary, enforced where it is TAUGHT as well as where it is used ----------------
+// Everything below checks BOSS's own records. This checks the shipped skills that tell a founder
+// what to write in one — the half that had no gate, and the half that reaches strangers.
+//
+// `/revalidate` routed a dead item to `status: killed` / `folded` and a revived one to `active`;
+// `/sunset` marked a removed FEAT `retired` (or `sunset`). Five words, none of them among the
+// seven. The cost was not cosmetic: `boss records` flagged the founder for following the skill,
+// and `boss board` files an unrecognised FEAT status as in-flight — so the two verbs that exist
+// to END work were the only reliable way to create a permanent Building card.
+//
+// PRECISION, deliberately. It reads only INLINE-CODE `\`status: x\`` — which is how a skill writes
+// an *instruction* about a record in flight, and in every shipped instance that record is an IDEA
+// or FEAT. A BARE `status:` line inside a fenced block is a TEMPLATE for a typed record, and those
+// types declare their own vocabularies in docs/IDS.md (`DEC` is decided|superseded, `PRAC` is
+// active|stale|retired, a canvas is drafting). Scanning both would fire on every one of them, and
+// a checker that cries wolf gets switched off — which is how the last three died.
+//
+// Only the FIRST word is compared. Detail after it is encouraged: `dropped (sunset 2026-09-08 —
+// 3 users in 90 days)` is well-formed and says far more than `dropped`.
+const SKILL_STATUS = /`status:\s*([a-z-]+)/g;
+const skillFiles = [];
+const walkSkills = (dir) => {
+  let entries = [];
+  try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return; }
+  for (const e of entries) {
+    if (e.isDirectory()) walkSkills(join(dir, e.name));
+    else if (e.name.endsWith('.md')) skillFiles.push(join(dir, e.name));
+  }
+};
+for (const stage of (() => { try { return readdirSync(join(ROOT, 'stages')); } catch { return []; } })()) {
+  walkSkills(join(ROOT, 'stages', stage, 'template', '.claude', 'skills'));
+}
+const skillVocab = [];
+for (const abs of skillFiles) {
+  const rel = abs.slice(ROOT.length + 1);
+  const text = readFileSync(abs, 'utf8');
+  for (const m of text.matchAll(SKILL_STATUS)) {
+    if (VOCAB.includes(m[1])) continue;
+    const line = text.slice(0, m.index).split('\n').length;
+    skillVocab.push([`${rel}:${line}`,
+      `tells the founder to write \`status: ${m[1]}\` — not one of: ${VOCAB.join(' | ')}`]);
+  }
+}
+
 // The gitignored dogfood workspace is not present in a fresh clone or a CI checkout of the
 // tarball. Nothing to check is not a failure — the same posture `check-freshness` takes.
+// The skill scan above runs FIRST and on its own: those files are always present, and gating
+// them behind a folder that is absent in every fresh clone would silence the check exactly
+// where it matters most.
 if (!existsSync(IDEAS)) {
-  console.log('\nBOSS · backlog integrity — docs/ideas/ not present (dogfood workspace). Nothing to check.\n');
+  if (skillVocab.length) {
+    console.log(`\nBOSS · backlog integrity — ${skillFiles.length} shipped skill files (docs/ideas/ not present)\n`);
+    console.log('  UNDECLARED STATUS IN A SHIPPED SKILL');
+    for (const [a, b] of skillVocab) console.log(`      ${a}\n        -> ${b}`);
+    console.log(`\n  ${skillVocab.length} total. Exit 1.\n`);
+    process.exit(1);
+  }
+  console.log(`\nBOSS · backlog integrity — ${skillFiles.length} shipped skill files clean; docs/ideas/ not present (dogfood workspace).\n`);
   process.exit(0);
 }
 
@@ -54,7 +108,7 @@ const field = (text, name) => {
 };
 const base = baseStatus;
 
-const findings = { vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [], proof: [], unproven: [] };
+const findings = { skillVocab, vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [], proof: [], unproven: [] };
 
 // --- the records on disk -----------------------------------------------------------------
 const records = new Map(); // id -> [{file, status}]
@@ -184,6 +238,8 @@ const report = (key, title, why) => {
   console.log('');
 };
 
+report('skillVocab', 'UNDECLARED STATUS IN A SHIPPED SKILL',
+  `a skill instructing a founder to write a status outside the closed set in docs/IDS.md. This\n  reaches strangers: \`boss records\` then flags them for following BOSS's own instruction, and\n  \`boss board\` files the unrecognised FEAT status as in-flight — so the verb that ends work\n  creates a permanent Building card instead.`);
 report('vocab', 'UNDECLARED STATUS',
   `a status outside the closed set in docs/IDS.md. Four spellings of "shipped" is how the\n  index and the files drifted apart for ~80 releases without anyone able to see it.`);
 report('collisions', 'DUPLICATE IDS',

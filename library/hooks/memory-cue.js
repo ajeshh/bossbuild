@@ -47,8 +47,10 @@ function readStdin() {
     process.stdin.setEncoding('utf8');
     process.stdin.on('data', (c) => (data += c));
     process.stdin.on('end', () => resolve(data));
-    // If nothing is piped in, don't hang the session.
-    setTimeout(() => resolve(data), 1000);
+    // If nothing is piped in, don't hang the session. `.unref()` matters as much as the timeout:
+    // without it the timer keeps the event loop alive for the full second AFTER `end` already
+    // resolved, so every fire cost a second of latency it never needed.
+    setTimeout(() => resolve(data), 1000).unref();
   });
 }
 

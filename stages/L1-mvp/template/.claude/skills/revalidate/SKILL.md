@@ -36,9 +36,17 @@ item's own framing, which was written in the old world.
 
 | Answers | Do this |
 |---|---|
-| All three **yes** | **Revive.** Set `status` to active, note it in RESUME's next-tasks, carry on. |
-| Any **no** | **Rescope or kill.** Reshape it to the new reality (and say how), or close it — set `status: killed` / `folded` with a one-line reason logged. Don't build it as-was. |
-| **Unclear** | **Re-pause.** Write a *new* `paused_reason` and a fresh `next_review` date. Don't let it drift back in by default. |
+| All three **yes** | **Revive.** Set `status: ready` (or `building` if you're starting now), note it in RESUME's next-tasks, carry on. |
+| Any **no** | **Rescope or kill.** Reshape it to the new reality (and say how), or close it — `status: dropped (<why, in a few words>)`. Don't build it as-was. |
+| **Unclear** | **Re-pause.** `status: deferred`, a *new* `paused_reason`, and a fresh `next_review` date. Don't let it drift back in by default. |
+
+**Use the seven words.** `docs/IDS.md` declares a closed vocabulary — `seedling · exploring · ready ·
+building · shipped · deferred · dropped` — and everything after the first word is free-form detail
+that is *encouraged*: `dropped (superseded by the v2 flow)` says far more than `dropped`. This skill
+used to route to `killed`, `folded` and `active`, none of which are in it, and the cost was not
+cosmetic: `boss records` flagged the founder for doing exactly what BOSS told them to, and
+`boss board` — which files an unrecognised FEAT status as in-flight — put the killed feature **back
+in the Building column, permanently.** The verb that exists to end a zombie was manufacturing one.
 
 **4. Record the call.** Update the item's frontmatter (`status`, `paused_reason`, `next_review`) and
 leave a one-line trace of the decision (devlog / RESUME). The point is that the next person sees the
@@ -66,7 +74,7 @@ what the code actually does now. Route the same way the table above does:
 | Criteria still true | **Say so and stop.** Stamp a fresh `next_review`. A confirmed spec is a real result, not a wasted pass. |
 | Code moved past the spec | **Update the FEAT to what's true now**, and put the *why* in its `## Build log`. The drift is usually a decision nobody wrote down. |
 | Criteria were quietly abandoned | **Untick them and say which.** A criterion silently dropped is the most useful thing this pass can find — it's a scope change that never got made explicitly. |
-| The feature is gone or absorbed | `status: folded`, one-line reason. Don't leave a spec for something that no longer exists. |
+| The feature is gone or absorbed | `status: dropped (absorbed into FEAT-NNN)` — name where it went. Don't leave a spec for something that no longer exists. |
 
 **Keep it rare and opt-in.** This fires when *you* run it, or when a `next_review:` you set has
 passed — never on a schedule BOSS chose. Re-reading every shipped spec on a cadence is the

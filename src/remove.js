@@ -207,6 +207,13 @@ function planSettings(projectDir, layers) {
 // It is the same asymmetry `sync --force` closed in v0.197.0, one function over: sync grew a
 // backup before it overwrote, and remove kept deleting without one.
 //
+// SINCE DEC-015 the list above is a LEGACY list, and deliberately still handled. `conscience-log.jsonl`
+// and `brain/relationship.md` are no longer written under `.boss/` — they live at
+// `~/.boss/projects/<key>/`, outside any working directory, so removal never reaches them. But a
+// project scaffolded before that move keeps its old copies on disk (the migration COPIES, it does
+// not delete), and those copies are exactly as unrecoverable as they ever were. So this still backs
+// up the whole of `.boss/`, and must keep doing so.
+//
 // WHY THE MACHINE DIR AND NOT `.boss-removed-…/` IN THE PROJECT: `brain/relationship.md` is
 // per-person conscience state that [[DEC-001]] says never travels to a cofounder, and BOSS ships a
 // `.gitignore` rule saying so. A copy parked in the project is NOT covered by that rule, so the

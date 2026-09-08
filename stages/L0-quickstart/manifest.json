@@ -28,7 +28,8 @@
     "boss-learn"
   ],
   "hooks": [
-    "conscience"
+    "conscience",
+    "reentry"
   ],
   "optionalHooks": [
     "secrets-guard",

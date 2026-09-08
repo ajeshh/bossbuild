@@ -179,8 +179,11 @@ that when you're choosing among many candidates, not just reacting to one.)_
    > freely.
 
 5. Create `docs/ideas/FEAT-NNN-<slug>.md` from the template below.
-6. Update the source IDEA's `status` to `building` and add a one-line pointer at the top:
-   `> Building as [FEAT-NNN](FEAT-NNN-<slug>.md).`
+6. Update the source IDEA's `status` to `building`, stamp `building_since: {{today}}` on it too,
+   and add a one-line pointer at the top: `> Building as [FEAT-NNN](FEAT-NNN-<slug>.md).`
+   The stamp goes on **both** records because the board ages a card by the column it is in, not
+   by its type — and an idea sitting in Building is the shape that actually goes stale here
+   (most ideas never earn a FEAT at all).
 7. Nothing else to register — `boss board` picks the FEAT up from its frontmatter and shows it
    alongside the ideas.
    - `building_since:` anchors the board's time-in-build aging (`boss board` flags a FEAT that's sat

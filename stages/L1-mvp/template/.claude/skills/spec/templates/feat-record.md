@@ -7,6 +7,10 @@
 > omit them entirely otherwise rather than filling them with `n/a`. The same rule governs the three
 > lines under **Paths that must not break**: omit a path this FEAT doesn't have. `n/a` in a template
 > is noise; a missing line is an answer.
+> **`from:` is the field, and it is spelled exactly that.** It is what `boss records` reads to link
+> the promotion back to its idea — `source:`, `implements:` and `promoted_from:` all look right and
+> are read by nothing. No source idea? `from: none` plus a `from_note:` saying where it came from
+> is a complete answer, and a common one.
 
 ```markdown
 ---
@@ -17,7 +21,7 @@ status: building
 gist: <one plain sentence — what this feature IS, for the board>
 created: {{today}}
 building_since: {{today}}
-source: IDEA-NNN
+from: IDEA-NNN
 ---
 
 # <Feature name — one plain line, present tense>

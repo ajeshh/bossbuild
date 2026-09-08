@@ -734,6 +734,7 @@ function cmdRecords(args) {
     'duplicate-id': 'DUPLICATE ID',
     'off-vocabulary': 'OFF-VOCABULARY STATUS',
     'unlinked-promotion': 'BROKEN PROMOTION LINK',
+    'stale-field': 'FIELD NOTHING READS',
     'no-proof': 'NOTHING TO CHECK AGAINST',
   };
   let last = null;
@@ -744,6 +745,10 @@ function cmdRecords(args) {
       if (f.kind === 'built-not-recorded') {
         console.log(dim('  You finished these and the record still says otherwise. Left alone, this is'));
         console.log(dim('  how a thing gets built twice.'));
+      }
+      if (f.kind === 'stale-field') {
+        console.log(dim('  These look answered and are read by nothing — the quietest way a record goes'));
+        console.log(dim('  wrong, because a missing field gets reported and a misspelled one does not.'));
       }
     }
     console.log(`      ${f.id}  ${dim(f.file)}\n        ${f.what}`);
@@ -1331,7 +1336,7 @@ const HELP = {
   },
   remove: {
     usage: 'boss remove [--apply] [--yes]   ·   boss remove --global [--apply]',
-    what: "Take BOSS back out. Without --apply it previews only. It removes what BOSS WROTE and nothing else: files you authored are never touched, a BOSS file you EDITED is yours and is kept, your CLAUDE.md keeps everything except BOSS's marked block, and settings.json loses only BOSS's hook registrations — your permissions, your own hooks and the secret-path deny floor all stay (removing a deny would widen access on the way out). That boundary matters most in docs/, where your ideas and decisions sit in the same tree as BOSS's scaffold. `--global` is the OTHER exit: it prints the uninstall command for how you installed BOSS and lists the machine-local state in ~/.boss. Note your projects keep working after a global uninstall — the conscience hook runs from the project and doesn't call this CLI. Two things about the undo, because the honest version is not the obvious one: `git checkout .` brings back every TRACKED file, but it cannot bring back `.boss/` — BOSS gitignores its own conscience log, cost log, trace and per-person brain state, so git never saw them. `--apply` therefore copies `.boss/` into ~/.boss/removed/ first and tells you where. And because BOSS is self-hosted, its own repo is a valid target: `--apply` refuses there without `--yes`, so cleaning up after a throwaway one directory too far up can't take BOSS out of BOSS.",
+    what: "Take BOSS back out. Without --apply it previews only. It removes what BOSS WROTE and nothing else: files you authored are never touched, a BOSS file you EDITED is yours and is kept, your CLAUDE.md keeps everything except BOSS's marked block, and settings.json loses only BOSS's hook registrations — your permissions, your own hooks and the secret-path deny floor all stay (removing a deny would widen access on the way out). That boundary matters most in docs/, where your ideas and decisions sit in the same tree as BOSS's scaffold. `--global` is the OTHER exit: it prints the uninstall command for how you installed BOSS and lists the machine-local state in ~/.boss. Note your projects keep working after a global uninstall — the conscience hook runs from the project and doesn't call this CLI. Two things about the undo, because the honest version is not the obvious one: `git checkout .` brings back every TRACKED file, but it cannot bring back `.boss/` — BOSS gitignores its own cost log, trace and backups, so git never saw them. `--apply` therefore copies `.boss/` into ~/.boss/removed/ first and tells you where. Your conscience history is a separate matter and a reassuring one: since DEC-015 the frequency ledger and the relationship log do not live in the project at all (they are at ~/.boss/projects/<key>/, keyed to you and this project so a second checkout or a Remote Control worktree is not a stranger), so removing BOSS from this project does not touch them. `--global` is where you go to see and clear those. And because BOSS is self-hosted, its own repo is a valid target: `--apply` refuses there without `--yes`, so cleaning up after a throwaway one directory too far up can't take BOSS out of BOSS.",
     examples: ['boss remove', 'boss remove --apply', 'boss remove --global'],
     see: ['adopt', 'retire', 'sync'],
   },
@@ -1398,6 +1403,7 @@ const OPTIONAL_HOOKS = [
   {
     name: 'secrets-guard',
     event: 'PreToolUse',
+    mode: 'Quickstart',
     does: 'Stops a tool from reading a secret\'s CONTENTS into the model\'s context — denies Read/Edit of .env and secrets/, asks before a Bash command or MCP call that references one.',
     cost: 'a process on EVERY tool call',
     worth: 'regulated / PHI / high-stakes work, where the deny-list floor in settings.json isn\'t enough',
@@ -1405,6 +1411,7 @@ const OPTIONAL_HOOKS = [
   {
     name: 'memory-cue',
     event: 'UserPromptSubmit',
+    mode: 'Quickstart',
     does: 'Notices when you say something durable ("from now on…", "no, don\'t…", "perfect, keep doing…") and nudges Claude to save it to project memory. It never writes the memory itself.',
     cost: 'a process per prompt, silent unless a pattern matches',
     worth: 'you keep repeating the same correction across sessions',
@@ -1412,6 +1419,7 @@ const OPTIONAL_HOOKS = [
   {
     name: 'auto-log',
     event: 'SubagentStop',
+    mode: 'MVP',
     does: 'Appends one honest line per writer-subagent to .boss/trace.jsonl — what it touched, when. Local-only, append-only, never sent anywhere. This is the substrate /judge-traces reads.',
     cost: 'a process after every subagent',
     worth: 'you want /judge-traces to have anything to read (it is empty until this is on)',
@@ -1419,19 +1427,39 @@ const OPTIONAL_HOOKS = [
   {
     name: 'design-tokens-guard',
     event: 'PostToolUse',
+    mode: 'MVP',
     does: 'Catches hardcoded colors (hex, rgb()/hsl(), palette classes like bg-blue-500) the moment they\'re written, and hands Claude your token names instead. Silent until a DESIGN_TOKENS.md exists — no token system, no opinion.',
     cost: 'a process after each file write',
     worth: 'you have a token system and want it to actually hold — a prompt convention is a filter, this is the check',
+  },
+  {
+    name: 'schema-guard',
+    event: 'PostToolUse',
+    mode: 'MVP',
+    does: 'Catches a migration that creates a table without row-level security — the leak behind CVE-2025-48757 (170+ apps) and MoltBook (1.5M tokens, a founder who wrote no code). Reports the two failures apart: RLS never enabled, and RLS on with no policy. Silent unless you are writing a migration or schema file.',
+    cost: 'a process after each file write',
+    worth: 'your app talks to a database with a public/anon key — this is the only half that can PREVENT it, because it fires while the migration is still being written',
+  },
+  {
+    name: 'content-terminology-guard',
+    event: 'PostToolUse',
+    mode: 'MVP',
+    does: 'Scans the strings and JSX text you just wrote for words your terminology table says not to use, and hands back the word it should be. Strings only — your code can call it whatever it likes. Silent until STYLE_GUIDE.md has a filled-in Terminology table.',
+    cost: 'a process after each file write',
+    worth: 'you have authored a terminology list and want it to hold — renaming a core noun late hits copy, routes, schema, tests and every prompt at once',
   },
 ];
 
 function printHooks() {
   console.log(`\n  ${bold('Optional hooks')}  ${dim('— shipped with your project, switched OFF')}\n`);
   console.log(`  ${OPTIONAL_HOOKS.length} hooks land in \`.claude/hooks/\` and do nothing until you register them.`);
+  console.log(`  The mode column is when each one ARRIVES — a Quickstart project has the first two.`);
+  console.log(`  ${dim('Two hooks are already ON and are not listed here: `conscience` (the nudges) and')}`);
+  console.log(`  ${dim('`reentry` (hands Claude where you left off when you come back after a few days).')}`);
   console.log(`  That is deliberate: a hook runs a process on every matching event, and BOSS won't`);
   console.log(`  spend your latency without you asking. ${dim('An unregistered script costs nothing.')}\n`);
   for (const h of OPTIONAL_HOOKS) {
-    console.log(`  ${bold('/' + h.name.padEnd(20))} ${dim(h.event)}`);
+    console.log(`  ${bold('/' + h.name.padEnd(26))} ${dim(h.event)} ${dim('· ' + h.mode)}`);
     console.log(`    ${h.does}`);
     console.log(`    ${dim('costs:')} ${h.cost}`);
     console.log(`    ${dim('worth it when:')} ${h.worth}\n`);

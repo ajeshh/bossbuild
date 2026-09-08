@@ -71,7 +71,7 @@ test('canvassedIdeas counts ideas that graduated past the canvas', () => {
   const dir = project({
     'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'building' }),
     'docs/ideas/IDEA-001-canvas.md': canvas('IDEA-001', 'A real risk'),
-    'docs/ideas/FEAT-001.md': feat('FEAT-001', { source: 'IDEA-001' }),
+    'docs/ideas/FEAT-001.md': feat('FEAT-001', { from: 'IDEA-001' }),
   });
   assert.deepEqual(canvassedIdeas(dir).ids, ['IDEA-001']);
 });
@@ -87,12 +87,30 @@ test('a project-level CANVAS.md is its own fact, not an idea count', () => {
 });
 
 test('a promoted idea is represented by its FEAT, never double-counted', () => {
+  // REGRESSION: this test used to write `source:` — the dead spelling — so it passed while the
+  // real board double-counted every promotion BOSS had ever made. A test written against the
+  // implementation cannot fail; `from:` is what /spec ships and what `boss records` reads.
   const dir = project({
     'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'building' }),
-    'docs/ideas/FEAT-001.md': feat('FEAT-001', { source: 'IDEA-001' }),
+    'docs/ideas/FEAT-001.md': feat('FEAT-001', { from: 'IDEA-001' }),
   });
   const { cards } = collectBoard(dir);
   assert.deepEqual(cards.map((c) => c.id), ['FEAT-001']);
+});
+
+test('a legacy `source: IDEA-NNN` still dedupes; free-form `source:` prose never does', () => {
+  // Founders' records written from the old template carry `source:`, and the board must not
+  // double-count them while `boss records` nags. But `source:` is legitimate provenance prose
+  // 39 times over in BOSS's own records — and prose simply never equals an id, which is why
+  // this needs no whitelist to tell the two apart.
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'building' }),
+    'docs/ideas/FEAT-001.md': feat('FEAT-001', { source: 'IDEA-001' }),
+    'docs/ideas/IDEA-002.md': idea('IDEA-002', { status: 'building' }),
+    'docs/ideas/FEAT-002.md': feat('FEAT-002', { from: 'IDEA-002', source: 'Ajesh, 2026-08-20 conversation' }),
+  });
+  const ids = collectBoard(dir).cards.map((c) => c.id).sort();
+  assert.deepEqual(ids, ['FEAT-001', 'FEAT-002'], 'both promotions collapse to their FEAT');
 });
 
 test('FEAT status maps to a column; shipped leaves Building', () => {
@@ -117,8 +135,9 @@ test('aging + review-due are frontmatter-true, never guessed from mtime', () => 
   });
   const { cards } = collectBoard(dir);
   assert.equal(cards.find((c) => c.id === 'FEAT-001').aging, true);
+  assert.equal(cards.find((c) => c.id === 'FEAT-001').ageSource, 'authored');
   assert.equal(cards.find((c) => c.id === 'FEAT-002').aging, false);
-  assert.equal(cards.find((c) => c.id === 'FEAT-002').ageDays, null, 'no date → no guess');
+  assert.equal(cards.find((c) => c.id === 'FEAT-002').ageDays, null, 'no frontmatter, no git → still no guess');
   assert.equal(cards.find((c) => c.id === 'IDEA-001').reviewDue, true);
   assert.equal(cards.find((c) => c.id === 'IDEA-002').reviewDue, false);
 });
@@ -360,4 +379,65 @@ test('a card that has not shipped never shows a shipped date', () => {
   const out = renderBoardCard('p', { cards, hasIdeasDir: true }, 'IDEA-001');
   assert.ok(!/shipped\s+2026-01-01/.test(out), out);
   assert.ok(/column\s+Building/.test(out));
+});
+
+test('REGRESSION: a record whose SLUG contains "canvas" is a card, not a canvas file', () => {
+  // `f.includes('-canvas')` deleted any record whose slug happened to contain the word.
+  // Two of BOSS's own ideas rendered in no column at all — the only board failure that
+  // leaves no trace, because a missing card has no count to be missing from.
+  const dir = project({
+    'docs/ideas/IDEA-063-canvas-frames-and-the-render.md': idea('IDEA-063'),
+    'docs/ideas/IDEA-068-the-canvas-as-a-standalone-tool.md': idea('IDEA-068'),
+    'docs/ideas/IDEA-063-canvas.md': canvas('IDEA-063', 'A real risk'),
+  });
+  const ids = collectBoard(dir).cards.map((c) => c.id).sort();
+  assert.deepEqual(ids, ['IDEA-063', 'IDEA-068'], 'both records are cards; only the -canvas.md file is state');
+});
+
+test('an IDEA in Building ages like a FEAT — the column is what matters, not the record type', () => {
+  // The zombie flag lived only on the FEAT branch, so it could not fire on an idea however
+  // long it sat. That is the normal case: IDS.md says most ideas never earn a FEAT, and seven
+  // of the eight cards in BOSS's own Building column were ideas.
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'building', building_since: daysAgo(40) }),
+    'docs/ideas/IDEA-002.md': idea('IDEA-002', { status: 'building', building_since: daysAgo(3) }),
+    'docs/ideas/IDEA-003.md': idea('IDEA-003', { status: 'seedling', building_since: daysAgo(90) }),
+  });
+  const { cards } = collectBoard(dir);
+  const c = (id) => cards.find((x) => x.id === id);
+  assert.equal(c('IDEA-001').aging, true, 'in Building past the threshold');
+  assert.equal(c('IDEA-001').ageSource, 'authored');
+  assert.equal(c('IDEA-002').aging, false, 'in Building, still fresh');
+  assert.equal(c('IDEA-003').ageDays, null, 'not in Building — time in build is meaningless');
+});
+
+test('a derived age is UNTOUCHED-since, labelled as such, never claimed as time-in-build', () => {
+  // The old fallback pointed at git's ADD date for the record — the CAPTURE date — and rendered
+  // it as "Nw in build". An idea captured in March and started yesterday read "24w in build",
+  // confidently. The derived date now answers what git can actually prove.
+  const dir = mkdtempSync(join(tmpdir(), 'boss-board-age-'));
+  execFileSync('git', ['init', '-q'], { cwd: dir });
+  execFileSync('git', ['config', 'user.email', 't@t.t'], { cwd: dir });
+  execFileSync('git', ['config', 'user.name', 't'], { cwd: dir });
+  mkdirSync(join(dir, 'docs', 'ideas'), { recursive: true });
+  writeFileSync(join(dir, 'docs', 'ideas', 'IDEA-001-thing.md'),
+    '---\nid: IDEA-001\nstatus: building\n---\n\n# The thing\n');
+  writeFileSync(join(dir, 'docs', 'ideas', 'FEAT-001-thing.md'),
+    `---\nid: FEAT-001\nstatus: building\nfrom: none\nbuilding_since: ${daysAgo(40)}\n---\n\n# Specced\n`);
+  execFileSync('git', ['add', '-A'], { cwd: dir });
+  execFileSync('git', ['commit', '-qm', 'capture'], { cwd: dir });
+
+  const cards = collectBoard(dir).cards;
+  const derived = cards.find((c) => c.id === 'IDEA-001');
+  assert.equal(derived.ageSource, 'derived', 'no building_since: → the date is git-derived');
+  assert.equal(derived.ageDays, 0, 'committed just now — untouched for zero days');
+  assert.equal(derived.aging, false);
+
+  const authored = cards.find((c) => c.id === 'FEAT-001');
+  assert.equal(authored.ageSource, 'authored', 'frontmatter wins over the repo');
+  assert.equal(authored.aging, true);
+
+  const text = renderBoardCard(dir, 'IDEA-001');
+  assert.ok(!/in build/.test(text), 'a derived age must never be rendered as time-in-build');
+  rmSync(dir, { recursive: true, force: true });
 });

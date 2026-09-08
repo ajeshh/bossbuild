@@ -9,6 +9,321 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.245.0 — 2026-09-08
+
+**The three records the memory sweep left open, resolved — one shipped, two answered NO.** No new
+skills, no new hooks. The interesting part of this release is what it declines.
+
+### [[IDEA-079]] — SHIPPED: prompt storage gets a home it can run from
+
+`prompt-coach` quoted Willison — *"prompt is code; version it; save the good ones"* — and filed them
+as prose in `docs/dossier/`. `.claude/commands/` appeared nowhere in BOSS.
+
+- **Step 3b:** when the founder reaches for the same prompt again — *they* notice, not the agent —
+  offer to promote it to `.claude/commands/<name>.md`, where it becomes `/<name>`, commits with the
+  repo, and shows up in `git log` when it changes. Offer once, take the answer, don't push.
+- **`/close` stops pointing at a snippets app** for kickoff prompts.
+- 🔴 **The invented "three times" threshold was DROPPED.** The record proposed it and flagged it as
+  unevidenced in the same breath; the shipped wording hands the judgment to the person who has the
+  information the rule was standing in for.
+- **No authoring path was built.** `.claude/commands/` being *the rung below a skill* stays a note.
+
+### [[IDEA-078]] — HALF shipped, half declined with a testable trigger
+
+- **SHIPPED — the vocabulary, which was the plainly-wrong half.** The founder-facing surface named
+  none of `/resume`, `--continue`, `/clear`, `/compact`. A *Sessions vs. chats* line in the template
+  `CLAUDE.md` names them and resolves the **`/resume` ↔ `docs/RESUME.md` collision** — a founder told
+  to "read RESUME" who types `/resume` gets the host's conversation picker.
+- **`context-discipline` gained the whole session lifecycle.** It had been **silent about every
+  session event** while being the document BOSS points founders at for context discipline —
+  `curve: host`, and the host had moved under it. Re-read out of the 2.1.132 binary.
+- 🔴 **DEFERRED — the `PreCompact` cue.** It would be BOSS's *second* registered hook in one day,
+  against **n=0**, in the week its own mandate is compose-and-subtract. **Re-open trigger, and check
+  the second half FIRST:** a founder loses work to auto-compaction, OR any real project has a
+  `feature-context.md` someone actually wrote in — *nothing has ever written to that file*, and if it
+  is empty everywhere then the working-state half of the memory model has a bigger problem.
+
+### [[IDEA-080]] — ANSWERED NO, and shipping [[DEC-015]] inverted the record's own lean
+
+The record called machine-local durable memory "the uncomfortable part" and proposed pointing
+`autoMemoryDirectory` into the repo. **Building DEC-015 the same day answered it the other way:**
+DEC-015 deliberately moved per-person state OUT of the tree because machine-local is the *right* home
+for person-scoped data. Auto-memory is person-scoped data. It is already where it belongs.
+
+- **`autoMemoryDirectory` is NOT set.** Durable memory is not committed.
+- **What shipped is the honest sentence.** The template `CLAUDE.md` said durable facts go to
+  "Claude's auto-memory" and stopped. It now says **where** that is (this machine, not the repo),
+  what follows (it does not reach a cofounder or a new laptop, so anything the *project* depends on
+  belongs in `docs/`), and names `memory-cue` as the mechanism — findable since v0.241.0.
+
+### Housekeeping
+
+- **`registry/surface-freshness.json` regenerated:** picked up `prompt-coach` (crossed at v0.236.0
+  and never added), `comp-eval`, and the new `reentry` hook — and **dropped two rows for
+  `mentor-fundraising` and `mentor-pitch`, which ship nowhere**: `stages/L2-v1/template/.claude/agents/`
+  does not exist. The ledger had been tracking two agents no founder can reach.
+- **`memory-cue` was NOT re-stamped** despite being edited. Touching a file is not reviewing it —
+  the ledger's own rule, and a bug fix must not reset the clock.
+- **The build-craft watchlist marker was NOT stamped**, matching the 2026-08-22 precedent: this was a
+  targeted re-verification, not a sweep. Stamping it would silently retire research nobody has done.
+- 286 unit tests, eval gate 152/152.
+
+> **For you:** BOSS now tells you where your durable memory actually lives, what `/resume`, `/clear`
+> and `/compact` do to your session (and that none of them is `docs/RESUME.md`), and offers to turn a
+> prompt you keep reusing into a slash command you can just run.
+
+## 0.244.0 — 2026-09-08
+
+**BOSS had written the answer to "what was I doing" and put it behind a command the founder has to
+remember to type.** [[IDEA-077]], shipped: a `SessionStart` hook that hands Claude where you left
+off, at the moment you come back.
+
+`src/brain.js` records the rule this violated, in Ajesh's own words — ***"people can forget close —
+a rule that depends on someone remembering is not a mechanism."*** That rule had been applied to the
+brain's CONTENTS and never to the two rituals that produce everything: open by reading RESUME, close
+with `/close`. `boss status` has computed the whole re-entry read since v0.231.0; it fired only if
+the founder typed a CLI command, inside a product that lives in Claude Code where they just start
+typing — and, with Remote Control, may have no terminal at all.
+
+- **One implementation, two surfaces.** The facts moved to `lib/reentry.js` in the TEMPLATE, because
+  a hook that ships into a project cannot import from `src/`. `boss status` now calls the same
+  `reentryRead` the hook does, so the two can never disagree about how long you were away —
+  a test asserts exactly that. **A second copy is how two surfaces end up individually correct and
+  contradicting each other.**
+- **Registered by default — the first hook besides the conscience, argued rather than assumed.**
+  `conscience.js` already ships ON and fires on EVERY prompt; this fires ONCE per session start, so
+  it is strictly cheaper than what was already registered. And a dormant orientation hook cannot
+  orient anyone: dormant is right for a hook that adds a CHECK, wrong for one that answers a
+  question the founder is already asking.
+- **Silence is the requirement, not the fallback.** It says nothing under 3 days away, nothing with
+  no `docs/devlog.md` (so it is silent by construction at Quickstart until `/log` arrives with MVP),
+  nothing on `source: clear|compact` — those are the founder mid-session, and firing there is the
+  over-fire the conscience spends its whole design avoiding — and nothing the second time for the
+  same devlog date, so three sessions in an afternoon do not replay one line three times. That
+  marker lives in the DEC-015 per-person dir, so it is keyed to you and survives a worktree.
+- ⛔ **It never fires AT someone who is away.** It fires when they come back — the only moment it can
+  observe and the only kind one, and per [[DEC-016]] that is now a decision rather than a limit.
+- 🔴 **A latent second of latency, found by the tests and fixed in all three copies.** `readStdin`'s
+  1000ms fallback timer was never `.unref()`d, so the process stayed alive for the full second
+  *after* `end` had already resolved. Every fire of `memory-cue` — and every fire of this hook —
+  cost a second it never needed. **25ms now.** A registered SessionStart hook is exactly where that
+  would have been felt, and exactly where nobody would have thought to look.
+- **`boss help hooks` now names the two hooks that are ON** as well as the six that are off, so the
+  picture is complete rather than only the half you can switch. The catalog's completeness test
+  derives BOTH sides from disk — shipped hooks minus whatever a shipped `settings.json` registers —
+  so adding a registered hook can never silently open a gap again.
+- The MVP overlay's rule 0 (*"Open the session before you work in it"*) finally names its runner.
+- 286 unit tests (6 new), eval gate 152/152. Verified end-to-end on a throwaway scaffold, including
+  that `boss remove` still strips the new registration cleanly.
+
+> **For you:** come back to a project after a few days and BOSS opens with what you last landed and
+> what you said was next, without you having to ask. Under three days it stays quiet.
+
+## 0.243.0 — 2026-09-08
+
+**The conscience remembered the venture and forgot every nudge it had ever fired — and one
+founder's private nudge history was reaching their cofounder through a file nobody had looked at.**
+Two decisions, both confirmed by Ajesh, both executed here. Verified end-to-end on a throwaway
+scaffold with a real `git worktree`, and against the Claude Code 2.1.132 binary rather than its docs.
+
+### [[DEC-015]] — per-person state is keyed to a person, not a directory
+
+[[DEC-001]] split the venture brain by nature and got the cut right: `read.md` is about the VENTURE
+and commits; `relationship.md` and the frequency ledger are about a PERSON and stay private. What
+was wrong was the implementation — "private" was built as *gitignored inside the working directory*,
+which only equals "per person" while a person has ONE working directory.
+
+- 🔴 **Remote Control spawns sessions in their own git worktree** — the same person, a different
+  directory — and a worktree carries tracked files only. So an RC session arrived with
+  `brain/read.md` and **without** `conscience-log.jsonl` or `relationship.md`: full memory of the
+  venture, zero memory of its own behaviour. **It re-nagged a founder who had already overridden
+  it**, which is the worst failure available to a thing whose credibility is restraint.
+- **The state now lives at `~/.boss/projects/<key>/`**, keyed off `.boss/manifest.json` — which is
+  **tracked**, so it is byte-identical in every worktree, survives a rename, and needs no git
+  shell-out from a hook that runs on every prompt. `src/remove.js` had already reasoned its way to
+  *"`~/.boss/` is per-person by construction"* for the removal backup and never applied it to the
+  live state.
+- **Migration is read-both-write-new and never destructive** — a legacy in-project log is COPIED up
+  and the original left in place. A path change must not be able to lose a founder's history.
+- 🔴 **`.boss/brain/index.json` was a live leak, and it is the sharper half.** It **commits**, and it
+  carried `kind: 'relationship'` headlines — *"flagged drift, they overrode it"* — so a cofounder
+  could read one founder's nudge history through the index while `relationship.md` was correctly
+  private. **DEC-001 named this itself and deferred it as "a minor residual."** It is not minor; it
+  is the same leak by another route. Entries split by kind on write and merge on read, so `--diff`,
+  `--forget` and the renderer are unchanged. ⚠️ You cannot un-share what is already in history.
+- 🔴 **Two things the decision's own draft got WRONG, corrected in the record rather than quietly:**
+  the `.gitignore` rules **stay** (removing them would have committed the legacy copies the
+  migration deliberately leaves behind — a leak, not a cleanup), and **`trace.jsonl` did not move**
+  (dormant hook, different stage, named in four prose surfaces; a named follow-on, and harmless
+  while it waits because a dormant hook writes nothing).
+
+### [[DEC-016]] — BOSS never initiates contact with an absent founder
+
+Every restraint in the conscience rested on *"a CLI can only ever run while the founder is HERE; it
+can never observe an absence"*. Remote Control made the inference false — `PushNotification` reaches
+the founder's phone. **A false premise holding up a true conclusion** is the most dangerous shape a
+comment can have, so the restraint is recorded as a decision instead of a limit.
+
+- **It got teeth, because "nothing to build" was its weakness.** A test asserts that no shipped
+  `.js` under `src/` or `stages/` carries a notification call site or shell-out — verified to fail
+  when one is planted. Trivially true today, which is exactly why it was cheap to lock in.
+- ⚠️ **Its honest limit is stated in the test:** it reads CODE, not PROSE. A hook that *printed* a
+  request for a push would pass. That half is held by the decision and by review, and saying so is
+  the difference between a checker and a comfort device.
+- `src/orientation.js` now cites DEC-016 where the old rule invites re-derivation. Comments strip
+  before matching, because the first version of the check flagged that very citation.
+
+- 280 unit tests (6 new), eval gate 152/152. `boss brain --relationship` verified from a real
+  worktree that carries no `relationship.md` at all.
+
+> **For you:** the conscience no longer forgets what it already said to you when you work from a
+> second checkout, a worktree, or a Remote Control session — and a nudge you have already overridden
+> stays overridden. If you build with a cofounder, your private history with the conscience no longer
+> reaches them through the brain index.
+
+## 0.242.0 — 2026-09-08
+
+**The zombie detector had never fired, and the two verbs that END work were the only reliable way
+to create a permanent Building card.** Seven defects in the surface that answers *what is in flight,
+and what has stopped moving* — found by running `boss board` against BOSS's own records rather than
+reading the module that renders them.
+
+- **`/revalidate` and `/sunset` both instructed statuses the vocabulary forbids** — `killed`,
+  `folded`, `active`, `retired`, `sunset`. Five words, none among the seven `docs/IDS.md` declares,
+  in the two skills whose whole job is ending work. The cost was not cosmetic: `boss records`
+  flagged the founder for following BOSS's own instruction, and `boss board` files an unrecognised
+  FEAT status as in-flight — so the *removed* feature went back into the Building column and stayed
+  there. Both now route to `dropped (<why>)`; the free-form detail after the first word is where
+  "it shipped and then we took it out" belongs. **A new word was never needed.**
+- **A gate, so it cannot drift back** (`check-backlog.js`): every shipped skill's inline
+  `` `status: x` `` instruction is checked against the closed set. Deliberately inline-code ONLY —
+  a bare `status:` line inside a fenced block is a *template* for a typed record (`DEC` is
+  decided|superseded, `PRAC` is active|stale|retired, a canvas is drafting), and scanning those
+  would fire on every one; a checker that cries wolf gets switched off. It runs **before** the
+  `docs/ideas/` early-exit, because that folder is absent in every fresh clone and gating a check
+  on the *shipped templates* behind it would silence it exactly where it matters most.
+- **An IDEA in Building now ages like a FEAT.** The flag lived only on the FEAT branch of
+  `collectBoard`, so it could not fire on an idea however long it sat — and that is the NORMAL
+  case, not an edge one: `docs/IDS.md` says most ideas never earn a FEAT and carry themselves to
+  `shipped`. Seven of the eight cards in BOSS's own Building column were ideas. **The one surface
+  built to catch stalled work was blind to 88% of it.**
+- **The derived date measured the wrong thing, in the caution colour.** The fallback pointed
+  `gitFirst` — "when did this APPEAR" — at time-in-build, so it read the record's *capture* date:
+  an idea captured in March and started yesterday rendered "24w in build". It now derives the last
+  commit that CHANGED the record and says `untouched 3w`, which is what git can actually prove.
+  A new `ageSource` carries authored-vs-derived to every renderer, so the two claims are never
+  merged into one sentence. Two comments had said the signal was "frontmatter-true, NEVER guessed"
+  while the line three screens down guessed.
+- **The board's dedupe read a field nothing writes.** `fm.source` where `/spec` ships `from:` — the
+  same near-miss v0.240.0 fixed in `boss records` and in the template, which never reached this
+  reader. The set never matched, so every promotion BOSS has ever made was double-counted:
+  IDEA-020 and FEAT-020 both rendered as Shipped cards, and **IDEA-037 sat in Building while both
+  FEATs promoted from it shipped in June.** The unit test locked the bug in — it was written with
+  `source:`, so it passed the entire time. Legacy `source:` still dedupes (founders' records carry
+  it); prose never can, because prose never equals an id.
+- **A record whose SLUG contained "canvas" was deleted from the board.** `f.includes('-canvas')`,
+  where `canvassedIdeas()` two screens up has always used the anchored form. IDEA-063 and IDEA-068
+  rendered in no column, in no count — **the only board failure that leaves no trace at all**,
+  because a missing card has no total to be missing from.
+- **`/log` and `/spec` disagreed about what shipping writes.** `/log` said *"flip its status to
+  `shipped` — that one field is the whole update"*; `/spec`, read once months earlier, carried the
+  other two. `/log` is the skill that actually runs at ship time, so the two it didn't name are the
+  two that didn't get written: `shipped_on:` is on 10 of BOSS's 58 records, and the Shipped
+  column's 30-day fold silently degrades to a count cap without it. `/log` now closes a FEAT in
+  three lines; `/spec` stamps `building_since:` on the source IDEA as well as the FEAT.
+- **The two dates are now documented where a founder meets the status vocabulary.** The shipped
+  `docs/IDS.md` never mentioned `building_since:` at all, so on the IDEA-only path — the common one
+  — nothing ever told them the field existed or that the board ages by it.
+- 280 unit tests (4 new, 2 existing corrected).
+
+> **For you:** `boss board` now flags stalled *ideas*, not just stalled specs, and tells you whether
+> it is counting time **in build** (your `building_since:`) or time **untouched** (the repo's) —
+> different claims, never blurred. `/revalidate` and `/sunset` write statuses the rest of BOSS can
+> actually read.
+
+**Not fixed, and it is yours to call.** BOSS's own seven in-flight records carry no
+`building_since:`, and `docs/ideas/` is gitignored here by design, so there is nothing for the
+fallback to read — BOSS's board is the one board that still cannot age a card. The only honest
+source is a date you supply. `created:` is the *capture* date, which is the exact conflation this
+release removed, so it was left alone rather than back-filled.
+
+## 0.241.0 — 2026-09-08
+
+**The help topic built so founders could FIND the dormant hooks shipped covering four of six.**
+`boss help hooks` exists because the only place the optional hooks were written down was a comment
+inside the JavaScript file — unfindable for the non-technical cohort BOSS explicitly targets. It
+then listed `secrets-guard`, `memory-cue`, `auto-log` and `design-tokens-guard`, and omitted
+`schema-guard` and `content-terminology-guard`, which ship dormant in MVP and were named only inside
+`/spec` and `/design-tokens-init` prose. **The fix reproduced the defect it was built to fix**, for
+the two hooks a founder is least likely to discover — one of which prevents the best-evidenced leak
+in the whole vibe-coded stack (CVE-2025-48757 / MoltBook).
+
+- **All six are listed**, each with what it does, what it costs and when it is worth it — the
+  existing shape, not a new one.
+- **A mode column**, because the catalog is a help topic that runs anywhere and four of the six
+  arrive only at MVP. A Quickstart founder was being told about hooks their project does not have.
+- **A test that reads the hook files off disk** and asserts every dormant one appears in
+  `boss help hooks` — verified to fail when an entry is removed. *A hand-fix that does not move the
+  gate has a half-life* (v0.227.0); the gate here is the directory listing, never a second
+  hand-maintained list. `conscience.js` is excluded on purpose: it is registered by the shipped
+  `settings.json` and is the one hook that is not optional.
+- **+1 unit test** — the catalog gate. *(A total is deliberately not quoted: a peer session
+  was adding tests to this tree while this shipped.)*
+
+> **For you:** `boss help hooks` now lists all six optional hooks, and says which mode each arrives
+> in. Two of them were previously findable only by reading a skill's prose — including
+> `schema-guard`, which catches a database table created without row-level security while the
+> migration is still being written.
+
+**Filed, not built (docs only).** A sweep of the founder-facing memory / resume / logging surface
+against Claude Code 2.1.132 — prompted by Remote Control — produced five records and two proposed
+decisions. **Nothing else in this release; the mandate holds at 48 skills.**
+
+- [[IDEA-077]] the session boundary has no runner · [[IDEA-078]] compaction is the unit BOSS does
+  not model · [[IDEA-079]] prompt storage points away from `.claude/commands/` · [[IDEA-080]] durable
+  memory ships as a pointer · [[IDEA-081]] Remote Control.
+- **[[DEC-015]] (proposed)** — per-person conscience state is keyed to a person, not a directory.
+  Verified by experiment: a Remote-Control worktree session carries `brain/read.md` and **not**
+  `conscience-log.jsonl` or `relationship.md`, so the conscience remembers the venture and forgets
+  every nudge it fired — and **re-nags a founder who already overrode it.** DEC-001's cut stays; only
+  the storage moves. Its own `revisit_by` is 2026-09-20, so this is that revisit, early.
+- **[[DEC-016]] (proposed)** — BOSS never initiates contact with an absent founder. Every restraint
+  in the conscience currently rests on *"a CLI can never observe an absence"*, which Remote Control
+  made false; `PushNotification` reaches the founder's phone. **A false premise supporting a true
+  conclusion** is the most dangerous shape a comment can have.
+- ✅ **A kill worth recording:** `.claude/rules/` with `paths:` frontmatter was re-verified against
+  the 2.1.132 **binary** (not the docs) and is correct — stronger provenance than v0.45.0 had.
+
+## 0.240.0 — 2026-08-25
+
+**BOSS's own `/spec` template told founders to write a field BOSS does not read.** The FEAT record
+template's frontmatter shipped `source: IDEA-NNN`; the skill body two files away, and `boss records`,
+both read `from:`. So a founder who followed BOSS's own template got told their build contract
+*"cannot name the idea it came from"* — about a link they had made, in the field the template gave
+them. Nothing pointed at the misspelling, because a missing field gets reported and a wrong one
+does not.
+
+That is the whole shape of the failure, and it is [[checkers-state-intents-they-dont-enforce]] at
+its quietest: **the record looks answered.** BOSS's own tree had nine of them — four ships dated
+with `shipped:` (the board reads `shipped_on:`, so those ships silently fell back to a git guess),
+three promotion links under `source:` / `implements:` / `promoted_from:`, and two `building_since:`
+dates left on shipped records.
+
+- **The template writes `from:`.** The defect's origin, and the only half a founder ever saw.
+- **`boss records` gains a `stale-field` finding** — a field that looks filled in and is read by
+  nothing, named alongside the field readers actually open. **An alias list, never a whitelist:**
+  `source:` appears 39 times in BOSS's own records as free-form provenance, and every one of those
+  is correct — only a value shaped like a record id is flagged. A checker that fails people for
+  annotating their own records gets switched off, which is how the last three died.
+- **It stays out of `boss status`.** Tidy findings live in `boss records`; `boss status` answers
+  where-am-I. Guarded by a test.
+- **BOSS's own nine are fixed**, and `boss records` is clean on this repo again.
+
+> **For you:** `/spec` now writes the field the tools read, so a promotion you actually made stops
+> being reported as missing. `boss records` also names any near-miss frontmatter field it finds —
+> `shipped:` where the board wants `shipped_on:`, `source:` where the link wants `from:`. Existing
+> records are not rewritten; run `boss records` to see them.
+
 ## 0.239.0 — 2026-08-24
 
 **A founder running several projects was told they were current by the one command that lists them

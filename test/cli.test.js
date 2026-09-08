@@ -7,7 +7,7 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, mkdirSync, existsSync, realpathSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { collectBoard, canvassedIdeas } from '../src/board.js';
@@ -579,5 +579,42 @@ test('every glossary pointer at a /skill names a skill BOSS actually ships', () 
       const name = ref.trim().slice(1);
       assert.ok(shipped.has(name), `glossary '${t}' points at /${name}, which BOSS does not ship`);
     }
+  }
+});
+
+test('`boss help hooks` names every dormant hook BOSS actually ships', () => {
+  // The catalog exists BECAUSE the only place these were written down was a comment inside the
+  // JavaScript file, where a non-technical founder — an explicitly targeted cohort — could never
+  // find them. It then shipped covering four of six: `schema-guard` and `content-terminology-guard`
+  // were named only inside /spec and /design-tokens-init prose, reproducing the exact defect the
+  // catalog was built to fix. A hand-fix that does not move the gate has a half-life (v0.227.0),
+  // so the gate is the list on disk, not a second hand-maintained list.
+  // BOTH sides come off disk. "Dormant" is not a list someone maintains — it is every shipped
+  // hook MINUS the ones a shipped settings.json already registers (conscience, reentry). Derive
+  // it, and adding a registered hook can never silently create a catalog gap.
+  const stages = readdirSync(join(BOSS_ROOT, 'stages'), { withFileTypes: true }).filter((d) => d.isDirectory());
+  const registered = new Set();
+  for (const d of stages) {
+    const f = join(BOSS_ROOT, 'stages', d.name, 'template', '.claude', 'settings.json');
+    if (!existsSync(f)) continue;
+    for (const m of readFileSync(f, 'utf8').matchAll(/hooks\/([a-z-]+)\.js/g)) registered.add(m[1]);
+  }
+  assert.ok(registered.size > 0, 'no registered hooks found — the settings.json scan is wrong, not the catalog');
+
+  const dormant = stages.flatMap((d) => {
+    const dir = join(BOSS_ROOT, 'stages', d.name, 'template', '.claude', 'hooks');
+    if (!existsSync(dir)) return [];
+    return readdirSync(dir)
+      .filter((f) => f.endsWith('.js'))
+      .map((f) => f.replace(/\.js$/, ''))
+      .filter((n) => !registered.has(n));
+  });
+  assert.ok(dormant.length > 0, 'found no shipped hooks — the glob is wrong, not the catalog');
+
+  const dir = project();
+  const r = boss(['help', 'hooks'], dir);
+  assert.equal(r.code, 0);
+  for (const name of dormant) {
+    assert.match(r.out, new RegExp(`/${name}\\b`), `boss help hooks never mentions ${name}`);
   }
 });

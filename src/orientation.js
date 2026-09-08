@@ -22,6 +22,15 @@
 // So the re-entry read does not fire AT someone who is away — it fires when they COME
 // BACK, which is both the only observable moment and the only kind one.
 //
+// ⚠️ READ THIS BEFORE RE-DERIVING THE RULE ABOVE (DEC-016). The sentence is true of a CLI
+// and stays true. The INFERENCE it invites — "so BOSS cannot reach an absent founder" — is
+// no longer true of BOSS: with Claude Code's Remote Control connected, `PushNotification`
+// reaches the founder's phone. The restraint is therefore a DECISION now, not a limit, and
+// it is recorded as one. **BOSS never initiates contact with an absent founder** — not
+// because it can't, but because a tool that pings you when you stop using it is the dark
+// pattern BOSS ships a catalog against. Do not "fix" this by adding a push when the reason
+// is good; the reasons will always be good. See docs/decisions/DEC-016.
+//
 // AND THE ANTI-FLATTERY RULE (IDEA-065): a progress surface that cannot go down is a
 // comfort device. Every rung is printed including its zeros — so "none yet" and "not
 // counted" stop looking the same (the failure `check:site`'s citation gauge shipped for
@@ -33,77 +42,24 @@ import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { readEvidenceContext } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
+import { REENTRY_DAYS, readDevlogHead, awayDays, reentryRead } from '../stages/L0-quickstart/template/.claude/hooks/lib/reentry.js';
 import { dim, bold, ok, warn } from './ui.js';
 
-// Days away before the re-entry line is worth printing. A founder who worked yesterday
-// does not need to be told what they were doing; one back after a week does. Three days
-// is the span over which "what was I building" actually stops being obvious — and the
-// cost of being wrong is one dim line, in both directions.
-export const REENTRY_DAYS = 3;
-
-const DATE_HEADING = /^##\s+(\d{4}-\d{2}-\d{2})\s*$/;
-const DAY_MS = 86400000;
-
-// The newest dated entry in docs/devlog.md — the record `/log` writes and `/close`
-// appends to. Parsed from CONTENT, not mtime: a fresh clone resets every mtime, and the
-// date the founder worked is a fact that survives the checkout.
-//
-// The devlog is append-newest-at-top by convention, but this scans every heading and
-// takes the max rather than trusting position — a founder who appended at the bottom
-// once should not get a stale answer, and ordering is a convention, not a guarantee.
-export function readDevlogHead(projectDir) {
-  const f = join(projectDir, 'docs', 'devlog.md');
-  if (!existsSync(f)) return null;
-  let lines;
-  try { lines = readFileSync(f, 'utf8').split('\n'); } catch { return null; }
-
-  let best = null; // { date, start }
-  for (let i = 0; i < lines.length; i += 1) {
-    const m = DATE_HEADING.exec(lines[i]);
-    if (m && (!best || m[1] > best.date)) best = { date: m[1], start: i };
-  }
-  if (!best) return null;
-
-  // Read that entry's bullets, stopping at the next `## ` heading.
-  const field = (label) => {
-    const re = new RegExp(`^\\s*-\\s+\\*\\*${label}:?\\*\\*\\s*(.*)$`, 'i');
-    for (let i = best.start + 1; i < lines.length; i += 1) {
-      if (/^##\s/.test(lines[i])) break;
-      const m = re.exec(lines[i]);
-      if (m) {
-        const v = m[1].trim();
-        // A skill that writes an empty field is being honest ("blanks are honest" —
-        // /log rule 3). Report the blank as absent rather than as an empty string.
-        return v && !/^_?\(?(tbd|none|n\/a)\)?_?$/i.test(v) ? v : null;
-      }
-    }
-    return null;
-  };
-
-  return { date: best.date, landed: field('Landed'), next: field('Next'), feat: field('FEAT') };
-}
-
-// Whole days between the newest devlog date and now. Null when there is no devlog to
-// read — an absence of record is not an absence of work, and saying "back after 0 days"
-// to someone who never ran `/log` would be inventing a fact.
-export function awayDays(projectDir, nowMs = Date.now()) {
-  const head = readDevlogHead(projectDir);
-  if (!head) return null;
-  const then = Date.parse(`${head.date}T00:00:00Z`);
-  if (Number.isNaN(then)) return null;
-  // Compare date-to-date in UTC so a session at 23:00 and one at 01:00 the next day
-  // read as one day apart, not two hours.
-  const today = Math.floor(nowMs / DAY_MS) * DAY_MS;
-  return Math.max(0, Math.round((today - then) / DAY_MS));
-}
+// The re-entry FACTS now live in the TEMPLATE lib, because the `reentry` SessionStart hook
+// ships into the project and cannot import from `src/`. One implementation, two surfaces —
+// `boss status` here and the hook there — so they can never drift into disagreeing about how
+// long someone has been away (IDEA-077). The address stays this module: every existing
+// importer names it, and the implementation moving is not their business.
+export { REENTRY_DAYS, readDevlogHead, awayDays };
 
 // The bridge back. Silent below the threshold, and silent when there is nothing to
 // bridge from — a project with no devlog has not gone quiet, it has not started.
 export function printReentry(projectDir, { now = Date.now(), threshold = REENTRY_DAYS } = {}) {
-  const head = readDevlogHead(projectDir);
+  // The DECISION is shared too, not just the parsing — `reentryRead` is what the hook calls, so
+  // the two surfaces cannot disagree about whether there is anything worth saying.
+  const head = reentryRead(projectDir, { now, threshold });
   if (!head) return false;
-  const days = awayDays(projectDir, now);
-  if (days == null || days < threshold) return false;
+  const days = head.days;
 
   const last = head.landed || head.feat;
   console.log('');

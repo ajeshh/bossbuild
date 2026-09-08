@@ -24,6 +24,13 @@ secrets/
 # brain's read.md) DOES commit — so pushing backs up your thinking AND keeps your
 # cofounder in the loop. But the conscience's relationship with YOU — what it said and
 # what you did with it — is yours alone; it never travels to a teammate.
+#
+# DEC-015 moved the live copies OUT of the project entirely, to ~/.boss/projects/<key>/,
+# because "gitignored in this directory" stopped meaning "private to this person" the
+# moment a session could be spawned in its own git worktree — the same person, a
+# different directory, and a conscience that had forgotten every nudge it ever fired.
+# These rules are still here on purpose: a project created before that move keeps its
+# old copies on disk (migration copies, never deletes), and they must stay ignored.
 .boss/brain/relationship.md
 .boss/trace.jsonl
 

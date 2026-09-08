@@ -29,6 +29,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 
 import { join } from 'node:path';
 import { dim, bold, ok, err } from './ui.js';
 import { parseArgs } from './args.js';
+import { personStatePath, personStatePathForWrite, personStateDir } from '../stages/L0-quickstart/template/.claude/hooks/lib/person-state.js';
 
 
 // --- the floor under the ritual --------------------------------------------------------------
@@ -60,7 +61,7 @@ export function derivedFacts(projectDir) {
     }
   } catch { /* best-effort */ }
   try {
-    const log = join(projectDir, '.boss', 'conscience-log.jsonl');
+    const log = personStatePath(projectDir, 'conscience-log.jsonl');
     if (existsSync(log)) {
       const lines = readFileSync(log, 'utf8').trim().split('\n').filter(Boolean);
       const counts = {};
@@ -81,32 +82,70 @@ function brainDir(projectDir) {
 function readPath(projectDir) {
   return join(brainDir(projectDir), 'read.md');
 }
+// DEC-015: per-person, so it is keyed to the PERSON + PROJECT and lives outside the tree.
+// Falls back to the in-project path when there is no manifest to key on.
 function relationshipPath(projectDir) {
-  return join(brainDir(projectDir), 'relationship.md');
+  return personStatePath(projectDir, join('brain', 'relationship.md'));
 }
 function indexPath(projectDir) {
   return join(brainDir(projectDir), 'index.json');
+}
+// The per-person half of the ledger. `index.json` was a live DEC-001 leak that DEC-001 itself
+// named and deferred as "a minor residual": it COMMITS, and it carries `kind: 'relationship'`
+// headlines — "flagged X, they did Y" — so one founder's nudge history reached the other through
+// the index even while `relationship.md` was correctly private. Splitting by kind is what makes
+// DEC-001's cut true of the whole brain rather than of one file in it.
+function personIndexPath(projectDir) {
+  const dir = personStateDir(projectDir);
+  return dir ? join(dir, 'brain', 'index.json') : null;
 }
 
 function freshIndex() {
   return { version: 1, created: new Date().toISOString(), last_write_ts: null, next_seq: 1, entries: [] };
 }
 
-function readIndex(projectDir) {
-  const f = indexPath(projectDir);
-  if (!existsSync(f)) return freshIndex();
+function loadIndexFile(f) {
+  if (!f || !existsSync(f)) return null;
   try {
     const idx = JSON.parse(readFileSync(f, 'utf8'));
     // Tolerate a hand-edited or older index — fill the shape, don't throw.
     return { ...freshIndex(), ...idx, entries: Array.isArray(idx.entries) ? idx.entries : [] };
   } catch {
-    return freshIndex();
+    return null;
   }
 }
 
+// Callers see ONE ledger. The split is an implementation detail on purpose: every consumer
+// below (render, --diff, --forget) reads the merged view, mutates it, and writes it back, and
+// `writeIndex` re-splits by kind — so the storage change adds no branch anyone can get wrong.
+function readIndex(projectDir) {
+  const shared = loadIndexFile(indexPath(projectDir));
+  const person = loadIndexFile(personIndexPath(projectDir));
+  if (!shared && !person) return freshIndex();
+  const base = shared || person;
+  const entries = [...(shared?.entries || []), ...(person?.entries || [])]
+    .sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+  const next_seq = Math.max(shared?.next_seq || 1, person?.next_seq || 1, entries.length + 1);
+  const last = [shared?.last_write_ts, person?.last_write_ts].filter(Boolean).sort().pop() || null;
+  return { ...freshIndex(), ...base, entries, next_seq, last_write_ts: last };
+}
+
 function writeIndex(projectDir, idx) {
+  const meta = { version: idx.version, created: idx.created, last_write_ts: idx.last_write_ts, next_seq: idx.next_seq };
+  const person = idx.entries.filter((e) => e.kind === 'relationship');
+  const shared = idx.entries.filter((e) => e.kind !== 'relationship');
   mkdirSync(brainDir(projectDir), { recursive: true });
-  writeFileSync(indexPath(projectDir), JSON.stringify(idx, null, 2) + '\n');
+  writeFileSync(indexPath(projectDir), JSON.stringify({ ...meta, entries: shared }, null, 2) + '\n');
+  const pf = personIndexPath(projectDir);
+  // No manifest to key on means no machine-local home, so everything stays where it was —
+  // identical to pre-DEC-015 behaviour rather than a silent half-write.
+  if (!pf) {
+    if (person.length) writeFileSync(indexPath(projectDir), JSON.stringify({ ...meta, entries: idx.entries }, null, 2) + '\n');
+    return;
+  }
+  if (!person.length && !existsSync(pf)) return;
+  personStatePathForWrite(projectDir, join('brain', 'relationship.md')); // ensures <dir>/brain/
+  writeFileSync(pf, JSON.stringify({ ...meta, entries: person }, null, 2) + '\n');
 }
 
 // `boss brain record --headline "..."` — append one index entry. Called by the

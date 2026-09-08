@@ -23,6 +23,7 @@ import * as packageRuntime from '../stages/L0-quickstart/template/.claude/hooks/
 import { readPauseState, readMuteState } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { dim, bold, ok, warn } from './ui.js';
 import { readConfigOrFail, writeConfig, readCohort, readSourceGlobs, DEFAULT_SOURCE_GLOBS } from './config.js';
+import { personStatePath } from '../stages/L0-quickstart/template/.claude/hooks/lib/person-state.js';
 
 // What to SHOW a founder when a loop could not be evaluated. Prefers the running hook's own
 // default over this package's, so the globs named are the globs that actually ran — a project
@@ -212,7 +213,7 @@ function exitSummary(result) {
 
 // Read the frequency ledger (v0.34) the hook appends to on every fire.
 function readActivity(projectDir) {
-  const f = join(projectDir, '.boss', 'conscience-log.jsonl');
+  const f = personStatePath(projectDir, 'conscience-log.jsonl');
   if (!existsSync(f)) return [];
   try {
     return readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter(Boolean);
@@ -227,7 +228,7 @@ function readActivity(projectDir) {
 // Heuristic read of the founder-owned prose (the tags /close is told to use);
 // returns null when there's no relationship log yet.
 function readRelationshipOutcomes(projectDir) {
-  const f = join(projectDir, '.boss', 'brain', 'relationship.md');
+  const f = personStatePath(projectDir, join('brain', 'relationship.md'));
   if (!existsSync(f)) return null;
   let text;
   try { text = readFileSync(f, 'utf8').toLowerCase(); } catch { return null; }

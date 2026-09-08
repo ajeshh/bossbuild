@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.238.0" />
+<meta name="generator" content="BOSS 0.245.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -75,6 +75,34 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.245.0</span><span class="when">2026-09-08</span></div>
+        <p>BOSS now tells you where your durable memory actually lives, what <code>/resume</code>, <code>/clear</code> and <code>/compact</code> do to your session (and that none of them is <code>docs/RESUME.md</code>), and offers to turn a prompt you keep reusing into a slash command you can just run.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.244.0</span><span class="when">2026-09-08</span></div>
+        <p>come back to a project after a few days and BOSS opens with what you last landed and what you said was next, without you having to ask. Under three days it stays quiet.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.243.0</span><span class="when">2026-09-08</span></div>
+        <p>the conscience no longer forgets what it already said to you when you work from a second checkout, a worktree, or a Remote Control session — and a nudge you have already overridden stays overridden. If you build with a cofounder, your private history with the conscience no longer reaches them through the brain index.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.242.0</span><span class="when">2026-09-08</span></div>
+        <p><code>boss board</code> now flags stalled <em>ideas</em>, not just stalled specs, and tells you whether it is counting time <strong>in build</strong> (your <code>building_since:</code>) or time <strong>untouched</strong> (the repo's) — different claims, never blurred. <code>/revalidate</code> and <code>/sunset</code> write statuses the rest of BOSS can actually read.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.241.0</span><span class="when">2026-09-08</span></div>
+        <p><code>boss help hooks</code> now lists all six optional hooks, and says which mode each arrives in. Two of them were previously findable only by reading a skill's prose — including <code>schema-guard</code>, which catches a database table created without row-level security while the migration is still being written.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.240.0</span><span class="when">2026-08-25</span></div>
+        <p><code>/spec</code> now writes the field the tools read, so a promotion you actually made stops being reported as missing. <code>boss records</code> also names any near-miss frontmatter field it finds — <code>shipped:</code> where the board wants <code>shipped_on:</code>, <code>source:</code> where the link wants <code>from:</code>. Existing records are not rewritten; run <code>boss records</code> to see them.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.239.0</span><span class="when">2026-08-24</span></div>
+        <p><code>boss list</code> now shows which of your projects are behind and names them. If you've ever moved or deleted a project folder, <code>boss list --prune</code> clears the leftover rows. Updating each project is still one deliberate <code>/boss-sync</code> per project — there is no sync-all, on purpose.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.238.0</span><span class="when">2026-08-24</span></div>
         <p>nothing to run — this is BOSS's own release gate. (<code>check:deployed</code> checks BOSS's website against BOSS's repo; a founder's <code>/ship</code> already hands back the live URL.)</p>
       </li>
@@ -93,34 +121,6 @@
       <li>
         <div class="rel"><span class="ver">v0.234.0</span><span class="when">2026-08-24</span></div>
         <p><code>boss help &lt;word&gt;</code> now explains any word BOSS uses — <code>boss help cohort</code>, <code>boss help pretotype</code>, <code>boss help stated-pain</code>. <code>boss help glossary</code> lists them all. Words that are also skills answer both halves: what a canvas <em>is</em>, then where to run it.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.233.0</span><span class="when">2026-08-24</span></div>
-        <p>skipping a rung now says so and names what you're skipping — and still lets you do it. Unlocking a rung you skipped no longer moves you <em>backwards</em>. <code>boss help canvas</code> explains that <code>/canvas</code> is a skill you run inside Claude rather than silently printing the whole manual. And &quot;not a BOSS project&quot; now tells you how to become one — usually just <code>cd</code> into the folder you made.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.232.0</span><span class="when">2026-08-24</span></div>
-        <p><code>boss status</code> now tells you how to get back INTO the thing you were building (<code>→ boss board FEAT-002</code>), and no longer prints record chores — those stay in <code>boss records</code>, which is where you go to tidy. <code>boss unlock</code> finally says what just arrived and where to go next, the way <code>boss new</code> always has. <code>boss map</code> leads each rung with the loop you actually repeat (<code>the loop: spec → smoke → log → close</code>) instead of an alphabetical list that opened on <code>/ai-cost</code>.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.231.0</span><span class="when">2026-08-24</span></div>
-        <p><code>boss status</code> now opens with the bridge back when you've been away — how many days, what you last landed, and the <em>next</em> you wrote down before you stopped — and it renders what you've learned as the evidence ladder (<code>stated-pain · observed · commitment</code>), beside the shipped-feature line it always had. Nothing new to run.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.230.0</span><span class="when">2026-08-24</span></div>
-        <p><code>/ux-check</code> now tells you <em>how</em> it reviewed — which findings it saw running and which it read out of your source — and it will say <strong>&quot;not checked&quot;</strong> for anything needing a rendered page instead of quietly passing it. If you build a CLI or an agent with no screen, <code>/design-review</code> now stops instead of walking you through hover states. And if you use <code>/persona</code> to QA a flow, remember the persona likes your work more than a real user will: their confusion is signal, their approval isn't.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.228.0</span><span class="when">2026-08-24</span></div>
-        <p>two patterns in <code>boss craft deceptive-patterns</code> stop saying &quot;UNVETTED&quot; — they're verified now, against the FTC's own orders and the EU regulator's own opinion. And the consent-or-pay row no longer reads as though charging for an ad-free plan is manipulation; it isn't, and <code>monetization-in-practice</code> now says so plainly.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.227.0</span><span class="when">2026-08-24</span></div>
-        <p>the craft shelf no longer points you at a reviewer you don't have. Where it used to say &quot;hand this to <code>voice-keeper</code>&quot;, it now names something you actually own — your <code>BRAND.md</code>, or reading the line aloud to someone who hasn't seen it.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.226.0</span><span class="when">2026-08-24</span></div>
-        <p>if BOSS's loops have been quiet, this is likely why. <code>src/*<em></code> in a loop spec silently meant <code>src/</em></code>, so anything nested was invisible. And if you build for mobile, CLI or a service rather than the web, BOSS now says so out loud instead of going silent on you.</p>
       </li>
     </ol>
         <p class="small">
@@ -151,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.238.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.245.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

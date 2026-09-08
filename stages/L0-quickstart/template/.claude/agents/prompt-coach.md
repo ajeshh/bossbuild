@@ -44,6 +44,12 @@ to a teammate (even if the teammate is an agent).
    up. Keep `docs/dossier/founder-prompt-patterns.md` (create on first use) — append each new
    pattern with: pattern name, before/after example, when it applies. The founder ends up with
    their own playbook, not a generic one.
+3b. **When they reach for the same prompt again — they will notice before you do — offer to make
+   it a command.** A prompt saved as `.claude/commands/<name>.md` becomes `/<name>`: they run it
+   instead of finding and pasting it, it commits with the repo so it survives a new laptop and
+   reaches a cofounder, and `git log` shows when it changed. The dossier keeps the *lesson*; the
+   command carries the *prompt*. Offer once, take their answer, don't push — a playbook of one
+   entry does not need a command, and a prompt they are still tuning belongs in prose.
 4. Don't rewrite *every* prompt. Many prompts are fine. Intervene when the rewrite would
    meaningfully improve the founder's next-hour, not as a constant copy-edit.
 
@@ -75,7 +81,7 @@ to a teammate (even if the teammate is an agent).
 | **Split multi-prompts** | If you'd accept different replies to 2 parts, they're 2 prompts. |
 | **Ask for the failure mode** | "What would make this answer wrong?" produces better answers than the answer alone. |
 | **Use AI as multiple roles** | Don't run one query — run three with different framings (critic, customer, hostile reviewer). Mollick's move. |
-| **Document the good ones** | A prompt that worked is worth saving. Add to `docs/dossier/founder-prompt-patterns.md`. |
+| **Document the good ones** | A prompt that worked is worth saving. The *lesson* goes in `docs/dossier/founder-prompt-patterns.md`; a prompt you will actually **run** again goes in `.claude/commands/<name>.md`, where it becomes `/<name>` and commits with the repo. Willison's rule, applied: a prompt you keep retyping is a prompt you never saved. |
 
 ## What you do NOT do
 

@@ -55,6 +55,31 @@ function vocabFor(projectDir, prefix) {
   return null;   // no declared vocabulary = nothing to enforce
 }
 
+// --- fields that LOOK filled in and are read by nothing -------------------------------------
+// A record's frontmatter is only as good as the reader that opens it, and a near-miss field name
+// fails in the worst possible direction: it looks answered. Nothing is missing, so nothing is
+// reported, and the value sits there being ignored.
+//
+// BOSS shipped this bug at its source. The `/spec` FEAT template wrote `source: IDEA-NNN` while
+// the skill body two files away and this checker both required `from:` — so a founder who
+// followed BOSS's own template got told their build contract "cannot name the idea it came from",
+// about a link they had made. Four of BOSS's own records dated a ship with `shipped:`, which the
+// board does not read, so those ships silently fell back to a git guess.
+//
+// Deliberately an ALIAS list, never a whitelist. `source:` appears 39 times across BOSS's own
+// records as free-form provenance ("Ajesh, 2026-08-20 — <quote>") and every one of those is
+// correct usage; the only ones flagged are those whose VALUE is a record id, which is someone
+// reaching for `from:` and missing. A whitelist would fail people for annotating their own
+// records, and a checker that cries wolf gets switched off — which is how the last three died.
+const RECORD_ID = /^[A-Z]{3,4}-\d+$/;
+// [dead field, the field readers actually open, only-when-the-value-is-a-record-id]
+const ALIASES = [
+  ['source', 'from', true],
+  ['implements', 'from', true],
+  ['promoted_from', 'from', true],
+  ['shipped', 'shipped_on', false],
+];
+
 const field = (text, name) => {
   const m = text.match(new RegExp(`^${name}:\\s*(.+)$`, 'm'));
   return m ? m[1].trim() : null;
@@ -85,6 +110,13 @@ function readRecords(projectDir) {
           from: field(text, 'from'),
           promotedTo: field(text, 'promoted_to'),
           program: field(text, 'program'),
+          buildingSince: field(text, 'building_since'),
+          aliases: ALIASES.map(([dead, live, idShaped]) => {
+            const v = field(text, dead);
+            if (v === null) return null;
+            if (idShaped && !RECORD_ID.test(v)) return null;   // free-form prose, not a reach for `live`
+            return { dead, live, value: v, already: field(text, live) };
+          }).filter(Boolean),
         });
       } catch { /* unreadable record is not a drift finding */ }
     }
@@ -95,6 +127,7 @@ function readRecords(projectDir) {
 /**
  * Findings, most-actionable first. Never throws.
  * kind: 'built-not-recorded' | 'claimed-not-built' | 'no-proof' | 'off-vocabulary' | 'duplicate-id'
+ *     | 'unlinked-promotion' | 'stale-field'
  */
 export function recordDrift(projectDir) {
   const findings = [];
@@ -170,8 +203,26 @@ export function recordDrift(projectDir) {
     }
   }
 
+  // --- the field nothing reads --------------------------------------------------------------
+  // Reported per record, not per field, so a record with two of them is one line to go fix.
+  for (const r of records) {
+    for (const a of r.aliases || []) {
+      findings.push({ kind: 'stale-field', id: r.id, file: r.file,
+        what: a.already
+          ? `\`${a.dead}: ${a.value}\` — nothing reads \`${a.dead}:\`; this record already carries \`${a.live}:\`, so the two can only drift apart`
+          : `\`${a.dead}: ${a.value}\` — nothing reads \`${a.dead}:\`. The field readers open is \`${a.live}:\`` });
+    }
+    // /spec: when status moves to shipped, drop `building_since:` and stamp `shipped_on:`. The
+    // board only ages a FEAT while it sits in Building, so a leftover date is untidy rather than
+    // wrong — but it is the record saying two things at once, and it is one line to settle.
+    if (r.buildingSince && baseStatus(r.status) === 'shipped') {
+      findings.push({ kind: 'stale-field', id: r.id, file: r.file,
+        what: '`building_since:` on a shipped record — drop it and keep `shipped_on:` (the board reads that one)' });
+    }
+  }
+
   // The expensive direction first: work you finished and did not write down.
-  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'duplicate-id': 2, 'unlinked-promotion': 3, 'off-vocabulary': 4, 'no-proof': 5 };
+  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'duplicate-id': 2, 'unlinked-promotion': 3, 'stale-field': 4, 'off-vocabulary': 5, 'no-proof': 6 };
   return findings.sort((a, b) => (rank[a.kind] ?? 9) - (rank[b.kind] ?? 9));
 }
 
@@ -191,7 +242,7 @@ export function recordDrift(projectDir) {
  *      it does not describe a record being untidy, it makes every REFERENCE to that id ambiguous,
  *      including the ones in other records. It corrupts the vocabulary the rest of the board reads.
  *
- * Everything else — `claimed-not-built`, `unlinked-promotion`, `off-vocabulary` — is real, stays in
+ * Everything else — `claimed-not-built`, `unlinked-promotion`, `stale-field`, `off-vocabulary` — is real, stays in
  * `recordDrift`, and is what `boss records` is for. A founder goes there to tidy; they come to
  * `boss status` to find out where they are.
  */

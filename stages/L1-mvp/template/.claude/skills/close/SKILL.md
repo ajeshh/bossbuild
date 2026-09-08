@@ -46,9 +46,10 @@ ahead to what's next.
      direction so you don't re-litigate from scratch.
    - **Prompt for the next session:** keep it **evergreen** — a pointer + procedure, never a
      status report. *State* and *Next tasks* already carry the current-state surface; restating
-     them here just doubles the drift surface. Save kickoff prompts somewhere stable (a shell
-     alias, a snippets app, the `Prompt for the next session` block) so they don't bit-rot
-     against the actual RESUME. If you find yourself writing *"we're at v0.X"* or *"X just
+     them here just doubles the drift surface. Save kickoff prompts somewhere stable — the
+     `Prompt for the next session` block, or `.claude/commands/<name>.md`, which makes one a
+     `/<name>` you can run and commits it with the repo — so they don't bit-rot against the
+     actual RESUME. If you find yourself writing *"we're at v0.X"* or *"X just
      shipped"* in this block, delete it — that's what *State* is for.
 
 3. **Update the venture brain** (`.boss/brain/read.md`) — *the conscience's read on this venture,

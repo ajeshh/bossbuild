@@ -286,6 +286,30 @@ const gitFirst = (projectDir, path) => {
   }
 };
 
+// --- how long it has sat, derived --------------------------------------------------------
+// `gitFirst` above answers "when did this APPEAR". Time-in-build is a different question, and
+// pointing the same helper at it was the bug: git's ADD date for a record is when the idea was
+// CAPTURED, not when it entered `building`. An idea captured in March and started yesterday
+// reported "24w in build" — confidently, in the caution colour.
+//
+// So the derived signal answers what git can actually prove: the last commit that CHANGED the
+// record. That is "untouched since", which is a different claim from "in build since" — and the
+// renderers say which one they have rather than blurring them into one sentence. Arguably it is
+// the better zombie signal of the two: a FEAT worked on every week is not a zombie at 60 days,
+// and one nobody has opened in a month is one at 31.
+//
+// Not mtime, which every checkout and copy resets. Fails open exactly like gitFirst.
+const repoTouched = (projectDir, path) => {
+  if (!path || path === 'none') return null;
+  try {
+    return execFileSync('git', ['log', '--format=%as', '-1', '--', path],
+      { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null;
+  } catch (e) {
+    if (e instanceof ReferenceError || e instanceof TypeError) throw e;
+    return null;
+  }
+};
+
 // { cards: [{id, title, column, blocked}], hasIdeasDir }.
 export function collectBoard(projectDir) {
   const ideasDir = join(projectDir, 'docs', 'ideas');
@@ -298,7 +322,13 @@ export function collectBoard(projectDir) {
 
   for (const f of files) {
     if (f === 'INDEX.md' || f === 'CANVAS.md') continue;
-    if (f.includes('-canvas')) continue; // canvas files are state, not cards
+    // Anchored, never a substring: `includes('-canvas')` also matched any record whose SLUG
+    // happened to contain the word, and silently deleted it from the board. IDEA-063
+    // (`-canvas-frames-and-the-business-case-render`) and IDEA-068 (`-the-canvas-as-a-free-
+    // standalone-tool`) rendered nowhere, in no column, with no count to notice them by — the
+    // one board failure that leaves no trace at all. `canvassedIdeas` two screens up always
+    // used the anchored form; this reader never got it.
+    if (/-canvas\.md$/.test(f)) continue; // canvas files are state, not cards
     const text = readFileSync(join(ideasDir, f), 'utf8');
     const fm = frontmatter(text);
     const id = fm.id || f.replace(/\.md$/, '');
@@ -306,13 +336,31 @@ export function collectBoard(projectDir) {
     const priority = (fm.priority || '').trim().toLowerCase() === 'high' ? 'high' : null;
     const gist = cardGist(text, fm);
     if (/^FEAT/i.test(id)) {
-      if (fm.source) featSources.add(fm.source);
+      // `from:` is the field, and it is spelled exactly that — the same near-miss that let
+      // `source: IDEA-NNN` sit in the shipped /spec template being read by nobody. This reader
+      // opened only the dead spelling, so the set never matched and the dedupe below has never
+      // once fired: IDEA-020 and FEAT-020 both rendered as Shipped cards, and IDEA-037 sat in
+      // Building while both FEATs promoted from it shipped in June. `source:` is still accepted
+      // because founders' existing records carry it; a value that is prose rather than an id
+      // simply never matches an id, so no guard is needed to tell them apart here — and
+      // `boss records` still reports the dead field so it gets corrected at the source.
+      const src = fm.from || fm.source;
+      if (src && src !== 'none') featSources.add(src);
       feats.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review,
-        buildingSince: fm.building_since || gitFirst(projectDir, `docs/ideas/${f}`),
+        buildingSince: fm.building_since || repoTouched(projectDir, `docs/ideas/${f}`),
+        ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
         priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text) });
     } else {
       ideas.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+        // An IDEA in Building ages exactly like a FEAT does. It did not, and the gap was
+        // structural rather than an oversight: only the FEAT branch carried the field, so the
+        // zombie-feature flag could not fire on an idea no matter how long it sat. That is the
+        // NORMAL case, not an edge one — `docs/IDS.md` says most ideas never earn a FEAT and
+        // carry themselves to `shipped`, and on BOSS's own board seven of the eight cards in
+        // Building were ideas. The one surface built to catch stalled work was blind to 88% of it.
+        buildingSince: fm.building_since || repoTouched(projectDir, `docs/ideas/${f}`),
+        ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof), program: fm.program || null });
     }
   }
@@ -329,10 +377,14 @@ export function collectBoard(projectDir) {
     return /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= today; // YYYY-MM-DD lexical compare
   };
 
-  // Time-in-build aging (IDEA-034 Track B) — frontmatter-true, NEVER guessed from
-  // mtime. A FEAT that's been in Building past AGING_DAYS is the zombie-feature
-  // smell /revalidate targets. Reads `building_since:` (stamped by /spec when it
-  // sets status: building); no date → no age signal, exactly like reviewDue.
+  // Time-in-build aging (IDEA-034 Track B). Authored wins, derived fills the silence — the
+  // same posture `gist:` and `shipped_on:` take, and for the same reason: a field someone has
+  // to remember to stamp goes unstamped, and a signal that is dark for most cards is worse
+  // than one that is honest about where it came from.
+  //
+  // The two are NEVER conflated. `building_since:` (stamped by /spec) is time IN BUILD; the
+  // derived fallback is time UNTOUCHED, and `ageSource` is what lets every renderer say which
+  // of the two it is holding. Still never mtime, and still no date → no age signal at all.
   const todayMs = Date.parse(today);
   const daysSince = (date) => {
     const d = (date || '').trim();
@@ -362,6 +414,7 @@ export function collectBoard(projectDir) {
       blocked: (ft.status || '').toLowerCase() === 'blocked',
       reviewDue: reviewDue(ft.nextReview, ft.status),
       ageDays,
+      ageSource: ageDays == null ? null : ft.ageSource,
       aging: ageDays != null && ageDays >= AGING_DAYS,
       shippedAgeDays,
       shippedOn: ft.shippedOn || null,
@@ -379,6 +432,8 @@ export function collectBoard(projectDir) {
     if (featSources.has(id.id)) continue;
     const hasRisk = files.includes(`${id.id}-canvas.md`)
       && riskiestNamed(readFileSync(join(ideasDir, `${id.id}-canvas.md`), 'utf8'));
+    const column = ideaColumn(id.status, hasRisk);
+    const ageDays = ageInBuild(id.buildingSince, column);
     cards.push({
       id: id.id,
       title: id.title,
@@ -386,9 +441,12 @@ export function collectBoard(projectDir) {
       file: id.file,
       status: id.status || '',
       parked: isParked(id.status),
-      column: ideaColumn(id.status, hasRisk),
+      column,
       blocked: false,
       reviewDue: reviewDue(id.nextReview, id.status),
+      ageDays,
+      ageSource: ageDays == null ? null : id.ageSource,
+      aging: ageDays != null && ageDays >= AGING_DAYS,
       priority: id.priority,
       owner: personOwner(id.owner),
       shippedOn: id.shippedOn || null,
@@ -489,11 +547,20 @@ function ageLabel(days) {
   return w >= 1 ? `${w}w` : `${days}d`;
 }
 
+// The aging phrase, in ONE place, because the two dates behind it are two different claims and
+// the difference is the whole point. `building_since:` is authored and means time IN BUILD.
+// The fallback is git's last commit to the record and means UNTOUCHED — a real signal, and not
+// the same sentence. Saying "3w in build" over a derived date is how the old code lied about an
+// idea captured in March and started yesterday.
+const agePhrase = (c) => (c.ageSource === 'authored'
+  ? `${ageLabel(c.ageDays)} in build`
+  : `untouched ${ageLabel(c.ageDays)}`);
+
 // One card's flag (text). Priority: blocked > review-due > aging-in-build.
 function cardFlagText(c) {
   if (c.blocked) return '  · blocked';
   if (c.reviewDue) return '  · ↻ review due';
-  if (c.aging) return `  · ⌛ ${ageLabel(c.ageDays)} in build`;
+  if (c.aging) return `  · ⌛ ${agePhrase(c)}`;
   return '';
 }
 
@@ -570,7 +637,7 @@ export function renderBoardText(projectName, data, opts = {}) {
   const aging = cards.filter((c) => c.aging).sort((a, b) => b.ageDays - a.ageDays);
   if (aging.length) {
     const top = aging[0];
-    lines.push(`  ⌛ ${aging.length} aging in build — ${top.id} has been open ${ageLabel(top.ageDays)}. Finish it, or \`/revalidate ${top.id}\`.`);
+    lines.push(`  ⌛ ${aging.length} not moving — ${top.id} ${agePhrase(top)}. Finish it, or \`/revalidate ${top.id}\`.`);
     lines.push('');
   }
 
@@ -635,7 +702,7 @@ export function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, s
       : c.reviewDue
         ? '<span class="flag review">↻ review due</span>'
         : c.aging
-          ? `<span class="flag aging">⌛ ${esc(ageLabel(c.ageDays))} in build</span>`
+          ? `<span class="flag aging">⌛ ${esc(agePhrase(c))}</span>`
           : '';
     const prio = c.priority === 'high' ? '<span class="prio" title="priority: high">⬆ high</span>' : '';
     // One segment per acceptance criterion — countable at a glance, and honest
@@ -693,7 +760,7 @@ export function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, s
 
   const agingCards = cards.filter((c) => c.aging).sort((a, b) => b.ageDays - a.ageDays);
   const agingBanner = agingCards.length
-    ? `<div class="banner aging-banner">⌛ ${agingCards.length} aging in build — <code>${esc(agingCards[0].id)}</code> open ${esc(ageLabel(agingCards[0].ageDays))} <span class="muted">finish it, or</span> <code>/revalidate ${esc(agingCards[0].id)}</code></div>`
+    ? `<div class="banner aging-banner">⌛ ${agingCards.length} not moving — <code>${esc(agingCards[0].id)}</code> ${esc(agePhrase(agingCards[0]))} <span class="muted">finish it, or</span> <code>/revalidate ${esc(agingCards[0].id)}</code></div>`
     : '';
 
 // --- programs: the umbrella roll-up ---------------------------------------------------------
@@ -1077,7 +1144,7 @@ export function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
     lines.push('');
   };
   block('Blocked', blocked, () => '— status: blocked');
-  block('Aging in build', aging, (c) => `⌛ open ${ageLabel(c.ageDays)} — finish or /revalidate`);
+  block('Aging', aging, (c) => `⌛ ${agePhrase(c)} — finish or /revalidate`);
   block('Review due', reviewDue, (c) => `↻ run /revalidate ${c.id}`);
   return lines.join('\n');
 }
@@ -1114,13 +1181,13 @@ export function boardJson(projectDir, projectName) {
       priority: c.priority || null,
       owner: c.owner || null,
       blocked: c.blocked, reviewDue: c.reviewDue,
-      aging: c.aging || false, ageDays: c.ageDays ?? null,
+      aging: c.aging || false, ageDays: c.ageDays ?? null, ageSource: c.ageSource ?? null,
       archived: c.archived || false, shippedAgeDays: c.shippedAgeDays ?? null,
     })),
     next: { finish, start, pressureTest: pressure, unblock },
     stuck: {
       blocked: blocked.map((c) => c.id),
-      aging: aging.map((c) => ({ id: c.id, ageDays: c.ageDays })),
+      aging: aging.map((c) => ({ id: c.id, ageDays: c.ageDays, ageSource: c.ageSource ?? null })),
       reviewDue: reviewDue.map((c) => c.id),
     },
   };
@@ -1154,7 +1221,7 @@ export function renderBoardCard(projectName, { cards, hasIdeasDir }, id) {
     if (c.program) facts.push(['program', c.program]);
     if (c.owner) facts.push(['owner', c.owner]);
     if (c.progress) facts.push(['criteria', `${c.progress.done}/${c.progress.total} ticked`]);
-    if (c.ageDays != null) facts.push(['in build', `${ageLabel(c.ageDays)}`]);
+    if (c.ageDays != null) facts.push([c.ageSource === 'authored' ? 'in build' : 'untouched', ageLabel(c.ageDays)]);
     // Only in the Shipped column. `shippedOn` is derived from the `proof:` artifact's first commit,
     // which exists for plenty of in-flight records — printing it on a Building card claims the
     // thing shipped, which is the exact lie this release went and fixed in the columns.

@@ -137,10 +137,15 @@ what you relied on," the silent removal, the sunset with no export path (data ho
 
 - **Harvest** the reusable pattern (same as a project sunset — offer to route it UP via `/boss-learn`; the
   founder decides what generalizes). Even a killed feature usually taught something.
-- **Remove** the feature and record it: mark the FEAT `status: retired` (or `sunset`) with today's date in
-  `docs/ideas/FEAT-NNN-*.md`, a one-line devlog entry (`/log`) with the usage evidence + the reason, and remove
-  the code in a small reversible commit. Nothing is hidden — the FEAT record stays; it's marked ended, not
-  deleted.
+- **Remove** the feature and record it: mark the FEAT `status: dropped (sunset {{today}} — <the usage
+  evidence, in a few words>)` in `docs/ideas/FEAT-NNN-*.md`, a one-line devlog entry (`/log`) with the
+  reason, and remove the code in a small reversible commit. Nothing is hidden — the FEAT record stays;
+  it's marked ended, not deleted.
+  - **`dropped` is the seventh word, and the parenthetical is where "it shipped and then we removed it"
+    goes.** `docs/IDS.md` declares a closed set of seven; this step used to say `retired` (or `sunset`),
+    neither of which is in it, so `boss records` flagged the founder for following the skill and
+    `boss board` — which files an unrecognised FEAT status as in-flight — put the *removed* feature back
+    in the Building column. Detail after the first word is encouraged; a new word is not.
 
 ## Feature-level guardrails
 

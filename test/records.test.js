@@ -247,3 +247,40 @@ test('good news still outranks a duplicate id — the positive register leads wh
   assert.match(driftLine(d).head, /already finished/);
   rmSync(d, { recursive: true, force: true });
 });
+
+// --- the field that looks answered ------------------------------------------------------------
+// The bug BOSS shipped: the `/spec` FEAT template wrote `source: IDEA-NNN` while the skill body
+// and this checker both read `from:`. A missing field gets reported; a misspelled one does not —
+// which makes this the quietest way a record goes wrong.
+
+test('a near-miss field name is caught — the value is a record id, so it was a reach for `from:`', () => {
+  const d = project([['FEAT-001-x.md', 'id: FEAT-001\nstatus: building\nfrom: none\nproof: none\nsource: IDEA-007']]);
+  assert.ok(kinds(d).includes('stale-field'));
+  assert.match(recordDrift(d).find((f) => f.kind === 'stale-field').what, /nothing reads `source:`/);
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('free-form `source:` prose is NOT flagged — a whitelist would fail people for annotating', () => {
+  const d = project([['IDEA-001-x.md', 'id: IDEA-001\nstatus: exploring\nproof: none\nsource: Ajesh, 2026-08-20 — "what if the board rolled up?"']]);
+  assert.deepEqual(kinds(d).filter((k) => k === 'stale-field'), []);
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('`shipped:` is flagged whatever its value — no reader opens it, the board reads `shipped_on:`', () => {
+  const d = project([['IDEA-001-x.md', 'id: IDEA-001\nstatus: shipped\nproof: none\nshipped: 2026-05-21 (v0.18.0)']]);
+  assert.ok(kinds(d).includes('stale-field'));
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('`building_since:` left on a shipped record is the record saying two things at once', () => {
+  const d = project([['FEAT-001-x.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\nbuilding_since: 2026-06-20\nshipped_on: 2026-06-21']]);
+  assert.ok(recordDrift(d).some((f) => f.kind === 'stale-field' && /building_since/.test(f.what)));
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('a tidy finding never reaches `boss status` — that surface is for where-am-I, not chores', () => {
+  const d = project([['FEAT-001-x.md', 'id: FEAT-001\nstatus: building\nfrom: none\nproof: none\nimplements: IDEA-007']]);
+  assert.ok(kinds(d).includes('stale-field'));
+  assert.equal(driftLine(d), null);
+  rmSync(d, { recursive: true, force: true });
+});

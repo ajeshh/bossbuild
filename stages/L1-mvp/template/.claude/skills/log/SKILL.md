@@ -49,8 +49,21 @@ If you only read one thing when picking the project back up, read the last devlo
      surprise in it. The devlog entry you just wrote is per *session*; this is the same day's work
      filed under the *feature*, so its arc stays whole across releases. **Don't mirror the devlog
      line into it** — if the only thing you'd write is a restatement, write nothing.
-5. If a FEAT closed (all criteria ticked + smoke green), flip its status in the FEAT doc to
-   `shipped`. That one field is the whole update — the board reads it directly.
+5. If a FEAT closed (all criteria ticked + smoke green), close it out in the FEAT doc — **three
+   lines, not one**:
+   - `status: shipped`
+   - **stamp `shipped_on: {{today}}`** — the board's Shipped column folds anything older than ~30
+     days into "shipped earlier", and that window only works on a real date. With no stamp it
+     falls back to a count cap, so a ship from March keeps sitting in the recent column.
+   - **drop `building_since:`** — it anchors the *time-in-build* aging flag, and a shipped record
+     that still carries one is the record saying two things at once.
+
+   > This step used to read *"flip its status to `shipped` — that one field is the whole update"*,
+   > while `/spec` (which a founder reads once, months earlier) carried the other two. `/log` is
+   > the skill that actually runs at ship time, so the two it didn't mention are the two that
+   > didn't get written: BOSS's own repo ended up with `shipped_on:` on 10 records out of 58.
+   > **A rule that lives only in the skill nobody re-reads is a rule with no mechanism.**
+
    **If — and only if — that FEAT is one someone else will later rely on the spec for**, offer to set
    a `next_review:` date so `/revalidate` can re-read it against the code later. Offer once, take
    their answer, don't ask again. Most FEATs never need it.

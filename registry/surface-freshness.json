@@ -39,6 +39,13 @@
       "last_reviewed": "2026-08-20"
     },
     {
+      "kind": "agent",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/agents/prompt-coach.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-24"
+    },
+    {
       "kind": "hook",
       "stage": "L0-quickstart",
       "rel": "stages/L0-quickstart/template/.claude/hooks/conscience.js",
@@ -51,6 +58,13 @@
       "rel": "stages/L0-quickstart/template/.claude/hooks/memory-cue.js",
       "curve": "host",
       "last_reviewed": "2026-06-20"
+    },
+    {
+      "kind": "hook",
+      "stage": "L0-quickstart",
+      "rel": "stages/L0-quickstart/template/.claude/hooks/reentry.js",
+      "curve": "host",
+      "last_reviewed": "2026-09-08"
     },
     {
       "kind": "hook",
@@ -188,6 +202,13 @@
     {
       "kind": "agent",
       "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/agents/mentor-capital.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-20"
+    },
+    {
+      "kind": "agent",
+      "stage": "L1-mvp",
       "rel": "stages/L1-mvp/template/.claude/agents/mentor-cofounder.md",
       "curve": "craft",
       "last_reviewed": "2026-08-17"
@@ -197,13 +218,6 @@
       "stage": "L1-mvp",
       "rel": "stages/L1-mvp/template/.claude/agents/mentor-customers.md",
       "curve": "market",
-      "last_reviewed": "2026-08-20"
-    },
-    {
-      "kind": "agent",
-      "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/agents/mentor-capital.md",
-      "curve": "craft",
       "last_reviewed": "2026-08-20"
     },
     {
@@ -275,6 +289,13 @@
       "rel": "stages/L1-mvp/template/.claude/skills/close/SKILL.md",
       "curve": "craft",
       "last_reviewed": "2026-07-23"
+    },
+    {
+      "kind": "skill",
+      "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/skills/comp-eval/SKILL.md",
+      "curve": "craft",
+      "last_reviewed": "2026-08-21"
     },
     {
       "kind": "skill",
@@ -443,20 +464,6 @@
       "rel": "stages/L1-mvp/template/.claude/skills/ux-check/SKILL.md",
       "curve": "craft",
       "last_reviewed": "2026-08-20"
-    },
-    {
-      "kind": "agent",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/agents/mentor-fundraising.md",
-      "curve": "craft",
-      "last_reviewed": "2026-08-01"
-    },
-    {
-      "kind": "agent",
-      "stage": "L2-v1",
-      "rel": "stages/L2-v1/template/.claude/agents/mentor-pitch.md",
-      "curve": "craft",
-      "last_reviewed": "2026-08-17"
     },
     {
       "kind": "skill",

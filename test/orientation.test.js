@@ -160,3 +160,69 @@ test('the evidence read never renders a percentage or a total-only score', () =>
   assert.ok(!/\b(streak|day streak|in a row)\b/i.test(line), 'no streak');
   assert.match(line, /1 stated-pain · 0 observed · 1 commitment/, 'the ladder is the whole render');
 });
+
+// --- the SessionStart runner (IDEA-077) -----------------------------------
+//
+// `boss status` answers "what was I doing" only for a founder who remembers to type it — in a
+// product that lives inside Claude Code, where they just start typing, and (with Remote Control)
+// may have no terminal at all. These cover the hook that asks the question where it is asked.
+
+const HOOK = join(BOSS_ROOT, 'stages', 'L0-quickstart', 'template', '.claude', 'hooks', 'reentry.js');
+
+// Runs the hook the way the host does: JSON on stdin, project dir in the env. HOME is redirected
+// so the once-per-date marker (DEC-015 per-person state) never touches a real home.
+function hook(dir, source = 'startup') {
+  return execFileSync('node', [HOOK], {
+    input: JSON.stringify({ hook_event_name: 'SessionStart', source }),
+    encoding: 'utf8', cwd: dir,
+    env: { ...process.env, CLAUDE_PROJECT_DIR: dir, HOME: dir },
+  });
+}
+
+test('the hook hands Claude the way back in when the founder returns', () => {
+  const dir = mvp({ 'docs/devlog.md': devlog(daysAgo(9)) });
+  const out = JSON.parse(hook(dir));
+  assert.equal(out.hookSpecificOutput.hookEventName, 'SessionStart');
+  const ctx = out.hookSpecificOutput.additionalContext;
+  assert.match(ctx, /back after 9 days/i);
+  assert.match(ctx, /the callback round-trips a session/);
+  assert.match(ctx, /They said next: wire token refresh/);
+});
+
+test('the hook is silent for a founder who was here yesterday', () => {
+  // Silence on the day after a session is the REQUIREMENT, not the fallback — this hook is
+  // registered by default, so every byte it emits is paid for on every session.
+  assert.equal(hook(mvp({ 'docs/devlog.md': devlog(daysAgo(1)) })).trim(), '');
+});
+
+test('the hook is silent in a project that has not started', () => {
+  // No devlog is a Quickstart project, not a quiet one. This is why the hook can ship registered
+  // at L0 at all: it is silent by construction until `/log` arrives with MVP.
+  assert.equal(hook(mvp()).trim(), '');
+});
+
+test('the hook does not fire mid-session on /clear or a compaction', () => {
+  // `clear` and `compact` are SessionStart sources, but the founder never left. Firing there is
+  // the over-fire the conscience spends its whole design avoiding.
+  const dir = mvp({ 'docs/devlog.md': devlog(daysAgo(9)) });
+  for (const source of ['clear', 'compact']) {
+    assert.equal(hook(dir, source).trim(), '', `fired on ${source}`);
+  }
+});
+
+test('the hook says it once per devlog date, not once per session', () => {
+  // Opening three sessions in an afternoon must not replay the same line three times.
+  const dir = mvp({ 'docs/devlog.md': devlog(daysAgo(9)) });
+  assert.notEqual(hook(dir).trim(), '', 'the first arrival should speak');
+  assert.equal(hook(dir).trim(), '', 'the second must not');
+});
+
+test('boss status and the hook never disagree about how long you were away', () => {
+  // The cross-surface invariant this whole extraction exists for: one implementation, two
+  // surfaces. A second copy is how two surfaces end up individually correct and contradicting.
+  const dir = mvp({ 'docs/devlog.md': devlog(daysAgo(11)) });
+  const fromHook = JSON.parse(hook(dir)).hookSpecificOutput.additionalContext;
+  const fromCli = boss(['status'], dir);
+  assert.match(fromHook, /back after 11 days/i);
+  assert.match(fromCli, /Back after 11 days/);
+});

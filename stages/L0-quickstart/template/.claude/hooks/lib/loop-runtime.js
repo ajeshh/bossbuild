@@ -61,6 +61,7 @@ import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseFrontmatter } from './yaml.js';
 import { JUDGE_MOMENTS } from './moment-frames.js';
+import { personStatePath, personStatePathForWrite } from './person-state.js';
 
 // Everything the conscience SAYS now lives in `moment-frames.js` — this file is
 // predicates + project-state I/O only (v0.132.0; it was 603 lines mixing all three).
@@ -575,7 +576,7 @@ function deriveBrainFacts(projectDir) {
   } catch { /* facts are best-effort; never break the hook */ }
   try {
     // What the conscience has ALREADY been saying — the closest thing to memory it can derive.
-    const log = join(projectDir, '.boss', 'conscience-log.jsonl');
+    const log = personStatePath(projectDir, 'conscience-log.jsonl');
     if (existsSync(log)) {
       const lines = readFileSync(log, 'utf8').trim().split('\n').filter(Boolean).slice(-25);
       const counts = {};
@@ -628,7 +629,7 @@ export function readBrainContext(projectDir) {
 // there's no log yet (byte-identical output, evals unaffected).
 export function readRelationshipContext(projectDir) {
   try {
-    const f = join(projectDir, '.boss', 'brain', 'relationship.md');
+    const f = personStatePath(projectDir, join('brain', 'relationship.md'));
     if (!existsSync(f)) return null;
     const text = readFileSync(f, 'utf8');
     if (!text.trim()) return null;
@@ -799,7 +800,7 @@ export function logActivity(projectDir, signals, additionalContext, cohort) {
       injected_chars: (additionalContext || '').length,
       cohort: cohort || null,
     };
-    appendFileSync(join(projectDir, '.boss', 'conscience-log.jsonl'), JSON.stringify(entry) + '\n');
+    appendFileSync(personStatePathForWrite(projectDir, 'conscience-log.jsonl'), JSON.stringify(entry) + '\n');
   } catch { /* fail silent — the ledger is overhead, never a gate */ }
 }
 

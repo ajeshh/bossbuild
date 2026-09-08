@@ -4,10 +4,10 @@ type: practice
 owner: product-lead
 status: active
 host: claude-code
-provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned.
+provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned.
 provenance_public: Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.
-last_reviewed: 2026-08-22
-review_by: 2026-11-20
+last_reviewed: 2026-09-08
+review_by: 2026-12-07
 curve: host
 ---
 
@@ -314,6 +314,21 @@ moves with numbers and named failure modes:
   **compress the useful state into a short markdown artifact and start a fresh session that references it.**
   (That's what `/close` + the recency-window in move #1 already do; name it so it's deliberate.) A handoff
   note beats a 200-turn scrollback the model half-ignores.
+- **The session lifecycle is a MECHANISM, not just a discipline — and this practice was silent about
+  it until 2026-09-08.** Claude Code fires `SessionStart` (with `source: startup|resume|clear|compact`),
+  `SessionEnd`, `PreCompact` (`trigger: manual|auto`) and `PostCompact` (carrying the summary it
+  produced). Everything above is advice a founder has to remember; these are the points at which a
+  tool can act. **Verify against the host you are on** — this list is read out of Claude Code 2.1.132.
+  - **BOSS uses exactly one of them, and the restraint is the interesting part.** `SessionStart` runs
+    the re-entry read (v0.244.0). `SessionEnd` is deliberately unused: a hook cannot run `/close`, so
+    all that is left is a nag arriving as someone leaves. `PreCompact` is a real opportunity —
+    auto-compaction is when working state evaporates, and it is the one moment "write down what you'd
+    lose" is both possible and cheap — but **a hook that auto-writes on a schedule the founder does
+    not control is the accretion this section warns against**, so it stays unbuilt until someone has
+    actually lost work to it.
+  - **The founder-facing half is vocabulary.** `/resume`, `--continue`, `/clear`, `/compact`,
+    `/context`, `/memory`. A founder who does not know `/compact` exists cannot practise "intentional
+    compaction over accretion", however well this section argues for it.
 - **Trajectory poisoning — restart, don't correct.** Once a session has gone wrong and the model starts
   agreeing with your corrections ("you're right to push back"), the trajectory is poisoned — the bad context
   is now load-bearing and steering it straight rarely works. Restart from the compacted state.
