@@ -16,6 +16,66 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.268.0 — 2026-09-09
+
+> **For you:** The design-system nudge could fire at high confidence on a project with no design
+> system problem — one file that generates HTML (a report, a mailer, an export) was enough to trip
+> it, because it counted how many TIMES the pattern appeared rather than how many FILES it appeared
+> in. It now needs the styling to have actually spread across three files. Also: `docs/loops/`
+> shipped a cross-reference link that broke the moment it was installed into your project.
+
+**BOSS turned its own conscience on for the first time and it immediately paid for itself.**
+IDEA-088: the mechanism BOSS's whole thesis rests on had never run in the repo that calls itself
+BOSS's first project — the hook files were not on disk, no settings registered them, the manifest
+said `hooks: []`, and the frequency ledger was 0 lines. `boss sync --apply --keep-mine` (v0.267.0)
+installed it without touching a single dev-workspace agent. **Three real bugs surfaced in the first
+five minutes, all of them shipped, none of them findable from inside `stages/`.**
+
+### 🔴 The predicate counted occurrences; the moment claimed files
+
+`design-tokens-loop` fired at **high confidence** on a zero-dep CLI, saying *"UI is accumulating in
+the code (several files styling by hand)"*. The truth: **all 52 matches were in ONE file** —
+`src/board.js`, a module that GENERATES an HTML board — and every other file in `src/` had zero.
+
+`count_at_least` counts matches. The claim it was voicing is about **spread**. Occurrences measure
+how chatty one file is; files measure whether a pattern has actually got loose, and spread is the
+thing a design system exists to stop. `count_at_least` gains an optional **`min_files`** — additive,
+so every loop that only cares about frequency is unchanged — and `design-tokens-loop` now requires
+three distinct files. The evidence reports `matchedFiles` separately from `files` read, because
+those were always two different facts rendered as one.
+
+This is a **shipped false-positive class**, not a BOSS quirk: any repo with a single HTML-emitting
+module — a report generator, a mailer, an export — was tripping it.
+
+### A loop link that only worked before it was installed
+
+`docs/loops/canvas-drift-loop.md` pointed at
+`../../../../L0-quickstart/template/docs/loops/harvest-loop.md`. That resolves inside `stages/`; once
+`boss unlock mvp` copies the file into a founder's `docs/loops/`, the `../../../../` escapes the
+project entirely. **Every project with MVP unlocked has carried that dead link.** De-linked to a bare
+`` `harvest-loop` `` — which is the rule v0.263.0 already shipped: **a link promises the reader can
+open it; a bare name says the thing exists.** Both loops are siblings in a real project anyway.
+
+### The boundary check inverted the moment BOSS installed its own product
+
+`check-boundary` audits BOSS's `/.claude/` **dev workspace** — what has been ruled on for crossing UP
+into the product. Installing 48 shipped skills and agents into that same directory made every one of
+them read as *"authored in the workspace and never ruled on"*, and the check went from 27 artifacts
+to 75. `.boss/managed.json` is the authoritative separator and costs one read: sync records every
+file BOSS installed, and a dev-authored artifact has no entry because nothing else writes that
+ledger. Absent ledger → empty set → the check behaves exactly as before.
+
+### What the conscience got RIGHT on its first run
+
+The re-entry hook opened with *"The founder is back after 19 days away."* That is not a bug — it is
+**54 commits since the last `docs/devlog.md` entry**. BOSS ships *"devlog every session"* as MVP
+working rule 3 and has not followed it. The first thing BOSS's own conscience did was catch BOSS
+skipping BOSS's own rule.
+
+### Also
+
+- 350 unit tests (was 345).
+
 ## 0.267.0 — 2026-09-09
 
 > **For you:** If you brought BOSS into a repo that already had its own `.claude/agents/` or

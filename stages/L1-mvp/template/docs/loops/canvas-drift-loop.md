@@ -22,7 +22,7 @@ drift_moment: outpaced
 
 **The second half of the harvest, and the one BOSS's own repo proved it needed.**
 
-[`harvest-loop`](../../../../L0-quickstart/template/docs/loops/harvest-loop.md) closed the first half:
+`harvest-loop` closed the first half:
 evidence lands, and the picture of the *user* doesn't move. It deliberately left the canvas alone,
 and the reason it gave was right — *"evidence bearing on a canvas cell is a looser mapping, and a
 looser mapping means more false fires on the one loop whose whole risk is crying wolf."*

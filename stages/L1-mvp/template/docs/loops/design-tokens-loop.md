@@ -10,6 +10,11 @@ entry:
       path_glob: $source
       pattern: '(className=|style={|css`|styled\.|class="|<style|\.foregroundColor\(|\.font\(\.|Modifier\.|MaterialTheme\.|TextStyle\(|BoxDecoration\(|EdgeInsets\.|android:textColor|android:layout_)'
       min: 3
+      # The claim is that styling has SPREAD ("several files styling by hand"), so the predicate
+      # has to test spread. Occurrences alone fired this loop at high confidence on a zero-dep CLI
+      # where all 52 matches were in ONE HTML-generating module. A single generator is not the
+      # 47-blues problem; three files each rolling their own is.
+      min_files: 3
 exit:
   - exists: { path: docs/design/DESIGN_TOKENS.md }
   - count_at_least:

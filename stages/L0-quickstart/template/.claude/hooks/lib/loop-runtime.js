@@ -8,8 +8,10 @@
 //
 // Predicate vocabulary (closed set; extend deliberately):
 //   - exists: { path }                — a file/dir exists at the project-relative path
-//   - count_at_least: { path_glob, pattern, min, exclude_files_matching?, not_path_glob? }
-//                                     — N+ regex matches across globbed files
+//   - count_at_least: { path_glob, pattern, min, min_files?, exclude_files_matching?, not_path_glob? }
+//                                     — N+ regex matches across globbed files. `min_files` adds the
+//                                       SPREAD bar: the matches must also land in N+ DISTINCT files,
+//                                       so one chatty generator cannot look like a pattern.
 //   - count_at_most:  { path_glob, pattern, max, exclude_files_matching?, not_path_glob? }
 //                                     — NO MORE THAN N matches. The mirror, so a loop whose
 //                                       healthy state is an ABSENCE ("no raw hex codes in the
@@ -236,14 +238,22 @@ function countMatches({ path_glob, pattern, exclude_files_matching, not_path_glo
   const re = new RegExp(pattern, 'gm');
   let count = 0;
   let read = 0;
+  // `matched` is a DIFFERENT fact from `read`, and conflating them is what let design-tokens-loop
+  // fire on this repo: 52 occurrences across 32 files READ, all 52 of them in ONE file
+  // (`src/board.js`, a CLI module that GENERATES an HTML board). The moment then said "several
+  // files styling by hand", which was false. Occurrences measure how chatty one file is; files
+  // measure whether a pattern has SPREAD, and spread is what a design system exists to stop.
+  let matched = 0;
   for (const f of files) {
     try {
       if (statSync(f).size > MAX_FILE_BYTES) continue;
-      count += (readFileSync(f, 'utf8').match(re) || []).length;
+      const hits = (readFileSync(f, 'utf8').match(re) || []).length;
+      count += hits;
+      if (hits > 0) matched += 1;
       read++;
     } catch { /* ignore unreadable */ }
   }
-  return { count, files: read, blind };
+  return { count, files: read, matchedFiles: matched, blind };
 }
 
 const PREDICATES = {
@@ -251,9 +261,19 @@ const PREDICATES = {
     return existsSync(join(projectDir, path));
   },
 
+  // `min_files` is OPTIONAL and additive: a loop that only cares how often a pattern occurs is
+  // unchanged, and one whose claim is about SPREAD can now say so. Both bars must clear.
   count_at_least(args, projectDir) {
-    const { count, files, blind } = countMatches(args, projectDir);
-    return { ok: count >= args.min, evidence: { count, min: args.min, files, ...(blind ? { blind: true } : {}) } };
+    const { count, files, matchedFiles, blind } = countMatches(args, projectDir);
+    const ok = count >= args.min && (args.min_files === undefined || matchedFiles >= args.min_files);
+    return {
+      ok,
+      evidence: {
+        count, min: args.min, files, matchedFiles,
+        ...(args.min_files !== undefined ? { minFiles: args.min_files } : {}),
+        ...(blind ? { blind: true } : {}),
+      },
+    };
   },
 
   // The MIRROR of count_at_least, and the reason design-drift-loop stopped lying.

@@ -304,9 +304,14 @@ test('REGRESSION: `**` actually recurses — it used to silently mean `*`', () =
   // loop specs wrote `src/**` anyway. So every code-reading loop scanned exactly the top of
   // `src/` and classified `unopenable` — which emits nothing. This was never mobile-only: any
   // project keeping components in subdirectories (every real one) had a dead conscience.
+  // Three FILES one directory down, not one file with three matches: design-tokens-loop gained a
+  // `min_files` spread bar in v0.268.0, and this test's subject is glob RECURSION, not the
+  // threshold. Three nested components prove recursion just as well and clear the bar honestly.
   const nested = project({
     '.boss/config.json': JSON.stringify({ sourceGlobs: ['src/**'] }),
-    'src/components/Button.tsx': 'const a=<b className="a"/>;\nconst b=<b className="b"/>;\nconst c=<b className="c"/>;\n',
+    'src/components/Button.tsx': 'const a=<b className="a"/>;\n',
+    'src/components/Card.tsx': 'const b=<b className="b"/>;\n',
+    'src/components/Modal.tsx': 'const c=<b className="c"/>;\n',
     'docs/loops/l.md': '',
   });
   const spec = SHIPPED_LOOP('L1-mvp', 'design-tokens-loop');

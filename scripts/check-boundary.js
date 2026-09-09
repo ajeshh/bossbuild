@@ -51,10 +51,31 @@ const dirsIn = (p) => (existsSync(p)
 const mdIn = (p) => (existsSync(p)
   ? readdirSync(p).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)) : []);
 
+// `/.claude/` now holds TWO populations, and only one of them is a boundary question.
+//
+// v0.268.0 ran `boss sync --apply` in this repo for the first time (IDEA-088 — BOSS had never
+// installed its own product), which copied 48 shipped skills and agents DOWN into the same
+// directory the dev workspace lives in. Those are not workspace artifacts awaiting a ruling: they
+// already crossed, which is why they exist under `stages/` at all. Counting them made every one
+// read as "authored in the workspace and never ruled on" — the boundary check inverted, 48 times.
+//
+// `.boss/managed.json` is the authoritative answer and costs one read: sync records every file
+// BOSS itself installed, and a dev-authored artifact has NO entry because nothing else writes that
+// ledger. Absent ledger (a checkout that never synced) → the set is empty and this behaves exactly
+// as it did before, which is the honest fallback rather than a guess.
+const installed = (() => {
+  try {
+    return new Set(Object.keys(JSON.parse(readFileSync(join(ROOT, '.boss', 'managed.json'), 'utf8'))));
+  } catch { return new Set(); }
+})();
+const bossInstalled = ({ name, kind }) => installed.has(
+  kind === 'agent' ? `.claude/agents/${name}.md` : `.claude/skills/${name}/SKILL.md`,
+);
+
 const onDisk = [
   ...mdIn(join(WORKSPACE, 'agents')).map((n) => ({ name: n, kind: 'agent' })),
   ...dirsIn(join(WORKSPACE, 'skills')).map((n) => ({ name: n, kind: 'skill' })),
-];
+].filter((a) => !bossInstalled(a));
 
 // Where a crossed artifact is allowed to have landed: a stage template. That is the whole list.
 //
