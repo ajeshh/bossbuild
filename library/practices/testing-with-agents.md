@@ -4,7 +4,7 @@ type: practice
 owner: tester
 status: active
 host: stack-neutral
-provenance: written 2026-08-11 (v0.142.0) to close the coverage gap the 2026-07-30 craft-staleness audit named and the 2026-08-11 sweep re-confirmed — `library/README.md` had advertised a testing practice in `practices/` since the library was created, and none existed. Sources - Hamel Husain + Shreya Shankar (error analysis, evals-as-spec, judge validation), "How Coding Agents Fail Their Users" (20,574-session misalignment analysis, arXiv 2605.29442), "Professional Software Developers Don't Vibe, They Control" (arXiv 2512.14012), Veracode Spring-2026, METR, Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was already BOSS's, stranded in `git-workflow.md`.
+provenance: written 2026-08-11 (v0.142.0) to close the coverage gap the 2026-07-30 craft-staleness audit named and the 2026-08-11 sweep re-confirmed — `library/README.md` had advertised a testing practice in `practices/` since the library was created, and none existed. Sources - Hamel Husain + Shreya Shankar (error analysis, evals-as-spec, judge validation), "How Coding Agents Fail Their Users" (20,574-session misalignment analysis, arXiv 2605.29442), "Professional Software Developers Don't Vibe, They Control" (arXiv 2512.14012), Veracode Spring-2026, METR, Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was already BOSS's, stranded in `git-workflow.md`. The *negative-finding* section was sorted UP (PRINCIPLE #1) after BOSS made the same mistake TWICE in one session on 2026-09-08: it grepped a single word, concluded a gap, and twice the concept shipped under other words — see [[RVW-095]]. n=2 in one sitting is the breakpoint.
 provenance_public: Written after BOSS's own library README had advertised a testing practice that did not exist. Sources: Hamel Husain and Shreya Shankar (error analysis, evals-as-spec, judge validation), *How Coding Agents Fail Their Users* (20,574-session misalignment analysis, arXiv 2605.29442), *Professional Software Developers Don't Vibe, They Control* (arXiv 2512.14012), Veracode Spring-2026, METR, and Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was BOSS's own, stranded in the git practice until it had a home.
 last_reviewed: 2026-08-11
 review_by: 2027-02-07
@@ -122,6 +122,42 @@ Numbers rot faster than the practice — each is dated, and the direction matter
   developers shipping unverified code. **The agent will not ask you for tests. You have to.**
 - **The professionals who do well with agents don't vibe — they control** (arXiv 2512.14012). The
   differentiator is not prompt skill; it's holding a verification loop the agent runs inside.
+
+## The agent's *negative* finding is the least reliable thing it says
+
+Everything above is about verifying what an agent **wrote**. This is about verifying what it says it
+**didn't find** — and it is the failure most likely to survive review, because a negative reads as
+diligence.
+
+Ask an agent *"do we handle expired tokens anywhere?"* and it searches, finds nothing, and tells you
+no. That answer has a different shape from every other answer it gives:
+
+- **A positive finding carries its own evidence.** *"Yes — `auth.ts:88`."* You can open it. If it's
+  wrong, you find out in seconds.
+- **A negative finding is a claim about your whole codebase**, and it rests entirely on the queries
+  that happened to get run. Nothing is attached for you to check. **You cannot open an absence.**
+
+So the honest reading of *"I found nothing"* is **"the searches I ran returned nothing"** — a
+statement about the search, not about the code. Most of the time those are the same. When they
+aren't, the cost is lopsided: a wrong positive costs you one look, a wrong negative costs you
+**building something you already had**, in a second vocabulary, which is now two things to maintain
+and one of them is wrong.
+
+**Before you act on any absence, do a synonym pass.** Name three or four ways the thing could be
+spelled or phrased before you accept that it isn't there — including the words *you* wouldn't use.
+The concept you're hunting is usually shipped under someone else's noun: *rearchitect* lives as
+"extract when forced"; *technical debt* lives as "the code is what's slowing you down"; *retry* lives
+as "backoff". Then search once more by **behaviour** rather than name — what would this code *do* if
+it existed? — because that catches the case where nobody named it at all.
+
+**The rule underneath: a word count is not a coverage measure.** One query returning zero is a
+hypothesis. Three queries across different vocabularies returning zero is a finding. Write down which
+one you have.
+
+**And weight the ones you'd like to be true.** An absence that justifies work you already wanted to
+do — a gap that makes your idea necessary — is exactly where this check gets skipped. If the missing
+thing turns out to be present, that is the cheapest good news you will get all week; go looking for
+it *before* you build, not after.
 
 ## What to test first (when you have nothing)
 

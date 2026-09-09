@@ -9,6 +9,52 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.262.0 — the founder's word didn't reach the answer BOSS already had
+
+> **For you:** ask the architecture mentor *"when should I rearchitect?"* or *"do I need to rebuild
+> this?"* and it now answers. It always knew — it just didn't recognise the question.
+
+[[EVID-001]] asked, in the founder's own words, for help knowing *"when to rearchitect."* `rearchitect`
+appeared **zero times** anywhere in this repo, and the first read of that was a coverage gap.
+
+**It wasn't.** The judgment ships, twice, and it is good: `mentor-architect` — *"a **breakpoint, not a
+calendar**: a shipped FEAT, a mode transition, the third repeat… **debt is only worth naming once the
+code is what's slowing them down**"*, with the refusal case attached (*for a founder with no users,
+"go tidy" is the pseudo-app trap wearing an engineering hat*). And `scalable-architecture.md` —
+*"extract when forced"*, trigger list named: a scaling wall, independent deploys, a compliance
+boundary, *"not an aesthetic preference or a blog post."*
+
+**The gap was vocabulary.** The agent's trigger phrases were *"what stack" · "should we split this" ·
+"is this premature"* — not one word a founder would actually use at that moment. Five phrasings added
+to the `description:` line. **No new skill, no new agent, no new guidance, and deliberately not
+promoted above MVP** — the judgment's own first move is *check the register*, and surfacing it at
+Quickstart would invert its meaning. [[RVW-095]] (ADAPT); [[RVW-094]] REJECTED the VC "rebuild after
+funding" claim this was split out of, on cohort harm and vendor-manufactured evidence.
+
+## 0.261.0 — an agent's "I found nothing" is the least reliable thing it says
+
+**Sorted UP (PRINCIPLE #1) from BOSS making the same mistake twice in one sitting.** Both times: grep
+one word, find zero, write up a gap. Both times the concept shipped under other words — *rearchitect*
+as *"extract when forced"*, and an "unwatched" watchlist that named `arXiv cs.SE` one domain over.
+**n=2 in one session is the breakpoint.**
+
+`testing-with-agents.md` already said *verification is where agents fail their users* — about code the
+agent **wrote**. It said nothing about what the agent says it **didn't find**, which is the failure
+likeliest to survive review, because a negative reads as diligence.
+
+The asymmetry is the whole point: **a positive finding carries its own evidence** (*"yes —
+`auth.ts:88`"*, you can open it); **a negative is a claim about the entire codebase resting on
+whichever queries happened to run, with nothing attached to check. You cannot open an absence.** The
+honest reading of *"I found nothing"* is *"the searches I ran returned nothing."* Costs are lopsided
+too — a wrong positive costs one look; a wrong negative costs building something you already had, in a
+second vocabulary, so now there are two and one is wrong.
+
+The move: a **synonym pass** (three or four phrasings, including the words *you* wouldn't use) plus one
+search by **behaviour** rather than name; and the rule underneath — **a word count is not a coverage
+measure.** One query returning zero is a hypothesis; three across different vocabularies is a finding.
+Plus the tell that makes it stick: **weight the absences you'd like to be true**, because a gap that
+makes your idea necessary is exactly where the check gets skipped.
+
 ## 0.260.0 — 2026-09-08
 
 > **For you:** **`boss recap`** — what happened this week, read back out of the records you already
