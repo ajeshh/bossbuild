@@ -24,20 +24,30 @@ const run = (args, opts = {}) => {
 };
 const CHECK = join(BOSS_ROOT, 'scripts', 'check-refs.js');
 
+// Assembled rather than written out, because this file is TRACKED and the check scans tracked
+// files: spelling the probe citation as a literal here makes the test suite itself a finding.
+// (It did, on the first run. The check has no exemption list and this is what that costs — a
+// price worth paying, since an allowlist is how the class survives in the first place.)
+const PROBE = `[[${'ZZZ'}-001]]`;
+
 test('the tracked tree carries no citation the reader cannot follow', () => {
   const r = run([CHECK]);
   assert.doesNotMatch(r.out, /DEAD CITATIONS/);
 });
 
+// The probe id is deliberately synthetic. It was `DEC-011` until v0.264.0 published
+// `docs/decisions/`, at which point the citation became LEGAL and this test failed — the check
+// doing its job, and a fixture that had quietly encoded "no record class is ever published."
+// The probe id is record-shaped (the regex is `[A-Z]{3,4}-\d+`) and can never be tracked.
 test('REGRESSION: the check can still be made to fail — it is not a silent no-op', () => {
   const probe = join(BOSS_ROOT, 'docs', '__citation-probe.md');
-  writeFileSync(probe, '# probe\n\nSee [[DEC-011]].\n');
+  writeFileSync(probe, `# probe\n\nSee ${PROBE}.\n`);
   try {
     execFileSync('git', ['add', '-f', probe], { cwd: BOSS_ROOT, stdio: 'ignore' });
     const r = run([CHECK]);
     assert.equal(r.code, 1, 'a dead citation in a tracked file must fail the check');
     assert.match(r.out, /DEAD CITATIONS/);
-    assert.match(r.out, /write it as `DEC-011`/);
+    assert.match(r.out, /write it as `ZZZ-001`/);
   } finally {
     try { execFileSync('git', ['rm', '--cached', '-f', probe], { cwd: BOSS_ROOT, stdio: 'ignore' }); } catch { /* */ }
     rmSync(probe, { force: true });
@@ -46,7 +56,7 @@ test('REGRESSION: the check can still be made to fail — it is not a silent no-
 
 test('a mention inside backticks is a mention, not a citation', () => {
   const probe = join(BOSS_ROOT, 'docs', '__citation-probe-2.md');
-  writeFileSync(probe, '# probe\n\nThe form is `[[DEC-011]]`, documented here.\n');
+  writeFileSync(probe, ['# probe', '', 'The form is `' + PROBE + '`, documented here.', ''].join('\n'));
   try {
     execFileSync('git', ['add', '-f', probe], { cwd: BOSS_ROOT, stdio: 'ignore' });
     assert.doesNotMatch(run([CHECK]).out, /DEAD CITATIONS/);
@@ -71,4 +81,14 @@ test('boss changelog renders a citation plain, for the tarballs already in the w
   assert.equal((src.match(/plainCitations\(/g) || []).length, 3, 'all three render paths must strip it');
   assert.ok(typeof mod.printChangelog === 'function');
   void fs;
+});
+
+test('a published record class keeps its citations resolvable', () => {
+  // v0.264.0 published docs/decisions/, which makes `[[DEC-011]]` a legal citation again. If those
+  // files are ever un-tracked, every decision-to-decision link in them silently becomes the exact
+  // dead door v0.263.0 removed — so the publication is asserted, not assumed.
+  const tracked = execFileSync('git', ['ls-files', 'docs/decisions'], { cwd: BOSS_ROOT, encoding: 'utf8' })
+    .split('\n').filter(Boolean);
+  assert.ok(tracked.length >= 16, `expected the decision records to be tracked, found ${tracked.length}`);
+  assert.doesNotMatch(run([CHECK]).out, /DEAD CITATIONS/);
 });

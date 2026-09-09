@@ -35,8 +35,13 @@ docs/RESUME.md
 docs/devlog.md
 docs/RESUME-ARCHIVE.md
 docs/evidence/
+# docs/decisions/ is DELIBERATELY ABSENT from this list — the one record class BOSS publishes.
+# A DEC's stated job is "the rationale future-you and a cofounder can read instead of guessing",
+# and 49 citations of them sit in registry/CHANGELOG.md, which ships inside the npm package. They
+# contain no personal, customer or financial content; the decision to publish was made per-record
+# on the 16 that existed, and is NOT a standing rule — a future DEC that should stay private stays
+# untracked, and check-refs handles its citation automatically (docs/IDS.md).
 docs/ideas/
-docs/decisions/
 docs/extractions/
 docs/research/
 docs/source/

@@ -16,6 +16,50 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.264.0 — 2026-09-09
+
+> **For you:** BOSS's own decision records are now in the repo — `docs/decisions/`, 16 of them, the
+> reasoning behind the licence, the telos, the agent roster, why the conscience never pings you when
+> you're away. The ids the changelog has been citing for a year now resolve.
+
+**The one record class BOSS publishes, decided per-record rather than by rule.**
+
+v0.263.0 made 198 citations honest by removing a door that wasn't there. This opens the door for
+the 49 of them that pointed at decisions — the record class whose *stated job* is *"the rationale
+future-you and a cofounder can read instead of guessing."* A record written to be read by someone
+who wasn't in the room, kept where nobody could be.
+
+Scanned before publishing, not after: **no personal, customer or financial content.** The only money
+in 1,850 lines is a competitor's publicly-announced seed round and the price of a domain. Nine cite
+`EVID-001` — all of them for its *mandate* (*compose and subtract*), none for the founder's words or
+identity. Evidence itself stays private and always will: those are real people who spoke in
+confidence.
+
+### Not a standing rule, and that is the load-bearing part
+
+Sixteen records were written with **no reader**, which is why several are unflattering on purpose —
+the roster that bloated before it got subtracted, the 22 releases that mistook persona signal for
+demand. That candour is the entire value, and an audience is what erodes it. So the call was made
+per-record on the sixteen that exist, and the seventeenth gets its own. A future DEC that should
+stay private simply stays untracked, and `check-refs` handles its citation with no list to update.
+`.gitignore` carries the reasoning where the rule would have gone.
+
+### 31 links de-linked, 0 further records published
+
+Publishing a record does not oblige you to publish what it points at. Each of the 31 pointers out
+of the decisions got the v0.263.0 treatment instead:
+
+- **Nine were pure provenance** — *"occasioned by IDEA-064"*, *"the charter question raised by
+  IDEA-067"*. Every one of those decisions reads whole without the idea behind it.
+- **Three were illustrative and self-contained** — DEC-005's *"the exact failure mode EVID-001 …"*
+  states the failure mode in the same sentence.
+- **One pointed at `RESUME.md`**, live working state, which was a weak link even privately.
+- **Eighteen were wiki citations** into ideas and evidence.
+
+The filter is one question: **can the decision be understood without opening it?** If yes, de-link.
+If no, inline the sentence. Publishing the target is the third option and it was the right one zero
+times out of 31. Decision-to-decision citations kept their brackets, because now they resolve.
+
 ## 0.263.0 — 2026-09-09
 
 > **For you:** Release notes used to point you at records like `[[DEC-011]]` as if you could open
