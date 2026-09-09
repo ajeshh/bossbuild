@@ -63,3 +63,7 @@ docs/mentor-practitioners.md
 # with lib/node_modules and share/man, in whatever cwd you ran it from. Empty, untracked and one
 # `git add -A` from being committed. `npm run bump:formula` exists so nobody hand-runs that again.
 {{HOMEBREW_PREFIX}}/
+
+# Cloudflare deploy artifact — hand-zipped from site/ at deploy time, never source.
+# Regenerate: cd site && zip -r ../site.zip . -x '.*' -x '__MACOSX/*'
+site.zip
