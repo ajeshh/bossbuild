@@ -1,6 +1,6 @@
 ---
 name: money
-description: The money verb, from the first dollar to operating it. Reads where you actually are and routes - no yes yet → /interview to GET one; a real yes but no way to pay → take the first dollar (entity, ToS+privacy, payment rail, refund posture, the first price) and record the commitment-grade EVID; paying customers already → operate it (behavior-triggered upgrades, dunning for involuntary churn, the humane price raise, aligned expansion) while watching the margin underneath. Bright line - pointers to professionals, never legal or tax advice; records the EVENT, never the stream (no MRR dashboard — that's your payment provider's job). Usage - /money [upgrade | dunning | price-raise | expansion]
+description: The money verb, from the first dollar to operating it. Reads where you actually are and routes - no yes yet → /interview to GET one; a real yes but no way to pay → take the first dollar (entity, ToS+privacy, payment rail, refund posture, the first price) and record the commitment-grade EVID; paying customers already → operate it (upgrades, dunning, the humane price raise, expansion) while watching the margin underneath. Bright line - pointers to professionals, never legal or tax advice; records the EVENT, never the stream. Usage - /money [upgrade | dunning | price-raise | expansion]
 ---
 
 # /money — take the first dollar, then run it honestly

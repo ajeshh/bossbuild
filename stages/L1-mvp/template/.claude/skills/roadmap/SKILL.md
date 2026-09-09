@@ -1,6 +1,6 @@
 ---
 name: roadmap
-description: Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list. Not a Gantt, not a backlog to tend: a Shape-Up-style handful of bets with a fixed appetite, produced periodically and thrown away, never a persistent planning surface. Confidence on each bet = the EVID grade behind it (Gilad's Confidence Meter mapped onto BOSS's stated-pain → observed-behavior → commitment ladder), so a bet's rank comes from evidence, not volume or a HiPPO. RICE-reach is OFF by default (reach-weighting optimizes for the loud majority-of-noise). Pre-PMF, the only honest roadmap is "find fit" — it defers to /health. Humane — serves the silent majority who drive value, not whoever shouts, and the NO-list is where that discipline lives. At n<10 the honest output is "go talk to them." Usage - /roadmap
+description: Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list. Not a Gantt and not a backlog to tend: a Shape-Up-style handful of bets with a fixed appetite, produced periodically and thrown away, never a persistent planning surface. Confidence on each bet is the EVID grade behind it, so rank comes from evidence rather than volume or a HiPPO. Pre-PMF the only honest roadmap is "find fit" — it defers to /health, and at n<10 the honest output is "go talk to them." Usage - /roadmap
 ---
 
 # /roadmap — what's worth building next (a small bet-list + an honest NO-list)

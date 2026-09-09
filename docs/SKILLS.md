@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.265.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.266.0**.
 
 ## Quickstart
 
@@ -15,9 +15,9 @@
 - **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc])_
 - **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)  _(/evidence [paste notes | describe what happened])_
 - **`/interview`** — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence  _(/interview [prep | debrief | paste your notes])_
-- **`/research`** — Turn a real research transcript into product context and graded evidence  _(/research [transcript file | paste the transcript])_
+- **`/research`** — Turn a whole research transcript into product context and graded evidence  _(/research [transcript file | paste the transcript])_
 - **`/decide`** — Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is  _(/decide <the decision, or describe it>)_
-- **`/sunset`** — End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against  _(validating it's actually dead (not just quiet), guarding the segment/commitment exception (a low-usage feature can be the reason a key account stays), and drafting the HONEST user-facing deprecation notice (real notice period, a path out, no "we're improving your experience" euphemism). Subtraction is a feature; a bloated product serves no one. Framed as an experiment that returned an answer, never as failure. Deliberate-invoke only; the conscience never suggests it unprompted (it may only point at it from inside a moment that already fired — e.g. the focus circuit-breaker). With an IDEA (e.g. /sunset IDEA-012), closes ONE CAPTURED IDEA — the lightest scope: asks the one question that comes first (did you decide against this, or just never get to it?), keeps the reasoning the `dropped` status has always promised to keep, and writes the condition that would bring it back, so `dropped` is a 'not now' rather than a graveyard. Never harvests an unbuilt idea UP. Usage - /sunset [FEAT-NNN | IDEA-NNN | name])_
+- **`/sunset`** — End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against  _(/sunset [FEAT-NNN | IDEA-NNN | name])_
 - **`/persona`** — Build your app's target-user persona from your idea, grow it from what you know + online research + any real user research you drop in, and consult it as an agent voice — both to guide product decisions ("would my user want this?") and to QA your builds ("how would she react to this screen?")  _(/persona [derive | enrich <slug> | consult <slug> "question"])_
 - **`/read-repo`** — Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work  _(/read-repo)_
 - **`/feedback`** — Send feedback about BOSS itself back to the people who build it — a bug, a confusion, a wish, a "this got in my way." User-initiated and transparent: it shows you exactly what it will send (and the small bit of context attached) before anything leaves your machine, then files it as a GitHub issue upstream (or gives you a prefilled link to paste)  _(/feedback [what's on your mind])_
@@ -42,12 +42,12 @@
 - **`/revalidate`** — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature  _(/revalidate [ID or paused item])_
 - **`/judge-traces`** — Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work  _(/judge-traces [last N | all])_
 - **`/consult`** — Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, and synthesize the answer with the disagreements kept visible (not averaged away)  _(/consult <question>)_
-- **`/red-team`** — Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest  _(/red-team [FEAT-NNN | --paths | --self | --humane])_
+- **`/red-team`** — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent (tools + memory + autonomy) against the OWASP Agentic ASI Top 10  _(/red-team [FEAT-NNN | --paths | --self | --humane])_
 - **`/practice`** — Capture a craft learning — a better way to build with AI you found — as a shared, attributed PRAC-NNN record your cofounder gets too  _(/practice <what you learned>)_
 - **`/ship`** — Put your app where a real user can hit it — the CD half of building  _(/ship [--preview | --rollback])_
-- **`/landing`** — Generate the founder's FIRST landing page — on-brand, honest, out the block to scale  _(/landing [--demand | --product])_
-- **`/measure`** — The post-ship counterpart to /pretotype  _(/measure)_
-- **`/onboard`** — Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once)  _(/onboard)_
+- **`/landing`** — Generate the founder's FIRST landing page — on-brand, honest, out the block fast  _(/landing [--demand | --product])_
+- **`/measure`** — The post-ship counterpart to /pretotype - /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship  _(/measure)_
+- **`/onboard`** — Design the path from signup to the aha-moment — activation, the highest-leverage number in the funnel (fix it and every downstream cohort lifts at once)  _(/onboard)_
 - **`/roadmap`** — Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list  _(/roadmap)_
 - **`/trust`** — Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater  _(/trust)_
 - **`/health`** — The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix  _(/health)_

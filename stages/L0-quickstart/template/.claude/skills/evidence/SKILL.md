@@ -18,6 +18,28 @@ still arguing from vibes.
 You paste raw notes (or describe what happened); BOSS drafts `docs/evidence/EVID-NNN-<slug>.md` with an
 honest grade, links the canvas assumption it bears on, and shows it to you before saving.
 
+## The door you're at — route before you capture
+
+Three verbs turn *what a real person said* into a graded `EVID`, and `/evidence` is the one a
+founder reaches for by name. So this is where the routing lives. **Read what they gave you first**,
+say the one line that saves them a step, then keep going — never bounce them back to a different
+command and never make them run it twice.
+
+- **A conversation that hasn't happened yet** — *"I'm meeting someone Thursday"* → **`/interview`**
+  preps it as one printable page. That prep half exists nowhere else, and it is the half the
+  conscience actually points at.
+- **Notes from a call you just had** → you're at the right door. `/interview` also debriefs notes
+  and flags **where you pitched instead of listened** — offer it once if the notes read like a
+  pitch, then take their answer.
+- **A whole transcript** — a recording, a sales call, a support thread, more than a page →
+  **`/research`** grades it at scale *and* synthesizes the product context underneath (pains, jobs,
+  verbatim words, workarounds, objections → canvas + brain). Captured here you get one record and
+  **lose the synthesis without being told** — which is the whole reason this routing exists.
+- **Something you read** — a pricing page, a market estimate, an article → **no rung fits.** See
+  the red block below; it never becomes evidence, at any door.
+
+One line, once. If they'd rather just capture, capture.
+
 ## The 3-grade ladder (fixed — three rungs, blunt on purpose)
 
 The grade is the load-bearing field. Its power is its bluntness — resist growing the taxonomy.

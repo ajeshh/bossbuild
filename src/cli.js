@@ -23,6 +23,7 @@ import { insights } from './insights.js';
 import { recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { printReentry, printEvidenceHeadway } from './orientation.js';
+import { readiness, renderReadiness } from './readiness.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
 import { lookup, terms } from './glossary.js';
@@ -337,17 +338,15 @@ function cmdUnlock(args) {
   if (!target) return fail(`unknown mode '${layer}'. options: ${STAGE_ORDER.map(modeWord).join(' | ')}`);
   if (stamp.installedLayers.includes(target)) return fail(`${target} already installed.`);
 
-  // Scale names its bar before you cross it (IDEA-040 trigger discipline, made a moment). It never
-  // blocks — the house rule — but Scale is the mode most tempted by premature ceremony, so it says
-  // out loud what earns the ceremony. Missing a leg is fine; carrying unearned ceremony is the cost.
-  if (target === 'L3-scale') {
-    console.log('\n  Scale-mode discipline pays for itself when three things are true:');
-    console.log('    · revenue that recurs (a first-dollar EVID or better)');
-    console.log('    · at least one non-founder in the work (`boss team` roster)');
-    console.log('    · a coordination symptom you can name (a dropped handoff, a decision nobody');
-    console.log('      owned, a 3am incident)');
-    console.log(dim('  Missing one? That\'s fine — but you\'ll be carrying ceremony you haven\'t earned.'));
-    console.log(dim('  Unlocking anyway (BOSS never blocks); the deviation is yours to own.'));
+  // Every rung names its bar before you cross it, and READS the legs it can actually check
+  // (IDEA-076). This used to be a hard-coded block for L3-scale alone (IDEA-040), which meant the
+  // one rung almost nobody reaches was the only one that spoke, while Quickstart→MVP and MVP→V1 —
+  // the two founders actually climb — unlocked in silence. It still never blocks; see
+  // src/readiness.js for why the unknowns stay unjudged instead of quietly passing.
+  const bar = readiness(target, process.cwd());
+  if (bar) {
+    console.log('');
+    for (const line of renderReadiness(bar, { bold, dim, ok, warn })) console.log(line);
   }
 
   // A SKIPPED rung, named before you cross it — the same shape as Scale's bar above, for the same
@@ -577,6 +576,22 @@ async function cmdStatus(args) {
   // This is the other half, and the half that can be wrong: what the work actually
   // taught you. Shipping is motion; evidence is the part that moves the bet.
   printEvidenceHeadway(process.cwd());
+  // The one place the CLIMB question gets answered without being asked, and it is one line that
+  // prints only when every leg BOSS can check is in place. Silent otherwise, on purpose (IDEA-076):
+  // a founder mid-rung gets nothing, the way the re-entry line stays quiet for someone who worked
+  // yesterday. And it can go back to silence — supersede the EVID behind it and this stops
+  // printing. That is what keeps it off the comfort-device list: a surface that cannot go down is
+  // not a status, it is a trophy. The unmet and unknown legs are NOT rendered here; they belong at
+  // `boss unlock`, the moment of crossing, where there is room to say what they are.
+  const nextStage = STAGE_ORDER[STAGE_ORDER.indexOf(stamp.stage) + 1];
+  const nextBar = nextStage ? readiness(nextStage, process.cwd()) : null;
+  if (nextBar && nextBar.cleared) {
+    // The rung's NAME to read ("MVP"), its WORD to type ("mvp") — `boss unlock` takes the latter
+    // and printing the label back at a founder as a command is how a copy-paste fails.
+    let nextName = modeWord(nextStage);
+    try { nextName = readStageManifest(nextStage).name || nextName; } catch { /* unauthored rung */ }
+    console.log(`    ${ok('✓')} ${bold(`Ready for ${nextName}:`)} ${dim('everything BOSS can check is in place —')} ${bold(`boss unlock ${modeWord(nextStage)}`)} ${dim('when you are.')}`);
+  }
   printBuiltAndSeam(process.cwd(), stamp);
   console.log('');
   console.log(`    ${dim('layers:')}       ${stamp.installedLayers.join(' → ')}`);

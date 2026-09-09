@@ -1,6 +1,6 @@
 ---
 name: measure
-description: The post-ship counterpart to /pretotype. /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship. Picks ONE activation metric + ONE retention curve, names 5-10 events max (kills analytics theater), defaults to the free/OSS/no-lock-in path, and for an AI product adds the metrics that classic analytics misses (task-completion, edit rate, cost-per-successful-outcome). Humane by construction — measures graduation/loop-closure, NOT engagement/DAU. At n<10 its honest output is "close this, go talk to your users" — but never empty-handed: it leaves the SEAM (a `created_at` on user + core rows, and one `track()` stub), because you can add a tracking call any day and you can never add the past. Usage - /measure
+description: The post-ship counterpart to /pretotype - /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship. Picks ONE activation metric and ONE retention curve, names 5-10 events max (kills analytics theater), and for an AI product adds what classic analytics misses (task-completion, edit rate, cost-per-successful-outcome). Humane by construction — measures graduation, not engagement. At n<10 it still leaves the SEAM, because you can add a tracking call any day and you can never add the past. Usage - /measure
 ---
 
 # /measure — is the shipped thing working, and are they staying?

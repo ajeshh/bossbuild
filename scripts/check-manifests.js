@@ -233,6 +233,71 @@ function checkModelPins() {
   return errors;
 }
 
+// --- 2d. the always-on description budget (IDEA-085) ----------------------
+// v0.266.0. A skill's `description:` frontmatter is loaded so the HOST can decide when the skill
+// applies — which means every installed skill's description sits in the founder's context on every
+// turn, whether or not the skill is ever run. v0.258.0 cut what CLAUDE.md + AGENTS.md spend per
+// turn (25.4 KB -> 14.9 KB at MVP) and this is the other half of the same bill: a project at MVP
+// carried ~24 KB of descriptions, larger than the prose file that release spent itself trimming,
+// and completely unmeasured until someone counted.
+//
+// THE CAP IS DERIVED, NOT GUESSED. Measured across all 48 shipped skills before the rule existed:
+// median 485 B, p75 633 B, max 1402 B. 700 sits just above the 75th percentile, so three quarters
+// of the corpus already complied and the ten that did not ARE the finding — which is this repo's
+// own rule (measure the gap before building the gate: 0 violations means the rule was right and
+// only enforcement was missing; a flood means the rule itself is wrong).
+//
+// WHY THE PER-RUNG TOTAL IS PRINTED AND NEVER FAILS. A budget on the total would improve when BOSS
+// ships FEWER skills and worsen when it ships more — a denominator built from an inventory rather
+// than a truth, which is the exact shape of metric this repo keeps catching (check:site's citation
+// gauge read 95% clean because uncounted practices never reached the denominator). The total is a
+// fact worth seeing at release time; it is not a bar anyone should game. Only the per-skill cap
+// fails a release, because only it names a specific file someone can actually fix.
+//
+// THE BOUNDARY THIS DOES NOT GUARD. Trimming a description too hard makes a skill fail to fire,
+// and that failure is SILENT — it looks like the skill not existing. No check can see it. The cap
+// only bounds the cost; keeping the trigger intact is a judgment made when the line is written.
+// The rule that survives the cut: the description's job is WHEN DO I FIRE, and the what belongs in
+// the body, which loads only when the skill runs.
+
+const DESCRIPTION_CAP = 700;
+
+function skillDescriptions(stageId) {
+  const dir = join(tplDir(stageId), '.claude', 'skills');
+  const out = [];
+  if (!existsSync(dir)) return out;
+  for (const name of readdirSync(dir)) {
+    const f = join(dir, name, 'SKILL.md');
+    if (!existsSync(f)) continue;
+    const line = (readFileSync(f, 'utf8').split('\n').find((l) => l.startsWith('description:')) || '');
+    out.push({ name, bytes: Buffer.byteLength(line, 'utf8') + 1 });
+  }
+  return out;
+}
+
+function checkDescriptionBudget() {
+  const errors = [];
+  const totals = [];
+  for (const stageId of STAGE_ORDER) {
+    const descs = skillDescriptions(stageId);
+    // Every authored rung reports, zeros included — an unauthored one has nothing to say and
+    // printing "0 B" for it would read as a measurement rather than an absence.
+    if (descs.length) {
+      totals.push({ stageId, count: descs.length, bytes: descs.reduce((a, d) => a + d.bytes, 0) });
+    }
+    for (const d of descs) {
+      if (d.bytes > DESCRIPTION_CAP) {
+        errors.push(
+          `${stageId}: /${d.name}'s description is ${d.bytes} B (cap ${DESCRIPTION_CAP}). It is read on `
+          + 'EVERY turn in every project at this rung. A description says WHEN the skill fires; move '
+          + 'the what into the body, which loads only when it runs.',
+        );
+      }
+    }
+  }
+  return { errors, totals };
+}
+
 // --- 3. every declared drift_moment has an authored voicing frame ---------
 // Probes the REAL function rather than comparing against a hand-kept list of moment
 // names — a parallel list is the same class of drift this check exists to catch.
@@ -280,16 +345,18 @@ function checkVoicing() {
 export function checkManifests() {
   const stages = STAGE_ORDER.map(checkStage);
   const voicing = checkVoicing();
+  const budget = checkDescriptionBudget();
   const errors = [
     ...stages.flatMap((s) => s.errors.map((e) => `${s.stageId}: ${e}`)),
     ...voicing.errors,
     ...checkModelPins(),
+    ...budget.errors,
   ];
-  return { stages, voicing, errors };
+  return { stages, voicing, budget, errors };
 }
 
 export function reportManifests() {
-  const { stages, voicing, errors } = checkManifests();
+  const { stages, voicing, budget, errors } = checkManifests();
   const authored = stages.filter((s) => s.authored);
   const exempt = stages.flatMap((s) => s.exempt);
 
@@ -298,10 +365,27 @@ export function reportManifests() {
   } else {
     console.log(`  ⚠ Manifest integrity — ${errors.length} problem(s):`);
     for (const e of errors) console.log(`      · ${e}`);
-    console.log('    A manifest entry with no file is stamped into every project that unlocks the');
-    console.log('    mode, and both `boss sync` and the conscience skip it silently. Author the');
-    console.log('    file, or drop the entry — never ship the claim without the thing.');
+    // Printed only when a WIRING error is among them. It explains manifest-vs-file drift, and
+    // a budget finding has a different cause entirely — a footer that names the wrong cause for
+    // the finding above it is the same drift this file exists to catch, one level up.
+    if (errors.length > budget.errors.length) {
+      console.log('    A manifest entry with no file is stamped into every project that unlocks the');
+      console.log('    mode, and both `boss sync` and the conscience skip it silently. Author the');
+      console.log('    file, or drop the entry — never ship the claim without the thing.');
+    }
   }
+  // The standing per-turn cost, printed whether or not anything failed. It is the number that
+  // was invisible for 48 skills; a check that only speaks when something breaks would let it go
+  // back to being invisible the moment it was under the cap.
+  const carried = [];
+  let running = 0;
+  for (const t of budget.totals) {
+    running += t.bytes;
+    carried.push(`${t.stageId.replace(/^L\d-/, '')} ${(t.bytes / 1024).toFixed(1)}K`);
+  }
+  console.log(`    always-on descriptions: ${carried.join(' · ')} — a project at MVP carries `
+    + `${((budget.totals.filter((t) => ['L0-quickstart', 'L1-mvp'].includes(t.stageId))
+      .reduce((a, t) => a + t.bytes, 0)) / 1024).toFixed(1)}K of them on every turn.`);
   if (exempt.length) {
     console.log(`    (dormant-by-design hooks, unregistered on purpose: ${exempt.join(', ')})`);
   }

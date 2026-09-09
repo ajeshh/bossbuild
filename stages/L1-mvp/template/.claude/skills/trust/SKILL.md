@@ -1,6 +1,6 @@
 ---
 name: trust
-description: Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater. Walks the pieces that actually matter first: a data-minimization privacy policy (what you collect, why, how long, how to delete) + ToS + a real retention/deletion path; a subprocessor list auto-derived from what the app actually uses (LLM provider, vector DB, observability); the config act that founders skip — "did you actually turn on the provider's training opt-out?" (an act, not a promise); and a public trust-page stub. Explicitly DEFERS SOC2 / ISO / DPIA until a NAMED enterprise deal demands them (the 9-month clock — don't start it for a 50-user app). Bright line: pointers to a real lawyer, never legal advice. Humane — privacy as respect; the trust page as honesty; "the AI did it" is not a legal defense (Air-Canada). Usage - /trust
+description: Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater. Walks the pieces that actually matter - a data-minimization privacy policy plus a real retention/deletion path, a subprocessor list derived from what the app actually uses, the provider training opt-out (a config ACT, not a promise), and a public trust-page stub. Explicitly DEFERS SOC2 / ISO / DPIA until a NAMED enterprise deal demands them. Bright line - pointers to a real lawyer, never legal advice. "The AI did it" is not a legal defense. Usage - /trust
 ---
 
 # /trust — earn it honestly (privacy + compliance, JIT, no theater)

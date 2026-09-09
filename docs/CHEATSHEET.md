@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.265.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.266.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -43,7 +43,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them
 - `/evidence` — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)
 - `/interview` — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence
-- `/research` — Turn a real research transcript into product context and graded evidence
+- `/research` — Turn a whole research transcript into product context and graded evidence
 - `/decide` — Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is
 - `/sunset` — End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against
 - `/persona` — Build your app's target-user persona from your idea, grow it from what you know + online research + any real user research you drop in, and consult it as an agent voice — both to guide product decisions ("would my user want this?") and to QA your builds ("how would she react to this screen?")
@@ -78,12 +78,12 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/revalidate` — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature
 - `/judge-traces` — Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work
 - `/consult` — Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, and synthesize the answer with the disagreements kept visible (not averaged away)
-- `/red-team` — Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest
+- `/red-team` — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent (tools + memory + autonomy) against the OWASP Agentic ASI Top 10
 - `/practice` — Capture a craft learning — a better way to build with AI you found — as a shared, attributed PRAC-NNN record your cofounder gets too
 - `/ship` — Put your app where a real user can hit it — the CD half of building
-- `/landing` — Generate the founder's FIRST landing page — on-brand, honest, out the block to scale
-- `/measure` — The post-ship counterpart to /pretotype
-- `/onboard` — Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation > acquisition; fix it and every downstream cohort lifts at once)
+- `/landing` — Generate the founder's FIRST landing page — on-brand, honest, out the block fast
+- `/measure` — The post-ship counterpart to /pretotype - /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship
+- `/onboard` — Design the path from signup to the aha-moment — activation, the highest-leverage number in the funnel (fix it and every downstream cohort lifts at once)
 - `/roadmap` — Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list
 - `/trust` — Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater
 - `/health` — The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix

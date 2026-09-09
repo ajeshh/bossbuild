@@ -16,6 +16,87 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.266.0 — 2026-09-09
+
+> **For you:** Every rung now names what earns it *before* you climb — `boss unlock mvp` and
+> `boss unlock v1` used to do it in silence, and only Scale ever said its bar out loud. `boss status`
+> adds one line when everything BOSS can check is in place, and stays quiet otherwise. Separately,
+> ten skills were spending more of your per-turn context than they needed to; MVP projects carry
+> 3.3 KB less on every single turn.
+
+**Three captured ideas, worked in order of what the evidence supports.** IDEA-076 has the strongest
+backing of anything unshipped — two independent founders, EVID-001 and EVID-003 — and IDEA-085 and
+IDEA-086 were both measurements taken during the v0.257.0–v0.260.0 front-door pass that nobody had
+acted on yet.
+
+### The readiness half of the train line (IDEA-076)
+
+EVID-001's words were *"knowing exactly where i am like a train line, seeing my progress."* Until
+now `renderLadder` printed four station NAMES and bolded one — the same output on a project's first
+day and its fortieth — and `graduationHint` was a fixed sentence read out of the manifest. Exactly
+**one** rung named a bar before you crossed it: `boss unlock scale`, hard-coded inline. So the rung
+almost nobody reaches was the only one that spoke, while the two founders actually climb unlocked in
+total silence.
+
+`src/readiness.js` gives every rung a bar and **reads the legs it can actually check**:
+
+- **Quickstart → MVP** — an idea captured you can build from · at least one real signal on file.
+- **MVP → V1** — something that actually reached Shipped on the board.
+- **V1 → Scale** — the three conditions IDEA-040 already authored, two of which are now *read*
+  (a commitment-grade EVID; a non-founder on the `boss team` roster) rather than merely asserted.
+
+**What it deliberately is not.** No percentage, no "2 of 3", no counter of any kind — `IDEA-065`'s
+rule is already law in `src/orientation.js`: *a progress surface that cannot go down is a comfort
+device.* Every condition is a fresh read of durable records, and the test that matters proves it
+goes back down: supersede the EVID behind it and `boss status` stops printing the line. Nothing
+counts skills-run — a denominator built from an inventory improves when BOSS ships fewer skills.
+And `unknown` is a first-class state: BOSS cannot see whether real users are hitting your app or
+whether you can name a coordination symptom, so those legs are **named and left unjudged** rather
+than quietly passing. It never blocks; the unlock proceeds either way.
+
+### The other always-on context bill (IDEA-085)
+
+v0.258.0 cut what `CLAUDE.md` + `AGENTS.md` spend per turn (25.4 KB → 14.9 KB at MVP). That was half
+the bill. A skill's `description:` is loaded so the host can decide when the skill applies — so
+**every installed skill's description is in context on every turn, whether or not it ever runs**, and
+a project at MVP was carrying ~24 KB of them, unmeasured.
+
+Ten descriptions were summarising their bodies rather than saying when to fire. Trimmed to the
+trigger, with every removed clause verified to have its own heading in the body first: `/sunset`
+1402 → 495 B, `/red-team` 1248 → 662, and eight more. **MVP now carries 21.0 KB, down 3.3 KB per
+turn.**
+
+`check-manifests` gained the budget so it cannot drift back. The cap (700 B) is **derived, not
+guessed** — measured across all 48 shipped skills before the rule existed: median 485, p75 633, max
+1402. Three quarters of the corpus already complied and the ten that did not were the finding.
+The per-rung **total is printed and never fails**: a budget on the total would improve when BOSS
+ships fewer skills, which is a denominator built from an inventory rather than a truth.
+
+### One door that routes, instead of three that don't (IDEA-086)
+
+`/evidence`, `/interview` and `/research` all turn what a real person said into a graded `EVID`, and
+the seam between them — input size, and whether BOSS helped you prepare — is one the founder has to
+already understand in order to pick. At the moment they need it most, having just had a
+conversation, the three names give them no way to choose.
+
+`/evidence` is the door founders reach for by name, so the routing now lives there: a conversation
+that hasn't happened yet → `/interview`'s prep; notes from one you just had → you're in the right
+place; a whole transcript → `/research`, because capturing it here gets you one record and **loses
+the synthesis without telling you**. Something you read is still not evidence at any door.
+
+**This is a re-narration, not a merge**, and the record says why: `/interview`'s prep half and
+`/research`'s synthesis half have no counterpart elsewhere, so merging would cost real capability to
+fix a naming problem. What would justify an actual merge is a founder observed bouncing between the
+three — which is unknowable before there is a founder to observe.
+
+### Also
+
+- The manifest gate's explanatory footer now prints only when a *wiring* error is among the
+  findings. It explains manifest-vs-file drift, and a budget finding has a different cause — a
+  footer naming the wrong cause for the finding above it is the drift this file exists to catch.
+- 341 unit tests (was 331). The advertised counts in `docs/PATTERNS.md` and `registry/dogfood.json`
+  drifted again and `check-roster-claims` caught it again.
+
 ## 0.265.0 — 2026-09-09
 
 > **For you:** If you brought BOSS into a repo you'd already built, three of the four day-one agents
