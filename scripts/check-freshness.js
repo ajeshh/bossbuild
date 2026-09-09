@@ -189,6 +189,7 @@ function readMarkers(asof) {
     const fm = parseFrontmatter(text) || {};
     const claimed = practices.filter((pr) => text.includes(pr.name) && pr.reviewed);
     const lr = fm.last_refresh || '';
+    const tr = fm.taps_reviewed || '';
     const ahead = claimed.filter((c) => lr && c.reviewed > lr).sort((a, b) => b.reviewed.localeCompare(a.reviewed));
     // Name the practice that caused the drift. The claim test is a substring match, so a watchlist
     // can over-claim a doc from another curve — showing WHICH practice is what lets a reader tell a
@@ -199,6 +200,15 @@ function readMarkers(asof) {
       nextReview: fm.next_review || '',
       behindBy: ahead.length ? ahead : null,
       overdue: fm.next_review ? fm.next_review < asof : false,
+      tapsReviewed: tr,
+      // Absent and stale are DIFFERENT states and must never render the same (the denominator
+      // lesson, n=20). A watchlist with no `taps_reviewed:` has never had its tap list checked —
+      // which is not "fine", it is "unmeasured".
+      tapsUnreviewed: !tr,
+      // `taps_reviewed` older than `last_refresh` means a sweep ran against a tap list nobody had
+      // checked first. The curation pass is specified to run BEFORE the search for exactly this
+      // reason: a dead tap returns nothing and looks identical to a quiet one.
+      tapsStale: !!(tr && lr && tr < lr),
     };
   });
 }
@@ -281,7 +291,9 @@ function report() {
   if (markers && markers.length) {
     const drifted = markers.filter((m) => m.behindBy);
     const due = markers.filter((m) => m.overdue);
-    if (drifted.length || due.length) {
+    const tapsMissing = markers.filter((m) => m.tapsUnreviewed);
+    const tapsStale = markers.filter((m) => m.tapsStale);
+    if (drifted.length || due.length || tapsMissing.length || tapsStale.length) {
       console.log(`\nBOSS · watchlist markers — the marker that scopes the NEXT sweep, as of ${asof}\n`);
       for (const m of drifted) {
         console.log(`  ! ${m.name.padEnd(14)}  last_refresh ${m.lastRefresh} — ${m.behindBy.length} claimed practice(s) reviewed since:`);
@@ -293,7 +305,21 @@ function report() {
       for (const m of due) {
         console.log(`  ! ${m.name.padEnd(14)}  past next_review (${m.nextReview}) — a sweep is due`);
       }
-      console.log(`\n  ${drifted.length} unstamped · ${due.length} due`);
+      // The fourth silent failure (v0.255.0): the WATCHLIST rots too. `code.claude.com/docs/en/
+      // release-notes` sat in build-craft as a tap for an unknown number of sweeps while returning
+      // 404. Nothing could see it — every check above reads practices, and a watchlist that lists
+      // the wrong places to look is green by all of them. `taps_reviewed:` is the date that answers
+      // "when did we last check we were looking in the right places", as distinct from
+      // `last_refresh:` ("when did we last look").
+      for (const m of tapsStale) {
+        console.log(`  ! ${m.name.padEnd(14)}  taps_reviewed ${m.tapsReviewed} PREDATES last_refresh ${m.lastRefresh}`);
+        console.log(`  ${' '.repeat(16)}  That sweep searched a tap list nobody had checked. Curate first, then search.`);
+      }
+      for (const m of tapsMissing) {
+        console.log(`  · ${m.name.padEnd(14)}  no taps_reviewed — this tap list has never been checked`);
+        console.log(`  ${' '.repeat(16)}  Dead? quiet? missing? still the right person? A 404 tap is silent and permanent.`);
+      }
+      console.log(`\n  ${drifted.length} unstamped · ${due.length} due · ${tapsStale.length + tapsMissing.length} tap list(s) unchecked`);
     }
   }
 

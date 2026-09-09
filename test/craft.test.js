@@ -77,3 +77,26 @@ test('the freshness stamp survives — it is the reader\'s only staleness signal
   const out = craft(['harm-taxonomy'], dir);
   assert.match(out, /fresh until \d{4}-\d{2}-\d{2}|review overdue/, 'the review stamp vanished');
 });
+
+// 🔴 The bug this whole file's subject exists to prevent, found INSIDE the thing that prevents it.
+//
+// `src/craft.js` was built because 25 shipped agents and skills pointed at `library/practices/<x>.md`
+// — "a path that resolves in BOSS's own repo and nowhere else." The bridge fixed every pointer INTO
+// the shelf and left every pointer INSIDE it: the practices cross-reference each other with plain
+// relative markdown, so `boss craft git-workflow` printed four dead links in its first screen.
+// **77 of them, across 22 of the 33 practices**, straight into the terminal of a project with no
+// `library/` at all. Fixed v0.255.0 by rewriting them to the one form that resolves anywhere.
+test('no practice prints a link a founder cannot follow', () => {
+  const dir = project({});
+  const names = readdirSync(PRACTICES_DIR).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3));
+  assert.ok(names.length > 20, `expected the practice shelf, found ${names.length}`);
+  for (const n of names) {
+    const dead = [...craft([n], dir).matchAll(/\]\(([a-z][a-z0-9-]*)\.md/g)].map((m) => m[1]);
+    assert.deepEqual(
+      dead, [],
+      `boss craft ${n} prints ${dead.length} relative link(s) — ${dead.join(', ')} — which resolve `
+      + 'in BOSS\'s repo and nowhere in a founder\'s project. Rewrite them to `boss craft <name>`, '
+      + 'which is the whole reason this command exists.',
+    );
+  }
+});

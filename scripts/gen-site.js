@@ -16,6 +16,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOSS_ROOT, bossVersion } from '../src/paths.js';
 import { loadModes, packageSkillMd, skillGloss, modeWord, STANDING_COMMANDS } from '../src/modes.js';
+// ONE implementation of "what did this release say to a founder", read by both surfaces. The CLI
+// had no copy of this at all until v0.256.0 and printed the raw entry instead; giving it one would
+// have made two, and two copies of a rule is how the rule drifts. See src/changelog.js.
+import { forYou } from '../src/changelog.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // web/ is SOURCE (page fragments, the shell, the stylesheets).
@@ -269,14 +273,13 @@ blocks.WHATS_NEW = () => {
     // the rest — v0.189.0 shipped a merged designer, a retired agent with a new guard hook, and
     // seven renames, and the feed showed the designer. The array below was always plural; only
     // the reader was singular.
-    const blocks = [...chunk.matchAll(/^>\s*\*\*For you:\*\*\s*(.+(?:\n>.*)*)/gm)];
-    if (!blocks.length) continue;
-    const forYou = blocks.map((b) => b[1].split('\n').map((l) => l.replace(/^>\s?/, '').trim()).join(' ').trim());
+    const forYouLines = forYou({ body: chunk.split('\n') });
+    if (!forYouLines.length) continue;
     const head = chunk.split('\n')[0].trim();
     const m = head.match(/^([\d.]+)\s+\u2014\s+(.+)$/);
     out.push(`      <li>
         <div class="rel"><span class="ver">v${esc(m ? m[1] : head)}</span><span class="when">${esc(m ? m[2] : '')}</span></div>
-        ${forYou.map((t) => `<p>${md(t)}</p>`).join('\n        ')}
+        ${forYouLines.map((t) => `<p>${md(t)}</p>`).join('\n        ')}
       </li>`);
     if (out.length >= 12) break;
   }

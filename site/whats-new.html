@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.254.0" />
+<meta name="generator" content="BOSS 0.256.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -75,6 +75,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.256.0</span><span class="when">2026-09-08</span></div>
+        <p><code>boss whatsnew</code> used to dump BOSS's internal engineering notes at you whenever you were exactly one release behind — the commonest reason to run it. It now shows what a release actually changed for you, and <code>--full</code> is the only way to the raw entry. <code>boss craft</code> also stopped printing links you could not open.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.253.0</span><span class="when">2026-09-08</span></div>
         <p><code>boss idd</code> used to answer <em>&quot;Did you mean <strong>boss new</strong>?&quot;</em> — the command that creates a project — because <code>boss id</code> was invisible to the typo suggester. Six commands were. Fixed. And two MVP skills told you to run <code>/design-library</code>, which does not arrive until V1.</p>
       </li>
@@ -118,10 +122,6 @@
         <div class="rel"><span class="ver">v0.240.0</span><span class="when">2026-08-25</span></div>
         <p><code>/spec</code> now writes the field the tools read, so a promotion you actually made stops being reported as missing. <code>boss records</code> also names any near-miss frontmatter field it finds — <code>shipped:</code> where the board wants <code>shipped_on:</code>, <code>source:</code> where the link wants <code>from:</code>. Existing records are not rewritten; run <code>boss records</code> to see them.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.239.0</span><span class="when">2026-08-24</span></div>
-        <p><code>boss list</code> now shows which of your projects are behind and names them. If you've ever moved or deleted a project folder, <code>boss list --prune</code> clears the leftover rows. Updating each project is still one deliberate <code>/boss-sync</code> per project — there is no sync-all, on purpose.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -151,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.254.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.256.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

@@ -37,7 +37,13 @@ export function parseEntries(text) {
     const m = line.match(/^##\s+(\d+\.\d+\.\d+)\s*(?:[—-]\s*(.*))?$/);
     if (m) {
       if (cur) out.push(cur);
-      cur = { version: m[1], date: (m[2] || '').trim(), body: [] };
+      // Whatever follows the dash was taken as the DATE, unvalidated — so a heading written
+      // `## 0.255.0 — the watchlist rots too` rendered its title in the date column, straight-faced.
+      // One entry in 257 was shaped that way, and nothing could have told you. Anything that is not
+      // a date IS a title, which is both true and more useful: it gives the entry a headline.
+      const rest = (m[2] || '').trim();
+      const isDate = /^\d{4}-\d{2}-\d{2}$/.test(rest);
+      cur = { version: m[1], date: isDate ? rest : '', title: isDate ? '' : rest, body: [] };
     } else if (cur) cur.body.push(line);
   }
   if (cur) out.push(cur);
@@ -49,14 +55,46 @@ export function parseEntries(text) {
 // bullet is a detail, not the release's point. (v0.150.0 otherwise reported itself as
 // "[[RVW-073]] workslop antecedents — ADAPT (narrow)", which is one of its four sub-items.)
 // Indented bullets are the fallback, so an entry that only nests still says something.
+// Third fallback added v0.256.0: a **bolded lead-in PARAGRAPH**, which is how most entries actually
+// open — `**The fourth silent failure in the freshness system.**` is the release's point, and the
+// bullets beneath it are the detail. Reading only bullets left **25 of 257 entries rendering as a
+// blank row**: a version, a date, and nothing at all, in the one view a founder scans.
+// 🔴 AND THE SAME WRAPPING BUG, IN THE SIBLING FUNCTION (v0.256.0). This matched line by line, so a
+// bolded lead-in whose `**` closes on the NEXT line never matched at all — and entries open with
+// long bold spans, which wrap. That is exactly the bug `gen-site.js` records paying for on the
+// For-you block: *"The block is MULTI-LINE. `(.+)$` captured only the first line."* The fix landed
+// there and never crossed to here, and the two functions read the same file four lines apart.
+// **23 of 257 entries rendered as a blank row** because of it — a version, a date, and nothing.
+// Match against the JOINED body so a wrapped span closes.
 export function headline(entry) {
-  for (const re of [/^-\s+\*\*(.+?)\*\*/, /^\s*-\s+\*\*(.+?)\*\*/]) {
-    for (const raw of entry.body) {
-      const m = raw.match(re);
-      if (m) return m[1].replace(/\s+/g, ' ').trim();
-    }
+  const text = entry.body.join('\n');
+  for (const re of [/^-\s+\*\*([\s\S]+?)\*\*/m, /^\s*-\s+\*\*([\s\S]+?)\*\*/m, /^\*\*([\s\S]+?)\*\*/m]) {
+    const m = text.match(re);
+    if (m) return m[1].replace(/\s+/g, ' ').trim();
   }
   return '';
+}
+
+// 🔴 THE RULE THE CHANGELOG STATES ABOUT ITSELF, AND THE SURFACE THAT NEVER APPLIED IT (v0.256.0).
+//
+// The file's own header: *"The `> **For you:**` line is opt-in, and the bar is high on purpose…
+// Everything else (audits, refactors, doc sweeps, internal tooling) gets no line and never reaches
+// oyeboss.build/whats-new.html."* `gen-site.js` implements that, with two recorded bug-fixes behind
+// it. **This file implemented none of it** — `headline()` returns the first bolded top-level bullet,
+// which is an internal engineering finding, and the full-body branch fired whenever exactly one
+// entry matched. So a founder ONE RELEASE BEHIND — the commonest case, and the exact person
+// `boss whatsnew` is for — got the raw entry: `check:freshness`, `taps_reviewed:`, a watchlist
+// filename. **One rule, two surfaces, one of them unread**, which is the same sentence `src/craft.js`
+// carries about the provenance leak, on a third surface.
+//
+// Exported so `gen-site.js` reads THIS instead of its own copy: one implementation, two readers,
+// the shape v0.244.0 used for `lib/reentry.js`. The regex is gen-site's, including both fixes it
+// paid for — the block is MULTI-LINE (prose wraps) and there can be MORE THAN ONE per release.
+export function forYou(entry) {
+  const text = Array.isArray(entry.body) ? entry.body.join('\n') : String(entry || '');
+  return [...text.matchAll(/^>\s*\*\*For you:\*\*\s*(.+(?:\n>.*)*)/gm)]
+    .map((b) => b[1].split('\n').map((l) => l.replace(/^>\s?/, '').trim()).join(' ').trim())
+    .filter(Boolean);
 }
 
 const truncate = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
@@ -93,16 +131,28 @@ export function printChangelog({ since, all = false, full = false, pin = null } 
     return 0;
   }
 
-  if (full || shown.length === 1) {
+  // `full` is now the ONLY way to the raw body. It used to also fire on `shown.length === 1`, which
+  // meant being one release behind — the commonest reason to run this — dumped the internal entry.
+  if (full) {
     for (const e of shown) {
       console.log(`  ${bold(e.version)}${e.date ? dim(`  — ${e.date}`) : ''}`);
       for (const line of e.body) console.log(line ? `  ${line}` : '');
       console.log('');
     }
+  } else if (shown.length === 1) {
+    // One entry still earns more than a truncated row — but it earns the FOUNDER-FACING half.
+    const [e] = shown;
+    console.log(`  ${bold(e.version)}${e.date ? dim(`  — ${e.date}`) : ''}\n`);
+    const lines = forYou(e);
+    if (lines.length) for (const l of lines) console.log(`  ${l}\n`);
+    else console.log(`  ${dim('Internal release — nothing here changes what you do.')}\n`);
+    console.log(`  ${dim('--full for the engineering detail')}`);
   } else {
     const list = shown.slice(0, all ? shown.length : 25);
     for (const e of list) {
-      const h = headline(e);
+      // Prefer what the release said TO A FOUNDER; fall back to the first finding only when the
+      // release never spoke to one. Truncating an internal bullet was never the right summary.
+      const h = forYou(e)[0] || e.title || headline(e);
       console.log(`  ${bold(e.version.padEnd(9))}${dim((e.date || '').padEnd(12))}${h ? truncate(h, 62) : ''}`);
     }
     if (shown.length > list.length) console.log(`  ${dim(`… +${shown.length - list.length} older`)}`);

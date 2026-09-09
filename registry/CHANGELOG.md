@@ -9,6 +9,110 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.256.0 — 2026-09-08
+
+> **For you:** `boss whatsnew` used to dump BOSS's internal engineering notes at you whenever you
+> were exactly one release behind — the commonest reason to run it. It now shows what a release
+> actually changed for you, and `--full` is the only way to the raw entry. `boss craft` also stopped
+> printing links you could not open.
+
+**Two bridges, built for the same reason, carrying the same residual bug: they fixed the pointers
+INTO a thing and left the pointers INSIDE it.**
+
+`src/craft.js` and `src/changelog.js` both exist because a shipped file pointed at a path only
+BOSS's own checkout has — `library/practices/<x>.md` and `registry/CHANGELOG.md`. `changelog.js`'s
+header says so outright: *"Same dead end `boss craft` fixed for the practice shelf in v0.147.0."*
+Neither finished the job.
+
+### 🔴 `boss craft` printed 77 links a founder cannot follow
+
+The practices cross-reference each other with plain relative markdown — `[git-workflow](git-workflow.md)`
+— which resolves in BOSS's repo and **nowhere** in a founder's project. **77 of them, across 22 of the
+33 practices.** `boss craft git-workflow` printed four in its first screen.
+
+Rewritten at print time to `` `boss craft <name>` `` — the one form that resolves anywhere, which is
+the same answer this file's header reached. An anchor is dropped on purpose (the command prints the
+whole practice), and a link to something that is *not* a practice is left exactly as written.
+
+### 🔴 `boss whatsnew` printed the internal entry to founders
+
+The changelog's own header states the rule: *"The `> **For you:**` line is opt-in… Everything else —
+audits, refactors, doc sweeps, internal tooling — gets no line and never reaches
+oyeboss.build/whats-new.html."* `gen-site.js` implements it, with two recorded bug-fixes behind it.
+**`src/changelog.js` implemented none of it.**
+
+- `headline()` returned the first bolded **bullet** — an internal engineering finding, not the
+  founder-facing line.
+- The raw-body branch fired on `full || shown.length === 1`, so being **one release behind** —
+  the commonest reason to run `boss whatsnew` — dumped `check:freshness`, `taps_reviewed:` and a
+  watchlist filename into a founder's terminal. **`--full` is now the only way there.**
+
+**One rule, two surfaces, one of them unread** — the same sentence `src/craft.js` carries about the
+provenance leak, on a third surface. `forYou()` now lives in `src/changelog.js` and `gen-site.js`
+imports it: one implementation, two readers, the shape v0.244.0 used for `lib/reentry.js`. The site
+rebuilds **byte-identically**, which is the proof it was behaviour-preserving.
+
+### 🔴 And the same wrapping bug, in the sibling function four lines away
+
+`headline()` matched **line by line**, so a bolded lead-in whose `**` closes on the next line never
+matched at all — and entries open with long bold spans, which wrap. That is precisely the bug
+`gen-site.js` records paying for on the For-you block: *"The block is MULTI-LINE. `(.+)$` captured
+only the first line."* The fix landed there and never crossed to here.
+
+**25 of 257 entries rendered as a blank row** in `boss changelog` — a version, a date, and nothing.
+Now **3**.
+
+### A heading's date field was never validated
+
+Anything after the dash became the date, so `## 0.255.0 — the watchlist rots too` rendered its title
+in the date column, straight-faced. One entry in 257 was shaped that way and nothing could have told
+you. **Anything that is not a date is now a title**, which is both true and more useful — it gives
+the entry a headline.
+
+### ⚠️ Two concurrent sessions in one commit, again
+
+v0.255.0 (the watchlist's own rot, `taps_reviewed:`) is a **peer session's** release, complete on
+disk and uncommitted when this one landed. **Not separable:** VERSION, `package.json` and the
+generated docs/site are single shared files, so an intermediate commit would have described a tree
+that never existed. Precedent `9312a83`, and the same reasoning. 311 tests, eval 152/152.
+
+## 0.255.0 — the watchlist rots too, and nothing was watching it
+
+**The fourth silent failure in the freshness system.** Three checks already run: is a practice past its
+date, is it claimed by any watchlist domain, and did a sweep run without stamping its marker. All three
+read **practices**. None of them could see the thing that decides where a sweep *looks* — and a watchlist
+that lists the wrong places is green by every one of them.
+
+It was not hypothetical. `code.claude.com/docs/en/release-notes` sat in `build-craft.md` as domain 2's
+canonical tap while returning **404**, for an unknown number of sweeps. A dead tap returns nothing and
+looks exactly like a quiet one, so the sweeps it corrupted reported a clean domain they never searched.
+Found by fetching it, which no check does.
+
+- **`taps_reviewed:` is now a distinct date from `last_refresh:`**, and the distinction is the whole
+  mechanism: `last_refresh` = *when did we last look*; `taps_reviewed` = *when did we last check we were
+  looking in the right places*.
+- **`check:freshness` reads it, and separates two states that must never render alike** — a watchlist
+  whose `taps_reviewed` **predates** its `last_refresh` (a sweep ran against an unchecked tap list), and
+  one with **no `taps_reviewed` at all** (never checked — which is *unmeasured*, not *fine*). Absent ≠
+  current is the n=20 denominator lesson applied to a new surface.
+- **`/practice-refresh` gained the curation step, and it moved to the FRONT.** The intent already existed
+  — step 6 said *"still the right taps?"* — but it sat at the **end** of the pass, after the search it
+  should have protected, with no date behind it, so nothing could tell whether it had ever run. It is now
+  step 1 with four questions (dead? quiet? missing? still the right person?) and a stamp. **An unenforced
+  intent in the wrong order is the class this repo has now logged thirty-one times.**
+- **Measured before shipping, per the standing rule:** 1 of 2 watchlists flags. `humane-lens` has never had
+  its taps checked; `build-craft` was curated the same day. A real gap, not a wrong rule.
+
+Taps curated in the same pass (`build-craft.md`): the dead release-notes URL replaced with the raw GitHub
+CHANGELOG, `arXiv cs.SE` duplicated into domain 1 (the first population-scale study of harness
+configuration landed there and no domain-1 tap could see it), Simon Willison's blog split from his
+substack, and **`/skill-doctor` added as the file's first *instrument* tap** — it returns a number about
+BOSS's own 45-skill surface rather than an opinion about the host. Domain 1 also carries a new standing
+note: **the Anthropic engineering blog has published nothing since April 2026, and quiet is a reading** —
+lower the cadence, do not widen the search to justify a sweep.
+
+Research record: `docs/research/sessions/SESSION-2026-09-08-harness-and-host-since-august.md`.
+
 ## 0.254.0 — 2026-09-08
 
 **`docs/MENTORS.md` — the roster doc `CLAUDE.md` names as the reference for BOSS's two agent classes

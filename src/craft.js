@@ -45,6 +45,30 @@ function body(text) {
   return text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '').trim();
 }
 
+// 🔴 THE SAME BUG AS THIS FILE'S HEADER, ONE LAYER DOWN — found v0.255.0.
+//
+// The practices cross-reference each other with plain relative markdown: `[git-workflow](git-workflow.md)`.
+// That resolves in BOSS's own repo and NOWHERE in a founder's project, which is the exact dead end
+// this whole file exists to remove — **77 of them, across 22 of the 33 practices.** The bridge fixed
+// every pointer INTO the shelf and left every pointer INSIDE it, so `boss craft git-workflow`
+// printed four dead links in its first screen.
+//
+// Rewritten to the one form that resolves anywhere, which is the same answer the header reached:
+// a command, not a path. An anchor (`#section`) is dropped on purpose — `boss craft` prints the
+// whole practice, so there is nothing for it to address, and keeping it would imply otherwise.
+// A link to something that is NOT a practice is left exactly as written: this only knows about
+// the shelf, and silently rewriting anything else would be a guess.
+function resolveSiblingLinks(text, known) {
+  return text.replace(
+    /\[([^\]]+)\]\(([a-z][a-z0-9-]*)\.md(?:#[a-z0-9-]*)?\)/g,
+    (whole, label, name) => {
+      if (!known.has(name)) return whole;
+      const bare = label.replace(/`/g, '').trim();
+      return bare === name ? `\`boss craft ${name}\`` : `${label} (\`boss craft ${name}\`)`;
+    },
+  );
+}
+
 // The title line is the practice's own one-liner — better than a hand-maintained gloss,
 // because it cannot drift from the doc it describes.
 function headline(text) {
@@ -166,9 +190,11 @@ export function printCraft(query, opts = {}) {
     return 0;
   }
 
-  // Print the doc, minus the frontmatter. The reader is usually Claude following a pointer from
-  // an agent prompt — it wants the practice, not a summary of it, and it never wanted the ledger.
-  console.log(`\n${body(text)}\n`);
+  // Print the doc, minus the frontmatter, with sibling links turned into commands that resolve
+  // where the reader is standing. The reader is usually Claude following a pointer from an agent
+  // prompt — it wants the practice, not a summary of it, and it never wanted the ledger.
+  const known = new Set(listPractices().map((p) => p.name));
+  console.log(`\n${resolveSiblingLinks(body(text), known)}\n`);
 
   // `provenance_public` is the half a reader can actually use: who we learned it from, and what
   // it cost to find out. Same field the website renders, and the only one that crosses.
