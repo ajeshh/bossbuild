@@ -5,7 +5,7 @@ import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from 
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
-import { learn, LIBRARY_CATEGORIES } from './learn.js';
+import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog, cmpVersion } from './changelog.js';
 import { detectStage, inferSourceGlobs } from './detect.js';
@@ -111,15 +111,20 @@ function cmdNew(args) {
       // | first-product | vibe-virtuoso | indie-hacker | returning-founder |
       // domain-expert | null. /boss skill asks during spin-up; user can edit later.
       cohort: null,
-      // Opt-in share-up (IDEA-021/024). Default OFF — BOSS never sends usage anywhere on its own.
-      // `boss insights` reads your trace locally; `/feedback` sends only what you explicitly approve.
-      // If a future version offers to share anonymized loop-closure signals UP to improve BOSS, it
-      // is gated on this flag being true AND a per-send confirmation. Telemetry is never a default.
-      shareUp: false,
-      // AI-native augmentation (IDEA-022 Track 3, opt-in via `--ai`). When true, `/comprehend` tailors
-      // the scaffold to what BOSS understands (seeds the venture brain, fills the overview). The
-      // deterministic template scaffold above is ALWAYS the reversible base — this only augments it.
-      aiNative,
+      // 🔴 `shareUp` and `aiNative` were written here until v0.252.0 and read by NOTHING — not src/,
+      // not a hook, not one shipped skill. Two different reasons, and the first is the sharper:
+      //
+      // `shareUp: false` gated a share-up pipe that was subsequently REFUSED (IDEA-021 — only the
+      // opt-in *contract* could ever re-open, and the pipe stays refused regardless). It read to a
+      // founder as a privacy setting, and setting it `true` did nothing. **A pre-set opt-in flag for
+      // an unbuilt feature is a consent trap**: someone flipping it today consents to nothing
+      // specific, and a future version reading it would inherit an agreement nobody could have
+      // understood. The honest position is that BOSS sends nothing, which needs no field. When a
+      // share contract is genuinely built, it writes its own key and asks at that moment.
+      //
+      // `aiNative` recorded the `--ai` flag, and `adopt`'s comment claimed `/comprehend` read it
+      // back. `/comprehend` never mentioned it. The flag still does its job as a LOCAL — it prints
+      // the extra line below — but persisting it bought nothing.
     }, null, 2) + '\n',
   );
 
@@ -253,9 +258,9 @@ function cmdAdopt(args) {
     const sourceGlobs = inferSourceGlobs(targetDir);
     writeFileSync(cfgPath, JSON.stringify({
       // license: null — undecided, and BOSS doesn't decide it (DEC-011). See `boss new` above.
-      github: 'ask', visibility: 'private', license: null, cohort: null, shareUp: false,
+      github: 'ask', visibility: 'private', license: null, cohort: null,
       ...(sourceGlobs ? { sourceGlobs } : {}),
-      aiNative: !!flags.ai, // IDEA-022 Track 3 — `/comprehend` reads the adopted repo to tailor + seed the brain
+      // `shareUp` and `aiNative` dropped v0.252.0 — nothing read either. See `boss new` above.
     }, null, 2) + '\n');
   }
 
@@ -1159,6 +1164,7 @@ function cmdLearn(args) {
     res = learn({
       srcPath: f._[0],
       category: f.as,
+      mode: typeof f.mode === 'string' ? f.mode : undefined,
       note: typeof f.note === 'string' ? f.note : undefined,
       versionKind,
       explicitVersion: typeof f.version === 'string' ? f.version : undefined,
@@ -1168,6 +1174,14 @@ function cmdLearn(args) {
     return fail(e.message);
   }
   console.log(`\n  ${ok('✦')} Learned ${bold(res.name)} UP into ${res.dest}`);
+  if (res.registered) {
+    console.log(res.registered.added
+      ? `    Registered in the ${res.stageId} manifest as ${bold(res.registered.key)} — without that it would never sync.`
+      : `    Already listed in the ${res.stageId} manifest as ${bold(res.registered.key)}; left as-is.`);
+    if (res.category === 'hooks') {
+      console.log(`    ${dim('Filed as OPTIONAL. Whether it fires for every founder is a decision, not a side effect.')}`);
+    }
+  }
   console.log(`    BOSS ${res.prev} → ${res.next}  (VERSION + package.json + CHANGELOG updated)`);
   console.log(`    in ${res.root}   ${dim('(' + res.how + ')')}`);
   console.log('    Review, then commit. Connected projects pull it via `boss sync` / `/boss-sync`.\n');
@@ -1358,9 +1372,9 @@ const HELP = {
     see: ['sync', 'learn'],
   },
   learn: {
-    usage: `boss learn <path> --as <category> [--yes]   (${LIBRARY_CATEGORIES.join(' | ')})`,
-    what: 'Promote a proven pattern UP into the BOSS library so every future project inherits it. This writes into the BOSS SOURCE checkout — usually not the repo you\'re standing in — bumping its VERSION and CHANGELOG, so it names the target and asks before writing unless you pass --yes. Set BOSS_SRC to point it somewhere specific. The judgment layer over this is /boss-learn inside Claude (a two-way UP/DOWN router).',
-    examples: ['boss learn ./my-practice.md --as practices', 'BOSS_SRC=~/code/bossbuild boss learn ./p.md --as practices --yes'],
+    usage: `boss learn <path> --as <category> [--mode <mode>] [--yes]   (${LEARN_CATEGORIES.join(' | ')})`,
+    what: `Promote a proven pattern UP into BOSS so every future project inherits it. Where it lands depends on the category: ${SHIPPED_CLASSES.join(', ')} go into a stage template and get registered in that stage's manifest — which is what makes them ship — so they need --mode (quickstart | mvp | v1 | scale). The shelf category (${SHELF_CATEGORIES.join(', ')}) goes into library/ and takes no --mode. Either way this writes into the BOSS SOURCE checkout — usually not the repo you're standing in — bumping its VERSION and CHANGELOG, so it names the target and asks before writing unless you pass --yes. Set BOSS_SRC to point it somewhere specific. The judgment layer over this is /boss-learn inside Claude (a two-way UP/DOWN router).`,
+    examples: ['boss learn ./my-practice.md --as practices', 'boss learn ./mentor-ops.md --as agents --mode v1', 'BOSS_SRC=~/code/bossbuild boss learn ./p.md --as practices --yes'],
     see: ['sync'],
   },
   conscience: {
@@ -1580,7 +1594,7 @@ function printHelp() {
   console.log(row('boss sync [--apply]', 'pull current BOSS practices into this project (DOWN)'));
   console.log(row('boss changelog [--full]', "what's changed in BOSS since this project's pin"));
   console.log(row('boss update', 'is the BOSS you have installed the latest one?'));
-  console.log(row('boss learn <p> --as <c>', 'promote a pattern UP into the library'));
+  console.log(row('boss learn <p> --as <c>', 'promote a pattern UP into BOSS (shelf, or a mode)'));
   console.log(row('boss craft [name]', "read BOSS's practice shelf (the craft behind the skills)"));
   console.log(row('boss list [--prune]', 'every project on this machine · which are behind'));
   console.log(row('boss retire [--undo]', 'end a project honestly (reversible)'));

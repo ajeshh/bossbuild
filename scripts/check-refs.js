@@ -127,12 +127,23 @@ for (const f of md.filter((x) => rel(x).startsWith(`docs${sep}loops${sep}`))) {
 // `/boss-learn` joins `/extract` on the allowlist: both DESCRIBE what `boss learn` writes into
 // BOSS's own repo (it bumps a VERSION and prepends a CHANGELOG entry there). That's a description
 // of the UP direction, not a pointer the founder is meant to follow.
-const ESCAPE = /\b(library\/(?:practices|skills|agents|hooks)\/[A-Za-z0-9._/-]+\.\w+|docs\/ideas\/IDEA-\d+[A-Za-z0-9._-]*\.md|registry\/CHANGELOG\.md)/g;
-const ESCAPE_OK = [`skills${sep}extract${sep}`, `skills${sep}boss-learn${sep}`];
+// 🔴 THE ALLOWLIST WAS FILE-SCOPED, AND THAT IS A HOLE (fixed v0.251.0). Exempting `/boss-learn`
+// and `/extract` for their legitimate `library/practices/` mentions exempted them for EVERYTHING
+// else too — so `library/memory-seed/`, sitting inside `/boss-learn`, was invisible to this check
+// until it was found BY HAND in v0.249.0, and would otherwise have stayed there indefinitely.
+// An exemption should name the pattern it justifies, not the file it lives in: these two describe
+// where `boss learn` writes, which is `library/practices/` and `registry/CHANGELOG.md`. Anything
+// else escaping out of them is the bug this class exists to catch.
+const ESCAPE = /\b(library\/(?:practices|skills|agents|hooks|memory-seed)\/[A-Za-z0-9._/-]+\.\w+|docs\/ideas\/IDEA-\d+[A-Za-z0-9._-]*\.md|registry\/CHANGELOG\.md)/g;
+const ESCAPE_OK = [
+  [`skills${sep}extract${sep}`, /^(library\/practices\/|registry\/CHANGELOG\.md)/],
+  [`skills${sep}boss-learn${sep}`, /^(library\/practices\/|registry\/CHANGELOG\.md)/],
+];
 for (const f of files.filter((x) => rel(x).startsWith(`stages${sep}`) && /\.(md|js|json)$/.test(x))) {
-  if (ESCAPE_OK.some((s) => rel(f).includes(s))) continue;
+  const justified = ESCAPE_OK.find(([s]) => rel(f).includes(s))?.[1];
   for (const m of readFileSync(f, 'utf8').matchAll(ESCAPE)) {
     if (PLACEHOLDER.test(m[1])) continue;
+    if (justified && justified.test(m[1])) continue;
     findings.escapes.push([rel(f), m[1]]);
   }
 }
@@ -255,6 +266,77 @@ if (repoOnlyDocDirs.length) {
       if (!existsSync(join(ROOT, p))) continue;
       seen.add(p);
       findings.escapes.push([r, `${p} — resolves in BOSS's repo only (docs/${m[1]}/ is gitignored and no template ships it)`]);
+    }
+  }
+}
+
+// --- 3d. shipped files POINTING AT a repo-ROOT file no template ships -------------------
+// Classes 3, 3b and 3c cover `library/`, `docs/*.md` and `docs/<subdir>/`. **Nothing covered the
+// repo ROOT** — and that is where `PRINCIPLES.md` lives: BOSS's charter, named by ~16 shipped
+// files and installed in zero projects. This is class 3's own stated job ("a SHIPPED file pointing
+// at something only BOSS's own repo has") on the one tier it could not see.
+//
+// WHAT MADE IT NECESSARY: v0.250.0 found two shipped artifacts INSTRUCTING a read of it —
+// `/boss-learn` step 0 and `mentor-founder` step 1 — by hand, thirteen releases after v0.237.0
+// accepted *"no scaffolded project has PRINCIPLES.md"* as the reason `/vet` could not cross. That
+// reason was correct and nobody asked which already-shipped files carried the same dependency.
+// A reason accepted for one artifact is a question owed to all of its siblings.
+//
+// Membership is COMPUTED, like 3b: a root file is repo-only when no template ships a file of that
+// name. `README.md` and `CLAUDE.md` both do, so `PRINCIPLES.md` is the only one today — and adding
+// a root doc to a template clears it here with no edit.
+//
+// ⚠️ STATED LIMIT, and the distinction is the whole design: this flags a POINTER, never a CITATION.
+// *"PRINCIPLES.md opens with: a pseudo app…"* quotes the charter and carries the quote with it —
+// the reader loses nothing by never opening the file. *"Read `PRINCIPLES.md`"* sends the model to
+// a file that is not there. Flagging both would fire ~16 times on text that is correct, and a check
+// that cries wolf is a check people switch off (the reason class 4 reads names off disk). So the
+// trigger is a directive in the same sentence, and bare citations are OUT OF SCOPE BY DECISION
+// rather than missed by accident.
+const templateFiles = new Set(
+  walk(join(ROOT, 'stages'))
+    .filter((f) => rel(f).includes(`template${sep}`))
+    .map((f) => f.slice(f.lastIndexOf(sep) + 1)),
+);
+const REPO_ONLY_ROOT = readdirSync(ROOT)
+  .filter((f) => f.endsWith('.md') && !templateFiles.has(f));
+// DIRECTION MATTERS, and getting it wrong is how this cries wolf. A directive GOVERNS what follows
+// it, so a verb only counts BEFORE the name — `drift-loop.md`'s *"the gap PRINCIPLES.md names first
+// and that no predicate can fully see"* is a citation whose trailing "see" belongs to another
+// clause entirely. The one directive that legitimately trails is the *"…are the canonical
+// reference"* form, so it gets its own pattern rather than a widened word list.
+//
+// ⚠️ Both patterns need a CLOSING `\b`. The first cut omitted it and matched "Read" inside
+// **"Ready for a real, shippable v1"** in a stage manifest — a false positive manufactured by the
+// checker itself, caught only because every hit was read before the check was believed.
+// `[\s\S]`, not `[^\n]`: prose WRAPS, so the directive and the name land on different lines about
+// half the time — `mentor-capital`'s *"read them before you ask for anything.** Also
+// `PRINCIPLES.md`"* straddles a line break, and a newline-forbidding window silently dropped it.
+// The window is already bounded by the blank line above, which is the honest edge of "same breath."
+const DIRECTIVE_BEFORE = /\b(read|see|consult|refer to|refer back to)\b[\s\S]{0,120}$/i;
+const DIRECTIVE_AFTER = /^[\s\S]{0,80}?\b(is|are) the canonical\b/i;
+
+for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
+  const r = rel(f);
+  if (!SHIPPED_ROOTS_DOCS.some((x) => r.startsWith(x))) continue;
+  const text = readFileSync(f, 'utf8');
+  for (const name of REPO_ONLY_ROOT) {
+    const re = new RegExp(name.replace(/\./g, '\\.'), 'g');
+    for (const m of text.matchAll(re)) {
+      // Bound the window at a blank line so a directive from the paragraph above cannot reach in.
+      const before = text.slice(Math.max(0, m.index - 200), m.index);
+      // A mention inside an absolute URL is the REMEDIATION, not the bug — `deeper.md` links
+      // `.../blob/main/PRINCIPLES.md`, which is exactly what a founder needs. Flagging that would
+      // push the fix toward DELETING the reference rather than making it reachable, which is the
+      // wrong incentive from a check meant to keep pointers honest. (Found by this check firing on
+      // its own fix, one minute after the fix landed.)
+      const token = before.slice(Math.max(before.lastIndexOf(' '), before.lastIndexOf('(')) + 1);
+      if (token.includes('://')) continue;
+      const near = before.slice(before.lastIndexOf('\n\n') + 1);
+      const trailing = text.slice(m.index + name.length, m.index + name.length + 100);
+      if (!DIRECTIVE_BEFORE.test(near) && !DIRECTIVE_AFTER.test(trailing)) continue;
+      findings.escapes.push([r, `${name} — POINTED AT, and no template ships it (a citation is fine; an instruction to open it is not)`]);
+      break;
     }
   }
 }

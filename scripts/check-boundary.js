@@ -56,12 +56,16 @@ const onDisk = [
   ...dirsIn(join(WORKSPACE, 'skills')).map((n) => ({ name: n, kind: 'skill' })),
 ];
 
-// Where a crossed artifact is allowed to have landed: any stage template, or the library superset.
+// Where a crossed artifact is allowed to have landed: a stage template. That is the whole list.
+//
+// It used to include `library/<kind>s/` "or the library superset" — a home that shipped to nobody,
+// since `applyStage()` and `managedFiles()` resolve stage templates and nothing else. So this check
+// would have called an artifact CROSSED on the strength of a copy no founder could ever receive.
+// Removed with the mirror in v0.248.0 (IDEA-038); `test/learn-destination.test.js` locks it shut.
 const shipsAs = ({ name, kind }) => {
   const leaf = kind === 'agent' ? `${name}.md` : name;
   const homes = dirsIn(join(ROOT, 'stages'))
-    .map((s) => join(ROOT, 'stages', s, 'template', '.claude', `${kind}s`, leaf))
-    .concat([join(ROOT, 'library', `${kind}s`, leaf)]);
+    .map((s) => join(ROOT, 'stages', s, 'template', '.claude', `${kind}s`, leaf));
   return homes.filter(existsSync).map((h) => h.slice(ROOT.length + 1));
 };
 

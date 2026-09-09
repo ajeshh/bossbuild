@@ -79,10 +79,13 @@ For each candidate, ask the routing questions:
 | **Where does future-you look for it?** | Across projects (BOSS library) | Within this project (src/) | Not findable yet |
 
 Route each candidate based on the dominant signal:
-- **UP** → `library/skills/`, `library/agents/`, `library/practices/`, `library/hooks/`, or
-  `library/memory-seed/` in the BOSS source repo. Run `boss learn <path> --as <cat>` to
-  copy + bump VERSION + add CHANGELOG entry. (Requires `$BOSS_DEV` or `npm link`-installed
-  BOSS — see [`/boss-learn`](../boss-learn/SKILL.md).)
+- **UP** → into BOSS, in one of two homes. A **practice** or a **memory seed** goes onto BOSS's
+  shelf (`library/`); an **agent**, **skill** or **hook** goes into a mode's template, because that
+  is the only place it ships from — so it also takes `--mode <quickstart|mvp|v1|scale>`. Run
+  `boss learn <path> --as <cat> [--mode <mode>]` to copy + register + bump VERSION + add a
+  CHANGELOG entry. (Requires a BOSS source checkout — `$BOSS_SRC`, a self-hosted registry entry, or
+  running from one. An npm/Homebrew install cannot promote; record the candidate instead — see
+  [`/boss-learn`](../boss-learn/SKILL.md).)
 - **DOWN** → refactor the duplication into a named module/function/schema in `src/`. /extract
   doesn't execute the refactor (the founder owns the code); it names the target file path +
   the smallest valuable refactor.

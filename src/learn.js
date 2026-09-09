@@ -2,11 +2,39 @@ import {
   cpSync, readFileSync, writeFileSync, existsSync, mkdirSync, statSync,
 } from 'node:fs';
 import { join, basename, resolve } from 'node:path';
-import { BOSS_ROOT, isBossRepo } from './paths.js';
+import { BOSS_ROOT, isBossRepo, resolveStageId } from './paths.js';
 import { listProjects } from './registry.js';
 
-// The library/ subfolders a pattern can be routed UP into.
-export const LIBRARY_CATEGORIES = ['agents', 'skills', 'hooks', 'practices', 'memory-seed'];
+// TWO destinations, and the difference is not cosmetic.
+//
+// SHELF categories land in `library/` — BOSS's own knowledge, one copy, with a real reader:
+// `boss craft` resolves `library/practices/` out of the installed package.
+//
+// SHIPPED classes land in a STAGE TEMPLATE, because that is the only place an agent, a skill or
+// a hook becomes something a founder actually gets. `applyStage()` and `managedFiles()` read
+// `stages/<id>/template/` and nothing else.
+//
+// They used to share one destination. `library/agents|skills|hooks` was a landing zone that
+// nothing read and nothing deployed from, so anything routed UP had to be hand-copied into a
+// template afterwards to ship — and then the two copies drifted. By v0.245.0 four of the eight
+// artifacts with a twin had, every one of them stale on the library side, two of them still
+// carrying defects already fixed on the shipped copy. The mechanism was never used either: in
+// 245 releases the CHANGELOG records not one `boss learn` promotion. Removed in v0.246.0
+// (IDEA-038) — the shelf holds what BOSS knows, the stages hold what BOSS ships.
+// `memory-seed` was the fifth category and is gone as of v0.249.0. Its premise — seed memories every
+// new project starts with — was a mechanism for a decision that had already been answered NO:
+// [[IDEA-080]]/[[DEC-015]] settled at v0.245.0 that durable memory is machine-local and
+// person-scoped, `autoMemoryDirectory` stays unset, and BOSS does not manage anyone's memory store.
+// The shelf outlived its own premise by four releases. The durable-vs-working cut it held — the one
+// genuinely good thing on it — moved into `library/practices/context-discipline.md`, which ships.
+export const SHELF_CATEGORIES = ['practices'];
+export const SHIPPED_CLASSES = ['agents', 'skills', 'hooks'];
+export const LEARN_CATEGORIES = [...SHIPPED_CLASSES, ...SHELF_CATEGORIES];
+
+// Which manifest array claims each class. A new hook goes to `optionalHooks` on purpose:
+// registering a hook that fires for every founder is a decision (v0.244.0 argued it for a
+// single SessionStart), and `boss learn` must not make it silently.
+const MANIFEST_KEY = { agents: 'agents', skills: 'skills', hooks: 'optionalHooks' };
 
 // `boss learn` writes into the BOSS SOURCE repo (mutable git checkout), not the
 // installed package. When `boss` runs from a global symlink, BOSS_ROOT is the
@@ -61,10 +89,27 @@ function prependChangelog(file, version, date, lines) {
 
 // Route a proven pattern UP into the BOSS library + record the version bump.
 // Returns a result object; throws Error (with a usage-friendly message) on misuse.
-export function learn({ srcPath, category, note, versionKind = 'minor', explicitVersion, confirmed = false }) {
-  if (!srcPath) throw new Error('usage: boss learn <path> --as <category> [--note "..."]');
-  if (!LIBRARY_CATEGORIES.includes(category)) {
-    throw new Error(`--as must be one of: ${LIBRARY_CATEGORIES.join(', ')}`);
+export function learn({
+  srcPath, category, mode, note, versionKind = 'minor', explicitVersion, confirmed = false,
+}) {
+  if (!srcPath) throw new Error('usage: boss learn <path> --as <category> [--mode <mode>] [--note "..."]');
+  if (!LEARN_CATEGORIES.includes(category)) {
+    throw new Error(`--as must be one of: ${LEARN_CATEGORIES.join(', ')}`);
+  }
+  const shipped = SHIPPED_CLASSES.includes(category);
+  // An agent, skill or hook only exists for a founder at a RUNG, so BOSS has to be told which.
+  // There is no neutral place to put one: the mode is the thing that decides who ever sees it.
+  let stageId;
+  if (shipped) {
+    stageId = resolveStageId(mode);
+    if (!stageId) {
+      throw new Error(
+        `--as ${category} also needs --mode <quickstart|mvp|v1|scale>.\n`
+        + `      A promoted ${category.replace(/s$/, '')} ships to a founder at one rung, and the rung is what\n`
+        + '      decides who ever gets it. Shelf categories '
+        + `(${SHELF_CATEGORIES.join(', ')}) take no --mode.`,
+      );
+    }
   }
   const abs = resolve(process.cwd(), srcPath);
   if (!existsSync(abs)) throw new Error(`source not found: ${srcPath}`);
@@ -88,12 +133,38 @@ export function learn({ srcPath, category, note, versionKind = 'minor', explicit
     throw e;
   }
 
-  // Place it in library/<category>/<basename> (file or directory).
-  const destDir = join(root, 'library', category);
+  // Place it where its class is actually read from.
+  const relDir = shipped
+    ? join('stages', stageId, 'template', '.claude', category)
+    : join('library', category);
+  const destDir = join(root, relDir);
   mkdirSync(destDir, { recursive: true });
   const name = basename(abs);
   const dest = join(destDir, name);
   cpSync(abs, dest, { recursive: statSync(abs).isDirectory() });
+
+  // A file the manifest does not claim NEVER SYNCS — `managedFiles()` iterates the manifest, so
+  // an unregistered artifact silently rots in every existing project, and `check:manifests` says
+  // so by name. Copying without registering would move the dead drop rather than close it, so
+  // this step is what makes "routed UP" mean "shipped" instead of "on disk".
+  let registered = null;
+  if (shipped) {
+    const key = MANIFEST_KEY[category];
+    const entry = category === 'skills' ? name : name.replace(/\.(md|js|sh)$/, '');
+    const manifestFile = join(root, 'stages', stageId, 'manifest.json');
+    const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
+    const arr = manifest[key] || (manifest[key] = []);
+    // Guarded because concurrent sessions converging on one plan produce DUPLICATES, not
+    // conflicts, and a duplicate passes most gates — v0.189.0 shipped one when two sessions
+    // both appended `designer` to the same array.
+    if (arr.includes(entry)) {
+      registered = { key, entry, added: false };
+    } else {
+      arr.push(entry);
+      writeFileSync(manifestFile, JSON.stringify(manifest, null, 2) + '\n');
+      registered = { key, entry, added: true };
+    }
+  }
 
   // Bump VERSION + keep package.json in sync.
   const versionFile = join(root, 'VERSION');
@@ -110,10 +181,13 @@ export function learn({ srcPath, category, note, versionKind = 'minor', explicit
 
   // Record it in the CHANGELOG (what /boss-sync reads to tell projects what's new).
   const date = new Date().toISOString().slice(0, 10);
-  const relDest = join('library', category, name);
-  const lines = [`Learned \`${name}\` into \`${relDest}\`.${note ? ' ' + note : ''}`];
+  const relDest = join(relDir, name);
+  const where = registered
+    ? ` Registered as \`${registered.key}\` in the ${stageId} manifest, so it syncs.`
+    : '';
+  const lines = [`Learned \`${name}\` into \`${relDest}\`.${where}${note ? ' ' + note : ''}`];
   const changelog = join(root, 'registry', 'CHANGELOG.md');
   if (existsSync(changelog)) prependChangelog(changelog, next, date, lines);
 
-  return { root, how, dest: relDest, prev, next, category, name };
+  return { root, how, dest: relDest, prev, next, category, name, stageId, registered };
 }

@@ -46,5 +46,6 @@
 
 > *"`boss --help` for CLI commands; `boss status` for what mode you're in; `boss list` for
 > every project you've registered. In Claude, list available skills by typing `/`. The
-> [README](https://github.com/ajeshh/bossbuild) and `PRINCIPLES.md` are the canonical
+> [README](https://github.com/ajeshh/bossbuild) and
+> [PRINCIPLES](https://github.com/ajeshh/bossbuild/blob/main/PRINCIPLES.md) are the canonical
 > references — short by design."*

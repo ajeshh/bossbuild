@@ -14,7 +14,12 @@ import { project, cleanup } from './helpers.js';
 
 after(cleanup);
 
-const HOOK = join(process.cwd(), 'library', 'hooks', 'design-tokens-guard.js');
+// The SHIPPED copy, which is now the only copy. Until v0.248.0 this pointed at
+// `library/hooks/design-tokens-guard.js` — a mirror that reached no founder — so this suite was
+// verifying the file nobody ran. That is how the v0.243.0 shape-range fix (SwiftUI / Compose /
+// Flutter extensions, the packed-color-int pattern) could land on the shipped hook while the
+// tested one stayed web-only, with every case still green. Test the artifact that ships.
+const HOOK = join(process.cwd(), 'stages', 'L1-mvp', 'template', '.claude', 'hooks', 'design-tokens-guard.js');
 
 // Run the hook against a project dir; return the additionalContext string, or '' if silent.
 function run(dir, toolInput, toolName = 'Write') {

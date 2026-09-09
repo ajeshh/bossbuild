@@ -11,7 +11,9 @@ import { dateField } from './frontmatter.js';
 // Reads the trace your own work already leaves — your registered projects, on THIS machine —
 // and reports where each venture's loop stands: idea → canvas → build → graduation. It measures
 // *graduation and loop-closure*, never activity/engagement (that's the vanity metric BOSS refuses
-// to expose). Nothing is sent anywhere; cross-user learning is opt-in only (shareUp). This is the
+// to expose). Nothing is sent anywhere, full stop — there is no share pipe and no flag pretending
+// to gate one (`shareUp` was written into every config and read by nothing; dropped v0.252.0; the
+// pipe itself stays refused per IDEA-021). This is the
 // humane half of "learn how it's used": read the trace, don't instrument the human.
 
 const DAY = 86400000;

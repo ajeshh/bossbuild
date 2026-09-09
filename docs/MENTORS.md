@@ -102,8 +102,10 @@ Mentors stay **pull-only** (the founder invokes them); the conscience remains th
 Mentor voices and heuristics are seeded from **real practitioners' best-practices**, deduplicated and
 grouped by archetype. The
 loop: study a person → distill their transferable heuristics → route UP via
-`/boss-learn` into `library/practices/` (the named practice) and `library/memory-seed/` (feedback every
-new project starts with) → a mentor agent cites those practices.
+`/boss-learn` into `library/practices/` (the named practice) → a mentor agent cites those practices.
+*(This once also named `library/memory-seed/`, "feedback every new project starts with". That shelf
+went in v0.249.0 — durable memory is machine-local and person-scoped, and BOSS does not seed anyone's
+memory store. A practice with an attribution is the whole route now.)*
 
 **Mapping decision (provisional):** prefer **archetype mentors seeded by named, attributed practices**
 over one-agent-per-person. A person → one or more `practices/*.md` entries with clear attribution; a
@@ -120,7 +122,8 @@ From the canvas's Risks & Harms: a mentor is a **thinking partner, not a license
 
 ## Status / next
 
-- [ ] Seed `mentor-founder` into Quickstart (template agent + `library/agents/` + manifest). *(in progress)*
+- [x] Seed `mentor-founder` into Quickstart (template agent + manifest). *(the `library/agents/` half
+  is gone — v0.246.0 removed the mirror shelf; a stage template is where an agent lives, full stop)*
 - [ ] Get Ajesh's list of people; encode their practices UP via `/boss-learn`.
 - [ ] Author the remaining roster as their modes get built (architect/GTM with MVP, etc.).
 - [ ] Define `docs/dossier/` artifact templates.

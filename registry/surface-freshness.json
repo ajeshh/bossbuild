@@ -1,19 +1,19 @@
 {
   "_readme": [
-    "Rot ledger for the TEMPLATE SURFACE — the skills, agents and hooks BOSS ships into every project.",
+    "Rot ledger for the TEMPLATE SURFACE \u2014 the skills, agents and hooks BOSS ships into every project.",
     "",
     "Deliberately NOT inline frontmatter: a shipped SKILL.md carries only `name` + `description` and an",
     "agent adds `tools`, all host-consumed. Adding unknown keys to files Claude Code parses, in every",
     "founder's project, to solve a maintenance problem only BOSS has, puts the risk on them and the",
     "benefit here. The practice shelf can do it inline because nothing but BOSS reads that frontmatter.",
     "",
-    "  curve         a JUDGMENT — which ground moves under this file. Seeded by a stated rule in",
+    "  curve         a JUDGMENT \u2014 which ground moves under this file. Seeded by a stated rule in",
     "                scripts/gen-surface-freshness.js, then owned by hand. Disagree per-entry.",
-    "  last_reviewed a FACT — seeded from git last-touch, then set BY A SWEEP. Never auto-derived",
+    "  last_reviewed a FACT \u2014 seeded from git last-touch, then set BY A SWEEP. Never auto-derived",
     "                afterwards: touching a file is not reviewing it, and a typo fix must not reset",
     "                the clock. Same reason the practice shelf stores it instead of reading mtime.",
     "",
-    "Regenerate with `npm run gen:surface-freshness` — idempotent; adds new files, drops deleted ones,",
+    "Regenerate with `npm run gen:surface-freshness` \u2014 idempotent; adds new files, drops deleted ones,",
     "and never clobbers a curve or a stamp you set. Read by `npm run check:freshness`."
   ],
   "surface": [
@@ -78,7 +78,7 @@
       "stage": "L0-quickstart",
       "rel": "stages/L0-quickstart/template/.claude/skills/boss-learn/SKILL.md",
       "curve": "host",
-      "last_reviewed": "2026-05-21"
+      "last_reviewed": "2026-09-08"
     },
     {
       "kind": "skill",

@@ -67,11 +67,30 @@ curve: host
   happened faster than the record could keep up. A stated rule would have cost one paragraph.
 - **Don't hand-tend what the host now remembers for you.** The `#` hotkey era — *prompt the user to
   save that to CLAUDE.md* — is over; Claude saves durable facts to **auto-memory** on its own. The
-  cut BOSS already draws in [`library/memory-seed/README.md`](../memory-seed/README.md) is the one
-  that matters, and it survives: **durable facts → auto-memory · working state → a path-scoped rule
+  cut that matters survives: **durable facts → auto-memory · working state → a path-scoped rule
   (move #2) · what surprises a new dev → `CLAUDE.md`.** What changes is the *default*: reach for
   auto-memory first and let `CLAUDE.md` hold only what auto-memory structurally can't — the
   repo-shaped gotchas that are true regardless of who is working or what they're doing.
+
+  **A build has two memories, and keeping them apart is what keeps context lean.** This is the cut
+  the rest of this practice leans on:
+
+  | | **Durable facts** | **Working state** |
+  |---|---|---|
+  | Changes | rarely, across sessions | fast, within one build |
+  | Examples | who the founder is, settled decisions, project constraints, the stack once chosen | the live feature's local decisions, gotchas, scratch context |
+  | Home | Claude's **auto-memory** — machine-local, scoped to a person | `.claude/rules/*.md` with `paths:`, loading **only** when the model opens a matching file |
+  | Lifecycle | persists; compounds | created → cleared at `/close` → the best bits promoted |
+
+  **The test for which one you're holding:** *would this still be true, and still worth loading,
+  three sessions from now?* If it is only true while one feature is in flight, it is working state —
+  it belongs in a path-scoped rule, not in memory.
+
+  ⚠️ **Auto-memory is machine-local and person-scoped, and that is deliberate, not a gap.** It does
+  not travel to a cofounder or a new laptop, so **anything the project depends on belongs in
+  `docs/`** — a durable fact about *you* is not the same thing as a fact the project needs. BOSS
+  does not seed, manage or ship anyone's memory store; it says where the store is and leaves it to
+  its owner.
 - `<!-- HTML comments -->` are stripped before injection (zero-token notes for humans).
 - **Which file the words go in is a two-file split — and it's the one BOSS has scaffolded since
   v0.58.0.** *Verified against the primary docs 2026-08-17:* **Claude Code reads `CLAUDE.md`, not
@@ -110,8 +129,8 @@ genuinely global rules. This is just-in-time support (Principle 2) applied to th
 `.claude/rules/` example so every `boss new` project is JIT-by-construction, not just
 deny-by-construction — L0 `your-app-code.md` (the basic path-scoped pattern), L1 `feature-context.md`
 (the live feature's working notes, which `/close` will later compress — FEAT-020 Phases 2-3). The
-durable-vs-working-state cut that decides what belongs here vs. always-loaded memory lives in
-`library/memory-seed/README.md`. Re-verified against the official Claude Code docs 2026-06-05: `paths:`
+durable-vs-working-state cut that decides what belongs here rather than in always-loaded memory is
+the table in move #1 above. Re-verified against the official Claude Code docs 2026-06-05: `paths:`
 is the correct key (not Cursor's `globs:`); path-scoped rules load when Claude reads a matching file,
 not at session start.
 
@@ -179,8 +198,8 @@ Claude Code glob syntax (`./` = relative to cwd; `**` = any depth):
     layer here that is actually a boundary.** The per-call latency argument still stands, so it
     stays opt-in — but the honest recommendation is now: **turn it on as soon as the project holds a
     real credential**, not only for regulated work.
-  - **BOSS ships this hook dormant** as `.claude/hooks/secrets-guard.js` (canonical in
-    `library/hooks/secrets-guard.js`): Read/Edit of a secrets file → **deny**, Bash/MCP referencing
+  - **BOSS ships this hook dormant** as `.claude/hooks/secrets-guard.js` — one copy, in the
+    Quickstart template, which is the only place it ships from: Read/Edit of a secrets file → **deny**, Bash/MCP referencing
     one → **ask**, else allow; fail-open. It is **not registered by default** (an unregistered hook
     costs nothing — registration is the on-switch). Turn it on by adding the `PreToolUse` block in the
     file header. **Recommended for the `domain-expert` / regulated cohort.**

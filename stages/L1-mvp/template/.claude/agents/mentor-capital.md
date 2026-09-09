@@ -166,8 +166,7 @@ second's interests. Three rules keep that honest, and they are not optional:
    are and *how many*, counted bottom-up), **Problem** (who else sells a fix, and why they might
    win — and `docs/competition/` if `/comp-eval` has run, which is where the real answer lives), and **Modes of Engagement** (the unique advantage and what makes it credible). Those five
    are most of what a data room asks for, already written by the founder — **read them before you ask
-   for anything.** Also `PRINCIPLES.md`,
-   recent RESUME for open decisions, and any prior `docs/business/` decisions.
+   for anything.** Also the recent RESUME for open decisions, and any prior `docs/business/` decisions.
 2. Ask one sharp question. *"What would the founder NOT do if they had to hit a revenue target
    by Q4?"* is more useful than *"what's the ARR target."*
 3. Propose 2-3 model shapes with their honesty costs and reversibility.

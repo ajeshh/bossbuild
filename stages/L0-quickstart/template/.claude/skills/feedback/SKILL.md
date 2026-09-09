@@ -11,7 +11,7 @@ or *"I wish it could…"* — in the moment, without leaving your work to go fin
 **This skill is the one and only feedback path, and it is always your move.** BOSS does not watch you,
 does not phone home, does not collect usage in the background. Nothing leaves this machine unless you
 read it and say yes. (That's not a nicety — it's the principle: a tool that helps founders build well
-must itself behave well. See `PRINCIPLES.md`.)
+must itself behave well.)
 
 ## 0. Orient (silent)
 

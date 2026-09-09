@@ -9,6 +9,391 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.252.0 — 2026-09-08
+
+> **For you:** two keys are gone from `.boss/config.json` — `shareUp` and `aiNative`. Nothing ever
+> read either. `shareUp` in particular looked like a privacy switch and was not one: **BOSS sends
+> nothing anywhere, and that is true because there is no pipe, not because a flag is set to false.**
+> Existing projects can leave theirs in place; nothing reads them.
+
+**The second class from the wide-sweep triage: a shipped field nobody reads. Two found, both in the
+config file every founder gets, and they were dead for opposite reasons.**
+
+[[checkers-state-intents-they-dont-enforce]] n=25's flavour — *the field that looks answered* — and
+still the quietest one, because **a missing field gets reported and an unread one never does.**
+
+### 🔴 `shareUp: false` — a consent trap, and the sharper of the two
+
+It gated a share-up pipe that was subsequently **refused** ([[IDEA-021]]: only the opt-in *contract*
+could ever re-open; the pipe stays refused regardless). So it sat in every founder's config reading
+like a privacy setting, and **setting it `true` did nothing.**
+
+The hazard is not the dead code, it is the shape: **a pre-set opt-in flag for an unbuilt feature is
+a consent trap.** A founder flipping it today consents to nothing specific, because there is nothing
+to consent to — and a future version that read it would inherit an agreement nobody could have
+understood at the time they gave it. The honest position is the one that was already true: BOSS
+sends nothing, which needs no field. When a share contract is genuinely built it writes its own key
+and asks at that moment.
+
+`insights.js` had carried the claim in a comment — *"cross-user learning is opt-in only (shareUp)"* —
+which was the only thing in the repo that mentioned the flag at all. Corrected to say what is true.
+
+### `aiNative` — a comment that named a reader which never read
+
+`boss new` persisted the `--ai` flag; `boss adopt`'s own comment said *"`/comprehend` reads the
+adopted repo to tailor + seed the brain."* **`/comprehend` never mentioned `aiNative`.** The flag
+still does its job as a local — it prints the extra line at the end of `boss new` — but persisting
+it bought nothing. Dropped.
+
+### The guard, and the bug found inside the guard
+
+`test/config-keys-have-readers.test.js`: **every key the scaffold writes must be read by something
+other than the file that writes it.** A key visible only to its own writer is talking to nobody.
+
+Two things worth keeping about how it was built:
+
+- **Shipped PROSE counts as a reader, deliberately.** BOSS's architecture is *the model owns the
+  prose, the CLI owns the index* — `/boss` reading `license` out of the config is a real read. A
+  first pass that grepped only `src/` called **four live keys dead** (`github`, `visibility`,
+  `license`, and nearly `cohort`). *Grep who reads a field — including the model — before believing
+  it is unread.*
+- 🔴 **The plant test caught a hole in the guard itself.** `boss new` and `boss adopt` carry
+  **separate** config literals, and the first draft only scaffolded via `new` — so a dead key planted
+  in the `adopt` path did not fail the test. That is the same one-tier blindness this sweep exists to
+  catch, reproduced inside the thing catching it, and it is the entire argument for verifying a guard
+  by planting a failure rather than by reading it.
+
+⚠️ **Stated limit, so the check does not assert more than it enforces:** a name-match cannot tell a
+READ from a MENTION. Re-planting `shareUp` passes the general test purely because `insights.js` now
+names it in a comment explaining its removal — *a key kept alive by its own obituary*. That is why
+the second assertion is written by name rather than left to the general rule. A tighter check would
+need to distinguish an identifier from prose, which is a parser, and this does not pretend to be one.
+
+### What is still not covered
+
+The third class from the triage — **a shipped command whose preconditions cannot hold in a founder's
+install** (v0.250.0's UP route) — is still unguarded and is probably not mechanizable. It wants a
+one-pass audit of the shipped skills against what a fresh `boss new` actually contains.
+
+## 0.251.0 — 2026-09-08
+
+**`check:refs` class 3 is named ESCAPES and its stated job is *"a SHIPPED file pointing at something
+only BOSS's own repo has."* It could not see the repo root, and its allowlist exempted whole files.
+Both holes closed — and the sweep they were meant to size turned out to be small.**
+
+[[checkers-state-intents-they-dont-enforce]] **n=30**, in the checker built for this exact class.
+v0.250.0 found two dangling `PRINCIPLES.md` read-instructions **by hand**; this asks why the gate
+that exists for them stayed green, and makes the answer a standing check instead of an audit.
+
+### Hole 1 — no class covered the repo ROOT
+
+Class 3 matches three shapes (`library/…`, `docs/ideas/IDEA-*`, `registry/CHANGELOG.md`); 3b scans
+`docs/*.md`; 3c scans `docs/<subdir>/`. **`PRINCIPLES.md` lives at the repo root**, so it was
+invisible to all of them — BOSS's charter, named by ~16 shipped files and installed in zero
+projects. New **class 3d**, with membership COMPUTED the way 3b does it: a root file is repo-only
+when no template ships a file of that name. `README.md` and `CLAUDE.md` both do, so `PRINCIPLES.md`
+is the only one today, and adding a root doc to a template clears it with no edit here.
+
+**The generalisable lesson: a reason accepted for one artifact is a question owed to all its
+siblings.** v0.237.0 accepted *"no scaffolded project has `PRINCIPLES.md`"* as why `/vet` could not
+cross, correctly — and nobody asked which **already-shipped** files carried the same dependency.
+Thirteen releases later, three did.
+
+### Hole 2 — the allowlist exempted FILES, not PATTERNS
+
+`ESCAPE_OK` skipped `/boss-learn` and `/extract` entirely, on the sound reasoning that both *describe*
+where `boss learn` writes. But a whole-file exemption exempts everything: **`library/memory-seed/`
+sat inside `/boss-learn` invisible to this check** until it was found by hand in v0.249.0, and would
+have stayed. The exemption now names the pattern it justifies — `library/practices/` and
+`registry/CHANGELOG.md` — and anything else escaping out of those files is flagged. `memory-seed`
+was also added to the escape regex, which had never listed it.
+
+### The distinction the new class encodes, and its stated limit
+
+**It flags a POINTER, never a CITATION**, which is the call v0.250.0 made by hand and is now
+mechanical. *"PRINCIPLES.md opens with: a pseudo app…"* carries its quote with it — the reader loses
+nothing. *"Read `PRINCIPLES.md`"* sends the model to a file that is not there. Flagging both would
+fire ~16 times on correct text, and **a check that cries wolf is a check people switch off** — the
+same reason class 4 reads agent names off disk. Bare citations are out of scope **by decision**,
+which is written in the file so the next reader doesn't mistake it for an oversight.
+
+### Three false positives, all mine, all caught by reading every hit before believing the check
+
+Worth recording, because the discipline is the finding:
+
+1. **`\b(read|…)` with no CLOSING boundary matched "Read" inside "Ready for a real, shippable v1"**
+   in a stage manifest. A false positive manufactured by the checker itself.
+2. **Direction was missing.** A directive governs what follows it, so a verb only counts *before*
+   the name — `drift-loop.md`'s *"…that no predicate can fully see"* is a citation whose trailing
+   "see" belongs to another clause. The one directive that legitimately trails (*"are the canonical
+   reference"*) gets its own pattern rather than a widened word list.
+3. **The check fired on its own fix.** Linking `…/blob/main/PRINCIPLES.md` still contains the
+   filename, so a mention inside an absolute URL now skips — **a reachable URL is the remediation,
+   and a checker that flags the remediation pushes people to delete the reference instead of fixing
+   it.** Wrong incentive from a check meant to keep pointers honest.
+
+A fourth correction went the other way: forbidding newlines in the window silently **dropped a true
+positive**, because prose wraps and `mentor-capital`'s directive straddled a line break.
+
+### The three real findings, fixed
+
+- `mentor-capital` — a read list: *"read them before you ask for anything.** Also `PRINCIPLES.md`"*.
+  The third instance of the v0.250.0 defect, at a third rung. Dropped from the list.
+- `feedback` — *"See `PRINCIPLES.md`."* The principle is stated in the same sentence; pointer dropped.
+- `welcome/reference/deeper.md` — called it *"the canonical reference"* beside a README that had a
+  URL, and left the charter bare. **Given the same URL** — here the fix is reachability, not deletion.
+
+Both new guards verified to fail when planted, and the justified pattern verified to still pass.
+
+### What this sizes
+
+The sweep this was meant to scope came back **small: three findings, now zero, and gated.** But that
+is one class — dangling path references. The other two defects found this week (`$BOSS_DEV`, a
+command that cannot run on an npm install) are **not** path references and no checker sees them yet.
+A clean `check:refs` means this class is closed, not that the surface is honest.
+
+## 0.250.0 — 2026-09-08
+
+> **For you:** if you installed BOSS from npm or Homebrew, `/boss-learn`'s "promote this UP into
+> BOSS" half **cannot run** — it needs a source checkout to bump a VERSION and write a CHANGELOG,
+> and the skill never told you. It does now, and tells you what to do instead. `/extract` was also
+> naming the wrong environment variable (`$BOSS_DEV`; nothing reads it — it is `$BOSS_SRC`).
+
+**`/practice-refresh boss-learn` — the surface ledger's only OVERDUE row, swept. Five corrections,
+zero additions, and no `/vet` pass.**
+
+`boss-learn` was last reviewed 2026-05-21 on `curve: host`, 21 days past its date. Scoped to one
+shipped artifact: read in full, diffed line by line against `src/learn.js` and `src/cli.js` as they
+actually behave, plus a real `boss new` scaffold to check what a founder's project contains.
+
+**No RVW, deliberately.** Every finding was BOSS's own text being wrong about BOSS's own code.
+`/vet` judges an *outside claim*; there was none. Filing a verdict to look rigorous is the ceremony
+PRINCIPLE #2 refuses — recorded so the next sweep doesn't read the absence as a skipped step.
+
+### 🔴 The UP route structurally cannot run for most installs
+
+`boss learn` writes into BOSS's **own repo** — bumps `VERSION`, rewrites `package.json`, prepends
+this file — which a read-only npm package cannot do. `resolveBossSource()` tries `$BOSS_SRC`, then a
+`selfHosted` entry in the machine-local registry, then the cwd *if it is a checkout*. **An npm or
+Homebrew install has none of the three.**
+
+So the UP half of a skill that ships into **every Quickstart project** errors out for anyone who
+installed BOSS the advertised way, and the skill presented promotion as routinely available. Now
+stated, with the honest fallback: capture the pattern where you are and say why it could not go up,
+rather than implying a promotion happened. The first-run confirmation (`--yes`) is documented too —
+the target repo is almost never the one you are standing in, so the first invocation always stops.
+
+**Not built, deliberately:** a real promotion path for founders. That is a feature against n=0
+demand; [[EVID-001]]'s mandate is compose-and-subtract. Making the limit legible is what is earned.
+
+### 🔴 `/extract` told founders to set `$BOSS_DEV`, and nothing has ever read it
+
+The code reads `$BOSS_SRC`. A founder following BOSS's own instruction exports a variable no line of
+BOSS consults, then hits the same "cannot locate the BOSS source repo" error with no way to see why.
+
+[[checkers-state-intents-they-dont-enforce]] **n=29**, and a new flavour. Every prior instance was a
+key or field **BOSS** writes and nothing reads. This is the first where the unread key is one BOSS
+asks the **founder** to set — so the failure lands on them, in a variable they cannot grep for.
+
+### 🔴 "Read `PRINCIPLES.md`" — and no scaffolded project has one
+
+Verified on a real `boss new`: the project root gets `.boss/ .claude/ .git/ .gitignore AGENTS.md
+CLAUDE.md docs/` and no charter. **There is no bridge either** — the only `PRINCIPLES.md` reference
+in `src/` is `BOSS_REPO_SIGNATURE`, the check that detects BOSS's *own* repo, which is the opposite
+of shipping it. `boss craft` bridges `library/practices/*` exactly this way; the charter has none.
+
+**This is v0.237.0's finding, unresolved for surface that had already crossed.** That release
+accepted *"`/vet` was never portable for a concrete reason: its rubric scores against
+`PRINCIPLES.md`, which no scaffolded project has"* — and nobody then asked which **already-shipped**
+artifacts carried the same dependency. Two did, both at Quickstart: `boss-learn`'s step 0, and
+`mentor-founder`'s step 1 — which gave `CANVAS.md` an *"if present"* hedge it did not give the
+charter, so the model tries hardest on the file guaranteed to be missing.
+
+Both read instructions **deleted**. The content they would fetch is already stated inline in both
+files, which is why deletion is the fix rather than a bridge.
+
+⚠️ **The ~16 other `PRINCIPLES.md` mentions were left alone on purpose.** Those are *citations* —
+the principle is quoted where it is cited, so the meaning travels with the reader. **A quote with an
+attribution is not a dead pointer; an instruction to open a missing file is.** (`welcome`'s
+`deeper.md` already does the strongest version and links the public URL.)
+
+### Also
+
+- `memory-seed` was still listed as an UP destination — retired one release earlier at v0.249.0.
+- `docs/RESUME.md` named as the close-the-loop target, at a rung where it does not exist yet: that
+  file arrives with MVP and this skill ships at Quickstart.
+- **Confirmed still current, checked rather than assumed:** `--patch`/`--major`/`--version`/`--note`
+  behave as documented · the `/boss-sync` pull line · the UP/DOWN framing, the never-default-to-UP
+  rule and generalize-first. **The skill's core judgment needed no change — everything wrong with it
+  was plumbing.**
+
+### Cadence check: `host` is the right curve, and only became right last week
+
+`gen-surface-freshness.js` files `boss-learn` under *"describes HOST plumbing."* Against the old code
+that was wrong — it wrote solely into `library/`, which nothing host-consumed reads, so it sat on the
+90-day clock by accident. Since v0.248.0 it writes `.claude/{agents,skills,hooks}/` at the host's own
+layout contract and edits stage manifests, so host discovery changes now break its destination logic.
+**A curve assignment is a claim about coupling, and coupling changes when the code does** — the
+ledger stores that judgment and nothing re-derives it.
+
+`last_reviewed` → 2026-09-08 for **`boss-learn` only**; `mentor-founder` and `extract` were touched,
+not reviewed, and are not re-stamped (the v0.245.0 `memory-cue` precedent). The watchlist marker is
+**deliberately not stamped** — one artifact of one domain is not a sweep, and stamping would scope
+the next one to September and retire research nobody has done.
+
+Full record: [`SESSION-2026-09-08-practice-refresh-boss-learn`](../docs/research/sessions/SESSION-2026-09-08-practice-refresh-boss-learn.md).
+
+## 0.249.0 — 2026-09-08
+
+**`library/memory-seed/` outlived its own premise by four releases — and a practice that SHIPS was
+delegating to it, twice, from a path a founder cannot open.**
+
+The residue of v0.248.0, and the reason it was deferred there was **half wrong**. That release
+called it *"content with no shipped twin rather than a mirror"* — true about drift, and it missed
+the thing that mattered: it was the same **dead drop**. `boss learn --as memory-seed` deposited into
+a folder nothing read. Four of the five categories had that property; three were removed and this
+one was left standing on a distinction that did not rescue it.
+
+### The premise was answered NO at v0.245.0
+
+The shelf existed to hold *"project-agnostic feedback memories every new project should start with."*
+[[IDEA-080]] and [[DEC-015]] settled four releases ago that durable memory is **machine-local and
+person-scoped** — `autoMemoryDirectory` stays unset, and BOSS does not seed, manage or ship anyone's
+memory store. Its README still claimed durable facts live in *"Claude's auto-memory **+ this shelf**"*.
+
+**A shelf is a mechanism. When the decision it implements is reversed, the mechanism does not read
+the decision** — somebody has to go and sweep it, and nobody did. Worth noticing because BOSS keeps
+finding the same shape from the other direction: usually the claim is stale and the mechanism is
+right; here the mechanism was stale and the decision was right.
+
+### 🔴 And the shipped surface was pointing at it
+
+`context-discipline.md` reaches founders through `boss craft context-discipline`. **Two lines
+delegated the durable-vs-working cut to `library/memory-seed/README.md`** — *"the cut BOSS already
+draws in … is the one that matters"* and *"the cut that decides what belongs here … lives in …"*.
+A founder's project has no `library/`. So the practice named where the answer lived and then handed
+over a path that resolves in BOSS's repo alone: **the exact dead-pointer class `src/craft.js` was
+built to kill.**
+
+⚠️ **The lesson, and it is the reason this got missed for a day:** v0.248.0 fixed a *third* instance
+of this in the same file (`:183`, the `secrets-guard.js` pointer) without grepping the document for
+its siblings. **When you fix a dead pointer, sweep the file it lived in** — one is rarely alone.
+
+### What moved, and what went
+
+- **The durable-facts vs working-state table moved into `context-discipline.md`**, which ships and is
+  read, along with the test that decides which one you are holding (*would this still be true, and
+  still worth loading, three sessions from now?*). It gains the line the shelf never carried:
+  **auto-memory is machine-local and person-scoped by design, so anything the project depends on
+  belongs in `docs/`** — a durable fact about *you* is not a fact the project needs.
+- **`library/memory-seed/` deleted.** `SHELF_CATEGORIES` is now `['practices']` — the one folder with
+  a reader that resolves from the installed package (`boss craft` → `PRACTICES_DIR`).
+- `boss learn` drops the category; `/boss-learn`, `boss help learn` and `docs/MENTORS.md` updated.
+  MENTORS' encoding loop had routed practitioner heuristics into the shelf — a practice with an
+  attribution is the whole route now.
+
+### The guard that generalizes
+
+`test/learn-destination.test.js` grows to 6 cases, **verified to fail when planted**. The new one is
+deliberately not about `memory-seed`: **every folder on the shelf must have a reader in `src/`.**
+
+> *"Every previous folder in this position — agents, skills, hooks, memory-seed — was a dead drop
+> that drifted or outlived its premise. Add the reader, or do not add the folder."*
+
+Two releases, four folders, one failure mode. The assertion is written against the failure mode.
+
+## 0.248.0 — 2026-09-08
+
+**`library/agents|skills|hooks` was a shelf nothing read, nothing deployed from, and nothing had
+ever written to. Removed — and `boss learn` now puts a promoted agent where it actually ships.**
+
+[[IDEA-038]], filed 2026-06-20 and deferred on the grounds that *"the duplication pain is currently
+1 file — don't pay for the abstraction before the project earns it."* That reason is now falsified,
+and the audit that falsified it is the release.
+
+### The measurement
+
+Eight artifacts in `library/` had a shipped twin. **Four had drifted, every one of them stale on the
+library side:**
+
+- `agents/mentor-founder.md` — 62 lines against 103 shipped. Missing the role-shift ladder, the
+  `/health` PMF hinge, *read the state first*, `/consult`, the dossier beat.
+- `skills/boss-sync/SKILL.md` — 48 against 119.
+- `hooks/design-tokens-guard.js` — **missing the v0.243.0 shape-range fix entirely**: no
+  `.swift/.kt/.dart/.xml`, no Android tokens-file skip, no packed-color-int pattern. A defect found
+  and fixed on one copy, still live on the other.
+- `hooks/secrets-guard.js` — pointed at `library/practices/context-discipline.md`, **the exact dead
+  pointer `src/craft.js` was built to kill** (*"a founder's project has no `library/`"*).
+
+The other four were identical because someone reconciled them by hand during v0.245.0 — which is
+the finding, not the reassurance. `src/brain.js` already records the rule: **a rule that depends on
+someone remembering is not a mechanism.**
+
+### The mechanism had never been used, once
+
+`learn()` writes a CHANGELOG line of the form ``Learned `x` into `library/<cat>/x` ``. That string
+appears **zero times in 245 releases**. The UP landing zone for agents, skills and hooks never
+received anything; every file in those folders was hand-placed. This was not an abstraction the
+project had not yet earned — it was one it tried and did not use.
+
+### The cut
+
+**The shelf holds what BOSS knows; the stages hold what BOSS ships.**
+
+- `library/agents/`, `library/skills/`, `library/hooks/` **deleted.** `library/` keeps `practices/`
+  (33 files, one copy, a real reader in `boss craft`), `memory-seed/`, and the two data files.
+- `boss learn --as agents|skills|hooks` now **requires `--mode`** and lands in
+  `stages/<id>/template/.claude/<class>/`, because `applyStage()` and `managedFiles()` read that
+  path and nothing else. It refuses rather than guessing a rung: the rung is what decides who ever
+  gets the artifact.
+- 🔴 **And it registers the artifact in that stage's manifest** — without which the copy would have
+  moved the dead drop rather than closed it. `check-manifests.js` says so in its own words: *"a file
+  present but unclaimed by the manifest never syncs (`managedFiles` iterates the manifest), so it
+  silently rots in every existing project."* Registration is what makes *routed UP* mean *shipped*.
+- **A new hook is filed as `optionalHooks`, deliberately.** Whether a hook fires for every founder is
+  a decision — v0.244.0 argued it at length for a single `SessionStart` — and `boss learn` must not
+  make it as a side effect.
+- The registration is **deduped**, because v0.189.0 shipped a duplicate when two concurrent sessions
+  both appended `designer` to one array. *Concurrent agents converging on one plan produce
+  duplicates, not conflicts, and duplicates pass most gates.*
+
+### Not chosen, and why
+
+The record's north star was the inverse — make `library/` canonical, let templates resolve from it.
+It buys one thing this doesn't: **cross-mode reuse**, one agent file serving two rungs. That has
+never happened. `designer` moved L2→L1, `mentor-capital` moved L2→L1, `mentor-hiring` moved L2→L3 —
+agents **move between rungs; they don't live at two.** The north star costs a rewrite of
+`applyStage()` + `managedFiles()`, and the record's own architect flagged it as partly a one-way
+door for in-the-wild projects. It would have paid that price for a form of reuse the product has
+never needed.
+
+Gating the drift instead (reconcile the four, add a `check:shelf`) was refused for a different
+reason: it would have made a false claim *enforceable* rather than *true*, and a checker whose job
+is keeping a duplicate in sync is the ceremony PRINCIPLE #2 exists to refuse.
+
+### Guards
+
+Five cases in `test/learn-destination.test.js`, **verified to fail when planted** (a
+`secrets-guard.js` dropped back into `library/hooks/` reddens two of them):
+
+- no shipped artifact class may exist under `library/` again;
+- **no shelf file may share a basename with anything that ships** — the stronger form, and the one
+  that would have caught the original drift;
+- a shipped class refuses to land without `--mode`;
+- the two category lists together are the whole surface;
+- registration reads the manifest and dedupes.
+
+### Also
+
+- `library/README.md` claimed the shelf was *"the superset that stages draw from."* **Stages draw
+  from nothing.** [[checkers-state-intents-they-dont-enforce]] n=28, sitting in the shelf's own front
+  door. Rewritten to say what is true, including that `memory-seed/` is honestly empty and why.
+- Two live dead pointers left by the deletion, both fixed: `context-discipline.md:183` (which
+  **ships** via `boss craft`) and `docs/MENTORS.md:123`.
+- `/boss-learn` and `/extract` now describe the two homes and the `--mode` requirement.
+- ⚠️ **Untouched on purpose:** every `library/agents|skills|hooks` mention in this CHANGELOG. A
+  ledger that rewrites itself is not a ledger.
+
 ## 0.247.0 — 2026-09-08
 
 **`docs/IDS.md` said a promotion "is legible from both ends, and that part IS enforced
