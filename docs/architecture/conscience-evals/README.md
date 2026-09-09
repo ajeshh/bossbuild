@@ -173,6 +173,6 @@ under test.
 ## Honest scope flag (Claude's note)
 
 This first cut is a *model of Ajesh's model* of the conscience. The examples are plausible and
-opinionated, but they reflect Claude's reading of the boss-ethos / boss-voice / triage skill /
+opinionated, but they reflect Claude's reading of the boss-ethos / boss-voice / idea skill /
 canvas skill — not Ajesh's lived sense of the founder's experience. Treat as a draft to argue
 with. The wrongness in cut 1 is the data that makes cut 2 useful.

@@ -45,7 +45,7 @@ function seedRegistry(home, projects) {
 const bossProject = (extra = {}) => project({
   '.boss/manifest.json': JSON.stringify({
     name: 'testproj', bossVersion: '0.0.1', stage: 'L0-quickstart', mode: 'Quickstart',
-    installedLayers: ['L0-quickstart'], agents: [], skills: ['triage', 'canvas'], hooks: [], loops: [],
+    installedLayers: ['L0-quickstart'], agents: [], skills: ['idea', 'canvas'], hooks: [], loops: [],
   }),
   '.boss/config.json': JSON.stringify({ cohort: null }),
   ...extra,
@@ -242,7 +242,7 @@ test('the post-launch arc folds until something ships, then opens by itself', ()
       name: 'p', bossVersion: '0.0.1', stage: 'L1-mvp', mode: 'MVP',
       installedLayers: ['L0-quickstart', 'L1-mvp'],
       agents: [], hooks: [], loops: [],
-      skills: ['triage', 'spec', 'smoke', 'measure', 'pmf-check', 'retain', 'trust'],
+      skills: ['idea', 'spec', 'smoke', 'measure', 'pmf-check', 'retain', 'trust'],
     }),
     '.boss/config.json': '{}',
   };

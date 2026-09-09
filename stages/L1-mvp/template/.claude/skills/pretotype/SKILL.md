@@ -7,7 +7,7 @@ description: Test demand BEFORE you build. Alberto Savoia's discipline applied t
 
 **"Most new products fail not because they're built poorly, but because they're the wrong product."**
 — Alberto Savoia. A pretotype is a *pretend prototype* — designed to test whether anyone actually
-wants the thing, *before* you build the thing. In Quickstart you captured ideas with `/triage` and
+wants the thing, *before* you build the thing. In Quickstart you captured ideas with `/idea` and
 pressure-tested them with `/canvas`. Now the canvas has a sharp riskiest assumption (the canvas-loop
 closed). The next discipline is **demand-testing it** — not prototyping it (that's after) and not
 shipping it (also after). Pretotype first; build only what demand justified.

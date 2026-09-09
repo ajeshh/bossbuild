@@ -22,7 +22,7 @@ persona is **a mom managing a household** — and most product decisions get eas
 Read the captured idea (`docs/ideas/*.md`) + its canvas if one exists.
 
 **If those are thin or empty — which is the normal case in a repo BOSS adopted rather than
-scaffolded — read `.boss/brain/read.md` too.** `/comprehend` writes its read of an existing
+scaffolded — read `.boss/brain/read.md` too.** `/read-repo` writes its read of an existing
 codebase there: what the app does, who it appears to be for, what's already built. Deriving a
 persona from a blank page while BOSS holds a whole-repo read it never handed over is the version
 of this that wastes the founder's time.

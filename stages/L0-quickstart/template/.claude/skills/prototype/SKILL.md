@@ -29,7 +29,7 @@ The conscience stays out of the way until the thing is on the screen.
 
 ## When to run it
 
-- You have an idea (a sentence, or an `IDEA-NNN` from `/triage`) and you want to *see* it, now.
+- You have an idea (a sentence, or an `IDEA-NNN` from `/idea`) and you want to *see* it, now.
 - You're stuck arguing with yourself in the abstract — a tangible version would unstick you.
 - You want to show someone the gist before you've written a word of spec.
 

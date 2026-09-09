@@ -50,7 +50,7 @@ export function rungIndex(rung) {
 }
 
 // The rung the project is INSTALLED at. Not the rung its work is at — that gap is exactly the
-// information /comprehend exists to read, and a path list has no business guessing it.
+// information /read-repo exists to read, and a path list has no business guessing it.
 export function projectRung(stamp) {
   if (!stamp) return null;
   const byLayers = (stamp.installedLayers || [])

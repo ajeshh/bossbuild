@@ -55,8 +55,8 @@ What changes:
   `.boss/` mode record. **Nothing of theirs was overwritten.** If their `CLAUDE.md` or `AGENTS.md`
   already existed, BOSS appended a marked block rather than replacing it — say so, and say it's a
   plain diff they can revert.
-- **Skip the "capture an idea" arc entirely.** Their next step is not `/triage`. Point at
-  **`/comprehend`** — BOSS reads the actual repo and tailors the scaffold to it, then seeds the
+- **Skip the "capture an idea" arc entirely.** Their next step is not `/idea`. Point at
+  **`/read-repo`** — BOSS reads the actual repo and tailors the scaffold to it, then seeds the
   venture brain so the conscience has real context instead of a blank read. That's the adopted
   repo's `/boss`.
 - **Name the mode BOSS inferred, and how to change it.** `boss adopt` reads the repo and proposes
@@ -65,11 +65,11 @@ What changes:
   `--mode` was always available. **If it guessed low, that's a one-command fix; say so** rather
   than letting them assume BOSS has decided they're a beginner.
 - **Don't audit their code.** They didn't ask for a review, and an unrequested critique of work
-  they already shipped is the fastest way to lose them. If `/comprehend` surfaces something real
+  they already shipped is the fastest way to lose them. If `/read-repo` surfaces something real
   later, that's its job, with their consent.
 
 Then rejoin at section 2 (cohort) and continue — but throughout, **swap the "what to do next"
-options** (section 4's Path A / Path B) for: `/comprehend` first, then `/canvas` if the bet has
+options** (section 4's Path A / Path B) for: `/read-repo` first, then `/canvas` if the bet has
 never been pressure-tested, then `/spec` when the next feature starts.
 
 ## 0.7 Say what BOSS leaves behind (once, plainly, unprompted)
@@ -183,7 +183,7 @@ new to building — pace accordingly.
 > 1. *A **mode** — how much structure the project has. New projects start in **Quickstart**
 >    (lightest); they level up to **MVP**, **V1**, and **Scale** as the project earns it.
 >    Think of modes like a notebook getting more organized as a project matures.*
-> 2. *A set of **skills** — small commands like `/boss`, `/triage`, `/canvas` that do one
+> 2. *A set of **skills** — small commands like `/boss`, `/idea`, `/canvas` that do one
 >    thing well. You'll see them suggested as you work.*
 > 3. *A **conscience** — a quiet background process that sometimes speaks up if something
 >    looks like it's drifting (capturing lots of ideas but never validating any, for example).
@@ -222,7 +222,7 @@ Read the manifest. Name what's there in plain language:
 > - *`CLAUDE.md` — the working rules for this project. Read it first.*
 > - *`.boss/manifest.json` — what BOSS installed; `.boss/config.json` — your preferences.*
 > - *`.claude/skills/` — the skills you can run with `/<name>`. Today: `/boss` (spin up an idea),
->    `/triage` (capture one), `/prototype` (hit go — see it running), `/canvas` (pressure-test it),
+>    `/idea` (capture one), `/prototype` (hit go — see it running), `/canvas` (pressure-test it),
 >    `/persona` (your user's voice), `/welcome` (you're here), and a few more (`boss map` lists them all).*
 > - *`.claude/agents/` — specialized helpers BOSS can hand work off to: `product-lead` (decides what's
 >    worth building), `coder` (builds it once the stack is chosen), `mentor-founder` (advisory only —
@@ -240,10 +240,10 @@ Two paths. Name both; let the founder pick.
 > a stack and mode, and (with your OK) create a private GitHub repo. That's the **spin-up** flow.*
 >
 > *Living means what it says: the idea doc is somewhere you keep adding, not a form you filled in once.
-> `/triage <a thought>` adds to it whenever more lands; `/import` adds a whole document.*
+> `/idea <a thought>` adds to it whenever more lands; `/import` adds a whole document.*
 >
-> *Path B — you have a fragment, a hunch, or just a topic to noodle on. Run `/triage <one
-> sentence about it>`. I'll create a living idea doc you can keep adding to. Re-run `/triage`
+> *Path B — you have a fragment, a hunch, or just a topic to noodle on. Run `/idea <one
+> sentence about it>`. I'll create a living idea doc you can keep adding to. Re-run `/idea`
 > anytime to add more. No commitment yet — capture first, decide later.*
 >
 > *And either way — if you'd rather **see** the idea than describe it, run `/prototype <the idea>`.
@@ -261,7 +261,7 @@ Two paths. Name both; let the founder pick.
 >
 > > *"That's enough to start. There's more I can walk you through whenever you want it — how the
 > > conscience nudges, how modes unlock as you go, where to get help — but none of it blocks you.
-> > Want any of it now, or shall we get going with `/boss` or `/triage`?"*
+> > Want any of it now, or shall we get going with `/boss` or `/idea`?"*
 >
 > Expand a topic **only if they ask** — and when they do, read the matching section of
 > [`reference/deeper.md`](reference/deeper.md). Don't load it otherwise; it's reference, not a script.
@@ -271,7 +271,7 @@ Two paths. Name both; let the founder pick.
 
 The founder has just read a fair amount. The single most important thing now: they leave knowing
 *exactly what to type* — one literal command, not a menu. After a lot of content, a fork ("/boss or
-/triage, your pick") re-triggers the forgetting this whole skill exists to prevent. So **recommend one
+/idea, your pick") re-triggers the forgetting this whole skill exists to prevent. So **recommend one
 action, put the literal command on its own line, and demote the alternative to a single parenthetical:**
 
 > *"That's the tour. Your next step — just one thing:*
@@ -279,7 +279,7 @@ action, put the literal command on its own line, and demote the alternative to a
 > ***`/boss <your idea>`** — a sentence, or a path to a doc / a link / a Google Doc. I'll pull it in,
 > shape it, and capture it. That's the whole start.*
 >
-> *(Only have a fragment, not a whole idea yet? `/triage <a thought>` instead — same start, lower stakes.)"*
+> *(Only have a fragment, not a whole idea yet? `/idea <a thought>` instead — same start, lower stakes.)"*
 
 Never end on *"pick whichever feels right."* One bold, literal, do-it-now command; the fallback gets a
 parenthetical, not equal billing. The founder should be able to act without re-reading anything above.
@@ -291,7 +291,7 @@ parenthetical, not equal billing. The founder should be able to act without re-r
 - **Cohort changes the depth.** Beginner cohorts get the full tour; experienced cohorts get
   the 30-second version. The cohort question is asked ONCE; the answer persists in
   `.boss/config.json`.
-- **No power moves.** Don't run `/boss`, `/triage`, or any other skill *for* the founder.
+- **No power moves.** Don't run `/boss`, `/idea`, or any other skill *for* the founder.
   Suggest them; let the founder decide. /welcome is orientation, not action.
 - **Don't oversell.** BOSS is a build tool, not a religion. If the founder says "this
   is overkill for what I'm doing," they may be right — point at `boss conscience pause`,

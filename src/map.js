@@ -95,16 +95,20 @@ export function renderMap(projectDir, stamp, opts = {}) {
     // Fold this rung's post-launch skills until something has shipped. `--all` opens them; once a
     // FEAT ships they appear on their own under their own heading, because then they're the work.
     const post = new Set(shipped || showAll ? [] : (mode.postLaunch || []));
-    const later = skillsHere.filter((s) => post.has(s));
+    // `aside` folds unconditionally (see modes.js): these are BOSS's upkeep and the ending
+    // verbs, never the founder's next move. Only `--all` opens them.
+    const aside = new Set(showAll ? [] : (mode.aside || []));
+    const later = skillsHere.filter((s) => post.has(s) && !aside.has(s));
+    const asides = skillsHere.filter((s) => aside.has(s));
     // The rung's own loop first, IN ORDER, then the rest alphabetically. This list used to be
     // sorted end-to-end, which put `/ai-cost`, `/ai-failure-states` and `/ai-first-init` at the top
     // of MVP and scattered the loop the rung actually runs — `/close` 4th, `/log` 14th, `/smoke`
     // 20th, `/spec` 21st of 21. So the first thing a freshly-unlocked founder read was AI-cost
     // infrastructure, and the sequence they were meant to repeat was invisible. Alphabetical order
     // is what a list looks like when nothing is sequencing it; a rung is a loop, not an index.
-    const loop = (mode.coreLoop || []).filter((s) => skillsHere.includes(s) && !post.has(s));
+    const loop = (mode.coreLoop || []).filter((s) => skillsHere.includes(s) && !post.has(s) && !aside.has(s));
     const inLoop = new Set(loop);
-    const now = [...loop, ...skillsHere.filter((s) => !post.has(s) && !inLoop.has(s))];
+    const now = [...loop, ...skillsHere.filter((s) => !post.has(s) && !aside.has(s) && !inLoop.has(s))];
     lines.push(`    ${bold(mode.name)}`);
     // Name the sequence before listing it — the order alone reads as an accident unless something
     // says it isn't. One dim line, and only when there is a loop to name.
@@ -117,6 +121,9 @@ export function renderMap(projectDir, stamp, opts = {}) {
     }
     if (later.length) {
       lines.push(`      ${dim(`… +${later.length} for after you ship — measuring, retention, pricing, trust  (\`boss map --all\`)`)}`);
+    }
+    if (asides.length) {
+      lines.push(`      ${dim(`… +${asides.length} that aren't about your company — BOSS upkeep, and ending something honestly  (\`boss map --all\`)`)}`);
     }
   }
   lines.push('');

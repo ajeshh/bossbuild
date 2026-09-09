@@ -89,7 +89,7 @@ While you're heads-down, BOSS does almost nothing, deliberately. That's the desi
 
 ## A concrete moment
 
-You've used `/triage` four times this week capturing ideas. You haven't run `/canvas` on any.
+You've used `/idea` four times this week capturing ideas. You haven't run `/canvas` on any.
 You submit a prompt — anything — and the conscience fires once:
 
 > *"That's the fourth thing you've added here, and none of it's been tested. Who would you
@@ -121,7 +121,7 @@ list of what each mode includes lives where it can't go stale:
 
 ## What BOSS isn't
 
-- **Not a framework you have to learn.** First hour: `boss new`, `/boss`, `/triage`. That's
+- **Not a framework you have to learn.** First hour: `boss new`, `/boss`, `/idea`. That's
   the whole vocabulary you need.
 - **Not a replacement for talking to real users.** `/persona` sharpens the questions you take to
   a real one; it never answers for them. A synthetic user likes your idea more than a real person
@@ -179,7 +179,7 @@ a deploy config), tells you what it found, and starts you at the mode that match
 assuming you're at square one. It lays BOSS down *non-destructively*: your files are untouched, and
 an existing `CLAUDE.md` gets a marked block appended, never replaced. It caps its own guess at MVP —
 V1 means committing to a design system and a db discipline, and that's your call, not a Dockerfile's.
-`--mode <m>` overrides it outright. Then run `/comprehend` inside Claude to have BOSS read the repo
+`--mode <m>` overrides it outright. Then run `/read-repo` inside Claude to have BOSS read the repo
 properly and tailor the scaffold to it.
 
 After that:

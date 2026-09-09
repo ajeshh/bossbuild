@@ -33,7 +33,7 @@ down yet.
 
 ## Purpose
 
-Get the founder's thought *into a document* with low ceremony. The `/triage` skill is how this
+Get the founder's thought *into a document* with low ceremony. The `/idea` skill is how this
 loop is run. The exit is one dated capture-log entry in any active idea file.
 
 ## Exit artifact
@@ -47,7 +47,7 @@ The signal: *the founder is reaching for downstream work — `/canvas`, `/spec`,
 on nothing.* That's restraint (moment #4) coming through the loop-graph: trying to open a
 downstream loop without this one's exit being satisfied.
 
-For most projects this loop closes within the first minute of use (running `/boss` or `/triage`
+For most projects this loop closes within the first minute of use (running `/boss` or `/idea`
 once). It exists as a primitive so the loop-graph has a coherent foundation, not because the
 discipline of capture-something-before-thinking-bigger needs much policing.
 

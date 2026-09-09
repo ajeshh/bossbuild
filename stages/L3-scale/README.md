@@ -21,7 +21,7 @@ here is **symptom-gated**, and the unlock names its own evidence bar before you 
   in the work · a nameable coordination symptom). Never blocks; records the deviation as yours.
 - **The leader paragraph** at unlock (the role-shift ladder, IDEA-053).
 - **`/incident`** — the blameless one-page outage post-mortem (fix-first; one systemic learning UP).
-- **`/triage --feedback`** — the customer register on the existing `/triage` verb (bug / friction /
+- **`/idea --feedback`** — the customer register on the existing `/idea` verb (bug / friction /
   feature-request-as-`EVID` / churn).
 
 ## Trigger-gated — NOT authored (slices 3–5)

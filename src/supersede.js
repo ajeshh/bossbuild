@@ -6,7 +6,7 @@
 //      So the subtraction pass EVID-001 mandates could never actually reach a founder — syncing
 //      would only ever GROW their surface, which is the opposite of the point.
 //   2. DEC-003's fourth step — "if they say yes, BOSS does the migration" — was a promise the sync
-//      layer could not keep. `/comprehend` can refactor a founder's own code on request; nothing
+//      layer could not keep. `/read-repo` can refactor a founder's own code on request; nothing
 //      could carry them across a change in BOSS's way of working.
 //
 // This module is the small half: read the ledger, answer "what happened to this thing, and why."

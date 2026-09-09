@@ -57,10 +57,10 @@ tidied-up version gives them nothing to push against.
 
 ## 3. Capture it — as a LIVING doc
 
-**Get the number by running `boss id IDEA`.** Don't assume `001`: a founder may have run `/triage`
+**Get the number by running `boss id IDEA`.** Don't assume `001`: a founder may have run `/idea`
 before `/boss`, and two files claiming one number makes every reference to it ambiguous.
 
-Create `docs/ideas/IDEA-NNN-<slug>.md` in **exactly the shape `/triage` writes**. The two capture
+Create `docs/ideas/IDEA-NNN-<slug>.md` in **exactly the shape `/idea` writes**. The two capture
 paths produce one document — a founder must not get the lesser record for having come in the front
 door:
 
@@ -131,7 +131,7 @@ mode wearing a different hat.
 
 ### If they have more
 
-You are now running `/triage`'s add loop against the doc you just created — same behavior, no new
+You are now running `/idea`'s add loop against the doc you just created — same behavior, no new
 machinery:
 
 - Append a dated bullet to **Capture log**, in their words. Don't sanitize the spark.
@@ -257,7 +257,7 @@ it's pending), the mode, the cohort (if set), and the repo URL if created.
 insights that arrive tomorrow have nowhere to go. That is the gap this line exists to close:
 
 > *"`docs/ideas/IDEA-NNN` is a living doc, not a filing. When more lands — and it usually does, once
-> it's out of your head — `/triage <the thought>` adds to it."*
+> it's out of your head — `/idea <the thought>` adds to it."*
 
 Then the single best next step (usually: start building the smallest version, or `boss unlock mvp` if
 it's clearly a real build).

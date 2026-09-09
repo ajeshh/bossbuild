@@ -463,11 +463,11 @@ export function collectBoard(projectDir) {
 // that's the humane point of the surface.
 function evidenceLine(counts, total) {
   // Same state, same first command as `boss status` says. These two surfaces used to disagree —
-  // status offered `/boss or /triage`, this offered only `/triage` — so a founder who ran both in
+  // status offered `/boss or /idea`, this offered only `/idea` — so a founder who ran both in
   // their first ten minutes was given two different places to start, on the one screen where they
   // have the least basis for choosing. On an empty project `/boss` genuinely is the front door
-  // (it is what `boss new` hands you); `/triage` is the one that keeps working forever.
-  if (total === 0) return 'Nothing captured yet — `/boss <your idea>` to spin up, or `/triage <thought>` to capture one.';
+  // (it is what `boss new` hands you); `/idea` is the one that keeps working forever.
+  if (total === 0) return 'Nothing captured yet — `/boss <your idea>` to spin up, or `/idea <thought>` to capture one.';
   if (counts.Captured > 0 && counts['Taking shape'] === 0 && counts.Building === 0) {
     const n = counts.Captured;
     return `${n} captured, nothing pressure-tested yet — what would you learn first? (\`/canvas\`)`;
@@ -651,7 +651,7 @@ export function renderBoardText(projectName, data, opts = {}) {
   }
 
   lines.push('  The board is a read of the files. To change it, change the work:');
-  lines.push('  `/triage` to capture · `/canvas` to pressure-test · `/spec` to build.');
+  lines.push('  `/idea` to capture · `/canvas` to pressure-test · `/spec` to build.');
   if (!opts.detail) lines.push(dim('  `boss board --detail` for a line on each · `boss board <ID>` for one in full.'));
   lines.push('');
   return lines.join('\n');
@@ -1050,7 +1050,7 @@ ${columnHtml}
     ${timelineHtml}
     ${parkedHtml}
     <footer>
-      A read of the files — to change the board, change the work (<code>/triage</code> · <code>/canvas</code> · <code>/spec</code>).
+      A read of the files — to change the board, change the work (<code>/idea</code> · <code>/canvas</code> · <code>/spec</code>).
       Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` &middot; ${esc(stampedAt)}` : ''}
     </footer>
   </div>
@@ -1103,7 +1103,7 @@ export function renderBoardNext(projectName, { cards, hasIdeasDir }) {
   if (!hasIdeasDir) { lines.push('  (no docs/ideas/ here — is this a BOSS project?)', ''); return lines.join('\n'); }
   const { finish, start, unblock, pressure } = computeNext(cards);
   if (!finish.length && !start.length && !unblock.length && !pressure.length) {
-    lines.push('  ▸ nothing in flight — `/triage` to capture or `/canvas` to pressure-test.', '');
+    lines.push('  ▸ nothing in flight — `/idea` to capture or `/canvas` to pressure-test.', '');
     return lines.join('\n');
   }
   lines.push('  ▸ finish before you start', '');

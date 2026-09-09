@@ -113,6 +113,19 @@ function checkStage(stageId) {
     }
   }
 
+  // `aside` folds BOSS-upkeep + ending verbs out of `boss map`'s rung list, always. Same
+  // failure as postLaunch — a stale name makes the fold count lie — plus one of its own: a
+  // skill folded into BOTH `aside` and `coreLoop` would be filtered out of the very sequence
+  // it is declared to be part of. (Written in the same pass as the field, not the pass after.)
+  for (const s of manifest.aside || []) {
+    if (!(manifest.skills || []).includes(s)) {
+      errors.push(`aside lists '${s}' which is not in this stage's skills (the fold count would lie)`);
+    }
+    if ((manifest.coreLoop || []).includes(s)) {
+      errors.push(`aside lists '${s}' which is also coreLoop (it would be folded out of the loop it defines)`);
+    }
+  }
+
   // Reverse: a file present but unclaimed by the manifest never syncs (managedFiles
   // iterates the manifest), so it silently rots in every existing project.
   const dir = (p) => (existsSync(p) ? readdirSync(p) : []);

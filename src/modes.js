@@ -87,6 +87,18 @@ export function loadModes() {
         // of nine verbs about retention and pricing (REVIEW-2026-07-28 §C1 / §E1). Nothing is
         // removed or disabled — they install, they run, they're one flag away.
         postLaunch: m.postLaunch || [],
+        // Skills that are not about building the founder's company — BOSS's own upkeep
+        // (`/boss-sync`, `/boss-learn`, `/feedback`) and the verbs that END something
+        // (`/sunset`). `boss map` folds these behind one line, always, because a rung's list
+        // is answering *what do I do next for my company* and these four never are. Distinct
+        // from `postLaunch`, which folds work that is real but not yet EARNED; this folds work
+        // that is real and simply is not the founder's job. Nothing is disabled — `boss map
+        // --all` opens both folds, and every one of them still runs by name.
+        //
+        // WHY THIS EXISTS AT ALL: five of Quickstart's sixteen verbs were about BOSS or about
+        // endings, read to a founder who had not yet captured an idea. That is Principle 2
+        // violated in BOSS's own front door.
+        aside: m.aside || [],
         loops: m.loops || [],
         hooks: m.hooks || [],
         requires: m.requires || null,

@@ -6,8 +6,8 @@
 //     a founder as a privacy setting and setting it `true` did nothing. **A pre-set opt-in flag for
 //     an unbuilt feature is a consent trap** — flipping it consents to nothing specific, and a
 //     future version reading it would inherit an agreement nobody could have understood.
-//   · `aiNative` recorded the `--ai` flag, and `adopt`'s own comment claimed `/comprehend` read it
-//     back. `/comprehend` never mentioned it.
+//   · `aiNative` recorded the `--ai` flag, and `adopt`'s own comment claimed `/read-repo` read it
+//     back. `/read-repo` never mentioned it.
 //
 // Both are [[checkers-state-intents-they-dont-enforce]] n=25's flavour — a FIELD nobody reads, which
 // is the quietest one, because a missing field gets reported and an unread one is silent.

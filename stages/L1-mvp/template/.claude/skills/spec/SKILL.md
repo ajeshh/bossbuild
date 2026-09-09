@@ -24,7 +24,7 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 - The idea has been captured (Quickstart) and ideally pressure-tested in `/canvas` — at minimum the
   riskiest assumption is named.
 - You're ready to write code against it. If you're still figuring out *whether* to build, go back to
-  `/triage` or `/canvas`; don't spec a maybe.
+  `/idea` or `/canvas`; don't spec a maybe.
 
 ## Moment #4 — restraint check (v0.21.0+)
 
@@ -62,7 +62,7 @@ articulately are rarely the users who pay.
 **Gate — surface this only when BOTH hold** (otherwise skip it entirely; it's not a checklist):
 
 1. **There are real users** — a `--feedback` register with entries (`docs/feedback/` or the register
-   `/triage --feedback` writes), an EVID ledger, or a live analytics read (`/measure`). Pre-launch there
+   `/idea --feedback` writes), an EVID ledger, or a live analytics read (`/measure`). Pre-launch there
    is no vocal minority yet, so this stays silent — restraint (above) is the only check that fires.
 2. **This FEAT traces to a request/complaint**, not to a founder-named bet — the source is a feature
    request, a friction complaint, or "a few users asked." (If the source is the canvas's *riskiest

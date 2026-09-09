@@ -361,7 +361,7 @@ export function driftLine(projectDir) {
 
 // --- allocation: a computation, not an instruction ----------------------------------------
 // BOSS's own website says this out loud, and it was true: *"you don't allocate the number —
-// /triage reads the folder and takes the next free one. But that's a sentence in a skill file
+// /idea reads the folder and takes the next free one. But that's a sentence in a skill file
 // telling an agent to count, not code that computes, and the difference is invisible right up
 // until it isn't."* It broke exactly that way — two files claimed IDEA-059 on the same day, and
 // every reference to it was ambiguous until a person noticed.

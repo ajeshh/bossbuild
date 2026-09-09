@@ -40,7 +40,7 @@ const verbs = new Set(STANDING_COMMANDS.map(([c]) => c.split(' ')[1]).filter(Boo
 
 // Skills legitimately named on the site that are not stage skills (host built-ins
 // or CLI-side verbs) — listed so a genuine typo still gets caught.
-const ALLOW = new Set(['boss', 'boss-sync', 'boss-learn', 'welcome', 'comprehend', 'vet',
+const ALLOW = new Set(['boss', 'boss-sync', 'boss-learn', 'welcome', 'read-repo', 'vet',
   'practice', 'feedback', 'retention', 'canvas', 'red-team']);
 
 for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsWith('_'))) {

@@ -55,7 +55,7 @@ const CURVE_BY_KIND = { hook: 'host', skill: 'craft', agent: 'craft' };
 const EXCEPTIONS = {
   // Describe HOST plumbing: settings.json, the hook contract, skill/agent discovery, CLAUDE.md +
   // AGENTS.md, the sync mechanics. These break when Claude Code ships, which it does continuously.
-  host: ['boss-sync', 'boss-learn', 'comprehend', 'welcome', 'feedback', 'practice', 'extract'],
+  host: ['boss-sync', 'boss-learn', 'read-repo', 'welcome', 'feedback', 'practice', 'extract'],
   // Describe what the MODEL layer does by default — cost shape, eval technique, trace analysis,
   // failure modes. These move with the frontier, not with the host.
   model: ['ai-cost', 'cost-review', 'ai-first-init', 'ai-failure-states', 'evals', 'judge-traces'],

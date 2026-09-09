@@ -9,6 +9,47 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.257.0 — 2026-09-08
+
+> **For you:** `/triage` is now **`/idea`** and `/comprehend` is now **`/read-repo`** — same skills,
+> names that say what they do. `boss sync` will offer the swap and tell you why. `boss map` also
+> stopped opening a fresh project with four verbs about BOSS itself; they fold behind one line
+> (`boss map --all` opens it).
+
+**A partner-review read of BOSS as a tool someone would recommend, not as a business — the first
+findings from it are about vocabulary, and they are mechanical.**
+
+Sixteen verbs are read to a founder at Quickstart before they have captured anything. **Five of them
+were not about building their company.** Two more were named for a job they don't do.
+
+### `/triage` → `/idea`
+
+"Triage" is what you do to a queue you are behind on: sort many things by urgency, drop some. The
+skill does the opposite — it opens **one** idea and keeps sharpening it, and the doc it writes has
+carried the answer in its name the whole time (`IDEA-NNN`). The verb and its own output disagreed.
+
+### `/comprehend` → `/read-repo`
+
+Nothing in "comprehend" names what is comprehended or by whom. The skill reads what is already
+here — an adopted repo, or the idea and source material you brought — and says where you stand.
+It is also about to become the front door for an already-started repo, which is a bad moment to
+carry a name a founder has to memorize.
+
+Both go through `registry/supersedes.json`, so an existing project is *told* (what went, what
+replaced it, why, what to do) rather than finding a skill missing after a sync.
+
+### `boss map` folds what isn't the founder's job
+
+`/boss-sync`, `/boss-learn`, `/feedback` and `/sunset` are real and stay one keystroke away — but a
+rung's list answers *what do I do next for my company*, and BOSS's own upkeep never does. New
+manifest field `aside`, folded like `postLaunch`, opened by `boss map --all`. Quickstart's visible
+list: **16 → 12.**
+
+`check-manifests` gained the matching rule **in the same pass as the field** — a stale `aside` entry
+makes the fold count lie, and an entry in both `aside` and `coreLoop` would be filtered out of the
+sequence it is declared part of. (This repo's own heuristic: audit the adjacent rule when you add
+one, not two releases later.)
+
 ## 0.256.0 — 2026-09-08
 
 > **For you:** `boss whatsnew` used to dump BOSS's internal engineering notes at you whenever you

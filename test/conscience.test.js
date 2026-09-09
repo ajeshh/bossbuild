@@ -157,7 +157,7 @@ test('a malformed predicate fails closed (no signal), never throws', () => {
 // indistinguishable from one who had captured nothing, and the `caution` moment could never fire
 // for them. Two surfaces agreed on a contract in prose and disagreed in fact; nothing read both.
 
-const CAPTURE_TEMPLATE_SKILLS = ['boss', 'triage'];
+const CAPTURE_TEMPLATE_SKILLS = ['boss', 'idea'];
 
 // Pull the fenced ```markdown block a skill tells the model to write.
 function ideaTemplateFrom(skill) {

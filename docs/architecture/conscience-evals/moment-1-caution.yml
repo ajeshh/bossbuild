@@ -267,16 +267,16 @@
 
 - id: m1-sf-016
   category: should-fire
-  scenario: "User just ran `/triage` to add a new capture to an already-thick idea."
+  scenario: "User just ran `/idea` to add a new capture to an already-thick idea."
   project_state:
     ideas:
       - { file: IDEA-001-foo.md, capture_log_entries: 6, canvas: false, just_appended: true }
-    user_prompt: "/triage add: thinking about a B2B angle for this"
+    user_prompt: "/idea add: thinking about a B2B angle for this"
   expected_detection:
     fires: true
     moment: caution
     confidence: high
-  why: "/triage on top of existing depth without validating — exactly the drift the moment is for."
+  why: "/idea on top of existing depth without validating — exactly the drift the moment is for."
 
 - id: m1-sf-017
   category: should-fire
@@ -563,7 +563,7 @@
       - file: IDEA-001-a.md
         capture_log_entries: 4
         canvas:
-          riskiest_assumption_text: "Whether power-users find /triage feels right or naggy."
+          riskiest_assumption_text: "Whether power-users find /idea feels right or naggy."
       - file: IDEA-002-b.md
         capture_log_entries: 4
         canvas:

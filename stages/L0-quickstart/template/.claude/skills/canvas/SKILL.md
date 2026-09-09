@@ -87,7 +87,7 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 2. Open (or create) `docs/ideas/IDEA-NNN-canvas.md` from the template below.
 3. **Don't interrogate.** Ask about 2-4 cells at a time, starting with the most uncertain. Pull
    answers from the idea's "Current shape" + capture log; only ask what's missing.
-   **On an adopted repo, also read `.boss/brain/read.md`** — `/comprehend` put its read of the
+   **On an adopted repo, also read `.boss/brain/read.md`** — `/read-repo` put its read of the
    existing codebase there, and several cells (People, Problem, Story, Business Model) often have a
    partial answer sitting in what's already built. Propose those as *drafts to correct*, never as
    filled cells: code tells you what someone decided to build, not whether anyone wanted it. A cell

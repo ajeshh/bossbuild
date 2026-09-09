@@ -35,7 +35,7 @@ const mvp = (extra = {}) => project({
   '.boss/manifest.json': JSON.stringify({
     name: 'p', bossVersion: '0.0.1', stage: 'L1-mvp', mode: 'MVP',
     installedLayers: ['L0-quickstart', 'L1-mvp'],
-    agents: [], hooks: [], loops: [], skills: ['triage', 'spec', 'log', 'close', 'evidence'],
+    agents: [], hooks: [], loops: [], skills: ['idea', 'spec', 'log', 'close', 'evidence'],
   }),
   '.boss/config.json': '{}',
   ...extra,

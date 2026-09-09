@@ -1,12 +1,12 @@
 ---
-name: triage
-description: Capture an idea — and keep adding to it. Creates a LIVING idea doc you return to over time: a sharpening "current shape" at the top, an append-only capture log below. The lightest step in Quickstart mode. Usage - /triage <thought>  (run again anytime to add more)
+name: idea
+description: Capture an idea — and keep adding to it. Creates a LIVING idea doc you return to over time: a sharpening "current shape" at the top, an append-only capture log below. The lightest step in Quickstart mode. Usage - /idea <thought>  (run again anytime to add more)
 ---
 
-# /triage — capture & keep adding
+# /idea — capture & keep adding
 
 Quickstart is about getting an idea out of your head and letting it *grow* with almost no
-ceremony. Each idea is a **living document**, not a one-shot form. Run `/triage` whenever a new
+ceremony. Each idea is a **living document**, not a one-shot form. Run `/idea` whenever a new
 thought lands — the first run creates the doc, every later run adds to it.
 
 ## Decide: new idea or add to an existing one?
@@ -115,7 +115,7 @@ If the idea feels real (recurring, exciting, worth betting time on), say so and 
 
 ## The `--feedback` register (Scale mode)
 
-Once the project has real users (Scale mode), `/triage --feedback` is the **customer register** — the
+Once the project has real users (Scale mode), `/idea --feedback` is the **customer register** — the
 same living-capture habit, pointed at what users report instead of what you dreamed up. The point is
 sorting, because the four kinds want opposite responses:
 
@@ -131,12 +131,12 @@ sorting, because the four kinds want opposite responses:
 
 This is where the project's evidence source officially flips from interviews to **live behavior**.
 `/incident` handles the failures; `--feedback` handles the everyday signal. (Both are Scale-mode
-surfaces; in earlier modes, plain `/triage` is the whole story.)
+surfaces; in earlier modes, plain `/idea` is the whole story.)
 
 ## Rules
 
 - Capture > ceremony. A one-liner is a complete input.
 - One idea per doc. If they chain several with "also", split into separate docs.
-- Never start building from `/triage` — this is capture only.
+- Never start building from `/idea` — this is capture only.
 - Preserve the original spark verbatim in the capture log; sharpen in "Current shape," not by overwriting history.
 - The validation check is a nudge, never a gate — it never blocks a capture and never repeats into a nag.

@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.256.0" />
+<meta name="generator" content="BOSS 0.257.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -75,6 +75,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.257.0</span><span class="when">2026-09-08</span></div>
+        <p><code>/triage</code> is now <strong><code>/idea</code></strong> and <code>/comprehend</code> is now <strong><code>/read-repo</code></strong> — same skills, names that say what they do. <code>boss sync</code> will offer the swap and tell you why. <code>boss map</code> also stopped opening a fresh project with four verbs about BOSS itself; they fold behind one line (<code>boss map --all</code> opens it).</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.256.0</span><span class="when">2026-09-08</span></div>
         <p><code>boss whatsnew</code> used to dump BOSS's internal engineering notes at you whenever you were exactly one release behind — the commonest reason to run it. It now shows what a release actually changed for you, and <code>--full</code> is the only way to the raw entry. <code>boss craft</code> also stopped printing links you could not open.</p>
       </li>
@@ -118,10 +122,6 @@
         <div class="rel"><span class="ver">v0.241.0</span><span class="when">2026-09-08</span></div>
         <p><code>boss help hooks</code> now lists all six optional hooks, and says which mode each arrives in. Two of them were previously findable only by reading a skill's prose — including <code>schema-guard</code>, which catches a database table created without row-level security while the migration is still being written.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.240.0</span><span class="when">2026-08-25</span></div>
-        <p><code>/spec</code> now writes the field the tools read, so a promotion you actually made stops being reported as missing. <code>boss records</code> also names any near-miss frontmatter field it finds — <code>shipped:</code> where the board wants <code>shipped_on:</code>, <code>source:</code> where the link wants <code>from:</code>. Existing records are not rewritten; run <code>boss records</code> to see them.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -151,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.256.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.257.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

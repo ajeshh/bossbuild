@@ -81,7 +81,7 @@ nothing else. (In a project, `/welcome` asks you this and tunes itself; you can 
 
 - **You've shipped a couple of small things.** A few months on Claude Code; the *building*
   feels possible, the *what's-worth-finishing* less so. → Start at `/boss`. Capture freely with
-  `/triage`; the payoff is `/canvas` — that's where BOSS earns its keep for you. `unlock mvp` when
+  `/idea`; the payoff is `/canvas` — that's where BOSS earns its keep for you. `unlock mvp` when
   you're actually building, not before.
 
 - **You've shipped real products before.** Strong engineer, or a returning founder. → You don't need
@@ -100,7 +100,7 @@ nothing else. (In a project, `/welcome` asks you this and tunes itself; you can 
   mode that matches. *Non-destructive throughout:* your files are untouched, and an existing
   `CLAUDE.md` / `AGENTS.md` gets a marked block appended rather than replaced. It **caps its guess at
   MVP** on purpose (V1 is a design-system and db commitment — your call), so if it reads low,
-  `boss unlock <mode>` is one command; `--mode <m>` overrides it outright. Then run **`/comprehend`**
+  `boss unlock <mode>` is one command; `--mode <m>` overrides it outright. Then run **`/read-repo`**
   inside Claude — that's the adopted repo's version of `/boss`: BOSS reads the actual code, tailors
   the scaffold, and seeds the venture brain so the conscience starts with real context.
 
@@ -120,7 +120,7 @@ always your call.
 
 ### Quickstart — *get the idea out of your head*
 Capture an idea, shape it, pressure-test whether it's real. Almost no ceremony.
-- **You'll actually use:** `/triage` (capture an idea and keep adding to it), `/prototype` (drop an
+- **You'll actually use:** `/idea` (capture an idea and keep adding to it), `/prototype` (drop an
   idea and hit go — BOSS builds the smallest clickable version so you can *see* it, not just argue
   with a blank page), `/canvas` (pressure-test it as a humane business — who's served, what's the bet,
   what could kill it), `/persona` (your target user as a consultable voice — guide *and* QA, never a
@@ -188,7 +188,7 @@ bottleneck.** The rung most tempted by premature ceremony, so everything here is
 non-founder in the work · a coordination symptom you can name). It never blocks; missing a leg is
 fine, it just says out loud what you'd be carrying unearned.
 - **You'll actually use:** `/incident` (the blameless one-page post-mortem when something breaks in
-  production — fix first, then one systemic learning routed UP), and `/triage --feedback` (the
+  production — fix first, then one systemic learning routed UP), and `/idea --feedback` (the
   customer register: bug · friction · feature-request-as-evidence-not-spec · churn).
 - **Deliberately not built yet:** unit economics at volume, `/code-health`, refactor waves, RFCs,
   collaborator roles, and the give-away-your-Legos conscience moment. Each waits on a real project

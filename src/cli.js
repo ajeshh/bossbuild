@@ -122,8 +122,8 @@ function cmdNew(args) {
       // understood. The honest position is that BOSS sends nothing, which needs no field. When a
       // share contract is genuinely built, it writes its own key and asks at that moment.
       //
-      // `aiNative` recorded the `--ai` flag, and `adopt`'s comment claimed `/comprehend` read it
-      // back. `/comprehend` never mentioned it. The flag still does its job as a LOCAL — it prints
+      // `aiNative` recorded the `--ai` flag, and `adopt`'s comment claimed `/read-repo` read it
+      // back. `/read-repo` never mentioned it. The flag still does its job as a LOCAL — it prints
       // the extra line below — but persisting it bought nothing.
     }, null, 2) + '\n',
   );
@@ -152,7 +152,7 @@ function cmdNew(args) {
   console.log(`    > /boss <your idea>     # spin up — a sentence, a doc, a deck, or a link`);
   console.log(`                            #   (first time? /welcome · already written it down? /import <file|url>)`);
   if (aiNative) {
-    console.log(`    > /comprehend           # AI-native: tailor the scaffold to what BOSS understands (augments, never replaces)`);
+    console.log(`    > /read-repo           # AI-native: tailor the scaffold to what BOSS understands (augments, never replaces)`);
   }
   console.log('');
 }
@@ -182,7 +182,7 @@ function cmdAdopt(args) {
   const name = basename(targetDir);
 
   // 1. Non-destructive scaffold of the FULL chain up to the target mode — adopting
-  //    at MVP must also lay down Quickstart's foundation (welcome/boss/triage/...),
+  //    at MVP must also lay down Quickstart's foundation (welcome/boss/idea/...),
   //    exactly as `boss new` + `boss unlock mvp` would. Copy-if-absent throughout.
   const chain = STAGE_ORDER
     .slice(0, STAGE_ORDER.indexOf(stageId) + 1)
@@ -302,7 +302,7 @@ function cmdAdopt(args) {
   console.log(`\n  ${bold('Next')}`);
   console.log(`    claude              # open Claude Code here ${dim('(terminal)')}`);
   console.log(`    > /welcome              # what BOSS added + how the conscience works ${dim('(inside Claude)')}`);
-  console.log(`    > /comprehend           # have BOSS read this repo${flags.ai ? '' : ' (optional)'} — tailor the scaffold + seed`);
+  console.log(`    > /read-repo           # have BOSS read this repo${flags.ai ? '' : ' (optional)'} — tailor the scaffold + seed`);
   console.log(`                            #   the venture brain. Additive and reversible; diff or revert anything.`);
   console.log(`    boss map                # what's available · boss unlock <mode> to grow ${dim('(terminal)')}`);
   console.log('');
@@ -512,7 +512,7 @@ function printFocusAndHeadway(projectDir) {
   } else if (pressure.length) {
     console.log(`    ▸ ${bold('Next:')}            pressure-test ${pressure[0].id}   ${dim('→ /canvas')}`);
   } else {
-    console.log(`    ▸ ${dim('Nothing in flight yet — /boss or /triage to capture an idea.')}`);
+    console.log(`    ▸ ${dim('Nothing in flight yet — /boss or /idea to capture an idea.')}`);
   }
   // Headway — the positive register BOSS lacks: the most recently shipped FEAT and how
   // long ago. Real shipped_on dates only; omitted (never guessed) when absent.
@@ -1276,7 +1276,7 @@ const HELP = {
   new: {
     usage: 'boss new <name> [--ai]',
     what: 'Scaffold a fresh project in the lightest mode (Quickstart) and register it. Adds a screen-sized CLAUDE.md, the capture surfaces, and the conscience hook; git-inits.',
-    examples: ['boss new my-app', 'boss new my-app --ai   # let /comprehend tailor the scaffold'],
+    examples: ['boss new my-app', 'boss new my-app --ai   # let /read-repo tailor the scaffold'],
     see: ['adopt', 'unlock', 'map'],
   },
   adopt: {
@@ -1548,7 +1548,7 @@ function printCommandHelp(name) {
       return;
     }
 
-    // A skill with no glossary entry: still better than the overview. `/canvas`, `/spec`, `/triage`
+    // A skill with no glossary entry: still better than the overview. `/canvas`, `/spec`, `/idea`
     // are the names a founder sees most — in `boss map`, in `boss status`, in every conscience nudge
     // — so `boss help <skill>` is natural, and the two command LANGUAGES are what is not yet learned.
     if (isSkill) {

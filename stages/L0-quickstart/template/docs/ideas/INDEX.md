@@ -8,7 +8,7 @@ status: active
 # {{PROJECT_NAME}} — Idea Pool
 
 **Ideas live as files in this folder** — one `IDEA-NNN-<slug>.md` each, captured with
-`/triage <thought>`. Each file's frontmatter carries its own `status`, and that frontmatter is
+`/idea <thought>`. Each file's frontmatter carries its own `status`, and that frontmatter is
 the only place status is recorded.
 
 ## Where to see everything at once

@@ -491,11 +491,11 @@ test('node_modules never makes an empty repo look like a real build', () => {
 });
 
 // v0.154.0 — DEC-003 (position, not verdict). A decision recorded only in docs/ is a decision the
-// next edit can quietly undo. `/comprehend` is the one skill that speaks to a founder about work
+// next edit can quietly undo. `/read-repo` is the one skill that speaks to a founder about work
 // they already built, and the pull toward a scorecard there is strong: it demos well. These pin the
 // two guarantees that make it humane rather than clever — no grade, and no invented payoff.
-test('REGRESSION: /comprehend reports POSITION and is forbidden from grading (DEC-003)', () => {
-  const p = join(STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'skills', 'comprehend', 'SKILL.md');
+test('REGRESSION: /read-repo reports POSITION and is forbidden from grading (DEC-003)', () => {
+  const p = join(STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'skills', 'read-repo', 'SKILL.md');
   const text = readFileSync(p, 'utf8');
   assert.match(text, /^## Position/m, 'the position read must be a named section, not a buried aside');
   assert.match(text, /Position, never a grade/, 'the no-grade rule must be stated where the model reads it');
@@ -731,10 +731,10 @@ test("REGRESSION: a project never looks like BOSS's own checkout, and BOSS's doe
 
 test('REGRESSION: a BOSS file the founder edited is theirs, and is never removed', () => {
   const dir = adopted();
-  const mine = join(dir, '.claude', 'skills', 'triage', 'SKILL.md');
+  const mine = join(dir, '.claude', 'skills', 'idea', 'SKILL.md');
   writeFileSync(mine, readFileSync(mine, 'utf8') + '\n## My customisation\n');
   const plan = planRemove(dir, stampOf(dir));
-  assert.ok(plan.edited.some((e) => e.rel.includes('triage')), 'the edited file must be detected');
+  assert.ok(plan.edited.some((e) => e.rel.includes('idea')), 'the edited file must be detected');
   removeAll(dir, plan);
   assert.ok(existsSync(mine), 'an edited BOSS file survives removal');
   assert.match(readFileSync(mine, 'utf8'), /My customisation/);
@@ -910,7 +910,7 @@ test('REGRESSION: a real edit is always detected — the false-negative directio
     ['append', (s) => `${s}\n## my note\n`, true],
     ['reword', (s) => s.replace('Capture an idea', 'Capture a THING'), true],
     ['delete a content line', (s) => s.split('\n').filter((l) => !l.startsWith('ceremony. Each idea')).join('\n'), true],
-    ['one character', (s) => s.replace('# /triage', '# /triage!'), true],
+    ['one character', (s) => s.replace('# /idea', '# /idea!'), true],
     ['whitespace only', (s) => s.replace(/\n/g, '\n '), false],
     ['untouched', (s) => s, false],
   ];
@@ -923,9 +923,9 @@ test('REGRESSION: a real edit is always detected — the false-negative directio
       installedLayers: ['L0-quickstart'], skills: [], agents: [], hooks: [],
     };
     writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify(stamp));
-    const f = join(dir, '.claude', 'skills', 'triage', 'SKILL.md');
+    const f = join(dir, '.claude', 'skills', 'idea', 'SKILL.md');
     writeFileSync(f, mutate(readFileSync(f, 'utf8')));
-    const flagged = planRemove(dir, stamp).edited.some((e) => e.rel.includes('triage'));
+    const flagged = planRemove(dir, stamp).edited.some((e) => e.rel.includes('idea'));
     assert.equal(flagged, expected, `"${label}" should ${expected ? '' : 'not '}read as edited`);
   }
 });

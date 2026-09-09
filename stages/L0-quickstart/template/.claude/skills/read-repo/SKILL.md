@@ -1,16 +1,16 @@
 ---
-name: comprehend
-description: Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work. Then tailor the scaffold to it non-destructively and seed the venture brain so the conscience has continuity from day one. On an adopted repo this is the counterpart to /boss — the thing you run first. Augments the deterministic template scaffold; never replaces it. Usage - /comprehend
+name: read-repo
+description: Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work. Then tailor the scaffold to it non-destructively and seed the venture brain so the conscience has continuity from day one. On an adopted repo this is the counterpart to /boss — the thing you run first. Augments the deterministic template scaffold; never replaces it. Usage - /read-repo
 ---
 
-# /comprehend — tailor the scaffold to what BOSS understands
+# /read-repo — tailor the scaffold to what BOSS understands
 
 The deterministic scaffold (the `stages/L{0..3}` templates) is the same for every project — that's the
-point: it's the reversible, diffable base. `/comprehend` is the **augmentation**: it reads what's
+point: it's the reversible, diffable base. `/read-repo` is the **augmentation**: it reads what's
 actually here and tailors that base to *this* venture, so BOSS starts from understanding instead of a
 generic copy.
 
-> **The guardrail (IDEA-022 Track 3 — read this first):** everything `/comprehend` does is **additive
+> **The guardrail (IDEA-022 Track 3 — read this first):** everything `/read-repo` does is **additive
 > and reversible** — plain-text writes the founder can diff and `git revert`. It **never** deletes or
 > rewrites the deterministic scaffold; it fills in placeholders and seeds the brain. A model-generated
 > scaffold you can't inspect is exactly what BOSS warns founders against. If it can't be diffed, it
@@ -31,7 +31,7 @@ In order of strength — use whatever exists, say what you used:
    context; this is the strongest signal). Infer what it is, who it's for, what stage it's at.
 2. **Captured idea + source** — `docs/ideas/*.md` + anything under `docs/source/` (`/import`/`/boss`
    pulled it in).
-3. **Nothing yet** — if there's no idea and no repo, say so and stop: *"Nothing to comprehend yet —
+3. **Nothing yet** — if there's no idea and no repo, say so and stop: *"Nothing to read yet —
    run `/boss <your idea>` or `/import` first, then come back."* Don't invent understanding.
 
 ## Position — the read you give BEFORE you write anything

@@ -78,9 +78,16 @@ const findings = { links: [], predicates: [], escapes: [], agents: [], workspace
 
 // --- 1. relative markdown links --------------------------------------------------------
 const LINK = /\[[^\]]*\]\(([^)#\s]+)(?:#[^)]*)?\)/g;
+// A link inside CODE FORMATTING is a sample, not a dependency — and this file's own premise (top of
+// file) is that a reference is a dependency. Found v0.256.0: the changelog entry documenting the
+// `boss craft` dead-link bug had to QUOTE the broken form (`[git-workflow](git-workflow.md)`), and
+// this check read the quote as a real link and went red — blocking `npm test`, which runs it first.
+// Any entry that documents a link bug would have done the same, so the checker, not the prose, was
+// wrong. Fences stripped before inline spans so a ``` block containing backticks can't half-match.
+const stripCode = (t) => t.replace(/```[\s\S]*?```/g, '').replace(/`[^`\n]*`/g, '');
 for (const f of md) {
   const inTemplate = rel(f).startsWith(`stages${sep}`) && rel(f).includes(`template${sep}`);
-  for (const m of readFileSync(f, 'utf8').matchAll(LINK)) {
+  for (const m of stripCode(readFileSync(f, 'utf8')).matchAll(LINK)) {
     const t = m[1];
     if (/^(https?:|mailto:|#)/.test(t) || PLACEHOLDER.test(t)) continue;
     // A template file's relative links resolve inside the FOUNDER's project, where the stage

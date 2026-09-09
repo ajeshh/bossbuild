@@ -164,6 +164,22 @@
       "replacedBy": "mentor-capital",
       "why": "BOSS calls itself a just-in-time incubator, and a real incubator does not staff a pricing specialist, a fundraising specialist and a pitch coach — one partner covers all three and gets deeper as the company does. Three chairs also meant a founder had to know which of them owned their question before they could ask it.",
       "migrate": "`mentor-capital` holds this lens now and arrives at MVP rather than V1 — its remit widens at V1 instead of a new agent installing. It carries a hard \"not yet\" default on raising, and is required to surface its own money-vs-raise tension out loud rather than resolving it silently. Your docs/dossier/ files are untouched."
+    },
+    {
+      "since": "0.257.0",
+      "kind": "skill",
+      "removed": "triage",
+      "replacedBy": "idea",
+      "why": "\"Triage\" is what you do to a queue you are behind on — sort many things by urgency. This skill does the opposite: it opens ONE idea and keeps sharpening it. The name said the wrong job, and it hid the link to what the skill actually writes, an IDEA-NNN.",
+      "migrate": "`/idea <thought>` is the same skill, same living doc, same capture log. Your `docs/ideas/` files are untouched — the number they already carry is the name the verb now uses."
+    },
+    {
+      "since": "0.257.0",
+      "kind": "skill",
+      "removed": "comprehend",
+      "replacedBy": "read-repo",
+      "why": "Nothing in \"comprehend\" says what gets comprehended, or by whom. The skill reads what is already here — the repo you adopted, or the idea and source material you brought — and tells you where you stand. `read-repo` says that; the old name asked you to remember it.",
+      "migrate": "`/read-repo` is the same skill, unchanged. It is now the first thing an adopted repo runs, so it is worth knowing by the name that describes it."
     }
   ]
 }

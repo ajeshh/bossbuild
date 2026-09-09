@@ -7,7 +7,7 @@
 // before BOSS has read a single file. Most people who try BOSS arrive with a repo, so this was the
 // weakest path in the product wearing the strongest path's clothes.
 //
-// WHAT THIS DELIBERATELY IS NOT: a clever repo classifier. Deep understanding is `/comprehend`'s
+// WHAT THIS DELIBERATELY IS NOT: a clever repo classifier. Deep understanding is `/read-repo`'s
 // job — it has the model and the wide context. This is the cheap, legible, zero-dep half: a few
 // signals a founder can check by eye, so the inference can be SHOWN ("a build manifest, 34 source
 // files, tests") rather than asserted. A confident wrong guess is worse than no guess, and an

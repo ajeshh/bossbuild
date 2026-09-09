@@ -14,7 +14,7 @@
 2. **Decisions get an owner (DRI).** At Scale a decision without an owner is the coordination symptom
    in its purest form. `/decide` carries an optional `dri:` (the one directly-responsible individual);
    `boss board --json` surfaces it. Recording an owner ≠ gating the decision.
-3. **The customer loop is the signal now.** Real users generate evidence; `/triage --feedback` is the
+3. **The customer loop is the signal now.** Real users generate evidence; `/idea --feedback` is the
    register (bug → fix now / friction → observe / **feature request → a stated-pain `EVID`, never a
    spec** / churn → the loudest evidence there is). `/incident` runs the blameless post-mortem when
    something breaks: fix first, analyze second, one systemic learning routed through `/boss-learn`.
@@ -40,7 +40,7 @@
 
 - **Skills:**
   - `/incident` — the blameless one-page outage post-mortem (fix-first, one systemic learning UP).
-  - `/triage --feedback` — the customer register on the existing `/triage` verb (bug / friction /
+  - `/idea --feedback` — the customer register on the existing `/idea` verb (bug / friction /
     feature-request-as-`EVID` / churn), writing into the evidence ledger.
 - **Mentors:**
   - `mentor-hiring` — the talent and org coach, and the one Scale's own bottleneck earns. First

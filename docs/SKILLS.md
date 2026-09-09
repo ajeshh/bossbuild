@@ -3,14 +3,14 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.256.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.257.0**.
 
 ## Quickstart
 
 - **`/welcome`** — First time using BOSS? Start here  _(/welcome)_
 - **`/boss`** — Spin up a freshly-scaffolded project from a rough idea or PRD  _(/boss [path-to-PRD | rough idea text])_
 - **`/import`** — Bring existing material into this project — point at a file, a folder, or a URL (Word doc, Google Doc, Obsidian note, PDF, slide deck, online reference) and BOSS pulls a durable copy into docs/source/ and folds it into your idea  _(/import <path-or-url> [more paths/urls] [IDEA-NNN])_
-- **`/triage`** — Capture an idea — and keep adding to it  _(/triage <thought>  (run again anytime to add more))_
+- **`/idea`** — Capture an idea — and keep adding to it  _(/idea <thought>  (run again anytime to add more))_
 - **`/prototype`** — Get the idea out of your head and onto the screen — fast  _(/prototype [IDEA-NNN | rough idea text])_
 - **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc])_
 - **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)  _(/evidence [paste notes | describe what happened])_
@@ -19,7 +19,7 @@
 - **`/decide`** — Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is  _(/decide <the decision, or describe it>)_
 - **`/sunset`** — End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against  _(validating it's actually dead (not just quiet), guarding the segment/commitment exception (a low-usage feature can be the reason a key account stays), and drafting the HONEST user-facing deprecation notice (real notice period, a path out, no "we're improving your experience" euphemism). Subtraction is a feature; a bloated product serves no one. Framed as an experiment that returned an answer, never as failure. Deliberate-invoke only; the conscience never suggests it unprompted (it may only point at it from inside a moment that already fired — e.g. the focus circuit-breaker). With an IDEA (e.g. /sunset IDEA-012), closes ONE CAPTURED IDEA — the lightest scope: asks the one question that comes first (did you decide against this, or just never get to it?), keeps the reasoning the `dropped` status has always promised to keep, and writes the condition that would bring it back, so `dropped` is a 'not now' rather than a graveyard. Never harvests an unbuilt idea UP. Usage - /sunset [FEAT-NNN | IDEA-NNN | name])_
 - **`/persona`** — Build your app's target-user persona from your idea, grow it from what you know + online research + any real user research you drop in, and consult it as an agent voice — both to guide product decisions ("would my user want this?") and to QA your builds ("how would she react to this screen?")  _(/persona [derive | enrich <slug> | consult <slug> "question"])_
-- **`/comprehend`** — Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work  _(/comprehend)_
+- **`/read-repo`** — Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work  _(/read-repo)_
 - **`/feedback`** — Send feedback about BOSS itself back to the people who build it — a bug, a confusion, a wish, a "this got in my way." User-initiated and transparent: it shows you exactly what it will send (and the small bit of context attached) before anything leaves your machine, then files it as a GitHub issue upstream (or gives you a prefilled link to paste)  _(/feedback [what's on your mind])_
 - **`/boss-sync`** — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin  _(/boss-sync)_
 - **`/boss-learn`** — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality  _(/boss-learn [what to promote])_

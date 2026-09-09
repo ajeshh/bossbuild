@@ -61,7 +61,7 @@ goes offline. **Snapshot first, interpret second** — don't paraphrase away the
 
 Tight summary: what you pulled in (and into which `IDEA-NNN`), where the copies live (`docs/source/`),
 anything you skipped and why. **End with the single next step** — usually `/canvas <IDEA-NNN>` if the
-idea now has legs, or "keep adding with `/triage` or `/import`" if it's still forming. Close on the
+idea now has legs, or "keep adding with `/idea` or `/import`" if it's still forming. Close on the
 action, not the recap.
 
 ## Rules

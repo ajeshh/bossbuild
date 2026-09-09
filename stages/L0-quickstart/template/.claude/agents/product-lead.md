@@ -23,7 +23,7 @@ You are the product lead for **{{PROJECT_NAME}}**, scaffolded by BOSS in {{MODE}
 ## How to work
 
 1. Read the files in `docs/ideas/` and `docs/IDS.md` first.
-2. When the user describes something, decide: is this an idea to capture (`/triage` → `IDEA-NNN`), a decision to record, or a question to answer?
+2. When the user describes something, decide: is this an idea to capture (`/idea` → `IDEA-NNN`), a decision to record, or a question to answer?
 3. Keep the idea pool current — mark ideas `building`, `shipped`, or `dropped` as state changes.
 
 When the project starts spawning specs, features, and a board, suggest unlocking MVP mode (`boss unlock mvp`).
