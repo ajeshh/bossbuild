@@ -20,7 +20,7 @@ import { map, renderLadder } from './map.js';
 import { modeWord, loadModes } from './modes.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
-import { recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
+import { gistWork, recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { printReentry, printEvidenceHeadway } from './orientation.js';
 import { readiness, renderReadiness } from './readiness.js';
@@ -786,9 +786,13 @@ function cmdRecords(args) {
   const dir = process.cwd();
   if (args.includes('--timeline')) return recordTimeline(dir);
   if (args.includes('--programs')) return recordPrograms(dir);
+  // `--gists` is its own door because this class is WORK, not drift. It is quiet by default (a
+  // founder opening `boss records` wants what is wrong, and none of this is wrong), and burying
+  // 39 quality items inside `--all` next to the no-proof list is the same as not shipping them.
+  const gistsOnly = args.includes('--gists');
   let found = [];
   try { found = recordDrift(dir); } catch { /* fall through to the empty case */ }
-  const shown = all ? found : found.filter((f) => !f.quiet);
+  const shown = gistsOnly ? gistWork(dir) : (all ? found : found.filter((f) => !f.quiet));
 
   console.log(`\n  ${bold('BOSS records')}   ${dim(dir)}\n`);
   if (!shown.length) {
@@ -808,6 +812,7 @@ function cmdRecords(args) {
     'broken-split': 'BROKEN SPLIT LINK',
     'stale-field': 'FIELD NOTHING READS',
     'no-proof': 'NOTHING TO CHECK AGAINST',
+    'derived-gist': 'THE BOARD LINE NOBODY WROTE',
   };
   let last = null;
   for (const f of shown) {
@@ -821,6 +826,12 @@ function cmdRecords(args) {
       if (f.kind === 'broken-split') {
         console.log(dim('  Scope that grew and moved to a new id. The record it left has to say so —'));
         console.log(dim('  otherwise the only way to find the rest of the work is to already know.'));
+      }
+      if (f.kind === 'derived-gist') {
+        console.log(dim('  The one line `boss board --detail` shows for these was never chosen — it is'));
+        console.log(dim('  whatever sentence opened the file, or a paragraph cut mid-thought. Nothing is'));
+        console.log(dim('  broken; it is just the line future-you reads to remember which idea this was.'));
+        console.log(dim('  `/idea gist <ID>` reads the record whole and writes one.'));
       }
       if (f.kind === 'stale-field') {
         console.log(dim('  These look answered and are read by nothing — the quietest way a record goes'));
@@ -1425,9 +1436,9 @@ const HELP = {
     see: ['records', 'board'],
   },
   records: {
-    usage: 'boss records [--all | --timeline | --programs]',
-    what: "Check what your docs CLAIM against what your repo actually has. A status is a claim — `shipped` means the thing exists. This reads each record's `proof:` path and says where the two stopped agreeing, in both directions: something you finished and never wrote down, or something a record says you shipped that isn't there. --all also lists records with no `proof:` to check.",
-    examples: ['boss records', 'boss records --all'],
+    usage: 'boss records [--all | --timeline | --programs | --gists]',
+    what: "Check what your docs CLAIM against what your repo actually has. A status is a claim — `shipped` means the thing exists. This reads each record's `proof:` path and says where the two stopped agreeing, in both directions: something you finished and never wrote down, or something a record says you shipped that isn't there. --all also lists records with no `proof:` to check. --gists is a different question and its own door: which IDEA and FEAT records have no chosen board line — no `gist:` at all (so `boss board --detail` reads whatever sentence opened the file) or one that still reads as a paragraph and gets cut mid-thought. Nothing there is broken, which is why it is separate from the drift findings; `/idea gist <ID>` reads the record whole and writes the line.",
+    examples: ['boss records', 'boss records --all', 'boss records --gists'],
     see: ['status', 'board'],
   },
   team: {

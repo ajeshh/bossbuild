@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.269.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.270.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -41,6 +41,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/idea` — Capture an idea — and keep adding to it
 - `/prototype` — Get the idea out of your head and onto the screen — fast
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them
+- `/pretotype` — Test demand BEFORE you build
 - `/evidence` — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)
 - `/interview` — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence
 - `/research` — Turn a whole research transcript into product context and graded evidence
@@ -53,7 +54,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/boss-learn` — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality
 
 **Agents:** product-lead, coder, mentor-founder, prompt-coach  
-**Loops:** capture-loop, canvas-loop, harvest-loop, sustaining-loop  
+**Loops:** capture-loop, canvas-loop, pretotype-loop, harvest-loop, sustaining-loop  
 **Hooks:** conscience, reentry  
 
 > _When to unlock next:_ When you're ready to actually build, switch to MVP mode: boss unlock mvp.
@@ -67,7 +68,6 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/log` — Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you
 - `/close` — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)
 - `/evals` — Build and run the eval set for an AI-mediated FEAT — "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to LLM-mediated control-flow in your app — look at your data, build the eval set FIRST, categorize failures by mode, vibes-based eval is only a starting point
-- `/pretotype` — Test demand BEFORE you build
 - `/design-tokens-init` — Scaffold the minimal three-layer design token system at the first UI commit
 - `/ai-cost` — Establish AI spend discipline for your app — declare per-user / per-feature / monthly budgets, name the model choices, wire a per-call cost logger, set a review cadence
 - `/cost-review` — Read the AI cost ledger and produce a dated review
@@ -93,7 +93,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/comp-eval` — Find out who else is solving this, and keep knowing
 
 **Agents:** tester, planner, mentor-architect, mentor-customers, mentor-cofounder, mentor-capital, designer  
-**Loops:** spec-loop, pretotype-loop, design-tokens-loop, deception-loop, cost-budget-loop, ai-failure-state-loop, verification-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop, canvas-drift-loop  
+**Loops:** spec-loop, design-tokens-loop, deception-loop, cost-budget-loop, ai-failure-state-loop, verification-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop, canvas-drift-loop  
 
 > _When to unlock next:_ When you have real users and the app needs design rigor, a real db, and prototypes — boss unlock v1.
 

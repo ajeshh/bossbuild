@@ -27,7 +27,8 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
-import { STATUS_VOCAB, baseStatus } from './frontmatter.js';
+import { frontmatter, STATUS_VOCAB, baseStatus } from './frontmatter.js';
+import { cardGist } from './board.js';
 
 const RECORD = /^([A-Z]{3,4})-(\d+)[-.].*\.md$/;
 // The seven-word ladder governs the LIFECYCLE types only. `DEC` is decided|superseded, `PRAC` is
@@ -104,9 +105,18 @@ const splitLinks = (v) => String(v || '')
   .map((part) => part.trim().split(/[\s(]/)[0])   // leading token; detail after it is free
   .filter((t) => RECORD_ID.test(t));
 
+// Backed by `frontmatter()` rather than its own regex — this was the FIFTH near-identical
+// frontmatter reader in the CLI, and the one that still carried the block-scalar bug after
+// v0.269.0 fixed the shared one: `^proof:\s*(.+)$` against `proof: >` captured the literal ">",
+// which is exactly how a record with a folded proof reported `says "shipped" but ">" is NOT on
+// disk`. The `null`-when-absent contract is preserved deliberately — several callers below
+// distinguish an ABSENT field from an empty one, and collapsing those would be a new bug in
+// place of the old one.
+const readSafe = (f) => { try { return readFileSync(f, 'utf8'); } catch { return ''; } };
+
 const field = (text, name) => {
-  const m = text.match(new RegExp(`^${name}:\\s*(.+)$`, 'm'));
-  return m ? m[1].trim() : null;
+  const fm = frontmatter(text);
+  return name in fm ? fm[name] : null;
 };
 
 // Every folder a BOSS project keeps typed records in. Missing folders are normal — a Quickstart
@@ -129,6 +139,7 @@ function readRecords(projectDir) {
           file: `${d}/${n}`,
           id: field(text, 'id') || n.match(RECORD).slice(1, 3).join('-'),
           status: field(text, 'status'),
+          gist: field(text, 'gist'),
           proof: field(text, 'proof'),
           note: field(text, 'proof_note'),
           from: field(text, 'from'),
@@ -148,6 +159,68 @@ function readRecords(projectDir) {
     }
   }
   return out;
+}
+
+
+/**
+ * THE BOARD LINE NOBODY WROTE — the work-list behind `boss records --gists` and `/idea gist`.
+ *
+ * Deliberately NOT part of `recordDrift`. That function answers one question — *do the records
+ * still agree with the repo?* — and every finding in it describes something WRONG. None of this is
+ * wrong: a record with no `gist:` renders a perfectly serviceable line read from its opening prose.
+ * This is a quality work-list, and folding it into drift both muddied that contract and broke five
+ * tests that encode it. The tests were right.
+ *
+ * `boss board --detail` shows one line per card: `gist:` when the record has one, the record's
+ * OPENING PROSE when it does not. The fallback works — it just means the line a founder reads six
+ * weeks later was never chosen by anyone. Two shapes, one fix:
+ *   · no `gist:` at all        → the line is derived, not authored
+ *   · a gist that still CLIPS  → someone wrote a paragraph where a line was wanted
+ *
+ * The CLI finds these and cannot fix them: it is zero-dependency and deterministic, so it renders
+ * what is in the file and cannot write a sentence. `/idea gist` is where a model reads the record
+ * whole and writes one. A stored line also beats one generated per render — reviewable, stable,
+ * and it commits with the record instead of changing underneath the founder.
+ */
+export function gistWork(projectDir) {
+  const records = readRecords(projectDir);
+  const findings = [];
+  // THE BOARD LINE NOBODY WROTE (v0.270.0).
+  //
+  // `boss board --detail` shows one line per card, and it comes from `gist:` when the record has
+  // one and from the record's OPENING PROSE when it does not. The fallback works — but it means
+  // the line a founder reads six weeks later was never chosen by anyone; it is whatever sentence
+  // happened to open the file. 32 of BOSS's own 92 records were in that state.
+  //
+  // Reported QUIETLY: this is a quality gap, not drift. Nothing here is wrong, nothing is
+  // ambiguous, and a founder who never fixes one has lost nothing they had. It stays out of
+  // `boss status` for exactly that reason.
+  //
+  // The two shapes, and they want the same fix:
+  //   · no `gist:` at all      → the line is derived, not authored
+  //   · a gist that gets CLIPPED → someone wrote a paragraph where a line was wanted, and the
+  //     board cuts it mid-thought at 200 chars (GIST_MAX in src/board.js — matched deliberately;
+  //     a threshold that disagreed with the renderer would report a problem nobody can see).
+  // SCOPED TO WHAT THE BOARD ACTUALLY RENDERS. `readRecords` walks five directories; `collectBoard`
+  // reads `docs/ideas` alone. Flagging a DEC or an EVID for a missing board line would report a
+  // defect on a surface that does not exist for it — the same class of mistake as a checker that
+  // claims more than it enforces, pointed the other way. Unscoped this fired 75 times; scoped, 40.
+  const GIST_CLIP = 200;
+  for (const r of records) {
+    if (!LIFECYCLE.includes(prefixOf(r.id))) continue;
+    if (r.gist === null) {
+      findings.push({ kind: 'derived-gist', id: r.id, file: r.file, quiet: true,
+        what: 'no `gist:` — the board line is read from the record\'s opening prose, so it is whatever sentence happens to be first' });
+    } else if (cardGist(readSafe(join(projectDir, r.file)), { gist: r.gist }).endsWith('…')) {
+      // Tested through the REAL renderer, not against a length. `cardGist` takes the first
+      // sentence before it clips, so a long gist whose opening sentence is short renders
+      // perfectly — flagging it on raw length would report a problem the founder cannot see,
+      // which is how a checker starts crying wolf and gets switched off.
+      findings.push({ kind: 'derived-gist', id: r.id, file: r.file, quiet: true,
+        what: `\`gist:\` still reads as a paragraph — the board cuts it mid-thought at ${GIST_CLIP} chars` });
+    }
+  }
+  return findings;
 }
 
 /**

@@ -3,16 +3,17 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.269.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.270.0**.
 
 ## Quickstart
 
 - **`/welcome`** — First time using BOSS? Start here  _(/welcome)_
 - **`/boss`** — Spin up a freshly-scaffolded project from a rough idea or PRD  _(/boss [path-to-PRD | rough idea text])_
 - **`/import`** — Bring existing material into this project — point at a file, a folder, or a URL (Word doc, Google Doc, Obsidian note, PDF, slide deck, online reference) and BOSS pulls a durable copy into docs/source/ and folds it into your idea  _(/import <path-or-url> [more paths/urls] [IDEA-NNN])_
-- **`/idea`** — Capture an idea — and keep adding to it  _(/idea <thought>  (run again anytime to add more))_
+- **`/idea`** — Capture an idea — and keep adding to it  _(/idea <thought>  (run again anytime to add more) | /idea gist [ID] to write the one line the board shows)_
 - **`/prototype`** — Get the idea out of your head and onto the screen — fast  _(/prototype [IDEA-NNN | rough idea text])_
 - **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc])_
+- **`/pretotype`** — Test demand BEFORE you build  _(/pretotype [IDEA-NNN])_
 - **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)  _(/evidence [paste notes | describe what happened])_
 - **`/interview`** — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence  _(/interview [prep | debrief | paste your notes])_
 - **`/research`** — Turn a whole research transcript into product context and graded evidence  _(/research [transcript file | paste the transcript])_
@@ -31,7 +32,6 @@
 - **`/log`** — Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you  _(/log <one-line summary or detailed entry>)_
 - **`/close`** — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)  _(/close)_
 - **`/evals`** — Build and run the eval set for an AI-mediated FEAT — "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to LLM-mediated control-flow in your app — look at your data, build the eval set FIRST, categorize failures by mode, vibes-based eval is only a starting point  _(/evals [FEAT-NNN | --new <feat>])_
-- **`/pretotype`** — Test demand BEFORE you build  _(/pretotype [IDEA-NNN])_
 - **`/design-tokens-init`** — Scaffold the minimal three-layer design token system at the first UI commit  _(/design-tokens-init)_
 - **`/ai-cost`** — Establish AI spend discipline for your app — declare per-user / per-feature / monthly budgets, name the model choices, wire a per-call cost logger, set a review cadence  _(/ai-cost)_
 - **`/cost-review`** — Read the AI cost ledger and produce a dated review  _(/cost-review)_

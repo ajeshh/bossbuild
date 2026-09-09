@@ -16,6 +16,58 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.270.0 — 2026-09-09
+
+> **For you:** `boss board --detail` shows one line per card, and unless you wrote a `gist:` that
+> line is just whatever sentence happened to open the file. **`boss records --gists`** now lists
+> every idea and feature in that state, and **`/idea gist <ID>`** reads the record whole and writes
+> a real one — what the thing is and why it matters, in one sentence you'll still recognise in six
+> weeks.
+
+**Requested after reading the board:** *"it should look at the full gist, and be able to craft a
+well-versed one line that captures the sentiment and purpose."*
+
+### The split, and why it is not one command
+
+`boss board` is zero-dependency and deterministic (PRINCIPLE #4) — it renders what is in the file
+and **cannot write a sentence**. So the crafting cannot happen at render time, and that turns out to
+be the better design anyway: a stored line is reviewable, stable, and commits with the record,
+where a per-render one would change underneath the founder.
+
+- **The CLI finds the work.** `boss records --gists` names every IDEA and FEAT whose board line was
+  never chosen — no `gist:` at all, or one that still reads as a paragraph.
+- **The skill writes it.** `/idea gist <ID>` (or `/idea gist` for all of them) reads the record
+  whole — title, current shape, capture log, proof note, the arguments against — and writes ONE
+  sentence carrying what the thing is *and why it matters*, in the founder's own words where they
+  exist. Explicitly not a summary and not the first sentence: those are what the board already
+  falls back to, and being usually wrong is why this exists.
+
+### Three decisions worth naming
+
+**Tested through the real renderer, not a length.** `cardGist` takes the first *sentence* before it
+clips, so a long field with a short opening sentence renders perfectly. A raw-length threshold
+would have reported 22 records; the renderer reports 5. Flagging a problem the founder cannot see is
+how a checker starts crying wolf and gets switched off.
+
+**Scoped to what the board actually renders.** `readRecords` walks five directories; the board reads
+`docs/ideas` alone. Flagging a `DEC` or an `EVID` for a missing board line would report a defect on
+a surface that does not exist for it — 75 findings unscoped, 39 scoped.
+
+**Its own function, not a drift finding.** `recordDrift` answers *do the records still agree with
+the repo?* and everything in it describes something WRONG. None of this is wrong. Folding it in
+muddied that contract and broke five tests that encode it — **the tests were right**, and it moved
+to `gistWork()` with its own door rather than weakening them.
+
+### Also — the fifth frontmatter reader
+
+`records.js` carried its own regex `field()` (`^proof:\s*(.+)$`), which still had the block-scalar
+bug v0.269.0 fixed in the shared parser: against `proof: >` it captured the literal `">"`. That is
+exactly how a record with a folded proof reported *"says `shipped` but `>` is NOT on disk"*. Now
+backed by `frontmatter()`, with the `null`-when-absent contract preserved — several callers
+distinguish an absent field from an empty one.
+
+- 362 unit tests (was 356).
+
 ## 0.269.0 — 2026-09-09
 
 > **For you:** If you wrote a long `gist:` in an idea record using YAML's folded form
