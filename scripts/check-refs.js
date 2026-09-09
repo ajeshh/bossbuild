@@ -605,6 +605,64 @@ for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
   }
 }
 
+// --- 4d. rung-aware: TELLING a founder to run a skill their install does not have ------------
+// Class 4b does this for AGENTS and has since v0.178.0. There has never been a skill twin, and the
+// gap cost two live instances: `/design-review` and `/ux-check` (both **MVP**) instruct *"Run
+// `/design-library`"*, which arrives at **V1**. Both were created the moment DEC-005 (v0.189.0)
+// moved those two skills DOWN a rung and left `/design-library` where it was — 63 releases ago.
+//
+// 🔑 THE DISCRIMINATOR, and it is why this is a check rather than a hand audit: a shipped file
+// naming a later-rung skill is USUALLY CORRECT — describing the ladder is the actual job of
+// `/welcome`, `/canvas`'s graduation beat and `AGENTS.md`. A blanket version of this fires **52**
+// times, which is a check nobody keeps. What is never correct is an IMPERATIVE — *run it* — aimed
+// at someone who cannot. So the trigger is a verb, not a mention.
+//
+// And the exemption is PRINCIPLED rather than a hand-kept list: the three legitimate imperatives in
+// the shipped corpus all name the rung or the unlock in the same breath — *"In MVP mode you must run
+// `/smoke`"*, *"After `boss unlock mvp`, run `/ai-first-init`"*. An instruction that says WHEN is not
+// a dead pointer; it is the ladder doing its job. That rule needs no maintenance as skills re-rung,
+// which a `FORWARD_OK` map would.
+const RUNG_WORDS = /\b(quickstart|mvp|v1|scale|unlock|rung|mode|arrives? at|later|when you)\b/i;
+// Read off disk rather than imported: this script deliberately has no `src/` dependency, so it
+// keeps working on a tree where `src/` is mid-edit — the same reason its other vocabularies are
+// built from `readdirSync` instead of from a module.
+const STAGE_ORDER = readdirSync(join(ROOT, 'stages'), { withFileTypes: true })
+  .filter((e) => e.isDirectory()).map((e) => e.name).sort();
+const skillRung = {};
+STAGE_ORDER.forEach((s, i) => {
+  const mf = join(ROOT, 'stages', s, 'manifest.json');
+  if (!existsSync(mf)) return;
+  for (const k of JSON.parse(readFileSync(mf, 'utf8')).skills || []) skillRung[k] = i;
+});
+const IMPERATIVE = /\b(run|use|invoke|start with)\s+[`"']?\/([a-z][a-z-]{2,})/gi;
+for (let i = 0; i < STAGE_ORDER.length; i++) {
+  const stage = STAGE_ORDER[i];
+  for (const f of files.filter((x) => rel(x).startsWith(join('stages', stage, 'template')) && x.endsWith('.md'))) {
+    const text = readFileSync(f, 'utf8');
+    const seen = new Set();
+    for (const m of text.matchAll(IMPERATIVE)) {
+      const k = m[2];
+      if (!(k in skillRung) || skillRung[k] <= i || seen.has(k)) continue;
+      // Same breath = same paragraph, and the split has to happen AT the match: taking
+      // `lastIndexOf('\n\n')` over the whole window finds a blank line AFTER it and throws away
+      // everything before, which silently discarded the rung word every time it preceded the verb.
+      // Two legitimate instructions read as findings until this was split. Bound each side separately.
+      const before = text.slice(Math.max(0, m.index - 220), m.index);
+      const after = text.slice(m.index, m.index + 160);
+      const near = before.slice(before.lastIndexOf('\n\n') + 1) + after.split('\n\n')[0];
+      if (RUNG_WORDS.test(near)) continue;
+      // A NEGATED imperative is never a dead pointer — telling someone not to do a thing does not
+      // require them to be able to do it. `/boss-sync` carries *"Never 'want me to re-run
+      // /landing?'"* as an example of what NOT to say, and read without this it looked identical to
+      // an instruction. Scoped tight (the clause, not the paragraph) so a real instruction sitting
+      // near an unrelated "don't" is still caught.
+      if (/\b(never|don't|do not|rather than|instead of|avoid)\b[^.\n]{0,60}$/i.test(before)) continue;
+      seen.add(k);
+      findings.agents.push([rel(f), `/${k} — INSTRUCTED at ${stage}, but it ships at ${STAGE_ORDER[skillRung[k]]}; say when it arrives, or name what to do instead`]);
+    }
+  }
+}
+
 const total = Object.values(findings).reduce((n, a) => n + a.length, 0);
 const plural = (n, s) => `${n} ${s}${n === 1 ? '' : 's'}`;
 

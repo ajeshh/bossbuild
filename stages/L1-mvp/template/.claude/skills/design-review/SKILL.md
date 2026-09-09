@@ -56,8 +56,9 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    - Reuse-before-creation: does a similar pattern exist? **Read
      `docs/design/library/manifest.json` if it exists** — name + purpose + variants for every
      component, which is the difference between actually checking and asking the model to
-     remember to check. No manifest yet? Run `/design-library` first; reviewing reuse without an
-     index is how `CTAButton` gets born.
+     remember to check. No manifest yet? `/design-library` generates it, and it arrives at **V1** —
+     so at MVP the honest substitute is to read the component directory itself before adding to it.
+     Reviewing reuse without an index is how `CTAButton` gets born.
 4. **Then pass two — flow, state and content.** Same agent, second lens: pass the spec **plus its
    own pass-one notes**. Two passes rather than one prompt on purpose — a single sweep reliably
    trades depth on the second half for fluency on the first, and the content check at the end of

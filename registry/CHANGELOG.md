@@ -9,6 +9,79 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.253.0 — 2026-09-08
+
+> **For you:** `boss idd` used to answer *"Did you mean **boss new**?"* — the command that creates a
+> project — because `boss id` was invisible to the typo suggester. Six commands were. Fixed. And two
+> MVP skills told you to run `/design-library`, which does not arrive until V1.
+
+**The third class from the wide-sweep triage: a shipped instruction a founder cannot follow. Two
+shapes found, and both were a hand-kept list drifting from the real one.**
+
+### 🔴 The typo suggester could not see six of its own commands — and misdirected
+
+`KNOWN_COMMANDS` is the vocabulary `nearestCommand()` searches. It is hand-kept beside the `switch`
+in `run()` that actually dispatches, and it had drifted by **six**: `records`, `id`, `credit`,
+`uninstall`, `whatsnew`, `outdated`. Nearly a quarter of the surface, and `records`/`id` are named
+**14 times in shipped founder text**.
+
+**The harm was a wrong answer, not a missing one**, which is what makes it worth a release:
+
+```
+$ boss idd
+  Error unknown command 'idd'. Did you mean boss new?      ← boss id was one edit away
+$ boss outdate
+  Error unknown command 'outdate'. Did you mean boss update?   ← boss outdated was one edit away
+```
+
+`boss new` **creates a project**, offered to someone who wanted a read-only number. **A suggester
+that cannot see a command does not fall silent; it confidently names the nearest thing it can see.**
+Now: `idd → id`, `recrods → records`, `outdate → outdated`, `credits → credit`.
+
+`test/cli-vocabulary.test.js` checks it **both ways** — every dispatched command is suggestible, and
+the suggester names nothing the CLI cannot run. The list stays hand-written (a `switch` is not
+enumerable at runtime without reading our own source), so the test is what makes it a *checked*
+claim rather than a restated one.
+
+### 🔴 Two MVP skills instructed a V1 skill — `check:refs` class 4d
+
+Class 4b has been rung-aware for **agents** since v0.178.0. There has never been a **skill** twin,
+and the gap held two live instances: `/design-review` and `/ux-check` (both MVP) say *"Run
+`/design-library`"*, which arrives at **V1**. Both were created the moment [[DEC-005]] (v0.189.0)
+moved those two skills DOWN a rung and left `/design-library` where it was — **63 releases ago**.
+
+**The discriminator is why this is a check and not an audit.** A shipped file naming a later-rung
+skill is usually CORRECT — describing the ladder is the actual job of `/welcome`, `/canvas`'s
+graduation beat and `AGENTS.md`. A blanket version fires **52 times**, which is a check nobody keeps.
+What is never correct is an **imperative** aimed at someone who cannot obey it. So the trigger is a
+verb, not a mention — and the exemption is principled rather than a hand-kept list: the three
+legitimate imperatives in the corpus all **name the rung in the same breath** (*"In MVP mode you must
+run `/smoke`"*, *"After `boss unlock mvp`, run `/ai-first-init`"*). That rule needs no maintenance as
+skills re-rung, which a `FORWARD_OK` map would. A **negated** imperative is also exempt: `/boss-sync`
+carries *"Never 'want me to re-run /landing?'"* as an example of what NOT to say.
+
+### Two bugs in the check, both mine, both caught by planting
+
+- **The paragraph window split in the wrong place.** Taking `lastIndexOf('\n\n')` over the whole
+  window finds a blank line *after* the match and discards everything before it — so the rung word
+  was thrown away every time it preceded the verb, and two legitimate instructions read as findings.
+  Bounding each side separately fixed it. (Same bug the root-file class avoided by construction one
+  release earlier; writing it twice is how it got written wrong once.)
+- 🔴 **A sloppy plant nearly passed as a working check.** Replacing only the first line of a
+  three-line fix left *"so at MVP…"* behind, so the rung rule matched and the planted defect did not
+  fire — which looked exactly like a broken check. **The plant has to restore the real prior text**
+  (`git show HEAD:<path>` does it exactly); a hand-typed approximation tests something else.
+
+### Where the sweep now stands
+
+All three classes from the v0.251.0 triage are closed and gated:
+
+| class | gate |
+|---|---|
+| dangling path reference | `check:refs` 3d + pattern-scoped allowlist (v0.251.0) |
+| a shipped field nobody reads | `test/config-keys-have-readers.test.js` (v0.252.0) |
+| an instruction a founder cannot follow | `check:refs` 4d + `test/cli-vocabulary.test.js` (this) |
+
 ## 0.252.0 — 2026-09-08
 
 > **For you:** two keys are gone from `.boss/config.json` — `shareUp` and `aiNative`. Nothing ever

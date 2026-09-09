@@ -1248,9 +1248,25 @@ function failNotAProject() {
 // drills in; `boss help symbols` explains the glyph vocabulary. The two command
 // LANGUAGES are cued explicitly — `boss …` is the shell, `/…` runs inside Claude.
 
+// 🔴 This list is the typo suggester's whole vocabulary, and it had drifted from the `switch` in
+// `run()` — the real vocabulary — by SIX commands: `records`, `id`, `credit`, `uninstall`,
+// `whatsnew`, `outdated`. Nearly a quarter of the surface, and `records`/`id` are named 14 times in
+// shipped founder text.
+//
+// The harm was not a missing hint, it was a WRONG one. `boss idd` answered *"Did you mean boss
+// new?"* — the command that CREATES A PROJECT — because `id` was not in the list to be one edit
+// away; `boss outdate` pointed at `update` while `outdated` sat one edit away. A suggester that
+// cannot see a command does not fall silent, it confidently names the nearest thing it can see.
+//
+// Kept as a list rather than derived, because a `switch` is not parseable at runtime without
+// reading our own source — but `test/cli-vocabulary.test.js` asserts the two agree, so the claim is
+// checked rather than restated. (Same rule as `check-refs` class 4: build the vocabulary from what
+// actually exists, never from a hand-kept copy of it.) Flags are excluded on purpose: `--help` is
+// not a plausible typo for a bare word, and suggesting it would be noise.
 const KNOWN_COMMANDS = [
-  'new', 'adopt', 'unlock', 'status', 'board', 'map', 'brain', 'insights',
-  'team', 'list', 'retire', 'remove', 'sync', 'learn', 'craft', 'changelog', 'update', 'conscience', 'version', 'help',
+  'new', 'adopt', 'unlock', 'status', 'board', 'map', 'brain', 'insights', 'records', 'id',
+  'team', 'list', 'retire', 'credit', 'remove', 'uninstall', 'sync', 'learn', 'craft',
+  'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'version', 'help',
 ];
 
 // Per-command detail for `boss help <command>`. Kept tight — a usage line, a

@@ -196,10 +196,11 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
 - **Token violations** (raw hex in shipped code) → `design-drift-loop` detects this (and *only*
   this — it's a hex regex, nothing more); this skill cross-confirms
 - **Pattern reinvention** (new component that duplicates existing) → **`/design-library --check`
-  is the mechanical version of this check** and the drift loop cannot see it. Run it before the
-  walk; flag the duplicate pair, propose consolidation, let the founder decide
-- **Run `/design-library` after the fixes land.** The library is generated, so it only tells the
-  truth if it's regenerated — a stale card is the drift it exists to catch
+  is the mechanical version of this check** and the drift loop cannot see it. ⚠️ **`/design-library`
+  arrives at V1** — at MVP, do this pass by reading the component directory. If you're at V1, run
+  the check before the walk; flag the duplicate pair, propose consolidation, let the founder decide
+- **At V1, run `/design-library` after the fixes land.** The library is generated, so it only tells
+  the truth if it's regenerated — a stale card is the drift it exists to catch
 - **Missing states** → these are the most common shipped-UX failures; track them as a category
   in `docs/design/ux-check-summary.md` so you can see if a particular state-category is your
   pattern weakness
