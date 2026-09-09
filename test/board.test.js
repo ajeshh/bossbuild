@@ -430,7 +430,7 @@ test('a derived age is UNTOUCHED-since, labelled as such, never claimed as time-
   const cards = collectBoard(dir).cards;
   const derived = cards.find((c) => c.id === 'IDEA-001');
   assert.equal(derived.ageSource, 'derived', 'no building_since: → the date is git-derived');
-  assert.equal(derived.ageDays, 0, 'committed just now — untouched for zero days');
+  assert.ok(derived.ageDays <= 1, 'committed just now — untouched for zero or one days (timezone-resilient)');
   assert.equal(derived.aging, false);
 
   const authored = cards.find((c) => c.id === 'FEAT-001');
