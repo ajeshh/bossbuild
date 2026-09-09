@@ -31,8 +31,13 @@ BOSS is one answer.
 
 ## What BOSS is, plainly
 
-A CLI plus a set of skills, agents, and loops that run inside Claude Code:
+A CLI plus a set of skills, agents, and loops that run inside Claude Code. **Two doors, and most
+people come through the second one:**
 
+- **`boss adopt`**, in a repo you already started — BOSS reads how far along you are and starts you
+  at the mode that matches, non-destructively. Then `/read-repo` reads the actual code and tells you
+  where you stand: what it can see, what it can't, and what you could do this week. Your files are
+  untouched; `boss remove` takes it all back out.
 - **`boss new my-app`** — scaffolds a project at the lightest level (Quickstart) in five seconds.
   Then `/boss <your idea>` to spin up — point it at a sentence, a doc, a Google Doc, an Obsidian
   note, a PDF, or a URL, and BOSS pulls the material in and shapes it. Optional private GitHub repo;
@@ -155,12 +160,20 @@ brew install ajeshh/boss/boss   # macOS, via the tap
 # already have the old package? uninstall first — both provide `boss`, so npm refuses to relink
 npm uninstall -g bossbuild && npm i -g oyeboss
 
+# ── already building something? start here ──────────────────────────────
+cd my-existing-repo
+boss adopt                      # reads how far along you are; nothing of yours is overwritten
+claude
+> /read-repo                    # BOSS reads YOUR code and says where you stand — position, not a grade
+
+# ── starting from an idea? ──────────────────────────────────────────────
 boss new my-app                 # 5 seconds — scaffolds + git-inits + registers
 cd my-app
 code .                          # open the folder in your editor (or `claude` in the terminal)
 claude                          # open Claude Code (terminal or editor panel)
 > /welcome                      # first time? ~1 min orientation
 > /boss <idea | file | url>     # spin up — point at a sentence, a doc, or a link; BOSS pulls it in
+> /interview                    # the step that pays for the rest — one 15-min call, graded honestly
 > /prototype <your idea>        # or just hit go — BOSS builds the smallest clickable version to react to
 ```
 

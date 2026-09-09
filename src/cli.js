@@ -299,11 +299,15 @@ function cmdAdopt(args) {
   ].filter(Boolean);
   console.log(`    ${copied.length} file(s) added · nothing of yours overwritten${preserved.length ? ` · ${preserved.join(' · ')}` : ''}`);
   console.log(`    skills: ${skillsLine(stamp.skills)}`);
+  // `/read-repo` leads here, and `/welcome` follows it. The order is the point: someone adopting
+  // BOSS has already built the thing, so the first useful sentence BOSS can say is about THEIR
+  // repo, not about BOSS. `/welcome`'s own tour opens on an empty folder and walks the capture
+  // arc — read to someone with a working codebase, that is a tool that didn't bother to look.
   console.log(`\n  ${bold('Next')}`);
   console.log(`    claude              # open Claude Code here ${dim('(terminal)')}`);
-  console.log(`    > /welcome              # what BOSS added + how the conscience works ${dim('(inside Claude)')}`);
-  console.log(`    > /read-repo           # have BOSS read this repo${flags.ai ? '' : ' (optional)'} — tailor the scaffold + seed`);
-  console.log(`                            #   the venture brain. Additive and reversible; diff or revert anything.`);
+  console.log(`    > /read-repo            # start here — BOSS reads what you've built and says where you stand.`);
+  console.log(`                            #   Additive and reversible; diff or revert anything.`);
+  console.log(`    > /welcome              # then, if you want it: what BOSS added + how the conscience works`);
   console.log(`    boss map                # what's available · boss unlock <mode> to grow ${dim('(terminal)')}`);
   console.log('');
 }
@@ -570,10 +574,25 @@ async function cmdStatus(args) {
   const u = updateNote();
   if (u.state === 'behind') {
     console.log(`    ${warn('⟳')} your INSTALL is behind too — ${bold(u.latest)} is published. ${bold(u.cmd)}`);
-  } else if (u.state === 'unknown') {
+  } else if (u.state === 'unknown' && !justScaffolded(stamp)) {
+    // Withheld on a project's first day, and only that line. The staleness it reports is the
+    // MACHINE's (when `boss update` last asked npm), not this project's — so a folder created
+    // ninety seconds ago opened with "unchecked for 19d", which reads as *you are already behind
+    // on something* at the one moment a founder has done nothing to be behind on. The claim was
+    // true and the framing was a nag. `behind` still prints on day one: that one is a fact about
+    // an install that IS out of date, and withholding it would be the dishonest direction.
     console.log(`    ${dim(`whether the install itself is current: unchecked${u.age ? ` for ${u.age}d` : ''} — ${'boss update'}`)}`);
   }
   console.log('');
+}
+
+// A project scaffolded within the last day. Used to hold back tool-upkeep chatter on a first
+// run — never to hide a fact about the founder's own work, which is why it is scoped to one line.
+function justScaffolded(stamp) {
+  if (!stamp || !stamp.createdAt) return false;
+  const t = Date.parse(stamp.createdAt);
+  if (Number.isNaN(t)) return false;
+  return Date.now() - t < 24 * 60 * 60 * 1000;
 }
 
 function cmdBoard(args = []) {

@@ -68,9 +68,9 @@ What changes:
   they already shipped is the fastest way to lose them. If `/read-repo` surfaces something real
   later, that's its job, with their consent.
 
-Then rejoin at section 2 (cohort) and continue — but throughout, **swap the "what to do next"
-options** (section 4's Path A / Path B) for: `/read-repo` first, then `/canvas` if the bet has
-never been pressure-tested, then `/spec` when the next feature starts.
+Then rejoin at section 2 (cohort) and continue — and at section 4, use **Path 0** below instead of
+Path A / Path B. It is written out there rather than described here, because an instruction to
+"swap the options" is how the adopted repo kept getting the empty-folder tour.
 
 ## 0.7 Say what BOSS leaves behind (once, plainly, unprompted)
 
@@ -231,7 +231,20 @@ Read the manifest. Name what's there in plain language:
 
 ### What to do next
 
-Two paths. Name both; let the founder pick.
+Three paths. **Path 0 is the only one you offer an adopted repo** (`manifest.adopted === true`);
+for a fresh project, name A and B and let the founder pick.
+
+> *"**Path 0 — you already built something.** Run `/read-repo` next. I'll read what's actually
+> here — the code, the tests, what ships, what's half-finished — and tell you where you stand:
+> what BOSS can see, what it can't, and two or three things you could do this week with what each
+> would change. **Position, not a grade.** Nothing gets rewritten, nothing gets audited that you
+> didn't ask about. After that, `/canvas` if the bet itself has never been pressure-tested, and
+> `/spec` when the next feature starts."*
+>
+> *If nobody outside the building has used it yet, the highest-value hour is still `/interview` —
+> one 15-minute conversation with someone who has the problem. Working software makes that call
+> easier to get, not less necessary.*
+
 
 > *"**Path A — you have a rough idea or PRD already.** Run `/boss` next. Point me at it however it
 > exists — a sentence, a file path, a URL, even a few of them (a Word doc, a deck, an Obsidian note,
@@ -249,6 +262,10 @@ Two paths. Name both; let the founder pick.
 > *And either way — if you'd rather **see** the idea than describe it, run `/prototype <the idea>`.
 > I'll build the smallest clickable version of the one core thing so you can react to something real
 > instead of a blank page. Building first is a fine place to start; we fill in the rest after.*
+>
+> *Once you can say what it is and who it's for, the step that pays for the rest is `/interview` —
+> it preps a 15-minute Mom-Test call and turns your notes into a graded record of what you actually
+> learned. One real conversation beats another pass over the canvas.*
 >
 > *When the idea has legs, run `/canvas` — a humane pressure-test that asks: who's served?
 > what's the tension? what's the promise? who could be harmed? what's the riskiest assumption?

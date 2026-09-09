@@ -9,6 +9,36 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.259.0 — 2026-09-08
+
+> **For you:** If you brought BOSS into a repo you'd already built, `/read-repo` is now the first
+> thing it points you at — BOSS reads *your* code and says where you stand, before it explains
+> itself. And `boss status` stopped opening a brand-new project with "unchecked for 19d."
+
+**BOSS's default path was written for an empty folder, and almost nobody arrives with one.**
+
+`boss adopt` has existed for a long time and works. What was wrong is everything *around* it:
+
+- **`boss adopt` listed `/welcome` first and `/read-repo` as "(optional)".** Backwards. Someone
+  adopting BOSS has already built the thing; the first useful sentence BOSS can say is about their
+  repo, not about BOSS. `/read-repo` leads now, `/welcome` follows for whoever wants it.
+- **`/welcome` described the adopted path instead of authoring it.** Its adopted-repo branch said
+  *"swap the 'what to do next' options"* — an instruction to the model, where every other path is
+  written out in the words to say. So the fresh-project tour (*"docs/ideas/ is empty now; it fills
+  as you capture"*) kept leaking to people with a working codebase, which reads as a tool that
+  didn't bother to look. **Path 0** is now written out like Path A and Path B.
+- **The README buried the door.** *"Already started building?"* sat below installation, below
+  `boss remove`. Both doors are now in the first paragraph and both are in the quickstart block —
+  adopt first, because that is where most people actually are.
+
+### `boss status` no longer opens a first run with tool upkeep
+
+A folder ninety seconds old printed *"whether the install itself is current: unchecked for 19d."*
+The 19 days is the **machine's** last update check, not the project's — a true fact, framed as
+*you are already behind*, at the one moment a founder cannot be. Withheld on a project's first day,
+one line only. `behind` — an install that genuinely IS out of date — still prints on day one;
+withholding *that* would be the dishonest direction.
+
 ## 0.258.0 — 2026-09-08
 
 > **For you:** Quickstart's arc now has the step it was missing — **talk to one person** — and BOSS
