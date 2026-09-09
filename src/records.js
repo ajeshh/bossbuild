@@ -80,6 +80,30 @@ const ALIASES = [
   ['shipped', 'shipped_on', false],
 ];
 
+// --- the split: where the rest of the work went -------------------------------------------
+// A build contract closes at the scope it was WRITTEN at. When scope grows mid-build, the honest
+// move is to ship what was specced and spin the remainder to a new id — not to widen the
+// acceptance criteria of something already in flight, which is the single act that turns a
+// feature into one that is perpetually 90% done.
+//
+// BOSS improvised exactly this four times and never named it: `spun_from:` ×4, `shipped_threads:`,
+// a `note:` on FEAT-021, and prose in eight more records. FEAT-023 ↔ IDEA-040 is the worked
+// example done RIGHT — the FEAT shipped threads 1-2 and says thread 3 spun out; IDEA-040 says it
+// came from FEAT-023 thread 3 — and the link was bidirectional in PROSE, through two differently
+// named fields that no reader opened. That is PRINCIPLE #1's whole subject: a pattern proven four
+// times and never sorted up. `program:` was improvised 60+ times before it got a field.
+//
+// Parsed the way a STATUS is parsed: the leading token is the link, everything after is free-form
+// detail and is encouraged. `spun_from: FEAT-023 thread 3 (split when 1-2 shipped)` links and
+// keeps its sentence. Three of the four existing uses are pure provenance prose ("what's-missing
+// gap pass 2026-06-20 (Ajesh — ...)") and must never be flagged — so a leading token that is not
+// record-shaped is not a link, and nothing is checked. Same posture as the ALIASES list above:
+// derive the rule from how the field is really used, never from how you wish it were used.
+const splitLinks = (v) => String(v || '')
+  .split(',')
+  .map((part) => part.trim().split(/[\s(]/)[0])   // leading token; detail after it is free
+  .filter((t) => RECORD_ID.test(t));
+
 const field = (text, name) => {
   const m = text.match(new RegExp(`^${name}:\\s*(.+)$`, 'm'));
   return m ? m[1].trim() : null;
@@ -111,6 +135,8 @@ function readRecords(projectDir) {
           promotedTo: field(text, 'promoted_to'),
           program: field(text, 'program'),
           buildingSince: field(text, 'building_since'),
+          spunTo: splitLinks(field(text, 'spun_to')),
+          spunFrom: splitLinks(field(text, 'spun_from')),
           aliases: ALIASES.map(([dead, live, idShaped]) => {
             const v = field(text, dead);
             if (v === null) return null;
@@ -127,7 +153,7 @@ function readRecords(projectDir) {
 /**
  * Findings, most-actionable first. Never throws.
  * kind: 'built-not-recorded' | 'claimed-not-built' | 'no-proof' | 'off-vocabulary' | 'duplicate-id'
- *     | 'unlinked-promotion' | 'stale-field'
+ *     | 'unlinked-promotion' | 'broken-split' | 'stale-field'
  */
 export function recordDrift(projectDir) {
   const findings = [];
@@ -199,6 +225,64 @@ export function recordDrift(projectDir) {
       if (!ids.has(target)) {
         findings.push({ kind: 'unlinked-promotion', id: r.id, file: r.file,
           what: `\`promoted_to: ${target}\` — no such record` });
+      } else if (byId.get(target)[0].from !== r.id) {
+        findings.push({ kind: 'unlinked-promotion', id: r.id, file: r.file,
+          what: `\`promoted_to: ${target}\`, but ${target} says \`from: ${byId.get(target)[0].from || '(nothing)'}\` — the two ends disagree about the promotion` });
+      }
+    }
+    // RECIPROCITY, which is the half the docs have always claimed and no code has ever checked.
+    // `docs/IDS.md` says a promotion "is legible from BOTH ends, and that part IS enforced
+    // (`npm run check:backlog`)" — and `check-backlog.js` does not contain the string
+    // `promoted_to` at all. The shipped IDS says "`boss records` checks both directions", which
+    // was half-true: it read both fields and verified each TARGET EXISTS, never that the two
+    // point at each other. Two records can therefore both pass while disagreeing about the same
+    // promotion — which is the IDEA-059 ambiguity again, wearing the link's clothes.
+    //
+    // Adding it cost nothing: all 87 of BOSS's own records already satisfy it. That is the
+    // signal that the RULE is right and only the enforcement was missing — the opposite of
+    // IDEA-015's case, where the rule was violated 46 times because the rule itself was wrong.
+    if (r.from && r.from !== 'none' && ids.has(r.from)) {
+      const back = (byId.get(r.from)[0].promotedTo || '').split(',').map((t) => t.trim());
+      if (!back.includes(r.id)) {
+        findings.push({ kind: 'unlinked-promotion', id: r.id, file: r.file,
+          what: `\`from: ${r.from}\`, but ${r.from} does not say \`promoted_to: ${r.id}\` — the promotion reads from one end only` });
+      }
+    }
+  }
+
+  // --- the split, legible from both ends -----------------------------------------------------
+  // The reciprocity is the point, and it is the half the improvised version kept losing. Someone
+  // reading the CLOSED record has to be able to see where the rest of the work went; a `spun_from:`
+  // on the new record alone means the answer only exists somewhere you would have to already know
+  // to look. This is the one thing `from:`/`promoted_to:` does NOT check — it verifies each end
+  // exists without ever verifying they point at each other — so the newer field gets the stricter
+  // rule rather than inheriting the older one's gap.
+  for (const r of records) {
+    for (const target of r.spunTo) {
+      if (!ids.has(target)) {
+        findings.push({ kind: 'broken-split', id: r.id, file: r.file,
+          what: `\`spun_to: ${target}\` — no such record. The scope that left this one has nowhere to be` });
+      } else if (!byId.get(target)[0].spunFrom.includes(r.id)) {
+        findings.push({ kind: 'broken-split', id: r.id, file: r.file,
+          what: `\`spun_to: ${target}\`, but ${target} does not say \`spun_from: ${r.id}\` — the split reads from one end only` });
+      }
+    }
+    for (const source of r.spunFrom) {
+      // `spun_from:` pointing at the same record `from:` already names is not a split — it is the
+      // promotion said twice. FEAT-023 carries both, and reporting it as "IDEA-037 forgot its
+      // `spun_to:`" would send someone to add a link that should not exist. A split is where
+      // scope LEFT a record; a promotion is where the record CAME FROM. Different directions.
+      if (r.from && r.from === source) {
+        findings.push({ kind: 'broken-split', id: r.id, file: r.file,
+          what: `\`spun_from: ${source}\` duplicates \`from: ${source}\` — the promotion is already recorded, and two fields saying it can only drift. A split is scope that LEFT a record, not where this one came from` });
+        continue;
+      }
+      if (!ids.has(source)) {
+        findings.push({ kind: 'broken-split', id: r.id, file: r.file,
+          what: `\`spun_from: ${source}\` — no such record` });
+      } else if (!byId.get(source)[0].spunTo.includes(r.id)) {
+        findings.push({ kind: 'broken-split', id: r.id, file: r.file,
+          what: `\`spun_from: ${source}\`, but ${source} does not say \`spun_to: ${r.id}\` — whoever reads ${source} cannot see that this exists` });
       }
     }
   }
@@ -222,7 +306,7 @@ export function recordDrift(projectDir) {
   }
 
   // The expensive direction first: work you finished and did not write down.
-  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'duplicate-id': 2, 'unlinked-promotion': 3, 'stale-field': 4, 'off-vocabulary': 5, 'no-proof': 6 };
+  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'duplicate-id': 2, 'unlinked-promotion': 3, 'broken-split': 4, 'stale-field': 5, 'off-vocabulary': 6, 'no-proof': 7 };
   return findings.sort((a, b) => (rank[a.kind] ?? 9) - (rank[b.kind] ?? 9));
 }
 

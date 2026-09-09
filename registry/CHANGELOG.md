@@ -9,6 +9,89 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.247.0 — 2026-09-08
+
+**`docs/IDS.md` said a promotion "is legible from both ends, and that part IS enforced
+(`npm run check:backlog`)". `check-backlog.js` did not contain the string `promoted_to`.**
+[[checkers-state-intents-they-dont-enforce]] n=27, and the same shape as v0.237.0's n=24 —
+`boundary.json`'s `_enforced_by` naming a check `check-boundary.js` has never held. Found while
+building v0.246.0's split check, by asking what the ADJACENT rule actually enforced.
+
+- **Two claims, two different grades of wrong.** BOSS's own IDS named a gate with no such check in
+  it — flatly false. The shipped IDS said *"`boss records` checks both directions"*, which was
+  half-true and therefore worse to read: it verified each target **exists**, never that the two
+  point at each other. **Two records could both pass while disagreeing about the same promotion** —
+  the IDEA-059 ambiguity wearing the link's clothes.
+- **Reciprocity is now real, in `boss records`:** a `from:` whose source does not say `promoted_to:`
+  (and the reverse) is reported, as is a pair that names different partners. `from: none` still
+  needs no reciprocal, and one idea promoted to several FEATs (IDEA-037 → FEAT-021 + FEAT-023, the
+  shape BOSS actually has) stays clean.
+- **`check:backlog` now holds the claim its own docs made — by IMPORTING `recordDrift`, not by
+  writing the rule a second time.** That script already re-implements record reading, and a second
+  copy of the *link* rule is precisely how a checker drifts from the thing it checks, which is the
+  entire subject of that file. Scoped to the link kinds; everything else `recordDrift` reports stays
+  a founder-facing tidy in `boss records` rather than becoming a hard CI failure by accident.
+- 🔑 **All 87 records already satisfied it, which is the finding.** Adding the gate cost nothing and
+  changed nothing — **the rule was right and only the enforcement was missing.** That is the
+  opposite of the IDEA-015 case, where a rule violated 46 times turned out to be the wrong rule.
+  Measuring the gap BEFORE building the gate is what tells the two apart, and it is one command.
+- **The false sentence is corrected in place rather than quietly fixed** — BOSS's own IDS now
+  carries what it claimed, for how long, and why the fix was an import.
+- 295 unit tests (4 new).
+
+> **For you:** if you link an idea to a feature, `boss records` now checks the link reads the same
+> from both records — not just that both exist.
+
+## 0.246.0 — 2026-09-08
+
+**Scope growth had no mechanism, and BOSS had improvised one four times without naming it.** The
+other half of the seed question behind v0.242.0: *"we finish building A, then increase scope — now
+it's a feature perpetually in development."* PRINCIPLE #1's exact subject, and the same shape
+`program:` had before v0.199.0 gave it a field — a pattern proven repeatedly and never sorted up.
+
+- **The rule, and it is one sentence: a build contract closes at the scope it was written at; new
+  scope gets a new id.** The act it forbids is specific — *adding acceptance criteria to a FEAT
+  already in flight*. That single move is what makes a feature perpetually 90% done, and it is
+  invisible while it happens, because the record looks **more** thorough every time it grows.
+- **`spun_to:` — the mirror of the `spun_from:` BOSS already wrote four times and no code ever
+  read.** FEAT-023 ↔ IDEA-040 was the worked example done right: threads 1-2 shipped, thread 3 spun
+  out to its own id — **and the link was bidirectional in prose, through two differently-named
+  free-form fields nothing opened.** Now one field pair, checked.
+- **Checked stricter than promotion, deliberately: both records must NAME EACH OTHER.**
+  `from:`/`promoted_to:` verifies each end *exists* without ever verifying they point at each other;
+  the newer field gets the rule the older one lacks rather than inheriting its gap. A `spun_from:`
+  on the new record alone means the only way to find where the rest of the work went is to already
+  know it exists — no better than the prose note everyone writes and nobody finds.
+- **Parsed the way a STATUS is parsed** — leading token is the link, everything after is free-form
+  detail and is encouraged (`spun_to: IDEA-040 (thread 3, split when 1-2 shipped)`). This is what
+  keeps it honest: **three of BOSS's four existing `spun_from:` values are pure provenance prose**
+  (*"what's-missing gap pass 2026-06-20 (Ajesh — …)"*) and are correct usage. A leading token that
+  is not record-shaped is not a link and nothing is checked — the ALIASES posture from v0.240.0,
+  applied again: derive the rule from how the field is really used, never from how you wish it were.
+- **`spun_from:` duplicating `from:` gets its own message, not a missing-reciprocal one.** FEAT-023
+  carried both; reporting it as *"IDEA-037 forgot its `spun_to:`"* would have sent someone to add a
+  link that should not exist. **A split is scope that LEFT a record; a promotion is where the record
+  CAME FROM.** Different directions, and the checker now says so.
+- **The trigger is `/log`, which already runs at ship time and already ticks criteria** — no new
+  skill, no new moment (EVID-001's mandate holds; **48 skills before and after**). When criteria
+  remain unticked it now asks the one question that separates the two cases: *is this not done, or
+  did the extra criteria arrive after the spec?* The founder answers in a sentence. `/spec` states
+  the closing rule where the criteria are written; `/revalidate` routes its "criteria quietly
+  abandoned" finding to the same split instead of leaving it as an open criterion on a shipped
+  record.
+- **Three honest destinations for the remainder** — a new FEAT (already clear), a new IDEA (shipping
+  the first half changed what you know), or nothing at all with the reason written down. And the
+  distinction that stops this becoming ceremony: a criterion that turns out **wrong** is a
+  correction, fixed in place; a criterion that turns out to be **more** is a split. The tell is
+  whether shipping what you have would be worth anything on its own.
+- **Dogfooded on the record that motivated it:** FEAT-023 now carries `spun_to: IDEA-040`, and its
+  duplicate `spun_from: IDEA-037` (the promotion said twice) is gone. `boss records` is clean.
+- 291 unit tests (5 new).
+
+> **For you:** when a feature grows past what you specced, ship what you specced and give the rest
+> its own id — `/log` will offer at the moment it can see it. `boss records` then checks the split
+> reads from both ends, so the closed feature always says where the remainder went.
+
 ## 0.245.0 — 2026-09-08
 
 **The three records the memory sweep left open, resolved — one shipped, two answered NO.** No new

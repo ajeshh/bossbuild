@@ -32,6 +32,7 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { STATUS_VOCAB, baseStatus } from '../src/frontmatter.js';
+import { recordDrift } from '../src/records.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const IDEAS = join(ROOT, 'docs', 'ideas');
@@ -108,7 +109,22 @@ const field = (text, name) => {
 };
 const base = baseStatus;
 
-const findings = { skillVocab, vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [], proof: [], unproven: [] };
+const findings = { skillVocab, links: [], vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [], proof: [], unproven: [] };
+
+// --- the links, from the SHIPPED checker rather than a fourth copy of it ---------------------
+// `docs/IDS.md` says a promotion "is legible from both ends, and that part IS enforced
+// (`npm run check:backlog`)". This file did not contain the string `promoted_to`. The claim named
+// a gate that has never held it — the same shape as `boundary.json`'s `_enforced_by` (v0.237.0).
+//
+// Fixed by IMPORTING `recordDrift`, not by writing the rule a second time. This script already
+// re-implements record reading, and a second copy of the LINK rule is how a checker and the thing
+// it checks drift apart — which is the entire subject of this file. Scoped to the link kinds
+// only: everything else `recordDrift` reports is a founder-facing tidy surfaced by `boss records`,
+// and promoting those to a hard CI failure is a different decision than the one made here.
+for (const f of recordDrift(ROOT)) {
+  if (f.kind !== 'unlinked-promotion' && f.kind !== 'broken-split') continue;
+  findings.links.push([f.id, `${f.what}  (${f.file})`]);
+}
 
 // --- the records on disk -----------------------------------------------------------------
 const records = new Map(); // id -> [{file, status}]
@@ -238,6 +254,8 @@ const report = (key, title, why) => {
   console.log('');
 };
 
+report('links', 'A LINK THAT READS FROM ONE END ONLY',
+  `a promotion or a split whose two records do not point at each other. IDS.md has always said\n  this is enforced; until v0.247.0 nothing checked it, and two records could both pass while\n  disagreeing about the same link.`);
 report('skillVocab', 'UNDECLARED STATUS IN A SHIPPED SKILL',
   `a skill instructing a founder to write a status outside the closed set in docs/IDS.md. This\n  reaches strangers: \`boss records\` then flags them for following BOSS's own instruction, and\n  \`boss board\` files the unrecognised FEAT status as in-flight — so the verb that ends work\n  creates a permanent Building card instead.`);
 report('vocab', 'UNDECLARED STATUS',

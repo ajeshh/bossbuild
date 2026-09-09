@@ -284,3 +284,104 @@ test('a tidy finding never reaches `boss status` — that surface is for where-a
   assert.equal(driftLine(d), null);
   rmSync(d, { recursive: true, force: true });
 });
+
+// --- the split: scope that grew and moved to a new id ---------------------------------------
+// BOSS improvised this four times and never named it. FEAT-023 ↔ IDEA-040 is the worked example
+// done right — and the link lived in two differently-named free-form fields no reader opened.
+
+test('a split is legible from BOTH ends, or it is only findable by someone who already knows', () => {
+  const d = project([
+    ['FEAT-001-a.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\nspun_to: IDEA-009 (the rest of the scope)'],
+    ['IDEA-009-b.md', 'id: IDEA-009\nstatus: ready\nproof: none'],
+  ]);
+  assert.ok(kinds(d).includes('broken-split'), 'IDEA-009 does not point back');
+  rmSync(d, { recursive: true, force: true });
+
+  const ok = project([
+    ['FEAT-001-a.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\nspun_to: IDEA-009 (the rest of the scope)'],
+    ['IDEA-009-b.md', 'id: IDEA-009\nstatus: ready\nproof: none\nspun_from: FEAT-001 (scope that grew past the spec)'],
+  ]);
+  assert.deepEqual(kinds(ok).filter((k) => k === 'broken-split'), [], 'both ends named → nothing to report');
+  rmSync(ok, { recursive: true, force: true });
+});
+
+test('a split pointing at a record that does not exist is caught', () => {
+  const d = project([
+    ['FEAT-001-a.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\nspun_to: IDEA-404'],
+  ]);
+  assert.ok(recordDrift(d).some((f) => f.kind === 'broken-split' && /no such record/.test(f.what)));
+});
+
+test('free-form `spun_from:` provenance is never a link — three of BOSS\'s four uses are prose', () => {
+  // `spun_from: "what's-missing gap pass 2026-06-20 (Ajesh — ...)"` is real, correct usage. A
+  // check that flagged it would fail people for annotating their own records.
+  const d = project([
+    ['IDEA-001-a.md', 'id: IDEA-001\nstatus: ready\nproof: none\nspun_from: "what\'s-missing gap pass 2026-06-20 (Ajesh)"'],
+  ]);
+  assert.deepEqual(kinds(d).filter((k) => k === 'broken-split'), []);
+});
+
+test('the leading token is the link and the rest is free detail — same rule as a status', () => {
+  const d = project([
+    ['FEAT-001-a.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\nspun_to: IDEA-009 thread 3 (split when 1-2 shipped)'],
+    ['IDEA-009-b.md', 'id: IDEA-009\nstatus: ready\nproof: none\nspun_from: FEAT-001 thread 3 (the V1 rung)'],
+  ]);
+  assert.deepEqual(kinds(d).filter((k) => k === 'broken-split'), [], 'detail after the id must not break the link');
+});
+
+test('`spun_from:` duplicating `from:` is the promotion said twice, not a split', () => {
+  // FEAT-023 carried both. Reporting it as a missing reciprocal would send someone to add a
+  // `spun_to:` that should not exist — a split is scope LEAVING a record, not its origin.
+  const d = project([
+    ['IDEA-001-a.md', 'id: IDEA-001\nstatus: shipped\nproof: none\npromoted_to: FEAT-001'],
+    ['FEAT-001-b.md', 'id: FEAT-001\nstatus: shipped\nproof: none\nfrom: IDEA-001\nspun_from: IDEA-001 research realignment'],
+  ]);
+  const f = recordDrift(d).find((x) => x.kind === 'broken-split');
+  assert.ok(f, 'the duplicate is worth reporting');
+  assert.match(f.what, /duplicates `from: IDEA-001`/);
+});
+
+// --- reciprocity: the half the docs always claimed and nothing checked ------------------------
+// docs/IDS.md: "a promotion is legible from both ends, and that part IS enforced
+// (`npm run check:backlog`)" — and check-backlog.js did not contain the string `promoted_to`.
+// The shipped IDS said "`boss records` checks both directions", which was half-true: it verified
+// each TARGET EXISTS, never that the two point at each other.
+
+test('a promotion that reads from one end only is caught', () => {
+  const d = project([
+    ['IDEA-001-a.md', 'id: IDEA-001\nstatus: building\nproof: none'],
+    ['FEAT-001-b.md', 'id: FEAT-001\nstatus: shipped\nproof: none\nfrom: IDEA-001'],
+  ]);
+  const f = recordDrift(d).find((x) => x.kind === 'unlinked-promotion');
+  assert.ok(f, 'IDEA-001 never says promoted_to');
+  assert.match(f.what, /does not say `promoted_to: FEAT-001`/);
+});
+
+test('two records can no longer both pass while disagreeing about the same promotion', () => {
+  // Each end existed, so the old existence-only check passed both — and the promotion was still
+  // ambiguous, which is the IDEA-059 problem wearing the link's clothes.
+  const d = project([
+    ['IDEA-001-a.md', 'id: IDEA-001\nstatus: building\nproof: none\npromoted_to: FEAT-001'],
+    ['IDEA-002-c.md', 'id: IDEA-002\nstatus: building\nproof: none'],
+    ['FEAT-001-b.md', 'id: FEAT-001\nstatus: shipped\nproof: none\nfrom: IDEA-002'],
+  ]);
+  const found = recordDrift(d).filter((x) => x.kind === 'unlinked-promotion');
+  assert.ok(found.some((f) => /the two ends disagree/.test(f.what)), 'IDEA-001 -> FEAT-001 disagrees');
+});
+
+test('a reciprocal promotion reports nothing — including one idea to several FEATs', () => {
+  const d = project([
+    ['IDEA-001-a.md', 'id: IDEA-001\nstatus: building\nproof: none\npromoted_to: FEAT-001, FEAT-002'],
+    ['FEAT-001-b.md', 'id: FEAT-001\nstatus: shipped\nproof: none\nfrom: IDEA-001'],
+    ['FEAT-002-c.md', 'id: FEAT-002\nstatus: shipped\nproof: none\nfrom: IDEA-001'],
+  ]);
+  assert.deepEqual(kinds(d).filter((k) => k === 'unlinked-promotion'), [],
+    'IDEA-037 -> FEAT-021 + FEAT-023 is BOSS\'s own shape and must stay clean');
+});
+
+test('`from: none` needs no reciprocal — a feature can come straight from a conversation', () => {
+  const d = project([
+    ['FEAT-001-b.md', 'id: FEAT-001\nstatus: shipped\nproof: none\nfrom: none\nfrom_note: from a customer call'],
+  ]);
+  assert.deepEqual(kinds(d).filter((k) => k === 'unlinked-promotion'), []);
+});

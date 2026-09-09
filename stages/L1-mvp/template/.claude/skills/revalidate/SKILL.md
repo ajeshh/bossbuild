@@ -73,7 +73,7 @@ what the code actually does now. Route the same way the table above does:
 |---|---|
 | Criteria still true | **Say so and stop.** Stamp a fresh `next_review`. A confirmed spec is a real result, not a wasted pass. |
 | Code moved past the spec | **Update the FEAT to what's true now**, and put the *why* in its `## Build log`. The drift is usually a decision nobody wrote down. |
-| Criteria were quietly abandoned | **Untick them and say which.** A criterion silently dropped is the most useful thing this pass can find — it's a scope change that never got made explicitly. |
+| Criteria were quietly abandoned | **Untick them and say which** — a criterion silently dropped is the most useful thing this pass can find, because it is a scope change nobody made explicitly. Then make it explicit: either they are genuinely dropped (say so in the FEAT) or they are still wanted, in which case they are a **split** — `spun_to:` a new id rather than an open criterion on a shipped record. |
 | The feature is gone or absorbed | `status: dropped (absorbed into FEAT-NNN)` — name where it went. Don't leave a spec for something that no longer exists. |
 
 **Keep it rare and opt-in.** This fires when *you* run it, or when a `next_review:` you set has

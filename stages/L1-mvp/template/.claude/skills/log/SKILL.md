@@ -64,6 +64,23 @@ If you only read one thing when picking the project back up, read the last devlo
    > didn't get written: BOSS's own repo ended up with `shipped_on:` on 10 records out of 58.
    > **A rule that lives only in the skill nobody re-reads is a rule with no mechanism.**
 
+   **If criteria are still unticked, ask which of two things is true — this is the one moment BOSS
+   can see scope growth.** Either the feature genuinely isn't done (leave it in Building, that's the
+   normal answer), *or* the untouched criteria arrived **after** the spec did — which means the
+   scope grew and this FEAT can no longer finish. Don't guess between them; the founder knows in one
+   sentence. When it's the second, say the specific version of:
+
+   > *"Four of these you've done. The other three weren't in the original spec — they arrived while
+   > you were building. Ship the four and spin the three to their own id, or keep this one open?"*
+
+   Shipping the done half **closes** something, which is the point: a FEAT whose criteria list grows
+   faster than it gets ticked is the feature that is perpetually 90% done, and nothing else on the
+   board can tell you it is happening. Route the remainder per `docs/IDS.md` — a new FEAT if it is
+   already clear, a new IDEA if shipping the first half changed what you know, or nothing at all if
+   you've decided against it. Then stamp `spun_to:` on this record and `spun_from:` on the new one,
+   both ways, so whoever reads the closed FEAT can see where the rest went. **Offer, never insist** —
+   one under-specced feature is not scope creep, and the founder may simply want to finish it.
+
    **If — and only if — that FEAT is one someone else will later rely on the spec for**, offer to set
    a `next_review:` date so `/revalidate` can re-read it against the code later. Offer once, take
    their answer, don't ask again. Most FEATs never need it.

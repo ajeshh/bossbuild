@@ -126,12 +126,56 @@ IDEA-014                    FEAT-003
   promoted_to: FEAT-003  ←→   from: IDEA-014
 ```
 
-`boss records` checks both directions. `from: none` is valid — some features come straight from a
-conversation with a customer, never from a captured idea. Say so in `from_note:`.
+`boss records` checks that each end exists **and that the two name each other** — two records
+saying different things about the same promotion is the ambiguity a link is supposed to remove.
+`from: none` is valid — some features come straight from a conversation with a customer, never from
+a captured idea. Say so in `from_note:`.
 
 > BOSS got this wrong on itself: its own rule said *"an idea in active build"* becomes a FEAT, and
 > then 46 of its ideas shipped without one. Every FEAT that actually got written was a multi-slice
 > build. The rule was wrong, not the people.
+
+## When scope grows — `spun_to:` and the rule that keeps a build finishable
+
+**A build contract closes at the scope it was written at. New scope gets a new id.**
+
+That one sentence is the whole discipline, and the act it forbids is specific: *do not add
+acceptance criteria to a FEAT that is already in flight.* It feels like bookkeeping — the work is
+related, the record is right there, the criteria list is one line longer. But a target that moves
+every time you approach it is a target you never reach, and this is exactly how a feature becomes
+the one that has been "nearly done" for four months. Nothing else on your board can tell you it
+happened, because the record looks *more* thorough every time it grows.
+
+So when the work grows past what you specced, **ship what you specced** and spin the rest out:
+
+```
+FEAT-003                       IDEA-021
+  status: shipped                status: ready
+  spun_to: IDEA-021 (the        spun_from: FEAT-003 (scope that
+    export half, split when       arrived after the spec — the
+    the import half shipped)      export half)
+```
+
+`boss records` checks it the same way it checks a promotion, plus one thing promotion doesn't:
+**both records must name each other.** A `spun_from:` on the new record alone means the only way to
+discover where the rest of the work went is to already know it exists — which is no better than the
+prose note everybody writes and nobody finds. The leading word is the link; everything after it is
+free-form detail and is encouraged, exactly like a status.
+
+**The split is a decision, so make it out loud.** Three honest destinations, and the choice is
+about how much you still believe in the new scope:
+
+| The remainder is | Send it to | Because |
+|---|---|---|
+| genuinely the next slice | a new **FEAT** | it already has a contract's worth of clarity |
+| an idea again — it needs re-thinking | a new **IDEA** | shipping the first half changed what you know |
+| not worth doing after all | nothing; say so in the FEAT | *"we decided against the export half"* is a result, and the cheapest one |
+
+**Not every growth is a split.** Finding out mid-build that a criterion was *wrong* is a correction
+— fix it in place. Finding out there is *more* is a split. The tell: could you ship what you have
+and have it be worth something? Then you have two features. If the extra thing makes the first half
+meaningless on its own, it was one feature all along and you underspecced it — say that in the FEAT
+and carry on.
 
 ## `program:` — grouping things that belong together
 

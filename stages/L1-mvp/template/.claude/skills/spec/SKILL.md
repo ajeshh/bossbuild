@@ -290,6 +290,12 @@ ambiguity?"* — sometimes that genuinely is one clear sentence.
 - One FEAT per concern. A feature that needs three smoke checks is probably two features.
 - Acceptance criteria are testable statements, not vibes. "Feels fast" → "Initial page render < 1s on a cold reload."
 - Out-of-scope is load-bearing. Naming what's *not* in this FEAT prevents the scope creep that kills MVPs.
+- **This FEAT closes at the scope you are writing now. New scope gets a new id.** The criteria below
+  are a contract with a version of you who is three weeks tireder — so when the work grows mid-build,
+  the move is to ship what was specced and `spun_to:` the rest, never to add a criterion to something
+  already in flight. That single act is what turns a feature into the one that is perpetually
+  90% done, and it is invisible while it happens: the record looks *more* thorough every time it
+  grows. `docs/IDS.md` has the field and the three destinations for the remainder.
 - Spec a delegation, not just a feature (Ethan Mollick, 2026). A FEAT is a brief you hand to a coder
   (human or agent), so it should answer two things the acceptance criteria don't: **what will *you*
   verify** before it's done (not "tests pass" — the one or two things you'll click/read to trust it),

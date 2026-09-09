@@ -69,6 +69,14 @@ A `FEAT` that cannot name its idea is an orphan; an idea pointing at a `FEAT` th
 the duplicate-ID problem wearing a different hat. `from: none` is a valid answer — FEAT-024 came
 straight from a conversation, and says so in `from_note:`.
 
+> 🔴 **This sentence was false for ~150 releases, and it named its own enforcer.**
+> `check-backlog.js` did not contain the string `promoted_to`, and `boss records` verified only that
+> each *target existed* — never that the two ends pointed at each other, so two records could both
+> pass while disagreeing about the same promotion. Enforced for real at **v0.247.0**, by importing
+> `recordDrift` rather than writing the rule a second time. All 87 records already satisfied it:
+> **the rule was right and only the enforcement was missing** — the opposite of the IDEA-015 case,
+> where a rule violated 46 times turned out to be the wrong rule.
+
 ## `gist:` — the one line that makes a record findable again
 
 **A title is a name. After twenty records, a name stops being a reminder.**
@@ -90,6 +98,48 @@ derived fills the silence. Same posture as `shipped_on:` and its git-derived fal
 
 **Rewrite the gist when the record's shape changes.** A gist describing a superseded shape is worse
 than none — it is the one field that can lie quietly, because nothing can check it against the body.
+
+## When scope grows — `spun_to:` and the rule that keeps a build finishable
+
+**A build contract closes at the scope it was written at. New scope gets a new id.**
+
+That one sentence is the whole discipline, and the act it forbids is specific: *do not add
+acceptance criteria to a FEAT that is already in flight.* It feels like bookkeeping — the work is
+related, the record is right there, the criteria list is one line longer. But a target that moves
+every time you approach it is a target you never reach, and this is exactly how a feature becomes
+the one that has been "nearly done" for four months. Nothing else on your board can tell you it
+happened, because the record looks *more* thorough every time it grows.
+
+So when the work grows past what you specced, **ship what you specced** and spin the rest out:
+
+```
+FEAT-003                       IDEA-021
+  status: shipped                status: ready
+  spun_to: IDEA-021 (the        spun_from: FEAT-003 (scope that
+    export half, split when       arrived after the spec — the
+    the import half shipped)      export half)
+```
+
+`boss records` checks it the same way it checks a promotion, plus one thing promotion doesn't:
+**both records must name each other.** A `spun_from:` on the new record alone means the only way to
+discover where the rest of the work went is to already know it exists — which is no better than the
+prose note everybody writes and nobody finds. The leading word is the link; everything after it is
+free-form detail and is encouraged, exactly like a status.
+
+**The split is a decision, so make it out loud.** Three honest destinations, and the choice is
+about how much you still believe in the new scope:
+
+| The remainder is | Send it to | Because |
+|---|---|---|
+| genuinely the next slice | a new **FEAT** | it already has a contract's worth of clarity |
+| an idea again — it needs re-thinking | a new **IDEA** | shipping the first half changed what you know |
+| not worth doing after all | nothing; say so in the FEAT | *"we decided against the export half"* is a result, and the cheapest one |
+
+**Not every growth is a split.** Finding out mid-build that a criterion was *wrong* is a correction
+— fix it in place. Finding out there is *more* is a split. The tell: could you ship what you have
+and have it be worth something? Then you have two features. If the extra thing makes the first half
+meaningless on its own, it was one feature all along and you underspecced it — say that in the FEAT
+and carry on.
 
 ## `program:` — the umbrella, and the ladder it climbs
 

@@ -734,6 +734,7 @@ function cmdRecords(args) {
     'duplicate-id': 'DUPLICATE ID',
     'off-vocabulary': 'OFF-VOCABULARY STATUS',
     'unlinked-promotion': 'BROKEN PROMOTION LINK',
+    'broken-split': 'BROKEN SPLIT LINK',
     'stale-field': 'FIELD NOTHING READS',
     'no-proof': 'NOTHING TO CHECK AGAINST',
   };
@@ -745,6 +746,10 @@ function cmdRecords(args) {
       if (f.kind === 'built-not-recorded') {
         console.log(dim('  You finished these and the record still says otherwise. Left alone, this is'));
         console.log(dim('  how a thing gets built twice.'));
+      }
+      if (f.kind === 'broken-split') {
+        console.log(dim('  Scope that grew and moved to a new id. The record it left has to say so —'));
+        console.log(dim('  otherwise the only way to find the rest of the work is to already know.'));
       }
       if (f.kind === 'stale-field') {
         console.log(dim('  These look answered and are read by nothing — the quietest way a record goes'));
