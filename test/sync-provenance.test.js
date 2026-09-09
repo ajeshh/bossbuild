@@ -10,7 +10,19 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileHash, readLedger, recordManaged, provenance, backupManaged } from '../src/managed.js';
+import { execFileSync } from 'node:child_process';
+import { BOSS_ROOT } from '../src/paths.js';
 import { project, cleanup } from './helpers.js';
+
+const BIN = join(BOSS_ROOT, 'bin', 'boss');
+function boss(args, cwd) {
+  try {
+    return execFileSync('node', [BIN, ...args], {
+      cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
+      env: { ...process.env, NO_COLOR: '1', HOME: cwd },
+    });
+  } catch (e) { return (e.stdout || '') + (e.stderr || ''); }
+}
 
 after(cleanup);
 
@@ -143,4 +155,82 @@ test('provenance is never back-filled onto files BOSS did not write', () => {
   writeFileSync(join(dir, '.claude', 'agents', 'mentor-founder.md'), 'hand-written, never scaffolded');
   assert.deepEqual(readLedger(dir), {}, 'merely existing on disk must not create provenance');
   assert.equal(provenance(dir, '.claude/agents/mentor-founder.md', 'hand-written, never scaffolded'), null);
+});
+
+// --- the THIRD value of the tri-state, which nothing acted on until v0.267.0 -----------------
+//
+// `provenance()` returns null when BOSS has no ledger entry, and its own comment names two causes:
+// BOSS wrote the file before the ledger existed, OR IT NEVER WROTE IT AT ALL. The apply path
+// collapsed both into "back it up and replace", which is right for the first and wrong for the
+// second — a founder's own `.claude/agents/coder.md`, or a repo `boss adopt` took on that already
+// had one, was replaced and reported as `~ changed`: the same words a routine BOSS update gets.
+//
+// The default is deliberately UNCHANGED (changing it breaks updates for every pre-ledger project).
+// What is guarded here is that the two causes are now distinguishable and that there is an action.
+
+test('a file BOSS has no record of writing is reported as unclaimed, not as changed', () => {
+  const dir = project({
+    '.boss/manifest.json': JSON.stringify({
+      name: 'p', bossVersion: '0.6.0', stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], agents: [], hooks: [], loops: [], skills: [],
+    }),
+    '.boss/config.json': '{}',
+    '.boss/managed.json': '{}',
+    '.claude/agents/coder.md': '---\nname: coder\n---\nMINE\n',
+  });
+  const out = boss(['sync'], dir);
+  assert.match(out, /\? unclaimed/, 'it must not wear the same word as a routine BOSS update');
+  assert.match(out, /no record of writing/);
+  assert.match(out, /--keep-mine/, 'a warning with no action is noise');
+});
+
+test('--keep-mine leaves unclaimed files alone and applies everything else', () => {
+  const dir = project({
+    '.boss/manifest.json': JSON.stringify({
+      name: 'p', bossVersion: '0.6.0', stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], agents: [], hooks: [], loops: [], skills: [],
+    }),
+    '.boss/config.json': '{}',
+    '.boss/managed.json': '{}',
+    '.claude/agents/coder.md': '---\nname: coder\n---\nMINE\n',
+  });
+  boss(['sync', '--apply', '--keep-mine'], dir);
+  assert.match(readFileSync(join(dir, '.claude/agents/coder.md'), 'utf8'), /MINE/,
+    'the founder\'s own file must survive');
+  // Everything BOSS genuinely owns still lands — the flag is a scalpel, not a stop button.
+  assert.ok(existsSync(join(dir, '.claude/hooks/conscience.js')), 'unrelated managed files still apply');
+});
+
+test('the two skip reasons are never reported with the same sentence', () => {
+  // "You changed them" is true for an EDITED managed file and false for an unclaimed one.
+  // Telling a founder they changed a file they never touched makes the next decision worse.
+  const dir = project({
+    '.boss/manifest.json': JSON.stringify({
+      name: 'p', bossVersion: '0.6.0', stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], agents: [], hooks: [], loops: [], skills: [],
+    }),
+    '.boss/config.json': '{}',
+    '.boss/managed.json': '{}',
+    '.claude/agents/coder.md': '---\nname: coder\n---\nMINE\n',
+  });
+  const out = boss(['sync', '--apply', '--keep-mine'], dir);
+  assert.match(out, /no record of writing them/);
+  assert.doesNotMatch(out, /you changed them/,
+    'an unclaimed file was never claimed to be edited');
+});
+
+test('the default still replaces unclaimed files, with a backup — pre-ledger projects keep updating', () => {
+  const dir = project({
+    '.boss/manifest.json': JSON.stringify({
+      name: 'p', bossVersion: '0.6.0', stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], agents: [], hooks: [], loops: [], skills: [],
+    }),
+    '.boss/config.json': '{}',
+    '.boss/managed.json': '{}',
+    '.claude/agents/coder.md': '---\nname: coder\n---\nMINE\n',
+  });
+  boss(['sync', '--apply'], dir);
+  assert.doesNotMatch(readFileSync(join(dir, '.claude/agents/coder.md'), 'utf8'), /MINE/,
+    'default behaviour is deliberately unchanged');
+  assert.ok(existsSync(join(dir, '.boss', 'backups')), 'and it is recoverable');
 });

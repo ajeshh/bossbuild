@@ -482,9 +482,21 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
   const skipped = [];
   const toBackUp = [];
   const force = opts.force === true;
+  // `--keep-mine` acts on the tri-state's THIRD value, which nothing acted on before. `null`
+  // means BOSS has no record of writing this file — and `provenance()`'s own comment names two
+  // causes for that: BOSS wrote it before the ledger existed, OR **it never wrote it at all**.
+  // The default collapses both into "probably ours, back it up and replace", which is right for
+  // the first cause and wrong for the second: a founder's own `.claude/agents/coder.md`, or a
+  // repo `boss adopt` took on that already had one, is replaced and reported as `~ changed` —
+  // the same words a routine BOSS update gets. The backup makes it recoverable; nothing made it
+  // VISIBLE. Changing the default would break updates for every pre-ledger project (which is why
+  // it is not changed here), so the opt-out is the fix: `--keep-mine` leaves every unclaimed file
+  // alone and applies the rest.
+  const keepMine = opts.keepMine === true;
   for (const e of plan.entries) {
     if (e.status === 'ok') continue;
     if (e.status === 'changed' && e.edited === true && !force) { skipped.push(e); continue; }
+    if (e.status === 'changed' && e.edited === null && keepMine) { skipped.push(e); continue; }
     if (e.status === 'changed' && (e.edited === null || (e.edited === true && force))) toBackUp.push(e.rel);
   }
   const backupDir = backupManaged(projectDir, toBackUp);

@@ -16,6 +16,55 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.267.0 — 2026-09-09
+
+> **For you:** If you brought BOSS into a repo that already had its own `.claude/agents/` or
+> skills, `boss sync --apply` could replace one of your files with BOSS's version and report it in
+> the same words as a routine update. It always kept a backup, but you had no way to tell which
+> files were yours. They now show as **`? unclaimed`**, and **`boss sync --apply --keep-mine`**
+> leaves every one of them alone while applying everything else.
+
+**Found by pulling on the thread IDEA-088 left open** — *"whether that is a `boss sync` bug is worth
+checking separately."* It is not a sync bug: `planSync` reads the **stage** manifest rather than the
+project's stamp, so a project pinned at 0.6.0 correctly sees every hook, skill and agent added
+since. That hypothesis is closed. What the check found instead was one rung down.
+
+### The third value of a tri-state that nothing acted on
+
+`provenance()` in `src/managed.js` returns three values, and its own comment names both causes of
+the third:
+
+> `null` — UNKNOWABLE. No ledger entry, because BOSS wrote this before the ledger existed **or
+> never wrote it at all.**
+
+The apply path collapsed both into one behaviour — back it up, replace it — which is **right for the
+first cause and wrong for the second.** The second cause is a real founder: someone whose repo
+already had `.claude/agents/coder.md` before `boss adopt` ever ran. `boss adopt` protects them on
+day one (copy-if-absent, verified in v0.265.0); `boss sync --apply` replaced them on day thirty.
+
+It was never data loss — the file was copied to `.boss/backups/` and the path printed. It was
+**invisibility**: the entry rendered as `~ changed (30 lines)`, the exact words a genuine BOSS update
+gets, so nothing distinguished *BOSS moved on* from *BOSS took your file*.
+
+### What changed, and what deliberately did not
+
+- **`? unclaimed`** is now its own status word in the sync plan, with a footer naming the count, both
+  possible causes, and the action.
+- **`--keep-mine`** skips every unclaimed file and applies the rest. A warning a founder cannot act
+  on is noise, so the flag ships with the label.
+- **The two skip reasons no longer share a sentence.** *"You changed them"* is true for an edited
+  managed file and false for an unclaimed one; telling a founder they changed a file they never
+  touched makes the next decision worse.
+- **The default is unchanged, on purpose.** Making `--keep-mine` the default would stop pre-ledger
+  projects from ever updating — which is the exact trade-off the original comment weighed and got
+  right. The fix is the opt-out and the visibility, not a new default.
+
+### Also
+
+- The `boss help sync` text said files predating the ledger are backed up *"because BOSS cannot tell
+  whether you changed them."* True, and it named only the first cause. It now names both.
+- 345 unit tests (was 341).
+
 ## 0.266.0 — 2026-09-09
 
 > **For you:** Every rung now names what earns it *before* you climb — `boss unlock mvp` and

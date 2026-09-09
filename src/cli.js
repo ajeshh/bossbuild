@@ -1110,7 +1110,7 @@ function cmdRemove(args) {
 }
 
 function cmdSync(args) {
-  const { _: pos, apply, remove, force } = parseArgs(args);
+  const { _: pos, apply, remove, force, 'keep-mine': keepMine } = parseArgs(args);
   void pos;
   const stamp = readStamp(process.cwd());
   if (!stamp) return failNotAProject();
@@ -1130,7 +1130,13 @@ function cmdSync(args) {
     if (plan.drift && !apply) console.log('    (run `boss sync --apply` to bump the pin to current.)');
   } else {
     for (const e of changed) {
-      const mark = e.status === 'new' ? ok('+ new    ') : warn(`~ changed (${e.delta} lines)`);
+      // Three states, three words. `? unclaimed` is the one that was missing: BOSS has no record
+      // of writing this file, so it may be the founder's own — and it used to render as
+      // `~ changed`, the same words a routine BOSS update gets. Recoverable (it is backed up)
+      // but indistinguishable, which is the half that mattered.
+      const mark = e.status === 'new'
+        ? ok('+ new    ')
+        : (e.edited === null ? warn(`? unclaimed (${e.delta} lines)`) : warn(`~ changed (${e.delta} lines)`));
       console.log(`    ${mark}  ${e.kind}/${e.name}  →  ${e.rel}`);
       // The unit of an update is the ARTIFACT, not the file — a founder who has the thing this
       // skill makes is the only one for whom "it changed" means anything.
@@ -1139,6 +1145,14 @@ function cmdSync(args) {
           + (e.affects.more ? ` +${e.affects.more} more` : '');
         console.log(`    ${dim('           ↳ you already have')} ${bold(e.affects.what)} ${dim(`— ${evidence}`)}`);
       }
+    }
+    const unclaimed = changed.filter((e) => e.status === 'changed' && e.edited === null);
+    if (unclaimed.length) {
+      console.log('');
+      console.log(`    ${warn('?')} ${bold(`${unclaimed.length} file(s) BOSS has no record of writing.`)} ${dim('Either it wrote them before it')}`);
+      console.log(`      ${dim('kept a ledger, or they are yours and share a name with something BOSS ships.')}`);
+      console.log(`      ${dim('--apply copies them to')} ${bold('.boss/backups/')} ${dim('and replaces them.')} ${bold('boss sync --apply --keep-mine')}`);
+      console.log(`      ${dim('leaves them alone and applies everything else.')}`);
     }
     if (settingsChanged) {
       console.log(`    ${warn('~ merge')}    settings/hooks + deny floor  →  ${plan.settings.rel}`);
@@ -1204,14 +1218,25 @@ function cmdSync(args) {
     return;
   }
 
-  const { written, skipped, backupDir, removed, stamp: next } = applySync(process.cwd(), plan, stamp, { remove, force });
+  const { written, skipped, backupDir, removed, stamp: next } = applySync(process.cwd(), plan, stamp, { remove, force, keepMine });
   writeStamp(process.cwd(), next);
   registerProject({
     name: next.name, path: process.cwd(), stage: next.stage, mode: next.mode, bossVersion: next.bossVersion,
   });
   console.log(`\n  ${ok('✦')} Synced ${written.length} file(s)${removed.length ? `, removed ${removed.length}` : ''}; pin now ${bold(next.bossVersion)}.`);
   if (skipped.length) {
-    console.log(`    ${warn('⚠')}  ${skipped.length} left alone — you changed them: ${skipped.map((e) => e.name).join(', ')}`);
+    // Two reasons to skip, and they are not the same claim. "You changed them" is TRUE for an
+    // edited managed file and FALSE for an unclaimed one — there, BOSS simply has no record, which
+    // is the whole reason --keep-mine exists. Telling a founder they changed a file they never
+    // touched is a small lie that makes the next decision worse.
+    const skippedEdited = skipped.filter((e) => e.edited === true);
+    const skippedUnclaimed = skipped.filter((e) => e.edited === null);
+    if (skippedEdited.length) {
+      console.log(`    ${warn('⚠')}  ${skippedEdited.length} left alone — you changed them: ${skippedEdited.map((e) => e.name).join(', ')}`);
+    }
+    if (skippedUnclaimed.length) {
+      console.log(`    ${warn('?')}  ${skippedUnclaimed.length} left alone — BOSS has no record of writing them: ${skippedUnclaimed.map((e) => e.name).join(', ')}`);
+    }
     console.log(`    ${dim('`/boss-sync` merges them; `--force` takes BOSS\'s version.')}`);
   }
   if (backupDir) console.log(`    ${dim(`previous versions kept in ${backupDir}`)}`);
@@ -1431,7 +1456,7 @@ const HELP = {
   },
   sync: {
     usage: 'boss sync [--apply] [--remove] [--force]',
-    what: "Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. It also lists anything BOSS installed here and has since RETIRED, with what replaced it and why — but `--apply` never deletes: removal is a separate, explicit `--remove`, and something you edited is never removed at all. Only files BOSS itself stamped are ever candidates; your own skills and agents are invisible to sync — and a MANAGED file you edited after BOSS wrote it is now left alone too, reported by name rather than overwritten (`--force` takes BOSS's version, keeping a copy in `.boss/backups/`). Files predating the provenance ledger are backed up before being written, because BOSS cannot tell whether you changed them. For a reviewed, narrated update — and the actual migration to whatever replaced a retired verb — use /boss-sync inside Claude instead.",
+    what: "Pull current BOSS skills/agents/hooks into this project (the DOWN direction). Without --apply it previews the diff only. It also lists anything BOSS installed here and has since RETIRED, with what replaced it and why — but `--apply` never deletes: removal is a separate, explicit `--remove`, and something you edited is never removed at all. Only files BOSS itself stamped are ever candidates; your own skills and agents are invisible to sync — and a MANAGED file you edited after BOSS wrote it is now left alone too, reported by name rather than overwritten (`--force` takes BOSS's version, keeping a copy in `.boss/backups/`). A file BOSS has no record of writing — one predating the provenance ledger, or one that was already yours and shares a name with something BOSS ships — is reported as `? unclaimed` and backed up before being written; `--keep-mine` leaves all of those alone and applies the rest. For a reviewed, narrated update — and the actual migration to whatever replaced a retired verb — use /boss-sync inside Claude instead.",
     examples: ['boss sync', 'boss sync --apply', 'boss sync --apply --remove', 'boss sync --apply --force'],
     see: ['status', 'changelog', 'learn'],
   },
