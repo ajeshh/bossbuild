@@ -217,12 +217,23 @@ function cmdAdopt(args) {
   //     founder's rules intact, import the (now-present) AGENTS.md so the rules
   //     reach Claude, and append a small marked BOSS orientation block.
   if (claudePreexisted) {
+    // THE AGENT ROSTER IS THE LOAD-BEARING HALF, and it was missing until v0.265.0. A repo that
+    // already has a CLAUDE.md never receives the template's — so the Quickstart layer, which is the
+    // ONLY place `coder`, `mentor-founder` and `prompt-coach` are named, never lands. Three of the
+    // four day-one agents shipped into the repo and were named nowhere, which is the exact condition
+    // `check-manifests` fails a release for ("it will never be invoked"). That gate reads the
+    // TEMPLATE; nothing read the ADOPTED RESULT, so the rule held for `boss new` and quietly did not
+    // for `boss adopt` — on the path that is most people's first contact with BOSS.
+    //
+    // Derived from the manifests, never typed: this block cannot drift from what was installed.
+    const roster = [...new Set(chain.flatMap((s) => readStageManifest(s).agents || []))];
     appendClaudeBlock('adopt', targetDir,
       `@AGENTS.md\n\n` +
       `## BOSS — adopted ${stageVars(name, stageId, manifest.name).DATE}\n\n` +
       `This repo was adopted into BOSS at **${manifest.name}** mode (non-destructively — your files were untouched).\n` +
-      `Host-neutral working rules are imported from \`@AGENTS.md\` above. New: \`.claude/skills/\` + \`.claude/agents/\` for this mode, a conscience hook, and \`docs/\` capture surfaces.\n` +
-      `Run **\`/welcome\`** to orient, **\`/boss\`** to spin up an idea, or **\`boss map\`** to see what's available.\n` +
+      `Host-neutral working rules are imported from \`@AGENTS.md\` above. New: \`.claude/skills/\` + \`.claude/agents/\` for this mode, a conscience hook, and \`docs/\` capture surfaces.\n\n` +
+      `**Start with \`/read-repo\`** — it reads what you've actually built and says where you stand, which is the useful first thing to know about a repo that already exists. Then \`/welcome\` if you want the tour, and \`boss map\` for everything available.\n\n` +
+      `**Agents you can call by name:** ${roster.map((a) => `\`${a}\``).join(', ')}. \`boss map\` lists the skills.\n\n` +
       `Grow ceremony as the project earns it: \`boss unlock <mode>\`.`);
   }
 
@@ -496,7 +507,7 @@ function printBuiltAndSeam(projectDir, stamp) {
 // The orientation core of `boss status` (EVID-001): what you're building right now,
 // and that you're making headway. Reads the same board projection so status, board,
 // and insights all agree on "in flight." Prints nothing it can't derive honestly.
-function printFocusAndHeadway(projectDir) {
+function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
   let cards;
   try { ({ cards } = collectBoard(projectDir)); } catch { return; }
   const { finish, start, pressure } = computeNext(cards);
@@ -516,6 +527,13 @@ function printFocusAndHeadway(projectDir) {
     console.log(`    ▸ ${bold('Ready to build:')}  ${start[0].id} — ${start[0].title}   ${dim('→ /spec')}`);
   } else if (pressure.length) {
     console.log(`    ▸ ${bold('Next:')}            pressure-test ${pressure[0].id}   ${dim('→ /canvas')}`);
+  } else if (adopted) {
+    // An empty board in an ADOPTED repo is the expected state, not a prompt. The old line told
+    // someone who had just handed BOSS a shipped app with tests, CI and a deploy config to go
+    // "capture an idea" — one line above `Already built: a deploy config · the landing page`, so
+    // the same screen both saw their work and asked them to start. What they have not done is let
+    // BOSS read it.
+    console.log(`    ▸ ${dim('Nothing captured yet — expected here.')} ${bold('/read-repo')} ${dim('reads what you have built and says where you stand.')}`);
   } else {
     console.log(`    ▸ ${dim('Nothing in flight yet — /boss or /idea to capture an idea.')}`);
   }
@@ -554,7 +572,7 @@ async function cmdStatus(args) {
   // silently if the board can't be read.
   console.log(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
   console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
-  printFocusAndHeadway(process.cwd());
+  printFocusAndHeadway(process.cwd(), { adopted: stamp.adopted === true });
   // Ticket headway is what printFocusAndHeadway just rendered (the last shipped FEAT).
   // This is the other half, and the half that can be wrong: what the work actually
   // taught you. Shipping is motion; evidence is the part that moves the bet.

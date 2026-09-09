@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.264.0" />
+<meta name="generator" content="BOSS 0.265.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -75,6 +75,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.265.0</span><span class="when">2026-09-09</span></div>
+        <p>If you brought BOSS into a repo you'd already built, three of the four day-one agents — <code>coder</code>, <code>mentor-founder</code>, <code>prompt-coach</code> — were installed and named nowhere, so nothing could ever call them. Fixed. <code>boss adopt</code> now also points you at <code>/read-repo</code> first in the file Claude reads, and <code>boss status</code> stopped telling a shipped app to go capture an idea.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.264.0</span><span class="when">2026-09-09</span></div>
         <p>BOSS's own decision records are now in the repo — <code>docs/decisions/</code>, 16 of them, the reasoning behind the licence, the telos, the agent roster, why the conscience never pings you when you're away. The ids the changelog has been citing for a year now resolve.</p>
       </li>
@@ -118,10 +122,6 @@
         <div class="rel"><span class="ver">v0.250.0</span><span class="when">2026-09-08</span></div>
         <p>if you installed BOSS from npm or Homebrew, <code>/boss-learn</code>'s &quot;promote this UP into BOSS&quot; half <strong>cannot run</strong> — it needs a source checkout to bump a VERSION and write a CHANGELOG, and the skill never told you. It does now, and tells you what to do instead. <code>/extract</code> was also naming the wrong environment variable (<code>$BOSS_DEV</code>; nothing reads it — it is <code>$BOSS_SRC</code>).</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.247.0</span><span class="when">2026-09-08</span></div>
-        <p>if you link an idea to a feature, <code>boss records</code> now checks the link reads the same from both records — not just that both exist.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -151,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.264.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.265.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

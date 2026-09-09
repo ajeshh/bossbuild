@@ -16,6 +16,58 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.265.0 — 2026-09-09
+
+> **For you:** If you brought BOSS into a repo you'd already built, three of the four day-one agents
+> — `coder`, `mentor-founder`, `prompt-coach` — were installed and named nowhere, so nothing could
+> ever call them. Fixed. `boss adopt` now also points you at `/read-repo` first in the file Claude
+> reads, and `boss status` stopped telling a shipped app to go capture an idea.
+
+**`boss adopt` walked against six real-shaped repos, because v0.259.0 fixed where adopt POINTS and
+never checked what adopt DOES.**
+
+A Next.js app with tests, CI and a deploy config · a half-finished side project · a Python CLI · a
+monorepo · a repo that already had `CLAUDE.md` + `AGENTS.md` · a nearly-empty one. Detection was
+right in all six (MVP for the first, third and fourth; Quickstart for the other two) and the
+mechanics were **better than expected and should not be touched**: a founder's own `permissions`,
+`env`, their own `UserPromptSubmit` hook and their own skill all survived the merge, with BOSS's
+29-rule secrets deny-list added alongside. **Every finding was orientation — who BOSS thinks it is
+talking to — and none was state that failed to move.**
+
+### 🔴 Three of the four day-one agents were invocable by nothing
+
+`check-manifests` enforces a real rule: an agent a stage ships must be **named** in that stage's
+CLAUDE.md contribution, *"otherwise it will never be invoked."* It reads the **template**.
+
+A repo that already has a `CLAUDE.md` never receives the template's — correctly, it is theirs. So
+the Quickstart layer never lands, and that layer is the **only** place `coder`, `mentor-founder` and
+`prompt-coach` are named. All three shipped into the repo and were addressable by nobody.
+`mentor-founder` is the venture mentor, seated from day one, and it was the most invisible of them.
+
+**The gate held for `boss new` and quietly did not for `boss adopt`** — on the path v0.259.0 had
+just declared the front door. The adopt block now names the roster, derived from the manifests so it
+cannot drift from what was installed, and `test/adopt.test.js` asserts it against the **adopted
+result** rather than the template. That test was checked by removing the fix and watching it fail.
+
+### Two more, both the same shape: the surfaces disagreed about who was standing there
+
+- **The adopt block said *"Run `/welcome` to orient, `/boss` to spin up an idea."*** v0.259.0 made
+  `/read-repo` the adopted front door in the terminal and in `/welcome` itself, and missed the one
+  file Claude reads on every turn. The terminal and the always-loaded file were giving different
+  first steps.
+- **`boss status` told a shipped app to go capture an idea.** *"Nothing in flight yet — /boss or
+  /idea to capture an idea"* printed one line above *"Already built: a deploy config · the landing
+  page"* — the same screen seeing their work and asking them to start. An empty board in an adopted
+  repo is the expected state, not a prompt; it now says so and points at `/read-repo`. Scoped to
+  `adopted`, and a test asserts a fresh `boss new` project still gets the capture prompt.
+
+### What the walk confirmed and did not fix
+
+`boss map` listed **36 verbs at once** in the adopted MVP repos — IDEA-084's wall, now measured on
+the real path rather than counted off the manifests. Left alone deliberately: what `boss unlock`
+installs is the least reversible thing BOSS does to a founder's repo, and that record's own rule is
+to measure how many projects use the AI-native set before splitting anything.
+
 ## 0.264.0 — 2026-09-09
 
 > **For you:** BOSS's own decision records are now in the repo — `docs/decisions/`, 16 of them, the
