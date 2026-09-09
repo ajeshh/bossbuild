@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.257.0" />
+<meta name="generator" content="BOSS 0.258.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -75,6 +75,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.258.0</span><span class="when">2026-09-08</span></div>
+        <p>Quickstart's arc now has the step it was missing — <strong>talk to one person</strong> — and BOSS stopped charging you ~6,400 tokens of its own prose on every single turn. <code>CLAUDE.md</code> and <code>AGENTS.md</code> are 41% smaller, and the MVP block no longer lists skills that <code>boss map</code> renders live anyway.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.257.0</span><span class="when">2026-09-08</span></div>
         <p><code>/triage</code> is now <strong><code>/idea</code></strong> and <code>/comprehend</code> is now <strong><code>/read-repo</code></strong> — same skills, names that say what they do. <code>boss sync</code> will offer the swap and tell you why. <code>boss map</code> also stopped opening a fresh project with four verbs about BOSS itself; they fold behind one line (<code>boss map --all</code> opens it).</p>
       </li>
@@ -118,10 +122,6 @@
         <div class="rel"><span class="ver">v0.242.0</span><span class="when">2026-09-08</span></div>
         <p><code>boss board</code> now flags stalled <em>ideas</em>, not just stalled specs, and tells you whether it is counting time <strong>in build</strong> (your <code>building_since:</code>) or time <strong>untouched</strong> (the repo's) — different claims, never blurred. <code>/revalidate</code> and <code>/sunset</code> write statuses the rest of BOSS can actually read.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.241.0</span><span class="when">2026-09-08</span></div>
-        <p><code>boss help hooks</code> now lists all six optional hooks, and says which mode each arrives in. Two of them were previously findable only by reading a skill's prose — including <code>schema-guard</code>, which catches a database table created without row-level security while the migration is still being written.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -151,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.257.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.258.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

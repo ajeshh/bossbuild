@@ -77,8 +77,12 @@ export function loadModes() {
         //
         // Each rung's loop is TAKEN FROM ITS OWN AUTHORED WORKING RULES, never invented here —
         // MVP's from `claude-append.md` rule 5 ("open → spec → build → smoke → log → close"),
-        // Quickstart's from its CLAUDE.md ("capture → keep adding → canvas"), with `/evidence` as
-        // the step `/canvas` hands its one-week experiment to. Empty = no declared loop, render
+        // Quickstart's from its CLAUDE.md ("capture → talk to one person → pressure-test"), with
+        // `/evidence` as the step `/canvas` hands its one-week experiment to. `/interview` joined
+        // the sequence in v0.258.0: Quickstart shipped the two verbs that turn a conversation into
+        // a graded signal and narrated an arc that never told anyone to have one, so the rung's
+        // loop went capture → canvas — pressure-testing an idea against nothing but the founder.
+        // Empty = no declared loop, render
         // alphabetically as before; V1 and Scale ship 2 skills and 1, where ordering earns nothing.
         coreLoop: m.coreLoop || [],
         // Skills whose moment only arrives once something is LIVE — the "After you ship" arc

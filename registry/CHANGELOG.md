@@ -9,6 +9,58 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.258.0 — 2026-09-08
+
+> **For you:** Quickstart's arc now has the step it was missing — **talk to one person** — and BOSS
+> stopped charging you ~6,400 tokens of its own prose on every single turn. `CLAUDE.md` and
+> `AGENTS.md` are 41% smaller, and the MVP block no longer lists skills that `boss map` renders
+> live anyway.
+
+**Two findings from the same read: what BOSS's own always-on files SAY, and what they COST.**
+
+### The arc never told anyone to talk to a customer
+
+Quickstart's narrated loop was *capture → keep adding → canvas → unlock MVP*. Four steps, and not
+one of them puts the founder in front of another human. The rung **ships `/interview` and
+`/evidence`** — prep a Mom-Test call, debrief the notes into a graded `EVID-NNN` — and the arc
+walked straight past both, which means the canvas got pressure-tested against nothing but the
+founder's own head. That is the exact failure this repo has caught in itself twice (persona signal
+read as demand signal; a riskiest assumption "built around" rather than tested).
+
+`/interview` joins `coreLoop`, and the arc is now **capture → talk to one person → pressure-test →
+unlock MVP**, with step 2 named as the one that pays for the others. Composition, not surface: both
+verbs already shipped, nothing new was added, nothing was written that `boss map` won't render.
+
+### The context tax nobody had measured
+
+Every line of `CLAUDE.md` + `AGENTS.md` is re-read on **every turn**, ahead of whatever the founder
+wrote about their own project. The bill:
+
+| | before | after |
+|---|---|---|
+| Quickstart (`CLAUDE.md` + `AGENTS.md`) | 113 lines / 10.7 KB | **98 lines / 6.7 KB** |
+| MVP (+ `claude-append.md`) | 25.4 KB ≈ 6.4k tokens **per turn** | **14.9 KB ≈ 3.7k** |
+
+What went, and why none of it is a loss:
+
+- **The MVP inventory — ~100 lines listing every skill, agent and loop with its version history.**
+  `boss map` renders that from the manifest, live, in loop order. The hand-typed copy could only
+  ever drift from it — and did.
+- **Quickstart's 16-skill prose bullet.** Same reason. The file now points at `boss map` and says so.
+- **The "three questions" block**, restated in four lines with a pointer to `boss craft
+  seed-to-scale` — which is the canonical version, 149 lines, with the worked examples.
+- **A duplicated agent roster** (the same four agents in a bullet *and* a table).
+
+**What the gate saved from the cut, correctly:** deleting MVP's agent roster tripped
+`check-manifests` — *"agent 'tester' ships but is named nowhere in this stage's CLAUDE.md
+contribution — it will never be invoked."* A compact roster went back. The rule is real: an agent
+no file names is an agent nothing calls.
+
+One substantive edit rather than a compression: the trunk-based bullet cited **DORA's ~2.3× elite
+multiplier**. DORA's primary is a gated PDF, so every figure in circulation is second-hand — this
+repo's own standing rule is to cite the framing and never the number. The framing stayed; the
+multiplier went.
+
 ## 0.257.0 — 2026-09-08
 
 > **For you:** `/triage` is now **`/idea`** and `/comprehend` is now **`/read-repo`** — same skills,

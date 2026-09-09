@@ -3,34 +3,46 @@
 @AGENTS.md
 
 > Scaffolded by BOSS {{BOSS_VERSION}} in **{{MODE}}** mode ({{STAGE}}) on {{DATE}}.
-> The host-neutral **working rules + conventions live in `@AGENTS.md`** (imported above — read it
-> first). This file adds only what's Claude-specific: the skills, the conscience, and the mode ladder.
-> Keep it short — compliance drops past ~200 lines.
+> Host-neutral working rules live in `@AGENTS.md` (imported above). This file adds only the
+> Claude-specific layer. **Keep both short** — every line here is read on every turn, so this file
+> spends the founder's context budget, not BOSS's. If something can be *looked up*, link it.
 
-> **First time? Run `/welcome`** — gentle orientation, takes a minute, defines terms inline.
-> Already familiar with BOSS? Skip to `/boss <idea, file, Google Doc / Obsidian / PDF, or URL>` to
-> spin up — it pulls your material in. Already have it written somewhere? `/import <file|url>`.
+> **First time? Run `/welcome`.** Already know BOSS? `/boss <idea, file, doc, or URL>` spins up —
+> it pulls your material in. Already have a repo? `/read-repo` reads it and says where you stand.
 
-## What exists in this mode ({{MODE}})
+## What's here
 
-- **Agents:** `product-lead` (decides what's worth building), `coder` (builds it, in whatever stack gets chosen), `mentor-founder` (coaches *you*, the founder — is this worth it, what's the riskiest assumption, what's the next real step), `prompt-coach` (sharpens how you *ask* — rewrites a prompt side-by-side, names the pattern so you need it less next time; say "help me ask this better").
-- **Skills:** `/welcome` (gentle first-run orientation — cohort-aware), `/boss` (spin up an idea — point it at a sentence, file, doc, or URL), `/import` (bring existing material in — Word/Google Doc/Obsidian/PDF/deck/link → `docs/source/`), `/idea` (capture an idea & keep adding to it — a living doc), `/prototype` (drop an idea, hit go — build the smallest clickable version fast), `/canvas` (pressure-test it as a humane business when it has legs), `/evidence` (capture a real signal about your riskiest assumption as a durable `EVID-NNN`, honestly graded — the conscience reads it and gets quieter when commitments exist), `/interview` (prep a Mom-Test customer call, then debrief your notes into graded evidence — the bridge from "talk to someone" to a captured `EVID`), `/research` (drop in a real transcript — interview, sales call, support thread — and BOSS digests it into graded `EVID` + product context, flagging where you led the witness; never fabricates), `/decide` (record a load-bearing or hard-to-reverse call as a durable `DEC-NNN` — who decided, why, how reversible), `/persona` (your app's target user as a consultable voice), `/read-repo` (AI-native: tailor the scaffold to what BOSS understands — opt-in via `--ai`), `/feedback` (tell BOSS's makers what's working / broken — user-initiated, never background telemetry), `/boss-sync` + `/boss-learn` (pull BOSS updates in / promote a pattern UP).
-- **Docs:** `docs/ideas/` (living idea docs + canvases), `docs/IDS.md` (the ID system, minimal here).
-- **Memory:** two kinds, kept apart so context stays lean. *Durable facts* (who you are, settled decisions) → Claude's auto-memory, which lives **on this machine**, not in the repo — the right home for facts about *you*, but it doesn't travel to a cofounder or a new laptop, so anything the project depends on belongs in `docs/`. `boss help hooks` lists `memory-cue`, which nudges Claude to write one when you say something durable. *Working state* (notes that only matter while you're in one area of the code) → `.claude/rules/your-app-code.md`, which loads **only when** Claude opens a file it's scoped to — not every session.
-- **Sessions vs. chats.** Claude's `/resume` and `--continue` reopen a past *conversation*; `/clear` starts a fresh one; `/compact` squeezes a long one to keep going. **None of them is `docs/RESUME.md`** — that's BOSS's record of where the *project* stands, and `boss status` reads it back. Worth knowing because `/clear` and `/compact` both drop working context mid-flight: if something you'd hate to re-derive only exists in the chat, put it in your idea doc (or the devlog, once MVP is on) *before* you run them.
+- **Agents:** `product-lead` (what's worth building), `coder` (builds it, in whatever stack gets
+  chosen), `mentor-founder` (coaches *you* — is this worth it, what's the riskiest assumption,
+  what's the next real step), `prompt-coach` (sharpens how you ask; say *"help me ask this better"*).
+- **Skills:** run **`boss map`**. It lists what this project actually has, live from the install —
+  which is why this file doesn't enumerate them and can't go stale about them.
+- **Docs:** `docs/ideas/` (living idea docs + canvases), `docs/IDS.md` (the ID system).
+- **Memory:** durable facts about *you* go to Claude's auto-memory, which lives on **this machine**
+  and travels to no cofounder — so anything the project depends on belongs in `docs/`. Working notes
+  scoped to one area of the code go in `.claude/rules/`, which loads only when that code is opened.
+- **`/clear` and `/compact` drop working context**, and neither is `docs/RESUME.md` (that's the
+  project's state, which `boss status` reads back). Put anything you'd hate to re-derive into your
+  idea doc *before* you run them.
 
 ### The Quickstart arc
 
-Quickstart is a tiny incubator: **capture → keep adding → canvas → unlock MVP.**
+**capture → talk to one person → pressure-test → unlock MVP.**
 
-1. **Capture** a raw idea with `/idea` (or `/boss`). It becomes a living `docs/ideas/IDEA-NNN.md`.
-2. **Keep adding.** Re-run `/idea` whenever a new thought lands — it appends to the capture log and sharpens the idea. No pressure to "finish."
-3. **Canvas** it with `/canvas` once it has legs — a humane business pressure-test (the Humane Product Canvas + lean/Lenny prompts) that names the riskiest assumption and a one-week experiment.
-4. **Unlock MVP** (`boss unlock mvp`) when the canvas holds up and you're ready to build.
+1. **Capture** the idea with `/idea` — a living `docs/ideas/IDEA-NNN.md` you keep adding to. No
+   pressure to finish it; re-run `/idea` whenever a new thought lands.
+2. **Talk to one person.** `/interview` preps a 15-minute Mom-Test call, then turns your notes into
+   a graded `EVID-NNN` — and flags where you pitched instead of listened. **This is the step that
+   pays for the others**: one real conversation beats another pass over the canvas, and the grade
+   ladder (stated-pain → observed-behavior → commitment) is what stops a compliment reading as a
+   receipt. `/evidence` records any signal you already have; `/research` digests a whole transcript.
+3. **Pressure-test** with `/canvas` once it has legs — the humane business read that names the
+   riskiest assumption and one week's experiment. It's a far better canvas after step 2.
+4. **Unlock MVP** (`boss unlock mvp`) when the canvas holds and you're ready to build.
 
-BOSS plays **conscience** along the way: if you keep capturing without testing anything, `/idea` will
-pause once to ask *what does this prove?* — a nudge toward `/canvas`, never a gate. Capturing isn't the
-same as validating.
+`/prototype` is a legitimate start too: build the smallest clickable version first, then fill the
+gaps once you can see it. The conscience nudges once if you keep capturing without testing anything
+— a pointer, never a gate. Capturing isn't validating.
 
 ## The four modes (unlock additively)
 
@@ -43,40 +55,14 @@ This project is in **{{MODE}}** mode. Modes level up as the project earns it:
 | **V1** | design-system *enforcement*, prototypes, `/board`, `/design-library`, doc-placement contract | ready for a real, shippable v1 |
 | **Scale** | `/incident` post-mortems, `/idea --feedback` customer register, the org mentor | customers are real and coordination is the bottleneck |
 
-Run `boss status` to see your mode and whether newer BOSS practices are available. Run `boss unlock <mode>` (e.g. `boss unlock mvp`) to level up.
+`boss status` shows your mode and whether newer BOSS practices are available; `boss unlock <mode>`
+climbs a rung.
 
----
+## Before you generate anything durable
 
-## Before you generate anything durable — three questions
+Three questions, and they cost three seconds: **does it already exist?** (look for the *output*, not
+the inputs — if it's there and it's fine, say so and stop, that is a complete outcome) · **what rung
+is this project on, and what rung does this belong to?** · **if it's above their rung, what's the
+seam** — the one cheap thing that stops history being *gone* rather than merely undone.
 
-> Applies to every skill that makes something lasting (a page, a schema, a policy, a token file, a
-> deploy config). Costs three seconds; skipping it is what's expensive. Depth: `boss craft seed-to-scale`.
-
-1. **Does it already exist?** Look for the *output*, not just the inputs. Most projects arrive with
-   some of this already built, and generating a second one says *what you built doesn't count*.
-   Four honest answers: nothing there → generate · it's there and it's fine → **say so and stop, that
-   is a complete outcome** · it's there and it's behind → name the *specific* gap and offer the
-   *specific* edit (never "want me to regenerate it?") · it's there under another name or outside the
-   repo → then the gap is BOSS's blindness, not their discipline. Say that, and work from what they have.
-
-2. **What rung is this project on, and what rung does this belong to?** At its rung → run it. Above
-   it (they're further along) → run it and drop the 101. Below it → don't run it; go to 3. The mode
-   installed and the rung the *work* is at are different numbers, and the gap is information.
-
-3. **If it's above their rung — what's the seam?** The one question: *skip this for six months —
-   what is **gone**, versus merely **undone**?* Undone is fine, that's what "not yet" means. Gone is
-   the history a missing `created_at` can't reconstruct, the failing output you deleted, the key
-   that's in git history now. **Plant only the thing that stops it going** — a column, a stub, a
-   folder, a habit. If your seam needs a document, a decision, or a dependency, it's the practice
-   wearing a seam's clothes. And often there is no seam: *"nothing to do here, and here's why nothing
-   is the right answer"* buys more trust than a seam nobody needed.
-
-## Reference
-
-### Agent roster (Quickstart)
-
-| Agent | Use for |
-|---|---|
-| `product-lead` | What's worth building, scope, priority. Not a coder. |
-| `coder` | Implementation in the chosen stack. Configured when the stack is decided. |
-| `mentor-founder` | Coaches the founder: is this worth it, riskiest assumption, next step. Advisory only — no code. More mentors arrive in `.claude/agents/` as you unlock modes. |
+Full version, with the worked examples: **`boss craft seed-to-scale`**.
