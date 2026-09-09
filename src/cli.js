@@ -15,6 +15,7 @@ import { planRemove, applyRemove, machineState, removeMachineState } from './rem
 import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
+import { recap } from './recap.js';
 import { map, renderLadder } from './map.js';
 import { modeWord, loadModes } from './modes.js';
 import { brain } from './brain.js';
@@ -593,6 +594,19 @@ function justScaffolded(stamp) {
   const t = Date.parse(stamp.createdAt);
   if (Number.isNaN(t)) return false;
   return Date.now() - t < 24 * 60 * 60 * 1000;
+}
+
+// boss recap — what happened, from the records already written. See src/recap.js for why it is a
+// composition and not a new surface.
+function cmdRecap(args = []) {
+  const stamp = readStamp(process.cwd());
+  if (!stamp) return failNotAProject();
+  const flags = parseArgs(args);
+  recap(process.cwd(), stamp.name, {
+    markdown: args.includes('--md') || args.includes('--markdown'),
+    days: flags.days,
+    since: flags.since,
+  });
 }
 
 function cmdBoard(args = []) {
@@ -1283,7 +1297,7 @@ function failNotAProject() {
 // actually exists, never from a hand-kept copy of it.) Flags are excluded on purpose: `--help` is
 // not a plausible typo for a bare word, and suggesting it would be noise.
 const KNOWN_COMMANDS = [
-  'new', 'adopt', 'unlock', 'status', 'board', 'map', 'brain', 'insights', 'records', 'id',
+  'new', 'adopt', 'unlock', 'status', 'board', 'recap', 'map', 'brain', 'insights', 'records', 'id',
   'team', 'list', 'retire', 'credit', 'remove', 'uninstall', 'sync', 'learn', 'craft',
   'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'version', 'help',
 ];
@@ -1321,6 +1335,12 @@ const HELP = {
     what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. Pass an ID for one card in full, or --detail for a line under every card. Deferred and dropped work is folded into Parked — decided, not queued. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',
     examples: ['boss board', 'boss board --detail', 'boss board IDEA-004', 'boss board --next', 'boss board --html'],
     see: ['insights', 'brain'],
+  },
+  recap: {
+    usage: 'boss recap [--days N | --since YYYY-MM-DD] [--md]',
+    what: 'What happened, read back out of the records you already wrote — what landed, what you learned, what you decided, what is in flight, and whether any of it touched the riskiest assumption. Composed from the devlog, the record set and the canvas; it maintains nothing and invents nothing. --md prints paste-ready markdown for a weekly update. Empty sections print as empty, on purpose: a summary that can only go up is a comfort device.',
+    examples: ['boss recap', 'boss recap --days 14', 'boss recap --md'],
+    see: ['board', 'status'],
   },
   map: {
     usage: 'boss map [--next] [--all]',
@@ -1611,6 +1631,7 @@ function printHelp() {
 
   console.log(`\n  ${bold('Everyday')}`);
   console.log(row('boss board [--html]', 'what\'s in flight (captured → shipped); --html = kanban'));
+  console.log(row('boss recap [--md]', 'what happened this week, from your own records; --md to paste'));
   console.log(row('boss board <ID> | --detail', 'one card in full · a line under every card'));
   console.log(row('boss board --next|--blocked|--json', 'what to pick up · what\'s stuck · JSON (agent-readable)'));
   console.log(row('boss status [--conscience]', 'mode + pinned version + drift (--conscience: loop states)'));
@@ -1714,6 +1735,7 @@ export async function run(argv) {
     case 'unlock': return cmdUnlock(args);
     case 'status': return cmdStatus(args);
     case 'board': return cmdBoard(args);
+    case 'recap': return cmdRecap(args);
     case 'map': return cmdMap(args);
     case 'brain': return cmdBrain(args);
     case 'insights': return cmdInsights();

@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.259.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.260.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -20,6 +20,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 | `boss map` | live cheatsheet: where you are + what’s one unlock away |
 | `boss status [--conscience]` | mode / pinned version / drift (+ loop states) |
 | `boss board` | what’s in flight (captured → shipped) |
+| `boss recap [--md]` | what happened this week, read back out of your own records |
 | `boss id [TYPE]` | the next free record number — computed, never counted by hand |
 | `boss records` | check the record set: duplicate IDs, off-vocabulary status, broken promotions |
 | `boss unlock <mode>` | climb a rung: quickstart → mvp → v1 → scale |

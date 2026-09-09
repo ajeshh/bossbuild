@@ -9,6 +9,54 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.260.0 — 2026-09-08
+
+> **For you:** **`boss recap`** — what happened this week, read back out of the records you already
+> wrote: what landed, what you learned, what you decided, what's in flight, and whether any of it
+> touched your riskiest assumption. `boss recap --md` prints it as markdown you can paste into a
+> weekly update.
+
+**BOSS produced nothing a founder could show anyone — including themselves.**
+
+Every surface answered a different question. `boss status`: *where am I.* `boss board`: *what's in
+flight.* `boss map`: *what can I run.* **Nothing answered *what happened*** — the question a founder
+gets asked every week by whoever they answer to, and the one they were re-deriving by scrolling the
+devlog.
+
+The deeper version of the same gap: `/log`, `/close`, `/decide` and `/evidence` each write a durable
+record, and **the sum of them was never rendered anywhere a person could paste.** A tool whose only
+visible output is a nudge that fires rarely and silence the rest of the time gives its user nothing
+to show. Sections: **Landed · Learned · Decided · Started · In flight · The bet.**
+
+### It is a composition, and the mandate is why
+
+[[EVID-001]]'s standing instruction is *compose and **SUBTRACT** — never add another skill*, and the
+founder's own stated fear is bloat. So: **no new skill, no new loop, no new record type, nothing to
+maintain.** Every line is read back out of `docs/devlog.md`, the record set, the board's columns and
+the canvas's riskiest assumption — the same readers `boss board` and the conscience already use, so
+the surfaces cannot disagree about what a bet is or when it was named.
+
+### The anti-flattery rule, applied where it is hardest
+
+A weekly summary is the most tempting place in the product to invent momentum. So it carries none of
+the usual instruments: **no streak, no percentage, no total-only count, no "you're on a roll."**
+
+- **Empty sections print as empty.** A week where nothing shipped prints as a week where nothing
+  shipped. Hiding the row is how a summary becomes a comfort device.
+- **`The bet` prints whether or not the answer flatters** — the riskiest assumption, and then
+  whether anything captured this week actually tested it. Run against BOSS's own repo it says
+  *"Nothing this week tested it."* That is the intended behaviour, on its author, first.
+- **A record git cannot date is reported, not dropped.** On BOSS's own tree that is 82 of them
+  (`docs/ideas/` is gitignored here) — a fact worth stating, because a window that silently
+  excludes what it cannot see reports a clean empty week when the truth is *I could not tell*.
+  Same failure shape as `check:site`'s citation gauge: forgetting to file something must never
+  make the number look better.
+
+One thing the first dogfood run caught: the assumption line is markdown-hard-wrapped in a real
+canvas, and reading only the matched line truncated BOSS's own bet mid-clause. It now reads the
+continuation, and clips at a word boundary with the cut marked — an unmarked truncation in a
+paste-ready summary misquotes the founder's own words.
+
 ## 0.259.0 — 2026-09-08
 
 > **For you:** If you brought BOSS into a repo you'd already built, `/read-repo` is now the first

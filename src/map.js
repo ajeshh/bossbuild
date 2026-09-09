@@ -162,6 +162,7 @@ export function renderMap(projectDir, stamp, opts = {}) {
   // These are `boss …` shell commands (except /boss-sync, which runs in Claude).
   lines.push(`  ${bold('Anytime')}  ${dim('— boss … commands, run in your terminal')}`);
   lines.push(`    boss board [--html]              ${dim('what\'s in flight (captured → shipped); --html = visual kanban')}`);
+  lines.push(`    boss recap [--md]                ${dim('what happened this week, from your own records')}`);
   lines.push(`    boss brain                       ${dim('the conscience\'s read on this venture')}`);
   lines.push(`    boss insights                    ${dim('how far your ventures have gotten (local)')}`);
   lines.push(`    boss team [add @user]            ${dim('who\'s on the venture — add a cofounder (solo by default)')}`);
