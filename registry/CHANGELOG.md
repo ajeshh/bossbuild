@@ -9,6 +9,62 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.254.0 — 2026-09-08
+
+**`docs/MENTORS.md` — the roster doc `CLAUDE.md` names as the reference for BOSS's two agent classes
+— had FOUR of nine rows on the wrong rung, all from one release, for 64 releases. The count check
+beside it passed the whole time.**
+
+[[DEC-005]]/[[DEC-006]] (v0.189.0) merged `mentor-fundraising` and `mentor-pitch` into
+`mentor-capital`, moved `mentor-capital` **down** to MVP, and moved `mentor-hiring` **up** to Scale.
+The table still said all four arrived at V1.
+
+| row | table said | manifests say |
+|---|---|---|
+| `mentor-capital` | V1 | **MVP** |
+| `mentor-hiring` | V1 | **Scale** |
+| `mentor-fundraising` | V1 | **retired — ships nowhere** |
+| `mentor-pitch` | V1 | **retired — ships nowhere** |
+
+The artifact table below it still routed the pitch deck and the data room to the two retired agents.
+Both now point at `mentor-capital`, which is where that remit actually went.
+
+### 🔑 Why `check:roster` read green through all of it
+
+It validates a **number** next to a roster noun — *"6 mentors"*, *"eight advisors"* — against the
+manifests. **The mentor count never changed.** Only which rung each one sits on did.
+
+> *A checker that validates the count and not the assignment reads green through a re-runging.*
+
+### The stated limit was right about the hard half and quietly covered the easy half
+
+`check-roster-claims.js` has always carried an honest *"WHAT IT DOES NOT CHECK"* section: prose that
+**enumerates** a roster without counting it is unguarded, because catching *"architect, GTM and
+cofounder at MVP"* needs either a second word list — *"the thing this file refuses to become"* — or
+judgment about whether a bare word like "pitch" is naming an agent or just being English.
+
+**That argument is correct about prose, and it was covering the structured case too.** A markdown
+table row pairing a backticked agent name with a rung is not ambiguous English: the names come off
+disk (same as `check-refs` class 4), the rung is one of four known words, and the manifests are the
+truth. No vocabulary to maintain, no judgment to make. Now checked.
+
+⚠️ **A limit worth re-reading periodically for exactly this**: a reason that is sound for the hard
+case can silently annex the easy one next to it.
+
+### The bug in the check, caught by planting
+
+`|a|b|c|` splits to `['', 'a', 'b', 'c', '']` — the leading and trailing empties are the row's own
+pipes, not cells. Reading the last cell therefore read `''`, matched no rung word, and **the first
+cut passed the exact four-row defect it was written for.** Restoring the real prior file with
+`git show HEAD:<path>` is what surfaced it; the fix trims the row's own pipes before indexing.
+
+### Also
+
+- **`docs/RESUME.md`: second archive pass of the day** — 621 → 437 lines, the v0.246.0–v0.250.0
+  windows moved out (all committed and pushed). Their one live thread is in the header where it
+  belongs: **npm is eight releases behind, so every founder-facing fix of the last six releases is
+  unreachable by the people it was written for.**
+
 ## 0.253.0 — 2026-09-08
 
 > **For you:** `boss idd` used to answer *"Did you mean **boss new**?"* — the command that creates a

@@ -229,7 +229,62 @@ if (unverifiable.length) {
   if (bare) console.log(`  ${warn(`${bare} of ${unverifiable.length} are unguarded in release.js too — add the phrasing there.`)}`);
 }
 
-console.log(`\n  ${dim('Counts only. Prose that ENUMERATES without counting is still unguarded — see the header.')}\n`);
+// --- THIRD CLASS (v0.254.0) — a roster TABLE that assigns a rung ------------------------------
+//
+// The header above declines the enumeration half for a good reason: catching *"architect, GTM and
+// cofounder at MVP"* in prose needs either a second word list or judgment about whether "pitch" is
+// naming an agent or just being English. That argument is right about PROSE — and it was quietly
+// covering the structured case too, which needs neither.
+//
+// A markdown table row that pairs a backticked agent name with a rung is not ambiguous English. The
+// names come off disk (same as `check-refs` class 4), the rung is one of four known words, and the
+// truth is in the manifests. No vocabulary to maintain, no judgment to make.
+//
+// WHAT THE GAP COST: `docs/MENTORS.md`'s roster table — the doc `CLAUDE.md` names as the reference
+// for BOSS's two agent classes — had **four of nine rows wrong**, all from one release.
+// [[DEC-005]]/[[DEC-006]] (v0.189.0) merged `mentor-fundraising` + `mentor-pitch` into
+// `mentor-capital`, moved `mentor-capital` DOWN to MVP and `mentor-hiring` UP to Scale. The table
+// still said all four arrived at V1, **64 releases later**. The count check beside it passed the
+// whole time, because the number of mentors never changed — only which rung each one sits on.
+// *A checker that validates the count and not the assignment reads green through a re-runging.*
+const RUNG_WORD = { quickstart: 'L0-quickstart', mvp: 'L1-mvp', v1: 'L2-v1', scale: 'L3-scale' };
+const agentRung = {};
+for (const s of readdirSync(join(BOSS_ROOT, 'stages'))) {
+  const mf = join(BOSS_ROOT, 'stages', s, 'manifest.json');
+  if (!existsSync(mf)) continue;
+  for (const a of JSON.parse(readFileSync(mf, 'utf8')).agents || []) agentRung[a] = s;
+}
+const rungFindings = [];
+for (const rel of ['docs/MENTORS.md']) {
+  const abs = join(BOSS_ROOT, rel);
+  if (!existsSync(abs)) continue;
+  readFileSync(abs, 'utf8').split('\n').forEach((line, i) => {
+    if (!line.startsWith('|')) return;
+    // `|a|b|c|` splits to ['', 'a', 'b', 'c', ''] — the leading and trailing empties are the row's
+    // own pipes, not cells. Reading `cells[last]` therefore read '' and matched nothing, so the
+    // first cut of this check passed the exact four-row defect it was written for. Trim them.
+    const cells = line.split('|').map((c) => c.trim()).filter((c, i, a) => !(c === '' && (i === 0 || i === a.length - 1)));
+    // A row states a rung only if its LAST cell is one of the four rung words. Anything else —
+    // "*nowhere*", a sentence, a header — is not a claim this can check, and is left alone.
+    const rung = RUNG_WORD[(cells[cells.length - 1] || '').replace(/\*|_/g, '').toLowerCase()];
+    if (!rung) return;
+    const name = (cells[0] || '').match(/`([a-z][a-z0-9-]*)`/)?.[1];
+    if (!name) return;
+    if (!(name in agentRung)) {
+      rungFindings.push([`${rel}:${i + 1}`, `\`${name}\` is assigned a rung, and ships at NO rung`]);
+      return;
+    }
+    if (agentRung[name] !== rung) {
+      rungFindings.push([`${rel}:${i + 1}`, `\`${name}\` — table says ${rung}, manifests say ${agentRung[name]}`]);
+    }
+  });
+}
+if (rungFindings.length) {
+  console.log(`\n  ${err(`${rungFindings.length} roster-table finding${rungFindings.length > 1 ? 's' : ''} — a hand-typed rung disagrees with the manifests.`)}\n`);
+  for (const [where, why] of rungFindings) console.log(`      ${where}\n        ${why}`);
+}
 
-const hard = findings.length + verifyFindings.length;
+console.log(`\n  ${dim('Counts and table rungs. Prose that ENUMERATES in a sentence is still unguarded — see the header.')}\n`);
+
+const hard = findings.length + verifyFindings.length + rungFindings.length;
 process.exit(hard && STRICT ? 1 : 0);
