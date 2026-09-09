@@ -122,7 +122,13 @@ function firstSentence(line) {
 }
 
 export function cardGist(text, fm = {}) {
-  if (fm.gist) return flatten(unquote(fm.gist));
+  // Same treatment as a prose-derived gist: first sentence, clamped at GIST_MAX. This used to
+  // return the whole field, and the asymmetry was invisible for one reason only — a FOLDED
+  // `gist: >` parsed to the literal ">" (1 char) and an inline one is short by convention. Once
+  // the parser learned block scalars (v0.269.0), IDEA-076's gist rendered NINE lines while
+  // IDEA-084 beside it was cut to one. A board is scannable or it is a document; one rule for
+  // both sources is what keeps it the former.
+  if (fm.gist) return firstSentence(flatten(unquote(fm.gist)));
 
   // Everything after the H1. Before it is frontmatter and the title itself.
   const h1 = text.search(/^#\s+/m);

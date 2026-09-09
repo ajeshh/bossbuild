@@ -18,11 +18,49 @@ export function frontmatter(text) {
   const m = String(text).match(/^---\n([\s\S]*?)\n---/);
   if (!m) return {};
   const out = {};
-  for (const line of m[1].split('\n')) {
+  const lines = m[1].split('\n');
+  for (let n = 0; n < lines.length; n++) {
+    const line = lines[n];
     const i = line.indexOf(':');
     if (i === -1) continue;
     const k = line.slice(0, i).trim();
-    if (k) out[k] = line.slice(i + 1).trim();
+    if (!k) continue;
+    const rest = line.slice(i + 1).trim();
+
+    // BLOCK SCALARS. Without this the parser took what followed the colon on the SAME line —
+    // which for `gist: >` is the literal string ">". Ten of BOSS's own records write a folded
+    // gist, and all ten rendered as ">" on `boss board`: the surface built to make ideas findable
+    // showed a punctuation mark instead of the idea. The same gap surfaced in check-backlog as
+    // `says "shipped" but ">" is NOT on disk`. One parser, two symptoms.
+    //
+    // `>` folds (line breaks become spaces, a blank line becomes a real break); `|` keeps them.
+    // Chomping indicators are accepted and ignored — every consumer here trims anyway, so the
+    // difference between clip/strip/keep is not observable. An explicit indentation indicator
+    // (`>2`) is not supported and is not used anywhere in BOSS's records.
+    const block = /^([>|])[-+]?$/.exec(rest);
+    if (block) {
+      const indent = line.length - line.trimStart().length;
+      const body = [];
+      while (n + 1 < lines.length) {
+        const next = lines[n + 1];
+        const isBlank = next.trim() === '';
+        const deeper = next.length - next.trimStart().length > indent;
+        if (!isBlank && !deeper) break;
+        body.push(next);
+        n++;
+      }
+      // Drop the common indent so a folded paragraph does not carry the block's own margin.
+      const margin = Math.min(...body.filter((l) => l.trim()).map((l) => l.length - l.trimStart().length), Infinity);
+      const rows = body.map((l) => (l.trim() ? l.slice(Number.isFinite(margin) ? margin : 0) : ''));
+      out[k] = block[1] === '|'
+        ? rows.join('\n').trim()
+        : rows.reduce((acc, row) => {
+          if (row === '') return acc + '\n';
+          return acc + (acc === '' || acc.endsWith('\n') ? '' : ' ') + row.trim();
+        }, '').trim();
+      continue;
+    }
+    out[k] = rest;
   }
   return out;
 }

@@ -16,6 +16,46 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.269.0 — 2026-09-09
+
+> **For you:** If you wrote a long `gist:` in an idea record using YAML's folded form
+> (`gist: >` with the text indented underneath), `boss board` showed a bare `>` where the idea
+> should be. Every record like that now reads correctly. Card gists are also clipped consistently
+> now, however they were written.
+
+**Found by looking at the board.** Ten of BOSS's own records — including IDEA-076, the
+highest-evidence record in the pool — rendered as a single `>` in the column built to make ideas
+findable.
+
+### One parser gap, two symptoms
+
+`frontmatter()` took whatever followed the colon **on the same line**, so `gist: >` parsed to the
+literal string `">"`. It had already surfaced once today wearing a different costume:
+`check-backlog` reporting *"says `shipped` but `>` is NOT on disk"* for a record whose `proof:` was
+folded. Same cause, different reader.
+
+`src/frontmatter.js` now understands block scalars: `>` folds (line breaks become spaces, a blank
+line stays a break), `|` keeps them, and chomping indicators (`>-`, `|+`) are accepted rather than
+read as content. Inline values, quotes, embedded colons and empty keys are all untouched.
+
+**Not consolidated with the hook lib's `yaml.js`, on purpose** — that one ships into a founder's
+repo and runs on every prompt, and its consumers read only inline fields (`grade`, `status`,
+`type`, `date`). The two-implementation seam is deliberate and documented; this was the reader with
+the damage.
+
+### The asymmetry the fix exposed
+
+With the parser fixed, IDEA-076's gist rendered **nine lines** while IDEA-084 beside it was cut to
+one. `cardGist` sent a prose-derived gist through `firstSentence` (first sentence, clamped at 200
+chars) and returned a frontmatter gist **whole** — no sentence cut, no clamp. That asymmetry was
+invisible for one reason only: a folded gist parsed to `">"`, one character, and an inline gist is
+short by convention. Both paths now get the same rule. **A board is scannable or it is a
+document.**
+
+### Also
+
+- 356 unit tests (was 350).
+
 ## 0.268.0 — 2026-09-09
 
 > **For you:** The design-system nudge could fire at high confidence on a project with no design
