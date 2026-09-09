@@ -19,7 +19,7 @@ is ready to `boss unlock mvp`.
 ## Frames — one set of answers, several ways to read them
 
 **A canvas is a set of answers, not a layout.** The Humane Product Canvas is the *default frame*, not
-the only one ([[DEC-004]]) — it was never meant to be, and became the sole spine by inheritance from
+the only one (DEC-004) — it was never meant to be, and became the sole spine by inheritance from
 a v0.4.0 release note rather than by decision. So the answers live in one place and you project them:
 
 | Frame | Reads as | Use when |
@@ -168,7 +168,7 @@ _How it shows up in a life, how people engage, how it sustains itself._
 
 > **These four are additive and mostly dormant.** They exist so the canvas can answer a conventional
 > reader (a Lean or BMC audience, an operator, an investor) without a second artifact — see
-> [[DEC-004]]. **Do not walk a founder through them at Quickstart.** Each carries the condition that
+> DEC-004. **Do not walk a founder through them at Quickstart.** Each carries the condition that
 > makes it live; until that condition holds, `_(not yet)_` is the honest answer and the canvas is not
 > less complete for it. The frame layer will formalise this gating; until then, judgement does.
 
@@ -273,7 +273,7 @@ place to sit; mark it Done only when it's genuinely earned, not as a box to tick
 - Humane-first. The Risks & Harms cell is not optional polish — surface real harm honestly, even when inconvenient.
 - **The frame never changes the required set.** Risks & Harms and Principles render in Lean and BMC
   too. Un-defaulting the *frame* is not un-defaulting the *ethics* — humane stopped being the only
-  frame and became the floor under all of them ([[DEC-004]]).
+  frame and became the floor under all of them (DEC-004).
 - **Switching frames never asks a question twice.** If an answer exists under any name, it renders
   under its new one. A founder who switches views and gets re-interviewed will not switch again.
 - Just-in-time, not all-at-once. Blanks are data; never fabricate answers to look complete.

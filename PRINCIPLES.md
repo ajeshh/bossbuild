@@ -66,7 +66,7 @@ the first build decision, snapshot-not-blueprint canvases. Decide late, on evide
 **Where a choice is asymmetric, BOSS asks rather than assumes** — and names the asymmetry in *both*
 directions. A permissive licence, once published, cannot be revoked; a project that was never opened
 quietly stays closed. Both are real losses. Preserving optionality means the founder makes that call
-out loud, not that BOSS picks the enclosing side and calls it neutral ([[DEC-011]]).
+out loud, not that BOSS picks the enclosing side and calls it neutral (DEC-011).
 
 ## 6. Humane before viable
 

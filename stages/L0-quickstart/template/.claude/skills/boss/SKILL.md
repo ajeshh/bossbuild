@@ -183,7 +183,7 @@ Read `github`, `visibility` and `license` from `.boss/config.json`.
 - `always` → proceed with the configured `visibility` without asking.
 
 **Then the licence — and ask it straight.** `license` scaffolds as `null`, which means *undecided*.
-**BOSS does not pick this for you** ([[DEC-011]]): a licence is the one scaffold decision that can be
+**BOSS does not pick this for you** (DEC-011): a licence is the one scaffold decision that can be
 irreversible, so it is the last one to make on someone's behalf. Put both costs on the table in one
 breath and don't lean:
 

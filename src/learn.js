@@ -23,7 +23,7 @@ import { listProjects } from './registry.js';
 // (IDEA-038) — the shelf holds what BOSS knows, the stages hold what BOSS ships.
 // `memory-seed` was the fifth category and is gone as of v0.249.0. Its premise — seed memories every
 // new project starts with — was a mechanism for a decision that had already been answered NO:
-// [[IDEA-080]]/[[DEC-015]] settled at v0.245.0 that durable memory is machine-local and
+// IDEA-080/DEC-015 settled at v0.245.0 that durable memory is machine-local and
 // person-scoped, `autoMemoryDirectory` stays unset, and BOSS does not manage anyone's memory store.
 // The shelf outlived its own premise by four releases. The durable-vs-working cut it held — the one
 // genuinely good thing on it — moved into `library/practices/context-discipline.md`, which ships.

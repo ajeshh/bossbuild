@@ -242,7 +242,7 @@ if (unverifiable.length) {
 //
 // WHAT THE GAP COST: `docs/MENTORS.md`'s roster table — the doc `CLAUDE.md` names as the reference
 // for BOSS's two agent classes — had **four of nine rows wrong**, all from one release.
-// [[DEC-005]]/[[DEC-006]] (v0.189.0) merged `mentor-fundraising` + `mentor-pitch` into
+// DEC-005/DEC-006 (v0.189.0) merged `mentor-fundraising` + `mentor-pitch` into
 // `mentor-capital`, moved `mentor-capital` DOWN to MVP and `mentor-hiring` UP to Scale. The table
 // still said all four arrived at V1, **64 releases later**. The count check beside it passed the
 // whole time, because the number of mentors never changed — only which rung each one sits on.

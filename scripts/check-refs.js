@@ -38,6 +38,15 @@
 //                   during the rebrand, then it got advertised as product here.
 //
 //   5. WORKSPACE  — a shipped file naming a SKILL that lives only in BOSS's gitignored /.claude/.
+//   6. CITATIONS  — a TRACKED file offering `[[DEC-011]]` for a record that is not tracked. The
+//                   link form is a promise the reader can open it; BOSS's ideas, decisions,
+//                   evidence and verdicts are all gitignored, so 198 citations across 28 files
+//                   were pointing into a room that does not exist for anyone but Ajesh. The worst
+//                   of them are in `registry/CHANGELOG.md`, which ships INSIDE the npm package
+//                   (package.json `files:`) and is what `boss changelog` prints in a founder's
+//                   own project — so the dead references were being distributed, not merely
+//                   published. Same family as class 3 (an escape resolves here and dangles
+//                   there); this one dangles in both places at once.
 //                   Added v0.178.0, after a boundary review found `/vet`, `/recalibrate`,
 //                   `/practice-refresh` and `/humane-refresh` named in fifteen shipped files and
 //                   installed for nobody. `src/craft.js` printed one to a founder's terminal.
@@ -53,6 +62,7 @@
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SKIP = new Set(['.git', 'node_modules', '.boss', 'coverage', 'dist']);
@@ -74,7 +84,7 @@ function walk(dir, out = []) {
 const files = walk(ROOT);
 const md = files.filter((f) => f.endsWith('.md'));
 const rel = (p) => relative(ROOT, p);
-const findings = { links: [], predicates: [], escapes: [], agents: [], workspaceSkills: [] };
+const findings = { links: [], predicates: [], escapes: [], agents: [], workspaceSkills: [], citations: [] };
 
 // --- 1. relative markdown links --------------------------------------------------------
 const LINK = /\[[^\]]*\]\(([^)#\s]+)(?:#[^)]*)?\)/g;
@@ -670,6 +680,81 @@ for (let i = 0; i < STAGE_ORDER.length; i++) {
   }
 }
 
+// --- 6. citations: `[[ID]]` in a tracked file for an untracked record ---------------------
+// THE RULE, and it is one line: **the `[[…]]` form promises the reader can open it; a bare `ID` says a
+// record exists.** So a tracked file may carry the link form only when the record is tracked too.
+//
+// NO EXEMPTIONS, deliberately — not even for `registry/CHANGELOG.md`, which holds 151 of the 198
+// this check first found. An allowlist that excuses whole files is exactly how this class of drift
+// survives audits (v0.251.0 shipped one and it hid a real finding). The historical entries were not
+// rewritten to satisfy this; their brackets were removed, which changes an affordance and not a
+// word, and `docs/IDS.md` records the convention.
+//
+// SELF-CORRECTING BY CONSTRUCTION: `tracked` and `trackedRecordIds` are both computed from git, so
+// publishing a record class (say `docs/decisions/`) makes its brackets legal again with no list to
+// update — and makes their ABSENCE the thing worth fixing. That is the direction a check should
+// rot in: toward being satisfiable by doing the right thing.
+//
+// Placeholders (`IDEA-NNN` in a template that teaches the format) are not citations and are
+// skipped by the shared PLACEHOLDER guard.
+//
+// A NOTE ON THE SHAPE OF THE GUARD BELOW, because the first cut of it got this wrong and the
+// mistake is the one this whole file exists to catch. It was written as one `try { … } catch
+// { return null }` around the git call — and `execFileSync` had not been imported, so the catch
+// swallowed a ReferenceError, the class ran zero times, and check-refs printed *"Everything BOSS
+// points at exists."* A catch that cannot tell "there is no git here" from "this code is broken"
+// reports the second as the first. So: the checkout is tested explicitly, a real absence SAYS it
+// is skipping, and anything else throws.
+const gitCheckout = (() => {
+  try {
+    execFileSync('git', ['rev-parse', '--git-dir'], { cwd: ROOT, stdio: 'ignore' });
+    return true;
+  } catch { return false; }
+})();
+if (!gitCheckout) {
+  console.log('  (not a git checkout — the citation class cannot be judged and was skipped)');
+}
+const tracked = gitCheckout
+  ? new Set(execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean))
+  : null;
+if (tracked) {
+  const RECORD_FILE = /^docs\/.*\/([A-Z]{3,4}-\d+)[-.].*\.md$/;
+  const trackedRecordIds = new Set();
+  for (const f of tracked) {
+    const m = RECORD_FILE.exec(f);
+    if (m) trackedRecordIds.add(m[1]);
+  }
+  const CITE = /\[\[([A-Z]{3,4}-\d+)\]\]/g;
+  for (const f of files.filter((x) => /\.(md|js|json|html|yml)$/.test(x))) {
+    const r = rel(f);
+    if (!tracked.has(r.split(sep).join('/'))) continue;   // an untracked file citing an untracked
+    let text;                                             // record is consistent: both are private
+    try { text = readFileSync(f, 'utf8'); } catch { continue; }
+    const seen = new Set();
+    // Code spans and fences are stripped first, the same judgment class 1 makes about links: the
+    // bracket form inside backticks is a MENTION of the form, not an offer to follow it. Without
+    // this, docs/IDS.md cannot document the very convention this check enforces.
+    //
+    // `<code>` and `<pre>` go too, and that is not a courtesy to HTML — `gen-site.js` renders the
+    // CHANGELOG's markdown into `site/*.html`, so a backticked mention arrives as `<code>` in a
+    // TRACKED generated file. Stripping only markdown made this check fail on its own release
+    // note. The rule is about the form being quoted, not about which syntax quoted it.
+    const prose = stripCode(text).replace(/<(code|pre)\b[^>]*>[\s\S]*?<\/\1>/gi, '');
+    for (const m of prose.matchAll(CITE)) {
+      const id = m[1];
+      if (PLACEHOLDER.test(id) || trackedRecordIds.has(id) || seen.has(id)) continue;
+      seen.add(id);
+      findings.citations.push([r, `[[${id}]] — record is not in the repository; write it as \`${id}\``]);
+    }
+  }
+}
+
+// NOTE ON PLACEMENT — this class runs HERE, above the tally, and that is not cosmetic. It was
+// first written below it, after `const total` and after the `total === 0` early exit, so on a
+// clean tree the loop never ran and check-refs printed "Everything BOSS points at exists." while
+// 198 dead citations sat in the repo. Second silent no-op in the same sitting (the first was a
+// catch swallowing a missing import). Anything that PUSHES a finding belongs above the count of
+// findings; the only thing below it is reporting.
 const total = Object.values(findings).reduce((n, a) => n + a.length, 0);
 const plural = (n, s) => `${n} ${s}${n === 1 ? '' : 's'}`;
 
@@ -702,6 +787,10 @@ report('agents', 'PHANTOM AGENTS',
 
 report('workspaceSkills', 'WORKSPACE-ONLY SKILLS',
   "a SHIPPED file naming a skill that exists only in BOSS's gitignored /.claude/ workspace.\n  It resolves when you run it from here and dangles in every founder's install. Either ship it\n  under stages/<id>/template/.claude/skills/, or say what the founder actually does instead.");
+report('citations', 'DEAD CITATIONS',
+  'a tracked file offering `[[ID]]` for a record that is not in the repository.\n' +
+  '`[[ID]]` promises the reader can open it; a bare `ID` says a record exists.\n' +
+  'Drop the brackets, or track the record. See docs/IDS.md.');
 
 console.log(`  ${total} total. Exit 1.\n`);
 process.exit(1);

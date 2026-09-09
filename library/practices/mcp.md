@@ -145,7 +145,7 @@ deferral whose stated condition has expired is not a decision — it's just a st
 
 **Re-open on the demand trigger alone** — a real project asking the question. And when it does, the skill
 should mostly *route this decision* + hand off the auth-hardening checklist, not generate a server BOSS then
-owns (that's "doing," not mentoring). Ties [[IDEA-006]] (host portability) + [[IDEA-017]] (founder-facing
+owns (that's "doing," not mentoring). Ties IDEA-006 (host portability) + IDEA-017 (founder-facing
 domain practices).
 
 **Re-decided again 2026-08-20, and the answer got cheaper.** The trigger that arrived was a *market* read —

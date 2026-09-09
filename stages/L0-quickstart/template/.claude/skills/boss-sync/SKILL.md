@@ -61,7 +61,7 @@ Before applying, for each **changed** file:
 `boss sync` lists anything under **"No longer shipped by BOSS — still in your project"**: things BOSS
 installed here and has since retired. Each carries what replaced it and why, from the supersede
 ledger. **This is not a file list; it's the one place BOSS changes how the founder works.** Walk it
-in this order, per item ([[DEC-003]]):
+in this order, per item (DEC-003):
 
 1. **Say what changed and why** — in their terms, from the ledger's `why` + `migrate`, not
    "deprecated." If BOSS has *no* record (the CLI says so), say that plainly rather than inventing a

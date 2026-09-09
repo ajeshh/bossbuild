@@ -49,7 +49,7 @@ Neither pure method works alone:
   — cohort framing, the Fitzpatrick lean, the drift block itself), a frozen transcript asserts a
   decision the model would no longer make, and *passes green*.
 
-So: golden transcripts are the dataset — **local, not tracked** ([[DEC-013]]: they carry a
+So: golden transcripts are the dataset — **local, not tracked** (DEC-013: they carry a
 voice-hash and go STALE the moment a frame is edited, so tracking them means carrying expiring
 output); **the voice-hash tripwire makes their staleness loud**; and LLM-as-judge is how transcripts get (re)generated, not how every commit gates.
 
@@ -81,7 +81,7 @@ No API key, no credits, no network — the parent Claude Code session spawns iso
 subagents (reason first, then `fires|silent` + verbatim nudge, never shown the label), then separate
 **judge** subagents (get the rubric, may see the label), then writes replay-compatible transcripts
 stamped `generated_via: in-session-subagent-reasoned`. This is the **recorded practice** — the route
-recalibration ([[IDEA-014]] / `/recalibrate`) actually takes. ~15 min, $0 marginal.
+recalibration (IDEA-014 / `/recalibrate`) actually takes. ~15 min, $0 marginal.
 
 ```
 npm run regrade:keyless           # the canonical path — drives regrade-keyless.js via /regrade

@@ -215,7 +215,7 @@ function planSettings(projectDir, layers) {
 // up the whole of `.boss/`, and must keep doing so.
 //
 // WHY THE MACHINE DIR AND NOT `.boss-removed-…/` IN THE PROJECT: `brain/relationship.md` is
-// per-person conscience state that [[DEC-001]] says never travels to a cofounder, and BOSS ships a
+// per-person conscience state that DEC-001 says never travels to a cofounder, and BOSS ships a
 // `.gitignore` rule saying so. A copy parked in the project is NOT covered by that rule, so the
 // first `git add -A` after an exit would commit the one file BOSS promised would stay local —
 // a safety net that leaks the thing it was saving. `~/.boss/` is per-person by construction, and

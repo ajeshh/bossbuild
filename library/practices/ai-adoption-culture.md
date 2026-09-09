@@ -51,7 +51,7 @@ For a two-person team the load-bearing question is concrete: **can your non-tech
 - Model it from the top: "I don't know this either — let's figure it out." A founder who pretends
   fluency teaches everyone else to fake it.
 - Pair safety with **high standards** — it's not niceness or lowered bar; it's the condition where
-  people can tell the truth *and* be held to good work (the Edmondson correction, [[RVW-035]]).
+  people can tell the truth *and* be held to good work (the Edmondson correction, RVW-035).
 
 ## 3. Kill the secret-cyborg dynamic — reward honest use
 
@@ -86,7 +86,7 @@ sideways:
 > forward.
 
 *(Why "high trust in AI" belongs on that list: it rhymes with the **competence gate** — AI advice
-amplifies the judgment you already have, and helps least whoever can least grade it ([[RVW-039]],
+amplifies the judgment you already have, and helps least whoever can least grade it (RVW-039,
 [`conscience-voicing`](conscience-voicing.md)). Uncalibrated trust looks like the shared shape. The two
 studies measure different things, so treat it as a rhyme worth noticing, not a mechanism worth citing.)*
 
@@ -123,4 +123,4 @@ Not a policy doc. A short, explicit conversation, early, revisited as the craft 
 > - The **cofounder consent + norms conversation** (§5) as a step in team onboarding / the `boss team`
 >   flow.
 > - **mentor-the-team (slice 5)** cites this practice as its source for the AI-adoption coaching.
-> - [[RVW-035]] (Edmondson psych-safety, NOT-YET) finds its home here — fold it in when slice 5 lands.
+> - RVW-035 (Edmondson psych-safety, NOT-YET) finds its home here — fold it in when slice 5 lands.

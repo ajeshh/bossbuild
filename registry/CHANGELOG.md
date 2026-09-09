@@ -2,6 +2,13 @@
 
 Each entry = a BOSS version. `/boss-sync` reads this to tell a project what's new since its pin.
 
+**Record ids in this file — `DEC-011`, `IDEA-084`, `EVID-001`, `RVW-016` — name BOSS's own internal
+working records, which are NOT in this repository** (`docs/ideas/`, `docs/decisions/`,
+`docs/evidence/` and `docs/research/` are gitignored). They are provenance, not a place to click.
+The convention is enforced by `npm run check:refs` and holds repo-wide: **`[[ID]]` promises you can
+open it; a bare `ID` says a record exists.** If a record class is ever published, its citations get
+their brackets back and the check starts requiring them.
+
 **The `> **For you:**` line is opt-in, and the bar is high on purpose.** Add one ONLY if the release
 changes something a BOSS user *does, sees, or can rely on* — a command, a fix they'd have hit, a
 behaviour change — **or** if it integrates a new/updated best practice their project now inherits.
@@ -9,12 +16,70 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.263.0 — 2026-09-09
+
+> **For you:** Release notes used to point you at records like `[[DEC-011]]` as if you could open
+> them. You can't — they're BOSS's private working files — so the ids are still there and the false
+> door isn't. `boss changelog` strips the link form even from older installs.
+
+**BOSS's most public file was distributing 151 references to files nobody outside this machine can
+reach, and the npm package carried them.**
+
+`registry/CHANGELOG.md` is in `package.json`'s `files:` list. So every citation of `[[DEC-011]]`,
+`[[IDEA-084]]`, `[[EVID-001]]`, `[[RVW-016]]` shipped into every founder's `node_modules` and got
+printed by `boss changelog` — while `docs/ideas/`, `docs/decisions/`, `docs/evidence/` and
+`docs/research/` are all gitignored. **198 citations across 28 tracked files, 151 of them in the
+CHANGELOG. Zero resolved for anyone but Ajesh.**
+
+### The rule, and it is one line
+
+**The `[[…]]` form promises the reader can open it; a bare id says a record exists.**
+
+That distinction is the whole fix. Every citation whose record is not tracked lost its brackets and
+kept its id — which changes an affordance and **not a single word**. The release history was not
+rewritten; a false door was removed from it. `docs/IDS.md` now carries the convention, and
+`registry/CHANGELOG.md` opens by saying where its ids actually live.
+
+`src/changelog.js` strips the link form when printing, because the tarballs already published carry
+the old text and will keep carrying it forever.
+
+### The check, with no exemptions — including for the file with 151 of them
+
+`check-refs` class 6: a tracked file may carry the link form only if that record is also tracked.
+Nothing is allowlisted. An allowlist that excuses whole files is how this class survives an audit —
+v0.251.0 shipped exactly that and it hid a real finding. A mention inside backticks stays a mention,
+the same judgment class 1 already makes about links.
+
+**It is self-correcting by construction.** Both sides are computed from `git ls-files`, so if a
+record class is ever published, its brackets become legal again with no list to update — and their
+*absence* becomes the thing worth fixing.
+
+### 🔴 The check was a silent no-op twice before it worked, and both are worth writing down
+
+1. **A `catch` swallowed a missing import.** `execFileSync` was never imported; the guard was one
+   `try/catch` around the git call, so a `ReferenceError` was read as *"not a git checkout"*, the
+   class ran zero times, and check-refs printed **"Everything BOSS points at exists."** A catch that
+   cannot tell *there is no git here* from *this code is broken* reports the second as the first.
+2. **It was placed below the tally.** `const total` and the `total === 0` early exit sit above the
+   report block — so on a clean tree the loop never ran at all. **Anything that pushes a finding
+   belongs above the count of findings.**
+
+Both printed green. Neither would have been caught by "does it pass?" — only by *can I still make
+it fail?*, which is now a regression test (`test/citations.test.js`) that plants a dead citation and
+asserts exit 1.
+
+### What this does not fix, named rather than swept
+
+A shipped file citing BOSS's *internal* record id is now honest and still opaque — a founder reading
+`/canvas` sees `DEC-004` and has no way to learn what it decided. That is a weaker, separate smell,
+and this pass makes it visible without pretending to solve it.
+
 ## 0.262.0 — the founder's word didn't reach the answer BOSS already had
 
 > **For you:** ask the architecture mentor *"when should I rearchitect?"* or *"do I need to rebuild
 > this?"* and it now answers. It always knew — it just didn't recognise the question.
 
-[[EVID-001]] asked, in the founder's own words, for help knowing *"when to rearchitect."* `rearchitect`
+EVID-001 asked, in the founder's own words, for help knowing *"when to rearchitect."* `rearchitect`
 appeared **zero times** anywhere in this repo, and the first read of that was a coverage gap.
 
 **It wasn't.** The judgment ships, twice, and it is good: `mentor-architect` — *"a **breakpoint, not a
@@ -28,7 +93,7 @@ boundary, *"not an aesthetic preference or a blog post."*
 "is this premature"* — not one word a founder would actually use at that moment. Five phrasings added
 to the `description:` line. **No new skill, no new agent, no new guidance, and deliberately not
 promoted above MVP** — the judgment's own first move is *check the register*, and surfacing it at
-Quickstart would invert its meaning. [[RVW-095]] (ADAPT); [[RVW-094]] REJECTED the VC "rebuild after
+Quickstart would invert its meaning. RVW-095 (ADAPT); RVW-094 REJECTED the VC "rebuild after
 funding" claim this was split out of, on cohort harm and vendor-manufactured evidence.
 
 ## 0.261.0 — an agent's "I found nothing" is the least reliable thing it says
@@ -76,7 +141,7 @@ to show. Sections: **Landed · Learned · Decided · Started · In flight · The
 
 ### It is a composition, and the mandate is why
 
-[[EVID-001]]'s standing instruction is *compose and **SUBTRACT** — never add another skill*, and the
+EVID-001's standing instruction is *compose and **SUBTRACT** — never add another skill*, and the
 founder's own stated fear is bloat. So: **no new skill, no new loop, no new record type, nothing to
 maintain.** Every line is read back out of `docs/devlog.md`, the record set, the board's columns and
 the canvas's riskiest assumption — the same readers `boss board` and the conscience already use, so
@@ -336,7 +401,7 @@ Research record: `docs/research/sessions/SESSION-2026-09-08-harness-and-host-sin
 — had FOUR of nine rows on the wrong rung, all from one release, for 64 releases. The count check
 beside it passed the whole time.**
 
-[[DEC-005]]/[[DEC-006]] (v0.189.0) merged `mentor-fundraising` and `mentor-pitch` into
+DEC-005/DEC-006 (v0.189.0) merged `mentor-fundraising` and `mentor-pitch` into
 `mentor-capital`, moved `mentor-capital` **down** to MVP, and moved `mentor-hiring` **up** to Scale.
 The table still said all four arrived at V1.
 
@@ -424,7 +489,7 @@ claim rather than a restated one.
 
 Class 4b has been rung-aware for **agents** since v0.178.0. There has never been a **skill** twin,
 and the gap held two live instances: `/design-review` and `/ux-check` (both MVP) say *"Run
-`/design-library`"*, which arrives at **V1**. Both were created the moment [[DEC-005]] (v0.189.0)
+`/design-library`"*, which arrives at **V1**. Both were created the moment DEC-005 (v0.189.0)
 moved those two skills DOWN a rung and left `/design-library` where it was — **63 releases ago**.
 
 **The discriminator is why this is a check and not an audit.** A shipped file naming a later-rung
@@ -474,7 +539,7 @@ still the quietest one, because **a missing field gets reported and an unread on
 
 ### 🔴 `shareUp: false` — a consent trap, and the sharper of the two
 
-It gated a share-up pipe that was subsequently **refused** ([[IDEA-021]]: only the opt-in *contract*
+It gated a share-up pipe that was subsequently **refused** (IDEA-021: only the opt-in *contract*
 could ever re-open; the pipe stays refused regardless). So it sat in every founder's config reading
 like a privacy setting, and **setting it `true` did nothing.**
 
@@ -634,7 +699,7 @@ rather than implying a promotion happened. The first-run confirmation (`--yes`) 
 the target repo is almost never the one you are standing in, so the first invocation always stops.
 
 **Not built, deliberately:** a real promotion path for founders. That is a feature against n=0
-demand; [[EVID-001]]'s mandate is compose-and-subtract. Making the limit legible is what is earned.
+demand; EVID-001's mandate is compose-and-subtract. Making the limit legible is what is earned.
 
 ### 🔴 `/extract` told founders to set `$BOSS_DEV`, and nothing has ever read it
 
@@ -707,7 +772,7 @@ one was left standing on a distinction that did not rescue it.
 ### The premise was answered NO at v0.245.0
 
 The shelf existed to hold *"project-agnostic feedback memories every new project should start with."*
-[[IDEA-080]] and [[DEC-015]] settled four releases ago that durable memory is **machine-local and
+IDEA-080 and DEC-015 settled four releases ago that durable memory is **machine-local and
 person-scoped** — `autoMemoryDirectory` stays unset, and BOSS does not seed, manage or ship anyone's
 memory store. Its README still claimed durable facts live in *"Claude's auto-memory **+ this shelf**"*.
 
@@ -757,7 +822,7 @@ Two releases, four folders, one failure mode. The assertion is written against t
 **`library/agents|skills|hooks` was a shelf nothing read, nothing deployed from, and nothing had
 ever written to. Removed — and `boss learn` now puts a promoted agent where it actually ships.**
 
-[[IDEA-038]], filed 2026-06-20 and deferred on the grounds that *"the duplication pain is currently
+IDEA-038, filed 2026-06-20 and deferred on the grounds that *"the duplication pain is currently
 1 file — don't pay for the abstraction before the project earns it."* That reason is now falsified,
 and the audit that falsified it is the release.
 
@@ -932,7 +997,7 @@ it's a feature perpetually in development."* PRINCIPLE #1's exact subject, and t
 **The three records the memory sweep left open, resolved — one shipped, two answered NO.** No new
 skills, no new hooks. The interesting part of this release is what it declines.
 
-### [[IDEA-079]] — SHIPPED: prompt storage gets a home it can run from
+### IDEA-079 — SHIPPED: prompt storage gets a home it can run from
 
 `prompt-coach` quoted Willison — *"prompt is code; version it; save the good ones"* — and filed them
 as prose in `docs/dossier/`. `.claude/commands/` appeared nowhere in BOSS.
@@ -946,7 +1011,7 @@ as prose in `docs/dossier/`. `.claude/commands/` appeared nowhere in BOSS.
   information the rule was standing in for.
 - **No authoring path was built.** `.claude/commands/` being *the rung below a skill* stays a note.
 
-### [[IDEA-078]] — HALF shipped, half declined with a testable trigger
+### IDEA-078 — HALF shipped, half declined with a testable trigger
 
 - **SHIPPED — the vocabulary, which was the plainly-wrong half.** The founder-facing surface named
   none of `/resume`, `--continue`, `/clear`, `/compact`. A *Sessions vs. chats* line in the template
@@ -961,7 +1026,7 @@ as prose in `docs/dossier/`. `.claude/commands/` appeared nowhere in BOSS.
   `feature-context.md` someone actually wrote in — *nothing has ever written to that file*, and if it
   is empty everywhere then the working-state half of the memory model has a bigger problem.
 
-### [[IDEA-080]] — ANSWERED NO, and shipping [[DEC-015]] inverted the record's own lean
+### IDEA-080 — ANSWERED NO, and shipping DEC-015 inverted the record's own lean
 
 The record called machine-local durable memory "the uncomfortable part" and proposed pointing
 `autoMemoryDirectory` into the repo. **Building DEC-015 the same day answered it the other way:**
@@ -993,7 +1058,7 @@ for person-scoped data. Auto-memory is person-scoped data. It is already where i
 ## 0.244.0 — 2026-09-08
 
 **BOSS had written the answer to "what was I doing" and put it behind a command the founder has to
-remember to type.** [[IDEA-077]], shipped: a `SessionStart` hook that hands Claude where you left
+remember to type.** IDEA-077, shipped: a `SessionStart` hook that hands Claude where you left
 off, at the moment you come back.
 
 `src/brain.js` records the rule this violated, in Ajesh's own words — ***"people can forget close —
@@ -1020,7 +1085,7 @@ typing — and, with Remote Control, may have no terminal at all.
   same devlog date, so three sessions in an afternoon do not replay one line three times. That
   marker lives in the DEC-015 per-person dir, so it is keyed to you and survives a worktree.
 - ⛔ **It never fires AT someone who is away.** It fires when they come back — the only moment it can
-  observe and the only kind one, and per [[DEC-016]] that is now a decision rather than a limit.
+  observe and the only kind one, and per DEC-016 that is now a decision rather than a limit.
 - 🔴 **A latent second of latency, found by the tests and fixed in all three copies.** `readStdin`'s
   1000ms fallback timer was never `.unref()`d, so the process stayed alive for the full second
   *after* `end` had already resolved. Every fire of `memory-cue` — and every fire of this hook —
@@ -1044,9 +1109,9 @@ founder's private nudge history was reaching their cofounder through a file nobo
 Two decisions, both confirmed by Ajesh, both executed here. Verified end-to-end on a throwaway
 scaffold with a real `git worktree`, and against the Claude Code 2.1.132 binary rather than its docs.
 
-### [[DEC-015]] — per-person state is keyed to a person, not a directory
+### DEC-015 — per-person state is keyed to a person, not a directory
 
-[[DEC-001]] split the venture brain by nature and got the cut right: `read.md` is about the VENTURE
+DEC-001 split the venture brain by nature and got the cut right: `read.md` is about the VENTURE
 and commits; `relationship.md` and the frequency ledger are about a PERSON and stay private. What
 was wrong was the implementation — "private" was built as *gitignored inside the working directory*,
 which only equals "per person" while a person has ONE working directory.
@@ -1075,7 +1140,7 @@ which only equals "per person" while a person has ONE working directory.
   (dormant hook, different stage, named in four prose surfaces; a named follow-on, and harmless
   while it waits because a dormant hook writes nothing).
 
-### [[DEC-016]] — BOSS never initiates contact with an absent founder
+### DEC-016 — BOSS never initiates contact with an absent founder
 
 Every restraint in the conscience rested on *"a CLI can only ever run while the founder is HERE; it
 can never observe an absence"*. Remote Control made the inference false — `PushNotification` reaches
@@ -1197,15 +1262,15 @@ in the whole vibe-coded stack (CVE-2025-48757 / MoltBook).
 against Claude Code 2.1.132 — prompted by Remote Control — produced five records and two proposed
 decisions. **Nothing else in this release; the mandate holds at 48 skills.**
 
-- [[IDEA-077]] the session boundary has no runner · [[IDEA-078]] compaction is the unit BOSS does
-  not model · [[IDEA-079]] prompt storage points away from `.claude/commands/` · [[IDEA-080]] durable
-  memory ships as a pointer · [[IDEA-081]] Remote Control.
-- **[[DEC-015]] (proposed)** — per-person conscience state is keyed to a person, not a directory.
+- IDEA-077 the session boundary has no runner · IDEA-078 compaction is the unit BOSS does
+  not model · IDEA-079 prompt storage points away from `.claude/commands/` · IDEA-080 durable
+  memory ships as a pointer · IDEA-081 Remote Control.
+- **DEC-015 (proposed)** — per-person conscience state is keyed to a person, not a directory.
   Verified by experiment: a Remote-Control worktree session carries `brain/read.md` and **not**
   `conscience-log.jsonl` or `relationship.md`, so the conscience remembers the venture and forgets
   every nudge it fired — and **re-nags a founder who already overrode it.** DEC-001's cut stays; only
   the storage moves. Its own `revisit_by` is 2026-09-20, so this is that revisit, early.
-- **[[DEC-016]] (proposed)** — BOSS never initiates contact with an absent founder. Every restraint
+- **DEC-016 (proposed)** — BOSS never initiates contact with an absent founder. Every restraint
   in the conscience currently rests on *"a CLI can never observe an absence"*, which Remote Control
   made false; `PushNotification` reaches the founder's phone. **A false premise supporting a true
   conclusion** is the most dangerous shape a comment can have.
@@ -1372,7 +1437,7 @@ Crossing it is not an addition; it is delivering something already written for t
   most — `first-product`, `vibe-coder-newbie` — meet Claude on day one, not at the build unlock. L0
   seated three agents; it now seats four.
 - **An agent, not a skill — and that is the whole reason this one crosses while three others don't.**
-  [[EVID-001]]'s compose-and-subtract mandate is about the 48-skill wall a founder has to read. An
+  EVID-001's compose-and-subtract mandate is about the 48-skill wall a founder has to read. An
   agent is a role Claude takes on when you describe a problem; it adds nothing to that wall. **Nothing
   was added to the skill surface.**
 - 🔴 **Two things were WRONG in the workspace copy, and crossing it is what surfaced them.**
@@ -1451,7 +1516,7 @@ vocabulary was closed.
   house rule is *assume intelligence, never assume knowledge* — and the second half of that sentence
   had no mechanism behind it once `/welcome` had been run and closed.
 - **Not a skill and not a new command.** It is `boss help` answering a kind of question it already
-  looked like it would answer — the third topic beside `symbols` and `hooks`. [[EVID-001]]'s
+  looked like it would answer — the third topic beside `symbols` and `hooks`. EVID-001's
   compose-and-subtract holds: nothing was added to the 49-skill surface, and the founder's own stated
   fear is bloat.
 - **Terms that are also skills print both halves.** `boss help canvas` used to say only *"it runs
@@ -1542,7 +1607,7 @@ moves feedback and scannability and catches flow problems at approximately zero.
   day** — ended in a full stop, while three lower-priority lines below it each carried a pointer.
   Being told the id is not the same as being told how to get back in. It now points at the card
   (`boss board FEAT-NNN`): goal, acceptance criteria, the paths that must not break. **This is
-  [[EVID-001]]'s *"I forget what feature I'm building"* answered on the surface that had already
+  EVID-001's *"I forget what feature I'm building"* answered on the surface that had already
   computed the answer** — a read of a file that exists, not a new skill.
 - 🔴 **`boss status` grew the chore line its own comment forbade — 22nd
   [[checkers-state-intents-they-dont-enforce]], and a new flavour: the intent statement sat three
@@ -1576,7 +1641,7 @@ moves feedback and scannability and catches flow problems at approximately zero.
 - **Two surfaces disagreed about where to start.** `boss status` offered `/boss or /triage`;
   `boss board` offered only `/triage` — the same state, two different front doors, on the one screen
   where a founder has the least basis for choosing. Aligned.
-- **Captured, not built — [[IDEA-076]].** The remaining half of EVID-001's *"train line"*: the ladder
+- **Captured, not built — IDEA-076.** The remaining half of EVID-001's *"train line"*: the ladder
   renders four mode names with the current one bolded and **never shows position WITHIN a rung**,
   which is where a founder spends weeks. Nothing computes readiness either — `graduationHint` is a
   static manifest string, and only `unlock scale` names a bar (the two rungs people actually climb
@@ -1630,12 +1695,12 @@ reads added, both composed entirely from records BOSS was already writing and ne
   `engage-streaks-variable-rewards` names in BOSS's own dark-pattern catalog. The honest register here
   is orientation, not dopamine — so when the ladder is bottom-heavy it says so: *"nothing observed yet
   — a compliment is not a receipt."*
-- **Composition, not addition — the standing [[EVID-001]] mandate holds.** No new skill, no new loop,
+- **Composition, not addition — the standing EVID-001 mandate holds.** No new skill, no new loop,
   no new command; the 20th loop would have been surface, and `boss status` is already the where-am-I
   command, so where-am-I answers go where the question is asked. One new module (`src/orientation.js`),
   14 tests, and one relocated sentence. **The founder's own stated fear is app bloat.**
 
-**The evidence behind this, stated honestly:** [[EVID-001]] (2026-07-23) and [[EVID-003]] (2026-08-21)
+**The evidence behind this, stated honestly:** EVID-001 (2026-07-23) and EVID-003 (2026-08-21)
 are two independent founders who each described losing the thread — *"hard to gauge where I am… I
 forget what I'm building"* and *"it jumped straight into building rather than saying back what the
 idea was."* That is **n=2, and all of it is `stated-pain`. Nobody has been observed using BOSS, and
@@ -1656,9 +1721,9 @@ pattern — and the first one surfaced by reading an outside paper rather than B
   source and reasoned about what it renders). Inferred is honest work and usually all that's
   available; **an inferred review written in the voice of a walkthrough is not.** The record now
   opens with `Evidence: observed <N> · inferred <N> · not checked <N>`. This is
-  [[RVW-092]]'s ADAPT, and it is deliberately **composition, not addition** — `/persona`'s
+  RVW-092's ADAPT, and it is deliberately **composition, not addition** — `/persona`'s
   `synthetic % · real %` ledger already proved the shape, so no new skill was created (the standing
-  [[EVID-001]] mandate: compose and subtract, never add a 23rd skill).
+  EVID-001 mandate: compose and subtract, never add a 23rd skill).
 - 🔴 **What needs rendering is now `not checked`, never a pass.** Contrast ratios, focus order and
   screen-reader sequence moved into their own list with the honest label attached — *"eyeballing hex
   pairs is not a check."* **Retiring an accessibility question you never asked is worse than leaving
@@ -1673,7 +1738,7 @@ pattern — and the first one surfaced by reading an outside paper rather than B
 - **The persona discount now travels to the skill that consumes personas.** `/persona` ships the
   guard — *"a synthetic persona will tend to like your idea more than a real person would"* — and
   `/ux-check`'s *"pair with personas"* line carried none of it. **A persona's approval is not a pass;
-  their confusion still is.** ([[RVW-093]]; the finding is NN/g 2024, not the 2026 wave that re-dates it.)
+  their confusion still is.** (RVW-093; the finding is NN/g 2024, not the 2026 wave that re-dates it.)
 - **A shipped copy-paste defect, fixed in passing:** `/ux-check` step 9 read *"Each issue: severity /
   Each issue: severity (blocking / serious / minor / nit)…"* — a duplicated fragment that had been
   going out to founders.
@@ -1683,10 +1748,10 @@ pattern — and the first one surfaced by reading an outside paper rather than B
   review intact.* Recorded as **direction, not magnitude** (the source is a June 2026 arXiv preprint,
   not peer-reviewed, with small absolute effects and a model-scored headline metric). **Don't read a
   clean design review as a validated flow.** `library/sources.json` → 71 sources.
-- **Two verdicts recorded, and the second is a REJECT.** [[RVW-092]] ADAPT (evidence-gated critique).
-  [[RVW-093]] **REJECT** — *AI-generated users can stand in for real research*: contradicted by its
+- **Two verdicts recorded, and the second is a REJECT.** RVW-092 ADAPT (evidence-gated critique).
+  RVW-093 **REJECT** — *AI-generated users can stand in for real research*: contradicted by its
   own field (Lewis & Sauro's 12-paper review, Apr 2026 — 9 encouraging vs 14 discouraging), and
-  **already shipped better inside BOSS** than the wave describes. [[RVW-082]]'s refusal of the
+  **already shipped better inside BOSS** than the wave describes. RVW-082's refusal of the
   code→editable-design round-trip was re-checked and **stands** — the 2026 "agents write to Figma"
   claims are still secondary-blog-only.
 - ⚠️ **Attribution caught, recorded so it isn't repeated:** *"NN/g's State of UX 2026"* **does not
@@ -1740,12 +1805,12 @@ worse than no metric.**
   exists to catch. Adding 26 names with null URLs is what *raised* the debt figure — the debt was
   always there, and this is the first release in which it is countable.
 - **Three verdicts pointed at agents that no longer exist, and one nearly caused a re-litigation.**
-  [[RVW-023]], [[RVW-030]] and [[RVW-037]] all `route:` into L2-v1 seats (`mentor-business`,
+  RVW-023, RVW-030 and RVW-037 all `route:` into L2-v1 seats (`mentor-business`,
   `mentor-pitch`) removed when the mentor ladder consolidated at v0.189.0–v0.195.0. **Checked
   line-by-line: all three verdicts' adopted content SURVIVES in the shipped `mentor-capital` —
   nothing was lost in the merge, only the routing records rotted.** Each now carries a consolidation
   note; the `route:` fields are left as written because they record the decision as it was made.
-  Found while vetting [[RVW-089]], which nearly re-argued RVW-037's claim without noticing the file
+  Found while vetting RVW-089, which nearly re-argued RVW-037's claim without noticing the file
   it named was gone. `docs/RESUME.md` had the same stale seat name and is fixed.
 - **Guards (4 new, each verified non-vacuous):** every practice on disk must be mapped · no mapped
   practice may lack a file · no dangling source key · **a `url` must be an https URL or `null`** —
@@ -1778,13 +1843,13 @@ next `npm publish` would have shipped a build labelled 0.221.0.**
   So the test a founder can actually apply is **count the doors** — two is the pattern, three is a
   business model. The row now says that, and **the counterweight ships with it**: `monetization-in-
   practice.md` had *zero* guidance on ad-free tiers, so the catalog was BOSS's only voice on the
-  subject and stated only the manipulative reading. [[RVW-088]].
-- **`claims-ai-washing` verified to the digit and promoted.** [[RVW-058]] ruled NOT-YET in June 2026
+  subject and stated only the manipulative reading. RVW-088.
+- **`claims-ai-washing` verified to the digit and promoted.** RVW-058 ruled NOT-YET in June 2026
   purely on evidence grade, naming its own re-open condition — FTC "Operation AI Comply". Both
   primaries fetched from ftc.gov: the sweep (**2024-09-25, five actions**) and the DoNotPay final
   order — *"the Commission voted 5-0 on January 16, 2025"*, **$193,000**, notice to 2021–2023
   subscribers, no *"performs like a real lawyer"* without substantiation. Every figure in the shipped
-  `teeth` checks out. The catalog is now **89/89 adopted**; nothing renders `UNVETTED`. [[RVW-087]].
+  `teeth` checks out. The catalog is now **89/89 adopted**; nothing renders `UNVETTED`. RVW-087.
   **BOSS passes the row reflexively** — zero AI-capability claims across README and all 15 site pages.
 - **The funding filter is not neutral, and `mentor-capital` now says so once.** Brooks, Huang, Kearney
   & Murray, *PNAS* 2014 — an identical pitch was preferred from a man, across a field study of 90
@@ -1793,13 +1858,13 @@ next `npm publish` would have shipped a build labelled 0.221.0.**
   only**, and the causal experiments used laypeople, not investors. It lands on the existing
   *"right-sized is good, not a fallback"* line — if the filter is biased, right-sized stops being a
   consolation and becomes, for some founders, the better-reasoned call. Said when the raise question
-  is live, **never** as a forecast about them. [[RVW-091]].
+  is live, **never** as a forecast about them. RVW-091.
 - **Two claims REFUSED, which is the point of running the sweep.** *"Candour about setbacks raises
-  more"* (HBR 2025) — real, but duplicate-in-effect of the already-shipped [[RVW-037]] heuristic in
+  more"* (HBR 2025) — real, but duplicate-in-effect of the already-shipped RVW-037 heuristic in
   the same paragraph, and measured on **peer-to-peer lending, not equity**; bolting it on would have
   made an argument that rests on Principle #6 *look* more evidenced while becoming more attackable
-  ([[RVW-089]]). *"VCs assess character over competence"* — primary paywalled and unread, the record
-  named no author, and the population is **angels, not VCs** ([[RVW-090]]).
+  (RVW-089). *"VCs assess character over competence"* — primary paywalled and unread, the record
+  named no author, and the population is **angels, not VCs** (RVW-090).
 - 🔴 **`package.json` sat at 0.221.0 while `VERSION` reached 0.227.0 — six releases of committed
   drift.** `npm publish` reads `package.json`, so the standing "npm is behind" action would have
   published a build **labelled six versions below its own contents**, and burned the 0.221.0 slot.
@@ -1986,7 +2051,7 @@ authorized it.**
 > rebuild is your call, piece by piece — and the sketch comes with you into `/spec` as the reference
 > for what to build. `/prototype` also commits before it runs now, so "actually, go back" is real.
 
-- 🔴 **Three claims in one blockquote, none of them right.** [[RVW-016]] approved **one line** —
+- 🔴 **Three claims in one blockquote, none of them right.** RVW-016 approved **one line** —
   *"a sketch to think with"* — and **five shipped**, swapping in *"a throwaway"*, stamping
   **"(Marty Cagan, 2026)"** on a phrase Cagan credits to **Jeff Patton** *in the very article the
   verdict cites*, and adding *"the two modes stay separate on purpose"*, which contradicts Cagan's
@@ -2027,7 +2092,7 @@ authorized it.**
   unsupported part.
 
 Records: `SESSION-2026-08-24-prototype-generation-craft` (6 angles, 35 sources, 12 skeptics),
-[[RVW-084]] / [[RVW-085]] / [[RVW-086]], and an addendum on [[RVW-016]].
+RVW-084 / RVW-085 / RVW-086, and an addendum on RVW-016.
 
 ## 0.222.0 — 2026-08-24
 
@@ -2041,7 +2106,7 @@ every founder reads on day one promised three Scale features that do not exist.*
 > block is the wrong fix. And the mode table in your `CLAUDE.md` no longer advertises Scale features
 > BOSS hasn't built; it names the two it has.
 
-- **The claim was vetted and half of it died** ([[RVW-083]], ADAPT). Fowler's position has been
+- **The claim was vetted and half of it died** (RVW-083, ADAPT). Fowler's position has been
   settled for twenty years and it is the opposite of a schedule — *"a team that's using refactoring
   well should hardly ever need to plan refactoring."* He names a scheduled refactor block as the
   **symptom** of having skipped the opportunities. Beck's unit of rhythm is per-feature, not
@@ -2062,7 +2127,7 @@ every founder reads on day one promised three Scale features that do not exist.*
   code is what's slowing them down — not before. Suggestive, never a gate, same as the 70%-problem
   marker it sits beside.
 - **The 70%-problem citation was three years stale.** It carried GitClear's 2024 vintage
-  (*"copy-paste overtook refactor in 2024"*) from [[RVW-053]]. Refreshed to the 2026 slope — copy/paste
+  (*"copy-paste overtook refactor in 2024"*) from RVW-053. Refreshed to the 2026 slope — copy/paste
   9.4% of changed lines in 2022 → 15.7% in 2026, duplication +81% since 2023. Same finding, sharper.
 - 🔴 **`stages/L0-quickstart/template/CLAUDE.md` sold three Scale features that do not exist.** The
   mode ladder — the table a founder reads in their first five minutes — said Scale adds *"PM org,
@@ -2080,8 +2145,8 @@ every founder reads on day one promised three Scale features that do not exist.*
 - **What was deliberately NOT built.** The gap the research actually found is that BOSS can grow a
   codebase and can end one, but cannot shrink one — every reduction-shaped surface it ships is
   additive (`/extract`), holds-the-line (`quality-ratchet`), or terminal (`/sunset`). That verb is
-  **held at n=0 founder demand** ([[IDEA-074]]): the only repo with the symptom is BOSS's own, and
-  building a founder feature from BOSS's own itch is the inversion [[EVID-001]] flagged. If it is ever
+  **held at n=0 founder demand** (IDEA-074): the only repo with the symptom is BOSS's own, and
+  building a founder feature from BOSS's own itch is the inversion EVID-001 flagged. If it is ever
   earned it is a second question inside `/extract`'s existing pass, never a new skill.
 - ⚠️ **`library/sources.json` was left untouched on purpose.** It indexes the sources behind
   `library/practices/*`, and this landed on a `stages/` agent. The verified URLs live in RVW-083's
@@ -2092,7 +2157,7 @@ every founder reads on day one promised three Scale features that do not exist.*
   doors — whether the AI era changes that is unexamined and stays open.
 - ⚠️ **DORA would not verify, for the second time.** Only *"AI's primary role is as an amplifier"*
   came off `dora.dev`; the instability and rework-rate figures everyone repeats are secondary-only.
-  [[RVW-076]] quarantined a DORA attribution once already. Treat that primary as effectively
+  RVW-076 quarantined a DORA attribution once already. Treat that primary as effectively
   unfetchable and cite the framing, never the numbers.
 
 ## 0.221.0 — 2026-08-24
@@ -2118,7 +2183,7 @@ permanently. Nothing was wrong with the command.**
   overwriting without one is the bug*; `remove` kept deleting without one, one function over. The
   2026-08-21 incident note called this out and it stayed open for three days.
 - **The copy lands in `~/.boss/removed/`, deliberately NOT in the project.**
-  `.boss/brain/relationship.md` is per-person conscience state that [[DEC-001]] says never travels to
+  `.boss/brain/relationship.md` is per-person conscience state that DEC-001 says never travels to
   a cofounder, and BOSS ships a `.gitignore` rule saying exactly that. A `.boss-removed-…/` parked in
   the repo would not be covered by that rule, so the first `git add -A` after an exit would commit
   the one file BOSS promised would stay local — a safety net that leaks the thing it saves. The
@@ -2331,7 +2396,7 @@ never written outside a project, and `boss remove` could not take it back.
 ## 0.217.0 — 2026-08-22
 
 **`boss adopt` never installed BOSS's `.gitignore`. On every already-started repo, the per-person
-conscience state [[DEC-001]] says never travels to a cofounder has been committable.**
+conscience state DEC-001 says never travels to a cofounder has been committable.**
 
 > **For you:** If you brought BOSS into an existing repo with `boss adopt`, open your `.gitignore`.
 > BOSS's rules were skipped **in full**, silently — precisely *because* you already had one — so
@@ -2451,7 +2516,7 @@ went from advertised-and-undefined to defined. That is a trade worth naming rath
 
 ## 0.215.0 — 2026-08-21
 
-**The website stops assuming you're building a company. [[DEC-014]] — work-order 2b, and the end of
+**The website stops assuming you're building a company. DEC-014 — work-order 2b, and the end of
 a standing constraint.**
 
 *"Website stays untouched till we solve this"* held for **four consecutive decisions.** The
@@ -2469,13 +2534,13 @@ mechanism is built now, so the claim was finally allowed — and the claim turne
   `/charter`, the page a commons-minded reader is most likely to check.
 
 🔴 **"startup" stays, and that is what keeps the diff honest.** `CLAUDE.md` kept *"a just-in-time
-**startup incubator**"* when [[DEC-011]] moved the telos to *"a company, a co-op, or a commons"* —
+**startup incubator**"* when DEC-011 moved the telos to *"a company, a co-op, or a commons"* —
 the category word survived that edit deliberately. Changing the homepage `<h1>` would be the site
 getting **ahead of the repo's own recorded decision**, which is the exact failure this arc exists to
 prevent.
 
 **Nothing is claimed about commons, co-ops or social good, and that is deliberate.** No rungs exist
-— [[IDEA-067]] rungs 2–3 are deferred at n=0, there is no co-op mentor and no `intent` axis.
+— IDEA-067 rungs 2–3 are deferred at n=0, there is no co-op mentor and no `intent` axis.
 Advertising support that is not built is the described-as-shipped failure at the most public surface
 BOSS has. The change is visible by the **absence of a filter**, never by a promise.
 
@@ -2498,7 +2563,7 @@ nobody had run `npm run release` for v0.211.0 → v0.214.0, and that check is ad
 committed a different 0.213.0 (the conscience eval suite going public, work-order 2e) while this was in
 the working tree, and swept the version files into it. Nothing was lost; the two releases are unrelated.
 
-**A founder emptied their head into `/boss`, and BOSS filed it and moved on.** [[EVID-003]], relayed
+**A founder emptied their head into `/boss`, and BOSS filed it and moved on.** EVID-003, relayed
 2026-08-21 — BOSS's third external signal and the first from someone who actually ran the tool:
 
 > *"it's almost like the idea was stream of the idea, just a run on, but then now that it's outta
@@ -2547,25 +2612,25 @@ leaves capture-loop `open`; the new one closes it.
   real `capture-loop` spec can see, and the two capture paths must agree on `status`, `gist:`, and an
   `owner` naming an agent the mode actually ships.
 
-**What this release deliberately did NOT do.** [[EVID-003]] is n=1–2 at `stated-pain`, and per
-[[EVID-001]]'s standing instruction the move is compose-and-subtract, not add. No new skill: four of
+**What this release deliberately did NOT do.** EVID-003 is n=1–2 at `stated-pain`, and per
+EVID-001's standing instruction the move is compose-and-subtract, not add. No new skill: four of
 the founder's asks map onto surfaces that already existed and were simply never surfaced at the moment
 they would have helped. No new loop for a stalled idea either — canvas-loop may well cover it now that
 captures actually register, and adding a loop to compensate for a broken predicate is how a conscience
 gets noisy. **What justified acting on weak feedback is the measurement, not the opinion** — the same
-reasoning as [[EVID-002]].
+reasoning as EVID-002.
 
 ✅ **Provenance settled the same day: a DIFFERENT founder — n=2 INDEPENDENT.** That meets
-[[EVID-001]]'s standing condition ("hold until a second signal") on its own terms. Three sources now
-converge on one axis — **BOSS emits and never mirrors**: [[EVID-002]] couldn't see what they'd get,
-[[EVID-001]] couldn't see where they were, EVID-003 couldn't get their idea reflected back. ⚠️ That is a
+EVID-001's standing condition ("hold until a second signal") on its own terms. Three sources now
+converge on one axis — **BOSS emits and never mirrors**: EVID-002 couldn't see what they'd get,
+EVID-001 couldn't see where they were, EVID-003 couldn't get their idea reflected back. ⚠️ That is a
 hypothesis with convergence, **not a raised grade** — everything is still `stated-pain`, nobody has been
 observed, nobody has committed. Three questions would move it, and they cost nothing; they are written at
 the foot of the evidence file.
 
 ## 0.213.0 — 2026-08-21
 
-**The conscience eval suite stops being private. [[DEC-013]] — work-order 2e, held for three
+**The conscience eval suite stops being private. DEC-013 — work-order 2e, held for three
 sessions and decided once the question got smaller.**
 
 BOSS has claimed for months that its conscience is verified — *"a model-verified judgment surface,
@@ -2598,10 +2663,10 @@ fixtures, both READMEs. **Not tracked: `judgment/transcripts/`** — 50 files, 2
   genuinely should not be carried forever is exactly the half left out.
 - ⚠️ **Knowingly accepted:** `docs/decisions/` stays local, so DEC-013 itself is not readable by
   someone reading the code it authorises. The tracked tier note in `conscience-evals/README.md`
-  carries the substance inline so the `[[DEC-013]]` reference is supplementary rather than
+  carries the substance inline so the `DEC-013` reference is supplementary rather than
   load-bearing. Named in the decision as the trigger to revisit, not waved past.
 
-Serves [[DEC-012]] clause 3 — *"any future change that makes the mission less inspectable breaks
+Serves DEC-012 clause 3 — *"any future change that makes the mission less inspectable breaks
 this decision"* — and is the first change that **adds** inspectable evidence rather than only
 declining to remove it.
 
@@ -2661,7 +2726,7 @@ listing and what the model routes on. The corrected body was three screens down.
 - **Only the false line changed.** `/welcome` says *"create a private GitHub repo"* and that is still
   true — `visibility` really does scaffold as `private`, that default is reversible in a click, and
   the line never claimed BOSS chose the licence. Correcting accurate copy to sound more on-message
-  would be the addition [[EVID-001]] exists to refuse.
+  would be the addition EVID-001 exists to refuse.
 - **Nothing mechanical caught it, and nothing here pretends to.** A frontmatter description
   contradicting its own body is a judgment call, not a grep. Named rather than gated.
 
@@ -2836,7 +2901,7 @@ place those record names are allowed to live. Meanwhile `boss craft` printed the
 15 moments and 18 loops there was **zero** mention of maintainer burnout, bus factor, contributor
 pipeline or succession — while `drift` watched the bet, `margin-trap` the price against the cost,
 `outpaced` the canvas against shipped work, and `cost`/`cost-stale` the spend. That quietly made BOSS
-a tool for one kind of project while [[DEC-011]] and [[DEC-012]] claimed otherwise.
+a tool for one kind of project while DEC-011 and DEC-012 claimed otherwise.
 
 **It required the fifth predicate, and that is the load-bearing part.** The four existing predicates
 are all relations between two files. `outpaced_by` is temporal but it detects **presence** — N files
@@ -2873,7 +2938,7 @@ only kind one. That's a property of the architecture, not a line in the copy.
 > **the exact failure that change existed to prevent.** `/ship` now asks, once, at the only moment it
 > becomes real: the moment your code goes where other people can find it.
 
-**A defect introduced three releases ago by the change that was supposed to fix it.** [[DEC-011]]
+**A defect introduced three releases ago by the change that was supposed to fix it.** DEC-011
 named the failure mode in its own words — *"a project that was never opened quietly stays closed,
 because nobody comes back to it"* — and then shipped a mechanism that never came back. The ask was
 built; the silence was left.
@@ -2893,7 +2958,7 @@ built; the silence was left.
 - ⛔ **Not a gate, and never a nag.** Once per project, then silence — whichever way they answer.
 
 🔴 **Found alongside it and NOT fixed: the conscience watches the venture half and not the commons
-half.** [[DEC-009]] gave the canvas a second sustainability branch — *what keeps this alive · who else
+half.** DEC-009 gave the canvas a second sustainability branch — *what keeps this alive · who else
 could carry it · what happens if you're hit by a bus · what would make you stop* — and **nothing ever
 watches those answers again.** Across 15 conscience moments and 18 loops, zero mention of maintainer
 burnout, bus factor, contributor pipeline or succession, while the venture half is watched
@@ -2929,7 +2994,7 @@ smaller; the honesty doesn't.
   this vocabulary once had six words in the spec and fifteen in practice; adding a fifteenth would
   have been a poor way to celebrate it.
 - **Evidence the gap was real, from BOSS's own backlog:** across **67 ideas, `dropped` has been used
-  exactly zero times** — while `deferred` (which [[DEC-009]] gave a written re-open-trigger practice)
+  exactly zero times** — while `deferred` (which DEC-009 gave a written re-open-trigger practice)
   has 17. A status with no mechanism behind it doesn't get used; the one with a practice does. The
   router now makes that choice explicit instead of instinctive.
 - **Ambiguous arguments get one question, not a guess.** A `FEAT` was built and has users; an `IDEA`
@@ -2946,7 +3011,7 @@ not a quiet addition inside a scope release.
 > **For you:** **The README was selling a mentor board that doesn't exist.** It promised *"eight
 > advisors"* and named **business, fundraising, pitch and talent arriving at V1**. Six ship,
 > `mentor-fundraising` and `mentor-pitch` were absorbed into `mentor-capital` fourteen releases ago
-> ([[DEC-006]]), and **V1 seats nobody at all** — that's deliberate, not a gap. Corrected: founder at
+> (DEC-006), and **V1 seats nobody at all** — that's deliberate, not a gap. Corrected: founder at
 > Quickstart; architect, customers, capital and cofounder at MVP; **V1 adds none** (capital's remit
 > widens instead); hiring at Scale.
 
@@ -2967,14 +3032,14 @@ under-read surface.
 - ⛔ **The README's positioning lines are deliberately untouched** — *"tell a real business from a
   convincing demo"*, *"the discipline on top gets you a business."* Those still assume the destination
   the telos dropped in v0.200.0, and they are covered by the standing decision to leave outward-facing
-  positioning alone until it's settled ([[DEC-012]] §5). **They are not drift; do not sweep them.**
+  positioning alone until it's settled (DEC-012 §5). **They are not drift; do not sweep them.**
 
-**Charter recorded:** [[DEC-012]] — the range widens but the methodology doesn't; BOSS holds both the
+**Charter recorded:** DEC-012 — the range widens but the methodology doesn't; BOSS holds both the
 Silicon Valley and the ancient ways of building without resolving them; the mission to build more good
 is **unadvertised, never enforced, and never hidden from the founder** (an unstated goal shaping a
 tool's nudges is a deceptive pattern by BOSS's own catalog — it stays honest only because BOSS is
 inspectable by construction). Written *after* three releases of mechanism, per DEC-011's ordering.
-[[IDEA-069]] filed and **not built**: every time-shaped question BOSS asks a founder points at *now* or
+IDEA-069 filed and **not built**: every time-shaped question BOSS asks a founder points at *now* or
 *how it ends*; nothing asks what a thing is meant to **outlast**.
 
 ## 0.202.0 — 2026-08-21
@@ -3042,19 +3107,19 @@ altogether.** The same cell said three different things across three surfaces:
 - `stages/L0-quickstart/…/canvas/SKILL.md` — *"for people **and planet**"*, with a sharpen covering
   well-being, learning and resilience. **The planet is named in the prompt and absent from the ask.**
 - `web/humane-product-canvas.md` — the **CC BY-SA 4.0 template given away one release ago**
-  ([[DEC-010]], v0.198.0) — read *"for people as well as **the business**."* The planet was not
+  (DEC-010, v0.198.0) — read *"for people as well as **the business**."* The planet was not
   softened, it was **replaced, by the business**, on the public artifact BOSS calls its front door.
 - `web/canvas.html` — asked neither, leading with *"what people gain."*
 
 All three now carry the same question and the same second half. **This is composition, not a new
-cell** — the prompt already promised it; only the sharpen was missing ([[EVID-001]]: compose and
+cell** — the prompt already promised it; only the sharpen was missing (EVID-001: compose and
 subtract). No new ceremony: a "negligible" answer is explicitly the common and correct one, the same
 discipline the six shape questions already use.
 
 - **Why it matters more here than on a generic canvas:** BOSS's founders are building AI products,
   where the footprint is not a fixed overhead but the variable cost — it scales with the thing you're
   trying to grow. The measurement already existed (`/ai-cost`) and was pointed only at the wallet.
-- **Found by audit, in the [[DEC-011]] family:** the values layer said the right thing and the
+- **Found by audit, in the DEC-011 family:** the values layer said the right thing and the
   mechanism underneath it didn't. Fix the mechanism, don't restate the value.
 
 ## 0.200.0 — 2026-08-21
@@ -3083,15 +3148,15 @@ venture"* → **a thing that stands on its own: a company, a co-op, or a commons
 repos, proprietary license"* — it now names the asymmetry in both directions.
 
 - ⛔ **What is deliberately NOT built.** No co-op mentor, no commons mode, no `intent` axis.
-  [[IDEA-067]] rungs 2 and 3 stay `deferred` on their existing triggers. **n=0 is still n=0** —
+  IDEA-067 rungs 2 and 3 stay `deferred` on their existing triggers. **n=0 is still n=0** —
   cooperative-structure counsel built for a founder who hasn't appeared is the charter-widening
-  [[DEC-009]] refused, in a better hat. And **the website is untouched**: mechanism first, claim
+  DEC-009 refused, in a better hat. And **the website is untouched**: mechanism first, claim
   second. BOSS doesn't get to say *"co-ops, commons, tech for good"* on a landing page in the same
   release it changes four defaults.
-- **The falsifier that matters** ([[DEC-011]]): if **n ≥ 1** founder open-sources through the new
+- **The falsifier that matters** (DEC-011): if **n ≥ 1** founder open-sources through the new
   prompt, later needs to earn from the work and can't, BOSS caused the harm the old default
   prevented. One occurrence is enough to revisit.
-- **Supersedes [[DEC-009]] §5 only.** DEC-009 — the same day — fixed a real defect (a founder who
+- **Supersedes DEC-009 §5 only.** DEC-009 — the same day — fixed a real defect (a founder who
   would never charge had to fabricate a revenue line) and then held the positioning fixed. The
   positioning is what changed here; DEC-009's canvas branch and `/money` stop are untouched.
 
@@ -3111,7 +3176,7 @@ reason they sat unnoticed.
 
 **The landing page now shows BOSS working instead of describing it.** Feedback via Ajesh: *"people
 are struggling with which kind of projects they could use this to… the value is not being seen."*
-Graded as [[EVID-002]] — **stated-pain, n=1-2, solicited**, which is the weakest form of signal there
+Graded as EVID-002 — **stated-pain, n=1-2, solicited**, which is the weakest form of signal there
 is and close to the anti-pattern `/interview` exists to prevent. **The audit it prompted was the part
 that justified acting:** zero example projects anywhere on the site (`my-app`, 14 times, was the only
 project name), zero audience statement, and 14 of 14 pages describing BOSS's machinery rather than a
@@ -3155,7 +3220,7 @@ repo-wide, and a blanket `.boss/` exemption would be a real hole in `check:refs`
 
 - **Ships as a page plus a template**, not an app. `web/canvas.html` sits at **top level in the nav,
   a peer of Start**, because a free front door buried under "The product" isn't a front door.
-  ⛔ **No interactive state** — build the view, refuse the app ([[IDEA-034]]). A fill-in-the-boxes
+  ⛔ **No interactive state** — build the view, refuse the app (IDEA-034). A fill-in-the-boxes
   page with saved answers brings accounts, sync and a support burden; *"if you want it to remember
   your answers, that's what BOSS is for"* is honest rather than coy.
 - **The frames were deliberately left out.** Rendering one set of answers as Lean or BMC is **BOSS's
@@ -3181,7 +3246,7 @@ repo-wide, and a blanket `.boss/` exemption would be a real hole in `check:refs`
   This entry's own `For you:` line — the release whose whole point is *"here is a free thing, go
   take it"* — linked **`boss.build/canvas.html`**. `boss.build` has been registered to someone
   else **since 2026-01-16**, five months before BOSS chose the name; it is why the domain moved to
-  `oyeboss.build` ([[DEC-002]]). Not a 404 — a founder following the one link in the giveaway
+  `oyeboss.build` (DEC-002). Not a 404 — a founder following the one link in the giveaway
   release lands on a stranger's site. **And it would not have been clickable either:**
   `gen-site.js`'s inline renderer handled code, bold and italic and **not links** for the site's
   whole life, which held only because no `For you:` line had ever used one. This was the first, and
@@ -3199,7 +3264,7 @@ repo-wide, and a blanket `.boss/` exemption would be a real hole in `check:refs`
   shows the literal line `boss credit` writes into a README, where raw Markdown is correct.
   *(Eighth instance of [[checkers-state-intents-they-dont-enforce]] — and the second running where
   the gap was SCOPE rather than logic.)*
-- ✅ **The licence was decided before the door closed, not after** ([[DEC-010]]). BOSS's own argument
+- ✅ **The licence was decided before the door closed, not after** (DEC-010). BOSS's own argument
   applies to its own artifact — *"a permissive open-source grant, once published, cannot be
   revoked"* — so it was confirmed while the site is still undeployed and the grant is still
   theoretical. 🔴 **And BY-SA turns out to be the reversible-in-the-useful-direction pick:** as sole
@@ -3322,7 +3387,7 @@ the other half — and BOSS's own repo is the reason it exists.**
 > most open-source projects die of maintainer exhaustion, not of a missing business model.
 
 **BOSS is an incubator. It should not have been assuming a business** — and those turned out to be
-different things, with only the second a defect ([[DEC-009]]).
+different things, with only the second a defect (DEC-009).
 
 - 🔴 **The audit's good news is most of it.** Commercial intent was *not* baked in everywhere.
   Licensing is handled **and argued** — `/boss` offers MIT / Apache-2.0 / AGPL-3.0, and the
@@ -3334,7 +3399,7 @@ different things, with only the second a defect ([[DEC-009]]).
   small enough to be worth making.**
 - 🔴 **The cell never needed re-framing — its *sharpen* needed a second branch.** The humane prompt
   was intent-neutral the whole time; the commercial assumption lived one column to the right. That is
-  composition over an existing prompt, and the gating idea it leans on ([[DEC-004]]: a dormant cell
+  composition over an existing prompt, and the gating idea it leans on (DEC-004: a dormant cell
   never counts against graduation) was already load-bearing under three neighbouring cells.
 - **`/money` was giving actively wrong advice, not merely staying silent.** *"Stop. Don't build a
   payment rail for a customer who doesn't exist… the move is `/interview` or `/pretotype` to get the
@@ -3342,12 +3407,12 @@ different things, with only the second a defect ([[DEC-009]]).
   intended to, it is BOSS selling. The new branch refuses it by name and points at the canvas instead.
 - **BOSS is its own n=1.** It is MIT-licensed, and its own canvas answers that cell with
   *"calm-company / OSS / patronage… no pricing decision is honest before then"* — **a well-written
-  deferral in a cell with no honest way to hold one.** Same family as [[DEC-006]] (BOSS shipped a
+  deferral in a cell with no honest way to hold one.** Same family as DEC-006 (BOSS shipped a
   heavier org than the incubator it models): the gap was visible from inside its own repo.
   **And it was the first thing run through the new branch.** BOSS's own canvas (v0.4) now answers
   both halves: the earning deferral stands, and the sustaining half is filled from evidence rather
   than assertion — **196 of 196 commits from one human**, bursty with four zero-commit weeks, **bus
-  factor 1**, and a stopping condition dated to [[DEC-009]]'s own `revisit_by`. 🔴 **The succession
+  factor 1**, and a stopping condition dated to DEC-009's own `revisit_by`. 🔴 **The succession
   question came back "haven't decided" and is recorded as a live hole, not filled** — an MIT project
   other people can install, one maintainer, no archive-or-handover decision. **A named hole was the
   correct output; a plausible plan would have been the failure the branch exists to prevent.**
@@ -3356,7 +3421,7 @@ different things, with only the second a defect ([[DEC-009]]).
   public site one release earlier, still sitting in BOSS's own record.
 - **The structural finding, captured and deliberately not built.** All eight cohorts answer *"how much
   do you already know?"*; **none answers *"what is this for?"*** Intent is a real second axis
-  ([[IDEA-067]] rung 2) and it stays **`deferred` at n=0**, along with the non-commercial support that
+  (IDEA-067 rung 2) and it stays **`deferred` at n=0**, along with the non-commercial support that
   would sit on it — maintainer burnout, contributor pipeline, governance-as-succession,
   funding-for-sustenance. ⚠️ **The positioning does not change either**, and DEC-009 states the cost
   that buys: a CC/OSS founder evaluating BOSS has no way to know they won't be pushed toward a
@@ -3414,7 +3479,7 @@ finishing move on work that already existed and was one step short of counting.
   told, in the file Claude reads to learn who is on the team. *(Exactly the `mentor-cofounder` bug
   from v0.178.0, in a different stage — the gate written then is what caught it.)* And `/comp-eval`
   had shipped in v0.190.0 without ever reaching `GUIDE.md`, the one doc meant to walk the whole
-  ladder; it is now named where a founder would look for it, with the boundary [[DEC-008]] drew —
+  ladder; it is now named where a founder would look for it, with the boundary DEC-008 drew —
   **research is context, never evidence** — stated in the same breath.
 
 ## 0.193.0 — 2026-08-20
@@ -3435,13 +3500,13 @@ exactly that was looking in the wrong half of the page.**
   the check could not see. The scan now runs over `<pre>` blocks too, feeds the same `--strict`
   release gate, and was verified to fire and to block in both directions. *(Sixth instance of
   header-states-an-intent-the-code-misses.)*
-- **V1 hires nobody, and the site said the opposite.** [[DEC-005]] and [[DEC-006]] left L2 with
+- **V1 hires nobody, and the site said the opposite.** DEC-005 and DEC-006 left L2 with
   **zero agents**, and moved `/design-review` + `/ux-check` down to MVP. `/guide` and `/quick-guide`
   still told founders the next tier of mentors and *"real designers"* arrived there. Corrected, and
   the emptiness is now stated as the deliberate thing it is: the rung that adds two ways to *see*
   what you built rather than more people to build it.
 - **The canvas is no longer described as one framework.** `/guide` still presented the Humane Product
-  Canvas as *the* canvas — the exact inheritance [[DEC-004]] overturned. It now says what shipped in
+  Canvas as *the* canvas — the exact inheritance DEC-004 overturned. It now says what shipped in
   v0.191.0: you answer questions, the frame is a view you switch (`--frame lean|bmc`), switching
   re-renders rather than re-interviews, and **Risks & Harms and Principles render in every frame** —
   un-defaulting the framework was never meant to make those optional.
@@ -3526,10 +3591,10 @@ unfinished, and finished work gets rebuilt.**
   and waiting on a URL, and copy written before the page gets rewritten. **IDEA-052 was parked with
   its trigger already FIRED**: `mentor-operations` gated on *"first-dollar exists"* and `/money`
   shipped in v0.157.0. It is parked anyway because building it means **adding a seat**, against
-  [[EVID-001]]'s compose-and-subtract mandate from a founder whose own stated fear was app bloat.
+  EVID-001's compose-and-subtract mandate from a founder whose own stated fear was app bloat.
   ***A fired trigger is a fact, not an obligation*** — and that is a distinction the board had no
   way to express until `deferred` had a lane.
-- **IDEA-055 re-graded, and it says something about the hold.** [[EVID-001]] said *build nothing
+- **IDEA-055 re-graded, and it says something about the hold.** EVID-001 said *build nothing
   yet* on the orientation axis pending a second signal. No second signal has arrived — and v0.179.0
   and this release have both put real work on that exact axis, each arriving as a status line or a
   **bug fix** rather than as a program. Marked `building` because that is what is true; the hold
@@ -3555,7 +3620,7 @@ unfinished, and finished work gets rebuilt.**
 
 ## 0.191.0 — 2026-08-20
 
-**Canvas frames — the answer store gets its views, and the floor holds.** [[DEC-004]] settled in
+**Canvas frames — the answer store gets its views, and the floor holds.** DEC-004 settled in
 v0.189.0 that the Humane Product Canvas was one frame rather than the spine — it had become the sole
 spine by inheritance from a **v0.4.0 release note**, never by decision, and was carried unexamined
 through ~180 releases. The cells it had been missing landed that release. **This is the other half:
@@ -3577,8 +3642,8 @@ the views.**
   Business Model Canvas by Osterwalder & Pigneur. With three frames a single blanket credit would be
   wrong on two of them.
 
-**[[DEC-008]] — desk research is context, not evidence, and never becomes an `EVID`.** This was the
-blocker gating [[IDEA-066]]'s remaining Tier-1 research items, and the reason it had to be settled
+**DEC-008 — desk research is context, not evidence, and never becomes an `EVID`.** This was the
+blocker gating IDEA-066's remaining Tier-1 research items, and the reason it had to be settled
 before building any of them.
 
 - **`EVID`'s ladder does not measure confidence in general — it measures what a PERSON did**
@@ -3723,7 +3788,7 @@ is the other loops' job, not this one's.
 Seed: Ajesh — *"if i say find me all the competition for x, features, pricing, differentiators. then
 help do research and organize… and i can add names of new comp, and have it do the eval."*
 
-This **narrows** the standing recommendation rather than overturning it. [[IDEA-066]] argued BOSS
+This **narrows** the standing recommendation rather than overturning it. IDEA-066 argued BOSS
 should *structure and grade, not fetch* — the founder's host searches better than BOSS ever will, and
 `/interview` and `/pretotype` both prep-but-don't-perform. That holds for market sizing, why-now and
 channels. **It fails for competition, for one reason those don't share: you cannot list the
@@ -4112,11 +4177,11 @@ content or existence; none can compare two timestamps.** Every conscience moment
 therefore an **absence** predicate ("an idea exists and no canvas does"); none can say *"evidence
 landed and the artifact hasn't moved."* **BOSS's conscience watches for what was never made, not for
 what stopped being true.** Harvesting needs a staleness predicate, and that is a new runtime
-primitive rather than a loop someone forgot to author. **Not built** — recorded in [[FEAT-025]]
+primitive rather than a loop someone forgot to author. **Not built** — recorded in FEAT-025
 Layer 4 with the proposed shape (N new `EVID` since the artifact's mtime; two mtimes and a count,
 never inferred from age, so `board.js`'s standing refusal to guess staleness holds).
 
-**The canvas gains the four cells the single spine never asked for** ([[DEC-004]] item: *conventional
+**The canvas gains the four cells the single spine never asked for** (DEC-004 item: *conventional
 cells are additions, not replacements*). **Cost Structure** first, because it is the only cell present
 in both Lean Canvas and the BMC with no home in the humane one — *revenue without cost isn't a model,
 it's a price* — and because its absence is what left BOSS with no unit-economics record at all. Plus
@@ -4145,7 +4210,7 @@ properly: all three test **content or existence**, and **none compares two times
 staleness is not expressible. The wrong count had been written into three records and is corrected in
 all of them.
 
-**Three money-and-story mentors become one venture coach whose remit SCALES** ([[DEC-006]]).
+**Three money-and-story mentors become one venture coach whose remit SCALES** (DEC-006).
 Seed: *"i really feel like mentor-money, fundraising, and pitch could be baked into vc or incubator
 coach role… it just continues to scale in what they have as their skill set."*
 
@@ -4157,7 +4222,7 @@ coach role… it just continues to scale in what they have as their skill set."*
 - **What changed the answer is the second framing.** BOSS calls itself *a just-in-time startup
   incubator*, and a real incubator does not staff a pricing specialist, a fundraising specialist and
   a pitch coach — **one partner covers all three and gets deeper as the company does.** Same shape as
-  the [[DEC-005]] designer finding: BOSS shipped a split it did not itself run. And needing `/consult`
+  the DEC-005 designer finding: BOSS shipped a split it did not itself run. And needing `/consult`
   to *find a mentor* is a smell about the roster, not a feature of the router.
 - **Capability that grows INSIDE an agent is new for BOSS.** The ladder was otherwise entirely
   arrival-based, which is what produced the 1/3/4/0 lumpiness fixed earlier in this same release.
@@ -4204,7 +4269,7 @@ existing cells better:
   room wants is already written down by the time the raise question is live; asking for it again is
   how a tool teaches a founder that their own records don't count.
 
-**Layer 1 of [[FEAT-025]] is now three items from done, and all three are correctly held open:**
+**Layer 1 of FEAT-025 is now three items from done, and all three are correctly held open:**
 CAC/LTV (gated on real customers), the ask + use of funds (gated behind the coach's *not yet*), and
 the traction timeline — **closed as won't-build-as-a-record**, because it is fully derivable from
 `EVID` dates + CHANGELOG + `/measure` and a field would duplicate truth.
@@ -4223,7 +4288,7 @@ a third of it.**
   intermediate hop.** A ledger row pointing at a name no founder ever had would be a promise about a
   thing that never existed, and this repo has already logged one *"rename's own two-hop trap."*
 - 🔴 **The sweep rewrote a verbatim quotation, and that was caught and reverted.** A global
-  find-and-replace edited Ajesh's own quoted words inside [[DEC-006]] and this changelog, making him
+  find-and-replace edited Ajesh's own quoted words inside DEC-006 and this changelog, making him
   say "mentor-capital" in a sentence where he said "mentor-money." **A record that silently edits what
   someone said is worse than a stale name** — the quote is evidence, the name around it is only
   commentary. Both restored; the surrounding prose keeps the new name.
@@ -4509,12 +4574,12 @@ and found a missing mechanism.**
   sweep found 21 times in the backlog index, now found once more in the file that is read first
   every session. **The lesson generalises past the fix: a note that says "still open" is a claim
   about the code, and nothing was checking it.**
-- **[[IDEA-060]] item 6 — the `site-drift-loop` — is SUPERSEDED, not built.** Its proposed predicate
+- **IDEA-060 item 6 — the `site-drift-loop` — is SUPERSEDED, not built.** Its proposed predicate
   was *"the page hasn't been touched since N FEATs closed."* `check:site` already does strictly
   better: each page declares `covers:`, and the check compares the **actual change time of those
   sources** against the page's `reviewed:` date, so it names *what* fell behind rather than counting
   events. Building the loop would have added a second, blinder watcher over the same surface —
-  **compose and subtract, per [[EVID-001]]**. Recorded as superseded so the reasoning survives.
+  **compose and subtract, per EVID-001**. Recorded as superseded so the reasoning survives.
 
 - **🔴 Every multi-line release note BOSS has ever published to the web was truncated mid-sentence.**
   `gen:site` captured the `> **For you:**` block with `(.+)$` — one line — so v0.180.0 went out to the
@@ -4610,7 +4675,7 @@ rules without the checker. The page discloses that rather than claiming enforcem
   frontmatter rule only decides who to believe when both are plausible.** Four records were corrected
   against disk rather than against each other.
 - **Also found by the same sweep:** two records both claiming `IDEA-059`, which made every
-  `[[IDEA-059]]` link ambiguous — including one in BOSS's own RESUME. Four records absent from the
+  `IDEA-059` link ambiguous — including one in BOSS's own RESUME. Four records absent from the
   index entirely (`FEAT-020`, `IDEA-024`, `IDEA-038`, `IDEA-039`). And **`FEAT-022` — the venture
   brain — cited by name in a SHIPPED practice (`conscience-voicing.md`) and twice in this changelog,
   including the sentence *"FEAT-022 is now complete,"* with no record anywhere behind the id.** Its
@@ -4736,7 +4801,7 @@ and know where it should fit, or add a kernel of it as a seed and then scale."*
   durable*: a DEC-NNN writes a new record every run, a privacy policy exists and should be read. It
   also fails loudly on a malformed ledger — `readLadder()` swallows a parse error and returns `{}`,
   which silently disables artifact-awareness everywhere. That bit during this build.
-- **0 new skills (47 → 47), 1 new practice (30 → 31).** Compose + subtract per [[EVID-001]] — the
+- **0 new skills (47 → 47), 1 new practice (30 → 31).** Compose + subtract per EVID-001 — the
   three questions live in the always-loaded `CLAUDE.md`, and each skill only names its own specifics.
   **`boss status`'s "Already built" line is the positive register EVID-001 asked for**: ~120 releases
   spoke only in the conscience's caution voice, and a founder who said *"I can't tell where I am"* now
@@ -4941,7 +5006,7 @@ readable retention curve is another 30–90 days out — for data your own datab
   keeps this from re-growing the thing it refuses: **the seam is a timestamp column and a stub function** —
   naming events means you crossed back over.
 - **The humane read is what makes it shippable.** You are timestamping **your own rows**, not watching a
-  person — the [[IDEA-021]] contract exactly (*the work already leaves an honest trace*). A `created_at` on
+  person — the IDEA-021 contract exactly (*the work already leaves an honest trace*). A `created_at` on
   a record the user asked you to create is not surveillance; a session recorder on a user who didn't is.
 - **`/measure` step 0 + a new rule** — says no, then hands back the seam. Description updated so the routing
   carries it.
@@ -4962,8 +5027,8 @@ correction, applied to itself.
 
 The measurement ladder **stops at MVP**: L2-V1 ships 4 skills (sequencing + design, zero measurement), L3-Scale
 ships `/incident`, and `/economics` is named in the manifest as trigger-gated and unauthored. That is a
-real gap — and it stays open. It has already been deferred twice on purpose ([[IDEA-051]], `/economics`),
-both waiting on a real project's symptom, and [[EVID-001]] is explicit that post-launch surface for
+real gap — and it stays open. It has already been deferred twice on purpose (IDEA-051, `/economics`),
+both waiting on a real project's symptom, and EVID-001 is explicit that post-launch surface for
 operators BOSS has **zero** of is the pattern to stop repeating. **0 new skills (47 → 47), 0 new
 practices (30 → 30)** — three sections on files that already existed.
 
@@ -5072,8 +5137,8 @@ Grep the shipped surface: `payroll` 0 · `bookkeep` 0 · `compensation` 0 · `ha
 `performance review` 0 · `board meeting` 0. **"Early finance" today means the LLM bill**
 (`/ai-cost` + `/cost-review`) **and the first dollar** (`/money`) — the operating middle (runway,
 books, business/personal separation) has nothing. Employee onboarding has nothing. Culture has one
-practice scoped to AI rollout. [[IDEA-052]] already designed the answer — briefs-as-interface · **one**
-`mentor-operations` seat, not four · collaborator classes — and it is still unbuilt. [[IDEA-004]],
+practice scoped to AI rollout. IDEA-052 already designed the answer — briefs-as-interface · **one**
+`mentor-operations` seat, not four · collaborator classes — and it is still unbuilt. IDEA-004,
 the values table Ajesh's own vision doc calls the differentiator, has been `exploring` since 2026-05-21.
 
 ### 🔴 `/onboard` was a false friend
@@ -5218,7 +5283,7 @@ independent pass is recorded as **still owed**.
 
 ### What the vet actually changed
 
-**Verdict: ADAPT, not ADOPT** — matching both design precedents ([[RVW-014]], [[RVW-052]]), which
+**Verdict: ADAPT, not ADOPT** — matching both design precedents (RVW-014, RVW-052), which
 landed the same way for the same reason: *outside design advice is sound in substance and wrong in
 dose for a green founder.*
 
@@ -5364,7 +5429,7 @@ round-trips cleanly · **what's actually wrong** — the open findings, the most
 and the one founders skip out of embarrassment · and a **scoped** ask, since the five-state table is a
 ready-made work order.
 
-**Deliberately not a `/brief designer`.** [[IDEA-052]]'s brief slice carries a hard gate — *don't
+**Deliberately not a `/brief designer`.** IDEA-052's brief slice carries a hard gate — *don't
 author brief content without a real engagement* — and it's right, because knowing what an accountant
 needs is knowledge you can only get by having done it. **The designer case has no such dependency:**
 it composes entirely from artifacts BOSS already generates, so it isn't imagined, it's assembled. It
@@ -5818,7 +5883,7 @@ available.
 - **Two renderers, one palette.** BOSS's product is a terminal and its front door is a browser, so
   every color is named **once** and carries **both** bindings — a CSS custom property *and* an ANSI
   truecolor/256 pair. A color chosen for the web and re-derived for the CLI later is the 47-blues
-  failure at brand scale. Four signals (rust · moss · ochre · oxblood) answer [[IDEA-055]]'s sharpest
+  failure at brand scale. Four signals (rust · moss · ochre · oxblood) answer IDEA-055's sharpest
   finding — that today *a warning looks exactly like a success*. The ANSI column is **documented, not
   wired**: `src/` is untouched, no behavior change, nothing added to the founder surface.
 - **`site/styles/tokens.css` — three-layer tokens** (primitives → semantic → component), because two
@@ -6025,9 +6090,9 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 - **`/vet` now verifies who actually said it — before it grades what they said.** The queue's n=3
   item, promoted under Principle #1. The rubric's question 2 rewards *"a named practitioner BOSS
   already respects,"* and the skill **never checked whether the practitioner said it.** Three of four
-  claims bent exactly there in one session: [[RVW-072]]'s *"Karpathy shared this"* was half-right (the
+  claims bent exactly there in one session: RVW-072's *"Karpathy shared this"* was half-right (the
   lecture is real; the second video was an unrelated older explainer) **and the evidence grade swung
-  on the verification**; [[RVW-076]]'s *"DORA 2026 says the bottleneck moves to specification"* does
+  on the verification**; RVW-076's *"DORA 2026 says the bottleneck moves to specification"* does
   not verify at all (DORA's real 2026 publication is an ROI report; the phrasing traces to blog
   summaries); and the review-sandwich claim rested on a second-hand GitHub number nobody could trace.
 - **Placed as step 3 — before the rubric, not inside it.** Grading first and checking later means the
@@ -6063,7 +6128,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 
 ## 0.157.0 — 2026-08-17
 
-- **The subtraction pass — the first time BOSS has ever removed a skill.** [[EVID-001]]'s mandate was
+- **The subtraction pass — the first time BOSS has ever removed a skill.** EVID-001's mandate was
   *compose and subtract, never add*, and the surface had grown from 22 to 48 skills since it was
   written. **48 → 46**, and the post-launch block a live founder actually faces goes **9 → 7**.
 - **`/pmf-check` + `/retain` → `/health`.** They read the same retention curve, sat behind the same
@@ -6134,7 +6199,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   structural: **(1)** the subtraction pass EVID-001 mandates could never reach a founder — merging
   `/retain` + `/onboard` + `/pmf-check` would deliver the new verb and leave all three originals, so
   syncing could only ever *grow* a project's surface; **(2)** v0.153.0's adopt detection had to cap at
-  MVP because ceremony added was ceremony BOSS couldn't take back; **(3)** [[DEC-003]]'s fourth step —
+  MVP because ceremony added was ceremony BOSS couldn't take back; **(3)** DEC-003's fourth step —
   *"if they say yes, BOSS does the migration"* — was a promise the sync layer could not keep across a
   change in **BOSS's own** way of working.
 - **`registry/supersedes.json` — the ledger that lets a removal explain itself.** `planSync` finds the
@@ -6174,7 +6239,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 
 ## 0.154.0 — 2026-08-17
 
-- **[[DEC-003]] — position, not verdict.** The open question v0.153.0's mechanics couldn't answer:
+- **DEC-003 — position, not verdict.** The open question v0.153.0's mechanics couldn't answer:
   what should BOSS actually *say* to a founder about work they already built? The tempting answer was
   a **report card** — read the repo, grade it, hand back recommendations. It demos well. It also
   collides head-on with the README's own promise (*"Refuses to nag. **Refuses to grade.**"*), lands as
@@ -6357,7 +6422,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   written by the scan that captured it. Honoring those flags is what produced the release: **three of
   the four claims changed shape or died on verification**, and the two things worth shipping were
   drift in BOSS's own shelf that the vetting exposed on the way past.
-  - **[[RVW-073]] workslop antecedents — ADAPT (narrow).** The ask was to restructure
+  - **RVW-073 workslop antecedents — ADAPT (narrow).** The ask was to restructure
     `ai-adoption-culture.md` around a causal chain. **Rejected on its own premise:** the practice does
     not present four independent sections — its preamble already *is* that spine ("the failure isn't
     the tool, it's the rollout"). What survived is that the spine had been **asserted without a
@@ -6367,13 +6432,13 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     receiving end. **52.7% admit sending; 55% of recipients got it from a manager; 85% say it damaged
     their trust in leadership.** On a two-person team the founder is the highest-leverage sender and
     the least likely to be told — so the norm now points **down**, not just sideways.
-  - **[[RVW-074]] pickup latency — REJECT**, and the review sandwich rejected separately (an AI
+  - **RVW-074 pickup latency — REJECT**, and the review sandwich rejected separately (an AI
     blessing the AI's diff so the human reads *less* erodes *whoever clicks merge owns what the agent
     wrote*). Batch size was **already** `git-workflow.md`'s organizing frame five times over, and the
     pickup stat was already in the file. **A solo founder has no pickup queue** — a 400-line agent PR
     doesn't wait, it gets merged unread — so the reframe would have made the practice *less* true for
     the only cohort BOSS has validated.
-  - **[[RVW-075]] AGENTS.md — ADAPT (narrow).** The claim duplicates a scaffold BOSS shipped in
+  - **RVW-075 AGENTS.md — ADAPT (narrow).** The claim duplicates a scaffold BOSS shipped in
     **v0.58.0**; its team framing serves a cohort of zero. But the vet caught real drift:
     `context-discipline.md` was **swept 2026-08-11, seven weeks after that split shipped**, and still
     told founders to put project constraints in `CLAUDE.md` while never mentioning `AGENTS.md`.
@@ -6381,11 +6446,11 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     creates.** Now stated, primary-verified: *Claude Code reads `CLAUDE.md`, not `AGENTS.md`* — the
     import is the bridge, and the "keep it tight" budget applies to **both files combined**, because
     the split saves exactly zero tokens.
-  - **[[RVW-076]] spec-as-shared-artifact — REJECT, already shipped.** The entire suggested routing
+  - **RVW-076 spec-as-shared-artifact — REJECT, already shipped.** The entire suggested routing
     landed in v0.136.0 and sits committed at HEAD, judgment-labeled and citation-clean. The inbox item
     was a leftover of work already done.
 - **Two second-hand attributions failed verification in one session, and that is the finding.**
-  [[RVW-072]]'s "Karpathy shared this" arrived half-right (the lecture is real; the second video was an
+  RVW-072's "Karpathy shared this" arrived half-right (the lecture is real; the second video was an
   unrelated older explainer), and **"DORA 2026 says the bottleneck moves to specification"** does not
   verify at all — DORA's actual 2026 publication is *ROI of AI-Assisted Software Development
   (2026.01)*, an ROI report; the phrasing traces to blog summaries and preprints. Both are now
@@ -6782,7 +6847,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 - **The post-launch arc folds until you've shipped something — the reversible half of the
   subtraction question (checklist 5.3, option C).** At MVP a founder with one idea was read **44
   skills, nine of them about measuring, retention, pricing and trust** — for a product with no
-  users. That is [[EVID-001]]'s *"worried about bloating my app"* rendered as a menu.
+  users. That is EVID-001's *"worried about bloating my app"* rendered as a menu.
   **44 → 35 listed; 72 → 64 lines.**
   - **Nothing is removed, disabled, or made harder to run.** The nine still install, still work, and
     are one flag away (`boss map --all`). This is the `headline` pattern from v0.130.0 applied to
@@ -6807,7 +6872,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 
 - **`/pretotype` can publish the fake door in one turn — and says out loud what it can't do.**
   The first host-capability integration, folded into an existing verb. **No new skill**: if Artifacts
-  needed their own command the integration would have failed ([[EVID-001]] — compose, never add).
+  needed their own command the integration would have failed (EVID-001 — compose, never add).
   - **The gap it closes.** Savoia's whole argument is that a demand test must be *cheap and fast*.
     BOSS asked for "a landing page with a sign-up button" and then left the founder to design, build
     and host it — so **the most important discipline BOSS teaches was the one most likely to be
@@ -7135,7 +7200,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     The "One unlock away" block printed *every* skill of the next rung — for MVP that was 29 entries,
     making the map **68 lines, ~2/3 of it unavailable**. That is premature ceremony rendered as text
     (PRINCIPLE #2 inverted, on the surface whose whole job is orientation) and a direct hit on
-    [[EVID-001]]: *"hard to gauge where I am"* and *"worried about bloating my app."* A rung now
+    EVID-001: *"hard to gauge where I am"* and *"worried about bloating my app."* A rung now
     declares a **`headline`** in its manifest — the few skills worth naming at the transition (MVP:
     `/spec` `/smoke` `/pretotype` `/close`) — and the rest fold into `… +24 more when you get there`.
     **`boss map --next` opens the full list** whenever the founder actually wants it. Map: **68 → 45
@@ -7225,14 +7290,14 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     dropped) · `.js` edit permissions added to the local settings.
   - **Full audit + the remaining prioritized checklist** live in `docs/architecture/REVIEW-2026-07-28-full-audit.md`
     and `CHECKLIST-2026-07-28-improvements.md` (gitignored dev workspace). Still open and deliberately not
-    bundled here: the `boss map` 29-skill wall (the highest-leverage [[EVID-001]] fix), moving conscience
+    bundled here: the `boss map` 29-skill wall (the highest-leverage EVID-001 fix), moving conscience
     voice frames out of JS string literals into the loop specs, unit tests for `src/`, `/recalibrate` for
     Opus 5, and the subtraction pass on 48 skills.
 
 ## 0.128.0 — 2026-07-23
 
 - **CLI usability + visual encoding (IDEA-055) — legibility, wayfinding, and a "you are here" orientation
-  home.** The visual-encoding + wayfinding layer that [[EVID-001]] (BOSS's first real external founder signal)
+  home.** The visual-encoding + wayfinding layer that EVID-001 (BOSS's first real external founder signal)
   named as core to the offering — *"I can't tell where I am / did it work / what now."* **Composes and
   subtracts the existing surface; adds no new command or skill.** Conscience gate held **129/0** throughout
   (runtime untouched); reviewed by `designer` (encoding) + `voice-keeper` (strings). Four commits
@@ -7547,7 +7612,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   regeneration, containment, frustration index, **cost-per-*successful*-outcome**), the product-analytics ↔
   eval-loop convergence (traces → evals → product metrics; online evals on a sample of live traffic), and the
   **anti-surveillance clause** (measure graduation/loop-closure, NOT engagement/DAU — the humane differentiator;
-  measure the product, don't surveil the human — [[IDEA-021]]). **DOWN** = a thin **`/measure`** skill (the
+  measure the product, don't surveil the human — IDEA-021). **DOWN** = a thin **`/measure`** skill (the
   `/pretotype` counterpart): a hard **n<10 gate** ("close this, go talk to your users"), ONE activation metric +
   ONE retention curve, **≤10 events** (kills analytics theater), the AI-specific metrics, and free/OSS/no-lock-in
   tooling (PostHog / Plausible / Langfuse-Phoenix; print+JSONL+spreadsheet for a first app). Extends `/evals` +
@@ -7603,7 +7668,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   *artifact you design*, not a prompt — and BOSS already ships the rungs (`CLAUDE.md` → `/smoke` → `/spec`
   acceptance criteria → `RESUME`/`/close` → `/evals`+`/red-team`), so the win is naming the shape. Carries
   three durable stances: **the model is a dependency you don't control** (build assuming it improves; delete
-  scaffolding it outgrew — ties [[IDEA-014]]/[[IDEA-028]]); **spec-driven development** (BOSS's `/spec` already
+  scaffolding it outgrew — ties IDEA-014/IDEA-028); **spec-driven development** (BOSS's `/spec` already
   *is* SDD — adopt the stance, reject Spec-Kit's multi-file ceremony); **Karpathy's verifiability thesis**
   (build the features with a verification signal first; the harness's job is to expand what's verifiable).
   **`context-discipline.md` promoted** from host-mechanics to the named discipline it serves — the **dumb
@@ -8318,7 +8383,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   up, a cofounder who clones has it). **Staleness-aware — the part that keeps you *current*, not just
   documented:** a practice tied to a specific model/price/tool can carry `review_by:`, and when it passes,
   `/revalidate` asks *"still the best way? anything changed?"* → keep / update / retire — the team's quiet
-  defense against being outdated or overspending, the model-recalibration discipline ([[IDEA-014]])
+  defense against being outdated or overspending, the model-recalibration discipline (IDEA-014)
   team-scoped. **Held the humane line:** attribution is recognition + a pointer, **never a scoreboard**
   ("measures what the team knows, never who contributed more"). New `PRAC-NNN` ID type (`docs/IDS.md`);
   registered in the L1 manifest. Zero-dep, skill-layer only; eval gate **113/0**; `/tmp`-verified (ships,

@@ -22,7 +22,7 @@ updated: 2026-05-21
 Mentors sit **outside** the product. They never write production code or own specs — they push the
 founder's *thinking* forward and leave a paper trail (the dossier) that compounds toward whatever this
 becomes — **fundable, hireable, forkable, or handed to the people it serves.** Which one is the
-founder's call ([[DEC-011]]); mentoring is opt-in, never forced (Principle 2).
+founder's call (DEC-011); mentoring is opt-in, never forced (Principle 2).
 
 ## Where mentors live
 
@@ -61,8 +61,8 @@ Each mentor unlocks only when the project earns the questions it asks (Principle
 | `mentor-cofounder` | The founding-team *relationship*: working together across skill sets (non-tech ↔ eng), dividing the work, decision rights, the hard conversations. Serves the partnership-as-unit; **never takes a side.** Dormant when solo. | MVP |
 | `mentor-capital` | Model, pricing, unit economics, willingness-to-pay — **and, as the remit widens rather than new chairs arriving, the raise question and the investor story.** | MVP |
 | `mentor-hiring` | First hires, team shape, what to keep vs delegate. | Scale |
-| ~~`mentor-fundraising`~~ | **Retired v0.189.0 ([[DEC-006]])** — absorbed into `mentor-capital`, whose remit widens by rung instead of three chairs arriving. The lens still ships; the agent does not. | *nowhere* |
-| ~~`mentor-pitch`~~ | **Retired v0.189.0 ([[DEC-006]])** — same merge. | *nowhere* |
+| ~~`mentor-fundraising`~~ | **Retired v0.189.0 (DEC-006)** — absorbed into `mentor-capital`, whose remit widens by rung instead of three chairs arriving. The lens still ships; the agent does not. | *nowhere* |
+| ~~`mentor-pitch`~~ | **Retired v0.189.0 (DEC-006)** — same merge. | *nowhere* |
 | `mentor-humane` | The ethics/stewardship lens — who could be harmed, what's the humane call. (Pairs with `/canvas` §3.) | **Lens: Quickstart** (conscience + `/canvas` §3 + `harm-taxonomy` practice + `/red-team --humane`) — this is the part that ships. **Agent: not shipped in any mode**; designed for Scale (board), deliberately unbuilt until a real project needs the door. |
 
 > *The full board convenes at Scale.* This roster is provisional — it gets sharpened by encoding real

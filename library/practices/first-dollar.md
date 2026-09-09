@@ -66,7 +66,7 @@ early conversations do. Record who, what they paid for, and what it proves about
 
 Once a first-dollar EVID exists, the existing drift/caution voicings shift from **validate → deliver**: the
 question stops being *"will anyone pay?"* and becomes *"someone is paying — is what they paid for actually
-working for them?"* No new machinery — the conscience's evidence eye ([[IDEA-045]]) already reads the ledger;
+working for them?"* No new machinery — the conscience's evidence eye (IDEA-045) already reads the ledger;
 the presence of `commitment` EVID is what quiets the "will anyone pay?" line and sharpens the delivery one.
 
 ## The humane line (PRINCIPLE #6)

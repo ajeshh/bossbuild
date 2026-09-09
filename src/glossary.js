@@ -9,7 +9,7 @@
 // The house rule (README, /welcome): **assume intelligence, never assume knowledge.** So a definition
 // here explains the WORD, never the person — no "simply", no "just", no "as you probably know".
 //
-// It is not a skill and not a new command ([[EVID-001]]: compose + SUBTRACT). It is `boss help`
+// It is not a skill and not a new command (EVID-001: compose + SUBTRACT). It is `boss help`
 // answering a kind of question it already looked like it would answer.
 //
 // `see` is the surface where the term is actually MET, not a related-reading list — a definition that

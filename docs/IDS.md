@@ -20,6 +20,21 @@ status: active
 Frontmatter on every doc: `id`, `type`, `owner`, `status`. On `IDEA`/`FEAT`, add a one-line
 `gist:` — see below.
 
+## Citing a record: the `[[…]]` form vs a bare id
+
+**`[[DEC-011]]` promises the reader can open it. A bare `DEC-011` says a record exists.**
+
+The distinction is load-bearing because BOSS's own working records — ideas, decisions, evidence,
+research verdicts — are gitignored, while the files that cite them (`registry/CHANGELOG.md` above
+all, which ships inside the npm package) are not. 198 citations across 28 tracked files were
+offering a reader a door into a room that isn't there.
+
+`npm run check:refs` enforces it: **a tracked file may carry the link form only if that record is
+also tracked.** Nothing is exempt, including the CHANGELOG — an allowlist that excuses whole files
+is how this class of drift survives (v0.251.0). A mention inside backticks is a mention, not a
+citation. Publish a record class and its brackets become legal again automatically; there is no
+list to update.
+
 ## Status — the declared vocabulary
 
 **The file's frontmatter is truth. `docs/ideas/INDEX.md` is a view of it.** When they disagree, the
@@ -210,6 +225,6 @@ record to its INDEX row — document against document. All 21 drifted records wo
 the index had simply agreed with the wrong files. **Agreement is not truth.** Ajesh, on reading the
 result: *"the whole point of us managing the docs was to avoid this."*
 
-**IDs are never reused.** Two files claimed `IDEA-059` at once, which made every `[[IDEA-059]]`
+**IDs are never reused.** Two files claimed `IDEA-059` at once, which made every `IDEA-059`
 link ambiguous — including the one in `RESUME.md`. Take the next free number; a gap is free and a
 collision is not.

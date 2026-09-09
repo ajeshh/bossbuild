@@ -28,7 +28,7 @@ arrangement rather than the product.**
 
 ## The asymmetry it closes
 
-[[DEC-009]] gave the canvas's Business Model cell a **second branch** for projects that are not
+DEC-009 gave the canvas's Business Model cell a **second branch** for projects that are not
 trying to earn — *what keeps this alive · who else could carry it · what happens when you get bored,
 busy, or hit by a bus · what would make you stop* — on the grounds that **most open-source projects
 die of maintainer exhaustion, not of a missing business model.**
@@ -36,8 +36,8 @@ die of maintainer exhaustion, not of a missing business model.**
 The cell asks it. Nothing watched it. Meanwhile the *commercial* half of the same cell is watched
 continuously — `drift` on the named bet, `margin-trap` on price against cost, `outpaced` on the canvas
 falling behind shipped work, `cost` and `cost-stale` on spend. **The canvas asked both halves and the
-conscience watched one**, which quietly made BOSS a tool for one kind of project while [[DEC-011]] and
-[[DEC-012]] claimed otherwise.
+conscience watched one**, which quietly made BOSS a tool for one kind of project while DEC-011 and
+DEC-012 claimed otherwise.
 
 ## Why it needed a new predicate
 

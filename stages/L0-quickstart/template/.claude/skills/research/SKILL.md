@@ -91,7 +91,7 @@ mechanically — the grade says exactly how strong each signal is.
 
 ## Why it's worth it
 
-A transcript you don't digest is a conversation that evaporates — the exact failure `EVID` ([[IDEA-045]])
-and `/interview` ([[IDEA-046]]) exist to stop, at the scale of a full transcript instead of one call. Run
+A transcript you don't digest is a conversation that evaporates — the exact failure `EVID` (IDEA-045)
+and `/interview` (IDEA-046) exist to stop, at the scale of a full transcript instead of one call. Run
 this on your real conversations and the canvas's riskiest assumption stops arguing from vibes and starts
 arguing from receipts — with the words your users actually used.

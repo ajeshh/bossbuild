@@ -108,7 +108,7 @@ dunning *system* (point at Stripe — it's plumbing, not a product you build).
 
 Silent until a project is live with a real, decaying curve past n≥~30–50 (involuntary-churn plumbing earlier,
 at first paying user). Surfaces via **`/health`** (the runner) and a pointer from `/measure` when it reads a
-sliding curve. Feeds `/health` (a flattening curve is one of its three fit lenses) and [[IDEA-051]]
+sliding curve. Feeds `/health` (a flattening curve is one of its three fit lenses) and IDEA-051
 (operate-mode customer loop). Post-ship retention is `observed-behavior` / `commitment` **EVID** — record the
 real signal. Cite: Winters (activation > acquisition; the curve must flatten), Bangaly Kaba (best-retained-
 users), Balfour (retention is the engine), a16z/ChartMogul (AI-tourist wave; rebase to Month 3), Murphy/Campbell

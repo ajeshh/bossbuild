@@ -40,7 +40,7 @@ to learn something their own database already knew. This is a schema one-way doo
 ([`data-schema`](data-schema.md)), and it is the *cheapest* thing in this entire practice.
 
 It is also the humane version by construction: you are timestamping **your own rows**, not watching a person.
-The work already leaves an honest trace — read the trace, don't instrument the human ([[IDEA-021]]). A
+The work already leaves an honest trace — read the trace, don't instrument the human (IDEA-021). A
 `created_at` on a record the user asked you to create is not surveillance; a session recorder on a user who
 didn't is.
 
@@ -98,7 +98,7 @@ lens exists to catch. So:
 - **Measure task success and graduation / loop-closure, NOT engagement / DAU / time-in-app.** Engagement-as-goal
   is the surveillance-capitalism failure mode; a humane product wants the user to *succeed and leave*, not stay.
 - **Prefer aggregate / privacy-first instrumentation** (Plausible/Fathom/Matomo pattern; PostHog with PII
-  discipline). Measure the *product*, don't surveil the *human* (the [[IDEA-021]] contract: the work leaves an
+  discipline). Measure the *product*, don't surveil the *human* (the IDEA-021 contract: the work leaves an
   honest trace; read the trace, don't instrument the person).
 - **The Frustration Index is legitimate *because it helps the user*** — catch churn-from-struggle and fix the
   product — not to manipulate retention. Name that line so it isn't weaponized.
@@ -110,7 +110,7 @@ lens exists to catch. So:
 Post-ship behavior is the **top of the evidence ladder** — real usage/retention is `observed-behavior` /
 `commitment` EVID, not `stated-pain`. And the honest frame holds: cheap AI lowered the cost of *building*, not
 of *being wrong* (Camuffo) — so the live product is now your best evidence instrument. Instrument it, or you're
-just shipping faster into the dark. Feeds [[IDEA-051]] (operate-mode customer loop).
+just shipping faster into the dark. Feeds IDEA-051 (operate-mode customer loop).
 
 ## Altitude / JIT
 

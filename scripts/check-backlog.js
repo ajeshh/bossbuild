@@ -143,7 +143,7 @@ for (const f of readdirSync(IDEAS).filter((n) => RECORD.test(n))) {
 
 // --- 1. one id, one file -----------------------------------------------------------------
 // Two files both claimed IDEA-059 (the acknowledgement idea and the testing-ladder idea), which
-// made `[[IDEA-059]]` ambiguous everywhere it was written — including in RESUME.md's own list of
+// made `IDEA-059` ambiguous everywhere it was written — including in RESUME.md's own list of
 // open work. Ids are cheap and gaps are free; collisions are neither.
 for (const [id, rows] of records) {
   if (rows.length > 1) findings.collisions.push([id, rows.map((r) => r.file).join('  +  ')]);

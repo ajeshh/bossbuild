@@ -48,9 +48,9 @@ The load-bearing stance, and the one that keeps a harness from rotting: **build 
 better.** Harnesses "encode assumptions about what the model can't do — and those assumptions go stale as
 models improve" (Anthropic). So put the deterministic guardrails around the nondeterministic core (the
 `agent-security` shape), and **don't hardcode a workaround for a limitation the next model won't have.** This
-is the same discipline as model-recalibration ([[IDEA-014]]) pointed at the harness: re-ask what the harness
+is the same discipline as model-recalibration (IDEA-014) pointed at the harness: re-ask what the harness
 needs to do every time the model jumps, and *delete* scaffolding the model outgrew (the host-subtraction
-instinct, [[IDEA-028]]).
+instinct, IDEA-028).
 
 ## Spec-driven, before it had the name
 

@@ -53,7 +53,7 @@ export function parseEntries(text) {
 // The first bolded lead-in of an entry, as a one-line gist for the compact list.
 // TOP-LEVEL bullets only on the first pass: entries nest their sub-findings, and an indented
 // bullet is a detail, not the release's point. (v0.150.0 otherwise reported itself as
-// "[[RVW-073]] workslop antecedents — ADAPT (narrow)", which is one of its four sub-items.)
+// "RVW-073 workslop antecedents — ADAPT (narrow)", which is one of its four sub-items.)
 // Indented bullets are the fallback, so an entry that only nests still says something.
 // Third fallback added v0.256.0: a **bolded lead-in PARAGRAPH**, which is how most entries actually
 // open — `**The fourth silent failure in the freshness system.**` is the release's point, and the
@@ -99,6 +99,17 @@ export function forYou(entry) {
 
 const truncate = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 
+
+// A founder's install can hold an OLDER CHANGELOG than the one in this repo — the file ships
+// inside the npm package (package.json `files:`), so every version ever published carries whatever
+// citation form it was written with. v0.263.0 removed the link form from the repo's copy; this
+// removes it from what a founder READS, which covers the tarballs already in the world.
+//
+// The distinction is the one docs/IDS.md now names: the bracket form promises you can open it,
+// and BOSS's records are gitignored, so for a founder it never resolves. The id itself is kept —
+// it is true that a record exists, and provenance is worth reading even when the door is shut.
+const plainCitations = (line) => line.replace(/\[\[([A-Z]{3,4}-\d+)\]\]/g, '$1');
+
 export function printChangelog({ since, all = false, full = false, pin = null } = {}) {
   if (!existsSync(CHANGELOG)) {
     console.log(`\n  ${err('✗')} no changelog in this BOSS install (${CHANGELOG}).\n`);
@@ -136,7 +147,7 @@ export function printChangelog({ since, all = false, full = false, pin = null } 
   if (full) {
     for (const e of shown) {
       console.log(`  ${bold(e.version)}${e.date ? dim(`  — ${e.date}`) : ''}`);
-      for (const line of e.body) console.log(line ? `  ${line}` : '');
+      for (const line of e.body) console.log(line ? `  ${plainCitations(line)}` : '');
       console.log('');
     }
   } else if (shown.length === 1) {
@@ -144,7 +155,7 @@ export function printChangelog({ since, all = false, full = false, pin = null } 
     const [e] = shown;
     console.log(`  ${bold(e.version)}${e.date ? dim(`  — ${e.date}`) : ''}\n`);
     const lines = forYou(e);
-    if (lines.length) for (const l of lines) console.log(`  ${l}\n`);
+    if (lines.length) for (const l of lines) console.log(`  ${plainCitations(l)}\n`);
     else console.log(`  ${dim('Internal release — nothing here changes what you do.')}\n`);
     console.log(`  ${dim('--full for the engineering detail')}`);
   } else {
@@ -153,7 +164,7 @@ export function printChangelog({ since, all = false, full = false, pin = null } 
       // Prefer what the release said TO A FOUNDER; fall back to the first finding only when the
       // release never spoke to one. Truncating an internal bullet was never the right summary.
       const h = forYou(e)[0] || e.title || headline(e);
-      console.log(`  ${bold(e.version.padEnd(9))}${dim((e.date || '').padEnd(12))}${h ? truncate(h, 62) : ''}`);
+      console.log(`  ${bold(e.version.padEnd(9))}${dim((e.date || '').padEnd(12))}${h ? truncate(plainCitations(h), 62) : ''}`);
     }
     if (shown.length > list.length) console.log(`  ${dim(`… +${shown.length - list.length} older`)}`);
     console.log('');

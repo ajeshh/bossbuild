@@ -47,7 +47,7 @@ fixes and the part that matters most.
   (positioning, first users), `mentor-founder` (is this worth building, what's the riskiest assumption).
 - **Seller → operator (→ V1):** the customer-loop verbs as they arrive (support/incidents/churn);
   `mentor-capital` (model, pricing), `mentor-hiring` (first help).
-- **Operator → leader (→ Scale):** the extended-team + give-away-your-Legos work ([[IDEA-040]]);
+- **Operator → leader (→ Scale):** the extended-team + give-away-your-Legos work (IDEA-040);
   `mentor-hiring`, `mentor-cofounder`. (Scale mode ships — `boss unlock scale`.)
 
 `mentor-founder` cites this ladder when the founder asks *"what should I be doing next?"* — the answer
@@ -56,6 +56,6 @@ is often not another feature but the next rung's job.
 ## Delivery
 
 One honest paragraph at each `boss unlock` (shipped in the CLI unlock output, static text), plus this
-practice as the named spine. The four lifecycle IDEAs ([[IDEA-050]] first-dollar, [[IDEA-051]] operate
-mode, [[IDEA-052]] extended team, [[IDEA-040]] V1→Scale rung) get their narrative here: the modes are
+practice as the named spine. The four lifecycle IDEAs (IDEA-050 first-dollar, IDEA-051 operate
+mode, IDEA-052 extended team, IDEA-040 V1→Scale rung) get their narrative here: the modes are
 who you're becoming, not tiers you're buying.

@@ -9,7 +9,7 @@ loop: ../../loops/eval.md
 
 # Conscience evals — measuring when BOSS speaks
 
-> **Tier note ([[DEC-013]], v0.213.0).** The cases and runners in here are **tracked** — they are
+> **Tier note (DEC-013, v0.213.0).** The cases and runners in here are **tracked** — they are
 > tests, and four public claims about BOSS's own rigour were resting on them while no reader could
 > open them. `judgment/transcripts/` is **deliberately NOT tracked**: those are recorded model
 > outputs stamped with a voice-hash, and editing a frame marks them STALE by design. Re-generate
