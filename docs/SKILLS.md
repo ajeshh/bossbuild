@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.271.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.272.0**.
 
 ## Quickstart
 
@@ -12,7 +12,7 @@
 - **`/import`** — Bring existing material into this project — point at a file, a folder, or a URL (Word doc, Google Doc, Obsidian note, PDF, slide deck, online reference) and BOSS pulls a durable copy into docs/source/ and folds it into your idea  _(/import <path-or-url> [more paths/urls] [IDEA-NNN])_
 - **`/idea`** — Capture an idea — and keep adding to it  _(/idea <thought>  (run again anytime to add more) | /idea gist [ID] to write the one line the board shows)_
 - **`/prototype`** — Get the idea out of your head and onto the screen — fast  _(/prototype [IDEA-NNN | rough idea text])_
-- **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc])_
+- **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager])_
 - **`/pretotype`** — Test demand BEFORE you build  _(/pretotype [IDEA-NNN])_
 - **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)  _(/evidence [paste notes | describe what happened])_
 - **`/interview`** — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence  _(/interview [prep | debrief | paste your notes])_

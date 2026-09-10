@@ -16,6 +16,83 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.272.0 — 2026-09-09
+
+> **For you:** **`/canvas --frame onepager`** — the smallest thing you can hand to someone outside.
+> The same answers you already gave, as one page of prose for a warm intro or an advisor, with a
+> short honest account of what's actually behind it. It needs at least one `EVID` record; with none,
+> it tells you that instead of printing a handsome page made of assertions.
+
+**A fourth projection, not a fourth verb.** FEAT-025's rung 2 — *"the smallest shareable thing,
+probably the highest-value/lowest-cost render and the one a founder actually needs first"* — built
+where the mechanism already was. `/canvas` has said *"a canvas is a set of answers, not a layout;
+you project them"* since v0.191.0, and the frames are prose instructions, so this is **one file,
+zero new commands, no new code.** The compose-and-subtract mandate is not bent to fit: it is the
+reason this shape was chosen over the `boss case` CLI the FEAT originally named.
+
+**The one way it is not a pure projection, said out loud in the skill.** The other three frames are
+layout and vocabulary over the same cells. The one-pager adds something the canvas does not hold —
+**the evidence ledger** — and that addition is the whole reason it is safe to hand outside. *A page
+of claims with no account of what is behind them is a pitch; the same page with the account attached
+is a position.* Hiding that asymmetry would have been the easy way to keep "frame" tidy.
+
+**Gated, and the gate has teeth.** It needs the canvas filled **and ≥1 `EVID-NNN`**. With none it
+refuses the page and points at the cheaper thing (*"one 15-minute conversation would change that more
+than another canvas pass"*). The floor holds too: **Risks & Harms and Principles render here like in
+every frame** — more load-bearing outside than in, because a founder who names the harm before a
+stranger asks is the one worth backing. Holes stay `_(not yet)_`; nothing is smoothed because the
+reader is external; no number, quote, logo or testimonial that is not already in a record.
+
+### Dogfooding it caught a defect in its own spec
+
+Rendered against BOSS's own canvas + 3 `EVID` records before shipping. It behaved — two cells came
+out as visible holes (no bottom-up count of the audience; no competitive research), the rivals section
+said why Lovable/v0/Bolt might win, and the page opened with what is *not* known rather than with
+enthusiasm.
+
+🔴 **But the ledger line the first draft specified was wrong, in the exact way this repo keeps
+catching.** It read *"eleven claims; three rest on a graded record."* **`M` is produced by deciding
+what counts as a claim** — so forgetting one shrinks the denominator and *raises* the backed
+fraction. **A ratio that improves when you look less carefully is a comfort device wearing a lab
+coat**, and it would have been the most rigorous-looking line on a page written for strangers.
+Replaced with countable facts only — how many records, what grade, how old, how many cells are still
+open — each of which is a file you can point at.
+
+The coverage-vs-verdict line is now stated twice and tested: *could this number go DOWN when the
+founder learns something true?* A record count can (supersede an `EVID` and it drops). A
+readiness score never does. **No "investor-readiness: 62%", no letter grade, no traffic light, no
+progress bar.**
+
+### Board honesty: `Building` went 7 → 1
+
+Not a code change; a truth pass over BOSS's own records, kept honest by `check:backlog` (which caught
+all six `INDEX.md` rows the moment they disagreed).
+
+- **IDEA-060 → `shipped`.** Its status line said *"items 1-4 done, 5-7 open"*; its own build order
+  says 1-5 ✅, 6 ⛔ superseded v0.182.0, 7 gated. And its sharpest finding — *"At Quickstart, BOSS
+  cannot put anything in front of anyone"*, flagged **"the more important half"** — was closed by
+  v0.271.0.
+- **IDEA-057 → `shipped`.** Both open items dissolved. *"`boss.build` is still unregistered"* is
+  **contradicted by this record's own `proof:` file** — `BRAND.md` records the domain changed to
+  `oyeboss.build` and was **registered 2026-08-20**, and `check:deployed` reaches it right now. The
+  second item wanted site pages tracked for staleness by `check:freshness`; **`check:site` already
+  does exactly that** (13 pages currently trailing their `reviewed:` date) — the gap was vocabulary,
+  and building a second one would have been two implementations of one job.
+- **IDEA-031 → `shipped`**, and its `proof:` pointed at `.../persona/target-users.md`, **a file that
+  does not exist and never did** — the skill shipped as one `SKILL.md`. Nothing reported it:
+  `recordDrift` only checks the missing-file direction for records that say `shipped`, which is
+  correct for tripwire proofs laid in advance, and is why a dead pointer can sit under `building`
+  indefinitely. Re-grading it is what put the pointer under the check for the first time.
+- **IDEA-047 and IDEA-055 and IDEA-059 → `deferred`, each with its trigger written.** IDEA-047's own
+  `proof_note` says the remainder *"is not a build task"* (it waits on a deploy). IDEA-059's
+  *"Earn-it gates"* still said *"**(1)** … Ship when convenient"* for a candidate that **shipped at
+  v0.170.0** — a gate describing finished work as ready-to-start is how a parked record keeps looking
+  live.
+
+**The pattern under all five: a card in `building` is the only board state nothing verifies.**
+`check:backlog` compares the record to the index, `recordDrift` compares a `shipped` claim to disk —
+and neither asks whether a card claiming to be in flight has anyone in flight on it.
+
 ## 0.271.0 — 2026-09-09
 
 > **For you:** **`/pretotype` is in Quickstart now, not MVP.** Test whether anyone wants the thing
