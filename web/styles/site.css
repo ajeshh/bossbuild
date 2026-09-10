@@ -470,3 +470,14 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
   margin: 0 0 var(--space-1); }
 .snags p { font-size: var(--step--1); color: var(--color-text-secondary); margin: 0; }
 .snags p strong, .snags p code { color: var(--color-text); }
+
+/* --- quirks — the craft moments, a different kind of persuasion ----------
+   The snags say "BOSS handles your problem". These say "somebody thought about
+   this" — which is what actually makes a tool feel trustworthy. Deliberately
+   terse: one claim each, no elaboration, scan-and-move-on. */
+.quirks { list-style: none; margin: var(--space-3) 0; padding: 0; max-width: none;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr)); gap: var(--space-2) var(--space-5); }
+.quirks li { padding-left: var(--space-3); border-left: 2px solid var(--color-rule);
+  font-size: var(--step--1); color: var(--color-text-secondary); }
+.quirks li:hover { border-left-color: var(--color-brand); }
+.quirks b { color: var(--color-text); font-weight: 650; }

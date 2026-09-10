@@ -295,10 +295,44 @@
               the cheapest way to find out, which is usually a conversation, not a canvas.</p>
           </div>
           <div>
-            <h3>"Every project starts from scratch"</h3>
-            <p>The scaffolding you rebuild each time — how to decide, what to write down, when to
-              ship — arrives already set up, at the size the project has earned. Four files are
-              yours to read. The rest is the team.</p>
+            <h3>"I built the whole thing and still don't know if anyone wants it"</h3>
+            <p>The one that costs the most and gets skipped the most. BOSS designs a fake door — or
+              a wizard-of-oz, or a concierge version — for the riskiest demand assumption, and it
+              runs in days, before the build. Savoia's rule, plainly: make sure you're building the
+              right it before you build it right.</p>
+          </div>
+          <div>
+            <h3>"I keep saying yes and the scope keeps growing"</h3>
+            <p>A short bet-list with a <strong>mandatory no-list</strong> — because a roadmap that
+              only says yes isn't a decision. It has a fixed appetite, it gets thrown away rather
+              than tended, and each bet's confidence is the evidence grade behind it, so wishful
+              ones look wishful.</p>
+          </div>
+          <div>
+            <h3>"Four things are half-built and none of them are done"</h3>
+            <p>BOSS notices when too much is in flight at once and asks which one is actually
+              moving. It won't reorganise your work — it names the pile, which is usually enough.</p>
+          </div>
+          <div>
+            <h3>"I talked to six people and can't tell what I actually learned"</h3>
+            <p>Paste the transcript — an interview, a sales call, a support thread — and it comes
+              back as honestly-graded records, plus the pains, the jobs and the words people
+              actually used. <strong>It also flags the moment you led the witness</strong>, which is
+              the part you can't see yourself.</p>
+          </div>
+          <div>
+            <h3>"Someone asked who else does this and I had a vibe, not an answer"</h3>
+            <p>Features, pricing, and an honest "why they might win", kept as a living set you add
+              names to rather than a slide you drew once. <strong>Every claim carries a source and
+              the date it was checked, or it's marked unverified</strong> — because a confidently
+              invented competitor price is the failure mode here.</p>
+          </div>
+          <div>
+            <h3>"It looks right and I can't tell if it works"</h3>
+            <p>The honest failure mode of building fast. <code>/spec</code> makes you say what
+              "working" means <em>before</em> you build it, <code>/smoke</code> is the gate that
+              answers "is it alive", and <code>/evals</code> is the separate question for anything
+              an AI decides — because alive and correct are not the same test.</p>
           </div>
           <div>
             <h3>"My AI writes a different button on every screen"</h3>
@@ -313,11 +347,18 @@
               rung, so you're never handed eleven agents on day one.</p>
           </div>
           <div>
-            <h3>"It looks right and I can't tell if it works"</h3>
-            <p>The honest failure mode of building fast. <code>/spec</code> makes you say what
-              "working" means <em>before</em> you build it, <code>/smoke</code> is the gate that
-              answers "is it alive", and <code>/evals</code> is the separate question for anything
-              an AI decides — because alive and correct are not the same test.</p>
+            <h3>"This works at ten users and I suspect it breaks at a thousand"</h3>
+            <p>There's an architecture mentor for exactly this, and its job is to name the
+              load-bearing decision rather than start refactoring — including the answer
+              <em>"not yet, and here's the signal to watch for."</em> Rebuilding early is as
+              expensive as rebuilding late.</p>
+          </div>
+          <div>
+            <h3>"We're both moving fast and quietly drifting apart"</h3>
+            <p>AI makes each of you faster, which left alone pulls a two-person team into parallel.
+              BOSS notices when real work has happened and <em>nothing has been decided together</em>
+              — and it notices through an untouched decision log, <strong>never by asking how your
+              teamwork is going</strong>, because self-report is exactly what's blind to this.</p>
           </div>
           <div>
             <h3>"I came back after two weeks and lost the thread"</h3>
@@ -326,9 +367,11 @@
               is a document you maintain, so neither can be out of date.</p>
           </div>
           <div>
-            <h3>"Four things are half-built and none of them are done"</h3>
-            <p>BOSS notices when too much is in flight at once and asks which one is actually
-              moving. It won't reorganise your work — it names the pile, which is usually enough.</p>
+            <h3>"We decided this months ago and nobody remembers why"</h3>
+            <p>A decision record with the context, the call, the reasoning — and a
+              <strong>falsifier</strong>: what would prove this wrong, and by when. It also stamps
+              <em>who</em> decided: you, or you ratifying the AI's suggestion, or the AI on its own.
+              Six months later that distinction turns out to matter a lot.</p>
           </div>
           <div>
             <h3>"The AI bill arrived and I hadn't thought about it"</h3>
@@ -338,44 +381,50 @@
               than against a number you invented.</p>
           </div>
           <div>
-            <h3>"I can't afford a security audit and I don't know what I'd ask for"</h3>
-            <p>There's a pass for that, and it needs no AI in your product at all: the
-              <strong>money path</strong>, the <strong>destructive path</strong>, and the
-              <strong>negative path</strong> — can user A reach user B's data — plus a scan of the
-              bundle you're about to ship for secrets. It returns pass or fail per category
-              <em>with the attack that proved it</em>, so it's evidence rather than a checklist you
-              ticked.</p>
-          </div>
-          <div>
-            <h3>"My agent can do more than I realised"</h3>
-            <p>Tools, memory and autonomy are a bigger surface than the code around them. BOSS tests
-              an agent against the OWASP <strong>Agentic</strong> Top 10, and the LLM-mediated parts
-              of your product against the OWASP <strong>LLM</strong> Top 10 — two different lists,
-              because they're two different problems.</p>
+            <h3>"I can't afford a security audit and don't know what I'd ask for"</h3>
+            <p>The <strong>money path</strong>, the <strong>destructive path</strong>, and the
+              <strong>negative path</strong> — can user A reach user B's data — plus a secrets scan
+              of the bundle you're about to ship. Needs no AI in your product at all. Agents get
+              their own pass, because tools and memory are a different surface from code. Output is
+              pass or fail <em>with the attack that proved it</em>.</p>
           </div>
           <div>
             <h3>"My AI just read my .env into the chat"</h3>
             <p>A guard ships with every project that denies reading <code>.env</code> and
-              <code>secrets/</code> into the model's context, and asks first about any command that
-              references one. <strong>It arrives switched off</strong> — it costs a process on every
-              tool call, and BOSS won't spend your latency without asking. One line turns it on when
-              the stakes justify it.</p>
+              <code>secrets/</code> into the model's context. <strong>It arrives switched off</strong>
+              — it costs a process on every tool call, and BOSS won't spend your latency without
+              asking. One line turns it on when the stakes justify it.</p>
           </div>
           <div>
             <h3>"I don't want to become the thing I used to complain about"</h3>
-            <p>Fake scarcity, the hidden unsubscribe, the confirmshame. There's a pass that probes
-              <em>your shipped product</em> against a catalog of these. It is a different check from
-              the one that watches the model's suggestions: <strong>one audits what you built, the
-              other reads what you were about to be talked into.</strong></p>
-          </div>
-          <div>
-            <h3>"The model suggested something that works and feels wrong"</h3>
-            <p><strong>BOSS watches what the model <em>proposed</em>, not just what you shipped.</strong>
-              It's the one check that reads the suggestion rather than the decision — because the
-              dark pattern you have to worry about now is the one you were never asked about. It
-              names the pattern and hands it back; it doesn't quietly refuse.</p>
+            <p>Fake scarcity, the hidden unsubscribe, the confirmshame. One pass probes
+              <em>your shipped product</em> against a catalog of these. A separate check reads what
+              the <em>model</em> proposed — because the dark pattern to worry about now is the one
+              you were never asked about. <strong>One audits what you built, the other reads what
+              you were about to be talked into.</strong></p>
           </div>
         </div>
+        <div class="prose">
+          <h3>And the small ones, which say more about it than the big ones</h3>
+        </div>
+        <ul class="quirks">
+          <li><b>It refuses to make you a one-pager</b> if you have no evidence on file. A handsome
+            page made of assertions is the most convincing wrong thing you can hand someone.</li>
+          <li><b>It will never message you while you're away.</b> No push, no "while you were out" —
+            and that holds even where the notification would genuinely be useful.</li>
+          <li><b>Empty sections print as empty.</b> Your weekly recap says "nothing recorded" rather
+            than padding, because a summary that can only go up is a comfort device.</li>
+          <li><b>It grades your evidence honestly</b>, not generously. "Great idea, I'd use that"
+            lands on the bottom rung and stays there.</li>
+          <li><b>It won't pick your licence</b>, or assume you're building a company at all. A
+            co-op, a commons and a startup get the same ladder.</li>
+          <li><b>Every opinion it ships names who it was learned from</b>, when it was last checked,
+            and what would make it wrong.</li>
+          <li><b>The conscience's only positive signal is silence.</b> If it isn't speaking, nothing
+            it watches is out of shape.</li>
+          <li><b>It comes back out.</b> <code>boss remove</code> previews first, and everything you
+            wrote stays yours.</li>
+        </ul>
         <p class="small prose">
           Every one of these is a real mechanism you can read, not a promise —
           <a href="thinking.html">the decisions behind them →</a>
