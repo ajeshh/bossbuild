@@ -481,3 +481,12 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
   font-size: var(--step--1); color: var(--color-text-secondary); }
 .quirks li:hover { border-left-color: var(--color-brand); }
 .quirks b { color: var(--color-text); font-weight: 650; }
+
+/* --- grouped sub-navigation ----------------------------------------------
+   The depth door is ten pages in three beats — what you get, how it is built,
+   what it believes. The order encoded that from the start and nobody could see
+   it, because a flat row of ten reads as a pile whatever order it is in. */
+.subnav-in:has(.subgroup) { gap: var(--space-5); align-items: flex-start; }
+.subgroup { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
+.subgroup .subnav-label { white-space: nowrap; }
+@media (max-width: 60rem) { .subnav-in:has(.subgroup) { gap: var(--space-2) var(--space-4); } }

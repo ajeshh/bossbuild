@@ -817,34 +817,53 @@ const NAV = [
   // each page was. Three beats: what you actually get -> how it is built -> what it believes.
   // `About` and `The canvas` sit at the end because they are context and a takeaway, not the
   // argument. Decisions leads the third beat because it is the one with falsifiers in it.
-  { label: 'How it thinks', href: 'team.html', children: [
-    { id: 'team', href: 'team.html', label: 'The team' },
-    { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
-    { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
-    { id: 'design', href: 'design.html', label: 'Design' },
-    { id: 'engineering', href: 'engineering.html', label: 'For engineers' },
-    { id: 'thinking', href: 'thinking.html', label: 'What it refuses' },
-    { id: 'charter', href: 'charter.html', label: 'Charter' },
-    { id: 'governance', href: 'governance.html', label: 'Governance' },
-    { id: 'credits', href: 'credits.html', label: 'Credits' },
-    { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
+  // The three beats are now DECLARED rather than implied by ordering. A reader could not see
+  // the structure before: the subnav was one flat row of ten, and a flat row of ten reads as a
+  // pile whatever order it is in.
+  { label: 'How it thinks', href: 'team.html', groups: [
+    { label: 'what you get', items: [
+      { id: 'team', href: 'team.html', label: 'The team' },
+      { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
+      { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
+    ] },
+    { label: 'how it is built', items: [
+      { id: 'design', href: 'design.html', label: 'Design' },
+      { id: 'engineering', href: 'engineering.html', label: 'For engineers' },
+    ] },
+    { label: 'what it believes', items: [
+      { id: 'thinking', href: 'thinking.html', label: 'What it refuses' },
+      { id: 'charter', href: 'charter.html', label: 'Charter' },
+      { id: 'governance', href: 'governance.html', label: 'Governance' },
+      { id: 'credits', href: 'credits.html', label: 'Credits' },
+      { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
+    ] },
   ] },
   { id: 'about', href: 'about.html', label: 'About' },
   { id: 'whats-new', href: 'whats-new.html', label: "What's new" },
 ];
 
 function navFor(current) {
-  const section = NAV.find((n) => n.children && n.children.some((c) => c.id === current));
+  // A section declares EITHER a flat `children` list or labelled `groups`. `kids()` flattens
+  // both so the active-section test and the primary bar stay identical either way.
+  const kids = (n) => n.children || (n.groups || []).flatMap((g) => g.items);
+  const section = NAV.find((n) => kids(n).some((c) => c.id === current));
   const primary = NAV.map((n) => {
-    const active = n.id === current || (n.children && n.children.some((c) => c.id === current));
+    const active = n.id === current || kids(n).some((c) => c.id === current);
     return `<li><a href="${n.href}"${active ? ' aria-current="page"' : ''}>${n.label}</a></li>`;
   }).join('');
-  const sub = section
-    ? `<div class="subnav"><div class="subnav-in"><span class="subnav-label">${section.label}</span><ul>` +
-      section.children.map((c) =>
-        `<li><a href="${c.href}"${c.id === current ? ' aria-current="page"' : ''}>${c.label}</a></li>`).join('') +
-      '</ul></div></div>'
-    : '';
+  const link = (c) =>
+    `<li><a href="${c.href}"${c.id === current ? ' aria-current="page"' : ''}>${c.label}</a></li>`;
+  let sub = '';
+  if (section && section.groups) {
+    sub = '<div class="subnav"><div class="subnav-in">'
+      + section.groups.map((g) =>
+        `<div class="subgroup"><span class="subnav-label">${g.label}</span>`
+        + `<ul>${g.items.map(link).join('')}</ul></div>`).join('')
+      + '</div></div>';
+  } else if (section) {
+    sub = `<div class="subnav"><div class="subnav-in"><span class="subnav-label">${section.label}</span><ul>`
+      + kids(section).map(link).join('') + '</ul></div></div>';
+  }
   return { primary, sub };
 }
 
