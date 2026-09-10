@@ -338,11 +338,42 @@
               than against a number you invented.</p>
           </div>
           <div>
+            <h3>"I can't afford a security audit and I don't know what I'd ask for"</h3>
+            <p>There's a pass for that, and it needs no AI in your product at all: the
+              <strong>money path</strong>, the <strong>destructive path</strong>, and the
+              <strong>negative path</strong> — can user A reach user B's data — plus a scan of the
+              bundle you're about to ship for secrets. It returns pass or fail per category
+              <em>with the attack that proved it</em>, so it's evidence rather than a checklist you
+              ticked.</p>
+          </div>
+          <div>
+            <h3>"My agent can do more than I realised"</h3>
+            <p>Tools, memory and autonomy are a bigger surface than the code around them. BOSS tests
+              an agent against the OWASP <strong>Agentic</strong> Top 10, and the LLM-mediated parts
+              of your product against the OWASP <strong>LLM</strong> Top 10 — two different lists,
+              because they're two different problems.</p>
+          </div>
+          <div>
+            <h3>"My AI just read my .env into the chat"</h3>
+            <p>A guard ships with every project that denies reading <code>.env</code> and
+              <code>secrets/</code> into the model's context, and asks first about any command that
+              references one. <strong>It arrives switched off</strong> — it costs a process on every
+              tool call, and BOSS won't spend your latency without asking. One line turns it on when
+              the stakes justify it.</p>
+          </div>
+          <div>
+            <h3>"I don't want to become the thing I used to complain about"</h3>
+            <p>Fake scarcity, the hidden unsubscribe, the confirmshame. There's a pass that probes
+              <em>your shipped product</em> against a catalog of these. It is a different check from
+              the one that watches the model's suggestions: <strong>one audits what you built, the
+              other reads what you were about to be talked into.</strong></p>
+          </div>
+          <div>
             <h3>"The model suggested something that works and feels wrong"</h3>
-            <p>Fake urgency, a hidden opt-out, a confirmshame. <strong>BOSS watches what the model
-              <em>proposed</em>, not just what you shipped</strong> — it's the one check that reads
-              the suggestion rather than the decision, and it names the pattern instead of quietly
-              refusing.</p>
+            <p><strong>BOSS watches what the model <em>proposed</em>, not just what you shipped.</strong>
+              It's the one check that reads the suggestion rather than the decision — because the
+              dark pattern you have to worry about now is the one you were never asked about. It
+              names the pattern and hands it back; it doesn't quietly refuse.</p>
           </div>
         </div>
         <p class="small prose">
