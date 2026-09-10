@@ -1,0 +1,31 @@
+<!--
+title: Taking it back out
+section: removing
+covers: src/remove.js src/sync.js
+reviewed: 2026-09-10
+review_by: 2027-03-09
+describes: boss remove, and what happens to files you wrote yourself
+-->
+<p>
+  Scaffolding comes down when it is holding nothing up. <code>boss remove</code> previews exactly
+  what would go and changes nothing; <code>boss remove --apply</code> does it, after copying
+  <code>.boss/</code> aside first.
+</p>
+<p>
+  <strong>Your records are yours.</strong> Ideas, decisions, evidence, the devlog — everything you
+  wrote stays. What comes out is BOSS's own machinery.
+</p>
+<h3>Files you wrote yourself are tracked separately</h3>
+<p>
+  If you brought BOSS into a repo that already had its own <code>.claude/agents/</code> or
+  skills, those are marked <em>unclaimed</em> — BOSS knows it did not write them. They are not
+  overwritten on day one, they are skipped by
+  <code>boss sync --apply --keep-mine</code> on day thirty, and they are not removed when BOSS
+  leaves. A file BOSS never wrote is not BOSS's to delete.
+</p>
+<h3>Staying current is a reviewed diff, never a silent update</h3>
+<p>
+  <code>boss sync</code> shows you what changed in BOSS since your project's pin and what it
+  would do about it; <code>--apply</code> is a separate decision. Nothing about your project
+  changes because something changed upstream.
+</p>

@@ -1,0 +1,41 @@
+<!--
+title: What this is, and when to reach for it
+section: orientation
+covers: PRINCIPLES.md src/cli.js src/modes.js
+reviewed: 2026-09-10
+review_by: 2027-03-09
+describes: the terminal/Claude split, and when a BOSS verb is the right move
+-->
+<p>
+  BOSS puts the structure of a company around your code — how to decide what to build, how to
+  find out whether anyone wants it, when to ship, and when the discipline should get out of your
+  way. This page is the whole of it, generated from <em>your</em> project, so everything below is
+  something you actually have.
+</p>
+<p>
+  <strong>Two kinds of thing run here, in two different places.</strong>
+  Commands starting with <code>boss</code> run in your terminal — they read and write files, and
+  they never call a model. Commands starting with <code>/</code> run inside Claude Code, because
+  they need judgment.
+</p>
+<h3>When to use a BOSS verb, and when to just talk to Claude</h3>
+<p>
+  This is the distinction worth internalising, because getting it wrong is how a tool like this
+  becomes ceremony:
+</p>
+<ul>
+  <li><strong>“How do I build this?”</strong> — just ask Claude. No skill, no verb, no ceremony.
+    That is most of your day, and BOSS is designed to stay out of it.</li>
+  <li><strong>“Should I build this? Is it working? What did I decide, and why?”</strong> — that is
+    a BOSS verb. Those are the <em>seams</em> between building, and the seams are where things get
+    lost.</li>
+</ul>
+<p>
+  While you are heads-down, BOSS does almost nothing. That is the design, not a gap.
+</p>
+<h3>Nothing here is permanent</h3>
+<p>
+  Every mode is additive and every unlock is your call. Nothing is ever removed from your project
+  by climbing, and the whole installation comes back out with <code>boss remove</code> — which
+  previews first and needs <code>--apply</code> to actually do anything.
+</p>

@@ -1,9 +1,9 @@
 <!--
 title: BOSS — the team you hire, just in time
-description: You are one person with an AI. BOSS gives you the team a real company would have around the build — builders who make it, mentors who coach you — hired just in time as the project earns them.
-reviewed: 2026-08-20
-review_by: 2027-02-16
-describes: the pitch, the modes, the conscience
+description: You can build anything now. BOSS is the part that tells you whether to — the team a real company would have around the build, hired just in time as the project earns it. Free, MIT, runs on your machine.
+reviewed: 2026-09-10
+review_by: 2027-03-09
+describes: the pitch, what you end up with, the three shapes, the ladder
 covers: README.md PRINCIPLES.md
 nav: home
 -->
@@ -11,12 +11,12 @@ nav: home
     <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
       <p class="kicker">Build Out Solid Stuff</p>
-      <h1>A startup incubator that runs inside Claude&nbsp;Code<span class="dot">.</span></h1>
+      <h1>Everyone can build now. Almost nobody can tell a real thing from a convincing demo<span class="dot">.</span></h1>
       <p class="lede">
-        Everyone can build now. Almost no one can tell a thing people actually need from a convincing demo.
-        BOSS puts the structure of a startup around your code — how to decide what to build, when
-        to ship, and when the discipline should get out of your way — and it speaks up when you're
-        drifting. Free, MIT, zero dependencies, runs entirely on your machine.
+        BOSS is a startup incubator that runs inside Claude&nbsp;Code. It puts the structure of a
+        company around your code — how to decide what to build, how to find out if anyone wants it,
+        when to ship, and when the discipline should get out of your way — and it speaks up when
+        you're drifting. Free, MIT, zero dependencies, runs entirely on your machine.
       </p>
 
       <div class="cta">
@@ -24,14 +24,15 @@ nav: home
         <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
       </div>
       <p class="small">Needs <a href="https://nodejs.org">Node 18+</a> and
-        <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>. The CLI sets the project up; the skills run inside Claude.</p>
+        <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>. The CLI sets the project up; the skills run inside Claude.
+        Already have a repo? <code>boss adopt</code> — <a href="start.html">both paths →</a></p>
 
       <div class="terminal breakout">
         <span class="cap">what that actually prints</span>
 <pre><span class="line"><span class="t-cmd">boss new my-app</span></span>
 <span class="line"><span class="t-ok">  ✦ Created my-app</span> — Quickstart mode (L0-quickstart, BOSS {{VERSION}})</span>
-<span class="line"><span class="t-dim">    agents: product-lead, coder, mentor-founder</span></span>
-<span class="line"><span class="t-dim">    skills: welcome, boss, import, idea, prototype, canvas, evidence, interview … +8 more (`boss map`)</span></span>
+<span class="line"><span class="t-dim">    agents: product-lead, coder, mentor-founder, prompt-coach</span></span>
+<span class="line"><span class="t-dim">    skills: welcome, boss, import, idea, prototype, canvas, pretotype, evidence … +9 more (`boss map`)</span></span>
 <span class="line"> </span>
 <span class="line">  Next (these run in your terminal)</span>
 <span class="line">    cd my-app</span>
@@ -50,20 +51,14 @@ nav: home
       <div class="body prose">
         <h2>Building got cheap. Being wrong didn't.</h2>
         <p>
-          AI made a polished prototype nearly free, which created a new trap: confusing a
-          <strong>pseudo app</strong> — an impressive demo with no proven pain, no workflow fit and
-          nobody who would miss it — with a <strong>real one</strong>.
-        </p>
-        <p>
-          You've been using Claude Code for a few months. You shipped one project this year. There
-          are two more in <code>~/projects/</code> you didn't finish, and a folder of ideas you never
-          started. Each time you rebuild the same scaffolding from scratch, and somewhere around screen three the
-          design drifts into 47 different blues — or you realize you never pressure-tested whether the
-          bet was real at all.
+          AI made a polished prototype nearly free, which created a new trap: an impressive demo
+          with no proven pain, no workflow fit and nobody who would miss it — sitting in a folder
+          next to two more you didn't finish.
         </p>
         <p>
           Cheap AI lowers the cost of <em>building</em>, not the cost of <em>being wrong</em>. So the
-          cheaper building gets, the more the loop matters.
+          cheaper building gets, the more the loop around it matters — and the loop is the part
+          nobody handed you.
         </p>
         <div class="note">
           <p class="q">BOSS helps you build faster without fooling yourself.</p>
@@ -76,31 +71,147 @@ nav: home
     <hr class="hazard">
 
     <section class="section">
+      <div class="rail">▸<span>what you get</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Two weeks in, you have four things you didn't have</h2>
+          <p>
+            Not features — files. Each one is a real artifact you can open, hand to someone, or
+            argue with.
+          </p>
+        </div>
+        <ul class="yield">
+          <li>
+            <h3>An idea that shrank to something you can test on Sunday <code>/idea</code></h3>
+            <p>You arrive with "build me a scheduling app." You leave with <strong>one week, one
+              cleaner, one text sent by hand</strong> — the smallest version that would actually
+              prove it. That line is the whole job.</p>
+          </li>
+          <li>
+            <h3>A signal from a real person, graded honestly <code>/interview</code> <code>/evidence</code></h3>
+            <p>A fixed three-rung ladder — <strong>stated-pain → observed-behavior → commitment</strong>
+              — and BOSS grades what you bring it, not what you hoped for. Somebody saying "great
+              idea" lands on rung one and stays there. The conscience gets quieter when real
+              commitments exist, which is the only reward on offer.</p>
+          </li>
+          <li>
+            <h3>A decision with a cheap way to find out it was wrong <code>/decide</code></h3>
+            <p>Context, the call, why — and a <strong>falsifier</strong>: what would disprove this,
+              and by when. Lighter than an RFC, denser than a commit message, and readable by a
+              cofounder who wasn't in the room.</p>
+          </li>
+          <li>
+            <h3>One page you can hand to someone outside <code>/canvas --frame onepager</code></h3>
+            <p>The same answers you already gave, laid out for somebody who has four minutes. It
+              <strong>refuses to render if you have no evidence on file</strong> — because a
+              one-pager backed by nothing is the most convincing wrong thing you can make.</p>
+          </li>
+        </ul>
+        <div class="prose">
+          <p class="small">
+            Before any of it, <code>/pretotype</code> builds a fake door — a real page you can put
+            in front of real people — so you can find out whether anyone wants the thing while it
+            still costs an afternoon. That's available on <strong>day one</strong>, not after you've
+            built something.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>is this you?</span></div>
       <div class="body">
         <div class="prose">
           <h2>Three shapes this actually fits</h2>
+          <p class="small">Pick the one that sounds like your week.</p>
         </div>
-        <div class="pairs">
-          <div class="pair">
-            <span class="k">two people who clean houses</span>
-            <span>Forty regulars, a WhatsApp thread and a paper diary. Sunday nights go on rebuilding
-              the rota by hand and someone still turns up at the wrong address. Neither of them has
-              written code before. → <code>boss new</code></span>
+
+        <div class="picker">
+          <input type="radio" name="shape" id="shape-new" checked>
+          <input type="radio" name="shape" id="shape-repo">
+          <input type="radio" name="shape" id="shape-many">
+          <div class="tabs">
+            <label for="shape-new">starting something new</label>
+            <label for="shape-repo">a repo I already have</label>
+            <label for="shape-many">several at once</label>
           </div>
-          <div class="pair">
-            <span class="k">the spreadsheet twelve people fight over</span>
-            <span>It runs a real part of the business and nobody trusts it. Someone inside the company
-              is going to rebuild it properly this quarter, and they can build now — the hard part is
-              knowing what to leave out. → <code>boss new</code></span>
-          </div>
-          <div class="pair">
-            <span class="k">something already live, already paying</span>
-            <span>The repo exists and works. An AI feature is going into it, and the real question
-              isn't how to build the feature — it's whether it's a good idea and what it costs per
-              user. → <code>boss adopt</code></span>
+          <div class="panels">
+
+            <div class="panel p-new">
+              <div class="prose">
+                <h3>Two people who clean houses</h3>
+                <p>
+                  Forty regulars, a WhatsApp thread and a paper diary. Sunday nights go on rebuilding
+                  the rota by hand and someone still turns up at the wrong address. Neither of them
+                  has written code before.
+                </p>
+                <p class="small">
+                  Quickstart is {{Q_AGENTS}} agents and {{Q_SKILLS}} skills. Five seconds, and four
+                  files that are yours to read — <code>CLAUDE.md</code>, <code>AGENTS.md</code>,
+                  <code>docs/IDS.md</code> and an idea index; everything else is the team. Nothing
+                  about specs, tests, design systems or deploys arrives until you ask for it.
+                  → <code>boss new</code>
+                </p>
+              </div>
+            </div>
+
+            <div class="panel p-repo">
+              <div class="prose">
+                <h3>Something already live, already paying</h3>
+                <p>
+                  The repo exists and works. An AI feature is going into it, and the real question
+                  isn't how to build the feature — it's whether it's a good idea and what it costs
+                  per user. Or: it's the spreadsheet twelve people fight over, it runs a real part of
+                  the business, and somebody inside is going to rebuild it properly this quarter.
+                </p>
+                <p class="small">
+                  <code>boss adopt</code> reads what you've built and <strong>never overwrites your
+                  work</strong> — anything you wrote yourself is kept as-is and reported as kept, and
+                  later updates skip it too. Then <code>/read-repo</code> tells you where you stand
+                  before it suggests anything.
+                </p>
+              </div>
+              <div class="terminal breakout">
+                <span class="cap">adopting a repo that already had its own <code>coder</code> agent</span>
+<pre><span class="line"><span class="t-cmd">boss adopt</span></span>
+<span class="line"><span class="t-ok">  ✦ Adopted rota-live into BOSS</span> — Quickstart mode (L0-quickstart, BOSS {{VERSION}})</span>
+<span class="line"><span class="t-dim">    read from your repo: 1 source file(s), no build manifest</span></span>
+<span class="line">    43 file(s) added · <span class="t-accent">nothing of yours overwritten · 1 of yours kept as-is</span></span>
+<span class="line"> </span>
+<span class="line">  Next</span>
+<span class="line">    <span class="t-accent">&gt; /read-repo</span>       <span class="t-dim"># start here — BOSS reads what you've built</span></span>
+<span class="line"><span class="t-dim">                       #   and says where you stand. Reversible.</span></span>
+</pre>
+              </div>
+            </div>
+
+            <div class="panel p-many">
+              <div class="prose">
+                <h3>More than one of these on the go</h3>
+                <p>
+                  Your own three side projects, or a room of other people's twelve. Either way the
+                  problem stops being <em>how do I build this</em> and becomes <em>which of these is
+                  actually alive, and how would I know without asking</em>.
+                </p>
+                <p>
+                  Every project keeps the same record vocabulary — one closed set of statuses, typed
+                  IDs, evidence graded on the same three rungs — and the board is
+                  <strong>rendered from the files</strong>, so there's nothing to keep up to date and
+                  nothing that can quietly disagree with the repo. <code>boss recap</code> reads a
+                  week back out of records the founder was already writing.
+                </p>
+                <p class="small">
+                  It installs per-project, on the machine, with no account and no server: MIT, zero
+                  dependencies, <strong>no telemetry of any kind</strong>. Nothing to provision,
+                  nothing to switch off, nothing that phones anyone.
+                  <a href="keeping-track.html">What BOSS writes down →</a>
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
+
         <div class="note">
           <p>
             <strong>Not for two cases, and it'll say so.</strong> A codebase that already has a product
@@ -118,33 +229,13 @@ nav: home
         <div class="prose">
           <h2>What happens, on one real idea</h2>
           <p>
-            Take the cleaning business. This is the actual output, not a mock-up — every line below is
-            copied from a terminal.
+            Take the cleaning business. Every line below is copied from a terminal — the records
+            behind it are two files a founder would have written by hand.
           </p>
         </div>
 
         <div class="terminal breakout">
-          <span class="cap">1 · five seconds</span>
-<pre><span class="line"><span class="t-cmd">boss new tidy-rota</span></span>
-<span class="line"></span>
-<span class="line">  <span class="t-ok">✦</span> Created tidy-rota — Quickstart mode (L0-quickstart, BOSS {{VERSION}})</span>
-<span class="line">    agents: product-lead, coder, mentor-founder</span>
-<span class="line">    skills: welcome, boss, import, idea, prototype, canvas, evidence, interview … +8 more</span>
-</pre>
-        </div>
-
-        <div class="prose">
-          <p class="small">
-            That's {{Q_AGENTS}} agents and {{Q_SKILLS}} skills — the whole Quickstart rung, and
-            deliberately not more. Forty files land, and only five of them are yours to read:
-            <code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>docs/IDS.md</code>,
-            <code>docs/ideas/INDEX.md</code>, and a <code>docs/evidence/</code> folder that's still
-            empty. The rest is the team.
-          </p>
-        </div>
-
-        <div class="terminal breakout">
-          <span class="cap">2 · you say the thing out loud, twice that week</span>
+          <span class="cap">1 · you say the thing out loud</span>
 <pre><span class="line"><span class="t-cmd">/idea every sunday we redo the whole thing from scratch</span></span>
 <span class="line"><span class="t-dim">              and someone still turns up at the wrong house</span></span>
 <span class="line"></span>
@@ -164,19 +255,12 @@ nav: home
 </pre>
         </div>
 
-        <div class="prose">
-          <p class="small">
-            <strong>That last line is the whole job.</strong> You arrived with "build me a scheduling
-            app" and left with something you can test on Sunday without writing any code.
-          </p>
-        </div>
-
         <div class="terminal breakout">
-          <span class="cap">3 · a week later, two ideas in</span>
+          <span class="cap">2 · a week later, two ideas in</span>
 <pre><span class="line"><span class="t-cmd">boss board</span></span>
 <span class="line"></span>
 <span class="line">  tidy-rota · board</span>
-<span class="line">  <span class="t-accent">▸ 2 captured, nothing pressure-tested yet — what would you learn first? (/canvas)</span></span>
+<span class="line">  <span class="t-accent">▸ 2 captured, nothing pressure-tested yet — what would you learn first? (`/canvas`)</span></span>
 <span class="line"></span>
 <span class="line">  Captured (2)</span>
 <span class="line">    IDEA-001   The weekly rota should text itself</span>
@@ -188,6 +272,9 @@ nav: home
 <span class="line">    <span class="t-dim">—</span></span>
 <span class="line">  Shipped (0)</span>
 <span class="line">    <span class="t-dim">—</span></span>
+<span class="line"></span>
+<span class="line"><span class="t-dim">  The board is a read of the files. To change it, change the work:</span></span>
+<span class="line"><span class="t-dim">  `/idea` to capture · `/canvas` to pressure-test · `/spec` to build.</span></span>
 </pre>
         </div>
 
@@ -209,98 +296,50 @@ nav: home
     <hr class="hazard">
 
     <section class="section">
-      <div class="rail">▸<span>the idea</span></div>
+      <div class="rail">▸<span>where you are</span></div>
       <div class="body">
         <div class="prose">
-          <h2>What “scaffolding” means here</h2>
+          <h2>You should never have to wonder which stop you're at</h2>
           <p>
-            It's the construction word, used literally. <strong>Scaffolding is the temporary structure
-            that goes up around a building while it's being built.</strong> You don't live in it. It
-            holds things steady while the real thing takes shape, it gets added to as the building
-            gets taller, and it comes down when it's no longer holding anything up.
-          </p>
-          <p>
-            <strong>BOSS is that structure, and it goes up one level at a time.</strong> A funded
-            company gets it from a process, a board and a team; solo with an AI you get none of it. A
-            one-evening idea gets almost nothing here. A thing with real users gets more. You never pay
-            for ceremony the project hasn't earned, and nothing gets bolted on that you can't take back
-            off.
+            BOSS grows in four modes, and you unlock them. A one-evening idea gets almost nothing
+            here. A thing with real users gets more. <strong>You never pay for ceremony the project
+            hasn't earned</strong>, and nothing gets bolted on that you can't take back off.
           </p>
         </div>
 
+        {{LADDER_LINE}}
+
         <div class="prose">
-          <h3>What it puts around you</h3>
-        </div>
-        <div class="pairs">
-          <div class="pair">
-            <span class="k">a process that fits right now</span>
-            <span>Four modes. The lightest one is five seconds and a file you can read in a minute.</span>
-          </div>
-          <div class="pair">
-            <span class="k">people to ask</span>
-            <span>{{COUNT_MENTORS}} mentors for the parts code can't teach, plus builders who do the work.</span>
-          </div>
-          <div class="pair">
-            <span class="k"><a href="keeping-track.html">a memory</a></span>
-            <span>Every idea, decision and signal gets a file with a status. Your progress is
-              <em>rendered</em> from those files, so there's no board to keep up to date and nothing
-              that can quietly disagree with your repo.</span>
-          </div>
-          <div class="pair">
-            <span class="k">someone who'll tell you the truth</span>
-            <span>The conscience. It speaks when you're drifting, then stops. You can pause it.</span>
-          </div>
+          <p>
+            And every rung <strong>names its own entry price before you climb it</strong> — then
+            declines to stop you, because it's your project and BOSS isn't your gatekeeper.
+          </p>
         </div>
 
-        <p class="small prose">
-          And when it's holding nothing up, it comes down: <code>boss remove</code>.
-        </p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="rail">▸<span>go on</span></div>
-      <div class="body">
-        <div class="prose">
-          <h2>The rest of it</h2>
-          <p>This page is the pitch. Everything under it has its own page.</p>
+        <div class="terminal breakout">
+          <span class="cap">climbing a rung you haven't earned yet</span>
+<pre><span class="line"><span class="t-cmd">boss unlock mvp</span></span>
+<span class="line"></span>
+<span class="line">  MVP mode pays for itself when three things are true:</span>
+<span class="line">    <span class="t-ok">✓</span> an idea captured you can actually build from  <span class="t-dim">(2 on file)</span></span>
+<span class="line">    <span class="t-dim">·</span> at least one real signal on file — something a person actually said or did</span>
+<span class="line"><span class="t-dim">        (nothing in docs/evidence/ yet — /interview)</span></span>
+<span class="line"><span class="t-dim">      and you know roughly what the first working version has to do</span></span>
+<span class="line"><span class="t-dim">  The unmarked ones BOSS cannot check — they are yours to judge, not its.</span></span>
+<span class="line">  <span class="t-accent">Missing one? That's fine — but you'll be carrying ceremony you haven't earned.</span></span>
+<span class="line"><span class="t-dim">  Unlocking anyway (BOSS never blocks); the deviation is yours to own.</span></span>
+</pre>
         </div>
-        <div class="pairs">
-          <div class="pair">
-            <span class="k"><a href="start.html">Start →</a></span>
-            <span>Install, then either start something new or bring BOSS into a repo you already have.
-              Both paths, the real output, and how to take it back out.</span>
-          </div>
-          <div class="pair">
-            <span class="k"><a href="team.html">The team →</a></span>
-            <span>All {{COUNT_AGENTS}} of them — {{COUNT_BUILDERS}} builders who make the product,
-              {{COUNT_MENTORS}} mentors who coach you — and which rung each one arrives on.</span>
-          </div>
-          <div class="pair">
-            <span class="k"><a href="keeping-track.html">Keeping track →</a></span>
-            <span>The other half: what BOSS writes down for you. Typed records, one closed status
-              vocabulary, and why there is deliberately no status document anywhere.</span>
-          </div>
-          <div class="pair">
-            <span class="k"><a href="guide.html">Guide →</a></span>
-            <span>When to use a BOSS verb and when to just talk to Claude, the ladder rung by rung, and
-              what happens after you ship.</span>
-          </div>
-          <div class="pair">
-            <span class="k"><a href="teams.html">Cofounders →</a></span>
-            <span>AI makes you both faster, which left alone makes a team drift apart. Dormant when
-              you're solo.</span>
-          </div>
-          <div class="pair">
-            <span class="k"><a href="engineering.html">For engineers →</a></span>
-            <span>The technical positions BOSS holds on harnesses, context, agent security and testing —
-              and who each one was learned from.</span>
-          </div>
-          <div class="pair">
-            <span class="k"><a href="charter.html">Charter →</a></span>
-            <span>A conscience makes a cost visible; a censor makes a choice unavailable. The line, and
-              the mechanism under it.</span>
-          </div>
+
+        <div class="prose">
+          <p class="small">
+            Two commands answer "where am I" without you keeping anything up to date.
+            <code>boss status</code> opens with <em>you are here</em> and the ladder, then the one
+            thing to pick up next and what you've actually learned so far.
+            <code>boss recap</code> reads the last week back out of your own records — what landed,
+            what you learned, what you decided, what's in flight — and says plainly when a section is
+            empty rather than padding it. <a href="guide.html">The ladder, rung by rung →</a>
+          </p>
         </div>
       </div>
     </section>
@@ -319,5 +358,78 @@ nav: home
       </div>
     </section>
 
-  </main>
+    <div class="band">
+      <div class="band-in">
+        <p class="stencil">don't take our word for it</p>
+        <h2>The claims on this page are checkable.</h2>
+        <p class="lede">
+          BOSS asks you to write down what you decided and what would prove it wrong, so it does the
+          same in public. Its <a href="https://github.com/ajeshh/bossbuild/tree/main/docs/decisions">decision
+          records</a> are in the repo — 16 of them, including the ones that make it look bad, because
+          they were written before anyone was reading. So is the conscience's own eval suite, so you
+          can run the judgment it will apply to you.
+        </p>
+        <p class="small">
+          Every practice it ships names who it was learned from, when it was last checked, and what
+          would make it wrong — {{COUNT_PRACTICES}} of them, and {{COUNT_VERDICTS}} outside claims put
+          through the filter, most of which were turned down.
+          <a href="governance.html">How BOSS decides what it believes →</a>
+        </p>
+      </div>
+    </div>
 
+    <section class="section">
+      <div class="rail">▸<span>go on</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>The rest of it</h2>
+          <p>This page is the pitch. Everything under it has its own page.</p>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k"><a href="start.html">Start →</a></span>
+            <span>Install, then either start something new or bring BOSS into a repo you already have.
+              Both paths, the real output, and how to take it back out.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="guide.html">Guide →</a></span>
+            <span>When to use a BOSS verb and when to just talk to Claude, the ladder rung by rung, and
+              what happens after you ship.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="team.html">The team →</a></span>
+            <span>All {{COUNT_AGENTS}} of them — {{COUNT_BUILDERS}} builders who make the product,
+              {{COUNT_MENTORS}} mentors who coach you — and which rung each one arrives on.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="keeping-track.html">Keeping track →</a></span>
+            <span>What BOSS writes down for you. Typed records, one closed status vocabulary, and why
+              there is deliberately no status document anywhere.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="conscience.html">The conscience →</a></span>
+            <span>The bit that speaks up. A hook watches the work, a model finds the words, and the
+              decision comes straight back to you. Always overridable; you can pause it.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="engineering.html">For engineers →</a></span>
+            <span>The technical positions BOSS holds on harnesses, context, agent security and testing —
+              and who each one was learned from.</span>
+          </div>
+          <div class="pair">
+            <span class="k"><a href="charter.html">Charter →</a></span>
+            <span>A conscience makes a cost visible; a censor makes a choice unavailable. The line, and
+              the mechanism under it.</span>
+          </div>
+        </div>
+        <p class="small prose">
+          Also: <a href="teams.html">cofounders</a> (dormant when you're solo) ·
+          <a href="canvas.html">the canvas</a> (free, no install) ·
+          <a href="governance.html">how BOSS decides what it believes</a> ·
+          <a href="credits.html">everyone it learned from</a>.
+          And when it's holding nothing up, it comes down: <code>boss remove</code>.
+        </p>
+      </div>
+    </section>
+
+  </main>

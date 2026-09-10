@@ -813,7 +813,6 @@ const NAV = [
     { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
     { id: 'guide', href: 'guide.html', label: 'Guide' },
     { id: 'teams', href: 'teams.html', label: 'Cofounders' },
-    { id: 'quick-guide', href: 'quick-guide.html', label: 'Quick guide' },
   ] },
   { label: 'How it works', href: 'engineering.html', children: [
     { id: 'engineering', href: 'engineering.html', label: 'For engineers' },

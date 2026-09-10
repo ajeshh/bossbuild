@@ -81,19 +81,42 @@ test('the shelf is exactly what has a reader, and the lists are the whole surfac
 });
 
 // The reason the shelf was cut back at all: a folder nothing reads is a place to put things and
-// forget them. This asserts the surviving shelf against the ONE path `src/paths.js` exports, so a
-// new folder here has to come with a reader rather than an intention.
+// forget them, so a new folder here has to come with a reader rather than an intention.
+//
+// v0.273.0 — this test used to assert against a HARDCODED SET (`new Set(['practices'])`) while its
+// own comment claimed it asserted "against the ONE path src/paths.js exports". It did not. The
+// difference matters: an allowlist says *whether someone edited the allowlist*, and passing it is
+// one line of maintenance rather than evidence a reader exists. It now GREPS `src/` for code that
+// actually resolves the folder — so adding a shelf with no reader fails, and adding one with a
+// reader passes without anybody being asked to update a list.
 test('every folder on the shelf has a reader', () => {
-  const readable = new Set(['practices']);
+  const src = readdirSync(join(BOSS_ROOT, 'src'))
+    .filter((f) => f.endsWith('.js'))
+    .map((f) => readFileSync(join(BOSS_ROOT, 'src', f), 'utf8'))
+    .join('\n');
   for (const n of readdirSync(join(BOSS_ROOT, 'library'))) {
     if (!statSync(join(BOSS_ROOT, 'library', n)).isDirectory()) continue;
+    // Either a path built inline — join(..., 'library', '<n>') — or via a named export that
+    // resolves it, which is how `practices` reaches `boss craft` (PRACTICES_DIR in paths.js).
+    const resolved = new RegExp(`'library'\\s*,\\s*'${n}'`).test(src);
     assert.equal(
-      readable.has(n), true,
+      resolved, true,
       `library/${n}/ has no reader in src/. Every previous folder in this position — agents, skills, `
       + 'hooks, memory-seed — was a dead drop that drifted or outlived its premise. Add the reader, '
       + 'or do not add the folder.',
     );
   }
+});
+
+// The teeth on the test above: it must fail for a folder nothing resolves. Without this, the regex
+// could be quietly wrong (or match everything) and the guard would read green forever — which is
+// precisely how the allowlist version passed while claiming to check something it never checked.
+test('REGRESSION: the shelf-reader check fails for an unread folder', () => {
+  const src = "const A = join(ROOT, 'library', 'practices');\nconst B = join(HERE, '..', 'library', 'help');";
+  const probe = (n) => new RegExp(`'library'\\s*,\\s*'${n}'`).test(src);
+  assert.equal(probe('practices'), true, 'a resolved folder must pass');
+  assert.equal(probe('help'), true, 'a folder resolved with a relative prefix must also pass');
+  assert.equal(probe('memory-seed'), false, 'an unresolved folder must FAIL — otherwise the guard is decorative');
 });
 
 // A file the manifest does not claim never syncs — `managedFiles()` iterates the manifest. If

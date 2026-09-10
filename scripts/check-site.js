@@ -276,9 +276,10 @@ function lastChangedAt(paths) {
     return out ? Number(out) * 1000 : 0;
   } catch { return 0; }
 }
-// The LATER of the last commit and the working-tree mtime. Preferring git alone
-// reports a page as stale while you are actively fixing it; preferring mtime alone
-// misses that a checkout resets timestamps. Take whichever says "more recently".
+// The LATER of the last commit and the working-tree mtime.
+//
+// NO LONGER USED for staleness — see the `reviewed:` comparison below. Kept because it is the
+// honest way to answer "when was this file last touched", which the in-flight bucket reads.
 function pageTouchedAt(file) {
   let git = 0, disk = 0;
   try {
@@ -306,10 +307,50 @@ for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsW
   if (!reviewed) continue;
   const now = changingNow(covers);
   if (now) inflight.push(`${f.replace(/\.html$/, '')} — ${now} uncommitted change(s) under ${covers.split(' ').slice(0, 2).join(', ')}`);
+  // v0.273.0 — this compared `srcAt` against the page's TOUCH time (max of git and mtime), and
+  // three comments in this file claimed it compared against `reviewed:`. It did not, and the
+  // difference is the whole mechanism: touching a page for ANY reason cleared the flag, so a typo
+  // fix silently asserted "I have re-read this against its sources." Only a human bumping
+  // `reviewed:` can make that assertion, so that is what it is now measured against.
+  //
+  // End-of-day, because `reviewed:` is a date and a source commit later the same day should not
+  // read as behind a review that says it happened that day.
   const srcAt = lastChangedAt(covers);
-  const pageAt = pageTouchedAt(`web/${f}`);
-  if (srcAt && pageAt && srcAt > pageAt) {
-    behind.push(`${f.replace(/\.html$/, '')} — ${covers.split(' ')[0]}… changed ${fmt(srcAt)}, page last touched ${fmt(pageAt)}`);
+  const reviewedAt = Date.parse(`${reviewed}T23:59:59Z`);
+  if (srcAt && reviewedAt && srcAt > reviewedAt) {
+    behind.push(`${f.replace(/\.html$/, '')} — ${covers.split(' ')[0]}… changed ${fmt(srcAt)}, reviewed ${reviewed}`);
+  }
+}
+
+// ---- 2b. internal links that go nowhere -----------------------------------
+// Nothing checked this until v0.273.0, and the gap was found by deleting a page:
+// `quick-guide.html` was linked from index and guide, and removing it would have shipped
+// two dead links to a live site in silence. A 404 from your own front page is the cheapest
+// possible credibility loss and the easiest thing to check mechanically.
+//
+// Scope is deliberately narrow — SAME-PAGE relative hrefs only. External URLs are a network
+// call and a different discipline (and `check:deployed` owns the live surface); anchors are
+// checked as page+fragment, with the fragment ignored, because an id can be generated.
+{
+  const pages = new Set(readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsWith('_')));
+  // Assets live in site/, not web/ — they are copied, not generated, so resolve against both.
+  const assets = new Set(['og.png', 'humane-product-canvas.md', 'sitemap.xml', 'robots.txt',
+    'styles/site.css', 'styles/tokens.css']);
+  // `_shell.html` is not a page, and it is the file with the most reach: its brand link
+  // (`href="index.html"`) renders on ALL of them. Excluding underscore files from the SCAN as
+  // well as from the page list would leave the single highest-blast-radius link unchecked.
+  for (const f of [...pages, '_shell.html']) {
+    const html = readFileSync(join(WEB, f), 'utf8');
+    for (const m of html.matchAll(/href="([^"#:][^":]*?)"/g)) {
+      const target = m[1].split('#')[0].split('?')[0];
+      if (!target || target.startsWith('/') || target.startsWith('.')) continue;
+      if (pages.has(target) || assets.has(target)) continue;
+      if (/^(mailto|tel)/.test(m[1])) continue;
+      // The shell's hrefs include build-time tokens ({{CANONICAL}}); the generator
+      // already fails on an unsubstituted token, so they are not this check's job.
+      if (target.includes('{{')) continue;
+      problems.push(`${f} links to \`${target}\`, which is not a page in web/ — that ships a 404`);
+    }
   }
 }
 
@@ -337,7 +378,8 @@ if (inflight.length) {
 }
 if (behind.length) {
   console.log(`\n  ${behind.length} page(s) document something that changed after they were last reviewed.`);
-  console.log('  Re-read them, fix what moved, then bump `reviewed:` in the fragment header.');
+  console.log('  Re-read them against what moved, then bump `reviewed:` — that date IS the assertion,');
+  console.log('  and editing the file no longer clears this on its own.');
 }
 if (debt) {
   console.log(`\n  · citation debt: ${debt} of ${sourceTotal} KEY sources have no URL.`);

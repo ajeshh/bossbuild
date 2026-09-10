@@ -1,0 +1,50 @@
+<!--
+title: The conscience — how it decides to speak, and every way to quiet it
+section: conscience
+covers: src/conscience.js stages/L0-quickstart/template/docs/loops
+reviewed: 2026-09-10
+review_by: 2027-03-09
+describes: the hook/model split, what a moment is, and the off switches
+-->
+<p>
+  This is the part people either value or want to switch off, so it is worth being precise about
+  what it does, what it cannot do, and every way to shut it up.
+</p>
+<h3>Detection is mechanical. Tact is the model's job.</h3>
+<p>
+  A lightweight hook watches the <em>state of the work</em> — how many ideas are captured, how
+  many were tested, whether a spec traces to anything the canvas validated. When a named moment's
+  condition is met, it fires. <strong>No model is ever asked “is this person drifting?”</strong>
+</p>
+<p>
+  Only once a moment is earned does a model compose the actual words. So the judgment about
+  <em>whether</em> to speak is deterministic and inspectable; only the phrasing is generated.
+  That split is the entire design — a model deciding when to interrupt you would interrupt you
+  constantly, because interrupting is the only way it can demonstrate value.
+</p>
+<h3>It speaks once, then stops</h3>
+<p>
+  A moment fires, says its piece, and goes quiet. It does not block your prompt, does not repeat
+  itself, does not grade you, and it will point at something better than its own features — a
+  fifteen-minute call with the right person beats another pass at any BOSS artifact, and it will
+  say so.
+</p>
+<p>
+  <strong>Its only positive signal is silence.</strong> If it is not speaking, nothing it watches
+  is out of shape. That is worth knowing, because a tool that is quiet can look like a tool that
+  is broken.
+</p>
+<h3>Turning it down</h3>
+<ul>
+  <li><code>boss conscience pause --for 8h</code> — silence everything for a bounded sprint. It
+    comes back on its own, because a permanent off switch you set once during a bad afternoon is
+    not a choice you get to revisit.</li>
+  <li><code>boss conscience mute &lt;moment&gt;</code> — turn down one nudge while the rest keep
+    speaking. <code>unmute</code> brings it back.</li>
+  <li><code>boss conscience activity</code> — how often it has actually fired. Run this if it
+    feels noisy; the answer is usually lower than the feeling, and if it isn't, that is a bug
+    worth reporting.</li>
+</ul>
+<p>
+  It never blocks, and it never has the last word. You are the one deciding.
+</p>

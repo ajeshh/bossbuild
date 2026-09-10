@@ -4,10 +4,10 @@ type: practice
 owner: product-lead
 status: active
 host: stack-neutral
-provenance: consolidated from BOSS's own shipped discipline — the seven capture artifacts (/idea, /canvas, /evidence, /decide, /spec, /log, /close) had been distributed across eight skills and zero practices since v0.1, so nothing could refresh, cite, or hold them to a standard. Assessment: BOSS's own documentation-and-progress pass 001 (2026-08-20). Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction · structured note-taking · JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored / code-coupled / drift-enforced), and Marty Cagan's *Discovery vs. Documentation* (SVPG). The formatting layer is new and unvetted by anyone outside BOSS. §7 (user-facing docs) added 2026-08-20 from the llms.txt / AI-readable-docs sweep — the llms.txt adoption status is explicitly caveated in the text and MUST be re-checked on refresh; it is the fastest-moving claim in this doc.
+provenance: consolidated from BOSS's own shipped discipline — the seven capture artifacts (/idea, /canvas, /evidence, /decide, /spec, /log, /close) had been distributed across eight skills and zero practices since v0.1, so nothing could refresh, cite, or hold them to a standard. Assessment: BOSS's own documentation-and-progress pass 001 (2026-08-20). Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction · structured note-taking · JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored / code-coupled / drift-enforced), and Marty Cagan's *Discovery vs. Documentation* (SVPG). The formatting layer is new and unvetted by anyone outside BOSS. §7 (user-facing docs) added 2026-08-20 from the llms.txt / AI-readable-docs sweep. **The flagged llms.txt claim WAS re-checked 2026-09-10 against its primary (llmstxt.org, fetched) in SESSION-2026-09-10-documentation-craft: the read-commitment caveat survived, the adoption evidence was six months stale and is updated, and the author/date/status are now verbatim from the primary rather than from secondary summaries.** It remains the fastest-moving claim in this doc; re-check again on next refresh. An adversarial pass also flagged that the primary names OpenAI/Anthropic/Gemini *developer docs* specifically — do not upgrade that to company-level adoption.
 provenance_public: Consolidated from BOSS's own shipped capture discipline: seven artifacts spread across eight skills and no practice, so nothing could refresh, cite, or hold them to a standard. Externally grounded in Anthropic's *Effective context engineering for AI agents* (compaction, structured note-taking, JIT retrieval), Hartwig Grabowski's *Spec Growth Engine* (arXiv 2606.27045, June 2026 — spec-anchored, code-coupled, drift-enforced), and Marty Cagan's *Discovery vs. Documentation*. The formatting layer is new and unvetted by anyone outside BOSS; the llms.txt adoption claim is the fastest-moving thing in the doc and is caveated in the text.
-last_reviewed: 2026-08-20
-review_by: 2027-02-16
+last_reviewed: 2026-09-10
+review_by: 2027-03-09
 curve: craft-ai
 ---
 
@@ -284,9 +284,19 @@ What that changes, concretely:
 ### `llms.txt` — cheap, worth doing, and don't oversell it
 
 A markdown file at your domain root linking your canonical pages with one-line descriptions. **The
-honest status matters:** as of early 2026 **no major model provider has publicly committed to reading
-it in production.** It is shipped by Stripe, Vercel, Cloudflare, Anthropic and Cursor anyway, because
-the coding agents their users run consume it *today*.
+honest status matters, and it has two halves that move at different speeds.**
+
+**The core caveat survives:** as of September 2026 **no major model provider has publicly committed
+to reading it in production.** Publishing one is not the same as promising to read one, and the
+labs that publish have promised nothing.
+
+**The adoption evidence has moved a long way, though.** Its own primary — [llmstxt.org](https://llmstxt.org/),
+Jeremy Howard, published 3 September 2024 and revised **10 August 2026** — is now "v2 of the
+proposal, updated based on what I learned from two years of adoption." It reports thousands of sites
+publishing one, documentation platforms generating them automatically, **Chrome's Lighthouse auditing
+sites for one**, and llms.txt files published for the developer docs of **OpenAI, Anthropic and
+Gemini**. It still describes itself as *"open for community input"* and an *"informal overview"* —
+**a widely-adopted one-person proposal, not a ratified standard.**
 
 **Treat it as a content-authority play, not access control** — you're pointing models at what's
 canonically true about your product so they invent less. It costs an afternoon and it cannot hurt.

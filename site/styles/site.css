@@ -396,3 +396,52 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 .key-src { font-family: var(--font-prose); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
   font-weight: 700; color: var(--color-on-brand); background: var(--color-brand);
   padding: 0.08rem 0.3rem; margin-left: 0.4rem; vertical-align: 0.14em; border-radius: var(--radius-sm); }
+
+/* --- the picker ----------------------------------------------------------
+   "Is this you?" as three things you choose between, not three paragraphs to
+   read. Pure CSS — hidden radios drive `:checked ~` on the panels, so it works
+   with JS off, arrow-keys work for free (it IS a radio group), and every panel
+   ships in the HTML where a crawler can still read it.
+
+   The labels deliberately describe SHAPES OF WORK, not job titles. The third
+   one ("several of these at once") is true of one person with three side
+   projects and of somebody holding a room of other people's twelve; naming
+   either would be a claim, and only one of them has ever been observed. */
+.picker { margin: var(--space-4) 0 var(--space-3); }
+.picker .panel > .prose { max-width: var(--measure); }
+.picker > input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.picker .tabs { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
+.picker .tabs label {
+  font-family: var(--font-mono); font-size: var(--step--1); cursor: pointer;
+  border: var(--hairline); border-radius: var(--radius-sm);
+  padding: 0.34rem 0.7rem; color: var(--color-text-secondary);
+  transition: color 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+.picker .tabs label:hover { color: var(--color-text); border-color: var(--color-brand); }
+.picker .panel { display: none; }
+.picker .panel h3 { margin-top: 0; }
+#shape-new:checked    ~ .panels > .p-new,
+#shape-repo:checked   ~ .panels > .p-repo,
+#shape-many:checked   ~ .panels > .p-many { display: block; }
+#shape-new:checked    ~ .tabs label[for="shape-new"],
+#shape-repo:checked   ~ .tabs label[for="shape-repo"],
+#shape-many:checked   ~ .tabs label[for="shape-many"] {
+  background: var(--color-brand); color: var(--color-on-brand); border-color: var(--color-brand);
+}
+/* The radio is off-screen, so the focus ring has to be drawn on its label or
+   keyboard users get no indication of where they are in the group. */
+#shape-new:focus-visible  ~ .tabs label[for="shape-new"],
+#shape-repo:focus-visible ~ .tabs label[for="shape-repo"],
+#shape-many:focus-visible ~ .tabs label[for="shape-many"] {
+  outline: 2px solid var(--color-link); outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) { .picker .tabs label { transition: none; } }
+
+/* --- what you end up with ------------------------------------------------
+   Artifacts, not features. Each one is a file the founder can open. */
+.yield { display: grid; gap: var(--space-4); max-width: var(--measure); margin: var(--space-4) 0; }
+.yield > li { list-style: none; border-left: var(--hivis-rule); padding-left: var(--space-3); }
+.yield h3 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
+.yield h3 code { background: none; border: 0; padding: 0; color: var(--color-link); font-size: 0.9em; }
+.yield p { margin: 0; font-size: var(--step--1); color: var(--color-text-secondary); }
+.yield p strong { color: var(--color-text); }

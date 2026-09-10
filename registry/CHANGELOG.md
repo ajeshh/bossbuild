@@ -16,6 +16,109 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.273.0 — 2026-09-10
+
+> **For you:** **`boss help --html`** — the whole guide as a page, and it describes *your* project
+> rather than BOSS. Every skill and command on it is one you actually have; the next rung shows as a
+> dimmed preview with what earns it. Written to `.boss/help.html`, rebuilt from your own install
+> each time you run it. The terminal answers are unchanged and still faster: `boss help`,
+> `boss map`, `boss status`.
+
+**The gap this closes was in the wrong direction from where it looked.** BOSS has good in-terminal
+support — `boss help` grouped by section, `boss help <command>`, `glossary`, `symbols`, `hooks`,
+plus `boss map` for the live read. What it had no answer for is the founder who would rather read a
+page, and the only page that existed was the website — which describes **the superset**. A founder
+standing in a Quickstart project has **17 skills and 4 agents** and the site lists 48 and 12 with no
+way to tell which are theirs. *The surface with the most content was the one least able to answer
+"what can I run".* That is the same shape as EVID-001's *"I can't tell where I am"*, one altitude up.
+
+**Generated on demand, never scaffolded — and that is the load-bearing choice.** A guide written
+into the repo at install is wrong by the second unlock and nothing would be watching it. So this
+mirrors `boss board --html` exactly: read the stamp, render, write to gitignored `.boss/`, re-run to
+refresh. It cannot rot, because there is no stored copy to go stale. Verified across a rung —
+Quickstart renders `17 skills · 4 agents` with MVP dimmed; after `boss unlock mvp` the same command
+renders `45 · 11`, the MVP group opens, and the *"— at MVP"* annotations in the wayfinding map
+**disappear on their own** because those verbs are now available.
+
+**One flag on a verb that exists.** No new command, no new noun, no skill. `--html` is a renderer
+for questions `boss help` already looked like it would answer.
+
+### Three things moved so two surfaces could not disagree
+
+- **`HELP` (23 commands) and `SYMBOLS` left `cli.js` for `src/help.js`.** They were module-local,
+  which was fine while the terminal was the only reader. The moment a second surface describes the
+  same command, the copy drifts — the failure this repo keeps catching in its own docs. One home,
+  both renderers.
+- **`SYMBOLS` stopped carrying ANSI escapes.** It stored `ok('✦')` — presentation baked into data,
+  unreadable by anything that is not a terminal. It is now `[glyph, meaning, tone]` and the renderer
+  paints it. Terminal output is byte-identical.
+- **The "I want to…" map became data (`WAYFINDING`).** It was hand-written markup on the website,
+  which is why the website could not filter it. As data, a renderer resolves each verb against the
+  install and can say *"you have this"* versus *"this arrives at MVP"*.
+
+### `npm run check:help` — and it found a shipped bug on its first run
+
+The hand-written half lives in **`library/help/`** with the same frontmatter discipline as `web/`
+(`covers:` / `reviewed:` / `review_by:` / `section:`), and `check:help` mirrors `check:site` one rung
+down: a fragment with no `covers:` **fails the gate**, because prose nothing can invalidate is prose
+that will quietly go stale. It is in `npm run check`.
+
+It also checks something a date-based gate structurally cannot see: **every skill the wayfinding map
+names must exist in a stage manifest.** On the first run it caught **`/vet`** — an internal BOSS
+skill, in no manifest, shipped to nobody. The map said *"here is how to work out what an outside
+claim is worth"* and the verb behind it did not exist for the reader.
+
+**And it reports coverage against ground truth rather than a ratio that can only flatter.**
+*"5 of 48 shipped skills are in no `I want to…` row"*, with the five named. The remainder is honest
+— they are BOSS's own audit and upkeep verbs, which have no founder-phrased intent — and the number
+cannot shrink by someone forgetting to add a row.
+
+**The rule that keeps the halves apart:** if a manifest can answer it, it is generated; if it needs
+a human sentence, it goes in `library/help/` where something is watching it. Prose in the generator
+would be prose nothing checks.
+
+### Then it was vetted, and the vet found two defects in it — same day
+
+A `/deep-research` pass on documentation craft (5 angles, 4 primaries fetched, 9 claims put to three
+independent skeptics) **killed 8 of 9 claims**, and two of the kills were BOSS's own mechanisms.
+
+- 🔴 **`library/help/` shipped UNTRACKED.** `git ls-files library/help` → 0 while 7 files sat on
+  disk and **all 7 were in `npm pack`**. Three consequences, none visible from inside the code: the
+  freshness comparison read a null git time so it **could never fire**; a fresh clone has no
+  `library/help/` so **`npm run check` fails for everyone else**; and the hand-written half of
+  `boss help --html` existed in one working directory on one machine. Found by the IDEA-087 method —
+  `git ls-files <dir>` vs `ls <dir>` — on a directory whose own README promised *"something is
+  watching it."* **n=28.**
+- 🔴 **`reviewed:` was decorative in `check-site.js` AND `check-help.js`, and three comments said
+  otherwise.** Both parsed it as a presence gate, then compared the source-change time against the
+  doc's own touch time — `max(git commit, mtime)`. **So editing a page for any reason cleared the
+  flag**: a typo fix silently asserted *"I have re-read this against its sources,"* which is the one
+  thing only a human can assert. Now measured against the `reviewed:` date, which surfaced one more
+  trailing page (`charter.html`) that the old comparison had been hiding. The printed instruction
+  was wrong too — *"bump `reviewed:`"* cleared nothing.
+- ⚠️ **An untracked `covers:` path freezes a tripwire forever.** `git log` on a path with no tracked
+  files reports the commit that *removed* it. `docs/loops` read `2026-06-20` permanently while the
+  real files changed in September. Now a hard finding, and every `covers:` path is checked for
+  tracking.
+- ⚠️ **"The tables are GENERATED and cannot drift" was overstated** — `WAYFINDING` is hand-authored
+  English inside the generated half, and this checker exists *because* one of those tables drifted.
+  Reworded to say which half is authored and therefore driftable.
+
+**`check:site` also gained internal-link validation**, because nothing had it: absorbing
+`quick-guide.html` into the in-project guide and deleting it would have shipped two dead links from
+`index.html` and `guide.html` in silence. The scan includes `_shell.html` — not a page, and the file
+with the most reach, since its brand link renders on every one of them.
+
+**The one-flag-on-a-verb shape held under all of it.** No new command was added by any of these
+fixes, and `quick-guide.html` is gone from the website — its three parts are now the guide's
+wayfinding map, command table and complete index, the last of which shows install state, which is
+the thing a web page structurally cannot do.
+
+> **Verdicts:** RVW-096 ADAPT (uncertainty-gated context → sharpen `context-discipline.md`);
+> RVW-097 **NOT-YET** on shipping a documentation practice — premature at n=1-day against a
+> mechanism that was defective on day one, largely duplicating `documentation.md`, and adding
+> founder surface under the standing subtract mandate. Re-open conditions are written.
+
 ## 0.272.0 — 2026-09-09
 
 > **For you:** **`/canvas --frame onepager`** — the smallest thing you can hand to someone outside.

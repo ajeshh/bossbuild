@@ -1,0 +1,40 @@
+<!--
+title: What BOSS writes down, and why there is no status document
+section: records
+covers: docs/IDS.md src/records.js src/board.js
+reviewed: 2026-09-10
+review_by: 2027-03-09
+describes: typed records, the closed status vocabulary, and the rendered board
+-->
+<p>
+  Twelve ideas, three half-finished specs, and a decision you cannot remember making. BOSS gives
+  every one of them a file, a type and a status — and then <em>renders</em> your progress from
+  those files.
+</p>
+<p>
+  <strong>There is deliberately no status document anywhere.</strong> A hand-maintained board and
+  the frontmatter it copies will eventually disagree, and nothing tells you which one is lying. So
+  status lives in exactly one place — the record's own frontmatter — and
+  <code>boss board</code> is a read of the files, never a document you keep up to date.
+</p>
+<h3>The consequence, which is the useful part</h3>
+<p>
+  You cannot make the board look better than the work. Moving a card means changing a record;
+  changing a record means the work actually moved. An empty column stays visibly empty, because
+  “two ideas captured and nothing tested” is the honest picture of where you are.
+</p>
+<h3>The status vocabulary is closed</h3>
+<p>
+  A fixed, small list of words — not free text. That is what makes the board renderable and what
+  lets <code>boss records</code> catch a typo before it becomes an invisible card. If you find
+  yourself wanting a new status, the work has usually outgrown its record type rather than its
+  vocabulary.
+</p>
+<h3>Evidence is graded, not collected</h3>
+<p>
+  Signals about whether anyone wants this go on a fixed three-rung ladder —
+  <strong>stated-pain → observed-behavior → commitment</strong> — and the grade is what somebody
+  <em>did</em>, not how enthusiastic they sounded. “Great idea, I'd definitely use that” is rung
+  one and stays there. Desk research never becomes evidence at all: reading about a market is
+  context, and treating it as a signal is how a founder talks themselves into a year of work.
+</p>

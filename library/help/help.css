@@ -1,0 +1,133 @@
+/* library/help/help.css — inlined into .boss/help.html at generation time.
+   Inlined rather than linked because the file is opened straight off the filesystem:
+   a relative stylesheet works, but the page also gets copied, mailed and dropped into
+   Slack, and a single file survives all three. No fonts are fetched — the stacks below
+   are what the machine already has. Dark mode follows the OS. */
+:root {
+  --ink: #17150f; --ink-2: #5c574c; --ground: #f4f2ec; --surface: #ebe8e0;
+  --rule: #d8d4c8; --brand: #e8590c; --link: #a03e05; --code: #2b2820;
+  --term-bg: #17150f; --term-fg: #e8e4d8; --term-dim: #8a8578; --term-ok: #7cb342;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --measure: 68ch;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #ece9e0; --ink-2: #9d968a; --ground: #14130f; --surface: #1e1c17;
+    --rule: #302d26; --brand: #ff7a33; --link: #ff9257; --code: #d8d4c8;
+    --term-bg: #0d0c0a; --term-fg: #e8e4d8;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem 5rem; }
+a { color: var(--link); text-underline-offset: 3px; }
+code, kbd { font-family: var(--mono); font-size: 0.88em; color: var(--code);
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 3px; padding: 0.08em 0.32em; }
+h1, h2, h3 { font-family: var(--mono); font-weight: 650; line-height: 1.15; letter-spacing: -0.02em; }
+h1 { font-size: clamp(1.9rem, 1.3rem + 2.4vw, 2.9rem); margin: 0 0 0.5rem; }
+h2 { font-size: 1.5rem; margin: 0 0 1rem; }
+h3 { font-size: 1.08rem; margin: 2rem 0 0.5rem; }
+p, ul, ol { max-width: var(--measure); }
+ul, ol { padding-left: 1.3rem; }
+li { margin-bottom: 0.4rem; }
+strong { font-weight: 650; }
+
+/* --- masthead + the you-are-here line ---------------------------------- */
+header.top { border-bottom: 1px solid var(--rule); padding: 2.5rem 0 1.75rem; margin-bottom: 0; }
+.kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+  background: var(--brand); color: #fff; display: inline-block; padding: 0.22rem 0.5rem; font-weight: 650; margin: 0 0 1rem; }
+.lede { font-size: 1.12rem; color: var(--ink-2); max-width: var(--measure); }
+.stamp { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-2); margin-top: 1.25rem; }
+.stamp b { color: var(--ink); }
+
+/* --- the ladder as a line you can locate yourself on -------------------- */
+.rungs { list-style: none; display: flex; flex-wrap: wrap; gap: 0; margin: 1.25rem 0 0; padding: 0;
+  font-family: var(--mono); font-size: 0.9rem; }
+.rungs li { padding: 0.3rem 0.85rem; border: 1px solid var(--rule); border-right: 0; color: var(--ink-2); }
+.rungs li:last-child { border-right: 1px solid var(--rule); }
+.rungs li.on { background: var(--surface); color: var(--ink); }
+.rungs li.here { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 650; }
+
+/* --- sections + nav ----------------------------------------------------- */
+nav.toc { position: sticky; top: 0; background: var(--ground); border-bottom: 1px solid var(--rule);
+  padding: 0.6rem 0; margin-bottom: 2.5rem; z-index: 5; }
+nav.toc ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1rem; margin: 0; padding: 0; max-width: none; }
+nav.toc a { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); text-decoration: none; }
+nav.toc a:hover { color: var(--ink); }
+section { padding: 2.5rem 0; border-top: 1px solid var(--rule); }
+section:first-of-type { border-top: 0; }
+.eyebrow { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-2); font-weight: 650; display: flex; align-items: center; gap: 0.75rem; margin: 0 0 0.75rem; }
+.eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+/* --- tables (commands, glossary, symbols) ------------------------------- */
+.tw { overflow-x: auto; margin: 1.25rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.9rem 0.55rem 0; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+td code { white-space: nowrap; }
+.glyph { font-size: 1.15rem; width: 2.5rem; }
+.glyph.ok { color: var(--term-ok); } .glyph.warn { color: var(--brand); } .glyph.dim { color: var(--ink-2); }
+
+/* --- skills, grouped by the rung that unlocked them --------------------- */
+.rung-group { margin: 1.5rem 0; }
+.rung-group > h3 { margin-top: 0; display: flex; align-items: baseline; gap: 0.6rem; }
+.rung-group > h3 .n { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+.loop { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); margin: 0 0 0.75rem; max-width: none; }
+.skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); gap: 0.9rem 1.75rem; max-width: none; }
+.skill { border-left: 2px solid var(--rule); padding-left: 0.8rem; }
+.skill b { font-family: var(--mono); font-weight: 650; font-size: 0.9rem; }
+.skill span { display: block; font-size: 0.86rem; color: var(--ink-2); }
+.locked .skill { opacity: 0.62; }
+.locked .skill b { color: var(--ink-2); }
+
+/* --- the wayfinding map ------------------------------------------------- */
+.want { display: grid; gap: 1rem; max-width: none; }
+.want > div { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 0.4rem 1.5rem;
+  padding-left: 0.9rem; border-left: 2px solid var(--rule); }
+.want .q { font-family: var(--mono); font-size: 0.88rem; font-weight: 650; }
+.want .a { font-size: 0.9rem; }
+.want .a .soon { color: var(--ink-2); }
+.want .a .soon code { opacity: 0.7; }
+@media (max-width: 44rem) { .want > div { grid-template-columns: 1fr; } }
+
+/* --- terminal transcript ------------------------------------------------ */
+.term { background: var(--term-bg); color: var(--term-fg); border-radius: 8px; padding: 1.1rem 1.25rem;
+  font-family: var(--mono); font-size: 0.82rem; line-height: 1.65; overflow-x: auto; margin: 1.25rem 0; }
+.term pre { margin: 0; }
+.term .c { color: var(--term-ok); } .term .d { color: var(--term-dim); }
+
+footer { border-top: 1px solid var(--rule); padding: 2rem 0; margin-top: 3rem;
+  font-family: var(--mono); font-size: 0.78rem; color: var(--ink-2); }
+footer b { color: var(--ink); }
+@media print {
+  nav.toc { position: static; } body { font-size: 11pt; }
+  .term { background: #fff; color: #000; border: 1px solid #999; }
+}
+
+/* A skill that is real but is not a next move — BOSS's own upkeep, or the post-launch
+   arc. `boss map` hides these; a reference shows them and says which they are. */
+.skill .tag { font-style: normal; font-family: var(--mono); font-size: 0.6rem;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 650;
+  color: var(--ink-2); border: 1px solid var(--rule); border-radius: 3px;
+  padding: 0.05rem 0.28rem; margin-left: 0.4rem; vertical-align: 0.1em; }
+
+/* --- the whole surface (the complete index) ------------------------------ */
+details { border-top: 1px solid var(--rule); padding: 0.7rem 0; }
+details > summary { cursor: pointer; font-family: var(--mono); font-weight: 650; font-size: 0.95rem;
+  display: flex; align-items: baseline; gap: 0.7rem; list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--brand); font-size: 0.8em; }
+details[open] > summary::before { content: "▾"; }
+details > summary .n { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+details .tw { margin: 0.75rem 0 0.25rem; }
+details td { padding: 0.4rem 0.9rem 0.4rem 0; }
+.usage { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-2); }
+.soon { color: var(--brand); font-weight: 700; }

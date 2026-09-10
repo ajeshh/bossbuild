@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.272.0" />
+<meta name="generator" content="BOSS 0.273.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -75,6 +75,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.273.0</span><span class="when">2026-09-10</span></div>
+        <p><strong><code>boss help --html</code></strong> — the whole guide as a page, and it describes <em>your</em> project rather than BOSS. Every skill and command on it is one you actually have; the next rung shows as a dimmed preview with what earns it. Written to <code>.boss/help.html</code>, rebuilt from your own install each time you run it. The terminal answers are unchanged and still faster: <code>boss help</code>, <code>boss map</code>, <code>boss status</code>.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.272.0</span><span class="when">2026-09-09</span></div>
         <p><strong><code>/canvas --frame onepager</code></strong> — the smallest thing you can hand to someone outside. The same answers you already gave, as one page of prose for a warm intro or an advisor, with a short honest account of what's actually behind it. It needs at least one <code>EVID</code> record; with none, it tells you that instead of printing a handsome page made of assertions.</p>
       </li>
@@ -118,10 +122,6 @@
         <div class="rel"><span class="ver">v0.262.0</span><span class="when">the founder's word didn't reach the answer BOSS already had</span></div>
         <p>ask the architecture mentor <em>&quot;when should I rearchitect?&quot;</em> or <em>&quot;do I need to rebuild this?&quot;</em> and it now answers. It always knew — it just didn't recognise the question.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.260.0</span><span class="when">2026-09-08</span></div>
-        <p><strong><code>boss recap</code></strong> — what happened this week, read back out of the records you already wrote: what landed, what you learned, what you decided, what's in flight, and whether any of it touched your riskiest assumption. <code>boss recap --md</code> prints it as markdown you can paste into a weekly update.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -151,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.272.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.273.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

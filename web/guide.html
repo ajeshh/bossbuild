@@ -1,8 +1,8 @@
 <!--
 title: Guide — using the team, rung by rung
 description: What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder.
-reviewed: 2026-08-21
-review_by: 2027-02-16
+reviewed: 2026-09-10
+review_by: 2027-03-09
 describes: the mode ladder and the post-launch arc
 covers: docs/GUIDE.md stages
 nav: guide
@@ -53,7 +53,9 @@ nav: guide
             <em>Business Model Canvas</em>; <code>/canvas --frame lean</code> re-renders what you've
             already said rather than interviewing you again, and a cell you haven't answered shows as
             <code>_(not yet)_</code> in every frame instead of quietly disappearing to make a view look
-            complete.
+            complete. A fourth frame, <code>/canvas --frame onepager</code>, folds the same answers
+            into the smallest thing you can hand to somebody outside — and it refuses to render at all
+            until at least one piece of evidence is on file.
           </p>
           <p>
             Commercial prompts are folded into every cell (who <em>exactly</em> has the problem, what
@@ -61,6 +63,16 @@ nav: guide
             frames, not just the humane one: <strong>who this could harm or exclude</strong>, and the
             principles you'll hold when holding them costs you something. Un-defaulting the framework
             was never meant to make those optional.
+          </p>
+          <p>
+            Then find out if it's real, which is the half that doesn't happen in the editor.
+            <code>/interview</code> preps one 15-minute conversation under Mom-Test discipline — past
+            behaviour, their life, no pitching — and debriefs your notes into graded records
+            afterwards. <code>/pretotype</code> builds the fake door: a real page you can put in front
+            of real people, published in one turn, so demand gets tested while it still costs an
+            afternoon. <strong>Both live here, at the first rung</strong> — testing whether anyone
+            wants the thing is not an advanced move, and holding it back until MVP had it arriving
+            after the build it was meant to prevent.
           </p>
           <p>
             Work out who it's for with <code>/persona</code> — your target user as a voice you can
@@ -73,9 +85,9 @@ nav: guide
           </p>
           <h3>MVP — build the first working version</h3>
           <p>
-            Adds the spec discipline (<code>/spec</code>, with validated-learning and evals fields), the
-            smoke gate, and the demand test — <code>/pretotype</code>, which builds a fake door before you
-            build the real thing. Design tokens get scaffolded here too, the moment there's real UI, so
+            Adds the spec discipline (<code>/spec</code>, with validated-learning and evals fields) and
+            the smoke gate — the first rung where "is it alive?" becomes a gate rather than a habit.
+            Design tokens get scaffolded here too, the moment there's real UI, so
             style never gets locked into code, and the <code>designer</code> arrives with them —
             one designer for both halves, what it looks like and what it does
             (<code>/design-review</code>, <code>/ux-check</code>).
@@ -155,14 +167,20 @@ nav: guide
         <h2>Two things</h2>
         <ul class="plain">
           <li><strong><code>boss status</code> is the one command to remember.</strong> Come back after a
-            week and it tells you where you are and what's next.</li>
+            week and it tells you where you are and what's next — <em>you are here</em>, the ladder, the
+            one thing to pick up, and what you've actually learned so far. Its companion is
+            <code>boss recap</code>, which reads the last week back out of your own records (landed /
+            learned / decided / in flight) and says a section is empty rather than padding it.
+            <code>boss recap --md</code> if you need to paste it to someone.</li>
           <li><strong>The conscience is always overridable.</strong> <code>boss conscience pause --for
             8h</code> for a sprint, or <code>mute &lt;moment&gt;</code> to turn down one nudge while the
             rest keep speaking. It never blocks.</li>
         </ul>
         <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE.md">The full guide →</a> ·
-          <a href="quick-guide.html">every skill →</a>
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE.md">The full guide →</a>
+          &middot; and once BOSS is installed, <code>boss help --html</code> writes the whole thing as a
+          page for <em>your</em> project — every skill you actually have, the rungs you have not climbed
+          folded but searchable, and nothing you would have to keep up to date.
         </p>
       </div>
     </section>
