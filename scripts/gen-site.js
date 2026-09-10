@@ -813,16 +813,20 @@ const NAV = [
   // in the install path — so it stops competing with Start for a first-time visitor's
   // attention, and stops making the product look like fourteen pages of machinery
   // (which is exactly what EVID-002 said it looked like).
-  { label: 'How it thinks', href: 'thinking.html', children: [
-    { id: 'thinking', href: 'thinking.html', label: 'Decisions' },
-    { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
-    { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
-    { id: 'engineering', href: 'engineering.html', label: 'For engineers' },
-    { id: 'design', href: 'design.html', label: 'Design' },
-    { id: 'governance', href: 'governance.html', label: 'Governance' },
-    { id: 'charter', href: 'charter.html', label: 'Charter' },
-    { id: 'credits', href: 'credits.html', label: 'Credits' },
+  // Ordered by what a curious reader wants next, not alphabetically and not by how much work
+  // each page was. Three beats: what you actually get -> how it is built -> what it believes.
+  // `About` and `The canvas` sit at the end because they are context and a takeaway, not the
+  // argument. Decisions leads the third beat because it is the one with falsifiers in it.
+  { label: 'How it thinks', href: 'team.html', children: [
     { id: 'team', href: 'team.html', label: 'The team' },
+    { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
+    { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
+    { id: 'design', href: 'design.html', label: 'Design' },
+    { id: 'engineering', href: 'engineering.html', label: 'For engineers' },
+    { id: 'thinking', href: 'thinking.html', label: 'What it refuses' },
+    { id: 'charter', href: 'charter.html', label: 'Charter' },
+    { id: 'governance', href: 'governance.html', label: 'Governance' },
+    { id: 'credits', href: 'credits.html', label: 'Credits' },
     { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
   ] },
   { id: 'about', href: 'about.html', label: 'About' },

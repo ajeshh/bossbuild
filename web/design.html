@@ -156,8 +156,18 @@ nav: design
               drift into a gate.</span>
           </div>
           <div class="pair">
+            <span class="k">design-tokens-guard</span>
+            <span>A hook that catches a hardcoded colour <em>the moment it is written</em> — hex,
+              <code>rgb()</code>, <code>bg-blue-500</code> — and hands Claude your token names
+              instead. <strong>A prompt convention is a filter; this is the check.</strong> Silent
+              until a <code>DESIGN_TOKENS.md</code> exists: no token system, no opinion. It ships
+              switched off, like every optional hook, because it runs after each file write.</span>
+          </div>
+          <div class="pair">
             <span class="k">/design-review · /ux-check</span>
-            <span>The MVP pass, before code and after it: token enforcement, the five states, and the
+            <span>The MVP pass, before code and after it. <code>/ux-check</code> walks the
+              <em>actual journey rather than the spec</em>, checks the five states are real and not
+              merely designed, and runs accessibility heuristics. Token enforcement, the five states, and the
               flow read end-to-end rather than screen-by-screen. Findings say whether they were
               <em>observed</em> or <em>inferred</em> — a review can only walk what it can run, and it
               tells you which it did.</span>
