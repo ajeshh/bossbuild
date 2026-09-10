@@ -68,9 +68,9 @@
       <div class="body">
         <div class="terminal breakout">
           <span class="cap">pick one — all three put `boss` on your PATH</span>
-<pre><span class="line"><span class="t-cmd">npx oyeboss new my-app</span>        <span class="t-dim"># no install; try it first</span></span>
-<span class="line"><span class="t-cmd">npm install -g oyeboss</span>        <span class="t-dim"># the usual</span></span>
-<span class="line"><span class="t-cmd">brew install ajeshh/boss/oyeboss</span>   <span class="t-dim"># macOS, via the tap</span></span>
+<pre><span class="line"><span class="t-cmd">npm install -g oyeboss</span>            <span class="t-dim"># the usual</span></span>
+<span class="line"><span class="t-cmd">brew install ajeshh/boss/oyeboss</span>  <span class="t-dim"># macOS; then plain `brew install oyeboss` works</span></span>
+<span class="line"><span class="t-cmd">npx oyeboss new my-app</span>            <span class="t-dim"># try it without installing anything</span></span>
 </pre>
         </div>
       </div>
@@ -200,11 +200,6 @@
       <div class="body prose">
         <div class="install">
           <div class="cta">
-            <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx oyeboss new my-app</span></div>
-            <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
-            <span class="which">try it — nothing installed</span>
-          </div>
-          <div class="cta">
             <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npm install -g oyeboss</span></div>
             <button class="copy" type="button" data-copy="npm install -g oyeboss">Copy</button>
             <span class="which">npm</span>
@@ -213,6 +208,11 @@
             <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>brew install ajeshh/boss/oyeboss</span></div>
             <button class="copy" type="button" data-copy="brew install ajeshh/boss/oyeboss">Copy</button>
             <span class="which">Homebrew, macOS</span>
+          </div>
+          <div class="cta">
+            <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx oyeboss new my-app</span></div>
+            <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
+            <span class="which">try it, nothing installed</span>
           </div>
         </div>
         <p class="small">All three put <code>boss</code> on your PATH. Needs

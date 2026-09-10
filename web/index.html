@@ -19,12 +19,20 @@ nav: home
         you're drifting. Free, MIT, zero dependencies, runs entirely on your machine.
       </p>
 
-      <div class="cta">
-        <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span id="install-cmd">npx oyeboss new my-app</span></div>
-        <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
+      <div class="install">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span id="install-cmd">npm install -g oyeboss</span></div>
+          <button class="copy" type="button" data-copy="npm install -g oyeboss">Copy</button>
+          <span class="which">npm</span>
+        </div>
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>brew install ajeshh/boss/oyeboss</span></div>
+          <button class="copy" type="button" data-copy="brew install ajeshh/boss/oyeboss">Copy</button>
+          <span class="which">Homebrew</span>
+        </div>
       </div>
-      <p class="small">Or <code>npm install -g oyeboss</code> ·
-        <code>brew install ajeshh/boss/oyeboss</code>. Needs
+      <p class="small">Then <code>boss new my-app</code>. Or try it without installing:
+        <code>npx oyeboss new my-app</code>. Needs
         <a href="https://nodejs.org">Node 18+</a> and
         <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>; the CLI sets the project up and
         the skills run inside Claude. Already have a repo? <code>boss adopt</code> —
@@ -143,21 +151,22 @@ nav: home
 
             <div class="panel p-new">
               <div class="prose">
-                <h3>Two people who clean houses</h3>
+                <h3>An idea you can't stop thinking about</h3>
                 <p>
-                  Forty regular customers, a WhatsApp thread and a paper diary. Every Sunday night
-                  goes on writing out next week's schedule by hand, and someone still turns up at
-                  the wrong address. Neither of them has written code before.
+                  You've been building with AI for a few months. You shipped one small thing, there
+                  are two more in <code>~/projects/</code> you didn't finish, and a folder of ideas
+                  you never started. This one feels different — but so did those.
                 </p>
                 <p>
-                  <strong>What BOSS does:</strong> helps them work out the smallest useful thing to
-                  build — one week, one cleaner, one text message — and then helps them build it.
-                  It doesn't hand them specs, tests or a design system, because at this point those
-                  would just be homework. Those show up later, if the thing works.
+                  <strong>What BOSS does:</strong> helps you find the smallest version that would
+                  actually prove it — something you can put in front of one real person this week,
+                  before you spend a month building the version in your head. If the idea isn't
+                  real, you find that out in days instead of at launch.
                 </p>
                 <p class="small">
                   Day one is {{Q_AGENTS}} agents and {{Q_SKILLS}} skills, and four files that are
-                  theirs to read. Everything else is the team. → <code>boss new</code>
+                  yours to read. No specs, no tests, no design system — those arrive later, if the
+                  thing works. → <code>boss new</code>
                 </p>
               </div>
             </div>
@@ -238,8 +247,9 @@ nav: home
         <div class="prose">
           <h2>What happens, on one real idea</h2>
           <p>
-            Same cleaning business. Two ideas written down, neither tested yet. Every line below is
-            copied from a terminal.
+            A real example: two people who clean houses, whose weekly schedule lives in a WhatsApp
+            thread. Two ideas written down, neither tested yet. Every line below is copied from a
+            terminal.
           </p>
         </div>
 

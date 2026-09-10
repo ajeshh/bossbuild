@@ -29,14 +29,14 @@ body::before {
 
 /* --- layout: a margin rail, not a centered card -------------------------- */
 .shell { position: relative; z-index: 1; max-width: 78rem; margin: 0 auto; padding: 0 var(--space-4); }
-.section { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); padding: var(--space-6) 0; }
+.section { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); padding: var(--space-5) 0; }
 .section + .section { border-top: 1px solid var(--color-rule); }
 .rail { font-family: var(--font-mono); font-size: var(--step--1); color: var(--rail-label); letter-spacing: 0.04em; padding-top: 0.55rem; }
 .rail span { display: block; color: var(--color-text-secondary); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.72rem; }
 .body { min-width: 0; }
 .prose { max-width: var(--measure); }
 @media (max-width: 46rem) {
-  .section { grid-template-columns: 1fr; gap: var(--space-3); padding: var(--space-5) 0; }
+  .section { grid-template-columns: 1fr; gap: var(--space-3); padding: var(--space-4) 0; }
   .rail { padding-top: 0; }
   .rail span { display: inline; margin-left: var(--space-2); }
 }
@@ -63,7 +63,7 @@ a:hover { color: var(--color-link-hover); }
 }
 
 /* --- hero ---------------------------------------------------------------- */
-.hero { padding: var(--space-7) 0 var(--space-5); display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); }
+.hero { padding: var(--space-6) 0 var(--space-4); display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); }
 @media (max-width: 46rem) { .hero { grid-template-columns: 1fr; padding-top: var(--space-5); } }
 .wordmark { font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; letter-spacing: 0.02em; }
 .wordmark em { font-style: normal; color: var(--color-brand); }
@@ -92,8 +92,8 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 .terminal {
   background: var(--color-terminal-ground); color: var(--color-terminal-text);
   border-radius: var(--terminal-radius); padding: var(--terminal-pad);
-  box-shadow: var(--shadow-inset); margin: var(--space-4) 0;
-  font-family: var(--font-mono); font-size: var(--step--1); line-height: 1.65;
+  box-shadow: var(--shadow-inset); margin: var(--space-3) 0;
+  font-family: var(--font-mono); font-size: var(--step--1); line-height: 1.45;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 .terminal.breakout { width: min(100%, 54rem); }
@@ -130,7 +130,7 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 .modes i { font-style: normal; color: var(--color-text-secondary); }
 
 .note {
-  max-width: var(--measure); margin: var(--space-5) 0;
+  max-width: var(--measure); margin: var(--space-4) 0;
   padding-top: var(--space-3); border-top: var(--hivis-rule);
 }
 .note p:last-child { margin-bottom: 0; }
@@ -158,7 +158,7 @@ code {
 .step h3 { margin-bottom: var(--space-1); }
 
 /* --- footer -------------------------------------------------------------- */
-footer { border-top: 1px solid var(--color-rule); padding: var(--space-5) 0 var(--space-6); }
+footer { border-top: 1px solid var(--color-rule); padding: var(--space-5) 0 var(--space-5); }
 footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); }
 @media (max-width: 46rem) { footer .cols { grid-template-columns: 1fr; } }
 .skip {
@@ -283,7 +283,7 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 /* A full-width hi-vis band: used once per page, maximum, for the turn. */
 .band {
   background: var(--color-brand); color: var(--color-on-brand);
-  margin: var(--space-6) 0; padding: var(--space-5) 0;
+  margin: var(--space-5) 0; padding: var(--space-5) 0;
 }
 .band .band-in { max-width: 78rem; margin: 0 auto; padding: 0 var(--space-4); }
 .band .lede, .band .small, .band p { color: var(--color-on-brand); }
@@ -308,7 +308,7 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .stat .of { color: var(--color-text-secondary); font-size: var(--step--1); max-width: 34ch; }
 
 /* Hazard rule — the humane charter's one visual device. */
-.hazard { height: 6px; border: 0; margin: var(--space-5) 0;
+.hazard { height: 6px; border: 0; margin: var(--space-4) 0;
   background: repeating-linear-gradient(135deg, var(--color-brand) 0 10px, transparent 10px 20px); }
 
 /* --- releases (what's new) ----------------------------------------------- */

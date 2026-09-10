@@ -180,7 +180,7 @@
   --hivis-rule:      3px solid var(--color-brand);
 
   --terminal-radius: var(--radius-lg);
-  --terminal-pad:    var(--space-4);
+  --terminal-pad:      1.1rem 1.25rem;
 
   --station-on:      var(--color-brand);
   --station-off:     var(--color-rule);
