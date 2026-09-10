@@ -16,6 +16,29 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.275.0 — 2026-09-10
+
+> **For you:** **`boss help` is now in the standing-commands list** — the one place that claims to
+> hold "the commands that always work" did not include the command you reach for when you know
+> nothing. It also now shows its full shape, including `--html`.
+
+**The wayfinding map stopped being skills-only.** `WAYFINDING` in `src/help.js` drove the
+*"I want to…"* section of `boss help --html`, and it could only name `/skills`. So two things BOSS
+genuinely answers were **structurally unable to appear**: *"who do I ask about rearchitecting"*
+(`@mentor-architect` — an agent, and there will never be a skill for it) and *"how do I pick up
+where I left off"* (`boss status` / `boss recap` — terminal reads). Entries are now explicit tokens
+— `/skill`, `@agent`, `boss cmd` — and `wayfindingKind()` splits them so every renderer treats them
+alike. **25 rows, 52 skills, 7 agents, 6 commands.**
+
+**`check:help` was widened in the same commit, deliberately.** The skills-only version had already
+caught one ghost (`/vet`, in no manifest, shipped to nobody). Widening the data without widening the
+check would have re-opened that hole for two thirds of the entries. Skills are now validated against
+the stage manifests, agents against the shipped roster, and commands against `STANDING_COMMANDS`.
+
+**And it immediately caught the entry above.** The map pointed at `boss help` and the gate refused
+it: not in `STANDING_COMMANDS`. The command existed — **the list of always-available commands was
+missing the most always-available one.** The fix was the list, not the map.
+
 ## 0.274.0 — 2026-09-10
 
 > **For you:** **the Homebrew command changed — `brew install ajeshh/boss/oyeboss`.** The formula

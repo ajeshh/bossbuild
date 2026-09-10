@@ -450,10 +450,23 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
    Three rows rather than one: someone who already has Homebrew should not have
    to find the Start page to learn the command. `.which` labels the row so the
    choice is obvious without reading all three. */
-.install { display: grid; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2); }
+.install { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3);
+  align-items: center; margin: var(--space-3) 0 var(--space-2); }
 .install .cta { margin: 0; align-items: center; }
 .install .cmd { flex: 0 1 auto; }
 .install .which {
   font-family: var(--font-prose); font-size: 0.7rem; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600;
 }
+
+/* --- the snags -----------------------------------------------------------
+   Problems in the founder's own words, each with the mechanism that answers it.
+   Two columns because the list is long and the headings are the scannable part —
+   someone should be able to find their own problem without reading the answers. */
+.snags { display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+  gap: var(--space-3) var(--space-5); max-width: none; margin: var(--space-3) 0; }
+.snags > div { border-top: var(--hairline); padding-top: var(--space-2); }
+.snags h3 { font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em;
+  margin: 0 0 var(--space-1); }
+.snags p { font-size: var(--step--1); color: var(--color-text-secondary); margin: 0; }
+.snags p strong, .snags p code { color: var(--color-text); }

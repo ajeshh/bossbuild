@@ -182,23 +182,43 @@ export const SYMBOLS = [
 // BOSS's word for a feature. If the intent can only be phrased using a skill name, it is not
 // an intent — it is a menu item, and `boss map` already lists those.
 export const WAYFINDING = [
-  ['get an idea out of my head', ['boss', 'idea', 'import']],
-  ['find out whether anyone wants it', ['canvas', 'persona', 'comp-eval', 'interview', 'pretotype', 'evidence']],
-  ['see something move today', ['prototype']],
-  ['build the thing properly', ['spec', 'smoke', 'log', 'close']],
-  ['keep the design from drifting', ['design-tokens-init', 'design-library', 'design-review', 'ux-check']],
-  ['not get hacked or embarrass myself', ['red-team', 'ai-failure-states', 'trust']],
-  ['put it in front of someone', ['landing', 'ship', 'onboard']],
-  ['know if it is working', ['measure', 'money', 'health']],
-  ['remember what I decided', ['decide', 'revalidate']],
-  ['ask someone who has done this', ['consult']],
-  ['understand a repo I already built', ['read-repo']],
-  ['turn one real conversation into evidence', ['interview', 'research']],
-  ['stop working on something', ['sunset', 'revalidate']],
-  ['stay current with how BOSS builds', ['boss-sync', 'boss-learn', 'practice']],
-  ['put AI in my product without regretting it', ['ai-first-init', 'ai-failure-states', 'evals']],
-  ['know what the AI is costing me', ['ai-cost', 'cost-review']],
-  ['decide what to build next', ['roadmap', 'revalidate']],
-  ['handle something breaking in front of users', ['incident', 'trust']],
-  ['get oriented for the first time', ['welcome']],
+  // Each entry is an explicit TOKEN, because BOSS helps in three different ways and a list that
+  // only knows about one of them hides the other two:
+  //   `/skill`     — a verb you run inside Claude Code
+  //   `@agent`     — somebody to ask; architecture and prompting have no skill and never will
+  //   `boss cmd`   — a terminal read; re-entry, the board and the weekly recap live here
+  // Before v0.275.0 this was skills-only, so "who do I ask about rearchitecting" and "how do I
+  // pick up where I left off" — two things BOSS genuinely answers — could not appear at all.
+  ['get an idea out of my head', ['/boss', '/idea', '/import']],
+  ['find out whether anyone wants it', ['/canvas', '/persona', '/comp-eval', '/interview', '/pretotype', '/evidence']],
+  ['see something move today', ['/prototype']],
+  ['build the thing properly', ['/spec', '/smoke', '/log', '/close']],
+  ['work out how to build it — or whether to rebuild', ['@mentor-architect']],
+  ['keep the design from drifting', ['/design-tokens-init', '/design-library', '/design-review', '/ux-check', '@designer']],
+  ['write better prompts, and get better at it', ['@prompt-coach']],
+  ['pick up where I left off', ['boss status', 'boss recap']],
+  ['see everything in flight at once', ['boss board', 'boss map']],
+  ['keep notes I will actually find again', ['/log', '/close', '/decide']],
+  ['not get hacked or embarrass myself', ['/red-team', '/ai-failure-states', '/trust']],
+  ['put it in front of someone', ['/landing', '/ship', '/onboard']],
+  ['know if it is working', ['/measure', '/money', '/health']],
+  ['remember what I decided', ['/decide', '/revalidate']],
+  ['ask someone who has done this before', ['/consult', '@mentor-founder', '@mentor-customers', '@mentor-capital']],
+  ['understand a repo I already built', ['/read-repo']],
+  ['turn one real conversation into evidence', ['/interview', '/research']],
+  ['work well with a cofounder', ['boss team', '@mentor-cofounder', '/practice']],
+  ['stop working on something', ['/sunset', '/revalidate']],
+  ['put AI in my product without regretting it', ['/ai-first-init', '/ai-failure-states', '/evals']],
+  ['know what the AI is costing me', ['/ai-cost', '/cost-review']],
+  ['decide what to build next', ['/roadmap', '/revalidate']],
+  ['handle something breaking in front of users', ['/incident', '/trust']],
+  ['stay current with how BOSS builds', ['/boss-sync', '/boss-learn', '/practice']],
+  ['get oriented for the first time', ['/welcome', 'boss help']],
 ];
+
+// Split a WAYFINDING token into its kind and bare name, so every renderer treats them the same way.
+export function wayfindingKind(token) {
+  if (token.startsWith('/')) return { kind: 'skill', name: token.slice(1) };
+  if (token.startsWith('@')) return { kind: 'agent', name: token.slice(1) };
+  return { kind: 'command', name: token.replace(/^boss /, '') };
+}

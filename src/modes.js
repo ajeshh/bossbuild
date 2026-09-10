@@ -22,6 +22,13 @@ const STAGE_NAMES = {
 // rather than in a generator because BOTH generators need it (the cheatsheet and the
 // website's quick guide); two copies is how the cheatsheet drifted the first time.
 export const STANDING_COMMANDS = [
+  // `help` sits first because it is the only entry that needs no prior knowledge, and because
+  // it was missing from a list whose stated job is the commands that always work. Found by
+  // check:help at v0.275.0: the wayfinding map pointed at `boss help` for "get oriented for
+  // the first time" and the gate refused it as a command that does not exist. The command
+  // existed; the list of always-available commands did not include the one you reach for
+  // when you know nothing.
+  ['boss help [<command>|glossary|symbols|hooks] [--html]', 'every command, what a word means, the glyphs \u2014 or the whole guide as a page'],
   ['boss new <name>', 'scaffold a new project (Quickstart mode)'],
   ['boss adopt', 'bring BOSS into a repo you already started'],
   ['boss map', 'live cheatsheet: where you are + what\u2019s one unlock away'],

@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.274.0" />
+<meta name="generator" content="BOSS 0.275.0" />
 <link rel="canonical" href="https://oyeboss.build/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -59,16 +59,13 @@
         <div class="cta">
           <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span id="install-cmd">npm install -g oyeboss</span></div>
           <button class="copy" type="button" data-copy="npm install -g oyeboss">Copy</button>
-          <span class="which">npm</span>
         </div>
         <div class="cta">
           <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>brew install ajeshh/boss/oyeboss</span></div>
           <button class="copy" type="button" data-copy="brew install ajeshh/boss/oyeboss">Copy</button>
-          <span class="which">Homebrew</span>
         </div>
       </div>
-      <p class="small">Then <code>boss new my-app</code>. Or try it without installing:
-        <code>npx oyeboss new my-app</code>. Needs
+      <p class="small">Then <code>boss new my-app</code>. Needs
         <a href="https://nodejs.org">Node 18+</a> and
         <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>; the CLI sets the project up and
         the skills run inside Claude. Already have a repo? <code>boss adopt</code> —
@@ -77,7 +74,7 @@
       <div class="terminal breakout">
         <span class="cap">what that actually prints</span>
 <pre><span class="line"><span class="t-cmd">boss new my-app</span></span>
-<span class="line"><span class="t-ok">  ✦ Created my-app</span> — Quickstart mode (L0-quickstart, BOSS 0.274.0)</span>
+<span class="line"><span class="t-ok">  ✦ Created my-app</span> — Quickstart mode (L0-quickstart, BOSS 0.275.0)</span>
 <span class="line"><span class="t-dim">    agents: product-lead, coder, mentor-founder, prompt-coach</span></span>
 <span class="line"><span class="t-dim">    skills: welcome, boss, import, idea, prototype, canvas, pretotype, evidence … +9 more (`boss map`)</span></span>
 <span class="line"> </span>
@@ -229,7 +226,7 @@
               <div class="terminal breakout">
                 <span class="cap">joining a project that already had its own <code>coder</code> file</span>
 <pre><span class="line"><span class="t-cmd">boss adopt</span></span>
-<span class="line"><span class="t-ok">  ✦ Adopted booking-app into BOSS</span> — Quickstart mode (L0-quickstart, BOSS 0.274.0)</span>
+<span class="line"><span class="t-ok">  ✦ Adopted booking-app into BOSS</span> — Quickstart mode (L0-quickstart, BOSS 0.275.0)</span>
 <span class="line"><span class="t-dim">    read from your repo: 1 source file(s), no build manifest</span></span>
 <span class="line">    43 file(s) added · <span class="t-accent">nothing of yours overwritten · 1 of yours kept as-is</span></span>
 <span class="line"> </span>
@@ -274,6 +271,84 @@
             anything more is the ceremony BOSS exists to prevent.
           </p>
         </div>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>the snags</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>The things that go wrong when you build this way</h2>
+          <p>
+            None of these are AI's fault exactly. They're what happens when the building gets fast
+            and nothing else does. BOSS has a specific answer to each — and mostly it stays quiet
+            until one of them is actually happening to you.
+          </p>
+        </div>
+        <div class="snags">
+          <div>
+            <h3>"I have twelve ideas and no idea which one is real"</h3>
+            <p>Every idea gets a file with a status, and the board is read from those files. When
+              you've captured several and pressure-tested none, it says so — once — and points at
+              the cheapest way to find out, which is usually a conversation, not a canvas.</p>
+          </div>
+          <div>
+            <h3>"Every project starts from scratch"</h3>
+            <p>The scaffolding you rebuild each time — how to decide, what to write down, when to
+              ship — arrives already set up, at the size the project has earned. Four files are
+              yours to read. The rest is the team.</p>
+          </div>
+          <div>
+            <h3>"My AI writes a different button on every screen"</h3>
+            <p>Design tokens get scaffolded the moment there's real UI — not at the start, when
+              they'd be ceremony. BOSS watches for styling spread across several files and offers
+              then, so style never gets welded into code one component at a time.</p>
+          </div>
+          <div>
+            <h3>"I don't know what agents to set up, or what to let them touch"</h3>
+            <p>You don't set them up. BOSS ships a roster — builders who make the product, mentors
+              who coach you — each with its tools already declared and scoped. They arrive rung by
+              rung, so you're never handed eleven agents on day one.</p>
+          </div>
+          <div>
+            <h3>"It looks right and I can't tell if it works"</h3>
+            <p>The honest failure mode of building fast. <code>/spec</code> makes you say what
+              "working" means <em>before</em> you build it, <code>/smoke</code> is the gate that
+              answers "is it alive", and <code>/evals</code> is the separate question for anything
+              an AI decides — because alive and correct are not the same test.</p>
+          </div>
+          <div>
+            <h3>"I came back after two weeks and lost the thread"</h3>
+            <p><code>boss status</code> opens with where you are and the one thing to pick up.
+              <code>boss recap</code> reads the week back out of records you already wrote. Neither
+              is a document you maintain, so neither can be out of date.</p>
+          </div>
+          <div>
+            <h3>"Four things are half-built and none of them are done"</h3>
+            <p>BOSS notices when too much is in flight at once and asks which one is actually
+              moving. It won't reorganise your work — it names the pile, which is usually enough.</p>
+          </div>
+          <div>
+            <h3>"The AI bill arrived and I hadn't thought about it"</h3>
+            <p>Declare a budget <em>before</em> the first model call, not after the invoice.
+              <code>/ai-cost</code> wires a per-call ledger, <code>/cost-review</code> reads it back,
+              and if you're charging for the thing, BOSS watches spend against your price rather
+              than against a number you invented.</p>
+          </div>
+          <div>
+            <h3>"The model suggested something that works and feels wrong"</h3>
+            <p>Fake urgency, a hidden opt-out, a confirmshame. <strong>BOSS watches what the model
+              <em>proposed</em>, not just what you shipped</strong> — it's the one check that reads
+              the suggestion rather than the decision, and it names the pattern instead of quietly
+              refusing.</p>
+          </div>
+        </div>
+        <p class="small prose">
+          Every one of these is a real mechanism you can read, not a promise —
+          <a href="thinking.html">the decisions behind them →</a>
+        </p>
       </div>
     </section>
 
@@ -485,20 +560,13 @@
           <div class="cta">
             <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npm install -g oyeboss</span></div>
             <button class="copy" type="button" data-copy="npm install -g oyeboss">Copy</button>
-            <span class="which">npm</span>
           </div>
           <div class="cta">
             <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>brew install ajeshh/boss/oyeboss</span></div>
             <button class="copy" type="button" data-copy="brew install ajeshh/boss/oyeboss">Copy</button>
-            <span class="which">Homebrew, macOS</span>
-          </div>
-          <div class="cta">
-            <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx oyeboss new my-app</span></div>
-            <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
-            <span class="which">try it, nothing installed</span>
           </div>
         </div>
-        <p class="small">All three put <code>boss</code> on your PATH. Needs
+        <p class="small">Either puts <code>boss</code> on your PATH. Needs
           <a href="https://nodejs.org">Node 18+</a> and
           <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>.</p>
         <p class="small">
@@ -519,7 +587,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.274.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.275.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

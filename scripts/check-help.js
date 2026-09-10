@@ -22,14 +22,15 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
-import { loadModes } from '../src/modes.js';
-import { WAYFINDING } from '../src/help.js';
+import { loadModes, STANDING_COMMANDS } from '../src/modes.js';
+import { WAYFINDING, wayfindingKind } from '../src/help.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'library', 'help');
 const strict = process.argv.includes('--strict');
 const today = new Date().toISOString().slice(0, 10);
 
+const modes = loadModes();
 const problems = [];
 const behind = [];
 const inflight = [];
@@ -103,27 +104,42 @@ for (const f of frags) {
   }
 }
 
-// ---- the wayfinding map must only name skills that actually ship -----------
-const shipped = new Set(loadModes().flatMap((m) => m.skills || []));
-const named = [...new Set(WAYFINDING.flatMap(([, verbs]) => verbs))];
-const ghosts = named.filter((s) => !shipped.has(s));
-for (const g of ghosts) {
-  problems.push(`WAYFINDING names \`/${g}\`, which is in no stage manifest — the guide advertises a verb the reader cannot run`);
+// ---- every wayfinding token must resolve to something that ships ----------
+// Widened at v0.275.0 from skills-only. The map now names skills, AGENTS and terminal COMMANDS,
+// and all three can be wrong in the same way — an entry pointing at something the reader cannot
+// run. Skills are checked against the stage manifests, agents against the shipped roster, and
+// commands against STANDING_COMMANDS. The skills-only version already caught one ghost (`/vet`,
+// in no manifest); widening the data without widening the check would have re-opened that hole
+// for two thirds of the entries.
+const shippedSkills = new Set(modes.flatMap((m) => m.skills || []));
+const shippedAgents = new Set(modes.flatMap((m) => (m.agents || []).map((a) => (typeof a === 'string' ? a : a.name))));
+const shippedCmds = new Set(STANDING_COMMANDS.map(([c]) => c.split(' ')[1]).filter(Boolean));
+
+const tokens = [...new Set(WAYFINDING.flatMap(([, v]) => v))];
+for (const t of tokens) {
+  const { kind, name } = wayfindingKind(t);
+  const set = kind === 'skill' ? shippedSkills : kind === 'agent' ? shippedAgents : shippedCmds;
+  const where = kind === 'skill' ? 'stage manifest' : kind === 'agent' ? 'shipped roster' : 'STANDING_COMMANDS';
+  if (!set.has(name)) {
+    problems.push(`WAYFINDING names \`${t}\` (${kind}), which is in no ${where} — the guide advertises `
+      + 'something the reader cannot run');
+  }
 }
-// And the reverse read, as a NOTE not a finding: a shipped skill no intent points at is
-// reachable via `boss map` and the skills list, so it is not broken — but if the number is
-// large the map has stopped being a map.
-const pointed = new Set(named);
-const unpointed = [...shipped].filter((s) => !pointed.has(s));
+
+// The reverse read, as a NOTE not a finding: a shipped skill no intent points at is still
+// reachable via the skills list, so it is not broken — but if the number is large the map has
+// stopped being a map.
+const pointed = new Set(tokens.filter((t) => wayfindingKind(t).kind === 'skill').map((t) => wayfindingKind(t).name));
+const unpointed = [...shippedSkills].filter((s) => !pointed.has(s));
 
 // ---- report ---------------------------------------------------------------
-console.log(`\n  BOSS · in-project guide freshness — ${frags.length} fragments, ${shipped.size} shipped skills, as of ${today}\n`);
+console.log(`\n  BOSS · in-project guide freshness — ${frags.length} fragments, ${shippedSkills.size} shipped skills, as of ${today}\n`);
 for (const p of problems) console.log(`  ✗ ${p}`);
 for (const b of behind) console.log(`  ! may be behind: ${b}`);
 for (const i of inflight) console.log(`  ~ changing now: ${i}`);
 for (const o of overdue) console.log(`  ✗ overdue: ${o}`);
 if (unpointed.length) {
-  console.log(`\n  · ${unpointed.length} of ${shipped.size} shipped skills are in no "I want to…" row.`);
+  console.log(`\n  · ${unpointed.length} of ${shippedSkills.size} shipped skills are in no "I want to…" row.`);
   console.log(`    Reachable via the skills list; listed so the map cannot quietly stop being one:`);
   console.log(`    ${unpointed.sort().join(', ')}`);
 }
