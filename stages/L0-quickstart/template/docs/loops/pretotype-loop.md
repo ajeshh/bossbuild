@@ -1,7 +1,7 @@
 ---
 id: pretotype-loop
 type: loop
-stage: L1-mvp
+stage: L0-quickstart
 runner_type: skill
 attributed_to: [Alberto Savoia, Ash Maurya]
 also_relevant: [Eric Ries, Rob Fitzpatrick]
@@ -17,7 +17,7 @@ exit:
       min: 1
 ---
 
-# Loop: pretotype (MVP)
+# Loop: pretotype (Quickstart)
 
 The discipline that gates *build* on *demand-test*. Encodes Savoia's *"make sure you're building
 the right It, before you build It right."*
@@ -37,10 +37,19 @@ the default ceremony.)
 
 ## Entry artifact
 
-Canvas-loop has closed (a real riskiest assumption exists). Same entry as spec-loop — both are
-downstream of canvas-loop. Difference: spec-loop produces a FEAT; pretotype-loop produces *demand
-evidence about the FEAT before it's built.* The discipline of *running the pretotype between
-the canvas and the spec* is what this loop encourages.
+Canvas-loop has closed (a real riskiest assumption exists). Same entry as spec-loop — but spec-loop
+lives one rung up, and that asymmetry is the point. Difference: spec-loop produces a FEAT;
+pretotype-loop produces *demand evidence about the FEAT before it's built.* The discipline of
+*running the pretotype between the canvas and the spec* is what this loop encourages — and the spec
+is on the far side of `boss unlock mvp`, so this loop opens while the founder still has nothing to
+defend.
+
+> **Why this loop sits at Quickstart, though it used to sit at MVP.** Its entry predicate reads a
+> Quickstart artifact — the canvas — and `/canvas`'s own graduation moment invites the pretotype by
+> name. For as long as the runner shipped at MVP, the loop could open on a rung where nothing could
+> answer it, and the only route to the demand test ran through the build unlock. That inverts the
+> sentence this loop exists to encode. A demand test you can only reach by first taking the build
+> tools is not a gate on building; it is a reward for having decided to.
 
 ## Purpose
 

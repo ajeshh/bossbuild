@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.265.0" />
+<meta name="generator" content="BOSS 0.271.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -75,6 +75,30 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.271.0</span><span class="when">2026-09-09</span></div>
+        <p><strong><code>/pretotype</code> is in Quickstart now, not MVP.</strong> Test whether anyone wants the thing without first unlocking the tools for building it — the page-shaped patterns publish a real shareable URL in one turn, no host and no account. Already at MVP? Nothing changes; you had it already. Still in Quickstart? <code>boss sync --apply</code> brings it down to you.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.270.0</span><span class="when">2026-09-09</span></div>
+        <p><code>boss board --detail</code> shows one line per card, and unless you wrote a <code>gist:</code> that line is just whatever sentence happened to open the file. <strong><code>boss records --gists</code></strong> now lists every idea and feature in that state, and <strong><code>/idea gist &lt;ID&gt;</code></strong> reads the record whole and writes a real one — what the thing is and why it matters, in one sentence you'll still recognise in six weeks.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.269.0</span><span class="when">2026-09-09</span></div>
+        <p>If you wrote a long <code>gist:</code> in an idea record using YAML's folded form (<code>gist: &gt;</code> with the text indented underneath), <code>boss board</code> showed a bare <code>&gt;</code> where the idea should be. Every record like that now reads correctly. Card gists are also clipped consistently now, however they were written.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.268.0</span><span class="when">2026-09-09</span></div>
+        <p>The design-system nudge could fire at high confidence on a project with no design system problem — one file that generates HTML (a report, a mailer, an export) was enough to trip it, because it counted how many TIMES the pattern appeared rather than how many FILES it appeared in. It now needs the styling to have actually spread across three files. Also: <code>docs/loops/</code> shipped a cross-reference link that broke the moment it was installed into your project.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.267.0</span><span class="when">2026-09-09</span></div>
+        <p>If you brought BOSS into a repo that already had its own <code>.claude/agents/</code> or skills, <code>boss sync --apply</code> could replace one of your files with BOSS's version and report it in the same words as a routine update. It always kept a backup, but you had no way to tell which files were yours. They now show as <strong><code>? unclaimed</code></strong>, and <strong><code>boss sync --apply --keep-mine</code></strong> leaves every one of them alone while applying everything else.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.266.0</span><span class="when">2026-09-09</span></div>
+        <p>Every rung now names what earns it <em>before</em> you climb — <code>boss unlock mvp</code> and <code>boss unlock v1</code> used to do it in silence, and only Scale ever said its bar out loud. <code>boss status</code> adds one line when everything BOSS can check is in place, and stays quiet otherwise. Separately, ten skills were spending more of your per-turn context than they needed to; MVP projects carry 3.3 KB less on every single turn.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.265.0</span><span class="when">2026-09-09</span></div>
         <p>If you brought BOSS into a repo you'd already built, three of the four day-one agents — <code>coder</code>, <code>mentor-founder</code>, <code>prompt-coach</code> — were installed and named nowhere, so nothing could ever call them. Fixed. <code>boss adopt</code> now also points you at <code>/read-repo</code> first in the file Claude reads, and <code>boss status</code> stopped telling a shipped app to go capture an idea.</p>
       </li>
@@ -97,30 +121,6 @@
       <li>
         <div class="rel"><span class="ver">v0.259.0</span><span class="when">2026-09-08</span></div>
         <p>If you brought BOSS into a repo you'd already built, <code>/read-repo</code> is now the first thing it points you at — BOSS reads <em>your</em> code and says where you stand, before it explains itself. And <code>boss status</code> stopped opening a brand-new project with &quot;unchecked for 19d.&quot;</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.258.0</span><span class="when">2026-09-08</span></div>
-        <p>Quickstart's arc now has the step it was missing — <strong>talk to one person</strong> — and BOSS stopped charging you ~6,400 tokens of its own prose on every single turn. <code>CLAUDE.md</code> and <code>AGENTS.md</code> are 41% smaller, and the MVP block no longer lists skills that <code>boss map</code> renders live anyway.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.257.0</span><span class="when">2026-09-08</span></div>
-        <p><code>/triage</code> is now <strong><code>/idea</code></strong> and <code>/comprehend</code> is now <strong><code>/read-repo</code></strong> — same skills, names that say what they do. <code>boss sync</code> will offer the swap and tell you why. <code>boss map</code> also stopped opening a fresh project with four verbs about BOSS itself; they fold behind one line (<code>boss map --all</code> opens it).</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.256.0</span><span class="when">2026-09-08</span></div>
-        <p><code>boss whatsnew</code> used to dump BOSS's internal engineering notes at you whenever you were exactly one release behind — the commonest reason to run it. It now shows what a release actually changed for you, and <code>--full</code> is the only way to the raw entry. <code>boss craft</code> also stopped printing links you could not open.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.253.0</span><span class="when">2026-09-08</span></div>
-        <p><code>boss idd</code> used to answer <em>&quot;Did you mean <strong>boss new</strong>?&quot;</em> — the command that creates a project — because <code>boss id</code> was invisible to the typo suggester. Six commands were. Fixed. And two MVP skills told you to run <code>/design-library</code>, which does not arrive until V1.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.252.0</span><span class="when">2026-09-08</span></div>
-        <p>two keys are gone from <code>.boss/config.json</code> — <code>shareUp</code> and <code>aiNative</code>. Nothing ever read either. <code>shareUp</code> in particular looked like a privacy switch and was not one: <strong>BOSS sends nothing anywhere, and that is true because there is no pipe, not because a flag is set to false.</strong> Existing projects can leave theirs in place; nothing reads them.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.250.0</span><span class="when">2026-09-08</span></div>
-        <p>if you installed BOSS from npm or Homebrew, <code>/boss-learn</code>'s &quot;promote this UP into BOSS&quot; half <strong>cannot run</strong> — it needs a source checkout to bump a VERSION and write a CHANGELOG, and the skill never told you. It does now, and tells you what to do instead. <code>/extract</code> was also naming the wrong environment variable (<code>$BOSS_DEV</code>; nothing reads it — it is <code>$BOSS_SRC</code>).</p>
       </li>
     </ol>
         <p class="small">
@@ -151,7 +151,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.265.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.271.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

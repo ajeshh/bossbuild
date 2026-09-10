@@ -94,6 +94,32 @@ const FIXTURES = {
   style_inline_objects:
     `import React from 'react';\nexport const A = () => <div style={{color: 'red'}}>a</div>;\nexport const B = () => <div style={{color: 'blue'}}>b</div>;\nexport const C = () => <div style={{color: 'green'}}>c</div>;\n`,
 
+  // SPREAD fixtures (v0.271.0). design-tokens-loop carries `min_files: 3` since v0.268.0 —
+  // the claim is that styling has spread across files, so a fixture that puts every declaration
+  // in ONE file can no longer satisfy the entry, and six should-fire cases silently inverted when
+  // that bar landed. One declaration per file, composed into three-file projects below.
+  style_decl_a:
+    `import React from 'react';\nexport const A = () => <div className="foo">a</div>;\n`,
+  style_decl_b:
+    `import React from 'react';\nexport const B = () => <div className="bar">b</div>;\n`,
+  style_decl_c:
+    `import React from 'react';\nexport const C = () => <div className="baz">c</div>;\n`,
+  style_decls_four:
+    `import React from 'react';\n` +
+    `export const A = () => <div className="a">a</div>;\n`.repeat(4),
+  style_styled_a:
+    `import styled from 'styled-components';\nconst A = styled.div\`color: red\`;\n`,
+  style_styled_b:
+    `import styled from 'styled-components';\nconst B = styled.div\`color: blue\`;\n`,
+  style_styled_c:
+    `import styled from 'styled-components';\nconst C = styled.div\`color: green\`;\n`,
+  style_inline_a:
+    `import React from 'react';\nexport const A = () => <div style={{color: 'red'}}>a</div>;\n`,
+  style_inline_b:
+    `import React from 'react';\nexport const B = () => <div style={{color: 'blue'}}>b</div>;\n`,
+  style_inline_c:
+    `import React from 'react';\nexport const C = () => <div style={{color: 'green'}}>c</div>;\n`,
+
   // Design-tokens-loop EXIT artifacts.
   design_tokens_doc:
     `---\nid: design-tokens\ntype: design\nowner: pm\nstatus: declared\nupdated: 2026-05-24\n---\n# Design tokens\n`,

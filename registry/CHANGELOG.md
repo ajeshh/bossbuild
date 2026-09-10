@@ -16,6 +16,103 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.271.0 — 2026-09-09
+
+> **For you:** **`/pretotype` is in Quickstart now, not MVP.** Test whether anyone wants the thing
+> without first unlocking the tools for building it — the page-shaped patterns publish a real
+> shareable URL in one turn, no host and no account. Already at MVP? Nothing changes; you had it
+> already. Still in Quickstart? `boss sync --apply` brings it down to you.
+
+**Found by reading the loop, not the skill.** `pretotype-loop`'s entry predicate reads
+`docs/ideas/*-canvas.md` for a real riskiest-assumption line — **a Quickstart artifact** — and
+`/canvas`'s graduation moment invites the pretotype by name. The loop and its runner both shipped at
+MVP. So the loop could open on a rung where nothing could answer it, and the only route to the
+cheapest demand test in the system ran through `boss unlock mvp`.
+
+**That inverts the sentence the skill opens with** — *"Pretotype first; build only what demand
+justified."* A demand test you can reach only by first accepting the build tools is not a gate on
+building; it is a reward for having decided to.
+
+### The skill was arguing with itself, two paragraphs apart
+
+Verbatim from the shipped file, line 15: *"This skill ships in **MVP mode** because the canvas earns
+the question. **In Quickstart the riskiest assumption isn't sharp enough yet.**"* Line 18, under
+*When to run it*: *"An IDEA has a `/canvas` with a **real** riskiest-assumption line (the canvas-loop
+has closed)."* A sharp riskiest assumption **is** `/canvas`'s graduation gate, and `/canvas` is
+Quickstart. The staging rationale was contradicted by the entry condition directly beneath it.
+
+Three more places said the same thing from the other side:
+
+- **`/pretotype` was in MVP's `headline`** — the skills `boss map` previews to a founder who has
+  *not* unlocked. BOSS advertised the demand test as a reason to cross the build gate. Replaced with
+  `/ship`; a demand test is a poor advertisement for the build unlock, which was the inversion.
+- **`/canvas`'s graduation copy**, in BOSS's own voice: *"`boss unlock mvp` brings the build tools —
+  and the ones for testing that promise on someone before you build it."* The skill's own comment
+  names the failure it was trying to avoid (*"quietly teaches that the unlock means start
+  building, which is the one inversion this whole skill exists to prevent"*) — and the fix it
+  shipped in v0.182.0 still routed through the unlock. Now it offers `/pretotype` first, because it
+  is the cheaper of the two.
+- **`/prototype` and `/pretotype` are one letter apart and answer opposite questions**, and until now
+  they were split across the gate with the *build* one on the near side. They are on the same rung
+  now, so each names the other and says which one it is about to run and why.
+
+### It is a MOVE, not an addition
+
+**Quickstart 16 → 17 verbs, MVP 29 → 28. The shipped total is unchanged at 45**, and the MVP cliff
+(IDEA-084 — 29 verbs in one command) is one verb shorter. `/landing` and `/ship` stay at MVP on
+purpose: they make a page you intend to keep, and keeping is a build. That split is now structural
+rather than advisory, and `/pretotype`'s lifespan table says so in a new row — *available now* vs
+*after `boss unlock mvp`*.
+
+### Both migration paths were walked, not reasoned about
+
+`.boss/manifest.json` stamps a flat **union** across installed layers, so a skill changing rungs is
+invisible to a project that has both:
+
+- **At MVP:** `boss sync` reports *"BOSS-managed skills/agents/hooks are up to date."* Zero diff. The
+  file path never moved (`.claude/skills/pretotype/SKILL.md`), only which manifest sources it.
+- **At Quickstart, pinned pre-move:** `+ new skill/pretotype` and `+ new loop/pretotype-loop`.
+- **`boss unlock mvp` after the move:** 45 skills, `pretotype` present exactly once, no duplicate.
+
+**No `registry/supersedes.json` entry, deliberately.** That ledger exists to explain a *removal*, and
+nothing was removed from the union — an entry would tell a founder something went away when it did
+not. The one case that reads as a change is the Quickstart project gaining a verb, which the sync
+diff already narrates correctly.
+
+### 🔴 Also: the eval gate had been red for three releases
+
+Caught by running `npm run release` for this change — **not** caused by it. `npm run eval:gate`
+reported **146 passed / 6 failed**, identical at clean `HEAD`, and v0.269.0 and v0.270.0 both shipped
+over it.
+
+**Cause: v0.268.0's own fix.** That release added `min_files: 3` to `design-tokens-loop` — correctly,
+after BOSS ran its own conscience and the loop fired at HIGH confidence on a zero-dep CLI where all
+52 matches were in one HTML-generating module. The claim was about *spread*; the predicate counted
+*occurrences*. But **all six `should-fire` fixtures put every declaration in ONE file**, so the bar
+that fixed the false positive inverted all six of them at once.
+
+**The sharper half: the fix shipped with no test that could see it.** There was no `should-not-fire`
+case for a single-file generator — the exact scenario `min_files` exists for. So the six red cases
+were the *only* signal, and they read as "the change broke something" rather than "the fixtures
+encode the old behaviour." Both are true, and only one is worth acting on.
+
+Fixed: the six should-fire cases now ship **three styling files each**, which is what the moment
+claims out loud (*"several files styling by hand"*); `m-coh-102` gained spread too, so it proves the
+*exit* closes an entry that was genuinely met rather than passing because the entry missed. And
+**`m-coh-105` is the missing regression test** — 12 declarations in one `src/board.js`, asserting
+`fires: false`. Verified the way this repo requires: delete `min_files: 3` and `m-coh-105` is the
+only case that fails. **153 passed / 0 failed**; the four tracked `152` claims re-stamped.
+
+**Observed, deliberately not fixed:** `computeConfidence` reads `count / min` only, so spread gates
+entry but never raises confidence — twelve declarations in three files and twelve in thirty read the
+same. Noted in `m-coh-002`'s `why:` rather than changed, because moving a confidence curve under a
+moment is not a thing to do in passing.
+
+**Not built here:** the second half of IDEA-060's finding — `/landing` and `/ship` remain MVP-only,
+so a Quickstart founder still cannot put an *in-repo* page in front of anyone. That is the correct
+outcome, not an omission: those two build something meant to last, and that is what the unlock is
+for.
+
 ## 0.270.0 — 2026-09-09
 
 > **For you:** `boss board --detail` shows one line per card, and unless you wrote a `gist:` that

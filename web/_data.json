@@ -1,5 +1,5 @@
 {
-  "version": "0.265.0",
+  "version": "0.271.0",
   "generated_from": "stages/*/manifest.json via src/modes.js",
   "agents": 12,
   "skills": 48,
@@ -10,15 +10,15 @@
       "word": "quickstart",
       "name": "Quickstart",
       "agents": 4,
-      "skills": 16,
+      "skills": 17,
       "cumAgents": 4,
-      "cumSkills": 16
+      "cumSkills": 17
     },
     {
       "word": "mvp",
       "name": "MVP",
       "agents": 7,
-      "skills": 29,
+      "skills": 28,
       "cumAgents": 11,
       "cumSkills": 45
     },

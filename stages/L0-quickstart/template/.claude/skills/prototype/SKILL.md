@@ -33,6 +33,13 @@ The conscience stays out of the way until the thing is on the screen.
 - You're stuck arguing with yourself in the abstract — a tangible version would unstick you.
 - You want to show someone the gist before you've written a word of spec.
 
+**And its one-letter neighbour, `/pretotype`, ships on this same rung.** Prototype answers *can this
+work?*; pretotype answers *does anyone want it?* Both are legitimate places to start a lean cycle and
+neither outranks the other. Reach for `/pretotype` instead when the thing you actually want to know
+is whether anyone would show up — its page-shaped patterns publish a real shareable URL in one turn,
+with no code at all. **Say which of the two you're running and why, once, before you run it** — they
+are one letter apart and they answer opposite questions.
+
 ## How to run it
 
 **1. Get the idea.** If given an `IDEA-NNN`, read it (and its canvas if one exists). If given rough

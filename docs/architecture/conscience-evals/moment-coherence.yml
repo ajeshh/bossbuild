@@ -6,41 +6,54 @@
 # (the "first UI commit" inflection — IDEA-010) and closes when a design-tokens
 # doc exists AND code references tokens. No overlap with cost/failure-mode
 # (different regex patterns); these tests don't need to close other loops.
+#
+# 🔴 SPREAD IS PART OF THE ENTRY (v0.268.0, `min_files: 3`). The moment's claim is
+# "several files styling by hand", so occurrences alone are not enough — the matches
+# must land in ≥3 distinct files. Every should-fire case below therefore ships THREE
+# styling files. They shipped one file each until v0.271.0, which is why all six
+# inverted the moment the bar landed and stayed red for three releases: the fix
+# arrived without a fixture that could see it. m-coh-105 is that fixture, added late.
 
 # =============================================================================
-# SHOULD FIRE — style declarations accumulating without tokens discipline
+# SHOULD FIRE — style declarations accumulating ACROSS FILES without tokens discipline
 # =============================================================================
 
 - id: m-coh-001
   category: should-fire
-  scenario: "Three className= declarations in one src/ file; no tokens doc."
+  scenario: "Three className= declarations across three src/ files; no tokens doc."
   project_state:
     src_files:
-      - { path: src/components.tsx, fixture: style_decls_low }
+      - { path: src/header.tsx, fixture: style_decl_a }
+      - { path: src/footer.tsx, fixture: style_decl_b }
+      - { path: src/sidebar.tsx, fixture: style_decl_c }
   expected_detection:
     fires: true
     moment: coherence
     confidence: low
-  why: "Entry threshold (≥3) just met; one or two files. Low confidence (might still be exploratory)."
+  why: "Entry threshold (≥3 matches in ≥3 files) exactly met. Low confidence (might still be exploratory)."
 
 - id: m-coh-002
   category: should-fire
-  scenario: "12+ style declarations — high-confidence drift."
+  scenario: "12 style declarations across three files — high-confidence drift."
   project_state:
     src_files:
-      - { path: src/components.tsx, fixture: style_decls_high }
+      - { path: src/header.tsx, fixture: style_decls_four }
+      - { path: src/footer.tsx, fixture: style_decls_four }
+      - { path: src/sidebar.tsx, fixture: style_decls_four }
   expected_detection:
     fires: true
     moment: coherence
     confidence: high
-  why: "Confidence scales with overshoot past entry threshold (per loop-runtime computeConfidence: ratio ≥ 2 → high)."
+  why: "Confidence scales with overshoot past entry threshold (loop-runtime computeConfidence: ratio ≥ 2 → high). NOTE: confidence reads count/min only — spread gates entry but does not raise confidence."
 
 - id: m-coh-003
   category: should-fire
-  scenario: "styled-components syntax (different pattern, same drift)."
+  scenario: "styled-components syntax across three files (different pattern, same drift)."
   project_state:
     src_files:
-      - { path: src/styled.tsx, fixture: style_styled_components }
+      - { path: src/styled-a.tsx, fixture: style_styled_a }
+      - { path: src/styled-b.tsx, fixture: style_styled_b }
+      - { path: src/styled-c.tsx, fixture: style_styled_c }
   expected_detection:
     fires: true
     moment: coherence
@@ -48,21 +61,25 @@
 
 - id: m-coh-004
   category: should-fire
-  scenario: "Inline style={{...}} objects (the most common AI-generated UI pattern)."
+  scenario: "Inline style={{...}} objects across three files (the most common AI-generated UI pattern)."
   project_state:
     src_files:
-      - { path: src/views.tsx, fixture: style_inline_objects }
+      - { path: src/view-a.tsx, fixture: style_inline_a }
+      - { path: src/view-b.tsx, fixture: style_inline_b }
+      - { path: src/view-c.tsx, fixture: style_inline_c }
   expected_detection:
     fires: true
     moment: coherence
-  why: "Inline style objects fire the entry. Loops catches this whether or not Tailwind is involved."
+  why: "Inline style objects fire the entry. Loop catches this whether or not Tailwind is involved."
 
 - id: m-coh-005
   category: should-fire
   scenario: "Design-tokens doc exists, but no token references in code."
   project_state:
     src_files:
-      - { path: src/components.tsx, fixture: style_decls_low }
+      - { path: src/header.tsx, fixture: style_decl_a }
+      - { path: src/footer.tsx, fixture: style_decl_b }
+      - { path: src/sidebar.tsx, fixture: style_decl_c }
     docs_files:
       - { path: docs/design/DESIGN_TOKENS.md, fixture: design_tokens_doc }
   expected_detection:
@@ -75,7 +92,9 @@
   scenario: "Token references in code, but no design-tokens doc."
   project_state:
     src_files:
-      - { path: src/components.tsx, fixture: style_decls_low }
+      - { path: src/header.tsx, fixture: style_decl_a }
+      - { path: src/footer.tsx, fixture: style_decl_b }
+      - { path: src/sidebar.tsx, fixture: style_decl_c }
       - { path: src/tokens-use.ts, fixture: token_refs }
   expected_detection:
     fires: true
@@ -83,7 +102,7 @@
   why: "Token usage without a declared doc is design-by-archeology. Loop keeps open."
 
 # =============================================================================
-# SHOULD NOT FIRE — under threshold or closure
+# SHOULD NOT FIRE — under threshold, not spread, or closed
 # =============================================================================
 
 - id: m-coh-101
@@ -98,16 +117,18 @@
 
 - id: m-coh-102
   category: should-not-fire
-  scenario: "Style declarations + design tokens doc + token references → loop closed."
+  scenario: "Style declarations spread across files + design tokens doc + token references → loop closed."
   project_state:
     src_files:
-      - { path: src/components.tsx, fixture: style_decls_low }
+      - { path: src/header.tsx, fixture: style_decl_a }
+      - { path: src/footer.tsx, fixture: style_decl_b }
+      - { path: src/sidebar.tsx, fixture: style_decl_c }
       - { path: src/tokens-use.ts, fixture: token_refs }
     docs_files:
       - { path: docs/design/DESIGN_TOKENS.md, fixture: design_tokens_doc }
   expected_detection:
     fires: false
-  why: "Both halves of exit satisfied. Loop closed; no coherence moment."
+  why: "Both halves of exit satisfied. Loop closed; no coherence moment. Entry IS met here — this proves the exit closes it, not that the entry missed."
 
 - id: m-coh-103
   category: should-not-fire
@@ -126,3 +147,21 @@
   expected_detection:
     fires: false
   why: "Pre-code state must not fire any UI-discipline moment."
+
+- id: m-coh-105
+  category: should-not-fire
+  scenario: "🔴 THE REGRESSION v0.268.0 FIXED: 12 style declarations, all in ONE generator module."
+  project_state:
+    src_files:
+      - { path: src/board.js, fixture: style_decls_high }
+  expected_detection:
+    fires: false
+  why: >
+    A single HTML-generating module, mailer, or report renderer is not the 47-blues
+    problem — three files each rolling their own is. Occurrence-counting alone fired
+    this loop at HIGH confidence on BOSS's own zero-dep CLI, where all 52 matches were
+    in `src/board.js`. `min_files: 3` is what makes the predicate test the claim the
+    moment actually makes. THIS CASE IS THE POINT OF THAT BAR, and it did not exist
+    when the bar shipped: six should-fire cases inverted instead, and the gate stayed
+    red for three releases with nothing asserting the intended new behavior. A fix
+    without a test that can see it is a fix nobody can keep.

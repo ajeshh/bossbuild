@@ -7,13 +7,18 @@ description: Test demand BEFORE you build. Alberto Savoia's discipline applied t
 
 **"Most new products fail not because they're built poorly, but because they're the wrong product."**
 — Alberto Savoia. A pretotype is a *pretend prototype* — designed to test whether anyone actually
-wants the thing, *before* you build the thing. In Quickstart you captured ideas with `/idea` and
-pressure-tested them with `/canvas`. Now the canvas has a sharp riskiest assumption (the canvas-loop
+wants the thing, *before* you build the thing. You captured the idea with `/idea` and
+pressure-tested it with `/canvas`. Now the canvas has a sharp riskiest assumption (the canvas-loop
 closed). The next discipline is **demand-testing it** — not prototyping it (that's after) and not
 shipping it (also after). Pretotype first; build only what demand justified.
 
-This skill ships in **MVP mode** because the canvas earns the question. In Quickstart the riskiest
-assumption isn't sharp enough yet; in V1 you've already built. MVP is the inflection.
+This skill ships in **Quickstart**, on the near side of `boss unlock mvp`, because the canvas earns
+the question and the canvas is a Quickstart artifact. It shipped at MVP until v0.271.0, which meant
+the cheapest way to find out nobody wants this sat behind the command that hands you the build
+tools — so the only route to *don't build it yet* ran through *here is everything you need to build
+it*. **A demand test is worth most in the hour before the first line of code, and that hour is
+here.** Its two page-shaped siblings stay at MVP on purpose: `/landing` and `/ship` make a page you
+intend to keep, and keeping is a build.
 
 ## When to run it
 
@@ -66,21 +71,25 @@ not an assumption) → they send the URL to the audience the canvas named → th
 form tool → they bring it back and you write it into the pretotype log below.
 
 **What this is not.** It is not a host. The moment someone says yes, the product needs a real home —
-that's `/ship`, and the handoff should be explicit so demand-testing and delivery stay separate.
+that's `/ship`, which arrives with `boss unlock mvp`. Keep the handoff explicit so demand-testing and
+delivery stay separate; **needing a host is a result, not a prerequisite.**
 
 **And it is not the only page BOSS builds — know which one you want.** `/landing --demand` builds the
 same door *in the repo*: version-controlled, on-brand from the token system, deployed through `/ship`.
-The split is about what the page has to survive, not about which is better:
+Both of those are MVP verbs. The split is about what the page has to survive, not about which is
+better — and the rungs they sit on say the same thing the table does:
 
 | | **Publish here (Artifact)** | **`/landing --demand`** |
 |---|---|---|
+| Available | now, in Quickstart | after `boss unlock mvp` |
 | Cost to first URL | this turn — no host, no account | a deploy |
 | Lives in | the artifact, not the repo | the repo, under version control |
 | Best when | you are testing and expect to throw it away | the page will outlive the test, or the brand matters |
 
 **Default to publishing here for the test.** A demand test that waits on a deploy is the delay Savoia's
 whole argument is about, and most fake doors *should* be thrown away. Reach for `/landing` when the page
-is going to stick around.
+is going to stick around — and **if you find yourself wanting it to stick around before anyone has said
+yes, that is the pretotype telling you something.**
 
 **The line a fake door does not cross** (`ai-ux-patterns.md`, PRINCIPLE #6). Testing demand for
 something that doesn't exist yet is honest. These are not:
@@ -124,14 +133,18 @@ page is lying, and the signal it produces is worthless anyway.
 ## Connection to other loops
 
 - **Upstream:** canvas-loop closed (riskiest assumption named).
-- **Downstream:** if pretotype gives a yes, *now* spec the FEAT (run `/spec`). If pretotype gives
-  a no, pivot the canvas or kill the bet (record in the idea's status). If maybe, refine the
-  pretotype.
+- **Downstream:** if pretotype gives a yes, *now* unlock and spec the FEAT (`boss unlock mvp`, then
+  `/spec`) — and that yes is the best reason to cross that gate anyone gets. If pretotype gives a no,
+  pivot the canvas or kill the bet (record in the idea's status) — **and you kept the build tools in
+  the box, which was the whole point.** If maybe, refine the pretotype.
 
 ## What this is NOT
 
 - **Not a prototype.** Prototype = "does it work in code." Pretotype = "does anyone want it."
-  Different question.
+  Different question. 🔴 **`/prototype` is a real skill on this same rung and it is one letter
+  away** — if the founder typed one and meant the other, say which one you are about to run and
+  why, before running it. Reaching for `/prototype` here is not a typo to correct silently; it is
+  usually the honest instinct this skill exists to interrupt.
 - **Not a survey.** Surveys ask what people would do. Pretotypes ask what they actually do.
   Behavior, not stated preference.
 - **Not a "soft launch."** Soft launch is shipping cautiously to real users. Pretotype is

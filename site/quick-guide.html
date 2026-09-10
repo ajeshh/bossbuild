@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.265.0" />
+<meta name="generator" content="BOSS 0.271.0" />
 <link rel="canonical" href="https://oyeboss.build/quick-guide" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -161,11 +161,11 @@
         <div class="prose">
           <h2>Every skill, and the rung it arrives on</h2>
           <p class="small">
-            Generated from the stage manifests, current as of v0.265.0. If this page and the tool
+            Generated from the stage manifests, current as of v0.271.0. If this page and the tool
             ever disagree, the tool is right and the release gate is broken.
           </p>
         </div>
-              <h3>Quickstart <span class="count">16 skills</span></h3>
+              <h3>Quickstart <span class="count">17 skills</span></h3>
       <div class="tablewrap">
         <table class="skills">
           <tbody>
@@ -183,7 +183,7 @@
           </tr>
           <tr>
             <th scope="row"><code>/idea</code></th>
-            <td>Capture an idea — and keep adding to it <span class="usage">/idea &lt;thought&gt;  (run again anytime to add more)</span></td>
+            <td>Capture an idea — and keep adding to it <span class="usage">/idea &lt;thought&gt;  (run again anytime to add more) | /idea gist [ID] to write the one line the board shows</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/prototype</code></th>
@@ -192,6 +192,10 @@
           <tr>
             <th scope="row"><code>/canvas</code></th>
             <td>Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them <span class="usage">/canvas [IDEA-NNN] [--frame humane|lean|bmc]</span></td>
+          </tr>
+          <tr>
+            <th scope="row"><code>/pretotype</code></th>
+            <td>Test demand BEFORE you build <span class="usage">/pretotype [IDEA-NNN]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/evidence</code></th>
@@ -203,7 +207,7 @@
           </tr>
           <tr>
             <th scope="row"><code>/research</code></th>
-            <td>Turn a real research transcript into product context and graded evidence <span class="usage">/research [transcript file | paste the transcript]</span></td>
+            <td>Turn a whole research transcript into product context and graded evidence <span class="usage">/research [transcript file | paste the transcript]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/decide</code></th>
@@ -211,7 +215,7 @@
           </tr>
           <tr>
             <th scope="row"><code>/sunset</code></th>
-            <td>End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against <span class="usage">validating it's actually dead (not just quiet), guarding the segment/commitment exception (a low-usage feature can be the reason a key account stays), and drafting the HONEST user-facing deprecation notice (real notice period, a path out, no &quot;we're improving your experience&quot; euphemism). Subtraction is a feature; a bloated product serves no one. Framed as an experiment that returned an answer, never as failure. Deliberate-invoke only; the conscience never suggests it unprompted (it may only point at it from inside a moment that already fired — e.g. the focus circuit-breaker). With an IDEA (e.g. /sunset IDEA-012), closes ONE CAPTURED IDEA — the lightest scope: asks the one question that comes first (did you decide against this, or just never get to it?), keeps the reasoning the `dropped` status has always promised to keep, and writes the condition that would bring it back, so `dropped` is a 'not now' rather than a graveyard. Never harvests an unbuilt idea UP. Usage - /sunset [FEAT-NNN | IDEA-NNN | name]</span></td>
+            <td>End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against <span class="usage">/sunset [FEAT-NNN | IDEA-NNN | name]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/persona</code></th>
@@ -237,7 +241,7 @@
         </table>
       </div>
 
-      <h3>MVP <span class="count">29 skills</span></h3>
+      <h3>MVP <span class="count">28 skills</span></h3>
       <div class="tablewrap">
         <table class="skills">
           <tbody>
@@ -260,10 +264,6 @@
           <tr>
             <th scope="row"><code>/evals</code></th>
             <td>Build and run the eval set for an AI-mediated FEAT — &quot;is it correct?&quot; paired with /smoke's &quot;is it alive?&quot; Husain's discipline applied to LLM-mediated control-flow in your app — look at your data, build the eval set FIRST, categorize failures by mode, vibes-based eval is only a starting point <span class="usage">/evals [FEAT-NNN | --new &lt;feat&gt;]</span></td>
-          </tr>
-          <tr>
-            <th scope="row"><code>/pretotype</code></th>
-            <td>Test demand BEFORE you build <span class="usage">/pretotype [IDEA-NNN]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/design-tokens-init</code></th>
@@ -307,7 +307,7 @@
           </tr>
           <tr>
             <th scope="row"><code>/red-team</code></th>
-            <td>Adversarially test an AI-mediated FEAT (or BOSS's own conscience hook, --self) against the OWASP LLM Top 10 — and, when the target is an agent (tools + memory + autonomy), the OWASP Agentic ASI Top 10 (Dec 2025) — tool misuse, agentic supply chain, memory poisoning, and the rest <span class="usage">/red-team [FEAT-NNN | --paths | --self | --humane]</span></td>
+            <td>Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent (tools + memory + autonomy) against the OWASP Agentic ASI Top 10 <span class="usage">/red-team [FEAT-NNN | --paths | --self | --humane]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/practice</code></th>
@@ -319,15 +319,15 @@
           </tr>
           <tr>
             <th scope="row"><code>/landing</code></th>
-            <td>Generate the founder's FIRST landing page — on-brand, honest, out the block to scale <span class="usage">/landing [--demand | --product]</span></td>
+            <td>Generate the founder's FIRST landing page — on-brand, honest, out the block fast <span class="usage">/landing [--demand | --product]</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/measure</code></th>
-            <td>The post-ship counterpart to /pretotype <span class="usage">/measure</span></td>
+            <td>The post-ship counterpart to /pretotype - /pretotype asks &quot;will anyone want this?&quot; BEFORE you build; /measure asks &quot;given they're using it, is it working and are they staying?&quot; AFTER you ship <span class="usage">/measure</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/onboard</code></th>
-            <td>Design the path from signup to the aha-moment — the highest-leverage number in the funnel (activation &gt; acquisition; fix it and every downstream cohort lifts at once) <span class="usage">/onboard</span></td>
+            <td>Design the path from signup to the aha-moment — activation, the highest-leverage number in the funnel (fix it and every downstream cohort lifts at once) <span class="usage">/onboard</span></td>
           </tr>
           <tr>
             <th scope="row"><code>/roadmap</code></th>
@@ -414,7 +414,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.265.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.271.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
