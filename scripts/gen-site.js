@@ -824,8 +824,8 @@ const NAV = [
     { id: 'credits', href: 'credits.html', label: 'Credits' },
     { id: 'team', href: 'team.html', label: 'The team' },
     { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
-    { id: 'about', href: 'about.html', label: 'About' },
   ] },
+  { id: 'about', href: 'about.html', label: 'About' },
   { id: 'whats-new', href: 'whats-new.html', label: "What's new" },
 ];
 
