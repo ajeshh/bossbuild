@@ -445,3 +445,15 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 .yield h3 code { background: none; border: 0; padding: 0; color: var(--color-link); font-size: 0.9em; }
 .yield p { margin: 0; font-size: var(--step--1); color: var(--color-text-secondary); }
 .yield p strong { color: var(--color-text); }
+
+/* --- the install block (shell footer, every page) ------------------------
+   Three rows rather than one: someone who already has Homebrew should not have
+   to find the Start page to learn the command. `.which` labels the row so the
+   choice is obvious without reading all three. */
+.install { display: grid; gap: var(--space-2); margin: var(--space-4) 0 var(--space-2); }
+.install .cta { margin: 0; align-items: center; }
+.install .cmd { flex: 0 1 auto; }
+.install .which {
+  font-family: var(--font-prose); font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600;
+}

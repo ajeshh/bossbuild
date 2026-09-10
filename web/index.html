@@ -23,9 +23,12 @@ nav: home
         <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span id="install-cmd">npx oyeboss new my-app</span></div>
         <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
       </div>
-      <p class="small">Needs <a href="https://nodejs.org">Node 18+</a> and
-        <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>. The CLI sets the project up; the skills run inside Claude.
-        Already have a repo? <code>boss adopt</code> — <a href="start.html">both paths →</a></p>
+      <p class="small">Or <code>npm install -g oyeboss</code> ·
+        <code>brew install ajeshh/boss/boss</code>. Needs
+        <a href="https://nodejs.org">Node 18+</a> and
+        <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>; the CLI sets the project up and
+        the skills run inside Claude. Already have a repo? <code>boss adopt</code> —
+        <a href="start.html">both paths →</a></p>
 
       <div class="terminal breakout">
         <span class="cap">what that actually prints</span>
@@ -142,40 +145,46 @@ nav: home
               <div class="prose">
                 <h3>Two people who clean houses</h3>
                 <p>
-                  Forty regulars, a WhatsApp thread and a paper diary. Sunday nights go on rebuilding
-                  the rota by hand and someone still turns up at the wrong address. Neither of them
-                  has written code before.
+                  Forty regular customers, a WhatsApp thread and a paper diary. Every Sunday night
+                  goes on writing out next week's schedule by hand, and someone still turns up at
+                  the wrong address. Neither of them has written code before.
+                </p>
+                <p>
+                  <strong>What BOSS does:</strong> helps them work out the smallest useful thing to
+                  build — one week, one cleaner, one text message — and then helps them build it.
+                  It doesn't hand them specs, tests or a design system, because at this point those
+                  would just be homework. Those show up later, if the thing works.
                 </p>
                 <p class="small">
-                  Quickstart is {{Q_AGENTS}} agents and {{Q_SKILLS}} skills. Five seconds, and four
-                  files that are yours to read — <code>CLAUDE.md</code>, <code>AGENTS.md</code>,
-                  <code>docs/IDS.md</code> and an idea index; everything else is the team. Nothing
-                  about specs, tests, design systems or deploys arrives until you ask for it.
-                  → <code>boss new</code>
+                  Day one is {{Q_AGENTS}} agents and {{Q_SKILLS}} skills, and four files that are
+                  theirs to read. Everything else is the team. → <code>boss new</code>
                 </p>
               </div>
             </div>
 
             <div class="panel p-repo">
               <div class="prose">
-                <h3>Something already live, already paying</h3>
+                <h3>An app that's live, with people paying for it</h3>
                 <p>
-                  The repo exists and works. An AI feature is going into it, and the real question
-                  isn't how to build the feature — it's whether it's a good idea and what it costs
-                  per user. Or: it's the spreadsheet twelve people fight over, it runs a real part of
-                  the business, and somebody inside is going to rebuild it properly this quarter.
+                  It works. Now an AI feature is going in, and the hard question isn't how to build
+                  it — it's whether it's worth building at all, and what it will cost per customer
+                  once real people are using it.
+                </p>
+                <p>
+                  <strong>What BOSS does:</strong> reads what's already there and tells you where
+                  you stand, then helps with the decision rather than the typing.
+                  <strong>Your code is not touched.</strong> Anything you wrote yourself stays
+                  yours — it tells you what it added, and later updates skip your files.
                 </p>
                 <p class="small">
-                  <code>boss adopt</code> reads what you've built and <strong>never overwrites your
-                  work</strong> — anything you wrote yourself is kept as-is and reported as kept, and
-                  later updates skip it too. Then <code>/read-repo</code> tells you where you stand
-                  before it suggests anything.
+                  Nothing is overwritten and nothing is permanent; <code>boss remove</code> takes it
+                  back out. → <code>boss adopt</code>
                 </p>
               </div>
               <div class="terminal breakout">
-                <span class="cap">adopting a repo that already had its own <code>coder</code> agent</span>
+                <span class="cap">joining a project that already had its own <code>coder</code> file</span>
 <pre><span class="line"><span class="t-cmd">boss adopt</span></span>
-<span class="line"><span class="t-ok">  ✦ Adopted rota-live into BOSS</span> — Quickstart mode (L0-quickstart, BOSS {{VERSION}})</span>
+<span class="line"><span class="t-ok">  ✦ Adopted booking-app into BOSS</span> — Quickstart mode (L0-quickstart, BOSS {{VERSION}})</span>
 <span class="line"><span class="t-dim">    read from your repo: 1 source file(s), no build manifest</span></span>
 <span class="line">    43 file(s) added · <span class="t-accent">nothing of yours overwritten · 1 of yours kept as-is</span></span>
 <span class="line"> </span>
@@ -188,23 +197,22 @@ nav: home
 
             <div class="panel p-many">
               <div class="prose">
-                <h3>More than one of these on the go</h3>
+                <h3>Several of these going at once</h3>
                 <p>
-                  Your own three side projects, or a room of other people's twelve. Either way the
-                  problem stops being <em>how do I build this</em> and becomes <em>which of these is
-                  actually alive, and how would I know without asking</em>.
+                  Three side projects of your own, or a room full of other people's. Either way the
+                  question stops being <em>how do I build this</em> and becomes <em>which of these
+                  is still alive, and how would I know without asking everyone</em>.
                 </p>
                 <p>
-                  Every project keeps the same record vocabulary — one closed set of statuses, typed
-                  IDs, evidence graded on the same three rungs — and the board is
-                  <strong>rendered from the files</strong>, so there's nothing to keep up to date and
-                  nothing that can quietly disagree with the repo. <code>boss recap</code> reads a
-                  week back out of records the founder was already writing.
+                  <strong>What BOSS does:</strong> every project writes things down the same way, so
+                  you can open any one of them and see where it actually got to — what was decided,
+                  what was learned, what's still in the air. <strong>There's nothing to keep up to
+                  date.</strong> It's read straight from the files, so it can't quietly disagree
+                  with the work.
                 </p>
                 <p class="small">
-                  It installs per-project, on the machine, with no account and no server: MIT, zero
-                  dependencies, <strong>no telemetry of any kind</strong>. Nothing to provision,
-                  nothing to switch off, nothing that phones anyone.
+                  Runs per-project on the machine. No account, no server, no telemetry of any kind —
+                  nothing to set up and nothing that phones anyone.
                   <a href="keeping-track.html">What BOSS writes down →</a>
                 </p>
               </div>
@@ -230,8 +238,8 @@ nav: home
         <div class="prose">
           <h2>What happens, on one real idea</h2>
           <p>
-            Take the cleaning business again. Two ideas captured, nothing tested yet. Every line
-            below is copied from a terminal.
+            Same cleaning business. Two ideas written down, neither tested yet. Every line below is
+            copied from a terminal.
           </p>
         </div>
 
@@ -240,12 +248,12 @@ nav: home
           <span class="cap">a week in, two ideas captured</span>
 <pre><span class="line"><span class="t-cmd">boss board</span></span>
 <span class="line"></span>
-<span class="line">  tidy-rota · board</span>
+<span class="line">  sunday-list · board</span>
 <span class="line">  <span class="t-accent">▸ 2 captured, nothing pressure-tested yet — what would you learn first? (`/canvas`)</span></span>
 <span class="line"></span>
 <span class="line">  Captured (2)</span>
-<span class="line">    IDEA-001   The weekly rota should text itself</span>
-<span class="line">    IDEA-002   Customers book their own slot</span>
+<span class="line">    IDEA-001   The schedule should text itself</span>
+<span class="line">    IDEA-002   Customers pick their own slot</span>
 <span class="line"></span>
 <span class="line">  Taking shape (0)</span>
 <span class="line">    <span class="t-dim">—</span></span>
