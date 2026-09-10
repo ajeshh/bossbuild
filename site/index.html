@@ -353,51 +353,73 @@
     </section>
 
     <section class="section">
-      <div class="rail">▸<span>the first hour</span></div>
+      <div class="rail">▸<span>it working</span></div>
       <div class="body">
         <div class="prose">
-          <h2>What happens, on one real idea</h2>
+          <h2>What it looks like when BOSS actually speaks</h2>
           <p>
-            A real example: two people who clean houses, whose weekly schedule lives in a WhatsApp
-            thread. Two ideas written down, neither tested yet. Every line below is copied from a
-            terminal.
+            Four ideas captured over a couple of weeks, none of them pressure-tested. You open Claude
+            and ask for something unrelated — <em>"add a settings page"</em>. Here is exactly what
+            happens, in two halves.
           </p>
         </div>
 
+        <div class="terminal breakout">
+          <span class="cap">1 · the part that decides <em>whether</em> to speak — real output, no model involved</span>
+<pre><span class="line"><span class="t-dim">a hook reads the project's own files and returns:</span></span>
+<span class="line">  <span class="t-accent">"loop_id"</span>: <span class="t-ok">"canvas-loop"</span>,  <span class="t-accent">"moment"</span>: <span class="t-ok">"caution"</span>,  <span class="t-accent">"confidence"</span>: <span class="t-ok">"medium"</span></span>
+<span class="line">  <span class="t-accent">"evidence"</span>: { entry: <span class="t-ok">4 captures across 4 files</span>, min 3 <span class="t-dim">— met</span></span>
+<span class="line">                exit:  <span class="t-dim">0 canvases naming a riskiest assumption — not met</span> }</span>
+</pre>
+        </div>
+
+        <div class="prose">
+          <p class="small">
+            <strong>No model was asked "is this person drifting?"</strong> A condition was met, in
+            files, and that is checkable. The same project state gives the same answer every time.
+          </p>
+        </div>
 
         <div class="terminal breakout">
-          <span class="cap">a week in, two ideas captured</span>
-<pre><span class="line"><span class="t-cmd">boss board</span></span>
-<span class="line"></span>
-<span class="line">  sunday-list · board</span>
-<span class="line">  <span class="t-accent">▸ 2 captured, nothing pressure-tested yet — what would you learn first? (`/canvas`)</span></span>
-<span class="line"></span>
-<span class="line">  Captured (2)</span>
-<span class="line">    IDEA-001   The schedule should text itself</span>
-<span class="line">    IDEA-002   Customers pick their own slot</span>
-<span class="line"></span>
-<span class="line">  Taking shape (0)</span>
-<span class="line">    <span class="t-dim">—</span></span>
-<span class="line">  Building (0)</span>
-<span class="line">    <span class="t-dim">—</span></span>
-<span class="line">  Shipped (0)</span>
-<span class="line">    <span class="t-dim">—</span></span>
-<span class="line"></span>
-<span class="line"><span class="t-dim">  The board is a read of the files. To change it, change the work:</span></span>
-<span class="line"><span class="t-dim">  `/idea` to capture · `/canvas` to pressure-test · `/spec` to build.</span></span>
+          <span class="cap">2 · the instruction that fires next — and it opens by telling the model to shut up</span>
+<pre><span class="line"><span class="t-dim">If the captures are ONE idea getting sharper — each entry refining the</span></span>
+<span class="line"><span class="t-dim">same bet, narrowing the user, finding the real pain — that's</span></span>
+<span class="line"><span class="t-ok">DEPTH, not avoidance</span><span class="t-dim">. </span><span class="t-accent">Stay silent; firing here punishes exactly</span></span>
+<span class="line"><span class="t-accent">the thinking caution should encourage.</span></span>
+<span class="line"><span class="t-dim">Fire only if the captures are scattered … name the *specific* pattern</span></span>
+<span class="line"><span class="t-dim">in one spare line (not a generic "you should validate"), ask what</span></span>
+<span class="line"><span class="t-dim">they'd want to learn, and hand the decision back. Say it at most once.</span></span>
 </pre>
         </div>
 
         <div class="prose">
           <p>
-            <strong>Nobody configured that nudge.</strong> BOSS read the folder, saw two ideas and no
-            pressure-test, and said so — and it shows you the three empty columns rather than hiding
-            them, because two captured ideas and nothing tested is the honest picture of where you are.
+            <strong>That is the whole design in one paragraph.</strong> The hook decides
+            <em>whether</em> it is allowed to speak; the model only decides <em>how</em>. And the
+            first thing the instruction does is describe the case where speaking would be wrong —
+            because four captures might be one idea getting sharper, and nagging someone for
+            thinking carefully is worse than saying nothing.
           </p>
+        </div>
+
+        <div class="terminal breakout">
+          <span class="cap">3 · here the four captures really were four different products, so it speaks — once</span>
+<pre><span class="line"><span class="voice"><span class="voice-mark">▸ </span>Four captures, four different products — none of them narrowing</span></span>
+<span class="line"><span class="voice">  on who actually has the problem. What would you want to learn</span></span>
+<span class="line"><span class="voice">  before building any of them? <span class="t-accent">/canvas</span> sharpens the bet; if you</span></span>
+<span class="line"><span class="voice">  already know whose problem it is, <span class="t-accent">/interview</span> preps the call.</span></span>
+<span class="line"> </span>
+<span class="line"><span class="after">Then it stops. Your settings page gets built either way.</span></span>
+</pre>
+        </div>
+
+        <div class="prose">
           <p class="small">
-            That's the whole loop, and it's the same at every size: you say what you're thinking, it
-            becomes a file, and the file is what BOSS reads back to you when you're kidding yourself.
-            <a href="start.html">Start →</a>
+            The first two blocks are copied from a real run — you can reproduce them by putting four
+            captures in a project and typing anything. <strong>The third is composed fresh each
+            time</strong>, so the words you get will not be these words; that is the half a model
+            does. It did not block the prompt, did not repeat itself, did not grade you, and pointed
+            at a conversation rather than at more BOSS. <a href="conscience.html">How it decides →</a>
           </p>
         </div>
       </div>
