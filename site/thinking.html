@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Decisions — the calls, the tradeoffs, and what would prove them wrong</title>
+<meta name="description" content="Sixteen load-bearing decisions taken while building BOSS, each with the tradeoff accepted and a pre-committed falsifier. Written before anyone was reading, which is why several are unflattering." />
+<meta name="color-scheme" content="light dark" />
+<!-- The one machine-readable answer to "what is actually serving right now?". `check:deployed`
+     fetches the live page and reads this; without it the only version on the page is prose
+     ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
+     free to reword. Every page carries it, so any URL answers the question. -->
+<meta name="generator" content="BOSS 0.273.0" />
+<link rel="canonical" href="https://oyeboss.build/thinking" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="Decisions — the calls, the tradeoffs, and what would prove them wrong" />
+<meta property="og:description" content="Sixteen load-bearing decisions taken while building BOSS, each with the tradeoff accepted and a pre-committed falsifier. Written before anyone was reading, which is why several are unflattering." />
+<meta property="og:url" content="https://oyeboss.build/thinking" />
+<meta property="og:image" content="https://oyeboss.build/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="BOSS — Build Out Solid Stuff. Make it real." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Decisions — the calls, the tradeoffs, and what would prove them wrong" />
+<meta name="twitter:description" content="Sixteen load-bearing decisions taken while building BOSS, each with the tradeoff accepted and a pre-committed falsifier. Written before anyone was reading, which is why several are unflattering." />
+<meta name="twitter:image" content="https://oyeboss.build/og.png" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF5C00' d='M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z'/%3E%3C/svg%3E" />
+<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#16181A" media="(prefers-color-scheme: dark)" />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/site.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="sitenav" aria-label="Site">
+  <div class="sitenav-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>BOSS</span></a>
+    <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="guide.html">Guide</a></li><li><a href="thinking.html" aria-current="page">How it thinks</a></li><li><a href="whats-new.html">What's new</a></li></ul>
+  </div>
+</nav>
+<div class="subnav"><div class="subnav-in"><span class="subnav-label">How it thinks</span><ul><li><a href="thinking.html" aria-current="page">Decisions</a></li><li><a href="conscience.html">The conscience</a></li><li><a href="keeping-track.html">Keeping track</a></li><li><a href="engineering.html">For engineers</a></li><li><a href="design.html">Design</a></li><li><a href="governance.html">Governance</a></li><li><a href="charter.html">Charter</a></li><li><a href="credits.html">Credits</a></li><li><a href="team.html">The team</a></li><li><a href="canvas.html">The canvas</a></li></ul></div></div>
+
+<div class="shell">
+<header class="hero">
+    <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">Decisions</p>
+      <h1>Every call, and what would prove it wrong<span class="dot">.</span></h1>
+      <p class="lede">
+        BOSS asks a founder to write down what they decided and what would disprove it. This is the
+        same discipline applied to BOSS — sixteen records, in the repo, each with a tradeoff named and
+        a falsifier committed to in advance. They were written before anyone was reading them, which
+        is why several are unflattering.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the shape</span></div>
+      <div class="body prose">
+        <h2>A decision without a falsifier is a preference</h2>
+        <p>
+          Every record carries the same five parts: the <strong>context</strong>, the
+          <strong>decision</strong>, the <strong>why</strong>, a <strong>falsifier</strong> — what
+          would prove this wrong, and by when — and the <strong>consequences</strong>. Plus who
+          decided, and how reversible it is.
+        </p>
+        <p>
+          <strong>The falsifier is the part that costs something.</strong> It is written at decision
+          time, before the answer is known, with a number and a date attached: <em>n ≥ 3 real
+          projects</em>, <em>revisit 2026-11-18</em>. That makes finding out you were wrong cheap and
+          scheduled rather than expensive and accidental — and it makes the record impossible to
+          quietly reinterpret later.
+        </p>
+        <div class="note">
+          <p class="q">Supersede, don't edit.</p>
+          <p class="small">A decision that turns out wrong gets a new record that supersedes it. The
+            original stays exactly as written. A decision log you can revise is a log that agrees
+            with you.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>the calls</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Eight of the sixteen</h2>
+          <p class="small">
+            Each one links to the record. The full set is in
+            <a href="https://github.com/ajeshh/bossbuild/tree/main/docs/decisions">docs/decisions/</a>.
+          </p>
+        </div>
+
+        <div class="practices">
+          <div class="practice">
+            <h4>BOSS never initiates contact with an absent founder</h4>
+            <p class="meta">DEC-016 · <span class="curve">refusing an engagement lever</span></p>
+            <p class="prov">No push, no phone, no "while you were away." <strong>It binds even where
+              the notification would be genuinely useful</strong> — a red build, a failed deploy —
+              because those are exactly the cases that would be used to reverse it. The re-entry read
+              fires when they come back, never states elapsed time, and never arrives as a summons.
+              <em>Falsifier: a real founder, unprompted, asks to be told something while away, and
+              what they want isn't already served on return.</em></p>
+          </div>
+          <div class="practice">
+            <h4>Desk research is context, not evidence — and never becomes a record</h4>
+            <p class="meta">DEC-008 · <span class="curve">evidence hygiene</span></p>
+            <p class="prov">Findings live in the artifact they inform, carrying a source URL and a
+              checked date or marked unverified. <strong>The evidence ladder stays about people.</strong>
+              No fourth rung, no "research grade" — a ladder that grades two different kinds of thing
+              grades neither. Learning three rivals charge $40 is context; watching a customer switch
+              is evidence. <em>Falsifier: across n ≥ 3 real projects, research consistently has no
+              home and gets orphaned.</em></p>
+          </div>
+          <div class="practice">
+            <h4>Position, never a verdict — then do the work</h4>
+            <p class="meta">DEC-003 · <span class="curve">where the human decides</span></p>
+            <p class="prov">BOSS reports <em>where you are</em>, with what it can't see stated
+              explicitly — usage, retention, cost, why you built it. <strong>No score, letter,
+              percentage, maturity level or traffic-light, ever.</strong> Two or three options, each
+              with what it would change about your week, always including <em>"nothing yet — keep
+              building."</em> And the half that makes it fair: if you say yes, BOSS does the
+              migration. Naming a problem and leaving you with it is a critique. <em>Falsifier: an
+              observed founder runs it and asks for a straight verdict anyway.</em></p>
+          </div>
+          <div class="practice">
+            <h4>The mission is unadvertised rather than enforced</h4>
+            <p class="meta">DEC-012 · <span class="curve">mechanism over claim</span></p>
+            <p class="prov">BOSS holds a Silicon Valley half (validated learning, ceremony scaled to
+              evidence, quitting faster) and an older one (craft transmitted rather than reinvented,
+              building to outlast the builder) — and <strong>declines to resolve them</strong>. The
+              range of what you might be building widens; the methodology does not fork. Deliberately
+              small consequence: one scope line in the canvas, not a rewrite. <em>Falsifier: a commons
+              or co-op project runs the ladder and something other than the money cell breaks.</em></p>
+          </div>
+          <div class="practice">
+            <h4>The roster gets subtracted before it gets renamed</h4>
+            <p class="meta">DEC-005 · <span class="curve">scope discipline, downward</span></p>
+            <p class="prov">Two agents merged into one rather than three kept and relabelled. The
+              headcount went <em>down</em>. <em>Falsifier: across n ≥ 3 real projects, founders
+              consistently ask the merged agent for the thing it stopped being.</em></p>
+          </div>
+          <div class="practice">
+            <h4>The catalog is data; the dose is a filter</h4>
+            <p class="meta">DEC-007 · <span class="curve">data apart from policy</span></p>
+            <p class="prov">The dark-pattern catalog is a data file. How much of it a founder meets at
+              a given rung is a separate filter over it. Splitting the two keeps the policy
+              inspectable and the data reusable. <strong>And the falsifier calls its own bluff:</strong>
+              <em>if by 2026-11-18 no founder-facing surface has grown past the dose ceiling and the
+              catalog has gained no row, the split was ceremony.</em></p>
+          </div>
+          <div class="practice">
+            <h4>The eval suite is tests, not strategy — so it goes public</h4>
+            <p class="meta">DEC-013 · <span class="curve">what should be open, and why</span></p>
+            <p class="prov">The conscience's judgment evals moved to the public tier, on the reasoning
+              that they are tests rather than positioning. <em>Falsifier, and it is a real risk:
+              if by the revisit date nobody outside this machine has run, cited or corrected a case,
+              the claim that the evals are inspectable was decoration.</em></p>
+          </div>
+          <div class="practice">
+            <h4>Un-defaulting its own preferred framework</h4>
+            <p class="meta">DEC-004 · <span class="curve">killing a default you like</span></p>
+            <p class="prov">The canvas became an answer store with interchangeable frames, and the
+              humane frame stopped being the default — it became the floor. The framework the author
+              built and preferred lost its privileged position because it had not earned it.
+              <em>Falsifier: two independent failure modes, either of which reopens it.</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>where this is honest</span></div>
+      <div class="body prose">
+        <h2>What the records don't have</h2>
+        <p>
+          <strong>Outcomes.</strong> Almost none of these falsifiers has come due, because BOSS has
+          very few users. The records show judgment under uncertainty and a pre-commitment to finding
+          out — not a track record of having been right.
+        </p>
+        <p>
+          They also aren't a complete history. Sixteen decisions were recorded; more were made. The
+          honest reading is that the ones written down are the ones someone thought were
+          hard to reverse at the time.
+        </p>
+        <p class="small">
+          The rest of how BOSS decides what it believes: <a href="governance.html">every practice is
+          attributed, dated, and has a review trigger →</a> ·
+          <a href="charter.html">the humane line and its mechanism →</a> ·
+          <a href="engineering.html">the technical positions, and who each was learned from →</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="cols">
+      <div class="rail"><span>make it real.</span></div>
+      <div class="body prose">
+        <div class="cta">
+          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>npx oyeboss new my-app</span></div>
+          <button class="copy" type="button" data-copy="npx oyeboss new my-app">Copy</button>
+        </div>
+        <p class="small">
+          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
+          <a href="https://www.npmjs.com/package/oyeboss">npm</a> ·
+          MIT licensed · zero dependencies · no account.
+        </p>
+        <p class="small">
+          <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
+          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
+          phone-home; the check never runs unless you ask for it. It’s ~30 lines in
+          <code>src/update.js</code> and you can read them.
+        </p>
+        <p class="small">
+          <strong>Where this actually is:</strong> v0.273.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          modes, files its own ideas, and its conscience nudges the person building it. If that sounds
+          like a reason to wait, that’s a fair read.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll(".terminal").forEach(function (t) {
+    t.querySelectorAll(".line").forEach(function (l, i) {
+      l.style.animationDelay = Math.min(i * 55, 900) + "ms";
+    });
+  });
+  document.querySelectorAll("button.copy").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var text = btn.getAttribute("data-copy");
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        var ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        document.body.removeChild(ta);
+      }
+      var was = btn.textContent;
+      btn.textContent = "Copied"; btn.dataset.done = "true"; btn.disabled = true;
+      setTimeout(function () {
+        btn.textContent = was; delete btn.dataset.done; btn.disabled = false;
+      }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

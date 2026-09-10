@@ -808,22 +808,22 @@ blocks.MARK = () => MARK('mark mark-lg');
 const NAV = [
   { id: 'index', href: 'index.html', label: 'Home' },
   { id: 'start', href: 'start.html', label: 'Start' },
-  { label: 'The product', href: 'team.html', children: [
-    { id: 'team', href: 'team.html', label: 'The team' },
+  { id: 'guide', href: 'guide.html', label: 'Guide' },
+  // The second door. Everything under here is depth someone came looking for, not a step
+  // in the install path — so it stops competing with Start for a first-time visitor's
+  // attention, and stops making the product look like fourteen pages of machinery
+  // (which is exactly what EVID-002 said it looked like).
+  { label: 'How it thinks', href: 'thinking.html', children: [
+    { id: 'thinking', href: 'thinking.html', label: 'Decisions' },
+    { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
     { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
-    { id: 'guide', href: 'guide.html', label: 'Guide' },
-    { id: 'teams', href: 'teams.html', label: 'Cofounders' },
-  ] },
-  { label: 'How it works', href: 'engineering.html', children: [
     { id: 'engineering', href: 'engineering.html', label: 'For engineers' },
     { id: 'design', href: 'design.html', label: 'Design' },
-    { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
-  ] },
-  { label: 'Trust', href: 'charter.html', children: [
-    { id: 'charter', href: 'charter.html', label: 'Charter' },
-    { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
     { id: 'governance', href: 'governance.html', label: 'Governance' },
+    { id: 'charter', href: 'charter.html', label: 'Charter' },
     { id: 'credits', href: 'credits.html', label: 'Credits' },
+    { id: 'team', href: 'team.html', label: 'The team' },
+    { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
   ] },
   { id: 'whats-new', href: 'whats-new.html', label: "What's new" },
 ];
