@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.273.0" />
+<meta name="generator" content="BOSS 0.274.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.274.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>the Homebrew command changed — <code>brew install ajeshh/boss/oyeboss</code>.</strong> The formula was called <code>boss</code>, which collides with an existing Homebrew cask of the same name, so brew refused the bare word and made you type the tap path twice. Renaming it fixes that: after <code>brew tap ajeshh/boss</code>, plain <strong><code>brew install oyeboss</code></strong> now works. If you installed under the old name, <code>brew upgrade</code> migrates you — the tap carries the rename map and brew reports <em>&quot;Old Names: boss&quot;</em>. <strong>The command you type is unchanged: still <code>boss</code>.</strong></p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.273.0</span><span class="when">2026-09-10</span></div>
         <p><strong><code>boss help --html</code></strong> — the whole guide as a page, and it describes <em>your</em> project rather than BOSS. Every skill and command on it is one you actually have; the next rung shows as a dimmed preview with what earns it. Written to <code>.boss/help.html</code>, rebuilt from your own install each time you run it. The terminal answers are unchanged and still faster: <code>boss help</code>, <code>boss map</code>, <code>boss status</code>.</p>
       </li>
@@ -113,10 +117,6 @@
         <div class="rel"><span class="ver">v0.263.0</span><span class="when">2026-09-09</span></div>
         <p>Release notes used to point you at records like <code>[[DEC-011]]</code> as if you could open them. You can't — they're BOSS's private working files — so the ids are still there and the false door isn't. <code>boss changelog</code> strips the link form even from older installs.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.262.0</span><span class="when">the founder's word didn't reach the answer BOSS already had</span></div>
-        <p>ask the architecture mentor <em>&quot;when should I rearchitect?&quot;</em> or <em>&quot;do I need to rebuild this?&quot;</em> and it now answers. It always knew — it just didn't recognise the question.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -141,8 +141,8 @@
             <span class="which">npm</span>
           </div>
           <div class="cta">
-            <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>brew install ajeshh/boss/boss</span></div>
-            <button class="copy" type="button" data-copy="brew install ajeshh/boss/boss">Copy</button>
+            <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>brew install ajeshh/boss/oyeboss</span></div>
+            <button class="copy" type="button" data-copy="brew install ajeshh/boss/oyeboss">Copy</button>
             <span class="which">Homebrew, macOS</span>
           </div>
         </div>
@@ -167,7 +167,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.273.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.274.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

@@ -4,7 +4,7 @@
 // WHY THIS EXISTS (2026-08-23): the README sells three equal install paths. One of them had been
 // serving a build from 38 releases earlier for over two weeks.
 //
-//   repo VERSION  0.217.0   ·   npm oyeboss  0.215.0   ·   tap Formula/boss.rb  0.179.0
+//   repo VERSION  0.217.0   ·   npm oyeboss  0.215.0   ·   tap Formula/oyeboss.rb  0.179.0
 //
 // Nothing was broken. Nothing existed. There is no CI, there are zero git tags, package.json has no
 // publish script, and the formula lives in a second repo (ajeshh/homebrew-boss) that nothing here
@@ -66,8 +66,8 @@ const TIMEOUT_MS = 5000;
 // authoritative and rate-limits at 60/hr unauthenticated, which is far more than a release gate
 // needs; raw stays as the fallback for the rate-limited case, where being 5 minutes stale beats
 // being blind.
-const TAP_API = 'https://api.github.com/repos/ajeshh/homebrew-boss/contents/Formula/boss.rb';
-const TAP_RAW = 'https://raw.githubusercontent.com/ajeshh/homebrew-boss/HEAD/Formula/boss.rb';
+const TAP_API = 'https://api.github.com/repos/ajeshh/homebrew-boss/contents/Formula/oyeboss.rb';
+const TAP_RAW = 'https://raw.githubusercontent.com/ajeshh/homebrew-boss/HEAD/Formula/oyeboss.rb';
 const NPM_LATEST = `https://registry.npmjs.org/${PKG}/latest`;
 
 const VERSION = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
@@ -134,28 +134,42 @@ if (npmRes.error) {
 
 // --- the tap --------------------------------------------------------------
 if (tapRes.error) {
-  console.log(`  ${warn('⚠')} tap  ${dim(`couldn't read the formula (${tapRes.error})`)}`);
+  // v0.274.0 — a 404 used to be reported the same way as a timeout: one warn line, no finding,
+  // and the summary still printed "Every advertised install path serves what this repo says it
+  // is." Found by triggering it — renaming the formula made the advertised path 404 and the gate
+  // PASSED. The two failures are not the same kind of thing:
+  //   · 404 is DEFINITIVE. The formula is not where this repo tells strangers it is, so
+  //     `brew install` fails for everyone. That is the exact condition this gate exists to catch.
+  //   · a timeout, a 5xx or a rate-limit means UNKNOWN, and the honest report is "not checked".
+  const notFound = String(tapRes.error).includes('404');
+  if (notFound) {
+    console.log(`  ${err('✗')} tap  ${dim('no formula at the advertised path (HTTP 404)')}`);
+    findings.push('The tap has no formula where this repo points — `brew install` is broken for everyone. '
+      + 'Either the formula was renamed here and not pushed to the tap, or the tap path is wrong.');
+  } else {
+    console.log(`  ${warn('⚠')} tap  ${dim(`couldn't read the formula (${tapRes.error}) — NOT CHECKED, not a pass`)}`);
+  }
 } else {
   const f = readFormula(tapRes.body);
   if (!f.url) {
-    console.log(`  ${err('✗')} tap  ${dim('could not parse a version out of Formula/boss.rb')}`);
-    findings.push('Formula/boss.rb has no readable `url` version — the bump script cannot target it either.');
+    console.log(`  ${err('✗')} tap  ${dim('could not parse a version out of Formula/oyeboss.rb')}`);
+    findings.push('Formula/oyeboss.rb has no readable `url` version — the bump script cannot target it either.');
   } else {
     // Internal coherence first: url, sha and test assertion must describe ONE version.
     if (f.test && f.test !== f.url) {
       console.log(`  ${err('✗')} tap  ${dim('formula disagrees with itself —')} url ${bold(f.url)} ${dim('vs test')} ${bold(f.test)}`);
-      findings.push(`Formula/boss.rb installs ${f.url} and asserts ${f.test}: \`brew test\` verifies a version it did not install.`);
+      findings.push(`Formula/oyeboss.rb installs ${f.url} and asserts ${f.test}: \`brew test\` verifies a version it did not install.`);
     }
-    if (!f.sha) findings.push('Formula/boss.rb has no sha256 — Homebrew cannot verify the tarball it downloads.');
+    if (!f.sha) findings.push('Formula/oyeboss.rb has no sha256 — Homebrew cannot verify the tarball it downloads.');
 
     const target = npmLatest ?? VERSION;
     const gap = cmpVersion(target, f.url);
     if (gap <= 0) {
-      console.log(`  ${ok('✓')} tap  ${dim(`Formula/boss.rb at ${f.url} — matches npm`)}${tapRes.stale ? ` ${warn('(via the ~5-min CDN cache — API unavailable)')}` : ''}`);
+      console.log(`  ${ok('✓')} tap  ${dim(`Formula/oyeboss.rb at ${f.url} — matches npm`)}${tapRes.stale ? ` ${warn('(via the ~5-min CDN cache — API unavailable)')}` : ''}`);
     } else {
       const behind = releasesBetween(f.url, target);
       console.log(`  ${err('✗')} tap  ${bold(f.url)} ${dim(`vs npm ${target}`)} — ${bold(String(behind))} behind`);
-      findings.push(`Formula/boss.rb is ${behind} releases behind npm — \`brew install ajeshh/boss/boss\` serves ${f.url}.`);
+      findings.push(`Formula/oyeboss.rb is ${behind} releases behind npm — \`brew install ajeshh/boss/boss\` serves ${f.url}.`);
     }
   }
 }

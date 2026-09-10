@@ -90,7 +90,7 @@ if (!tapDir || !existsSync(tapDir)) {
   die('No tap checkout found.',
     'Pass --tap PATH, or `brew tap ajeshh/boss` to get one at brew --repository ajeshh/boss.');
 }
-const formulaPath = join(tapDir, 'Formula', 'boss.rb');
+const formulaPath = join(tapDir, 'Formula', 'oyeboss.rb');
 if (!existsSync(formulaPath)) die(`No formula at ${formulaPath}.`);
 
 // --- 4. move all three fields together -----------------------------------
@@ -102,7 +102,7 @@ const edits = [
 ];
 let after = before;
 for (const [re, to, name] of edits) {
-  if (!re.test(after)) die(`Couldn't find the ${name} in Formula/boss.rb.`, 'The formula shape changed — update this script rather than hand-editing.');
+  if (!re.test(after)) die(`Couldn't find the ${name} in Formula/oyeboss.rb.`, 'The formula shape changed — update this script rather than hand-editing.');
   after = after.replace(re, to);
 }
 
@@ -130,7 +130,7 @@ console.log(`      ${bold(wasVersion)} ${dim('→')} ${bold(version)}  ${dim('·
 // --- 5. commit, but never push -------------------------------------------
 if (has('commit')) {
   try {
-    execFileSync('git', ['-C', tapDir, 'add', 'Formula/boss.rb'], { stdio: 'ignore' });
+    execFileSync('git', ['-C', tapDir, 'add', 'Formula/oyeboss.rb'], { stdio: 'ignore' });
     execFileSync('git', ['-C', tapDir, 'commit', '-m', `boss ${version}`], { stdio: 'ignore' });
     console.log(`  ${ok('✓')} committed in the tap checkout`);
   } catch (e) { console.log(`  ${warn('⚠')} commit failed — the file is written; commit by hand.`); }

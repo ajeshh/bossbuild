@@ -16,6 +16,55 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.274.0 — 2026-09-10
+
+> **For you:** **the Homebrew command changed — `brew install ajeshh/boss/oyeboss`.** The formula
+> was called `boss`, which collides with an existing Homebrew cask of the same name, so brew refused
+> the bare word and made you type the tap path twice. Renaming it fixes that: after
+> `brew tap ajeshh/boss`, plain **`brew install oyeboss`** now works. If you installed under the old
+> name, `brew upgrade` migrates you — the tap carries the rename map and brew reports
+> *"Old Names: boss"*. **The command you type is unchanged: still `boss`.**
+
+**What could not be done, and why, from the primary source.** The ask was bare `brew install oyeboss`
+with no tap at all. That requires the formula to be in **homebrew-core**, and Homebrew's
+[Package Acceptance Policy](https://docs.brew.sh/Package-Acceptance-Policy) sets the bar at
+*"at least 30 forks, 30 watchers or 75 stars"* — and for **a self-submission by the repository
+owner**, *"at least 90 forks, 90 watchers or 225 stars."* `ajeshh/bossbuild` is at **0 / 0 / 0**.
+So this is not a task that was skipped; it is 225 stars away, and the same policy names the
+alternative outright: *"Software that does not meet the official criteria can generally be
+maintained in a third-party tap."*
+
+**The collision was real and worth naming.** `boss` is an existing Homebrew **cask** (BOSS 9.5.13).
+Brew said so directly — *"Treating boss as a cask. For the formula, use ajeshh/boss/boss or specify
+the `--formula` flag."* So even after tapping, the bare name resolved to **somebody else's
+software**. That is a name collision on the primary install path, not a cosmetic verbosity problem.
+
+**Migration is handled, not assumed.** `formula_renames.json` in the tap maps `boss` → `oyeboss`;
+verified locally — brew reports `Old Names: boss` and offers `brew migrate oyeboss` against an
+existing install.
+
+### The gate reported a PASS while the install path was broken
+
+Renaming the formula made the advertised path 404, and `check:published` printed
+*"⚠ tap couldn't read the formula (HTTP 404)"* followed by
+**"✦ Every advertised install path serves what this repo says it is."** A read failure pushed no
+finding, so any unreadable formula passed.
+
+The two failures were being treated as one and they are not the same kind of thing:
+
+- **404 is definitive** — the formula is not where this repo tells strangers it is, so
+  `brew install` fails for everyone. That is precisely the condition this gate exists to catch, and
+  it is now a **finding**.
+- **A timeout, a 5xx or a rate-limit is UNKNOWN** — now reported as *"NOT CHECKED, not a pass"*,
+  the same wording `check:deployed` already uses for the same reason.
+
+**Found by triggering it.** The rename broke the path, the gate went green, and the green was the
+bug. A gate whose failure mode is silence is worse than no gate, because it is trusted.
+
+⚠️ **`npm run check` is red on the tap until the tap is pushed** — correctly. The rename is
+committed in the tap checkout and the push is deliberately a human keystroke (`bump:formula` has
+never pushed and still does not).
+
 ## 0.273.0 — 2026-09-10
 
 > **For you:** **`boss help --html`** — the whole guide as a page, and it describes *your* project
