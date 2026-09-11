@@ -16,6 +16,55 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.278.0 — 2026-09-10
+
+> **For you:** **`/design-review` now writes a pattern set** — `docs/design/PATTERNS.md`, the
+> recurring decisions your product has settled (what an empty state says, what a destructive confirm
+> names). It's created by your first design review and grows one review at a time, and `/ux-check`
+> checks what shipped against it.
+
+**A design system is usually described as tokens plus components. That is its floor and its walls.**
+
+| | Example | Lived in |
+|---|---|---|
+| Token | `color.action.primary` | ✅ `DESIGN_TOKENS.md` |
+| Component | `Button` | ✅ `COMPONENTS.md` → the manifest |
+| **Pattern** | *a destructive action names the consequence, never "are you sure"* | ❌ **nowhere** |
+| Flow | signup → verify → first project | the FEAT spec |
+
+The pattern layer is what makes two screens feel like one product, and it is most of what Material
+and HIG actually are. BOSS held ten interaction patterns on the craft shelf (`ai-ux-patterns`), the
+five-state requirement in one place, and the content rules in another — **all of it UP, none of it in
+a project.** IDEA-091 part 3.
+
+- **`docs/design/PATTERNS.md`**, seeded from the new `templates/pattern-set.md`: state and content
+  rules always · AI-interaction rows only if the product is AI-mediated · deceptive patterns in the
+  **Anti-pattern** column, where they are useful while designing rather than in a document nobody
+  opens · an empty **Ours** table, which is the one that matters · and a **Refused** table, because a
+  pattern you rejected is a decision worth not re-litigating.
+- **Born in `/design-review`, not `/design-tokens-init`.** A pattern set written before anything has
+  been designed is a catalog nobody consults — the same reason that skill refuses to hand a
+  first-time founder a voice-and-tone matrix. A pattern named while reviewing a real screen is
+  grounded in a decision that actually came up. New step 4b asks the question that makes findings
+  compound: *is this going to come up again?* **Once is a choice; twice is a pattern.**
+- **`designer` cites the row instead of re-deriving the rule** — a rule re-argued every review is not
+  a system, it is a set of opinions that happen to agree.
+- **`/ux-check` walks the rows against what shipped** (new step 8b). A pattern with no enforcement is
+  a preference. And when a row is violated in more than one place, the finding is not the screen —
+  it is that the pattern never reached the code.
+- **`/design-library` renders them as do/don't pairs**, which is where rendering beats reading by the
+  widest margin on the whole page.
+
+**The limit is written into the template rather than papered over.** BOSS holds the state rules, the
+content rules and the AI-interaction patterns. It does **not** ship a general-UI catalog — forms,
+tables, navigation — and pretending otherwise would be this practice's oldest failure mode wearing a
+new hat. For those the `designer` agent's cited lens is the source, and your own product will grow
+better ones than a generic catalog would. That growth is what part 5 is for.
+
+**Also fixed, same pass:** `/design-review` step 3 still told founders that at MVP *"the honest
+substitute is to read the component directory itself"* — true until v0.276.0 shipped the index two
+days' worth of releases ago. Same lesson as that release: **when a fact changes, grep the string.**
+
 ## 0.277.0 — 2026-09-10
 
 > **For you:** **`design-tokens-guard` now watches your whole token system, not just color** — a

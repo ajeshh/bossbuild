@@ -168,6 +168,20 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    Founder framing, once: *"You didn't design these. Check whether the model did."* Then the
    finding, specific and short — the file, the line, and the honest version. Never a lecture.
 
+8b. **Check it against the pattern set.** Read `docs/design/PATTERNS.md` and walk its rows against
+   what actually shipped. This is the cheapest high-yield pass in the list, because every row is a
+   decision somebody already made — you are checking compliance, not exercising taste, and the
+   finding writes itself: *"the delete confirm says 'Are you sure?'; our destructive-confirm pattern
+   says name the consequence."*
+
+   **A pattern with no enforcement is a preference.** `/design-review` names them before code; this
+   is where they are checked after. If a row is violated in more than one place, the finding is not
+   the screen — it is that the pattern never reached the code, and the fix belongs upstream in the
+   component or in `CLAUDE.md`.
+
+   No `PATTERNS.md`? Say so once and move on. It is created by the first `/design-review`, and
+   telling a founder to go run another skill mid-review is worse than a missing section.
+
 9. **Capture findings** in `docs/design/ux-check-<feat-or-date>.md`. Each issue: severity
    (blocking / serious / minor / nit), the specific scene, the proposed fix — and **`observed` or
    `inferred`**, per step 2.

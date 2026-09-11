@@ -60,6 +60,11 @@ The half that makes this a *design system* rather than a component dump. Pulled 
 - **The five-state table**, with the states actually rendered
 - **Terminology** — one word per concept. The single most checkable content rule you own.
 - **Voice in the interface** — button labels, error copy, empty-state copy, as real strings
+- **The patterns**, from `docs/design/PATTERNS.md` — each row rendered as a **do / don't pair**,
+  not as a table of prose. This is the section where rendering beats reading by the widest margin: a
+  rule like *"a destructive confirm names the consequence"* is a sentence you skim, and the same rule
+  as two rendered dialogs side by side is a thing you cannot unsee. Render the **Ours** table first —
+  those are the decisions this product actually made — and the seeded rows after.
 - **The signature** — the one thing someone could describe without naming the product
 - **Exceptions**, dated. An exception recorded is a decision.
 

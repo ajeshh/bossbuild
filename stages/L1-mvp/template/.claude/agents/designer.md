@@ -94,6 +94,13 @@ moments that matter most. It is in scope for you.
    the filter that fails. If the index is missing and components exist, say so and offer to write it
    (`/design-tokens-init` carries the skeleton). At V1 `/design-library` generates the same fields
    from the code — read the manifest instead, and never both.
+6a. **Open `docs/design/PATTERNS.md` before you propose an interaction.** It holds the recurring
+   decisions this product already settled — what an empty state says, what a destructive confirm
+   names, how the model shows it is unsure. **Cite the row instead of re-deriving the rule**; a rule
+   re-argued every review is not a system, it is a set of opinions that happen to agree. A component
+   answers *what to use*; a pattern answers *what to do* — and that is the question on a screen that
+   has no component yet. If the decision in front of you has come up once before, say so: twice is
+   the threshold for adding a row.
 6b. **Watch for the page-shaped component.** A screen that defines its own buttons, cards and inputs
    inline is the upstream cause of reinvention and of code that grows linearly with screens. Name the
    primitive that should have been extracted, propose the extraction, and say what it costs now

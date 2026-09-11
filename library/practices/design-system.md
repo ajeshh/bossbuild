@@ -464,4 +464,14 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
   the same sentence is usually in two places, and the copy in always-on agent context is the one that
   matters most.
 
+- ✅ `docs/design/PATTERNS.md` — **the pattern layer** (v0.278.0), born in the first
+  `/design-review` and grown one review at a time. The middle of the ladder: a token is a value, a
+  component is a thing, **a pattern is a recurring decision with a rule** — and it is what Material
+  and HIG mostly *are*. Read by `designer`, checked by `/ux-check`, rendered as do/don't pairs by
+  `/design-library`. Threshold for a new row: **the same decision comes up twice.**
+  ⚠️ **Its honest limit is written into the template rather than papered over:** BOSS holds the
+  five-state requirement, the content rules and the AI-interaction patterns — it does **not** ship a
+  general-UI catalog (forms, tables, navigation) and should not pretend to. The `designer` agent's
+  cited lens is the source for those, and the project grows better ones than a generic catalog would.
+
 **Nothing on this list is open.** Verified against the filesystem, not against this doc.

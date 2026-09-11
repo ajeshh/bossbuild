@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed UI through `designer` in two passes — the visual system, then flows and states (flows + 5-state requirement) in sequence. Reads `docs/design/DESIGN_TOKENS.md` + `docs/design/STYLE_GUIDE.md` + the relevant FEAT spec. Outputs concrete diffs or numbered issues. Catches token violations + missing states + brand drift BEFORE code commits. Pairs with `/ux-check` (after-code review). Usage - /design-review [FEAT-NNN | path-to-component-spec]
+description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed UI through `designer` in two passes — the visual system, then flows and states (flows + 5-state requirement) in sequence, then names what recurs as a pattern. Reads `docs/design/DESIGN_TOKENS.md` + `docs/design/STYLE_GUIDE.md` + the relevant FEAT spec. Outputs concrete diffs or numbered issues. Catches token violations + missing states + brand drift BEFORE code commits. Pairs with `/ux-check` (after-code review). Usage - /design-review [FEAT-NNN | path-to-component-spec]
 ---
 
 # /design-review — before-code design review
@@ -46,8 +46,15 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    description), and the relevant section of any design brief.
 2. **Read the system.** `docs/design/DESIGN_TOKENS.md` (authoritative tokens), `docs/design/
    STYLE_GUIDE.md` (how tokens compose into patterns), `docs/ideas/CANVAS.md` (Promises cell —
-   the brand anchor), and **`docs/design/library/manifest.json`** (what already exists — the
-   reuse index).
+   the brand anchor), **`docs/design/COMPONENTS.md`** (the component index at MVP, superseded by
+   **`docs/design/library/manifest.json`** at V1 — read whichever exists, never both), and
+   **`docs/design/PATTERNS.md`** (the pattern set — see step 4b).
+
+   **If `PATTERNS.md` does not exist, this is the run that creates it.** Seed it from
+   [`templates/pattern-set.md`](templates/pattern-set.md) with the rows that apply to *this*
+   product — the state and content rules always, the AI-interaction rows only if the product is
+   AI-mediated, the anti-patterns always. Don't seed rows for surfaces this product doesn't have; a
+   pattern for a situation you never hit is noise, and noise is how a file stops being opened.
 3. **Run `designer` — pass one, the visual system.** Pass the spec + the design system; ask for
    review against:
    - Token compliance (no raw hex; no raw spacing; no font-family inlined)
@@ -56,9 +63,10 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    - Reuse-before-creation: does a similar pattern exist? **Read
      `docs/design/library/manifest.json` if it exists** — name + purpose + variants for every
      component, which is the difference between actually checking and asking the model to
-     remember to check. No manifest yet? `/design-library` generates it, and it arrives at **V1** —
-     so at MVP the honest substitute is to read the component directory itself before adding to it.
-     Reviewing reuse without an index is how `CTAButton` gets born.
+     remember to check. **At MVP the index is `docs/design/COMPONENTS.md`** (written by
+     `/design-tokens-init`); the generated manifest supersedes it at V1. If neither exists, read the
+     component directory itself before adding to it — reviewing reuse without an index is how
+     `CTAButton` gets born.
 4. **Then pass two — flow, state and content.** Same agent, second lens: pass the spec **plus its
    own pass-one notes**. Two passes rather than one prompt on purpose — a single sweep reliably
    trades depth on the second half for fluency on the first, and the content check at the end of
@@ -81,6 +89,22 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
      - **If the FEAT is AI-mediated, the copy the model will generate at runtime is in scope** —
        system prompt, refusal and hedge language, retry and rate-limit messages, the words before an
        irreversible action. That copy ships to users and usually nobody reviewed it.
+4b. **Name the pattern, not just the fix.** Pass two produces findings about *this* screen. Before
+   you write them up, ask the question that makes them compound: **is this decision going to come up
+   again?**
+
+   - **Already in `PATTERNS.md`?** Cite the row. A finding that says *"this violates our
+     destructive-confirm pattern"* is worth five that re-derive the reasoning, because it is
+     reviewable by someone who wasn't in this session.
+   - **Came up once before and now again?** That is the threshold. Add it to the **Ours** table with
+     the situation, the rule, the anti-pattern, and where it was first seen. Once is a choice; twice
+     is a pattern.
+   - **Novel and genuinely one-off?** Leave it a finding. Most things are. A pattern set that grows
+     on every review is a transcript, not a system.
+
+   **Where this layer earns its keep:** a component answers *what to use*, a pattern answers *what to
+   do* — and the second question is the one that comes up on a screen that has no component yet.
+
 5. **Synthesize.** Output:
    - **Token violations** — list each; propose the right token; flag if a new token is
      legitimately needed and which layer
@@ -90,6 +114,8 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    - **AI-UX issues** (where applicable) — listed
    - **Content issues** — terminology violations (name the word and its replacement), off-voice
      strings (quote them, propose the rewrite), missing error-recovery or empty-state copy
+   - **Pattern findings** — each one cited to its row in `PATTERNS.md`, plus any row this review
+     *added*, and the decision you deliberately left un-patterned
 6. **Capture the review** in `docs/design/reviews/<feat-nnn-or-date>.md`. The review is a
    diff against the proposed design, not a critique-only doc — propose every change concretely.
 
@@ -118,6 +144,12 @@ Per `.boss/config.json` cohort declaration (v0.20+):
   you're running the wrong skill — use `/ux-check`.
 - **Propose, don't just critique.** Every finding includes a specific change suggestion.
 - **Reuse first.** The first question on every new component: *does a similar pattern exist?*
+- **Cite the pattern; don't re-derive it.** If `PATTERNS.md` has the row, name it. Re-arguing a
+  settled rule every review is how a design system becomes a set of opinions that happen to agree.
+- **Seed only what applies.** A pattern for a surface this product doesn't have is noise, and noise
+  is how a file stops being opened. The general-UI half is deliberately thin — BOSS holds the state
+  rules, the content rules and the AI-interaction patterns, and does **not** ship a forms-and-tables
+  catalog. Say so rather than inventing one.
 - **Cite the practitioner / heuristic.** "Violates Nielsen #4 — consistency and standards"
   beats "this is inconsistent."
 - **Capture the review.** Without `docs/design/reviews/`, the discipline doesn't compound.
