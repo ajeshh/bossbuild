@@ -249,6 +249,14 @@ that when you're choosing among many candidates, not just reacting to one.)_
    The stamp goes on **both** records because the board ages a card by the column it is in, not
    by its type — and an idea sitting in Building is the shape that actually goes stale here
    (most ideas never earn a FEAT at all).
+6b. **Stamp the working context (v0.293.0).** Set **Active FEAT** in
+   `.claude/rules/feature-context.md` to this one, and clear the previous feature's
+   `Found while building` and `Open questions` rows if they were left behind (`/close` should have
+   compressed them; it is not always run). Carry across the **Still unknown** lines you just wrote
+   into that file's Open questions block — **same content, two lifetimes**: the FEAT keeps the
+   record of what you didn't know when you specced it, and the working file is the copy that gets
+   worked on and answered during the build.
+
 7. Nothing else to register — `boss board` picks the FEAT up from its frontmatter and shows it
    alongside the ideas.
    - `building_since:` anchors the board's time-in-build aging (`boss board` flags a FEAT that's sat

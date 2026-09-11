@@ -17,6 +17,42 @@
 // Always exits 0. Empty output = no signal = stay silent.
 
 import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity } from './lib/loop-runtime.js';
+import { detectTaskHygiene } from './lib/task-hygiene.js';
+import process from 'node:process';
+
+// The one signal that is NOT loop-driven (IDEA-094 Part 0). Every other moment reads files in the
+// project; this one reads the session's own task list out of the host transcript, whose path the
+// host hands us on stdin. It is folded in HERE rather than shipped as a second hook, for three
+// reasons worth keeping: nothing new has to be registered, there stays exactly one surface that
+// speaks, and it inherits `/pause`, per-moment mute and the frequency ledger for free — so a
+// founder can turn this down the same way they turn down anything else BOSS says.
+//
+// Reading stdin is new for this hook and it is on the hot path, so the budget is small and the
+// failure is silence. A TTY means nothing is piped (the eval runner, a hand-run), and that path
+// resolves immediately rather than paying the timeout.
+const HOOK_STDIN_MS = 300;
+
+function readHookInput() {
+  return new Promise((resolve) => {
+    if (process.stdin.isTTY) { resolve(null); return; }
+    let data = '';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (c) => { data += c; });
+    process.stdin.on('end', () => resolve(data));
+    process.stdin.on('error', () => resolve(null));
+    setTimeout(() => resolve(data), HOOK_STDIN_MS).unref();
+  });
+}
+
+async function transcriptPath() {
+  try {
+    const raw = await readHookInput();
+    if (!raw || !raw.trim()) return null;
+    return JSON.parse(raw).transcript_path || null;
+  } catch {
+    return null;
+  }
+}
 
 const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
@@ -34,6 +70,15 @@ try {
   }
 
   const detected = detectSignals(projectDir);
+
+  // Task hygiene rides alongside the loops rather than inside them: a loop predicate reads files in
+  // the project, and this reads the session. It is appended AFTER the loop signals so an ordinary
+  // drift moment still leads — the emergent list is real, but it never outranks the founder
+  // building the wrong thing. Fails to null on anything unexpected, so a project on a host whose
+  // transcript format has moved is byte-identical to one before this shipped.
+  const task = detectTaskHygiene(projectDir, await transcriptPath());
+  if (task) detected.push(task);
+
   if (detected.length === 0) {
     process.exit(0);
   }

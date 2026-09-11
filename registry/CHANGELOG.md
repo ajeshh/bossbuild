@@ -16,6 +16,93 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.293.0 — 2026-09-10
+
+> **For you:** **The tasks you spot mid-build stop living only in the chat.** BOSS notices when the
+> list in the conversation has outrun anything written down, and `.claude/rules/feature-context.md`
+> — a file that shipped for months with nothing ever writing to it — is now where found work,
+> local decisions and open questions actually go.
+
+**IDEA-094 part 0, and the seed was a diagnosis rather than a request.** Ajesh: *"the todo issue is
+happening frequently in boss, where **it forgets what it was trying to accomplish as it ids tasks**,
+and then it needs to **reassess everything it built** to recollect. It's more of **hygiene around
+remembering tasks id'd**."*
+
+**Every checklist mechanism BOSS owned was aimed at the wrong list.** A FEAT's acceptance criteria
+are the **planned** work — written at spec time, when you knew least, ticked at `/close`. The list
+that goes missing is the **emergent** one: what you find at hour three, which was never in the FEAT
+because nobody knew about it an hour ago. BOSS had **no artifact for it at all**, and its only
+mid-build mechanism — `spun_to:` — is a *refusal* for new scope, correctly so. But *"this also needs
+a rollback"* is a **task**, not scope, so the one door BOSS had pushed it out of the record.
+
+🔴 **The recovery cost is the real finding, and it is an inversion BOSS already catalogs.**
+*"Reassess everything it built to recollect"* is reconstructing **intent from artifacts** — the same
+shape as `boss craft testing-with-agents`'s *a test derived from the implementation cannot fail.*
+**Re-reading what you built tells you what you did; it can never tell you what you meant to do
+next.** The three things that vanish are the three that left no artifact: the task identified but
+not started, the reason for this order, and the question you were coming back to — and the re-read
+returns a shorter list that reads as complete.
+
+**The home.** `.claude/rules/feature-context.md` is **adopted**. It shipped in every MVP project
+with **zero writers anywhere in BOSS** (`grep -rln "feature-context" stages/ src/` returned only the
+file itself) and told the founder *"when the feature ships, `/close` will compress this to a one-line
+outcome"* — **`/close` had never opened it.** Now: a **Found while building** list with the
+three-way sort on every row (**task** stays · **new scope** becomes a `spun_to:` id, never a
+criterion bolted onto a FEAT in flight · **open question** goes to the questions block), an **Open
+questions** section, `/spec` stamping the active FEAT and carrying across its *Still unknown* lines,
+and `/close` genuinely compressing it — keeping every open item, routing answered questions to
+`/decide`, and **never silently dropping one**, because an item that disappears unnamed is
+indistinguishable from one that was forgotten.
+
+**The keeper, and why it is a hook and not a sentence.** A line asking the model to write things
+down is a filter, and BOSS's own verdict on filters is on record in `src/brain.js`: *"a rule that
+depends on someone remembering is not a mechanism."* This can be checked because the host writes
+every tool call — inputs included — into the session transcript, and hands hooks its path on stdin.
+**So the list the model is holding is readable from outside the model.**
+
+- **`task-hygiene`** is a new conscience moment **folded into the `UserPromptSubmit` hook that
+  already runs**, not a second hook. Nothing new registers, one surface still speaks, and it
+  inherits `/pause`, per-moment mute and the frequency ledger — so it is turned down like anything
+  else BOSS says.
+- **It fires on the gap, not the count.** Not *"you have 6 todos"* (the model can see that) but
+  *"open items have outrun anything written down."* Silence is the normal output.
+- **Five silences, each a test:** fewer than 3 open items · everything completed · no TodoWrite in
+  the window · no durable file at all · **anything durable written within ten minutes of the list
+  moving** — writing things down is the behaviour this encourages and must never be nudged at.
+- **It never writes the list itself.** Same rule the `harvest` moment keeps: an artifact updated in
+  the background launders a guess into a record.
+- **A bug the tests found, worth keeping.** The first version compared the transcript's ISO
+  timestamp directly against a filesystem `mtime`. `utimes` truncates fractional seconds, so a
+  founder who wrote a file the instant after the list moved could land microscopically "behind" it
+  and get nudged. A **ten-minute floor** removes the class and makes the signal conservative in the
+  direction that matters.
+
+⚠️ **Two host-version facts with a date on them, because they will rot.** Checked 2026-09-10:
+`~/.claude/todos/` does **not** exist on this version, so the transcript is the only route; and the
+transcript is JSONL with `timestamp` plus a `message.content` array of `tool_use` blocks. Everything
+reading it **fails silent and fails open** — an unfamiliar transcript produces no signal, never an
+error, and a project on a moved host is byte-identical to one before this shipped. The read is
+capped to the last 256KB, so a list older than the window **under-fires**, which is the safe
+direction.
+
+**The always-on rules gained their missing middle.** MVP's `claude-append.md` had rule 0 (open the
+session) and rule 4 (`/close` at the end) and **nothing about the interior** — which is exactly where
+Ajesh reported it failing: *"if BOSS is setting up the guidelines for how we are working in this
+chat, that's where it's failing after a point."* New rule 3b names the three-way sort and says
+plainly that the conscience fires on a timestamp and **cannot see whether you already wrote them
+down — a reminder, never a referee.**
+
+**Dogfooded.** BOSS is self-hosted, so the same hook, lib and frame are installed at this repo's own
+root, and `CLAUDE.md` gained the same interior rule. Verified end-to-end against the real project
+directory: the moment fires with `docs/devlog.md` named as the file that had fallen behind.
+
+🔴 **Unlike the design and product programs, this one is evidence-aimed.** EVID-001 — *"i forget
+what feature i'm building / get adhd… knowing exactly where i am like a train line"* — and
+EVID-003 is a second independent founder on the same axis. Still `stated-pain`; nobody has been
+observed losing a session to it. **And the trap is named in advance:** IDEA-076 is held because
+*a progress surface that cannot go down is a comfort device*, so the working file says out loud that
+un-ticking is free and a tick is a claim.
+
 ## 0.292.0 — 2026-09-10
 
 > **For you:** **The website and the generated docs catch up with the design work** — the design page

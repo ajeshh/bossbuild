@@ -38,6 +38,25 @@ ahead to what's next.
    also ticks the active FEAT's acceptance criteria and appends to its `## Build log` when there's a
    decision or surprise worth keeping. If `/log` already ran this session, skip — don't duplicate.
 
+1b. **Compress `.claude/rules/feature-context.md` (v0.293.0 — the promise it had been making).**
+   That file told every founder *"when the feature ships, `/close` will compress this to a one-line
+   outcome"* and `/close` had never opened it. It does now. Three passes, in this order:
+
+   - **The `Found while building` list** — anything ticked, and anything that turned out not to
+     matter, goes. Anything still open **stays exactly as written**: that list is the reason the
+     next session doesn't begin by re-reading the diff to work out what was in flight.
+   - **Open questions** — read them back out loud. A question answered during the session gets its
+     answer written next to it and then, if it was load-bearing, **routed to `/decide`** — the
+     difference between "we discussed it" and a record with a falsifier is the whole point.
+   - **Local decisions and gotchas** — when the FEAT has shipped, compress the section to the one
+     line worth keeping and let the rest go. It is ephemeral by design; a working-context file that
+     accumulates forever becomes a second, worse changelog.
+
+   ⚠️ **Never silently discard an open item.** If something is being dropped, say which and why —
+   an item that disappears without being named is indistinguishable from one that was forgotten,
+   and this file exists precisely because that distinction was being lost. No file yet, or nothing
+   in flight? Skip it and say nothing.
+
 2. **Update `docs/RESUME.md`** (create if missing — template below). Rewrite, don't append:
    - **State (current):** the one paragraph someone re-entering the project needs. What's true *now*.
    - **Next tasks (in order):** the 1–3 concrete things to pick up. Concrete = "wire `/foo` to call
