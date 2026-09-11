@@ -156,20 +156,50 @@ Read `docs/ideas/CANVAS.md` Promises cell. The brand voice declared there should
 declared brand. If the canvas's Promises cell is `_(not yet)_`, flag it — design tokens without
 a brand anchor will drift back to internet-defaults.
 
-### The 5-token distinctiveness pass (2026 — the "shadcn trap" fix)
+### The 5-token distinctiveness pass
 
-The fastest tell of a generic AI app: shadcn defaults straight out of the box — slate neutrals,
-Inter, 8px radius, indigo accent. AI codegen reaches for these because they're the internet
-average. Five deliberate overrides break the sameness without a redesign — do this *as part of
-picking primitives*, anchored to the canvas Promises cell:
+**The tells are not a fixed list. They are the current attractor**, and the attractor moves: the
+"shadcn trap" (slate, Inter, 8px radius, indigo) was the 2024 tell, and the fix for it — *warm the
+neutral* — is now **the 2026 tell**. A list of tells without a date is a list of last year's tells.
 
-1. **Warm (or cool) the neutral scale** — pick a neutral with a temperature, not pure slate gray.
+**Current as of 2026-09** (Anthropic's `frontend-design` skill, Apache-2.0, read at source; see
+`docs/competition/frontend-design.md`) — generated design clusters around five looks, and each is a
+default rather than a choice because it appears *regardless of subject*:
+
+1. **Warm cream (~`#F4F1EA`) + a high-contrast serif display + a terracotta or warm-clay accent
+   (~`#D97757`)** — the commonest one, and the terracotta is Claude's own interaction accent, so on a
+   founder's product it reads as a tell twice over.
+2. **Near-black + one bright acid-green or vermilion accent.**
+3. **The broadsheet** — hairline rules, zero border-radius, dense newspaper columns.
+4. **The SaaS-card kit** — content chopped into identical rounded cards, one radius on everything
+   regardless of hierarchy, the same soft `rgba(0,0,0,.1)` shadow under each, gradient washes.
+5. **Template chrome, whatever the subject** — a tracked-out ALL-CAPS eyebrow above every heading ·
+   meta strings joined with middle dots (`A · B · C`) · `WORD — fragment` with a spaced em dash ·
+   tinted near-black (`#0B0B0B`, `#111`) standing in for black · a mono face for small labels · a `→`
+   appended to every link and button.
+
+**If this stamp is more than six months old, assume the attractor has moved and check** before
+trusting the list. When the brief *asks* for one of these looks, follow the brief — these are
+defaults, not sins.
+
+Five deliberate overrides break the sameness without a redesign — do this *as part of picking
+primitives*, anchored to the brand doc and the canvas Promises cell:
+
+1. **Give the neutral a temperature — and not warm cream.** A neutral with a temperature was the
+   2024 fix and warm cream is the 2026 default; cool, or a warm that isn't cream, or a genuine tint.
 2. **Choose a radius on purpose** — sharp (0–2px) or soft (12px+), not the default 8.
 3. **Intentional type pairing** — one characterful display/heading face + a clean body face; not
    Inter-on-Inter.
 4. **One saturated accent** the brand owns — a single confident color, not indigo-by-default.
 5. **One "signature token" the defaults omit** — a texture, a shadow language, a custom easing
    curve. This is the brandable one; it's what makes the UI *yours*.
+
+6. **Then run the genericness test, before a single component is written.** *Would I have
+   produced this exact plan for any similar brief?* Work through a neighbouring prompt in your head —
+   a different product, same category — and see whether you arrive somewhere similar. **Any part that
+   survives that swap unchanged is a default, not a choice**: revise it, and say what changed and why.
+   This is the one check that makes *sameness* visible to the model that produced it, and it costs
+   one paragraph. (From `frontend-design`; the best single idea in it.)
 
 Cohort-aware: `vibe-coder-newbie` / `first-product` → just *do* the 5 overrides and show the
 before/after. `eng-builder` / `vibe-virtuoso` → *offer* them as a checklist, override-friendly.

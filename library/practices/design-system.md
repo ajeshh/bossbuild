@@ -192,6 +192,51 @@ the eye but skip the pre-pass — OFFER the design-thinking prompt, skip the lec
 Lands at **V1**, with the rest of the design layer — the moment a UI is worth keeping is the moment
 genericness starts to cost.
 
+### The tells move — a dated list, or last year's list (added v0.299.0)
+
+**The anti-slop catalog above was a 2024 list, and the fix it prescribed became the 2026 tell.**
+Found by running `/comp-eval` on Anthropic's own `frontend-design` skill (Apache-2.0, read at source
+2026-09-11 — `docs/competition/frontend-design.md`): the "shadcn trap" (slate, Inter, 8px, indigo) was
+what generated UI converged on in 2024, and BOSS's first override — *warm the neutral scale* — is now
+the single commonest tell: **warm cream + high-contrast serif + terracotta.**
+
+> **The tells are not a list. They are the current attractor**, and the attractor moves as the models
+> and the prompts do. Any anti-slop catalog needs a **date and an owner**, or it quietly becomes a
+> catalog of last year's tells — worse than none, because it reads as current.
+
+**Current as of 2026-09** (the five, per `frontend-design`, quoted with attribution): warm cream +
+serif display + terracotta · near-black + acid green or vermilion · the broadsheet (hairlines, zero
+radius, dense columns) · the SaaS-card kit (identical rounded cards, one radius everywhere, the same
+`rgba(0,0,0,.1)` shadow, gradient washes) · template chrome regardless of subject (ALL-CAPS eyebrows,
+`A · B · C` middle dots, spaced em dashes, tinted near-black for black, mono data labels, `→` on every
+link). **The live copy is in `/design-tokens-init`'s distinctiveness pass, stamped; this section
+records the rule and the date.** Two copies is a known cost; the stamp is what makes drift visible.
+
+**The genericness test** (also from `frontend-design`, and the best single idea in it): before
+building, *would this exact plan have been produced for any similar brief?* Swap the product for a
+neighbour in the same category; whatever survives the swap unchanged is a default, not a choice. It is
+a filter — but it is the one filter that makes *sameness* visible to the model that produced it.
+
+### Craft floors and brand values are different kinds of thing (added v0.299.0)
+
+*Name the slot, earn the value* is the composition layer's governing rule, and `frontend-design`
+exposed where it overreaches. That skill hands over *line length under 80*, *one family or two,
+clearly distinct*, *serif gets more line-height* on turn one — and it is right to, because those are
+not decisions. They are **floors**: true for almost every product, known to the craft, and
+withholding them is withholding a fact.
+
+| | Floor | Value |
+|---|---|---|
+| What it is | craft knowledge | a decision |
+| True for | almost every product | this product |
+| Ships as | **pre-filled** | **blank until earned** |
+| Example | measure under ~80 characters | *which* typeface, *what* ratio |
+
+The composition slots now carry both — a `Floor (pre-filled)` line and the empty value lines
+beneath it. Bringhurst is the reference for the typographic floors; `frontend-design` is where BOSS
+took the short form. **The rule survives sharper than before:** a slot can carry its floor and leave
+its value empty, and a founder who fills the floor line with a value has confused the two.
+
 ## Making the system visible — the design library (added 2026-08-20)
 
 Everything above is markdown, and **markdown cannot show you a button.** `DESIGN_TOKENS.md`,

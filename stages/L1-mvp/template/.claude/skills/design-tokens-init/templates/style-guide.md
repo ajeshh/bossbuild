@@ -62,6 +62,12 @@ it is the difference between an interface that is *consistent* and one that look
 > decision becomes **noticeable** when it happens — not so you fill it in on day one, when you know
 > least. **Name the slot; earn the value.**
 
+**Each slot has a floor and a value, and they are different kinds of thing.** The **floor** is craft
+knowledge — it is true for almost every product and it is pre-filled here, because withholding it
+would be withholding a fact. The **value** is a decision — it belongs to this product and it is
+blank until earned. *Name the slot, earn the value* is right for values and wrong for floors; a slot
+can carry its floor and leave its value empty.
+
 Mark each answer **`observed`** (read back off what you already built — the honest default) or
 **`declared`** (you chose it deliberately). The distinction matters: an observed answer is a
 description you can still change your mind about; a declared one is a decision that should be
@@ -79,6 +85,11 @@ looking unresolved.
 | UI | | labels, buttons, form fields | long prose | |
 | Mono | | code, ids, numbers you compare | | |
 
+- **Floor (pre-filled):** one family, or two that are clearly distinct — never two that nearly match ·
+  body measure under ~80 characters · a serif body gets a little more line-height than a sans ·
+  never accent a single word in a headline with italic, bold or colour — it is the commonest tell of
+  a generated page · no ALL-CAPS labels by default. *(Bringhurst's* Elements of Typographic Style *is
+  the reference; `frontend-design` is where BOSS took the short form.)*
 - **The scale:** <how many sizes, and what relates them — a ratio, a set of steps, or "four sizes we
   picked and stuck to". Any of the three is a real answer; not knowing which is not.>
 - **Type colour:** <which token pairs carry text — `text.body` on `surface.background`, etc. This is
@@ -96,6 +107,9 @@ foundation choice, not a per-screen one.
 
 ### 2. Rhythm — *the spacing that makes it feel like one thing*
 
+- **Floor (pre-filled):** one base unit and everything a multiple of it · the measure above governs
+  the container, not the other way round · density is one setting, with the other named as the
+  exception.
 - **Base step:** <the unit everything is a multiple of>
 - **Steps actually used:** <a scale you use 4 of beats a scale you defined 9 of>
 - **Measure:** <max line length for body text — the single cheapest readability decision there is>
@@ -108,6 +122,10 @@ There are five ways, and the decision is **which one is primary**, not which one
 
 > border · shadow · fill · space alone · nothing
 
+- **Floor (pre-filled):** one primary means · a structural device — a border, a divider, a
+  numbered marker, an eyebrow — encodes information about the content or it doesn't appear; `01 / 02 /
+  03` only when the content is actually a sequence · one radius does not go on everything regardless
+  of hierarchy.
 - **Primary means:** <one of the five>
 - **Secondary, and when:** <e.g. "shadow only for things that float above the page — menus, dialogs">
 - **Raised means:** <what earns elevation, and what doesn't>
@@ -120,6 +138,10 @@ default, because each screen picks whichever the model reached for that turn.
 The one slot that most decides whether this looks designed. There are five levers — **size, weight,
 colour, space, position** — and a product should reach for them **in the same order everywhere.**
 
+- **Floor (pre-filled):** colour is never the *only* carrier (the accessibility floor already says
+  so) · spend the boldness in one place — one element is the memorable thing and everything around
+  it stays quiet · motion that nobody triggered is used once, for one orchestrated moment, not as a
+  fade-and-slide on every section.
 - **Our order:** <e.g. "space first, then size, then weight — colour is never the primary carrier,
   because it can't be the only signal anyway">
 - **What we never use for emphasis:** <e.g. all-caps, italics, more than one accent on a screen>

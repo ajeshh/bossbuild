@@ -60,6 +60,9 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    - Token compliance (no raw hex; no raw spacing; no font-family inlined)
    - Three-layer architecture preserved (semantic tokens used, not primitives)
    - Brand-anchored choices (matches canvas Promises voice, not internet-default)
+   - **The genericness test** — *would this exact plan have been produced for any similar brief?*
+     Swap the product for a neighbour in the same category; whatever survives the swap unchanged is a
+     default, not a choice. Name it. (The current tells, dated, are in `/design-tokens-init`.)
    - Reuse-before-creation: does a similar pattern exist? **Read
      `docs/design/library/manifest.json` if it exists** — name + purpose + variants for every
      component, which is the difference between actually checking and asking the model to

@@ -16,6 +16,44 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.299.0 — 2026-09-11
+
+> **For you:** **BOSS's list of "what generated design looks like" is current again** — it was a
+> 2024 list, and the fix it prescribed had become the 2026 tell. Plus a one-paragraph test that makes
+> *sameness* visible before you build, and craft floors pre-filled in your style guide so "name the
+> slot" stops withholding facts.
+
+**Three things learned from running `/comp-eval` on Anthropic's `frontend-design` skill**
+(`docs/competition/frontend-design.md`, read from the marketplace's own cache the same morning).
+
+- **The anti-slop catalog was from 2024.** The "shadcn trap" — slate, Inter, 8px radius, indigo — was
+  what generated UI converged on then, and BOSS's first override, *warm the neutral scale*, is now
+  **the single commonest tell**: warm cream + high-contrast serif + terracotta. The catalog is
+  replaced with the five current clusters (quoted from `frontend-design`, Apache-2.0, with
+  attribution) and **stamped with a date**, because the lesson underneath is portable: **the tells
+  are not a list, they are the current attractor, and the attractor moves.** A catalog without a
+  date and an owner becomes last year's list while reading as current — which is worse than none.
+  The stamp says to re-check after six months. Override #1 is reworded: *give the neutral a
+  temperature — and not warm cream.*
+- **The genericness test.** *Would I have produced this exact plan for any similar brief?* Swap the
+  product for a neighbour in its category; whatever survives the swap unchanged is a default, not a
+  choice — revise it and say why. One paragraph, in the distinctiveness pass and in `/design-review`
+  pass one. It is a filter, but it is the one filter that makes *sameness* visible to the model that
+  produced it. The best single idea in that skill.
+- **Craft floors and brand values are different kinds of thing**, and *name the slot, earn the value*
+  had been overreaching. `frontend-design` hands over *measure under 80*, *one family or two, clearly
+  distinct*, *serif gets more line-height* on turn one, and it is right to: those are **floors** —
+  true for almost every product, known to the craft — and withholding them is withholding a fact. A
+  **value** (*which* face, *what* ratio) is a decision and stays blank. Every composition slot now
+  carries a `Floor (pre-filled)` line above its empty value lines, with Bringhurst as the reference.
+  The rule survives sharper: a slot can carry its floor and leave its value empty.
+
+**Also true, and worth saying plainly:** `frontend-design` is not a rival. It is stateless and
+operates at generation time; BOSS is all state and operates at project time. Its own text wishes for
+*"a space to quickly jot down notes… for future passes"* — which is BOSS. A founder should install
+both. RVW-014, which vetted an earlier version of the skill in June, carries an addendum: the restraint
+BOSS's ADAPT added has since been absorbed upstream.
+
 ## 0.298.0 — 2026-09-11
 
 **Three release gates had never run on Windows, and reported green.** The second matrix run left
