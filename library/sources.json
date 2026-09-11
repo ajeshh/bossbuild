@@ -479,15 +479,19 @@
       "kind": "research",
       "key": true
     },
-    "W3C Web Accessibility Initiative (WAI)": {
+    "w3c-wai": {
+      "name": "W3C Web Accessibility Initiative (WAI)",
+      "url": null,
+      "for": "the POUR principles, the WCAG conformance levels, and the quick-reference a founder should actually open",
       "kind": "standard",
-      "key": true,
-      "url": null
+      "key": true
     },
-    "ARIA Authoring Practices Guide": {
+    "aria-apg": {
+      "name": "ARIA Authoring Practices Guide",
+      "url": null,
+      "for": "keyboard behaviour for custom widgets \u2014 what arrow keys should do in a control you invented",
       "kind": "standard",
-      "key": true,
-      "url": null
+      "key": true
     }
   },
   "practices": {
@@ -639,8 +643,8 @@
     ],
     "outside-claims": [],
     "accessibility": [
-      "W3C Web Accessibility Initiative (WAI)",
-      "ARIA Authoring Practices Guide"
+      "w3c-wai",
+      "aria-apg"
     ]
   }
 }

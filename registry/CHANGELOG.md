@@ -16,6 +16,42 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.292.0 — 2026-09-10
+
+> **For you:** **The website and the generated docs catch up with the design work** — the design page
+> now explains the eight layers a design system actually has, and why one that can only *add* rules
+> locks your design in.
+
+**The release pass: regenerate everything derived, hand-write only what a generator can't know.**
+
+- **`docs/CHEATSHEET.md` + `docs/SKILLS.md`** regenerated from the manifests. Counts unchanged —
+  **48 skills, 12 agents** — which is the point: seventeen releases of design work and **not one new
+  verb.** Two dormant hooks were added (`component-reuse-guard`, `contrast-guard`) and both are listed
+  by `boss hooks`, which a test now enforces.
+- **The site regenerated**, and `library/practices/accessibility.md` propagates to four pages on its
+  own, because the practice shelf is derived rather than typed.
+- **Two hand-written sections on the design page**, for the two things that genuinely changed what
+  BOSS claims:
+  - **The ladder.** *Tokens are the floor; most systems never build the middle.* Ask what a design
+    system is and you get "tokens and components" — a floor and some walls. That is not what makes two
+    screens feel like one product, and it is **not what Material or the HIG actually are**: those are
+    mostly *patterns with guidance*, the layer nobody ships.
+  - **Emergence.** *A system that can only add rules locks your design in.* Promotion has a threshold
+    and so does demotion — a component nobody imports gets deleted, and **three exceptions to the same
+    rule means the rule is wrong**, not that you have three exceptions. Plus why the composition layer
+    ships **empty**: a type scale handed over on day one, when you know least, is lock-in wearing a
+    best-practice hat.
+
+**Two bugs found by running the release rather than reading it**, both mine, both in the same pass:
+
+- **`npm run gen:site` crashed and deleted most of `site/`** — the two accessibility sources I added
+  to `sources.json` had no `name` field, and the credits block sorts on it. The generator was right to
+  die loudly. Restored, fixed to the real record shape (slug key, `name` / `for` / `kind` / `key`),
+  and **both URLs left `null` on purpose** — that file's own note says inventing a plausible link is
+  the exact failure `/vet` exists to catch.
+- The design page still described the system as it was **seventeen releases ago**, which is the
+  ordinary way a hand-written page rots beside a generated one. That is what a release pass is for.
+
 ## 0.291.0 — 2026-09-10
 
 > **For you:** **Four small seams, each cheap now and expensive later** — strings in one place, one

@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.275.0" />
+<meta name="generator" content="BOSS 0.292.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,52 +70,52 @@
       <div class="body">
         <ol class="releases">
       <li>
-        <div class="rel"><span class="ver">v0.275.0</span><span class="when">2026-09-10</span></div>
-        <p><strong><code>boss help</code> is now in the standing-commands list</strong> — the one place that claims to hold &quot;the commands that always work&quot; did not include the command you reach for when you know nothing. It also now shows its full shape, including <code>--html</code>.</p>
+        <div class="rel"><span class="ver">v0.291.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>Four small seams, each cheap now and expensive later</strong> — strings in one place, one word per concept in your props too, how waiting should <em>feel</em>, and a &quot;wrong if&quot; line on every design principle.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.274.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>the Homebrew command changed — <code>brew install ajeshh/boss/oyeboss</code>.</strong> The formula was called <code>boss</code>, which collides with an existing Homebrew cask of the same name, so brew refused the bare word and made you type the tap path twice. Renaming it fixes that: after <code>brew tap ajeshh/boss</code>, plain <strong><code>brew install oyeboss</code></strong> now works. If you installed under the old name, <code>brew upgrade</code> migrates you — the tap carries the rename map and brew reports <em>&quot;Old Names: boss&quot;</em>. <strong>The command you type is unchanged: still <code>boss</code>.</strong></p>
+        <div class="rel"><span class="ver">v0.290.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>The parts of a product nobody designs now get asked about.</strong> Your pattern set can seed the three element families that get decided by accident — inputs, data display, icons — and <code>/ux-check</code> asks once what <em>else</em> a user sees: the receipt email, the settings screen, the 404.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.273.0</span><span class="when">2026-09-10</span></div>
-        <p><strong><code>boss help --html</code></strong> — the whole guide as a page, and it describes <em>your</em> project rather than BOSS. Every skill and command on it is one you actually have; the next rung shows as a dimmed preview with what earns it. Written to <code>.boss/help.html</code>, rebuilt from your own install each time you run it. The terminal answers are unchanged and still faster: <code>boss help</code>, <code>boss map</code>, <code>boss status</code>.</p>
+        <div class="rel"><span class="ver">v0.289.0</span><span class="when">2026-09-10</span></div>
+        <p><strong><code>boss craft accessibility</code> is new</strong> — the guidelines BOSS reasons from, so <code>designer</code> can tell you <em>which principle</em> something violates and where to look it up, instead of reciting four rules. Plus <code>contrast-guard</code>: the one accessibility property that is arithmetic, computed over the token pairs you declared.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.272.0</span><span class="when">2026-09-09</span></div>
-        <p><strong><code>/canvas --frame onepager</code></strong> — the smallest thing you can hand to someone outside. The same answers you already gave, as one page of prose for a warm intro or an advisor, with a short honest account of what's actually behind it. It needs at least one <code>EVID</code> record; with none, it tells you that instead of printing a handsome page made of assertions.</p>
+        <div class="rel"><span class="ver">v0.288.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>You get a brand doc that grows instead of one nobody wrote.</strong> <code>docs/BRAND.md</code> — who it's for, what it promises, what it refuses, how it sounds — is seeded by whichever skill needs it first, starts <code>nascent</code>, and gains rows from what real people actually said. It is <strong>not</strong> a design file: the landing page, the fake door, the pitch and the design tokens all read the same one.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.271.0</span><span class="when">2026-09-09</span></div>
-        <p><strong><code>/pretotype</code> is in Quickstart now, not MVP.</strong> Test whether anyone wants the thing without first unlocking the tools for building it — the page-shaped patterns publish a real shareable URL in one turn, no host and no account. Already at MVP? Nothing changes; you had it already. Still in Quickstart? <code>boss sync --apply</code> brings it down to you.</p>
+        <div class="rel"><span class="ver">v0.286.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>Your style guide now asks the four questions that make a page look designed</strong> — which type roles you actually use, your spacing rhythm, how a thing is separated from what's behind it, and what carries emphasis. They ship <strong>empty</strong>, and <code>/design-review</code> fills them by looking at what you've already built rather than handing you a form.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.270.0</span><span class="when">2026-09-09</span></div>
-        <p><code>boss board --detail</code> shows one line per card, and unless you wrote a <code>gist:</code> that line is just whatever sentence happened to open the file. <strong><code>boss records --gists</code></strong> now lists every idea and feature in that state, and <strong><code>/idea gist &lt;ID&gt;</code></strong> reads the record whole and writes a real one — what the thing is and why it matters, in one sentence you'll still recognise in six weeks.</p>
+        <div class="rel"><span class="ver">v0.285.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>A new guard asks the question that keeps a codebase a system: reuse, adjust, or new?</strong> Turn on <code>component-reuse-guard</code> and when a component gets written that isn't in your index, it hands Claude the ones that already exist and asks — before you end up with <code>Button</code>, <code>CTAButton</code> and <code>PrimaryButton</code>.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.269.0</span><span class="when">2026-09-09</span></div>
-        <p>If you wrote a long <code>gist:</code> in an idea record using YAML's folded form (<code>gist: &gt;</code> with the text indented underneath), <code>boss board</code> showed a bare <code>&gt;</code> where the idea should be. Every record like that now reads correctly. Card gists are also clipped consistently now, however they were written.</p>
+        <div class="rel"><span class="ver">v0.284.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>Your product records stop being write-only.</strong> A FEAT now names who it's for and <code>/spec</code> opens that persona; <code>/roadmap</code>'s NO-list stops being deleted with each cycle; <code>/spec</code> reads the current bets and the declined list before it writes; the competitive field says so when it's a quarter stale; and the first user-facing flow also writes a one-page journey map, with the edge users the happy story assumes away.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.268.0</span><span class="when">2026-09-09</span></div>
-        <p>The design-system nudge could fire at high confidence on a project with no design system problem — one file that generates HTML (a report, a mailer, an export) was enough to trip it, because it counted how many TIMES the pattern appeared rather than how many FILES it appeared in. It now needs the styling to have actually spread across three files. Also: <code>docs/loops/</code> shipped a cross-reference link that broke the moment it was installed into your project.</p>
+        <div class="rel"><span class="ver">v0.283.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>Three exceptions to the same rule now means the rule is wrong.</strong> <code>/design-review</code> reads your exceptions table before adding to it, and on the third of a kind it proposes changing the rule instead of recording another departure from it.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.267.0</span><span class="when">2026-09-09</span></div>
-        <p>If you brought BOSS into a repo that already had its own <code>.claude/agents/</code> or skills, <code>boss sync --apply</code> could replace one of your files with BOSS's version and report it in the same words as a routine update. It always kept a backup, but you had no way to tell which files were yours. They now show as <strong><code>? unclaimed</code></strong>, and <strong><code>boss sync --apply --keep-mine</code></strong> leaves every one of them alone while applying everything else.</p>
+        <div class="rel"><span class="ver">v0.282.0</span><span class="when">2026-09-10</span></div>
+        <p><strong><code>/prototype</code> now uses your design system if you have one.</strong> It checks for your components, tokens and patterns first and builds out of them — faster than drawing, and what you get is a preview of what will actually ship. No system yet? It says nothing and keeps moving, which is the right answer at Quickstart.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.266.0</span><span class="when">2026-09-09</span></div>
-        <p>Every rung now names what earns it <em>before</em> you climb — <code>boss unlock mvp</code> and <code>boss unlock v1</code> used to do it in silence, and only Scale ever said its bar out loud. <code>boss status</code> adds one line when everything BOSS can check is in place, and stays quiet otherwise. Separately, ten skills were spending more of your per-turn context than they needed to; MVP projects carry 3.3 KB less on every single turn.</p>
+        <div class="rel"><span class="ver">v0.281.0</span><span class="when">2026-09-10</span></div>
+        <p><strong><code>/spec</code> now asks you to name the flow and cut a step.</strong> Each step says what it asks the user for and why it's needed <em>now</em> — and one that can't answer is the one to cut. Plus the two paths that usually only exist on paper: what the flow looks like for someone with nothing yet, and where they land when a step fails.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.265.0</span><span class="when">2026-09-09</span></div>
-        <p>If you brought BOSS into a repo you'd already built, three of the four day-one agents — <code>coder</code>, <code>mentor-founder</code>, <code>prompt-coach</code> — were installed and named nowhere, so nothing could ever call them. Fixed. <code>boss adopt</code> now also points you at <code>/read-repo</code> first in the file Claude reads, and <code>boss status</code> stopped telling a shipped app to go capture an idea.</p>
+        <div class="rel"><span class="ver">v0.280.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>BOSS now notices when your design has stopped learning.</strong> After three design reviews, if every pattern in your set is still one BOSS handed you, the conscience asks once whether you've now decided something twice. One row in the <strong>Ours</strong> table closes it.</p>
       </li>
       <li>
-        <div class="rel"><span class="ver">v0.264.0</span><span class="when">2026-09-09</span></div>
-        <p>BOSS's own decision records are now in the repo — <code>docs/decisions/</code>, 16 of them, the reasoning behind the licence, the telos, the agent roster, why the conscience never pings you when you're away. The ids the changelog has been citing for a year now resolve.</p>
+        <div class="rel"><span class="ver">v0.279.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>Your brand choices can now be a decision on file, not a memory.</strong> After the five-token distinctiveness pass, <code>/design-tokens-init</code> offers to record the anchor — neutral, radius, type pairing, accent, signature — as a single <code>/decide</code> record with a falsifier. So the next session knows the 2px radius was chosen, not defaulted.</p>
       </li>
     </ol>
         <p class="small">
@@ -160,7 +160,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.275.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.292.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

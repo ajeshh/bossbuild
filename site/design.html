@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.275.0" />
+<meta name="generator" content="BOSS 0.292.0" />
 <link rel="canonical" href="https://oyeboss.build/design" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -212,6 +212,72 @@
     </section>
 
     <section class="section">
+      <div class="rail">▸<span>the ladder</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Tokens are the floor. Most systems never build the middle.</h2>
+          <p>
+            Ask what a design system is and you get &ldquo;tokens and components.&rdquo; That is a floor
+            and a set of walls. It is not what makes two screens feel like one product, and it is not
+            what Material or the Human Interface Guidelines actually are &mdash; those are mostly
+            <strong>patterns with guidance</strong>, which is the layer nobody ships.
+          </p>
+          <p>
+            BOSS holds eight, and names them so you can tell which one you are missing:
+          </p>
+          <ul class="tight">
+            <li><strong>Brief</strong> &mdash; why it looks like this. The brand, which is
+              <em>upstream</em> of design and belongs to no single lens.</li>
+            <li><strong>Foundations</strong> &mdash; colour, spacing, type, radius, elevation. All five
+              enforced, not one.</li>
+            <li><strong>Components</strong> &mdash; an index the agent <em>opens</em>, rather than a rule
+              it is asked to remember.</li>
+            <li><strong>Patterns</strong> &mdash; a recurring decision with a rule. The missing middle.</li>
+            <li><strong>Flows</strong> &mdash; the sequence, and which step to cut.</li>
+            <li><strong>Content</strong> &mdash; voice, tone, one word per concept.</li>
+            <li><strong>Visibility</strong> &mdash; the thing you can look at.</li>
+            <li><strong>Learning</strong> &mdash; how the language grows from what you actually built.</li>
+          </ul>
+          <p>
+            The last one is the point. <strong>A pattern is named when the same decision comes up
+            twice</strong> &mdash; once is a choice, twice is a pattern &mdash; and BOSS notices when
+            three design reviews have happened and your product has never named one of its own.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>emergence</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>A system that can only add rules locks your design in</h2>
+          <p>
+            Every design system knows how to add. Almost none know how to take something back &mdash;
+            and a system that only ever ratchets tighter is lock-in, no matter how sensibly each
+            individual rule arrived.
+          </p>
+          <p>
+            So promotion has a threshold and <strong>so does demotion</strong>. A component nobody
+            imports gets deleted. A token nothing references is dead. And
+            <strong>three exceptions to the same rule means the rule is wrong</strong> &mdash; not that
+            you have three exceptions. A rule with three standing exceptions is not being followed, it
+            is being worked around, and the working&#8209;around is the real convention now.
+          </p>
+          <p>
+            The same instinct governs what BOSS refuses to decide <em>for</em> you. The composition
+            layer &mdash; type roles, rhythm, surface language, hierarchy &mdash; ships
+            <strong>empty</strong>. It names the slot and leaves the value to you, because a type scale
+            handed over on day one, when you know least, is lock&#8209;in wearing a best&#8209;practice
+            hat. A named blank is not a gap. It is a decision that exists whether or not anyone looked
+            at it, made <em>noticeable</em> &mdash; and the slots get filled by reading back what you
+            already built, never by handing you a form.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>the library</span></div>
       <div class="body">
         <div class="prose">
@@ -403,7 +469,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.275.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.292.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

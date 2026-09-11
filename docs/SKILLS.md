@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.275.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.292.0**.
 
 ## Quickstart
 
@@ -32,7 +32,7 @@
 - **`/log`** — Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you  _(/log <one-line summary or detailed entry>)_
 - **`/close`** — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)  _(/close)_
 - **`/evals`** — Build and run the eval set for an AI-mediated FEAT — "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to LLM-mediated control-flow in your app — look at your data, build the eval set FIRST, categorize failures by mode, vibes-based eval is only a starting point  _(/evals [FEAT-NNN | --new <feat>])_
-- **`/design-tokens-init`** — Scaffold the minimal three-layer design token system at the first UI commit  _(/design-tokens-init)_
+- **`/design-tokens-init`** — Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two  _(/design-tokens-init)_
 - **`/ai-cost`** — Establish AI spend discipline for your app — declare per-user / per-feature / monthly budgets, name the model choices, wire a per-call cost logger, set a review cadence  _(/ai-cost)_
 - **`/cost-review`** — Read the AI cost ledger and produce a dated review  _(/cost-review)_
 - **`/ai-first-init`** — Bake the AI-first discipline into your app from day one  _(/ai-first-init)_
