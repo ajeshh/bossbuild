@@ -154,7 +154,7 @@ list of what each mode includes lives where it can't go stale:
 ```bash
 # pick one — all three put `boss` on your PATH (zero runtime deps)
 npx oyeboss new my-app        # no install; try it first
-npm install -g oyeboss        # the usual
+npm install -g oyeboss        # the usual — macOS, Linux, Windows
 brew install ajeshh/boss/oyeboss   # macOS, via the tap
 
 # already have the old package? uninstall first — both provide `boss`, so npm refuses to relink
@@ -177,9 +177,11 @@ claude                          # open Claude Code (terminal or editor panel)
 > /prototype <your idea>        # or just hit go — BOSS builds the smallest clickable version to react to
 ```
 
-**Where it runs:** wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains. The CLI
-sets the project up; the skills and the conscience run inside Claude Code, and Claude's own
-extension installs in VS Code and its forks (Cursor, Kiro, …). Nothing BOSS ships is editor-specific.
+**Where it runs:** wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains — on
+macOS, Linux and Windows. The CLI sets the project up; the skills and the conscience run inside
+Claude Code, and Claude's own extension installs in VS Code and its forks (Cursor, Kiro, …). Nothing
+BOSS ships is editor-specific, and [CI](https://github.com/ajeshh/bossbuild/actions/workflows/ci.yml)
+runs the unit suite and a scaffold-to-hook smoke on all three OSes.
 
 **Contributing / want the source?** `git clone https://github.com/ajeshh/bossbuild.git && cd bossbuild
 && npm install -g .` links your checkout globally. `npm run release` is the gate every change has to

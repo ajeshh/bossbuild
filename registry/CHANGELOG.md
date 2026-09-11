@@ -31,6 +31,22 @@ realpathSync(fileURLToPath(import.meta.url))`); all three use it now, and
 
 Internal tooling; nothing a founder installs changes. Unit tests 398 → 399.
 
+**Then the matrix went green on all six cells** — the Windows smoke ran `boss new` → `boss id` →
+`boss unlock mvp` → status / board / records → the conscience hook, for the first time anywhere but
+a Mac — and the README and site now say *macOS, Linux, Windows*, with the workflow linked as the
+thing that makes the sentence checkable.
+
+**One gap remains, and it is now precisely known rather than suspected.** Claude Code's docs:
+native Windows *"requires none; Git for Windows is optional"*, and shell-form hooks run through
+*"Git Bash on Windows, or PowerShell when Git Bash isn't installed."* In PowerShell,
+`$CLAUDE_PROJECT_DIR` is an undefined PowerShell variable, so the shipped
+`node "$CLAUDE_PROJECT_DIR/.claude/hooks/conscience.js"` runs `node "/.claude/hooks/…"` and the
+conscience never fires, silently, for a Windows founder without Git Bash. The documented fix is
+**exec form** (`"command": "node", "args": ["${CLAUDE_PROJECT_DIR}/…"]` — no shell, placeholder
+substituted by Claude Code itself), which shipped in **Claude Code 2.1.139**. Switching the template
+sets that as BOSS's floor; older Claude Codes would run bare `node`. A decision, recorded in
+IDEA-095 and RESUME — not flipped here.
+
 ## 0.297.0 — 2026-09-11
 
 > **For you:** **the conscience now reads your files the same on Windows** — CRLF line endings no
