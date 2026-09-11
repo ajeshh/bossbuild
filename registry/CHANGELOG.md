@@ -16,6 +16,46 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.282.0 — 2026-09-10
+
+> **For you:** **`/prototype` now uses your design system if you have one.** It checks for your
+> components, tokens and patterns first and builds out of them — faster than drawing, and what you
+> get is a preview of what will actually ship. No system yet? It says nothing and keeps moving,
+> which is the right answer at Quickstart.
+
+**The seam that was structurally impossible to cross.** IDEA-091 part 7 — the closer, and the last
+of the seven.
+
+`/design-library` says a prototype should compose the components that exist rather than redraw them.
+`/prototype` lives two rungs below at Quickstart and **had no way to ever learn that.** So the first
+visual thing a founder makes was off-system by construction, and stayed off-system every time they
+prototyped after that — which is often, because prototyping does not stop when building starts.
+
+- **A look-before-you-draw step**, reading `COMPONENTS.md` (or the V1 library), `DESIGN_TOKENS.md`
+  and `PATTERNS.md`. Present → compose from them. Absent → **say nothing and keep moving.**
+- **Silence at Quickstart is the correct behaviour, not a gap.** A prototype there is *supposed* to
+  be off-system, and sending a founder to build a token system before they can see their idea would
+  invert the whole skill.
+- **Framed as a speed-up, because that is what it is.** The library is a pile of working, on-brand
+  HTML. **Copying is faster than drawing**, and what you get is a preview of what will ship rather
+  than a picture of something adjacent to it.
+- **Every prototype is labelled `on-system` or `sketch` in the file itself.** Both are legitimate.
+  What is not is a mockup that *looks* like a design decision and silently isn't — prose is obviously
+  incomplete, while a mockup is a confident, complete-looking answer the implementation will
+  reproduce faithfully, raw hexes and all.
+
+**This closes IDEA-091.** Seven parts, seven releases, **one new loop and no new verbs** — the rest
+were rung moves, compositions and edits to surfaces that already existed. The ladder that had a floor
+and a roof now has its middle: brief (v0.279.0) · foundations (v0.277.0) · components (v0.276.0) ·
+patterns (v0.278.0) · flows (v0.281.0) · content (already strong) · visibility (already strong) ·
+learning (v0.280.0).
+
+**Four corrections landed alongside**, all of the same family this practice keeps producing — a
+claim outliving its mechanism: a `design-drift-loop` overstatement sitting in always-on agent
+context, a stale "read the component directory" instruction, a `capture` moment voicing the wrong
+loop's words, and a test whose body contradicted its own name. **The method that found all four was
+the same: when a fact changes, grep the string.**
+
 ## 0.281.0 — 2026-09-10
 
 > **For you:** **`/spec` now asks you to name the flow and cut a step.** Each step says what it asks

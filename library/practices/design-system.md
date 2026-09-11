@@ -514,4 +514,13 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
   say**, because a clean review is evidence about states and legibility and close to none about
   whether the sequence is right.
 
+- ✅ **The prototype seam** (v0.282.0) — `/prototype` looks for a design system before it draws one,
+  and composes from it when one exists. It lives at Quickstart where there is usually nothing to
+  find, and **silence is the correct behaviour there, not a gap**: sending a founder to build a token
+  system before they can see their idea would invert the skill. The point is a speed-up, not a
+  discipline — *copying is faster than drawing, and what you get is a preview of what will ship
+  instead of a picture of something adjacent to it.* Every prototype is now labelled **on-system** or
+  **sketch** in the file itself, because a mockup that looks like a design decision and silently
+  isn't is the one artifact an implementation will reproduce faithfully, raw hexes and all.
+
 **Nothing on this list is open.** Verified against the filesystem, not against this doc.

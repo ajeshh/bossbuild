@@ -64,12 +64,37 @@ it. Everything else can come after."*
   install"*, not *"a Vite stack."* Name it as a speed pick they can change, not a decision made for
   them. (If the project already chose a stack, respect it unless it'd slow the sketch down.)
 
+**3.5. Look for a design system before you draw one.** This skill lives at Quickstart, where there
+is usually nothing to find — and *that is the common case, so check fast and move on.* But a founder
+keeps prototyping long after they start building, and when they do, the system is right there:
+
+- **`docs/design/COMPONENTS.md`** (or `docs/design/library/` at V1) — the components that exist, with
+  the import line for each.
+- **`docs/design/DESIGN_TOKENS.md`** — the values.
+- **`docs/design/PATTERNS.md`** — what an empty state says, what a destructive confirm names.
+
+If they exist, **compose from them.** This is the cheapest speed-up in the skill and it is worth
+saying as a selling point rather than a discipline: the library is a pile of working, on-brand HTML
+and components. **Copying is faster than drawing, and what you get is a preview of what will actually
+ship instead of a picture of something adjacent to it.**
+
+If they don't exist, **say nothing and keep moving.** A prototype at Quickstart is *supposed* to be
+off-system, and sending a founder to go build a token system before they can see their idea would
+invert this entire skill. Silence is the correct behaviour, not a gap.
+
 **4. Build the minimal slice.** Just the core thing, made real. Use mock/sample data freely — the
 point is tangibility, not a backend. **Don't gold-plate a throwaway** — tangible beats pretty (it's a
 sketch). Skip the design polish by default; only if the sketch is becoming something you'll keep (or
 an `eng-builder`/design-minded cohort asks) reach for the 5-token distinctiveness pass from
 `/design-tokens-init`. Keep it in a clearly-a-sketch place (`prototype/` if the repo has other code;
 root if it's empty).
+
+**Label it, once, in the file itself.** A prototype is either **on-system** (it imports the tokens
+and uses the real components) or a **sketch** (it doesn't, and decides nothing). Both are legitimate.
+What is not legitimate is a mockup that *looks* like a design decision and silently isn't — because
+prose is obviously incomplete while a mockup is a confident, complete-looking answer the
+implementation will reproduce faithfully, raw hexes and all. One HTML comment at the top is enough.
+If the project has `docs/design/PROTOTYPES.md`, add the row there with the same status.
 
 **4.5. Commit it, before you run it.** `git init` if the folder isn't a repo yet, then commit the
 sketch. One line, no lecture: *"committed — you can always get back to this version."* This is the
