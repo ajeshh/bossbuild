@@ -257,6 +257,65 @@ the same pass.** Not a deprecation window, not SemVer, not an RFC — those are 
 consuming teams, and unearned ceremony for one person. Just: it's dead, and you can see that it's
 dead, so remove it while you're looking at it.
 
+### Composition — the layer between tokens and a page (added v0.286.0)
+
+Tokens say what a colour *is*. Components say what a button *is*. Patterns say what to do in a
+*situation*. **Nothing said what a page is** — and that is the difference between an interface that is
+*consistent* and one that looks *designed*. It is also the gap a founder feels without being able to
+name it; Ajesh's own list arrived as three separate-sounding topics — typography, layout, materials —
+that turn out to be one hole.
+
+**It did not need a new artifact.** `STYLE_GUIDE.md` has always described itself as *how the tokens
+compose*; it was missing three of its four slots and carried the fourth as three blank lines. So this
+completes a document rather than adding one, and **subtracts** the thin *Density & rhythm* section into
+the slot that supersedes it.
+
+| Slot | The question it makes noticeable |
+|---|---|
+| **Type roles** | which faces, when, why — and *how many roles does this product actually have?* Most need two, not four; more roles is the commonest way a young interface starts looking unresolved |
+| **Rhythm** | the base step, the steps actually used, the measure, the container, the density |
+| **Surface language** | border · shadow · fill · space alone · nothing — **which one is primary**, not which ones exist |
+| **Hierarchy** | size · weight · colour · space · position — and *in what order*, everywhere. The slot that most decides whether it looks designed |
+
+**The rule that shapes all of it: name the slot, earn the value.** The founder's own framing —
+*"we're not trying to lock it in, but helping one emerge"* — has a concrete consequence here: **this
+layer must not ship a type scale.** A ratio handed to someone on day one, when they know least, is
+lock-in wearing a best-practice hat. A named blank is not a gap; it is a decision that exists whether
+or not anyone looked at it, made **noticeable**.
+
+**And the slots get filled by reading, not by asking.** `/design-review` step 4a looks at what is
+already built and says what the product *appears to have decided* — marked **`observed`**, which is a
+description the founder can still change their mind about, as distinct from **`declared`**, which is a
+decision to defend. Graduating a row from one to the other is the founder's act. **An inconsistency
+found while reading is the most useful output** — *"everything is a border except one shadow"* has two
+honest resolutions, and the second (*"border, and shadow for things that float"*) is usually right and
+never written down.
+
+### The definition layer is now surface-gated (added v0.286.0)
+
+🔴 **The finding that occasioned it:** `/design-review` and `/ux-check` branch on `shape` from
+`.boss/config.json`. **`/design-tokens-init` and `/design-library` never read it** — every `shape` in
+those files is the English word. So BOSS *built* a three-layer colour cake and an HTML component
+gallery for founders whose surface is a terminal, and then correctly *refused to review it*.
+
+**Building a system for a surface you will not review is the ceremony Principle #2 exists to prevent**,
+and it is the same bug `/design-review`'s own Step 0 records fixing for itself — *"`/ux-check` has
+always done this and this skill never did."* **The fix was applied to one skill and never asked of its
+neighbours**, which is the generalizable half: when a skill fixes a class of bug, the next question is
+which of its siblings has it.
+
+The split the gate uses was already written down; it just wasn't applied where the system is built:
+
+- **Universal, every surface:** hierarchy · contrast · the five states · one word per concept · error
+  copy that says what to do next · reuse before creation.
+- **`cli`/`dev-tool`:** no colour cake — colour is a *capability that may be absent* (`NO_COLOR`, a
+  pipe, a CI log), so it can never carry meaning. Still write the style guide: terminology, voice, the
+  five states in CLI form, and hierarchy as *what the eye finds first in a wall of text*. **A real
+  design system that isn't a visual one.**
+- **`agent`/`chatbot`:** the surface is the transcript, so the content half is the whole system.
+- **`mobile-app`:** the slots hold; the units and mechanics don't (pt/dp, Dynamic Type reflow, safe
+  areas, touch targets).
+
 ### Reuse, adjust, or new — the decision that actually happens (added v0.285.0)
 
 *Twice is a pattern* governs **promotion**, and promotion is rare. The decision that lands **every

@@ -94,6 +94,12 @@ moments that matter most. It is in scope for you.
    the filter that fails. If the index is missing and components exist, say so and offer to write it
    (`/design-tokens-init` carries the skeleton). At V1 `/design-library` generates the same fields
    from the code — read the manifest instead, and never both.
+4b. **Read the Composition slots in `STYLE_GUIDE.md` before you make a page-level choice.** Type
+   roles, rhythm, surface language, hierarchy — these are what make two screens feel like one product,
+   and a blank slot is a question, not permission. If a slot is blank and this work answers it, say
+   what the product *appears to have decided* and offer to record it as `observed`. **Never invent a
+   value for an empty slot** — an unearned ratio written into a style guide is read by every future
+   turn as a decision somebody made.
 5a. **Read `docs/design/FLOWS.md` before designing a screen that sits in a sequence.** A flow
    composes with the ones already there; it does not get to invent a second navigation model. And
    when you review a flow, **your highest-value question is not a heuristic — it is whether a step

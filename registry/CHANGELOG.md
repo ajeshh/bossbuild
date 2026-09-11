@@ -16,6 +16,65 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.286.0 — 2026-09-10
+
+> **For you:** **Your style guide now asks the four questions that make a page look designed** — which
+> type roles you actually use, your spacing rhythm, how a thing is separated from what's behind it, and
+> what carries emphasis. They ship **empty**, and `/design-review` fills them by looking at what you've
+> already built rather than handing you a form.
+
+**Tokens say what a colour is. Components say what a button is. Nothing said what a *page* is.**
+
+That is the difference between an interface that is *consistent* and one that looks *designed* — and
+it is the gap a founder feels without being able to name it. Ajesh's list arrived as three
+separate-sounding topics (typography, layout, materials) that are one hole.
+
+**It needed no new artifact.** `STYLE_GUIDE.md` has always described itself as *how the tokens
+compose*; it was missing three of its four slots and carried the fourth as three blank lines. So this
+completes a document and **subtracts** the thin *Density & rhythm* section into the slot that
+supersedes it.
+
+| Slot | What it makes noticeable |
+|---|---|
+| **Type roles** | which faces, when, why — and how many roles this product *actually* has. Most need two, not four; more is the commonest way a young interface starts looking unresolved |
+| **Rhythm** | base step · steps actually used · measure · container · density |
+| **Surface language** | border · shadow · fill · space alone · nothing — **which is primary**, not which exist. Mixing all five is what generated UI does by default, and it is what makes an interface look unresolved |
+| **Hierarchy** | size · weight · colour · space · position — and in what order, *everywhere*. The slot that most decides whether it looks designed |
+
+**The governing rule, and it is the founder's own: name the slot, earn the value.** *"We're not trying
+to lock it in, but helping one emerge."* The concrete consequence — **this layer does not ship a type
+scale.** A ratio handed to someone on day one, when they know least, is lock-in wearing a
+best-practice hat. **A named blank is not a gap**; it is a decision that exists whether or not anyone
+looked at it, made *noticeable*.
+
+**And the slots get filled by reading, not asking.** `/design-review` step 4a looks at what is already
+built and says what the product *appears to have decided* — marked **`observed`** (a description you
+can still change your mind about) rather than **`declared`** (a decision to defend). Graduating a row
+between them is the founder's act. **The inconsistency found while reading is the most useful output:**
+*"everything is a border except one shadow"* has two honest resolutions, and the second — *"border, and
+shadow for things that float"* — is usually right and never written down. At most two slots per review;
+all four at once is the form we just refused.
+
+**🔴 Same release: the definition layer stops being surface-blind.**
+
+`/design-review` and `/ux-check` branch on `shape` from `.boss/config.json`. **`/design-tokens-init`
+and `/design-library` never read it** — every `shape` in those files is the English word. So BOSS has
+been **building a three-layer colour cake and an HTML component gallery for founders whose surface is a
+terminal, and then correctly refusing to review it.**
+
+Building a system for a surface you will not review is the ceremony Principle #2 exists to prevent —
+and it is the *same bug* `/design-review`'s Step 0 records fixing for itself: *"`/ux-check` has always
+done this and this skill never did."* **The fix was applied to one skill and never asked of its
+neighbours.** That is the part worth carrying: when a skill fixes a class of bug, the next question is
+which of its siblings has it.
+
+New Step 0b uses the split that was already written down: **universal** (hierarchy, contrast, the five
+states, one word per concept, error copy, reuse-first) versus **per-surface** — `cli`/`dev-tool` gets
+no colour cake, because colour is a *capability that may be absent* (`NO_COLOR`, a pipe, a CI log) and
+can never carry meaning, but still gets terminology, voice, the five states in CLI form and hierarchy
+as *what the eye finds first in a wall of text*; `agent`/`chatbot` gets the content half as the whole
+system; `mobile-app` keeps every slot and changes the units.
+
 ## 0.285.0 — 2026-09-10
 
 > **For you:** **A new guard asks the question that keeps a codebase a system: reuse, adjust, or

@@ -48,6 +48,72 @@ The one thing someone could describe about this interface without naming the pro
 - **It is:** <the signature — a typographic choice, a motion, a color relationship, a shape language>
 - **It appears:** <where — and where it deliberately doesn't>
 
+## Composition — four slots, and they start empty on purpose
+
+Tokens say what a colour *is*. Components say what a button *is*. **This says what a page is** — and
+it is the difference between an interface that is *consistent* and one that looks *designed*.
+
+> **A blank slot here is not a gap.** These are decisions that exist whether or not you make them: a
+> product with no answer still has an answer, it just hasn't looked at it. The slot is named so the
+> decision becomes **noticeable** when it happens — not so you fill it in on day one, when you know
+> least. **Name the slot; earn the value.**
+
+Mark each answer **`observed`** (read back off what you already built — the honest default) or
+**`declared`** (you chose it deliberately). The distinction matters: an observed answer is a
+description you can still change your mind about; a declared one is a decision that should be
+defended. Most rows start observed and some graduate.
+
+### 1. Type roles — *which faces, when, and why*
+
+Most products need **two** roles, not four. More roles is the commonest way a young interface starts
+looking unresolved.
+
+| Role | The face | Used for | Deliberately NOT used for | |
+|---|---|---|---|---|
+| Display | | headings that carry the brand | body copy, UI labels | `observed`/`declared` |
+| Body | | anything someone reads | | |
+| UI | | labels, buttons, form fields | long prose | |
+| Mono | | code, ids, numbers you compare | | |
+
+- **The scale:** <how many sizes, and what relates them — a ratio, a set of steps, or "four sizes we
+  picked and stuck to". Any of the three is a real answer; not knowing which is not.>
+- **Type colour:** <which token pairs carry text — `text.body` on `surface.background`, etc. This is
+  not a typography decision, it is a **token pair**, which means it is also the contrast check.>
+
+### 2. Rhythm — *the spacing that makes it feel like one thing*
+
+- **Base step:** <the unit everything is a multiple of>
+- **Steps actually used:** <a scale you use 4 of beats a scale you defined 9 of>
+- **Measure:** <max line length for body text — the single cheapest readability decision there is>
+- **Container:** <how wide does content get, and what happens outside it>
+- **Density:** <comfortable | compact — and where the other one is used>
+
+### 3. Surface language — *how a thing is separated from what is behind it*
+
+There are five ways, and the decision is **which one is primary**, not which ones exist:
+
+> border · shadow · fill · space alone · nothing
+
+- **Primary means:** <one of the five>
+- **Secondary, and when:** <e.g. "shadow only for things that float above the page — menus, dialogs">
+- **Raised means:** <what earns elevation, and what doesn't>
+
+**Mixing all five is what makes an interface look unresolved**, and it is what generated UI does by
+default, because each screen picks whichever the model reached for that turn.
+
+### 4. Hierarchy — *what makes the most important thing most important*
+
+The one slot that most decides whether this looks designed. There are five levers — **size, weight,
+colour, space, position** — and a product should reach for them **in the same order everywhere.**
+
+- **Our order:** <e.g. "space first, then size, then weight — colour is never the primary carrier,
+  because it can't be the only signal anyway">
+- **What we never use for emphasis:** <e.g. all-caps, italics, more than one accent on a screen>
+
+> Colour cannot be your primary hierarchy lever even if you want it to be — *nothing communicated by
+> colour alone* is already in the accessibility floor below. The two constraints agree, which is
+> usually a sign the rule is real.
+
 ## Composition patterns
 
 How tokens combine. One row per recurring pattern; add as they emerge, don't invent up front.
@@ -75,12 +141,6 @@ and they're the two users hit first on a slow network or a fresh account.
 A prose checklist is something a reviewer has to remember to check; a naming convention makes a
 missing state something you can **enumerate**. Same requirement, moved from filter to boundary, for
 the price of a naming rule.
-
-## Density & rhythm
-
-- **Spacing scale in use:** <which steps — a scale you use 4 of beats a scale you defined 9 of>
-- **Line length:** <max measure for body text>
-- **Default density:** <comfortable | compact — and where the other one is used>
 
 ## Accessibility floor (not negotiable, not a phase)
 

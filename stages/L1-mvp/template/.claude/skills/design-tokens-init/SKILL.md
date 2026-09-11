@@ -24,6 +24,38 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 **Rung: MVP.** Applies only when the project starts accumulating UI. If this project is **earlier** than that, don't run this — leave the seam instead:
 **Name the first color for what it MEANS, not what it looks like — `action.primary`, not `indigo-600`. One habit, zero files.** That is the whole ask; it is *not* a three-layer token architecture, a style dictionary pipeline, a semantic layer, a component library. Nothing is technically lost — but the cost is the only one on this list that compounds per screen. Retrofitting is linear in UI you already generated, and an agent generating screen forty has forty precedents telling it to invent a new blue.
 
+## Step 0b — read the shape before you build the system
+
+Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). **`/design-review`
+and `/ux-check` have always done this and this skill never did** — so BOSS has been *building* a
+three-layer colour token cake and an HTML component gallery for founders whose surface is a terminal,
+and then correctly refusing to *review* it. Building a system for a surface you will not review is the
+ceremony Principle #2 exists to prevent, and it is the same bug `/design-review` fixed for itself.
+
+**What is universal, whatever the surface** — do these for everybody: hierarchy · contrast · the five
+states · one word per concept (terminology) · error copy that says what to do next · reuse before
+creation.
+
+**What is per-surface:**
+
+- **`cli` / `dev-tool` with no GUI alongside** — there is no colour layer-cake for terminal output:
+  colour is a capability that may be absent (`NO_COLOR`, a pipe, a CI log), so it can never be the
+  carrier of meaning. Skip tokens, radius, elevation and surface language entirely. **Write the style
+  guide anyway** — terminology (one verb per concept across every command), voice (what an error
+  says), the five states in their CLI form (no output / in progress / partial / failed / needs input),
+  and hierarchy as *what the eye finds first in a wall of text*. That is a real design system; it just
+  isn't a visual one.
+- **`agent` / `chatbot` with no screen** — the surface is the **transcript**, so the content half *is*
+  the whole system: voice, tone, terminology, what it says when uncertain, when refusing, before
+  something irreversible. Type, layout and surface language are nil. Do not scaffold tokens.
+- **`mobile-app`** — tokens, the three layers and every composition slot hold. The **units and the
+  mechanics** don't: pt/dp rather than px, Dynamic Type / font-scale reflow instead of a fixed type
+  scale, safe areas in the rhythm slot, and touch targets as a floor with no web equivalent.
+- **Web / desktop GUI, or a GUI shape alongside any of the above** — everything below applies as
+  written.
+- **No shape declared** — ask one line (*"is there a screen here, or is this a CLI/API?"*) rather than
+  assuming a browser. Don't send them to `/canvas` to find out.
+
 ## When to run it
 
 - `design-tokens-loop` is open (UI exists, no tokens file).

@@ -47,8 +47,8 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
 2. **Read the system.** `docs/design/DESIGN_TOKENS.md` (authoritative tokens), `docs/design/
    STYLE_GUIDE.md` (how tokens compose into patterns), `docs/ideas/CANVAS.md` (Promises cell —
    the brand anchor), **`docs/design/COMPONENTS.md`** (the component index at MVP, superseded by
-   **`docs/design/library/manifest.json`** at V1 — read whichever exists, never both), and
-   **`docs/design/PATTERNS.md`** (the pattern set — see step 4b).
+   **`docs/design/library/manifest.json`** at V1 — read whichever exists, never both), **`docs/design/PATTERNS.md`** (the pattern set — see step 4b), and `STYLE_GUIDE.md`'s
+   **Composition** slots (see step 4a).
 
    **If `PATTERNS.md` does not exist, this is the run that creates it.** Seed it from
    [`templates/pattern-set.md`](templates/pattern-set.md) with the rows that apply to *this*
@@ -96,6 +96,30 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
      - **If the FEAT is AI-mediated, the copy the model will generate at runtime is in scope** —
        system prompt, refusal and hedge language, retry and rate-limit messages, the words before an
        irreversible action. That copy ships to users and usually nobody reviewed it.
+4a. **Fill a composition slot by reading, never by asking.** `STYLE_GUIDE.md`'s **Composition**
+   section has four slots — type roles, rhythm, surface language, hierarchy — and they ship empty on
+   purpose. **Do not hand the founder a form.** Every one of them already has a de-facto answer
+   sitting in the code, and your job is to read it back so an implicit decision becomes a visible one.
+
+   Look at what is in front of you plus what is already built, and say what the product *appears to
+   have decided*:
+
+   > *"You're using two type roles, not four. Everything raised uses a border — except the menu,
+   > which uses a shadow. And what carries emphasis is space, consistently. Want those written down
+   > as `observed`?"*
+
+   **Mark it `observed`, not `declared`.** An observed answer is a description the founder can still
+   change their mind about; a declared one is a decision to defend. Graduating a row from observed to
+   declared is *their* act, not yours — and it is the moment the slot stops being a reading and starts
+   being a rule.
+
+   **An inconsistency you find while reading is the most useful thing here** — *"everything is a
+   border except one shadow"* is exactly the finding, and it has two honest resolutions: the shadow is
+   wrong, or the rule is *"border, and shadow for things that float."* Offer both; the second is
+   usually right and nobody ever writes it down.
+
+   **Fill at most one or two slots per review.** All four at once is the form you just refused.
+
 4b. **Name the pattern, not just the fix.** Pass two produces findings about *this* screen. Before
    you write them up, ask the question that makes them compound: **is this decision going to come up
    again?**
