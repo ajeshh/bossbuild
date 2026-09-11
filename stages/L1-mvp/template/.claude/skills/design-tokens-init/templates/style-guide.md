@@ -33,6 +33,10 @@ act on a principle; it can only act on a rule.**
 - **Why:** <what this buys the user, and what you're giving up to get it>
 - **Guideline:** <how to approach it — e.g. "notifications are opt-in and batched daily">
 - **Rules:** <checkable instructions — e.g. "no unread-count badges; no red dots; no auto-playing motion">
+- **Wrong if:** <the cheapest thing you'd expect to see if this principle is wrong — e.g. "people
+  keep asking where the notifications went". A principle is a decision, and every other decision here
+  carries a falsifier. Without one it can only ever be reaffirmed, and a rule that can only be
+  reaffirmed is how a design system stops being able to learn.>
 
 ### 2. <Principle>
 - **Why:** … · **Guideline:** … · **Rules:** …

@@ -133,6 +133,19 @@ even if they can't say why.
 - **Icon alone or icon plus label:** <when each. An icon-only button needs an accessible name either way>
 - **What an icon never does:** <e.g. carry meaning nothing else carries — see the accessibility floor>
 
+### Waiting — how it feels, which is a design decision and not an engineering one
+
+Perceived speed is mostly composition, not milliseconds, and for an AI product it is the **dominant
+felt quality** — a model that takes four seconds and shows its work reads as faster than one that
+takes two behind a spinner.
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **Skeleton over spinner** | you know the shape of what's coming | show the shape; the page stops jumping when it arrives | a centred spinner that reflows everything on resolve |
+| **Optimistic for the reversible** | an action that almost always succeeds | show it as done, reconcile quietly, and say so clearly if it failed | a modal blocking on a round trip that works 99.9% of the time |
+| **Stream, don't accumulate** | model output | show it as it arrives | a spinner, then a wall of text |
+| **Name the wait past ~10s** | anything genuinely slow | say what is happening and roughly how long | an indeterminate bar with no end and no explanation |
+
 ## Ours — patterns this product grew
 
 The most valuable section, and it starts empty on purpose. A row lands here when the same decision

@@ -16,6 +16,39 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.291.0 — 2026-09-10
+
+> **For you:** **Four small seams, each cheap now and expensive later** — strings in one place, one
+> word per concept in your props too, how waiting should *feel*, and a "wrong if" line on every design
+> principle.
+
+**The last four gaps from the design audit, and none of them needed a mechanism.** Each is a seam:
+name it now, pay nothing; skip it, and the retrofit is linear in everything you've already built.
+
+- **Strings live in one place** — a new row in the seed-that-scales table, and the content half's
+  version of *component boundaries*. **Emphatically not a localization system**: no locale files, no
+  pluralization rules, no translation pipeline until a second language is something a real person
+  asked for. The seam is one habit — user-facing text comes from somewhere rather than being typed
+  inline — and it compounds with the terminology table, which only becomes *mechanically* checkable
+  once the strings are in one place to check. Extracting them later touches every screen an agent has
+  ever generated.
+- **The component API is part of the system.** `COMPONENTS.md` recorded what a component looks like
+  and nothing about how it is **called** — `variant` here, `type` there, `onClick` beside `onPress`,
+  `disabled` next to `isDisabled`. That is **pattern reinvention moved one level in**, from what
+  components look like to how they are invoked, and it inherits terminology's best property: **it is a
+  word list, so it is greppable.** The template's example table is a *shape*, not a recommendation —
+  whatever your components already say is the right answer, unless they disagree with each other, in
+  which case picking one is the work.
+- **Waiting is a design decision, not an engineering one.** Skeleton over spinner (the page stops
+  jumping) · optimistic for the reversible · stream rather than accumulate · name any wait past ~10
+  seconds. For an AI product this is the **dominant felt quality**: a model that takes four seconds and
+  shows its work reads as faster than one that takes two behind a spinner.
+- **Every design principle now carries a "Wrong if".** Patterns evolve, components retire, rules get
+  demoted after three exceptions — and principles could only ever be reaffirmed. Every other decision
+  in BOSS carries a falsifier; these didn't. *"Calm over engaging — **wrong if** people keep asking
+  where the notifications went."* **A rule that can only be reaffirmed is how a design system stops
+  being able to learn**, which is the same argument v0.283.0 made for exceptions, pointed one level up.
+
 ## 0.290.0 — 2026-09-10
 
 > **For you:** **The parts of a product nobody designs now get asked about.** Your pattern set can

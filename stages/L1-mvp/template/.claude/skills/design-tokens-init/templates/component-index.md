@@ -62,6 +62,29 @@ updated: {{DATE}}
 disabled / empty+loading). A dash means none are missing. Leaving the column blank is not the same
 as a dash — an unfilled cell means nobody checked.
 
+## The API is part of the system too
+
+The table above records what a component *looks like*. The other half is **how it is called**, and it
+is the half a developer feels every day and a design review never looks at: `variant` here and `type`
+there, `onClick` beside `onPress`, `disabled` next to `isDisabled`.
+
+This is **pattern reinvention moved one level in** — from what components look like to how they are
+invoked — and it inherits terminology's best property: **it is a word list, so it is greppable.**
+
+**One word per concept, in props too:**
+
+| Concept | We call it | Never |
+|---|---|---|
+| the visual variation | `variant` | `type`, `kind`, `style`, `appearance` |
+| the primary action handler | `onClick` | `onPress`, `onSelect`, `handleClick` |
+| the off state | `disabled` | `isDisabled`, `inactive`, `enabled={false}` |
+| the loading state | `loading` | `isLoading`, `pending`, `busy` |
+
+**Fill this in from what you already have, not from this example** — the table above is BOSS's
+illustration of the *shape*, not a recommendation about which words to pick. Whatever the existing
+components already say is the right answer, unless they disagree with each other, in which case
+picking one is the work.
+
 ## Not a component
 
 Pages and routes do not get rows — they are compositions, not building blocks. The landing page is

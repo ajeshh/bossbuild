@@ -81,7 +81,17 @@ Same shape as *cheapest-reversible* and `/decide`'s falsifier, pointed at design
 | **Component boundaries: element-shaped, not page-shaped** | extracting primitives later is a rewrite | no — it's a naming habit |
 | **Five states as structure**, not a review checklist | retrofitting empty/loading/error touches every component | low |
 | **Terminology: one word per concept** | renaming a core noun later hits copy, routes, schema, tests | no — it's a list |
+| **User-facing strings live in one place** | extracting them later touches every screen ever generated | no — it's a habit, not a library |
 | Motion, theming, density, versioning, a component library | cheap to add when earned | **yes — defer** |
+
+**The strings row is the content half's version of component boundaries**, added v0.291.0 and easy
+to mistake for premature i18n. It is not: **the seam is one habit — user-facing text comes from one
+place rather than being typed inline — and it is emphatically NOT a localization system.** No locale
+files, no pluralization rules, no translation pipeline until a second language is something a real
+person has asked for. The asymmetry is the familiar one: the habit costs nothing at seed, and
+retrofitting extraction across every screen an agent has generated is a rewrite. It also compounds
+with the terminology table, which only becomes *mechanically* true — one word per concept — once the
+strings are in one place to check.
 
 **Component boundaries is the one most often missed, and it's the most expensive.** Ask an AI for a
 screen and you get a page-shaped component — `DashboardPage.tsx` with its own buttons, cards and
