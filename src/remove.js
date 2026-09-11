@@ -23,6 +23,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, rmSync, statSync,
 import { join, relative, sep } from 'node:path';
 import { STAGES_DIR, BOSS_HOME } from './paths.js';
 import { sameAsTemplate, readStageManifest } from './scaffold.js';
+import { hookKey } from './sync.js';
 
 const MARKER = /<!-- boss:[^>]*? start -->[\s\S]*?<!-- boss:[^>]*? end -->\n?/g;
 
@@ -162,7 +163,7 @@ function planSettings(projectDir, layers) {
     try {
       const hooks = JSON.parse(readFileSync(t, 'utf8')).hooks || {};
       for (const entries of Object.values(hooks)) {
-        for (const entry of entries || []) for (const h of entry.hooks || []) if (h.command) bossCmds.add(h.command);
+        for (const entry of entries || []) for (const h of entry.hooks || []) if (hookKey(h)) bossCmds.add(hookKey(h));
       }
     } catch { /* skip */ }
   }
@@ -174,7 +175,7 @@ function planSettings(projectDir, layers) {
     const keptEntries = [];
     for (const entry of entries || []) {
       const keep = (entry.hooks || []).filter((h) => {
-        const drop = bossCmds.has(h.command) || /\.claude[/\\]hooks[/\\]conscience\.js/.test(h.command || '');
+        const drop = bossCmds.has(hookKey(h)) || /\.claude[/\\]hooks[/\\](conscience|reentry)\.js/.test(hookKey(h));
         if (drop) removed++;
         return !drop;
       });

@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.298.0" />
+<meta name="generator" content="BOSS 0.300.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,14 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.300.0</span><span class="when">2026-09-11</span></div>
+        <p><strong>the conscience now fires on Windows without Git Bash.</strong> The two hooks BOSS registers moved to Claude Code's exec form — no shell in between — and <code>/boss-sync</code> migrates the old line in existing projects. Needs Claude Code 2.1.139 or newer (<code>claude --version</code>).</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.299.0</span><span class="when">2026-09-11</span></div>
+        <p><strong>BOSS's list of &quot;what generated design looks like&quot; is current again</strong> — it was a 2024 list, and the fix it prescribed had become the 2026 tell. Plus a one-paragraph test that makes <em>sameness</em> visible before you build, and craft floors pre-filled in your style guide so &quot;name the slot&quot; stops withholding facts.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.297.0</span><span class="when">2026-09-11</span></div>
         <p><strong>the conscience now reads your files the same on Windows</strong> — CRLF line endings no longer make your loop specs, devlog and frontmatter invisible to it, and its source globs match on <code>\\</code> paths. A <code>.gitattributes</code> in new projects keeps line endings LF for every cofounder.</p>
       </li>
@@ -108,14 +116,6 @@
       <li>
         <div class="rel"><span class="ver">v0.288.0</span><span class="when">2026-09-10</span></div>
         <p><strong>You get a brand doc that grows instead of one nobody wrote.</strong> <code>docs/BRAND.md</code> — who it's for, what it promises, what it refuses, how it sounds — is seeded by whichever skill needs it first, starts <code>nascent</code>, and gains rows from what real people actually said. It is <strong>not</strong> a design file: the landing page, the fake door, the pitch and the design tokens all read the same one.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.286.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>Your style guide now asks the four questions that make a page look designed</strong> — which type roles you actually use, your spacing rhythm, how a thing is separated from what's behind it, and what carries emphasis. They ship <strong>empty</strong>, and <code>/design-review</code> fills them by looking at what you've already built rather than handing you a form.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.285.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>A new guard asks the question that keeps a codebase a system: reuse, adjust, or new?</strong> Turn on <code>component-reuse-guard</code> and when a component gets written that isn't in your index, it hands Claude the ones that already exist and asks — before you end up with <code>Button</code>, <code>CTAButton</code> and <code>PrimaryButton</code>.</p>
       </li>
     </ol>
         <p class="small">
@@ -161,7 +161,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.298.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.300.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

@@ -162,7 +162,7 @@ test('settings merge is additive and idempotent — a founder keeps their own co
   const first = computeSettingsMerge(dir, ['L0-quickstart']);
   assert.equal(first.changed, true);
   assert.deepEqual(first.merged.permissions.allow, ['Bash(my-tool:*)'], 'the allow list is never widened');
-  const cmds = first.merged.hooks.UserPromptSubmit.flatMap((e) => e.hooks.map((h) => h.command));
+  const cmds = first.merged.hooks.UserPromptSubmit.flatMap((e) => e.hooks.map((h) => [h.command, ...(h.args || [])].join(" ")));
   assert.ok(cmds.includes('my-own-hook.sh'), "the founder's hook survives");
   assert.ok(cmds.some((c) => c.includes('conscience.js')), "BOSS's hook is registered");
 
@@ -177,7 +177,7 @@ test('the v0.18 bash→node hook migration drops the stale command', () => {
     }),
   });
   const cmds = computeSettingsMerge(dir, ['L0-quickstart']).merged.hooks.UserPromptSubmit
-    .flatMap((e) => e.hooks.map((h) => h.command));
+    .flatMap((e) => e.hooks.map((h) => [h.command, ...(h.args || [])].join(" ")));
   assert.ok(!cmds.some((c) => c.includes('conscience.sh')), 'the stale bash entry must be removed');
   assert.ok(cmds.some((c) => c.includes('conscience.js')), 'the node entry must be present');
 });
@@ -1064,4 +1064,27 @@ test('every built page carries the generator stamp check:deployed reads', () => 
   // One build, one version. Mixed stamps mean a partial regeneration, which would make the deployed
   // check answer differently depending on which page it happened to fetch.
   assert.equal(stamps.size, 1, `pages disagree about the build version: ${[...stamps].join(', ')}`);
+});
+
+test('the v0.299 shell→exec hook migration replaces the POSIX-only command with exec form', () => {
+  // The old line is what every project scaffolded before v0.299.0 carries. On native Windows
+  // without Git Bash it runs under PowerShell, where `$CLAUDE_PROJECT_DIR` is undefined.
+  const dir = project({
+    '.claude/settings.json': JSON.stringify({
+      hooks: {
+        UserPromptSubmit: [{ matcher: '', hooks: [{ type: 'command', command: 'node "$CLAUDE_PROJECT_DIR/.claude/hooks/conscience.js"', timeout: 5 }] }],
+        SessionStart: [{ matcher: '', hooks: [{ type: 'command', command: 'node "$CLAUDE_PROJECT_DIR/.claude/hooks/reentry.js"', timeout: 5 }] }],
+      },
+    }),
+  });
+  const merged = computeSettingsMerge(dir, ['L0-quickstart']).merged.hooks;
+  for (const [event, script] of [['UserPromptSubmit', 'conscience.js'], ['SessionStart', 'reentry.js']]) {
+    const hooks = merged[event].flatMap((e) => e.hooks);
+    const ours = hooks.filter((h) => JSON.stringify(h).includes(script));
+    assert.equal(ours.length, 1, `${event}: exactly one BOSS entry after migration — never both forms`);
+    assert.equal(ours[0].command, 'node', 'exec form: the executable alone');
+    assert.deepEqual(ours[0].args, [`\${CLAUDE_PROJECT_DIR}/.claude/hooks/${script}`], 'the path travels in args');
+  }
+  writeFileSync(join(dir, '.claude', 'settings.json'), JSON.stringify(computeSettingsMerge(dir, ['L0-quickstart']).merged, null, 2));
+  assert.equal(computeSettingsMerge(dir, ['L0-quickstart']).changed, false, 're-merging must be a no-op');
 });

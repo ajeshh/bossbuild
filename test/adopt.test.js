@@ -110,7 +110,7 @@ test("adopt does not overwrite a founder's own Claude Code settings", () => {
   const s = JSON.parse(readFileSync(join(dir, '.claude', 'settings.json'), 'utf8'));
   assert.deepEqual(s.permissions.allow, ['Bash(npm test)'], 'their allow rules must survive');
   assert.equal(s.env.MY_FLAG, '1', 'their env must survive');
-  const cmds = (s.hooks.UserPromptSubmit || []).flatMap((e) => (e.hooks || []).map((h) => h.command));
+  const cmds = (s.hooks.UserPromptSubmit || []).flatMap((e) => (e.hooks || []).map((h) => [h.command, ...(h.args || [])].join(' ')));
   assert.ok(cmds.some((c) => c.includes('mine.js')), 'their own hook must survive');
   assert.ok(cmds.some((c) => c.includes('conscience.js')), "BOSS's hook must be added alongside");
   assert.ok((s.permissions.deny || []).length > 0, 'the secrets deny-list must be merged in');

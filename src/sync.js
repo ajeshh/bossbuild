@@ -158,10 +158,17 @@ function templateDenies(stageId) {
   } catch { return []; }
 }
 
+// A hook's identity is `command` PLUS `args`. Since v0.299.0 the shipped hooks are exec form
+// (`command: "node"`, the script path in `args`) — keying on `command` alone would make every
+// BOSS hook look like every other, and an old shell-form entry would never match the new one.
+export function hookKey(h) {
+  return [h && h.command, ...((h && h.args) || [])].filter(Boolean).join(' ');
+}
+
 function eventCommands(entries) {
   const cmds = new Set();
   for (const entry of entries || []) {
-    for (const h of entry.hooks || []) if (h.command) cmds.add(h.command);
+    for (const h of entry.hooks || []) if (hookKey(h)) cmds.add(hookKey(h));
   }
   return cmds;
 }
@@ -182,6 +189,17 @@ const HOOK_MIGRATIONS = [
     action: 'drop',
     note: 'v0.18.0 migration: conscience hook moved from bash to node',
   },
+  {
+    // v0.299.0 — shell form → exec form. `node "$CLAUDE_PROJECT_DIR/…"` is POSIX syntax; on native
+    // Windows without Git Bash, Claude Code runs hooks through PowerShell, where that variable is
+    // undefined and the conscience silently never fires. Exec form (`args`, no shell) is
+    // substituted by Claude Code itself on every OS. Drop the shell-form entry; the additive merge
+    // registers the exec-form one. Matches ONLY an entry with no `args` — an exec-form entry that
+    // happens to mention the same path is the new form and stays.
+    matches: (cmd, h) => !(h && h.args) && /\$CLAUDE_PROJECT_DIR\/\.claude\/hooks\/(conscience|reentry)\.js/.test(cmd),
+    action: 'drop',
+    note: 'v0.299.0 migration: hooks moved to exec form (runs under PowerShell on Windows too)',
+  },
 ];
 
 function applyHookMigrations(merged) {
@@ -193,7 +211,7 @@ function applyHookMigrations(merged) {
       const before = entry.hooks ? entry.hooks.length : 0;
       entry.hooks = (entry.hooks || []).filter((h) => {
         for (const m of HOOK_MIGRATIONS) {
-          if (m.matches(h.command || '')) return m.action !== 'drop';
+          if (m.matches(h.command || '', h)) return m.action !== 'drop';
         }
         return true;
       });
@@ -242,7 +260,7 @@ export function computeSettingsMerge(projectDir, layers) {
       merged.hooks[event] ||= [];
       const present = eventCommands(merged.hooks[event]);
       for (const entry of tEntries) {
-        const cmds = (entry.hooks || []).map((h) => h.command).filter(Boolean);
+        const cmds = (entry.hooks || []).map(hookKey).filter(Boolean);
         if (cmds.length && cmds.every((c) => present.has(c))) continue; // already registered
         merged.hooks[event].push(JSON.parse(JSON.stringify(entry)));
         cmds.forEach((c) => present.add(c));

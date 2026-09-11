@@ -16,6 +16,34 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.300.0 — 2026-09-11
+
+> **For you:** **the conscience now fires on Windows without Git Bash.** The two hooks BOSS
+> registers moved to Claude Code's exec form — no shell in between — and `/boss-sync` migrates the
+> old line in existing projects. Needs Claude Code 2.1.139 or newer (`claude --version`).
+
+**The gap v0.298.0 named, closed the same day.** Shell-form hooks run through *"Git Bash on
+Windows, or PowerShell when Git Bash isn't installed"* (Claude Code's own docs), and in PowerShell
+`$CLAUDE_PROJECT_DIR` is an undefined variable — the shipped line ran `node "/.claude/hooks/…"` and
+the conscience never fired, silently, for exactly the founder BOSS most wants to reach. Both
+registrations are now exec form — `"command": "node", "args": ["${CLAUDE_PROJECT_DIR}/…"]` — where
+Claude Code substitutes the placeholder itself and spawns the process directly, on every OS.
+**Verified, not inferred:** a scaffolded project under Claude Code 2.1.236, one `-p` turn, both
+hooks instrumented — `SessionStart` and `UserPromptSubmit` each fired once with the right project
+dir. (Aside learned on the way: `-p` mode does emit `UserPromptSubmit`; the first probe failed only
+because it had displaced the shebang.)
+
+**Existing projects migrate, and never end up with both forms.** `HOOK_MIGRATIONS` — the same
+mechanism v0.18.0 used for bash → node — gained a second entry: a shell-form BOSS hook (no `args`,
+path under `$CLAUDE_PROJECT_DIR`) is dropped and the additive merge registers the exec form. A
+hook's identity for merge and removal is now `command` + `args` (`hookKey()`), because keying on
+`command` alone would make every BOSS hook read as `node`. `boss remove` strips both forms.
+
+**The floor.** Exec form shipped in Claude Code **2.1.139**; native installs auto-update, Homebrew
+and WinGet do not. Below it, `args` is ignored and bare `node` runs — a visible hook error, not a
+silent one, which is the right failure. Ajesh's own machine was on 2.1.132 until this release;
+`brew upgrade --cask claude-code` → 2.1.236.
+
 ## 0.299.0 — 2026-09-11
 
 > **For you:** **BOSS's list of "what generated design looks like" is current again** — it was a
