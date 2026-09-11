@@ -212,6 +212,16 @@ radius, dense columns) · the SaaS-card kit (identical rounded cards, one radius
 link). **The live copy is in `/design-tokens-init`'s distinctiveness pass, stamped; this section
 records the rule and the date.** Two copies is a known cost; the stamp is what makes drift visible.
 
+**How it stays current — and why the previous sweep failed to notice it wasn't.** The 2026-08-11
+sweep declared this catalog *"confirmed current by the sameness literature"* while it was a 2024
+list. The literature was right about the *principle*; it cannot see the *instance*, because every
+tap it used writes about sameness and none observes what gets generated. **A tap that confirms the
+principle cannot be trusted to refresh the instance.** The watchlist now carries output-observing
+taps (§7b — the tools' own maintained lists read as a diff, framework defaults, practitioners found
+fresh each sweep, and BOSS's own projects once there are any) and fires on **the model curve, not
+the calendar**: a new frontier model is what moves the attractor, so it is the event that re-opens
+this list.
+
 **The genericness test** (also from `frontend-design`, and the best single idea in it): before
 building, *would this exact plan have been produced for any similar brief?* Swap the product for a
 neighbour in the same category; whatever survives the swap unchanged is a default, not a choice. It is

@@ -178,8 +178,10 @@ default rather than a choice because it appears *regardless of subject*:
    tinted near-black (`#0B0B0B`, `#111`) standing in for black · a mono face for small labels · a `→`
    appended to every link and button.
 
-**If this stamp is more than six months old, assume the attractor has moved and check** before
-trusting the list. When the brief *asks* for one of these looks, follow the brief — these are
+**The stamp is a claim, not a mechanism.** The list is re-checked on the *model curve*, not the
+calendar — a new frontier model is what moves the attractor, and it is the event that re-opens this
+list (BOSS's build-craft watchlist, §7b). **If a newer frontier model has shipped since the stamp,
+treat the list as stale regardless of the date**, and say so rather than applying it as current. When the brief *asks* for one of these looks, follow the brief — these are
 defaults, not sins.
 
 Five deliberate overrides break the sameness without a redesign — do this *as part of picking

@@ -16,6 +16,46 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.301.0 — 2026-09-11
+
+> **For you:** **The anti-slop list now says when to distrust itself** — it's re-checked when a new
+> frontier model ships, not on a calendar, because that's what actually moves what generated design
+> looks like. If a newer model has shipped since the list's stamp, it tells you to treat it as stale.
+
+**The previous sweep confirmed a stale list, and the reason generalizes.** Ajesh: *"how do we keep
+checking our anti-slop list, and not just from Claude but anywhere else?"*
+
+On 2026-08-11 the design-process sweep declared BOSS's catalog *"confirmed current by the 2026
+sameness literature."* It was a 2024 list — its own first override had become the commonest 2026
+tell. The sweep wasn't wrong about the literature. **It was pointed at the wrong thing.** NN/g, PAIR,
+HAX and the design-engineering blogs write *about* sameness and confirm the **principle**; none of
+them can refresh the **list**, because the attractor is only visible in what actually gets generated,
+and no tap on the watchlist observed output.
+
+> **A tap that confirms the principle cannot be trusted to refresh the instance.** The literature says
+> sameness is bad. Only output says what sameness looks like this quarter.
+
+- **Watchlist §7b — the AI-design attractor**, with taps that see *output*, not commentary:
+  1. **The tools' own maintained lists, read as a diff.** `git log -p` on Anthropic's
+     `frontend-design` `SKILL.md` is a primary record of every time their view of the attractor moved
+     (June: "bold maximalism" → September: cream/serif/terracotta named as a tell). v0's Design
+     Systems skill is the second of the kind.
+  2. **The defaults that become the tells** — Tailwind/shadcn release notes; the "indigo apology" is
+     the canonical case of a framework default becoming a model default becoming a tell.
+  3. **Practitioners cataloguing tells, found fresh each sweep** — deliberately **not pre-listed**,
+     because a name on a watchlist that no longer publishes is a tap the file is lying about.
+     `/deep-research` finds them; `/vet` verifies each is real before a tell is taken.
+  4. **BOSS's own projects** — three founders' `design-library` manifests landing on the same look is
+     the attractor *measured*, not reported. **n=0 today**; the only tap nobody else has.
+- **The trigger is the model curve, not the calendar.** June→September was one model generation.
+  Any new frontier model fires this entry — the same event `/recalibrate` already fires on.
+  `craft-ai`/180d would have missed the 2026 shift and confirmed the stale list again, exactly as it
+  did in August.
+- **The stamp in the skill now says what it is.** v0.299.0 wrote *"re-check after six months"* —
+  calendar prose that nothing enforced, the same claim-without-mechanism this repo keeps catching. It
+  now says: *the stamp is a claim, not a mechanism; if a newer frontier model has shipped since it,
+  treat the list as stale regardless of the date, and say so.*
+
 ## 0.300.0 — 2026-09-11
 
 > **For you:** **the conscience now fires on Windows without Git Bash.** The two hooks BOSS
