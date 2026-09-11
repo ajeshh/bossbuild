@@ -6,14 +6,17 @@
 > are now earned.
 
 1. **Design tokens are authoritative.** Every style value comes from `docs/design/DESIGN_TOKENS.md`
-   + the corresponding code file. The `design-drift-loop` watches for drift — raw hex codes,
-   near-duplicate components, tokens-file-untouched-while-components-grow. New colors are added
-   to the tokens, never inline. (Future: PostToolUse hook for hardcoded-style detection lands in
-   v0.23.)
+   + the corresponding code file. New colors are added to the tokens, never inline — and
+   `design-tokens-guard` catches a raw hex the moment one is written. It shipped at MVP and is
+   dormant until you turn it on; `/design-tokens-init` offers it once.
+   **What `design-drift-loop` watches is raw hex codes in source, and that is all** — one regex.
+   It cannot see near-duplicate components or a tokens file going stale while components grow.
+   Those are component-shaped failures, and `/design-library` is what reads them.
 2. **You already have `/design-review` and `/ux-check`** — they arrived at MVP with `designer`
    (v0.189.0), and the 5-state requirement has been non-optional since then. What V1 adds is the
    half that needs a real component set to exist first: `/design-library` renders the system from
-   your code, and `design-drift-loop` enforces it.
+   your code — foundations, rule sets, every component in all five states — and reports the
+   component-shaped drift the regex loop cannot reach.
 3. **`/board` is the sequencing surface.** Cross-FEAT prioritization. Read by `planner`
    (the *when*, not the *what*). What's blocked, what's parallelizable, what's next.
 4. **Data shape is a decision, not an accident.** You settled this at MVP — `/spec`'s data-shape step reviews schema before code, even

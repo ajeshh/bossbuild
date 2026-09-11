@@ -32,7 +32,7 @@ discipline, these failure modes appear by default. Naming them is half the fix:
 |---|---|---|
 | **Rudimentary first design** | AI generates generic-internet defaults (Tailwind blue-500, default spacing, no brand). "Looks ok" at one screen; falls apart by three. | Brand-anchor the first prompt from the canvas Promises cell, not from "make it look good." |
 | **The 47 blues** | Each new screen, AI derives slightly different colors. `bg-blue-500`, `#3B82F6`, `bg-blue-600`, custom variables — all in the same codebase. No single source of truth. | Tokens file FIRST, before second screen. Reference tokens *by name* in every prompt. |
-| **Pattern reinvention** | Each new component is a new file. `Button.tsx` → `CTAButton.tsx` → `PrimaryButton.tsx` — all near-identical. AI doesn't search for the existing pattern. | Prompt convention: *"search components/ for similar; reuse first, extend second, create last."* |
+| **Pattern reinvention** | Each new component is a new file. `Button.tsx` → `CTAButton.tsx` → `PrimaryButton.tsx` — all near-identical. AI doesn't search for the existing pattern. | **A component index the agent opens** (`docs/design/COMPONENTS.md`, MVP) — retrieval, not recall. The prompt convention *"search components/ for similar"* is the filter this replaces; it held only while every future prompt remembered. |
 | **Billion-line drift** | Code grows linearly with screens instead of approximately constant after primitives are built. AI never generalizes across requests. | Token system + reuse-first prompting *together*. Either alone is insufficient. |
 | **Missing states** | Default/hover/active/disabled/empty/loading — at least one always missing. Especially empty + loading (the most user-facing failures). | Five-state requirement enforced at prompt level — name the states before AI gets a chance to skip them. |
 | **Brand-default problem** | AI defaults to generic-internet aesthetics because that's the training data. Your brand voice never makes it in unless you bring it. | Canvas Promises cell becomes the design brief, not "make it pretty." |
@@ -392,8 +392,13 @@ converge instead of wander:
 - **MVP:** `designer` unlocks, with `/design-review` before code and `/ux-check` after — moved
   down from V1 in v0.189.0 (DEC-005). AI-generated UI nails the happy path and skips
   empty/loading/disabled/error, and that lands the first week someone builds a screen.
+  From v0.276.0 it also writes **`docs/design/COMPONENTS.md`** — the authored component index, plus
+  the *build the button, then use it on the page* rule inlined into CLAUDE.md. The rung is the
+  argument: the two most expensive failures in the catalog above both begin at **component number
+  two**, and the index that prevents them had been shipping at V1 (IDEA-091 part 1).
 - **V1:** the enforcement that needs a real component set to exist first — `/design-library`
-  rendered from the code, and `design-drift-loop`.
+  rendered from the code (it **generates over the MVP index's shape and supersedes it**, never beside
+  it), and `design-drift-loop`.
 - **Scale:** design drift audits, token versioning, multi-surface theming.
 
 ## Shipped (this section was a TODO until 2026-08-11)
@@ -435,5 +440,20 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
   practice's history (after the stale TODO list and the `STYLE_GUIDE.md` false ✅). **The pattern is
   now unmistakable: this doc's claims rot faster than its ideas.** Verify each line against the
   filesystem every sweep.
+
+- ✅ `docs/design/COMPONENTS.md` — the component index at **MVP** (v0.276.0), with the
+  component-boundary rule in CLAUDE.md. Closes the layer this practice had been describing as a V1
+  concern while naming its failures as week-one ones. **Honest scope: authored, therefore a filter** —
+  a component created without its row is not caught by anything. It becomes a boundary at V1 when
+  `/design-library` generates it with a source hash. Said here so the next sweep does not have to
+  rediscover it.
+- ⚠️ **Corrected in the same pass (the fourth doc-vs-filesystem mismatch in this practice's history):**
+  `stages/L2-v1/template/claude-append.md` — which is appended to the founder's own CLAUDE.md and read
+  on every turn — still carried the `design-drift-loop` overstatement (*"near-duplicate components,
+  tokens-file-untouched-while-components-grow"*) that the loop doc itself corrected in v0.166.0, plus
+  a *"(Future: PostToolUse hook … lands in v0.23)"* for a hook that shipped in v0.145.0. **The
+  correction landed in the loop doc and not in its twin.** When a claim is corrected, grep the string —
+  the same sentence is usually in two places, and the copy in always-on agent context is the one that
+  matters most.
 
 **Nothing on this list is open.** Verified against the filesystem, not against this doc.

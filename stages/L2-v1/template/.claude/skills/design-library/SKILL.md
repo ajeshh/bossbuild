@@ -18,7 +18,11 @@ that a founder, a designer, a stakeholder **and the agent** can all read.
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 
-**Rung: V1.** If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: It costs the same at V1 as it would have at MVP, minus the components that did not exist yet. The rung below it is the tokens file, and that seam is already `design-tokens-init`'s.
+**Rung: V1.** If this project is **earlier** than that, don't run this — the *gallery* costs the same at V1 as it would have at MVP, minus the components that did not exist yet.
+
+**But the seam below it is real, and it is not the tokens file.** `/design-tokens-init` writes `docs/design/COMPONENTS.md` at MVP — the authored component index the agent opens before creating component number two. That exists because the failures this skill *renders* (pattern reinvention, near-duplicates, code growing linearly with screens) **start** at component two, which is two rungs down. If you are early and there is no index, point at that, not at this.
+
+⚠️ **This paragraph used to say there was no seam worth planting.** There was; it shipped in v0.276.0.
 
 ## The load-bearing rule: GENERATED, never authored
 
@@ -149,6 +153,15 @@ warning. It shows what you've built, not only what's wrong.
    `/design-tokens-init` first — no tokens, no library). `STYLE_GUIDE.md` should exist; if it's still
    skeleton, generate the library anyway and mark the rules section as unfilled — a visibly empty
    rules section is a better prompt than a missing one.
+
+   **Then deal with `docs/design/COMPONENTS.md` if it is there.** It is the MVP-rung authored index
+   and `manifest.json` carries every field it does plus a source hash and a usage count. **The
+   manifest supersedes it — the two must not sit side by side**, or you have shipped the
+   two-definitions-of-a-button trap this skill's central rule exists to refuse. Read it first for the
+   one thing a generator cannot recover — **the hand-written `purpose` line, and the retired-component
+   rows with their reasons** — carry those into the manifest, then replace the file with a one-line
+   pointer at the library. Say you did it and why; silently deleting a file the founder wrote is not
+   a thing to do on your own.
 2. **Find the components.** Detect the stack, then scan the conventional location
    (`src/components/**`, `app/components/**`, `lib/components/**`, `components/**`). Skip tests,
    stories and index barrels.

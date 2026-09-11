@@ -1,6 +1,6 @@
 ---
 name: design-tokens-init
-description: Scaffold the minimal three-layer design token system at the first UI commit. Prevents the 47-blues / pattern-reinvention / billion-line-drift failure modes that happen by default when AI generates UI without discipline (IDEA-010). Cohort-aware delivery — vibe-coder-newbie gets SHOWING; eng-builder gets OFFERING; vibe-virtuoso gets OVERRIDE-FRIENDLY. JIT — runs when design-tokens-loop opens. Usage - /design-tokens-init
+description: Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two. Prevents the 47-blues / pattern-reinvention / billion-line-drift failure modes that happen by default when AI generates UI without discipline (IDEA-010). Cohort-aware delivery — vibe-coder-newbie gets SHOWING; eng-builder gets OFFERING; vibe-virtuoso gets OVERRIDE-FRIENDLY. JIT — runs when design-tokens-loop opens. Usage - /design-tokens-init
 ---
 
 # /design-tokens-init — scaffold the design tokens system
@@ -246,6 +246,46 @@ also honors the canvas's "don't monetize lock-in" line.
    discipline that arrives before there is copy to be inconsistent about is PRINCIPLE #2's premature
    ceremony wearing a design-system hat.
 
+1d. **Write the component index — and the one rule that outranks it.** `DESIGN_TOKENS.md` governs
+   *values*. The more expensive AI-UI failures are **component-shaped**: `Button` → `CTAButton` →
+   `PrimaryButton`, and code that grows linearly with screens. Both begin at component number two,
+   which is this rung — not V1.
+
+   **Create `docs/design/COMPONENTS.md` as soon as the first component exists. Skeleton:
+   [`templates/component-index.md`](templates/component-index.md).** An index of one is not ceremony
+   the way a registry of one prototype would be: a prototype is a throwaway, a component is a
+   precedent, and the index is where the *second* one gets written down.
+
+   Then add this to CLAUDE.md, directly under the token map. Keep it this short — it is read on every
+   turn:
+
+   ```markdown
+   ## Components (added by /design-tokens-init)
+
+   **Before creating a component, open `docs/design/COMPONENTS.md`** — the index of what already
+   exists, with the import line for each. Reuse first, extend second, create last.
+
+   1. Build the button, then use it on the page. Don't build the page and leave the button inside it.
+   2. A new component gets its row in the index in the same change that creates it.
+   3. Reaching for a near-name (`CTAButton` beside `Button`) means you found a variant, not a component.
+   ```
+
+   **Why a file and not just the rule:** *"search `components/` for similar first"* has been the
+   prescribed prevention for years and it is a **filter** — it holds only while every future prompt
+   remembers. An index gives the agent something to *open* instead of something to recall. That is
+   the same filter→boundary move `design-tokens-guard` makes for hex codes, one layer up.
+
+   **Do not overstate it.** At this rung the index is *authored*, so it can go stale; the staleness is
+   visible (a component in the tree with no row) and nothing enforces it. It is a better filter, not
+   yet a boundary. At V1 `/design-library` generates the same fields from the code with a per-component
+   source hash, and **supersedes this file rather than sitting beside it** — two definitions of a
+   button is the trap that skill exists to refuse.
+
+   **This one is not cohort-scoped, and that follows the rule 1c just set:** ship the *checkable*
+   thing to everyone, cohort-scope only the judgment-shaped ones. An index is an index. What varies is
+   how much you explain — SHOW cohorts get one walked example (*"you already have a Button; that's
+   what this row is for"*); terse cohorts get the path and nothing else.
+
 2. The `design-tokens-loop` exit predicate now passes — loop closes.
 
 3. Going forward, `design-drift-loop` (V1) watches for raw hex codes appearing in source — **that
@@ -255,11 +295,20 @@ also honors the canvas's "don't monetize lock-in" line.
 
 4. **At V1, `/design-library` makes the system visible** — one self-contained HTML page with the
    foundations, the rule sets, and every component in all five states, generated from the code so it
-   can't drift. That's the artifact a founder spot-checks against, a designer gets handed, and the
-   agent reads before creating component number two.
+   can't drift. That's the artifact a founder spot-checks against and a designer gets handed. It
+   **generates over `COMPONENTS.md`'s shape rather than introducing it**: same fields, plus a source
+   hash and a usage count the generator can compute and an author can't.
 
 ## Rules
 
+- **The index is written the same turn the component is.** A component created without its row is
+  how the index starts lying, and an index that lies is worse than none — the agent trusts it and
+  stops looking. This is a filter at MVP and becomes a boundary at V1 when `/design-library`
+  generates it; say which one you have, never imply the other.
+- **Build the button, then use it on the page.** Page-shaped components (`DashboardPage.tsx` with its
+  buttons and inputs defined inline) are the upstream cause of both *pattern reinvention* and
+  *billion-line drift* — every inlined primitive is one the next screen reinvents. One sentence at
+  seed; a refactor across every screen at V1.
 - **Three layers, not two.** Two-layer (primitives → component) is fragile under AI generation.
   Three layers (primitives → semantic → component) gives AI a meaningful name to grab.
 - **Brand-anchor the primitives.** Don't default to internet-aesthetic. Canvas Promises cell IS

@@ -16,6 +16,70 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.276.0 — 2026-09-10
+
+> **For you:** **`/design-tokens-init` now writes a component index too** — `docs/design/COMPONENTS.md`,
+> the list your agent opens before it creates a component, plus one rule in your CLAUDE.md: *build the
+> button, then use it on the page.* It is the cheapest fix for the failure where `Button` quietly
+> becomes `Button`, `CTAButton` and `PrimaryButton`.
+
+**The component half of the design system was shipping two rungs above where it is needed.**
+
+BOSS's own AI-design failure catalog names six failure modes and ranks two of them as the most
+expensive: **pattern reinvention** (`Button` → `CTAButton` → `PrimaryButton`, all near-identical) and
+**billion-line drift** (code growing linearly with screens instead of flattening after the primitives
+exist). Both begin at **component number two**. The thing that prevents them — a component index the
+agent can open — shipped at **V1**, inside `/design-library`'s `manifest.json`.
+
+That is the same inversion `designer` had before v0.189.0, and the argument that fixed it then
+applies unchanged: *the failure lands in week one, so the prevention belongs in week one.* It was
+never made for the index.
+
+- **`/design-tokens-init` writes `docs/design/COMPONENTS.md`** at the first component — name, purpose,
+  import line, variants, and the **missing** states — plus a four-line CLAUDE.md block pointing at it.
+  New bundled template: `templates/component-index.md`.
+- **The rule that outranks the index** goes into CLAUDE.md with it: *build the button, then use it on
+  the page; don't build the page and leave the button inside it.* The practice already called
+  page-shaped components *"the one most often missed, and the most expensive"* — the upstream cause of
+  both failure modes above — and the sentence that prevents it lived only on the craft shelf. Seed-time
+  cost: one sentence. V1-time cost: a refactor across every screen shipped.
+- **`designer` opens the index before proposing a component**, and now names the page-shaped component
+  when it sees one.
+- **`/design-library` (V1) generates over the same shape and supersedes the file** — carrying forward
+  the two things a generator cannot recover, the hand-written purpose lines and the retired-component
+  rows. Two definitions of a button is the trap that skill exists to refuse, and this change is exactly
+  how a project would have acquired one.
+
+**The mechanism, stated honestly.** *"Search `components/` for similar first"* has been the prescribed
+prevention for years, and it is a **filter** — it holds only while every future prompt remembers. An
+index is something the agent *opens* instead of something it recalls. RVW-078 vetted that direction
+(CHI EA '26) and BOSS took it as the portable index in v0.166.0 — at V1. **Scope stated on the file
+itself: at MVP the index is authored, so it can go stale, and nothing catches a component created
+without its row. It is a better filter, not yet a boundary.** It becomes one at V1 with the source
+hash. Said out loud because this practice's documents have a history of claiming more than their
+mechanism delivers — and **never cite the "~95% compliance" figure**: it is blog-sourced, the ACM body
+is 403, and the study had GPT-5 grading GPT-5.
+
+**A fourth doc-vs-filesystem mismatch, found in the same pass, in the worst possible file.**
+`stages/L2-v1/template/claude-append.md` is *appended to the founder's own CLAUDE.md*, so it is read on
+every turn. It still said `design-drift-loop` watches *"raw hex codes, near-duplicate components,
+tokens-file-untouched-while-components-grow"* and that a hardcoded-style hook was *"(Future: … lands in
+v0.23)"*. The loop's predicate is one hex regex and always was — **the loop doc corrected itself in
+v0.166.0 and its twin was never touched** — and the hook shipped in v0.145.0. Corrected. The method
+that generalizes: **when you correct a claim, grep the string.** The same sentence is usually in two
+places, and the copy sitting in always-on agent context is the one that matters most.
+
+**Planned as a program, not a feature.** The audit behind this release is IDEA-091 — the design-system
+ladder BOSS actually holds (brief · foundations · components · patterns · flows · content · visibility ·
+learning), which rungs are built, and the order to fill the rest. The honest verdict: **not
+under-developed, unevenly runged** — foundations and content are strong, components and visibility were
+built at the wrong rung, and brief, patterns, flows and learning are missing. Six of its seven parts are
+a composition or a rung move; **no new verbs**, and the seventh (flows) is held precisely because it
+would need one. Six refusals are carried forward from RVW-078/079/080/081/082 so they are not
+re-proposed: no shipped UI kit (PRINCIPLE #4 — BOSS cannot pick a stack), no `DESIGN.md` format
+(`version: alpha`, adoption unverified), no versioning machinery (Curtis's context is multi-team
+enterprise), no code→design round-trip (does not verify), no sync engine (that is the host's job).
+
 ## 0.275.0 — 2026-09-10
 
 > **For you:** **`boss help` is now in the standing-commands list** — the one place that claims to
