@@ -161,6 +161,57 @@
     </section>
 
     <section class="section">
+      <div class="rail">▸<span>reuse</span></div>
+      <div class="body prose">
+        <h2>The library exists so the agent stops rebuilding the button</h2>
+        <p>
+          The gallery is not mainly for you to browse. Alongside it BOSS writes a manifest that
+          <strong>doubles as the agent's reuse index</strong> — so the next time something needs a
+          button, the model has a list of what already exists instead of generating
+          <code>PrimaryButton.tsx</code> next to the <code>CTAButton.tsx</code> it wrote last week.
+        </p>
+        <p>
+          That's the actual cure for pattern reinvention. <strong>An AI never generalises across
+          sessions unless something hands it the inventory</strong> — it isn't lazy, it simply can't
+          see what it can't be told about, and generating a new component is always cheaper than
+          finding the old one.
+        </p>
+
+        <h3>Boundaries are a naming habit that costs nothing now and a rewrite later</h3>
+        <p>
+          Ask an AI for a settings page and you get a <em>page-shaped</em> component: everything
+          entangled with the page it was born in. Ask for element-shaped pieces and you get
+          primitives that compose. <strong>The cost of getting this wrong isn't refactoring — it's
+          that extracting primitives later is a rewrite</strong>, which is why it's the most-missed
+          and most-expensive call on the list.
+        </p>
+
+        <h3>What the library actually contains, and the half everyone forgets</h3>
+        <ul class="plain">
+          <li><strong>Foundations</strong> — colour, type, spacing. The part people mean when they
+            say design system, and the smallest part.</li>
+          <li><strong>Components, every variant, all five states</strong> — default, hover, active,
+            disabled, empty, loading. <em>At least one is always missing</em>, and it's usually empty
+            or loading, which are the two a user is most likely to meet on a bad day.</li>
+          <li><strong>The rule sets</strong> — principles, do/don't pairs, terminology, voice.
+            <strong>A library of components with no rules is a box of parts.</strong> This is the
+            half that gets skipped and the half that makes the rest usable by someone who wasn't
+            there.</li>
+        </ul>
+        <p>
+          All of it rendered <em>from your code and tokens</em>, so it cannot drift — and where a
+          component <em>has</em> drifted from the tokens, the drift is rendered on the component
+          rather than filed in a report nobody opens.
+        </p>
+        <p class="small">
+          The discipline that keeps it honest cuts the other way too: <strong>a component nobody uses
+          is drift you're paying to maintain</strong> — and worse, it's a decision the next agent
+          will copy.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>the library</span></div>
       <div class="body">
         <div class="prose">

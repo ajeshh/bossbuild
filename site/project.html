@@ -119,6 +119,57 @@
     </section>
 
     <section class="section">
+      <div class="rail">▸<span>the board</span></div>
+      <div class="body prose">
+        <h2>A kanban whose columns you can't drag things into</h2>
+        <p>
+          <strong>Captured → Taking shape → Building → Shipped</strong>, plus
+          <strong>Parked</strong>. It looks like every board you've used and behaves like none of
+          them, because there is nothing to drag: a card sits in a column <em>because of what its
+          record says</em>, and the only way to move it is to change the work.
+        </p>
+        <p>
+          One column has proved harder than the rest, and it's an honest problem rather than a
+          feature: <strong>Building is the only state nothing can verify.</strong> A shipped claim
+          can be checked against disk. An index can be checked against the records. But nothing can
+          check whether a card claiming to be in flight has anyone in flight on it — which is why
+          BOSS also watches how long things sit there and asks.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>context</span></div>
+      <div class="body prose">
+        <h2>Ending a session is a thing you do, not a thing that happens</h2>
+        <p>
+          Work doesn't stop at a natural boundary; it stops when you do. So there's a verb for
+          closing out — it updates where the project stands, appends a log entry for what landed and
+          what surprised you, and lets the conscience update its own read. <strong>You run it before
+          stepping away, so the next session starts with context instead of archaeology.</strong>
+        </p>
+        <p>
+          Coming back is the other half. <code>boss status</code> opens with where you are and the
+          one thing to pick up; <code>boss recap</code> reads the week back out of records you
+          already wrote — landed, learned, decided, in flight — and <strong>prints empty sections as
+          empty</strong>, because a summary that can only go up is a comfort device.
+        </p>
+        <h3>And the part that isn't a file</h3>
+        <p>
+          The conscience keeps a persistent read on the venture in plain English — its point of view,
+          not a log. You can ask what it currently thinks, see <strong>how that read changed over
+          time</strong>, or see <em>what it said and what you actually did with it</em>. You can also
+          make it forget things before a date, because a memory you can't evict isn't memory, it's
+          an accumulation.
+        </p>
+        <p class="small">
+          That last view is the uncomfortable one and the most useful: it's the record of advice
+          given versus advice taken, and it belongs to you rather than to BOSS.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>records</span></div>
       <div class="body prose">
         <h2>Typed records, and a promotion you can read from both ends</h2>
