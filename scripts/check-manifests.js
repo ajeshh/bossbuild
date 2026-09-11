@@ -27,6 +27,8 @@
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { realpathSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { BOSS_ROOT, STAGE_ORDER } from '../src/paths.js';
 import { readStageManifest } from '../src/scaffold.js';
 import {
@@ -392,7 +394,10 @@ export function reportManifests() {
   return errors.length;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Compared as PATHS, not as a URL against argv[1]. The old `import.meta.url === \`file://${argv[1]}\``
+// form is false on Windows (`file:///D:/…` vs `D:\\…`), so this gate ran to the end of the file and
+// exited 0 without checking anything — a release gate that passes by never running (IDEA-095).
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
   const n = reportManifests();
   const strict = process.argv.includes('--strict');
   if (strict && n) console.log('    --strict: failing the release.');

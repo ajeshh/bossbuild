@@ -16,6 +16,21 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.298.0 — 2026-09-11
+
+**Three release gates had never run on Windows, and reported green.** The second matrix run left
+one red: an oversized skill description did not fail `check-manifests --strict`. The reason is the
+idiom every one of these scripts used to detect *"was I invoked directly?"* —
+`import.meta.url === \`file://${process.argv[1]}\``. On Windows the URL is `file:///D:/…` and
+`argv[1]` is `D:\\…`; never equal, so the main block never ran, and `check-manifests`,
+`check-wayfinding-drift` and `check-freshness` **exited 0 having checked nothing.** The quietest
+flavour of the pattern this repo keeps cataloguing — not a checker that fails to enforce, a checker
+that passes by never executing. `regrade.js` already had the right form (`realpathSync(argv[1]) ===
+realpathSync(fileURLToPath(import.meta.url))`); all three use it now, and
+`test/main-guard.test.js` refuses the old idiom anywhere in `scripts/`, `src/` or `bin/`.
+
+Internal tooling; nothing a founder installs changes. Unit tests 398 → 399.
+
 ## 0.297.0 — 2026-09-11
 
 > **For you:** **the conscience now reads your files the same on Windows** — CRLF line endings no
