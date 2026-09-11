@@ -1,0 +1,129 @@
+<!--
+title: For project management — progress you can't fake
+description: The board is derived from files rather than maintained, the status vocabulary is closed, parked work carries a written re-open trigger, and every decision records who made it and what would prove it wrong.
+reviewed: 2026-09-10
+review_by: 2027-03-09
+describes: BOSS's own positions on tracking work — derived progress, closed vocabulary, parked vs queued
+covers: docs/IDS.md src/board.js src/records.js
+nav: project
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <p class="kicker">For project management</p>
+      <h1>Progress you can't fake<span class="dot">.</span></h1>
+      <p class="lede">
+        Every tracking tool eventually drifts from the work, because the board and the work are two
+        different things someone has to keep in agreement. BOSS's positions here all follow from
+        refusing that split.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the rule</span></div>
+      <div class="body prose">
+        <h2>Derive progress. Never maintain it.</h2>
+        <p>
+          There is <strong>no status document anywhere</strong>. Status lives in one place — the
+          record's own frontmatter — and the board is a <em>read</em> of those files. A hand-kept
+          board and the frontmatter it copies will eventually disagree, and nothing tells you which
+          one is lying.
+        </p>
+        <p>
+          The useful consequence: <strong>you cannot make the board look better than the work.</strong>
+          Moving a card means changing a record, and changing a record means the work actually moved.
+          An empty column stays visibly empty, because "two ideas captured and nothing tested" is the
+          honest picture of where you are.
+        </p>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>vocabulary</span></div>
+      <div class="body prose">
+        <h2>The status list is closed, and that's the feature</h2>
+        <p>
+          A small fixed set of words, not free text. That's what makes the board renderable at all,
+          and what lets the record checker catch a typo before it becomes an invisible card sitting
+          in no column.
+        </p>
+        <p class="small">
+          If you find yourself wanting a new status, the work has usually outgrown its
+          <em>record type</em> rather than its vocabulary — which is a different and more useful
+          thing to discover.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>parked</span></div>
+      <div class="body prose">
+        <h2>Parked is decided. It is not queued.</h2>
+        <p>
+          Most backlogs are a graveyard that looks like a plan — things nobody rejected and nobody
+          will do. BOSS splits that pile in two and makes you say which:
+        </p>
+        <ul class="plain">
+          <li><strong>Deferred</strong> — you named a condition that would bring it back. A decision
+            with a trigger, and the trigger is written down.</li>
+          <li><strong>Dropped</strong> — decided against on the merits, reasoning kept so you don't
+            re-litigate it in four months.</li>
+        </ul>
+        <p>
+          <strong>Neither is a queue</strong>, and the board says so where it lists them. Paused work
+          also can't simply walk back in: three questions first — still relevant, still aligned,
+          anything changed — so nobody builds a feature the world moved past while it sat there.
+        </p>
+      </div>
+    </section>
+
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>decisions</span></div>
+      <div class="body prose">
+        <h2>A decision record with a falsifier and a signature</h2>
+        <p>
+          Context, the call, the reasoning, the consequences — plus two fields most decision logs
+          don't carry:
+        </p>
+        <ul class="plain">
+          <li><strong>A falsifier.</strong> What would prove this wrong, and by when, with a number
+            and a date. Written before the answer is known, which is what makes it cost something.</li>
+          <li><strong>Who decided</strong> — you, you ratifying the AI's suggestion, or the AI on its
+            own. That distinction gets more useful every year, and nobody remembers it unstated.</li>
+        </ul>
+        <p>
+          And the rule that keeps the log honest: <strong>supersede, don't edit.</strong> A decision
+          that turns out wrong gets a new record pointing at the old one, which stays exactly as
+          written. A log you can revise is a log that agrees with you.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>in flight</span></div>
+      <div class="body prose">
+        <h2>Work in progress is a number, and BOSS watches it</h2>
+        <p>
+          When too much is open at once it says so and asks which one is actually moving. It won't
+          reorganise your work or rank it for you — <strong>naming the pile is usually enough</strong>,
+          and a tool that reprioritises on your behalf is a tool you stop trusting.
+        </p>
+        <p class="small">
+          Coming back is handled the same way: <code>boss status</code> opens with where you are and
+          the one thing to pick up, and <code>boss recap</code> reads the week back out of records
+          you already wrote — landed, learned, decided, in flight. <strong>Empty sections print as
+          empty</strong>, because a summary that can only go up is a comfort device.
+          <a href="keeping-track.html">What BOSS writes down →</a> ·
+          <a href="product.html">the product positions →</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
