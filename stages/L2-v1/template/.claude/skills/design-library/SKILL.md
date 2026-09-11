@@ -24,6 +24,28 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 
 ⚠️ **This paragraph used to say there was no seam worth planting.** There was; it shipped in v0.276.0.
 
+## Step 0b — read the shape, same as its siblings
+
+Read `shape` from `.boss/config.json`. **This page renders components as HTML, so it assumes a
+graphical interface**, and for two shapes that assumption is simply wrong:
+
+- **`cli` / `dev-tool` with no GUI alongside** — there are no components to render and no swatches
+  worth looking at. **Do not generate a gallery of nothing.** What *is* worth making visible at this
+  rung is the part a terminal product genuinely has: the verb table (one verb per concept across every
+  command), the error copy, and the five states in their CLI form. Say that, offer it, and stop.
+- **`agent` / `chatbot` with no screen** — the surface is the transcript. The renderable artifact is
+  the **voice and terminology tables**, not component cards.
+- **`mobile-app`** — generate it. The cards are an approximation either way (they always were — see
+  step 6), and an approximation of a native component is no less useful than one of a web component,
+  as long as the page says so once.
+- **No shape declared** — ask one line rather than assuming a browser.
+
+> ⚠️ **This gate arrived one release late, and the miss is instructive.** v0.286.0 named *both* this
+> skill and `/design-tokens-init` as surface-blind and then fixed only `/design-tokens-init` — in the
+> release whose stated lesson was *"the fix was applied to one skill and never asked of its
+> siblings."* **Writing the lesson down is not the same as applying it.** When a correction names more
+> than one file, fix them in the same change or the second one does not happen.
+
 ## The load-bearing rule: GENERATED, never authored
 
 **The code is the source of truth. This library is derived from it.**

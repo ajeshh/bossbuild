@@ -16,6 +16,27 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.287.0 — 2026-09-10
+
+**A correction to the release before it, of exactly the kind that release was about.**
+
+v0.286.0 named **both** `/design-tokens-init` and `/design-library` as surface-blind — neither read
+`shape` from `.boss/config.json`, so BOSS built a colour token cake and an HTML component gallery for
+founders whose surface is a terminal, then correctly refused to review either. It then fixed
+`/design-tokens-init` and **not** `/design-library`.
+
+The stated lesson of that release was *"the fix was applied to one skill and never asked of its
+siblings."* It was written down and not applied, in the same change. **Writing the lesson down is not
+the same as applying it** — and the operational version is narrow enough to follow: **when a
+correction names more than one file, fix them in the same change, or the second one does not happen.**
+
+- **`/design-library` Step 0b** now reads `shape`: `cli`/`dev-tool` gets no gallery of nothing — what
+  is worth rendering for a terminal product is the verb table, the error copy and the five states in
+  CLI form · `agent`/`chatbot` renders the voice and terminology tables, because the transcript is the
+  surface · `mobile-app` generates as normal (the cards were always an approximation, and one of a
+  native component is no less useful than one of a web component) · no shape declared asks a line
+  rather than assuming a browser.
+
 ## 0.286.0 — 2026-09-10
 
 > **For you:** **Your style guide now asks the four questions that make a page look designed** — which
