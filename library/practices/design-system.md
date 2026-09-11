@@ -498,4 +498,20 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
   `coherence` frame already carried for the two design loops; **many-to-one moments need a branch, not
   just a shared name.**
 
+- ✅ `docs/design/FLOWS.md` + the FEAT's **Flow** section — **the flow layer** (v0.281.0), authored
+  in `/spec` rather than reviewed into existence. It is the one layer a checker structurally cannot
+  give you, and this doc already said why: an AI review moves feedback and scannability and moves
+  **flow efficiency by almost nothing** (UXBench, direction only). *No amount of checking produces a
+  flow nobody designed*, so it is decided while the FEAT is still prose and changing it is free.
+  **The mechanism is one column and one question: each step names what it asks the user for and why
+  it is needed *now*, and a step that cannot answer is the step to cut.** Cut rows are kept — a
+  question you decided not to ask is the decision most likely to be silently reversed. Three paths,
+  not one (happy / first-run / failure) — the five-state requirement raised a level.
+  ⚠️ **Stated on the artifact: there is no boundary here at any rung, and there is not going to be
+  one.** Every other layer got a mechanism; this got a cheap format and a hard question. Saying so is
+  the point — this practice's oldest failure is describing a mechanism it does not provide.
+  `designer` and `/design-review` both now grade their own flow verdict as **the weakest thing they
+  say**, because a clean review is evidence about states and legibility and close to none about
+  whether the sequence is right.
+
 **Nothing on this list is open.** Verified against the filesystem, not against this doc.

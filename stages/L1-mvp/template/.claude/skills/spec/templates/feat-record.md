@@ -74,6 +74,26 @@ real and common answer (a settings toggle, a copy change, an internal report)._
 > and nothing changes. That is deliberate — the bar rises because *you* described a risk, not because
 > BOSS guessed you had one.
 
+## Flow (v0.281.0 — only if this FEAT has a user-facing surface)
+
+Indexed in `docs/design/FLOWS.md`. Delete this section for a FEAT with no surface.
+
+| # | Step | Asks the user for | Why it's needed *now* |
+|---|---|---|---|
+| 1 | | | |
+
+**Cut** — a step that can't say why it's needed *now* is the step to cut. Keep the rows; a question
+you decided not to ask is the decision most likely to be silently reversed.
+
+| Cut | Why |
+|---|---|
+| | |
+
+*(Or: "tried to cut and every step held" — that's a real answer, and different from not looking.)*
+
+- **First-run path** — the same flow when the user has nothing yet:
+- **Failure path** — a step can't complete; where they land and what they keep:
+
 ## Smoke check
 _How `/smoke` proves this didn't break things. One or two commands, or one manual path._
 - …

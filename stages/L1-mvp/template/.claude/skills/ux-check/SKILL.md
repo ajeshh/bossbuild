@@ -168,6 +168,17 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    Founder framing, once: *"You didn't design these. Check whether the model did."* Then the
    finding, specific and short — the file, the line, and the honest version. Never a lecture.
 
+8a. **Walk the authored flow against the shipped one.** Read the FEAT's **Flow** section and
+   `docs/design/FLOWS.md`, then check what actually shipped against it — **step count first**. A flow
+   specced at three steps that shipped at five is the single most common and least-noticed regression
+   in a build, because each added step arrived for a good local reason and nobody was holding the
+   total. Name the added steps and ask the same question the spec asked: why is this needed *now*?
+
+   Then the two paths that are usually only on paper: **first-run** (make an empty account and walk
+   it — not the happy path with less data) and **failure** (break a step and see where you land, and
+   whether what you already gave it survived). Label each `observed` or `inferred` like everything
+   else here; a flow walked by reading the router is inferred, and saying so is the honest work.
+
 8b. **Check it against the pattern set.** Read `docs/design/PATTERNS.md` and walk its rows against
    what actually shipped. This is the cheapest high-yield pass in the list, because every row is a
    decision somebody already made — you are checking compliance, not exercising taste, and the

@@ -73,6 +73,13 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    this list is the one that gets dropped. Ask for review against:
    - All 5 states named (default / hover / active / disabled / empty) — plus loading + error
      for async / interactive elements
+   - **The flow as authored** — read the FEAT's **Flow** section and `docs/design/FLOWS.md`. Check
+     the three paths are all there (happy / first-run / failure), that the first-run path is a real
+     design and not "the happy path with less data", and that the cut list was actually attempted.
+     **Grade your own flow finding as the weakest thing in this review and say so** — an AI review
+     moves feedback and scannability and barely moves whether the sequence is right. A clean design
+     review is evidence about states and legibility; it is close to no evidence that the flow is
+     good. That judgment stayed with the founder, and it should read that way on the page.
    - Affordances clear (Norman's lens — the user can tell what's interactive)
    - Nielsen heuristics (visibility, recognition, error prevention, recovery)
    - Accessibility floor: keyboard nav, focus visibility, screen reader output, color-isn't-

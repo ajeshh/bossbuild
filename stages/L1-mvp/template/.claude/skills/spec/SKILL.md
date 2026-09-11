@@ -203,6 +203,39 @@ that when you're choosing among many candidates, not just reacting to one.)_
      level by design (no P0/P1/P2 ladder — that turns the board into a planning surface you tend
      instead of ship). The honest caveat the seasoned hand would add: *re-prioritizing isn't progress;
      finishing is.* Most FEATs need no priority field at all.
+7b. **If this FEAT has a user-facing surface, name the flow — and cut a step (v0.281.0).** Step 4
+   asked which paths must not break. This asks the question upstream of it: **is this sequence right
+   at all?**
+
+   It is a step and not a review because it is the one design judgment a review structurally cannot
+   give you. An AI design review reliably improves feedback and scannability and moves **flow
+   efficiency by almost nothing** — whether two screens should be one, whether the person should have
+   been asked this at all, survives the review intact. **No amount of checking produces a flow nobody
+   designed.** So it gets decided here, while the FEAT is still prose and changing it is free.
+
+   In the record's **Flow** section, write:
+
+   - **The steps, each with what it asks the user for and why it is needed *now*.** One line each.
+   - **The cut.** *A step that cannot say why it is needed now is the step to cut.* Cut at least one
+     or say plainly that you tried and every step held — that sentence is a real answer, and it is
+     different from not having looked. *"We need company size for pricing tiers"* is a reason to
+     collect it eventually; it is not a reason to ask before they have seen the product work.
+     **Keep the cut rows** — a question you decided not to ask is the decision most likely to be
+     silently reversed by someone who assumes it was an oversight.
+   - **Three paths, not one.** The happy path, the **first-run path** (the same flow when the user
+     has nothing — almost always the one that ships broken, because the builder never sees it after
+     day one), and the **failure path** (a step can't complete: where do they land, what do they
+     still have, can they get back in). This is the five-state requirement raised one level.
+
+   Then add one row to **`docs/design/FLOWS.md`** — name, entry, step count, where it ends, which
+   FEAT owns it. Create it from [`templates/flow-index.md`](templates/flow-index.md) if it isn't
+   there. **The index, not a second copy**: two copies of a flow diverge, and the one people read is
+   never the one that got updated. Read it first — a new flow composes with the ones already there
+   rather than inventing a second navigation model.
+
+   **Skip all of this for a FEAT with no surface.** A background job has no flow, and asking for one
+   is the ceremony PRINCIPLE #2 refuses.
+
 8. **Offer plan mode before the coder.** The FEAT says *what* and *how we'll know it's done*; it
    deliberately doesn't say *how*. On this host, the built-in `Plan` agent reads the actual codebase
    and returns an implementation route — which is the half a spec shouldn't contain and shouldn't guess:

@@ -94,6 +94,14 @@ moments that matter most. It is in scope for you.
    the filter that fails. If the index is missing and components exist, say so and offer to write it
    (`/design-tokens-init` carries the skeleton). At V1 `/design-library` generates the same fields
    from the code — read the manifest instead, and never both.
+5a. **Read `docs/design/FLOWS.md` before designing a screen that sits in a sequence.** A flow
+   composes with the ones already there; it does not get to invent a second navigation model. And
+   when you review a flow, **your highest-value question is not a heuristic — it is whether a step
+   should exist at all.** Asking is the most expensive thing an interface does, and every individual
+   question looks reasonable, which is why nobody notices the cost. Name the step you would cut and
+   what it would take to not need it. Know the honest limit while you do it: a model review moves
+   feedback and scannability reliably and moves flow efficiency almost not at all, so **treat your own
+   flow verdict as the weakest thing you say**, and say so.
 5b. **A decided value is not a default — check before you change one.** Before proposing a change to
    the accent, the neutral, the radius, the type pairing or the signature token, look in
    `docs/decisions/` for the brand-anchor record. If one exists, **say what it decided and what its

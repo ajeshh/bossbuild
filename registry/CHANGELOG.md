@@ -16,6 +16,53 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.281.0 — 2026-09-10
+
+> **For you:** **`/spec` now asks you to name the flow and cut a step.** Each step says what it asks
+> the user for and why it's needed *now* — and one that can't answer is the one to cut. Plus the two
+> paths that usually only exist on paper: what the flow looks like for someone with nothing yet, and
+> where they land when a step fails.
+
+**The layer a checker cannot give you.** IDEA-091 part 6 — held in the plan on purpose, and built
+last for the reason that held it.
+
+`designer` owned flows. `/design-review` reviewed flows. `/ux-check` walked the journey. **Nothing
+produced one.** And the obvious fix — another checker — is the wrong one, which BOSS's own practice
+had already established and then not acted on: an AI design review reliably improves feedback and
+scannability and moves **flow efficiency by almost nothing.** Whether two screens should be one, or
+whether the person should have been asked at all, survives the review intact. **No amount of checking
+produces a flow nobody designed.**
+
+So this is an **authored** artifact, decided in `/spec` while the FEAT is still prose and changing it
+is free — not a new verb, and not a fourth reviewer.
+
+- **`/spec` step 7b**, for any FEAT with a user-facing surface: the steps, each with **what it asks
+  the user for** and **why it is needed *now***.
+- **The cut test is the whole mechanism, and it is one column.** *A step that cannot say why it is
+  needed now is the step to cut.* Cut at least one, or say plainly that you tried and every step
+  held — that sentence is a real answer and it is different from not having looked. **Asking is the
+  most expensive thing an interface does, and nobody notices the cost because each individual
+  question looks reasonable.**
+- **Cut rows are kept.** A question you decided not to ask is the decision most likely to be silently
+  reversed by someone who assumes it was an oversight.
+- **Three paths, not one** — happy, **first-run** (the same flow when the user has nothing; almost
+  always the one that ships broken, because the builder never sees it after day one), and **failure**
+  (where they land, what they keep, whether they can get back in). The five-state requirement raised
+  a level.
+- **`docs/design/FLOWS.md` is an index, not a second copy.** Two copies of a flow diverge and the one
+  people read is never the one that got updated. A new flow composes with the ones already there
+  rather than inventing a second navigation model.
+- **`/ux-check` walks authored against shipped, step count first.** A flow specced at three steps and
+  shipped at five is the most common and least-noticed regression in a build — every added step
+  arrived for a good local reason and nobody was holding the total.
+
+**Said on the artifact rather than implied: there is no boundary here at any rung, and there is not
+going to be one.** Every other layer of the design system got a mechanism — a guard, an index, a
+source hash, a loop. This one gets a cheap format and a hard question, because the judgment is the
+product. `designer` and `/design-review` now both grade their own flow verdict as **the weakest thing
+they say.** A clean design review is evidence about states and legibility; it is close to no evidence
+that the flow is right, and it should read that way on the page.
+
 ## 0.280.0 — 2026-09-10
 
 > **For you:** **BOSS now notices when your design has stopped learning.** After three design
