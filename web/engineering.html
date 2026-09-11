@@ -132,6 +132,98 @@ nav: engineering
       </div>
     </section>
 
+    <hr class="hazard">
+
+    <section class="section">
+      <div class="rail">▸<span>four worth the detail</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>The ones that change what you'd actually do</h2>
+          <p>
+            The positions above are the shape. These four are the ones with a specific mechanism
+            underneath, and they're the reason the rest is worth holding.
+          </p>
+        </div>
+
+        <div class="prose">
+          <h3>The bug that is invisible from inside your own product</h3>
+          <p>
+            The most common way an AI-built app leaks its users' data is a schema the model
+            <strong>generated correctly and secured not at all</strong> — row-level security never
+            configured. And the reason it survives every test you'd think to write is that
+            <em>the app works</em>. Logged in as yourself, every screen is correct.
+          </p>
+          <p>
+            <strong>RLS-off is not a functional defect. It's a missing security property</strong> —
+            so no happy-path test, no amount of clicking, and no screenshot will ever show it. The
+            agent isn't confused, either: ask and it will explain RLS correctly. It simply doesn't
+            apply it unless told. That's why BOSS treats schema as a <em>threat</em> topic rather
+            than a craft one, and why the spec asks up front who must <strong>not</strong> be able to
+            see a thing.
+          </p>
+          <p class="small">
+            Sourced to the Lovable RLS class (CVE-2025-48757 — rated critical, and
+            <em>disputed by the vendor</em>, which the practice says out loud rather than quietly
+            dropping).
+          </p>
+        </div>
+
+        <div class="prose">
+          <h3>Read the test diff harder than the code diff</h3>
+          <p>
+            When writing code was expensive, tests protected work you'd already paid for. When
+            generating code is nearly free, <strong>verification is the only scarce thing left</strong>
+            — the suite stops being insurance and becomes the bottleneck.
+          </p>
+          <p>
+            Which produces one concrete review rule: <strong>a test file that changed in the same
+            commit as the code it tests is the highest-signal thing in the whole diff.</strong> Not
+            automatically wrong — an intentional behaviour change should move its test — but never
+            routine, and the one thing that must never be skimmed. The fix is ordering rather than
+            effort: write the acceptance criteria, or the failing test, <em>before</em>.
+          </p>
+          <p class="small">
+            And for a path a model decides: run it <strong>k times and require all k to pass</strong>.
+            One green run against a non-deterministic system is a coin that landed your way.
+          </p>
+        </div>
+
+        <div class="prose">
+          <h3>Documented conventions rot. Enforced conventions compound.</h3>
+          <p>
+            An agent <strong>re-derives your codebase's conventions from scratch every session</strong>.
+            That single fact reorganises architecture work: anything you only <em>wrote down</em>
+            drifts, and anything you <em>encoded as a check</em> compounds. It's the difference
+            between a convention and a gate, and with an agent in the loop the gap widens weekly
+            rather than yearly.
+          </p>
+          <p>
+            So the advice is two moves, not one. <strong>Defer the architecture costs you can
+            defer</strong> — modular monolith first, extract when a real constraint forces it, where
+            the <em>modular</em> half is the load-bearing word. And <strong>spend the rigor on the
+            one-way doors</strong>, of which the schema is the obvious one: migrations as code from
+            day one, versioned and replayable.
+          </p>
+        </div>
+
+        <div class="prose">
+          <h3>A number that can only move one way</h3>
+          <p>
+            Codebases don't decay in a bad commit. They accumulate <code>any</code>s, TODOs, skipped
+            tests, untyped boundaries and bundle bytes <strong>one reasonable-looking change at a
+            time</strong> — no single diff looks bad, and the trend is the damage.
+          </p>
+          <p>
+            A ratchet turns the trend into a gate: pick one number, write it down, let it move only
+            in the direction you want. <strong>And the honest limit ships with it</strong> — don't
+            ratchet something that punishes legitimate growth, or a number that can be gamed. A
+            metric that makes the right change look wrong gets bypassed, and a bypassed gate is worse
+            than none.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="rail">▸<span>where it lands</span></div>
       <div class="body">
