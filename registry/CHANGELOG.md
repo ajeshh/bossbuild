@@ -16,6 +16,40 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.295.0 — 2026-09-11
+
+> **For you:** **`/comp-eval` now says what to open, not just what to write** — docs before
+> marketing, the changelog, the product itself if there's a free tier — and writes a `How they do
+> it` entry for the handful of features that touch your bet, which `/spec` reads as design
+> reference *after* you've decided to build one.
+
+**A correction to v0.294.0, an hour later.** Ajesh: *"I feel like leveraging Claude to do a full
+comp analysis, and ID key ways it's implemented — I feel like the deep research may be weak."* Both
+right.
+
+**The over-correction.** v0.294.0's vet fairly killed *praise-as-a-feature-list feeding the
+roadmap* — that is the parity trap. It then widened to *"do not read how the rival implements it"*
+in `/spec`, which threw out the useful half. **Once a feature is decided, how three rivals shaped
+it — the flow, the defaults, what their users now expect — is design reference, not parity.** The
+guard against parity was always the *timing* (after the decision, in `/spec`; never in
+`/roadmap`), and that guard was already there. Restored, with the line drawn where it belongs.
+
+**The gap the "weak" feeling pointed at.** `/comp-eval` was a table spec, not a research method:
+its only *"open the page"* instruction was about pricing. New section — **How deep to go** — the
+order to open things per rival and why: their own words · the pricing page · **the docs, which is
+where the product actually is** (marketing says what a feature *is*; docs say what it *does*, its
+limits, the edge cases they wrote a help article about) · the changelog (velocity and investment)
+· **the product itself** if there is a free tier · 1–2★ reviews · the community, where the
+workarounds live. Stop when the founder's question is answered, not when the list is exhausted.
+
+**`## How they do it`** — per rival, for the three-to-five features that touch this founder's bet
+and never as a catalog: the flow, the defaults, ask-vs-automatic, the limits, and what their users
+have come to expect (the one place 4–5★ reviews are read). `/spec` reads it into **Flow** and
+*Assumptions* **after** the feature is decided. Cite what you opened, labelled inference vs fact.
+
+**Also found:** BOSS ships this skill and has never run it on itself — no `docs/competition/`
+here. That is the honest test of whether the method works, and it is the next step.
+
 ## 0.294.0 — 2026-09-11
 
 > **For you:** **The competitive field is finally read by the things that build.** `/spec` opens a

@@ -73,6 +73,51 @@ fact; a rival read against the canvas's Promises cell is an answer. Two things, 
 Re-check the named rival, or every row past the staleness threshold. Report **what changed**, not
 just the new value: *"Beta was $29, is now $39"* is the signal; the current number alone isn't.
 
+## How deep to go — the research, not just the table (v0.294.0)
+
+Everything above says what to *write*. This says what to *open*, because a comp eval that reads one
+rival's homepage and fills a table is a table with a rival's marketing in it. **Per rival, in this
+order, and stop when the founder's question is answered — not when the list is exhausted:**
+
+1. **Their own words first** — homepage, the positioning line, who they say it's for. Quote it;
+   don't paraphrase. What a company *claims* to be is a fact about them even when it isn't true.
+2. **The pricing page, opened.** Every tier, what gates each one, what "contact sales" hides.
+   `checked` date on every cell.
+3. **The docs or help center — this is where the product actually is.** Marketing says what a
+   feature *is*; docs say what it *does*, what it asks the user for, its limits, its defaults, the
+   edge cases they wrote a help article about because people hit them. **If you only open one
+   thing beyond the pricing page, open this.** A "how they do it" entry written from marketing
+   copy is a guess with a citation.
+4. **The changelog or release notes** — what they shipped in the last six months tells you what
+   they are investing in, and how fast they move. A rival with monthly releases and one with a
+   changelog last touched in 2024 are different rivals with the same feature list.
+5. **The product itself, if there's a free tier or a demo.** Sign up. Click through the thing you
+   care about. Ten minutes in the real product beats an hour of reading about it, and it is the
+   only way to catch the gap between the docs and the build.
+6. **Reviews — 1–2★ for `where they're weak` and `## Where it breaks`.** The complaints are pain
+   evidence in the users' own words. (4–5★ reviews are read *only* under the rule in step 7.)
+7. **Their community, if any** — a forum, a Discord, GitHub issues if it's open. This is where
+   the workarounds live, and a workaround is a feature request that already has a shape.
+
+**Then, for the features that matter — and only those — write `## How they do it`.** Not every
+feature. The three to five that touch this founder's bet: the differentiator, and whatever is being
+specced right now. For each, one short entry: the **flow** (what steps, in what order), the
+**defaults** (what happens if the user does nothing), what they **ask for vs do automatically**,
+the **limits** (plan gates, counts, the thing the help article exists for), and **what their users
+have come to expect** — this is the one place 4–5★ reviews are read, because *"I love that it
+just…"* is the expectation your version will be measured against.
+
+> **This entry is read by `/spec`, after a feature is decided, as design reference.** It is never
+> read to decide *what* to build — that is `/roadmap`'s job and this file has no vote there. The
+> line is timing: after the decision, this sharpens the FEAT; before it, it is the parity trap.
+> A founder who reads `How they do it` for a feature they have not decided on has opened the wrong
+> file, and the honest move is to say so.
+
+**Cite what you opened, not what you inferred.** A docs page, a changelog entry, a screenshot you
+took, a review with its date — each entry says which. "Their pricing page suggests…" is inference;
+"their pricing page says (checked 2026-09-11)…" is a fact. Both are allowed; they are labelled
+differently, and the label is not decoration.
+
 ## 🔴 The honesty bar — this is the whole skill
 
 **A confidently invented price is the failure mode here, and it is a very easy one to hit.** A model
@@ -110,12 +155,20 @@ docs/competition/
 
 Each `<slug>.md` carries the depth a table can't: what they actually do, quotes from their own
 positioning, what changed at each recheck (dated, append-only — **the drift is the interesting part**),
-open questions, and — as of v0.294.0 — a **`## Where it breaks`** section: the specific things their
-users complain about, dated and linked, one line each. **Failures, never features.** This is the
-section `/spec` opens when it writes a FEAT this rival also has: a rival's known breakages are the
-cheapest source of *what wrong looks like* there is, and reading their feature list instead is how
-a spec turns into a parity checklist. `/landing` reads the positioning quotes; `/pretotype` reads the
-`watch`/in-evidence sort. Nothing reads a feature comparison, because there isn't one.
+open questions, and — as of v0.294.0 — two sections `/spec` opens:
+
+- **`## Where it breaks`** — the specific things their users complain about, dated and linked,
+  one line each. Read into *what wrong looks like*. A rival's known breakages are the cheapest
+  source of failure modes there is.
+- **`## How they do it`** — per feature that matters, the flow, defaults, limits, and what their
+  users expect. Read into the FEAT's **Flow** and *Assumptions* **after** the feature is decided,
+  as design reference. Written only for the three-to-five features that touch this founder's bet,
+  never as a catalog — a catalog is a feature matrix with extra steps, and this file has no vote
+  in `/roadmap`.
+
+`/landing` reads the positioning quotes; `/pretotype` reads the `watch`/in-evidence sort. There is
+no feature-comparison matrix and there is not going to be one; the by-feature knowledge lives in
+each rival's file, keyed to features already decided.
 
 ## How it connects
 
