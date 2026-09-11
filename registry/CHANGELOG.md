@@ -16,6 +16,47 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.285.0 — 2026-09-10
+
+> **For you:** **A new guard asks the question that keeps a codebase a system: reuse, adjust, or
+> new?** Turn on `component-reuse-guard` and when a component gets written that isn't in your index,
+> it hands Claude the ones that already exist and asks — before you end up with `Button`, `CTAButton`
+> and `PrimaryButton`.
+
+**The decision that happens dozens of times a day, and had no mechanism.**
+
+*Twice is a pattern* governs promotion, and promotion is rare. Ajesh named the common one:
+*"it's not just twice — if it already exists, should it be leveraged again? Sometimes vibe coding can
+go really wild. It's about knowing if it's new, or reuse, or adjust it."*
+
+BOSS's shipped rule was an **ordering** — *reuse first, extend second, create last* — which gives you
+the preference and not the test. And an ordering loses to a structural fact about generation:
+**writing a new file is easier than reading an existing one and widening it**, so *create* is the
+path of least resistance and the default silently lands there.
+
+- **`component-reuse-guard`** (opt-in, dormant, `.claude/hooks/`): when a component-shaped file is
+  written whose name has **no row in `docs/design/COMPONENTS.md`**, it hands the agent the rows it
+  should have compared against — near-names first — and asks the three-way question.
+- **It carries the decision rule, because the question is genuinely hard.** Match on the **job**, not
+  the look: same job + different look → a **variant** (a prop, not a file) · same job + slightly
+  different need → **widen** it · different job that happens to look alike → genuinely **new**
+  (`Chip` and `Badge` can be pixel-identical and still be two things, because one is interactive) ·
+  **can't tell → it's a variant.** Forking is cheap now and expensive forever; extending is slightly
+  expensive now and free forever, and **a model optimizes for now, because now is the only thing in
+  its context.**
+- **A fourth answer nobody asks for: reconcile.** If two things in the index already do the same job,
+  the answer isn't reuse-or-new — it's that they should be one. `designer` proposes the merge and
+  does not perform it; that blast radius is the founder's call.
+- **The same four-line rule is now in the CLAUDE.md block**, where it is read on every turn, because
+  this decision is made in the generation loop and not in a review.
+- **Fires once per NEW component name**, never on an edit to a known one, and never at all without an
+  index. Eight cases cover the silences, which are the load-bearing half.
+
+**This closes the one honest weakness the index shipped with.** v0.276.0 said it plainly: *at MVP the
+index is authored, so it can go stale, and nothing catches a component created without its row — a
+better filter, not yet a boundary.* This is the boundary. It arrived because a founder named the pain,
+not because the gap was on a list — which is the only reason it was worth building now.
+
 ## 0.284.0 — 2026-09-10
 
 > **For you:** **Your product records stop being write-only.** A FEAT now names who it's for and

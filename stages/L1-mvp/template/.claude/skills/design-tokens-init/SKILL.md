@@ -303,7 +303,12 @@ also honors the canvas's "don't monetize lock-in" line.
 
    1. Build the button, then use it on the page. Don't build the page and leave the button inside it.
    2. A new component gets its row in the index in the same change that creates it.
-   3. Reaching for a near-name (`CTAButton` beside `Button`) means you found a variant, not a component.
+   3. **Reuse, adjust, or new?** Match on the **job**, not the look.
+      - same job, different look → a **variant** (a prop, not a file)
+      - same job, slightly different need → **widen** the one that exists
+      - different job that happens to look alike → genuinely **new**
+      - can't tell → it's a variant. Forking is cheap now and expensive forever; extending is
+        slightly expensive now and free forever.
    ```
 
    **Why a file and not just the rule:** *"search `components/` for similar first"* has been the
@@ -377,6 +382,21 @@ also honors the canvas's "don't monetize lock-in" line.
   If yes, add the `PostToolUse` block from the header of `.claude/hooks/design-tokens-guard.js` to
   `.claude/settings.json`. If no, **drop it and don't re-ask** — the tokens file alone is a real
   choice, and `boss hooks` will still list it whenever they want it.
+
+- **Offer `component-reuse-guard` when the index has real rows.** The index made *reuse first*
+  checkable; this is what makes it a **boundary**, and it closes the one honest weakness of the index
+  itself — nothing noticed a component written without consulting it.
+
+  > *"Your index has components in it now. Want `component-reuse-guard` on? When a component gets
+  > written that isn't in the index, it hands Claude the rows it should have compared against and
+  > asks the actual question — reuse, adjust, or new? It fires once per new component, never on an
+  > edit to one you already have, and it stays silent until this index exists."*
+
+  **Why it earns a hook when a prompt rule doesn't:** writing a new file is easier for a generating
+  model than reading an existing one and widening it, so *create* is the path of least resistance and
+  the default silently lands there. The cost arrives later and one reasonable decision at a time —
+  `Button`, `CTAButton`, `PrimaryButton`. Same JIT gate and same drop-it-if-declined rule as the
+  others.
 
 - **Offer the terminology guard the same way — but only once a terminology table has real rows.**
   Voice and tone can't be checked by a regex and this hook doesn't try. **Terminology can**, because

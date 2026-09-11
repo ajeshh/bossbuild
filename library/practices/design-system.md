@@ -257,6 +257,41 @@ the same pass.** Not a deprecation window, not SemVer, not an RFC — those are 
 consuming teams, and unearned ceremony for one person. Just: it's dead, and you can see that it's
 dead, so remove it while you're looking at it.
 
+### Reuse, adjust, or new — the decision that actually happens (added v0.285.0)
+
+*Twice is a pattern* governs **promotion**, and promotion is rare. The decision that lands **every
+time something gets built** is narrower and was never named:
+
+> **Given this already exists and my need is eighty percent of it — do I reuse it, adjust it, or
+> make a new one?**
+
+The shipped rule was an *ordering* — *reuse first, extend second, create last* — which tells you the
+preference and not the test. And the ordering loses to a structural fact about generation: **writing
+a new file is easier than reading an existing one and widening it**, so *create* is the path of least
+resistance and the default silently lands there. The cost arrives later, one reasonable-looking
+decision at a time: `Button`, `CTAButton`, `PrimaryButton`.
+
+**The test is the job, not the look.**
+
+| What you have | The answer |
+|---|---|
+| same job, different look | a **variant** — a prop, not a file |
+| same job, slightly different need | **widen** the one that exists |
+| different job that happens to look alike | genuinely **new** — `Chip` and `Badge` can be pixel-identical and still be two things, because one is interactive |
+| two existing things doing the same job | **reconcile** — the fourth answer, and the one that gets missed. Propose the merge; the blast radius is the founder's call |
+| can't tell | **variant.** Forking is cheap now and expensive forever; extending is slightly expensive now and free forever |
+
+**The asymmetry is why this earns a boundary rather than a rule.** A model optimizes for now, because
+now is the only thing in its context. `component-reuse-guard` fires when a component-shaped file is
+written whose name has no row in the index, hands over the rows it should have been compared against,
+and asks the three-way question. It fires **once per new component name** — never on an edit to a
+known one — which is what keeps it usable.
+
+**It also closes the honest weakness the index shipped with.** v0.276.0 said so plainly: *at MVP the
+index is authored, so it can go stale, and nothing catches a component created without its row — a
+better filter, not yet a boundary.* This is the boundary, and it arrived because a founder named the
+pain (*"sometimes vibe coding can go really wild"*) rather than because the gap was on a list.
+
 ### Promotion has a threshold; so does demotion (added v0.283.0)
 
 Retirement above is about **artifacts** — a component nobody imports. This is about **rules**, and it

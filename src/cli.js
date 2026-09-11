@@ -1424,6 +1424,14 @@ const OPTIONAL_HOOKS = [
     worth: 'you have a token system and want it to actually hold — a prompt convention is a filter, this is the check',
   },
   {
+    name: 'component-reuse-guard',
+    event: 'PostToolUse',
+    mode: 'MVP',
+    does: "Asks the question that keeps a codebase a system. When a component gets written whose name has no row in `docs/design/COMPONENTS.md`, it hands Claude the ones that already exist — near-names first — and asks: reuse, adjust, or new? It carries the test, because the question is hard: match on the JOB, not the look. Fires once per new component name, never on an edit to one you already have, and never at all until the index exists.",
+    cost: 'a process after each file write',
+    worth: "you have more than a couple of components and want to keep it that way — writing a new file is easier for a model than reading an existing one and widening it, so `create` is the default unless something asks. This is what stops Button, CTAButton and PrimaryButton",
+  },
+  {
     name: 'schema-guard',
     event: 'PostToolUse',
     mode: 'MVP',

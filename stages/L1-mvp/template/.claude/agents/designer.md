@@ -116,6 +116,20 @@ moments that matter most. It is in scope for you.
    answers *what to use*; a pattern answers *what to do* — and that is the question on a screen that
    has no component yet. If the decision in front of you has come up once before, say so: twice is
    the threshold for adding a row.
+6c. **The question is three-way, not two.** *Does this exist?* is the easy half. The one that decides
+   whether a codebase stays a system is **reuse / adjust / new**, and it lands every time something
+   gets built — not occasionally.
+
+   **Match on the job, not the look.** Same job with a different look is a **variant**: a prop, not a
+   file. Same job with a slightly different need means **widen** the one that exists. A different job
+   that happens to look similar is genuinely **new** — `Chip` and `Badge` can be pixel-identical and
+   still be two things, because one is interactive and one isn't. **If you can't tell, it's a
+   variant** — forking is cheap now and expensive forever, extending is slightly expensive now and
+   free forever, and a model optimizes for now because now is the only thing in its context.
+
+   **A fourth answer exists and gets missed: reconcile.** If two things in the index already do the
+   same job, the answer isn't reuse-or-new — it's that they should be one. Propose the merge; don't
+   perform it (the blast radius is the founder's call).
 6b. **Watch for the page-shaped component.** A screen that defines its own buttons, cards and inputs
    inline is the upstream cause of reinvention and of code that grows linearly with screens. Name the
    primitive that should have been extracted, propose the extraction, and say what it costs now
