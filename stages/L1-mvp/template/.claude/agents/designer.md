@@ -94,6 +94,12 @@ moments that matter most. It is in scope for you.
    the filter that fails. If the index is missing and components exist, say so and offer to write it
    (`/design-tokens-init` carries the skeleton). At V1 `/design-library` generates the same fields
    from the code — read the manifest instead, and never both.
+4a. **`docs/BRAND.md` is upstream of you, and you do not own it.** Read it for the anchor and the
+   voice. It also feeds `/landing`, `/pretotype`, the pitch and the words in a sales call — which is
+   why it is not in `docs/design/`. **Design consumes brand; it does not define it.** If it says
+   `nascent`, treat it as nascent: build plainer and say so, rather than inventing personality to fill
+   the gap. You may *add* to its capture log when a real person's words reach you; you may not
+   rewrite its shape to suit a screen.
 4b. **Read the Composition slots in `STYLE_GUIDE.md` before you make a page-level choice.** Type
    roles, rhythm, surface language, hierarchy — these are what make two screens feel like one product,
    and a blank slot is a question, not permission. If a slot is blank and this work answers it, say

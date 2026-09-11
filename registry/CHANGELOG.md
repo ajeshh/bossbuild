@@ -16,6 +16,60 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.288.0 — 2026-09-10
+
+> **For you:** **You get a brand doc that grows instead of one nobody wrote.** `docs/BRAND.md` — who
+> it's for, what it promises, what it refuses, how it sounds — is seeded by whichever skill needs it
+> first, starts `nascent`, and gains rows from what real people actually said. It is **not** a design
+> file: the landing page, the fake door, the pitch and the design tokens all read the same one.
+
+**A file with three readers and nothing that wrote it.**
+
+`docs/design/BRAND.md` was read by `/landing`, `/pretotype` and the brand-anchor step of
+`/design-tokens-init`. **Nothing wrote it or offered to.** `/landing` degraded honestly — *"never
+invent a brand the founder didn't choose"* — and then handed the founder no way to close the gap.
+
+Same family as the `STYLE_GUIDE.md` failure, and it survived longer for a structural reason: **its
+readers were in different lenses from the writer that did not exist**, so no discipline-scoped check
+could see it.
+
+**Two corrections, and the first one is a path.**
+
+- **It moved to `docs/BRAND.md`.** Filing it under `docs/design/` made it the designer's, and it
+  isn't. Brand is **upstream** of design — the accent colour and the voice in a button trace back to
+  it, and so do the landing page, the pitch, the first email and the words in a sales call. Ajesh:
+  *"brand should be part of marketing, not design — more under the entrepreneur lens, and
+  independent, but it can be developed from any."* Any lens may grow it; **none owns it**.
+  **And brand is not marketing either.** Marketing is what you *do* with a brand — positioning,
+  channels, campaigns — which is downstream and has its own artifacts. Collapsing the two is how a
+  brand doc quietly becomes a landing-page brief and stops being read by everything else.
+  `mentor-customers` now says so in as many words, and reads the same file `/design-tokens-init` does.
+- **It is living, and it starts nascent.** *"Brand starts early MVP but stays nascent, keeps
+  learning, then grows."* So it has `/idea`'s shape: a current shape that sharpens, and an
+  **append-only capture log** whose rows are things that actually happened — a phrase a user used, a
+  comparison someone made unprompted, a word that got a blank look. **Rows come from `/interview` and
+  `/research`, not from brainstorming.** The failure mode it refuses by name: a complete-looking brand
+  document written on day one from imagination that everything downstream then obeys. **A confident
+  answer arrived at with no information is worse than a blank — a blank invites a question and a
+  confident answer ends it.**
+- **Seeded by whoever needs it first**, deliberately not by one skill. A shared artifact with one
+  owning skill becomes that skill's artifact, and the other lenses stop writing to it.
+
+**The invariant that would have caught it, generalized.** `scaffold.test.js` had *"every design doc a
+consumer reads is a design doc some skill writes"* and was blind here, because `BRAND.md`'s readers
+were not design skills. **The class is "a shared artifact with readers and no origin", and it is not a
+design problem.** The test is now repo-wide across every stage: any `docs/**/SHOUTY.md` named by any
+skill or agent must either ship as a template file or be written by some skill. **It watches 17
+shared docs today**, including the ones a concurrent workstream is adding.
+
+Two things it taught in the first minute, both kept:
+
+- It flagged `TRUST.md`, whose skill **did** write it — under a heading that said `## Output` and
+  never said *writes*. **A heading is not a declaration.** Fixed with one sentence in `/trust`.
+- Its own first regex excluded `.` from the match window, so a sentence naming two filenames could
+  never match — `PRIVACY.md` ended it. **A test that cannot express the artifact it checks will pass
+  for the wrong reason**, and this one was checked by making it fail on purpose before trusting it.
+
 ## 0.287.0 — 2026-09-10
 
 **A correction to the release before it, of exactly the kind that release was about.**

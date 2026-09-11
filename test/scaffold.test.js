@@ -386,6 +386,72 @@ test('every design doc a consumer reads is a design doc some skill writes', () =
   }
 });
 
+// The design-doc invariant above, generalized past design (v0.288.0). `docs/design/BRAND.md` had
+// three readers across three different lenses and NOTHING that wrote it or offered to — for many
+// releases — and the design-scoped test could not see it, because its readers weren't design skills.
+// The class is "a shared artifact with readers and no origin", and it is not a design problem.
+test('no shared doc is read by a skill that nothing ships or writes', () => {
+  const bodies = [];          // every skill + agent, per stage
+  const skills = [];          // skill bodies only — a doc must be WRITTEN by one of these...
+  const shipped = new Set();  // ...or SHIPPED as a template file, which is equally an origin.
+
+  for (const st of readdirSync(STAGES_DIR)) {
+    const tpl = join(STAGES_DIR, st, 'template');
+    if (!existsSync(tpl)) continue;
+
+    const skillsDir = join(tpl, '.claude', 'skills');
+    if (existsSync(skillsDir)) {
+      for (const name of readdirSync(skillsDir)) {
+        const dir = join(skillsDir, name);
+        if (!statSync(dir).isDirectory()) continue;
+        const parts = [readFileSync(join(dir, 'SKILL.md'), 'utf8')];
+        const t = join(dir, 'templates');
+        if (existsSync(t)) for (const f of readdirSync(t)) parts.push(readFileSync(join(t, f), 'utf8'));
+        const body = parts.join('\n');
+        skills.push(body); bodies.push(body);
+      }
+    }
+    const agentsDir = join(tpl, '.claude', 'agents');
+    if (existsSync(agentsDir)) {
+      for (const f of readdirSync(agentsDir)) bodies.push(readFileSync(join(agentsDir, f), 'utf8'));
+    }
+    // A doc that ships as a real file in the template has an origin — `docs/IDS.md` is one.
+    const walk = (d, rel) => {
+      if (!existsSync(d)) return;
+      for (const f of readdirSync(d)) {
+        const full = join(d, f);
+        if (statSync(full).isDirectory()) walk(full, `${rel}${f}/`);
+        else if (f.endsWith('.md')) shipped.add(f);
+      }
+    };
+    walk(join(tpl, 'docs'), '');
+  }
+
+  // SHOUTY.md basenames only — the shared, named artifacts, not every incidental path.
+  const named = new Set();
+  for (const body of bodies) {
+    for (const m of body.matchAll(/docs\/(?:[\w.-]+\/)*([A-Z][A-Z_]{2,}\.md)/g)) named.add(m[1]);
+  }
+  assert.ok(named.size >= 5, 'expected the templates to name several shared docs');
+
+  const orphans = [...named].filter((doc) => {
+    if (shipped.has(doc)) return false;
+    const esc = doc.replace('.', '\\.');
+    return !skills.some((b) =>
+      // NOTE: the window excludes newlines but NOT periods — an earlier version excluded `.`
+      // and so could never match a sentence naming two filenames, because `PRIVACY.md` ended it.
+      new RegExp(`(write|writes|create|creates|generate|generates|scaffold|seed|seeds)[^\n]{0,140}${esc}`, 'i').test(b)
+      || new RegExp(`${esc}[^\n]{0,100}(is written|gets written|is created|is seeded)`, 'i').test(b));
+  });
+
+  assert.deepEqual(
+    orphans, [],
+    `shared doc(s) with readers and no origin — nothing ships or writes them: ${orphans.join(', ')}. ` +
+    'This is the STYLE_GUIDE.md failure and the BRAND.md failure; both survived because the readers ' +
+    'were in different files from the writer that did not exist.',
+  );
+});
+
 // v0.141.0 — progressive disclosure makes a skill a TREE, not one file. If sync only
 // tracked SKILL.md, every bundled resource would ship once and then never update again —
 // the same bug already fixed for dormant hooks.

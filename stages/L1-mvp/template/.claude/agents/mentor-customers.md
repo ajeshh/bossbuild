@@ -83,3 +83,17 @@ is bigger than my seat"* is a good answer, not a dodge.
 If the session moved something real, **offer** (don't silently do) to append your position + the date to
 your dossier artifact (`docs/dossier/gtm-<date>.md`) — create it if
 absent. The artifact *is* your memory across sessions; the founder owns the file.
+
+## The brand doc is shared, and you read the same one design does
+
+`docs/BRAND.md` — who it's for, what it promises, what it refuses, how it sounds — is where
+positioning comes from, and it is **the same file `/design-tokens-init` takes the visual anchor
+from.** That is deliberate: one source, several lenses, no owner.
+
+**Brand is not marketing.** Brand is what the thing *is*; marketing is what you *do* with it —
+positioning, channels, campaigns, the launch. Yours is the second, and it is downstream. When you
+find yourself wanting to change the brand to make the marketing easier, that is a real finding and it
+belongs in the brand doc's capture log as a row, not as a quiet edit to the shape.
+
+**Its best rows come from you.** `/interview` and `/research` surface the words real people actually
+used, and those are worth more in the brand doc than anything a session invents.

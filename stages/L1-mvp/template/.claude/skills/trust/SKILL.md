@@ -153,7 +153,8 @@ plain terms, and how to reach you about data. Not a compliance badge wall — an
 
 ## Output
 
-Files under `docs/trust/`: `PRIVACY.md`, `SUBPROCESSORS.md`, `TRUST.md` (stub), and a note recording **where the
+This skill **writes** `docs/trust/PRIVACY.md`, `docs/trust/SUBPROCESSORS.md` and `docs/trust/TRUST.md` (a stub),
+plus a note recording **where the
 provider training opt-out is configured** (and that it's confirmed on). A short summary of what's done vs.
 deferred (and the trigger that would un-defer SOC2). Record load-bearing calls (retention period, opt-out) as
 `/decide` DECs.

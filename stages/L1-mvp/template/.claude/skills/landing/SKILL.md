@@ -44,7 +44,16 @@ people who found you without being told to.
 
 The whole anti-slop mechanism is that the page is born from the brand, not from "make me a landing page." Read,
 and if missing, say so and offer to fill the gap first:
-- **`docs/design/BRAND.md`** (or the project's brand doc) → voice, positioning, story = the **copy** brief.
+- **`docs/BRAND.md`** (the shared brand doc) → voice, positioning, story = the **copy** brief.
+  **If `docs/BRAND.md` doesn't exist, seed it — don't just report the gap.** Telling a founder a
+  brand doc is missing and handing them no way to make one is how that file stayed unwritten while
+  three skills read it. Create it from
+  [`templates/brand-doc.md`](templates/brand-doc.md) using the canvas **Promises** cell and whatever
+  they have already said, mark it `nascent`, say once that it is a living doc that grows from what
+  real people say — then get on with what they actually asked for. **Note the path: `docs/BRAND.md`,
+  not `docs/design/`. Brand is upstream of design and feeds marketing, the pitch and the words in a
+  sales call; it belongs to no single lens.**
+
 - **The design tokens** (`DESIGN_TOKENS.md` / the token layer) → visuals, referenced **by semantic name**
   (`color.action.primary`, never `indigo-600` — that's the AI-slop default).
 - **The canvas Promises cell** → the value proposition (feed it through Shapiro's *Bad Alternative → Better
@@ -117,7 +126,7 @@ disagree.
 
 - `first-product` / `vibe-coder-newbie`: generate the whole thing, explain the five parts in plain language,
   default to precise minimalism (don't hand them a maximalist page to maintain).
-- `non-tech-founder`: lead with the copy/positioning from `BRAND.md`; offer the Carrd/Framer handoff early.
+- `non-tech-founder`: lead with the copy/positioning from `docs/BRAND.md`; offer the Carrd/Framer handoff early.
 - `eng-builder` / `returning-founder`: terse; hand back clean Next.js + tokens, skip the explanation.
 - `indie-hacker`: calm, no growth-bro urgency; the honest-conversion argument resonates here most.
 

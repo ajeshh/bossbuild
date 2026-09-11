@@ -52,7 +52,11 @@ is running a **fake door**, **Pinocchio** or **Impresario** pattern, offer to pu
 
 **Compose it from what BOSS already holds** — don't interview them for copy they've written already:
 the canvas's **People** (who it's for), **Problem** (the tension, in their words), and **Promises**
-(the value), plus `docs/design/BRAND.md` voice and the design tokens if they exist. One screen: what
+(the value), plus **`docs/BRAND.md`** voice and the design tokens if they exist. **No brand doc?**
+Seed one — it is a living, lens-neutral file that any skill can start and none owns (`/landing`
+carries the skeleton at `templates/brand-doc.md`); mark it `nascent` and move on. A fake door
+generated from a nascent brand should read *plainer* than the real thing will, never invent
+personality to fill the gap. One screen: what
 it is, who it's for, one honest claim, one call to action.
 
 **Capture is external, and you must say so plainly.** A published page is sandboxed — it makes no

@@ -257,6 +257,53 @@ the same pass.** Not a deprecation window, not SemVer, not an RFC — those are 
 consuming teams, and unearned ceremony for one person. Just: it's dead, and you can see that it's
 dead, so remove it while you're looking at it.
 
+### Brand is upstream, and it is not ours (added v0.288.0)
+
+🔴 **The defect:** `docs/design/BRAND.md` had **three readers** — `/landing`, `/pretotype` and this
+skill's brand-anchor step — and **nothing that wrote it or offered to.** `/landing` degraded honestly
+(*"never invent a brand the founder didn't choose"*) and then handed the founder no way to close the
+gap. Same family as the `STYLE_GUIDE.md` failure, and it survived longer for a structural reason:
+**its readers were in different lenses from the writer that did not exist**, so no discipline-scoped
+check could see it.
+
+**Two corrections, and the first is a path.**
+
+1. **It moved to `docs/BRAND.md`.** Filing it under `docs/design/` made it the designer's, and it
+   isn't. Brand is upstream of design — the accent colour and the voice in a button trace back to it,
+   and so do the landing page, the pitch, the first email and the words in a sales call. Ajesh:
+   *"brand should be part of marketing, not design — more under the entrepreneur lens, and
+   independent, but it can be developed from any."* **Any lens may grow it; none owns it.**
+   **And brand is not marketing either** — marketing is what you *do* with a brand, downstream, with
+   its own artifacts. Collapsing the two is how a brand doc becomes a landing-page brief and stops
+   being read by everything else.
+2. **It is living, and starts nascent.** *"Brand starts early MVP but stays nascent, keeps learning,
+   then grows."* So it has `/idea`'s shape — a current shape that sharpens, and an **append-only
+   capture log** whose rows are things that actually happened (a phrase a user used, a comparison
+   someone made unprompted, a word that got a blank look). **Rows come from `/interview` and
+   `/research`, never from brainstorming.** The failure mode to refuse is a complete-looking brand
+   document written on day one from imagination, which everything downstream then faithfully obeys:
+   *a confident answer arrived at with no information is worse than a blank, because a blank invites a
+   question and a confident answer ends it.*
+
+**Seeded by whoever needs it first**, which is not one skill on purpose — a shared artifact with one
+owning skill becomes that skill's artifact, and the other lenses stop writing to it.
+
+### The invariant that would have caught it (added v0.288.0)
+
+`scaffold.test.js` had *"every design doc a consumer reads is a design doc some skill writes"* — and
+it could not see this, because `BRAND.md`'s readers were not design skills. **The class is "a shared
+artifact with readers and no origin", and it is not a design problem.** The test is now repo-wide
+across every stage: any `docs/**/SHOUTY.md` named by any skill or agent must either **ship as a
+template file** or be **written by some skill**. It watches 17 shared docs today.
+
+Two things it taught immediately, both worth keeping:
+
+- It flagged `TRUST.md`, whose skill *did* write it under a heading that said `## Output` and never
+  said *writes*. **A heading is not a declaration** — the fix was one sentence in `/trust`.
+- The first version of its regex excluded `.` from the match window, so a sentence naming two
+  filenames could never match, because `PRIVACY.md` ended it. **A test that cannot express the
+  artifact it checks will pass for the wrong reason.**
+
 ### Composition — the layer between tokens and a page (added v0.286.0)
 
 Tokens say what a colour *is*. Components say what a button *is*. Patterns say what to do in a
