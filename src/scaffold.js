@@ -1,7 +1,7 @@
 import {
   cpSync, readdirSync, statSync, readFileSync, writeFileSync, existsSync, rmSync, mkdirSync,
 } from 'node:fs';
-import { join } from 'node:path';
+import { join, basename } from 'node:path';
 import { STAGES_DIR } from './paths.js';
 
 // A stage template may carry this file. Instead of being copied verbatim, its
@@ -203,7 +203,7 @@ export function applyStageSafe(stageId, targetDir, vars) {
 
   // Substitute placeholders only in the files we actually wrote.
   for (const f of copied) {
-    if (!isTextFile(f.slice(f.lastIndexOf('/') + 1))) continue;
+    if (!isTextFile(basename(f))) continue;   // basename, not a '/'-split: `f` came from join() (IDEA-095)
     let body = readFileSync(f, 'utf8');
     for (const [k, v] of Object.entries(vars)) body = body.replaceAll(`{{${k}}}`, v);
     writeFileSync(f, body);

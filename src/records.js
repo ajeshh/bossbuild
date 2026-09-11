@@ -26,7 +26,7 @@
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { join } from 'node:path';
+import { join, sep, basename } from 'node:path';
 import { frontmatter, STATUS_VOCAB, baseStatus } from './frontmatter.js';
 import { cardGist } from './board.js';
 
@@ -498,11 +498,15 @@ export function idCensus(projectDir) {
   // The case prose scanning exists for — `docs/ideas/INDEX.md` naming a number before the file
   // exists — lives in a record folder, so it is still caught.
   const recordRoots = RECORD_DIRS.map((d) => join(projectDir, d));
+  // `basename` and `sep`, not `'/'`: `walkDocs` builds these with `join()`, which is `\` on
+  // Windows. The `'/'` form made every basename the whole path there, so no id ever matched,
+  // the census came back empty, and `boss id` handed out IDEA-001 to a project with sixty
+  // records. Silent, and the one place duplicates are manufactured (IDEA-095).
   for (const f of walkDocs(join(projectDir, 'docs'))) {
-    const base = f.slice(f.lastIndexOf('/') + 1);
+    const base = basename(f);
     const m = base.match(/^([A-Z]{3,4})-(\d+)/);
     if (m) bump(m[1], parseInt(m[2], 10));
-    if (!recordRoots.some((r) => f.startsWith(r + '/'))) continue;
+    if (!recordRoots.some((r) => f.startsWith(r + sep))) continue;
     let text = '';
     try { text = readFileSync(f, 'utf8'); } catch { continue; }
     for (const hit of text.matchAll(ID_ANYWHERE)) bump(hit[1], parseInt(hit[2], 10));

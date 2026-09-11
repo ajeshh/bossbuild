@@ -177,6 +177,10 @@ claude                          # open Claude Code (terminal or editor panel)
 > /prototype <your idea>        # or just hit go — BOSS builds the smallest clickable version to react to
 ```
 
+**Where it runs:** wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains. The CLI
+sets the project up; the skills and the conscience run inside Claude Code, and Claude's own
+extension installs in VS Code and its forks (Cursor, Kiro, …). Nothing BOSS ships is editor-specific.
+
 **Contributing / want the source?** `git clone https://github.com/ajeshh/bossbuild.git && cd bossbuild
 && npm install -g .` links your checkout globally. `npm run release` is the gate every change has to
 pass.

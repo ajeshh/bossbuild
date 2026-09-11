@@ -1,0 +1,39 @@
+# The first CI this repo has had. ~300 releases were verified on one laptop (macOS, one Node),
+# and "works on Windows" was a sentence with no checker behind it — IDEA-095.
+#
+# Deliberately NOT `npm test`. Two of its gates read state that is gitignored by decision
+# (`check-refs` follows CHANGELOG links into docs/ideas; `check-dogfood` reads .boss/), so on a
+# clean checkout they are red for a stranger and green for Ajesh — that asymmetry is IDEA-087's
+# one-way door, not CI's to resolve. `test:ci` is the subset a clean checkout can honestly run.
+#
+# The matrix is the point: the same script on the OS the founder actually has.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} · node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      # Zero-dependency CLI (Principle #4): there is nothing to install. `npm ci` would need a
+      # lockfile the repo does not carry, and would prove nothing.
+      - run: node --version && git --version
+      - name: unit + boundary + ladder
+        run: npm run test:ci
+      - name: CLI smoke (boss new → id → unlock → status/board/records → hook)
+        run: npm run smoke:cli
+      - name: the package ships what it says
+        run: npm pack --dry-run

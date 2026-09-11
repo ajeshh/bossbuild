@@ -1,5 +1,5 @@
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
-import { join, resolve, basename } from 'node:path';
+import { join, resolve, basename, sep } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from './paths.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
@@ -1333,7 +1333,7 @@ function failNotAProject() {
   let projects = [];
   try { projects = (listProjects() || []).filter((p) => p && p.path && p.status !== 'retired'); } catch { /* registry optional */ }
   if (projects.length) {
-    const here = projects.filter((p) => p.path.startsWith(process.cwd() + '/'));
+    const here = projects.filter((p) => p.path.startsWith(process.cwd() + sep));
     if (here.length) {
       // The single likeliest case: they are standing one level above the project they mean.
       console.error(dim(`  ${here.length === 1 ? 'It looks like it is' : 'They look like they are'} just below you:`));

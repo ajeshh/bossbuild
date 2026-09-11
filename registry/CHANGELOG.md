@@ -16,6 +16,65 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.296.0 — 2026-09-11
+
+> **For you:** **BOSS runs wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains.**
+> It always did; the README and the site now say so. And `boss id` no longer hands out a duplicate
+> record number on Windows.
+
+**The first CI this repo has had, and the audit that made it necessary.** Ajesh: *"how do we make
+boss compliant with windows, linux."* The honest answer was that nobody knew: ~300 releases had
+been verified on one laptop, one OS, one Node. **`npm test` had never been run on a clean
+checkout** — and when it was, it failed at step one, because two of its gates read state that is
+gitignored by decision (`check-refs` follows CHANGELOG links into `docs/ideas/`; `check-dogfood`
+reads `.boss/`). Green for Ajesh, red for a stranger: that asymmetry is IDEA-087's one-way door,
+not CI's to settle. So **`npm run test:ci`** is the subset a clean checkout can honestly run
+(boundary, ladder, the 398 unit tests), and `.github/workflows/ci.yml` runs it on **ubuntu ·
+windows · macos × Node 22 · 24**, plus a new **`npm run smoke:cli`** — one node script, no shell
+globs, no `$VAR`, no `/tmp` — that does `boss new` → `boss id` → `boss unlock mvp` → status /
+board / records → feeds the conscience hook a `UserPromptSubmit` payload on stdin, and prunes its
+own row from `~/.boss/registry.json` afterwards. **The matrix is the checker; the fixes below are
+what it checks.** Until it has gone green on a Windows runner, the README deliberately does not say
+"Windows".
+
+**Linux needed nothing.** `src/` is Node built-ins, paths go through `join()`/`homedir()`, git is
+`execFileSync`, the browser opener already branched to `xdg-open`.
+
+**Windows had one silent defect and two small ones, all one shape** — a path built with `join()`
+(backslashes there) then handled as a `/`-string. `src/records.js` took the basename with
+`lastIndexOf('/')`, which on Windows returns -1, so the "basename" was the whole path, no
+`^IDEA-\d+` ever matched, the census came back empty, and **`boss id IDEA` would offer `IDEA-001`
+to a project with sixty records** — the one place duplicates get manufactured, and the exact bug
+`boss id` was built to stop. `src/scaffold.js` handed `isTextFile` a full path the same way, so
+dotfiles like `.gitignore` kept their `{{placeholders}}`. `src/cli.js`'s *"you're one level above
+your project"* hint compared against `cwd + '/'` and never fired. All three now use `basename()` /
+`sep` from `node:path`. **Not touched, deliberately:** `ladder.js` and `loop-runtime.js` split on
+`/` because the input is a *config pattern*, not a path; and the `relative()` keys in
+`remove.js`/`managed.js` are compared against other `relative()`/`join()` output on the same OS, so
+they agree — re-examined and found consistent, not a bug.
+
+**Also fixed on the way: a 1-in-10 flake in `test/citations.test.js`.** It stages a probe in
+BOSS's *own* index while `node --test` runs files in parallel, and once in a while `git add` lost
+the `index.lock` race with exit 128 — and the un-stage lost it too, leaving phantom `AD` files in
+`git status`. Both sides retry now. A flaky gate on day one teaches everyone to ignore the gate.
+
+**Two things CI cannot answer, written down rather than claimed.** Whether Claude Code on Windows
+invokes the shipped `settings.json` hook command (`node "$CLAUDE_PROJECT_DIR/…"` — POSIX syntax)
+through Git Bash or through cmd; if the latter, the conscience never fires and never says why. And
+`team.js`'s one string-through-shell call. Both need a real Windows box. IDEA-095 holds the list.
+
+**The other half of the question — *"a lot of folks use VS Code, Cursor"* — turned out to be
+copy, not a port.** Verified against Claude's own docs (code.claude.com/docs/en/vs-code, read
+2026-09-11): the Claude Code extension has an explicit *Install for Cursor* link and installs in
+other VS Code forks (Kiro, Devin Desktop, Open VSX). **So BOSS has run at full strength inside Cursor
+for months, conscience included, and told nobody** — the README said `code .` once and the site
+said nothing. One sentence in README, `web/_shell.html`, `web/index.html`, `web/start.html`.
+Separately, Cursor's *native* agent now ships hooks (`sessionStart` + `additional_context`,
+`beforeSubmitPrompt`, `preCompact`, `stop` — cursor.com/docs/agent/hooks), which meets the
+host-half of IDEA-006's re-open trigger; the founder-half is still n=0 and it stays parked. The
+presence question — where founders *find* BOSS, including the Claude Code plugin marketplace as an
+open design question — is IDEA-096.
+
 ## 0.295.0 — 2026-09-11
 
 > **For you:** **`/comp-eval` now says what to open, not just what to write** — docs before

@@ -24,6 +24,23 @@ const run = (args, opts = {}) => {
 };
 const CHECK = join(BOSS_ROOT, 'scripts', 'check-refs.js');
 
+// These two tests stage a probe in BOSS's OWN index, and `node --test` runs files in parallel —
+// so once in ~10 runs another process holds `.git/index.lock` at the wrong instant and `git add`
+// exits 128. Seen 2026-09-11 on a clean clone while standing up CI (IDEA-095). Retry, briefly:
+// a flaky gate on day one teaches everyone to ignore the gate.
+function gitRetry(args) {
+  let last;
+  for (let i = 0; i < 5; i++) {
+    try { return execFileSync('git', args, { cwd: BOSS_ROOT, stdio: 'ignore' }); }
+    catch (e) { last = e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 40 * (i + 1)); }
+  }
+  throw last;
+}
+const gitAddForce = (probe) => gitRetry(['add', '-f', probe]);
+// The un-stage needs the retry MORE than the add: if it loses the race the probe stays in
+// BOSS's real index as `AD` and the next `git status` shows a phantom file. That happened.
+const gitUnstage = (probe) => { try { gitRetry(['rm', '--cached', '-f', probe]); } catch { /* */ } };
+
 // Assembled rather than written out, because this file is TRACKED and the check scans tracked
 // files: spelling the probe citation as a literal here makes the test suite itself a finding.
 // (It did, on the first run. The check has no exemption list and this is what that costs — a
@@ -43,13 +60,13 @@ test('REGRESSION: the check can still be made to fail — it is not a silent no-
   const probe = join(BOSS_ROOT, 'docs', '__citation-probe.md');
   writeFileSync(probe, `# probe\n\nSee ${PROBE}.\n`);
   try {
-    execFileSync('git', ['add', '-f', probe], { cwd: BOSS_ROOT, stdio: 'ignore' });
+    gitAddForce(probe);
     const r = run([CHECK]);
     assert.equal(r.code, 1, 'a dead citation in a tracked file must fail the check');
     assert.match(r.out, /DEAD CITATIONS/);
     assert.match(r.out, /write it as `ZZZ-001`/);
   } finally {
-    try { execFileSync('git', ['rm', '--cached', '-f', probe], { cwd: BOSS_ROOT, stdio: 'ignore' }); } catch { /* */ }
+    gitUnstage(probe);
     rmSync(probe, { force: true });
   }
 });
@@ -58,10 +75,10 @@ test('a mention inside backticks is a mention, not a citation', () => {
   const probe = join(BOSS_ROOT, 'docs', '__citation-probe-2.md');
   writeFileSync(probe, ['# probe', '', 'The form is `' + PROBE + '`, documented here.', ''].join('\n'));
   try {
-    execFileSync('git', ['add', '-f', probe], { cwd: BOSS_ROOT, stdio: 'ignore' });
+    gitAddForce(probe);
     assert.doesNotMatch(run([CHECK]).out, /DEAD CITATIONS/);
   } finally {
-    try { execFileSync('git', ['rm', '--cached', '-f', probe], { cwd: BOSS_ROOT, stdio: 'ignore' }); } catch { /* */ }
+    gitUnstage(probe);
     rmSync(probe, { force: true });
   }
 });

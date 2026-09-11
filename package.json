@@ -1,6 +1,6 @@
 {
   "name": "oyeboss",
-  "version": "0.295.0",
+  "version": "0.296.0",
   "description": "BOSS (Build Out Solid Stuff) \u2014 a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart \u2192 MVP \u2192 V1 \u2192 Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
@@ -46,6 +46,8 @@
     "check:boundary": "node scripts/check-boundary.js",
     "check:site": "node scripts/check-site.js",
     "test": "node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node --test test/*.test.js",
+    "test:ci": "node scripts/check-boundary.js && node scripts/check-ladder.js && node --test \"test/*.test.js\"",
+    "smoke:cli": "node scripts/smoke-cli.js",
     "release": "node scripts/release.js",
     "check:published": "node scripts/check-published.js",
     "check:deployed": "node scripts/check-deployed.js",

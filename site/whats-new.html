@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.295.0" />
+<meta name="generator" content="BOSS 0.296.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.296.0</span><span class="when">2026-09-11</span></div>
+        <p><strong>BOSS runs wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains.</strong> It always did; the README and the site now say so. And <code>boss id</code> no longer hands out a duplicate record number on Windows.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.295.0</span><span class="when">2026-09-11</span></div>
         <p><strong><code>/comp-eval</code> now says what to open, not just what to write</strong> — docs before marketing, the changelog, the product itself if there's a free tier — and writes a <code>How they do it</code> entry for the handful of features that touch your bet, which <code>/spec</code> reads as design reference <em>after</em> you've decided to build one.</p>
       </li>
@@ -113,10 +117,6 @@
         <div class="rel"><span class="ver">v0.284.0</span><span class="when">2026-09-10</span></div>
         <p><strong>Your product records stop being write-only.</strong> A FEAT now names who it's for and <code>/spec</code> opens that persona; <code>/roadmap</code>'s NO-list stops being deleted with each cycle; <code>/spec</code> reads the current bets and the declined list before it writes; the competitive field says so when it's a quarter stale; and the first user-facing flow also writes a one-page journey map, with the edge users the happy story assumes away.</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.283.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>Three exceptions to the same rule now means the rule is wrong.</strong> <code>/design-review</code> reads your exceptions table before adding to it, and on the third of a kind it proposes changing the rule instead of recording another departure from it.</p>
-      </li>
     </ol>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
@@ -141,7 +141,8 @@
         </div>
         <p class="small">Either puts <code>boss</code> on your PATH. Needs
           <a href="https://nodejs.org">Node 18+</a> and
-          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>.</p>
+          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a> — in the terminal, VS Code,
+          Cursor or JetBrains; BOSS runs wherever Claude Code does.</p>
         <p class="small">
           <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
           <a href="https://www.npmjs.com/package/oyeboss">npm</a> ·
@@ -160,7 +161,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.295.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.296.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
