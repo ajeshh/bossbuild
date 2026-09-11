@@ -422,7 +422,15 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
 
 - ✅ `design-tokens-guard` — the hardcoded-style hook (shipped v0.145.0, dormant at L1, offered by
   `/design-tokens-init`). It was the one gap that actually mattered: the doc prescribed a boundary it
-  didn't provide.
+  didn't provide. **Widened to all five token families in v0.277.0** — it had enforced *one of five*
+  (color) while the tokens file defined color, spacing, type, radius and elevation, so four families
+  were prose calling itself a system. The gate that keeps the four quiet is the JIT rule applied per
+  family: **no named tokens for a family, no opinion about it** — you cannot ask an agent to use a
+  name that does not exist. Color stays unconditional; weakening a shipped boundary to generalize it
+  would be a bad trade. Spacing is deliberately the narrowest pattern in the file (CSS declarations
+  and Tailwind *arbitrary* values only — never `p-4`, which IS the scale; never `0` or a hairline),
+  because **a guard that cries wolf gets turned off, and a guard that is off is worth less than no
+  guard, since the founder believes it is on.**
 - ✅ `docs/design/PROTOTYPES.md` — the prototype registry (v0.146.0), with the token-consumption rule.
 
 - ✅ `/design-library` + `docs/design/library/` — the visual surface, the rendered rule sets, the

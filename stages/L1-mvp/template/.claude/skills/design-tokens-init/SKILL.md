@@ -317,6 +317,12 @@ also honors the canvas's "don't monetize lock-in" line.
   `DESIGN_TOKENS.md` as context. This single discipline prevents 80% of the drift — **and the
   remaining 20% is where the 47 blues actually live**, because a prompt convention is a *filter*
   (it depends on every future prompt remembering), not a boundary.
+- **Define a family or don't — but know the guard follows you.** `design-tokens-guard` has an
+  opinion about radius, type, spacing and elevation **only if your tokens file names tokens for
+  them** (color is unconditional — it is the original boundary). This is deliberate: you cannot ask
+  an agent to use a token name that does not exist, so an undefined family is silence rather than
+  nagging. The practical consequence is worth saying out loud — **defining a spacing scale turns on
+  its enforcement**, which is the right trade and should not be a surprise.
 - **Prototypes consume the tokens, or they're labeled sketches.** Once this project has tokens *and*
   more than one mockup, start `docs/design/PROTOTYPES.md` —
   **[`templates/prototypes-registry.md`](templates/prototypes-registry.md)**. The rule it carries is
@@ -328,8 +334,9 @@ also honors the canvas's "don't monetize lock-in" line.
   check has something to point at — so this is the JIT on-switch, not a V1 afterthought:
 
   > *"Tokens are in. Want me to turn on `design-tokens-guard`? It's a hook that catches a hardcoded
-  > color the moment it's written and hands Claude your token names instead. It stays silent unless
-  > this tokens file exists, and it costs a process per file write."*
+  > style value the moment it's written — color, radius, type, spacing, elevation — and hands Claude
+  > your token names instead. It stays silent unless this tokens file exists, and it only has an
+  > opinion about a family you actually defined tokens for. Costs a process per file write."*
 
   If yes, add the `PostToolUse` block from the header of `.claude/hooks/design-tokens-guard.js` to
   `.claude/settings.json`. If no, **drop it and don't re-ask** — the tokens file alone is a real

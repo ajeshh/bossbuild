@@ -16,6 +16,42 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.277.0 — 2026-09-10
+
+> **For you:** **`design-tokens-guard` now watches your whole token system, not just color** — a
+> hardcoded radius, font size, spacing value or shadow gets the same catch a raw hex always did. It
+> only has an opinion about a family your tokens file actually defines names for, so it stays quiet
+> about the parts you haven't systematized.
+
+**Four of five token families were prose calling itself a system.**
+
+`DESIGN_TOKENS.md` defines color, spacing, type, radius and elevation. `design-tokens-guard`
+enforced **one**. The other four had the same status the color rule had before v0.145.0 — a sentence
+asking the next prompt to remember, which is the definition of a filter. IDEA-091 part 2.
+
+- **All five families are checked**, across CSS, JS/TS style objects, Tailwind arbitrary values, and
+  the native shapes the guard already claimed to cover (SwiftUI `cornerRadius`, Compose
+  `RoundedCornerShape`, Flutter `BorderRadius.circular`).
+- **The gate that keeps the four new ones quiet is the JIT rule, applied per family: no named tokens
+  for a family, no opinion about it.** If your tokens file defines no `radius.*` or `--radius-*`
+  vocabulary, a `border-radius: 12px` is not drift — it is the only way to say it. The guard cannot
+  ask you to use a name that does not exist, so it doesn't.
+- **Color stays unconditional.** It is the original boundary and "the 47 blues" is the named failure;
+  weakening a shipped check in order to generalize it would be a bad trade.
+- **Spacing is the narrowest pattern in the file, on purpose.** CSS declarations and Tailwind
+  *arbitrary* values (`p-[13px]`) only — never `p-4`, which **is** a scale reference rather than
+  drift — and never a zero or a 1px hairline. A `var()`, `calc()`, `clamp()` or `theme()` defers to
+  the system and is never flagged, in any family.
+- **The message names the vocabulary of the family it hit**, not the whole token file.
+
+**The reasoning behind the caution, since it is the part worth reusing:** a spacing literal is far
+more common and far more often legitimate than a hex. **A guard that cries wolf is a guard the
+founder turns off — and a guard that is off is worth *less* than no guard, because they believe it
+is on.** That asymmetry is why the new families ship gated and narrow rather than thorough.
+
+Nine cases cover the widening in `test/design-tokens-guard.test.js`, including the two that matter
+most: silence on an ungoverned family, and silence on `p-4`.
+
 ## 0.276.0 — 2026-09-10
 
 > **For you:** **`/design-tokens-init` now writes a component index too** — `docs/design/COMPONENTS.md`,

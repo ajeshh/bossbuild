@@ -41,6 +41,28 @@ function withTokens() {
   return dir;
 }
 
+
+// A tokens doc that defines vocabulary for every family. The per-family gate reads this: a family
+// with no named tokens is not governed, so these cases need the names to exist.
+function withFullTokens() {
+  const dir = project({});
+  mkdirSync(join(dir, 'docs', 'design'), { recursive: true });
+  writeFileSync(
+    join(dir, 'docs', 'design', 'DESIGN_TOKENS.md'),
+    [
+      '# Tokens',
+      '',
+      '- `--color-action-primary` — the main CTA',
+      '- `radius.default` — 2px, chosen on purpose',
+      '- `font.body` — the body face',
+      '- `spacing.element` / `spacing.section`',
+      '- `shadow.raised`',
+      '',
+    ].join('\n'),
+  );
+  return dir;
+}
+
 const DRIFT = { file_path: 'src/Button.tsx', content: '<i className="bg-indigo-500" style={{color:"#3B82F6"}}/>' };
 
 test('stays SILENT when the project has no token system (the JIT gate)', () => {
@@ -79,6 +101,62 @@ test('reads what the call actually wrote, across Edit and MultiEdit shapes', () 
   // Only NEW content is drift — a pre-existing hex the founder already decided to keep is not
   // this hook's business, so a call that writes nothing must say nothing.
   assert.equal(run(dir, { file_path: 'a.css', content: '   ' }), '');
+});
+
+
+// --- the other four families (v0.277.0) -----------------------------------------------------
+// The guard enforced ONE of the five families a token system defines. The other four were prose.
+
+test('catches radius, type, spacing and elevation once each family has vocabulary', () => {
+  const dir = withFullTokens();
+  assert.match(run(dir, { file_path: 'a.css', content: 'border-radius: 12px;' }), /border-radius/, 'radius');
+  assert.match(run(dir, { file_path: 'a.css', content: 'font-size: 17px;' }), /font-size/, 'type');
+  assert.match(run(dir, { file_path: 'a.css', content: 'padding: 13px;' }), /padding/, 'spacing');
+  assert.match(run(dir, { file_path: 'a.css', content: 'box-shadow: 0 2px 8px #0001;' }), /box-shadow/, 'elevation');
+  assert.match(run(dir, { file_path: 'a.tsx', content: '<div className="rounded-[13px]"/>' }), /rounded-\[13px\]/);
+});
+
+test('names the token vocabulary of the family it actually hit', () => {
+  const out = run(withFullTokens(), { file_path: 'a.css', content: 'border-radius: 12px;' });
+  assert.match(out, /radius\.default/, 'a warning that names no alternative just gets ignored');
+  assert.doesNotMatch(out, /color-action-primary/, "don't dump the whole token file — name the family that was hit");
+});
+
+// THE GATE that keeps the four new families quiet: no named tokens for a family, no opinion about
+// it. You cannot ask someone to use a token name that does not exist.
+test('stays SILENT on a family the tokens file defines no vocabulary for', () => {
+  const dir = withTokens(); // color vocabulary only
+  assert.equal(run(dir, { file_path: 'a.css', content: 'border-radius: 12px;' }), '', 'no radius tokens, no opinion');
+  assert.equal(run(dir, { file_path: 'a.css', content: 'padding: 13px;' }), '', 'no spacing tokens, no opinion');
+  // ...and color stays unconditional, because it is the original boundary.
+  assert.match(run(dir, { file_path: 'a.css', content: 'color:#3B82F6;' }), /#3B82F6/);
+});
+
+// THE NOISE RULE. A guard that cries wolf gets turned off, and a guard that is off is worth less
+// than no guard because the founder believes it is on.
+test('spacing ignores the scale references and the honest exceptions', () => {
+  const dir = withFullTokens();
+  for (const [label, content] of [
+    ['a Tailwind scale class IS the scale, not drift', '<div className="p-4 gap-2"/>'],
+    ['a hairline border is not a spacing decision', 'padding: 1px;'],
+    ['zero is not a spacing decision', 'margin: 0;'],
+    ['a var() defers to the system', 'padding: var(--spacing-element);'],
+    ['calc() defers too', 'gap: calc(var(--s) * 2);'],
+  ]) {
+    assert.equal(run(dir, { file_path: 'a.tsx', content }), '', label);
+  }
+});
+
+test('a value that defers to the system is never drift, in any family', () => {
+  const dir = withFullTokens();
+  for (const content of [
+    'border-radius: var(--radius-default);',
+    'font-size: inherit;',
+    'box-shadow: none;',
+    'border-radius: 0;',
+  ]) {
+    assert.equal(run(dir, { file_path: 'a.css', content }), '', content);
+  }
 });
 
 test('fails open — a broken guard must never break a session', () => {

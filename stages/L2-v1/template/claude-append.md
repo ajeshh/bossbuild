@@ -7,7 +7,8 @@
 
 1. **Design tokens are authoritative.** Every style value comes from `docs/design/DESIGN_TOKENS.md`
    + the corresponding code file. New colors are added to the tokens, never inline — and
-   `design-tokens-guard` catches a raw hex the moment one is written. It shipped at MVP and is
+   `design-tokens-guard` catches a raw style value the moment one is written — color, radius, type,
+   spacing, elevation, each gated on your tokens file defining that family. It shipped at MVP and is
    dormant until you turn it on; `/design-tokens-init` offers it once.
    **What `design-drift-loop` watches is raw hex codes in source, and that is all** — one regex.
    It cannot see near-duplicate components or a tokens file going stale while components grow.
