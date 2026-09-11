@@ -484,9 +484,23 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 
 /* --- grouped sub-navigation ----------------------------------------------
    The depth door is ten pages in three beats — what you get, how it is built,
-   what it believes. The order encoded that from the start and nobody could see
-   it, because a flat row of ten reads as a pile whatever order it is in. */
-.subnav-in:has(.subgroup) { gap: var(--space-5); align-items: flex-start; }
-.subgroup { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
-.subgroup .subnav-label { white-space: nowrap; }
-@media (max-width: 60rem) { .subnav-in:has(.subgroup) { gap: var(--space-2) var(--space-4); } }
+   what it believes. Flex-wrapping them put two beats on one line and orphaned
+   the third under a dead band of space, which read as broken rather than
+   grouped. One row per beat, always.
+
+   `display: contents` on the wrapper promotes each label and its list into the
+   parent grid, so column 1 sizes to the WIDEST label and every row's links
+   start on the same x. Hard-coding that width would have been a guess that
+   breaks the first time a beat gets renamed. */
+.subnav-in:has(.subgroup) {
+  display: grid; grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.3rem var(--space-3); align-items: baseline;
+  padding-top: var(--space-2); padding-bottom: var(--space-2);
+}
+.subgroup { display: contents; }
+.subnav .subgroup .subnav-label { white-space: nowrap; }
+@media (max-width: 46rem) {
+  .subnav-in:has(.subgroup) { grid-template-columns: 1fr; gap: 0.15rem; }
+  .subnav .subgroup .subnav-label { margin-top: var(--space-2); }
+  .subnav .subgroup:first-child .subnav-label { margin-top: 0; }
+}
