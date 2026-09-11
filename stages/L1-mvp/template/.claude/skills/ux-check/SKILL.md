@@ -170,6 +170,29 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    Founder framing, once: *"You didn't design these. Check whether the model did."* Then the
    finding, specific and short — the file, the line, and the honest version. Never a lecture.
 
+7b. **Ask once: what else does a user of this actually see?** The journey being walked almost never
+   ends inside the app, and **every product has more surfaces than its founder thinks.** These are
+   the ones that arrive without ever entering a design conversation:
+
+   - **Transactional email** — the welcome, the reset, the receipt, the invite. It is the surface
+     someone sees when they are **not in your app**, it is usually the ugliest thing you ship, and it
+     is the one an incumbent competitor gets right. It also tends to be the only artifact a user
+     forwards to someone else.
+   - **Settings, admin, billing.** The second surface always arrives and is never in the brief.
+   - **Error and empty pages** — the 404, the 500, the maintenance page, the expired link. Each is a
+     moment where trust is either kept or lost, and each is generated from a framework default.
+   - **Export and print** — a PDF, a CSV, a shared-link preview. Someone *else* sees these.
+
+   **This is a question, not a checklist, and it is asked once.** List what exists, name which have
+   never been looked at, and stop. Do not schedule a redesign of six surfaces — that is the ceremony
+   Principle #2 refuses. **The usual honest outcome is one row: the email nobody has read since the
+   library generated it.**
+
+   **Why it matters more for a solo founder than for a team:** these surfaces are where credibility
+   leaks. An internal screen that drifts costs a slightly incoherent app. A receipt that looks
+   auto-generated, or a 404 in a framework's default typeface, tells a stranger how big your company
+   is — and they never file a bug, they just adjust their estimate of you.
+
 8a. **Walk the authored flow against the shipped one.** Read the FEAT's **Flow** section and
    `docs/design/FLOWS.md`, then check what actually shipped against it — **step count first**. A flow
    specced at three steps that shipped at five is the single most common and least-noticed regression

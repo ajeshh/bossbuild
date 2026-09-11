@@ -207,6 +207,13 @@ warning. It shows what you've built, not only what's wrong.
    to be off-token and **the only one a stranger ever sees**. A drift check scoped to `src/` covers
    everything except the front door. These are pages, not components, so they get no cards — they get
    a **surfaces** row on the shell, carrying the same off-token and stale badges.
+
+   **Scan the unglamorous ones too, and list them even when they are empty.** Transactional email
+   templates, the settings and billing screens, the 404 / 500 / expired-link pages, and anything the
+   product exports or prints. They are real surfaces a user sees, they are almost never in the
+   component tree, and **an absent row and an unexamined row must not look the same** — a surface with
+   no row reads as *"doesn't exist"* when it usually means *"nobody looked."* Mark those
+   `not examined` rather than leaving them out.
 3. **Read each component.** Extract: exported name, the props that create variants, which states it
    handles, the import path, and any raw style values. One line of purpose — from a doc comment if
    there is one, otherwise inferred and marked as inferred.

@@ -87,6 +87,52 @@ updated: {{DATE}}
 | **Degraded-state honesty** | the model is slow, rate-limited, or failing | say which, and what still works | a spinner that never resolves |
 | **Trust repair** | the model got something wrong and the user saw it | own it and reduce autonomy asymmetrically — faster to lose than to regain | a silent retry |
 
+## Element families — seed only the ones this product has
+
+Three families come up in almost every product, get decided by accident, and are expensive to
+re-decide later. **These are not a catalog of elements** — BOSS does not ship one and shouldn't (see
+the note above). They are the **decisions each family forces**, which is a different thing: a catalog
+tells you what a dialog is, and these tell you what you have to settle before you build your third
+one.
+
+### Inputs — where most of the friction in a product lives
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **Label, not placeholder** | any field | a visible label that stays visible | placeholder-as-label — it vanishes on focus, and a screen reader may never announce it |
+| **Validate on leave, not on keystroke** | any field with a format | let them finish, then tell them | an error appearing on character three of an email address |
+| **The error sits with the field** | a field that failed | next to the input, naming the fix | one summary at the top that doesn't say which field |
+| **Mark what's optional** | a form with both | mark the *optional* ones, not the required ones | a form where everything has an asterisk |
+| **Never lose what they typed** | a submit that fails | the values survive the round trip | a cleared form after a server error |
+
+> Luke Wroblewski's forms work is the depth behind this; `designer` already carries him as a lens.
+> **The one that costs the most and looks the smallest is the last row** — a founder rarely tests the
+> failing submit, and a user who retypes a form once does not do it twice.
+
+### Data display — the one AI-generated UI gets worst
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **Zero / one / many / far too many** | any list, table or feed | all four are designed, not just "many" | a table that's beautiful at 12 rows and unusable at 4,000 |
+| **Numbers align right, text aligns left** | any table with figures | so digits line up and you can compare down a column | centred numbers |
+| **One sort by default, and say which** | any ordered list | the order is stated, not implied | an order the user has to reverse-engineer |
+| **Truncate with a way back** | long values in a cell | show the truncation and let them get the whole thing | silent clipping |
+
+> **The reason this family is the worst under AI generation:** a model composes a table from the shape
+> of the data it was shown, which is almost always the happy middle. Zero rows and far-too-many rows
+> are where real users live, and both are invisible in the example.
+
+### Icons — decide the set before the second one
+
+**An icon set is a dependency**, which makes this a seed-that-scales decision rather than a style
+choice: swapping sets later means touching every use site, and mixing two sets is visible to anyone
+even if they can't say why.
+
+- **The set:** <one, named — and it's a dependency, so it belongs in the same conversation as any other>
+- **Sizes:** <the two or three that exist. Not "whatever the component needs">
+- **Icon alone or icon plus label:** <when each. An icon-only button needs an accessible name either way>
+- **What an icon never does:** <e.g. carry meaning nothing else carries — see the accessibility floor>
+
 ## Ours — patterns this product grew
 
 The most valuable section, and it starts empty on purpose. A row lands here when the same decision

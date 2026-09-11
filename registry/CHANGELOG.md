@@ -16,6 +16,56 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.290.0 — 2026-09-10
+
+> **For you:** **The parts of a product nobody designs now get asked about.** Your pattern set can
+> seed the three element families that get decided by accident — inputs, data display, icons — and
+> `/ux-check` asks once what *else* a user sees: the receipt email, the settings screen, the 404.
+
+**Two halves of one thesis: the unglamorous parts are where a young product actually leaks.**
+
+**The element families — the decisions each forces, not a catalog.** BOSS still does not ship a
+Material-sized catalog of elements and still shouldn't. But three families come up in almost every
+product, get decided by accident, and are expensive to re-decide. A catalog tells you what a dialog
+*is*; these tell you **what you have to settle before you build your third one.**
+
+- **Inputs** — label not placeholder (a placeholder vanishes on focus and a screen reader may never
+  announce it) · validate on leave, not on keystroke · the error sits with the field · mark what's
+  *optional*, not what's required · **never lose what they typed.** That last one costs the most and
+  looks the smallest: a founder rarely tests the failing submit, and **a user who retypes a form once
+  does not do it twice.**
+- **Data display — the family AI generation gets worst**, for a nameable reason: a model composes a
+  table from the shape of the data it was shown, which is always the happy middle. **Zero rows and
+  far-too-many rows are where real users live, and both are invisible in the example.** So: all four
+  of zero / one / many / far too many are designed · numbers right, text left · one default sort,
+  stated · truncate with a way back.
+- **Icons — decide the set before the second one.** An icon set is a **dependency**, which makes it a
+  seed-that-scales decision rather than a style choice: swapping later touches every use site, and
+  **mixing two sets is visible to anyone even if they can't say why.** It gets a slot in the style
+  guide's Composition section alongside type roles, because it is a foundation choice.
+
+**The unglamorous surfaces — a question asked once.** `/ux-check` step 7b: the journey being walked
+almost never ends inside the app, and **every product has more surfaces than its founder thinks.**
+
+- **Transactional email** — the welcome, the reset, the receipt, the invite. The surface someone sees
+  when they are **not in your app**, usually the ugliest thing you ship, the one an incumbent gets
+  right, and often the only artifact a user forwards to someone else.
+- **Settings, admin, billing** — the second surface always arrives and is never in the brief.
+- **Error and empty pages** — 404, 500, maintenance, expired link. Each is a trust moment, each is a
+  framework default.
+- **Export and print** — a PDF, a CSV, a link preview. Someone *else* sees these.
+
+**It is a question, not a checklist, and the honest outcome is usually one row.** List them, name what
+has never been looked at, stop — scheduling a redesign of six surfaces is the ceremony Principle #2
+refuses. **Why it matters more for a solo founder than a team:** an internal screen that drifts costs
+a slightly incoherent app; a receipt that looks auto-generated tells a stranger how big your company
+is, and they never file a bug — they just adjust their estimate of you.
+
+At V1 `/design-library`'s existing **surfaces** row widens to cover them, with one rule carried over
+from the coverage lesson: **an absent row and an unexamined row must not look the same.** A surface
+with no row reads as *"doesn't exist"* when it usually means *"nobody looked"*, so those are marked
+`not examined`.
+
 ## 0.289.0 — 2026-09-10
 
 > **For you:** **`boss craft accessibility` is new** — the guidelines BOSS reasons from, so `designer`

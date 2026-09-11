@@ -80,6 +80,16 @@ looking unresolved.
 - **Type colour:** <which token pairs carry text — `text.body` on `surface.background`, etc. This is
   not a typography decision, it is a **token pair**, which means it is also the contrast check.>
 
+### 1b. Icons — *the set, and it is a dependency*
+
+Cheap to decide now, expensive later: swapping sets means touching every use site, and **mixing two
+sets is visible to anyone even if they can't say why.** Same shape as the type-roles slot — a
+foundation choice, not a per-screen one.
+
+- **The set:** <one, named>
+- **Sizes that exist:** <two or three, not "whatever fits">
+- **Icon-only is allowed when:** <and it still needs an accessible name>
+
 ### 2. Rhythm — *the spacing that makes it feel like one thing*
 
 - **Base step:** <the unit everything is a multiple of>
