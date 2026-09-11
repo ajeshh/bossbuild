@@ -1,0 +1,17 @@
+{
+  "name": "bossbuild",
+  "description": "BOSS — the just-in-time startup incubator. One plugin: the front door.",
+  "owner": { "name": "Ajesh Shah", "url": "https://github.com/ajeshh" },
+  "plugins": [
+    {
+      "name": "boss",
+      "source": "./",
+      "description": "Puts `boss` on your PATH and orients you with /boss:welcome. The incubator itself — 48 skills, 12 agents, the conscience — arrives in your project with `boss new` or `boss adopt`.",
+      "category": "productivity",
+      "tags": ["startup", "founder", "incubator", "scaffold"],
+      "homepage": "https://oyeboss.build",
+      "repository": "https://github.com/ajeshh/bossbuild",
+      "license": "MIT"
+    }
+  ]
+}

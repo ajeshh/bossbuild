@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.300.0" />
+<meta name="generator" content="BOSS 0.302.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,14 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.302.0</span><span class="when">2026-09-11</span></div>
+        <p><strong>BOSS is installable as a Claude Code plugin.</strong> <code>/plugin marketplace add ajeshh/bossbuild</code> → <code>/plugin install boss@bossbuild</code> puts <code>boss</code> on your PATH inside Claude and gives you <code>/boss:welcome</code>, which opens the door to <code>boss new</code> or <code>boss adopt</code>. No npm step.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.301.0</span><span class="when">2026-09-11</span></div>
+        <p><strong>The anti-slop list now says when to distrust itself</strong> — it's re-checked when a new frontier model ships, not on a calendar, because that's what actually moves what generated design looks like. If a newer model has shipped since the list's stamp, it tells you to treat it as stale.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.300.0</span><span class="when">2026-09-11</span></div>
         <p><strong>the conscience now fires on Windows without Git Bash.</strong> The two hooks BOSS registers moved to Claude Code's exec form — no shell in between — and <code>/boss-sync</code> migrates the old line in existing projects. Needs Claude Code 2.1.139 or newer (<code>claude --version</code>).</p>
       </li>
@@ -108,14 +116,6 @@
       <li>
         <div class="rel"><span class="ver">v0.290.0</span><span class="when">2026-09-10</span></div>
         <p><strong>The parts of a product nobody designs now get asked about.</strong> Your pattern set can seed the three element families that get decided by accident — inputs, data display, icons — and <code>/ux-check</code> asks once what <em>else</em> a user sees: the receipt email, the settings screen, the 404.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.289.0</span><span class="when">2026-09-10</span></div>
-        <p><strong><code>boss craft accessibility</code> is new</strong> — the guidelines BOSS reasons from, so <code>designer</code> can tell you <em>which principle</em> something violates and where to look it up, instead of reciting four rules. Plus <code>contrast-guard</code>: the one accessibility property that is arithmetic, computed over the token pairs you declared.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.288.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>You get a brand doc that grows instead of one nobody wrote.</strong> <code>docs/BRAND.md</code> — who it's for, what it promises, what it refuses, how it sounds — is seeded by whichever skill needs it first, starts <code>nascent</code>, and gains rows from what real people actually said. It is <strong>not</strong> a design file: the landing page, the fake door, the pitch and the design tokens all read the same one.</p>
       </li>
     </ol>
         <p class="small">
@@ -161,7 +161,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.300.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.302.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

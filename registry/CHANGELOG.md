@@ -16,6 +16,38 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.302.0 — 2026-09-11
+
+> **For you:** **BOSS is installable as a Claude Code plugin.** `/plugin marketplace add
+> ajeshh/bossbuild` → `/plugin install boss@bossbuild` puts `boss` on your PATH inside Claude and
+> gives you `/boss:welcome`, which opens the door to `boss new` or `boss adopt`. No npm step.
+
+**The plugin is the front door, never the body — DEC-017, decided and built the same morning.**
+Ajesh: *"I think i do want to publish to claude plugins."* IDEA-096 had refused to build one until
+its design question was answered: *is a plugin BOSS, or the CLI's clothes without its body?*
+
+**The answer is the thin one.** BOSS's value is a substrate *in the project* — `.boss/`,
+`docs/loops/`, the evidence ledger, the venture brain — that the hooks read and the skills write,
+versioned per project, diffed by `boss sync`, removed by `boss remove`. A plugin is per-user and
+enabled in every folder. Shipping the full surface that way fails twice: the conscience would fire
+from the plugin *and* from the project's `settings.json` (two nudges a turn, no honest dedupe), and
+every scaffolded project would list 96 skills in `/help`, half with a colon in front. So the plugin
+carries **one skill and a PATH entry**: `/boss:welcome` — orients in a paragraph, checks whether the
+folder already carries BOSS, asks new-vs-adopt, runs the CLI on the founder's go, and hands off to
+the project's own `/welcome` — and `bin/`, which is the repo's `bin/`, so `boss` is on the Bash
+tool's PATH the moment the plugin is enabled. No hooks, no agents, no settings in the plugin.
+
+**The repository is the plugin and its own marketplace.** `.claude-plugin/plugin.json` (skills
+pointed at `plugin/skills/`, nothing else declared) and `.claude-plugin/marketplace.json` listing
+the repo root as `"source": "./"`. `claude plugin validate . --strict` passes. Verified with
+`--plugin-dir` in an empty folder: `boss:welcome` is the only namespaced skill, and `which -a boss`
+shows the plugin's `bin/` on PATH — *after* any global install, which is the right order. The release
+gate now checks `plugin.json`'s `version` against `VERSION`; a plugin whose version never moves never
+updates.
+
+**Submission to `claude-community` is Ajesh's action** — the Console form at
+platform.claude.com/plugins/submit. Approval pins a commit SHA and CI re-pins on push.
+
 ## 0.301.0 — 2026-09-11
 
 > **For you:** **The anti-slop list now says when to distrust itself** — it's re-checked when a new

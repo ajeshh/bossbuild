@@ -152,10 +152,15 @@ list of what each mode includes lives where it can't go stale:
 > `src/` since the beginning. It just happens to be exactly what the new defaults reward.)
 
 ```bash
-# pick one — all three put `boss` on your PATH (zero runtime deps)
+# pick one — each puts `boss` on your PATH (zero runtime deps)
 npx oyeboss new my-app        # no install; try it first
 npm install -g oyeboss        # the usual — macOS, Linux, Windows
 brew install ajeshh/boss/oyeboss   # macOS, via the tap
+
+# or, already inside Claude Code — no npm at all:
+> /plugin marketplace add ajeshh/bossbuild
+> /plugin install boss@bossbuild
+> /boss:welcome                # the front door; `boss` is on Claude's PATH now
 
 # already have the old package? uninstall first — both provide `boss`, so npm refuses to relink
 npm uninstall -g bossbuild && npm i -g oyeboss

@@ -53,6 +53,12 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   const pkg = JSON.parse(readFileSync(join(BOSS_ROOT, 'package.json'), 'utf8'));
   record('VERSION ↔ package.json', pkg.version === VERSION,
     pkg.version === VERSION ? VERSION : `VERSION ${VERSION} vs package.json ${pkg.version}`);
+  // The plugin manifest pins its own version, and Claude Code only updates an installed plugin
+  // when that string moves — a stale one is a plugin frozen at the release it was written in
+  // (DEC-017). Same check, third copy of the same number.
+  const plugin = JSON.parse(readFileSync(join(BOSS_ROOT, '.claude-plugin', 'plugin.json'), 'utf8'));
+  record('VERSION ↔ .claude-plugin/plugin.json', plugin.version === VERSION,
+    plugin.version === VERSION ? VERSION : `VERSION ${VERSION} vs plugin.json ${plugin.version}`);
 }
 
 // --- 1b. the unit suite ---------------------------------------------------
