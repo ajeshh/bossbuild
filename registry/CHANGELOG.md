@@ -47,8 +47,16 @@ and never as a catalog: the flow, the defaults, ask-vs-automatic, the limits, an
 have come to expect (the one place 4–5★ reviews are read). `/spec` reads it into **Flow** and
 *Assumptions* **after** the feature is decided. Cite what you opened, labelled inference vs fact.
 
-**Also found:** BOSS ships this skill and has never run it on itself — no `docs/competition/`
-here. That is the honest test of whether the method works, and it is the next step.
+**Also found, then done the same day:** BOSS ships this skill and had never run it on itself.
+`docs/competition/` now exists — `README.md` with the *doing nothing* row (raw Claude Code, where
+EVID-001 and EVID-003 both came from) and **v0** filed in full following the method: docs before
+marketing (which is where every real finding was — the homepage and FAQ said nothing about
+Instructions, Design Systems 2.0, or what a Project holds), the changelog, their forum's complaints
+dated and quoted, and `How they do it` for the three features that touch BOSS's bet. Sort: `watch`.
+Two things it found: **v0 has no "why" layer at all** (a Project holds deployment, domains and env
+vars — the memory is git), and their Design Systems 2.0 is the same *shape* as IDEA-091's retrieval
+thesis shipped as product, grounded by a sentence to the model rather than a check on the output.
+Step 5 of the method — use the product — is the one an agent cannot do alone; left open, and named.
 
 ## 0.294.0 — 2026-09-11
 
