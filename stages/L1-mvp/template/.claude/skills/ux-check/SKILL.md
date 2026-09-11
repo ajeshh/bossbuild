@@ -242,6 +242,12 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
   don't flatten the list.
 - **Capture every check.** Without `docs/design/ux-check-*.md` files, the discipline doesn't
   compound.
+- 🔴 **Open `docs/personas/` and the FEAT's `for:` field — don't just recommend it (v0.283.0).**
+  This rule said *"pair with personas where relevant"* for twelve releases and named no path, which
+  made it a suggestion the next session was free to skip. **Read the persona this surface is for**
+  (the FEAT frontmatter's `for:` slug, or the only persona there is), and walk its `pains` and its
+  *what we don't know yet* block against what is actually on the screen. A review run without
+  opening the file is a review of a generic user, and this product does not have one.
 - **Pair with personas (v0.19) where relevant** — *carrying `/persona`'s discount with them.* A
   persona's reaction can surface cohort-specific failures the heuristic walk misses. It can also
   like your flow more than a real person would: synthetic readers skew agreeable, and the research

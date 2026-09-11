@@ -71,7 +71,10 @@ The half that makes this a *design system* rather than a component dump. Pulled 
   as two rendered dialogs side by side is a thing you cannot unsee. Render the **Ours** table first —
   those are the decisions this product actually made — and the seeded rows after.
 - **The signature** — the one thing someone could describe without naming the product
-- **Exceptions**, dated. An exception recorded is a decision.
+- **Exceptions**, dated, **grouped by the rule they depart from and counted.** An exception
+  recorded is a decision; three against one rule is a verdict on the rule. Rendering them in date
+  order hides that — the whole point of the grouping is that *"three exceptions · one primary per
+  view"* is a sentence you cannot skim past.
 
 > If the library shows only components, it teaches the agent and the founder that design *is*
 > components. It isn't. The rules are the part that survives a rewrite.

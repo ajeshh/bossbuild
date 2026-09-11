@@ -48,13 +48,30 @@ estimate you'll overrun (Singer, *Shape Up*). A bet is *"this problem, this much
 ticket, not a spec (that's `/spec`'s job, downstream). Anything that isn't a bet this cycle isn't "later" — it's
 **not now**, and it goes on the NO-list.
 
-## Step 4 — the NO-list is mandatory (this is where the discipline lives)
+## Step 4 — the NO-list is mandatory, and it is the half that STAYS (v0.283.0)
 
 Write down, explicitly, **what you are NOT building** — the requests you're declining this cycle and *why*
 (usually: low evidence grade, serves a vocal minority, or doesn't move the current bet). **No is the default;
 the NO-list is the load-bearing half of the roadmap** — a roadmap that only says yes is a wish-list. This is also
 where you protect the **silent majority**: the features you're *not* building for the loudest few are a decision,
 so record it.
+
+🔴 **The two halves have different lifespans, and until v0.283.0 this skill deleted the wrong one.**
+The bet-list is disposable on purpose — a bet-list you tend becomes the backlog Shape Up refuses.
+But the refusals were being thrown away with it, which meant the same declined request came back
+three cycles later with nothing to stop it, and **the reason — usually a weak evidence grade — was
+gone.** Deleting your reasoning while keeping your conclusions is backwards.
+
+So the NO-list is **append-only and standing**, in `docs/roadmap/NO-LIST.md` — **one file, not one
+per cycle**. Create it from [`templates/no-list.md`](templates/no-list.md) if it isn't there, and
+**read it before you weigh anything**: a candidate already on it either needs its re-open signal to
+have actually fired, or it needs a better reason than "it came up again."
+
+Every row carries a **re-open signal**, not a date — *"three more users ask unprompted"*, *"the churn
+interview names it"*. That is the same grammar every `deferred` record in `docs/ideas/` uses, and it
+is what makes a NO reversible without being weak. **A row with no re-open signal is a refusal nobody
+can undo, which is a decision nobody made.** When one does come back, fill in `Reopened` and leave
+the row — a list showing only the refusals that stuck reads as wiser than it was.
 
 ## The humane line (PRINCIPLE #6)
 
@@ -67,11 +84,19 @@ so record it.
 
 ## Output
 
-A dated `docs/roadmap/ROADMAP-<date>.md`: the **bet-list** (2–4 bets, each with its problem + appetite +
-confidence = EVID grade), the **NO-list** (declined + why), and the **one riskiest assumption** the top bet
-still rests on. **A snapshot, not a living plan** — re-run when the signal has genuinely moved (a Shape-Up cycle,
-a new cohort), never on a calendar; delete the old one. Promote a chosen bet with `/spec` (that's where it
-becomes a FEAT).
+**Two files, two lifespans.**
+
+1. A dated `docs/roadmap/ROADMAP-<date>.md`: the **bet-list** (2–4 bets, each with its problem + appetite +
+   confidence = EVID grade) and the **one riskiest assumption** the top bet still rests on. **A snapshot, not a
+   living plan** — re-run when the signal has genuinely moved (a Shape-Up cycle, a new cohort), never on a
+   calendar; delete the old one.
+2. `docs/roadmap/NO-LIST.md` — **appended to, never replaced, never deleted.** The refusals compound; the
+   bets don't.
+
+Promote a chosen bet with `/spec` (that's where it becomes a FEAT). **`/spec` reads both of these** as of
+v0.283.0 — a FEAT that is neither a current bet nor on the NO-list gets named once, and a FEAT that is on
+the NO-list gets its own row read back. Neither blocks; both make the decision visible at the moment it is
+being made rather than three cycles later.
 
 ## Cohort-aware
 - `first-product` / `vibe-coder-newbie`: keep it to 1–2 bets + a NO-list; teach "what users *do* beats what they
@@ -89,6 +114,7 @@ becomes a FEAT).
 - **Behavior outranks requests.** Requests are `stated-pain` (weak); usage/churn is the strong grade.
 - **Confidence = the EVID grade**, not reach, not a HiPPO. **RICE-reach OFF by default.**
 - **A small bet-list with fixed appetites, never a Gantt/backlog you tend.** Snapshot, use, discard.
-- **The NO-list is mandatory** — no is the default; it's where the silent-majority discipline lives.
+- **The NO-list is mandatory AND standing** — no is the default; it's where the silent-majority discipline
+  lives, and it is the one artifact here that outlives its cycle. Append-only, re-open signal on every row.
 - **Not a scheduled cadence.** Re-run when the signal moves, not on a calendar (BOSS refuses the weekly-discovery
   treadmill). Promote a bet with `/spec`; end a zombie with `/sunset`.

@@ -19,6 +19,46 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 **Rung: MVP.** If this project is **earlier** than that, don't run this — leave the seam instead:
 **Write down what 'working' means for the feature while you are building it — one sentence, in the commit or a comment. It costs nothing now and it is the only thing that makes a test writable later.** That is the whole ask; it is *not* a spec convention, an id scheme, acceptance-criteria fields, a template. You can write a spec any day. You cannot reconstruct what you MEANT by 'correct' six months after you built it — and an agent asked to test that feature later will happily write assertions against whatever the code already does.
 
+## Step 0b — read the sequence before you spec against it (v0.283.0)
+
+`/roadmap` weighs everything at once into a small bet-list with fixed appetites and a standing
+NO-list, then points at this skill. **Until v0.283.0 `/spec` could not see either of them** —
+`docs/roadmap/` was referenced by exactly one line in the whole shipped surface, inside the skill
+that writes it. A sequence nothing downstream reads is a document, not a plan.
+
+Read both, and say something **once**. Never block; this is a mirror, not a gate.
+
+- **`docs/roadmap/NO-LIST.md`** — is this FEAT something you already declined? If it is, read the
+  row back: *what* was declined, the grade it was declined on, and **the re-open signal that was
+  written at the time.** Then ask the only question that matters: *has that signal actually fired,
+  or has this just come up again?* Both answers are legitimate. A founder who says "it fired" is
+  doing exactly what the list is for — and the honest close is updating the row's `Reopened` cell,
+  not quietly ignoring it.
+- **The newest `docs/roadmap/ROADMAP-*.md`** — is this FEAT one of the current bets? If it is, name
+  its **appetite** and check the scope you're about to write against it: a bet with a two-week
+  appetite and a FEAT with eleven acceptance criteria is the appetite already being overrun, and
+  this is the last cheap moment to notice. If it isn't a bet, say so in one line and move on —
+  plenty of good FEATs are a bug, a small fix, or something the founder simply decided to do. **The
+  point is that it was noticed, not that it was authorized.**
+
+- **`docs/competition/` — but only when this FEAT *is* the differentiator.** If what you're about to
+  spec is the thing that makes this product the choice over a named rival, the most relevant sentence
+  in the repo is that rival's **`why they might win`** line, and `/spec` has never been able to see
+  it. Read it and hold it against the acceptance criteria: *does what I'm about to build actually
+  beat their reason?* For an ordinary FEAT — a settings toggle, a fix, internal plumbing — **skip
+  this and stay silent.** Opening a competitor file to spec a copy change is the ceremony that gets
+  the whole step ignored.
+
+  ⚠️ **Carry the file's age with you.** Every cell in that table has a `checked` date, and
+  `field-stale-loop` fires when the field hasn't been touched in ~90 days. A pricing figure from
+  March is not a fact about today, and a FEAT argued against a stale rival is argued against a
+  memory. If the rows are old, say so in the FEAT's **Assumptions** rather than letting the number
+  pass as current.
+
+**No roadmap files? Skip this entirely and say nothing.** Pre-PMF, at n<10, `/roadmap` correctly
+refuses to run at all — so their absence is the expected state for most projects at this rung, and
+treating it as a gap would be exactly the ceremony PRINCIPLE #2 refuses.
+
 ## When to run
 
 - The idea has been captured (Quickstart) and ideally pressure-tested in `/canvas` — at minimum the
@@ -111,6 +151,31 @@ that when you're choosing among many candidates, not just reacting to one.)_
    currently in `building` status.
 2. Allocate the next free `FEAT-NNN` (parallel numbering to IDEA — same N if it's a clean promotion,
    otherwise next free integer; grep the **files** under `docs/` for existing FEATs, per `docs/IDS.md`).
+2b. **Name the user, from the persona that already exists (v0.283.0).** Set `for:` in the FEAT's
+   frontmatter before you draft a line of it.
+
+   Read `docs/personas/` first. If a persona is there, `for:` is its slug and **you read the file** —
+   its `jobs`, `pains` and especially its *what we don't know yet* block are the sharpest input this
+   skill gets, and until now nothing in `/spec` opened them. If there is no persona, `for:` is a
+   plain phrase in the founder's own words, and that is a complete answer; **say once** that
+   `/persona derive` would make the next FEAT sharper, then move on. Never block, never generate a
+   persona from inside this skill.
+
+   > **Two things follow from this field, and the second is why BOSS ships no user-story format.**
+   >
+   > A persona consult is a *pre-filter, never validation* — carry `/persona`'s own discount with
+   > you. Its evidence ledger says what fraction of that user is real; a FEAT justified by a 100%
+   > synthetic persona is justified by nothing, and should say so in **Assumptions** rather than
+   > reading as research.
+   >
+   > And: *as a X I want Y so that Z* is a format for carrying **who and why** into a ticket for
+   > someone who wasn't in the conversation. This record already carries the goal, the assumptions
+   > with the founder's corrections, what *wrong* looks like, the flow with its cut, and three paths
+   > — strictly more than the story form holds. The one thing it had and this record didn't was the
+   > user's **name**. That is now a field, so the format has nothing left to add. If a founder asks
+   > for user stories, tell them that plainly rather than generating a second artifact that says
+   > less.
+
 3. **The elicitation pass — say back what you had to guess (v0.172.0+).** Draft the spec from what
    you actually have, then **before you show it, separate what you were told from what you filled
    in.** This is the cheapest step in the whole skill and the one that decides whether the build

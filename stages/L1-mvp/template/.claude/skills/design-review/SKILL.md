@@ -117,6 +117,25 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    **Where this layer earns its keep:** a component answers *what to use*, a pattern answers *what to
    do* — and the second question is the one that comes up on a screen that has no component yet.
 
+4c. **Before you record an exception, read the ones already there — the rule may be what's wrong.**
+   `STYLE_GUIDE.md` has an Exceptions table and the discipline is right: *an exception recorded is a
+   decision; an exception unrecorded is drift.* But an exceptions table nobody reads back is a
+   ratchet, and a system that only tightens is a system that locks design in.
+
+   So, when this review is about to add one, count the ones like it:
+
+   - **First of its kind** — record it. That is what the table is for.
+   - **Second** — record it and say out loud that it is the second. No action yet; twice is a
+     coincidence you should be able to see.
+   - **Third of the same kind** — 🔴 **stop. The rule is wrong, not the three screens.** Three
+     exceptions is the same threshold as *twice is a pattern*, pointed the other way. Propose the
+     rule change: narrow it (*"one primary per view, **except** in a toolbar"*), split it into two
+     rules, or retire it. A rule with three standing exceptions is not being followed — it is being
+     worked around, and the working-around is the real convention now.
+
+   **Say which one you are doing.** "Recording an exception" and "this rule needs to change" are
+   different acts and the table cannot tell them apart on its own.
+
 5. **Synthesize.** Output:
    - **Token violations** — list each; propose the right token; flag if a new token is
      legitimately needed and which layer
@@ -156,6 +175,11 @@ Per `.boss/config.json` cohort declaration (v0.20+):
   you're running the wrong skill — use `/ux-check`.
 - **Propose, don't just critique.** Every finding includes a specific change suggestion.
 - **Reuse first.** The first question on every new component: *does a similar pattern exist?*
+- **Every layer has a demotion path, not just a promotion path.** A pattern nobody cites, a token
+  nothing references, a component nobody imports, a rule with three exceptions — each is a thing the
+  system should be able to *take back*. Promotion has a threshold (*twice*); so does demotion
+  (*three exceptions, or zero uses*). A design system that can only add is one that locks design in,
+  which is the opposite of the job.
 - **Cite the pattern; don't re-derive it.** If `PATTERNS.md` has the row, name it. Re-arguing a
   settled rule every review is how a design system becomes a set of opinions that happen to agree.
 - **Seed only what applies.** A pattern for a surface this product doesn't have is noise, and noise

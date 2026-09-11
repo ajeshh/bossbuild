@@ -7,6 +7,12 @@
 > omit them entirely otherwise rather than filling them with `n/a`. The same rule governs the three
 > lines under **Paths that must not break**: omit a path this FEAT doesn't have. `n/a` in a template
 > is noise; a missing line is an answer.
+> **`for:` names the user, and it is the reason BOSS ships no user-story format.** Resolve it
+> against `docs/personas/` — the slug of the persona this feature serves, or a plain phrase when no
+> persona exists yet. *As a X I want Y so that Z* exists to carry **who and why** into a ticket for
+> someone who wasn't in the conversation; everything else that form holds, this record already holds
+> better. What it had and this record didn't was the user's name. Now it's a field.
+>
 > **`from:` is the field, and it is spelled exactly that.** It is what `boss records` reads to link
 > the promotion back to its idea — `source:`, `implements:` and `promoted_from:` all look right and
 > are read by nothing. No source idea? `from: none` plus a `from_note:` saying where it came from
@@ -19,6 +25,7 @@ type: feature
 owner: product-lead
 status: building
 gist: <one plain sentence — what this feature IS, for the board>
+for: <persona slug from docs/personas/, or a plain phrase — who this is for>
 created: {{today}}
 building_since: {{today}}
 from: IDEA-NNN

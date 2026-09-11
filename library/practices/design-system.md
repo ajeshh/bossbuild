@@ -257,6 +257,49 @@ the same pass.** Not a deprecation window, not SemVer, not an RFC — those are 
 consuming teams, and unearned ceremony for one person. Just: it's dead, and you can see that it's
 dead, so remove it while you're looking at it.
 
+### Promotion has a threshold; so does demotion (added v0.283.0)
+
+Retirement above is about **artifacts** — a component nobody imports. This is about **rules**, and it
+is the half that decides whether a design system helps a design emerge or quietly locks it in.
+
+The system knows how to add. *Twice is a pattern* promotes a recurring decision into a rule. What it
+had no way to do was **take one back** — and a system that only ratchets tighter is lock-in no matter
+how emergently each individual rule arrived.
+
+The data was already being collected and never read: `STYLE_GUIDE.md`'s **Exceptions** table. The
+discipline around it was right (*an exception recorded is a decision; an exception unrecorded is
+drift*) and incomplete, because nobody ever asked what a *repeated* exception means.
+
+> **Three exceptions to the same rule means the rule is wrong, not that you have three exceptions.**
+> A rule with three standing exceptions is not being followed — it is being worked around, and the
+> working-around is the real convention now.
+
+Same threshold as promotion, pointed the other way. Narrow the rule, split it, or retire it.
+
+**The general form, which applies at every layer:**
+
+| Layer | Promotes when | Demotes when |
+|---|---|---|
+| Pattern | the same decision comes up twice | nothing cites it · three exceptions against it |
+| Component | it is used in more than one place | nobody imports it (⚪ unused → delete in this pass) |
+| Token | a value recurs with a meaning | nothing references it |
+| Principle | it survives being argued with | it is contradicted more often than it is applied |
+| Rule in the style guide | a review keeps re-deriving it | **three exceptions of the same kind** |
+
+**Why this is the load-bearing half of an emergent system, not a tidiness feature.** The founder's
+own framing: *design is constantly emerging; we are not trying to lock it in, but as it develops,
+keep establishing the norms so it can be reused and remembered.* Both clauses need a mechanism. BOSS
+built the *establishing* half thoroughly — indexes, patterns, an extraction loop — and the *not
+locking it in* half was a sentence of intent with nothing behind it. **The seed-that-scales test
+already governs what to decide EARLY; this governs what to un-decide LATER**, and a system with only
+the first is a system that gets more confident as it gets more wrong.
+
+**Where it fires:** `/design-review` step 4c, at the moment an exception is about to be recorded —
+which is the strongest place for a filter, because it is the instant the decision is being made and
+the evidence is already in hand. **Not a loop.** A loop over exception counts is buildable and is not
+yet earned: no project has an exceptions table with three rows in it, and building the watcher before
+the thing it watches exists is the premature ceremony this practice keeps warning about.
+
 ### The designer seam
 
 The library is also the handoff artifact, already built: a designer gets a **URL, not a repo

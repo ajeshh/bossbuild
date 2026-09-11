@@ -166,6 +166,13 @@ opposite?):
 Deliberate departures, dated. **An exception recorded is a decision; an exception unrecorded is
 drift** — and next time it reads as precedent.
 
+**Read this table before adding to it.** One of a kind is an exception. Two is worth noticing.
+**Three of the same kind means the rule is wrong** — narrow it, split it, or retire it. A rule with
+three standing exceptions isn't being followed, it's being worked around, and the working-around is
+the real convention now. *Three exceptions* is the same threshold as *twice is a pattern*, pointed
+the other way: this is how a rule gets taken back, and a system that can only add rules locks design
+in instead of letting it emerge.
+
 | Date | Where | What | Why |
 |---|---|---|---|
 | | | | |

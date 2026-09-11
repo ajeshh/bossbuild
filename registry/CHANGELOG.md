@@ -16,6 +16,46 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.283.0 — 2026-09-10
+
+> **For you:** **Three exceptions to the same rule now means the rule is wrong.** `/design-review`
+> reads your exceptions table before adding to it, and on the third of a kind it proposes changing
+> the rule instead of recording another departure from it.
+
+**A design system that can only add rules locks design in.** Ajesh, naming the thing this program had
+half-built: *"design is constantly emerging — we are not trying to lock it in, but as it develops,
+keep establishing the norms and patterns so it can be reused and remembered."*
+
+**Both clauses need a mechanism, and only one had one.** The *establishing* half is thorough — the
+component index, the pattern set, `design-pattern-loop`, *twice is a pattern*. The *not locking it
+in* half was a sentence of intent. The system could promote a rule and had no way to take one back.
+
+And the evidence was already being collected and never read: `STYLE_GUIDE.md`'s **Exceptions** table.
+Its discipline was right — *an exception recorded is a decision; an exception unrecorded is drift* —
+and incomplete, because nobody ever asked what a **repeated** exception means.
+
+- **`/design-review` step 4c**, at the moment an exception is about to be recorded: first of a kind →
+  record it · second → record it and say it is the second · **third → stop, the rule is wrong, not
+  the three screens.** Narrow it, split it, or retire it. A rule with three standing exceptions is
+  not being followed — it is being worked around, and **the working-around is the real convention
+  now.**
+- **Three exceptions is the same threshold as *twice is a pattern*, pointed the other way.**
+- **`/design-library` groups exceptions by the rule they depart from and counts them**, instead of
+  listing them by date. *"Three exceptions · one primary per view"* is a sentence you cannot skim
+  past; a date-ordered list is one you can.
+- **The general form is now written down for every layer** — a pattern nobody cites, a token nothing
+  references, a component nobody imports, a principle contradicted more than applied. **Promotion has
+  a threshold; so does demotion.**
+
+**Deliberately not a loop.** A watcher over exception counts is buildable and unearned: no project has
+an exceptions table with three rows yet, and building the watcher before the thing it watches exists
+is the premature ceremony this practice keeps warning about. The check fires where the decision is
+actually made, which is the strongest place a filter can sit.
+
+**The pairing worth remembering:** the seed-that-scales test governs what to decide **early**; this
+governs what to un-decide **later**. A system with only the first gets more confident as it gets more
+wrong.
+
 ## 0.282.0 — 2026-09-10
 
 > **For you:** **`/prototype` now uses your design system if you have one.** It checks for your
