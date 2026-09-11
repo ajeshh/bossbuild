@@ -474,4 +474,13 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
   general-UI catalog (forms, tables, navigation) and should not pretend to. The `designer` agent's
   cited lens is the source for those, and the project grows better ones than a generic catalog would.
 
+- ✅ **Design decisions route to `/decide`** (v0.279.0) — the brand anchor recorded as ONE
+  `DEC-NNN`, not five and not zero. The five distinctiveness overrides are the most hard-to-reverse
+  choices in the system (every use site changes on a retheme) and were being made in one conversation
+  and written down nowhere readable as a *decision*. `designer` now argues against the record and its
+  falsifier rather than against the current value, and `/design-library` renders *"chosen — DEC-NNN"*
+  beside the swatch. **The bar for what earns a record is the seed-that-scales test already in this
+  doc** — record it if reversing it gets more expensive as the app grows — so no new rule was needed,
+  which is why this is a routing edit rather than a feature.
+
 **Nothing on this list is open.** Verified against the filesystem, not against this doc.

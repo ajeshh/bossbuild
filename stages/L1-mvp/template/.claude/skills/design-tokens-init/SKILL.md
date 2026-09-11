@@ -137,6 +137,42 @@ Cohort-aware: `vibe-coder-newbie` / `first-product` → just *do* the 5 override
 before/after. `eng-builder` / `vibe-virtuoso` → *offer* them as a checklist, override-friendly.
 `domain-expert` → keep it sober; distinctiveness ≠ playful when the stakes are clinical.
 
+### Record the anchor as ONE decision — not five, and not zero
+
+The five overrides above are the most hard-to-reverse choices in the whole design system: **every
+use site changes on a retheme.** They are also, today, made in a single conversation and written
+down nowhere a future session can read as a *decision*. Six months later nobody knows whether the
+2px radius was a choice or a default — which means nobody will defend it, and everybody will
+gradually drift off it.
+
+**Offer `/decide` once, with the five choices as one record.** Not five records: they were made
+together, for one reason, and splitting them would be the ceremony PRINCIPLE #2 refuses.
+
+> *"That's your brand anchor — the neutral, the radius, the type pairing, the accent, the signature.
+> Want me to record it as a decision (`/decide`)? It takes the reasoning and a falsifier, so the next
+> session knows these were chosen rather than defaulted. Two minutes, and it's the difference between
+> a design system and a set of values nobody will defend."*
+
+Set `reversibility: costly` — a retheme touches every use site — and write a falsifier that is
+actually cheap to check, e.g. *"if three people describe the product as generic-looking by <date>,
+the anchor didn't do its job."* If they decline, drop it and don't re-ask; the tokens file alone is
+a real choice.
+
+**Which design choices earn a record, and which don't** — this is already answered by the
+seed-that-scales test and needs no new rule:
+
+| Earns a `/decide` | Doesn't |
+|---|---|
+| the brand anchor (the five overrides) | which grey the disabled state uses |
+| naming semantics by purpose rather than hue | adding a token to an existing scale |
+| the terminology of a core noun (`team` vs `org`) | the wording of one button |
+| a pattern you deliberately **refused** (see `/design-review`) | a pattern you adopted — that's just the pattern set |
+| component boundaries — element-shaped, not page-shaped | which file a component lives in |
+
+The test underneath is the same one that decided this skill's own rung: **record it if reversing it
+gets more expensive as the app grows.** Everything else is a note in the devlog, and treating it as
+more is how a decision log becomes something nobody reads.
+
 ### Name by purpose, build on the standard (DTCG)
 
 Name semantic tokens by **purpose, not appearance** — `color.text.error`, never `color.red.500`

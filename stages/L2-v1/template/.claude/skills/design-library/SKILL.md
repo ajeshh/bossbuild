@@ -48,6 +48,11 @@ Color swatches with their **semantic token name** (not the hex) and the contrast
 text/background pair · the type scale as real specimens · the spacing scale as rendered bars ·
 radius, elevation, motion. Someone should be able to point at a swatch and say its name.
 
+**Render the *decision* beside the value where one exists.** If `docs/decisions/` holds a
+brand-anchor record, the accent swatch, the radius sample and the type specimen each carry a one-line
+*"chosen — DEC-NNN"* with the reason. A swatch with a reason under it is an argument someone has to
+answer; a swatch alone is a value someone will quietly change.
+
 ### 2. Rules — the style guide, rendered
 The half that makes this a *design system* rather than a component dump. Pulled from
 `STYLE_GUIDE.md`:

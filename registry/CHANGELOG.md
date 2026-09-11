@@ -16,6 +16,41 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.279.0 — 2026-09-10
+
+> **For you:** **Your brand choices can now be a decision on file, not a memory.** After the
+> five-token distinctiveness pass, `/design-tokens-init` offers to record the anchor — neutral,
+> radius, type pairing, accent, signature — as a single `/decide` record with a falsifier. So the
+> next session knows the 2px radius was chosen, not defaulted.
+
+**Layer 0 of the design ladder: why it looks like this.** IDEA-091 part 4.
+
+The five distinctiveness overrides are the most hard-to-reverse choices in the whole system — **every
+use site changes on a retheme** — and they were being made in a single conversation and written down
+nowhere a future session could read as a *decision*. Six months on, nobody knows whether the radius
+was a choice or a default. **Nobody defends a default.** That is how a design system dies: not in one
+rewrite, but in a hundred reasonable-looking one-off changes, each made by someone who did not know a
+choice had been made.
+
+- **ONE record, not five.** They were made together for one reason; five records would be the
+  ceremony PRINCIPLE #2 refuses. `reversibility: costly`, with a falsifier that is cheap to check.
+- **`designer` argues against the record, not the value.** Before proposing a change to a decided
+  token it names what was decided and what the falsifier was. If no record exists and the choice is
+  load-bearing, it says so and offers `/decide` once.
+- **A refused pattern is a decision too.** `/design-review` routes load-bearing refusals — *we will
+  not ship streaks* — to `/decide`, because a refusal is precisely the kind of call that gets
+  silently reversed by the next person who assumes it was an oversight.
+- **`/design-library` renders the lineage beside the swatch** — *"chosen — DEC-NNN"* with the reason.
+  A swatch with a reason under it is an argument someone has to answer; a swatch alone is a value
+  someone will quietly change.
+
+**No new record class and no new verb** — `/decide` and `DEC-NNN` already exist, with the falsifier
+field this needs. And **no new rule for what earns a record**: the seed-that-scales test already in
+`boss craft design-system` answers it — *record it if reversing it gets more expensive as the app
+grows.* The brand anchor, purpose-naming, a core noun's terminology, component boundaries and a
+refused pattern earn one. Which grey the disabled state uses does not, and treating it as though it
+does is how a decision log becomes something nobody reads.
+
 ## 0.278.0 — 2026-09-10
 
 > **For you:** **`/design-review` now writes a pattern set** — `docs/design/PATTERNS.md`, the

@@ -102,6 +102,11 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    - **Novel and genuinely one-off?** Leave it a finding. Most things are. A pattern set that grows
      on every review is a transcript, not a system.
 
+   - **Refused it?** Put it in the **Refused** table with the reason. And if the refusal is
+     load-bearing — *we will not ship streaks*, *we will not use a modal for this class of action* —
+     offer `/decide` once. A refusal is the kind of decision that gets silently reversed by the next
+     person who thinks it was an oversight, which is exactly what a DEC record prevents.
+
    **Where this layer earns its keep:** a component answers *what to use*, a pattern answers *what to
    do* — and the second question is the one that comes up on a screen that has no component yet.
 

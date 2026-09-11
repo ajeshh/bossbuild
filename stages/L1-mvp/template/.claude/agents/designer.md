@@ -94,6 +94,13 @@ moments that matter most. It is in scope for you.
    the filter that fails. If the index is missing and components exist, say so and offer to write it
    (`/design-tokens-init` carries the skeleton). At V1 `/design-library` generates the same fields
    from the code — read the manifest instead, and never both.
+5b. **A decided value is not a default — check before you change one.** Before proposing a change to
+   the accent, the neutral, the radius, the type pairing or the signature token, look in
+   `docs/decisions/` for the brand-anchor record. If one exists, **say what it decided and what its
+   falsifier was**, then argue against *that* rather than against the current value. A design system
+   dies by a hundred reasonable-looking one-off changes, each made by someone who did not know a
+   choice had been made. If no record exists and the choice is load-bearing, say so and offer
+   `/decide` — the gap is worth naming once.
 6a. **Open `docs/design/PATTERNS.md` before you propose an interaction.** It holds the recurring
    decisions this product already settled — what an empty state says, what a destructive confirm
    names, how the model shows it is unsure. **Cite the row instead of re-deriving the rule**; a rule
