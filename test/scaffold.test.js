@@ -3,7 +3,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { resolveStageId, STAGE_ORDER, STAGES_DIR, isBossRepo, BOSS_ROOT } from '../src/paths.js';
 import { loadModes, modeWord, skillGloss } from '../src/modes.js';
@@ -358,17 +358,30 @@ test('every design doc a consumer reads is a design doc some skill writes', () =
   const wanted = new Set([...consumers.matchAll(/docs\/design\/\s*([A-Z_]+\.md)/g)].map((m) => m[1]));
   assert.ok(wanted.size >= 2, 'expected the design consumers to name at least tokens + style guide');
 
-  const producerDir = join(STAGES_DIR, 'L1-mvp/template/.claude/skills/design-tokens-init');
-  const producer = [
-    readFileSync(join(producerDir, 'SKILL.md'), 'utf8'),
-    ...readdirSync(join(producerDir, 'templates')).map((f) =>
-      readFileSync(join(producerDir, 'templates', f), 'utf8')),
-  ].join('\n');
+  // ANY MVP skill may be the producer, not just /design-tokens-init. The invariant this test
+  // exists for is the one in its own name — *some* skill writes it — and hardcoding one producer
+  // made the test fail when `PATTERNS.md` arrived from /design-review (v0.278.0). A doc born in
+  // the review that discovers the need for it is the JIT-correct place for it to be born; the
+  // thing that must never happen is the STYLE_GUIDE case, where three consumers read a file
+  // nothing wrote for two releases.
+  const skillsDir = join(STAGES_DIR, 'L1-mvp/template/.claude/skills');
+  const producers = new Map();
+  for (const skill of readdirSync(skillsDir)) {
+    const dir = join(skillsDir, skill);
+    if (!statSync(dir).isDirectory()) continue;
+    const parts = [readFileSync(join(dir, 'SKILL.md'), 'utf8')];
+    const tpl = join(dir, 'templates');
+    if (existsSync(tpl)) {
+      for (const f of readdirSync(tpl)) parts.push(readFileSync(join(tpl, f), 'utf8'));
+    }
+    producers.set(skill, parts.join('\n'));
+  }
 
   for (const doc of wanted) {
+    const writer = [...producers].find(([, body]) => body.includes(doc));
     assert.ok(
-      producer.includes(doc),
-      `${doc} is read by a design consumer but nothing in /design-tokens-init produces it`,
+      writer,
+      `${doc} is read by a design consumer but NO skill produces it — the STYLE_GUIDE.md failure, again`,
     );
   }
 });

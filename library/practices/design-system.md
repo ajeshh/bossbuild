@@ -483,4 +483,19 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
   doc** — record it if reversing it gets more expensive as the app grows — so no new rule was needed,
   which is why this is a routing edit rather than a feature.
 
+- ✅ `design-pattern-loop` — **PRINCIPLE #1 pointed at design** (v0.280.0). `extraction-loop`
+  applies the UP/DOWN sort to the *work*; this applies it to the *design*, and it needed its own
+  moment because the two breakpoints differ: the work's inflection is a devlog entry, the design's is
+  a **review**. Predicate: three or more reviews exist and `PATTERNS.md` still holds no `PAT-N` row of
+  the product's own — it has been thinking, and none of it stuck.
+  **It counts reviews, not components, and the reasoning generalizes:** a predicate pointed at the
+  component index would break at V1 when the manifest supersedes it (*a predicate that breaks on
+  graduation is worse than none*), and components are not where patterns come from — a pattern is a
+  recurring **decision**, and decisions happen in reviews.
+  ⚠️ **The `capture` frame now branches on which loop fired.** Reusing the moment without branching
+  voiced extraction-loop's *"read your devlog"* text at a design review — sending the founder to the
+  wrong file, which is how a conscience moment teaches a founder to ignore it. Same fix the
+  `coherence` frame already carried for the two design loops; **many-to-one moments need a branch, not
+  just a shared name.**
+
 **Nothing on this list is open.** Verified against the filesystem, not against this doc.

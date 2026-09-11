@@ -92,8 +92,14 @@ updated: {{DATE}}
 The most valuable section, and it starts empty on purpose. A row lands here when the same decision
 has come up twice in a review, or when `/extract` names a shape the code kept repeating.
 
-| Pattern | The situation | The rule | Anti-pattern | First seen |
-|---|---|---|---|---|
+**These carry an id — `PAT-1`, `PAT-2` — and the seeded rows above do not.** Two reasons, and the
+second is the real one: a review finding can then say *"violates `PAT-3`"* instead of re-arguing the
+rule, and **a pattern this product invented is a different kind of thing from one it inherited.**
+The seeded rows are BOSS's; these are yours, and they are the ones worth showing a designer.
+
+| ID | Pattern | The situation | The rule | Anti-pattern | First seen |
+|---|---|---|---|---|---|
+| **PAT-1** | *(your first one lands here)* | | | | |
 
 ## Refused — and why
 

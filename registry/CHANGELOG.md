@@ -16,6 +16,50 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.280.0 — 2026-09-10
+
+> **For you:** **BOSS now notices when your design has stopped learning.** After three design
+> reviews, if every pattern in your set is still one BOSS handed you, the conscience asks once
+> whether you've now decided something twice. One row in the **Ours** table closes it.
+
+**PRINCIPLE #1, pointed at design.** IDEA-091 part 5 — the engine, and the part that makes this a
+*language* rather than a filing system.
+
+`extraction-loop` applies *pause and sort the pattern UP or DOWN* to the **work**. `design-pattern-loop`
+applies it to the **design**, and it earns its own moment because the two breakpoints are genuinely
+different: the work's inflection is a devlog entry; the design's is a **review**.
+
+- **What it detects, and that is all:** three or more design reviews exist and `PATTERNS.md` still has
+  no `PAT-N` row of the product's own. A count and an absence — exactly `extraction-loop`'s shape, for
+  exactly its stated reason: *a predicate cannot see whether something is reusable; only the model can.*
+  The loop opens the door at the inflection and the model does the judgment.
+- **It counts reviews, not components — and the reasoning generalizes.** A predicate pointed at the
+  component index would quietly stop working at V1, when the generated manifest supersedes it: **a
+  predicate that breaks on graduation is worse than none.** And components are not where patterns come
+  from. A pattern is a recurring *decision*, and decisions happen in reviews. Counting components asks
+  *"is this product big yet?"*; counting reviews asks **"has this product been thinking, and did any
+  of it stick?"**
+- **Patterns the product grew now carry an id** — `PAT-1`, `PAT-2` — and the seeded rows do not. So a
+  finding can say *"violates `PAT-3`"* instead of re-arguing the rule, and because **a pattern this
+  product invented is a different kind of thing from one it inherited.** Those are the rows worth
+  showing a designer.
+- **One row closes it.** Not a count, not a quality bar. The thing being established is that the
+  product learns at all, and a loop that keeps firing after the founder answered it is a loop they
+  turn off.
+
+**A bug caught by running it rather than reading it.** Reusing the `capture` moment without branching
+voiced *extraction-loop*'s text — *"read your recent devlog entries"* — at a design review. The
+founder would have been sent to the wrong file by a nudge that sounded confident. Moments are
+many-to-one with loops (the `coherence` frame already branches for the two design loops), so **a
+shared moment needs a branch, not just a shared name.** Fixed in both copies of `moment-frames.js`,
+and verified end to end: the right frame fires, and a `PAT-1` row goes silent.
+
+**Honest limits, written into the loop doc:** it cannot tell a real pattern from a row typed to close
+it (nothing can — same as `extraction-loop`, same answer: one line in a file the founder owns costs
+less than a design language that never forms), and it cannot see near-duplicate components — that is
+`/design-library`'s manifest at V1, computed from the code. *Reviews without learning* and *components
+that repeat* are complementary signals; neither is the other.
+
 ## 0.279.0 — 2026-09-10
 
 > **For you:** **Your brand choices can now be a decision on file, not a memory.** After the
