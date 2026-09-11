@@ -39,10 +39,35 @@ products:
 
 For each: what it does, **what it costs**, who it's for, and where it's weak. Then the bar below.
 
+**Read their 1–2★ reviews before you write `where they're weak` (v0.294.0).** A rival's public
+complaints are the cheapest pain evidence you did not have to run an interview for — real people,
+in their own words, saying what the current fix fails at. That is the *Problem* cell's raw material
+and it is lying in the open. Quote two or three, dated and linked like everything else here, and
+resist the pull to read their **praise**: what their users love is a list of features to match,
+which is the parity trap this skill exists to keep you out of. Complaints tell you where the field
+is weak. Praise tells you what they built. Only one of those is yours to use.
+
 ### `add <name>` — the founder heard about one
 The common case, and the reason this is a living set rather than a report. Take the name, research
 that one, file it into the same shape. **No regeneration of the others** — their `checked` dates are
 theirs, and silently refreshing them would erase the record of what was actually verified when.
+
+**Then say what the twist is, against *this* bet (v0.294.0).** A rival filed in isolation is a
+fact; a rival read against the canvas's Promises cell is an answer. Two things, both short:
+
+- **Sort it — in evidence, or a watch.** Does any `EVID` record name them — did a real person say
+  *"I use X for this"*? If yes, they are on the shortlist and the `why they might win` line is
+  load-bearing. If nobody has, mark the row **`watch`**: real, filed, not yet in anyone's mouth.
+  Positioning against a rival nobody you talked to has heard of waters down the positioning you
+  have (Dunford's *phantom competitor*, and it is the commonest way a field gets padded). **A label,
+  not a gate** — the row is written either way, and a `watch` row that later gets named flips.
+- **If the twist lands on the differentiator, say so and offer the test.** When what makes them
+  different is the same thing that makes you different, the honest demand question changes from
+  *"would you use this?"* to **`/pretotype`'s *"would you switch?"*** — and sometimes the honest
+  output is *"buy the thing."* Offer that here, in the moment, rather than leaving it as a pointer
+  in the rules for the founder to find later. **Do not wait for an EVID to say it** — a solo founder
+  who finds an exact-match, funded rival before any user names it should reconsider *now*; that is
+  the one case where the `watch` label and the re-aim question part company on purpose.
 
 ### `recheck [<name>]` — re-verify what's gone stale
 Re-check the named rival, or every row past the staleness threshold. Report **what changed**, not
@@ -85,7 +110,12 @@ docs/competition/
 
 Each `<slug>.md` carries the depth a table can't: what they actually do, quotes from their own
 positioning, what changed at each recheck (dated, append-only — **the drift is the interesting part**),
-and open questions.
+open questions, and — as of v0.294.0 — a **`## Where it breaks`** section: the specific things their
+users complain about, dated and linked, one line each. **Failures, never features.** This is the
+section `/spec` opens when it writes a FEAT this rival also has: a rival's known breakages are the
+cheapest source of *what wrong looks like* there is, and reading their feature list instead is how
+a spec turns into a parity checklist. `/landing` reads the positioning quotes; `/pretotype` reads the
+`watch`/in-evidence sort. Nothing reads a feature comparison, because there isn't one.
 
 ## How it connects
 
@@ -94,7 +124,9 @@ and open questions.
 - **`mentor-capital`** reads this when the raise question is live; *"who else is doing this"* is
   something an investor asks in the first ten minutes.
 - **`/pretotype`** — if a rival already does exactly this, the honest demand test may be *"would you
-  switch?"* rather than *"would you use it?"*
+  switch?"* rather than *"would you use it?"* As of v0.294.0 `/pretotype` **reads this field** when
+  it picks a pattern, and `add` offers the switch test in the moment — this stopped being a one-way
+  pointer.
 - **The canvas's Build-or-buy cell** — sometimes this skill's real output is *"buy the thing."* Say
   it plainly when it's true; that is a complete outcome, not a failed survey.
 

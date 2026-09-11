@@ -41,13 +41,19 @@ Read both, and say something **once**. Never block; this is a mirror, not a gate
   plenty of good FEATs are a bug, a small fix, or something the founder simply decided to do. **The
   point is that it was noticed, not that it was authorized.**
 
-- **`docs/competition/` — but only when this FEAT *is* the differentiator.** If what you're about to
-  spec is the thing that makes this product the choice over a named rival, the most relevant sentence
-  in the repo is that rival's **`why they might win`** line, and `/spec` has never been able to see
-  it. Read it and hold it against the acceptance criteria: *does what I'm about to build actually
-  beat their reason?* For an ordinary FEAT — a settings toggle, a fix, internal plumbing — **skip
-  this and stay silent.** Opening a competitor file to spec a copy change is the ceremony that gets
-  the whole step ignored.
+- **`docs/competition/` — two reads, and the second is narrower than it looks (v0.294.0).**
+  *When this FEAT is the differentiator:* the rival's **`why they might win`** line, held against the
+  acceptance criteria — *does what I'm about to build actually beat their reason?* *When a rival
+  simply also has this feature:* that rival's **`## Where it breaks`** section, read into **What
+  "wrong" looks like**. Their users' complaints about this exact thing are the cheapest failure
+  modes you will ever get, and they are the ones your first users will hit too.
+
+  🔴 **Failures, never features.** Do not read how the rival *implements* it, and do not read what
+  their users *praise* — that is a list of things to match, and a FEAT written from it is a parity
+  checklist wearing a spec's clothes. *What "wrong" looks like* is defined in the template as
+  **failure modes, not missing features**; keep it that way. For an ordinary FEAT — a settings
+  toggle, a fix, internal plumbing — **skip this and stay silent.** Opening a competitor file to spec
+  a copy change is the ceremony that gets the whole step ignored.
 
   ⚠️ **Carry the file's age with you.** Every cell in that table has a `checked` date, and
   `field-stale-loop` fires when the field hasn't been touched in ~90 days. A pricing figure from

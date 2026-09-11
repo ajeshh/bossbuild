@@ -59,6 +59,12 @@ and if missing, say so and offer to fill the gap first:
 - **The canvas Promises cell** → the value proposition (feed it through Shapiro's *Bad Alternative → Better
   Solution → Action Statement*).
 - **`docs/design/library/`** if it exists (V1) → the components to compose from, instead of redrawing them.
+- **`docs/competition/README.md`** if it exists (v0.294.0) → the rivals' own positioning quotes and
+  their `why they might win` lines. A landing page's whole job is to make one choice obvious, and
+  it cannot do that into a void — the *Bad Alternative* in Shapiro's arc is a real thing people use
+  today, and this file has it in their own words. **Write against the alternative, never at the
+  rival**: name the spreadsheet, the workaround, the *doing nothing*; do not name the company. The
+  "doing nothing" row is usually the one the page is actually competing with.
 
 If there's no brand/tokens/canvas yet, the honest move is to generate a *plainer* page and name what's missing —
 never invent a brand the founder didn't choose.

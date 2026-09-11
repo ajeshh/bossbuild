@@ -16,6 +16,66 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.294.0 — 2026-09-11
+
+> **For you:** **The competitive field is finally read by the things that build.** `/spec` opens a
+> rival's *where it breaks* when you spec something they also have; `/landing` writes against the
+> alternative people actually use; `/pretotype` asks *"would you switch?"* when a real rival is in
+> your evidence; and `/comp-eval add` tells you whether a new rival is on anyone's shortlist or a
+> phantom — and offers the switch test in the moment when their twist lands on your differentiator.
+
+**IDEA-093 part 4b, and the interesting part is what got cut.** Ajesh: *"not just price — what do
+we capture, what do we keep updating, do we do a feature-by-feature matrix, does `/spec` see how the
+competition does it, how do we help when a new rival with a twist gets added, how is it organised so
+it's reachable inside app building."* Then: *"let's also look at vetting how to use AI for
+competitive evaluation. Once we get all the ideas together, then we can build."*
+
+**The vet — `/deep-research`, 5 angles, 8 primaries, 3-vote — killed 7 of 10 outside claims.** Two
+died on fetch: *"pricing is hallucinated in 30% of queries"* is an **unattributed hypothetical** in a
+vendor blog, and *"92.5% changed pricing in six months"* **does not appear on the page the search
+snippet cited** (it says 80.1% over nine months — vendor data, measuring pricing-*page* diffs, not
+prices). The literature confirmed the shape `/comp-eval` already ships — per-cell `checked` dates,
+append-only rechecks, *doing nothing* as a row — and added almost nothing.
+
+🔴 **What the adversarial pass did to BOSS's own plan is the release.** Before research, the plan
+had a per-feature index (`FEATURES.md`, emerging one row per FEAT), a `/spec` reader for *how rivals
+do X*, and readers in `/design-review` and `designer`. **All three cut:**
+
+- **A per-feature index is the parity trap however JIT it is.** `feat-record.md` defines *what
+  "wrong" looks like* as **failure modes, not missing features**; a table of how rivals implement
+  things is a checklist of what to match, and a founder at n<10 cannot yet tell threshold features
+  from differentiators, so the index cannot be safely read.
+- **Narrowed to failures.** Each rival's `<slug>.md` gains **`## Where it breaks`** — their users'
+  1–2★ complaints, dated and linked. `/spec` step 0b reads *that* into *what wrong looks like*.
+  Never the feature list, never the praise: what a rival's users love is a list of things to match.
+- **`/design-review` and `designer` readers — nothing supported them.** Dropped.
+
+**What survived, built:**
+
+- **`/comp-eval add <name>` sorts and offers.** A new rival is labelled **in evidence** (an `EVID`
+  names them — someone said *"I use X for this"*) or **`watch`** (real, filed, not yet in anyone's
+  mouth — Dunford's *phantom competitor*, the commonest way a field gets padded). **A label, not a
+  gate:** when the twist lands on the differentiator, `/pretotype`'s *"would you switch?"* — or the
+  honest *"buy the thing"* — is offered right there, **without waiting for an EVID.** A solo founder
+  who finds an exact-match, funded rival should reconsider now. The 2-1 refutation of Dunford's
+  "wait for deals" rule as a *gate* is what put that sentence in.
+- **`/comp-eval` default mode reads their 1–2★ reviews** for `where they're weak` — the cheapest
+  pain evidence a founder never had to interview for (the LLM-Cure technique — Assi/Hassan/Zou,
+  ACM TOSEM 2025 — aimed at the artifact BOSS already has, not a new field).
+- **`/landing` reads the positioning quotes** and writes *against the alternative, never at the
+  rival* — the *doing nothing* row is usually what the page is actually competing with.
+- **`/pretotype` reads the sort** and switches the demand question when a rival is in evidence.
+  `/comp-eval` had pointed at `/pretotype` for the switch test since v0.190.0; `/pretotype` had
+  never read the field. **A one-way pointer, closed.**
+
+**Kept, now confirmed from outside: 90 days.** Every argument to tighten the `field-stale-loop`
+threshold came from a vendor selling the tightening, measured page changes rather than price
+changes, and — in BOSS's own context — weekly rechecks are the "monitoring daemon" the skill
+refuses by name. The nudge is about *forgetting*; accuracy is carried per cell by `checked`.
+
+Build-time readers of `docs/competition/` went from **zero to three**. No new file, no new verb, no
+matrix. Session record: `docs/research/sessions/SESSION-2026-09-11-competitive-intelligence-with-ai.md`.
+
 ## 0.293.0 — 2026-09-10
 
 > **For you:** **The tasks you spot mid-build stop living only in the chat.** BOSS notices when the

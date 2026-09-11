@@ -32,6 +32,15 @@ intend to keep, and keeping is a build.
 1. **Pick the IDEA.** `[IDEA-NNN]` if given, else the most active idea with a filled canvas.
 2. **Read the canvas.** Especially: People (who), Problem (the tension), Promises (the value),
    riskiest assumption (what could kill this).
+2b. **Read `docs/competition/` if it exists (v0.294.0) — it changes the question.** If a rival
+   already does this and is marked *in evidence* (a real person named them), the honest demand test
+   is not *"would you use it?"* but **"would you switch?"** — a materially harder bar, and the one
+   most fake doors quietly dodge by not mentioning the incumbent. If the rival is a `watch` row
+   (filed, nobody has named them), keep the ordinary test and note the row. Either way the
+   *"doing nothing"* row is the alternative the pretotype is really up against, and the page should
+   say what people do today rather than pretend the field is empty. No competition file? Skip this;
+   the canvas Problem cell's *what do they use instead* is the right-sized version at this rung.
+
 3. **Pick a pretotype pattern.** Match the pattern to the riskiest assumption:
 
 | Pattern | Best for | Example |
