@@ -91,6 +91,40 @@ nav: design
     </section>
 
     <section class="section">
+      <div class="rail">▸<span>the system</span></div>
+      <div class="body prose">
+        <h2>Three layers, and the middle one is the whole trick</h2>
+        <p>
+          Tokens get scaffolded in three layers at the first UI commit — and the layer that matters
+          is the middle one. <strong>Semantic tokens are named by purpose, never by hue.</strong>
+          <code>--color-danger</code>, not <code>--color-red</code>. The reason is mechanical: when
+          you retheme, <em>every use site changes at once</em>, because nothing downstream ever
+          referred to the colour, only to the job.
+        </p>
+        <p>
+          Component boundaries follow the same logic — <strong>element-shaped, not page-shaped</strong>.
+          Extracting a primitive from a page-shaped component means untangling it from the page it was
+          born in, which is the work everybody defers until it is too expensive.
+        </p>
+        <h3>Three failure modes, named, because unnamed ones get rebuilt</h3>
+        <ul class="plain">
+          <li><strong>47 blues.</strong> Each screen generated separately, each picking its own
+            approximation of your brand colour. Nobody decides this; it accumulates.</li>
+          <li><strong>Pattern reinvention.</strong> Every new component becomes a new file —
+            <code>Button</code>, then <code>CTAButton</code>, then <code>PrimaryButton</code> —
+            because generating a new one is cheaper than finding the old one.</li>
+          <li><strong>Billion-line drift.</strong> Code grows linearly with screens instead of
+            roughly flattening, because nothing is being reused. This is the one you notice last and
+            pay for longest.</li>
+        </ul>
+        <p class="small">
+          All three are the <em>default</em> outcome of AI-generated UI, not a mistake someone made.
+          That is why the tokens arrive at the first UI commit rather than at the first complaint.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>the library</span></div>
       <div class="body">
         <div class="prose">
@@ -103,7 +137,8 @@ nav: design
           <p>
             <code>/design-library</code> generates the thing instead — a self-contained HTML gallery of
             your foundations (colour, type, spacing) and every component in <strong>every variant and
-            all five states</strong>, rendered <em>from the code and tokens</em>. The code stays the
+            all five states</strong> — <em>and the rule sets too</em>: the principles, the do/don't
+            pairs, the terminology, the voice. Rendered <em>from the code and tokens</em>. The code stays the
             source of truth, so the library cannot disagree with the product. Re-run it any time; it's
             idempotent.
           </p>

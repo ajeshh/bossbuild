@@ -827,10 +827,10 @@ const NAV = [
       { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
     ] },
     { label: 'how it is built', items: [
+      { id: 'engineering', href: 'engineering.html', label: 'Engineering' },
+      { id: 'design', href: 'design.html', label: 'Design' },
       { id: 'product', href: 'product.html', label: 'Product' },
       { id: 'project', href: 'project.html', label: 'Project' },
-      { id: 'design', href: 'design.html', label: 'Design' },
-      { id: 'engineering', href: 'engineering.html', label: 'Engineering' },
     ] },
     { label: 'what it believes', items: [
       { id: 'thinking', href: 'thinking.html', label: 'What it refuses' },
