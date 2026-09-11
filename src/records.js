@@ -48,7 +48,7 @@ function vocabFor(projectDir, prefix) {
   for (const f of ['docs/IDS.md', 'IDS.md']) {
     try {
       const text = readFileSync(join(projectDir, f), 'utf8');
-      const row = text.split('\n').find((l) => l.includes(`\`${prefix}-NNN\``));
+      const row = text.split(/\r?\n/).find((l) => l.includes(`\`${prefix}-NNN\``));
       const m = row && row.match(/`status: ([a-z |\\]+)`/);
       if (m) return m[1].split('|').map((s) => s.replace(/\\/g, '').trim()).filter(Boolean);
     } catch { /* try the next location */ }

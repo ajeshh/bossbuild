@@ -21,7 +21,7 @@ function boss(args, cwd) {
   try {
     return execFileSync('node', [BIN, ...args], {
       cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, NO_COLOR: '1', HOME: cwd },
+      env: { ...process.env, NO_COLOR: '1', HOME: cwd, USERPROFILE: cwd },
     });
   } catch (e) {
     return (e.stdout || '') + (e.stderr || '');
@@ -175,7 +175,7 @@ function hook(dir, source = 'startup') {
   return execFileSync('node', [HOOK], {
     input: JSON.stringify({ hook_event_name: 'SessionStart', source }),
     encoding: 'utf8', cwd: dir,
-    env: { ...process.env, CLAUDE_PROJECT_DIR: dir, HOME: dir },
+    env: { ...process.env, CLAUDE_PROJECT_DIR: dir, HOME: dir, USERPROFILE: dir },
   });
 }
 

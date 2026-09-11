@@ -70,7 +70,7 @@ function parseTerminology(md) {
   const sec = md.split(/^##\s+/m).find((s) => /^terminology\b/i.test(s));
   if (!sec) return [];
   const pairs = [];
-  for (const line of sec.split('\n')) {
+  for (const line of sec.split(/\r?\n/)) {
     if (!line.trim().startsWith('|')) continue;
     const cells = line.split('|').map((c) => c.trim()).filter((c, i, a) => i > 0 && i < a.length - 1);
     if (cells.length < 2) continue;

@@ -104,7 +104,7 @@ function gitignoreGroups(body) {
   const flush = () => {
     if (patterns.length) { groups.push({ comments, patterns }); comments = []; patterns = []; }
   };
-  for (const raw of body.split('\n')) {
+  for (const raw of body.split(/\r?\n/)) {
     const line = raw.trim();
     if (!line) { flush(); continue; }
     if (line.startsWith('#')) { if (patterns.length) flush(); comments.push(raw.trimEnd()); }
@@ -141,7 +141,7 @@ export function appendGitignoreBlock(stageIds, targetDir) {
   // Exact (trimmed) match. A near-miss — theirs `node_modules`, ours `node_modules/` — adds a
   // harmless duplicate rather than guessing at gitignore semantics we'd get subtly wrong.
   const have = new Set(
-    existing.split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')),
+    existing.split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !l.startsWith('#')),
   );
 
   const out = [];

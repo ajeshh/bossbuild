@@ -90,7 +90,7 @@ export function listPractices() {
         curve: fm.curve || '',
         reviewBy: fm.review_by || '',
         headline: headline(text),
-        lines: text.split('\n').length,
+        lines: text.split(/\r?\n/).length,
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -116,7 +116,7 @@ export function resolvePractice(query) {
 // VISIBLE. Outliers are flagged, not split: `--outline` lets a reader map a long practice
 // before pulling all of it.
 function outlineOf(text) {
-  return text.split('\n')
+  return text.split(/\r?\n/)
     .map((l, i) => ({ l, i }))
     .filter(({ l }) => /^#{2,3}\s+\S/.test(l))
     .map(({ l, i }) => ({

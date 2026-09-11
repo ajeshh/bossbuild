@@ -1,0 +1,3 @@
+# LF everywhere, including Windows checkouts. The shipped hooks parse frontmatter and devlogs
+# line by line; a CRLF checkout made every loop spec unparseable on the first Windows CI run.
+* text=auto eol=lf

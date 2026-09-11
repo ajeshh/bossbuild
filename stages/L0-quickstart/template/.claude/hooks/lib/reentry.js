@@ -38,7 +38,7 @@ export function readDevlogHead(projectDir) {
   const f = join(projectDir, 'docs', 'devlog.md');
   if (!existsSync(f)) return null;
   let lines;
-  try { lines = readFileSync(f, 'utf8').split('\n'); } catch { return null; }
+  try { lines = readFileSync(f, 'utf8').split(/\r?\n/); } catch { return null; }
 
   let best = null; // { date, start }
   for (let i = 0; i < lines.length; i += 1) {

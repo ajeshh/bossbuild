@@ -275,8 +275,8 @@ function substitute(body, vars) {
 // versions (positional compare + length delta). Enough to flag a file as worth
 // reviewing; the /boss-sync skill does the real side-by-side read.
 function lineDelta(oldText, newText) {
-  const a = oldText.split('\n');
-  const b = newText.split('\n');
+  const a = oldText.split(/\r?\n/);
+  const b = newText.split(/\r?\n/);
   let diff = Math.abs(a.length - b.length);
   for (let i = 0; i < Math.min(a.length, b.length); i++) {
     if (a[i] !== b[i]) diff++;

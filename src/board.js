@@ -147,7 +147,7 @@ export function cardGist(text, fm = {}) {
   let para = [];
   let quoted = false;                     // is the paragraph being built inside a blockquote?
   const flush = () => { if (para.length) paras.push({ text: para.join(' '), quoted }); para = []; };
-  for (const raw of body.split('\n')) {
+  for (const raw of body.split(/\r?\n/)) {
     const isQuote = /^\s*>/.test(raw);
     const line = raw.replace(/^\s*>\s?/, '').trim();      // a blockquote can be prose, not chrome
     if (!para.length) {

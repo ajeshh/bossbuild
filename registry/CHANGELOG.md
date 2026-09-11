@@ -16,6 +16,41 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.297.0 — 2026-09-11
+
+> **For you:** **the conscience now reads your files the same on Windows** — CRLF line endings no
+> longer make your loop specs, devlog and frontmatter invisible to it, and its source globs match
+> on `\\` paths. A `.gitattributes` in new projects keeps line endings LF for every cofounder.
+
+**What the first Windows CI run said, an hour after v0.296.0 built it.** Linux and macOS: green
+on both Nodes, first try. Windows: **22 of 393 red**, in three clusters — and only one of them was
+the one the reading audit had predicted.
+
+**1. CRLF, the big one, and it is product.** GitHub's Windows runners check out with
+`autocrlf=true`, and `yaml.js` opened with `text.startsWith('---\n')`. So every loop spec parsed as
+*no frontmatter*, `JUDGE_MOMENTS` looked stale, `/boss` "shipped no idea-doc template", and the
+re-entry hook fell silent on a devlog it could not read. A founder does not clone BOSS — but their
+Windows editor saves CRLF, and their cofounder's clone converts it, and the shipped hooks would go
+blind the same way. Both frontmatter parsers (`yaml.js` in the hooks, `src/frontmatter.js` in the
+CLI) now fold `\r\n` first, and all 32 `split('\n')` line readers across `src/` and the shipped
+hooks split on `/\r?\n/`. Plus a `.gitattributes` (`* text=auto eol=lf`) in this repo *and* in the
+Quickstart template, so a new project keeps LF on every OS from its first commit.
+
+**2. The glob, which v0.296.0's notes called "correct as-is" — half right.** `expandGlob` in
+`loop-runtime.js` builds its regex from a `/`-pattern (config, fine) and then tested it against
+`join()`ed paths (`\\` on Windows — not fine). Every `$source` glob matched nothing, `count_at_least`
+reported *unopenable*, and the design-drift moment could never fire. The relative part is now
+normalised to `/` before the test. Reading found the pattern half and missed the match half; the
+matrix found both.
+
+**3. `HOME` does not redirect a Windows home.** `os.homedir()` reads `USERPROFILE` there, so every
+test that isolated `~/.boss/registry.json` by setting `HOME` was writing to the runner's real one —
+*"8 registered but not on disk"* was the previous tests' projects leaking in. Test harness only;
+every setter now sets both. The smoke script already fell back to `USERPROFILE`.
+
+**Still open** (IDEA-095): whether Claude Code on Windows runs the shipped `settings.json` hook
+line (`node "$CLAUDE_PROJECT_DIR/…"`) through Git Bash. A runner cannot tell us; a Windows box can.
+
 ## 0.296.0 — 2026-09-11
 
 > **For you:** **BOSS runs wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains.**

@@ -27,7 +27,7 @@ function boss(args, cwd) {
       code: 0,
       out: execFileSync('node', [BIN, ...args], {
         cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
-        env: { ...process.env, NO_COLOR: '1', HOME: cwd },
+        env: { ...process.env, NO_COLOR: '1', HOME: cwd, USERPROFILE: cwd },
       }),
     };
   } catch (e) {

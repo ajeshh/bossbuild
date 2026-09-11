@@ -1,0 +1,3 @@
+# LF in this project, on every OS. BOSS's hooks read your docs line by line; a CRLF checkout on
+# Windows would make the frontmatter they depend on invisible to them.
+* text=auto eol=lf

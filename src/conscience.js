@@ -182,7 +182,7 @@ function readOverrides(projectDir) {
   const f = join(projectDir, 'docs', 'devlog.md');
   if (!existsSync(f)) return [];
   try {
-    const lines = readFileSync(f, 'utf8').split('\n');
+    const lines = readFileSync(f, 'utf8').split(/\r?\n/);
     const re = /^- \*\*OVERRIDE:\*\*\s+(\w+)\s+`([^`]+)`\s+—\s+rationale:\s+(.+)$/;
     return lines.map((l) => l.match(re))
       .filter(Boolean)
@@ -216,7 +216,7 @@ function readActivity(projectDir) {
   const f = personStatePath(projectDir, 'conscience-log.jsonl');
   if (!existsSync(f)) return [];
   try {
-    return readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter(Boolean);
+    return readFileSync(f, 'utf8').split(/\r?\n/).filter(Boolean).map((l) => JSON.parse(l)).filter(Boolean);
   } catch { return []; }
 }
 

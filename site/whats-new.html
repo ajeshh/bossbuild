@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.296.0" />
+<meta name="generator" content="BOSS 0.297.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.297.0</span><span class="when">2026-09-11</span></div>
+        <p><strong>the conscience now reads your files the same on Windows</strong> — CRLF line endings no longer make your loop specs, devlog and frontmatter invisible to it, and its source globs match on <code>\\</code> paths. A <code>.gitattributes</code> in new projects keeps line endings LF for every cofounder.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.296.0</span><span class="when">2026-09-11</span></div>
         <p><strong>BOSS runs wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains.</strong> It always did; the README and the site now say so. And <code>boss id</code> no longer hands out a duplicate record number on Windows.</p>
       </li>
@@ -112,10 +116,6 @@
       <li>
         <div class="rel"><span class="ver">v0.285.0</span><span class="when">2026-09-10</span></div>
         <p><strong>A new guard asks the question that keeps a codebase a system: reuse, adjust, or new?</strong> Turn on <code>component-reuse-guard</code> and when a component gets written that isn't in your index, it hands Claude the ones that already exist and asks — before you end up with <code>Button</code>, <code>CTAButton</code> and <code>PrimaryButton</code>.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.284.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>Your product records stop being write-only.</strong> A FEAT now names who it's for and <code>/spec</code> opens that persona; <code>/roadmap</code>'s NO-list stops being deleted with each cycle; <code>/spec</code> reads the current bets and the declined list before it writes; the competitive field says so when it's a quarter stale; and the first user-facing flow also writes a one-page journey map, with the edge users the happy story assumes away.</p>
       </li>
     </ol>
         <p class="small">
@@ -161,7 +161,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.296.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.297.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

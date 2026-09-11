@@ -98,7 +98,7 @@ try {
   // --- Find what it should have been compared against. --------------------------------------
   // Table rows look like: | `Button` | primary and secondary actions | `import …` | … |
   const rows = [];
-  for (const line of index.split('\n')) {
+  for (const line of index.split(/\r?\n/)) {
     const m = line.match(/^\|\s*\**`?([A-Za-z][\w-]*)`?\**\s*\|([^|]*)\|/);
     if (!m) continue;
     const [, rowName, purpose] = m;

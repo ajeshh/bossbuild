@@ -96,7 +96,7 @@ try {
   // pair text against surface if the names say which is which, which is why `/design-tokens-init`
   // insists on purpose-naming rather than hue-naming.
   const tokens = [];
-  for (const line of body.split('\n')) {
+  for (const line of body.split(/\r?\n/)) {
     const name = line.match(/([-\w.]*(?:text|surface|background|bg|foreground|fg|ink|action|feedback)[-\w.]*)/i);
     const hex = line.match(/#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b/);
     if (!name || !hex) continue;

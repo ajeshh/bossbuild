@@ -26,7 +26,7 @@ function boss(args, cwd, home, extraEnv = {}) {
   try {
     const out = execFileSync('node', [BIN, ...args], {
       cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, NO_COLOR: '1', HOME: home || cwd, ...extraEnv },
+      env: { ...process.env, NO_COLOR: '1', HOME: home || cwd, USERPROFILE: home || cwd, ...extraEnv },
     });
     return { code: 0, out };
   } catch (e) {

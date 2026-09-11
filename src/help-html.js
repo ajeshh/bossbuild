@@ -57,7 +57,7 @@ function fragments() {
       const raw = readFileSync(join(HELP_SRC, f), 'utf8');
       const head = (raw.match(/^<!--\n([\s\S]*?)\n-->/) || [, ''])[1];
       const meta = {};
-      for (const line of head.split('\n')) {
+      for (const line of head.split(/\r?\n/)) {
         const m = line.match(/^([a-z_]+):\s*(.*)$/);
         if (m) meta[m[1]] = m[2].trim();
       }

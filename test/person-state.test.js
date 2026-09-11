@@ -22,6 +22,7 @@ import { BOSS_ROOT } from '../src/paths.js';
 // is what keeps the suite out of the real ~/.boss — the same isolation `boss()` does by env.
 const HOME = mkdtempSync(join(tmpdir(), 'boss-home-'));
 process.env.HOME = HOME;
+process.env.USERPROFILE = HOME;   // `os.homedir()` reads THIS on Windows, not $HOME (IDEA-095)
 assert.equal(homedir(), HOME, 'HOME redirection failed — refusing to write to a real home dir');
 
 // A project whose `.boss/manifest.json` is byte-identical to another's, which is exactly what a

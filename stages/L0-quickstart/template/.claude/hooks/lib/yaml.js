@@ -21,6 +21,9 @@ export function parseYaml(text) {
 // Extract YAML frontmatter from a markdown file (between leading `---` and `---`).
 // Returns the parsed object, or null if no frontmatter is present.
 export function parseFrontmatter(text) {
+  // CRLF-tolerant: a Windows editor, or a cofounder's autocrlf clone, hands us `---\r\n`. The
+  // first Windows CI run parsed ZERO loop specs for exactly this reason (IDEA-095).
+  text = String(text).replace(/\r\n?/g, '\n');
   if (!text.startsWith('---\n')) return null;
   const end = text.indexOf('\n---\n', 4);
   if (end < 0) return null;
@@ -99,7 +102,7 @@ function indentOf(line) {
 }
 
 function tokenize(text) {
-  return text.split('\n')
+  return text.split(/\r?\n/)
     .map((line, i) => ({ raw: line, lineNum: i + 1 }))
     .filter((t) => t.raw.trim().length > 0 && !t.raw.trim().startsWith('#'))
     .map((t) => ({ ...t, indent: indentOf(t.raw), body: t.raw.trim() }));

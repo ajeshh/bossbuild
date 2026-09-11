@@ -93,7 +93,7 @@ export function headline(entry) {
 export function forYou(entry) {
   const text = Array.isArray(entry.body) ? entry.body.join('\n') : String(entry || '');
   return [...text.matchAll(/^>\s*\*\*For you:\*\*\s*(.+(?:\n>.*)*)/gm)]
-    .map((b) => b[1].split('\n').map((l) => l.replace(/^>\s?/, '').trim()).join(' ').trim())
+    .map((b) => b[1].split(/\r?\n/).map((l) => l.replace(/^>\s?/, '').trim()).join(' ').trim())
     .filter(Boolean);
 }
 

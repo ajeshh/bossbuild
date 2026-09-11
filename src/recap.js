@@ -55,7 +55,7 @@ function devlogEntries(projectDir, from, to) {
   const f = join(projectDir, 'docs', 'devlog.md');
   if (!existsSync(f)) return null;                 // no devlog is a different fact from an empty one
   let lines;
-  try { lines = readFileSync(f, 'utf8').split('\n'); } catch { return null; }
+  try { lines = readFileSync(f, 'utf8').split(/\r?\n/); } catch { return null; }
   const out = [];
   for (let i = 0; i < lines.length; i += 1) {
     const m = DATE_HEADING.exec(lines[i]);
@@ -81,7 +81,7 @@ function devlogEntries(projectDir, from, to) {
 const title = (projectDir, file) => {
   try {
     const t = readFileSync(join(projectDir, file), 'utf8');
-    const h = t.split('\n').find((l) => /^#\s+/.test(l));
+    const h = t.split(/\r?\n/).find((l) => /^#\s+/.test(l));
     return h ? h.replace(/^#\s+/, '').replace(/^[A-Z]{3,4}-\d+\s*[—:-]\s*/, '').trim() : '';
   } catch { return ''; }
 };
@@ -100,7 +100,7 @@ function riskiest(projectDir) {
     const p = join(projectDir, rel);
     if (!existsSync(p)) continue;
     try {
-      const lines = readFileSync(p, 'utf8').split('\n');
+      const lines = readFileSync(p, 'utf8').split(/\r?\n/);
       const i = lines.findIndex((l) => /Riskiest assumption:\*\*/.test(l));
       if (i < 0) continue;
       // Markdown hard-wraps. Reading only the matched line truncated BOSS's own assumption

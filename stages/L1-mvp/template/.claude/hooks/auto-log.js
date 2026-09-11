@@ -86,7 +86,7 @@ const main = async () => {
   const changed = [
     ...new Set(
       git(repo, ['status', '--porcelain', '--untracked-files=all'])
-        .split('\n')
+        .split(/\r?\n/)
         .filter(Boolean)
         .map((l) => l.slice(3).replace(/^"|"$/g, '').split(' -> ').pop())
         .filter(Boolean)
@@ -110,7 +110,7 @@ const main = async () => {
     // Dedup: SubagentStop can fire several times for one change set. Skip if the
     // last line has the same (session, agent, files) signature.
     if (existsSync(out)) {
-      const lines = readFileSync(out, 'utf8').trim().split('\n');
+      const lines = readFileSync(out, 'utf8').trim().split(/\r?\n/);
       const last = lines[lines.length - 1];
       if (last) {
         try {

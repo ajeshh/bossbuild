@@ -15,10 +15,11 @@
 // BOSS's docs are hand-editable, so a malformed block yields {} rather than throwing —
 // a board that crashes on one bad file is worse than one that skips it.
 export function frontmatter(text) {
-  const m = String(text).match(/^---\n([\s\S]*?)\n---/);
+  // `\r\n` folded first: a CRLF file is the same document, and Windows produces them (IDEA-095).
+  const m = String(text).replace(/\r\n?/g, '\n').match(/^---\n([\s\S]*?)\n---/);
   if (!m) return {};
   const out = {};
-  const lines = m[1].split('\n');
+  const lines = m[1].split(/\r?\n/);
   for (let n = 0; n < lines.length; n++) {
     const line = lines[n];
     const i = line.indexOf(':');

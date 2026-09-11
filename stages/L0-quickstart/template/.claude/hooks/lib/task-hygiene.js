@@ -79,7 +79,7 @@ function tail(path, bytes) {
 // which is a complete and common answer — a session that never identified a task has no list to
 // lose, and this must be silent for it.
 function lastTodoList(text) {
-  const lines = text.split('\n');
+  const lines = text.split(/\r?\n/);
   // Drop the first line: a tail read almost always begins mid-object.
   for (let i = lines.length - 1; i >= 1; i -= 1) {
     const line = lines[i];

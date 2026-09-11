@@ -63,7 +63,7 @@ export function derivedFacts(projectDir) {
   try {
     const log = personStatePath(projectDir, 'conscience-log.jsonl');
     if (existsSync(log)) {
-      const lines = readFileSync(log, 'utf8').trim().split('\n').filter(Boolean);
+      const lines = readFileSync(log, 'utf8').trim().split(/\r?\n/).filter(Boolean);
       const counts = {};
       for (const l of lines.slice(-25)) {
         try { for (const m of (JSON.parse(l).moments || [])) counts[m.moment] = (counts[m.moment] || 0) + 1; }
@@ -175,7 +175,7 @@ const BRAIN_WINDOW = 8;
 // first dated header is preamble (a standing summary) and is never auto-evicted.
 // Format-based only — the CLI owns block boundaries; the model owns the content.
 function parseDatedBlocks(read) {
-  const lines = read.split('\n');
+  const lines = read.split(/\r?\n/);
   const blocks = [];
   let preamble = [];
   let cur = null;
@@ -294,7 +294,7 @@ export function renderBrain(projectDir, stamp) {
   }
 
   const read = readFileSync(rf, 'utf8').replace(/\s+$/, '');
-  for (const l of read.split('\n')) lines.push(`  ${l}`);
+  for (const l of read.split(/\r?\n/)) lines.push(`  ${l}`);
   lines.push('');
 
   const idx = readIndex(projectDir);
@@ -332,7 +332,7 @@ export function renderRelationship(projectDir, stamp) {
     return lines.join('\n');
   }
   const rel = readFileSync(rf, 'utf8').replace(/\s+$/, '');
-  for (const l of rel.split('\n')) lines.push(`  ${l}`);
+  for (const l of rel.split(/\r?\n/)) lines.push(`  ${l}`);
   lines.push('');
   lines.push(`  ${dim('the conscience reads this to learn whether its nudges land; yours to correct too')}`);
   lines.push('');

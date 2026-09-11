@@ -47,7 +47,7 @@ after(() => { try { rmSync(tmp, { recursive: true, force: true }); } catch { /* 
 // caught because the planted-failure check did not fail. That is the same one-tier blindness this
 // guard exists to catch, reproduced inside the guard, and it is why the plant test is not optional.
 const boss = (args, cwd) => execFileSync('node', [join(BOSS_ROOT, 'bin', 'boss'), ...args], {
-  cwd, stdio: 'ignore', env: { ...process.env, HOME: tmp, NO_COLOR: '1' },
+  cwd, stdio: 'ignore', env: { ...process.env, HOME: tmp, USERPROFILE: tmp, NO_COLOR: '1' },
 });
 
 let cached;

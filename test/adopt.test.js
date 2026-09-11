@@ -31,7 +31,7 @@ const boss = (args, cwd) => {
   try {
     return execFileSync('node', [BIN, ...args], {
       cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, NO_COLOR: '1', HOME: cwd },
+      env: { ...process.env, NO_COLOR: '1', HOME: cwd, USERPROFILE: cwd },
     });
   } catch (e) { return (e.stdout || '') + (e.stderr || ''); }
 };

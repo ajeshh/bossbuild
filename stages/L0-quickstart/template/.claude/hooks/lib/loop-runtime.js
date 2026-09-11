@@ -59,7 +59,7 @@
 //   - Entry predicates not satisfied → loop is UNOPENABLE; no signal.
 
 import { readFileSync, writeFileSync, appendFileSync, readdirSync, existsSync, statSync } from 'node:fs';
-import { join, dirname, basename } from 'node:path';
+import { join, dirname, basename, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseFrontmatter } from './yaml.js';
 import { JUDGE_MOMENTS } from './moment-frames.js';
@@ -202,8 +202,11 @@ function expandGlob(pattern, projectDir) {
       }
     } catch { return []; }
   }
-  const cut = projectDir.endsWith('/') ? projectDir.length : projectDir.length + 1;
-  return files.filter((f) => re.test(f.slice(cut)));
+  // The regex speaks `/`; the paths came from `join()`, which speaks `\\` on Windows. Normalise
+  // the relative part before testing, or every glob matches nothing there — which is how the
+  // conscience went blind on the first Windows CI run while reporting "unopenable" (IDEA-095).
+  const cut = projectDir.endsWith(sep) ? projectDir.length : projectDir.length + 1;
+  return files.filter((f) => re.test(f.slice(cut).split(sep).join('/')));
 }
 
 function matchesGlob(filePath, pattern, projectDir) {
@@ -362,7 +365,7 @@ const PREDICATES = {
       ok: newer.length >= need,
       evidence: { path_glob, behind, newer: newer.length, min: need,
                   ...(pattern ? { pattern } : {}),
-                  names: newer.slice(0, 4).map((f) => f.split('/').pop()) },
+                  names: newer.slice(0, 4).map((f) => basename(f)) },
     };
   },
 
@@ -598,7 +601,7 @@ function deriveBrainFacts(projectDir) {
     // What the conscience has ALREADY been saying — the closest thing to memory it can derive.
     const log = personStatePath(projectDir, 'conscience-log.jsonl');
     if (existsSync(log)) {
-      const lines = readFileSync(log, 'utf8').trim().split('\n').filter(Boolean).slice(-25);
+      const lines = readFileSync(log, 'utf8').trim().split(/\r?\n/).filter(Boolean).slice(-25);
       const counts = {};
       for (const l of lines) {
         try {
@@ -625,7 +628,7 @@ export function readBrainContext(projectDir) {
     const preambleLines = [];
     const blocks = [];
     let cur = null;
-    for (const l of text.split('\n')) {
+    for (const l of text.split(/\r?\n/)) {
       if (dateRe.test(l)) { if (cur) blocks.push(cur); cur = [l]; }
       else if (cur) cur.push(l);
       else preambleLines.push(l);
@@ -657,7 +660,7 @@ export function readRelationshipContext(projectDir) {
     const blocks = [];
     let cur = null;
     let preamble = [];
-    for (const l of text.split('\n')) {
+    for (const l of text.split(/\r?\n/)) {
       if (dateRe.test(l)) { if (cur) blocks.push(cur); cur = [l]; }
       else if (cur) cur.push(l);
       else preamble.push(l);
@@ -703,7 +706,7 @@ export function readEvidenceContext(projectDir) {
       if (grade) counts[grade] += 1;
       const date = typeof fm.date === 'string' ? fm.date : '';
       if (!recent || date > recent.date) {
-        const titleLine = (text.split('\n').find((l) => /^#\s+EVID-/.test(l)) || '').replace(/^#\s+/, '').trim();
+        const titleLine = (text.split(/\r?\n/).find((l) => /^#\s+EVID-/.test(l)) || '').replace(/^#\s+/, '').trim();
         recent = { date, id: fm.id || n.replace(/\.md$/, ''), grade: grade || 'ungraded', title: titleLine };
       }
     }
