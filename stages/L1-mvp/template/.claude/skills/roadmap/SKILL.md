@@ -48,7 +48,7 @@ estimate you'll overrun (Singer, *Shape Up*). A bet is *"this problem, this much
 ticket, not a spec (that's `/spec`'s job, downstream). Anything that isn't a bet this cycle isn't "later" — it's
 **not now**, and it goes on the NO-list.
 
-## Step 4 — the NO-list is mandatory, and it is the half that STAYS (v0.283.0)
+## Step 4 — the NO-list is mandatory, and it is the half that STAYS (v0.284.0)
 
 Write down, explicitly, **what you are NOT building** — the requests you're declining this cycle and *why*
 (usually: low evidence grade, serves a vocal minority, or doesn't move the current bet). **No is the default;
@@ -56,7 +56,7 @@ the NO-list is the load-bearing half of the roadmap** — a roadmap that only sa
 where you protect the **silent majority**: the features you're *not* building for the loudest few are a decision,
 so record it.
 
-🔴 **The two halves have different lifespans, and until v0.283.0 this skill deleted the wrong one.**
+🔴 **The two halves have different lifespans, and until v0.284.0 this skill deleted the wrong one.**
 The bet-list is disposable on purpose — a bet-list you tend becomes the backlog Shape Up refuses.
 But the refusals were being thrown away with it, which meant the same declined request came back
 three cycles later with nothing to stop it, and **the reason — usually a weak evidence grade — was
@@ -94,7 +94,7 @@ the row — a list showing only the refusals that stuck reads as wiser than it w
    bets don't.
 
 Promote a chosen bet with `/spec` (that's where it becomes a FEAT). **`/spec` reads both of these** as of
-v0.283.0 — a FEAT that is neither a current bet nor on the NO-list gets named once, and a FEAT that is on
+v0.284.0 — a FEAT that is neither a current bet nor on the NO-list gets named once, and a FEAT that is on
 the NO-list gets its own row read back. Neither blocks; both make the decision visible at the moment it is
 being made rather than three cycles later.
 

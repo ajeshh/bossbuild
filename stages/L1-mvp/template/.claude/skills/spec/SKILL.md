@@ -19,10 +19,10 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 **Rung: MVP.** If this project is **earlier** than that, don't run this — leave the seam instead:
 **Write down what 'working' means for the feature while you are building it — one sentence, in the commit or a comment. It costs nothing now and it is the only thing that makes a test writable later.** That is the whole ask; it is *not* a spec convention, an id scheme, acceptance-criteria fields, a template. You can write a spec any day. You cannot reconstruct what you MEANT by 'correct' six months after you built it — and an agent asked to test that feature later will happily write assertions against whatever the code already does.
 
-## Step 0b — read the sequence before you spec against it (v0.283.0)
+## Step 0b — read the sequence before you spec against it (v0.284.0)
 
 `/roadmap` weighs everything at once into a small bet-list with fixed appetites and a standing
-NO-list, then points at this skill. **Until v0.283.0 `/spec` could not see either of them** —
+NO-list, then points at this skill. **Until v0.284.0 `/spec` could not see either of them** —
 `docs/roadmap/` was referenced by exactly one line in the whole shipped surface, inside the skill
 that writes it. A sequence nothing downstream reads is a document, not a plan.
 
@@ -151,7 +151,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
    currently in `building` status.
 2. Allocate the next free `FEAT-NNN` (parallel numbering to IDEA — same N if it's a clean promotion,
    otherwise next free integer; grep the **files** under `docs/` for existing FEATs, per `docs/IDS.md`).
-2b. **Name the user, from the persona that already exists (v0.283.0).** Set `for:` in the FEAT's
+2b. **Name the user, from the persona that already exists (v0.284.0).** Set `for:` in the FEAT's
    frontmatter before you draft a line of it.
 
    Read `docs/personas/` first. If a persona is there, `for:` is its slug and **you read the file** —
@@ -297,6 +297,34 @@ that when you're choosing among many candidates, not just reacting to one.)_
    there. **The index, not a second copy**: two copies of a flow diverge, and the one people read is
    never the one that got updated. Read it first — a new flow composes with the ones already there
    rather than inventing a second navigation model.
+
+   Then, **the first time** a flow is written and **only then**, create
+   `docs/product/JOURNEY.md` from [`templates/journey-map.md`](templates/journey-map.md) — the tier
+   above the flow index, and one page for the whole product rather than a section per feature.
+   Afterwards just check it: does this FEAT's flow serve a stage that's already on the map, or does
+   it add one?
+
+   **Why a second file and not a heading in `FLOWS.md`.** The flow index holds in-app sequences, and
+   it is structurally unable to hold the two places users are most often lost: **before they sign
+   up**, and **after they have succeeded once and are deciding whether you are part of their week.**
+   Four skills are already standing on different parts of that arc — `/landing`, `/onboard`,
+   `/measure`, `/health` — and until this file exists none of them shares a map, which is how a
+   product ends up with a good landing page, a good first run, and nobody in week three.
+
+   Two things make it worth the ten minutes, and neither is the table itself:
+
+   - **The gaps section.** The stages with no serving flow and no FEAT that owns them. That list is
+     the output; a journey where every stage is covered is either a finished product or a map drawn
+     to look tidy.
+   - **The edge users.** Not edge *cases* — the three paths above already own those. **People** the
+     happy journey assumes away: the user with no data, the user with ten thousand rows, the person
+     who is not the buyer, someone on a screen reader, someone acting in bad faith. Name the ones
+     that are real here and delete the rest.
+
+   ⚠️ **Label every stage `observed` / `said` / `assumed`.** Most start assumed and that is fine. An
+   assumed row that stops being labelled becomes "research" in about six weeks — to you as much as
+   to anyone else — and a journey map invented at a desk is more dangerous than none, because it
+   looks like it came from somewhere.
 
    **Skip all of this for a FEAT with no surface.** A background job has no flow, and asking for one
    is the ceremony PRINCIPLE #2 refuses.

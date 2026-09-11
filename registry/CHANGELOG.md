@@ -16,6 +16,91 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.284.0 — 2026-09-10
+
+> **For you:** **Your product records stop being write-only.** A FEAT now names who it's for and
+> `/spec` opens that persona; `/roadmap`'s NO-list stops being deleted with each cycle; `/spec`
+> reads the current bets and the declined list before it writes; the competitive field says so when
+> it's a quarter stale; and the first user-facing flow also writes a one-page journey map, with the
+> edge users the happy story assumes away.
+
+**The product twin of the design ladder (IDEA-093, parts 1–4 plus the journey).** The design program
+argued that a design system is a substrate the agent retrieves, not a guide the founder reads. The
+same argument transfers to product — and has a second half design could not have, because a design
+token has no outcome and a product bet does.
+
+**What the audit measured, before anything was built:**
+
+```
+docs/roadmap/     → read by 1 line in the entire shipped surface: the skill that writes it
+docs/competition/ → 2 readers, both advisory. 0 at build time.
+docs/personas/    → 0 readers in /spec, designer, coder, product-lead  (/spec: "persona" ×0)
+```
+
+Against the design layer after v0.282.0: `COMPONENTS.md` 5 readers + a hook, `PATTERNS.md` 7 + a
+loop, `FLOWS.md` 5. **The product artifacts were where the design artifacts had been three days
+earlier.** Every part below is a field, a reader, a loop on an existing predicate, or an authored
+artifact. **No new skills, no new verbs; the shipped skill count is unchanged.**
+
+- **The FEAT names its user, and that is BOSS's answer on user stories.** New `for:` frontmatter,
+  resolved against `docs/personas/`, plus a `/spec` step that actually opens the file — its `pains`
+  and its *what we don't know yet* block are the sharpest input the skill gets and nothing had ever
+  read them. **`user story` had zero occurrences in the whole shipped surface** — an accidental
+  refusal, never a stated one. *As a X I want Y so that Z* exists to carry **who and why** into a
+  ticket for someone who wasn't in the conversation; the FEAT already carries the goal, the
+  assumptions with the founder's corrections, what *wrong* looks like, the flow with its cut, and
+  three paths. The one thing the story form had and the record didn't was the user's name. It is now
+  a field, and the skill says so plainly when a founder asks.
+- **`/ux-check` opens the persona instead of recommending it.** Its rule said *"pair with personas
+  where relevant"* for twelve releases and named no path — a filter the next session was free to
+  skip. It now reads the FEAT's `for:` slug and walks that persona's pains against the screen.
+- **The NO-list outlives its cycle.** `/roadmap` calls the NO-list *the load-bearing half* and then
+  instructed *"a snapshot — use it and discard; delete the old one."* So the most disciplined thing
+  the skill produced was the thing it deleted, and the same declined request came back three cycles
+  later with its reason — usually a weak evidence grade — gone. **Deleting your reasoning while
+  keeping your conclusions is backwards.** Now: the bet-list stays disposable (Shape Up is right
+  that a bet-list you tend becomes a backlog) and `docs/roadmap/NO-LIST.md` is standing and
+  append-only, every row carrying a **re-open signal** rather than a date — the same grammar every
+  `deferred` record already uses. A row with no re-open signal is a refusal nobody can undo.
+- **`/spec` step 0b reads the sequence.** The NO-list (has the re-open signal actually fired, or has
+  this just come up again?), the newest bet-list (does the scope match the appetite — the last cheap
+  moment to notice an overrun), and `docs/competition/` **only when the FEAT is the differentiator**,
+  carrying the rows' age with it. Named once, never blocking. No roadmap files — the normal state
+  pre-PMF, since `/roadmap` correctly refuses at n<10 — and the step stays silent.
+- **`field-stale-loop`** — `exists` + `quiet_for` at 90 days over `docs/competition/`. `/comp-eval`
+  already published that threshold and said stale rows *render with their age* — but only when the
+  founder re-runs the skill, **which is exactly what someone who has forgotten the file will not
+  do.** The loop is the reader for a bar the skill had already set. *"Nothing changed"* closes it,
+  and writing *checked, still true* into a row is worth more than the check. Fails safe: an mtime
+  read under-fires on a fresh clone.
+- **The journey map** — `docs/product/JOURNEY.md`, written at the first user-facing flow alongside
+  the `FLOWS.md` row. The flow index holds in-app sequences and is structurally unable to hold the
+  two places users are most often lost: **before they sign up**, and **after they have succeeded
+  once and are deciding whether you are part of their week.** Four skills already stood on different
+  parts of that arc — `/landing`, `/onboard`, `/measure`, `/health` — and none shared a map, which is
+  how a product ends up with a good landing page, a good first run, and nobody in week three.
+  Authored, for the same reason flows are: **no amount of checking produces a journey nobody drew.**
+  Its output is the **gaps** section (stages with no serving flow and no owner) and the **edge
+  users** — *people* the happy journey assumes away (no data yet, ten thousand rows, not the buyer,
+  a screen reader, bad faith), which is the honest home for edge cases that are not code paths. Every
+  stage labelled `observed` / `said` / `assumed`; an assumed row that stops being labelled becomes
+  "research" in six weeks. Read by `/ux-check` (which walks it instead of improvising one) and
+  `/onboard` (which finds its own segment, and the orphaned stage after it).
+
+🔴 **What is NOT in this release, and both are deliberate.** The **return path** — an outcome stamp
+closing the four record classes that already carry a prediction (the canvas assumption, DEC's
+falsifier *with its by-when date*, the FEAT's learning hypothesis, the roadmap's confidence grade,
+none of which anything reads back; `falsifier` appears in five files, one writes it, one defines it,
+three tell you to write one, **zero check it**) — is held because it needs a **sixth loop predicate**,
+one that compares a date *inside* a file against today. The existing five are four file-relations
+plus an mtime read and structurally cannot say it. A predicate, not a verb — but a runtime change,
+and the one part of this program worth researching before building. And **market sizing stays
+parked**: IDEA-066's gate holds, with a sharper re-open trigger (the first time a founder is asked a
+question *by someone else* and cannot answer it — a raise, a partner, a pricing call), which is V1.
+
+⚠️ **Craft-driven, not evidence-driven, and said out loud.** Nobody asked for this by using BOSS. It
+does not outrank publish + Phase 3 outreach, and no part of it is evidence that BOSS works.
+
 ## 0.283.0 — 2026-09-10
 
 > **For you:** **Three exceptions to the same rule now means the rule is wrong.** `/design-review`

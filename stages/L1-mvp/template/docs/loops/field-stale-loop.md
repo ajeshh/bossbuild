@@ -71,5 +71,5 @@ closes this is the founder doing something to the file.* A quarter later it open
 `/comp-eval recheck` (the whole field, or one rival) · `/comp-eval add <name>` if what prompted the
 thought was hearing about a new one · the canvas **Problem** cell, which cites this field rather
 than duplicating it, and is the place a stale rival does the most damage. `/spec` reads the field
-too as of v0.283.0, when the FEAT being written *is* the differentiator — which is the other half of
+too as of v0.284.0, when the FEAT being written *is* the differentiator — which is the other half of
 this artifact finally being read by something.

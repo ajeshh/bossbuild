@@ -242,7 +242,15 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
   don't flatten the list.
 - **Capture every check.** Without `docs/design/ux-check-*.md` files, the discipline doesn't
   compound.
-- 🔴 **Open `docs/personas/` and the FEAT's `for:` field — don't just recommend it (v0.283.0).**
+- 🔴 **Walk `docs/product/JOURNEY.md`, not a journey you improvise (v0.284.0).** This skill's whole
+  premise is *walk the actual user journey, not the spec* — and before v0.284.0 there was no journey
+  on disk to walk, so every run invented one, which meant two runs a month apart checked different
+  products. Read the map: which **stage** does this surface sit in, what is the row's *where they
+  leave*, and does the screen in front of you do anything about it? Then check the **edge users**
+  table against what you just walked. **Not on the map?** That is a finding worth more than the
+  review — a shipped surface serving no stage is either a gap in the map or a feature serving nobody,
+  and you are the first person positioned to tell which.
+- 🔴 **Open `docs/personas/` and the FEAT's `for:` field — don't just recommend it (v0.284.0).**
   This rule said *"pair with personas where relevant"* for twelve releases and named no path, which
   made it a suggestion the next session was free to skip. **Read the persona this surface is for**
   (the FEAT frontmatter's `for:` slug, or the only persona there is), and walk its `pains` and its

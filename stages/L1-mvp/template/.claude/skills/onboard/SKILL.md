@@ -29,6 +29,26 @@ onboarding any day; you cannot re-hear someone's first five minutes — after th
 longer a person who has never seen your product, so the observation is unrepeatable by construction. That is
 the whole seam: a file with quotes in it. Not a flow, not a checklist, not an aha-moment definition.
 
+## Step 0b — find your segment on the journey (v0.284.0)
+
+If `docs/product/JOURNEY.md` exists, **read it before designing anything** — activation is stages
+2–3 of an arc this file already holds, and the stages on either side are what decide whether the
+work sticks.
+
+- **The stage before yours (they hear about it)** sets what the user arrives *expecting*. An
+  activation flow that contradicts the landing page's promise has an activation problem that is
+  actually a positioning problem, and no amount of TTV shaving fixes it.
+- **The stage after yours (they come back)** is the one most often orphaned — the journey's gaps
+  section usually names it. Getting someone to value once, with nothing responsible for the second
+  session, is how a product gets a good activation number and a dead retention curve.
+- **The edge-users table** is where the magic first run is decided honestly: *the user with no data
+  yet* is not an edge case here, it is **every** new user, which is exactly why the empty state is
+  where activation dies.
+
+**Update the map when you're done** — what you learn watching the first ten people onboard is
+`observed`, which is the strongest source that file takes, and it will be replacing rows currently
+marked `assumed`. No journey file yet? Skip this; `/spec` writes it at the first user-facing flow.
+
 ## Step 1 — derive the aha-moment from data (don't guess it)
 
 The **aha-moment** is the first action that reliably predicts retention. Derive it, don't whiteboard it
