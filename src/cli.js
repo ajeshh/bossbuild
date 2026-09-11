@@ -1424,6 +1424,14 @@ const OPTIONAL_HOOKS = [
     worth: 'you have a token system and want it to actually hold — a prompt convention is a filter, this is the check',
   },
   {
+    name: 'contrast-guard',
+    event: 'PostToolUse',
+    mode: 'MVP',
+    does: "The one accessibility check that is arithmetic rather than a judgment. When your tokens file changes it computes the WCAG contrast ratio for every text-on-surface pair you have DECLARED and names the ones under AA (4.5:1 body, 3.0:1 large). Fixes belong in the tokens, so one change fixes every screen. It says its own scope every time: text over an image, a gradient or a translucent overlay composites at runtime, needs a rendered page, and stays `not checked` — never a pass.",
+    cost: 'a process after each file write (it only reads tokens files)',
+    worth: "you have colour tokens — this is the cheapest real accessibility mechanism in BOSS and the only one that needs no browser. Everything else it could check is a judgment; this is a published formula over two numbers. Background: `boss craft accessibility`",
+  },
+  {
     name: 'component-reuse-guard',
     event: 'PostToolUse',
     mode: 'MVP',

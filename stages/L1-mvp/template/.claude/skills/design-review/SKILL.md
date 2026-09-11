@@ -82,6 +82,9 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
      good. That judgment stayed with the founder, and it should read that way on the page.
    - Affordances clear (Norman's lens — the user can tell what's interactive)
    - Nielsen heuristics (visibility, recognition, error prevention, recovery)
+   - **The basis is `boss craft accessibility`** — reason from POUR and name the principle, not
+     just the rule, so the founder can look the criterion up themselves. Say what you did *not*
+     check; an accessibility note with no blind spots named reads as clearance.
    - Accessibility floor: keyboard nav, focus visibility, screen reader output, color-isn't-
      the-only-signal, WCAG 2 AA contrast
    - AI-specific UX (if applicable): options-not-truth, visible confidence, undo/edit/regenerate,

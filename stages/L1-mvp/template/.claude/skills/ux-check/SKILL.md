@@ -84,6 +84,8 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    never that it **looks right**. Report the half you did.
 
 4. **Accessibility heuristics.** Split them honestly — this list is where an inferred review most
+   **Read `boss craft accessibility` first** — the floor, the checkable/needs-a-person split,
+   and the motor and cognitive halves that no checker sees. Reason from POUR and name the principle.
    often reports a pass it did not earn:
 
    *Checkable from source:*

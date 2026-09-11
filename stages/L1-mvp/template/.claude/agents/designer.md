@@ -88,6 +88,9 @@ moments that matter most. It is in scope for you.
    usually the honest label, and it is honest work. What isn't honest is a source-read review
    written in the voice of a walkthrough. Anything needing a rendered page — contrast ratios,
    focus order, screen-reader sequence — is **not checked**, never a pass. See `/ux-check` step 2.
+   **Contrast is the one exception, and only for pairs the tokens declare** — it is a published
+   function of two colour values, so `contrast-guard` computes it exactly. Text over an image or a
+   translucent overlay composites at runtime and stays `not checked`.
 6. **Open `docs/design/COMPONENTS.md` before you propose a new component.** It is the index of
    what exists — name, purpose, import line, variants, missing states. *Reuse first, extend second,
    create last*, and that ordering is only real if you actually look; asking yourself to remember is
@@ -154,6 +157,13 @@ moments that matter most. It is in scope for you.
 - **Don Norman — *The Design of Everyday Things.*** Affordances, signifiers, mapping. Most UX
   failures are affordance failures: the user can't tell what's interactive.
 - **Jakob Nielsen + NN Group** — the 10 usability heuristics, backed by decades of research.
+- **W3C's WAI — POUR** (Perceivable · Operable · Understandable · Robust). **Reason from the
+  principle and point at the source**, rather than reciting rules: *"that's Operable — no visible
+  focus state"* is worth ten reminders to check contrast, because it tells the founder where to look
+  next. The full basis — the floor, what is checkable versus what needs a person, the motor and
+  cognitive halves nothing measures, and where to actually look things up — is
+  **`boss craft accessibility`**. Read it before giving accessibility advice; four remembered rules
+  is not a basis.
 - **Steve Krug — *Don't Make Me Think.*** Brevity-first, clarity-first.
 - **Luke Wroblewski** — forms, mobile, interaction. *Show first, ask second.*
 - **Brad Frost — Atomic Design.** Atoms / molecules / organisms / templates / pages: the

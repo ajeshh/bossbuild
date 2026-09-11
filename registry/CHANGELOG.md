@@ -16,6 +16,70 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.289.0 — 2026-09-10
+
+> **For you:** **`boss craft accessibility` is new** — the guidelines BOSS reasons from, so `designer`
+> can tell you *which principle* something violates and where to look it up, instead of reciting four
+> rules. Plus `contrast-guard`: the one accessibility property that is arithmetic, computed over the
+> token pairs you declared.
+
+**BOSS had accessibility rules and no accessibility knowledge.**
+
+Ajesh named it exactly: *"it's more about the principle rather than being able to enforce
+accessibility, but knowing the guidelines and being able to recommend or look up based on best
+practices."* And the audit agreed — **there was no accessibility practice at all.** A four-line floor
+in the style-guide skeleton, some bullets in two review skills, honest `not checked` labels. Enough to
+repeat rules; not enough to **reason from a basis or point anywhere.**
+
+**`library/practices/accessibility.md` — the basis.** Structured on W3C's own framing, deliberately:
+
+- **POUR as a lookup index, not a checklist.** Perceivable · Operable · Understandable · Robust. The
+  value is that when something feels wrong and you can't name it, the principle it violates is usually
+  obvious — and the principle is how you find the specific guidance. *"That's Operable — no visible
+  focus state"* is worth ten reminders to check contrast, because it tells you where to look next.
+- **AA is the working floor**, AAA where it's cheap — W3C itself doesn't recommend AAA as a general
+  policy, because some criteria can't be met for all content.
+- **Where to actually look things up** — the WAI quick-reference, the WAI tutorials, the **ARIA
+  Authoring Practices Guide** (the answer to *"what should arrow keys do in this thing I invented?"*),
+  the platform's own guidance where you're not on the web, and the auditor already installed in your
+  browser or IDE.
+- **The founder-scale floor: six things**, cheap while building and expensive after — and an explicit
+  list of what is **not** the floor yet (VPAT, audit, statement page), plus a specific warning about
+  **overlay widgets**, which are sold as a one-line fix, are widely criticised by disabled users, and
+  can interfere with a person's own assistive technology.
+- **The checkable / needs-a-person table.** The half BOSS is unusual for having, and what makes its
+  recommendations worth anything: *a recommendation you can trust is one that says what it did not
+  look at.* `alt="image"` passes every checker ever written.
+- **Beyond the visual** — motor and cognitive, neither of which any checker sees, and the cognitive
+  half is the highest-impact and least-measured group for a beginner-cohort product.
+- **The AI-generated-UI failure list**: `outline: none` surviving a reset · `<div onClick>` because
+  it's fewer characters · placeholder-as-label · icon buttons with no name · colour as the only state
+  signal · custom widgets with no keyboard model. **The leverage is upstream**, which is why the floor
+  lives in `STYLE_GUIDE.md` rather than only in a review.
+
+**`contrast-guard` — the arithmetic half, and the only one.** BOSS had been saying two contradictory
+things in shipped text: `designer.md` called contrast ratios *"not checked, never a pass"* (true only
+of a **rendered** page), while `/design-library` carried a `contrast {{ratio}}:1 {{PASS_OR_FAIL}}`
+placeholder that **nothing computed** — so the model was being asked to reason about hex values. The
+style guide had already prescribed the right method (*"check the token pairs, not screenshots"*) and
+the arithmetic was never shipped.
+
+It is now: relative luminance, the published ratio, over every `text.*` × `surface.*` pair the tokens
+declare, on a write to the tokens file. **Fixes belong in the tokens** — a pair that fails there fails
+everywhere it is used. And it states its own scope every time: text over an image, a gradient or a
+translucent overlay composites at runtime, needs a rendered page, and stays `not checked`. **Nothing
+else in that table is going to join it**, and saying so is the point — a tool that leads with
+enforcement teaches a founder that accessibility is the set of things a linter catches, which is the
+most expensive wrong idea available here.
+
+Seven cases pin the numbers at the AA boundary, including that `#767676` on white (4.54:1) must
+**not** be flagged and `#777777` (4.48:1) must.
+
+**Three caught by BOSS's own gates while writing this**, all worth keeping: the practice named
+`/practice-refresh`, which is **BOSS-only and would dangle in every founder's install** — reworded to
+say what the founder actually does; its `review_by` was 180 days when the `craft` curve wants 365; and
+`boss hooks` didn't list the new hook, which would have shipped it undiscoverable.
+
 ## 0.288.0 — 2026-09-10
 
 > **For you:** **You get a brand doc that grows instead of one nobody wrote.** `docs/BRAND.md` — who
