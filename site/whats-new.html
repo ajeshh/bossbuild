@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.292.0" />
+<meta name="generator" content="BOSS 0.295.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,22 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.295.0</span><span class="when">2026-09-11</span></div>
+        <p><strong><code>/comp-eval</code> now says what to open, not just what to write</strong> — docs before marketing, the changelog, the product itself if there's a free tier — and writes a <code>How they do it</code> entry for the handful of features that touch your bet, which <code>/spec</code> reads as design reference <em>after</em> you've decided to build one.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.294.0</span><span class="when">2026-09-11</span></div>
+        <p><strong>The competitive field is finally read by the things that build.</strong> <code>/spec</code> opens a rival's <em>where it breaks</em> when you spec something they also have; <code>/landing</code> writes against the alternative people actually use; <code>/pretotype</code> asks <em>&quot;would you switch?&quot;</em> when a real rival is in your evidence; and <code>/comp-eval add</code> tells you whether a new rival is on anyone's shortlist or a phantom — and offers the switch test in the moment when their twist lands on your differentiator.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.293.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>The tasks you spot mid-build stop living only in the chat.</strong> BOSS notices when the list in the conversation has outrun anything written down, and <code>.claude/rules/feature-context.md</code> — a file that shipped for months with nothing ever writing to it — is now where found work, local decisions and open questions actually go.</p>
+      </li>
+      <li>
+        <div class="rel"><span class="ver">v0.292.0</span><span class="when">2026-09-10</span></div>
+        <p><strong>The website and the generated docs catch up with the design work</strong> — the design page now explains the eight layers a design system actually has, and why one that can only <em>add</em> rules locks your design in.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.291.0</span><span class="when">2026-09-10</span></div>
         <p><strong>Four small seams, each cheap now and expensive later</strong> — strings in one place, one word per concept in your props too, how waiting should <em>feel</em>, and a &quot;wrong if&quot; line on every design principle.</p>
       </li>
@@ -100,22 +116,6 @@
       <li>
         <div class="rel"><span class="ver">v0.283.0</span><span class="when">2026-09-10</span></div>
         <p><strong>Three exceptions to the same rule now means the rule is wrong.</strong> <code>/design-review</code> reads your exceptions table before adding to it, and on the third of a kind it proposes changing the rule instead of recording another departure from it.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.282.0</span><span class="when">2026-09-10</span></div>
-        <p><strong><code>/prototype</code> now uses your design system if you have one.</strong> It checks for your components, tokens and patterns first and builds out of them — faster than drawing, and what you get is a preview of what will actually ship. No system yet? It says nothing and keeps moving, which is the right answer at Quickstart.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.281.0</span><span class="when">2026-09-10</span></div>
-        <p><strong><code>/spec</code> now asks you to name the flow and cut a step.</strong> Each step says what it asks the user for and why it's needed <em>now</em> — and one that can't answer is the one to cut. Plus the two paths that usually only exist on paper: what the flow looks like for someone with nothing yet, and where they land when a step fails.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.280.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>BOSS now notices when your design has stopped learning.</strong> After three design reviews, if every pattern in your set is still one BOSS handed you, the conscience asks once whether you've now decided something twice. One row in the <strong>Ours</strong> table closes it.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.279.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>Your brand choices can now be a decision on file, not a memory.</strong> After the five-token distinctiveness pass, <code>/design-tokens-init</code> offers to record the anchor — neutral, radius, type pairing, accent, signature — as a single <code>/decide</code> record with a falsifier. So the next session knows the 2px radius was chosen, not defaulted.</p>
       </li>
     </ol>
         <p class="small">
@@ -160,7 +160,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.292.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.295.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

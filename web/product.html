@@ -1,7 +1,7 @@
 <!--
 title: For product people — the positions BOSS holds
 description: Ceremony scaled to evidence, a canvas that is an answer store rather than a framework, an evidence ladder that grades what people did rather than what they said, and a roadmap with a mandatory no-list.
-reviewed: 2026-09-10
+reviewed: 2026-09-11
 review_by: 2027-03-09
 describes: BOSS's own product positions — evidence, canvas frames, scope, ending things
 covers: stages library/practices PRINCIPLES.md
@@ -136,6 +136,18 @@ nav: product
           and an evals field for anything a model decides. <strong>Acceptance criteria answer "did we
           build it"; those two answer "should we have."</strong>
         </p>
+        <h3>Name the flow, then cut a step</h3>
+        <p>
+          For anything a user walks through, the spec asks you to write the steps — and for each one,
+          <em>what it asks the user for and why it's needed now</em>. <strong>A step that can't answer
+          is the step to cut.</strong> Then the two paths that usually exist only on paper: what the
+          flow looks like for someone with nothing yet, and where they land when a step fails.
+        </p>
+        <p class="small">
+          The spec also opens the persona the feature names, and reads the current bets and the
+          declined list before it writes — so a feature can't quietly re-propose something the
+          roadmap already said no to.
+        </p>
       </div>
     </section>
 
@@ -161,6 +173,11 @@ nav: product
           Under all three is a visible ledger of <strong>how much of this person is evidence and how
           much is still a guess — and it starts at all guess.</strong> Enriching moves the number.
           Nothing else does.
+        </p>
+        <p>
+          And it stopped being write-only. <strong>A feature names who it's for, and the spec opens
+          that persona</strong> when it writes — so the person you researched is in the room when the
+          thing is designed, not filed next to it.
         </p>
         <p class="small">
           It is deliberately honest about one thing that flatters nobody: a persona built from online
@@ -193,9 +210,24 @@ nav: product
           confidently invented competitor price is the easiest thing in the world for a model to
           produce, and the hardest thing for you to notice.
         </p>
+        <h3>Read by the things that build, which is the part that was missing</h3>
+        <p>
+          A competitive field nobody reads is a slide. This one is opened by the verbs downstream:
+          <strong>the spec opens a rival's <em>where it breaks</em></strong> when you spec something
+          they also have; the landing page writes against the alternative people actually use; the
+          demand test asks <em>"would you switch?"</em> when a real rival is in your evidence; and
+          adding a new name tells you whether it's on anyone's shortlist or a curiosity.
+        </p>
+        <p>
+          It also says <strong>what to open, not just what to write</strong> — docs before marketing,
+          the changelog, the product itself if there's a free tier — and keeps a <em>How they do it</em>
+          entry for the handful of features that touch your bet, which the spec reads as design
+          reference <strong>after</strong> you've decided to build one, never as a reason to.
+        </p>
         <p class="small">
-          It lives in the repo, next to the work it informs — so it is there when you are pricing,
-          not in a doc you would have to remember to open.
+          It lives in the repo next to the work it informs, and <strong>it says so when it's a
+          quarter stale</strong> — a competitor table from last winter presented as current is the
+          slide problem wearing a date.
         </p>
       </div>
     </section>
@@ -207,9 +239,11 @@ nav: product
       <div class="body prose">
         <h2>A roadmap that only says yes isn't a decision</h2>
         <p>
-          So the roadmap carries a <strong>mandatory no-list</strong>. It's a short bet-list with a
-          fixed appetite, produced when you need it and <em>thrown away</em> rather than tended —
-          not a backlog, not a persistent planning surface, and never a Gantt.
+          So the roadmap carries a <strong>mandatory no-list</strong>. The bet-list half is short,
+          has a fixed appetite, and gets <em>re-cut each cycle</em> rather than tended — because a
+          bet-list you tend becomes a backlog. <strong>The no-list is the half that outlives the
+          cycle.</strong> It used to be deleted with each pass, and the same declined request came back
+          three cycles running; now it stands, and the spec reads it before writing anything.
         </p>
         <p>
           <strong>Each bet's confidence is the evidence grade behind it</strong>, which is the part

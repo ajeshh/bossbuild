@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.292.0" />
+<meta name="generator" content="BOSS 0.295.0" />
 <link rel="canonical" href="https://oyeboss.build/design" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -127,12 +127,48 @@
     </section>
 
     <section class="section">
+      <div class="rail">▸<span>the ladder</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Tokens are the floor. Most systems never build the middle.</h2>
+          <p>
+            Ask what a design system is and you get &ldquo;tokens and components.&rdquo; That is a floor
+            and a set of walls. It is not what makes two screens feel like one product, and it is not
+            what Material or the Human Interface Guidelines actually are &mdash; those are mostly
+            <strong>patterns with guidance</strong>, which is the layer nobody ships.
+          </p>
+          <p>
+            BOSS holds eight, and names them so you can tell which one you are missing:
+          </p>
+          <ul class="tight">
+            <li><strong>Brief</strong> &mdash; why it looks like this. The brand, which is
+              <em>upstream</em> of design and belongs to no single lens.</li>
+            <li><strong>Foundations</strong> &mdash; colour, spacing, type, radius, elevation. All five
+              enforced, not one.</li>
+            <li><strong>Components</strong> &mdash; an index the agent <em>opens</em>, rather than a rule
+              it is asked to remember.</li>
+            <li><strong>Patterns</strong> &mdash; a recurring decision with a rule. The missing middle.</li>
+            <li><strong>Flows</strong> &mdash; the sequence, and which step to cut.</li>
+            <li><strong>Content</strong> &mdash; voice, tone, one word per concept.</li>
+            <li><strong>Visibility</strong> &mdash; the thing you can look at.</li>
+            <li><strong>Learning</strong> &mdash; how the language grows from what you actually built.</li>
+          </ul>
+          <p>
+            The last one is the point. <strong>A pattern is named when the same decision comes up
+            twice</strong> &mdash; once is a choice, twice is a pattern &mdash; and BOSS notices when
+            three design reviews have happened and your product has never named one of its own.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="rail">▸<span>the system</span></div>
       <div class="body prose">
-        <h2>Three layers, and the middle one is the whole trick</h2>
+        <h2>Zoom into the floor: tokens come in three tiers, and the middle one is the trick</h2>
         <p>
-          Tokens get scaffolded in three layers at the first UI commit — and the layer that matters
-          is the middle one. <strong>Semantic tokens are named by purpose, never by hue.</strong>
+          Tokens are the bottom rung of the eight above, and they have their own structure: three
+          tiers, scaffolded at the first UI commit — and the tier that matters is the middle one. <strong>Semantic tokens are named by purpose, never by hue.</strong>
           <code>--color-danger</code>, not <code>--color-red</code>. The reason is mechanical: when
           you retheme, <em>every use site changes at once</em>, because nothing downstream ever
           referred to the colour, only to the job.
@@ -208,42 +244,6 @@
           is drift you're paying to maintain</strong> — and worse, it's a decision the next agent
           will copy.
         </p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="rail">▸<span>the ladder</span></div>
-      <div class="body">
-        <div class="prose">
-          <h2>Tokens are the floor. Most systems never build the middle.</h2>
-          <p>
-            Ask what a design system is and you get &ldquo;tokens and components.&rdquo; That is a floor
-            and a set of walls. It is not what makes two screens feel like one product, and it is not
-            what Material or the Human Interface Guidelines actually are &mdash; those are mostly
-            <strong>patterns with guidance</strong>, which is the layer nobody ships.
-          </p>
-          <p>
-            BOSS holds eight, and names them so you can tell which one you are missing:
-          </p>
-          <ul class="tight">
-            <li><strong>Brief</strong> &mdash; why it looks like this. The brand, which is
-              <em>upstream</em> of design and belongs to no single lens.</li>
-            <li><strong>Foundations</strong> &mdash; colour, spacing, type, radius, elevation. All five
-              enforced, not one.</li>
-            <li><strong>Components</strong> &mdash; an index the agent <em>opens</em>, rather than a rule
-              it is asked to remember.</li>
-            <li><strong>Patterns</strong> &mdash; a recurring decision with a rule. The missing middle.</li>
-            <li><strong>Flows</strong> &mdash; the sequence, and which step to cut.</li>
-            <li><strong>Content</strong> &mdash; voice, tone, one word per concept.</li>
-            <li><strong>Visibility</strong> &mdash; the thing you can look at.</li>
-            <li><strong>Learning</strong> &mdash; how the language grows from what you actually built.</li>
-          </ul>
-          <p>
-            The last one is the point. <strong>A pattern is named when the same decision comes up
-            twice</strong> &mdash; once is a choice, twice is a pattern &mdash; and BOSS notices when
-            three design reviews have happened and your product has never named one of its own.
-          </p>
-        </div>
       </div>
     </section>
 
@@ -469,7 +469,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.292.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.295.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
