@@ -2,20 +2,25 @@
    Inlined rather than linked because the file is opened straight off the filesystem:
    a relative stylesheet works, but the page also gets copied, mailed and dropped into
    Slack, and a single file survives all three. No fonts are fetched — the stacks below
-   are what the machine already has. Dark mode follows the OS. */
+   are what the machine already has. Dark mode follows the OS.
+
+   The hexes are the same values as web/styles/tokens.css (concrete, graphite, one hi-vis);
+   a file opened off the filesystem cannot share a stylesheet, so they are copied — move
+   them together. Until 2026-09-12 this file carried its own warm-cream palette, which is
+   the commonest generated-UI tell and the one BOSS's own design practice names first. */
 :root {
-  --ink: #17150f; --ink-2: #5c574c; --ground: #f4f2ec; --surface: #ebe8e0;
-  --rule: #d8d4c8; --brand: #e8590c; --link: #a03e05; --code: #2b2820;
-  --term-bg: #17150f; --term-fg: #e8e4d8; --term-dim: #8a8578; --term-ok: #7cb342;
+  --ink: #16181A; --ink-2: #565C62; --ground: #E4E6E8; --surface: #D7DADD;
+  --rule: #C4C8CC; --brand: #FF5C00; --on-brand: #16181A; --link: #A63400; --code: #16181A;
+  --term-bg: #101214; --term-fg: #E2E5E7; --term-dim: #9AA0A6; --term-ok: #4FBF7F;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --measure: 68ch;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink: #ece9e0; --ink-2: #9d968a; --ground: #14130f; --surface: #1e1c17;
-    --rule: #302d26; --brand: #ff7a33; --link: #ff9257; --code: #d8d4c8;
-    --term-bg: #0d0c0a; --term-fg: #e8e4d8;
+    --ink: #E2E5E7; --ink-2: #9AA0A6; --ground: #16181A; --surface: #101214;
+    --rule: #2E3236; --brand: #FF5C00; --on-brand: #16181A; --link: #FF7A2E; --code: #E2E5E7;
+    --term-bg: #0B0D0E; --term-fg: #E2E5E7;
   }
 }
 * { box-sizing: border-box; }
@@ -33,14 +38,19 @@ h1 { font-size: clamp(1.9rem, 1.3rem + 2.4vw, 2.9rem); margin: 0 0 0.5rem; }
 h2 { font-size: 1.5rem; margin: 0 0 1rem; }
 h3 { font-size: 1.08rem; margin: 2rem 0 0.5rem; }
 p, ul, ol { max-width: var(--measure); }
+/* 40em in the element's OWN size is 80 characters at any size — `ch` on the container is
+   not, because the container's zero is 16px and a 0.86rem caption inside it ran to ~105. */
+.wrap :is(p, li, dd, td, .skill span, .want .a, .loop, .lede, .stamp) { max-width: 40em; }
 ul, ol { padding-left: 1.3rem; }
 li { margin-bottom: 0.4rem; }
 strong { font-weight: 650; }
 
 /* --- masthead + the you-are-here line ---------------------------------- */
 header.top { border-bottom: 1px solid var(--rule); padding: 2.5rem 0 1.75rem; margin-bottom: 0; }
-.kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
-  background: var(--brand); color: #fff; display: inline-block; padding: 0.22rem 0.5rem; font-weight: 650; margin: 0 0 1rem; }
+/* The project's name, set as a plain mono line above the title. It used to be a tracked
+   ALL-CAPS tag in white on hi-vis (3.6:1, under AA) — template chrome, and unreadable. */
+.kicker { font-family: var(--mono); font-size: 0.9rem; color: var(--ink-2); margin: 0 0 0.75rem; }
+.kicker b { color: var(--ink); font-weight: 650; }
 .lede { font-size: 1.12rem; color: var(--ink-2); max-width: var(--measure); }
 .stamp { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-2); margin-top: 1.25rem; }
 .stamp b { color: var(--ink); }
@@ -51,7 +61,7 @@ header.top { border-bottom: 1px solid var(--rule); padding: 2.5rem 0 1.75rem; ma
 .rungs li { padding: 0.3rem 0.85rem; border: 1px solid var(--rule); border-right: 0; color: var(--ink-2); }
 .rungs li:last-child { border-right: 1px solid var(--rule); }
 .rungs li.on { background: var(--surface); color: var(--ink); }
-.rungs li.here { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 650; }
+.rungs li.here { background: var(--brand); border-color: var(--brand); color: var(--on-brand); font-weight: 650; }
 
 /* --- sections + nav ----------------------------------------------------- */
 nav.toc { position: sticky; top: 0; background: var(--ground); border-bottom: 1px solid var(--rule);
@@ -61,30 +71,36 @@ nav.toc a { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); te
 nav.toc a:hover { color: var(--ink); }
 section { padding: 2.5rem 0; border-top: 1px solid var(--rule); }
 section:first-of-type { border-top: 0; }
-.eyebrow { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ink-2); font-weight: 650; display: flex; align-items: center; gap: 0.75rem; margin: 0 0 0.75rem; }
-.eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+/* Section label: the short name the table of contents uses, so a reader landing from the
+   TOC sees the word they clicked. Normal case, the size of the TOC link. */
+.eyebrow { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); font-weight: 650;
+  display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.6rem; }
+.eyebrow::before { content: "▸"; color: var(--brand); }
 
 /* --- tables (commands, glossary, symbols) ------------------------------- */
 .tw { overflow-x: auto; margin: 1.25rem 0; }
 table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
 th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.9rem 0.55rem 0; border-bottom: 1px solid var(--rule); }
-th { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+th { font-family: var(--sans); font-size: 0.85rem; color: var(--ink-2); font-weight: 600; }
 td code { white-space: nowrap; }
+/* Table layout ignores max-width on a cell; a block inside the cell bounds the column. */
+td .cell { max-width: 40em; }
+.more { color: var(--ink-2); font-size: 0.9em; }
 .glyph { font-size: 1.15rem; width: 2.5rem; }
 .glyph.ok { color: var(--term-ok); } .glyph.warn { color: var(--brand); } .glyph.dim { color: var(--ink-2); }
 
 /* --- skills, grouped by the rung that unlocked them --------------------- */
 .rung-group { margin: 1.5rem 0; }
 .rung-group > h3 { margin-top: 0; display: flex; align-items: baseline; gap: 0.6rem; }
-.rung-group > h3 .n { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+.rung-group > h3 .n { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); font-weight: 600; }
 .loop { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); margin: 0 0 0.75rem; max-width: none; }
 .skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); gap: 0.9rem 1.75rem; max-width: none; }
 .skill { border-left: 2px solid var(--rule); padding-left: 0.8rem; }
 .skill b { font-family: var(--mono); font-weight: 650; font-size: 0.9rem; }
 .skill span { display: block; font-size: 0.86rem; color: var(--ink-2); }
-.locked .skill { opacity: 0.62; }
+/* Locked skills are dimmed with the secondary ink, not opacity — an opacity stack is what a
+   pixel-contrast check reads as invisible text, and a founder squinting agrees with it. */
+.locked .skill { border-left-style: dashed; }
 .locked .skill b { color: var(--ink-2); }
 
 /* --- the wayfinding map ------------------------------------------------- */
@@ -98,7 +114,7 @@ td code { white-space: nowrap; }
 @media (max-width: 44rem) { .want > div { grid-template-columns: 1fr; } }
 
 /* --- terminal transcript ------------------------------------------------ */
-.term { background: var(--term-bg); color: var(--term-fg); border-radius: 8px; padding: 1.1rem 1.25rem;
+.term { background: var(--term-bg); color: var(--term-fg); border-radius: 4px; padding: 1.1rem 1.25rem;
   font-family: var(--mono); font-size: 0.82rem; line-height: 1.65; overflow-x: auto; margin: 1.25rem 0; }
 .term pre { margin: 0; }
 .term .c { color: var(--term-ok); } .term .d { color: var(--term-dim); }
@@ -113,8 +129,7 @@ footer b { color: var(--ink); }
 
 /* A skill that is real but is not a next move — BOSS's own upkeep, or the post-launch
    arc. `boss map` hides these; a reference shows them and says which they are. */
-.skill .tag { font-style: normal; font-family: var(--mono); font-size: 0.6rem;
-  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 650;
+.skill .tag { font-style: normal; font-family: var(--mono); font-size: 0.75rem; font-weight: 650;
   color: var(--ink-2); border: 1px solid var(--rule); border-radius: 3px;
   padding: 0.05rem 0.28rem; margin-left: 0.4rem; vertical-align: 0.1em; }
 
@@ -125,8 +140,7 @@ details > summary { cursor: pointer; font-family: var(--mono); font-weight: 650;
 details > summary::-webkit-details-marker { display: none; }
 details > summary::before { content: "▸"; color: var(--brand); font-size: 0.8em; }
 details[open] > summary::before { content: "▾"; }
-details > summary .n { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+details > summary .n { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); font-weight: 600; }
 details .tw { margin: 0.75rem 0 0.25rem; }
 details td { padding: 0.4rem 0.9rem 0.4rem 0; }
 .usage { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-2); }

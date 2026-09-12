@@ -88,8 +88,8 @@ function commandsHtml() {
     // The standing line is the one-liner; HELP carries the paragraph. Printing the
     // paragraph too is the difference between a cheatsheet and a guide.
     const extra = detail ? `<span class="d">${esc(detail.what)}</span>` : '';
-    return `<tr><td><code>${esc(cmd)}</code></td><td>${esc(what)}${
-      extra ? `<br><span style="color:var(--ink-2);font-size:0.9em">${esc(detail.what)}</span>` : ''}</td></tr>`;
+    return `<tr><td><code>${esc(cmd)}</code></td><td><div class="cell">${esc(what)}${
+      extra ? `<br><span class="more">${esc(detail.what)}</span>` : ''}</div></td></tr>`;
   }).join('\n');
   return `<div class="tw"><table><thead><tr><th>command</th><th>what it does</th></tr></thead><tbody>\n${rows}\n</tbody></table></div>`;
 }
@@ -142,7 +142,7 @@ function skillsHtml(projectDir, stamp) {
     // `headline` is the manifest's own curated preview — the few worth naming to someone who
     // has not climbed yet. Empty is legitimate (a rung with 1-3 skills), so fall back to all.
     const preview = (next.headline && next.headline.length) ? next.headline : (next.skills || []);
-    out.push(`<div class="rung-group locked"><h3>${esc(next.name)} <span class="n">not unlocked · ${
+    out.push(`<div class="rung-group locked"><h3>${esc(next.name)} <span class="n">not unlocked, ${
       (next.skills || []).length} skills</span></h3><div class="skills">${
       preview.map((s) => `<div class="skill"><b>/${esc(s)}</b><span>${esc(gloss(s, nextId))}</span></div>`).join('')
     }</div><p class="loop">Unlock with <code>boss unlock ${esc(next.id.replace(/^L\d+-/, ''))}</code> — it names what earns the rung first.</p></div>`);
@@ -219,7 +219,7 @@ function teamHtml(projectDir, stamp) {
     const mode = modes.find((m) => m.id === stageId);
     return `<tr><td><code>${esc(name)}</code></td><td>${
       isMentor(name) ? 'mentor' : 'builder'}</td><td>${
-      esc(mode ? mode.name : '')}</td><td>${esc(fill(agentDescription(projectDir, name, stageId), stamp.name))}</td></tr>`;
+      esc(mode ? mode.name : '')}</td><td><div class="cell">${esc(fill(agentDescription(projectDir, name, stageId), stamp.name))}</div></td></tr>`;
   }).join('\n');
   return `<p><strong>Builders make the product; mentors coach you.</strong> They arrive as the
     project earns them, and nothing is ever removed by climbing a rung.</p>
@@ -261,9 +261,9 @@ function surfaceHtml(projectDir, stamp) {
       const file = join(projectDir, '.claude', 'skills', sk, 'SKILL.md');
       const g = existsSync(file) ? skillGloss(file) : skillGloss(packageSkillMd(id, sk));
       const usage = fill(g && g.usage, stamp.name);
-      return `<tr><td><code>/${esc(sk)}</code>${have.has(sk) ? '' : ' <span class="soon">·</span>'}</td><td>${
+      return `<tr><td><code>/${esc(sk)}</code>${have.has(sk) ? '' : ' <span class="soon">·</span>'}</td><td><div class="cell">${
         esc(fill(g && g.gloss, stamp.name))}${
-        usage ? `<br><span class="usage">${esc(usage)}</span>` : ''}</td></tr>`;
+        usage ? `<br><span class="usage">${esc(usage)}</span>` : ''}</div></td></tr>`;
     }).join('\n');
     return `<details${id === deepest ? ' open' : ''}><summary>${esc(mode.name)} <span class="n">${esc(state)}</span></summary>
       <div class="tw"><table><tbody>\n${rows}\n</tbody></table></div></details>`;
@@ -277,9 +277,9 @@ ${blocks}`;
 
 function glossaryHtml() {
   const rows = Object.entries(GLOSSARY).sort(([a], [b]) => a.localeCompare(b)).map(([term, d]) =>
-    `<tr><td><code>${esc(term)}</code></td><td>${esc(d.what)}${
-      d.more ? `<br><span style="color:var(--ink-2);font-size:0.9em">${esc(d.more)}</span>` : ''}${
-      d.see ? `<br><span style="color:var(--ink-2);font-size:0.9em">met at <code>${esc(d.see)}</code></span>` : ''}</td></tr>`).join('\n');
+    `<tr><td><code>${esc(term)}</code></td><td><div class="cell">${esc(d.what)}${
+      d.more ? `<br><span class="more">${esc(d.more)}</span>` : ''}${
+      d.see ? `<br><span class="more">met at <code>${esc(d.see)}</code></span>` : ''}</div></td></tr>`).join('\n');
   return `<div class="tw"><table><thead><tr><th>word</th><th>what it means</th></tr></thead><tbody>\n${rows}\n</tbody></table></div>`;
 }
 
@@ -333,8 +333,10 @@ export function renderHelpHtml(projectDir, stamp, stampedAt) {
     const id = key.replace(/^__/, '');
     toc.push(`<li><a href="#${esc(id)}">${esc(fallbackTitle)}</a></li>`);
     const body = frag ? frag.body : generated[key]();
-    sections.push(`<section id="${esc(id)}">
-  <p class="eyebrow">${esc(fallbackTitle)}</p>
+    // The short TOC name sits above the heading only when the heading says something else;
+    // a label that repeats the h2 under it is the kicker-above-heading tell, not wayfinding.
+    const label = title !== fallbackTitle ? `\n  <p class="eyebrow">${esc(fallbackTitle)}</p>` : '';
+    sections.push(`<section id="${esc(id)}">${label}
   <h2>${esc(title)}</h2>
   ${body}
 </section>`);
@@ -352,16 +354,16 @@ ${stylesheet()}
 </head><body>
 <div class="wrap">
 <header class="top">
-  <p class="kicker">${esc(stamp.name)} · guide</p>
+  <p class="kicker"><b>${esc(stamp.name)}</b>, the guide</p>
   <h1>Everything this project has, and why.</h1>
   <p class="lede">Generated from this project — not the BOSS website. Every skill and command
     below is one you actually have right now. Rebuild it any time with
     <code>boss help --html</code>.</p>
   ${ladderHtml(installed, deepest)}
-  <p class="stamp">You are here: <b>${esc(stamp.mode || stamp.stage)}</b>
-    &nbsp;·&nbsp; ${(stamp.skills || []).length} skills, ${(stamp.agents || []).length} agents
-    &nbsp;·&nbsp; BOSS pinned <b>${esc(stamp.bossVersion || '—')}</b>, installed <b>${esc(V)}</b>${
-    stampedAt ? ` &nbsp;·&nbsp; generated ${esc(stampedAt)}` : ''}</p>
+  <p class="stamp">You are here: <b>${esc(stamp.mode || stamp.stage)}</b>, with
+    ${(stamp.skills || []).length} skills and ${(stamp.agents || []).length} agents.
+    BOSS pinned <b>${esc(stamp.bossVersion || '—')}</b>, installed <b>${esc(V)}</b>${
+    stampedAt ? `, generated ${esc(stampedAt)}` : ''}.</p>
 </header>
 <nav class="toc" aria-label="Sections"><ul>
 ${toc.join('\n')}
@@ -371,8 +373,8 @@ ${sections.join('\n')}
   <p><b>This page is a read, not a document.</b> Nothing here is maintained by hand — it is
   rebuilt from your project's own stamp and BOSS's manifests each time you run
   <code>boss help --html</code>. If it looks stale, it is: run it again.</p>
-  <p>The terminal has the same answers, faster: <code>boss help</code> ·
-  <code>boss map</code> · <code>boss status</code> · <code>boss help &lt;command&gt;</code>.</p>
+  <p>The terminal has the same answers, faster: <code>boss help</code>,
+  <code>boss map</code>, <code>boss status</code> and <code>boss help &lt;command&gt;</code>.</p>
 </footer>
 </div>
 </body></html>
