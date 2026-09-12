@@ -889,24 +889,28 @@ function shippedTimeline(cards) {
   /* BOSS board — the site-and-signage world.
      Concrete ground, graphite ink, ONE hi-vis mark at ~2% coverage. Straight
      cuts (2-3px radii), not soft cards. Display type is the mono stack, because
-     the tool is the product. Signage colour is reserved for real states. */
+     the tool is the product. Signage colour is reserved for real states.
+     The hexes are a COPY of web/styles/tokens.css (a CLI cannot link a stylesheet);
+     when that file moves, move these. 2026-09-12: the ground went cool (hue 210°,
+     matching graphite) and --muted / --hivis-text darkened so they clear AA on
+     --sunk — muted-on-sunk was 4.2:1 on both surfaces, found on the site first. */
   :root {
     color-scheme: light dark;
-    --bg: #E8E6E1; --panel: #F2F1EE; --sunk: #DCDAD4;
-    --ink: #16181A; --muted: #5F656B; --line: #CBC9C3;
-    --hivis: #FF5C00; --hivis-text: #B33900; --ink-on-hivis: #16181A;
-    --caution: #7F5800; --stop: #C01818;
-    --stage-0: #9AA0A6; --stage-1: #5F656B; --stage-2: #2E3236; --stage-3: #16181A;
+    --bg: #E4E6E8; --panel: #F0F2F3; --sunk: #D7DADD;
+    --ink: #16181A; --muted: #565C62; --line: #C4C8CC;
+    --hivis: #FF5C00; --hivis-text: #A63400; --ink-on-hivis: #16181A;
+    --caution: #7F5800; --stop: #B71616;
+    --stage-0: #9AA0A6; --stage-1: #565C62; --stage-2: #2E3236; --stage-3: #16181A;
     --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #16181A; --panel: #1F2225; --sunk: #101214;
-      --ink: #E6E4DF; --muted: #9AA0A6; --line: #2E3236;
+      --ink: #E2E5E7; --muted: #9AA0A6; --line: #2E3236;
       --hivis: #FF5C00; --hivis-text: #FF7A2E;
       --caution: #E8A200; --stop: #FF6B5A;
-      --stage-0: #5F656B; --stage-1: #9AA0A6; --stage-2: #CBC9C3; --stage-3: #E6E4DF;
+      --stage-0: #565C62; --stage-1: #9AA0A6; --stage-2: #C4C8CC; --stage-3: #E2E5E7;
     }
   }
   * { box-sizing: border-box; }
