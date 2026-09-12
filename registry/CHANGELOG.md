@@ -16,6 +16,35 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.306.0 — 2026-09-11
+
+**The tail of the comp-read batch — two citations, one mentor move, one measurement. No new
+surface.**
+
+- **`library/practices/harness-engineering.md` — *Split the gathering, never the synthesis.*** An
+  outside number for a rule BOSS already keeps: haytham's ADR-026 measured a single agent with full
+  context at **8 PASS / 4 PARTIAL / 0 FAIL** against a 4-agent + 6-validator pipeline at **1 / 3 / 8**
+  on the same inputs. *"If you're adding a validator to fix disagreements between two agents, you have
+  an architecture problem."* The receipt for `/consult` synthesizing once and the conscience judging
+  in one place. Freshness clock held — a section, not a sweep.
+- **`library/practices/testing-with-agents.md` — rule 7: *if you can't name the data that populates
+  a score, delete the score.*** haytham's ADR-023: eight scoring dimensions, five evidence clusters,
+  three dimensions hallucinated. BOSS's own denominator lesson (`check:site` at "95% clean") stated
+  as a design rule before the fact. Both cited to `arslan70/haytham/docs/system-evolution.md`, read
+  at source 2026-09-11; the source is in `library/sources.json` with a URL.
+- **`mentor-founder` — the 10x → 2x move**, for a stuck growth question only: multiply the goal by
+  ten to surface the constraint, then ask what became obvious about 2x. Chesky's *add a zero*, via
+  the founder-mode plugin's skill of that name. Once, on a real number, never a ritual.
+- **`docs/retros/2026-09-11-never-run-skills.md` — which of the 48 skills has ever run on BOSS
+  itself.** No invocation record exists, so the denominator is *the artifact each skill leaves*, on
+  disk: **22 ran · 11 rung-not-reached · 5 superseded on BOSS's own altitude · 6 should have run and
+  never did · 4 unknowable.** Nothing in the should-have bin is a sunset candidate — every one is a
+  skill BOSS would tell a founder in BOSS's position to run. The two red ones are the same finding:
+  **`.boss/brain/` does not exist in this repo** (`/read-repo` and `/close` never wrote one, so every
+  continuity line in the conscience frame has been off here since v0.22) and **`/drift-deep` has
+  never been run** on the repo whose RESUME calls its own build stream *"building around the risk."*
+  Two dogfood actions filed; sunset nothing.
+
 ## 0.305.0 — 2026-09-11
 
 > **For you:** **If you installed BOSS as a plugin, the door now asks what you're building and says

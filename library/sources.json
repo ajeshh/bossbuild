@@ -1,5 +1,5 @@
 {
-  "_note": "The named sources behind BOSS's practices, lifted from each practice's `provenance:` field so the website can show compact references instead of a wall of prose. URLs are DELIBERATELY null until someone verifies them \u2014 BOSS checks who actually said a thing before grading it, so inventing a plausible link here would be the exact failure that step exists to catch. Fill a url in and the website turns that name into a link on the next `npm run gen:site`; leave it null and the name renders as plain text. Nothing breaks either way. Each source carries a `kind` (person | org | research | standard) for grouping, and `key: true` when it is a named practitioner whose thinking is distilled here or a primary spec a reviewer would re-open. ONLY key sources carry a URL obligation \u2014 everything else is credited by name and that is enough. Naming everyone is right; linking everyone is busywork.",
+  "_note": "The named sources behind BOSS's practices, lifted from each practice's `provenance:` field so the website can show compact references instead of a wall of prose. URLs are DELIBERATELY null until someone verifies them — BOSS checks who actually said a thing before grading it, so inventing a plausible link here would be the exact failure that step exists to catch. Fill a url in and the website turns that name into a link on the next `npm run gen:site`; leave it null and the name renders as plain text. Nothing breaks either way. Each source carries a `kind` (person | org | research | standard) for grouping, and `key: true` when it is a named practitioner whose thinking is distilled here or a primary spec a reviewer would re-open. ONLY key sources carry a URL obligation — everything else is credited by name and that is enough. Naming everyone is right; linking everyone is busywork.",
   "sources": {
     "anthropic-engineering": {
       "name": "Anthropic engineering",
@@ -9,13 +9,13 @@
       "key": true
     },
     "dex-horthy": {
-      "name": "Dex Horthy \u2014 12-factor agents",
+      "name": "Dex Horthy — 12-factor agents",
       "url": "https://github.com/humanlayer/12-factor-agents",
       "kind": "person",
       "key": true
     },
     "karpathy": {
-      "name": "Andrej Karpathy \u2014 the verifiability thesis",
+      "name": "Andrej Karpathy — the verifiability thesis",
       "url": null,
       "kind": "person",
       "key": true,
@@ -36,7 +36,7 @@
       "key": true
     },
     "owasp": {
-      "name": "OWASP \u2014 LLM Top 10 (2026) + Top 10 for Agentic Applications",
+      "name": "OWASP — LLM Top 10 (2026) + Top 10 for Agentic Applications",
       "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
       "kind": "standard",
       "key": true
@@ -103,13 +103,13 @@
       "key": true
     },
     "chroma": {
-      "name": "Chroma \u2014 context rot",
+      "name": "Chroma — context rot",
       "url": "https://www.trychroma.com/research/context-rot",
       "kind": "org",
       "key": true
     },
     "jason-liu": {
-      "name": "Jason Liu \u2014 systematically improving RAG",
+      "name": "Jason Liu — systematically improving RAG",
       "url": "https://jxnl.co/writing/2024/05/22/systematically-improving-your-rag/",
       "for": "recall@k first; inventory vs capability",
       "kind": "person",
@@ -147,7 +147,7 @@
       "key": false
     },
     "kleppmann": {
-      "name": "Martin Kleppmann \u2014 DDIA",
+      "name": "Martin Kleppmann — DDIA",
       "url": "https://dataintensive.net/",
       "for": "schema evolution",
       "kind": "person",
@@ -201,7 +201,7 @@
       "key": false
     },
     "anthropic-skills": {
-      "name": "Anthropic \u2014 the Agent Skills spec and template",
+      "name": "Anthropic — the Agent Skills spec and template",
       "url": "https://github.com/anthropics/skills",
       "kind": "org",
       "key": true
@@ -231,13 +231,13 @@
       "key": false
     },
     "apple-hig": {
-      "name": "Apple HIG \u2014 generative AI",
+      "name": "Apple HIG — generative AI",
       "url": null,
       "kind": "standard",
       "key": false
     },
     "cdt-dark-patterns": {
-      "name": "CDT \u2014 Dark Patterns in AI Chatbots (2026)",
+      "name": "CDT — Dark Patterns in AI Chatbots (2026)",
       "url": null,
       "kind": "research",
       "key": false
@@ -250,13 +250,13 @@
       "key": false
     },
     "brad-frost": {
-      "name": "Brad Frost \u2014 Atomic Design",
+      "name": "Brad Frost — Atomic Design",
       "url": "https://atomicdesign.bradfrost.com/",
       "kind": "person",
       "key": true
     },
     "nathan-curtis": {
-      "name": "Nathan Curtis \u2014 design tokens",
+      "name": "Nathan Curtis — design tokens",
       "url": "https://eightshapes.com/articles/tokens-in-design-systems/",
       "kind": "person",
       "key": true
@@ -268,47 +268,47 @@
       "key": true
     },
     "nygard-adr": {
-      "name": "Michael Nygard \u2014 Documenting Architecture Decisions",
+      "name": "Michael Nygard — Documenting Architecture Decisions",
       "url": "https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions",
-      "for": "the architecture decision record (2011) \u2014 the direct ancestor of BOSS's DEC-NNN: short, dated, superseded rather than edited",
+      "for": "the architecture decision record (2011) — the direct ancestor of BOSS's DEC-NNN: short, dated, superseded rather than edited",
       "kind": "person",
       "key": true
     },
     "cagan-svpg": {
       "name": "Marty Cagan (SVPG)",
       "url": "https://www.svpg.com/",
-      "for": "discovery vs documentation \u2014 why a written artifact is a means of deciding, not a deliverable",
+      "for": "discovery vs documentation — why a written artifact is a means of deciding, not a deliverable",
       "kind": "person",
       "key": true
     },
     "spec-growth-engine": {
-      "name": "Hartwig Grabowski \u2014 Spec Growth Engine",
+      "name": "Hartwig Grabowski — Spec Growth Engine",
       "url": null,
       "for": "spec-anchored / code-coupled / drift-enforced documentation for AI-written systems",
       "kind": "paper",
       "key": false
     },
     "ftc-ai-comply": {
-      "name": "FTC \u2014 Operation AI Comply",
+      "name": "FTC — Operation AI Comply",
       "url": "https://www.ftc.gov/news-events/news/press-releases/2024/09/ftc-announces-crackdown-deceptive-ai-claims-schemes",
-      "for": "AI washing as an enforced deceptive pattern \u2014 five actions, 2024-09-25; the DoNotPay final order (5-0, 2025-01-16)",
+      "for": "AI washing as an enforced deceptive pattern — five actions, 2024-09-25; the DoNotPay final order (5-0, 2025-01-16)",
       "kind": "org",
       "key": true
     },
     "edpb-consent-or-pay": {
-      "name": "EDPB \u2014 Opinion 08/2024 (consent or pay)",
+      "name": "EDPB — Opinion 08/2024 (consent or pay)",
       "url": "https://www.edpb.europa.eu/system/files/2024-04/edpb_opinion_202408_consentorpay_en.pdf",
-      "for": "the consent-or-pay binary; 'an equivalent alternative that does not entail the payment of a fee'. Scoped to large online platforms \u2014 cite the principle, not the statute, to a small team",
+      "for": "the consent-or-pay binary; 'an equivalent alternative that does not entail the payment of a fee'. Scoped to large online platforms — cite the principle, not the statute, to a small team",
       "kind": "standard",
       "key": true
     },
     "brooks-pnas": {
-      "name": "Brooks, Huang, Kearney & Murray \u2014 PNAS 2014",
+      "name": "Brooks, Huang, Kearney & Murray — PNAS 2014",
       "url": "https://www.hbs.edu/ris/Publication%20Files/Brooks%20Huang%20Kearney%20Murray_59b551a9-8218-4b84-be15-eaff58009767.pdf",
       "for": "investors preferred an identical pitch from a man; attractiveness moderated for men only",
       "kind": "research",
       "key": true,
-      "url_note": "doi 10.1073/pnas.1321202111 \u2014 doi.org is Cloudflare-gated, so this records the HBS-hosted PDF actually opened and read (2026-08-24)."
+      "url_note": "doi 10.1073/pnas.1321202111 — doi.org is Cloudflare-gated, so this records the HBS-hosted PDF actually opened and read (2026-08-24)."
     },
     "stanford-workbank": {
       "name": "Stanford WORKBank / Human Agency Scale",
@@ -319,7 +319,7 @@
       "url_note": "arXiv id was already in the practice's provenance; resolved and confirmed 2026-08-24 as 'Future of Work with AI Agents'."
     },
     "anthropic-harm-framework": {
-      "name": "Anthropic \u2014 Unified Harm Framework",
+      "name": "Anthropic — Unified Harm Framework",
       "url": null,
       "for": "the 5 harm dimensions",
       "kind": "org",
@@ -340,7 +340,7 @@
       "key": true
     },
     "harry-dry": {
-      "name": "Harry Dry \u2014 MarketingExamples",
+      "name": "Harry Dry — MarketingExamples",
       "url": null,
       "for": "'write with the delete key'; back a bold claim with proof",
       "kind": "person",
@@ -384,7 +384,7 @@
     "lenny-rachitsky": {
       "name": "Lenny Rachitsky",
       "url": null,
-      "for": "there is no retention silver bullet \u2014 it's the product",
+      "for": "there is no retention silver bullet — it's the product",
       "kind": "person",
       "key": false
     },
@@ -405,7 +405,7 @@
     "a16z-tunguz": {
       "name": "a16z / Tomasz Tunguz",
       "url": null,
-      "for": "the margin trap \u2014 cost scales with engagement; the AI-'tourist' churn wave",
+      "for": "the margin trap — cost scales with engagement; the AI-'tourist' churn wave",
       "kind": "org",
       "key": false
     },
@@ -417,7 +417,7 @@
       "key": true
     },
     "superhuman-concierge": {
-      "name": "Superhuman \u2014 concierge onboarding",
+      "name": "Superhuman — concierge onboarding",
       "url": null,
       "for": "onboarding done by hand for the first users",
       "kind": "org",
@@ -438,28 +438,28 @@
       "key": true
     },
     "betterup-workslop": {
-      "name": "BetterUp Labs x Stanford \u2014 'workslop'",
+      "name": "BetterUp Labs x Stanford — 'workslop'",
       "url": null,
       "for": "HBR 2025 + the 2026 OSF follow-on (n=962)",
       "kind": "research",
       "key": false
     },
     "tianpan": {
-      "name": "TianPan \u2014 AI product metrics",
+      "name": "TianPan — AI product metrics",
       "url": null,
       "for": "TCR, retained-character rate, frustration index",
       "kind": "person",
       "key": false
     },
     "posthog": {
-      "name": "PostHog \u2014 LLM analytics",
+      "name": "PostHog — LLM analytics",
       "url": null,
       "for": "product + observability convergence",
       "kind": "org",
       "key": false
     },
     "camuffo": {
-      "name": "Camuffo et al. \u2014 the scientific-approach RCT",
+      "name": "Camuffo et al. — the scientific-approach RCT",
       "url": null,
       "for": "validation buys faster quitting",
       "kind": "research",
@@ -475,7 +475,7 @@
     "uxbench": {
       "name": "UXBench (Wang et al.)",
       "url": "https://arxiv.org/abs/2606.16262",
-      "for": "what an LLM UX critique measurably repairs \u2014 feedback and scannability move, flow efficiency does not; preprint, grade as direction not magnitude",
+      "for": "what an LLM UX critique measurably repairs — feedback and scannability move, flow efficiency does not; preprint, grade as direction not magnitude",
       "kind": "research",
       "key": true
     },
@@ -489,9 +489,16 @@
     "aria-apg": {
       "name": "ARIA Authoring Practices Guide",
       "url": null,
-      "for": "keyboard behaviour for custom widgets \u2014 what arrow keys should do in a control you invented",
+      "for": "keyboard behaviour for custom widgets — what arrow keys should do in a control you invented",
       "kind": "standard",
       "key": true
+    },
+    "haytham-arslan70": {
+      "name": "Haytham (arslan70) — system-evolution ADRs",
+      "url": "https://github.com/arslan70/haytham/blob/main/docs/system-evolution.md",
+      "for": "single-agent synthesis beats a split pipeline (8/4/0 vs 1/3/8); a score with no named evidence source is hallucinated",
+      "kind": "research",
+      "key": false
     }
   },
   "practices": {
@@ -580,7 +587,8 @@
       "anthropic-engineering",
       "dex-horthy",
       "karpathy",
-      "spec-driven"
+      "spec-driven",
+      "haytham-arslan70"
     ],
     "landing-page": [
       "julian-shapiro",
@@ -639,7 +647,8 @@
       "devs-dont-vibe",
       "veracode",
       "metr",
-      "karpathy"
+      "karpathy",
+      "haytham-arslan70"
     ],
     "outside-claims": [],
     "accessibility": [

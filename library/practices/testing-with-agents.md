@@ -4,7 +4,7 @@ type: practice
 owner: tester
 status: active
 host: stack-neutral
-provenance: written 2026-08-11 (v0.142.0) to close the coverage gap the 2026-07-30 craft-staleness audit named and the 2026-08-11 sweep re-confirmed — `library/README.md` had advertised a testing practice in `practices/` since the library was created, and none existed. Sources - Hamel Husain + Shreya Shankar (error analysis, evals-as-spec, judge validation), "How Coding Agents Fail Their Users" (20,574-session misalignment analysis, arXiv 2605.29442), "Professional Software Developers Don't Vibe, They Control" (arXiv 2512.14012), Veracode Spring-2026, METR, Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was already BOSS's, stranded in `git-workflow.md`. The *negative-finding* section was sorted UP (PRINCIPLE #1) after BOSS made the same mistake TWICE in one session on 2026-09-08: it grepped a single word, concluded a gap, and twice the concept shipped under other words — see RVW-095. n=2 in one sitting is the breakpoint.
+provenance: written 2026-08-11 (v0.142.0) to close the coverage gap the 2026-07-30 craft-staleness audit named and the 2026-08-11 sweep re-confirmed — `library/README.md` had advertised a testing practice in `practices/` since the library was created, and none existed. Sources - Hamel Husain + Shreya Shankar (error analysis, evals-as-spec, judge validation), "How Coding Agents Fail Their Users" (20,574-session misalignment analysis, arXiv 2605.29442), "Professional Software Developers Don't Vibe, They Control" (arXiv 2512.14012), Veracode Spring-2026, METR, Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was already BOSS's, stranded in `git-workflow.md`. The *negative-finding* section was sorted UP (PRINCIPLE #1) after BOSS made the same mistake TWICE in one session on 2026-09-08: it grepped a single word, concluded a gap, and twice the concept shipped under other words — see RVW-095. n=2 in one sitting is the breakpoint. · **one rule added 2026-09-11 (v0.306.0)** from a competitor source read — haytham ADR-023, evidence must match evaluation; not a refresh, the freshness clock is held.
 provenance_public: Written after BOSS's own library README had advertised a testing practice that did not exist. Sources: Hamel Husain and Shreya Shankar (error analysis, evals-as-spec, judge validation), *How Coding Agents Fail Their Users* (20,574-session misalignment analysis, arXiv 2605.29442), *Professional Software Developers Don't Vibe, They Control* (arXiv 2512.14012), Veracode Spring-2026, METR, and Karpathy's verifiability thesis. The seed line — *agents rewrite assertions to match broken behavior* — was BOSS's own, stranded in the git practice until it had a home.
 last_reviewed: 2026-08-11
 review_by: 2027-02-07
@@ -105,6 +105,16 @@ metrics dashboard. That is the wrong end.
    more than 500 generated ones.
 6. **When you have no data, synthesize — but only to bootstrap.** Generated inputs get you moving;
    they don't tell you what your users actually break. Replace them as real traces arrive.
+
+7. **If you can't name the data that populates a score, delete the score.** A builder's own
+   post-mortem (haytham, ADR-023): their market-validation report had eight scoring dimensions and
+   five evidence clusters, so **three dimensions were the model hallucinating plausible analysis
+   with nothing behind it** — confident, formatted, unfounded. The fix was not a better prompt; it
+   was cutting to six dimensions, each mapped to a named upstream source. Same shape as BOSS's own
+   denominator lesson (`check:site` read 95% clean because uncounted practices never reached the
+   denominator): **before you trust a judge's dimension, ask what evidence it reads. If the answer
+   is "the model's impression," it is a vibe wearing a rubric.** (arslan70/haytham,
+   `docs/system-evolution.md`, read at source 2026-09-11.)
 
 > **The conscience read:** *hand-tuning a prompt in circles is a signal you need eval data, not more
 > fiddling.* (RVW-065.) Prompt-thrash is the symptom; missing error analysis is the disease.

@@ -4,7 +4,7 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0.
+provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0. · **one section added 2026-09-11 (v0.306.0)** from a competitor source read — haytham ADR-026's single-vs-split synthesis measurement; not a refresh, the freshness clock is held.
 provenance_public: Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (GitHub Spec Kit, AWS Kiro). Two independent research threads named the harness as the biggest gap in how BOSS was building.
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
@@ -97,6 +97,24 @@ stateless one is cattle you replace and move on. What a founder should take from
 they need the architecture: **anything you can't afford to lose belongs in the session log, not in
 the agent's context** — which is the same instinct as `/close` and `RESUME.md`, and the reason a
 crashed session should cost you a restart rather than the work.
+
+## Split the gathering, never the synthesis (haytham, ADR-026)
+
+One outside number, from a builder who measured it on their own pipeline: a **single agent with full
+upstream context scored 8 PASS / 4 PARTIAL / 0 FAIL** on report-quality criteria; a **4-agent
+pipeline with 6 deterministic validators, on the same inputs, scored 1 / 3 / 8.** Their diagnosis is
+the useful part: a scorer writes numbers without the narrative, a narrator writes prose without the
+scoring rationale, a merge function stitches them, and the validators exist to patch inconsistencies
+the architecture created. *"If you're adding a validator to fix disagreements between two agents, you
+have an architecture problem, not a validation problem."*
+
+The rule that falls out: **multi-agent is justified when agents need different tools, different
+model tiers, or genuinely independent tasks — gathering, adversarial review of a generated artifact.
+Synthesis is not one of those.** Anything that has to cross-reference findings belongs in one call
+with everything in front of it. BOSS already builds this way — `/consult` gathers mentors separately
+and synthesizes once; the conscience judges in one place — and this is the receipt for why it
+should stay that way. (arslan70/haytham, `docs/system-evolution.md`, read at source 2026-09-11; the
+tool itself is retired, the measurement stands.)
 
 ## Don't author what the host ships — name the seam instead
 
