@@ -36,6 +36,24 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 4. If the FEAT-NNN being built specifies its own smoke check in its spec, run that *in addition*
    to the project-wide smoke. A FEAT-specific smoke is the acceptance check stripped to its bones.
 
+## The first time — plant the two cheapest enforced conventions with it
+
+When you save `.boss/smoke.json` for the first time, ask one more question and stop there: **does the
+stack have a strict typecheck and a formatter, and are they on?** (`tsc --strict` / `mypy --strict` /
+`cargo clippy`; Prettier or Biome / `ruff format` / `rustfmt`.) If they exist and are off, turn them on
+now and fold the typecheck into the smoke command — `"tsc --noEmit && <boot>"`. Two config lines, not a
+practice: this is the seam `seed-to-scale` names, because a strict mode is the cheapest enforced
+convention there is and the most painful one to retrofit onto a codebase an agent has been growing
+for three months. If the stack has neither, say so and move on — nothing to plant.
+
+**Then offer the runner, once.** The gate only holds if something runs it at the moment nobody
+remembers to — when Claude finishes a turn and says "done." `.claude/hooks/smoke-guard.js` is that:
+a dormant `Stop` hook that runs this command once per turn that touched source, reports green in
+one line, and hands red back as a reason to keep going (exactly once — it never blocks twice on the
+same failure). The file's header has the settings.json block to paste; `boss help hooks` lists it
+with the other guards. **Documented conventions rot; enforced ones compound** — `/smoke` documents
+the gate, `smoke-guard` is what enforces it. Offer it; don't register it for them.
+
 ## What smoke is and isn't
 
 - **Is:** does the app start, build, or run its happiest path without exploding.

@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.311.0" />
+<meta name="generator" content="BOSS 0.312.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.312.0</span><span class="when">2026-09-12</span></div>
+        <p><code>/smoke</code> now plants the strict typecheck + formatter at its first run and offers <code>smoke-guard</code> — a <code>Stop</code> hook that runs your smoke when Claude finishes a turn that touched source and hands red back once. <code>/spec</code> asks for a <code>program:</code> slug on the second FEAT of the same thing. <code>boss help hooks</code> describes the guard. All advisory, all fail-open, all silent until earned.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.311.0</span><span class="when">2026-09-12</span></div>
         <p><code>DESIGN_TOKENS.md</code> gains a <code>## Deprecated</code> table (<code>old</code> → <code>use instead</code> → <code>why</code>), and <code>design-tokens-guard</code> reads it — type a retired token name and you're told its successor, so a rename never has to be a deletion. <code>/ux-check</code>, <code>/design-library</code> and <code>/design-tokens-init</code> now name the <em>class</em> of tool where they used to name a product; <code>boss craft design-system</code> carries the current names, dated.</p>
       </li>
@@ -112,10 +116,6 @@
       <li>
         <div class="rel"><span class="ver">v0.299.0</span><span class="when">2026-09-11</span></div>
         <p><strong>BOSS's list of &quot;what generated design looks like&quot; is current again</strong> — it was a 2024 list, and the fix it prescribed had become the 2026 tell. Plus a one-paragraph test that makes <em>sameness</em> visible before you build, and craft floors pre-filled in your style guide so &quot;name the slot&quot; stops withholding facts.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.297.0</span><span class="when">2026-09-11</span></div>
-        <p><strong>the conscience now reads your files the same on Windows</strong> — CRLF line endings no longer make your loop specs, devlog and frontmatter invisible to it, and its source globs match on <code>\\</code> paths. A <code>.gitattributes</code> in new projects keeps line endings LF for every cofounder.</p>
       </li>
     </ol>
         <p class="small">
@@ -161,7 +161,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.311.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.312.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

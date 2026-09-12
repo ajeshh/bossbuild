@@ -72,6 +72,17 @@ A convention only counts if a machine enforces it — otherwise it's a suggestio
   no-implicit-any) — they're the cheapest enforced convention there is, and they're far more painful to
   retrofit onto a large AI-generated codebase than to start with.
 
+**Where BOSS actually runs any of this (added 2026-09-12, v0.312.0).** For ~130 releases this section
+was a rule with no runner — the exact failure it quotes. Today the enforcers are: `ui-boundary-guard`
+(the one-way import rule, a PostToolUse hook), `schema-guard` (migrations), and **`smoke-guard`** (a
+`Stop` hook that runs the project's smoke — and the strict typecheck `/smoke` folds into it — when
+Claude finishes a turn that touched source, and hands red back once). All three ship dormant in
+`.claude/hooks/`; the registration is the on-switch. Formatting and the wider lint set are still the
+stack's own tools, turned on at `/smoke`'s first run — the Thoughtworks Radar (vol 34, April 2026)
+calls this shape *feedback sensors for coding agents* and puts it at Trial: deterministic gates
+*"wired into agentic workflows so that failures trigger timely self-correction… during the coding
+session… before a commit is made."*
+
 ## The ratchet holds the line (extends `quality-ratchet`)
 
 The mechanism for *keeping* any of this — module-boundary crossings, schema-drift, type violations,

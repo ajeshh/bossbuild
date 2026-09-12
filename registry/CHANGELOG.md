@@ -16,6 +16,60 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.312.0 — 2026-09-12
+
+**Engineering gets its first feedback sensor: `smoke-guard` (new, dormant). The initiative rung
+`/spec` never offered is offered. And the sentence about the four crafts gets written.**
+
+> **For you:** `/smoke` now plants the strict typecheck + formatter at its first run and offers
+> `smoke-guard` — a `Stop` hook that runs your smoke when Claude finishes a turn that touched source
+> and hands red back once. `/spec` asks for a `program:` slug on the second FEAT of the same thing.
+> `boss help hooks` describes the guard. All advisory, all fail-open, all silent until earned.
+
+An outside read — DORA's AI Capabilities Model, Thoughtworks Radar vol 34, six Linear Method pages
+and their Agent Interaction Guidelines, Cagan's *Strong Opinions, Loosely Held* (2026-09-11),
+Karpathy's own Sequoia Ascent post, the Beads README — grepped against `stages/` and `library/`
+before anything was called a gap. **Fifteen of ~eighteen claims were already held** (curated shared
+instructions in service templates = the Radar's Adopt = BOSS's whole distribution mechanism; *"an
+agent cannot be held accountable"* = the merge-owner rule; the throwaway `/roadmap` = Cagan retracting
+predictability). The two that survived had one shape: **BOSS held the rule and shipped no runner.**
+
+- **`smoke-guard`** — `grep biome|prettier|eslint|typecheck stages/` returned nothing. The
+  `scalable-architecture` practice quotes *"documented conventions rot; enforced conventions
+  compound"* and for ~130 releases was that failure: the design rung shipped six PostToolUse guards,
+  the code's own gate got none, and nothing ran `/smoke` at the moment it is least likely to be
+  remembered — when the agent says *done*. The guard runs `.boss/smoke.json`'s command once per turn
+  that changed source (a tree fingerprint, so nothing changed means nothing runs; docs-only turns are
+  ignored), reports green in one line, and returns red as a reason to keep going — **exactly once.**
+  `stop_hook_active` is the loop guard; it never blocks twice on one failure. No smoke configured, no
+  opinion. The Radar calls this shape *feedback sensors for coding agents* (Trial): *"run during the
+  coding session and report clean results before a commit is made."* 7 tests. Catalogued in
+  `boss help hooks`, listed in the L1 manifest, named in the practice and on the engineering page.
+- **`/smoke` plants the seam at first run.** When it saves the smoke command for the first time it
+  asks one more thing — is the strict typecheck on, is there a formatter — and folds the typecheck
+  into the command. Two config lines, by `seed-to-scale`'s own test; *"the cheapest enforced
+  convention there is and the most painful one to retrofit."* Then it offers the guard, once.
+- **`/spec` step 0b asks for `program:`.** The idea → initiative rung (`program: <slug>` →
+  `PROG-NNN` when cross-member reasoning appears) has shipped in `docs/IDS.md` since v0.199.0, and
+  no verb ever mentioned it — a founder learned it by reading the id guide. Now: a second FEAT with
+  the same `from:` or the same gist gets the slug. One FEAT, no sibling → nothing said. Linear's
+  *initiatives* is the same rung, offered in the tool.
+- **The four crafts meet on the FEAT, and the record now says so.** Cagan's unit is a team assigned
+  a problem; Linear's is a project *"shared between the design team and the engineering team… we
+  start working together when writing the project spec."* BOSS's is the FEAT — product writes the
+  goal and criteria, design decides the flow in prose, engineering shapes the data and the smoke,
+  the planner sets the order — and the site's four *How it's built* pages described each craft alone.
+  A four-row table in the FEAT template header (writes / checks / holds, per craft) and one sentence
+  on the site's index. Not a fifth page.
+- **Beads** filed in `docs/competition/` as `watch` — the Radar's *"agent-native project memory"*
+  category, ★27k, and BOSS's project rung with the venture removed. Study `ready` (a derived
+  unblocked column); do not adopt the graph.
+- **Named, not built:** rework rate / first-pass acceptance as a `/judge-traces` header (substrate
+  is `.boss/trace.jsonl`; team-level only, never per-person) · agent topologies (Scale, trigger-gated)
+  · Cagan's *"teams over-invest in validating problems"* → `/vet`, because it rubs against the
+  conscience's validation nudges and deserves a verdict rather than a flinch. The watchlist has no
+  row for the project/PM rung — noted for its next revision.
+
 ## 0.311.0 — 2026-09-12
 
 **No vendor names in shipped text; the tokens guard reads the `Deprecated` table; the anti-slop

@@ -16,7 +16,21 @@
 > **`from:` is the field, and it is spelled exactly that.** It is what `boss records` reads to link
 > the promotion back to its idea — `source:`, `implements:` and `promoted_from:` all look right and
 > are read by nothing. No source idea? `from: none` plus a `from_note:` saying where it came from
-> is a complete answer, and a common one.
+> is a complete answer, and a common one. **`program: <slug>`** is optional and goes on when a
+> second FEAT belongs to the same larger thing (`docs/IDS.md`); `/spec` step 0b asks.
+>
+> **This record is where the four crafts meet — and each has a different section (v0.312.0).**
+> Linear's line for it: *"we start working together when writing the project spec."* Nobody hands
+> off; everybody writes their part here, while changing it is free:
+>
+> | Craft | Writes | Checks it | Holds it |
+> |---|---|---|---|
+> | **Product** (`product-lead`) | Goal · `for:` · Acceptance criteria · Validated learning | `/spec`'s restraint + loud≠important | `focus-loop`, `canvas-drift-loop` |
+> | **Design** (`designer`) | Flow — decided here, in prose · the five states · the copy in them | `/design-review` before code · `/ux-check` after | the design guards (tokens, contrast, reuse, boundary, terminology) |
+> | **Engineering** (`coder`, `tester`, `mentor-architect`) | Data shape (before the migration) · Paths that must not break · Smoke check | `/smoke` · `/evals` · `/red-team --paths` | `schema-guard` · `smoke-guard` |
+> | **Project** (`planner`) | `program:` · order and blockers via `boss board` · found tasks in `.claude/rules/feature-context.md` | `/close` ticks the criteria | `reentry`, the WIP watch |
+>
+> And it closes back on itself: `/measure` → `/health` → `/roadmap` → the next `/spec`.
 
 ```markdown
 ---

@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.311.0" />
+<meta name="generator" content="BOSS 0.312.0" />
 <link rel="canonical" href="https://oyeboss.build/engineering" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -239,6 +239,17 @@
             the <em>modular</em> half is the load-bearing word. And <strong>spend the rigor on the
             one-way doors</strong>, of which the schema is the obvious one: migrations as code from
             day one, versioned and replayable.
+          </p>
+          <p>
+            And BOSS held this as a rule with no runner for about 130 releases &mdash; the exact
+            failure it quotes. The design rung got six hooks; the code's own gate got none until
+            <code>smoke-guard</code>: a dormant <code>Stop</code> hook that runs the smoke
+            <code>/smoke</code> recorded (and the strict typecheck it folds in) when Claude finishes a
+            turn that touched source, reports green in one line, and hands red back as a reason to keep
+            going &mdash; once, never twice on the same failure. The Thoughtworks Radar (vol&nbsp;34,
+            April 2026) names the shape <em>feedback sensors for coding agents</em> and puts it at
+            Trial: deterministic gates &ldquo;wired into agentic workflows so that failures trigger
+            timely self-correction &hellip; before a commit is made.&rdquo;
           </p>
         </div>
 
@@ -705,7 +716,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.311.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.312.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

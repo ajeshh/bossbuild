@@ -73,6 +73,16 @@ Read both, and say something **once**. Never block; this is a mirror, not a gate
 refuses to run at all — so their absence is the expected state for most projects at this rung, and
 treating it as a gap would be exactly the ceremony PRINCIPLE #2 refuses.
 
+- **Is this the second FEAT of something bigger? Then write the `program:` line (v0.312.0).** Grep
+  `docs/ideas/` for another FEAT with the same `from:` IDEA, or one whose `gist:` names the same
+  thing this one does. If there is one, the two belong to a **program** — the rung between a feature
+  and the venture that `docs/IDS.md` has carried since v0.199.0 and no verb ever offered: a short slug
+  on both records (`program: checkout-rebuild`), nothing created first. `boss records --programs`
+  and `boss board --html` then answer the question a column board can't — *which of the things I
+  decided to do is actually stuck.* It graduates to a `PROG-NNN` record only when there is reasoning
+  that belongs to no single member; until then a slug is the whole ceremony. **One FEAT, no
+  sibling → no slug, say nothing.** An initiative with one member is a feature with a hat on.
+
 ## When to run
 
 - The idea has been captured (Quickstart) and ideally pressure-tested in `/canvas` — at minimum the

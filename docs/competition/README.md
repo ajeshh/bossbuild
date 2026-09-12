@@ -3,7 +3,7 @@ id: COMPETITION
 type: competition
 owner: product-lead
 status: living
-updated: 2026-09-12 (impeccable + the design-system tooling field, nine tools read at source)
+updated: 2026-09-12 (beads — the agent-native tracker the Radar named a category; earlier the same day: impeccable + the design-system tooling field)
 ---
 
 # The field — who else is solving this
@@ -25,6 +25,7 @@ updated: 2026-09-12 (impeccable + the design-system tooling field, nine tools re
 | [**superpowers** (obra)](superpowers.md) | adjacent — the build-craft methodology: 14 skills (brainstorm → plan → subagent TDD → review), one `SessionStart` hook, **on fourteen hosts from one repo**, in the official marketplace | free, MIT · enterprise support = a sales email, not public | **it is the default** — ★285k, *"skills trigger automatically"*, zero ceremony; its brainstorming skill is a real front door | **no venture at all** — never asks why or for whom; no memory across sessions; one fixed register for everyone; usage telemetry via a remote logo, on by default; 1 commit in 30 days vs 353 open issues | `watch` | 2026-09-11 |
 | [**the Claude plugin field**](claude-plugin-field.md) — haytham · product-discovery · founder-mode · arness · harnesskit · the SSS suite · boss-ai-agent | direct — every marketplace plugin that says *founder / startup idea / co-founder* | free; ★0–33 each; several created and abandoned the same day; **haytham retired itself 2026-07** | product-discovery's **typed evidence (REAL / SYNTHETIC / INFERRED + confidence)**; arness's **three ceremony tiers**; haytham's twenty-minute GO/NO-GO — founders want a verdict | all one-shot pipelines: idea → verdict → spec → nothing; no re-entry, no ledger that changes what the tool says next; synthetic research graded as evidence; your product lives in *their* folder | `watch` | 2026-09-11 |
 | [**the five founder plugins, read at source**](founder-plugins-source-read.md) — haytham · product-discovery · founder-mode · harnesskit · personal-council (404) | the same rivals, opened at the file level — skills, hooks, design docs, retirement notes — with every claimed BOSS gap grepped against `stages/` and `src/` first | free; two alive, two abandoned, one gone | haytham asks **why you're building it** and calibrates everything to the answer; product-discovery delivers **value before the scaffold** (TTFV ≤ 60 s) and keeps a **transition history** per hypothesis; both **subtracted their way to health** | still one-shot or PM-only; haytham's verdict rests on synthetic research; product-discovery **killed its own plugin** for three reasons BOSS's thin door dodges by construction — carry reason (2) into DEC-017's 90-day recheck | `watch` | 2026-09-11 |
+| [**Beads** (Yegge)](beads.md) | adjacent — *"distributed graph issue tracker for AI agents"*: a task graph agents read and write (`bd ready` = unblocked work, `bd prime` = session-start context, `bd remember`, compaction of closed work); the Thoughtworks Radar vol 34 named it **the category** — *"agent-native project memory and task tracking"* | free, MIT · ★27.1k · Dolt-backed | **`ready` is a derived unblocked column BOSS's board can't compute** · `bd prime`/`bd remember` are BOSS's `reentry` + `memory-cue`, at 100× the audience · its pitch — *"replaces messy markdown plans"* — is aimed at BOSS's substrate | no *why*, no `for:`, no evidence grade, no `proof:`, no closed status vocabulary, nothing about the person; built for swarms (Radar: Caution) and sold to everyone; a second source of truth beside git | `watch` | 2026-09-12 |
 
 ## Not yet filed — named, not researched
 
@@ -46,6 +47,14 @@ is a `/comp-eval add`._
 
 ## What this field says, read together
 
+**Eight rows, and the project corner now has a name that isn't BOSS's.** Beads (★27k) is what the
+Radar calls *agent-native project memory* — a task graph with an unblocked-work column, a session-start
+injection and compaction, and nothing about why, for whom, or the person. It is the project rung with the
+venture removed, and the one mechanism worth studying is `ready`. Everything the seven-row read said still holds — BOSS's bet
+(the value is in staying) remains the one shape nobody in the field tried, now including the tracker corner.
+
+<details><summary>Earlier reads, kept as the record of what was seen when</summary>
+
 **Seven rows now, and the design corner just got a second opinion.** The founder-shaped plugin niche
 *exists* and is a graveyard: every plugin that says *founder* or *startup idea* is at 0–33 stars,
 several were abandoned the day they were made, and the most ambitious retired itself. All of them are
@@ -61,7 +70,6 @@ product-discovery's *synthetic* evidence rung, superpowers' one-repo-fourteen-ho
 impeccable's detector as the output-observing tap the anti-slop watchlist named a day before finding
 it built.
 
-<details><summary>Earlier reads, kept as the record of what was seen when</summary>
 
 **Five rows now, and the last two change the picture.** The founder-shaped plugin niche *exists*
 and is a graveyard: every plugin that says *founder* or *startup idea* is at 0–33 stars, several

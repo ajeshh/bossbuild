@@ -1466,6 +1466,14 @@ const OPTIONAL_HOOKS = [
     cost: 'a process after each file write',
     worth: 'you have authored a terminology list and want it to hold — renaming a core noun late hits copy, routes, schema, tests and every prompt at once',
   },
+  {
+    name: 'smoke-guard',
+    event: 'Stop',
+    mode: 'MVP',
+    does: "Runs your smoke command (the one `/smoke` saved to `.boss/smoke.json`) when Claude finishes a turn that touched source, and hands a red result back as a reason to keep going — once. Green is one line; nothing changed, nothing runs; docs-only turns are ignored. It never blocks twice on the same failure. The engineering counterpart of the design guards above: `/smoke` documents the gate, this is what runs it before the commit.",
+    cost: 'your smoke command, once per turn that changed source',
+    worth: "you have a smoke configured and want it to actually hold — an agent that says \"done\" is the moment the gate is least likely to be remembered, and a red base is what the next change builds on",
+  },
 ];
 
 function printHooks() {
