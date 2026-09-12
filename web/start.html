@@ -1,10 +1,10 @@
 <!--
 title: Start — your first hour with BOSS
 description: Install, then either start something new or bring BOSS into a repo you already have. Both paths, the real output, and how to take it back out.
-reviewed: 2026-08-21
+reviewed: 2026-09-12
 review_by: 2027-02-16
-describes: install paths, boss new / adopt / remove
-covers: src/cli.js src/adopt.js src/remove.js stages/L0-quickstart/manifest.json
+describes: install paths (npm, brew, the plugin door), boss new / adopt / remove
+covers: src/cli.js src/adopt.js src/remove.js stages/L0-quickstart/manifest.json plugin/skills/welcome/SKILL.md .claude-plugin/plugin.json
 nav: start
 -->
   <header class="hero">
@@ -37,6 +37,19 @@ nav: start
 <span class="line"><span class="t-dim"># then open the project in Claude Code — terminal, VS Code, Cursor or JetBrains, your call</span></span>
 </pre>
         </div>
+        <div class="terminal breakout">
+          <span class="cap">or, already inside Claude Code — no npm at all</span>
+<pre><span class="line"><span class="t-cmd">/plugin marketplace add ajeshh/bossbuild</span>   <span class="t-dim"># the repo is its own marketplace</span></span>
+<span class="line"><span class="t-cmd">/plugin install boss@bossbuild</span></span>
+<span class="line"><span class="t-cmd">/boss:welcome</span>                             <span class="t-dim"># the front door — asks what you're building, says it back, then offers to set it up</span></span>
+</pre>
+        </div>
+        <p class="small prose">
+          The plugin is deliberately thin: one skill and <code>boss</code> on Claude's PATH. Everything
+          else — the mentors, the conscience, the skills — arrives in your project when you say go. It
+          is not yet listed in Claude's plugin directory; the lines above add this repo directly, and
+          that path is verified against the current release.
+        </p>
       </div>
     </section>
 
@@ -61,8 +74,12 @@ nav: start
           <div class="step">
             <h3>Point it at the idea</h3>
             <p><code>/boss &lt;your idea&gt;</code> — a sentence, a doc, a Google Doc, an Obsidian note, a
-              PDF, or a URL. Already written it down? <code>/import &lt;file|url&gt;</code>. Just want to
-              see something move? <code>/prototype</code> builds the smallest clickable version to react to.</p>
+              PDF, or a URL. It says the idea back in your words first — what it is, who it's for, the
+              smallest version that proves it, and which way it read any word that could go two ways —
+              then asks two things nobody else does: <em>why this one, for you</em>, and <em>what would
+              “it worked” look like in three months</em>. Skip is an answer. Already written it down?
+              <code>/import &lt;file|url&gt;</code>. Just want to see something move?
+              <code>/prototype</code> builds the smallest clickable version to react to.</p>
           </div>
           <div class="step">
             <h3>Come back later and run <code>boss status</code></h3>
