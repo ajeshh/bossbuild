@@ -148,7 +148,7 @@ meeting and no information, which costs more than the awkward version.
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 
-**Rung: Quickstart.** If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: There is no rung below this one. The canvas IS the seed.
+**Rung: Quickstart.** If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: the only rung below this one is step 0 — the plugin door, where a founder says the idea and hears it back before any file exists (IDEA-099) — and a canvas has nothing to stand on there. Inside a project, the canvas IS the seed.
 
 ## How to run it
 

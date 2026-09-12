@@ -342,28 +342,70 @@ function checkVoicing() {
   return { errors, count: moments.size };
 }
 
+// --- plugin pointers (IDEA-099) -------------------------------------------
+//
+// The plugin is the front door, never the body (DEC-017): its one skill POINTS at the shipped
+// `/boss` skill instead of copying it — `${CLAUDE_PLUGIN_ROOT}/<path>` plus a heading in
+// backticks. Claude Code substitutes that placeholder "anywhere it appears" in skill content
+// (code.claude.com/docs/en/plugins-reference, read 2026-09-11), so the pointer works — until
+// someone renames the heading or moves the file, at which point the door points at nothing and
+// no test notices, because the door is text the model reads. This is that test: every plugin-root
+// path must exist, and every backticked `## heading` named in the same skill must be a heading
+// line in one of the files it points at.
+function checkPluginPointers() {
+  const errors = [];
+  const dir = join(BOSS_ROOT, 'plugin', 'skills');
+  if (!existsSync(dir)) return { errors, pointers: 0 };
+  let pointers = 0;
+  for (const name of readdirSync(dir)) {
+    const f = join(dir, name, 'SKILL.md');
+    if (!existsSync(f)) continue;
+    const text = readFileSync(f, 'utf8');
+    const paths = [...text.matchAll(/\$\{CLAUDE_PLUGIN_ROOT\}\/([^\s`)]+)/g)].map((m) => m[1]);
+    const headings = [...text.matchAll(/`(##+ [^`]+)`/g)].map((m) => m[1]);
+    const bodies = [];
+    for (const rel of new Set(paths)) {
+      pointers += 1;
+      const abs = join(BOSS_ROOT, rel);
+      if (!existsSync(abs)) {
+        errors.push(`plugin skill '${name}' points at \${CLAUDE_PLUGIN_ROOT}/${rel} — no such file`);
+        continue;
+      }
+      bodies.push(readFileSync(abs, 'utf8'));
+    }
+    for (const h of new Set(headings)) {
+      if (!bodies.some((b) => b.split(/\r?\n/).some((l) => l.trim() === h))) {
+        errors.push(`plugin skill '${name}' names heading \`${h}\` — not a heading line in any file it points at`);
+      }
+    }
+  }
+  return { errors, pointers };
+}
+
 // --- report ---------------------------------------------------------------
 
 export function checkManifests() {
   const stages = STAGE_ORDER.map(checkStage);
   const voicing = checkVoicing();
   const budget = checkDescriptionBudget();
+  const plugin = checkPluginPointers();
   const errors = [
     ...stages.flatMap((s) => s.errors.map((e) => `${s.stageId}: ${e}`)),
     ...voicing.errors,
     ...checkModelPins(),
     ...budget.errors,
+    ...plugin.errors,
   ];
-  return { stages, voicing, budget, errors };
+  return { stages, voicing, budget, plugin, errors };
 }
 
 export function reportManifests() {
-  const { stages, voicing, budget, errors } = checkManifests();
+  const { stages, voicing, budget, plugin, errors } = checkManifests();
   const authored = stages.filter((s) => s.authored);
   const exempt = stages.flatMap((s) => s.exempt);
 
   if (!errors.length) {
-    console.log(`  ✦ Manifests: ${authored.length} stage(s) wired clean · ${voicing.count} moment(s) voiced.`);
+    console.log(`  ✦ Manifests: ${authored.length} stage(s) wired clean · ${voicing.count} moment(s) voiced · ${plugin.pointers} plugin pointer(s) resolve.`);
   } else {
     console.log(`  ⚠ Manifest integrity — ${errors.length} problem(s):`);
     for (const e of errors) console.log(`      · ${e}`);

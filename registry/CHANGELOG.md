@@ -16,6 +16,46 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.305.0 — 2026-09-11
+
+> **For you:** **If you installed BOSS as a plugin, the door now asks what you're building and says
+> it back — before it offers to set anything up.** Four lines, in your words: what it is, who it's
+> for, the smallest version that proves it, and which way it read any word that could go two ways.
+> Then one question: *want me to set this up here as a project?* Nothing is written until you say
+> yes. This is step 0 of the ladder — the rung below Quickstart, where nothing exists yet but the
+> conversation.
+
+**IDEA-099 — the door hears the idea first.** Ajesh's framing, which is now the record's own:
+*"it's like scaffolding — everything is there but only a few things are set up, and then more is
+set up."* BOSS's ladder is just-in-time ceremony; the plugin door extends it one rung down. Both
+evidence records that describe BOSS *"jumping straight into building"* came from a path where the
+folder arrived before anyone heard the idea. v0.214.0 moved the reflection ahead of the paperwork,
+inside the project; this moves it ahead of the project.
+
+**Built to the scope the board converged on, not the one filed.** `/consult` (with v0.304.0's
+movement round) split founder/customers against architect on whether to also build `boss new
+--idea` — a file that carries the reflection across the restart. The round moved both sides, and
+the smaller scope won: the door asks, reflects, offers, and **writes nothing**. After `boss new`
+and the restart, the project's `/boss` asks for the idea again — one sentence — and whether that
+retype lands or stalls is the first real signal the plugin path will ever produce. The carrying is
+specced in IDEA-099 (*place and validate a model-authored doc; never compose one*) for the day
+someone stalls there.
+
+**The door points; it does not copy.** `plugin/skills/welcome/SKILL.md` names the heading `## 2.
+Shape it (product-lead lens)` in `${CLAUDE_PLUGIN_ROOT}/stages/…/skills/boss/SKILL.md` — the
+placeholder resolves *"anywhere it appears"* in skill content (Claude Code plugins reference, read
+today) — and explicitly does not run that file's steps 1, 3 or 3.5 (sources, ids, motivation all
+presume a project). One source of truth for the reflection. **`check:manifests` now verifies every
+plugin pointer**: the path exists and the named heading is a heading line in it — a renamed
+heading fails `--strict` (proved by renaming it). `/canvas`'s *"there is no rung below this one"*
+now names step 0.
+
+Refused on the way: writing the idea from the door (no files at step 0); asking motivation or
+"it worked" at the door (those are `/boss` 3.5's, and live in the project); a second offer beyond
+one re-ask; copying the reflection text into the plugin. What to measure — three behaviours, not
+compliments: did they correct the reflection · did they say go · did they open a second session
+within seven days.
+
 ## 0.304.0 — 2026-09-11
 
 > **For you:** **When `/consult`'s mentors disagree, the two that split now hear each other once
