@@ -1,6 +1,6 @@
 ---
 name: consult
-description: Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, and synthesize the answer with the disagreements kept visible (not averaged away). The humane lens can override. Advisory only — the mentors inform; you decide. Usage - /consult <question>
+description: Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, let the two sides of any real split hear each other once, and synthesize the answer with the disagreements — and what moved — kept visible (not averaged away). The humane lens can override. Advisory only — the mentors inform; you decide. Usage - /consult <question>
 ---
 
 # /consult — convene the board on a real question
@@ -54,6 +54,24 @@ them assume.
 Each returns their honest read — including pushback. Don't homogenize; a mentor's job is their lens,
 not consensus.
 
+**3.5. The movement round — only if step 3 split them.** The mentors answered in isolation, on
+purpose: a single voice writing all the takes knows what the others will say, and the disagreement
+is staged. That isolation also means no mentor has yet heard the other side. So, **when two (or
+three) mentors disagree on the load-bearing point** — not on emphasis, on the point the decision
+turns on — do one more thing before you synthesize:
+
+- Show each of the *disagreeing* mentors the other's take, one paragraph, unedited.
+- Ask each, once: *"Does this move you? Say what moved, or hold — one paragraph."*
+- Carry the answer into step 4 as a **movement line**.
+
+Rules of the round, and they are the whole point:
+- **Only the pair that split.** The mentors who agreed stand as given; re-asking them is cost
+  without movement.
+- **One round.** A second round is where mush begins.
+- **No weights, no votes.** A mentor that moved is a mentor that heard something — that is the
+  useful fact. Nobody's take is discounted for being in the minority.
+- **If nobody split, this step does not run**, and you say nothing about it having not run.
+
 **4. Synthesize — keep the disagreement visible.** Compose the panel's answer:
 - **Where they converge** — the points all (or most) lenses agree on. Usually the safe ground.
 - **Where they diverge** — name it plainly: *"`mentor-customers` says the channel only works if you
@@ -64,6 +82,11 @@ not consensus.
   say Y."* Render that on the panel exactly as you would a disagreement between two chairs. If it
   ever comes back one-sided on a question that plainly has both, that is the merge failing and worth
   saying out loud (DEC-006's falsifier).
+- **What moved** — if step 3.5 ran, one line per mentor that was shown the other side:
+  *"`mentor-capital` moved on hearing `mentor-customers`' point about the channel cost — it now says
+  the margin question is second; `mentor-customers` held."* A hold is a result too — say it as
+  plainly as a move. This is the sentence a static panel can never give: not just *where* seasoned
+  advisors split, but whether the split survives contact.
 - **The humane override — you run it, every panel, before you synthesize.** No mentor holds this
   lens, so ask it yourself: *who could this harm, who gets excluded, what does it cost them in
   attention, agency or dignity?* Ground it in the canvas's **Risks & Harms** cell and
@@ -86,7 +109,8 @@ sharpen the brain; the brain grounds the board. (Skip silently if it isn't there
 - **Relevant mentors only.** Convening a mentor with no stake is noise. Pick the lenses that bear on
   *this* question.
 - **Disagreement is the product.** Never average seasoned advisors into mush. The split is where the
-  decision is — surface it.
+  decision is — surface it, and (step 3.5) let the two sides hear each other exactly once, so the
+  founder learns whether the split holds or was two people who hadn't met.
 - **Humane can override.** A real humane concern outranks the viability case. That authority does not
   sit with one mentor — it sits in the practices every mentor here cites (`boss craft
   deceptive-patterns`, `boss craft harm-taxonomy`), so no lens gets to be the one that skips it. Say

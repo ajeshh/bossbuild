@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.303.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.304.0**.
 
 ## Quickstart
 
@@ -41,7 +41,7 @@
 - **`/drift-deep`** — The deep, whole-project version of the conscience's drift check — "am I fooling myself across EVERYTHING I've built?" Reads the entire project (canvas, all devlog, all FEAT specs, the actual code, the ideas) and judges, honestly, whether the body of work is validating the named riskiest assumption or building around it  _(/drift-deep)_
 - **`/revalidate`** — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature  _(/revalidate [ID or paused item])_
 - **`/judge-traces`** — Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work  _(/judge-traces [last N | all])_
-- **`/consult`** — Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, and synthesize the answer with the disagreements kept visible (not averaged away)  _(/consult <question>)_
+- **`/consult`** — Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, let the two sides of any real split hear each other once, and synthesize the answer with the disagreements — and what moved — kept visible (not averaged away)  _(/consult <question>)_
 - **`/red-team`** — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent (tools + memory + autonomy) against the OWASP Agentic ASI Top 10  _(/red-team [FEAT-NNN | --paths | --self | --humane])_
 - **`/practice`** — Capture a craft learning — a better way to build with AI you found — as a shared, attributed PRAC-NNN record your cofounder gets too  _(/practice <what you learned>)_
 - **`/ship`** — Put your app where a real user can hit it — the CD half of building  _(/ship [--preview | --rollback])_

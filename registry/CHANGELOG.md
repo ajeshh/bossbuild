@@ -16,6 +16,31 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.304.0 — 2026-09-11
+
+> **For you:** **When `/consult`'s mentors disagree, the two that split now hear each other once
+> before the answer is written** — and the synthesis tells you *what moved*, not just where the
+> line was. A hold is reported as plainly as a move. If nobody split, nothing changes and nothing
+> is said about it.
+
+**IDEA-098 — the movement round.** The mentors answer in isolated contexts on purpose (one voice
+writing every take stages the disagreement), which also meant no mentor ever heard the other side.
+Step 3.5 adds exactly one round, only for the pair (or trio) that split on the load-bearing point:
+show each the other's take unedited, ask *"does this move you? say what moved, or hold,"* carry the
+answer into the synthesis as a **movement line**. No weights, no votes, no second round, no
+re-asking the mentors who agreed. The shape is Karpathy's llm-council (propose → cross-examine →
+synthesize); the reason is personal-council's, a rival read in
+`docs/competition/founder-plugins-source-read.md` whose repo is now gone.
+
+**Dogfooded before shipping, on a real BOSS split.** IDEA-099 (*should the plugin door hear the
+idea before scaffolding?*) convened `mentor-founder`, `mentor-architect`, `mentor-customers`. They
+split on whether to build the `boss new --idea` carrying now. The round moved both sides —
+architect on *sequence* (*"the second ask stops being a bug to prevent and becomes the
+measurement"*), founder on *shape* (*"a better `--idea` than the one IDEA-099 sketched; I take
+both"*, holding on sequence) — to a scope **smaller** than the proposal: the door's question, a
+pointer to `/boss` step 2, a check, nothing that writes. The un-split mentor was not re-asked. The
+call is handed back to the founder, per step 5.
+
 ## 0.303.0 — 2026-09-11
 
 > **For you:** **`/boss` now asks why *you* are building this, and what "it worked" would look like
