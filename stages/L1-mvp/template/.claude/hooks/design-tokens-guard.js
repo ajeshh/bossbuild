@@ -48,6 +48,11 @@
 //     ]
 //   }
 //
+// SINCE v0.310.0 it also reads the tokens doc's `## Deprecated` table — rows of `| \`old\` | \`new\` |`
+// (or any line pairing two token names with `→`) — and names the successor when a write references
+// a retired token. A deleted token breaks every screen silently; a deprecated one names its
+// replacement, and this is the check that makes the table more than a note.
+//
 // Fail-open: any surprise exits 0 silently. A missed warning is fine; a broken session is not.
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -196,6 +201,27 @@ try {
     .map((f) => ({ ...f, vocab: vocabFor(f.names) }))
     .filter((f) => f.always || f.vocab.length > 0);
 
+  // --- Deprecated tokens: the successor table, read where the old name gets typed. -----------
+  // Under a `## Deprecated` heading, a table row `| \`old\` | \`new\` | … |`; anywhere, a line that
+  // says "deprecated" and pairs two names with an arrow. Both shapes are what a person writes.
+  const retired = new Map();
+  let inDeprecated = false;
+  for (const line of doc.split(/\r?\n/)) {
+    if (/^#{1,6}\s/.test(line)) inDeprecated = /deprecat/i.test(line);
+    const row = inDeprecated && line.match(/^\|\s*`([\w.-]+)`\s*\|\s*`([\w.-]+)`/);
+    const arrow = /deprecat/i.test(line) && line.match(/`([\w.-]+)`[^`\n]{0,40}?(?:→|->)\s*`([\w.-]+)`/);
+    const m = row || arrow;
+    if (m && m[1] !== m[2]) retired.set(m[1], m[2]);
+  }
+  const retiredHits = [];
+  for (const [old, next] of retired) {
+    // `tokens.color.brand` and `--color-brand` both count; `color.brandmark` does not.
+    const dotted = old.replace(/[.]/g, '\\.');
+    const dashed = '--' + old.replace(/[.]/g, '-');
+    const re = new RegExp(`(^|[^\\w-])(?:${dotted}|${dashed})(?![\\w-])`);
+    if (re.test(written)) retiredHits.push({ old, next });
+  }
+
   // --- Scan, family by family. --------------------------------------------------------------
   const found = [];
   for (const family of governed) {
@@ -210,7 +236,16 @@ try {
       }
     }
   }
-  if (!found.length) process.exit(0);
+  const retiredNote = retiredHits.length
+    ? `design-tokens-guard: \`${path}\` references ${retiredHits.length === 1 ? 'a deprecated token' : `${retiredHits.length} deprecated tokens`} — ` +
+      retiredHits.map((h) => `\`${h.old}\` → use \`${h.next}\``).join(', ') +
+      `. The \`Deprecated\` table in \`${tokensRel}\` retired ${retiredHits.length === 1 ? 'it' : 'them'}; ` +
+      `the old name keeps working until its last use is gone, and this is one of the uses keeping it alive.`
+    : '';
+  if (!found.length) {
+    if (retiredNote) out(retiredNote);
+    process.exit(0);
+  }
 
   // De-dupe by literal value, keep source order.
   const seen = new Set();
@@ -231,6 +266,7 @@ try {
     .join(' · ');
 
   out(
+    (retiredNote ? `${retiredNote}\n\n` : '') +
     `design-tokens-guard: hardcoded style values were just written to \`${path}\` — ${list}${tail}. ` +
     `This project has a token system, so raw values are drift ("the 47 blues": each screen derives ` +
     `slightly different values until no single source of truth survives — it happens to spacing and ` +

@@ -327,6 +327,43 @@ Carbon-style status pages, RFCs, CODEOWNERS on the component directory, federate
 models — all real, all for a system with consuming teams, all unearned ceremony at one founder and
 one agent. They are named here so Scale can find them when a project hits the symptom, not before.
 
+### Leverage or own — the four questions, and where the names live (added v0.310.0)
+
+Every tool in the design field gets sorted the same way, so the next one that appears does not
+re-open the argument:
+
+1. **Is the value at render time, or across sessions?** BOSS's differentiation is state — *why* a
+   token exists, when it was earned, which rung you are on. Render-time craft → leverage. State → own.
+2. **Does it need a runtime BOSS does not ship?** BOSS has no browser. A check that needs a rendered
+   page → leverage and point at it, with `not checked` as the honest fallback. A check that is
+   arithmetic on files at write time → own; that is what the guards are.
+3. **Is it stack-bound?** Founders build CLIs, mobile apps, agents. Stack-bound → leverage *where
+   present*, never require. Stack-neutral rules → own (`ui-boundary-guard` reads paths, not syntax,
+   for exactly this reason).
+4. **Does BOSS still work if it vanishes?** A pointer with an explicit fallback is fine. A dependency
+   is not.
+
+And the rule the 2024 anti-slop list taught: **if the value is a list that must stay current, never
+fork it.** Tap the maintained one on the watchlist; a copied list rots and reads as current.
+
+**Where the names live.** Skills, templates and agents name the *class* — "a rendered-page design
+linter", "the project's component explorer" — because they are durable instructions and tools
+change faster than the rule. **This practice names the tools, dated**, because it is the reference
+layer — the one with a review date, re-read on the model curve. Person and standard citations (Frost, Curtis, DTCG, the
+APG) are attribution, not tools, and appear anywhere. As of 2026-09-12: the rendered-page linter is
+`impeccable` (Apache-2.0, `npx`, no account; 61 rules, reads a root `DESIGN.md`); the component
+explorer serving an index and a test runner to the agent is Storybook ≥ 10.6 with its MCP addon;
+the visual-test accept-as-baseline step is Chromatic's or Storybook's own test runner. **BOSS does
+not install any of these into itself or a founder's project.** It reads what they leave behind
+(step 0), points at them where a check needs a renderer, and runs the linter against its own site
+on the model curve as a measurement.
+
+**What that measurement said the first time it ran (2026-09-12, BOSS's own site):** five of the
+tells this practice documents — a cream background, ALL-CAPS body text, a kicker above an h2,
+side-tab borders, em-dash density — plus eleven text/surface pairs at 4.2:1 (AA is 4.5) and
+seventeen measures over the 80-character floor. A list without a mechanism is a claim; a mechanism
+that has never been pointed at yourself is a claim with better posture. Recorded, not yet fixed.
+
 ### Craft floors and brand values are different kinds of thing (added v0.299.0)
 
 *Name the slot, earn the value* is the composition layer's governing rule, and `frontend-design`

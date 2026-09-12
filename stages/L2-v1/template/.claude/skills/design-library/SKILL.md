@@ -48,13 +48,14 @@ graphical interface**, and for two shapes that assumption is simply wrong:
 
 ## The load-bearing rule: GENERATED, never authored
 
-> **If the host already generates the index, don't generate it twice.** Storybook ≥ 10.6 with
-> `@storybook/addon-mcp` serves `docs-list` (every component and its props, from a manifest) and
-> `test-run` (interaction + accessibility) straight to the agent, for React, Vue and Angular
-> projects. Where that is present, **it is the component index** — the manifest this skill writes
-> would be the second copy. Keep this library for what Storybook does not render: the rule sets
+> **If the project's component explorer already generates the index, don't generate it twice.**
+> The mainstream explorers now serve a component index (every component and its props, from a
+> manifest) and a test runner (interaction + accessibility) straight to the agent, for the big web
+> frameworks. Where that is present, **it is the component index** — the manifest this skill writes
+> would be the second copy. Keep this library for what an explorer does not render: the rule sets
 > (principles, do/don't pairs, terminology, voice) and the drift shown *on* the component. Say
-> which of the two is authoritative in the library's own header.
+> which of the two is authoritative in the library's own header. The practice names the current
+> explorers; this skill names the class.
 
 
 **The code is the source of truth. This library is derived from it.**
@@ -171,8 +172,8 @@ mechanically checkable — no prompt has to remember, no reviewer has to notice.
 
 **What the hash cannot see is a rendered change** — a token edit that shifts every button, a CSS
 cascade that reaches a component nobody touched. The boundary for *that* is a visual snapshot per
-component with an explicit *accept as baseline* step, which is what Storybook's test runner and
-its hosted visual-test services do. Where Storybook is already present, turn it on; the accept step
+component with an explicit *accept as baseline* step, which is what a component explorer's visual
+test runner does. Where one is already present, turn it on; the accept step
 is the governance act — a diff nobody approved is drift by definition. Where it is not, this hash is
 the honest half, and the page should say which half it is.
 
@@ -311,7 +312,7 @@ Two seams worth naming, in order of how real they are:
 The `@dsCard` first-line marker this skill writes is the right convention and matches. **The rest is
 not the same artifact**, and saying otherwise would be the overclaim this practice keeps making:
 
-- A host sync runs **its own converters** over a **Storybook or package layout** — the real component
+- A host sync runs **its own converters** over a **component-explorer or package layout** — the real component
   library — and emits a bundle (`_ds_bundle.js`, a `styles.css` `@import` closure, a per-component
   directory of preview/source/types/prompt files, and a content-hash anchor for incremental re-syncs).
 - This skill emits a **human-readable gallery**. One page, no build step, opens from the filesystem.

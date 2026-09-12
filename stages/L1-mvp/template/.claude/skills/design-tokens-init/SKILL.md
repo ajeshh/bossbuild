@@ -21,10 +21,10 @@ never runs. For a UI-heavy project, it runs at the first UI commit.
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 
-**Also look for a system another tool wrote** — a root `DESIGN.md` or `PRODUCT.md`, an
-`.impeccable/` directory, `design-system/*/MASTER.md`. Design skills that install alongside this one
-write those (Google's DESIGN.md spec and impeccable both claim the `DESIGN.md` name, in different
-formats; ui-ux-pro-max writes `MASTER.md`). **A hit is prior art, not a competitor:** read it, name
+**Also look for a system another tool wrote** — a root `DESIGN.md` or `PRODUCT.md`, a
+`design-system/*/MASTER.md`, a dot-directory a design skill left behind with surface or design
+files in it. Design skills that install alongside this one write those, and more than one claims
+the `DESIGN.md` name in a different format. **A hit is prior art, not a competitor:** read it, name
 what it already decided, and build the tokens file *from* it — a founder who arrives carrying one has
 already made choices, and generating a second system beside theirs is the exact failure this step
 exists to prevent. Don't convert their file into this one's format and don't emit theirs; the code
@@ -147,6 +147,20 @@ spacing.element: { ref: spacing.s }
 spacing.section: { ref: spacing.l }
 ```
 
+### The `Deprecated` table — empty on day one, and the guard reads it
+
+```markdown
+## Deprecated
+
+| Old | Use instead | Why |
+|---|---|---|
+| `color.brand` | `color.action.primary` | named by hue; renamed by purpose |
+```
+
+A retired token gets a row here, never a deletion. `design-tokens-guard` reads this table and tells
+the agent the successor the moment the old name is typed again. Delete the row when the last use is
+gone. Ship the heading with no rows so the shape is there when the first rename happens.
+
 ### Layer 3 — Component (occasionally needed)
 
 Component-specific tokens when a component has unique constraints. Most projects don't need
@@ -171,9 +185,9 @@ a brand anchor will drift back to internet-defaults.
 "shadcn trap" (slate, Inter, 8px radius, indigo) was the 2024 tell, and the fix for it — *warm the
 neutral* — is now **the 2026 tell**. A list of tells without a date is a list of last year's tells.
 
-**Current as of 2026-09** (Anthropic's `frontend-design` skill, Apache-2.0, read at source) —
-generated design clusters around five looks, and each is a default rather than a choice because it
-appears *regardless of subject*:
+**Current as of 2026-09** (the host maker's own current design skill, read at source; the
+practice carries the citation and the date) — generated design clusters around five looks, and each
+is a default rather than a choice because it appears *regardless of subject*:
 
 1. **Warm cream (~`#F4F1EA`) + a high-contrast serif display + a terracotta or warm-clay accent
    (~`#D97757`)** — the commonest one, and the terracotta is Claude's own interaction accent, so on a
@@ -192,7 +206,7 @@ calendar — a new frontier model is what moves the attractor, and it is the eve
 list (BOSS's build-craft watchlist, §7b). **If a newer frontier model has shipped since the stamp,
 treat the list as stale regardless of the date**, and say so rather than applying it as current. When the brief *asks* for one of these looks, follow the brief — these are
 defaults, not sins. And expect lists to disagree: the same month this one named *tinted near-black*
-as template chrome, impeccable's detector shipped a rule saying *pure black — always tint*. Neither is
+as template chrome, a rendered-page linter's rule set said *pure black — always tint*. Neither is
 wrong; **the tint is not the tell, the combination is.** Read any tell as a symptom of *default
 chosen for you*, never as a banned value.
 
@@ -213,7 +227,7 @@ primitives*, anchored to the brand doc and the canvas Promises cell:
    a different product, same category — and see whether you arrive somewhere similar. **Any part that
    survives that swap unchanged is a default, not a choice**: revise it, and say what changed and why.
    This is the one check that makes *sameness* visible to the model that produced it, and it costs
-   one paragraph. (From `frontend-design`; the best single idea in it.)
+   one paragraph. (From the same source as the list above; the best single idea in it.)
 
 Cohort-aware: `vibe-coder-newbie` / `first-product` → just *do* the 5 overrides and show the
 before/after. `eng-builder` / `vibe-virtuoso` → *offer* them as a checklist, override-friendly.
@@ -262,11 +276,13 @@ at the semantic layer — so the AI can *reason* about intent rather than guess 
 Curtis). Where the stack allows, emit tokens in the **W3C DTCG** format (it reached a first stable
 version) so the system is portable and you're not locked into one vendor's token dialect — which
 also honors the canvas's "don't monetize lock-in" line. **Retire a token by marking it, not by
-deleting it:** DTCG 2025.10 defines `$deprecated` on tokens and groups — `true`, or a string that
-says what to use instead (`"$deprecated": "use color.action.primary"`). A deleted token breaks
-every screen that used it in one silent step; a deprecated one keeps working, names its successor,
-and can be removed when the last use is gone. `$description` on every semantic token is the other
-field worth filling — it is what an editor shows on hover, and the agent reads hovers.
+deleting it.** `DESIGN_TOKENS.md` carries a `## Deprecated` table — `| \`old.name\` | \`new.name\` |
+why |` — and `design-tokens-guard` reads it: a write that references a deprecated name is told the
+successor. Mirror it into the code file where the format has a field (DTCG 2025.10 defines
+`$deprecated` on tokens and groups — `true`, or a string naming the replacement). A deleted token
+breaks every screen that used it in one silent step; a deprecated one keeps working, names its
+successor, and can be removed when the last use is gone. `$description` on every semantic token is
+the other field worth filling — it is what an editor shows on hover, and the agent reads hovers.
 
 ## After scaffolding
 

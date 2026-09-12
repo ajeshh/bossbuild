@@ -89,7 +89,7 @@ looking unresolved.
   body measure under ~80 characters · a serif body gets a little more line-height than a sans ·
   never accent a single word in a headline with italic, bold or colour — it is the commonest tell of
   a generated page · no ALL-CAPS labels by default. *(Bringhurst's* Elements of Typographic Style *is
-  the reference; `frontend-design` is where BOSS took the short form.)*
+  the reference; the short form is a floor, not a value.)*
 - **The scale:** <how many sizes, and what relates them — a ratio, a set of steps, or "four sizes we
   picked and stuck to". Any of the three is a real answer; not knowing which is not.>
 - **Type colour:** <which token pairs carry text — `text.body` on `surface.background`, etc. This is

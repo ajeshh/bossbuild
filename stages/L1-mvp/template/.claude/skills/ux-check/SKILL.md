@@ -100,13 +100,14 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    - Touch targets where the size comes out of layout rather than a token
 
    **A check that didn't run must not look like a check that passed.** Write *not checked — needs a
-   rendered page*, and say what would run it — concretely. Two that exist today and need no account:
-   `npx impeccable detect http://localhost:<port>` (Apache-2.0; rendered DOM and computed layout —
-   contrast, overflow, touch targets, skipped headings, and drift from a `DESIGN.md` if one exists)
-   and, if the project has Storybook ≥ 10.6 with the MCP addon, its `test-run` tool, which returns
-   accessibility issues per story. Name whichever fits; the founder runs it or you do. Retiring an
-   accessibility question you never asked is worse than leaving it open, because nobody comes back
-   to it.
+   rendered page*, and say what would run it — concretely, as a class: **a rendered-page design
+   linter** (one that opens a local URL, reads the DOM and computed layout, and reports contrast,
+   overflow, touch targets and skipped headings — free, no-account ones exist), or **the project's
+   component explorer's test runner** if it reports accessibility issues per story. The practice
+   (`boss craft design-system`) names the current ones with a date; this skill does not, because
+   tools change faster than the rule. Name whichever fits; the founder runs it or you do. Retiring
+   an accessibility question you never asked is worse than leaving it open, because nobody comes
+   back to it.
 5. **Nielsen heuristics walk:**
    - **#1 Visibility of system status** — does the user always know what's happening?
    - **#3 User control and freedom** — is undo / cancel / back available where consequential?

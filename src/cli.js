@@ -1422,7 +1422,7 @@ const OPTIONAL_HOOKS = [
     name: 'design-tokens-guard',
     event: 'PostToolUse',
     mode: 'MVP',
-    does: 'Catches hardcoded colors (hex, rgb()/hsl(), palette classes like bg-blue-500) the moment they\'re written, and hands Claude your token names instead. Silent until a DESIGN_TOKENS.md exists — no token system, no opinion.',
+    does: 'Catches hardcoded colors (hex, rgb()/hsl(), palette classes like bg-blue-500) the moment they\'re written, and hands Claude your token names instead. Silent until a DESIGN_TOKENS.md exists — no token system, no opinion. It also reads the tokens doc\'s `Deprecated` table: a write that references a retired token is told its successor, so a rename never has to be a deletion.',
     cost: 'a process after each file write',
     worth: 'you have a token system and want it to actually hold — a prompt convention is a filter, this is the check',
   },

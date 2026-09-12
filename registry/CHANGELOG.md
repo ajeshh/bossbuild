@@ -16,6 +16,43 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.311.0 — 2026-09-12
+
+**No vendor names in shipped text; the tokens guard reads the `Deprecated` table; the anti-slop
+tap ran against BOSS's own site for the first time — and BOSS failed it.**
+
+> **For you:** `DESIGN_TOKENS.md` gains a `## Deprecated` table (`old` → `use instead` → `why`),
+> and `design-tokens-guard` reads it — type a retired token name and you're told its successor, so
+> a rename never has to be a deletion. `/ux-check`, `/design-library` and `/design-tokens-init` now
+> name the *class* of tool where they used to name a product; `boss craft design-system` carries the
+> current names, dated.
+
+- **The rule, recorded** (`design-system.md` → *Leverage or own — the four questions*): render-time
+  vs across-sessions · needs a runtime BOSS doesn't ship? · stack-bound? · does BOSS still work if it
+  vanishes? — plus *never fork a list that must stay current*. **Where the names live:** skills,
+  templates and agents say the class ("a rendered-page design linter", "the project's component
+  explorer") because they are durable instructions; the practice names tools with a date because it
+  is the reference layer `/practice-refresh` re-reads. Person and standard citations (Frost, Curtis,
+  DTCG, the APG) are attribution and appear anywhere. Applied to every shipped design file this
+  batch touched, including two mentions that predate it; `grep -ri` across `stages/` finds none.
+- **`design-tokens-guard` — the `Deprecated` table.** Rows under a `## Deprecated` heading
+  (`| \`old\` | \`new\` | why |`) or any line pairing two names with an arrow and the word
+  *deprecated*. Matches `tokens.color.brand` and `--color-brand`, not `color.brandmark`. Speaks on
+  its own when there is no raw value in the write; leads the message when there is. Mirror into
+  DTCG `$deprecated` where the code file has the field; the doc is what the guard reads. 3 tests.
+- **The tap, executed:** `npx impeccable@4.1.0 detect https://oyeboss.build` — the watchlist's
+  output-observing tap, pointed at ourselves. **40 findings:** a cream background our tokens claim is
+  "deliberately not warm cream" · ALL-CAPS body text ×5 · a kicker above an h2 · side-tab borders ·
+  75 em-dashes · **11 text/surface pairs at 4.2:1** (AA is 4.5) · 17 measures over the 80-character
+  floor BOSS ships to founders. Five of the tells this practice documents, on BOSS. Recorded in the
+  practice and the watchlist; **the site is not fixed in this release** — contrast and measure are
+  floors and go first; the cream is a decision. *A mechanism never pointed at yourself is a claim
+  with better posture.*
+- **Is BOSS using the linter, or recommending it? Neither.** It is not installed here and never
+  will be as a hook — its 23 verbs overlap BOSS's and its `PRODUCT.md` would sit beside the canvas
+  saying less. BOSS reads what it leaves behind, points at the class where a check needs a renderer,
+  and runs it against its own site on the model curve as a measurement. That is a tap.
+
 ## 0.309.0 — 2026-09-12
 
 **UI organization gets its boundaries: `ui-boundary-guard` (new, dormant), and

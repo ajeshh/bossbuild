@@ -163,3 +163,46 @@ test('fails open — a broken guard must never break a session', () => {
   const stdout = execFileSync('node', [HOOK], { input: 'not json at all', encoding: 'utf8' });
   assert.equal(stdout.trim(), '', 'unparseable input exits 0 and silent');
 });
+
+// --- v0.310.0: the Deprecated table --------------------------------------------------------
+
+function withDeprecated() {
+  const dir = project({});
+  mkdirSync(join(dir, 'docs', 'design'), { recursive: true });
+  writeFileSync(join(dir, 'docs', 'design', 'DESIGN_TOKENS.md'), [
+    '# Design tokens',
+    '',
+    '## Semantic',
+    '- `color.action.primary` — the one accent',
+    '- `color.text.body`',
+    '',
+    '## Deprecated',
+    '',
+    '| Old | Use instead | Why |',
+    '|---|---|---|',
+    '| `color.brand` | `color.action.primary` | named by hue; renamed by purpose |',
+    '',
+    '## Notes',
+    '- `space.gutter` is deprecated → `space.section` (line form, outside the table)',
+    '',
+  ].join('\n'));
+  return dir;
+}
+
+test('names the successor when a write references a deprecated token — with no raw values at all', () => {
+  const out = run(withDeprecated(), { file_path: 'src/Card.tsx', content: 'const c = tokens.color.brand;' });
+  assert.match(out, /`color\.brand` → use `color\.action\.primary`/);
+  assert.doesNotMatch(out, /hardcoded style values/, 'no hex here — only the deprecation speaks');
+});
+
+test('reads the line form too, and does not match a longer token that merely starts the same', () => {
+  const out = run(withDeprecated(), { file_path: 'src/a.css', content: 'padding: var(--space-gutter); x: space.gutter;' });
+  assert.match(out, /`space\.gutter` → use `space\.section`/);
+  const quiet = run(withDeprecated(), { file_path: 'src/b.tsx', content: 'const x = tokens.color.brandmark;' });
+  assert.equal(quiet, '', '`color.brandmark` is a different token');
+});
+
+test('combines with a raw-value finding in one message, deprecation first', () => {
+  const out = run(withDeprecated(), { file_path: 'src/c.css', content: '.x{color:#ff0000; y: color.brand}' });
+  assert.ok(out.indexOf('deprecated token') < out.indexOf('hardcoded style values'));
+});
