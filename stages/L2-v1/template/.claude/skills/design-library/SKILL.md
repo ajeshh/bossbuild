@@ -48,6 +48,15 @@ graphical interface**, and for two shapes that assumption is simply wrong:
 
 ## The load-bearing rule: GENERATED, never authored
 
+> **If the host already generates the index, don't generate it twice.** Storybook ≥ 10.6 with
+> `@storybook/addon-mcp` serves `docs-list` (every component and its props, from a manifest) and
+> `test-run` (interaction + accessibility) straight to the agent, for React, Vue and Angular
+> projects. Where that is present, **it is the component index** — the manifest this skill writes
+> would be the second copy. Keep this library for what Storybook does not render: the rule sets
+> (principles, do/don't pairs, terminology, voice) and the drift shown *on* the component. Say
+> which of the two is authoritative in the library's own header.
+
+
 **The code is the source of truth. This library is derived from it.**
 
 Never hand-maintain a card. Never let the library become a second place a component is defined. A

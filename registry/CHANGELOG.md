@@ -16,6 +16,49 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.307.0 — 2026-09-12
+
+**The design-system tooling field, read at source — nine tools, three already vetted, one decision
+changed. `/design-tokens-init` now reads the design system a founder arrives carrying.**
+
+> **For you:** if you installed `impeccable`, `ui-ux-pro-max` or wrote a Google-style `DESIGN.md`
+> before running `/design-tokens-init`, it now finds that file and builds *from* it instead of
+> generating a second system beside it. And `/ux-check` names what would actually run the
+> accessibility checks it cannot run from source.
+
+- **`docs/competition/design-system-tooling.md` — the field in three kinds that don't compete:**
+  skills the agent reads (impeccable, web-interface-guidelines, ui-ux-pro-max, Google DESIGN.md),
+  the code's own components served to the agent (Storybook MCP, shadcn registries), a design tool as
+  source of truth (Figma MCP, Supernova, zeroheight, Claude Design). Each grepped against `stages/`
+  and `library/` before it was written down; three carry a BOSS verdict already (RVW-079/081/082)
+  and nothing found changes them. Pricing opened at source, one ambiguity recorded as ambiguous.
+- **impeccable is the row that matters** — `frontend-design`'s self-declared successor (★67.5k,
+  17 hosts, Apache-2.0): 23 design verbs, `PRODUCT.md` + `DESIGN.md` + per-route surface files
+  written into the repo, and a **61-rule deterministic detector that runs against a rendered page**.
+  That is the output-observing tap §7b of the build-craft watchlist named on 2026-09-11 — found built
+  one day later, and now tap 1's third source. Its tells and `frontend-design`'s **disagree on tint**;
+  the skill's stamp text now says so: *the tint is not the tell, the combination is.*
+- **`/design-tokens-init` step 0 also looks for a system another tool wrote** — root `DESIGN.md`,
+  `PRODUCT.md`, `.impeccable/`, `design-system/*/MASTER.md` — and treats a hit as prior art to build
+  from, never converting or re-emitting it. This is RVW-079's own re-open condition #2 (*a founder
+  arrives carrying one → read it, cheaper than emitting it*), which two ~95k-star tools just made the
+  common case. The FORMAT verdict stays NOT-YET: the spec is still alpha, and impeccable's `DESIGN.md`
+  is a *different format under the same filename* — a collision, not a standard.
+- **`/ux-check` — "say what would run it" now says.** The rendered-page checks it marks *not checked*
+  name two runners that exist today and need no account: `npx impeccable detect <url>` and Storybook
+  MCP's `test-run`. BOSS's four hooks stay the source-level, token-vocabulary half; the rendered half
+  is somebody else's maintained list, which is where it belongs.
+- **`/design-library` (V1) defers to Storybook MCP where present.** Storybook ≥ 10.6 serves
+  `docs-list` from a component manifest for React/Vue/Angular — that *is* the generated index, and
+  the library's manifest would be the second copy. The library keeps what Storybook cannot render:
+  the rule sets and drift shown on the component. The MVP-rung authored `COMPONENTS.md` is untouched.
+- **`design-system.md` — one thing that did *not* change, now with evidence:** the most-starred
+  design skill in the field (ui-ux-pro-max, ★127k) sells **palettes by industry** — the attractor as
+  a product. *Values blank until earned* is the contrarian bet in this market; hold it and say so.
+- Small: a `docs/competition/…` path that v0.299.0 shipped inside `/design-tokens-init` (dangles in
+  every founder install) is removed; `frontend-design.md` and RVW-079 carry dated addenda; the
+  competition README's synthesis is one current read with the earlier reads folded under it.
+
 ## 0.306.0 — 2026-09-11
 
 **The tail of the comp-read batch — two citations, one mentor move, one measurement. No new

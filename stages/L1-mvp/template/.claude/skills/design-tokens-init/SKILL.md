@@ -21,6 +21,15 @@ never runs. For a UI-heavy project, it runs at the first UI commit.
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 
+**Also look for a system another tool wrote** — a root `DESIGN.md` or `PRODUCT.md`, an
+`.impeccable/` directory, `design-system/*/MASTER.md`. Design skills that install alongside this one
+write those (Google's DESIGN.md spec and impeccable both claim the `DESIGN.md` name, in different
+formats; ui-ux-pro-max writes `MASTER.md`). **A hit is prior art, not a competitor:** read it, name
+what it already decided, and build the tokens file *from* it — a founder who arrives carrying one has
+already made choices, and generating a second system beside theirs is the exact failure this step
+exists to prevent. Don't convert their file into this one's format and don't emit theirs; the code
+file is the source of truth either way, and both docs describe it.
+
 **Rung: MVP.** Applies only when the project starts accumulating UI. If this project is **earlier** than that, don't run this — leave the seam instead:
 **Name the first color for what it MEANS, not what it looks like — `action.primary`, not `indigo-600`. One habit, zero files.** That is the whole ask; it is *not* a three-layer token architecture, a style dictionary pipeline, a semantic layer, a component library. Nothing is technically lost — but the cost is the only one on this list that compounds per screen. Retrofitting is linear in UI you already generated, and an agent generating screen forty has forty precedents telling it to invent a new blue.
 
@@ -162,9 +171,9 @@ a brand anchor will drift back to internet-defaults.
 "shadcn trap" (slate, Inter, 8px radius, indigo) was the 2024 tell, and the fix for it — *warm the
 neutral* — is now **the 2026 tell**. A list of tells without a date is a list of last year's tells.
 
-**Current as of 2026-09** (Anthropic's `frontend-design` skill, Apache-2.0, read at source; see
-`docs/competition/frontend-design.md`) — generated design clusters around five looks, and each is a
-default rather than a choice because it appears *regardless of subject*:
+**Current as of 2026-09** (Anthropic's `frontend-design` skill, Apache-2.0, read at source) —
+generated design clusters around five looks, and each is a default rather than a choice because it
+appears *regardless of subject*:
 
 1. **Warm cream (~`#F4F1EA`) + a high-contrast serif display + a terracotta or warm-clay accent
    (~`#D97757`)** — the commonest one, and the terracotta is Claude's own interaction accent, so on a
@@ -182,7 +191,10 @@ default rather than a choice because it appears *regardless of subject*:
 calendar — a new frontier model is what moves the attractor, and it is the event that re-opens this
 list (BOSS's build-craft watchlist, §7b). **If a newer frontier model has shipped since the stamp,
 treat the list as stale regardless of the date**, and say so rather than applying it as current. When the brief *asks* for one of these looks, follow the brief — these are
-defaults, not sins.
+defaults, not sins. And expect lists to disagree: the same month this one named *tinted near-black*
+as template chrome, impeccable's detector shipped a rule saying *pure black — always tint*. Neither is
+wrong; **the tint is not the tell, the combination is.** Read any tell as a symptom of *default
+chosen for you*, never as a banned value.
 
 Five deliberate overrides break the sameness without a redesign — do this *as part of picking
 primitives*, anchored to the brand doc and the canvas Promises cell:

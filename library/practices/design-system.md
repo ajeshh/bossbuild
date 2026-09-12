@@ -227,6 +227,32 @@ building, *would this exact plan have been produced for any similar brief?* Swap
 neighbour in the same category; whatever survives the swap unchanged is a default, not a choice. It is
 a filter — but it is the one filter that makes *sameness* visible to the model that produced it.
 
+### The field, read together — the index is being host-shipped and the detector exists (added v0.307.0)
+
+Nine design-system tools read at source on 2026-09-12 (`docs/competition/design-system-tooling.md`),
+and three things changed what this practice says:
+
+1. **The rendered-output check exists; don't build it, point at it.** `impeccable` ships 61
+   deterministic tells that run against a live page — contrast, overflow, touch targets, skipped
+   headings, design-system drift — with no API key. `/ux-check`'s *"not checked — needs a rendered
+   page, and say what would run it"* now names it. BOSS's four hooks stay what they are: the
+   source-level, token-vocabulary half. The arithmetic half of accessibility and the *rendered*
+   half of drift are somebody else's maintained list, and that is the right place for them.
+2. **The generated component index is host-shipped at V1 for the big three frameworks.** Storybook
+   MCP's `docs-list` is `design-library`'s manifest, made by the code's own tool. `/design-library`
+   now defers to it where present and keeps what Storybook cannot render — the rule sets and drift
+   shown on the component. The MVP-rung authored `COMPONENTS.md` is unaffected: it exists for
+   component two, before anyone has installed Storybook.
+3. **Founders now arrive carrying a design system.** impeccable writes `PRODUCT.md` + `DESIGN.md`,
+   ui-ux-pro-max writes `MASTER.md`, Google's spec claims `DESIGN.md` in a different format. Step 0
+   of `/design-tokens-init` looks for all of them and treats a hit as prior art — the alternative is
+   the second-system failure step 0 was written to prevent, arriving from outside.
+
+And one thing that did *not* change, now with evidence: the most-starred design skill in the field
+(★127k) sells **palettes by industry** — the attractor as a product. **Values blank until earned** is
+the contrarian position in this market. Hold it, and say so when a founder asks why BOSS did not
+just pick them a palette.
+
 ### Craft floors and brand values are different kinds of thing (added v0.299.0)
 
 *Name the slot, earn the value* is the composition layer's governing rule, and `frontend-design`

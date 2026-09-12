@@ -171,3 +171,9 @@ design looks like today, and BOSS's equivalent is from 2024.** That is the row t
 - **2026-09-11** — filed. Read from the marketplace cache pulled the same morning. Supersedes the
   factual half of RVW-014, whose source was an earlier version of the skill that has since moved
   toward the restraint BOSS's ADAPT added.
+- **2026-09-12** — **a successor claims descent.** `impeccable` (Paul Bakaus, Apache-2.0, ★67.5k,
+  17 hosts) says in its README that it *"started from"* this skill, and adds what this file's
+  *Where they're weak* section said was missing: a file that survives to the next session
+  (`PRODUCT.md`, `DESIGN.md`) and a deterministic detector. Its tells list and this skill's now
+  **disagree on tint** (this skill: tinted near-black is template chrome; impeccable: pure
+  black/gray, always tint). See `design-system-tooling.md`.

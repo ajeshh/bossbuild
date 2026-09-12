@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.306.0" />
+<meta name="generator" content="BOSS 0.307.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.307.0</span><span class="when">2026-09-12</span></div>
+        <p>if you installed <code>impeccable</code>, <code>ui-ux-pro-max</code> or wrote a Google-style <code>DESIGN.md</code> before running <code>/design-tokens-init</code>, it now finds that file and builds <em>from</em> it instead of generating a second system beside it. And <code>/ux-check</code> names what would actually run the accessibility checks it cannot run from source.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.305.0</span><span class="when">2026-09-11</span></div>
         <p><strong>If you installed BOSS as a plugin, the door now asks what you're building and says it back — before it offers to set anything up.</strong> Four lines, in your words: what it is, who it's for, the smallest version that proves it, and which way it read any word that could go two ways. Then one question: <em>want me to set this up here as a project?</em> Nothing is written until you say yes. This is step 0 of the ladder — the rung below Quickstart, where nothing exists yet but the conversation.</p>
       </li>
@@ -112,10 +116,6 @@
       <li>
         <div class="rel"><span class="ver">v0.294.0</span><span class="when">2026-09-11</span></div>
         <p><strong>The competitive field is finally read by the things that build.</strong> <code>/spec</code> opens a rival's <em>where it breaks</em> when you spec something they also have; <code>/landing</code> writes against the alternative people actually use; <code>/pretotype</code> asks <em>&quot;would you switch?&quot;</em> when a real rival is in your evidence; and <code>/comp-eval add</code> tells you whether a new rival is on anyone's shortlist or a phantom — and offers the switch test in the moment when their twist lands on your differentiator.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.293.0</span><span class="when">2026-09-10</span></div>
-        <p><strong>The tasks you spot mid-build stop living only in the chat.</strong> BOSS notices when the list in the conversation has outrun anything written down, and <code>.claude/rules/feature-context.md</code> — a file that shipped for months with nothing ever writing to it — is now where found work, local decisions and open questions actually go.</p>
       </li>
     </ol>
         <p class="small">
@@ -161,7 +161,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.306.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.307.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
