@@ -1,7 +1,7 @@
 <!--
 title: For project management — progress you can't fake
 description: The board is derived from files rather than maintained, the status vocabulary is closed, parked work carries a written re-open trigger, and every decision records who made it and what would prove it wrong.
-reviewed: 2026-09-11
+reviewed: 2026-09-12
 review_by: 2027-03-09
 describes: BOSS's own positions on tracking work — derived progress, closed vocabulary, parked vs queued
 covers: docs/IDS.md src/board.js src/records.js
@@ -10,7 +10,6 @@ nav: project
   <header class="hero">
     <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">For project management</p>
       <h1>Progress you can't fake<span class="dot">.</span></h1>
       <p class="lede">
         Every tracking tool eventually drifts from the work, because the board and the work are two
@@ -27,8 +26,8 @@ nav: project
       <div class="body prose">
         <h2>Derive progress. Never maintain it.</h2>
         <p>
-          There is <strong>no status document anywhere</strong>. Status lives in one place — the
-          record's own frontmatter — and the board is a <em>read</em> of those files. A hand-kept
+          There is <strong>no status document anywhere</strong>. Status lives in one place, the
+          record's own frontmatter, and the board is a <em>read</em> of those files. A hand-kept
           board and the frontmatter it copies will eventually disagree, and nothing tells you which
           one is lying.
         </p>
@@ -41,7 +40,7 @@ nav: project
       </div>
     </section>
 
-    <hr class="hazard">
+    <hr>
 
     <section class="section">
       <div class="rail">▸<span>vocabulary</span></div>
@@ -54,7 +53,7 @@ nav: project
         </p>
         <p class="small">
           If you find yourself wanting a new status, the work has usually outgrown its
-          <em>record type</em> rather than its vocabulary — which is a different and more useful
+          <em>record type</em> rather than its vocabulary, which is a different and more useful
           thing to discover.
         </p>
       </div>
@@ -65,19 +64,19 @@ nav: project
       <div class="body prose">
         <h2>Parked is decided. It is not queued.</h2>
         <p>
-          Most backlogs are a graveyard that looks like a plan — things nobody rejected and nobody
+          Most backlogs are a graveyard that looks like a plan: things nobody rejected and nobody
           will do. BOSS splits that pile in two and makes you say which:
         </p>
         <ul class="plain">
-          <li><strong>Deferred</strong> — you named a condition that would bring it back. A decision
+          <li><strong>Deferred</strong>: you named a condition that would bring it back. A decision
             with a trigger, and the trigger is written down.</li>
-          <li><strong>Dropped</strong> — decided against on the merits, reasoning kept so you don't
+          <li><strong>Dropped</strong>: decided against on the merits, reasoning kept so you don't
             re-litigate it in four months.</li>
         </ul>
         <p>
           <strong>Neither is a queue</strong>, and the board says so where it lists them. Paused work
-          also can't simply walk back in: three questions first — still relevant, still aligned,
-          anything changed — so nobody builds a feature the world moved past while it sat there.
+          also can't simply walk back in: three questions first (still relevant, still aligned,
+          anything changed) so nobody builds a feature the world moved past while it sat there.
         </p>
       </div>
     </section>
@@ -96,7 +95,7 @@ nav: project
           One column has proved harder than the rest, and it's an honest problem rather than a
           feature: <strong>Building is the only state nothing can verify.</strong> A shipped claim
           can be checked against disk. An index can be checked against the records. But nothing can
-          check whether a card claiming to be in flight has anyone in flight on it — which is why
+          check whether a card claiming to be in flight has anyone in flight on it, which is why
           BOSS also watches how long things sit there and asks.
         </p>
       </div>
@@ -108,14 +107,14 @@ nav: project
         <h2>Ending a session is a thing you do, not a thing that happens</h2>
         <p>
           Work doesn't stop at a natural boundary; it stops when you do. So there's a verb for
-          closing out — it updates where the project stands, appends a log entry for what landed and
+          closing out: it updates where the project stands, appends a log entry for what landed and
           what surprised you, and lets the conscience update its own read. <strong>You run it before
           stepping away, so the next session starts with context instead of archaeology.</strong>
         </p>
         <p>
           Coming back is the other half. <code>boss status</code> opens with where you are and the
           one thing to pick up; <code>boss recap</code> reads the week back out of records you
-          already wrote — landed, learned, decided, in flight — and <strong>prints empty sections as
+          already wrote (landed, learned, decided, in flight) and <strong>prints empty sections as
           empty</strong>, because a summary that can only go up is a comfort device.
         </p>
         <h3>The tasks you spot mid-build</h3>
@@ -123,7 +122,7 @@ nav: project
           <em>"This also needs a rollback."</em> <em>"The adjacent rule is probably wrong too."</em>
           Found work lives in the conversation until something durable holds it, and a long session
           loses it silently. BOSS notices when <strong>the list in the chat has outrun anything
-          written down</strong> and says so — once — and there's a file for exactly this: found tasks,
+          written down</strong> and says so, once, and there's a file for exactly this: found tasks,
           the scope that turned out to be new, and the questions that should stay questions.
         </p>
         <p class="small">
@@ -133,7 +132,7 @@ nav: project
         </p>
         <h3>And the part that isn't a file</h3>
         <p>
-          The conscience keeps a persistent read on the venture in plain English — its point of view,
+          The conscience keeps a persistent read on the venture in plain English: its point of view,
           not a log. You can ask what it currently thinks, see <strong>how that read changed over
           time</strong>, or see <em>what it said and what you actually did with it</em>. You can also
           make it forget things before a date, because a memory you can't evict isn't memory, it's
@@ -152,20 +151,20 @@ nav: project
         <h2>Typed records, and a promotion you can read from both ends</h2>
         <p>
           An idea is <code>IDEA-NNN</code>. When it earns a build contract it becomes
-          <code>FEAT-NNN</code> — and <strong>the link is written at both ends</strong>, so you can
+          <code>FEAT-NNN</code>, and <strong>the link is written at both ends</strong>, so you can
           stand at a feature and find the thinking that produced it, or stand at an idea and find
           what became of it. A promotion legible from only one side is how work gets rebuilt.
         </p>
         <p>
           There's a checker for the record set itself: duplicate ids, statuses outside the closed
           vocabulary, and promotions that broke. <strong>The failure it exists for is the quiet
-          one</strong> — a record that looks fine, sits in no column, and is therefore invisible
+          one</strong>: a record that looks fine, sits in no column, and is therefore invisible
           rather than wrong.
         </p>
         <p class="small">
           Six record types, and you get the few you need on day one rather than the whole filing
           system. Ideas, evidence and decisions at the first rung; specs when there's something to
-          build. <a href="keeping-track.html">The record system in full →</a>
+          build. <a href="keeping-track.html">The record system in full</a>
         </p>
       </div>
     </section>
@@ -177,7 +176,7 @@ nav: project
         <p>
           The thing that watches your project isn't a list of steps you tick. Each loop declares an
           <strong>entry condition and an exit condition</strong>, both evaluated against your actual
-          files — <em>three or more captured ideas and no canvas naming a riskiest assumption</em>,
+          files, <em>three or more captured ideas and no canvas naming a riskiest assumption</em>,
           or <em>styling spread across several files and no token system</em>.
         </p>
         <p>
@@ -187,31 +186,31 @@ nav: project
           <li><strong>A loop can close by itself.</strong> You do the work, the exit condition
             becomes true, it stops watching. Nobody marks anything done.</li>
           <li><strong>It can be wrong in a checkable way.</strong> A predicate that fires when it
-            shouldn't is a bug with a reproduction, not a matter of taste — which is how a
+            shouldn't is a bug with a reproduction, not a matter of taste, which is how a
             false-positive class got found and fixed rather than tolerated.</li>
         </ul>
         <p class="small">
           And the loops that end work are first-class: a gate before paused work re-enters, and a
           verb for ending something at whatever size it actually is.
-          <a href="conscience.html">How a loop decides to speak →</a>
+          <a href="conscience.html">How a loop decides to speak</a>
         </p>
       </div>
     </section>
 
-    <hr class="hazard">
+    <hr>
 
     <section class="section">
       <div class="rail">▸<span>decisions</span></div>
       <div class="body prose">
         <h2>A decision record with a falsifier and a signature</h2>
         <p>
-          Context, the call, the reasoning, the consequences — plus two fields most decision logs
+          Context, the call, the reasoning, the consequences, plus two fields most decision logs
           don't carry:
         </p>
         <ul class="plain">
           <li><strong>A falsifier.</strong> What would prove this wrong, and by when, with a number
             and a date. Written before the answer is known, which is what makes it cost something.</li>
-          <li><strong>Who decided</strong> — you, you ratifying the AI's suggestion, or the AI on its
+          <li><strong>Who decided</strong>: you, you ratifying the AI's suggestion, or the AI on its
             own. That distinction gets more useful every year, and nobody remembers it unstated.</li>
         </ul>
         <p>
@@ -228,16 +227,16 @@ nav: project
         <h2>Work in progress is a number, and BOSS watches it</h2>
         <p>
           When too much is open at once it says so and asks which one is actually moving. It won't
-          reorganise your work or rank it for you — <strong>naming the pile is usually enough</strong>,
+          reorganise your work or rank it for you; <strong>naming the pile is usually enough</strong>,
           and a tool that reprioritises on your behalf is a tool you stop trusting.
         </p>
         <p class="small">
           Coming back is handled the same way: <code>boss status</code> opens with where you are and
           the one thing to pick up, and <code>boss recap</code> reads the week back out of records
-          you already wrote — landed, learned, decided, in flight. <strong>Empty sections print as
+          you already wrote: landed, learned, decided, in flight. <strong>Empty sections print as
           empty</strong>, because a summary that can only go up is a comfort device.
-          <a href="keeping-track.html">What BOSS writes down →</a> ·
-          <a href="product.html">the product positions →</a>
+          <a href="keeping-track.html">What BOSS writes down</a>, and
+          <a href="product.html">the product positions</a>.
         </p>
       </div>
     </section>

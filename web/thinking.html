@@ -1,7 +1,7 @@
 <!--
 title: What BOSS refuses to do — and what would prove each refusal wrong
 description: The things BOSS will not do to you — no scoring, no notifications while you are away, no assuming you are building a company — each recorded as a decision with the cost accepted and a pre-committed falsifier.
-reviewed: 2026-09-10
+reviewed: 2026-09-12
 review_by: 2027-03-09
 describes: the decision records, the falsifier discipline, and how BOSS decides what it believes
 covers: docs/decisions PRINCIPLES.md
@@ -10,10 +10,9 @@ nav: thinking
   <header class="hero">
     <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">What it refuses</p>
-      <h1>What it refuses to do — and what would prove each refusal wrong<span class="dot">.</span></h1>
+      <h1>What it refuses to do, and what would prove each refusal wrong<span class="dot">.</span></h1>
       <p class="lede">
-        Most of what makes a tool bearable is what it declines to do. These are the declines —
+        Most of what makes a tool bearable is what it declines to do. These are the declines,
         written down as decisions, each with the cost accepted and a <strong>falsifier</strong>: what
         would prove this wrong, and by when. Sixteen records sit in the repo; the ones below are the
         ones you would actually feel.
@@ -29,15 +28,15 @@ nav: thinking
         <h2>A decision without a falsifier is a preference</h2>
         <p>
           Every record carries the same five parts: the <strong>context</strong>, the
-          <strong>decision</strong>, the <strong>why</strong>, a <strong>falsifier</strong> — what
-          would prove this wrong, and by when — and the <strong>consequences</strong>. Plus who
+          <strong>decision</strong>, the <strong>why</strong>, a <strong>falsifier</strong> (what
+          would prove this wrong, and by when) and the <strong>consequences</strong>. Plus who
           decided, and how reversible it is.
         </p>
         <p>
           <strong>The falsifier is the part that costs something.</strong> It is written at decision
           time, before the answer is known, with a number and a date attached: <em>n ≥ 3 real
           projects</em>, <em>revisit 2026-11-18</em>. That makes finding out you were wrong cheap and
-          scheduled rather than expensive and accidental — and it makes the record impossible to
+          scheduled rather than expensive and accidental, and it makes the record impossible to
           quietly reinterpret later.
         </p>
         <div class="note">
@@ -49,7 +48,7 @@ nav: thinking
       </div>
     </section>
 
-    <hr class="hazard">
+    <hr>
 
     <section class="section">
       <div class="rail">▸<span>the calls</span></div>
@@ -58,7 +57,7 @@ nav: thinking
           <h2>Eight you would actually feel</h2>
           <p class="small">
             The record id is there so you can go and read the full reasoning, the consequences and
-            the revisit date — all sixteen are in
+            the revisit date; all sixteen are in
             <a href="https://github.com/ajeshh/bossbuild/tree/main/docs/decisions">docs/decisions/</a>,
             including the internal ones that wouldn't mean much from outside.
           </p>
@@ -66,73 +65,73 @@ nav: thinking
 
         <div class="practices">
           <div class="practice">
-            <h4>It will never message you while you're away</h4>
-            <p class="meta">DEC-016 · <span class="curve">the cost: you find out when you come back</span></p>
+            <h3>It will never message you while you're away</h3>
+            <p class="meta">DEC-016. The cost: <span class="curve">you find out when you come back</span>.</p>
             <p class="prov">No push, no phone, no "while you were away." <strong>This binds even
-              where the notification would be genuinely useful</strong> — a red build, a failed
-              deploy — because those are exactly the cases someone would use to reverse it. Coming
+              where the notification would be genuinely useful</strong>, a red build or a failed
+              deploy, because those are exactly the cases someone would use to reverse it. Coming
               back is when you get told, and never as a summons to return.
               <em>Falsifier: a real founder, unprompted, asks to be told something while away, and
               what they want isn't already served on return.</em></p>
           </div>
           <div class="practice">
-            <h4>It tells you where you are. It never scores you.</h4>
-            <p class="meta">DEC-003 · <span class="curve">the cost: no number to feel good about</span></p>
+            <h3>It tells you where you are. It never scores you.</h3>
+            <p class="meta">DEC-003. The cost: <span class="curve">no number to feel good about</span>.</p>
             <p class="prov"><strong>No score, letter, percentage, maturity level or traffic-light,
-              ever</strong> — and it states what it <em>can't</em> see, which is usually usage,
+              ever</strong>, and it states what it <em>can't</em> see, which is usually usage,
               retention, cost and why you built it that way. You get two or three options with what
-              each changes about your week, always including <em>"nothing yet — keep building."</em>
+              each changes about your week, always including <em>"nothing yet; keep building."</em>
               And if you say yes, it does the migration; naming a problem and leaving you with it is
               a critique, not help. <em>Falsifier: an observed founder runs it and asks for a
               straight verdict anyway.</em></p>
           </div>
           <div class="practice">
-            <h4>Reading about a market never counts as evidence</h4>
-            <p class="meta">DEC-008 · <span class="curve">the cost: your research doesn't raise your grade</span></p>
+            <h3>Reading about a market never counts as evidence</h3>
+            <p class="meta">DEC-008. The cost: <span class="curve">your research doesn't raise your grade</span>.</p>
             <p class="prov">Desk research is context and lives with the claim it informs, carrying a
               source and a date. <strong>The evidence ladder stays about people.</strong> No fourth
-              rung, no "research grade" — a ladder that grades two different kinds of thing grades
+              rung, no "research grade": a ladder that grades two different kinds of thing grades
               neither. Learning three rivals charge $40 is context; watching a customer switch is
               evidence. <em>Falsifier: across three real projects, research consistently has no home
               and gets orphaned.</em></p>
           </div>
           <div class="practice">
-            <h4>It won't assume you're building a company</h4>
-            <p class="meta">DEC-009 / DEC-011 · <span class="curve">the cost: it can't shortcut to startup defaults</span></p>
-            <p class="prov">A company, a co-op, or a commons — whichever you're actually building —
+            <h3>It won't assume you're building a company</h3>
+            <p class="meta">DEC-009 / DEC-011. The cost: <span class="curve">it can't shortcut to startup defaults</span>.</p>
+            <p class="prov">A company, a co-op, or a commons, whichever you're actually building,
               gets the same ladder. The money question stays live for all of them, and for the
               non-commercial ones it's <strong>harder, not softer</strong>: what keeps this alive,
               who else could carry it, what happens when you get bored or busy. <em>Most open-source
               projects die of maintainer exhaustion, not of a missing business model.</em></p>
           </div>
           <div class="practice">
-            <h4>It won't pick your licence, or open your repo for you</h4>
-            <p class="meta">DEC-011 · <span class="curve">the cost: one more decision that's yours</span></p>
+            <h3>It won't pick your licence, or open your repo for you</h3>
+            <p class="meta">DEC-011. The cost: <span class="curve">one more decision that's yours</span>.</p>
             <p class="prov">"Optionality by default" used to quietly mean <em>private repo,
               proprietary licence</em>. That pre-loaded answer is gone. The principle keeps its real
-              content — decide late, on evidence — and stops deciding enclosure on your behalf.
+              content (decide late, on evidence) and stops deciding enclosure on your behalf.
               <em>Falsifier: asked a genuinely two-sided question, founders pick proprietary at the
               same rate anyway, and the neutral ask changed nothing.</em></p>
           </div>
           <div class="practice">
-            <h4>It grades your evidence honestly, including when you'd rather it didn't</h4>
-            <p class="meta">the evidence ladder · <span class="curve">the cost: your good week looks thinner</span></p>
-            <p class="prov">Three rungs — <strong>stated-pain → observed-behavior → commitment</strong>
-              — and the grade is what somebody <em>did</em>, not how enthusiastic they sounded.
+            <h3>It grades your evidence honestly, including when you'd rather it didn't</h3>
+            <p class="meta">the evidence ladder. The cost: <span class="curve">your good week looks thinner</span>.</p>
+            <p class="prov">Three rungs, <strong>stated-pain → observed-behavior → commitment</strong>,
+              and the grade is what somebody <em>did</em>, not how enthusiastic they sounded.
               "Great idea, I'd definitely use that" lands on rung one and stays there. The only
               reward for real commitments is that the conscience gets quieter.</p>
           </div>
           <div class="practice">
-            <h4>It stopped defaulting to its own favourite framework</h4>
-            <p class="meta">DEC-004 · <span class="curve">the cost: the author's preference lost its privilege</span></p>
+            <h3>It stopped defaulting to its own favourite framework</h3>
+            <p class="meta">DEC-004. The cost: <span class="curve">the author's preference lost its privilege</span>.</p>
             <p class="prov">The canvas became an answer store with interchangeable frames, and the
-              humane frame stopped being the default — it became the floor. The framework the author
+              humane frame stopped being the default; it became the floor. The framework the author
               built, and prefers, lost its privileged position because it hadn't earned it.
               <em>Falsifier: two independent failure modes, either of which reopens it.</em></p>
           </div>
           <div class="practice">
-            <h4>You can run the judgment it will apply to you</h4>
-            <p class="meta">DEC-013 · <span class="curve">the cost: the judgment is inspectable, so it can be argued with</span></p>
+            <h3>You can run the judgment it will apply to you</h3>
+            <p class="meta">DEC-013. The cost: <span class="curve">the judgment is inspectable, so it can be argued with</span>.</p>
             <p class="prov">The conscience's own eval suite moved to the public tier, on the reasoning
               that it's tests rather than positioning. <em>Falsifier, and it's a live risk: if by the
               revisit date nobody outside this machine has run, cited or corrected a case, the claim
@@ -142,7 +141,7 @@ nav: thinking
       </div>
     </section>
 
-    <hr class="hazard">
+    <hr>
 
     <section class="section">
       <div class="rail">▸<span>where this is honest</span></div>
@@ -151,7 +150,7 @@ nav: thinking
         <p>
           <strong>Outcomes.</strong> Almost none of these falsifiers has come due, because BOSS has
           very few users. The records show judgment under uncertainty and a pre-commitment to finding
-          out — not a track record of having been right.
+          out, not a track record of having been right.
         </p>
         <p>
           They also aren't a complete history. Sixteen decisions were recorded; more were made. The
@@ -160,9 +159,9 @@ nav: thinking
         </p>
         <p class="small">
           The rest of how BOSS decides what it believes: <a href="governance.html">every practice is
-          attributed, dated, and has a review trigger →</a> ·
-          <a href="charter.html">the humane line and its mechanism →</a> ·
-          <a href="engineering.html">the technical positions, and who each was learned from →</a>
+          attributed, dated, and has a review trigger</a>;
+          <a href="charter.html">the humane line and its mechanism</a>; and
+          <a href="engineering.html">the technical positions, and who each was learned from</a>.
         </p>
       </div>
     </section>

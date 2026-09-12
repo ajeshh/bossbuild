@@ -226,7 +226,7 @@ ${stations}
 blocks.ROSTER = () => roster.map((m) => {
   if (!m.agents.length) return '';
   const cards = m.agents.map((a) => `        <div class="agent ${a.kind}">
-          <h4><code>${esc(a.name)}</code> <span class="tag">${a.kind}</span></h4>
+          <h3><code>${esc(a.name)}</code> <span class="tag">${a.kind}</span></h3>
           <p>${esc(a.gloss)}.</p>
           ${a.triggers ? `<p class="triggers"><span>ask it</span> ${esc(a.triggers)}</p>` : ''}
         </div>`).join('\n');
@@ -292,6 +292,10 @@ blocks.WHATS_NEW = () => {
 // ---- diagrams -------------------------------------------------------------
 // Hand-authored inline SVG: no library, no runtime, currentColor so both themes
 // work, one hi-vis element carrying the claim. Each figure makes ONE point.
+// Secondary labels take the token (`--color-text-secondary`), never `opacity` — an
+// opacity stack is what a pixel-contrast check reads as invisible text, and it was
+// (2026-09-12). Nothing in a figure is set under 13 units: at the figure's 52rem
+// max width that is ~12.6px, the smallest text on the site.
 
 blocks.DIAGRAM_CONSCIENCE = () => `<figure class="fig">
   <svg viewBox="0 0 860 300" role="img" aria-label="A mechanical hook reads project state on every prompt and evaluates a named condition. When the condition does not hold, which is the usual case, nothing happens. Only when it holds is a model asked to compose the words. The model never decides whether to speak."
@@ -315,17 +319,17 @@ blocks.DIAGRAM_CONSCIENCE = () => `<figure class="fig">
     <rect x="540" y="182" width="256" height="64" rx="3" fill="var(--color-brand)" stroke="none"/>
     <g font-family="system-ui, sans-serif" font-size="13.5" fill="currentColor" text-anchor="middle">
       <text x="106" y="146">project state</text>
-      <text x="106" y="167" font-size="11.5" opacity="0.72">files on disk</text>
+      <text x="106" y="167" font-size="13" fill="var(--color-text-secondary)">files on disk</text>
       <text x="358" y="146">hook</text>
-      <text x="358" y="167" font-size="11.5" opacity="0.72">a mechanical condition</text>
+      <text x="358" y="167" font-size="13" fill="var(--color-text-secondary)">a mechanical condition</text>
       <text x="630" y="70">silence</text>
-      <text x="630" y="89" font-size="11.5" opacity="0.72">the usual path</text>
+      <text x="630" y="89" font-size="13" fill="var(--color-text-secondary)">the usual path</text>
     </g>
     <g font-family="system-ui, sans-serif" font-size="13.5" fill="var(--color-on-brand)" text-anchor="middle">
       <text x="668" y="210">model composes the words</text>
-      <text x="668" y="230" font-size="11.5" opacity="0.85">only now is a model involved</text>
+      <text x="668" y="230" font-size="13">only now is a model involved</text>
     </g>
-    <g font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.72">
+    <g font-family="system-ui, sans-serif" font-size="13" fill="var(--color-text-secondary)">
       <text x="222" y="140" text-anchor="middle">read</text>
       <text x="508" y="66">not met</text>
       <text x="508" y="236">met</text>
@@ -361,17 +365,17 @@ blocks.DIAGRAM_PRACTICE_FLOW = () => `<figure class="fig">
     <rect x="312" y="44" width="248" height="64" rx="3" fill="var(--color-brand)" stroke="none"/>
     <g font-family="system-ui, sans-serif" font-size="13.5" fill="currentColor" text-anchor="middle">
       <text x="129" y="72">the practice shelf</text>
-      <text x="129" y="93" font-size="11.5" opacity="0.72">attributed · dated · versioned</text>
+      <text x="129" y="93" font-size="13" fill="var(--color-text-secondary)">attributed · dated · versioned</text>
       <text x="737" y="72">your code, your screens,</text>
       <text x="737" y="93">your schema</text>
       <text x="446" y="184" font-size="12.5">boss craft &lt;name&gt;</text>
-      <text x="446" y="202" font-size="11.5" opacity="0.72">read the source yourself — optional</text>
+      <text x="446" y="202" font-size="13" fill="var(--color-text-secondary)">read the source yourself — optional</text>
     </g>
     <g font-family="system-ui, sans-serif" font-size="13.5" fill="var(--color-on-brand)" text-anchor="middle">
       <text x="436" y="72">the agents that do the work</text>
-      <text x="436" y="93" font-size="11.5" opacity="0.85">carry it distilled, in their prompts</text>
+      <text x="436" y="93" font-size="13">carry it distilled, in their prompts</text>
     </g>
-    <g font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.72" text-anchor="middle">
+    <g font-family="system-ui, sans-serif" font-size="13" fill="var(--color-text-secondary)" text-anchor="middle">
       <text x="277" y="66">distilled into</text>
       <text x="595" y="66">applied while</text>
     </g>
@@ -473,7 +477,7 @@ blocks.DIAGRAM_RECORDS = () => `<figure class="fig">
       <text x="104" y="209">DEC-007.md</text>
       <text x="368" y="133">boss board</text>
     </g>
-    <g font-family="system-ui, sans-serif" font-size="11" fill="currentColor" opacity="0.72" text-anchor="middle">
+    <g font-family="system-ui, sans-serif" font-size="13" fill="var(--color-text-secondary)" text-anchor="middle">
       <text x="104" y="76">status: exploring</text>
       <text x="104" y="152">status: building</text>
       <text x="104" y="228">status: shipped</text>
@@ -483,23 +487,23 @@ blocks.DIAGRAM_RECORDS = () => `<figure class="fig">
     </g>
     <g font-family="system-ui, sans-serif" fill="var(--color-on-brand)">
       <text x="518" y="62" font-size="12.5" font-weight="600">Captured</text>
-      <text x="518" y="84" font-size="11" opacity="0.85">IDEA-014</text>
+      <text x="518" y="84" font-size="13">IDEA-014</text>
       <text x="518" y="127" font-size="12.5" font-weight="600">Taking shape</text>
-      <text x="518" y="149" font-size="11" opacity="0.85">— empty —</text>
+      <text x="518" y="149" font-size="13">— empty —</text>
       <text x="686" y="62" font-size="12.5" font-weight="600">Building</text>
-      <text x="686" y="84" font-size="11" opacity="0.85">FEAT-003</text>
+      <text x="686" y="84" font-size="13">FEAT-003</text>
       <text x="686" y="127" font-size="12.5" font-weight="600">Shipped</text>
-      <text x="686" y="149" font-size="11" opacity="0.85">DEC-007</text>
-      <text x="518" y="206" font-size="11" opacity="0.85">rendered on read,</text>
-      <text x="518" y="222" font-size="11" opacity="0.85">never written down</text>
+      <text x="686" y="149" font-size="13">DEC-007</text>
+      <text x="518" y="206" font-size="13">rendered on read,</text>
+      <text x="518" y="222" font-size="13">never written down</text>
     </g>
     <g stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.4" stroke-dasharray="5 4">
       <rect x="292" y="256" width="152" height="48" rx="3"/>
       <path d="M368 164 V256" />
     </g>
-    <g font-family="system-ui, sans-serif" fill="currentColor" text-anchor="middle" opacity="0.55">
+    <g font-family="system-ui, sans-serif" fill="var(--color-text-secondary)" text-anchor="middle">
       <text x="368" y="280" font-size="12.5">a status doc</text>
-      <text x="368" y="297" font-size="11">does not exist</text>
+      <text x="368" y="297" font-size="13">does not exist</text>
     </g>
   </svg>
   <figcaption><strong>The view is a render, never a record.</strong> Status lives in one place — the
@@ -644,7 +648,7 @@ const SOURCES = (() => {
 
 function refs(practiceId) {
   const keys = (SOURCES.practices || {})[practiceId] || [];
-  if (!keys.length) return '<p class="prov"><span>source</span> BOSS’s own practice — extracted from its build, not from outside</p>';
+  if (!keys.length) return '<p class="prov"><span>source</span> BOSS’s own practice, extracted from its build, not from outside</p>';
   const chips = keys.map((k) => {
     const src = SOURCES.sources[k];
     const label = esc(src.name);
@@ -657,14 +661,14 @@ function refs(practiceId) {
 
 blocks.ENGINEERING_PRACTICES = () => ENG_GROUPS.map(([name, blurb, ids]) => {
   const rows = ids.map((id) => byId[id]).filter(Boolean).map((p) => `        <div class="practice">
-          <h4>${md(p.title)}</h4>
-          <p class="meta"><code>${esc(p.id)}</code> · owned by <code>${esc(p.owner)}</code> ·
-            <span class="curve" title="how fast this ground moves">${esc(p.curve)} curve</span> ·
-            last checked ${esc(p.reviewed)}</p>
+          <h3>${md(p.title)}</h3>
+          <p class="meta"><code>${esc(p.id)}</code>, owned by <code>${esc(p.owner)}</code>, on a
+            <span class="curve" title="how fast this ground moves">${esc(p.curve)}-moving curve</span>;
+            last checked ${esc(p.reviewed)}.</p>
           ${refs(p.id)}
           ${p.provenance ? `<details class="prov-full"><summary>where this came from</summary><p>${md(p.provenance)}</p></details>` : ''}
         </div>`).join('\n');
-  return `      <h3>${esc(name)}</h3>
+  return `      <h2 class="group">${esc(name)}</h2>
       <p class="small">${esc(blurb)}</p>
       <div class="practices">
 ${rows}
@@ -677,9 +681,9 @@ blocks.DESIGN_PRACTICES = () => {
   const g = ENG_GROUPS.find(([n]) => n === 'Design & interface');
   if (!g) return '';
   return g[2].map((id) => byId[id]).filter(Boolean).map((p) => `        <div class="practice">
-          <h4>${md(p.title)}</h4>
-          <p class="meta"><code>${esc(p.id)}</code> · <span class="curve">${esc(p.curve)} curve</span> ·
-            last checked ${esc(p.reviewed)}</p>
+          <h3>${md(p.title)}</h3>
+          <p class="meta"><code>${esc(p.id)}</code>, on a <span class="curve">${esc(p.curve)}-moving curve</span>;
+            last checked ${esc(p.reviewed)}.</p>
           ${refs(p.id)}
           ${p.provenance ? `<details class="prov-full"><summary>where this came from</summary><p>${md(p.provenance)}</p></details>` : ''}
         </div>`).join('\n');
@@ -721,7 +725,7 @@ blocks.CREDITS = () => {
           ${ps ? `<p class="credit-in">${ps}</p>` : ''}
         </li>`;
     }).join('\n');
-    return `      <h3>${esc(heading)}</h3>
+    return `      <h2 class="group">${esc(heading)}</h2>
       <p class="small">${esc(blurb)}</p>
       <ul class="credits">
 ${items}

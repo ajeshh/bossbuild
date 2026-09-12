@@ -1,7 +1,7 @@
 <!--
 title: Design — how BOSS approaches UI and UX
 description: What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation.
-reviewed: 2026-09-11
+reviewed: 2026-09-12
 review_by: 2027-03-10
 describes: the design-system and ai-ux-patterns practices, /design-library, the design agents and skills
 covers: library/practices/design-system.md library/practices/ai-ux-patterns.md
@@ -10,12 +10,11 @@ nav: design
   <header class="hero">
     <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">Design</p>
       <h1>AI will give you the average of the internet<span class="dot">.</span></h1>
       <p class="lede">
         Ask a model for UI without design discipline and it ships the mean of its training data:
         Inter, a purple gradient, a centred card, three feature boxes. It looks <em>fine</em> on one
-        screen and forgettable by the third — and, worse, <strong>indistinguishable from every
+        screen and forgettable by the third and, worse, <strong>indistinguishable from every
         competitor your user tried this week.</strong> BOSS treats that as two separate problems, because
         they have two separate fixes.
       </p>
@@ -29,10 +28,10 @@ nav: design
       <div class="body">
         <div class="duo">
           <div class="prose">
-            <h3>Drift — the 47 blues</h3>
+            <h2>Drift: the 47 blues</h2>
             <p>
               Each new screen, the model derives slightly different colours. <code>bg-blue-500</code>,
-              <code>#3B82F6</code>, <code>blue-600</code>, a custom variable — all in one codebase,
+              <code>#3B82F6</code>, <code>blue-600</code>, a custom variable, all in one codebase,
               none of them agreeing. Components multiply the same way:
               <code>Button</code> → <code>CTAButton</code> → <code>PrimaryButton</code>, near-identical,
               because nothing searched for the existing one.
@@ -41,14 +40,14 @@ nav: design
               prompts that name tokens semantically rather than by value.</p>
           </div>
           <div class="prose">
-            <h3>Sameness — the slop default</h3>
+            <h2>Sameness: the slop default</h2>
             <p>
               A codebase can be perfectly token-disciplined and still look like every other AI-built
               app. That's a different failure: not drift, but <em>the absence of a decision.</em>
             </p>
             <p><strong>The fix is a choice:</strong> intentionality, not intensity. Bold maximalism and
               refined minimalism both work; what fails is defaulting. For a first build, minimalism done
-              precisely beats maximalism done loosely — restraint hides fewer mistakes.</p>
+              precisely beats maximalism done loosely; restraint hides fewer mistakes.</p>
           </div>
         </div>
         <div class="note">
@@ -62,12 +61,12 @@ nav: design
     <section class="section">
       <div class="rail">▸<span>the discipline</span></div>
       <div class="body">
-        <p class="stencil">three layers, not two</p>
+        <h2 class="stencil">three layers, not two</h2>
         <div class="prose">
           <p>
             Tokens go <strong>primitives → semantic → component</strong>. Two layers is fragile under AI
             generation: the model takes the easier path and hex codes escape. Three gives it a semantic
-            name to grab — <code>color.action.primary</code>, never <code>indigo-600</code> — so the
+            name to grab (<code>color.action.primary</code>, never <code>indigo-600</code>) so the
             system survives being generated against.
           </p>
           <p>
@@ -77,9 +76,9 @@ nav: design
             without copy-pasting.
           </p>
         </div>
-        <p class="stencil">the floors</p>
+        <h2 class="stencil">the floors</h2>
         <ul class="plain">
-          <li><strong>Five states on everything.</strong> Default, hover, active, disabled, focus — plus
+          <li><strong>Five states on everything.</strong> Default, hover, active, disabled, focus, plus
             empty and loading wherever data lands. At least one is always missing by default, and it's
             usually empty or loading, which are the most user-facing failures there are.</li>
           <li><strong>Accessibility is a floor, not a trade-off.</strong> Contrast measured rather than
@@ -132,13 +131,13 @@ nav: design
         <h2>Zoom into the floor: tokens come in three tiers, and the middle one is the trick</h2>
         <p>
           Tokens are the bottom rung of the eight above, and they have their own structure: three
-          tiers, scaffolded at the first UI commit — and the tier that matters is the middle one. <strong>Semantic tokens are named by purpose, never by hue.</strong>
+          tiers, scaffolded at the first UI commit, and the tier that matters is the middle one. <strong>Semantic tokens are named by purpose, never by hue.</strong>
           <code>--color-danger</code>, not <code>--color-red</code>. The reason is mechanical: when
           you retheme, <em>every use site changes at once</em>, because nothing downstream ever
           referred to the colour, only to the job.
         </p>
         <p>
-          Component boundaries follow the same logic — <strong>element-shaped, not page-shaped</strong>.
+          Component boundaries follow the same logic: <strong>element-shaped, not page-shaped</strong>.
           Extracting a primitive from a page-shaped component means untangling it from the page it was
           born in, which is the work everybody defers until it is too expensive.
         </p>
@@ -146,8 +145,8 @@ nav: design
         <ul class="plain">
           <li><strong>47 blues.</strong> Each screen generated separately, each picking its own
             approximation of your brand colour. Nobody decides this; it accumulates.</li>
-          <li><strong>Pattern reinvention.</strong> Every new component becomes a new file —
-            <code>Button</code>, then <code>CTAButton</code>, then <code>PrimaryButton</code> —
+          <li><strong>Pattern reinvention.</strong> Every new component becomes a new file:
+            <code>Button</code>, then <code>CTAButton</code>, then <code>PrimaryButton</code>,
             because generating a new one is cheaper than finding the old one.</li>
           <li><strong>Billion-line drift.</strong> Code grows linearly with screens instead of
             roughly flattening, because nothing is being reused. This is the one you notice last and
@@ -166,13 +165,13 @@ nav: design
         <h2>The library exists so the agent stops rebuilding the button</h2>
         <p>
           The gallery is not mainly for you to browse. Alongside it BOSS writes a manifest that
-          <strong>doubles as the agent's reuse index</strong> — so the next time something needs a
+          <strong>doubles as the agent's reuse index</strong>, so the next time something needs a
           button, the model has a list of what already exists instead of generating
           <code>PrimaryButton.tsx</code> next to the <code>CTAButton.tsx</code> it wrote last week.
         </p>
         <p>
           That's the actual cure for pattern reinvention. <strong>An AI never generalises across
-          sessions unless something hands it the inventory</strong> — it isn't lazy, it simply can't
+          sessions unless something hands it the inventory</strong>. It isn't lazy, it simply can't
           see what it can't be told about, and generating a new component is always cheaper than
           finding the old one.
         </p>
@@ -181,31 +180,31 @@ nav: design
         <p>
           Ask an AI for a settings page and you get a <em>page-shaped</em> component: everything
           entangled with the page it was born in. Ask for element-shaped pieces and you get
-          primitives that compose. <strong>The cost of getting this wrong isn't refactoring — it's
+          primitives that compose. <strong>The cost of getting this wrong isn't refactoring; it's
           that extracting primitives later is a rewrite</strong>, which is why it's the most-missed
           and most-expensive call on the list.
         </p>
 
         <h3>What the library actually contains, and the half everyone forgets</h3>
         <ul class="plain">
-          <li><strong>Foundations</strong> — colour, type, spacing. The part people mean when they
+          <li><strong>Foundations</strong>: colour, type, spacing. The part people mean when they
             say design system, and the smallest part.</li>
-          <li><strong>Components, every variant, all five states</strong> — default, hover, active,
+          <li><strong>Components, every variant, all five states</strong>: default, hover, active,
             disabled, empty, loading. <em>At least one is always missing</em>, and it's usually empty
             or loading, which are the two a user is most likely to meet on a bad day.</li>
-          <li><strong>The rule sets</strong> — principles, do/don't pairs, terminology, voice.
+          <li><strong>The rule sets</strong>: principles, do/don't pairs, terminology, voice.
             <strong>A library of components with no rules is a box of parts.</strong> This is the
             half that gets skipped and the half that makes the rest usable by someone who wasn't
             there.</li>
         </ul>
         <p>
-          All of it rendered <em>from your code and tokens</em>, so it cannot drift — and where a
+          All of it rendered <em>from your code and tokens</em>, so it cannot drift, and where a
           component <em>has</em> drifted from the tokens, the drift is rendered on the component
           rather than filed in a report nobody opens.
         </p>
         <p class="small">
           The discipline that keeps it honest cuts the other way too: <strong>a component nobody uses
-          is drift you're paying to maintain</strong> — and worse, it's a decision the next agent
+          is drift you're paying to maintain</strong>, and worse, it's a decision the next agent
           will copy.
         </p>
       </div>
@@ -252,9 +251,9 @@ nav: design
             either one moves</strong>, and nobody notices until a screen looks wrong.
           </p>
           <p>
-            <code>/design-library</code> generates the thing instead — a self-contained HTML gallery of
+            <code>/design-library</code> generates the thing instead: a self-contained HTML gallery of
             your foundations (colour, type, spacing) and every component in <strong>every variant and
-            all five states</strong> — <em>and the rule sets too</em>: the principles, the do/don't
+            all five states</strong>, <em>and the rule sets too</em>: the principles, the do/don't
             pairs, the terminology, the voice. Rendered <em>from the code and tokens</em>. The code stays the
             source of truth, so the library cannot disagree with the product. Re-run it any time; it's
             idempotent.
@@ -263,13 +262,13 @@ nav: design
         <div class="pairs">
           <div class="pair">
             <span class="k">the rule sets are half of it</span>
-            <span>Not just components — the principles with their tradeoffs, do/don't pairs,
+            <span>Not just components: the principles with their tradeoffs, do/don't pairs,
               terminology and voice. The parts a model needs in order to extend your system rather than
               invent beside it.</span>
           </div>
           <div class="pair">
             <span class="k">drift renders ON the component</span>
-            <span>Off-token colour, a missing state, an inconsistency — shown on the component itself,
+            <span>Off-token colour, a missing state, an inconsistency, shown on the component itself,
               not filed in a report nobody reopens. <code>--check</code> makes it a gate.</span>
           </div>
           <div class="pair">
@@ -292,7 +291,7 @@ nav: design
         <div class="pairs">
           <div class="pair">
             <span class="k">designer</span>
-            <span>Arrives at MVP, with the token system it owns. One designer, both halves — how it looks
+            <span>Arrives at MVP, with the token system it owns. One designer, both halves: how it looks
               and whether a person can actually get through it. That split is an org chart, not a seam in
               the work, and the two failures it exists to catch (a screen with no empty state, a colour
               that never entered the system) show up the first week you build anything.</span>
@@ -305,20 +304,23 @@ nav: design
           <div class="pair">
             <span class="k">/design-library</span>
             <span>Generates the gallery + the reuse manifest from your code. <code>--check</code> turns
-              drift into a gate.</span>
+              drift into a gate, and where the project already runs a component explorer with its own
+              index, it defers to that rather than keeping a second one.</span>
           </div>
           <div class="pair">
             <span class="k">design-tokens-guard</span>
-            <span>A hook that catches a hardcoded colour <em>the moment it is written</em> — hex,
-              <code>rgb()</code>, <code>bg-blue-500</code> — and hands Claude your token names
+            <span>A hook that catches a hardcoded colour <em>the moment it is written</em> (hex,
+              <code>rgb()</code>, <code>bg-blue-500</code>) and hands Claude your token names
               instead. <strong>A prompt convention is a filter; this is the check.</strong> Silent
-              until a <code>DESIGN_TOKENS.md</code> exists: no token system, no opinion. It ships
-              switched off, like every optional hook, because it runs after each file write.</span>
+              until a <code>DESIGN_TOKENS.md</code> exists: no token system, no opinion. It also reads
+              that document's <code>Deprecated</code> table, so a retired token name is answered with its
+              successor and a rename never has to be a deletion. It ships switched off, like every
+              optional hook, because it runs after each file write.</span>
           </div>
           <div class="pair">
-            <span class="k">component-reuse-guard · ui-boundary-guard</span>
+            <span class="k">component-reuse-guard, ui-boundary-guard</span>
             <span>Two more hooks, both dormant until earned. The first fires once per <em>new</em>
-              component and asks the question the index exists for — reuse, adjust, or new? — and
+              component and asks the question the index exists for (reuse, adjust, or new?) and
               reads the index's <code>Status</code> column, so an import of something marked
               <code>deprecated → X</code> is told to use <code>X</code>. The second keeps imports
               flowing one way, <code>ui/ → features/ → app/</code>, naming the crossing the moment
@@ -326,17 +328,18 @@ nav: design
               and Dart.</span>
           </div>
           <div class="pair">
-            <span class="k">/design-review · /ux-check</span>
+            <span class="k">/design-review, /ux-check</span>
             <span>The MVP pass, before code and after it. <code>/ux-check</code> walks the
               <em>actual journey rather than the spec</em>, checks the five states are real and not
               merely designed, and runs accessibility heuristics. Token enforcement, the five states, and the
               flow read end-to-end rather than screen-by-screen. Findings say whether they were
-              <em>observed</em> or <em>inferred</em> — a review can only walk what it can run, and it
-              tells you which it did.</span>
+              <em>observed</em> or <em>inferred</em>. A review can only walk what it can run, and it
+              tells you which it did, and names the runner that would turn a <em>not checked</em> row
+              into a checked one.</span>
           </div>
           <div class="pair">
             <span class="k">/red-team --humane</span>
-            <span>Probes your <em>built</em> product for dark patterns — including the ones that emerge
+            <span>Probes your <em>built</em> product for dark patterns, including the ones that emerge
               from the model itself, like sycophancy, rather than only the ones designed on purpose.</span>
           </div>
         </div>
@@ -350,7 +353,7 @@ nav: design
           That line is the whole of BOSS's conversion ethic, and it's testable. <strong>The
           say-it-out-loud test:</strong> would you say that decline sentence to the person's face, in a
           shop? If it exposes a sneer, cut it. <strong>The urgency-honesty rule:</strong> a real deadline
-          is a fact you can state — the manipulation is only ever in the falsity.
+          is a fact you can state; the manipulation is only ever in the falsity.
         </p>
       </div>
     </div>
@@ -358,26 +361,37 @@ nav: design
     <section class="section">
       <div class="rail">▸<span>a worked example</span></div>
       <div class="body prose">
-        <h2>This site failed its own test first</h2>
+        <h2>This site failed its own test first. Twice.</h2>
         <p>
           The first draft of BOSS's visual identity was warm cream, a serif display face, a terracotta
           accent, hairline rules and a decorative <code>01 / 02 / 03</code> rail. That is, precisely, a
-          named 2026 AI-default cluster — <strong>BOSS walked straight into the failure its own practice
+          named 2026 AI-default cluster. <strong>BOSS walked straight into the failure its own practice
           exists to prevent.</strong>
         </p>
         <p>
           The lesson is the transferable part, and it's the opposite of what you'd guess: <strong>you
           can't escape a cluster by swapping the palette. You break it by deriving the choices from the
-          subject.</strong> The ground and accent stayed. The display face became the mono stack, because
+          subject.</strong> The accent stayed. The display face became the mono stack, because
           BOSS is a terminal and its headlines should come from the same world as its proof. The
           numbered rail became the <code>▸</code> the CLI actually prints, because the sections were
           never a sequence.
         </p>
         <p>
           It also exposed something worse than a bad page: the practice that warns about AI-default
-          still named the <em>2025</em> tell — purple gradient, Inter, centred card — while reporting
+          still named the <em>2025</em> tell (purple gradient, Inter, centred card) while reporting
           itself fresh. <strong>A practice naming last year's default is worse than no practice, because
           it certifies the current one as safe.</strong>
+        </p>
+        <p>
+          The second failure was quieter. The token file said the ground was <em>"cool poured concrete,
+          deliberately not warm cream"</em>, and for a year the ground was hue 43°: the cream's own hue
+          with the saturation turned down, a nudged default wearing a comment that said otherwise. The
+          first time a rendered-page linter was pointed at this site (2026-09-12, forty findings) it read
+          the ground as cream, eleven text pairs under the contrast floor, seventeen measures past
+          eighty characters, and the tracked ALL-CAPS label above every heading that the practice on
+          this page names as the commonest tell. <strong>A comment is a claim. A rule never pointed at
+          yourself is a claim with better posture.</strong> The ground is now the graphite's own hue,
+          the floors are at zero, and the decision record says what moved and why.
         </p>
       </div>
     </section>
@@ -388,8 +402,8 @@ nav: design
         <div class="practices">
           {{DESIGN_PRACTICES}}
         </div>
-        <p class="small"><a href="engineering.html">The rest of the technical practices →</a> ·
-          <a href="charter.html">the humane line →</a></p>
+        <p class="small"><a href="engineering.html">The rest of the technical practices</a>, and
+          <a href="charter.html">the humane line</a>.</p>
       </div>
     </section>
 

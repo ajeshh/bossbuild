@@ -1,7 +1,7 @@
 <!--
 title: Keeping track — what BOSS writes down, so you don't have to
 description: Twelve ideas, three half-finished specs, and a decision you can't remember making. BOSS gives every one of them a file, a status, and a place — and renders the board from the files so nothing can drift.
-reviewed: 2026-08-20
+reviewed: 2026-09-12
 review_by: 2027-02-16
 describes: the record system — typed IDs, status in frontmatter, the rendered board
 covers: library/practices/documentation.md stages/L0-quickstart/template/docs
@@ -10,10 +10,9 @@ nav: keeping-track
   <header class="hero">
     <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">Keeping track</p>
       <h1>Twelve ideas, three half-specs, and a decision you can't remember making<span class="dot">.</span></h1>
       <p class="lede">
-        The build isn't usually what breaks. What breaks is the <em>bookkeeping around</em> the build —
+        The build isn't usually what breaks. What breaks is the <em>bookkeeping around</em> the build:
         which idea you dropped and why, what that spec was actually supposed to do, whether you already
         decided this six weeks ago. BOSS gives every one of those a file, a status, and a place to live,
         and then <strong>renders your progress out of those files</strong> instead of asking you to keep
@@ -30,16 +29,16 @@ nav: keeping-track
         <div class="prose">
           <h2>Every capture leaves an object behind</h2>
           <p>
-            Talking to an AI produces a transcript, and a transcript is not a record — you can't grep it,
+            Talking to an AI produces a transcript, and a transcript is not a record: you can't grep it,
             link to it, or hand it to someone. So the verbs that matter write files instead. Not a
             summary of the conversation: a durable, addressable thing with an ID.
           </p>
           <p>
-            <strong>The status vocabulary is closed, and the record types arrive by rung</strong> — you
+            <strong>The status vocabulary is closed, and the record types arrive by rung</strong>; you
             get the few you need on day one, not the whole filing system. Both are reference, both are
             generated from the manifests, and both read better against <em>your</em> project than
             against the superset: <code>boss help --html</code> writes them out for the types you
-            actually have. The closed list is what makes the board renderable — a typo would otherwise
+            actually have. The closed list is what makes the board renderable; a typo would otherwise
             become an invisible card, and <code>boss records</code> catches it before it does.
           </p>
         </div>
@@ -58,13 +57,13 @@ nav: keeping-track
           </div>
           <div class="pair">
             <span class="k">/decide → DEC-007.md</span>
-            <span>Context, decision, why, consequences, who decided — and <strong>a falsifier</strong>:
+            <span>Context, decision, why, consequences, who decided, and <strong>a falsifier</strong>:
               what would prove this wrong, and by when. Superseded, never edited, so the reasoning you
               had at the time survives the fact that you changed your mind.</span>
           </div>
           <div class="pair">
-            <span class="k">/evidence · /interview · /research → EVID-002.md</span>
-            <span>One real signal per file, graded honestly on a fixed three-rung ladder — said it hurts
+            <span class="k">/evidence, /interview, /research → EVID-002.md</span>
+            <span>One real signal per file, graded honestly on a fixed three-rung ladder: said it hurts
               → did something about it → committed money or time. The thing your whole plan rests on
               finally gets an object instead of evaporating into memory.</span>
           </div>
@@ -77,12 +76,12 @@ nav: keeping-track
         <p class="small prose">
           <code>/idea</code>, <code>/decide</code> and the evidence verbs are there on day one;
           <code>/spec</code> arrives with MVP mode. {{COUNT_ID_TYPES}} record types exist in total and
-          you're handed {{COUNT_ID_DAY_ONE}} — see <code>boss help --html</code>.
+          you're handed {{COUNT_ID_DAY_ONE}}; see <code>boss help --html</code>.
         </p>
       </div>
     </section>
 
-    <hr class="hazard">
+    <hr>
 
     <section class="section">
       <div class="rail">▸<span>the board</span></div>
@@ -91,7 +90,7 @@ nav: keeping-track
           <h2>Progress is derived, never maintained</h2>
           <p>
             <em>"Where am I?"</em> is the question a founder asks most often and documentation answers
-            worst — because the obvious fix is a status document, and a status document is a second
+            worst, because the obvious fix is a status document, and a status document is a second
             source of truth that starts lying in about a week. You update the files, you forget the
             board; or you update the board, and now two things disagree and nothing tells you which one
             is wrong.
@@ -116,9 +115,9 @@ nav: keeping-track
 </pre>
         </div>
         <p class="small prose">
-          If the board looks wrong, the fix is to change the work — never the view. There is no view to
+          If the board looks wrong, the fix is to change the work, never the view. There is no view to
           fix. When a card's one-line summary isn't enough, <code>boss board &lt;ID&gt;</code> opens that
-          one in full and <code>boss board --detail</code> puts a line under every card — still a read of
+          one in full and <code>boss board --detail</code> puts a line under every card, still a read of
           the files, just a closer one.
         </p>
       </div>
@@ -139,7 +138,7 @@ nav: keeping-track
           <div class="pair">
             <span class="k">review_by:</span>
             <span>Practices carry an expiry date. Ground that moves fast gets a short one. A doc past its
-              date is flagged as stale rather than silently trusted — being old is a fact about a
+              date is flagged as stale rather than silently trusted; being old is a fact about a
               document, so it belongs in the document.</span>
           </div>
           <div class="pair">
@@ -150,13 +149,13 @@ nav: keeping-track
           </div>
           <div class="pair">
             <span class="k">/sunset</span>
-            <span>Ending something honestly — a whole project, or one zombie feature. The post-mortem
+            <span>Ending something honestly, a whole project or one zombie feature. The post-mortem
               nobody ships: what it was for, what actually happened, what's worth keeping. Framed as an
               experiment that returned an answer, because that's what it is.</span>
           </div>
           <div class="pair">
             <span class="k">status: dropped</span>
-            <span>Decided against — <strong>and the file stays.</strong> Deleting it destroys the only
+            <span>Decided against, <strong>and the file stays.</strong> Deleting it destroys the only
               record of the reasoning, which is exactly what you need in eight months when the same idea
               arrives looking brand new.</span>
           </div>
@@ -164,7 +163,7 @@ nav: keeping-track
       </div>
     </section>
 
-    <hr class="hazard">
+    <hr>
 
     <section class="section">
       <div class="rail">▸<span>honestly</span></div>
@@ -173,7 +172,7 @@ nav: keeping-track
           <h2>What's borrowed, and where this still leans on you</h2>
           <p>
             Very little here is invented. <code>DEC</code> records are architecture decision records,
-            which <strong>Michael Nygard</strong> wrote down in 2011 — short, dated, superseded rather
+            which <strong>Michael Nygard</strong> wrote down in 2011: short, dated, superseded rather
             than edited. Rendering a view out of file frontmatter is what note tools and project
             databases have done for years. Treating a written artifact as a means of deciding rather
             than a deliverable is <strong>Marty Cagan</strong>'s point about discovery, and it predates
@@ -182,7 +181,7 @@ nav: keeping-track
           <p>
             What's actually ours is narrower and worth stating plainly: <strong>the ceremony is rationed
             by mode</strong> rather than issued all at once, and some of these documents are read by the
-            tool at runtime rather than only by people — a loop file in <code>docs/loops/</code> isn't a
+            tool at runtime rather than only by people; a loop file in <code>docs/loops/</code> isn't a
             description of a process, it's the thing that makes BOSS speak up. That's the composition,
             not the parts.
           </p>
@@ -190,18 +189,18 @@ nav: keeping-track
         <div class="note">
           <p>
         Two of these were rules in your project and not yet mechanisms, and one still is. You don't
-        allocate the number by hand any more — <code>boss id IDEA</code> computes it, reading every
+        allocate the number by hand any more; <code>boss id IDEA</code> computes it, reading every
         <code>.md</code> under <code>docs/</code>, filenames <em>and</em> prose, because a number
         reserved in an index is taken even when no file exists yet. That closes the hole this page
         was written to disclose: two files claimed the same number in BOSS's own repo on the same
         day, and every reference to it was ambiguous until a person spotted it.
       </p>
       <p>
-        <code>boss records</code> now ships the other half — the checker that catches a duplicate ID,
+        <code>boss records</code> now ships the other half: the checker that catches a duplicate ID,
         an off-list status, and a broken promotion link. It also asks the question the rules never
         could: a status is a claim about your code, so <code>proof:</code> names the file that would
         not exist if the thing weren't done, and the check runs both ways. The expensive direction is
-        a finished feature whose record still reads <em>exploring</em> — a thing you might build
+        a finished feature whose record still reads <em>exploring</em>, a thing you might build
         twice, or hand to an agent that rebuilds it, because the agent believes your docs.
       </p>
       <p>
@@ -209,7 +208,7 @@ nav: keeping-track
         by hand that isn't on the list, or skipping <code>boss id</code> and typing a number. The
         checker tells you afterwards. Detection is not prevention, and this page would rather say so
         than let you find out. <em>This paragraph was itself stale for four releases after the
-        checker shipped — which is the whole subject of the page, arriving on time.</em>
+        checker shipped, which is the whole subject of the page, arriving on time.</em>
       </p>
         </div>
       </div>
@@ -220,7 +219,7 @@ nav: keeping-track
       <div class="body">
         <div class="prose">
           <p>
-            None of this is set up. It's in the folder from the first command, and it's plain Markdown —
+            None of this is set up. It's in the folder from the first command, and it's plain Markdown;
             readable, editable, deletable, and yours whether or not you keep using BOSS.
           </p>
         </div>
