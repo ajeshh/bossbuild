@@ -11,7 +11,7 @@ review_by: 2026-10-21
 curve: model
 ---
 
-# Practice — Retrieval (a ladder, not a vector database — climb only when it hurts)
+# Practice — Retrieval (a ladder, not a vector database; climb only when it hurts)
 
 > **Where this sits.** This is a *build-time* practice, and its whole value is **subtraction**: telling a
 > founder what NOT to build. Retrieval is the one area where a first-timer makes an *expensive wrong turn* — a

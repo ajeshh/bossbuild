@@ -11,7 +11,7 @@ review_by: 2027-07-23
 curve: craft
 ---
 
-# Practice — Feature flags (decouple deploy from release — and flag the *model*, not just the feature)
+# Practice — Feature flags (decouple deploy from release, and flag the *model*, not just the feature)
 
 > **Where this sits.** [`git-workflow`](git-workflow.md) says merge to trunk daily; a flag is *how* you merge
 > unfinished work safely. [`ship-it-live`](ship-it-live.md) says a URL is the proof; a flag is the fast

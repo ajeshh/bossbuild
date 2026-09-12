@@ -11,7 +11,7 @@ review_by: 2027-02-16
 curve: craft-ai
 ---
 
-# Practice: Design system — style never locked into code
+# Practice: Design system, or style never locked into code
 
 > Generalized from dhun's design system (DESIGN_TOKENS single source of truth, central badge/pill
 > style utils, "no raw Tailwind colors" enforcement hook, Rangoli generative styles, prototype

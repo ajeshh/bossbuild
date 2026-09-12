@@ -11,7 +11,7 @@ review_by: 2026-11-09
 curve: host
 ---
 
-# Practice: Skill authoring — write skills the model actually triggers and follows
+# Practice: Skill authoring, or writing skills the model actually triggers and follows
 
 > Adapted from Anthropic's own `skill-creator` skill, vetted into BOSS's practice shelf (RVW-013).
 > The wisdom, not the harness: the with/without eval machinery is deferred (see *What's left out*).
