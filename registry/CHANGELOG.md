@@ -16,6 +16,91 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.313.0 — 2026-09-12
+
+**BOSS's own website and the in-project guide, measured against BOSS's own design floors, and
+fixed at the source. The first execution of build-craft tap 1 came back with forty findings; the
+floors are now at zero on all seventeen pages and on `boss help --html`.**
+
+> **For you:** `boss help --html` renders on the same concrete-and-graphite palette as everything
+> else BOSS makes, with no tracked ALL-CAPS labels, every text pair over 4.5:1 (the project-name tag
+> was white on hi-vis at 3.6:1), prose bounded at 80 characters at every size, and table cells that
+> wrap. `boss board` gets the same contrast fix. Four practice titles lost a `WORD — fragment`.
+
+**What the tap found (2026-09-12, a rendered-page design linter at 4.1.0, 17 pages + `web/`):**
+low-contrast **114** · line-length **183** · undersized-ui-text **142** · all-caps-body **30** ·
+cream-palette **17** · side-tab **10** · repeating-stripes **11** · tiny-text **5** · tight-leading
+**4** · skipped-heading **6** · kicker-above-heading **2** · heading-rhythm **2** · text-occlusion
+**1** · em-dash advisory on 17 pages. **After:** every floor at **0**; two advisories left, each
+decided in writing (below).
+
+**The floors, fixed in the tokens so one change fixed every page.**
+- **Contrast.** 83 of the 114 were one pair: `--slate` (`#5F656B`) inheriting into `<code>` on
+  `--concrete-sunk` at **4.22:1** — muted text never met the sunk surface in anyone's head, and
+  `<code>` inherits its parent's colour. `--slate` → `#565C62`, `--hivis-ink` → `#A63400`, `--stop-ink`
+  → `#B71616`; every text/surface pair in both themes now ≥ 4.5:1, checked with the arithmetic
+  `contrast-guard.js` ships before a value was written. The token file says which pair failed and why.
+  Twelve more were **`opacity` stacks** in the inline SVG figures (`<text opacity="0.72">` at 11.5px),
+  which a pixel-contrast reader correctly calls invisible: token fills, 13 units. One was real and
+  tiny — the skip link's hover in dark mode set chalk on chalk. `src/board.js` carried the same
+  muted-on-sunk pair in its palette copy and moved in the same change.
+- **Measure.** `--measure: 64ch` capped prose *containers*, and `ch` is the root font's zero — so a
+  14px caption inside a 64ch box ran to ~100 characters and the footer, in no container, to 142.
+  The rule that holds is **`max-width: 40em` on every text block**: 40em in the element's own size is
+  80 characters at any size. `pre`, tables and figures stay the exceptions inside `overflow-x: auto`;
+  table cells got a bounded block child, since table layout ignores `max-width` on a `td`.
+- **Leading** 1.2 → 1.35 on the note question; figure and micro text nowhere under 12px.
+
+**The taste, decided (DEC-018 for the one that is a decision).**
+- **The ground was cream.** `tokens.css` said *"cool poured concrete — deliberately NOT warm cream"*
+  and `VISUAL.md` said *"a different family, not a nudged version of the same one."* The value was
+  hue **43°** at 13% saturation — the cream tell (`#F4F1EA`, 42°) with the saturation turned down,
+  while the entire graphite half sat at **210°**. The comment was the claim; nothing was pointed at
+  the value for 24 releases. The light neutrals moved to 210° (`#E4E6E8` / `#F0F2F3` / `#D7DADD`),
+  `--bone` became `--chalk` because the name would have lied, the comment now states the number and
+  cites the record, and `VISUAL.md` keeps its wrong sentence with the correction beside it.
+- **The kicker above every h1** (a tracked ALL-CAPS hi-vis tag repeating the nav label — the
+  commonest template-chrome tell, on all 17 pages) is gone; the index tagline moved into the rail
+  under the wordmark, which is the one place it decodes the acronym beside the acronym. The uppercase
+  `.stencil` labels became real `<h2>`s in normal case, which also fixed every skipped-heading finding
+  honestly (h1 → label → items) instead of by resizing. `thead th`, `.count`, `.tag`, the practice
+  `learned from` badge, the `key` badge, the subnav labels: normal case, ≥ 0.75rem.
+- **3px hi-vis edges** on `.note` / `.yield` / `.orphan-note` were card side-tabs; `--hivis-rule` is
+  now `--turn-rule`, a 1px ink hairline. Hi-vis stays a fill. **The hazard stripes**, *"the humane
+  charter's one visual device"* per their own comment, had spread to fifteen uses on ten pages; they
+  are back to the charter only and `<hr>` is a hairline elsewhere. **Kept, decided:** the charter's
+  one stripe rule is the device it was always meant to be.
+- **Copy tells, at the source.** 34 cross-links ending in `→` lost the arrow (a link is a link).
+  Every `A · B · C` string outside real CLI output became a sentence — the footer, the practice
+  `meta` lines in the generator, the `thinking` cost lines, the canvas's `1 · Human Foundation`
+  headings, the guide's `Quickstart — get the idea out of your head` rung headings. **Em-dashes:**
+  index 79 → 18 (12 of those inside terminal transcripts, which are the CLI's own text), engineering
+  38 → 2, design 36 → 1, and a pass over every hand-written page — cut where a full stop, comma or
+  colon read better, kept where the dash does work; no global replace. **Kept, decided:** the
+  `Author — Work` labels in `library/sources.json` are citation form, not chrome, so the credits
+  page still trips the advisory; the what's-new page is the CHANGELOG's own historical lines and
+  those are not rewritten.
+- **The in-project guide (`library/help/help.css`, `src/help-html.js`) was further from the rule
+  than the website:** its own warm-cream palette (`#f4f2ec`, hue 45°), a white-on-hi-vis label at
+  3.6:1, ALL-CAPS kicker / eyebrow / table heads, a 0.6rem tag, `opacity: 0.62` on locked skills,
+  inline `style="color:…"` in table cells, and an eyebrow that repeated the h2 under it whenever a
+  section had no title of its own. All of it moved: same values as `tokens.css` (copied, and the
+  copy says so), normal case, token colour instead of opacity, a `.cell` block so the description
+  column wraps at 40em, and the eyebrow only when it says something the heading does not. The
+  detector on a fresh `boss new` guide: floors at zero.
+
+**Docs that had gone stale.** `design.html`'s worked example said *"the ground and accent stayed"*;
+it now tells the second failure too, with the numbers. The tokens-guard pair says it reads the
+`Deprecated` table (v0.311.0); `/ux-check`'s says it names the runner for a *not checked* row
+(v0.307.0); `/design-library`'s says it defers to a project's own component-explorer index. `VISUAL.md`
+gains the corrected palette table, the every-surface contrast rule, the no-ALL-CAPS rule, the
+per-element measure, and the 2026-09 template-chrome line in its anti-slop checklist.
+
+**Not done, written down:** `boss board`'s HTML still carries its own uppercase micro-labels and
+9.5–11px text (contrast fixed here; the rest is a separate pass — RESUME). The tap stays a
+measurement via `npx`, never a dependency or a hook in BOSS's own tree. The page `<title>`s keep the
+`Name — what it is` form, which is a title convention rather than a heading.
+
 ## 0.312.0 — 2026-09-12
 
 **Engineering gets its first feedback sensor: `smoke-guard` (new, dormant). The initiative rung

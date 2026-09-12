@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.312.0" />
+<meta name="generator" content="BOSS 0.313.0" />
 <link rel="canonical" href="https://oyeboss.build/governance" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught." />
 <meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF5C00' d='M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z'/%3E%3C/svg%3E" />
-<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#E4E6E8" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#16181A" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
@@ -46,10 +46,9 @@
 <header class="hero">
     <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">Governance</p>
       <h1>Where every opinion in here came from<span class="dot">.</span></h1>
       <p class="lede">
-        A tool that coaches you is only as good as the advice inside it — and “built on best practices”
+        A tool that coaches you is only as good as the advice inside it, and “built on best practices”
         is the cheapest sentence in software. So BOSS treats its own beliefs as an asset that can rot:
         <strong>34</strong> practice files, every one carrying who it came from, when it
         was last checked, and what would make it wrong. <strong>98</strong> outside claims
@@ -66,7 +65,7 @@
         <div class="stat">
           <span class="n">98</span>
           <span class="of">outside claims put through the filter. Adopting one as-is is the
-            <em>rare</em> outcome — most that survive are modified, and a large share are turned down
+            <em>rare</em> outcome; most that survive are modified, and a large share are turned down
             or held.</span>
         </div>
         <div class="stat">
@@ -74,11 +73,11 @@
           <span class="of">practice files, every one carrying its provenance, the date it was last
             checked, and the curve that says how fast its ground moves.</span>
         </div>
-        <hr class="hazard" />
+        <hr>
         <div class="prose">
           <h2>A claim from a stranger has earned nothing</h2>
           <p>
-            A Reddit thread, a blog post, a conference talk, a “you must do X” best-practice — none of it
+            A Reddit thread, a blog post, a conference talk, a “you must do X” best-practice: none of it
             gets into BOSS by being popular. It goes through <code>/vet</code>, which is deliberately
             <strong>biased toward NO</strong> and scores against a fixed rubric.
           </p>
@@ -102,7 +101,7 @@
               multipliers; vendor-graded findings are labeled as such.</span>
           </div>
           <div class="pair">
-            <span class="k">who does it serve — and who does it harm?</span>
+            <span class="k">who does it serve, and who does it harm?</span>
             <span>Named explicitly, both directions, before any adoption.</span>
           </div>
           <div class="pair">
@@ -117,14 +116,14 @@
         </div>
         <div class="prose">
           <p>
-            Four outcomes: <strong>ADOPT</strong> · <strong>ADAPT</strong> (taken, but changed and the
-            change reasoned) · <strong>REJECT</strong> (with the reason, logged, so it isn't re-litigated
-            every time it trends) · <strong>NOT-YET</strong> (a real condition that would re-open it).
-            <strong>Adopting as-is is the rare outcome, not the common one</strong> — most claims that
+            Four outcomes: <strong>ADOPT</strong>; <strong>ADAPT</strong> (taken, but changed and the
+            change reasoned); <strong>REJECT</strong> (with the reason, logged, so it isn't re-litigated
+            every time it trends); <strong>NOT-YET</strong> (a real condition that would re-open it).
+            <strong>Adopting as-is is the rare outcome, not the common one</strong>; most claims that
             survive are modified, and a large share are turned down or held.
           </p>
           <p class="small">
-            A deferral whose condition has expired is not a decision — it's a stale note. Those get
+            A deferral whose condition has expired is not a decision; it's a stale note. Those get
             re-decided, not left to rot.
           </p>
         </div>
@@ -139,12 +138,12 @@
           <p>
             Everything above is the filter on claims from <em>outside</em>. There's a second door, and
             it's the one BOSS's first operating principle is about: <strong>when work pauses, sort what
-            you just learned.</strong> Most of what's worth keeping isn't a blog post — it's a pattern
+            you just learned.</strong> Most of what's worth keeping isn't a blog post; it's a pattern
             you used three times without noticing.
           </p>
           <p>
-            <code>/extract</code> is that pause made into a verb. It reads your recent work — the commit
-            log, the devlog, the code — and proposes one to three candidates, each routed one of two
+            <code>/extract</code> is that pause made into a verb. It reads your recent work (the commit
+            log, the devlog, the code) and proposes one to three candidates, each routed one of two
             ways: <strong>UP</strong> into BOSS's library as a practice other projects inherit, or
             <strong>DOWN</strong> into your own app as hardened code that stops being a pattern you have
             to remember. <code>/boss-learn</code> is the judgment step over that routing, because those
@@ -152,8 +151,8 @@
             things nobody needed.
           </p>
           <p class="small">
-            It proposes; you decide. Nothing enters the library because a machine thought it was clever
-            — the same standard the outside door is held to.
+            It proposes; you decide. Nothing enters the library because a machine thought it was clever,
+            the same standard the outside door is held to.
           </p>
         </div>
       </div>
@@ -165,13 +164,13 @@
         <div class="prose">
           <h2>Nobody's name is on an agent</h2>
           <p>
-            BOSS's mentors are <strong>archetypes seeded by named, attributed practices</strong> — never
+            BOSS's mentors are <strong>archetypes seeded by named, attributed practices</strong>, never
             impersonations. The rule, kept in writing: <strong>no agent impersonates a person; mentors
             cite the practice.</strong> A named thinker's transferable heuristic is distilled into a
             practice file with the attribution attached; the agent then reasons from the practice.
           </p>
           <p>
-            The one-line lens recorded next to a practitioner is a study pointer — <em>not</em> that
+            The one-line lens recorded next to a practitioner is a study pointer, <em>not</em> that
             person's endorsement, and not their verbatim view. Which is why you'll never see a
             <code>mentor-</code> agent claiming to be anybody.
           </p>
@@ -185,7 +184,7 @@
         <div class="prose">
           <h2>A doc rots because the ground moved, not because time passed</h2>
           <p>
-            So every practice carries a <strong>curve</strong> — how fast its ground actually moves — and
+            So every practice carries a <strong>curve</strong>, how fast its ground actually moves, and
             the curve routes it to whichever discipline owns it. Cadence alone provably misses: the first
             freshness run reported everything fresh while one practice was already <em>wrong</em>, seven
             days after it was written, because a spec had shipped in the meantime.
@@ -194,7 +193,7 @@
         <div class="pairs">
           <div class="pair">
             <span class="k">the sweep hunts for what's WRONG, not just missing</span>
-            <span>Because the tool pushes its guidance into live projects, a stale practice isn't inert —
+            <span>Because the tool pushes its guidance into live projects, a stale practice isn't inert;
               it actively ships bad advice. Reversals count as findings.</span>
           </div>
           <div class="pair">
@@ -215,7 +214,7 @@
             <strong>generated at build time</strong> from the same stage manifests the CLI reads, and the
             build runs in the release gate. Nobody can type “15 agents” into a page and let it quietly
             become false. That fix exists because BOSS's own cheatsheet drifted for 56 releases while its
-            generator was wired to nothing — <strong>a check nobody runs isn't a check.</strong>
+            generator was wired to nothing: <strong>a check nobody runs isn't a check.</strong>
           </p>
         </div>
       </div>
@@ -227,8 +226,8 @@
         <h2>What this doesn't prove</h2>
         <p>
           A rigorous filter on incoming advice is not the same as evidence that the advice
-          <em>works</em>. BOSS has one external founder's reaction on record and no long-run outcome data
-          — so what's claimed here is process, not proof. The pipeline stops bad claims getting in. It
+          <em>works</em>. BOSS has one external founder's reaction on record and no long-run outcome data,
+          so what's claimed here is process, not proof. The pipeline stops bad claims getting in. It
           does not establish that the good ones made anyone's company better. That would take users and
           time, and BOSS has very little of either yet.
         </p>
@@ -253,28 +252,28 @@
         </div>
         <p class="small">Either puts <code>boss</code> on your PATH. Needs
           <a href="https://nodejs.org">Node 18+</a> and
-          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a> — in the terminal, VS Code,
+          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>, in the terminal, VS Code,
           Cursor or JetBrains, on macOS, Linux or Windows; BOSS runs wherever Claude Code does.</p>
         <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
-          <a href="https://www.npmjs.com/package/oyeboss">npm</a> ·
-          MIT licensed · zero dependencies · no account.
+          <a href="https://github.com/ajeshh/bossbuild">The source is on GitHub</a> and
+          <a href="https://www.npmjs.com/package/oyeboss">the package is on npm</a>. MIT licensed, zero
+          dependencies, no account.
         </p>
         <p class="small">
-          Built by <strong>Ajesh Shah</strong> in Oakland, California. <a href="about.html">About →</a> ·
-          <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> ·
-          <a href="https://github.com/ajeshh">GitHub</a>
+          Built by <strong>Ajesh Shah</strong> in Oakland, California; <a href="about.html">the why is
+          here</a>. Ajesh is on <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> and
+          <a href="https://github.com/ajeshh">GitHub</a>.
         </p>
         <p class="small">
           <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
-          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          you type <code>boss update</code>: a GET to the public npm registry asking for a version
           number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
           phone-home; the check never runs unless you ask for it. It’s ~30 lines in
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.312.0, built in the open and used daily by its
-          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          <strong>Where this actually is:</strong> v0.313.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
         </p>

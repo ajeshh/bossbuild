@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.312.0" />
+<meta name="generator" content="BOSS 0.313.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin." />
 <meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF5C00' d='M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z'/%3E%3C/svg%3E" />
-<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#E4E6E8" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#16181A" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
@@ -46,7 +46,6 @@
 <header class="hero">
     <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">What's new</p>
       <h1>What's new<span class="dot">.</span></h1>
       <p class="lede">
         Releases that change something you'd actually do, see or rely on — or that add a practice
@@ -59,7 +58,7 @@
         installed, and <code>/boss-sync</code> brings you forward as a reviewed diff — never a
         silent update.
         <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full
-        engineering changelog →</a>
+        engineering changelog</a>
       </p>
     </div>
   </header>
@@ -69,6 +68,10 @@
       <div class="rail">▸<span>releases</span></div>
       <div class="body">
         <ol class="releases">
+      <li>
+        <div class="rel"><span class="ver">v0.313.0</span><span class="when">2026-09-12</span></div>
+        <p><code>boss help --html</code> renders on the same concrete-and-graphite palette as everything else BOSS makes, with no tracked ALL-CAPS labels, every text pair over 4.5:1 (the project-name tag was white on hi-vis at 3.6:1), prose bounded at 80 characters at every size, and table cells that wrap. <code>boss board</code> gets the same contrast fix. Four practice titles lost a <code>WORD — fragment</code>.</p>
+      </li>
       <li>
         <div class="rel"><span class="ver">v0.312.0</span><span class="when">2026-09-12</span></div>
         <p><code>/smoke</code> now plants the strict typecheck + formatter at its first run and offers <code>smoke-guard</code> — a <code>Stop</code> hook that runs your smoke when Claude finishes a turn that touched source and hands red back once. <code>/spec</code> asks for a <code>program:</code> slug on the second FEAT of the same thing. <code>boss help hooks</code> describes the guard. All advisory, all fail-open, all silent until earned.</p>
@@ -113,13 +116,9 @@
         <div class="rel"><span class="ver">v0.300.0</span><span class="when">2026-09-11</span></div>
         <p><strong>the conscience now fires on Windows without Git Bash.</strong> The two hooks BOSS registers moved to Claude Code's exec form — no shell in between — and <code>/boss-sync</code> migrates the old line in existing projects. Needs Claude Code 2.1.139 or newer (<code>claude --version</code>).</p>
       </li>
-      <li>
-        <div class="rel"><span class="ver">v0.299.0</span><span class="when">2026-09-11</span></div>
-        <p><strong>BOSS's list of &quot;what generated design looks like&quot; is current again</strong> — it was a 2024 list, and the fix it prescribed had become the 2026 tell. Plus a one-paragraph test that makes <em>sameness</em> visible before you build, and craft floors pre-filled in your style guide so &quot;name the slot&quot; stops withholding facts.</p>
-      </li>
     </ol>
         <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog →</a>
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/registry/CHANGELOG.md">The full changelog</a>
         </p>
       </div>
     </section>
@@ -141,28 +140,28 @@
         </div>
         <p class="small">Either puts <code>boss</code> on your PATH. Needs
           <a href="https://nodejs.org">Node 18+</a> and
-          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a> — in the terminal, VS Code,
+          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>, in the terminal, VS Code,
           Cursor or JetBrains, on macOS, Linux or Windows; BOSS runs wherever Claude Code does.</p>
         <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
-          <a href="https://www.npmjs.com/package/oyeboss">npm</a> ·
-          MIT licensed · zero dependencies · no account.
+          <a href="https://github.com/ajeshh/bossbuild">The source is on GitHub</a> and
+          <a href="https://www.npmjs.com/package/oyeboss">the package is on npm</a>. MIT licensed, zero
+          dependencies, no account.
         </p>
         <p class="small">
-          Built by <strong>Ajesh Shah</strong> in Oakland, California. <a href="about.html">About →</a> ·
-          <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> ·
-          <a href="https://github.com/ajeshh">GitHub</a>
+          Built by <strong>Ajesh Shah</strong> in Oakland, California; <a href="about.html">the why is
+          here</a>. Ajesh is on <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> and
+          <a href="https://github.com/ajeshh">GitHub</a>.
         </p>
         <p class="small">
           <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
-          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          you type <code>boss update</code>: a GET to the public npm registry asking for a version
           number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
           phone-home; the check never runs unless you ask for it. It’s ~30 lines in
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.312.0, built in the open and used daily by its
-          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          <strong>Where this actually is:</strong> v0.313.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
         </p>

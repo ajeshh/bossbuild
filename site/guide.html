@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.312.0" />
+<meta name="generator" content="BOSS 0.313.0" />
 <link rel="canonical" href="https://oyeboss.build/guide" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder." />
 <meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF5C00' d='M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z'/%3E%3C/svg%3E" />
-<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#E4E6E8" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#16181A" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
@@ -46,10 +46,9 @@
 <header class="hero">
     <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">Guide</p>
       <h1>Using the team, rung by rung<span class="dot">.</span></h1>
       <p class="lede">
-        Each mode is additive — unlocking the next never removes what you had, and
+        Each mode is additive: unlocking the next never removes what you had, and
         <code>boss unlock &lt;mode&gt;</code> is always your call. You don't memorize any of this:
         <code>boss map</code> lists what your project has and what's one unlock away.
       </p>
@@ -66,9 +65,9 @@
           BOSS doesn't sit between you and Claude. You build exactly as you do now. The split is simple:
         </p>
         <ul class="plain">
-          <li><strong>“How do I build this?”</strong> — just ask Claude. No skill, no ceremony. That's
+          <li><strong>“How do I build this?”</strong> Just ask Claude. No skill, no ceremony. That's
             most of your day, and BOSS stays out of it.</li>
-          <li><strong>“Should I build this? Is it working? What did I decide?”</strong> — that's a BOSS
+          <li><strong>“Should I build this? Is it working? What did I decide?”</strong> That's a BOSS
             verb. Those are the seams between building, where things get lost.</li>
         </ul>
         <p>While you're heads-down, BOSS does almost nothing. That's the design, not a gap.</p>
@@ -108,17 +107,17 @@
     <p class="line-note">You unlock each stop. Nothing is ever removed — the roster only grows.</p>
   </div>
         <div class="prose">
-          <h3>Quickstart — get the idea out of your head</h3>
+          <h3>Quickstart: get the idea out of your head</h3>
           <p>
             Capture freely with <code>/idea</code>. Pressure-test one with <code>/canvas</code>,
             filled a few cells at a time rather than all at once. <strong>You never pick a
-            framework</strong> — you answer questions, and the frame is a view you switch. The same
+            framework</strong>: you answer questions, and the frame is a view you switch. The same
             answers render as the Humane Product Canvas (the default), a <em>Lean Canvas</em>, or a
             <em>Business Model Canvas</em>; <code>/canvas --frame lean</code> re-renders what you've
             already said rather than interviewing you again, and a cell you haven't answered shows as
             <code>_(not yet)_</code> in every frame instead of quietly disappearing to make a view look
             complete. A fourth frame, <code>/canvas --frame onepager</code>, folds the same answers
-            into the smallest thing you can hand to somebody outside — and it refuses to render at all
+            into the smallest thing you can hand to somebody outside, and it refuses to render at all
             until at least one piece of evidence is on file.
           </p>
           <p>
@@ -130,16 +129,16 @@
           </p>
           <p>
             Then find out if it's real, which is the half that doesn't happen in the editor.
-            <code>/interview</code> preps one 15-minute conversation under Mom-Test discipline — past
-            behaviour, their life, no pitching — and debriefs your notes into graded records
+            <code>/interview</code> preps one 15-minute conversation under Mom-Test discipline (past
+            behaviour, their life, no pitching) and debriefs your notes into graded records
             afterwards. <code>/pretotype</code> builds the fake door: a real page you can put in front
             of real people, published in one turn, so demand gets tested while it still costs an
-            afternoon. <strong>Both live here, at the first rung</strong> — testing whether anyone
+            afternoon. <strong>Both live here, at the first rung</strong>, because testing whether anyone
             wants the thing is not an advanced move, and holding it back until MVP had it arriving
             after the build it was meant to prevent.
           </p>
           <p>
-            Work out who it's for with <code>/persona</code> — your target user as a voice you can
+            Work out who it's for with <code>/persona</code>: your target user as a voice you can
             actually consult, both to decide what to build and to react to what you built. It carries
             a visible ledger of how much of that user is real evidence and how much is still a guess,
             and it starts at <em>all guess</em>. It's a way to sharpen the questions you take to a
@@ -147,10 +146,10 @@
             and what you chose with <code>/decide</code>. A project that lives here forever is a
             legitimate project.
           </p>
-          <h3>MVP — build the first working version</h3>
+          <h3>MVP: build the first working version</h3>
           <p>
             Adds the spec discipline (<code>/spec</code>, with validated-learning and evals fields) and
-            the smoke gate — the first rung where "is it alive?" becomes a gate rather than a habit.
+            the smoke gate, the first rung where "is it alive?" becomes a gate rather than a habit.
             Design tokens get scaffolded here too, the moment there's real UI, so
             style never gets locked into code, and the <code>designer</code> arrives with them —
             one designer for both halves, what it looks like and what it does
@@ -158,21 +157,21 @@
           </p>
           <p>
             It's also where the questions start pointing <em>outward</em>. <code>/comp-eval</code> goes
-            and finds out who else is solving this — features, pricing, and the honest “why they might
-            win” — then keeps it as a living set you add names to, rather than a slide you drew once.
+            and finds out who else is solving this (features, pricing, and the honest “why they might
+            win”), then keeps it as a living set you add names to, rather than a slide you drew once.
             <code>/roadmap</code> weighs what to build next into a short bet-list with a
             <strong>mandatory no-list</strong>, because a roadmap that only says yes isn't a decision.
           </p>
-          <h3>V1 — make it shippable</h3>
+          <h3>V1: make it shippable</h3>
           <p>
             <strong>V1 hires nobody.</strong> It's the one rung that adds no agents at all, and that's
-            deliberate — by now you have the team; what you don't have is a way to see what you've
+            deliberate. By now you have the team; what you don't have is a way to see what you've
             already made. So it adds two views. <code>/design-library</code> generates a gallery of your
-            components — every variant, all five states — <em>from your code</em>, plus a reuse index the
+            components, every variant, all five states, <em>from your code</em>, plus a reuse index the
             agent reads before writing a new one. <code>/board</code> sequences work across features
             instead of within one.
           </p>
-          <h3>Scale — grow it</h3>
+          <h3>Scale: grow it</h3>
           <p>Adds <code>/incident</code>. Deliberately thin: most projects should never need this rung.</p>
         </div>
       </div>
@@ -183,7 +182,7 @@
       <div class="body prose">
         <h2>The post-launch arc</h2>
         <p>
-          A second set of verbs whose moment only arrives once something is <em>live</em> — retention,
+          A second set of verbs whose moment only arrives once something is <em>live</em>: retention,
           pricing, measurement, health, the first dollar. They install with MVP but stay folded away
           until you've actually shipped a feature, so a founder with one idea isn't read a menu of nine
           verbs about pricing.
@@ -202,7 +201,7 @@
         <div class="prose">
           <h2>Building with someone else</h2>
           <p>
-            AI made each of you faster — which, left alone, makes a two-person team <strong>drift
+            AI made each of you faster, which, left alone, makes a two-person team <strong>drift
             apart.</strong> You each work in your own AI session, ship in parallel, and quietly stop
             deciding things together. The uncomfortable part: that erosion is invisible from the inside.
             Teams that have already drifted still rate their teamwork as fine.
@@ -210,38 +209,38 @@
           <p>
             <code>boss team add @their-handle</code> lights up a shared place to decide
             (<code>/decide</code>), a shared craft commons (<code>/practice</code>), and
-            <code>mentor-cofounder</code> — the one mentor that coaches the <em>relationship</em>:
+            <code>mentor-cofounder</code>, the one mentor that coaches the <em>relationship</em>:
             dividing work across different skill sets, decision rights, and the hard conversations about
             roles, pace and equity. It serves the partnership as a unit and never takes a side.
           </p>
           <p>
-            All of it is <strong>dormant when you're solo.</strong> Keyed to GitHub handles — no accounts,
+            All of it is <strong>dormant when you're solo.</strong> Keyed to GitHub handles: no accounts,
             no seats, no server, no hierarchy.
           </p>
           <h3>What the conscience watches, and what it won't</h3>
           <p>
             If real work has happened and you have never recorded a single decision
-            <em>together</em>, it says so once — <em>"you've been building a while and haven't decided
+            <em>together</em>, it says so once: <em>"you've been building a while and haven't decided
             anything jointly; are you two actually deciding this together, or in parallel?"</em> It
             notices that through the artifacts, an empty decision log, and <strong>never by asking
-            "how's your teamwork?"</strong> — self-report is precisely what is blind to this drift.
+            "how's your teamwork?"</strong>, because self-report is precisely what is blind to this drift.
             It is deliberately conservative, because a quiet decision log can just mean you decide on
             a call; if that is you, <code>boss conscience mute coordination</code> and it stops. It
             surfaces the seam. It never says whose fault it is, and it never scores your equity.
           </p>
           <h3>What your cofounder sees, and what never leaves your machine</h3>
           <p>
-            <strong>Shared — commits with the repo:</strong> your ideas, the canvas, your decisions,
+            <strong>Shared, commits with the repo:</strong> your ideas, the canvas, your decisions,
             your practices, the devlog, and the venture brain's read on the project. Pushing your repo
-            backs up your thinking and keeps your cofounder in the loop — same action, both jobs.
+            backs up your thinking and keeps your cofounder in the loop: same action, both jobs.
           </p>
           <p>
-            <strong>Private — never travels:</strong> the conscience's relationship notes. What it
+            <strong>Private, never travels:</strong> the conscience's relationship notes. What it
             said to <em>you</em>, what you overrode, what it is holding back. Those stay on your
             machine. <strong>Your cofounder never sees how often you have been nudged.</strong>
           </p>
           <p class="small">
-            <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE-teams.md">The full teams guide →</a>
+            <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE-teams.md">The full teams guide</a>
           </p>
         </div>
       </div>
@@ -253,7 +252,7 @@
         <h2>Two things</h2>
         <ul class="plain">
           <li><strong><code>boss status</code> is the one command to remember.</strong> Come back after a
-            week and it tells you where you are and what's next — <em>you are here</em>, the ladder, the
+            week and it tells you where you are and what's next: <em>you are here</em>, the ladder, the
             one thing to pick up, and what you've actually learned so far. Its companion is
             <code>boss recap</code>, which reads the last week back out of your own records (landed /
             learned / decided / in flight) and says a section is empty rather than padding it.
@@ -263,9 +262,9 @@
             rest keep speaking. It never blocks.</li>
         </ul>
         <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE.md">The full guide →</a>
+          <a href="https://github.com/ajeshh/bossbuild/blob/main/docs/GUIDE.md">The full guide</a>
           &middot; and once BOSS is installed, <code>boss help --html</code> writes the whole thing as a
-          page for <em>your</em> project — every skill you actually have, the rungs you have not climbed
+          page for <em>your</em> project: every skill you actually have, the rungs you have not climbed
           folded but searchable, and nothing you would have to keep up to date.
         </p>
       </div>
@@ -289,28 +288,28 @@
         </div>
         <p class="small">Either puts <code>boss</code> on your PATH. Needs
           <a href="https://nodejs.org">Node 18+</a> and
-          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a> — in the terminal, VS Code,
+          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>, in the terminal, VS Code,
           Cursor or JetBrains, on macOS, Linux or Windows; BOSS runs wherever Claude Code does.</p>
         <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
-          <a href="https://www.npmjs.com/package/oyeboss">npm</a> ·
-          MIT licensed · zero dependencies · no account.
+          <a href="https://github.com/ajeshh/bossbuild">The source is on GitHub</a> and
+          <a href="https://www.npmjs.com/package/oyeboss">the package is on npm</a>. MIT licensed, zero
+          dependencies, no account.
         </p>
         <p class="small">
-          Built by <strong>Ajesh Shah</strong> in Oakland, California. <a href="about.html">About →</a> ·
-          <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> ·
-          <a href="https://github.com/ajeshh">GitHub</a>
+          Built by <strong>Ajesh Shah</strong> in Oakland, California; <a href="about.html">the why is
+          here</a>. Ajesh is on <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> and
+          <a href="https://github.com/ajeshh">GitHub</a>.
         </p>
         <p class="small">
           <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
-          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          you type <code>boss update</code>: a GET to the public npm registry asking for a version
           number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
           phone-home; the check never runs unless you ask for it. It’s ~30 lines in
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.312.0, built in the open and used daily by its
-          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          <strong>Where this actually is:</strong> v0.313.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
         </p>

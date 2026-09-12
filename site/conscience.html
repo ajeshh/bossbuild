@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.312.0" />
+<meta name="generator" content="BOSS 0.313.0" />
 <link rel="canonical" href="https://oyeboss.build/conscience" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -26,7 +26,7 @@
 <meta name="twitter:description" content="BOSS's most distinctive mechanism: a hook watches the state of the work, a model composes the voice, and it hands the decision back. Always overridable, never blocking." />
 <meta name="twitter:image" content="https://oyeboss.build/og.png" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23FF5C00' d='M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z'/%3E%3C/svg%3E" />
-<meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#E4E6E8" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#16181A" media="(prefers-color-scheme: dark)" />
 <link rel="stylesheet" href="styles/tokens.css" />
 <link rel="stylesheet" href="styles/site.css" />
@@ -46,10 +46,9 @@
 <header class="hero">
     <div class="rail"><div class="wordmark"><svg class="mark mark-lg" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
     <div class="body">
-      <p class="kicker">The conscience</p>
       <h1>It speaks once, then gets out of the way<span class="dot">.</span></h1>
       <p class="lede">
-        This is the part of BOSS people either love or want to switch off — so it's worth being
+        This is the part of BOSS people either love or want to switch off, so it's worth being
         precise about what it does, what it can't do, and every way you can shut it up.
       </p>
     </div>
@@ -82,7 +81,7 @@
     <section class="section">
       <div class="rail">▸<span>mechanism</span></div>
       <div class="body">
-        <p class="stencil">how it works</p>
+        <h2 class="stencil">how it works</h2>
         <figure class="fig">
   <svg viewBox="0 0 860 300" role="img" aria-label="A mechanical hook reads project state on every prompt and evaluates a named condition. When the condition does not hold, which is the usual case, nothing happens. Only when it holds is a model asked to compose the words. The model never decides whether to speak."
        xmlns="http://www.w3.org/2000/svg">
@@ -105,17 +104,17 @@
     <rect x="540" y="182" width="256" height="64" rx="3" fill="var(--color-brand)" stroke="none"/>
     <g font-family="system-ui, sans-serif" font-size="13.5" fill="currentColor" text-anchor="middle">
       <text x="106" y="146">project state</text>
-      <text x="106" y="167" font-size="11.5" opacity="0.72">files on disk</text>
+      <text x="106" y="167" font-size="13" fill="var(--color-text-secondary)">files on disk</text>
       <text x="358" y="146">hook</text>
-      <text x="358" y="167" font-size="11.5" opacity="0.72">a mechanical condition</text>
+      <text x="358" y="167" font-size="13" fill="var(--color-text-secondary)">a mechanical condition</text>
       <text x="630" y="70">silence</text>
-      <text x="630" y="89" font-size="11.5" opacity="0.72">the usual path</text>
+      <text x="630" y="89" font-size="13" fill="var(--color-text-secondary)">the usual path</text>
     </g>
     <g font-family="system-ui, sans-serif" font-size="13.5" fill="var(--color-on-brand)" text-anchor="middle">
       <text x="668" y="210">model composes the words</text>
-      <text x="668" y="230" font-size="11.5" opacity="0.85">only now is a model involved</text>
+      <text x="668" y="230" font-size="13">only now is a model involved</text>
     </g>
-    <g font-family="system-ui, sans-serif" font-size="11.5" fill="currentColor" opacity="0.72">
+    <g font-family="system-ui, sans-serif" font-size="13" fill="var(--color-text-secondary)">
       <text x="222" y="140" text-anchor="middle">read</text>
       <text x="508" y="66">not met</text>
       <text x="508" y="236">met</text>
@@ -133,7 +132,7 @@
           <div class="prose">
             <h3>Detection is mechanical</h3>
             <p>
-              A lightweight hook watches the <em>state of the work</em> — how many ideas are captured,
+              A lightweight hook watches the <em>state of the work</em>: how many ideas are captured,
               how many are tested, whether a spec traces to anything the canvas validated. When a named
               moment's condition is met, it fires. No model is asked “is this person drifting?”
             </p>
@@ -141,7 +140,7 @@
           <div class="prose">
             <h3>Tact is the model's job</h3>
             <p>
-              Only once a moment is earned does a model compose the actual words — cohort-aware, so the
+              Only once a moment is earned does a model compose the actual words, cohort-aware, so the
               same moment reads differently for a first-time builder and someone who's shipped three
               products, and aware of <em>why you said you're building it</em>: a community project is
               asked whether anyone came back, not whether anyone paid. The judgment about
@@ -170,12 +169,12 @@
         <div class="pairs">
           <div class="pair">
             <span class="k">you've captured, and never tested</span>
-            <span>Several ideas in, none pressure-tested. It asks who you'd talk to first — and points
+            <span>Several ideas in, none pressure-tested. It asks who you'd talk to first, and points
               at a 15-minute call ahead of its own feature.</span>
           </div>
           <div class="pair">
             <span class="k">you shipped, and nothing tests it</span>
-            <span>Entry is deliberately the exit of the focus loop — at least one feature actually
+            <span>Entry is deliberately the exit of the focus loop: at least one feature actually
               shipped. Exit is one file. A low bar on purpose: it asks whether <em>anything</em> guards
               the thing you just put in front of people, not whether your coverage is good.</span>
           </div>
@@ -186,20 +185,20 @@
           <div class="pair">
             <span class="k">evidence landed, and your user never moved</span>
             <span>Two pieces of real evidence recorded since your persona was last touched. The one
-              moment that watches for something going <em>stale</em> rather than something never made —
+              moment that watches for something going <em>stale</em> rather than something never made;
               every other one fires on an absence. It goes quiet the moment you fold the evidence in.</span>
           </div>
           <div class="pair">
             <span class="k">two of you, and no shared decision</span>
             <span>Real work has happened and the decision log is empty. It asks whether you're deciding
-              together or in parallel — never whose fault that is.</span>
+              together or in parallel, never whose fault that is.</span>
           </div>
         </div>
         <p class="small prose">
           Refusals are stated in the loop rather than left to drift: it won't quietly self-heal an
           assertion to make a test pass, and it says so. And when you'd rather ask than wait to be
           asked, <code>/drift-deep</code> is the same question run deliberately across the whole
-          project at once — canvas, specs, devlog and the actual code — <em>am I fooling myself about
+          project at once (canvas, specs, devlog and the actual code): <em>am I fooling myself about
           any of this?</em>
         </p>
       </div>
@@ -224,7 +223,7 @@
         <div class="prose">
           <ul class="plain">
             <li><strong>It never blocks.</strong> Not once, anywhere. It has no mechanism to stop you
-              doing a thing — only to name a cost before you do it.</li>
+              doing a thing, only to name a cost before you do it.</li>
             <li><strong>It honors prior consent.</strong> Once you've heard a moment and decided,
               it's settled. Re-raising is how care curdles into control.</li>
             <li><strong>Overrides are recorded, not scored.</strong> <code>/decide</code> captures what
@@ -239,7 +238,7 @@
       <div class="body prose">
         <h2>How it could be wrong</h2>
         <p>
-          The failure mode isn't speaking harshly — it's speaking <em>too often</em>, which turns a
+          The failure mode isn't speaking harshly; it's speaking <em>too often</em>, which turns a
           conscience into a nag and trains you to ignore it. BOSS treats that as a measurable bug rather
           than a matter of taste: every firing is logged, so over-speaking shows up in a frequency
           ledger you can look at instead of a feeling you have to argue about.
@@ -247,10 +246,10 @@
         <p>
           The judgment itself is graded by evals that get re-run when the model curve moves. It is still
           a young instrument, and it has been tuned mostly against one person's projects. If it talks too
-          much for you, that's worth reporting — <code>/feedback</code> — and it's worth muting in the
+          much for you, that's worth reporting (<code>/feedback</code>), and it's worth muting in the
           meantime rather than enduring.
         </p>
-        <p class="small"><a href="charter.html">The line it holds itself to →</a></p>
+        <p class="small"><a href="charter.html">The line it holds itself to</a></p>
       </div>
     </section>
 
@@ -272,28 +271,28 @@
         </div>
         <p class="small">Either puts <code>boss</code> on your PATH. Needs
           <a href="https://nodejs.org">Node 18+</a> and
-          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a> — in the terminal, VS Code,
+          <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>, in the terminal, VS Code,
           Cursor or JetBrains, on macOS, Linux or Windows; BOSS runs wherever Claude Code does.</p>
         <p class="small">
-          <a href="https://github.com/ajeshh/bossbuild">Source on GitHub</a> ·
-          <a href="https://www.npmjs.com/package/oyeboss">npm</a> ·
-          MIT licensed · zero dependencies · no account.
+          <a href="https://github.com/ajeshh/bossbuild">The source is on GitHub</a> and
+          <a href="https://www.npmjs.com/package/oyeboss">the package is on npm</a>. MIT licensed, zero
+          dependencies, no account.
         </p>
         <p class="small">
-          Built by <strong>Ajesh Shah</strong> in Oakland, California. <a href="about.html">About →</a> ·
-          <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> ·
-          <a href="https://github.com/ajeshh">GitHub</a>
+          Built by <strong>Ajesh Shah</strong> in Oakland, California; <a href="about.html">the why is
+          here</a>. Ajesh is on <a href="https://www.linkedin.com/in/ajeshshah/">LinkedIn</a> and
+          <a href="https://github.com/ajeshh">GitHub</a>.
         </p>
         <p class="small">
           <strong>Every byte stays on your machine.</strong> The only network call BOSS makes is when
-          you type <code>boss update</code> — a GET to the public npm registry asking for a version
+          you type <code>boss update</code>: a GET to the public npm registry asking for a version
           number. Nothing is sent about you, your code, or your ideas. No analytics, no telemetry, no
           phone-home; the check never runs unless you ask for it. It’s ~30 lines in
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.312.0, built in the open and used daily by its
-          author. Very few other people have used it yet. BOSS is its own first project — it runs its own
+          <strong>Where this actually is:</strong> v0.313.0, built in the open and used daily by its
+          author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.
         </p>

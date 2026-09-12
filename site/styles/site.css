@@ -32,9 +32,18 @@ body::before {
 .section { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); padding: var(--space-5) 0; }
 .section + .section { border-top: 1px solid var(--color-rule); }
 .rail { font-family: var(--font-mono); font-size: var(--step--1); color: var(--rail-label); letter-spacing: 0.04em; padding-top: 0.55rem; }
-.rail span { display: block; color: var(--color-text-secondary); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.72rem; }
+.rail span { display: block; color: var(--color-text-secondary); letter-spacing: 0; text-transform: none; font-size: var(--step--1); }
 .body { min-width: 0; }
-.prose { max-width: var(--measure); }
+/* The measure, twice. `--measure` (64ch, root-relative) caps prose CONTAINERS. It could not
+   cap a line: `ch` is the root font's zero, so a `.small` paragraph at 14px inside a 64ch
+   container ran to ~100 characters, and the footer's paragraphs, in no container at all, to
+   142. The second rule is the one that holds — 40em in the element's OWN size is 80 characters
+   at any size. Tables, the terminal's `pre` and the figures are the deliberate exceptions and
+   carry their own widths inside `overflow-x: auto`. */
+.prose, .body > p, .body > ul.plain, .body > ul.tight, .body > ol, .band-in > p, footer .body > p { max-width: var(--measure); }
+/* Grids of short items (`.credits`, `.quirks`) keep the full column; their items are bounded
+   by the 40em rule below, so nothing in them runs long either. */
+.body :is(p, li, figcaption, summary, dd, .cap), .band-in :is(p, li), footer p { max-width: 40em; }
 @media (max-width: 46rem) {
   .section { grid-template-columns: 1fr; gap: var(--space-3); padding: var(--space-4) 0; }
   .rail { padding-top: 0; }
@@ -48,19 +57,17 @@ h1 .dot { color: var(--color-brand); }
 h2 { font-size: var(--step-2); }
 h3 { font-size: var(--step-1); letter-spacing: -0.005em; }
 p { margin: 0 0 var(--space-3); }
-.lede { font-size: var(--step-1); line-height: 1.5; color: var(--color-text-secondary); max-width: var(--measure); }
+.lede { font-size: var(--step-1); line-height: 1.45; color: var(--color-text-secondary); max-width: var(--measure); }
 .small { font-size: var(--step--1); color: var(--color-text-secondary); }
 strong { font-weight: 650; color: var(--color-text); }
 a { color: var(--color-link); text-underline-offset: 3px; }
 a:hover { color: var(--color-link-hover); }
 :focus-visible { outline: var(--focus-ring); outline-offset: 3px; border-radius: 2px; }
 
-.kicker {
-  font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--color-text); margin: 0 0 var(--space-3);
-  display: inline-block; padding: 0.2rem 0.5rem 0.22rem;
-  background: var(--color-brand); color: var(--color-on-brand); font-weight: 600;
-}
+/* There is no `.kicker`. Every page used to open with a tracked ALL-CAPS hi-vis tag above the
+   h1 repeating the nav label — the commonest template-chrome tell, and it said nothing the h1
+   and the nav did not. Removed 2026-09-12 after a rendered-page linter found it on BOSS's own
+   site. If a label above a heading is ever needed again, it is a `.rail span`. */
 
 /* --- hero ---------------------------------------------------------------- */
 .hero { padding: var(--space-6) 0 var(--space-4); display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); gap: var(--space-5); }
@@ -77,6 +84,11 @@ a:hover { color: var(--color-link-hover); }
   font-family: var(--font-mono); font-size: var(--step--1); color: var(--color-text);
 }
 .cmd .prompt { color: var(--color-accent); user-select: none; }
+/* `brew install ajeshh/boss/oyeboss` in a box with the page gutters is ~390px, wider than
+   the narrowest phones. A command box that cannot shrink would push the whole hero past the
+   viewport, so the box may shrink and the command may break — only when nothing else fits. */
+.cmd { min-width: 0; }
+.cmd > span:not(.prompt) { overflow-wrap: anywhere; }
 button.copy {
   font: inherit; font-family: var(--font-prose); font-weight: 600; font-size: var(--step--1);
   background: var(--cta-bg); color: var(--cta-text); border: 1px solid transparent;
@@ -99,9 +111,10 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 .terminal.breakout { width: min(100%, 54rem); }
 .terminal pre { margin: 0; white-space: pre; }
 .terminal .cap {
-  display: block; font-family: var(--font-prose); font-size: 0.72rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--color-terminal-dim); margin-bottom: var(--space-3);
+  display: block; font-family: var(--font-mono); font-size: var(--step--1);
+  color: var(--color-terminal-dim); margin-bottom: var(--space-3);
 }
+.terminal .cap::before { content: "# "; }
 .t-cmd { color: var(--color-terminal-text); }
 .t-cmd::before { content: "$ "; color: var(--color-terminal-accent); }
 .t-ok { color: var(--color-terminal-safe); }
@@ -119,6 +132,7 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 /* --- lists, notes, grids -------------------------------------------------- */
 .stack { display: grid; gap: var(--space-4); }
 .pairs { display: grid; gap: var(--space-3); max-width: var(--measure); }
+.pairs + .prose { margin-top: var(--space-5); }
 .pair { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-1); padding-left: var(--space-3); border-left: 2px solid var(--color-rule); }
 .pair:hover { border-left-color: var(--color-brand); }
 .pair b { font-weight: 650; }
@@ -131,10 +145,10 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 
 .note {
   max-width: var(--measure); margin: var(--space-4) 0;
-  padding-top: var(--space-3); border-top: var(--hivis-rule);
+  padding-top: var(--space-3); border-top: var(--turn-rule);
 }
 .note p:last-child { margin-bottom: 0; }
-.note .q { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.03em; margin-bottom: var(--space-2); }
+.note .q { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.35; letter-spacing: -0.03em; margin-bottom: var(--space-2); }
 
 ul.plain { list-style: none; padding: 0; margin: 0 0 var(--space-3); max-width: var(--measure); }
 ul.plain li { padding-left: 1.5rem; position: relative; margin-bottom: var(--space-2); }
@@ -144,7 +158,11 @@ code {
   font-family: var(--font-mono); font-size: 0.88em;
   background: var(--color-surface-sunk); border: 1px solid var(--color-rule);
   border-radius: var(--radius-sm); padding: 0.08em 0.35em;
+  /* A boxed token that wraps mid-phrase draws two half-boxes and lands on its neighbour.
+     The longest inline code on the site is 40 characters; it fits any width over 30rem. */
+  white-space: nowrap;
 }
+@media (max-width: 30rem) { code { white-space: normal; } }
 
 /* --- steps --------------------------------------------------------------- */
 .steps { counter-reset: step; display: grid; gap: var(--space-4); max-width: var(--measure); }
@@ -167,6 +185,9 @@ footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0,
   border-radius: var(--radius-sm); z-index: 10;
 }
 .skip:focus { left: var(--space-4); top: var(--space-2); }
+/* `a:hover` would recolour this to --color-link-hover, which in the dark theme is the same
+   chalk as its background — the one hover state on the site that went invisible. */
+.skip:hover { color: var(--color-ground); }
 
 /* The conscience block — it is not a testimonial card, it is the tool talking. */
 .terminal .voice { color: var(--color-terminal-text); white-space: pre-wrap; display: block; }
@@ -201,7 +222,7 @@ footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0,
 table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
 table caption { text-align: left; color: var(--color-text-secondary); font-size: var(--step--1); padding-bottom: var(--space-2); }
 th, td { text-align: left; vertical-align: top; padding: 0.6rem 0.9rem 0.6rem 0; border-bottom: 1px solid var(--color-rule); }
-thead th { font-family: var(--font-prose); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600; }
+thead th { font-family: var(--font-prose); font-size: var(--step--1); color: var(--color-text-secondary); font-weight: 600; }
 tbody th[scope="row"] { font-weight: 650; white-space: nowrap; padding-right: var(--space-4); }
 .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ladder tbody th { font-family: var(--font-display); letter-spacing: -0.02em; }
@@ -210,19 +231,19 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .ladder td code { display: inline-block; margin-right: 0.35rem; }
 .skills th[scope="row"] code { color: var(--color-link); background: none; border: 0; padding: 0; }
 .skills .usage { display: block; color: var(--color-text-secondary); font-family: var(--font-mono); font-size: 0.92em; margin-top: 0.15rem; }
-.count { font-family: var(--font-prose); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600; margin-left: var(--space-2); }
+.count { font-family: var(--font-prose); font-size: var(--step--1); color: var(--color-text-secondary); font-weight: 600; margin-left: var(--space-2); }
 
 /* --- agent cards ---------------------------------------------------------- */
 .agents { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: var(--space-3); margin: var(--space-3) 0 var(--space-5); }
 .agent { border-top: 2px solid var(--color-rule); padding-top: var(--space-2); }
 .agent.mentor { border-top-color: var(--color-brand); }
-.agent h4 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
-.agent h4 code { background: none; border: 0; padding: 0; }
-.agent .tag { font-family: var(--font-prose); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600; }
+.agent h3 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
+.agent h3 code { background: none; border: 0; padding: 0; }
+.agent .tag { font-family: var(--font-prose); font-size: 0.78rem; color: var(--color-text-secondary); font-weight: 600; }
 .agent.mentor .tag { color: var(--color-link); }
 .agent p { font-size: var(--step--1); margin: 0 0 var(--space-1); }
-.agent .triggers { color: var(--color-text-secondary); font-size: 0.82rem; }
-.agent .triggers span { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.62rem; font-weight: 600; margin-right: 0.3rem; }
+.agent .triggers { color: var(--color-text-secondary); font-size: var(--step--1); }
+.agent .triggers span { font-weight: 600; margin-right: 0.3rem; }
 
 /* =========================================================================
    SIGNAGE — the mark, the train line, and the devices that break the
@@ -266,7 +287,7 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 }
 .station .crew { display: block; font-size: var(--step--1); color: var(--color-text-secondary); margin-top: 0.15rem; }
 .station .crew b { color: var(--color-text); font-variant-numeric: tabular-nums; }
-.station .verbs { display: block; font-size: 0.78rem; color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.station .verbs { display: block; font-size: var(--step--1); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
 .station.thin .stop { color: var(--color-text-secondary); }
 .line-note { font-size: var(--step--1); color: var(--color-text-secondary); margin: var(--space-2) 0 0; }
 @media (max-width: 44rem) {
@@ -296,10 +317,15 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 
 /* Stencil label — the site-signage device, for section turns. */
 .stencil {
-  font-family: var(--font-display); font-size: 0.7rem; font-weight: 700;
-  letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-text-secondary);
+  font-family: var(--font-display); font-size: var(--step--1); font-weight: 650;
+  color: var(--color-text-secondary);
   display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-3);
 }
+.stencil::before { content: "▸"; color: var(--color-brand); }
+h2.stencil { line-height: 1.4; letter-spacing: 0; }
+/* Group headings inside a labelled section (practice shelves, credit lists) and the paired
+   h2s in a `.duo` sit one level under the label, so they take the h3 size. */
+h2.group, .duo h2 { font-size: var(--step-1); letter-spacing: -0.005em; }
 .stencil::after { content: ""; flex: 1; height: 1px; background: var(--color-rule); }
 
 /* A big pull statistic — used where a number IS the argument. */
@@ -307,7 +333,10 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .stat .n { font-family: var(--font-display); font-size: var(--step-3); font-weight: 700; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
 .stat .of { color: var(--color-text-secondary); font-size: var(--step--1); max-width: 34ch; }
 
-/* Hazard rule — the humane charter's one visual device. */
+/* Hazard rule — the humane charter's one visual device, and it lives on the charter page only.
+   It had spread to fifteen uses on ten pages as a section divider, which is what a device
+   becomes when nothing says where it stops. Everywhere else `<hr>` is a hairline. */
+hr { border: 0; border-top: var(--hairline); margin: var(--space-4) 0; }
 .hazard { height: 6px; border: 0; margin: var(--space-4) 0;
   background: repeating-linear-gradient(135deg, var(--color-brand) 0 10px, transparent 10px 20px); }
 
@@ -316,24 +345,20 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .releases li { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
 .releases .rel { display: flex; flex-direction: column; gap: 0.1rem; }
 .releases .ver { font-family: var(--font-display); font-weight: 700; font-variant-numeric: tabular-nums; }
-.releases .when { font-size: 0.75rem; color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.releases .when { font-size: var(--step--1); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
 .releases p { margin: 0; }
 .releases li:first-child .ver { color: var(--color-link); }
 @media (max-width: 40rem) { .releases li { grid-template-columns: 1fr; gap: var(--space-1); } }
 
 /* --- practice attribution (the engineering page) -------------------------- */
-.practices { display: grid; gap: var(--space-4); margin: var(--space-3) 0 var(--space-5); }
+.practices { display: grid; gap: var(--space-4); margin: var(--space-3) 0 var(--space-5); max-width: var(--measure); }
 .practice { border-top: var(--hairline); padding-top: var(--space-2); }
-.practice h4 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
-.practice .meta { font-size: 0.78rem; color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
+.practice h3 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
+.practice .meta { font-size: var(--step--1); color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
 .practice .meta code { background: none; border: 0; padding: 0; }
 .practice .curve { color: var(--color-link); }
 .practice .prov { font-size: var(--step--1); margin: 0; color: var(--color-text-secondary); }
-.practice .prov span {
-  display: inline-block; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
-  font-weight: 700; color: var(--color-on-brand); background: var(--color-brand);
-  padding: 0.1rem 0.35rem; margin-right: 0.4rem; vertical-align: 0.08em;
-}
+.practice .prov span { font-weight: 650; color: var(--color-text); margin-right: 0.25rem; }
 .practice .prov code { font-size: 0.9em; }
 
 /* --- figures (diagrams) --------------------------------------------------- */
@@ -345,16 +370,16 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 /* --- agent → practice map ------------------------------------------------- */
 .agentmap th[scope="row"] code { color: var(--color-text); font-weight: 650; }
 .chip {
-  display: inline-block; font-family: var(--font-mono); font-size: 0.76rem;
+  display: inline-block; font-family: var(--font-mono); font-size: 0.8rem;
   border: var(--hairline); border-radius: var(--radius-sm);
   padding: 0.1rem 0.4rem; margin: 0 0.25rem 0.3rem 0; color: var(--color-text-secondary);
   white-space: nowrap;
 }
-.orphan-note { border-left: var(--hivis-rule); padding-left: var(--space-3); margin-top: var(--space-3); max-width: var(--measure); }
+.orphan-note { border-left: var(--turn-rule); padding-left: var(--space-3); margin-top: var(--space-3); max-width: var(--measure); }
 
 /* --- source references (compact, replace the provenance wall) -------------- */
 .ref {
-  display: inline-block; font-size: 0.78rem; line-height: 1.35;
+  display: inline-block; font-size: var(--step--1); line-height: 1.4;
   border: var(--hairline); border-radius: var(--radius-sm);
   padding: 0.12rem 0.42rem; margin: 0 0.25rem 0.3rem 0;
   color: var(--color-text); white-space: normal;
@@ -363,7 +388,7 @@ a.ref { text-decoration: none; border-color: var(--color-brand); }
 a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 .prov-full { margin-top: var(--space-2); }
 .prov-full summary {
-  cursor: pointer; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; font-size: var(--step--1);
   color: var(--color-text-secondary); font-weight: 600;
 }
 .prov-full summary:hover { color: var(--color-text); }
@@ -376,8 +401,8 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
   display: flex; align-items: baseline; gap: var(--space-3); flex-wrap: wrap;
 }
 .subnav-label {
-  font-family: var(--font-display); font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-text-secondary);
+  font-family: var(--font-display); font-size: var(--step--1); font-weight: 700;
+  color: var(--color-text-secondary);
 }
 .subnav ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; }
 .subnav a { font-size: var(--step--1); color: var(--color-text-secondary); text-decoration: none; }
@@ -392,10 +417,9 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 .credit-name a { text-decoration: none; box-shadow: inset 0 -1px 0 var(--color-brand); }
 .credit-for { display: block; font-size: var(--step--1); color: var(--color-text-secondary); margin-bottom: var(--space-2); }
 .credit-in { margin: 0; }
-.credit-in .chip { font-size: 0.7rem; }
-.key-src { font-family: var(--font-prose); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
-  font-weight: 700; color: var(--color-on-brand); background: var(--color-brand);
-  padding: 0.08rem 0.3rem; margin-left: 0.4rem; vertical-align: 0.14em; border-radius: var(--radius-sm); }
+.credit-in .chip { font-size: 0.78rem; }
+.key-src { font-family: var(--font-prose); font-size: 0.78rem;
+  font-weight: 650; color: var(--color-link); margin-left: 0.4rem; }
 
 /* --- the picker ----------------------------------------------------------
    "Is this you?" as three things you choose between, not three paragraphs to
@@ -440,7 +464,7 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 /* --- what you end up with ------------------------------------------------
    Artifacts, not features. Each one is a file the founder can open. */
 .yield { display: grid; gap: var(--space-4); max-width: var(--measure); margin: var(--space-4) 0; }
-.yield > li { list-style: none; border-left: var(--hivis-rule); padding-left: var(--space-3); }
+.yield > li { list-style: none; border-left: var(--turn-rule); padding-left: var(--space-3); }
 .yield h3 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
 .yield h3 code { background: none; border: 0; padding: 0; color: var(--color-link); font-size: 0.9em; }
 .yield p { margin: 0; font-size: var(--step--1); color: var(--color-text-secondary); }
@@ -455,8 +479,8 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 .install .cta { margin: 0; align-items: center; }
 .install .cmd { flex: 0 1 auto; }
 .install .which {
-  font-family: var(--font-prose); font-size: 0.7rem; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600;
+  font-family: var(--font-prose); font-size: var(--step--1);
+  color: var(--color-text-secondary); font-weight: 600;
 }
 
 /* --- the snags -----------------------------------------------------------

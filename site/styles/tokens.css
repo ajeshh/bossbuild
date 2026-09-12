@@ -22,32 +22,40 @@
 /* --- Layer 1 · primitives -------------------------------------------------
    Raw values. Never referenced by a component. Named for what they ARE. */
 :root {
-  /* Ground: cool poured concrete — deliberately NOT warm cream. */
-  --concrete:        #E8E6E1;
-  --concrete-raised: #F2F1EE;
-  --concrete-sunk:   #DCDAD4;
+  /* Ground: poured concrete, and COOL — hue 210°, the same family as the graphite
+     below, so light and dark are one temperature. This was not true until
+     2026-09-12: the first values here sat at hue 43°, which is warm cream with the
+     saturation turned down (the 2026 tell is ~#F4F1EA at 42°). A rendered-page
+     linter measured it as cream while this comment said "deliberately NOT warm
+     cream". The comment was the claim; the value is the mechanism. DEC-018. */
+  --concrete:        #E4E6E8;
+  --concrete-raised: #F0F2F3;
+  --concrete-sunk:   #D7DADD;
 
   --graphite:        #16181A;
   --graphite-raised: #1F2225;
   --graphite-sunk:   #101214;
   --graphite-soft:   #2E3236;
 
-  --bone:            #E6E4DF;   /* text on graphite */
-  --slate:           #5F656B;   /* muted on concrete */
+  --chalk:           #E2E5E7;   /* text on graphite (was --bone, hue 43°) */
+  /* Muted text has to clear AA on EVERY light surface — the failing pair was slate on
+     --concrete-sunk, the <code> background (4.2:1). Checked pairs: ground 5.4, raised 6.0,
+     sunk 4.8. Run the WCAG arithmetic before changing either side. */
+  --slate:           #565C62;   /* muted on concrete */
   --slate-light:     #9AA0A6;   /* muted on graphite */
-  --rule-light:      #CBC9C3;
+  --rule-light:      #C4C8CC;
   --rule-dark:       #2E3236;
 
   /* Hi-vis — the one loud thing. A FILL colour: graphite sits on it (5.75:1).
      Never small text on concrete; that's what --hivis-ink is for. */
   --hivis:           #FF5C00;
   --hivis-bright:    #FF7A2E;   /* text weight, on graphite */
-  --hivis-ink:       #B33900;   /* text weight, on concrete */
+  --hivis-ink:       #A63400;   /* text weight, on concrete — 5.4 ground, 4.8 sunk */
 
   /* Signage states. Two variants each: one that survives concrete, one graphite. */
   --safe-ink:        #1A6B3D;   --safe-bright:    #4FBF7F;
   --caution-ink:     #7F5800;   --caution-bright: #E8A200;
-  --stop-ink:        #C01818;   --stop-bright:    #FF6B5A;
+  --stop-ink:        #B71616;   --stop-bright:    #FF6B5A;
 
   /* Type — two stacks, zero network requests. See VISUAL.md.
      Display is the MONO stack used editorially: BOSS's headlines are set in the
@@ -104,7 +112,7 @@
 
   /* The terminal inset — graphite in BOTH themes. It's the product, not a theme. */
   --color-terminal-ground: var(--graphite-sunk);
-  --color-terminal-text:   var(--bone);
+  --color-terminal-text:   var(--chalk);
   --color-terminal-dim:    var(--slate-light);
   --color-terminal-accent: var(--hivis-bright);
   --color-terminal-safe:   var(--safe-bright);
@@ -123,12 +131,12 @@
     --color-ground:          var(--graphite);
     --color-surface:         var(--graphite-raised);
     --color-surface-sunk:    var(--graphite-sunk);
-    --color-text:            var(--bone);
+    --color-text:            var(--chalk);
     --color-text-secondary:  var(--slate-light);
     --color-rule:            var(--rule-dark);
 
     --color-link:            var(--hivis-bright);
-    --color-link-hover:      var(--bone);
+    --color-link-hover:      var(--chalk);
     --color-accent:          var(--hivis-bright);
 
     --color-signal-safe:     var(--safe-bright);
@@ -144,12 +152,12 @@
   --color-ground:          var(--graphite);
   --color-surface:         var(--graphite-raised);
   --color-surface-sunk:    var(--graphite-sunk);
-  --color-text:            var(--bone);
+  --color-text:            var(--chalk);
   --color-text-secondary:  var(--slate-light);
   --color-rule:            var(--rule-dark);
 
   --color-link:            var(--hivis-bright);
-  --color-link-hover:      var(--bone);
+  --color-link-hover:      var(--chalk);
   --color-accent:          var(--hivis-bright);
 
   --color-signal-safe:     var(--safe-bright);
@@ -177,7 +185,9 @@
   --rail-label:      var(--color-text-secondary);
 
   --hairline:        1px solid var(--color-rule);
-  --hivis-rule:      3px solid var(--color-brand);
+  /* The rule that marks a turn (a note, a yield). It was `--hivis-rule`, 3px of brand on one
+     edge — a card side-tab, the most recognisable generated-UI tell. Hi-vis stays a FILL. */
+  --turn-rule:       1px solid var(--color-text);
 
   --terminal-radius: var(--radius-lg);
   --terminal-pad:      1.1rem 1.25rem;
