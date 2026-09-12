@@ -114,6 +114,30 @@ derived fills the silence. Same posture as `shipped_on:` and its git-derived fal
 **Rewrite the gist when the record's shape changes.** A gist describing a superseded shape is worse
 than none — it is the one field that can lie quietly, because nothing can check it against the body.
 
+## `motivation:` and `success_looks_like:` — why *this founder* is building it (IDEA-097)
+
+```
+motivation: community
+success_looks_like: "ten people in the forum who aren't my friends, still posting in March"
+```
+
+On `IDEA` records. `/boss` asks the two questions behind them once, after the reflection and
+before the paperwork — *why this one, for you* · *what would "it worked" look like in three
+months* — and writes the sentence **verbatim** and the why mapped to one of `learning` ·
+`revenue` · `community` · `credibility` · `own-problem`. `/idea` writes them empty and asks nothing
+(it is the lightest step); `/canvas` asks if they are still empty when it opens Business Model.
+
+**Who reads them — the readers are the reason the field exists:** the conscience hook picks
+*which rung* of the evidence ladder to point at (`readIntentContext` in the shipped runtime lib);
+`boss status` prints the sentence once as *Toward:*; `/canvas` opens the Business Model branch the
+motivation points at without asking; `/consult` hands both to every mentor; `/interview` shapes the
+follow-up commitment ask to it.
+
+**`unset` and empty mean *not asked yet*, never *none*.** Nothing infers a motivation from the idea
+— the `/idea` rule that *a motivation nobody wrote is a small fabrication* applies to every writer.
+When unset, every reader behaves exactly as it did before the field existed. The founder edits
+either at will; BOSS never re-asks on a timer.
+
 ## When scope grows — `spun_to:` and the rule that keeps a build finishable
 
 **A build contract closes at the scope it was written at. New scope gets a new id.**

@@ -30,6 +30,8 @@ type: idea
 owner: product-lead
 status: seedling
 gist: <one plain sentence — what this IS, in their words where you can>
+motivation: unset
+success_looks_like: ""
 created: {{today}}
 ---
 
@@ -58,6 +60,15 @@ records a name stops being a reminder — `boss board --detail`, the visual boar
 is: "a way to point BOSS at a doc you already jotted the idea in" beats "an import feature." One
 sentence. Their words where you have them. It costs nothing now and is most of what a founder
 needs six weeks from now, when they open the board and cannot remember which idea this was.
+
+**`motivation:` and `success_looks_like:` are written empty here, on purpose.** This is the lightest
+step in BOSS and it stays that way — `/idea` asks nothing. `/boss` asks the two questions behind
+those fields (*why this one, for you* · *what would "it worked" look like in three months*) at its
+own step 3.5, and `/canvas` asks them if they are still empty when it opens the Business Model
+cell. If the founder says either thing here, unprompted — *"mostly I want to learn Rust"* — write it:
+the sentence verbatim into `success_looks_like:` or the log, and the why mapped to one of `learning`
+· `revenue` · `community` · `credibility` · `own-problem`, shown before saving. **Never infer
+either.** An empty field means *not asked yet*; a filled one means *they said so*.
 
 If you leave it out, the board falls back to reading the record's opening prose — which works, and
 is why this is never a blocker, but it will only ever be as good as the first paragraph happens to

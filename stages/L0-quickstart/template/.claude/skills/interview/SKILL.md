@@ -82,6 +82,12 @@ The founder pastes raw notes or brain-dumps what happened. Do three things — i
    in detail — ask if she'll show you next Monday's actual spreadsheet. If she says yes, that's
    observed-behavior, not just stated pain."*). If the pain didn't show up, say so honestly — that's a
    useful result too, not a failure.
+   **Shape the ask to what the founder said they're building this for** — `motivation:` on the IDEA
+   doc (IDEA-097). `revenue` → the commitment is money or a slot (*"would you pre-pay for the first
+   month?"*). `community` → it's return (*"will you come back Tuesday and bring one person?"*).
+   `learning` or `own-problem` → there may be no commitment to ask for at all, and saying so is the
+   honest debrief — the interview taught the founder the thing; that was the point. `credibility` →
+   the ask is a public one (*"would you say that on the record?"*). Unset → the default above.
 
 4. **Offer to fold it back into the persona.** You just talked to a real one. If `docs/personas/`
    holds a persona for this user, offer `/persona enrich <slug>` with what the call actually showed —

@@ -226,3 +226,23 @@ test('boss status and the hook never disagree about how long you were away', () 
   assert.match(fromHook, /back after 11 days/i);
   assert.match(fromCli, /Back after 11 days/);
 });
+
+// --- toward what (IDEA-097) ------------------------------------------------
+
+const idea = (id, fields = '') =>
+  `---\nid: ${id}\ntype: idea\nowner: product-lead\nstatus: seedling\ngist: x\n${fields}created: 2026-09-01\n---\n\n# ${id} — x\n`;
+
+test('status prints the founder\'s own "it worked" sentence once, when they gave one', () => {
+  const out = boss(['status'], mvp({
+    'docs/ideas/IDEA-001-a.md': idea('IDEA-001', 'motivation: community\nsuccess_looks_like: "ten strangers still posting in March"\n'),
+  }));
+  assert.match(out, /Toward:\s+“ten strangers still posting in March”\s+\(community\)/);
+  assert.equal((out.match(/Toward:/g) || []).length, 1, 'once');
+});
+
+test('status says nothing about intent when it was never asked or was skipped', () => {
+  // Silence, not a prompt to fill it in — an unset motivation is a founder who skipped, and
+  // the one thing this line must never become is a nag.
+  assert.doesNotMatch(boss(['status'], mvp({ 'docs/ideas/IDEA-001-a.md': idea('IDEA-001') })), /Toward:/);
+  assert.doesNotMatch(boss(['status'], mvp({ 'docs/ideas/IDEA-001-a.md': idea('IDEA-001', 'motivation: unset\nsuccess_looks_like: ""\n') })), /Toward:/);
+});

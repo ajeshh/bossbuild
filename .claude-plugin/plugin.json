@@ -1,7 +1,7 @@
 {
   "name": "boss",
   "displayName": "BOSS — Build Out Solid Stuff",
-  "version": "0.302.0",
+  "version": "0.303.0",
   "description": "A just-in-time startup incubator inside Claude Code. Scaffolds a project at the right level of ceremony (Quickstart → MVP → V1 → Scale), mentors the founder, and keeps a conscience that catches drift early. This plugin is the front door: it puts `boss` on your PATH and orients you; the full surface lives in your project after `boss new` or `boss adopt`.",
   "author": { "name": "Ajesh Shah", "url": "https://github.com/ajeshh" },
   "homepage": "https://oyeboss.build",

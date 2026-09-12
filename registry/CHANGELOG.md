@@ -16,6 +16,50 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.303.0 — 2026-09-11
+
+> **For you:** **`/boss` now asks why *you* are building this, and what "it worked" would look like
+> in three months** — one beat, right after it says your idea back, before any setup question.
+> *Skip* is a complete answer. If you answer, the canvas opens on the branch you meant (earning or
+> not), the mentors advise the founder you actually are, the conscience points at the rung of the
+> evidence ladder that fits (a community project is asked *did anyone come back*, not *did anyone
+> pay*), and `boss status` prints your sentence once as **Toward:**. It also names any reading it
+> had to choose — *"I'm reading 'marketplace' as two-sided with payments; if it's a directory, say
+> so"* — because a stated reading is cheaper to correct than a question is to answer.
+
+**IDEA-097 — founder intent at intake.** Learned from a rival, verified against BOSS first: haytham
+(the retired idea-to-MVP plugin, read at source in `docs/competition/founder-plugins-source-read.md`)
+asks a founder's motivation *before* any analysis and calibrates every downstream agent to it. BOSS
+asked What / Who / Smallest-version and never *why you* — `grep -ri motivation stages/ src/` found
+one hit, `/idea`'s rule never to invent one. So every reader downstream assumed a founder who wants a
+paying customer, which DEC-011 says not to assume. Ajesh: *"im surprised we dont do it! heck yeah."*
+
+**Two frontmatter fields on the IDEA doc, five readers that already existed, no new surface.**
+`motivation: learning | revenue | community | credibility | own-problem | unset` and
+`success_looks_like: "<their sentence, unedited>"`, declared in `docs/IDS.md`. `/boss` step 3.5 asks
+once (the why is mapped and *shown before saving*); `/idea` writes them empty and asks nothing — the
+lightest step stays light; `/canvas` asks only if still empty when it opens Business Model, and
+otherwise picks the branch without asking. Readers: the conscience hook (`readIntentContext` in the
+shipped `loop-runtime.js`, an intent line in `moment-frames.js` that changes *which rung the ask
+points at*, never whether it fires and never a grade); `boss status` (`printIntent`, one line, silent
+when unset); `/consult` (both fields to every mentor, verbatim; *"motivation not stated"* when
+empty); `/interview` (the follow-up commitment shaped to it — for `learning` / `own-problem` there
+may be none to ask for, and saying so is the honest debrief).
+
+**Nothing is inferred.** `unset` / empty means *not asked yet*, never *none*; every reader is
+byte-identical to v0.302.0 when the fields are unset (tested). BOSS never re-asks on a timer.
+
+**The interpretation line** (task 3 of the same idea) rides in `/boss` step 2: when one word could
+be read two ways and the wrong reading changes Who or the smallest version, say which way you read
+it and proceed — at most two, and more than three ambiguous words means the idea is too vague to
+reflect, which is when one question *is* right.
+
+Tests: 7 new (`readIntentContext` null-when-unset / dropped / skipped, newest-live-idea wins, an
+unknown enum never becomes a motivation, `composeContext` byte-identical without intent, `boss
+status` prints once and never nags). `/tmp` scaffold verified both surfaces end to end. The
+phantom-agent check caught a first draft naming `mentor-fundraising` in `/consult` — it ships to
+nobody (folded into `mentor-capital`, v0.189.0) — and the line was fixed before this entry.
+
 ## 0.302.0 — 2026-09-11
 
 > **For you:** **BOSS is installable as a Claude Code plugin.** `/plugin marketplace add

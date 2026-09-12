@@ -718,6 +718,58 @@ export function readEvidenceContext(projectDir) {
   }
 }
 
+// Read the founder's stated INTENT — why they are building this and what "it worked" means
+// to them (IDEA-097). `/boss` asks it once, after the reflection and before the paperwork, and
+// writes two frontmatter fields on the IDEA doc:
+//
+//   motivation: learning | revenue | community | credibility | own-problem | unset
+//   success_looks_like: "<their sentence, unedited>"
+//
+// This is the field that lets every downstream reader stop assuming a founder who wants a
+// paying customer. The conscience uses it to pick WHICH rung of the ladder to point at
+// (revenue → commitment; community → observed-behavior; learning / own-problem → "did it teach
+// you / does it solve it for you", never "did anyone pay"). `boss status` prints the sentence
+// once. `/consult`, `/canvas` and `/interview` read the same two fields from the file directly.
+//
+// THE RULES THAT MAKE IT SAFE TO READ:
+//   · Nothing is inferred. `unset` (or absent) → null → every reader behaves exactly as before.
+//     `/idea`'s rule already says a motivation nobody wrote is a small fabrication; the same
+//     goes for one nobody read.
+//   · One idea, not a vote. The most recently `created:` live IDEA (not dropped / deferred /
+//     shipped) that carries a set motivation wins. Two ideas with two motivations is a real
+//     state and the founder's to reconcile — this returns the newer, and says which.
+//   · Bounded: two fields and an id. Never the Current shape, never the capture log.
+export const MOTIVATIONS = ['learning', 'revenue', 'community', 'credibility', 'own-problem'];
+
+export function readIntentContext(projectDir) {
+  try {
+    const dir = join(projectDir, 'docs', 'ideas');
+    if (!existsSync(dir)) return null;
+    const files = readdirSync(dir).filter((n) => /^IDEA-\d+.*\.md$/.test(n) && !/-canvas\.md$/.test(n));
+    let best = null;
+    for (const n of files) {
+      let fm;
+      try { fm = parseFrontmatter(readFileSync(join(dir, n), 'utf8')); } catch { continue; }
+      if (!fm || fm.type !== 'idea') continue;
+      const status = String(fm.status || '').split(/\s/)[0];
+      if (['dropped', 'deferred', 'shipped'].includes(status)) continue;
+      const motivation = typeof fm.motivation === 'string' ? fm.motivation.trim() : '';
+      const success = typeof fm.success_looks_like === 'string' ? fm.success_looks_like.trim() : '';
+      const hasMotivation = MOTIVATIONS.includes(motivation);
+      if (!hasMotivation && !success) continue;
+      const created = typeof fm.created === 'string' ? fm.created : '';
+      if (!best || created > best.created) {
+        best = { id: fm.id || n.replace(/\.md$/, ''), motivation: hasMotivation ? motivation : null, success: success || null, created };
+      }
+    }
+    if (!best) return null;
+    const { created, ...out } = best;
+    return out;
+  } catch {
+    return null;
+  }
+}
+
 // Read the conscience pause state from .boss/config.json (v0.23.0+, IDEA-011).
 // Returns { mode, since, expires, reason } or null. Mode is 'paused' or 'active'
 // (or null when never set). When paused, the hook exits silent if not expired.

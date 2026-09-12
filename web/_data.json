@@ -1,5 +1,5 @@
 {
-  "version": "0.302.0",
+  "version": "0.303.0",
   "generated_from": "stages/*/manifest.json via src/modes.js",
   "agents": 12,
   "skills": 48,

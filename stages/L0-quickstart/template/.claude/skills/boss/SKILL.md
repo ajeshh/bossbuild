@@ -1,6 +1,6 @@
 ---
 name: boss
-description: Spin up a freshly-scaffolded project from a rough idea or PRD. Reads the idea, says it back, and asks whether you want to keep shaping it or start building — then captures it as a living idea doc, recommends a stack and starting stage, and (with your OK) creates a GitHub repo — private unless you say otherwise, and it asks about the licence rather than picking one. Run this right after `boss new`. Usage - /boss [path-to-PRD | rough idea text]
+description: Spin up a freshly-scaffolded project from a rough idea or PRD. Reads the idea, says it back (naming any reading it had to choose), asks why this one and what 'it worked' would look like, and whether you want to keep shaping it or start building — then captures it as a living idea doc, recommends a stack and starting stage, and (with your OK) creates a GitHub repo — private unless you say otherwise, and it asks about the licence rather than picking one. Run this right after `boss new`. Usage - /boss [path-to-PRD | rough idea text]
 ---
 
 # /boss — project spin-up
@@ -55,6 +55,13 @@ reflection far more readily than they answer an open question — *"no, it's act
 cheapest thinking tool in this skill. Reflect what you actually heard, rough edges included; a
 tidied-up version gives them nothing to push against.
 
+**If one word could be read two ways and the wrong reading changes Who or the smallest version,
+say which way you read it — and proceed.** *"I'm reading 'marketplace' as two-sided with payments;
+if it's a directory with a contact button, say so."* One line, at most two, inside the reflection.
+Don't stop to ask; a stated reading is cheaper to correct than an open question is to answer. If
+they correct it → Capture log, in their words. If they don't → it goes in Open questions. If more
+than three words are ambiguous the idea is too vague to reflect, and *then* one question is right.
+
 ## 3. Capture it — as a LIVING doc
 
 **Get the number by running `boss id IDEA`.** Don't assume `001`: a founder may have run `/idea`
@@ -71,6 +78,8 @@ type: idea
 owner: product-lead
 status: seedling
 gist: <one plain sentence — what this IS, in their words where you can>
+motivation: unset
+success_looks_like: ""
 created: {{today}}
 ---
 
@@ -93,7 +102,8 @@ _Append-only. Newest at the bottom. Don't edit old entries._
 _Not started. When this has legs, run `/canvas` to pressure-test it as a business._
 ```
 
-Three of those are load-bearing, and none is decoration:
+`motivation:` and `success_looks_like:` are written `unset` / empty here and filled in step 3.5
+— never inferred. Four of those are load-bearing, and none is decoration:
 
 - 🔴 **The dated `Capture log` bullet is what makes the idea legible to the conscience.**
   `capture-loop` exits on `^- YYYY-MM-DD` in an active idea file, and `canvas-loop` *enters* at three
@@ -106,22 +116,44 @@ Three of those are load-bearing, and none is decoration:
 
 This is the "idea is shared" moment that gates GitHub creation (step 5).
 
-## 3.5 The check — ready to build, or is there more?
+## 3.5 The check — why this one, and ready to build or is there more?
 
 **Stop here and hand the turn back.** This is the one beat the founder gets to spend on the idea
 itself, and it goes **before** the setup questions. Repo, visibility, licence and cohort are
 paperwork; asking paperwork straight after someone has emptied their head is exactly what makes BOSS
 feel like it filed the idea and moved on.
 
-Ask **once**, in one line. Order it by cohort (read `cohort` from `.boss/config.json`):
+**One beat, two things in it — and the first is about them, not the idea.** Everything BOSS says
+later (which canvas branch opens, what the mentors weigh, which rung of the evidence ladder the
+conscience points at) assumes a founder who wants a paying customer unless told otherwise. So ask,
+once, and take *"skip"* as a complete answer:
+
+> *"Two quick ones before the setup, a line each is plenty: **why this one, for you** — and what
+> would **'it worked'** look like three months from now?"*
+
+Then the check, ordered by cohort (read `cohort` from `.boss/config.json`) — in the same message,
+not a second turn:
 
 - **Experienced** (`returning-founder`, `eng-builder`, `vibe-virtuoso`, `indie-hacker`) — build first.
   They usually are ready; the offer only needs to exist.
-  > *"Ready to build from that — or want to share more on the idea first?"*
+  > *"…and then: ready to build from that — or want to share more on the idea first?"*
 - **Beginner or unset** (`first-product`, `vibe-coder-newbie`, `non-tech-founder`, `domain-expert`,
   `null`) — shape first. A first articulation is usually a run-on draft, and getting it out is what
   generates the next round of thinking.
-  > *"Anything you'd add or correct before we set this up?"*
+  > *"…and then: anything you'd add or correct before we set this up?"*
+
+### What you do with the why
+
+- **Write their sentence verbatim** into `success_looks_like:` and as a dated **Capture log** line
+  (*"— why: … / it worked = …"*). Their words; don't tidy them.
+- **Map the why to one of** `learning` · `revenue` · `community` · `credibility` · `own-problem`
+  and write it to `motivation:`. **Show the mapping before saving** — *"I'll file that as
+  `community` — right?"* — and take their correction. If it doesn't fit, leave `unset` and keep the
+  sentence; the sentence is what matters, the enum is for the readers.
+- **If they skip, write nothing** — `motivation: unset`, `success_looks_like: ""`. Never infer a
+  motivation from the idea (the `/idea` rule: *a motivation nobody wrote is a small fabrication*).
+  Every reader behaves as before when it is unset. Don't ask again; they can say it any time with
+  `/idea` and the fields are theirs to edit.
 
 ### If they say build
 
@@ -265,8 +297,9 @@ it's clearly a real build).
 ## Rules
 
 - Capture before code. Don't start implementing inside `/boss` — this is spin-up only.
-- **Ask about the idea before you ask about paperwork.** The step 3.5 check comes before repo,
-  visibility, licence and cohort — and it is asked once, never re-offered.
+- **Ask about the idea — and about them — before you ask about paperwork.** The step 3.5 beat (why
+  this one · it worked looks like · ready or more) comes before repo, visibility, licence and cohort
+  — and it is asked once, never re-offered. *Skip* is an answer; nothing is inferred.
 - **Write the living doc shape, always.** A capture with no dated log entry is invisible to the
   conscience; see step 3.
 - **Never decide the licence for them, in either direction** — ask, name both costs, accept "not yet".

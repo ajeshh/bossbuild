@@ -10,7 +10,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   loadLoops, classifyLoop, detectSignals, signalAsContext, composeContext,
-  GENERIC_FRAME_TAIL, JUDGE_MOMENTS, isMomentMuted, readEvidenceContext,
+  GENERIC_FRAME_TAIL, JUDGE_MOMENTS, isMomentMuted, readEvidenceContext, readIntentContext,
   DEFAULT_SOURCE_GLOBS,
 } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { inferSourceGlobs } from '../src/detect.js';
@@ -233,6 +233,43 @@ test('evidence is read as a projection and absent evidence returns null', () => 
   assert.equal(e.total, 2);
   assert.equal(e.counts.commitment, 1);
   assert.equal(e.recent.id, 'EVID-001', 'most recent by date');
+});
+
+// --- founder intent (IDEA-097) ----------------------------------------------
+
+const IDEA = (id, extra, created = '2026-09-01') =>
+  `---\nid: ${id}\ntype: idea\nowner: product-lead\nstatus: seedling\ngist: x\n${extra}created: ${created}\n---\n\n# ${id} — x\n`;
+
+test('intent is null when never asked, when skipped, and when the only idea is dropped', () => {
+  assert.equal(readIntentContext(project({})), null, 'no docs/ideas');
+  assert.equal(readIntentContext(project({ 'docs/ideas/IDEA-001-a.md': IDEA('IDEA-001', '') })), null, 'fields absent');
+  assert.equal(readIntentContext(project({ 'docs/ideas/IDEA-001-a.md': IDEA('IDEA-001', 'motivation: unset\nsuccess_looks_like: ""\n') })), null, 'skipped → unset/empty');
+  assert.equal(readIntentContext(project({ 'docs/ideas/IDEA-001-a.md': IDEA('IDEA-001', 'motivation: community\nstatus: dropped\n') })), null, 'dropped idea does not speak');
+});
+
+test('intent reads the two fields verbatim and prefers the newest live idea', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001-a.md': IDEA('IDEA-001', 'motivation: revenue\nsuccess_looks_like: "three paying teams"\n', '2026-08-01'),
+    'docs/ideas/IDEA-002-b.md': IDEA('IDEA-002', 'motivation: community\nsuccess_looks_like: "ten strangers still posting in March"\n', '2026-09-01'),
+    'docs/ideas/IDEA-002-b-canvas.md': '---\nid: IDEA-002\ntype: canvas\nmotivation: learning\n---\n',
+  });
+  const i = readIntentContext(dir);
+  assert.deepEqual(i, { id: 'IDEA-002', motivation: 'community', success: 'ten strangers still posting in March' });
+});
+
+test('a sentence without a mappable motivation still counts; an unknown enum does not become one', () => {
+  const dir = project({ 'docs/ideas/IDEA-001-a.md': IDEA('IDEA-001', 'motivation: vibes\nsuccess_looks_like: "I finish something"\n') });
+  assert.deepEqual(readIntentContext(dir), { id: 'IDEA-001', motivation: null, success: 'I finish something' });
+});
+
+test('composeContext adds the intent line only when intent is present, and never grades it', () => {
+  const s = [{ moment: 'caution', loop_id: 'canvas-loop', confidence: 'low' }];
+  assert.equal(composeContext(s, { intent: null }), composeContext(s, {}), 'byte-identical when unset');
+  const out = composeContext(s, { intent: { id: 'IDEA-002', motivation: 'community', success: 'ten strangers' } });
+  assert.match(out, /from IDEA-002/);
+  assert.match(out, /motivation: community/);
+  assert.match(out, /"it worked" = "ten strangers"/);
+  assert.match(out, /Never re-ask the motivation, never grade it/);
 });
 
 test('superseded evidence is excluded from the ledger projection', () => {

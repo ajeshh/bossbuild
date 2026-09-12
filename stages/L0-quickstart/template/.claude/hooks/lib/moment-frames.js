@@ -81,11 +81,27 @@ export function composeContext(signals, opts = {}) {
   const evidenceLine = opts.evidence
     ? `\n\nEvidence on record (projected from docs/evidence/ — the ledger you've been asking for): ${evidenceSummary(opts.evidence)}. Use it to calibrate, not to lecture: (a) if there's recent COMMITMENT-grade evidence (someone gave up time/money/a slot), the founder is validating — say LESS, or stay silent; validation earns quiet. (b) If it's all stated-pain with no commitments, you may get SPECIFIC instead of generic — name the gap ("N said it hurts, zero commitments — what would a commitment test look like?") rather than a vague "will anyone pay?". (c) Never read the ledger back as a scoreboard or a number to hit — it's a fact that sharpens one line, not a meter.`
     : '';
+  // Intent (IDEA-097 — why THIS founder is building, in their words). The ladder above
+  // assumes a founder who wants a paying customer; this is the line that stops that
+  // assumption. It changes which rung the nudge points at, never whether it fires and never
+  // a grade. Added only when `/boss` recorded a motivation → byte-identical when unset.
+  const intentLine = opts.intent
+    ? `\n\nWhy they're building this (their own words, from ${opts.intent.id}): ${intentSummary(opts.intent)}. Calibrate the ASK to it, not the tone: a revenue motivation earns the commitment question (who paid, who gave up a slot); community → point at observed behaviour (did anyone come back a second time); learning or own-problem → the honest question is "did it teach you the thing / does it solve it for you yet", and "will anyone pay" is the wrong question for them — don't ask it. Credibility → who outside saw it. Never re-ask the motivation, never grade it, never quote their success sentence back at them as a target.`
+    : '';
   if (signals.length === 1) {
-    return signalAsContext(signals[0]) + cohortLine + brainLine + relationshipLine + evidenceLine;
+    return signalAsContext(signals[0]) + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine;
   }
   const parts = signals.map((s, i) => `(${i + 1}) ${signalAsContext(s)}`);
-  return `[BOSS conscience — ${signals.length} signals]\n` + parts.join('\n') + cohortLine + brainLine + relationshipLine + evidenceLine;
+  return `[BOSS conscience — ${signals.length} signals]\n` + parts.join('\n') + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine;
+}
+
+// One-line summary of the founder's stated intent for the voicing frame (IDEA-097).
+// e.g. `motivation: community; "it worked" = "ten people in the forum who weren't my friends"`
+function intentSummary(i) {
+  const parts = [];
+  if (i.motivation) parts.push(`motivation: ${i.motivation}`);
+  if (i.success) parts.push(`"it worked" = "${i.success}"`);
+  return parts.join('; ');
 }
 
 // One-line human summary of the evidence projection for the voicing frame.

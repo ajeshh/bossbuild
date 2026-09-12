@@ -40,7 +40,7 @@
 
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { readEvidenceContext } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
+import { readEvidenceContext, readIntentContext } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
 import { REENTRY_DAYS, readDevlogHead, awayDays, reentryRead } from '../stages/L0-quickstart/template/.claude/hooks/lib/reentry.js';
 import { dim, bold, ok, warn } from './ui.js';
@@ -72,6 +72,23 @@ export function printReentry(projectDir, { now = Date.now(), threshold = REENTRY
     console.log(`    ${dim('No "next" was recorded — `/close` writes one, and it is what makes the next return cheap.')}`);
   }
   console.log('');
+  return true;
+}
+
+// Toward what. `boss status` answers "where am I" (the rung) and "what am I doing" (the
+// focus); this is the one line that says what the founder said it was FOR (IDEA-097). Their
+// sentence, not BOSS's paraphrase, and only when they gave one — a founder who skipped the
+// question sees nothing here, not a prompt to fill it in. It is not a target and it does not
+// move: it is printed so the two lines above it have something to be measured against.
+export function printIntent(projectDir) {
+  const intent = readIntentContext(projectDir);
+  if (!intent) return false;
+  const why = intent.motivation ? dim(` (${intent.motivation})`) : '';
+  if (intent.success) {
+    console.log(`    ▸ ${bold('Toward:')} “${intent.success}”${why}`);
+  } else {
+    console.log(`    ▸ ${bold('Toward:')} ${intent.motivation}`);
+  }
   return true;
 }
 

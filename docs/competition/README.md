@@ -3,7 +3,7 @@ id: COMPETITION
 type: competition
 owner: product-lead
 status: living
-updated: 2026-09-11 (superpowers + the plugin field added)
+updated: 2026-09-11 (superpowers + the plugin field added; the five founder plugins read at source)
 ---
 
 # The field — who else is solving this
@@ -22,6 +22,7 @@ updated: 2026-09-11 (superpowers + the plugin field added)
 | [**v0** (Vercel)](v0.md) | adjacent — builds and hosts the app; not the company | Free $0 (7 msgs/day) · Plus $30/user/mo · Business $100/user/mo · Enterprise not public | **owns the runtime** — prompt → deployed URL in an hour; a retrieval-shaped design-system "skill"; 2–3 releases/mo | **no "why" layer at all** — memory is git; Instructions are opt-in per chat and static; credit burn is the #1 complaint; degrades past ~30 prompts | `watch` | 2026-09-11 |
 | [**superpowers** (obra)](superpowers.md) | adjacent — the build-craft methodology: 14 skills (brainstorm → plan → subagent TDD → review), one `SessionStart` hook, **on fourteen hosts from one repo**, in the official marketplace | free, MIT · enterprise support = a sales email, not public | **it is the default** — ★285k, *"skills trigger automatically"*, zero ceremony; its brainstorming skill is a real front door | **no venture at all** — never asks why or for whom; no memory across sessions; one fixed register for everyone; usage telemetry via a remote logo, on by default; 1 commit in 30 days vs 353 open issues | `watch` | 2026-09-11 |
 | [**the Claude plugin field**](claude-plugin-field.md) — haytham · product-discovery · founder-mode · arness · harnesskit · the SSS suite · boss-ai-agent | direct — every marketplace plugin that says *founder / startup idea / co-founder* | free; ★0–33 each; several created and abandoned the same day; **haytham retired itself 2026-07** | product-discovery's **typed evidence (REAL / SYNTHETIC / INFERRED + confidence)**; arness's **three ceremony tiers**; haytham's twenty-minute GO/NO-GO — founders want a verdict | all one-shot pipelines: idea → verdict → spec → nothing; no re-entry, no ledger that changes what the tool says next; synthetic research graded as evidence; your product lives in *their* folder | `watch` | 2026-09-11 |
+| [**the five founder plugins, read at source**](founder-plugins-source-read.md) — haytham · product-discovery · founder-mode · harnesskit · personal-council (404) | the same rivals, opened at the file level — skills, hooks, design docs, retirement notes — with every claimed BOSS gap grepped against `stages/` and `src/` first | free; two alive, two abandoned, one gone | haytham asks **why you're building it** and calibrates everything to the answer; product-discovery delivers **value before the scaffold** (TTFV ≤ 60 s) and keeps a **transition history** per hypothesis; both **subtracted their way to health** | still one-shot or PM-only; haytham's verdict rests on synthetic research; product-discovery **killed its own plugin** for three reasons BOSS's thin door dodges by construction — carry reason (2) into DEC-017's 90-day recheck | `watch` | 2026-09-11 |
 
 ## Not yet filed — named, not researched
 

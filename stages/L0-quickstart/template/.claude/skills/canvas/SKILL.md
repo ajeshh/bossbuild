@@ -161,6 +161,16 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 2. Open (or create) `docs/ideas/IDEA-NNN-canvas.md` from the template below.
 3. **Don't interrogate.** Ask about 2-4 cells at a time, starting with the most uncertain. Pull
    answers from the idea's "Current shape" + capture log; only ask what's missing.
+   **Read `motivation:` and `success_looks_like:` from the IDEA doc first** (IDEA-097 — `/boss`
+   asks them at spin-up). They decide two things below without a question: which branch of
+   **Business Model** to open (`revenue` → the earning branch; anything else → the *not every
+   project is trying to earn* branch, and don't offer both), and what sits in **Metrics** beside
+   "for people and planet" — their own sentence for *it worked*, quoted, not paraphrased. **If both
+   are `unset` / empty, ask them here as one of your first cells** — *"before the grid: why this
+   one, for you, and what would 'it worked' look like in three months?"* — write the answers back to
+   the IDEA doc's two fields (mapping the why to `learning` · `revenue` · `community` · `credibility`
+   · `own-problem`, shown before saving), and only then open Business Model. *Skip* is an answer;
+   leave them empty and open the earning branch with the not-earning note in view.
    **On an adopted repo, also read `.boss/brain/read.md`** — `/read-repo` put its read of the
    existing codebase there, and several cells (People, Problem, Story, Business Model) often have a
    partial answer sitting in what's already built. Propose those as *drafts to correct*, never as
@@ -221,8 +231,9 @@ _How it shows up in a life, how people engage, how it sustains itself._
 > this* — and it is only the sharpen that assumes money. So do **not** skip the cell, and do **not**
 > let a founder write a revenue line they don't mean to make it look finished.
 >
-> **Take the second branch instead.** Sustainability without revenue is time, attention, other
-> people, and an ending:
+> **Take the second branch instead** — and take it without asking when the IDEA doc's `motivation:`
+> is `learning`, `community`, `credibility` or `own-problem`. Sustainability without revenue is
+> time, attention, other people, and an ending:
 >
 > - **What keeps this alive?** Your own hours are the budget. How many a week, and for how long — a
 >   season, a year, indefinitely? Name it, because "indefinitely" is the answer that ends projects.

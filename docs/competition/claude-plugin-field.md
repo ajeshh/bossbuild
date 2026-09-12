@@ -91,3 +91,7 @@ toolbox-vs-journey line against them, and it is the right line).
 
 - 2026-09-11 — filed with superpowers, from Ajesh: *"maybe also see if any other plugins are
   competitors or things we can learn from the best for ours."* Method and its holes recorded above.
+- 2026-09-11 — five of these rows (haytham, product-discovery, founder-mode, harnesskit,
+  personal-council) re-read at the source level in
+  [founder-plugins-source-read.md](founder-plugins-source-read.md). personal-council's repo is
+  gone (404). Several "gaps" this file implied turned out to exist in BOSS already; that file says which.

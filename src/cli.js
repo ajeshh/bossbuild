@@ -22,7 +22,7 @@ import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { gistWork, recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
-import { printReentry, printEvidenceHeadway } from './orientation.js';
+import { printReentry, printEvidenceHeadway, printIntent } from './orientation.js';
 import { readiness, renderReadiness } from './readiness.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
@@ -574,6 +574,9 @@ async function cmdStatus(args) {
   console.log(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
   console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
   printFocusAndHeadway(process.cwd(), { adopted: stamp.adopted === true });
+  // Toward what (IDEA-097): the founder's own sentence for "it worked", if they gave one.
+  // Silent otherwise — see src/orientation.js.
+  printIntent(process.cwd());
   // Ticket headway is what printFocusAndHeadway just rendered (the last shipped FEAT).
   // This is the other half, and the half that can be wrong: what the work actually
   // taught you. Shipping is motion; evidence is the part that moves the bet.

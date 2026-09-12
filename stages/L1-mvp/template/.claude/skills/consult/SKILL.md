@@ -44,6 +44,13 @@ mentors who have nothing to add is noise). Read which mentors are installed (`.b
 
 **3. Get each mentor's take in their own voice.** Consult each relevant mentor (their agent), with the
 *same* question + enough context (read the canvas / RESUME / the relevant FEAT so they're grounded).
+**Include the founder's own intent in that context, verbatim** — `motivation:` and
+`success_looks_like:` from the active IDEA doc (IDEA-097; `/boss` asks them at spin-up). A mentor
+advising a `learning` or `community` founder as if they were chasing revenue gives confident advice
+to the wrong person: `mentor-capital` should default to *"not yet"* harder on the raise half of its
+seat, and `mentor-customers` should read *"the first ten"* as the first ten who come back, not who pay.
+If both fields are empty, say so to the mentors — *"motivation not stated"* — rather than letting
+them assume.
 Each returns their honest read — including pushback. Don't homogenize; a mentor's job is their lens,
 not consensus.
 

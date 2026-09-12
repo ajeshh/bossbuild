@@ -16,7 +16,7 @@
 //
 // Always exits 0. Empty output = no signal = stay silent.
 
-import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity } from './lib/loop-runtime.js';
+import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readIntentContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity } from './lib/loop-runtime.js';
 import { detectTaskHygiene } from './lib/task-hygiene.js';
 import process from 'node:process';
 
@@ -106,7 +106,11 @@ try {
   // is already firing (past the silent early-exit), same as brain/relationship.
   // null when no evidence yet → additionalContext byte-identical to before.
   const evidence = readEvidenceContext(projectDir);
-  const additionalContext = composeContext(signals, { cohort, brain, relationship, evidence });
+  // Intent (IDEA-097): why this founder is building, from the IDEA doc's `motivation:` /
+  // `success_looks_like:`. Same discipline — read only once a moment is firing, null when
+  // `/boss` never asked or they skipped → additionalContext byte-identical to before.
+  const intent = readIntentContext(projectDir);
+  const additionalContext = composeContext(signals, { cohort, brain, relationship, evidence, intent });
 
   // Frequency ledger (v0.34) — correctness-invisible side effect; only fires
   // reach here (past the silent early-exit). Records facts (moments, judge-bool,
