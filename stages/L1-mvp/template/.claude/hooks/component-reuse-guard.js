@@ -32,6 +32,15 @@
 // WHY IT STAYS QUIET IN PRACTICE: it fires only on files whose name is not already in the index —
 // i.e. once per new component, not once per edit. Editing `Button.tsx` forever is silent.
 //
+// TWO MORE CHECKS SINCE v0.309.0, both reading the index's `Status` column and the API-shape floor:
+//   - DEPRECATED IMPORT — a row marked `deprecated → X` is a component the agent must not copy, and
+//     the agent copies whatever import it finds. When a write adds a reference to one, it names the
+//     replacement. Fires on ANY component-shaped file (pages import components too), once per write
+//     that adds the reference, never for the deprecated component's own file.
+//   - THE BOOLEAN PILE — `isPrimary isLarge isDanger` on one component is eight undesigned states
+//     and the shape a model produces by default. When a component's props reach three `isX`-shaped
+//     booleans and this write added one, it asks for an enumerated `variant`/`size` instead.
+//
 // TO TURN IT ON — add to .claude/settings.json (same block as design-tokens-guard; both can share it):
 //   "hooks": { "PostToolUse": [ { "matcher": "Edit|Write|MultiEdit",
 //     "hooks": [ { "type": "command",
@@ -65,6 +74,17 @@ const words = (name) => name
   .replace(/[_\-.]/g, ' ')
   .toLowerCase().split(/\s+/).filter(Boolean);
 
+// The text this write ADDED — a Write's content, an Edit's new_string, a MultiEdit's new_strings.
+const addedText = (input) => {
+  if (typeof input.content === 'string') return input.content;
+  if (typeof input.new_string === 'string') return input.new_string;
+  if (Array.isArray(input.edits)) return input.edits.map((e) => e.new_string || '').join('\n');
+  return '';
+};
+// `isPrimary?: boolean` · `hasIcon: Boolean` · `var isLarge: Bool` — the prefixed-boolean prop shape.
+const BOOL_PROP = /\b((?:is|has|show|hide|can|should)[A-Z]\w*)\??\s*:\s*(?:boolean|Boolean|Bool)\b/g;
+const boolProps = (text) => [...new Set([...text.matchAll(BOOL_PROP)].map((m) => m[1]))];
+
 let event;
 try {
   event = JSON.parse(readFileSync(0, 'utf8') || '{}');
@@ -84,16 +104,58 @@ try {
   if (!path || SKIP_PATH.test(path) || !COMPONENT_EXT.test(path)) process.exit(0);
 
   const name = basename(path, extname(path));
-  if (NOT_A_COMPONENT.test(name)) process.exit(0);
-  // Either it lives in a components directory, or it is PascalCase — the two conventions that
-  // actually signal "this is a component" across web and native.
-  if (!COMPONENT_DIR.test(path) && !/^[A-Z][A-Za-z0-9]*$/.test(name)) process.exit(0);
-
   const index = readFileSync(indexPath, 'utf8');
+  const added = addedText(input);
+  const notes = [];
 
-  // Already indexed? Then this is an edit to a known component and there is nothing to ask.
-  // Word-boundary match so `Button` doesn't mask `CTAButton`.
-  if (new RegExp(`\\b${name.replace(/[^\w]/g, '')}\\b`).test(index)) process.exit(0);
+  // --- Deprecated import: the Status column, read at the moment it matters. -----------------
+  // A row ends `… | deprecated → `Surface` |` (either arrow). Any component-shaped file can import
+  // a deprecated one — pages most of all — so this runs before the "is it a component?" gate.
+  const deprecated = new Map();
+  for (const line of index.split(/\r?\n/)) {
+    const row = line.match(/^\|\s*\**`?([A-Za-z][\w-]*)`?\**\s*\|/);
+    const st = line.match(/deprecated\s*(?:→|->)\s*`?([A-Za-z][\w.-]*)`?/i);
+    if (row && st && row[1].toLowerCase() !== st[1].toLowerCase()) deprecated.set(row[1], st[1]);
+  }
+  for (const [old, next] of deprecated) {
+    if (old === name) continue; // the deprecated component's own file is allowed to exist
+    if (new RegExp(`\\b${old}\\b`).test(added)) {
+      notes.push(
+        `\`${old}\` is marked **deprecated → \`${next}\`** in \`${INDEX_REL}\` and this write just ` +
+        `referenced it. Use \`${next}\`. The old row stays until its last import is gone — this is ` +
+        `one of the imports keeping it alive.`
+      );
+    }
+  }
+
+  const isComponent = !NOT_A_COMPONENT.test(name) &&
+    // Either it lives in a components directory, or it is PascalCase — the two conventions that
+    // actually signal "this is a component" across web and native.
+    (COMPONENT_DIR.test(path) || /^[A-Z][A-Za-z0-9]*$/.test(name));
+
+  // --- The boolean pile: the API-shape floor, checked where the props are written. ----------
+  if (isComponent && boolProps(added).length) {
+    let whole = added;
+    try { whole = readFileSync(join(projectDir, path), 'utf8'); } catch { /* not on disk yet */ }
+    const pile = boolProps(whole);
+    if (pile.length >= 3) {
+      notes.push(
+        `\`${name}\` now carries ${pile.length} prefixed boolean props (${pile.map((b) => `\`${b}\``).join(', ')}) — ` +
+        `that is ${2 ** pile.length} combinations, and nobody designed most of them. The API-shape ` +
+        `floor: **enumerated variants, not boolean piles** — \`variant="…"\` / \`size="…"\` with the ` +
+        `states you actually drew. Booleans that are genuinely independent (\`disabled\`, \`loading\`) ` +
+        `are fine; ones that describe *which kind* are a variant wearing a boolean's name.`
+      );
+    }
+  }
+
+  // Already indexed? Then this is an edit to a known component and the three-way question is
+  // settled. Word-boundary match so `Button` doesn't mask `CTAButton`.
+  const indexed = new RegExp(`\\b${name.replace(/[^\w]/g, '')}\\b`).test(index);
+  if (!isComponent || indexed) {
+    if (notes.length) out(`component-reuse-guard: ${notes.join(' ')}`);
+    process.exit(0);
+  }
 
   // --- Find what it should have been compared against. --------------------------------------
   // Table rows look like: | `Button` | primary and secondary actions | `import …` | … |
@@ -123,6 +185,7 @@ try {
     : '';
 
   out(
+    (notes.length ? `component-reuse-guard: ${notes.join(' ')}\n\n` : '') +
     `component-reuse-guard: \`${name}\` was just written to \`${path}\` and has no row in ` +
     `\`${INDEX_REL}\`. Before continuing, answer the three-way question the index exists for — ` +
     `**reuse, adjust, or new?**${nearNote} Already there: ${listing}. ` +

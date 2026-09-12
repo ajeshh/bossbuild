@@ -1438,9 +1438,17 @@ const OPTIONAL_HOOKS = [
     name: 'component-reuse-guard',
     event: 'PostToolUse',
     mode: 'MVP',
-    does: "Asks the question that keeps a codebase a system. When a component gets written whose name has no row in `docs/design/COMPONENTS.md`, it hands Claude the ones that already exist — near-names first — and asks: reuse, adjust, or new? It carries the test, because the question is hard: match on the JOB, not the look. Fires once per new component name, never on an edit to one you already have, and never at all until the index exists.",
+    does: "Asks the question that keeps a codebase a system. When a component gets written whose name has no row in `docs/design/COMPONENTS.md`, it hands Claude the ones that already exist — near-names first — and asks: reuse, adjust, or new? It carries the test, because the question is hard: match on the JOB, not the look. Fires once per new component name, never on an edit to one you already have, and never at all until the index exists. It also reads the index's `Status` column — a write that references a component marked `deprecated → X` is told to use `X` — and the API-shape floor: three `isX`-style booleans on one component is eight undesigned states, and it asks for an enumerated `variant` instead.",
     cost: 'a process after each file write',
     worth: "you have more than a couple of components and want to keep it that way — writing a new file is easier for a model than reading an existing one and widening it, so `create` is the default unless something asks. This is what stops Button, CTAButton and PrimaryButton",
+  },
+  {
+    name: 'ui-boundary-guard',
+    event: 'PostToolUse',
+    mode: 'MVP',
+    does: "Keeps imports flowing one way — `ui/` → `features/` → `app/`. When a file inside a layered layout gains an import that points UP (a system component reaching into a feature, a feature reaching into the app shell) or SIDEWAYS into another feature's internals, it names the crossing and the usual fix: move the shared piece down, import from the other feature's `index`, or pass it in as a prop. Reads paths, not syntax, so it works for TS/JS, Vue, Svelte, Astro and Dart alike. Silent unless the project actually has a `features/` directory beside a `ui/` or `components/` one — a flat components folder is earlier, not wrong.",
+    cost: 'a process after each file write (it reads only the imports the write added)',
+    worth: "your app has grown past one folder of components — one reasonable-looking upward import is cheap today and makes `ui/` un-extractable and two features un-separable forever. This is the linter the mature systems keep for exactly this rule, without a stack-specific linter",
   },
   {
     name: 'schema-guard',

@@ -99,3 +99,69 @@ test('fails open — a broken guard must never break a session', () => {
   const stdout = execFileSync('node', [HOOK], { input: 'not json at all', encoding: 'utf8' });
   assert.equal(stdout.trim(), '', 'unparseable input exits 0 and silent');
 });
+
+// --- v0.309.0: the Status column and the API-shape floor -------------------------------------
+
+function withStatusIndex() {
+  const dir = project({});
+  mkdirSync(join(dir, 'docs', 'design'), { recursive: true });
+  writeFileSync(join(dir, 'docs', 'design', 'COMPONENTS.md'), [
+    '# Component index',
+    '',
+    '| Component | What it\'s for | Import | Variants | Missing states | Status |',
+    '|---|---|---|---|---|---|',
+    '| `Button` | primary and secondary actions | `import { Button }` | primary · ghost | — | stable |',
+    '| `Card` | a bounded surface | `import { Card }` | — | — | deprecated → `Surface` |',
+    '| `Surface` | a bounded surface for one thing | `import { Surface }` | raised · flat | — | stable |',
+    '',
+  ].join('\n'));
+  return dir;
+}
+
+test('names the replacement when a write references a deprecated component — even from a page', () => {
+  const out = run(withStatusIndex(), {
+    file_path: 'src/app/dashboard/page.tsx',
+    content: "import { Card } from '@/ui/Card';\nexport default () => <Card />;",
+  });
+  assert.match(out, /`Card` is marked \*\*deprecated → `Surface`\*\*/, 'reads the Status column');
+  assert.match(out, /Use `Surface`/);
+  assert.doesNotMatch(out, /reuse, adjust, or new/, 'a page is not a component; only the deprecation speaks');
+});
+
+test('lets the deprecated component\'s own file exist, and stays quiet on the replacement', () => {
+  const own = run(withStatusIndex(), { file_path: 'src/ui/Card/Card.tsx', content: 'export function Card(){}' });
+  assert.equal(own, '', 'the deprecated row stays until its last import is gone — its file may be edited');
+  const next = run(withStatusIndex(), { file_path: 'src/app/page.tsx', content: "import { Surface } from '@/ui/Surface';" });
+  assert.equal(next, '');
+});
+
+test('asks for an enumerated variant when a component\'s prefixed booleans reach three', () => {
+  const dir = withStatusIndex();
+  const out = run(dir, {
+    file_path: 'src/ui/Button/Button.tsx',
+    content: 'type Props = { isPrimary?: boolean; isLarge?: boolean; isDanger: boolean; disabled?: boolean };',
+  });
+  assert.match(out, /3 prefixed boolean props/);
+  assert.match(out, /`isPrimary`, `isLarge`, `isDanger`/);
+  assert.match(out, /enumerated variants, not boolean piles/);
+  assert.match(out, /\(`isPrimary`, `isLarge`, `isDanger`\) —/, 'the pile is exactly the prefixed three — `disabled` is not counted');
+  assert.doesNotMatch(out, /reuse, adjust, or new/, 'Button is indexed — no three-way question');
+});
+
+test('stays quiet at two booleans, and on an edit that adds none', () => {
+  const dir = withStatusIndex();
+  const two = run(dir, { file_path: 'src/ui/Button/Button.tsx', content: 'type P = { isPrimary?: boolean; isLarge?: boolean }' });
+  assert.equal(two, '');
+  mkdirSync(join(dir, 'src', 'ui', 'Button'), { recursive: true });
+  writeFileSync(join(dir, 'src', 'ui', 'Button', 'Button.tsx'), 'type P = { isA: boolean; isB: boolean; isC: boolean }');
+  const untouched = run(dir, { file_path: 'src/ui/Button/Button.tsx', old_string: 'x', new_string: 'const y = 1;' }, 'Edit');
+  assert.equal(untouched, '', 'an existing pile is reported when a write ADDS to it, not on every edit');
+});
+
+test('a new component with a pile gets both the pile and the three-way question, in that order', () => {
+  const out = run(withStatusIndex(), {
+    file_path: 'src/ui/CTAButton.tsx',
+    content: 'type P = { isPrimary: boolean; isLarge: boolean; isDanger: boolean }',
+  });
+  assert.ok(out.indexOf('boolean piles') < out.indexOf('reuse, adjust, or new'));
+});

@@ -16,6 +16,43 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.309.0 — 2026-09-12
+
+**UI organization gets its boundaries: `ui-boundary-guard` (new, dormant), and
+`component-reuse-guard` learns the `Status` column and the boolean pile.**
+
+> **For you:** three sentences v0.308.0 wrote into your project now have a check behind them.
+> `boss help hooks` describes the new one; `/design-tokens-init` offers it the day a `features/`
+> directory appears beside `ui/`. All advisory, all fail-open, all silent until earned.
+
+- **`ui-boundary-guard`** — the one-way import rule as a hook: `ui/` → `features/` → `app/`, and a
+  feature never reaches into another's internals. When a write *adds* an import that points UP (a
+  system component into a feature, a feature into the app shell) or SIDEWAYS (past another feature's
+  `index`), it names the crossing and the usual fix — move the shared piece down, import from the
+  index, or pass it in as a prop. **Paths, not syntax:** it resolves relatives, `@/`-style aliases,
+  `src/`-rooted paths and Dart `package:` imports, so one file covers TS/JS, Vue, Svelte, Astro and
+  Flutter without a stack-specific linter. Module-name imports it cannot resolve are not guessed at.
+  **JIT gate:** a `features/` (or `modules/`, `domains/`) directory *and* a `ui/`-layer directory at
+  the same root — a flat `components/` folder is earlier, not wrong. Judges only the text the write
+  added, so an old crossing in a file edited elsewhere stays quiet; it speaks once, when the line
+  lands. This is the linter FSD and bulletproof-react keep for exactly this rule; ESLint's
+  `import/no-restricted-paths` can sit on top for projects that have it.
+- **`component-reuse-guard` reads `Status`.** A row marked `deprecated → X` is a component the agent
+  must not copy, and the agent copies whatever import it finds. Any component-shaped file — pages
+  most of all — that references one is told to use `X`, once per write that adds it; the deprecated
+  component's own file may still be edited, because the row stays until its last import is gone.
+- **`component-reuse-guard` counts the boolean pile.** Three `isX`/`hasX`/`showX`-shaped booleans on
+  one component is eight undesigned states and the shape a model produces by default. When a write
+  adds one and the file reaches three, it asks for an enumerated `variant`/`size` instead — and says
+  which booleans are the pile, so `disabled` and `loading` are left alone. Works for TS, Swift
+  (`Bool`) and Kotlin (`Boolean`) prop shapes.
+- 13 new tests (419 total); both guards exercised from a fresh `boss new` + `unlock mvp` scaffold
+  before this entry was written. Catalogued in `boss help hooks`, listed in the L1 manifest's
+  optional hooks, described on the site's design page.
+- **Not built, on purpose:** `$deprecated` tokens as a guard check — `design-tokens-guard` reads the
+  markdown tokens doc, not `tokens.json`, and teaching it DTCG is a different change. Stays a
+  convention; the practice says so.
+
 ## 0.308.0 — 2026-09-12
 
 **Governance and the shape of UI code — read from the systems that have them, seeded at MVP.**

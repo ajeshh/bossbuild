@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.308.0" />
+<meta name="generator" content="BOSS 0.309.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -70,6 +70,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.309.0</span><span class="when">2026-09-12</span></div>
+        <p>three sentences v0.308.0 wrote into your project now have a check behind them. <code>boss help hooks</code> describes the new one; <code>/design-tokens-init</code> offers it the day a <code>features/</code> directory appears beside <code>ui/</code>. All advisory, all fail-open, all silent until earned.</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.308.0</span><span class="when">2026-09-12</span></div>
         <p><code>docs/design/COMPONENTS.md</code> gains a <code>Status</code> column (<code>draft</code> · <code>stable</code> · <code>deprecated → X</code>) the agent reads before copying an import; the CLAUDE.md block <code>/design-tokens-init</code> writes now carries the one-way import rule (<code>ui/ → features/ → app/</code>); the style guide gains the four component-API floors and <em>behaviour from a primitive, style from tokens</em>; <code>/design-library</code> prints how much of your UI is on the system at all.</p>
       </li>
@@ -112,10 +116,6 @@
       <li>
         <div class="rel"><span class="ver">v0.296.0</span><span class="when">2026-09-11</span></div>
         <p><strong>BOSS runs wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains.</strong> It always did; the README and the site now say so. And <code>boss id</code> no longer hands out a duplicate record number on Windows.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.295.0</span><span class="when">2026-09-11</span></div>
-        <p><strong><code>/comp-eval</code> now says what to open, not just what to write</strong> — docs before marketing, the changelog, the product itself if there's a free tier — and writes a <code>How they do it</code> entry for the handful of features that touch your bet, which <code>/spec</code> reads as design reference <em>after</em> you've decided to build one.</p>
       </li>
     </ol>
         <p class="small">
@@ -161,7 +161,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.308.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.309.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project — it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

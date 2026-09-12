@@ -299,7 +299,9 @@ in vocabulary (Frost's levels, Curtis's layers) and not in file shape:
    props on non-utility components, one named escape hatch. (Primer ADR-003/004.) The AI-specific
    failure this prevents is the boolean pile — `isPrimary isLarge isDanger` — which is eight
    undesigned states; enumerated `variant`/`size` is the fix, and variants-as-data (cva-style
-   recipes) is its mechanical form.
+   recipes) is its mechanical form. `component-reuse-guard` counts the pile (three `isX` booleans on
+   one component) and reads the index's `deprecated → X` rows, so both the API floor and the
+   lifecycle column are checked where the code is written, not remembered.
 3. **Behaviour from a primitive, style from tokens** — Radix's argument and Primer ADR-002's: the
    ARIA/focus/keyboard model lives in an unstyled primitive (or framework-free behaviour consumed by
    a hook); the visual system sits on top. This is the single rule that removes the hand-rolled
@@ -308,9 +310,11 @@ in vocabulary (Frost's levels, Curtis's layers) and not in file shape:
    entities → shared`, *"only import from layers strictly below"*, enforced by its Steiger linter);
    bulletproof-react's `shared → features → app` with ESLint `import/no-restricted-paths`. BOSS's
    founder-sized version is three folders — `ui/` (knows nothing about the product) → `features/`
-   → `app/` — inlined into CLAUDE.md by `/design-tokens-init`. **It is a filter at MVP and a
-   boundary at V1** (the ESLint rule), and the practice says so rather than pretending the sentence
-   enforces itself.
+   → `app/` — inlined into CLAUDE.md by `/design-tokens-init`. The sentence is a filter; the
+   boundary is **`ui-boundary-guard`** (v0.309.0), a hook that reads the imports a write added and
+   names the ones pointing up or sideways — stack-neutral because it reads paths, not syntax, and
+   silent until a `features/` directory exists beside `ui/`. A project with ESLint can add
+   `import/no-restricted-paths` on top; the hook is the half that works before anyone sets that up.
 5. **A partial with parameters is a component.** Rails partials, Astro/Svelte files, HTMX
    fragments, Django includes — if it renders from more than one place and takes inputs, it gets a
    row in the index. The index is not a React artifact.
@@ -734,6 +738,11 @@ converge instead of wander:
   names instead. **Ships dormant at L1 and is offered once by `/design-tokens-init`**, because the
   tokens file is the opt-in signal: *no token system, no opinion.* This is the boundary the note
   above asks for — the check that doesn't depend on the next prompt remembering.
+- **The moment the layout is layered (MVP):** `ui-boundary-guard` — imports flow `ui/` →
+  `features/` → `app/` and never up or into a sibling feature's internals. Dormant until
+  `features/` exists beside `ui/`; offered by `/design-tokens-init` when it does. In the same
+  release `component-reuse-guard` learned the index's `Status` column and the boolean pile, so the
+  lifecycle and the API-shape floor have a check and not only a sentence.
 - **MVP:** `designer` unlocks, with `/design-review` before code and `/ux-check` after — moved
   down from V1 in v0.189.0 (DEC-005). AI-generated UI nails the happy path and skips
   empty/loading/disabled/error, and that lands the first week someone builds a screen.

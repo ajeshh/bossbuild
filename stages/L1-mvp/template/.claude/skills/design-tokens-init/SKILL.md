@@ -490,6 +490,16 @@ field worth filling — it is what an editor shows on hover, and the agent reads
   `Button`, `CTAButton`, `PrimaryButton`. Same JIT gate and same drop-it-if-declined rule as the
   others.
 
+- **Offer `ui-boundary-guard` when the layout becomes layered** — the day a `features/` directory
+  appears beside `ui/` or `components/`. The one-way import rule in CLAUDE.md is a filter until
+  then; this is its boundary, and it reads paths rather than syntax so it needs no stack-specific
+  linter:
+
+  > *"You've got `features/` next to `ui/` now. Want `ui-boundary-guard` on? When a write adds an
+  > import that points the wrong way — a system component reaching into a feature, a feature reaching
+  > into another's internals — it names the crossing and the usual fix. Silent on every import that
+  > flows down."*
+
 - **Offer the terminology guard the same way — but only once a terminology table has real rows.**
   Voice and tone can't be checked by a regex and this hook doesn't try. **Terminology can**, because
   it's a word list:

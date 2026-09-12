@@ -316,6 +316,16 @@ nav: design
               switched off, like every optional hook, because it runs after each file write.</span>
           </div>
           <div class="pair">
+            <span class="k">component-reuse-guard · ui-boundary-guard</span>
+            <span>Two more hooks, both dormant until earned. The first fires once per <em>new</em>
+              component and asks the question the index exists for — reuse, adjust, or new? — and
+              reads the index's <code>Status</code> column, so an import of something marked
+              <code>deprecated → X</code> is told to use <code>X</code>. The second keeps imports
+              flowing one way, <code>ui/ → features/ → app/</code>, naming the crossing the moment
+              a write adds it. Paths, not syntax: the same hook works for TypeScript, Vue, Svelte
+              and Dart.</span>
+          </div>
+          <div class="pair">
             <span class="k">/design-review · /ux-check</span>
             <span>The MVP pass, before code and after it. <code>/ux-check</code> walks the
               <em>actual journey rather than the spec</em>, checks the five states are real and not
