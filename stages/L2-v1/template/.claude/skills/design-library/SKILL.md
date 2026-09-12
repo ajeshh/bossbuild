@@ -169,6 +169,13 @@ component's current source hash differs from the manifest, its card is **stale**
 mechanically checkable — no prompt has to remember, no reviewer has to notice. It is the same move
 `design-tokens-guard` makes for hex codes, applied to the library itself.
 
+**What the hash cannot see is a rendered change** — a token edit that shifts every button, a CSS
+cascade that reaches a component nobody touched. The boundary for *that* is a visual snapshot per
+component with an explicit *accept as baseline* step, which is what Storybook's test runner and
+its hosted visual-test services do. Where Storybook is already present, turn it on; the accept step
+is the governance act — a diff nobody approved is drift by definition. Where it is not, this hash is
+the honest half, and the page should say which half it is.
+
 **The manifest is also the agent's reuse index.** `name` + `purpose` + `import` + `variants` is
 exactly what an agent needs to answer *"does something like this already exist?"* before writing a
 new file. The design system's biggest unenforced rule — *reuse first, extend second, create last* —
@@ -226,16 +233,27 @@ warning. It shows what you've built, not only what's wrong.
 3. **Read each component.** Extract: exported name, the props that create variants, which states it
    handles, the import path, and any raw style values. One line of purpose — from a doc comment if
    there is one, otherwise inferred and marked as inferred.
-4. **Count usage.** Grep the import across the repo. Zero means ⚪ unused.
+4. **Count usage.** Grep the import across the repo. Zero means ⚪ unused. Then **count the other
+   direction — how much of the UI is on the system at all.** Files that style by hand (the same
+   pattern `design-tokens-loop` opens on) versus files that consume tokens or system components.
+   That ratio is the one adoption number this library can compute, and adoption — not correctness
+   — is where design systems die: the 2026 zeroheight survey has only 38% of systems reaching
+   moderate-to-wide adoption and 59% of teams not measuring it at all. Print it in the summary line.
+   Below it, list **the bespoke patterns used from the most places** — a hand-styled card that
+   appears on four screens is the next component, already earned; that is the promotion threshold
+   measured instead of remembered.
 5. **Look for near-duplicates.** Compare names and prop shapes across components.
    `Button`/`CTAButton`/`PrimaryButton` is the canonical smell. Flag pairs, don't merge them — the
-   founder decides, you propose.
+   founder decides, you propose. Carry the index's `Status` column into the manifest: a `deprecated
+   → X` component whose import count is still above zero is a finding (*"3 screens still on `Card`;
+   `Surface` replaced it on <date>"*), and the day it reaches zero is the day the row goes.
 6. **Render each card** as static HTML+CSS that consumes the **real token values**, so the card looks
    like the component does. This is an honest approximation, not a live render — say so on the page,
    once, in small type. An approximation labeled as one is useful; an approximation presented as
    truth is the mockup hazard all over again.
 7. **Render the shell** — foundations from the tokens file, rules from the style guide, a link to
-   every card, and a summary line: *"14 components · 3 findings · generated <date>."*
+   every card, and a summary line: *"14 components · 71% of UI files on-system · 3 findings ·
+   generated <date>."*
 8. **Write `manifest.json`** with a source hash per component.
 9. **Report** the findings list in the session, ordered by severity, and point at the library path.
 

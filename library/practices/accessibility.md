@@ -139,7 +139,11 @@ the fix:
 - An icon-only button with no accessible name.
 - Colour as the only state signal, because a colour token is the thing most readily to hand.
 - A custom dropdown, tab set or modal with no keyboard model — **the APG exists precisely for this**,
-  and an agent that has been pointed at it writes a very different component.
+  and an agent that has been pointed at it writes a very different component. The cheaper answer
+  than implementing the APG by hand is **a headless primitive that already did** — an unstyled
+  component library that owns the ARIA, focus and keyboard model and leaves every visual decision
+  to your tokens (the web has several; mobile platforms ship theirs). *Behaviour from a primitive,
+  style from tokens* is the single rule that removes this whole class of miss.
 
 **The leverage is upstream, not in review.** These are prompt-time and component-time facts, which is
 why the accessibility floor lives in `STYLE_GUIDE.md` (read on every design turn) rather than only in

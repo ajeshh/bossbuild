@@ -53,14 +53,37 @@ updated: {{DATE}}
 > **Open this before creating a component.** Reuse first, extend second, create last.
 > A new component gets its row in the same change that creates it.
 
-| Component | What it's for | Import | Variants | Missing states |
-|---|---|---|---|---|
-| `Button` | primary and secondary actions | `import { Button } from '@/components/Button'` | primary · secondary · ghost | — |
-| `EmptyState` | what a list shows before there is data | `import { EmptyState } from '@/components/EmptyState'` | — | loading |
+| Component | What it's for | Import | Variants | Missing states | Status |
+|---|---|---|---|---|---|
+| `Button` | primary and secondary actions | `import { Button } from '@/components/Button'` | primary · secondary · ghost | — | stable |
+| `EmptyState` | what a list shows before there is data | `import { EmptyState } from '@/components/EmptyState'` | — | loading | draft |
+| `Card` | a bounded surface for one thing | `import { Card } from '@/components/Card'` | — | — | deprecated → `Surface` |
 
 **Missing states** names the holes in the five-state requirement (default / hover / active /
 disabled / empty+loading). A dash means none are missing. Leaving the column blank is not the same
 as a dash — an unfilled cell means nobody checked.
+
+**Status is the column the agent reads before it copies an import.** Three words, and each changes
+what reuse means: **`draft`** — exists, used once, not yet a precedent; reuse it if it fits, *change
+it freely*, it has no consumers to break. **`stable`** — used from two or more places; reuse first,
+extend second, and a change is a change to every screen that imports it. **`deprecated → X`** — a
+replacement exists; **never reuse this one**, use `X`, and the row stays until the last import is
+gone. A replaced component is not the same as an unused one: unused gets deleted in the pass that
+finds it; replaced gets the pointer first, because until it is gone the agent will keep finding the
+old import and copying it. Mark the source too where the language has a way (`@deprecated` in
+JSDoc/TS, `@Deprecated`/`@available(*, deprecated:)` on mobile) — that annotation shows up in the
+editor and in the agent's hover, which is the one place a reminder is read without opening this file.
+The same three words work for the token file: DTCG has `$deprecated: "use color.action.primary"`
+on tokens and groups for exactly this.
+
+**Where a component lives.** One directory per component, named for it, holding everything about it:
+`Button/Button.tsx`, its subparts carrying the parent's name (`ButtonGroup.tsx`, exported as
+`Button.Group`), its stories or preview, its test, and its `index` re-export. A replacement is
+`Button2`, never `NewButton` — a number says *this is the successor*, an adjective says nothing and
+outlives its meaning. On mobile it is one view per file with its modifiers beside it; in a
+server-rendered stack the directory is the view component or the partial plus its helper. The shape
+is the same everywhere: **if you cannot find all of a component in one place, it is two components
+with one name.**
 
 ## The API is part of the system too
 
@@ -87,7 +110,10 @@ picking one is the work.
 
 ## Not a component
 
-Pages and routes do not get rows — they are compositions, not building blocks. The landing page is
+Pages and routes do not get rows — they are compositions, not building blocks. **A partial with
+parameters is a component** and does get one — `_card.html.erb`, an Astro or Svelte file, an
+HTMX fragment, a Django `{% include %}` with a context: if it is rendered from more than one place
+and takes inputs, it is a building block with a template's file extension. The landing page is
 the exception worth naming: it is the surface a stranger judges you by and it was usually written
 before any of this existed, so it carries its own row here once `/design-library` runs at V1.
 

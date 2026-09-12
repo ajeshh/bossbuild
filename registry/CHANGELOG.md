@@ -16,6 +16,64 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.308.0 — 2026-09-12
+
+**Governance and the shape of UI code — read from the systems that have them, seeded at MVP.**
+Second pass on the design field the same day, aimed where Ajesh pointed it: not what generates a
+screen, but how a system is governed, scaled, documented, held against drift, and how its code is
+organized so that is possible.
+
+> **For you:** `docs/design/COMPONENTS.md` gains a `Status` column (`draft` · `stable` ·
+> `deprecated → X`) the agent reads before copying an import; the CLAUDE.md block
+> `/design-tokens-init` writes now carries the one-way import rule (`ui/ → features/ → app/`); the
+> style guide gains the four component-API floors and *behaviour from a primitive, style from
+> tokens*; `/design-library` prints how much of your UI is on the system at all.
+
+- **Sources, all at source:** GitHub Primer's contributor docs and ADRs (the deprecation
+  checklist — `@deprecated` in source *and* `"status": "deprecated"` in docs metadata *and* a
+  Deprecation section with the replacement; semver table; prop norms; children-as-API; one
+  directory per component; `Breadcrumbs2` never `NewBreadcrumbs`) · zeroheight *Design Systems
+  Report 2026* (n=147: 51/31/13 centralized/hybrid/federated · **only 41% measure adoption, 38%
+  reach moderate-to-wide** · 61% worried about AI-generated design) · Omlet · DTCG 2025.10, stable,
+  `$deprecated` verified on the published spec, not the editor's draft · Chromatic ·
+  Feature-Sliced Design and bulletproof-react · Radix · Curtis's team models and his retraction of
+  the federated preference. Seven entries added to `library/sources.json`, every URL opened.
+- **The index's `Status` column, and the rule that replaced ≠ unused.** Unused is deleted in the
+  pass that finds it (unchanged); *replaced* gets the pointer first, because until the last import
+  is gone the agent will keep finding the old one and copying it. Mark the source too —
+  `@deprecated` shows in the hover, which is the one reminder read without opening a file. Same
+  three words for tokens: DTCG `$deprecated: "use color.action.primary"`, and `$description` on
+  every semantic token, because the agent reads hovers.
+- **Where a component lives** — one directory, everything colocated, subparts carrying the
+  parent's name; shape-neutral phrasing: *if you cannot find all of a component in one place, it is
+  two components with one name.* **A partial with parameters is a component** and gets a row — the
+  index is not a React artifact.
+- **Component API shape** in the style guide, four floors every mature system converged on:
+  enumerated variants not boolean piles (`isPrimary isLarge isDanger` is eight undesigned states —
+  and the agent's default); children for content; strict props where the design decided, parts
+  where the consumer decides; one named escape hatch, never `style`. Underneath: **behaviour from a
+  primitive, style from tokens** — now in `accessibility.md` as the single rule that removes the
+  hand-rolled inaccessible dropdown.
+- **The one-way import rule** inlined into CLAUDE.md — `ui/` knows nothing about the product,
+  `features/` never reaches into another feature. A filter at MVP, a boundary at V1 (the ESLint
+  rule), and the practice says which it is rather than pretending the sentence enforces itself.
+- **`/design-library` measures adoption** — on-system vs hand-styled file ratio (the predicates
+  `design-tokens-loop` already owns), printed in the summary line, plus *the bespoke patterns used
+  from the most places* — the promotion threshold measured instead of remembered. A `deprecated → X`
+  component with imports still above zero is a finding. And the honest split: `sourceHash` is the
+  source half of drift; a visual snapshot with an accept-as-baseline step is the rendered half —
+  turn on Storybook's where it exists, say which half you have where it doesn't.
+- **Deliberately not taken:** Primer's separate experimental repo, status pages, RFCs, CODEOWNERS,
+  the semver table, federated contribution — all real, all for a system with consuming teams. Named
+  in the practice so Scale can find them at the symptom.
+- Small: v0.307.0's competition file shipped three `[[RVW-NNN]]` brackets on records that are not
+  in the repo; `check:refs` caught it and this release drops them. The gate was red and I filtered
+  its output through a grep that hid the block — read the exit code, not the tail.
+- BOSS's rungs are Curtis's team models in order — MVP *solitary*, V1 *centralized* the day a
+  designer joins, Scale where *hybrid* becomes a question — and the survey's adoption numbers are the
+  boundary-over-filter argument stated as an industry figure: the system that fails is the one
+  nobody adopts, and for a founder-plus-agent, adoption is whether the agent uses it on screen forty.
+
 ## 0.307.0 — 2026-09-12
 
 **The design-system tooling field, read at source — nine tools, three already vetted, one decision

@@ -499,6 +499,55 @@
       "for": "single-agent synthesis beats a split pipeline (8/4/0 vs 1/3/8); a score with no named evidence source is hallucinated",
       "kind": "research",
       "key": false
+    },
+    "primer-contributor-docs": {
+      "name": "GitHub Primer — contributor docs & ADRs",
+      "url": "https://github.com/primer/react/tree/main/contributor-docs",
+      "for": "component lifecycle (drafts → main → deprecated), prop norms, children-as-API, one directory per component, deprecating props with a lint rule",
+      "kind": "org",
+      "key": true
+    },
+    "zeroheight-ds-report-2026": {
+      "name": "zeroheight — Design Systems Report 2026",
+      "url": "https://report.zeroheight.com/",
+      "for": "governance model split (51/31/13), adoption measured by only 41%, top challenges, AI use and worry — n=147 practitioners",
+      "kind": "research",
+      "key": true
+    },
+    "feature-sliced-design": {
+      "name": "Feature-Sliced Design",
+      "url": "https://feature-sliced.design/docs/get-started/overview",
+      "for": "layered UI architecture with a one-way import rule and a linter (Steiger)",
+      "kind": "standard",
+      "key": false
+    },
+    "bulletproof-react": {
+      "name": "Alan Alickovic — bulletproof-react",
+      "url": "https://github.com/alan2207/bulletproof-react/blob/master/docs/project-structure.md",
+      "for": "shared → features → app unidirectional structure enforced with ESLint import/no-restricted-paths; the barrel-file caveat",
+      "kind": "person",
+      "key": false
+    },
+    "radix-primitives": {
+      "name": "Radix Primitives",
+      "url": "https://www.radix-ui.com/primitives/docs/overview/introduction",
+      "for": "the headless-primitive argument — behaviour and accessibility in the primitive, style from your system",
+      "kind": "org",
+      "key": false
+    },
+    "omlet": {
+      "name": "Omlet",
+      "url": "https://omlet.dev/",
+      "for": "design-system adoption measured from static analysis of code — legacy usage, unused props, non-system components used most",
+      "kind": "org",
+      "key": false
+    },
+    "chromatic": {
+      "name": "Chromatic",
+      "url": "https://www.chromatic.com/docs/visual-tests-addon/",
+      "for": "visual snapshot per story; accept-as-baseline as the governance step",
+      "kind": "org",
+      "key": false
     }
   },
   "practices": {
@@ -556,7 +605,14 @@
       "brad-frost",
       "nathan-curtis",
       "w3c-tokens",
-      "uxbench"
+      "uxbench",
+      "primer-contributor-docs",
+      "zeroheight-ds-report-2026",
+      "feature-sliced-design",
+      "bulletproof-react",
+      "radix-primitives",
+      "omlet",
+      "chromatic"
     ],
     "documentation": [
       "nygard-adr",

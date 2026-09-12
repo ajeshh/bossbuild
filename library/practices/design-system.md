@@ -253,6 +253,76 @@ And one thing that did *not* change, now with evidence: the most-starred design 
 the contrarian position in this market. Hold it, and say so when a founder asks why BOSS did not
 just pick them a palette.
 
+### Governance and the shape of UI code, read from the systems that have them (added v0.308.0)
+
+Second pass on the field, same day, different corner: not what generates a screen but **how a system
+is governed, scaled, documented and held against drift** — and how its code is organized so it can
+be. Sources opened: GitHub Primer's contributor docs and ADRs (deprecation, versioning, prop norms,
+children-as-API, file structure, experimental components), the zeroheight *Design Systems Report
+2026* (n=147 practitioners), Omlet (adoption analytics from static analysis), DTCG 2025.10 (stable),
+Chromatic's visual-test model, Feature-Sliced Design and bulletproof-react (the two widely-used
+layered-import conventions), Radix (the headless-primitive argument), and Nathan Curtis's team models.
+
+**What the survey says, and why it argues for BOSS's shape.** 51% of systems are centralized, 31%
+hybrid, 13% federated — and Curtis, who named the models, has since written that favouring federated
+*"was and is wrong."* Top challenges: resourcing 56%, prioritizing updates 35%, buy-in 31%,
+consistency 31%, contributions 27%. **Only 41% measure adoption at all; only 38% reach
+moderate-to-wide adoption; 7% full.** On AI: 71% use it for code generation, 60% for documentation,
+and **61% are worried about AI-generated design.** Read together: the system that fails is the one
+nobody adopts, not the one with the wrong radius — and *adoption* for a founder-plus-agent is
+whether **the agent** uses the system on screen forty. That is the boundary-over-filter argument
+stated as an industry number. BOSS's rungs are Curtis's models in order: MVP is *solitary* (one
+maker, one agent — Curtis's warning is that it serves one team's needs and doesn't scale, which is
+fine until there is a second team); V1 is *centralized* the day a designer joins (IDEA-052);
+Scale is where *hybrid* and contribution rules become a real question, and stays symptom-gated.
+
+**What the mature systems do that BOSS did not, now seeded at MVP (v0.308.0):**
+
+| Practice | Who | Founder-scale seed |
+|---|---|---|
+| **Lifecycle as a status the consumer reads** — Primer keeps `src/drafts` → `src` → `src/deprecated` as three folders; `@deprecated` in source *and* `"status": "deprecated"` in docs metadata *and* a Deprecation section naming the replacement with a diff | Primer | the index's `Status` column: `draft` · `stable` · `deprecated → X`; **replaced ≠ unused** — unused is deleted in the pass, replaced gets the pointer first, because the agent copies whatever import it finds |
+| **Deprecate props, not only components** — TS `@deprecated`, a lint rule, count instances before flipping it to error | Primer ADR-019 | the annotation, which surfaces in the agent's hover; the lint rule is V1 |
+| **Token deprecation with a successor** | DTCG 2025.10 `$deprecated` | *retire a token by marking it, not deleting it* — in `/design-tokens-init` |
+| **Adoption measured from code** — usage over time, legacy usage, unused props, similar components to consolidate, *the non-system components used most* | Omlet | `/design-library` prints on-system vs hand-styled file ratio and lists the bespoke patterns used from the most places — the promotion threshold *measured* |
+| **Visual snapshot per component, accept-as-baseline as the governance act** | Chromatic / Storybook | named as the rendered half of drift; `sourceHash` is the source half and says so |
+| **Semver table for the system** (component added = minor, deprecated = minor, removed = major) | Primer | *not* seeded — no consumers, no package; the retirement section's *"not SemVer, not RFC"* stands until there is a consuming team |
+
+**How UI code is organized, so the above is possible** — the second axis, and the one BOSS had only
+in vocabulary (Frost's levels, Curtis's layers) and not in file shape:
+
+1. **One directory per component, everything colocated** — source, subparts carrying the parent's
+   name and exported as properties (`Breadcrumbs.Item`), stories, tests, docs, `index`. A replacement
+   is `Breadcrumbs2`, never `NewBreadcrumbs`. (Primer ADR-013.) BOSS's phrasing is shape-neutral:
+   *if you cannot find all of a component in one place, it is two components with one name.*
+2. **Prop norms** — children for content; strict props where the design decided, composite parts
+   where the consumer decides; `as`/polymorphism only with a clear need; no `theme` prop, no style
+   props on non-utility components, one named escape hatch. (Primer ADR-003/004.) The AI-specific
+   failure this prevents is the boolean pile — `isPrimary isLarge isDanger` — which is eight
+   undesigned states; enumerated `variant`/`size` is the fix, and variants-as-data (cva-style
+   recipes) is its mechanical form.
+3. **Behaviour from a primitive, style from tokens** — Radix's argument and Primer ADR-002's: the
+   ARIA/focus/keyboard model lives in an unstyled primitive (or framework-free behaviour consumed by
+   a hook); the visual system sits on top. This is the single rule that removes the hand-rolled
+   inaccessible dropdown, and it is now in `accessibility.md` and the style guide.
+4. **Imports flow one way, and it is lintable** — FSD's layers (`app → pages → widgets → features →
+   entities → shared`, *"only import from layers strictly below"*, enforced by its Steiger linter);
+   bulletproof-react's `shared → features → app` with ESLint `import/no-restricted-paths`. BOSS's
+   founder-sized version is three folders — `ui/` (knows nothing about the product) → `features/`
+   → `app/` — inlined into CLAUDE.md by `/design-tokens-init`. **It is a filter at MVP and a
+   boundary at V1** (the ESLint rule), and the practice says so rather than pretending the sentence
+   enforces itself.
+5. **A partial with parameters is a component.** Rails partials, Astro/Svelte files, HTMX
+   fragments, Django includes — if it renders from more than one place and takes inputs, it gets a
+   row in the index. The index is not a React artifact.
+6. **Barrels: per-component `index`, never a giant one** — Primer keeps a re-export per directory;
+   bulletproof-react warns the whole-library barrel defeats tree-shaking. Both are right about
+   different files.
+
+**What was deliberately not taken.** Primer's experimental-components-in-a-separate-repo (ADR-007),
+Carbon-style status pages, RFCs, CODEOWNERS on the component directory, federated contribution
+models — all real, all for a system with consuming teams, all unearned ceremony at one founder and
+one agent. They are named here so Scale can find them when a project hits the symptom, not before.
+
 ### Craft floors and brand values are different kinds of thing (added v0.299.0)
 
 *Name the slot, earn the value* is the composition layer's governing rule, and `frontend-design`

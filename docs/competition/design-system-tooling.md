@@ -123,7 +123,7 @@ in the market. Note that for the pitch; do not soften the position for it.
 
 ### Google DESIGN.md (Stitch) — Apache-2.0 · `@google/design.md` 0.4.0 · ★27.9k · spec status "alpha"
 
-Already vetted: [[RVW-079]] (NOT-YET, 2026-08-20). What changed since: **the spec is still alpha**
+Already vetted: RVW-079 (NOT-YET, 2026-08-20). What changed since: **the spec is still alpha**
 (*"Expect changes to the format as it matures"*), the CLI grew `lint`, `diff`, `export` (Tailwind
 v3/v4, **DTCG**), and — the material change — **impeccable now writes a root `DESIGN.md` in a
 different format.** Two tools with a combined ~95k stars both claim the filename and do not agree on
@@ -163,7 +163,7 @@ Nothing to build; the row exists so the Scale mode names it when the time comes.
 
 - **Figma MCP + Code Connect** — remote server on all seats/plans; desktop server needs a Dev/Full
   seat on a paid plan. Code Connect maps Figma components to code components because *"without it,
-  the model is guessing."* Already vetted: [[RVW-082]] — ship the seam (DTCG), refuse the vendor,
+  the model is guessing."* Already vetted: RVW-082 — ship the seam (DTCG), refuse the vendor,
   refuse the code→design round-trip. Nothing found changes it.
 - **Supernova** — Free $0 (5 seats, 1 design system, 5 MCP consumers), Pro **$35/seat/mo as
   displayed** (page toggle shows a −22% yearly option; whether $35 is the monthly or the yearly rate
@@ -172,7 +172,7 @@ Nothing to build; the row exists so the Scale mode names it when the time comes.
   lets agents *write* to the system.
 - **zeroheight** — Free $0 (1 editor, 1 styleguide, 1 token set, MCP 500 calls/mo), Starter
   **$49/editor/mo** (yearly saves 15%; up to 5 editors), Enterprise contact sales.
-- **Claude Design** — already vetted: [[RVW-081]]. BOSS emits compatible `@dsCard` markers and does
+- **Claude Design** — already vetted: RVW-081. BOSS emits compatible `@dsCard` markers and does
   not point founders at it (reachability unverified).
 
 **Read against BOSS, as a group.** All of (C) is the two-sources-of-truth shape BOSS's
@@ -196,6 +196,21 @@ founder whose only designer is the model. The pricing is the tell: per-editor se
 4. **Two current tells lists disagree** (tint vs. no-tint). An attractor, not a list — and the
    strongest argument yet that the model-curve trigger, not any one list, is the mechanism.
 
+## Second pass, same day — the operations corner
+
+Ajesh's redirect: *"not templates — how we do UI governance, scaling, documentation, guard against
+drift… and the best UI organization and practices in code."* Read at source: **GitHub Primer's
+contributor docs and ADRs** (deprecation checklist, semver table, prop norms, children-as-API, file
+structure, experimental components), the **zeroheight Design Systems Report 2026** (n=147),
+**Omlet**, **DTCG 2025.10** (stable; `$deprecated` verified), **Chromatic**, **Feature-Sliced
+Design**, **bulletproof-react**, **Radix**, and Curtis's team models (Medium 403'd; the retraction
+of the federated preference is on his own site). None of these is a rival; they are the canon BOSS's
+practice had in vocabulary and not in file shape. The full read and the seeds it produced are in
+`library/practices/design-system.md` → *"Governance and the shape of UI code"* (v0.308.0). The
+one number to carry: **only 41% of design-system teams measure adoption and only 38% reach
+moderate-to-wide adoption** — for a founder-plus-agent, adoption means *the agent uses the system on
+screen forty*, which is the boundary-over-filter argument stated as an industry figure.
+
 ## What I did not find
 
 - **impeccable's full 61-rule inventory** — neither the docs nor the README enumerate it; the
@@ -209,8 +224,10 @@ founder whose only designer is the model. The pricing is the tell: per-editor se
   verified at the source.
 - **Cursor's, Codex's and Gemini's own design-skill directories** — not opened; impeccable's 17-host
   list suggests the same files are in all of them.
-- **Chromatic / visual regression** as the drift boundary at Scale — deliberately out of scope for
-  this pass; belongs with `design-drift-loop` when that rung has a project.
+- **Primer's component status page and Carbon's** — both URLs 404 now; the lifecycle came from
+  Primer's contributor docs instead, which is the better source anyway (it is the checklist, not the
+  page). Carbon's was not read.
+- **Omlet's pricing** — not on the landing page; unverified.
 
 ## Change log
 
@@ -218,3 +235,7 @@ founder whose only designer is the model. The pricing is the tell: per-editor se
   cross-referenced rather than re-argued. The one decision it changed: `/design-tokens-init` step 0
   now looks for `DESIGN.md`, `PRODUCT.md`, `.impeccable/`, and `design-system/*/MASTER.md`
   (v0.307.0), per RVW-079's own re-open condition #2.
+- **2026-09-12, second pass** — the operations corner (governance, drift, code organization) read
+  at source; seeds shipped in v0.308.0 — index `Status` column, one-way import rule in CLAUDE.md,
+  DTCG `$deprecated`, component API shape, *behaviour from a primitive*, adoption ratio in the
+  V1 library.

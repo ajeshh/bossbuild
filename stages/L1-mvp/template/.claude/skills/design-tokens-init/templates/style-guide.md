@@ -160,6 +160,30 @@ How tokens combine. One row per recurring pattern; add as they emerge, don't inv
 | Surface / card | `color.surface.raised` + `space.4` + `radius.default` | elevation by surface token, never an ad-hoc shadow |
 | Destructive action | `color.feedback.danger` + confirm step | destructive actions are never one click from idle |
 
+## Component API shape — the composition rule for props
+
+How a component is *called* is part of the system, and it drifts the same way colour does. Four
+floors, pre-filled because every mature system converged on them:
+
+- **Enumerated variants, not boolean piles.** `variant="danger" size="sm"`, never
+  `isDanger isSmall isPrimary` — three booleans are eight states nobody designed, and it is the
+  shape an agent produces by default.
+- **Children for content.** `<Notice variant="success">Saved</Notice>`, not `text="Saved"`. The
+  platform already has a way to put content inside a thing; a custom prop for it is a second way.
+- **Strict props where the design decided; parts where the consumer decides.** If the icon colour
+  follows `variant`, it is not a prop. If the consumer genuinely composes the inside — a list item
+  with a leading visual, a label and a trailing action — expose the parts (`Item`, `Item.Leading`,
+  `Item.Action`) rather than twelve props that reconstruct them.
+- **One escape hatch, named, and it is not `style`.** A single `className`-shaped override on the
+  root, so the exceptional case has somewhere to go and the token guard can see it. A `theme` prop
+  or a bag of style props on every component is the system leaking out of its own container.
+
+And the rule underneath all four: **behaviour comes from a primitive, style comes from tokens.**
+Keyboard model, focus, ARIA — use a headless primitive that already implements the APG for that
+widget (or the platform's own control on mobile) and put the tokens on top. Hand-rolling a
+dropdown's keyboard handling is the one place an agent reliably ships an inaccessible component, and
+it is the one place there is no reason to.
+
 ## The five states
 
 Every interactive component specifies all five. **Empty and loading are the two that get skipped**,

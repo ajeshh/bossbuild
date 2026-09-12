@@ -261,7 +261,12 @@ Name semantic tokens by **purpose, not appearance** — `color.text.error`, neve
 at the semantic layer — so the AI can *reason* about intent rather than guess from a hue (Nathan
 Curtis). Where the stack allows, emit tokens in the **W3C DTCG** format (it reached a first stable
 version) so the system is portable and you're not locked into one vendor's token dialect — which
-also honors the canvas's "don't monetize lock-in" line.
+also honors the canvas's "don't monetize lock-in" line. **Retire a token by marking it, not by
+deleting it:** DTCG 2025.10 defines `$deprecated` on tokens and groups — `true`, or a string that
+says what to use instead (`"$deprecated": "use color.action.primary"`). A deleted token breaks
+every screen that used it in one silent step; a deprecated one keeps working, names its successor,
+and can be removed when the last use is gone. `$description` on every semantic token is the other
+field worth filling — it is what an editor shows on hover, and the agent reads hovers.
 
 ## After scaffolding
 
@@ -290,6 +295,11 @@ also honors the canvas's "don't monetize lock-in" line.
    2. Reference tokens by semantic name (`color.action.primary`), never raw hex.
    3. Specify all 5 states (default / hover / active / disabled / empty) explicitly.
    4. Reject "make it pretty" prompts; anchor to the canvas Promises cell.
+   5. Imports flow one way: `ui/` (system components — know nothing about the product) →
+      `features/` (product) → `app/` (routes, shell). A system component never imports a
+      feature; a feature never reaches into another feature's internals. Open
+      `docs/design/COMPONENTS.md` before creating a component; read its `Status` column
+      before copying an import — `deprecated → X` means use `X`.
 
    Semantic → primitive map (the AI reads this without opening another file):
    | semantic                 | primitive        |

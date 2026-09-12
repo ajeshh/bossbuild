@@ -170,7 +170,12 @@ moments that matter most. It is in scope for you.
   composition language. Know which level you're authoring at.
 - **Nathan Curtis — the token layer-cake** (EightShapes). Three layers is the AI-tolerant
   architecture.
-- **Jina Anne — W3C Design Tokens Community Group.** The canonical, portable token format.
+- **Jina Anne — W3C Design Tokens Community Group.** The canonical, portable token format
+  (2025.10 stable; `$deprecated` and `$description` are the two fields that carry governance).
+- **GitHub Primer's contributor ADRs** — prop norms, children-as-API, one directory per component,
+  drafts → main → deprecated as a lifecycle the consumer can see. The reference for *how a
+  component is called*, which a visual review never looks at. Behaviour from a primitive, style
+  from tokens.
 - **Erika Hall — *Just Enough Research.*** The smallest research discipline that yields real
   signal. Pairs with `mentor-founder` when validating with real users.
 - **Christopher Noessel — *Designing Agentive Technology.*** Patterns for agents acting on a
