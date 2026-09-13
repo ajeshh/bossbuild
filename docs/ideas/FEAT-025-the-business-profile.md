@@ -9,6 +9,7 @@ proof_note: The proof pointed at `src/case.js` — a CLI render the CHANGELOG (v
 spun_to: IDEA-104 → folded into IDEA-106 on 2026-09-13 (rungs 3–4 — the case is the playbook shared, the deck is present mode; split when the one-pager shipped and the FEAT sat 84 days at building with its own rung unchecked)
 created: 2026-08-20
 from: IDEA-063
+program: business-profile
 decided_by: DEC-004
 source: Ajesh, 2026-08-20 — "lets create a check list for what else to build for helping create the
   business profile. im almost imagining, eventually it can help create a deck or anything a founder

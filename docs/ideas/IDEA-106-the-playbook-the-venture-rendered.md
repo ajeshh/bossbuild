@@ -2,7 +2,9 @@
 id: IDEA-106
 type: idea
 owner: product-lead
-status: captured (prototype next — a mock over a fictional venture, before any mechanism is chosen)
+status: building
+building_since: 2026-09-13
+promoted_to: FEAT-026
 gist: Everything a founder has uncovered about the venture — the why, the people, the canvas as boxes, the rivals, the evidence, the decisions — rendered as one beautifully designed, on-brand, single-file HTML space; every block deep-linkable and copyable into a deck. A view over records, never a document; holes and the evidence ledger survive the polish. Absorbs the living dashboard (065) and the case + deck (104).
 proof: none
 proof_note: Captured with a design and a prototype plan, not built. If it earns a build, the path is `src/playbook.js` (the fourth use of the `boss board --html` pattern) and the first slice is the canvas-as-boxes page alone.
@@ -25,6 +27,8 @@ altitude: what BOSS ships a founder (not BOSS's own practice)
 ---
 
 # IDEA-106 — The playbook: the venture, rendered so someone wants to read it
+
+> Building as [FEAT-026](FEAT-026-the-playbook-render.md) — slice 1, the canvas as boxes. Ajesh, 2026-09-13: *"lets start building this out!!!"*
 
 ## The idea
 
@@ -539,6 +543,7 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **promoted** → FEAT-026 (slice 1: the canvas as boxes; slices 2–4 named). Program `business-profile` with FEAT-025.
 - 2026-09-13 — **v5 rulings** (Ajesh): A — *yes all*; after the first user it's acquisition,
   retention, showing how it's going, and *when do market signals start* · B — yes · C — Priya stays,
   a proto-persona for the entrepreneur, not for VCs · E — the playbook is for the founder and team
