@@ -65,34 +65,34 @@ link to a cell, copy a cell into a slide, or show a cell as one.
 - Whether a founder's canvas ever carries revision history inside a cell, or only BOSS's does.
 
 ## Acceptance criteria
-- [ ] `boss playbook` in a project with a canvas writes `.boss/playbook.html` and prints the path;
+- [x] `boss playbook` in a project with a canvas writes `.boss/playbook.html` and prints the path;
       `--open` opens it. The file is single-file: no external script, style or font request; opens
       from `file://`.
-- [ ] Every cell in the canvas file renders as a box with the cell's heading and its full answer;
+- [x] Every cell in the canvas file renders as a box with the cell's heading and its full answer;
       **no cell is omitted** and **no word is added** — the page contains no sentence that isn't in a
       record or a prompt the `/canvas` template already holds.
-- [ ] `_(not yet)_` renders as a dashed box carrying the cell's humane prompt and the verb
+- [x] `_(not yet)_` renders as a dashed box carrying the cell's humane prompt and the verb
       (`/canvas`); a dormant cell (`_(live once…)_`, `_(live when…)_`, `_(live only if…)_`) renders at
       full size with its condition. Neither is collapsed or hidden in any frame.
-- [ ] The page has a Humane ⇄ Lean toggle; in Lean the answers move into Maurya's grid and **Risks &
+- [x] The page has a Humane ⇄ Lean toggle; in Lean the answers move into Maurya's grid and **Risks &
       Harms and Principles render as a full-width band beneath it** under the heading `/canvas`
       already uses (*"two questions this canvas asks that Lean doesn't"*). The frame's credit line
       renders (Humane Product Canvas · Ajesh Shah / Lean Canvas · Ash Maurya).
-- [ ] Every box carries a chip: `EVID ×N · <top grade>` when evidence names the cell, else
+- [x] Every box carries a chip: `EVID ×N · <top grade>` when evidence names the cell, else
       `asserted`; and a source line (`canvas · <cell> · rev. <date>` when a date is derivable).
-- [ ] The chrome carries the ledger: `N of M cells backed by graded evidence · K signals, all/top
+- [x] The chrome carries the ledger: `N of M cells backed by graded evidence · K signals, all/top
       <grade> · newest <days> ago` — numbers computed from the files, never typed.
-- [ ] Every box has a stable id (`#canvas-<slug>`), a Link (copies the deep link), a Copy (rich HTML
+- [x] Every box has a stable id (`#canvas-<slug>`), a Link (copies the deep link), a Copy (rich HTML
       + plain text, carrying the chip and source line), and a Slide (the box alone, 16:9, brand
       chrome, Esc closes; ← → step between boxes).
-- [ ] Brand: `docs/BRAND.md`'s accent/wordmark/tagline apply; missing or `unknown` fields fall back
+- [x] Brand: `docs/BRAND.md`'s accent/wordmark/tagline apply; missing or `unknown` fields fall back
       per-field to the neutral default; the footer says which (`brand: <name> · docs/BRAND.md` /
       `brand: nascent — /landing seeds it`). Light and dark both render through tokens.
-- [ ] With no canvas file, the page renders every cell as a hole with its prompt and `/canvas`, the
+- [x] With no canvas file, the page renders every cell as a hole with its prompt and `/canvas`, the
       ledger reads `0 of M`, and the command exits 0.
-- [ ] The renderer never writes to any file except `.boss/playbook.html`; `.boss/playbook.html` is
+- [x] The renderer never writes to any file except `.boss/playbook.html`; `.boss/playbook.html` is
       gitignored in both templates with the same comment `board.html` carries.
-- [ ] `boss help` lists `playbook`; the CHANGELOG bullet is under `## Unreleased`; tests cover the
+- [x] `boss help` lists `playbook`; the CHANGELOG bullet is under `## Unreleased`; tests cover the
       criteria above (`test/playbook.test.js`) and `npm run check` is at its baseline.
 
 ## What "wrong" looks like
@@ -175,6 +175,15 @@ Indexed in `docs/design/FLOWS.md`.
   box into Keynote or Slides, and read the ledger against the files by hand.
 
 ## Build log
+- 2026-09-13 — **slice 1 landed** (`55502e9`, under Unreleased). Surprises: BOSS's own canvas
+  rendered first time, history-in-cells and all — the "render the whole cell" decision cost nothing
+  and would have been wrong the other way. The typo suggester keeps its own command list (a test
+  caught it; a founder typing `playbok` would have been sent to `board`). `check:refs` counted the
+  gitignored `docs/design/FLOWS.md` that `/spec` itself created as "repo-only" — eight shipped files
+  flagged; same class as `manifest.json`, listed. Rejected: a slate accent for the no-brand default
+  — the conscience pointed at two generated pages with two hand-inlined palettes, so the neutral is
+  now `board.html`'s greys and monochrome, BOSS's own rule. Not done: the Keynote/Slides paste
+  (Ajesh's hand), the BMC grid (found task).
 - 2026-09-13 — specced from IDEA-106 after six prototype rounds. Slice 1 is the canvas page alone;
   the deck and the other chapters are named so the renderer is built as one. Decision: `.boss/`
   not `docs/playbook/` — one precedent for generated views. Decision: the whole cell renders when a

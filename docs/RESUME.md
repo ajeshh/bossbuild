@@ -85,11 +85,17 @@ npm run check            # zero findings = clean; check:published says how far n
   shelves, provenance on the twelve, exactly-one check — found two more). Parked with triggers: 006
   (the port), 047 (fake door, keyless — when strangers exist), 082, 075, 076; 036 dropped; 066 owns
   outward research. Board: 4 captured · 0 taking shape · 0 building · 73 shipped · 29 parked.
+- **FEAT-026 slice 1 landed under Unreleased (`55502e9`)** — `boss playbook`: the canvas as boxes in
+  `.boss/playbook.html`, holes as holes, Humane ⇄ Lean with the DEC-004 floor, chips + ledger counted,
+  Link · Copy · Slide, brand per-field with a monochrome default. 14 tests. **Seven assumptions in the
+  FEAT are marked for Ajesh to reject in a word**; the Keynote/Slides paste is his hand-check. Slices
+  2–4 (chapters, proof, the deck with a VC cut) are FEAT-027..029, not yet specced. The 27-row *Kicked
+  up* table in IDEA-106 is the intake spec for what BOSS should ask a founder and doesn't.
 - **IDEA-106 captured (2026-09-13), absorbing 065 + 104** — the playbook: the canvas as boxes + the why,
   personas, rivals, evidence and DECs as one on-brand single-file HTML; every block linkable, Copy where
   worth copying, Slide/Present. Design + prototype plan in the record; next is a **prototype** over a
   fictional venture — **published v0** (link + what to react to in the record); the paste-into-Keynote
-  test is Ajesh's. Board: 5 captured · 28 parked.
+  test is Ajesh's. Board: 6 captured · 1 building · 28 parked.
 - **The external evidence is still n=3 signals / n=2 founders, all `stated-pain`.** Nobody has been
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
