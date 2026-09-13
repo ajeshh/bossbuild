@@ -27,7 +27,7 @@ import { createHash } from 'node:crypto';
 import { frontmatter } from './frontmatter.js';
 import { isRegistered } from './hooks.js';
 import { readBrand, verbLine } from './playbook.js';
-import { esc, shellPage } from './page-shell.js';
+import { esc, shellPage, NEUTRAL, DEFAULT_ACCENT } from './page-shell.js';
 
 // --- tokens: docs/design/tokens.json (DTCG) first; DESIGN_TOKENS.md names as the fallback --------
 
@@ -424,11 +424,12 @@ export function readComponents(projectDir) {
 const FIVE = ['default', 'hover', 'active', 'disabled', 'empty'];
 export function specFrameSvg(c, tokens) {
   const hexOf = (re, fallback) => { const t = tokens.find((x) => x.type === 'color' && re.test(x.name) && typeof x.value === 'string' && /^#[0-9a-f]{6}$/i.test(x.value)); return t ? t.value : fallback; };
-  const paper = hexOf(/(^|\.)(paper|card|elevated)$/i, hexOf(/(^|\.)(surface|paper|background|bg|canvas)(\.|$)/i, '#FFFFFF'));
-  const ink = hexOf(/(^|\.)(text|ink|foreground|fg)\.(primary|body|default|base)$|(^|\.)ink$/i, '#16181A');
-  const muted = hexOf(/(^|\.)(text|ink)\.(muted|secondary|subtle)$/i, '#8A9096');
-  const accent = hexOf(/(^|\.)(action|accent|brand|primary)(\.primary)?$|(^|\.)action\.primary$/i, '#16181A');
-  const rule = hexOf(/(^|\.)(border|rule|line|stroke)(\.|$)/i, '#C4C8CC');
+  // Fallbacks are the shell's own palette (page-shell.js), so a frame with no tokens matches the page it sits on.
+  const paper = hexOf(/(^|\.)(paper|card|elevated)$/i, hexOf(/(^|\.)(surface|paper|background|bg|canvas)(\.|$)/i, NEUTRAL.light.paper));
+  const ink = hexOf(/(^|\.)(text|ink|foreground|fg)\.(primary|body|default|base)$|(^|\.)ink$/i, NEUTRAL.light.ink);
+  const muted = hexOf(/(^|\.)(text|ink)\.(muted|secondary|subtle)$/i, NEUTRAL.light.hole);
+  const accent = hexOf(/(^|\.)(action|accent|brand|primary)(\.primary)?$|(^|\.)action\.primary$/i, DEFAULT_ACCENT);
+  const rule = hexOf(/(^|\.)(border|rule|line|stroke)(\.|$)/i, NEUTRAL.light.rule);
   const fams = tokens.filter((x) => x.type === 'fontFamily' && Array.isArray(x.value));
   const fam = fams.find((x) => /body|text|ui|sans/i.test(x.name)) || fams[0];
   const font = (fam ? fam.value : ['Helvetica Neue', 'Arial', 'sans-serif']).join(', ').replace(/"/g, "'");
