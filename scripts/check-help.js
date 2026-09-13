@@ -28,7 +28,13 @@ import { WAYFINDING, wayfindingKind } from '../src/help.js';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'library', 'help');
 const strict = process.argv.includes('--strict');
-const today = new Date().toISOString().slice(0, 10);
+// Dates here are the reviewer's calendar, not UTC. `reviewed:` is a day a person typed after
+// looking at a page, and a commit made that evening is the same day to them — it was only
+// "tomorrow" in UTC, which is why every page read as behind after 17:00 Pacific and the line
+// printed nightly until nobody heeded it. Both sides of the comparison are local now.
+const localDay = (ms) => { const d = new Date(ms); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const endOfLocalDay = (ymd) => { const [y, m, d] = ymd.split('-').map(Number); return new Date(y, m - 1, d, 23, 59, 59, 999).getTime(); };
+const today = localDay(Date.now());
 
 const modes = loadModes();
 const problems = [];
@@ -52,7 +58,7 @@ function changingNow(paths) {
     return out ? out.split('\n').length : 0;
   } catch { return 0; }
 }
-const fmt = (ms) => new Date(ms).toISOString().slice(0, 10);
+const fmt = localDay;
 
 if (!existsSync(SRC)) {
   console.error('  ✗ library/help/ is missing — `boss help --html` would render with no prose at all.');
@@ -87,7 +93,7 @@ for (const f of frags) {
   // `library/help/` was UNTRACKED at birth, which made a git-time comparison silently
   // un-fireable — the guard read green because one side of it was always null.
   const srcAt = lastChangedAt(covers);
-  const reviewedAt = Date.parse(`${reviewed}T23:59:59Z`);
+  const reviewedAt = endOfLocalDay(reviewed);
   if (srcAt && reviewedAt && srcAt > reviewedAt) {
     behind.push(`${f} — ${covers.split(' ')[0]}… changed ${fmt(srcAt)}, reviewed ${reviewed}`);
   }

@@ -27,7 +27,13 @@ const strict = process.argv.includes('--strict');
 const SITE_URL = (readFileSync(join(ROOT, 'scripts', 'gen-site.js'), 'utf8')
   .match(/^const SITE_URL = '([^']+)'/m) || [])[1];
 if (!SITE_URL) throw new Error('check:site cannot find SITE_URL in scripts/gen-site.js');
-const today = process.env.BOSS_TODAY || new Date().toISOString().slice(0, 10);
+// Dates here are the reviewer's calendar, not UTC. `reviewed:` is a day a person typed after
+// looking at a page, and a commit made that evening is the same day to them — it was only
+// "tomorrow" in UTC, which is why every page read as behind after 17:00 Pacific and the line
+// printed nightly until nobody heeded it. Both sides of the comparison are local now.
+const localDay = (ms) => { const d = new Date(ms); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const endOfLocalDay = (ymd) => { const [y, m, d] = ymd.split('-').map(Number); return new Date(y, m - 1, d, 23, 59, 59, 999).getTime(); };
+const today = process.env.BOSS_TODAY || localDay(Date.now());
 
 const problems = [];
 const notes = [];
@@ -289,7 +295,7 @@ function pageTouchedAt(file) {
   try { disk = statSync(join(ROOT, file)).mtimeMs; } catch { /* gone */ }
   return Math.max(git, disk);
 }
-const fmt = (ms) => new Date(ms).toISOString().slice(0, 10);
+const fmt = localDay;
 // Committed history only tells you what already landed. The moment that matters is
 // while the work is happening — that's when the docs are cheap to update and when
 // you still remember what changed. So uncommitted edits to a page's sources count too.
@@ -313,10 +319,10 @@ for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsW
   // fix silently asserted "I have re-read this against its sources." Only a human bumping
   // `reviewed:` can make that assertion, so that is what it is now measured against.
   //
-  // End-of-day, because `reviewed:` is a date and a source commit later the same day should not
-  // read as behind a review that says it happened that day.
+  // End of the reviewer's day, because `reviewed:` is a date and a source commit later the same
+  // day should not read as behind a review that says it happened that day.
   const srcAt = lastChangedAt(covers);
-  const reviewedAt = Date.parse(`${reviewed}T23:59:59Z`);
+  const reviewedAt = endOfLocalDay(reviewed);
   if (srcAt && reviewedAt && srcAt > reviewedAt) {
     behind.push(`${f.replace(/\.html$/, '')} — ${covers.split(' ')[0]}… changed ${fmt(srcAt)}, reviewed ${reviewed}`);
   }
