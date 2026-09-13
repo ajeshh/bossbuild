@@ -22,6 +22,28 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-09-13 (positioning — from "acquired" to "an incubator hires me and I bring the tool")
+- **FEAT:** _no FEAT — a conversation, captured as IDEA-109_
+- **Landed:** Ajesh opened with *"i could see boss potentially being acquired, so maybe worth dropping the
+  open source part… but i do plan to keep boss free"* and, over three turns, arrived at *"an incubator would
+  wanna hire me… their coach, but also leverage this kind of tool to help their cohorts."* Checked the tree
+  before answering: MIT in `LICENSE`, `package.json`, every site footer, `charter.html`; 0 stars / 0 forks;
+  1,784 npm downloads a month with 13 self-publishes in the window; 196/196 commits his; riskiest assumption
+  n=0 on a 2026-11-21 clock. Verdict on the copy edit: **no** — the words would say less than the LICENSE
+  grants on a public repo, the mechanism-vs-claim shape BOSS catches in itself. IDEA-109 captured with the
+  acqui-hire read (demo on *their* founder's repo · the paper trail as résumé · MIT as an asset · n=1 is
+  enough) and one next step. Peer session bossbuild-64 claimed the FEAT-026 lane (`src/playbook.js`, cli,
+  CHANGELOG); this session touched only `docs/`.
+- **Next:** `/interview` — one founder in a target incubator's orbit, or its program director. The README
+  *"never the CLI itself"* line is the real licence decision, on Ajesh's list. Above all, unchanged: publish
+  and Phase 3 outreach — his.
+- **Surprises / decisions:** *Free to use* and *open source* pull opposite ways under a change of owner —
+  MIT on what shipped is the only "free" that survives a transfer, so the instinct to drop it worked
+  against the stated intent. **YC does not buy companies; it invests** — the acqui-hire reframe made the
+  numbers stop mattering and the person start mattering, which is the honest read of a 0-star repo with
+  a year of DECs behind it. The drift-loop fired every turn; this was the one session where the
+  stated-vs-actual line fit (the deck and the design playbook do not test the named bet), so it was said once.
+
 ## 2026-09-13 (the board emptied — Building and Taking shape both at zero, by finishing and by reading)
 - **FEAT:** _no FEAT — exploration/ops_
 - **Landed:** Five commits under Unreleased (`1b91586` → `3ffb630`). Ajesh, from his phone: *"on the board what are some ideas that have been vetted and ready to implement next"* → *"flip status, elevate stuff to taking shape, review older ideas that could be deprecated"* → *"lets go, finish whats building and then continue to taking shape."* **The board never read `ready`** — `/revalidate` writes it on revive and it rendered as Captured; fixed, one test. **Five cards had finished under other names and never said so** (IDEA-071 v0.218.0, 084 v0.324.0 `earned`, 095 v0.300.0 exec-form, 096 the copy + plugin door, 102 v0.318.0) — flipped, remainders parked with the triggers their records already carried (006 owns the port again; 066 owns outward research with 093 p7's sharper trigger; 047 re-aimed keyless as a fake door, parked until strangers exist; 036 dropped by Ajesh; 075/076/082 deferred). **Built:** the return path (IDEA-093 p6 + 094 p2/p5) — `revisit-due` and `unticked-shipped` in `boss records`/`boss status`, `/log` stamps `outcome:` at ship; priced as a sixth loop predicate, cost none; first run caught FEAT-021 (6/6 unticked, all true on disk); first BOSS decision due 2026-09-20. `/log`'s recipe as a script (IDEA-100 pilot) — measured 1,140 → 1,186 words, no token gain, the newest-first invariant is the gain; this entry is its first real use. The shelf's product half (IDEA-090) — product/project/conscience shelves, `provenance_public` on the twelve (five say *no outside source is claimed*), the exactly-one check found two more (accessibility, deceptive-patterns). The board's summary line hid the shipped count when the middle emptied — fixed. Board artifact published for the phone (claude.ai/code/artifact/168927a8…). Board: 4 captured · 0 · 0 · 73 shipped · 29 parked.

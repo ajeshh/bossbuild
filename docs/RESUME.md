@@ -26,6 +26,11 @@ npm run check            # zero findings = clean; check:published says how far n
 
 ## Now
 
+- **IDEA-109 captured (2026-09-13) — the coach-in-residence positioning.** Ajesh: acquisition → acqui-hire →
+  *"an incubator would wanna hire me… their coach, but also leverage this kind of tool for their cohorts."*
+  Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
+  nothing to *sell* but the person, which is the acqui-hire's point. Licence: **keep MIT and the words**
+  (a copy edit claws nothing back; diligence reads `LICENSE`). Next step is one call, not a build.
 - **v0.318.0 committed (`e035ce2`), not pushed** — IDEA-102: RESUME is a briefing with a window.
   `boss status` reads the window; `/close` writes it; the old file and `RESUME-ARCHIVE.md` are in the
   devlog verbatim; the archive is gone.
@@ -135,6 +140,9 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 - ⬜ **IDEA-047 re-aimed keyless (2026-09-13)** — the fake door: drop `pretotype/api/`, one labelled
   recording, CTA = plugin install, count the click. Parked on a trigger: strangers exist (plugin listed / outreach live) and installs stay flat.
   IDEA-036 dropped; IDEA-066 is the one owner of outward research (093 p7's trigger carried in).
+- ⬜ **IDEA-109 — the `README.md` §License line *"never the CLI itself"*.** Stronger than "open source"
+  and it closes a door the coach-in-residence shape may want open. Keep · soften · or write the DEC.
+  (Not: drop "open source" from the site while `LICENSE` stays MIT.)
 - 🔷 **DEC-018 — the ground moved from 43° to 210°** on the strength of a brief; `AI-suggested-ratified`.
   Confirm or reverse.
 
