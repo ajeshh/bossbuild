@@ -52,6 +52,10 @@ npm run check            # zero findings = clean; check:published says how far n
   shelves, provenance on the twelve, exactly-one check — found two more). Parked with triggers: 006
   (the port), 047 (fake door, keyless — when strangers exist), 082, 075, 076; 036 dropped; 066 owns
   outward research. Board: 4 captured · 0 taking shape · 0 building · 73 shipped · 29 parked.
+- **FEAT-027 landed under Unreleased (`48ff59c`)** — the Pitch chapters: eight sections + a rail, each a
+  projection over a record (IDEA doc, FEATs, persona snippets → Design link, competition table + briefs +
+  stale, `docs/source/`, the capital dossier as the ask); a chapter line = the record's first sentence,
+  tested. FEAT-026 flipped to shipped. Next: 028 (Proof) whose first commit adopts the peer's page-shell.
 - **FEAT-026 slice 1 landed under Unreleased (`55502e9`)** — `boss playbook`: the canvas as boxes in
   `.boss/playbook.html`, holes as holes, Humane ⇄ Lean with the DEC-004 floor, chips + ledger counted,
   Link · Copy · Slide, brand per-field with a monochrome default. 14 tests. **Seven assumptions in the
@@ -62,17 +66,16 @@ npm run check            # zero findings = clean; check:published says how far n
   personas, rivals, evidence and DECs as one on-brand single-file HTML; every block linkable, Copy where
   worth copying, Slide/Present. Design + prototype plan in the record; next is a **prototype** over a
   fictional venture — **published v0** (link + what to react to in the record); the paste-into-Keynote
-  test is Ajesh's. Board: 6 captured · 1 building · 28 parked.
+  test is Ajesh's. Board: 6 captured · 0 building (FEAT-030 is the Design lane's) · 28 parked.
 - **The external evidence is still n=3 signals / n=2 founders, all `stated-pain`.** Nobody has been
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
 
 ## Next (in order)
 
-1. **FEAT-026 — Ajesh's turn.** Reject any of the seven assumptions in the FEAT in a word; hand-check
-   `boss playbook --open` in a real project (Lean toggle, copy a box into Keynote/Slides, ledger vs
-   files). Then **spec FEAT-027** (pitch chapters: Vision · Product · Customers · Problem · Market ·
-   Competition · Business model), **028** (proof: Evidence · Health · Learnings · Decisions · Risks),
+1. **FEAT-026/027 — Ajesh's turn.** Reject any of the assumptions in either FEAT in a word; hand-check
+   `boss playbook --open` in a real project (the chapter lines read as a pitch? Lean toggle, copy a box
+   into Keynote/Slides, ledger vs files). Then **spec 028** (proof: Evidence · Health · Learnings · Decisions · Risks),
    **029** (the deck: VC cut / internal / everything, remove-and-restore, Export PDF). Prototype v6 is
    the mockup for all three (link in IDEA-106). Same recipe: `/spec`, lane by message, commit by name.
 2. **The 27-row *Kicked up* table in IDEA-106** is the intake spec for what BOSS should ask a founder
