@@ -157,11 +157,31 @@ ahead to what's next.
      more honest fact to see. No new hook, no counter, no threshold.
    - **Ask it once per close, never re-ask in-session, never block.** The pulse observes; it never grades.
 
+3d. **What you said that no record holds** — the passive door. Re-read the session for facts the
+   founder stated **in their own words** that no record carries: a count (*"the register has 6,400
+   agencies"*), a price, a rival named in passing, a tagline, who is on the team. Run
+   `boss playbook --questions` — the open holes with the verb that fills each — and match what was
+   said against it. Then, at most **five** lines, ask:
+
+   > You said three things this session that no record holds —
+   > · *"6,400 agencies on the register"* → **People** (canvas), with today as the date · write it in?
+   > · *"CareSheet does rotas too"* → a row in **Competition** · add it?
+   > · *"Priya said she'd pay £40"* → that's a real person's words → `/evidence`, graded · record it?
+   > Yes to any?
+
+   Each yes is written **in the owning verb's shape** — a canvas cell with its date, a rival row in
+   `/comp-eval`'s columns, an `EVID` through `/evidence`'s ladder, a persona line in `/persona`'s
+   six fields — and a record that already exists is *updated against what it holds*, never quietly
+   overwritten. What someone else said is evidence, never a cell as fact. What has no record yet
+   (a bio, prior capital) is named as *no record holds this yet* and left. **Nothing is written
+   without a yes, and when nothing was said, say nothing** — an empty list is the honest close, not
+   a gap to fill. The founder is at the end of a session: five lines, then the tree.
+
 4. **Check the working tree.** If there are uncommitted changes the user wants to keep but isn't
    committing now, mention them in RESUME's *State* so next-you isn't surprised. Don't auto-commit.
 
 5. **Report what you wrote.** One line: "RESUME updated · devlog entry added · brain read appended ·
-   N uncommitted change(s) noted." Then stop — don't summarize the session further; the artifacts are
+   2 records written from what you said · N uncommitted change(s) noted." Then stop — don't summarize the session further; the artifacts are
    the summary.
 
 ## The RESUME template (used when none exists yet)

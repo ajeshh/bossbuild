@@ -251,6 +251,19 @@ rule above still applies to the whole section once it is stamped.
   here* — one flat folder, dated names, nothing in it is a record until a record holds it; the
   playbook no longer lists that README as an import). A gated verb with a plain door says so —
   `/log — or add it to the idea: /idea`, beside `/comp-eval — or drop what you know: /import`.
+- **The intake doors (FEAT-035, from IDEA-111) — no wizard.** The playbook's holes fill at the
+  founder's pace, three ways. **Drop a document:** `/import` now dates its snapshot
+  (`docs/source/YYYY-MM-DD-<file>`) and, after folding a source into the idea, **assesses what else
+  it fills** — reads `boss playbook --questions`, names at most five things with the page they came
+  from (*a count for People · two rivals · a tagline*), and writes each record **only on a yes, in
+  the owning verb's shape** (a persona is `/persona`'s six fields, a rival is a `/comp-eval` row, a
+  figure is a canvas cell written with its source and date). A document's number is a claim with a
+  source, never an `EVID`; a transcript is someone else's words and routes to `/evidence`; what has
+  no record yet is said so, never given an invented home. **Dump into chat:** `/import` takes pasted
+  text as a source — same steps, no snapshot for a paste. **Be noticed:** `/close` gains **3d — what
+  you said that no record holds**: the facts stated in the founder's own words this session, matched
+  against the open questions, at most five, ask then write; nothing said, nothing asked. Three
+  vendor names left the skill's body while it was open. No new skill, field or loop.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's
