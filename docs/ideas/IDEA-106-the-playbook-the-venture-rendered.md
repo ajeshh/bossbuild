@@ -280,6 +280,63 @@ neither readable at source, so neither used ([[vet-verify-attribution]]).
 Kept that Sequoia doesn't ask for, on purpose: the evidence ladder, Risks & harms, Principles,
 Decisions, Learnings, Brand — and the ask rendered as a hole with its reason.
 
+### 12. The mentor reviews and the 2026 read (2026-09-13)
+
+Ajesh: *"anything else missing from this? lets have vc mentor review, and also anything else around
+how to get funding in 2026 and what we should be presenting that might be missing."* Two mentors
+read the record and prototype v4; the research ran in parallel.
+
+**`mentor-fundraising` — what an investor probes, in order:** (1) willingness to pay — the canvas
+names its own kill-question and shows it untested (`asserted · 0 paying`); (2) the ceiling — £2.5M a
+year is the whole pond at today's price: *right-sized, not venture-shaped*, and the honest end of
+most VC conversations; (3) what happened after ship — sixteen days of a live product and not one
+number. **The not-yet sentence, now real** (it replaces the fictional one in the prototype):
+*"Not yet — nobody outside the founder's circle has paid or been watched using it, and at £4 a
+caregiver across 6,400 agencies the whole pond is £2.5M a year, so the open question isn't when to
+raise but whether this is a venture at all; it reopens when a stranger has paid for a second month,
+and the honest answer then may still be 'stay right-sized'."* **Hide from a shareable view:** Priya
+(`synthetic 100%`, a labelled fake quote) and the persona bars' false precision (fixed: ordinal
+rank). **Keep refused, agreed:** projections, readiness score, cap table, invented photos. **Keep
+shown:** the £2.5M ceiling and the 3/0/0 ladder — *"a founder who hides them is raising on the wrong
+story."* **What changed by 2026, confident only:** shipping signals little (an AI-built MVP is
+assumed cheap), so distribution, retention and willingness to pay are probed harder; *"is AI just a
+feature here"* is a standard objection and the credible answer is a moat that isn't the model; a solo
+non-technical founder building with AI draws a data-security and code-ownership question that didn't
+exist for this profile before. Unsure, and said so: round sizes, traction norms, UK instruments.
+
+**`mentor-pitch` — the deck:** the chapter lines read alone are *nearly a pitch* (§8's rule works),
+with two faults — solution lands before problem, and **three chapter lines are BOSS's, not the
+founder's** (Canvas *"read as boxes"*, Learnings *"in the order it happened"*, Decisions *"nothing
+recorded yet"* describe the render; the room tunes out exactly there). Open on the tension (Problem's
+line), close on Team → the ask → the tagline, not on swatches. **~50 slides is not a deck:** proposed
+a mechanical profile — an ordered id list, a per-chapter cap, a hole policy — investor 12 / internal
+20 (built in v5 as `PROFILES`). **The missing slide: what it looks like** — no record holds an image,
+so there is no product-in-use slide, and a 2026 room asks that before market (row 10 again).
+**Honesty devices in the room:** ledger on the cover, the close and every PDF page — not every slide
+(moved to the deck's bottom bar); the cover conscience line is *the best slide for the right investor*;
+keep two hole slides (the ask, the cofounder — they read as judgment), skip *"Nothing recorded yet"*
+full-bleed; `asserted` reads as *made up* to a stranger — the chip stays, two words max. **Visual:**
+tables and personas at 13px are *"a website with big text"*; rival slides hid the rival's name
+(fixed); machine syntax leaked (`_(not yet)_`, `motivation: own-problem` — fixed).
+
+**The research, graded.** Readable at source: **Sequoia** (2026 page, ten sections — §9) and
+**DocSend/Dropbox** (Justin Izzo, 2025-04-01, data from their 2020 pre-seed report): 12 sections in
+four buckets — overview (purpose, team, problem, solution, product) · monetization (business model,
+financials) · product-market fit (market size, **why now**, traction, competition) · **the ask**;
+investors spend under three minutes; funded decks put **product and why-now earlier**, **always had
+a competition section**, **none had a table of contents**; ~20 pages, ~50 words a slide. **Not
+readable at source, therefore not cited:** Carta Q1 2026 (bot-check), DocSend's 2026 seed post
+(bot-check), YC (JS app). **Circulating unverified** (vendor blogs only — pitchwise, eqvista,
+flowjam): a $24M median seed post-money, *"$300–500K ARR expected at seed"*, AI screening of decks
+before a partner reads them. Filed as claims, not facts.
+
+**What the reviews add to the chapter list:** Problem before Product in the deck order (the site
+order is not the room order — the profile carries its own); a **Health** chapter drawn the moment
+`/ship` has run (its trigger *fired* for Tidewell and the chapter wasn't there — v5 draws it as a hole
+page); the compliance stance inside Risks & harms (data basis, the regulator by name, safeguarding
+when *covered* isn't); and the AI-era question — *why doesn't the incumbent add a model that makes
+the cover call next quarter?* — which no cell asks.
+
 ## The prototype — see it before choosing any of the above
 
 Ajesh, 2026-09-13: *"lets first create a prototype of the idea to see how an example would look …
@@ -337,6 +394,15 @@ question — not a fix made in passing.
 | 14 | **sibling spaces** — Design, Board, later others | a second session built a Design artifact and linked it by hand | **question:** one renderer with chapters, or several spaces with one brand and one ledger? The family nav is the answer for now; the mechanism decision (§7) has to include it |
 | 15 | **charts** over market research, evidence, anything counted | no record holds a *table*; `/import` copies a document whole; `EVID` grades and cell states are countable at render, nothing else is | **task:** an imported source that carries a series gets it extracted with a date and origin (`docs/source/<slug>.md` + a small CSV) so the render can plot it and cite it |
 | 16 | **values as a page** — headline · meaning · cost · origin | the Principles cell holds one-liners; the meaning and the cost of each have no home | **new scope:** `docs/BRAND.md § How we build` — one paragraph and one cost per principle; the cell stays the headline. Readers: the playbook, `/landing`, `voice-keeper` |
+| 17 | **use of funds · milestones the money buys · round size · instrument** | absent by design at n=0; when the question reopens, nothing holds *"£X buys these three observed-behaviour milestones"* | **new scope:** an *ask* record, gated on `mentor-capital`'s not-yet flipping — milestones written as EVID rungs to reach, never revenue lines |
+| 18 | **prior capital and ownership** — *has anyone put money in; are you sole owner* | cap table refused (rightly); a one-line fact pointer is not securities content | **task:** `prior_capital:` on the IDEA doc — *none* / *see lawyer* / a sentence; the first fact-question every investor asks |
+| 19 | **unit economics** — CAC, payback, gross margin, churn | Cost structure is a hole; `/measure` picks one activation metric, not the set; `/ai-cost` holds cost-per-user for AI products only | **question:** which of these does a pre-PMF founder honestly hold, and does BOSS refuse the rest as projections? |
+| 20 | **AI-era defensibility** — *why doesn't the incumbent add a model that does this next quarter; why doesn't a nephew build it in a weekend* | the matrix is over features; *Unfair advantage* holds domain trust (the right answer) but no cell asks the question | **question:** a sharpen on *Modes of engagement*, or a new Risks & harms line? |
+| 21 | **compliance stance** for a care product — data basis, the regulator by name, safeguarding when *covered* isn't | Risks & harms holds *harm*; `/trust` holds the privacy posture; nothing holds the regulatory relationship | **task:** Risks & harms gains a *stance* half; `/trust` writes the data-basis line into it |
+| 22 | **founder runway** — *full-time* with no burn or personal-runway line | nothing | **question:** is this BOSS's to ask? It decides whether "three months" is a plan or a hope |
+| 23 | **the product, seen** — a screenshot or a 30-second recording | no record holds an image; `/ship` hands back a URL and nothing else | **task:** `/ship` (or `/log` at ship) captures one screenshot into `docs/product/`; the playbook renders it before Market |
+| 24 | **Health** — the chapter's trigger fired (shipped 2026-08-28) and the chapter wasn't drawn | `/measure` and `/health` exist; nothing renders their output | **render** — drawn as a hole page in v5; the real render reads `docs/measure*` when they exist |
+| 25 | **three chapter lines are BOSS's** (Canvas, Learnings, Decisions) — §8's rule has no source for them | the chapters render *the render*, not a record with a first sentence | **question:** derive the line from the newest record in the chapter (newest DEC's title, newest *surprised* line, the Promise for Canvas) — or accept that some chapters have no line and get no slide |
 | 8 | **the ask** as a hole with a reason | `mentor-capital` defaults to *not yet*; nothing records *why not yet* in a place a render can quote | **task:** the not-yet needs a sentence on disk, or the hole has no reason to show |
 
 ## Open questions — written as questions, not carried
@@ -360,6 +426,17 @@ The prototype is a **mock to react to**, not a build; it costs one file and deci
 *build* trigger, carried in from 065 and 104 together: **a founder (or Ajesh on a real project) goes
 looking for their own material and cannot find it without grepping, or asks for something to show a
 room** — the symptom this surface treats. Until then it is a good idea with a prototype attached.
+
+## Prototype v5 — republished 2026-09-13 (same link)
+
+The mentors' concrete fixes: the matrix no longer cites a DEC that doesn't exist; *2 owners* not
+*2 founders*; chips cut to two or three words; no `_(not yet)_` or `motivation:` on the page; rival
+slides carry the rival's name; persona bars are an ordinal rank (1st–4th), not a percentage; the
+ask block carries the real not-yet sentence. **Deck profiles** in the deck chrome — *Investor · 12*
+(problem → why now → Dee → product → count → the incumbent → who pays → the ladder → Maya → the
+ask → close), *Internal · 20* (+ values, built/not, Priya, matrix, timeline, the cofounder hole),
+*Everything*. The ledger moved to the deck's bottom bar; each slide's foot carries its source only.
+A closing slide (the tagline + the ledger). **Health** drawn as a hole page — 18 chapters, 15 drawn.
 
 ## Prototype v4 — republished 2026-09-13 (same link)
 
@@ -430,6 +507,10 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **v4: mentor reviews + the 2026 read** (Ajesh: *"anything else missing? lets have vc
+  mentor review … how to get funding in 2026"*). `mentor-fundraising` and `mentor-pitch` reviews in
+  §12; research graded (two primaries, three bot-blocked, vendor claims filed unverified). v5 applies
+  the cheap fixes and deck profiles. Kicked-up rows 17–25.
 - 2026-09-13 — **prototype v3 reactions** (Ajesh): charts for market research and anything counted ·
   the principles read as *"just 3 lines"* — wants a page: one headline, then the text. v4: three
   charts (one hue, validator-driven — no pies, no categorical palette), Evidence drawn, How we
