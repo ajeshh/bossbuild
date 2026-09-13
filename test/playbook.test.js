@@ -407,7 +407,7 @@ test('the terminal: one summary line grouped by verb, --questions lists each wit
   assert.equal(questionsLine([{ line: '/canvas' }, { line: '/canvas' }, { line: '/idea' }]), '3 questions open · /canvas ×2 · /idea');
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
   const out = execFileSync('node', [BIN, 'playbook', '--questions'], { cwd: dir, encoding: 'utf8' });
-  assert.match(out, /\d+ questions open · \/canvas · \/idea ×2/);
+  assert.match(out, /\d+ questions open · \/canvas · \/idea ×3/);
   assert.match(out, /· Who, exactly — \/persona derive/);
   const plain = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
   assert.doesNotMatch(plain, /· Who, exactly/, 'the list only with --questions');
@@ -705,4 +705,16 @@ test('a person stub\'s placeholders never render — only what the person wrote'
   const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
   assert.ok(html.includes('id="person-sam"') && html.includes('the specific thing — not written yet'));
   assert.ok(!html.includes('two or three things') && !html.includes('&lt;the gap'));
+});
+
+test('the two new IDEA fields (Ajesh, 2026-09-13): in_a_few_years renders under Vision, prior_capital beside the ask; `none` is an answer, `unset` is a hole', () => {
+  const withBoth = IDEA.replace('motivation: own-problem', 'motivation: own-problem\nin_a_few_years: "every small agency in the county runs its Monday on this"\nprior_capital: none');
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-tidewell.md': withBoth, 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('id="vision-few-years"') && html.includes('every small agency in the county runs its Monday on this'));
+  assert.ok(html.includes('id="model-capital"') && html.includes('<p>none</p>'), 'none is a fact, not a hole');
+  const bare = project({ ...stamp(), 'docs/ideas/IDEA-001-tidewell.md': IDEA, 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const d2 = collectPlaybook(bare, 'tidewell'); const h2 = renderPlaybookHtml(d2, '2026-09-13 10:00');
+  assert.ok(d2.questions.some((q) => q.id === 'vision-few-years') && d2.questions.some((q) => q.id === 'model-capital'));
+  assert.ok(h2.includes('add in_a_few_years: to the IDEA doc'));
 });

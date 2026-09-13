@@ -308,6 +308,18 @@ rule above still applies to the whole section once it is stamped.
   situation, and the sharper vendor page agrees), goals/scenario fields (the six fields hold them),
   sliders and stat tiles (a measure with no source is decoration). Not yet: behaviours and channels,
   until a ledger reads real ≥ 50% and `/measure` has events.
+- **Four things BOSS never asked, now asked where they belong (Ajesh's rulings, 2026-09-13).**
+  *In a few years* — `in_a_few_years:` on the IDEA doc (his phrasing, not five years): `/boss`
+  asks it at 3.5 beside *why this one* and *it worked*, `/canvas` asks it when still empty, and the
+  playbook renders it under Vision or the hole. *Prior capital and ownership* — `prior_capital:`
+  (`none`, a sentence, or `see lawyer`; a fact pointer, never a cap table): `/canvas` asks it once,
+  on the Business Model cell's earning branch only; rendered beside the ask, where `none` is an
+  answer and `unset` is a hole. *Runway* — a sharpen on Cost Structure: *what keeps you alive
+  meanwhile, for how long?* — the three-month *it worked* is only a plan if the runway reaches it.
+  *AI-era defensibility and the compliance stance* — two sharpens on Risks & Harms: *why doesn't
+  the incumbent add a model next quarter*, and, when the domain is regulated, the regulator and the
+  data basis in a line (`/trust` reads it first). Unit economics beyond price and cost to serve
+  stay refused as projections; demographics on the persona stay in the `who` line (RVW-103).
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

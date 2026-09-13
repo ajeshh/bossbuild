@@ -224,7 +224,7 @@ export function readIdea(projectDir, canvasId) {
     const fm = frontmatter(text);
     const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
     const skip = (v) => { const s = String(v ?? '').trim().replace(/^"|"$/g, ''); return !s || /^(unset|none|tbd)$/i.test(s) ? '' : s; };
-    return { file: pick.n, id: fm.id || null, title, gist: skip(fm.gist), motivation: skip(fm.motivation), success: skip(fm.success_looks_like), vision: skip(fm.vision), shape: section(text, 'Current shape'), created: fm.created || null };
+    return { file: pick.n, id: fm.id || null, title, gist: skip(fm.gist), motivation: skip(fm.motivation), success: skip(fm.success_looks_like), vision: skip(fm.in_a_few_years) || skip(fm.vision), priorCapital: (() => { const v = String(fm.prior_capital ?? '').trim().replace(/^"|"$/g, ''); return !v || /^unset$/i.test(v) ? '' : v; })(), shape: section(text, 'Current shape'), created: fm.created || null };
   } catch { return null; }
 }
 
@@ -641,8 +641,8 @@ function pitchChapters(data) {
       : hole('vision-why', 'Why this, and what "it worked" looks like', 'Why are you building this, and what does success look like in three months? Two lines on the IDEA doc.', '/idea', ideaSrc))
     + cellBlock(cell('principles'), canvas, 'vision-principles', 'Principles', 'what we\'ll hold when it\'s costly')
     + hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'no record holds this yet', 'docs/team — not a BOSS record')
-    + (idea && idea.vision ? block({ id: 'vision-five-years', title: 'In five years', body: `<p>${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · vision` })
-      : hole('vision-five-years', 'In five years', 'If all goes well, what will you have built in five years? Nobody has asked; the answer is on no record.', 'no record holds this yet', `${ideaSrc} · no vision line`))
+    + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', body: `<p>${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · in_a_few_years` })
+      : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', idea ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : '/idea', `${ideaSrc} · no in_a_few_years line`))
     + '</div>'));
 
   // 2 · Product — the IDEA doc's current shape, whole; the FEATs; what it is not.
@@ -701,8 +701,11 @@ function pitchChapters(data) {
   const askBlock = ask
     ? block({ id: 'model-ask', title: 'The ask', sub: 'the capital mentor\'s read', state: 'hole', body: `<p class="prompt">${inline(ask.text)}</p><span class="verb">docs/dossier/mentor-capital.md${ask.updated ? ` · ${esc(String(ask.updated).slice(0, 10))}` : ''}</span>`, src: 'docs/dossier/mentor-capital.md' })
     : hole('model-ask', 'The ask', 'Round, use of funds, the milestones the money buys — open only when the capital mentor says the raise question is live.', '/consult · mentor-capital', 'docs/dossier/mentor-capital.md — none');
+  const capitalBlock = idea && idea.priorCapital
+    ? block({ id: 'model-capital', title: 'Prior capital and ownership', body: `<p>${inline(idea.priorCapital)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · prior_capital` })
+    : hole('model-capital', 'Prior capital and ownership', 'Has anyone put money in, and are you the sole owner? none, a sentence, or see lawyer — the first fact an investor asks, never a cap table.', 'add prior_capital: to the IDEA doc — /canvas asks it on the earning branch', `${ideaSrc} · no prior_capital line`);
   out.push(chapter('model', chapterHead(8, 'Business model', line(cell('bizmodel'))),
-    '<div class="blocks">' + cellBlock(cell('bizmodel'), canvas, 'model-revenue', 'Who pays, how much') + cellBlock(cell('cost'), canvas, 'model-cost', 'What it costs to serve') + askBlock + '</div>'));
+    '<div class="blocks">' + cellBlock(cell('bizmodel'), canvas, 'model-revenue', 'Who pays, how much') + cellBlock(cell('cost'), canvas, 'model-cost', 'What it costs to serve') + capitalBlock + askBlock + '</div>'));
 
   return { before: out.slice(0, 6).join('\n'), after: out.slice(6).join('\n') };
 }

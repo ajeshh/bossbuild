@@ -126,6 +126,8 @@ status: seedling
 gist: <one plain sentence — what this IS, in their words where you can>
 motivation: unset
 success_looks_like: ""
+in_a_few_years: ""
+prior_capital: unset
 created: {{today}}
 ---
 
@@ -174,8 +176,9 @@ later (which canvas branch opens, what the mentors weigh, which rung of the evid
 conscience points at) assumes a founder who wants a paying customer unless told otherwise. So ask,
 once, and take *"skip"* as a complete answer:
 
-> *"Two quick ones before the setup, a line each is plenty: **why this one, for you** — and what
-> would **'it worked'** look like three months from now?"*
+> *"Three quick ones before the setup, a line each is plenty: **why this one, for you** — what
+> would **'it worked'** look like three months from now — and **if it works, what's here in a few
+> years?**"*
 
 Then the check, ordered by cohort (read `cohort` from `.boss/config.json`) — in the same message,
 not a second turn:
@@ -196,8 +199,12 @@ not a second turn:
   and write it to `motivation:`. **Show the mapping before saving** — *"I'll file that as
   `community` — right?"* — and take their correction. If it doesn't fit, leave `unset` and keep the
   sentence; the sentence is what matters, the enum is for the readers.
-- **If they skip, write nothing** — `motivation: unset`, `success_looks_like: ""`. Never infer a
-  motivation from the idea (the `/idea` rule: *a motivation nobody wrote is a small fabrication*).
+- **The few-years line goes verbatim into `in_a_few_years:`** — it is the one far-horizon
+  sentence BOSS holds, and the playbook renders it under Vision. Not five years, not a forecast: a
+  few, in their words.
+- **If they skip, write nothing** — `motivation: unset`, `success_looks_like: ""`,
+  `in_a_few_years: ""`. Never infer any of the three from the idea (the `/idea` rule: *a motivation
+  nobody wrote is a small fabrication*).
   Every reader behaves as before when it is unset. Don't ask again; they can say it any time with
   `/idea` and the fields are theirs to edit.
 

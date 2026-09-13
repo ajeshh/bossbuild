@@ -32,6 +32,8 @@ status: seedling
 gist: <one plain sentence — what this IS, in their words where you can>
 motivation: unset
 success_looks_like: ""
+in_a_few_years: ""
+prior_capital: unset
 created: {{today}}
 ---
 
@@ -69,6 +71,13 @@ cell. If the founder says either thing here, unprompted — *"mostly I want to l
 the sentence verbatim into `success_looks_like:` or the log, and the why mapped to one of `learning`
 · `revenue` · `community` · `credibility` · `own-problem`, shown before saving. **Never infer
 either.** An empty field means *not asked yet*; a filled one means *they said so*.
+
+Two more fields follow the same rule. **`in_a_few_years:`** — *if this works, what's here in a few
+years?* — the far-horizon line the playbook renders under Vision; `/boss` asks it at 3.5 beside the
+other two, `/canvas` asks it when still empty. **`prior_capital:`** — has anyone put money in, and
+are you the sole owner: `none`, a sentence, or `see lawyer`; a fact pointer, never cap-table
+content. `/canvas` asks it once when the Business Model cell opens on the earning branch; nothing
+else does. Both stay empty until said.
 
 If you leave it out, the board falls back to reading the record's opening prose — which works, and
 is why this is never a blocker, but it will only ever be as good as the first paragraph happens to

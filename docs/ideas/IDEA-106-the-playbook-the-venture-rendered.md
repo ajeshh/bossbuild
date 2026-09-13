@@ -469,11 +469,13 @@ rendered, dormant until a file) · 25 (a chapter's line is its newest record's �
 - 17 — an ask record, gated on the capital mentor flipping → hold at n=0.
 - 26 — the cut lives in the render, never the records → FEAT-029 (last, by Ajesh's order).
 
-**Questions for Ajesh** (asked in one batch, 2026-09-13): 12 (does BOSS ask *in five years* at all?)
-· 18 (a `prior_capital:` line on the IDEA doc?) · 19 (which unit-economics does a pre-PMF founder
-honestly hold?) · 20 (AI-era defensibility — a sharpen on a cell, or a Risks half?) · 22 (founder
-runway — BOSS's to ask?) · 3 (demographics on the persona — the `who` line, or a field?) · 10 (which
-chapters earn a visual the records don't hold?).
+**Questions for Ajesh — answered 2026-09-13, built the same day:** 12 → yes, as *in a few years*
+(`in_a_few_years:` on the IDEA doc; `/boss` 3.5, `/canvas`, Vision chapter) · 18 → yes
+(`prior_capital:`; `/canvas` on the earning branch; beside the ask) · 22 → a sharpen on Cost
+Structure, not a field · 20 → a sharpen on Risks & Harms · 21 → the stance line on Risks & Harms,
+`/trust` reads it · 19 → price and cost to serve only; the rest refused as projections · 3 → the
+`who` line (RVW-103). Still open: 10 (which chapters earn a visual the records don't hold) — the
+answer so far is the photo (Team, personas) and the logo (Brand); nothing drawn.
 
 ## Open questions — written as questions, not carried
 
