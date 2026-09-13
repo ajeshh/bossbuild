@@ -19,7 +19,7 @@ updated: 2026-09-10
 - **Grounded in:** EVID-001 and EVID-002 (three owners described the Monday cover call unprompted; one said the hour is the job she hates most); DEC-003 (nothing after 8pm); docs/personas/marta.md
 - **Why:** an owner opens Kettlewick when a visit is already uncovered. Urgency is the default state of the job; the app must not add to it. Giving up: the "act now" conversion that badges and red dots buy.
 - **Guideline:** one accent, on the one thing you can act on. Everything else is quiet.
-- **Rules:** no unread counts; no badges on navigation; no red except the confirm on a destructive dialog; amber for *uncovered*, never red; nothing sent after 8pm, and the screen says when it will go.
+- **Rules:** no unread counts; no badges on navigation; no red except the confirm on a destructive dialog; amber for *uncovered*, a settled green for *covered*, the copper only on the act; nothing sent after 8pm, and the screen says when it will go.
 - **Wrong if:** an owner misses an uncovered visit that a badge would have caught. Then calm cost a visit, and the rule narrows.
 
 ### 2. The row is the unit
@@ -42,7 +42,7 @@ updated: 2026-09-10
 
 The one thing someone could describe about this interface without naming the product.
 
-- **It is:** the status chip — a shape before a colour (a hollow ring for *uncovered*, a half-filled ring for *asked*, a filled disc for *covered*), the same three shapes on the owner's laptop, the carer's phone, and the printed Monday.
+- **It is:** the status chip — a shape before a colour (a hollow ring for *uncovered*, a half-filled ring for *asked*, a filled disc for *covered*), the same three shapes on the owner's laptop, the carer's phone, and the printed Monday; and the sage ground under everything, so paper reads as paper without a shadow.
 - **It appears:** on every row and on the carer's ask card; deliberately not in navigation, never as a badge.
 
 ## Logo

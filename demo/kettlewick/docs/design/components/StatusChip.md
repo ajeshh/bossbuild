@@ -21,7 +21,7 @@ updated: 2026-09-05
 |---|---|---|
 | uncovered | a hollow ring, `signal.uncovered` | red |
 | asked | a half-filled ring, `signal.asked` | a spinner |
-| covered | a filled disc, `signal.covered` | a tick — the disc is the tick |
+| covered | a filled disc, `signal.covered` — the settled green, never the copper | a tick — the disc is the tick |
 
 ## Content
 - the word beside the shape on the laptop; the shape alone on the phone row, with its accessible name

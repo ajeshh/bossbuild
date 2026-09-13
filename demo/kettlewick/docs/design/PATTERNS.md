@@ -34,7 +34,7 @@ updated: 2026-09-08
 
 | Pattern | The situation | The rule | Anti-pattern |
 |---|---|---|---|
-| **Severity has four levels and one is enough** | any message to the owner | amber for uncovered, the accent for covered, danger only on the confirm; colour *and* a shape | five shades of alert; red for everything |
+| **Severity has four levels and one is enough** | any message to the owner | amber for uncovered, a settled green for covered, the copper only on the act, danger only on the confirm; colour *and* a shape | five shades of alert; red for everything |
 | **A badge is a number someone will act on** | a count on navigation | never — principle 1; the day view is the count | an unread count that never clears |
 
 ### Overlays — dialogs, popovers, tooltips, toasts: each interrupts; decide how much
