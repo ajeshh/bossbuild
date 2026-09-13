@@ -47,7 +47,10 @@ type: brand
 owner: "@you"          # the founder. No agent owns this — any lens may add to it
 status: nascent
 updated: {{DATE}}
-readers: /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers
+readers: /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers · boss playbook · boss design
+tagline: unknown          # one line, when there is one — the pages carry it under the name
+accent: unknown           # the one owned colour, as hex, once /design-tokens-init's anchor chooses it
+logo: unknown             # path to the mark (.svg) when there is a file — no file, no drawing, never a placeholder
 ---
 
 # Brand — {{PROJECT_NAME}}

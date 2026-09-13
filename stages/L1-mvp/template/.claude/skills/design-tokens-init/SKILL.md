@@ -313,6 +313,13 @@ the other field worth filling — it is what an editor shows on hover, and the a
    could argue the opposite, it's a mood, not a principle), and **each must descend into rules**,
    because an agent can't act on "calm over engaging" — it can act on "no unread-count badges."
 
+   **Then run `boss design`.** It renders the system as it is — every slot you just left as a
+   `<placeholder>` is a hole on the page, and `boss design --questions` lists them in build order
+   with the verb and the *moment* that earns each: `/design-review` reads layout, icons, the
+   five-state row and a do/don't back from the first screen that decides them; `/ux-check` fills the
+   tone table from the strings that shipped; `/spec` writes the flows; a logo needs a file. Nothing
+   here is filled by asking the founder a form — each slot has a moment, and the page says which.
+
 1. Update the project's CLAUDE.md (or claude-append.md) to declare the token discipline:
 
    ```markdown

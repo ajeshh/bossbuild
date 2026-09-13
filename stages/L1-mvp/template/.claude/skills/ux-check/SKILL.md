@@ -133,6 +133,18 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
      That copy is in your product, in whoever's voice the model defaulted to. `/judge-traces` reads
      the same surface for correctness; this reads it for voice.
 
+7a. **Fill the content slots from what shipped — this is the moment they can be filled.**
+   `STYLE_GUIDE.md`'s *Tone by context* table has a *Real string* column, and `/design-tokens-init`
+   was right to leave it empty: before there is copy, a string written to fill a table steers
+   nothing. Now there is copy. For each context row (success · error · warning · destructive
+   confirm · empty · loading), **copy the string that actually shipped into the cell**, marked
+   `observed` — the one you just read, not a better one you thought of. If it is off-voice, the
+   finding is the string *and* the cell says what the product currently says, which is the only
+   honest baseline for changing it. Terminology works the same way: the word the product uses is the
+   row's *Use*, and the synonym you found on another screen is its *Never*. Alt text: the images on
+   the walked surface either carry text that says what they are *for* or they don't — one line under
+   *Surfaces* either way. Fill what this walk touched; never the whole table.
+
 8. **The deceptive-pattern walk — read the markup, not the intent.** This is the one check where
    the founder's intention proves nothing, because **the pattern may not be theirs**: ask a model
    for a signup flow or an upgrade modal and it frequently ships a fake countdown, a pre-ticked

@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, statSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -638,4 +638,22 @@ test('research on a design object is by name, not by a new field: an EVID whose 
   const html2 = renderDesignHtml({ ...collectDesign(dir2, 'Tidewell'), projectDir: dir2 }, 'x');
   assert.match(html2, /descends from · 1 · Calm over urgent/);
   assert.match(html2, /id="principle-1"[\s\S]*?<span class="chip dec">1 rule descends<\/span>/); assert.match(html2, /id="principle-2"[\s\S]*?no rule descends from it yet/);
+});
+
+test('the open slots read back in build order, each with its verb and the moment that earns it; a filled slot drops out', () => {
+  const dir = project({ 'docs/ideas/IDEA-001.md': '# nothing' });
+  const data = collectDesign(dir, 'Tidewell');
+  assert.equal(data.questions.length, 17, 'every slot is open on an empty tree');
+  assert.deepEqual(data.questions.slice(0, 3).map((q) => q.verb), ['/landing', '/persona derive', '/spec'], 'cheapest and earliest first');
+  const layout = data.questions.find((q) => q.id === 'layout-hole');
+  assert.equal(layout.verb, '/design-review'); assert.equal(layout.moment, 'at the first screen with a grid');
+  assert.equal(data.questions.find((q) => q.id === 'logo').verb, 'docs/BRAND.md · logo: <path>');
+  assert.equal(data.questions.find((q) => q.id === 'content-voice').verb, '/ux-check');
+  const rest = withRest();
+  const q2 = collectDesign(rest, 'Tidewell').questions.map((q) => q.id);
+  assert.ok(!q2.includes('logo') && !q2.includes('icons-set') && !q2.includes('components-none') && !q2.includes('content-voice'), 'filled slots are not questions');
+  assert.ok(q2.includes('persona-none') && q2.includes('layout-hole'), 'the still-empty ones are');
+  const html = renderDesignHtml({ ...collectDesign(rest, 'Tidewell'), projectDir: rest }, 'x');
+  assert.match(html, /<b class="tab">\d+<\/b> open · next: \/persona derive/, 'the ledger names the next verb');
+  assert.match(html, /\/design-review reads it back at the first screen with a grid/, 'the layout hole names the moment that fills it');
 });

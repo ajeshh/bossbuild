@@ -42,9 +42,9 @@ export const HELP = {
     see: ['board', 'canvas'],
   },
   design: {
-    usage: 'boss design [--open]',
-    what: 'Your design system as one page in .boss/design.html — every token as a swatch with the DEC that chose it, contrast computed for every declared text-on-surface pair, the principles with their grounding marked, the brand, and the layout slot as the hole it is. Every value copies in the form an editor wants. A read of your files; re-run to refresh.',
-    examples: ['boss design', 'boss design --open'],
+    usage: 'boss design [--open] [--questions]',
+    what: 'Your design system as one page in .boss/design.html — seventeen sections read from your files: the people and the journey, the principles with their grounding marked, every token as a swatch with the DEC that chose it and contrast computed for every declared text-on-surface pair, icons and the logo from files or not at all, the components with an import line and a spec frame to copy, patterns, flows, content, accessibility, resources, exceptions, research. A hole stays a hole and names the verb and the moment that earns it; --questions lists them in build order. Every value copies in the form an editor wants. A read of your files; re-run to refresh.',
+    examples: ['boss design', 'boss design --open', 'boss design --questions'],
     see: ['playbook', 'design-tokens-init'],
   },
   board: {

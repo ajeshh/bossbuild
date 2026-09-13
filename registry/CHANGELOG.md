@@ -30,6 +30,23 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **Every design slot now has a moment that fills it — and `boss design --questions` says which.**
+  Ajesh: *"some of the content has no way of being populated as the app is being built."* Measured:
+  Layout, the icon decision, the logo rules, the five-state table, Do/Don't, a principle's grounding
+  and the tone table had no verb that ran at the moment they get decided. Now: `/design-review`'s
+  read-back step (4a — *observed, never a form*) covers them — the first screen with a grid decides
+  the base unit and the ramp, the first screen with an icon has chosen a set, the five-state row is
+  written into the table instead of the review file, a rule cited twice becomes a Do/Don't pair, a
+  finding that leans on a principle and an EVID records the grounding, a mark in a mockup asks where
+  the file is. `/ux-check` gained 7a — the tone table's *Real string* column fills from the strings
+  that shipped (copied, marked *observed* — the only honest baseline), terminology from the words in
+  use, alt text from the images walked. The brand doc's frontmatter carries `tagline:` · `accent:` ·
+  `logo:` (all `unknown` until true). And the pull, as the playbook has it: `boss design` prints
+  *N questions open · /landing · /design-review ×4 …*; `--questions` lists every open slot in build
+  order with its verb and the moment that earns it (*at the first screen with a grid*, *from the
+  strings that shipped*, *when there is a mark — a file, never a placeholder*); the page's ledger
+  names the next verb; each hole's verb on the page now names the skill that actually opens it
+  (two of them used to name a moment nothing ran at).
 - **The style guide gained the slots the design space was drawing as holes (IDEA-107's kicks-up
   rows).** In `/design-tokens-init`'s `STYLE_GUIDE.md` skeleton: `Statement:` and `Grounded in:` on
   the principle slot (a principle nothing outside the room names renders as *asserted*); a **Logo**

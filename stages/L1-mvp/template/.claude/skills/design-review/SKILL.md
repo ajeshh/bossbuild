@@ -126,6 +126,32 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
 
    **Fill at most one or two slots per review.** All four at once is the form you just refused.
 
+   **The same read fills the slots that have no other moment.** Half of `STYLE_GUIDE.md` is slots
+   that nothing fills while the app is being built — not because nobody cares, but because no verb
+   runs at the moment they are decided. This review *is* that moment, and the screen in front of you
+   has already decided most of them. Read them back the same way, `observed`, one or two per review,
+   whichever this screen actually opens:
+
+   - **Layout** (six sub-slots) — the first screen with a grid decides the base unit, the ramp and
+     the grid anatomy whether anyone writes them or not. Read the columns and gutters off the
+     mockup; a second surface (a phone, paper) opens *Responsive* and the `target.min` token. A
+     breakpoint typed in a media query is a `breakpoint.*` token that hasn't been named yet.
+   - **The five-state row** for the component under review — the pass-two check already produces it;
+     write the row into the table instead of leaving it in the review file.
+   - **Icons** — the first screen with an icon has chosen a set. Name it in *1b. Icons* (it is a
+     dependency), and say the SVGs go in `docs/design/icons/`, one file each, stroke in the file.
+   - **Do / Don't** — a rule you cite for the second time is a pair. Write the *Do* and the specific
+     *Don't* you keep seeing; the *Because* is the principle it serves.
+   - **A principle's `Statement:` and `Grounded in:`** — when a finding leans on a principle and an
+     `EVID`, a persona or a journey stage is why, that is the grounding, and it costs one line to
+     record. A principle nothing outside the room names renders as *asserted* on `boss design` until
+     something does.
+   - **The logo** — if the mockup carries a mark, ask where the file is: `logo:` in `docs/BRAND.md`.
+     No file, no lockups; never draw a stand-in.
+
+   `boss design --questions` lists which of these are still open and the moment that earns each —
+   read it before the review so you know which slot this screen is likely to open.
+
 4b. **Name the pattern, not just the fix.** Pass two produces findings about *this* screen. Before
    you write them up, ask the question that makes them compound: **is this decision going to come up
    again?**
