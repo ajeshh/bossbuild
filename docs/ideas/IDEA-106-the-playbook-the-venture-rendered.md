@@ -437,6 +437,44 @@ question — not a fix made in passing.
 | 27 | **Health from `/measure`'s events** — acquisition · activation · retention with the day each starts to mean something | `/measure` picks one activation metric and one retention curve; nothing writes *acquired from a channel vs by hand*; nothing dates *when the signal begins* | **task:** `/measure` records the channel per first user (`hand` / `<channel>`) and the install date; the render derives *days-to-aha* and *second-Sunday* from them |
 | 8 | **the ask** as a hole with a reason | `mentor-capital` defaults to *not yet*; nothing records *why not yet* in a place a render can quote | **task:** the not-yet needs a sentence on disk, or the hole has no reason to show |
 
+### Sorted — 2026-09-13, after FEAT-028
+
+The 27 rows, three ways (CLAUDE.md rule 3b). A row appears once.
+
+**Done or answered** — 5 (one date convention, `readLearnings` joins devlog + capture logs) · 6 and 7
+(Ajesh: phrase match, whole cell) · 14 (one shell, several spaces — `src/page-shell.js`) · 24 (Health
+rendered, dormant until a file) · 25 (a chapter's line is its newest record's — built) · 2 in part
+(the Design space renders tokens and brand; the playbook's Brand chapter links across, like personas).
+
+**Tasks** (a list, each with its home):
+- 8 — `mentor-capital`'s *not yet* needs a sentence in `docs/dossier/mentor-capital.md`; the ask
+  hole already quotes it when present → the agent's own output step.
+- 13 — `/import` dates and heads its `docs/source/<slug>.md` snapshot → the intake FEAT (IDEA-111).
+- 15 — a series extracted from an imported source, with date and origin → after 13; no chart before
+  a record holds a table.
+- 23 — `/log` at ship captures one screenshot into `docs/product/` → when `/ship` next moves.
+- 27 — `/measure` records channel per first user and the install date → when a project has users.
+- 21 — Risks & harms gains a *stance* half written by `/trust` → with the next `/trust` edit.
+- 1 — a matrix over *decided* features from the rivals' `## How they do it` → when a project has
+  three FEATs and two rivals with those sections; not before.
+
+**New scope** (each wants its own id when picked up):
+- 11 — a person record: `docs/team/<slug>.md` (bio, the specific thing seen/built/sold/lived, photo
+  path), for founder · cofounder · team · advisors; `/persona` gains `photo:`. `boss team` holds
+  handles only. → the Team chapter (Company group).
+- 16 — values as a page: `docs/BRAND.md § How we build` — a headline, a paragraph, a cost per
+  principle; the cell stays the headline. → the Values chapter.
+- 9 — the persona record against the craft → `/vet` the three inboxed pages, then `/persona`.
+- 4 — *the product today* as a record → hold; `## Current shape` + FEATs + *What it is NOT* serve.
+- 17 — an ask record, gated on the capital mentor flipping → hold at n=0.
+- 26 — the cut lives in the render, never the records → FEAT-029 (last, by Ajesh's order).
+
+**Questions for Ajesh** (asked in one batch, 2026-09-13): 12 (does BOSS ask *in five years* at all?)
+· 18 (a `prior_capital:` line on the IDEA doc?) · 19 (which unit-economics does a pre-PMF founder
+honestly hold?) · 20 (AI-era defensibility — a sharpen on a cell, or a Risks half?) · 22 (founder
+runway — BOSS's to ask?) · 3 (demographics on the persona — the `who` line, or a field?) · 10 (which
+chapters earn a visual the records don't hold?).
+
 ## Open questions — written as questions, not carried
 
 1. When a canvas cell carries its own revision history (BOSS's own does), does the box show the
