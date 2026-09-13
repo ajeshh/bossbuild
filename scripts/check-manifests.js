@@ -29,7 +29,7 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { BOSS_ROOT, STAGE_ORDER } from '../src/paths.js';
+import { BOSS_ROOT, STAGE_ORDER, bossVersion } from '../src/paths.js';
 import { readStageManifest } from '../src/scaffold.js';
 import {
   signalAsContext, GENERIC_FRAME_TAIL, JUDGE_MOMENTS,
@@ -377,6 +377,19 @@ function checkPluginPointers() {
       if (!bodies.some((b) => b.split(/\r?\n/).some((l) => l.trim() === h))) {
         errors.push(`plugin skill '${name}' names heading \`${h}\` — not a heading line in any file it points at`);
       }
+    }
+  }
+  // The manifest pins its own version, and Claude Code only updates an installed plugin when
+  // that string moves. `npm run release` has checked VERSION ↔ plugin.json since v0.302.0 — and
+  // seven releases (0.307 → 0.313) shipped past it at 0.306.0, because `release` is the gate
+  // nobody runs and `check` is the one everybody does. A gate that is not in the loop people
+  // actually run is a gate on paper; so the same check lives here too.
+  const pj = join(BOSS_ROOT, '.claude-plugin', 'plugin.json');
+  if (existsSync(pj)) {
+    const pv = JSON.parse(readFileSync(pj, 'utf8')).version;
+    const v = bossVersion();
+    if (pv !== v) {
+      errors.push(`.claude-plugin/plugin.json is at ${pv} while VERSION is ${v} — an installed plugin will never update until this moves`);
     }
   }
   return { errors, pointers };
