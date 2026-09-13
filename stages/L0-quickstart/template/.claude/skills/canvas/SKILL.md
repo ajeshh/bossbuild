@@ -157,7 +157,13 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    asked to see what they have in a different shape, not to fill more in. **`--frame onepager` also
    reads `docs/evidence/` and is gated on at least one `EVID-NNN`** — see the one-pager section above
    for what to do when there are none (it is not "render it anyway").
-1. Pick the idea: `[IDEA-NNN]` if given, else the most active idea in `docs/ideas/`.
+1. Pick the idea: `[IDEA-NNN]` if given, else **the venture idea** — the record with
+   `kind: venture` in its frontmatter (an older record that carries `motivation:` at all counts;
+   `/boss` wrote it before the field existed). Two of them is a real state (a founder choosing
+   between apps): ask which, don't pick. **Never a `kind: capability` idea** — "the most active
+   idea" after a few feature captures is a feature, and a feature is not pressure-tested as a
+   business; the venture it belongs to is. If someone points `/canvas` at a capability, say so in
+   one line and offer the venture.
 2. Open (or create) `docs/ideas/IDEA-NNN-canvas.md` from the template below.
 3. **Don't interrogate.** Ask about 2-4 cells at a time, starting with the most uncertain. Pull
    answers from the idea's "Current shape" + capture log; only ask what's missing.

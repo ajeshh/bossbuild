@@ -30,6 +30,20 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **An IDEA is one of two kinds, and the record now says which (IDEA-114).** Ajesh: *"what is an idea
+  in boss? I think its getting interchanged.. A founder may have a new idea for an app.. Thats one..
+  The other is.. when they have a new feature."* It was — `docs/IDS.md` defined `IDEA-NNN` as *"a raw
+  idea / planned capability"*, one template served both, and the pickers guessed: `/canvas` with no
+  argument took *"the most active idea"* and `boss playbook`'s Vision chapter took the **newest** file,
+  so after a few feature captures both rendered a feature as the venture. Now `kind: venture` (the
+  thing you're building — `/boss` writes it, one per project, and it alone carries `motivation`,
+  `success_looks_like`, `in_a_few_years`, `prior_capital` and a Canvas section) or `kind: capability`
+  ("add X" — `/idea` writes it, many, no venture fields, `/spec` is its next door). `/canvas`, the
+  playbook and `boss status`'s *Toward:* line all prefer the venture record; a project from before
+  the field still works — a record carrying `motivation:` at all is the one `/boss` wrote. No `kind:`
+  reads as capability, which is what every one of BOSS's own 113 ideas is; BOSS's venture idea is the
+  canvas, and `CLAUDE.md` now says so. A field, not a new ID prefix — a second class would have
+  re-filed 113 records for a distinction one line carries.
 - **The front page says what the conscience is watching.** Ajesh: *"with the whole playbook, design
   system, and demo… we need to update the copy on the front page"* — and, a minute later, *"it's still
   conscience for your build right."* It is; the H1 and the one-line sentence do not move. What moved:

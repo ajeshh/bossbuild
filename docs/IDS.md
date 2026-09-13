@@ -9,7 +9,7 @@ status: active
 
 | Prefix | Means | Lives in |
 |---|---|---|
-| `IDEA-NNN` | A raw idea / planned capability | `docs/ideas/` |
+| `IDEA-NNN` | An idea — of two kinds, named by `kind:` (see below): the **venture** idea a founder walked in with, or a **capability** idea ("add X") | `docs/ideas/` |
 | `FEAT-NNN` | An idea that earned a **build contract** — named slices, or a build spanning more than one release | `docs/ideas/` |
 | `DEC-NNN` | A load-bearing / hard-to-reverse decision record (ADR-lite; `status: decided \| superseded`, supersede-don't-edit) | `docs/decisions/` |
 | `PRAC-NNN` | A shared craft learning — a better way to build with AI (`status: active \| stale \| retired`, staleness-aware via `review_by:`) | `docs/practices/` |
@@ -19,6 +19,23 @@ status: active
 
 Frontmatter on every doc: `id`, `type`, `owner`, `status`. On `IDEA`/`FEAT`, add a one-line
 `gist:` — see below.
+
+## Two kinds of IDEA — `kind: venture | capability`
+
+**The venture idea** is the thing the founder walked in with. One per project (a few candidates on
+day 0). `/boss` writes it with `kind: venture`; it alone carries `motivation`, `success_looks_like`,
+`in_a_few_years`, `prior_capital` and a Canvas section; `/canvas` pressure-tests it, `boss playbook`
+renders it as the Vision, `boss status` orients on it. It is validated or killed — it does not
+*ship*.
+
+**A capability idea** is "we should add X". Many per project. `/idea` writes it with
+`kind: capability`; it climbs `seedling → … → shipped`, and `/spec` promotes it to a FEAT when the
+build has named slices. **A record with no `kind:` is a capability** — the field arrived 2026-09-13
+(IDEA-114) and every IDEA in this repo before it was one.
+
+**In BOSS's own tree, every `IDEA-NNN` is a capability.** BOSS's venture idea is
+`docs/ideas/CANVAS.md`. When a session says "the idea" here, it means a capability unless it says
+"the venture".
 
 ## Citing a record: the `[[…]]` form vs a bare id
 

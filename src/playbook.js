@@ -215,7 +215,12 @@ export function blockMd(md) {
   return out.join('');
 }
 
-// The IDEA doc the canvas belongs to (`IDEA-NNN-canvas` → `IDEA-NNN-*.md`), else the newest idea.
+// The IDEA doc the canvas belongs to (`IDEA-NNN-canvas` → `IDEA-NNN-*.md`), else THE VENTURE idea —
+// never simply the newest. An IDEA is one of two kinds (IDEA-114): the venture the founder walked in
+// with (`kind: venture`, written by /boss, one per project) or a capability ("add X", `kind: capability`,
+// written by /idea, many). The Vision chapter renders the venture; picking the newest file rendered
+// whatever feature was captured last. Rank: `kind: venture` · then a record carrying `motivation:` at
+// all (the pre-field /boss template always wrote it) · then newest, so nothing older regresses.
 export function readIdea(projectDir, canvasId) {
   const dir = join(projectDir, 'docs', 'ideas');
   if (!existsSync(dir)) return null;
@@ -223,8 +228,9 @@ export function readIdea(projectDir, canvasId) {
   let names = readdirSync(dir).filter((n) => /^IDEA-\d+.*\.md$/i.test(n) && !/-canvas\.md$/i.test(n));
   if (m) { const mine = names.filter((n) => n.toUpperCase().startsWith(m[1].toUpperCase() + '-') || n.toUpperCase() === m[1].toUpperCase() + '.md'); if (mine.length) names = mine; }
   if (!names.length) return null;
-  const pick = names.map((n) => { const p = join(dir, n); let fm = {}; try { fm = frontmatter(readFileSync(p, 'utf8')); } catch { /* keep going */ } return { n, p, when: Date.parse(fm.created || '') || statSync(p).mtimeMs }; })
-    .sort((a, b) => b.when - a.when)[0];
+  const rank = (fm) => (String(fm.kind || '').trim().toLowerCase() === 'venture' ? 2 : 'motivation' in fm ? 1 : 0);
+  const pick = names.map((n) => { const p = join(dir, n); let fm = {}; try { fm = frontmatter(readFileSync(p, 'utf8')); } catch { /* keep going */ } return { n, p, rank: rank(fm), when: Date.parse(fm.created || '') || statSync(p).mtimeMs }; })
+    .sort((a, b) => b.rank - a.rank || b.when - a.when)[0];
   try {
     const text = readFileSync(pick.p, 'utf8');
     const fm = frontmatter(text);

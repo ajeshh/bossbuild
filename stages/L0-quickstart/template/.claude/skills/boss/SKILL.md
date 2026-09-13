@@ -29,7 +29,7 @@ menu**, and the position is on disk:
 
 | On disk | Where they are | The door that opens |
 |---|---|---|
-| no `docs/ideas/IDEA-*.md` | day 0 | **spin-up** — steps 1 → 7 below |
+| no `kind: venture` idea in `docs/ideas/` (a file with none of the venture fields is a capability, not the venture) | day 0 | **spin-up** — steps 1 → 7 below |
 | an IDEA, no `docs/evidence/EVID-*` | an idea nobody has been asked about | **one conversation** — the smallest real step; `/interview prep` if they have a person, the demand test (`/pretotype`) if they have a crowd, `/prototype` if they need to see it before they can ask anyone anything |
 | evidence, no FEAT in `docs/ideas/` | heard, not built | **the smallest build** — `/prototype` for a thing to react to; `boss unlock mvp` then `/spec` only when it is plainly a real build |
 | a FEAT at `building` | mid-build | **finish or shrink it** — the board's line (`boss status`); `/spec` to read what "done" was; `/sunset FEAT-NNN` if it has stopped being the point |
@@ -113,14 +113,17 @@ than three words are ambiguous the idea is too vague to reflect, and *then* one 
 **Get the number by running `boss id IDEA`.** Don't assume `001`: a founder may have run `/idea`
 before `/boss`, and two files claiming one number makes every reference to it ambiguous.
 
-Create `docs/ideas/IDEA-NNN-<slug>.md` in **exactly the shape `/idea` writes**. The two capture
-paths produce one document — a founder must not get the lesser record for having come in the front
-door:
+Create `docs/ideas/IDEA-NNN-<slug>.md` in the shape `/idea` writes, **plus the venture fields**.
+This is the **`kind: venture`** record — the thing they are building, one per project — and it
+alone carries `motivation`, `success_looks_like`, `in_a_few_years`, `prior_capital` and a Canvas
+section. `/idea` writes `kind: capability` ("add X") and none of those; `/canvas`, `boss playbook`
+and `boss status` find the venture by this field, so it is not decoration:
 
 ```markdown
 ---
 id: IDEA-NNN
 type: idea
+kind: venture
 owner: product-lead
 status: seedling
 gist: <one plain sentence — what this IS, in their words where you can>

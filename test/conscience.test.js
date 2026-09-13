@@ -257,6 +257,14 @@ test('intent reads the two fields verbatim and prefers the newest live idea', ()
   assert.deepEqual(i, { id: 'IDEA-002', motivation: 'community', success: 'ten strangers still posting in March' });
 });
 
+test('intent prefers the kind: venture idea over a newer capability that happens to carry the fields (IDEA-114)', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001-a.md': IDEA('IDEA-001', 'kind: venture\nmotivation: own-problem\nsuccess_looks_like: "two cafes use it weekly"\n', '2026-08-01'),
+    'docs/ideas/IDEA-002-b.md': IDEA('IDEA-002', 'kind: capability\nmotivation: learning\nsuccess_looks_like: "looks nice"\n', '2026-09-01'),
+  });
+  assert.deepEqual(readIntentContext(dir), { id: 'IDEA-001', motivation: 'own-problem', success: 'two cafes use it weekly' });
+});
+
 test('a sentence without a mappable motivation still counts; an unknown enum does not become one', () => {
   const dir = project({ 'docs/ideas/IDEA-001-a.md': IDEA('IDEA-001', 'motivation: vibes\nsuccess_looks_like: "I finish something"\n') });
   assert.deepEqual(readIntentContext(dir), { id: 'IDEA-001', motivation: null, success: 'I finish something' });

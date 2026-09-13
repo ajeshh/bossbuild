@@ -313,6 +313,22 @@ test('readers: the IDEA doc the canvas belongs to, persona fields in the founder
   assert.equal(comp.rows[1].key, false); assert.equal(comp.rows[1].stale, true); assert.equal(comp.rows[1].ageDays, 134);
 });
 
+test('with no canvas, readIdea picks the kind: venture record over a newer capability, and a motivation-carrying record over a bare one (IDEA-114)', () => {
+  const bare = (id, extra, created) => `---\nid: ${id}\ntype: idea\nowner: product-lead\nstatus: seedling\ngist: x\n${extra}created: ${created}\n---\n\n# ${id}\n`;
+  const dir = project({
+    ...stamp(),
+    'docs/ideas/IDEA-001-app.md': bare('IDEA-001', 'kind: venture\nmotivation: own-problem\n', '2026-08-01'),
+    'docs/ideas/IDEA-002-feature.md': bare('IDEA-002', 'kind: capability\n', '2026-09-01'),
+  });
+  assert.equal(readIdea(dir).id, 'IDEA-001', 'the venture, not the newest');
+  const dir2 = project({
+    ...stamp(),
+    'docs/ideas/IDEA-001-app.md': bare('IDEA-001', 'motivation: unset\n', '2026-08-01'),
+    'docs/ideas/IDEA-002-feature.md': bare('IDEA-002', '', '2026-09-01'),
+  });
+  assert.equal(readIdea(dir2).id, 'IDEA-001', 'pre-field project: the record /boss wrote, by its motivation: line');
+});
+
 test('eight chapters, each line a substring of a record on disk or absent — BOSS writes no chapter line', () => {
   const files = {
     ...stamp(),

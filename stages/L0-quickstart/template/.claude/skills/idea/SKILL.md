@@ -19,6 +19,21 @@ thought lands — the first run creates the doc, every later run adds to it.
    files claiming one number makes every reference to it ambiguous, and it is invisible until it
    isn't.
 
+## Which kind — the venture, or a piece of it?
+
+An IDEA is one of two things, and the record says which in `kind:`:
+
+- **`kind: venture`** — the thing they are building. One per project (a few candidates on day 0).
+  `/boss` writes this one; it alone carries `motivation`, `success_looks_like`, `in_a_few_years`,
+  `prior_capital` and a Canvas section, because those are questions about a venture, not a feature.
+- **`kind: capability`** — "we should add X". Many per project. This is what `/idea` writes, and
+  it is the default.
+
+Ask only when it is genuinely unclear: if the project has **no** `kind: venture` idea yet (grep the
+frontmatter) and the thought reads like a whole product rather than a piece of one, one question —
+*"is this the thing you're building, or a piece of it?"* — and on *the thing*, write it in the
+shape `/boss` writes (venture fields and all). Otherwise, capability, no question.
+
 ## Create (first capture)
 
 Make `docs/ideas/IDEA-NNN-<slug>.md`:
@@ -27,13 +42,10 @@ Make `docs/ideas/IDEA-NNN-<slug>.md`:
 ---
 id: IDEA-NNN
 type: idea
+kind: capability
 owner: product-lead
 status: seedling
 gist: <one plain sentence — what this IS, in their words where you can>
-motivation: unset
-success_looks_like: ""
-in_a_few_years: ""
-prior_capital: unset
 created: {{today}}
 ---
 
@@ -51,10 +63,10 @@ _Append-only. Newest at the bottom. Don't edit old entries._
 
 ## Open questions
 - <what's still fuzzy>
-
-## Canvas
-_Not started. When this has legs, run `/canvas` to pressure-test it as a business._
 ```
+
+No Canvas section on a capability — a feature is not pressure-tested as a business; the venture
+it belongs to is. `/spec` is its next door, when it earns one.
 
 **`gist:` is the line that makes the idea findable later.** A title is a name, and after twenty
 records a name stops being a reminder — `boss board --detail`, the visual board's hover, and
@@ -63,21 +75,17 @@ is: "a way to point BOSS at a doc you already jotted the idea in" beats "an impo
 sentence. Their words where you have them. It costs nothing now and is most of what a founder
 needs six weeks from now, when they open the board and cannot remember which idea this was.
 
-**`motivation:` and `success_looks_like:` are written empty here, on purpose.** This is the lightest
-step in BOSS and it stays that way — `/idea` asks nothing. `/boss` asks the two questions behind
-those fields (*why this one, for you* · *what would "it worked" look like in three months*) at its
-own step 3.5, and `/canvas` asks them if they are still empty when it opens the Business Model
-cell. If the founder says either thing here, unprompted — *"mostly I want to learn Rust"* — write it:
-the sentence verbatim into `success_looks_like:` or the log, and the why mapped to one of `learning`
-· `revenue` · `community` · `credibility` · `own-problem`, shown before saving. **Never infer
-either.** An empty field means *not asked yet*; a filled one means *they said so*.
-
-Two more fields follow the same rule. **`in_a_few_years:`** — *if this works, what's here in a few
-years?* — the far-horizon line the playbook renders under Vision; `/boss` asks it at 3.5 beside the
-other two, `/canvas` asks it when still empty. **`prior_capital:`** — has anyone put money in, and
-are you the sole owner: `none`, a sentence, or `see lawyer`; a fact pointer, never cap-table
-content. `/canvas` asks it once when the Business Model cell opens on the earning branch; nothing
-else does. Both stay empty until said.
+**The venture fields (`motivation:`, `success_looks_like:`, `in_a_few_years:`, `prior_capital:`)
+belong to the `kind: venture` record and are not written here.** This is the lightest step in BOSS
+and it stays that way — `/idea` asks nothing. `/boss` asks the questions behind those fields (*why
+this one, for you* · *what would "it worked" look like in three months* · *what's here in a few
+years*) at its own step 3.5, and `/canvas` asks whichever are still empty when it opens the
+Business Model cell. If the founder says one of those things here, unprompted — *"mostly I want to
+learn Rust"* — it is about the venture, not this capability: write it on the venture idea's record
+(the sentence verbatim into `success_looks_like:` or its log; the why mapped to one of `learning`
+· `revenue` · `community` · `credibility` · `own-problem`, shown before saving), or into this
+record's capture log if there is no venture idea yet. **Never infer any of them.** An empty field
+means *not asked yet*; a filled one means *they said so*.
 
 If you leave it out, the board falls back to reading the record's opening prose — which works, and
 is why this is never a blocker, but it will only ever be as good as the first paragraph happens to

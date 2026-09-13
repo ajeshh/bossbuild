@@ -747,8 +747,10 @@ export function readEvidenceContext(projectDir) {
 //   · Nothing is inferred. `unset` (or absent) → null → every reader behaves exactly as before.
 //     `/idea`'s rule already says a motivation nobody wrote is a small fabrication; the same
 //     goes for one nobody read.
-//   · One idea, not a vote. The most recently `created:` live IDEA (not dropped / deferred /
-//     shipped) that carries a set motivation wins. Two ideas with two motivations is a real
+//   · One idea, not a vote. The `kind: venture` IDEA wins (IDEA-114 — the record /boss writes; a
+//     capability idea from /idea never carries these fields, and if one does, the venture still
+//     outranks it). Among equals, the most recently `created:` live IDEA (not dropped / deferred /
+//     shipped) that carries a set motivation. Two venture ideas with two motivations is a real
 //     state and the founder's to reconcile — this returns the newer, and says which.
 //   · Bounded: two fields and an id. Never the Current shape, never the capture log.
 export const MOTIVATIONS = ['learning', 'revenue', 'community', 'credibility', 'own-problem'];
@@ -770,12 +772,13 @@ export function readIntentContext(projectDir) {
       const hasMotivation = MOTIVATIONS.includes(motivation);
       if (!hasMotivation && !success) continue;
       const created = typeof fm.created === 'string' ? fm.created : '';
-      if (!best || created > best.created) {
-        best = { id: fm.id || n.replace(/\.md$/, ''), motivation: hasMotivation ? motivation : null, success: success || null, created };
+      const venture = String(fm.kind || '').trim().toLowerCase() === 'venture' ? 1 : 0;
+      if (!best || venture > best.venture || (venture === best.venture && created > best.created)) {
+        best = { id: fm.id || n.replace(/\.md$/, ''), motivation: hasMotivation ? motivation : null, success: success || null, created, venture };
       }
     }
     if (!best) return null;
-    const { created, ...out } = best;
+    const { created, venture, ...out } = best;
     return out;
   } catch {
     return null;
