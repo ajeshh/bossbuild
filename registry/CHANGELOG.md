@@ -320,6 +320,16 @@ rule above still applies to the whole section once it is stamped.
   the incumbent add a model next quarter*, and, when the domain is regulated, the regulator and the
   data basis in a line (`/trust` reads it first). Unit economics beyond price and cost to serve
   stay refused as projections; demographics on the persona stay in the `who` line (RVW-103).
+- **`boss playbook` — the BMC frame, and the ask read from the file the mentor actually writes.**
+  The canvas chapter's toggle is Humane ⇄ Lean ⇄ **BMC**: Osterwalder's nine boxes laid out as
+  he draws them (partnerships · activities and resources · value propositions · relationships over
+  channels · segments; cost and revenue along the bottom), from `/canvas`'s own mapping — seven
+  cells have a BMC home, Problem, Story and Metrics have none and step aside, the two floor cells
+  stay under *two questions this canvas asks that Lean and BMC don't*. The empty row above the
+  floor band in Lean is gone. And a mismatch found while reading the capital mentor: the shipped
+  agent writes `docs/dossier/business-<date>.md`, the render read `mentor-capital.md` — it now
+  reads the newest of either, and the mentor's *not yet* is asked to be one sentence with its
+  reason as that file's first paragraph, because *The ask* quotes exactly that paragraph.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

@@ -46,7 +46,7 @@ conscience they can't*). **A conventional frame is a different view of a humane 
 out of one.**
 
 When rendering `lean` or `bmc`, append the two cells under a plain heading — *"and two questions this
-canvas asks that Lean doesn't"* — rather than hiding them or apologising for them.
+canvas asks that Lean and BMC don't"* — rather than hiding them or apologising for them.
 
 ### Mapping — where each answer shows up
 

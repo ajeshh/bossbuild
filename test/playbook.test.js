@@ -115,7 +115,7 @@ test('the floor: Risks & Harms and Principles render in the Lean frame as a full
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
   playbookHtml(dir, 'tidewell');
   const html = readFileSync(join(dir, '.boss', 'playbook.html'), 'utf8');
-  assert.ok(html.includes("Two questions this canvas asks that Lean doesn't"));
+  assert.ok(html.includes("Two questions this canvas asks that Lean and BMC don't"));
   assert.match(html, /class="block filled floor[^"]*" id="canvas-risks"/);
   assert.match(html, /class="block filled floor[^"]*" id="canvas-principles"/);
   // Floor cells are never hidden by the Lean rule that hides humane-only cells.
@@ -717,4 +717,23 @@ test('the two new IDEA fields (Ajesh, 2026-09-13): in_a_few_years renders under 
   const d2 = collectPlaybook(bare, 'tidewell'); const h2 = renderPlaybookHtml(d2, '2026-09-13 10:00');
   assert.ok(d2.questions.some((q) => q.id === 'vision-few-years') && d2.questions.some((q) => q.id === 'model-capital'));
   assert.ok(h2.includes('add in_a_few_years: to the IDEA doc'));
+});
+
+test('the ask reads the dossier the shipped capital mentor writes (business-<date>.md), newest by name; the older mentor-capital.md still counts', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/dossier/business-2026-08-01.md': '# Capital\n\nOld position.\n', 'docs/dossier/business-2026-09-01.md': '# Capital\n\nNot yet — the first observed-behaviour signal reopens this.\n' });
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('Not yet — the first observed-behaviour signal reopens this.') && !html.includes('Old position.'));
+  assert.ok(html.includes('docs/dossier/business-2026-09-01.md'));
+});
+
+test('the BMC frame: seven cells with a BMC home carry their Osterwalder name and area; Problem, Story and Metrics have none and hide; the floor stays', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('data-frame="bmc" aria-pressed="false">BMC</button>'));
+  for (const name of ['Customer segments', 'Value propositions', 'Customer relationships', 'Revenue streams', 'Cost structure', 'Key activities · Key resources', 'Key partnerships']) assert.ok(html.includes(`<span class="t-bmc">${name}</span>`), name);
+  assert.equal(CELLS.filter((c) => c.bmc).length, 7);
+  for (const key of ['problem', 'story', 'metrics', 'buildbuy']) assert.match(html, new RegExp(`class="block [^"]*no-bmc[^"]*" id="canvas-${key}"`), `${key} hides in BMC`);
+  assert.match(html, /class="block [^"]*floor[^"]*" id="canvas-risks"/);
+  assert.ok(html.includes('--bmc-area:1 / 1 / 3 / 2;'), 'Key partnerships top-left');
+  assert.ok(html.includes('Business Model Canvas · Alexander Osterwalder'));
 });

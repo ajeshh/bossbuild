@@ -271,3 +271,8 @@ is bigger than my seat"* is a good answer, not a dodge.
 If the session moved something real, **offer** (don't silently do) to append your position + the date to
 your dossier artifact (`docs/dossier/business-<date>.md`) — create it if
 absent. The artifact *is* your memory across sessions; the founder owns the file.
+
+**When the raise question came up, the first paragraph of that file is your answer in one
+sentence with its reason** — *"Not yet — nobody outside the founder's circle has used it; the
+first observed-behaviour signal reopens this"* — because `boss playbook` quotes exactly that
+paragraph as *The ask*. A "not yet" with no sentence on disk is a hole with no reason to show.

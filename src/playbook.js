@@ -25,23 +25,23 @@ import { shellPage } from './page-shell.js';
 // Cells with no `lean` are humane-only and hide in the Lean frame — except the two FLOOR cells,
 // which render in EVERY frame as a band beneath the grid (DEC-004: humane is the floor).
 export const CELLS = [
-  { key: 'people',     name: 'People',                   band: 1, lean: 'Customer segments',        area: '1 / 5 / 3 / 6',
+  { key: 'people',     name: 'People',                   band: 1, lean: 'Customer segments',        area: '1 / 5 / 3 / 6', bmc: 'Customer segments', bmcArea: '1 / 5 / 3 / 6',
     prompt: 'Who are you designing for & what matters to them? Who exactly has the painful problem — how many, and how do you know?' },
   { key: 'problem',    name: 'Problem',                  band: 1, lean: 'Problem',                  area: '1 / 1 / 3 / 2',
     prompt: 'What real human tension are you solving? Is it urgent, frequent, expensive, or emotionally painful?' },
-  { key: 'promises',   name: 'Promises',                 band: 1, lean: 'Unique value proposition', area: '1 / 3 / 3 / 4',
+  { key: 'promises',   name: 'Promises',                 band: 1, lean: 'Unique value proposition', area: '1 / 3 / 3 / 4', bmc: 'Value propositions', bmcArea: '1 / 3 / 3 / 4',
     prompt: 'What emotional / relational value will it deliver? The sharp promise: "We help X do Y without Z."' },
   { key: 'story',      name: 'Story',                    band: 2, lean: 'Solution',                 area: '1 / 2 / 2 / 3',
     prompt: 'How does your product show up in someone\'s life? What changed that makes this newly possible?' },
-  { key: 'modes',      name: 'Modes of Engagement',      band: 2, lean: 'Unfair advantage',         area: '1 / 4 / 2 / 5',
+  { key: 'modes',      name: 'Modes of Engagement',      band: 2, lean: 'Unfair advantage',         area: '1 / 4 / 2 / 5', bmc: 'Customer relationships', bmcArea: '1 / 4 / 2 / 5',
     prompt: 'How do people interact with your product in a humane way? Does it respect time, attention, agency?' },
-  { key: 'bizmodel',   name: 'Business Model',           band: 2, lean: 'Revenue streams',          area: '3 / 4 / 4 / 6',
+  { key: 'bizmodel',   name: 'Business Model',           band: 2, lean: 'Revenue streams',          area: '3 / 4 / 4 / 6', bmc: 'Revenue streams', bmcArea: '3 / 4 / 4 / 6',
     prompt: 'How will you sustain this without compromising your promise? Who pays, how much — and how do the first 100 find you?' },
-  { key: 'cost',       name: 'Cost Structure',           band: 2, lean: 'Cost structure',           area: '3 / 1 / 4 / 4',
+  { key: 'cost',       name: 'Cost Structure',           band: 2, lean: 'Cost structure',           area: '3 / 1 / 4 / 4', bmc: 'Cost structure', bmcArea: '3 / 1 / 4 / 4',
     prompt: 'What does it actually cost to serve one person for a month?' },
-  { key: 'deliver',    name: 'What it takes to deliver', band: 2,
+  { key: 'deliver',    name: 'What it takes to deliver', band: 2, bmc: 'Key activities · Key resources', bmcArea: '1 / 2 / 3 / 3',
     prompt: 'What do you need to have and do to keep the promise?' },
-  { key: 'partners',   name: 'Key Partnerships',         band: 2,
+  { key: 'partners',   name: 'Key Partnerships',         band: 2, bmc: 'Key partnerships', bmcArea: '1 / 1 / 3 / 2',
     prompt: 'Is there anyone whose cooperation this can\'t work without?' },
   { key: 'metrics',    name: 'Metrics',                  band: 3, lean: 'Key metrics',              area: '2 / 2 / 3 / 3',
     prompt: 'What does meaningful success look like — for people and planet? Real pull: activation, retention.' },
@@ -54,15 +54,15 @@ export const CELLS = [
 ];
 // Lean has a box the humane canvas answers inside Business Model. It renders as a POINTER, never a
 // second copy — the frame layer's rule is that switching frames never asks (or shows) anything twice.
-const LEAN_CHANNELS_AREA = '2 / 4 / 3 / 5';
+const LEAN_CHANNELS_AREA = '2 / 4 / 3 / 5';   // the same slot in BMC — Channels sits under Customer relationships in both
 
 const BANDS = {
   1: ['Human foundation', 'who you serve, the tension they carry, the value you promise'],
   2: ['Product expression', 'how it shows up in a life, how people engage, how it sustains itself'],
   3: ['Stewardship', 'impact, risks, and the values that guide decisions'],
 };
-const FLOOR_HEADING = 'Two questions this canvas asks that Lean doesn\'t';
-const CREDITS = { humane: 'Humane Product Canvas · Ajesh Shah', lean: 'Lean Canvas · Ash Maurya, adapted — plus the two floor cells' };
+const FLOOR_HEADING = 'Two questions this canvas asks that Lean and BMC don\'t';
+const CREDITS = { humane: 'Humane Product Canvas · Ajesh Shah', lean: 'Lean Canvas · Ash Maurya, adapted — plus the two floor cells', bmc: 'Business Model Canvas · Alexander Osterwalder, adapted — plus the two floor cells' };
 const GRADES = ['stated-pain', 'observed-behavior', 'commitment'];
 
 const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -303,13 +303,18 @@ export function readSources(projectDir) {
 }
 
 // docs/dossier/mentor-capital.md — the first paragraph of the body, if the file exists.
+// The capital mentor writes `docs/dossier/business-<date>.md` (the shipped agent's own step);
+// `mentor-capital.md` is the older name. Newest by name wins.
 export function readAsk(projectDir) {
-  const p = join(projectDir, 'docs', 'dossier', 'mentor-capital.md');
-  if (!existsSync(p)) return null;
+  const dir = join(projectDir, 'docs', 'dossier');
+  if (!existsSync(dir)) return null;
+  const n = readdirSync(dir).filter((x) => /^(business|mentor-capital).*\.md$/i.test(x)).sort().pop();
+  if (!n) return null;
+  const p = join(dir, n);
   try {
     const text = readFileSync(p, 'utf8').replace(/\r\n?/g, '\n').replace(/^---\n[\s\S]*?\n---\n?/, '');
     const para = text.split(/\n\s*\n/).map((s) => s.trim()).find((s) => s && !/^#/.test(s) && !/^>/.test(s));
-    return para ? { text: para, updated: frontmatter(readFileSync(p, 'utf8')).updated || null } : null;
+    return para ? { text: para, file: `docs/dossier/${n}`, updated: frontmatter(readFileSync(p, 'utf8')).updated || dateOf(n) || null } : null;
   } catch { return null; }
 }
 
@@ -580,9 +585,9 @@ function chipFor(b) {
 
 function boxHtml(b, canvas) {
   const src = canvas ? `canvas · ${esc(b.name)}${canvas.updated ? ` · rev. ${esc(canvas.updated)}` : ''}` : `canvas · ${esc(b.name)} · no canvas yet`;
-  const title = `<h3><span class="t-humane">${esc(b.name)}</span>${b.lean ? `<span class="t-lean">${esc(b.lean)}</span>` : ''}</h3>`;
-  const area = b.area ? ` style="--area:${b.area}"` : '';
-  const cls = `block ${b.state}${b.floor ? ' floor' : ''}${b.lean ? '' : ' humane-only'}${b.known ? '' : ' extra'}`;
+  const title = `<h3><span class="t-humane">${esc(b.name)}</span>${b.lean ? `<span class="t-lean">${esc(b.lean)}</span>` : ''}${b.bmc ? `<span class="t-bmc">${esc(b.bmc)}</span>` : ''}</h3>`;
+  const area = (b.area || b.bmcArea) ? ` style="${b.area ? `--area:${b.area};` : ''}${b.bmcArea ? `--bmc-area:${b.bmcArea};` : ''}"` : '';
+  const cls = `block ${b.state}${b.floor ? ' floor' : ''}${b.lean ? '' : ' humane-only'}${b.bmc ? '' : ' no-bmc'}${b.known ? '' : ' extra'}`;
   let body;
   if (b.state === 'hole') {
     body = `<p class="prompt">${esc(b.prompt || 'No prompt on file for this cell.')}</p><span class="verb">not yet · /canvas fills it</span>`;
@@ -699,8 +704,8 @@ function pitchChapters(data) {
 
   // 7 · Canvas is assembled in renderPlaybookHtml (FEAT-026). 8 · Business model — two cells and the ask.
   const askBlock = ask
-    ? block({ id: 'model-ask', title: 'The ask', sub: 'the capital mentor\'s read', state: 'hole', body: `<p class="prompt">${inline(ask.text)}</p><span class="verb">docs/dossier/mentor-capital.md${ask.updated ? ` · ${esc(String(ask.updated).slice(0, 10))}` : ''}</span>`, src: 'docs/dossier/mentor-capital.md' })
-    : hole('model-ask', 'The ask', 'Round, use of funds, the milestones the money buys — open only when the capital mentor says the raise question is live.', '/consult · mentor-capital', 'docs/dossier/mentor-capital.md — none');
+    ? block({ id: 'model-ask', title: 'The ask', sub: 'the capital mentor\'s read', state: 'hole', body: `<p class="prompt">${inline(ask.text)}</p><span class="verb">${esc(ask.file)}${ask.updated ? ` · ${esc(String(ask.updated).slice(0, 10))}` : ''}</span>`, src: 'docs/dossier/mentor-capital.md' })
+    : hole('model-ask', 'The ask', 'Round, use of funds, the milestones the money buys — open only when the capital mentor says the raise question is live.', '/consult · mentor-capital', 'docs/dossier/business-<date>.md — none');
   const capitalBlock = idea && idea.priorCapital
     ? block({ id: 'model-capital', title: 'Prior capital and ownership', body: `<p>${inline(idea.priorCapital)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · prior_capital` })
     : hole('model-capital', 'Prior capital and ownership', 'Has anyone put money in, and are you the sole owner? none, a sentence, or see lawyer — the first fact an investor asks, never a cap table.', 'add prior_capital: to the IDEA doc — /canvas asks it on the earning branch', `${ideaSrc} · no prior_capital line`);
@@ -843,7 +848,7 @@ export function renderPlaybookHtml(data, stampedAt) {
   const { boxes, ledger, brand, canvas, error, projectName } = data;
   const byBand = (n) => boxes.filter((b) => b.band === n && !b.floor);
   const floor = boxes.filter((b) => b.floor);
-  const bandHtml = (n) => `<div class="band-title humane-only"><h3>${n} · ${esc(BANDS[n][0])}</h3><span>${esc(BANDS[n][1])}</span></div>\n` + byBand(n).map((b) => boxHtml(b, canvas)).join('\n');
+  const bandHtml = (n) => `<div class="band-title humane-only no-bmc"><h3>${n} · ${esc(BANDS[n][0])}</h3><span>${esc(BANDS[n][1])}</span></div>\n` + byBand(n).map((b) => boxHtml(b, canvas)).join('\n');
   const extras = boxes.filter((b) => !b.known && ![1, 2, 3].includes(b.band));
   const ledgerLine = `<b class="tab">${ledger.backed} of ${ledger.live}</b> cells backed by graded evidence · <b>${ledger.signals}</b> signal${ledger.signals === 1 ? '' : 's'}`
     + (ledger.signals ? `, ${GRADES.every((g) => !ledger.gradeCounts[g] || g === ledger.topOverall) ? 'all' : 'top'} <b>${esc(ledger.topOverall)}</b>` : '')
@@ -874,13 +879,13 @@ export function renderPlaybookHtml(data, stampedAt) {
   ];
   const mainHtml = `${chapters.before}
   <section class="chapter" id="canvas">
-  <div class="chapter-head"><div class="label">7 · Canvas</div><p>Switch the frame and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
-  <div class="frame-bar"><div class="seg" role="group" aria-label="Frame"><button type="button" data-frame="humane" aria-pressed="true">Humane</button><button type="button" data-frame="lean" aria-pressed="false">Lean</button></div><span class="credit" id="credit">${esc(CREDITS.humane)}</span></div>
+  <div class="chapter-head"><div class="label">7 · Canvas</div><p>Switch the frame — Humane, Lean, BMC — and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
+  <div class="frame-bar"><div class="seg" role="group" aria-label="Frame"><button type="button" data-frame="humane" aria-pressed="true">Humane</button><button type="button" data-frame="lean" aria-pressed="false">Lean</button><button type="button" data-frame="bmc" aria-pressed="false">BMC</button></div><span class="credit" id="credit">${esc(CREDITS.humane)}</span></div>
   ${errorHtml}
   <div class="canvas" id="canvas-grid" data-frame="humane">
 ${bandHtml(1)}
 ${bandHtml(2)}
-    <article class="block pointer" id="canvas-channels" data-title="Channels"><div class="head"><h3>Channels</h3></div><div class="body">Lean has a box for this; the humane canvas answers it inside <a href="#canvas-bizmodel">Business Model</a> — <em>how the first 100 find you</em>. One answer, never rendered twice.</div><div class="foot"><span class="src">canvas · Business Model</span></div></article>
+    <article class="block pointer" id="canvas-channels" data-title="Channels"><div class="head"><h3>Channels</h3></div><div class="body">Lean and BMC have a box for this; the humane canvas answers it inside <a href="#canvas-bizmodel">Business Model</a> — <em>how the first 100 find you</em>. One answer, never rendered twice.</div><div class="foot"><span class="src">canvas · Business Model</span></div></article>
 ${bandHtml(3)}
 ${extras.map((b) => boxHtml(b, canvas)).join('\n')}
     <div class="band-title floor-title"><h3>${esc(FLOOR_HEADING)}</h3><span>they render in every frame — the floor, not a footnote</span></div>
@@ -917,13 +922,19 @@ const PLAYBOOK_CSS = `
   .block .prompt { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; } .block.hole .prompt, .block.dormant .prompt { font-size: 14px; }
   .block .answer p + p { margin-top: 8px; } .block .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 11px; color: var(--muted); } .block .src { min-width: 0; overflow-wrap: anywhere; }
   .block.extra h3::after { content: " · your cell"; font-weight: 400; color: var(--muted); }
-  .t-lean { display: none; }
-  .canvas[data-frame="lean"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: minmax(150px, auto); }
+  .t-lean, .t-bmc { display: none; }
+  .canvas[data-frame="lean"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(150px, auto)) auto minmax(150px, auto); }
   .canvas[data-frame="lean"] .humane-only { display: none; } .canvas[data-frame="lean"] .block.floor { display: flex; }
   .canvas[data-frame="lean"] .block { grid-area: var(--area, auto); } .canvas[data-frame="lean"] .block .prompt { display: none; } .canvas[data-frame="lean"] .block.hole .prompt, .canvas[data-frame="lean"] .block.dormant .prompt { display: block; }
   .canvas[data-frame="lean"] .t-lean { display: inline; } .canvas[data-frame="lean"] .t-humane { display: none; }
   .canvas[data-frame="lean"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="lean"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="lean"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
   .canvas[data-frame="lean"] .pointer { display: flex; grid-area: ${LEAN_CHANNELS_AREA}; } .pointer { display: none; }
+  .canvas[data-frame="bmc"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(150px, auto)) auto minmax(150px, auto); }
+  .canvas[data-frame="bmc"] .no-bmc { display: none; } .canvas[data-frame="bmc"] .block.floor { display: flex; }
+  .canvas[data-frame="bmc"] .block { grid-area: var(--bmc-area, auto); } .canvas[data-frame="bmc"] .block .prompt { display: none; } .canvas[data-frame="bmc"] .block.hole .prompt, .canvas[data-frame="bmc"] .block.dormant .prompt { display: block; }
+  .canvas[data-frame="bmc"] .t-bmc { display: inline; } .canvas[data-frame="bmc"] .t-humane { display: none; }
+  .canvas[data-frame="bmc"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="bmc"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="bmc"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
+  .canvas[data-frame="bmc"] .pointer { display: flex; grid-area: ${LEAN_CHANNELS_AREA}; }
   .pointer .body { color: var(--ink-2); font-size: 14px; }
   .deck { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; grid-template-rows: auto 1fr auto; padding: 16px clamp(16px, 4vw, 48px); }
   .deck .chrome, .deck .bottom { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); } .deck .chrome button { margin-left: auto; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 5px; font-family: var(--body); font-size: 12.5px; color: var(--ground); }
@@ -934,8 +945,8 @@ const PLAYBOOK_CSS = `
   .sl .sl-title { font-family: var(--display); font-size: clamp(24px, 2.6vw, 38px); color: var(--ink-2); font-weight: 500; }
   .sl .sl-body { margin-top: 20px; flex: 1; min-height: 0; overflow: auto; font-family: var(--display); font-size: clamp(19px, 2.2vw, 32px); line-height: 1.32; } .sl .sl-body .prompt { display: none; } .sl.hole .sl-body .prompt, .sl.dormant .sl-body .prompt { display: block; color: var(--hole); font-style: italic; }
   .sl .sl-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule-2); display: flex; gap: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); } .sl.hole { border: 2px dashed var(--rule); }
-  @media (max-width: 900px) { .canvas, .canvas[data-frame="lean"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .canvas[data-frame="lean"] .block, .canvas[data-frame="lean"] .pointer, .canvas[data-frame="lean"] .band-title.floor-title { grid-area: auto !important; } .canvas[data-frame="lean"] .band-title.floor-title { grid-column: 1 / -1; } }
-  @media (max-width: 640px) { .canvas, .canvas[data-frame="lean"] { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .canvas, .canvas[data-frame="lean"], .canvas[data-frame="bmc"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .canvas[data-frame="lean"] .block, .canvas[data-frame="lean"] .pointer, .canvas[data-frame="lean"] .band-title.floor-title, .canvas[data-frame="bmc"] .block, .canvas[data-frame="bmc"] .pointer, .canvas[data-frame="bmc"] .band-title.floor-title { grid-area: auto !important; } .canvas[data-frame="lean"] .band-title.floor-title, .canvas[data-frame="bmc"] .band-title.floor-title { grid-column: 1 / -1; } }
+  @media (max-width: 640px) { .canvas, .canvas[data-frame="lean"], .canvas[data-frame="bmc"] { grid-template-columns: 1fr; } }
   .block .helper { color: var(--muted); font-size: 13px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; } .block .body p + p, .block .body ul + p, .block .body p + ul { margin-top: 8px; }
   .block.snippet .who { font-family: var(--display); font-size: 19px; line-height: 1.3; } .xlink { font-family: var(--mono); font-size: 11.5px; } .xlink.dim { color: var(--muted); } .hole-text { color: var(--hole); }
   .tier-title { display: flex; align-items: baseline; gap: 10px; margin: 22px 0 12px; } .tier-title h3 { font-family: var(--display); font-size: 20px; } .tier-title span { font-size: 13px; color: var(--muted); }
