@@ -132,6 +132,17 @@ rule above still applies to the whole section once it is stamped.
   **A chapter's line is the first sentence of the record it renders, or the chapter has no line** —
   a test asserts no `<h2>` on the page is a sentence BOSS wrote. Six more tests; docs/ still
   byte-identical after a render.
+- **`boss playbook` prints what's open (IDEA-111, the pull).** After the path: *`11 questions open ·
+  /canvas ×4 · /idea ×2 · /persona derive · …`* — the page's holes read back as a list, one entry per
+  question, the verb that answers it, cheapest first; `--questions` lists each by name. Nothing is
+  computed twice: every chapter hole is recorded as it is drawn, canvas holes come from the boxes,
+  so the terminal and the page cannot disagree (a test walks the page's hole ids against the list).
+  A verb the project doesn't have yet is said so — `/spec — arrives with the next mode (boss
+  unlock)` — and when the hole is a record a document can fill (rivals, brand) it points at the
+  door that exists: `/comp-eval — or drop what you know: /import`. The record is ungated; only the
+  deeper verb is. Two holes that cited BOSS's own `IDEA-106 · kicked up #11` to a founder whose tree
+  has no IDEA-106 now say `no record holds this yet`; a dormant cell renders dormant in its chapter,
+  not as a question. Three tests.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

@@ -360,3 +360,64 @@ test('the Design link renders only when .boss/design.html is on disk, and is rel
 test('blockMd: the IDEA doc\'s bullets and helper line render, escaped', () => {
   assert.equal(blockMd('_helper_\n- **What:** one <b>tap</b>\n- second'), '<p class="helper">helper</p><ul><li><strong>What:</strong> one &lt;b&gt;tap&lt;/b&gt;</li><li>second</li></ul>');
 });
+
+// --- IDEA-111 — the pull: the page's questions read back in the terminal -------------------------
+import { openQuestions, questionsLine } from '../src/playbook.js';
+
+test('open questions are the page\'s holes, once each — every canvas hole and every chapter hole, no dormant cell, no duplicate', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const data = collectPlaybook(dir, 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-09-13 10:00');
+  const qs = openQuestions(data, dir);
+  const holeIds = [...html.matchAll(/class="block hole[^"]*" id="([^"]+)"/g)].map((m) => m[1]);
+  // every terminal question is a hole on the page, and every non-canvas hole on the page is a question
+  for (const q of qs) assert.ok(holeIds.includes(q.id), `${q.id} is on the page`);
+  for (const id of holeIds.filter((i) => !i.startsWith('canvas-'))) assert.ok(qs.some((q) => q.id === id), `${id} is in the list`);
+  // the chapters repeat canvas cells as holes; the list carries each cell once, and never a dormant one
+  const canvasQs = qs.filter((q) => q.verb === '/canvas');
+  assert.equal(canvasQs.length, data.boxes.filter((b) => b.state === 'hole').length);
+  assert.equal(new Set(canvasQs.map((q) => q.id)).size, canvasQs.length);
+  assert.ok(!qs.some((q) => data.boxes.find((b) => b.state === 'dormant' && `canvas-${b.key}` === q.id)));
+  // cheapest first: every /canvas before any other verb
+  const firstOther = qs.findIndex((q) => q.verb !== '/canvas');
+  assert.ok(qs.slice(0, firstOther).every((q) => q.verb === '/canvas'));
+});
+
+test('a verb the project does not have yet: droppable records point at /import, the rest wait for the mode; a verb it has is printed as is', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/import/SKILL.md': '# import', '.claude/skills/persona/SKILL.md': '# persona' });
+  const data = collectPlaybook(dir, 'tidewell'); renderPlaybookHtml(data, '2026-09-13 10:00');
+  const line = (id) => openQuestions(data, dir).find((q) => q.id === id).line;
+  assert.equal(line('competition-none'), '/comp-eval — or drop what you know: /import');
+  assert.equal(line('product-not'), '/landing seeds docs/BRAND.md — or drop what you know: /import');
+  assert.equal(line('product-feats'), '/spec — arrives with the next mode (boss unlock)');
+  assert.equal(line('persona-none'), '/persona derive');
+  assert.equal(line('vision-team'), 'no record holds this yet', 'a hole with no verb is said so, without citing BOSS\'s own records');
+  // skills folder present but no /import → the gated verb just waits
+  const noImport = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/canvas/SKILL.md': '# canvas' });
+  const d2 = collectPlaybook(noImport, 'tidewell'); renderPlaybookHtml(d2, '2026-09-13 10:00');
+  assert.equal(openQuestions(d2, noImport).find((q) => q.id === 'competition-none').line, '/comp-eval — arrives with the next mode (boss unlock)');
+  // no skills folder at all → nothing can be said about gating; the verb prints as is
+  const bare = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const d3 = collectPlaybook(bare, 'tidewell'); renderPlaybookHtml(d3, '2026-09-13 10:00');
+  assert.equal(openQuestions(d3, bare).find((q) => q.id === 'competition-none').line, '/comp-eval');
+});
+
+test('the terminal: one summary line grouped by verb, --questions lists each with its verb, nothing open says so', () => {
+  assert.equal(questionsLine([]), 'no questions open');
+  assert.equal(questionsLine([{ line: '/canvas' }, { line: '/canvas' }, { line: '/idea' }]), '3 questions open · /canvas ×2 · /idea');
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const out = execFileSync('node', [BIN, 'playbook', '--questions'], { cwd: dir, encoding: 'utf8' });
+  assert.match(out, /\d+ questions open · \/canvas · \/idea ×2/);
+  assert.match(out, /· Who, exactly — \/persona derive/);
+  const plain = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
+  assert.doesNotMatch(plain, /· Who, exactly/, 'the list only with --questions');
+});
+
+test('the page says the same thing the terminal says: a gated hole\'s verb line matches, and the rail carries the open count with the cheapest verb', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/import/SKILL.md': '# import', '.claude/skills/canvas/SKILL.md': '# canvas' });
+  const data = collectPlaybook(dir, 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-09-13 10:00');
+  assert.ok(html.includes('not yet · /comp-eval — or drop what you know: /import'));
+  assert.ok(html.includes('not yet · /spec — arrives with the next mode (boss unlock)'));
+  assert.ok(html.includes(`<div class="open"><b class="tab">${data.questions.length}</b> open · start: /canvas</div>`));
+});

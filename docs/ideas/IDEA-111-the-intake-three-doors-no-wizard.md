@@ -76,6 +76,27 @@ written. The fields with no home yet (IDEA-106 kicked-up: a person record, a `vi
 capital, the compliance stance, the AI-defensibility question) get homes in the verbs that own the
 adjacent question — one JIT line each, never a new skill.
 
+## The folder — where a founder's own files live
+
+Ajesh: *"how we organize all the business docs in a folder, and text files or anything else they
+organize would be clutch."* Today there is one drop folder and it already works passively:
+`docs/source/` is where `/import` snapshots a document, and the playbook's Market chapter lists
+whatever is in it by name and date — a founder who copies a PDF there by hand, no verb, sees it on
+the page at the next render. So the folder exists; what it lacks is (a) a name that says *put your
+stuff here* — `source` reads as BOSS's, not theirs — and (b) anything that reads the files beyond
+listing them.
+
+**Recommendation, to be ruled on:** one flat folder, dated filenames (`2026-09-13-deck-v3.pdf`),
+and **no sub-folders by chapter** — sorting a file into *market* or *competition* is exactly the
+judgment door 1's assessment makes, and asking the founder to make it first is the wizard by
+another name. The records are the organisation; the folder is the inbox. Every file type BOSS can
+read (md, txt, csv, pdf via the host's reader) gets assessed; the rest are listed with their name
+and left to the founder. Open: rename `docs/source/` → `docs/inbox/`? (BOSS's own tree uses
+`research/inbox/` for the same job — the name already means this here.) A rename touches the
+`/import` skill, the Market chapter, `.gitignore`s and every project that has the old folder —
+`boss sync` would have to carry it. Cheaper: keep the path, and let the README the scaffold drops
+in it say *drop anything here*.
+
 ## Updating
 
 By the same doors. A founder who re-drops a newer deck gets the assessment against what's already
@@ -100,5 +121,10 @@ that exists.
 
 ## Capture log
 
+- 2026-09-13 — the pull landed: `boss playbook` prints the open questions and `--questions` lists
+  them; the page's hole verbs and the terminal share one line (`verbLine`), gated verbs point at
+  `/import` when the record is droppable. Ajesh, same day: *"the nudge when they see the html and
+  it's empty — a prompt in the box to go fill it out"* → the rail now carries `N open · start:
+  /canvas`; each hole already carried its prompt and verb. And the folder question, above.
 - 2026-09-13 — seed (Ajesh), after the playbook's first two slices landed and the question *"have
   we integrated asking all these questions?"* got an honest *no*.

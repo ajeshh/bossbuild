@@ -450,6 +450,16 @@ question — not a fix made in passing.
 5. Single page with sections, or multi-page? (065's Q1 — volume decides; the prototype is one page.)
 6. Does it ship to every founder, or is it a BOSS-local tool? (065's Q5 — a founder's need to browse
    their own docs is real; whether it is BOSS's job is not obvious. Answer from a founder, not a demo.)
+7. **Where does the file live, and what is it called?** (Ajesh, 2026-09-13: *"the html should be
+   filed by the name of the app.html and in the project folder to easily bookmark?"*) Today
+   `.boss/playbook.html`, the `board.html` precedent — hidden in Finder, one gitignore rule. A
+   browser bookmark takes the page's `<title>` (*Tidewell — Playbook*) and the path already carries
+   the project folder, so the bookmark is named right as it is; the friction is finding the file
+   from Finder, not from the browser. Options: (a) keep the path, and have `--open` print the
+   `file://` URL to bookmark; (b) `.boss/<name>-playbook.html` — visible name, still hidden folder;
+   (c) `<name>.html` at the project root — findable, but a generated file in the founder's repo needs
+   a gitignore rule in every template and in `boss adopt`, and `boss sync` to carry it to existing
+   projects. Recommend (a) now, (c) only if a founder is seen looking for the file. Ajesh's call.
 
 ## Gate
 
@@ -550,6 +560,10 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — **ruling via the Design lane** (bossbuild-a1): full persona cards move to the Design
   space; the playbook keeps a snippet + a link. Chapter 3 rewritten; lands in FEAT-027.
 - 2026-09-13 — **promoted** → FEAT-026 (slice 1: the canvas as boxes; slices 2–4 named). Program `business-profile` with FEAT-025.
+- 2026-09-13 — the pull (IDEA-111) landed on `boss playbook`: the open questions printed, `--questions`
+  lists them, the rail says `N open · start: /canvas`. Three of Ajesh's pushes the same day: the
+  empty-page nudge (done — rail line + each hole's verb), the founder's own files folder (→ IDEA-111
+  *The folder*), the file name / location (→ open question 7 above).
 - 2026-09-13 — **v5 rulings** (Ajesh): A — *yes all*; after the first user it's acquisition,
   retention, showing how it's going, and *when do market signals start* · B — yes · C — Priya stays,
   a proto-persona for the entrepreneur, not for VCs · E — the playbook is for the founder and team

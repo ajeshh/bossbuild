@@ -363,7 +363,7 @@ export function collectPlaybook(projectDir, projectName) {
   const idea = readIdea(projectDir, parsed.id);
   const cell = (key) => boxes.find((b) => b.key === key) || null;
   return {
-    projectName,
+    projectName, projectDir,
     canvas: found ? { file: found.name, updated: parsed.updated, others: found.others } : null,
     error, boxes, cell,
     ledger: { backed, live: live.length, signals: evidence.length, gradeCounts, topOverall, newestDays },
@@ -429,8 +429,15 @@ function block({ id, title, sub = '', body = '', chip = '', src = '', state = 'f
   <div class="actions"></div>
 </article>`;
 }
-const hole = (id, title, prompt, verb, src, sub = '') => block({ id, title, sub, state: 'hole', body: `<p class="prompt">${esc(prompt)}</p><span class="verb">not yet · ${esc(verb)}</span>`, src: esc(src) });
+// Every chapter hole is also recorded, so the terminal can read the page's questions back (IDEA-111).
+let holeLog = null, holeDir = null;
+const hole = (id, title, prompt, verb, src, sub = '') => {
+  if (holeLog) holeLog.push({ id, title, prompt, verb, src });
+  return block({ id, title, sub, state: 'hole', body: `<p class="prompt">${esc(prompt)}</p><span class="verb">not yet · ${esc(verbLine(verb, holeDir))}</span>`, src: esc(src) });
+};
 const cellBlock = (b, canvas, id, title, sub = '') => {
+  // a dormant cell is a condition, not a question — the chapter says so the way the canvas grid does
+  if (b && b.state === 'dormant') return block({ id, title, sub, state: 'dormant', body: `<p class="prompt">${esc(b.prompt)}</p><span class="cond">dormant — ${esc(b.condition || b.answer.replace(/^_\(|\)_$/g, ''))}</span>`, src: `canvas · ${esc(b.name)}` });
   if (!b || b.state !== 'filled') return hole(id, title, (b && b.prompt) || '', '/canvas', `canvas · ${(b && b.name) || title}`, sub);
   const srcLine = `canvas · ${esc(b.name)}${canvas && canvas.updated ? ` · rev. ${esc(canvas.updated)}` : ''}`;
   return block({ id, title, sub, body: `<div class="answer">${inline(b.answer)}</div>`, chip: chipFor(b), src: srcLine });
@@ -453,9 +460,9 @@ function pitchChapters(data) {
       ? block({ id: 'vision-why', title: 'Why this, and what "it worked" looks like', body: (idea.motivation ? `<p><strong>Motivation:</strong> ${inline(idea.motivation)}</p>` : '') + (idea.success ? `<p><strong>Success looks like:</strong> ${inline(idea.success)}</p>` : ''), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · motivation · success_looks_like` })
       : hole('vision-why', 'Why this, and what "it worked" looks like', 'Why are you building this, and what does success look like in three months? Two lines on the IDEA doc.', '/idea', ideaSrc))
     + cellBlock(cell('principles'), canvas, 'vision-principles', 'Principles', 'what we\'ll hold when it\'s costly')
-    + hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'no person record yet (IDEA-106 · kicked up #11)', 'docs/team — not a BOSS record')
+    + hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'no record holds this yet', 'docs/team — not a BOSS record')
     + (idea && idea.vision ? block({ id: 'vision-five-years', title: 'In five years', body: `<p>${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · vision` })
-      : hole('vision-five-years', 'In five years', 'If all goes well, what will you have built in five years? Nobody has asked; the answer is on no record.', 'a vision: line on the IDEA doc (IDEA-106 · kicked up #12)', `${ideaSrc} · no vision line`))
+      : hole('vision-five-years', 'In five years', 'If all goes well, what will you have built in five years? Nobody has asked; the answer is on no record.', 'no record holds this yet', `${ideaSrc} · no vision line`))
     + '</div>'));
 
   // 2 · Product — the IDEA doc's current shape, whole; the FEATs; what it is not.
@@ -536,7 +543,14 @@ export function renderPlaybookHtml(data, stampedAt) {
   const canvasLine = canvas
     ? `docs/ideas/${esc(canvas.file)}${canvas.others.length ? ` · newest of ${canvas.others.length + 1} (${canvas.others.map(esc).join(', ')})` : ''}`
     : 'no canvas yet — this page fills itself as you answer · /canvas';
+  holeLog = []; holeDir = data.projectDir;
   const chapters = pitchChapters(data);
+  data.holes = holeLog; holeLog = null; holeDir = null;
+  data.questions = openQuestions(data, data.projectDir);
+  // the nudge on an empty page: how many questions are open and the cheapest verb to start with
+  const openLine = data.questions.length
+    ? `<b class="tab">${data.questions.length}</b> open · start: ${esc(data.questions[0].line)}`
+    : 'nothing open';
   const errorHtml = error ? `<article class="block hole" id="canvas-error"><div class="head"><h3>Couldn't read the canvas</h3></div><div class="body"><p class="prompt">${esc(error)}</p></div><div class="foot"><span class="src">the rest of the page renders from what it could read</span></div></article>` : '';
 
   return `<!doctype html>
@@ -562,6 +576,7 @@ export function renderPlaybookHtml(data, stampedAt) {
   .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
   .shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); max-width: 1360px; margin: 0 auto; padding-inline: 20px; }
   .rail { position: sticky; top: 56px; align-self: start; height: calc(100vh - 56px); overflow: auto; padding: 28px 20px 40px 0; border-right: 1px solid var(--rule); }
+  .rail .open { font-family: var(--mono); font-size: 11px; color: var(--ink-2); margin: 6px 0 10px; line-height: 1.45; overflow-wrap: anywhere; } .rail .open b { color: var(--ink); font-weight: 500; }
   .rail .grp { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 14px 8px 4px; }
   .rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; } .rail a { display: flex; align-items: baseline; gap: 8px; padding: 6px 8px; border-radius: 5px; text-decoration: none; font-size: 14px; color: var(--ink-2); } .rail a:hover { background: var(--paper); color: var(--ink); } .rail a.on { background: var(--accent-soft); color: var(--ink); } .rail a .n { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 16px; flex: none; }
   main { min-width: 0; padding: 28px 0 80px 32px; }
@@ -623,6 +638,7 @@ export function renderPlaybookHtml(data, stampedAt) {
 <div class="shell">
 <nav class="rail" aria-label="Chapters">
   <div class="label">Playbook</div>
+  <div class="open">${openLine}</div>
   <div class="grp">Pitch</div>
   <ol>${[['vision', 'Vision'], ['product', 'Product'], ['customers', 'Customers'], ['problem', 'Problem'], ['market', 'Market'], ['competition', 'Competition'], ['canvas', 'Canvas'], ['model', 'Business model']].map(([id, name], i) => `<li><a href="#${id}"><span class="n">${i + 1}</span>${name}</a></li>`).join('')}</ol>
 </nav>
@@ -697,6 +713,45 @@ function start() {
 </body>
 </html>
 `;
+}
+
+// --- the pull (IDEA-111) ------------------------------------------------------------------------
+// The page's holes read back as a list: one entry per open question, the verb that answers it,
+// cheapest first. Canvas holes come from the boxes (a dormant cell is a condition, not a question);
+// chapter holes are what hole() drew, minus the canvas cells the chapters repeat. Nothing is computed
+// twice, so the terminal and the page can never disagree. A verb whose skill folder the project
+// doesn't have yet is said so; when the hole is a record a document can fill (rivals, brand) it
+// points at /import instead — the record is ungated, only the deeper verb is. A FEAT or a mentor's
+// dossier is not something you drop in, so those just wait for the mode.
+const VERB_ORDER = ['/canvas', '/idea', '/persona', '/import', '/spec', '/comp-eval', '/landing', '/consult'];
+const DROPPABLE = new Set(['comp-eval', 'landing']);
+// The verb as the founder should read it. No skills folder at all (a bare adopt, a test tree) →
+// nothing can be said about gating and the verb prints as is.
+export function verbLine(verb, projectDir) {
+  const m = /^\/([a-z-]+)/.exec(verb);
+  if (!m || !projectDir) return verb;
+  const skillsDir = join(projectDir, '.claude', 'skills');
+  const has = (v) => !existsSync(skillsDir) || existsSync(join(skillsDir, v));
+  if (has(m[1])) return verb;
+  return DROPPABLE.has(m[1]) && has('import') ? `${verb} — or drop what you know: /import` : `${verb} — arrives with the next mode (boss unlock)`;
+}
+export function openQuestions(data, projectDir) {
+  const fromCanvas = data.boxes.filter((b) => b.state === 'hole').map((b) => ({ id: `canvas-${b.key}`, title: b.name, prompt: b.prompt, verb: '/canvas' }));
+  const fromChapters = (data.holes || []).filter((h) => h.verb !== '/canvas');
+  const rank = (v) => { const i = VERB_ORDER.findIndex((o) => v.startsWith(o)); return i < 0 ? VERB_ORDER.length : i; };
+  return [...fromCanvas, ...fromChapters].sort((a, b) => rank(a.verb) - rank(b.verb)).map((q) => {
+    const line = verbLine(q.verb, projectDir);
+    return { ...q, gated: line !== q.verb, line };
+  });
+}
+
+// One terminal line: `11 questions open · /canvas ×4 · /persona derive · …` — grouped by verb line.
+export function questionsLine(questions) {
+  if (!questions.length) return 'no questions open';
+  const counts = new Map();
+  for (const q of questions) counts.set(q.line, (counts.get(q.line) || 0) + 1);
+  const parts = [...counts].map(([line, n]) => n > 1 ? `${line} ×${n}` : line);
+  return `${questions.length} question${questions.length === 1 ? '' : 's'} open · ${parts.join(' · ')}`;
 }
 
 // Write the playbook to .boss/playbook.html and return its path — the board.html contract.
