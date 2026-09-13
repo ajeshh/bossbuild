@@ -148,8 +148,9 @@ export function readEvidence(projectDir) {
 // means "the default", never an invented colour.
 export function readBrand(projectDir, projectName) {
   const brand = { name: projectName, accent: null, tagline: null, present: false, nascent: false };
-  const p = join(projectDir, 'docs', 'BRAND.md');
-  if (!existsSync(p)) return brand;
+  // The template writes docs/BRAND.md; BOSS's own brand bible predates it at docs/design/BRAND.md.
+  const p = [join(projectDir, 'docs', 'BRAND.md'), join(projectDir, 'docs', 'design', 'BRAND.md')].find((x) => existsSync(x));
+  if (!p) return brand;
   brand.present = true;
   let text = '';
   try { text = readFileSync(p, 'utf8'); } catch { return brand; }
