@@ -175,7 +175,7 @@ test('first run: no canvas → every cell is a hole with its prompt, the ledger 
   const out = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
   assert.match(out, /no canvas yet/);
   const html = readFileSync(join(dir, '.boss', 'playbook.html'), 'utf8');
-  assert.equal((html.match(/class="block hole/g) || []).length, CELLS.length);
+  assert.equal((html.match(/class="block hole[^"]*" id="canvas-/g) || []).length, CELLS.length, 'every canvas cell is a hole');
   assert.ok(html.includes('<b class="tab">0 of'));
   assert.ok(html.includes('this page fills itself as you answer'));
 });
@@ -230,4 +230,133 @@ test('help lists the command and the template gitignores the output', () => {
   const gi = readFileSync(join(ROOT, 'stages/L0-quickstart/template/.gitignore'), 'utf8');
   assert.ok(gi.includes('.boss/playbook.html'));
   assert.ok(existsSync(BIN));
+});
+
+// --- FEAT-027 — the Pitch chapters ---------------------------------------------------------------
+
+import { firstSentence, readPersonas, readCompetition, readIdea, blockMd } from '../src/playbook.js';
+
+const IDEA = `---
+id: IDEA-001
+type: idea
+status: building
+gist: A phone-first rota for small home-care agencies.
+motivation: own-problem
+success_looks_like: "Five agencies I don't know run their week on it."
+created: 2026-08-04
+---
+
+# Tidewell
+
+## Current shape
+_The best articulation so far._
+- **What:** One tap when someone calls in sick. The rota stays a spreadsheet.
+- **Who it's for:** owner-operators with 3 to 15 caregivers.
+
+## Capture log
+- 2026-08-04 — seed
+`;
+const PERSONA = `---
+id: persona-dee
+created: 2026-08-19
+role: primary
+---
+
+# Persona — Dee
+
+**who** — 52, owns a nine-caregiver agency in a market town; runs it from the kitchen table.
+**context** — Sunday, 8:40pm: a text says "can't do tomorrow".
+**jobs** — keep every visit covered.
+
+Evidence ledger:  synthetic 60% · real 40%
+`;
+const COMP = `---
+id: COMPETITION
+updated: 2026-08-30
+---
+
+# The field
+
+| Rival | What it is | Pricing | Why they might win | Where they're weak | Checked |
+|---|---|---|---|---|---|
+| [**Rotawise**](rotawise.md) | direct — agency rota software | £12 / seat | every inspector already recognises their export | office-first | 2026-08-30 |
+| **ShiftLoop** | adjacent — generic shifts | £3 / user | cheaper, slicker | no visit model | 2026-05-02 |
+`;
+const ROTAWISE = `# Rotawise\n\n## Where it breaks\n- caregivers rate the phone app 2.1 — "it logs me out on every visit"\n- cover-finding is still a phone call\n\n## How they do it\n- rota: office-first\n`;
+
+test('firstSentence: the record\'s own first sentence, markdown stripped, never composed', () => {
+  assert.equal(firstSentence('We help **small** agencies fill every shift. Then more.'), 'We help small agencies fill every shift.');
+  assert.equal(firstSentence('- **What:** One tap when someone calls in sick. The rota stays.'), 'What: One tap when someone calls in sick.');
+  assert.equal(firstSentence(''), '');
+});
+
+test('readers: the IDEA doc the canvas belongs to, persona fields in the founder\'s markup, the competition table as it is', () => {
+  const dir = project({
+    ...stamp(),
+    'docs/ideas/IDEA-001-tidewell.md': IDEA, 'docs/ideas/IDEA-001-canvas.md': CANVAS,
+    'docs/ideas/IDEA-002-later.md': IDEA.replace('IDEA-001', 'IDEA-002').replace('2026-08-04', '2026-09-01'),
+    'docs/personas/dee.md': PERSONA, 'docs/personas/priya.md': PERSONA.replace('role: primary', 'role: secondary').replace('2026-08-19', '2026-09-01').replace('Dee', 'Priya').replace('synthetic 60% · real 40%', 'synthetic 100% · real 0%'),
+    'docs/competition/README.md': COMP, 'docs/competition/rotawise.md': ROTAWISE,
+  });
+  const idea = readIdea(dir, 'IDEA-001-canvas');
+  assert.equal(idea.id, 'IDEA-001', 'the canvas\'s own idea, not the newest');
+  assert.equal(idea.motivation, 'own-problem');
+  assert.match(idea.shape, /One tap when someone calls in sick/);
+  const ps = readPersonas(dir);
+  assert.equal(ps[0].slug, 'dee'); assert.equal(ps[0].primary, true);
+  assert.match(ps[0].who, /^52, owns a nine-caregiver agency/);
+  assert.equal(ps[0].synthetic, 60); assert.equal(ps[1].real, 0);
+  const comp = readCompetition(dir, Date.parse('2026-09-13'));
+  assert.equal(comp.rows.length, 2);
+  assert.equal(comp.rows[0].name, 'Rotawise'); assert.equal(comp.rows[0].key, true); assert.equal(comp.rows[0].breaks.length, 2);
+  assert.equal(comp.rows[1].key, false); assert.equal(comp.rows[1].stale, true); assert.equal(comp.rows[1].ageDays, 134);
+});
+
+test('eight chapters, each line a substring of a record on disk or absent — BOSS writes no chapter line', () => {
+  const files = {
+    ...stamp(),
+    'docs/ideas/IDEA-001-tidewell.md': IDEA, 'docs/ideas/IDEA-001-canvas.md': CANVAS,
+    'docs/personas/dee.md': PERSONA, 'docs/competition/README.md': COMP, 'docs/competition/rotawise.md': ROTAWISE,
+    'docs/source/2026-08-20-register.csv': 'a,b\n', 'docs/dossier/mentor-capital.md': '---\nid: mentor-capital\nupdated: 2026-08-30\n---\n# Capital\n\nNot yet — nobody outside the founder\'s circle has paid.\n',
+    'docs/BRAND.md': '---\nid: brand\n---\n## Current shape\n- **What it is NOT:** agency software. A marketplace.\n',
+  };
+  const dir = project(files);
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  for (const id of ['vision', 'product', 'customers', 'problem', 'market', 'competition', 'canvas', 'model']) assert.ok(html.includes(`<section class="chapter" id="${id}">`), id);
+  const corpus = Object.values(files).join('\n').replace(/[*_`]/g, '');
+  const lines = [...html.matchAll(/<h2>([^<]*)<\/h2>/g)].map((m) => m[1].replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&amp;/g, '&'));
+  assert.ok(lines.length >= 5, 'most chapters have a line');
+  for (const l of lines) {
+    if (/^\d+ on the field; \d+ of them key\.$/.test(l)) continue;   // the one counted line
+    assert.ok(corpus.includes(l.replace(/…$/, '')), `chapter line not from a record: "${l}"`);
+  }
+  // the pieces
+  assert.ok(html.includes('Motivation:</strong> own-problem'));
+  assert.ok(html.includes('One tap when someone calls in sick'));
+  assert.ok(html.includes('agency software. A marketplace.'));
+  assert.ok(html.includes('id="persona-dee"') && html.includes('synthetic 60% · real 40%'));
+  assert.ok(html.includes('the full card lives in the Design space — not rendered yet'), 'no design.html → no link');
+  assert.ok(html.includes('2026-08-20-register.csv'));
+  assert.ok(html.includes('id="rival-rotawise"') && html.includes('it logs me out on every visit'));
+  assert.match(html, /stale · \d+ d/, 'the 2026-05-02 row renders stale');
+  assert.ok(html.includes("Not yet — nobody outside the founder"), 'the ask quotes the dossier');
+  assert.ok(!/ceiling|×|TAM/.test(html), 'no arithmetic on the Market chapter');
+});
+
+test('first run of the chapters: no idea, personas, competition, sources or dossier → every chapter is questions and verbs', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  for (const v of ['/idea', '/persona derive', '/comp-eval', '/import', '/consult · mentor-capital', '/spec']) assert.ok(html.includes(v), v);
+  assert.ok(html.includes('id="persona-none"') && html.includes('id="competition-none"'));
+});
+
+test('the Design link renders only when .boss/design.html is on disk, and is relative', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/personas/dee.md': PERSONA, '.boss/design.html': '<p>design</p>' });
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('href="design.html#persona-dee"'));
+  assert.doesNotMatch(html, /https:\/\/claude\.ai/);
+});
+
+test('blockMd: the IDEA doc\'s bullets and helper line render, escaped', () => {
+  assert.equal(blockMd('_helper_\n- **What:** one <b>tap</b>\n- second'), '<p class="helper">helper</p><ul><li><strong>What:</strong> one &lt;b&gt;tap&lt;/b&gt;</li><li>second</li></ul>');
 });

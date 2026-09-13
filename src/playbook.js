@@ -160,6 +160,167 @@ export function readBrand(projectDir, projectName) {
   return brand;
 }
 
+
+// --- slice 2 readers (FEAT-027) — each returns a plain shape or null; none throws ------------------
+
+const stripMd = (s) => String(s).replace(/^\s*[-*]\s+/gm, '').replace(/\[\[([^\]]+)\]\]/g, '$1').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+  .replace(/[*_`]/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+
+// The first sentence of a record's text — the chapter line (IDEA-106 §8). BOSS writes none of
+// these: if the sentence is bad, the record wants a better first sentence, not the render.
+export function firstSentence(md, max = 180) {
+  const t = stripMd(md);
+  if (!t) return '';
+  const m = t.match(/^(.{12,}?[.!?])(\s|$)/);
+  const s = (m ? m[1] : t).trim();
+  return s.length > max ? s.slice(0, max - 1).replace(/\s+\S*$/, '') + '…' : s;
+}
+
+// The section body under `## <heading>` (to the next `## `), as markdown lines.
+function section(text, heading) {
+  const lines = String(text).replace(/\r\n?/g, '\n').split('\n');
+  const start = lines.findIndex((l) => new RegExp(`^##\\s+${heading}\\s*$`, 'i').test(l));
+  if (start < 0) return null;
+  const out = [];
+  for (let i = start + 1; i < lines.length; i++) { if (/^##\s/.test(lines[i])) break; out.push(lines[i]); }
+  return out.join('\n').trim();
+}
+
+// Markdown block → HTML for the small set a record body uses: paragraphs, `- ` lists, `_italic_`
+// helper lines. Every line goes through `inline` (escaped first).
+export function blockMd(md) {
+  const lines = String(md || '').replace(/\r\n?/g, '\n').split('\n');
+  const out = [];
+  let list = [];
+  const flush = () => { if (list.length) { out.push(`<ul>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</ul>`); list = []; } };
+  for (const raw of lines) {
+    const l = raw.trim();
+    if (!l) { flush(); continue; }
+    const li = l.match(/^[-*]\s+(.*)$/);
+    if (li) { list.push(li[1]); continue; }
+    flush();
+    if (/^_.*_$/.test(l)) out.push(`<p class="helper">${inline(l.slice(1, -1))}</p>`);
+    else out.push(`<p>${inline(l)}</p>`);
+  }
+  flush();
+  return out.join('');
+}
+
+// The IDEA doc the canvas belongs to (`IDEA-NNN-canvas` → `IDEA-NNN-*.md`), else the newest idea.
+export function readIdea(projectDir, canvasId) {
+  const dir = join(projectDir, 'docs', 'ideas');
+  if (!existsSync(dir)) return null;
+  const m = String(canvasId || '').match(/^(IDEA-\d+)/i);
+  let names = readdirSync(dir).filter((n) => /^IDEA-\d+.*\.md$/i.test(n) && !/-canvas\.md$/i.test(n));
+  if (m) { const mine = names.filter((n) => n.toUpperCase().startsWith(m[1].toUpperCase() + '-') || n.toUpperCase() === m[1].toUpperCase() + '.md'); if (mine.length) names = mine; }
+  if (!names.length) return null;
+  const pick = names.map((n) => { const p = join(dir, n); let fm = {}; try { fm = frontmatter(readFileSync(p, 'utf8')); } catch { /* keep going */ } return { n, p, when: Date.parse(fm.created || '') || statSync(p).mtimeMs }; })
+    .sort((a, b) => b.when - a.when)[0];
+  try {
+    const text = readFileSync(pick.p, 'utf8');
+    const fm = frontmatter(text);
+    const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
+    const skip = (v) => { const s = String(v ?? '').trim().replace(/^"|"$/g, ''); return !s || /^(unset|none|tbd)$/i.test(s) ? '' : s; };
+    return { file: pick.n, id: fm.id || null, title, gist: skip(fm.gist), motivation: skip(fm.motivation), success: skip(fm.success_looks_like), vision: skip(fm.vision), shape: section(text, 'Current shape'), created: fm.created || null };
+  } catch { return null; }
+}
+
+export function readFeats(projectDir) {
+  const dir = join(projectDir, 'docs', 'ideas');
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const n of readdirSync(dir).filter((x) => /^FEAT-\d+.*\.md$/i.test(x)).sort()) {
+    try {
+      const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
+      out.push({ id: fm.id || n.replace(/\.md$/, ''), gist: String(fm.gist || (text.match(/^#\s+(.+)$/m) || [null, ''])[1] || '').trim(), status: String(fm.status || '').split(/\s*[(—-]/)[0].trim(), shippedOn: fm.shipped_on || null });
+    } catch { /* skip */ }
+  }
+  return out;
+}
+
+// docs/personas/<slug>.md — the six fields the skill writes, in whichever markup the founder used
+// (`who — …`, `**who** — …`, `- **who:** …`, `who: …`), and the ledger line.
+export function readPersonas(projectDir) {
+  const dir = join(projectDir, 'docs', 'personas');
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const n of readdirSync(dir).filter((x) => /\.md$/i.test(x) && !/^README/i.test(x))) {
+    try {
+      const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
+      const fieldLine = (key) => { const m = text.match(new RegExp(`^(?:[-*]\\s*)?(?:\\*\\*)?${key}(?:\\*\\*)?\\s*(?:[—:–-]|\\*\\*)\\s*(.+)$`, 'im')); return m ? m[1].replace(/\*\*$/, '').trim() : ''; };
+      const ledger = text.match(/synthetic\s*<?(\d+)%?>?\s*[·,]\s*real\s*<?(\d+)%?>?/i);
+      const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
+      out.push({ slug: n.replace(/\.md$/i, ''), name: String(fm.name || title || n.replace(/\.md$/i, '')).replace(/^persona\s*[—:-]\s*/i, '').trim(), who: fieldLine('who'), context: fieldLine('context'), primary: /primary/i.test(String(fm.role || fm.kind || fm.primary || '')), created: fm.created || null, synthetic: ledger ? parseInt(ledger[1], 10) : null, real: ledger ? parseInt(ledger[2], 10) : null });
+    } catch { /* skip */ }
+  }
+  return out.sort((a, b) => (b.primary - a.primary) || (Date.parse(a.created || '') || 0) - (Date.parse(b.created || '') || 0));
+}
+
+// docs/competition/README.md — the table as it is (any columns) + the rival files' `## Where it breaks`.
+export function readCompetition(projectDir, today = Date.now()) {
+  const dir = join(projectDir, 'docs', 'competition');
+  const readme = join(dir, 'README.md');
+  if (!existsSync(readme)) return null;
+  let text = '';
+  try { text = readFileSync(readme, 'utf8'); } catch { return null; }
+  const lines = text.replace(/\r\n?/g, '\n').split('\n');
+  const hi = lines.findIndex((l) => /^\|.*\|\s*$/.test(l) && /rival/i.test(l));
+  if (hi < 0) return { columns: [], rows: [], updated: frontmatter(text).updated || null };
+  const cells = (l) => l.replace(/^\||\|\s*$/g, '').split('|').map((c) => c.trim());
+  const columns = cells(lines[hi]);
+  const rows = [];
+  for (let i = hi + 2; i < lines.length && /^\|/.test(lines[i]); i++) {
+    const c = cells(lines[i]); if (c.length < 2) continue;
+    const row = Object.fromEntries(columns.map((k, j) => [k, c[j] || '']));
+    const rivalCell = c[0];
+    const link = (rivalCell.match(/\]\(([^)]+\.md)\)/) || [null, null])[1];
+    const name = stripMd(rivalCell.replace(/\]\([^)]*\)/, ']')).replace(/[[\]]/g, '').split(/\s+—\s+/)[0].trim();
+    const what = row[columns.find((k) => /what it is/i.test(k)) || ''] || '';
+    const sort = row[columns.find((k) => /^sort$/i.test(k)) || ''] || '';
+    const checkedRaw = row[columns.find((k) => /checked/i.test(k)) || ''] || '';
+    const checked = (checkedRaw.match(/\d{4}-\d{2}-\d{2}/) || [null])[0];
+    const ageDays = checked ? Math.round((today - Date.parse(checked)) / 86400000) : null;
+    const key = /in evidence/i.test(sort) || /^\**direct\b/i.test(stripMd(what));
+    let breaks = [];
+    if (link) { try { const sec = section(readFileSync(join(dir, link), 'utf8'), 'Where it breaks'); if (sec) breaks = sec.split('\n').map((l) => l.replace(/^[-*]\s+/, '').trim()).filter(Boolean).slice(0, 3); } catch { /* no file */ } }
+    rows.push({ name, file: link, cells: c, key, checked, ageDays, stale: ageDays !== null && ageDays > 90, breaks, why: row[columns.find((k) => /why they might win/i.test(k)) || ''] || '' });
+  }
+  return { columns, rows, updated: frontmatter(text).updated || null };
+}
+
+// docs/source/ — imported material, name and date (from the filename else mtime).
+export function readSources(projectDir) {
+  const dir = join(projectDir, 'docs', 'source');
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir).filter((n) => !n.startsWith('.')).map((n) => {
+    const p = join(dir, n); let st = null; try { st = statSync(p); } catch { return null; }
+    const d = (n.match(/\d{4}-\d{2}-\d{2}/) || [null])[0] || (st ? st.mtime.toISOString().slice(0, 10) : null);
+    return { name: n, dir: st && st.isDirectory(), date: d };
+  }).filter(Boolean).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+}
+
+// docs/dossier/mentor-capital.md — the first paragraph of the body, if the file exists.
+export function readAsk(projectDir) {
+  const p = join(projectDir, 'docs', 'dossier', 'mentor-capital.md');
+  if (!existsSync(p)) return null;
+  try {
+    const text = readFileSync(p, 'utf8').replace(/\r\n?/g, '\n').replace(/^---\n[\s\S]*?\n---\n?/, '');
+    const para = text.split(/\n\s*\n/).map((s) => s.trim()).find((s) => s && !/^#/.test(s) && !/^>/.test(s));
+    return para ? { text: para, updated: frontmatter(readFileSync(p, 'utf8')).updated || null } : null;
+  } catch { return null; }
+}
+
+// One line of docs/BRAND.md's current shape, by its bold label ("What it is NOT", "What it refuses").
+export function readBrandLine(projectDir, label) {
+  const p = join(projectDir, 'docs', 'BRAND.md');
+  if (!existsSync(p)) return '';
+  try {
+    const m = readFileSync(p, 'utf8').match(new RegExp(`^[-*]\\s*\\*\\*${label}:?\\*\\*\\s*(.+)$`, 'im'));
+    const v = m ? m[1].trim() : '';
+    return !v || /^<.*>$/.test(v) || /^unknown\b/i.test(v) ? '' : v;
+  } catch { return ''; }
+}
+
 // --- the projection -------------------------------------------------------------------------------
 
 export function collectPlaybook(projectDir, projectName) {
@@ -199,12 +360,19 @@ export function collectPlaybook(projectDir, projectName) {
   const newestDays = dates.length ? Math.max(0, Math.round((Date.now() - Math.max(...dates)) / 86400000)) : null;
   const gradeCounts = Object.fromEntries(GRADES.map((g) => [g, evidence.filter((e) => e.grade === g).length]));
   const topOverall = [...GRADES].reverse().find((g) => gradeCounts[g] > 0) || null;
+  const idea = readIdea(projectDir, parsed.id);
+  const cell = (key) => boxes.find((b) => b.key === key) || null;
   return {
     projectName,
     canvas: found ? { file: found.name, updated: parsed.updated, others: found.others } : null,
-    error, boxes,
+    error, boxes, cell,
     ledger: { backed, live: live.length, signals: evidence.length, gradeCounts, topOverall, newestDays },
     brand: readBrand(projectDir, projectName),
+    // slice 2 (FEAT-027) — each null/empty renders as a hole, never invented
+    idea, feats: readFeats(projectDir), personas: readPersonas(projectDir),
+    competition: readCompetition(projectDir), sources: readSources(projectDir), ask: readAsk(projectDir),
+    brandNot: readBrandLine(projectDir, 'What it is NOT'),
+    designExists: existsSync(join(projectDir, '.boss', 'design.html')),
   };
 }
 
@@ -251,6 +419,107 @@ function boxHtml(b, canvas) {
 </article>`;
 }
 
+// --- chapters (FEAT-027) ------------------------------------------------------------------------
+// A generic block. `state` filled | hole | dormant; a hole carries a prompt and a verb, never prose.
+function block({ id, title, sub = '', body = '', chip = '', src = '', state = 'filled', cls = '' }) {
+  return `<article class="block ${state}${cls ? ' ' + cls : ''}" id="${esc(id)}" data-title="${esc(title)}">
+  <div class="head"><h3>${esc(title)}${sub ? ` <span class="sub">— ${esc(sub)}</span>` : ''}</h3></div>
+  <div class="body">${body}</div>
+  <div class="foot">${chip}<span class="src">${src}</span></div>
+  <div class="actions"></div>
+</article>`;
+}
+const hole = (id, title, prompt, verb, src, sub = '') => block({ id, title, sub, state: 'hole', body: `<p class="prompt">${esc(prompt)}</p><span class="verb">not yet · ${esc(verb)}</span>`, src: esc(src) });
+const cellBlock = (b, canvas, id, title, sub = '') => {
+  if (!b || b.state !== 'filled') return hole(id, title, (b && b.prompt) || '', '/canvas', `canvas · ${(b && b.name) || title}`, sub);
+  const srcLine = `canvas · ${esc(b.name)}${canvas && canvas.updated ? ` · rev. ${esc(canvas.updated)}` : ''}`;
+  return block({ id, title, sub, body: `<div class="answer">${inline(b.answer)}</div>`, chip: chipFor(b), src: srcLine });
+};
+const chapterHead = (n, label, line, lead = '') =>
+  `<div class="chapter-head"><div class="label">${n} · ${esc(label)}</div>${line ? `<h2>${esc(line)}</h2>` : ''}${lead ? `<p>${lead}</p>` : ''}</div>`;
+const chapter = (id, headHtml, inner) => `<section class="chapter" id="${id}">${headHtml}${inner}</section>`;
+const slug = (s) => norm(s).replace(/ /g, '-');
+
+function pitchChapters(data) {
+  const { canvas, cell, idea, feats, personas, competition, sources, ask, brandNot, designExists } = data;
+  const out = [];
+  const line = (b) => (b && b.state === 'filled' ? firstSentence(b.answer) : '');
+
+  // 1 · Vision — the Promise is the line; the founder's why; principles; two holes the records can't fill.
+  const ideaSrc = idea ? `docs/ideas/${esc(idea.file)}` : 'docs/ideas — no IDEA doc';
+  out.push(chapter('vision', chapterHead(1, 'Vision', line(cell('promises'))),
+    '<div class="blocks">'
+    + (idea && (idea.motivation || idea.success)
+      ? block({ id: 'vision-why', title: 'Why this, and what "it worked" looks like', body: (idea.motivation ? `<p><strong>Motivation:</strong> ${inline(idea.motivation)}</p>` : '') + (idea.success ? `<p><strong>Success looks like:</strong> ${inline(idea.success)}</p>` : ''), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · motivation · success_looks_like` })
+      : hole('vision-why', 'Why this, and what "it worked" looks like', 'Why are you building this, and what does success look like in three months? Two lines on the IDEA doc.', '/idea', ideaSrc))
+    + cellBlock(cell('principles'), canvas, 'vision-principles', 'Principles', 'what we\'ll hold when it\'s costly')
+    + hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'no person record yet (IDEA-106 · kicked up #11)', 'docs/team — not a BOSS record')
+    + (idea && idea.vision ? block({ id: 'vision-five-years', title: 'In five years', body: `<p>${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · vision` })
+      : hole('vision-five-years', 'In five years', 'If all goes well, what will you have built in five years? Nobody has asked; the answer is on no record.', 'a vision: line on the IDEA doc (IDEA-106 · kicked up #12)', `${ideaSrc} · no vision line`))
+    + '</div>'));
+
+  // 2 · Product — the IDEA doc's current shape, whole; the FEATs; what it is not.
+  const shapeLine = idea && idea.shape ? firstSentence(idea.shape.split('\n').filter((l) => !/^_.*_$/.test(l.trim())).join('\n')) : '';
+  const featList = feats.length
+    ? block({ id: 'product-feats', title: 'What has shipped', sub: 'and what is being built', body: `<ul>${feats.map((f) => `<li><strong>${esc(f.id)}</strong> · ${inline(f.gist)} — <em>${esc(f.status || 'unknown')}</em>${f.shippedOn ? ` · ${esc(f.shippedOn)}` : ''}</li>`).join('')}</ul>`, chip: `<span class="chip ev">${feats.length} FEAT${feats.length === 1 ? '' : 's'} · ${feats.filter((f) => /^shipped/i.test(f.status)).length} shipped</span>`, src: 'docs/ideas/FEAT-*.md · boss board' })
+    : hole('product-feats', 'What has shipped', 'Nothing has a build contract yet. The first FEAT is where "we should build this" becomes "here is how we\'ll know it\'s done."', '/spec', 'docs/ideas/FEAT-*.md — none');
+  out.push(chapter('product', chapterHead(2, 'Product', shapeLine),
+    '<div class="blocks">'
+    + (idea && idea.shape ? block({ id: 'product-shape', title: 'What it is today', sub: 'the current shape, in the founder\'s words', body: blockMd(idea.shape), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · ## Current shape${idea.created ? ` · since ${esc(idea.created)}` : ''}` })
+      : hole('product-shape', 'What it is today', 'What is it, who is it for, and what is the smallest version that proves it? The IDEA doc\'s current shape.', '/idea', ideaSrc))
+    + featList
+    + (brandNot ? block({ id: 'product-not', title: 'What it is not', body: `<p>${inline(brandNot)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: 'docs/BRAND.md · What it is NOT' })
+      : hole('product-not', 'What it is not', 'The nearest thing people will mistake it for — and what it refuses to be.', '/landing seeds docs/BRAND.md', 'docs/BRAND.md · What it is NOT'))
+    + '</div>'));
+
+  // 3 · Customers — snippets; the full card is the Design space's (IDEA-107).
+  const primary = personas[0] || null;
+  const snippet = (p, i) => {
+    const led = p.synthetic === null ? '<span class="chip asserted">no ledger line</span>' : `<span class="chip synthetic">synthetic ${p.synthetic}% · real ${p.real}%</span>`;
+    const link = designExists ? `<a class="xlink" href="design.html#persona-${esc(p.slug)}">the full card, in Design →</a>` : '<span class="xlink dim">the full card lives in the Design space — not rendered yet</span>';
+    return block({ id: `persona-${esc(p.slug)}`, title: p.name, sub: i === 0 ? 'primary' : 'secondary', cls: 'snippet', body: `<p class="who">${p.who ? inline(p.who) : '<em class="hole-text">no who line</em>'}</p>${p.context ? `<p>${inline(p.context)}</p>` : ''}<p>${link}</p>`, chip: led, src: `docs/personas/${esc(p.slug)}.md` });
+  };
+  out.push(chapter('customers', chapterHead(3, 'Customers', primary && primary.who ? firstSentence(primary.who) : line(cell('people'))),
+    '<div class="blocks">'
+    + (personas.length ? personas.map(snippet).join('') : hole('persona-none', 'Who, exactly', 'One primary target user — who, when they\'d reach for this, what they\'re trying to get done, what\'s hard today, what would make them trust or abandon it, and what you don\'t know yet.', '/persona derive', 'docs/personas — none'))
+    + '</div>'));
+
+  // 4 · Problem — the cell, and the Story cell (why-now is inside it; the render never splits a cell).
+  out.push(chapter('problem', chapterHead(4, 'Problem', line(cell('problem'))),
+    '<div class="blocks">' + cellBlock(cell('problem'), canvas, 'problem-cell', 'The problem') + cellBlock(cell('story'), canvas, 'problem-story', 'Story — and why now', 'what changed that makes this newly possible') + '</div>'));
+
+  // 5 · Market — the count and how you know; what you imported. No arithmetic.
+  const srcList = sources.length
+    ? block({ id: 'market-sources', title: 'Research you\'ve imported', sub: `${sources.length} item${sources.length === 1 ? '' : 's'} in docs/source/`, body: `<ul>${sources.map((f) => `<li>${esc(f.name)}${f.dir ? '/' : ''}${f.date ? ` <span class="date">${esc(f.date)}</span>` : ''}</li>`).join('')}</ul>`, chip: '<span class="chip asserted">imported · not read here</span>', src: 'docs/source/ · /import' })
+    : hole('market-sources', 'Research you\'ve imported', 'A market report, a regulator\'s figures, a survey — imported material lands here with its date.', '/import <file or url>', 'docs/source — empty');
+  out.push(chapter('market', chapterHead(5, 'Market', line(cell('people'))),
+    '<div class="blocks">' + cellBlock(cell('people'), canvas, 'market-people', 'How many, and how do you know', 'the People cell') + srcList + '</div>'));
+
+  // 6 · Competition — the table as it is; key rivals with where they break; the watch list.
+  let compInner;
+  if (!competition) {
+    compInner = `<div class="blocks">${hole('competition-none', 'Who else fixes it', 'Who else sells a fix — including the spreadsheet, the agency, the intern and doing nothing — and for each real one, why they might win?', '/comp-eval', 'docs/competition — none')}</div>`;
+  } else {
+    const rows = competition.rows;
+    const table = `<div class="tscroll"><table class="rivals"><thead><tr>${competition.columns.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${r.cells.map((c, j) => `<td>${inline(c)}${j === r.cells.length - 1 && r.stale ? ` <span class="chip stale">stale · ${r.ageDays} d</span>` : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    const keys = rows.filter((r) => r.key), watch = rows.filter((r) => !r.key);
+    compInner = `<div class="blocks one">${block({ id: 'competition-table', title: 'Who else fixes it', sub: 'docs/competition/README.md', body: table, chip: `<span class="chip ev">${rows.length} on the field · ${keys.length} key · ${rows.filter((r) => r.stale).length} stale</span>`, src: `docs/competition/README.md${competition.updated ? ` · updated ${esc(String(competition.updated).slice(0, 10))}` : ''}` })}</div>`
+      + (keys.length ? `<div class="tier-title"><h3>Key rivals</h3><span>direct, or named by a real person in evidence</span></div><div class="blocks">${keys.map((r) => block({ id: `rival-${esc(slug(r.name))}`, title: r.name, sub: 'key', cls: 'rival', body: (r.why ? `<p class="win-line">They might win because ${inline(r.why)}</p>` : '') + (r.breaks.length ? `<p><strong>Where it breaks:</strong></p><ul>${r.breaks.map((b) => `<li>${inline(b)}</li>`).join('')}</ul>` : `<p class="helper">no <code>## Where it breaks</code> in ${r.file ? esc(r.file) : 'its file'} yet</p>`), chip: r.stale ? `<span class="chip stale">stale · checked ${r.ageDays} days ago</span>` : `<span class="chip ev">checked ${esc(r.checked || '—')}</span>`, src: `docs/competition/${esc(r.file || 'README.md')}` })).join('')}</div>` : '')
+      + (watch.length ? `<div class="tier-title"><h3>Also on the field</h3><span>watch — real, filed, not yet in anyone's mouth · one line each</span></div><div class="blocks one">${block({ id: 'competition-watch', title: 'Watch list', body: `<ul>${watch.map((r) => `<li><strong>${esc(r.name)}</strong>${r.why ? ` — ${inline(r.why)}` : ''}${r.stale ? ` <span class="chip stale">stale · ${r.ageDays} d</span>` : ''}</li>`).join('')}</ul>`, chip: `<span class="chip asserted">${watch.length} on watch</span>`, src: 'docs/competition/README.md · watch rows' })}</div>` : '');
+  }
+  const compLine = competition && competition.rows.length ? `${competition.rows.length} on the field; ${competition.rows.filter((r) => r.key).length} of them key.` : '';
+  out.push(chapter('competition', chapterHead(6, 'Competition', compLine), compInner));
+
+  // 7 · Canvas is assembled in renderPlaybookHtml (FEAT-026). 8 · Business model — two cells and the ask.
+  const askBlock = ask
+    ? block({ id: 'model-ask', title: 'The ask', sub: 'the capital mentor\'s read', state: 'hole', body: `<p class="prompt">${inline(ask.text)}</p><span class="verb">docs/dossier/mentor-capital.md${ask.updated ? ` · ${esc(String(ask.updated).slice(0, 10))}` : ''}</span>`, src: 'docs/dossier/mentor-capital.md' })
+    : hole('model-ask', 'The ask', 'Round, use of funds, the milestones the money buys — open only when the capital mentor says the raise question is live.', '/consult · mentor-capital', 'docs/dossier/mentor-capital.md — none');
+  out.push(chapter('model', chapterHead(8, 'Business model', line(cell('bizmodel'))),
+    '<div class="blocks">' + cellBlock(cell('bizmodel'), canvas, 'model-revenue', 'Who pays, how much') + cellBlock(cell('cost'), canvas, 'model-cost', 'What it costs to serve') + askBlock + '</div>'));
+
+  return { before: out.slice(0, 6).join('\n'), after: out.slice(6).join('\n') };
+}
+
 export function renderPlaybookHtml(data, stampedAt) {
   const { boxes, ledger, brand, canvas, error, projectName } = data;
   const byBand = (n) => boxes.filter((b) => b.band === n && !b.floor);
@@ -267,6 +536,7 @@ export function renderPlaybookHtml(data, stampedAt) {
   const canvasLine = canvas
     ? `docs/ideas/${esc(canvas.file)}${canvas.others.length ? ` · newest of ${canvas.others.length + 1} (${canvas.others.map(esc).join(', ')})` : ''}`
     : 'no canvas yet — this page fills itself as you answer · /canvas';
+  const chapters = pitchChapters(data);
   const errorHtml = error ? `<article class="block hole" id="canvas-error"><div class="head"><h3>Couldn't read the canvas</h3></div><div class="body"><p class="prompt">${esc(error)}</p></div><div class="foot"><span class="src">the rest of the page renders from what it could read</span></div></article>` : '';
 
   return `<!doctype html>
@@ -290,8 +560,22 @@ export function renderPlaybookHtml(data, stampedAt) {
   .wordmark { font-family: var(--display); font-size: 21px; font-weight: 500; white-space: nowrap; } .wordmark .tag { font-family: var(--body); font-size: 12.5px; color: var(--muted); margin-left: 8px; }
   .ledger { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); min-width: 0; } .ledger b { color: var(--ink); font-weight: 500; }
   .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
-  main { max-width: 1360px; margin: 0 auto; padding: 28px 20px 80px; }
-  .chapter-head { max-width: 62ch; margin-bottom: 22px; } .chapter-head h2 { font-family: var(--display); font-size: 32px; line-height: 1.12; } .chapter-head p { margin-top: 8px; color: var(--ink-2); }
+  .shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); max-width: 1360px; margin: 0 auto; padding-inline: 20px; }
+  .rail { position: sticky; top: 56px; align-self: start; height: calc(100vh - 56px); overflow: auto; padding: 28px 20px 40px 0; border-right: 1px solid var(--rule); }
+  .rail .grp { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 14px 8px 4px; }
+  .rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; } .rail a { display: flex; align-items: baseline; gap: 8px; padding: 6px 8px; border-radius: 5px; text-decoration: none; font-size: 14px; color: var(--ink-2); } .rail a:hover { background: var(--paper); color: var(--ink); } .rail a.on { background: var(--accent-soft); color: var(--ink); } .rail a .n { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 16px; flex: none; }
+  main { min-width: 0; padding: 28px 0 80px 32px; }
+  .chapter { padding-block: 20px 48px; border-bottom: 1px solid var(--rule); scroll-margin-top: 70px; } .chapter:last-of-type { border-bottom: 0; }
+  .blocks { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } .blocks.one { grid-template-columns: 1fr; }
+  .block .sub { font-weight: 400; color: var(--muted); } .block .helper { color: var(--muted); font-size: 13px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; } .block .body p + p, .block .body ul + p, .block .body p + ul { margin-top: 8px; }
+  .block.snippet .who { font-family: var(--display); font-size: 19px; line-height: 1.3; } .xlink { font-family: var(--mono); font-size: 11.5px; } .xlink.dim { color: var(--muted); } .hole-text { color: var(--hole); }
+  .tier-title { display: flex; align-items: baseline; gap: 10px; margin: 22px 0 12px; } .tier-title h3 { font-family: var(--display); font-size: 20px; } .tier-title span { font-size: 13px; color: var(--muted); }
+  .tscroll { overflow-x: auto; } table.rivals { width: 100%; border-collapse: collapse; font-size: 13.5px; } table.rivals th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); } table.rivals td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; } table.rivals tr:last-child td { border-bottom: 0; }
+  .chip.stale { background: color-mix(in srgb, #A8681A 14%, var(--paper)); color: #A8681A; } .chip.synthetic { background: var(--accent-soft); color: var(--ink-2); } .date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .rival .win-line { font-family: var(--display); font-size: 20px; line-height: 1.25; margin-bottom: 8px; }
+  @media (max-width: 980px) { .shell { grid-template-columns: 1fr; } .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 16px 0 12px; } .rail ol { flex-direction: row; flex-wrap: wrap; gap: 4px 6px; } main { padding-left: 0; } }
+
+  .chapter-head { max-width: 62ch; margin-bottom: 22px; } .chapter-head .label { margin-bottom: 6px; } .chapter-head h2 { font-family: var(--display); font-size: 32px; line-height: 1.12; } .chapter-head p { margin-top: 8px; color: var(--ink-2); }
   .frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 16px; } .credit { font-family: var(--mono); font-size: 11px; color: var(--muted); }
   .canvas { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .band-title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; margin-top: 8px; } .band-title h3 { font-family: var(--display); font-size: 20px; } .band-title span { font-size: 13px; color: var(--muted); }
@@ -336,8 +620,16 @@ export function renderPlaybookHtml(data, stampedAt) {
   <div class="ledger">${ledgerLine}</div>
   <div class="seg" role="group" aria-label="Frame"><button type="button" data-frame="humane" aria-pressed="true">Humane</button><button type="button" data-frame="lean" aria-pressed="false">Lean</button></div>
 </header>
+<div class="shell">
+<nav class="rail" aria-label="Chapters">
+  <div class="label">Playbook</div>
+  <div class="grp">Pitch</div>
+  <ol>${[['vision', 'Vision'], ['product', 'Product'], ['customers', 'Customers'], ['problem', 'Problem'], ['market', 'Market'], ['competition', 'Competition'], ['canvas', 'Canvas'], ['model', 'Business model']].map(([id, name], i) => `<li><a href="#${id}"><span class="n">${i + 1}</span>${name}</a></li>`).join('')}</ol>
+</nav>
 <main>
-  <div class="chapter-head"><div class="label">Canvas</div><h2>One set of answers, read as boxes.</h2><p>Switch the frame and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
+${chapters.before}
+  <section class="chapter" id="canvas">
+  <div class="chapter-head"><div class="label">7 · Canvas</div><p>Switch the frame and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
   <div class="frame-bar"><span class="credit" id="credit">${esc(CREDITS.humane)}</span></div>
   ${errorHtml}
   <div class="canvas" id="canvas-grid" data-frame="humane">
@@ -349,7 +641,10 @@ ${extras.map((b) => boxHtml(b, canvas)).join('\n')}
     <div class="band-title floor-title"><h3>${esc(FLOOR_HEADING)}</h3><span>they render in every frame — the floor, not a footnote</span></div>
 ${floor.map((b) => boxHtml(b, canvas)).join('\n')}
   </div>
+  </section>
+${chapters.after}
 </main>
+</div>
 <footer>
   <div>${brandLine}</div>
   <div>a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh</div>
@@ -382,16 +677,19 @@ function start() {
   }
   let deckEl = null, cur = 0;
   const LEDGER = $('.ledger').innerText;
-  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(${JSON.stringify(brand.name)}) + '</span>canvas</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '<span>' + esc($('.src', b).innerText) + '</span></div>'); return sl; }
+  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(${JSON.stringify(brand.name)}) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '<span>' + esc($('.src', b).innerText) + '</span></div>'); return sl; }
   function openDeck(i) {
     cur = i;
     if (!deckEl) { deckEl = document.createElement('div'); deckEl.className = 'deck'; deckEl.tabIndex = -1; deckEl.setAttribute('role', 'dialog'); deckEl.innerHTML = '<div class="chrome"><span class="where"></span><button type="button" class="close">Close · Esc</button></div><div class="stage"><div class="hit l"></div><div class="hit r"></div></div><div class="bottom"><span class="pos"></span><span class="lg">' + esc(LEDGER) + '</span></div>'; document.body.appendChild(deckEl); $('.close', deckEl).addEventListener('click', closeDeck); $('.hit.l', deckEl).addEventListener('click', () => step(-1)); $('.hit.r', deckEl).addEventListener('click', () => step(1)); }
     render(); deckEl.hidden = false; document.body.style.overflow = 'hidden'; deckEl.focus({ preventScroll: true });
   }
-  function render() { const st = $('.stage', deckEl); $$('.sl', st).forEach((x) => x.remove()); st.appendChild(slide(blocks[cur])); $('.where', deckEl).textContent = 'canvas · ' + blocks[cur].dataset.title; $('.pos', deckEl).textContent = (cur + 1) + ' / ' + blocks.length; }
+  function render() { const st = $('.stage', deckEl); $$('.sl', st).forEach((x) => x.remove()); st.appendChild(slide(blocks[cur])); const ch2 = blocks[cur].closest('.chapter'); $('.where', deckEl).textContent = (ch2 && $('.label', ch2) ? $('.label', ch2).innerText + ' · ' : '') + blocks[cur].dataset.title; $('.pos', deckEl).textContent = (cur + 1) + ' / ' + blocks.length; }
   function step(d) { cur = (cur + d + blocks.length) % blocks.length; render(); }
   function closeDeck() { if (deckEl) { deckEl.hidden = true; document.body.style.overflow = ''; } }
   document.addEventListener('keydown', (e) => { if (!deckEl || deckEl.hidden) return; if (e.target && e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) return; if (e.key === 'Escape') closeDeck(); if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); step(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); } });
+  const links = $$('.rail a'), sections = $$('.chapter');
+  function highlight() { const y = window.scrollY + window.innerHeight * 0.35; let id = sections[0] && sections[0].id; sections.forEach((sec) => { if (sec.offsetTop <= y) id = sec.id; }); links.forEach((l) => l.classList.toggle('on', l.getAttribute('href') === '#' + id)); }
+  window.addEventListener('scroll', highlight, { passive: true }); highlight();
   if (location.hash) { const t = $(location.hash); if (t) setTimeout(() => t.scrollIntoView({ block: 'start' }), 60); }
 }
 (window.claude && window.claude.hot && window.claude.hot.ready) ? window.claude.hot.ready(start) : start();

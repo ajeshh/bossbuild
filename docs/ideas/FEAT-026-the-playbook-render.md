@@ -2,11 +2,11 @@
 id: FEAT-026
 type: feature
 owner: product-lead
-status: building
+status: shipped (slice 1, `55502e9`, under Unreleased — the FEAT closed at the scope it wrote; slices 2–4 are FEAT-027..029)
 gist: `boss playbook` renders a founder's records — canvas cells as boxes first, then the other chapters — into one self-contained, on-brand HTML page under `.boss/`, with a stable id, Copy and Slide on every block, holes rendered as holes, and the evidence ledger in the chrome. A view, never an app.
 for: a founder in Quickstart or MVP whose canvas, personas, rivals, evidence and decisions exist as files and cannot be looked at together or handed to a room (no persona in `docs/personas/` here — BOSS's own personas are agents)
 created: 2026-09-13
-building_since: 2026-09-13
+shipped_on: 2026-09-13
 from: IDEA-106
 program: business-profile
 relates: FEAT-025, DEC-004, IDEA-065, IDEA-104

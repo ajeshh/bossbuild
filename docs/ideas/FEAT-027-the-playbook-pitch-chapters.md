@@ -2,11 +2,11 @@
 id: FEAT-027
 type: feature
 owner: product-lead
-status: building
+status: shipped (under Unreleased, 2026-09-13)
 gist: `boss playbook` grows from one page to the Pitch chapters — Vision · Product · Customers · Problem · Market · Competition · Canvas · Business model — each a projection over a record that exists (IDEA doc, personas, competition set, imported sources, the capital mentor's dossier), a chapter rail, and a chapter line that is the first sentence of the record it renders. Holes stay holes; personas are snippets that link to the Design space.
 for: the same founder as FEAT-026 — records in six folders, nothing that reads them together for a room
 created: 2026-09-13
-building_since: 2026-09-13
+shipped_on: 2026-09-13
 from: IDEA-106
 program: business-profile
 relates: FEAT-026, IDEA-107, FEAT-025, DEC-004
@@ -59,24 +59,24 @@ skill shows a plain block; the parser accepts `who —`, `**who**`, `- **who:**`
 in a test.
 
 ## Acceptance criteria
-- [ ] The page has a chapter rail (Pitch group, eight entries) and each chapter is a section with a
+- [x] The page has a chapter rail (Pitch group, eight entries) and each chapter is a section with a
       stable id; the canvas chapter is unchanged from FEAT-026.
-- [ ] Every chapter line is the first sentence of a record on disk, or the chapter has no line.
+- [x] Every chapter line is the first sentence of a record on disk, or the chapter has no line.
       A test asserts no chapter line appears that isn't a substring of a record.
-- [ ] Vision renders the Promise, `motivation:`, `success_looks_like:`, Principles; *In five years*
+- [x] Vision renders the Promise, `motivation:`, `success_looks_like:`, Principles; *In five years*
       and *Who is building it* render as holes with their prompts and verbs.
-- [ ] Product renders `## Current shape` whole; FEATs as a list with status; *What it is not* from
+- [x] Product renders `## Current shape` whole; FEATs as a list with status; *What it is not* from
       BRAND.md when present, a hole when not.
-- [ ] Customers renders one snippet per persona file — `who`, `context`, ledger chip — primary
+- [x] Customers renders one snippet per persona file — `who`, `context`, ledger chip — primary
       first (a file with `primary` in its frontmatter or the oldest by `created:`), and a hole when
       there are none; the Design link renders only when `.boss/design.html` exists.
-- [ ] Problem renders the Problem cell and the Story cell; Market renders the People cell and the
+- [x] Problem renders the Problem cell and the Story cell; Market renders the People cell and the
       `docs/source/` listing or a hole.
-- [ ] Competition renders the README table as-is, key briefs with *Where it breaks* bullets from the
+- [x] Competition renders the README table as-is, key briefs with *Where it breaks* bullets from the
       rival's file, a watch list, and `stale` on any row checked > 90 days ago; no `docs/competition/`
       → a hole with `/comp-eval`.
-- [ ] Business model renders the two cells and the ask (dossier paragraph or hole).
-- [ ] Nothing fetched; one file written; `docs/` byte-identical after a render; existing FEAT-026
+- [x] Business model renders the two cells and the ask (dossier paragraph or hole).
+- [x] Nothing fetched; one file written; `docs/` byte-identical after a render; existing FEAT-026
       tests still pass; `npm run check` at its baseline; CHANGELOG bullet under `## Unreleased`.
 
 ## What "wrong" looks like
@@ -123,6 +123,14 @@ a question. No row added to `docs/design/FLOWS.md`.
   snippet links across to the Design page when both exist.
 
 ## Build log
+- 2026-09-13 — **landed.** Surprise: the chapter-line rule showed its cost on BOSS's own canvas —
+  Vision's line came out *"🟢 v0.5 — UNCHANGED BY DECISION, with the cost named."* because BOSS's
+  cells open with revision markers (IDEA-106 kicked-up #7, now visible on a page rather than in a
+  table). Left as is: the render telling the founder the record wants a better first sentence is the
+  rule working. Rejected: choosing the "active" IDEA by `status: building` when the canvas id doesn't
+  link (BOSS's own `CANVAS.md`) — kept "newest by created:" as specced; BOSS's tree is the odd one.
+  A peer's FEAT-030 (`boss design`) plans to lift the chrome into `src/page-shell.js`; the playbook
+  adopts it in a follow-up commit, not here.
 - 2026-09-13 — specced. Decision: no arithmetic and no matrix in this slice — both need something
   the records don't hold cleanly (numbers in prose; per-feature sections), and a wrong number on a
   Market chapter is worse than a hole.

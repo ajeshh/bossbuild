@@ -89,6 +89,24 @@ rule above still applies to the whole section once it is stamped.
   `check:refs` learns `docs/design/FLOWS.md` is a per-project file `/spec` writes (the
   `manifest.json` case). Slices 2–4 (the other chapters, the deck with a VC cut) are FEAT-027..029;
   the design and the 27 things it kicked up about what BOSS captures are IDEA-106.
+- **`boss playbook` — the Pitch chapters (FEAT-027, slice 2).** The page grows a chapter rail and
+  eight sections, each a projection over a record that exists: **Vision** (the Promise cell's first
+  sentence as the line; `motivation:` and `success_looks_like:` from the IDEA doc; Principles; *Who
+  is building it* and *In five years* as holes — no person record, no `vision:` line), **Product**
+  (the IDEA doc's `## Current shape` whole; every `FEAT-*` with its status; BRAND.md's *What it is
+  NOT*), **Customers** (one **snippet** per `docs/personas/*.md` — the `who` and `context` lines,
+  the `synthetic · real` ledger chip, a relative link to `design.html#persona-<slug>` that renders
+  only when the Design page is on disk; the full card is the Design space's), **Problem** (the
+  cell, and the Story cell labelled *and why now* — a cell is never split), **Market** (the People
+  cell; `docs/source/` listed with dates or a hole; **no arithmetic** — a number extracted from
+  prose is a number the render invented), **Competition** (`docs/competition/README.md`'s table
+  rendered as it is, any columns; key rivals — `direct`, or `in evidence` — with the first three
+  lines of their file's `## Where it breaks`; the rest a one-line watch list; `Checked` past 90
+  days renders `stale · N d`), **Canvas** (unchanged), **Business model** (the two cells; *The ask*
+  quotes the first paragraph of `docs/dossier/mentor-capital.md` when it exists, else the hole).
+  **A chapter's line is the first sentence of the record it renders, or the chapter has no line** —
+  a test asserts no `<h2>` on the page is a sentence BOSS wrote. Six more tests; docs/ still
+  byte-identical after a render.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's
