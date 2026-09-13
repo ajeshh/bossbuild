@@ -81,8 +81,12 @@ competition. Think of your audience, and being able to easily ID the content"*),
    and *In five years* (a hole until the IDEA doc carries a `vision:` line — the far-horizon question
    BOSS never asks; Sequoia's tenth section).
 2. **Product** — what it is *today*, what has shipped, what it is not.
-3. **Customers** — every `docs/personas/*.md` as a card (primary first, secondary after, a hole for
-   the next), each with its `synthetic · real` ledger. Multiple personas are the normal case.
+3. **Customers** — every `docs/personas/*.md` as a **snippet**, not the full card (Ajesh, 2026-09-13,
+   relayed from the Design lane: *"maybe personas from playbook should be here? and a snippet
+   there?"*): the `who` line, the two stat tiles, the `synthetic · real` ledger chip, and a link
+   across to the Design space's `#persona-<slug>`, where the full card lives — the design space is
+   where a persona is *used*, the venture space is where it is *presented* (IDEA-107, "the fourth
+   seed"). Primary first, secondary after, a hole for the next. Multiple personas are the normal case.
 4. **Problem** — the pain · how it's handled today and where each falls short · **Why now** (its own
    block; the Story cell's second half surfaced — Sequoia's fourth section, previously buried).
 5. **Market** — how many and how you know (the People sharpen) · **the ceiling by arithmetic** (two
@@ -543,6 +547,8 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **ruling via the Design lane** (bossbuild-a1): full persona cards move to the Design
+  space; the playbook keeps a snippet + a link. Chapter 3 rewritten; lands in FEAT-027.
 - 2026-09-13 — **promoted** → FEAT-026 (slice 1: the canvas as boxes; slices 2–4 named). Program `business-profile` with FEAT-025.
 - 2026-09-13 — **v5 rulings** (Ajesh): A — *yes all*; after the first user it's acquisition,
   retention, showing how it's going, and *when do market signals start* · B — yes · C — Priya stays,

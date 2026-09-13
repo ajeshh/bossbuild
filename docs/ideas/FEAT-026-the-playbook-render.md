@@ -23,7 +23,7 @@ relates: FEAT-025, DEC-004, IDEA-065, IDEA-104
 | Slice | Renders | Lands as |
 |---|---|---|
 | **1 · the canvas as boxes** | `docs/ideas/*-canvas.md` → the Humane grid, Lean grid, the DEC-004 floor band, holes dashed, dormant with its condition, a chip per cell, the ledger in the chrome, Link · Copy · Slide per block, light/dark, brand from `docs/BRAND.md` or the neutral default | **this FEAT** |
-| 2 · the pitch chapters | Vision · Product · Customers (`docs/personas/`) · Problem · Market · Competition (`docs/competition/`) · Business model | FEAT-027 |
+| 2 · the pitch chapters | Vision · Product · Customers (`docs/personas/` as **snippets** — `who` line, tiles, ledger chip, link to the Design space's full card; Ajesh 2026-09-13 via IDEA-107) · Problem · Market · Competition (`docs/competition/`) · Business model | FEAT-027 |
 | 3 · the proof chapters | Evidence (`docs/evidence/` — grades and dates only, never quotes on a shareable copy) · Health · Learnings · Decisions · Risks | FEAT-028 |
 | 4 · the deck | Present with profiles (VC cut / internal / everything), remove-and-restore, Export PDF | FEAT-029 |
 
