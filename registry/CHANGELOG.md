@@ -16,6 +16,74 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.324.0 — 2026-09-12
+
+**The board's assessment, applied: MVP opens on 16 verbs, `/boss` is the door any day, `boss status`
+in 0.17s, and BOSS's own conscience can finally see its own drift.**
+
+> **For you:** `boss unlock mvp` lays down 16 skills, not 28 — the seven for after launch arrive when
+> your first FEAT ships and the five for an AI product when your app first calls a model; `boss status`
+> says when, `boss sync` lays them down. `/boss` now works on any day, not only day 0: say what you
+> are trying to do (or nothing) and it reads where you are and names the smallest next step, naming
+> the verb *after* the act. `/evidence` is the one capture verb — a thing that happened, your notes,
+> or a whole transcript — and `/research` retires into it; `/interview` is the prep, only.
+> `boss status` runs in a sixth of the time. Your `docs/loops/` moves to `.boss/loops/` on the next
+> sync (`docs/` is yours again; the old copies are reported, never deleted without `--remove`).
+> Nothing you wrote moves.
+
+- **Seventeen reviewers, one afternoon.** Ajesh asked whether BOSS needed refactoring — bloat,
+  cohesion, staleness, speed — and whether the flow of how work is done had kept pace with the tree.
+  Nine mentors, six builders and two personas read one measured facts sheet; ten findings converged.
+  The verdict: the code is not the problem. What had not kept pace was BOSS running what it ships,
+  the unit of work (a version per capability, ~11 a day, contended by six sessions), and the width
+  of the surface at MVP. The record is `docs/retros/2026-09-12-board-assessment.md`; the disagreements
+  are kept visible there. Fourteen commits on one branch, one version at the end.
+- **The re-entry read:** `boss status` spawned **378 git processes** — one `git log -1` per record,
+  each twice — and took 2.4s on BOSS's own tree; a founder with three ideas never felt it. One pass
+  over the log (`src/gitdates.js`), two spawns, 0.17s, output byte-identical, a shim test that holds
+  the count at ≤2 for 40 records.
+- **The conscience was structurally blind to BOSS.** `drift-loop` globbed `docs/ideas/*-canvas.md`
+  while the file is `CANVAS.md` — the twin bug `canvas-loop` was fixed for, never reaching its
+  siblings (drift, canvas-drift, spec, pretotype). `focus-loop` exited on "≥1 shipped *ever*" and
+  counted only FEATs, so six IDEAs in Building and one ship 84 days old could never open it. Both
+  fixed; on BOSS's own tree drift and focus opened for the first time, and fired that session. The
+  two evals that expected the old behaviour were the accomplice shape — rewritten to the intent.
+- **The gates.** Four gate lists named four subsets; `release` re-implemented eight checkers and
+  five were half-installed since the release that named the defect. One list now (`package.json`
+  `check`), `release` runs it; `check-published`/`check-deployed` move to `check:external` — they
+  were red by construction for weeks, the definition of a gate you bypass. Two freshness checkers
+  compared "today" in UTC, so every evening printed ten pages behind; local now. And the number has
+  to be **next**: `release` refuses a VERSION not strictly newer than HEAD's and origin's, and
+  refuses equal-to-HEAD with new work in the tree — five collisions, now a mechanism. The one line
+  that turned advisory is *published state*: publishing is Ajesh's act, so between his publishes that
+  line was red for every session by construction — it still prints the number, loudly.
+- **The founder's brief carried BOSS's bookkeeping** — 65 version stamps (nine confessions: *"until
+  v0.284.0 this skill deleted the wrong one"*), 66 of BOSS's own record ids (`IDEA-008` cited in
+  `/ai-cost`, colliding with the founder's own IDEA-008), 21 severity glyphs, across 54 shipped
+  files. 202 lines rewritten to the rule each carried; `check-manifests` refuses all three shapes.
+- **31 exports nobody imported:** 27 un-exported, four deleted (`config.readShape` — nothing ever read
+  the `shape` `/canvas` writes; noted). The gate tests that broke a shipped skill in the working tree
+  to prove the gate had teeth run against a copy now.
+- **`earned` in a stage manifest** (`src/earned.js`): a skill-list field and the predicate that lays
+  it down. MVP holds back `postLaunch` until a FEAT ships and a new `aiMediated` group until the
+  cost-budget loop's own regex finds a model call under the source roots; unlock records what is
+  held, sync lays it down as ordinary `new` entries, the stamp names only what is on disk, a frame
+  that points at a held verb says `boss sync` lays it down. Pre-existing installs are untouched.
+- **`/boss` is the door** — position (an idea? evidence? a FEAT building? shipped?) and intent
+  ("I don't know if anyone wants this") decide which one opens; the routing table lives in one body,
+  loaded only when it runs. Two eval cases written (`plugin/evals/everyday-door-*`); both route
+  correctly under `claude -p` in the fixture, and cannot run under `claude plugin eval` until the
+  plugin ships the door (DEC-017 — Ajesh's call).
+- **The old-vintage sync test:** a project scaffolded and unlocked by v0.267.0's own binary, one
+  skill edited, synced by this tree — edit kept, 20+ files current, pin moved, ledger stamped,
+  loops moved, no `deferred` invented, status fast. The path every real project takes, finally run.
+- **One sentence, one home.** `PRINCIPLES.md` holds what BOSS is; README, the site's h1, `/welcome`
+  and the plugin listing quote it. The site said *"like you have a team"* (DEC-011 says otherwise).
+- **Deferred, on purpose:** BOSS's own `.claude/` re-sync (five sessions run it live);
+  release-on-publish instead of a version per capability (a flow rule — a DEC, not a commit);
+  IDEA-087; branch-per-session (this branch switched the shared checkout under five peers — the
+  working agreement needs worktrees, not branches).
+
 ## 0.323.0 — 2026-09-12
 
 **The last model names leave the shipped text, and the recalibration pass stops describing a file

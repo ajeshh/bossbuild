@@ -25,10 +25,10 @@ const HOOK_DIR = join(REPO_ROOT, 'stages/L0-quickstart/template/.claude/hooks');
 const HOOK = join(HOOK_DIR, 'conscience.js');
 // Load loops from both Quickstart AND MVP — the eval suite covers moments
 // emitted by loops at either stage. The hook reads `docs/loops/*.md` from the
-// project; both stages' loops coexist post-`boss unlock mvp`.
+// project (.boss/loops/, docs/loops/ as a fallback); both stages' loops coexist post-`boss unlock mvp`.
 const LOOPS_DIRS = [
-  join(REPO_ROOT, 'stages/L0-quickstart/template/docs/loops'),
-  join(REPO_ROOT, 'stages/L1-mvp/template/docs/loops'),
+  join(REPO_ROOT, 'stages/L0-quickstart/template/.boss/loops'),
+  join(REPO_ROOT, 'stages/L1-mvp/template/.boss/loops'),
 ];
 
 // YAML parsing moved to ./lib/yaml-eval.js (v0.32.0) so judgment/replay.js
@@ -315,10 +315,10 @@ function buildProjectDir(example) {
   mkdirSync(tempBase, { recursive: true });
 
   // Copy loop specs so the v0.18+ generic runtime can read them at hook time.
-  // The runtime expects docs/loops/*.md in the project root. v0.27.0+: load
+  // The runtime expects .boss/loops/*.md in the project root. v0.27.0+: load
   // from BOTH Quickstart and MVP so cost / failure-mode / coherence evals
   // (loops live in L1-mvp) can run alongside caution / done (loops in L0).
-  const projectLoopsDir = join(tempBase, 'docs', 'loops');
+  const projectLoopsDir = join(tempBase, '.boss', 'loops');
   mkdirSync(projectLoopsDir, { recursive: true });
   for (const dir of LOOPS_DIRS) {
     if (!existsSync(dir)) continue;

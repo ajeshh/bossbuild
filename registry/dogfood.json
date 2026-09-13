@@ -138,7 +138,7 @@
       "path": "docs/experiments/EXP-NNN",
       "capability": "L3-scale",
       "verdict": "exempt",
-      "why": "Unlocks at Scale. BOSS runs experiments as evals and /vet verdicts (153 eval cases, 82 RVW records) rather than as EXP files — the substitute is exercised heavily and the original would duplicate it."
+      "why": "Unlocks at Scale. BOSS runs experiments as evals and /vet verdicts (154 eval cases, 82 RVW records) rather than as EXP files — the substitute is exercised heavily and the original would duplicate it."
     }
   ]
 }

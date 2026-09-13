@@ -94,21 +94,36 @@ Already landed by peers before kick-off: IDEA-101 (/boss-learn → /extract, v0.
 a baseline arm (v0.320/321 — the instrument for step 3) · model names out of shipped text (v0.323.0).
 
 Order of work (one concern per commit; one VERSION at merge):
-- [ ] A1 git-dates single pass — board/records/recap; readiness stops re-collecting; spawn-count test
-- [ ] A2 drift-loop glob (`*-canvas.md` → also `CANVAS.md`) + focus exit (shipped + BOSS's own docs/loops)
-- [ ] A3 check-site / check-help "today" in local time, not UTC
-- [ ] A4 release.js refuses a VERSION not strictly greater than the last committed one
-- [ ] A5 one gate list: `release` runs `check`; `test`/`test:ci` are named subsets of it
-- [ ] A6 strip v0.NNN / IDEA-NNN / 🔴⛔🆕 from shipped SKILL.md bodies; check-manifests rule beside " #"
-- [ ] A7 un-export 13 internal helpers; delete config.readShape
-- [ ] A8 always-on-cost test works on a tmp copy, not the working tree
-- [ ] A9 CLAUDE.md repo-map sentences (library/agents|skills|hooks|memory-seed/ do not exist)
-- [ ] A10 close FEAT-025 → shipped (rungs 1–2); spun_to a deferred IDEA for rungs 3–4
-- [ ] B  the cliff: postLaunch lays down on first ship; AI quartet on first LLM call (manifest groups exist)
-- [ ] C  /boss is the everyday door: body branches on position; names the verb after the act
-- [ ] D  run the plugin eval both ways (procedures resident vs reached via the door); the number decides
-- [ ] E1 /evidence + /interview debrief + /research → one capture verb routed on input
-- [ ] E2 docs/loops → .boss/loops (loadLoops path + 20 template files)
-- [ ] E3 one story, one home (site h1 / README hero / CLAUDE.md one-liner / welcome quote one sentence)
+- [x] A1 git-dates single pass — board/records/recap; readiness stops re-collecting; spawn-count test
+- [x] A2 drift-loop glob (`*-canvas.md` → also `CANVAS.md`) + focus exit (shipped + BOSS's own docs/loops)
+- [x] A3 check-site / check-help "today" in local time, not UTC
+- [x] A4 release.js refuses a VERSION not strictly greater than the last committed one
+- [x] A5 one gate list: `release` runs `check`; `test`/`test:ci` are named subsets of it
+- [x] A6 strip v0.NNN / IDEA-NNN / 🔴⛔🆕 from shipped SKILL.md bodies; check-manifests rule beside " #"
+- [x] A7 un-export 13 internal helpers; delete config.readShape
+- [x] A8 always-on-cost test works on a tmp copy, not the working tree
+- [x] A9 — already done by a peer before kick-off (CLAUDE.md repo map and /vet step 2 both correct)
+- [x] A10 close FEAT-025 → shipped (rungs 1–2); spun_to a deferred IDEA for rungs 3–4
+- [x] B  the cliff: postLaunch lays down on first ship; AI quartet on first LLM call (manifest groups exist)
+- [x] C  /boss is the everyday door: body branches on position; names the verb after the act
+- [~] D  two everyday-door cases written (plugin/evals/everyday-door-*); both route correctly via `claude -p` in the fixture (n=1 each). Cannot run under `claude plugin eval`: DEC-017 ships one plugin skill, so /boss:boss is unknown there — **Ajesh's call** whether the door joins the plugin. The resident-vs-door ablation needs that first.
+- [x] E1 /evidence + /interview debrief + /research → one capture verb routed on input
+- [x] E2 docs/loops → .boss/loops (loadLoops path + 20 template files)
+- [x] E3 one story, one home (site h1 / README hero / CLAUDE.md one-liner / welcome quote one sentence)
 Deferred, flagged, not started here: dogfood re-sync of `.claude/` (five sessions run it live) · Unreleased
 heading + release-on-publish (a flow rule; propose as a DEC, not a unilateral change) · IDEA-087 · branches/caps.
+
+## Found on the way (not acted on)
+- `/canvas` writes `shape` into `.boss/config.json`; with `readShape` deleted, nothing reads it — a field nobody reads. Decide: read it somewhere, or stop writing it.
+- The conscience fired drift + focus on THIS session the moment A2 landed (four signals). The drift one is the founder-lens finding in the conscience's own voice.
+- `--trust-plugin` is in `npm run eval:plugin` and unknown to the 2.1.236 brew binary; the 2.1.269 VS Code binary knows it. The script assumes a version.
+- Old-vintage sync test (tester's #1): being built now as test/sync-vintage.test.js.
+
+## Landed — v0.324.0, branch `assess/board-2026-09-12`, 2026-09-12 evening
+A1–A10, B, C, D (as far as DEC-017 allows), E1, E2, E3, plus the old-vintage sync test. 15 commits,
+one version. 448 unit tests, 154 conscience evals, `npm run check` green with a meaning it did not
+have before (publish state is `check:external`). The conscience fired drift + focus on this session
+the moment A2 landed.
+Still Ajesh's: the door in the plugin (DEC-017) · `.claude/` re-sync · release-on-publish as a DEC ·
+IDEA-087 · the `shape` field nobody reads · whether a shared checkout can have branches at all
+(this branch switched HEAD under five peers — worktrees would not).

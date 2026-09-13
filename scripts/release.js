@@ -323,11 +323,16 @@ if (!fast) {
 {
   const r = run('node', [join('scripts', 'check-published.js'), '--strict']);
   const offline = /No network/.test(r.out);
+  // ADVISORY, loudly. Publishing is Ajesh's act and nobody else's (CLAUDE.md), so between his
+  // publishes this line is red for every session that releases — seventeen versions behind on
+  // 2026-09-12 — and a gate that is red for weeks by construction is a gate that gets stepped over,
+  // which is how the tap sat 38 releases stale with this file signing off every time. It prints,
+  // it names the number, and the closing hand-step list says what to run. It does not block.
   record('published state', r.code === 0,
     offline ? 'skipped — no network'
       : r.code === 0 ? 'npm and the Homebrew tap serve this repo'
-        : 'an advertised install path is stale — npm run check:external',
-    offline);
+        : 'an advertised install path is stale — npm run check:external says how far; publishing is by hand',
+    true);
   if (r.code !== 0) console.log(r.out.trimEnd());
 }
 
