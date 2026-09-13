@@ -337,6 +337,28 @@ page); the compliance stance inside Risks & harms (data basis, the regulator by 
 when *covered* isn't); and the AI-era question — *why doesn't the incumbent add a model that makes
 the cover call next quarter?* — which no cell asks.
 
+### 13. Ajesh's rulings on the reviews (2026-09-13) — the audience is the founder first
+
+- **Who it is for.** *"This is not just for VCs, its also for the team and entrepreneur to stay
+  grounded."* The playbook is the founder's and the team's; **the VC deck is a cut of it**, never
+  the other way round. So the fundraising mentor's *hide Priya* is overruled: *"priya is a
+  proto-persona, as we get real data the entrepreneur can fill it in … to remember who they are
+  solving for."* A synthetic persona stays on the site with its `synthetic 100%` ledger; the VC cut
+  simply doesn't carry it. The profile mechanism resolves the disagreement without a rule.
+- **The cut is editable.** *"a VC-Deck cut export option that focuses only on the key slide, but
+  they can also easily delete slides."* Present has *VC cut · 12*, *Internal · 20*, *Everything*; any
+  slide can be **removed from the current cut** (remembered per cut, in the browser) and restored;
+  *Export this cut as PDF* prints what is left. The founder's delete is the last word; BOSS's
+  profile is the first draft.
+- **After the first user, what matters is market signals**: *"user acquisition, retention, and
+  being able to show how its going … when does it start to get market signals right."* Health is a
+  chapter of three — **acquisition** (are they coming, and from a channel or by hand), **activation**
+  (did the aha happen, how many days in), **retention** (did she use it a second Sunday) — each
+  with the day it *starts to mean something*: a hand-delivered first user is a test; the signal
+  starts with the first stranger; retention reads at n≈10; below that, `/health`'s own rule — talk
+  to them, never a score. The first retention number is also the first `observed-behavior` rung.
+- **The record gaps stand** (rows 17–22): *"Yes."* Those are intake work for BOSS, not render work.
+
 ## The prototype — see it before choosing any of the above
 
 Ajesh, 2026-09-13: *"lets first create a prototype of the idea to see how an example would look …
@@ -403,6 +425,8 @@ question — not a fix made in passing.
 | 23 | **the product, seen** — a screenshot or a 30-second recording | no record holds an image; `/ship` hands back a URL and nothing else | **task:** `/ship` (or `/log` at ship) captures one screenshot into `docs/product/`; the playbook renders it before Market |
 | 24 | **Health** — the chapter's trigger fired (shipped 2026-08-28) and the chapter wasn't drawn | `/measure` and `/health` exist; nothing renders their output | **render** — drawn as a hole page in v5; the real render reads `docs/measure*` when they exist |
 | 25 | **three chapter lines are BOSS's** (Canvas, Learnings, Decisions) — §8's rule has no source for them | the chapters render *the render*, not a record with a first sentence | **question:** derive the line from the newest record in the chapter (newest DEC's title, newest *surprised* line, the Promise for Canvas) — or accept that some chapters have no line and get no slide |
+| 26 | **a VC cut a founder can edit** — remove a slide, export what's left | nothing in BOSS holds a *selection* over records; the deck profile is render-side | **render:** the cut and its removals live in the render (browser or `docs/playbook/cut.json`), never in the records — a hidden slide is not a deleted fact |
+| 27 | **Health from `/measure`'s events** — acquisition · activation · retention with the day each starts to mean something | `/measure` picks one activation metric and one retention curve; nothing writes *acquired from a channel vs by hand*; nothing dates *when the signal begins* | **task:** `/measure` records the channel per first user (`hand` / `<channel>`) and the install date; the render derives *days-to-aha* and *second-Sunday* from them |
 | 8 | **the ask** as a hole with a reason | `mentor-capital` defaults to *not yet*; nothing records *why not yet* in a place a render can quote | **task:** the not-yet needs a sentence on disk, or the hole has no reason to show |
 
 ## Open questions — written as questions, not carried
@@ -426,6 +450,14 @@ The prototype is a **mock to react to**, not a build; it costs one file and deci
 *build* trigger, carried in from 065 and 104 together: **a founder (or Ajesh on a real project) goes
 looking for their own material and cannot find it without grepping, or asks for something to show a
 room** — the symptom this surface treats. Until then it is a good idea with a prototype attached.
+
+## Prototype v6 — republished 2026-09-13 (same link)
+
+**Health** drawn as three market signals — acquisition (1 agency, hand-delivered; 0 from a channel),
+activation (hole: the aha never counted), retention (hole: two Sundays passed, nobody wrote down
+where the second sick call went) — each naming the day it starts to mean something. **VC cut** —
+the investor profile renamed; *Remove slide* / *Restore* per cut, remembered in the browser;
+*Export this cut as PDF*. 18 chapters, 16 drawn.
 
 ## Prototype v5 — republished 2026-09-13 (same link)
 
@@ -507,6 +539,10 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **v5 rulings** (Ajesh): A — *yes all*; after the first user it's acquisition,
+  retention, showing how it's going, and *when do market signals start* · B — yes · C — Priya stays,
+  a proto-persona for the entrepreneur, not for VCs · E — the playbook is for the founder and team
+  to stay grounded; a **VC-deck cut** export, slides deletable. §13 written; v6 built. Rows 26–27.
 - 2026-09-13 — **v4: mentor reviews + the 2026 read** (Ajesh: *"anything else missing? lets have vc
   mentor review … how to get funding in 2026"*). `mentor-fundraising` and `mentor-pitch` reviews in
   §12; research graded (two primaries, three bot-blocked, vendor claims filed unverified). v5 applies
