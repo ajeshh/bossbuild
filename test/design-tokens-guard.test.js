@@ -206,3 +206,35 @@ test('combines with a raw-value finding in one message, deprecation first', () =
   const out = run(withDeprecated(), { file_path: 'src/c.css', content: '.x{color:#ff0000; y: color.brand}' });
   assert.ok(out.indexOf('deprecated token') < out.indexOf('hardcoded style values'));
 });
+
+// tokens.json (DTCG) is the file a colour is a fact in — the guard reads its names as vocabulary and
+// its `$deprecated` as retirement, so a token that exists only in the JSON still governs its family.
+function withJsonTokens() {
+  const dir = withTokens(); // the markdown opens the gate; color vocabulary only
+  writeFileSync(join(dir, 'docs', 'design', 'tokens.json'), JSON.stringify({
+    radius: { control: { $type: 'dimension', $value: { value: 6, unit: 'px' } } },
+    color: { text: {
+      muted: { $type: 'color', $value: '#7D8985' },
+      placeholder: { $type: 'color', $value: '#9AA5A1', $deprecated: 'color.text.muted' },
+    } },
+  }));
+  return dir;
+}
+
+test('reads vocabulary from tokens.json — a family named only in the JSON is governed', () => {
+  const out = run(withJsonTokens(), { file_path: 'a.css', content: 'border-radius: 5px;' });
+  assert.match(out, /border-radius/, 'radius is governed because tokens.json names radius.control');
+  assert.match(out, /radius\.control/, 'and the JSON name is what gets offered');
+  assert.equal(run(withJsonTokens(), { file_path: 'a.css', content: 'padding: 13px;' }), '', 'spacing is still silent — nothing names it');
+});
+
+test('reads $deprecated from tokens.json as the successor table', () => {
+  const out = run(withJsonTokens(), { file_path: 'src/Hole.tsx', content: 'const ink = tokens.color.text.placeholder;' });
+  assert.match(out, /`color\.text\.placeholder` → use `color\.text\.muted`/);
+});
+
+test('a tokens.json that is not JSON never breaks the guard', () => {
+  const dir = withTokens();
+  writeFileSync(join(dir, 'docs', 'design', 'tokens.json'), '{ not json');
+  assert.match(run(dir, { file_path: 'a.css', content: 'color:#3B82F6;' }), /#3B82F6/, 'the markdown still speaks');
+});

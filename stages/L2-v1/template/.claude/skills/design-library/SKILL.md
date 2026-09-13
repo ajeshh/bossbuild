@@ -293,9 +293,12 @@ without installing anything.
 
 Two seams worth naming, in order of how real they are:
 
-- **Tokens are genuinely two-way.** Tokens are structured data with stable IDs, which is why this is
-  the one layer where design-tool sync actually works. Emit DTCG (`/design-tokens-init` already does
-  where the stack allows), push to the design tool's variables, pull their changes back.
+- **Tokens are two-way — on the token layer, and by a path that depends on the plan.** Tokens are
+  structured data with stable names, which is why this is the one layer where design-tool sync
+  actually works. `docs/design/tokens.json` is DTCG (`/design-tokens-init` writes it always); a
+  designer imports it with a tokens plugin on any plan, or through the tool's own API on an
+  enterprise plan — don't promise a native import. Their DTCG export comes back through `--check`,
+  diffed per token.
 - **Components are one-way, each direction, by a different mechanism.** Design→code mapping is
   mature. Code→editable-design-file round-trip is **not** well established — treat any claim that it
   is as unproven until you've watched it work on your own components.

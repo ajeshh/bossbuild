@@ -648,9 +648,13 @@ the thing it watches exists is the premature ceremony this practice keeps warnin
 The library is also the handoff artifact, already built: a designer gets a **URL, not a repo
 checkout.** Two seams, in order of how real they are:
 
-- **Tokens are genuinely two-way.** They're structured data with stable IDs, which is why this is the
-  one layer where design-tool sync actually works — and why emitting **DTCG** (above) is already the
-  bridge. Push to the tool's variables, pull their edits back.
+- **Tokens are two-way — for a price.** They're structured data with stable names, which is why this
+  is the one layer where design-tool sync actually works — and why `docs/design/tokens.json` in
+  **DTCG** (above) is the bridge. Checked 2026-09-13: Figma's Variables REST API requires an
+  Enterprise plan to read *or* write; native import of a DTCG JSON is not documented on the variables
+  help page. So the path for most founders is a tokens plugin (Tokens Studio and its kind), and the
+  shipped text says *"a tokens plugin on any plan; the tool's API on an enterprise plan"* — never a
+  bare "two-way". [[RVW-082]] carries the correction; [[IDEA-108]] the full list by direction.
 - **Components are one-way, each direction, by a different mechanism.** Design→code mapping is
   mature. Code→editable-design-file round-trip is **not** well established; treat any claim that it
   is as unproven until you've watched it work on your own components.

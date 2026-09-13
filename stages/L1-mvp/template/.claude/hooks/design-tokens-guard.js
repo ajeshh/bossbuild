@@ -53,6 +53,11 @@
 // a retired token. A deleted token breaks every screen silently; a deprecated one names its
 // replacement, and this is the check that makes the table more than a note.
 //
+// SINCE the release after 0.325.0 it also reads `docs/design/tokens.json` (DTCG): a token's name is the
+// path to its `$value`, so a family named only in the JSON is governed, and `$deprecated` naming a
+// successor is the same retirement the markdown table records. The JSON is the copy a design tool
+// round-trips, so it is the copy least likely to be stale.
+//
 // Fail-open: any surprise exits 0 silently. A missed warning is fine; a broken session is not.
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -188,11 +193,33 @@ try {
   let doc = '';
   try { doc = readFileSync(join(projectDir, tokensRel), 'utf8'); } catch { /* vocabulary is a nicety */ }
 
+  // `docs/design/tokens.json` (DTCG) is the file a colour is a fact in; the markdown is the
+  // human-readable spec over it. A token's name is the path to its `$value`; `$deprecated` naming a
+  // successor is the same retirement the markdown table records. Read it when it exists — the JSON
+  // is the copy a design tool round-trips, so it is the copy least likely to be stale.
+  const jsonNames = [];
+  const jsonRetired = [];
+  try {
+    const tree = JSON.parse(readFileSync(join(projectDir, 'docs', 'design', 'tokens.json'), 'utf8'));
+    const walk = (node, path) => {
+      if (!node || typeof node !== 'object' || Array.isArray(node)) return;
+      if ('$value' in node) {
+        const name = path.join('.');
+        jsonNames.push(name);
+        if (typeof node.$deprecated === 'string' && node.$deprecated !== name) jsonRetired.push([name, node.$deprecated]);
+        return;
+      }
+      for (const k of Object.keys(node)) if (!k.startsWith('$')) walk(node[k], path.concat(k));
+    };
+    walk(tree, []);
+  } catch { /* no JSON, or not DTCG — the markdown still speaks */ }
+
   const vocabFor = (keywords) => {
     const names = new Set();
     for (const kw of keywords) {
       const re = new RegExp('`(--[\\w-]*' + kw + '[\\w-]*|' + kw + '\\.[\\w.-]+|[\\w-]*\\.' + kw + '\\.[\\w.-]+)`', 'gi');
       for (const m of doc.matchAll(re)) names.add(m[1]);
+      for (const n of jsonNames) if (n.split('.').some((seg) => seg.toLowerCase().includes(kw))) names.add(n);
     }
     return [...names];
   };
@@ -213,6 +240,7 @@ try {
     const m = row || arrow;
     if (m && m[1] !== m[2]) retired.set(m[1], m[2]);
   }
+  for (const [old, next] of jsonRetired) if (!retired.has(old)) retired.set(old, next);
   const retiredHits = [];
   for (const [old, next] of retired) {
     // `tokens.color.brand` and `--color-brand` both count; `color.brandmark` does not.

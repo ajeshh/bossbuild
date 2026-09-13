@@ -30,6 +30,15 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **A colour is a fact in one file.** `/design-tokens-init` wrote DTCG *"where the stack allows"* —
+  a filter, not a file — so the design-tool seam the skill, the gallery and the practice all
+  described had no guaranteed artifact behind it. Now `docs/design/tokens.json` (W3C DTCG) is
+  written always, the stack file is derived from it, and `design-tokens-guard` reads the JSON too:
+  a token that exists only there still governs its family, and `$deprecated` naming a successor is
+  the same retirement the markdown table records (three tests). The two shipped "genuinely
+  two-way" sentences now say what was checked at source: the tool's variables API is enterprise-only
+  in both directions, so the path on any plan is a tokens plugin, and a native import is not
+  promised (RVW-082 corrected; IDEA-108 has the list by direction). Found drawing IDEA-107.
 - **Checker hygiene.** `check-site` and `check-help` shared four helpers as two copies (the UTC
   bug had to be fixed twice) — one copy now, `scripts/lib/freshness.js`. `check-pattern-coverage`
   leaves the `check` chain: a report that always exits 0 in a gate chain is noise dressed as a

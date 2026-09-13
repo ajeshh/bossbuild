@@ -116,8 +116,12 @@ to use the new tokens so the founder *sees* the pattern. Plain language:
 
 ## The minimum three-layer token system (Nathan Curtis layer-cake)
 
-Create `docs/design/DESIGN_TOKENS.md` (the human-readable spec) + the stack-specific token file
-(JSON / CSS variables / TypeScript / etc. depending on stack):
+Create three files, in this order — **`docs/design/tokens.json`** (the tokens themselves, in the W3C
+DTCG format — the one file a colour is a fact in, whatever the stack), `docs/design/DESIGN_TOKENS.md`
+(the human-readable spec over it: the same names, the reasons, the deprecated table), and the
+stack-specific token file **derived from the JSON** (CSS variables / TypeScript / a theme object —
+whatever the stack consumes). The JSON is not optional and not stack-dependent: it is JSON. It is
+what a design tool imports, what the guard reads for vocabulary, and what a gallery renders from.
 
 ### Layer 1 — Primitives (raw values)
 
@@ -273,9 +277,20 @@ more is how a decision log becomes something nobody reads.
 
 Name semantic tokens by **purpose, not appearance** — `color.text.error`, never `color.red.500`
 at the semantic layer — so the AI can *reason* about intent rather than guess from a hue (Nathan
-Curtis). Where the stack allows, emit tokens in the **W3C DTCG** format (it reached a first stable
-version) so the system is portable and you're not locked into one vendor's token dialect — which
-also honors the canvas's "don't monetize lock-in" line. **Retire a token by marking it, not by
+Curtis). Emit the tokens in the **W3C DTCG** format (it reached a first stable version) as
+`docs/design/tokens.json` — always, whatever the stack — so the system is portable and you're not
+locked into one vendor's token dialect, which also honors the canvas's "don't monetize lock-in"
+line. The shape: a group per family, a token per name, `$type` and `$value` on each (`color`,
+`dimension` as `{ value, unit }`, `fontFamily` as a list), `$description` where a reader would want
+the reason. **The stack file is derived from this one** — the CSS variable is the JSON name with
+dots as dashes (`color.text.muted` → `--color-text-muted`) — never the other way round. Two files
+that can both be edited is the two-definitions-of-a-button trap at the token layer.
+
+This file is also the design-tool seam, and it is honest about which way it goes: a designer
+imports it into their tool's variables (a tokens plugin on any plan; the tool's own API only on an
+enterprise plan; native JSON import is not something to promise), edits there, exports DTCG, and the
+export is diffed against this file one token at a time — the founder decides per token. Tokens are
+the one layer where that round-trip is real, because a token has a stable name. **Retire a token by marking it, not by
 deleting it.** `DESIGN_TOKENS.md` carries a `## Deprecated` table — `| \`old.name\` | \`new.name\` |
 why |` — and `design-tokens-guard` reads it: a write that references a deprecated name is told the
 successor. Mirror it into the code file where the format has a field (DTCG 2025.10 defines
@@ -304,7 +319,8 @@ the other field worth filling — it is what an editor shows on hover, and the a
    ## Design tokens (added by /design-tokens-init)
 
    This project uses three-layer design tokens. **All style values come from
-   `docs/design/DESIGN_TOKENS.md` + the corresponding code file.**
+   `docs/design/tokens.json` (DTCG — the source), read as `docs/design/DESIGN_TOKENS.md` and
+   consumed through the derived code file.**
 
    When generating new UI:
    1. Search `src/components/` for similar patterns first; reuse before creating.
@@ -532,8 +548,9 @@ the other field worth filling — it is what an editor shows on hover, and the a
   in devlog with substantive rationale.
 - **Run the 5-token distinctiveness pass.** Three layers prevent drift; the 5 overrides prevent
   *sameness* (the generic-AI-app look). Both, not one. The "signature token" is the brandable one.
-- **Name by purpose; emit DTCG where the stack allows.** Semantic tokens reason about intent
-  (`color.text.error`), not hue (`color.red.500`); DTCG keeps it portable (no lock-in).
+- **Name by purpose; `tokens.json` is DTCG, always, and the stack file is derived from it.**
+  Semantic tokens reason about intent (`color.text.error`), not hue (`color.red.500`); DTCG keeps it
+  portable (no lock-in) and is the file a design tool imports.
 - **Cite the field.** Brad Frost (Atomic Design), Nathan Curtis (layer-cake + purpose-naming), W3C
   Design Tokens Community Group (DTCG stable). 2026 distinctiveness tactic per the AI-UX scan. Not
   BOSS's inventions — applied with build-integration. Interaction-layer companion:
