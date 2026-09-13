@@ -500,6 +500,96 @@ export function readFlows(projectDir) {
 export const GUARDS = [['contrast-guard', 'contrast, per declared pair, at every tokens change'], ['design-tokens-guard', 'a raw colour caught at the write'], ['component-reuse-guard', 'a second Button asked about before it exists'], ['content-terminology-guard', 'a refused word caught in a string']];
 export function readGuards(projectDir) { return GUARDS.map(([name, does]) => ({ name, does, on: isRegistered(projectDir, name) })); }
 
+// --- icons: docs/design/icons/*.svg, drawn from the file; the set copies as one sprite ---------------
+// Nothing in BOSS writes the folder — a founder or a designer drops files in (IDEA-107's kicks-up
+// row). The style guide's `1b. Icons` lines are the decision; the files are the set.
+export function readIcons(projectDir) {
+  const dir = join(projectDir, 'docs', 'design', 'icons');
+  const out = { present: existsSync(dir), files: [], sprite: '' };
+  if (!out.present) return out;
+  for (const n of readdirSync(dir).filter((x) => /\.svg$/i.test(x)).sort()) {
+    let svg = '';
+    try { svg = readFileSync(join(dir, n), 'utf8'); } catch { continue; }
+    const open = svg.match(/<svg\b[^>]*>/i); if (!open) continue;
+    const viewBox = (open[0].match(/viewBox="([^"]+)"/i) || [])[1] || null;
+    const w = (open[0].match(/\bwidth="([\d.]+)/i) || [])[1] || null;
+    const inner = svg.slice(svg.indexOf(open[0]) + open[0].length, svg.lastIndexOf('</svg>')).trim();
+    const name = n.replace(/\.svg$/i, '');
+    out.files.push({ name, file: `docs/design/icons/${n}`, svg: svg.trim(), inner, viewBox, size: w ? Number(w) : viewBox ? Number(viewBox.split(/\s+/)[2]) : null, bytes: Buffer.byteLength(svg) });
+  }
+  if (out.files.length) out.sprite = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">${out.files.map((f) => `<symbol id="icon-${f.name}"${f.viewBox ? ` viewBox="${f.viewBox}"` : ''}>${f.inner}</symbol>`).join('')}</svg>`;
+  return out;
+}
+export function readIconDecision(guideText) {
+  const sec = section(guideText || '', /^###?\s+(1b\.\s*)?icons\b/i) || '';
+  const line = (re) => { const m = sec.match(new RegExp(`^-\\s*\\*\\*${re}[^*]*\\*\\*:?\\s*(.+)$`, 'im')); const v = m ? clean(m[1]) : ''; return v && !/^<|<[^>]*>/.test(v) ? v : ''; };
+  return { set: line('The set'), sizes: line('Sizes'), iconOnly: line('Icon-only'), never: line('What an icon never does') };
+}
+
+// --- the logo: a path in docs/BRAND.md's frontmatter (`logo:` the mark, `wordmark:` when it is a file);
+// the lockups draw from those files or the slot stays a slot. No placeholder mark, ever.
+export function readLogo(projectDir) {
+  const p = join(projectDir, 'docs', 'BRAND.md');
+  const out = { mark: null, markSvg: '', wordmarkFile: null, wordmarkSvg: '', minimum: '', clearSpace: '', colour: '', tagline: '', misuse: '' };
+  if (!existsSync(p)) return out;
+  let text = '';
+  try { text = readFileSync(p, 'utf8'); } catch { return out; }
+  const fm = frontmatter(text);
+  const svgAt = (rel) => { if (!rel || !/\.svg$/i.test(String(rel))) return ''; try { const t = readFileSync(join(projectDir, String(rel)), 'utf8'); return /<svg\b/i.test(t) && t.length < 64 * 1024 ? t.trim() : ''; } catch { return ''; } };
+  const mark = fm.logo || fm.mark || null;
+  if (mark && existsSync(join(projectDir, String(mark)))) { out.mark = String(mark); out.markSvg = svgAt(mark); }
+  const wm = fm.wordmark && /\.(svg|png)$/i.test(String(fm.wordmark)) ? String(fm.wordmark) : null;
+  if (wm && existsSync(join(projectDir, wm))) { out.wordmarkFile = wm; out.wordmarkSvg = svgAt(wm); }
+  const guidePath = join(projectDir, 'docs', 'design', 'STYLE_GUIDE.md');
+  let guide = '';
+  try { guide = existsSync(guidePath) ? readFileSync(guidePath, 'utf8') : ''; } catch { guide = ''; }
+  const sec = section(guide, /^##\s+logo\b/i) || section(text, /^##\s+logo\b/i) || '';
+  const line = (re) => { const m = sec.match(new RegExp(`^-\\s*\\*\\*${re}[^*]*\\*\\*:?\\s*(.+)$`, 'im')); const v = m ? clean(m[1]) : ''; return v && !/<[^>]*>/.test(v) ? v : ''; };
+  out.clearSpace = line('Clear space'); out.minimum = line('Minimum'); out.colour = line('Colou?r'); out.tagline = line('Tagline'); out.misuse = line('Misuse');
+  return out;
+}
+
+// --- exceptions: the style guide's table, grouped by the rule each departs from --------------------------
+// The template's own threshold: one is an exception, two is worth noticing, three against the same
+// rule means the rule is wrong — narrow it, split it, or retire it.
+export function readExceptions(guideText) {
+  const out = { rows: [], groups: [] };
+  for (const t of mdTables(guideText || '')) {
+    if (!/exception/i.test(t.heading) || t.col(/^date/) < 0) continue;
+    const iD = t.col(/^date/), iW = t.col(/^where/), iWhat = t.col(/^what/), iY = t.col(/^why/), iR = t.col(/^rule|against/);
+    for (const r of t.rows) {
+      const what = clean(r[iWhat]), where = clean(r[iW]);
+      if (!what && !where) continue;
+      out.rows.push({ date: clean(r[iD]), where, what, why: iY >= 0 ? clean(r[iY]) : '', rule: iR >= 0 ? clean(r[iR]) : '' });
+    }
+  }
+  const byRule = new Map();
+  for (const r of out.rows) { const k = (r.rule || r.what).toLowerCase().replace(/\s+/g, ' ').trim(); if (!byRule.has(k)) byRule.set(k, { rule: r.rule || r.what, rows: [] }); byRule.get(k).rows.push(r); }
+  out.groups = [...byRule.values()].sort((a, b) => b.rows.length - a.rows.length).map((g) => ({ ...g, verdict: g.rows.length >= 3 ? 'the rule is wrong — narrow it, split it, or retire it' : g.rows.length === 2 ? 'worth noticing' : 'an exception' }));
+  return out;
+}
+
+// --- resources: the DTCG file verbatim, a variables block derived from it, the import lines, coverage -----
+export function tokensCss(tokens) {
+  const lines = tokens.filter((t) => t.value != null && !t.deprecated).map((t) => `  ${cssVar(t.name)}: ${Array.isArray(t.value) ? t.value.map((f) => (/\s/.test(f) ? `"${f}"` : f)).join(', ') : dim(t.value)};`);
+  return lines.length ? `:root {\n${lines.join('\n')}\n}\n` : '';
+}
+export function readTokensFile(projectDir) {
+  const p = join(projectDir, 'docs', 'design', 'tokens.json');
+  try { return existsSync(p) ? readFileSync(p, 'utf8') : ''; } catch { return ''; }
+}
+// Kit coverage reads a `design` field (the manifest) or a `Design` column (COMPONENTS.md) — a URL
+// into the founder's own file. Nothing writes it yet (IDEA-108 row 3, gated); when nobody has, the
+// count is 0 of N and the page names the field rather than inventing a link.
+export function readKitLinks(projectDir, components) {
+  const links = new Map();
+  const mPath = join(projectDir, 'docs', 'design', 'library', 'manifest.json');
+  if (existsSync(mPath)) { try { for (const c of JSON.parse(readFileSync(mPath, 'utf8')).components || []) if (c && c.name && typeof c.design === 'string' && /^https?:\/\//.test(c.design)) links.set(String(c.name), c.design); } catch { /* reported elsewhere */ } }
+  const cPath = join(projectDir, 'docs', 'design', 'COMPONENTS.md');
+  if (existsSync(cPath)) { try { for (const t of mdTables(readFileSync(cPath, 'utf8'))) { const iN = t.col(/^component/), iD = t.col(/^design/); if (iN < 0 || iD < 0) continue; for (const r of t.rows) { const name = clean(r[iN]); const url = (String(r[iD] || '').match(/https?:\/\/\S+/) || [])[0]; if (name && url) links.set(name, url.replace(/[)>\]]+$/, '')); } } } catch { /* reported elsewhere */ } }
+  return components.map((c) => ({ name: c.name, design: links.get(c.name) || null }));
+}
+
 // --- collect ----------------------------------------------------------------------------------------
 
 export function collectDesign(projectDir, projectName) {
@@ -523,13 +613,18 @@ export function collectDesign(projectDir, projectName) {
   // The style guide's five-state table fills a component's states when nothing else says.
   for (const c of components.components) if (!c.states && c.missing === null && guide.fiveStates && guide.fiveStates[c.name]) { c.states = guide.fiveStates[c.name]; c.missing = Object.keys(c.states).filter((k) => c.states[k] === false); }
   for (const c of components.components) c.svg = specFrameSvg(c, tokens);
+  const icons = readIcons(projectDir); icons.decision = readIconDecision(guide.text);
+  const logo = readLogo(projectDir);
+  const exceptions = readExceptions(guide.text);
+  const resources = { tokensText: readTokensFile(projectDir), css: tokensCss(tokens), kit: readKitLinks(projectDir, components.components) };
   const content = { terms: guide.terms || [], voiceTraits: guide.voiceTraits || [], tone: (guide.tone || []).filter((t) => t.string), toneAll: guide.tone || [], surfaces: guide.surfaces || [], deferred: guide.voiceDeferred !== false, present: guide.present };
   const slots = [
     ['brand', shape.present], ['people', personas.length > 0], ['journey', journey.stages.length > 0], ['principles', guide.principles.length > 0], ['colour', color.length > 0], ['type', type.length > 0], ['space', space.length + radius.length + elevation.length > 0], ['layout', guide.layout],
+    ['icons', icons.files.length > 0 || Boolean(icons.decision.set)], ['logo', Boolean(logo.mark)],
     ['components', components.components.length > 0], ['patterns', patterns.ours.length + patterns.groups.length > 0], ['flows', flows.flows.length > 0], ['content', content.terms.length + content.tone.length + content.voiceTraits.length > 0], ['a11y', (guide.floor || []).length > 0 || pairs.length > 0],
     ['research', research.evid.length > 0],
   ];
-  return { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, components, patterns, flows, content, guards, findings: pairs.filter((p) => p.grade !== 'AA').length };
+  return { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, findings: pairs.filter((p) => p.grade !== 'AA').length };
 }
 
 // --- render -------------------------------------------------------------------------------------------
@@ -549,7 +644,7 @@ function swatchHtml(t, decs) {
 }
 
 export function renderDesignHtml(data, stampedAt) {
-  const { brand, shape, tokens, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings, projectName, personas, journey, research, components, patterns, flows, content, guards } = data;
+  const { brand, shape, tokens, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings, projectName, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources } = data;
   // The verb on a hole is gated the way the playbook gates it (verbLine): a skill the mode hasn't
   // unlocked says so, and a droppable record points at /import — both spaces say the same thing.
   const hole = (id, title, body, verb, src) => holeRaw(id, title, body, verbLine(verb, data.projectDir), src);
@@ -615,7 +710,7 @@ export function renderDesignHtml(data, stampedAt) {
       : `      <div class="blocks one">${hole('space-none', 'Spacing · radius · elevation', '<p>A 4-base scale, two radii, one shadow — the three families after colour that a screen reinvents by hand.</p>', '/design-tokens-init', esc(src))}</div>`);
 
   // 6 · Layout
-  const layout = chapter('layout', 8, 'Layout', guide.layout ? 'A layout section exists.' : 'Nobody has decided how a page is built yet.', '',
+  const layout = chapter('layout', 9, 'Layout', guide.layout ? 'A layout section exists.' : 'Nobody has decided how a page is built yet.', '',
     guide.layout ? `      <div class="blocks one"><article class="block" id="layout-guide" data-title="Layout"><div class="head"><h3>From the style guide</h3></div><div class="body"><p>The Layout section of <code>docs/design/STYLE_GUIDE.md</code> has content; slice 2 renders it. Until then, read it there.</p></div><div class="foot"><span class="src">docs/design/STYLE_GUIDE.md · Layout</span></div><div class="actions"></div></article></div>`
       : `      <div class="blocks one">${hole('layout-hole', 'The slot, and what fills it', '<p>No column grid, no breakpoint list, no container width. The slot has a shape so the decision has somewhere to land:</p><ul style="margin-top:8px;font-style:normal"><li><strong>base unit</strong></li><li><strong>the ramp</strong> — which spacing steps mean inside a control, between controls, between sections</li><li><strong>grid anatomy</strong> — columns · gutters · margins · regions</li><li><strong>breakpoints</strong> — as <code>breakpoint.*</code> tokens, so a media query is a name</li><li><strong>responsive techniques</strong> — reposition · resize · reflow · hide · re-architect, and which are allowed</li><li><strong>density</strong> — one, until a second is earned</li></ul>', 'docs/design/STYLE_GUIDE.md · Layout — six sub-slots, all blank · /design-review opens it at the next screen', guide.present ? 'docs/design/STYLE_GUIDE.md · Layout section empty or absent' : 'docs/design/STYLE_GUIDE.md · absent')}</div>`);
 
@@ -646,7 +741,7 @@ export function renderDesignHtml(data, stampedAt) {
   const rungRow = (k, label, items, note) => `<tr><td><strong>${label}</strong></td><td class="mono tab">${items.length}</td><td>${items.length ? esc(items.map((e) => `${e.id}${e.date ? ` · ${e.date}` : ''}`).join(' · ')) : `<span class="unk">${esc(note)}</span>`}</td></tr>`;
   const methodRows = r.byMethod.map((m) => `<tr><td><strong>${esc(m.label)}</strong></td><td class="mono">${m.rung}</td><td class="${m.used ? 'ok' : 'q'}">${m.used ? `used · ${m.used}` : 'never'}</td><td class="mono">${esc(m.verb)}</td></tr>`).join('');
   const synth = personas.length ? Math.round(personas.reduce((a, p) => a + (p.synthetic ?? 100), 0) / personas.length) : null;
-  const researchCh = chapter('research', 14, 'Research', r.evid.length ? `${r.byRung.observed.length} observed · ${r.byRung.stated.length} stated${synth != null ? ` · the personas are ${synth}% inferred` : ''}.` : 'Nothing from outside the room yet.',
+  const researchCh = chapter('research', 17, 'Research', r.evid.length ? `${r.byRung.observed.length} observed · ${r.byRung.stated.length} stated${synth != null ? ` · the personas are ${synth}% inferred` : ''}.` : 'Nothing from outside the room yet.',
     'Research is everything that tells you whether the design is right — what people did, what they said, what the field does, what a reviewer can see. The same records the playbook keeps by date, cut here by the rung they reach and by the method that produced them. Grades, dates and methods only; never a quote. Coverage is a fact; readiness is a verdict.',
     `      <div class="blocks one">
         <article class="block" id="research-rungs" data-title="Research — by rung"><div class="head"><h3>By rung <span class="sub">— observed beats stated beats inferred</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Rung</th><th>n</th><th>Records</th></tr></thead><tbody>${rungRow('observed', 'Observed — someone was watched, or paid, or showed up', r.byRung.observed, 'nobody has been watched using anything — the cheapest test is to sit beside one person')}${rungRow('stated', 'Stated — someone said something that bears on a design choice', r.byRung.stated, 'no conversation recorded — /interview preps one, /evidence grades it')}<tr><td><strong>Inferred — the founder\'s assumptions, marked as such</strong></td><td class="mono tab">${personas.length}</td><td>${personas.length ? esc(personas.map((p) => `${p.name} · synthetic ${p.synthetic ?? '?'}%`).join(' · ')) : '<span class="unk">no persona to mark</span>'}</td></tr>${r.byRung.ungraded.length ? `<tr><td><strong>Ungraded</strong></td><td class="mono tab">${r.byRung.ungraded.length}</td><td class="warn">${esc(r.byRung.ungraded.map((e) => e.id).join(' · '))} — a record with no <code>grade:</code> counts for nothing</td></tr>` : ''}</tbody></table></div></div><div class="foot"><span class="chip ${r.byRung.observed.length ? 'ev' : 'asserted'}">${r.evid.length} record${r.evid.length === 1 ? '' : 's'}${r.newest ? ` · newest ${esc(r.newest)}` : ''}</span><span class="src">docs/evidence/ · grades and dates only</span></div><div class="actions"></div></article>
@@ -669,7 +764,7 @@ export function renderDesignHtml(data, stampedAt) {
   const apiLine = co.api.length ? `<p class="t-small" style="margin-top:10px"><strong>One word per concept, in props too:</strong> ${co.api.map((a) => `${esc(a.concept)} → <code>${esc(a.word)}</code>${a.never ? ` <span class="unk">(never ${esc(a.never)})</span>` : ''}`).join(' · ')}</p>` : '';
   const bothLine = co.both ? '<p class="t-small" style="margin-top:10px;color:var(--stale)"><strong>Both <code>COMPONENTS.md</code> and <code>library/manifest.json</code> are on disk.</strong> The manifest supersedes the index — two definitions of a button is the trap the index exists to refuse. Replace the file with a pointer at the library (the skill says how).</p>' : '';
   const nFind = co.components.reduce((a, c) => a + c.findings.length + (c.stale ? 1 : 0) + (c.missing && c.missing.length ? 1 : 0), 0);
-  const componentsCh = chapter('components', 9, 'Components', co.components.length ? `${co.components.length} exist${co.retired.length ? `, ${co.retired.length} retired` : ''}. Every card carries its import line and a frame for your design tool.` : 'No component index yet.',
+  const componentsCh = chapter('components', 10, 'Components', co.components.length ? `${co.components.length} exist${co.retired.length ? `, ${co.retired.length} retired` : ''}. Every card carries its import line and a frame for your design tool.` : 'No component index yet.',
     'The index is the agent\'s reuse list — <em>does something like this already exist?</em> — and the founder\'s inventory. Reuse first, extend second, create last. Build the button, then use it on the page; don\'t build the page and leave the button inside it.',
     co.components.length ? `      <div class="blocks one">
         ${co.error ? `<article class="block hole" id="components-error"><div class="head"><h3>Couldn't read the manifest</h3></div><div class="body"><p>${esc(co.error)}</p></div><div class="actions"></div></article>` : ''}
@@ -693,7 +788,7 @@ export function renderDesignHtml(data, stampedAt) {
   const refusedBlock = pa.refused.length ? `<article class="block" id="patterns-refused" data-title="Patterns — refused"><div class="head"><h3>Refused <span class="sub">— considered, rejected, kept so nobody proposes it again</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Pattern</th><th>Why refused</th><th>On</th></tr></thead><tbody>${pa.refused.map((r) => `<tr><td><strong>${esc(r.pattern)}</strong></td><td>${esc(r.why)}</td><td class="mono">${esc(r.on || '—')}</td></tr>`).join('')}</tbody></table></div></div><div class="foot"><span class="chip dec">${pa.refused.length} refused</span><span class="src">docs/design/PATTERNS.md · Refused</span></div><div class="actions"></div></article>` : '';
   const doDontBlock = (guide.doDont || []).length ? `<article class="block" id="patterns-dodont" data-title="Do / Don't — from the style guide"><div class="head"><h3>Do / Don't <span class="sub">— the rule rung, from the style guide · ${guide.doDont.length}</span></h3></div><div class="body"><div class="tscroll"><table class="t pairs"><thead><tr><th>Do</th><th>Don't</th><th>Because</th></tr></thead><tbody>${guide.doDont.map((r) => `<tr><td class="do">${esc(r.do)}</td><td class="dont">${esc(r.dont)}</td><td>${esc(r.because)}</td></tr>`).join('')}</tbody></table></div><p class="t-small" style="margin-top:10px">The only rung an agent can act on. A principle above that never produced a row here isn't steering anything yet.</p></div><div class="foot"><span class="chip dec">${guide.doDont.length} pair${guide.doDont.length === 1 ? '' : 's'}</span><span class="src">docs/design/STYLE_GUIDE.md · Do / Don't</span></div><div class="actions"></div></article>` : '';
   const nPat = pa.ours.length + pa.groups.reduce((a, g) => a + g.rows.length, 0);
-  const patternsCh = chapter('patterns', 10, 'Patterns', pa.present ? `${nPat} pattern${nPat === 1 ? '' : 's'}${pa.ours.length ? `, ${pa.ours.length} of them ours` : ', none of them ours yet'}${pa.refused.length ? ` · ${pa.refused.length} refused` : ''}.` : 'No pattern set yet.',
+  const patternsCh = chapter('patterns', 11, 'Patterns', pa.present ? `${nPat} pattern${nPat === 1 ? '' : 's'}${pa.ours.length ? `, ${pa.ours.length} of them ours` : ', none of them ours yet'}${pa.refused.length ? ` · ${pa.refused.length} refused` : ''}.` : 'No pattern set yet.',
     'A pattern is a recurring decision with a rule attached — one level above a component, one below a flow. The rule and the anti-pattern sit side by side because a rule you can see is one you stop arguing about. Ours first; the inherited groups after.',
     pa.present || (guide.doDont || []).length ? `      <div class="blocks one">
         ${oursBlock}
@@ -707,7 +802,7 @@ export function renderDesignHtml(data, stampedAt) {
   const fl = flows;
   const pathChip = (ok, label) => ok ? `<span class="chip dec">${label}</span>` : `<span class="chip find">${label} · missing</span>`;
   const flowBlock = (f, i) => { const noWhy = f.happy.filter((st) => !st.why); return `<article class="block" id="flow-${i + 1}" data-title="Flow — ${esc(f.name)}"><div class="head"><h3>${esc(f.name)} <span class="sub">· ${esc(f.entry || 'no entry')} → ${esc(f.endsAt || '?')}${f.owner ? ` · ${esc(f.owner)}` : ''}</span></h3></div><div class="body">${f.happy.length ? `<div class="tscroll"><table class="t"><thead><tr><th>#</th><th>Step</th><th>Asks the user for</th><th>Why it's needed <em>now</em></th></tr></thead><tbody>${f.happy.map((st) => `<tr><td class="mono">${esc(st.n)}</td><td>${esc(st.step)}</td><td>${esc(st.asks || '—')}</td><td class="${st.why ? '' : 'n'}">${st.why ? esc(st.why) : '<strong>cannot say — the step to cut</strong>'}</td></tr>`).join('')}</tbody></table></div>` : f.deferred ? '<p class="t-small">The happy path, cut list, first-run and failure paths live in the FEAT — the index holds the row, the FEAT holds the detail, and two copies diverge.</p>' : '<p class="unk">No step table — the cut test needs one: each step names what it asks for and why now.</p>'}${f.cut.length ? `<p class="t-small" style="margin-top:10px"><strong>Cut, and kept:</strong> ${f.cut.map((c) => `${esc(c.cut)}${c.why ? ` — <em>${esc(c.why)}</em>` : ''}`).join(' · ')}</p>` : ''}${noWhy.length ? `<p class="t-small" style="margin-top:10px;color:var(--stale)"><strong>${noWhy.length} step${noWhy.length === 1 ? '' : 's'} cannot say why now.</strong> Asking is the most expensive thing an interface does; a step that can't say why it's needed now is the step to cut.</p>` : ''}</div><div class="foot">${f.deferred ? '<span class="chip asserted">three paths · in the FEAT</span>' : `${pathChip(f.happy.length > 0, 'happy')}${pathChip(f.firstRun, 'first-run')}${pathChip(f.failure, 'failure')}`}<span class="src">docs/design/FLOWS.md${f.owner ? ` · ${esc(f.owner)}` : ''}</span></div><div class="actions"></div></article>`; };
-  const flowsCh = chapter('flows', 11, 'Flows', fl.flows.length ? `${fl.flows.length} flow${fl.flows.length === 1 ? '' : 's'}, each with three paths or a hole where one is missing.` : 'No flow named yet.',
+  const flowsCh = chapter('flows', 12, 'Flows', fl.flows.length ? `${fl.flows.length} flow${fl.flows.length === 1 ? '' : 's'}, each with three paths or a hole where one is missing.` : 'No flow named yet.',
     'The one layer no checker can give you: the sequence is a judgment a person made and wrote down. A flow is entry → steps → exit, plus the first-run path (the one that ships broken) and the failure path (where they land, what they keep). Each step says why it is needed <em>now</em> — the step that can\'t is the step to cut.',
     fl.flows.length ? `      <div class="blocks one">
         <article class="block" id="flows-index" data-title="Flows — the index"><div class="head"><h3>Index</h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Flow</th><th>Entry</th><th>Steps</th><th>Ends at</th><th>Owned by</th><th>Paths</th></tr></thead><tbody>${fl.flows.map((f, i) => `<tr><td><a href="#flow-${i + 1}">${esc(f.name)}</a></td><td class="mono">${esc(f.entry)}</td><td class="tab">${esc(f.steps || '—')}</td><td>${esc(f.endsAt)}</td><td class="mono">${esc(f.owner || '—')}</td><td>${f.deferred ? '<span class="chip asserted">in the FEAT</span>' : f.section ? `${[f.happy.length > 0, f.firstRun, f.failure].filter(Boolean).length} of 3` : '<span class="chip find">no section</span>'}</td></tr>`).join('')}</tbody></table></div></div><div class="foot"><span class="src">docs/design/FLOWS.md${fl.updated ? ` · rev. ${esc(String(fl.updated))}` : ''}</span></div><div class="actions"></div></article>
@@ -721,7 +816,7 @@ export function renderDesignHtml(data, stampedAt) {
     : hole('content-terms', 'Terminology', '<p>Use · never · because. The cheapest content rule to write and the most expensive to change late — renaming a core noun hits copy, routes, schema, tests and every prompt at once. Pick the user\'s word over the internal one.</p>', 'docs/design/STYLE_GUIDE.md · Terminology — the table is there, blank', guide.present ? 'docs/design/STYLE_GUIDE.md · Terminology empty' : 'docs/design/STYLE_GUIDE.md · absent');
   const voiceBlock = !ct.deferred ? `<article class="block" id="content-voice" data-title="Voice and tone"><div class="head"><h3>Voice, and how it shifts <span class="sub">— the real strings</span></h3></div><div class="body">${ct.voiceTraits.length ? `<ul>${ct.voiceTraits.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : holeLine('voice traits', 'three, each with what it gives up')}${ct.toneAll.length ? `<div class="tscroll" style="margin-top:10px"><table class="t"><thead><tr><th>Context</th><th>How the voice shifts</th><th>Real string</th></tr></thead><tbody>${ct.toneAll.map((t) => `<tr><td><strong>${esc(t.context)}</strong></td><td>${esc(t.shift || '—')}</td><td>${t.string ? `<span class="val" data-copy="${esc(`value=${t.string}`)}">“${esc(t.string)}”</span>` : '<span class="unk">no string yet — an agent can\'t act on an adjective</span>'}</td></tr>`).join('')}</tbody></table></div>` : ''}${ct.surfaces.length ? `<p class="t-small" style="margin-top:10px">${ct.surfaces.map((s) => `<strong>${esc(s.surface)}:</strong> ${esc(s.rule)}`).join(' · ')}</p>` : ''}</div><div class="foot"><span class="chip ${ct.tone.length ? 'dec' : 'asserted'}">${ct.tone.length} of ${ct.toneAll.length} contexts have a real string</span><span class="src">docs/design/STYLE_GUIDE.md · Voice in the interface</span></div><div class="actions"></div></article>`
     : `<article class="block dormant" id="content-voice" data-title="Voice and tone"><div class="head"><h3>Voice, and how it shifts</h3></div><div class="body">Deferred, and deferring it is a real choice: until people have been watched using the product, "plain over clever" cannot be told from "friendly over formal", and a table filled in because it was asked for steers nothing. Terminology first; come back when there is enough copy to be inconsistent about.<span class="cond">wakes when the Error and Warning rows get a real string · high-stakes domains fill those two on day one</span></div><div class="foot"><span class="chip asserted">deferred by rule</span><span class="src">docs/design/STYLE_GUIDE.md · Voice in the interface · placeholders</span></div><div class="actions"></div></article>`;
-  const contentCh = chapter('content', 12, 'Content', ct.terms.length || ct.tone.length ? `${ct.terms.length} term${ct.terms.length === 1 ? '' : 's'} · ${ct.tone.length} real string${ct.tone.length === 1 ? '' : 's'}.` : 'The words are not written down yet.',
+  const contentCh = chapter('content', 13, 'Content', ct.terms.length || ct.tone.length ? `${ct.terms.length} term${ct.terms.length === 1 ? '' : 's'} · ${ct.tone.length} real string${ct.tone.length === 1 ? '' : 's'}.` : 'The words are not written down yet.',
     'The words are half the interface. Voice is constant; tone shifts by context; both get down to real strings, because an agent can act on “Delete 14 records. This can\'t be undone.” and cannot act on “confident”. The brand\'s <em>how it sounds</em> line is the source; this is where it becomes rules.',
     `      <div class="blocks one">
         ${termsBlock}
@@ -731,7 +826,7 @@ export function renderDesignHtml(data, stampedAt) {
   // 13 · Accessibility
   const floorList = (guide.floor || []).length ? `<ul>${guide.floor.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` : '<p class="unk">No floor written — the style guide template carries four lines: contrast by token pair, a visible focus state, reduced motion honoured, nothing by colour alone.</p>';
   const guardRows = guards.map((g) => `<tr><td class="mono">${esc(g.name)}</td><td>${esc(g.does)}</td><td class="${g.on ? 'ok' : 'q'}">${g.on ? 'on' : `off · <code>boss hooks enable ${esc(g.name)}</code>`}</td></tr>`).join('');
-  const a11yCh = chapter('a11y', 13, 'Accessibility', pairs.length ? `${pairs.length} pair${pairs.length === 1 ? '' : 's'} computed, ${findings} finding${findings === 1 ? '' : 's'}; everything else needs a person.` : 'Nothing computed yet; everything needs a person.',
+  const a11yCh = chapter('a11y', 14, 'Accessibility', pairs.length ? `${pairs.length} pair${pairs.length === 1 ? '' : 's'} computed, ${findings} finding${findings === 1 ? '' : 's'}; everything else needs a person.` : 'Nothing computed yet; everything needs a person.',
     'One check here is arithmetic — contrast over two declared numbers — and it is computed. Every other check is a judgment or needs a rendered page, and the honest word for those is <em>not checked</em>, said once, never mistaken for a pass.',
     `      <div class="blocks one">
         <article class="block" id="a11y-floor" data-title="Accessibility — the floor"><div class="head"><h3>The floor <span class="sub">— not negotiable, not a phase</span></h3></div><div class="body">${floorList}</div><div class="foot"><span class="src">docs/design/STYLE_GUIDE.md · Accessibility floor</span></div><div class="actions"></div></article>
@@ -739,11 +834,66 @@ export function renderDesignHtml(data, stampedAt) {
         <article class="block" id="a11y-notchecked" data-title="Accessibility — not checked"><div class="head"><h3>Not checked <span class="sub">— said once, for everything below</span></h3></div><div class="body"><ul><li><strong>Focus</strong> — every interactive element has a visible focus state</li><li><strong>Keyboard</strong> — every flow completes without a pointer</li><li><strong>Screen reader</strong> — names, roles, the order things are announced</li><li><strong>Colour alone</strong> — nothing is communicated only by hue</li><li><strong>Motion</strong> — <code>prefers-reduced-motion</code> honoured by every animation</li><li><strong>Text over an image, a gradient, a translucent overlay</strong> — composites at runtime; the token pairs cannot see it</li><li><strong>320px</strong> — reads and works at the narrowest width</li></ul><p class="t-small" style="margin-top:10px">Each needs a rendered page or a person. <code>/ux-check</code> walks them against shipped UI and writes <em>not checked</em> where it cannot see — the same word as here, never a pass by omission.</p></div><div class="foot"><span class="chip asserted">7 · not checked</span><span class="src">needs a render or a person · /ux-check</span></div><div class="actions"></div></article>
       </div>`);
 
+
+  // 8 · Icons & logo
+  const ic = icons, lg = logo;
+  const iconTile = (f) => `<div class="icon val" data-copy="${esc(`svg=${f.svg}`)}" title="Copy as SVG"><span class="g" aria-hidden="true">${f.svg}</span><b>${esc(f.name)}</b><span class="m">${f.size ? `${f.size}px` : f.viewBox ? esc(f.viewBox) : ''} · ${f.bytes} B</span></div>`;
+  const dec = ic.decision;
+  const decisionRows = [['The set', dec.set, 'one, named — it is a dependency'], ['Sizes that exist', dec.sizes, 'two or three, not "whatever fits"'], ['Icon-only is allowed when', dec.iconOnly, 'and it still needs an accessible name'], ['What an icon never does', dec.never, 'carry meaning nothing else carries']];
+  const decided = decisionRows.filter(([, v]) => v).length;
+  const iconsBlock = ic.files.length ? `<article class="block" id="icons-set" data-title="Icons — the set" data-svg="${esc(ic.sprite)}"><div class="head"><h3>The set <span class="sub">· ${ic.files.length} icon${ic.files.length === 1 ? '' : 's'} · drawn from the files · click one to copy its SVG · <em>SVG</em> on this block copies the set as one sprite</span></h3></div><div class="body"><div class="icons">${ic.files.map(iconTile).join('')}</div><p class="t-small" style="margin-top:10px">The sprite is one <code>&lt;svg&gt;</code> of <code>&lt;symbol id="icon-&lt;name&gt;"&gt;</code> — the honest download: paste it once into a design tool or a page and reference each icon by id.</p></div><div class="foot"><span class="chip dec">${ic.files.length} files</span><span class="src">docs/design/icons/*.svg</span></div><div class="actions"></div></article>`
+    : hole('icons-set', 'The set, as files', '<p>One SVG per icon under <code>docs/design/icons/</code>. The page draws each from its file, copies any one as SVG, and copies the set as a sprite — nothing is drawn that isn\'t a file.</p>', 'drop the files in docs/design/icons/ — a designer\'s export, or the set you chose', ic.present ? 'docs/design/icons/ · present, no .svg' : 'docs/design/icons/ · absent');
+  const decisionBlock = `<article class="block${decided ? '' : ' hole'}" id="icons-decision" data-title="Icons — the decision"><div class="head"><h3>The decision <span class="sub">— the set is a dependency; decide it before the second icon</span></h3></div><div class="body">${decided ? `<ul>${decisionRows.map(([k, v, hint]) => `<li><strong>${k}:</strong> ${v ? esc(v) : `<span class="unk">not decided — ${esc(hint)}</span>`}</li>`).join('')}</ul>` : `<p>Which set, which sizes exist, when icon-only is allowed, what an icon never does. Swapping sets later touches every use site; mixing two is visible to anyone even if they can't say why.</p><span class="verb">docs/design/STYLE_GUIDE.md · 1b. Icons — four lines</span>`}</div><div class="foot"><span class="chip ${decided === decisionRows.length ? 'dec' : 'asserted'}">${decided} of ${decisionRows.length} decided</span><span class="src">docs/design/STYLE_GUIDE.md · Icons</span></div><div class="actions"></div></article>`;
+  const name = brand.name;
+  const displayFam = type.find((t) => Array.isArray(t.value) && /display|heading|brand/i.test(t.name)) || type.find((t) => Array.isArray(t.value));
+  const wmStyle = displayFam ? ` style="font-family:${esc(displayFam.value.map((f) => (/\s/.test(f) ? `'${f}'` : f)).join(', '))}"` : '';
+  const markHtml = lg.markSvg ? lg.markSvg : lg.mark ? `<img src="${esc(lg.mark.split('/').map(encodeURIComponent).join('/'))}" alt="${esc(name)} mark">` : '';
+  const wordHtml = lg.wordmarkSvg ? lg.wordmarkSvg : `<span class="wm"${wmStyle}>${esc(name)}</span>`;
+  const lockups = lg.mark ? `<div class="lockups"><div class="lk paper"><div class="a">${markHtml}${wordHtml}</div><span class="m">mark + wordmark · on paper</span></div><div class="lk accent"><div class="a">${markHtml}<span class="wm"${wmStyle}>${esc(name)}</span></div><span class="m">on the accent</span></div><div class="lk paper"><div class="a">${markHtml}</div><span class="m">the mark alone</span></div><div class="lk paper"><div class="a">${wordHtml}</div><span class="m">the wordmark alone${lg.wordmarkFile ? '' : ' · the name in the display face'}</span></div></div>` : '';
+  const logoRules = [['Clear space', lg.clearSpace], ['Minimum size', lg.minimum], ['Colour', lg.colour], ['With the tagline', lg.tagline], ['Misuse', lg.misuse]];
+  const rulesFilled = logoRules.filter(([, v]) => v).length;
+  const logoBlock = lg.mark ? `<article class="block" id="logo" data-title="The logo"${lg.markSvg ? ` data-svg="${esc(lg.markSvg)}"` : ''}><div class="head"><h3>The logo <span class="sub">· ${esc(lg.mark)}${lg.wordmarkFile ? ` · ${esc(lg.wordmarkFile)}` : ''}${lg.markSvg ? ' · <em>SVG</em> copies the mark' : ''}</span></h3></div><div class="body">${lockups}<ul style="margin-top:12px">${logoRules.map(([k, v]) => `<li><strong>${k}:</strong> ${v ? esc(v) : '<span class="unk">not written</span>'}</li>`).join('')}</ul></div><div class="foot"><span class="chip ${rulesFilled ? 'dec' : 'asserted'}">${rulesFilled} of ${logoRules.length} rules written</span><span class="src">docs/BRAND.md · logo: · docs/design/STYLE_GUIDE.md · Logo</span></div><div class="actions"></div></article>`
+    : hole('logo', 'The logo', `<p>The mark and the wordmark as lockups — on paper, on the accent, each alone — with clear space, minimum size, colour, the tagline rule and the misuse pair. Nothing is drawn until there is a file: a placeholder mark becomes the logo in about a week.</p>`, 'docs/BRAND.md · logo: <path to the mark .svg> — then a ## Logo section with the five rules', brand.present ? 'docs/BRAND.md · no logo: path' : 'docs/BRAND.md · absent');
+  const iconsCh = chapter('icons', 8, 'Icons & logo', ic.files.length || lg.mark ? `${ic.files.length ? `${ic.files.length} icon${ic.files.length === 1 ? '' : 's'} from files` : 'no icon files'}${lg.mark ? ' · the mark from its file' : ' · no mark'}.` : 'No icon files, no mark — the slots, not placeholders.',
+    'An icon set is a dependency and a logo is the one drawing everything else defers to. Both render from files or not at all: the page copies what exists as SVG and says what is missing, and never draws a stand-in that would quietly become the real thing.',
+    `      <div class="blocks">
+        ${iconsBlock}
+        ${decisionBlock}
+      </div>
+      <div class="blocks one" style="margin-top:14px">
+        ${logoBlock}
+      </div>`);
+
+  // 15 · Resources
+  const rs = resources;
+  const kitN = rs.kit.filter((k) => k.design).length;
+  const importList = components.components.filter((c) => c.import).map((c) => c.import).join('\n');
+  const dl = rs.tokensText ? `<a class="dl" href="data:application/json;charset=utf-8,${encodeURIComponent(rs.tokensText)}" download="tokens.json">Download tokens.json</a>` : '';
+  const resourcesCh = chapter('resources', 15, 'Resources', rs.tokensText ? 'Take it with you — the one file, and what derives from it.' : 'Nothing to take yet.',
+    'Everything here is a file on disk or derived from one at render. The tokens file is the seam between code and a design tool: on any plan a tokens plugin reads it; an enterprise API can read and write it; native import without a plugin is unverified. The page says which, and never promises a round trip.',
+    `      <div class="blocks">
+        ${rs.tokensText ? `<article class="block" id="res-tokens" data-title="Resources — the tokens file" data-code="${esc(JSON.stringify({ 'tokens.json (DTCG)': rs.tokensText, 'CSS variables — derived at render': rs.css }))}"><div class="head"><h3>The tokens file <span class="sub">· W3C DTCG · the source of every value on this page</span></h3></div><div class="body"><p>${tokens.tokens.length} token${tokens.tokens.length === 1 ? '' : 's'} · ${Buffer.byteLength(rs.tokensText)} bytes. <em>Code</em> copies the file, or the <code>:root { --… }</code> block derived from it. ${dl}</p><pre class="pre">${esc(rs.css.split('\n').slice(0, 8).join('\n'))}${rs.css.split('\n').length > 8 ? '\n  …' : ''}</pre><p class="t-small">Your design tool: a tokens plugin on any plan reads this file; the enterprise API reads and writes it; native import is unverified — check before planning around it. The return trip is the same file, exported back and diffed.</p></div><div class="foot"><span class="chip dec">DTCG 2025.10</span><span class="src">docs/design/tokens.json</span></div><div class="actions"></div></article>`
+          : hole('res-tokens', 'The tokens file', '<p>One DTCG file, written always, whatever the stack — the portable half. The stack file (CSS variables, a theme object) is derived from it, never the other way round.</p>', '/design-tokens-init writes docs/design/tokens.json', 'docs/design/tokens.json · absent')}
+        ${components.components.length ? `<article class="block" id="res-imports" data-title="Resources — the import lines" data-code="${esc(JSON.stringify({ 'Import lines — every component': importList }))}"><div class="head"><h3>The import lines <span class="sub">· ${components.components.filter((c) => c.import).length} · the reuse list, as one paste</span></h3></div><div class="body"><pre class="pre">${esc(importList)}</pre></div><div class="foot"><span class="src">${esc(components.source)}</span></div><div class="actions"></div></article>` : ''}
+        ${ic.files.length ? `<article class="block" id="res-sprite" data-title="Resources — the icon sprite" data-svg="${esc(ic.sprite)}"><div class="head"><h3>The icon sprite <span class="sub">· ${ic.files.length} symbols · <em>SVG</em> copies it</span></h3></div><div class="body"><p class="t-small">One <code>&lt;svg&gt;</code> of <code>&lt;symbol&gt;</code>s. In a page: <code>&lt;svg&gt;&lt;use href="#icon-${esc(ic.files[0].name)}"/&gt;&lt;/svg&gt;</code>. In a design tool: paste, and each symbol is a layer.</p></div><div class="foot"><span class="src">docs/design/icons/*.svg</span></div><div class="actions"></div></article>` : ''}
+        <article class="block${components.components.length ? '' : ' dormant'}" id="res-kit" data-title="Resources — kit coverage"><div class="head"><h3>Kit coverage <span class="sub">— which components have a counterpart in your design tool</span></h3></div><div class="body">${components.components.length ? `<p><strong>${kitN} of ${rs.kit.length}</strong> component${rs.kit.length === 1 ? ' carries' : 's carry'} a <code>design:</code> link.</p><ul style="margin-top:8px">${rs.kit.map((k) => `<li><code>${esc(k.name)}</code> — ${k.design ? `<a href="${esc(k.design)}" rel="noopener">Open in your design tool</a>` : '<span class="unk">no link</span>'}</li>`).join('')}</ul><p class="t-small" style="margin-top:10px">A link is a URL into your own file and node: a <code>design</code> field on the component in the manifest, or a <em>Design</em> column in <code>COMPONENTS.md</code>. Coverage is a fact about links, never about whether the two match — a component is stable when the code, the docs and the kit agree, and this page can only show which of the three exist.</p>` : 'No components, so nothing to cover.<span class="cond">wakes with the first component row</span>'}</div><div class="foot"><span class="chip ${kitN ? 'dec' : 'asserted'}">${kitN} of ${rs.kit.length} linked</span><span class="src">manifest.json · design: · COMPONENTS.md · Design column</span></div><div class="actions"></div></article>
+      </div>`);
+
+  // 16 · Exceptions
+  const ex = exceptions;
+  const exGroup = (g, i) => `<article class="block" id="exception-${i + 1}" data-title="Exceptions — ${esc(g.rule)}"><div class="head"><h3>${esc(g.rule)} <span class="sub">· ${g.rows.length} · ${esc(g.verdict)}</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Date</th><th>Where</th><th>What</th><th>Why</th></tr></thead><tbody>${g.rows.map((r) => `<tr><td class="mono">${esc(r.date || '—')}</td><td>${esc(r.where)}</td><td>${esc(r.what)}</td><td>${esc(r.why)}</td></tr>`).join('')}</tbody></table></div></div><div class="foot"><span class="chip ${g.rows.length >= 3 ? 'find' : g.rows.length === 2 ? 'stale' : 'dec'}">${g.rows.length} · ${esc(g.verdict)}</span><span class="src">docs/design/STYLE_GUIDE.md · Exceptions</span></div><div class="actions"></div></article>`;
+  const exceptionsCh = chapter('exceptions', 16, 'Exceptions', ex.rows.length ? `${ex.rows.length} recorded, against ${ex.groups.length} rule${ex.groups.length === 1 ? '' : 's'}.` : 'None recorded.',
+    'A deliberate departure, dated, is a decision; an unrecorded one is drift that reads as precedent next time. Grouped by the rule each departs from, because three against one rule is not three exceptions — it is a rule being worked around, and the working-around is the real convention now.',
+    ex.rows.length ? `      <div class="blocks one">\n        ${ex.groups.map(exGroup).join('\n        ')}\n      </div>`
+      : `      <div class="blocks one"><article class="block dormant" id="exceptions-none" data-title="Exceptions"><div class="head"><h3>None recorded</h3></div><div class="body">Either every screen keeps every rule, or a departure went unrecorded. The first is rare and the second is the one to check: an exception written down here is what stops it reading as precedent.<span class="cond">docs/design/STYLE_GUIDE.md · Exceptions — Date · Where · What · Why, one row per departure</span></div><div class="foot"><span class="chip asserted">0 recorded</span><span class="src">${guide.present ? 'docs/design/STYLE_GUIDE.md · Exceptions empty' : 'docs/design/STYLE_GUIDE.md · absent'}</span></div><div class="actions"></div></article></div>`);
+
   const rail = [
     { group: 'Why it looks like this', items: [{ href: 'brand', n: 1, label: 'Start here', hole: !shape.present }, { href: 'people', n: 2, label: 'People', hole: !personas.length }, { href: 'journey', n: 3, label: 'The journey', hole: !journey.stages.length }, { href: 'principles', n: 4, label: 'Principles', hole: !guide.principles.length }] },
-    { group: 'The language', items: [{ href: 'colour', n: 5, label: 'Colour', hole: !color.length }, { href: 'type', n: 6, label: 'Type', hole: !type.length }, { href: 'shape', n: 7, label: 'Space & shape', hole: !(space.length || radius.length || elevation.length) }, { href: 'layout', n: 8, label: 'Layout', hole: !guide.layout }] },
-    { group: 'The parts', items: [{ href: 'components', n: 9, label: 'Components', hole: !components.components.length }, { href: 'patterns', n: 10, label: 'Patterns', hole: !(patterns.ours.length + patterns.groups.length) }, { href: 'flows', n: 11, label: 'Flows', hole: !flows.flows.length }, { href: 'content', n: 12, label: 'Content', hole: !(content.terms.length + content.tone.length + content.voiceTraits.length) }, { href: 'a11y', n: 13, label: 'Accessibility', hole: !((guide.floor || []).length || pairs.length) }] },
-    { group: 'Kept honest', items: [{ href: 'research', n: 14, label: 'Research', hole: !research.evid.length }] },
+    { group: 'The language', items: [{ href: 'colour', n: 5, label: 'Colour', hole: !color.length }, { href: 'type', n: 6, label: 'Type', hole: !type.length }, { href: 'shape', n: 7, label: 'Space & shape', hole: !(space.length || radius.length || elevation.length) }, { href: 'icons', n: 8, label: 'Icons & logo', hole: !(icons.files.length || logo.mark) }, { href: 'layout', n: 9, label: 'Layout', hole: !guide.layout }] },
+    { group: 'The parts', items: [{ href: 'components', n: 10, label: 'Components', hole: !components.components.length }, { href: 'patterns', n: 11, label: 'Patterns', hole: !(patterns.ours.length + patterns.groups.length) }, { href: 'flows', n: 12, label: 'Flows', hole: !flows.flows.length }] },
+    { group: 'Every screen', items: [{ href: 'content', n: 13, label: 'Content', hole: !(content.terms.length + content.tone.length + content.voiceTraits.length) }, { href: 'a11y', n: 14, label: 'Accessibility', hole: !((guide.floor || []).length || pairs.length) }] },
+    { group: 'Take it with you', items: [{ href: 'resources', n: 15, label: 'Resources', hole: !resources.tokensText }] },
+    { group: 'Kept honest', items: [{ href: 'exceptions', n: 16, label: 'Exceptions', hole: false }, { href: 'research', n: 17, label: 'Research', hole: !research.evid.length }] },
   ];
   const extraCss = `
   .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 10px; } .sw i { display: block; height: 52px; border-radius: 6px; margin-bottom: 7px; border: 1px solid var(--rule-2); } .sw i.val { border-bottom: 1px solid var(--rule-2); } .sw i.val:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -760,14 +910,17 @@ export function renderDesignHtml(data, stampedAt) {
   .t.done td.y, .t td.ok { color: var(--chip-ev); } .t.done td.n, .t td.n { color: var(--bad); } .t.done td.q, .t td.q { color: var(--hole); font-style: italic; }
   .t.pairs td.do { border-left: 3px solid var(--chip-ev); padding-left: 10px; } .t.pairs td.dont { border-left: 3px solid var(--bad); padding-left: 10px; } tr.retired td { color: var(--muted); }
   .component .frame { margin: 10px 0; } .component .frame svg { max-width: 100%; height: auto; display: block; } .cmeta .import { font-family: var(--mono); font-size: 11.5px; padding: 6px 8px; border: 1px solid var(--rule-2); border-radius: 5px; background: var(--ground); cursor: pointer; word-break: break-all; } .cmeta .import:hover { outline: 2px solid var(--accent); outline-offset: 1px; } .cmeta .t-small { margin-top: 8px; }
+  .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; } .icon { display: grid; justify-items: center; gap: 4px; padding: 12px 8px 10px; border: 1px solid var(--rule-2); border-radius: 6px; text-align: center; } .icon .g svg { width: 24px; height: 24px; display: block; } .icon b { font-family: var(--mono); font-size: 11px; font-weight: 500; } .icon .m { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .lockups { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; } .lk { display: grid; gap: 8px; padding: 18px 14px 10px; border: 1px solid var(--rule-2); border-radius: 6px; } .lk .a { display: flex; align-items: center; gap: 10px; min-height: 40px; } .lk .a svg, .lk .a img { height: 32px; width: auto; max-width: 120px; } .lk .wm { font-size: 22px; letter-spacing: -.01em; } .lk .m { font-family: var(--mono); font-size: 10px; color: var(--muted); } .lk.paper { background: var(--ground); } .lk.accent { background: var(--accent); color: var(--accent-ink); } .lk.accent .m { color: var(--accent-ink); opacity: .8; }
+  .pre { margin: 10px 0; padding: 10px 12px; background: var(--ground); border: 1px solid var(--rule-2); border-radius: 5px; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; overflow-x: auto; white-space: pre; } .dl { display: inline-block; margin-left: 6px; padding: 2px 8px; border: 1px solid var(--accent); border-radius: 5px; font-size: 12.5px; text-decoration: none; }
   @media (max-width: 640px) { .scale .row { grid-template-columns: 1fr; gap: 4px; } }
 `;
   const footer = [
     brand.present ? `brand: ${esc(brand.name)} · docs/BRAND.md${brand.accent ? '' : ' (accent unknown → default)'}${brand.nascent ? ' · nascent' : ''}` : 'brand: nascent — no docs/BRAND.md yet; rendered in the default. /landing seeds it.',
     `a read of your files — ${esc(src)} · docs/design/STYLE_GUIDE.md · docs/BRAND.md · docs/decisions · regenerated, never edited · <span class="tab">rendered ${esc(stampedAt)}</span>`,
-    'slices 1–3: the language, the people and the story, the parts · icons, resources and exceptions are slice 4 · contrast is computed, everything else visual is inferred',
+    'seventeen sections, every one a read of a file · contrast is computed, everything else visual is inferred · icons and the logo render from files or not at all',
   ];
-  return shellPage({ title: `${brand.name} — Design`, brand, projectDir: data.projectDir, current: 'design', ledgerHtml: ledger, rail, mainHtml: [start, people, journeyCh, principles, colour, typeCh, shapeCh, layout, componentsCh, patternsCh, flowsCh, contentCh, a11yCh, researchCh].join('\n'), footerLines: footer, extraCss });
+  return shellPage({ title: `${brand.name} — Design`, brand, projectDir: data.projectDir, current: 'design', ledgerHtml: ledger, rail, mainHtml: [start, people, journeyCh, principles, colour, typeCh, shapeCh, iconsCh, layout, componentsCh, patternsCh, flowsCh, contentCh, a11yCh, resourcesCh, exceptionsCh, researchCh].join('\n'), footerLines: footer, extraCss });
 }
 
 export function designHtml(projectDir, projectName) {

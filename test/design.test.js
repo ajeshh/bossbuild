@@ -1,4 +1,4 @@
-// design — the design space render (FEAT-030 slice 1, FEAT-031 slice 2, FEAT-032 slice 3). What's locked here: the page is a pure
+// design — the design space render (FEAT-030 slice 1, FEAT-031 slice 2, FEAT-032 slice 3, FEAT-033 slice 4). What's locked here: the page is a pure
 // projection of the files (the swatch hex IS the tokens.json hex), contrast is computed correctly
 // for the declared pairs and only those, a principle is grounded by a REFERENCE not a word, holes
 // are holes, and `boss design` writes exactly one file under .boss/ and nothing under docs/.
@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -125,7 +125,7 @@ test('with nothing under docs/design/ every language chapter is a hole with the 
   const html = renderDesignHtml({ ...collectDesign(dir, 'Bare'), projectDir: dir }, 'x');
   for (const id of ['principle-none', 'colour-none', 'type-none', 'space-none', 'layout-hole']) assert.match(html, new RegExp(`id="${id}"`), id);
   assert.match(html, /\/design-tokens-init/);
-  assert.match(html, /<b class="tab">1 of 14<\/b> slots/, 'the ledger counts the brand as the one filled slot');
+  assert.match(html, /<b class="tab">1 of 16<\/b> slots/, 'the ledger counts the brand as the one filled slot');
 });
 
 test('a tokens.json that is not JSON renders the error as a block and the rest of the page', () => {
@@ -259,7 +259,7 @@ test('research is cut by rung from grade: and by method from method: — and nev
   const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
   assert.ok(!html.includes('A quote that must never reach the page'), 'grades and dates only');
   assert.match(html, /Product events · drop-off<\/strong><\/td><td class="mono">observed<\/td><td class="q">never/);
-  assert.match(html, /<b class="tab">9 of 14<\/b> slots/, 'the language, the story, the pairs (accessibility) — not layout, components, patterns, flows or content');
+  assert.match(html, /<b class="tab">9 of 16<\/b> slots/, 'the language, the story, the pairs (accessibility) — not layout, components, patterns, flows or content');
 });
 
 test('with no personas, no journey and no evidence the three chapters are holes with their verbs', () => {
@@ -485,7 +485,7 @@ test('content renders the terms, the traits, the tone rows with a real string an
   const guards = readGuards(dir);
   assert.deepEqual(guards.map((x) => [x.name, x.on]), [['contrast-guard', true], ['design-tokens-guard', false], ['component-reuse-guard', false], ['content-terminology-guard', false]]);
   assert.match(html, /<td class="mono">contrast-guard<\/td><td>[^<]*<\/td><td class="ok">on<\/td>/);
-  assert.match(html, /<b class="tab">10 of 14<\/b> slots/, 'the parts fill four more slots; layout, people, journey and research stay empty');
+  assert.match(html, /<b class="tab">10 of 16<\/b> slots/, 'the parts fill four more slots; layout, people, journey and research stay empty');
 });
 
 test('with the style guide\'s voice left as placeholders the block is dormant with the template\'s reason, and with no parts files all five chapters hole with their verbs', () => {
@@ -500,4 +500,101 @@ test('with the style guide\'s voice left as placeholders the block is dormant wi
   assert.match(html, /class="block dormant" id="content-voice"[\s\S]*?deferred by rule/);
   assert.match(html, /id="a11y-notchecked"[\s\S]*?7 · not checked/);
   assert.ok(!html.includes('id="component-'), 'no card without a component');
+});
+
+// --- slice 4 (FEAT-033): icons & logo, resources, exceptions ------------------------------------------
+
+const ICON_A = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4 12h16"/></svg>';
+const ICON_B = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg>';
+const MARK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M2 20c6-8 22-8 28 0" fill="#1B7F79"/></svg>';
+const GUIDE_REST = GUIDE_CONTENT + `
+### 1b. Icons — *the set, and it is a dependency*
+
+- **The set:** one stroke set, 1.5px, named in the deps
+- **Sizes that exist:** <two or three, not "whatever fits">
+- **Icon-only is allowed when:** it sits in a labelled row
+
+## Logo
+
+- **Clear space:** the height of the mark on every side
+- **Minimum:** 16px on screen
+
+## Exceptions
+
+| Date | Where | What | Why |
+|---|---|---|---|
+| 2026-09-01 | the week view | two primary buttons | the owner asks and adds in one place |
+| 2026-09-04 | the shift dialog | two primary buttons | ask and keep are both acts |
+| 2026-09-08 | the print sheet | two primary buttons | paper has no hover |
+| 2026-09-09 | ShiftRow | a raw hex for the print rule | the print stylesheet has no tokens yet |
+| | | | |
+`;
+const BRAND_LOGO = BRAND.replace('tagline: Calm on Sunday.', 'tagline: Calm on Sunday.\nlogo: docs/brand/mark.svg');
+function withRest(extra = {}) {
+  return withParts({ 'docs/design/icons/dash.svg': ICON_A, 'docs/design/icons/dot.svg': ICON_B, 'docs/brand/mark.svg': MARK, 'docs/BRAND.md': BRAND_LOGO, 'docs/design/STYLE_GUIDE.md': GUIDE_REST, ...extra });
+}
+
+test('icons render from the files: each copies its own SVG, the set copies as one sprite of symbols, the decision reads the filled lines and not the placeholders', () => {
+  const dir = withRest();
+  const ic = readIcons(dir);
+  assert.deepEqual(ic.files.map((f) => [f.name, f.size, f.viewBox]), [['dash', 24, '0 0 24 24'], ['dot', 20, '0 0 20 20']]);
+  assert.match(ic.sprite, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" style="display:none"><symbol id="icon-dash" viewBox="0 0 24 24"><path d="M4 12h16"\/><\/symbol><symbol id="icon-dot" viewBox="0 0 20 20">/);
+  const d = readIconDecision(readStyleGuide(dir).text);
+  assert.equal(d.set, 'one stroke set, 1.5px, named in the deps'); assert.equal(d.sizes, '', 'the placeholder is not a decision'); assert.equal(d.iconOnly, 'it sits in a labelled row');
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /id="icons-set"[^>]*data-svg="&lt;svg xmlns=&quot;http:\/\/www\.w3\.org\/2000\/svg&quot; style=&quot;display:none&quot;&gt;&lt;symbol id=&quot;icon-dash&quot;/, 'SVG on the block is the sprite');
+  assert.match(html, /class="icon val" data-copy="svg=&lt;svg[^"]*M4 12h16/, 'one icon copies its own file');
+  assert.match(html, /2 of 4 decided/);
+});
+
+test('the logo renders from the brand\'s file as lockups, with the rules that are written; no file → the slot and never a placeholder mark', () => {
+  const dir = withRest();
+  const lg = readLogo(dir);
+  assert.equal(lg.mark, 'docs/brand/mark.svg'); assert.ok(lg.markSvg.startsWith('<svg')); assert.equal(lg.wordmarkFile, null);
+  assert.equal(lg.clearSpace, 'the height of the mark on every side'); assert.equal(lg.minimum, '16px on screen'); assert.equal(lg.misuse, '');
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /id="logo"[^>]*data-svg="&lt;svg[^"]*M2 20c6-8 22-8 28 0/, 'SVG on the block copies the mark');
+  assert.match(html, /<div class="lk accent">/); assert.match(html, /<span class="wm" style="font-family:Newsreader, Georgia, serif">Tidewell<\/span>/, 'the wordmark is the name in the display face');
+  assert.match(html, /2 of 5 rules written/);
+  const bare = withParts();
+  const html2 = renderDesignHtml({ ...collectDesign(bare, 'Tidewell'), projectDir: bare }, 'x');
+  assert.match(html2, /class="block hole" id="logo"/); assert.ok(!html2.includes('<div class="lockups">'), 'no lockup without a file');
+  assert.match(html2, /class="block hole" id="icons-set"/);
+});
+
+test('resources: the tokens file verbatim, the variables block derived from it value for value, the import lines as one paste, kit coverage from a design field only', () => {
+  const dir = withRest();
+  const data = collectDesign(dir, 'Tidewell');
+  assert.equal(data.resources.tokensText, TOKENS, 'the file, not a re-serialisation');
+  const css = tokensCss(data.tokens.tokens);
+  assert.match(css, /^:root \{\n/); assert.ok(css.includes('  --color-surface-ground: #F4F6F5;')); assert.ok(css.includes('  --space-2: 8px;')); assert.ok(css.includes('  --font-body: "Public Sans", Arial, sans-serif;'));
+  assert.ok(!css.includes('--color-text-placeholder'), 'a deprecated token is not emitted');
+  assert.deepEqual(data.resources.kit.map((k) => k.design), [null, null, null], 'nobody wrote a design: link');
+  const html = renderDesignHtml({ ...data, projectDir: dir }, 'x');
+  assert.match(html, /<strong>0 of 3<\/strong> components carry a <code>design:<\/code> link/);
+  assert.match(html, /id="res-tokens"[^>]*data-code="[^"]*tokens\.json \(DTCG\)[^"]*CSS variables — derived at render/);
+  assert.match(html, /download="tokens.json"/);
+  assert.match(html, /id="res-imports"[^>]*data-code="[^"]*import \{ Button \}[^"]*\\n[^"]*import \{ ShiftRow \}/, 'the import lines, newline-joined');
+  const manifest = JSON.stringify({ components: [{ name: 'Button', import: "import { Button } from '@/components/Button'", design: 'https://example.test/file/abc?node-id=1' }, { name: 'ShiftRow', import: 'x' }] });
+  const linked = withRest({ 'docs/design/library/manifest.json': manifest });
+  assert.deepEqual(readKitLinks(linked, readComponents(linked).components).map((k) => k.design), ['https://example.test/file/abc?node-id=1', null]);
+  const html2 = renderDesignHtml({ ...collectDesign(linked, 'Tidewell'), projectDir: linked }, 'x');
+  assert.match(html2, /<strong>1 of 2<\/strong> components carry/); assert.match(html2, /<a href="https:\/\/example\.test\/file\/abc\?node-id=1" rel="noopener">Open in your design tool<\/a>/);
+});
+
+test('exceptions group by the rule they depart from: three against one rule is a verdict on the rule, one is an exception, the blank row is skipped, an empty table is dormant not a hole', () => {
+  const dir = withRest();
+  const ex = readExceptions(readStyleGuide(dir).text);
+  assert.equal(ex.rows.length, 4); assert.equal(ex.groups.length, 2);
+  assert.equal(ex.groups[0].rule, 'two primary buttons'); assert.equal(ex.groups[0].rows.length, 3); assert.match(ex.groups[0].verdict, /the rule is wrong/);
+  assert.equal(ex.groups[1].rows.length, 1); assert.equal(ex.groups[1].verdict, 'an exception');
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /4 recorded, against 2 rules/); assert.match(html, /id="exception-1"[\s\S]*?<span class="chip find">3 · the rule is wrong/);
+  const bare = withParts();
+  const html2 = renderDesignHtml({ ...collectDesign(bare, 'Tidewell'), projectDir: bare }, 'x');
+  assert.match(html2, /class="block dormant" id="exceptions-none"/);
+  assert.match(html2, /<b class="tab">10 of 16<\/b> slots/);
+  assert.match(html, /<b class="tab">12 of 16<\/b> slots/, 'icons and the logo fill two more');
+  const order = ['id="brand"', 'id="people"', 'id="journey"', 'id="principles"', 'id="colour"', 'id="type"', 'id="shape"', 'id="icons"', 'id="layout"', 'id="components"', 'id="patterns"', 'id="flows"', 'id="content"', 'id="a11y"', 'id="resources"', 'id="exceptions"', 'id="research"'].map((x) => html.indexOf('<section class="chapter" ' + x));
+  assert.ok(order.every((v, i) => v > 0 && (i === 0 || v > order[i - 1])), 'seventeen sections in the decided order');
 });

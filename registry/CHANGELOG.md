@@ -30,6 +30,23 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **`boss design` is complete — seventeen sections (FEAT-033, slice 4, closes the FEAT-030 plan).**
+  **Icons & logo** — every `docs/design/icons/*.svg` drawn from its file (click one to copy its SVG;
+  *SVG* on the block copies the set as one sprite of `<symbol id="icon-<name>">`), the style guide's
+  *1b. Icons* lines as the decision (the set · sizes · icon-only · never), and the logo as lockups —
+  mark + wordmark on paper, on the accent, each alone — from the path in `docs/BRAND.md`'s `logo:`
+  (the wordmark is the name in the display face unless `wordmark:` is a file); no file, no drawing,
+  never a placeholder mark · **Resources** — the DTCG file verbatim (copy, or a `download` link — the
+  page is a local file), a `:root { --… }` block derived from it at render (deprecated tokens left
+  out), the import lines as one paste, the sprite again, and **kit coverage**: *N of M components carry
+  a `design:` link* read from a `design` field in the manifest or a *Design* column in `COMPONENTS.md`,
+  rendered as *Open in your design tool* — the count is 0 until someone writes one, and the page names
+  the field instead of inventing a link · **Exceptions** — the style guide's table grouped by the rule
+  each row departs from, with the template's own threshold as the verdict (one is an exception, two is
+  worth noticing, three means the rule is wrong — narrow, split or retire it); an empty table is
+  dormant, not a hole. The rail now reads *Why it looks like this · The language · The parts · Every
+  screen · Take it with you · Kept honest*; sixteen slots in the ledger. The shell's block copy drops a
+  filled block's `.prompt` line in both forms, so a canvas cell pastes the answer without the question.
 - **`boss design` has the parts (FEAT-032, slice 3).** Five chapters between Layout and Research:
   **Components** — the index as it is written at MVP (`docs/design/COMPONENTS.md`: a dash means no
   state missing, a blank means nobody checked, `deprecated → X` carries its successor, the retired

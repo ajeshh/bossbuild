@@ -164,8 +164,10 @@ export function shellJs() {
   });
   function copyLink(id) { const url = location.href.replace(/#.*$/, '') + '#' + id; history.replaceState(null, '', '#' + id);
     writeClipboard(url, null).then((r) => showCopied({ title: 'Link to #' + id, result: r, views: [{ name: 'Link', kind: 'value', body: url }], recopy: () => copyLink(id) })); }
-  function plainText(el) { const c = el.cloneNode(true); $$('.actions', c).forEach((x) => x.remove()); return c.innerText.replace(/\n{3,}/g, '\n\n').trim(); }
-  function blockHtml(b) { const body = $('.body', b).cloneNode(true); const title = $('h3', b) ? $('h3', b).innerText.trim() : (b.dataset.title || ''); const foot = $('.foot', b) ? $('.foot', b).innerText.replace(/\s+/g, ' ').trim() : '';
+  /* what a copy leaves out: the action buttons, and a filled block's .prompt (the question above a canvas answer) */
+  function strip(node) { $$('.actions, .prompt', node).forEach((x) => x.remove()); return node; }
+  function plainText(el) { const c = strip(el.cloneNode(true)); return c.innerText.replace(/\n{3,}/g, '\n\n').trim(); }
+  function blockHtml(b) { const body = strip($('.body', b).cloneNode(true)); const title = $('h3', b) ? $('h3', b).innerText.trim() : (b.dataset.title || ''); const foot = $('.foot', b) ? $('.foot', b).innerText.replace(/\s+/g, ' ').trim() : '';
     return '<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#16181A"><p style="margin:0 0 6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#565C62">' + esc(wordmark ? wordmark + ' · ' : '') + esc(title) + '</p>' + body.innerHTML.replace(/ class="[^"]*"/g, '') + '<p style="margin:10px 0 0;font-size:10px;color:#565C62;font-family:Menlo,Consolas,monospace">' + esc(foot) + '</p></div>'; }
   function copyBlock(b) { const html = blockHtml(b), text = plainText(b);
     writeClipboard(text, html).then((r) => showCopied({ title: (b.dataset.title || b.id) + ' · the block, for a doc or a deck', result: r, views: [{ name: 'Looks like (rich)', kind: 'html', body: html }, { name: 'Text', kind: 'text', body: text }], recopy: () => copyBlock(b) })); }

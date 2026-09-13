@@ -59,7 +59,7 @@ URL to a designer.
 - [x] Layout renders as a hole with the six sub-slots and the verb when no layout section exists.
 - [x] Every value (swatch, name, hex, type role, spacing step, radius) copies on click in the forms that apply; every copy opens the sheet showing the payload and the form it reached the clipboard in.
 - [x] The family bar links to `playbook.html` and `board.html` by relative path, dimmed when the sibling file does not exist.
-- [ ] `src/page-shell.js` is the one source of the chrome; `boss playbook` adopts it — **the FEAT-026 lane's first FEAT-028 commit** (agreed 2026-09-13), with the snapshot; the shell is ready and exports `NEUTRAL`, `shellPage`, `familyBar`.
+- [x] `src/page-shell.js` is the one source of the chrome; `boss playbook` adopts it (landed 6736162, FEAT-028 commit 1) — **the FEAT-026 lane's first FEAT-028 commit** (agreed 2026-09-13), with the snapshot; the shell is ready and exports `NEUTRAL`, `shellPage`, `familyBar`.
 - [x] Brand: the accent from `docs/BRAND.md`, neutral default otherwise; no colour invented for a field marked unknown.
 - [x] Zero dependencies; opens from `file://`; light and dark.
 
@@ -110,3 +110,4 @@ Indexed in `docs/design/FLOWS.md`.
 ## Log
 - 2026-09-13 — specced from IDEA-107 after four prototype rounds (v0 → v4). Slice 1 is the language + the frame; the shell extraction is the one structural move and is claimed as a lane with the FEAT-026 session.
 - 2026-09-13 — **slice 1 landed** (`c2c63ea`, under Unreleased). Nine tests. In a `/tmp` scaffold seeded with the Tidewell fixture: 7 pairs computed, 4 findings (muted and placeholder inks on both surfaces — the prototype's own finding, reproduced by the arithmetic), the DEC on the swatch, deprecated struck, the family bar live once the playbook exists. Surprise: nothing exported the neutral palette — board.js and playbook.js each restate it — so the shell became the exported source (`NEUTRAL`). The one open criterion is the playbook's adoption of the shell, handed to the FEAT-026 lane.
+- 2026-09-13 — **the plan is complete**: slices 2–4 landed as FEAT-031 (33305a4), FEAT-032 (c1516fe) and FEAT-033; the playbook adopted the shell (6736162). Seventeen sections, the v4 IA. What's left is the *Kicks up* list in IDEA-107, not a render.
