@@ -80,6 +80,17 @@ npm run check            # zero findings = clean; check:published says how far n
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
 
+- **Design lane, 2026-09-13 — the design space is complete and the templates caught up (`c2c63ea` →
+  `c0b76fb`, all under Unreleased).** `boss design` renders seventeen sections from the files — the
+  people and the story, the language with contrast computed, the parts with Code and an SVG spec
+  frame on every component card, icons from files and as a sprite, the logo from the brand's file or
+  not at all, resources (the DTCG file, a derived variables block, kit coverage from `design:` links
+  nobody has written), exceptions grouped by rule; 27 tests. FEAT-030/031/032/033 shipped. IDEA-107's
+  kicks-up rows landed in the shipped templates (Statement/Grounded in · Logo · Layout's six sub-slots
+  · the three earned families · a `Principle` column on Ours only · research on a design object by
+  name via `about:`). Open by design: IDEA-108 row 3 (the `design:` link in the template) waits for a
+  designer with a file; the data-viz palette question (107 gap row 3) is still a question.
+
 ## Next (in order)
 
 1. **FEAT-026/027/028 — Ajesh's turn.** Reject any assumption in the three FEATs in a word (7 + 9 + 8);
@@ -115,6 +126,10 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
+- 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
+  frame and the icon sprite into a design tool (they should land as editable layers); paste a block
+  into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing
+  left to build until one of those says something.
 - ⛔ **`npm run stamp` → `npm publish`** (18 behind; DEC-019 — the stamp makes the version), then `npm run bump:formula`. He publishes himself — never run it for him.
 - 🔷 **Submit the plugin to `claude-community`** (DEC-017; `claude plugin validate . --strict`
   passes; platform.claude.com/plugins/submit). `boss-ai-agent` exists there — lead with what BOSS is not.
