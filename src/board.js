@@ -18,6 +18,11 @@ import { firstAdded, lastTouched } from './gitdates.js';
 import { join } from 'node:path';
 import { dim, bold } from './ui.js';
 import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
+// One chrome for every generated page in .boss/ — the board is a subpage of the same dashboard
+// as the playbook and the design space (Ajesh, 2026-09-13: "everything should feel like it's one
+// dashboard with different subpages"). The board keeps its own visual world inside main.
+import { shellPage } from './page-shell.js';
+import { readBrand } from './playbook.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -675,7 +680,7 @@ const esc = (s) =>
 // self-contained file in the founder's project. Keep them in step by hand.
 const COLUMN_INDEX = Object.fromEntries(COLUMNS.map((c, i) => [c, i]));
 
-function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt) {
+function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt, projectDir = process.cwd()) {
   // Same rule as the terminal board: parked work leaves the flow but is never deleted.
   const parked = allCards.filter((c) => c.parked);
   const cards = allCards.filter((c) => !c.parked);
@@ -743,7 +748,7 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
     } else {
       cardsHtml = inCol.map(cardHtml).join('\n');
     }
-    return `<section class="col" style="--hue:var(--stage-${COLUMN_INDEX[col]})">
+    return `<section class="col" id="col-${COLUMN_INDEX[col]}" style="--hue:var(--stage-${COLUMN_INDEX[col]})">
         <h2><span class="label">${esc(col)}</span> <span class="n">${inCol.length}</span></h2>
         <div class="cards">${cardsHtml}</div>
       </section>`;
@@ -791,7 +796,7 @@ function programRollup(cards) {
           <div class="prog-n">${p.shipped}<span class="muted">/${p.total}</span></div>
         </div>`;
     }).join('');
-  return `<section class="programs">
+  return `<section class="programs" id="programs">
       <h2><span class="label">Programs</span> <span class="n">${by.size}</span></h2>
       <div class="progs">${rows}</div>
       <p class="tl-foot"><span class="muted">One frontmatter line — <code>program:</code> — grouping records that belong together.</span></p>
@@ -848,7 +853,7 @@ function shippedTimeline(cards) {
 
   const first = shipped[0].shippedOn;
   const last = shipped[shipped.length - 1].shippedOn;
-  return `<section class="timeline">
+  return `<section class="timeline" id="timeline">
       <h2><span class="label">Shipped over time</span> <span class="n">${shipped.length}</span></h2>
       <div class="tl">${cols}</div>
       <p class="tl-foot">${esc(first)} → ${esc(last)} <span class="muted">· dates derived from your repo, not stamped by hand</span></p>
@@ -858,7 +863,7 @@ function shippedTimeline(cards) {
   const timelineHtml = shippedTimeline(cards);
   const programHtml = programRollup(cards);
   const parkedHtml = parked.length
-    ? `<section class="parked">
+    ? `<section class="parked" id="parked">
       <details><summary>Parked <b>${parked.length}</b> <span class="muted">— decided, not queued; each carries a written re-open trigger</span></summary>
       <div class="cards">${[...parked]
         .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }))
@@ -870,11 +875,37 @@ function shippedTimeline(cards) {
     `<span class="pill" style="--hue:var(--stage-${COLUMN_INDEX[col]})"><i></i>${esc(col)} <b>${counts[col] || 0}</b></span>`
   ).join('');
 
-  return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(projectName)} · board</title>
-<style>
+  const rail = [{ group: 'Board', items: [
+    ...COLUMNS.map((col, i) => ({ href: `col-${COLUMN_INDEX[col]}`, n: i + 1, label: col, hole: !(counts[col] || 0) })),
+    ...(programHtml ? [{ href: 'programs', n: COLUMNS.length + 1, label: 'Programs' }] : []),
+    ...(timelineHtml ? [{ href: 'timeline', n: COLUMNS.length + 2, label: 'Shipped, by month' }] : []),
+    ...(parkedHtml ? [{ href: 'parked', n: COLUMNS.length + 3, label: 'Parked' }] : []),
+  ] }];
+  const brand = readBrand(projectDir, projectName);
+  const mainHtml = `
+  <div class="board-page">
+    <header class="board-head">
+      <h1><small>the board</small>${esc(projectName)}</h1>
+      <p class="evidence${pointing ? ' points' : ''}">${esc(evidence)}</p>
+    </header>
+    ${dueBanner}
+    ${agingBanner}
+    <div class="board">
+${columnHtml}
+    </div>
+    ${programHtml}
+    ${timelineHtml}
+    ${parkedHtml}
+  </div>
+`;
+  return shellPage({
+    title: `${projectName} · board`, brand, projectDir, current: 'board',
+    ledgerHtml: pills, rail, mainHtml,
+    footerLines: [
+      'A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.',
+      `Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` Rendered ${esc(stampedAt)}.` : ''}`,
+    ],
+    extraCss: `
   /* BOSS board — the site-and-signage world.
      Concrete ground, graphite ink, ONE hi-vis mark at ~2% coverage. Straight
      cuts (2-3px radii), not soft cards. Display type is the mono stack, because
@@ -886,34 +917,29 @@ function shippedTimeline(cards) {
   :root {
     color-scheme: light dark;
     --bg: #E4E6E8; --panel: #F0F2F3; --sunk: #D7DADD;
-    --ink: #16181A; --muted: #565C62; --line: #C4C8CC;
+    --line: #C4C8CC;
     --hivis: #FF5C00; --hivis-text: #A63400; --ink-on-hivis: #16181A;
     --caution: #7F5800; --stop: #B71616;
     --stage-0: #9AA0A6; --stage-1: #565C62; --stage-2: #2E3236; --stage-3: #16181A;
-    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
+    }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #16181A; --panel: #1F2225; --sunk: #101214;
-      --ink: #E2E5E7; --muted: #9AA0A6; --line: #2E3236;
+      --line: #2E3236;
       --hivis: #FF5C00; --hivis-text: #FF7A2E;
       --caution: #E8A200; --stop: #FF6B5A;
       --stage-0: #565C62; --stage-1: #9AA0A6; --stage-2: #C4C8CC; --stage-3: #E2E5E7;
     }
   }
-  * { box-sizing: border-box; }
-  body { margin: 0; font: 15px/1.55 var(--sans); background: var(--bg); color: var(--ink);
-         padding: 40px 24px 64px; -webkit-font-smoothing: antialiased; }
-  .wrap { max-width: 1160px; margin: 0 auto; }
-  header { margin: 0 0 6px; }
+  .board-page { font: 15px/1.55 var(--body); color: var(--ink); }
+  .board-page .board-head { margin: 0 0 6px; }
   /* No label above the heading. The page used to open with a tracked ALL-CAPS hi-vis tag
      reading "Board" — the kicker-above-heading tell, and it said nothing the <title> and the
      h1 did not. The one hi-vis mark on the page is the current month on the timeline.
      2026-09-12: nothing on this page is set under 12px, nothing is uppercased by CSS, and
      dimming is done with --muted, never opacity — the same floors the website holds. */
-  h1 small { display: block; font: 500 13px/1.4 var(--mono); color: var(--muted); margin-bottom: 4px; }
-  h1 { font: 650 24px/1.2 var(--mono); letter-spacing: -.02em; margin: 0; }
+  .board-page h1 small { display: block; font: 500 13px/1.4 var(--mono); color: var(--muted); margin-bottom: 4px; }
+  .board-page h1 { font: 650 24px/1.2 var(--mono); letter-spacing: -.02em; margin: 0; }
   .evidence { color: var(--muted); font-size: 13.5px; margin: 8px 0 0; max-width: 64ch; }
   .evidence.points { color: var(--hivis-text); font-weight: 600; }
   .pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 24px; }
@@ -1030,32 +1056,11 @@ function shippedTimeline(cards) {
   details.more > summary::before { content: "+ "; }
   details.more[open] > summary::before { content: "− "; }
   details.more .rest { margin-top: 8px; }
-  footer { color: var(--muted); font-size: 12px; margin: 34px 0 0; padding-top: 18px;
+  .board-page .board-foot { color: var(--muted); font-size: 12px; margin: 34px 0 0; padding-top: 18px;
            border-top: 1px solid var(--line); max-width: 64ch; }
-  footer code { font: 12px var(--mono); background: var(--sunk); padding: 2px 6px; border-radius: 2px; }
-</style></head>
-<body>
-  <div class="wrap">
-    <header>
-      <h1><small>the board</small>${esc(projectName)}</h1>
-      <p class="evidence${pointing ? ' points' : ''}">${esc(evidence)}</p>
-    </header>
-    <div class="pills">${pills}</div>
-    ${dueBanner}
-    ${agingBanner}
-    <div class="board">
-${columnHtml}
-    </div>
-    ${programHtml}
-    ${timelineHtml}
-    ${parkedHtml}
-    <footer>
-      A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.
-      Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` Rendered ${esc(stampedAt)}.` : ''}
-    </footer>
-  </div>
-</body></html>
-`;
+  .board-page .board-foot code { font: 12px var(--mono); background: var(--sunk); padding: 2px 6px; border-radius: 2px; }
+`,
+  });
 }
 
 // --- Agent-readable / focused views (IDEA-034 Track A) --------------------
@@ -1248,7 +1253,7 @@ export function board(projectDir, projectName, opts = {}) {
 export function boardHtml(projectDir, projectName) {
   const data = collectBoard(projectDir);
   const stampedAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
-  const html = renderBoardHtml(projectName, data, stampedAt);
+  const html = renderBoardHtml(projectName, data, stampedAt, projectDir);
   const dir = join(projectDir, '.boss');
   const out = join(dir, 'board.html');
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });

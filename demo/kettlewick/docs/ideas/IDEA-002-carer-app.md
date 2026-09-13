@@ -2,7 +2,7 @@
 id: IDEA-002
 type: idea
 owner: product-lead
-status: parked
+status: deferred (re-open when a carer asks — n≥3)
 gist: A carer-side app — see your week, swap a shift with a colleague.
 created: 2026-06-10
 ---

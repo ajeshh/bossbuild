@@ -420,6 +420,25 @@ rule above still applies to the whole section once it is stamped.
   fills *Who is missing* (the role you need and don't have, written plainly), and Vision's *Who is
   building it* lists the team when `docs/team/` has people. Tidewell is a real product, so the
   demo venture is Kettlewick. *Demo* joins the site nav. Five tests.
+- **The board is a subpage of the same dashboard.** `boss board --html` now renders through
+  `src/page-shell.js` like the playbook and the design space — the shared top bar, the family bar
+  (Playbook · Design · Board), the counts as the ledger, and a rail over its columns (Captured ·
+  Taking shape · Building · Shipped · Programs · Shipped by month · Parked; an empty column marked
+  so). The board's own visual world — the mono display, the signage hues, the timeline — stays
+  inside `main`; its tokens no longer repaint the chrome. Ajesh, 2026-09-13: *"everything should
+  feel like it's one dashboard with different subpages."*
+- **The showcase, second pass — Organization and Learning replace Folders and Inside.**
+  *Organization*: the depth on how BOSS files things, counted from the tree (records · folders ·
+  verbs · id classes), the four rules it keeps (one verb one shape · the status line is the truth
+  · folders arrive as the venture earns them, read from the stage manifests · nothing written
+  without a yes), and every folder grouped by what the founder is doing — the verb that writes it
+  as an accent chip, one line that says what a record there *is*, the files. *Learning* replaces
+  the shipped-files dump with the venture's own trail: evidence climbing the ladder, a persona's
+  ledger moving with dated refactors, a decision failing its own falsifier and superseded, the
+  brand's learned rows, a health read turning into the next idea, and the verbs each mode gave
+  — all read from the records, none composed. The demo board got a fuller life: six ideas
+  (captured, ready, deferred with a re-open trigger, dropped by a DEC), six FEATs shipped across
+  three months, two programs. Two tests.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

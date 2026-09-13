@@ -41,18 +41,35 @@ test('the six pages: every one says fictional, links stay relative, nothing is f
   } finally { rmSync(out, { recursive: true, force: true }); }
 });
 
-test('the folders page is read from the tree; the inside page is the shipped files verbatim', () => {
+test('the organization page is read from the tree and grouped, verbs as chips; the learning page reads the records', () => {
   const out = mkdtempSync(join(tmpdir(), 'boss-demo-out-'));
   try {
     generate({ out });
-    const folders = readFileSync(join(out, 'folders.html'), 'utf8');
-    for (const d of ['docs/ideas/', 'docs/evidence/', 'docs/team/', 'docs/competition/']) assert.ok(folders.includes(`${d}</td>`), d);
-    assert.ok(folders.includes('<code>/comp-eval</code>'), 'a table README falls back to the verb map');
-    const inside = readFileSync(join(out, 'inside.html'), 'utf8');
-    const hook = readFileSync(join(BOSS_ROOT, 'stages/L0-quickstart/template/.claude/hooks/conscience.js'), 'utf8').split('\n').slice(0, 40).join('\n');
-    const esc = (s) => s.replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
-    assert.ok(inside.includes(esc(hook)), 'the hook is shown as shipped');
-    assert.ok(inside.includes('kettlewick') && !inside.includes('{{PROJECT_NAME}}'), 'placeholders filled the way boss new fills them');
+    const org = readFileSync(join(out, 'organization.html'), 'utf8');
+    for (const d of ['docs/ideas', 'docs/evidence', 'docs/team', 'docs/competition', 'docs/design']) assert.ok(org.includes(`<code>${d}/</code>`), d);
+    assert.ok(org.includes('<span class="verb-chip">/comp-eval</span>') && org.includes('<span class="verb-chip">boss team add</span>'));
+    for (const g of ['org-idea', 'org-people', 'org-field', 'org-made', 'org-going', 'org-machine']) assert.ok(org.includes(`id="${g}"`), g);
+    assert.match(org, /<b class="tab">\d+<\/b><span>records on disk<\/span>/);
+    assert.ok(org.includes('Quickstart</div><p><b class="tab">'), 'the modes strip is read from the manifests');
+    const learn = readFileSync(join(out, 'learning.html'), 'utf8');
+    assert.ok(learn.includes('3 of 3 rungs reached') && learn.includes('one owner pre-paid a month'));
+    assert.ok(learn.includes('synthetic 40% · real 60%') && learn.includes('Notable refactors'));
+    assert.ok(learn.includes('DEC-001') && learn.includes('superseded by DEC-002'));
+    assert.ok(learn.includes('the right three is the promise people repeat'), 'markdown stripped from a learned row');
+    assert.ok(learn.includes('<span class="verb-chip">/canvas</span>') && learn.includes('<span class="verb-chip">/spec</span>'));
+  } finally { rmSync(out, { recursive: true, force: true }); }
+});
+
+test('the board is a subpage of the same dashboard: the shared top bar, the family bar, a rail over its columns', () => {
+  const out = mkdtempSync(join(tmpdir(), 'boss-demo-out-'));
+  try {
+    generate({ out });
+    const board = readFileSync(join(out, 'board.html'), 'utf8');
+    assert.ok(board.includes('<header class="topbar">') && board.includes('class="on" aria-current="page">Board</a>'));
+    assert.ok(board.includes('<a href="playbook.html">Playbook</a>') && board.includes('<a href="design.html">Design</a>'));
+    assert.ok(board.includes('href="#col-0"') && board.includes('href="#parked"') && board.includes('href="#timeline"'));
+    assert.equal((board.match(/class="pills"/g) || []).length, 0, 'the pills are the ledger, once');
+    assert.ok(board.includes('id="parked"') && board.includes('IDEA-005'), 'a dropped idea sits in Parked with its reason');
   } finally { rmSync(out, { recursive: true, force: true }); }
 });
 
