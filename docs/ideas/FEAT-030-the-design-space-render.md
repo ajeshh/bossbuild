@@ -2,11 +2,13 @@
 id: FEAT-030
 type: feature
 owner: designer
-status: building
+status: shipped
 gist: `boss design` renders a founder's design system — the tokens, the principles, the brand, then the people, patterns, components and research — into one self-contained, on-brand HTML page under `.boss/`, a sibling of the playbook, where every value copies and every hole stays a hole.
 for: a founder at MVP with a tokens file and a style guide they cannot look at, and the designer or engineer they hand the URL to (no persona in `docs/personas/` here — BOSS's own users are described in `docs/evidence/`, n=3 stated-pain)
 created: 2026-09-13
 building_since: 2026-09-13
+shipped_on: 2026-09-13
+proof: src/design.js
 from: IDEA-107
 program: design-system
 relates: FEAT-026, IDEA-108, IDEA-091, IDEA-092, RVW-082
@@ -38,13 +40,13 @@ accent — and can open it, link to a block, copy any value in the form an edito
 URL to a designer.
 
 ## Assumptions (the plan-time record)
-- **Assumed:** the output is `.boss/design.html`, gitignored, beside `playbook.html` and `board.html`; cross-links between the three are relative paths (IDEA-107, agreed with the FEAT-026 lane) → _confirmed / corrected to: …_
-- **Assumed:** CLI verb `boss design [--open]`, not a skill — it composes nothing (the same reasoning as FEAT-026) → _confirmed / corrected to: …_
-- **Assumed:** the shell (tokens CSS, topbar, family bar, rail, block, Link · Copy, the copy sheet) is **extracted from `src/playbook.js` into `src/page-shell.js`** and imported by both renderers — one renderer, three spaces, no second copy of the chrome → _confirmed / corrected to: …_
-- **Assumed:** with no `tokens.json` the page still renders — Start here and Principles from what exists, and the language chapters as holes with the verb (`/design-tokens-init`) — because an absent chapter is the most honest thing on the site → _confirmed / corrected to: …_
-- **Assumed:** contrast is computed only over pairs the tokens declare as text-on-surface (semantic names containing `text` / `on-` against `surface` / the accent), never over every pair of colours → _confirmed / corrected to: …_
-- **Assumed:** "every value copies" ships in slice 1 as plain-text forms (hex · token · `var(--…)`) with the copy sheet; rich-HTML block copy stays exactly as FEAT-026 shipped it → _confirmed / corrected to: …_
-- **Assumed:** BOSS's own tree renders a near-empty design space (no `tokens.json`, a `docs/design/BRAND.md` that is BOSS's) — fine; the throwaway in `/tmp` is where it is judged → _confirmed / corrected to: …_
+- **Assumed:** the output is `.boss/design.html`, gitignored, beside `playbook.html` and `board.html`; cross-links between the three are relative paths (IDEA-107, agreed with the FEAT-026 lane) → _confirmed — `.boss/design.html` (gitignored under `/.boss/`), family bar links are relative_
+- **Assumed:** CLI verb `boss design [--open]`, not a skill — it composes nothing (the same reasoning as FEAT-026) → _confirmed — `boss design [--open]` in `src/cli.js`; `--open` spawns the platform opener_
+- **Assumed:** the shell (tokens CSS, topbar, family bar, rail, block, Link · Copy, the copy sheet) is **extracted from `src/playbook.js` into `src/page-shell.js`** and imported by both renderers — one renderer, three spaces, no second copy of the chrome → _confirmed — `src/page-shell.js` exports `esc`, `shellPage`, `NEUTRAL`, `DEFAULT_ACCENT`, `familyBar`; both renderers import it (6736162)_
+- **Assumed:** with no `tokens.json` the page still renders — Start here and Principles from what exists, and the language chapters as holes with the verb (`/design-tokens-init`) — because an absent chapter is the most honest thing on the site → _confirmed — every language chapter holes with `/design-tokens-init`; the test *with nothing under docs/design/* covers it_
+- **Assumed:** contrast is computed only over pairs the tokens declare as text-on-surface (semantic names containing `text` / `on-` against `surface` / the accent), never over every pair of colours → _corrected — the matcher is wider than *text / on- vs surface*: text-like is `text | ink | foreground | fg | *.on-<x>`, surface-like is `surface | ground | paper | background | bg | canvas`, and each `on-<x>` is also paired with its own `<x>`. Still declared pairs only, never every pair_
+- **Assumed:** "every value copies" ships in slice 1 as plain-text forms (hex · token · `var(--…)`) with the copy sheet; rich-HTML block copy stays exactly as FEAT-026 shipped it → _confirmed — hex · token · `var(--…)` through the shell's copy sheet; block copy untouched_
+- **Assumed:** BOSS's own tree renders a near-empty design space (no `tokens.json`, a `docs/design/BRAND.md` that is BOSS's) — fine; the throwaway in `/tmp` is where it is judged → _confirmed — judged in the `/tmp` scaffold with the Tidewell fixture_
 
 **Still unknown (didn't guess):**
 - Where a principle's *grounding* lives when the style guide predates the `Grounded in:` line — read `Why:` as the grounding, or render *asserted*? (Slice 1 renders *asserted* when no EVID/persona/journey reference appears in the principle's text.)
@@ -111,3 +113,4 @@ Indexed in `docs/design/FLOWS.md`.
 - 2026-09-13 — specced from IDEA-107 after four prototype rounds (v0 → v4). Slice 1 is the language + the frame; the shell extraction is the one structural move and is claimed as a lane with the FEAT-026 session.
 - 2026-09-13 — **slice 1 landed** (`c2c63ea`, under Unreleased). Nine tests. In a `/tmp` scaffold seeded with the Tidewell fixture: 7 pairs computed, 4 findings (muted and placeholder inks on both surfaces — the prototype's own finding, reproduced by the arithmetic), the DEC on the swatch, deprecated struck, the family bar live once the playbook exists. Surprise: nothing exported the neutral palette — board.js and playbook.js each restate it — so the shell became the exported source (`NEUTRAL`). The one open criterion is the playbook's adoption of the shell, handed to the FEAT-026 lane.
 - 2026-09-13 — **the plan is complete**: slices 2–4 landed as FEAT-031 (33305a4), FEAT-032 (c1516fe) and FEAT-033; the playbook adopted the shell (6736162). Seventeen sections, the v4 IA. What's left is the *Kicks up* list in IDEA-107, not a render.
+- 2026-09-13 — **closed out**: status flipped to shipped (the code had shipped under Unreleased before the record said so), `proof: src/design.js` named, every plan-time assumption answered — one corrected (FEAT-030's contrast matcher is wider than the spec said; still declared pairs only).

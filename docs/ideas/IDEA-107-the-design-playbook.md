@@ -4,7 +4,7 @@ type: idea
 owner: designer
 status: building
 building_since: 2026-09-13
-promoted_to: FEAT-030
+promoted_to: FEAT-030, FEAT-031, FEAT-032, FEAT-033, IDEA-112
 gist: The founder's own design guidelines — foundations, components, patterns, content, accessibility, resources — rendered as one on-brand HTML space in the class of HIG / Material / Carbon / Fluent / Ant, generated from `docs/design/*` and the code so it cannot drift; and the honest answer to "add Figma support" (tokens two-way via DTCG, everything else refused — RVW-082).
 proof: none
 proof_note: Captured with a gap table and a prototype, not built. If it earns a build it is the IDEA-106 renderer over `docs/design/`, emitting a sibling space (one renderer, three spaces — playbook · design · board — linked in one family bar; the V1 `/design-library` contained, never duplicated). The one mechanism change worth making regardless is DTCG as a guaranteed file.

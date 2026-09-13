@@ -2,11 +2,13 @@
 id: FEAT-031
 type: feature
 owner: designer
-status: building
+status: shipped
 gist: `boss design` gains the UX half — People (every persona as a full card with its ledger), The journey (the stages from JOURNEY.md with their source labels, the gaps named) and Research (the evidence cut by rung and by method, with the holes for what has never been tried) — so the page opens with who it is for before it shows a colour.
 for: the same founder as FEAT-030, and the designer who needs the person before the palette
 created: 2026-09-13
 building_since: 2026-09-13
+shipped_on: 2026-09-13
+proof: src/design.js
 from: IDEA-107
 program: design-system
 relates: FEAT-030, FEAT-027, IDEA-106
@@ -25,12 +27,12 @@ ledger cut two ways — by rung (observed · stated · inferred) and by method �
 every method never used.
 
 ## Assumptions (the plan-time record)
-- **Assumed:** the persona record is what `/persona` writes — `who`, `context`, `jobs`, `pains`, `values`, *what we DON'T know yet*, the ledger line — read tolerantly (a field line, or a label followed by bullets); a field that isn't there is a hole on the card, never a guess → _confirmed / corrected to: …_
-- **Assumed:** the journey is `docs/product/JOURNEY.md`'s table as `/spec` writes it (Stage · trying to do · meets · serving flow · where they leave · Source) plus `## The gaps`; a stage with no source label renders *unlabelled* in amber — the failure mode the template warns about, made visible → _confirmed / corrected to: …_
-- **Assumed:** "by method" reads the EVID `method:` field (`interview | observation | pretotype | metric | commitment-test`) and the presence of `docs/competition/README.md` (desk) and `docs/design/ux-check-*.md` (heuristic review); methods with no record render as holes with the verb → _confirmed / corrected to: …_
-- **Assumed:** rung is the EVID `grade:` (stated-pain → *stated*, observed-behavior → *observed*, commitment → *observed*) and *inferred* is the persona's synthetic share — nothing else is graded → _confirmed / corrected to: …_
-- **Assumed:** the evening-by-moments story (prototype v3) is NOT rendered — it was hand-written; no record holds a moment-by-moment day. The persona's `context` line renders as the day, and that is honest → _confirmed / corrected to: …_
-- **Assumed:** evidence quotes are never rendered — grades, dates, methods and the assumption phrase only (the FEAT-026 rule for a shareable copy applies from the start here) → _confirmed / corrected to: …_
+- **Assumed:** the persona record is what `/persona` writes — `who`, `context`, `jobs`, `pains`, `values`, *what we DON'T know yet*, the ledger line — read tolerantly (a field line, or a label followed by bullets); a field that isn't there is a hole on the card, never a guess → _confirmed — a label needs a separator, not the word (the `who does the rota…` bullet is the test)_
+- **Assumed:** the journey is `docs/product/JOURNEY.md`'s table as `/spec` writes it (Stage · trying to do · meets · serving flow · where they leave · Source) plus `## The gaps`; a stage with no source label renders *unlabelled* in amber — the failure mode the template warns about, made visible → _confirmed — *unlabelled* renders as the amber `find` chip with a count line under the table_
+- **Assumed:** "by method" reads the EVID `method:` field (`interview | observation | pretotype | metric | commitment-test`) and the presence of `docs/competition/README.md` (desk) and `docs/design/ux-check-*.md` (heuristic review); methods with no record render as holes with the verb → _confirmed — `method:` on the EVID plus `docs/competition/README.md` (desk) and `docs/design/ux-check-*.md` (heuristic); a method with no record renders *never* with its verb_
+- **Assumed:** rung is the EVID `grade:` (stated-pain → *stated*, observed-behavior → *observed*, commitment → *observed*) and *inferred* is the persona's synthetic share — nothing else is graded → _confirmed_
+- **Assumed:** the evening-by-moments story (prototype v3) is NOT rendered — it was hand-written; no record holds a moment-by-moment day. The persona's `context` line renders as the day, and that is honest → _confirmed — `context` is the day; no moment-by-moment story rendered_
+- **Assumed:** evidence quotes are never rendered — grades, dates, methods and the assumption phrase only (the FEAT-026 rule for a shareable copy applies from the start here) → _confirmed — the ledger reads `grade`, `method`, `date`, `assumption` and the title; the body of an EVID is never read_
 
 **Still unknown (didn't guess):**
 - Whether `/persona` ever writes `role: primary` — the playbook reader checks `role|kind|primary`; the first file in date order is primary otherwise.
@@ -62,3 +64,4 @@ every method never used.
 ## Log
 - 2026-09-13 — specced from FEAT-030's slice table. `method:` already exists on the EVID record — by-method is a read, not a field.
 - 2026-09-13 — **landed** (under Unreleased). Fourteen design tests. Surprise: the persona parser first took `- who does the rota when she is away?` as a `who` label — a label needs a separator, not the word; the test that caught it is the one with two bullets under *what we don't know yet*.
+- 2026-09-13 — **closed out**: status flipped to shipped (the code had shipped under Unreleased before the record said so), `proof: src/design.js` named, every plan-time assumption answered — one corrected (FEAT-030's contrast matcher is wider than the spec said; still declared pairs only).
