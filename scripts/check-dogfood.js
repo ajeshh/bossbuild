@@ -117,6 +117,44 @@ if (problems.length || drifted.length) {
 
 console.log(`  ${exercised} exercised · ${exempt} exempt (with a reason) · ${owed.length} owed\n`);
 
+// --- BOSS runs what BOSS ships — the install itself, not only the artifacts -------------------
+// The 2026-09-12 board assessment found BOSS's own `.boss/manifest.json` pinned at 0.267.0 with the
+// tree at 0.323.0 — 52 versions of practice BOSS shipped to founders and never installed in the one
+// project it has — and 45 workspace skills drifted from their shipped twins, with no checker able
+// to see it: this file checked record types and logs, not the install. "BOSS eats the dogfood"
+// was a claim with no mechanism. So: the pin is compared to VERSION. A few versions behind is the
+// ordinary state between releases and prints; more than three is the 52-version state beginning
+// again and fails — `boss sync --apply --keep-mine` here is the fix and takes a minute.
+{
+  const stampFile = join(ROOT, '.boss', 'manifest.json');
+  if (existsSync(stampFile)) {
+    let pin = null;
+    try { pin = JSON.parse(readFileSync(stampFile, 'utf8')).bossVersion || null; } catch { /* unreadable: the ladder check above already screams */ }
+    const version = readFileSync(join(ROOT, 'VERSION'), 'utf8').trim();
+    const num = (v) => String(v || '0').split('.').map(Number);
+    const behind = (() => {
+      // Count CHANGELOG entries strictly between the pin and VERSION — the honest unit, the same
+      // one check-published uses.
+      try {
+        const log = readFileSync(join(ROOT, 'registry', 'CHANGELOG.md'), 'utf8');
+        const versions = [...log.matchAll(/^## (\d+\.\d+\.\d+)/gm)].map((m) => m[1]);
+        const gt = (a, b) => { const [x, y] = [num(a), num(b)]; for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] > y[i]; return false; };
+        return versions.filter((v) => gt(v, pin) && !gt(v, version)).length;
+      } catch { return null; }
+    })();
+    if (pin === null || behind === null) {
+      console.log('  BOSS\'s own install: pin unreadable — `boss status` here should say why.\n');
+    } else if (behind === 0) {
+      console.log(`  BOSS's own install is current (pin ${pin}).\n`);
+    } else if (behind <= 3) {
+      console.log(`  BOSS's own install is ${behind} release(s) behind (pin ${pin}, tree ${version}) — ordinary between releases; \`boss sync --apply --keep-mine\` when the tree is quiet.\n`);
+    } else {
+      console.log(`  ✗ BOSS's own install is ${behind} releases behind (pin ${pin}, tree ${version}). That is how 52 happened. Run \`boss sync --apply --keep-mine\` here.\n`);
+      process.exit(1);
+    }
+  }
+}
+
 if (owed.length) {
   console.log('  OWED — applies to BOSS, and BOSS has never done it:');
   for (const r of owed) console.log(`      ${r.path}\n        ${r.capability}`);
