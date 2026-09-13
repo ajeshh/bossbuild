@@ -280,6 +280,13 @@ const SHARED_NAMES = new Set([
   // that makes a correct reference look like a dangle. Unlike BRAND.md, a shipped capability DOES
   // create this one — so it is the stronger of the two entries, not the weaker.
   'docs/design/library/manifest.json',
+  // Third instance, 2026-09-13 (FEAT-026). `/spec` step 7b WRITES `docs/design/FLOWS.md` into the
+  // founder's project the first time a FEAT with a surface names its flow, from its own bundled
+  // template; eight shipped files (`designer`, `/design-review`, `/spec` + templates, `/ux-check`,
+  // design-system.md) point at it. It resolves here only because BOSS dogfooded /spec on itself
+  // and the file is gitignored in this tree — the manifest.json case exactly. Same rung as every
+  // reader, so the reference is always satisfiable where it is made.
+  'docs/design/FLOWS.md',
 ]);
 
 if (repoOnlyDocDirs.length) {

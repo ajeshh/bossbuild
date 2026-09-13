@@ -17,6 +17,7 @@ import { planRemove, applyRemove, machineState, removeMachineState } from './rem
 import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
+import { playbookHtml } from './playbook.js';
 import { recap } from './recap.js';
 import { map, renderLadder } from './map.js';
 import { modeWord, loadModes } from './modes.js';
@@ -666,6 +667,24 @@ function cmdRecap(args = []) {
     days: flags.days,
     since: flags.since,
   });
+}
+
+// `boss playbook` — the founder's canvas as boxes, one self-contained page in .boss/ (FEAT-026).
+// Same contract as `board --html`: a pure projection of the files, re-run to refresh, the path
+// is printed and `--open` is best-effort. It asks nothing (the frame is a toggle on the page).
+function cmdPlaybook(args = []) {
+  const stamp = readStamp(process.cwd());
+  if (!stamp) return failNotAProject();
+  const { out, data } = playbookHtml(process.cwd(), stamp.name);
+  const { ledger, canvas, error } = data;
+  console.log(`\n  ${ok('✦')} Playbook → ${out}`);
+  console.log(`    ${canvas ? `docs/ideas/${canvas.file}` : 'no canvas yet — every box is a question; /canvas fills them'} · ${ledger.backed} of ${ledger.live} cells backed by evidence · ${ledger.signals} signal${ledger.signals === 1 ? '' : 's'}`);
+  if (error) console.error(`    ${warn('!')} ${error}`);
+  console.log('    A read of your files. Re-run `boss playbook` to refresh.\n');
+  if (args.includes('--open')) {
+    const opener = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+    try { spawn(opener, [out], { stdio: 'ignore', detached: true, shell: process.platform === 'win32' }).unref(); } catch { /* path already printed */ }
+  }
 }
 
 function cmdBoard(args = []) {
@@ -1393,7 +1412,7 @@ function failNotAProject() {
 // actually exists, never from a hand-kept copy of it.) Flags are excluded on purpose: `--help` is
 // not a plausible typo for a bare word, and suggesting it would be noise.
 const KNOWN_COMMANDS = [
-  'new', 'adopt', 'unlock', 'status', 'board', 'recap', 'map', 'brain', 'insights', 'records', 'id',
+  'new', 'adopt', 'unlock', 'status', 'board', 'playbook', 'recap', 'map', 'brain', 'insights', 'records', 'id',
   'team', 'list', 'retire', 'credit', 'remove', 'uninstall', 'sync', 'learn', 'craft',
   'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'hooks', 'version', 'help',
 ];
@@ -1635,6 +1654,7 @@ function printHelp() {
   console.log(row('boss recap [--md]', 'what happened this week, from your own records; --md to paste'));
   console.log(row('boss board <ID> | --detail', 'one card in full · a line under every card'));
   console.log(row('boss board --next|--blocked|--json', 'what to pick up · what\'s stuck · JSON (agent-readable)'));
+  console.log(row('boss playbook [--open]', 'your canvas as boxes, one page in .boss/ — holes stay holes'));
   console.log(row('boss status [--conscience]', 'mode + pinned version + drift (--conscience: loop states)'));
   console.log(row('boss unlock <mode>', 'climb a rung: quickstart → mvp → v1 → scale'));
   console.log(row('boss brain [--diff|--relationship]', 'the conscience\'s read on this venture'));
@@ -1758,6 +1778,7 @@ export async function run(argv) {
     case 'unlock': return cmdUnlock(args);
     case 'status': return cmdStatus(args);
     case 'board': return cmdBoard(args);
+    case 'playbook': return cmdPlaybook(args);
     case 'recap': return cmdRecap(args);
     case 'map': return cmdMap(args);
     case 'brain': return cmdBrain(args);

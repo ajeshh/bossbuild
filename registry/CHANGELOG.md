@@ -72,6 +72,23 @@ rule above still applies to the whole section once it is stamped.
   inbox and imported material stay local: real people's words and someone else's copyright are a
   consent question, not a repo setting. The test was "fine public forever?", not "is the repo
   private" — history goes with the toggle.
+- **`boss playbook` — your canvas as boxes (FEAT-026, slice 1).** One self-contained page in
+  `.boss/playbook.html`, the `board.html` contract: a read of your files, re-run to refresh,
+  nothing fetched, `--open` best-effort. Every cell in `docs/ideas/*-canvas.md` renders whole, in
+  your words — `_(not yet)_` as a dashed box carrying the question and `/canvas`, a dormant cell at
+  full size with the condition that wakes it, nothing collapsed in any frame. Humane ⇄ Lean on the
+  page; in Lean, Risks & Harms and Principles stay as a full band beneath the grid (DEC-004's
+  floor), and Lean's Channels box is a pointer to Business Model, never a second copy. A chip per
+  cell — `EVID ×N · <grade>` when an evidence record names the cell, else `asserted` — and the
+  ledger in the chrome (`N of M cells backed · K signals · newest D days`), counted from the files.
+  Every box has a stable id, Link, Copy (rich HTML + text, carrying the chip and source) and Slide
+  (16:9, ← → Esc). Brand from `docs/BRAND.md` — `accent:`, `tagline:`, `wordmark:` — each
+  `unknown` falling back on its own; no brand renders monochrome in `board.html`'s own greys, and
+  the footer says so. No canvas renders every cell as a question and exits 0. Writes one file, never
+  under `docs/`. The typo suggester and `boss help` know it; the template gitignores the output.
+  `check:refs` learns `docs/design/FLOWS.md` is a per-project file `/spec` writes (the
+  `manifest.json` case). Slices 2–4 (the other chapters, the deck with a VC cut) are FEAT-027..029;
+  the design and the 27 things it kicked up about what BOSS captures are IDEA-106.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

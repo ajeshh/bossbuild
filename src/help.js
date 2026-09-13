@@ -35,6 +35,12 @@ export const HELP = {
     examples: ['boss status', 'boss status --conscience', 'boss status --conscience --verbose'],
     see: ['map', 'sync', 'conscience'],
   },
+  playbook: {
+    usage: 'boss playbook [--open]',
+    what: 'Your canvas as boxes — one self-contained page in .boss/playbook.html, holes drawn as holes, the evidence ledger in the chrome. A read of your files; re-run to refresh.',
+    examples: ['boss playbook', 'boss playbook --open'],
+    see: ['board', 'canvas'],
+  },
   board: {
     usage: 'boss board [<ID>] [--detail] [--html] [--next|--blocked|--json] [--all] [--mine]',
     what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. Pass an ID for one card in full, or --detail for a line under every card. Deferred and dropped work is folded into Parked — decided, not queued. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',

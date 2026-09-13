@@ -14,6 +14,7 @@ secrets/
 # demand. Committing it means a 200-line diff every time the board moves, for a file
 # nobody reads from git.
 .boss/board.html
+.boss/playbook.html
 
 # Copies BOSS keeps of files it was about to overwrite (`boss sync`). Local recovery, not
 # project history — and the reason an overwrite is never the end of the story.
