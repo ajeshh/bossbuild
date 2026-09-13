@@ -20,7 +20,7 @@ id: person
 type: person
 name: <Name>
 handle: "@<github-username>"
-role: founder            # founder | cofounder | team | advisor
+role: founder            # founder | cofounder | team | advisor | missing (a role you need and don't have — the name is the role)
 photo: unknown           # a file beside this one (./name.jpg) — your choice to add; no file, no face
 status: active
 ---

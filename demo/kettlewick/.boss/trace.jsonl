@@ -1,0 +1,9 @@
+{"ts":"2026-09-01T22:54:24.683Z","kind":"component-new","name":"CoverButton","path":"src/components/CoverButton.tsx","near":["Button"]}
+{"ts":"2026-09-02T22:54:24.684Z","kind":"design-decision","file":"src/components/VisitRow.tsx","ids":["PAT-2","dodont-3"]}
+{"ts":"2026-09-04T22:54:24.684Z","kind":"component-new","name":"AskCard","path":"src/components/AskCard.tsx","near":[]}
+{"ts":"2026-09-05T22:54:24.684Z","kind":"design-decision","file":"src/components/AskCard.tsx","ids":["PAT-3"]}
+{"ts":"2026-09-07T22:54:24.684Z","kind":"component-new","name":"Card","path":"src/components/Card.tsx","near":["AskCard"]}
+{"ts":"2026-09-08T22:54:24.684Z","kind":"design-decision","file":"src/components/DayView.tsx","ids":["PAT-1","dodont-1"]}
+{"ts":"2026-09-10T22:54:24.684Z","kind":"design-decision","file":"src/components/AskCard.tsx","ids":["PAT-4","exception-2026-09-04"]}
+{"ts":"2026-09-11T22:54:24.684Z","kind":"component-new","name":"EmptyState","path":"src/components/EmptyState.tsx","near":[]}
+{"ts":"2026-09-12T22:54:24.684Z","kind":"design-decision","file":"src/components/PrintSheet.tsx","ids":["exception-2026-09-08"]}

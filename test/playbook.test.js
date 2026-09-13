@@ -391,7 +391,7 @@ test('a verb the project does not have yet: droppable records point at /import, 
   assert.equal(line('product-not'), '/landing seeds docs/BRAND.md — or drop what you know: /import');
   assert.equal(line('product-feats'), '/spec — arrives with the next mode (boss unlock)');
   assert.equal(line('persona-none'), '/persona derive');
-  assert.equal(line('vision-team'), 'no record holds this yet', 'a hole with no verb is said so, without citing BOSS\'s own records');
+  assert.equal(line('vision-team'), 'write docs/team/<you>.md — the README there has the shape', 'a hole with no verb points at the record shape, without citing BOSS\'s own records');
   // skills folder present but no /import → the gated verb just waits
   const noImport = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/canvas/SKILL.md': '# canvas' });
   const d2 = collectPlaybook(noImport, 'tidewell'); renderPlaybookHtml(d2, '2026-09-13 10:00');

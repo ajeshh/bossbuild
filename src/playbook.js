@@ -424,7 +424,7 @@ export function readPhoto(baseDir, ref) {
 }
 
 // docs/team/<slug>.md — a person, in their own words: the three sections, a role, a photo by choice.
-const ROLES = ['founder', 'cofounder', 'team', 'advisor'];
+const ROLES = ['founder', 'cofounder', 'team', 'advisor', 'missing'];   // `missing` = a role you need and don't have, written plainly
 export function readTeam(projectDir) {
   const dir = join(projectDir, 'docs', 'team');
   if (!existsSync(dir)) return null;
@@ -634,6 +634,7 @@ const slug = (s) => norm(s).replace(/ /g, '-');
 
 function pitchChapters(data) {
   const { canvas, cell, idea, feats, personas, competition, sources, ask, brandNot, designExists } = data;
+  const people = (data.team || []).filter((p) => p.role !== 'missing');
   const out = [];
   const line = (b) => (b && b.state === 'filled' ? firstSentence(b.answer) : '');
 
@@ -645,7 +646,9 @@ function pitchChapters(data) {
       ? block({ id: 'vision-why', title: 'Why this, and what "it worked" looks like', body: (idea.motivation ? `<p><strong>Motivation:</strong> ${inline(idea.motivation)}</p>` : '') + (idea.success ? `<p><strong>Success looks like:</strong> ${inline(idea.success)}</p>` : ''), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · motivation · success_looks_like` })
       : hole('vision-why', 'Why this, and what "it worked" looks like', 'Why are you building this, and what does success look like in three months? Two lines on the IDEA doc.', '/idea', ideaSrc))
     + cellBlock(cell('principles'), canvas, 'vision-principles', 'Principles', 'what we\'ll hold when it\'s costly')
-    + hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'no record holds this yet', 'docs/team — not a BOSS record')
+    + (people.length
+      ? block({ id: 'vision-team', title: 'Who is building it', body: people.map((p) => `<p><strong>${esc(p.name)}</strong> <span class="sub">${esc(p.role)}</span>${p.thing ? ` — ${inline(firstSentence(p.thing))}` : ''}</p>`).join('') + '<p class="xlink"><a href="#team">the team, in full →</a></p>', chip: '<span class="chip asserted">asserted</span>', src: `docs/team · ${people.length} ${people.length === 1 ? 'person' : 'people'}` })
+      : hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'write docs/team/<you>.md — the README there has the shape', 'docs/team — none'))
     + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', body: `<p>${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · in_a_few_years` })
       : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', idea ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : '/idea', `${ideaSrc} · no in_a_few_years line`))
     + '</div>'));
@@ -797,7 +800,8 @@ function companyChapters(data) {
   const empty = {};
 
   // 14 · Team — a card per person, founders first; who is missing as a question.
-  const people = team || [];
+  const people = (team || []).filter((p) => p.role !== 'missing');
+  const gaps = (team || []).filter((p) => p.role === 'missing');
   const card = (p) => block({ id: `person-${esc(slug(p.slug))}`, title: p.name, sub: p.role + (p.handle ? ` · ${p.handle}` : ''), cls: 'person',
     body: face(p.photo, p.name)
       + (p.thing ? `<p class="thing">${inline(p.thing)}</p>` : '<p class="helper">the specific thing — not written yet</p>')
@@ -805,7 +809,9 @@ function companyChapters(data) {
       + (p.bio ? `<p class="bio">${inline(p.bio)}</p>` : ''),
     src: `docs/team/${esc(p.slug)}.md` });
   empty.team = !people.length;
-  const missing = hole('team-missing', 'Who is missing', 'The role you need and don\'t have — a cofounder, an advisor, the first hire — written plainly, or not at all.', '/consult · mentor-hiring', 'docs/team — no file names a gap');
+  const missing = gaps.length
+    ? block({ id: 'team-missing', title: 'Who is missing', sub: `${gaps.length} role${gaps.length === 1 ? '' : 's'}, named`, body: gaps.map((g) => `<p><strong>${esc(g.name)}</strong>${g.thing ? ` — ${inline(g.thing)}` : ''}</p>${g.brings ? blockMd(g.brings) : ''}`).join(''), chip: '<span class="chip asserted">asserted</span>', src: gaps.map((g) => `docs/team/${esc(g.slug)}.md`).join(' · ') })
+    : hole('team-missing', 'Who is missing', 'The role you need and don\'t have — a cofounder, an advisor, the first hire — written plainly, or not at all. A person file with `role: missing` names one.', '/consult · mentor-hiring', 'docs/team — no file names a gap');
   out.push(chapter('team', chapterHead(14, 'Team', people[0] && people[0].thing ? firstSentence(people[0].thing) : ''),
     people.length
       ? `<div class="blocks">${people.map(card).join('')}${missing}</div>`

@@ -2,7 +2,8 @@
 id: IDEA-110
 type: idea
 owner: product-lead
-status: captured (trigger: FEAT-026 slices 2–4 shipped — the playbook exists end to end)
+status: promoted (trigger fired 2026-09-13 — the playbook exists end to end)
+promoted_to: FEAT-039
 gist: After the playbook is built, reposition BOSS around one complete worked example on oyeboss.build — not just "Tidewell" as an implementation, but the whole run: how BOSS sets the project up, the records it writes, the playbook and design pages it renders, the conscience firing along the way. A demo that shows all the pieces at once, because no single page can.
 proof: none
 proof_note: Nothing built. If it earns a build, the path is a `demo/` route on the site (`scripts/gen-site.js`) generated from a real throwaway project's files — the same renderers, never hand-written pages.
@@ -38,6 +39,27 @@ needs: one complete worked example, on the site, with every piece in it.
 - **The conscience** — the moments that fired along the way, quoted, with what the founder did.
 - **The mentors** — one `/consult`, one `mentor-capital` *not yet* sentence.
 
+## Ajesh's additions, 2026-09-13 (the trigger fired the same day)
+
+- **Tidewell, renamed.** *"I just saw tidewell is a real app"* — the demo venture is **Kettlewick**
+  (no product by that name; the tagline *cover found before the kettle boils* already carried the
+  word). Same venture, same cohort (`non-tech-founder`).
+- **Fully filled.** *"right now it's a bit empty or it's got empty slots, including on the design
+  and board page."* Every record the three renderers read exists in the demo and holds a real
+  (fictional) answer — a hole on the demo is a bug, not honesty. The one deliberate exception is
+  a proto-persona with a `synthetic 100%` ledger, because that is a feature (the VC cut omits it).
+- **A page on how the folders are organized.** The tree of a BOSS project, each folder with the
+  one line that says what lives there and which verb writes it — generated from the demo
+  project's actual tree, never typed.
+- **What else makes a demo.** *"other examples of agents or claude.md or something else"* — the
+  shipped `CLAUDE.md`, one agent, one skill, one hook, shown as they are in the folder (escaped,
+  from the template, so they can't drift), plus the conscience firing once and a mentor's *not yet*.
+- **A standing discipline.** *"any time we have a feature that needs to be highlighted there then
+  like we do for docs, site … we should know when to update that."* The demo is a generated
+  surface: `gen:site` regenerates it from the demo records with the current renderers, so a
+  renderer change lands by itself; and **the demo's open questions are a checker** — a new hole
+  on the demo page means a new feature shipped without demo content, and `check:demo` fails on it.
+
 ## The line it must respect
 
 The example is **fictional and says so on every page** (no photo of a real person, no quote nobody
@@ -59,5 +81,7 @@ FEAT-026 slices 2–4 shipped — the playbook exists end to end, so the showcas
 real. Until then: a to-do, written down.
 
 ## Capture log
+
+- 2026-09-13 — Ajesh's additions (above); **promoted → FEAT-039** the same day.
 
 - 2026-09-13 — seed (Ajesh), captured at the moment of compaction so it wouldn't be lost.

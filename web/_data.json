@@ -41,9 +41,9 @@
   ],
   "practices": 34,
   "verdicts": {
-    "total": 103,
+    "total": 104,
     "ADOPT": 11,
-    "ADAPT": 60,
+    "ADAPT": 61,
     "REJECT": 16,
     "NOT-YET": 16
   }

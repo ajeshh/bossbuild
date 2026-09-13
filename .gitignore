@@ -82,3 +82,11 @@ site.zip
 
 # plugin eval runs (claude plugin eval) — results are per-machine, never in the repo
 plugin/evals/results/
+
+# demo/ is authored fiction, tracked whole (FEAT-039) — the docs rules above guard REAL records;
+# a demo venture's evidence, sources, dossier and design are made up and belong in the repo.
+!demo/**/docs/evidence/
+!demo/**/docs/source/
+!demo/**/docs/dossier/
+!demo/**/docs/design/
+!demo/**/docs/research/

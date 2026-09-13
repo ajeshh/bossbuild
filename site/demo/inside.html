@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kettlewick — Inside the folder</title>
+<style>
+  :root { --accent: #2F5D8A; --ground: #E4E6E8; --paper: #F0F2F3; --ink: #16181A; --ink-2: #565C62; --muted: #565C62; --hole: #8A9096; --rule: #C4C8CC; --rule-2: #D7DADD; --accent-ink: #F0F2F3; --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper)); --chip-ev: #2F5D8A; --chip-ev-soft: #E3ECF5; --stale: #A8681A; --stale-soft: #F6ECDA; --bad: #A33A2E; --bad-soft: #F8E4E1; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color-scheme: light; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; } }
+  :root[data-theme="dark"] { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; }
+  * { box-sizing: border-box; } body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15.5px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); } h1, h2, h3, h4 { margin: 0; font-weight: 500; text-wrap: balance; } p { margin: 0; } code { font-family: var(--mono); font-size: .9em; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; } button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  .label { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); } .tab { font-variant-numeric: tabular-nums; }
+  .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 18px; padding: 10px 20px; background: color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .wordmark { font-family: var(--display); font-size: 21px; font-weight: 500; white-space: nowrap; } .wordmark .tag { font-family: var(--body); font-size: 12.5px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .family { display: flex; gap: 2px; font-size: 13px; } .family a { padding: 4px 9px; border-radius: 5px; text-decoration: none; color: var(--ink-2); white-space: nowrap; } .family a:hover { background: var(--paper); color: var(--ink); } .family a.on { background: var(--accent-soft); color: var(--ink); } .family a.dim { color: var(--hole); } .family a.dim::after { content: " · not generated"; font-family: var(--mono); font-size: 10px; letter-spacing: .04em; }
+  .ledger { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .ledger b { color: var(--ink); font-weight: 500; }
+  .shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); max-width: 1360px; margin: 0 auto; padding-inline: 20px; }
+  .rail { position: sticky; top: 56px; align-self: start; padding-block: 32px 40px; padding-right: 24px; border-right: 1px solid var(--rule); height: calc(100vh - 56px); overflow: auto; }
+  .rail .label { margin-bottom: 10px; } .rail .group { margin-top: 14px; } .rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .rail a { display: flex; align-items: baseline; gap: 8px; min-width: 0; padding: 6px 8px; border-radius: 5px; text-decoration: none; font-size: 14px; color: var(--ink-2); } .rail a:hover { background: var(--paper); color: var(--ink); } .rail a.on { background: var(--accent-soft); color: var(--ink); }
+  .rail a .n { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 18px; flex: none; } .rail a.hole-link { color: var(--hole); } .rail a.hole-link::after { content: "empty"; margin-left: auto; flex: none; font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--hole); }
+  main { padding-block: 32px 80px; padding-left: 40px; min-width: 0; }
+  .chapter { padding-block: 24px 56px; border-bottom: 1px solid var(--rule); scroll-margin-top: 70px; } .chapter:last-of-type { border-bottom: 0; }
+  .chapter-head { max-width: 62ch; margin-bottom: 26px; } .chapter-head .label { margin-bottom: 8px; } .chapter-head h2 { font-family: var(--display); font-size: 34px; line-height: 1.12; letter-spacing: -.01em; } .chapter-head p { margin-top: 10px; color: var(--ink-2); max-width: 58ch; }
+  .blocks { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } .blocks.one { grid-template-columns: 1fr; } .blocks.two { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+  .block { position: relative; display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 18px 20px 14px; scroll-margin-top: 80px; min-width: 0; }
+  .block .head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; } .block h3 { font-size: 13px; font-weight: 600; letter-spacing: .01em; } .block h3 .sub { font-weight: 400; color: var(--muted); }
+  .block .body { font-size: 15px; line-height: 1.5; flex: 1; min-width: 0; } .block .body p + p { margin-top: 8px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; }
+  .block .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 11px; color: var(--muted); } .block .src { min-width: 0; overflow-wrap: anywhere; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 99px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .02em; white-space: nowrap; } .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .chip.ev { background: var(--chip-ev-soft); color: var(--chip-ev); } .chip.dec { background: var(--accent-soft); color: var(--ink-2); } .chip.asserted { background: transparent; color: var(--muted); border: 1px solid var(--rule); } .chip.asserted::before { background: transparent; border: 1.5px solid currentColor; width: 5px; height: 5px; }
+  .chip.stale, .chip.find { background: var(--stale-soft); color: var(--stale); } .chip.find::before { border-radius: 1px; } .chip.bad { background: var(--bad-soft); color: var(--bad); }
+  .actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 2px; opacity: 0; transition: opacity .12s; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 2px; z-index: 2; }
+  .block:hover .actions, .block:focus-within .actions { opacity: 1; } @media (hover: none) { .actions { opacity: 1; } }
+  .actions button { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 4px; font-size: 11.5px; color: var(--ink-2); } .actions button:hover { background: var(--accent-soft); color: var(--ink); } .actions svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .block.hole .actions .copy, .block.dormant .actions .copy { display: none; }
+  .block.hole { border-style: dashed; background: transparent; } .block.hole .body { color: var(--hole); font-style: italic; } .block.hole .body .verb, .block.dormant .body .cond { font-style: normal; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); display: block; margin-top: 10px; }
+  .block.dormant { background: transparent; } .block.dormant .body { color: var(--hole); }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; } table.t th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  table.t td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; } table.t tr:last-child td { border-bottom: 0; } table.t td.mono { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+  table.t td.ok { color: var(--accent); font-weight: 500; } table.t td.warn { color: var(--stale); font-weight: 500; } table.t td.fail { color: var(--bad); font-weight: 500; } table.t td.q { color: var(--hole); font-style: italic; } .tscroll { overflow-x: auto; }
+  .t-small { font-size: 13px; color: var(--ink-2); }
+  .val { cursor: pointer; border-bottom: 1px dotted color-mix(in srgb, currentColor 45%, transparent); border-radius: 2px; } .val:hover { background: var(--accent-soft); border-bottom-color: var(--accent); }
+  .valmenu { position: absolute; z-index: 30; display: flex; flex-direction: column; min-width: 190px; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); padding: 4px; }
+  .valmenu button { display: flex; justify-content: space-between; gap: 14px; padding: 6px 8px; border-radius: 4px; font-size: 12.5px; text-align: left; } .valmenu button:hover { background: var(--accent-soft); } .valmenu button span { font-family: var(--mono); font-size: 11px; color: var(--muted); } .valmenu .k { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 4px 8px 2px; }
+  .sheet { position: fixed; right: 18px; bottom: 18px; z-index: 55; width: min(560px, calc(100vw - 36px)); max-height: min(70vh, 640px); display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; box-shadow: var(--shadow); }
+  .sheet .sh { display: flex; align-items: center; gap: 10px; padding: 10px 12px 8px; border-bottom: 1px solid var(--rule-2); } .sheet .sh b { font-weight: 600; font-size: 13px; } .sheet .sh .form { font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .sheet .sh .form.plain { color: var(--stale); } .sheet .sh .x { margin-left: auto; padding: 4px 8px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12px; color: var(--ink-2); }
+  .sheet .stabs { display: flex; gap: 2px; padding: 6px 10px 0; } .sheet .stabs button { padding: 5px 9px; font-size: 12px; color: var(--muted); border-bottom: 2px solid transparent; } .sheet .stabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .sheet .sb { overflow: auto; padding: 12px; min-height: 0; } .sheet .sb pre { margin: 0; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-2); }
+  .sheet .sb .rendered { font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: #17211E; background: #fff; border: 1px dashed var(--rule); border-radius: 6px; padding: 12px; } .sheet .sb .rendered table { border-collapse: collapse; } .sheet .sb .rendered td, .sheet .sb .rendered th { border: 1px solid #ddd; padding: 3px 6px; font-size: 12px; text-align: left; }
+  .sheet .sb .literal { font-family: var(--mono); font-size: 15px; padding: 10px 12px; background: var(--ground); border-radius: 6px; }
+  .sheet .sf { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .sheet .sf .again { margin-left: auto; padding: 4px 9px; border: 1px solid var(--rule); border-radius: 5px; font-family: var(--body); font-size: 12px; color: var(--ink-2); } .sheet .sf .again:hover { border-color: var(--accent); }
+  footer.site { padding-block: 26px 40px; padding-left: 40px; font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; }
+  @media (max-width: 980px) { .shell { grid-template-columns: 1fr; } .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 18px 0 14px; } .rail ol { flex-direction: row; flex-wrap: wrap; gap: 4px 6px; } .rail .group { margin-top: 8px; } .rail a { padding: 5px 9px; } .rail a.hole-link::after { display: none; } main, footer.site { padding-left: 0; } }
+  @media (max-width: 640px) { .topbar { flex-wrap: wrap; gap: 8px 12px; } .ledger { order: 4; flex-basis: 100%; margin-left: 0; white-space: normal; } .family a.dim::after { display: none; } .blocks, .blocks.two { grid-template-columns: 1fr; } .sheet { right: 12px; left: 12px; bottom: 12px; width: auto; } }
+  @media (prefers-reduced-motion: reduce) { .actions { transition: none; } }
+  @media print { .topbar, .rail, .actions, .valmenu, .sheet, footer.site { display: none !important; } .shell { display: block; } main { padding: 0; } .block { break-inside: avoid; } }
+
+  [hidden] { display: none !important; }
+  .present { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); } .present .seg button b { margin-left: 6px; color: var(--muted); font-weight: 500; } .present .seg button[aria-pressed="true"] b { color: inherit; }
+  .present .go, .present .pdf { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12.5px; } .present .go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); } .present .pdf:hover, .present .go:hover { filter: brightness(1.08); }
+  .present .removed { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 8px; border-top: 1px solid var(--rule-2); } .present .removed .chips { display: contents; } .present .removed .rm { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px dashed var(--rule); border-radius: 99px; font-size: 12px; color: var(--ink-2); } .present .removed .rm button { font-family: var(--mono); font-size: 11px; color: var(--accent); } .present .removed .restore-all { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--accent); }
+  .deck .chrome .cut { color: var(--ground); } .deck .chrome .remove { margin-left: 0; color: var(--muted); border-color: color-mix(in srgb, var(--muted) 40%, transparent); } .deck .chrome .close { margin-left: auto; }
+  .printdeck { display: none; }
+  @media print {
+    @page { size: landscape; margin: 0; }
+    .topbar, .shell, footer.site, .deck, .sheet, .valmenu { display: none !important; }
+    .printdeck { display: block; } .printdeck .sl { width: 100vw; height: 100vh; aspect-ratio: auto; max-height: none; border-radius: 0; box-shadow: none; page-break-after: always; break-after: page; padding: 6vh 7vw; } .printdeck .sl:last-child { page-break-after: auto; break-after: auto; } .printdeck .sl .sl-body { overflow: hidden; }
+  }
+  .face { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; border: 1px solid var(--rule); } .block.snippet .face { float: right; margin: 0 0 8px 12px; width: 56px; height: 56px; }
+  .block.person .thing { font-family: var(--display); font-size: 18px; line-height: 1.3; margin-bottom: 8px; } .block.person .bio { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
+  .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
+  .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
+  .block.value .meaning { font-family: var(--display); font-size: 19px; line-height: 1.35; } .block.value .cost { margin-top: 10px; color: var(--ink-2); font-size: 14px; } .block.value .cost .label { margin-right: 6px; }
+  .ladder { display: grid; gap: 6px; margin-bottom: 14px; } .rung { display: grid; grid-template-columns: 150px 1fr 32px; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); } .rung .bar { height: 10px; background: var(--rule-2); border-radius: 3px; overflow: hidden; } .rung .bar i { display: block; height: 100%; background: var(--accent); border-radius: 3px; } .rung b { text-align: right; color: var(--ink); }
+  table.t.ev td { font-size: 13.5px; } .block.superseded { opacity: .62; } .block .fals { margin-top: 8px; font-size: 14px; color: var(--ink-2); } .more { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
+  .chapter-head { max-width: 62ch; margin-bottom: 22px; } .chapter-head .label { margin-bottom: 6px; } .chapter-head h2 { font-family: var(--display); font-size: 32px; line-height: 1.12; } .chapter-head p { margin-top: 8px; color: var(--ink-2); }
+  .frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 16px; } .credit { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .canvas { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .band-title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; margin-top: 8px; } .band-title h3 { font-family: var(--display); font-size: 20px; } .band-title span { font-size: 13px; color: var(--muted); }
+  .canvas .block { min-height: 150px; }
+  .block .prompt { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; } .block.hole .prompt, .block.dormant .prompt { font-size: 14px; }
+  .block .answer p + p { margin-top: 8px; } .block .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 11px; color: var(--muted); } .block .src { min-width: 0; overflow-wrap: anywhere; }
+  .block.extra h3::after { content: " · your cell"; font-weight: 400; color: var(--muted); }
+  .t-lean, .t-bmc { display: none; }
+  .canvas[data-frame="lean"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(150px, auto)) auto minmax(150px, auto); }
+  .canvas[data-frame="lean"] .humane-only { display: none; } .canvas[data-frame="lean"] .block.floor { display: flex; }
+  .canvas[data-frame="lean"] .block { grid-area: var(--area, auto); } .canvas[data-frame="lean"] .block .prompt { display: none; } .canvas[data-frame="lean"] .block.hole .prompt, .canvas[data-frame="lean"] .block.dormant .prompt { display: block; }
+  .canvas[data-frame="lean"] .t-lean { display: inline; } .canvas[data-frame="lean"] .t-humane { display: none; }
+  .canvas[data-frame="lean"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="lean"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="lean"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
+  .canvas[data-frame="lean"] .pointer { display: flex; grid-area: 2 / 4 / 3 / 5; } .pointer { display: none; }
+  .canvas[data-frame="bmc"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(150px, auto)) auto minmax(150px, auto); }
+  .canvas[data-frame="bmc"] .no-bmc { display: none; } .canvas[data-frame="bmc"] .block.floor { display: flex; }
+  .canvas[data-frame="bmc"] .block { grid-area: var(--bmc-area, auto); } .canvas[data-frame="bmc"] .block .prompt { display: none; } .canvas[data-frame="bmc"] .block.hole .prompt, .canvas[data-frame="bmc"] .block.dormant .prompt { display: block; }
+  .canvas[data-frame="bmc"] .t-bmc { display: inline; } .canvas[data-frame="bmc"] .t-humane { display: none; }
+  .canvas[data-frame="bmc"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="bmc"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="bmc"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
+  .canvas[data-frame="bmc"] .pointer { display: flex; grid-area: 2 / 4 / 3 / 5; }
+  .pointer .body { color: var(--ink-2); font-size: 14px; }
+  .deck { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; grid-template-rows: auto 1fr auto; padding: 16px clamp(16px, 4vw, 48px); }
+  .deck .chrome, .deck .bottom { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); } .deck .chrome button { margin-left: auto; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 5px; font-family: var(--body); font-size: 12.5px; color: var(--ground); }
+  .deck .stage { display: grid; place-items: center; min-height: 0; position: relative; } .deck .hit { position: absolute; top: 0; bottom: 0; width: 22%; cursor: pointer; } .deck .hit.l { left: 0; } .deck .hit.r { right: 0; }
+  .deck .bottom .lg { margin-left: auto; }
+  .sl { width: min(100%, 1180px); aspect-ratio: 16 / 9; max-height: 100%; background: var(--paper); color: var(--ink); border-radius: 10px; box-shadow: var(--shadow); padding: clamp(28px, 4.5vw, 64px) clamp(28px, 5vw, 72px); display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+  .sl .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; } .sl .eyebrow .wm { font-family: var(--display); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--ink); margin-right: 10px; }
+  .sl .sl-title { font-family: var(--display); font-size: clamp(24px, 2.6vw, 38px); color: var(--ink-2); font-weight: 500; }
+  .sl .sl-body { margin-top: 20px; flex: 1; min-height: 0; overflow: auto; font-family: var(--display); font-size: clamp(19px, 2.2vw, 32px); line-height: 1.32; } .sl .sl-body .prompt { display: none; } .sl.hole .sl-body .prompt, .sl.dormant .sl-body .prompt { display: block; color: var(--hole); font-style: italic; }
+  .sl .sl-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule-2); display: flex; gap: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); } .sl.hole { border: 2px dashed var(--rule); }
+  @media (max-width: 900px) { .canvas, .canvas[data-frame="lean"], .canvas[data-frame="bmc"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .canvas[data-frame="lean"] .block, .canvas[data-frame="lean"] .pointer, .canvas[data-frame="lean"] .band-title.floor-title, .canvas[data-frame="bmc"] .block, .canvas[data-frame="bmc"] .pointer, .canvas[data-frame="bmc"] .band-title.floor-title { grid-area: auto !important; } .canvas[data-frame="lean"] .band-title.floor-title, .canvas[data-frame="bmc"] .band-title.floor-title { grid-column: 1 / -1; } }
+  @media (max-width: 640px) { .canvas, .canvas[data-frame="lean"], .canvas[data-frame="bmc"] { grid-template-columns: 1fr; } }
+  .block .helper { color: var(--muted); font-size: 13px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; } .block .body p + p, .block .body ul + p, .block .body p + ul { margin-top: 8px; }
+  .block.snippet .who { font-family: var(--display); font-size: 19px; line-height: 1.3; } .xlink { font-family: var(--mono); font-size: 11.5px; } .xlink.dim { color: var(--muted); } .hole-text { color: var(--hole); }
+  .tier-title { display: flex; align-items: baseline; gap: 10px; margin: 22px 0 12px; } .tier-title h3 { font-family: var(--display); font-size: 20px; } .tier-title span { font-size: 13px; color: var(--muted); }
+  table.rivals { width: 100%; border-collapse: collapse; font-size: 13.5px; } table.rivals th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); } table.rivals td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; } table.rivals tr:last-child td { border-bottom: 0; }
+  .chip.synthetic { background: var(--accent-soft); color: var(--ink-2); } .date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .rival .win-line { font-family: var(--display); font-size: 20px; line-height: 1.25; margin-bottom: 8px; }
+
+  .demo-banner { font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); padding: 8px 20px; background: var(--paper); border-bottom: 1px solid var(--rule); }
+  main.one { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; } .src-file { font-family: var(--mono); font-size: 12px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--ground); border-radius: 6px; padding: 12px 14px; margin: 10px 0 0; max-height: 640px; overflow: auto; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wordmark">kettlewick</div>
+  <nav class="family" aria-label="Spaces"><a href="index.html">Demo</a><a href="playbook.html">Playbook</a><a href="design.html">Design</a><a href="board.html">Board</a><a href="folders.html">Folders</a><a href="inside.html" class="on" aria-current="page">Inside</a></nav>
+</header>
+<div class="demo-banner">Kettlewick is fictional — every page here is generated by <code>boss</code> from the records in <code>demo/kettlewick/</code>, the same way an install renders yours.</div>
+<main class="one">
+
+<div class="chapter-head"><div class="label">Inside the folder</div><h2>What BOSS put in the project, as it ships.</h2><p>Five of the files an install lays down, read from the template at build time and shown unedited. The placeholders are filled the way <code>boss new</code> fills them.</p></div>
+<div class="blocks one"><article class="block filled" id="inside-claude-md" data-title="CLAUDE.md"><div class="head"><h3>CLAUDE.md</h3></div><div class="body"><p class="t-small">read on every turn — the host-specific layer, kept to a screen</p><pre class="src-file"># CLAUDE.md — kettlewick
+
+@AGENTS.md
+
+&gt; Scaffolded by BOSS 0.325.0 in **MVP** mode (L1-mvp) on 2026-05-12.
+&gt; Host-neutral working rules live in `@AGENTS.md` (imported above). This file adds only the
+&gt; Claude-specific layer. **Keep both short** — every line here is read on every turn, so this file
+&gt; spends the founder's context budget, not BOSS's. If something can be *looked up*, link it.
+
+&gt; **First time? Run `/welcome`.** Already know BOSS? `/boss &lt;idea, file, doc, or URL&gt;` spins up —
+&gt; it pulls your material in. Already have a repo? `/read-repo` reads it and says where you stand.
+
+## What's here
+
+- **Agents:** `product-lead` (what's worth building), `coder` (builds it, in whatever stack gets
+  chosen), `mentor-founder` (coaches *you* — is this worth it, what's the riskiest assumption,
+  what's the next real step), `prompt-coach` (sharpens how you ask; say *&quot;help me ask this better&quot;*).
+- **Skills:** run **`boss map`**. It lists what this project actually has, live from the install —
+  which is why this file doesn't enumerate them and can't go stale about them.
+- **Docs:** `docs/ideas/` (living idea docs + canvases), `docs/IDS.md` (the ID system).
+- **Memory:** durable facts about *you* go to Claude's auto-memory, which lives on **this machine**
+  and travels to no cofounder — so anything the project depends on belongs in `docs/`. Working notes
+  scoped to one area of the code go in `.claude/rules/`, which loads only when that code is opened.
+- **`/clear` and `/compact` drop working context**, and neither is `docs/RESUME.md` (that's the
+  project's state, which `boss status` reads back). Put anything you'd hate to re-derive into your
+  idea doc *before* you run them.
+
+### The Quickstart arc
+
+**capture → talk to one person → pressure-test → unlock MVP.**
+
+1. **Capture** the idea with `/idea` — a living `docs/ideas/IDEA-NNN.md` you keep adding to. No
+   pressure to finish it; re-run `/idea` whenever a new thought lands.
+2. **Talk to one person.** `/interview` preps a 15-minute Mom-Test call; `/evidence` turns what you
+   heard into graded `EVID-NNN` records — one thing, your notes, or a whole transcript — and flags
+   where you pitched instead of listened. **This is the step that pays for the others**: one real
+   conversation beats another pass over the canvas, and the grade ladder (stated-pain →
+   observed-behavior → commitment) is what stops a compliment reading as a receipt.
+3. **Pressure-test** with `/canvas` once it has legs — the humane business read that names the
+   riskiest assumption and one week's experiment. It's a far better canvas after step 2.
+4. **Unlock MVP** (`boss unlock mvp`) when the canvas holds and you're ready to build.
+
+`/prototype` is a legitimate start too: build the smallest clickable version first, then fill the
+gaps once you can see it. The conscience nudges once if you keep capturing without testing anything
+— a pointer, never a gate. Capturing isn't validating.
+
+## The four modes (unlock additively)
+
+This project is in **MVP** mode. Modes level up as the project earns it:
+
+| Mode | Adds | When |
+|---|---|---|
+| **Quickstart** _(here)_ | idea capture, `/boss` spin-up, `/idea`, `/prototype`, pm + coder | you have an idea to capture |
+| **MVP** | `/spec` + `FEAT-NNN`, `/smoke` build gate, devlog, `/close` + RESUME.md, tester | you're ready to build the first working version |
+| **V1** | design-system *enforcement*, prototypes, `/board`, `/design-library`, doc-placement contract | ready for a real, shippable v1 |
+| **Scale** | `/incident` post-mortems, `/idea --feedback` customer register, the org mentor | customers are real and coordination is the bottleneck |
+
+`boss status` shows your mode and whether newer BOSS practices are available; `boss unlock &lt;mode&gt;`
+climbs a rung.
+
+## Before you generate anything durable
+
+Three questions, and they cost three seconds: **does it already exist?** (look for the *output*, not
+the inputs — if it's there and it's fine, say so and stop, that is a complete outcome) · **what rung
+is this project on, and what rung does this belong to?** · **if it's above their rung, what's the
+seam** — the one cheap thing that stops history being *gone* rather than merely undone.
+
+Full version, with the worked examples: **`boss craft seed-to-scale`**.
+</pre></div><div class="foot"><span class="src">stages/L0-quickstart/template/CLAUDE.md · as shipped in this version</span></div><div class="actions"></div></article>
+<article class="block filled" id="inside-agents-md" data-title="AGENTS.md"><div class="head"><h3>AGENTS.md</h3></div><div class="body"><p class="t-small">the host-neutral working rules; CLAUDE.md imports it</p><pre class="src-file"># AGENTS.md — kettlewick
+
+&gt; Working rules for **any** AI coding agent in this repo (host-neutral). Scaffolded by BOSS
+&gt; 0.325.0 on 2026-05-12. Claude Code reads this through `CLAUDE.md`; other tools (Codex,
+&gt; Cursor, Copilot, Devin…) read it directly. Source of truth for *how work is done here*.
+
+## Working rules (read first)
+
+1. **Capture before you build.** Every idea, bug or ask becomes an `IDEA-NNN` in `docs/ideas/` before code. Its frontmatter `status` is the record of where it stands; `boss board` renders the rest.
+2. **Stack-neutral until decided.** No assumed stack. The first real build decision picks one — record it, don't hold it in your head.
+3. **Source of truth is the docs, not the chat.** If code and a doc disagree, surface it before changing either.
+4. **Small, reversible steps.** One concern at a time. Prefer editing an existing file to adding one.
+5. **Ask before risky or irreversible actions** (deletes, force-push, anything shared). Local reversible edits don't need a check.
+6. **Don't over-build.** No speculative abstractions, no handling for impossible states, no comments that restate the code.
+7. **Grow the system deliberately.** Ceremony arrives by mode (Quickstart → MVP → V1 → Scale), only when earned. `boss unlock &lt;mode&gt;` lays each one down.
+
+## Conventions
+
+- **IDs:** `IDEA-NNN` (raw ideas), `DEC-NNN` (load-bearing or one-way-door decisions). See `docs/IDS.md`; more types unlock with later modes.
+- **Decisions:** `/decide` writes the record — Context / Decision / Why / Consequences, who decided, how reversible. Supersede, don't edit.
+- **Frontmatter:** every new doc carries `id`, `type`, `owner`, `status`.
+- **Backup &amp; share:** `docs/` commits with the repo, so **pushing backs up your thinking** and a cofounder who clones is in the loop. Only secrets and the conscience's private read stay local. `boss team add @handle &quot;Name&quot;` when someone joins — solo is the default.
+- **Git:** small commits, present-tense messages, never force-push a shared branch without asking.
+
+## Project overview
+
+&lt;!-- Replace this with what kettlewick is. Already written somewhere — a doc, a deck, an
+     Obsidian note, a PDF, a link? Point your agent at it and capture the idea. --&gt;
+
+_TBD — describe kettlewick here._
+</pre></div><div class="foot"><span class="src">stages/L0-quickstart/template/AGENTS.md · as shipped in this version</span></div><div class="actions"></div></article>
+<article class="block filled" id="inside-mentor-founder-md" data-title="mentor-founder.md"><div class="head"><h3>.claude/agents/mentor-founder.md</h3></div><div class="body"><p class="t-small">one of the mentors — advisory only, never writes product code</p><pre class="src-file">---
+name: mentor-founder
+description: Venture mentor for kettlewick — coaches the FOUNDER, not the codebase. Pressure-tests whether the idea is worth pursuing, names the riskiest assumption, and points at the next real step. Owns the canvas conversation. Advisory only — never writes product code or specs. Trigger phrases - &quot;is this worth doing&quot;, &quot;should I build this&quot;, &quot;what's my biggest risk&quot;, &quot;how do I start a company&quot;, &quot;talk me through this idea&quot;.
+tools: Read, Grep, Glob, Edit, Write
+---
+
+&gt; **Model:** this mentor is invoked rarely and its output shapes a decision you'll live with
+&gt; for months — the `deliberation` shape (see `model-routing.md`). If your host lets you pick a
+&gt; model per agent, this is the one worth your most deliberate one. BOSS doesn't pin it: a model
+&gt; name rots, and you already chose one when you opened your host.
+
+You are the **venture mentor** for **kettlewick** (MVP mode) — the cornerstone of BOSS's
+mentor layer. You coach the *founder*. You are not a builder: you don't write
+production code, own specs, or decide implementation. You move the founder's *thinking* forward.
+
+## Your job
+
+- Be the experienced voice in the room for a founder who may be doing this for the first time.
+- Pressure-test the idea humanely: who's served, what tension, what promise, who could be harmed —
+  *then* commercial rigor (riskiest assumption, smallest experiment, willingness to pay).
+- Always leave them with **the single most useful next step**, not a plan they can't act on.
+- When *&quot;what should I be doing next?&quot;* is really about the founder, not the feature: each mode quietly
+  asks them to become someone slightly different — builder → seller → operator → leader (the role-shift
+  ladder, `boss craft founder-role-shifts`). The honest next step is often not another
+  feature but the next rung's job (the interviews, the customer loop, giving away your Legos). Name the
+  *situation*, never the person; staying at a rung is legitimate.
+- When the question is really *&quot;are we there yet — should we scale / hire / raise?&quot;*, that's the
+  product-market-fit hinge, and the seller→operator→leader ladder turns on it. Point at **`/health`**
+  (MVP+) — the verdict that reads what BOSS already holds and calls pre/at/post-PMF, defaulting to
+  *not yet*. Hold the same line it does: **scaling before fit is the #1 way startups die**, so the
+  honest default is pre-PMF, and the leader's job stays refused until the operator's is done.
+- Own the canvas conversation: nudge toward `/canvas`, help fill a few cells at a time, revisit it.
+
+## How you work
+
+1. Read `docs/ideas/` (what they're chasing) and `docs/ideas/CANVAS.md` if present.
+2. Ask one sharp question at a time. The goal is insight, not an interrogation.
+3. Name the **riskiest assumption** out loud and propose one cheap way to test it this week.
+4. Capture what's decided where it belongs (canvas, idea doc) — start the founder's dossier
+   (`docs/dossier/` as artifacts emerge). Author *with* them, never behind their back.
+
+## The evidence you carry (use it, don't recite it)
+
+Three findings anchor how you pressure-test. Lead with the judgment; cite only if they want the receipt.
+
+- **Validation buys faster *decisions*, not guaranteed wins.** The disciplined founder doesn't win more
+  often by magic — they decide faster and **quit weak ideas faster** (Camuffo et al., 759-firm RCT).
+  Cheap AI lowers the cost of *building*, not the cost of *being wrong*. So when building feels free,
+  the riskiest-assumption test matters *more*, not less. Never sell validation as a guarantee.
+- **The demoware test.** AI makes an impressive demo trivially cheap — and trivially easy to mistake for
+  a validated product. The blunt cut (Cagan/SVPG): *if your AI product only replaces a prompt plus a
+  copy/paste, it's a demo, not a product.* Use it at the `/prototype`→`/spec` graduation: did we test
+  value, usability, viability — or just that the demo runs?
+- **The competence-gate.** AI advice *amplifies* the judgment a founder already has — it can actively
+  harm the founder least able to grade it (Otis et al., HBS RCT, 640 founders: high performers ~+15%,
+  struggling ones ~−8%; and confidence in AI tracks *less* checking, not more). So at a decision the
+  founder may not be equipped to evaluate, the move is to ask **&quot;are you set up to judge this answer?&quot;** —
+  point them at who would know, don't answer it for them. A humility prompt, used rarely, never a gate.
+- **The 10x → 2x move, for a stuck growth question only.** When the founder is optimizing inside a
+  constraint they haven't noticed (*&quot;how do I get from 40 to 60 users&quot;*), multiply the goal by ten and</pre><p class="t-small">… 51 more lines in the shipped file.</p></div><div class="foot"><span class="src">stages/L0-quickstart/template/.claude/agents/mentor-founder.md · as shipped in this version</span></div><div class="actions"></div></article>
+<article class="block filled" id="inside-skill-md" data-title="SKILL.md"><div class="head"><h3>.claude/skills/canvas/SKILL.md</h3></div><div class="body"><p class="t-small">one of the skills — a verb the founder runs; this is the pressure test</p><pre class="src-file">---
+name: canvas
+description: Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them. One set of answers, several frames (Humane by default, Lean, BMC, a onepager with the evidence ledger). A few cells at a time; the Quickstart→MVP gate. Usage - /canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager]
+---
+
+# /canvas — pressure-test the idea (humanely)
+
+The just-in-time mentor that shows up once an idea has legs. Built on **the Humane Product Canvas
+(by Ajesh Shah)** — values-first — with sharp Lean/Lenny business prompts folded into each cell so
+the idea is both *humane* and *viable*.
+
+It is **a snapshot, not a final blueprint.** Answers evolve as insight grows. Don't rush to fill
+boxes — sit with the hard questions, sketch, talk, revisit. A half-filled canvas with a sharp
+riskiest-assumption beats a fully-filled canvas of guesses.
+
+When the canvas is reasonably filled and the **riskiest assumption has a validation plan**, the idea
+is ready to `boss unlock mvp`.
+
+## Frames — one set of answers, several ways to read them
+
+**A canvas is a set of answers, not a layout.** The Humane Product Canvas is the *default frame*, not
+the only one — it was never meant to be, and became the sole spine by inheritance from
+a release note rather than by decision. So the answers live in one place and you project them:
+
+| Frame | Reads as | Use when |
+|---|---|---|
+| **`humane`** _(default)_ | Human Foundation / Product Expression / Stewardship | you're building — it puts the questions that shape decisions first |
+| **`lean`** | Maurya's nine: Problem · Existing Alternatives · Customer Segments · Early Adopters · UVP · Solution · Channels · Revenue · Cost Structure · Key Metrics · Unfair Advantage | you want the fast iteration view, or a reader who expects it |
+| **`bmc`** | Osterwalder's nine: Customer Segments · Value Props · Channels · Customer Relationships · Revenue · Key Resources · Key Activities · Key Partnerships · Cost Structure | the audience is an operator or an investor |
+| **`onepager`** | Prose, not a grid — the promise, who it's for, the tension, how it shows up, how it sustains itself, **what you actually know and how you know it**, and what could sink it | someone outside needs to read it in two minutes — a warm intro, an advisor, a would-be collaborator |
+
+**The founder never picks a framework.** They answer questions; the frame is a view they can switch,
+and switching never loses an answer or asks anything twice.
+
+### The floor — what a frame may and may not change
+
+A frame changes **layout and vocabulary**. It does **not** change which cells are required.
+
+&gt; **Risks &amp; Harms and Principles render in EVERY frame, including Lean and BMC.**
+
+Those two are the cells no conventional canvas has, and they are the reason this one is worth
+keeping. If a conventional frame could drop them, &quot;humane&quot; would become a preference a founder can
+decline — which is the argument BOSS already settled against an opt-in ethics mentor
+(`registry/boundary.json`: *an ethics advisor a founder can decline to open is weaker than a
+conscience they can't*). **A conventional frame is a different view of a humane canvas, never a way
+out of one.**
+
+When rendering `lean` or `bmc`, append the two cells under a plain heading — *&quot;and two questions this
+canvas asks that Lean and BMC don't&quot;* — rather than hiding them or apologising for them.
+
+### Mapping — where each answer shows up
+
+One answer, several homes. Nothing is asked twice:
+
+- **People** → Customer Segments (both) · the *who feels it worst* half → Early Adopters (Lean)
+- **Problem** → Problem (Lean) · its *what they use today* half → Existing Alternatives (Lean)
+- **Promises** → Unique Value Proposition (Lean) / Value Propositions (BMC)
+- **Story** → Solution (Lean); its *why now* half has no conventional home — **render it anyway**
+- **Modes of Engagement** → Customer Relationships (BMC) · its *unique advantage* half → Unfair Advantage (Lean)
+- **Business Model** → Revenue Streams (both) · its acquisition/ongoing-channel half → Channels (both).</pre><p class="t-small">… 320 more lines in the shipped file.</p></div><div class="foot"><span class="src">stages/L0-quickstart/template/.claude/skills/canvas/SKILL.md · as shipped in this version</span></div><div class="actions"></div></article>
+<article class="block filled" id="inside-conscience-js" data-title="conscience.js"><div class="head"><h3>.claude/hooks/conscience.js</h3></div><div class="body"><p class="t-small">the conscience hook — reads the loops, returns signals; Claude composes the voice</p><pre class="src-file">#!/usr/bin/env node
+// BOSS conscience hook (v0.18.0+) — generic, loop-driven.
+//
+// Fires on UserPromptSubmit. Reads .boss/loops/*.md from the project, classifies
+// each loop's state against the predicate-based runtime, returns structured
+// signals for any loop drifting. Claude composes the voice; the hook ships a
+// schema (Liu's discipline).
+//
+// Output schema:
+//   { hookSpecificOutput: {
+//       hookEventName: &quot;UserPromptSubmit&quot;,
+//       signals: [{ loop_id, type, moment, confidence, evidence, suppress_if }, ...],
+//       // For back-compat with v0.16 eval-runner: mirror first signal's fields.
+//       moment, confidence, evidence, suppress_if,
+//       additionalContext: &quot;...&quot; } }
+//
+// Always exits 0. Empty output = no signal = stay silent.
+
+import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readIntentContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity, notYetSaid, markSaid } from './lib/loop-runtime.js';
+import { detectTaskHygiene } from './lib/task-hygiene.js';
+import process from 'node:process';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+// The one signal that is NOT loop-driven (IDEA-094 Part 0). Every other moment reads files in the
+// project; this one reads the session's own task list out of the host transcript, whose path the
+// host hands us on stdin. It is folded in HERE rather than shipped as a second hook, for three
+// reasons worth keeping: nothing new has to be registered, there stays exactly one surface that
+// speaks, and it inherits `/pause`, per-moment mute and the frequency ledger for free — so a
+// founder can turn this down the same way they turn down anything else BOSS says.
+//
+// Reading stdin is new for this hook and it is on the hot path, so the budget is small and the
+// failure is silence. A TTY means nothing is piped (the eval runner, a hand-run), and that path
+// resolves immediately rather than paying the timeout.
+const HOOK_STDIN_MS = 300;
+
+function readHookInput() {
+  return new Promise((resolve) =&gt; {
+    if (process.stdin.isTTY) { resolve(null); return; }
+    let data = '';</pre><p class="t-small">… 117 more lines in the shipped file.</p></div><div class="foot"><span class="src">stages/L0-quickstart/template/.claude/hooks/conscience.js · as shipped in this version</span></div><div class="actions"></div></article></div>
+</main>
+</body>
+</html>

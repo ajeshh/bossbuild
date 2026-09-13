@@ -371,6 +371,26 @@ rule above still applies to the whole section once it is stamped.
   fact. **Export PDF** prints the current cut, one landscape page per slide, through a print-only
   container — the shell's print sheet hides the page, this one hides the shell. Nothing opens on
   its own. One test walks the three lists against the page.
+- **The Kettlewick showcase (FEAT-039, from IDEA-110) — `oyeboss.build/demo/`.** One fictional
+  venture, every piece, generated: `demo/kettlewick/` is a tracked record set in the exact shapes
+  the shipped verbs write (an IDEA doc with all four fields, a 13-cell canvas with no hole, two
+  personas — one with a real share and a quote from an EVID, one proto at 100% synthetic so the VC
+  cut has something to omit — three fictional rivals, four EVIDs across the ladder, three DECs,
+  a devlog, sources, the capital mentor's *not yet*, a brand doc with *How we build* and a mark,
+  two people and a **missing role** written as a person file, health, measure, trust, four FEATs),
+  and `scripts/gen-demo.js` hands it to the real renderers — `boss playbook`, `boss design`,
+  `boss board --html` — and writes `site/demo/`: the three spaces, **the folders page** (read from
+  the rendered tree, each folder's line its README's first sentence or the verb that writes there),
+  and **inside the folder** (CLAUDE.md, AGENTS.md, a mentor, a skill, the conscience hook — read
+  from `stages/` at build time, escaped, so it cannot drift). Every page says *fictional*; no
+  face, no real company. `gen:site` runs it, so the demo is rebuilt with the current renderers
+  whenever the site is; **`check:demo`** (in `npm run check`) renders it and fails when the
+  playbook reports an open question or a folder a renderer reads is missing — the standing
+  discipline Ajesh asked for: a feature shipped without demo content shows up as a hole and the
+  gate says so. Two small renderer changes the demo forced: a person file with `role: missing`
+  fills *Who is missing* (the role you need and don't have, written plainly), and Vision's *Who is
+  building it* lists the team when `docs/team/` has people. Tidewell is a real product, so the
+  demo venture is Kettlewick. *Demo* joins the site nav. Five tests.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

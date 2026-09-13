@@ -1,0 +1,68 @@
+<!--
+title: The demo — one venture, every piece, generated
+description: Kettlewick is a fictional home-care rota venture run through BOSS end to end. The playbook, the design space, the board, the folders and the shipped files — every page produced by the same code an install runs, from records you can read.
+reviewed: 2026-09-13
+review_by: 2027-03-13
+describes: the showcase — what a BOSS project looks like when it is full, and how it is made
+covers: demo/kettlewick scripts/gen-demo.js src/playbook.js src/design.js src/board.js
+nav: demo
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <h1>See it run on one venture<span class="dot">.</span></h1>
+      <p class="lede">
+        Kettlewick is a fictional home-care rota venture — one tap when a carer calls in sick, and
+        the cover is found before the kettle boils. Nothing below is a mock-up. Every page is what
+        <code>boss playbook</code>, <code>boss design</code> and <code>boss board --html</code>
+        produce from the records in <code>demo/kettlewick/</code>, which you can read in the repo —
+        the same renderers, the same output an install gives you.
+      </p>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>the pages</span></div>
+      <div class="body prose">
+        <ul>
+          <li><a href="demo/playbook.html"><strong>The playbook</strong></a> — sixteen chapters over the
+            records: the pitch, the proof, the company; the canvas in three frames; <em>Present</em>
+            as a deck with a VC cut you can trim, and <em>Export PDF</em>.</li>
+          <li><a href="demo/design.html"><strong>The design space</strong></a> — tokens as swatches with
+            the decision that chose them, contrast computed, the people, the parts, the patterns.</li>
+          <li><a href="demo/board.html"><strong>The board</strong></a> — every idea and feature by where
+            it stands, read from the records' own status lines.</li>
+          <li><a href="demo/folders.html"><strong>The folders</strong></a> — how a BOSS project is
+            organised on disk and which verb writes where, read from the tree after rendering.</li>
+          <li><a href="demo/inside.html"><strong>Inside the folder</strong></a> — the CLAUDE.md, an agent,
+            a skill and the conscience hook an install lays down, shown unedited.</li>
+        </ul>
+        <p class="small">
+          What to look at first: open the playbook, press <em>Present</em>, and step through the VC
+          cut — then open the folders page and find the record each slide came from.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the rules it keeps</span></div>
+      <div class="body prose">
+        <p>
+          <strong>Fictional, and it says so on every page.</strong> No real person — no name, no
+          face, no quote. A fictional founder gets no photo, because BOSS never draws a stand-in for
+          a person who has none, and a generated face is a stand-in with better lighting. No real
+          company is a rival.
+        </p>
+        <p>
+          <strong>Generated, never drawn.</strong> A demo prettier than what <code>boss</code>
+          produces is a lie the first install exposes. So the demo is rebuilt from the records with
+          the current renderers every time the site is, and a check fails the build when a hole
+          appears on it — a hole on the demo means a feature shipped without demo content, and that
+          is how the demo stays current with the product.
+        </p>
+      </div>
+    </section>
+
+  </main>

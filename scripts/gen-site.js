@@ -20,6 +20,8 @@ import { loadModes, packageSkillMd, skillGloss, modeWord, STANDING_COMMANDS } fr
 // had no copy of this at all until v0.256.0 and printed the raw entry instead; giving it one would
 // have made two, and two copies of a rule is how the rule drifts. See src/changelog.js.
 import { forYou, parseEntries } from '../src/changelog.js';
+// The showcase (FEAT-039): demo/kettlewick/ rendered by the real renderers into site/demo/.
+import { generate as generateDemo } from './gen-demo.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // web/ is SOURCE (page fragments, the shell, the stylesheets).
@@ -873,6 +875,7 @@ const NAV = [
       { id: 'canvas', href: 'canvas.html', label: 'The canvas' },
     ] },
   ] },
+  { id: 'demo', href: 'demo.html', label: 'Demo' },
   { id: 'about', href: 'about.html', label: 'About' },
   { id: 'whats-new', href: 'whats-new.html', label: "What's new" },
 ];
@@ -1020,6 +1023,8 @@ writeFileSync(join(SITE, 'sitemap.xml'),
   + pages.map((f) => `  <url><loc>${esc(canonical(f))}</loc></url>`).join('\n')
   + '\n</urlset>\n');
 
+const demo = generateDemo();
+console.log(`  ✦ demo → site/demo/ · ${demo.line}`);
 console.log(`\n  BOSS · site — ${built} pages from ${pages.length} fragments, v${V}`);
 console.log(`    source: web/   →   deploy: site/  (upload the whole folder)`);
 console.log(`    ${data.agents} agents (${data.builders} builders · ${data.mentors} mentors) · ${data.skills} skills`);

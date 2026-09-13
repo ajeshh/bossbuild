@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kettlewick — Playbook</title>
+<style>
+  :root { --accent: #2F5D8A; --ground: #E4E6E8; --paper: #F0F2F3; --ink: #16181A; --ink-2: #565C62; --muted: #565C62; --hole: #8A9096; --rule: #C4C8CC; --rule-2: #D7DADD; --accent-ink: #F0F2F3; --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper)); --chip-ev: #2F5D8A; --chip-ev-soft: #E3ECF5; --stale: #A8681A; --stale-soft: #F6ECDA; --bad: #A33A2E; --bad-soft: #F8E4E1; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color-scheme: light; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; } }
+  :root[data-theme="dark"] { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; }
+  * { box-sizing: border-box; } body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15.5px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); } h1, h2, h3, h4 { margin: 0; font-weight: 500; text-wrap: balance; } p { margin: 0; } code { font-family: var(--mono); font-size: .9em; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; } button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  .label { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); } .tab { font-variant-numeric: tabular-nums; }
+  .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 18px; padding: 10px 20px; background: color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .wordmark { font-family: var(--display); font-size: 21px; font-weight: 500; white-space: nowrap; } .wordmark .tag { font-family: var(--body); font-size: 12.5px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .family { display: flex; gap: 2px; font-size: 13px; } .family a { padding: 4px 9px; border-radius: 5px; text-decoration: none; color: var(--ink-2); white-space: nowrap; } .family a:hover { background: var(--paper); color: var(--ink); } .family a.on { background: var(--accent-soft); color: var(--ink); } .family a.dim { color: var(--hole); } .family a.dim::after { content: " · not generated"; font-family: var(--mono); font-size: 10px; letter-spacing: .04em; }
+  .ledger { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .ledger b { color: var(--ink); font-weight: 500; }
+  .shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); max-width: 1360px; margin: 0 auto; padding-inline: 20px; }
+  .rail { position: sticky; top: 56px; align-self: start; padding-block: 32px 40px; padding-right: 24px; border-right: 1px solid var(--rule); height: calc(100vh - 56px); overflow: auto; }
+  .rail .label { margin-bottom: 10px; } .rail .group { margin-top: 14px; } .rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .rail a { display: flex; align-items: baseline; gap: 8px; min-width: 0; padding: 6px 8px; border-radius: 5px; text-decoration: none; font-size: 14px; color: var(--ink-2); } .rail a:hover { background: var(--paper); color: var(--ink); } .rail a.on { background: var(--accent-soft); color: var(--ink); }
+  .rail a .n { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 18px; flex: none; } .rail a.hole-link { color: var(--hole); } .rail a.hole-link::after { content: "empty"; margin-left: auto; flex: none; font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--hole); }
+  main { padding-block: 32px 80px; padding-left: 40px; min-width: 0; }
+  .chapter { padding-block: 24px 56px; border-bottom: 1px solid var(--rule); scroll-margin-top: 70px; } .chapter:last-of-type { border-bottom: 0; }
+  .chapter-head { max-width: 62ch; margin-bottom: 26px; } .chapter-head .label { margin-bottom: 8px; } .chapter-head h2 { font-family: var(--display); font-size: 34px; line-height: 1.12; letter-spacing: -.01em; } .chapter-head p { margin-top: 10px; color: var(--ink-2); max-width: 58ch; }
+  .blocks { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } .blocks.one { grid-template-columns: 1fr; } .blocks.two { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+  .block { position: relative; display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 18px 20px 14px; scroll-margin-top: 80px; min-width: 0; }
+  .block .head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; } .block h3 { font-size: 13px; font-weight: 600; letter-spacing: .01em; } .block h3 .sub { font-weight: 400; color: var(--muted); }
+  .block .body { font-size: 15px; line-height: 1.5; flex: 1; min-width: 0; } .block .body p + p { margin-top: 8px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; }
+  .block .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 11px; color: var(--muted); } .block .src { min-width: 0; overflow-wrap: anywhere; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 99px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .02em; white-space: nowrap; } .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .chip.ev { background: var(--chip-ev-soft); color: var(--chip-ev); } .chip.dec { background: var(--accent-soft); color: var(--ink-2); } .chip.asserted { background: transparent; color: var(--muted); border: 1px solid var(--rule); } .chip.asserted::before { background: transparent; border: 1.5px solid currentColor; width: 5px; height: 5px; }
+  .chip.stale, .chip.find { background: var(--stale-soft); color: var(--stale); } .chip.find::before { border-radius: 1px; } .chip.bad { background: var(--bad-soft); color: var(--bad); }
+  .actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 2px; opacity: 0; transition: opacity .12s; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 2px; z-index: 2; }
+  .block:hover .actions, .block:focus-within .actions { opacity: 1; } @media (hover: none) { .actions { opacity: 1; } }
+  .actions button { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 4px; font-size: 11.5px; color: var(--ink-2); } .actions button:hover { background: var(--accent-soft); color: var(--ink); } .actions svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .block.hole .actions .copy, .block.dormant .actions .copy { display: none; }
+  .block.hole { border-style: dashed; background: transparent; } .block.hole .body { color: var(--hole); font-style: italic; } .block.hole .body .verb, .block.dormant .body .cond { font-style: normal; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); display: block; margin-top: 10px; }
+  .block.dormant { background: transparent; } .block.dormant .body { color: var(--hole); }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; } table.t th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  table.t td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; } table.t tr:last-child td { border-bottom: 0; } table.t td.mono { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+  table.t td.ok { color: var(--accent); font-weight: 500; } table.t td.warn { color: var(--stale); font-weight: 500; } table.t td.fail { color: var(--bad); font-weight: 500; } table.t td.q { color: var(--hole); font-style: italic; } .tscroll { overflow-x: auto; }
+  .t-small { font-size: 13px; color: var(--ink-2); }
+  .val { cursor: pointer; border-bottom: 1px dotted color-mix(in srgb, currentColor 45%, transparent); border-radius: 2px; } .val:hover { background: var(--accent-soft); border-bottom-color: var(--accent); }
+  .valmenu { position: absolute; z-index: 30; display: flex; flex-direction: column; min-width: 190px; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); padding: 4px; }
+  .valmenu button { display: flex; justify-content: space-between; gap: 14px; padding: 6px 8px; border-radius: 4px; font-size: 12.5px; text-align: left; } .valmenu button:hover { background: var(--accent-soft); } .valmenu button span { font-family: var(--mono); font-size: 11px; color: var(--muted); } .valmenu .k { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 4px 8px 2px; }
+  .sheet { position: fixed; right: 18px; bottom: 18px; z-index: 55; width: min(560px, calc(100vw - 36px)); max-height: min(70vh, 640px); display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; box-shadow: var(--shadow); }
+  .sheet .sh { display: flex; align-items: center; gap: 10px; padding: 10px 12px 8px; border-bottom: 1px solid var(--rule-2); } .sheet .sh b { font-weight: 600; font-size: 13px; } .sheet .sh .form { font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .sheet .sh .form.plain { color: var(--stale); } .sheet .sh .x { margin-left: auto; padding: 4px 8px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12px; color: var(--ink-2); }
+  .sheet .stabs { display: flex; gap: 2px; padding: 6px 10px 0; } .sheet .stabs button { padding: 5px 9px; font-size: 12px; color: var(--muted); border-bottom: 2px solid transparent; } .sheet .stabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .sheet .sb { overflow: auto; padding: 12px; min-height: 0; } .sheet .sb pre { margin: 0; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-2); }
+  .sheet .sb .rendered { font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: #17211E; background: #fff; border: 1px dashed var(--rule); border-radius: 6px; padding: 12px; } .sheet .sb .rendered table { border-collapse: collapse; } .sheet .sb .rendered td, .sheet .sb .rendered th { border: 1px solid #ddd; padding: 3px 6px; font-size: 12px; text-align: left; }
+  .sheet .sb .literal { font-family: var(--mono); font-size: 15px; padding: 10px 12px; background: var(--ground); border-radius: 6px; }
+  .sheet .sf { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .sheet .sf .again { margin-left: auto; padding: 4px 9px; border: 1px solid var(--rule); border-radius: 5px; font-family: var(--body); font-size: 12px; color: var(--ink-2); } .sheet .sf .again:hover { border-color: var(--accent); }
+  footer.site { padding-block: 26px 40px; padding-left: 40px; font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; }
+  @media (max-width: 980px) { .shell { grid-template-columns: 1fr; } .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 18px 0 14px; } .rail ol { flex-direction: row; flex-wrap: wrap; gap: 4px 6px; } .rail .group { margin-top: 8px; } .rail a { padding: 5px 9px; } .rail a.hole-link::after { display: none; } main, footer.site { padding-left: 0; } }
+  @media (max-width: 640px) { .topbar { flex-wrap: wrap; gap: 8px 12px; } .ledger { order: 4; flex-basis: 100%; margin-left: 0; white-space: normal; } .family a.dim::after { display: none; } .blocks, .blocks.two { grid-template-columns: 1fr; } .sheet { right: 12px; left: 12px; bottom: 12px; width: auto; } }
+  @media (prefers-reduced-motion: reduce) { .actions { transition: none; } }
+  @media print { .topbar, .rail, .actions, .valmenu, .sheet, footer.site { display: none !important; } .shell { display: block; } main { padding: 0; } .block { break-inside: avoid; } }
+
+  [hidden] { display: none !important; }
+  .present { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); } .present .seg button b { margin-left: 6px; color: var(--muted); font-weight: 500; } .present .seg button[aria-pressed="true"] b { color: inherit; }
+  .present .go, .present .pdf { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12.5px; } .present .go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); } .present .pdf:hover, .present .go:hover { filter: brightness(1.08); }
+  .present .removed { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 8px; border-top: 1px solid var(--rule-2); } .present .removed .chips { display: contents; } .present .removed .rm { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px dashed var(--rule); border-radius: 99px; font-size: 12px; color: var(--ink-2); } .present .removed .rm button { font-family: var(--mono); font-size: 11px; color: var(--accent); } .present .removed .restore-all { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--accent); }
+  .deck .chrome .cut { color: var(--ground); } .deck .chrome .remove { margin-left: 0; color: var(--muted); border-color: color-mix(in srgb, var(--muted) 40%, transparent); } .deck .chrome .close { margin-left: auto; }
+  .printdeck { display: none; }
+  @media print {
+    @page { size: landscape; margin: 0; }
+    .topbar, .shell, footer.site, .deck, .sheet, .valmenu { display: none !important; }
+    .printdeck { display: block; } .printdeck .sl { width: 100vw; height: 100vh; aspect-ratio: auto; max-height: none; border-radius: 0; box-shadow: none; page-break-after: always; break-after: page; padding: 6vh 7vw; } .printdeck .sl:last-child { page-break-after: auto; break-after: auto; } .printdeck .sl .sl-body { overflow: hidden; }
+  }
+  .face { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; border: 1px solid var(--rule); } .block.snippet .face { float: right; margin: 0 0 8px 12px; width: 56px; height: 56px; }
+  .block.person .thing { font-family: var(--display); font-size: 18px; line-height: 1.3; margin-bottom: 8px; } .block.person .bio { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
+  .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
+  .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
+  .block.value .meaning { font-family: var(--display); font-size: 19px; line-height: 1.35; } .block.value .cost { margin-top: 10px; color: var(--ink-2); font-size: 14px; } .block.value .cost .label { margin-right: 6px; }
+  .ladder { display: grid; gap: 6px; margin-bottom: 14px; } .rung { display: grid; grid-template-columns: 150px 1fr 32px; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); } .rung .bar { height: 10px; background: var(--rule-2); border-radius: 3px; overflow: hidden; } .rung .bar i { display: block; height: 100%; background: var(--accent); border-radius: 3px; } .rung b { text-align: right; color: var(--ink); }
+  table.t.ev td { font-size: 13.5px; } .block.superseded { opacity: .62; } .block .fals { margin-top: 8px; font-size: 14px; color: var(--ink-2); } .more { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
+  .chapter-head { max-width: 62ch; margin-bottom: 22px; } .chapter-head .label { margin-bottom: 6px; } .chapter-head h2 { font-family: var(--display); font-size: 32px; line-height: 1.12; } .chapter-head p { margin-top: 8px; color: var(--ink-2); }
+  .frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 16px; } .credit { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .canvas { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .band-title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; margin-top: 8px; } .band-title h3 { font-family: var(--display); font-size: 20px; } .band-title span { font-size: 13px; color: var(--muted); }
+  .canvas .block { min-height: 150px; }
+  .block .prompt { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; } .block.hole .prompt, .block.dormant .prompt { font-size: 14px; }
+  .block .answer p + p { margin-top: 8px; } .block .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 11px; color: var(--muted); } .block .src { min-width: 0; overflow-wrap: anywhere; }
+  .block.extra h3::after { content: " · your cell"; font-weight: 400; color: var(--muted); }
+  .t-lean, .t-bmc { display: none; }
+  .canvas[data-frame="lean"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(150px, auto)) auto minmax(150px, auto); }
+  .canvas[data-frame="lean"] .humane-only { display: none; } .canvas[data-frame="lean"] .block.floor { display: flex; }
+  .canvas[data-frame="lean"] .block { grid-area: var(--area, auto); } .canvas[data-frame="lean"] .block .prompt { display: none; } .canvas[data-frame="lean"] .block.hole .prompt, .canvas[data-frame="lean"] .block.dormant .prompt { display: block; }
+  .canvas[data-frame="lean"] .t-lean { display: inline; } .canvas[data-frame="lean"] .t-humane { display: none; }
+  .canvas[data-frame="lean"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="lean"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="lean"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
+  .canvas[data-frame="lean"] .pointer { display: flex; grid-area: 2 / 4 / 3 / 5; } .pointer { display: none; }
+  .canvas[data-frame="bmc"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(150px, auto)) auto minmax(150px, auto); }
+  .canvas[data-frame="bmc"] .no-bmc { display: none; } .canvas[data-frame="bmc"] .block.floor { display: flex; }
+  .canvas[data-frame="bmc"] .block { grid-area: var(--bmc-area, auto); } .canvas[data-frame="bmc"] .block .prompt { display: none; } .canvas[data-frame="bmc"] .block.hole .prompt, .canvas[data-frame="bmc"] .block.dormant .prompt { display: block; }
+  .canvas[data-frame="bmc"] .t-bmc { display: inline; } .canvas[data-frame="bmc"] .t-humane { display: none; }
+  .canvas[data-frame="bmc"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="bmc"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="bmc"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
+  .canvas[data-frame="bmc"] .pointer { display: flex; grid-area: 2 / 4 / 3 / 5; }
+  .pointer .body { color: var(--ink-2); font-size: 14px; }
+  .deck { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; grid-template-rows: auto 1fr auto; padding: 16px clamp(16px, 4vw, 48px); }
+  .deck .chrome, .deck .bottom { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); } .deck .chrome button { margin-left: auto; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 5px; font-family: var(--body); font-size: 12.5px; color: var(--ground); }
+  .deck .stage { display: grid; place-items: center; min-height: 0; position: relative; } .deck .hit { position: absolute; top: 0; bottom: 0; width: 22%; cursor: pointer; } .deck .hit.l { left: 0; } .deck .hit.r { right: 0; }
+  .deck .bottom .lg { margin-left: auto; }
+  .sl { width: min(100%, 1180px); aspect-ratio: 16 / 9; max-height: 100%; background: var(--paper); color: var(--ink); border-radius: 10px; box-shadow: var(--shadow); padding: clamp(28px, 4.5vw, 64px) clamp(28px, 5vw, 72px); display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+  .sl .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; } .sl .eyebrow .wm { font-family: var(--display); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--ink); margin-right: 10px; }
+  .sl .sl-title { font-family: var(--display); font-size: clamp(24px, 2.6vw, 38px); color: var(--ink-2); font-weight: 500; }
+  .sl .sl-body { margin-top: 20px; flex: 1; min-height: 0; overflow: auto; font-family: var(--display); font-size: clamp(19px, 2.2vw, 32px); line-height: 1.32; } .sl .sl-body .prompt { display: none; } .sl.hole .sl-body .prompt, .sl.dormant .sl-body .prompt { display: block; color: var(--hole); font-style: italic; }
+  .sl .sl-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule-2); display: flex; gap: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); } .sl.hole { border: 2px dashed var(--rule); }
+  @media (max-width: 900px) { .canvas, .canvas[data-frame="lean"], .canvas[data-frame="bmc"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .canvas[data-frame="lean"] .block, .canvas[data-frame="lean"] .pointer, .canvas[data-frame="lean"] .band-title.floor-title, .canvas[data-frame="bmc"] .block, .canvas[data-frame="bmc"] .pointer, .canvas[data-frame="bmc"] .band-title.floor-title { grid-area: auto !important; } .canvas[data-frame="lean"] .band-title.floor-title, .canvas[data-frame="bmc"] .band-title.floor-title { grid-column: 1 / -1; } }
+  @media (max-width: 640px) { .canvas, .canvas[data-frame="lean"], .canvas[data-frame="bmc"] { grid-template-columns: 1fr; } }
+  .block .helper { color: var(--muted); font-size: 13px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; } .block .body p + p, .block .body ul + p, .block .body p + ul { margin-top: 8px; }
+  .block.snippet .who { font-family: var(--display); font-size: 19px; line-height: 1.3; } .xlink { font-family: var(--mono); font-size: 11.5px; } .xlink.dim { color: var(--muted); } .hole-text { color: var(--hole); }
+  .tier-title { display: flex; align-items: baseline; gap: 10px; margin: 22px 0 12px; } .tier-title h3 { font-family: var(--display); font-size: 20px; } .tier-title span { font-size: 13px; color: var(--muted); }
+  table.rivals { width: 100%; border-collapse: collapse; font-size: 13.5px; } table.rivals th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); } table.rivals td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; } table.rivals tr:last-child td { border-bottom: 0; }
+  .chip.synthetic { background: var(--accent-soft); color: var(--ink-2); } .date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .rival .win-line { font-family: var(--display); font-size: 20px; line-height: 1.25; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wordmark">kettlewick<span class="tag">Cover found before the kettle boils</span></div>
+  <nav class="family" aria-label="Spaces"><a href="index.html">Demo</a><a href="#" class="on" aria-current="page">Playbook</a><a href="design.html">Design</a><a href="board.html">Board</a></nav>
+  <div class="ledger"><b class="tab">0 of 13</b> cells backed by graded evidence · <b>4</b> signals, top <b>commitment</b> · newest <b>9 days</b> ago · nothing open</div>
+</header>
+<div class="demo-banner" style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;padding:8px 20px;border-bottom:1px solid #C4C8CC;background:#F0F2F3;color:#565C62">Kettlewick is fictional — every page here is generated by <code>boss</code> from the records in <code>demo/kettlewick/</code>, the same way an install renders yours. <a href="index.html">← the demo</a></div>
+<div class="shell">
+  <nav class="rail" aria-label="Sections">
+    <div class="label group">Pitch</div><ol><li><a href="#vision"><span class="n">1</span>Vision</a></li><li><a href="#product"><span class="n">2</span>Product</a></li><li><a href="#customers"><span class="n">3</span>Customers</a></li><li><a href="#problem"><span class="n">4</span>Problem</a></li><li><a href="#market"><span class="n">5</span>Market</a></li><li><a href="#competition"><span class="n">6</span>Competition</a></li><li><a href="#canvas"><span class="n">7</span>Canvas</a></li><li><a href="#model"><span class="n">8</span>Business model</a></li></ol>
+<div class="label group">Proof</div><ol><li><a href="#evidence"><span class="n">9</span>Evidence</a></li><li><a href="#learnings"><span class="n">10</span>Learnings</a></li><li><a href="#decisions"><span class="n">11</span>Decisions</a></li><li><a href="#risks"><span class="n">12</span>Risks &amp; harms</a></li><li><a href="#health"><span class="n">13</span>Health</a></li></ol>
+<div class="label group">Company</div><ol><li><a href="#team"><span class="n">14</span>Team</a></li><li><a href="#brand"><span class="n">15</span>Brand</a></li><li><a href="#values"><span class="n">16</span>Values</a></li></ol>
+  </nav>
+  <main>
+<div class="present" id="present" data-cuts="{&quot;all&quot;:[&quot;vision-why&quot;,&quot;vision-principles&quot;,&quot;vision-team&quot;,&quot;vision-few-years&quot;,&quot;product-shape&quot;,&quot;product-feats&quot;,&quot;product-not&quot;,&quot;persona-marta&quot;,&quot;persona-priya&quot;,&quot;problem-cell&quot;,&quot;problem-story&quot;,&quot;market-people&quot;,&quot;market-sources&quot;,&quot;competition-table&quot;,&quot;rival-rotawise&quot;,&quot;rival-caresheet&quot;,&quot;competition-watch&quot;,&quot;canvas-people&quot;,&quot;canvas-problem&quot;,&quot;canvas-promises&quot;,&quot;canvas-story&quot;,&quot;canvas-modes&quot;,&quot;canvas-bizmodel&quot;,&quot;canvas-cost&quot;,&quot;canvas-deliver&quot;,&quot;canvas-partners&quot;,&quot;canvas-metrics&quot;,&quot;canvas-buildbuy&quot;,&quot;canvas-risks&quot;,&quot;canvas-principles&quot;,&quot;model-revenue&quot;,&quot;model-cost&quot;,&quot;model-capital&quot;,&quot;model-ask&quot;,&quot;evidence-ladder&quot;,&quot;learn-1&quot;,&quot;learn-2&quot;,&quot;learn-3&quot;,&quot;learn-4&quot;,&quot;learn-5&quot;,&quot;learn-6&quot;,&quot;learn-7&quot;,&quot;learn-8&quot;,&quot;dec-003&quot;,&quot;dec-002&quot;,&quot;dec-004&quot;,&quot;dec-001&quot;,&quot;risks-harms&quot;,&quot;risks-trust&quot;,&quot;health-read&quot;,&quot;health-measure&quot;,&quot;person-marta&quot;,&quot;person-ola&quot;,&quot;team-missing&quot;,&quot;brand-shape&quot;,&quot;brand-anchor&quot;,&quot;brand-learned&quot;,&quot;values-principles&quot;,&quot;value-1&quot;,&quot;value-2&quot;,&quot;value-3&quot;],&quot;internal&quot;:[&quot;vision-why&quot;,&quot;vision-principles&quot;,&quot;vision-team&quot;,&quot;vision-few-years&quot;,&quot;product-shape&quot;,&quot;product-feats&quot;,&quot;product-not&quot;,&quot;persona-marta&quot;,&quot;persona-priya&quot;,&quot;problem-cell&quot;,&quot;problem-story&quot;,&quot;market-people&quot;,&quot;market-sources&quot;,&quot;competition-table&quot;,&quot;rival-rotawise&quot;,&quot;rival-caresheet&quot;,&quot;competition-watch&quot;,&quot;canvas-promises&quot;,&quot;canvas-modes&quot;,&quot;canvas-deliver&quot;,&quot;canvas-partners&quot;,&quot;canvas-metrics&quot;,&quot;canvas-buildbuy&quot;,&quot;model-revenue&quot;,&quot;model-cost&quot;,&quot;model-capital&quot;,&quot;evidence-ladder&quot;,&quot;learn-1&quot;,&quot;learn-2&quot;,&quot;learn-3&quot;,&quot;learn-4&quot;,&quot;learn-5&quot;,&quot;learn-6&quot;,&quot;learn-7&quot;,&quot;learn-8&quot;,&quot;dec-003&quot;,&quot;dec-002&quot;,&quot;dec-004&quot;,&quot;dec-001&quot;,&quot;risks-harms&quot;,&quot;risks-trust&quot;,&quot;health-read&quot;,&quot;health-measure&quot;,&quot;person-marta&quot;,&quot;person-ola&quot;,&quot;team-missing&quot;,&quot;brand-shape&quot;,&quot;brand-anchor&quot;,&quot;brand-learned&quot;,&quot;values-principles&quot;,&quot;value-1&quot;,&quot;value-2&quot;,&quot;value-3&quot;],&quot;vc&quot;:[&quot;vision-why&quot;,&quot;vision-principles&quot;,&quot;vision-few-years&quot;,&quot;product-shape&quot;,&quot;product-feats&quot;,&quot;product-not&quot;,&quot;persona-marta&quot;,&quot;problem-cell&quot;,&quot;problem-story&quot;,&quot;market-people&quot;,&quot;market-sources&quot;,&quot;competition-table&quot;,&quot;rival-rotawise&quot;,&quot;rival-caresheet&quot;,&quot;model-revenue&quot;,&quot;model-cost&quot;,&quot;model-capital&quot;,&quot;model-ask&quot;,&quot;evidence-ladder&quot;,&quot;risks-harms&quot;,&quot;risks-trust&quot;,&quot;health-read&quot;,&quot;health-measure&quot;,&quot;person-marta&quot;,&quot;person-ola&quot;,&quot;brand-anchor&quot;,&quot;value-1&quot;,&quot;value-2&quot;,&quot;value-3&quot;]}">
+    <span class="label">Present</span>
+    <div class="seg" role="group" aria-label="Cut"><button type="button" data-cut="vc" aria-pressed="true">VC cut <b class="tab n-vc">29</b></button><button type="button" data-cut="internal" aria-pressed="false">Internal <b class="tab n-internal">53</b></button><button type="button" data-cut="all" aria-pressed="false">Everything <b class="tab n-all">61</b></button></div>
+    <button type="button" class="go" id="present-go">Present</button>
+    <button type="button" class="pdf" id="present-pdf" title="Print the current cut, one slide per page">Export PDF</button>
+    <div class="removed" id="present-removed" hidden><span class="label">removed</span><span class="chips"></span><button type="button" class="restore-all">restore all</button></div>
+  </div><section class="chapter" id="vision"><div class="chapter-head"><div class="label">1 · Vision</div><h2>We find cover before the kettle boils.</h2></div><div class="blocks"><article class="block filled" id="vision-why" data-title="Why this, and what &quot;it worked&quot; looks like">
+  <div class="head"><h3>Why this, and what &quot;it worked&quot; looks like</h3></div>
+  <div class="body"><p><strong>Motivation:</strong> own-problem</p><p><strong>Success looks like:</strong> Five agencies I don't know run their Monday on it.</p></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/ideas/IDEA-001-kettlewick.md · motivation · success_looks_like</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="vision-principles" data-title="Principles">
+  <div class="head"><h3>Principles <span class="sub">— what we'll hold when it's costly</span></h3></div>
+  <div class="body"><div class="answer">Never sell carer data. Nothing after 8pm. The owner is the last word on every fill.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Principles · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="vision-team" data-title="Who is building it">
+  <div class="head"><h3>Who is building it</h3></div>
+  <div class="body"><p><strong>Marta Kowalczyk</strong> <span class="sub">founder</span> — Ran a twelve-carer agency for six years and did the Monday cover call every week of it.</p><p><strong>Ola Bennett</strong> <span class="sub">cofounder</span> — Built the texting for a taxi firm's night desk; knows what a 7 a.m.</p><p class="xlink"><a href="#team">the team, in full →</a></p></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/team · 2 people</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="vision-few-years" data-title="In a few years">
+  <div class="head"><h3>In a few years</h3></div>
+  <div class="body"><p>Every small agency in the county runs its week on it, and the phone tree is a story the owners tell new staff.</p></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/ideas/IDEA-001-kettlewick.md · in_a_few_years</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="product"><div class="chapter-head"><div class="label">2 · Product</div><h2>What: One tap when a carer calls in sick.</h2></div><div class="blocks"><article class="block filled" id="product-shape" data-title="What it is today">
+  <div class="head"><h3>What it is today <span class="sub">— the current shape, in the founder's words</span></h3></div>
+  <div class="body"><p class="helper">The best articulation so far.</p><ul><li><strong>What:</strong> One tap when a carer calls in sick. The rota stays a spreadsheet; Kettlewick only does the cover.</li><li><strong>Who it's for:</strong> owner-operators with 3 to 15 carers who do the Monday rota by hand.</li><li><strong>Why now:</strong> owners moved the rota to their phones in 2024–25; the cover call didn't follow.</li><li><strong>Smallest version that proves it:</strong> a text goes out to the three carers who can take the visit; the first yes fills it; the owner sees it filled.</li></ul></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/ideas/IDEA-001-kettlewick.md · ## Current shape · since 2026-05-12</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="product-feats" data-title="What has shipped">
+  <div class="head"><h3>What has shipped <span class="sub">— and what is being built</span></h3></div>
+  <div class="body"><ul><li><strong>FEAT-001</strong> · The cover flow — one tap on the visit, the ask to three carers, the first yes fills it, the owner confirms. — <em>shipped</em> · 2026-08-28</li><li><strong>FEAT-002</strong> · The Monday view — every visit for the day, the uncovered ones first, on one phone screen. — <em>shipped</em> · 2026-08-28</li><li><strong>FEAT-003</strong> · Take the first £4 — a card on file per agency, billed monthly per carer, cancel in one tap. — <em>building</em></li><li><strong>FEAT-004</strong> · Import an owner's carer list from the register extract instead of typing it. — <em>ready</em></li></ul></div>
+  <div class="foot"><span class="chip ev">4 FEATs · 2 shipped</span><span class="src">docs/ideas/FEAT-*.md · boss board</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="product-not" data-title="What it is not">
+  <div class="head"><h3>What it is not</h3></div>
+  <div class="body"><p>agency software. A marketplace. A rota.</p></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/BRAND.md · What it is NOT</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="customers"><div class="chapter-head"><div class="label">3 · Customers</div><h2>52, owns a nine-carer agency in a market town; runs it from the kitchen table before the school run.</h2></div><div class="blocks"><article class="block filled snippet" id="persona-marta" data-title="Marta">
+  <div class="head"><h3>Marta <span class="sub">— primary</span></h3></div>
+  <div class="body"><p class="who">52, owns a nine-carer agency in a market town; runs it from the kitchen table before the school run.</p><p>Sunday 8:40pm or Monday 7:40am: a text says &quot;can't do tomorrow&quot; and the phone tree starts.</p><p><a class="xlink" href="design.html#persona-marta">the full card, in Design →</a></p></div>
+  <div class="foot"><span class="chip synthetic">synthetic 40% · real 60%</span><span class="src">docs/personas/marta.md</span></div>
+  <div class="actions"></div>
+</article><article class="block filled snippet" id="persona-priya" data-title="Priya">
+  <div class="head"><h3>Priya <span class="sub">— secondary</span></h3></div>
+  <div class="body"><p class="who">34, a carer with two agencies, a car, and a school run of her own.</p><p>7:41am, a text asks if she can take Mrs H at 9; she's already dressed.</p><p><a class="xlink" href="design.html#persona-priya">the full card, in Design →</a></p></div>
+  <div class="foot"><span class="chip synthetic">synthetic 100% · real 0%</span><span class="src">docs/personas/priya.md</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="problem"><div class="chapter-head"><div class="label">4 · Problem</div><h2>Every Monday morning — and every Sunday night — the owner rebuilds cover by phone.</h2></div><div class="blocks"><article class="block filled" id="problem-cell" data-title="The problem">
+  <div class="head"><h3>The problem</h3></div>
+  <div class="body"><div class="answer">Every Monday morning — and every Sunday night — the owner rebuilds cover by phone. One sick text means eight calls. The visit is the thing that can't slip; the owner is the only one who knows who can take it.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Problem · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="problem-story" data-title="Story — and why now">
+  <div class="head"><h3>Story — and why now <span class="sub">— what changed that makes this newly possible</span></h3></div>
+  <div class="body"><div class="answer">7:40 on a Monday. A text: &quot;can't do Mrs H at 9&quot;. The owner taps the visit, Kettlewick asks the three carers who are free, qualified and close; Priya says yes at 7:43; the owner is already making tea. What changed: the rota went to phones in 2024–25, the cover call never did. Smallest workflow: the ask, the yes, the fill.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Story · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="market"><div class="chapter-head"><div class="label">5 · Market</div><h2>Owner-operators of small home-care agencies — 3 to 15 carers, run from a kitchen table or a back office.</h2></div><div class="blocks"><article class="block filled" id="market-people" data-title="How many, and how do you know">
+  <div class="head"><h3>How many, and how do you know <span class="sub">— the People cell</span></h3></div>
+  <div class="body"><div class="answer">Owner-operators of small home-care agencies — 3 to 15 carers, run from a kitchen table or a back office. <strong>About 6,400</strong> such agencies in England (register extract, 2026-06-02, docs/source). We know from nine of them, in person.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · People · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="market-sources" data-title="Research you've imported">
+  <div class="head"><h3>Research you've imported <span class="sub">— 2 items in docs/source/</span></h3></div>
+  <div class="body"><ul><li>2026-07-15-owner-survey-notes.md <span class="date">2026-07-15</span></li><li>2026-06-02-register-extract.csv <span class="date">2026-06-02</span></li></ul></div>
+  <div class="foot"><span class="chip asserted">imported · not read here</span><span class="src">docs/source/ · /import</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="competition"><div class="chapter-head"><div class="label">6 · Competition</div><h2>3 on the field; 2 of them key.</h2></div><div class="blocks one"><article class="block filled" id="competition-table" data-title="Who else fixes it">
+  <div class="head"><h3>Who else fixes it <span class="sub">— docs/competition/README.md</span></h3></div>
+  <div class="body"><div class="tscroll"><table class="rivals"><thead><tr><th>Rival</th><th>What it is</th><th>Pricing</th><th>Why they might win</th><th>Where they're weak</th><th>Checked</th></tr></thead><tbody><tr><td><strong>Rotawise</strong></td><td>direct — agency rota software with a cover module</td><td>£12 / seat / month</td><td>every inspector already recognises their export; owners have it</td><td>office-first; the cover module needs the office screen</td><td>2026-09-02</td></tr><tr><td><strong>CareSheet</strong></td><td>direct — a shared spreadsheet template with a texting add-on</td><td>£0 + texts</td><td>free, and it's the spreadsheet owners already have</td><td>the add-on texts everyone, not the right three</td><td>2026-09-02</td></tr><tr><td><strong>The phone tree</strong></td><td>in evidence — doing nothing, by hand</td><td>an hour a Monday</td><td>it works, it's known, it costs no money</td><td>it costs the owner's hour and the carer's evening</td><td>2026-09-02</td></tr></tbody></table></div></div>
+  <div class="foot"><span class="chip ev">3 on the field · 2 key · 0 stale</span><span class="src">docs/competition/README.md · updated 2026-09-02</span></div>
+  <div class="actions"></div>
+</article></div><div class="tier-title"><h3>Key rivals</h3><span>direct, or named by a real person in evidence</span></div><div class="blocks"><article class="block filled rival" id="rival-rotawise" data-title="Rotawise">
+  <div class="head"><h3>Rotawise <span class="sub">— key</span></h3></div>
+  <div class="body"><p class="win-line">They might win because every inspector already recognises their export; owners have it</p><p><strong>Where it breaks:</strong></p><ul><li>owners rate the phone app poorly — &quot;it logs me out on every visit&quot;</li><li>cover is still a phone call: the module lists who's free, then you ring them</li><li>the office screen is where it works; Monday morning happens on a phone</li></ul></div>
+  <div class="foot"><span class="chip ev">checked 2026-09-02</span><span class="src">docs/competition/rotawise.md</span></div>
+  <div class="actions"></div>
+</article><article class="block filled rival" id="rival-caresheet" data-title="CareSheet">
+  <div class="head"><h3>CareSheet <span class="sub">— key</span></h3></div>
+  <div class="body"><p class="win-line">They might win because free, and it's the spreadsheet owners already have</p><p><strong>Where it breaks:</strong></p><ul><li>the add-on texts every carer, every time — owners turn it off after the first complaint</li><li>no yes: the owner still rings to confirm who's taking it</li></ul></div>
+  <div class="foot"><span class="chip ev">checked 2026-09-02</span><span class="src">docs/competition/caresheet.md</span></div>
+  <div class="actions"></div>
+</article></div><div class="tier-title"><h3>Also on the field</h3><span>watch — real, filed, not yet in anyone's mouth · one line each</span></div><div class="blocks one"><article class="block filled" id="competition-watch" data-title="Watch list">
+  <div class="head"><h3>Watch list</h3></div>
+  <div class="body"><ul><li><strong>The phone tree</strong> — it works, it's known, it costs no money</li></ul></div>
+  <div class="foot"><span class="chip asserted">1 on watch</span><span class="src">docs/competition/README.md · watch rows</span></div>
+  <div class="actions"></div>
+</article></div></section>
+  <section class="chapter" id="canvas">
+  <div class="chapter-head"><div class="label">7 · Canvas</div><p>Switch the frame — Humane, Lean, BMC — and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
+  <div class="frame-bar"><div class="seg" role="group" aria-label="Frame"><button type="button" data-frame="humane" aria-pressed="true">Humane</button><button type="button" data-frame="lean" aria-pressed="false">Lean</button><button type="button" data-frame="bmc" aria-pressed="false">BMC</button></div><span class="credit" id="credit">Humane Product Canvas · Ajesh Shah</span></div>
+  
+  <div class="canvas" id="canvas-grid" data-frame="humane">
+<div class="band-title humane-only no-bmc"><h3>1 · Human foundation</h3><span>who you serve, the tension they carry, the value you promise</span></div>
+<article class="block filled" id="canvas-people" data-cell="people" data-title="People" style="--area:1 / 5 / 3 / 6;--bmc-area:1 / 5 / 3 / 6;">
+  <div class="head"><h3><span class="t-humane">People</span><span class="t-lean">Customer segments</span><span class="t-bmc">Customer segments</span></h3></div>
+  <div class="body"><p class="prompt">Who are you designing for &amp; what matters to them? Who exactly has the painful problem — how many, and how do you know?</p><div class="answer">Owner-operators of small home-care agencies — 3 to 15 carers, run from a kitchen table or a back office. <strong>About 6,400</strong> such agencies in England (register extract, 2026-06-02, docs/source). We know from nine of them, in person.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · People · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled no-bmc" id="canvas-problem" data-cell="problem" data-title="Problem" style="--area:1 / 1 / 3 / 2;">
+  <div class="head"><h3><span class="t-humane">Problem</span><span class="t-lean">Problem</span></h3></div>
+  <div class="body"><p class="prompt">What real human tension are you solving? Is it urgent, frequent, expensive, or emotionally painful?</p><div class="answer">Every Monday morning — and every Sunday night — the owner rebuilds cover by phone. One sick text means eight calls. The visit is the thing that can't slip; the owner is the only one who knows who can take it.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Problem · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled" id="canvas-promises" data-cell="promises" data-title="Promises" style="--area:1 / 3 / 3 / 4;--bmc-area:1 / 3 / 3 / 4;">
+  <div class="head"><h3><span class="t-humane">Promises</span><span class="t-lean">Unique value proposition</span><span class="t-bmc">Value propositions</span></h3></div>
+  <div class="body"><p class="prompt">What emotional / relational value will it deliver? The sharp promise: &quot;We help X do Y without Z.&quot;</p><div class="answer">We find cover before the kettle boils. One tap; the right three carers get the ask; the first yes fills the visit; the owner sees it filled.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Promises · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<div class="band-title humane-only no-bmc"><h3>2 · Product expression</h3><span>how it shows up in a life, how people engage, how it sustains itself</span></div>
+<article class="block filled no-bmc" id="canvas-story" data-cell="story" data-title="Story" style="--area:1 / 2 / 2 / 3;">
+  <div class="head"><h3><span class="t-humane">Story</span><span class="t-lean">Solution</span></h3></div>
+  <div class="body"><p class="prompt">How does your product show up in someone's life? What changed that makes this newly possible?</p><div class="answer">7:40 on a Monday. A text: &quot;can't do Mrs H at 9&quot;. The owner taps the visit, Kettlewick asks the three carers who are free, qualified and close; Priya says yes at 7:43; the owner is already making tea. What changed: the rota went to phones in 2024–25, the cover call never did. Smallest workflow: the ask, the yes, the fill.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Story · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled" id="canvas-modes" data-cell="modes" data-title="Modes of Engagement" style="--area:1 / 4 / 2 / 5;--bmc-area:1 / 4 / 2 / 5;">
+  <div class="head"><h3><span class="t-humane">Modes of Engagement</span><span class="t-lean">Unfair advantage</span><span class="t-bmc">Customer relationships</span></h3></div>
+  <div class="body"><p class="prompt">How do people interact with your product in a humane way? Does it respect time, attention, agency?</p><div class="answer">Self-serve, phone-first, and quiet: nothing pings after 8pm, no location tracking, no league table of who says yes. The owner's own carers are the only people asked. Why us: Marta ran a twelve-carer agency for six years and did this call every week; the product is her Monday, not a demo of one.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Modes of Engagement · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled" id="canvas-bizmodel" data-cell="bizmodel" data-title="Business Model" style="--area:3 / 4 / 4 / 6;--bmc-area:3 / 4 / 4 / 6;">
+  <div class="head"><h3><span class="t-humane">Business Model</span><span class="t-lean">Revenue streams</span><span class="t-bmc">Revenue streams</span></h3></div>
+  <div class="body"><p class="prompt">How will you sustain this without compromising your promise? Who pays, how much — and how do the first 100 find you?</p><div class="answer">£4 per carer per month, flat, paid by the agency; free for the carers. The first 100 find us through the county owners' group and the register (owners talk to owners); usage compounds because every fill is a text a carer keeps. Channels that keep working after the first 100: the owners' group, and the carers who move agencies.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Business Model · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled" id="canvas-cost" data-cell="cost" data-title="Cost Structure" style="--area:3 / 1 / 4 / 4;--bmc-area:3 / 1 / 4 / 4;">
+  <div class="head"><h3><span class="t-humane">Cost Structure</span><span class="t-lean">Cost structure</span><span class="t-bmc">Cost structure</span></h3></div>
+  <div class="body"><p class="prompt">What does it actually cost to serve one person for a month?</p><div class="answer">About 40p per carer per month at nine agencies — texts and hosting; no model in the loop. Fixed: one laptop, one phone number. Runway: Ola part-time on savings until December; Marta full-time on the agency sale. If cover isn't earning by then, it's a hobby.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Cost Structure · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled humane-only" id="canvas-deliver" data-cell="deliver" data-title="What it takes to deliver" style="--bmc-area:1 / 2 / 3 / 3;">
+  <div class="head"><h3><span class="t-humane">What it takes to deliver</span><span class="t-bmc">Key activities · Key resources</span></h3></div>
+  <div class="body"><p class="prompt">What do you need to have and do to keep the promise?</p><div class="answer">A phone number that sends texts reliably at 7 a.m.; the owner's rota as a CSV every week; Ola's evenings. Nothing else is load-bearing.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · What it takes to deliver · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled humane-only" id="canvas-partners" data-cell="partners" data-title="Key Partnerships" style="--bmc-area:1 / 1 / 3 / 2;">
+  <div class="head"><h3><span class="t-humane">Key Partnerships</span><span class="t-bmc">Key partnerships</span></h3></div>
+  <div class="body"><p class="prompt">Is there anyone whose cooperation this can't work without?</p><div class="answer">None load-bearing. The register is open data; the text provider is swappable in a day.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Key Partnerships · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+    <article class="block pointer" id="canvas-channels" data-title="Channels"><div class="head"><h3>Channels</h3></div><div class="body">Lean and BMC have a box for this; the humane canvas answers it inside <a href="#canvas-bizmodel">Business Model</a> — <em>how the first 100 find you</em>. One answer, never rendered twice.</div><div class="foot"><span class="src">canvas · Business Model</span></div></article>
+<div class="band-title humane-only no-bmc"><h3>3 · Stewardship</h3><span>impact, risks, and the values that guide decisions</span></div>
+<article class="block filled no-bmc" id="canvas-metrics" data-cell="metrics" data-title="Metrics" style="--area:2 / 2 / 3 / 3;">
+  <div class="head"><h3><span class="t-humane">Metrics</span><span class="t-lean">Key metrics</span></h3></div>
+  <div class="body"><p class="prompt">What does meaningful success look like — for people and planet? Real pull: activation, retention.</p><div class="answer">It worked = five agencies we don't know run their Monday on it. Real pull: a visit filled by Kettlewick without the owner's phone (activation), and the same owner filling again the second Monday (retention). Nine owners on; six filled twice.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Metrics · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled humane-only no-bmc" id="canvas-buildbuy" data-cell="buildbuy" data-title="Build or buy?">
+  <div class="head"><h3><span class="t-humane">Build or buy?</span></h3></div>
+  <div class="body"><p class="prompt">Is the honest move to build this — or would using / buying something existing get the same outcome?</p><div class="answer">Build the cover flow only. Buy the texting; keep the rota where it is (the spreadsheet). Rotawise does rotas; we don't.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Build or buy? · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+
+    <div class="band-title floor-title"><h3>Two questions this canvas asks that Lean and BMC don't</h3><span>they render in every frame — the floor, not a footnote</span></div>
+<article class="block filled floor humane-only no-bmc" id="canvas-risks" data-cell="risks" data-title="Risks &amp; Harms">
+  <div class="head"><h3><span class="t-humane">Risks &amp; Harms</span></h3></div>
+  <div class="body"><p class="prompt">What could unintentionally go wrong? Who might be harmed or excluded?</p><div class="answer">A visit marked covered that isn't — a person doesn't get their care. Carers pressured to say yes at 7 a.m. — refused by design (no reply is fine, nothing shows who declined). Location tracking — refused. The regulator names a duty of care to the person visited; our stance: the owner confirms every fill, Kettlewick never marks a visit covered on its own.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Risks &amp; Harms · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+<article class="block filled floor humane-only no-bmc" id="canvas-principles" data-cell="principles" data-title="Principles">
+  <div class="head"><h3><span class="t-humane">Principles</span></h3></div>
+  <div class="body"><p class="prompt">What values will guide your decisions? The non-negotiables you'll hold even when it's costly.</p><div class="answer">Never sell carer data. Nothing after 8pm. The owner is the last word on every fill.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Principles · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article>
+  </div>
+  </section>
+<section class="chapter" id="model"><div class="chapter-head"><div class="label">8 · Business model</div><h2>£4 per carer per month, flat, paid by the agency; free for the carers.</h2></div><div class="blocks"><article class="block filled" id="model-revenue" data-title="Who pays, how much">
+  <div class="head"><h3>Who pays, how much</h3></div>
+  <div class="body"><div class="answer">£4 per carer per month, flat, paid by the agency; free for the carers. The first 100 find us through the county owners' group and the register (owners talk to owners); usage compounds because every fill is a text a carer keeps. Channels that keep working after the first 100: the owners' group, and the carers who move agencies.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Business Model · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="model-cost" data-title="What it costs to serve">
+  <div class="head"><h3>What it costs to serve</h3></div>
+  <div class="body"><div class="answer">About 40p per carer per month at nine agencies — texts and hosting; no model in the loop. Fixed: one laptop, one phone number. Runway: Ola part-time on savings until December; Marta full-time on the agency sale. If cover isn't earning by then, it's a hobby.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Cost Structure · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="model-capital" data-title="Prior capital and ownership">
+  <div class="head"><h3>Prior capital and ownership</h3></div>
+  <div class="body"><p>none — sole owner, no money in but my own</p></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/ideas/IDEA-001-kettlewick.md · prior_capital</span></div>
+  <div class="actions"></div>
+</article><article class="block hole" id="model-ask" data-title="The ask">
+  <div class="head"><h3>The ask <span class="sub">— the capital mentor's read</span></h3></div>
+  <div class="body"><p class="prompt">Not yet — one agency has paid and eight haven't; the raise question opens when five agencies we don't know pay a second month. Until then the model question is the only live one: does £4 a carer for cover alone hold, or does it need the rota?</p><span class="verb">docs/dossier/business-2026-09-05.md · 2026-09-05</span></div>
+  <div class="foot"><span class="src">docs/dossier/mentor-capital.md</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="evidence"><div class="chapter-head"><div class="label">9 · Evidence</div><h2>one owner pre-paid a month before the card form existed</h2></div><div class="blocks one"><article class="block filled" id="evidence-ladder" data-title="The ladder">
+  <div class="head"><h3>The ladder <span class="sub">— 4 signals, graded — the grade is the founder's, the count is the file's</span></h3></div>
+  <div class="body"><div class="ladder" aria-label="Signals by grade"><div class="rung"><span class="g">commitment</span><span class="bar"><i style="width:50%"></i></span><b class="tab">1</b></div><div class="rung"><span class="g">observed-behavior</span><span class="bar"><i style="width:50%"></i></span><b class="tab">1</b></div><div class="rung"><span class="g">stated-pain</span><span class="bar"><i style="width:100%"></i></span><b class="tab">2</b></div></div><div class="tscroll"><table class="t ev"><thead><tr><th>Grade</th><th>Date</th><th>Signal</th><th>Method</th><th>Bears on</th><th>Record</th></tr></thead><tbody><tr id="evid-004"><td><span class="chip ev">commitment</span></td><td class="mono">2026-09-05</td><td>one owner pre-paid a month before the card form existed</td><td class="mono">commitment-test</td><td class="t-small">owners will pay £4 a carer for cover alone</td><td class="mono">EVID-004</td></tr><tr id="evid-003"><td><span class="chip ev">observed-behavior</span></td><td class="mono">2026-08-30</td><td>an owner covered a Monday visit from the school gate</td><td class="mono">observation</td><td class="t-small">owners will cover a visit from their phone</td><td class="mono">EVID-003</td></tr><tr id="evid-002"><td><span class="chip asserted">stated-pain</span></td><td class="mono">2026-06-04</td><td>an owner said the hour is the job she hates most</td><td class="mono">interview</td><td class="t-small">owners lose Monday to the cover call</td><td class="mono">EVID-002</td></tr><tr id="evid-001"><td><span class="chip asserted">stated-pain</span></td><td class="mono">2026-05-20</td><td>three owners described the Monday cover call unprompted</td><td class="mono">interview</td><td class="t-small">owners lose Monday to the cover call</td><td class="mono">EVID-001</td></tr></tbody></table></div></div>
+  <div class="foot"><span class="src">docs/evidence · 4 records · bodies stay in the files</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="learnings"><div class="chapter-head"><div class="label">10 · Learnings</div><h2>the card form works on my phone; the invoice line names the carers.</h2></div><div class="blocks"><article class="block filled" id="learn-1" data-title="2026-09-08">
+  <div class="head"><h3>2026-09-08</h3></div>
+  <div class="body"><p><strong>Landed:</strong> the card form works on my phone; the invoice line names the carers.</p><p><strong>Surprises / decisions:</strong> an owner asked for a register import before paying — FEAT-004 captured as ready.</p></div>
+  <div class="foot"><span class="src">docs/devlog.md · 2026-09-08</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="learn-2" data-title="2026-09-05">
+  <div class="head"><h3>2026-09-05</h3></div>
+  <div class="body"><p><strong>Landed:</strong> one owner pre-paid a month by bank transfer before the form existed (EVID-004).</p></div>
+  <div class="foot"><span class="src">docs/devlog.md · 2026-09-05</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="learn-3" data-title="2026-09-01 · IDEA-003">
+  <div class="head"><h3>2026-09-01 · IDEA-003</h3></div>
+  <div class="body"><p>two owners do this by hand from the texts. Captured, not promised.</p></div>
+  <div class="foot"><span class="src">docs/ideas/IDEA-003-invoice-export.md · 2026-09-01</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="learn-4" data-title="2026-08-30">
+  <div class="head"><h3>2026-08-30</h3></div>
+  <div class="body"><p><strong>Landed:</strong> watched an owner cover a visit from the school gate, no call (EVID-003). Enriched Marta's persona from it.</p><p><strong>Surprises / decisions:</strong> the office screen was the wrong bet — DEC-001 marked wrong, DEC-002 stands.</p></div>
+  <div class="foot"><span class="src">docs/devlog.md · 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="learn-5" data-title="2026-08-28">
+  <div class="head"><h3>2026-08-28</h3></div>
+  <div class="body"><p><strong>Landed:</strong> shipped to nine owners.</p></div>
+  <div class="foot"><span class="src">docs/devlog.md · 2026-08-28</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="learn-6" data-title="2026-08-28 · IDEA-001">
+  <div class="head"><h3>2026-08-28 · IDEA-001</h3></div>
+  <div class="body"><p>shipped to the first nine owners. Marta covered a Monday visit from the school gate.</p></div>
+  <div class="foot"><span class="src">docs/ideas/IDEA-001-kettlewick.md · 2026-08-28</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="learn-7" data-title="2026-07-15 · IDEA-001">
+  <div class="head"><h3>2026-07-15 · IDEA-001</h3></div>
+  <div class="body"><p>owner survey notes: the phone tree is the job they hate most; the spreadsheet they'd keep.</p></div>
+  <div class="foot"><span class="src">docs/ideas/IDEA-001-kettlewick.md · 2026-07-15</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="learn-8" data-title="2026-07-02">
+  <div class="head"><h3>2026-07-02</h3></div>
+  <div class="body"><p><strong>Landed:</strong> the Monday view on a phone.</p><p><strong>Surprises / decisions:</strong> DEC-002 — phone-first; the rota stays a spreadsheet.</p></div>
+  <div class="foot"><span class="src">docs/devlog.md · 2026-07-02</span></div>
+  <div class="actions"></div>
+</article></div><p class="more">5 earlier entries in docs/devlog.md · docs/ideas/IDEA-003-invoice-export.md · docs/ideas/IDEA-001-kettlewick.md · docs/ideas/IDEA-002-carer-app.md</p></section>
+<section class="chapter" id="decisions"><div class="chapter-head"><div class="label">11 · Decisions</div><h2>Kettlewick never reads a carer's location, never ranks carers, and sends nothing between 8pm and 6:30am.</h2></div><div class="blocks"><article class="block filled" id="dec-003" data-title="No location tracking, no league table, nothing after 8pm">
+  <div class="head"><h3>No location tracking, no league table, nothing after 8pm <span class="sub">— DEC-003</span></h3></div>
+  <div class="body"><p>Kettlewick never reads a carer's location, never ranks carers, and sends nothing between 8pm and 6:30am.</p><p class="fals"><strong>Falsifier —</strong> If owners leave for a rival because of tracking, by July 2027, the cost was real. <span class="date">by 2027-07-20</span></p></div>
+  <div class="foot"><span class="chip dec">one-way</span><span class="chip asserted">founder</span><span class="src">docs/decisions/DEC-003-no-tracking.md · 2026-07-20</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="dec-002" data-title="Phone-first, and the rota stays a spreadsheet">
+  <div class="head"><h3>Phone-first, and the rota stays a spreadsheet <span class="sub">— DEC-002</span></h3></div>
+  <div class="body"><p>The cover flow is phone-first; the office screen is the same page, wider. The rota stays the owner's spreadsheet; Kettlewick reads it and never edits it.</p><p class="fals"><strong>Falsifier —</strong> If half the fills by December start from the office screen, the phone bet was wrong. <span class="date">by 2026-12-01</span></p></div>
+  <div class="foot"><span class="chip dec">costly</span><span class="chip asserted">founder</span><span class="src">docs/decisions/DEC-002-phone-first.md · 2026-07-02</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="dec-004" data-title="The brand anchor: kettle blue, green-black, two radii, one shadow">
+  <div class="head"><h3>The brand anchor: kettle blue, green-black, two radii, one shadow <span class="sub">— DEC-004</span></h3></div>
+  <div class="body"><p class="helper">no ## Decision section</p></div>
+  <div class="foot"><span class="src">docs/decisions/DEC-004-brand-anchor.md</span></div>
+  <div class="actions"></div>
+</article><article class="block filled superseded" id="dec-001" data-title="Office-first cover">
+  <div class="head"><h3>Office-first cover <span class="sub">— DEC-001</span></h3></div>
+  <div class="body"><p>Build the cover flow for the office screen first; the phone waits.</p><p class="fals"><strong>Falsifier —</strong> If three owners cover from a phone before August, this was wrong. <span class="date">by 2026-08-15</span></p><p class="helper">superseded by DEC-002</p></div>
+  <div class="foot"><span class="chip dec">reversible</span><span class="chip asserted">founder</span><span class="chip ev">outcome recorded</span><span class="src">docs/decisions/DEC-001-office-first.md · 2026-06-14</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="risks"><div class="chapter-head"><div class="label">12 · Risks &amp; harms</div><h2>A visit marked covered that isn't — a person doesn't get their care.</h2></div><div class="blocks"><article class="block filled" id="risks-harms" data-title="Who could this harm, and how">
+  <div class="head"><h3>Who could this harm, and how</h3></div>
+  <div class="body"><div class="answer">A visit marked covered that isn't — a person doesn't get their care. Carers pressured to say yes at 7 a.m. — refused by design (no reply is fine, nothing shows who declined). Location tracking — refused. The regulator names a duty of care to the person visited; our stance: the owner confirms every fill, Kettlewick never marks a visit covered on its own.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Risks &amp; Harms · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="risks-trust" data-title="Trust">
+  <div class="head"><h3>Trust <span class="sub">— what you collect, in plain terms</span></h3></div>
+  <div class="body"><p>We hold the rota you give us and the phone numbers on it; nothing else. Carers' locations are never read. Nothing is sold, shared or used to train anything. Delete your agency and it is gone in a day, texts included. To ask about your data, text the number you already have.</p></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/trust/TRUST.md · 2026-09-13</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="health"><div class="chapter-head"><div class="label">13 · Health</div><h2>Nine owners on since 2026-08-28; six filled a visit a second Monday; one has paid.</h2></div><div class="blocks"><article class="block filled" id="health-read" data-title="The health read">
+  <div class="head"><h3>The health read <span class="sub">— 2026-09-07</span></h3></div>
+  <div class="body"><p>Nine owners on since 2026-08-28; six filled a visit a second Monday; one has paid. Pre-fit, honestly — n is under ten, so this is a read, not a curve, and the next move is to watch the three who didn't fill twice.</p></div>
+  <div class="foot"><span class="chip asserted">a verdict, dated</span><span class="src">docs/health/HEALTH-2026-09-07.md</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="health-measure" data-title="What is measured">
+  <div class="head"><h3>What is measured <span class="sub">— 2026-08-30</span></h3></div>
+  <div class="body"><p>One activation metric: a visit filled by Kettlewick without the owner's phone. One retention curve: the same owner filling again the second Monday. Six events, no more: ask sent, yes received, fill confirmed, fill cancelled, owner opened Monday view, carer opened ask. No location, no ranking, aggregate by default.</p></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/measure/MEASURE-2026-08-30.md</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="team"><div class="chapter-head"><div class="label">14 · Team</div><h2>Ran a twelve-carer agency for six years and did the Monday cover call every week of it.</h2></div><div class="blocks"><article class="block filled person" id="person-marta" data-title="Marta Kowalczyk">
+  <div class="head"><h3>Marta Kowalczyk <span class="sub">— founder · @marta</span></h3></div>
+  <div class="body"><p class="thing">Ran a twelve-carer agency for six years and did the Monday cover call every week of it.</p><ul><li><strong>Brings:</strong> the owners' trust; the rota in her head; the inspector's questions by heart.</li><li><strong>Doesn't:</strong> code. Ola does.</li></ul><p class="bio">Marta owned a home-care agency until 2025 and sold it to build the thing she wished she'd had. She still covers a visit herself when a friend's agency is short.</p></div>
+  <div class="foot"><span class="src">docs/team/marta.md</span></div>
+  <div class="actions"></div>
+</article><article class="block filled person" id="person-ola" data-title="Ola Bennett">
+  <div class="head"><h3>Ola Bennett <span class="sub">— cofounder · @ola</span></h3></div>
+  <div class="body"><p class="thing">Built the texting for a taxi firm's night desk; knows what a 7 a.m. message has to survive.</p><ul><li><strong>Brings:</strong> the build, evenings and weekends until December; a horror of anything that pings at night.</li><li><strong>Doesn't:</strong> the care domain — Marta translates.</li></ul><p class="bio">Ola has shipped small things for small firms for a decade and never wanted a big one.</p></div>
+  <div class="foot"><span class="src">docs/team/ola.md</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="team-missing" data-title="Who is missing">
+  <div class="head"><h3>Who is missing <span class="sub">— 1 role, named</span></h3></div>
+  <div class="body"><p><strong>A designer, part-time</strong> — Someone who has drawn a screen a carer reads at 7 a.m. with one thumb and a child on the other arm.</p><ul><li><strong>Brings:</strong> the carer side, which is plainer than it should be (see <em>How we build</em>).</li><li><strong>Doesn't:</strong> need to be full-time — two days a month from November.</li></ul></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">docs/team/missing-designer.md</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="brand"><div class="chapter-head"><div class="label">15 · Brand</div><h2>it will not rank carers, track carers, or text anyone after 8pm.</h2></div><div class="blocks"><article class="block filled" id="brand-shape" data-title="Current shape">
+  <div class="head"><h3>Current shape <span class="sub">— nascent</span></h3></div>
+  <div class="body"><dl class="kv"><dt>Who it's for</dt><dd>owner-operators who do the Monday rota by hand and would keep the spreadsheet forever.</dd><dt>What it promises</dt><dd>cover found before the kettle boils.</dd><dt>What it refuses</dt><dd>it will not rank carers, track carers, or text anyone after 8pm.</dd><dt>How it sounds</dt><dd>plain over clever (costs us delight); calm over urgent (costs us the &quot;act now&quot; conversion); the owner's words over ours.</dd><dt>What it is NOT</dt><dd>agency software. A marketplace. A rota.</dd><dt>The name, and why</dt><dd>the kettle is the owner's Monday morning; the wick is the bit that catches. It means nothing to a stranger and everything to an owner.</dd></dl></div>
+  <div class="foot"><span class="chip asserted">6 of 6 known</span><span class="src">docs/BRAND.md · 2026-09-02</span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="brand-anchor" data-title="The anchor">
+  <div class="head"><h3>The anchor <span class="sub">— what is decided</span></h3></div>
+  <div class="body"><img class="logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxMiIgZmlsbD0iIzJGNUQ4QSIvPjxwYXRoIGQ9Ik0xOCA0NFYyMGg2djEwbDEwLTEwaDhMMzAgMzJsMTMgMTJoLThsLTktOS0yIDJ2N3oiIGZpbGw9IiNGMEYyRjMiLz48L3N2Zz4K" alt="kettlewick mark"><p class="swatch"><i style="background:#2F5D8A"></i><code>#2F5D8A</code> accent</p><p class="specimen">Cover found before the kettle boils</p></div>
+  <div class="foot"><span class="src">docs/BRAND.md · frontmatter · <a class="xlink" href="design.html">tokens and type, in Design →</a></span></div>
+  <div class="actions"></div>
+</article><article class="block filled" id="brand-learned" data-title="What the brand has learned">
+  <div class="head"><h3>What the brand has learned <span class="sub">— rows, counted — the words stay in the file</span></h3></div>
+  <div class="body"><p><b class="tab">2</b> things that actually happened, newest 2026-08-30.</p></div>
+  <div class="foot"><span class="chip ev">from evidence</span><span class="src">docs/BRAND.md · What we've learned</span></div>
+  <div class="actions"></div>
+</article></div></section>
+<section class="chapter" id="values"><div class="chapter-head"><div class="label">16 · Values</div><h2>Owners first</h2></div><div class="blocks"><article class="block filled" id="values-principles" data-title="Principles">
+  <div class="head"><h3>Principles <span class="sub">— the short form</span></h3></div>
+  <div class="body"><div class="answer">Never sell carer data. Nothing after 8pm. The owner is the last word on every fill.</div></div>
+  <div class="foot"><span class="chip asserted">asserted</span><span class="src">canvas · Principles · rev. 2026-08-30</span></div>
+  <div class="actions"></div>
+</article><article class="block filled value" id="value-1" data-title="Owners first">
+  <div class="head"><h3>Owners first</h3></div>
+  <div class="body"><p class="meaning">every screen is designed at the owner's desk on a Monday morning, not in a demo.</p><p class="cost"><span class="label">costs</span> the carer side is plainer than it could be.</p></div>
+  <div class="foot"><span class="src">docs/BRAND.md · How we build</span></div>
+  <div class="actions"></div>
+</article><article class="block filled value" id="value-2" data-title="No league tables">
+  <div class="head"><h3>No league tables</h3></div>
+  <div class="body"><p class="meaning">we never rank people, even when an owner asks.</p><p class="cost"><span class="label">costs</span> some owners ask, and leave.</p></div>
+  <div class="foot"><span class="src">docs/BRAND.md · How we build</span></div>
+  <div class="actions"></div>
+</article><article class="block filled value" id="value-3" data-title="Nothing after 8pm">
+  <div class="head"><h3>Nothing after 8pm</h3></div>
+  <div class="body"><p class="meaning">the product is asleep when the carers are.</p><p class="cost"><span class="label">costs</span> a late cancellation waits until 6:30.</p></div>
+  <div class="foot"><span class="src">docs/BRAND.md · How we build</span></div>
+  <div class="actions"></div>
+</article></div></section>
+  </main>
+</div>
+<footer class="site">
+  <div>brand: kettlewick · docs/BRAND.md · nascent</div>
+  <div>a read of your files — docs/ideas/IDEA-001-canvas.md · docs/evidence · regenerated, never edited · rendered 2026-09-13 22:56 · re-run <code>boss playbook</code> to refresh</div>
+  <div>coverage is a fact · readiness is a verdict this page doesn't render</div>
+</footer>
+<script>
+(function () {
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+
+  /* the copy sheet — the payload that actually reached the clipboard, and in which form */
+  let sheet = null;
+  function showCopied(p) {
+    if (!sheet) { sheet = document.createElement('aside'); sheet.className = 'sheet'; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-label', 'What was copied'); document.body.appendChild(sheet); }
+    const form = p.result === 'rich' ? 'on the clipboard as rich text + plain text' : 'on the clipboard as plain text' + (p.views.some((v) => v.kind === 'html') ? ' only' : '');
+    sheet.innerHTML = '<div class="sh"><b>Copied</b><span class="form ' + (p.result !== 'rich' && p.views.some((v) => v.kind === 'html') ? 'plain' : '') + '">' + esc(form) + '</span><button type="button" class="x">Close · Esc</button></div>'
+      + (p.views.length > 1 ? '<div class="stabs" role="tablist">' + p.views.map((v, i) => '<button type="button" role="tab" aria-selected="' + (i === 0) + '" data-i="' + i + '">' + esc(v.name) + '</button>').join('') + '</div>' : '')
+      + '<div class="sb"></div><div class="sf"><span>' + esc(p.title) + '</span><button type="button" class="again">Copy again</button></div>';
+    const sb = $('.sb', sheet);
+    const render = (i) => { const v = p.views[i]; sb.innerHTML = '';
+      if (v.kind === 'html') { const d = document.createElement('div'); d.className = 'rendered'; d.innerHTML = v.body; sb.appendChild(d); }
+      else if (v.kind === 'value') { const d = document.createElement('div'); d.className = 'literal'; d.textContent = v.body; sb.appendChild(d); }
+      else { const pre = document.createElement('pre'); pre.textContent = v.body; sb.appendChild(pre); } };
+    render(0);
+    $$('[role="tab"]', sheet).forEach((b) => b.addEventListener('click', () => { $$('[role="tab"]', sheet).forEach((x) => x.setAttribute('aria-selected', String(x === b))); render(+b.dataset.i); }));
+    $('.x', sheet).addEventListener('click', () => { sheet.hidden = true; });
+    $('.again', sheet).addEventListener('click', () => p.recopy());
+    sheet.hidden = false;
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (sheet) sheet.hidden = true; closeMenu(); } });
+
+  /* clipboard: rich where the host allows, plain otherwise — and say which */
+  function writeClipboard(text, html) {
+    if (html && navigator.clipboard && window.ClipboardItem) {
+      try { const item = new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) });
+        return navigator.clipboard.write([item]).then(() => 'rich').catch(() => plain(text)); } catch (e) { return plain(text); }
+    }
+    return plain(text);
+  }
+  function plain(text) { if (navigator.clipboard) return navigator.clipboard.writeText(text).then(() => 'plain').catch(() => legacy(text)); return legacy(text); }
+  function legacy(text) { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); return Promise.resolve('plain'); }
+
+  /* blocks: Link · Copy */
+  const ICON = { link: '<svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>', copy: '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>', code: '<svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M14 4l-4 16"/></svg>', svg: '<svg viewBox="0 0 24 24"><path d="M4 20L20 4"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/></svg>' };
+  const wordmark = ($('.wordmark') ? $('.wordmark').textContent.trim().split('\n')[0] : '');
+  $$('.block').forEach((b) => {
+    const a = $('.actions', b); if (!a) return;
+    a.innerHTML = '<button type="button" class="link" title="Copy link to this block">' + ICON.link + 'Link</button><button type="button" class="copy" title="Copy this block for a doc or a deck">' + ICON.copy + 'Copy</button>'
+      + (b.dataset.code ? '<button type="button" class="code" title="Copy the code — the import line, the source">' + ICON.code + 'Code</button>' : '')
+      + (b.dataset.svg ? '<button type="button" class="svg" title="Copy as SVG — pastes into a design tool as editable vectors">' + ICON.svg + 'SVG</button>' : '');
+    $('.link', a).addEventListener('click', () => copyLink(b.id));
+    $('.copy', a).addEventListener('click', () => copyBlock(b));
+    /* Code: data-code is JSON {label: text} — code holds '|' and '=', so the value format won't do */
+    if (b.dataset.code) $('.code', a).addEventListener('click', (e) => { e.stopPropagation(); let o = {}; try { o = JSON.parse(b.dataset.code); } catch (x) {} const fs = Object.keys(o).map((k) => ({ k, v: o[k], name: k })); if (fs.length === 1) return copyVal(fs[0].k, fs[0].v, fs[0].name); openMenu($('.code', a), fs); });
+    /* SVG: plain text — that is the form a design tool pastes as vectors; the sheet shows the markup */
+    if (b.dataset.svg) $('.svg', a).addEventListener('click', () => copyVal('svg', b.dataset.svg));
+  });
+  function copyLink(id) { const url = location.href.replace(/#.*$/, '') + '#' + id; history.replaceState(null, '', '#' + id);
+    writeClipboard(url, null).then((r) => showCopied({ title: 'Link to #' + id, result: r, views: [{ name: 'Link', kind: 'value', body: url }], recopy: () => copyLink(id) })); }
+  /* what a copy leaves out: the action buttons, and a filled block's .prompt (the question above a canvas answer) */
+  function strip(node) { $$('.actions, .prompt', node).forEach((x) => x.remove()); return node; }
+  function plainText(el) { const c = strip(el.cloneNode(true)); return c.innerText.replace(/\n{3,}/g, '\n\n').trim(); }
+  function blockHtml(b) { const body = strip($('.body', b).cloneNode(true)); const title = $('h3', b) ? $('h3', b).innerText.trim() : (b.dataset.title || ''); const foot = $('.foot', b) ? $('.foot', b).innerText.replace(/\s+/g, ' ').trim() : '';
+    return '<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#16181A"><p style="margin:0 0 6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#565C62">' + esc(wordmark ? wordmark + ' · ' : '') + esc(title) + '</p>' + body.innerHTML.replace(/ class="[^"]*"/g, '') + '<p style="margin:10px 0 0;font-size:10px;color:#565C62;font-family:Menlo,Consolas,monospace">' + esc(foot) + '</p></div>'; }
+  function copyBlock(b) { const html = blockHtml(b), text = plainText(b);
+    writeClipboard(text, html).then((r) => showCopied({ title: (b.dataset.title || b.id) + ' · the block, for a doc or a deck', result: r, views: [{ name: 'Looks like (rich)', kind: 'html', body: html }, { name: 'Text', kind: 'text', body: text }], recopy: () => copyBlock(b) })); }
+
+  /* values: click → the one form, or a menu of forms */
+  const LABEL = { hex: 'Hex', token: 'Token name', css: 'CSS variable', stack: 'Font stack', size: 'Size / line', px: 'Pixels', value: 'Value', svg: 'SVG', import: 'Import line', source: 'Source file' };
+  let menu = null;
+  function closeMenu() { if (menu) { menu.remove(); menu = null; } }
+  function forms(el) { return el.dataset.copy.split('|').map((kv) => { const k = kv.slice(0, kv.indexOf('=')); return { k, v: kv.slice(k.length + 1) }; }); }
+  function copyVal(k, v, name) { const label = name || LABEL[k] || k; const long = k === 'svg' || k === 'source' || /\n/.test(v);
+    writeClipboard(v, null).then((r) => showCopied({ title: label, result: r, views: [{ name: label, kind: long ? 'text' : 'value', body: v }], recopy: () => copyVal(k, v, name) })); }
+  function openMenu(anchor, fs) {
+    closeMenu();
+    menu = document.createElement('div'); menu.className = 'valmenu'; menu.setAttribute('role', 'menu');
+    menu.innerHTML = '<div class="k">Copy as</div>' + fs.map((f, i) => '<button type="button" role="menuitem" data-i="' + i + '">' + esc(f.name || LABEL[f.k] || f.k) + '<span>' + esc(f.v.length > 26 ? f.v.slice(0, 24).replace(/\s+/g, ' ') + '…' : f.v) + '</span></button>').join('');
+    document.body.appendChild(menu);
+    const r = anchor.getBoundingClientRect(); menu.style.left = Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - menu.offsetWidth - 12) + 'px'; menu.style.top = (r.bottom + window.scrollY + 6) + 'px';
+    $$('button', menu).forEach((b) => b.addEventListener('click', () => { const f = fs[+b.dataset.i]; copyVal(f.k, f.v, f.name); closeMenu(); }));
+    $('button', menu).focus();
+  }
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('.val');
+    if (!el) { if (!e.target.closest('.valmenu')) closeMenu(); return; }
+    if (e.target.closest('.valmenu')) return;
+    e.preventDefault(); e.stopPropagation();
+    const fs = forms(el); if (fs.length === 1) return copyVal(fs[0].k, fs[0].v);
+    openMenu(el, fs);
+  });
+  $$('.val').forEach((el) => { if (!el.hasAttribute('tabindex')) { el.tabIndex = 0; el.setAttribute('role', 'button'); } el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } }); });
+
+  /* rail highlight */
+  const links = $$('.rail a'), sections = $$('.chapter');
+  function highlight() { const y = window.scrollY + window.innerHeight * 0.35; let id = sections.length ? sections[0].id : ''; sections.forEach((sec) => { if (sec.offsetTop <= y) id = sec.id; }); links.forEach((l) => l.classList.toggle('on', l.getAttribute('href') === '#' + id)); }
+  window.addEventListener('scroll', highlight, { passive: true }); highlight();
+  if (location.hash) { const t = $(location.hash); if (t) setTimeout(() => t.scrollIntoView({ block: 'start' }), 60); }
+})();
+
+(function () {
+  const SLIDE_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M12 17v3M8 20h8"/></svg>';
+  const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+  const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const grid = $('#canvas-grid'), credits = {"humane":"Humane Product Canvas · Ajesh Shah","lean":"Lean Canvas · Ash Maurya, adapted — plus the two floor cells","bmc":"Business Model Canvas · Alexander Osterwalder, adapted — plus the two floor cells"}, BRAND = "kettlewick";
+  $$('[data-frame]').forEach((x) => x.addEventListener('click', () => { grid.dataset.frame = x.dataset.frame; $$('[data-frame]').forEach((y) => y.setAttribute('aria-pressed', String(y === x))); $('#credit').textContent = credits[x.dataset.frame]; }));
+  const blocks = $$('.block:not(.pointer)');
+  blocks.forEach((b) => {
+    const a = $('.actions', b); if (!a || a.dataset.ready) return; a.dataset.ready = '1';
+    a.insertAdjacentHTML('beforeend', '<button type="button" class="slide" title="Open this box as a slide">' + SLIDE_ICON + 'Slide</button>');
+    $('.slide', a).addEventListener('click', () => openDeck(0, b));
+  });
+  /* the deck (FEAT-029): a cut is a list of block ids; removals live in the browser, never in a record */
+  const present = $('#present'); let cuts = {}; try { cuts = JSON.parse(present.dataset.cuts); } catch (e) {}
+  const KEY = 'boss-playbook-';
+  const store = { get(k) { try { return JSON.parse(localStorage.getItem(KEY + k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) {} } };
+  const NAMES = { vc: 'VC cut', internal: 'Internal', all: 'Everything' };
+  let cut = ['vc', 'internal', 'all'].includes(store.get('cut')) ? store.get('cut') : 'vc';
+  const byId = (id) => blocks.find((b) => b.id === id);
+  const removed = () => (store.get('removed-' + cut) || []).filter((id) => byId(id));
+  const list = () => (cuts[cut] || []).filter((id) => !removed().includes(id)).map(byId).filter(Boolean);
+  function setCut(c) { cut = c; store.set('cut', c); $$('[data-cut]', present).forEach((y) => y.setAttribute('aria-pressed', String(y.dataset.cut === c))); renderBar(); }
+  function renderBar() {
+    const rm = removed(); const box = $('#present-removed'); box.hidden = !rm.length;
+    $('.chips', box).innerHTML = rm.map((id) => '<span class="rm">' + esc(byId(id).dataset.title || id) + '<button type="button" data-restore="' + esc(id) + '" title="Put this slide back">↺</button></span>').join('');
+    $$('[data-restore]', box).forEach((x) => x.addEventListener('click', () => restore(x.dataset.restore)));
+    ['vc', 'internal', 'all'].forEach((c) => { const n = $('.n-' + c, present); if (n) n.textContent = String((cuts[c] || []).filter((id) => byId(id) && !(store.get('removed-' + c) || []).includes(id)).length); });
+  }
+  function remove(id) { const r = removed(); if (!r.includes(id)) r.push(id); store.set('removed-' + cut, r); renderBar(); }
+  function restore(id) { store.set('removed-' + cut, removed().filter((x) => x !== id)); renderBar(); if (deckEl && !deckEl.hidden) render(); }
+  $$('[data-cut]', present).forEach((x) => x.addEventListener('click', () => setCut(x.dataset.cut)));
+  $('.restore-all', present).addEventListener('click', () => { store.set('removed-' + cut, []); renderBar(); if (deckEl && !deckEl.hidden) render(); });
+  $('#present-go').addEventListener('click', () => openDeck(0));
+  $('#present-pdf').addEventListener('click', () => exportPdf());
+  setCut(cut);
+
+  let deckEl = null, cur = 0;
+  const LEDGER = $('.ledger').innerText;
+  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); $$('.actions', body).forEach((x) => x.remove()); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(BRAND) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '<span>' + esc($('.src', b) ? $('.src', b).innerText : '') + '</span></div>'); return sl; }
+  function openDeck(i, block) {
+    let l = list();
+    if (block) { let j = l.indexOf(block); if (j < 0) { setCut('all'); l = list(); j = l.indexOf(block); } cur = Math.max(0, j); } else cur = i;
+    if (!l.length) return;
+    if (!deckEl) {
+      deckEl = document.createElement('div'); deckEl.className = 'deck'; deckEl.tabIndex = -1; deckEl.setAttribute('role', 'dialog');
+      deckEl.innerHTML = '<div class="chrome"><span class="cut"></span><span class="where"></span><button type="button" class="remove" title="Take this slide out of the current cut — restore it from the bar">Remove from this cut</button><button type="button" class="close">Close · Esc</button></div><div class="stage"><div class="hit l"></div><div class="hit r"></div></div><div class="bottom"><span class="pos"></span><span class="lg">' + esc(LEDGER) + '</span></div>';
+      document.body.appendChild(deckEl);
+      $('.close', deckEl).addEventListener('click', closeDeck); $('.hit.l', deckEl).addEventListener('click', () => step(-1)); $('.hit.r', deckEl).addEventListener('click', () => step(1));
+      $('.remove', deckEl).addEventListener('click', () => { const l2 = list(); if (!l2.length) return; remove(l2[cur].id); const l3 = list(); if (!l3.length) { closeDeck(); return; } cur = Math.min(cur, l3.length - 1); render(); });
+    }
+    render(); deckEl.hidden = false; document.body.style.overflow = 'hidden'; deckEl.focus({ preventScroll: true });
+  }
+  function render() { const l = list(); if (!l.length) { closeDeck(); return; } cur = Math.min(cur, l.length - 1); const st = $('.stage', deckEl); $$('.sl', st).forEach((x) => x.remove()); st.appendChild(slide(l[cur])); const ch2 = l[cur].closest('.chapter'); $('.cut', deckEl).textContent = NAMES[cut]; $('.where', deckEl).textContent = (ch2 && $('.label', ch2) ? $('.label', ch2).innerText + ' · ' : '') + l[cur].dataset.title; $('.pos', deckEl).textContent = (cur + 1) + ' / ' + l.length; }
+  function step(d) { const n = list().length; if (!n) return; cur = (cur + d + n) % n; render(); }
+  function closeDeck() { if (deckEl) { deckEl.hidden = true; document.body.style.overflow = ''; } }
+  function exportPdf() { let pd = $('.printdeck'); if (!pd) { pd = document.createElement('div'); pd.className = 'printdeck'; document.body.appendChild(pd); } pd.innerHTML = ''; list().forEach((b) => pd.appendChild(slide(b))); window.print(); }
+  document.addEventListener('keydown', (e) => { if (!deckEl || deckEl.hidden) return; if (e.target && e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) return; if (e.key === 'Escape') closeDeck(); if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); step(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); } });
+})();
+</script>
+</body>
+</html>
