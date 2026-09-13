@@ -280,6 +280,15 @@ rule above still applies to the whole section once it is stamped.
   section on the brand doc (a headline, what it means, *Costs:* what you give up — a value with no
   cost is a slogan); the template carries the section. A persona's `photo:` renders on its snippet
   the same way. Four tests; the single-file rule now allows an image only as a data URI.
+- **The persona record gains a face and a quote — each only when real (RVW-103).** Three pages on
+  persona practice vetted at source: NN/g (verified — a name and a photo *"aid memorability, which
+  is the primary job of a persona"*) and two vendor blogs read as such. ADAPT: `/persona`'s record
+  has a `photo:` line (a real file beside it, the founder's choice, never a generated face) and a
+  `quote:` line that only `enrich` writes, only from an `EVID`, with its id — at 100% synthetic
+  there is nobody to quote. Rejected: a demographics block (the `who` line already carries the
+  situation, and the sharper vendor page agrees), goals/scenario fields (the six fields hold them),
+  sliders and stat tiles (a measure with no source is decoration). Not yet: behaviours and channels,
+  until a ledger reads real ≥ 50% and `/measure` has events.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

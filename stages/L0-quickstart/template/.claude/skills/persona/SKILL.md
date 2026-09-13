@@ -43,9 +43,15 @@ pains       — what's hard / annoying / failing about how they do it today
 values      — what they care about, what would make them trust or abandon a tool
 what we DON'T know yet — the open questions a real conversation would answer (be honest + specific)
 ---
+photo: unknown        — a real file beside this one, if you choose one; never a generated face
+quote:                — filled by `enrich`, only from an EVID, with its id; empty until someone real has spoken
 Evidence ledger:  synthetic <N%> · real <N%>   (starts 100% synthetic)
 Notable refactors: (dated bullets when evidence reshapes the persona)
 ```
+
+A persona is *remembered* by a name and a face (NN/g's point), so the record has a place for one —
+but the face is a file the founder adds or nothing. A drawn stand-in makes a synthetic persona look
+finished, and a finished-looking guess lies better than a blank.
 
 Name what's a guess. The `what we don't know` block is the most valuable part — it's the interview
 guide for when you talk to a real one.
@@ -64,6 +70,9 @@ Offer the four sources; fold in what they choose; **shift the ledger** (real gro
   tracking; the work already names them).
 
 Each enrich pass: update the persona body, add a dated `Notable refactor` bullet, re-weight the ledger.
+When real research lands, this is also where `quote:` gets written — **one line a real person said,
+from an `EVID`, cited by id** (`quote: "every Monday I lose an hour to this" — the EVID id`). Never at
+`derive`: at 100% synthetic there is nobody to quote, and a quote nobody said is a fabricated EVID.
 
 ### `consult <slug> "question"` — ask the voice (both directions)
 Answer **in the persona's voice**, and run in whichever direction fits:
