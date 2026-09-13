@@ -228,6 +228,33 @@ what we've learned → what we decided → risks → brand → what's next.
 - **The deck exports.** *Export PDF* prints one slide per page at 16:9 (13.33 × 7.5 in) — the
   universal path into any deck tool, and the artifact a founder mails.
 
+### 10. Charts — only over numbers a record holds, one hue, to scale
+
+Ajesh, 2026-09-13: *"graphs like pie chart or bars … for market research or for anything."* The
+rule that keeps a chart honest here is the same as for prose: **the render draws a number only if a
+record holds it, and says which one.** Counted numbers (the register by size band, signals by rung,
+cells by state) get a chart; a number nobody counted stays a hole, not a placeholder bar.
+
+- **Form follows the job**: magnitude → bars, one hue (the accent), direct labels, a recessive grid,
+  a table under a disclosure for every chart. **No pies** — a part-to-whole reads better as bars, and
+  every categorical palette derived from this brand failed the CVD/chroma validator (the greys are
+  the brand; a chart can't borrow them for identity). Semantic amber stays reserved for *stale*.
+- **Where a number would come from**, per chapter: Market ← `/import`ed sources with a table in them
+  (the register CSV) · Evidence ← `EVID` grades · Canvas ← cell states · Business model ← Cost
+  structure once filled · Health ← `/measure`, post-ship. A chart on the Roadmap or the Team is
+  decoration; none is drawn.
+- **Kicked up:** nothing in BOSS holds a *table*. `/import` copies a document; nothing extracts a
+  series with a source and a date the render could plot (row 15).
+
+### 11. Values as a page, not three lines
+
+Ajesh: *"the principles, values, it doesnt look more interesting, just 3 lines … a page sharing
+how we build, what are our values, one headline, and then more text describing it."* Drawn as
+**How we build** on the cover: one card per principle — the canvas line as the headline, a
+paragraph on what it means in practice, **what it costs us** (a principle with no cost is a slogan),
+and where it came from (the founder's, or an `EVID`). The headlines exist in the Principles cell;
+the paragraphs and costs have no home — proposed as `docs/BRAND.md § How we build` (row 16).
+
 ### 9. Against the canonical deck — what a VC expects that the records don't hold
 
 Ajesh, 2026-09-13: *"do some research on what other content shd be there that we dont have."*
@@ -308,6 +335,8 @@ question — not a fix made in passing.
 | 12 | **In five years** | `success_looks_like` asks three months; nothing asks the far horizon | **question:** does BOSS ask it at all (a `vision:` line on the IDEA doc), or is the five-year answer exactly the confident-with-no-information sentence the brand doc refuses? |
 | 13 | **intake for market research and sizing** — *"we should be able to intake content and keep adding it"* | `/import` exists and folds material into the IDEA doc; nothing routes an imported report to a chapter or a cell, and nothing dates it on the way in | **task:** `/import` writes a `docs/source/<slug>.md` header (date, origin, what it changed) the render can list; sizing beyond the count stays a hole until a source is imported |
 | 14 | **sibling spaces** — Design, Board, later others | a second session built a Design artifact and linked it by hand | **question:** one renderer with chapters, or several spaces with one brand and one ledger? The family nav is the answer for now; the mechanism decision (§7) has to include it |
+| 15 | **charts** over market research, evidence, anything counted | no record holds a *table*; `/import` copies a document whole; `EVID` grades and cell states are countable at render, nothing else is | **task:** an imported source that carries a series gets it extracted with a date and origin (`docs/source/<slug>.md` + a small CSV) so the render can plot it and cite it |
+| 16 | **values as a page** — headline · meaning · cost · origin | the Principles cell holds one-liners; the meaning and the cost of each have no home | **new scope:** `docs/BRAND.md § How we build` — one paragraph and one cost per principle; the cell stays the headline. Readers: the playbook, `/landing`, `voice-keeper` |
 | 8 | **the ask** as a hole with a reason | `mentor-capital` defaults to *not yet*; nothing records *why not yet* in a place a render can quote | **task:** the not-yet needs a sentence on disk, or the hole has no reason to show |
 
 ## Open questions — written as questions, not carried
@@ -331,6 +360,14 @@ The prototype is a **mock to react to**, not a build; it costs one file and deci
 *build* trigger, carried in from 065 and 104 together: **a founder (or Ajesh on a real project) goes
 looking for their own material and cannot find it without grepping, or asks for something to show a
 room** — the symptom this surface treats. Until then it is a good idea with a prototype attached.
+
+## Prototype v4 — republished 2026-09-13 (same link)
+
+Three single-hue bar charts over counted numbers (agencies by size band · signals by rung, two
+rungs at zero · canvas cells by state), each with a table under it; **Evidence** drawn (14 of 17)
+with the ladder chart and three `EVID` cards, the third saying why it isn't graded higher yet;
+**How we build** — four value cards with headline, meaning, cost, origin — replaces the
+three-line Principles block on the cover.
 
 ## Prototype v3 — republished 2026-09-13 (same link, built on the peer session's version)
 
@@ -393,6 +430,10 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **prototype v3 reactions** (Ajesh): charts for market research and anything counted ·
+  the principles read as *"just 3 lines"* — wants a page: one headline, then the text. v4: three
+  charts (one hue, validator-driven — no pies, no categorical palette), Evidence drawn, How we
+  build. Kicked-up rows 15–16.
 - 2026-09-13 — **prototype v2 reactions** (Ajesh): *"way better!!!!"* · chapter names should be the
   audience's (*"competition should be competition"*) · multiple personas · *"we are merging in
   multiple sections like design, board … a full playbook"* · intake for market research and sizing ·
