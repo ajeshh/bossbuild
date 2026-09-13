@@ -50,7 +50,7 @@ function hasShipped(projectDir) {
   } catch { return false; }
 }
 
-export function renderMap(projectDir, stamp, opts = {}) {
+function renderMap(projectDir, stamp, opts = {}) {
   const showAllNext = opts.next === true;
   const showAll = opts.all === true;
   const modes = loadModes();

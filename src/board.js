@@ -549,7 +549,7 @@ function cardFlagText(c) {
   return '';
 }
 
-export function renderBoardText(projectName, data, opts = {}) {
+function renderBoardText(projectName, data, opts = {}) {
   const showAll = opts.all === true;
   const { hasIdeasDir } = data;
   // `--mine` narrows the board to the cards I own (founder layer slice 2b) — "what am
@@ -665,7 +665,7 @@ const esc = (s) =>
 // self-contained file in the founder's project. Keep them in step by hand.
 const COLUMN_INDEX = Object.fromEntries(COLUMNS.map((c, i) => [c, i]));
 
-export function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt) {
+function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt) {
   // Same rule as the terminal board: parked work leaves the flow but is never deleted.
   const parked = allCards.filter((c) => c.parked);
   const cards = allCards.filter((c) => !c.parked);
@@ -1088,7 +1088,7 @@ export function computeStuck(allCards) {
   };
 }
 
-export function renderBoardNext(projectName, { cards, hasIdeasDir }) {
+function renderBoardNext(projectName, { cards, hasIdeasDir }) {
   const lines = ['', `  ${projectName} · next`];
   if (!hasIdeasDir) { lines.push('  (no docs/ideas/ here — is this a BOSS project?)', ''); return lines.join('\n'); }
   const { finish, start, unblock, pressure } = computeNext(cards);
@@ -1115,7 +1115,7 @@ export function renderBoardNext(projectName, { cards, hasIdeasDir }) {
   return lines.join('\n');
 }
 
-export function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
+function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
   const lines = ['', `  ${projectName} · not moving`];
   if (!hasIdeasDir) { lines.push('  (no docs/ideas/ here — is this a BOSS project?)', ''); return lines.join('\n'); }
   const { blocked, aging, reviewDue } = computeStuck(cards);

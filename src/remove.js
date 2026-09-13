@@ -222,7 +222,7 @@ function planSettings(projectDir, layers) {
 // a safety net that leaks the thing it was saving. `~/.boss/` is per-person by construction, and
 // `boss remove --global` already walks and NAMES every file under it, so the parked copy shows up
 // in the other exit's preview without a line of new code.
-export function backupStateDir(projectDir, name, { root = BOSS_HOME, when } = {}) {
+function backupStateDir(projectDir, name, { root = BOSS_HOME, when } = {}) {
   const src = join(projectDir, '.boss');
   if (!existsSync(src)) return null;
   const stamp = (when || new Date().toISOString()).slice(0, 19).replace(/[:T]/g, '-');

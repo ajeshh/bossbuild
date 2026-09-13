@@ -40,7 +40,7 @@ const REGISTRY = `https://registry.npmjs.org/${PKG}/latest`;
 const TIMEOUT_MS = 4000;
 const STALE_DAYS = 7;
 
-export function readCache() {
+function readCache() {
   if (!existsSync(CACHE)) return null;
   try { return JSON.parse(readFileSync(CACHE, 'utf8')); } catch { return null; }
 }
@@ -52,7 +52,7 @@ function writeCache(data) {
   } catch { /* a cache we can't write is a cache we do without */ }
 }
 
-export function cacheAgeDays(cache, now = Date.now()) {
+function cacheAgeDays(cache, now = Date.now()) {
   if (!cache?.checked) return null;
   const t = Date.parse(cache.checked);
   return Number.isNaN(t) ? null : Math.floor((now - t) / 86400000);

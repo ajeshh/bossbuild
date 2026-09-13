@@ -77,7 +77,7 @@ function headline(text) {
   return h[1].replace(/^Practice:?\s*[—-]?\s*/i, '').trim();
 }
 
-export function listPractices() {
+function listPractices() {
   if (!existsSync(PRACTICES_DIR)) return [];
   return readdirSync(PRACTICES_DIR)
     .filter((f) => f.endsWith('.md'))

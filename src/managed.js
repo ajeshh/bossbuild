@@ -32,7 +32,7 @@ export function readLedger(projectDir) {
   try { const v = JSON.parse(readFileSync(p, 'utf8')); return (v && typeof v === 'object') ? v : {}; } catch { return {}; }
 }
 
-export function writeLedger(projectDir, ledger) {
+function writeLedger(projectDir, ledger) {
   const p = join(projectDir, ...LEDGER);
   mkdirSync(dirname(p), { recursive: true });
   const sorted = Object.fromEntries(Object.entries(ledger).sort(([a], [b]) => a.localeCompare(b)));
@@ -46,17 +46,6 @@ export function recordManaged(projectDir, entries) {
   const ledger = readLedger(projectDir);
   for (const e of entries) ledger[e.rel] = fileHash(e.text);
   writeLedger(projectDir, ledger);
-}
-
-// Record files already on disk (the scaffold path, which copies a tree rather than composing
-// strings). Absolute paths in, relative keys out.
-export function recordManagedPaths(projectDir, absPaths) {
-  const entries = [];
-  for (const abs of absPaths || []) {
-    try { entries.push({ rel: relative(projectDir, abs), text: readFileSync(abs, 'utf8') }); }
-    catch { /* binary or vanished — an unrecorded file is `null`, which is the safe answer */ }
-  }
-  recordManaged(projectDir, entries);
 }
 
 // TRI-STATE, and the third value is the honest one — same shape as `orphanEdited`:

@@ -17,7 +17,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from './paths.js';
 
-export const LADDER_FILE = join(BOSS_ROOT, 'registry', 'surface-ladder.json');
+const LADDER_FILE = join(BOSS_ROOT, 'registry', 'surface-ladder.json');
 
 // Quickstart → MVP → V1 → Scale. Same order as STAGE_ORDER, in the founder-facing names the
 // ledger and every skill use.
@@ -44,7 +44,7 @@ export function readLadder(file = LADDER_FILE) {
   }
 }
 
-export function rungIndex(rung) {
+function rungIndex(rung) {
   const i = RUNGS.indexOf(rung);
   return i === -1 ? null : i;
 }
@@ -164,7 +164,7 @@ export function assess(projectDir, name, stamp, ladder = readLadder()) {
   };
 }
 
-export function assessAll(projectDir, stamp, ladder = readLadder()) {
+function assessAll(projectDir, stamp, ladder = readLadder()) {
   return Object.keys(ladder)
     .map((n) => assess(projectDir, n, stamp, ladder))
     .filter(Boolean);

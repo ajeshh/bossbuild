@@ -20,9 +20,9 @@ import { join } from 'node:path';
 import { BOSS_ROOT } from './paths.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 
-export const CATALOG_PATH = join(BOSS_ROOT, 'library', 'deceptive-patterns.json');
+const CATALOG_PATH = join(BOSS_ROOT, 'library', 'deceptive-patterns.json');
 
-export function loadCatalog() {
+function loadCatalog() {
   if (!existsSync(CATALOG_PATH)) return null;
   try { return JSON.parse(readFileSync(CATALOG_PATH, 'utf8')); } catch { return null; }
 }

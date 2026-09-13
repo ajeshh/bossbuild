@@ -54,7 +54,7 @@ const isTestFile = (n) => /\.(test|spec)\.[a-z]+$/i.test(n) || /^test_.+\.py$/i.
 // suggestion needs, and an unbounded walk on a monorepo is a hang the founder blames on BOSS.
 const FILE_CAP = 4000;
 
-export function scanRepo(dir) {
+function scanRepo(dir) {
   const found = {
     manifests: [], deploy: [], sourceFiles: 0, testFiles: 0, hasTestDir: false, hasCI: false,
     truncated: false,
@@ -112,7 +112,7 @@ export function scanRepo(dir) {
 // of being one notch high is ceremony that sync currently cannot remove.
 const REAL_BUILD_FILES = 5;
 
-export function suggestStage(scan) {
+function suggestStage(scan) {
   const why = [];
   const realBuild = scan.manifests.length > 0 && scan.sourceFiles >= REAL_BUILD_FILES;
 

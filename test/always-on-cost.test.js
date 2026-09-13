@@ -8,14 +8,38 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, writeFileSync, cpSync, mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { BOSS_ROOT, STAGE_ORDER } from '../src/paths.js';
 import { cleanup } from './helpers.js';
 
 after(cleanup);
 const CAP = 420;
+
+// The gate-has-teeth tests below break a description ON PURPOSE and watch the gate go red. They
+// used to do that to the shipped file in the working tree and restore it in `finally` — while
+// `node --test` runs files in parallel and six peer sessions `git status` the same tree. A kill
+// mid-run would have committed "Rule #1" into a founder's skill. So the gate runs against a
+// throwaway copy of everything check-manifests reads; the working tree is never written.
+const sandboxes = [];
+after(() => { for (const d of sandboxes.splice(0)) rmSync(d, { recursive: true, force: true }); });
+function sandbox() {
+  const root = mkdtempSync(join(tmpdir(), 'boss-gate-'));
+  sandboxes.push(root);
+  for (const part of ['src', 'scripts', 'stages', 'library', 'plugin', '.claude-plugin', 'VERSION', 'package.json']) {
+    if (existsSync(join(BOSS_ROOT, part))) cpSync(join(BOSS_ROOT, part), join(root, part), { recursive: true });
+  }
+  return root;
+}
+function gateExit(root) {
+  try {
+    execFileSync('node', [join(root, 'scripts', 'check-manifests.js'), '--strict'],
+      { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    return 0;
+  } catch (e) { return e.status; }
+}
 
 function descriptions() {
   const out = [];
@@ -40,37 +64,27 @@ test('no shipped skill description exceeds the always-on cap', () => {
 test('the cap is enforced by a gate that actually fails', () => {
   // Make it fail on purpose, then put it back. The alternative — trusting a green run — is how
   // check-refs shipped its citation class as a no-op twice.
-  const victim = descriptions().find((d) => d.stage === 'L1-mvp');
-  const original = readFileSync(victim.file, 'utf8');
-  try {
-    writeFileSync(victim.file, original.replace(/^description: /m, `description: ${'x'.repeat(CAP)} `));
-    let code = 0;
-    try {
-      execFileSync('node', [join(BOSS_ROOT, 'scripts', 'check-manifests.js'), '--strict'],
-        { cwd: BOSS_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    } catch (e) { code = e.status; }
-    assert.equal(code, 1, 'an oversized description must fail the release gate');
-  } finally {
-    writeFileSync(victim.file, original);
-  }
+  const root = sandbox();
+  const victim = descriptions().find((d) => d.stage === 'L1-mvp').file.replace(BOSS_ROOT, root);
+  writeFileSync(victim, readFileSync(victim, 'utf8').replace(/^description: /m, `description: ${'x'.repeat(CAP)} `));
+  assert.equal(gateExit(root), 1, 'an oversized description must fail the release gate');
 });
 
 test('a " #" in a description fails the gate — YAML reads it as a comment and the host truncates there', () => {
   // Found by running /skill-doctor in a scaffolded project (2026-09-12): /extract listed at "< 20"
   // tokens because its description said "PRINCIPLE #1". Same proof shape as the cap test above.
-  const victim = descriptions().find((d) => d.stage === 'L1-mvp');
-  const original = readFileSync(victim.file, 'utf8');
-  try {
-    writeFileSync(victim.file, original.replace(/^description: /m, 'description: Rule #1 of this skill - '));
-    let code = 0;
-    try {
-      execFileSync('node', [join(BOSS_ROOT, 'scripts', 'check-manifests.js'), '--strict'],
-        { cwd: BOSS_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    } catch (e) { code = e.status; }
-    assert.equal(code, 1, 'a description with " #" must fail the release gate');
-  } finally {
-    writeFileSync(victim.file, original);
-  }
+  const root = sandbox();
+  const victim = descriptions().find((d) => d.stage === 'L1-mvp').file.replace(BOSS_ROOT, root);
+  writeFileSync(victim, readFileSync(victim, 'utf8').replace(/^description: /m, 'description: Rule #1 of this skill - '));
+  assert.equal(gateExit(root), 1, 'a description with " #" must fail the release gate');
+});
+
+test('a BOSS version stamp or record id in a shipped skill body fails the gate', () => {
+  const root = sandbox();
+  const victim = descriptions().find((d) => d.stage === 'L1-mvp').file.replace(BOSS_ROOT, root);
+  writeFileSync(victim, readFileSync(victim, 'utf8') + '\n\nUntil v0.284.0 this deleted the wrong one (IDEA-097).\n');
+  assert.equal(gateExit(root), 1, "BOSS's bookkeeping in the founder's brief must fail the release gate");
+  assert.equal(gateExit(sandbox()), 0, 'and the unmodified tree passes it');
 });
 
 test('no shipped skill description contains " #"', () => {

@@ -43,7 +43,7 @@ import { personStatePath, personStatePathForWrite, personStateDir } from '../sta
 // machine-assembled summary must never be mistaken for one. /close still writes the judgment; this
 // is the floor it lands on. Nothing about /close changes, and it is never "hampered" by this: an
 // authored read always renders first and in full.
-export function derivedFacts(projectDir) {
+function derivedFacts(projectDir) {
   const bits = [];
   try {
     const ideas = join(projectDir, 'docs', 'ideas');
@@ -198,7 +198,7 @@ function parseDatedBlocks(read) {
 // `boss brain --diff` — the evolution of the read over time (date + headline per
 // session, from the index). Continuity made visible: how the conscience's read
 // changed session to session, without dumping the whole prose.
-export function renderBrainDiff(projectDir, stamp) {
+function renderBrainDiff(projectDir, stamp) {
   const lines = [`\n  ${stamp.name} · brain · how the read evolved`, ''];
   const idx = readIndex(projectDir);
   if (!idx.entries.length) {
@@ -226,7 +226,7 @@ export function renderBrainDiff(projectDir, stamp) {
 // living memory. Founder-invoked, never automatic (it records an opinion about a
 // person — only the human prunes it). Drops dated blocks older than the date from
 // read.md AND the matching index entries, keeping the preamble + recent reads.
-export function forgetBrain(projectDir, { before, id } = {}) {
+function forgetBrain(projectDir, { before, id } = {}) {
   const rf = readPath(projectDir);
   const idx = readIndex(projectDir);
   let evictedBlocks = 0;
@@ -265,7 +265,7 @@ export function forgetBrain(projectDir, { before, id } = {}) {
 // Render the brain for `boss brain`. A pure read of read.md + a one-line ledger
 // footer from the index. Empty-state is honest: the brain is thin until the
 // conscience has lived a few sessions with you (the anti-fortune-cookie posture).
-export function renderBrain(projectDir, stamp) {
+function renderBrain(projectDir, stamp) {
   const lines = [];
   lines.push('');
   lines.push(`  ${bold(stamp.name + ' · brain')}`);
@@ -322,7 +322,7 @@ export function renderBrain(projectDir, stamp) {
 // `boss brain --relationship` — the relationship log: what the conscience said and
 // what the founder did with it. This is the loop the frequency ledger (IDEA-013)
 // only counts: did the nudge land? The conscience reads this to learn (Track 4).
-export function renderRelationship(projectDir, stamp) {
+function renderRelationship(projectDir, stamp) {
   const lines = [`\n  ${bold(stamp.name + ' · brain · relationship')}`,
     `  ${dim('what the conscience said — and what you did with it (the outcome of its nudges)')}`, ''];
   const rf = relationshipPath(projectDir);

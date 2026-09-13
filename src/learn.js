@@ -53,7 +53,7 @@ const MANIFEST_KEY = { agents: 'agents', skills: 'skills', hooks: 'optionalHooks
 // the registry and then writing silently is the surprise REVIEW-2026-07-28 §D4 flagged: a
 // founder who happens to name a project "boss" would get their own repo version-bumped.
 // The `selfHosted` flag is preferred over the name regex for exactly that reason.
-export function resolveBossSource() {
+function resolveBossSource() {
   if (process.env.BOSS_SRC && isBossRepo(process.env.BOSS_SRC)) {
     return { root: process.env.BOSS_SRC, how: '$BOSS_SRC' };
   }
@@ -65,10 +65,6 @@ export function resolveBossSource() {
     return { root: BOSS_ROOT, how: 'running from a source checkout' };
   }
   return { root: null, how: null };
-}
-
-export function bossSourceRoot() {
-  return resolveBossSource().root;
 }
 
 function bump(version, kind) {

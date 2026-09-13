@@ -289,7 +289,7 @@ function symbolsHtml() {
 }
 
 // ---- the page --------------------------------------------------------------
-export function renderHelpHtml(projectDir, stamp, stampedAt) {
+function renderHelpHtml(projectDir, stamp, stampedAt) {
   const V = bossVersion();
   const installed = stamp.installedLayers || [stamp.stage];
   const deepest = installed[installed.length - 1];

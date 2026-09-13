@@ -13,7 +13,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const configPath = (projectDir) => join(projectDir, '.boss', 'config.json');
+const configPath = (projectDir) => join(projectDir, '.boss', 'config.json');
 
 // Read the config, or {} if absent/corrupt. Never throws.
 export function readConfig(projectDir) {
@@ -62,17 +62,3 @@ export function readSourceGlobs(projectDir) {
   return DEFAULT_SOURCE_GLOBS;
 }
 
-// WHAT THE FOUNDER IS BUILDING — the shape tags from the deceptive-pattern catalog, as an array.
-// `cohort` (who they are) has been persisted and read everywhere since early on; `shape` was asked
-// by `/canvas`, printed into a canvas cell, and then thrown away — so BOSS knew how to talk to a
-// founder and not what they were making. Tags, never one bucket: an edtech mobile app with a
-// chatbot is all three.
-//
-// An empty array is a legitimate state and means "not declared", never "none apply". Skills that
-// read this must degrade to asking, not to assuming web.
-export function readShape(projectDir) {
-  const sh = readConfig(projectDir).shape;
-  if (Array.isArray(sh)) return sh.filter((x) => typeof x === 'string' && x.trim());
-  if (typeof sh === 'string' && sh.trim()) return [sh.trim()];
-  return [];
-}

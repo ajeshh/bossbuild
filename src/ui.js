@@ -15,7 +15,7 @@
 // call time (not import time) because isTTY can differ per stream/run.
 const noColor = () => 'NO_COLOR' in process.env && process.env.NO_COLOR !== '';
 const forceColor = () => process.env.FORCE_COLOR != null && process.env.FORCE_COLOR !== '0';
-export const colorEnabled = () => forceColor() || (!noColor() && !!process.stdout.isTTY);
+const colorEnabled = () => forceColor() || (!noColor() && !!process.stdout.isTTY);
 
 // Specific close codes (39 = default fg, 22 = normal weight) rather than a full
 // reset, so a wrapped span can nest inside another without killing it.

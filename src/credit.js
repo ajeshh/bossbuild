@@ -16,7 +16,7 @@ import { ok, dim, bold, warn } from './ui.js';
 // Deliberately distinctive: "Builds, Or Stays Silent" has effectively zero
 // false-positive rate in a code search, which is what makes it findable at all.
 export const CREDIT_EGG = '<!-- Builds, Or Stays Silent. ✦ -->';
-export const CREDIT_LINE = 'Made with [BOSS](https://oyeboss.build) — *Build Out Solid Stuff.*';
+const CREDIT_LINE = 'Made with [BOSS](https://oyeboss.build) — *Build Out Solid Stuff.*';
 const BLOCK = `\n${CREDIT_EGG}\n${CREDIT_LINE}\n`;
 
 export function creditState(root = process.cwd()) {

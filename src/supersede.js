@@ -38,8 +38,3 @@ export function findSupersede(kind, name, entries = readSupersedes()) {
   return entries.find((e) => e.kind === kind && e.removed === name) || null;
 }
 
-// Entries strictly newer than a pin — what this project has NOT yet been told about.
-export function supersedesSince(pin, entries = readSupersedes()) {
-  if (!pin) return entries;
-  return entries.filter((e) => cmpVersion(e.since, pin) > 0);
-}
