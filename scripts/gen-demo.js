@@ -46,8 +46,8 @@ export function renderDemo() {
   const once = () => { boardHtml(dir, project.name); designHtml(dir, project.name); return playbookHtml(dir, project.name); };
   once();
   const { data } = once();
-  designHtml(dir, project.name); boardHtml(dir, project.name);
-  return { dir, project, data, pages: { playbook: join(dir, '.boss', 'playbook.html'), design: join(dir, '.boss', 'design.html'), board: join(dir, '.boss', 'board.html') } };
+  const design = designHtml(dir, project.name).data; boardHtml(dir, project.name);
+  return { dir, project, data, design, pages: { playbook: join(dir, '.boss', 'playbook.html'), design: join(dir, '.boss', 'design.html'), board: join(dir, '.boss', 'board.html') } };
 }
 
 // The folders page — from the tree that was just rendered. Each directory: the first sentence of
@@ -165,12 +165,14 @@ function stamp(html) {
 }
 
 export function generate({ out = SITE_DEMO, check = false } = {}) {
-  const { dir, project, data, pages } = renderDemo();
+  const { dir, project, data, design, pages } = renderDemo();
   try {
     const playbook = readFileSync(pages.playbook, 'utf8');
     SHELL_CSS = (playbook.match(/<style>([\s\S]*?)<\/style>/) || [null, ''])[1];
     const questions = data.questions || [];
-    if (check) return { questions, line: questionsLine(questions), dir };
+    // The design page's own open list (boss design --questions): the same shape, gated the same way.
+    const designQuestions = (design && design.questions) || [];
+    if (check) return { questions, designQuestions, line: `${questionsLine(questions)} · design: ${questionsLine(designQuestions)}`, dir };
     mkdirSync(out, { recursive: true });
     writeFileSync(join(out, 'playbook.html'), stamp(playbook));
     writeFileSync(join(out, 'design.html'), stamp(readFileSync(pages.design, 'utf8')));

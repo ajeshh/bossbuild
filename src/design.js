@@ -89,7 +89,8 @@ export function grade(ratio) { return ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA-lar
 // token (surface.*, ground, paper, background), and each `on-<x>` against its own `<x>`. Never
 // every colour against every colour — that produces a wall of numbers nobody declared.
 export function contrastPairs(tokens) {
-  const colors = tokens.filter((t) => t.type === 'color' && typeof t.value === 'string' && /^#[0-9a-f]{6}$/i.test(t.value));
+  // A deprecated token is out of the system, not a finding in it — its failure is usually why it was retired.
+  const colors = tokens.filter((t) => t.type === 'color' && !t.deprecated && typeof t.value === 'string' && /^#[0-9a-f]{6}$/i.test(t.value));
   const isText = (n) => /(^|\.)(text|ink|foreground|fg)(\.|$)/i.test(n) || /(^|\.)on-[\w-]+$/i.test(n);
   const isSurface = (n) => /(^|\.)(surface|ground|paper|background|bg|canvas)(\.|$)/i.test(n);
   const pairs = [];
@@ -97,7 +98,9 @@ export function contrastPairs(tokens) {
     if (!isText(t.name)) continue;
     const onMatch = t.name.match(/(.*)\.on-([\w-]+)$/i);
     if (onMatch) {
-      const base = colors.find((c) => c.name === `${onMatch[1]}.${onMatch[2]}`);
+      // `on-primary` against `primary` — same group first (`color.action.on-primary`), else the
+      // one token anywhere whose last segment is `primary` (`color.text.on-primary` vs `color.action.primary`).
+      const base = colors.find((c) => c.name === `${onMatch[1]}.${onMatch[2]}`) || colors.find((c) => c.name.split('.').pop().toLowerCase() === onMatch[2].toLowerCase() && !/(^|\.)on-/.test(c.name));
       if (base) pairs.push({ text: t, on: base });
       continue;
     }
@@ -187,7 +190,7 @@ function section(text, headingRe) {
 
 // --- the brand's current shape: the six lines /landing seeds, each present or its own hole ------
 
-const BRAND_LINES = [['Who it\'s for', /who it'?s for/i], ['What it promises', /what it promises/i], ['What it refuses', /what it refuses/i], ['How it sounds', /how it sounds/i], ['What it is NOT', /what it is not/i], ['The name, and why', /the name(, and why)?/i]];
+const BRAND_LINES = [['Who it\'s for', /who it'?s for/i], ['What it promises', /what it promises/i], ['What it refuses', /what it refuses/i], ['How it sounds', /how it sounds/i], ['What it is NOT', /what it is not/i], ['The name, and why', /the name(?:, and why)?/i]];
 export function readBrandShape(projectDir) {
   const p = join(projectDir, 'docs', 'BRAND.md');
   const shape = { present: existsSync(p), lines: [], updated: null };
@@ -553,10 +556,12 @@ export function readLogo(projectDir) {
   try { text = readFileSync(p, 'utf8'); } catch { return out; }
   const fm = frontmatter(text);
   const svgAt = (rel) => { if (!rel || !/\.svg$/i.test(String(rel))) return ''; try { const t = readFileSync(join(projectDir, String(rel)), 'utf8'); return /<svg\b/i.test(t) && t.length < 64 * 1024 ? t.trim() : ''; } catch { return ''; } };
-  const mark = fm.logo || fm.mark || null;
-  if (mark && existsSync(join(projectDir, String(mark)))) { out.mark = String(mark); out.markSvg = svgAt(mark); }
-  const wm = fm.wordmark && /\.(svg|png)$/i.test(String(fm.wordmark)) ? String(fm.wordmark) : null;
-  if (wm && existsSync(join(projectDir, wm))) { out.wordmarkFile = wm; out.wordmarkSvg = svgAt(wm); }
+  // The path is project-relative; a path written relative to docs/ (`brand/mark.svg`) is tried there too.
+  const resolve = (rel) => { if (!rel) return null; const r = String(rel).replace(/^\.\//, ''); return existsSync(join(projectDir, r)) ? r : existsSync(join(projectDir, 'docs', r)) ? `docs/${r}` : null; };
+  const mark = resolve(fm.logo || fm.mark);
+  if (mark) { out.mark = mark; out.markSvg = svgAt(mark); }
+  const wm = fm.wordmark && /\.(svg|png)$/i.test(String(fm.wordmark)) ? resolve(fm.wordmark) : null;
+  if (wm) { out.wordmarkFile = wm; out.wordmarkSvg = svgAt(wm); }
   const guidePath = join(projectDir, 'docs', 'design', 'STYLE_GUIDE.md');
   let guide = '';
   try { guide = existsSync(guidePath) ? readFileSync(guidePath, 'utf8') : ''; } catch { guide = ''; }
@@ -633,7 +638,8 @@ export function collectDesign(projectDir, projectName) {
   components.tree = scanTree(projectDir);
   components.unindexed = components.tree.filter((f) => !known(f.name));
   const patterns0 = readPatterns(projectDir);
-  patterns0.inUse = familiesInUse([...components.components.map((c) => c.name), ...components.retired.map((r) => r.name), ...components.tree.map((f) => f.name), ...usage.map((u) => u.name)]);
+  // In use = in the index, the tree or a usage page. A retired name is not in use — that is the point of retiring it.
+  patterns0.inUse = familiesInUse([...components.components.map((c) => c.name), ...components.tree.map((f) => f.name), ...usage.map((u) => u.name)]);
   for (const r of patterns0.ours) r.familyKey = familyOfRow(r);
   const patterns = patterns0;
   const flows = readFlows(projectDir);
@@ -724,7 +730,9 @@ export const FAMILIES = [
   ['forms', 'Forms as a whole', /^forms/i, /\b(Form|Fieldset|FormLayout|Wizard)\b/],
   ['layout', 'Layout primitives', /^layout primitives/i, /\b(Card|Stack|Page|Container|Box|Section|Panel|Divider)\b/],
 ];
-const famOfText = (text) => FAMILIES.filter(([, , , names]) => names.test(String(text || ''))).map(([key]) => key);
+// `AskCard` → "Ask Card" so the family list's whole-word match sees the compound's last word.
+const splitName = (n) => String(n || '').replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2').replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+const famOfText = (text) => FAMILIES.filter(([, , , names]) => names.test(splitName(text))).map(([key]) => key);
 export function familiesInUse(names) {
   const used = new Map();
   for (const n of names) for (const key of famOfText(n)) { if (!used.has(key)) used.set(key, []); if (!used.get(key).includes(n)) used.get(key).push(n); }
@@ -1103,7 +1111,7 @@ export function renderDesignHtml(data, stampedAt) {
     { group: 'Kept honest', items: [{ href: 'exceptions', n: 16, label: 'Exceptions & divergence', hole: false }, { href: 'research', n: 17, label: 'Research', hole: !research.evid.length }] },
   ];
   const extraCss = `
-  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 10px; } .sw i { display: block; height: 52px; border-radius: 6px; margin-bottom: 7px; border: 1px solid var(--rule-2); } .sw i.val { border-bottom: 1px solid var(--rule-2); } .sw i.val:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 12px; } .sw { min-width: 0; } .sw b, .sw span { overflow-wrap: anywhere; } .sw i { display: block; height: 52px; border-radius: 6px; margin-bottom: 7px; border: 1px solid var(--rule-2); } .sw i.val { border-bottom: 1px solid var(--rule-2); } .sw i.val:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
   .sw b { display: block; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--ink); } .sw span { display: block; font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .sw .dec { margin-top: 4px; font-family: var(--body); font-size: 11.5px; color: var(--ink-2); } .sw .dec em { color: var(--muted); } .sw.retired b { text-decoration: line-through; color: var(--muted); } .sw .ret { color: var(--stale); }
   .sw .val { display: inline; } .unk { color: var(--hole); font-style: italic; }
   .scale { display: grid; gap: 10px; } .scale .row { display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: baseline; border-bottom: 1px solid var(--rule-2); padding-bottom: 8px; } .scale .row:last-child { border-bottom: 0; }

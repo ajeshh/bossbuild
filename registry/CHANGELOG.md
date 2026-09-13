@@ -30,6 +30,21 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The Kettlewick showcase has its design half (FEAT-039, the design lane).** `demo/kettlewick/docs/design/**`
+  in the shapes the verbs write: a DTCG `tokens.json` with `breakpoint.*`, `target.min` and
+  `z-index.*`; a style guide with every slot filled (three grounded principles with statements,
+  the logo rules, the six layout sub-slots and a three-surface responsive table, terminology, the
+  tone table with real strings, three exceptions); five components with usage pages and source
+  stubs, one `proposed` (the front door, shown on purpose and allowed in `check:demo` with its
+  reason); a pattern set with five *Ours* rows carrying Family and Principle; three flows with
+  their three paths and cut lists; six icons, stroke in the file; a journey with sources and gaps;
+  a ux-check; DEC-004 naming the tokens; `about:` on the four EVIDs; a trace so *Divergence*
+  renders; the guards registered. **16 of 16 slots, 8 pairs, 0 findings.** `check:demo` now gates
+  the design page's open list too. Five renderer fixes the showcase found: the brand's *The name,
+  and why* line captured ", and why" as its value; a deprecated token was still scored as a
+  contrast finding (it is out of the system — its failure is why it was retired); `on-primary`
+  never found `action.primary` across groups; family detection didn't split `AskCard`; long token
+  names overlapped in the swatch grid.
 - **Divergence is a number on the page (IDEA-113 row 4).** *Exceptions & divergence* opens with the
   trace read back over 30 days: how many times a decision was handed to the agent at the write
   (`design-decision` lines, by decision and by file), and every new-component question the reuse

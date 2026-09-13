@@ -53,6 +53,7 @@ tagline: Calm on Sunday.
 - **Who it's for:** "I run a small care agency"
 - **What it promises:** every shift filled without the Sunday-night phone tree
 - **What it refuses:** unknown
+- **The name, and why:** Tidewell — the tide comes in whether you like it or not
 `;
 const DEC = `---
 id: DEC-001
@@ -84,7 +85,10 @@ test('pairs are the DECLARED ones: text-like against surface-like, on-x against 
   assert.ok(names.includes('color.action.on-primary/color.action.primary'), 'on-primary pairs with primary');
   assert.ok(!names.some((n) => n.includes('gray.500')), 'a primitive is not a pair');
   assert.ok(!names.some((n) => n.startsWith('color.action.primary/')), 'the accent is not text');
-  assert.equal(pairs.length, 7, '3 text tokens × 2 surfaces + 1 on-pair');
+  assert.equal(pairs.length, 5, '2 live text tokens × 2 surfaces + 1 on-pair — the deprecated placeholder is out of the system, not a finding in it');
+  assert.ok(!names.some((n) => n.includes('placeholder')), 'a deprecated token is not paired');
+  const cross = contrastPairs([{ name: 'color.text.on-primary', type: 'color', value: '#FFFFFF' }, { name: 'color.action.primary', type: 'color', value: '#2F5D8A' }]);
+  assert.deepEqual(cross.map((x) => `${x.text.name}/${x.on.name}`), ['color.text.on-primary/color.action.primary'], 'on-primary finds primary across groups');
 });
 
 test('the swatch hex IS the tokens.json hex, the DEC that named a token is on its swatch, deprecated is struck with its successor', () => {
@@ -95,7 +99,7 @@ test('the swatch hex IS the tokens.json hex, the DEC that named a token is on it
   assert.match(html, /class="sw retired"[\s\S]*?color\.text\.placeholder[\s\S]*?deprecated → color\.text\.muted/);
   assert.match(html, /data-copy="hex=#1B7F79\|token=color\.action\.primary\|css=var\(--color-action-primary\)"/, 'three copy forms on a swatch');
   assert.match(html, /<td class="mono tab">3\.63<\/td><td class="warn">large text only/);
-  assert.match(html, /<td class="mono tab">2\.54<\/td><td class="fail">fails/);
+  assert.ok(!/<td class="mono tab">2\.54<\/td>/.test(html), 'the deprecated placeholder is struck on the swatch, not scored in the table');
   assert.match(html, /checks the pairs the tokens declare, not what the page renders/i, 'says its scope once');
 });
 
@@ -114,6 +118,7 @@ test('a principle is grounded by a reference, not by a word; an unfilled part is
 });
 
 test('the brand shape renders what is written and holes what is not — never invents', () => {
+  assert.equal(readBrandShape(tidewell()).lines.find((l) => l.label === 'The name, and why').value, 'Tidewell — the tide comes in whether you like it or not', 'the optional ", and why" is not the value');
   const s = readBrandShape(tidewell());
   assert.equal(s.lines.find((l) => l.label === "Who it's for").value, '"I run a small care agency"');
   assert.equal(s.lines.find((l) => l.label === 'What it refuses').value, null, '"unknown" is a hole, not a value');
@@ -784,8 +789,9 @@ test('a family appears only when the product uses it: a CLI-shaped tree shows no
   assert.ok(!html.includes('id="family-overlays"'), 'no Modal anywhere → no overlays block, seeded rows or not');
   assert.ok(!html.includes('A dialog is a question, not a place'), 'the seed is not rendered for a family not in use');
   assert.match(html, /famil(y exists|ies exist) as options — [^<]*overlays/);
-  assert.match(html, /1 decision of the product's own · 1 family in use, 1 with nothing decided/, 'Card puts layout primitives in use; PAT-1 names no family');
-  assert.match(html, /class="block hole" id="family-layout"[\s\S]*?in use: Card/);
+  assert.match(html, /1 decision of the product's own · 2 families in use, 2 with nothing decided/, 'ShiftRow (data display) and the deprecated-but-present Card (layout) are in use; the retired CTAButton is not; PAT-1 names no family');
+  assert.match(html, /class="block hole" id="family-data-display"[\s\S]*?in use: ShiftRow/);
+  assert.match(html, /class="block hole" id="family-layout"[\s\S]*?in use: Card/, 'deprecated is still in use until its last import goes');
   const web = withParts({ 'docs/design/PATTERNS.md': seededOverlays, 'src/components/Modal.tsx': 'export const Modal = () => null;\n' });
   const data = collectDesign(web, 'Tidewell');
   assert.deepEqual(data.patterns.inUse.get('overlays'), ['Modal']);
