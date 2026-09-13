@@ -7,14 +7,14 @@ attributed_to: [Ajesh Shah (PRINCIPLES — "compress the loop from idea to evide
 also_relevant: [David J. Anderson (Kanban — limit work-in-progress), Jim Benson (Personal Kanban — "stop starting, start finishing"), Eric Ries (validated learning over motion), Ryan Singer / Basecamp (Shape Up — the circuit-breaker + fixed appetite: finish-or-kill on the aged item, no default extension)]
 entry:
   - count_at_least:
-      path_glob: docs/ideas/FEAT-*.md
+      path_glob: docs/ideas/FEAT-*.md, docs/ideas/IDEA-*.md
       pattern: '^status:\s*(building|drafting|blocked)'
       min: 4
 exit:
-  - count_at_least:
-      path_glob: docs/ideas/FEAT-*.md
-      pattern: '^status:\s*(shipped|done)'
-      min: 1
+  - count_at_most:
+      path_glob: docs/ideas/FEAT-*.md, docs/ideas/IDEA-*.md
+      pattern: '^status:\s*(building|drafting|blocked)'
+      max: 3
 drift_moment: focus
 ---
 
@@ -84,13 +84,14 @@ why" taught plainly; indie-hacker gets the calm "small and done beats big and op
 - The read is **bounded** — the board projection / in-flight FEAT statuses, never the whole project.
 - The model fires **at most once per session** and stays silent when the parallelism is honest.
 
-## Known limitation (documented, like drift-loop's)
+## What closes it
 
-Exit is "≥1 shipped *ever*," so the moment targets the never-finished pile and goes quiet after the
-first ship — even if a large WIP pile rebuilds later. A "shipped *recently*" semantic would need a
-date-windowed count the predicate vocabulary doesn't have yet (the same gap `building_since` aging
-fills on the board side). Deferred until there's evidence the rebuilt-pile case matters; the board's
-own aging flag (`⌛ Nw in build`) already surfaces the stuck items visually in the meantime.
+The pile shrinking — three or fewer in build, however that happened (a ship, a `/sunset`, a
+`/revalidate` that re-paused something). The exit used to be "≥1 shipped *ever*", which went quiet
+after the first ship and never came back: BOSS's own board sat at six in build with one ship 84 days
+old, and the one moment built to notice could not open. A pile that rebuilds is the ordinary case,
+not the edge one. "Shipped *recently*" would still be the sharper signal, and needs a date-windowed
+predicate the vocabulary doesn't have; the board's aging flag (`⌛ Nw in build`) carries that half.
 
 ## How to remix
 

@@ -12,7 +12,7 @@ entry:
       min: 3
 exit:
   - outpaced_by:
-      path_glob: docs/ideas/*-canvas.md
+      path_glob: docs/ideas/*-canvas.md, docs/ideas/CANVAS.md
       behind: docs/ideas/FEAT-*.md
       min: 1
 drift_moment: outpaced

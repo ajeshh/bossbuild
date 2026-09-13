@@ -7,7 +7,7 @@ attributed_to: [Ajesh Shah (PRINCIPLES — "build faster without fooling themsel
 also_relevant: [Eric Ries (validated learning), Ash Maurya (riskiest assumption first), Rob Fitzpatrick (talk to someone before you build)]
 entry:
   - any_file_matches:
-      path_glob: docs/ideas/*-canvas.md
+      path_glob: docs/ideas/*-canvas.md, docs/ideas/CANVAS.md
       pattern: 'Riskiest assumption:\*\*\s+[^_].*[a-zA-Z0-9]{3,}'
       related_idea_not_matching: '^status:\s+dropped'
   - count_at_least:
@@ -16,7 +16,7 @@ entry:
       min: 3
 exit:
   - any_file_matches:
-      path_glob: docs/ideas/*-canvas.md
+      path_glob: docs/ideas/*-canvas.md, docs/ideas/CANVAS.md
       pattern: 'Experiment this week:\*\*\s+[^_].*[a-zA-Z0-9]{3,}'
       related_idea_not_matching: '^status:\s+dropped'
 drift_moment: drift

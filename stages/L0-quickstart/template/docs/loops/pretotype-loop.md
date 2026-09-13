@@ -7,7 +7,7 @@ attributed_to: [Alberto Savoia, Ash Maurya]
 also_relevant: [Eric Ries, Rob Fitzpatrick]
 entry:
   - any_file_matches:
-      path_glob: docs/ideas/*-canvas.md
+      path_glob: docs/ideas/*-canvas.md, docs/ideas/CANVAS.md
       pattern: 'Riskiest assumption:\*\*\s+[^_].*[a-zA-Z0-9]{3,}'
       related_idea_not_matching: '^status:\s+dropped'
 exit:
