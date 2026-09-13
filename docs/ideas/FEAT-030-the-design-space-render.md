@@ -51,17 +51,17 @@ URL to a designer.
 - Whether `--open` should open the design space or the family (playbook + design) — one page for now.
 
 ## Acceptance criteria
-- [ ] `boss design` in a project with `docs/design/tokens.json` writes `.boss/design.html` and prints the path; `--open` opens it.
-- [ ] Every semantic colour token renders as a swatch with its name, value, and — where a DEC names it — the *chosen — DEC-NNN* line; a token with `$deprecated` renders struck, naming its successor.
-- [ ] Contrast is computed (WCAG 2.x relative luminance) for every declared text-on-surface pair and rendered with the ratio and *AA · AA-large · fails*; the page says once that it checks declared pairs, not what renders.
-- [ ] Principles render from `STYLE_GUIDE.md`'s slot — statement/name, Why, Guideline, Rules, Wrong if — and a principle with no grounding reference renders *asserted*.
-- [ ] Start here renders `docs/BRAND.md`'s current shape; a missing field renders as its own hole, never invented; the anchor DEC renders when present.
-- [ ] Layout renders as a hole with the six sub-slots and the verb when no layout section exists.
-- [ ] Every value (swatch, name, hex, type role, spacing step, radius) copies on click in the forms that apply; every copy opens the sheet showing the payload and the form it reached the clipboard in.
-- [ ] The family bar links to `playbook.html` and `board.html` by relative path, dimmed when the sibling file does not exist.
-- [ ] `src/page-shell.js` is the one source of the chrome; `boss playbook` output is byte-identical before and after the extraction except where the family bar is added.
-- [ ] Brand: the accent from `docs/BRAND.md`, neutral default otherwise; no colour invented for a field marked unknown.
-- [ ] Zero dependencies; opens from `file://`; light and dark.
+- [x] `boss design` in a project with `docs/design/tokens.json` writes `.boss/design.html` and prints the path; `--open` opens it.
+- [x] Every semantic colour token renders as a swatch with its name, value, and — where a DEC names it — the *chosen — DEC-NNN* line; a token with `$deprecated` renders struck, naming its successor.
+- [x] Contrast is computed (WCAG 2.x relative luminance) for every declared text-on-surface pair and rendered with the ratio and *AA · AA-large · fails*; the page says once that it checks declared pairs, not what renders.
+- [x] Principles render from `STYLE_GUIDE.md`'s slot — statement/name, Why, Guideline, Rules, Wrong if — and a principle with no grounding reference renders *asserted*.
+- [x] Start here renders `docs/BRAND.md`'s current shape; a missing field renders as its own hole, never invented; the anchor DEC renders when present.
+- [x] Layout renders as a hole with the six sub-slots and the verb when no layout section exists.
+- [x] Every value (swatch, name, hex, type role, spacing step, radius) copies on click in the forms that apply; every copy opens the sheet showing the payload and the form it reached the clipboard in.
+- [x] The family bar links to `playbook.html` and `board.html` by relative path, dimmed when the sibling file does not exist.
+- [ ] `src/page-shell.js` is the one source of the chrome; `boss playbook` adopts it — **the FEAT-026 lane's first FEAT-028 commit** (agreed 2026-09-13), with the snapshot; the shell is ready and exports `NEUTRAL`, `shellPage`, `familyBar`.
+- [x] Brand: the accent from `docs/BRAND.md`, neutral default otherwise; no colour invented for a field marked unknown.
+- [x] Zero dependencies; opens from `file://`; light and dark.
 
 ## What "wrong" looks like
 - A swatch whose hex differs from `tokens.json` — the page and the file disagree, which is the trap the whole thing exists to refuse.
@@ -109,3 +109,4 @@ Indexed in `docs/design/FLOWS.md`.
 
 ## Log
 - 2026-09-13 — specced from IDEA-107 after four prototype rounds (v0 → v4). Slice 1 is the language + the frame; the shell extraction is the one structural move and is claimed as a lane with the FEAT-026 session.
+- 2026-09-13 — **slice 1 landed** (`c2c63ea`, under Unreleased). Nine tests. In a `/tmp` scaffold seeded with the Tidewell fixture: 7 pairs computed, 4 findings (muted and placeholder inks on both surfaces — the prototype's own finding, reproduced by the arithmetic), the DEC on the swatch, deprecated struck, the family bar live once the playbook exists. Surprise: nothing exported the neutral palette — board.js and playbook.js each restate it — so the shell became the exported source (`NEUTRAL`). The one open criterion is the playbook's adoption of the shell, handed to the FEAT-026 lane.
