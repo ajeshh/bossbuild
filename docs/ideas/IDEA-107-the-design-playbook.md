@@ -124,6 +124,57 @@ monorepo `packages/`, not from the rendered site (a JS app; the fetch returned n
 **The read in one line:** Carbon's depth is *per component* (four tabs, a definition of done, a
 keyboard table), not per site. BOSS's cards are one tab deep. That is where "go deeper" lands.
 
+## The field, read at source (2026-09-13) — seven systems, one table
+
+Ajesh: *"the organization of content needs to be better … check fluent … the level of detail and
+the content around principles, and depth … not just fluent, but also apple, material design and
+any other that you recommend."*
+
+**What was opened.** Fluent 2: the home page, `/design-principles`, `/color`, `/design-tokens`,
+`/layout`, and the React Button usage page (fetched; the site renders content server-side).
+GOV.UK, Polaris (Shopify), Primer (GitHub) and USWDS: the exact page trees from their public site
+repos, plus GOV.UK's `check-answers`, `button`, `component-lifecycle-statuses`,
+`continuous-research` and `contribution-criteria` pages, Polaris's `experience-values`, Primer's
+`component-lifecycle`. Carbon: the previous section. **Apple HIG and Material 3 are JS shells with
+no readable endpoint from here** (Apple's DocC JSON 404s); their structure below is from memory and
+is marked — verify before any of it reaches shipped text.
+
+| Axis | Fluent 2 | Carbon | GOV.UK | Polaris | Primer | Apple HIG *(memory)* | Material 3 *(memory)* | BOSS today | Take |
+|---|---|---|---|---|---|---|---|---|---|
+| **Organization** | Design (get started → principles → language → tokens → a11y) → Components by platform → Patterns → Resources | All about → Elements → Components → Patterns → Data viz → Designing / Developing / Contributing | Get started → Styles → Components → Patterns → Accessibility → Community | Getting started → Foundations → Design → Components → Patterns → Content → Tokens → Tools | Foundations → Components → UI patterns → Guides | Foundations → Patterns → Components → Inputs → Technologies | Foundations → Styles → Components | prototype v1 grouped by *kind of file* | **every one of them is a reader's path: why → language → parts → patterns → resources.** Prototype v2 adopts it, with *Start here* per reader |
+| **Principles** | **4, one sentence each** (*natural on every platform · built for focus · one for all, all for one · unmistakably Microsoft*) — and every page below descends from them | "All about Carbon" (the why) | "Design principles" as GOV.UK's service standard; the system itself leads with *styles* | **6 experience values, one word each** (considerate · empowering · crafted · efficient · trustworthy · familiar) | (guides) | *(memory)* clarity · deference · depth, retired in favour of per-platform pages | *(memory)* none stated as principles; "foundations" | 3–5 **with a tradeoff each** — sharper than any of these — but **no rule below names the principle it descends from** (`principle:` as a field: 0 hits) | **traceability, as a mechanism:** a `principle:` on every pattern row and component usage rule; the site counts descendants; a principle with zero descendants renders as a finding (*a slogan*). Prototype v2 draws the chips |
+| **Per-component page** | Usage page = *Resources · Types · Behavior · Layout · Accessibility · Content*, with do/don't pairs | Usage · Style · Code · Accessibility tabs; anatomy; keyboard table | *when to use · when not · how it works · **research on this component*** | usage · best practices · accessibility · content guidelines | usage · accessibility · props; lifecycle badge | *(memory)* best practices · platform considerations | *(memory)* guidelines · specs · accessibility | one tab (v0) → four tabs on Button (v1) | add Fluent's two: a **Layout** line (placement, alignment, RTL) and a **Content** line per component; GOV.UK's *Research on this component* is the Research chip |
+| **Patterns** | product patterns | 17 UI patterns | **service patterns** — check answers · confirm an email · create accounts · addresses · bank details · dates | layouts (resource index, app settings) · common actions · new features | saving · loading · degraded experiences · feature onboarding · progressive disclosure · empty states · navigation · data viz | *(memory)* ~25 (onboarding, searching, undo, settings, loading…) | *(memory)* few | 10 AI-interaction patterns UP; `PATTERNS.md` per project; **the founder's flows in `FLOWS.md`** | **a flow that recurs is a service pattern.** GOV.UK's list is what `/spec` writes one FEAT at a time; `design-pattern-loop` promotes near-duplicate *components* — the same loop over near-duplicate *flows* is the composition |
+| **Research on the page** | — | — | **yes, per page** — a *Research on this component* section citing the backlog issue; *always-on* research programme since 2026-03; *share research findings* as a contribution path | — | — | *(memory)* — | *(memory)* — | Research section (v1); chips on the pattern | confirmed by the one system that does it; **the mechanism is an `about:` on `EVID` that can name a design object** — the same question as 106's open Q2 (what ties an EVID to a cell), generalized |
+| **Tokens** | global → alias, "named so the function is immediately recognizable"; theming by re-aliasing | @carbon/{colors,type,layout,motion,themes,…} packages; four themes | Sass settings; a new type scale (2024) | **eleven token families** — border · breakpoints · color · font · height · motion · shadow · space · text · width · z-index | primitives | *(memory)* system colours, Dynamic Type | *(memory)* design tokens as a foundation; Material Theme Builder | 3-layer DTCG, 6 families guarded; `tokens.json` guaranteed (dedb7ca) | families BOSS lacks that Polaris names: **breakpoints · z-index** (0 hits each). Both are the layout slot's tokens |
+| **Layout** | base unit 4 → spacing ramp → grid anatomy → grid types → alignment → responsive techniques → **six named breakpoints with values** | 2x Grid | page templates; a width container | design/layout + tokens/breakpoints | foundations/layout + responsive | *(memory)* Layout, Spatial layout | *(memory)* Layout, adaptive design | **the hole** (0 layout hits; the extraction loop's "breakpoint" is a different word) | the slot now has Fluent's six sub-slots (prototype v2); `breakpoint.*` tokens; the guard's next family once tokens exist |
+| **Interaction states** | on the Color page — rest → hover → selected get darker | per-component | focus states in get-started | **`design/interaction-states` as its own page** | — | *(memory)* per component | *(memory)* foundations/interaction states | five states per component; **no system-level rule** (0 hits) | one paragraph in the Colour slot: *how a state changes a colour*; drawn in v2 |
+| **Content design** | Content per component | guidelines/content | style guide (the strongest in the field) | **content/** — alternative text · error messages · grammar and mechanics · inclusive language · naming · fundamentals | foundations/content | *(memory)* Writing | *(memory)* content design | voice · tone · terminology · error copy; **alt text 1 hit, inclusive language 0** | two lines in the Content slot: *alternative text* and *inclusive language* (the humane lens already owns the second — name it here) |
+| **Lifecycle** | — | Draft → Preview candidate → Preview → Stable + a checklist | *trial* components; "research on component statuses" | — | **Experimental · Alpha · Beta · Stable · Deprecated · Removed** | — | — | stable · experimental · deprecated · retired; definition of done (v1) | nothing to add — BOSS's *done* is earned per row, which is stricter than a badge |
+| **Data viz** | — | its own site | — | design/data-visualizations | ui-patterns/data-visualization | *(memory)* Charting data | *(memory)* — | 0 hits | **the gap is confirmed four times.** The palette question first |
+| **Sound · haptics · illustration · pictograms** | — | pictograms | — | sounds · illustrations | — | *(memory)* haptics, playing audio | — | 0 (deliberately) | deferred-by-rule row; render nothing, say why once |
+| **Contributing / propose** | — | contributing + checklist + PDLC | contribution criteria · propose a component · community | contributing | contribute | — | — | reuse / adjust / new boundary; `component-reuse-guard` | for a solo founder the proposer is the agent; already the mechanism |
+
+**The read in three lines.** (1) Organization is settled by unanimity — a reader's path, not a
+folder tree. (2) BOSS's principles are *sharper* than the field's (a tradeoff each) and *less
+connected* — nothing below them says which one it serves; the fix is a field, not prose. (3) The
+depth the field has and BOSS doesn't is at two ends: **layout** (a whole foundation with tokens) and
+**research on the page** (GOV.UK alone does it, and it is the most BOSS-shaped thing here).
+
+## What to invest in — ranked, each sorted
+
+| # | Investment | Cost | Sort |
+|---|---|---|---|
+| 1 | **Reader's-path organization** for the site (and for `docs/design/` itself: the README the folder lacks — *who reads what*) | decided; v2 drawn | **task** — the renderer's section order, when it earns a build |
+| 2 | **`principle:` on every rule** — a column in `PATTERNS.md`, a line per component usage rule, a chip on the render, a descendant count per principle, *zero descendants* rendered as a finding | one column, one render rule | **task** — measure first: how many of BOSS's own seeded pattern rows can name a principle today? if most can't, the rule is wrong, not the field |
+| 3 | **Layout slot** to Fluent's six sub-slots + `breakpoint.*` and `z-index.*` token families in the DTCG template; the guard's spacing family stays off, a breakpoint literal becomes its own family once tokens exist | slots + two families | **task** (IDEA-107 step 3, now shaped) |
+| 4 | **Research on the design object** — an `about:` on `EVID` that may name a pattern, component, flow or canvas cell; the site renders the chip from it | one field, read by the render | **open question** — the same as 106 Q2; grep who reads `assumption:` before adding anything |
+| 5 | **Flows that recur become service patterns** — `design-pattern-loop`'s near-duplicate read over `FLOWS.md` rows | a loop predicate over a file that exists | **new scope** — its own id when a real project has two flows that rhyme; not before |
+| 6 | Interaction-state rule · alt text · inclusive language — three lines in slots that exist | three lines | **task** |
+| 7 | Data viz palette | a question on the token skill | **open question** (107 gap row 3, unchanged) |
+
+Nothing here is a verb. Nothing here is evidence. The standing line holds.
+
 ## UX research on the site — yes, and where
 
 Research is evidence about design objects. BOSS already records it (`EVID` records graded on the
@@ -266,6 +317,18 @@ guide as a block.
 name and hold the menu for a second click · (7) do four tabs on one card read as depth or as a
 wall · (8) is Research a section a designer would open, or is the chip on the block enough.
 
+### Prototype v2 — republished 2026-09-13 (same link)
+
+Reorganised as a reader's path: *Why it looks like this* (Start here · Principles) → *The language*
+(Colour · Type · Space, shape, icons · Layout) → *The parts* (Components · Patterns · Flows) →
+*Every screen* (Content · Accessibility) → *Take it with you* (Resources) → *Kept honest* (Exceptions ·
+Research). A *Who reads what* block for designer · engineer · the agent · the founder. Every rule
+carries an *↑ principle* chip and each principle counts its descendants. The Layout hole has
+Fluent's six sub-slots. Colour gains *how a state changes a colour* and *where the accent may not
+go*; Button's Usage gains a *Layout* line. **React to:** (9) is the group naming right (*The
+language* is Fluent's phrase; *Kept honest* is BOSS's) · (10) do the principle chips read as
+lineage or as clutter · (11) is *Start here* the page a designer would actually start on.
+
 ### The plan it was drawn from
 
 Hand-written, over **Tidewell**. Draw: Brand → Foundations with three swatches and their
@@ -339,3 +402,7 @@ asks what to import.**
   feature → [[IDEA-108]] · read Carbon deeper · should research show up. Carbon read at source
   (page tree from the website repo, packages from the monorepo); Figma's Variables API found to be
   Enterprise-only both ways (RVW-082 correction note). Three rules added; prototype v1 republished.
+- 2026-09-13 — **third seed** (Ajesh): organization; Fluent 2's principles and depth; *"not just
+  fluent, but also apple, material design and any other that you recommend."* Seven systems read —
+  five at source, two from memory and marked; one table, three lines, seven investments sorted.
+  Prototype v2 republished as a reader's path with principle chips and the Layout slot shaped.
