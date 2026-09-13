@@ -91,7 +91,7 @@ treating it as a gap would be exactly the ceremony PRINCIPLE #2 refuses.
 
 ## Moment #4 — restraint check
 
-Before any FEAT spec is created, check `docs/loops/spec-loop.md` (which declares spec-loop's entry
+Before any FEAT spec is created, check `.boss/loops/spec-loop.md` (which declares spec-loop's entry
 predicate: canvas-loop must be closed for the active idea). If canvas-loop is NOT closed for the idea
 being specced — i.e., the idea has no canvas, or its canvas has only placeholder cells, or the
 riskiest assumption is unfilled — **surface BOSS's restraint nudge in your own voice**, cohort-aware

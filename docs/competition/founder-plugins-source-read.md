@@ -55,7 +55,7 @@ most useful document in the five repos: a "collaboration stance", a constitution
   is the same move with more fields.
 - *LLM judges; hooks enforce.* haytham's PITFALL *"never let LLM text override deterministic
   rules"* is BOSS's predicate-gated conscience — regex opens the door, the model walks through
-  ([focus-loop.md](../../stages/L1-mvp/template/docs/loops/focus-loop.md)).
+  ([focus-loop.md](../../stages/L1-mvp/template/.boss/loops/focus-loop.md)).
 - *Never fabricate a number.* haytham: *"tag as [estimate: basis]"*. BOSS's canvas People cell:
   *"a number you cannot say the source of out loud does not go in this cell."*
 - *Roadmap first / frame every agent call in plain language / guided review questions with a

@@ -1215,7 +1215,8 @@ function cmdSync(args) {
       console.log(`    ${warn('−')} ${o.kind}/${bold(o.name)}${arrow}   ${dim(o.rel)}`);
       if (s?.why) console.log(`        ${dim(s.why)}`);
       if (s?.migrate) console.log(`        ${dim(`what changes: ${s.migrate}`)}`);
-      if (!s) console.log(`        ${dim("BOSS has no record of why this went — review it before removing.")}`);
+      if (o.moved) console.log(`        ${dim(`moved: the live copy is now ${o.moved}; this one is read only if that is missing.`)}`);
+      else if (!s) console.log(`        ${dim("BOSS has no record of why this went — review it before removing.")}`);
       if (o.edited === true) console.log(`        ${warn('you edited this')} ${dim("— kept even with --remove; it's yours now.")}`);
       else if (o.edited === null) console.log(`        ${dim("BOSS can no longer tell whether you changed this (its template is gone) — check `git log` on it first.")}`);
     }

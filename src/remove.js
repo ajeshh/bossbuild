@@ -305,7 +305,7 @@ export function applyRemove(projectDir, plan, opts = {}) {
     try { rmSync(join(projectDir, '.boss'), { recursive: true, force: true }); done.push('.boss/'); } catch { /* skip */ }
   }
   // Prune directories BOSS emptied — but never one that still holds the founder's files.
-  for (const dir of ['.claude/hooks/lib', '.claude/hooks', '.claude/skills', '.claude/agents', '.claude', 'docs/loops', 'docs/evidence']) {
+  for (const dir of ['.claude/hooks/lib', '.claude/hooks', '.claude/skills', '.claude/agents', '.claude', '.boss/loops', 'docs/loops', 'docs/evidence']) {
     const abs = join(projectDir, dir);
     try {
       if (existsSync(abs) && statSync(abs).isDirectory() && readdirSync(abs).length === 0) rmSync(abs, { recursive: true, force: true });

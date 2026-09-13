@@ -48,7 +48,7 @@ By default (`/board` with no flags):
 1. **Walk `docs/ideas/FEAT-*.md`** to enumerate every FEAT. Read each one's frontmatter
    (`status`), acceptance-criteria checklist progress, smoke field, evals field.
 2. **Walk `docs/devlog.md`** for override entries naming FEATs. Filter recent ones.
-3. **Walk `docs/loops/*.md` state** (use the same logic `boss status --conscience` uses) to
+3. **Walk `.boss/loops/*.md` state** (use the same logic `boss status --conscience` uses) to
    identify loops that gate any FEATs (e.g., a FEAT depends on `design-tokens-loop` being
    closed).
 4. **Compute the board.** Group FEATs by status:

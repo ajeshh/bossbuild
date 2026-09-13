@@ -1,6 +1,6 @@
 // BOSS loop runtime (IDEA-008 promoted to FEAT in v0.18.0).
 //
-// Reads docs/loops/*.md from the project, parses their YAML frontmatter, and
+// Reads .boss/loops/*.md (docs/loops/ as a fallback) from the project, parses their YAML frontmatter, and
 // evaluates entry/exit predicates against the live project state. Returns a
 // list of *signals* — one per loop whose state warrants attention (drifting,
 // stalled, just-graduated, etc.). The conscience hook composes these signals
@@ -450,21 +450,33 @@ function evalList(preds, projectDir) {
 // Loop loading + state classification.
 // ---------------------------------------------------------------------------
 
+// Loops live in `.boss/loops/` — they are the hook's data, and `docs/` is the founder's. They
+// shipped into `docs/loops/` for the first ~320 releases, so a project synced before the move still
+// has them there; that copy is read as a fallback, and where both exist the new location wins per
+// loop id. The fallback is what keeps the conscience from going silent on an un-synced project —
+// silence would be the one failure nothing could report.
+export const LOOP_DIRS = [join('.boss', 'loops'), join('docs', 'loops')];
+
 export function loadLoops(projectDir) {
-  const loopsDir = join(projectDir, 'docs', 'loops');
-  if (!existsSync(loopsDir)) return [];
-  return readdirSync(loopsDir)
-    .filter((n) => n.endsWith('.md'))
-    .map((n) => {
+  const seen = new Set();
+  const out = [];
+  for (const rel of LOOP_DIRS) {
+    const loopsDir = join(projectDir, rel);
+    if (!existsSync(loopsDir)) continue;
+    for (const n of readdirSync(loopsDir).filter((f) => f.endsWith('.md'))) {
       const path = join(loopsDir, n);
       try {
         const text = readFileSync(path, 'utf8');
         const fm = parseFrontmatter(text);
-        if (!fm || fm.type !== 'loop') return null;
-        return { ...fm, _file: path };
-      } catch { return null; }
-    })
-    .filter(Boolean);
+        if (!fm || fm.type !== 'loop') continue;
+        const id = fm.id || n.replace(/\.md$/, '');
+        if (seen.has(id)) continue;
+        seen.add(id);
+        out.push({ ...fm, _file: path });
+      } catch { /* unreadable loop: skip it, never the whole set */ }
+    }
+  }
+  return out;
 }
 
 // `blind` is a SEPARATE axis from state, deliberately. A loop can be blind and open, blind and

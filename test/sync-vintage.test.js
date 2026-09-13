@@ -36,7 +36,7 @@ after(() => {
   }
 });
 
-test(`a project scaffolded by ${VINTAGE} syncs cleanly with the current BOSS`, { skip: !vintageSha && `no ${VINTAGE} commit in history (shallow checkout?)` }, () => {
+test(`a project scaffolded by ${VINTAGE} syncs cleanly with the current BOSS`, { skip: !vintageSha && `no ${VINTAGE} commit in history (shallow checkout?)` }, async () => {
   worktree = mkdtempSync(join(tmpdir(), 'boss-vintage-'));
   rmSync(worktree, { recursive: true, force: true });
   sh('git', ['worktree', 'add', '--detach', worktree, vintageSha], { cwd: BOSS_ROOT });
@@ -84,6 +84,18 @@ test(`a project scaffolded by ${VINTAGE} syncs cleanly with the current BOSS`, {
   // A vintage project has everything on disk already; `earned` must not hold anything back from it.
   assert.equal(after_.deferred, undefined, 'no deferred groups are invented for a pre-existing install');
   assert.ok(after_.skills.includes('money') && after_.skills.includes('ai-cost'), 'its post-launch and AI skills stay stamped');
+
+  // The loops moved (docs/loops → .boss/loops) between the vintages: the new set is laid down, the
+  // old copies are reported as moved orphans (never deleted without --remove), and the runtime
+  // reads the new ones.
+  assert.ok(existsSync(join(proj, '.boss', 'loops', 'focus-loop.md')), 'the new loop set is on disk');
+  assert.ok(existsSync(join(proj, 'docs', 'loops', 'focus-loop.md')), 'the old copy is left where it was');
+  const movedLoops = (plan.orphans || []).filter((o) => o.kind === 'loop' && o.moved);
+  assert.ok(movedLoops.length >= 10, `the old loops are reported as moved (saw ${movedLoops.length})`);
+  const { loadLoops } = await import('../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js');
+  const live = loadLoops(proj);
+  assert.ok(live.length >= 15, 'all loops still load');
+  assert.ok(live.every((l) => /[\\/]\.boss[\\/]loops[\\/]/.test(l._file)), 'and every one is read from .boss/loops');
 
   // And the re-entry read is still fast on the synced project.
   const t0 = Date.now();

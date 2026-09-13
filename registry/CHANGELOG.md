@@ -7438,7 +7438,7 @@ rules without the checker. The page discloses that rather than claiming enforcem
 
 - **🔴 `check:refs` printed *"Everything BOSS points at exists"* across 485 files while a file
   scaffolded into EVERY MVP project pointed a founder's repo at a file that was never in it.**
-  [`coordination-loop.md`](../stages/L1-mvp/template/docs/loops/coordination-loop.md) cited
+  [`coordination-loop.md`](../stages/L1-mvp/template/.boss/loops/coordination-loop.md) cited
   `docs/research/IDEA-037-...md`. Class 3 hard-coded the one subdirectory that had bitten it
   (`docs/ideas/IDEA-*.md`) and class 3b only read `docs/*.md` at the top level, so the whole middle
   tier — `docs/research/`, `docs/dossier/`, `docs/architecture/`, `docs/source/` — was uncovered.

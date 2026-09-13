@@ -118,14 +118,14 @@ function managedFiles(stageId, manifest) {
       });
     }
   }
-  // Loop specs (IDEA-008, v0.18.0+) live in docs/loops/. Each is a managed
-  // markdown file with YAML frontmatter that the runtime parses.
+  // Loop specs live in .boss/loops/ (they are the hook's data; docs/ is the founder's). Each is
+  // a managed markdown file with YAML frontmatter that the runtime parses.
   for (const l of manifest.loops || []) {
     out.push({
       kind: 'loop',
       name: l,
-      src: join(stageRoot, 'docs', 'loops', `${l}.md`),
-      rel: join('docs', 'loops', `${l}.md`),
+      src: join(stageRoot, '.boss', 'loops', `${l}.md`),
+      rel: join('.boss', 'loops', `${l}.md`),
     });
   }
   return out;
@@ -329,6 +329,24 @@ function planOrphans(projectDir, stamp, layers) {
 
   const ledger = readSupersedes();
   const out = [];
+  // Loops moved from docs/loops/ to .boss/loops/. A copy still at the old path is read by the
+  // runtime only when the new one is absent, so once sync has laid the new set down it is dead
+  // weight in the founder's docs/ — reported here, removed only on --remove like every orphan.
+  for (const l of stamp.loops || []) {
+    const rel = join('docs', 'loops', `${l}.md`);
+    const abs = join(projectDir, rel);
+    if (!existsSync(abs)) continue;
+    // Edited if it differs from what BOSS ships for that loop (same text, either path); a founder
+    // who tuned a `min:` there keeps it — reported, never removed.
+    let edited = null;
+    for (const stageId of layers) {
+      const src = join(STAGES_DIR, stageId, 'template', '.boss', 'loops', `${l}.md`);
+      if (!existsSync(src)) continue;
+      try { edited = readFileSync(abs, 'utf8') !== readFileSync(src, 'utf8'); } catch { edited = null; }
+      break;
+    }
+    out.push({ kind: 'loop', name: l, rel, present: true, edited, moved: join('.boss', 'loops', `${l}.md`) });
+  }
   const consider = (kind, names) => {
     for (const name of names || []) {
       if (live[kind].has(name)) continue;

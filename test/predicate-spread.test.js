@@ -56,7 +56,7 @@ test('matchedFiles is reported distinctly from files READ — they are different
 test('the shipped design-tokens-loop carries the spread bar', () => {
   // The loop whose false positive found this. Guarded so the bar cannot be dropped silently.
   const spec = readFileSync(
-    new URL('../stages/L1-mvp/template/docs/loops/design-tokens-loop.md', import.meta.url), 'utf8',
+    new URL('../stages/L1-mvp/template/.boss/loops/design-tokens-loop.md', import.meta.url), 'utf8',
   );
   assert.match(spec, /min_files:\s*3/);
 });

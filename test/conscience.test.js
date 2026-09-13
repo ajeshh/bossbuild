@@ -31,7 +31,7 @@ test('REGRESSION §A3: every drift_moment shipped in a loop spec has an authored
   // the literal string "signal warrants attention." injected into their session.
   const declared = new Map();
   for (const stageId of STAGE_ORDER) {
-    const dir = join(STAGES_DIR, stageId, 'template', 'docs', 'loops');
+    const dir = join(STAGES_DIR, stageId, 'template', '.boss', 'loops');
     if (!existsSync(dir)) continue;
     for (const f of readdirSync(dir).filter((n) => n.endsWith('.md'))) {
       const fm = parseFrontmatter(readFileSync(join(dir, f), 'utf8'));
@@ -53,7 +53,7 @@ test('REGRESSION §A3: every drift_moment shipped in a loop spec has an authored
 test('JUDGE_MOMENTS does not name a moment no loop declares', () => {
   const declared = new Set();
   for (const stageId of STAGE_ORDER) {
-    const dir = join(STAGES_DIR, stageId, 'template', 'docs', 'loops');
+    const dir = join(STAGES_DIR, stageId, 'template', '.boss', 'loops');
     if (!existsSync(dir)) continue;
     for (const f of readdirSync(dir).filter((n) => n.endsWith('.md'))) {
       const fm = parseFrontmatter(readFileSync(join(dir, f), 'utf8'));
@@ -99,9 +99,9 @@ test('the runtime still re-exports the voice, so every existing import site work
 
 test('entry unmet → unopenable; entry met + exit unmet → open; both met → closed', () => {
   const spec = loop('t', 'entry:\n  - exists: { path: a.md }\nexit:\n  - exists: { path: b.md }\ndrift_moment: caution');
-  const none = project({ 'docs/loops/t.md': spec });
-  const open = project({ 'docs/loops/t.md': spec, 'a.md': 'x' });
-  const closed = project({ 'docs/loops/t.md': spec, 'a.md': 'x', 'b.md': 'y' });
+  const none = project({ '.boss/loops/t.md': spec });
+  const open = project({ '.boss/loops/t.md': spec, 'a.md': 'x' });
+  const closed = project({ '.boss/loops/t.md': spec, 'a.md': 'x', 'b.md': 'y' });
   assert.equal(classifyLoop(loadLoops(none)[0], none).state, 'unopenable');
   assert.equal(classifyLoop(loadLoops(open)[0], open).state, 'open');
   assert.equal(classifyLoop(loadLoops(closed)[0], closed).state, 'closed');
@@ -111,7 +111,7 @@ test('a loop with no drift_moment is structural and never emits a signal', () =>
   // capture-loop's job is to be canvas-loop's upstream; it must not fire just because a
   // fresh project has no captures. This is the over-fires-on-a-fresh-project failure mode.
   const dir = project({
-    'docs/loops/t.md': loop('t', 'entry:\n  - exists: { path: a.md }\nexit:\n  - exists: { path: b.md }'),
+    '.boss/loops/t.md': loop('t', 'entry:\n  - exists: { path: a.md }\nexit:\n  - exists: { path: b.md }'),
     'a.md': 'x',
   });
   assert.deepEqual(detectSignals(dir), []);
@@ -119,7 +119,7 @@ test('a loop with no drift_moment is structural and never emits a signal', () =>
 
 test('a non-hook runner_type never auto-fires', () => {
   const dir = project({
-    'docs/loops/t.md': `---\nid: t\ntype: loop\nrunner_type: skill\nentry:\n  - exists: { path: a.md }\nexit:\n  - exists: { path: b.md }\ndrift_moment: caution\n---\n`,
+    '.boss/loops/t.md': `---\nid: t\ntype: loop\nrunner_type: skill\nentry:\n  - exists: { path: a.md }\nexit:\n  - exists: { path: b.md }\ndrift_moment: caution\n---\n`,
     'a.md': 'x',
   });
   assert.deepEqual(detectSignals(dir), []);
@@ -131,7 +131,7 @@ test('an empty project is silent — the most important case', () => {
 
 test('count_at_least reports its evidence honestly', () => {
   const dir = project({
-    'docs/loops/t.md': loop('t', "entry:\n  - count_at_least:\n      path_glob: 'docs/ideas/IDEA-*.md'\n      pattern: '^id:'\n      min: 2\nexit:\n  - exists: { path: nope.md }\ndrift_moment: caution"),
+    '.boss/loops/t.md': loop('t', "entry:\n  - count_at_least:\n      path_glob: 'docs/ideas/IDEA-*.md'\n      pattern: '^id:'\n      min: 2\nexit:\n  - exists: { path: nope.md }\ndrift_moment: caution"),
     'docs/ideas/IDEA-001.md': idea('IDEA-001'),
     'docs/ideas/IDEA-002.md': idea('IDEA-002'),
   });
@@ -143,7 +143,7 @@ test('count_at_least reports its evidence honestly', () => {
 
 test('a malformed predicate fails closed (no signal), never throws', () => {
   const dir = project({
-    'docs/loops/t.md': loop('t', 'entry:\n  - not_a_predicate: { x: 1 }\nexit:\n  - exists: { path: b.md }\ndrift_moment: caution'),
+    '.boss/loops/t.md': loop('t', 'entry:\n  - not_a_predicate: { x: 1 }\nexit:\n  - exists: { path: b.md }\ndrift_moment: caution'),
   });
   assert.doesNotThrow(() => detectSignals(dir));
   assert.deepEqual(detectSignals(dir), []);
@@ -171,10 +171,10 @@ function ideaTemplateFrom(skill) {
 
 test('REGRESSION: every skill that captures an idea writes a doc capture-loop can SEE', () => {
   const spec = readFileSync(
-    join(STAGES_DIR, 'L0-quickstart', 'template', 'docs', 'loops', 'capture-loop.md'), 'utf8');
+    join(STAGES_DIR, 'L0-quickstart', 'template', '.boss', 'loops', 'capture-loop.md'), 'utf8');
   for (const skill of CAPTURE_TEMPLATE_SKILLS) {
     const dir = project({
-      'docs/loops/capture-loop.md': spec,
+      '.boss/loops/capture-loop.md': spec,
       'docs/ideas/IDEA-001-a-thing.md': ideaTemplateFrom(skill),
     });
     const { state } = classifyLoop(loadLoops(dir)[0], dir);
@@ -334,7 +334,7 @@ test('every shipped eval file reconciles — no case is silently missing today',
 // each failure mode here is silent, so only a test can hold it.
 
 const SHIPPED_LOOP = (stage, name) =>
-  parseFrontmatter(readFileSync(join(STAGES_DIR, stage, 'template', 'docs', 'loops', `${name}.md`), 'utf8'));
+  parseFrontmatter(readFileSync(join(STAGES_DIR, stage, 'template', '.boss', 'loops', `${name}.md`), 'utf8'));
 
 test('REGRESSION: `**` actually recurses — it used to silently mean `*`', () => {
   // The bug: expandGlob was single-level and SAID SO in its own header, while five shipped
@@ -349,7 +349,7 @@ test('REGRESSION: `**` actually recurses — it used to silently mean `*`', () =
     'src/components/Button.tsx': 'const a=<b className="a"/>;\n',
     'src/components/Card.tsx': 'const b=<b className="b"/>;\n',
     'src/components/Modal.tsx': 'const c=<b className="c"/>;\n',
-    'docs/loops/l.md': '',
+    '.boss/loops/l.md': '',
   });
   const spec = SHIPPED_LOOP('L1-mvp', 'design-tokens-loop');
   assert.equal(classifyLoop(spec, nested).state, 'open',
@@ -363,7 +363,7 @@ test('REGRESSION: a glob returns FILES, never directory entries', () => {
   const p = project({
     '.boss/config.json': JSON.stringify({ sourceGlobs: ['src/*'] }),
     'src/components/Button.tsx': 'const a=<b className="a"/>;\n',
-    'docs/loops/l.md': '',
+    '.boss/loops/l.md': '',
   });
   const spec = SHIPPED_LOOP('L1-mvp', 'design-tokens-loop');
   const r = classifyLoop(spec, p);
@@ -380,7 +380,7 @@ test('REGRESSION: design-drift fires on DRIFT and stays silent when clean (it wa
   const base = {
     'docs/design/DESIGN_TOKENS.md': '# tokens\n',
     '.boss/config.json': JSON.stringify({ sourceGlobs: ['src/**'] }),
-    'docs/loops/l.md': '',
+    '.boss/loops/l.md': '',
   };
   const clean = project({ ...base, 'src/App.tsx': 'const a = tokens.color.action;\n' });
   const drifty = project({ ...base, 'src/App.tsx': 'const a = "#3B82F6";\n' });
@@ -394,7 +394,7 @@ test('an exit predicate states the HEALTHY condition — no loop ships a prose-o
   // The generalisable rule from that bug. If a loop's healthy state is an absence, it says so
   // with count_at_most; it must never rely on a paragraph claiming the runtime flips it.
   for (const stage of STAGE_ORDER) {
-    const dir = join(STAGES_DIR, stage, 'template', 'docs', 'loops');
+    const dir = join(STAGES_DIR, stage, 'template', '.boss', 'loops');
     if (!existsSync(dir)) continue;
     for (const f of readdirSync(dir).filter((n) => n.endsWith('.md'))) {
       const text = readFileSync(join(dir, f), 'utf8');
@@ -415,7 +415,7 @@ test('REGRESSION: a $source glob that matches nothing is BLIND, not "waiting"', 
   const swift = project({
     'Sources/App/V.swift': 'Toggle("Marketing", isOn: .constant(true))\n',
     'docs/ideas/FEAT-001-x.md': 'status: shipped\n',
-    'docs/loops/l.md': '',
+    '.boss/loops/l.md': '',
   });
   const spec = SHIPPED_LOOP('L1-mvp', 'verification-loop');
   const blindRes = classifyLoop(spec, swift);
@@ -425,7 +425,7 @@ test('REGRESSION: a $source glob that matches nothing is BLIND, not "waiting"', 
     '.boss/config.json': JSON.stringify({ sourceGlobs: ['Sources/**'] }),
     'Sources/App/V.swift': 'Toggle("Marketing", isOn: .constant(true))\n',
     'docs/ideas/FEAT-001-x.md': 'status: shipped\n',
-    'docs/loops/l.md': '',
+    '.boss/loops/l.md': '',
   });
   const seeingRes = classifyLoop(spec, seeing);
   assert.equal(seeingRes.blind, false, 'configured sourceGlobs must clear blindness');
@@ -438,8 +438,8 @@ test('a blind loop never speaks — under-firing is the correct direction', () =
   const blind = project({
     'docs/design/DESIGN_TOKENS.md': '# tokens\n',
     'Sources/App/V.swift': 'let c = "#3B82F6"\n',
-    'docs/loops/design-drift-loop.md': readFileSync(
-      join(STAGES_DIR, 'L2-v1', 'template', 'docs', 'loops', 'design-drift-loop.md'), 'utf8'),
+    '.boss/loops/design-drift-loop.md': readFileSync(
+      join(STAGES_DIR, 'L2-v1', 'template', '.boss', 'loops', 'design-drift-loop.md'), 'utf8'),
   });
   assert.equal(detectSignals(blind).length, 0, 'a blind loop must emit no signal');
 });
@@ -457,7 +457,7 @@ test('the deception conscience sees a pre-ticked box that is not JSX', () => {
     flutter: { '.boss/config.json': JSON.stringify({ sourceGlobs: ['lib/**'] }),
                'lib/main.dart': 'Checkbox(value: true, onChanged: null);\n' },
   })) {
-    const p = project({ ...files, 'docs/loops/l.md': '' });
+    const p = project({ ...files, '.boss/loops/l.md': '' });
     assert.equal(classifyLoop(spec, p).state, 'open', `${label}: a pre-ticked box must be seen`);
   }
 });
@@ -479,4 +479,20 @@ test('DEFAULT_SOURCE_GLOBS covers the layouts BOSS claims to support', () => {
   for (const g of ['src/**', 'app/**', 'lib/**']) {
     assert.ok(DEFAULT_SOURCE_GLOBS.includes(g), `${g} must be a default source glob`);
   }
+});
+
+// --- the move from docs/loops/ to .boss/loops/ ---------------------------------------------
+// A project synced before the move still has its loops at the old path. The runtime reads them
+// there as a fallback — silence on an un-synced project would be the one failure nothing reports —
+// and once the new set is down, the new location wins per loop id.
+test('loops at the old docs/loops/ path are still read, and .boss/loops/ shadows them by id', () => {
+  const spec = (min) => `---\nid: t\ntype: loop\nrunner_type: hook\nentry:\n  - count_at_least: { path_glob: '*.md', pattern: 'x', min: ${min} }\nexit:\n  - exists: { path: never.md }\ndrift_moment: caution\n---\n`;
+  const oldOnly = project({ 'docs/loops/t.md': spec(1), 'a.md': 'x' });
+  const loops = loadLoops(oldOnly);
+  assert.equal(loops.length, 1, 'the fallback path is read');
+  assert.match(loops[0]._file, /docs[\\/]loops[\\/]t\.md$/);
+  const both = project({ 'docs/loops/t.md': spec(1), '.boss/loops/t.md': spec(99), 'a.md': 'x' });
+  const shadowed = loadLoops(both);
+  assert.equal(shadowed.length, 1, 'one loop, not two, when both paths carry the same id');
+  assert.match(shadowed[0]._file, /\.boss[\\/]loops[\\/]t\.md$/, 'the new location wins');
 });

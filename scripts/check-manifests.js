@@ -62,7 +62,7 @@ function checkStage(stageId) {
   const want = [
     ...(manifest.agents || []).map((n) => ({ kind: 'agent', name: n, file: join(claude, 'agents', `${n}.md`) })),
     ...(manifest.skills || []).map((n) => ({ kind: 'skill', name: n, file: join(claude, 'skills', n, 'SKILL.md') })),
-    ...(manifest.loops || []).map((n) => ({ kind: 'loop', name: n, file: join(base, 'docs', 'loops', `${n}.md`) })),
+    ...(manifest.loops || []).map((n) => ({ kind: 'loop', name: n, file: join(base, '.boss', 'loops', `${n}.md`) })),
   ];
   for (const h of manifest.hooks || []) {
     const js = join(claude, 'hooks', `${h}.js`);
@@ -161,7 +161,7 @@ function checkStage(stageId) {
       errors.push(`agent '${n}' ships but is named nowhere in this stage's CLAUDE.md contribution — it will never be invoked`);
     }
   }
-  for (const n of dir(join(base, 'docs', 'loops'))) {
+  for (const n of dir(join(base, '.boss', 'loops'))) {
     if (n.endsWith('.md') && !(manifest.loops || []).includes(n.slice(0, -3))) {
       errors.push(`loop file '${n}' is not in the manifest (the hook reads it; sync won't update it)`);
     }
@@ -330,7 +330,7 @@ function checkDescriptionBudget() {
 // are IDEA-097 and DEC-011. IDEA/FEAT flag from 020; DEC/RVW/EVID/PRAC/EXTR (which a founder's
 // skill has no reason to cite by number) from 003. Markdown only — hook JS comments are read by
 // nobody's model. Bundled resources under a skill (templates/) count: they are shipped text too.
-const SHIPPED_TEXT_DIRS = ['.claude/skills', '.claude/agents', 'docs/loops'];
+const SHIPPED_TEXT_DIRS = ['.claude/skills', '.claude/agents', '.boss/loops'];
 const BOOKKEEPING = [
   { re: /\bv0\.\d+(?:\.\d+)?\b/g, what: 'a BOSS version stamp' },
   { re: /\b(?:IDEA|FEAT)-(?:0[2-9]\d|[1-9]\d\d)\b|\b(?:DEC|RVW|EVID|PRAC|EXTR)-(?!00[12]\b)\d{3}\b/g, what: "one of BOSS's own record ids" },
@@ -372,7 +372,7 @@ function checkShippedText() {
 function collectMoments() {
   const moments = new Map(); // moment -> [loop ids that declare it]
   for (const stageId of STAGE_ORDER) {
-    const loopsDir = join(tplDir(stageId), 'docs', 'loops');
+    const loopsDir = join(tplDir(stageId), '.boss', 'loops');
     if (!existsSync(loopsDir)) continue;
     for (const n of readdirSync(loopsDir)) {
       if (!n.endsWith('.md')) continue;

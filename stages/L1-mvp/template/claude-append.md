@@ -52,7 +52,7 @@ lines read on *every* turn, and it drifted from the manifest the moment either m
   enforces exactly that, which is how this list survived the cut the inventory above did not.)*
 
 - **Conventions:** `FEAT-NNN` for features in build (`docs/IDS.md`); `docs/devlog.md` is append-only;
-  `docs/RESUME.md` is the living state pointer; `docs/loops/` sits alongside `docs/ideas/`;
+  `docs/RESUME.md` is the living state pointer; `.boss/loops/` holds the conscience loops;
   `docs/design/DESIGN_TOKENS.md` arrives JIT when `design-tokens-loop` opens.
 - **Graduation:** when the app earns design-system rigor, a real db, prototypes and a board →
   `boss unlock v1`.

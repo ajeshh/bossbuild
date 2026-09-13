@@ -59,7 +59,7 @@ test('REGRESSION §A2: every manifest entry resolves to a real template file', (
       assert.ok(existsSync(join(base, '.claude', 'agents', `${a}.md`)), `${stageId}: agent ${a} has no file`);
     }
     for (const l of m.loops || []) {
-      assert.ok(existsSync(join(base, 'docs', 'loops', `${l}.md`)), `${stageId}: loop ${l} has no spec`);
+      assert.ok(existsSync(join(base, '.boss', 'loops', `${l}.md`)), `${stageId}: loop ${l} has no spec`);
     }
   }
 });
@@ -936,7 +936,7 @@ test('REGRESSION: nothing of BOSS is left behind after a full remove', () => {
   // the template behind) plus a stray settings.json.
   const dir = adopted();
   removeAll(dir);
-  for (const p of ['CLAUDE.md', 'AGENTS.md', '.boss', '.claude/agents', '.claude/hooks', 'docs/loops']) {
+  for (const p of ['CLAUDE.md', 'AGENTS.md', '.boss', '.claude/agents', '.claude/hooks', '.boss/loops']) {
     assert.ok(!existsSync(join(dir, p)), `${p} should be gone`);
   }
   assert.ok(existsSync(join(dir, 'src', 'a.js')), "and the founder's code is still there");

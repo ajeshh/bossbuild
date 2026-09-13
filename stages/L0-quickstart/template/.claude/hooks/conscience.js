@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // BOSS conscience hook (v0.18.0+) — generic, loop-driven.
 //
-// Fires on UserPromptSubmit. Reads docs/loops/*.md from the project, classifies
+// Fires on UserPromptSubmit. Reads .boss/loops/*.md from the project, classifies
 // each loop's state against the predicate-based runtime, returns structured
 // signals for any loop drifting. Claude composes the voice; the hook ships a
 // schema (Liu's discipline).

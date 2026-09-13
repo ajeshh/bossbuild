@@ -1,7 +1,7 @@
 // Conscience-state inspect for the BOSS CLI (v0.20.0+).
 //
 // Human-readable surface for what the conscience hook does machine-readably.
-// Loads docs/loops/*.md in the current project, classifies each loop, formats
+// Loads .boss/loops/*.md (docs/loops/ as a fallback) in the current project, classifies each loop, formats
 // open/closed/unopenable + what would close the open ones + any recent
 // overrides recorded in the devlog. Asked-for by eng-builder / indie-hacker /
 // vibe-virtuoso personas (v0.19 reactions) — "I want to see what fired and why."
