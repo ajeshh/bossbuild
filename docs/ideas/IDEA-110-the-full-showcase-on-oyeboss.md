@@ -2,7 +2,7 @@
 id: IDEA-110
 type: idea
 owner: product-lead
-status: promoted (trigger fired 2026-09-13 — the playbook exists end to end)
+status: shipped (FEAT-039, 2026-09-13 — oyeboss.build/demo)
 promoted_to: FEAT-039
 gist: After the playbook is built, reposition BOSS around one complete worked example on oyeboss.build — not just "Tidewell" as an implementation, but the whole run: how BOSS sets the project up, the records it writes, the playbook and design pages it renders, the conscience firing along the way. A demo that shows all the pieces at once, because no single page can.
 proof: none

@@ -2,7 +2,7 @@
 id: IDEA-111
 type: idea
 owner: product-lead
-status: promoted
+status: shipped (FEAT-035, 2026-09-13)
 promoted_to: FEAT-035
 gist: How the playbook's holes get filled over time without an intake wizard — three doors: a founder drops a document and BOSS assesses what it fills; a founder dumps into chat and BOSS sorts it into records; BOSS passively notices what the founder said this session that no record holds, and asks before writing. Notice passively, write explicitly, never invent.
 proof: none

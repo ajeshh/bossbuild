@@ -2,11 +2,11 @@
 id: IDEA-065
 type: idea
 owner: product-lead
-status: superseded (folded into IDEA-106 on 2026-09-13 — Ajesh: "lets combine all ideas into one"; the workbench is the playbook, browsed)
+status: shipped (as IDEA-106 → FEAT-026..029, 2026-09-13 — the workbench is `boss playbook`, browsed; folded on Ajesh's "lets combine all ideas into one")
 superseded_by: IDEA-106
 gist: A local, read-only HTML surface over everything a project has made — canvas, personas, evidence, decisions, board, dossier — so a founder can find their own material instead of recalling where it went.
-proof: src/dashboard.js
-proof_note: Tripwire laid in advance, following the `src/board.js` precedent. Nothing is built — this record is deliberately capture-don't-build, and the file named here should not exist until a founder has asked for it.
+proof: src/playbook.js
+proof_note: The tripwire was laid as src/dashboard.js; the file that shipped is src/playbook.js (`boss playbook`, FEAT-026..029). Tripwire laid in advance, following the `src/board.js` precedent. Nothing is built — this record is deliberately capture-don't-build, and the file named here should not exist until a founder has asked for it.
 created: 2026-08-20
 source: Ajesh, 2026-08-20 — "im wondering as the lean canvas, personas, other business or ux research
   related or other content is created, if we should have an html local only site, that has all the

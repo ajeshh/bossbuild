@@ -2,9 +2,9 @@
 id: IDEA-106
 type: idea
 owner: product-lead
-status: building
-building_since: 2026-09-13
-promoted_to: FEAT-026
+status: shipped (FEAT-026..029, all four slices, 2026-09-13; FEAT-035/036/039 grew from it)
+shipped_on: 2026-09-13
+promoted_to: FEAT-026, FEAT-027, FEAT-028, FEAT-029, FEAT-036
 gist: Everything a founder has uncovered about the venture — the why, the people, the canvas as boxes, the rivals, the evidence, the decisions — rendered as one beautifully designed, on-brand, single-file HTML space; every block deep-linkable and copyable into a deck. A view over records, never a document; holes and the evidence ledger survive the polish. Absorbs the living dashboard (065) and the case + deck (104).
 proof: none
 proof_note: Captured with a design and a prototype plan, not built. If it earns a build, the path is `src/playbook.js` (the fourth use of the `boss board --html` pattern) and the first slice is the canvas-as-boxes page alone.

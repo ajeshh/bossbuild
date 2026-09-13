@@ -2,7 +2,7 @@
 id: IDEA-104
 type: idea
 owner: product-lead
-status: superseded (folded into IDEA-106 on 2026-09-13 — the case is the playbook shared; the deck is present mode over its blocks)
+status: shipped (as IDEA-106 → FEAT-026..029, 2026-09-13 — the case is the playbook; the deck is Present over its blocks)
 superseded_by: IDEA-106
 gist: Rungs 3–4 of the business profile — `boss case` (a projection over canvas + EVID + DEC + roadmap, holes rendered never filled) and the deck — spun out of FEAT-025 so the FEAT could close at the scope it shipped.
 proof: none
