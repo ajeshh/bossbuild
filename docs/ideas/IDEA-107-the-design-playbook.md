@@ -2,7 +2,9 @@
 id: IDEA-107
 type: idea
 owner: designer
-status: captured (prototype v0 published 2026-09-13 — its own space, linked to the playbook; react, then decide the mechanism)
+status: building
+building_since: 2026-09-13
+promoted_to: FEAT-030
 gist: The founder's own design guidelines — foundations, components, patterns, content, accessibility, resources — rendered as one on-brand HTML space in the class of HIG / Material / Carbon / Fluent / Ant, generated from `docs/design/*` and the code so it cannot drift; and the honest answer to "add Figma support" (tokens two-way via DTCG, everything else refused — RVW-082).
 proof: none
 proof_note: Captured with a gap table and a prototype, not built. If it earns a build it is the IDEA-106 renderer over `docs/design/`, emitting a sibling space (one renderer, three spaces — playbook · design · board — linked in one family bar; the V1 `/design-library` contained, never duplicated). The one mechanism change worth making regardless is DTCG as a guaranteed file.
@@ -21,6 +23,8 @@ altitude: what BOSS ships a founder (not BOSS's own practice)
 ---
 
 # IDEA-107 — the design playbook: the founder's own guidelines, rendered
+
+> Building as [FEAT-030](FEAT-030-the-design-space-render.md) — slice 1 is the language + the frame.
 
 ## The idea, and the one reframe it needs
 
@@ -367,6 +371,28 @@ header says *rich + plain* or *plain text only* (amber) — so the sandbox's fal
 instead of silent; a value shows the literal; code shows the source; SVG shows the drawing on a
 checkerboard plus its source. *Copy again* re-sends. **Rule for the render:** a copy is a claim
 about what will paste; show the payload, never a verb. (Carried into 106's Copy too, when built.)
+
+### Prototype v4 — icons, logo, responsive (2026-09-13, same link)
+
+Ajesh: *"what about icons, logo, as well. What about responsive design guidelines (if its an app
+that needs it)."* **Icons & logo** is its own section (8): four lockups rendered from two SVG files
+(mark on paper · wordmark · mark on accent · one-colour for print), clear space, minimum size (the
+16px finding from `BRAND.md` kept and sharpened), colour rules, the tagline rule, a misuse pair
+(gradient · stretched · recoloured · below minimum), the icon set with sizes 16/20/24 and the
+stroke rule, *Copy the set as a sprite* (one `<svg>` of `<symbol>`s — the honest "download"), and a
+hole for what isn't drawn (app icon first, illustration and pictograms deferred by rule). In
+*No brand yet* the section renders the slot, never a placeholder mark. **Responsive** lives inside
+Layout (9) and is **earned by shape**: three surfaces — laptop (Dee), phone on a bus (Priya), paper
+(the one in eight; FEAT-002 *is* a print surface) — with must / may / never per surface, and a
+reflow rule per component (ShiftRow reflows, Button resizes, the chip keeps, the week
+re-architects). Breakpoints stay the one empty slot; the 44px target is now the third place on the
+site that says *a rule with no token behind it*. Density dormant. Seventeen sections.
+
+**Kicks up for BOSS:** a *Logo* slot in the style-guide template (clear space · minimum · colour ·
+tagline · misuse) reading `BRAND.md`'s logo path; `docs/design/icons/*.svg` as the icon source the
+render reads; a *Responsive* sub-slot under Layout that `/design-tokens-init` fills only when
+`.boss/config.json`'s shape has a screen (and lists paper when a FEAT prints); `breakpoint.*` and a
+`target.min` token so the 44px rule stops being prose in three places.
 
 ### The plan it was drawn from
 
