@@ -347,6 +347,20 @@ rule above still applies to the whole section once it is stamped.
   agent writes `docs/dossier/business-<date>.md`, the render read `mentor-capital.md` — it now
   reads the newest of either, and the mentor's *not yet* is asked to be one sentence with its
   reason as that file's first paragraph, because *The ask* quotes exactly that paragraph.
+- **`boss playbook` — the deck (FEAT-029, slice 4; the playbook is complete).** A **Present** bar
+  at the top of the page with three cuts, each a list of block ids read off the rendered page in
+  page order: **VC cut** (the pitch arc — vision, product, the personas whose ledger reads real
+  > 0, problem, market, the rivals, who pays / what it costs / prior capital / the ask, the
+  evidence ladder, risks and trust, health when live, the team, the brand anchor — a 100%
+  synthetic persona stays on the page and off this cut), **Internal** (every filled block; the
+  canvas cells a chapter already renders leave the grid), **Everything** (every block, holes
+  included). *Present* opens the overlay at slide 1; a block's *Slide* button opens it in the
+  current cut, or in Everything when it isn't in the cut. **Remove from this cut** in the deck
+  chrome; the bar lists what's removed with ↺ and *restore all* — **removals live in the browser**
+  (`localStorage`, one key per cut), never in a record or a file: a hidden slide is not a deleted
+  fact. **Export PDF** prints the current cut, one landscape page per slide, through a print-only
+  container — the shell's print sheet hides the page, this one hides the shell. Nothing opens on
+  its own. One test walks the three lists against the page.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

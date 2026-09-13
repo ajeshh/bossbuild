@@ -25,7 +25,7 @@ relates: FEAT-025, DEC-004, IDEA-065, IDEA-104
 | **1 · the canvas as boxes** | `docs/ideas/*-canvas.md` → the Humane grid, Lean grid, the DEC-004 floor band, holes dashed, dormant with its condition, a chip per cell, the ledger in the chrome, Link · Copy · Slide per block, light/dark, brand from `docs/BRAND.md` or the neutral default | **this FEAT** |
 | 2 · the pitch chapters | Vision · Product · Customers (`docs/personas/` as **snippets** — `who` line, tiles, ledger chip, link to the Design space's full card; Ajesh 2026-09-13 via IDEA-107) · Problem · Market · Competition (`docs/competition/`) · Business model | FEAT-027 |
 | 3 · the proof chapters | Evidence (`docs/evidence/` — grades and dates only, never quotes on a shareable copy) · Health · Learnings · Decisions · Risks | FEAT-028 |
-| 4 · the deck | Present with profiles (VC cut / internal / everything), remove-and-restore, Export PDF | FEAT-029 |
+| 4 · the deck | Present with profiles (VC cut / internal / everything), remove-and-restore, Export PDF | FEAT-029 — shipped 2026-09-13 |
 
 Prototype v6 is the rendered mockup for all four: **a sketch, not on-system** — it carries its own
 CSS because a founder's page is in *their* brand, not BOSS's site tokens. Implement the *behaviour*

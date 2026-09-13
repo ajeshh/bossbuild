@@ -737,3 +737,31 @@ test('the BMC frame: seven cells with a BMC home carry their Osterwalder name an
   assert.ok(html.includes('--bmc-area:1 / 1 / 3 / 2;'), 'Key partnerships top-left');
   assert.ok(html.includes('Business Model Canvas · Alexander Osterwalder'));
 });
+
+// --- FEAT-029 — the deck -------------------------------------------------------------------------
+import { deckCuts } from '../src/playbook.js';
+
+test('deck cuts: Everything is every block in page order; Internal has no hole, no dormant, no chapter-duplicated cell; the VC cut omits a 100% synthetic persona and keeps a real one', () => {
+  const synthetic = PERSONA.replace(/synthetic\s*\d+%\s*·\s*real\s*\d+%/, 'synthetic 100% · real 0%').replace(/^name:.*$/m, 'name: Priya');
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-tidewell.md': IDEA, 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/personas/dee.md': PERSONA, 'docs/personas/priya.md': synthetic, 'docs/evidence/EVID-001.md': EVID(1, 'stated-pain', 'Problem', '2026-08-12'), 'docs/team/marta.md': PERSON('Marta', 'founder') });
+  const data = collectPlaybook(dir, 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-09-13 10:00');
+  const { all, internal, vc } = data.cuts;
+  const pageIds = [...html.matchAll(/<article class="([^"]*)" id="([^"]+)"/g)].filter((m) => !/pointer/.test(m[1])).map((m) => m[2]);
+  assert.deepEqual(all, pageIds, 'Everything = every block, page order');
+  const holes = new Set([...html.matchAll(/<article class="[^"]*\b(?:hole|dormant)\b[^"]*" id="([^"]+)"/g)].map((m) => m[1]));
+  assert.ok(internal.every((id) => !holes.has(id)), 'Internal has no hole or dormant');
+  assert.ok(!internal.includes('canvas-problem') && internal.includes('canvas-modes'), 'a chapter-rendered cell leaves the grid; a grid-only cell stays');
+  assert.ok(vc.includes('persona-dee') && !vc.includes('persona-priya'), 'the synthetic persona is on the page and off the VC cut');
+  assert.ok(html.includes('id="persona-priya"'));
+  assert.ok(vc.includes('evidence-ladder') && vc.includes('person-marta') && vc.includes('risks-harms'));
+  assert.ok(!vc.includes('canvas-modes') && !vc.includes('learn-1'), 'no grid cell, no devlog entry in the VC cut');
+  assert.ok(vc.every((id) => all.indexOf(id) >= 0) && vc.slice(1).every((id, i) => all.indexOf(id) > all.indexOf(vc[i])), 'VC in page order');
+  // the page carries the bar, the counts, the print sheet, the browser-only removal store
+  assert.ok(html.includes('id="present"') && html.includes(`<b class="tab n-vc">${vc.length}</b>`));
+  assert.ok(html.includes("const KEY = 'boss-playbook-'") && html.includes("store.set('removed-' + cut, r)"), 'removals live in localStorage');
+  assert.ok(html.includes('.printdeck { display: block; }') && html.includes('.topbar, .shell, footer.site, .deck, .sheet, .valmenu { display: none !important; }'), 'print shows the cut only');
+  assert.ok(html.includes('page-break-after: always') && html.includes('@page { size: landscape; margin: 0; }'));
+  assert.ok(html.includes('class="remove" title="Take this slide out of the current cut'));
+  assert.ok(!/addEventListener\('load'|DOMContentLoaded.*openDeck|openDeck\(0\);\s*$/m.test(html), 'Present opens on click only');
+});

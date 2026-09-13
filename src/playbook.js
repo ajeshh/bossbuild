@@ -844,6 +844,27 @@ function companyChapters(data) {
   return { html: out.join('\n'), empty };
 }
 
+// --- the deck (FEAT-029) ------------------------------------------------------------------------
+// Three cuts, each a list of block ids in page order, read off the rendered page so the list can
+// never name a block that isn't there. Everything = every block. Internal = every filled block,
+// minus the canvas cells a chapter already renders. VC = the pitch arc — and a 100% synthetic
+// persona stays on the page and off this cut (Ajesh, 2026-09-13). The founder's removals live in
+// the browser; these are the first draft.
+const CHAPTER_CELLS = ['problem', 'story', 'people', 'risks', 'bizmodel', 'cost', 'principles'];
+const VC_IDS = new Set(['vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'problem-story', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
+const VC_PREFIXES = ['rival-', 'person-', 'value-'];
+export function deckCuts(mainHtml, data) {
+  const blocks = [...String(mainHtml).matchAll(/<article class="([^"]*)" id="([^"]+)"/g)].map((m) => ({ id: m[2], cls: m[1].split(/\s+/) }));
+  const real = new Set((data.personas || []).filter((p) => p.real > 0).map((p) => `persona-${slug(p.slug)}`));
+  const all = blocks.filter((b) => !b.cls.includes('pointer'));
+  const filled = (b) => !b.cls.includes('hole') && !b.cls.includes('dormant');
+  return {
+    all: all.map((b) => b.id),
+    internal: all.filter((b) => filled(b) && !CHAPTER_CELLS.some((k) => b.id === `canvas-${k}`)).map((b) => b.id),
+    vc: all.filter((b) => VC_IDS.has(b.id) || VC_PREFIXES.some((p) => b.id.startsWith(p)) || real.has(b.id)).map((b) => b.id),
+  };
+}
+
 export function renderPlaybookHtml(data, stampedAt) {
   const { boxes, ledger, brand, canvas, error, projectName } = data;
   const byBand = (n) => boxes.filter((b) => b.band === n && !b.floor);
@@ -877,7 +898,7 @@ export function renderPlaybookHtml(data, stampedAt) {
     { group: 'Proof', items: [['evidence', 'Evidence'], ['learnings', 'Learnings'], ['decisions', 'Decisions'], ['risks', 'Risks & harms'], ['health', 'Health']].map(([href, label], i) => ({ href, n: i + 9, label, hole: !!proof.empty[href] })) },
     { group: 'Company', items: [['team', 'Team'], ['brand', 'Brand'], ['values', 'Values']].map(([href, label], i) => ({ href, n: i + 14, label, hole: !!company.empty[href] })) },
   ];
-  const mainHtml = `${chapters.before}
+  const chaptersHtml = `${chapters.before}
   <section class="chapter" id="canvas">
   <div class="chapter-head"><div class="label">7 · Canvas</div><p>Switch the frame — Humane, Lean, BMC — and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
   <div class="frame-bar"><div class="seg" role="group" aria-label="Frame"><button type="button" data-frame="humane" aria-pressed="true">Humane</button><button type="button" data-frame="lean" aria-pressed="false">Lean</button><button type="button" data-frame="bmc" aria-pressed="false">BMC</button></div><span class="credit" id="credit">${esc(CREDITS.humane)}</span></div>
@@ -895,6 +916,16 @@ ${floor.map((b) => boxHtml(b, canvas)).join('\n')}
 ${chapters.after}
 ${proof.html}
 ${company.html}`;
+  const cuts = deckCuts(chaptersHtml, data);
+  data.cuts = cuts;
+  const presentBar = `<div class="present" id="present" data-cuts="${esc(JSON.stringify(cuts))}">
+    <span class="label">Present</span>
+    <div class="seg" role="group" aria-label="Cut"><button type="button" data-cut="vc" aria-pressed="true">VC cut <b class="tab n-vc">${cuts.vc.length}</b></button><button type="button" data-cut="internal" aria-pressed="false">Internal <b class="tab n-internal">${cuts.internal.length}</b></button><button type="button" data-cut="all" aria-pressed="false">Everything <b class="tab n-all">${cuts.all.length}</b></button></div>
+    <button type="button" class="go" id="present-go">Present</button>
+    <button type="button" class="pdf" id="present-pdf" title="Print the current cut, one slide per page">Export PDF</button>
+    <div class="removed" id="present-removed" hidden><span class="label">removed</span><span class="chips"></span><button type="button" class="restore-all">restore all</button></div>
+  </div>`;
+  const mainHtml = presentBar + chaptersHtml;
   const footerLines = [
     brandLine,
     `a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh`,
@@ -906,6 +937,17 @@ ${company.html}`;
 // What the playbook adds to the shell: the frame toggle, the canvas grid in both frames, the deck.
 // The chrome, the block, Link · Copy and the copy sheet are the shell's (src/page-shell.js).
 const PLAYBOOK_CSS = `
+  [hidden] { display: none !important; }
+  .present { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); } .present .seg button b { margin-left: 6px; color: var(--muted); font-weight: 500; } .present .seg button[aria-pressed="true"] b { color: inherit; }
+  .present .go, .present .pdf { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12.5px; } .present .go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); } .present .pdf:hover, .present .go:hover { filter: brightness(1.08); }
+  .present .removed { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 8px; border-top: 1px solid var(--rule-2); } .present .removed .chips { display: contents; } .present .removed .rm { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px dashed var(--rule); border-radius: 99px; font-size: 12px; color: var(--ink-2); } .present .removed .rm button { font-family: var(--mono); font-size: 11px; color: var(--accent); } .present .removed .restore-all { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--accent); }
+  .deck .chrome .cut { color: var(--ground); } .deck .chrome .remove { margin-left: 0; color: var(--muted); border-color: color-mix(in srgb, var(--muted) 40%, transparent); } .deck .chrome .close { margin-left: auto; }
+  .printdeck { display: none; }
+  @media print {
+    @page { size: landscape; margin: 0; }
+    .topbar, .shell, footer.site, .deck, .sheet, .valmenu { display: none !important; }
+    .printdeck { display: block; } .printdeck .sl { width: 100vw; height: 100vh; aspect-ratio: auto; max-height: none; border-radius: 0; box-shadow: none; page-break-after: always; break-after: page; padding: 6vh 7vw; } .printdeck .sl:last-child { page-break-after: auto; break-after: auto; } .printdeck .sl .sl-body { overflow: hidden; }
+  }
   .face { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; border: 1px solid var(--rule); } .block.snippet .face { float: right; margin: 0 0 8px 12px; width: 56px; height: 56px; }
   .block.person .thing { font-family: var(--display); font-size: 18px; line-height: 1.3; margin-bottom: 8px; } .block.person .bio { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
   .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
@@ -962,27 +1004,59 @@ function playbookJs(brand) {
   const SLIDE_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M12 17v3M8 20h8"/></svg>';
   const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
   const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
-  const grid = $('#canvas-grid'), credits = ${JSON.stringify(CREDITS)};
+  const grid = $('#canvas-grid'), credits = ${JSON.stringify(CREDITS)}, BRAND = ${JSON.stringify(brand.name)};
   $$('[data-frame]').forEach((x) => x.addEventListener('click', () => { grid.dataset.frame = x.dataset.frame; $$('[data-frame]').forEach((y) => y.setAttribute('aria-pressed', String(y === x))); $('#credit').textContent = credits[x.dataset.frame]; }));
   const blocks = $$('.block:not(.pointer)');
   blocks.forEach((b) => {
     const a = $('.actions', b); if (!a || a.dataset.ready) return; a.dataset.ready = '1';
     a.insertAdjacentHTML('beforeend', '<button type="button" class="slide" title="Open this box as a slide">' + SLIDE_ICON + 'Slide</button>');
-    $('.slide', a).addEventListener('click', () => openDeck(blocks.indexOf(b)));
+    $('.slide', a).addEventListener('click', () => openDeck(0, b));
   });
+  /* the deck (FEAT-029): a cut is a list of block ids; removals live in the browser, never in a record */
+  const present = $('#present'); let cuts = {}; try { cuts = JSON.parse(present.dataset.cuts); } catch (e) {}
+  const KEY = 'boss-playbook-';
+  const store = { get(k) { try { return JSON.parse(localStorage.getItem(KEY + k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) {} } };
+  const NAMES = { vc: 'VC cut', internal: 'Internal', all: 'Everything' };
+  let cut = ['vc', 'internal', 'all'].includes(store.get('cut')) ? store.get('cut') : 'vc';
+  const byId = (id) => blocks.find((b) => b.id === id);
+  const removed = () => (store.get('removed-' + cut) || []).filter((id) => byId(id));
+  const list = () => (cuts[cut] || []).filter((id) => !removed().includes(id)).map(byId).filter(Boolean);
+  function setCut(c) { cut = c; store.set('cut', c); $$('[data-cut]', present).forEach((y) => y.setAttribute('aria-pressed', String(y.dataset.cut === c))); renderBar(); }
+  function renderBar() {
+    const rm = removed(); const box = $('#present-removed'); box.hidden = !rm.length;
+    $('.chips', box).innerHTML = rm.map((id) => '<span class="rm">' + esc(byId(id).dataset.title || id) + '<button type="button" data-restore="' + esc(id) + '" title="Put this slide back">↺</button></span>').join('');
+    $$('[data-restore]', box).forEach((x) => x.addEventListener('click', () => restore(x.dataset.restore)));
+    ['vc', 'internal', 'all'].forEach((c) => { const n = $('.n-' + c, present); if (n) n.textContent = String((cuts[c] || []).filter((id) => byId(id) && !(store.get('removed-' + c) || []).includes(id)).length); });
+  }
+  function remove(id) { const r = removed(); if (!r.includes(id)) r.push(id); store.set('removed-' + cut, r); renderBar(); }
+  function restore(id) { store.set('removed-' + cut, removed().filter((x) => x !== id)); renderBar(); if (deckEl && !deckEl.hidden) render(); }
+  $$('[data-cut]', present).forEach((x) => x.addEventListener('click', () => setCut(x.dataset.cut)));
+  $('.restore-all', present).addEventListener('click', () => { store.set('removed-' + cut, []); renderBar(); if (deckEl && !deckEl.hidden) render(); });
+  $('#present-go').addEventListener('click', () => openDeck(0));
+  $('#present-pdf').addEventListener('click', () => exportPdf());
+  setCut(cut);
+
   let deckEl = null, cur = 0;
   const LEDGER = $('.ledger').innerText;
-  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(${JSON.stringify(brand.name)}) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '<span>' + esc($('.src', b).innerText) + '</span></div>'); return sl; }
-  function openDeck(i) {
-    cur = i;
-    if (!deckEl) { deckEl = document.createElement('div'); deckEl.className = 'deck'; deckEl.tabIndex = -1; deckEl.setAttribute('role', 'dialog'); deckEl.innerHTML = '<div class="chrome"><span class="where"></span><button type="button" class="close">Close · Esc</button></div><div class="stage"><div class="hit l"></div><div class="hit r"></div></div><div class="bottom"><span class="pos"></span><span class="lg">' + esc(LEDGER) + '</span></div>'; document.body.appendChild(deckEl); $('.close', deckEl).addEventListener('click', closeDeck); $('.hit.l', deckEl).addEventListener('click', () => step(-1)); $('.hit.r', deckEl).addEventListener('click', () => step(1)); }
+  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); $$('.actions', body).forEach((x) => x.remove()); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(BRAND) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '<span>' + esc($('.src', b) ? $('.src', b).innerText : '') + '</span></div>'); return sl; }
+  function openDeck(i, block) {
+    let l = list();
+    if (block) { let j = l.indexOf(block); if (j < 0) { setCut('all'); l = list(); j = l.indexOf(block); } cur = Math.max(0, j); } else cur = i;
+    if (!l.length) return;
+    if (!deckEl) {
+      deckEl = document.createElement('div'); deckEl.className = 'deck'; deckEl.tabIndex = -1; deckEl.setAttribute('role', 'dialog');
+      deckEl.innerHTML = '<div class="chrome"><span class="cut"></span><span class="where"></span><button type="button" class="remove" title="Take this slide out of the current cut — restore it from the bar">Remove from this cut</button><button type="button" class="close">Close · Esc</button></div><div class="stage"><div class="hit l"></div><div class="hit r"></div></div><div class="bottom"><span class="pos"></span><span class="lg">' + esc(LEDGER) + '</span></div>';
+      document.body.appendChild(deckEl);
+      $('.close', deckEl).addEventListener('click', closeDeck); $('.hit.l', deckEl).addEventListener('click', () => step(-1)); $('.hit.r', deckEl).addEventListener('click', () => step(1));
+      $('.remove', deckEl).addEventListener('click', () => { const l2 = list(); if (!l2.length) return; remove(l2[cur].id); const l3 = list(); if (!l3.length) { closeDeck(); return; } cur = Math.min(cur, l3.length - 1); render(); });
+    }
     render(); deckEl.hidden = false; document.body.style.overflow = 'hidden'; deckEl.focus({ preventScroll: true });
   }
-  function render() { const st = $('.stage', deckEl); $$('.sl', st).forEach((x) => x.remove()); st.appendChild(slide(blocks[cur])); const ch2 = blocks[cur].closest('.chapter'); $('.where', deckEl).textContent = (ch2 && $('.label', ch2) ? $('.label', ch2).innerText + ' · ' : '') + blocks[cur].dataset.title; $('.pos', deckEl).textContent = (cur + 1) + ' / ' + blocks.length; }
-  function step(d) { cur = (cur + d + blocks.length) % blocks.length; render(); }
+  function render() { const l = list(); if (!l.length) { closeDeck(); return; } cur = Math.min(cur, l.length - 1); const st = $('.stage', deckEl); $$('.sl', st).forEach((x) => x.remove()); st.appendChild(slide(l[cur])); const ch2 = l[cur].closest('.chapter'); $('.cut', deckEl).textContent = NAMES[cut]; $('.where', deckEl).textContent = (ch2 && $('.label', ch2) ? $('.label', ch2).innerText + ' · ' : '') + l[cur].dataset.title; $('.pos', deckEl).textContent = (cur + 1) + ' / ' + l.length; }
+  function step(d) { const n = list().length; if (!n) return; cur = (cur + d + n) % n; render(); }
   function closeDeck() { if (deckEl) { deckEl.hidden = true; document.body.style.overflow = ''; } }
+  function exportPdf() { let pd = $('.printdeck'); if (!pd) { pd = document.createElement('div'); pd.className = 'printdeck'; document.body.appendChild(pd); } pd.innerHTML = ''; list().forEach((b) => pd.appendChild(slide(b))); window.print(); }
   document.addEventListener('keydown', (e) => { if (!deckEl || deckEl.hidden) return; if (e.target && e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) return; if (e.key === 'Escape') closeDeck(); if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); step(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); } });
-}
 })();
 `;
 }
