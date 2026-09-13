@@ -390,7 +390,10 @@ teams use it as a reference and ensure they are reusing existing."*
 
 So: **one renderer, three spaces** — the playbook (106), the design guidelines (this), the board
 (`boss board --html`, already shipped) — each its own single file with its own URL, joined by a
-**family bar** in the top bar (*Playbook · Design · Board*). A designer gets the design URL alone;
+**family bar** in the top bar (*Playbook · Design · Board*). **Cross-links between the spaces are
+relative paths between sibling files in `.boss/` once they are generated** (`design.html#persona-dee`
+from `playbook.html`, and back); the artifact URLs in the prototypes are prototype-only and never
+belong in `src/` (agreed with the FEAT-026 lane, 2026-09-13). A designer gets the design URL alone;
 an investor gets the playbook alone; both can walk across. The reuse claim is the same one BOSS
 already makes for the agent (retrieval beats instruction, [[RVW-078]]): the site is the human-readable
 half of the index the agent reads before component number two. Open question 1 below is closed;
