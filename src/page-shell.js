@@ -104,8 +104,10 @@ export function shellCss(accent) {
 `;
 }
 
-// The behaviour every page shares. Link · Copy on blocks; `.val[data-copy="k=v|k=v"]` on values;
-// the sheet after every copy. Nothing here fetches, stores, or runs on load beyond wiring.
+// The behaviour every page shares. Link · Copy on blocks — plus Code on a block with `data-code`
+// (JSON, label → text) and SVG on one with `data-svg` (the markup, copied as plain text: that is the
+// form a design tool pastes as editable vectors); `.val[data-copy="k=v|k=v"]` on values; the sheet
+// after every copy. Nothing here fetches, stores, or runs on load beyond wiring.
 export function shellJs() {
   return String.raw`
 (function () {
@@ -146,13 +148,19 @@ export function shellJs() {
   function legacy(text) { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); return Promise.resolve('plain'); }
 
   /* blocks: Link · Copy */
-  const ICON = { link: '<svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>', copy: '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>' };
+  const ICON = { link: '<svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>', copy: '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>', code: '<svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M14 4l-4 16"/></svg>', svg: '<svg viewBox="0 0 24 24"><path d="M4 20L20 4"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/></svg>' };
   const wordmark = ($('.wordmark') ? $('.wordmark').textContent.trim().split('\n')[0] : '');
   $$('.block').forEach((b) => {
     const a = $('.actions', b); if (!a) return;
-    a.innerHTML = '<button type="button" class="link" title="Copy link to this block">' + ICON.link + 'Link</button><button type="button" class="copy" title="Copy this block for a doc or a deck">' + ICON.copy + 'Copy</button>';
+    a.innerHTML = '<button type="button" class="link" title="Copy link to this block">' + ICON.link + 'Link</button><button type="button" class="copy" title="Copy this block for a doc or a deck">' + ICON.copy + 'Copy</button>'
+      + (b.dataset.code ? '<button type="button" class="code" title="Copy the code — the import line, the source">' + ICON.code + 'Code</button>' : '')
+      + (b.dataset.svg ? '<button type="button" class="svg" title="Copy as SVG — pastes into a design tool as editable vectors">' + ICON.svg + 'SVG</button>' : '');
     $('.link', a).addEventListener('click', () => copyLink(b.id));
     $('.copy', a).addEventListener('click', () => copyBlock(b));
+    /* Code: data-code is JSON {label: text} — code holds '|' and '=', so the value format won't do */
+    if (b.dataset.code) $('.code', a).addEventListener('click', (e) => { e.stopPropagation(); let o = {}; try { o = JSON.parse(b.dataset.code); } catch (x) {} const fs = Object.keys(o).map((k) => ({ k, v: o[k], name: k })); if (fs.length === 1) return copyVal(fs[0].k, fs[0].v, fs[0].name); openMenu($('.code', a), fs); });
+    /* SVG: plain text — that is the form a design tool pastes as vectors; the sheet shows the markup */
+    if (b.dataset.svg) $('.svg', a).addEventListener('click', () => copyVal('svg', b.dataset.svg));
   });
   function copyLink(id) { const url = location.href.replace(/#.*$/, '') + '#' + id; history.replaceState(null, '', '#' + id);
     writeClipboard(url, null).then((r) => showCopied({ title: 'Link to #' + id, result: r, views: [{ name: 'Link', kind: 'value', body: url }], recopy: () => copyLink(id) })); }
@@ -163,23 +171,28 @@ export function shellJs() {
     writeClipboard(text, html).then((r) => showCopied({ title: (b.dataset.title || b.id) + ' · the block, for a doc or a deck', result: r, views: [{ name: 'Looks like (rich)', kind: 'html', body: html }, { name: 'Text', kind: 'text', body: text }], recopy: () => copyBlock(b) })); }
 
   /* values: click → the one form, or a menu of forms */
-  const LABEL = { hex: 'Hex', token: 'Token name', css: 'CSS variable', stack: 'Font stack', size: 'Size / line', px: 'Pixels', value: 'Value', svg: 'SVG', import: 'Import line' };
+  const LABEL = { hex: 'Hex', token: 'Token name', css: 'CSS variable', stack: 'Font stack', size: 'Size / line', px: 'Pixels', value: 'Value', svg: 'SVG', import: 'Import line', source: 'Source file' };
   let menu = null;
   function closeMenu() { if (menu) { menu.remove(); menu = null; } }
   function forms(el) { return el.dataset.copy.split('|').map((kv) => { const k = kv.slice(0, kv.indexOf('=')); return { k, v: kv.slice(k.length + 1) }; }); }
-  function copyVal(k, v) { writeClipboard(v, null).then((r) => showCopied({ title: LABEL[k] || k, result: r, views: [{ name: LABEL[k] || k, kind: k === 'svg' ? 'text' : 'value', body: v }], recopy: () => copyVal(k, v) })); }
+  function copyVal(k, v, name) { const label = name || LABEL[k] || k; const long = k === 'svg' || k === 'source' || /\n/.test(v);
+    writeClipboard(v, null).then((r) => showCopied({ title: label, result: r, views: [{ name: label, kind: long ? 'text' : 'value', body: v }], recopy: () => copyVal(k, v, name) })); }
+  function openMenu(anchor, fs) {
+    closeMenu();
+    menu = document.createElement('div'); menu.className = 'valmenu'; menu.setAttribute('role', 'menu');
+    menu.innerHTML = '<div class="k">Copy as</div>' + fs.map((f, i) => '<button type="button" role="menuitem" data-i="' + i + '">' + esc(f.name || LABEL[f.k] || f.k) + '<span>' + esc(f.v.length > 26 ? f.v.slice(0, 24).replace(/\s+/g, ' ') + '…' : f.v) + '</span></button>').join('');
+    document.body.appendChild(menu);
+    const r = anchor.getBoundingClientRect(); menu.style.left = Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - menu.offsetWidth - 12) + 'px'; menu.style.top = (r.bottom + window.scrollY + 6) + 'px';
+    $$('button', menu).forEach((b) => b.addEventListener('click', () => { const f = fs[+b.dataset.i]; copyVal(f.k, f.v, f.name); closeMenu(); }));
+    $('button', menu).focus();
+  }
   document.addEventListener('click', (e) => {
     const el = e.target.closest('.val');
     if (!el) { if (!e.target.closest('.valmenu')) closeMenu(); return; }
     if (e.target.closest('.valmenu')) return;
-    e.preventDefault(); e.stopPropagation(); closeMenu();
+    e.preventDefault(); e.stopPropagation();
     const fs = forms(el); if (fs.length === 1) return copyVal(fs[0].k, fs[0].v);
-    menu = document.createElement('div'); menu.className = 'valmenu'; menu.setAttribute('role', 'menu');
-    menu.innerHTML = '<div class="k">Copy as</div>' + fs.map((f) => '<button type="button" role="menuitem" data-k="' + f.k + '">' + (LABEL[f.k] || f.k) + '<span>' + esc(f.v.length > 26 ? f.v.slice(0, 24) + '…' : f.v) + '</span></button>').join('');
-    document.body.appendChild(menu);
-    const r = el.getBoundingClientRect(); menu.style.left = Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - menu.offsetWidth - 12) + 'px'; menu.style.top = (r.bottom + window.scrollY + 6) + 'px';
-    $$('button', menu).forEach((b) => b.addEventListener('click', () => { const f = fs.find((x) => x.k === b.dataset.k); copyVal(f.k, f.v); closeMenu(); }));
-    $('button', menu).focus();
+    openMenu(el, fs);
   });
   $$('.val').forEach((el) => { if (!el.hasAttribute('tabindex')) { el.tabIndex = 0; el.setAttribute('role', 'button'); } el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); } }); });
 

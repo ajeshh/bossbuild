@@ -1,4 +1,4 @@
-// design — the design space render (FEAT-030, slice 1). What's locked here: the page is a pure
+// design — the design space render (FEAT-030 slice 1, FEAT-031 slice 2, FEAT-032 slice 3). What's locked here: the page is a pure
 // projection of the files (the swatch hex IS the tokens.json hex), contrast is computed correctly
 // for the declared pairs and only those, a principle is grounded by a REFERENCE not a word, holes
 // are holes, and `boss design` writes exactly one file under .boss/ and nothing under docs/.
@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -125,7 +125,7 @@ test('with nothing under docs/design/ every language chapter is a hole with the 
   const html = renderDesignHtml({ ...collectDesign(dir, 'Bare'), projectDir: dir }, 'x');
   for (const id of ['principle-none', 'colour-none', 'type-none', 'space-none', 'layout-hole']) assert.match(html, new RegExp(`id="${id}"`), id);
   assert.match(html, /\/design-tokens-init/);
-  assert.match(html, /<b class="tab">1 of 9<\/b> slots/, 'the ledger counts the brand as the one filled slot');
+  assert.match(html, /<b class="tab">1 of 14<\/b> slots/, 'the ledger counts the brand as the one filled slot');
 });
 
 test('a tokens.json that is not JSON renders the error as a block and the rest of the page', () => {
@@ -259,7 +259,7 @@ test('research is cut by rung from grade: and by method from method: — and nev
   const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
   assert.ok(!html.includes('A quote that must never reach the page'), 'grades and dates only');
   assert.match(html, /Product events · drop-off<\/strong><\/td><td class="mono">observed<\/td><td class="q">never/);
-  assert.match(html, /<b class="tab">8 of 9<\/b> slots/, 'everything but layout, whose section is a placeholder');
+  assert.match(html, /<b class="tab">9 of 14<\/b> slots/, 'the language, the story, the pairs (accessibility) — not layout, components, patterns, flows or content');
 });
 
 test('with no personas, no journey and no evidence the three chapters are holes with their verbs', () => {
@@ -269,4 +269,235 @@ test('with no personas, no journey and no evidence the three chapters are holes 
   assert.match(html, /id="journey-none"[\s\S]*?\/spec writes docs\/product\/JOURNEY\.md/);
   assert.match(html, /nobody has been watched using anything/);
   assert.match(html, /id="research-methods"/, 'the methods table renders even at n=0 — every row a never');
+});
+
+// --- slice 3 (FEAT-032): the parts --------------------------------------------------------------------
+
+const COMPONENTS = `---
+id: components
+status: active
+updated: 2026-09-10
+---
+# Component index — Tidewell
+
+| Component | What it's for | Import | Variants | Missing states | Status |
+|---|---|---|---|---|---|
+| \`Button\` | the one act on a screen | \`import { Button } from '@/components/Button'\` | primary · secondary · ghost | — | stable |
+| \`ShiftRow\` | one shift, its state, who | \`import { ShiftRow } from '@/components/ShiftRow'\` | — | empty | draft |
+| \`Card\` | a bounded surface | \`import { Card } from '@/components/Card'\` | — |  | deprecated → \`Surface\` |
+
+| Concept | We call it | Never |
+|---|---|---|
+| the visual variation | \`variant\` | \`type\`, \`kind\` |
+
+## Retired
+
+| Component | Why retired | On |
+|---|---|---|
+| \`CTAButton\` | was \`Button variant="primary"\` all along — merged | 2026-09-01 |
+`;
+const BUTTON_SRC = `export function Button({ variant = 'primary', children }) { return <button className={'btn btn-' + variant}>{children}</button>; }\n`;
+const PATTERNS = `# Patterns — Tidewell
+
+## Always
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **Destructive confirm** | delete, revoke, cancel | name the consequence and whether it can be undone | "Are you sure?" |
+
+## Ours — patterns this product grew
+
+| ID | Pattern | The situation | The rule | Anti-pattern | First seen |
+|---|---|---|---|---|---|
+| **PAT-1** | Ask, don't assign | a shift needs cover | the owner asks one person; the app never assigns | auto-assign with a notification | 2026-09-02 |
+| **PAT-2** | *(your first one lands here)* | | | | |
+
+## Refused — and why
+
+| Pattern | Why refused | On |
+|---|---|---|
+| streak counter | engagement-shaped, not value-shaped | 2026-08-20 |
+`;
+const FLOWS = `---
+id: flows
+updated: 2026-09-11
+---
+# Flows — Tidewell
+
+| Flow | Entry | Steps | Ends at | Owned by |
+|---|---|---|---|---|
+| Cover a shift | the uncovered row | 3 | the shift is covered | \`FEAT-004\` |
+| Add the week | the calendar | 2 | seven days on the board | \`FEAT-006\` |
+
+---
+
+## Cover a shift · \`FEAT-004\`
+
+**Happy path**
+
+| # | Step | Asks the user for | Why it's needed *now* |
+|---|---|---|---|
+| 1 | pick who to ask | one name | there is no ask without a person |
+| 2 | add a note | free text | |
+| 3 | send | nothing | it is the act |
+
+| Cut | Why |
+|---|---|
+| how urgent | the row already says |
+
+**First-run path** — no caregivers yet: step 1 is the empty state with one action.
+
+## Add the week · \`FEAT-006\`
+
+Happy path, cut list, first-run and failure paths: in the FEAT's **Flow** section.
+`;
+const GUIDE_CONTENT = GUIDE + `
+## The five states
+
+| Component | default | hover | active | disabled | empty / loading |
+|---|---|---|---|---|---|
+| ShiftRow | ✓ | ✓ | ✓ | — | **✓ what does an empty list say?** |
+
+## Accessibility floor (not negotiable, not a phase)
+
+- Contrast: body text ≥ 4.5:1 — check the token pairs
+- Every interactive element has a visible focus state
+
+## Do / Don't
+
+| Do | Don't | Because |
+|---|---|---|
+| one primary action per view | two buttons competing | a second primary means the view has two jobs |
+| <your rule> | <the specific thing you keep seeing> | <the principle it serves> |
+
+## Terminology
+
+| Use | Never | Because |
+|---|---|---|
+| shift | slot, booking | the owner's word |
+| <the word> | <the synonyms> | <what the distinction protects> |
+
+## Voice in the interface
+
+**Voice — 3 traits, each with a tradeoff**
+
+- plain over clever — giving up: personality in the microcopy
+- <trait> — giving up: <what>
+
+**Tone by context:**
+
+| Context | How the voice shifts | Real string |
+|---|---|---|
+| Success | brief | "Covered." |
+| Error | what to do next | <> |
+
+**Surfaces:**
+
+- **Buttons:** verb first, sentence case
+`;
+function withParts(extra = {}) {
+  return tidewell({ 'docs/design/COMPONENTS.md': COMPONENTS, 'src/components/Button.tsx': BUTTON_SRC, 'docs/design/PATTERNS.md': PATTERNS, 'docs/design/FLOWS.md': FLOWS, 'docs/design/STYLE_GUIDE.md': GUIDE_CONTENT,
+    '.claude/settings.json': JSON.stringify({ hooks: { PostToolUse: [{ matcher: 'Write|Edit', hooks: [{ type: 'command', command: 'node "$CLAUDE_PROJECT_DIR"/.claude/hooks/contrast-guard.js' }] }] } }), ...extra });
+}
+
+test('the authored index reads as the template writes it: a dash is none missing, a blank is nobody checked, deprecated carries its successor, the import resolves only to a file that exists', () => {
+  const dir = withParts();
+  const co = readComponents(dir);
+  assert.equal(co.source, 'docs/design/COMPONENTS.md'); assert.equal(co.both, false);
+  const [button, row, card] = co.components;
+  assert.equal(button.name, 'Button'); assert.deepEqual(button.variants, ['primary', 'secondary', 'ghost']); assert.deepEqual(button.missing, []); assert.equal(button.status, 'stable');
+  assert.equal(button.source, 'src/components/Button.tsx', '@/ resolves to src/ and the .tsx is on disk'); assert.equal(button.sourceText, BUTTON_SRC);
+  assert.deepEqual(row.missing, ['empty']); assert.equal(row.source, null, 'ShiftRow has an import line and no file — nothing is guessed'); assert.equal(row.sourceText, null);
+  assert.equal(card.missing, null, 'a blank cell is not a dash'); assert.equal(card.status, 'deprecated'); assert.equal(card.replacedBy, 'Surface');
+  assert.deepEqual(co.api, [{ concept: 'the visual variation', word: 'variant', never: 'type, kind' }]);
+  assert.deepEqual(co.retired, [{ name: 'CTAButton', why: 'was Button variant="primary" all along — merged', on: '2026-09-01' }]);
+  assert.equal(resolveImport(dir, "import { X } from './X'"), null, 'a relative specifier has no known base');
+});
+
+test('the manifest supersedes the index: states from the manifest, a stale hash is a finding, both files on disk is itself reported', () => {
+  const manifest = JSON.stringify({ generated: '2026-09-12', components: [
+    { name: 'Button', source: 'src/components/Button.tsx', sourceHash: 'deadbeef0000', purpose: 'the act', import: "import { Button } from '@/components/Button'", variants: ['primary'], states: { default: true, hover: true, active: true, disabled: false, empty: 'n/a' }, usedIn: 14, findings: [{ severity: 'serious', kind: 'raw-value', detail: '#3B82F6 at line 42' }] },
+  ] });
+  const dir = withParts({ 'docs/design/library/manifest.json': manifest });
+  const co = readComponents(dir);
+  assert.equal(co.source, 'docs/design/library/manifest.json'); assert.equal(co.both, true);
+  const [b] = co.components;
+  assert.deepEqual(b.missing, ['disabled']); assert.equal(b.usedIn, 14); assert.equal(b.stale, true, 'the hash in the manifest is not the file\'s'); assert.equal(b.findings[0].kind, 'raw-value');
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /Both <code>COMPONENTS\.md<\/code> and <code>library\/manifest\.json<\/code> are on disk/);
+  assert.match(html, /stale · source moved since the manifest/);
+  assert.match(html, /<td class="n">✗ #3B82F6 at line 42<\/td>/, 'on tokens answers from the manifest findings');
+});
+
+test('every component card carries Code (the import line, the source when on disk) and SVG (a spec frame in the project\'s own tokens, never a render)', () => {
+  const dir = withParts();
+  const data = collectDesign(dir, 'Tidewell');
+  const html = renderDesignHtml({ ...data, projectDir: dir }, 'x');
+  assert.match(html, /id="component-button"[^>]*data-code="[^"]*Import line[^"]*Source · src\/components\/Button\.tsx/, 'Button offers both');
+  assert.match(html, /id="component-shiftrow"[^>]*data-code="[^"]*Import line/, 'ShiftRow offers the import line only');
+  assert.ok(!/id="component-shiftrow"[^>]*Source ·/.test(html), 'no source is invented for ShiftRow');
+  const svg = data.components.components[0].svg;
+  assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/); assert.ok(svg.includes('#1B7F79'), 'the accent is the tokens.json hex'); assert.ok(svg.includes('#FFFFFF'), 'the paper is color.surface.paper');
+  assert.ok(svg.includes('Public Sans'), 'the frame is set in the body face'); assert.match(svg, /spec frame · not a render/);
+  assert.match(data.components.components[1].svg, />empty<\/text><text[^>]*>missing</, 'a missing state is drawn as missing');
+  assert.match(html, /<td class="q">not checked — the Missing states cell is blank<\/td>/, 'Card\'s five states are not asserted');
+  assert.match(html, /Not checked, for every component:/, 'said once, above the table');
+});
+
+test('patterns render Ours first with ids, the inherited groups after, the refused last, and the style guide\'s do/don\'t as pairs; the placeholder row is skipped', () => {
+  const dir = withParts();
+  const pa = readPatterns(dir);
+  assert.deepEqual(pa.ours.map((r) => r.id), ['PAT-1'], 'PAT-2 is the template\'s placeholder');
+  assert.equal(pa.groups.length, 1); assert.equal(pa.groups[0].heading, 'Always'); assert.equal(pa.groups[0].rows[0].anti, '"Are you sure?"');
+  assert.deepEqual(pa.refused, [{ pattern: 'streak counter', why: 'engagement-shaped, not value-shaped', on: '2026-08-20' }]);
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  const ours = html.indexOf('id="patterns-ours"'), always = html.indexOf('id="patterns-0"'), refused = html.indexOf('id="patterns-refused"'), dd = html.indexOf('id="patterns-dodont"');
+  assert.ok(ours > 0 && ours < always && always < refused, 'Ours · inherited · Refused, in that order');
+  assert.ok(dd > 0); assert.match(html, /<td class="do">one primary action per view<\/td><td class="dont">two buttons competing<\/td>/);
+  assert.ok(!html.includes('&lt;your rule&gt;'), 'the placeholder pair is not a pair');
+});
+
+test('flows render the index and each flow\'s three paths; a step with no why-now is the step to cut; a section that defers to the FEAT is not a hole', () => {
+  const dir = withParts();
+  const fl = readFlows(dir);
+  assert.equal(fl.flows.length, 2);
+  const [cover, week] = fl.flows;
+  assert.equal(cover.happy.length, 3); assert.equal(cover.happy[1].why, ''); assert.deepEqual(cover.cut, [{ cut: 'how urgent', why: 'the row already says' }]); assert.equal(cover.firstRun, true); assert.equal(cover.failure, false);
+  assert.equal(week.deferred, true); assert.equal(week.happy.length, 0);
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /cannot say — the step to cut/); assert.match(html, /1 step cannot say why now/);
+  assert.match(html, /id="flow-1"[\s\S]*?<span class="chip dec">happy<\/span><span class="chip dec">first-run<\/span><span class="chip find">failure · missing<\/span>/);
+  assert.match(html, /id="flow-2"[\s\S]*?three paths · in the FEAT/);
+});
+
+test('content renders the terms, the traits, the tone rows with a real string and the surfaces; placeholders are not content; a guard that is on is named', () => {
+  const dir = withParts();
+  const g = readStyleGuide(dir);
+  assert.deepEqual(g.terms, [{ use: 'shift', never: 'slot, booking', because: 'the owner\'s word' }]);
+  assert.deepEqual(g.voiceTraits, ['plain over clever — giving up: personality in the microcopy']);
+  assert.equal(g.tone.length, 2); assert.equal(g.tone[0].string, '"Covered."'); assert.equal(g.tone[1].string, '');
+  assert.deepEqual(g.surfaces, [{ surface: 'Buttons', rule: 'verb first, sentence case' }]);
+  assert.equal(g.voiceDeferred, false); assert.equal(g.floor.length, 2);
+  assert.deepEqual(g.fiveStates.ShiftRow, { default: true, hover: true, active: true, disabled: false, empty: true });
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /1 of 2 contexts have a real string/);
+  assert.match(html, /no string yet — an agent can't act on an adjective/);
+  const guards = readGuards(dir);
+  assert.deepEqual(guards.map((x) => [x.name, x.on]), [['contrast-guard', true], ['design-tokens-guard', false], ['component-reuse-guard', false], ['content-terminology-guard', false]]);
+  assert.match(html, /<td class="mono">contrast-guard<\/td><td>[^<]*<\/td><td class="ok">on<\/td>/);
+  assert.match(html, /<b class="tab">10 of 14<\/b> slots/, 'the parts fill four more slots; layout, people, journey and research stay empty');
+});
+
+test('with the style guide\'s voice left as placeholders the block is dormant with the template\'s reason, and with no parts files all five chapters hole with their verbs', () => {
+  const dir = tidewell();
+  const g = readStyleGuide(dir);
+  assert.equal(g.voiceDeferred, true);
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /id="components-none"[\s\S]*?\/design-tokens-init writes docs\/design\/COMPONENTS\.md/);
+  assert.match(html, /id="patterns-none"[\s\S]*?\/design-review writes docs\/design\/PATTERNS\.md/);
+  assert.match(html, /id="flows-none"[\s\S]*?\/spec writes docs\/design\/FLOWS\.md/);
+  assert.match(html, /id="content-terms"[\s\S]*?class="block hole"/.source ? /class="block hole" id="content-terms"/ : /x/);
+  assert.match(html, /class="block dormant" id="content-voice"[\s\S]*?deferred by rule/);
+  assert.match(html, /id="a11y-notchecked"[\s\S]*?7 · not checked/);
+  assert.ok(!html.includes('id="component-'), 'no card without a component');
 });

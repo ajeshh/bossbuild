@@ -30,6 +30,30 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **`boss design` has the parts (FEAT-032, slice 3).** Five chapters between Layout and Research:
+  **Components** — the index as it is written at MVP (`docs/design/COMPONENTS.md`: a dash means no
+  state missing, a blank means nobody checked, `deprecated → X` carries its successor, the retired
+  rows struck with their reason) or generated at V1 (`library/manifest.json`: states, usage, findings,
+  and a `sourceHash` that no longer matches the file is a *stale* finding); both on disk is reported
+  as the two-definitions-of-a-button trap. A definition-of-done row per component answers only from
+  disk and says *not checked* once, above the table, for what needs a render or a person. Every card
+  carries **Code** (the import line; the source file when the manifest names it or the import line
+  resolves to a real file — nothing is invented from a name) and **SVG** — a *spec frame* drawn in
+  the project's own tokens (name, purpose, variants, the five states as filled or missing boxes)
+  that a design tool pastes as editable layers; the card says it is a frame, never a render ·
+  **Patterns** — `PATTERNS.md` with *Ours* (the `PAT-n` rows) first, the inherited groups after,
+  *Refused* last, the anti-pattern always beside the rule, and the style guide's Do / Don't as pairs
+  · **Flows** — `FLOWS.md`'s index and, per flow, the three paths present or missing, the cut list
+  kept, and a step whose *why it's needed now* cell is empty flagged as the step to cut; a section
+  that defers the paths to the FEAT says so instead of holing · **Content** — the Terminology table
+  (each term copies), the voice traits, tone by context with the *real string* or the reason it
+  can't be acted on, the surfaces; a voice section left as placeholders is *deferred by rule* with the
+  template's own reason · **Accessibility** — the floor as written, the contrast result once as a
+  count with a link to the pairs table (never the table twice), which of the four design guards are
+  registered in `.claude/settings.json`, and one list of what stays *not checked*. The shell gains
+  the two buttons for any block that carries `data-code` / `data-svg`; the copy sheet shows the
+  payload as before. Hole verbs go through the playbook's `verbLine`, so both spaces gate a verb the
+  same way. Fourteen slots in the ledger; seven new tests.
 - **`boss design` opens with the people (FEAT-031, slice 2).** Three chapters before a colour is
   shown: **People** — every `docs/personas/*.md` as a full card (`who`, the day, jobs, pains, values,
   *what we don't know yet*, the `synthetic N% · real N%` chip; a field that isn't written is a hole on
