@@ -30,6 +30,16 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **Divergence is a number on the page (IDEA-113 row 4).** *Exceptions & divergence* opens with the
+  trace read back over 30 days: how many times a decision was handed to the agent at the write
+  (`design-decision` lines, by decision and by file), and every new-component question the reuse
+  guard asked (`component-new` lines — it now logs each one) answered by what is on disk *now*:
+  **became a row** (new, and said so) · **reused** (the name is gone, or in Retired with its reason) ·
+  **unanswered** (in the tree with no row — a fork nobody justified, listed with its near-name).
+  Counts, not verdicts; the block says what it cannot see (a write that diverged where nothing was
+  ever decided is a hole above, not a number here). With no trace it is dormant and names the two
+  guards to enable. Also: the reuse guard now splits acronym prefixes when it looks for near-names
+  (`CTAButton` → `CTA Button` → near `Button`), which was the canonical case it was written for.
 - **The decision record, not a pattern library (IDEA-113 → FEAT-038).** Ajesh: *"the visual html
   is a showcase of all the design decisions it has made so that the team, and agents can keep
   leveraging it without diverging… it's not a pattern library… the families should only appear

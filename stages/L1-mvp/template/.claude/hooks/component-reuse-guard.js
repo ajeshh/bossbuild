@@ -47,9 +47,12 @@
 //                  "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/component-reuse-guard.js\"",
 //                  "timeout": 5 } ] } ] }
 //
+// THE TRACE: each three-way question is one line in `.boss/trace.jsonl` ({ kind: "component-new" }),
+// so the design page can later say whether it was answered — a row, a merge, or nothing (IDEA-113).
+//
 // Fail-open: any surprise exits 0 silently. A missed warning is fine; a broken session is not.
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, appendFileSync } from 'node:fs';
 import { join, basename, extname } from 'node:path';
 
 const INDEX_REL = join('docs', 'design', 'COMPONENTS.md');
@@ -70,6 +73,7 @@ const out = (additionalContext) => {
 // "CTAButton" -> ["cta","button"] · "user_card" -> ["user","card"]. Cheap, good enough to find
 // the near-name that matters, which is the whole job.
 const words = (name) => name
+  .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2') // "CTAButton" -> "CTA Button"
   .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
   .replace(/[_\-.]/g, ' ')
   .toLowerCase().split(/\s+/).filter(Boolean);
@@ -184,6 +188,9 @@ try {
       `canonical tell of a variant that got forked into a file.`
     : '';
 
+  // One line in the trace per question asked — { kind: "component-new", name, path, near } — so
+  // `boss design` can say later whether the question got answered: a row, a merge, or nothing.
+  try { appendFileSync(join(projectDir, '.boss', 'trace.jsonl'), JSON.stringify({ ts: new Date().toISOString(), kind: 'component-new', name, path: path.startsWith(projectDir) ? path.slice(projectDir.length + 1) : path, near: near.map((r) => r.name) }) + '\n'); } catch { /* the trace is optional */ }
   out(
     (notes.length ? `component-reuse-guard: ${notes.join(' ')}\n\n` : '') +
     `component-reuse-guard: \`${name}\` was just written to \`${path}\` and has no row in ` +

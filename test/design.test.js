@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, statSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, readUsagePages, scanTree, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, readUsagePages, scanTree, readDivergence, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -800,4 +800,31 @@ test('a family appears only when the product uses it: a CLI-shaped tree shows no
   const html3 = renderDesignHtml({ ...d3, projectDir: dir3 }, 'x');
   assert.match(html3, /<article class="block" id="family-overlays"[\s\S]*?1 decided/);
   assert.match(html3, /<b class="tab">\d+<\/b> open/);
+});
+
+test('divergence reads the trace back: decisions handed, and each new-component question answered by what is on disk now — a row, gone, or unanswered; outside the window is ignored; no trace is dormant', () => {
+  const now = Date.now(), d = (n) => new Date(now - n * 86400000).toISOString();
+  const trace = [
+    { ts: d(1), kind: 'design-decision', file: 'src/components/CoverDialog.tsx', ids: ['PAT-1'] },
+    { ts: d(2), kind: 'design-decision', file: 'src/components/WeekView.tsx', ids: ['PAT-1', 'dodont-1'] },
+    { ts: d(3), kind: 'component-new', name: 'ShiftRow', path: 'src/components/ShiftRow.tsx', near: [] },
+    { ts: d(4), kind: 'component-new', name: 'CaregiverLine', path: 'src/components/CaregiverLine.tsx', near: ['Caregiver'] },
+    { ts: d(5), kind: 'component-new', name: 'CTAButton', path: 'src/components/CTAButton.tsx', near: ['Button'] },
+    { ts: d(45), kind: 'component-new', name: 'OldThing', path: 'x', near: [] },
+    { ts: d(1), session: 's', agent: 'coder', files: ['a'] },
+  ].map((x) => JSON.stringify(x)).join('\n') + '\n';
+  const dir = withLibrary({ '.boss/trace.jsonl': trace });
+  const data = collectDesign(dir, 'Tidewell');
+  const dv = data.divergence;
+  assert.equal(dv.handed.length, 2); assert.deepEqual(dv.byId, [['PAT-1', 2], ['dodont-1', 1]]); assert.equal(dv.files.length, 2);
+  assert.equal(dv.asked.length, 3, 'the 45-day-old question is outside the window');
+  assert.deepEqual(Object.fromEntries(dv.asked.map((a) => [a.name, a.answer])), { ShiftRow: 'indexed', CaregiverLine: 'unanswered', CTAButton: 'reused' }, 'a row · in the tree with no row · gone from the tree');
+  const html = renderDesignHtml({ ...data, projectDir: dir }, 'x');
+  assert.match(html, /id="divergence"[\s\S]*?<strong class="tab">2<\/strong> times across <strong class="tab">2<\/strong> files — PAT-1 ×2 · dodont-1 ×1/);
+  assert.match(html, /<span class="ok">1 became a row<\/span> · <span class="ok">1 reused<\/span>[^<]*<span class="n">1 unanswered<\/span>/);
+  assert.match(html, /<code>CaregiverLine<\/code> — near Caregiver/);
+  assert.ok(html.indexOf('id="divergence"') < html.indexOf('id="exception-1"') || !html.includes('id="exception-1"'), 'divergence sits first in the chapter');
+  const bare = withLibrary();
+  const html2 = renderDesignHtml({ ...collectDesign(bare, 'Tidewell'), projectDir: bare }, 'x');
+  assert.match(html2, /class="block dormant" id="divergence"[\s\S]*?boss hooks enable design-decisions-guard · component-reuse-guard/);
 });

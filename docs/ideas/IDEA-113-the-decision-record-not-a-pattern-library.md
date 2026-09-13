@@ -60,3 +60,4 @@ shows what has been decided so far, holes for what hasn't, and the moment each h
 ## Capture log
 - 2026-09-13 — seed (Ajesh's two messages above). Rows 1–3 building as FEAT-038.
 - 2026-09-13 — rows 1–3 landed as FEAT-038. Next: row 4, the divergence number, from the trace the guard now writes.
+- 2026-09-13 — row 4 landed (the divergence block; the reuse guard logs its question). Rows 5 remain: the designer's return trip, then the eval set — both gated on Ajesh's hand checks first.

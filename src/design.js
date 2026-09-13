@@ -638,6 +638,7 @@ export function collectDesign(projectDir, projectName) {
   const patterns = patterns0;
   const flows = readFlows(projectDir);
   const guards = readGuards(projectDir);
+  const divergence = readDivergence(projectDir, components);
   // The style guide's five-state table fills a component's states when nothing else says.
   for (const c of components.components) if (!c.states && c.missing === null && guide.fiveStates && guide.fiveStates[c.name]) { c.states = guide.fiveStates[c.name]; c.missing = Object.keys(c.states).filter((k) => c.states[k] === false); }
   for (const c of components.components) c.svg = specFrameSvg(c, tokens);
@@ -652,7 +653,7 @@ export function collectDesign(projectDir, projectName) {
     ['components', components.components.length > 0], ['patterns', patterns.ours.length > 0], ['flows', flows.flows.length > 0], ['content', content.terms.length + content.tone.length + content.voiceTraits.length > 0], ['a11y', (guide.floor || []).length > 0 || pairs.length > 0],
     ['research', research.evid.length > 0],
   ];
-  const data = { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, findings: pairs.filter((p) => p.grade !== 'AA').length };
+  const data = { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, divergence, findings: pairs.filter((p) => p.grade !== 'AA').length };
   data.questions = openSlots(data, projectDir);
   return data;
 }
@@ -737,6 +738,37 @@ export function familyOfRow(row) {
   return guess[0] || null;
 }
 
+// --- divergence: the trace, read back — did the build follow its own decisions? (IDEA-113 row 4) -----
+// Two guards write one line each to .boss/trace.jsonl: `design-decision` (a decision handed to the
+// agent at a write) and `component-new` (the three-way question asked about a new name). Read over
+// a window, and each question is answered by what is on disk NOW: a row in the index (answered —
+// new, and said so), the name gone from the tree or in the Retired table (reused — the fork was
+// undone, or merged with its reason), or still in the tree with no row (unanswered — the index lags). Never a judgment about whether a write was "good".
+export function readDivergence(projectDir, components, days = 30) {
+  const p = join(projectDir, '.boss', 'trace.jsonl');
+  const out = { present: existsSync(p), days, handed: [], asked: [], since: null };
+  if (!out.present) return out;
+  let lines = [];
+  try { lines = readFileSync(p, 'utf8').split(/\r?\n/).filter(Boolean); } catch { return out; }
+  const cutoff = Date.now() - days * 86400000;
+  out.since = new Date(cutoff).toISOString().slice(0, 10);
+  const indexed = (n) => components.components.some((c) => c.name.toLowerCase() === String(n).toLowerCase());
+  const retired = (n) => components.retired.some((r) => r.name.toLowerCase() === String(n).toLowerCase());
+  const inTree = (n) => (components.tree || []).some((f) => f.name.toLowerCase() === String(n).toLowerCase());
+  for (const l of lines) {
+    let e; try { e = JSON.parse(l); } catch { continue; }
+    const t = Date.parse(e.ts || ''); if (!t || t < cutoff) continue;
+    if (e.kind === 'design-decision') out.handed.push({ ts: e.ts, file: e.file || '', ids: Array.isArray(e.ids) ? e.ids : [] });
+    if (e.kind === 'component-new' && e.name) out.asked.push({ ts: e.ts, name: e.name, path: e.path || '', near: e.near || [], answer: indexed(e.name) ? 'indexed' : retired(e.name) || !inTree(e.name) ? 'reused' : 'unanswered' });
+  }
+  const byId = new Map();
+  for (const h of out.handed) for (const id of h.ids) byId.set(id, (byId.get(id) || 0) + 1);
+  out.byId = [...byId].sort((a, b) => b[1] - a[1]);
+  out.files = [...new Set(out.handed.map((h) => h.file))];
+  out.answers = { indexed: out.asked.filter((a) => a.answer === 'indexed').length, reused: out.asked.filter((a) => a.answer === 'reused').length, unanswered: out.asked.filter((a) => a.answer === 'unanswered').length };
+  return out;
+}
+
 // --- the open slots, read back: what is empty, which verb fills it, and the moment in the build that
 // earns it. The playbook prints its holes as questions (IDEA-111); the design space does the same,
 // in build order — a slot is never "missing", it is not yet earned, and the moment says when.
@@ -784,7 +816,7 @@ function swatchHtml(t, decs) {
 }
 
 export function renderDesignHtml(data, stampedAt) {
-  const { brand, shape, tokens, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings, projectName, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources } = data;
+  const { brand, shape, tokens, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings, projectName, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, divergence } = data;
   // The verb on a hole is gated the way the playbook gates it (verbLine): a skill the mode hasn't
   // unlocked says so, and a droppable record points at /import — both spaces say the same thing.
   const hole = (id, title, body, verb, src) => holeRaw(id, title, body, verbLine(verb, data.projectDir), src);
@@ -1050,10 +1082,17 @@ export function renderDesignHtml(data, stampedAt) {
   // 16 · Exceptions
   const ex = exceptions;
   const exGroup = (g, i) => `<article class="block" id="exception-${i + 1}" data-title="Exceptions — ${esc(g.rule)}"><div class="head"><h3>${esc(g.rule)} <span class="sub">· ${g.rows.length} · ${esc(g.verdict)}</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Date</th><th>Where</th><th>What</th><th>Why</th></tr></thead><tbody>${g.rows.map((r) => `<tr><td class="mono">${esc(r.date || '—')}</td><td>${esc(r.where)}</td><td>${esc(r.what)}</td><td>${esc(r.why)}</td></tr>`).join('')}</tbody></table></div></div><div class="foot"><span class="chip ${g.rows.length >= 3 ? 'find' : g.rows.length === 2 ? 'stale' : 'dec'}">${g.rows.length} · ${esc(g.verdict)}</span><span class="src">docs/design/STYLE_GUIDE.md · Exceptions</span></div><div class="actions"></div></article>`;
-  const exceptionsCh = chapter('exceptions', 16, 'Exceptions', ex.rows.length ? `${ex.rows.length} recorded, against ${ex.groups.length} rule${ex.groups.length === 1 ? '' : 's'}.` : 'None recorded.',
-    'A deliberate departure, dated, is a decision; an unrecorded one is drift that reads as precedent next time. Grouped by the rule each departs from, because three against one rule is not three exceptions — it is a rule being worked around, and the working-around is the real convention now.',
-    ex.rows.length ? `      <div class="blocks one">\n        ${ex.groups.map(exGroup).join('\n        ')}\n      </div>`
-      : `      <div class="blocks one"><article class="block dormant" id="exceptions-none" data-title="Exceptions"><div class="head"><h3>None recorded</h3></div><div class="body">Either every screen keeps every rule, or a departure went unrecorded. The first is rare and the second is the one to check: an exception written down here is what stops it reading as precedent.<span class="cond">docs/design/STYLE_GUIDE.md · Exceptions — Date · Where · What · Why, one row per departure</span></div><div class="foot"><span class="chip asserted">0 recorded</span><span class="src">${guide.present ? 'docs/design/STYLE_GUIDE.md · Exceptions empty' : 'docs/design/STYLE_GUIDE.md · absent'}</span></div><div class="actions"></div></article></div>`);
+  // Divergence — the trace read back. The page shows the decisions; this says whether the build
+  // followed them: decisions handed at the write, and each new-component question answered by
+  // what is on disk now. No judgment of taste — counts, and the files.
+  const dv = divergence;
+  const exceptionsOn = guards.some((g) => g.name === 'design-decisions-guard' && g.on), reuseOn = guards.some((g) => g.name === 'component-reuse-guard' && g.on);
+  const divBlock = dv.present && (dv.handed.length || dv.asked.length) ? `<article class="block" id="divergence" data-title="Divergence — the last ${dv.days} days"><div class="head"><h3>Divergence <span class="sub">— the last ${dv.days} days, from the trace · did the build follow its own decisions?</span></h3></div><div class="body"><div class="pgrid"><div><h4>Decisions handed at the write</h4><p><strong class="tab">${dv.handed.length}</strong> time${dv.handed.length === 1 ? '' : 's'} across <strong class="tab">${dv.files.length}</strong> file${dv.files.length === 1 ? '' : 's'}${dv.byId.length ? ` — ${esc(dv.byId.slice(0, 5).map(([id, n]) => `${id} ×${n}`).join(' · '))}` : ''}.</p>${dv.handed.length ? '' : '<p class="unk">none — either nothing touched a decided situation, or the guard is off</p>'}</div><div><h4>New component asked about</h4><p><strong class="tab">${dv.asked.length}</strong> question${dv.asked.length === 1 ? '' : 's'}: <span class="ok">${dv.answers.indexed} became a row</span> · <span class="ok">${dv.answers.reused} reused</span> (the name is gone) · <span class="${dv.answers.unanswered ? 'n' : ''}">${dv.answers.unanswered} unanswered</span> (in the tree, no row).</p>${dv.answers.unanswered ? `<ul>${dv.asked.filter((a) => a.answer === 'unanswered').map((a) => `<li><code>${esc(a.name)}</code>${a.near.length ? ` — near ${esc(a.near.join(', '))}` : ''} · ${esc(a.ts.slice(0, 10))}</li>`).join('')}</ul>` : ''}</div></div><p class="t-small" style="margin-top:10px">Counts, not verdicts: a decision handed is a screen that stayed on-system without anyone opening this page; an unanswered question is a fork nobody justified. What this cannot see is a write that diverged in a situation nothing ever decided — that is a hole above, not a number here.</p></div><div class="foot"><span class="chip ${dv.answers.unanswered ? 'find' : 'dec'}">${dv.answers.unanswered} unanswered</span><span class="chip asserted">since ${esc(dv.since)}</span><span class="src">.boss/trace.jsonl · design-decision · component-new</span></div><div class="actions"></div></article>`
+    : `<article class="block dormant" id="divergence" data-title="Divergence"><div class="head"><h3>Divergence</h3></div><div class="body">Nothing in the trace yet${dv.present ? ` for the last ${dv.days} days` : ''}. Two guards write it: <code>design-decisions-guard</code> (${exceptionsOn ? 'on' : 'off'}) hands the agent a decision at the write and logs it; <code>component-reuse-guard</code> (${reuseOn ? 'on' : 'off'}) asks the three-way question about a new name and logs it. With both on, this block says how often the build followed its own decisions and which forks were never justified.<span class="cond">${exceptionsOn && reuseOn ? 'wakes at the first UI write that touches a decision' : `boss hooks enable ${[!exceptionsOn && 'design-decisions-guard', !reuseOn && 'component-reuse-guard'].filter(Boolean).join(' · ')}`}</span></div><div class="foot"><span class="chip asserted">no trace</span><span class="src">.boss/trace.jsonl</span></div><div class="actions"></div></article>`;
+  const exceptionsCh = chapter('exceptions', 16, 'Exceptions & divergence', ex.rows.length ? `${ex.rows.length} recorded, against ${ex.groups.length} rule${ex.groups.length === 1 ? '' : 's'}.` : 'None recorded.',
+    'Two ways a system drifts, both counted here. A deliberate departure, dated, is a decision; an unrecorded one is drift that reads as precedent — grouped by the rule each departs from, because three against one rule is a rule being worked around. And the trace: how often the build was handed one of its own decisions at the write, and whether every new-component question got an answer.',
+    ex.rows.length ? `      <div class="blocks one">\n        ${divBlock}\n        ${ex.groups.map(exGroup).join('\n        ')}\n      </div>`
+      : `      <div class="blocks one">${divBlock}<article class="block dormant" id="exceptions-none" data-title="Exceptions"><div class="head"><h3>None recorded</h3></div><div class="body">Either every screen keeps every rule, or a departure went unrecorded. The first is rare and the second is the one to check: an exception written down here is what stops it reading as precedent.<span class="cond">docs/design/STYLE_GUIDE.md · Exceptions — Date · Where · What · Why, one row per departure</span></div><div class="foot"><span class="chip asserted">0 recorded</span><span class="src">${guide.present ? 'docs/design/STYLE_GUIDE.md · Exceptions empty' : 'docs/design/STYLE_GUIDE.md · absent'}</span></div><div class="actions"></div></article></div>`);
 
   const rail = [
     { group: 'Why it looks like this', items: [{ href: 'brand', n: 1, label: 'Start here', hole: !shape.present }, { href: 'people', n: 2, label: 'People', hole: !personas.length }, { href: 'journey', n: 3, label: 'The journey', hole: !journey.stages.length }, { href: 'principles', n: 4, label: 'Principles', hole: !guide.principles.length }] },
@@ -1061,7 +1100,7 @@ export function renderDesignHtml(data, stampedAt) {
     { group: 'The parts', items: [{ href: 'components', n: 10, label: 'Components', hole: !components.components.length }, { href: 'patterns', n: 11, label: 'Patterns', hole: !(patterns.ours.length + patterns.groups.length) }, { href: 'flows', n: 12, label: 'Flows', hole: !flows.flows.length }] },
     { group: 'Every screen', items: [{ href: 'content', n: 13, label: 'Content', hole: !(content.terms.length + content.tone.length + content.voiceTraits.length) }, { href: 'a11y', n: 14, label: 'Accessibility', hole: !((guide.floor || []).length || pairs.length) }] },
     { group: 'Take it with you', items: [{ href: 'resources', n: 15, label: 'Resources', hole: !resources.tokensText }] },
-    { group: 'Kept honest', items: [{ href: 'exceptions', n: 16, label: 'Exceptions', hole: false }, { href: 'research', n: 17, label: 'Research', hole: !research.evid.length }] },
+    { group: 'Kept honest', items: [{ href: 'exceptions', n: 16, label: 'Exceptions & divergence', hole: false }, { href: 'research', n: 17, label: 'Research', hole: !research.evid.length }] },
   ];
   const extraCss = `
   .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 10px; } .sw i { display: block; height: 52px; border-radius: 6px; margin-bottom: 7px; border: 1px solid var(--rule-2); } .sw i.val { border-bottom: 1px solid var(--rule-2); } .sw i.val:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
