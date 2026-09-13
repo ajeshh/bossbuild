@@ -127,3 +127,12 @@ the moment A2 landed.
 Still Ajesh's: the door in the plugin (DEC-017) · `.claude/` re-sync · release-on-publish as a DEC ·
 IDEA-087 · the `shape` field nobody reads · whether a shared checkout can have branches at all
 (this branch switched HEAD under five peers — worktrees would not).
+
+## Later that night — items 1–3
+1. `/boss:welcome` is the everyday door by POINTER (DEC-017 intact); both door cases under `claude plugin
+   eval --scaffold`: with 1.0 / without 0 / Δ 1.0. v0.325.0.
+2. DEC-019 — release-on-publish. Capabilities land under `## Unreleased`; `npm run stamp` at publish.
+   `VERSION is next` → `VERSION is honest`. Landed under Unreleased itself, unstamped, as the rule says.
+3. BOSS's own `.claude/` synced 0.267 → 0.325 (81 files; six edited hook/skill copies taken from shipped;
+   seven BOSS-specific mentor prompts kept). `check-dogfood` fails past 3 behind. The old `docs/loops`
+   copies remain (the classifier blocked `--remove`; they are shadowed and harmless).
