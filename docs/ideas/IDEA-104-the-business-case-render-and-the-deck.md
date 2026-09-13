@@ -2,7 +2,8 @@
 id: IDEA-104
 type: idea
 owner: product-lead
-status: deferred (trigger: a founder asks for a data room, a business case, or a deck — n=0 today)
+status: superseded (folded into IDEA-106 on 2026-09-13 — the case is the playbook shared; the deck is present mode over its blocks)
+superseded_by: IDEA-106
 gist: Rungs 3–4 of the business profile — `boss case` (a projection over canvas + EVID + DEC + roadmap, holes rendered never filled) and the deck — spun out of FEAT-025 so the FEAT could close at the scope it shipped.
 proof: none
 proof_note: Deferred on a trigger; the path that would exist if this were done is a `case` frame in the canvas skill (`/canvas --frame case`) or a `boss case` command — whichever the trigger's founder actually asks for.
@@ -11,6 +12,10 @@ created: 2026-09-12
 ---
 
 # IDEA-104 — The business case render and the deck
+
+> **FOLDED INTO [[IDEA-106]] on 2026-09-13.** Rungs 3–4 of FEAT-025 now live there: the case is the
+> playbook shared as a link, the deck is present mode over the same blocks. The amended refusal —
+> never a deck BOSS has to invent the content for — is carried in verbatim.
 
 ## Current shape
 

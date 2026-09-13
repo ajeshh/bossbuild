@@ -2,7 +2,8 @@
 id: IDEA-065
 type: idea
 owner: product-lead
-status: deferred
+status: superseded (folded into IDEA-106 on 2026-09-13 — Ajesh: "lets combine all ideas into one"; the workbench is the playbook, browsed)
+superseded_by: IDEA-106
 gist: A local, read-only HTML surface over everything a project has made — canvas, personas, evidence, decisions, board, dossier — so a founder can find their own material instead of recalling where it went.
 proof: src/dashboard.js
 proof_note: Tripwire laid in advance, following the `src/board.js` precedent. Nothing is built — this record is deliberately capture-don't-build, and the file named here should not exist until a founder has asked for it.
@@ -18,6 +19,10 @@ relates: FEAT-025, IDEA-015, IDEA-034, IDEA-063
 ---
 
 # IDEA-065 — The living dashboard
+
+> **FOLDED INTO [[IDEA-106]] on 2026-09-13.** The playbook is one renderer over the same records; the
+> *two products* warning below survives there as the *cannot flatter* rule — the evidence state is
+> unremovable in every mode. Kept for the reasoning; not a live record.
 
 > **PARKED 2026-08-20** (Ajesh: *"lets park this idea for now"*). `deferred` is the deliberate
 > status — a decision, not a backlog item — and the re-open trigger is written at the foot of this

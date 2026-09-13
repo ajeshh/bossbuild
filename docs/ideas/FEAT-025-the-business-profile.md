@@ -6,7 +6,7 @@ status: shipped (rungs 1–2 — the canvas cells at v0.191.0, the one-pager at 
 gist: A founder's business profile as a render over records they already made, not a document they sit down and write. Four rungs, each reachable only when the records under it exist.
 proof: stages/L0-quickstart/template/.claude/skills/canvas/SKILL.md
 proof_note: The proof pointed at `src/case.js` — a CLI render the CHANGELOG (v0.272.0) says was chosen AGAINST in favour of `/canvas --frame onepager`. Rungs 1–2 shipped inside the canvas skill; that is where the proof points now. Rungs 3–4 (`boss case`, the deck) are IDEA-104.
-spun_to: IDEA-104 (rungs 3–4 — the business case render and the deck; split when the one-pager shipped and the FEAT sat 84 days at building with its own rung unchecked)
+spun_to: IDEA-104 → folded into IDEA-106 on 2026-09-13 (rungs 3–4 — the case is the playbook shared, the deck is present mode; split when the one-pager shipped and the FEAT sat 84 days at building with its own rung unchecked)
 created: 2026-08-20
 from: IDEA-063
 decided_by: DEC-004
