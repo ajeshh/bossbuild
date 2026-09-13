@@ -170,6 +170,105 @@ export function readBrandShape(projectDir) {
   return shape;
 }
 
+// --- people: docs/personas/<slug>.md as /persona writes it — six labelled lines and a ledger ---------
+// A field is a labelled line (`who — …`, `**who**: …`, `## Jobs`) and, where the value is a list,
+// the bullets under it up to the next label. A field that isn't there is a hole on the card.
+
+const PERSONA_FIELDS = [['who', /who/i], ['context', /context/i], ['jobs', /jobs/i], ['pains', /pains/i], ['values', /values/i], ['unknowns', /what we don'?t know( yet)?/i]];
+export function readPersonasFull(projectDir) {
+  const dir = join(projectDir, 'docs', 'personas');
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const n of readdirSync(dir).filter((x) => /\.md$/i.test(x) && !/^README/i.test(x)).sort()) {
+    let text = '';
+    try { text = readFileSync(join(dir, n), 'utf8'); } catch { continue; }
+    const fm = frontmatter(text);
+    const lines = text.split(/\r?\n/);
+    // A label is the field word followed by a separator (— : ** or the end of the line) — never
+    // prose: `- who does the rota when she is away?` is a bullet under "unknowns", not a `who`.
+    const labelRe = (re) => new RegExp(`^(?:#{1,4}\\s*|[-*]\\s*)?(?:\\*\\*)?\\s*(${re.source})(?:\\*\\*)?\\s*(?:[—:–-]|\\*\\*|$)`, 'i');
+    const isLabel = (l) => PERSONA_FIELDS.some(([, re]) => labelRe(re).test(l)) || /^evidence ledger/i.test(l) || /^#{1,3}\s/.test(l);
+    const fields = {};
+    for (const [key, re] of PERSONA_FIELDS) {
+      const i = lines.findIndex((l) => labelRe(re).test(l));
+      if (i < 0) { fields[key] = null; continue; }
+      const head = lines[i].replace(new RegExp(`^(?:#{1,4}\\s*|[-*]\\s*)?(?:\\*\\*)?\\s*(${re.source})(?:\\*\\*)?[^\\w"(]*`, 'i'), '').trim();
+      const items = [];
+      for (let j = i + 1; j < lines.length && !isLabel(lines[j]); j++) { const m = lines[j].match(/^\s*[-*]\s+(.+)$/); if (m) items.push(m[1].trim()); else if (lines[j].trim() && !items.length && !head) items.push(lines[j].trim()); }
+      const value = head ? (items.length ? [head, ...items] : head) : (items.length ? items : null);
+      fields[key] = value && String(value).length && !/^<.*>$/.test(String(value)) ? value : null;
+    }
+    const ledger = text.match(/synthetic\s*<?(\d+)%?>?\s*[·,]\s*real\s*<?(\d+)%?>?/i);
+    const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
+    out.push({ slug: n.replace(/\.md$/i, ''), name: String(fm.name || title || n.replace(/\.md$/i, '')).replace(/^persona\s*[—:-]\s*/i, '').trim(), primary: /primary/i.test(String(fm.role || fm.kind || fm.primary || '')), created: fm.created || null, updated: fm.updated || null, synthetic: ledger ? parseInt(ledger[1], 10) : null, real: ledger ? parseInt(ledger[2], 10) : null, ...fields });
+  }
+  out.sort((a, b) => (b.primary - a.primary) || (Date.parse(a.created || '') || 0) - (Date.parse(b.created || '') || 0));
+  if (out.length && !out.some((p) => p.primary)) out[0].primary = true;
+  return out;
+}
+
+// --- the journey: docs/product/JOURNEY.md — the stage table, the gaps, and every row's source label -
+export function readJourney(projectDir) {
+  const p = join(projectDir, 'docs', 'product', 'JOURNEY.md');
+  const out = { present: existsSync(p), stages: [], gaps: [], updated: null };
+  if (!out.present) return out;
+  let text = '';
+  try { text = readFileSync(p, 'utf8'); } catch { return out; }
+  out.updated = frontmatter(text).updated || null;
+  const rows = text.split(/\r?\n/).filter((l) => /^\|/.test(l));
+  const header = rows.find((l) => /stage/i.test(l));
+  if (header) {
+    const cols = header.split('|').slice(1, -1).map((c) => c.trim().toLowerCase());
+    const col = (re) => cols.findIndex((c) => re.test(c));
+    const iStage = col(/^stage/), iDo = col(/trying/), iMeet = col(/meet/), iFlow = col(/flow/), iLeave = col(/leave/), iSrc = col(/source/);
+    for (const r of rows.slice(rows.indexOf(header) + 1)) {
+      if (/^\|\s*-{2,}/.test(r)) continue;
+      const cells = r.split('|').slice(1, -1).map((c) => c.trim());
+      if (!cells[iStage]) continue;
+      const src = (cells[iSrc] || '').toLowerCase();
+      out.stages.push({ stage: cells[iStage], doing: cells[iDo] || '', meets: cells[iMeet] || '', flow: cells[iFlow] || '', leaves: cells[iLeave] || '', source: /observ/.test(src) ? 'observed' : /said|interview|stated/.test(src) ? 'said' : /assum/.test(src) ? 'assumed' : null });
+    }
+  }
+  const gaps = section(text, /^##\s+the gaps/i);
+  if (gaps) out.gaps = gaps.split(/\r?\n/).slice(1).map((l) => l.replace(/^\s*[-*]\s+/, '').trim()).filter((l) => l && !/^<.*>$/.test(l));
+  return out;
+}
+
+// --- research: the EVID ledger by rung and by method — grades, dates, methods; never a quote ----------
+export const METHODS = [
+  ['interview', 'Interviews', 'stated', '/interview · /evidence'],
+  ['observation', 'Watching someone use it', 'observed', '/interview → the last question: "could I sit with you?"'],
+  ['metric', 'Product events · drop-off', 'observed', '/measure — a few events, not ten'],
+  ['pretotype', 'A pretotype (fake door · concierge)', 'observed', '/pretotype'],
+  ['commitment-test', 'A commitment asked for', 'observed', '/money · the ask at the end of a call'],
+  ['desk', 'Desk · competitive', 'inferred', '/comp-eval'],
+  ['heuristic', 'Heuristic review', 'inferred', '/design-review · /ux-check'],
+];
+export function readResearch(projectDir) {
+  const dir = join(projectDir, 'docs', 'evidence');
+  const evid = [];
+  if (existsSync(dir)) {
+    for (const n of readdirSync(dir).filter((x) => /^EVID-\d+.*\.md$/i.test(x)).sort()) {
+      try {
+        const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
+        const dateIn = (v) => (String(v || '').match(/\d{4}-\d{2}-\d{2}/) || [null])[0];
+        evid.push({ id: fm.id || n.replace(/\.md$/i, ''), grade: String(fm.grade || '').trim().toLowerCase() || null, method: String(fm.method || '').trim().toLowerCase() || null, date: dateIn(fm.date) || dateIn(fm.created) || null, assumption: String(fm.assumption || '').trim(), title: ((text.match(/^#\s+(?:EVID-\d+\s*[—-]\s*)?(.+)$/m) || [])[1] || '').trim() });
+      } catch { /* unreadable is not a signal */ }
+    }
+  }
+  const rung = (g) => (g === 'commitment' || g === 'observed-behavior') ? 'observed' : g === 'stated-pain' ? 'stated' : null;
+  const byRung = { observed: evid.filter((e) => rung(e.grade) === 'observed'), stated: evid.filter((e) => rung(e.grade) === 'stated'), ungraded: evid.filter((e) => !rung(e.grade)) };
+  const uxChecks = existsSync(join(projectDir, 'docs', 'design')) ? readdirSync(join(projectDir, 'docs', 'design')).filter((x) => /^ux-check-.*\.md$/i.test(x)).length : 0;
+  const reviews = existsSync(join(projectDir, 'docs', 'design', 'reviews')) ? readdirSync(join(projectDir, 'docs', 'design', 'reviews')).filter((x) => /\.md$/i.test(x)).length : 0;
+  const desk = existsSync(join(projectDir, 'docs', 'competition', 'README.md'));
+  const byMethod = METHODS.map(([key, label, r, verb]) => {
+    const used = key === 'desk' ? (desk ? 1 : 0) : key === 'heuristic' ? uxChecks + reviews : evid.filter((e) => e.method === key).length;
+    return { key, label, rung: r, verb, used };
+  });
+  const newest = evid.map((e) => e.date).filter(Boolean).sort().pop() || null;
+  return { evid, byRung, byMethod, newest };
+}
+
 // --- collect ----------------------------------------------------------------------------------------
 
 export function collectDesign(projectDir, projectName) {
@@ -183,10 +282,13 @@ export function collectDesign(projectDir, projectName) {
   const color = by('color|colour'), type = by('font|type|typography'), space = by('space|spacing'), radius = by('radius'), elevation = by('shadow|elevation'), motion = by('motion');
   const pairs = contrastPairs(tokens);
   const anchor = decs.find((d) => /brand.?anchor|anchor/i.test(d.title)) || null;
+  const personas = readPersonasFull(projectDir);
+  const journey = readJourney(projectDir);
+  const research = readResearch(projectDir);
   const slots = [
-    ['brand', shape.present], ['principles', guide.principles.length > 0], ['colour', color.length > 0], ['type', type.length > 0], ['space', space.length + radius.length + elevation.length > 0], ['layout', guide.layout],
+    ['brand', shape.present], ['people', personas.length > 0], ['journey', journey.stages.length > 0], ['principles', guide.principles.length > 0], ['colour', color.length > 0], ['type', type.length > 0], ['space', space.length + radius.length + elevation.length > 0], ['layout', guide.layout], ['research', research.evid.length > 0],
   ];
-  return { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings: pairs.filter((p) => p.grade !== 'AA').length };
+  return { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, findings: pairs.filter((p) => p.grade !== 'AA').length };
 }
 
 // --- render -------------------------------------------------------------------------------------------
@@ -206,7 +308,7 @@ function swatchHtml(t, decs) {
 }
 
 export function renderDesignHtml(data, stampedAt) {
-  const { brand, shape, tokens, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings, projectName } = data;
+  const { brand, shape, tokens, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings, projectName, personas, journey, research } = data;
   const filled = slots.filter(([, ok]) => ok).length;
   const ledger = `<b class="tab">${filled} of ${slots.length}</b> slots have something in them · <b class="tab">${pairs.length}</b> contrast pair${pairs.length === 1 ? '' : 's'} computed · <b class="tab">${findings}</b> finding${findings === 1 ? '' : 's'}`;
   const src = tokens.source || 'no tokens file';
@@ -229,7 +331,7 @@ export function renderDesignHtml(data, stampedAt) {
     const parts = [['Why', p.why], ['Guideline', p.guideline], ['Rules', p.rules], ['Wrong if', p.wrongIf]].filter(([, v]) => v);
     return `<article class="block principle" id="principle-${i + 1}" data-title="Principle ${i + 1} — ${esc(p.title)}"><div class="head"><h3>${i + 1} · ${esc(p.title)}</h3></div><div class="body">${p.statement ? `<p class="statement">${esc(p.statement)}</p>` : ''}${p.groundedIn ? `<p class="t-small"><strong>Grounded in:</strong> ${esc(p.groundedIn)}</p>` : ''}<div class="pgrid">${parts.map(([k, v]) => `<div><h4>${k}</h4><p>${esc(v)}</p></div>`).join('')}${parts.length === 0 ? '<p class="t-small"><em>A name and nothing under it — the slot asks for Why, Guideline, Rules and Wrong if.</em></p>' : ''}</div></div><div class="foot"><span class="chip ${p.grounded ? 'ev' : 'asserted'}">${p.grounded ? `grounded · ${esc(p.refs.join(', ') || 'named')}` : 'asserted · no EVID, persona or journey stage names it'}</span>${p.wrongIf ? '' : '<span class="chip asserted">no falsifier</span>'}<span class="src">docs/design/STYLE_GUIDE.md · Design principles · ${i + 1}</span></div><div class="actions"></div></article>`;
   };
-  const principles = chapter('principles', 2, 'Principles', guide.principles.length ? `${guide.principles.length}, each a direction that contains a tradeoff.` : 'No principle written yet.',
+  const principles = chapter('principles', 4, 'Principles', guide.principles.length ? `${guide.principles.length}, each a direction that contains a tradeoff.` : 'No principle written yet.',
     'A principle is grounded when something outside the room names it — an EVID, a persona, a stage of the journey. One that only asserts is still a principle; the chip says which is which so it can be tested instead of reaffirmed.',
     guide.principles.length ? `      <div class="blocks one">\n        ${guide.principles.map(principleHtml).join('\n        ')}\n      </div>`
       : `      <div class="blocks one">${hole('principle-none', 'Design principles', '<p>Three to five, each with what it buys and what it costs. If a reasonable person couldn\'t argue the opposite, it isn\'t a principle.</p>', guide.present ? 'docs/design/STYLE_GUIDE.md · Design principles — the slot is there, blank' : '/design-tokens-init writes the style guide with the slot', guide.present ? 'docs/design/STYLE_GUIDE.md · present, principles empty' : 'docs/design/STYLE_GUIDE.md · absent')}</div>`);
@@ -239,7 +341,7 @@ export function renderDesignHtml(data, stampedAt) {
   const semantic = color.filter((t) => !/^colou?r\.(gray|grey|blue|red|green|teal|amber|yellow|orange|purple|violet|neutral|palette)\b/i.test(t.name) && !/\.\d{2,3}$/.test(t.name));
   const primitives = color.length - semantic.length;
   const pairsRows = pairs.map((p) => `<tr><td class="mono">${esc(p.text.name)}</td><td class="mono">${esc(p.on.name)}</td><td class="mono tab">${p.ratio.toFixed(2)}</td><td class="${p.grade === 'AA' ? 'ok' : p.grade === 'AA-large' ? 'warn' : 'fail'}">${p.grade === 'AA' ? 'AA' : p.grade === 'AA-large' ? 'large text only' : 'fails'}</td></tr>`).join('');
-  const colour = chapter('colour', 3, 'Colour', color.length ? `${semantic.length} semantic name${semantic.length === 1 ? '' : 's'}${primitives ? ` over ${primitives} primitives` : ''}.` : 'No colour tokens yet.',
+  const colour = chapter('colour', 5, 'Colour', color.length ? `${semantic.length} semantic name${semantic.length === 1 ? '' : 's'}${primitives ? ` over ${primitives} primitives` : ''}.` : 'No colour tokens yet.',
     'Every swatch is its semantic name — what it is for, never its hue. Click a swatch, a name or a value to copy it in the form you want. A swatch with a reason under it is an argument someone has to answer; a swatch alone is a value someone will quietly change.',
     color.length ? `      <div class="blocks one">
         ${err}
@@ -250,7 +352,7 @@ export function renderDesignHtml(data, stampedAt) {
 
   // 4 · Type
   const typeRows = type.map((t) => { const v = Array.isArray(t.value) ? t.value.join(', ') : dim(t.value); return `<div class="row"><div class="meta"><b class="val" data-copy="${esc(`token=${t.name}|value=${v}|css=var(${cssVar(t.name)})`)}">${esc(t.name)}</b><span class="val" data-copy="${esc(`value=${v}|token=${t.name}`)}">${esc(v)}</span>${t.description ? `<span class="d">${esc(t.description)}</span>` : ''}</div><div class="spec"${Array.isArray(t.value) ? ` style="font-family:${esc(t.value.map((f) => (/\s/.test(f) ? `'${f}'` : f)).join(', '))}"` : ''}>${Array.isArray(t.value) ? 'The quick brown fox covers the Sunday shift.' : ''}</div></div>`; }).join('');
-  const typeCh = chapter('type', 4, 'Type', type.length ? `${type.length} type token${type.length === 1 ? '' : 's'}.` : 'No type tokens yet.',
+  const typeCh = chapter('type', 6, 'Type', type.length ? `${type.length} type token${type.length === 1 ? '' : 's'}.` : 'No type tokens yet.',
     'Roles, not sizes. A screen that needs a seventh role is asking a question the style guide should answer first.',
     type.length ? `      <div class="blocks one"><article class="block" id="type-roles" data-title="Type — the roles"><div class="head"><h3>Roles <span class="sub">· click a role to copy its token or value</span></h3></div><div class="body"><div class="scale">${typeRows}</div></div><div class="foot"><span class="src">${esc(src)} · font family</span></div><div class="actions"></div></article></div>`
       : `      <div class="blocks one">${hole('type-none', 'Type roles', '<p>A display face for the promise, a body face for the work, a data face for the numbers — and the six roles they play.</p>', '/design-tokens-init · the 5-token pass chooses the pairing', esc(src))}</div>`);
@@ -259,7 +361,7 @@ export function renderDesignHtml(data, stampedAt) {
   const bars = space.map((t) => `<div class="row"><span class="val" data-copy="${esc(`px=${dim(t.value)}|token=${t.name}|css=var(${cssVar(t.name)})`)}">${esc(t.name)} · ${esc(dim(t.value))}</span><i style="width:${esc(dim(t.value))}"></i></div>`).join('');
   const radii = radius.map((t) => `<div class="val" style="border-radius:${esc(dim(t.value))}" data-copy="${esc(`px=${dim(t.value)}|token=${t.name}`)}">${esc(dim(t.value))} · ${esc(t.name.replace(/^radius\./, ''))}</div>`).join('');
   const elev = elevation.map((t) => `<div class="val" style="box-shadow:${esc(String(t.value))}" data-copy="${esc(`value=${String(t.value)}|token=${t.name}`)}">${esc(t.name.replace(/^(shadow|elevation)\./, ''))}</div>`).join('');
-  const shapeCh = chapter('shape', 5, 'Space & shape', (space.length || radius.length || elevation.length) ? `${space.length} spacing step${space.length === 1 ? '' : 's'} · ${radius.length} radi${radius.length === 1 ? 'us' : 'i'} · ${elevation.length} elevation${elevation.length === 1 ? '' : 's'}.` : 'No spacing, radius or elevation tokens yet.', '',
+  const shapeCh = chapter('shape', 7, 'Space & shape', (space.length || radius.length || elevation.length) ? `${space.length} spacing step${space.length === 1 ? '' : 's'} · ${radius.length} radi${radius.length === 1 ? 'us' : 'i'} · ${elevation.length} elevation${elevation.length === 1 ? '' : 's'}.` : 'No spacing, radius or elevation tokens yet.', '',
     (space.length || radius.length || elevation.length) ? `      <div class="blocks">
         ${space.length ? `<article class="block" id="space-scale" data-title="Spacing scale"><div class="head"><h3>Spacing</h3></div><div class="body"><div class="bars">${bars}</div></div><div class="foot"><span class="src">${esc(src)} · space</span></div><div class="actions"></div></article>` : ''}
         ${radius.length ? `<article class="block" id="shape-radius" data-title="Radius"><div class="head"><h3>Radius</h3></div><div class="body"><div class="radii">${radii}</div></div><div class="foot"><span class="src">${esc(src)} · radius</span></div><div class="actions"></div></article>` : ''}
@@ -269,13 +371,48 @@ export function renderDesignHtml(data, stampedAt) {
       : `      <div class="blocks one">${hole('space-none', 'Spacing · radius · elevation', '<p>A 4-base scale, two radii, one shadow — the three families after colour that a screen reinvents by hand.</p>', '/design-tokens-init', esc(src))}</div>`);
 
   // 6 · Layout
-  const layout = chapter('layout', 6, 'Layout', guide.layout ? 'A layout section exists.' : 'Nobody has decided how a page is built yet.', '',
+  const layout = chapter('layout', 8, 'Layout', guide.layout ? 'A layout section exists.' : 'Nobody has decided how a page is built yet.', '',
     guide.layout ? `      <div class="blocks one"><article class="block" id="layout-guide" data-title="Layout"><div class="head"><h3>From the style guide</h3></div><div class="body"><p>The Layout section of <code>docs/design/STYLE_GUIDE.md</code> has content; slice 2 renders it. Until then, read it there.</p></div><div class="foot"><span class="src">docs/design/STYLE_GUIDE.md · Layout</span></div><div class="actions"></div></article></div>`
       : `      <div class="blocks one">${hole('layout-hole', 'The slot, and what fills it', '<p>No column grid, no breakpoint list, no container width. The slot has a shape so the decision has somewhere to land:</p><ul style="margin-top:8px;font-style:normal"><li><strong>base unit</strong></li><li><strong>the ramp</strong> — which spacing steps mean inside a control, between controls, between sections</li><li><strong>grid anatomy</strong> — columns · gutters · margins · regions</li><li><strong>breakpoints</strong> — as <code>breakpoint.*</code> tokens, so a media query is a name</li><li><strong>responsive techniques</strong> — reposition · resize · reflow · hide · re-architect, and which are allowed</li><li><strong>density</strong> — one, until a second is earned</li></ul>', 'docs/design/STYLE_GUIDE.md · Layout — six sub-slots, all blank · /design-review opens it at the next screen', guide.present ? 'docs/design/STYLE_GUIDE.md · Layout section empty or absent' : 'docs/design/STYLE_GUIDE.md · absent')}</div>`);
 
+  // 2 · People
+  const list = (v) => Array.isArray(v) ? `<ul>${v.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : `<p>${esc(v)}</p>`;
+  const holeLine = (label, verb) => `<p class="unk">${esc(label)} — not written${verb ? ` · ${esc(verb)}` : ''}</p>`;
+  const personaHtml = (p) => `<article class="block persona" id="persona-${esc(p.slug)}" data-title="${esc(p.name)} — ${p.primary ? 'primary' : 'secondary'} persona"><div class="head"><h3>${esc(p.name)} <span class="sub">— ${p.primary ? 'primary' : 'secondary'} · docs/personas/${esc(p.slug)}.md</span></h3></div><div class="body">${p.who ? `<p class="who">${esc(String(Array.isArray(p.who) ? p.who[0] : p.who))}</p>` : holeLine('who', '/persona derive')}<div class="pgrid">${[['The day (context)', p.context], ['Jobs', p.jobs], ['Pains', p.pains], ['Values', p.values]].map(([k, v]) => `<div><h4>${esc(k)}</h4>${v ? list(v) : holeLine(k.toLowerCase(), '')}</div>`).join('')}</div>${p.unknowns ? `<div class="dontknow"><strong>What we don't know yet:</strong> ${Array.isArray(p.unknowns) ? esc(p.unknowns.join(' · ')) : esc(p.unknowns)}</div>` : `<div class="dontknow unk">What we don't know yet — not written. The persona's open questions are the interview guide; without them there is nothing to ask.</div>`}</div><div class="foot">${p.synthetic != null ? `<span class="chip ${p.real ? 'ev' : 'asserted'}">synthetic ${p.synthetic}% · real ${p.real}%</span>` : '<span class="chip asserted">no evidence ledger</span>'}<span class="src">docs/personas/${esc(p.slug)}.md${p.updated ? ` · rev. ${esc(String(p.updated))}` : p.created ? ` · ${esc(String(p.created))}` : ''}</span></div><div class="actions"></div></article>`;
+  const people = chapter('people', 2, 'People', personas.length ? `${personas[0].name}${personas.length > 1 ? `, and ${personas.length - 1} more` : ''}.` : 'Nobody written down yet.',
+    'The full persona lives here, in the design space, because this is where it gets used; the playbook carries a snippet and a link. Each card says how much of it came from a real person — a card that is 100% synthetic is a guess with a name.',
+    personas.length ? `      <div class="blocks one">\n        ${personas.map(personaHtml).join('\n        ')}\n      </div>`
+      : `      <div class="blocks one">${hole('persona-none', 'Who this is for', '<p>The person who pays, the person who uses it, and the person who notices when it fails — each as a card with a <em>who</em> line, their day, their jobs, pains and values, and what you don\'t know yet.</p>', '/persona derive — from the idea; /persona enrich — from a real conversation', 'docs/personas/ · empty')}</div>`);
+
+  // 3 · The journey
+  const srcChip = (s) => s ? `<span class="chip ${s === 'observed' ? 'ev' : s === 'said' ? 'dec' : 'asserted'}">${s}</span>` : '<span class="chip find">unlabelled</span>';
+  const stageRows = journey.stages.map((st, i) => `<tr><td class="mono">${i + 1}</td><td><strong>${esc(st.stage)}</strong></td><td>${esc(st.doing)}</td><td>${esc(st.meets)}</td><td class="mono">${esc(st.flow || '—')}</td><td>${esc(st.leaves)}</td><td>${srcChip(st.source)}</td></tr>`).join('');
+  const unlabelled = journey.stages.filter((st) => !st.source).length;
+  const counts = ['observed', 'said', 'assumed'].map((k) => `${journey.stages.filter((st) => st.source === k).length} ${k}`).join(' · ');
+  const journeyCh = chapter('journey', 3, 'The journey', journey.stages.length ? 'From hearing about it to relying on it — and the gaps between.' : 'The arc nobody has drawn yet.',
+    'The tier above the flows: the stages a person travels, what they meet at each, and where they leave. Every row says where it came from — observed, said, or assumed — because a journey invented at a desk looks like research and isn\'t.',
+    journey.stages.length ? `      <div class="blocks one">
+        <article class="block" id="journey-arc" data-title="The journey — the stages"><div class="head"><h3>The stages <span class="sub">— the gaps between flows are the point</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>#</th><th>Stage</th><th>Trying to do</th><th>Meets</th><th>Serving flow</th><th>Where they leave</th><th>Source</th></tr></thead><tbody>${stageRows}</tbody></table></div>${unlabelled ? `<p class="t-small" style="margin-top:10px;color:var(--stale)"><strong>${unlabelled} stage${unlabelled === 1 ? '' : 's'} without a source label.</strong> An assumed row that stops being labelled becomes "research" in about six weeks. Label it.</p>` : ''}</div><div class="foot"><span class="chip asserted">${journey.stages.length} stages · ${counts}</span><span class="src">docs/product/JOURNEY.md${journey.updated ? ` · rev. ${esc(String(journey.updated))}` : ''}</span></div><div class="actions"></div></article>
+        ${journey.gaps.length ? `<article class="block" id="journey-gaps" data-title="The journey — the gaps"><div class="head"><h3>The gaps <span class="sub">— stages with no flow and no FEAT that owns them</span></h3></div><div class="body"><ul>${journey.gaps.map((g) => `<li>${esc(g)}</li>`).join('')}</ul></div><div class="foot"><span class="src">docs/product/JOURNEY.md · The gaps</span></div><div class="actions"></div></article>` : hole('journey-gaps', 'The gaps', '<p>The stages with no serving flow and no FEAT — that list is the output of a journey map; a map where every stage is covered is either a finished product or one drawn to look tidy.</p>', 'docs/product/JOURNEY.md · ## The gaps — empty', 'docs/product/JOURNEY.md')}
+      </div>`
+      : `      <div class="blocks one">${hole('journey-none', 'From first hearing about it to relying on it', '<p>Hear about it · try it · first value · come back · rely on it — what they\'re trying to do, what they meet, where they leave, and the source of each row. One page, written once.</p>', '/spec writes docs/product/JOURNEY.md the first time a flow is named', 'docs/product/JOURNEY.md · absent')}</div>`);
+
+  // 9 · Research
+  const r = research;
+  const rungRow = (k, label, items, note) => `<tr><td><strong>${label}</strong></td><td class="mono tab">${items.length}</td><td>${items.length ? esc(items.map((e) => `${e.id}${e.date ? ` · ${e.date}` : ''}`).join(' · ')) : `<span class="unk">${esc(note)}</span>`}</td></tr>`;
+  const methodRows = r.byMethod.map((m) => `<tr><td><strong>${esc(m.label)}</strong></td><td class="mono">${m.rung}</td><td class="${m.used ? 'ok' : 'q'}">${m.used ? `used · ${m.used}` : 'never'}</td><td class="mono">${esc(m.verb)}</td></tr>`).join('');
+  const synth = personas.length ? Math.round(personas.reduce((a, p) => a + (p.synthetic ?? 100), 0) / personas.length) : null;
+  const researchCh = chapter('research', 9, 'Research', r.evid.length ? `${r.byRung.observed.length} observed · ${r.byRung.stated.length} stated${synth != null ? ` · the personas are ${synth}% inferred` : ''}.` : 'Nothing from outside the room yet.',
+    'Research is everything that tells you whether the design is right — what people did, what they said, what the field does, what a reviewer can see. The same records the playbook keeps by date, cut here by the rung they reach and by the method that produced them. Grades, dates and methods only; never a quote. Coverage is a fact; readiness is a verdict.',
+    `      <div class="blocks one">
+        <article class="block" id="research-rungs" data-title="Research — by rung"><div class="head"><h3>By rung <span class="sub">— observed beats stated beats inferred</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Rung</th><th>n</th><th>Records</th></tr></thead><tbody>${rungRow('observed', 'Observed — someone was watched, or paid, or showed up', r.byRung.observed, 'nobody has been watched using anything — the cheapest test is to sit beside one person')}${rungRow('stated', 'Stated — someone said something that bears on a design choice', r.byRung.stated, 'no conversation recorded — /interview preps one, /evidence grades it')}<tr><td><strong>Inferred — the founder\'s assumptions, marked as such</strong></td><td class="mono tab">${personas.length}</td><td>${personas.length ? esc(personas.map((p) => `${p.name} · synthetic ${p.synthetic ?? '?'}%`).join(' · ')) : '<span class="unk">no persona to mark</span>'}</td></tr>${r.byRung.ungraded.length ? `<tr><td><strong>Ungraded</strong></td><td class="mono tab">${r.byRung.ungraded.length}</td><td class="warn">${esc(r.byRung.ungraded.map((e) => e.id).join(' · '))} — a record with no <code>grade:</code> counts for nothing</td></tr>` : ''}</tbody></table></div></div><div class="foot"><span class="chip ${r.byRung.observed.length ? 'ev' : 'asserted'}">${r.evid.length} record${r.evid.length === 1 ? '' : 's'}${r.newest ? ` · newest ${esc(r.newest)}` : ''}</span><span class="src">docs/evidence/ · grades and dates only</span></div><div class="actions"></div></article>
+        <article class="block" id="research-methods" data-title="Research — by method"><div class="head"><h3>By method <span class="sub">— what has been used, and what never has</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Method</th><th>Rung it reaches</th><th>Used</th><th>Verb</th></tr></thead><tbody>${methodRows}</tbody></table></div><p class="t-small" style="margin-top:10px">Read it by rung: every <em>observed</em> method that says <em>never</em> is a design decision resting on a guess. The EVID record\'s <code>method:</code> field is what this reads.</p></div><div class="foot"><span class="chip asserted">${r.byMethod.filter((m) => m.used).length} of ${r.byMethod.length} methods used</span><span class="src">docs/evidence/*.md · method: · docs/competition/README.md · docs/design/ux-check-*.md</span></div><div class="actions"></div></article>
+      </div>`);
+
   const rail = [
-    { group: 'Why it looks like this', items: [{ href: 'brand', n: 1, label: 'Start here', hole: !shape.present }, { href: 'principles', n: 2, label: 'Principles', hole: !guide.principles.length }] },
-    { group: 'The language', items: [{ href: 'colour', n: 3, label: 'Colour', hole: !color.length }, { href: 'type', n: 4, label: 'Type', hole: !type.length }, { href: 'shape', n: 5, label: 'Space & shape', hole: !(space.length || radius.length || elevation.length) }, { href: 'layout', n: 6, label: 'Layout', hole: !guide.layout }] },
+    { group: 'Why it looks like this', items: [{ href: 'brand', n: 1, label: 'Start here', hole: !shape.present }, { href: 'people', n: 2, label: 'People', hole: !personas.length }, { href: 'journey', n: 3, label: 'The journey', hole: !journey.stages.length }, { href: 'principles', n: 4, label: 'Principles', hole: !guide.principles.length }] },
+    { group: 'The language', items: [{ href: 'colour', n: 5, label: 'Colour', hole: !color.length }, { href: 'type', n: 6, label: 'Type', hole: !type.length }, { href: 'shape', n: 7, label: 'Space & shape', hole: !(space.length || radius.length || elevation.length) }, { href: 'layout', n: 8, label: 'Layout', hole: !guide.layout }] },
+    { group: 'Kept honest', items: [{ href: 'research', n: 9, label: 'Research', hole: !research.evid.length }] },
   ];
   const extraCss = `
   .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 10px; } .sw i { display: block; height: 52px; border-radius: 6px; margin-bottom: 7px; border: 1px solid var(--rule-2); } .sw i.val { border-bottom: 1px solid var(--rule-2); } .sw i.val:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -286,15 +423,16 @@ export function renderDesignHtml(data, stampedAt) {
   .bars { display: grid; gap: 8px; } .bars .row { display: grid; grid-template-columns: 120px 1fr; gap: 12px; align-items: center; font-family: var(--mono); font-size: 11.5px; color: var(--muted); } .bars .row i { display: block; height: 14px; background: var(--accent-soft); border-left: 2px solid var(--accent); }
   .radii { display: flex; gap: 14px; flex-wrap: wrap; } .radii div { width: 84px; height: 56px; border: 1.5px solid var(--ink-2); display: grid; place-items: end; padding: 6px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
   .elev { display: flex; gap: 16px; flex-wrap: wrap; } .elev div { width: 120px; height: 70px; background: var(--paper); border-radius: 8px; display: grid; place-items: center; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .persona .who { font-family: var(--display); font-size: 21px; line-height: 1.3; margin-bottom: 12px; } .persona .dontknow { margin-top: 12px; padding: 10px 12px; border: 1px dashed var(--rule); border-radius: 6px; color: var(--ink-2); font-size: 14px; } .persona .pgrid ul { margin: 0; padding-left: 18px; font-size: 14px; } .persona .pgrid li + li { margin-top: 3px; }
   .principle .statement { font-family: var(--display); font-size: 22px; line-height: 1.3; max-width: 34ch; margin-bottom: 12px; } .pgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 24px; } .pgrid h4 { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; font-weight: 500; } .pgrid p { font-size: 14.5px; }
   @media (max-width: 640px) { .scale .row { grid-template-columns: 1fr; gap: 4px; } }
 `;
   const footer = [
     brand.present ? `brand: ${esc(brand.name)} · docs/BRAND.md${brand.accent ? '' : ' (accent unknown → default)'}${brand.nascent ? ' · nascent' : ''}` : 'brand: nascent — no docs/BRAND.md yet; rendered in the default. /landing seeds it.',
     `a read of your files — ${esc(src)} · docs/design/STYLE_GUIDE.md · docs/BRAND.md · docs/decisions · regenerated, never edited · <span class="tab">rendered ${esc(stampedAt)}</span>`,
-    'slice 1: the language and the frame · people, the journey, components, patterns, icons and research are later slices · contrast is computed, everything else visual is inferred',
+    'slices 1–2: the language, the people and the story · components, patterns, icons and resources are later slices · contrast is computed, everything else visual is inferred',
   ];
-  return shellPage({ title: `${brand.name} — Design`, brand, projectDir: data.projectDir, current: 'design', ledgerHtml: ledger, rail, mainHtml: [start, principles, colour, typeCh, shapeCh, layout].join('\n'), footerLines: footer, extraCss });
+  return shellPage({ title: `${brand.name} — Design`, brand, projectDir: data.projectDir, current: 'design', ledgerHtml: ledger, rail, mainHtml: [start, people, journeyCh, principles, colour, typeCh, shapeCh, layout, researchCh].join('\n'), footerLines: footer, extraCss });
 }
 
 export function designHtml(projectDir, projectName) {

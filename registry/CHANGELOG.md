@@ -30,6 +30,18 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **`boss design` opens with the people (FEAT-031, slice 2).** Three chapters before a colour is
+  shown: **People** — every `docs/personas/*.md` as a full card (`who`, the day, jobs, pains, values,
+  *what we don't know yet*, the `synthetic N% · real N%` chip; a field that isn't written is a hole on
+  the card, never borrowed from another field; the playbook's Customers chapter links here by
+  `#persona-<slug>`) · **The journey** — `docs/product/JOURNEY.md`'s stages with the Source column as a
+  chip and a row that lost its label flagged in amber, plus *The gaps* as its own block · **Research**
+  — the evidence cut by rung (observed · stated · inferred, from `grade:`; grades and dates only, never
+  a quote) and by method (from the EVID record's `method:` — interviews · watching someone · product
+  events · a pretotype · a commitment asked for · desk · heuristic review — each *used N* or *never*
+  with its verb). Nine slots in the ledger; five more tests. The moment-by-moment "evening" the
+  prototype drew is not rendered: no record holds it, and the persona's `context` line is the honest
+  version.
 - **`boss design` — the design system as one page (FEAT-030, slice 1).** A sibling of `boss playbook`
   under `.boss/`: Start here (the brand's current shape, each of its six lines present or its own
   hole; the anchor DEC), Principles (the style guide's slot rendered as prose, *grounded* only when an

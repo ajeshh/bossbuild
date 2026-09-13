@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -125,7 +125,7 @@ test('with nothing under docs/design/ every language chapter is a hole with the 
   const html = renderDesignHtml({ ...collectDesign(dir, 'Bare'), projectDir: dir }, 'x');
   for (const id of ['principle-none', 'colour-none', 'type-none', 'space-none', 'layout-hole']) assert.match(html, new RegExp(`id="${id}"`), id);
   assert.match(html, /\/design-tokens-init/);
-  assert.match(html, /<b class="tab">1 of 6<\/b> slots/, 'the ledger counts the brand as the one filled slot');
+  assert.match(html, /<b class="tab">1 of 9<\/b> slots/, 'the ledger counts the brand as the one filled slot');
 });
 
 test('a tokens.json that is not JSON renders the error as a block and the rest of the page', () => {
@@ -152,4 +152,121 @@ test('designHtml writes exactly .boss/design.html and nothing under docs/', () =
   assert.ok(statSync(out).size > 10000);
   assert.deepEqual(readdirSync(join(dir, 'docs', 'design')).sort(), before);
   assert.deepEqual(readdirSync(join(dir, '.boss')), ['design.html']);
+});
+
+// --- slice 2 (FEAT-031): people, the journey, research ---------------------------------------------
+
+const DEE = `---
+name: Dee
+role: primary
+created: 2026-08-19
+---
+# Persona — Dee
+
+who — an owner-operator of a small home-care agency, 50s, nine caregivers
+context — Sunday evening, kitchen table, a caregiver just texted "can't do tomorrow"
+jobs —
+- every visit covered, every day
+- the regulator satisfied without a week of prep
+pains —
+- the Sunday phone tree: forty minutes, three calls
+- a sheet that is wrong until Monday
+values — trusts people who have done the job; abandons anything that treats her caregivers as numbers
+what we DON'T know yet —
+- would she pay £36 a month?
+- who does the rota when she is away?
+
+Evidence ledger:  synthetic 60% · real 40%
+`;
+const PRIYA = `# Persona — Priya
+
+who — a caregiver, 34, two bus rides from most clients
+
+Evidence ledger:  synthetic 100% · real 0%
+`;
+const JOURNEY = `---
+id: journey
+updated: 2026-09-13
+---
+# The journey — Tidewell
+
+| # | Stage | What they're trying to do | What they meet | Serving flow | Where they leave | Source |
+|---|---|---|---|---|---|---|
+| 1 | Hear about it | work out if this is for them | the landing page | — | it reads like agency software | assumed |
+| 2 | Try it | get the week in | the empty state | Monday import | retyping nine weeks | said · EVID-003 |
+| 3 | First value | cover one shift | the week view | Cover a shift | nobody free at 9:30 | observed |
+| 4 | Come back | next Sunday | re-entry | — | the sheet is wrong by Wednesday | |
+
+## The gaps
+
+- stage 1 → 2 has no flow at all
+- stage 4 is the one nobody owns
+`;
+const evid = (id, grade, method, date) => `---
+id: ${id}
+type: evidence
+date: ${date}
+method: ${method}
+grade: ${grade}
+assumption: owners will pay for cover-finding
+---
+# ${id} — a signal
+
+"A quote that must never reach the page."
+`;
+function withStory(extra = {}) {
+  return tidewell({ 'docs/personas/dee.md': DEE, 'docs/personas/priya.md': PRIYA, 'docs/product/JOURNEY.md': JOURNEY,
+    'docs/evidence/EVID-001-x.md': evid('EVID-001', 'stated-pain', 'interview', '2026-08-12'), 'docs/evidence/EVID-002-y.md': evid('EVID-002', 'stated-pain', 'interview', '2026-08-19'), 'docs/evidence/EVID-003-z.md': evid('EVID-003', 'observed-behavior', 'observation', '2026-08-30'),
+    'docs/competition/README.md': '# Rivals\n', ...extra });
+}
+
+test('a persona reads as /persona writes it — list fields as lists, a missing field as null, the ledger as numbers, primary first', () => {
+  const ps = readPersonasFull(withStory());
+  assert.equal(ps[0].name, 'Dee'); assert.equal(ps[0].primary, true);
+  assert.match(ps[0].who, /owner-operator/);
+  assert.deepEqual(ps[0].jobs, ['every visit covered, every day', 'the regulator satisfied without a week of prep']);
+  assert.deepEqual(ps[0].unknowns, ['would she pay £36 a month?', 'who does the rota when she is away?']);
+  assert.equal(ps[0].synthetic, 60); assert.equal(ps[0].real, 40);
+  assert.equal(ps[1].name, 'Priya'); assert.equal(ps[1].context, null, 'not written is null, never borrowed from who'); assert.equal(ps[1].synthetic, 100);
+});
+
+test('the people chapter renders the cards with stable ids and holes for what is not written', () => {
+  const dir = withStory();
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /id="persona-dee"[\s\S]*?synthetic 60% · real 40%/);
+  assert.match(html, /id="persona-priya"[\s\S]*?the day \(context\) — not written/i, 'a missing field is a hole on the card');
+  assert.match(html, /What we don't know yet:<\/strong> would she pay/);
+});
+
+test('the journey reads the stage table, labels the source, and flags the unlabelled row', () => {
+  const j = readJourney(withStory());
+  assert.equal(j.stages.length, 4);
+  assert.deepEqual(j.stages.map((s) => s.source), ['assumed', 'said', 'observed', null]);
+  assert.deepEqual(j.gaps, ['stage 1 → 2 has no flow at all', 'stage 4 is the one nobody owns']);
+  const dir = withStory();
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /<span class="chip find">unlabelled<\/span>/);
+  assert.match(html, /1 stage without a source label/);
+  assert.match(html, /id="journey-gaps"[\s\S]*?stage 4 is the one nobody owns/);
+});
+
+test('research is cut by rung from grade: and by method from method: — and never quotes', () => {
+  const r = readResearch(withStory());
+  assert.equal(r.byRung.observed.length, 1); assert.equal(r.byRung.stated.length, 2); assert.equal(r.newest, '2026-08-30');
+  const m = Object.fromEntries(r.byMethod.map((x) => [x.key, x.used]));
+  assert.equal(m.interview, 2); assert.equal(m.observation, 1); assert.equal(m.metric, 0); assert.equal(m.desk, 1, 'docs/competition/README.md exists'); assert.equal(m.heuristic, 0);
+  const dir = withStory();
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.ok(!html.includes('A quote that must never reach the page'), 'grades and dates only');
+  assert.match(html, /Product events · drop-off<\/strong><\/td><td class="mono">observed<\/td><td class="q">never/);
+  assert.match(html, /<b class="tab">8 of 9<\/b> slots/, 'everything but layout, whose section is a placeholder');
+});
+
+test('with no personas, no journey and no evidence the three chapters are holes with their verbs', () => {
+  const dir = tidewell();
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /id="persona-none"[\s\S]*?\/persona derive/);
+  assert.match(html, /id="journey-none"[\s\S]*?\/spec writes docs\/product\/JOURNEY\.md/);
+  assert.match(html, /nobody has been watched using anything/);
+  assert.match(html, /id="research-methods"/, 'the methods table renders even at n=0 — every row a never');
 });
