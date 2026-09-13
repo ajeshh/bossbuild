@@ -4,6 +4,6 @@ allowed_tools: [Read, Glob, Grep, Bash]
 runs: 1
 ---
 
-/boss:boss
+/boss:welcome
 
 what should I do next?

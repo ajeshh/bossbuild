@@ -16,6 +16,22 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.325.0 — 2026-09-12
+
+**`/boss:welcome` is the everyday door too — by pointer, not by copy.**
+
+> **For you:** if you installed BOSS as a plugin, `/boss:welcome` inside a BOSS project now does what
+> the project's own `/boss` does: say what you're trying to do (or nothing) and it reads where you are
+> and names the smallest next step. In a folder without BOSS it is unchanged.
+
+- The two everyday-door eval cases (0.324.0) could not run: the plugin ships one skill (DEC-017) and
+  the sandbox loads no project skills. The fix the decision already allows: the plugin skill POINTS
+  at the shipped `/boss` — `${CLAUDE_PLUGIN_ROOT}/…/boss/SKILL.md`, the door section, gated by
+  `check-manifests`' pointer check — so the routing table has one home. Result under
+  `claude plugin eval --scaffold`: **with 1.0 / without 0 / Δ 1.0 on both cases** — the demand
+  question and the plain "what should I do next?" — reading £60/week and Leeds off the idea doc,
+  naming one conversation, naming the verb after. Same result as the two prior cases (IDEA-103).
+
 ## 0.324.0 — 2026-09-12
 
 **The board's assessment, applied: MVP opens on 16 verbs, `/boss` is the door any day, `boss status`

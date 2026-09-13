@@ -1,6 +1,6 @@
 ---
 name: welcome
-description: Start here if you installed BOSS as a plugin. Says what BOSS is in a paragraph, checks whether this folder already carries it, asks what you're building and says it back — then, on your go, opens one of two doors (`boss new` for an idea, `boss adopt` for a repo you already have) and hands you to the project's own /welcome. Usage - /boss:welcome
+description: Start here if you installed BOSS as a plugin. In a folder without BOSS - says what it is in a paragraph, hears what you're building and says it back, then on your go opens one of two doors (`boss new` for an idea, `boss adopt` for a repo). In a BOSS project - the everyday door: say what you're trying to do and it names the smallest next step. Usage - /boss:welcome [what you're trying to do]
 ---
 
 # /boss:welcome — the front door
@@ -19,9 +19,14 @@ Check, quietly, before saying anything:
 ls .boss/manifest.json 2>/dev/null && boss status
 ```
 
-- **If `.boss/manifest.json` exists**, this folder already carries BOSS. Say so in one line, tell
-  them the project's own `/welcome` is the fuller tour and `/boss` is the spin-up, and stop. Do not
-  re-scaffold, do not run `boss adopt` on a project that has it.
+- **If `.boss/manifest.json` exists**, this folder already carries BOSS — and this skill IS the
+  everyday door, by pointer: read
+  `${CLAUDE_PLUGIN_ROOT}/stages/L0-quickstart/template/.claude/skills/boss/SKILL.md`, the section
+  `## 0.5 Where you are decides which door opens`, and do exactly what it says with whatever the
+  founder typed after the command (or nothing). Position is on disk in *this* folder; the routing
+  table lives in that one file so it can only drift in one place. The project's own `/boss` is the
+  same door under a shorter name; `/welcome` there is the fuller tour. Do not re-scaffold, do not
+  run `boss adopt` on a project that has it. Stop once the step is named and taken.
 - **If it does not**, continue.
 
 Also run `boss --version` once. If it fails, the plugin's `bin/` did not reach PATH — say that
