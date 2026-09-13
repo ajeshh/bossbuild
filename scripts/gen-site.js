@@ -19,7 +19,7 @@ import { loadModes, packageSkillMd, skillGloss, modeWord, STANDING_COMMANDS } fr
 // ONE implementation of "what did this release say to a founder", read by both surfaces. The CLI
 // had no copy of this at all until v0.256.0 and printed the raw entry instead; giving it one would
 // have made two, and two copies of a rule is how the rule drifts. See src/changelog.js.
-import { forYou } from '../src/changelog.js';
+import { forYou, parseEntries } from '../src/changelog.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // web/ is SOURCE (page fragments, the shell, the stylesheets).
@@ -256,29 +256,21 @@ ${rows}
 blocks.WHATS_NEW = () => {
   const cl = join(ROOT, 'registry', 'CHANGELOG.md');
   if (!existsSync(cl)) return '<p class="small">Changelog unavailable at build time.</p>';
-  // `## Unreleased` is landed-but-unpublished work; the site lists what a founder can install.
-  const parts = readFileSync(cl, 'utf8').split(/^## /m).slice(1).filter((p) => !/^Unreleased\s*$/im.test(p.split('\n')[0]));
+  // One parser for the CHANGELOG: `parseEntries` (src/changelog.js) — the same one `boss changelog`
+  // and `boss sync` read, so an entry the site shows is an entry a founder can install. It never
+  // returns `## Unreleased` (its heading is not a version) and it already separates a date from a
+  // title, which this file's own head regex used to get wrong (a titled heading landed in the
+  // date column).
   const out = [];
-  for (const chunk of parts) {
-    // OPT-IN: a release reaches the public feed only if it carries a "For you:" line.
-    // Most releases are internal — audits, refactors, doc sweeps — and a feed that
-    // lists those is a commit log, not a reason for anyone to care.
-    // The block is MULTI-LINE. `(.+)$` captured only the first line, so every release note
-    // longer than ~100 chars was published to the world truncated mid-sentence — v0.180.0's read
-    // "there's now one command for" and stopped. The changelog's own header tells authors to write
-    // these as prose, and prose wraps. Take the `> ` continuation lines too, and stop at the first
-    // line that is not a quote.
-    // And there can be MORE THAN ONE. `.match()` without /g returns the first hit only, so a
-    // release that changed three things for founders published one of them and silently dropped
-    // the rest — v0.189.0 shipped a merged designer, a retired agent with a new guard hook, and
-    // seven renames, and the feed showed the designer. The array below was always plural; only
-    // the reader was singular.
-    const forYouLines = forYou({ body: chunk.split('\n') });
+  for (const entry of parseEntries(readFileSync(cl, 'utf8'))) {
+    // OPT-IN: a release reaches the public feed only if it carries a "For you:" line. Most
+    // releases are internal — audits, refactors, doc sweeps — and a feed that lists those is a
+    // commit log, not a reason for anyone to care. The block is multi-line and there can be more
+    // than one; `forYou` reads all of them.
+    const forYouLines = forYou(entry);
     if (!forYouLines.length) continue;
-    const head = chunk.split('\n')[0].trim();
-    const m = head.match(/^([\d.]+)\s+\u2014\s+(.+)$/);
     out.push(`      <li>
-        <div class="rel"><span class="ver">v${esc(m ? m[1] : head)}</span><span class="when">${esc(m ? m[2] : '')}</span></div>
+        <div class="rel"><span class="ver">v${esc(entry.version)}</span><span class="when">${esc(entry.date || entry.title || '')}</span></div>
         ${forYouLines.map((t) => `<p>${md(t)}</p>`).join('\n        ')}
       </li>`);
     if (out.length >= 12) break;

@@ -30,6 +30,12 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **Checker hygiene.** `check-site` and `check-help` shared four helpers as two copies (the UTC
+  bug had to be fixed twice) — one copy now, `scripts/lib/freshness.js`. `check-pattern-coverage`
+  leaves the `check` chain: a report that always exits 0 in a gate chain is noise dressed as a
+  gate; it stays `npm run check:patterns`. `gen-site` reads the CHANGELOG through `parseEntries`
+  instead of its own splitter (the one that once filed a titled heading as a date); the generated
+  site is byte-identical.
 - **Manifest summaries are one sentence.** `stages/*/manifest.json` carried 24,000 characters of
   `summary` — MVP's alone was a 17,000-character release history with version stamps — packed into
   the site roster and rendered by nothing. One sentence each now; the roster field is gone.

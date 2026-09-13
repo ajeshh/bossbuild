@@ -64,8 +64,9 @@ test('a For-you line wins over the internal headline', () => {
 // two copies of a rule is how the rule drifts — which is the whole subject of this file.
 test('the website reads the shared extractor rather than its own copy', () => {
   const site = readFileSync(join(BOSS_ROOT, 'scripts', 'gen-site.js'), 'utf8');
-  assert.match(site, /import \{ forYou \} from '\.\.\/src\/changelog\.js'/,
-    'gen-site.js must import forYou, not re-implement it');
+  assert.match(site, /import \{ forYou, parseEntries \} from '\.\.\/src\/changelog\.js'/,
+    'gen-site.js must import forYou AND parseEntries — the entry splitter was its own copy too, and mis-filed a titled heading as a date');
+  assert.equal(/split\(\/\^## \/m\)/.test(site), false, 'no private CHANGELOG splitter in gen-site.js');
   assert.equal(
     /For you:\\\*\\\*/.test(site), false,
     'gen-site.js still carries its own For-you regex — that is the second copy this test exists to prevent',

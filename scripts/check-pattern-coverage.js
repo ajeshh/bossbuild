@@ -2,7 +2,9 @@
 // Deceptive-pattern coverage check — what the catalog does NOT cover, and what dose each
 // founder actually gets.
 //
-//   npm run check:patterns              the report
+//   npm run check:patterns              the report (a REPORT — it cannot fail, so it is not in
+//                                       `npm run check`; a checker that always exits 0 in a gate
+//                                       chain is noise dressed as a gate)
 //   npm run check:patterns -- --matrix  the full shape x surface grid
 //   npm run check:patterns -- --json    machine-readable, for /humane-refresh to read
 //

@@ -206,6 +206,7 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
 // checkers were listed again in package.json — two lists, and they disagreed: v0.212.0 named
 // "a checker in one gate is a checker half-installed" and five were still half-installed at
 // v0.323.0 (check-help, check-refs, check-boundary, check-pattern-coverage, check-deployed).
+// check-pattern-coverage later left the chain on purpose: a report that always exits 0.
 // The list now lives in ONE place, package.json's `check`, and this gate runs it. A checker is
 // in the gate or it is not. It runs here, after regeneration, because check-site reads the
 // regenerated site. Everything a checker itself treats as advisory still exits 0 there and so

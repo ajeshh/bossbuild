@@ -18,6 +18,7 @@
 // The list said "here is how to work out what an outside claim is worth" and the verb
 // behind it did not exist for the reader. A gate that only read dates would never see it.
 
+import { localDay, endOfLocalDay, lastChangedAt, changingNow } from './lib/freshness.js';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,12 +29,6 @@ import { WAYFINDING, wayfindingKind } from '../src/help.js';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'library', 'help');
 const strict = process.argv.includes('--strict');
-// Dates here are the reviewer's calendar, not UTC. `reviewed:` is a day a person typed after
-// looking at a page, and a commit made that evening is the same day to them — it was only
-// "tomorrow" in UTC, which is why every page read as behind after 17:00 Pacific and the line
-// printed nightly until nobody heeded it. Both sides of the comparison are local now.
-const localDay = (ms) => { const d = new Date(ms); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
-const endOfLocalDay = (ymd) => { const [y, m, d] = ymd.split('-').map(Number); return new Date(y, m - 1, d, 23, 59, 59, 999).getTime(); };
 const today = localDay(Date.now());
 
 const modes = loadModes();
@@ -46,18 +41,6 @@ const overdue = [];
 // section from the plan surfaces as a finding instead of silently orphaning its fragment.
 const PLACED = new Set(['orientation', 'ladder', 'records', 'conscience', 'removing']);
 
-function lastChangedAt(paths) {
-  try {
-    const out = execSync(`git log -1 --format=%ct -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
-    return out ? Number(out) * 1000 : null;
-  } catch { return null; }
-}
-function changingNow(paths) {
-  try {
-    const out = execSync(`git status --porcelain -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
-    return out ? out.split('\n').length : 0;
-  } catch { return 0; }
-}
 const fmt = localDay;
 
 if (!existsSync(SRC)) {
@@ -85,14 +68,14 @@ for (const f of frags) {
   else if (by < today) overdue.push(`${f} — due ${by} · ${describes}`);
   if (!reviewed) continue;
 
-  const now = changingNow(covers);
+  const now = changingNow(ROOT, covers);
   if (now) inflight.push(`${f} — ${now} uncommitted change(s) under ${covers.split(' ').slice(0, 2).join(', ')}`);
   // Measured against the `reviewed:` DATE, not the fragment's own commit/mtime. Two reasons,
   // both learned the hard way within an hour of writing this file: a fragment's touch time
   // clears on any edit (so a typo fix would assert a re-read that never happened), and
   // `library/help/` was UNTRACKED at birth, which made a git-time comparison silently
   // un-fireable — the guard read green because one side of it was always null.
-  const srcAt = lastChangedAt(covers);
+  const srcAt = lastChangedAt(ROOT, covers, null);
   const reviewedAt = endOfLocalDay(reviewed);
   if (srcAt && reviewedAt && srcAt > reviewedAt) {
     behind.push(`${f} — ${covers.split(' ')[0]}… changed ${fmt(srcAt)}, reviewed ${reviewed}`);

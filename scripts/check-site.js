@@ -11,6 +11,7 @@
 //
 // Soft by default (reports and exits 0) — HARD on a broken claim, because a site
 // promising a command that doesn't exist is worse than a site that's a bit stale.
+import { localDay, endOfLocalDay, lastChangedAt, changingNow } from './lib/freshness.js';
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
@@ -27,12 +28,6 @@ const strict = process.argv.includes('--strict');
 const SITE_URL = (readFileSync(join(ROOT, 'scripts', 'gen-site.js'), 'utf8')
   .match(/^const SITE_URL = '([^']+)'/m) || [])[1];
 if (!SITE_URL) throw new Error('check:site cannot find SITE_URL in scripts/gen-site.js');
-// Dates here are the reviewer's calendar, not UTC. `reviewed:` is a day a person typed after
-// looking at a page, and a commit made that evening is the same day to them — it was only
-// "tomorrow" in UTC, which is why every page read as behind after 17:00 Pacific and the line
-// printed nightly until nobody heeded it. Both sides of the comparison are local now.
-const localDay = (ms) => { const d = new Date(ms); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
-const endOfLocalDay = (ymd) => { const [y, m, d] = ymd.split('-').map(Number); return new Date(y, m - 1, d, 23, 59, 59, 999).getTime(); };
 const today = process.env.BOSS_TODAY || localDay(Date.now());
 
 const problems = [];
@@ -276,12 +271,6 @@ const inflight = [];
 // silently reports "fresh" for everything that changed since this morning, which is
 // exactly the rot this file exists to catch. Compare the source's last COMMIT time
 // against when the page itself was last edited.
-function lastChangedAt(paths) {
-  try {
-    const out = execSync(`git log -1 --format=%ct -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
-    return out ? Number(out) * 1000 : 0;
-  } catch { return 0; }
-}
 // The LATER of the last commit and the working-tree mtime.
 //
 // NO LONGER USED for staleness — see the `reviewed:` comparison below. Kept because it is the
@@ -299,19 +288,13 @@ const fmt = localDay;
 // Committed history only tells you what already landed. The moment that matters is
 // while the work is happening — that's when the docs are cheap to update and when
 // you still remember what changed. So uncommitted edits to a page's sources count too.
-function changingNow(paths) {
-  try {
-    const out = execSync(`git status --porcelain -- ${paths}`, { cwd: ROOT, encoding: 'utf8' }).trim();
-    return out ? out.split('\n').length : 0;
-  } catch { return 0; }
-}
 for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsWith('_'))) {
   const head = (readFileSync(join(WEB, f), 'utf8').match(/^<!--\n([\s\S]*?)\n-->/) || [, ''])[1];
   const covers = (head.match(/^covers:\s*(.*)$/m) || [, ''])[1].trim();
   const reviewed = (head.match(/^reviewed:\s*(\S+)/m) || [])[1];
   if (!covers) { problems.push(`${f} declares no \`covers:\` — nothing can tell when it falls behind`); continue; }
   if (!reviewed) continue;
-  const now = changingNow(covers);
+  const now = changingNow(ROOT, covers);
   if (now) inflight.push(`${f.replace(/\.html$/, '')} — ${now} uncommitted change(s) under ${covers.split(' ').slice(0, 2).join(', ')}`);
   // v0.273.0 — this compared `srcAt` against the page's TOUCH time (max of git and mtime), and
   // three comments in this file claimed it compared against `reviewed:`. It did not, and the
@@ -321,7 +304,7 @@ for (const f of readdirSync(WEB).filter((f) => f.endsWith('.html') && !f.startsW
   //
   // End of the reviewer's day, because `reviewed:` is a date and a source commit later the same
   // day should not read as behind a review that says it happened that day.
-  const srcAt = lastChangedAt(covers);
+  const srcAt = lastChangedAt(ROOT, covers, 0);
   const reviewedAt = endOfLocalDay(reviewed);
   if (srcAt && reviewedAt && srcAt > reviewedAt) {
     behind.push(`${f.replace(/\.html$/, '')} — ${covers.split(' ')[0]}… changed ${fmt(srcAt)}, reviewed ${reviewed}`);
