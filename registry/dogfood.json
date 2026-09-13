@@ -11,8 +11,8 @@
     {
       "path": ".boss/brain/read.md",
       "capability": "the venture brain — /close, /read-repo",
-      "verdict": "owed",
-      "why": "Root cause fixed 2026-08-20 (the conscience hook had never been installed here), and the DEPENDENCE is now fixed too: `deriveBrainFacts` gives the conscience a factual floor from the records and the frequency ledger, so a skipped /close no longer means no memory. This file stays owed on purpose — it holds the POV, and a POV is the one thing that cannot be derived. It is written by a person at the end of a real session."
+      "verdict": "exercised",
+      "why": "First read written at /close on 2026-09-12 (the IDEA-102 session), stamped with `boss brain record`. It had been `owed` since the ledger was created — FEAT-022 declared the brain complete at v0.65.0 and BOSS never wrote one. One entry; the read says so."
     },
     {
       "path": ".boss/brain/relationship.md",

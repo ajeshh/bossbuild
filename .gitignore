@@ -71,3 +71,6 @@ docs/mentor-practitioners.md
 # Cloudflare deploy artifact — hand-zipped from site/ at deploy time, never source.
 # Regenerate: cd site && zip -r ../site.zip . -x '.*' -x '__MACOSX/*'
 site.zip
+
+# plugin eval runs (claude plugin eval) — results are per-machine, never in the repo
+plugin/evals/results/

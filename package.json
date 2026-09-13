@@ -1,7 +1,7 @@
 {
   "name": "oyeboss",
-  "version": "0.319.0",
-  "description": "BOSS (Build Out Solid Stuff) \u2014 a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart \u2192 MVP \u2192 V1 \u2192 Scale), and mentors the founder. Make it real.",
+  "version": "0.320.0",
+  "description": "BOSS (Build Out Solid Stuff) — a just-in-time startup incubator that cold-starts projects at the right level of agentic ceremony, grows them through modes (Quickstart → MVP → V1 → Scale), and mentors the founder. Make it real.",
   "keywords": [
     "Agentic",
     "framework",
@@ -65,7 +65,8 @@
     "check:patterns": "node scripts/check-pattern-coverage.js",
     "check": "node scripts/check-manifests.js --strict && node scripts/check-site.js --strict && node scripts/check-help.js --strict && node scripts/check-wayfinding-drift.js --strict && node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node scripts/check-freshness.js && node scripts/check-pattern-coverage.js && node scripts/check-roster-claims.js --strict && node scripts/check-published.js --strict && node scripts/check-deployed.js --strict",
     "check:roster": "node scripts/check-roster-claims.js",
-    "check:help": "node scripts/check-help.js"
+    "check:help": "node scripts/check-help.js",
+    "eval:plugin": "claude plugin eval --trust-plugin --no-publish --allow-tools \"Bash(boss:*)\" \"Bash(which:*)\" ."
   },
   "engines": {
     "node": ">=18"

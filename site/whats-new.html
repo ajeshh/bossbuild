@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.319.0" />
+<meta name="generator" content="BOSS 0.320.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -69,6 +69,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.320.0</span><span class="when">2026-09-12</span></div>
+        <p>nothing in your project changes. If you build on BOSS's plugin, <code>npm run eval:plugin</code> now runs the door case against a no-plugin baseline and prints the delta — needs a host with <code>claude plugin eval</code> out of early access (tested on 2.1.269).</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.319.0</span><span class="when">2026-09-12</span></div>
         <p><code>/extract</code>'s description reads whole again — it said <code>PRINCIPLE #1</code>, YAML treats <code> #</code> as a comment, and your host had been showing it as <em>&quot;Pause and sort patterns — PRINCIPLE&quot;</em> for as long as the line existed. <code>npm run check</code> now refuses <code> #</code> in any shipped description. Nothing else about your surface changed.</p>
       </li>
@@ -111,10 +115,6 @@
       <li>
         <div class="rel"><span class="ver">v0.308.0</span><span class="when">2026-09-12</span></div>
         <p><code>docs/design/COMPONENTS.md</code> gains a <code>Status</code> column (<code>draft</code> · <code>stable</code> · <code>deprecated → X</code>) the agent reads before copying an import; the CLAUDE.md block <code>/design-tokens-init</code> writes now carries the one-way import rule (<code>ui/ → features/ → app/</code>); the style guide gains the four component-API floors and <em>behaviour from a primitive, style from tokens</em>; <code>/design-library</code> prints how much of your UI is on the system at all.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.307.0</span><span class="when">2026-09-12</span></div>
-        <p>if you installed <code>impeccable</code>, <code>ui-ux-pro-max</code> or wrote a Google-style <code>DESIGN.md</code> before running <code>/design-tokens-init</code>, it now finds that file and builds <em>from</em> it instead of generating a second system beside it. And <code>/ux-check</code> names what would actually run the accessibility checks it cannot run from source.</p>
       </li>
     </ol>
         <p class="small">
@@ -160,7 +160,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.319.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.320.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

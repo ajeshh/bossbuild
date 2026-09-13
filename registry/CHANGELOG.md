@@ -16,6 +16,35 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.320.0 — 2026-09-12
+
+**The plugin has an eval, and the eval has a baseline arm. With BOSS: 1.0. Without: 0. Twenty cents.**
+
+> **For you:** nothing in your project changes. If you build on BOSS's plugin, `npm run eval:plugin`
+> now runs the door case against a no-plugin baseline and prints the delta — needs a host with
+> `claude plugin eval` out of early access (tested on 2.1.269).
+
+- **IDEA-103, built the same day it was filed** — the watchlist's second instrument had no probe.
+  `plugin/evals/door/` is one case: a founder's one-paragraph idea (dog walkers in Leeds, last-minute
+  cancellations, £5 a month) sent to `/boss:welcome`, and two LLM graders — *reflection* (says it
+  back in the founder's words, the smallest version that proves it, names the one reading it made;
+  fails on pitch-speak or a stack recommendation) and *offer-and-wait* (one offer, then stops; fails
+  only on scaffolding or proceeding as if yes). `plugin.json` gains `experimental.evals`; results are
+  gitignored — they are per-machine, like `~/.boss/`.
+- **The number.** Host's own `--ablation with-without`: **with the plugin 1.0 (3/3 judges on both
+  graders), without it 0 ("Unknown command")**, Δ = 1.0, $0.19–0.26 a run, ~45 s. It is the first
+  time BOSS has measured *does the plugin change what the model does, against the same prompt
+  without it* — the door (IDEA-099) shipped with n=0 founders and three behaviours to measure, and
+  this is the cheapest of the three.
+- **Two things the first run taught, both about the case, not the door.** (1) With no Bash in the
+  sandbox the door's step 1 apologised for the shell it didn't have and named the install fallback,
+  and the judge read a named command as "told them to run it before yes" — a real session has Bash,
+  so the case now allows `Bash(boss:*)` and the grader fails only on an *act*, never on a mention.
+  (2) `tool_used: Skill` is the wrong plugin-fired indicator for a slash command; the baseline's
+  "Unknown command" already is one. Dropped.
+- **Folded in:** `registry/dogfood.json` — `.boss/brain/read.md` owed → exercised (a peer's `/close`
+  wrote the first brain read here; the ledger row was left for the next release, this is it).
+
 ## 0.319.0 — 2026-09-12
 
 **The instrument ran. All 45 skill descriptions are resident on every turn (~4.7k tokens), one of
