@@ -108,6 +108,10 @@ rule above still applies to the whole section once it is stamped.
   one shelf, every practice with a public provenance, exemptions need a reason. Its first run found
   two more the hand count missed (`accessibility`, `deceptive-patterns` — carried by the old catch-all
   as a note nobody read). Engineering's count reads 22, not 23, for that reason.
+- **The board's summary line, when the middle empties by finishing.** *"N captured, nothing
+  pressure-tested yet"* fired on BOSS's own board with 73 shipped and both middle columns at zero —
+  false, and it hid the shipped count, the one number that said why. Now only on a project that has
+  shipped nothing. One test.
 
 ## 0.325.0 — 2026-09-12
 

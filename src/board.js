@@ -459,7 +459,11 @@ function evidenceLine(counts, total) {
   // have the least basis for choosing. On an empty project `/boss` genuinely is the front door
   // (it is what `boss new` hands you); `/idea` is the one that keeps working forever.
   if (total === 0) return 'Nothing captured yet — `/boss <your idea>` to spin up, or `/idea <thought>` to capture one.';
-  if (counts.Captured > 0 && counts['Taking shape'] === 0 && counts.Building === 0) {
+  // Only on a project that has shipped NOTHING. With seventy shipped and the two middle columns
+  // empty because they were finished, "nothing pressure-tested yet" is false, and it hid the
+  // shipped count — the one number that said why the middle was empty (seen on BOSS's own board,
+  // 2026-09-13, the first time both columns reached zero).
+  if (counts.Captured > 0 && counts['Taking shape'] === 0 && counts.Building === 0 && counts.Shipped === 0) {
     const n = counts.Captured;
     return `${n} captured, nothing pressure-tested yet — what would you learn first? (\`/canvas\`)`;
   }

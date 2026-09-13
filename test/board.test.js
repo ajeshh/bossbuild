@@ -6,7 +6,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { collectBoard, canvassedIdeas, computeNext, computeStuck, boardJson, renderBoardCard } from '../src/board.js';
+import { collectBoard, canvassedIdeas, computeNext, computeStuck, boardJson, renderBoardCard, board } from '../src/board.js';
 import { project, cleanup, idea, feat, canvas, daysAgo } from './helpers.js';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -32,6 +32,19 @@ test('an idea with no canvas is Captured; with a real canvas it is Taking shape'
   const { cards } = collectBoard(dir);
   assert.equal(col(cards, 'IDEA-001'), 'Captured');
   assert.equal(col(cards, 'IDEA-002'), 'Taking shape');
+});
+
+test('the "nothing pressure-tested yet" line is for a project that has shipped nothing — not one whose middle columns emptied by finishing', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001'),
+    'docs/ideas/IDEA-002.md': idea('IDEA-002', { status: 'shipped', proof: 'x' }),
+  });
+  const lines = [];
+  const orig = console.log; console.log = (...a) => lines.push(a.join(' '));
+  try { board(dir, 'p', {}); } finally { console.log = orig; }
+  const out = lines.join('\n');
+  assert.match(out, /1 captured · 0 taking shape · 0 building · 1 shipped/);
+  assert.doesNotMatch(out, /nothing pressure-tested yet/);
 });
 
 test('an idea marked `ready` is Taking shape even with no canvas — the status /revalidate writes', () => {
