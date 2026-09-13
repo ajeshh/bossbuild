@@ -124,6 +124,26 @@ monorepo `packages/`, not from the rendered site (a JS app; the fetch returned n
 **The read in one line:** Carbon's depth is *per component* (four tabs, a definition of done, a
 keyboard table), not per site. BOSS's cards are one tab deep. That is where "go deeper" lands.
 
+## The fourth seed — UX before UI, and a story (Ajesh, 2026-09-13)
+
+*"instead of slideshow on design, wouldnt it be to have javascript or some way to code export, or
+and also maybe like a figma copy of the design elements"* · *"our principles also is pretty meh and
+basic compared to the prose and robustness"* · *"there is other ux research that is not just about
+interviewing folks"* · *"maybe personas from playbook should be here? and a snippet there?"* · *"not
+just about ui design but also about ux design.. and creating a story!"*
+
+Four rulings, each drawn in prototype v3 and each with what it kicks up for BOSS's own surface:
+
+| Ruling | On the site | Kicks up (sorted) |
+|---|---|---|
+| **No slideshow on the design space.** A component's affordances are *Code* and *SVG*, not *Slide*. *Code* copies HTML + CSS on the tokens, the React usage, or the tokens the component uses (JSON); *SVG* copies a drawing that a design tool pastes as editable vectors — the honest "figma copy" (SVG is the interchange; the drawing is not the component and says so). Present mode stays on the playbook, where blocks are slides. | v3: Link · Copy · Code · SVG on every component card; the overlay is gone | **task:** `/design-library`'s card gains the two — the code forms are derivable (the source, the import line, the manifest's token list); the SVG is a *render* and needs the same honesty line as the card (*an approximation*). The manifest already holds everything but the drawing |
+| **Principles as prose, six parts.** The shipped slot (`Why · Guideline · Rules · Wrong if`) was fine and the prototype rendered one-liners. The field adds two parts the slot lacks: a **statement** in the second person of the experience (Fluent: *"Your experiences should…"*) and **where it came from** — the moment in the journey or the evidence line that made it necessary. So: statement · where it came from · what it buys, what it costs · in practice (the rules, each a link) · what it looks like (the pair) · wrong if. | v3: all three Tidewell principles rewritten this way; principle 3 grounded in one verbatim sentence, principle 2 marked *no EVID names it directly* | **task:** two lines in the style-guide template's principle slot — `Statement:` and `Grounded in:` (a moment, a persona, an EVID) — and the render rule that a principle with no grounding renders as *asserted*. Same mandate as before: **every word is the founder's**; the site shows the six parts, it never writes them |
+| **Research is more than interviews.** Ten methods, each with the rung it reaches and what it would answer *here*: interviews · usability test · product events · support and the 7:20am call · session replay (refused for caregivers — principle 3 applies to the tool) · survey · desk/competitive · heuristic review · diary study · A/B. Read by rung: everything *observed* is 0 or unread. | v3: a *By method* table under Research | **task:** the render reads what exists (`docs/evidence/`, `docs/competition/`, `ux-check-*.md`, `.boss/measure` if wired); **open question:** does `/evidence` want a `method:` field, or is the rung enough? grep who would read it first |
+| **Personas live here; the playbook shows a snippet.** The design space is where a persona is *used*; the venture space is where it is *presented*. The full card moves; the playbook's chapter 3 becomes the `who` line, the tiles, the ledger chip and a link across. **The journey** joins it: the evening moment by moment, each moment naming the piece of design that answers it and its source (said · assumed · observed), and the arc from *hear about it* to *rely on it* — `/spec`'s journey-map template, rendered, with the gaps named. That is the story; it is the only part of the site written to be read in order. | v3: *People* (Dee, Priya, the family as a hole) and *The journey* (six moments, five stages) open the site after *Start here* | **decision for the playbook (FEAT-026 lane):** chapter 3 → snippet + link. Told to the peer session. **task:** `docs/product/JOURNEY.md` is the source the render reads; the *answered by* column is new — a `design:` link per stage row, the same field IDEA-108 proposes per component |
+
+The IA is now **UX → UI**: *Why it looks like this* (Start here · People · The journey · Principles) →
+*The language* → *The parts* → *Every screen* → *Take it with you* → *Kept honest*. Sixteen sections.
+
 ## The field, read at source (2026-09-13) — seven systems, one table
 
 Ajesh: *"the organization of content needs to be better … check fluent … the level of detail and
@@ -329,6 +349,15 @@ go*; Button's Usage gains a *Layout* line. **React to:** (9) is the group naming
 language* is Fluent's phrase; *Kept honest* is BOSS's) · (10) do the principle chips read as
 lineage or as clutter · (11) is *Start here* the page a designer would actually start on.
 
+### Prototype v3 — republished 2026-09-13 (same link)
+
+The fourth seed drawn (table above): People and The journey open the site; principles as six-part
+prose; research by method; Code and SVG on every component in place of the slideshow; 16 sections.
+**React to:** (12) does the evening read as a story or as a table with adjectives · (13) is the
+six-part principle the right weight, or is it a page a founder won't fill · (14) does *SVG* paste
+into your design tool as vectors (the honest test of the "figma copy") · (15) is *By method* the
+research page a founder needs, or a wall.
+
 ### The plan it was drawn from
 
 Hand-written, over **Tidewell**. Draw: Brand → Foundations with three swatches and their
@@ -406,3 +435,7 @@ asks what to import.**
   fluent, but also apple, material design and any other that you recommend."* Seven systems read —
   five at source, two from memory and marked; one table, three lines, seven investments sorted.
   Prototype v2 republished as a reader's path with principle chips and the Layout slot shaped.
+- 2026-09-13 — **fourth seed** (Ajesh): no slideshow, code + a figma copy · principles are meh ·
+  research is more than interviews · personas here, a snippet there · UX not just UI, and a story.
+  Four rulings, each drawn in v3 and each sorted for BOSS's surface; the persona ruling handed to
+  the FEAT-026 lane.
