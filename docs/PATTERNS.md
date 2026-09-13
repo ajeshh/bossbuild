@@ -27,10 +27,10 @@ judgment is the model's, in isolation. ([Anthropic on hooks](https://code.claude
 
 *"Every probabilistic system starts with a specification of correctness."* BOSS runs three channels:
 
-- **Unit tests — the deterministic floor.** **435 cases**, zero-dep (`node:test`), covering the state
+- **Unit tests — the deterministic floor.** **438 cases**, zero-dep (`node:test`), covering the state
   projections, the scaffold's non-destructive guarantees, and the CLI contract. Several are marked
   `REGRESSION` and name the shipped bug they lock. Cheapest of the three; runs first.
-- **Gate evals — deterministic, conscience-specific.** **153 cases / 0 failures**, asserting the
+- **Gate evals — deterministic, conscience-specific.** **154 cases / 0 failures**, asserting the
   predicate machinery fires (and stays silent) exactly when it should. Pure structural facts, no model.
 - **Judgment evals — LLM-as-judge, calibrated, GRADED.** **50 golden-transcript cases** across the
   semantic moments (drift / caution / capture / humane / sustaining), each judged by a *separate* model pass with

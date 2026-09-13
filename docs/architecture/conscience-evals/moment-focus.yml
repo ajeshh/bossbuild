@@ -68,8 +68,8 @@
 # =============================================================================
 
 - id: m-focus-101
-  category: should-not-fire
-  scenario: "Four in Building AND one shipped — the founder has proven they can finish."
+  category: should-fire
+  scenario: "Four in Building AND one shipped long ago — a ship in the past does not shrink today's pile."
   project_state:
     ideas:
       - { file: FEAT-001-a.md, status: building, capture_log_entries: 0 }
@@ -78,8 +78,9 @@
       - { file: FEAT-004-d.md, status: building, capture_log_entries: 0 }
       - { file: FEAT-005-e.md, status: shipped, capture_log_entries: 0 }
   expected_detection:
-    fires: false
-  why: "Exit satisfied (≥1 shipped). Shipping anything closes the never-finished-pile loop — the good outcome of a focus nudge."
+    fires: true
+    moment: focus
+  why: "The exit used to be '≥1 shipped ever', so one ship muted this loop forever — BOSS's own board sat at six in Building with a ship 84 days old and the moment could not open. The exit is now the pile itself (≤3 in flight); a rebuilt pile reopens it. This case was the accomplice: a green expectation written against the dead exit."
 
 - id: m-focus-102
   category: should-not-fire
@@ -94,8 +95,8 @@
   why: "Entry needs ≥4 in flight. Three concurrent builds isn't yet the pile-up smell; below the threshold the conscience stays quiet."
 
 - id: m-focus-103
-  category: should-not-fire
-  scenario: "Four ideas in 'building' status but they're IDEA-*.md, not FEAT-*.md."
+  category: should-fire
+  scenario: "Four ideas in 'building' status — IDEA-*.md, not FEAT-*.md — the ordinary case."
   project_state:
     ideas:
       - { file: IDEA-001-a.md, status: building, capture_log_entries: 0 }
@@ -103,8 +104,22 @@
       - { file: IDEA-003-c.md, status: building, capture_log_entries: 0 }
       - { file: IDEA-004-d.md, status: building, capture_log_entries: 0 }
   expected_detection:
+    fires: true
+    moment: focus
+  why: "docs/IDS.md: most ideas never earn a FEAT and carry themselves to shipped, so an IDEA in `building` IS work in flight — seven of the eight Building cards on BOSS's own board were ideas, and the loop globbed only FEAT-*.md, so the one moment built to catch a stalled pile was blind to 88% of it. The board counts both; the loop now matches the board. A Quickstart project's *captured* ideas still don't count — the pattern is `building|drafting|blocked`, and the loop is MVP-only."
+
+- id: m-focus-106
+  category: should-not-fire
+  scenario: "The pile shrank — four were in Building, one was sunset, three remain."
+  project_state:
+    ideas:
+      - { file: FEAT-001-a.md, status: building, capture_log_entries: 0 }
+      - { file: IDEA-002-b.md, status: building, capture_log_entries: 0 }
+      - { file: IDEA-003-c.md, status: building, capture_log_entries: 0 }
+      - { file: IDEA-004-d.md, status: sunset, capture_log_entries: 0 }
+  expected_detection:
     fires: false
-  why: "Focus is a FEAT-level (MVP) flow signal; its entry globs `FEAT-*.md`. Ideas don't count — a Quickstart project with many captured ideas isn't carrying WIP. No over-fire pre-MVP."
+  why: "Exit is the pile at ≤3, however it got there — a ship, a /sunset, a /revalidate that re-paused something. Ending work honestly closes the loop exactly as finishing it does."
 
 - id: m-focus-104
   category: should-not-fire

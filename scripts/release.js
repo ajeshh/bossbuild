@@ -60,6 +60,28 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   const plugin = JSON.parse(readFileSync(join(BOSS_ROOT, '.claude-plugin', 'plugin.json'), 'utf8'));
   record('VERSION ↔ .claude-plugin/plugin.json', plugin.version === VERSION,
     plugin.version === VERSION ? VERSION : `VERSION ${VERSION} vs plugin.json ${plugin.version}`);
+
+  // --- 1a. the number is actually next ---------------------------------------------------
+  // Six sessions release into one tree and five of them have collided on this integer. The
+  // handshake ("check mtimes before bumping") lived in CLAUDE.md as prose, and a rule with no
+  // mechanism is the shape this repo keeps finding in itself. So the gate reads the last
+  // COMMITTED number (HEAD, and origin/main when the ref is here — no fetch, a plane must not
+  // block a release) and refuses to sign off a release that is not strictly newer than both.
+  // Equal-to-HEAD is fine when the tree is clean (re-running the gate on a committed release);
+  // equal-to-HEAD with uncommitted work is exactly the collision: a peer already took N.
+  {
+    const semver = (v) => String(v || '').trim().split('.').map(Number);
+    const newer = (a, b) => { const [x, y] = [semver(a), semver(b)]; for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
+    const committed = (ref) => { const r = run('git', ['show', `${ref}:VERSION`]); return r.code === 0 ? r.out.trim() : null; };
+    const head = committed('HEAD');
+    const origin = committed('origin/main');
+    const dirty = (run('git', ['status', '--porcelain', '--', 'src', 'stages', 'library', 'registry/CHANGELOG.md', 'scripts', 'bin']).out || '').trim() !== '';
+    let verdict = null;
+    if (head && newer(head, VERSION)) verdict = `HEAD already carries ${head} — this tree read VERSION before a peer released; re-read and renumber`;
+    else if (origin && newer(origin, VERSION)) verdict = `origin/main already carries ${origin} — renumber above it`;
+    else if (head === VERSION && dirty) verdict = `${VERSION} is already committed and this tree has new work — a peer took this number; bump again`;
+    record('VERSION is next', !verdict, verdict || `${VERSION} > ${head || '(no commit)'}${origin && origin !== head ? ` · origin ${origin}` : ''}`);
+  }
 }
 
 // --- 1b. the unit suite ---------------------------------------------------
@@ -80,86 +102,6 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   const fail = (r.out.match(/^. fail (\d+)/m) || [, '?'])[1];
   record('unit tests', r.code === 0 && fail === '0', `${pass} passed · ${fail} failed`);
   if (r.code !== 0) console.log(r.out.split('\n').filter((l) => /^✖|AssertionError|at Test/.test(l)).slice(0, 20).join('\n'));
-}
-
-// --- 2. manifest wiring ---------------------------------------------------
-// Caught: L3's phantom `operate-loop`, and the `coherence` moment shipped with no frame.
-{
-  const r = run('node', [join('scripts', 'check-manifests.js'), '--strict']);
-  record('manifest wiring', r.code === 0,
-    r.code === 0 ? 'every entry resolves · every moment voiced' : 'see output below');
-  if (r.code !== 0) console.log(r.out.trimEnd());
-}
-
-// --- 2b. the shelf is legible to the refresh disciplines ------------------
-// Caught: `design-system.md` and `skill-authoring.md` shipped with NO frontmatter, so no
-// refresh discipline could see them — design-system sat 40 days past its own AI-failure
-// catalog with nothing able to say so. Only the STRUCTURAL half gates (a doc nothing can
-// see); being due or overdue is information, not a reason to block a release — the script
-// exits 0 for those on purpose.
-{
-  const r = run('node', [join('scripts', 'check-freshness.js')]);
-  record('practice freshness legible', r.code === 0,
-    r.code === 0 ? 'every practice carries curve + review dates' : 'see output below');
-  if (r.code !== 0) console.log(r.out.trimEnd());
-}
-
-// --- 2c. every shipped capability is classified on the ladder -------------
-// Caught (v0.179.0, the release that added it): ~47 skills shipped and only four ever asked
-// whether the founder already HAD the thing they generate. Nothing forced the question at
-// authoring time, so nothing asked it. This gate is that forcing function — a new capability
-// cannot ship without someone deciding whether it produces something durable, and if so what
-// rung it sits on and what seam it leaves. It also fails LOUDLY on a malformed ledger, which
-// otherwise disables artifact-awareness across sync and status in total silence.
-{
-  const r = run('node', [join('scripts', 'check-ladder.js')]);
-  record('ladder classification', r.code === 0,
-    r.code === 0 ? 'every shipped skill is durable-with-a-rung or exempt-with-a-reason' : 'see output below');
-  if (r.code !== 0) console.log(r.out.trimEnd());
-}
-
-// --- 2d. the backlog agrees with itself -----------------------------------
-// Caught (2026-08-20, the sweep that added it): 21 of 64 records had a status that disagreed
-// with their own file, and in 18 of them the INDEX under-reported work that had ALREADY
-// SHIPPED — `IDEA-001` still read "ready — next build" while `/boss-learn` and `/boss-sync`
-// had been in the L0 template since v0.2.0. That is the expensive direction to rot in: it
-// makes finished work look unfinished, and finished work gets rebuilt.
-// The root cause was vocabulary — `docs/IDS.md` declared six statuses and the files used
-// fifteen, with four spellings of "shipped" that no reader could sort and no checker could
-// compare. Also caught: two records claiming `IDEA-059`, and `FEAT-022` cited by a SHIPPED
-// practice with no record anywhere behind the id.
-{
-  const r = run('node', [join('scripts', 'check-backlog.js')]);
-  record('backlog integrity', r.code === 0,
-    r.code === 0 ? 'every record has a declared status, one id, and an index row that agrees' : 'see output below');
-  if (r.code !== 0) console.log(r.out.trimEnd());
-}
-
-// --- 2e. BOSS runs what BOSS ships ----------------------------------------
-// Caught (2026-08-20): BOSS ships 9 record types and 5 machine logs and its own repo — 185
-// releases in — exercised 4 record types and ZERO logs. FEAT-022 declared the venture brain
-// "complete" and BOSS has never written one; /extract encodes PRINCIPLE #1 and has produced zero
-// records in 156 releases. A capability nobody has ever run is not shipped, it is published.
-// UNCLASSIFIED fails; `owed` prints but passes, because a gate that is red forever is a gate you
-// bypass — and this repo has already killed three checkers that way.
-{
-  const r = run('node', [join('scripts', 'check-dogfood.js')]);
-  const owed = (r.out.match(/(\d+) owed/) || [])[1];
-  record('dogfood coverage', r.code === 0,
-    r.code === 0 ? `every shipped artifact is exercised, exempt, or owed${owed && owed !== '0' ? ` (${owed} owed)` : ''}` : 'see output below');
-  if (r.code !== 0) console.log(r.out.trimEnd());
-}
-
-// Counted claims — the roster half (agents/mentors/builders vs the manifests) and the
-// unit-test half (advertised counts vs `test/`). Shipped at v0.210.0 wired ONLY into
-// `npm run check`, which is a different gate from this one; v0.212.0 found it missing here
-// while auditing why four advertised counts had drifted. A checker in one gate is a checker
-// half-installed.
-{
-  const r = run('node', [join('scripts', 'check-roster-claims.js'), '--strict']);
-  record('counted claims hold', r.code === 0,
-    r.code === 0 ? 'roster + unit-test counts match their sources' : 'see output below');
-  if (r.code !== 0) console.log(r.out.trimEnd());
 }
 
 // --- 3. generated docs are current ---------------------------------------
@@ -225,34 +167,35 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   }
 }
 
-// --- 3c. the public website still describes the product --------------------
-// The roster and counts are generated and cannot drift; this checks the half a human
-// wrote — claims about commands that may no longer exist, practices added to the
-// library that no page mentions, and prose past its review date. HARD on a broken
-// claim (a site promising a command that isn't there is worse than a stale one),
-// soft on overdue prose.
+// --- 3c. the standing gates, once ------------------------------------------------------
+// Eight checkers used to be re-implemented here, each with its own wording, and the same
+// checkers were listed again in package.json — two lists, and they disagreed: v0.212.0 named
+// "a checker in one gate is a checker half-installed" and five were still half-installed at
+// v0.323.0 (check-help, check-refs, check-boundary, check-pattern-coverage, check-deployed).
+// The list now lives in ONE place, package.json's `check`, and this gate runs it. A checker is
+// in the gate or it is not. It runs here, after regeneration, because check-site reads the
+// regenerated site. Everything a checker itself treats as advisory still exits 0 there and so
+// stays advisory here; nothing got stricter by moving.
+//
+// What the folded blocks each caught, so the reasons are not lost with the wording: L3's
+// phantom operate-loop and a moment with no frame (manifests) · two practices with no
+// frontmatter that no refresh discipline could see (freshness) · ~47 skills of which four asked
+// whether the founder already had the thing (ladder) · 21 of 64 records disagreeing with their
+// own INDEX row (backlog) · a shipped brain BOSS had never written (dogfood) · four advertised
+// counts drifted (roster) · a site promising a command that no longer existed (site) · a GUIDE
+// that named 45 of 48 skills (wayfinding).
 {
-  const r = run('node', [join('scripts', 'check-site.js'), '--strict']);
-  const broken = (r.out.match(/^\s*(\d+) broken claim/m) || [, '?'])[1];
-  record('website claims hold', r.code === 0, r.code === 0 ? 'every command and agent the site names exists' : `${broken} broken claim(s) — see npm run check:site`);
+  const r = run('npm', ['run', 'check', '--silent']);
+  record('standing gates (npm run check)', r.code === 0,
+    r.code === 0 ? 'every checker in package.json `check` is green' : 'see output below');
+  if (r.code !== 0) console.log(r.out.trimEnd());
+  // A release is exactly the moment the website goes stale: something shipped, and the page
+  // describing it didn't move. Soft (never block a release on prose) but named loudly.
   const trailing = (r.out.match(/(\d+) trailing/) || [, '0'])[1];
-  const overdue = (r.out.match(/(\d+) overdue/) || [, '0'])[1];
-  // A release is exactly the moment the website goes stale: something shipped, and
-  // the page describing it didn't move. Soft (never block a release on prose) but
-  // named loudly, because the whole failure mode is that nobody notices.
   record('website keeps up', trailing === '0',
     trailing === '0' ? 'no page trails what it documents'
       : `${trailing} page(s) document something that changed since they were reviewed — npm run check:site`,
     true);
-  if (overdue !== '0') record('website prose fresh', true, `${overdue} page(s) past review_by — not a blocker`, true);
-  if (r.code !== 0) console.log(r.out.trimEnd());
-}
-
-// --- 4. wayfinding prose -------------------------------------------------
-{
-  const r = run('node', [join('scripts', 'check-wayfinding-drift.js'), '--strict']);
-  record('GUIDE.md names every skill', r.code === 0, r.code === 0 ? '' : 'see output below');
-  if (r.code !== 0) console.log(r.out.trimEnd());
 }
 
 // --- 5. no "not authored yet" claim about an authored mode ---------------
@@ -383,7 +326,7 @@ if (!fast) {
   record('published state', r.code === 0,
     offline ? 'skipped — no network'
       : r.code === 0 ? 'npm and the Homebrew tap serve this repo'
-        : 'an advertised install path is stale — see output below',
+        : 'an advertised install path is stale — npm run check:external',
     offline);
   if (r.code !== 0) console.log(r.out.trimEnd());
 }
