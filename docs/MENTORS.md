@@ -2,8 +2,8 @@
 id: MENTORS
 type: design
 owner: product-lead
-status: drafting
-updated: 2026-05-21
+status: active
+updated: 2026-09-13
 ---
 
 # Mentors — BOSS's advisory layer
@@ -33,14 +33,18 @@ Project `.claude/agents/`, `mentor-` prefixed (decided: keeps them discoverable 
 ## Internal vs. shipped (the boundary that prevents misroutes)
 
 The real axis is **"is this an artifact a founder's *project* consumes, or tooling for authoring BOSS
-itself?"** — *not* "mentors ship, builders don't" (`product-lead`/`coder`/`tester` ship too). Name it so a
-`/boss-learn` routing lands in a shippable container, not BOSS's gitignored `/.claude/`.
+itself?"** — *not* "mentors ship, builders don't" (`product-lead`/`coder`/`tester` ship too). Name it so an
+`/extract` routing lands in a shippable container, not BOSS's gitignored `/.claude/`.
 
 | | Ships to founders (`stages/<id>/template/`) | BOSS-only (gitignored `/.claude/`) |
 |---|---|---|
-| **Builders** | `product-lead`, `coder-*`, `tester`, `planner`, `designer` | the architect *of BOSS itself* |
-| **Mentors** | `mentor-founder/architect/gtm/cofounder/business/fundraising/pitch/talent` | `mentor-humane` (the *agent* — see below) |
-| **Authoring tooling** | — | proto-personas, `voice-keeper`, `prompt-coach` |
+| **Builders** | `product-lead`, `coder`, `tester`, `planner`, `designer`, `prompt-coach` | — |
+| **Mentors** | `mentor-founder` (Quickstart) · `mentor-architect`, `mentor-customers`, `mentor-cofounder`, `mentor-capital` (MVP) · `mentor-hiring` (Scale) | `mentor-humane` (the *agent* — see below); BOSS-specific copies of the shipped mentors that coach *Ajesh on BOSS* |
+| **Authoring tooling** | — | proto-personas, `voice-keeper` |
+
+The shipped list is the one `registry/supersedes.json` and the stage manifests agree on;
+`check-roster-claims` holds this file to them. (The v0.189.0 merge retired `mentor-gtm/business/
+fundraising/pitch/talent` and `coder-*` into the names above.)
 
 **The humane case (the one that bit, RVW-045):** the humane *lens* ships from Quickstart (conscience +
 `mentor-founder` + `/canvas` §3 + the dark-pattern checklist + `/red-team --humane` + the
@@ -122,8 +126,9 @@ From the canvas's Risks & Harms: a mentor is a **thinking partner, not a license
 
 ## Status / next
 
-- [x] Seed `mentor-founder` into Quickstart (template agent + manifest). *(the `library/agents/` half
-  is gone — v0.246.0 removed the mirror shelf; a stage template is where an agent lives, full stop)*
-- [ ] Get Ajesh's list of people; encode their practices UP via `/boss-learn`.
-- [ ] Author the remaining roster as their modes get built (architect/GTM with MVP, etc.).
-- [ ] Define `docs/dossier/` artifact templates.
+- [x] `mentor-founder` seated at Quickstart; `architect`, `customers`, `cofounder`, `capital` at MVP;
+  `hiring` at Scale. The roster is the manifests', and `check-roster-claims` keeps this table honest.
+- [x] `docs/dossier/` — mentor positions commit in a founder's project (FEAT-025 rungs 1–2).
+- [ ] Encode real people's practices UP via `/extract` where a checkout exists — still Ajesh's list.
+- [ ] `mentor-humane` as an agent stays unbuilt until a project at Scale asks for the door; the lens
+  ships from Quickstart.
