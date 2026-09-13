@@ -7,7 +7,7 @@ host: host-neutral
 curve: craft
 last_reviewed: 2026-08-01
 review_by: 2027-08-01
-provenance: Extracted at v0.135.0 from a real mistake. BOSS pinned `model: fable` in 8 shipped agent files + hardcoded model ids and per-token prices in `.boss/model-profile.json`. Within four weeks the pin was stale (the session model moved on), the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install — while `/recalibrate`, the discipline built to catch exactly this, never fired. The audit (REVIEW-2026-07-28 §E2) caught it instead. Root cause named by BOSS's own PRINCIPLE #3 - a model name buried in an agent file is *locked into code*; the reusable thing is the INTENT, which is stable, not the name, which is not. · **one paragraph added 2026-09-12 (v0.321.0), clock NOT moved** — the host's `effort:` frontmatter (2.1.267) is a shape knob, not a name; artifacts still inherit; the binding question goes to the next /recalibrate.
+provenance: Extracted at v0.135.0 from a real mistake. BOSS pinned `model: fable` in 8 shipped agent files + hardcoded model ids and per-token prices in `.boss/model-profile.json`. Within four weeks the pin was stale (the session model moved on), the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install — while `/recalibrate`, the discipline built to catch exactly this, never fired. The audit (REVIEW-2026-07-28 §E2) caught it instead. Root cause named by BOSS's own PRINCIPLE #3 - a model name buried in an agent file is *locked into code*; the reusable thing is the INTENT, which is stable, not the name, which is not. · **one paragraph added 2026-09-12 (v0.321.0), clock NOT moved** — the host's `effort:` frontmatter (2.1.267) is a shape knob, not a name; artifacts still inherit; the binding question goes to the next model-recalibration pass.
 provenance_public: Extracted from a real mistake. BOSS pinned a model alias in eight shipped agent files and hardcoded model ids and per-token prices. Within four weeks the pin was stale, the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install. Root cause is BOSS's own PRINCIPLE #3 — a model name buried in an agent file is locked into code; the reusable thing is the intent, which is stable, not the name, which is not.
 ---
 
@@ -73,7 +73,7 @@ default effort is pinned. That is a *shape* knob, not a *name* — "deliberation
 effort on the same model rather than as a different model. The rule above does not change: a shipped
 artifact still says nothing and inherits, because an `effort:` key is one more host-specific line
 BOSS would sign up to sweep (the v0.218.0 cost), and the prose sentence already carries the intent to
-any host. The next `/recalibrate` should ask one question of the three shapes: *does any of them now
+any host. The next model-recalibration pass (IDEA-014) should ask one question of the three shapes: *does any of them now
 want an effort level rather than a model, and if so, is that binding local (`.boss/model-profile.json`)
 or shipped?* Recommended: local.
 
