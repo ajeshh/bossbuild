@@ -758,7 +758,8 @@ test('deck cuts: Everything is every block in page order; Internal has no hole, 
   assert.ok(!vc.includes('canvas-modes') && !vc.includes('learn-1'), 'no grid cell, no devlog entry in the VC cut');
   assert.ok(vc.every((id) => all.indexOf(id) >= 0) && vc.slice(1).every((id, i) => all.indexOf(id) > all.indexOf(vc[i])), 'VC in page order');
   // the page carries the bar, the counts, the print sheet, the browser-only removal store
-  assert.ok(html.includes('id="present"') && html.includes(`<b class="tab n-vc">${vc.length}</b>`));
+  assert.ok(html.includes('id="present"') && html.includes(`<b class="tab n-vc">${vc.length}</b>`) && html.includes('>All <b class="tab n-all">'));
+  assert.ok(html.includes('function filterPage()') && html.includes("b.hidden = !inCut.has(b.id)"), 'the cut filters the page');
   assert.ok(html.includes("const KEY = 'boss-playbook-'") && html.includes("store.set('removed-' + cut, r)"), 'removals live in localStorage');
   assert.ok(html.includes('.printdeck { display: block; }') && html.includes('.topbar, .shell, footer.site, .deck, .sheet, .valmenu { display: none !important; }'), 'print shows the cut only');
   assert.ok(html.includes('page-break-after: always') && html.includes('@page { size: landscape; margin: 0; }'));

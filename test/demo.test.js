@@ -106,3 +106,21 @@ test('nothing in the demo names a real person or a real rival — the fiction ru
   assert.doesNotMatch(text, /photo:\s*\.\//, 'no photo file for a person');
   assert.ok(!existsSync(join(DEMO, 'docs', 'evidence', 'CANDIDATES-2026-08-23-maintainer-experiment.md')), 'nothing copied from BOSS\'s own evidence');
 });
+
+test('the conscience is run for real at build time: the shipped hook against the demo tree, its signals on the learning page as schema, never a composed voice', () => {
+  const { dir, conscience } = renderDemo();
+  try {
+    assert.equal(conscience.ran, true);
+    assert.ok(conscience.signals.length >= 1, 'at least one loop is open on the demo — that is the demo being honest');
+    for (const sg of conscience.signals) { assert.ok(sg.loop && sg.moment && sg.confidence, JSON.stringify(sg)); assert.ok(sg.facts.length >= 1, `${sg.loop} carries its evidence`); }
+    assert.ok(!conscience.signals.some((sg) => sg.loop === 'canvas-loop'), 'the canvas carries its heartbeat, so canvas-loop is closed');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+  const out = mkdtempSync(join(tmpdir(), 'boss-demo-out-'));
+  try {
+    generate({ out });
+    const learn = readFileSync(join(out, 'learning.html'), 'utf8');
+    assert.ok(learn.includes('id="learn-conscience"') && learn.includes('the same <code>.claude/hooks/conscience.js</code>'));
+    assert.match(learn, /id="signal-[a-z-]+"/);
+    assert.ok(learn.includes('Cohort read from the project: <code>non-tech-founder</code>'));
+  } finally { rmSync(out, { recursive: true, force: true }); }
+});

@@ -932,9 +932,10 @@ ${company.html}`;
   data.cuts = cuts;
   const presentBar = `<div class="present" id="present" data-cuts="${esc(JSON.stringify(cuts))}">
     <span class="label">Present</span>
-    <div class="seg" role="group" aria-label="Cut"><button type="button" data-cut="vc" aria-pressed="true">VC cut <b class="tab n-vc">${cuts.vc.length}</b></button><button type="button" data-cut="internal" aria-pressed="false">Internal <b class="tab n-internal">${cuts.internal.length}</b></button><button type="button" data-cut="all" aria-pressed="false">Everything <b class="tab n-all">${cuts.all.length}</b></button></div>
+    <div class="seg" role="group" aria-label="Cut"><button type="button" data-cut="vc" aria-pressed="true">VC cut <b class="tab n-vc">${cuts.vc.length}</b></button><button type="button" data-cut="internal" aria-pressed="false">Internal <b class="tab n-internal">${cuts.internal.length}</b></button><button type="button" data-cut="all" aria-pressed="false">All <b class="tab n-all">${cuts.all.length}</b></button></div>
     <button type="button" class="go" id="present-go">Present</button>
     <button type="button" class="pdf" id="present-pdf" title="Print the current cut, one slide per page">Export PDF</button>
+    <span class="cut-note t-small"></span>
     <div class="removed" id="present-removed" hidden><span class="label">removed</span><span class="chips"></span><button type="button" class="restore-all">restore all</button></div>
   </div>`;
   const mainHtml = presentBar + chaptersHtml;
@@ -953,6 +954,7 @@ ${company.html}`;
 const PLAYBOOK_CSS = `
   [hidden] { display: none !important; }
   .present { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); } .present .seg button b { margin-left: 6px; color: var(--muted); font-weight: 500; } .present .seg button[aria-pressed="true"] b { color: inherit; }
+  .chapter.cut-empty { display: none; } .rail a.cut-out { opacity: .45; } .present .cut-note { color: var(--muted); font-family: var(--mono); font-size: 11px; }
   .present .go, .present .pdf { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12.5px; } .present .go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); } .present .pdf:hover, .present .go:hover { filter: brightness(1.08); }
   .present .removed { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 8px; border-top: 1px solid var(--rule-2); } .present .removed .chips { display: contents; } .present .removed .rm { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px dashed var(--rule); border-radius: 99px; font-size: 12px; color: var(--ink-2); } .present .removed .rm button { font-family: var(--mono); font-size: 11px; color: var(--accent); } .present .removed .restore-all { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--accent); }
   .deck .chrome .cut { color: var(--ground); } .deck .chrome .remove { margin-left: 0; color: var(--muted); border-color: color-mix(in srgb, var(--muted) 40%, transparent); } .deck .chrome .close { margin-left: auto; }
@@ -1030,12 +1032,21 @@ function playbookJs(brand) {
   const present = $('#present'); let cuts = {}; try { cuts = JSON.parse(present.dataset.cuts); } catch (e) {}
   const KEY = 'boss-playbook-';
   const store = { get(k) { try { return JSON.parse(localStorage.getItem(KEY + k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) {} } };
-  const NAMES = { vc: 'VC cut', internal: 'Internal', all: 'Everything' };
+  const NAMES = { vc: 'VC cut', internal: 'Internal', all: 'All' };
   let cut = ['vc', 'internal', 'all'].includes(store.get('cut')) ? store.get('cut') : 'vc';
   const byId = (id) => blocks.find((b) => b.id === id);
   const removed = () => (store.get('removed-' + cut) || []).filter((id) => byId(id));
   const list = () => (cuts[cut] || []).filter((id) => !removed().includes(id)).map(byId).filter(Boolean);
-  function setCut(c) { cut = c; store.set('cut', c); $$('[data-cut]', present).forEach((y) => y.setAttribute('aria-pressed', String(y.dataset.cut === c))); renderBar(); }
+  function setCut(c) { cut = c; store.set('cut', c); $$('[data-cut]', present).forEach((y) => y.setAttribute('aria-pressed', String(y.dataset.cut === c))); renderBar(); filterPage(); }
+  /* the cut is also a filter (Ajesh, 2026-09-13): the page below shows only what the cut carries;
+     All shows the page whole. A removed slide stays on the page — removal is about the deck. */
+  function filterPage() {
+    const inCut = new Set(cut === 'all' ? blocks.map((b) => b.id) : (cuts[cut] || []));
+    blocks.forEach((b) => { b.hidden = !inCut.has(b.id); });
+    $$('.chapter').forEach((ch) => { const any = $$('.block:not(.pointer)', ch).some((b) => !b.hidden); ch.classList.toggle('cut-empty', !any); });
+    $$('.rail a').forEach((a) => { const ch = $(a.getAttribute('href')); a.classList.toggle('cut-out', !!(ch && ch.classList.contains('cut-empty'))); });
+    const note = $('.cut-note', present); if (note) note.textContent = cut === 'all' ? '' : 'showing the ' + NAMES[cut] + ' \u2014 ' + inCut.size + ' block' + (inCut.size === 1 ? '' : 's') + '; All shows the page whole';
+  }
   function renderBar() {
     const rm = removed(); const box = $('#present-removed'); box.hidden = !rm.length;
     $('.chips', box).innerHTML = rm.map((id) => '<span class="rm">' + esc(byId(id).dataset.title || id) + '<button type="button" data-restore="' + esc(id) + '" title="Put this slide back">↺</button></span>').join('');

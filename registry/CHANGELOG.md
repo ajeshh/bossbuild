@@ -448,6 +448,20 @@ rule above still applies to the whole section once it is stamped.
   pale sage ground, deep green-black ink, the kettle **copper** as the one accent, a calm green for
   *covered* — every text pair ≥ 4.5 on paper, the mark recoloured, DEC-004 renamed. The demo's
   EVIDs now name the cells they bear on, so the ledger reads *5 of 13 backed*.
+- **The cut is a filter, and Everything is All.** Picking VC cut · Internal · All on the playbook's
+  Present bar now also filters the page beneath it — blocks outside the cut hide, a chapter with
+  nothing left folds, the rail dims it, and a note says what's showing; *All* is the page whole
+  (Ajesh, 2026-09-13). Every playbook, not the demo's.
+- **The conscience runs for real on the demo.** The showcase's Learning page now carries a section
+  produced by running the shipped `.claude/hooks/conscience.js` against the demo tree at build time
+  — the loops and hooks an MVP install lays down are copied in, the hook is fired as the host would
+  fire it, and what comes back is shown as the schema it is: which loop, which moment, how
+  confident, the file facts behind it, and the first sentence of the frame the model would compose
+  from. Nothing composed, nothing manufactured; silence renders as silence. On Kettlewick two loops
+  are open — six devlog entries and no extraction decision; a FEAT shipped and no `.boss/smoke.json`
+  — and the page says so. Filling the demo caught a third: the canvas lacked the *incubation
+  heartbeat* `/canvas` writes (riskiest assumption · experiment this week · what would change the
+  plan), so the canvas loop read as open; the demo canvas now carries it.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

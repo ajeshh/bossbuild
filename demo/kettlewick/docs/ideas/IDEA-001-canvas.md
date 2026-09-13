@@ -35,3 +35,8 @@ updated: 2026-08-30
 | **Risks & Harms** | A visit marked covered that isn't — a person doesn't get their care. Carers pressured to say yes at 7 a.m. — refused by design (no reply is fine, nothing shows who declined). Location tracking — refused. The regulator names a duty of care to the person visited; our stance: the owner confirms every fill, Kettlewick never marks a visit covered on its own. |
 | **Build or buy?** | Build the cover flow only. Buy the texting; keep the rota where it is (the spreadsheet). Rotawise does rotas; we don't. |
 | **Principles** | Never sell carer data. Nothing after 8pm. The owner is the last word on every fill. |
+
+## Incubation heartbeat
+- **Riskiest assumption:** owners will pay £4 a carer for cover alone, without the rota — one has (EVID-004); the next four haven't been asked.
+- **Experiment this week:** put the card form (FEAT-003) in front of the three owners who filled twice; ask for the first month, not a promise.
+- **What result would change the plan?** two of three say no to paying for cover alone → the rota question reopens (DEC-002's falsifier, early).

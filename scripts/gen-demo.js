@@ -18,6 +18,7 @@
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, cpSync, rmSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { playbookHtml, questionsLine } from '../src/playbook.js';
 import { designHtml } from '../src/design.js';
@@ -43,13 +44,49 @@ export function renderDemo() {
   mkdirSync(join(dir, '.boss'), { recursive: true });
   writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({ name: project.name, stage: project.stage, mode: project.mode, cohort: project.cohort, version: project.bossVersion, created: project.created }, null, 2));
   if (project.cohort) writeFileSync(join(dir, '.boss', 'config.json'), JSON.stringify({ cohort: project.cohort, team: [{ handle: '@ola', name: 'Ola Bennett', added: '2026-06-01' }] }, null, 2));
+  // the loops and hooks an install lays down for this stage — copied from the templates, so the
+  // conscience can be run for real against the records (never a manufactured log)
+  for (const stage of ['L0-quickstart', 'L1-mvp']) {
+    const loops = join(ROOT, 'stages', stage, 'template', '.boss', 'loops');
+    if (existsSync(loops)) cpSync(loops, join(dir, '.boss', 'loops'), { recursive: true });
+    const hooks = join(ROOT, 'stages', stage, 'template', '.claude', 'hooks');
+    if (existsSync(hooks)) cpSync(hooks, join(dir, '.claude', 'hooks'), { recursive: true });
+  }
   // render order matters only for the family bar: the last one rendered sees the other two on disk,
   // so render twice — cheap, and every page's bar then links to both siblings.
   const once = () => { boardHtml(dir, project.name); designHtml(dir, project.name); return playbookHtml(dir, project.name); };
   once();
   const { data } = once();
   const design = designHtml(dir, project.name).data; boardHtml(dir, project.name);
-  return { dir, project, data, design, pages: { playbook: join(dir, '.boss', 'playbook.html'), design: join(dir, '.boss', 'design.html'), board: join(dir, '.boss', 'board.html') } };
+  return { dir, project, data, design, conscience: runConscience(dir), pages: { playbook: join(dir, '.boss', 'playbook.html'), design: join(dir, '.boss', 'design.html'), board: join(dir, '.boss', 'board.html') } };
+}
+
+// The conscience, run for real: the shipped hook (`.claude/hooks/conscience.js`) against the demo
+// tree, exactly as the host would run it on a prompt. What comes back is a SCHEMA — loop, moment,
+// confidence, the predicate's evidence — and the loop file's own opening sentence; Claude composes
+// the voice at the desk, and this page composes nothing. An empty result is silence, shown as such.
+export function runConscience(dir) {
+  const hook = join(dir, '.claude', 'hooks', 'conscience.js');
+  if (!existsSync(hook)) return { ran: false, signals: [] };
+  let out = '';
+  try { out = execFileSync(process.execPath, [hook], { cwd: dir, input: '{}', encoding: 'utf8', timeout: 20000, stdio: ['pipe', 'pipe', 'ignore'] }); } catch { return { ran: false, signals: [] }; }
+  let j = null; try { j = JSON.parse(out).hookSpecificOutput; } catch { return { ran: true, signals: [] }; }
+  // the frame the hook hands the model, per signal: its first sentence is the plainest statement
+  // of the moment there is (the loop file's prose is BOSS's own history, not the founder's)
+  const frames = String(j && j.additionalContext || '').split(/\(\d+\)\s+\[BOSS conscience — /).slice(1);
+  const signals = (j && j.signals ? j.signals : []).map((sg, i) => {
+    const loopFile = join(dir, '.boss', 'loops', `${sg.loop_id}.md`);
+    let opening = '', title = '';
+    try { title = (readFileSync(loopFile, 'utf8').replace(/^---\n[\s\S]*?\n---\n?/, '').match(/^#\s+(.+)$/m) || [null, ''])[1].trim(); } catch { /* a loop with no prose is still a signal */ }
+    const frame = (frames[i] || '').replace(/^[^\]]*\]\s*/, '');
+    const m = frame.match(/^(.{12,}?[.!?])(\s|$)/);
+    opening = (m ? m[1] : '').replace(/[*_`]/g, '').trim();
+    const facts = [];
+    for (const e of (sg.evidence && sg.evidence.entry) || []) if (e.count != null) facts.push(`${e.count} match${e.count === 1 ? '' : 'es'} in ${e.files || e.matchedFiles || 0} file${(e.files || e.matchedFiles) === 1 ? '' : 's'} (needs ${e.min})`);
+    for (const x of (sg.evidence && sg.evidence.exit) || []) if (x.ok === false) facts.push(x.path ? `missing: ${x.path}` : x.path_glob ? `nothing matching ${x.path_glob}` : `exit not met`);
+    return { loop: sg.loop_id, moment: sg.moment, type: sg.type, confidence: sg.confidence, title, opening, facts };
+  });
+  return { ran: true, signals, cohort: j && j.cohort };
 }
 
 // The organization page — from the tree that was just rendered, grouped by what the founder is
@@ -151,7 +188,7 @@ ${groups}`);
 // The learning page — how the venture learned, read from its own records: the ladder climbing,
 // a persona's ledger moving, a decision proven wrong, the brand learning real words, a health
 // read turning into the next idea, and the modes that gave the founder each verb when earned.
-export function learningHtml(dir, project) {
+export function learningHtml(dir, project, conscience = { ran: false, signals: [] }) {
   const ev = readEvidence(dir).sort((a, b) => String(a.date).localeCompare(String(b.date)));
   const GR = ['stated-pain', 'observed-behavior', 'commitment'];
   const ladder = ev.map((e) => `<li><span class="date">${esc(e.date || 'undated')}</span> <span class="chip ${e.grade === 'stated-pain' ? 'asserted' : 'ev'}">${esc(e.grade)}</span> ${esc(e.title)}</li>`).join('');
@@ -181,6 +218,8 @@ ${wrong ? block('learn-decision', 'A decision failed its own test', wrong.id, `<
 ${brand ? block('learn-brand', 'The brand learned real words', `${brand.learned.count} rows, from evidence`, `<p>The brand doc starts nascent and only grows from things that actually happened — never from brainstorming. What each one said about the brand:</p><ol class="trail">${learnedRows}</ol>`, 'docs/BRAND.md · What we\'ve learned') : ''}
 ${health && health.health ? block('learn-health', 'A health read became the next idea', health.health.date, `<p>${esc(health.health.text)}</p>${fromHealth.length ? `<ol class="trail">${fromHealth.map((e) => `<li><span class="date">${esc(e.date)}</span> ${esc(e.landed)}${e.surprises ? ` — ${esc(e.surprises)}` : ''}</li>`).join('')}</ol>` : ''}<p class="t-small">Pre-fit by default. At n under ten, the verdict is <em>talk to them</em>, never a score.</p>`, `${health.health.file} · docs/devlog.md`) : ''}
 </div>
+<section class="chapter" id="learn-conscience"><div class="chapter-head"><div class="label">The conscience, run against these records</div><p>${conscience.ran ? `The shipped hook was run on this exact tree while this page was built — the same <code>.claude/hooks/conscience.js</code> an install fires on every prompt. It returns a <em>signal</em>, not a sentence: which loop, which moment, how confident, and the file facts behind it. At the founder's desk the model turns that into one spare line, once; here you see the schema.${conscience.cohort ? ` Cohort read from the project: <code>${esc(conscience.cohort)}</code>.` : ''}` : 'The hook could not be run at build time; nothing is shown in its place.'}</p></div>
+<div class="blocks">${conscience.signals.length ? conscience.signals.map((sg, i) => `<article class="block filled signal" id="signal-${esc(sg.loop)}" data-title="${esc(sg.loop)}"><div class="head"><h3>${esc(sg.title || sg.loop)} <span class="sub">— ${esc(sg.moment)} · ${esc(sg.confidence)} confidence</span></h3></div><div class="body">${sg.opening ? `<p>${esc(sg.opening)}</p>` : ''}<ul class="facts-list">${sg.facts.map((f) => `<li><code>${esc(f)}</code></li>`).join('')}</ul></div><div class="foot"><span class="chip ${sg.moment === 'done' ? 'ev' : 'find'}">${esc(sg.type)}</span><span class="src">.boss/loops/${esc(sg.loop)}.md · run ${new Date().toISOString().slice(0, 10)}</span></div><div class="actions"></div></article>`).join('') : (conscience.ran ? `<article class="block dormant" id="signal-none" data-title="silence"><div class="head"><h3>Nothing to say</h3></div><div class="body"><p class="prompt">Every loop's exit is met. The conscience stays quiet the rest of the time — that is the design, not a gap.</p></div><div class="foot"><span class="src">.boss/loops · run ${new Date().toISOString().slice(0, 10)}</span></div><div class="actions"></div></article>` : '')}</div></section>
 <section class="chapter" id="learn-modes"><div class="chapter-head"><div class="label">And the verbs arrived as they were earned</div><p>Quickstart gives a founder the capture-and-talk-to-one-person loop and nothing else; MVP adds the build, the ship and the measure. A mode is unlocked by the founder, when the canvas holds — not by a calendar.</p></div><div class="blocks two">${modeCards}</div></section>`);
 }
 
@@ -198,6 +237,7 @@ function page(project, title, inner) {
   .verbs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; } .verb-chip { display: inline-flex; padding: 2px 9px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); font-family: var(--mono); font-size: 11px; letter-spacing: .02em; }
   .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 28px; } .fact { background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; } .fact b { display: block; font-family: var(--display); font-size: 34px; line-height: 1; margin-bottom: 6px; } .fact span { font-size: 13px; color: var(--ink-2); }
   .modes { display: grid; gap: 10px; } .mode p { margin-top: 2px; font-size: 14px; }
+  .facts-list { margin: 8px 0 0; padding-left: 18px; font-size: 13px; } .facts-list li + li { margin-top: 4px; } .block.signal .body p { font-size: 14.5px; }
   .trail { margin: 8px 0 0; padding-left: 18px; } .trail li + li { margin-top: 6px; } .trail .date { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-right: 6px; } .block .fals { margin-top: 8px; color: var(--ink-2); font-size: 14px; }
   main.one .chapter { padding-block: 20px 36px; }
   .demo-banner { font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); padding: 8px 20px; background: var(--paper); border-bottom: 1px solid var(--rule); }
@@ -228,7 +268,7 @@ function stamp(html) {
 }
 
 export function generate({ out = SITE_DEMO, check = false } = {}) {
-  const { dir, project, data, design, pages } = renderDemo();
+  const { dir, project, data, design, pages, conscience } = renderDemo();
   try {
     const playbook = readFileSync(pages.playbook, 'utf8');
     SHELL_CSS = (playbook.match(/<style>([\s\S]*?)<\/style>/) || [null, ''])[1];
@@ -241,7 +281,7 @@ export function generate({ out = SITE_DEMO, check = false } = {}) {
     writeFileSync(join(out, 'design.html'), stamp(readFileSync(pages.design, 'utf8')));
     writeFileSync(join(out, 'board.html'), stamp(readFileSync(pages.board, 'utf8')));
     writeFileSync(join(out, 'organization.html'), organizationHtml(dir, project));
-    writeFileSync(join(out, 'learning.html'), learningHtml(dir, project));
+    writeFileSync(join(out, 'learning.html'), learningHtml(dir, project, conscience));
     writeFileSync(join(out, 'index.html'), page(project, 'Demo', `
 <div class="chapter-head"><div class="label">The demo</div><h2>One venture, every piece, generated.</h2><p>Kettlewick is a fictional home-care rota venture — a phone-first way to find cover when a carer calls in sick. Nothing here is a mock-up: the pages below are what <code>boss playbook</code>, <code>boss design</code> and <code>boss board --html</code> produce from the records in <code>demo/kettlewick/</code>, which you can read in the repo.</p></div>
 <div class="blocks">
@@ -249,7 +289,7 @@ export function generate({ out = SITE_DEMO, check = false } = {}) {
   <article class="block filled" id="demo-design" data-title="Design"><div class="head"><h3><a href="design.html">The design space →</a></h3></div><div class="body"><p>Tokens as swatches with the decision that chose them, contrast computed, the people, the parts, the patterns — every value copies in the form an editor wants.</p></div><div class="foot"><span class="src">boss design</span></div></article>
   <article class="block filled" id="demo-board" data-title="Board"><div class="head"><h3><a href="board.html">The board →</a></h3></div><div class="body"><p>Every idea and feature by where it stands — captured, taking shape, building, shipped, parked — read from the records' own status lines.</p></div><div class="foot"><span class="src">boss board --html</span></div></article>
   <article class="block filled" id="demo-organization" data-title="Organization"><div class="head"><h3><a href="organization.html">Organization →</a></h3></div><div class="body"><p>Every record has a home, a shape and one verb that writes it — the filing BOSS does so the founder never has to, grouped by what you're doing, read from the tree after rendering.</p></div><div class="foot"><span class="src">the demo project's tree</span></div></article>
-  <article class="block filled" id="demo-learning" data-title="Learning"><div class="head"><h3><a href="learning.html">How it learns →</a></h3></div><div class="body"><p>Evidence climbing the ladder, a persona getting less made-up, a decision failing its own test, a brand learning real words, a health read becoming the next idea — in the order it happened.</p></div><div class="foot"><span class="src">read from the records</span></div></article>
+  <article class="block filled" id="demo-learning" data-title="Learning"><div class="head"><h3><a href="learning.html">How it learns →</a></h3></div><div class="body"><p>Evidence climbing the ladder, a persona getting less made-up, a decision failing its own test, a brand learning real words, a health read becoming the next idea — and the conscience run for real against the records while the page was built.</p></div><div class="foot"><span class="src">read from the records · the shipped hook, run at build time</span></div></article>
 </div>
 <p class="t-small" style="margin-top:24px">No faces: the founders are fictional, and BOSS never draws a stand-in for a person with no photo. No real company is a rival here. What you see is the render's honesty, not a brochure — the questions still open on the playbook are open on purpose only when a page says so.</p>`));
     return { out, questions, line: questionsLine(questions) };
