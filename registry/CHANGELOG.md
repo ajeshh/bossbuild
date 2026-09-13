@@ -174,6 +174,20 @@ rule above still applies to the whole section once it is stamped.
   bar), the canvas grid in both frames, Slide beside Link · Copy, and the deck. The toast is gone —
   every copy shows its payload and whether rich text reached the clipboard. The open-questions line
   closes the ledger. One test; the FEAT-026/027 tests are the contract and still pass.
+- **`boss playbook` — the Proof chapters (FEAT-028, slice 3).** After the pitch, *how do you know?*
+  Five chapters, each a projection over a record that exists: **Evidence** (every `EVID` as a row on
+  the ladder — id, date, grade, method, the record's own title line, the `assumption:` phrase —
+  commitment first; a three-bar strip counts the grades; **never the body and never `source:`** — a
+  real person's words and name stay in the file, and a test says so), **Learnings** (`docs/devlog.md`'s
+  own entries, newest first, up to eight — the heading, *Landed*, *Surprises / decisions*),
+  **Decisions** (every `DEC` as a card: the Decision paragraph, the Falsifier's first sentence with
+  its date, `reversibility` and `decided_by` as chips; a passed `revisit_by` with no `outcome:`
+  renders `overdue`; a DEC named in a later one's `supersedes:` renders dimmed), **Risks & harms**
+  (the floor cell, and `docs/trust/TRUST.md`'s first paragraph or the `/trust` hole), **Health**
+  (the newest `HEALTH-` and `MEASURE-` files' first paragraphs; with neither the chapter is
+  **dormant, not a hole** — *live once there are users to read*). The rail's Proof group marks an
+  empty chapter; the open-questions line gains `/evidence · /log · /decide · /trust`, cheapest first.
+  Every chapter line is still a record's own first sentence. Three tests; docs/ byte-identical.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

@@ -438,3 +438,141 @@ test('the playbook renders through the shared shell: family bar (siblings live o
   html = renderPlaybookHtml(collectPlaybook(withDesign, 'tidewell'), '2026-09-13 10:00');
   assert.ok(html.includes('<a href="design.html">Design</a>'));
 });
+
+// --- FEAT-028 — the Proof chapters ---------------------------------------------------------------
+import { readDevlog, readDecisions, readHealth, firstParagraph } from '../src/playbook.js';
+
+const EVID_FULL = `---
+id: EVID-007
+type: evidence
+owner: "@you"
+status: active
+date: 2026-08-30
+source: Marta K., owner of a 12-carer agency — call
+method: interview
+grade: observed-behavior
+assumption: owners will open a phone app on a Monday morning
+---
+
+# EVID-007 — she opened the spreadsheet on speaker and read the gaps aloud
+
+She said "every Monday I lose an hour to this" and showed the sheet — three tabs, colour-coded by hand.
+`;
+const DEC_OLD = `---
+id: DEC-001
+type: decision
+owner: "@you"
+decided_by: founder
+status: decided
+created: 2026-08-01
+reversibility: reversible
+revisit_by: 2026-08-20
+---
+
+# DEC-001 — Office-first rota
+
+## Context
+Owners sit at a desk.
+
+## Decision
+Build the rota for the office screen first; the phone app waits.
+
+## Falsifier — what would prove this wrong, and by when?
+If three owners ask for the phone view before September, this was wrong. Then we swap.
+`;
+const DEC_NEW = `---
+id: DEC-002
+type: decision
+owner: "@you"
+decided_by: ai-suggested-ratified
+status: decided
+created: 2026-08-25
+reversibility: costly
+revisit_by: 2099-01-01
+supersedes: DEC-001
+---
+
+# DEC-002 — Phone-first after all
+
+## Decision
+The phone view ships first; the office screen is the same page wider.
+
+## Falsifier
+If Monday opens on phones stay under half by November, the office screen comes back.
+`;
+const DEVLOG = `# Devlog
+
+## 2026-08-30
+- **Landed:** the rota renders on a phone; Marta opened it on speaker.
+- **Next:** cover-finding.
+- **Surprises / decisions:** the office screen was the wrong bet — DEC-002.
+
+## 2026-08-12 (first week)
+- **Landed:** scaffold, canvas, two calls.
+- **Next:** build the rota.
+`;
+
+test('Proof readers: devlog entries newest first with the founder\'s lines; DEC cards with falsifier, overdue and superseded; health newest by filename', () => {
+  const dir = project({ ...stamp(), 'docs/devlog.md': DEVLOG, 'docs/decisions/DEC-001-office.md': DEC_OLD, 'docs/decisions/DEC-002-phone.md': DEC_NEW,
+    'docs/health/HEALTH-2026-08-01.md': '# Health\n\nToo early.\n', 'docs/health/HEALTH-2026-09-01.md': '---\nid: h\n---\n# Health read\n\nEight owners; five came back the second Monday.\nPre-fit, honestly.\n\n## Verdict\n' });
+  const log = readDevlog(dir);
+  assert.equal(log.total, 2);
+  assert.equal(log.entries[0].heading, '2026-08-30');
+  assert.equal(log.entries[0].landed, 'the rota renders on a phone; Marta opened it on speaker.');
+  assert.equal(log.entries[0].surprises, 'the office screen was the wrong bet — DEC-002.');
+  assert.equal(log.entries[1].surprises, '');
+  const decs = readDecisions(dir, Date.parse('2026-09-13'));
+  assert.equal(decs[0].id, 'DEC-002', 'newest first');
+  assert.equal(decs[0].title, 'Phone-first after all');
+  assert.equal(decs[0].decision, 'The phone view ships first; the office screen is the same page wider.');
+  assert.equal(decs[0].falsifier, 'If Monday opens on phones stay under half by November, the office screen comes back.');
+  assert.equal(decs[0].overdue, false);
+  assert.equal(decs[1].supersededBy, 'DEC-002');
+  assert.equal(decs[1].overdue, true, 'revisit_by 2026-08-20 passed with no outcome');
+  assert.equal(decs[1].falsifier, 'If three owners ask for the phone view before September, this was wrong.');
+  const h = readHealth(dir);
+  assert.equal(h.health.date, '2026-09-01');
+  assert.equal(h.health.text, 'Eight owners; five came back the second Monday. Pre-fit, honestly.');
+  assert.equal(h.measure, null);
+  assert.equal(firstParagraph('---\na: b\n---\n# T\n\nfirst line\nsecond line\n\nthird para'), 'first line second line');
+});
+
+test('Evidence renders the ladder rows — id, date, grade, method, title, assumption — and never a body line or a source', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/evidence/EVID-007-marta.md': EVID_FULL, 'docs/evidence/EVID-001.md': EVID(1, 'stated-pain', 'Problem', '2026-08-12') });
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('<section class="chapter" id="evidence">'));
+  assert.ok(html.includes('she opened the spreadsheet on speaker and read the gaps aloud'), 'the title line');
+  assert.ok(html.includes('observed-behavior') && html.includes('interview') && html.includes('owners will open a phone app on a Monday morning'));
+  assert.ok(!html.includes('every Monday I lose an hour'), 'the body never renders');
+  assert.ok(!html.includes('Marta K.'), 'source: never renders');
+  assert.ok(html.includes('<h2>she opened the spreadsheet on speaker and read the gaps aloud</h2>'), 'the chapter line is the newest record\'s title');
+  assert.match(html, /<div class="rung"><span class="g">commitment<\/span><span class="bar"><i style="width:0%"><\/i><\/span><b class="tab">0<\/b>/);
+  assert.match(html, /<span class="g">observed-behavior<\/span><span class="bar"><i style="width:100%"><\/i><\/span><b class="tab">1<\/b>/);
+});
+
+test('Learnings, Decisions, Risks & harms, Health render from their records; every hole has its verb; Health is dormant, not a question', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/devlog.md': DEVLOG, 'docs/decisions/DEC-001-office.md': DEC_OLD, 'docs/decisions/DEC-002-phone.md': DEC_NEW, 'docs/trust/TRUST.md': '# Trust\n\nWe keep the rota and the phone numbers on it; nothing else.\n' });
+  const data = collectPlaybook(dir, 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-09-13 10:00');
+  for (const id of ['learnings', 'decisions', 'risks', 'health']) assert.ok(html.includes(`<section class="chapter" id="${id}">`), id);
+  assert.ok(html.includes('<strong>Landed:</strong> the rota renders on a phone; Marta opened it on speaker.'));
+  assert.ok(html.includes('<h2>the rota renders on a phone; Marta opened it on speaker.</h2>'));
+  assert.ok(html.includes('class="block filled superseded" id="dec-001"'), 'DEC-001 is superseded');
+  assert.ok(html.includes('superseded by DEC-002') && html.includes('overdue · revisit 2026-08-20'));
+  assert.ok(html.includes('<strong>Falsifier —</strong> If Monday opens on phones stay under half by November'));
+  assert.ok(html.includes('<h2>The phone view ships first; the office screen is the same page wider.</h2>'));
+  assert.ok(html.includes('We keep the rota and the phone numbers on it; nothing else.'));
+  assert.ok(html.includes('id="health-dormant"') && html.includes('dormant — live once there are users to read'));
+  assert.ok(!data.questions.some((q) => q.id === 'health-dormant'), 'dormant is not a question');
+  // the empty state: every proof chapter a hole with its verb, the rail marking it
+  const bare = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const d2 = collectPlaybook(bare, 'tidewell');
+  const h2 = renderPlaybookHtml(d2, '2026-09-13 10:00');
+  for (const [id, verb] of [['evidence-none', '/evidence'], ['learnings-none', '/log'], ['decisions-none', '/decide'], ['risks-trust', '/trust']]) {
+    assert.ok(h2.includes(`id="${id}"`), id);
+    assert.ok(d2.questions.some((q) => q.id === id && q.verb === verb), `${id} → ${verb}`);
+  }
+  assert.match(h2, /<a href="#evidence" class="hole-link">/, 'the rail marks an empty chapter');
+  assert.doesNotMatch(h2, /<a href="#health" class="hole-link">/, 'dormant is not empty');
+  assert.equal((h2.match(/<section class="chapter"/g) || []).length, 13);
+});

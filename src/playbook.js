@@ -136,7 +136,9 @@ export function readEvidence(projectDir) {
       const dateIn = (s) => (String(s || '').match(/\d{4}-\d{2}-\d{2}/) || [null])[0];
       const date = dateIn(fm.date) || dateIn(fm.created) || dateIn(fm.source) || dateIn(fm.updated) || null;
       const names = [fm.cell, fm.cells, fm.assumption, fm.relates].filter(Boolean).map(String).join(' ');
-      out.push({ id: fm.id || n.replace(/\.md$/i, ''), grade, date, names: norm(names) });
+      // FEAT-028: the title line is the founder's own summary; the body and `source:` never leave the file
+      const h1 = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].replace(/^EVID-\d+\s*[—–-]\s*/i, '').trim();
+      out.push({ id: fm.id || n.replace(/\.md$/i, ''), file: n, grade, date, names: norm(names), title: stripMd(h1), method: String(fm.method || '').trim().toLowerCase(), assumption: stripMd(String(fm.assumption || '')) });
     } catch { /* an unreadable record is not a signal */ }
   }
   return out;
@@ -324,6 +326,93 @@ export function readBrandLine(projectDir, label) {
 
 // --- the projection -------------------------------------------------------------------------------
 
+// --- the Proof records (FEAT-028) ---------------------------------------------------------------
+// The first paragraph of a record's body: after the frontmatter and the title line, up to the first
+// blank line. The record's own opening, never a summary of it.
+export function firstParagraph(text) {
+  const body = String(text).replace(/\r\n?/g, '\n').replace(/^---\n[\s\S]*?\n---\n?/, '');
+  const lines = body.split('\n');
+  let i = 0;
+  while (i < lines.length && (!lines[i].trim() || /^#\s/.test(lines[i]))) i++;
+  const out = [];
+  for (; i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]); i++) out.push(lines[i].trim());
+  return out.join(' ');
+}
+// The section whose `## ` heading starts with `prefix` (DEC's Falsifier heading carries a question).
+function sectionStartingWith(text, prefix) {
+  const lines = String(text).replace(/\r\n?/g, '\n').split('\n');
+  const start = lines.findIndex((l) => new RegExp(`^##\\s+${prefix}`, 'i').test(l));
+  if (start < 0) return null;
+  const out = [];
+  for (let i = start + 1; i < lines.length; i++) { if (/^##\s/.test(lines[i])) break; out.push(lines[i]); }
+  return out.join('\n').trim();
+}
+const dateOf = (s) => (String(s || '').match(/\d{4}-\d{2}-\d{2}/) || [null])[0];
+
+// docs/devlog.md — `/log`'s shape: `## <date …>` then `- **Landed:**`, `- **Next:**`,
+// `- **Surprises / decisions:**`. Newest first as the file keeps them; a hand-written entry with
+// only a heading still renders as an entry.
+export function readDevlog(projectDir, max = 8) {
+  const file = join(projectDir, 'docs', 'devlog.md');
+  if (!existsSync(file)) return null;
+  const lines = readFileSync(file, 'utf8').replace(/\r\n?/g, '\n').split('\n');
+  const entries = [];
+  let cur = null;
+  for (const l of lines) {
+    const h = l.match(/^##\s+(.+)$/);
+    if (h) { cur = { heading: h[1].trim(), landed: '', surprises: '' }; entries.push(cur); continue; }
+    if (!cur) continue;
+    const landed = l.match(/^\s*[-*]?\s*\*\*Landed:?\*\*:?\s*(.*)$/i);
+    const sur = l.match(/^\s*[-*]?\s*\*\*Surprises[^*]*\*\*:?\s*(.*)$/i);
+    if (landed) cur.landed = landed[1].trim();
+    else if (sur) cur.surprises = sur[1].trim();
+  }
+  return { file: 'docs/devlog.md', entries: entries.filter((e) => e.heading).slice(0, max), total: entries.length };
+}
+
+// docs/decisions/DEC-*.md — `/decide`'s record: the title line, the frontmatter chips, the Decision
+// paragraph, the Falsifier's first sentence. `supersedes:` on a later DEC marks the earlier one.
+export function readDecisions(projectDir, today = Date.now()) {
+  const dir = join(projectDir, 'docs', 'decisions');
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const n of readdirSync(dir).filter((x) => /^DEC-\d+.*\.md$/i.test(x)).sort()) {
+    try {
+      const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
+      const id = String(fm.id || n.replace(/\.md$/i, '')).trim();
+      const h1 = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].replace(/^DEC-\d+\s*[—–-]\s*/i, '').trim();
+      const decision = firstParagraph('\n' + (section(text, 'Decision') || ''));
+      const falsifier = firstSentence(sectionStartingWith(text, 'Falsifier') || '');
+      const revisitBy = dateOf(fm.revisit_by);
+      const overdue = !!revisitBy && !fm.outcome && Date.parse(revisitBy) < today;
+      out.push({ id, file: n, title: stripMd(h1), created: dateOf(fm.created), reversibility: String(fm.reversibility || '').trim().split(/\s/)[0], decidedBy: String(fm.decided_by || '').trim(), status: String(fm.status || '').trim(),
+        decision, falsifier, revisitBy, outcome: fm.outcome ? String(fm.outcome).trim() : '', overdue, supersedes: (String(fm.supersedes || '').match(/DEC-\d+/i) || [null])[0], supersededBy: null });
+    } catch { /* skip */ }
+  }
+  for (const d of out) if (d.supersedes) { const t = out.find((x) => x.id.toLowerCase() === d.supersedes.toLowerCase()); if (t) t.supersededBy = d.id; }
+  return out.sort((a, b) => String(b.created || '').localeCompare(String(a.created || '')));
+}
+
+// docs/trust/TRUST.md — the honest paragraph `/trust` stubs; its first paragraph, dated by mtime.
+export function readTrust(projectDir) {
+  const file = join(projectDir, 'docs', 'trust', 'TRUST.md');
+  if (!existsSync(file)) return null;
+  try { const text = readFileSync(file, 'utf8'); return { file: 'docs/trust/TRUST.md', text: firstParagraph(text), updated: statSync(file).mtime.toISOString().slice(0, 10) }; } catch { return null; }
+}
+
+// docs/health/HEALTH-<date>.md and docs/measure/MEASURE-<date>.md — the newest of each, its date
+// from the filename, its first paragraph. Nothing is computed from either.
+export function readHealth(projectDir) {
+  const one = (sub, prefix) => {
+    const dir = join(projectDir, 'docs', sub);
+    if (!existsSync(dir)) return null;
+    const n = readdirSync(dir).filter((x) => new RegExp(`^${prefix}-.*\\.md$`, 'i').test(x)).sort().pop();
+    if (!n) return null;
+    try { return { file: `docs/${sub}/${n}`, date: dateOf(n), text: firstParagraph(readFileSync(join(dir, n), 'utf8')) }; } catch { return null; }
+  };
+  return { health: one('health', 'HEALTH'), measure: one('measure', 'MEASURE') };
+}
+
 export function collectPlaybook(projectDir, projectName) {
   const found = findCanvas(projectDir);
   let parsed = { cells: [], updated: null, id: null };
@@ -374,6 +463,9 @@ export function collectPlaybook(projectDir, projectName) {
     competition: readCompetition(projectDir), sources: readSources(projectDir), ask: readAsk(projectDir),
     brandNot: readBrandLine(projectDir, 'What it is NOT'),
     designExists: existsSync(join(projectDir, '.boss', 'design.html')),
+    // slice 3 (FEAT-028) — the Proof records; `evidence` above already carries the rows
+    evidenceRows: evidence, devlog: readDevlog(projectDir), decisions: readDecisions(projectDir),
+    trust: readTrust(projectDir), health: readHealth(projectDir),
   };
 }
 
@@ -528,6 +620,74 @@ function pitchChapters(data) {
   return { before: out.slice(0, 6).join('\n'), after: out.slice(6).join('\n') };
 }
 
+// --- the Proof chapters (FEAT-028) --------------------------------------------------------------
+// What backs the pitch: the ladder, the story so far, the decisions, the harms, the health read.
+// Every line is a record's own; the only numbers are counts.
+const gradeChip = (g) => `<span class="chip ${g === 'commitment' ? 'ev' : g === 'observed-behavior' ? 'ev' : 'asserted'}">${esc(g || 'ungraded')}</span>`;
+function proofChapters(data) {
+  const { canvas, cell, evidenceRows, devlog, decisions, trust, health } = data;
+  const out = [];
+  const empty = {};
+
+  // 9 · Evidence — the ladder. Rows, never bodies; the strip counts the grades.
+  const rows = [...evidenceRows].sort((a, b) => (GRADES.indexOf(b.grade) - GRADES.indexOf(a.grade)) || String(b.date || '').localeCompare(String(a.date || '')));
+  const newest = [...evidenceRows].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))[0];
+  const counts = GRADES.map((g) => [g, evidenceRows.filter((e) => e.grade === g).length]);
+  const maxC = Math.max(1, ...counts.map(([, n]) => n));
+  const strip = `<div class="ladder" aria-label="Signals by grade">${[...counts].reverse().map(([g, n]) => `<div class="rung"><span class="g">${esc(g)}</span><span class="bar"><i style="width:${Math.round((n / maxC) * 100)}%"></i></span><b class="tab">${n}</b></div>`).join('')}</div>`;
+  const evTable = rows.length ? `<div class="tscroll"><table class="t ev"><thead><tr><th>Grade</th><th>Date</th><th>Signal</th><th>Method</th><th>Bears on</th><th>Record</th></tr></thead><tbody>${rows.map((e) => `<tr id="${esc(slug(e.id))}"><td>${gradeChip(e.grade)}</td><td class="mono">${esc(e.date || 'undated')}</td><td>${esc(e.title || '—')}</td><td class="mono">${esc(e.method || '—')}</td><td class="t-small">${esc(e.assumption || '—')}</td><td class="mono">${esc(e.id)}</td></tr>`).join('')}</tbody></table></div>` : '';
+  empty.evidence = !rows.length;
+  out.push(chapter('evidence', chapterHead(9, 'Evidence', newest ? newest.title : ''),
+    rows.length
+      ? `<div class="blocks one">${block({ id: 'evidence-ladder', title: 'The ladder', sub: `${rows.length} signal${rows.length === 1 ? '' : 's'}, graded — the grade is the founder's, the count is the file's`, body: strip + evTable, src: `docs/evidence · ${rows.length} record${rows.length === 1 ? '' : 's'} · bodies stay in the files` })}</div>`
+      : `<div class="blocks">${hole('evidence-none', 'What backs this', 'Nothing graded yet. The first signal is a conversation written down honestly — what they said, what they did, what they committed to — and graded on the ladder.', '/evidence', 'docs/evidence — none')}</div>`));
+
+  // 10 · Learnings — the devlog's own lines, newest first.
+  const entries = devlog ? devlog.entries : [];
+  empty.learnings = !entries.length;
+  const entryBlock = (e, i) => block({ id: `learn-${i + 1}`, title: e.heading, body: (e.landed ? `<p><strong>Landed:</strong> ${inline(e.landed)}</p>` : '') + (e.surprises ? `<p><strong>Surprises / decisions:</strong> ${inline(e.surprises)}</p>` : '') || '<p class="helper">an entry with only a heading</p>', src: `docs/devlog.md · ${esc(e.heading.slice(0, 10))}` });
+  out.push(chapter('learnings', chapterHead(10, 'Learnings', entries[0] && entries[0].landed ? firstSentence(entries[0].landed) : ''),
+    entries.length
+      ? `<div class="blocks">${entries.map(entryBlock).join('')}</div>${devlog.total > entries.length ? `<p class="more">${devlog.total - entries.length} earlier entr${devlog.total - entries.length === 1 ? 'y' : 'ies'} in docs/devlog.md</p>` : ''}`
+      : `<div class="blocks">${hole('learnings-none', 'The story so far', 'What landed, what surprised you, what you decided — one entry a session, in your words. Nothing logged yet.', '/log', 'docs/devlog.md — none')}</div>`));
+
+  // 11 · Decisions — cards with their falsifiers; superseded ones dimmed, overdue ones said so.
+  empty.decisions = !decisions.length;
+  const decBlock = (d) => block({ id: slug(d.id), title: d.title || d.id, sub: d.id, cls: d.supersededBy ? 'superseded' : '',
+    body: (d.decision ? `<p>${inline(d.decision)}</p>` : '<p class="helper">no ## Decision section</p>')
+      + (d.falsifier ? `<p class="fals"><strong>Falsifier —</strong> ${inline(d.falsifier)}${d.revisitBy ? ` <span class="date">by ${esc(d.revisitBy)}</span>` : ''}</p>` : '')
+      + (d.supersededBy ? `<p class="helper">superseded by ${esc(d.supersededBy)}</p>` : ''),
+    chip: [d.reversibility ? `<span class="chip dec">${esc(d.reversibility)}</span>` : '', d.decidedBy ? `<span class="chip asserted">${esc(d.decidedBy)}</span>` : '', d.overdue ? `<span class="chip bad">overdue · revisit ${esc(d.revisitBy)}</span>` : '', d.outcome ? `<span class="chip ev">outcome recorded</span>` : ''].join(''),
+    src: `docs/decisions/${esc(d.file)}${d.created ? ` · ${esc(d.created)}` : ''}` });
+  const live = decisions.filter((d) => !d.supersededBy), old = decisions.filter((d) => d.supersededBy);
+  out.push(chapter('decisions', chapterHead(11, 'Decisions', live[0] && live[0].decision ? firstSentence(live[0].decision) : ''),
+    decisions.length
+      ? `<div class="blocks">${live.map(decBlock).join('')}${old.map(decBlock).join('')}</div>`
+      : `<div class="blocks">${hole('decisions-none', 'What you decided, and what would prove it wrong', 'A decision with its context, its reasoning, and the cheapest signal it was wrong — by when. None recorded yet.', '/decide', 'docs/decisions — none')}</div>`));
+
+  // 12 · Risks & harms — the floor cell, and the trust page.
+  const risks = cell('risks');
+  const trustBlock = trust
+    ? block({ id: 'risks-trust', title: 'Trust', sub: 'what you collect, in plain terms', body: `<p>${inline(trust.text)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${esc(trust.file)} · ${esc(trust.updated)}` })
+    : hole('risks-trust', 'Trust', 'What you collect, who processes it, how someone reaches you about their data — one honest paragraph a user or a buyer can read.', '/trust', 'docs/trust/TRUST.md — none');
+  empty.risks = !(risks && risks.state === 'filled') && !trust;
+  out.push(chapter('risks', chapterHead(12, 'Risks & harms', risks && risks.state === 'filled' ? firstSentence(risks.answer) : ''),
+    `<div class="blocks">${cellBlock(risks, canvas, 'risks-harms', 'Who could this harm, and how')}${trustBlock}</div>`));
+
+  // 13 · Health — dormant until there is something to read; then the files' own paragraphs.
+  const h = health || {};
+  const healthBlocks = [
+    h.health ? block({ id: 'health-read', title: 'The health read', sub: h.health.date || '', body: `<p>${inline(h.health.text)}</p>`, chip: '<span class="chip asserted">a verdict, dated</span>', src: esc(h.health.file) }) : '',
+    h.measure ? block({ id: 'health-measure', title: 'What is measured', sub: h.measure.date || '', body: `<p>${inline(h.measure.text)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: esc(h.measure.file) }) : '',
+  ].join('');
+  out.push(chapter('health', chapterHead(13, 'Health', h.health && h.health.text ? firstSentence(h.health.text) : ''),
+    healthBlocks
+      ? `<div class="blocks">${healthBlocks}</div>`
+      : `<div class="blocks">${block({ id: 'health-dormant', title: 'How it is going', state: 'dormant', body: '<p class="prompt">Acquisition, activation, retention — and the day each starts to mean something.</p><span class="cond">dormant — live once there are users to read: /measure picks the metric, /health reads the curve</span>', src: 'docs/health · docs/measure — none yet' })}</div>`));
+
+  return { html: out.join('\n'), empty };
+}
+
 export function renderPlaybookHtml(data, stampedAt) {
   const { boxes, ledger, brand, canvas, error, projectName } = data;
   const byBand = (n) => boxes.filter((b) => b.band === n && !b.floor);
@@ -545,6 +705,7 @@ export function renderPlaybookHtml(data, stampedAt) {
     : 'no canvas yet — this page fills itself as you answer · /canvas';
   holeLog = []; holeDir = data.projectDir;
   const chapters = pitchChapters(data);
+  const proof = proofChapters(data);
   data.holes = holeLog; holeLog = null; holeDir = null;
   data.questions = openQuestions(data, data.projectDir);
   // the nudge on an empty page: how many questions are open and the cheapest verb to start with
@@ -554,7 +715,10 @@ export function renderPlaybookHtml(data, stampedAt) {
   const errorHtml = error ? `<article class="block hole" id="canvas-error"><div class="head"><h3>Couldn't read the canvas</h3></div><div class="body"><p class="prompt">${esc(error)}</p></div><div class="foot"><span class="src">the rest of the page renders from what it could read</span></div></article>` : '';
 
   const ledgerHtml = `${ledgerLine} · ${openLine}`;
-  const rail = [{ group: 'Pitch', items: [['vision', 'Vision'], ['product', 'Product'], ['customers', 'Customers'], ['problem', 'Problem'], ['market', 'Market'], ['competition', 'Competition'], ['canvas', 'Canvas'], ['model', 'Business model']].map(([href, label], i) => ({ href, n: i + 1, label })) }];
+  const rail = [
+    { group: 'Pitch', items: [['vision', 'Vision'], ['product', 'Product'], ['customers', 'Customers'], ['problem', 'Problem'], ['market', 'Market'], ['competition', 'Competition'], ['canvas', 'Canvas'], ['model', 'Business model']].map(([href, label], i) => ({ href, n: i + 1, label })) },
+    { group: 'Proof', items: [['evidence', 'Evidence'], ['learnings', 'Learnings'], ['decisions', 'Decisions'], ['risks', 'Risks & harms'], ['health', 'Health']].map(([href, label], i) => ({ href, n: i + 9, label, hole: !!proof.empty[href] })) },
+  ];
   const mainHtml = `${chapters.before}
   <section class="chapter" id="canvas">
   <div class="chapter-head"><div class="label">7 · Canvas</div><p>Switch the frame and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
@@ -570,7 +734,8 @@ ${extras.map((b) => boxHtml(b, canvas)).join('\n')}
 ${floor.map((b) => boxHtml(b, canvas)).join('\n')}
   </div>
   </section>
-${chapters.after}`;
+${chapters.after}
+${proof.html}`;
   const footerLines = [
     brandLine,
     `a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh`,
@@ -582,6 +747,8 @@ ${chapters.after}`;
 // What the playbook adds to the shell: the frame toggle, the canvas grid in both frames, the deck.
 // The chrome, the block, Link · Copy and the copy sheet are the shell's (src/page-shell.js).
 const PLAYBOOK_CSS = `
+  .ladder { display: grid; gap: 6px; margin-bottom: 14px; } .rung { display: grid; grid-template-columns: 150px 1fr 32px; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); } .rung .bar { height: 10px; background: var(--rule-2); border-radius: 3px; overflow: hidden; } .rung .bar i { display: block; height: 100%; background: var(--accent); border-radius: 3px; } .rung b { text-align: right; color: var(--ink); }
+  table.t.ev td { font-size: 13.5px; } .block.superseded { opacity: .62; } .block .fals { margin-top: 8px; font-size: 14px; color: var(--ink-2); } .more { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
   .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
   .chapter-head { max-width: 62ch; margin-bottom: 22px; } .chapter-head .label { margin-bottom: 6px; } .chapter-head h2 { font-family: var(--display); font-size: 32px; line-height: 1.12; } .chapter-head p { margin-top: 8px; color: var(--ink-2); }
   .frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 16px; } .credit { font-family: var(--mono); font-size: 11px; color: var(--muted); }
@@ -658,7 +825,7 @@ function playbookJs(brand) {
 // doesn't have yet is said so; when the hole is a record a document can fill (rivals, brand) it
 // points at /import instead — the record is ungated, only the deeper verb is. A FEAT or a mentor's
 // dossier is not something you drop in, so those just wait for the mode.
-const VERB_ORDER = ['/canvas', '/idea', '/persona', '/import', '/spec', '/comp-eval', '/landing', '/consult'];
+const VERB_ORDER = ['/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/comp-eval', '/landing', '/trust', '/consult'];
 const DROPPABLE = new Set(['comp-eval', 'landing']);
 // The verb as the founder should read it. No skills folder at all (a bare adopt, a test tree) →
 // nothing can be said about gating and the verb prints as is.

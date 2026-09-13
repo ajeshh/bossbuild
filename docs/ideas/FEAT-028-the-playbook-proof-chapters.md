@@ -2,7 +2,8 @@
 id: FEAT-028
 type: feature
 owner: product-lead
-status: building
+status: shipped (under Unreleased, 2026-09-13)
+shipped_on: 2026-09-13
 gist: `boss playbook` grows the Proof group — Evidence · Learnings · Decisions · Risks & harms · Health — each a projection over a record that exists (EVID frontmatter and title lines, the devlog, DEC records, the Risks cell with the trust page, the newest HEALTH file), never a quote from a real person. First commit adopts the shared page shell so the playbook and the design space are one chrome.
 for: the same founder as FEAT-026 — six folders of records, a room that asks "and how do you know?"
 created: 2026-09-13
@@ -70,18 +71,18 @@ other than `/log`'s (heading + three bold lines) — the parser takes the headin
       family bar links to `design.html` / `board.html` only when they exist (dimmed otherwise); the
       copy sheet appears after a copy; the frame toggle works from the canvas chapter; the open
       line is in the ledger.
-- [ ] Evidence renders one row per EVID with id · date · grade · method · title · assumption; a test
+- [x] Evidence renders one row per EVID with id · date · grade · method · title · assumption; a test
       asserts no EVID body line and no `source:` value appears in the page.
-- [ ] Learnings renders devlog entries newest first, ≤ 8, heading + Landed + Surprises; the chapter
+- [x] Learnings renders devlog entries newest first, ≤ 8, heading + Landed + Surprises; the chapter
       line is a substring of the devlog.
-- [ ] Decisions renders every DEC as a card with the fields above; a passed `revisit_by` without an
+- [x] Decisions renders every DEC as a card with the fields above; a passed `revisit_by` without an
       `outcome:` line renders `overdue`; a superseded DEC renders dimmed.
-- [ ] Risks & harms renders the cell and the trust paragraph or hole; Health renders the newest
+- [x] Risks & harms renders the cell and the trust paragraph or hole; Health renders the newest
       HEALTH/MEASURE first paragraphs or the dormant block with its condition.
-- [ ] Every chapter line is a substring of a record on disk or absent (the FEAT-027 test extends).
-- [ ] `boss playbook`'s open-questions list includes the new holes (Evidence, Learnings, Decisions,
+- [x] Every chapter line is a substring of a record on disk or absent (the FEAT-027 test extends).
+- [x] `boss playbook`'s open-questions list includes the new holes (Evidence, Learnings, Decisions,
       Trust) with their verbs; Health's dormant state is not a question.
-- [ ] Nothing fetched; one file written; `docs/` byte-identical after a render (extends to
+- [x] Nothing fetched; one file written; `docs/` byte-identical after a render (extends to
       `docs/evidence`, `docs/decisions`, `docs/health`, `docs/measure`, `docs/trust`, `docs/devlog.md`);
       CHANGELOG bullets under `## Unreleased` (one per commit).
 
@@ -128,6 +129,11 @@ Unchanged: `boss playbook [--open] [--questions]` asks nothing. No row in `docs/
   project; the copy sheet after a copy is welcome and not noise.
 
 ## Build log
+- 2026-09-13 — **landed** (slice 3). Surprise: the peer's in-progress page-shell edit (the `.prompt`
+  strip I asked for) briefly broke every render — backticks inside a `String.raw` comment; fixed on
+  their side in minutes, a cost of one shared file with two writers. Kept as specced: Health dormant,
+  bodies off the page. Not done: the FEAT-027 chapter-line test already covered the new `<h2>`s
+  (the corpus is every fixture), so no new line test was needed.
 - 2026-09-13 — commit 1 landed: the shell adoption. Not byte-identical, as assumed — the family bar
   and the copy sheet are new, the toast and the hot-reload boot are gone (a file in `.boss/` is never
   live-republished). Found: the shell's copy includes a filled cell's prompt line; asked the design

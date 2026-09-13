@@ -37,7 +37,7 @@ export const HELP = {
   },
   playbook: {
     usage: 'boss playbook [--open] [--questions]',
-    what: 'Your venture as one page in .boss/playbook.html — the pitch chapters and the canvas as boxes, every hole drawn as a hole with the verb that fills it, the evidence ledger in the chrome. The terminal prints what is open; --questions lists each one. A read of your files; re-run to refresh.',
+    what: 'Your venture as one page in .boss/playbook.html — the pitch chapters, the canvas as boxes and the proof behind them, every hole drawn as a hole with the verb that fills it, the evidence ledger in the chrome. The terminal prints what is open; --questions lists each one. A read of your files; re-run to refresh.',
     examples: ['boss playbook', 'boss playbook --open', 'boss playbook --questions'],
     see: ['board', 'canvas'],
   },
