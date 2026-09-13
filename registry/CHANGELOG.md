@@ -30,6 +30,19 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **`boss design` — the design system as one page (FEAT-030, slice 1).** A sibling of `boss playbook`
+  under `.boss/`: Start here (the brand's current shape, each of its six lines present or its own
+  hole; the anchor DEC), Principles (the style guide's slot rendered as prose, *grounded* only when an
+  EVID, a persona or a journey stage names it — otherwise *asserted*, so it can be tested instead of
+  reaffirmed), Colour (every semantic token as a swatch with the DEC that chose it; deprecated struck
+  with its successor; **contrast computed** for every declared text-on-surface pair — WCAG relative
+  luminance, a published formula over two numbers — and the page says once that it checks declared
+  pairs, not what renders), Type, Space & shape, and Layout as the hole with six named sub-slots.
+  Every value copies on click in the form an editor wants (hex · token · `var(--…)`), and every copy
+  opens a sheet showing the exact payload and whether it reached the clipboard as rich text or plain.
+  The chrome lives once, in `src/page-shell.js` — the neutral palette exported, the family bar
+  (Playbook · Design · Board) as relative links dimmed when a sibling isn't on disk — and the
+  playbook adopts it in FEAT-028. Nine tests; writes exactly one file, nothing under `docs/`.
 - **A colour is a fact in one file.** `/design-tokens-init` wrote DTCG *"where the stack allows"* —
   a filter, not a file — so the design-tool seam the skill, the gallery and the practice all
   described had no guaranteed artifact behind it. Now `docs/design/tokens.json` (W3C DTCG) is

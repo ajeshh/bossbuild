@@ -15,6 +15,7 @@ secrets/
 # nobody reads from git.
 .boss/board.html
 .boss/playbook.html
+.boss/design.html
 
 # Copies BOSS keeps of files it was about to overwrite (`boss sync`). Local recovery, not
 # project history — and the reason an overwrite is never the end of the story.

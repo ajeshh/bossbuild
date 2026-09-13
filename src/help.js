@@ -41,6 +41,12 @@ export const HELP = {
     examples: ['boss playbook', 'boss playbook --open'],
     see: ['board', 'canvas'],
   },
+  design: {
+    usage: 'boss design [--open]',
+    what: 'Your design system as one page in .boss/design.html — every token as a swatch with the DEC that chose it, contrast computed for every declared text-on-surface pair, the principles with their grounding marked, the brand, and the layout slot as the hole it is. Every value copies in the form an editor wants. A read of your files; re-run to refresh.',
+    examples: ['boss design', 'boss design --open'],
+    see: ['playbook', 'design-tokens-init'],
+  },
   board: {
     usage: 'boss board [<ID>] [--detail] [--html] [--next|--blocked|--json] [--all] [--mine]',
     what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. Pass an ID for one card in full, or --detail for a line under every card. Deferred and dropped work is folded into Parked — decided, not queued. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',

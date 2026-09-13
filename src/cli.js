@@ -18,6 +18,7 @@ import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
 import { playbookHtml } from './playbook.js';
+import { designHtml } from './design.js';
 import { recap } from './recap.js';
 import { map, renderLadder } from './map.js';
 import { modeWord, loadModes } from './modes.js';
@@ -681,6 +682,24 @@ function cmdPlaybook(args = []) {
   console.log(`    ${canvas ? `docs/ideas/${canvas.file}` : 'no canvas yet — every box is a question; /canvas fills them'} · ${ledger.backed} of ${ledger.live} cells backed by evidence · ${ledger.signals} signal${ledger.signals === 1 ? '' : 's'}`);
   if (error) console.error(`    ${warn('!')} ${error}`);
   console.log('    A read of your files. Re-run `boss playbook` to refresh.\n');
+  if (args.includes('--open')) {
+    const opener = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+    try { spawn(opener, [out], { stdio: 'ignore', detached: true, shell: process.platform === 'win32' }).unref(); } catch { /* path already printed */ }
+  }
+}
+
+// `boss design` — the founder's design system as one page in .boss/, a sibling of the playbook
+// (FEAT-030). Same contract: a pure projection of docs/design/*, docs/BRAND.md and the DECs;
+// contrast computed for the declared pairs; every hole a hole; re-run to refresh.
+function cmdDesign(args = []) {
+  const stamp = readStamp(process.cwd());
+  if (!stamp) return failNotAProject();
+  const { out, data } = designHtml(process.cwd(), stamp.name);
+  const filled = data.slots.filter(([, ok]) => ok).length;
+  console.log(`\n  ${ok('✦')} Design → ${out}`);
+  console.log(`    ${data.tokens.source || 'no tokens file yet — /design-tokens-init writes docs/design/tokens.json'} · ${filled} of ${data.slots.length} slots filled · ${data.pairs.length} contrast pair${data.pairs.length === 1 ? '' : 's'} computed · ${data.findings} finding${data.findings === 1 ? '' : 's'}`);
+  if (data.tokens.error) console.error(`    ${warn('!')} ${data.tokens.error}`);
+  console.log('    A read of your files. Re-run `boss design` to refresh.\n');
   if (args.includes('--open')) {
     const opener = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
     try { spawn(opener, [out], { stdio: 'ignore', detached: true, shell: process.platform === 'win32' }).unref(); } catch { /* path already printed */ }
@@ -1412,7 +1431,7 @@ function failNotAProject() {
 // actually exists, never from a hand-kept copy of it.) Flags are excluded on purpose: `--help` is
 // not a plausible typo for a bare word, and suggesting it would be noise.
 const KNOWN_COMMANDS = [
-  'new', 'adopt', 'unlock', 'status', 'board', 'playbook', 'recap', 'map', 'brain', 'insights', 'records', 'id',
+  'new', 'adopt', 'unlock', 'status', 'board', 'playbook', 'design', 'recap', 'map', 'brain', 'insights', 'records', 'id',
   'team', 'list', 'retire', 'credit', 'remove', 'uninstall', 'sync', 'learn', 'craft',
   'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'hooks', 'version', 'help',
 ];
@@ -1655,6 +1674,7 @@ function printHelp() {
   console.log(row('boss board <ID> | --detail', 'one card in full · a line under every card'));
   console.log(row('boss board --next|--blocked|--json', 'what to pick up · what\'s stuck · JSON (agent-readable)'));
   console.log(row('boss playbook [--open]', 'your canvas as boxes, one page in .boss/ — holes stay holes'));
+  console.log(row('boss design [--open]', 'your design system as one page in .boss/ — tokens, principles, contrast computed'));
   console.log(row('boss status [--conscience]', 'mode + pinned version + drift (--conscience: loop states)'));
   console.log(row('boss unlock <mode>', 'climb a rung: quickstart → mvp → v1 → scale'));
   console.log(row('boss brain [--diff|--relationship]', 'the conscience\'s read on this venture'));
@@ -1779,6 +1799,7 @@ export async function run(argv) {
     case 'status': return cmdStatus(args);
     case 'board': return cmdBoard(args);
     case 'playbook': return cmdPlaybook(args);
+    case 'design': return cmdDesign(args);
     case 'recap': return cmdRecap(args);
     case 'map': return cmdMap(args);
     case 'brain': return cmdBrain(args);
