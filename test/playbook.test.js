@@ -413,11 +413,28 @@ test('the terminal: one summary line grouped by verb, --questions lists each wit
   assert.doesNotMatch(plain, /· Who, exactly/, 'the list only with --questions');
 });
 
-test('the page says the same thing the terminal says: a gated hole\'s verb line matches, and the rail carries the open count with the cheapest verb', () => {
+test('the page says the same thing the terminal says: a gated hole\'s verb line matches, and the ledger carries the open count with the cheapest verb', () => {
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/import/SKILL.md': '# import', '.claude/skills/canvas/SKILL.md': '# canvas' });
   const data = collectPlaybook(dir, 'tidewell');
   const html = renderPlaybookHtml(data, '2026-09-13 10:00');
   assert.ok(html.includes('not yet · /comp-eval — or drop what you know: /import'));
   assert.ok(html.includes('not yet · /spec — arrives with the next mode (boss unlock)'));
-  assert.ok(html.includes(`<div class="open"><b class="tab">${data.questions.length}</b> open · start: /canvas</div>`));
+  assert.ok(html.includes(`<b class="tab">${data.questions.length}</b> open · start: /canvas</div>`), 'the open line closes the ledger');
+});
+
+// --- FEAT-028, commit 1 — the shared shell -----------------------------------------------------
+test('the playbook renders through the shared shell: family bar (siblings live only when on disk), copy sheet, frame toggle in the canvas chapter, Slide beside Link · Copy', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  let html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('<nav class="family"'));
+  assert.ok(html.includes('class="on" aria-current="page">Playbook</a>'));
+  assert.match(html, /class="dim" aria-disabled="true"[^>]*>Design<\/a>/, 'no design.html → dimmed');
+  assert.ok(html.includes("sheet.className = 'sheet'"), 'the copy sheet is the shell\'s');
+  assert.ok(!html.includes('id="toast"'), 'the toast is gone');
+  assert.match(html, /<div class="frame-bar"><div class="seg"/, 'the frame toggle lives in the canvas chapter');
+  assert.ok(html.includes('class="slide" title="Open this box as a slide"'));
+  assert.equal((html.match(/<header class="topbar">/g) || []).length, 1);
+  const withDesign = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.boss/design.html': '<p>d</p>' });
+  html = renderPlaybookHtml(collectPlaybook(withDesign, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('<a href="design.html">Design</a>'));
 });

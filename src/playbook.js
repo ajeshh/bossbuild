@@ -18,6 +18,7 @@
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { frontmatter } from './frontmatter.js';
+import { shellPage } from './page-shell.js';
 
 // --- the registry -----------------------------------------------------------------------------
 // `lean` is the Lean Canvas box the humane answer reads as (DEC-004 mapping); `area` its grid slot.
@@ -536,7 +537,6 @@ export function renderPlaybookHtml(data, stampedAt) {
   const ledgerLine = `<b class="tab">${ledger.backed} of ${ledger.live}</b> cells backed by graded evidence · <b>${ledger.signals}</b> signal${ledger.signals === 1 ? '' : 's'}`
     + (ledger.signals ? `, ${GRADES.every((g) => !ledger.gradeCounts[g] || g === ledger.topOverall) ? 'all' : 'top'} <b>${esc(ledger.topOverall)}</b>` : '')
     + (ledger.newestDays === null ? '' : ` · newest <b>${ledger.newestDays} day${ledger.newestDays === 1 ? '' : 's'}</b> ago`);
-  const accent = brand.accent || '#16181A';
   const brandLine = brand.present
     ? `brand: ${esc(brand.name)} · docs/BRAND.md${brand.accent ? '' : ' (accent unknown → default)'}${brand.nascent ? ' · nascent' : ''}`
     : 'brand: nascent — no docs/BRAND.md yet; rendered in the default. /landing seeds it.';
@@ -553,100 +553,12 @@ export function renderPlaybookHtml(data, stampedAt) {
     : 'nothing open';
   const errorHtml = error ? `<article class="block hole" id="canvas-error"><div class="head"><h3>Couldn't read the canvas</h3></div><div class="body"><p class="prompt">${esc(error)}</p></div><div class="foot"><span class="src">the rest of the page renders from what it could read</span></div></article>` : '';
 
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(brand.name)} — Playbook</title>
-<style>
-  /* Neutral values are board.js's inlined tokens (site/styles/tokens.css is the source of truth and
-     does not ship) — two generated pages in .boss/, one palette. The founder's accent is the only
-     thing BRAND.md changes; with no brand the page is monochrome, and that is the design. */
-  :root { --accent: ${accent}; --ground: #E4E6E8; --paper: #F0F2F3; --ink: #16181A; --ink-2: #565C62; --muted: #565C62; --hole: #8A9096; --rule: #C4C8CC; --rule-2: #D7DADD; --accent-ink: #F0F2F3; --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper)); --chip-ev: #2F5D8A; --chip-ev-soft: #E3ECF5; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color-scheme: light; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; } }
-  :root[data-theme="dark"] { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; }
-  * { box-sizing: border-box; } body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15.5px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
-  a { color: var(--accent); } h1, h2, h3 { margin: 0; font-weight: 500; text-wrap: balance; } p { margin: 0; } code { font-family: var(--mono); font-size: .9em; }
-  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; } button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
-  .label { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); } .tab { font-variant-numeric: tabular-nums; }
-  .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 18px; padding: 10px 20px; background: color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
-  .wordmark { font-family: var(--display); font-size: 21px; font-weight: 500; white-space: nowrap; } .wordmark .tag { font-family: var(--body); font-size: 12.5px; color: var(--muted); margin-left: 8px; }
-  .ledger { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); min-width: 0; } .ledger b { color: var(--ink); font-weight: 500; }
-  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
-  .shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); max-width: 1360px; margin: 0 auto; padding-inline: 20px; }
-  .rail { position: sticky; top: 56px; align-self: start; height: calc(100vh - 56px); overflow: auto; padding: 28px 20px 40px 0; border-right: 1px solid var(--rule); }
-  .rail .open { font-family: var(--mono); font-size: 11px; color: var(--ink-2); margin: 6px 0 10px; line-height: 1.45; overflow-wrap: anywhere; } .rail .open b { color: var(--ink); font-weight: 500; }
-  .rail .grp { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 14px 8px 4px; }
-  .rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; } .rail a { display: flex; align-items: baseline; gap: 8px; padding: 6px 8px; border-radius: 5px; text-decoration: none; font-size: 14px; color: var(--ink-2); } .rail a:hover { background: var(--paper); color: var(--ink); } .rail a.on { background: var(--accent-soft); color: var(--ink); } .rail a .n { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 16px; flex: none; }
-  main { min-width: 0; padding: 28px 0 80px 32px; }
-  .chapter { padding-block: 20px 48px; border-bottom: 1px solid var(--rule); scroll-margin-top: 70px; } .chapter:last-of-type { border-bottom: 0; }
-  .blocks { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } .blocks.one { grid-template-columns: 1fr; }
-  .block .sub { font-weight: 400; color: var(--muted); } .block .helper { color: var(--muted); font-size: 13px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; } .block .body p + p, .block .body ul + p, .block .body p + ul { margin-top: 8px; }
-  .block.snippet .who { font-family: var(--display); font-size: 19px; line-height: 1.3; } .xlink { font-family: var(--mono); font-size: 11.5px; } .xlink.dim { color: var(--muted); } .hole-text { color: var(--hole); }
-  .tier-title { display: flex; align-items: baseline; gap: 10px; margin: 22px 0 12px; } .tier-title h3 { font-family: var(--display); font-size: 20px; } .tier-title span { font-size: 13px; color: var(--muted); }
-  .tscroll { overflow-x: auto; } table.rivals { width: 100%; border-collapse: collapse; font-size: 13.5px; } table.rivals th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); } table.rivals td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; } table.rivals tr:last-child td { border-bottom: 0; }
-  .chip.stale { background: color-mix(in srgb, #A8681A 14%, var(--paper)); color: #A8681A; } .chip.synthetic { background: var(--accent-soft); color: var(--ink-2); } .date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-  .rival .win-line { font-family: var(--display); font-size: 20px; line-height: 1.25; margin-bottom: 8px; }
-  @media (max-width: 980px) { .shell { grid-template-columns: 1fr; } .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rule); padding: 16px 0 12px; } .rail ol { flex-direction: row; flex-wrap: wrap; gap: 4px 6px; } main { padding-left: 0; } }
-
-  .chapter-head { max-width: 62ch; margin-bottom: 22px; } .chapter-head .label { margin-bottom: 6px; } .chapter-head h2 { font-family: var(--display); font-size: 32px; line-height: 1.12; } .chapter-head p { margin-top: 8px; color: var(--ink-2); }
-  .frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 16px; } .credit { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-  .canvas { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .band-title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; margin-top: 8px; } .band-title h3 { font-family: var(--display); font-size: 20px; } .band-title span { font-size: 13px; color: var(--muted); }
-  .block { position: relative; display: flex; flex-direction: column; min-height: 150px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 18px 20px 14px; scroll-margin-top: 80px; min-width: 0; }
-  .block h3 { font-size: 13px; font-weight: 600; margin-bottom: 8px; } .block .body { flex: 1; font-size: 15px; line-height: 1.5; } .block .prompt { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
-  .block .answer p + p { margin-top: 8px; } .block .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 11px; color: var(--muted); } .block .src { min-width: 0; overflow-wrap: anywhere; }
-  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 99px; font-family: var(--mono); font-size: 10.5px; white-space: nowrap; } .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .chip.ev { background: var(--chip-ev-soft); color: var(--chip-ev); } .chip.asserted { color: var(--muted); border: 1px solid var(--rule); } .chip.asserted::before { background: transparent; border: 1.5px solid currentColor; width: 5px; height: 5px; }
-  .block.hole { border-style: dashed; background: transparent; } .block.hole .prompt { color: var(--hole); font-style: italic; font-size: 14px; } .block .verb, .block .cond { display: block; margin-top: 10px; font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); }
-  .block.dormant { background: transparent; } .block.dormant .prompt { color: var(--hole); font-size: 14px; }
-  .block.extra h3::after { content: " · your cell"; font-weight: 400; color: var(--muted); }
-  .actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 2px; opacity: 0; transition: opacity .12s; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 2px; }
-  .block:hover .actions, .block:focus-within .actions { opacity: 1; } @media (hover: none) { .actions { opacity: 1; } } @media (prefers-reduced-motion: reduce) { .actions { transition: none; } }
-  .actions button { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 4px; font-size: 11.5px; color: var(--ink-2); } .actions button:hover { background: var(--accent-soft); color: var(--ink); }
-  .block.hole .actions .copy, .block.dormant .actions .copy { display: none; }
-  .t-lean { display: none; }
-  .canvas[data-frame="lean"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: minmax(150px, auto); }
-  .canvas[data-frame="lean"] .humane-only { display: none; } .canvas[data-frame="lean"] .block.floor { display: flex; }
-  .canvas[data-frame="lean"] .block { grid-area: var(--area, auto); } .canvas[data-frame="lean"] .block .prompt { display: none; } .canvas[data-frame="lean"] .block.hole .prompt, .canvas[data-frame="lean"] .block.dormant .prompt { display: block; }
-  .canvas[data-frame="lean"] .t-lean { display: inline; } .canvas[data-frame="lean"] .t-humane { display: none; }
-  .canvas[data-frame="lean"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="lean"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="lean"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
-  .canvas[data-frame="lean"] .pointer { display: flex; grid-area: ${LEAN_CHANNELS_AREA}; } .pointer { display: none; }
-  .pointer .body { color: var(--ink-2); font-size: 14px; }
-  footer { max-width: 1360px; margin: 0 auto; padding: 0 20px 40px; font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; }
-  .deck { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; grid-template-rows: auto 1fr auto; padding: 16px clamp(16px, 4vw, 48px); }
-  .deck .chrome, .deck .bottom { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); } .deck .chrome button { margin-left: auto; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 5px; font-family: var(--body); font-size: 12.5px; color: var(--ground); }
-  .deck .stage { display: grid; place-items: center; min-height: 0; position: relative; } .deck .hit { position: absolute; top: 0; bottom: 0; width: 22%; cursor: pointer; } .deck .hit.l { left: 0; } .deck .hit.r { right: 0; }
-  .deck .bottom .lg { margin-left: auto; }
-  .sl { width: min(100%, 1180px); aspect-ratio: 16 / 9; max-height: 100%; background: var(--paper); color: var(--ink); border-radius: 10px; box-shadow: var(--shadow); padding: clamp(28px, 4.5vw, 64px) clamp(28px, 5vw, 72px); display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
-  .sl .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; } .sl .eyebrow .wm { font-family: var(--display); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--ink); margin-right: 10px; }
-  .sl .sl-title { font-family: var(--display); font-size: clamp(24px, 2.6vw, 38px); color: var(--ink-2); font-weight: 500; }
-  .sl .sl-body { margin-top: 20px; flex: 1; min-height: 0; overflow: auto; font-family: var(--display); font-size: clamp(19px, 2.2vw, 32px); line-height: 1.32; } .sl .sl-body .prompt { display: none; } .sl.hole .sl-body .prompt, .sl.dormant .sl-body .prompt { display: block; color: var(--hole); font-style: italic; }
-  .sl .sl-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule-2); display: flex; gap: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); } .sl.hole { border: 2px dashed var(--rule); }
-  .toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 60; background: var(--ink); color: var(--ground); padding: 8px 14px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity .15s; pointer-events: none; } .toast.show { opacity: 1; }
-  @media (max-width: 900px) { .canvas, .canvas[data-frame="lean"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .canvas[data-frame="lean"] .block, .canvas[data-frame="lean"] .pointer, .canvas[data-frame="lean"] .band-title.floor-title { grid-area: auto !important; } .canvas[data-frame="lean"] .band-title.floor-title { grid-column: 1 / -1; } }
-  @media (max-width: 600px) { .topbar { flex-wrap: wrap; } .ledger { order: 3; flex-basis: 100%; margin-left: 0; } .canvas, .canvas[data-frame="lean"] { grid-template-columns: 1fr; } }
-</style>
-</head>
-<body>
-<header class="topbar">
-  <div class="wordmark">${esc(brand.name)}${brand.tagline ? `<span class="tag">${esc(brand.tagline)}</span>` : ''}</div>
-  <div class="ledger">${ledgerLine}</div>
-  <div class="seg" role="group" aria-label="Frame"><button type="button" data-frame="humane" aria-pressed="true">Humane</button><button type="button" data-frame="lean" aria-pressed="false">Lean</button></div>
-</header>
-<div class="shell">
-<nav class="rail" aria-label="Chapters">
-  <div class="label">Playbook</div>
-  <div class="open">${openLine}</div>
-  <div class="grp">Pitch</div>
-  <ol>${[['vision', 'Vision'], ['product', 'Product'], ['customers', 'Customers'], ['problem', 'Problem'], ['market', 'Market'], ['competition', 'Competition'], ['canvas', 'Canvas'], ['model', 'Business model']].map(([id, name], i) => `<li><a href="#${id}"><span class="n">${i + 1}</span>${name}</a></li>`).join('')}</ol>
-</nav>
-<main>
-${chapters.before}
+  const ledgerHtml = `${ledgerLine} · ${openLine}`;
+  const rail = [{ group: 'Pitch', items: [['vision', 'Vision'], ['product', 'Product'], ['customers', 'Customers'], ['problem', 'Problem'], ['market', 'Market'], ['competition', 'Competition'], ['canvas', 'Canvas'], ['model', 'Business model']].map(([href, label], i) => ({ href, n: i + 1, label })) }];
+  const mainHtml = `${chapters.before}
   <section class="chapter" id="canvas">
   <div class="chapter-head"><div class="label">7 · Canvas</div><p>Switch the frame and the boxes move; the words don't. A dashed box is a question nobody has answered. Two cells stay on the page in every frame.</p></div>
-  <div class="frame-bar"><span class="credit" id="credit">${esc(CREDITS.humane)}</span></div>
+  <div class="frame-bar"><div class="seg" role="group" aria-label="Frame"><button type="button" data-frame="humane" aria-pressed="true">Humane</button><button type="button" data-frame="lean" aria-pressed="false">Lean</button></div><span class="credit" id="credit">${esc(CREDITS.humane)}</span></div>
   ${errorHtml}
   <div class="canvas" id="canvas-grid" data-frame="humane">
 ${bandHtml(1)}
@@ -658,39 +570,69 @@ ${extras.map((b) => boxHtml(b, canvas)).join('\n')}
 ${floor.map((b) => boxHtml(b, canvas)).join('\n')}
   </div>
   </section>
-${chapters.after}
-</main>
-</div>
-<footer>
-  <div>${brandLine}</div>
-  <div>a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh</div>
-  <div>coverage is a fact · readiness is a verdict this page doesn't render</div>
-</footer>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script>
-function start() {
-  const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
-  const toastEl = $('#toast'); let toastT;
-  const toast = (m) => { toastEl.textContent = m; toastEl.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('show'), 1600); };
+${chapters.after}`;
+  const footerLines = [
+    brandLine,
+    `a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh`,
+    'coverage is a fact · readiness is a verdict this page doesn\'t render',
+  ];
+  return shellPage({ title: `${brand.name} — Playbook`, brand, projectDir: data.projectDir, current: 'playbook', ledgerHtml, rail, mainHtml, footerLines, extraCss: PLAYBOOK_CSS, extraJs: playbookJs(brand) });
+}
+
+// What the playbook adds to the shell: the frame toggle, the canvas grid in both frames, the deck.
+// The chrome, the block, Link · Copy and the copy sheet are the shell's (src/page-shell.js).
+const PLAYBOOK_CSS = `
+  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
+  .chapter-head { max-width: 62ch; margin-bottom: 22px; } .chapter-head .label { margin-bottom: 6px; } .chapter-head h2 { font-family: var(--display); font-size: 32px; line-height: 1.12; } .chapter-head p { margin-top: 8px; color: var(--ink-2); }
+  .frame-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 16px; } .credit { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .canvas { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .band-title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; margin-top: 8px; } .band-title h3 { font-family: var(--display); font-size: 20px; } .band-title span { font-size: 13px; color: var(--muted); }
+  .canvas .block { min-height: 150px; }
+  .block .prompt { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; } .block.hole .prompt, .block.dormant .prompt { font-size: 14px; }
+  .block .answer p + p { margin-top: 8px; } .block .foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule-2); font-family: var(--mono); font-size: 11px; color: var(--muted); } .block .src { min-width: 0; overflow-wrap: anywhere; }
+  .block.extra h3::after { content: " · your cell"; font-weight: 400; color: var(--muted); }
+  .t-lean { display: none; }
+  .canvas[data-frame="lean"] { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: minmax(150px, auto); }
+  .canvas[data-frame="lean"] .humane-only { display: none; } .canvas[data-frame="lean"] .block.floor { display: flex; }
+  .canvas[data-frame="lean"] .block { grid-area: var(--area, auto); } .canvas[data-frame="lean"] .block .prompt { display: none; } .canvas[data-frame="lean"] .block.hole .prompt, .canvas[data-frame="lean"] .block.dormant .prompt { display: block; }
+  .canvas[data-frame="lean"] .t-lean { display: inline; } .canvas[data-frame="lean"] .t-humane { display: none; }
+  .canvas[data-frame="lean"] .band-title.floor-title { grid-area: 4 / 1 / 5 / 6; margin-top: 18px; } .canvas[data-frame="lean"] #canvas-risks { grid-area: 5 / 1 / 6 / 4; } .canvas[data-frame="lean"] #canvas-principles { grid-area: 5 / 4 / 6 / 6; }
+  .canvas[data-frame="lean"] .pointer { display: flex; grid-area: ${LEAN_CHANNELS_AREA}; } .pointer { display: none; }
+  .pointer .body { color: var(--ink-2); font-size: 14px; }
+  .deck { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; grid-template-rows: auto 1fr auto; padding: 16px clamp(16px, 4vw, 48px); }
+  .deck .chrome, .deck .bottom { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); } .deck .chrome button { margin-left: auto; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 5px; font-family: var(--body); font-size: 12.5px; color: var(--ground); }
+  .deck .stage { display: grid; place-items: center; min-height: 0; position: relative; } .deck .hit { position: absolute; top: 0; bottom: 0; width: 22%; cursor: pointer; } .deck .hit.l { left: 0; } .deck .hit.r { right: 0; }
+  .deck .bottom .lg { margin-left: auto; }
+  .sl { width: min(100%, 1180px); aspect-ratio: 16 / 9; max-height: 100%; background: var(--paper); color: var(--ink); border-radius: 10px; box-shadow: var(--shadow); padding: clamp(28px, 4.5vw, 64px) clamp(28px, 5vw, 72px); display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+  .sl .eyebrow { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; } .sl .eyebrow .wm { font-family: var(--display); font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--ink); margin-right: 10px; }
+  .sl .sl-title { font-family: var(--display); font-size: clamp(24px, 2.6vw, 38px); color: var(--ink-2); font-weight: 500; }
+  .sl .sl-body { margin-top: 20px; flex: 1; min-height: 0; overflow: auto; font-family: var(--display); font-size: clamp(19px, 2.2vw, 32px); line-height: 1.32; } .sl .sl-body .prompt { display: none; } .sl.hole .sl-body .prompt, .sl.dormant .sl-body .prompt { display: block; color: var(--hole); font-style: italic; }
+  .sl .sl-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule-2); display: flex; gap: 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); } .sl.hole { border: 2px dashed var(--rule); }
+  @media (max-width: 900px) { .canvas, .canvas[data-frame="lean"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .canvas[data-frame="lean"] .block, .canvas[data-frame="lean"] .pointer, .canvas[data-frame="lean"] .band-title.floor-title { grid-area: auto !important; } .canvas[data-frame="lean"] .band-title.floor-title { grid-column: 1 / -1; } }
+  @media (max-width: 640px) { .canvas, .canvas[data-frame="lean"] { grid-template-columns: 1fr; } }
+  .block .helper { color: var(--muted); font-size: 13px; } .block .body ul { margin: 0; padding-left: 18px; } .block .body li + li { margin-top: 4px; } .block .body p + p, .block .body ul + p, .block .body p + ul { margin-top: 8px; }
+  .block.snippet .who { font-family: var(--display); font-size: 19px; line-height: 1.3; } .xlink { font-family: var(--mono); font-size: 11.5px; } .xlink.dim { color: var(--muted); } .hole-text { color: var(--hole); }
+  .tier-title { display: flex; align-items: baseline; gap: 10px; margin: 22px 0 12px; } .tier-title h3 { font-family: var(--display); font-size: 20px; } .tier-title span { font-size: 13px; color: var(--muted); }
+  table.rivals { width: 100%; border-collapse: collapse; font-size: 13.5px; } table.rivals th { text-align: left; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); } table.rivals td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; } table.rivals tr:last-child td { border-bottom: 0; }
+  .chip.synthetic { background: var(--accent-soft); color: var(--ink-2); } .date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .rival .win-line { font-family: var(--display); font-size: 20px; line-height: 1.25; margin-bottom: 8px; }
+`;
+
+// Slide on every block (appended after the shell's Link · Copy), the frame toggle, the deck.
+function playbookJs(brand) {
+  return `
+(function () {
+  const SLIDE_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M12 17v3M8 20h8"/></svg>';
   const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+  const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const grid = $('#canvas-grid'), credits = ${JSON.stringify(CREDITS)};
   $$('[data-frame]').forEach((x) => x.addEventListener('click', () => { grid.dataset.frame = x.dataset.frame; $$('[data-frame]').forEach((y) => y.setAttribute('aria-pressed', String(y === x))); $('#credit').textContent = credits[x.dataset.frame]; }));
-  const ICON = { link: '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>', copy: '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>', slide: '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>' };
   const blocks = $$('.block:not(.pointer)');
   blocks.forEach((b) => {
     const a = $('.actions', b); if (!a || a.dataset.ready) return; a.dataset.ready = '1';
-    a.innerHTML = '<button type="button" class="link" title="Copy a link to this box">' + ICON.link + 'Link</button><button type="button" class="copy" title="Copy this box for a slide or doc">' + ICON.copy + 'Copy</button><button type="button" class="slide" title="Show this box as a slide">' + ICON.slide + 'Slide</button>';
-    $('.link', a).addEventListener('click', () => { history.replaceState(null, '', '#' + b.id); write(location.href.replace(/#.*$/, '') + '#' + b.id, null).then(() => toast('Link copied — #' + b.id)); });
-    $('.copy', a).addEventListener('click', () => write(plain(b), rich(b)).then((k) => toast(k === 'rich' ? 'Copied — pastes as text, and as a table where supported' : 'Copied as text')));
+    a.insertAdjacentHTML('beforeend', '<button type="button" class="slide" title="Open this box as a slide">' + SLIDE_ICON + 'Slide</button>');
     $('.slide', a).addEventListener('click', () => openDeck(blocks.indexOf(b)));
   });
-  function plain(b) { const c = b.cloneNode(true); $$('.actions, .prompt', c).forEach((x) => x.remove()); return c.innerText.replace(/\\n{3,}/g, '\\n\\n').trim(); }
-  function rich(b) { const body = $('.body', b).cloneNode(true); $$('.prompt', body).forEach((x) => x.remove()); const foot = $('.foot', b).innerText.replace(/\\s+/g, ' ').trim(); return '<div style="font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45"><p style="margin:0 0 6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7C868D">' + esc(${JSON.stringify(brand.name)} + ' · ' + b.dataset.title) + '</p>' + body.innerHTML.replace(/ class="[^"]*"/g, '') + '<p style="margin:10px 0 0;font-size:10px;color:#7C868D;font-family:Menlo,Consolas,monospace">' + esc(foot) + '</p></div>'; }
-  function write(text, html) {
-    const plainOnly = () => navigator.clipboard ? navigator.clipboard.writeText(text).then(() => 'plain') : Promise.resolve('none');
-    if (html && navigator.clipboard && window.ClipboardItem) { try { return navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]).then(() => 'rich').catch(plainOnly); } catch (e) { return plainOnly(); } }
-    return plainOnly();
-  }
   let deckEl = null, cur = 0;
   const LEDGER = $('.ledger').innerText;
   function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(${JSON.stringify(brand.name)}) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '<span>' + esc($('.src', b).innerText) + '</span></div>'); return sl; }
@@ -703,15 +645,8 @@ function start() {
   function step(d) { cur = (cur + d + blocks.length) % blocks.length; render(); }
   function closeDeck() { if (deckEl) { deckEl.hidden = true; document.body.style.overflow = ''; } }
   document.addEventListener('keydown', (e) => { if (!deckEl || deckEl.hidden) return; if (e.target && e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) return; if (e.key === 'Escape') closeDeck(); if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); step(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); } });
-  const links = $$('.rail a'), sections = $$('.chapter');
-  function highlight() { const y = window.scrollY + window.innerHeight * 0.35; let id = sections[0] && sections[0].id; sections.forEach((sec) => { if (sec.offsetTop <= y) id = sec.id; }); links.forEach((l) => l.classList.toggle('on', l.getAttribute('href') === '#' + id)); }
-  window.addEventListener('scroll', highlight, { passive: true }); highlight();
-  if (location.hash) { const t = $(location.hash); if (t) setTimeout(() => t.scrollIntoView({ block: 'start' }), 60); }
 }
-(window.claude && window.claude.hot && window.claude.hot.ready) ? window.claude.hot.ready(start) : start();
-</script>
-</body>
-</html>
+})();
 `;
 }
 

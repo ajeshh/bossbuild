@@ -167,6 +167,13 @@ rule above still applies to the whole section once it is stamped.
   deeper verb is. Two holes that cited BOSS's own `IDEA-106 · kicked up #11` to a founder whose tree
   has no IDEA-106 now say `no record holds this yet`; a dormant cell renders dormant in its chapter,
   not as a question. Three tests.
+- **`boss playbook` renders through the shared shell (FEAT-028, commit 1).** The top bar with the
+  family bar (Playbook · Design · Board — a sibling is a link only when its file is on disk), the
+  rail, the block, Link · Copy and the **copy sheet** are now `src/page-shell.js`'s, the same chrome
+  `boss design` draws; the playbook keeps the frame toggle (moved into the canvas chapter's frame
+  bar), the canvas grid in both frames, Slide beside Link · Copy, and the deck. The toast is gone —
+  every copy shows its payload and whether rich text reached the clipboard. The open-questions line
+  closes the ledger. One test; the FEAT-026/027 tests are the contract and still pass.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's
