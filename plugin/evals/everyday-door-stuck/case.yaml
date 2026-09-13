@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: everyday-door-stuck
+description: The everyday door — a project with one idea and no evidence; /boss should open on the one conversation, name the verb after the act, and stop.
+tags: [door, everyday]
+context:
+  scaffold_script: fixture.sh
