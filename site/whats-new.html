@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.313.0" />
+<meta name="generator" content="BOSS 0.314.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
@@ -69,6 +69,10 @@
       <div class="body">
         <ol class="releases">
       <li>
+        <div class="rel"><span class="ver">v0.314.0</span><span class="when">2026-09-12</span></div>
+        <p><code>boss board --html</code> renders with no tracked ALL-CAPS labels, nothing under 12px, no coloured tab down the side of every card, and dimming by colour rather than opacity. If you installed BOSS as a Claude Code plugin, the manifest version finally moves again (see below).</p>
+      </li>
+      <li>
         <div class="rel"><span class="ver">v0.313.0</span><span class="when">2026-09-12</span></div>
         <p><code>boss help --html</code> renders on the same concrete-and-graphite palette as everything else BOSS makes, with no tracked ALL-CAPS labels, every text pair over 4.5:1 (the project-name tag was white on hi-vis at 3.6:1), prose bounded at 80 characters at every size, and table cells that wrap. <code>boss board</code> gets the same contrast fix. Four practice titles lost a <code>WORD — fragment</code>.</p>
       </li>
@@ -111,10 +115,6 @@
       <li>
         <div class="rel"><span class="ver">v0.301.0</span><span class="when">2026-09-11</span></div>
         <p><strong>The anti-slop list now says when to distrust itself</strong> — it's re-checked when a new frontier model ships, not on a calendar, because that's what actually moves what generated design looks like. If a newer model has shipped since the list's stamp, it tells you to treat it as stale.</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.300.0</span><span class="when">2026-09-11</span></div>
-        <p><strong>the conscience now fires on Windows without Git Bash.</strong> The two hooks BOSS registers moved to Claude Code's exec form — no shell in between — and <code>/boss-sync</code> migrates the old line in existing projects. Needs Claude Code 2.1.139 or newer (<code>claude --version</code>).</p>
       </li>
     </ol>
         <p class="small">
@@ -160,7 +160,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.313.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.314.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

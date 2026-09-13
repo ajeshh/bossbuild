@@ -16,6 +16,31 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.314.0 — 2026-09-12
+
+**The plugin version gate moves into `npm run check`, where it will actually run. And `boss board`
+gets the same floors the website got an hour earlier.**
+
+> **For you:** `boss board --html` renders with no tracked ALL-CAPS labels, nothing under 12px, no
+> coloured tab down the side of every card, and dimming by colour rather than opacity. If you
+> installed BOSS as a Claude Code plugin, the manifest version finally moves again (see below).
+
+- **`.claude-plugin/plugin.json` had sat at 0.306.0 through seven releases** (0.307 → 0.313) — and
+  Claude Code only updates an installed plugin when that string moves, so anyone on the plugin path
+  was frozen at 0.306.0 without knowing. `npm run release` has checked `VERSION ↔ plugin.json`
+  since v0.302.0, and caught nothing, because `release` is the gate nobody runs and `check` is the
+  one everybody runs. **A gate that is not in the loop people actually run is a gate on paper.** The
+  same check now lives in `check:manifests` (strict = red), so `npm run check` fails the way
+  `release` would have. Found by the generated-file-behind-VERSION tell, the same tell as v0.228.0's
+  `package.json`.
+- **`boss board`'s HTML** carried the board's own copy of the chrome the site just lost: a
+  `Board` kicker in tracked caps over the h1, uppercase column heads / card ids / flags / section
+  heads at 9.5–11px, a 3px hue tab down the left of every card, `opacity` on parked cards and
+  empty cells, and a footer that joined three commands with middle dots. All of it moved: the word
+  `the board` is a plain mono lead inside the h1, nothing is under 12px or uppercased by CSS, the
+  column header's rule carries the hue on its own, and the footer is a sentence. Contrast was fixed
+  in v0.313.0; the rendered-page detector on a fresh `boss new` board now returns nothing.
+
 ## 0.313.0 — 2026-09-12
 
 **BOSS's own website and the in-project guide, measured against BOSS's own design floors, and
