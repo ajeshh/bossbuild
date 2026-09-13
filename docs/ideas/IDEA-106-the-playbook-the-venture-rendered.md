@@ -200,6 +200,30 @@ cell) · no readiness score · no investor update until n>0 · no second board r
 - **First slice, if it earns a build:** the canvas-as-boxes page alone, with chips, holes and links.
   Every other chapter is the same renderer over a different folder.
 
+### 8. How it tells the story — the deck is the chapter order, read aloud
+
+Ajesh, 2026-09-13: *"I wanna keep developing how we story tell."* The playbook has two readings of
+the same records — the site (browse, rich, everything) and the deck (present, one thing at a time)
+— and the story is the same in both because **the chapter order is the pitch arc**: why → the
+product → who → the problem and who else fixes it → the canvas → how it sustains → what we know →
+what we've learned → what we decided → risks → brand → what's next.
+
+- **Every chapter opens with one line, and that line is the story.** Read in sequence the chapter
+  lines *are* the pitch: *A home-care agency shouldn't lose its Sunday to a spreadsheet · One tap
+  when someone calls in sick · Dee, 52, runs nine caregivers from the kitchen table · Every Sunday
+  night the owner rebuilds the week by phone …* In the deck each becomes a full-bleed chapter slide.
+- **Where the line comes from — BOSS writes none of them.** The rule: *a chapter's line is the first
+  sentence of the record it renders.* Why ← the Promise cell · The product ← the IDEA doc's current
+  shape · Who ← the persona's `who` line · Problem ← the Problem cell · Learned ← the newest
+  *surprised* line · Decided ← the newest DEC · Brand ← the tagline. A record whose first sentence
+  makes a bad chapter line is a record worth a better first sentence — the render tells the founder
+  that, it doesn't fix it.
+- **Slides are composed per block type, not enlarged.** A canvas cell = the cell name small, the
+  answer in display type; a rival = *why they might win* as the headline; a persona = the card; a
+  table or timeline = itself, wider. The cover slide is the promise + the conscience line.
+- **The deck exports.** *Export PDF* prints one slide per page at 16:9 (13.33 × 7.5 in) — the
+  universal path into any deck tool, and the artifact a founder mails.
+
 ## The prototype — see it before choosing any of the above
 
 Ajesh, 2026-09-13: *"lets first create a prototype of the idea to see how an example would look …
@@ -249,6 +273,8 @@ question — not a fix made in passing.
 | 5 | **the story so far**, dated | learning is scattered across five append-only logs (IDEA capture log, canvas revisions, `BRAND.md` learned, devlog, `EVID`/`DEC` dates) with no reader that joins them | **task:** the render is the reader; the parse needs one date convention across all five |
 | 6 | an **evidence chip per cell** | `EVID` carries `assumption:` as a free phrase, no `cell:` | **question** (open question 2) |
 | 7 | the **current answer** in a box | BOSS's own canvas cells carry their revision history inline (`🟢 v0.5 — RE-AIMED…`) | **question** (open question 1) — a founder's canvas may never do this |
+| 9 | a persona **card** with photo, quote, bars, stat tiles, demographics | six fields, no quote, no numbers, no face — deliberately (a synthetic persona that looks finished lies better). Ajesh: *"our existing personas is weak"* | **new scope:** `/vet` the three pages he handed over, per field — inboxed as `docs/research/inbox/persona-record-is-thin-against-the-craft.md` |
+| 10 | slides that feel like *"the best presentations today"* | the render can only be as rich as the record; a cell is one paragraph, a rival is a table row, and no record holds an image | **question:** which chapters earn a visual the records don't hold (a chart from `/measure`, a screenshot from `/ship`, a photo from a real interview) — and where does each come from? |
 | 8 | **the ask** as a hole with a reason | `mentor-capital` defaults to *not yet*; nothing records *why not yet* in a place a render can quote | **task:** the not-yet needs a sentence on disk, or the hole has no reason to show |
 
 ## Open questions — written as questions, not carried
@@ -272,6 +298,26 @@ The prototype is a **mock to react to**, not a build; it costs one file and deci
 *build* trigger, carried in from 065 and 104 together: **a founder (or Ajesh on a real project) goes
 looking for their own material and cannot find it without grepping, or asks for something to show a
 room** — the symptom this surface treats. Until then it is a good idea with a prototype attached.
+
+## Prototype v2 — republished 2026-09-13 (same link)
+
+**The hopping was a class-name collision, not focus:** the per-block *Slide* button and the
+full-screen overlay both used `.slide`, so hovering any block turned its button into a
+`position: fixed; inset: 0` box over the page, the pointer "left" the block, it vanished, and it
+flickered back. Overlay renamed `.deck`. Slide now opens only on an explicit click.
+
+**Present rebuilt as a deck** (39 slides from 8 chapters): cover (promise + conscience line) →
+full-bleed accent chapter slides carrying each chapter's line → block slides composed per type →
+a hole chapter is a dashed slide. Progress bar, click-zones for touch, ← → Space PgUp/PgDn Esc.
+**Export PDF** in the top bar and in the deck (prints the deck, one 16:9 slide per page — needs
+verifying inside the artifact sandbox; on `file://` it is plain `⌘P`).
+
+**Persona redrawn as the classic card** (Ajesh's example image): photo column (a placeholder —
+*no photo of a real person will be invented*), name, About with `unknown` where the record has no
+answer (income), Core needs / Motivation / Pain points, four bars labelled *ranked from 2
+conversations · n=2, not a survey*, one quote attributed to its EVID, two stat tiles, a Sunday at
+8:40pm, and the *don't know* box. The record's six fields map onto the card; the card shows which
+of the classic fields the record doesn't hold — that is the point of drawing it.
 
 ## Prototype v1 — republished 2026-09-13 (same link)
 
@@ -303,6 +349,14 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **prototype v1 reactions** (Ajesh): *"I think of personas visually"* + an example
+  card (photo · About · Core needs · Motivation · bars · quote · stat · Pain points) + three pages on
+  persona practice — *"lets also assess the content separately.. i think our existing personas is
+  weak"* → inboxed for `/vet` · still hopping → the `.slide` collision found and fixed · *"maybe
+  slide is only when clicked explicitly"* → yes, now · *"add an export into pdf"* → done · *"the
+  presentation is pretty meh visually … the website part looks way richer"* → deck rebuilt with
+  per-type slides · *"some of the content is still pretty mid"* → kicked-up row 10 · *"keep
+  developing how we story tell"* → §8 written: the chapter line is the first sentence of the record.
 - 2026-09-13 — **prototype v0 reactions** (Ajesh): a bug — *"the switch between slides and just
   content keeps hopping between the 2"* (Space on the focused Close button both advanced and closed;
   fixed in v1 — the overlay takes focus, not a button) · competitive eval with **key rivals as briefs**,
@@ -313,3 +367,7 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — **folded**: 065 and 104 → this record (Ajesh: *"lets combine all ideas into one"*).
   065's *two products* warning kept as the *cannot flatter* rule. Added: linkable blocks, Copy only
   where worth copying, the prototype plan (fictional venture, three chapters), the ordered next steps.
+- 2026-09-13 — **the design half spun out as [[IDEA-107]]** (Ajesh: *"should we build also the design
+  playbook… rivaling apple HIG… whats missing… figma support"*). Chapter 11 (*Brand*) is the seed of
+  a full *Design* chapter in the same renderer; *Kicked up* row 2 (the one place a colour is a fact)
+  is answered there — a guaranteed DTCG `tokens.json`. One renderer, one space; nothing here changes.
