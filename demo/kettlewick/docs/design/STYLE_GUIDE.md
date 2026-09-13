@@ -131,6 +131,14 @@ The stroke is in the file, not in the CSS.
 | StatusChip | ✓ | n/a | n/a | n/a | n/a |
 | AskCard | ✓ | ✓ | ✓ | ✓ after 8pm — "This ask goes out at 7am" | ✓ answered — the card says who covered it |
 | EmptyState | ✓ | n/a | n/a | n/a | n/a |
+| ConfirmDialog | ✓ | ✓ | ✓ | ✓ while the cancel is sending | n/a |
+| Toast | ✓ | ✓ pauses the dismiss | n/a | n/a | n/a |
+| Rail | ✓ | ✓ | ✓ the current place | n/a | n/a |
+| TextField | ✓ | ✓ | ✓ focus ring | ✓ says why | ✓ the label stays; the placeholder is an example, never the label |
+| CarerRow | ✓ | ✓ | ✓ | — | ✓ "No carers yet — add the first" |
+| ImportRow | ✓ | ✓ | ✓ | n/a | ✓ couldn't-read keeps the line as typed |
+| RowSkeleton | ✓ | n/a | n/a | n/a | n/a — it IS the loading state |
+| PrintSheet | ✓ | n/a | n/a | n/a | ✓ "Nothing uncovered on Monday" in one colour |
 
 - **How a state changes a colour:** rest → hover mixes the fill 12% with `text.body`; active 22%; selected takes the accent; disabled is the same colour at 45% opacity, never a new grey. One rule for every component.
 

@@ -637,6 +637,7 @@ export function collectDesign(projectDir, projectName) {
   components.orphanPages = usage.filter((u) => !known(u.name) && u.status !== 'proposed');
   components.tree = scanTree(projectDir);
   components.unindexed = components.tree.filter((f) => !known(f.name));
+  if (components.tree.files && components.tree.files.length) { const counts = usageCounts(projectDir, components.components.map((c) => c.name), components.tree.files); for (const c of components.components) if (c.usedIn == null) { c.usedIn = counts[c.name]; c.usedInFrom = 'tree'; } }
   const patterns0 = readPatterns(projectDir);
   // In use = in the index, the tree or a usage page. A retired name is not in use — that is the point of retiring it.
   patterns0.inUse = familiesInUse([...components.components.map((c) => c.name), ...components.tree.map((f) => f.name), ...usage.map((u) => u.name)]);
@@ -698,6 +699,7 @@ const TREE_DIRS = ['src/components', 'app/components', 'lib/components', 'compon
 const NOT_A_COMPONENT = /^(index|main|app|page|layout|route|root)$|Page$|Route$|Layout$/;
 export function scanTree(projectDir) {
   const found = [];
+  const files = []; // every source file seen, for the usage count
   const walk = (dir, depth) => {
     if (depth > 4 || !existsSync(dir)) return;
     for (const n of readdirSync(dir).sort()) {
@@ -705,13 +707,24 @@ export function scanTree(projectDir) {
       let st; try { st = statSync(p); } catch { continue; }
       if (st.isDirectory()) { if (!/^(__tests__|__mocks__|stories|node_modules|\.)/.test(n)) walk(p, depth + 1); continue; }
       if (!SRC_EXT.some((e) => n.endsWith(e)) || /\.(test|spec|stories|story|d)\.[a-z]+$/i.test(n)) continue;
+      files.push(p);
       const name = n.replace(/\.[a-z]+$/i, '');
       if (!/^[A-Z][A-Za-z0-9]*$/.test(name) || NOT_A_COMPONENT.test(name)) continue;
       if (!found.some((f) => f.name === name)) found.push({ name, path: p.slice(projectDir.length + 1) });
     }
   };
   for (const d of TREE_DIRS) walk(join(projectDir, d), 0);
+  found.files = files;
   return found;
+}
+// Used in: the number of source files under the scanned directories that reference the name (whole
+// word), not counting its own file. A count from the tree, honest at MVP — the V1 manifest's usedIn
+// wins when it exists.
+export function usageCounts(projectDir, names, files) {
+  const texts = (files || []).map((p) => { try { return { p, t: readFileSync(p, 'utf8') }; } catch { return null; } }).filter(Boolean);
+  const out = {};
+  for (const name of names) { const re = new RegExp(`(^|[^\\w])${name}([^\\w]|$)`); out[name] = texts.filter(({ p, t }) => !p.endsWith(`/${name}.tsx`) && !new RegExp(`[\\/]${name}\\.[a-z]+$`).test(p) && re.test(t)).length; }
+  return out;
 }
 
 // --- families: options BOSS knows about, shown only when the product USES one (IDEA-113) -----------
@@ -805,6 +818,38 @@ export function openSlots(data, projectDir) {
   if (data.content.deferred) add('content-voice', 'Voice and tone — the real strings', '/ux-check', 'from the strings that shipped');
   if (!data.research.evid.length) add('research-rungs', 'Research', '/interview', 'before the second screen');
   return q;
+}
+
+// --- the page in the founder's own tokens ---------------------------------------------------------------
+// The design space is the system, demonstrated: when the tokens name a ground, a paper, an ink, a
+// rule, the faces and a surface radius, the page's chrome takes them — light scheme only, because a
+// system with no dark tokens has not designed dark, and the page says so rather than inventing it.
+// With no tokens the shell's neutral palette stands, and the founder's accent is the only colour.
+export function themeFromTokens(tokens) {
+  const hex = (re) => { const t = tokens.find((x) => x.type === 'color' && !x.deprecated && re.test(x.name) && typeof x.value === 'string' && /^#[0-9a-f]{6}$/i.test(x.value)); return t ? { name: t.name, value: t.value } : null; };
+  const fam = (re) => { const t = tokens.find((x) => x.type === 'fontFamily' && Array.isArray(x.value) && re.test(x.name)); return t ? { name: t.name, value: t.value.map((f) => (/\s/.test(f) ? `"${f}"` : f)).join(', ') } : null; };
+  const dimT = (re) => { const t = tokens.find((x) => re.test(x.name) && x.value != null); return t ? { name: t.name, value: dim(t.value) } : null; };
+  const th = {
+    ground: hex(/(^|\.)surface\.(ground|background|bg|canvas|base)$/i), paper: hex(/(^|\.)surface\.(paper|raised|card|elevated|default)$/i),
+    ink: hex(/(^|\.)text\.(body|primary|default|base)$/i), muted: hex(/(^|\.)text\.(muted|secondary|subtle)$/i),
+    rule: hex(/(^|\.)border\.(default|base|strong)$/i), rule2: hex(/(^|\.)border\.(subtle|soft|light)$/i),
+    display: fam(/display|heading|brand/i), body: fam(/body|text|ui|sans/i), mono: fam(/mono|code|data/i), radius: dimT(/^radius\.(surface|card|default|md)$/i),
+  };
+  const used = Object.entries(th).filter(([, v]) => v);
+  if (!used.length) return { css: '', used: [] };
+  const vars = [];
+  if (th.ground) vars.push(`--ground: ${th.ground.value}`);
+  if (th.paper) vars.push(`--paper: ${th.paper.value}`);
+  if (th.ink) vars.push(`--ink: ${th.ink.value}`);
+  if (th.muted) { vars.push(`--ink-2: ${th.muted.value}`); vars.push(`--muted: ${th.muted.value}`); }
+  if (th.rule) vars.push(`--rule: ${th.rule.value}`);
+  if (th.rule2) vars.push(`--rule-2: ${th.rule2.value}`);
+  if (th.display) vars.push(`--display: ${th.display.value}`);
+  if (th.body) vars.push(`--body: ${th.body.value}`);
+  if (th.mono) vars.push(`--mono: ${th.mono.value}`);
+  const light = `:root:not([data-theme="dark"]) { ${vars.join('; ')}; }`;
+  const radius = th.radius ? ` .block { border-radius: ${th.radius.value}; }` : '';
+  return { css: `\n  /* the founder's tokens, light scheme */ @media (prefers-color-scheme: light) { ${light} } :root[data-theme="light"] { ${vars.join('; ')}; }${radius}\n`, used: used.map(([k, v]) => `${k} ← ${v.name}`) };
 }
 
 // --- render -------------------------------------------------------------------------------------------
@@ -933,7 +978,7 @@ export function renderDesignHtml(data, stampedAt) {
   const co = components;
   const statusChip = (c) => c.status === 'deprecated' ? `<span class="chip stale">deprecated${c.replacedBy ? ` → ${esc(c.replacedBy)}` : ''}</span>` : c.status === 'stable' ? '<span class="chip dec">stable</span>' : c.status === 'draft' ? '<span class="chip asserted">draft</span>' : c.status === 'unused' ? '<span class="chip find">unused</span>' : `<span class="chip asserted">${esc(c.status)}</span>`;
   const findingChips = (c) => { const f = c.findings.map((x) => `<span class="chip find">${esc(x.kind || x.severity || 'finding')}${x.detail ? ` · ${esc(x.detail.length > 48 ? x.detail.slice(0, 46) + '…' : x.detail)}` : ''}</span>`); if (c.stale) f.push('<span class="chip stale">stale · source moved since the manifest</span>'); if (c.missing && c.missing.length) f.push(`<span class="chip find">missing state · ${esc(c.missing.join(', '))}</span>`); return f.length ? f.join(' ') : '—'; };
-  const indexRows = co.components.map((c) => `<tr><td class="mono">${esc(c.name)}</td><td>${c.purpose ? esc(c.purpose) : '<span class="unk">no purpose line</span>'}</td><td>${c.variants.length ? esc(c.variants.join(' · ')) : '—'}</td><td class="tab">${c.usedIn == null ? '<span class="unk" title="the authored index has no usage count; the V1 manifest does">?</span>' : c.usedIn}</td><td>${statusChip(c)}</td><td>${findingChips(c)}</td></tr>`).join('')
+  const indexRows = co.components.map((c) => `<tr><td class="mono">${esc(c.name)}</td><td>${c.purpose ? esc(c.purpose) : '<span class="unk">no purpose line</span>'}</td><td>${c.variants.length ? esc(c.variants.join(' · ')) : '—'}</td><td class="tab">${c.usedIn == null ? '<span class="unk" title="no source tree to count in; the V1 manifest carries the count">?</span>' : `${c.usedIn}${c.usedInFrom === 'tree' ? '<span class="unk" title="files in the source tree that reference it, counted at render">·</span>' : ''}`}</td><td>${statusChip(c)}</td><td>${findingChips(c)}</td></tr>`).join('')
     + co.retired.map((r) => `<tr class="retired"><td class="mono"><s>${esc(r.name)}</s></td><td>${esc(r.why)}${r.on ? ` · ${esc(r.on)}` : ''}</td><td></td><td class="tab">0</td><td><span class="chip asserted">retired</span></td><td>—</td></tr>`).join('');
   const fiveCell = (c) => { if (c.states) { const ks = Object.keys(c.states); const have = ks.filter((k) => c.states[k] === true).length, na = ks.filter((k) => c.states[k] === 'n/a').length, miss = ks.filter((k) => c.states[k] === false); return miss.length ? `<td class="n">${have + na} of ${ks.length} · missing ${esc(miss.join(', '))}</td>` : `<td class="y">✓${na ? ` (${na} n/a)` : ''}</td>`; } if (c.missing === null) return '<td class="q">not checked — the Missing states cell is blank</td>'; return c.missing.length ? `<td class="n">missing ${esc(c.missing.join(', '))}</td>` : '<td class="y">✓</td>'; };
   const tokensCell = (c) => co.source === 'docs/design/library/manifest.json' ? (c.findings.some((f) => /raw|off-token|hex/i.test(f.kind + f.detail)) ? `<td class="n">✗ ${esc((c.findings.find((f) => /raw|off-token|hex/i.test(f.kind + f.detail)) || {}).detail || 'raw value')}</td>` : '<td class="y">✓ no raw value found</td>') : '<td class="q">not checked — the guard checks the write, the V1 manifest checks the tree</td>';
@@ -1112,8 +1157,8 @@ export function renderDesignHtml(data, stampedAt) {
   ];
   const extraCss = `
   .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 12px; } .sw { min-width: 0; } .sw b, .sw span { overflow-wrap: anywhere; } .sw i { display: block; height: 52px; border-radius: 6px; margin-bottom: 7px; border: 1px solid var(--rule-2); } .sw i.val { border-bottom: 1px solid var(--rule-2); } .sw i.val:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .sw b { display: block; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--ink); } .sw span { display: block; font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .sw .dec { margin-top: 4px; font-family: var(--body); font-size: 11.5px; color: var(--ink-2); } .sw .dec em { color: var(--muted); } .sw.retired b { text-decoration: line-through; color: var(--muted); } .sw .ret { color: var(--stale); }
-  .sw .val { display: inline; } .unk { color: var(--hole); font-style: italic; }
+  .sw b { display: block; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--ink); margin-bottom: 2px; } .sw span { display: block; font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .sw b.val, .sw span.val { display: inline-block; max-width: 100%; } .sw .dec { margin-top: 4px; font-family: var(--body); font-size: 11.5px; color: var(--ink-2); } .sw .dec em { color: var(--muted); } .sw.retired b { text-decoration: line-through; color: var(--muted); } .sw .ret { color: var(--stale); }
+  .unk { color: var(--hole); font-style: italic; }
   .scale { display: grid; gap: 10px; } .scale .row { display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: baseline; border-bottom: 1px solid var(--rule-2); padding-bottom: 8px; } .scale .row:last-child { border-bottom: 0; }
   .scale .meta { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.5; } .scale .meta b { display: block; color: var(--ink); font-weight: 500; } .scale .meta .d { display: block; font-family: var(--body); color: var(--ink-2); } .scale .spec { font-size: 22px; line-height: 1.2; }
   .bars { display: grid; gap: 8px; } .bars .row { display: grid; grid-template-columns: 120px 1fr; gap: 12px; align-items: center; font-family: var(--mono); font-size: 11.5px; color: var(--muted); } .bars .row i { display: block; height: 14px; background: var(--accent-soft); border-left: 2px solid var(--accent); }
@@ -1132,12 +1177,14 @@ export function renderDesignHtml(data, stampedAt) {
   .pre { margin: 10px 0; padding: 10px 12px; background: var(--ground); border: 1px solid var(--rule-2); border-radius: 5px; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; overflow-x: auto; white-space: pre; } .dl { display: inline-block; margin-left: 6px; padding: 2px 8px; border: 1px solid var(--accent); border-radius: 5px; font-size: 12.5px; text-decoration: none; }
   @media (max-width: 640px) { .scale .row { grid-template-columns: 1fr; gap: 4px; } }
 `;
+  const theme = themeFromTokens(tokens.tokens);
   const footer = [
     brand.present ? `brand: ${esc(brand.name)} · docs/BRAND.md${brand.accent ? '' : ' (accent unknown → default)'}${brand.nascent ? ' · nascent' : ''}` : 'brand: nascent — no docs/BRAND.md yet; rendered in the default. /landing seeds it.',
     `a read of your files — ${esc(src)} · docs/design/STYLE_GUIDE.md · docs/BRAND.md · docs/decisions · regenerated, never edited · <span class="tab">rendered ${esc(stampedAt)}</span>`,
+    theme.used.length ? `this page is set in your own tokens — ${esc(theme.used.join(' · '))} · light scheme only: no dark tokens are defined, so dark is not designed and the page does not invent it` : 'this page is set in the shell\'s neutral palette with your accent — it takes your tokens once surface, text, border and font are named',
     'seventeen sections, every one a read of a file · contrast is computed, everything else visual is inferred · icons and the logo render from files or not at all',
   ];
-  return shellPage({ title: `${brand.name} — Design`, brand, projectDir: data.projectDir, current: 'design', ledgerHtml: ledger, rail, mainHtml: [start, people, journeyCh, principles, colour, typeCh, shapeCh, iconsCh, layout, componentsCh, patternsCh, flowsCh, contentCh, a11yCh, resourcesCh, exceptionsCh, researchCh].join('\n'), footerLines: footer, extraCss });
+  return shellPage({ title: `${brand.name} — Design`, brand, projectDir: data.projectDir, current: 'design', ledgerHtml: ledger, rail, mainHtml: [start, people, journeyCh, principles, colour, typeCh, shapeCh, iconsCh, layout, componentsCh, patternsCh, flowsCh, contentCh, a11yCh, resourcesCh, exceptionsCh, researchCh].join('\n'), footerLines: footer, extraCss: extraCss + theme.css });
 }
 
 export function designHtml(projectDir, projectName) {

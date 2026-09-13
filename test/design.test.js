@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, statSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, readUsagePages, scanTree, readDivergence, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, readUsagePages, scanTree, readDivergence, themeFromTokens, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -98,6 +98,7 @@ test('the swatch hex IS the tokens.json hex, the DEC that named a token is on it
   assert.match(html, /chosen · DEC-001/, 'DEC-001 names color.action.primary in backticks');
   assert.match(html, /class="sw retired"[\s\S]*?color\.text\.placeholder[\s\S]*?deprecated → color\.text\.muted/);
   assert.match(html, /data-copy="hex=#1B7F79\|token=color\.action\.primary\|css=var\(--color-action-primary\)"/, 'three copy forms on a swatch');
+  assert.ok(!/\.sw \.val \{ display: inline; \}/.test(html), 'the swatch block stays a block — the rule that collapsed it to zero height is gone');
   assert.match(html, /<td class="mono tab">3\.63<\/td><td class="warn">large text only/);
   assert.ok(!/<td class="mono tab">2\.54<\/td>/.test(html), 'the deprecated placeholder is struck on the swatch, not scored in the table');
   assert.match(html, /checks the pairs the tokens declare, not what the page renders/i, 'says its scope once');
@@ -833,4 +834,20 @@ test('divergence reads the trace back: decisions handed, and each new-component 
   const bare = withLibrary();
   const html2 = renderDesignHtml({ ...collectDesign(bare, 'Tidewell'), projectDir: bare }, 'x');
   assert.match(html2, /class="block dormant" id="divergence"[\s\S]*?boss hooks enable design-decisions-guard · component-reuse-guard/);
+});
+
+test('the page is set in the founder\'s own tokens — ground, paper, ink, rule, faces — light scheme only; with no tokens the neutral shell stands', () => {
+  const { tokens } = readTokens(tidewell());
+  const th = themeFromTokens(tokens);
+  assert.ok(th.css.includes('--ground: #F4F6F5') && th.css.includes('--paper: #FFFFFF') && th.css.includes('--ink: #17211E') && th.css.includes('--muted: #7D8985'));
+  assert.ok(th.css.includes('--display: Newsreader, Georgia, serif') && th.css.includes('--body: "Public Sans", Arial, sans-serif'));
+  assert.ok(th.css.includes('@media (prefers-color-scheme: light)') && th.css.includes(':root[data-theme="light"]') && !th.css.includes('[data-theme="dark"] {'), 'never applied to the dark scheme');
+  assert.ok(!th.css.includes('--ink-2: #9AA5A1'), 'the deprecated placeholder is not a theme token');
+  assert.deepEqual(themeFromTokens([]), { css: '', used: [] });
+  const dir = tidewell();
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /this page is set in your own tokens — ground ← color\.surface\.ground/);
+  const bare = project({ 'docs/BRAND.md': BRAND });
+  const html2 = renderDesignHtml({ ...collectDesign(bare, 'Tidewell'), projectDir: bare }, 'x');
+  assert.match(html2, /set in the shell's neutral palette with your accent/);
 });

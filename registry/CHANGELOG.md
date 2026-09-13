@@ -30,6 +30,20 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The design space is set in the founder's own tokens, and the showcase got fuller.** Ajesh, on
+  the demo: *"the colors are all gray, I wonder if gray scale was the right idea"* and *"the persona
+  seems hella empty."* The page now takes the product's ground, paper, ink, muted, rules, three faces
+  and surface radius from `tokens.json` — the system, demonstrated on its own page — light scheme
+  only, because a system with no dark tokens has not designed dark and the page says so in the
+  footer rather than inventing it; with no tokens the neutral shell and the accent stand. The swatch
+  colour blocks had collapsed to zero height (a `.val` rule made the block inline) — fixed, so a
+  semantic token shows its colour first. *Used in* on the authored index is now counted from the
+  source tree (files that reference the name, at render; the V1 manifest's count wins when it
+  exists) instead of a `?`. Kettlewick: thirteen components with usage pages (ConfirmDialog · Toast ·
+  Rail · TextField · CarerRow · ImportRow · RowSkeleton · PrintSheet joined the five), six families in
+  use with a decision each (nine *Ours* rows), five page compositions with real import lines, and
+  both personas filled to the shape `/persona` writes — four jobs, four pains, four values, four open
+  questions each; Priya stays 100% synthetic, which the card says.
 - **The Kettlewick showcase has its design half (FEAT-039, the design lane).** `demo/kettlewick/docs/design/**`
   in the shapes the verbs write: a DTCG `tokens.json` with `breakpoint.*`, `target.min` and
   `z-index.*`; a style guide with every slot filled (three grounded principles with statements,
