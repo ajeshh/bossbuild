@@ -21,6 +21,8 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 | `boss map` | live cheatsheet: where you are + what’s one unlock away |
 | `boss status [--conscience]` | mode / pinned version / drift (+ loop states) |
 | `boss board` | what’s in flight (captured → shipped) |
+| `boss playbook [--open]` | the venture as sixteen chapters over your records — present it, export the PDF |
+| `boss design [--open]` | the design space: tokens, parts, patterns, exceptions — read from docs/design/ |
 | `boss recap [--md]` | what happened this week, read back out of your own records |
 | `boss id [TYPE]` | the next free record number — computed, never counted by hand |
 | `boss records` | check the record set: duplicate IDs, off-vocabulary status, broken promotions |
@@ -37,7 +39,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 
 - `/welcome` — First time using BOSS? Start here
 - `/boss` — The door, any day
-- `/import` — Bring existing material into this project — a file, a folder, or a URL (Word, Google Doc, Obsidian, PDF, slides, a web page)
+- `/import` — Bring existing material in — a file, a folder, a URL, or text you paste
 - `/idea` — Capture an idea — and keep adding to it
 - `/prototype` — Get the idea onto the screen, fast (not /pretotype, which tests demand)
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them

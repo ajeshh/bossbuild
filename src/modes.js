@@ -34,6 +34,8 @@ export const STANDING_COMMANDS = [
   ['boss map', 'live cheatsheet: where you are + what\u2019s one unlock away'],
   ['boss status [--conscience]', 'mode / pinned version / drift (+ loop states)'],
   ['boss board', 'what\u2019s in flight (captured \u2192 shipped)'],
+  ['boss playbook [--open]', 'the venture as sixteen chapters over your records \u2014 present it, export the PDF'],
+  ['boss design [--open]', 'the design space: tokens, parts, patterns, exceptions \u2014 read from docs/design/'],
   ['boss recap [--md]', 'what happened this week, read back out of your own records'],
   ['boss id [TYPE]', 'the next free record number \u2014 computed, never counted by hand'],
   ['boss records', 'check the record set: duplicate IDs, off-vocabulary status, broken promotions'],

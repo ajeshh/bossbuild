@@ -30,6 +30,17 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The front page says what the conscience is watching.** Ajesh: *"with the whole playbook, design
+  system, and demo… we need to update the copy on the front page"* — and, a minute later, *"it's still
+  conscience for your build right."* It is; the H1 and the one-line sentence do not move. What moved:
+  the lede says the build it watches is the whole venture, not only the code; a new section under
+  *what you get* — *what it adds up to* — names the three pages the records read back into
+  (`boss playbook`, `boss design`, `boss board`: generated, never hand-written, a hole renders as its
+  question); and the demo is linked where it earns it — under the install block, at the end of that
+  section, and as the third way down (*See it run*), since the demo is the worked example, not the
+  pitch. `boss playbook` and `boss design` joined `STANDING_COMMANDS` (they are true in every mode,
+  like `boss board`), so the cheatsheet, the site's quick guide and `check:site` know them. Website
+  only; no `For you` line.
 - **The design space is set in the founder's own tokens, and the showcase got fuller.** Ajesh, on
   the demo: *"the colors are all gray, I wonder if gray scale was the right idea"* and *"the persona
   seems hella empty."* The page now takes the product's ground, paper, ink, muted, rules, three faces
