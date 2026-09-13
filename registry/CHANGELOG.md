@@ -16,6 +16,35 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.323.0 — 2026-09-12
+
+**The last model names leave the shipped text, and the recalibration pass stops describing a file
+that never existed.**
+
+> **For you:** four examples in `/cost-review`, its review template, the cost-budget loop and
+> `/practice` said a vendor's model names where they meant *the cheap tier* and *the capable tier*.
+> They say the tier now. Nothing else in your project changes.
+
+- **Asked directly:** *"should we get rid of the whole fable model pinning… or let go of model
+  attachment?"* Measured first: the shipped surface (`stages/`, `library/`, `src/`, `plugin/`) had
+  **zero model pins** since v0.135.0 — shapes, not names. What remained was residue, three places,
+  each stale differently: `/vet` still said *spawn the verdict with `model: "fable"`* (an instruction
+  this session ignored today with no consequence); `/recalibrate` still walked a `models` table, a
+  `routing` map and per-token prices in `.boss/model-profile.json`; and **that file has never
+  existed** — two skills and a practice described updating it for four months. The
+  field-nobody-reads pattern, inverted: a binding two readers named and nobody wrote.
+- **Let go, keep the discipline.** `/vet` asks for the *shape* (deliberation: the host's most
+  deliberate model, or a higher `effort:` on the session model — whichever the host resolves) and
+  names no model on purpose. `/recalibrate` is rewritten around its only honest triggers — a tier
+  moves a shape, an axis appears (`effort:`), a second host, a ledger anomaly — with the keyless
+  regrade when voice is affected and a rule against creating the profile to satisfy the reference.
+  `model-routing.md` says where a binding *would* go **if** BOSS ever has a paid surface, and that it
+  has not. IDEA-014's standing discipline is intact; what is gone is any sentence that knew a name.
+- **Shipped vendor names → tiers**, per the 2026-09-12 rule (*`stages/**` names the class of tool*):
+  `/cost-review` ×2, its review template ×2, `cost-budget-loop.md`, `/practice`'s example field. The
+  one model list left in shipped text is `task-hygiene.js`'s header naming the host's retained set —
+  a dated host fact, which is the exception the rule allows.
+
 ## 0.322.0 — 2026-09-12
 
 **`/boss-learn` leaves the template. `/extract` is the one verb for "I proved something" — it records,

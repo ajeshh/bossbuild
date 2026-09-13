@@ -48,7 +48,7 @@ lesson, not a changelog line.
    owner: "@<github-login of whoever learned it>"
    status: active           # active | stale | retired
    created: {{today}}
-   applies_to: <what this is about — e.g. "Claude Code" / "model: opus-4.8" / "prompting" / "cost">
+   applies_to: <what this is about — e.g. "Claude Code" / "the deliberate model tier" / "prompting" / "cost">
    review_by: <YYYY-MM-DD>   # optional — when to re-check it's still the best way (see staleness below)
    ---
 

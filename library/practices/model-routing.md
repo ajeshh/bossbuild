@@ -75,7 +75,7 @@ artifact still says nothing and inherits, because an `effort:` key is one more h
 BOSS would sign up to sweep (the v0.218.0 cost), and the prose sentence already carries the intent to
 any host. The next model-recalibration pass (IDEA-014) should ask one question of the three shapes: *does any of them now
 want an effort level rather than a model, and if so, is that binding local (`.boss/model-profile.json`)
-or shipped?* Recommended: local.
+or shipped?* Recommended: local — and only once a paid surface exists.
 
 **When you must bind concretely** — a paid API surface where you're spending real money per call, like
 a public demand page — bind it in **one place, locally, and say why**: a single config the operator
@@ -90,8 +90,11 @@ a template that ships to strangers.
 
 ## Related
 
-- `.boss/model-profile.json` — the local, operator-owned binding (capability shapes → whatever you
-  actually use). Not shipped; regenerable; safe to be wrong.
+- `.boss/model-profile.json` — **where** a local, operator-owned binding would go (capability shapes
+  → whatever you actually use) **if you have a paid API surface that needs one.** Not shipped;
+  regenerable; safe to be wrong — and, for four months, not there at all: two skills and this line
+  described updating it while no such file existed (2026-09-12). Create it when the surface exists,
+  never to satisfy a reference.
 - **What actually dates this practice.** Not a model launch — nothing here rots when one ships. It's a
   new *tier* that moves the shape of the tradeoff (did "cheap" or "deliberate" come to mean something
   else?), which is a much rarer and more meaningful event. Watch for that; ignore the launches.

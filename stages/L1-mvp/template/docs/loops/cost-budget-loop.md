@@ -90,8 +90,8 @@ hand the decision back. Never blocks. Override is recorded in devlog per IDEA-00
     dev-only script; not in user-facing code; not deployed>.
   ```
 - **Swap discipline:** Husain's eval-driven cost reduction vs. caching-first (Anthropic prompt
-  caching as default) vs. batch-first (non-realtime workloads) vs. tiered-model (Haiku as
-  default, escalate to Sonnet only when needed). The loop's exit predicate checks for *some*
+  caching as default) vs. batch-first (non-realtime workloads) vs. tiered-model (the cheap tier as
+  default, escalate to the capable tier only when needed). The loop's exit predicate checks for *some*
   cost-logger in code, not a specific tool; the budget doc is where the founder records which
   discipline they're applying.
 - **Author your own:** a domain-specific cost discipline (e.g., a `gpu-spend-loop` for a

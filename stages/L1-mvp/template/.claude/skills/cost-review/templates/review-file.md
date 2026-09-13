@@ -18,7 +18,7 @@ window: <last 7 days | since-last-review | custom>
 ## Headline
 _One sentence the founder reads in the inbox / Slack scroll. If only this line is read, the
 review should still land. Examples: "On-budget; one outlier user worth investigating."
-"Over by 18%; classifier FEAT is the culprit; consider Haiku A/B." "Under; safe to ship the
+"Over by 18%; classifier FEAT is the culprit; consider a cheap-tier A/B." "Under; safe to ship the
 deferred AI feature."_
 
 ## Numbers
@@ -49,7 +49,7 @@ scales with engagement, so your heaviest users can be your least profitable (AI 
 _Concrete findings from §4 above. One bullet per real surprise. Empty section is honest;
 "no surprises" is a finding worth recording when it's true._
 - <example: "FEAT-007 cost 4x its expected median — single user ran a 14k-token prompt repeatedly; investigate.">
-- <example: "Sonnet share grew from 30% → 65% over the window; no budget update recorded — stale rationale.">
+- <example: "capable-tier share grew from 30% → 65% over the window; no budget update recorded — stale rationale.">
 
 ## Actions
 _What the founder is doing about it. Concrete, dated. The point of the review is to drive

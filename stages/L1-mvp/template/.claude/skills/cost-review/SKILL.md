@@ -70,8 +70,8 @@ For each declared budget line in `docs/ai-cost-budget.md`, name the actual:
 - **Monthly cap vs. observed run-rate:** declared $X cap, observed run-rate $Y/month
   (extrapolate from the last 14 days).
 - **Per-model rationale check:** for each call-site row in the budget, look at actual
-  usage. If the budget says *"using Sonnet because Haiku fails this classifier,"* but the
-  ledger shows 90% Haiku calls, the rationale is stale.
+  usage. If the budget says *"using the capable tier because the cheap tier fails this classifier,"* but the
+  ledger shows 90% cheap-tier calls, the rationale is stale.
 
 ### 4. Flag surprises
 
@@ -152,7 +152,7 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
   variance. The founder's eye goes to numbers; structure for that.
 - **Surprises are the point.** A review with no surprises section is a stamp; a review with
   named surprises is a tool. Empty *"no surprises"* is honest when it's true; never fabricate.
-- **Actions are dated.** *"Improve cost"* is not an action. *"A/B Haiku on FEAT-007 by
+- **Actions are dated.** *"Improve cost"* is not an action. *"A/B the cheap tier on FEAT-007 by
   2026-06-15"* is.
 - **Privacy-first for domain-expert cohort.** No PII, no prompt bodies, no model output text
   in the review. Token counts + metadata only.
