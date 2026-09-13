@@ -15,7 +15,7 @@ import { BOSS_ROOT, STAGE_ORDER } from '../src/paths.js';
 import { cleanup } from './helpers.js';
 
 after(cleanup);
-const CAP = 700;
+const CAP = 420;
 
 function descriptions() {
   const out = [];

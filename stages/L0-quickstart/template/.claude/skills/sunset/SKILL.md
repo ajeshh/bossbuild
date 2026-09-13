@@ -1,6 +1,6 @@
 ---
 name: sunset
-description: End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against. The argument picks the scope - no argument sunsets the PROJECT, a FEAT sunsets one feature, an IDEA closes one captured idea. Framed as an experiment that returned an answer, never as failure; retiring is reversible. Deliberate-invoke only — the conscience never suggests quitting unprompted. Usage - /sunset [FEAT-NNN | IDEA-NNN | name]
+description: End something honestly, at whatever size it is - the whole project, one zombie feature, or one captured idea; the argument picks the scope. An experiment that returned an answer, never a failure; retiring is reversible. The conscience never suggests quitting. Usage - /sunset [FEAT-NNN | IDEA-NNN | name]
 ---
 
 # /sunset — projects can end well

@@ -1,6 +1,6 @@
 ---
 name: design-tokens-init
-description: Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two. Prevents the 47-blues / pattern-reinvention / billion-line-drift failure modes that happen by default when AI generates UI without discipline (IDEA-010). Cohort-aware delivery — vibe-coder-newbie gets SHOWING; eng-builder gets OFFERING; vibe-virtuoso gets OVERRIDE-FRIENDLY. JIT — runs when design-tokens-loop opens. Usage - /design-tokens-init
+description: Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two. Prevents the 47-blues, pattern-reinvention and billion-line-drift failures AI-generated UI produces by default. Cohort-aware delivery. Runs when design-tokens-loop opens. Usage - /design-tokens-init
 ---
 
 # /design-tokens-init — scaffold the design tokens system

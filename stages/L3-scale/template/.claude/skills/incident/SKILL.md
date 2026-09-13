@@ -1,6 +1,6 @@
 ---
 name: incident
-description: The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production. Captures what happened, what the user actually saw (and whether the status message was honest), a fix-first-analyze-second timeline, and the ONE systemic learning worth routing UP via /boss-learn. Not a blame doc, not a compliance artifact, not a ticket — one page you'll actually re-read. Runs when a real user hit a real failure. Usage - /incident [what broke]
+description: The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production. What happened, what the user actually saw, a fix-first timeline, and the ONE systemic learning worth routing UP via /boss-learn. Not a blame doc, not a ticket. Usage - /incident [what broke]
 ---
 
 # /incident — what broke, what it taught, once

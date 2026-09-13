@@ -1,6 +1,6 @@
 ---
 name: design-library
-description: Generate the visual design library for {{PROJECT_NAME}} — a self-contained HTML gallery of foundations (color/type/spacing), components (every variant, all five states) AND the rule sets (principles, do/don't pairs, terminology, voice), rendered from the code and tokens so it cannot drift. Writes `docs/design/library/` + a manifest that doubles as the agent's reuse index. Renders drift ON the component instead of filing it in a report nobody opens. Re-run any time; it is idempotent. Usage - /design-library [--check]
+description: Generate the visual design library for {{PROJECT_NAME}} - a self-contained HTML gallery of foundations, every component variant in all five states, and the rule sets, rendered from the code and tokens so it cannot drift. Writes docs/design/library/ plus a manifest that doubles as the reuse index. Usage - /design-library [--check]
 ---
 
 # /design-library — the system you can actually look at

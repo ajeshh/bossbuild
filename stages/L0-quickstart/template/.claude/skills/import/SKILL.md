@@ -1,6 +1,6 @@
 ---
 name: import
-description: Bring existing material into this project — point at a file, a folder, or a URL (Word doc, Google Doc, Obsidian note, PDF, slide deck, online reference) and BOSS pulls a durable copy into docs/source/ and folds it into your idea. Use it during spin-up or anytime later to add to a captured idea. The on-ramp for "I already jotted this somewhere." Usage - /import <path-or-url> [more paths/urls] [IDEA-NNN]
+description: Bring existing material into this project — a file, a folder, or a URL (Word, Google Doc, Obsidian, PDF, slides, a web page). BOSS pulls a durable copy into docs/source/ and folds it into your idea, at spin-up or any time after. Usage - /import <path-or-url> [more paths/urls] [IDEA-NNN]
 ---
 
 # /import — bring your own material in

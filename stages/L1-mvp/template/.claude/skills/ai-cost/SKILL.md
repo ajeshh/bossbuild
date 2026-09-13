@@ -1,6 +1,6 @@
 ---
 name: ai-cost
-description: Establish AI spend discipline for {{PROJECT_NAME}} — declare per-user / per-feature / monthly budgets, name the model choices, wire a per-call cost logger, set a review cadence. Cohort-aware (first-product gets a tight cap; vibe-virtuoso gets inspect-only; domain-expert gets privacy-first logging). Run at the first inflection where the app actually calls an LLM. Usage - /ai-cost
+description: Establish AI spend discipline for {{PROJECT_NAME}} — per-user, per-feature and monthly budgets, the model choices, a per-call cost logger, a review cadence. Cohort-aware - a tight cap for first-product, inspect-only for vibe-virtuoso, privacy-first logging for domain-expert. Run when the app first calls an LLM. Usage - /ai-cost
 ---
 
 # /ai-cost — name the bill before it surprises you

@@ -1,6 +1,6 @@
 ---
 name: canvas
-description: Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them. ONE set of answers, several frames - Humane (the default, values-first), Lean, and the Business Model Canvas. The frame changes the layout and the vocabulary, never the answers, and never the two cells no conventional canvas has. Filled just-in-time (a few cells at a time), it's the Quickstart→MVP graduation gate. The onepager frame is the smallest thing you can hand to someone outside, and it carries the evidence ledger so the page says what's behind it. Usage - /canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager]
+description: Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them. One set of answers, several frames (Humane by default, Lean, BMC, a onepager with the evidence ledger). A few cells at a time; the Quickstart→MVP gate. Usage - /canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager]
 ---
 
 # /canvas — pressure-test the idea (humanely)

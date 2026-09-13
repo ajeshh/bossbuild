@@ -1,6 +1,6 @@
 ---
 name: welcome
-description: First time using BOSS? Start here. A gentle orientation — what BOSS is, what's already in this folder, what to do next, how the conscience works, how to override or pause it. Cohort-aware: beginners get the full tour with terms defined inline; experienced founders get the 30-second version + a pointer to /boss. Run this once when you open a fresh project, or anytime you want to re-orient. Usage - /welcome
+description: First time using BOSS? Start here. What BOSS is, what's already in this folder, what to do next, how the conscience works and how to pause it. Beginners get the full tour with terms defined; experienced founders get the 30-second version and a pointer to /boss. Usage - /welcome
 ---
 
 # /welcome — the gentle entry into BOSS

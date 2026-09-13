@@ -1,6 +1,6 @@
 ---
 name: comp-eval
-description: Find out who else is solving this, and keep knowing. Researches the competitive field for {{PROJECT_NAME}} — features, pricing, differentiators, and the honest "why they might win" — then files it as a living set under docs/competition/ you add to over time. Name a space and it goes looking; name a rival you heard about and it evaluates that one into the same table. Every claim carries a source URL and the date it was checked, or it is marked unverified — because a confidently invented price is the failure mode here. Usage - /comp-eval [<space or problem> | add <name> | recheck [<name>]]
+description: Find out who else is solving this, and keep knowing. Researches the competitive field for {{PROJECT_NAME}} (features, pricing, the honest "why they might win") into a living set under docs/competition/. Every claim carries a source URL and checked date, or is marked unverified. Usage - /comp-eval [<space> | add]
 ---
 
 # /comp-eval — who else is solving this, and what would make them win

@@ -1,6 +1,6 @@
 ---
 name: ai-first-init
-description: Bake the AI-first discipline into {{PROJECT_NAME}} from day one. Conductor skill — walks the founder through declaring what's AI-mediated (docs/ai-first.md), seeding structured outputs (Liu — docs/schemas/), running the eval set early (Husain — /evals), declaring the cost budget upfront (/ai-cost), and designing failure states before they happen (/ai-failure-states). The "from day one" sequence. Cohort-aware. Run during MVP unlock for AI-native projects, or any time the project becomes AI-mediated. Usage - /ai-first-init
+description: Bake the AI-first discipline into {{PROJECT_NAME}} from day one. A conductor - declare what's AI-mediated (docs/ai-first.md), seed structured outputs (docs/schemas/), run evals early (/evals), declare the cost budget (/ai-cost), design failure states first (/ai-failure-states). Run at MVP unlock for AI-native projects, or when the project becomes AI-mediated. Usage - /ai-first-init
 ---
 
 # /ai-first-init — bake the AI-first discipline upfront

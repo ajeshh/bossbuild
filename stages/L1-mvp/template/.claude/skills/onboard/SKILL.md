@@ -1,6 +1,6 @@
 ---
 name: onboard
-description: Design the path from signup to the aha-moment — activation, the highest-leverage number in the funnel (fix it and every downstream cohort lifts at once). Derives the aha-moment from your retained-vs-churned data rather than a whiteboard guess, shrinks time-to-value, and sets up the concierge onboarding you do BY HAND for the first users. Humane by construction - success fast, not hooked fast; refuses fake-progress and forced-tutorial patterns. The top-of-curve fix /health routes to. Scope - your USERS' first run, not a new teammate's first week. At n<10, watch them onboard by hand instead. Usage - /onboard
+description: Design the path from signup to the aha-moment - activation, the highest-leverage number in the funnel. Derives the aha-moment from retained-vs-churned data, shrinks time-to-value, and sets up the concierge onboarding you do by hand for the first users. Success fast, not hooked fast. Usage - /onboard
 ---
 
 # /onboard — get new users to the aha-moment, fast (and honestly)

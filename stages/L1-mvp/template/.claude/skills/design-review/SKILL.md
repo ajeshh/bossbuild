@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed UI through `designer` in two passes — the visual system, then flows and states (flows + 5-state requirement) in sequence, then names what recurs as a pattern. Reads `docs/design/DESIGN_TOKENS.md` + `docs/design/STYLE_GUIDE.md` + the relevant FEAT spec. Outputs concrete diffs or numbered issues. Catches token violations + missing states + brand drift BEFORE code commits. Pairs with `/ux-check` (after-code review). Usage - /design-review [FEAT-NNN | path-to-component-spec]
+description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed UI through `designer` in two passes (the visual system, then flows and the five states) and names what recurs as a pattern. Reads tokens, style guide and FEAT spec; outputs concrete diffs. Pairs with `/ux-check`. Usage - /design-review [FEAT-NNN | path-to-component-spec]
 ---
 
 # /design-review — before-code design review

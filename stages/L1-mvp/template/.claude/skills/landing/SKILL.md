@@ -1,6 +1,6 @@
 ---
 name: landing
-description: Generate the founder's FIRST landing page — on-brand, honest, out the block fast. Composes what BOSS already holds (BRAND.md voice/positioning, the design tokens, the canvas Promises cell) into a real page in-repo, runs the humane check so it converts without dark patterns, and hands off to /ship. Looks for a page you already have before making one, and asks one thing first - does the product exist (product page) or not yet (waitlist/demand page, the /pretotype fake door)? Not a CRO tool; hands off to a visual editor when they want one. Usage - /landing [--demand | --product]
+description: Generate the founder's FIRST landing page - on-brand, honest, out the block fast. Composes what BOSS already holds (BRAND.md, the design tokens, the canvas Promises cell) into a real page in-repo, humane-checked so it converts without dark patterns, then hands off to /ship. Usage - /landing [--demand | --product]
 ---
 
 # /landing — get the first page out the block, on-brand and honest

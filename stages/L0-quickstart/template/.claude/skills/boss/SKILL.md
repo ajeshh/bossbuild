@@ -1,6 +1,6 @@
 ---
 name: boss
-description: Spin up a freshly-scaffolded project from a rough idea or PRD. Reads the idea, says it back (naming any reading it had to choose), asks why this one and what 'it worked' would look like, and whether you want to keep shaping it or start building — then captures it as a living idea doc, recommends a stack and starting stage, and (with your OK) creates a GitHub repo — private unless you say otherwise, and it asks about the licence rather than picking one. Run this right after `boss new`. Usage - /boss [path-to-PRD | rough idea text]
+description: Spin up a scaffolded project from a rough idea or PRD. Says the idea back, asks why this one and what 'it worked' looks like, captures a living idea doc, recommends a stack and stage, and with your OK creates a private repo. Usage - /boss [PRD | rough idea]
 ---
 
 # /boss — project spin-up

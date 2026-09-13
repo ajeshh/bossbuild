@@ -1,6 +1,6 @@
 ---
 name: red-team
-description: Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent (tools + memory + autonomy) against the OWASP Agentic ASI Top 10. `--paths` is the pre-ship app-security pass that needs NO LLM in the product at all - the money path, the destructive path, and the negative path (can user A reach user B's data), plus a secrets scan of the shipped bundle. `--self` red-teams BOSS's own conscience hook; `--humane` probes your product for dark patterns. Turns prevention into evidence - pass/fail per category, with the attack that proved it. Pairs with /evals (correctness). Usage - /red-team [FEAT-NNN | --paths | --self | --humane]
+description: Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent against the Agentic ASI Top 10. `--paths` is the pre-ship app-security pass with no LLM needed (money, destructive, negative paths, secrets scan); `--self` red-teams BOSS's conscience; `--humane` probes dark patterns. Usage - /red-team [FEAT-NNN]
 ---
 
 # /red-team — turn your defenses into evidence

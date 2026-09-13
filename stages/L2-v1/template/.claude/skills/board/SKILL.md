@@ -1,6 +1,6 @@
 ---
 name: board
-description: The cross-FEAT sequencing surface for {{PROJECT_NAME}}. Reads INDEX + FEAT frontmatter + smoke state + evals state + override entries to produce a live board view — what's open, what's blocked, what's next, what's parallelizable. Owned by `planner` (the *when*; distinct from `product-lead`'s *what*). Usage - /board  (or /board --next, /board --blocked, /board --by-cohort)
+description: The cross-FEAT sequencing surface for {{PROJECT_NAME}}. Reads INDEX, FEAT frontmatter, smoke and evals state and overrides into a live board — what's open, blocked, next, parallelizable. Owned by `planner` (the when, not `product-lead`'s what). Usage - /board (or /board --next, /board --blocked, /board --by-cohort)
 ---
 
 # /board — the cross-FEAT sequencing surface

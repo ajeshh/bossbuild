@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Put {{PROJECT_NAME}} where a real user can hit it — the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz/RLS actually on — the signature vibe-coded-leak surface), picks the cheapest reversible host, deploys, and hands back the live URL plus the rollback path. Stack-neutral - no baked-in target, learned per project. The pre-flight is a check, not a gate. "localhost is not shipped" — reachability is what turns a pseudo app into one a user can prove. Full depth - `boss craft ship-it-live`. Usage - /ship [--preview | --rollback]
+description: Put {{PROJECT_NAME}} where a real user can hit it, the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz actually on), picks the cheapest reversible host, deploys, hands back the live URL and rollback. Usage - /ship [--preview | --rollback]
 ---
 
 # /ship — localhost is not shipped

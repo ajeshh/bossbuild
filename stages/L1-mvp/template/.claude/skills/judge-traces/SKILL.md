@@ -1,6 +1,6 @@
 ---
 name: judge-traces
-description: Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work. Reads .boss/trace.jsonl (what agents actually did), helps you sort what went wrong into a binary pass/fail failure taxonomy, and routes the real failure modes to /boss-learn. The deliberate, founder-invoked reader for the auto-log trace substrate. Usage - /judge-traces [last N | all]
+description: Error analysis on your real session traces — Hamel/Shankar's discipline applied to your own work. Reads .boss/trace.jsonl (what agents actually did), sorts what went wrong into a binary pass/fail failure taxonomy, and routes the recurring modes to /boss-learn. Usage - /judge-traces [last N | all]
 ---
 
 # /judge-traces — read your real traces, find the real failure modes

@@ -262,7 +262,13 @@ function checkModelPins() {
 // The rule that survives the cut: the description's job is WHEN DO I FIRE, and the what belongs in
 // the body, which loads only when the skill runs.
 
-const DESCRIPTION_CAP = 700;
+// RE-DERIVED 2026-09-12 (v0.316.0). Every description was rewritten to <=50 words on the same
+// counter that measured the corpus (median 76, max 120), keeping the first-sentence gloss and the
+// `Usage -` tail the CLI splits on. After the pass: max 399 B, total 2,274 words (~3.0k tokens per
+// session, down from 3,654 / ~4.8k). 420 sits just above the new max for the same reason 700 sat
+// above the old p75 — the surface passes today, and the next description that does not is the
+// finding. The boundary above still holds: this bounds cost, not whether the trigger survived.
+const DESCRIPTION_CAP = 420;
 
 function skillDescriptions(stageId) {
   const dir = join(tplDir(stageId), '.claude', 'skills');

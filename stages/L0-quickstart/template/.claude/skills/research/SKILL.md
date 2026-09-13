@@ -1,6 +1,6 @@
 ---
 name: research
-description: Turn a whole research transcript into product context and graded evidence. Paste (or point at) an interview transcript, a sales call, a support thread, a batch of user messages — anything real a person said — and BOSS extracts honestly-graded EVID records at scale, synthesizes the pains / jobs / verbatim words / workarounds / objections into product context, and flags where the witness got led. It analyzes what's in the transcript; it never invents quotes. The sibling of /interview - that preps and debriefs one call, this digests a whole transcript. Usage - /research [transcript file | paste the transcript]
+description: Turn a whole research transcript into product context and graded evidence. Point at an interview, sales call, support thread or batch of user messages; BOSS extracts honestly-graded EVID records at scale, synthesizes pains, jobs, verbatim words, objections, and flags where the witness got led. Usage - /research [transcript]
 ---
 
 # /research — turn a transcript into product context + evidence

@@ -1,6 +1,6 @@
 ---
 name: extract
-description: Pause and sort patterns — PRINCIPLE #1's discipline as a skill. Reads recent work (git log, devlog, src/, library/) and proposes 1-3 candidate extractions, each routed UP (into BOSS's library/<cat>/ for reuse across projects via /boss-learn) or DOWN (into the app's own core code). Records the decision in docs/extractions/EXTR-NNN-*.md. The LLM-as-judge counterpart to the predicate-based loops — uses Claude's reading, not regex. Usage - /extract
+description: Pause and sort patterns — PRINCIPLE #1 as a skill. Reads recent work (git log, devlog, src/, library/) and proposes 1–3 extractions, each routed UP (BOSS's library, via /boss-learn) or DOWN (the app's own core). Records the decision in docs/extractions/EXTR-NNN-*.md. Claude's reading, not regex. Usage - /extract
 ---
 
 # /extract — pause and sort the pattern

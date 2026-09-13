@@ -1,6 +1,6 @@
 ---
 name: health
-description: The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix. Reads what you already hold (the EVID ledger, /measure's curve, the cost log, your honest answers); never instruments for itself, never keeps a score. At n<10 the honest output is "you can't measure this yet — go talk to them." Usage - /health
+description: The post-launch verdict and the diagnosis in one read - is this working, and if not, where is it breaking? Renders product-market fit honestly (defaulting to pre-PMF), says where a decaying curve dies (activation, engagement, the wallet) and routes to the fix. At n<10, talk to them. Usage - /health
 ---
 
 # /health — is this working, and if not, where is it breaking?

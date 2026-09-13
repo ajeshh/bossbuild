@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.314.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.316.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -37,20 +37,20 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 **Skills**
 
 - `/welcome` — First time using BOSS? Start here
-- `/boss` — Spin up a freshly-scaffolded project from a rough idea or PRD
-- `/import` — Bring existing material into this project — point at a file, a folder, or a URL (Word doc, Google Doc, Obsidian note, PDF, slide deck, online reference) and BOSS pulls a durable copy into docs/source/ and folds it into your idea
+- `/boss` — Spin up a scaffolded project from a rough idea or PRD
+- `/import` — Bring existing material into this project — a file, a folder, or a URL (Word, Google Doc, Obsidian, PDF, slides, a web page)
 - `/idea` — Capture an idea — and keep adding to it
-- `/prototype` — Get the idea out of your head and onto the screen — fast
+- `/prototype` — Get the idea out of your head and onto the screen, fast
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them
 - `/pretotype` — Test demand BEFORE you build
-- `/evidence` — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment)
-- `/interview` — The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence
+- `/evidence` — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record
+- `/interview` — The bridge from "go talk to one person" to captured evidence
 - `/research` — Turn a whole research transcript into product context and graded evidence
-- `/decide` — Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is
-- `/sunset` — End something honestly, at whatever size it actually is — a whole project, one zombie feature, or one captured idea you've decided against
-- `/persona` — Build your app's target-user persona from your idea, grow it from what you know + online research + any real user research you drop in, and consult it as an agent voice — both to guide product decisions ("would my user want this?") and to QA your builds ("how would she react to this screen?")
-- `/read-repo` — Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work
-- `/feedback` — Send feedback about BOSS itself back to the people who build it — a bug, a confusion, a wish, a "this got in my way." User-initiated and transparent: it shows you exactly what it will send (and the small bit of context attached) before anything leaves your machine, then files it as a GitHub issue upstream (or gives you a prefilled link to paste)
+- `/decide` — Record a load-bearing decision as a durable DEC-NNN record (Context, Decision, Why, a cheap Falsifier with a date, Consequences), stamped with who decided and how reversible it is
+- `/sunset` — End something honestly, at whatever size it is - the whole project, one zombie feature, or one captured idea; the argument picks the scope
+- `/persona` — Build your app's target-user persona from your idea, grow it from research and any real user data you drop in, and consult it as an agent voice for product decisions and QA
+- `/read-repo` — Read what BOSS can actually understand about this project (the captured idea, source material, or an adopted repo) and say where you stand - position, never a grade; what BOSS can't see; two or three options
+- `/feedback` — Send feedback about BOSS itself back to the people who build it
 - `/boss-sync` — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin
 - `/boss-learn` — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality
 
@@ -64,30 +64,30 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 
 **Skills**
 
-- `/spec` — Promote an idea into a buildable spec — IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, a smoke check, and the three paths that must not break (the money path, the destructive path, and the negative path — who must NOT be able to see this)
+- `/spec` — Promote an idea into a buildable spec - IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, a smoke check, and the three paths that must not break (money, destructive, who must NOT see this)
 - `/smoke` — Run the project's smoke check — "is the app even working right now?" Stack-configured
 - `/log` — Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you
 - `/close` — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)
-- `/evals` — Build and run the eval set for an AI-mediated FEAT — "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to LLM-mediated control-flow in your app — look at your data, build the eval set FIRST, categorize failures by mode, vibes-based eval is only a starting point
+- `/evals` — Build and run the eval set for an AI-mediated FEAT - "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to your app - look at your data, build the eval set first, categorize failures by mode
 - `/design-tokens-init` — Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two
-- `/ai-cost` — Establish AI spend discipline for your app — declare per-user / per-feature / monthly budgets, name the model choices, wire a per-call cost logger, set a review cadence
+- `/ai-cost` — Establish AI spend discipline for your app — per-user, per-feature and monthly budgets, the model choices, a per-call cost logger, a review cadence
 - `/cost-review` — Read the AI cost ledger and produce a dated review
 - `/ai-first-init` — Bake the AI-first discipline into your app from day one
-- `/ai-failure-states` — Design what your app does when the AI fails — the five failure states (garbage / refusal / hallucination / timeout / cost-spike) and the declared response for each
-- `/extract` — Pause and sort patterns — PRINCIPLE #1's discipline as a skill
-- `/drift-deep` — The deep, whole-project version of the conscience's drift check — "am I fooling myself across EVERYTHING I've built?" Reads the entire project (canvas, all devlog, all FEAT specs, the actual code, the ideas) and judges, honestly, whether the body of work is validating the named riskiest assumption or building around it
+- `/ai-failure-states` — Design what your app does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens
+- `/extract` — Pause and sort patterns — PRINCIPLE #1 as a skill
+- `/drift-deep` — The deep, whole-project version of the conscience's drift check — "am I fooling myself across everything I've built?" Reads the canvas, devlog, FEAT specs, code and ideas, and judges whether the work validates the riskiest assumption or builds around it
 - `/revalidate` — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature
-- `/judge-traces` — Error analysis on your real session traces — the Hamel/Shankar discipline applied to your own work
-- `/consult` — Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, let the two sides of any real split hear each other once, and synthesize the answer with the disagreements — and what moved — kept visible (not averaged away)
-- `/red-team` — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent (tools + memory + autonomy) against the OWASP Agentic ASI Top 10
-- `/practice` — Capture a craft learning — a better way to build with AI you found — as a shared, attributed PRAC-NNN record your cofounder gets too
-- `/ship` — Put your app where a real user can hit it — the CD half of building
-- `/landing` — Generate the founder's FIRST landing page — on-brand, honest, out the block fast
-- `/measure` — The post-ship counterpart to /pretotype - /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship
-- `/onboard` — Design the path from signup to the aha-moment — activation, the highest-leverage number in the funnel (fix it and every downstream cohort lifts at once)
-- `/roadmap` — Weigh what to build next — feedback against behavior — into a SMALL bet-list with a mandatory NO-list
-- `/trust` — Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater
-- `/health` — The post-launch verdict AND the diagnosis, in one read - is this working, and if it isn't, where exactly is it breaking? Renders product-market fit honestly (pre / at / post, defaulting to pre-PMF because scaling before fit is the #1 way startups die), and when the curve is decaying, says WHERE it dies — at the top (activation), in the middle (engagement), or at the wallet (failed payments) — and routes to the one real fix
+- `/judge-traces` — Error analysis on your real session traces — Hamel/Shankar's discipline applied to your own work
+- `/consult` — Convene the mentor board on a cross-cutting question
+- `/red-team` — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent against the Agentic ASI Top 10
+- `/practice` — Capture a craft learning (a better way to build with AI) as a shared, attributed PRAC-NNN record your cofounder gets too
+- `/ship` — Put your app where a real user can hit it, the CD half of building
+- `/landing` — Generate the founder's FIRST landing page - on-brand, honest, out the block fast
+- `/measure` — The post-ship counterpart to /pretotype — given they're using it, is it working and are they staying? Picks ONE activation metric and ONE retention curve, names 5–10 events max, and adds what classic analytics misses for an AI product (task-completion, edit rate, cost-per-successful-outcome)
+- `/onboard` — Design the path from signup to the aha-moment - activation, the highest-leverage number in the funnel
+- `/roadmap` — Weigh what to build next, feedback against behavior, into a SMALL bet-list with a mandatory NO-list
+- `/trust` — Earn trust honestly - the AI-specific privacy and compliance set without the SOC2 theater
+- `/health` — The post-launch verdict and the diagnosis in one read - is this working, and if not, where is it breaking? Renders product-market fit honestly (defaulting to pre-PMF), says where a decaying curve dies (activation, engagement, the wallet) and routes to the fix
 - `/money` — The money verb, from the first dollar to operating it
 - `/design-review` — Before-code design review for your app
 - `/ux-check` — After-code UX review for your app
@@ -103,7 +103,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 **Skills**
 
 - `/board` — The cross-FEAT sequencing surface for your app
-- `/design-library` — Generate the visual design library for your app — a self-contained HTML gallery of foundations (color/type/spacing), components (every variant, all five states) AND the rule sets (principles, do/don't pairs, terminology, voice), rendered from the code and tokens so it cannot drift
+- `/design-library` — Generate the visual design library for your app - a self-contained HTML gallery of foundations, every component variant in all five states, and the rule sets, rendered from the code and tokens so it cannot drift
 
 **Loops:** design-drift-loop  
 

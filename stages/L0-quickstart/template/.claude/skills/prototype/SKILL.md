@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: Get the idea out of your head and onto the screen — fast. Builds the smallest runnable, clickable version of an idea (the one core thing, fastest stack), then runs it so you can react to something tangible instead of arguing with a blank page. Build-first is a legitimate place to start a lean cycle; the conscience helps you fill the gaps AFTER you can see it, not before. Usage - /prototype [IDEA-NNN | rough idea text]
+description: Get the idea out of your head and onto the screen, fast. Builds the smallest runnable, clickable version (one core thing, fastest stack) and runs it, so you react to something tangible, not a blank page. Fill the gaps once you can see it. Usage - /prototype [IDEA-NNN | idea]
 ---
 
 # /prototype — drop an idea, hit go, see something tangible

@@ -1,6 +1,6 @@
 ---
 name: ux-check
-description: After-code UX review for {{PROJECT_NAME}}. Run against shipped UI to catch what slipped through `/design-review` or accumulated as drift. Walks the actual user journey (not the spec), checks the 5 states are real (not just designed), runs accessibility heuristics, applies AI-specific UX where relevant. Pairs with `/design-review` (before-code) — same lens, different timing. Usage - /ux-check [route-or-component-path | FEAT-NNN]
+description: After-code UX review for {{PROJECT_NAME}}. Run against shipped UI to catch what slipped through `/design-review` or accumulated as drift - walks the actual user journey, checks the five states are real, runs accessibility heuristics, applies AI-specific UX where relevant. Same lens, different timing. Usage - /ux-check [route-or-component-path | FEAT-NNN]
 ---
 
 # /ux-check — after-code UX review

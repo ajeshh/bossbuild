@@ -1,6 +1,6 @@
 ---
 name: read-repo
-description: Read what BOSS can actually understand about this project (the captured idea, the source material, or the adopted repo) and tell the founder where they stand — POSITION, never a grade - where the work is, what BOSS can't see, two or three options with what each would change about their week, and what changes in how they work. Then tailor the scaffold to it non-destructively and seed the venture brain so the conscience has continuity from day one. On an adopted repo this is the counterpart to /boss — the thing you run first. Augments the deterministic template scaffold; never replaces it. Usage - /read-repo
+description: Read what BOSS can actually understand about this project (the captured idea, source material, or an adopted repo) and say where you stand - position, never a grade; what BOSS can't see; two or three options. Tailors the scaffold non-destructively. On an adopted repo, run this first. Usage - /read-repo
 ---
 
 # /read-repo — tailor the scaffold to what BOSS understands

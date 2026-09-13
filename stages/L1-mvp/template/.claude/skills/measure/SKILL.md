@@ -1,6 +1,6 @@
 ---
 name: measure
-description: The post-ship counterpart to /pretotype - /pretotype asks "will anyone want this?" BEFORE you build; /measure asks "given they're using it, is it working and are they staying?" AFTER you ship. Picks ONE activation metric and ONE retention curve, names 5-10 events max (kills analytics theater), and for an AI product adds what classic analytics misses (task-completion, edit rate, cost-per-successful-outcome). Humane by construction — measures graduation, not engagement. At n<10 it still leaves the SEAM, because you can add a tracking call any day and you can never add the past. Usage - /measure
+description: The post-ship counterpart to /pretotype — given they're using it, is it working and are they staying? Picks ONE activation metric and ONE retention curve, names 5–10 events max, and adds what classic analytics misses for an AI product (task-completion, edit rate, cost-per-successful-outcome). Measures graduation, not engagement. Usage - /measure
 ---
 
 # /measure — is the shipped thing working, and are they staying?

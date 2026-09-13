@@ -1,6 +1,6 @@
 ---
 name: interview
-description: The bridge from the conscience's best advice ("a 15-minute call with the right person beats another canvas pass") to captured evidence. PREP a customer conversation under hard Mom-Test discipline (past behavior, their life, no pitching) — one printable page in five minutes — then DEBRIEF it: paste your raw notes and BOSS extracts honestly-graded EVID records, flags the one moment you pitched instead of listened, and names the single follow-up commitment to ask for. BOSS never simulates the interview. Usage - /interview [prep | debrief | paste your notes]
+description: The bridge from "go talk to one person" to captured evidence. PREP a customer conversation under Mom-Test discipline (past behavior, their life, no pitching); then DEBRIEF raw notes into honestly-graded EVID records, the moment you pitched, the one commitment to ask for. Usage - /interview [prep | debrief]
 ---
 
 # /interview — the Mom-Test bridge

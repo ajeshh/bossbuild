@@ -1,6 +1,6 @@
 ---
 name: evidence
-description: Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record — paste your notes or describe what happened, and BOSS drafts the file with an HONEST grade on a fixed 3-rung ladder (stated-pain → observed-behavior → commitment). The thing the whole thesis centers on finally gets an object, so a signal from a real conversation stops evaporating into memory. The conscience reads this ledger and goes quieter when real commitments exist. Usage - /evidence [paste notes | describe what happened]
+description: Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record. Paste notes or describe what happened; BOSS drafts it with an honest grade on a fixed ladder (stated-pain, observed-behavior, commitment). Real commitments quiet the conscience. Usage - /evidence [paste notes | describe what happened]
 ---
 
 # /evidence — evidence as a first-class object

@@ -1,6 +1,6 @@
 ---
 name: drift-deep
-description: The deep, whole-project version of the conscience's drift check — "am I fooling myself across EVERYTHING I've built?" Reads the entire project (canvas, all devlog, all FEAT specs, the actual code, the ideas) and judges, honestly, whether the body of work is validating the named riskiest assumption or building around it. The deliberate, founder-invoked counterpart to the cheap always-on `drift` hook moment (which reads only the last ~5 entries). Uses the model's full context, not a bounded peek. Writes docs/drift-audits/DRIFT-YYYY-MM-DD.md. Run when you want the real audit, not the tripwire. Usage - /drift-deep
+description: The deep, whole-project version of the conscience's drift check — "am I fooling myself across everything I've built?" Reads the canvas, devlog, FEAT specs, code and ideas, and judges whether the work validates the riskiest assumption or builds around it. Writes docs/drift-audits/DRIFT-YYYY-MM-DD.md. The audit, not the tripwire. Usage - /drift-deep
 ---
 
 # /drift-deep — the whole-project "am I fooling myself?" audit

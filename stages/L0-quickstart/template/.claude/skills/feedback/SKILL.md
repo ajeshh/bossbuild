@@ -1,6 +1,6 @@
 ---
 name: feedback
-description: Send feedback about BOSS itself back to the people who build it — a bug, a confusion, a wish, a "this got in my way." User-initiated and transparent: it shows you exactly what it will send (and the small bit of context attached) before anything leaves your machine, then files it as a GitHub issue upstream (or gives you a prefilled link to paste). Never background telemetry. Usage - /feedback [what's on your mind]
+description: Send feedback about BOSS itself back to the people who build it. Shows you exactly what it will send before anything leaves your machine, then files a GitHub issue upstream or hands you a prefilled link. Never background telemetry. Usage - /feedback [what's on your mind]
 ---
 
 # /feedback — tell BOSS's makers what's working and what isn't

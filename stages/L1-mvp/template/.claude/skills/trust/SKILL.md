@@ -1,6 +1,6 @@
 ---
 name: trust
-description: Earn trust honestly — the AI-specific privacy/compliance load-bearing set, without the SOC2 theater. Walks the pieces that actually matter - a data-minimization privacy policy plus a real retention/deletion path, a subprocessor list derived from what the app actually uses, the provider training opt-out (a config ACT, not a promise), and a public trust-page stub. Explicitly DEFERS SOC2 / ISO / DPIA until a NAMED enterprise deal demands them. Bright line - pointers to a real lawyer, never legal advice. "The AI did it" is not a legal defense. Usage - /trust
+description: Earn trust honestly - the AI-specific privacy and compliance set without the SOC2 theater. A data-minimization privacy policy with a real deletion path, a subprocessor list derived from what the app uses, the provider training opt-out (an act, not a promise), a trust-page stub. Never legal advice. Usage - /trust
 ---
 
 # /trust — earn it honestly (privacy + compliance, JIT, no theater)

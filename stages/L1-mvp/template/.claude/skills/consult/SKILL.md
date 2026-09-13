@@ -1,6 +1,6 @@
 ---
 name: consult
-description: Convene the mentor board on a cross-cutting question — route it to the mentors who actually have a stake, get each one's take in their own lens, let the two sides of any real split hear each other once, and synthesize the answer with the disagreements — and what moved — kept visible (not averaged away). The humane lens can override. Advisory only — the mentors inform; you decide. Usage - /consult <question>
+description: Convene the mentor board on a cross-cutting question. Routes it to the mentors with a stake, gets each take in its own lens, lets a real split hear itself once, and synthesizes with the disagreements kept visible. The humane lens can override. You decide. Usage - /consult <question>
 ---
 
 # /consult — convene the board on a real question

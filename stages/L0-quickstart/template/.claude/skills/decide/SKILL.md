@@ -1,6 +1,6 @@
 ---
 name: decide
-description: Record a load-bearing decision as a durable DEC-NNN record — Context / Decision / Why / a cheap Falsifier (what would prove this wrong, and by when) / Consequences, stamped with who decided (founder vs AI-suggested-ratified vs AI-autonomous) and how reversible it is. The rationale future-you (and a cofounder who wasn't in the room) can read instead of guessing — and the falsifier makes finding out you were wrong cheap and scheduled. Lighter than an RFC, denser than a commit message. Usage - /decide <the decision, or describe it>
+description: Record a load-bearing decision as a durable DEC-NNN record (Context, Decision, Why, a cheap Falsifier with a date, Consequences), stamped with who decided and how reversible it is. Lighter than an RFC, denser than a commit message. Usage - /decide <the decision, or describe it>
 ---
 
 # /decide — the decision record

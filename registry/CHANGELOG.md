@@ -16,6 +16,35 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.316.0 — 2026-09-12
+
+**Every shipped skill description trimmed to fifty words. The always-on bill drops by a third and
+nothing is removed.**
+
+> **For you:** the 48 skill descriptions your host reads on every turn went from ~3,650 words to
+> ~2,270 (roughly 4.8k → 3.0k tokens per session). Same skills, same triggers, same `Usage -` lines;
+> shorter sentences. `boss map`, `boss help` and the docs regenerate from the same source.
+
+- **The count was never the cost.** Asked *"should we reduce our bloat of skills?"*, the honest
+  number was measured before answering - 48 descriptions cost ~4,750 always-loaded tokens (2.4% of
+  a 200k window); bodies (~118k) load only on invoke. What 48 costs is *choice*, not tokens — and
+  the one subtraction that needs no instrument first is the length of the sentence the model routes
+  on. Median was 76 words, the top eight ran 99–120. Every description was rewritten by hand to
+  ≤50 on the same counter, keeping the first-sentence gloss and the `Usage -` tail that
+  `skillGloss()` splits on, and refusing `: ` inside the value (YAML plain scalars — the house
+  style already used ` - ` for that reason).
+- **The cap moved with the surface, derived not guessed.** `check:manifests` capped a description at
+  700 B since v0.258.0 (just above the old p75). After the pass the max is 399 B; the cap is now
+  **420**, just above the new max, and `always-on-cost.test.js` guards it the same way. The boundary
+  the old cap named still holds - a description trimmed too hard fails to fire *silently*; the cap
+  bounds cost, keeping the trigger intact is a judgment made when the line is written.
+- **Not done, on purpose:** no skill removed or merged. Whether 48 is too many is a distinctness
+  question — could the model pick the right one from the description alone? — and the adjacent
+  pairs get a written read next (`/interview`·`/research`·`/evidence`, `/health`·`/measure`,
+  `/idea`·`/import`, `/design-review`·`/ux-check`); any cut is the founder's call per pair. The
+  two instruments that turn "is it bloat?" into a number (`/skill-doctor`, `claude plugin eval`)
+  are still unrun.
+
 ## 0.315.0 — 2026-09-12
 
 **The host took `TodoWrite` away and a two-week-old conscience moment read nothing else. It now reads

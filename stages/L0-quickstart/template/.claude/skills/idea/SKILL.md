@@ -1,6 +1,6 @@
 ---
 name: idea
-description: Capture an idea — and keep adding to it. Creates a LIVING idea doc you return to over time: a sharpening "current shape" at the top, an append-only capture log below. The lightest step in Quickstart mode. Usage - /idea <thought>  (run again anytime to add more) | /idea gist [ID] to write the one line the board shows
+description: Capture an idea — and keep adding to it. A living doc - a sharpening "current shape" at the top, an append-only capture log below. The lightest step in Quickstart. Usage - /idea <thought> (run again to add more) | /idea gist [ID] for the one line the board shows
 ---
 
 # /idea — capture & keep adding
