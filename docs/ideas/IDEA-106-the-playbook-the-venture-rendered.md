@@ -68,24 +68,48 @@ A single generated site under `docs/playbook/` — gitignored, regenerated on de
 `boss board --html`. `index.html` plus one page per chapter; inline CSS; no framework; logo inlined
 as a data URI; opens from `file://`. Light and dark.
 
-Chapters in the order a *stranger* needs them, not the order the files were made:
+Chapters in the order a *stranger* needs them, not the order the files were made (revised
+2026-09-13 after prototype v0 — Ajesh: *"there is more story to be shared"*):
 
 1. **Why** — the cover. The founder's why (`motivation:` and `success_looks_like:` from the IDEA doc,
-   [[IDEA-097]]), the Promise (canvas *Promises*), the values (canvas *Principles*). Vision lives here.
-2. **Who** — *People* plus its market sharpen (*how many are there, and how do you know* — the
-   bottom-up count, never a "$50B"), and the personas from `docs/personas/` as cards, each carrying
-   its `synthetic N% · real N%` ledger.
-3. **The problem, and who else fixes it** — *Problem* plus `docs/competition/README.md` as the table,
-   then one card per rival. **"Why they might win" is the headline of the card**, not the footnote.
-4. **The canvas** — the boxes (§2).
-5. **How it sustains itself** — *Business Model*, both branches; *Cost Structure* and the other
-   dormant cells once live.
-6. **What we know** — the evidence ledger. Every `EVID` on the three-rung ladder as a dated timeline.
-   (The "traction timeline" FEAT-025 resolved as render-only — here it is rendered.)
-7. **What we decided** — `DEC` cards: the decision, the falsifier, the revisit date, past-due marked.
-8. **Risks & Harms** — a chapter, never a footer.
-9. **What's next** — the `/roadmap` bets and the NO-list. The board (`boss board --html`) is
-   *contained* here, not duplicated — one renderer, one board (065's Q3, answered).
+   [[IDEA-097]]), the Promise (canvas *Promises*), the values (canvas *Principles*), and **the
+   team** — who is building it and what makes that believable to a stranger (the *Modes of
+   Engagement* unfair-advantage sharpen, FEAT-025's "team" row). Vision lives here.
+2. **The product** — what it is *today*, in one paragraph: the IDEA doc's *current shape*, what has
+   shipped (`FEAT` records at `shipped`), what is being built, the landing page's promise if one
+   exists. The chapter a stranger reads first and BOSS has no single record for — see *Kicked up*.
+3. **Who** — *People* plus its market sharpen (*how many are there, and how do you know* — the
+   bottom-up count, never a "$50B"), then **the personas as stories**: `docs/personas/<slug>.md`
+   rendered as a person — the `who` line as the headline, `context` as a day in their life, `jobs`
+   / `pains` / `values` as the portrait, `what we DON'T know yet` as the open questions, and the
+   `synthetic N% · real N%` ledger on the card.
+4. **The problem, and who else fixes it** — *Problem*, then the competition in two tiers, both
+   from records `/comp-eval` already writes: **key rivals** (`direct`, or in evidence — a real
+   person named them) each get a **brief**: what it is, how they'd win, where it breaks, the two or
+   three things identified about them; **the rest** (`watch`, `adjacent`) render as a list, one line
+   each, no deep dive. Then **a matrix** — rivals × *the three-to-five features that touch the bet*
+   (the `## How they do it` sections `/comp-eval` writes per decided feature), never a catalog.
+5. **The canvas** — the boxes (§2).
+6. **How it sustains itself** — *Business Model*, both branches; *Cost Structure* and the other
+   dormant cells once live; the first dollar (`/money`); **the ask** renders as a hole *with the
+   reason* until `mentor-capital` says the raise question is live.
+7. **What we know** — the evidence ledger. Every `EVID` on the three-rung ladder as a dated timeline.
+8. **What we've learned — the story so far.** Dated, newest last: the IDEA capture log, the canvas
+   revisions, `BRAND.md`'s *What we've learned*, the devlog's *what surprised you* lines, each `EVID`
+   and `DEC` as a point on the same line. The chapter that answers *"as we continue to learn about
+   the company"* — and the first reader BOSS's five append-only logs have ever had.
+9. **What we decided** — `DEC` cards: the decision, the falsifier, the revisit date, past-due marked.
+10. **Risks & Harms** — a chapter, never a footer. **Trust** sits here: what the product refuses
+    to do with people's data (`/trust`, the *What it refuses* line of `BRAND.md`).
+11. **Brand** — the guidelines: who it's for, what it promises, what it refuses, how it sounds,
+    what it is NOT, the name and why — then the anchor as swatches and a type specimen (accent,
+    neutral, radius, type pairing) *when* tokens exist. A nascent brand renders its `unknown`s.
+12. **What's next** — the `/roadmap` bets and the NO-list. The board (`boss board --html`) is
+    *contained* here, not duplicated — one renderer, one board (065's Q3, answered).
+
+Candidates not drawn, each with its trigger: **Health** (post-ship — `/measure`, `/health`) ·
+**The interview guide** (the persona's *what we don't know* block *is* one; render it as a
+printable page) · **The glossary** (the domain's terms, for a reader outside it).
 
 **A chapter with nothing under it renders as a hole page**: the question it would answer and the verb
 that answers it (`/persona derive`, `/comp-eval`, `/evidence`, `/decide`). It stays in the nav. An
@@ -210,6 +234,23 @@ how it should visually look, how to interact with it, how dummy content would ap
 4. **Then decide the mechanism** and answer the open questions with the prototype in hand. Not before.
 5. **Build the first slice** only against a trigger (below), and only the canvas page.
 
+## Kicked up — what building the render shows about BOSS (found tasks, written as found)
+
+Ajesh, 2026-09-13: *"as we are building this, its highlighting things we may not be doing in boss,
+or properly doing. so lets track what other work it kicks up."* Each is a task, a new scope, or a
+question — not a fix made in passing.
+
+| # | What the render wants | What BOSS holds today | Sort |
+|---|---|---|---|
+| 1 | a **matrix** and a **key / not-key** tier of rivals | `/comp-eval` writes `direct`/`adjacent` and `watch`/in-evidence, and says *"there is no feature-comparison matrix and there is not going to be one"* — a catalog has no vote in `/roadmap` | **question:** is a matrix over *decided* features (the `## How they do it` sections it already writes) a render of the refusal or a breach of it? *Key* = direct or in-evidence — no new field needed |
+| 2 | **brand guidelines** as swatches and a type specimen | `BRAND.md` is prose with `unknown`s; the anchor (neutral, radius, type pairing, accent) is a `DEC`; tokens live in `/design-tokens-init`'s file — three sources, none parseable as a unit | **task:** decide the one place a colour is a fact (tokens) and make `BRAND.md` point at it, not restate it |
+| 3 | a persona **with key demographics, as a story** | `/persona` writes *"the situation, not demographics"* on purpose; the `who` line carries the little demographics it allows | **question:** render the `who` line as the demographic headline and stop there, or does the persona record want a `demographics:` line? Ask a founder, not the render |
+| 4 | **an overall product description** | none exists as a record — the IDEA doc's *current shape* is pre-build, `FEAT`s are slices, `/landing` holds the promise. Composing one from those is the closest the render comes to writing prose | **new scope:** where does "what the product is today" live? A `## The product today` section on the IDEA doc, maintained by `/log` at ship? |
+| 5 | **the story so far**, dated | learning is scattered across five append-only logs (IDEA capture log, canvas revisions, `BRAND.md` learned, devlog, `EVID`/`DEC` dates) with no reader that joins them | **task:** the render is the reader; the parse needs one date convention across all five |
+| 6 | an **evidence chip per cell** | `EVID` carries `assumption:` as a free phrase, no `cell:` | **question** (open question 2) |
+| 7 | the **current answer** in a box | BOSS's own canvas cells carry their revision history inline (`🟢 v0.5 — RE-AIMED…`) | **question** (open question 1) — a founder's canvas may never do this |
+| 8 | **the ask** as a hole with a reason | `mentor-capital` defaults to *not yet*; nothing records *why not yet* in a place a render can quote | **task:** the not-yet needs a sentence on disk, or the hole has no reason to show |
+
 ## Open questions — written as questions, not carried
 
 1. When a canvas cell carries its own revision history (BOSS's own does), does the box show the
@@ -232,6 +273,16 @@ The prototype is a **mock to react to**, not a build; it costs one file and deci
 looking for their own material and cannot find it without grepping, or asks for something to show a
 room** — the symptom this surface treats. Until then it is a good idea with a prototype attached.
 
+## Prototype v1 — republished 2026-09-13 (same link)
+
+Bug fixed (Space on the focused Close button both stepped and closed — the overlay takes focus
+now). Drawn in: **2 · The product** (today / shipped / not) · **3 · Who** (Dee as a story, ledger
+60/40, the caregiver as a hole) · **4** in two tiers — two key briefs, a four-line watch list, and a
+**matrix over the four decided features** (`unchecked` is its own answer) · **8 · What we've
+learned** (eight dated points from five logs) · **11 · Brand** (current shape, swatches, type
+specimen — *proposed, not decided*, so chapter 9 stays a hole honestly) · a team block on the cover.
+Now 8 of 12 chapters drawn; 6, 7, 10, 12 not.
+
 ## Prototype v0 — published 2026-09-13
 
 **https://claude.ai/code/artifact/e3f72fdf-dc50-4ebe-9f78-0d0f66684c35** (private until shared). Source:
@@ -252,6 +303,13 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **prototype v0 reactions** (Ajesh): a bug — *"the switch between slides and just
+  content keeps hopping between the 2"* (Space on the focused Close button both advanced and closed;
+  fixed in v1 — the overlay takes focus, not a button) · competitive eval with **key rivals as briefs**,
+  non-key as a list, and **a matrix** · **brand guidelines** as a chapter · **personas as stories** with
+  demographics · **track what it kicks up about BOSS** · *"more story to be shared"* — how the company,
+  the why, the who and the problem were learned over time · **an overall product description** ·
+  *"wondering what else?"*. Chapters revised 9 → 12; *Kicked up* table opened with eight rows.
 - 2026-09-13 — **folded**: 065 and 104 → this record (Ajesh: *"lets combine all ideas into one"*).
   065's *two products* warning kept as the *cannot flatter* rule. Added: linkable blocks, Copy only
   where worth copying, the prototype plan (fictional venture, three chapters), the ordered next steps.
