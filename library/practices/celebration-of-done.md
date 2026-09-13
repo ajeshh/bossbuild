@@ -5,6 +5,7 @@ owner: designer
 status: draft
 host: stack-neutral
 provenance: composted from Ajesh's humane-tech corpus (the "Celebration of Done" pillar — Mumbai sev-puri: assemble fast, serve with confidence, mark it, start the next; + AIR's "done is an exhale, not an end"). The GENERATIVE half of the humane lens — BOSS already *records* done (devlog, CHANGELOG, /close), it has never *marked* it. Draft pending wiring + `boss learn` route once the concurrent FEAT-024 (/ship) work lands. BOSS v0.9x.
+provenance_public: Composted from the author's own humane-tech notes — the *Celebration of Done* pillar: assemble fast, serve with confidence, mark it, start the next. The generative half of BOSS's humane lens: it already records done, it had never marked it. No outside source is claimed.
 last_reviewed: 2026-06-21
 review_by: 2027-06-21
 curve: craft

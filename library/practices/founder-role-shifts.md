@@ -5,6 +5,7 @@ owner: mentor-founder
 status: draft
 host: stack-neutral
 provenance: fable-campaign lifecycle pass (Fable 5, 2026-07-02 — "help the entrepreneur keep developing THEMSELVES"). BOSS develops the venture (modes), the craft (PRAC), the product (everything else) — and until now said nothing about the founder's own transformation, the thing real incubators actually sell. IDEA-053. BOSS v0.10x.
+provenance_public: Written from the observation that an incubator develops the founder, not only the venture, and BOSS said nothing about that transformation. The ladder — each mode asks you to become someone slightly different — is BOSS's own framing; no outside source is claimed.
 last_reviewed: 2026-07-23
 review_by: 2027-07-23
 curve: craft

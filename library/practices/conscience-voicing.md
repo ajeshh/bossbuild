@@ -5,6 +5,7 @@ owner: mentor-founder
 status: active
 host: stack-neutral
 provenance: distilled from the 2026-06-20 thread on dignity-cost / over-censoring — "voice the tension, never filter the menu" + how Claude voices concern without blocking. Drove the mentor-capital metering-axis fix (RVW-023 → ADAPT) and the mentor-humane "name, never override" reframe. BOSS v0.67.x.
+provenance_public: Written from BOSS's own rule for how a conscience speaks — voice the tension, never filter the menu — and from watching how a model can name a concern without blocking. It reshaped two of BOSS's mentors (name, never override). No outside source is claimed.
 last_reviewed: 2026-06-21
 review_by: 2027-06-21
 curve: craft

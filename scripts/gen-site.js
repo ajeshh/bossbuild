@@ -578,7 +578,7 @@ const ENG_GROUPS = [
   // second time under its own heading, so it rendered twice and inflated the practice
   // count. One practice, one group. Its founder-facing half is keeping-track.html.
   ['Design & interface', 'The failure modes that appear by default when AI writes your UI.',
-   ['design-system', 'ai-ux-patterns']],
+   ['design-system', 'ai-ux-patterns', 'accessibility']],
   // A group of one, deliberately, rather than filed under a heading it does not belong to. The
   // alternative was "Testing & quality", whose own description is about code being right — and a
   // practice about weighing somebody else's advice is not that. A thin honest group beats a
@@ -586,35 +586,66 @@ const ENG_GROUPS = [
   ['Judgment', 'What to do when a stranger tells you how to build.',
    ['outside-claims']],
 ];
-const NON_ENG = new Set(['activation', 'ai-adoption-culture', 'analytics-for-ai-products',
-  'celebration-of-done', 'conscience-voicing', 'first-dollar', 'founder-role-shifts',
-  'harm-taxonomy', 'landing-page', 'monetization-in-practice', 'retention']);
+// The other three shelves. Until 2026-09-13 only ENG_GROUPS existed, so a product-shaped
+// practice had nowhere to be rendered — twelve of thirty-four were surfaced on no page, and
+// eleven of those were also the ones with no public provenance. Not excluded; there was no
+// door. The exactly-one check below found two more the hand count missed (accessibility,
+// deceptive-patterns) on its first run. Each page renders its own shelf now, from the same files, with the same receipt.
+const PRODUCT_GROUPS = [
+  ['Finding fit', 'Getting the first users to a real result, and keeping them.',
+   ['activation', 'retention', 'analytics-for-ai-products']],
+  ['Money', 'From the first dollar to operating it.',
+   ['first-dollar', 'monetization-in-practice']],
+  ['Going public', 'The first page a stranger sees.',
+   ['landing-page']],
+];
+const PROJECT_GROUPS = [
+  ['The founder', 'How the job changes as the thing grows, and how a threshold gets marked.',
+   ['founder-role-shifts', 'celebration-of-done']],
+  ['The team', 'Bringing AI to people without breeding resentment.',
+   ['ai-adoption-culture']],
+];
+const CONSCIENCE_GROUPS = [
+  ['How the conscience speaks', 'What it names, and the one thing it never does.',
+   ['conscience-voicing', 'harm-taxonomy', 'deceptive-patterns']],
+];
+// A practice that ships but is deliberately rendered on no craft page. Empty today; an entry
+// here needs a reason, because a silent skip is how the twelve went missing in the first place.
+const SHELF_EXEMPT = new Map([
+  // ['some-practice', 'why no page shows it'],
+]);
 
 {
-  // The library is edited independently of this file, so a practice can appear or
-  // vanish between builds. Neither case should break the site or silently drop a
-  // practice: a stale reference is skipped, and an unclassified one is CARRIED into
-  // a catch-all group so it still gets credited. Both are reported so the grouping
-  // can be corrected deliberately rather than by a build failure.
-  // A practice listed in two groups renders twice and inflates COUNT_ENG_PRACTICES.
-  // That shipped undetected once (documentation.md), so it fails the build now: unlike
-  // a stale or unclassified id, there is no reading where this is what someone meant.
-  const all = ENG_GROUPS.flatMap(([, , ids]) => ids);
+  // Every practice appears in EXACTLY ONE group across the four shelves, or is exempt with a
+  // reason. Exactly-one rather than at-least-one: a practice in two groups is a categorisation
+  // someone fudged, and it rendered twice once (documentation.md). Both directions fail the
+  // build — an unclassified practice used to be carried into a catch-all group, which is how
+  // twelve sat unrendered for months: the catch-all only ever caught the engineering page's
+  // orphans, and reported them as a note nobody read.
+  const SHELVES = [...ENG_GROUPS, ...PRODUCT_GROUPS, ...PROJECT_GROUPS, ...CONSCIENCE_GROUPS];
+  const all = SHELVES.flatMap(([, , ids]) => ids);
   const dupes = [...new Set(all.filter((id, i) => all.indexOf(id) !== i))];
   if (dupes.length) {
     console.error(`  ✗ practice(s) classified into more than one group: ${dupes.join(', ')}`);
     process.exitCode = 1;
   }
-
   const claimed = new Set(all);
   const stale = [...claimed].filter((id) => !byId[id]);
-  if (stale.length) console.log(`  note: group references a practice not currently in library/: ${stale.join(', ')} — skipped.`);
-
-  const orphans = practiceDocs.map((p) => p.id).filter((id) => !claimed.has(id) && !NON_ENG.has(id));
+  if (stale.length) {
+    console.error(`  ✗ a shelf names a practice not in library/: ${stale.join(', ')}`);
+    process.exitCode = 1;
+  }
+  const orphans = practiceDocs.map((p) => p.id).filter((id) => !claimed.has(id) && !SHELF_EXEMPT.has(id));
   if (orphans.length) {
-    console.log(`  note: unclassified practice(s) shown under “Also on the shelf”: ${orphans.join(', ')}`);
-    ENG_GROUPS.push(['Also on the shelf',
-      'Practices that ship but have not been sorted into a group above yet.', orphans]);
+    console.error(`  ✗ practice(s) on no shelf and not exempt: ${orphans.join(', ')} — add to a group in gen-site.js, or to SHELF_EXEMPT with a reason`);
+    process.exitCode = 1;
+  }
+  // The receipt. A practice with no public provenance is one the site structurally cannot
+  // stand behind — "every position names who it was learned from" is the craft pages' claim.
+  const unattributed = practiceDocs.filter((p) => !p.provenance && !SHELF_EXEMPT.has(p.id)).map((p) => p.id);
+  if (unattributed.length) {
+    console.error(`  ✗ practice(s) with no provenance_public: ${unattributed.join(', ')}`);
+    process.exitCode = 1;
   }
 }
 
@@ -651,7 +682,7 @@ function refs(practiceId) {
   return `<p class="prov"><span>learned from</span> ${chips}</p>`;
 }
 
-blocks.ENGINEERING_PRACTICES = () => ENG_GROUPS.map(([name, blurb, ids]) => {
+const renderShelf = (groups) => groups.map(([name, blurb, ids]) => {
   const rows = ids.map((id) => byId[id]).filter(Boolean).map((p) => `        <div class="practice">
           <h3>${md(p.title)}</h3>
           <p class="meta"><code>${esc(p.id)}</code>, owned by <code>${esc(p.owner)}</code>, on a
@@ -666,6 +697,12 @@ blocks.ENGINEERING_PRACTICES = () => ENG_GROUPS.map(([name, blurb, ids]) => {
 ${rows}
       </div>`;
 }).join('\n\n');
+blocks.ENGINEERING_PRACTICES = () => renderShelf(ENG_GROUPS);
+blocks.PRODUCT_PRACTICES = () => renderShelf(PRODUCT_GROUPS);
+blocks.PROJECT_PRACTICES = () => renderShelf(PROJECT_GROUPS);
+blocks.CONSCIENCE_PRACTICES = () => renderShelf(CONSCIENCE_GROUPS);
+blocks.COUNT_PRODUCT_PRACTICES = () => String(PRODUCT_GROUPS.flatMap(([, , ids]) => ids).length);
+blocks.COUNT_PROJECT_PRACTICES = () => String(PROJECT_GROUPS.flatMap(([, , ids]) => ids).length);
 
 // Render one named group's practices — lets the design page show its own sources
 // without duplicating the engineering page's whole table.

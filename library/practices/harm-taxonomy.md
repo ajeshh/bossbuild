@@ -5,6 +5,7 @@ owner: mentor-founder
 status: active
 host: stack-neutral
 provenance: distilled via /vet RVW-045 from Anthropic's Unified Harm Framework (5 dimensions) + Ada Lovelace Institute's advanced-AI-assistant harms (4 relationship-harms). Re-homed from a BOSS-local agent edit into a shippable practice per the mentor-architect boundary verdict (2026-06-20) — the humane lens is cross-cutting, so it belongs in a practice every mentor + the conscience can cite, not inside one agent. BOSS v0.84.0.
+provenance_public: Distilled from Anthropic's Unified Harm Framework (five dimensions) and the Ada Lovelace Institute's work on advanced-AI-assistant harms (four relationship harms), with Brooks, Huang, Kearney and Murray (PNAS 2014) behind the dignity axis. Made a practice rather than an agent's private rule so every mentor and the conscience cite one taxonomy.
 last_reviewed: 2026-08-20
 review_by: 2026-11-18
 curve: humane

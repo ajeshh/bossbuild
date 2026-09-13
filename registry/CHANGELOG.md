@@ -98,6 +98,16 @@ rule above still applies to the whole section once it is stamped.
   one nobody reads). On that number the other four candidates do not convert; the record closes
   with the measurement written down. First shipped skill script; `boss sync` carries it like
   `templates/`. Four tests.
+- **The shelf's product half gets a page (IDEA-090).** Twelve of thirty-four practices — activation,
+  retention, the first dollar, pricing in practice, the landing page, the founder's own role shifts —
+  were rendered on no page and carried no public provenance, and they were the same twelve: the
+  only grouping that existed was the engineering page's. Three shelves now — product (finding fit ·
+  money · going public), project (the founder · the team), and the conscience's own two — generated
+  from the same files with the same receipt. `provenance_public:` written on all twelve; five say
+  *no outside source is claimed*, because none is. The check with teeth: every practice on exactly
+  one shelf, every practice with a public provenance, exemptions need a reason. Its first run found
+  two more the hand count missed (`accessibility`, `deceptive-patterns` — carried by the old catch-all
+  as a note nobody read). Engineering's count reads 22, not 23, for that reason.
 
 ## 0.325.0 — 2026-09-12
 

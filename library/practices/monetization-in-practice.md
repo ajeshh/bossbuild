@@ -5,6 +5,7 @@ owner: mentor-capital
 status: active
 host: stack-neutral
 provenance: post-launch program (2026-07-23 SESSION, JOB 4, Tier 2). The gap the map found — mentor-capital has the pricing *menu*, /money has the *first sale*, but nobody owned *running the money live*: upgrades, dunning, the price-raise, the margin trap. Distilled from Patrick Campbell / ProfitWell (dunning + involuntary churn is 20–40% and the cheapest revenue) + Kyle Poyar (usage-based + expansion when usage tracks value) + the margin-trap thread (a16z/Tunguz — cost scales with engagement). Pairs with mentor-capital (the menu), /money (the first sale), /money (the runner), retention.md (the involuntary-churn bucket), the margin-trap conscience moment + /cost-review's gross-margin band (JOB 4 build #1), /trust (offboarding + data export). BOSS v0.126.0.
+provenance_public: Distilled from Patrick Campbell / ProfitWell (dunning and involuntary churn — the cheapest revenue there is), Kyle Poyar (usage-based and expansion pricing when usage tracks value), a16z / Tomasz Tunguz on the margin trap in AI products, and the EDPB's 2024 opinion on consent-or-pay. Written for the gap between *the pricing menu* and *the first sale*: running the money once customers exist.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
 curve: market
