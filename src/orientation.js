@@ -164,3 +164,28 @@ export function printEvidenceHeadway(projectDir) {
     console.log(`      ${dim('Nothing observed yet — a compliment is not a receipt.')} ${bold('/interview')} ${dim('turns a conversation into a graded signal.')}`);
   }
 }
+
+// The briefing's window (IDEA-102). `docs/RESUME.md` is the file every session reads FIRST, which
+// makes it a magnet: anything that wants to be seen next session gets written there, and the file
+// BOSS's own tree read at session start reached 737 lines two days after an archive pass. The
+// shipped practice (context-discipline, *Session-state docs*) already said the cure — decide the
+// compaction rule while the file is small, and make the window a NUMBER — and BOSS's own file
+// carried no number. This is the runner for that rule: one line when the briefing is past its
+// window, silent otherwise. Lines, not tokens, because lines are what `wc -l` and the founder can
+// both count; the number is deliberately generous — a briefing that needs 200 lines is already
+// carrying history, and `/close` says where history goes (the devlog, which is what the re-entry
+// read above actually parses).
+export const RESUME_WINDOW = 200;
+
+export function resumeLines(projectDir) {
+  const f = join(projectDir, 'docs', 'RESUME.md');
+  if (!existsSync(f)) return null;
+  try { return readFileSync(f, 'utf8').split(/\r?\n/).length; } catch { return null; }
+}
+
+export function printResumeWindow(projectDir, { window = RESUME_WINDOW } = {}) {
+  const lines = resumeLines(projectDir);
+  if (lines == null || lines <= window) return false;
+  console.log(`    ${warn('!')} ${bold('docs/RESUME.md')} ${dim(`is ${lines} lines — past its ${window}-line window. It is a briefing: move what has shipped to the devlog (\`/close\` does this), don't trim it.`)}`);
+  return true;
+}

@@ -24,7 +24,10 @@ import { join } from 'node:path';
 // dim line, in both directions.
 export const REENTRY_DAYS = 3;
 
-const DATE_HEADING = /^##\s+(\d{4}-\d{2}-\d{2})\s*$/;
+// The date first; anything after it is the founder's title for the day (`## 2026-09-12 (later —
+// the vet sweep)`). It was a bare-date match until IDEA-102 found four of six entries in BOSS's own
+// devlog carried a suffix and `boss status` was quoting a session three weeks stale.
+const DATE_HEADING = /^##\s+(\d{4}-\d{2}-\d{2})(?:\s|$)/;
 const DAY_MS = 86400000;
 
 // The newest dated entry in docs/devlog.md — the record `/log` writes and `/close` appends to.

@@ -16,6 +16,47 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.318.0 — 2026-09-12
+
+**`docs/RESUME.md` is a briefing with a window, and the window is a number. `boss status` reads it;
+`/close` writes it; the re-entry read now accepts a titled devlog entry.**
+
+> **For you:** if `docs/RESUME.md` grows past 200 lines, `boss status` says so in one line and
+> tells you what to do — *move what has shipped to the devlog; don't trim.* `/close` now writes that
+> rule into the RESUME header it creates. And `## 2026-09-12 (what today was about)` is a devlog
+> heading `boss status` can read; before, only a bare date was, so a titled entry made the
+> re-entry line quote an older session.
+
+- **Why (IDEA-102).** BOSS's own RESUME — the file every session here reads first — reached 742
+  lines / ~15.6k tokens two days after an archive pass; stated npm's version seven ways in one file;
+  carried a 5.5 KB `updated:` field; and its only length check was an advisory in `npm run release`,
+  which nobody runs. The shipped practice (`context-discipline.md`, *Session-state docs*) already
+  said *decide the compaction rule while the file is small and make the window a number* — and
+  BOSS's file had every part of that rule except the number. The diagnosis under it: **a file every
+  session is told to read first is a magnet** — history, standing rules and computed facts migrate
+  into it because that is the only way to be seen — and the cure is a read home for each, not a
+  smaller file.
+- **`src/orientation.js`** — `RESUME_WINDOW = 200`, `resumeLines()`, `printResumeWindow()`: one
+  line on `boss status` past the window, silent at or under it, absent file silent. Says *move*,
+  never *trim*. Three tests.
+- **`reentry.js` (shipped lib)** — `DATE_HEADING` accepts `## YYYY-MM-DD` followed by anything.
+  Four of six entries in BOSS's own devlog carried a title and were invisible to `boss status`,
+  which reported *"Back after 23 days"* on a tree worked that morning. Two tests, including one
+  proving `## 2026-09-1 not a date` still is not.
+- **`/close` (dev + L1 template)** — step 2 carries the window as a number and names the three
+  things that make the file grow (computed facts, history, standing rules); the RESUME template's
+  header carries the rule; *"under a page"* → *"inside its window — move, don't trim"*.
+- **`check-dogfood.js`** — the window is a hard finding in `npm run check`, read from the same
+  constant `boss status` uses. `release.js` §7 (the ~400-line advisory) now only reports what that
+  gate enforced.
+- **`context-discipline.md`** — the dogfood paragraph gains the second failure and the number.
+- **BOSS's own tree** (gitignored, so not in this diff): RESUME rewritten 741 → 115 lines with no
+  dated State stack; the whole old file and the whole of `RESUME-ARCHIVE.md` moved into
+  `docs/devlog.md` verbatim (0 lines lost, checked line-by-line); the archive retired and its
+  `.gitignore` line removed; standing rules + the two incidents moved to `CLAUDE.md`;
+  `registry/dogfood.json` devlog row `exempt → exercised` (it had said "substituted by RESUME" since
+  before the devlog existed).
+
 ## 0.317.0 — 2026-09-12
 
 **`/pretotype` and `/prototype` name each other in their first sentence. One letter apart, two

@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
-import { readDevlogHead, awayDays, REENTRY_DAYS } from '../src/orientation.js';
+import { readDevlogHead, awayDays, REENTRY_DAYS, RESUME_WINDOW, resumeLines } from '../src/orientation.js';
 import { project, cleanup } from './helpers.js';
 
 after(cleanup);
@@ -245,4 +245,45 @@ test('status says nothing about intent when it was never asked or was skipped', 
   // the one thing this line must never become is a nag.
   assert.doesNotMatch(boss(['status'], mvp({ 'docs/ideas/IDEA-001-a.md': idea('IDEA-001') })), /Toward:/);
   assert.doesNotMatch(boss(['status'], mvp({ 'docs/ideas/IDEA-001-a.md': idea('IDEA-001', 'motivation: unset\nsuccess_looks_like: ""\n') })), /Toward:/);
+});
+
+// --- the briefing's window (IDEA-102) --------------------------------------
+
+const resumeOf = (n) => `# RESUME\n${Array.from({ length: n - 1 }, (_, i) => `- line ${i}`).join('\n')}`;
+
+test('boss status says nothing about RESUME while it is inside its window', () => {
+  const out = boss(['status'], mvp({ 'docs/RESUME.md': resumeOf(RESUME_WINDOW) }));
+  assert.ok(!/past its .*-line window/.test(out), 'must be silent at exactly the window');
+});
+
+test('boss status prints one line, and says MOVE not trim, when RESUME is past its window', () => {
+  const dir = mvp({ 'docs/RESUME.md': resumeOf(RESUME_WINDOW + 37) });
+  assert.equal(resumeLines(dir), RESUME_WINDOW + 37);
+  const out = boss(['status'], dir);
+  assert.match(out, new RegExp(`docs/RESUME.md\\s+is ${RESUME_WINDOW + 37} lines — past its ${RESUME_WINDOW}-line window`));
+  assert.match(out, /move what has shipped to the devlog/);
+  assert.match(out, /don't trim it/, 'the fix is a move, and the line says so');
+  assert.equal((out.match(/past its/g) || []).length, 1, 'one line, not a block');
+});
+
+test('a project with no RESUME yet is not told it is past a window', () => {
+  const dir = mvp();
+  assert.equal(resumeLines(dir), null);
+  const out = boss(['status'], dir);
+  assert.ok(!/RESUME\.md/.test(out));
+});
+
+// --- a titled entry is still a dated entry (IDEA-102) ------------------------
+
+test('the re-entry read accepts a devlog heading with a title after the date', () => {
+  const dir = mvp({ 'docs/devlog.md': `# Devlog\n\n## ${daysAgo(9)} (later — the vet sweep, v0.315.0)\n- **Landed:** the sweep\n- **Next:** publish\n\n## ${daysAgo(30)}\n- **Landed:** old\n- **Next:** older\n` });
+  const head = readDevlogHead(dir);
+  assert.equal(head.date, daysAgo(9), 'the titled entry is the newest, and must win');
+  assert.equal(head.next, 'publish');
+  assert.match(boss(['status'], dir), /Back after 9 days/);
+});
+
+test('a heading that merely starts with digits is not a date', () => {
+  const dir = mvp({ 'docs/devlog.md': `# Devlog\n\n## 2026-09-1 not a date\n- **Next:** no\n\n## ${daysAgo(12)}\n- **Next:** yes\n` });
+  assert.equal(readDevlogHead(dir).next, 'yes');
 });

@@ -26,6 +26,7 @@ import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { loadModes } from '../src/modes.js';
 import { dim, bold, ok, warn, err } from '../src/ui.js';
+import { RESUME_WINDOW, resumeLines } from '../src/orientation.js';
 
 const VERSION = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
 const fast = process.argv.includes('--fast');
@@ -305,14 +306,14 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
     `${n} descriptions ≈ ${tokens.toLocaleString()} tok at full unlock${tokens > 12000 ? ' — over the 12k ceiling' : ''}`, true);
 }
 
-// --- 7. RESUME.md stays readable (report, not a gate) -------------------
+// --- 7. RESUME.md stays inside its window --------------------------------
+// Was an advisory here at ~400 lines, and the file reached 737 two days after an archive pass —
+// an advisory in the script nobody runs is a gate on paper. The hard check now lives in
+// `check-dogfood.js` (part of `npm run check`, step 4 above) at the window `/close` ships and
+// `boss status` reads (IDEA-102). This line only reports what that gate already enforced.
 {
-  const p = join(BOSS_ROOT, 'docs', 'RESUME.md');
-  if (existsSync(p)) {
-    const lines = readFileSync(p, 'utf8').split('\n').length;
-    record('RESUME.md length', lines <= 400,
-      `${lines} lines${lines > 400 ? ' — a read-every-session doc past ~400 lines stops being read; archive older entries' : ''}`, true);
-  }
+  const lines = resumeLines(BOSS_ROOT);
+  if (lines != null) record('RESUME.md window', lines <= RESUME_WINDOW, `${lines} of ${RESUME_WINDOW} lines`);
 }
 
 // --- 8. the eval gate ---------------------------------------------------

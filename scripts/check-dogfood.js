@@ -28,6 +28,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RESUME_WINDOW, resumeLines } from '../src/orientation.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const LEDGER = join(ROOT, 'registry', 'dogfood.json');
@@ -77,6 +78,19 @@ for (const r of rows) {
     drifted.push([r.path, 'marked `owed` and it EXISTS — BOSS started doing this; update the ledger']);
   }
   if (r.verdict === 'owed') owed.push(r);
+}
+
+// The one shipped rule BOSS keeps on itself that is a NUMBER: `/close` writes a RESUME whose header
+// says *window: 200 lines*, and `boss status` reads it back. BOSS's own RESUME is the file every
+// session here reads first, and it reached 737 lines two days after an archive pass while the only
+// check was an advisory in `npm run release`, which nobody runs (IDEA-102). So the same read, here,
+// in the gate everybody runs — and it FAILS, because this is not owed work for a human: the fix is
+// a move to the devlog, which any session can make in the minute it notices.
+{
+  const lines = resumeLines(ROOT);
+  if (lines != null && lines > RESUME_WINDOW) {
+    drifted.push(['docs/RESUME.md', `${lines} lines — past the ${RESUME_WINDOW}-line window \`/close\` ships. Move what has shipped to docs/devlog.md; don't trim.`]);
+  }
 }
 
 const exercised = rows.filter((r) => r.verdict === 'exercised').length;

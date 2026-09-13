@@ -22,7 +22,7 @@ import { brain } from './brain.js';
 import { insights } from './insights.js';
 import { gistWork, recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
-import { printReentry, printEvidenceHeadway, printIntent } from './orientation.js';
+import { printReentry, printEvidenceHeadway, printIntent, printResumeWindow } from './orientation.js';
 import { readiness, renderReadiness } from './readiness.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { parseArgs } from './args.js';
@@ -581,6 +581,9 @@ async function cmdStatus(args) {
   // This is the other half, and the half that can be wrong: what the work actually
   // taught you. Shipping is motion; evidence is the part that moves the bet.
   printEvidenceHeadway(process.cwd());
+  // The briefing's window (IDEA-102): one line when docs/RESUME.md has outgrown what a session
+  // should read first, silent otherwise. It says MOVE, never trim — the history has a home.
+  printResumeWindow(process.cwd());
   // The one place the CLIMB question gets answered without being asked, and it is one line that
   // prints only when every leg BOSS can check is in place. Silent otherwise, on purpose (IDEA-076):
   // a founder mid-rung gets nothing, the way the re-entry line stays quiet for someone who worked

@@ -71,9 +71,16 @@ curve: host
   3. **What stays canonical** — the one file that holds the *complete* history (usually the changelog).
      The state doc is a **briefing**; it is allowed to be lossy precisely because that other file isn't.
 
-  BOSS learned this on itself: `docs/RESUME.md` was hand-split twice, the second time when a gate
-  flagged 592 lines, and several releases' state sections were **never written at all** — the split
-  happened faster than the record could keep up. A stated rule would have cost one paragraph.
+  BOSS learned this on itself, twice. `docs/RESUME.md` was hand-split twice, the second time when a
+  gate flagged 592 lines, and several releases' state sections were **never written at all** — the
+  split happened faster than the record could keep up. A stated rule would have cost one paragraph.
+  Then the paragraph above was written — and BOSS's own file still carried no number: it reached
+  **737 lines two days after an archive pass**, stated npm's version seven ways in one file, and the
+  length check was an advisory in a script nobody ran. The rule now lives in the file `/close` writes
+  (*window: 200 lines*) and `boss status` reads it back — one line, past the window, saying *move,
+  don't trim*. The lesson under the lesson: a file that every session is told to read first is a
+  **magnet** — history, standing rules and computed facts all migrate into it because that is the only
+  way to be seen — and the cure is a home for each that is also read, not a smaller file.
 - **Don't hand-tend what the host now remembers for you.** The `#` hotkey era — *prompt the user to
   save that to CLAUDE.md* — is over; Claude saves durable facts to **auto-memory** on its own. The
   cut that matters survives: **durable facts → auto-memory · working state → a path-scoped rule

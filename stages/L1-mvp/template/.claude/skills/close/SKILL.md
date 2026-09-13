@@ -57,7 +57,15 @@ ahead to what's next.
    and this file exists precisely because that distinction was being lost. No file yet, or nothing
    in flight? Skip it and say nothing.
 
-2. **Update `docs/RESUME.md`** (create if missing — template below). Rewrite, don't append:
+2. **Update `docs/RESUME.md`** (create if missing — template below). Rewrite, don't append —
+   and **keep it inside its window: 200 lines.** `boss status` prints one line when it is past that;
+   the answer is never to trim, it is to *move*: anything that has shipped goes to the devlog (step 1
+   already wrote the entry), anything durable goes to the record it belongs to (`/decide`, the IDEA,
+   `CLAUDE.md`), and RESUME keeps the pointer. A briefing is allowed to be lossy precisely because the
+   devlog and the changelog are not. Three things do not belong here at all, however much they want
+   to be read next session: **facts a command computes** (versions, counts, what's published — write
+   the command, not the number), **history** (that is the devlog), and **standing rules** (that is
+   `CLAUDE.md`). They are the three things that make this file grow.
    - **State (current):** the one paragraph someone re-entering the project needs. What's true *now*.
    - **Next tasks (in order):** the 1–3 concrete things to pick up. Concrete = "wire `/foo` to call
      bar()", not "improve the feature."
@@ -170,6 +178,9 @@ updated: {{today}}
 # RESUME — {{PROJECT_NAME}}
 
 **Read this first each session.** State + next tasks + open decisions.
+**Window: 200 lines.** What has shipped lives in `docs/devlog.md` (history, append-only); what a
+command can compute is not written here; standing rules live in `CLAUDE.md`. `boss status` says
+when this file is past its window — move, don't trim.
 
 ## What this project is
 _One paragraph. The current articulation — sharpen as the project sharpens._
@@ -200,8 +211,9 @@ _One paragraph. The current articulation — sharpen as the project sharpens._
 ## Rules
 
 - RESUME is rewritten, devlog is appended. The devlog is history; RESUME is the current pointer.
-- Keep RESUME short — under a page. If it grows past that, you're putting reference material in the
-  wrong file; move it to its own doc and link.
+- Keep RESUME inside its window — 200 lines, and the number is in the file. Past it, you're putting
+  history or reference material in the wrong file; move it to its home and leave the pointer. Decide
+  what moves *before* the file is big: a split done under pressure is where entries get dropped.
 - Don't run `/close` if the session was a one-line conversation; reserve it for sessions that moved the project.
 - If there's *real* unfinished work (a half-applied refactor), call it out in **State** in plain language.
   Surprises in the next session are the failure mode this skill exists to prevent.
