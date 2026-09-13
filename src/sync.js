@@ -42,7 +42,7 @@ function walkSkillResources(skillDir, prefix = '') {
 // The files BOSS manages for a stage: one .md per agent, one SKILL.md per skill,
 // plus any resources the skill bundles alongside it.
 // Each entry maps a source template file → its path inside the project.
-function managedFiles(stageId, manifest) {
+function managedFiles(stageId, manifest, projectDir = null) {
   const stageRoot = join(STAGES_DIR, stageId, 'template');
   const base = join(stageRoot, '.claude');
   const out = [];
@@ -96,7 +96,11 @@ function managedFiles(stageId, manifest) {
   // then NEVER updated again, including if a security fix landed in secrets-guard.js
   // (REVIEW-2026-07-28 §C7). `optionalHooks` syncs the FILE without registering it — the
   // registration stays the founder's on-switch, which is the whole point of dormant.
+  // Since `boss hooks enable` (src/hooks.js) an opt-in hook lands only when asked, so one that is
+  // not on disk is not managed: sync neither proposes it as `new` nor keeps it. One that IS on
+  // disk — enabled, or laid down by a pre-2026-09 scaffold — is kept current exactly as before.
   for (const h of manifest.optionalHooks || []) {
+    if (projectDir && !existsSync(join(projectDir, '.claude', 'hooks', `${h}.js`))) continue;
     out.push({
       kind: 'optional-hook',
       name: h,
@@ -419,7 +423,7 @@ export function stampManaged(projectDir, layers, exclude = []) {
   for (const stageId of layers || []) {
     let manifest;
     try { manifest = readStageManifest(stageId); } catch { continue; }
-    for (const f of managedFiles(stageId, manifest)) {
+    for (const f of managedFiles(stageId, manifest, projectDir)) {
       // A file BOSS deliberately did NOT write — because the founder had edited it — must never
       // be stamped: recording their bytes as BOSS's would report the file as untouched next run
       // and hand the overwrite straight back to the bug this ledger exists to close.
@@ -461,7 +465,7 @@ export function planSync(projectDir, stamp) {
     } catch {
       continue; // stage not authored in this BOSS version — skip
     }
-    for (const f of managedFiles(stageId, manifest)) {
+    for (const f of managedFiles(stageId, manifest, projectDir)) {
       if (!existsSync(f.src)) continue; // manifest lists it but template lacks it
       if ((f.kind === 'skill' || f.kind === 'skill-resource') && held.has(f.name.split('/')[0])) continue;
       const next = substitute(readFileSync(f.src, 'utf8'), {

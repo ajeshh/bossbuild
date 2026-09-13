@@ -497,7 +497,9 @@ test('dormant hooks are synced but never auto-registered', () => {
   // manifest list claimed them — a security fix to secrets-guard.js would never have
   // reached an existing project. `optionalHooks` syncs the FILE; the registration stays
   // the founder's on-switch, so syncing must NOT turn anything on.
-  const dir = project({});
+  // Since `boss hooks enable` an opt-in hook lands only when asked, so one that is NOT on disk is
+  // not managed either — this fixture is the pre-existing-install shape: files present, unregistered.
+  const dir = project({ '.claude/hooks/secrets-guard.js': '// old\n', '.claude/hooks/memory-cue.js': '// old\n' });
   const plan = planSync(dir, {
     name: 'p', bossVersion: '0.0.1', stage: 'L0-quickstart', installedLayers: ['L0-quickstart'],
   });

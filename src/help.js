@@ -125,6 +125,12 @@ export const HELP = {
     examples: ['boss changelog', 'boss changelog --full', 'boss changelog --since 0.140.0', 'boss changelog --all'],
     see: ['sync', 'status'],
   },
+  hooks: {
+    usage: 'boss hooks [enable <name> | disable <name>]',
+    what: "The opt-in hooks — the scripts that watch a tool call, a subagent finishing, or a session ending (a secrets guard, a smoke gate on Stop, the design-drift guards). None is laid down until you ask, because a hook is a process on every matching event and BOSS won't spend your latency unasked. `boss hooks` lists them with what each costs and when it is worth it; `enable <name>` copies the file and registers it in .claude/settings.json in one move — the block it registers is the one in the file's own header, so the two cannot disagree; `disable <name>` unregisters and removes it. The two always-on hooks (conscience, reentry) are not on this list. `boss sync` keeps enabled hooks current.",
+    examples: ['boss hooks', 'boss hooks enable smoke-guard', 'boss hooks disable smoke-guard'],
+    see: ['sync', 'conscience'],
+  },
   craft: {
     usage: 'boss craft [name] [--outline]',
     what: "Read BOSS's practice shelf — the craft the skills and agents are built on. The shelf ships inside the package, so it works from any project and is always exactly as current as your installed version. With no argument it lists every practice; with a name (prefixes work) it prints that one. This is BOSS's shelf, read-only — your own team's craft notes live in /practice as PRAC-NNN records. The shelf listing shows each practice's length and flags anything past 2\u00d7 the median \u2014 a shelf that only ever grows is how a toolkit becomes a framework, so those are subtraction candidates for the next refresh, and --outline maps a long one before you pull it whole.",

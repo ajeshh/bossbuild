@@ -221,14 +221,20 @@ export function applyStageSafe(stageId, targetDir, vars) {
 
 // Copy a stage's template/ tree into targetDir and fill placeholders.
 // Returns { appendedClaude } so callers can report what changed.
-export function applyStage(stageId, targetDir, vars, { skipSkills = [] } = {}) {
+export function applyStage(stageId, targetDir, vars, { skipSkills = [], skipHooks = null } = {}) {
   const templateDir = join(STAGES_DIR, stageId, 'template');
   if (!existsSync(templateDir)) {
     throw new Error(`Stage ${stageId} has no template/ dir (not authored yet).`);
   }
   // Skills a rung holds back until earned (src/earned.js) are not copied at all — the slash menu
   // is the host's, and the only way to keep a verb out of it is for the directory not to exist.
-  const held = new Set(skipSkills.map((n) => join(templateDir, '.claude', 'skills', n)));
+  // Opt-in hooks (src/hooks.js) likewise: `boss hooks enable` lays one down when asked. By default
+  // every `optionalHooks` entry of the manifest is held; pass [] to copy them (adopt's safe path).
+  const hooksHeld = skipHooks ?? (readStageManifest(stageId).optionalHooks || []);
+  const held = new Set([
+    ...skipSkills.map((n) => join(templateDir, '.claude', 'skills', n)),
+    ...hooksHeld.map((n) => join(templateDir, '.claude', 'hooks', `${n}.js`)),
+  ]);
   cpSync(templateDir, targetDir, { recursive: true, filter: (src) => !held.has(src) });
   substituteInTree(targetDir, vars);
 

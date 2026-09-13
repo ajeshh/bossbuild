@@ -6,6 +6,7 @@ import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, ap
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { heldBack, earnedGroups, newlyEarned, describeUntil, describeEarned } from './earned.js';
+import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog, cmpVersion } from './changelog.js';
@@ -1394,7 +1395,7 @@ function failNotAProject() {
 const KNOWN_COMMANDS = [
   'new', 'adopt', 'unlock', 'status', 'board', 'recap', 'map', 'brain', 'insights', 'records', 'id',
   'team', 'list', 'retire', 'credit', 'remove', 'uninstall', 'sync', 'learn', 'craft',
-  'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'version', 'help',
+  'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'hooks', 'version', 'help',
 ];
 
 // Per-command detail for `boss help <command>`. Kept tight — a usage line, a
@@ -1497,25 +1498,51 @@ const OPTIONAL_HOOKS = [
   },
 ];
 
-function printHooks() {
-  console.log(`\n  ${bold('Optional hooks')}  ${dim('— shipped with your project, switched OFF')}\n`);
-  console.log(`  ${OPTIONAL_HOOKS.length} hooks land in \`.claude/hooks/\` and do nothing until you register them.`);
-  console.log(`  The mode column is when each one ARRIVES — a Quickstart project has the first two.`);
+// `boss hooks` — list the opt-in hooks; `enable <name>` lays one down AND registers it from the
+// block in its own header; `disable <name>` reverses both. Nothing lands at scaffold any more.
+function cmdHooks(args) {
+  const { _: pos } = parseArgs(args);
+  const [sub, name] = pos;
+  if (!sub) return printHooks(process.cwd());
+  const stamp = readStamp(process.cwd());
+  if (!stamp) return fail('not a BOSS project here — run this inside one.');
+  const layers = stamp.installedLayers || [stamp.stage];
+  if (sub === 'enable') {
+    if (!name) return fail('usage: boss hooks enable <name>   (`boss hooks` lists them)');
+    try {
+      const r = enableHook(process.cwd(), name, layers);
+      console.log(`\n  ${ok('✦')} ${bold('/' + name)} is on${r.file ? ' — file laid down' : ''}${r.registered ? ', registered in .claude/settings.json' : ' (was already registered)'}.`);
+      console.log(`  ${dim('It runs from the next Claude Code session. `boss hooks disable ' + name + '` turns it off.')}\n`);
+    } catch (e) { return fail(e.message); }
+    return;
+  }
+  if (sub === 'disable') {
+    if (!name) return fail('usage: boss hooks disable <name>');
+    const r = disableHook(process.cwd(), name);
+    if (!r.unregistered && !r.removed) return fail(`'${name}' was not on.`);
+    console.log(`\n  ${ok('✦')} ${bold('/' + name)} is off${r.removed ? ' — file removed' : ''}${r.unregistered ? ', unregistered' : ''}. \`boss hooks enable ${name}\` brings it back.\n`);
+    return;
+  }
+  return fail(`unknown subcommand 'hooks ${sub}'. options: (none) | enable <name> | disable <name>`);
+}
+
+function printHooks(projectDir = null) {
+  console.log(`\n  ${bold('Opt-in hooks')}  ${dim('— off until you ask; one command turns one on')}\n`);
+  console.log(`  ${OPTIONAL_HOOKS.length} hooks are available. None is laid down until \`boss hooks enable <name>\`, which`);
+  console.log(`  copies the file and registers it in one move. The mode column is when each one becomes available.`);
   console.log(`  ${dim('Two hooks are already ON and are not listed here: `conscience` (the nudges) and')}`);
   console.log(`  ${dim('`reentry` (hands Claude where you left off when you come back after a few days).')}`);
   console.log(`  That is deliberate: a hook runs a process on every matching event, and BOSS won't`);
   console.log(`  spend your latency without you asking. ${dim('An unregistered script costs nothing.')}\n`);
   for (const h of OPTIONAL_HOOKS) {
-    console.log(`  ${bold('/' + h.name.padEnd(26))} ${dim(h.event)} ${dim('· ' + h.mode)}`);
+    const on = projectDir && isRegistered(projectDir, h.name);
+    console.log(`  ${bold('/' + h.name.padEnd(26))} ${dim(h.event)} ${dim('· ' + h.mode)}${on ? `  ${ok('on')}` : ''}`);
     console.log(`    ${h.does}`);
     console.log(`    ${dim('costs:')} ${h.cost}`);
     console.log(`    ${dim('worth it when:')} ${h.worth}\n`);
   }
-  console.log(`  ${bold('To turn one on')}`);
-  console.log('    Each file\'s header has the exact settings.json block to paste — open');
-  console.log(`    ${dim('.claude/hooks/<name>.js')} and copy the "TO TURN IT ON" snippet into`);
-  console.log(`    ${dim('.claude/settings.json')}. The registration IS the on-switch.`);
-  console.log(`\n  ${dim('`boss sync` keeps these files current whether or not you\'ve turned them on.')}\n`);
+  console.log(`  ${bold('To turn one on')}   ${bold('boss hooks enable <name>')}   ${dim('· off again: boss hooks disable <name>')}`);
+  console.log(`  ${dim('The registration in .claude/settings.json is the on-switch; `boss sync` keeps enabled hooks current.')}\n`);
 }
 
 function printSymbols() {
@@ -1647,7 +1674,7 @@ function cmdHelp(args) {
   if (args.includes('--html')) return cmdHelpHtml();
   if (!topic) return printHelp();
   if (topic === 'symbols' || topic === 'symbol' || topic === 'legend') return printSymbols();
-  if (topic === 'hooks' || topic === 'hook') return printHooks();
+  if (topic === 'hooks' || topic === 'hook') return printHooks(process.cwd());
   if (topic === 'glossary' || topic === 'terms' || topic === 'words') return printGlossary();
   return printCommandHelp(topic);
 }
@@ -1767,6 +1794,7 @@ export async function run(argv) {
     }
     case 'update': case 'outdated': return void printUpdate().then((c) => { process.exitCode = c; });
     case 'conscience': return cmdConscience(args);
+    case 'hooks': return cmdHooks(args);
     case 'version': case '--version': case '-v':
       return console.log(bossVersion());
     case undefined: case 'help': case '--help': case '-h':

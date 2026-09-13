@@ -25,6 +25,16 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+> **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched
+> off, with a JSON block to copy by hand. `boss hooks` lists them; `boss hooks enable <name>` copies
+> the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
+> already has the files keeps them, and `boss sync` keeps enabled ones current.
+
+- **Opt-in hooks land when asked.** `src/hooks.js` parses each hook's own "TO TURN IT ON" header
+  (one source for the file and its registration, so the header cannot lie), merges it into
+  `settings.json` deduplicated on the command, and the reverse. Scaffold and unlock hold every
+  `optionalHooks` entry back; sync manages an opt-in hook only when it is on disk. Ten fewer inert
+  files in every founder's tree; the fiddliest thing BOSS asked anyone to do is one command.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's
