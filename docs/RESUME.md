@@ -26,6 +26,10 @@ npm run check            # zero findings = clean; check:published says how far n
 
 ## Now
 
+- **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
+  `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
+  `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
+  IDEA is a capability; BOSS's venture is the canvas** (CLAUDE.md rule 3). Open: the board's split.
 - **IDEA-109 captured (2026-09-13) — the coach-in-residence positioning.** Ajesh: acquisition → acqui-hire →
   *"an incubator would wanna hire me… their coach, but also leverage this kind of tool for their cohorts."*
   Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
