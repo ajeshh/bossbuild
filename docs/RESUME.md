@@ -64,7 +64,9 @@ npm run check            # zero findings = clean; check:published says how far n
   `quote:` on the record, gated (`8da18b0`); four things BOSS never asked — `in_a_few_years:`,
   `prior_capital:`, runway and defensibility/compliance sharpens (`1daf260`); the **BMC frame**
   and the ask read from `business-<date>.md` (`ed46b24`). 16 chapters, 35 playbook tests, suite
-  529 pass + the 3 pre-existing. **Next is FEAT-029, the deck — Ajesh says go.**
+  529 pass + the 3 pre-existing. Then **FEAT-029 the deck** (`2d7563e`): Present with three cuts as
+  block-id lists (VC · Internal · Everything), remove/restore in the browser, Export PDF — **the
+  playbook's four slices are done.** 36 playbook tests; suite 535 pass + 3.
 - **FEAT-027 landed under Unreleased (`48ff59c`)** — the Pitch chapters: eight sections + a rail, each a
   projection over a record; a chapter line = the record's first sentence, tested.
 - **Earlier the same day:** FEAT-026 slice 1 (`55502e9`, the canvas as boxes) and IDEA-106 captured
@@ -86,12 +88,13 @@ npm run check            # zero findings = clean; check:published says how far n
 
 ## Next (in order)
 
-1. **FEAT-029 — the deck.** `/spec` it: VC cut / internal / everything as lists of block ids,
-   remove-and-restore in the browser (never the records — kicked-up #26), Export PDF via the shell's
-   print sheet; the prototype's deck JS is the mockup. Then IDEA-110 (the showcase). Ajesh's
-   hand-checks still open: `boss playbook --open` on a real project (16 chapters read as a pitch?),
-   the copy sheet, paste a box into Keynote/Slides, `/import` on a real deck (are the ≤5 proposals
-   the right five?).
+1. **IDEA-110 — the full showcase on oyeboss** (its trigger fired: the playbook exists end to end).
+   Decide the venture (Tidewell or a second cohort), where it lives (`/demo` on the site or a
+   linked family), and generate every page with the real renderers from a throwaway project —
+   fictional and says so. Reposition is IDEA-109's. Ajesh's hand-checks still open: `boss playbook
+   --open` on a real project, Present → VC cut, Export PDF in the sandbox (does `@page landscape`
+   hold?), a removed slide surviving a re-render, the copy sheet, a Keynote paste, `/import` on a
+   real deck (the right five?).
 2. **IDEA-106's kicked-up table is sorted** (2026-09-13); what's left waits on a trigger — #23 a
    screenshot at ship (`/ship`), #27 channel per first user (`/measure`), #15 a series from an
    import, #1 the matrix (three FEATs + two rivals with `## How they do it`), #10 which chapters
