@@ -34,6 +34,17 @@ test('an idea with no canvas is Captured; with a real canvas it is Taking shape'
   assert.equal(col(cards, 'IDEA-002'), 'Taking shape');
 });
 
+test('an idea marked `ready` is Taking shape even with no canvas — the status /revalidate writes', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'ready (step 1 scoped)' }),
+    'docs/ideas/IDEA-002.md': idea('IDEA-002', { status: 'exploring' }),
+  });
+  const { cards } = collectBoard(dir);
+  assert.equal(col(cards, 'IDEA-001'), 'Taking shape');
+  assert.equal(col(cards, 'IDEA-002'), 'Captured');
+  assert.deepEqual(canvassedIdeas(dir).ids, [], 'ready is not pressure-tested; the canvas count stays honest');
+});
+
 test('a canvas whose riskiest assumption is still the placeholder does NOT count', () => {
   // The distinction the whole "pressure-tested" claim rests on: a canvas FILE is not a
   // canvas that says anything. `riskiestNamed()` rejects the italic placeholder.

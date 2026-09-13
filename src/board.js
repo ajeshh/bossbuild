@@ -223,11 +223,17 @@ function riskiestNamed(canvasText) {
 // That is exactly how it shipped: twelve of BOSS's own cards — eight shipped, four in build — sat
 // in the Captured column looking like raw ideas nobody had touched, and the header comment three
 // screens up said "frontmatter is truth" the whole time.
+//
+// `ready` lands in Taking shape too. IDS.md defines it as "thought through, waiting on a build
+// slot" and `/revalidate` writes it on revive — yet until this line the board rendered a `ready`
+// idea as Captured, next to raw seedlings: the one status a founder sets by hand to say "this one
+// is next" changed nothing anyone could see. `canvassedIdeas()` below is deliberately NOT widened —
+// "pressure-tested" (a canvas with a named risk) and "declared ready" are different claims.
 function ideaColumn(status, hasRisk) {
   const s = baseStatus(status);
   if (s === 'shipped') return 'Shipped';
   if (s === 'building') return 'Building'; // promoted but no FEAT file yet
-  if (hasRisk) return 'Taking shape';
+  if (s === 'ready' || hasRisk) return 'Taking shape';
   return 'Captured';
 }
 

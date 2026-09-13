@@ -43,6 +43,13 @@ rule above still applies to the whole section once it is stamped.
   then the six edited hook/skill copies taken from shipped; the seven BOSS-specific mentor prompts
   kept). `check-dogfood` now fails when the pin is more than three releases behind — the 52-version
   state cannot begin again unnoticed.
+- **`ready` shows on the board.** `docs/IDS.md` defines `ready` as *thought through, waiting on a
+  build slot* and `/revalidate` writes it on revive — and `boss board` rendered it as Captured, beside
+  raw seedlings: the one status a founder sets by hand to say *this one is next* changed nothing
+  anyone could see. A `ready` idea now sits in Taking shape; the pressure-tested count (a canvas with
+  a named risk) is deliberately not widened. One test. On BOSS's own board the same pass flipped two
+  cards that had shipped and still said otherwise (IDEA-084 via `earned`, IDEA-102), moved three
+  scoped ideas to `ready`, and parked four whose records already carried a re-open trigger.
 
 ## 0.325.0 — 2026-09-12
 
