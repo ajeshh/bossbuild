@@ -1518,6 +1518,14 @@ const OPTIONAL_HOOKS = [
     worth: "you have more than a couple of components and want to keep it that way — writing a new file is easier for a model than reading an existing one and widening it, so `create` is the default unless something asks. This is what stops Button, CTAButton and PrimaryButton",
   },
   {
+    name: 'design-decisions-guard',
+    event: 'PostToolUse',
+    mode: 'MVP',
+    does: "Hands the agent the product's OWN design decisions at the moment a UI write touches their situation — a `PAT-n` the product grew (its rule and its anti-pattern), a Do / Don't pair from the style guide, an exception recorded at that path. Three lines at most, once per file per decision, never a seeded prompt and never BOSS's opinion. Silent until `PATTERNS.md` has an Ours row or the style guide a Do / Don't pair. Each fire is one line in `.boss/trace.jsonl`, which is what the divergence number reads.",
+    cost: 'a process after each UI file write',
+    worth: "you have decided things — the page (`boss design`) shows them, this is what keeps the next screen from quietly diverging while nobody is looking at the page",
+  },
+  {
     name: 'ui-boundary-guard',
     event: 'PostToolUse',
     mode: 'MVP',

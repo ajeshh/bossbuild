@@ -471,7 +471,8 @@ export function readPatterns(projectDir) {
       for (const r of t.rows) { const pattern = clean(r[iP]); if (pattern) out.refused.push({ pattern, why: clean(r[iW]), on: clean(r[iO]) }); }
     } else if (iP >= 0 && iS >= 0) {
       const iPr = t.col(/^principle/);
-      const rows = t.rows.map((r) => ({ id: iId >= 0 ? clean(r[iId]) : '', pattern: clean(r[iP]), situation: clean(r[iS]), rule: iR >= 0 ? clean(r[iR]) : '', anti: iA >= 0 ? clean(r[iA]) : '', firstSeen: iSeen >= 0 ? clean(r[iSeen]) : '', principle: iPr >= 0 ? clean(r[iPr]) : '' })).filter((r) => r.pattern);
+      const iFam = t.col(/^family/);
+      const rows = t.rows.map((r) => ({ id: iId >= 0 ? clean(r[iId]) : '', pattern: clean(r[iP]), situation: clean(r[iS]), rule: iR >= 0 ? clean(r[iR]) : '', anti: iA >= 0 ? clean(r[iA]) : '', firstSeen: iSeen >= 0 ? clean(r[iSeen]) : '', principle: iPr >= 0 ? clean(r[iPr]) : '', family: iFam >= 0 ? clean(r[iFam]) : '' })).filter((r) => r.pattern);
       if (iId >= 0 || /^ours/i.test(t.heading)) out.ours.push(...rows);
       else if (rows.length) out.groups.push({ heading: t.heading, rows });
     }
@@ -631,7 +632,10 @@ export function collectDesign(projectDir, projectName) {
   components.orphanPages = usage.filter((u) => !known(u.name) && u.status !== 'proposed');
   components.tree = scanTree(projectDir);
   components.unindexed = components.tree.filter((f) => !known(f.name));
-  const patterns = readPatterns(projectDir);
+  const patterns0 = readPatterns(projectDir);
+  patterns0.inUse = familiesInUse([...components.components.map((c) => c.name), ...components.retired.map((r) => r.name), ...components.tree.map((f) => f.name), ...usage.map((u) => u.name)]);
+  for (const r of patterns0.ours) r.familyKey = familyOfRow(r);
+  const patterns = patterns0;
   const flows = readFlows(projectDir);
   const guards = readGuards(projectDir);
   // The style guide's five-state table fills a component's states when nothing else says.
@@ -645,7 +649,7 @@ export function collectDesign(projectDir, projectName) {
   const slots = [
     ['brand', shape.present], ['people', personas.length > 0], ['journey', journey.stages.length > 0], ['principles', guide.principles.length > 0], ['colour', color.length > 0], ['type', type.length > 0], ['space', space.length + radius.length + elevation.length > 0], ['layout', guide.layout],
     ['icons', icons.files.length > 0 || Boolean(icons.decision.set)], ['logo', Boolean(logo.mark)],
-    ['components', components.components.length > 0], ['patterns', patterns.ours.length + patterns.groups.length > 0], ['flows', flows.flows.length > 0], ['content', content.terms.length + content.tone.length + content.voiceTraits.length > 0], ['a11y', (guide.floor || []).length > 0 || pairs.length > 0],
+    ['components', components.components.length > 0], ['patterns', patterns.ours.length > 0], ['flows', flows.flows.length > 0], ['content', content.terms.length + content.tone.length + content.voiceTraits.length > 0], ['a11y', (guide.floor || []).length > 0 || pairs.length > 0],
     ['research', research.evid.length > 0],
   ];
   const data = { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, findings: pairs.filter((p) => p.grade !== 'AA').length };
@@ -703,6 +707,36 @@ export function scanTree(projectDir) {
   return found;
 }
 
+// --- families: options BOSS knows about, shown only when the product USES one (IDEA-113) -----------
+// A family is in use when a component name in the index, the tree or a usage page matches its list;
+// it is decided when an Ours row belongs to it. Neither → one line naming it as an option. A CLI has
+// no overlays, and its page never says so.
+export const FAMILIES = [
+  ['inputs', 'Inputs', /^inputs/i, /\b(Input|Field|TextField|TextArea|Textarea|Search|NumberInput|DatePicker|Slider)\b/],
+  ['data-display', 'Data display', /^data display/i, /\b(Table|DataTable|List|Grid|Row|Cell|Tree)\b/],
+  ['icons', 'Icons', /^icons/i, /\b(Icon|Icons)\b/],
+  ['waiting', 'Waiting', /^waiting/i, /\b(Skeleton|Spinner|Loading|Loader|Progress)\b/],
+  ['navigation', 'Navigation', /^navigation/i, /\b(Nav|Navbar|Navigation|Tabs?|Breadcrumbs?|Pagination|Menu|Sidebar|Header|Footer|Link)\b/],
+  ['overlays', 'Overlays', /^overlays/i, /\b(Modal|Dialog|Popover|Tooltip|Toast|Drawer|Sheet|Overlay)\b/],
+  ['selection', 'Selection controls', /^selection/i, /\b(Checkbox|Radio|Toggle|Switch|Select|Dropdown|Combobox|ChoiceList)\b/],
+  ['feedback', 'Feedback', /^feedback/i, /\b(Banner|Alert|Notification|Badge|Status|Chip|Tag|Progress)\b/],
+  ['forms', 'Forms as a whole', /^forms/i, /\b(Form|Fieldset|FormLayout|Wizard)\b/],
+  ['layout', 'Layout primitives', /^layout primitives/i, /\b(Card|Stack|Page|Container|Box|Section|Panel|Divider)\b/],
+];
+const famOfText = (text) => FAMILIES.filter(([, , , names]) => names.test(String(text || ''))).map(([key]) => key);
+export function familiesInUse(names) {
+  const used = new Map();
+  for (const n of names) for (const key of famOfText(n)) { if (!used.has(key)) used.set(key, []); if (!used.get(key).includes(n)) used.get(key).push(n); }
+  return used;
+}
+// An Ours row's family: its Family column, else the same name list over pattern + situation.
+export function familyOfRow(row) {
+  const col = String(row.family || '').toLowerCase();
+  if (col) { const f = FAMILIES.find(([key, label]) => col.includes(key) || col.includes(label.toLowerCase().split(' ')[0])); if (f) return f[0]; }
+  const guess = famOfText(`${row.pattern} ${row.situation}`.replace(/\b\w/g, (c) => c.toUpperCase()));
+  return guess[0] || null;
+}
+
 // --- the open slots, read back: what is empty, which verb fills it, and the moment in the build that
 // earns it. The playbook prints its holes as questions (IDEA-111); the design space does the same,
 // in build order — a slot is never "missing", it is not yet earned, and the moment says when.
@@ -724,7 +758,8 @@ export function openSlots(data, projectDir) {
   if (!data.icons.files.length) add('icons-set', 'The icon files', 'docs/design/icons/*.svg', 'when the first icon is used');
   if (!data.icons.decision.set) add('icons-decision', 'The icon set, decided', '/design-review', 'at the first screen with an icon');
   if (!data.guide.layout) add('layout-hole', 'Layout — six sub-slots', '/design-review', 'at the first screen with a grid');
-  if (!(data.patterns.ours.length + data.patterns.groups.length)) add('patterns-none', 'The pattern set', '/design-review', 'the first time it runs');
+  if (!data.patterns.ours.length) add('patterns-none', 'A pattern of your own', '/design-review', 'the second time the same decision comes up');
+  for (const [key, label] of FAMILIES) if ((data.patterns.inUse || new Map()).has(key) && !data.patterns.ours.some((r) => r.familyKey === key)) add(`family-${key}`, `${label} — in use, nothing decided`, '/design-review', `at the next screen with ${data.patterns.inUse.get(key).slice(0, 2).join(' or ')}`);
   if (!data.flows.flows.length) add('flows-none', 'The flow index', '/spec', 'at the first FEAT with a surface');
   if (!data.content.terms.length) add('content-terms', 'Terminology', '/design-review', 'read back from the words already in use');
   if (data.content.deferred) add('content-voice', 'Voice and tone — the real strings', '/ux-check', 'from the strings that shipped');
@@ -770,7 +805,7 @@ export function renderDesignHtml(data, stampedAt) {
           : hole('brand-anchor', 'The anchor', '<p>Neutral temperature · radius · type pairing · the one owned accent · the signature. Five choices that get expensive to reverse, and no record yet says which were chosen and which are defaults.</p>', '/decide writes the anchor as a DEC · the 5-token pass in /design-tokens-init proposes it', 'docs/decisions/ · no brand-anchor DEC')}
       </div>`);
 
-  // 2 · Principles
+  // 4 · Principles
   const principleHtml = (p, i) => {
     const parts = [['Why', p.why], ['Guideline', p.guideline], ['Rules', p.rules], ['Wrong if', p.wrongIf]].filter(([, v]) => v);
     return `<article class="block principle" id="principle-${i + 1}" data-title="Principle ${i + 1} — ${esc(p.title)}"><div class="head"><h3>${i + 1} · ${esc(p.title)}</h3></div><div class="body">${p.statement ? `<p class="statement">${esc(p.statement)}</p>` : ''}${p.groundedIn ? `<p class="t-small"><strong>Grounded in:</strong> ${esc(p.groundedIn)}</p>` : ''}<div class="pgrid">${parts.map(([k, v]) => `<div><h4>${k}</h4><p>${esc(v)}</p></div>`).join('')}${parts.length === 0 ? '<p class="t-small"><em>A name and nothing under it — the slot asks for Why, Guideline, Rules and Wrong if.</em></p>' : ''}</div></div><div class="foot"><span class="chip ${p.grounded ? 'ev' : 'asserted'}">${p.grounded ? `grounded · ${esc(p.refs.join(', ') || 'named')}` : 'asserted · no EVID, persona or journey stage names it'}</span>${p.wrongIf ? '' : '<span class="chip asserted">no falsifier</span>'}${(() => { const n = patterns.ours.filter((r) => r.principle && (new RegExp(`(^|[^\\w])${i + 1}([^\\w]|$)`).test(r.principle) || r.principle.toLowerCase().includes(p.title.toLowerCase()))).length; return patterns.ours.length ? `<span class="chip ${n ? 'dec' : 'asserted'}">${n ? `${n} rule${n === 1 ? '' : 's'} descend${n === 1 ? 's' : ''}` : 'no rule descends from it yet'}</span>` : ''; })()}<span class="src">docs/design/STYLE_GUIDE.md · Design principles · ${i + 1}</span></div><div class="actions"></div></article>`;
@@ -780,7 +815,7 @@ export function renderDesignHtml(data, stampedAt) {
     guide.principles.length ? `      <div class="blocks one">\n        ${guide.principles.map(principleHtml).join('\n        ')}\n      </div>`
       : `      <div class="blocks one">${hole('principle-none', 'Design principles', '<p>Three to five, each with what it buys and what it costs. If a reasonable person couldn\'t argue the opposite, it isn\'t a principle.</p>', guide.present ? 'docs/design/STYLE_GUIDE.md · Design principles — the slot is there, blank' : '/design-tokens-init writes the style guide with the slot', guide.present ? 'docs/design/STYLE_GUIDE.md · present, principles empty' : 'docs/design/STYLE_GUIDE.md · absent')}</div>`);
 
-  // 3 · Colour
+  // 5 · Colour
   const err = tokens.error ? `<article class="block hole" id="tokens-error"><div class="head"><h3>Couldn't read the tokens</h3></div><div class="body"><p>${esc(tokens.error)}</p></div><div class="actions"></div></article>` : '';
   const semantic = color.filter((t) => !/^colou?r\.(gray|grey|blue|red|green|teal|amber|yellow|orange|purple|violet|neutral|palette)\b/i.test(t.name) && !/\.\d{2,3}$/.test(t.name));
   const primitives = color.length - semantic.length;
@@ -794,14 +829,14 @@ export function renderDesignHtml(data, stampedAt) {
       </div>`
       : `      <div class="blocks one">${err}${hole('colour-none', 'Semantic colour', '<p>The nine-or-so names a screen is allowed to use — surface, text, action, signal — and the primitives under them. The 47 blues start on the second screen without this.</p>', '/design-tokens-init writes docs/design/tokens.json', `${esc(src)}`)}</div>`);
 
-  // 4 · Type
+  // 6 · Type
   const typeRows = type.map((t) => { const v = Array.isArray(t.value) ? t.value.join(', ') : dim(t.value); return `<div class="row"><div class="meta"><b class="val" data-copy="${esc(`token=${t.name}|value=${v}|css=var(${cssVar(t.name)})`)}">${esc(t.name)}</b><span class="val" data-copy="${esc(`value=${v}|token=${t.name}`)}">${esc(v)}</span>${t.description ? `<span class="d">${esc(t.description)}</span>` : ''}</div><div class="spec"${Array.isArray(t.value) ? ` style="font-family:${esc(t.value.map((f) => (/\s/.test(f) ? `'${f}'` : f)).join(', '))}"` : ''}>${Array.isArray(t.value) ? 'The quick brown fox covers the Sunday shift.' : ''}</div></div>`; }).join('');
   const typeCh = chapter('type', 6, 'Type', type.length ? `${type.length} type token${type.length === 1 ? '' : 's'}.` : 'No type tokens yet.',
     'Roles, not sizes. A screen that needs a seventh role is asking a question the style guide should answer first.',
     type.length ? `      <div class="blocks one"><article class="block" id="type-roles" data-title="Type — the roles"><div class="head"><h3>Roles <span class="sub">· click a role to copy its token or value</span></h3></div><div class="body"><div class="scale">${typeRows}</div></div><div class="foot"><span class="src">${esc(src)} · font family</span></div><div class="actions"></div></article></div>`
       : `      <div class="blocks one">${hole('type-none', 'Type roles', '<p>A display face for the promise, a body face for the work, a data face for the numbers — and the six roles they play.</p>', '/design-tokens-init · the 5-token pass chooses the pairing', esc(src))}</div>`);
 
-  // 5 · Space & shape
+  // 7 · Space & shape
   const bars = space.map((t) => `<div class="row"><span class="val" data-copy="${esc(`px=${dim(t.value)}|token=${t.name}|css=var(${cssVar(t.name)})`)}">${esc(t.name)} · ${esc(dim(t.value))}</span><i style="width:${esc(dim(t.value))}"></i></div>`).join('');
   const radii = radius.map((t) => `<div class="val" style="border-radius:${esc(dim(t.value))}" data-copy="${esc(`px=${dim(t.value)}|token=${t.name}`)}">${esc(dim(t.value))} · ${esc(t.name.replace(/^radius\./, ''))}</div>`).join('');
   const elev = elevation.map((t) => `<div class="val" style="box-shadow:${esc(String(t.value))}" data-copy="${esc(`value=${String(t.value)}|token=${t.name}`)}">${esc(t.name.replace(/^(shadow|elevation)\./, ''))}</div>`).join('');
@@ -814,7 +849,7 @@ export function renderDesignHtml(data, stampedAt) {
       </div>`
       : `      <div class="blocks one">${hole('space-none', 'Spacing · radius · elevation', '<p>A 4-base scale, two radii, one shadow — the three families after colour that a screen reinvents by hand.</p>', '/design-tokens-init', esc(src))}</div>`);
 
-  // 6 · Layout
+  // 9 · Layout
   const layout = chapter('layout', 9, 'Layout', guide.layout ? 'A layout section exists.' : 'Nobody has decided how a page is built yet.', '',
     guide.layout ? `      <div class="blocks one"><article class="block" id="layout-guide" data-title="Layout — the six sub-slots"><div class="head"><h3>The six sub-slots <span class="sub">· ${guide.layoutSlots.filter((x) => x.value).length} of ${guide.layoutSlots.length} decided</span></h3></div><div class="body"><ul>${guide.layoutSlots.map((x) => `<li><strong>${esc(x.label)}:</strong> ${x.value ? esc(x.value) : '<span class="unk">not decided — blank until a screen needs it</span>'}</li>`).join('')}</ul>${guide.responsive.length ? `<div class="tscroll" style="margin-top:12px"><table class="t"><thead><tr>${guide.responsiveHeader.map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${guide.responsive.map((r) => `<tr><td><strong>${esc(r.surface)}</strong></td>${r.cells.map((c) => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}<p class="t-small" style="margin-top:10px">${tokens.tokens.some((t) => /^breakpoint\./i.test(t.name)) ? `<code>breakpoint.*</code> tokens: ${esc(tokens.tokens.filter((t) => /^breakpoint\./i.test(t.name)).map((t) => `${t.name} ${dim(t.value)}`).join(' · '))}.` : 'No <code>breakpoint.*</code> token yet — a media query is a number typed twice until there is one.'}${tokens.tokens.some((t) => /^target\.min$/i.test(t.name)) ? ` <code>target.min</code> ${esc(dim(tokens.tokens.find((t) => /^target\.min$/i.test(t.name)).value))}.` : ''}</p></div><div class="foot"><span class="chip ${guide.layoutSlots.every((x) => x.value) ? 'dec' : 'asserted'}">${guide.layoutSlots.filter((x) => x.value).length} of ${guide.layoutSlots.length}</span><span class="src">docs/design/STYLE_GUIDE.md · Layout</span></div><div class="actions"></div></article></div>`
       : `      <div class="blocks one">${hole('layout-hole', 'The slot, and what fills it', '<p>No column grid, no breakpoint list, no container width. The slot has a shape so the decision has somewhere to land:</p><ul style="margin-top:8px;font-style:normal"><li><strong>base unit</strong></li><li><strong>the ramp</strong> — which spacing steps mean inside a control, between controls, between sections</li><li><strong>grid anatomy</strong> — columns · gutters · margins · regions</li><li><strong>breakpoints</strong> — as <code>breakpoint.*</code> tokens, so a media query is a name</li><li><strong>responsive techniques</strong> — reposition · resize · reflow · hide · re-architect, and which are allowed</li><li><strong>density</strong> — one, until a second is earned</li></ul>', '/design-review reads it back at the first screen with a grid — observed, never a form', guide.present ? 'docs/design/STYLE_GUIDE.md · Layout section empty or absent' : 'docs/design/STYLE_GUIDE.md · absent')}</div>`);
@@ -841,7 +876,7 @@ export function renderDesignHtml(data, stampedAt) {
       </div>`
       : `      <div class="blocks one">${hole('journey-none', 'From first hearing about it to relying on it', '<p>Hear about it · try it · first value · come back · rely on it — what they\'re trying to do, what they meet, where they leave, and the source of each row. One page, written once.</p>', '/spec writes docs/product/JOURNEY.md the first time a flow is named', 'docs/product/JOURNEY.md · absent')}</div>`);
 
-  // 9 · Research
+  // 17 · Research
   const r = research;
   const rungRow = (k, label, items, note) => `<tr><td><strong>${label}</strong></td><td class="mono tab">${items.length}</td><td>${items.length ? esc(items.map((e) => `${e.id}${e.date ? ` · ${e.date}` : ''}`).join(' · ')) : `<span class="unk">${esc(note)}</span>`}</td></tr>`;
   const methodRows = r.byMethod.map((m) => `<tr><td><strong>${esc(m.label)}</strong></td><td class="mono">${m.rung}</td><td class="${m.used ? 'ok' : 'q'}">${m.used ? `used · ${m.used}` : 'never'}</td><td class="mono">${esc(m.verb)}</td></tr>`).join('');
@@ -854,7 +889,7 @@ export function renderDesignHtml(data, stampedAt) {
       </div>`);
 
 
-  // 9 · Components
+  // 10 · Components
   const co = components;
   const statusChip = (c) => c.status === 'deprecated' ? `<span class="chip stale">deprecated${c.replacedBy ? ` → ${esc(c.replacedBy)}` : ''}</span>` : c.status === 'stable' ? '<span class="chip dec">stable</span>' : c.status === 'draft' ? '<span class="chip asserted">draft</span>' : c.status === 'unused' ? '<span class="chip find">unused</span>' : `<span class="chip asserted">${esc(c.status)}</span>`;
   const findingChips = (c) => { const f = c.findings.map((x) => `<span class="chip find">${esc(x.kind || x.severity || 'finding')}${x.detail ? ` · ${esc(x.detail.length > 48 ? x.detail.slice(0, 46) + '…' : x.detail)}` : ''}</span>`); if (c.stale) f.push('<span class="chip stale">stale · source moved since the manifest</span>'); if (c.missing && c.missing.length) f.push(`<span class="chip find">missing state · ${esc(c.missing.join(', '))}</span>`); return f.length ? f.join(' ') : '—'; };
@@ -897,26 +932,40 @@ export function renderDesignHtml(data, stampedAt) {
       </div>`
       : `      <div class="blocks one">${co.error ? `<article class="block hole" id="components-error"><div class="head"><h3>Couldn't read the manifest</h3></div><div class="body"><p>${esc(co.error)}</p></div><div class="actions"></div></article>` : ''}${treeBlock}${askedBlock}${hole('components-none', 'The component index', '<p>Name · what it\'s for · the import line · variants · missing states · status. One row per component, written in the same change that creates it; the second component is where reinvention starts.</p>', co.source ? `${co.source} · present, no rows` : '/design-tokens-init writes docs/design/COMPONENTS.md at the first component · /design-library generates the manifest at V1', co.source || 'docs/design/COMPONENTS.md · absent')}</div>`);
 
-  // 10 · Patterns
+  // 11 · Patterns — the product's own decisions first; a family only when the product uses it;
+  // anything BOSS seeded is a prompt, never a decision (IDEA-113).
   const pa = patterns;
+  const inUse = pa.inUse || new Map();
   const pairRow = (r) => `<tr>${r.id ? `<td class="mono">${esc(r.id)}</td>` : ''}<td><strong>${esc(r.pattern)}</strong>${r.situation ? `<div class="t-small">${esc(r.situation)}</div>` : ''}${r.id ? `<div class="t-small">${r.principle ? `<span class="chip dec">descends from · ${esc(r.principle)}</span>` : '<span class="chip asserted">no principle named</span>'}${researchOn(research.evid, r.id).length ? ` <span class="chip ev">research · ${esc(researchOn(research.evid, r.id).join(', '))}</span>` : ''}</div>` : ''}</td><td class="do">${r.rule ? esc(r.rule) : '<span class="unk">no rule</span>'}</td><td class="dont">${r.anti ? esc(r.anti) : '<span class="unk">no anti-pattern — the pair is the point</span>'}</td>${r.id ? `<td class="mono">${esc(r.firstSeen || '—')}</td>` : ''}</tr>`;
-  const groupBlock = (g, i) => `<article class="block" id="patterns-${i}" data-title="Patterns — ${esc(g.heading)}"><div class="head"><h3>${esc(g.heading)} <span class="sub">· ${g.rows.length} · inherited</span></h3></div><div class="body"><div class="tscroll"><table class="t pairs"><thead><tr><th>Pattern</th><th>Do</th><th>Don't</th></tr></thead><tbody>${g.rows.map(pairRow).join('')}</tbody></table></div></div><div class="foot"><span class="chip asserted">seeded by /design-review</span><span class="src">docs/design/PATTERNS.md · ${esc(g.heading)}</span></div><div class="actions"></div></article>`;
-  const oursBlock = pa.ours.length ? `<article class="block" id="patterns-ours" data-title="Patterns — ours"><div class="head"><h3>Ours <span class="sub">— the ones this product grew · ${pa.ours.length}</span></h3></div><div class="body"><div class="tscroll"><table class="t pairs"><thead><tr><th>ID</th><th>Pattern</th><th>Do</th><th>Don't</th><th>First seen</th></tr></thead><tbody>${pa.ours.map(pairRow).join('')}</tbody></table></div><p class="t-small" style="margin-top:10px">A review finding can say <em>violates PAT-n</em> instead of re-arguing the rule. These are the ones worth showing a designer.</p></div><div class="foot"><span class="chip dec">${pa.ours.length} of ours</span><span class="src">docs/design/PATTERNS.md · Ours</span></div><div class="actions"></div></article>`
-    : hole('patterns-ours', 'Ours — the patterns this product grew', '<p>Empty on purpose until the same decision comes up twice in a review. Once is a choice; twice is a pattern, and it gets a <code>PAT-n</code> so a finding can name it.</p>', '/design-review names it · /extract promotes a repeated shape', pa.present ? 'docs/design/PATTERNS.md · Ours is empty' : 'docs/design/PATTERNS.md · absent');
-  const refusedBlock = pa.refused.length ? `<article class="block" id="patterns-refused" data-title="Patterns — refused"><div class="head"><h3>Refused <span class="sub">— considered, rejected, kept so nobody proposes it again</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Pattern</th><th>Why refused</th><th>On</th></tr></thead><tbody>${pa.refused.map((r) => `<tr><td><strong>${esc(r.pattern)}</strong></td><td>${esc(r.why)}</td><td class="mono">${esc(r.on || '—')}</td></tr>`).join('')}</tbody></table></div></div><div class="foot"><span class="chip dec">${pa.refused.length} refused</span><span class="src">docs/design/PATTERNS.md · Refused</span></div><div class="actions"></div></article>` : '';
+  const oursBlock = pa.ours.length ? `<article class="block" id="patterns-ours" data-title="Patterns — ours"><div class="head"><h3>Ours <span class="sub">— the decisions this product made · ${pa.ours.length}</span></h3></div><div class="body"><div class="tscroll"><table class="t pairs"><thead><tr><th>ID</th><th>Pattern</th><th>Do</th><th>Don't</th><th>First seen</th></tr></thead><tbody>${pa.ours.map(pairRow).join('')}</tbody></table></div><p class="t-small" style="margin-top:10px">A review finding can say <em>violates PAT-n</em> instead of re-arguing the rule. These are the ones worth showing a designer — and the ones the agent is handed at the write.</p></div><div class="foot"><span class="chip dec">${pa.ours.length} decided</span><span class="src">docs/design/PATTERNS.md · Ours</span></div><div class="actions"></div></article>`
+    : hole('patterns-ours', 'Ours — the decisions this product made', '<p>Empty on purpose until the same decision comes up twice in a review. Once is a choice; twice is a pattern, and it gets a <code>PAT-n</code> so a finding can name it and the agent can be handed it.</p>', '/design-review names it · /extract promotes a repeated shape', pa.present ? 'docs/design/PATTERNS.md · Ours is empty' : 'docs/design/PATTERNS.md · absent');
   const doDontBlock = (guide.doDont || []).length ? `<article class="block" id="patterns-dodont" data-title="Do / Don't — from the style guide"><div class="head"><h3>Do / Don't <span class="sub">— the rule rung, from the style guide · ${guide.doDont.length}</span></h3></div><div class="body"><div class="tscroll"><table class="t pairs"><thead><tr><th>Do</th><th>Don't</th><th>Because</th></tr></thead><tbody>${guide.doDont.map((r) => `<tr><td class="do">${esc(r.do)}</td><td class="dont">${esc(r.dont)}</td><td>${esc(r.because)}</td></tr>`).join('')}</tbody></table></div><p class="t-small" style="margin-top:10px">The only rung an agent can act on. A principle above that never produced a row here isn't steering anything yet.</p></div><div class="foot"><span class="chip dec">${guide.doDont.length} pair${guide.doDont.length === 1 ? '' : 's'}</span><span class="src">docs/design/STYLE_GUIDE.md · Do / Don't</span></div><div class="actions"></div></article>` : '';
-  const nPat = pa.ours.length + pa.groups.reduce((a, g) => a + g.rows.length, 0);
-  const patternsCh = chapter('patterns', 11, 'Patterns', pa.present ? `${nPat} pattern${nPat === 1 ? '' : 's'}${pa.ours.length ? `, ${pa.ours.length} of them ours` : ', none of them ours yet'}${pa.refused.length ? ` · ${pa.refused.length} refused` : ''}.` : 'No pattern set yet.',
-    'A pattern is a recurring decision with a rule attached — one level above a component, one below a flow. The rule and the anti-pattern sit side by side because a rule you can see is one you stop arguing about. Ours first; the inherited groups after.',
-    pa.present || (guide.doDont || []).length ? `      <div class="blocks one">
+  // A family block: the product's decided rows, then the prompts BOSS seeded for it, quietly.
+  const seededFor = (key) => { const f = FAMILIES.find(([k]) => k === key); return pa.groups.filter((g) => f[2].test(g.heading)).flatMap((g) => g.rows); };
+  const familyBlock = ([key, label]) => {
+    const decided = pa.ours.filter((r) => r.familyKey === key), used = inUse.get(key) || [], seeds = seededFor(key);
+    if (!decided.length && !used.length) return '';
+    return `<article class="block${decided.length ? '' : ' hole'}" id="family-${key}" data-title="${esc(label)}"><div class="head"><h3>${esc(label)} <span class="sub">· ${used.length ? `in use: ${esc(used.slice(0, 4).join(' · '))}${used.length > 4 ? ` +${used.length - 4}` : ''}` : 'decided; nothing named in the tree'} · ${decided.length ? `${decided.length} decided` : 'nothing decided'}</span></h3></div><div class="body">${decided.length ? `<div class="tscroll"><table class="t pairs"><thead><tr><th>ID</th><th>Pattern</th><th>Do</th><th>Don't</th><th>First seen</th></tr></thead><tbody>${decided.map(pairRow).join('')}</tbody></table></div>` : `<p>The product uses this family and has decided nothing about it — the third ${esc(used[0] || 'one')} decides by accident.</p><span class="verb">/design-review · at the next screen with ${esc(used.slice(0, 2).join(' or ') || 'one')}</span>`}${seeds.length ? `<details class="seeds"><summary>${seeds.length} prompt${seeds.length === 1 ? '' : 's'} BOSS seeded for this family — questions, not decisions</summary><div class="tscroll"><table class="t pairs"><thead><tr><th>Prompt</th><th>Do</th><th>Don't</th></tr></thead><tbody>${seeds.map(pairRow).join('')}</tbody></table></div><p class="t-small">A prompt becomes the product's rule only when it is adopted into <em>Ours</em> with a <code>PAT-n</code>.</p></details>` : ''}</div><div class="foot"><span class="chip ${decided.length ? 'dec' : 'find'}">${decided.length ? `${decided.length} decided` : 'in use · undecided'}</span><span class="src">docs/design/PATTERNS.md${seeds.length ? ` · ${seeds.length} seeded` : ''}</span></div><div class="actions"></div></article>`;
+  };
+  const familyBlocks = FAMILIES.map(familyBlock).filter(Boolean);
+  const shown = FAMILIES.filter(([key]) => (inUse.get(key) || []).length || pa.ours.some((r) => r.familyKey === key));
+  const options = FAMILIES.filter(([key]) => !shown.some(([k]) => k === key));
+  const otherSeeds = pa.groups.filter((g) => !FAMILIES.some(([, , re]) => re.test(g.heading))).flatMap((g) => g.rows.map((r) => ({ ...r, group: g.heading })));
+  const seedsLine = otherSeeds.length ? `<details class="seeds block-note"><summary>${otherSeeds.length} prompt${otherSeeds.length === 1 ? '' : 's'} BOSS seeded (${esc([...new Set(otherSeeds.map((r) => r.group))].join(' · '))}) — questions the product has not answered as its own</summary><div class="tscroll"><table class="t pairs"><thead><tr><th>Prompt</th><th>Do</th><th>Don't</th></tr></thead><tbody>${otherSeeds.map(pairRow).join('')}</tbody></table></div></details>` : '';
+  const optionsLine = options.length ? `<p class="t-small options">${options.length} more famil${options.length === 1 ? 'y exists' : 'ies exist'} as options — ${esc(options.map(([, l]) => l.toLowerCase()).join(' · '))} — and appear only when the product uses one. <code>/design-review</code> seeds a family the first time a screen has it.</p>` : '';
+  const refusedBlock = pa.refused.length ? `<article class="block" id="patterns-refused" data-title="Patterns — refused"><div class="head"><h3>Refused <span class="sub">— considered, rejected, kept so nobody proposes it again</span></h3></div><div class="body"><div class="tscroll"><table class="t"><thead><tr><th>Pattern</th><th>Why refused</th><th>On</th></tr></thead><tbody>${pa.refused.map((r) => `<tr><td><strong>${esc(r.pattern)}</strong></td><td>${esc(r.why)}</td><td class="mono">${esc(r.on || '—')}</td></tr>`).join('')}</tbody></table></div></div><div class="foot"><span class="chip dec">${pa.refused.length} refused</span><span class="src">docs/design/PATTERNS.md · Refused</span></div><div class="actions"></div></article>` : '';
+  const undecided = shown.filter(([key]) => !pa.ours.some((r) => r.familyKey === key)).length;
+  const patternsCh = chapter('patterns', 11, 'Patterns', pa.ours.length ? `${pa.ours.length} decision${pa.ours.length === 1 ? '' : 's'} of the product's own${shown.length ? ` · ${shown.length} famil${shown.length === 1 ? 'y' : 'ies'} in use${undecided ? `, ${undecided} with nothing decided` : ''}` : ''}${pa.refused.length ? ` · ${pa.refused.length} refused` : ''}.` : shown.length ? `${shown.length} famil${shown.length === 1 ? 'y' : 'ies'} in use, nothing decided yet.` : 'No decision of the product\'s own yet.',
+    'A pattern is a recurring decision with a rule attached — one level above a component, one below a flow. Only the product\'s own decisions are decisions here; what BOSS seeded is a prompt, shown only under a family the product actually uses. The rule and the anti-pattern sit side by side because a rule you can see is one you stop arguing about.',
+    `      <div class="blocks one">
         ${oursBlock}
         ${doDontBlock}
-        ${pa.groups.map(groupBlock).join('\n        ')}
+        ${familyBlocks.join('\n        ')}
         ${refusedBlock}
-      </div>`
-      : `      <div class="blocks one">${hole('patterns-none', 'The pattern set', '<p>Five states · empty state · error copy · destructive confirm · terminology — the rules every product needs, seeded at the first review, then the ones this product grows with a <code>PAT-n</code> each.</p>', '/design-review writes docs/design/PATTERNS.md the first time it runs', 'docs/design/PATTERNS.md · absent')}</div>`);
+      </div>
+      ${seedsLine}${optionsLine}`);
 
-  // 11 · Flows
+  // 12 · Flows
   const fl = flows;
   const pathChip = (ok, label) => ok ? `<span class="chip dec">${label}</span>` : `<span class="chip find">${label} · missing</span>`;
   const flowBlock = (f, i) => { const noWhy = f.happy.filter((st) => !st.why); return `<article class="block" id="flow-${i + 1}" data-title="Flow — ${esc(f.name)}"><div class="head"><h3>${esc(f.name)} <span class="sub">· ${esc(f.entry || 'no entry')} → ${esc(f.endsAt || '?')}${f.owner ? ` · ${esc(f.owner)}` : ''}</span></h3></div><div class="body">${f.happy.length ? `<div class="tscroll"><table class="t"><thead><tr><th>#</th><th>Step</th><th>Asks the user for</th><th>Why it's needed <em>now</em></th></tr></thead><tbody>${f.happy.map((st) => `<tr><td class="mono">${esc(st.n)}</td><td>${esc(st.step)}</td><td>${esc(st.asks || '—')}</td><td class="${st.why ? '' : 'n'}">${st.why ? esc(st.why) : '<strong>cannot say — the step to cut</strong>'}</td></tr>`).join('')}</tbody></table></div>` : f.deferred ? '<p class="t-small">The happy path, cut list, first-run and failure paths live in the FEAT — the index holds the row, the FEAT holds the detail, and two copies diverge.</p>' : '<p class="unk">No step table — the cut test needs one: each step names what it asks for and why now.</p>'}${f.cut.length ? `<p class="t-small" style="margin-top:10px"><strong>Cut, and kept:</strong> ${f.cut.map((c) => `${esc(c.cut)}${c.why ? ` — <em>${esc(c.why)}</em>` : ''}`).join(' · ')}</p>` : ''}${noWhy.length ? `<p class="t-small" style="margin-top:10px;color:var(--stale)"><strong>${noWhy.length} step${noWhy.length === 1 ? '' : 's'} cannot say why now.</strong> Asking is the most expensive thing an interface does; a step that can't say why it's needed now is the step to cut.</p>` : ''}</div><div class="foot">${f.deferred ? '<span class="chip asserted">three paths · in the FEAT</span>' : `${pathChip(f.happy.length > 0, 'happy')}${pathChip(f.firstRun, 'first-run')}${pathChip(f.failure, 'failure')}`}<span class="src">docs/design/FLOWS.md${f.owner ? ` · ${esc(f.owner)}` : ''}</span></div><div class="actions"></div></article>`; };
@@ -928,7 +977,7 @@ export function renderDesignHtml(data, stampedAt) {
       </div>`
       : `      <div class="blocks one">${hole('flows-none', 'The flow index', '<p>One row per sequence a user would name — entry, steps, where it ends, which FEAT owns it — and under each the three paths and the cut list.</p>', '/spec writes docs/design/FLOWS.md the first time a FEAT with a surface names its flow', fl.present ? 'docs/design/FLOWS.md · present, no rows' : 'docs/design/FLOWS.md · absent')}</div>`);
 
-  // 12 · Content
+  // 13 · Content
   const ct = content;
   const termsBlock = ct.terms.length ? `<article class="block" id="content-terms" data-title="Terminology"><div class="head"><h3>Terminology <span class="sub">— one word per concept · ${ct.terms.length}</span></h3></div><div class="body"><div class="tscroll"><table class="t pairs"><thead><tr><th>Use</th><th>Never</th><th>Because</th></tr></thead><tbody>${ct.terms.map((t) => `<tr><td class="do"><span class="val" data-copy="${esc(`value=${t.use}`)}">${esc(t.use)}</span></td><td class="dont">${esc(t.never || '—')}</td><td>${esc(t.because)}</td></tr>`).join('')}</tbody></table></div><p class="t-small" style="margin-top:10px">The one content rule that is mechanically checkable. ${guards.find((g) => g.name === 'content-terminology-guard' && g.on) ? '<code>content-terminology-guard</code> is on — a refused word in a string is caught at the write.' : '<code>boss hooks enable content-terminology-guard</code> makes it hold — a refused word in a string, caught at the write.'}</p></div><div class="foot"><span class="chip dec">${ct.terms.length} term${ct.terms.length === 1 ? '' : 's'}</span><span class="src">docs/design/STYLE_GUIDE.md · Terminology</span></div><div class="actions"></div></article>`
     : hole('content-terms', 'Terminology', '<p>Use · never · because. The cheapest content rule to write and the most expensive to change late — renaming a core noun hits copy, routes, schema, tests and every prompt at once. Pick the user\'s word over the internal one.</p>', '/design-review reads the words already in use back into the table · content-terminology-guard holds it', guide.present ? 'docs/design/STYLE_GUIDE.md · Terminology empty' : 'docs/design/STYLE_GUIDE.md · absent');
@@ -941,7 +990,7 @@ export function renderDesignHtml(data, stampedAt) {
         ${voiceBlock}
       </div>`);
 
-  // 13 · Accessibility
+  // 14 · Accessibility
   const floorList = (guide.floor || []).length ? `<ul>${guide.floor.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` : '<p class="unk">No floor written — the style guide template carries four lines: contrast by token pair, a visible focus state, reduced motion honoured, nothing by colour alone.</p>';
   const guardRows = guards.map((g) => `<tr><td class="mono">${esc(g.name)}</td><td>${esc(g.does)}</td><td class="${g.on ? 'ok' : 'q'}">${g.on ? 'on' : `off · <code>boss hooks enable ${esc(g.name)}</code>`}</td></tr>`).join('');
   const a11yCh = chapter('a11y', 14, 'Accessibility', pairs.length ? `${pairs.length} pair${pairs.length === 1 ? '' : 's'} computed, ${findings} finding${findings === 1 ? '' : 's'}; everything else needs a person.` : 'Nothing computed yet; everything needs a person.',
@@ -1028,6 +1077,7 @@ export function renderDesignHtml(data, stampedAt) {
   .sub-title { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 18px 0 6px; } .sub-title h4 { font-size: 15px; font-weight: 500; }
   .t.done td.y, .t td.ok { color: var(--chip-ev); } .t.done td.n, .t td.n { color: var(--bad); } .t.done td.q, .t td.q { color: var(--hole); font-style: italic; }
   .t.pairs td.do { border-left: 3px solid var(--chip-ev); padding-left: 10px; } .t.pairs td.dont { border-left: 3px solid var(--bad); padding-left: 10px; } tr.retired td { color: var(--muted); }
+  details.seeds { margin-top: 12px; } details.seeds summary { cursor: pointer; font-size: 13px; color: var(--muted); } details.seeds .t { margin-top: 8px; } details.seeds.block-note { margin: 14px 0 0; } .options { margin-top: 12px; color: var(--muted); }
   .usage { margin: 10px 0 4px; padding: 10px 12px; border: 1px solid var(--rule-2); border-radius: 6px; } .usage.hole-in { border-style: dashed; } .usage .why { margin-bottom: 8px; } .usage h4 { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 4px; font-weight: 500; } .usage ul { margin: 0; padding-left: 18px; font-size: 14px; } .usage .pgrid { gap: 8px 18px; }
   .component .frame { margin: 10px 0; } .component .frame svg { max-width: 100%; height: auto; display: block; } .cmeta .import { font-family: var(--mono); font-size: 11.5px; padding: 6px 8px; border: 1px solid var(--rule-2); border-radius: 5px; background: var(--ground); cursor: pointer; word-break: break-all; } .cmeta .import:hover { outline: 2px solid var(--accent); outline-offset: 1px; } .cmeta .t-small { margin-top: 8px; }
   .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; } .icon { display: grid; justify-items: center; gap: 4px; padding: 12px 8px 10px; border: 1px solid var(--rule-2); border-radius: 6px; text-align: center; } .icon .g svg { width: 24px; height: 24px; display: block; } .icon b { font-family: var(--mono); font-size: 11px; font-weight: 500; } .icon .m { font-family: var(--mono); font-size: 10px; color: var(--muted); }

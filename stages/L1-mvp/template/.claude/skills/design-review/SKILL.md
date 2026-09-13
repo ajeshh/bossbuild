@@ -163,6 +163,11 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    you write them up, ask the question that makes them compound: **is this decision going to come up
    again?**
 
+   - **A family this screen uses for the first time?** A dialog, a toggle, a badge, a tab bar —
+     seed *that* family's prompts from the template into `PATTERNS.md`, and only that one, keyed
+     off `shape` (a CLI never gets overlay rows). The prompts are questions; the product's answer
+     is an *Ours* row with a `PAT-n` and its `Family`. `boss design` shows a family only when the
+     product uses it.
    - **Already in `PATTERNS.md`?** Cite the row. A finding that says *"this violates our
      destructive-confirm pattern"* is worth five that re-derive the reasoning, because it is
      reviewable by someone who wasn't in this session.

@@ -48,6 +48,7 @@
     "content-terminology-guard",
     "design-tokens-guard",
     "component-reuse-guard",
+    "design-decisions-guard",
     "ui-boundary-guard",
     "contrast-guard",
     "schema-guard",

@@ -87,10 +87,16 @@ updated: {{DATE}}
 | **Degraded-state honesty** | the model is slow, rate-limited, or failing | say which, and what still works | a spinner that never resolves |
 | **Trust repair** | the model got something wrong and the user saw it | own it and reduce autonomy asymmetrically — faster to lose than to regain | a silent retry |
 
-## Element families — seed only the ones this product has
+## Element families — seed one the first time a screen has it, never all ten
 
 Ten families come up in almost every product, get decided by accident, and are expensive to
-re-decide later. **These are not a catalog of elements** — BOSS does not ship one and shouldn't (see
+re-decide later. **They are options BOSS knows about, not content this product has.** A CLI has no
+overlays; a print-first product has no toasts. So: seed a family the first time a review sees a
+screen that uses it — a dialog, a toggle, a badge — and key that off the product's `shape` in
+`.boss/config.json`; a family this product never uses is never written into this file, and
+`boss design` shows only the families in use (the rest is one line naming them as options). Every
+seeded row is a **prompt**, not a decision: it becomes the product's rule only when it is adopted
+into *Ours* with a `PAT-n`. **These are not a catalog of elements** — BOSS does not ship one and shouldn't (see
 the note above). They are the **decisions each family forces**, which is a different thing: a catalog
 tells you what a dialog is, and these tell you what you have to settle before you build your third
 one.
@@ -214,10 +220,12 @@ second is the real one: a review finding can then say *"violates `PAT-3`"* inste
 rule, and **a pattern this product invented is a different kind of thing from one it inherited.**
 The seeded rows are BOSS's; these are yours, and they are the ones worth showing a designer.
 
-| ID | Pattern | The situation | The rule | Anti-pattern | Principle | First seen |
-|---|---|---|---|---|---|---|
-| **PAT-1** | *(your first one lands here)* | | | | | |
+| ID | Pattern | The situation | The rule | Anti-pattern | Family | Principle | First seen |
+|---|---|---|---|---|---|---|---|
+| **PAT-1** | *(your first one lands here)* | | | | | | |
 
+**Family** (optional) names which of the ten this decision belongs to — `overlays`, `feedback` — so
+`boss design` files it under the family; leave it blank and the row's own words decide.
 **Principle** names the one in `STYLE_GUIDE.md` this rule descends from — its number or its name.
 It is the only column here the seeded rows above cannot have (they are BOSS's rules; the
 principles are yours), which is why it lives on this table and not on every row: a rule you grew

@@ -451,8 +451,9 @@ test('patterns render Ours first with ids, the inherited groups after, the refus
   assert.equal(pa.groups.length, 1); assert.equal(pa.groups[0].heading, 'Always'); assert.equal(pa.groups[0].rows[0].anti, '"Are you sure?"');
   assert.deepEqual(pa.refused, [{ pattern: 'streak counter', why: 'engagement-shaped, not value-shaped', on: '2026-08-20' }]);
   const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
-  const ours = html.indexOf('id="patterns-ours"'), always = html.indexOf('id="patterns-0"'), refused = html.indexOf('id="patterns-refused"'), dd = html.indexOf('id="patterns-dodont"');
-  assert.ok(ours > 0 && ours < always && always < refused, 'Ours · inherited · Refused, in that order');
+  const ours = html.indexOf('id="patterns-ours"'), refused = html.indexOf('id="patterns-refused"'), seeds = html.indexOf('prompt BOSS seeded (Always)'), dd = html.indexOf('id="patterns-dodont"');
+  assert.ok(ours > 0 && ours < refused && refused < seeds, 'Ours · Refused · then the seeds as a quiet line — never as decisions');
+  assert.ok(!html.includes('id="patterns-0"'), 'a seeded group is not a block of its own');
   assert.ok(dd > 0); assert.match(html, /<td class="do">one primary action per view<\/td><td class="dont">two buttons competing<\/td>/);
   assert.ok(!html.includes('&lt;your rule&gt;'), 'the placeholder pair is not a pair');
 });
@@ -494,7 +495,7 @@ test('with the style guide\'s voice left as placeholders the block is dormant wi
   assert.equal(g.voiceDeferred, true);
   const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
   assert.match(html, /id="components-none"[\s\S]*?\/design-tokens-init writes docs\/design\/COMPONENTS\.md/);
-  assert.match(html, /id="patterns-none"[\s\S]*?\/design-review writes docs\/design\/PATTERNS\.md/);
+  assert.match(html, /class="block hole" id="patterns-ours"[\s\S]*?\/design-review names it/);
   assert.match(html, /id="flows-none"[\s\S]*?\/spec writes docs\/design\/FLOWS\.md/);
   assert.match(html, /id="content-terms"[\s\S]*?class="block hole"/.source ? /class="block hole" id="content-terms"/ : /x/);
   assert.match(html, /class="block dormant" id="content-voice"[\s\S]*?deferred by rule/);
@@ -768,4 +769,35 @@ test('the pattern-set template carries ten element families as decisions, every 
   assert.ok((tpl.match(/^### Icons/m)), 'icons is the tenth');
   for (const g of families) for (const r of g.rows) assert.ok(r.rule && r.anti, `${g.heading} · ${r.pattern} has a rule and an anti-pattern`);
   assert.equal(pa.ours.length, 0, 'the placeholder row is not a pattern');
+});
+
+test('a family appears only when the product uses it: a CLI-shaped tree shows no overlays even with seeded rows; a Modal in the tree shows overlays as in use and undecided; an Ours row lands under its family; the rest is one line of options', () => {
+  const seededOverlays = PATTERNS + `
+### Overlays — dialogs, popovers, tooltips, toasts
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **A dialog is a question, not a place** | you are about to open a modal | one decision, then it closes | a modal with tabs |
+`;
+  const cli = withParts({ 'docs/design/PATTERNS.md': seededOverlays });
+  const html = renderDesignHtml({ ...collectDesign(cli, 'Tidewell'), projectDir: cli }, 'x');
+  assert.ok(!html.includes('id="family-overlays"'), 'no Modal anywhere → no overlays block, seeded rows or not');
+  assert.ok(!html.includes('A dialog is a question, not a place'), 'the seed is not rendered for a family not in use');
+  assert.match(html, /famil(y exists|ies exist) as options — [^<]*overlays/);
+  assert.match(html, /1 decision of the product's own · 1 family in use, 1 with nothing decided/, 'Card puts layout primitives in use; PAT-1 names no family');
+  assert.match(html, /class="block hole" id="family-layout"[\s\S]*?in use: Card/);
+  const web = withParts({ 'docs/design/PATTERNS.md': seededOverlays, 'src/components/Modal.tsx': 'export const Modal = () => null;\n' });
+  const data = collectDesign(web, 'Tidewell');
+  assert.deepEqual(data.patterns.inUse.get('overlays'), ['Modal']);
+  const html2 = renderDesignHtml({ ...data, projectDir: web }, 'x');
+  assert.match(html2, /class="block hole" id="family-overlays"[\s\S]*?in use: Modal · nothing decided/);
+  assert.match(html2, /1 prompt BOSS seeded for this family — questions, not decisions/);
+  assert.ok(data.questions.some((q) => q.id === 'family-overlays' && q.moment === 'at the next screen with Modal'));
+  const decided = seededOverlays.replace('| **PAT-2** | *(your first one lands here)* | | | | |', '| **PAT-2** | One question per dialog | a modal is about to open | one decision, then it closes | a modal that opens a modal | 2026-09-05 |');
+  const dir3 = withParts({ 'docs/design/PATTERNS.md': decided, 'src/components/Modal.tsx': 'x' });
+  const d3 = collectDesign(dir3, 'Tidewell');
+  assert.equal(d3.patterns.ours.find((r) => r.id === 'PAT-2').familyKey, 'overlays', 'the family is read from the row\'s words');
+  const html3 = renderDesignHtml({ ...d3, projectDir: dir3 }, 'x');
+  assert.match(html3, /<article class="block" id="family-overlays"[\s\S]*?1 decided/);
+  assert.match(html3, /<b class="tab">\d+<\/b> open/);
 });

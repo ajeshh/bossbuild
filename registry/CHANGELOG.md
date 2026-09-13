@@ -30,6 +30,23 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The decision record, not a pattern library (IDEA-113 → FEAT-038).** Ajesh: *"the visual html
+  is a showcase of all the design decisions it has made so that the team, and agents can keep
+  leveraging it without diverging… it's not a pattern library… the families should only appear
+  when there is content in them."* Three things. **A family appears only when the product uses
+  it** — a decided *Ours* row of its own, or a component name in the index, the tree or a usage
+  page that belongs to it (`Modal` → overlays, `Toggle` → selection, `Banner` → feedback); in use
+  with nothing decided is a hole with the moment (*at the next screen with Modal*); everything else
+  is one line — *9 more families exist as options*. A CLI never sees overlays. What BOSS seeded
+  (*Always*, a family's prompts) renders as prompts under a collapsed line, never as a decision,
+  and the ledger counts only the product's own rows. `/design-review` seeds a family the first time
+  a screen has it, keyed off `shape`, never all ten; *Ours* gained an optional `Family` column.
+  **`design-decisions-guard`** (opt-in, MVP) — at the moment a UI write touches a situation the
+  product already decided, the agent is handed *that* decision: a `PAT-n` with its rule and
+  anti-pattern, a Do / Don't pair, an exception recorded at that path; three lines at most, once
+  per file per decision (`.boss/decisions-guard.json`), never a seeded prompt, never BOSS's opinion;
+  each fire is a `design-decision` line in `.boss/trace.jsonl` — the substrate for the divergence
+  number, which is next. The page is the filter; this is the boundary.
 - **The library keeps itself (IDEA-112 → FEAT-037).** Ajesh: *"as the agents or entrepreneur builds
   more components or anything, we should be able to translate that into a design library… when to
   reuse, when to make something new, our system should be able to guide."* Four things, none a
