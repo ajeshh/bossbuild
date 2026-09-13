@@ -68,44 +68,48 @@ A single generated site under `docs/playbook/` — gitignored, regenerated on de
 `boss board --html`. `index.html` plus one page per chapter; inline CSS; no framework; logo inlined
 as a data URI; opens from `file://`. Light and dark.
 
-Chapters in the order a *stranger* needs them, not the order the files were made (revised
-2026-09-13 after prototype v0 — Ajesh: *"there is more story to be shared"*):
+Chapters named the way the audience names them (Ajesh, 2026-09-13: *"competition should be
+competition. Think of your audience, and being able to easily ID the content"*), in three groups —
+17 as of prototype v3. Each is a projection over records that exist; the source is named per chapter.
 
-1. **Why** — the cover. The founder's why (`motivation:` and `success_looks_like:` from the IDEA doc,
-   [[IDEA-097]]), the Promise (canvas *Promises*), the values (canvas *Principles*), and **the
-   team** — who is building it and what makes that believable to a stranger (the *Modes of
-   Engagement* unfair-advantage sharpen, FEAT-025's "team" row). Vision lives here.
-2. **The product** — what it is *today*, in one paragraph: the IDEA doc's *current shape*, what has
-   shipped (`FEAT` records at `shipped`), what is being built, the landing page's promise if one
-   exists. The chapter a stranger reads first and BOSS has no single record for — see *Kicked up*.
-3. **Who** — *People* plus its market sharpen (*how many are there, and how do you know* — the
-   bottom-up count, never a "$50B"), then **the personas as stories**: `docs/personas/<slug>.md`
-   rendered as a person — the `who` line as the headline, `context` as a day in their life, `jobs`
-   / `pains` / `values` as the portrait, `what we DON'T know yet` as the open questions, and the
-   `synthetic N% · real N%` ledger on the card.
-4. **The problem, and who else fixes it** — *Problem*, then the competition in two tiers, both
-   from records `/comp-eval` already writes: **key rivals** (`direct`, or in evidence — a real
-   person named them) each get a **brief**: what it is, how they'd win, where it breaks, the two or
-   three things identified about them; **the rest** (`watch`, `adjacent`) render as a list, one line
-   each, no deep dive. Then **a matrix** — rivals × *the three-to-five features that touch the bet*
-   (the `## How they do it` sections `/comp-eval` writes per decided feature), never a catalog.
-5. **The canvas** — the boxes (§2).
-6. **How it sustains itself** — *Business Model*, both branches; *Cost Structure* and the other
-   dormant cells once live; the first dollar (`/money`); **the ask** renders as a hole *with the
-   reason* until `mentor-capital` says the raise question is live.
-7. **What we know** — the evidence ledger. Every `EVID` on the three-rung ladder as a dated timeline.
-8. **What we've learned — the story so far.** Dated, newest last: the IDEA capture log, the canvas
-   revisions, `BRAND.md`'s *What we've learned*, the devlog's *what surprised you* lines, each `EVID`
-   and `DEC` as a point on the same line. The chapter that answers *"as we continue to learn about
-   the company"* — and the first reader BOSS's five append-only logs have ever had.
-9. **What we decided** — `DEC` cards: the decision, the falsifier, the revisit date, past-due marked.
-10. **Risks & Harms** — a chapter, never a footer. **Trust** sits here: what the product refuses
-    to do with people's data (`/trust`, the *What it refuses* line of `BRAND.md`).
-11. **Brand** — the guidelines: who it's for, what it promises, what it refuses, how it sounds,
-    what it is NOT, the name and why — then the anchor as swatches and a type specimen (accent,
-    neutral, radius, type pairing) *when* tokens exist. A nascent brand renders its `unknown`s.
-12. **What's next** — the `/roadmap` bets and the NO-list. The board (`boss board --html`) is
-    *contained* here, not duplicated — one renderer, one board (065's Q3, answered).
+**Pitch** — the arc a stranger reads first
+1. **Vision** — the Promise, the founder's why, `success_looks_like`, Principles, who is building it,
+   and *In five years* (a hole until the IDEA doc carries a `vision:` line — the far-horizon question
+   BOSS never asks; Sequoia's tenth section).
+2. **Product** — what it is *today*, what has shipped, what it is not.
+3. **Customers** — every `docs/personas/*.md` as a card (primary first, secondary after, a hole for
+   the next), each with its `synthetic · real` ledger. Multiple personas are the normal case.
+4. **Problem** — the pain · how it's handled today and where each falls short · **Why now** (its own
+   block; the Story cell's second half surfaced — Sequoia's fourth section, previously buried).
+5. **Market** — how many and how you know (the People sharpen) · **the ceiling by arithmetic** (two
+   cells multiplied, labelled *not a forecast* — FEAT-025's line holds) · **research you've
+   imported** (`/import` → `docs/source/`, each with its date and what it changed; the intake path
+   for market research and sizing).
+6. **Competition** — the table · **key rivals as briefs** (direct, or named in evidence) · the watch
+   list one line each · the matrix over decided features.
+7. **Canvas** — the boxes, Humane ⇄ Lean ⇄ BMC, the floor band.
+8. **Business model** — who pays, how much · what it costs to serve · **the ask, as a hole with the
+   reason** (`mentor-capital`'s *not yet* sentence, quoted from the dossier).
+
+**Proof** — what backs the pitch
+9. **Evidence** — every `EVID` on the ladder, dated. *(not drawn)*
+10. **Learnings** — the story so far, dated, read from five logs.
+11. **Decisions** — `DEC` cards; a hole page when none.
+12. **Risks & harms** — the chapter, with Trust inside it. *(not drawn)*
+
+**Company** — who and how
+13. **Team** — a bio per person: the specific thing seen/built/sold/lived, why a stranger should
+    believe it, what they bring and don't; **who is missing written as plainly** (the cofounder
+    hole, the advisors hole). Photo storage per person.
+14. **Brand** — current shape, the anchor as swatches and specimen, `unknown`s shown.
+15. **Design** — the guidelines and tokens; a **sibling space** (the peer session's Design artifact),
+    linked from the family nav and the rail, not duplicated here.
+16. **Roadmap** — bets and the NO-list. *(not drawn)*
+17. **Board** — `boss board` contained, not duplicated. *(not drawn; sibling in the family nav)*
+
+**Sibling spaces.** A second session added a family nav — *Playbook · Design · Board* — on
+2026-09-13. One product, several spaces, one brand and one ledger across them; the playbook is the
+one a stranger reads, the others are the founder's.
 
 Candidates not drawn, each with its trigger: **Health** (post-ship — `/measure`, `/health`) ·
 **The interview guide** (the persona's *what we don't know* block *is* one; render it as a
@@ -224,6 +228,31 @@ what we've learned → what we decided → risks → brand → what's next.
 - **The deck exports.** *Export PDF* prints one slide per page at 16:9 (13.33 × 7.5 in) — the
   universal path into any deck tool, and the artifact a founder mails.
 
+### 9. Against the canonical deck — what a VC expects that the records don't hold
+
+Ajesh, 2026-09-13: *"do some research on what other content shd be there that we dont have."*
+Fetched at source on 2026-09-13: **Sequoia Capital, "Writing a Business Plan"** (Team Sequoia; page
+dated 2026-09-11) — ten sections: company purpose · problem · solution · why now · market potential ·
+competition/alternatives · business model · team · financials · vision. **Not cited:** YC's seed-deck
+guide (a JS app; the HTML carries only its title) and Kawasaki's 10/20/30 page (bot-check) —
+neither readable at source, so neither used ([[vet-verify-attribution]]).
+
+| Sequoia asks for | The playbook has | The gap, and where it lives |
+|---|---|---|
+| a single declarative sentence | the Promise cell | — |
+| problem · how addressed today · shortcomings | Problem + alternatives + rivals' *where weak* | — |
+| solution, why unique | Product + Story + UVP | — |
+| **why now** | the Story cell's second half | **render** — its own block (v3) |
+| **market potential** | the bottom-up count | **record** — sizing beyond the count; `/import` is the intake, nothing reads it into a chapter yet |
+| competition, direct and indirect | Competition | — |
+| business model | Business model cell | — |
+| **team** — *"the story of your founders"* | one paragraph on the cover | **record** — no person record, no bio, no photo (kicked up #11) |
+| financials, *"if you have any"* | price × cost at today's numbers; projections refused | by design (FEAT-025) |
+| **vision** — *"five years"* | `success_looks_like` asks three months | **record** — BOSS never asks the far horizon (kicked up #12) |
+
+Kept that Sequoia doesn't ask for, on purpose: the evidence ladder, Risks & harms, Principles,
+Decisions, Learnings, Brand — and the ask rendered as a hole with its reason.
+
 ## The prototype — see it before choosing any of the above
 
 Ajesh, 2026-09-13: *"lets first create a prototype of the idea to see how an example would look …
@@ -275,6 +304,10 @@ question — not a fix made in passing.
 | 7 | the **current answer** in a box | BOSS's own canvas cells carry their revision history inline (`🟢 v0.5 — RE-AIMED…`) | **question** (open question 1) — a founder's canvas may never do this |
 | 9 | a persona **card** with photo, quote, bars, stat tiles, demographics | six fields, no quote, no numbers, no face — deliberately (a synthetic persona that looks finished lies better). Ajesh: *"our existing personas is weak"* | **new scope:** `/vet` the three pages he handed over, per field — inboxed as `docs/research/inbox/persona-record-is-thin-against-the-craft.md` |
 | 10 | slides that feel like *"the best presentations today"* | the render can only be as rich as the record; a cell is one paragraph, a rival is a table row, and no record holds an image | **question:** which chapters earn a visual the records don't hold (a chart from `/measure`, a screenshot from `/ship`, a photo from a real interview) — and where does each come from? |
+| 11 | **a bio and a photo per person** — founder, cofounder, team, advisors — and a photo per persona | no person record exists; the founder is a sentence in the Modes cell's sharpen, `mentor-cofounder` and `mentor-hiring` have nowhere to write a person down, `/persona` has no `photo:` | **new scope:** a person record (`docs/team/<slug>.md` + `<slug>.jpg`, and `photo:` on personas) — fields: the specific thing seen/built/sold/lived, why believable, brings / doesn't, role, since. Readers: the playbook, `/landing`'s about, `mentor-cofounder` |
+| 12 | **In five years** | `success_looks_like` asks three months; nothing asks the far horizon | **question:** does BOSS ask it at all (a `vision:` line on the IDEA doc), or is the five-year answer exactly the confident-with-no-information sentence the brand doc refuses? |
+| 13 | **intake for market research and sizing** — *"we should be able to intake content and keep adding it"* | `/import` exists and folds material into the IDEA doc; nothing routes an imported report to a chapter or a cell, and nothing dates it on the way in | **task:** `/import` writes a `docs/source/<slug>.md` header (date, origin, what it changed) the render can list; sizing beyond the count stays a hole until a source is imported |
+| 14 | **sibling spaces** — Design, Board, later others | a second session built a Design artifact and linked it by hand | **question:** one renderer with chapters, or several spaces with one brand and one ledger? The family nav is the answer for now; the mechanism decision (§7) has to include it |
 | 8 | **the ask** as a hole with a reason | `mentor-capital` defaults to *not yet*; nothing records *why not yet* in a place a render can quote | **task:** the not-yet needs a sentence on disk, or the hole has no reason to show |
 
 ## Open questions — written as questions, not carried
@@ -298,6 +331,17 @@ The prototype is a **mock to react to**, not a build; it costs one file and deci
 *build* trigger, carried in from 065 and 104 together: **a founder (or Ajesh on a real project) goes
 looking for their own material and cannot find it without grepping, or asks for something to show a
 room** — the symptom this surface treats. Until then it is a good idea with a prototype attached.
+
+## Prototype v3 — republished 2026-09-13 (same link, built on the peer session's version)
+
+Chapters renamed to the audience's words and regrouped **Pitch / Proof / Company** (17; 13 drawn).
+New: **Product** and **Problem** split from the old chapter 4, **Why now** as its own block,
+**Market** (count · ceiling-by-arithmetic · imported-research hole), **Competition** on its own,
+**Business model** with the ask as a reasoned hole, **Customers** with two full persona cards + a
+hole (Priya, the caregiver: `synthetic 100%`, her quote labelled *not a quote — the founder's
+expectation*), **Team** (founder bio with photo slot; cofounder and advisors as holes), **In five
+years** as a hole on the cover, the Design sibling linked from the rail. Merged over the family nav
+another session added.
 
 ## Prototype v2 — republished 2026-09-13 (same link)
 
@@ -349,6 +393,12 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:
   063 → FEAT-025 → 104; 065 parked 08-20 with the same seed sentence (*"so that they can use that
   content to build the pitch deck"*).
+- 2026-09-13 — **prototype v2 reactions** (Ajesh): *"way better!!!!"* · chapter names should be the
+  audience's (*"competition should be competition"*) · multiple personas · *"we are merging in
+  multiple sections like design, board … a full playbook"* · intake for market research and sizing ·
+  research what a VC deck has that we don't (done: Sequoia at source; YC and Kawasaki unreadable) ·
+  a photo and bio per persona, founder and team · *"keep capturing"*. v3 built on the peer session's
+  version (family nav). Kicked-up rows 11–14.
 - 2026-09-13 — **prototype v1 reactions** (Ajesh): *"I think of personas visually"* + an example
   card (photo · About · Core needs · Motivation · bars · quote · stat · Pain points) + three pages on
   persona practice — *"lets also assess the content separately.. i think our existing personas is
