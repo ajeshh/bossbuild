@@ -7,6 +7,7 @@ date: 2026-08-30
 source: an owner-operator (fictional) — observation
 method: observation
 grade: observed-behavior
+cells: Story · Promises
 assumption: owners will cover a visit from their phone
 about: VisitRow, Button, the day view
 ---

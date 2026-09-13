@@ -19,6 +19,11 @@ import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, statSy
 import { join } from 'node:path';
 import { frontmatter } from './frontmatter.js';
 import { shellPage } from './page-shell.js';
+// The venture's own tokens set the page when docs/design/tokens.json exists — ground, paper, ink,
+// rules, faces, radius — so a founder's playbook looks like their product and BOSS's looks like
+// BOSS (Ajesh, 2026-09-13). Light scheme only: no dark tokens means dark isn't designed. Neutral
+// otherwise. A cycle with design.js (it imports verbLine) — function bindings used at call time only.
+import { readTokens, themeFromTokens } from './design.js';
 
 // --- the registry -----------------------------------------------------------------------------
 // `lean` is the Lean Canvas box the humane answer reads as (DEC-004 mapping); `area` its grid slot.
@@ -938,7 +943,9 @@ ${company.html}`;
     `a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh`,
     'coverage is a fact · readiness is a verdict this page doesn\'t render',
   ];
-  return shellPage({ title: `${brand.name} — Playbook`, brand, projectDir: data.projectDir, current: 'playbook', ledgerHtml, rail, mainHtml, footerLines, extraCss: PLAYBOOK_CSS, extraJs: playbookJs(brand) });
+  const theme = themeFromTokens(readTokens(data.projectDir).tokens);
+  if (theme.used.length) footerLines.push(`set in the venture's own tokens — ${esc(theme.used.length)} taken from docs/design/tokens.json · light scheme only`);
+  return shellPage({ title: `${brand.name} — Playbook`, brand, projectDir: data.projectDir, current: 'playbook', ledgerHtml, rail, mainHtml, footerLines, extraCss: PLAYBOOK_CSS + theme.css, extraJs: playbookJs(brand) });
 }
 
 // What the playbook adds to the shell: the frame toggle, the canvas grid in both frames, the deck.

@@ -6,7 +6,7 @@ status: nascent
 updated: 2026-09-02
 readers: /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers · boss playbook · boss design
 tagline: Cover found before the kettle boils
-accent: "#2F5D8A"
+accent: "#A84D18"
 logo: brand/mark.svg
 ---
 

@@ -7,6 +7,7 @@ date: 2026-05-20
 source: an owner-operator (fictional) — interview
 method: interview
 grade: stated-pain
+cells: Problem · People
 assumption: owners lose Monday to the cover call
 about: StatusChip, the day view
 ---

@@ -8,11 +8,11 @@ revisit_by: 2026-12-01
 relates: DEC-002, DEC-003
 ---
 
-# DEC-004 — The brand anchor: kettle blue, green-black, two radii, one shadow
+# DEC-004 — The brand anchor: kettle copper, green-black, two radii, one shadow
 
 The five choices that get expensive to reverse, chosen once at the first UI commit:
 
-- **The one owned accent** is `color.action.primary` (#2F5D8A, the kettle blue) — the same hex as
+- **The one owned accent** is `color.action.primary` (#A84D18, the kettle copper) — the same hex as
   the brand's `accent:`; it appears on the one act and on *covered*, nowhere else.
 - **The neutral** is `color.text.body` (#17211E, green-black, not black) on a cool ground
   (`color.surface.ground`), so paper reads as raised without a shadow.

@@ -439,6 +439,15 @@ rule above still applies to the whole section once it is stamped.
   — all read from the records, none composed. The demo board got a fuller life: six ideas
   (captured, ready, deferred with a re-open trigger, dropped by a DEC), six FEATs shipped across
   three months, two programs. Two tests.
+- **The playbook and the board are set in the venture's own tokens.** When `docs/design/tokens.json`
+  exists, both pages take its ground, paper, ink, rules, faces and radius (the design page's
+  `themeFromTokens`, light scheme only — no dark tokens means dark isn't designed; the footer says
+  so); neutral otherwise. A founder's dashboard looks like their product; BOSS's own, with no tokens
+  file, keeps the concrete-and-graphite greys with the hi-vis accent — the site's look. And
+  **Kettlewick got a palette worth looking at** (Ajesh: *"very bland, it needs to be interesting"*):
+  pale sage ground, deep green-black ink, the kettle **copper** as the one accent, a calm green for
+  *covered* — every text pair ≥ 4.5 on paper, the mark recoloured, DEC-004 renamed. The demo's
+  EVIDs now name the cells they bear on, so the ledger reads *5 of 13 backed*.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

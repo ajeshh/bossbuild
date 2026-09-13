@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>kettlewick · board</title>
 <style>
-  :root { --accent: #2F5D8A; --ground: #E4E6E8; --paper: #F0F2F3; --ink: #16181A; --ink-2: #565C62; --muted: #565C62; --hole: #8A9096; --rule: #C4C8CC; --rule-2: #D7DADD; --accent-ink: #F0F2F3; --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper)); --chip-ev: #2F5D8A; --chip-ev-soft: #E3ECF5; --stale: #A8681A; --stale-soft: #F6ECDA; --bad: #A33A2E; --bad-soft: #F8E4E1; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color-scheme: light; }
+  :root { --accent: #A84D18; --ground: #E4E6E8; --paper: #F0F2F3; --ink: #16181A; --ink-2: #565C62; --muted: #565C62; --hole: #8A9096; --rule: #C4C8CC; --rule-2: #D7DADD; --accent-ink: #F0F2F3; --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper)); --chip-ev: #2F5D8A; --chip-ev-soft: #E3ECF5; --stale: #A8681A; --stale-soft: #F6ECDA; --bad: #A33A2E; --bad-soft: #F8E4E1; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color-scheme: light; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; } }
   :root[data-theme="dark"] { --ground: #16181A; --paper: #1F2225; --ink: #E4E6E8; --ink-2: #A9B0B6; --muted: #A9B0B6; --hole: #6E767D; --rule: #3A3F44; --rule-2: #2A2E32; --accent-ink: #16181A; --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; }
   * { box-sizing: border-box; } body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15.5px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
@@ -57,6 +57,8 @@
   @media (max-width: 640px) { .topbar { flex-wrap: wrap; gap: 8px 12px; } .ledger { order: 4; flex-basis: 100%; margin-left: 0; white-space: normal; } .family a.dim::after { display: none; } .blocks, .blocks.two { grid-template-columns: 1fr; } .sheet { right: 12px; left: 12px; bottom: 12px; width: auto; } }
   @media (prefers-reduced-motion: reduce) { .actions { transition: none; } }
   @media print { .topbar, .rail, .actions, .valmenu, .sheet, footer.site { display: none !important; } .shell { display: block; } main { padding: 0; } .block { break-inside: avoid; } }
+
+  /* the founder's tokens, light scheme */ @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --ground: #E6EBE3; --paper: #F5F7F2; --ink: #1B2A22; --ink-2: #536159; --muted: #536159; --rule: #BFC9BE; --rule-2: #D8E0D5; --display: Newsreader, Georgia, serif; --body: "Public Sans", "Helvetica Neue", Arial, sans-serif; --mono: "JetBrains Mono", Menlo, monospace; } } :root[data-theme="light"] { --ground: #E6EBE3; --paper: #F5F7F2; --ink: #1B2A22; --ink-2: #536159; --muted: #536159; --rule: #BFC9BE; --rule-2: #D8E0D5; --display: Newsreader, Georgia, serif; --body: "Public Sans", "Helvetica Neue", Arial, sans-serif; --mono: "JetBrains Mono", Menlo, monospace; } .block { border-radius: 8px; }
 
   /* BOSS board — the site-and-signage world.
      Concrete ground, graphite ink, ONE hi-vis mark at ~2% coverage. Straight
@@ -350,7 +352,8 @@ Carer profiles — a photo, a yes-rate, a favourite-visits list — so owners ca
 </div>
 <footer class="site">
   <div>A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.</div>
-  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-09-13 23:13.</div>
+  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-09-13 23:21.</div>
+  <div>set in the venture's own tokens — 10 taken from docs/design/tokens.json · light scheme only</div>
 </footer>
 <script>
 (function () {

@@ -23,6 +23,7 @@ import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
 // dashboard with different subpages"). The board keeps its own visual world inside main.
 import { shellPage } from './page-shell.js';
 import { readBrand } from './playbook.js';
+import { readTokens, themeFromTokens } from './design.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -882,6 +883,7 @@ function shippedTimeline(cards) {
     ...(parkedHtml ? [{ href: 'parked', n: COLUMNS.length + 3, label: 'Parked' }] : []),
   ] }];
   const brand = readBrand(projectDir, projectName);
+  const theme = themeFromTokens(readTokens(projectDir).tokens);
   const mainHtml = `
   <div class="board-page">
     <header class="board-head">
@@ -904,8 +906,9 @@ ${columnHtml}
     footerLines: [
       'A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.',
       `Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` Rendered ${esc(stampedAt)}.` : ''}`,
+      ...(theme.used.length ? [`set in the venture's own tokens — ${theme.used.length} taken from docs/design/tokens.json · light scheme only`] : []),
     ],
-    extraCss: `
+    extraCss: theme.css + `
   /* BOSS board — the site-and-signage world.
      Concrete ground, graphite ink, ONE hi-vis mark at ~2% coverage. Straight
      cuts (2-3px radii), not soft cards. Display type is the mono stack, because

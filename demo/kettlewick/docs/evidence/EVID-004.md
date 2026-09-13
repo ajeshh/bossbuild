@@ -7,6 +7,7 @@ date: 2026-09-05
 source: an owner-operator (fictional) — commitment-test
 method: commitment-test
 grade: commitment
+cells: Business Model
 assumption: owners will pay £4 a carer for cover alone
 about: EmptyState
 ---

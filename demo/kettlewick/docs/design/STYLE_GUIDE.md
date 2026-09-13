@@ -51,7 +51,7 @@ The mark is a file: `logo:` in `docs/BRAND.md` points at `docs/brand/mark.svg` �
 
 - **Clear space:** the height of the mark on every side
 - **Minimum:** 16px on screen, 6mm in print; below that the mark alone, never the lockup
-- **Colour:** kettle blue on paper · white on the accent · one colour (`text.body`) for print; never on a photograph
+- **Colour:** kettle copper on paper · white on the accent · one colour (`text.body`) for print; never on a photograph
 - **Tagline:** *Cover found before the kettle boils* sits with the wordmark on the landing page only; nowhere inside the app
 - **Misuse:** stretched · a gradient · recoloured to a signal colour · below minimum
 

@@ -7,6 +7,7 @@ date: 2026-06-04
 source: an owner-operator (fictional) — interview
 method: interview
 grade: stated-pain
+cells: Problem
 assumption: owners lose Monday to the cover call
 about: AskCard, PAT-3
 ---
