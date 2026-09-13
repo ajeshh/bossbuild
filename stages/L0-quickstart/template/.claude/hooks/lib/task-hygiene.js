@@ -6,97 +6,77 @@
 // BOSS's checklist machinery was all aimed at the PLANNED list — a FEAT's acceptance criteria,
 // written at spec time, ticked at `/close`. The list that actually goes missing is the EMERGENT
 // one: the tasks identified WHILE working, which were never in the FEAT because nobody knew about
-// them an hour ago. BOSS had no artifact for it, and the host's primitive for it (`TodoWrite`) was
-// never once mentioned in the shipped surface — the same blind spot IDEA-077 found for
-// `SessionStart`.
+// them an hour ago.
 //
 // WHY THIS IS A HOOK AND NOT A SENTENCE IN CLAUDE.md. A sentence asking the model to write things
 // down is a filter, and BOSS's own verdict on filters is on record (src/brain.js, Ajesh):
 // "a rule that depends on someone remembering is not a mechanism." This can be a real check
-// because the host writes every tool call, inputs included, into the session transcript, and hands
-// hooks its path on stdin. So the list the model is holding is readable from OUTSIDE the model.
+// because the host hands hooks the session transcript's path on stdin, so how long the session has
+// been running — and whether anything durable moved during it — is readable from OUTSIDE the model.
 //
-// ⚠️ HOST-VERSION-DEPENDENT, CHECKED 2026-09-10. Two facts with a date on them:
-//   · `~/.claude/todos/` does NOT exist on this version — the transcript is the only route.
-//   · The transcript is JSONL, one object per line, each with `timestamp` and a `message.content`
-//     array whose `tool_use` blocks carry `name` and `input`.
-// Both will rot. Everything below fails SILENT and fails OPEN: an unreadable or unfamiliar
-// transcript produces no signal, never an error and never a guess. A missed nudge costs nothing;
-// a false one spends trust, and on a per-turn hook it spends it fast.
+// ⚠️ HOST-VERSION-DEPENDENT. What this reads, and what it stopped reading:
+//   · v0.293.0 read the session's `TodoWrite` list out of the transcript and compared the time the
+//     list last moved against the newest durable file. Claude Code 2.1.268 stopped offering
+//     `TodoWrite`/`TaskCreate` on current models (retained: Claude 3.x, Opus 4.0–4.7, Sonnet
+//     4.0–4.6, Haiku 4.5) — so on every default model the list never existed and the moment went
+//     permanently silent, two weeks after shipping, and nothing could tell (RVW-098). The primitive
+//     is not read any more, on any model; re-enabling it would mean writing a host env key into a
+//     founder's config, which BOSS declined.
+//   · What it reads NOW is only the transcript file's TIMES (created / last written) and the
+//     durable files' mtimes. No transcript format is parsed. The remaining dependency is the one
+//     fact in the hook's stdin contract — `transcript_path` — and if that goes, this returns null.
+// Everything below fails SILENT and fails OPEN: an unreadable transcript produces no signal, never
+// an error and never a guess. A missed nudge costs nothing; a false one spends trust, and on a
+// per-turn hook it spends it fast.
 //
-// WHAT IT DELIBERATELY DOES NOT DO: match todo text against file contents. Wording differs between
-// a todo and the line someone writes down, so text matching would false-positive constantly and
-// the first thing a founder would do is turn it off. This compares TIMES, exactly like
-// `outpaced_by` and `harvest-loop`: the list moved, and nothing durable moved after it. That makes
-// the signal a GATE, not a finding — the frame says so, and the model does the judgment.
+// WHAT THE GATE IS NOW. The list was only ever the trigger; the judgment — "are there items that
+// exist in this conversation and nowhere else?" — was always the model's, and the model can see
+// its own conversation. So the gate is time-only: the session has been running for a real stretch,
+// and nothing durable has been written for that same stretch. Coarser than before, honest about
+// it (confidence stays 'medium', the frame says what was and wasn't checked), and it cannot rot
+// with a tool's name.
+//
+// WHAT IT DELIBERATELY DOES NOT DO: read the transcript's contents. Text matching a model's
+// prose against a file's contents would false-positive constantly, and the first thing a founder
+// would do is turn it off. This compares TIMES, exactly like `outpaced_by` and `harvest-loop`. That
+// makes the signal a GATE, not a finding — the frame says so, and the model does the judgment.
 
-import { readFileSync, statSync, openSync, readSync, closeSync } from 'node:fs';
+import { statSync } from 'node:fs';
 import { join } from 'node:path';
 
-// Read at most this much from the END of the transcript. A live session's file runs to megabytes
-// and this hook has a 5-second budget it shares with the loop runtime. Reading the tail means a
-// TodoWrite older than the window is invisible — which UNDER-fires, the safe direction.
-const TAIL_BYTES = 256 * 1024;
+// The session has to have been going for this long before its record can be "trailing" it. Short
+// sessions are ordinary working state; forty-five minutes is where a chat has accumulated enough
+// that its found tasks are worth a durable line.
+const MIN_SESSION_MS = 45 * 60 * 1000;
 
-// Below this, staying quiet is right. One or two open items is ordinary working state that the
-// model is actively holding; it is at four-plus, across a long session, that the list starts
-// outliving the attention on it.
-const MIN_OPEN = 3;
+// And nothing durable has moved for this long, measured against the session's last activity. A
+// founder who is writing things down should never be nudged about writing things down. The window
+// is the same length as the session floor on purpose: "you have been working for 45 minutes and
+// nothing on disk has moved in 45 minutes" is one sentence, not two thresholds.
+const MIN_STALE_MS = 45 * 60 * 1000;
+
+// A transcript whose last write is older than this is a session being RESUMED after a gap, not a
+// session that has been working — its record is not trailing anything yet. Stay silent until it
+// has actually run.
+const MAX_IDLE_MS = 30 * 60 * 1000;
 
 // Where the emergent list is supposed to live, newest wins. `feature-context.md` is the designated
 // home (MVP). `docs/devlog.md` is the fallback and the fairness clause: a founder who is actively
 // writing things down should not be nudged about writing things down, whichever file they used.
 const DURABLE = ['.claude/rules/feature-context.md', 'docs/devlog.md'];
 
-// The list has to be AHEAD by a real margin, not by a clock artifact. The two times being compared
-// come from different places — an ISO string the host wrote into the transcript, and a filesystem
-// mtime — and `utimes` truncates fractional seconds on some filesystems, so a founder who writes a
-// file the instant after the list moves can land microscopically "behind" it. Found by a test that
-// set both to `now` and got a signal. A ten-minute floor removes that whole class, and it makes
-// the signal more conservative in the direction that matters: it fires when a file is genuinely
-// trailing, never when someone is actively working in both.
-const MIN_STALE_MS = 10 * 60 * 1000;
-
-function tail(path, bytes) {
-  let fd;
+// The transcript's own two times. `birthtimeMs` is 0 on filesystems that do not record creation
+// time; a session whose start cannot be read has no length, and silence is the answer.
+function sessionTimes(transcriptPath) {
   try {
-    const size = statSync(path).size;
-    const start = Math.max(0, size - bytes);
-    const len = size - start;
-    if (len <= 0) return '';
-    const buf = Buffer.alloc(len);
-    fd = openSync(path, 'r');
-    readSync(fd, buf, 0, len, start);
-    return buf.toString('utf8');
+    const st = statSync(transcriptPath);
+    const start = st.birthtimeMs > 0 ? st.birthtimeMs : 0;
+    const last = st.mtimeMs;
+    if (!start || !last || last < start) return null;
+    return { start, last };
   } catch {
-    return '';
-  } finally {
-    if (fd !== undefined) { try { closeSync(fd); } catch { /* nothing to do */ } }
+    return null;
   }
-}
-
-// The last TodoWrite in the window, with the time it happened. Returns null for "nothing found",
-// which is a complete and common answer — a session that never identified a task has no list to
-// lose, and this must be silent for it.
-function lastTodoList(text) {
-  const lines = text.split(/\r?\n/);
-  // Drop the first line: a tail read almost always begins mid-object.
-  for (let i = lines.length - 1; i >= 1; i -= 1) {
-    const line = lines[i];
-    if (!line || line.indexOf('"TodoWrite"') === -1) continue;
-    let obj;
-    try { obj = JSON.parse(line); } catch { continue; }
-    const content = obj && obj.message && obj.message.content;
-    if (!Array.isArray(content)) continue;
-    for (const block of content) {
-      if (!block || block.type !== 'tool_use' || block.name !== 'TodoWrite') continue;
-      const todos = block.input && block.input.todos;
-      if (!Array.isArray(todos)) continue;
-      const at = Date.parse(obj.timestamp);
-      return { todos, at: Number.isNaN(at) ? 0 : at };
-    }
-  }
-  return null;
 }
 
 function newestDurable(projectDir) {
@@ -114,45 +94,35 @@ function newestDurable(projectDir) {
 /**
  * @returns a conscience signal, or null to stay silent.
  *
- * Silent when: no transcript · no TodoWrite in the window · fewer than MIN_OPEN open items ·
- * no durable file exists at all (a project with no devlog has not lost its notes, it has not
- * started) · or the newest durable write is less than MIN_STALE_MS behind the list, which covers
- * both the case that matters — something was written down after the list moved, the whole
- * behaviour this exists to encourage — and the clock artifact that makes those two times
- * unreliable at second resolution.
+ * Silent when: no transcript · its times can't be read · the session is shorter than
+ * MIN_SESSION_MS · it has been idle longer than MAX_IDLE_MS (a resume, not a run) · no durable
+ * file exists at all (a project with no devlog has not lost its notes, it has not started) · or
+ * something durable was written within MIN_STALE_MS of the session's last activity — which is the
+ * whole behaviour this exists to encourage.
  */
-export function detectTaskHygiene(projectDir, transcriptPath) {
+export function detectTaskHygiene(projectDir, transcriptPath, now = Date.now()) {
   if (!transcriptPath) return null;
-  const text = tail(transcriptPath, TAIL_BYTES);
-  if (!text) return null;
+  const session = sessionTimes(transcriptPath);
+  if (!session) return null;
 
-  const list = lastTodoList(text);
-  if (!list) return null;
-
-  const open = list.todos.filter((t) => t && t.status !== 'completed');
-  if (open.length < MIN_OPEN) return null;
+  if (session.last - session.start < MIN_SESSION_MS) return null;
+  if (now - session.last > MAX_IDLE_MS) return null;
 
   const durable = newestDurable(projectDir);
   if (!durable.path) return null;
-  if (!list.at) return null;
-  if (list.at - durable.at < MIN_STALE_MS) return null;
+  if (session.last - durable.at < MIN_STALE_MS) return null;
 
-  const minutes = Math.floor((list.at - durable.at) / 60000);
   return {
     loop_id: 'task-hygiene',
     type: 'stalled',
     moment: 'task-hygiene',
-    // Deliberately not 'high'. This reads host state through a format BOSS does not own, and it
-    // is a timestamp proxy for a content question. The frame is written to match that.
+    // Deliberately not 'high'. This is a timestamp proxy for a content question, and since
+    // v0.315.0 it cannot see the list at all — only that the session ran and the record did not.
     confidence: 'medium',
     evidence: {
-      open: open.length,
-      total: list.todos.length,
-      in_progress: open.filter((t) => t.status === 'in_progress').length,
+      session_minutes: Math.round((session.last - session.start) / 60000),
       durable_file: durable.path,
-      durable_stale_minutes: minutes,
-      // The first few, so the frame can be specific instead of talking about "your tasks".
-      sample: open.slice(0, 3).map((t) => String(t.content || '').slice(0, 80)),
+      durable_stale_minutes: Math.round((session.last - durable.at) / 60000),
     },
     suppress_if: [],
   };

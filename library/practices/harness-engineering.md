@@ -4,7 +4,7 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0. · **one section added 2026-09-11 (v0.306.0)** from a competitor source read — haytham ADR-026's single-vs-split synthesis measurement; not a refresh, the freshness clock is held.
+provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0. · **one section added 2026-09-11 (v0.306.0)** from a competitor source read — haytham ADR-026's single-vs-split synthesis measurement; not a refresh, the freshness clock is held. · **one paragraph added 2026-09-12 (v0.315.0, RVW-098), clock NOT moved** — the seam rule gains its detection half after Claude Code 2.1.268 withdrew `TodoWrite` and a two-week-old BOSS moment that read nothing else went silently vacuous.
 provenance_public: Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (GitHub Spec Kit, AWS Kiro). Two independent research threads named the harness as the biggest gap in how BOSS was building.
 last_reviewed: 2026-08-11
 review_by: 2026-11-09
@@ -137,6 +137,27 @@ The rule, in two halves:
 > **This is not hypothetical.** Ultraplan — a research preview since spring 2026 — was **removed** in
 > August. Nothing was lost because nothing had been built on it. Prefer host primitives at the
 > **boundaries** of your flows, not in their interiors.
+
+**The seam needs a tripwire, and the design test above cannot supply one.** *"If this vanished
+tomorrow, what breaks?"* is answered *"nothing"* by any mechanism that fails open — and *nothing
+breaking* is exactly what going vacuous looks like. The second instance made this concrete: Claude Code
+2.1.268 stopped offering `TodoWrite` on current models, and a BOSS conscience moment shipped two weeks
+earlier that read nothing else. It had been designed to fail silent; it did; for two weeks it was a
+promised mechanism nobody could tell was absent (RVW-098). So, for any hook or check that reads a host
+primitive:
+
+- **Name the primitive in a dated header** — which tool, event, file or field, and when you last saw
+  it in the host. A header that says *"host-version-dependent"* without naming the dependency listed
+  the wrong facts (that hook named the transcript format and the todos directory, not the tool).
+- **Say what the mechanism does when the primitive is absent** — silent, and *therefore* invisible?
+  Then the promise it makes elsewhere (a CHANGELOG line, a rule in `CLAUDE.md`) is only as true as the
+  last time someone checked the host.
+- **Read the host CHANGELOG for the primitive's name before believing the mechanism is live**, and
+  read the session's own toolbelt first — a tool that is not in the list is not there, whatever the
+  docs say. The watchlist's rule, pointed at your own hooks: *ground truth arrives before commentary.*
+- **Prefer inputs the host cannot rename.** A file's times outlive a tool's name. The repaired
+  moment reads only the transcript's mtime and creation time; there is nothing left in it to withdraw.
+
 
 ## Verifiability decides what to build first (Karpathy)
 

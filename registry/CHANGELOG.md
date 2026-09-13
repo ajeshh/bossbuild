@@ -16,6 +16,59 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.315.0 — 2026-09-12
+
+**The host took `TodoWrite` away and a two-week-old conscience moment read nothing else. It now reads
+the one thing the host cannot rename — the transcript's own clock.**
+
+> **For you:** the *task hygiene* moment (v0.293.0) works again on every current model. It used to
+> read your session's `TodoWrite` list; Claude Code 2.1.268 stopped offering that tool on Opus 4.8+,
+> Sonnet 4.7+ and the Claude 5 family, so the moment had been silent for two weeks and could not say
+> so. It now fires on time alone — the session has run 45+ minutes and nothing in
+> `.claude/rules/feature-context.md` or `docs/devlog.md` has moved for that stretch — and hands the
+> judgment ("is anything only in this chat?") to the model, which can see the chat. Writing something
+> down still silences it.
+
+- **Claude Code 2.1.268:** *"the task-tracking tools (TaskCreate/Get/Update/List, TodoWrite) [are]
+  offered only on Claude 3.x, Opus 4.0–4.7, Sonnet 4.0–4.6, Haiku 4.5."* `task-hygiene.js` read only
+  `TodoWrite` blocks out of the transcript and was designed to fail open — so on every default model
+  it went permanently silent, and its own dated `HOST-VERSION-DEPENDENT` header listed two facts that
+  could rot (the transcript format, the todos directory) and not the one that did. Found by the
+  2026-09-12 vet sweep reading the host CHANGELOG as ground truth (RVW-098, ADOPT), and confirmed the
+  fastest way: the finding session's own toolbelt had no `TodoWrite`. Ajesh's call between retiring
+  the read, opting the tool back in through a host env key BOSS would then have to sweep on every
+  founder's machine (the v0.218.0 cost), or leaving it silent: **retire.**
+- **The gate is now time-only and parses nothing.** `statSync` on the transcript gives its creation
+  and last-write times; the newest durable file gives the other side. Fires when the session has run
+  ≥45 minutes, is not a resume (idle ≤30 minutes), and nothing durable has moved for ≥45 minutes of
+  it. No JSONL is read, no tool is named — there is nothing left in the mechanism to withdraw. The
+  frame now says what it did and did not check (*"it has NOT read this conversation and it has NOT
+  seen any task list — it cannot, on this host. You can."*). Confidence stays `medium`. Nine tests,
+  most of them asserting silence, one asserting that garbage in the transcript changes nothing.
+- **`harness-engineering.md` §"Don't author what the host ships" gains its detection half.** The
+  design test — *"if this vanished tomorrow, what breaks?"* — is answered *"nothing"* by any
+  mechanism that fails open, and nothing breaking is exactly what going vacuous looks like. Four
+  lines: name the primitive in a dated header; say what happens when it is absent; read the host
+  CHANGELOG for the primitive's name before believing the mechanism is live, and the session's own
+  toolbelt before that; prefer inputs the host cannot rename. Ultraplan was the first instance; this
+  is the second. Clock not moved — a paragraph is not a sweep.
+- **`context-discipline.md` move #1 gets a second independent source (RVW-101, ADAPT).** Cai, Li,
+  Liang, Li, Shahin (arXiv 2606.12231, preprint) mined 83 projects / 7,310 rules: practitioners rank
+  architectural constraints first while the files hold formatting rules, and 77.78% edit rules mainly
+  to correct an AI error, usually by adding a negative constraint. Cited for the shape, not the
+  number — its compliance lift is before/after with no control. No rule-evolution section; the
+  clause that survives is *write the architecture line before an error forces it, and prune the
+  deny-list nobody designed.* `sources.json` gains the row, and the 2605.29442 row finally has a URL.
+- **Two sentences stopped naming shelves that do not exist.** `CLAUDE.md`'s repo map and `/vet` step
+  2 both listed `library/agents|skills|hooks|memory-seed/`; the mirror went in v0.246.0 and the seed
+  in v0.249.0, and `library/README.md` has explained why since. Found by a skeptic subagent asked to
+  refute a claim against the tree, which is the cheapest audit BOSS has.
+- **The sweep itself** (`SESSION-2026-09-12-agentic-practice-since-the-harness-sweep.md`): no new
+  agentic doctrine in the window; four verdicts, RVW-098 → RVW-101 (ADOPT · NOT-YET · REJECT ·
+  ADAPT); two claims from the 2026-09-08 session killed, including *"Anthropic published nothing
+  since April"* — the containment post is dated 2026-05-25 and BOSS had vetted it in June (RVW-044,
+  which now carries its URL). One instrument added to the watchlist: `claude plugin eval` (2.1.269).
+
 ## 0.314.0 — 2026-09-12
 
 **The plugin version gate moves into `npm run check`, where it will actually run. And `boss board`
