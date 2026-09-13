@@ -63,7 +63,7 @@
     },
     "coding-agents-fail": {
       "name": "How Coding Agents Fail Their Users (arXiv 2605.29442)",
-      "url": null,
+      "url": "https://arxiv.org/abs/2605.29442",
       "for": "20,574-session misalignment analysis",
       "kind": "research",
       "key": false
@@ -548,6 +548,13 @@
       "for": "visual snapshot per story; accept-as-baseline as the governance step",
       "kind": "org",
       "key": false
+    },
+    "rule-taxonomy-cai": {
+      "name": "Rule Taxonomy and Evolution in AI IDEs (Cai, Li, Liang, Li, Shahin — arXiv 2606.12231)",
+      "url": "https://arxiv.org/abs/2606.12231",
+      "for": "83 projects / 7,310 rules / 99 practitioners — architectural constraints ranked first, repos hold formatting rules; before/after compliance figure, no control",
+      "kind": "research",
+      "key": false
     }
   },
   "practices": {
@@ -587,7 +594,9 @@
     "automation": [],
     "celebration-of-done": [],
     "conscience-voicing": [],
-    "context-discipline": [],
+    "context-discipline": [
+      "rule-taxonomy-cai"
+    ],
     "data-schema": [
       "cve-lovable",
       "moltbook",

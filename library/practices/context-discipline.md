@@ -4,7 +4,7 @@ type: practice
 owner: product-lead
 status: active
 host: claude-code
-provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned.
+provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned. · **one citation added 2026-09-12 (v0.315.0, RVW-101), clock NOT moved** — Cai et al. 2606.12231 corroborates move #1's architecture-over-formatting line from mined rule files; preprint, before/after only.
 provenance_public: Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.
 last_reviewed: 2026-09-08
 review_by: 2026-12-07
@@ -46,6 +46,15 @@ curve: host
   *Confirmed 2026-08-11:* Anthropic's own guidance for the Claude 5 generation lands in the same
   place — *"keep your CLAUDE.md lightweight and briefly describe what your repo is for, but spend
   most of the tokens on gotchas inside of the codebase."* This line needs no change.
+  *Corroborated 2026-09-12 (RVW-101):* the first mining study of rule files says the same thing from
+  the other side — across 83 projects and 7,310 rules, practitioners rank **architectural constraints**
+  highest while the rule files themselves are mostly *"low-level workflow and code formatting
+  constraints"*, and 77.78% report editing rules mainly to correct an AI error, typically by adding a
+  negative constraint (Cai, Li, Liang, Li, Shahin, arXiv 2606.12231 — preprint; its compliance lift is
+  before/after with no control, so it is cited for the *shape*, not the number). Two consequences and
+  no new rule: write the architecture line **before** an error forces it, and notice that a rule file
+  grown one correction at a time is a deny-list nobody designed — prune it against the ~200-line
+  rule of thumb above.
 - **Session-state docs** (e.g. a `RESUME.md`): keep a **recency window** of the most recent few
   entries; let the full history live in the changelog it already maintains. Don't let an
   append-forever log become the file you read at every session start.
