@@ -60,6 +60,14 @@ rule above still applies to the whole section once it is stamped.
   reads as capability, which is what every one of BOSS's own 113 ideas is; BOSS's venture idea is the
   canvas, and `CLAUDE.md` now says so. A field, not a new ID prefix — a second class would have
   re-filed 113 records for a distinction one line carries.
+- **The nav spells the name out, and the demo ribbon wears the header's look.** Ajesh: *"on the
+  homesite we should spell out B.O.S.S."* and *"the ribbon color is not the same as the way it
+  looks on the homepage, its black."* The site nav's wordmark was the one place that still said
+  `BOSS` while the hero rail said `B.O.S.S.`; it now reads **✦ B.O.S.S. Build Out Solid Stuff** on
+  every page (the full form hides under 46rem). The demo ribbon drops the graphite bar for the
+  header's own concrete ground, hairline, graphite text and the SVG mark (gen-site's path, copied),
+  with the full form beside it — so the strip above the venture's page is the site's header, not a
+  third look.
 - **The demo pages carry the site's ribbon, and nobody says "rota" any more.** Ajesh, after the
   front page: *"when accessing demo from the main website, it feels like we went away completely"*
   — right, because the rendered spaces are the venture's (its name, its tokens, its nav), which is

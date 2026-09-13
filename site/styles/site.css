@@ -216,6 +216,11 @@ footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0,
 .sitenav a:hover { color: var(--color-text); }
 .sitenav a[aria-current="page"] { color: var(--color-text); border-bottom-color: var(--color-brand); }
 .sitenav .brand:hover .mark { color: var(--color-text); }
+/* The full form rides with the wordmark, the way the hero rail spells it: the acronym is a joke
+   until it is read out, and the nav is the one place every page shows it (Ajesh, 2026-09-13). */
+.sitenav .brand em { font-style: normal; color: var(--color-brand); }
+.sitenav .brand .full { font-family: var(--font-prose); font-weight: 500; font-size: var(--step--1); letter-spacing: 0; color: var(--color-text-secondary); margin-left: 0.2rem; }
+@media (max-width: 46rem) { .sitenav .brand .full { display: none; } }
 
 /* --- tables (ladder + reference) ----------------------------------------- */
 .tablewrap { overflow-x: auto; margin: var(--space-4) 0; -webkit-overflow-scrolling: touch; }
