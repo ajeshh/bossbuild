@@ -2,10 +2,10 @@
 id: IDEA-107
 type: idea
 owner: designer
-status: captured (a chapter of the IDEA-106 prototype next — see it before choosing a mechanism)
+status: captured (prototype v0 published 2026-09-13 — its own space, linked to the playbook; react, then decide the mechanism)
 gist: The founder's own design guidelines — foundations, components, patterns, content, accessibility, resources — rendered as one on-brand HTML space in the class of HIG / Material / Carbon / Fluent / Ant, generated from `docs/design/*` and the code so it cannot drift; and the honest answer to "add Figma support" (tokens two-way via DTCG, everything else refused — RVW-082).
 proof: none
-proof_note: Captured with a gap table and a prototype plan, not built. If it earns a build it is the IDEA-106 renderer over `docs/design/` (one renderer; the V1 `/design-library` contained, never duplicated). The one mechanism change worth making regardless is DTCG as a guaranteed file.
+proof_note: Captured with a gap table and a prototype, not built. If it earns a build it is the IDEA-106 renderer over `docs/design/`, emitting a sibling space (one renderer, three spaces — playbook · design · board — linked in one family bar; the V1 `/design-library` contained, never duplicated). The one mechanism change worth making regardless is DTCG as a guaranteed file.
 created: 2026-09-13
 program: design-system
 relates: IDEA-106, IDEA-091, IDEA-092, RVW-082, RVW-081, RVW-079, RVW-080, DEC-004
@@ -154,8 +154,38 @@ this playbook checks values, names, structure and presence; it cannot check appe
 
 ## The prototype — see it before choosing
 
-Same method as 106: hand-written, over **Tidewell**, published to the same artifact as a *Design*
-chapter (12 → 13 chapters, or 11 grown). Draw: Brand → Foundations with three swatches and their
+### Prototype v0 — published 2026-09-13
+
+**https://claude.ai/code/artifact/d907896e-c1c7-4b5d-a4f3-d5bb861a435c** (private until shared). Hand-written
+single-file HTML over **Tidewell**, its own artifact; the playbook (v1.1, same link as before) now
+carries the family bar and its Brand chapter links across. Same visual system, same Link · Copy ·
+Slide · Present on every block, same *Brand / No brand yet* toggle, light and dark.
+
+Thirteen sections in three groups: **Brand** (current shape · the anchor as DEC-001 with its falsifier) ·
+**Foundations** — Colour (nine semantic swatches, each with *chosen — DEC-001* or *derived*; dark as a
+dormant slot), Type (six roles as specimens; scale ratio as a named-but-unearned slot), Space / shape /
+icons (spacing bars, two radii, two elevations, five icons *as the decisions*; motion dormant), **Layout
+as a hole** · **Language** — Principles (three, each with its cost, each a rendered do/don't pair),
+Patterns (*Ours* first — Cover a shift with its five states — then two seeded rows), Flows (five steps,
+the two asks, the three paths), Content (voice · tone by moment · terminology, six rows), Accessibility
+(**eleven contrast pairs computed** — the prototype's own palette has three real findings: `text.muted`
+3.63:1 at 11px, `text.placeholder` 2.54:1 on hole text, `signal.stale` 3.85:1 on chips — with the
+token-level fix; five rules; five *not checked*, said once) · **The parts** — Components (the index with
+status, usage counts and findings; Button in five states; ShiftRow with *empty* as a rendered gap;
+StatusChip with states *n/a*; `CoverButton` as a near-duplicate with an off-token hex and a `kind` prop),
+Exceptions (three against *one primary per view* → a verdict on the rule; one against *no raw values*
+→ holds), Resources (a **real DTCG `tokens.json`** with Copy; the rest of the resources by direction
+and how real each is).
+
+**React to, in order:** (1) does a founder with four components and a tokens file feel like they *have
+a design system*, or like they are being shown how little there is · (2) do the holes — layout, dark,
+motion, the scale ratio — read as honest or as thin · (3) is a rendered do/don't pair the block that
+carries into a deck, or is it the component card · (4) does the Resources block read as a handoff a
+designer would accept · (5) the family bar — is three spaces the right count, and is *Design* the word.
+
+### The plan it was drawn from
+
+Hand-written, over **Tidewell**. Draw: Brand → Foundations with three swatches and their
 `DEC` lines and computed ratios, one failing pair · a type specimen · one principle as a do/don't ·
 one pattern as a do/don't with its five states · one component card in five states with one
 *off-token* badge and one missing-state gap · the layout slot as a hole · Resources with the DTCG
@@ -165,7 +195,7 @@ do/don't pair the thing that carries in a deck · does the Resources block read 
 
 ## Recommended next steps — in order
 
-1. **The Design chapter on the Tidewell prototype** (above). Reactions into this record's capture log.
+1. ~~The Design space on the Tidewell prototype~~ **published (above)**. Reactions into this record's capture log.
 2. **`tokens.json` as a guaranteed file** — the one build that stands on its own: a one-paragraph
    edit to `/design-tokens-init`, a `check` that the file parses as DTCG, a bullet under
    `## Unreleased`. Do not wait for the playbook.
@@ -175,10 +205,25 @@ do/don't pair the thing that carries in a deck · does the Resources block read 
    or waits for `/design-library` at V1. Answer with the prototype in hand and 106's mechanism
    decision, not before.
 
+## Decided 2026-09-13 — its own space, one family
+
+Ajesh: *"it should be a part of tidewell, but almost its own page.. that can be published independently
+of the other prototype. I could see the board, design, being independent, but being linked between the
+2."* And the why, which is the retrieval argument in the founder's own words: *"a lot of the key ways
+some of the best apps (apple, material…) they have their own robust websites. A lot of designers and
+teams use it as a reference and ensure they are reusing existing."*
+
+So: **one renderer, three spaces** — the playbook (106), the design guidelines (this), the board
+(`boss board --html`, already shipped) — each its own single file with its own URL, joined by a
+**family bar** in the top bar (*Playbook · Design · Board*). A designer gets the design URL alone;
+an investor gets the playbook alone; both can walk across. The reuse claim is the same one BOSS
+already makes for the agent (retrieval beats instruction, [[RVW-078]]): the site is the human-readable
+half of the index the agent reads before component number two. Open question 1 below is closed;
+question 2 stays.
+
 ## Open questions — written as questions
 
-1. Chapter of 106, or its own space with its own URL? (A designer wants the design guidelines
-   alone; an investor never does. One renderer either way — the question is the nav.)
+1. ~~Chapter of 106, or its own space with its own URL?~~ **Answered above — its own space, one family bar.**
 2. When `/design-library` exists at V1, is the playbook's Design chapter *it*, or does it link out?
    (106 answered this for the board: contained. Is a 40-card gallery containable in one page?)
 3. Does the return trip (step 3 under Figma) need a verb, or is it `--check` reading a second file?
@@ -201,3 +246,9 @@ asks what to import.**
   data viz and a guaranteed DTCG file are the three real gaps; Figma was vetted in [[RVW-082]] and
   the token layer is the only direction that verifies. Written as a chapter of 106, not a fourth
   product.
+- 2026-09-13 — **decided: its own space, one family** (Ajesh, second message — the reference-site
+  argument: *"designers and teams use it as a reference and ensure they are reusing existing"*).
+  **Prototype v0 published** as a sibling artifact; playbook republished v1.1 with the family bar and a
+  Brand → Design link. Found while drawing it: the prototype's own palette fails its own contrast
+  arithmetic in three places (muted, placeholder, stale-on-soft) — the page shows them as findings
+  with a token-level fix rather than hiding them, which is the whole point of computing the pairs.

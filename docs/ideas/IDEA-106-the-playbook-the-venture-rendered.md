@@ -370,4 +370,6 @@ picture? Write the reactions into the capture log below.
 - 2026-09-13 — **the design half spun out as [[IDEA-107]]** (Ajesh: *"should we build also the design
   playbook… rivaling apple HIG… whats missing… figma support"*). Chapter 11 (*Brand*) is the seed of
   a full *Design* chapter in the same renderer; *Kicked up* row 2 (the one place a colour is a fact)
-  is answered there — a guaranteed DTCG `tokens.json`. One renderer, one space; nothing here changes.
+  is answered there — a guaranteed DTCG `tokens.json`. Decided the same day: **one renderer, three
+  spaces** (playbook · design · board), each its own file and URL, joined by a family bar in the top
+  bar; prototype v1.1 carries it and chapter 11 links across. Nothing else here changes.
