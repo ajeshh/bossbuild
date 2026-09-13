@@ -307,6 +307,15 @@ const gitFirst = (projectDir, path) => firstAdded(projectDir, path);
 // Not mtime, which every checkout and copy resets. Fails open exactly like gitFirst.
 const repoTouched = (projectDir, path) => lastTouched(projectDir, path);
 
+// --- when it was captured ------------------------------------------------------------------
+// Ajesh: *"it's confusing to see when something was completed, or even how old a card is."* The
+// board carried an AGE (days untouched, days since shipped) and never a DATE, so the reader did
+// the subtraction — and only for the cards the age flags chose to mention. `created:` is on 131
+// of BOSS's 135 records and wins; git's add-date fills the rest. Leading ISO date only: a founder
+// writes `created: 2026-06-20 (from a call)` and the prose is not a date.
+const isoDate = (v) => { const m = String(v || '').match(/^\s*(\d{4}-\d{2}-\d{2})/); return m ? m[1] : null; };
+const addedOn = (projectDir, fm, path) => isoDate(fm.created) || gitFirst(projectDir, path);
+
 // { cards: [{id, title, column, blocked}], hasIdeasDir }.
 export function collectBoard(projectDir) {
   const ideasDir = join(projectDir, 'docs', 'ideas');
@@ -347,6 +356,7 @@ export function collectBoard(projectDir) {
         buildingSince: fm.building_since || repoTouched(projectDir, `docs/ideas/${f}`),
         ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
+        addedOn: addedOn(projectDir, fm, `docs/ideas/${f}`),
         priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text) });
     } else {
       ideas.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
@@ -358,7 +368,8 @@ export function collectBoard(projectDir) {
         // Building were ideas. The one surface built to catch stalled work was blind to 88% of it.
         buildingSince: fm.building_since || repoTouched(projectDir, `docs/ideas/${f}`),
         ageSource: fm.building_since ? 'authored' : 'derived',
-        shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof), program: fm.program || null });
+        shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof), program: fm.program || null,
+        addedOn: addedOn(projectDir, fm, `docs/ideas/${f}`) });
     }
   }
 
@@ -415,13 +426,19 @@ export function collectBoard(projectDir) {
       aging: ageDays != null && ageDays >= AGING_DAYS,
       shippedAgeDays,
       shippedOn: ft.shippedOn || null,
+      addedOn: ft.addedOn || null,
       program: ft.program || null,
       archived: shippedAgeDays != null && shippedAgeDays > SHIPPED_WINDOW_DAYS,
       priority: ft.priority,
       owner: personOwner(ft.owner),
-      // Only meaningful while in flight — a shipped FEAT is 100% by definition,
-      // and an unstarted one shows nothing rather than a discouraging 0/5.
-      progress: column === 'Building' && ft.progress && ft.progress.done > 0 ? ft.progress : null,
+      // Only meaningful while in flight — a shipped FEAT is 100% by definition. While in flight
+      // the count ALWAYS renders, zero included: this used to hide `0/11` as "discouraging", which
+      // made a FEAT nobody had started and a FEAT with no criteria written look the same — and
+      // both looked like an idea. `0/11` is the honest read of a spec that was written and then
+      // left; `{ total: 0 }` is a FEAT with no `## Acceptance criteria` at all, and the renderers
+      // draw that as a hole rather than a bar, because it is the spec that is missing, not the
+      // work. Ideas carry no criteria and render none (their hole, if any, is the FEAT itself).
+      progress: column === 'Building' ? (ft.progress || { done: 0, total: 0 }) : null,
     });
   }
   for (const id of ideas) {
@@ -447,7 +464,9 @@ export function collectBoard(projectDir) {
       priority: id.priority,
       owner: personOwner(id.owner),
       shippedOn: id.shippedOn || null,
+      addedOn: id.addedOn || null,
       program: id.program || null,
+      progress: null, // an idea carries no acceptance criteria; its hole, if any, is the FEAT
     });
   }
 
@@ -591,7 +610,9 @@ function renderBoardText(projectName, data, opts = {}) {
   // open in-build item = the thing to finish. Silent when nothing's in build.
   const onNow = sortColumn(cards.filter((c) => c.column === 'Building' && !c.blocked), 'Building')[0];
   if (onNow) {
-    const p = onNow.progress ? dim(`  [${onNow.progress.done}/${onNow.progress.total} criteria]`) : '';
+    const p = onNow.progress
+      ? dim(onNow.progress.total ? `  [${onNow.progress.done}/${onNow.progress.total} criteria]` : '  [no acceptance criteria]')
+      : '';
     lines.push(`  ${dim('▸ on now:')} ${bold(onNow.id)} — ${clip(onNow.title, TITLE_COLS)}${p}`);
   }
   lines.push('');
@@ -709,11 +730,25 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
     // One segment per acceptance criterion — countable at a glance, and honest
     // about the denominator. A continuous bar would imply a precision the ticks
     // don't have; five boxes say "five things, two done" and nothing more.
-    const prog = c.progress
-      ? `<div class="prog" title="${c.progress.done} of ${c.progress.total} acceptance criteria">`
-        + Array.from({ length: c.progress.total }, (_, i) => `<i${i < c.progress.done ? ' class="on"' : ''}></i>`).join('')
-        + `<b>${c.progress.done}/${c.progress.total}</b></div>`
-      : '';
+    // `0/11` renders, all segments off — a spec written and not started is a fact worth seeing.
+    // No criteria at all is a different fact, and it is a hole in the spec, not a bar: the
+    // shipped `/spec` template always writes the section, so its absence is a record that
+    // skipped the step, and the card says so rather than staying blank like an idea.
+    const prog = !c.progress ? ''
+      : c.progress.total
+        ? `<div class="prog" title="${c.progress.done} of ${c.progress.total} acceptance criteria">`
+          + Array.from({ length: c.progress.total }, (_, i) => `<i${i < c.progress.done ? ' class="on"' : ''}></i>`).join('')
+          + `<b>${c.progress.done}/${c.progress.total}</b></div>`
+        : '<div class="prog none" title="no ## Acceptance criteria section in the record">no acceptance criteria</div>';
+    // Both dates, labelled, on every card that has them — "added" from `created:` or git, and
+    // "shipped" only in the Shipped column (a `proof:` date exists for in-flight records too,
+    // and printing it there claims the thing shipped). Absolute dates: the age flags already say
+    // "3w untouched" where that matters; a founder asking "how old is this card" wants the day.
+    const dates = [
+      c.addedOn && `<span><em>added</em> ${esc(c.addedOn)}</span>`,
+      c.column === 'Shipped' && c.shippedOn && `<span><em>shipped</em> ${esc(c.shippedOn)}</span>`,
+    ].filter(Boolean);
+    const when = dates.length ? `<div class="dates">${dates.join('')}</div>` : '';
     // The gist — the line that answers "what IS this again?" (Ajesh: *"its a bit hard to remember
     // ideas"*). Always rendered, clamped to two lines so a column of cards stays scannable, and
     // opened on hover or keyboard focus. CSS-only: this page has no script and is not getting one
@@ -727,7 +762,7 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
     const tip = esc(`${c.id} — ${c.title}${peek ? `\n\n${peek}` : ''}`);
     return `<div class="card${cls}" tabindex="0" title="${tip}">
             <div class="id">${esc(c.id)}${prio}</div>
-            <div class="title">${esc(c.title)}</div>${gist}${prog}${flag}
+            <div class="title">${esc(c.title)}</div>${gist}${prog}${flag}${when}
           </div>`;
   };
 
@@ -1045,6 +1080,10 @@ ${columnHtml}
   .prog i { width: 13px; height: 4px; background: var(--line); flex: none; }
   .prog i.on { background: var(--hue); }
   .prog b { font: 650 12px/1 var(--mono); color: var(--muted); margin-left: 5px; }
+  .prog.none { font: 12px/1 var(--mono); color: var(--caution); }
+  .card .dates { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 9px;
+                 font: 12px/1 var(--mono); color: var(--muted); }
+  .card .dates em { font-style: normal; color: var(--muted); opacity: .7; margin-right: 4px; }
   .flag { display: inline-flex; align-items: center; margin-top: 9px;
           font: 650 12px/1 var(--mono);
           padding: 4px 7px; border-radius: 2px; }
@@ -1191,6 +1230,8 @@ export function boardJson(projectDir, projectName) {
       blocked: c.blocked, reviewDue: c.reviewDue,
       aging: c.aging || false, ageDays: c.ageDays ?? null, ageSource: c.ageSource ?? null,
       archived: c.archived || false, shippedAgeDays: c.shippedAgeDays ?? null,
+      addedOn: c.addedOn ?? null, shippedOn: c.column === 'Shipped' ? (c.shippedOn ?? null) : null,
+      criteria: c.progress ? { done: c.progress.done, total: c.progress.total } : null,
     })),
     next: { finish, start, pressureTest: pressure, unblock },
     stuck: {
@@ -1228,7 +1269,8 @@ export function renderBoardCard(projectName, { cards, hasIdeasDir }, id) {
     ];
     if (c.program) facts.push(['program', c.program]);
     if (c.owner) facts.push(['owner', c.owner]);
-    if (c.progress) facts.push(['criteria', `${c.progress.done}/${c.progress.total} ticked`]);
+    if (c.progress) facts.push(['criteria', c.progress.total ? `${c.progress.done}/${c.progress.total} ticked` : 'none written']);
+    if (c.addedOn) facts.push(['added', c.addedOn]);
     if (c.ageDays != null) facts.push([c.ageSource === 'authored' ? 'in build' : 'untouched', ageLabel(c.ageDays)]);
     // Only in the Shipped column. `shippedOn` is derived from the `proof:` artifact's first commit,
     // which exists for plenty of in-flight records — printing it on a Building card claims the

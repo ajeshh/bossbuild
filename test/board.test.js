@@ -6,7 +6,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { collectBoard, canvassedIdeas, computeNext, computeStuck, boardJson, renderBoardCard, board } from '../src/board.js';
+import { collectBoard, canvassedIdeas, computeNext, computeStuck, boardJson, renderBoardCard, board, boardHtml } from '../src/board.js';
 import { project, cleanup, idea, feat, canvas, daysAgo } from './helpers.js';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -468,4 +468,56 @@ test('a derived age is UNTOUCHED-since, labelled as such, never claimed as time-
   const text = renderBoardCard(dir, 'IDEA-001');
   assert.ok(!/in build/.test(text), 'a derived age must never be rendered as time-in-build');
   rmSync(dir, { recursive: true, force: true });
+});
+
+test('a Building FEAT shows its criteria count at ZERO, and a hole when none are written', () => {
+  // `0/11` used to be hidden as "discouraging", which made a spec nobody had started look
+  // exactly like an idea. A FEAT with no `## Acceptance criteria` at all is a different fact —
+  // a hole in the spec, not a bar — and both used to render as nothing.
+  const ac = '\n## Acceptance criteria\n\n- [ ] one\n- [ ] two\n- [x] three\n\n## Smoke check\n\n- [x] not a criterion\n';
+  const dir = project({
+    'docs/ideas/FEAT-001-unstarted.md': feat('FEAT-001') + '\n## Acceptance criteria\n\n- [ ] one\n- [ ] two\n',
+    'docs/ideas/FEAT-002-partial.md': feat('FEAT-002') + ac,
+    'docs/ideas/FEAT-003-no-criteria.md': feat('FEAT-003') + '\n## Goal\n\nJust prose.\n',
+    'docs/ideas/FEAT-004-shipped.md': feat('FEAT-004', { status: 'shipped' }) + ac,
+    'docs/ideas/IDEA-005.md': idea('IDEA-005', { status: 'building' }),
+  });
+  const { cards } = collectBoard(dir);
+  const by = Object.fromEntries(cards.map((c) => [c.id, c]));
+  assert.deepEqual(by['FEAT-001'].progress, { done: 0, total: 2 }, 'zero ticks still counts');
+  assert.deepEqual(by['FEAT-002'].progress, { done: 1, total: 3 }, 'the smoke list is not a criterion');
+  assert.deepEqual(by['FEAT-003'].progress, { done: 0, total: 0 }, 'no section → a hole, not null');
+  assert.equal(by['FEAT-004'].progress, null, 'shipped is 100% by definition');
+  assert.equal(by['IDEA-005'].progress, null, 'an idea carries no criteria');
+
+  const html = readFileSync(boardHtml(dir, 'p'), 'utf8');
+  assert.ok(/0 of 2 acceptance criteria/.test(html), 'the 0/2 bar renders');
+  assert.ok(/no acceptance criteria/.test(html), 'the hole is named');
+  const detail = renderBoardCard('p', { cards, hasIdeasDir: true }, 'FEAT-003');
+  assert.ok(/criteria\s+none written/.test(detail), detail);
+  const json = boardJson(dir);
+  assert.deepEqual(json.cards.find((c) => c.id === 'FEAT-001').criteria, { done: 0, total: 2 });
+});
+
+test('every card carries a labelled "added" date; "shipped" only in the Shipped column', () => {
+  // The board carried AGES and never DATES — the reader did the subtraction, and only for the
+  // cards the flags chose to mention. `created:` wins; a `created:` with prose after the date
+  // still yields the date; git's add-date fills a record with none.
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { created: '2026-03-04 (from a call)' }),
+    'docs/ideas/FEAT-002-x.md': feat('FEAT-002', { status: 'shipped', created: '2026-05-06', shipped_on: '2026-06-07' }),
+    'docs/ideas/FEAT-003-y.md': feat('FEAT-003', { created: '2026-05-06', shipped_on: '2026-06-07' }),
+  });
+  const { cards } = collectBoard(dir);
+  const by = Object.fromEntries(cards.map((c) => [c.id, c]));
+  assert.equal(by['IDEA-001'].addedOn, '2026-03-04');
+  assert.equal(by['FEAT-002'].addedOn, '2026-05-06');
+  const html = readFileSync(boardHtml(dir, 'p'), 'utf8');
+  assert.ok(/<em>added<\/em> 2026-03-04/.test(html));
+  assert.ok(/<em>shipped<\/em> 2026-06-07/.test(html), 'the shipped card shows its date');
+  assert.equal((html.match(/<em>shipped<\/em>/g) || []).length, 1, 'the Building FEAT with a shipped_on does not');
+  const json = boardJson(dir);
+  assert.equal(json.cards.find((c) => c.id === 'FEAT-003').shippedOn, null);
+  assert.equal(json.cards.find((c) => c.id === 'FEAT-002').shippedOn, '2026-06-07');
+  assert.ok(/added\s+2026-03-04/.test(renderBoardCard('p', { cards, hasIdeasDir: true }, 'IDEA-001')));
 });

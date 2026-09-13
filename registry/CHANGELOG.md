@@ -30,6 +30,22 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The board says when a card was added and when it shipped, and a Building FEAT's criteria count
+  never hides.** Ajesh: *"it's confusing to see when something was completed, or even how old a card
+  is. ideally both dates should be there"* — the board carried an AGE (`3w untouched`, `shipped 12d`)
+  and never a DATE, so the reader did the subtraction, and only for the cards the flags chose to
+  mention. Every card now carries a labelled `added <date>` (`created:` wins, git's add-date fills;
+  a `created:` with prose after the day still yields the day), and a Shipped card adds `shipped
+  <date>`; `boss board <id>` and `--json` (`addedOn`, `shippedOn`, `criteria`) say the same. And the
+  acceptance-criteria bar: `0/11` used to be hidden as "discouraging", which made a spec written
+  and not started look exactly like an idea; it renders now, every segment off. A Building FEAT
+  with no `## Acceptance criteria` section at all renders **no acceptance criteria** in the caution
+  colour — a hole in the spec, not a bar, because the shipped `/spec` template always writes the
+  section and its absence is a record that skipped the step. Ideas still carry no bar. The card
+  shows criteria, not todos, on purpose: criteria are the promise fixed at spec time — *"the thing
+  does 4 of the 11 things it said it would"* — and a todo list's denominator moves every session,
+  so its fraction can fall while you work. Found tasks go in the FEAT record (CLAUDE.md 3b).
+  `src/board.js`, `test/board.test.js` (+2).
 - **An IDEA is one of two kinds, and the record now says which (IDEA-114).** Ajesh: *"what is an idea
   in boss? I think its getting interchanged.. A founder may have a new idea for an app.. Thats one..
   The other is.. when they have a new feature."* It was — `docs/IDS.md` defined `IDEA-NNN` as *"a raw
