@@ -25,6 +25,14 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+> **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
+> used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
+> it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's
+> session id. A new session hears it again; a host that sends no session id gets the old behaviour.
+
+- **Said this session.** `notYetSaid` / `markSaid` in the loop runtime; the hook reads `session_id`
+  from stdin beside `transcript_path`. On BOSS's own tree: turn one voices four moments, turns two
+  and three are silent, a new session hears four again.
 - **Release-on-publish (DEC-019).** A version was minted per capability — ~11 a day across six
   sessions, five collisions on one integer, and `npm` 18 behind because publishing is one person's
   act. The unit moved: capabilities land here; `npm run stamp` makes the version when Ajesh

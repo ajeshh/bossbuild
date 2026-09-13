@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  loadLoops, classifyLoop, detectSignals, signalAsContext, composeContext,
+  loadLoops, classifyLoop, detectSignals, signalAsContext, composeContext, notYetSaid, markSaid,
   GENERIC_FRAME_TAIL, JUDGE_MOMENTS, isMomentMuted, readEvidenceContext, readIntentContext,
   DEFAULT_SOURCE_GLOBS,
 } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
@@ -495,4 +495,16 @@ test('loops at the old docs/loops/ path are still read, and .boss/loops/ shadows
   const shadowed = loadLoops(both);
   assert.equal(shadowed.length, 1, 'one loop, not two, when both paths carry the same id');
   assert.match(shadowed[0]._file, /\.boss[\\/]loops[\\/]t\.md$/, 'the new location wins');
+});
+
+// --- said this session — "at most once this session" as a mechanism ------------------------
+test('a moment voiced in a session is not voiced again in that session; a new session hears it', () => {
+  const dir = project({});
+  const sig = [{ moment: 'drift', confidence: 'high' }, { moment: 'focus', confidence: 'medium' }];
+  assert.deepEqual(notYetSaid(dir, 's1', sig), sig, 'nothing said yet');
+  markSaid(dir, 's1', sig);
+  assert.deepEqual(notYetSaid(dir, 's1', sig), [], 'both voiced in s1');
+  assert.deepEqual(notYetSaid(dir, 's1', [...sig, { moment: 'cost', confidence: 'high' }]).map((s) => s.moment), ['cost'], 'a new moment still gets through');
+  assert.deepEqual(notYetSaid(dir, 's2', sig), sig, 'a different session hears it again');
+  assert.deepEqual(notYetSaid(dir, null, sig), sig, 'no session id → the old behaviour, never silence by accident');
 });

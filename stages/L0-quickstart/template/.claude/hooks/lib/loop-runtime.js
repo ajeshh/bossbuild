@@ -877,6 +877,49 @@ export function clearExpiredMutes(projectDir) {
 // something fired (after the silent early-exit), append-only, single write, in
 // its own swallowing try/catch. Delete it entirely and the conscience behaves
 // identically. Telemetry must never affect the conscience.
+// --- said this session ------------------------------------------------------------------------
+// Every judged frame ends "say it at most once this session" — and nothing enforced it. A moment
+// whose predicate holds re-fired on every prompt, ~3.7K chars a turn, asking a question the
+// founder may have answered ten minutes ago; the promise rested on the model remembering across a
+// long session. The host hands the hook a `session_id` on stdin, so the promise can be kept in
+// code: a small ledger in person-state (off the repo, next to the frequency log) records which
+// moments were voiced in which session, and a signal already voiced this session is dropped
+// before composition. No session id (a host that stops sending one, a test) → nothing is dropped,
+// which is the old behaviour and the safe direction. Entries older than SAID_TTL_DAYS are pruned
+// on write so the file cannot grow with the founder's life.
+const SAID_FILE = 'conscience-said.json';
+const SAID_TTL_DAYS = 14;
+
+function readSaid(projectDir) {
+  try {
+    const f = personStatePath(projectDir, SAID_FILE);
+    return f && existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : {};
+  } catch { return {}; }
+}
+
+/** Drop the signals whose moment was already voiced in this session. Pure on the signals. */
+export function notYetSaid(projectDir, sessionId, signals) {
+  if (!sessionId) return signals;
+  const said = readSaid(projectDir)[sessionId] || {};
+  return signals.filter((s) => !said[s.moment]);
+}
+
+/** Record that these moments were voiced in this session. Fails silent. */
+export function markSaid(projectDir, sessionId, signals) {
+  if (!sessionId || !signals?.length) return;
+  try {
+    const all = readSaid(projectDir);
+    const cutoff = Date.now() - SAID_TTL_DAYS * 86400000;
+    for (const [sid, moments] of Object.entries(all)) {
+      if (!Object.values(moments).some((ts) => Date.parse(ts) > cutoff)) delete all[sid];
+    }
+    const mine = all[sessionId] || (all[sessionId] = {});
+    const now = new Date().toISOString();
+    for (const s of signals) mine[s.moment] = now;
+    writeFileSync(personStatePathForWrite(projectDir, SAID_FILE), JSON.stringify(all, null, 2) + '\n');
+  } catch { /* fail silent — a ledger, never a gate */ }
+}
+
 export function logActivity(projectDir, signals, additionalContext, cohort) {
   try {
     if (!signals || signals.length === 0) return;

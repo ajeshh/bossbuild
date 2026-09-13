@@ -16,7 +16,7 @@
 //
 // Always exits 0. Empty output = no signal = stay silent.
 
-import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readIntentContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity } from './lib/loop-runtime.js';
+import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readIntentContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity, notYetSaid, markSaid } from './lib/loop-runtime.js';
 import { detectTaskHygiene } from './lib/task-hygiene.js';
 import process from 'node:process';
 import { existsSync } from 'node:fs';
@@ -46,13 +46,16 @@ function readHookInput() {
   });
 }
 
-async function transcriptPath() {
+// The host's stdin contract: `transcript_path` (task hygiene reads it) and `session_id` (the
+// said-this-session ledger keys on it). Either missing → null, and each reader degrades alone.
+async function hookInput() {
   try {
     const raw = await readHookInput();
-    if (!raw || !raw.trim()) return null;
-    return JSON.parse(raw).transcript_path || null;
+    if (!raw || !raw.trim()) return {};
+    const j = JSON.parse(raw);
+    return { transcriptPath: j.transcript_path || null, sessionId: j.session_id || null };
   } catch {
-    return null;
+    return {};
   }
 }
 
@@ -78,7 +81,8 @@ try {
   // drift moment still leads — the emergent list is real, but it never outranks the founder
   // building the wrong thing. Fails to null on anything unexpected, so a project on a host whose
   // transcript format has moved is byte-identical to one before this shipped.
-  const task = detectTaskHygiene(projectDir, await transcriptPath());
+  const { transcriptPath, sessionId } = await hookInput();
+  const task = detectTaskHygiene(projectDir, transcriptPath);
   if (task) detected.push(task);
 
   if (detected.length === 0) {
@@ -91,7 +95,10 @@ try {
   // leaves nothing to say, exit silent, exactly like pause.
   clearExpiredMutes(projectDir);
   const mutes = readMuteState(projectDir);
-  const signals = detected.filter((s) => !isMomentMuted(mutes, s.moment));
+  // Said this session already? Every judged frame promises "at most once this session"; this is
+  // where the promise is kept. A moment whose predicate still holds is not re-voiced until the
+  // next session — the founder answered it, or chose not to, and either is an answer.
+  const signals = notYetSaid(projectDir, sessionId, detected.filter((s) => !isMomentMuted(mutes, s.moment)));
   if (signals.length === 0) {
     process.exit(0);
   }
@@ -122,6 +129,7 @@ try {
   // injected char count), never estimates. Remove this line and the conscience
   // output below is byte-identical.
   logActivity(projectDir, signals, additionalContext, cohort);
+  markSaid(projectDir, sessionId, signals);
 
   const first = signals[0];
 
