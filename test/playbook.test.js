@@ -153,7 +153,7 @@ test('single-file: nothing is fetched — no external script, stylesheet, font o
   assert.doesNotMatch(html, /<link\b/i);
   assert.doesNotMatch(html, /<script[^>]+src=/i);
   assert.doesNotMatch(html, /@import|url\(/i);
-  assert.doesNotMatch(html, /<img\b/i);
+  assert.doesNotMatch(html, /<img\b(?![^>]*src="data:)/i, 'an image only as an inlined data URI');
 });
 
 test('brand: BRAND.md accent and tagline apply; unknown falls back per field; no BRAND.md is nascent', () => {
@@ -574,7 +574,7 @@ test('Learnings, Decisions, Risks & harms, Health render from their records; eve
   }
   assert.match(h2, /<a href="#evidence" class="hole-link">/, 'the rail marks an empty chapter');
   assert.doesNotMatch(h2, /<a href="#health" class="hole-link">/, 'dormant is not empty');
-  assert.equal((h2.match(/<section class="chapter"/g) || []).length, 13);
+  assert.equal((h2.match(/<section class="chapter"/g) || []).length, 16);
 });
 
 test('Learnings merges the devlog with the IDEA capture logs by date (Ajesh, 2026-09-13); the source README is not an imported source; the URL prints', () => {
@@ -591,4 +591,118 @@ test('Learnings merges the devlog with the IDEA capture logs by date (Ajesh, 202
   assert.ok(html.includes('id="market-sources"'), 'Market still renders the import hole');
   const out = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
   assert.match(out, /bookmark: file:\/\/.*\/\.boss\/playbook\.html/);
+});
+
+// --- FEAT-036 — the Company chapters -------------------------------------------------------------
+import { readTeam, readBrandDoc, readPhoto } from '../src/playbook.js';
+import { writePersonStub } from '../src/team.js';
+
+const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64');
+const PERSON = (name, role, photo = 'unknown') => `---
+id: person
+type: person
+name: ${name}
+handle: "@${name.toLowerCase()}"
+role: ${role}
+photo: ${photo}
+status: active
+---
+
+# ${name} — ${role}
+
+## The specific thing
+Ran a 12-carer agency for six years and did the Monday rota by hand every week.
+
+## What they bring, and don't
+- **Brings:** the owners' trust; the rota in her head.
+- **Doesn't:** code.
+
+## Bio
+Marta owned Tidewell Care until 2025.
+`;
+const BRAND_DOC = `---
+id: brand
+type: brand
+status: nascent
+updated: 2026-09-01
+tagline: Cover found before the kettle boils
+accent: "#2F5D8A"
+logo: unknown
+---
+
+# Brand — Tidewell
+
+## Current shape
+
+- **Who it's for:** owner-operators with 3 to 15 carers
+- **What it promises:** cover found before the kettle boils
+- **What it refuses:** it will not rank carers against each other.
+- **How it sounds:** <2–3 traits>
+- **What it is NOT:** agency software. A marketplace.
+- **The name, and why:** unknown
+
+## How we build
+
+- **Owners first** — every screen is designed at the owner's desk on a Monday, not in a demo. *Costs:* the carer app is plainer than it could be.
+- **No league tables** — we never rank people. *Costs:* some owners ask for it and leave.
+- **<headline>** — <what it means>. *Costs:* <what you give up>.
+
+## What we've learned (append-only — never rewrite a row)
+
+| Date | What happened | What it says about the brand |
+|---|---|---|
+| 2026-08-30 | Marta called it "the thing that finds cover" | the verb is the brand |
+| | a word that landed | |
+`;
+
+test('Team: person files read with role order, sections and a photo only from a file; the stub is written once by boss team add', () => {
+  const dir = project({ ...stamp(), 'docs/team/marta.md': PERSON('Marta', 'founder', './marta.png'), 'docs/team/marta.png': PNG, 'docs/team/dev.md': PERSON('Dev', 'advisor'), 'docs/team/README.md': '# Team\n' });
+  const team = readTeam(dir);
+  assert.deepEqual(team.map((p) => p.role), ['founder', 'advisor']);
+  assert.equal(team[0].thing, 'Ran a 12-carer agency for six years and did the Monday rota by hand every week.');
+  assert.match(team[0].photo.dataUri, /^data:image\/png;base64,/);
+  assert.equal(team[1].photo, null, 'unknown → no photo, no placeholder');
+  assert.deepEqual(readPhoto(join(dir, 'docs', 'team'), './nope.jpg'), { file: './nope.jpg', missing: true });
+  const r = writePersonStub(dir, 'sam', 'Sam Lee');
+  assert.equal(r.written, true);
+  assert.ok(readFileSync(r.file, 'utf8').includes('handle: "@sam"'));
+  assert.equal(writePersonStub(dir, 'marta', 'X').written, false, 'never overwrites');
+  assert.ok(readFileSync(join(dir, 'docs/team/marta.md'), 'utf8').includes('Marta owned Tidewell'));
+});
+
+test('Company chapters: Team cards with the face inlined, who-is-missing as a hole; Brand as the doc holds it, never a learned row\'s words; Values from How we build', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/team/marta.md': PERSON('Marta', 'founder', './marta.png'), 'docs/team/marta.png': PNG, 'docs/BRAND.md': BRAND_DOC, '.boss/design.html': '<p>d</p>' });
+  const data = collectPlaybook(dir, 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-09-13 10:00');
+  for (const id of ['team', 'brand', 'values']) assert.ok(html.includes(`<section class="chapter" id="${id}">`), id);
+  assert.equal((html.match(/<section class="chapter"/g) || []).length, 16);
+  assert.ok(html.includes('id="person-marta"') && html.includes('<img class="face" src="data:image/png;base64,'));
+  assert.ok(html.includes('id="team-missing"') && data.questions.some((q) => q.id === 'team-missing'));
+  assert.ok(html.includes('<h2>Ran a 12-carer agency for six years and did the Monday rota by hand every week.</h2>'));
+  // brand
+  assert.ok(html.includes('<dt>What it refuses</dt><dd>it will not rank carers against each other.</dd>'));
+  assert.ok(html.includes('<dt>How it sounds</dt><dd><em class="hole-text">unknown</em></dd>'), 'a template placeholder renders unknown');
+  assert.ok(html.includes('4 of 6 known'));
+  assert.ok(html.includes('<code>#2F5D8A</code> accent') && html.includes('<p class="specimen">Cover found before the kettle boils</p>'));
+  assert.ok(html.includes('<b class="tab">1</b> thing that actually happened, newest 2026-08-30'));
+  assert.ok(!html.includes('the thing that finds cover'), 'a learned row\'s words never render');
+  assert.ok(html.includes('href="design.html">tokens and type, in Design'));
+  assert.ok(html.includes('<h2>it will not rank carers against each other.</h2>'));
+  // values
+  assert.equal(data.brandDoc.values.length, 2, 'the template placeholder bullet is not a value');
+  assert.ok(html.includes('data-title="Owners first"') && html.includes('the carer app is plainer than it could be'));
+  assert.ok(html.includes('<h2>Owners first</h2>'));
+  // empty state
+  const bare = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const d2 = collectPlaybook(bare, 'tidewell'); const h2 = renderPlaybookHtml(d2, '2026-09-13 10:00');
+  for (const id of ['team-none', 'brand-none', 'values-none']) assert.ok(h2.includes(`id="${id}"`) && d2.questions.some((q) => q.id === id), id);
+  assert.match(h2, /<a href="#team" class="hole-link">/);
+});
+
+test('a person stub\'s placeholders never render — only what the person wrote', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  writePersonStub(dir, 'sam', 'Sam Lee');
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
+  assert.ok(html.includes('id="person-sam"') && html.includes('the specific thing — not written yet'));
+  assert.ok(!html.includes('two or three things') && !html.includes('&lt;the gap'));
 });

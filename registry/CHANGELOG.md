@@ -264,6 +264,22 @@ rule above still applies to the whole section once it is stamped.
   you said that no record holds**: the facts stated in the founder's own words this session, matched
   against the open questions, at most five, ask then write; nothing said, nothing asked. Three
   vendor names left the skill's body while it was open. No new skill, field or loop.
+- **`boss playbook` — the Company chapters (FEAT-036).** Sixteen chapters now. **Team** — a card per
+  `docs/team/<slug>.md`: the specific thing seen, built, sold or lived; what they bring and don't;
+  three lines of bio; a photo **only from a file beside it**, inlined as a data URI so a copied
+  block carries the face (≤ 600 KB; over that, the name and a note; no file, no face, never a
+  stand-in). Founders first, then cofounders, team, advisors; *Who is missing* is a hole, not an
+  assumption. The Quickstart template ships `docs/team/README.md` with the shape, and
+  **`boss team add @handle "Name"` writes the stub** when the file is absent (never over what
+  someone wrote about themselves); a stub's placeholders never render. **Brand** — `docs/BRAND.md`
+  as it is: the current-shape lines with `unknown` kept unknown (*4 of 6 known*), the accent as a
+  swatch and the tagline as a specimen only when known, the logo from `logo:` when a file exists,
+  the learned table as a **count and its newest date — never a row's words** (they can be a real
+  person's), and a link into the Design space for tokens and type. **Values** — the Principles
+  cell as the short form beside a page-sized block per value from a new **`## How we build`**
+  section on the brand doc (a headline, what it means, *Costs:* what you give up — a value with no
+  cost is a slogan); the template carries the section. A persona's `photo:` renders on its snippet
+  the same way. Four tests; the single-file rule now allows an image only as a data URI.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

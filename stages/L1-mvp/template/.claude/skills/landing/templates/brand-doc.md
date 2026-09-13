@@ -70,6 +70,15 @@ logo: unknown             # path to the mark (.svg) when there is a file — no 
 - **What it is NOT:** <the nearest thing people will mistake it for>
 - **The name, and why:** <if it means something, say what. If it doesn't, say that too>
 
+## How we build
+
+The values — one headline each, then what it means in practice and what it costs you. Three is
+plenty; a value with no cost is a slogan. `boss playbook` renders each as a page-sized block under
+**Values**; the canvas Principles cell stays the short form.
+
+- **<headline>** — <what it means, in one or two sentences you would say out loud>. *Costs:* <what
+  you give up to hold it>.
+
 ## What we've learned (append-only — never rewrite a row)
 
 The half that makes this a brand rather than a guess. Every row is something that actually happened.

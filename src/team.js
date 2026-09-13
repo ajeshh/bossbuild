@@ -10,6 +10,8 @@
 // whole team layer keys on). Never fabricated: a null handle is honest.
 
 import { execSync } from 'node:child_process';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { bold } from './ui.js';
 import { readConfig, writeConfig } from './config.js';
 
@@ -47,7 +49,41 @@ export function addCollaborator(dir, handle, name) {
   team.push({ handle: '@' + h, name: name || null, added: new Date().toISOString().slice(0, 10) });
   cfg.team = team;
   writeConfig(dir, cfg);
-  return { added: true, handle: '@' + h };
+  return { added: true, handle: '@' + h, person: writePersonStub(dir, h, name) };
+}
+
+// The person record (FEAT-036): docs/team/<handle>.md, the shape docs/team/README.md shows — the
+// roster above is handles and stays local; this file is the person's own words and commits with
+// docs/. Written only when absent; never overwrites what someone wrote about themselves.
+export function writePersonStub(dir, handle, name) {
+  const teamDir = join(dir, 'docs', 'team');
+  const file = join(teamDir, `${handle}.md`);
+  if (existsSync(file)) return { file, written: false };
+  if (!existsSync(teamDir)) mkdirSync(teamDir, { recursive: true });
+  const who = name || handle;
+  writeFileSync(file, `---
+id: person
+type: person
+name: ${who}
+handle: "@${handle}"
+role: cofounder            # founder | cofounder | team | advisor
+photo: unknown             # a file beside this one (./${handle}.jpg) — your choice to add; no file, no face
+status: active
+---
+
+# ${who} — cofounder
+
+## The specific thing
+<the one thing seen, built, sold or lived that makes this venture believable from you — not a CV>
+
+## What they bring, and don't
+- **Brings:** <two or three things, plainly>
+- **Doesn't:** <the gap you'd want a cofounder or a hire to fill>
+
+## Bio
+<three lines — the ones you'd want under your name on a slide>
+`);
+  return { file, written: true };
 }
 
 export function removeCollaborator(dir, handle) {

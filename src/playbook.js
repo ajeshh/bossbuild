@@ -253,7 +253,7 @@ export function readPersonas(projectDir) {
       const fieldLine = (key) => { const m = text.match(new RegExp(`^(?:[-*]\\s*)?(?:\\*\\*)?${key}(?:\\*\\*)?\\s*(?:[—:–-]|\\*\\*)\\s*(.+)$`, 'im')); return m ? m[1].replace(/\*\*$/, '').trim() : ''; };
       const ledger = text.match(/synthetic\s*<?(\d+)%?>?\s*[·,]\s*real\s*<?(\d+)%?>?/i);
       const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
-      out.push({ slug: n.replace(/\.md$/i, ''), name: String(fm.name || title || n.replace(/\.md$/i, '')).replace(/^persona\s*[—:-]\s*/i, '').trim(), who: fieldLine('who'), context: fieldLine('context'), primary: /primary/i.test(String(fm.role || fm.kind || fm.primary || '')), created: fm.created || null, synthetic: ledger ? parseInt(ledger[1], 10) : null, real: ledger ? parseInt(ledger[2], 10) : null });
+      out.push({ slug: n.replace(/\.md$/i, ''), name: String(fm.name || title || n.replace(/\.md$/i, '')).replace(/^persona\s*[—:-]\s*/i, '').trim(), who: fieldLine('who'), context: fieldLine('context'), photo: readPhoto(dir, fm.photo), primary: /primary/i.test(String(fm.role || fm.kind || fm.primary || '')), created: fm.created || null, synthetic: ledger ? parseInt(ledger[1], 10) : null, real: ledger ? parseInt(ledger[2], 10) : null });
     } catch { /* skip */ }
   }
   return out.sort((a, b) => (b.primary - a.primary) || (Date.parse(a.created || '') || 0) - (Date.parse(b.created || '') || 0));
@@ -400,6 +400,61 @@ export function readLearnings(projectDir, max = 8) {
   return { entries: sorted.slice(0, max), total: sorted.length, files: [...new Set(sorted.map((e) => e.source))] };
 }
 
+// A photo, only from a file on disk, only inlined (a copied block carries the face). Bigger than
+// the cap → the name renders alone with a note. No file, no face, never a placeholder.
+const PHOTO_CAP = 600 * 1024;
+export function readPhoto(baseDir, ref) {
+  const r = String(ref || '').trim();
+  if (!r || /^unknown\b/i.test(r) || /^</.test(r)) return null;
+  const file = join(baseDir, r.replace(/^\.\//, ''));
+  if (!existsSync(file)) return { file: r, missing: true };
+  const ext = (file.match(/\.([a-z0-9]+)$/i) || [null, ''])[1].toLowerCase();
+  const mime = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif', svg: 'image/svg+xml' }[ext];
+  if (!mime) return { file: r, unsupported: true };
+  try {
+    const st = statSync(file);
+    if (st.size > PHOTO_CAP) return { file: r, tooBig: true, kb: Math.round(st.size / 1024) };
+    return { file: r, dataUri: `data:${mime};base64,${readFileSync(file).toString('base64')}` };
+  } catch { return null; }
+}
+
+// docs/team/<slug>.md — a person, in their own words: the three sections, a role, a photo by choice.
+const ROLES = ['founder', 'cofounder', 'team', 'advisor'];
+export function readTeam(projectDir) {
+  const dir = join(projectDir, 'docs', 'team');
+  if (!existsSync(dir)) return null;
+  const out = [];
+  for (const n of readdirSync(dir).filter((x) => /\.md$/i.test(x) && !/^README/i.test(x))) {
+    try {
+      const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
+      const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
+      // a stub's `<placeholders>` are not the person's words — a line that is only a placeholder is dropped
+      const sec = (h) => (sectionStartingWith(text, h) || '').split('\n').filter((l) => l.trim() && !/^(?:[-*]\s*)?(?:\*\*[^*]+\*\*\s*)?<[^>]*>\s*$/.test(l.trim())).join('\n').trim();
+      const role = String(fm.role || '').trim().toLowerCase().split(/\s/)[0];
+      out.push({ slug: n.replace(/\.md$/i, ''), name: String(fm.name || title.split(/\s+[—–-]\s+/)[0] || n.replace(/\.md$/i, '')).trim(), handle: String(fm.handle || '').replace(/^"|"$/g, ''),
+        role: ROLES.includes(role) ? role : 'team', thing: sec('The specific thing'), brings: sec('What they bring'), bio: sec('Bio'), photo: readPhoto(dir, fm.photo) });
+    } catch { /* skip */ }
+  }
+  return out.sort((a, b) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role) || a.name.localeCompare(b.name));
+}
+
+// docs/BRAND.md as a record: the current-shape lines as they are (unknown stays unknown), the
+// `## How we build` values, the learned table as a count and dates — never a row's words.
+export function readBrandDoc(projectDir) {
+  const p = join(projectDir, 'docs', 'BRAND.md');
+  if (!existsSync(p)) return null;
+  let text; try { text = readFileSync(p, 'utf8'); } catch { return null; }
+  const fm = frontmatter(text);
+  const shape = (section(text, 'Current shape') || '').split('\n').map((l) => l.match(/^[-*]\s*\*\*([^*]+?):?\*\*\s*(.*)$/)).filter(Boolean)
+    .map((m) => ({ label: m[1].trim(), value: /^<.*>$/.test(m[2].trim()) || /^unknown\b/i.test(m[2].trim()) ? '' : m[2].trim() }));
+  const values = (sectionStartingWith(text, 'How we build') || '').split('\n').map((l) => l.match(/^[-*]\s*\*\*([^*]+?)\*\*\s*[—–:-]\s*(.*)$/)).filter(Boolean)
+    .map((m) => { const rest = m[2].trim(); const c = rest.match(/\*Costs?:\*\s*(.*)$/i); return { headline: m[1].trim(), meaning: (c ? rest.slice(0, c.index) : rest).trim(), cost: c ? c[1].replace(/\*$/, '').trim() : '' }; })
+    .filter((v) => !/^<.*>$/.test(v.headline));
+  const learned = (sectionStartingWith(text, "What we've learned") || '').split('\n').filter((l) => /^\|\s*\d{4}-\d{2}-\d{2}/.test(l)).map((l) => (l.match(/\d{4}-\d{2}-\d{2}/) || [''])[0]);
+  const logo = readPhoto(join(projectDir, 'docs'), fm.logo);
+  return { file: 'docs/BRAND.md', updated: dateOf(fm.updated), status: String(fm.status || '').trim(), shape, values, learned: { count: learned.length, newest: learned.sort().pop() || null }, logo };
+}
+
 // docs/decisions/DEC-*.md — `/decide`'s record: the title line, the frontmatter chips, the Decision
 // paragraph, the Falsifier's first sentence. `supersedes:` on a later DEC marks the earlier one.
 export function readDecisions(projectDir, today = Date.now()) {
@@ -496,6 +551,8 @@ export function collectPlaybook(projectDir, projectName) {
     // slice 3 (FEAT-028) — the Proof records; `evidence` above already carries the rows
     evidenceRows: evidence, devlog: readLearnings(projectDir), decisions: readDecisions(projectDir),
     trust: readTrust(projectDir), health: readHealth(projectDir),
+    // slice 4 (FEAT-036) — the Company records
+    team: readTeam(projectDir), brandDoc: readBrandDoc(projectDir),
   };
 }
 
@@ -607,7 +664,7 @@ function pitchChapters(data) {
   const snippet = (p, i) => {
     const led = p.synthetic === null ? '<span class="chip asserted">no ledger line</span>' : `<span class="chip synthetic">synthetic ${p.synthetic}% · real ${p.real}%</span>`;
     const link = designExists ? `<a class="xlink" href="design.html#persona-${esc(p.slug)}">the full card, in Design →</a>` : '<span class="xlink dim">the full card lives in the Design space — not rendered yet</span>';
-    return block({ id: `persona-${esc(p.slug)}`, title: p.name, sub: i === 0 ? 'primary' : 'secondary', cls: 'snippet', body: `<p class="who">${p.who ? inline(p.who) : '<em class="hole-text">no who line</em>'}</p>${p.context ? `<p>${inline(p.context)}</p>` : ''}<p>${link}</p>`, chip: led, src: `docs/personas/${esc(p.slug)}.md` });
+    return block({ id: `persona-${esc(p.slug)}`, title: p.name, sub: i === 0 ? 'primary' : 'secondary', cls: 'snippet', body: `${face(p.photo, p.name)}<p class="who">${p.who ? inline(p.who) : '<em class="hole-text">no who line</em>'}</p>${p.context ? `<p>${inline(p.context)}</p>` : ''}<p>${link}</p>`, chip: led, src: `docs/personas/${esc(p.slug)}.md` });
   };
   out.push(chapter('customers', chapterHead(3, 'Customers', primary && primary.who ? firstSentence(primary.who) : line(cell('people'))),
     '<div class="blocks">'
@@ -718,6 +775,67 @@ function proofChapters(data) {
   return { html: out.join('\n'), empty };
 }
 
+// --- the Company chapters (FEAT-036) ------------------------------------------------------------
+// Who is building it and how they work. A face only from a file; a value only from the brand doc.
+function face(photo, name) {
+  if (!photo) return '';
+  if (photo.dataUri) return `<img class="face" src="${photo.dataUri}" alt="${esc(name)}">`;
+  const why = photo.missing ? `photo: ${esc(photo.file)} — not found` : photo.tooBig ? `photo: ${esc(photo.file)} — ${photo.kb} KB, over the ${PHOTO_CAP / 1024} KB inline cap` : `photo: ${esc(photo.file)} — not an image type the page inlines`;
+  return `<p class="helper">${why}</p>`;
+}
+function companyChapters(data) {
+  const { canvas, cell, team, brandDoc, designExists } = data;
+  const out = [];
+  const empty = {};
+
+  // 14 · Team — a card per person, founders first; who is missing as a question.
+  const people = team || [];
+  const card = (p) => block({ id: `person-${esc(slug(p.slug))}`, title: p.name, sub: p.role + (p.handle ? ` · ${p.handle}` : ''), cls: 'person',
+    body: face(p.photo, p.name)
+      + (p.thing ? `<p class="thing">${inline(p.thing)}</p>` : '<p class="helper">the specific thing — not written yet</p>')
+      + (p.brings ? blockMd(p.brings) : '')
+      + (p.bio ? `<p class="bio">${inline(p.bio)}</p>` : ''),
+    src: `docs/team/${esc(p.slug)}.md` });
+  empty.team = !people.length;
+  const missing = hole('team-missing', 'Who is missing', 'The role you need and don\'t have — a cofounder, an advisor, the first hire — written plainly, or not at all.', '/consult · mentor-hiring', 'docs/team — no file names a gap');
+  out.push(chapter('team', chapterHead(14, 'Team', people[0] && people[0].thing ? firstSentence(people[0].thing) : ''),
+    people.length
+      ? `<div class="blocks">${people.map(card).join('')}${missing}</div>`
+      : `<div class="blocks">${hole('team-none', 'Who is building it', 'One file per person — the specific thing seen, built, sold or lived; what they bring and don\'t; three lines of bio; a photo if you choose. Start with yourself.', 'write docs/team/<you>.md — the README there has the shape; boss team add writes a cofounder\'s', 'docs/team — none')}${missing}</div>`));
+
+  // 15 · Brand — the brand doc as it is.
+  const b = brandDoc;
+  empty.brand = !b;
+  let brandInner;
+  if (b) {
+    const known = b.shape.filter((l) => l.value);
+    const shapeBlock = block({ id: 'brand-shape', title: 'Current shape', sub: b.status || '', body: b.shape.length ? `<dl class="kv">${b.shape.map((l) => `<dt>${esc(l.label)}</dt><dd>${l.value ? inline(l.value) : '<em class="hole-text">unknown</em>'}</dd>`).join('')}</dl>` : '<p class="helper">no ## Current shape section</p>',
+      chip: `<span class="chip asserted">${known.length} of ${b.shape.length} known</span>`, src: `${esc(b.file)}${b.updated ? ` · ${esc(b.updated)}` : ''}` });
+    const { brand } = data;
+    const anchorBlock = (brand.accent || brand.tagline || (b.logo && b.logo.dataUri))
+      ? block({ id: 'brand-anchor', title: 'The anchor', sub: 'what is decided', body: `${b.logo && b.logo.dataUri ? `<img class="logo" src="${b.logo.dataUri}" alt="${esc(brand.name)} mark">` : ''}${brand.accent ? `<p class="swatch"><i style="background:${esc(brand.accent)}"></i><code>${esc(brand.accent)}</code> accent</p>` : '<p class="helper">accent: unknown</p>'}${brand.tagline ? `<p class="specimen">${esc(brand.tagline)}</p>` : '<p class="helper">tagline: unknown</p>'}`, src: `${esc(b.file)} · frontmatter` + (designExists ? ` · <a class="xlink" href="design.html">tokens and type, in Design →</a>` : '') })
+      : hole('brand-anchor', 'The anchor', 'The one owned colour, the tagline, the mark — each unknown until it is decided. /design-tokens-init chooses the anchor; a file beside BRAND.md is the mark.', '/design-tokens-init', `${b.file} · accent, tagline, logo all unknown`);
+    const learnedBlock = b.learned.count
+      ? block({ id: 'brand-learned', title: 'What the brand has learned', sub: 'rows, counted — the words stay in the file', body: `<p><b class="tab">${b.learned.count}</b> thing${b.learned.count === 1 ? '' : 's'} that actually happened${b.learned.newest ? `, newest ${esc(b.learned.newest)}` : ''}.</p>`, chip: '<span class="chip ev">from evidence</span>', src: `${esc(b.file)} · What we've learned` })
+      : hole('brand-learned', 'What the brand has learned', 'Every row is something that actually happened — what a real person called it, the word that landed. None yet.', '/evidence', `${b.file} · What we've learned — no dated rows`);
+    brandInner = `<div class="blocks">${shapeBlock}${anchorBlock}${learnedBlock}</div>`;
+  } else {
+    brandInner = `<div class="blocks">${hole('brand-none', 'The brand, as it is', 'Who it\'s for, what it promises, what it refuses, how it sounds, what it is not, the name and why — written when known, unknown when not.', '/landing seeds docs/BRAND.md', 'docs/BRAND.md — none')}</div>`;
+  }
+  const refuses = b && (b.shape.find((l) => /refuses/i.test(l.label)) || {}).value;
+  out.push(chapter('brand', chapterHead(15, 'Brand', refuses ? firstSentence(refuses) : ''), brandInner));
+
+  // 16 · Values — the Principles cell as the headlines; How we build as the page.
+  const principles = cell('principles');
+  const values = b ? b.values : [];
+  empty.values = !(principles && principles.state === 'filled') && !values.length;
+  const valueBlock = (v, i) => block({ id: `value-${i + 1}`, title: v.headline, cls: 'value', body: `<p class="meaning">${inline(v.meaning)}</p>${v.cost ? `<p class="cost"><span class="label">costs</span> ${inline(v.cost)}</p>` : '<p class="helper">no cost named — a value with no cost is a slogan</p>'}`, src: `docs/BRAND.md · How we build` });
+  out.push(chapter('values', chapterHead(16, 'Values', values[0] ? values[0].headline : (principles && principles.state === 'filled' ? firstSentence(principles.answer) : '')),
+    `<div class="blocks">${cellBlock(principles, canvas, 'values-principles', 'Principles', 'the short form')}${values.length ? values.map(valueBlock).join('') : hole('values-none', 'How we build', 'One headline per value, what it means in practice, what it costs you. Three is plenty.', b ? 'add ## How we build to docs/BRAND.md' : '/landing seeds docs/BRAND.md — then ## How we build', 'docs/BRAND.md · How we build — none')}</div>`));
+
+  return { html: out.join('\n'), empty };
+}
+
 export function renderPlaybookHtml(data, stampedAt) {
   const { boxes, ledger, brand, canvas, error, projectName } = data;
   const byBand = (n) => boxes.filter((b) => b.band === n && !b.floor);
@@ -736,6 +854,7 @@ export function renderPlaybookHtml(data, stampedAt) {
   holeLog = []; holeDir = data.projectDir;
   const chapters = pitchChapters(data);
   const proof = proofChapters(data);
+  const company = companyChapters(data);
   data.holes = holeLog; holeLog = null; holeDir = null;
   data.questions = openQuestions(data, data.projectDir);
   // the nudge on an empty page: how many questions are open and the cheapest verb to start with
@@ -748,6 +867,7 @@ export function renderPlaybookHtml(data, stampedAt) {
   const rail = [
     { group: 'Pitch', items: [['vision', 'Vision'], ['product', 'Product'], ['customers', 'Customers'], ['problem', 'Problem'], ['market', 'Market'], ['competition', 'Competition'], ['canvas', 'Canvas'], ['model', 'Business model']].map(([href, label], i) => ({ href, n: i + 1, label })) },
     { group: 'Proof', items: [['evidence', 'Evidence'], ['learnings', 'Learnings'], ['decisions', 'Decisions'], ['risks', 'Risks & harms'], ['health', 'Health']].map(([href, label], i) => ({ href, n: i + 9, label, hole: !!proof.empty[href] })) },
+    { group: 'Company', items: [['team', 'Team'], ['brand', 'Brand'], ['values', 'Values']].map(([href, label], i) => ({ href, n: i + 14, label, hole: !!company.empty[href] })) },
   ];
   const mainHtml = `${chapters.before}
   <section class="chapter" id="canvas">
@@ -765,7 +885,8 @@ ${floor.map((b) => boxHtml(b, canvas)).join('\n')}
   </div>
   </section>
 ${chapters.after}
-${proof.html}`;
+${proof.html}
+${company.html}`;
   const footerLines = [
     brandLine,
     `a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh`,
@@ -777,6 +898,11 @@ ${proof.html}`;
 // What the playbook adds to the shell: the frame toggle, the canvas grid in both frames, the deck.
 // The chrome, the block, Link · Copy and the copy sheet are the shell's (src/page-shell.js).
 const PLAYBOOK_CSS = `
+  .face { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; border: 1px solid var(--rule); } .block.snippet .face { float: right; margin: 0 0 8px 12px; width: 56px; height: 56px; }
+  .block.person .thing { font-family: var(--display); font-size: 18px; line-height: 1.3; margin-bottom: 8px; } .block.person .bio { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
+  .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
+  .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
+  .block.value .meaning { font-family: var(--display); font-size: 19px; line-height: 1.35; } .block.value .cost { margin-top: 10px; color: var(--ink-2); font-size: 14px; } .block.value .cost .label { margin-right: 6px; }
   .ladder { display: grid; gap: 6px; margin-bottom: 14px; } .rung { display: grid; grid-template-columns: 150px 1fr 32px; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); } .rung .bar { height: 10px; background: var(--rule-2); border-radius: 3px; overflow: hidden; } .rung .bar i { display: block; height: 100%; background: var(--accent); border-radius: 3px; } .rung b { text-align: right; color: var(--ink); }
   table.t.ev td { font-size: 13.5px; } .block.superseded { opacity: .62; } .block .fals { margin-top: 8px; font-size: 14px; color: var(--ink-2); } .more { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
   .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--paper); flex: none; } .seg button { padding: 5px 10px; font-size: 12px; color: var(--muted); } .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); } .seg button + button { border-left: 1px solid var(--rule); }
