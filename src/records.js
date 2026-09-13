@@ -28,7 +28,7 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { firstAdded } from './gitdates.js';
 import { join, sep, basename } from 'node:path';
 import { frontmatter, STATUS_VOCAB, baseStatus } from './frontmatter.js';
-import { cardGist } from './board.js';
+import { cardGist, criteriaProgress } from './board.js';
 
 const RECORD = /^([A-Z]{3,4})-(\d+)[-.].*\.md$/;
 // The seven-word ladder governs the LIFECYCLE types only. `DEC` is decided|superseded, `PRAC` is
@@ -146,6 +146,9 @@ function readRecords(projectDir) {
           promotedTo: field(text, 'promoted_to'),
           program: field(text, 'program'),
           buildingSince: field(text, 'building_since'),
+          criteria: criteriaProgress(text),
+          revisitBy: field(text, 'revisit_by'),
+          outcome: field(text, 'outcome'),
           spunTo: splitLinks(field(text, 'spun_to')),
           spunFrom: splitLinks(field(text, 'spun_from')),
           aliases: ALIASES.map(([dead, live, idShaped]) => {
@@ -226,7 +229,7 @@ export function gistWork(projectDir) {
 /**
  * Findings, most-actionable first. Never throws.
  * kind: 'built-not-recorded' | 'claimed-not-built' | 'no-proof' | 'off-vocabulary' | 'duplicate-id'
- *     | 'unlinked-promotion' | 'broken-split' | 'stale-field'
+ *     | 'unlinked-promotion' | 'broken-split' | 'stale-field' | 'unticked-shipped' | 'revisit-due'
  */
 export function recordDrift(projectDir) {
   const findings = [];
@@ -378,8 +381,41 @@ export function recordDrift(projectDir) {
     }
   }
 
+  // --- nothing ships with an unticked list in silence (IDEA-094 part 2) -----------------------
+  // A record whose status says `shipped` while its acceptance criteria still carry open boxes
+  // either finished and forgot to tick, or did not finish — and both are worth one line, because
+  // the list is the contract that said what "done" meant before the work started. It reports; it
+  // never blocks. Unticking stays free, so this can never become a surface satisfied by editing
+  // checkboxes. Scoped to the "## Acceptance criteria" section, like the board's fraction.
+  for (const r of records) {
+    if (baseStatus(r.status) !== 'shipped' || !r.criteria) continue;
+    const open = r.criteria.total - r.criteria.done;
+    if (open > 0) {
+      findings.push({ kind: 'unticked-shipped', id: r.id, file: r.file,
+        what: `says shipped with ${open} of ${r.criteria.total} acceptance criteria unticked — finished and forgot to tick, or didn't finish` });
+    }
+  }
+
+  // --- the return path (IDEA-093 part 6) ------------------------------------------------------
+  // A decision writes a falsifier with a by-when date (`revisit_by:`) and, until now, nothing on
+  // earth read the date. This is the bet you wrote down, and what happened to it — asked ONCE, at
+  // the moment the answer exists: the date has passed and the record carries no `outcome:`. Not a
+  // win rate (three skills already refuse the scoreboard); one line, one record, and stamping
+  // `outcome:` — held · fell · can't tell yet — silences it. Works for any record that carries
+  // both fields; DECs are the ones that do.
+  const today = new Date().toISOString().slice(0, 10);
+  for (const r of records) {
+    if (!r.revisitBy || r.outcome) continue;
+    if (!/^\d{4}-\d{2}-\d{2}/.test(r.revisitBy)) continue;
+    if (baseStatus(r.status) === 'superseded' || baseStatus(r.status) === 'dropped') continue;
+    if (r.revisitBy.slice(0, 10) <= today) {
+      findings.push({ kind: 'revisit-due', id: r.id, file: r.file,
+        what: `\`revisit_by: ${r.revisitBy.slice(0, 10)}\` has passed and there is no \`outcome:\` — did the falsifier fire? Stamp \`outcome:\` (held · fell · can't tell yet, and why)` });
+    }
+  }
+
   // The expensive direction first: work you finished and did not write down.
-  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'duplicate-id': 2, 'unlinked-promotion': 3, 'broken-split': 4, 'stale-field': 5, 'off-vocabulary': 6, 'no-proof': 7 };
+  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'unticked-shipped': 2, 'revisit-due': 3, 'duplicate-id': 4, 'unlinked-promotion': 5, 'broken-split': 6, 'stale-field': 7, 'off-vocabulary': 8, 'no-proof': 9 };
   return findings.sort((a, b) => (rank[a.kind] ?? 9) - (rank[b.kind] ?? 9));
 }
 
@@ -428,9 +464,33 @@ export function driftLine(projectDir) {
     };
   }
 
+  // The list that said what "done" meant, still open on a record that says done. One line, the
+  // id and the fraction; the founder decides which of the two stories is true.
+  const unticked = loud.filter((f) => f.kind === 'unticked-shipped');
+  if (unticked.length) {
+    const first = unticked[0];
+    return {
+      head: unticked.length === 1
+        ? `${first.id} says shipped with acceptance criteria still open`
+        : `${unticked.length} shipped records still have acceptance criteria open (${unticked.map((f) => f.id).join(', ')})`,
+      count: unticked.length,
+    };
+  }
+
+  // A bet whose check-by date has passed. The one status line that is about the founder's own
+  // prediction rather than BOSS's bookkeeping.
+  const due = loud.filter((f) => f.kind === 'revisit-due');
+  if (due.length) {
+    return {
+      head: due.length === 1
+        ? `${due[0].id}'s falsifier date has passed — did it fire? stamp \`outcome:\``
+        : `${due.length} decisions are past their falsifier date with no \`outcome:\` (${due.map((f) => f.id).join(', ')})`,
+      count: due.length,
+    };
+  }
+
   return null;
 }
-
 
 // --- allocation: a computation, not an instruction ----------------------------------------
 // BOSS's own website says this out loud, and it was true: *"you don't allocate the number —

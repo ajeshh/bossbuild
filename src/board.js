@@ -45,7 +45,7 @@ const SHIPPED_WINDOW_DAYS = 30;
 // Scoped to the "## Acceptance criteria" section ONLY. Other sections carry
 // checkboxes too (a smoke list, a failure-state list), and counting those would
 // silently inflate the fraction — a progress number that flatters is worse than none.
-function criteriaProgress(text) {
+export function criteriaProgress(text) {
   // NOTE: no `m` flag on the outer match — under /m, `$` means end-of-LINE, so the
   // lazy body stopped at the first criterion and every FEAT reported "1/1".
   const m = text.match(/(?:^|\n)##[ \t]+Acceptance criteria\b[^\n]*\n([\s\S]*?)(?=\n##[ \t]|$)/);

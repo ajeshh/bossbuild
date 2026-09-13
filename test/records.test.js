@@ -35,6 +35,39 @@ test('THE disease: a record says unbuilt and the artifact is already there', () 
   rmSync(d, { recursive: true, force: true });
 });
 
+test('nothing ships with an unticked list in silence — shipped + open criteria is one line', () => {
+  const d = project([['FEAT-001-x.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none']]);
+  writeFileSync(join(d, 'docs', 'ideas', 'FEAT-001-x.md'),
+    '---\nid: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\n---\n\n# FEAT-001\n\n## Acceptance criteria\n\n- [x] one\n- [ ] two\n- [ ] three\n\n## Smoke\n\n- [ ] not a criterion\n');
+  const f = recordDrift(d).filter((x) => x.kind === 'unticked-shipped');
+  assert.equal(f.length, 1);
+  assert.match(f[0].what, /2 of 3/);
+  assert.equal(driftLine(d).head, 'FEAT-001 says shipped with acceptance criteria still open');
+  // ticking them silences it; a shipped record with no criteria section is not a finding
+  writeFileSync(join(d, 'docs', 'ideas', 'FEAT-001-x.md'),
+    '---\nid: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\n---\n\n# FEAT-001\n\n## Acceptance criteria\n\n- [x] one\n- [x] two\n');
+  assert.deepEqual(kinds(d).filter((k) => k === 'unticked-shipped'), []);
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('the return path: a decision past its revisit_by with no outcome is one line; an outcome silences it', () => {
+  const d = project();
+  mkdirSync(join(d, 'docs', 'decisions'), { recursive: true });
+  const dec = (front) => writeFileSync(join(d, 'docs', 'decisions', 'DEC-001-x.md'), `---\n${front}---\n\n# DEC-001\n`);
+  dec('id: DEC-001\nstatus: decided\nrevisit_by: 2020-01-01\n');
+  const f = recordDrift(d).filter((x) => x.kind === 'revisit-due');
+  assert.equal(f.length, 1);
+  assert.match(f[0].what, /2020-01-01/);
+  assert.match(driftLine(d).head, /DEC-001's falsifier date has passed/);
+  dec('id: DEC-001\nstatus: decided\nrevisit_by: 2020-01-01\noutcome: held — nobody adapted it, SA stays\n');
+  assert.deepEqual(kinds(d).filter((k) => k === 'revisit-due'), []);
+  dec('id: DEC-001\nstatus: decided\nrevisit_by: 2999-01-01\n');
+  assert.deepEqual(kinds(d).filter((k) => k === 'revisit-due'), [], 'a date still ahead is silent');
+  dec('id: DEC-001\nstatus: superseded\nrevisit_by: 2020-01-01\n');
+  assert.deepEqual(kinds(d).filter((k) => k === 'revisit-due'), [], 'a superseded decision is silent');
+  rmSync(d, { recursive: true, force: true });
+});
+
 test('the other direction: a record claims shipped and the repo cannot show it', () => {
   const d = project([['IDEA-001-x.md', 'id: IDEA-001\nstatus: shipped\nproof: src/gone.ts']]);
   assert.deepEqual(kinds(d), ['claimed-not-built']);

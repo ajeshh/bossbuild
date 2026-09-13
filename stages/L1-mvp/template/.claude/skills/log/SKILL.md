@@ -58,6 +58,15 @@ If you only read one thing when picking the project back up, read the last devlo
    - **drop `building_since:`** — it anchors the *time-in-build* aging flag, and a shipped record
      that still carries one is the record saying two things at once.
 
+   **Then read the bet back — once, now, because this is the only moment the answer exists.** The
+   FEAT wrote two predictions at spec time, when the founder was most honest, and nothing opens them
+   at ship time, when the answer is in: *What result would change the plan* (under *Validated
+   learning*) and *Still unknown (didn't guess)*. Read both aloud and stamp one frontmatter line on
+   the FEAT — `outcome: held | fell | can't tell yet — <why, in a clause>`. Not a score: *the bet you
+   wrote down, and what happened to it.* If a *Still unknown* line got answered by building, write
+   the answer next to it; if it is still unknown, say so and leave it. Decisions get the same
+   question from `boss status` when their `revisit_by:` date passes.
+
    > This step used to read *"flip its status to `shipped` — that one field is the whole update"*,
    > while `/spec` (which a founder reads once, months earlier) carried the other two. `/log` is
    > the skill that actually runs at ship time, so the two it didn't mention are the two that

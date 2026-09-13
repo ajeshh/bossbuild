@@ -73,6 +73,24 @@ rule above still applies to the whole section once it is stamped.
   a named risk) is deliberately not widened. One test. On BOSS's own board the same pass flipped two
   cards that had shipped and still said otherwise (IDEA-084 via `earned`, IDEA-102), moved three
   scoped ideas to `ready`, and parked four whose records already carried a re-open trigger.
+- **The return path (IDEA-093 part 6, IDEA-094 parts 2 and 5).** A decision names a falsifier with a
+  by-when date and nothing ever read the date; a FEAT names *what result would change the plan* and
+  nothing opened it at ship time. `boss records` gained two findings: `revisit-due` (a `revisit_by:`
+  that has passed on a record with no `outcome:` — one `boss status` line, *did it fire?*, and
+  `outcome: held | fell | can't tell yet — why` silences it; superseded and dropped records are never
+  asked) and `unticked-shipped` (a record that says `shipped` with acceptance criteria still open —
+  finished and forgot to tick, or didn't finish; it reports, never blocks). `/log`'s ship step reads
+  the FEAT's two predictions back and stamps the same `outcome:`; `/decide` and `docs/IDS.md` name
+  the reader. Priced in the record as a sixth loop predicate; cost none — `records.js` already
+  compares fields across every record directory. First run on BOSS's own tree: FEAT-021, six of six
+  criteria unticked since v0.60 and every one true on disk; ticked. Nineteen of BOSS's decisions carry
+  a date; the first comes due 2026-09-20. Two tests.
+- **The board's Building column, read against the code.** IDEA-093, 094, 095, 096 and 071 each had
+  finished under other names — exec-form hooks (v0.300.0), `boss records --programs` (v0.186.0), the
+  permission file made true (v0.218.0) — and still said `building`/`exploring`. Closed at the scope
+  they shipped; the unbuilt remainders are parked with triggers (the host's session list, withdrawn
+  in 2.1.268 · a founder on a non-Claude-Code host · the first V1 project) or folded into the one
+  record that owns them (IDEA-006 the port, IDEA-066 the outward research). Building: 0.
 
 ## 0.325.0 — 2026-09-12
 

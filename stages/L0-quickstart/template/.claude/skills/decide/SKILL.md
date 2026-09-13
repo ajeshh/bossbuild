@@ -87,7 +87,8 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
    The cheapest signal you were wrong, with a date. *"If signups don't move by July, X was wrong."*
    This is the load-bearing field: naming who decided and who's accountable **is not enough** — the real
    bottleneck is the *cost of finding out later* that the call was wrong. A falsifier makes the check cheap
-   and scheduled (mirror the date into `revisit_by:`). **Required for `costly`/`one-way`; encouraged for
+   and scheduled (mirror the date into `revisit_by:` — `boss status` reads it, and asks once, when the
+   date passes and the record has no `outcome:` line). **Required for `costly`/`one-way`; encouraged for
    `reversible`.**
 
    ## Consequences

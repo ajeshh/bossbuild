@@ -214,6 +214,15 @@ holds it. Until then, a slug is enough.
 ×22, plus slices, threads and Tracks — and never named it. A pattern proven that often and never
 sorted UP is exactly what PRINCIPLE #1 exists to catch.
 
+## `revisit_by:` and `outcome:` — the bet you wrote down, and what happened to it
+
+A decision names a falsifier with a by-when date; a FEAT names *what result would change the plan*.
+Both are written at the honest moment and, without this, opened never. `revisit_by: YYYY-MM-DD` on
+any record is read by `boss status`: when the date passes and the record has no `outcome:`, it asks
+once — *did it fire?* — and `outcome: held | fell | can't tell yet — <why>` silences it. `/log`
+asks the same of a FEAT at the moment it ships. Not a score; nothing counts these. A superseded or
+dropped record is never asked.
+
 ## `proof:` — the field that makes a status checkable
 
 **A status is a claim about the code, so every record names the artifact that would settle it.**
