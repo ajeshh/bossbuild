@@ -257,7 +257,8 @@ ${rows}
 blocks.WHATS_NEW = () => {
   const cl = join(ROOT, 'registry', 'CHANGELOG.md');
   if (!existsSync(cl)) return '<p class="small">Changelog unavailable at build time.</p>';
-  const parts = readFileSync(cl, 'utf8').split(/^## /m).slice(1);
+  // `## Unreleased` is landed-but-unpublished work; the site lists what a founder can install.
+  const parts = readFileSync(cl, 'utf8').split(/^## /m).slice(1).filter((p) => !/^Unreleased\s*$/im.test(p.split('\n')[0]));
   const out = [];
   for (const chunk of parts) {
     // OPT-IN: a release reaches the public feed only if it carries a "For you:" line.

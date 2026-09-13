@@ -71,3 +71,23 @@ test('the website reads the shared extractor rather than its own copy', () => {
     'gen-site.js still carries its own For-you regex — that is the second copy this test exists to prevent',
   );
 });
+
+// --- `## Unreleased` (DEC-019) — capabilities land here; a version is stamped at publish ------
+import { unreleased, unreleasedHasContent, nextVersion, stampUnreleased } from '../src/changelog.js';
+
+test('an Unreleased section is invisible to parseEntries and to the site, until it is stamped', () => {
+  const text = '# BOSS Changelog\n\n## Unreleased\n\n- **A thing.** Landed, not published.\n\n## 0.325.0 — 2026-09-12\n\n**Old.**\n';
+  assert.deepEqual(parseEntries(text).map((e) => e.version), ['0.325.0'], 'founders never see an unversioned heading');
+  assert.equal(unreleasedHasContent(text), true);
+  assert.equal(unreleased(text).body.filter((l) => l.trim()).length, 1);
+  const stamped = stampUnreleased(text, nextVersion('0.325.0'), '2026-09-13');
+  assert.deepEqual(parseEntries(stamped).map((e) => [e.version, e.date]), [['0.326.0', '2026-09-13'], ['0.325.0', '2026-09-12']]);
+  assert.match(stamped, /^## Unreleased\n\n## 0\.326\.0 — 2026-09-13\n\n- \*\*A thing\.\*\*/m, 'a fresh empty Unreleased heading sits above the stamped entry');
+  assert.equal(unreleasedHasContent(stamped), false, 'and nothing is pending after the stamp');
+  assert.equal(stampUnreleased(stamped, '0.327.0', '2026-09-14'), null, 'stamping nothing is a no-op, not an empty version');
+});
+
+test('a template comment under Unreleased is not content', () => {
+  const text = '## Unreleased\n\n<!-- bullets land here -->\n\n## 0.1.0 — 2026-01-01\n';
+  assert.equal(unreleasedHasContent(text), false);
+});

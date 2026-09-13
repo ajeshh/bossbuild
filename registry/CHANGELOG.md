@@ -16,6 +16,26 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+**Since DEC-019 (2026-09-13), a capability lands as a commit plus a bullet under `## Unreleased`
+below — VERSION does not move.** The releaser stamps a version at publish: `npm run stamp` turns the
+heading into the next number and date, moves VERSION / package.json / plugin.json with it, and runs
+the gate. `boss sync`, `boss changelog` and the site read only stamped versions, so a founder never
+sees a number they cannot install. Write the bullet the way a stamped entry reads; the `For you:`
+rule above still applies to the whole section once it is stamped.
+
+## Unreleased
+
+- **Release-on-publish (DEC-019).** A version was minted per capability — ~11 a day across six
+  sessions, five collisions on one integer, and `npm` 18 behind because publishing is one person's
+  act. The unit moved: capabilities land here; `npm run stamp` makes the version when Ajesh
+  publishes. `release.js`'s "VERSION is next" became "VERSION is honest" (stale reads and hand-bumps
+  without an entry still fail; equal-to-HEAD with new work is now the ordinary state).
+  `parseEntries` never saw an unversioned heading, so nothing downstream changes; the site filters it.
+- **BOSS's own install is current, and has to stay so.** Synced from 0.267.0 to 0.325.0 (81 files,
+  then the six edited hook/skill copies taken from shipped; the seven BOSS-specific mentor prompts
+  kept). `check-dogfood` now fails when the pin is more than three releases behind — the 52-version
+  state cannot begin again unnoticed.
+
 ## 0.325.0 — 2026-09-12
 
 **`/boss:welcome` is the everyday door too — by pointer, not by copy.**

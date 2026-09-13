@@ -29,6 +29,48 @@ export function cmpVersion(a, b) {
 }
 
 // Entries are `## X.Y.Z — YYYY-MM-DD` headings with everything up to the next `## ` beneath.
+// --- `## Unreleased` — capabilities land here; a version is stamped when Ajesh publishes -------
+// Until v0.326.0 every capability bumped VERSION: ~11 versions a day across six sessions, contended
+// on one integer, received by nobody until `npm publish` — which is one person's act and happened
+// every few weeks. So the unit moved. A capability is a commit plus a bullet under `## Unreleased`
+// at the top of the CHANGELOG; VERSION does not move. `npm run release -- --stamp` (the releaser,
+// at publish) turns that heading into the next number and date. `parseEntries` never sees the
+// Unreleased section (its heading is not a version), so founders and `boss sync` see only what
+// they can install.
+
+/** The Unreleased section: { present, body } — body is the lines under the heading. */
+export function unreleased(text) {
+  const lines = text.split(/\r?\n/);
+  const start = lines.findIndex((l) => /^##\s+Unreleased\s*$/i.test(l));
+  if (start < 0) return { present: false, body: [] };
+  const body = [];
+  for (let i = start + 1; i < lines.length && !/^##\s/.test(lines[i]); i++) body.push(lines[i]);
+  return { present: true, body };
+}
+
+/** Is there anything to stamp? Bullets or prose, not blank lines or the template comment. */
+export function unreleasedHasContent(text) {
+  return unreleased(text).body.some((l) => l.trim() && !/^<!--/.test(l.trim()));
+}
+
+/** The next minor version after `current` (BOSS releases are 0.N.0). */
+export function nextVersion(current) {
+  const [a, b] = String(current).trim().split('.').map(Number);
+  return `${a}.${b + 1}.0`;
+}
+
+/**
+ * Rename `## Unreleased` to `## <version> — <date>` and put a fresh empty Unreleased heading above
+ * it. Returns the new text, or null when there was nothing to stamp. Pure — the caller writes.
+ */
+export function stampUnreleased(text, version, date) {
+  if (!unreleasedHasContent(text)) return null;
+  const lines = text.split(/\r?\n/);
+  const i = lines.findIndex((l) => /^##\s+Unreleased\s*$/i.test(l));
+  lines.splice(i, 1, '## Unreleased', '', `## ${version} — ${date}`);
+  return lines.join('\n');
+}
+
 export function parseEntries(text) {
   const out = [];
   const lines = text.split(/\r?\n/);

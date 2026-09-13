@@ -21,15 +21,48 @@
 // theater. Interactive runs of the underlying scripts stay nudges; only `release` has teeth.
 
 import { execFileSync, execSync } from 'node:child_process';
-import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { loadModes } from '../src/modes.js';
 import { dim, bold, ok, warn, err } from '../src/ui.js';
 import { RESUME_WINDOW, resumeLines } from '../src/orientation.js';
 
-const VERSION = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
+import { unreleased, unreleasedHasContent, nextVersion, stampUnreleased } from '../src/changelog.js';
+
 const fast = process.argv.includes('--fast');
+
+// --- --stamp: turn `## Unreleased` into the next version (DEC-019, 2026-09-13) ---------------
+// Capabilities land as commits plus a bullet under `## Unreleased`; VERSION does not move. The
+// releaser — at publish — runs `npm run release -- --stamp`: the heading becomes the next number
+// and today's date, VERSION / package.json / plugin.json move with it, and the gate below then
+// verifies the result. Explicit on purpose: a session running the gate "to check" must never mint
+// a version, because minting one per capability is the habit this retires.
+if (process.argv.includes('--stamp')) {
+  const clPath = join(BOSS_ROOT, 'registry', 'CHANGELOG.md');
+  const cl = readFileSync(clPath, 'utf8');
+  const current = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
+  if (!unreleasedHasContent(cl)) {
+    console.log(`\n  ${warn('⚠')} Nothing under \`## Unreleased\` — nothing to stamp. VERSION stays ${current}.\n`);
+    process.exit(0);
+  }
+  const next = nextVersion(current);
+  const today = new Date();
+  const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  writeFileSync(clPath, stampUnreleased(cl, next, date));
+  writeFileSync(join(BOSS_ROOT, 'VERSION'), `${next}\n`);
+  for (const f of ['package.json', join('.claude-plugin', 'plugin.json')]) {
+    const abs = join(BOSS_ROOT, f);
+    const doc = JSON.parse(readFileSync(abs, 'utf8'));
+    doc.version = next;
+    writeFileSync(abs, JSON.stringify(doc, null, 2) + '\n');
+  }
+  const bullets = unreleased(readFileSync(clPath, 'utf8')).body.length; // now empty; report from before
+  console.log(`\n  ${ok('✦')} Stamped ${bold('v' + next)} — \`## Unreleased\` is now \`## ${next} — ${date}\`; VERSION, package.json and plugin.json moved with it.`);
+  void bullets;
+}
+
+const VERSION = readFileSync(join(BOSS_ROOT, 'VERSION'), 'utf8').trim();
 
 const results = [];
 const record = (name, pass, detail, soft = false) => {
@@ -61,26 +94,27 @@ console.log(`\n  ${bold('BOSS release gate')}  ${dim('· v' + VERSION + (fast ? 
   record('VERSION ↔ .claude-plugin/plugin.json', plugin.version === VERSION,
     plugin.version === VERSION ? VERSION : `VERSION ${VERSION} vs plugin.json ${plugin.version}`);
 
-  // --- 1a. the number is actually next ---------------------------------------------------
-  // Six sessions release into one tree and five of them have collided on this integer. The
-  // handshake ("check mtimes before bumping") lived in CLAUDE.md as prose, and a rule with no
-  // mechanism is the shape this repo keeps finding in itself. So the gate reads the last
-  // COMMITTED number (HEAD, and origin/main when the ref is here — no fetch, a plane must not
-  // block a release) and refuses to sign off a release that is not strictly newer than both.
-  // Equal-to-HEAD is fine when the tree is clean (re-running the gate on a committed release);
-  // equal-to-HEAD with uncommitted work is exactly the collision: a peer already took N.
+  // --- 1a. the number is honest --------------------------------------------------------------
+  // Since DEC-019 a capability no longer bumps VERSION, so VERSION equal to HEAD's with new work
+  // in the tree is the ORDINARY state, not a collision. What still cannot be true: VERSION older
+  // than what is committed here or on origin (a stale read), or VERSION ahead of HEAD without a
+  // CHANGELOG entry for it (a bump by hand, skipping the stamp), or a stamped version whose
+  // `## Unreleased` above it still carries content (stamped, then kept landing under the old heading).
   {
     const semver = (v) => String(v || '').trim().split('.').map(Number);
     const newer = (a, b) => { const [x, y] = [semver(a), semver(b)]; for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
     const committed = (ref) => { const r = run('git', ['show', `${ref}:VERSION`]); return r.code === 0 ? r.out.trim() : null; };
     const head = committed('HEAD');
     const origin = committed('origin/main');
-    const dirty = (run('git', ['status', '--porcelain', '--', 'src', 'stages', 'library', 'registry/CHANGELOG.md', 'scripts', 'bin']).out || '').trim() !== '';
+    const cl = readFileSync(join(BOSS_ROOT, 'registry', 'CHANGELOG.md'), 'utf8');
+    const hasEntry = new RegExp(`^## ${VERSION.replace(/\./g, '\\.')}\\b`, 'm').test(cl);
     let verdict = null;
-    if (head && newer(head, VERSION)) verdict = `HEAD already carries ${head} — this tree read VERSION before a peer released; re-read and renumber`;
-    else if (origin && newer(origin, VERSION)) verdict = `origin/main already carries ${origin} — renumber above it`;
-    else if (head === VERSION && dirty) verdict = `${VERSION} is already committed and this tree has new work — a peer took this number; bump again`;
-    record('VERSION is next', !verdict, verdict || `${VERSION} > ${head || '(no commit)'}${origin && origin !== head ? ` · origin ${origin}` : ''}`);
+    if (head && newer(head, VERSION)) verdict = `HEAD already carries ${head} — this tree read VERSION before a peer stamped; re-read`;
+    else if (origin && newer(origin, VERSION)) verdict = `origin/main already carries ${origin} — pull first`;
+    else if (head && newer(VERSION, head) && !hasEntry) verdict = `VERSION was bumped to ${VERSION} by hand with no CHANGELOG entry — \`npm run release -- --stamp\` is how a version is made`;
+    else if (!hasEntry) verdict = `no \`## ${VERSION}\` entry in the CHANGELOG`;
+    const pending = unreleasedHasContent(cl);
+    record('VERSION is honest', !verdict, verdict || `${VERSION}${head === VERSION ? ' = HEAD' : ` > ${head || '(no commit)'}`}${pending ? ' · work under ## Unreleased awaits a stamp' : ''}`);
   }
 }
 
@@ -346,7 +380,9 @@ if (hard.length) {
   process.exit(1);
 }
 console.log(`  ${ok('✦')} ${bold('Ready to release v' + VERSION)}${soft.length ? dim(`  (${soft.length} advisory note(s) above)`) : ''}`);
-console.log(`  ${dim('Remaining by hand: registry/CHANGELOG.md entry · /tmp scaffold smoke-test · commit,')}`);
+console.log(unreleasedHasContent(readFileSync(join(BOSS_ROOT, 'registry', 'CHANGELOG.md'), 'utf8'))
+  ? `  ${dim('Work is waiting under `## Unreleased`. To publish it: ')}${bold('npm run stamp')}${dim(' (makes the version) · commit,')}`
+  : `  ${dim('Remaining by hand: /tmp scaffold smoke-test · commit,')}`);
 // Publishing was missing from this list for the whole life of the gate, and the omission was the
 // bug: everything above verifies a release that, followed literally, never leaves the machine.
 console.log(`  ${dim('then')} ${bold('npm publish')} ${dim('·')} ${bold('npm run bump:formula')} ${dim('· push the tap.')}`);
