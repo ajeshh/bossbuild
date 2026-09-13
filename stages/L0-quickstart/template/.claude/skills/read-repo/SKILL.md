@@ -10,7 +10,7 @@ point: it's the reversible, diffable base. `/read-repo` is the **augmentation**:
 actually here and tailors that base to *this* venture, so BOSS starts from understanding instead of a
 generic copy.
 
-> **The guardrail (IDEA-022 Track 3 — read this first):** everything `/read-repo` does is **additive
+> **The guardrail (read this first):** everything `/read-repo` does is **additive
 > and reversible** — plain-text writes the founder can diff and `git revert`. It **never** deletes or
 > rewrites the deterministic scaffold; it fills in placeholders and seeds the brain. A model-generated
 > scaffold you can't inspect is exactly what BOSS warns founders against. If it can't be diffed, it
@@ -86,7 +86,7 @@ position read is a conversation opener, not a preamble.
    a short, first-person, **honest** standing summary of what you understand and — crucially — **what
    you don't know yet** (the questions a real conversation would answer). Then stamp it:
    `boss brain record --headline "<one line>"`. This is what gives the conscience continuity from day
-   one (it can now voice *with* this read — IDEA-022 Track 4). Honor the brain's must-nots: no
+   one (it can voice *with* this read). Honor the brain's must-nots: no
    flattery, no diagnosing the founder, no certainty the material doesn't support; if thin, say less.
 3. **Suggest the disciplines that fit** (recommend, don't auto-apply) — based on what you read, name
    the 1–3 optional disciplines worth turning on, and why: AI in the path → `/ai-first-init`; UI

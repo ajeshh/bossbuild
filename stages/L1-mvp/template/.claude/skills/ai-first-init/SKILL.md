@@ -190,7 +190,7 @@ starting work; new contributors read it to onboard.
   the failure-states field; the conscience surfaces `cost` and `failure-mode` moments when
   drift accumulates against the declarations.
 - **Adjacent:** `/spec` — for AI-mediated FEATs, the spec template includes failure-states
-  field (v0.26.0+); `/evals` — eval set sits alongside the failure-state design.
+  field; `/evals` — eval set sits alongside the failure-state design.
 
 ## What this skill is NOT
 
@@ -208,7 +208,7 @@ starting work; new contributors read it to onboard.
 - **The doc IS the contract.** Future FEATs read `docs/ai-first.md`; if it says
   "deterministic" for a feature and a PR puts an LLM call in there, that's a real change
   worth a re-spec.
-- **Override grammar applies (IDEA-008).** Skipping a step is legitimate when the founder
+- **Override grammar applies.** Skipping a step is legitimate when the founder
   has a real reason; record it in devlog. Skipping silently is the failure mode.
 - **Domain-expert cohort doesn't skip.** In high-stakes domains, every step matters
   disproportionately. The hour spent here saves harm later.

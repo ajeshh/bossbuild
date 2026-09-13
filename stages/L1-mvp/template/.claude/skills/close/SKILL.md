@@ -38,7 +38,7 @@ ahead to what's next.
    also ticks the active FEAT's acceptance criteria and appends to its `## Build log` when there's a
    decision or surprise worth keeping. If `/log` already ran this session, skip — don't duplicate.
 
-1b. **Compress `.claude/rules/feature-context.md` (v0.293.0 — the promise it had been making).**
+1b. **Compress `.claude/rules/feature-context.md` (the promise it makes).**
    That file told every founder *"when the feature ships, `/close` will compress this to a one-line
    outcome"* and `/close` had never opened it. It does now. Three passes, in this order:
 

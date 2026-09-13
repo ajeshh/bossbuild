@@ -13,7 +13,7 @@ closed). The next discipline is **demand-testing it** — not prototyping it (th
 shipping it (also after). Pretotype first; build only what demand justified.
 
 This skill ships in **Quickstart**, on the near side of `boss unlock mvp`, because the canvas earns
-the question and the canvas is a Quickstart artifact. It shipped at MVP until v0.271.0, which meant
+the question and the canvas is a Quickstart artifact. It used to sit at MVP, which meant
 the cheapest way to find out nobody wants this sat behind the command that hands you the build
 tools — so the only route to *don't build it yet* ran through *here is everything you need to build
 it*. **A demand test is worth most in the hour before the first line of code, and that hour is
@@ -32,7 +32,7 @@ intend to keep, and keeping is a build.
 1. **Pick the IDEA.** `[IDEA-NNN]` if given, else the most active idea with a filled canvas.
 2. **Read the canvas.** Especially: People (who), Problem (the tension), Promises (the value),
    riskiest assumption (what could kill this).
-2b. **Read `docs/competition/` if it exists (v0.294.0) — it changes the question.** If a rival
+2b. **Read `docs/competition/` if it exists — it changes the question.** If a rival
    already does this and is marked *in evidence* (a real person named them), the honest demand test
    is not *"would you use it?"* but **"would you switch?"** — a materially harder bar, and the one
    most fake doors quietly dodge by not mentioning the incumbent. If the rival is a `watch` row
@@ -154,7 +154,7 @@ page is lying, and the signal it produces is worthless anyway.
 ## What this is NOT
 
 - **Not a prototype.** Prototype = "does it work in code." Pretotype = "does anyone want it."
-  Different question. 🔴 **`/prototype` is a real skill on this same rung and it is one letter
+  Different question. **`/prototype` is a real skill on this same rung and it is one letter
   away** — if the founder typed one and meant the other, say which one you are about to run and
   why, before running it. Reaching for `/prototype` here is not a typo to correct silently; it is
   usually the honest instinct this skill exists to interrupt.

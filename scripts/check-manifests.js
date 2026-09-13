@@ -319,6 +319,52 @@ function checkDescriptionBudget() {
   return { errors, totals };
 }
 
+// --- 2c. the founder's text carries none of BOSS's bookkeeping ------------------------------
+// A shipped skill is the founder's brief, read by their model to talk to them. 47 version stamps
+// sat in 20 of them, nine as confessions ("until v0.284.0 this skill deleted the wrong one");
+// `IDEA-008` was cited in /ai-cost as an authority and collides with the founder's OWN IDEA-008;
+// 🔴 / ⛔ / 🆕 are CLAUDE.md's severity glyphs, an internal register. Lineage belongs in
+// registry/CHANGELOG.md, where it already is. Placeholders (`IDEA-NNN`) pass. So do the founder's
+// own records used as examples — `/sunset FEAT-007`, `/board`'s sample output, `DEC-001` — and the
+// line between theirs and ours is the number: a founder's examples are small, BOSS's citations
+// are IDEA-097 and DEC-011. IDEA/FEAT flag from 020; DEC/RVW/EVID/PRAC/EXTR (which a founder's
+// skill has no reason to cite by number) from 003. Markdown only — hook JS comments are read by
+// nobody's model. Bundled resources under a skill (templates/) count: they are shipped text too.
+const SHIPPED_TEXT_DIRS = ['.claude/skills', '.claude/agents', 'docs/loops'];
+const BOOKKEEPING = [
+  { re: /\bv0\.\d+(?:\.\d+)?\b/g, what: 'a BOSS version stamp' },
+  { re: /\b(?:IDEA|FEAT)-(?:0[2-9]\d|[1-9]\d\d)\b|\b(?:DEC|RVW|EVID|PRAC|EXTR)-(?!00[12]\b)\d{3}\b/g, what: "one of BOSS's own record ids" },
+  { re: /🔴|⛔|🆕/g, what: 'an internal severity glyph' },
+];
+function checkShippedText() {
+  const errors = [];
+  const walk = (d, out = []) => {
+    if (!existsSync(d)) return out;
+    for (const n of readdirSync(d)) {
+      const f = join(d, n);
+      if (statSync(f).isDirectory()) walk(f, out);
+      else if (n.endsWith('.md')) out.push(f);
+    }
+    return out;
+  };
+  for (const stageId of STAGE_ORDER) {
+    for (const sub of SHIPPED_TEXT_DIRS) {
+      for (const f of walk(join(tplDir(stageId), sub))) {
+        const rel = f.replace(BOSS_ROOT + '/', '');
+        const lines = readFileSync(f, 'utf8').split('\n');
+        lines.forEach((line, i) => {
+          for (const { re, what } of BOOKKEEPING) {
+            re.lastIndex = 0;
+            const m = line.match(re);
+            if (m) errors.push(`${rel}:${i + 1} carries ${what} (${m[0]}) — lineage lives in the CHANGELOG, not in the founder's brief`);
+          }
+        });
+      }
+    }
+  }
+  return errors;
+}
+
 // --- 3. every declared drift_moment has an authored voicing frame ---------
 // Probes the REAL function rather than comparing against a hand-kept list of moment
 // names — a parallel list is the same class of drift this check exists to catch.
@@ -425,6 +471,7 @@ export function checkManifests() {
     ...stages.flatMap((s) => s.errors.map((e) => `${s.stageId}: ${e}`)),
     ...voicing.errors,
     ...checkModelPins(),
+    ...checkShippedText(),
     ...budget.errors,
     ...plugin.errors,
   ];

@@ -68,9 +68,9 @@ Confidence: low on first detection (one call site might be exploratory); medium 
 handful of calls; high when LLM calls touch user-visible code paths (heuristic: presence of
 the regex AND presence of `export`, `route`, `app.`, `Router`, `handler` near the call sites).
 
-The voice (cohort-aware via v0.20's framing): name the gap in one line, point at
+The voice (cohort-aware): name the gap in one line, point at
 `/ai-failure-states`, hand the decision back. Never blocks. Override recorded in devlog per
-IDEA-008.
+the devlog.
 
 ## How to remix
 

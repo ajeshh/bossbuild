@@ -160,7 +160,7 @@ honestly; nothing was extractable yet."* That's the principle working.
   the heuristic breakpoint; the skill is the judgment.
 - **Routes to:** `boss learn` (the CLI, for UP candidates where a checkout exists) — see `library/`
   rules in the BOSS source repo. /extract is the router at both the *propose* and the *promote*
-  step since v0.322.0; the CLI is the mechanism under its UP half, never a second verb.
+  step; the CLI is the mechanism under its UP half, never a second verb.
 - **Adjacent:** `/log` (devlog discipline produces the entry signal); `/close` (session-end
   may surface "consider /extract" when devlog has accumulated entries).
 

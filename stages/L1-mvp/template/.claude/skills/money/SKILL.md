@@ -5,7 +5,7 @@ description: The money verb, from the first dollar to operating it. Reads where 
 
 # /money — take the first dollar, then run it honestly
 
-One verb for the whole money arc. It was two (`/first-dollar` and `/monetize`) until v0.157.0, and
+One verb for the whole money arc. It was two (`/first-dollar` and `/monetize`), and
 each one's honest answer, when it didn't apply, was *"go run the other one"* — which meant the founder
 had to know which stage they were in before picking the skill that would have told them.
 
@@ -19,7 +19,7 @@ a product you'd ship.
 Look before asking: is there a payment link in the repo, a Stripe key in the env, a `docs/first-dollar/`
 record, an EVID graded `commitment`?
 
-- 🔴 **This project isn't trying to earn.** → **Stop, and don't route.** Open source, Creative
+- **This project isn't trying to earn.** → **Stop, and don't route.** Open source, Creative
   Commons, a research tool, something built for friends or for fun. **Read the canvas's Business
   Model cell before assuming: a project that has answered it with hours-and-maintainers rather than a
   price is not "pre-revenue," it is outside this arc.** The branch below is for a founder who intends

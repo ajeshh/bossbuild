@@ -29,7 +29,7 @@ onboarding any day; you cannot re-hear someone's first five minutes — after th
 longer a person who has never seen your product, so the observation is unrepeatable by construction. That is
 the whole seam: a file with quotes in it. Not a flow, not a checklist, not an aha-moment definition.
 
-## Step 0b — find your segment on the journey (v0.284.0)
+## Step 0b — find your segment on the journey
 
 If `docs/product/JOURNEY.md` exists, **read it before designing anything** — activation is stages
 2–3 of an arc this file already holds, and the stages on either side are what decide whether the

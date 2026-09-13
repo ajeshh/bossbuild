@@ -47,9 +47,9 @@ The grade is the load-bearing field. Its power is its bluntness — resist growi
 - **`stated-pain`** — someone *said* it hurts. Weakest. The Mom Test warns talk is nearly free.
 - **`observed-behavior`** — you *watched* them struggle, reach for a workaround, or bounce. Behavior
   beats opinion.
-> 🔴 **Desk research is not evidence, and there is no rung for it.** All three grades describe **what
+> **Desk research is not evidence, and there is no rung for it.** All three grades describe **what
 > a person did** — so a competitor's pricing page, a market-size estimate or an industry article has
-> no honest place on this ladder (DEC-008). It is not a loose fit; there is no rung it could
+> no honest place on this ladder. It is not a loose fit; there is no rung it could
 > occupy. **And the reason it matters is downstream: the conscience reads this ledger and goes quieter
 > when commitments exist** — so filing research here would let an afternoon of googling silence the
 > exact nudge that exists to push you toward a real conversation, while the riskiest assumption stayed

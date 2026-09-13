@@ -169,6 +169,6 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
 - **Privacy-first logging.** Token counts and metadata are fine. Prompt and response bodies
   are NOT fine to ship to shared logs without consent + retention discipline.
 - **The cost moment is a nudge, not a gate.** The conscience surfaces drift; the founder
-  decides. Override grammar in `docs/devlog.md` per IDEA-008.
+  decides. Override grammar in `docs/devlog.md`.
 - **Per-cohort math is real math.** A first-product cohort and a domain-expert cohort don't
   have the same budget shape; pretending they do produces wrong defaults for both.

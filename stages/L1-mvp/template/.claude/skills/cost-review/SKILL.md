@@ -8,7 +8,7 @@ description: Read the AI cost ledger and produce a dated review. Reads .boss/cos
 `/ai-cost` writes the **budget** — what you intend to spend. `/cost-review` reads the
 **ledger** — what you actually spent. The discipline only works when both halves run.
 
-The v0.25 audit named this as a gap: *"the weekly review cadence is declared in `/ai-cost` but
+An audit named this as a gap: *"the weekly review cadence is declared in `/ai-cost` but
 no skill reads `.boss/cost-log.jsonl`. The cadence is unenforced."* This skill closes that. It
 doesn't replace the founder's judgment — it surfaces the numbers so the judgment has data.
 
@@ -141,7 +141,7 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
   the founder ships the ledger to an actual datastore + observability layer when users are
   real. The skill is the discipline; the tooling scales beyond it.
 - **Not a budget-enforcement gate.** It surfaces variance; it doesn't block calls. The
-  override grammar (per IDEA-008) applies — if the review shows a legitimate overage (single
+  override grammar applies — if the review shows a legitimate overage (single
   product launch event, expected spike), record the override in the review file itself.
 - **Not a substitute for the budget doc.** `/ai-cost` declares; this skill reads. Both halves
   required; running only one is half the discipline.

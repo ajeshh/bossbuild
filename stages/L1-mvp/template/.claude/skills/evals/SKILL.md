@@ -42,7 +42,7 @@ under attack is `/red-team`; shipping an AI feature needs **both**, not either a
 ## How to run it
 
 1. **Pick the FEAT.** Read the FEAT spec's *Evals* section. If it doesn't exist (FEAT pre-dates the
-   v0.21.0 spec template), add it: declare an `Eval set path: docs/evals/FEAT-NNN.yml`.
+   current spec template), add it: declare an `Eval set path: docs/evals/FEAT-NNN.yml`.
 2. **Create or open** `docs/evals/FEAT-NNN.yml`. Format: a YAML list of cases, each with
    `id / category / scenario / inputs / expected / why`. Categorize `should-pass` and
    `should-fail` (the latter sub-categorized by failure mode per Husain's discipline —
@@ -81,7 +81,7 @@ under attack is `/red-team`; shipping an AI feature needs **both**, not either a
 Same shape as BOSS's own conscience-evals — copy that runner.js as a starting point if Node fits
 your stack.
 
-## Failure-state coverage requirement (v0.30.0+ — for AI-mediated FEATs)
+## Failure-state coverage requirement (for AI-mediated FEATs)
 
 For any FEAT that puts an LLM in the user-visible path (i.e., one that declares responses in
 `docs/ai-failure-states.md`), the eval set **must include at least one `should-fail` case
@@ -99,7 +99,7 @@ in `src/` satisfy the `ai-failure-state-loop` predicate; the eval cases here ver
 
 A handler whose `Eval-tested` field in `docs/ai-failure-states.md` reads `STUB` means the
 founder has committed to writing this eval case — either now, or under a recorded override
-(IDEA-008) with a re-open condition. **STUB without an override is the failure mode this
+with a re-open condition. **STUB without an override is the failure mode this
 upgrade prevents.**
 
 Cohort-aware: `first-product` may legitimately ship STUB + override on day-one builds
@@ -114,7 +114,7 @@ The 2026 update to the eval discipline, from the people who teach it. Fold these
   session/agent traces, sort the failures into a taxonomy, *then* build evaluators for the modes you
   actually see. Inventing eval cases before you've looked at real failures is "eval-driven
   development" done backwards. (If the project runs BOSS's `auto-log` trace substrate, `.boss/trace.jsonl`
-  is exactly this raw material — IDEA-025.) Error analysis is 60–80% of the work.
+  is exactly this raw material.) Error analysis is 60–80% of the work.
 - **Binary pass/fail, not 1–5 scores.** A Likert score hides the decision. Force each case to a
   yes/no — "did it do the thing or not" — and let the *categorized* failures carry the nuance. Scores
   feel rigorous and measure nothing.

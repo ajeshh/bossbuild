@@ -157,7 +157,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    - **First of its kind** — record it. That is what the table is for.
    - **Second** — record it and say out loud that it is the second. No action yet; twice is a
      coincidence you should be able to see.
-   - **Third of the same kind** — 🔴 **stop. The rule is wrong, not the three screens.** Three
+   - **Third of the same kind** — **stop. The rule is wrong, not the three screens.** Three
      exceptions is the same threshold as *twice is a pattern*, pointed the other way. Propose the
      rule change: narrow it (*"one primary per view, **except** in a toolbar"*), split it into two
      rules, or retire it. A rule with three standing exceptions is not being followed — it is being
@@ -189,7 +189,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
 
 ## Cohort-aware delivery
 
-Per `.boss/config.json` cohort declaration (v0.20+):
+Per `.boss/config.json` cohort declaration:
 - `vibe-coder-newbie` / `first-product`: explain *why* each token-compliance / state-coverage
   point matters; this cohort is most likely to find design discipline foreign
 - `eng-builder` / `returning-founder`: terse list of violations; assume context

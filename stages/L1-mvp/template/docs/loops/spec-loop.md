@@ -21,7 +21,7 @@ drift_moment: restraint
 # Loop: spec (MVP)
 
 The discipline that gates spec writing on canvas validation. Encodes **moment #4 — restraint
-(premature ceremony)** from IDEA-008's collapsed-moments architecture: when the founder reaches
+(premature ceremony)** from the collapsed-moments architecture: when the founder reaches
 for `/spec` without canvas-loop having closed, the conscience surfaces a restraint nudge — name
 what's missing, offer to back up, hand the decision back. Never block.
 
@@ -39,7 +39,7 @@ canvas-loop's exit predicate, reused as spec-loop's entry.
 ## Purpose
 
 Turn validated ideas into buildable features. The FEAT spec captures: goal, acceptance criteria,
-smoke check, validated learning (Ries — v0.21.0+), evals (Husain — if AI-mediated), out-of-scope.
+smoke check, validated learning (Ries), evals (Husain — if AI-mediated), out-of-scope.
 A clean handoff to `coder`.
 
 ## Exit artifact

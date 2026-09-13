@@ -118,13 +118,13 @@ declaration exists *before* the FEAT ships; the implementation can happen increm
 ### 5. Update existing AI-mediated FEAT specs
 
 For each `docs/ideas/FEAT-NNN.md` that puts an LLM in the user-visible path:
-- Add a **Failure states** section to the spec (the v0.26 `/spec` upgrade adds this field
+- Add a **Failure states** section to the spec (the `/spec` template carries this field
   automatically for new FEATs).
 - Reference the declared response from `docs/ai-failure-states.md`.
 - Update **Acceptance criteria** to include at least one failure-state path (e.g., *"refusal
   routes to /support, not the spinner"*).
 
-## The copy nobody reviewed (added v0.168.0)
+## The copy nobody reviewed
 
 Every failure state above ends in **words a user reads**, and those words are the least-reviewed
 copy in an AI product. A designed failure state with default copy is only half designed — the founder
@@ -182,13 +182,13 @@ not a decision; *"That's longer than I can read in one go — try under 50 pages
   *"TODO: implement per §3"* is better than no function at all — it satisfies the loop AND
   prevents the silent regression. **But:** the `Eval-tested` field is what turns a stub
   into a contract. If you've shipped a stub, you've also committed to writing the eval case
-  that will eventually exercise it — OR to recording the override per IDEA-008 with a
-  re-open condition (v0.30.0+).
+  that will eventually exercise it — OR to recording the override in the devlog with a
+  re-open condition.
 - **Domain-expert exception.** In high-stakes domains, the declared response for hallucination
   is **almost never a retry** — it's a human-in-the-loop escalation. Don't design AI-as-final-
   answer in regulated contexts.
 - **Override is legitimate.** Skip a state when the founder has a real reason (dev-only
-  feature; no user-facing path). Record the override in devlog per IDEA-008.
+  feature; no user-facing path). Record the override in devlog.
 - **The doc is a living artifact.** When a new failure mode shows up in production, add it as
   a sixth (and seventh, etc.) — the five are the floor, not the ceiling.
 - **Write the string, not a description of the string.** Every failure state ends in words a user

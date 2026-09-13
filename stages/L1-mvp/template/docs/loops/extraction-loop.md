@@ -27,7 +27,7 @@ drift_moment: capture
 
 For 28 releases the conscience has surfaced caution / done / restraint / coherence / cost /
 failure-mode. **PRINCIPLE #1's own discipline had no moment.** Capture-the-reusable was named
-in PRINCIPLES.md but undetected by the system meant to encode the principles. v0.29 closes
+in PRINCIPLES.md but undetected by the system meant to encode the principles. This loop closes
 that — not perfectly (predicate-based heuristics can't see *reusability* — only the model can),
 but enough to nudge the founder toward `/extract` at the *breakpoint inflection*.
 
@@ -50,7 +50,7 @@ yet at a natural breakpoint; the founder is still in initial-build motion.
 The devlog is the right surface to gate on because the `/log` skill already produces dated
 entries, the `/close` skill nudges devlog discipline at session end, and the format is
 stable. Future versions may add complementary entry signals (`boss unlock` recently fired;
-FEAT-NNN status flipped to `shipped`; library/ recently grew); for v0.29 the devlog-count
+FEAT-NNN status flipped to `shipped`; library/ recently grew); for now the devlog-count
 heuristic is enough to mark the inflection.
 
 ## Purpose
@@ -72,7 +72,7 @@ recorded. The skill `/extract` writes these. The presence of *any* extraction re
 the loop — the discipline IS the practice of pausing-and-routing, not the volume of
 extractions.
 
-To re-open the loop, the founder OR a future BOSS version refreshes the heuristic. v0.29
+To re-open the loop, the founder OR a future BOSS version refreshes the heuristic. This
 ships the **first-inflection** version of this loop. Future versions may add recurring re-
 opening (e.g., 5+ devlog entries since the most recent extraction); for now, once the
 founder has practiced extraction once, the discipline is theirs.
@@ -88,7 +88,7 @@ work and finds nothing extractable, it records that fact (`- **Route:** none-yet
 loadbearing-enough; check again in N entries`) and the loop closes. So the loop opens broadly,
 the judgment narrows.
 
-The voice (cohort-aware via v0.20's framing): name the inflection in one line, point at
+The voice (cohort-aware): name the inflection in one line, point at
 `/extract`, hand the decision back. Particularly important to **NOT** sound like a "you've
 been productive!" reward — that's the performative-warmth failure mode the voice work has
 been catching. Plain seasoned-hand: *"three sessions in — worth pausing to see what's worth
@@ -114,7 +114,7 @@ keeping?"*
 
 ## When this loop re-opens (today: not automatic)
 
-v0.29 ships the first-inflection version. The loop closes after one extraction record and
+This is the first-inflection version. The loop closes after one extraction record and
 stays closed. To re-open, the founder deletes/archives old extractions OR a future BOSS
 extends the predicate vocabulary with time-aware checks (*"N devlog entries since last
 extraction"*). The skill `/extract` is re-runnable anytime; the conscience just doesn't auto-

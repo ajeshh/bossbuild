@@ -71,7 +71,7 @@ creation.
 - Founder ran the skill explicitly because they want the system before any UI.
 - After a design audit revealed drift — re-init to consolidate.
 
-## How to run it — cohort-aware delivery (v0.20+)
+## How to run it — cohort-aware delivery
 
 Read `.boss/config.json` for the `cohort` field. Adjust the delivery accordingly:
 
@@ -363,7 +363,7 @@ the other field worth filling — it is what an editor shows on hover, and the a
    here. **Terminology is the exception — it's a word list, so it's the one content rule a check
    can actually enforce.** Everything else in this block is a filter, and worth shipping anyway.
 
-1c. **Cohort-scope the content half — do NOT hand everyone the full matrix** (RVW-077's required
+1c. **Cohort-scope the content half — do NOT hand everyone the full matrix** (the vetted source's required
    modification). The token half of this skill is carefully cohort-aware and the content half must
    be too, for the same reason: *a table filled in because it was asked for steers nothing.*
 

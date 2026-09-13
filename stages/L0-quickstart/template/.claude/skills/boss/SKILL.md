@@ -105,7 +105,7 @@ _Not started. When this has legs, run `/canvas` to pressure-test it as a busines
 `motivation:` and `success_looks_like:` are written `unset` / empty here and filled in step 3.5
 — never inferred. Four of those are load-bearing, and none is decoration:
 
-- 🔴 **The dated `Capture log` bullet is what makes the idea legible to the conscience.**
+- **The dated `Capture log` bullet is what makes the idea legible to the conscience.**
   `capture-loop` exits on `^- YYYY-MM-DD` in an active idea file, and `canvas-loop` *enters* at three
   of them. Write the doc without it and the founder is mechanically indistinguishable from someone who
   captured nothing: the `caution` moment can never fire for them, and BOSS never comes back to the idea
@@ -196,7 +196,7 @@ theirs and, incidentally, opens `canvas-loop` — which is how BOSS earns the ri
   stack-neutral and say the decision is pending the first build step. Never silently assume a stack.
 - **Mode:** Default is Quickstart (L0). If the PRD is rich and clearly a real product to build now,
   *recommend* `boss unlock mvp` (specs + `/smoke` gate) — but don't run it for them; suggest the command.
-- **AI-native check (v0.26.0+):** If the idea names the model as load-bearing (the product
+- **AI-native check:** If the idea names the model as load-bearing (the product
   doesn't work without it — a chatbot, a copilot, an LLM-pipeline, a generation tool, a
   RAG-mediated product), name it explicitly back to the founder: *"This sounds AI-native —
   the model is doing the work, not just polishing it."* Then **recommend the AI-first sequence**:
@@ -215,7 +215,7 @@ Read `github`, `visibility` and `license` from `.boss/config.json`.
 - `always` → proceed with the configured `visibility` without asking.
 
 **Then the licence — and ask it straight.** `license` scaffolds as `null`, which means *undecided*.
-**BOSS does not pick this for you** (DEC-011): a licence is the one scaffold decision that can be
+**BOSS does not pick this for you**: a licence is the one scaffold decision that can be
 irreversible, so it is the last one to make on someone's behalf. Put both costs on the table in one
 breath and don't lean:
 
@@ -257,7 +257,7 @@ On a yes, do this **in order**:
 If `gh` isn't authenticated (`gh auth status` fails), don't guess — tell the user to run `gh auth login`
 and offer to retry.
 
-## 6. Cohort (optional, low-friction — v0.20.0+)
+## 6. Cohort (optional, low-friction)
 
 Read `cohort` from `.boss/config.json`. If `null` (the default), ask ONE open question:
 
@@ -276,7 +276,7 @@ Read `cohort` from `.boss/config.json`. If `null` (the default), ask ONE open qu
 On answer, write the value to `.boss/config.json` (don't disturb other fields). If they skip, leave `null`.
 Either way, move on. Don't argue with their choice; they can edit the file later.
 
-**Voice note:** these are *beginner personas* (per IDEA-009). The cohort declaration sharpens BOSS for
+**Voice note:** these are *beginner personas*. The cohort declaration sharpens BOSS for
 this founder *as evidence comes in over time* — not the other way around. If the user mishears their own
 cohort, real use will reveal it; the file is editable.
 

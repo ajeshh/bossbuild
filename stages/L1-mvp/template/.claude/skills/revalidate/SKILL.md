@@ -52,7 +52,7 @@ in the Building column, permanently.** The verb that exists to end a zombie was 
 leave a one-line trace of the decision (devlog / RESUME). The point is that the next person sees the
 gate already ran.
 
-## The other direction — a SHIPPED FEAT, re-read against the code (v0.172.0+)
+## The other direction — a SHIPPED FEAT, re-read against the code
 
 Everything above is the **pre-build** gate: paused work, checked before it revives. This is the same
 gate pointed the other way, at work that already **shipped** — and it asks one question instead of

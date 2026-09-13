@@ -83,7 +83,7 @@ The founder pastes raw notes or brain-dumps what happened. Do three things — i
    observed-behavior, not just stated pain."*). If the pain didn't show up, say so honestly — that's a
    useful result too, not a failure.
    **Shape the ask to what the founder said they're building this for** — `motivation:` on the IDEA
-   doc (IDEA-097). `revenue` → the commitment is money or a slot (*"would you pre-pay for the first
+   doc. `revenue` → the commitment is money or a slot (*"would you pre-pay for the first
    month?"*). `community` → it's return (*"will you come back Tuesday and bring one person?"*).
    `learning` or `own-problem` → there may be no commitment to ask for at all, and saying so is the
    honest debrief — the interview taught the founder the thing; that was the point. `credibility` →
@@ -115,4 +115,4 @@ The founder pastes raw notes or brain-dumps what happened. Do three things — i
 
 This is the rare feature that serves the founder *and* the maker on day one: it's the tool for real
 customer conversations, and it closes the loop the conscience opens — advice → call → **captured,
-graded evidence** the conscience then reads (via `EVID-NNN`, IDEA-045) and calibrates against.
+graded evidence** the conscience then reads (via `EVID-NNN`) and calibrates against.

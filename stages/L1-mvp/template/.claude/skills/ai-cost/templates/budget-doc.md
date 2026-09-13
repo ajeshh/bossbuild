@@ -49,7 +49,7 @@ the one doc where the name belongs, because it's the record of a decision you ma
 - **Weekly during MVP** — read `.boss/cost-log.jsonl`, total by FEAT + by user, sanity-check.
 - **Monthly during V1** — daily totals, cohort cost-per-user, cost as % of revenue.
 
-## Breach grammar (per IDEA-008)
+## Breach grammar
 - When per-user/day exceeds budget by <Y%>, the hook surfaces the `cost` moment.
 - Override (when legitimate) — record in `docs/devlog.md`:
   - **OVERRIDE:** `cost-budget-loop` overrun on <date> — rationale: <one power user running a long

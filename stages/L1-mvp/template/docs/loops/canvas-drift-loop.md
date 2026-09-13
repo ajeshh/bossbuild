@@ -34,7 +34,7 @@ is no ambiguity about whether shipping bears on "what is this thing"; it definit
 
 ## The n=1 that argued for it
 
-BOSS's own canvas sat at **v0.3 for 80 days while ~154 releases shipped.** By the time anyone looked,
+BOSS's own canvas sat **untouched for 80 days while ~154 releases shipped.** By the time anyone looked,
 its roster cell named **eight retired agents** and listed three internal-only surfaces as founder
 features. Nothing in BOSS noticed — because nothing in BOSS was watching this relationship. It was
 found by hand, twice, on two different surfaces, in two consecutive releases.
@@ -53,7 +53,7 @@ at which the product has plausibly moved out from under its own description.
 Without it the entry would read *"three FEAT files changed"* — which fires when a founder **drafts**
 three specs. Drafting specs is building; the canvas is not stale because you are working. It is stale
 because things **shipped**. The filter matches the base status word (`status: shipped`), never the
-whole value, because `shipped (v0.3 — the pull half)` is well-formed and comparing the full string is
+whole value, because `shipped (the pull half)` is well-formed and comparing the full string is
 the exact bug that mis-filed 12 of 31 cards on BOSS's own board.
 
 ## Why the moment is judgment-gated

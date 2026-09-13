@@ -39,7 +39,7 @@ products:
 
 For each: what it does, **what it costs**, who it's for, and where it's weak. Then the bar below.
 
-**Read their 1–2★ reviews before you write `where they're weak` (v0.294.0).** A rival's public
+**Read their 1–2★ reviews before you write `where they're weak`.** A rival's public
 complaints are the cheapest pain evidence you did not have to run an interview for — real people,
 in their own words, saying what the current fix fails at. That is the *Problem* cell's raw material
 and it is lying in the open. Quote two or three, dated and linked like everything else here, and
@@ -52,7 +52,7 @@ The common case, and the reason this is a living set rather than a report. Take 
 that one, file it into the same shape. **No regeneration of the others** — their `checked` dates are
 theirs, and silently refreshing them would erase the record of what was actually verified when.
 
-**Then say what the twist is, against *this* bet (v0.294.0).** A rival filed in isolation is a
+**Then say what the twist is, against *this* bet.** A rival filed in isolation is a
 fact; a rival read against the canvas's Promises cell is an answer. Two things, both short:
 
 - **Sort it — in evidence, or a watch.** Does any `EVID` record name them — did a real person say
@@ -73,7 +73,7 @@ fact; a rival read against the canvas's Promises cell is an answer. Two things, 
 Re-check the named rival, or every row past the staleness threshold. Report **what changed**, not
 just the new value: *"Beta was $29, is now $39"* is the signal; the current number alone isn't.
 
-## How deep to go — the research, not just the table (v0.294.0)
+## How deep to go — the research, not just the table
 
 Everything above says what to *write*. This says what to *open*, because a comp eval that reads one
 rival's homepage and fills a table is a table with a rival's marketing in it. **Per rival, in this
@@ -118,7 +118,7 @@ took, a review with its date — each entry says which. "Their pricing page sugg
 "their pricing page says (checked 2026-09-11)…" is a fact. Both are allowed; they are labelled
 differently, and the label is not decoration.
 
-## 🔴 The honesty bar — this is the whole skill
+## The honesty bar — this is the whole skill
 
 **A confidently invented price is the failure mode here, and it is a very easy one to hit.** A model
 will produce plausible tier names and dollar figures for a product it half-remembers, and the founder
@@ -155,7 +155,7 @@ docs/competition/
 
 Each `<slug>.md` carries the depth a table can't: what they actually do, quotes from their own
 positioning, what changed at each recheck (dated, append-only — **the drift is the interesting part**),
-open questions, and — as of v0.294.0 — two sections `/spec` opens:
+open questions, and — — two sections `/spec` opens:
 
 - **`## Where it breaks`** — the specific things their users complain about, dated and linked,
   one line each. Read into *what wrong looks like*. A rival's known breakages are the cheapest
@@ -177,7 +177,7 @@ each rival's file, keyed to features already decided.
 - **`mentor-capital`** reads this when the raise question is live; *"who else is doing this"* is
   something an investor asks in the first ten minutes.
 - **`/pretotype`** — if a rival already does exactly this, the honest demand test may be *"would you
-  switch?"* rather than *"would you use it?"* As of v0.294.0 `/pretotype` **reads this field** when
+  switch?"* rather than *"would you use it?"* `/pretotype` **reads this field** when
   it picks a pattern, and `add` offers the switch test in the moment — this stopped being a one-way
   pointer.
 - **The canvas's Build-or-buy cell** — sometimes this skill's real output is *"buy the thing."* Say

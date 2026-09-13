@@ -41,7 +41,7 @@ If you only read one thing when picking the project back up, read the last devlo
 
 3. If the user gave you a one-liner, that's enough — fill it into **Landed**, leave **Next** empty
    only if they didn't say. Don't fabricate. Blanks are honest.
-4. **Tick what landed, and append the feature's own story (v0.172.0+).** If a FEAT is active:
+4. **Tick what landed, and append the feature's own story.** If a FEAT is active:
    - **Tick the acceptance criteria** that are now true (`- [ ]` → `- [x]`) in the FEAT doc. They
      ship as checkboxes and nothing used to check them, so a half-built feature and an untouched one
      looked identical. Ticking is what lets `boss board` show *how far*, not just *in flight*.

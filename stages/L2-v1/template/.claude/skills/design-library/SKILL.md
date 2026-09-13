@@ -22,8 +22,6 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 
 **But the seam below it is real, and it is not the tokens file.** `/design-tokens-init` writes `docs/design/COMPONENTS.md` at MVP — the authored component index the agent opens before creating component number two. That exists because the failures this skill *renders* (pattern reinvention, near-duplicates, code growing linearly with screens) **start** at component two, which is two rungs down. If you are early and there is no index, point at that, not at this.
 
-⚠️ **This paragraph used to say there was no seam worth planting.** There was; it shipped in v0.276.0.
-
 ## Step 0b — read the shape, same as its siblings
 
 Read `shape` from `.boss/config.json`. **This page renders components as HTML, so it assumes a
@@ -39,12 +37,6 @@ graphical interface**, and for two shapes that assumption is simply wrong:
   step 6), and an approximation of a native component is no less useful than one of a web component,
   as long as the page says so once.
 - **No shape declared** — ask one line rather than assuming a browser.
-
-> ⚠️ **This gate arrived one release late, and the miss is instructive.** v0.286.0 named *both* this
-> skill and `/design-tokens-init` as surface-blind and then fixed only `/design-tokens-init` — in the
-> release whose stated lesson was *"the fix was applied to one skill and never asked of its
-> siblings."* **Writing the lesson down is not the same as applying it.** When a correction names more
-> than one file, fix them in the same change or the second one does not happen.
 
 ## The load-bearing rule: GENERATED, never authored
 
@@ -189,7 +181,7 @@ them twice. Put the finding where the eye already is:
 
 | Badge | Meaning |
 |---|---|
-| 🔴 **off-token** | raw hex / rgb / spacing literal in the source — the 47 blues, caught |
+| **off-token** | raw hex / rgb / spacing literal in the source — the 47 blues, caught |
 | 🟠 **missing state** | a state the five-state rule requires and the component doesn't have |
 | 🟠 **near-duplicate** | another component shares most of this one's shape — pattern reinvention |
 | 🟡 **stale card** | source hash moved since generation — re-run |

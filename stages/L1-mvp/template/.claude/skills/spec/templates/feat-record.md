@@ -19,7 +19,7 @@
 > is a complete answer, and a common one. **`program: <slug>`** is optional and goes on when a
 > second FEAT belongs to the same larger thing (`docs/IDS.md`); `/spec` step 0b asks.
 >
-> **This record is where the four crafts meet — and each has a different section (v0.312.0).**
+> **This record is where the four crafts meet — and each has a different section.**
 > Linear's line for it: *"we start working together when writing the project spec."* Nobody hands
 > off; everybody writes their part here, while changing it is free:
 >
@@ -50,7 +50,7 @@ from: IDEA-NNN
 ## Goal
 _One sentence. The user-visible change. Not the implementation._
 
-## Assumptions (v0.172.0+ — the plan-time record)
+## Assumptions (the plan-time record)
 _Every place the spec was filled in **without being told**. One line each, phrased so it can be
 rejected in a word. The founder corrects these before a line of code is written — and a correction
 here is the highest-value sentence in this file, because it is precisely the thing a competent
@@ -73,7 +73,7 @@ _The inverse of the criteria, and where most of the real ones come from: what wo
 this is broken **even though it technically works**? Failure modes, not missing features._
 - …
 
-## Paths that must not break (v0.179.0+ — rungs 2–4 of the testing ladder)
+## Paths that must not break (rungs 2–4 of the testing ladder)
 _The three paths that, broken, cost more than a bug. `/spec` asks for these when it writes the
 criteria; each one is a **checkable line**, not a category label. **Omit any line that genuinely
 doesn't apply** — an empty line is worse than a missing one, and a FEAT with none of the three is a
@@ -95,7 +95,7 @@ real and common answer (a settings toggle, a copy change, an internal report)._
 > and nothing changes. That is deliberate — the bar rises because *you* described a risk, not because
 > BOSS guessed you had one.
 
-## Flow (v0.281.0 — only if this FEAT has a user-facing surface)
+## Flow (only if this FEAT has a user-facing surface)
 
 Indexed in `docs/design/FLOWS.md`. Delete this section for a FEAT with no surface.
 
@@ -119,7 +119,7 @@ you decided not to ask is the decision most likely to be silently reversed.
 _How `/smoke` proves this didn't break things. One or two commands, or one manual path._
 - …
 
-## Validated learning (v0.21.0+ — Ries discipline)
+## Validated learning (Ries discipline)
 _If this FEAT works perfectly, **what do we learn**? Not "the feature works" — what does it teach
 us about the bet that we didn't already know? If the answer is "the feature works" or "users like
 it," **don't build this**. The MVP is the minimum experiment that produces validated learning, not
@@ -127,12 +127,12 @@ the minimum product to polish (Eric Ries, **The Lean Startup**). Smallest cut, h
 - **Learning hypothesis:** …
 - **What result would change the plan:** …
 
-## Evals (v0.21.0+ — for AI-mediated FEATs only)
+## Evals (for AI-mediated FEATs only)
 _If this FEAT involves an LLM call in control flow, name the eval set this FEAT ships against. See
 `/evals` skill + the conscience-evals pattern. Failure modes categorized (Husain discipline)._
 - Eval set path: `docs/evals/FEAT-NNN.yml` _(or omit this section if no LLM in control flow)_
 
-## Failure states (v0.26.0+ — for AI-mediated FEATs only)
+## Failure states (for AI-mediated FEATs only)
 _If this FEAT puts an LLM in the user-visible path, name which of the five failure states it
 must handle (per `docs/ai-failure-states.md`). At minimum: which fallback handler is called for
 each applicable state. See `/ai-failure-states` skill._
@@ -154,7 +154,7 @@ _Open questions, links to the idea/canvas, anything the builder needs._
 - Source idea: [IDEA-NNN](IDEA-NNN-<slug>.md)
 - Canvas (if any): [IDEA-NNN-canvas.md](IDEA-NNN-canvas.md)
 
-## Build log (v0.172.0+ — the feature's own story, append-only)
+## Build log (the feature's own story, append-only)
 _This is the one place a feature's arc lives end-to-end. The devlog is per **session** and the
 changelog is per **release**; a feature that lands across several of either has its story shattered
 across them. This section is where it stays whole — appended each time a part lands, never rewritten._

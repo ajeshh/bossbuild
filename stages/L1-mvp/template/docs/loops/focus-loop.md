@@ -26,7 +26,7 @@ FEATs sitting in Building and not one shipped is not productivity — it's motio
 next thing nearly free, so "stop starting, start finishing" (Benson) is exactly the discipline that
 erodes first.
 
-This is the board → conscience bridge (IDEA-034 Track D). The other MVP moments catch *structural*
+This is the board → conscience bridge. The other MVP moments catch *structural*
 gaps (no budget, no failure-states, a named risk left untested). This one catches a *flow* problem the
 columns make visible: WIP accumulating with no graduation.
 
@@ -72,7 +72,7 @@ reward and **not** a generic "limit your WIP" lecture; the value is the specific
 finish first* cut. And for the *oldest* item still stuck in build (the board's `⌛` aged flag), the moment
 now offers the Shape-Up **circuit-breaker**: *finish it this session, or `/sunset` it honestly* — a thing
 perpetually 70%-done is WIP, not a plan (and a flag left at 5% forever is the same trap). It **offers**
-`/sunset`, never pushes it — IDEA-044's guardrail holds: the conscience points at the honest ending from inside
+`/sunset`, never pushes it — the guardrail holds: the conscience points at the honest ending from inside
 a moment that already fired; the founder chooses. Cohort-aware: returning-founder gets the blunt "you've started five things and
 shipped none — which one is real?"; first-product gets "finishing one beats starting three, here's
 why" taught plainly; indie-hacker gets the calm "small and done beats big and open" frame.

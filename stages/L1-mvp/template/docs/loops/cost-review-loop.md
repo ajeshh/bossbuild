@@ -17,16 +17,16 @@ drift_moment: cost-stale
 
 # Loop: cost-review (MVP) — the cadence the budget doc declared
 
-> The v0.25 audit named this as a discipline hole: *"`/ai-cost`'s weekly review cadence is
+> An audit named this as a discipline hole: *"`/ai-cost`'s weekly review cadence is
 > declared in `docs/ai-cost-budget.md` but no skill reads `.boss/cost-log.jsonl`. The cadence
-> is unenforced."* v0.30 closes that. /ai-cost declares the budget; /cost-review reads the
+> is unenforced."* This loop closes that. /ai-cost declares the budget; /cost-review reads the
 > ledger; both halves required.
 
 The loop opens once the founder has run `/ai-cost` and a budget doc exists. Until at least
 one cost-review file is recorded, the loop emits the `cost-stale` moment — *"you declared
 the budget; you haven't looked at the ledger yet."* The first review closes the loop.
 
-This is the **second time-of-work entry pattern** (after extraction-loop in v0.29). Entry is
+This is the **second time-of-work entry pattern** (after extraction-loop). Entry is
 *budget declared* (a deontic gate — once you commit to budget discipline you also commit to
 read it); exit is *first review recorded*. Future versions may add recurring re-opening when
 predicates gain time-awareness.
@@ -58,7 +58,7 @@ To re-open the loop (for recurring weekly reviews), the founder can either:
   the loop state today (predicate vocabulary doesn't compare file ages — same gap that
   extraction-loop hit; same trade-off).
 
-For v0.30, the loop is the **first-review inflection.** Future versions may add time-aware
+The loop is the **first-review inflection.** Future versions may add time-aware
 predicates (*"latest review file's mtime is older than 7 days"*) to enforce recurring cadence.
 
 ## Drift
@@ -71,7 +71,7 @@ mid-session running other discipline skills; ledger may be empty); medium if the
 older than a session or two; high if real spend has accumulated in the ledger without a
 review on record.
 
-The voice (cohort-aware via v0.20's framing): name the unread-ledger gap in one line, point
+The voice (cohort-aware): name the unread-ledger gap in one line, point
 at `/cost-review`, hand the decision back. Don't sound like a productivity-reward;
 *"you declared a budget — worth looking at what actually happened?"* lands better than
 *"great, time to review!"*
@@ -96,7 +96,7 @@ at `/cost-review`, hand the decision back. Don't sound like a productivity-rewar
 
 ## When this loop re-opens (today: requires founder action)
 
-v0.30 ships the first-review version. Once a review file exists, the loop stays closed —
+This is the first-review version. Once a review file exists, the loop stays closed —
 even if the review is stale (older than the cadence the doc claims). The recurring version
 is gated on the predicate vocabulary gaining time-awareness; same dependency as
 extraction-loop.

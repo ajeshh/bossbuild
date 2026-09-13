@@ -24,7 +24,7 @@ drift_moment: harvest
 
 Every other loop is an *absence* predicate — you made an idea and never made a canvas; you shipped a
 FEAT and never recorded a smoke check. Those catch work that was never done. None of them can catch
-work that *was* done and then quietly went out of date, because until v0.190.0 the runtime had no way
+work that *was* done and then quietly went out of date, because the runtime once had no way
 to say it: `exists`, `count_at_least` and `any_file_matches` all test content or existence, and none
 compares two timestamps.
 

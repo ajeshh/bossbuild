@@ -126,7 +126,7 @@ idea back?** A name does not. A category does not.
   second one is invisible work.
 - **Never touch anything else in the record.** This mode writes exactly one field.
 - **Use the folded form for nothing.** Write `gist: <one line>` inline. (A folded `gist: >` is
-  legal and parses correctly since v0.269.0, but a one-line value has no reason to be a block.)
+  legal and parses correctly, but a one-line value has no reason to be a block.)
 
 ## The validation check — BOSS's conscience
 
@@ -142,7 +142,7 @@ only time this fires.
 
 **What to say:** one spare line, in BOSS's voice — name the drift, ask what they'd want to *learn* (or
 *who they'd ask first* — Fitzpatrick-style, plain language), hand the decision back. Don't lecture, don't
-block the capture, don't make it a gate. **Voice lineage decision (v0.20.0):** lean Fitzpatrick-plain over
+block the capture, don't make it a gate. **Voice lineage decision:** lean Fitzpatrick-plain over
 Maurya-framework-name; the indie-hacker persona caught the prior mix and the cohort-portable version uses
 ask-someone language consistently. Tune it to them by ear; don't paste this verbatim:
 
@@ -150,7 +150,7 @@ ask-someone language consistently. Tune it to them by ear; don't paste this verb
 > to find out if any of them are real? `/canvas` is one way to pressure-test it — but a 15-minute call with
 > the right person beats it."*
 
-**Cohort awareness (v0.20.0+):** if `.boss/config.json` has a `cohort` field set, the conscience hook ships
+**Cohort awareness:** if `.boss/config.json` has a `cohort` field set, the conscience hook ships
 that to your context. *Read the framing and adjust the voice* — a `first-product` founder needs *teaching*
 (define terms inline; invite, never grade), a `returning-founder` wants the *harder cohort-aware question*
 ("is your conviction here at the level it needed to be for the last thing?"), a `vibe-virtuoso` deflects

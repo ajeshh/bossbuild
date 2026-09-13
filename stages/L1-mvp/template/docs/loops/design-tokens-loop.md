@@ -36,7 +36,7 @@ loop is structured so it **doesn't fire on fresh projects** (the entry predicate
 style declarations across `src/`; a brand-new repo has 0). It opens only when the founder has
 started accumulating UI — *the first UI commit inflection* (the early-start JIT rule).
 
-When open, the conscience surfaces a `coherence` moment (new in v0.21.0 — a flavor of caution
+When open, the conscience surfaces a `coherence` moment (a flavor of caution
 specific to system-vs-code drift): *"You're putting style into code without a token system. The
 AI doesn't have a reference, so each screen will reinvent colors and spacing — fast-forward to
 the 47 blues. Want me to run `/design-tokens-init` now?"*
@@ -74,8 +74,8 @@ Entry satisfied (≥3 style declarations) AND exit not satisfied (no tokens file
 - 6-10: medium
 - 11+: high (real drift)
 
-The voice (cohort-aware via v0.20's framing): name the drift in one line, offer to scaffold,
-hand the decision back. Override is recorded in devlog per IDEA-008.
+The voice (cohort-aware): name the drift in one line, offer to scaffold,
+hand the decision back. Override is recorded in devlog.
 
 ## How to remix
 
@@ -98,6 +98,6 @@ hand the decision back. Override is recorded in devlog per IDEA-008.
 - Tokens file deleted or renamed without code update → exit predicate fails again
 - New UI added in a way that bypasses tokens (raw hex codes proliferate) → arguably should
   re-open; today's predicate doesn't catch this (it just checks for *some* token consumption).
-  The v0.22 design-drift-loop will catch this case.
+  The V1 design-drift-loop catches this case.
 - Stack migration (e.g., Mantine → Tailwind) → exit predicate may transiently fail; re-init
   in the new stack

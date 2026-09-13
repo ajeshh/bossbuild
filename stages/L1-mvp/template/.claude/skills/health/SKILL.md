@@ -7,7 +7,7 @@ description: The post-launch verdict and the diagnosis in one read - is this wor
 
 The one post-launch verb. You have users; the question underneath every other decision is *have I
 found fit, and if the curve is sagging, which part is broken?* Those were two skills (`/pmf-check`
-and `/retain`) until v0.157.0, and keeping them apart made a founder pick which question they had
+and `/retain`), and keeping them apart made a founder pick which question they had
 before they had the answer that tells them.
 
 **A verdict and a diagnosis — never a dashboard.** It reads, it calls it, it names the one next move,
@@ -66,7 +66,7 @@ the numbers say fit but it feels like pushing a boulder, trust the boulder.**
 The hinge gates a *role transition* (`boss craft founder-role-shifts`); premature scaling is a
 founder doing the leader's job before they've done the operator's.
 
-- **🔴 pre-PMF — the default.** Lenses disagree or fall short. **You're still a seller**; the job is
+- **pre-PMF — the default.** Lenses disagree or fall short. **You're still a seller**; the job is
   fit, not growth. More `/interview`, sharper segment focus, product changes that move the 40% —
   **not** hiring, not paid acquisition, not a raise narrative. Say it plainly and without apology:
   *most products are here, most of the time, and that is not failure — it's the actual work.*

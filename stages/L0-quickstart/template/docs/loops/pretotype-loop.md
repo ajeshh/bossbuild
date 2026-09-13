@@ -28,10 +28,10 @@ declare ("pretotype should have happened before spec," when the project wants to
 
 This loop is **structural by default** — no `drift_moment` declared. The conscience doesn't nag
 about un-pretotyped ideas at every prompt; that's exactly the over-fires-on-fresh-project failure
-mode the v0.16 evals catch. Instead, the pretotype is *invited* by `/canvas`'s graduation moment
+mode the evals catch. Instead, the pretotype is *invited* by `/canvas`'s graduation moment
 ("Done!") and by the founder's own initiative via `/pretotype`. The loop tracks that it happened.
 
-(Future v0.22+: a project could optionally add `drift_moment: caution` to this loop spec if they
+(Future: a project could optionally add `drift_moment: caution` to this loop spec if they
 want the conscience to nudge on un-pretotyped ideas accumulating. JIT principle: don't make this
 the default ceremony.)
 

@@ -177,7 +177,7 @@ first is a sunset.
 - **Decided against** → continue below.
 - **Never got to it** → that isn't a decision, and `dropped` would be a lie about your own backlog.
   Leave it: *"this is still `seedling` — nothing has been decided, and that's a fine place for it to
-  sit."* ⛔ **Do not talk someone into closing an idea to tidy the list.** A tidy backlog is not the
+  sit."* **Do not talk someone into closing an idea to tidy the list.** A tidy backlog is not the
   goal; an honest one is.
 
 ## Three questions, then stop
@@ -200,7 +200,7 @@ experiment was thinking, not building.
      *"Decided against. Kept for the reasoning."* The reasoning is what stops future-you re-litigating
      it in six months, which is the only thing that makes this status worth having.
 
-   ⛔ **Do not ask both.** A `dropped` idea carrying a re-open trigger is a `deferred` idea wearing the
+   **Do not ask both.** A `dropped` idea carrying a re-open trigger is a `deferred` idea wearing the
    wrong word, and a status vocabulary that blurs is the failure `docs/IDS.md` was written to end.
 
 ## Then write it down, and stop
@@ -215,7 +215,7 @@ experiment was thinking, not building.
 
 ## Idea-level guardrails
 
-- ⛔ **Do NOT offer `/extract`.** The other two scopes harvest because something was *built* and a
+- **Do NOT offer `/extract`.** The other two scopes harvest because something was *built* and a
   pattern was *proven*. An unbuilt idea has proven nothing, and routing it UP is how a practice shelf
   fills with things that merely sounded good. **The harvest is the one movement that doesn't shrink to
   this scale — it disappears.**

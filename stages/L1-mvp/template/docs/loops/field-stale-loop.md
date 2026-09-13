@@ -3,7 +3,7 @@ id: field-stale-loop
 type: loop
 stage: L1-mvp
 runner_type: hook
-attributed_to: [Ajesh Shah (IDEA-093 — the product artifacts are write-only)]
+attributed_to: [Ajesh Shah (the product artifacts are write-only)]
 also_relevant: [Rob Fitzpatrick (what they do beats what they said, and both have a date on them), Richard Rumelt (a diagnosis that has stopped being true is worse than none)]
 entry:
   - exists: { path: docs/competition }
@@ -71,5 +71,5 @@ closes this is the founder doing something to the file.* A quarter later it open
 `/comp-eval recheck` (the whole field, or one rival) · `/comp-eval add <name>` if what prompted the
 thought was hearing about a new one · the canvas **Problem** cell, which cites this field rather
 than duplicating it, and is the place a stale rival does the most damage. `/spec` reads the field
-too as of v0.284.0, when the FEAT being written *is* the differentiator — which is the other half of
+too when the FEAT being written *is* the differentiator — which is the other half of
 this artifact finally being read by something.

@@ -23,7 +23,7 @@ drift_moment: coordination
 
 # Loop: coordination (MVP) — the cofounder seam AI quietly erodes
 
-This is the founder layer's conscience moment (IDEA-037 / FEAT-021 slice 5b). It exists because of the
+This is the founder layer's conscience moment. It exists because of the
 single most-replicated finding in human-AI teaming: **AI accelerates each individual but does not hold the
 team together** — and worse, the human-to-human seam erodes *invisibly* (Ju & Aral RCT, n=2,234:
 social/emotional communication dropped ~27% while *perceived* teamwork quality stayed flat). A two-person

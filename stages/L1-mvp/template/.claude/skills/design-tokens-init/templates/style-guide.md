@@ -5,7 +5,7 @@
 > **Why both files exist, and why neither replaces the other:** tokens are the *what* (the values and
 > their names); the style guide is the *how and why* (how they compose into patterns, and what
 > decision each pattern encodes). `/design-review` and `designer` both read this
-> file — it was read by three consumers and written by nothing until v0.146.0.
+> file — it was read by three consumers and written by nothing for a long time.
 >
 > Keep it short. A style guide nobody re-reads is a style guide nobody follows; three pages of
 > filled-in decisions beat thirty of aspiration.

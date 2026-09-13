@@ -20,7 +20,7 @@ accumulates. `/ux-check` catches that.
 - A FEAT just landed and is functionally working — *before* it's considered "shipped."
 - A user reported a UX issue — start `/ux-check` here, walk to where the issue surfaces.
 - Routine audit — run against the most-recently-shipped FEATs every 1-2 weeks.
-- A new persona-reaction (v0.19) surfaced a UX concern — `/ux-check` validates whether the
+- A new persona-reaction surfaced a UX concern — `/ux-check` validates whether the
   persona's read matches the shipped reality.
 
 ## Step 0 — read the shape, and be willing to stop
@@ -260,7 +260,7 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
 - **Missing states** → these are the most common shipped-UX failures; track them as a category
   in `docs/design/ux-check-summary.md` so you can see if a particular state-category is your
   pattern weakness
-- **AI-UX issues** → may surface needs for the v0.20 cohort-aware-conscience design (the
+- **AI-UX issues** → may surface needs for the cohort-aware conscience (the
   conscience speaks differently per cohort about how to fix AI-UX)
 
 ## Rules
@@ -273,21 +273,21 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
   don't flatten the list.
 - **Capture every check.** Without `docs/design/ux-check-*.md` files, the discipline doesn't
   compound.
-- 🔴 **Walk `docs/product/JOURNEY.md`, not a journey you improvise (v0.284.0).** This skill's whole
-  premise is *walk the actual user journey, not the spec* — and before v0.284.0 there was no journey
-  on disk to walk, so every run invented one, which meant two runs a month apart checked different
+- **Walk `docs/product/JOURNEY.md`, not a journey you improvise.** This skill's whole
+  premise is *walk the actual user journey, not the spec* — without a journey
+  on disk to walk, every run invents one, which means two runs a month apart checked different
   products. Read the map: which **stage** does this surface sit in, what is the row's *where they
   leave*, and does the screen in front of you do anything about it? Then check the **edge users**
   table against what you just walked. **Not on the map?** That is a finding worth more than the
   review — a shipped surface serving no stage is either a gap in the map or a feature serving nobody,
   and you are the first person positioned to tell which.
-- 🔴 **Open `docs/personas/` and the FEAT's `for:` field — don't just recommend it (v0.284.0).**
+- **Open `docs/personas/` and the FEAT's `for:` field — don't just recommend it.**
   This rule said *"pair with personas where relevant"* for twelve releases and named no path, which
   made it a suggestion the next session was free to skip. **Read the persona this surface is for**
   (the FEAT frontmatter's `for:` slug, or the only persona there is), and walk its `pains` and its
   *what we don't know yet* block against what is actually on the screen. A review run without
   opening the file is a review of a generic user, and this product does not have one.
-- **Pair with personas (v0.19) where relevant** — *carrying `/persona`'s discount with them.* A
+- **Pair with personas where relevant** — *carrying `/persona`'s discount with them.* A
   persona's reaction can surface cohort-specific failures the heuristic walk misses. It can also
   like your flow more than a real person would: synthetic readers skew agreeable, and the research
   on this is consistent enough to plan around (NN/g, 2024). **A persona's approval is not a pass.**

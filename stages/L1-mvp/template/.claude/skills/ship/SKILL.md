@@ -190,5 +190,5 @@ too, and a small current corpus beats a big one with good search. Depth is in `b
   at what's missing — don't invent a deploy.
 - **The demand voicing is once, suggestive, and situation-not-person.** Reachable → discoverable: name the
   first-user question at the live moment, point at `mentor-customers`, drop it. It's the demand question, not a
-  marketing checklist, and never a judgment of the founder. (Closes the distribution-leg asymmetry IDEA-041
-  named — voiced at the `/ship` moment rather than as an unprompted hook.)
+  marketing checklist, and never a judgment of the founder. (The distribution-leg question,
+  voiced at the `/ship` moment rather than as an unprompted hook.)

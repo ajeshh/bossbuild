@@ -78,8 +78,8 @@ Entry satisfied (≥1 LLM SDK call) AND exit not satisfied (no budget file OR no
 Confidence is medium on first detection (one call site might be exploratory) and high once
 there are multiple call sites — the math compounds with each user-facing path.
 
-The voice (cohort-aware via v0.20's framing): name the gap in one line, point at `/ai-cost`,
-hand the decision back. Never blocks. Override is recorded in devlog per IDEA-008.
+The voice (cohort-aware): name the gap in one line, point at `/ai-cost`,
+hand the decision back. Never blocks. Override is recorded in devlog.
 
 ## How to remix
 

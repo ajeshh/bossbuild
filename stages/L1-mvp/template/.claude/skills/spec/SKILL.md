@@ -19,12 +19,11 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 **Rung: MVP.** If this project is **earlier** than that, don't run this — leave the seam instead:
 **Write down what 'working' means for the feature while you are building it — one sentence, in the commit or a comment. It costs nothing now and it is the only thing that makes a test writable later.** That is the whole ask; it is *not* a spec convention, an id scheme, acceptance-criteria fields, a template. You can write a spec any day. You cannot reconstruct what you MEANT by 'correct' six months after you built it — and an agent asked to test that feature later will happily write assertions against whatever the code already does.
 
-## Step 0b — read the sequence before you spec against it (v0.284.0)
+## Step 0b — read the sequence before you spec against it
 
 `/roadmap` weighs everything at once into a small bet-list with fixed appetites and a standing
-NO-list, then points at this skill. **Until v0.284.0 `/spec` could not see either of them** —
-`docs/roadmap/` was referenced by exactly one line in the whole shipped surface, inside the skill
-that writes it. A sequence nothing downstream reads is a document, not a plan.
+NO-list, then points at this skill. **A sequence nothing downstream reads is a document, not a plan** — so this
+skill reads `docs/roadmap/` rather than leaving it referenced only by the skill that writes it.
 
 Read both, and say something **once**. Never block; this is a mirror, not a gate.
 
@@ -41,7 +40,7 @@ Read both, and say something **once**. Never block; this is a mirror, not a gate
   plenty of good FEATs are a bug, a small fix, or something the founder simply decided to do. **The
   point is that it was noticed, not that it was authorized.**
 
-- **`docs/competition/` — two reads, and the second is narrower than it looks (v0.294.0).**
+- **`docs/competition/` — two reads, and the second is narrower than it looks.**
   *When this FEAT is the differentiator:* the rival's **`why they might win`** line, held against the
   acceptance criteria — *does what I'm about to build actually beat their reason?* *When a rival
   simply also has this feature:* that rival's **`## Where it breaks`** section, read into **What
@@ -55,7 +54,7 @@ Read both, and say something **once**. Never block; this is a mirror, not a gate
   the people who already shipped X shaped it, and what their users therefore expect. Read it into
   the **Flow** section and into the *Assumptions* you would otherwise have guessed.
 
-  🔴 **The line, and it is about timing, not content.** Reading how rivals implement a feature
+  **The line, and it is about timing, not content.** Reading how rivals implement a feature
   *after* deciding to build it sharpens the spec. Reading their feature *list* to decide *what* to
   build is the parity trap — and that read belongs to `/roadmap`, where the NO-list and the EVID
   grade outrank *"a rival has it."* Their users' **praise** stays out of *what wrong looks like*,
@@ -73,10 +72,10 @@ Read both, and say something **once**. Never block; this is a mirror, not a gate
 refuses to run at all — so their absence is the expected state for most projects at this rung, and
 treating it as a gap would be exactly the ceremony PRINCIPLE #2 refuses.
 
-- **Is this the second FEAT of something bigger? Then write the `program:` line (v0.312.0).** Grep
+- **Is this the second FEAT of something bigger? Then write the `program:` line.** Grep
   `docs/ideas/` for another FEAT with the same `from:` IDEA, or one whose `gist:` names the same
   thing this one does. If there is one, the two belong to a **program** — the rung between a feature
-  and the venture that `docs/IDS.md` has carried since v0.199.0 and no verb ever offered: a short slug
+  and the venture that `docs/IDS.md` has carried and no verb ever offered: a short slug
   on both records (`program: checkout-rebuild`), nothing created first. `boss records --programs`
   and `boss board --html` then answer the question a column board can't — *which of the things I
   decided to do is actually stuck.* It graduates to a `PROG-NNN` record only when there is reasoning
@@ -90,7 +89,7 @@ treating it as a gap would be exactly the ceremony PRINCIPLE #2 refuses.
 - You're ready to write code against it. If you're still figuring out *whether* to build, go back to
   `/idea` or `/canvas`; don't spec a maybe.
 
-## Moment #4 — restraint check (v0.21.0+)
+## Moment #4 — restraint check
 
 Before any FEAT spec is created, check `docs/loops/spec-loop.md` (which declares spec-loop's entry
 predicate: canvas-loop must be closed for the active idea). If canvas-loop is NOT closed for the idea
@@ -102,7 +101,7 @@ riskiest assumption is unfilled — **surface BOSS's restraint nudge in your own
 > right?" but "is it worth building?"** (the bottleneck moved from *how* to build to *what* to build —
 > Ng/Appleton, 2026). So don't surface a checklist gap; surface the substantive one: **who is this
 > for, and what's the bet that could sink it?** Name it in one line, offer to back up to /canvas, hand
-> the decision back. Never block. The founder can override (record in `docs/devlog.md` with IDEA-008's
+> the decision back. Never block. The founder can override (record in `docs/devlog.md` with the
 > grammar: `- **OVERRIDE:** proceeded `spec-loop` without `canvas-loop` exit — rationale: <substantive
 > reason>`).
 >
@@ -175,7 +174,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
    currently in `building` status.
 2. Allocate the next free `FEAT-NNN` (parallel numbering to IDEA — same N if it's a clean promotion,
    otherwise next free integer; grep the **files** under `docs/` for existing FEATs, per `docs/IDS.md`).
-2b. **Name the user, from the persona that already exists (v0.284.0).** Set `for:` in the FEAT's
+2b. **Name the user, from the persona that already exists.** Set `for:` in the FEAT's
    frontmatter before you draft a line of it.
 
    Read `docs/personas/` first. If a persona is there, `for:` is its slug and **you read the file** —
@@ -200,7 +199,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
    > for user stories, tell them that plainly rather than generating a second artifact that says
    > less.
 
-3. **The elicitation pass — say back what you had to guess (v0.172.0+).** Draft the spec from what
+3. **The elicitation pass — say back what you had to guess.** Draft the spec from what
    you actually have, then **before you show it, separate what you were told from what you filled
    in.** This is the cheapest step in the whole skill and the one that decides whether the build
    matches the founder's head: a model asked to spec a feature will complete every gap fluently,
@@ -229,7 +228,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
    > interview, you've turned a spec into a PRD written *instead of* the thinking — which is the
    > exact failure Cagan names and the one BOSS's restraint check above already guards.
 
-4. **The three paths — rungs 2–4 of the testing ladder (v0.179.0+).** Acceptance criteria say what
+4. **The three paths — rungs 2–4 of the testing ladder.** Acceptance criteria say what
    *should* happen. This asks the other half: **which paths must not break, and what would it cost
    if they did?** `boss craft testing-with-agents` carries a six-rung ladder of what to test
    first when you have nothing; `/smoke` delivers rung 1 and `/evals` + `/judge-traces` deliver 5
@@ -273,7 +272,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
    The stamp goes on **both** records because the board ages a card by the column it is in, not
    by its type — and an idea sitting in Building is the shape that actually goes stale here
    (most ideas never earn a FEAT at all).
-6b. **Stamp the working context (v0.293.0).** Set **Active FEAT** in
+6b. **Stamp the working context.** Set **Active FEAT** in
    `.claude/rules/feature-context.md` to this one, and clear the previous feature's
    `Found while building` and `Open questions` rows if they were left behind (`/close` should have
    compressed them; it is not always run). Carry across the **Still unknown** lines you just wrote
@@ -300,7 +299,7 @@ that when you're choosing among many candidates, not just reacting to one.)_
      level by design (no P0/P1/P2 ladder — that turns the board into a planning surface you tend
      instead of ship). The honest caveat the seasoned hand would add: *re-prioritizing isn't progress;
      finishing is.* Most FEATs need no priority field at all.
-7b. **If this FEAT has a user-facing surface, name the flow — and cut a step (v0.281.0).** Step 4
+7b. **If this FEAT has a user-facing surface, name the flow — and cut a step.** Step 4
    asked which paths must not break. This asks the question upstream of it: **is this sequence right
    at all?**
 
@@ -397,7 +396,7 @@ any FEAT that creates or changes stored data, answer these in the record:
 - **Which columns are queried?** Index those. Don't index speculatively.
 - **What's the narrowest type that holds the data?** A type is documentation. So is every
   NOT NULL / UNIQUE / CHECK / foreign key — they're cheaper in the database than in app code.
-- 🔴 **Who can read a row, who can write it, and which column proves it?** (usually an owner or
+- **Who can read a row, who can write it, and which column proves it?** (usually an owner or
   tenant id). **A table whose answer is "the app checks" is unprotected the moment anything else —
   an agent, a script, a leaked key — talks to the database.** If this project reaches the database
   from the client with a publishable key, that rule is the only thing between your users and the

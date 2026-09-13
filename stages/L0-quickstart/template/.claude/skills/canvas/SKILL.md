@@ -19,8 +19,8 @@ is ready to `boss unlock mvp`.
 ## Frames — one set of answers, several ways to read them
 
 **A canvas is a set of answers, not a layout.** The Humane Product Canvas is the *default frame*, not
-the only one (DEC-004) — it was never meant to be, and became the sole spine by inheritance from
-a v0.4.0 release note rather than by decision. So the answers live in one place and you project them:
+the only one — it was never meant to be, and became the sole spine by inheritance from
+a release note rather than by decision. So the answers live in one place and you project them:
 
 | Frame | Reads as | Use when |
 |---|---|---|
@@ -32,7 +32,7 @@ a v0.4.0 release note rather than by decision. So the answers live in one place 
 **The founder never picks a framework.** They answer questions; the frame is a view they can switch,
 and switching never loses an answer or asks anything twice.
 
-### 🔴 The floor — what a frame may and may not change
+### The floor — what a frame may and may not change
 
 A frame changes **layout and vocabulary**. It does **not** change which cells are required.
 
@@ -113,13 +113,13 @@ One short block near the top, built only from things you can point at:
 > rungs). Nobody has been observed using it and nobody has committed anything. Newest record:
 > **19 days old**. Two cells below are still open."*
 
-🔴 **Do NOT write "N of M claims are backed."** It reads as the most rigorous line on the page and it
+**Do NOT write "N of M claims are backed."** It reads as the most rigorous line on the page and it
 is the softest: **M is produced by deciding what counts as a claim**, so forgetting one shrinks the
 denominator and *raises* the backed fraction. A ratio that improves when you look less carefully is a
 comfort device wearing a lab coat. Count records, grades, ages and open cells — things that exist as
 files — never a fraction whose bottom half you invented while rendering.
 
-🔴 **Coverage is a fact; readiness is a verdict.** BOSS never renders a verdict about your venture —
+**Coverage is a fact; readiness is a verdict.** BOSS never renders a verdict about your venture —
 **position, never a grade.** **Never render an "investor-readiness: 62%", a letter grade, a traffic
 light, or a progress bar.** The test: *could this number go DOWN when the founder learns something
 true?* The record count can — supersede an `EVID` and it drops. A readiness score never does, which
@@ -148,7 +148,7 @@ meeting and no information, which costs more than the awkward version.
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 
-**Rung: Quickstart.** If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: the only rung below this one is step 0 — the plugin door, where a founder says the idea and hears it back before any file exists (IDEA-099) — and a canvas has nothing to stand on there. Inside a project, the canvas IS the seed.
+**Rung: Quickstart.** If this project is **earlier** than that, don't run this — and there is **no seam** worth planting, which is a complete answer rather than a gap: the only rung below this one is step 0 — the plugin door, where a founder says the idea and hears it back before any file exists — and a canvas has nothing to stand on there. Inside a project, the canvas IS the seed.
 
 ## How to run it
 
@@ -161,7 +161,7 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 2. Open (or create) `docs/ideas/IDEA-NNN-canvas.md` from the template below.
 3. **Don't interrogate.** Ask about 2-4 cells at a time, starting with the most uncertain. Pull
    answers from the idea's "Current shape" + capture log; only ask what's missing.
-   **Read `motivation:` and `success_looks_like:` from the IDEA doc first** (IDEA-097 — `/boss`
+   **Read `motivation:` and `success_looks_like:` from the IDEA doc first** (`/boss`
    asks them at spin-up). They decide two things below without a question: which branch of
    **Business Model** to open (`revenue` → the earning branch; anything else → the *not every
    project is trying to earn* branch, and don't offer both), and what sits in **Metrics** beside
@@ -224,7 +224,7 @@ _How it shows up in a life, how people engage, how it sustains itself._
 | **What it takes to deliver** _(live when the answer isn't "just me and a laptop")_ | What do you need to *have*, and to *do*, for this to work at all? | The few resources and repeated activities the promise depends on — the data you need access to, the thing you must do every week, the skill you can't outsource. Keep it to what is genuinely load-bearing. |
 | **Key Partnerships** _(live only if someone else is load-bearing)_ | Is there anyone whose cooperation this cannot work without? | A supplier, a platform, a regulator, a distribution partner, a data source. **Most ventures have none — `_(not yet)_` is the common and correct answer.** Ask only when the domain implies one (regulated, marketplace, hardware, embedded).|
 
-> ### 🔴 Not every project is trying to earn — and this cell stays live anyway
+> ### Not every project is trying to earn — and this cell stays live anyway
 >
 > Open source, Creative Commons, a research tool, a thing built for friends, a thing built for fun.
 > **The humane prompt above is already the right question for all of them** — *how will you sustain
@@ -248,12 +248,12 @@ _How it shows up in a life, how people engage, how it sustains itself._
 > maintainer exhaustion, not of a missing business model — and a founder who has answered it has
 > answered the thing that actually decides whether the project survives.
 >
-> ⛔ **Never talk a founder into monetizing** because the cell would look better filled. Some tools
+> **Never talk a founder into monetizing** because the cell would look better filled. Some tools
 > should stay free — that is BOSS's own position, not a concession — and the conscience does not sell.
 
 > **These four are additive and mostly dormant.** They exist so the canvas can answer a conventional
-> reader (a Lean or BMC audience, an operator, an investor) without a second artifact — see
-> DEC-004. **Do not walk a founder through them at Quickstart.** Each carries the condition that
+> reader (a Lean or BMC audience, an operator, an investor) without a second artifact.
+> **Do not walk a founder through them at Quickstart.** Each carries the condition that
 > makes it live; until that condition holds, `_(not yet)_` is the honest answer and the canvas is not
 > less complete for it. The frame layer will formalise this gating; until then, judgement does.
 
@@ -361,7 +361,7 @@ place to sit; mark it Done only when it's genuinely earned, not as a box to tick
 - Humane-first. The Risks & Harms cell is not optional polish — surface real harm honestly, even when inconvenient.
 - **The frame never changes the required set.** Risks & Harms and Principles render in Lean and BMC
   too. Un-defaulting the *frame* is not un-defaulting the *ethics* — humane stopped being the only
-  frame and became the floor under all of them (DEC-004).
+  frame and became the floor under all of them.
 - **Switching frames never asks a question twice.** If an answer exists under any name, it renders
   under its new one. A founder who switches views and gets re-interviewed will not switch again.
 - Just-in-time, not all-at-once. Blanks are data; never fabricate answers to look complete.

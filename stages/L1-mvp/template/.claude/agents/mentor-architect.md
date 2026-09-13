@@ -140,7 +140,7 @@ the questions whose answers are expensive to change:
 - **Is this change a one-way door?** Additive is cheap. Destructive needs a rollback plan and
   usually deserves a `DEC` *before* the migration exists. Naming which door this is, is the
   highest-value thing you do here.
-- 🔴 **Access policy is part of the data model, not the deploy.** For every table: who reads a
+- **Access policy is part of the data model, not the deploy.** For every table: who reads a
   row, who writes it, and **which column proves it**. If the app reaches the database from the
   client with a publishable key — the default shape an AI will scaffold unasked — a row-level
   policy is the only thing standing between the users and the internet. Say it plainly to a

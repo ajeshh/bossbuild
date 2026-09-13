@@ -30,7 +30,7 @@ mentors who have nothing to add is noise). Read which mentors are installed (`.b
 `agents`, the `mentor-*` ones) — the board grows by mode, so consult what's seated:
 - MVP seats `mentor-architect` + `mentor-customers` + `mentor-cofounder` + `mentor-capital`. **V1 seats
   no new mentors** — `mentor-capital` is the single venture coach and its remit *widens* there (the raise
-  question and the investor story become live), which is the point of DEC-006. Scale adds
+  question and the investor story become live), which is the point of one coach whose remit scales. Scale adds
   `mentor-hiring`. `mentor-founder` is seated from Quickstart and **always** gets a voice on a real decision.
 - Map the question to lenses: a raise question → `mentor-capital` + `mentor-founder`; a build-speed
   question → `mentor-architect` + `mentor-founder`; a pricing question → `mentor-capital` +
@@ -38,14 +38,14 @@ mentors who have nothing to add is noise). Read which mentors are installed (`.b
 - **One seat can still hold a split.** `mentor-capital` covers the model, the raise and the story, and
   is required to surface its *own* internal tension rather than resolve it quietly. On a raise
   question, expect a divided answer from it — and put that division on the panel as though it came
-  from two mentors, because it did until v0.189.0.
+  from two mentors, because it used to.
 - **The humane lens has no chair, on purpose** — an ethics advisor is a door you can decline to open.
   *You* carry it, in step 4, on every panel. Don't route it to an agent; there isn't one.
 
 **3. Get each mentor's take in their own voice.** Consult each relevant mentor (their agent), with the
 *same* question + enough context (read the canvas / RESUME / the relevant FEAT so they're grounded).
 **Include the founder's own intent in that context, verbatim** — `motivation:` and
-`success_looks_like:` from the active IDEA doc (IDEA-097; `/boss` asks them at spin-up). A mentor
+`success_looks_like:` from the active IDEA doc (`/boss` asks them at spin-up). A mentor
 advising a `learning` or `community` founder as if they were chasing revenue gives confident advice
 to the wrong person: `mentor-capital` should default to *"not yet"* harder on the raise half of its
 seat, and `mentor-customers` should read *"the first ten"* as the first ten who come back, not who pay.
@@ -81,7 +81,7 @@ Rules of the round, and they are the whole point:
   honest answer to *"should we raise?"* is often two-sided — *"the raise case says X, the economics
   say Y."* Render that on the panel exactly as you would a disagreement between two chairs. If it
   ever comes back one-sided on a question that plainly has both, that is the merge failing and worth
-  saying out loud (DEC-006's falsifier).
+  saying out loud — it is the falsifier for seating one coach instead of two.
 - **What moved** — if step 3.5 ran, one line per mentor that was shown the other side:
   *"`mentor-capital` moved on hearing `mentor-customers`' point about the channel cost — it now says
   the margin question is second; `mentor-customers` held."* A hold is a result too — say it as
@@ -100,7 +100,7 @@ know>."* Mentors are advisory. They inform; you decide. Record the call (and whi
 and why) in `docs/devlog.md` so future-you sees the reasoning, not just the outcome.
 
 ## If a venture brain exists
-If `.boss/brain/` is present (the conscience's persistent read on this venture — IDEA-022), read it
+If `.boss/brain/` is present (the conscience's persistent read on this venture), read it
 for context before convening, and append a one-line note on what was decided after. The board's reads
 sharpen the brain; the brain grounds the board. (Skip silently if it isn't there.)
 

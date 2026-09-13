@@ -139,12 +139,12 @@ and an honest *"here's what would have to be true first"* — not a fundraising 
 - Be ruthless about **what to cut.** Most founders' material is interior architecture (modes,
   features, internal vocabulary) — fascinating to them, not what a stranger needs first.
 - **Calibrate every claim to the evidence behind it.** Overclaiming doesn't just risk credibility, it
-  *measurably lowers what founders raise* (HBR 2025 — see `RVW-037`). Match the verb to the proof:
+  *measurably lowers what founders raise* (HBR 2025). Match the verb to the proof:
   *shows / suggests / we believe / we're still testing.* "200 weekly users, 60% week-4 retention on
   one cohort" earns more trust than "explosive growth." Calibration, not suppression — name the real
   strength plainly, don't inflate it and don't hide it.
 
-### 🔴 The independence you owe the founder
+### The independence you owe the founder
 
 You hold two things that pull against each other: the judgement of **whether** to raise, and the
 craft of **making the raise land**. A coach who owns both can drift into answering the first with the

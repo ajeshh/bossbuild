@@ -27,7 +27,7 @@ becomes a live question. This loop closes when at least one active idea has a sh
 assumption — the gating cell of the Humane Product Canvas.
 
 This loop's drift IS moment #1 of the conscience — the "what does this prove?" caution. Until
-v0.18.0 the detector was hand-coded in bash; now it's a generic predicate evaluation on this
+the detector was once hand-coded in bash; now it's a generic predicate evaluation on this
 loop's entry/exit.
 
 ## Entry artifact
@@ -48,7 +48,7 @@ The `/canvas` skill is how this loop is run.
 ## Exit artifact
 
 ≥1 active idea has a canvas (`IDEA-NNN-canvas.md`) with a *real* riskiest-assumption line — at
-least 3 alphanumeric chars, not a placeholder, not a single `?`. The regex tightening (v0.16.0)
+least 3 alphanumeric chars, not a placeholder, not a single `?`. The regex tightening
 specifically rejects `_(...)`, `_TBD_`, `?`, and other minimal-substance fills.
 
 The exit also filters by *active idea* — a filled canvas for a dropped idea doesn't satisfy the
