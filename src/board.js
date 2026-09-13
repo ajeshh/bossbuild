@@ -918,11 +918,12 @@ function shippedTimeline(cards) {
          padding: 40px 24px 64px; -webkit-font-smoothing: antialiased; }
   .wrap { max-width: 1160px; margin: 0 auto; }
   header { margin: 0 0 6px; }
-  /* The one hi-vis mark on the page — a stencilled block, the way site signage
-     marks the thing that matters. Brand, not state. */
-  .kicker { display: inline-block; font: 700 10px/1 var(--mono); text-transform: uppercase;
-            letter-spacing: .18em; color: var(--ink-on-hivis); background: var(--hivis);
-            padding: 5px 8px 4px; border-radius: var(--r, 2px); margin: 0 0 10px; }
+  /* No label above the heading. The page used to open with a tracked ALL-CAPS hi-vis tag
+     reading "Board" — the kicker-above-heading tell, and it said nothing the <title> and the
+     h1 did not. The one hi-vis mark on the page is the current month on the timeline.
+     2026-09-12: nothing on this page is set under 12px, nothing is uppercased by CSS, and
+     dimming is done with --muted, never opacity — the same floors the website holds. */
+  h1 small { display: block; font: 500 13px/1.4 var(--mono); color: var(--muted); margin-bottom: 4px; }
   h1 { font: 650 24px/1.2 var(--mono); letter-spacing: -.02em; margin: 0; }
   .evidence { color: var(--muted); font-size: 13.5px; margin: 8px 0 0; max-width: 64ch; }
   .evidence.points { color: var(--hivis-text); font-weight: 600; }
@@ -938,7 +939,7 @@ function shippedTimeline(cards) {
      with nothing shipped is a fact worth seeing, not a failing grade. */
   .programs { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
   .programs h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px;
-    font: 600 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+    font: 600 12px/1 var(--mono); color: var(--muted); }
   .programs h2 .n { font-weight: 700; color: var(--ink); }
   .progs { display: grid; gap: 7px; }
   .prog { display: grid; grid-template-columns: minmax(120px, 200px) 1fr auto; gap: 12px; align-items: center; }
@@ -946,14 +947,14 @@ function shippedTimeline(cards) {
   .prog-bar { height: 8px; background: var(--sunk); border-radius: 2px; overflow: hidden; }
   .prog-bar i { display: block; height: 100%; background: var(--stage-3); }
   .prog.stuck .prog-bar { box-shadow: inset 0 0 0 1px var(--caution); }
-  .prog-n { font: 11px/1 var(--mono); color: var(--ink); min-width: 34px; text-align: right; }
+  .prog-n { font: 12px/1 var(--mono); color: var(--ink); min-width: 34px; text-align: right; }
   .prog-n .muted { color: var(--muted); }
   /* Shipped over time — cadence, never a scoreboard. One mark per shipped item,
      stacked in its month. No intensity ramp and no empty-square guilt: a quiet
      month is a fact about the month, not a verdict on the founder. */
   .timeline { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
   .timeline h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px;
-    font: 600 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+    font: 600 12px/1 var(--mono); color: var(--muted); }
   .timeline h2 .n { font-weight: 700; color: var(--ink); }
   .tl { display: flex; gap: 3px; align-items: flex-end; overflow-x: auto; padding-bottom: 2px; }
   .tl-m { flex: 1 0 26px; min-width: 26px; display: flex; flex-direction: column;
@@ -964,9 +965,9 @@ function shippedTimeline(cards) {
   .tl-marks i { display: block; height: 6px; background: var(--stage-3); border-radius: 1px; }
   /* The most recent month is the only hi-vis mark on the strip — where you are now. */
   .tl-m:last-child .tl-marks i { background: var(--hivis); }
-  .tl-label { font: 10px/1 var(--mono); color: var(--muted); text-align: center;
+  .tl-label { font: 12px/1 var(--mono); color: var(--muted); text-align: center;
     white-space: nowrap; overflow: hidden; }
-  .tl-foot { margin: 10px 0 0; font: 11px/1.5 var(--mono); color: var(--muted); }
+  .tl-foot { margin: 10px 0 0; font: 12px/1.5 var(--mono); color: var(--muted); }
   .banner { margin: 0 0 14px; padding: 11px 14px; font-size: 13px; border-radius: 2px;
             border: 1px solid var(--bar); border-left-width: 3px;
             background: color-mix(in srgb, var(--bar) 8%, var(--panel)); }
@@ -980,16 +981,17 @@ function shippedTimeline(cards) {
   .col { min-width: 0; }
   /* Position is weight, not hue: the rule and the label gain ink left to right. */
   .col h2 { display: flex; align-items: center; justify-content: space-between; gap: 8px;
-            font: 650 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .1em;
+            font: 650 12px/1 var(--mono);
             color: var(--hue); margin: 0 0 12px; padding: 0 1px 9px;
             border-bottom: 2px solid var(--hue); }
-  .col h2 .n { color: var(--muted); font-weight: 650; font-size: 11px; }
+  .col h2 .n { color: var(--muted); font-weight: 650; font-size: 12px; }
   .cards { display: flex; flex-direction: column; gap: 8px; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--hue);
+  /* No coloured edge on the card: the column already says where it is (the header rule is in
+     the hue), and a 3px accent on one side of a card is the most recognisable generated-UI tell. */
+  .card { background: var(--panel); border: 1px solid var(--line);
           border-radius: 2px; padding: 11px 13px 12px; }
   .card .id { display: flex; align-items: center; justify-content: space-between; gap: 6px;
-              font: 650 10px/1.3 var(--mono); color: var(--muted); letter-spacing: .06em;
-              text-transform: uppercase; }
+              font: 650 12px/1.3 var(--mono); color: var(--muted); }
   .card { transition: border-color .12s ease; }
   .card:hover, .card:focus-visible { border-color: var(--muted); outline: none; }
   .card .title { font-size: 14px; font-weight: 600; line-height: 1.4; margin-top: 5px;
@@ -997,7 +999,7 @@ function shippedTimeline(cards) {
   /* The gist — two lines at rest, all of it on hover or keyboard focus. The card is focusable so
      this is reachable by Tab, not only by a pointer; a disclosure you can only reach with a mouse
      is a disclosure half the readers do not have. */
-  .card .gist { font-size: 12.5px; line-height: 1.45; color: var(--muted); margin: 7px 0 0;
+  .card .gist { font-size: 13px; line-height: 1.45; color: var(--muted); margin: 7px 0 0;
                 overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical;
                 -webkit-line-clamp: 2; line-clamp: 2; overflow-wrap: anywhere; }
   .card:hover .gist, .card:focus-within .gist, .card:focus-visible .gist { -webkit-line-clamp: unset; line-clamp: unset; }
@@ -1005,16 +1007,16 @@ function shippedTimeline(cards) {
   /* Parked — folded by default. Present, subordinate, never gone: the reasoning is the point. */
   .parked { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
   .parked summary { cursor: pointer; list-style: none; user-select: none;
-    font: 600 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+    font: 600 12px/1 var(--mono); color: var(--muted); }
   .parked summary::-webkit-details-marker { display: none; }
   .parked summary::before { content: "+ "; }
   .parked details[open] summary::before { content: "− "; }
   .parked summary b { color: var(--ink); font-weight: 700; }
-  .parked summary .muted { text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .parked summary .muted { font-weight: 400; }
   .parked .cards { margin-top: 12px; display: grid; gap: 8px;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); opacity: .75; }
-  .parked .card { border-left-color: var(--line); }
-  .card .prio { font: 700 9.5px/1 var(--mono); letter-spacing: .06em; color: var(--hivis-text);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .parked .card .title { color: var(--muted); }
+  .card .prio { font: 700 12px/1 var(--mono); color: var(--hivis-text);
                 border: 1px solid color-mix(in srgb, var(--hivis) 45%, transparent);
                 border-radius: 2px; padding: 3px 6px; }
   /* Stuck cards pull the eye with signage, which is what signage is for. */
@@ -1024,30 +1026,29 @@ function shippedTimeline(cards) {
   .prog { display: flex; align-items: center; gap: 3px; margin-top: 9px; }
   .prog i { width: 13px; height: 4px; background: var(--line); flex: none; }
   .prog i.on { background: var(--hue); }
-  .prog b { font: 650 10px/1 var(--mono); color: var(--muted); margin-left: 5px; letter-spacing: .04em; }
+  .prog b { font: 650 12px/1 var(--mono); color: var(--muted); margin-left: 5px; }
   .flag { display: inline-flex; align-items: center; margin-top: 9px;
-          font: 650 10.5px/1 var(--mono); text-transform: uppercase; letter-spacing: .07em;
+          font: 650 12px/1 var(--mono);
           padding: 4px 7px; border-radius: 2px; }
   .flag.review, .flag.aging { color: var(--caution); border: 1px solid color-mix(in srgb, var(--caution) 40%, transparent); }
   .flag.blocked { color: var(--stop); border: 1px solid color-mix(in srgb, var(--stop) 45%, transparent); }
   /* The empty cell is the diagnostic — keep it legible, not decorative. */
-  .empty { color: var(--muted); font: 12px/1 var(--mono); padding: 10px 2px; opacity: .6; }
+  .empty { color: var(--muted); font: 12px/1 var(--mono); padding: 10px 2px; }
   details.more { margin-top: 2px; }
-  details.more > summary { cursor: pointer; list-style: none; font: 11.5px var(--mono);
+  details.more > summary { cursor: pointer; list-style: none; font: 12px var(--mono);
                            color: var(--muted); padding: 8px 2px; user-select: none; }
   details.more > summary::-webkit-details-marker { display: none; }
   details.more > summary::before { content: "+ "; }
   details.more[open] > summary::before { content: "− "; }
-  details.more .rest { margin-top: 8px; opacity: .8; }
+  details.more .rest { margin-top: 8px; }
   footer { color: var(--muted); font-size: 12px; margin: 34px 0 0; padding-top: 18px;
            border-top: 1px solid var(--line); max-width: 64ch; }
-  footer code { font: 11.5px var(--mono); background: var(--sunk); padding: 2px 6px; border-radius: 2px; }
+  footer code { font: 12px var(--mono); background: var(--sunk); padding: 2px 6px; border-radius: 2px; }
 </style></head>
 <body>
   <div class="wrap">
     <header>
-      <div class="kicker">Board</div>
-      <h1>${esc(projectName)}</h1>
+      <h1><small>the board</small>${esc(projectName)}</h1>
       <p class="evidence${pointing ? ' points' : ''}">${esc(evidence)}</p>
     </header>
     <div class="pills">${pills}</div>
@@ -1060,8 +1061,8 @@ ${columnHtml}
     ${timelineHtml}
     ${parkedHtml}
     <footer>
-      A read of the files — to change the board, change the work (<code>/idea</code> · <code>/canvas</code> · <code>/spec</code>).
-      Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` &middot; ${esc(stampedAt)}` : ''}
+      A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.
+      Re-run <code>boss board --html</code> to refresh.${stampedAt ? ` Rendered ${esc(stampedAt)}.` : ''}
     </footer>
   </div>
 </body></html>
