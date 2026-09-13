@@ -30,6 +30,10 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **One word for the ceremony level.** `boss status` and `boss sync` printed `layers:` under a
+  ladder drawn in modes, and `boss unlock` said "this rung"; the voice audit counted mode / rung /
+  layer / stage all in use for one thing. The label is `modes:` now (rendered as the mode names);
+  "climb a rung" stays only where the ladder is drawn beside it.
 - **Opt-in hooks land when asked.** `src/hooks.js` parses each hook's own "TO TURN IT ON" header
   (one source for the file and its registration, so the header cannot lie), merges it into
   `settings.json` deduplicated on the command, and the reverse. Scaffold and unlock hold every

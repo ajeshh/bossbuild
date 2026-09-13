@@ -449,7 +449,7 @@ function cmdUnlock(args) {
 
   const note = ROLE_SHIFT[target];
   if (note) {
-    console.log(`\n  ${dim('— what this rung tends to ask of you —')}`);
+    console.log(`\n  ${dim('— what this mode tends to ask of you —')}`);
     for (const line of note) console.log(`  ${line}`);
   }
 
@@ -457,7 +457,7 @@ function cmdUnlock(args) {
   // already has captured, and `boss status` is the surface that computes that — so point at it
   // rather than hardcoding a per-rung guess that is wrong for any founder who arrived mid-stream.
   console.log(`\n  ${bold('Next')}`);
-  console.log(`    boss map              ${dim('# everything this rung just added')}`);
+  console.log(`    boss map              ${dim('# everything this mode just added')}`);
   console.log(`    boss status           ${dim('# where that leaves you, and what to pick up')}`);
   console.log('');
 }
@@ -620,7 +620,7 @@ async function cmdStatus(args) {
   }
   printBuiltAndSeam(process.cwd(), stamp);
   console.log('');
-  console.log(`    ${dim('layers:')}       ${stamp.installedLayers.join(' → ')}`);
+  console.log(`    ${dim('modes:')}        ${stamp.installedLayers.map(modeWord).join(' → ')}`);
   console.log(`    ${dim('BOSS pinned:')}  ${stamp.bossVersion}   ${dim('current:')} ${current}`);
   if (stamp.bossVersion !== current) {
     console.log(`    ${warn('⟳')} newer practices available — ${bold('boss changelog')} ${dim('to read what changed,')}`);
@@ -1070,7 +1070,7 @@ function cmdRemove(args) {
   const total = plan.files.length + plan.blocks.length + (plan.bossDir ? 1 : 0);
 
   console.log(`\n  ${bold(stamp.name + ' — remove BOSS')}`);
-  console.log(`    ${dim('layers:')} ${plan.layers.join(' → ')}\n`);
+  console.log(`    ${dim('modes:')} ${plan.layers.map(modeWord).join(' → ')}\n`);
 
   console.log(`  ${bold('Would remove')} ${dim(`— ${plan.files.length} file(s) BOSS wrote, unchanged since`)}`);
   const head = plan.files.slice(0, 6).map((x) => x.rel);
@@ -1160,7 +1160,7 @@ function cmdSync(args) {
 
   console.log(`\n  ${bold(stamp.name + ' — sync')}`);
   console.log(`    pin:    ${plan.pin}${plan.drift ? `  →  current ${plan.current}` : '  (current)'}`);
-  console.log(`    layers: ${plan.layers.join(' → ')}\n`);
+  console.log(`    modes: ${plan.layers.map(modeWord).join(' → ')}\n`);
 
   if (!changed.length && !settingsChanged) {
     console.log(`    ${ok('✓')} BOSS-managed skills/agents/hooks are up to date.`);
