@@ -14,11 +14,11 @@ logo: brand/mark.svg
 
 ## Current shape
 
-- **Who it's for:** owner-operators who do the Monday rota by hand and would keep the spreadsheet forever.
+- **Who it's for:** owner-operators who do the Monday schedule by hand and would keep the spreadsheet forever.
 - **What it promises:** cover found before the kettle boils.
 - **What it refuses:** it will not rank carers, track carers, or text anyone after 8pm.
 - **How it sounds:** plain over clever (costs us delight); calm over urgent (costs us the "act now" conversion); the owner's words over ours.
-- **What it is NOT:** agency software. A marketplace. A rota.
+- **What it is NOT:** agency software. A marketplace. A scheduling tool.
 - **The name, and why:** the kettle is the owner's Monday morning; the wick is the bit that catches. It means nothing to a stranger and everything to an owner.
 
 ## How we build

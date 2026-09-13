@@ -60,7 +60,7 @@ updated: 2026-09-08
 
 | # | Step | Asks the user for | Why it's needed *now* |
 |---|---|---|---|
-| 1 | paste the week from the spreadsheet | the sheet as it is | the rota stays the spreadsheet (DEC-002); this is the only way in |
+| 1 | paste the week from the spreadsheet | the sheet as it is | the schedule stays the spreadsheet (DEC-002); this is the only way in |
 | 2 | check the day | a glance | the parse is shown as rows before it becomes the day |
 
 | Cut | Why |

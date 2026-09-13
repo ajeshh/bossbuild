@@ -10,7 +10,7 @@ It is the spreadsheet the owner already has, and free beats £4.
 - no yes: the owner still rings to confirm who's taking it
 
 ## How they do it
-- rota: the owner's own sheet
+- schedule: the owner's own sheet
 - cover: broadcast text to all
 - pricing: free; texts at cost
 

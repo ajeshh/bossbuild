@@ -19,7 +19,7 @@ photo: unknown
 - being asked by three owners at once for the same hour, then blamed by two
 - being asked at 10pm, and lying awake deciding
 - a yes that turns out not to be needed — nobody told her someone else had it
-- a rota that changes on paper she never sees
+- a schedule that changes on paper she never sees
 **values**
 - a yes should be a yes and a no should be nothing — no reason owed, no guilt trip
 - her phone is hers: no tracking, no app that knows where she is

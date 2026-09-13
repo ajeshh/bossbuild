@@ -24,7 +24,7 @@ An owner covers a visit from their phone in under five minutes without a call.
 ## Paths that must not break
 - **Money path:** none yet — the first month is free.
 - **Destructive path:** a fill is never final without the owner's confirm.
-- **Negative path:** a carer sees only their own asks — never another carer's rota.
+- **Negative path:** a carer sees only their own asks — never another carer's schedule.
 
 ## Build log
 - 2026-08-28 — shipped to nine owners.

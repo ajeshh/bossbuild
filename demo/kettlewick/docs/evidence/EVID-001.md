@@ -14,4 +14,4 @@ about: StatusChip, the day view
 
 # EVID-001 — three owners described the Monday cover call unprompted
 
-Three calls, three owners, three versions of the same hour: a text at 7:40, eight calls, one yes. Nobody mentioned the rota. I pitched nothing.
+Three calls, three owners, three versions of the same hour: a text at 7:40, eight calls, one yes. Nobody mentioned the schedule. I pitched nothing.

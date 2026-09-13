@@ -21,4 +21,4 @@ The first real pound, from an owner we don't know.
 
 ## Paths that must not break
 - **Money path:** this is it — tested for real, one agency, one pound.
-- **Destructive path:** cancel deletes nothing; the rota stays theirs.
+- **Destructive path:** cancel deletes nothing; the schedule stays theirs.

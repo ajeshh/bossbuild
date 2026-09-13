@@ -19,7 +19,7 @@ quote: "every Monday I lose an hour to this" — EVID-002
 **pains**
 - the cover call takes an hour and eight calls, and the eighth is the one who says yes
 - she's the only one who knows who can take what; if she's ill, nobody is covered
-- every rota tool she's tried wanted her to move the rota into it — she won't
+- every scheduling tool she's tried wanted her to move the schedule into it — she won't
 - asking at night feels like begging, and she does it anyway
 **values**
 - trusts a tool that does one thing and stays out of the way
@@ -35,5 +35,5 @@ quote: "every Monday I lose an hour to this" — EVID-002
 Evidence ledger:  synthetic 40% · real 60%
 
 Notable refactors:
-- 2026-06-04 — enriched from three calls: the rota is not the pain, the cover call is.
+- 2026-06-04 — enriched from three calls: the schedule is not the pain, the cover call is.
 - 2026-08-30 — enriched from EVID-003: she covered from the school gate; "keep out of the way" became a value.

@@ -1,6 +1,6 @@
-# Rotawise
+# Shiftwise
 
-**What it is:** the incumbent rota product for small agencies; the export is the one inspectors know.
+**What it is:** the incumbent scheduling product for small agencies; the export is the one inspectors know.
 
 ## Why they might win
 Every owner already has it; adding a cover module to a thing you already pay for is easier than a second app.
@@ -11,7 +11,7 @@ Every owner already has it; adding a cover module to a thing you already pay for
 - the office screen is where it works; Monday morning happens on a phone
 
 ## How they do it
-- rota: office-first, drag-and-drop, weekly
+- schedule: office-first, drag-and-drop, weekly
 - cover: a list of free carers; no ask, no yes
 - pricing: per seat, annual contract
 

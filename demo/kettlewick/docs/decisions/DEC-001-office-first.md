@@ -13,7 +13,7 @@ outcome: wrong — owners cover from phones; superseded by DEC-002
 # DEC-001 — Office-first cover
 
 ## Context
-Rotawise works on the office screen; owners are used to it.
+Shiftwise works on the office screen; owners are used to it.
 
 ## Decision
 Build the cover flow for the office screen first; the phone waits.

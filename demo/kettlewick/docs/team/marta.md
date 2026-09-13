@@ -14,7 +14,7 @@ status: active
 Ran a twelve-carer agency for six years and did the Monday cover call every week of it.
 
 ## What they bring, and don't
-- **Brings:** the owners' trust; the rota in her head; the inspector's questions by heart.
+- **Brings:** the owners' trust; the schedule in her head; the inspector's questions by heart.
 - **Doesn't:** code. Ola does.
 
 ## Bio

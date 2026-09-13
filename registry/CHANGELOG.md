@@ -44,6 +44,18 @@ rule above still applies to the whole section once it is stamped.
   reads as capability, which is what every one of BOSS's own 113 ideas is; BOSS's venture idea is the
   canvas, and `CLAUDE.md` now says so. A field, not a new ID prefix — a second class would have
   re-filed 113 records for a distinction one line carries.
+- **The demo pages carry the site's ribbon, and nobody says "rota" any more.** Ajesh, after the
+  front page: *"when accessing demo from the main website, it feels like we went away completely"*
+  — right, because the rendered spaces are the venture's (its name, its tokens, its nav), which is
+  the point of the demo and also the disorientation. One strip in the SITE's palette (graphite,
+  hi-vis rule) now sits above the venture's topbar on all six demo pages: the BOSS mark and five
+  site links (Demo lit), with the fictional note folded into it — one strip, not two; the old
+  paper-coloured banner is gone. Inlined CSS, since the rendered pages carry only the venture's
+  stylesheet. And *"rota is not a common term… lets not use it anywhere on the website and demo"* —
+  British for a shift schedule; it came in with the home-care setting. Swept from `web/` and every
+  `demo/kettlewick/` record: *schedule* where it meant the sheet, *shift cover* where it named the
+  venture, the fictional rival Rotawise is now **Shiftwise** (file renamed). Test fixtures still use
+  the word; nothing there ships. `check:demo` full, `check:site` clean, 0 hits in `site/`.
 - **The front page says what the conscience is watching.** Ajesh: *"with the whole playbook, design
   system, and demo… we need to update the copy on the front page"* — and, a minute later, *"it's still
   conscience for your build right."* It is; the H1 and the one-line sentence do not move. What moved:

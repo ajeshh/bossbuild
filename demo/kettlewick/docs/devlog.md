@@ -25,9 +25,9 @@
 ## 2026-07-02
 - **FEAT:** FEAT-002
 - **Landed:** the Monday view on a phone.
-- **Surprises / decisions:** DEC-002 — phone-first; the rota stays a spreadsheet.
+- **Surprises / decisions:** DEC-002 — phone-first; the schedule stays a spreadsheet.
 
 ## 2026-06-04
 - **FEAT:** _no FEAT — calls_
 - **Landed:** three calls; the persona has a real share for the first time.
-- **Surprises / decisions:** nobody wants a rota. They want the cover done.
+- **Surprises / decisions:** nobody wants a schedule. They want the cover done.
