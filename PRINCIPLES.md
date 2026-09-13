@@ -12,6 +12,15 @@ distribution). BOSS is the guidance layer between those two states.
 > evidence while continuously checking the work against real pain, real workflows, real buyers, real
 > economics, and real distribution. The goal is not more pseudo apps; it's real business value apps.
 
+## The one sentence
+
+> **BOSS is the conscience that keeps you honest while you build fast.** It runs inside Claude Code, sets a project up with only the structure it has earned, says one thing when you're drifting, and stays quiet the rest of the time.
+
+This is the sentence every other surface quotes — the README, the site, `/welcome`, the plugin
+listing. It lives here so it can only drift in one place. The modes are how much the conscience is
+allowed to say; the mentors are the voices it says it in; the skills are what it hands you when it
+speaks. Nothing BOSS ships is a second story.
+
 What that buys is narrower — and stronger — than "discipline wins." Disciplined validation doesn't
 guarantee a win; it makes you **decide faster, including quitting faster** (Camuffo et al., 759-firm
 RCT [EVIDENCE]). Cheap AI lowers the cost of *building*, not the cost of *being wrong* — so the cheaper

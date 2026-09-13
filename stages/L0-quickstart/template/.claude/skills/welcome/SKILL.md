@@ -179,7 +179,9 @@ new to building — pace accordingly.
 
 ### What BOSS is
 
-> *"BOSS is a build tool. Three pieces:*
+> *"BOSS is the conscience that keeps you honest while you build fast. It runs inside Claude Code, sets a project up with only the structure it has earned, says one thing when you're drifting, and stays quiet the rest of the time.*
+>
+> *Three pieces:*
 > 1. *A **mode** — how much structure the project has. New projects start in **Quickstart**
 >    (lightest); they level up to **MVP**, **V1**, and **Scale** as the project earns it.
 >    Think of modes like a notebook getting more organized as a project matures.*

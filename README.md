@@ -4,17 +4,11 @@
 
 *B.O.S.S. — Build Out Solid Stuff.*
 
-> **Everyone can build now. Almost no one can tell a real business from a convincing demo.**
-> **BOSS is the conscience that keeps you honest while you move fast** — the thinking layer that
-> nudges when you're drifting and pauses on command. No growth-hacking pressure. Override-friendly.
+> **BOSS is the conscience that keeps you honest while you build fast.** It runs inside Claude Code, sets a project up with only the structure it has earned, says one thing when you're drifting, and stays quiet the rest of the time.
 >
-> *(Vibe coding gets you a demo; the discipline on top gets you a business. BOSS is that discipline,
-> just-in-time. Pause it any time.)*
->
-> Cursor and Lovable generate the code. BOSS scaffolds the *thinking about what to build, when
-> to ship, and when the discipline should get out of your way.* Brings a mentor board for the
-> parts code can't teach, a conscience that catches drift early, modes that scale ceremony to
-> evidence. Calm-company by default. Open. Inspectable. Local-only state.
+> *Everyone can build now; almost no one can tell a real business from a convincing demo. Cursor
+> and Lovable generate the code. BOSS is the discipline on top, just-in-time — and it gets out of
+> your way on command.* Calm-company by default. Open. Inspectable. Local-only state.
 
 ## If this is you
 
