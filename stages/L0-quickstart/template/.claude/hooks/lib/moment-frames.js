@@ -51,6 +51,20 @@ const COHORT_FRAMING = {
 // Compose `additionalContext` for hosts that consume the flat field. For one
 // signal, a single nudge; for multiple, a brief enumeration. Voice stays with
 // the model — this hands signal + ask + cohort frame, not canned voice.
+// A frame may point at a verb the rung is still holding back (`/ai-cost` arrives when the app
+// first calls a model — which is the very predicate that fires the cost moment). Pointing a founder
+// at a slash command that is not in their menu reads as the tool being broken. So: when a named
+// skill is not on disk, say what lays it down. Silent when everything named is installed, so
+// output is byte-identical for every project that has it all. This file imports nothing by
+// design, so the hook passes the disk check in as `opts.isInstalled(name)`.
+function notYetInstalledLine(text, isInstalled) {
+  if (typeof isInstalled !== 'function') return '';
+  const named = [...new Set([...String(text).matchAll(/`\/([a-z][a-z0-9-]*)`/g)].map((m) => m[1]))];
+  const missing = named.filter((n) => !isInstalled(n));
+  if (!missing.length) return '';
+  return `\n\nNot installed yet: ${missing.map((n) => '`/' + n + '`').join(', ')} — this rung holds it back until earned, and it is earned now. Say so in the same breath: \`boss sync\` lays it down.`;
+}
+
 export function composeContext(signals, opts = {}) {
   if (!signals.length) return null;
   const cohort = opts.cohort || null;
@@ -89,10 +103,10 @@ export function composeContext(signals, opts = {}) {
     ? `\n\nWhy they're building this (their own words, from ${opts.intent.id}): ${intentSummary(opts.intent)}. Calibrate the ASK to it, not the tone: a revenue motivation earns the commitment question (who paid, who gave up a slot); community → point at observed behaviour (did anyone come back a second time); learning or own-problem → the honest question is "did it teach you the thing / does it solve it for you yet", and "will anyone pay" is the wrong question for them — don't ask it. Credibility → who outside saw it. Never re-ask the motivation, never grade it, never quote their success sentence back at them as a target.`
     : '';
   if (signals.length === 1) {
-    return signalAsContext(signals[0]) + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine;
+    return signalAsContext(signals[0]) + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine + notYetInstalledLine(signalAsContext(signals[0]), opts.isInstalled);
   }
   const parts = signals.map((s, i) => `(${i + 1}) ${signalAsContext(s)}`);
-  return `[BOSS conscience — ${signals.length} signals]\n` + parts.join('\n') + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine;
+  return `[BOSS conscience — ${signals.length} signals]\n` + parts.join('\n') + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine + notYetInstalledLine(parts.join('\n'), opts.isInstalled);
 }
 
 // One-line summary of the founder's stated intent for the voicing frame (IDEA-097).

@@ -221,12 +221,15 @@ export function applyStageSafe(stageId, targetDir, vars) {
 
 // Copy a stage's template/ tree into targetDir and fill placeholders.
 // Returns { appendedClaude } so callers can report what changed.
-export function applyStage(stageId, targetDir, vars) {
+export function applyStage(stageId, targetDir, vars, { skipSkills = [] } = {}) {
   const templateDir = join(STAGES_DIR, stageId, 'template');
   if (!existsSync(templateDir)) {
     throw new Error(`Stage ${stageId} has no template/ dir (not authored yet).`);
   }
-  cpSync(templateDir, targetDir, { recursive: true });
+  // Skills a rung holds back until earned (src/earned.js) are not copied at all — the slash menu
+  // is the host's, and the only way to keep a verb out of it is for the directory not to exist.
+  const held = new Set(skipSkills.map((n) => join(templateDir, '.claude', 'skills', n)));
+  cpSync(templateDir, targetDir, { recursive: true, filter: (src) => !held.has(src) });
   substituteInTree(targetDir, vars);
 
   // Handle the additive CLAUDE.md block: the file was copied into the project

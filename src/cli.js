@@ -5,6 +5,7 @@ import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from 
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
+import { heldBack, earnedGroups, newlyEarned, describeUntil, describeEarned } from './earned.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog, cmpVersion } from './changelog.js';
@@ -377,13 +378,21 @@ function cmdUnlock(args) {
     console.log(dim(`  Want them too? \`boss unlock ${names[0]}\` — additive, and it will not move you back down.`));
   }
 
-  let m, applied;
+  let m, applied, held = [];
   try {
     m = readStageManifest(target);
-    applied = applyStage(target, process.cwd(), stageVars(stamp.name, target, m.name));
+    held = heldBack(m);
+    applied = applyStage(target, process.cwd(), stageVars(stamp.name, target, m.name), { skipSkills: held });
     stampManaged(process.cwd(), [target]);
   } catch (e) {
     return fail(`${target} not authored yet — ${e.message}`);
+  }
+  // What this rung holds back until earned, recorded so `boss sync` knows what to lay down later
+  // and what to leave alone until then (src/earned.js).
+  const groups = earnedGroups(m);
+  if (groups.length) {
+    stamp.deferred = stamp.deferred || {};
+    stamp.deferred[target] = Object.fromEntries(groups.map((g) => [g.group, g.skills]));
   }
 
   stamp.installedLayers.push(target);
@@ -399,7 +408,7 @@ function cmdUnlock(args) {
   stamp.stage = deepest;
   stamp.mode = deepest === target ? m.name : (readStageManifest(deepest).name || deepest);
   stamp.agents = [...new Set([...(stamp.agents || []), ...(m.agents || [])])];
-  stamp.skills = [...new Set([...(stamp.skills || []), ...(m.skills || [])])];
+  stamp.skills = [...new Set([...(stamp.skills || []), ...(m.skills || []).filter((sk) => !held.includes(sk))])];
   stamp.hooks = [...new Set([...(stamp.hooks || []), ...(m.hooks || [])])];
   stamp.loops = [...new Set([...(stamp.loops || []), ...(m.loops || [])])];
   writeStamp(process.cwd(), stamp);
@@ -414,6 +423,9 @@ function cmdUnlock(args) {
   registerProject({ name: stamp.name, path: process.cwd(), stage: target, mode: m.name, bossVersion: stamp.bossVersion });
   console.log(`\n  ${ok('✦')} Unlocked ${bold(m.name + ' mode')} (${target}).`);
   if (applied.appendedClaude) console.log(`    ${ok('+')} appended ${m.name} working rules to CLAUDE.md`);
+  for (const g of groups) {
+    console.log(`    ${dim('·')} ${dim(`${g.skills.length} held back ${describeUntil(g.until)}:`)} ${skillsLine(g.skills, 3).replace(/ \(`boss map`\)$/, '')} ${dim('— `boss sync` lays them down then.')}`);
+  }
 
   // Say what actually arrived, and where to go next — the parity `boss new` has always had and this
   // did not. `boss new` installs 3 agents and 16 skills and prints both plus an explicit Next block;
@@ -421,15 +433,17 @@ function cmdUnlock(args) {
   // BIGGER change was the quieter one, and a founder was left to discover a doubled surface on their
   // own. Counts come from the mode's own manifest, so this is the delta that just landed — not the
   // cumulative install, which is what `boss map` is for.
+  // Held-back skills are not "available" — they are on disk when earned, and the lines above said so.
+  const landed = (m.skills || []).filter((sk) => !held.includes(sk));
   const arrived = [
     [(m.agents || []).length, 'agent'],
-    [(m.skills || []).length, 'skill'],
+    [landed.length, 'skill'],
     [(m.loops || []).length, 'loop'],
   ].filter(([n]) => n > 0).map(([n, w]) => `${n} ${w}${n === 1 ? '' : 's'}`);
   if (arrived.length) {
     console.log(`\n  ${bold('Now available')} ${dim(`(${arrived.join(' · ')})`)}`);
     if ((m.agents || []).length) console.log(`    agents: ${skillsLine(m.agents)}`);
-    if ((m.skills || []).length) console.log(`    skills: ${skillsLine(m.skills)}`);
+    if (landed.length) console.log(`    skills: ${skillsLine(landed)}`);
   }
 
   const note = ROLE_SHIFT[target];
@@ -574,6 +588,9 @@ async function cmdStatus(args) {
   console.log(`  ▸ ${bold('You are here:')} ${stamp.mode || stamp.stage}`);
   console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
   printFocusAndHeadway(process.cwd(), { adopted: stamp.adopted === true });
+  for (const g of newlyEarned(process.cwd(), stamp)) {
+    console.log(`    ${ok('▸')} ${bold('Earned:')}          ${skillsLine(g.skills, 3).replace(/ \(`boss map`\)$/, '')} ${dim(`— ${describeEarned(g.until)}. \`boss sync\` lays them down.`)}`);
+  }
   // Toward what (IDEA-097): the founder's own sentence for "it worked", if they gave one.
   // Silent otherwise — see src/orientation.js.
   printIntent(process.cwd());

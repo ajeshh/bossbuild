@@ -98,6 +98,8 @@ export function loadModes() {
         // of nine verbs about retention and pricing (REVIEW-2026-07-28 §C1 / §E1). Nothing is
         // removed or disabled — they install, they run, they're one flag away.
         postLaunch: m.postLaunch || [],
+        aiMediated: m.aiMediated || [],
+        earned: m.earned || {},
         // Skills that are not about building the founder's company — BOSS's own upkeep
         // (`/boss-sync`, `/feedback`) and the verbs that END something
         // (`/sunset`). `boss map` folds these behind one line, always, because a rung's list

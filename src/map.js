@@ -9,7 +9,8 @@ import { join } from 'node:path';
 import { STAGE_ORDER } from './paths.js';
 import { loadModes, packageSkillMd, skillGloss, modeWord } from './modes.js';
 import { dim, bold } from './ui.js';
-import { collectBoard } from './board.js';
+// `hasShipped` lives in earned.js now — the fold and the lay-down read the same predicate.
+import { hasShipped, stillDeferred } from './earned.js';
 
 function projectSkillMd(projectDir, name) {
   return join(projectDir, '.claude', 'skills', name, 'SKILL.md');
@@ -40,15 +41,6 @@ function installedGloss(projectDir, name, definedIn) {
   return { gloss: '', usage: '' };
 }
 
-// Has this project actually shipped anything? The honest predicate behind folding the
-// post-launch arc — frontmatter-true (a FEAT in the board's Shipped column), never guessed.
-// Degrades to `false` if the board can't be read, which errs toward the calmer surface.
-function hasShipped(projectDir) {
-  try {
-    return collectBoard(projectDir).cards
-      .some((c) => c.column === 'Shipped' && /^FEAT/i.test(c.id));
-  } catch { return false; }
-}
 
 function renderMap(projectDir, stamp, opts = {}) {
   const showAllNext = opts.next === true;
@@ -60,6 +52,9 @@ function renderMap(projectDir, stamp, opts = {}) {
   for (const m of modes) for (const s of m.skills || []) if (!(s in skillStage)) skillStage[s] = m.id;
 
   const shipped = hasShipped(projectDir);
+  // Held back until earned (src/earned.js): not on disk, so not in `stamp.skills` — listed under
+  // the fold anyway, because "not yet" is information and absence is not.
+  const held = stillDeferred(projectDir, stamp);
   const installed = stamp.installedLayers || [stamp.stage];
   const deepest = installed[installed.length - 1];
 
@@ -90,11 +85,13 @@ function renderMap(projectDir, stamp, opts = {}) {
   for (const layerId of STAGE_ORDER) {
     if (!installed.includes(layerId)) continue;
     const mode = byId[layerId];
-    const skillsHere = (stamp.skills || []).filter((s) => skillStage[s] === layerId).sort();
+    const skillsHere = [...new Set([...(stamp.skills || []), ...held])].filter((s) => skillStage[s] === layerId).sort();
     if (!skillsHere.length) continue;
     // Fold this rung's post-launch skills until something has shipped. `--all` opens them; once a
     // FEAT ships they appear on their own under their own heading, because then they're the work.
-    const post = new Set(shipped || showAll ? [] : (mode.postLaunch || []));
+    // Held-back groups (src/earned.js) fold too — those verbs are not on disk yet, and the fold
+    // line says what earns them.
+    const post = new Set([...(shipped || showAll ? [] : (mode.postLaunch || [])), ...(showAll ? [] : held)]);
     // `aside` folds unconditionally (see modes.js): these are BOSS's upkeep and the ending
     // verbs, never the founder's next move. Only `--all` opens them.
     const aside = new Set(showAll ? [] : (mode.aside || []));
@@ -120,7 +117,12 @@ function renderMap(projectDir, stamp, opts = {}) {
       lines.push(`      ${'/' + s.padEnd(18)} ${dim(fit(gloss))}`);
     }
     if (later.length) {
-      lines.push(`      ${dim(`… +${later.length} for after you ship — measuring, retention, pricing, trust  (\`boss map --all\`)`)}`);
+      // One fold line per reason, so "after you ship" and "when the app calls a model" don't blur.
+      const ai = new Set(mode.aiMediated || []);
+      const afterShip = later.filter((s) => !ai.has(s));
+      const onModel = later.filter((s) => ai.has(s));
+      if (afterShip.length) lines.push(`      ${dim(`… +${afterShip.length} for after you ship — measuring, retention, pricing, trust  (\`boss map --all\`)`)}`);
+      if (onModel.length) lines.push(`      ${dim(`… +${onModel.length} for when the app calls a model — cost, evals, failure states  (\`boss map --all\`)`)}`);
     }
     if (asides.length) {
       lines.push(`      ${dim(`… +${asides.length} that aren't about your company — BOSS upkeep, and ending something honestly  (\`boss map --all\`)`)}`);

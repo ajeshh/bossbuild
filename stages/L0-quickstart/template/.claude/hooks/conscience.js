@@ -19,6 +19,8 @@
 import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readIntentContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity } from './lib/loop-runtime.js';
 import { detectTaskHygiene } from './lib/task-hygiene.js';
 import process from 'node:process';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 // The one signal that is NOT loop-driven (IDEA-094 Part 0). Every other moment reads files in the
 // project; this one reads the session's own task list out of the host transcript, whose path the
@@ -110,7 +112,10 @@ try {
   // `success_looks_like:`. Same discipline — read only once a moment is firing, null when
   // `/boss` never asked or they skipped → additionalContext byte-identical to before.
   const intent = readIntentContext(projectDir);
-  const additionalContext = composeContext(signals, { cohort, brain, relationship, evidence, intent });
+  // A frame may name a verb this rung still holds back (src/earned.js); the frame says so only
+  // when the skill is genuinely not on disk.
+  const isInstalled = (name) => existsSync(join(projectDir, '.claude', 'skills', name, 'SKILL.md'));
+  const additionalContext = composeContext(signals, { cohort, brain, relationship, evidence, intent, isInstalled });
 
   // Frequency ledger (v0.34) — correctness-invisible side effect; only fires
   // reach here (past the silent early-exit). Records facts (moments, judge-bool,

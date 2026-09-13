@@ -7,6 +7,7 @@ import {
 } from './paths.js';
 import { readStageManifest, sameAsTemplate } from './scaffold.js';
 import { readSupersedes, findSupersede } from './supersede.js';
+import { stillDeferred, newlyEarned, markLaidDown } from './earned.js';
 import { readLadder, assess } from './ladder.js';
 import { provenance, recordManaged, backupManaged } from './managed.js';
 
@@ -430,6 +431,10 @@ export function planSync(projectDir, stamp) {
   }
 
   const ladder = readLadder();
+  // Skills a rung is holding back until earned (src/earned.js): not part of this plan while the
+  // predicate is false — they would show as `new` every sync and be laid down before their time.
+  // Once the predicate holds they ARE `new`, and the ordinary path installs them.
+  const held = stillDeferred(projectDir, stamp);
   const entries = [];
   for (const stageId of layers) {
     let manifest;
@@ -440,6 +445,7 @@ export function planSync(projectDir, stamp) {
     }
     for (const f of managedFiles(stageId, manifest)) {
       if (!existsSync(f.src)) continue; // manifest lists it but template lacks it
+      if ((f.kind === 'skill' || f.kind === 'skill-resource') && held.has(f.name.split('/')[0])) continue;
       const next = substitute(readFileSync(f.src, 'utf8'), {
         ...vars, STAGE: stageId, MODE: manifest.name,
       });
@@ -531,6 +537,12 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
   // them changes upstream it gets backed up as "provenance unknown" forever. A sync is the moment
   // BOSS knows the whole tree; stamp the whole tree. Skipped files are excluded by name.
   stampManaged(projectDir, plan.layers, skipped.map((e) => e.rel));
+  // Groups whose predicate came true were in this plan as `new` and are on disk now; say so in
+  // the stamp, so status stops announcing them and the next plan treats them as ordinary.
+  const earned = newlyEarned(projectDir, stamp).filter((g) => g.skills.every((sk) => existsSync(join(projectDir, '.claude', 'skills', sk, 'SKILL.md'))));
+  if (earned.length) markLaidDown(stamp, earned);
+  // What is STILL held back after that, so the reconciled stamp below does not list it as installed.
+  const heldNow = stillDeferred(projectDir, stamp);
 
   // Removal is OPT-IN, always. `--apply` writes and reports; only `--remove` deletes. DEC-003:
   // BOSS names what changed, the founder decides, and then BOSS does the work — a sync that
@@ -567,7 +579,7 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
     try {
       const m = readStageManifest(stageId);
       (m.agents || []).forEach((a) => agents.add(a));
-      (m.skills || []).forEach((s) => skills.add(s));
+      (m.skills || []).forEach((s) => { if (!heldNow.has(s)) skills.add(s); });
       (m.hooks || []).forEach((h) => hooks.add(h));
       (m.loops || []).forEach((l) => loops.add(l));
     } catch { /* skip unauthored */ }
