@@ -38,25 +38,22 @@ link to a cell, copy a cell into a slide, or show a cell as one.
 
 ## Assumptions (the plan-time record)
 - **Assumed:** the output lives at `.boss/playbook.html`, gitignored, exactly where `boss board --html`
-  puts `.boss/board.html` — one precedent, one place → _confirmed / corrected to: …_
+  puts `.boss/board.html` — one precedent, one place → _confirmed (Ajesh, 2026-09-13): keep `.boss/playbook.html`; `boss playbook` prints the file:// URL to bookmark_
 - **Assumed:** a CLI command (`src/playbook.js`, zero-dep), not a skill — it composes nothing, so it
-  needs no judgment (IDEA-106 §7) → _confirmed / corrected to: …_
+  needs no judgment (IDEA-106 §7) → _confirmed (2026-09-13)_
 - **Assumed:** the canvas is read from `docs/ideas/*-canvas.md` in the `| **Cell** | Answer |` table
   shape `/canvas` writes; a cell whose answer carries revision history (BOSS's own canvas does)
-  renders the **whole** cell — the render never decides which paragraph is current → _confirmed /
-  corrected to: …_
+  renders the **whole** cell — the render never decides which paragraph is current → _confirmed (2026-09-13)_
 - **Assumed:** a chip is `EVID ×N` only when an `EVID` record's `assumption:` phrase names the cell
   by its heading word (`People`, `Problem`…) or the record lists the cell explicitly; otherwise the
-  cell is `asserted`. No `cell:` field is added to `/evidence` in this FEAT → _confirmed / corrected
-  to: …_
+  cell is `asserted`. No `cell:` field is added to `/evidence` in this FEAT → _confirmed (2026-09-13)_
 - **Assumed:** the brand read is three fields from `docs/BRAND.md` — an `accent:` hex, a `wordmark:`
   (else the project name), a `tagline:` — each `unknown` or absent falls back to the neutral default
-  for that field only; no logo file in slice 1 → _confirmed / corrected to: …_
+  for that field only; no logo file in slice 1 → _confirmed (Ajesh, 2026-09-13): whole cell — the render never picks a paragraph_
 - **Assumed:** `--open` opens the file in the default browser (`open` on macOS, `xdg-open` on
-  Linux) and is the only flag; the frame toggle is on the page, not a CLI option → _confirmed /
-  corrected to: …_
+  Linux) and is the only flag; the frame toggle is on the page, not a CLI option → _confirmed (2026-09-13)_
 - **Assumed:** no canvas at all renders a full page of holes with the prompts and `/canvas` named —
-  the first-run path is a real render, not an error → _confirmed / corrected to: …_
+  the first-run path is a real render, not an error → _confirmed (Ajesh, 2026-09-13): keep the phrase match, no `cell:` field_
 
 **Still unknown (didn't guess):**
 - Which BMC grid BOSS commits to — the prototype drew Humane and Lean only; BMC's nine-box layout

@@ -679,6 +679,7 @@ function cmdPlaybook(args = []) {
   const { out, data } = playbookHtml(process.cwd(), stamp.name);
   const { ledger, canvas, error } = data;
   console.log(`\n  ${ok('✦')} Playbook → ${out}`);
+  console.log(`    ${dim('bookmark:')} file://${out}`);
   console.log(`    ${canvas ? `docs/ideas/${canvas.file}` : 'no canvas yet — every box is a question; /canvas fills them'} · ${ledger.backed} of ${ledger.live} cells backed by evidence · ${ledger.signals} signal${ledger.signals === 1 ? '' : 's'}`);
   if (error) console.error(`    ${warn('!')} ${error}`);
   // The pull (IDEA-111): the page's holes, read back — the founder sees what's open without opening
@@ -706,6 +707,13 @@ function cmdDesign(args = []) {
   console.log(`\n  ${ok('✦')} Design → ${out}`);
   console.log(`    ${data.tokens.source || 'no tokens file yet — /design-tokens-init writes docs/design/tokens.json'} · ${filled} of ${data.slots.length} slots filled · ${data.pairs.length} contrast pair${data.pairs.length === 1 ? '' : 's'} computed · ${data.findings} finding${data.findings === 1 ? '' : 's'}`);
   if (data.tokens.error) console.error(`    ${warn('!')} ${data.tokens.error}`);
+  // The pull, as the playbook has it: the open slots read back, in build order, each with the verb
+  // that fills it and the moment that earns it. `--questions` lists them.
+  console.log(`    ${questionsLine(data.questions)}`);
+  if (args.includes('--questions') && data.questions.length) {
+    console.log('');
+    for (const q of data.questions) console.log(`    ${dim('·')} ${q.title} ${dim('—')} ${q.line} ${dim('· ' + q.moment)}`);
+  }
   console.log('    A read of your files. Re-run `boss design` to refresh.\n');
   if (args.includes('--open')) {
     const opener = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
@@ -1681,7 +1689,7 @@ function printHelp() {
   console.log(row('boss board <ID> | --detail', 'one card in full · a line under every card'));
   console.log(row('boss board --next|--blocked|--json', 'what to pick up · what\'s stuck · JSON (agent-readable)'));
   console.log(row('boss playbook [--open] [--questions]', 'your venture as one page in .boss/ — holes stay holes; --questions lists what\'s open'));
-  console.log(row('boss design [--open]', 'your design system as one page in .boss/ — tokens, principles, contrast computed'));
+  console.log(row('boss design [--open] [--questions]', 'your design system as one page in .boss/ — holes stay holes; --questions lists what\'s open, with the moment that earns it'));
   console.log(row('boss status [--conscience]', 'mode + pinned version + drift (--conscience: loop states)'));
   console.log(row('boss unlock <mode>', 'climb a rung: quickstart → mvp → v1 → scale'));
   console.log(row('boss brain [--diff|--relationship]', 'the conscience\'s read on this venture'));

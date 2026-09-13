@@ -225,6 +225,15 @@ rule above still applies to the whole section once it is stamped.
   **dormant, not a hole** — *live once there are users to read*). The rail's Proof group marks an
   empty chapter; the open-questions line gains `/evidence · /log · /decide · /trust`, cheapest first.
   Every chapter line is still a record's own first sentence. Three tests; docs/ byte-identical.
+- **Ajesh's answers on the playbook (FEAT-026/027/028), and what they changed.** Eight
+  assumptions asked, seven confirmed, one corrected — **Learnings now merges the devlog with the
+  IDEA docs' capture logs by date** (a capture-log bullet is an entry with the idea as its source;
+  the newest one can be the chapter line). Confirmed and built: the page stays at
+  `.boss/playbook.html` and `boss playbook` prints its `file://` URL to bookmark; `docs/source/` is
+  the founder's inbox and the Quickstart template now ships `docs/source/README.md` (*drop anything
+  here* — one flat folder, dated names, nothing in it is a record until a record holds it; the
+  playbook no longer lists that README as an import). A gated verb with a plain door says so —
+  `/log — or add it to the idea: /idea`, beside `/comp-eval — or drop what you know: /import`.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

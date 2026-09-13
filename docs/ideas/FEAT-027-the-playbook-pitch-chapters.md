@@ -26,33 +26,30 @@ missing record drawn as the question and the verb that answers it.
 
 ## Assumptions (the plan-time record)
 - **Assumed:** the "active" IDEA doc is the one the canvas belongs to (`IDEA-NNN-canvas` → `IDEA-NNN-*.md`),
-  else the newest IDEA by `created:` → _confirmed / corrected to: …_
+  else the newest IDEA by `created:` → _confirmed (2026-09-13)_
 - **Assumed:** Vision = the Promise cell (the chapter line) + `motivation:` + `success_looks_like:` +
   the Principles cell + *In five years* as a hole (no `vision:` field exists — kicked-up #12) +
-  *Who is building it* as a hole (no `docs/team/` — kicked-up #11) → _confirmed / corrected to: …_
+  *Who is building it* as a hole (no `docs/team/` — kicked-up #11) → _confirmed (2026-09-13)_
 - **Assumed:** Product = the IDEA doc's `## Current shape` section whole, the FEAT records as a
-  list (id · gist · status · shipped_on), and BRAND.md's *What it is NOT* line → _confirmed /
-  corrected to: …_
+  list (id · gist · status · shipped_on), and BRAND.md's *What it is NOT* line → _confirmed (2026-09-13)_
 - **Assumed:** Customers = one **snippet** per `docs/personas/*.md` (Ajesh's ruling via IDEA-107):
   the `who` line, the `context` line, the ledger chip, a link to `design.html#persona-<slug>` that
-  renders only when `.boss/design.html` exists — no tiles (the record holds no numbers) →
-  _confirmed / corrected to: …_
+  renders only when `.boss/design.html` exists — no tiles (the record holds no numbers) → _confirmed (2026-09-13)_
 - **Assumed:** Problem = the Problem cell + the Story cell labelled *Story — and why now* (the
-  why-now half is inside the cell; the render never splits a cell) → _confirmed / corrected to: …_
+  why-now half is inside the cell; the render never splits a cell) → _confirmed (2026-09-13)_
 - **Assumed:** Market = the People cell + *Research you've imported* listing `docs/source/`
   (filename, date from the name or mtime), a hole when empty. **No arithmetic** — the prototype's
-  "ceiling" multiplied two numbers the render would have to extract from prose → _confirmed /
-  corrected to: …_
+  "ceiling" multiplied two numbers the render would have to extract from prose → _confirmed (2026-09-13)_
 - **Assumed:** Competition = `docs/competition/README.md`'s table rendered as it is (any columns),
   **key** rivals = rows whose *Sort* says `in evidence` or whose *What it is* starts with `direct`,
   each with a brief from its own file (`## Where it breaks` bullets, first three) — the rest a
   one-line watch list; a `Checked` older than 90 days renders `stale`. **No matrix** (needs the
-  `## How they do it` per decided feature — found task for 028+) → _confirmed / corrected to: …_
+  `## How they do it` per decided feature — found task for 028+) → _confirmed (2026-09-13)_
 - **Assumed:** Business model = the Business Model cell + the Cost Structure cell + *The ask* as a
   hole whose text is `docs/dossier/mentor-capital.md`'s first paragraph when the file exists, else
-  the prompt → _confirmed / corrected to: …_
+  the prompt → _confirmed (2026-09-13)_
 - **Assumed:** a chapter's line is **the first sentence of the record it renders** (IDEA-106 §8);
-  Canvas has no line (kicked-up #25) → _confirmed / corrected to: …_
+  Canvas has no line (kicked-up #25) → _confirmed (Ajesh, 2026-09-13): keep the rule — the record wants a better first sentence_
 
 **Still unknown (didn't guess):** how a founder's persona file is actually laid out on disk — the
 skill shows a plain block; the parser accepts `who —`, `**who**`, `- **who:**`, `who:` and says so

@@ -576,3 +576,19 @@ test('Learnings, Decisions, Risks & harms, Health render from their records; eve
   assert.doesNotMatch(h2, /<a href="#health" class="hole-link">/, 'dormant is not empty');
   assert.equal((h2.match(/<section class="chapter"/g) || []).length, 13);
 });
+
+test('Learnings merges the devlog with the IDEA capture logs by date (Ajesh, 2026-09-13); the source README is not an imported source; the URL prints', () => {
+  const idea = IDEA.replace('- 2026-08-04 — seed', '- 2026-08-04 — seed\n- 2026-08-20 — first thought: owners lose Monday to the rota.\n- 2026-09-01 — Marta said she would pay for cover-finding.');
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-tidewell.md': idea, 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/devlog.md': DEVLOG, 'docs/source/README.md': '# Source\n\ndrop anything here\n' });
+  const data = collectPlaybook(dir, 'tidewell');
+  assert.deepEqual(data.devlog.entries.map((e) => e.date), ['2026-09-01', '2026-08-30', '2026-08-20', '2026-08-12', '2026-08-04']);
+  assert.equal(data.devlog.entries[0].source, 'docs/ideas/IDEA-001-tidewell.md');
+  assert.equal(data.devlog.entries[0].landed, 'Marta said she would pay for cover-finding.');
+  const html = renderPlaybookHtml(data, '2026-09-13 10:00');
+  assert.ok(html.includes('<h2>Marta said she would pay for cover-finding.</h2>'), 'the newest entry\'s line, from the capture log');
+  assert.ok(html.includes('2026-09-01 · IDEA-001'));
+  assert.equal(data.sources.length, 0, 'the folder README is not a source');
+  assert.ok(html.includes('id="market-sources"'), 'Market still renders the import hole');
+  const out = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
+  assert.match(out, /bookmark: file:\/\/.*\/\.boss\/playbook\.html/);
+});

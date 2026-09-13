@@ -295,7 +295,7 @@ export function readCompetition(projectDir, today = Date.now()) {
 export function readSources(projectDir) {
   const dir = join(projectDir, 'docs', 'source');
   if (!existsSync(dir)) return [];
-  return readdirSync(dir).filter((n) => !n.startsWith('.')).map((n) => {
+  return readdirSync(dir).filter((n) => !n.startsWith('.') && !/^readme\.md$/i.test(n)).map((n) => {
     const p = join(dir, n); let st = null; try { st = statSync(p); } catch { return null; }
     const d = (n.match(/\d{4}-\d{2}-\d{2}/) || [null])[0] || (st ? st.mtime.toISOString().slice(0, 10) : null);
     return { name: n, dir: st && st.isDirectory(), date: d };
@@ -368,6 +368,36 @@ export function readDevlog(projectDir, max = 8) {
     else if (sur) cur.surprises = sur[1].trim();
   }
   return { file: 'docs/devlog.md', entries: entries.filter((e) => e.heading).slice(0, max), total: entries.length };
+}
+
+// The IDEA docs' `## Capture log` bullets — `- <date> — <the thought, in their words>` — each an
+// entry with the idea's id as its source. Merged with the devlog by date (Ajesh, 2026-09-13).
+export function readCaptureLogs(projectDir) {
+  const dir = join(projectDir, 'docs', 'ideas');
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const n of readdirSync(dir).filter((x) => /^IDEA-\d+.*\.md$/i.test(x) && !/-canvas\.md$/i.test(x))) {
+    try {
+      const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
+      const id = String(fm.id || n.replace(/\.md$/i, '')).trim();
+      const log = sectionStartingWith(text, 'Capture log') || '';
+      for (const l of log.split('\n')) {
+        const m = l.match(/^\s*[-*]\s+(\d{4}-\d{2}-\d{2})\s*[—–-]+\s*(.+)$/);
+        if (m) out.push({ heading: `${m[1]} · ${id}`, date: m[1], landed: m[2].trim(), surprises: '', source: `docs/ideas/${n}` });
+      }
+    } catch { /* skip */ }
+  }
+  return out;
+}
+
+// The story so far: devlog entries and capture-log bullets as one list, newest first, up to `max`.
+export function readLearnings(projectDir, max = 8) {
+  const devlog = readDevlog(projectDir, Infinity);
+  const fromLog = devlog ? devlog.entries.map((e) => ({ ...e, date: dateOf(e.heading) || '', source: 'docs/devlog.md' })) : [];
+  const all = [...fromLog, ...readCaptureLogs(projectDir)];
+  // the devlog is newest-first on disk; a stable sort by date keeps its order inside a day
+  const sorted = all.map((e, i) => [e, i]).sort((a, b) => String(b[0].date).localeCompare(String(a[0].date)) || a[1] - b[1]).map(([e]) => e);
+  return { entries: sorted.slice(0, max), total: sorted.length, files: [...new Set(sorted.map((e) => e.source))] };
 }
 
 // docs/decisions/DEC-*.md — `/decide`'s record: the title line, the frontmatter chips, the Decision
@@ -464,7 +494,7 @@ export function collectPlaybook(projectDir, projectName) {
     brandNot: readBrandLine(projectDir, 'What it is NOT'),
     designExists: existsSync(join(projectDir, '.boss', 'design.html')),
     // slice 3 (FEAT-028) — the Proof records; `evidence` above already carries the rows
-    evidenceRows: evidence, devlog: readDevlog(projectDir), decisions: readDecisions(projectDir),
+    evidenceRows: evidence, devlog: readLearnings(projectDir), decisions: readDecisions(projectDir),
     trust: readTrust(projectDir), health: readHealth(projectDir),
   };
 }
@@ -645,11 +675,11 @@ function proofChapters(data) {
   // 10 · Learnings — the devlog's own lines, newest first.
   const entries = devlog ? devlog.entries : [];
   empty.learnings = !entries.length;
-  const entryBlock = (e, i) => block({ id: `learn-${i + 1}`, title: e.heading, body: (e.landed ? `<p><strong>Landed:</strong> ${inline(e.landed)}</p>` : '') + (e.surprises ? `<p><strong>Surprises / decisions:</strong> ${inline(e.surprises)}</p>` : '') || '<p class="helper">an entry with only a heading</p>', src: `docs/devlog.md · ${esc(e.heading.slice(0, 10))}` });
+  const entryBlock = (e, i) => block({ id: `learn-${i + 1}`, title: e.heading, body: (e.landed ? `<p>${e.source === 'docs/devlog.md' ? '<strong>Landed:</strong> ' : ''}${inline(e.landed)}</p>` : '') + (e.surprises ? `<p><strong>Surprises / decisions:</strong> ${inline(e.surprises)}</p>` : '') || '<p class="helper">an entry with only a heading</p>', src: `${esc(e.source)} · ${esc(e.date || e.heading.slice(0, 10))}` });
   out.push(chapter('learnings', chapterHead(10, 'Learnings', entries[0] && entries[0].landed ? firstSentence(entries[0].landed) : ''),
     entries.length
-      ? `<div class="blocks">${entries.map(entryBlock).join('')}</div>${devlog.total > entries.length ? `<p class="more">${devlog.total - entries.length} earlier entr${devlog.total - entries.length === 1 ? 'y' : 'ies'} in docs/devlog.md</p>` : ''}`
-      : `<div class="blocks">${hole('learnings-none', 'The story so far', 'What landed, what surprised you, what you decided — one entry a session, in your words. Nothing logged yet.', '/log', 'docs/devlog.md — none')}</div>`));
+      ? `<div class="blocks">${entries.map(entryBlock).join('')}</div>${devlog.total > entries.length ? `<p class="more">${devlog.total - entries.length} earlier entr${devlog.total - entries.length === 1 ? 'y' : 'ies'} in ${esc(devlog.files.join(' · '))}</p>` : ''}`
+      : `<div class="blocks">${hole('learnings-none', 'The story so far', 'What landed, what surprised you, what you decided — one entry a session, in your words; the idea\'s capture log counts too. Nothing logged yet.', '/log', 'docs/devlog.md · docs/ideas capture logs — none')}</div>`));
 
   // 11 · Decisions — cards with their falsifiers; superseded ones dimmed, overdue ones said so.
   empty.decisions = !decisions.length;
@@ -826,7 +856,8 @@ function playbookJs(brand) {
 // points at /import instead — the record is ungated, only the deeper verb is. A FEAT or a mentor's
 // dossier is not something you drop in, so those just wait for the mode.
 const VERB_ORDER = ['/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/comp-eval', '/landing', '/trust', '/consult'];
-const DROPPABLE = new Set(['comp-eval', 'landing']);
+// A gated verb with a door that exists: the record can still be filled the plain way.
+const ALT = { 'comp-eval': ['or drop what you know', 'import'], landing: ['or drop what you know', 'import'], log: ['or add it to the idea', 'idea'] };
 // The verb as the founder should read it. No skills folder at all (a bare adopt, a test tree) →
 // nothing can be said about gating and the verb prints as is.
 export function verbLine(verb, projectDir) {
@@ -835,7 +866,8 @@ export function verbLine(verb, projectDir) {
   const skillsDir = join(projectDir, '.claude', 'skills');
   const has = (v) => !existsSync(skillsDir) || existsSync(join(skillsDir, v));
   if (has(m[1])) return verb;
-  return DROPPABLE.has(m[1]) && has('import') ? `${verb} — or drop what you know: /import` : `${verb} — arrives with the next mode (boss unlock)`;
+  const alt = ALT[m[1]];
+  return alt && has(alt[1]) ? `${verb} — ${alt[0]}: /${alt[1]}` : `${verb} — arrives with the next mode (boss unlock)`;
 }
 export function openQuestions(data, projectDir) {
   const fromCanvas = data.boxes.filter((b) => b.state === 'hole').map((b) => ({ id: `canvas-${b.key}`, title: b.name, prompt: b.prompt, verb: '/canvas' }));

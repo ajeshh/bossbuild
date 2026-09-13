@@ -97,6 +97,9 @@ and left to the founder. Open: rename `docs/source/` → `docs/inbox/`? (BOSS's 
 `boss sync` would have to carry it. Cheaper: keep the path, and let the README the scaffold drops
 in it say *drop anything here*.
 
+**Decided (Ajesh, 2026-09-13): keep `docs/source/`, add the README.** The template ships
+`docs/source/README.md` — one flat folder, dated names, drop anything.
+
 ## Updating
 
 By the same doors. A founder who re-drops a newer deck gets the assessment against what's already

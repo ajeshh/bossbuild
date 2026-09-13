@@ -30,37 +30,34 @@ is anything to read. A room sees what backs the pitch and, just as plainly, what
   the rail, the block anatomy, Link · Copy and the **copy sheet** replace the playbook's toast — one
   behaviour across spaces. The Humane ⇄ Lean toggle moves from the top bar to the canvas chapter's
   frame bar; the open-questions line moves into the ledger. Slide + the deck stay in the playbook's
-  `extraJs`. Not byte-identical (the family bar is new) — the tests are the contract →
-  _confirmed / corrected to: …_
+  `extraJs`. Not byte-identical (the family bar is new) — the tests are the contract → _confirmed (2026-09-13)_
 - **Assumed:** Evidence = every `docs/evidence/EVID-*.md` as one row on the ladder — id, date,
   grade, method, the **title line** (`# EVID-NNN — …`, the founder's own summary), the
   `assumption:` phrase — grouped by grade, commitment first, newest first within a grade.
   **Never the body and never `source:`** — the body is a real person's words and `source:` can be a
   person's name; this page is built to be pasted into a deck. A three-bar strip counts the grades
-  (one hue). None → a hole with `/evidence` → _confirmed / corrected to: …_
+  (one hue). None → a hole with `/evidence` → _confirmed (Ajesh, 2026-09-13): title line + grade/date/method/assumption; never the body, never `source:`_
 - **Assumed:** Learnings = `docs/devlog.md` entries, newest first, up to eight: the `## <date>`
   heading, the **Landed** line, and the **Surprises / decisions** line when present. The chapter
-  line is the newest entry's Landed first sentence. No devlog → a hole with `/log` →
-  _confirmed / corrected to: …_
+  line is the newest entry's Landed first sentence. No devlog → a hole with `/log` → _confirmed (2026-09-13)_
 - **Assumed:** Decisions = every `docs/decisions/DEC-*.md` as a card: the title line, `created:`,
   `reversibility:` and `decided_by:` as chips, the `## Decision` section's first paragraph, the
   `## Falsifier` first sentence with `revisit_by:` (a passed `revisit_by` with no `outcome:` renders
   `overdue`, counted from the date). A DEC named in another's `supersedes:` renders dimmed with
-  *superseded by*. None → a hole with `/decide` → _confirmed / corrected to: …_
+  *superseded by*. None → a hole with `/decide` → _**corrected (Ajesh, 2026-09-13): devlog + the IDEA docs' capture logs, merged by date** — built the same day_
 - **Assumed:** Risks & harms = the Risks & Harms cell (the DEC-004 floor, rendered in the chapter as
   the Problem chapter renders its cell) + *Trust* as `docs/trust/TRUST.md`'s first paragraph when
-  it exists, else a hole with `/trust` → _confirmed / corrected to: …_
+  it exists, else a hole with `/trust` → _confirmed (2026-09-13)_
 - **Assumed:** Health = the newest `docs/health/HEALTH-*.md` — its date from the filename and its
   first paragraph (a dated verdict, in the skill's own words) — plus the newest
   `docs/measure/MEASURE-*.md` named the same way; with neither, the chapter is **dormant, not a
   hole**: *live once there are users to read* — `/measure` picks the metric, `/health` reads the
   curve (Ajesh's ruling: after the first user it is acquisition, retention, and when market signals
-  start). No number is computed from either file → _confirmed / corrected to: …_
+  start). No number is computed from either file → _confirmed (Ajesh, 2026-09-13): dormant with its condition, not counted as open_
 - **Assumed:** the rail gains a **Proof** group (five entries, 9–13) and marks a chapter with
-  nothing under it with the shell's `hole-link` style → _confirmed / corrected to: …_
+  nothing under it with the shell's `hole-link` style → _confirmed (2026-09-13)_
 - **Assumed:** BOSS's own EVID files carry the date inside `source:` and no `method:` — the render
-  says `undated` / no method chip rather than parsing prose for a date →
-  _confirmed / corrected to: …_
+  says `undated` / no method chip rather than parsing prose for a date → _confirmed (2026-09-13)_
 
 **Still unknown (didn't guess):** whether a founder's devlog is ever written by hand in a shape
 other than `/log`'s (heading + three bold lines) — the parser takes the heading and any `**Landed:**`
@@ -129,6 +126,9 @@ Unchanged: `boss playbook [--open] [--questions]` asks nothing. No row in `docs/
   project; the copy sheet after a copy is welcome and not noise.
 
 ## Build log
+- 2026-09-13 — Ajesh answered the eight that mattered (two rounds of four). One correction, built
+  the same hour: Learnings = devlog + capture logs merged by date (`readLearnings`). Plus the two
+  calls: file stays put and prints its URL; `docs/source/` stays and gets a README in the template.
 - 2026-09-13 — **landed** (slice 3). Surprise: the peer's in-progress page-shell edit (the `.prompt`
   strip I asked for) briefly broke every render — backticks inside a `String.raw` comment; fixed on
   their side in minutes, a cost of one shared file with two writers. Kept as specced: Health dormant,

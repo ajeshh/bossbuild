@@ -460,6 +460,7 @@ question — not a fix made in passing.
    (c) `<name>.html` at the project root — findable, but a generated file in the founder's repo needs
    a gitignore rule in every template and in `boss adopt`, and `boss sync` to carry it to existing
    projects. Recommend (a) now, (c) only if a founder is seen looking for the file. Ajesh's call.
+   **Decided (Ajesh, 2026-09-13): (a)** — keep `.boss/playbook.html`; `boss playbook` prints the URL.
 
 ## Gate
 
