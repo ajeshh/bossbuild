@@ -66,6 +66,7 @@
     "check": "node scripts/check-manifests.js --strict && node scripts/check-site.js --strict && node scripts/check-help.js --strict && node scripts/check-wayfinding-drift.js --strict && node scripts/check-refs.js && node scripts/check-boundary.js && node scripts/check-ladder.js && node scripts/check-backlog.js && node scripts/check-dogfood.js && node scripts/check-freshness.js && node scripts/check-roster-claims.js --strict",
     "check:roster": "node scripts/check-roster-claims.js",
     "check:help": "node scripts/check-help.js",
+    "check:reach": "node scripts/check-reach.js",
     "eval:plugin": "claude plugin eval --trust-plugin --no-publish --allow-tools \"Bash(boss:*)\" \"Bash(which:*)\" .",
     "check:external": "node scripts/check-published.js --strict && node scripts/check-deployed.js --strict",
     "stamp": "node scripts/release.js --stamp"

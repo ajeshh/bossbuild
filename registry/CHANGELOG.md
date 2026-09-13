@@ -48,6 +48,14 @@ rule above still applies to the whole section once it is stamped.
   `settings.json` deduplicated on the command, and the reverse. Scaffold and unlock hold every
   `optionalHooks` entry back; sync manages an opt-in hook only when it is on disk. Ten fewer inert
   files in every founder's tree; the fiddliest thing BOSS asked anyone to do is one command.
+- **`npm run check:reach`.** There is no signup and no telemetry, so nobody knew whether a
+  stranger had ever installed BOSS. The script reads the counters that exist anyway — npm
+  downloads, both repos' 14-day git traffic, stars/forks/issues — and leads with the one honest
+  number: the latest version's downloads minus the crawl floor (a human fetches `latest`; a
+  mirror fetches every version — 11 stale versions were pulling ~120 a week each). First read:
+  ≈4 people, inside the crawl band. Each run appends a dated line to `.boss/reach.jsonl`, since
+  GitHub forgets traffic after two weeks. Flags a private repo as the thing that 404s
+  `/feedback`'s issue path. A number to look at, not a gate — not in `npm run check`.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's
