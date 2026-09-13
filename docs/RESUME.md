@@ -80,6 +80,9 @@ npm run check            # zero findings = clean; check:published says how far n
   shelves, provenance on the twelve, exactly-one check — found two more). Parked with triggers: 006
   (the port), 047 (fake door, keyless — when strangers exist), 082, 075, 076; 036 dropped; 066 owns
   outward research. Board: 4 captured · 0 taking shape · 0 building · 73 shipped · 29 parked.
+- **IDEA-106 captured (2026-09-13)** — the playbook: the canvas as boxes + the why, personas, rivals,
+  evidence and DECs as one on-brand single-file HTML, every block liftable into a deck. Design plan is
+  in the record; the honest next step is a **mock** over BOSS's own records, not a build. Board: 5 captured.
 - **The external evidence is still n=3 signals / n=2 founders, all `stated-pain`.** Nobody has been
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
@@ -96,7 +99,10 @@ npm run check            # zero findings = clean; check:published says how far n
 4. **Watchlist needs a row for the project/PM rung** (`planner`, `boss board`, `program:`).
 5. **Docs-accuracy found task:** CLAUDE.md's repo map and `/vet` step 2 name `library/agents|skills|
    hooks|memory-seed/` — none exist. Fix the sentences.
-6. **Two dogfood gaps from the `/retro`:** `.boss/brain/` (run `/read-repo`), `/drift-deep` never run here.
+6. **`npm run check` is red at 50 since `d20f15d` (IDEA-087):** `[[EVID-NNN]]` links in now-tracked
+   ideas/verdicts point at evidence that stays gitignored. Not a regression to chase — `check:refs` needs
+   to know evidence is private by design (skip or soften the EVID class), not un-ignore it.
+7. **Two dogfood gaps from the `/retro`:** `.boss/brain/` (run `/read-repo`), `/drift-deep` never run here.
 
 **Above all of these, unchanged: publish (npm is behind — `npm run check:published` says by how
 much) and Phase 3 outreach. Both are Ajesh's.**
