@@ -52,30 +52,23 @@ npm run check            # zero findings = clean; check:published says how far n
   shelves, provenance on the twelve, exactly-one check — found two more). Parked with triggers: 006
   (the port), 047 (fake door, keyless — when strangers exist), 082, 075, 076; 036 dropped; 066 owns
   outward research. Board: 4 captured · 0 taking shape · 0 building · 73 shipped · 29 parked.
-- **Playbook, 2026-09-13 afternoon — three more commits under Unreleased.** The pull (`590748f`):
-  `boss playbook` prints *N questions open · /canvas ×4 · …*, `--questions` lists each; one `verbLine`
-  for page and terminal (a verb the project lacks says so; rivals/brand holes point at `/import`);
-  the rail/ledger say *N open · start: /canvas*. **FEAT-028 shipped** — `6736162` adopts the peer's
-  `src/page-shell.js` (one chrome with `boss design`, copy sheet replaces the toast, frame toggle in
-  the canvas chapter), `edf52cc` the Proof chapters (Evidence rows never a body or `source:`,
-  Learnings = devlog lines, Decisions with falsifier/overdue/superseded, Risks + trust page, Health
-  dormant). 13 chapters, 28 playbook tests. **IDEA-111** captured (intake: three doors, no wizard —
-  drop a doc / dump in chat / `/close` notices; *The folder* section awaits Ajesh's call on
-  `docs/source/` vs `inbox/`). IDEA-106 Q7: the page's file name/place (Ajesh asked for
-  `<name>.html` at root — recommendation recorded, not moved).
+- **Playbook, 2026-09-13 — everything before the deck, done (Ajesh: *"do the deck last"*).** Under
+  Unreleased: the pull (`590748f`), FEAT-028 Proof chapters (`6736162`, `edf52cc`), Ajesh's answers
+  on 026/027/028 recorded — Learnings merges the IDEA capture logs, the URL prints, `docs/source/
+  README.md` ships (`1b1df27`); the kicked-up table sorted (`6a16e76`); **FEAT-035 the intake
+  doors** — `/import` takes pasted text, dates its snapshot, assesses what else a source fills (≤5,
+  yes/no, owning shapes, a document's number is never evidence), `/close` 3d notices what the
+  founder said (`61a7c2c`); **FEAT-036 the Company chapters** — Team from `docs/team/` person
+  records (`boss team add` stubs, photos inlined, never a stand-in), Brand as the doc holds it,
+  Values from `## How we build` (`3bfde2b`); **RVW-103** persona vetted at source — `photo:` and
+  `quote:` on the record, gated (`8da18b0`); four things BOSS never asked — `in_a_few_years:`,
+  `prior_capital:`, runway and defensibility/compliance sharpens (`1daf260`); the **BMC frame**
+  and the ask read from `business-<date>.md` (`ed46b24`). 16 chapters, 35 playbook tests, suite
+  529 pass + the 3 pre-existing. **Next is FEAT-029, the deck — Ajesh says go.**
 - **FEAT-027 landed under Unreleased (`48ff59c`)** — the Pitch chapters: eight sections + a rail, each a
   projection over a record; a chapter line = the record's first sentence, tested.
-- **FEAT-026 slice 1 landed under Unreleased (`55502e9`)** — `boss playbook`: the canvas as boxes in
-  `.boss/playbook.html`, holes as holes, Humane ⇄ Lean with the DEC-004 floor, chips + ledger counted,
-  Link · Copy · Slide, brand per-field with a monochrome default. 14 tests. **Seven assumptions in the
-  FEAT are marked for Ajesh to reject in a word**; the Keynote/Slides paste is his hand-check. Slices
-  2–4 (chapters, proof, the deck with a VC cut) are FEAT-027..029, not yet specced. The 27-row *Kicked
-  up* table in IDEA-106 is the intake spec for what BOSS should ask a founder and doesn't.
-- **IDEA-106 captured (2026-09-13), absorbing 065 + 104** — the playbook: the canvas as boxes + the why,
-  personas, rivals, evidence and DECs as one on-brand single-file HTML; every block linkable, Copy where
-  worth copying, Slide/Present. Design + prototype plan in the record; next is a **prototype** over a
-  fictional venture — **published v0** (link + what to react to in the record); the paste-into-Keynote
-  test is Ajesh's. Board: 6 captured · 0 building (FEAT-030 is the Design lane's) · 28 parked.
+- **Earlier the same day:** FEAT-026 slice 1 (`55502e9`, the canvas as boxes) and IDEA-106 captured
+  absorbing 065 + 104, six prototype rounds (link in the record) — the devlog holds the detail.
 - **The external evidence is still n=3 signals / n=2 founders, all `stated-pain`.** Nobody has been
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
@@ -93,19 +86,19 @@ npm run check            # zero findings = clean; check:published says how far n
 
 ## Next (in order)
 
-1. **FEAT-026/027/028 — Ajesh's turn.** Reject any assumption in the three FEATs in a word (7 + 9 + 8);
-   hand-check `boss playbook --open` on a real project (the Proof group answers *how do you know?*;
-   the copy sheet; paste a box into Keynote/Slides). Then **spec 029** (the deck: VC cut / internal /
-   everything as lists of block ids, remove-and-restore, Export PDF via the shell's print sheet).
-   Two of his calls pending: IDEA-111 *The folder* (`docs/source/` stays, README says *drop anything
-   here* — recommended) and IDEA-106 Q7 (file name/place — recommend `--open` prints the file:// URL).
-   Then IDEA-111's doors as a FEAT with a fresh `boss id` (031 is the design lane's).
-2. **The 27-row *Kicked up* table in IDEA-106** is the intake spec for what BOSS should ask a founder
-   and doesn't — sort it (task / new scope / question); IDEA-111 is where the rows land as doors. It names: a person record + photos (#11), a `vision:` line (#12), prior capital (#18), the
+1. **FEAT-029 — the deck.** `/spec` it: VC cut / internal / everything as lists of block ids,
+   remove-and-restore in the browser (never the records — kicked-up #26), Export PDF via the shell's
+   print sheet; the prototype's deck JS is the mockup. Then IDEA-110 (the showcase). Ajesh's
+   hand-checks still open: `boss playbook --open` on a real project (16 chapters read as a pitch?),
+   the copy sheet, paste a box into Keynote/Slides, `/import` on a real deck (are the ≤5 proposals
+   the right five?).
+2. **IDEA-106's kicked-up table is sorted** (2026-09-13); what's left waits on a trigger — #23 a
+   screenshot at ship (`/ship`), #27 channel per first user (`/measure`), #15 a series from an
+   import, #1 the matrix (three FEATs + two rivals with `## How they do it`), #10 which chapters
+   earn a visual. Previously it named: a person record + photos (#11), a `vision:` line (#12), prior capital (#18), the
    compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
    `/import` (#13), the ask record (#17).
-3. **`/vet` the persona sources** — `docs/research/inbox/persona-record-is-thin-against-the-craft.md`
-   (three pages + the example card; verdict per field; record or render).
+3. ~~`/vet` the persona sources~~ — RVW-103 (ADAPT: `photo:` and `quote:` gated; the rest rejected).
 4. **IDEA-110 — the full showcase on oyeboss** (after 029): one worked example generated by the
    real renderers. Reposition is IDEA-109's.
 5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
