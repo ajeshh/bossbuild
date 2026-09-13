@@ -89,7 +89,7 @@ updated: {{DATE}}
 
 ## Element families — seed only the ones this product has
 
-Three families come up in almost every product, get decided by accident, and are expensive to
+Ten families come up in almost every product, get decided by accident, and are expensive to
 re-decide later. **These are not a catalog of elements** — BOSS does not ship one and shouldn't (see
 the note above). They are the **decisions each family forces**, which is a different thing: a catalog
 tells you what a dialog is, and these tell you what you have to settle before you build your third
@@ -145,6 +145,64 @@ takes two behind a spinner.
 | **Optimistic for the reversible** | an action that almost always succeeds | show it as done, reconcile quietly, and say so clearly if it failed | a modal blocking on a round trip that works 99.9% of the time |
 | **Stream, don't accumulate** | model output | show it as it arrives | a spinner, then a wall of text |
 | **Name the wait past ~10s** | anything genuinely slow | say what is happening and roughly how long | an indeterminate bar with no end and no explanation |
+
+### Navigation — the one family users never notice until it is wrong
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **One way to get anywhere** | the product has more than three places | one primary navigation, and it is the same on every screen | a sidebar on one screen, tabs on the next, a menu on the third |
+| **Where am I** | any screen in a hierarchy | the current place is marked, and the way back is one step | a breadcrumb that is decoration; a back button that goes somewhere else |
+| **Tabs divide one thing; pages divide many** | content that could be tabs or pages | tabs when the user compares within one object; pages when they move between objects | seven tabs that are really seven pages |
+| **Paginate or scroll, and say which** | a list past one screen | one of the two, chosen by whether position matters (a report paginates; a feed scrolls) | infinite scroll under a footer nobody can reach |
+
+### Overlays — dialogs, popovers, tooltips, toasts: each interrupts; decide how much
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **A dialog is a question, not a place** | you are about to open a modal | one decision, then it closes; anything the user works *in* is a page | a modal with tabs; a modal that opens a modal |
+| **Dismissible unless destructive** | any overlay | Esc, a click outside and a close control all dismiss — except the destructive confirm, which needs the answer | a toast that can't be closed; a dialog that traps |
+| **A tooltip is not where the meaning lives** | hover-only content | the label is visible; the tooltip adds, never carries | an icon whose meaning is only in the tooltip (touch has no hover) |
+| **A toast confirms; it never asks** | a result to report | short, auto-dismissing, with one undo if the act was reversible | a toast with two buttons; an error that auto-dismisses before it is read |
+| **Focus goes in and comes back** | any overlay opens | focus moves into it and returns to what opened it on close | focus left on the page behind; a screen reader still reading the page under the modal |
+
+### Selection controls — checkbox, radio, toggle, select: four controls, one question each
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **Radio for one-of, checkbox for any-of, toggle for now** | a choice control | radio when exactly one; checkbox when zero or more; a toggle only when the effect is immediate and needs no save | a toggle that needs a Save button; checkboxes for a single choice |
+| **Fewer than six, show them** | options to pick from | up to five options are visible controls; a select is for six or more, or for values the user already knows (a country) | a dropdown with two options |
+| **Off is a state, not an absence** | any toggle or checkbox | the off label says what off means | "Enable" with no idea what happens when it's off |
+
+### Feedback — banners, notifications, badges, progress: what the product says back
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **Severity has four levels and one is enough** | any message to the user | info · success · warning · error — colour *and* an icon or word, since colour alone fails the floor | five shades of alert; red for everything |
+| **Inline beats banner beats toast beats badge** | choosing where feedback goes | as close to the thing as possible; a banner only for the whole page; a toast for a result; a badge for a count that matters | a page-wide banner for one field |
+| **A badge is a number someone will act on** | a count on a nav item | only for things that need the user, and it clears when they have looked | an unread count that never clears; a badge as decoration |
+| **Progress is determinate when you know** | anything longer than a second | a bar with an end when the total is known; a spinner only when it isn't, and never past ~10s without words | a spinner over a known-length upload |
+
+### Forms as a whole — the inputs family covers a field; this covers the form
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **One column, one thing per screen when it's hard** | a form of more than a few fields | one column; a multi-step flow when the questions are heavy, with a step count and a way back | a two-column form the eye has to zigzag across |
+| **The summary at the top names the field** | more than one field failed on submit | an error summary that links to each field, plus the inline error at the field | one red line at the top; the errors only inline where the user has to hunt |
+| **Save is the primary; Cancel keeps what they typed** | a form with a way out | one primary, one plain way out, and leaving does not lose the work without asking | Save and Cancel with equal weight; a Cancel that wipes the form silently |
+| **Autosave says so** | a form that saves as you go | a visible "saved" state, and no Save button that lies | a Save button on an autosaving form |
+
+### Layout primitives — stack, card, page: the three things every screen is made of
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **A card is a bounded thing, not a box for anything** | you are about to wrap something in a border | a card when the content is one object the user acts on as a whole; otherwise it is a section with a heading | a card inside a card; cards for paragraphs |
+| **One page shape** | any new screen | header · content · actions in the same places as every other screen; the grid from the Layout slot | a screen that invents its own header |
+| **Space from the scale, or from nothing** | any gap | every gap is a spacing token; siblings are laid out with a gap, not per-element margins | a 14px margin that is on no scale |
+| **Empty, loading, error, partial, full** | any container of data | the five states of a *container* are designed, not only the component's | a card that has never been seen empty |
+
+> Ten families now, and it is still not a catalog: none of these tells you what a dialog *is*. Each
+> tells you the decisions your third dialog will force, so you make them once. Seed only the
+> families this product has; a product with no overlay gets no overlay rows.
 
 ## Ours — patterns this product grew
 

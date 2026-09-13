@@ -30,6 +30,25 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The library keeps itself (IDEA-112 → FEAT-037).** Ajesh: *"as the agents or entrepreneur builds
+  more components or anything, we should be able to translate that into a design library… when to
+  reuse, when to make something new, our system should be able to guide."* Four things, none a
+  shipped component: **ten element families** in the pattern set (navigation · overlays · selection
+  controls · feedback · forms as a whole · layout primitives join inputs · data display · icons ·
+  waiting), each as the decisions it forces with the anti-pattern beside the rule, seeded only for
+  what the product has. **A usage page per component** — `docs/design/components/<Name>.md`: *why it
+  exists* (reuse · adjust · new, and the behaviour no other part has — the line the reuse guard asked
+  for and nothing kept), when it applies, when it doesn't, the variants and when, content, layout,
+  accessibility, research — written by `/design-review` at that component's review, read by the
+  agent, the founder, a teammate and a designer alike, rendered as *Usage* on the card before the
+  frame. **The tree, read back:** `boss design` scans the conventional component directories and
+  reports *in the tree, not in the index* — the lag the reuse rule fell through, now visible at MVP
+  without a manifest (tests, stories, barrels and page-shaped names skipped; it reports, never
+  writes). **A front door:** a usage page with `status: proposed` and no code is a request — it
+  renders under *Asked for*, `--questions` lists it, and the next review answers reuse, adjust, or
+  new; Resources carries the three doors (a part → a proposed page; a token → a DEC; a retirement →
+  `deprecated → Successor`). The rule under all of it, on the page: *nothing new lands unless it names
+  a behaviour nothing else has.*
 - **Every design slot now has a moment that fills it — and `boss design --questions` says which.**
   Ajesh: *"some of the content has no way of being populated as the app is being built."* Measured:
   Layout, the icon decision, the logo rules, the five-state table, Do/Don't, a principle's grounding

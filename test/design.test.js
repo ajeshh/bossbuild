@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, statSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, readUsagePages, scanTree, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -656,4 +656,116 @@ test('the open slots read back in build order, each with its verb and the moment
   const html = renderDesignHtml({ ...collectDesign(rest, 'Tidewell'), projectDir: rest }, 'x');
   assert.match(html, /<b class="tab">\d+<\/b> open · next: \/persona derive/, 'the ledger names the next verb');
   assert.match(html, /\/design-review reads it back at the first screen with a grid/, 'the layout hole names the moment that fills it');
+});
+
+// --- IDEA-112 / FEAT-037: the library keeps itself ----------------------------------------------------
+
+const USAGE_BUTTON = `---
+component: Button
+status: stable
+source: src/components/Button.tsx
+updated: 2026-09-12
+---
+
+# Button
+
+**Why it exists:** new — the one act a screen exists for; nothing else commits the user to anything.
+
+## When it applies
+- the one act a screen exists for — "Ask Priya", "Add the week"
+
+## When it doesn't
+- navigation — that is a link
+- a state change that isn't an act — a toggle
+
+## Variants, and when
+| Variant | Use it for | Never for |
+|---|---|---|
+| primary | the act | a second act on the same view |
+| ghost | an act on a row | the only control on a screen |
+
+## Content
+- verb first, two to three words, sentence case
+
+## Layout
+- <where it sits>
+
+## Accessibility
+- the label is the name; 44px on the caregiver's phone
+
+## Research
+- <EVID-NNN>
+`;
+const USAGE_PROPOSED = `---
+component: CoverSheet
+status: proposed
+---
+
+# CoverSheet
+
+**Why it exists:** new — a printable week for the one owner in eight who works on paper; no component renders for print today.
+
+## When it applies
+- the owner prints the week
+`;
+function withLibrary(extra = {}) {
+  return withParts({ 'docs/design/components/Button.md': USAGE_BUTTON, 'docs/design/components/CoverSheet.md': USAGE_PROPOSED,
+    'src/components/ShiftRow.tsx': 'export const ShiftRow = () => null;\n', 'src/components/CaregiverLine.tsx': 'export const CaregiverLine = () => null;\n', 'src/components/DashboardPage.tsx': 'x', 'src/components/Button.test.tsx': 'x', 'src/components/index.ts': 'x', ...extra });
+}
+
+test('a usage page reads as the template writes it — why it exists, the lists, the variants; placeholders are holes; a proposed page is a request', () => {
+  const dir = withLibrary();
+  const pages = readUsagePages(dir);
+  assert.deepEqual(pages.map((p) => [p.name, p.status]), [['Button', 'stable'], ['CoverSheet', 'proposed']]);
+  const b = pages[0];
+  assert.match(b.why, /^new — the one act/); assert.equal(b.applies.length, 1); assert.equal(b.doesnt.length, 2); assert.deepEqual(b.layout, [], 'a <placeholder> bullet is not content'); assert.deepEqual(b.research, []);
+  assert.deepEqual(b.variants.map((v) => v.variant), ['primary', 'ghost']); assert.equal(b.filled, 6, 'why · applies · doesnt · variants · content · a11y');
+  const data = collectDesign(dir, 'Tidewell');
+  assert.equal(data.components.components[0].usage.name, 'Button'); assert.equal(data.components.components[1].usage, null, 'ShiftRow has no page');
+  assert.deepEqual(data.components.proposed.map((u) => u.name), ['CoverSheet']);
+});
+
+test('the tree is read back: PascalCase component files in the conventional directories, never tests, barrels or page-shaped names; those with no row are unindexed', () => {
+  const dir = withLibrary();
+  assert.deepEqual(scanTree(dir).map((f) => f.name), ['Button', 'CaregiverLine', 'ShiftRow']);
+  const data = collectDesign(dir, 'Tidewell');
+  assert.deepEqual(data.components.unindexed.map((f) => f.name), ['CaregiverLine'], 'Button and ShiftRow have rows; CaregiverLine does not');
+  const html = renderDesignHtml({ ...data, projectDir: dir }, 'x');
+  assert.match(html, /id="components-unindexed"[\s\S]*?<code>CaregiverLine<\/code> — <span class="mono">src\/components\/CaregiverLine\.tsx<\/span>/);
+  assert.match(html, /1 of 3 component files/);
+  assert.ok(!html.includes('DashboardPage'), 'a page is a composition, not a component');
+  const q = data.questions.map((x) => x.id);
+  assert.ok(q.includes('unindexed-caregiverline') && q.includes('usage-shiftrow') && q.includes('proposed-coversheet'), 'the row, the page and the request are all questions');
+  assert.ok(!q.includes('usage-button'), 'Button has its page'); assert.ok(!q.includes('usage-card'), 'a deprecated component is not asked for a page');
+  assert.equal(data.questions.find((x) => x.id === 'unindexed-caregiverline').moment, 'now — src/components/CaregiverLine.tsx already exists');
+});
+
+test('the card renders Usage before the frame with why-it-exists first; a component without a page says which verb writes it; Asked for lists the proposal; the request path is in Resources', () => {
+  const dir = withLibrary();
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  const card = html.slice(html.indexOf('id="component-button"'), html.indexOf('id="component-shiftrow"'));
+  assert.ok(card.indexOf('<strong>Why it exists:</strong> new — the one act') < card.indexOf('<div class="frame"'), 'usage first, frame after');
+  assert.match(card, /<td class="mono">ghost<\/td><td>an act on a row<\/td><td>the only control on a screen<\/td>/);
+  assert.match(card, /<h4>Layout<\/h4><p class="unk">not written<\/p>/);
+  assert.match(card, /6 of 8 written/);
+  const row = html.slice(html.indexOf('id="component-shiftrow"'), html.indexOf('id="component-card"'));
+  assert.match(row, /No usage page[\s\S]*?docs\/design\/components\/ShiftRow\.md/);
+  assert.match(html, /id="components-asked"[\s\S]*?<strong>CoverSheet<\/strong> — new — a printable week/);
+  assert.match(html, /id="res-ask"[\s\S]*?status: proposed/);
+  // status disagreement: the index wins and the page says so
+  const dis = withLibrary({ 'docs/design/components/Button.md': USAGE_BUTTON.replace('status: stable', 'status: draft') });
+  const html2 = renderDesignHtml({ ...collectDesign(dis, 'Tidewell'), projectDir: dis }, 'x');
+  assert.match(html2, /The page says <em>draft<\/em>; the index says <em>stable<\/em>\. The index wins\./);
+});
+
+test('the pattern-set template carries ten element families as decisions, every row with an anti-pattern', () => {
+  const tpl = readFileSync(new URL('../stages/L1-mvp/template/.claude/skills/design-review/templates/pattern-set.md', import.meta.url), 'utf8');
+  const md = tpl.slice(tpl.indexOf('```markdown') + 12, tpl.lastIndexOf('```'));
+  const dir = tidewell({ 'docs/design/PATTERNS.md': md.replace(/\{\{PROJECT_NAME\}\}/g, 'T').replace(/\{\{DATE\}\}/g, '2026-09-13') });
+  const pa = readPatterns(dir);
+  const families = pa.groups.filter((g) => /^(Inputs|Data display|Waiting|Navigation|Overlays|Selection controls|Feedback|Forms as a whole|Layout primitives)/.test(g.heading));
+  assert.equal(families.length, 9, 'nine tabled families; Icons is a decision list, not a table');
+  assert.ok((tpl.match(/^### Icons/m)), 'icons is the tenth');
+  for (const g of families) for (const r of g.rows) assert.ok(r.rule && r.anti, `${g.heading} · ${r.pattern} has a rule and an anti-pattern`);
+  assert.equal(pa.ours.length, 0, 'the placeholder row is not a pattern');
 });

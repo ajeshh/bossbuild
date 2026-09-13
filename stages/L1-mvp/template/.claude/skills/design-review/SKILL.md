@@ -138,6 +138,13 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
      breakpoint typed in a media query is a `breakpoint.*` token that hasn't been named yet.
    - **The five-state row** for the component under review — the pass-two check already produces it;
      write the row into the table instead of leaving it in the review file.
+   - **The component's usage page** — `docs/design/components/<Name>.md` from
+     **[`templates/component-usage.md`](templates/component-usage.md)**: *why it exists* (reuse ·
+     adjust · new, and the behaviour no other component has), when it applies, when it doesn't,
+     the variants and when, content, layout, accessibility, research. This review is the only moment
+     those get decided, and the page is what the agent, the founder, a teammate and a designer all
+     read before the next screen. **Start from a `proposed` page if one exists** — someone asked for
+     this part; the review answers whether it is new or a variant of what is already there.
    - **Icons** — the first screen with an icon has chosen a set. Name it in *1b. Icons* (it is a
      dependency), and say the SVGs go in `docs/design/icons/`, one file each, stroke in the file.
    - **Do / Don't** — a rule you cite for the second time is a pair. Write the *Do* and the specific

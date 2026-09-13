@@ -193,8 +193,10 @@ try {
     `file); same job and a slightly different need means **widen** the existing one; a different job ` +
     `that happens to look similar is genuinely **new**. If you cannot tell, it is probably a variant — ` +
     `forking is cheap now and expensive forever, while extending is slightly expensive now and free ` +
-    `forever. If it IS new, say why in one line and add its row to the index in this same change; an ` +
-    `index that lags the code is one the next search will trust and be wrong about.`
+    `forever. If it IS new, say why in one line — as the **Why it exists** line of ` +
+    `\`docs/design/components/${name}.md\` (the usage page; \`/design-review\` fills the rest) — and add ` +
+    `its row to the index in this same change; an index that lags the code is one the next search ` +
+    `will trust and be wrong about. \`boss design\` lists components with no row and no page.`
   );
 } catch {
   process.exit(0); // fail-open
