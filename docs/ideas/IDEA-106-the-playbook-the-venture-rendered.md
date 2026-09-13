@@ -232,6 +232,21 @@ The prototype is a **mock to react to**, not a build; it costs one file and deci
 looking for their own material and cannot find it without grepping, or asks for something to show a
 room** — the symptom this surface treats. Until then it is a good idea with a prototype attached.
 
+## Prototype v0 — published 2026-09-13
+
+**https://claude.ai/code/artifact/e3f72fdf-dc50-4ebe-9f78-0d0f66684c35** (private until shared). Source:
+hand-written single-file HTML, no renderer behind it; fictional venture **Tidewell** (home-care rota
+cover, `non-tech-founder`, `motivation: own-problem`). Drawn: Why (cover + conscience line), Rivals
+(table + four cards, one stale at 134 days), the Canvas (Humane ⇄ Lean, 13 cells: 3 evidenced, 6
+asserted, 2 holes, 2 dormant, the DEC-004 floor band), and chapter 7 as a hole page. Live: Link ·
+Copy (rich HTML + text) · Slide · Present (arrow keys) · brand ⇄ no-brand toggle · light/dark · print
+one block per page. Not drawn: chapters 2, 5, 6, 8, 9.
+
+**React to, in order:** (1) is the no-brand default something to be proud of · (2) do the dashed
+holes read as honest or as embarrassing · (3) chip: legible or clutter · (4) Present: a deck, or a
+website with big text · (5) paste one copied block into Keynote / Slides / PowerPoint — table or
+picture? Write the reactions into the capture log below.
+
 ## Capture log
 
 - 2026-09-13 — seed, three messages (Ajesh). Design plan written before any build. Lineage read:

@@ -83,7 +83,8 @@ npm run check            # zero findings = clean; check:published says how far n
 - **IDEA-106 captured (2026-09-13), absorbing 065 + 104** — the playbook: the canvas as boxes + the why,
   personas, rivals, evidence and DECs as one on-brand single-file HTML; every block linkable, Copy where
   worth copying, Slide/Present. Design + prototype plan in the record; next is a **prototype** over a
-  fictional venture (three chapters, affordances live), then the paste-into-Keynote test. Board: 5 captured · 28 parked.
+  fictional venture — **published v0** (link + what to react to in the record); the paste-into-Keynote
+  test is Ajesh's. Board: 5 captured · 28 parked.
 - **The external evidence is still n=3 signals / n=2 founders, all `stated-pain`.** Nobody has been
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
