@@ -16,6 +16,28 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.321.0 — 2026-09-12
+
+**The second door has its eval too. And `effort:` is a shape, not a name.**
+
+- **`plugin/evals/repo-door/`** — *"I've already got a codebase… I want BOSS in it, not a new
+  project."* Two graders: *repo-door* (takes the adopt path, names `boss adopt` in the repo root, says
+  nothing is overwritten and `boss remove` reverses it, checks the session is open at that root) and
+  *show-then-wait* (shows the command, runs nothing). **With the plugin 1.0; without 0.33** — the
+  baseline passes "ran nothing" by running nothing, so Δ is 0.67 and that is the honest number. The
+  door noticed the sandbox was not the Rails root and refused to adopt the wrong folder, which is the
+  exact failure the skill was written to prevent. $0.18. One case proved the instrument (v0.320.0);
+  two prove the branch.
+- **`model-routing.md`** — Claude Code 2.1.267 honours `effort:` frontmatter on skills and subagents
+  even on pinned-effort models. That is a *shape* knob, not a *name*, and the rule does not move:
+  shipped artifacts still say nothing and inherit; an `effort:` key is one more host-specific line
+  BOSS would sign up to sweep. The binding question (local vs shipped; recommended local) goes to the
+  next `/recalibrate`. Clock not moved.
+- **RubyGems, grepped and held** (inbox, for the 2026-11-09 security sweep): BOSS covers the
+  dependency direction and config-from-environment; nothing covers a pipeline that *executes
+  repo-controlled config* (`postinstall`, `pull_request_target`, a doc builder reading `.yardopts`).
+  Real on the first outside contributor; not urgent for solo/private cohorts. Not built.
+
 ## 0.320.0 — 2026-09-12
 
 **The plugin has an eval, and the eval has a baseline arm. With BOSS: 1.0. Without: 0. Twenty cents.**
