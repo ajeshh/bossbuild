@@ -358,6 +358,16 @@ six-part principle the right weight, or is it a page a founder won't fill · (14
 into your design tool as vectors (the honest test of the "figma copy") · (15) is *By method* the
 research page a founder needs, or a wall.
 
+### Prototype v3.1 — the copy sheet (2026-09-13, same link)
+
+Ajesh: *"maybe instead of just copy, show how its being copied? cuz right now it just says copied
+as text."* Every copy now opens a **sheet** showing exactly what reached the clipboard and in which
+form: a block copy shows *Looks like (rich)* rendered as it would paste plus a *Text* tab, and the
+header says *rich + plain* or *plain text only* (amber) — so the sandbox's fallback is visible
+instead of silent; a value shows the literal; code shows the source; SVG shows the drawing on a
+checkerboard plus its source. *Copy again* re-sends. **Rule for the render:** a copy is a claim
+about what will paste; show the payload, never a verb. (Carried into 106's Copy too, when built.)
+
 ### The plan it was drawn from
 
 Hand-written, over **Tidewell**. Draw: Brand → Foundations with three swatches and their
