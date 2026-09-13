@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.317.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.319.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -74,7 +74,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/cost-review` — Read the AI cost ledger and produce a dated review
 - `/ai-first-init` — Bake the AI-first discipline into your app from day one
 - `/ai-failure-states` — Design what your app does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens
-- `/extract` — Pause and sort patterns — PRINCIPLE #1 as a skill
+- `/extract` — Pause and sort patterns — Principle 1 as a skill
 - `/drift-deep` — The deep, whole-project version of the conscience's drift check — "am I fooling myself across everything I've built?" Reads the canvas, devlog, FEAT specs, code and ideas, and judges whether the work validates the riskiest assumption or builds around it
 - `/revalidate` — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature
 - `/judge-traces` — Error analysis on your real session traces — Hamel/Shankar's discipline applied to your own work

@@ -278,7 +278,7 @@ function skillDescriptions(stageId) {
     const f = join(dir, name, 'SKILL.md');
     if (!existsSync(f)) continue;
     const line = (readFileSync(f, 'utf8').split('\n').find((l) => l.startsWith('description:')) || '');
-    out.push({ name, bytes: Buffer.byteLength(line, 'utf8') + 1 });
+    out.push({ name, line, bytes: Buffer.byteLength(line, 'utf8') + 1 });
   }
   return out;
 }
@@ -294,6 +294,19 @@ function checkDescriptionBudget() {
       totals.push({ stageId, count: descs.length, bytes: descs.reduce((a, d) => a + d.bytes, 0) });
     }
     for (const d of descs) {
+      // A description is a YAML plain scalar, and ` #` starts a comment in one. The host honours
+      // that: /extract's description read "…PRINCIPLE #1 as a skill…" and /skill-doctor reported
+      // it at "< 20" tokens — the listing had been cut at "PRINCIPLE" for as long as the line
+      // existed, and /health carried "the #1 way startups die" the same way until a rewrite
+      // removed it by accident. Found 2026-09-12 by running the instrument, not by reading.
+      // Same family as the ` - ` house style that already avoids `: ` — one more character.
+      if (/ #/.test(d.line)) {
+        errors.push(
+          `${stageId}: /${d.name}'s description contains " #", which YAML reads as the start of a `
+          + 'comment — the host truncates the description there. Write "no. 1", "Principle 1", or '
+          + 'drop the hash.',
+        );
+      }
       if (d.bytes > DESCRIPTION_CAP) {
         errors.push(
           `${stageId}: /${d.name}'s description is ${d.bytes} B (cap ${DESCRIPTION_CAP}). It is read on `

@@ -4,7 +4,7 @@ type: practice
 owner: product-lead
 status: active
 host: claude-code
-provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned. · **one citation added 2026-09-12 (v0.315.0, RVW-101), clock NOT moved** — Cai et al. 2606.12231 corroborates move #1's architecture-over-formatting line from mined rule files; preprint, before/after only.
+provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned. · **one citation added 2026-09-12 (v0.315.0, RVW-101), clock NOT moved** — Cai et al. 2606.12231 corroborates move #1's architecture-over-formatting line from mined rule files; preprint, before/after only. · **move 1b added 2026-09-12 (v0.318.0, RVW-102), clock NOT moved** — the tool list is always-on context; measured with `/skill-doctor` (45 resident, ~4.7k tokens/turn); the ` #` truncation found by the instrument.
 provenance_public: Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.
 last_reviewed: 2026-09-08
 review_by: 2026-12-07
@@ -126,6 +126,35 @@ curve: host
   tools, not context economy.
 - `CLAUDE.local.md` (gitignored) holds personal/local notes. Edits to `CLAUDE.md` apply on
   restart/`/compact`, not mid-session. Run `/context` and `/memory` to see what actually loaded.
+
+### 1b. Budget the tool list, not just the prose *(added 2026-09-12, RVW-102)*
+
+Move #1 budgets the files read on every turn. The **skill listing is the same bill and was never on
+it.** The host puts every installed skill's one-line description into the system prompt so it can
+decide when a skill applies — which means the *list* is always-on context, whether or not any skill
+ever runs. Only the body (`SKILL.md` below the frontmatter) loads on invoke. So progressive disclosure
+is real for bodies and does not exist for the list: Anthropic's *"smallest set of high-signal tokens"*
+applies to the list in full.
+
+**Measured 2026-09-12** in a fresh `boss new` + `boss unlock mvp` scaffold, with the host's own
+instrument (`/skill-doctor`): 45 descriptions resident, ~70–130 tokens each, **~4.7k tokens per turn**.
+The same run reported `/extract` at `< 20` tokens — its description contained ` #`, which YAML reads
+as a comment, so the host had been truncating it at that character for as long as the line existed.
+**Run the instrument; reading the file cannot see this.**
+
+Three rules, and the order matters:
+
+1. **Budget the line.** A description says *when to fire*; the *what* belongs in the body. BOSS caps
+   its own at 420 B and refuses ` #` and `: ` in the value (`npm run check:manifests`). Rewrite before
+   you remove — v0.316.0 cut the always-on bill by a third and removed nothing.
+2. **Measure the list with the host's instrument, not with the count.** `/skill-doctor` reports what
+   is resident, what it costs, and what has ever been invoked. A count is an inventory; the report is
+   a fact.
+3. **Judge a cut by two questions, never by the third.** *Can the model tell this skill from its
+   neighbour by the description alone?* and *has anyone ever reached for it, in sessions that could
+   have?* decide. *Is the count large?* does not — and usage from a project that structurally cannot
+   fire a verb (BOSS building BOSS has no customers, so `/money` never runs there) is not evidence
+   against the verb. Subtract by indistinguishability; compose before you cut.
 
 ### 2. Scope rules to where they apply (`.claude/rules/`)
 Put domain-specific instructions in `.claude/rules/*.md` with `paths:` frontmatter so they load

@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.317.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.319.0**.
 
 ## Quickstart
 
@@ -37,7 +37,7 @@
 - **`/cost-review`** — Read the AI cost ledger and produce a dated review  _(/cost-review)_
 - **`/ai-first-init`** — Bake the AI-first discipline into your app from day one  _(/ai-first-init)_
 - **`/ai-failure-states`** — Design what your app does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens  _(/ai-failure-states)_
-- **`/extract`** — Pause and sort patterns — PRINCIPLE #1 as a skill  _(/extract)_
+- **`/extract`** — Pause and sort patterns — Principle 1 as a skill  _(/extract)_
 - **`/drift-deep`** — The deep, whole-project version of the conscience's drift check — "am I fooling myself across everything I've built?" Reads the canvas, devlog, FEAT specs, code and ideas, and judges whether the work validates the riskiest assumption or builds around it  _(/drift-deep)_
 - **`/revalidate`** — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature  _(/revalidate [ID or paused item])_
 - **`/judge-traces`** — Error analysis on your real session traces — Hamel/Shankar's discipline applied to your own work  _(/judge-traces [last N | all])_

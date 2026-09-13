@@ -55,6 +55,39 @@ test('the cap is enforced by a gate that actually fails', () => {
   }
 });
 
+test('a " #" in a description fails the gate — YAML reads it as a comment and the host truncates there', () => {
+  // Found by running /skill-doctor in a scaffolded project (2026-09-12): /extract listed at "< 20"
+  // tokens because its description said "PRINCIPLE #1". Same proof shape as the cap test above.
+  const victim = descriptions().find((d) => d.stage === 'L1-mvp');
+  const original = readFileSync(victim.file, 'utf8');
+  try {
+    writeFileSync(victim.file, original.replace(/^description: /m, 'description: Rule #1 of this skill - '));
+    let code = 0;
+    try {
+      execFileSync('node', [join(BOSS_ROOT, 'scripts', 'check-manifests.js'), '--strict'],
+        { cwd: BOSS_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    } catch (e) { code = e.status; }
+    assert.equal(code, 1, 'a description with " #" must fail the release gate');
+  } finally {
+    writeFileSync(victim.file, original);
+  }
+});
+
+test('no shipped skill description contains " #"', () => {
+  const dir = (stage) => join(BOSS_ROOT, 'stages', stage, 'template', '.claude', 'skills');
+  const bad = [];
+  for (const stage of STAGE_ORDER) {
+    if (!existsSync(dir(stage))) continue;
+    for (const name of readdirSync(dir(stage))) {
+      const f = join(dir(stage), name, 'SKILL.md');
+      if (!existsSync(f)) continue;
+      const line = readFileSync(f, 'utf8').split('\n').find((l) => l.startsWith('description:')) || '';
+      if (/ #/.test(line)) bad.push(`${stage}/${name}`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
+
 test('/evidence routes to its two siblings instead of silently absorbing their work', () => {
   // IDEA-086: three verbs produce a graded EVID and the founder has to already understand the
   // seam to pick one. The resolution is a routing line at the door they reach for by name — NOT

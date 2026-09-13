@@ -16,6 +16,39 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.319.0 — 2026-09-12
+
+**The instrument ran. All 45 skill descriptions are resident on every turn (~4.7k tokens), one of
+them had been silently cut in half by a `#`, and the practice shelf finally says how to reason about
+the size of the list.**
+
+> **For you:** `/extract`'s description reads whole again — it said `PRINCIPLE #1`, YAML treats
+> ` #` as a comment, and your host had been showing it as *"Pause and sort patterns — PRINCIPLE"*
+> for as long as the line existed. `npm run check` now refuses ` #` in any shipped description.
+> Nothing else about your surface changed.
+
+- **`/skill-doctor` in a fresh `boss new` + `boss unlock mvp` scaffold** (output filed under
+  `docs/research/sessions/`). Two numbers. **Residency:** every one of the 45 descriptions is in the
+  system prompt on every turn, ~70–130 tokens each — the "progressive disclosure means the doctrine
+  doesn't apply" argument was half-true: bodies disclose progressively, the list does not. **Usage,
+  this machine, all history:** 10 of 45 ever invoked (`close` 59×, `smoke` 59×, `log` 18×,
+  `ux-check` 9×, `boss-learn` 4×, `boss` 2×, four at 1×); 35 never. n=1, and the project is BOSS
+  building BOSS — a meta-project with no customers, so the post-launch verbs *cannot* fire there.
+  First usage data BOSS has ever had; not a licence to cut.
+- **The ` #` truncation** — found by the instrument (`/extract` at `< 20` tokens), invisible to
+  reading. `/health` carried `the #1 way startups die` the same way until v0.316.0's rewrite removed
+  it by accident. `check:manifests` now fails on ` #` in a description; two tests, one proving the
+  gate bites. One violation across 48 when the rule was written — the rule was right, only the
+  enforcement was missing.
+- **RVW-102 ADAPT — tool-surface economy**, the item parked since 2026-09-08 *until the number
+  existed*. `context-discipline.md` gains **move 1b, "Budget the tool list, not just the prose"**:
+  the list is always-on context; budget each line (the 420 B cap, the ` #` / `: ` refusals); measure
+  with the host's instrument, never the count; judge a cut by *can the model tell it from its
+  neighbour?* and *has anyone reached for it, where they could?* — and never by *is the count large?*
+  Clock not moved. RVW-099 (Galster) has its re-open condition met and holds NOT-YET on its own claim.
+- **`claude plugin eval`** was checked and has nothing to run: the plugin ships no `evals/` cases.
+  That instrument is a build, not a run — filed as a next task, not as a finding.
+
 ## 0.318.0 — 2026-09-12
 
 **`docs/RESUME.md` is a briefing with a window, and the window is a number. `boss status` reads it;
