@@ -462,6 +462,16 @@ rule above still applies to the whole section once it is stamped.
   — and the page says so. Filling the demo caught a third: the canvas lacked the *incubation
   heartbeat* `/canvas` writes (riskiest assumption · experiment this week · what would change the
   plan), so the canvas loop read as open; the demo canvas now carries it.
+- **A default worth looking at.** A founder with no `tokens.json` and no brand accent used to get
+  BOSS's own concrete-and-graphite greys in monochrome — every new project looked like BOSS with the
+  colour turned off (Ajesh: *"the grey is very boring"*). The shell's default is now chosen, not
+  inherited: a warm stone ground with a slight hue, ink with a blue cast, a teal accent with its own
+  dark-scheme twin — every text pair ≥ 4.8:1 on the ground and ≥ 5.3 on paper in both schemes —
+  and `DEFAULT_ACCENT` is one named constant so no page can drift from it. BOSS's own pages don't
+  use the default any more either: BOSS eats its dogfood with a `docs/design/tokens.json` copied
+  from the site's tokens (concrete, graphite, the mono display face, 3px cuts, the hi-vis ink),
+  so `boss playbook` and `boss board --html` on BOSS's tree look like oyeboss.build. The deck's
+  browser store is keyed by project — every `.boss/` page shares the `file://` origin.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

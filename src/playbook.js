@@ -1030,7 +1030,8 @@ function playbookJs(brand) {
   });
   /* the deck (FEAT-029): a cut is a list of block ids; removals live in the browser, never in a record */
   const present = $('#present'); let cuts = {}; try { cuts = JSON.parse(present.dataset.cuts); } catch (e) {}
-  const KEY = 'boss-playbook-';
+  /* keyed by project: every .boss/ page shares the file:// origin, so one browser sees many playbooks */
+  const KEY = 'boss-playbook-' + BRAND.replace(/[^a-z0-9]+/gi, '-').toLowerCase() + '-';
   const store = { get(k) { try { return JSON.parse(localStorage.getItem(KEY + k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) {} } };
   const NAMES = { vc: 'VC cut', internal: 'Internal', all: 'All' };
   let cut = ['vc', 'internal', 'all'].includes(store.get('cut')) ? store.get('cut') : 'vc';

@@ -38,20 +38,28 @@ export function familyBar(projectDir, current) {
   return `<nav class="family" aria-label="Spaces">${items.join('')}</nav>`;
 }
 
-// The neutral palette — board.js's inlined tokens (site/styles/tokens.css is the source of truth
-// and does not ship). Exported so the three pages inherit one set instead of each restating it;
-// board.js and playbook.js restate these values inline today and adopt this when they take the shell.
+// The default palette — what a founder with no tokens.json and no brand accent sees. It used to be
+// BOSS's own concrete-and-graphite greys (a copy of the site's tokens), which made every new
+// project look like BOSS in monochrome; Ajesh, 2026-09-13: "we should have a good default … the
+// grey is very boring." So the default is chosen, not inherited: a warm stone ground with a
+// slight hue, ink with a blue cast, and a teal accent — every text pair ≥ 4.8:1 on the ground,
+// ≥ 5.3 on paper, in both schemes. BOSS's own pages don't use it: docs/design/tokens.json sets
+// them in the site's look the way any founder's tokens set theirs.
 export const NEUTRAL = {
-  light: { ground: '#E4E6E8', paper: '#F0F2F3', ink: '#16181A', ink2: '#565C62', muted: '#565C62', hole: '#8A9096', rule: '#C4C8CC', rule2: '#D7DADD', accentInk: '#F0F2F3' },
-  dark: { ground: '#16181A', paper: '#1F2225', ink: '#E4E6E8', ink2: '#A9B0B6', muted: '#A9B0B6', hole: '#6E767D', rule: '#3A3F44', rule2: '#2A2E32', accentInk: '#16181A' },
+  light: { ground: '#ECEAE3', paper: '#F7F5EF', ink: '#1F2328', ink2: '#5D6470', muted: '#5D6470', hole: '#8A8F98', rule: '#CFCBC1', rule2: '#E0DDD4', accentInk: '#F7F5EF' },
+  dark: { ground: '#1B1D22', paper: '#23262C', ink: '#E8E6DF', ink2: '#A6ACB4', muted: '#A6ACB4', hole: '#6E747D', rule: '#3A3E46', rule2: '#2C3036', accentInk: '#1B1D22' },
 };
+// The default accent, and its dark-scheme twin (a brand's own accent is used as given in both).
+export const DEFAULT_ACCENT = '#1F6F78';
+const DEFAULT_ACCENT_DARK = '#6FB7BF';
 const vars = (t) => `--ground: ${t.ground}; --paper: ${t.paper}; --ink: ${t.ink}; --ink-2: ${t.ink2}; --muted: ${t.muted}; --hole: ${t.hole}; --rule: ${t.rule}; --rule-2: ${t.rule2}; --accent-ink: ${t.accentInk};`;
 
 export function shellCss(accent) {
+  const darkAccent = accent === DEFAULT_ACCENT ? ` --accent: ${DEFAULT_ACCENT_DARK};` : '';
   return `
   :root { --accent: ${accent}; ${vars(NEUTRAL.light)} --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper)); --chip-ev: #2F5D8A; --chip-ev-soft: #E3ECF5; --stale: #A8681A; --stale-soft: #F6ECDA; --bad: #A33A2E; --bad-soft: #F8E4E1; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color-scheme: light; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ${vars(NEUTRAL.dark)} --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; } }
-  :root[data-theme="dark"] { ${vars(NEUTRAL.dark)} --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ${vars(NEUTRAL.dark)}${darkAccent} --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; } }
+  :root[data-theme="dark"] { ${vars(NEUTRAL.dark)}${darkAccent} --chip-ev: #8FB6DD; --chip-ev-soft: #1F2E3D; --stale: #E0A94F; --stale-soft: #3A2C14; --bad: #E58A7D; --bad-soft: #3B2320; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme: dark; }
   * { box-sizing: border-box; } body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15.5px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
   a { color: var(--accent); } h1, h2, h3, h4 { margin: 0; font-weight: 500; text-wrap: balance; } p { margin: 0; } code { font-family: var(--mono); font-size: .9em; }
   button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; } button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
@@ -216,7 +224,7 @@ export function shellPage({ title, brand, projectDir, current, ledgerHtml, rail,
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
-<style>${shellCss(brand.accent || '#16181A')}${extraCss}</style>
+<style>${shellCss(brand.accent || DEFAULT_ACCENT)}${extraCss}</style>
 </head>
 <body>
 <header class="topbar">

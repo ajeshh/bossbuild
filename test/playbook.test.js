@@ -11,6 +11,7 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { project, cleanup } from './helpers.js';
 import { CELLS, parseCanvas, collectPlaybook, renderPlaybookHtml, playbookHtml, inline, readBrand } from '../src/playbook.js';
+import { DEFAULT_ACCENT } from '../src/page-shell.js';
 
 after(cleanup);
 
@@ -164,7 +165,7 @@ test('brand: BRAND.md accent and tagline apply; unknown falls back per field; no
   const u = readBrand(unknown, 'tidewell');
   assert.equal(u.accent, null, 'unknown is not a colour'); assert.equal(u.tagline, null);
   const html = renderPlaybookHtml(collectPlaybook(unknown, 'tidewell'), '2026-09-13 10:00');
-  assert.ok(html.includes('--accent: #16181A'), 'no accent → monochrome, never an invented hue');
+  assert.ok(html.includes(`--accent: ${DEFAULT_ACCENT}`), 'no accent → the shell\'s one default, never a hue invented per project');
   assert.ok(html.includes('accent unknown → default'));
   const none = renderPlaybookHtml(collectPlaybook(project(stamp()), 'tidewell'), '2026-09-13 10:00');
   assert.ok(none.includes('brand: nascent — no docs/BRAND.md yet'));
@@ -760,7 +761,7 @@ test('deck cuts: Everything is every block in page order; Internal has no hole, 
   // the page carries the bar, the counts, the print sheet, the browser-only removal store
   assert.ok(html.includes('id="present"') && html.includes(`<b class="tab n-vc">${vc.length}</b>`) && html.includes('>All <b class="tab n-all">'));
   assert.ok(html.includes('function filterPage()') && html.includes("b.hidden = !inCut.has(b.id)"), 'the cut filters the page');
-  assert.ok(html.includes("const KEY = 'boss-playbook-'") && html.includes("store.set('removed-' + cut, r)"), 'removals live in localStorage');
+  assert.ok(html.includes("const KEY = 'boss-playbook-' + BRAND") && html.includes("store.set('removed-' + cut, r)"), 'removals live in localStorage, keyed by project');
   assert.ok(html.includes('.printdeck { display: block; }') && html.includes('.topbar, .shell, footer.site, .deck, .sheet, .valmenu { display: none !important; }'), 'print shows the cut only');
   assert.ok(html.includes('page-break-after: always') && html.includes('@page { size: landscape; margin: 0; }'));
   assert.ok(html.includes('class="remove" title="Take this slide out of the current cut'));
