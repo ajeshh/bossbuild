@@ -136,3 +136,18 @@ IDEA-087 · the `shape` field nobody reads · whether a shared checkout can have
 3. BOSS's own `.claude/` synced 0.267 → 0.325 (81 files; six edited hook/skill copies taken from shipped;
    seven BOSS-specific mentor prompts kept). `check-dogfood` fails past 3 behind. The old `docs/loops`
    copies remain (the classifier blocked `--remove`; they are shadowed and harmless).
+
+## 2026-09-13 — the second tier, landed under `## Unreleased`
+1. Conscience says a moment once per session (person-state ledger keyed on the host's session id).
+2. `boss hooks enable|disable` — opt-in hooks land when asked, registered from their own header; ten
+   fewer inert files per tree.
+3. `modes:` not `layers:` under the ladder.
+4. Manifest `summary` cut to one sentence each (24k chars nothing rendered).
+5–6. One freshness helper for check-site/check-help; `check:patterns` out of the gate chain; gen-site
+   reads the CHANGELOG through `parseEntries`.
+7. `docs/MENTORS.md` active and current.
+Not taken from the board's second tier, and why: `/landing --demand` → `/pretotype` fold and
+`/regrade`+`/recalibrate` merge (subtractions of verbs with n=0 use data either way — hold for an
+observed founder); names-as-credentials in three descriptions (Husain, Hamel/Shankar, Shape-Up — a
+voice call for Ajesh: they are citations, and the rule allows person citations); check-refs split for
+CI (IDEA-087 decides that); INDEX.md size (BOSS-only, gitignored; `boss board` already projects it).
