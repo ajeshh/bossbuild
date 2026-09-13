@@ -23,6 +23,12 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > mechanism working, not a bug.
 
 ## 2026-09-13
+- **FEAT:** _no FEAT — the close_
+- **Landed:** Ajesh's read of the demo, answered: five ideas whose status words were off-vocabulary (superseded, promoted) now say shipped and the board shows IDEA-065 where it belongs (ba38d62); BOSS's own playbook and board are set in BOSS's look via a local docs/design/tokens.json copied from the site's tokens — mono display, 3px cuts, hi-vis ink; the shell's default palette for a founder with no tokens is chosen, not inherited — warm stone, blue-cast ink, teal accent with a dark twin, DEFAULT_ACCENT exported (e6b4cdf); the deck's browser store keyed by project. 15 commits on this lane today, all under Unreleased.
+- **Next:** Ajesh: publish when ready (npm run stamp → npm publish; ~13 commits ahead of origin); his hand-checks on the playbook (Present → VC cut, Export PDF in the sandbox, a Keynote paste, /import on a real deck). The design lane's prose sweep to copper. The standing red: check:refs (EVID dangles, RESUME Next #9).
+- **Surprises / decisions:** Two off-vocabulary status words looked terminal to a reader and were invisible to the board — the accomplice pattern again, in the records this time. Every .boss/ page shares the file:// origin, so a browser store keyed by nothing leaks between projects.
+
+## 2026-09-13
 - **FEAT:** FEAT-039 (second pass)
 - **Landed:** Ajesh's four notes on the demo, built: the board joined the dashboard — boss board --html renders through page-shell (fd96771); Organization replaced Folders (grouped by what the founder is doing, verbs as accent chips, the four rules, the modes strip from the manifests, counts from the tree); Learning replaced Inside (the venture's trail from its records); the demo board got six ideas and six FEATs across three months. Then: playbook + board set in the venture's tokens.json (light only), Kettlewick recoloured sage/green-black/copper with contrast checked (872e5c8); the cut is a filter and Everything → All; the conscience runs for real on the demo at build time and its two open signals sit on Learning as schema (a4187cc). Suite 544 pass + 3.
 - **Next:** Ajesh's browser read of site/demo; his playbook hand-checks; the design lane's prose sweep to copper.

@@ -79,6 +79,11 @@ npm run check            # zero findings = clean; check:published says how far n
   board got six ideas / six FEATs; playbook + board set in the venture's tokens, Kettlewick
   recoloured sage/copper (`872e5c8`); the cut became a filter and Everything → All; the conscience
   runs for real on the demo at build time and its signals sit on Learning (`a4187cc`).
+  **Last:** IDEA-065/104/106/110/111 flipped to `shipped` — `superseded`/`promoted` were off-vocabulary
+  and the board filed two as Captured (`ba38d62`); BOSS eats its dogfood with a local
+  `docs/design/tokens.json` so its own pages look like the site; the shell's default palette is
+  chosen, not inherited (warm stone · blue-cast ink · teal, `DEFAULT_ACCENT`), and the deck store is
+  keyed by project (`e6b4cdf`). Board: 4 captured · 0 taking shape · 2 building · 88 shipped · 28 parked.
 - **FEAT-027 landed under Unreleased (`48ff59c`)** — the Pitch chapters: eight sections + a rail, each a
   projection over a record; a chapter line = the record's first sentence, tested.
 - **Earlier the same day:** FEAT-026 slice 1 (`55502e9`, the canvas as boxes) and IDEA-106 captured
