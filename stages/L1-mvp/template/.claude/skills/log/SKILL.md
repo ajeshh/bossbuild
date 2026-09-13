@@ -14,30 +14,26 @@ If you only read one thing when picking the project back up, read the last devlo
 
 ## How to run it
 
-1. Open (or create) `docs/devlog.md`. If creating, seed with:
-
-   ```markdown
-   ---
-   id: DEVLOG
-   type: devlog
-   owner: product-lead
-   status: active
-   ---
-
-   # Devlog — {{PROJECT_NAME}}
-
-   Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, what's next.
-   ```
-
-2. Append a **new entry at the top** (under the header), dated today:
+1. **Decide the four lines** — the judgment half, and the only half worth your attention. The
+   shape the loops and `boss status` read:
 
    ```markdown
    ## {{today}}
-   - **FEAT:** FEAT-NNN <name>  _(or "no FEAT — exploration/ops")_
+   - **FEAT:** FEAT-NNN  _(or "no FEAT — exploration/ops")_
    - **Landed:** <one or two lines — what's now real that wasn't before>
-   - **Next:** <the very next thing — concrete, one or two lines>
+   - **Next:** <the very next thing, concrete>
    - **Surprises / decisions:** <only if there was one — what changed in your model of the problem>
    ```
+
+2. **Write it with the script** — seeds `docs/devlog.md` if missing, inserts at the top, newest first
+   (the recipe the model used to re-derive, and occasionally got backwards):
+
+   ```bash
+   node .claude/skills/log/scripts/entry.js --feat FEAT-NNN --landed "…" --next "…" --surprises "…"
+   ```
+
+   Omit a flag when there is nothing to say; blanks are honest. No Node, or an entry too long for a
+   shell argument? Write the same block by hand at the top, under the header — a convenience, not a gate.
 
 3. If the user gave you a one-liner, that's enough — fill it into **Landed**, leave **Next** empty
    only if they didn't say. Don't fabricate. Blanks are honest.

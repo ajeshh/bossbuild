@@ -91,6 +91,13 @@ rule above still applies to the whole section once it is stamped.
   they shipped; the unbuilt remainders are parked with triggers (the host's session list, withdrawn
   in 2.1.268 · a founder on a non-Claude-Code host · the first V1 project) or folded into the one
   record that owns them (IDEA-006 the port, IDEA-066 the outward research). Building: 0.
+- **`/log` gets a script (IDEA-100, the pilot — and the measurement).** `skills/log/scripts/entry.js`
+  seeds `docs/devlog.md` and inserts the entry newest-first under the header; the skill's steps 1–2
+  became one command. Measured: the body went 1,140 → 1,186 words — **no token gain**; the gain is
+  the invariant prose stated and could not hold (an entry at the bottom of a newest-first file is the
+  one nobody reads). On that number the other four candidates do not convert; the record closes
+  with the measurement written down. First shipped skill script; `boss sync` carries it like
+  `templates/`. Four tests.
 
 ## 0.325.0 — 2026-09-12
 
