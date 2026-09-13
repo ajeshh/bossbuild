@@ -43,7 +43,7 @@ fixes and the part that matters most.
 
 ## Which BOSS verbs + mentors serve each shift
 
-- **Builder → seller (→ MVP):** `/interview`, `/pretotype`, `/evidence`, `/research`; `mentor-customers`
+- **Builder → seller (→ MVP):** `/interview`, `/pretotype`, `/evidence`; `mentor-customers`
   (positioning, first users), `mentor-founder` (is this worth building, what's the riskiest assumption).
 - **Seller → operator (→ V1):** the customer-loop verbs as they arrive (support/incidents/churn);
   `mentor-capital` (model, pricing), `mentor-hiring` (first help).

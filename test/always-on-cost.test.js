@@ -102,14 +102,20 @@ test('no shipped skill description contains " #"', () => {
   assert.deepEqual(bad, []);
 });
 
-test('/evidence routes to its two siblings instead of silently absorbing their work', () => {
-  // IDEA-086: three verbs produce a graded EVID and the founder has to already understand the
-  // seam to pick one. The resolution is a routing line at the door they reach for by name — NOT
-  // a merge, which would cost /interview's prep half and /research's synthesis half.
+test('/evidence is the one capture verb — and keeps the two halves a merge was feared to lose', () => {
+  // IDEA-086 kept three verbs and put a routing line at the door, because a merge "would cost
+  // /interview's prep half and /research's synthesis half." The board assessment (2026-09-12)
+  // merged anyway — the founder could not tell the three apart from the menu — and the cost was
+  // avoided by keeping both halves: prep stays the whole of /interview; synthesis is /evidence's
+  // digest. This holds those two facts, so the merge can never quietly drop either.
   const f = join(BOSS_ROOT, 'stages/L0-quickstart/template/.claude/skills/evidence/SKILL.md');
   const s = readFileSync(f, 'utf8');
-  assert.match(s, /\/interview/, 'the door for a conversation that has not happened yet');
-  assert.match(s, /\/research/, 'the door for a whole transcript');
-  // The cost of picking wrong is the reason the routing exists; say it, do not imply it.
-  assert.match(s, /lose the synthesis/i);
+  assert.match(s, /\/interview/, 'the door for a conversation that has not happened yet is still named');
+  assert.doesNotMatch(s, /\/research\b/, '/research is retired; nothing points a founder at it');
+  assert.match(s, /verbatim/i, "the synthesis half — the pain in the founder's user's own words");
+  assert.match(s, /workarounds/i, 'the synthesis half — what they do today');
+  assert.match(s, /led the witness/i, 'the epistemics half at transcript scale');
+  const prep = readFileSync(join(BOSS_ROOT, 'stages/L0-quickstart/template/.claude/skills/interview/SKILL.md'), 'utf8');
+  assert.match(prep, /## PREP/, 'the prep half is still the whole of /interview');
+  assert.doesNotMatch(prep, /## DEBRIEF/, 'and the debrief half no longer lives there');
 });

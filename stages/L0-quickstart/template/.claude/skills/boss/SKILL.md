@@ -42,7 +42,7 @@ only when this skill runs, which is why it can be this long and the menu can be 
 |---|---|---|
 | "I don't know if anyone wants this" · "would people pay" | the demand question | if nobody has been spoken to, a conversation first (`/interview prep`); otherwise the demand test (`/pretotype`) |
 | "I want to see it" · "get something on a screen" | build-first is legitimate | `/prototype` |
-| "I talked to someone" · "here are my notes" · a pasted transcript | evidence arriving | `/interview debrief` for one call's notes, `/evidence` for one thing that happened, `/research` for a whole transcript |
+| "I talked to someone" · "here are my notes" · a pasted transcript | evidence arriving | `/evidence` — it reads the size (one thing, a call's notes, a whole transcript) and does the right amount |
 | "should I build X or Y" · "is this worth it" | a judgment call | the canvas cell it turns on (`/canvas`), or `/consult` when it cuts across |
 | "am I still on track" · "am I fooling myself" | the honest read | at Quickstart, the canvas's riskiest-assumption line against what they did this week; at MVP, `/drift-deep` |
 | "ready to build for real" | the graduation | `boss unlock mvp`, then `/spec` on the idea |

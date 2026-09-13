@@ -1,6 +1,6 @@
 ---
 name: evidence
-description: Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record. Paste notes or describe what happened; BOSS drafts it with an honest grade on a fixed ladder (stated-pain, observed-behavior, commitment). Real commitments quiet the conscience. Usage - /evidence [paste notes | describe what happened]
+description: Write down what a real person told you, graded honestly, as EVID-NNN records. One thing that happened, your notes from a call, or a whole transcript - it reads the size and does the right amount (a record, a debrief with the one moment you pitched, or a synthesis of pains, jobs and objections). Ladder - stated-pain, observed-behavior, commitment. Usage - /evidence [what happened | notes | transcript]
 ---
 
 # /evidence — evidence as a first-class object
@@ -11,42 +11,45 @@ the conscience's best line — *"a 15-minute call with the right person beats `/
 call, the result had nowhere to live. It evaporated, and three weeks later the riskiest assumption was
 still arguing from vibes.
 
-`/evidence` fixes that. One signal → one file → a place the conscience can actually see.
+`/evidence` fixes that. What a real person said → graded records → a place the conscience can see.
 
-## What it does
+## Read the size, do the right amount
 
-You paste raw notes (or describe what happened); BOSS drafts `docs/evidence/EVID-NNN-<slug>.md` with an
-honest grade, links the canvas assumption it bears on, and shows it to you before saving.
+Three verbs used to turn *what a real person said* into `EVID` records, and a founder could not tell them
+apart from the menu — all three said "graded EVID records". The difference was never the verb; it was
+**how much the founder handed over.** So there is one verb, and it reads what it was given:
 
-## The door you're at — route before you capture
+| You gave it | What it does |
+|---|---|
+| **one thing that happened** — a sentence, a metric, a pretotype result, a thing you watched | **a record** — one `EVID`, graded, linked to the bet. Two minutes. |
+| **your notes from a call** you just had — a page or less, raw | **a debrief** — every real signal graded, the *one* moment you pitched instead of listened, the one follow-up ask that would raise the grade, and an offer to fold it into the persona |
+| **a whole transcript** — a recording turned to text, a sales call, a support thread, a pile of user messages, more than a page | **a digest** — signals graded at scale, then the product context underneath (the pain in their words, the job, the workarounds, the objections, who this actually was), the places you led the witness, and the next test |
 
-Three verbs turn *what a real person said* into a graded `EVID`, and `/evidence` is the one a
-founder reaches for by name. So this is where the routing lives. **Read what they gave you first**,
-say the one line that saves them a step, then keep going — never bounce them back to a different
-command and never make them run it twice.
+Two things are *not* this verb, and you say so in one line:
 
 - **A conversation that hasn't happened yet** — *"I'm meeting someone Thursday"* → **`/interview`**
-  preps it as one printable page. That prep half exists nowhere else, and it is the half the
+  preps it as one printable page. That is the only thing `/interview` does now, and it is the half the
   conscience actually points at.
-- **Notes from a call you just had** → you're at the right door. `/interview` also debriefs notes
-  and flags **where you pitched instead of listened** — offer it once if the notes read like a
-  pitch, then take their answer.
-- **A whole transcript** — a recording, a sales call, a support thread, more than a page →
-  **`/research`** grades it at scale *and* synthesizes the product context underneath (pains, jobs,
-  verbatim words, workarounds, objections → canvas + brain). Captured here you get one record and
-  **lose the synthesis without being told** — which is the whole reason this routing exists.
-- **Something you read** — a pricing page, a market estimate, an article → **no rung fits.** See
-  the red block below; it never becomes evidence, at any door.
+- **Something you read** — a pricing page, a market estimate, an article → **no rung fits.** See the
+  red block under the ladder; it never becomes evidence, at any size.
 
-One line, once. If they'd rather just capture, capture.
+## The one rule
+
+**BOSS writes down what the person said. It never fabricates.** No invented quotes, no inferred
+commitment the words don't support, no rounding "sounds interesting" up to "wants to buy." If they
+didn't say it, it isn't evidence. This is where BOSS's synthetic-vs-real honesty is enforced
+mechanically — the grade says exactly how strong each signal is.
 
 ## The 3-grade ladder (fixed — three rungs, blunt on purpose)
 
 The grade is the load-bearing field. Its power is its bluntness — resist growing the taxonomy.
 
 - **`stated-pain`** — someone *said* it hurts. Weakest. The Mom Test warns talk is nearly free.
-- **`observed-behavior`** — you *watched* them struggle, reach for a workaround, or bounce. Behavior
-  beats opinion.
+- **`observed-behavior`** — you *watched* them struggle, reach for a workaround, or bounce — or they
+  described a real past action. Behavior beats opinion.
+- **`commitment`** — they gave up something real: **time, money, reputation, a calendar slot.** The only
+  grade that cost the other person something.
+
 > **Desk research is not evidence, and there is no rung for it.** All three grades describe **what
 > a person did** — so a competitor's pricing page, a market-size estimate or an industry article has
 > no honest place on this ladder. It is not a loose fit; there is no rung it could
@@ -58,40 +61,29 @@ The grade is the load-bearing field. Its power is its bluntness — resist growi
 > so go ask someone what they'd pay" — but it never becomes one. If research raised a real question,
 > the honest next step is `/interview`.
 
-- **`commitment`** — they gave up something real: **time, money, reputation, a calendar slot.** The only
-  grade that cost the other person something.
-
-**Grade honestly, and push back on inflation.** If the founder writes *"they said they'd totally use
-it"* → that's `stated-pain`, not `commitment`. Say so plainly, once: *"'I'd totally use this' is
+**Grade honestly, and push back on inflation — out loud, once.** *"'I'd totally use this' is
 stated-pain — a compliment, not a receipt. A commitment is when they gave up time, money, or a slot.
 Want me to grade it stated-pain?"* Then take their call. You surface the honest read; you don't overrule
-them.
+them. When in doubt, grade *down*, and name the specific thing that would raise the grade.
 
-## How to run it
+## A record — one thing that happened
 
-1. **Read what the founder gave you.** Notes from a call, a description of something you watched, a
-   metric, a pretotype result. If they gave you nothing, ask one question: *"What happened, and who was
-   it with?"* — don't block.
-
+1. **Read what the founder gave you.** If they gave you nothing, ask one question: *"What happened, and
+   who was it with?"* — don't block.
 2. **Pick the next number.** Look in `docs/evidence/` for the highest `EVID-NNN`; add one (skip the
    `README.md`). First one is `EVID-001`. Create the directory if it doesn't exist. (Same next-number
    logic `/decide` uses for `DEC` files.)
-
-3. **Resolve the owner** (whoever captured it). Use their GitHub handle if it resolves, else `@you` —
+3. **Resolve the owner** (whoever captured it). Their GitHub handle if it resolves, else `@you` —
    never fabricate:
 
    ```bash
    gh api user --jq '.login' 2>/dev/null || git config user.name
    ```
 
-4. **Grade it — the one judgment that matters.** Map what happened to exactly one rung. When in doubt,
-   grade *down*: a signal you're unsure about is weaker than you hope, not stronger. Name the specific
-   thing that would raise the grade (*"if she'd actually booked the call, that's commitment"*).
-
-5. **Link the assumption.** If a canvas exists (`docs/ideas/*-canvas.md`), read its riskiest-assumption
-   line and put a short phrase of it in `assumption:`. If none exists, ask the founder which bet this
-   bears on in one sentence — don't block.
-
+4. **Grade it** — the one judgment that matters (see the ladder).
+5. **Link the assumption.** If a canvas exists (`docs/ideas/*-canvas.md` or `docs/ideas/CANVAS.md`),
+   read its riskiest-assumption line and put a short phrase of it in `assumption:`. If none exists, ask
+   the founder which bet this bears on in one sentence — don't block.
 6. **Draft the file, show it, then save:**
 
    ```markdown
@@ -113,20 +105,79 @@ them.
    If you pitched instead of listened, say so — that context matters to future-you.>
    ```
 
+## A debrief — notes from a call
+
+Do these in order, briefly. Each signal becomes a record exactly as above; batch the drafts, show them,
+save on the founder's OK. One call can yield several — don't force one.
+
+1. **Extract every real signal, honestly graded.** Definitions inline the first time, so the founder
+   learns the ladder by using it.
+2. **Flag AT MOST ONE pitched-instead-of-listened moment.** Fitzpatrick's taxonomy — *compliments*
+   ("sounds cool!", usually right after you explained a feature = a compliment, not evidence), *fluff*
+   (generic future talk: "I'd definitely…", "I always…"), *deflection*. Name the single clearest one,
+   plainly: *"They said 'I'd totally use that' right after you described the feature — that's a
+   compliment, not a signal. Next time, don't describe it; ask what they do today."* **Observe, don't
+   scold.** Skip it entirely if the call was clean.
+3. **Name the one follow-up commitment ask — only if the pain looked real.** The single next commitment
+   that would raise the grade (*"she described the Monday scramble in detail — ask if she'll show you
+   next Monday's actual spreadsheet. A yes is observed-behavior, not stated pain."*). If the pain didn't
+   show up, say so — a useful result, not a failure. **Shape the ask to why they are building this** —
+   `motivation:` on the IDEA doc. `revenue` → money or a slot (*"would you pre-pay for the first
+   month?"*). `community` → return (*"will you come back Tuesday and bring one person?"*). `learning` or
+   `own-problem` → there may be no ask at all, and saying so is the honest debrief. `credibility` → a
+   public one (*"would you say that on the record?"*). Unset → the default above.
+4. **Offer to fold it into the persona.** If `docs/personas/` holds one, offer `/persona enrich <slug>`
+   with what the call actually showed — the source that shrinks the synthetic share fastest, and the
+   whole point of having gone. Offer it; never do it silently. The founder should see which parts of
+   their assumed user just got contradicted.
+
+## A digest — a whole transcript
+
+1. **Get it in.** Pasted, use it. A file or URL, pull it into `docs/source/` first (`/import` — a
+   durable copy) and read from there. If it's long, read all of it before extracting — signals hide in
+   the back half.
+2. **Extract graded evidence at scale** — each real signal a record as above. Batch, show, save on OK.
+3. **Synthesize the product context — what it all means.** Above the individual signals, a short plain
+   summary (offer to write it into the canvas, seed the venture brain's `read.md` so the conscience
+   carries it forward, and fold it into the persona):
+   - **The pain, in their words** — quote *verbatim*. The exact phrasing is the copy you'll write later
+     and the language your user actually uses; don't paraphrase it into marketing-speak.
+   - **The job they're hiring for** — what were they actually trying to get done?
+   - **Workarounds observed** — what do they do *today*? A painful workaround is the strongest
+     product-context signal there is — proof the pain is worth effort.
+   - **Objections & non-needs** — what did they push back on, or shrug at? The "didn't care" is as
+     valuable as the "loved it."
+   - **Who this actually was** — does the real person match the target user, or is the segment off?
+4. **Flag the epistemics — where you led the witness.** The same taxonomy as a debrief, at transcript
+   scale: moments the founder pitched and then recorded the polite reaction as validation, leading
+   questions, hypotheticals answered as if fact. The **two or three clearest**, one spare line each.
+5. **Point at the next test.** If a pain looks real but under-proven (all stated-pain, no commitment),
+   name the one cheapest test that would raise the grade — often a follow-up commitment ask, sometimes
+   `/prototype` to watch them use it. Hand the decision back.
+6. **Offer the persona fold** as in a debrief. A transcript is the **strongest enrichment source that
+   exists** — real research outweighs your own knowledge, which outweighs online averages. No persona
+   yet, but the transcript clearly describes one kind of person? Offer `/persona derive` instead.
+
 ## Guardrails
 
-- **Never a score, never a dashboard-of-shame.** You're writing down a fact, not filling a meter. No
-  "validation level 3/10." Counts and grades are facts shown once in context.
-- **Grades are fixed and few (3).** Don't invent `warm-lead` or `soft-commit`. The ladder's power is that
-  it's blunt.
-- **Not a CRM.** No contact management, no pipeline, no scheduling. One signal, one file.
-- **The body stays ≤10 lines.** Evidence is a signal, not a transcript. (Keep the full transcript in
-  `docs/source/` via `/import` if you want it.)
+- **Never fabricate.** Analysis, not invention. Verbatim is sacred: the moment you paraphrase a pain
+  into your own framing, you've contaminated the signal.
+- **Never a score, never a dashboard-of-shame.** You're writing down facts, not filling a meter. No
+  "validation level 3/10." A transcript full of "sounds great" is a transcript full of stated-pain —
+  say so plainly; volume is not strength.
+- **Grades are fixed and few (3).** Don't invent `warm-lead` or `soft-commit`.
+- **Not a CRM, not a coding-of-qualitative-data tool.** No contact management, no pipelines, no
+  affinity diagrams, no theme-count dashboards. Signals → grades → context → the next test.
+- **The pitch-detector flags, it doesn't scold.** One observation per debrief; two or three per digest.
+- **A record's body stays ≤10 lines.** Evidence is a signal, not a transcript. The transcript itself
+  lives in `docs/source/`.
+- **Downstream of the real thing.** This writes down research you *did*. It is not a substitute for
+  doing it — if the conversations stop coming, the honest move is another conversation, not another
+  pass over the old ones.
 
 ## Why it's worth the minute
 
 It closes BOSS's epistemic loop: the conscience asks for evidence → you act → **the evidence lands
 somewhere the conscience reads** → the conscience calibrates (and gets specific: *"three stated-pain
-signals, zero commitments — what would a commitment test look like?"*). Related: **`/interview`** preps a
-call and debriefs it straight into `EVID` files; **`/canvas`** cites the `EVID` ids bearing on its
-riskiest assumption.
+signals, zero commitments — what would a commitment test look like?"*). Related: **`/interview`** preps
+the call this verb debriefs; **`/canvas`** cites the `EVID` ids bearing on its riskiest assumption.

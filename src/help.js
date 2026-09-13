@@ -205,7 +205,7 @@ export const WAYFINDING = [
   ['remember what I decided', ['/decide', '/revalidate']],
   ['ask someone who has done this before', ['/consult', '@mentor-founder', '@mentor-customers', '@mentor-capital']],
   ['understand a repo I already built', ['/read-repo']],
-  ['turn one real conversation into evidence', ['/interview', '/research']],
+  ['turn one real conversation into evidence', ['/interview', '/evidence']],
   ['work well with a cofounder', ['boss team', '@mentor-cofounder', '/practice']],
   ['stop working on something', ['/sunset', '/revalidate']],
   ['put AI in my product without regretting it', ['/ai-first-init', '/ai-failure-states', '/evals']],

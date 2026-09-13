@@ -47,7 +47,8 @@ test('unlock lays down the rung without the held-back skills', () => {
   const onDisk = readdirSync(join(dir, '.claude', 'skills'));
   for (const s of held) assert.ok(!onDisk.includes(s), `${s} must not be on disk at unlock`);
   assert.ok(onDisk.includes('spec') && onDisk.includes('smoke'), 'the loop is on disk');
-  assert.equal(onDisk.length, 16 + (L1.skills.length - held.length), 'L0 + the MVP skills that are not held');
+  const l0 = readStageManifest('L0-quickstart').skills.length;
+  assert.equal(onDisk.length, l0 + (L1.skills.length - held.length), 'L0 + the MVP skills that are not held');
 });
 
 test('llm-in-source reads the same call shapes as the cost-budget loop, only under source roots', () => {
@@ -104,7 +105,7 @@ test('a project stamped before this existed (no `deferred`) is untouched', () =>
   assert.equal(plan.entries.filter((e) => e.status === 'new').length, 0, 'everything is already on disk');
   const { stamp: next } = applySync(dir, plan, stamp, {});
   assert.equal(next.deferred, undefined);
-  assert.equal(next.skills.length, L1.skills.length + 16);
+  assert.equal(next.skills.length, L1.skills.length + readStageManifest('L0-quickstart').skills.length);
 });
 
 test('markLaidDown removes a group and collapses an empty deferred map', () => {

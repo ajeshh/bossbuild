@@ -131,7 +131,7 @@ Capture an idea, shape it, pressure-test whether it's real. Almost no ceremony.
   no pitching); run `/interview debrief` after and paste your notes — it pulls out the real signals,
   grades them, flags the one moment you pitched instead of listened, and names the next commitment to
   ask for. BOSS preps and debriefs; it never fakes the conversation.
-- **Already have a transcript?** `/research` digests a whole one — an interview recording, a sales
+- **Already have a transcript?** `/evidence` digests a whole one — an interview recording, a sales
   call, a support thread — into graded `EVID` at scale plus synthesized product context (the pain in
   your users' own words, the job they're hiring for, the workarounds they use today, what they *didn't*
   care about), and flags the spots where you led the witness. It analyzes what's actually there; it

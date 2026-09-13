@@ -95,5 +95,5 @@ positioning, channels, campaigns, the launch. Yours is the second, and it is dow
 find yourself wanting to change the brand to make the marketing easier, that is a real finding and it
 belongs in the brand doc's capture log as a row, not as a quiet edit to the shape.
 
-**Its best rows come from you.** `/interview` and `/research` surface the words real people actually
+**Its best rows come from you.** `/interview` and `/evidence` surface the words real people actually
 used, and those are worth more in the brand doc than anything a session invents.

@@ -31,11 +31,11 @@
 
 1. **Capture** the idea with `/idea` — a living `docs/ideas/IDEA-NNN.md` you keep adding to. No
    pressure to finish it; re-run `/idea` whenever a new thought lands.
-2. **Talk to one person.** `/interview` preps a 15-minute Mom-Test call, then turns your notes into
-   a graded `EVID-NNN` — and flags where you pitched instead of listened. **This is the step that
-   pays for the others**: one real conversation beats another pass over the canvas, and the grade
-   ladder (stated-pain → observed-behavior → commitment) is what stops a compliment reading as a
-   receipt. `/evidence` records any signal you already have; `/research` digests a whole transcript.
+2. **Talk to one person.** `/interview` preps a 15-minute Mom-Test call; `/evidence` turns what you
+   heard into graded `EVID-NNN` records — one thing, your notes, or a whole transcript — and flags
+   where you pitched instead of listened. **This is the step that pays for the others**: one real
+   conversation beats another pass over the canvas, and the grade ladder (stated-pain →
+   observed-behavior → commitment) is what stops a compliment reading as a receipt.
 3. **Pressure-test** with `/canvas` once it has legs — the humane business read that names the
    riskiest assumption and one week's experiment. It's a far better canvas after step 2.
 4. **Unlock MVP** (`boss unlock mvp`) when the canvas holds and you're ready to build.

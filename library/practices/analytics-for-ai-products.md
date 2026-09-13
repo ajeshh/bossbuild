@@ -12,8 +12,8 @@ curve: market
 
 # Practice — Analytics for products that ARE AI (measure the right thing; don't surveil the human)
 
-> **Where this sits.** BOSS owns *pre-build* validation (`/pretotype`, `/evidence`, `/interview`,
-> `/research`). This is the *post-ship* half, for AI products specifically — and its `/measure` skill is the
+> **Where this sits.** BOSS owns *pre-build* validation (`/pretotype`, `/evidence`,
+> `/interview`). This is the *post-ship* half, for AI products specifically — and its `/measure` skill is the
 > runner. The load-bearing idea: **classic analytics assumes deterministic output; an AI product violates
 > that, so measurement partly breaks and must fuse with the eval loop.** The humane clause below is the part
 > no listicle carries and the part BOSS won't drop.

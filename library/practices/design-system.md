@@ -482,7 +482,7 @@ check could see it.
    then grows."* So it has `/idea`'s shape — a current shape that sharpens, and an **append-only
    capture log** whose rows are things that actually happened (a phrase a user used, a comparison
    someone made unprompted, a word that got a blank look). **Rows come from `/interview` and
-   `/research`, never from brainstorming.** The failure mode to refuse is a complete-looking brand
+   `/evidence`, never from brainstorming.** The failure mode to refuse is a complete-looking brand
    document written on day one from imagination, which everything downstream then faithfully obeys:
    *a confident answer arrived at with no information is worse than a blank, because a blank invites a
    question and a confident answer ends it.*

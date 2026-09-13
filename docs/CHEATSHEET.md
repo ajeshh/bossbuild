@@ -36,15 +36,14 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 **Skills**
 
 - `/welcome` — First time using BOSS? Start here
-- `/boss` — Spin up a scaffolded project from a rough idea or PRD
+- `/boss` — The door, any day
 - `/import` — Bring existing material into this project — a file, a folder, or a URL (Word, Google Doc, Obsidian, PDF, slides, a web page)
 - `/idea` — Capture an idea — and keep adding to it
 - `/prototype` — Get the idea onto the screen, fast (not /pretotype, which tests demand)
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them
 - `/pretotype` — Test demand BEFORE you build (not /prototype, which builds)
-- `/evidence` — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record
-- `/interview` — The bridge from "go talk to one person" to captured evidence
-- `/research` — Turn a whole research transcript into product context and graded evidence
+- `/evidence` — Write down what a real person told you, graded honestly, as EVID-NNN records
+- `/interview` — Prep a customer conversation under Mom-Test discipline - 5 to 7 questions about their past and their life, never your idea, one commitment ask at the end, on one printable page in five minutes
 - `/decide` — Record a load-bearing decision as a durable DEC-NNN record (Context, Decision, Why, a cheap Falsifier with a date, Consequences), stamped with who decided and how reversible it is
 - `/sunset` — End something honestly, at whatever size it is - the whole project, one zombie feature, or one captured idea; the argument picks the scope
 - `/persona` — Build your app's target-user persona from your idea, grow it from research and any real user data you drop in, and consult it as an agent voice for product decisions and QA

@@ -339,7 +339,6 @@
     "persona": "append-only record",
     "practice": "append-only record (PRAC-NNN)",
     "log": "append-only devlog entry",
-    "research": "append-only research note",
     "close": "session ritual; updates RESUME, which is BOSS's own convention not a founder artifact",
     "prototype": "throwaway by design — a prototype you'd 'update' has stopped being one",
     "pretotype": "the fake door is deliberately disposable; its durable half is /landing",

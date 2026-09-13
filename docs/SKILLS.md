@@ -8,15 +8,14 @@
 ## Quickstart
 
 - **`/welcome`** — First time using BOSS? Start here  _(/welcome)_
-- **`/boss`** — Spin up a scaffolded project from a rough idea or PRD  _(/boss [PRD | rough idea])_
+- **`/boss`** — The door, any day  _(/boss [idea | PRD | what you're trying to do])_
 - **`/import`** — Bring existing material into this project — a file, a folder, or a URL (Word, Google Doc, Obsidian, PDF, slides, a web page)  _(/import <path-or-url> [more paths/urls] [IDEA-NNN])_
 - **`/idea`** — Capture an idea — and keep adding to it  _(/idea <thought> (run again to add more) | /idea gist [ID] for the one line the board shows)_
 - **`/prototype`** — Get the idea onto the screen, fast (not /pretotype, which tests demand)  _(/prototype [IDEA-NNN | idea])_
 - **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager])_
 - **`/pretotype`** — Test demand BEFORE you build (not /prototype, which builds)  _(/pretotype [IDEA-NNN])_
-- **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record  _(/evidence [paste notes | describe what happened])_
-- **`/interview`** — The bridge from "go talk to one person" to captured evidence  _(/interview [prep | debrief])_
-- **`/research`** — Turn a whole research transcript into product context and graded evidence  _(/research [transcript])_
+- **`/evidence`** — Write down what a real person told you, graded honestly, as EVID-NNN records  _(/evidence [what happened | notes | transcript])_
+- **`/interview`** — Prep a customer conversation under Mom-Test discipline - 5 to 7 questions about their past and their life, never your idea, one commitment ask at the end, on one printable page in five minutes  _(/interview [who or what the call is about])_
 - **`/decide`** — Record a load-bearing decision as a durable DEC-NNN record (Context, Decision, Why, a cheap Falsifier with a date, Consequences), stamped with who decided and how reversible it is  _(/decide <the decision, or describe it>)_
 - **`/sunset`** — End something honestly, at whatever size it is - the whole project, one zombie feature, or one captured idea; the argument picks the scope  _(/sunset [FEAT-NNN | IDEA-NNN | name])_
 - **`/persona`** — Build your app's target-user persona from your idea, grow it from research and any real user data you drop in, and consult it as an agent voice for product decisions and QA  _(/persona [derive | enrich | consult <slug>])_

@@ -1,6 +1,6 @@
 ---
 name: interview
-description: The bridge from "go talk to one person" to captured evidence. PREP a customer conversation under Mom-Test discipline (past behavior, their life, no pitching); then DEBRIEF raw notes into honestly-graded EVID records, the moment you pitched, the one commitment to ask for. Usage - /interview [prep | debrief]
+description: Prep a customer conversation under Mom-Test discipline - 5 to 7 questions about their past and their life, never your idea, one commitment ask at the end, on one printable page in five minutes. The bridge from "go talk to one person" to actually going. After the call, /evidence grades what you heard. Usage - /interview [who or what the call is about]
 ---
 
 # /interview — the Mom-Test bridge
@@ -10,15 +10,13 @@ The conscience's single best line is *"a 15-minute call with the right person be
 discipline during it, nowhere to put what it returned. BOSS walked you to the edge of build-world and
 waved goodbye.
 
-`/interview` is the bridge into validation-world. Two movements, one skill: **prep** before the call,
-**debrief** after. It's built on Rob Fitzpatrick's *The Mom Test* — cited by name, never impersonated.
+`/interview` is the bridge into validation-world: the page you take into the room. It's built on Rob
+Fitzpatrick's *The Mom Test* — cited by name, never impersonated. **After the call, paste your notes
+into `/evidence`** — it grades every real signal, flags the one moment you pitched instead of listened,
+and names the follow-up ask. One verb before the call, one after; this is the one before.
 
-## Two modes (detected from how you invoke it)
-
-- **`/interview`** or **`/interview prep`** → **PREP** (before the call).
-- **`/interview debrief`**, or you just paste raw notes → **DEBRIEF** (after the call).
-
-If it's ambiguous, ask which one — one line, don't guess wrong.
+If what the founder gave you is *notes from a call that already happened*, say so in one line and
+hand them to `/evidence` — don't prep a call that's over.
 
 ---
 
@@ -53,66 +51,25 @@ Output it as one clean page the founder can literally print or keep open. No pre
 
 ---
 
-## DEBRIEF — turn the conversation into evidence
+## After the call
 
-The founder pastes raw notes or brain-dumps what happened. Do three things — in this order, briefly:
-
-1. **Extract candidate evidence, honestly graded.** Pull out each real signal and grade it on the fixed
-   ladder (definitions inline so the founder learns them):
-   - **`stated-pain`** — they *said* it hurts. Weakest; talk is nearly free.
-   - **`observed-behavior`** — you *watched* them do / struggle / work around it, or they described a
-     real past action.
-   - **`commitment`** — they gave up something real: time, money, reputation, a calendar slot.
-
-   For each, **offer to write an `EVID-NNN`** via the `/evidence` schema — draft it, show it, save on
-   the founder's OK (next-number logic and frontmatter exactly as `/evidence` does; if
-   `docs/evidence/` doesn't exist yet, create it). If the `/evidence` skill isn't present in this
-   project for some reason, output the draft `EVID` blocks inline for the founder to save by hand, and
-   say so.
-
-2. **Flag AT MOST ONE pitched-instead-of-listened moment.** Use Fitzpatrick's taxonomy — *compliments*
-   ("sounds cool!" — usually right after you explained a feature = a compliment, not evidence),
-   *fluff* (generic future/hypothetical talk: "I'd definitely…", "I always…"), *deflection*. Name the
-   single clearest one, plainly: *"They said 'I'd totally use that' right after you described the
-   feature — that's a compliment, not a signal. Next time, don't describe it; ask what they do today."*
-   **Observe, don't scold** — one line, conscience-not-censor. Skip it entirely if the call was clean.
-
-3. **Name the one follow-up commitment ask — only if the pain looked real.** If there's genuine pain,
-   suggest the single next commitment that would raise the grade (*"she described the Monday scramble
-   in detail — ask if she'll show you next Monday's actual spreadsheet. If she says yes, that's
-   observed-behavior, not just stated pain."*). If the pain didn't show up, say so honestly — that's a
-   useful result too, not a failure.
-   **Shape the ask to what the founder said they're building this for** — `motivation:` on the IDEA
-   doc. `revenue` → the commitment is money or a slot (*"would you pre-pay for the first
-   month?"*). `community` → it's return (*"will you come back Tuesday and bring one person?"*).
-   `learning` or `own-problem` → there may be no commitment to ask for at all, and saying so is the
-   honest debrief — the interview taught the founder the thing; that was the point. `credibility` →
-   the ask is a public one (*"would you say that on the record?"*). Unset → the default above.
-
-4. **Offer to fold it back into the persona.** You just talked to a real one. If `docs/personas/`
-   holds a persona for this user, offer `/persona enrich <slug>` with what the call actually showed —
-   this is the source that shrinks the synthetic share fastest, and it is the *whole point* of having
-   gone. Note the direction: the persona may have **rehearsed your questions** beforehand, and this
-   is the return leg. A persona that only ever feeds interviews and never learns from them is a guess
-   that never gets corrected.
-
-   Offer it, don't do it. The founder should see which parts of their assumed user just got contradicted.
+Paste the raw notes into **`/evidence`**. It does the three things a debrief needs — grades each signal
+on the same ladder, flags at most one pitched-instead-of-listened moment, and names the one follow-up
+commitment ask shaped to why you're building this — and offers to fold what you heard into the persona.
 
 ---
 
 ## Guardrails
 
-- **BOSS preps and debriefs; it never simulates the interview.** No synthetic transcripts, no
-  role-played "customer answers." (The `/persona` agents may *rehearse your questions* beforehand —
-  pre-filter framing only, under the standing "personas are not validation" caveat. Rehearsal ≠ data.)
-- **No CRM ambitions.** No contact management, no pipelines, no scheduling. One call, one page, one
-  debrief.
-- **The pitch-detector flags, it doesn't scold.** One observation per debrief, at most.
-- **Grade honestly.** The debrief is where BOSS's synthetic-vs-real honesty gets enforced mechanically:
-  stated pain can't masquerade as validation because the grade says what it is.
+- **BOSS preps; it never simulates the interview.** No synthetic transcripts, no role-played "customer
+  answers." (The `/persona` agents may *rehearse your questions* beforehand — pre-filter framing only,
+  under the standing "personas are not validation" caveat. Rehearsal ≠ data.)
+- **No CRM ambitions.** No contact management, no pipelines, no scheduling. One call, one page.
+- **Don't describe the product on the page.** The prep is questions about their life; the idea stays
+  out of the room.
 
 ## Why it matters
 
 This is the rare feature that serves the founder *and* the maker on day one: it's the tool for real
-customer conversations, and it closes the loop the conscience opens — advice → call → **captured,
+customer conversations, and it opens the loop `/evidence` closes — advice → call → **captured,
 graded evidence** the conscience then reads (via `EVID-NNN`) and calibrates against.

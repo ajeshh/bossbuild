@@ -77,7 +77,7 @@ The half that makes this a brand rather than a guess. Every row is something tha
 | | a competitor comparison someone made unprompted | |
 | | a word that landed, or one that got a blank look | |
 
-**Where rows come from:** `/interview` and `/research` debriefs · a support thread · what someone
+**Where rows come from:** `/evidence` debriefs and digests · a support thread · what someone
 called it when they explained it to a friend · the phrase that made a stranger nod. **Not from
 brainstorming.** A row you invented is the failure mode above, wearing a table.
 
@@ -91,7 +91,7 @@ change, a positioning shift. Link them; don't restate them.
 
 ## After seeding
 
-- **It grows from evidence, not from sessions.** The best source is `/interview` and `/research` —
+- **It grows from evidence, not from sessions.** The best source is `/interview` and `/evidence` —
   when a debrief surfaces the words a real person used, that is a row here as well as an `EVID`.
 - **`/design-tokens-init` reads it for the anchor**, and the anchor becomes a `DEC`. That is the one
   place brand hardens into a decision, and it is deliberately narrow.
