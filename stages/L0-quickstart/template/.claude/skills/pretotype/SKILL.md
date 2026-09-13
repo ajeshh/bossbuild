@@ -1,6 +1,6 @@
 ---
 name: pretotype
-description: Test demand BEFORE you build. Savoia's discipline applied to {{PROJECT_NAME}} - a fake-door, wizard-of-oz, Mechanical-Turk, impresario or YouTube test for the riskiest demand assumption, in days not weeks. Page-shaped tests can be PUBLISHED in one turn as a real URL, signup pointed at a free form. Usage - /pretotype [IDEA-NNN]
+description: Test demand BEFORE you build (not /prototype, which builds). Savoia's discipline applied to {{PROJECT_NAME}} - a fake-door, wizard-of-oz, Mechanical-Turk or impresario test for the riskiest demand assumption, in days not weeks. Page-shaped tests can be PUBLISHED in one turn as a real URL. Usage - /pretotype [IDEA-NNN]
 ---
 
 # /pretotype — test demand, then build

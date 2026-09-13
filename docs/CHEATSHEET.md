@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.316.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.317.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -40,9 +40,9 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/boss` — Spin up a scaffolded project from a rough idea or PRD
 - `/import` — Bring existing material into this project — a file, a folder, or a URL (Word, Google Doc, Obsidian, PDF, slides, a web page)
 - `/idea` — Capture an idea — and keep adding to it
-- `/prototype` — Get the idea out of your head and onto the screen, fast
+- `/prototype` — Get the idea onto the screen, fast (not /pretotype, which tests demand)
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them
-- `/pretotype` — Test demand BEFORE you build
+- `/pretotype` — Test demand BEFORE you build (not /prototype, which builds)
 - `/evidence` — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record
 - `/interview` — The bridge from "go talk to one person" to captured evidence
 - `/research` — Turn a whole research transcript into product context and graded evidence

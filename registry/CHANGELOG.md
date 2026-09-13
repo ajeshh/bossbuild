@@ -16,6 +16,35 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.317.0 — 2026-09-12
+
+**`/pretotype` and `/prototype` name each other in their first sentence. One letter apart, two
+different verbs, and now each says which one it isn't.**
+
+> **For you:** `/pretotype` opens *"Test demand BEFORE you build (not `/prototype`, which builds)"*;
+> `/prototype` opens *"Get the idea onto the screen, fast (not `/pretotype`, which tests demand)"*.
+> Same skills, same usage; the mis-type now corrects itself at the door.
+
+- **The one sharpening the distinctness read licensed without a number.** IDEA-101 read every
+  adjacent pair of the 48 from its trimmed description alone and found nine keeps, one name
+  collision, and one merge candidate. The collision is Savoia's term — `pretotype` is deliberate and
+  stays — so the fix is the five words each first sentence now spends on the other. Both stay under
+  the 50-word / 420 B line (47 / 333 B, 50 / 305 B).
+- **The merge candidate reversed on reading, and is NOT in this release.** IDEA-101 proposed
+  `/extract` → `/boss-learn`. The shipped `/boss-learn` says, in its own step 2a, *"If you installed
+  BOSS from npm or Homebrew, that is you … capture the pattern where you are (`/extract` records it)"*,
+  and `src/learn.js` stops without a source checkout. So for every founder BOSS has, UP cannot happen:
+  `/boss-learn` is the internal verb (BOSS curating BOSS) and it ships at **Quickstart**, the lightest
+  rung's only verb that needs a checkout to act. The candidate is now **`/boss-learn` → `/extract`**
+  (leave the template for the root-only internal set; `/extract` gains the checkout-aware branch;
+  `/practice` untouched) — recorded, waiting on a per-pair yes and on `/skill-doctor`.
+- **`registry/surface-freshness.json` regenerated** (previous commit): five skills and three hooks had
+  no row at all; a `comprehend` row survived its skill. Seeded from git last-touch per the ledger's
+  rule for new rows; no existing `last_reviewed` was moved.
+- **Watchlist domain 1 gains a tap** (local file): the other harnesses' own configuration docs —
+  Cursor rules, Codex/`AGENTS.md`, Copilot instructions, `GEMINI.md` — read for *what a founder
+  arrives knowing*, never as doctrine. Galster's `AGENTS.md`-as-standard finding lands there first.
+
 ## 0.316.0 — 2026-09-12
 
 **Every shipped skill description trimmed to fifty words. The always-on bill drops by a third and

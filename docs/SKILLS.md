@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.316.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.317.0**.
 
 ## Quickstart
 
@@ -11,9 +11,9 @@
 - **`/boss`** — Spin up a scaffolded project from a rough idea or PRD  _(/boss [PRD | rough idea])_
 - **`/import`** — Bring existing material into this project — a file, a folder, or a URL (Word, Google Doc, Obsidian, PDF, slides, a web page)  _(/import <path-or-url> [more paths/urls] [IDEA-NNN])_
 - **`/idea`** — Capture an idea — and keep adding to it  _(/idea <thought> (run again to add more) | /idea gist [ID] for the one line the board shows)_
-- **`/prototype`** — Get the idea out of your head and onto the screen, fast  _(/prototype [IDEA-NNN | idea])_
+- **`/prototype`** — Get the idea onto the screen, fast (not /pretotype, which tests demand)  _(/prototype [IDEA-NNN | idea])_
 - **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager])_
-- **`/pretotype`** — Test demand BEFORE you build  _(/pretotype [IDEA-NNN])_
+- **`/pretotype`** — Test demand BEFORE you build (not /prototype, which builds)  _(/pretotype [IDEA-NNN])_
 - **`/evidence`** — Capture one piece of evidence about your riskiest assumption as a durable EVID-NNN record  _(/evidence [paste notes | describe what happened])_
 - **`/interview`** — The bridge from "go talk to one person" to captured evidence  _(/interview [prep | debrief])_
 - **`/research`** — Turn a whole research transcript into product context and graded evidence  _(/research [transcript])_
