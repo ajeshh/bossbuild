@@ -25,7 +25,7 @@
 // deliberate reader (`boss records`) is where problems get reported loudly.
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import { firstAdded } from './gitdates.js';
 import { join, sep, basename } from 'node:path';
 import { frontmatter, STATUS_VOCAB, baseStatus } from './frontmatter.js';
 import { cardGist } from './board.js';
@@ -531,13 +531,7 @@ export function nextId(projectDir, prefix) {
 // its `proof:` artifact's first commit is when the thing actually appeared. Nobody has to
 // remember anything, and the dates cannot drift from reality because they ARE reality.
 // Fails open — not a git checkout, not a finding.
-const firstCommit = (projectDir, path) => {
-  try {
-    const out = execFileSync('git', ['log', '--diff-filter=A', '--format=%as', '-1', '--', path],
-      { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-    return out || null;
-  } catch { return null; }
-};
+const firstCommit = (projectDir, path) => firstAdded(projectDir, path);
 
 /** [{ id, status, captured, shipped, lagDays }] — sorted oldest-captured first. Never throws. */
 export function timeline(projectDir) {

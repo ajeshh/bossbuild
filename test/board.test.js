@@ -235,11 +235,15 @@ test('a shipped FEAT with no shipped_on: still gets a date, derived from the rep
 
 test('REGRESSION: a coding error in date derivation throws instead of silently nulling', async () => {
   // The catch must not swallow ReferenceError/TypeError — that is how it shipped broken.
-  const src = readFileSync(new URL('../src/board.js', import.meta.url), 'utf8');
+  // The derivation moved to src/gitdates.js (one pass over the log instead of one spawn per
+  // record); the guard moved with it, and this test follows the code, not the file.
+  const src = readFileSync(new URL('../src/gitdates.js', import.meta.url), 'utf8');
   assert.match(src, /if \(e instanceof ReferenceError \|\| e instanceof TypeError\) throw e;/,
-    'gitFirst must re-throw programming errors, not fail open on them');
+    'gitDates must re-throw programming errors, not fail open on them');
   assert.match(src, /^import \{ execFileSync \} from 'node:child_process';$/m,
     'the import that was missing the first time');
+  const board = readFileSync(new URL('../src/board.js', import.meta.url), 'utf8');
+  assert.match(board, /from '\.\/gitdates\.js'/, 'board.js must read dates through the single pass');
 });
 
 // --- the status ladder (v0.192.0) --------------------------------------------

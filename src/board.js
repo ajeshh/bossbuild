@@ -14,7 +14,7 @@
 //   diagnostic.
 
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import { firstAdded, lastTouched } from './gitdates.js';
 import { join } from 'node:path';
 import { dim, bold } from './ui.js';
 import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
@@ -276,21 +276,9 @@ export function canvassedIdeas(projectDir) {
 // actually appeared. Frontmatter still wins when present (a founder may know better than the
 // repo — work done before `git init`, or a ship date that is a launch rather than a merge); this
 // only fills the silence. Fails open: no git, no dates, no invented ones.
-const gitFirst = (projectDir, path) => {
-  if (!path || path === 'none') return null;
-  try {
-    return execFileSync('git', ['log', '--diff-filter=A', '--format=%as', '-1', '--', path],
-      { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null;
-  } catch (e) {
-    // Expected: not a git checkout, git not installed, path never committed. NOT expected: a
-    // ReferenceError from a missing import — which is exactly how this shipped broken the first
-    // time, silently turning every derived date into null with no symptom but an empty strip.
-    // Same failure as v0.179.0's readLadder() swallowing a parse error. Re-throw the ones that
-    // mean the code is wrong.
-    if (e instanceof ReferenceError || e instanceof TypeError) throw e;
-    return null;
-  }
-};
+// Both answers come from one pass over the log (src/gitdates.js) — per-record `git log -1`
+// calls made `boss status` linear in the record count. Same semantics, two spawns.
+const gitFirst = (projectDir, path) => firstAdded(projectDir, path);
 
 // --- how long it has sat, derived --------------------------------------------------------
 // `gitFirst` above answers "when did this APPEAR". Time-in-build is a different question, and
@@ -305,16 +293,7 @@ const gitFirst = (projectDir, path) => {
 // and one nobody has opened in a month is one at 31.
 //
 // Not mtime, which every checkout and copy resets. Fails open exactly like gitFirst.
-const repoTouched = (projectDir, path) => {
-  if (!path || path === 'none') return null;
-  try {
-    return execFileSync('git', ['log', '--format=%as', '-1', '--', path],
-      { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null;
-  } catch (e) {
-    if (e instanceof ReferenceError || e instanceof TypeError) throw e;
-    return null;
-  }
-};
+const repoTouched = (projectDir, path) => lastTouched(projectDir, path);
 
 // { cards: [{id, title, column, blocked}], hasIdeasDir }.
 export function collectBoard(projectDir) {
