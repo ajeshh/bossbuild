@@ -118,7 +118,6 @@ const roster = modes.map((m) => ({
   id: m.id,
   word: modeWord(m.id),
   name: m.name,
-  summary: m.summary,
   agents: m.agents.map((a) => agentInfo(m.id, a)),
   skills: m.skills.map((s) => {
     const { gloss, usage } = skillGloss(packageSkillMd(m.id, s));

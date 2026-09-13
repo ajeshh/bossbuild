@@ -30,6 +30,9 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **Manifest summaries are one sentence.** `stages/*/manifest.json` carried 24,000 characters of
+  `summary` — MVP's alone was a 17,000-character release history with version stamps — packed into
+  the site roster and rendered by nothing. One sentence each now; the roster field is gone.
 - **One word for the ceremony level.** `boss status` and `boss sync` printed `layers:` under a
   ladder drawn in modes, and `boss unlock` said "this rung"; the voice audit counted mode / rung /
   layer / stage all in use for one thing. The label is `modes:` now (rendered as the mode names);
