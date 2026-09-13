@@ -5,10 +5,10 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, statSync } from 'node:fs';
+import { readdirSync, statSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
-import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
+import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
 
 after(cleanup);
 
@@ -597,4 +597,45 @@ test('exceptions group by the rule they depart from: three against one rule is a
   assert.match(html, /<b class="tab">12 of 16<\/b> slots/, 'icons and the logo fill two more');
   const order = ['id="brand"', 'id="people"', 'id="journey"', 'id="principles"', 'id="colour"', 'id="type"', 'id="shape"', 'id="icons"', 'id="layout"', 'id="components"', 'id="patterns"', 'id="flows"', 'id="content"', 'id="a11y"', 'id="resources"', 'id="exceptions"', 'id="research"'].map((x) => html.indexOf('<section class="chapter" ' + x));
   assert.ok(order.every((v, i) => v > 0 && (i === 0 || v > order[i - 1])), 'seventeen sections in the decided order');
+});
+
+// --- the shipped skeleton is all holes (IDEA-107 kicks-up: the slots the template gained) -----------
+
+test('the untouched STYLE_GUIDE skeleton renders every slot as a hole — its prose and <placeholders> never count as a decision', () => {
+  const tpl = readFileSync(new URL('../stages/L1-mvp/template/.claude/skills/design-tokens-init/templates/style-guide.md', import.meta.url), 'utf8');
+  const skeleton = tpl.slice(tpl.indexOf('```markdown') + 12, tpl.lastIndexOf('```')).replace(/\{\{PROJECT_NAME\}\}/g, 'Tidewell').replace(/\{\{DATE\}\}/g, '2026-09-13');
+  const dir = tidewell({ 'docs/design/STYLE_GUIDE.md': skeleton });
+  const g = readStyleGuide(dir);
+  assert.equal(g.principles.length, 0, 'the <Principle> headings are placeholders'); assert.equal(g.layout, false, 'six sub-slots, all <placeholders>'); assert.deepEqual(g.layoutSlots.map((x) => x.label), ['Base unit', 'The ramp', 'Grid anatomy', 'Breakpoints', 'Responsive techniques', 'Density']);
+  assert.equal(g.terms.length, 0); assert.equal(g.voiceDeferred, true); assert.equal(g.doDont.length, 2, 'the two seeded do/don\'t rows are real rules; the third is a placeholder');
+  assert.deepEqual(readIconDecision(g.text), { set: '', sizes: '', iconOnly: '', never: '' });
+  const lg = readLogo(dir); assert.equal(lg.clearSpace, ''); assert.equal(lg.misuse, '');
+  assert.equal(readExceptions(g.text).rows.length, 0);
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /id="layout-hole"/); assert.match(html, /class="block hole" id="logo"/); assert.match(html, /class="block hole" id="icons-decision"/);
+  // and one decided line plus a breakpoint token turns Layout into a read
+  const filled = skeleton.replace('- **Base unit:** <e.g. 4 — the spacing scale is multiples of it>', '- **Base unit:** 4');
+  const tokens = JSON.parse(TOKENS); tokens.breakpoint = { md: { $type: 'dimension', $value: { value: 768, unit: 'px' } } }; tokens.target = { min: { $type: 'dimension', $value: { value: 44, unit: 'px' } } };
+  const dir2 = tidewell({ 'docs/design/STYLE_GUIDE.md': filled, 'docs/design/tokens.json': JSON.stringify(tokens) });
+  const html2 = renderDesignHtml({ ...collectDesign(dir2, 'Tidewell'), projectDir: dir2 }, 'x');
+  assert.match(html2, /id="layout-guide"[\s\S]*?<strong>Base unit:<\/strong> 4<\/li>/); assert.match(html2, /1 of 6 decided/);
+  assert.match(html2, /<code>breakpoint\.\*<\/code> tokens: breakpoint\.md 768px\./); assert.match(html2, /<code>target\.min<\/code> 44px\./);
+});
+
+test('research on a design object is by name, not by a new field: an EVID whose about:/relates: names the component or the PAT id shows on it; prose "button" does not', () => {
+  const evidAbout = (id, about) => `---\nid: ${id}\ntype: evidence\ngrade: stated-pain\nmethod: interview\ndate: 2026-09-01\nabout: ${about}\n---\n# ${id} — x\n\nShe said the button was fine. Nothing here counts.\n`;
+  const dir = withParts({ 'docs/evidence/EVID-010-a.md': evidAbout('EVID-010', 'Button, the ask flow'), 'docs/evidence/EVID-011-b.md': evidAbout('EVID-011', 'PAT-1'), 'docs/evidence/EVID-012-c.md': evidAbout('EVID-012', 'the button on the row') });
+  const r = readResearch(dir);
+  assert.deepEqual(researchOn(r.evid, 'Button'), ['EVID-010'], 'exact case, whole word — "button" in prose is not research on Button');
+  assert.deepEqual(researchOn(r.evid, 'PAT-1'), ['EVID-011']); assert.deepEqual(researchOn(r.evid, 'ShiftRow'), []);
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /id="component-button"[\s\S]*?<span class="chip ev">research · EVID-010<\/span>/);
+  assert.match(html, /PAT-1[\s\S]*?<span class="chip asserted">no principle named<\/span> <span class="chip ev">research · EVID-011<\/span>/);
+  assert.ok(!html.includes('A quote'), 'still never a quote');
+  const withPrinciple = PATTERNS.replace('| ID | Pattern | The situation | The rule | Anti-pattern | First seen |\n|---|---|---|---|---|---|\n| **PAT-1** | Ask, don\'t assign | a shift needs cover | the owner asks one person; the app never assigns | auto-assign with a notification | 2026-09-02 |',
+    '| ID | Pattern | The situation | The rule | Anti-pattern | Principle | First seen |\n|---|---|---|---|---|---|---|\n| **PAT-1** | Ask, don\'t assign | a shift needs cover | the owner asks one person; the app never assigns | auto-assign with a notification | 1 · Calm over urgent | 2026-09-02 |');
+  const dir2 = withParts({ 'docs/design/PATTERNS.md': withPrinciple });
+  const html2 = renderDesignHtml({ ...collectDesign(dir2, 'Tidewell'), projectDir: dir2 }, 'x');
+  assert.match(html2, /descends from · 1 · Calm over urgent/);
+  assert.match(html2, /id="principle-1"[\s\S]*?<span class="chip dec">1 rule descends<\/span>/); assert.match(html2, /id="principle-2"[\s\S]*?no rule descends from it yet/);
 });

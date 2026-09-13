@@ -30,6 +30,11 @@ opposite, it isn't a principle, it's a mood. Then descend each into rules, becau
 act on a principle; it can only act on a rule.**
 
 ### 1. <Principle — e.g. "Calm over engaging">
+- **Statement:** <one sentence, in the second person of the experience — "Your evening gets shorter,
+  not louder." A name is a label; the statement is what a stranger could design from>
+- **Grounded in:** <where it came from — an `EVID-NNN`, a persona file, a stage of the journey. A
+  principle nothing outside the room names renders as *asserted* on `boss design`; it is still a
+  principle, but it can only be reaffirmed until something can test it>
 - **Why:** <what this buys the user, and what you're giving up to get it>
 - **Guideline:** <how to approach it — e.g. "notifications are opt-in and batched daily">
 - **Rules:** <checkable instructions — e.g. "no unread-count badges; no red dots; no auto-playing motion">
@@ -51,6 +56,19 @@ The one thing someone could describe about this interface without naming the pro
 
 - **It is:** <the signature — a typographic choice, a motion, a color relationship, a shape language>
 - **It appears:** <where — and where it deliberately doesn't>
+
+## Logo
+
+The mark is a file, and it lives where the brand does: `logo:` in `docs/BRAND.md`'s frontmatter is
+its path (`wordmark:` too, if the wordmark is a drawing rather than the name set in the display
+face). **Nothing is drawn until there is a file** — a placeholder mark becomes the logo in about a
+week. The five rules below are what a designer asks for first and what a founder never writes down.
+
+- **Clear space:** <e.g. the height of the mark on every side>
+- **Minimum:** <on screen and in print — e.g. 16px / 6mm; below this the mark alone, never the lockup>
+- **Colour:** <on paper · on the accent · one colour for print; which are allowed>
+- **Tagline:** <when the tagline sits with the mark, and when it doesn't>
+- **Misuse:** <the pair you refuse — stretched · gradient · recoloured · below minimum>
 
 ## Composition — four slots, and they start empty on purpose
 
@@ -104,6 +122,12 @@ foundation choice, not a per-screen one.
 - **The set:** <one, named>
 - **Sizes that exist:** <two or three, not "whatever fits">
 - **Icon-only is allowed when:** <and it still needs an accessible name>
+- **What an icon never does:** <carry meaning nothing else carries — the accessibility floor already
+  says *nothing by colour alone*; the same rule for shape>
+
+The icons themselves are files — one SVG each under `docs/design/icons/`, drawn from there by
+`boss design` and copied as one sprite. **The stroke is in the file, not in the CSS:** an icon whose
+markup relies on a stylesheet for its stroke is invisible everywhere the stylesheet isn't.
 
 ### 2. Rhythm — *the spacing that makes it feel like one thing*
 
@@ -160,6 +184,28 @@ How tokens combine. One row per recurring pattern; add as they emerge, don't inv
 | Surface / card | `color.surface.raised` + `space.4` + `radius.default` | elevation by surface token, never an ad-hoc shadow |
 | Destructive action | `color.feedback.danger` + confirm step | destructive actions are never one click from idle |
 
+## Layout — six sub-slots, and they start empty on purpose
+
+Nobody decides how a page is built until the third screen, and by then two screens have decided it
+differently. The slot has a shape so the decision has somewhere to land; **name the slot, earn the
+value** — a sub-slot stays blank until a screen needs it, and a blank one renders as a hole on
+`boss design`, never as a default.
+
+- **Base unit:** <e.g. 4 — the spacing scale is multiples of it>
+- **The ramp:** <which steps mean *inside a control* · *between controls* · *between sections*>
+- **Grid anatomy:** <columns · gutters · margins · the regions a page has>
+- **Breakpoints:** <as `breakpoint.*` tokens in `tokens.json`, so a media query is a name, not a
+  number typed twice>
+- **Responsive techniques:** <reposition · resize · reflow · hide · re-architect — which are allowed,
+  and which a component uses (a row reflows, a button resizes, a chip keeps its shape)>
+- **Density:** <one, until a second is earned>
+
+**Responsive, only if the product has a screen that changes shape.** Fill this when there is more
+than one surface — a laptop, a phone on a bus, paper (a FEAT that prints is a print surface) — as
+*must · may · never* per surface. A touch target has a number (`target.min` in the tokens, 44 is the
+usual) so the rule stops living as prose in three places. A CLI, an API, a single fixed surface: leave
+it blank and say so.
+
 ## Component API shape — the composition rule for props
 
 How a component is *called* is part of the system, and it drifts the same way colour does. Four
@@ -196,6 +242,10 @@ and they're the two users hit first on a slow network or a fresh account.
 
 > Re-check this table after a redesign. Iteration passes drop states quietly, because a missing
 > empty state is invisible in the screenshot you're looking at.
+
+- **How a state changes a colour:** <one rule for the whole system — e.g. rest → hover → active gets
+  darker by a fixed mix with the ink; selected takes the accent; disabled is the same colour at reduced
+  opacity, never a new grey. One rule, so five states on twelve components is one decision, not sixty.>
 
 **Name states structurally** — `button-primary-hover`, not "the hover state of the primary button".
 A prose checklist is something a reviewer has to remember to check; a naming convention makes a
@@ -274,6 +324,10 @@ opposite?):
 - **Buttons:** <verb-first? sentence case?>
 - **Errors:** <what the user should do, not what the system failed at>
 - **Empty states:** <what to do next, not "nothing here">
+- **Alternative text:** <what an image is *for* here, not what it shows — "the week, with Tuesday
+  uncovered", never "chart". Decorative images say so (`alt=""`); an icon-only control names its act>
+- **Inclusive language:** <the words this product refuses and what it says instead — the humane lens
+  already owns this; name it here so the copy can be checked against it>
 
 > **If this product has an AI feature, most of its copy is generated at runtime, not written here.**
 > System prompts, refusal and hedge language, retry and rate-limit messages, the words before a

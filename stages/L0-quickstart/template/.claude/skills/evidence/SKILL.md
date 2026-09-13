@@ -97,6 +97,7 @@ them. When in doubt, grade *down*, and name the specific thing that would raise 
    method: interview        # interview | observation | pretotype | metric | commitment-test
    grade: stated-pain       # stated-pain | observed-behavior | commitment
    assumption: <the canvas riskiest assumption this bears on, in a phrase>
+   about: <optional — what this is research ON, by name: a component (`Button`), a pattern (`PAT-2`), a flow, a canvas cell. The design space shows it on that object; the name does the linking, nothing else>
    ---
 
    # EVID-NNN — <one-line summary of the signal>

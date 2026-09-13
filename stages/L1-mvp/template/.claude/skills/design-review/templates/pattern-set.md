@@ -156,9 +156,15 @@ second is the real one: a review finding can then say *"violates `PAT-3`"* inste
 rule, and **a pattern this product invented is a different kind of thing from one it inherited.**
 The seeded rows are BOSS's; these are yours, and they are the ones worth showing a designer.
 
-| ID | Pattern | The situation | The rule | Anti-pattern | First seen |
-|---|---|---|---|---|---|
-| **PAT-1** | *(your first one lands here)* | | | | |
+| ID | Pattern | The situation | The rule | Anti-pattern | Principle | First seen |
+|---|---|---|---|---|---|---|
+| **PAT-1** | *(your first one lands here)* | | | | | |
+
+**Principle** names the one in `STYLE_GUIDE.md` this rule descends from — its number or its name.
+It is the only column here the seeded rows above cannot have (they are BOSS's rules; the
+principles are yours), which is why it lives on this table and not on every row: a rule you grew
+can say where it came from, and `boss design` shows each principle how many rules descend from it —
+a principle with none is not wrong, it is just not steering anything yet.
 
 ## Refused — and why
 

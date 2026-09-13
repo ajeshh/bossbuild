@@ -108,6 +108,14 @@ Each component gets its own card: name, source path, **the import line to copy**
 every variant, and all five states rendered (default / hover / active / disabled / empty+loading).
 Missing states are rendered as a visible gap, not silently omitted — you cannot skim past a hole.
 
+Two affordances on every card, and neither is a slideshow: **Code** copies what is on disk — the
+import line, the source file, or the tokens the component uses as JSON from the manifest — and
+**SVG** copies a drawing a design tool pastes as editable vectors. The drawing is generated from the
+tokens and the manifest, so it is **an approximation of the component, not a render of it**, and the
+card says so in as many words; the only interchange a design tool reads without a plugin is SVG,
+which makes this the honest version of "open it in my design tool" (`boss design` draws the same
+frame from `COMPONENTS.md` at MVP, before there is a gallery).
+
 > **Name states like variants, not like prose.** In the manifest and in any component tokens, a state
 > is `button-primary-hover` — a *structural* name — not a sentence in a review checklist. The
 > difference matters: a checklist entry is something a reviewer must remember to look for, while a

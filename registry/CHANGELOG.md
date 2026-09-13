@@ -30,6 +30,26 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The style guide gained the slots the design space was drawing as holes (IDEA-107's kicks-up
+  rows).** In `/design-tokens-init`'s `STYLE_GUIDE.md` skeleton: `Statement:` and `Grounded in:` on
+  the principle slot (a principle nothing outside the room names renders as *asserted*); a **Logo**
+  section — clear space · minimum · colour · tagline · misuse, the mark's path as `logo:` in
+  `docs/BRAND.md`, nothing drawn until there is a file; **Layout** as six sub-slots (base unit · the
+  ramp · grid anatomy · breakpoints · responsive techniques · density) with a *Responsive* paragraph
+  filled only when the product has more than one surface; *What an icon never does* and *the stroke
+  is in the file, not in the CSS* on 1b. Icons; *How a state changes a colour* under The five
+  states; *Alternative text* and *Inclusive language* under Surfaces. Every new line is a
+  `<placeholder>`, and `boss design` renders a placeholder as a hole — the template's prose never
+  counts as a decision. The token skill names three families the Layout slot earns and none of them
+  on day one: `breakpoint.*`, `z-index.*`, `target.min`; the page renders them beside the slot once
+  they exist. Two open questions closed by measuring: the *Ours* table in `PATTERNS.md` gained a
+  **Principle** column (only the rules you grew can name your principle — the seeded rows are
+  BOSS's — so *every rule names its principle* was the wrong rule; the page shows each principle *N
+  rules descend* or *no rule descends from it yet*), and **research on a design object** is by name,
+  not by a new mechanism: an EVID whose `about:` / `relates:` / `assumption:` names a component
+  (exact case, whole word) or a `PAT-n` shows as *research · EVID-NNN* on that card or row; `/evidence`
+  gained the optional `about:` line. `/design-library`'s card text names **Code** and **SVG** — the
+  drawing is an approximation, said in as many words.
 - **`boss design` is complete — seventeen sections (FEAT-033, slice 4, closes the FEAT-030 plan).**
   **Icons & logo** — every `docs/design/icons/*.svg` drawn from its file (click one to copy its SVG;
   *SVG* on the block copies the set as one sprite of `<symbol id="icon-<name>">`), the style guide's

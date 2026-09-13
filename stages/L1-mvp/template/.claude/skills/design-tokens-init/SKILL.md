@@ -488,6 +488,13 @@ the other field worth filling — it is what an editor shows on hover, and the a
   an agent to use a token name that does not exist, so an undefined family is silence rather than
   nagging. The practical consequence is worth saying out loud — **defining a spacing scale turns on
   its enforcement**, which is the right trade and should not be a surprise.
+- **Three families the layout slot earns, and none of them on day one.** `breakpoint.*` (`sm`, `md`,
+  `lg` as `dimension` tokens — a media query is a name, not a number typed twice), `z-index.*` (the
+  five or six layers a page has, named — `dropdown`, `sticky`, `overlay`, `toast` — so two overlays
+  never fight by magic number) and `target.min` (the touch target, 44px is the usual — the one rule
+  that otherwise lives as prose in three places). Add each **when the Layout slot in
+  `STYLE_GUIDE.md` names it**, not before: a breakpoint token for a product with one surface is a
+  number nobody reads. `boss design` renders them beside the slot once they exist.
 - **Prototypes consume the tokens, or they're labeled sketches.** Once this project has tokens *and*
   more than one mockup, start `docs/design/PROTOTYPES.md` —
   **[`templates/prototypes-registry.md`](templates/prototypes-registry.md)**. The rule it carries is
