@@ -31,45 +31,12 @@ npm run check            # zero findings = clean; check:published says how far n
   Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
   nothing to *sell* but the person, which is the acqui-hire's point. Licence: **keep MIT and the words**
   (a copy edit claws nothing back; diligence reads `LICENSE`). Next step is one call, not a build.
-- **v0.318.0 committed (`e035ce2`), not pushed** — IDEA-102: RESUME is a briefing with a window.
-  `boss status` reads the window; `/close` writes it; the old file and `RESUME-ARCHIVE.md` are in the
-  devlog verbatim; the archive is gone.
-- **v0.319.0 committed (`5c35568`), not pushed** — `/skill-doctor` ran in a fresh MVP scaffold: **all 45
-  descriptions resident every turn (~4.7k tokens); 10 of 45 ever invoked on this machine, 35 never**
-  (n=1, BOSS-on-BOSS — not a cut list). `/extract`'s description was truncated at `PRINCIPLE #1` (YAML
-  comment) — fixed, gated in `check:manifests`, two tests. **RVW-102 ADAPT**: `context-discipline.md`
-  move 1b (budget the list; measure with the instrument; judge a cut by distinguishability + observed
-  use, never count).
-- **v0.320.0 committed (`48fcff9`), not pushed** — IDEA-103 built: `plugin/evals/door/`, two graders,
-  `npm run eval:plugin`. **With the plugin 1.0, without 0, Δ = 1.0**, ~$0.20 a run — the first measure of
-  *does the plugin change what the model does*. Needs a host with `plugin eval` out of early access
-  (PATH `claude` is 2.1.236 and refuses; the VS Code-bundled 2.1.269 runs it).
-- **v0.321.0 committed (`259d152` + `b5e9dc1`), not pushed** — second eval case, the repo door: with
-  1.0 / without 0.33 / Δ 0.67 (the baseline passes "ran nothing" by running nothing). `model-routing.md`
-  notes `effort:` as a shape knob, artifacts still inherit; `check-refs` caught the practice naming
-  `/recalibrate` (ships to nobody) — reworded. RubyGems grepped: nothing covers a pipeline executing
-  repo-controlled config; held for the Nov 9 security sweep with the grep answer in the inbox file.
-- **v0.322.0 committed (`f387d67`), not pushed** — IDEA-101 shipped: `/boss-learn` out of the L0 template,
-  `/extract` checkout-aware (promotes via `boss learn` where a checkout exists, records UP-pending otherwise),
-  supersedes row, 38 shipped mentions rewritten, BOSS's own workspace on `/extract` too. `boss sync` on a
-  0.321.0-pinned throwaway printed the migration. 48 → 47 shipped skills.
-- **v0.323.0 committed, not pushed** — model attachment let go: shipped surface was already clean (v0.135.0);
-  residue removed — `/vet` asks for the shape not `model: "fable"`, `/recalibrate` rewritten around its
-  four honest triggers, `model-routing.md` says `.boss/model-profile.json` is where a binding WOULD go
-  (it never existed — four months of two skills describing updates to a file nobody wrote), four
-  shipped vendor-model examples → *cheap tier / capable tier*.
-- **v0.324.0 committed (`27e9252`, main fast-forwarded from `assess/board-2026-09-12`), not pushed** —
-  the board assessment applied (`docs/retros/2026-09-12-board-assessment.md`; 17 reviewers, the splits
-  kept). MVP unlock lays down 16 skills not 28 (`earned` in the manifest — postLaunch after first ship,
-  a new `aiMediated` group on first model call; `boss status` says, `boss sync` lays down); `/boss` is
-  the door any day (position + intent, verb named after the act); `/evidence` = record/debrief/digest,
-  `/research` retired, `/interview` prep-only; `boss status` 2.4s→0.17s (378 git spawns→2); drift +
-  focus loops can open on BOSS for the first time (both fired this session); 202 lines of BOSS
-  bookkeeping out of shipped text + a gate; one checker list, `check:external` for Ajesh's numbers,
-  release refuses a stale VERSION; loops → `.boss/loops` with fallback; old-vintage sync test
-  (v0.267.0 → now) passes; one sentence in PRINCIPLES.md, quoted everywhere. 15 commits, 448 tests.
-- **v0.325.0 committed, not pushed** — `/boss:welcome` is the everyday door by POINTER (DEC-017 intact);
-  `claude plugin eval --scaffold` on both everyday-door cases: with 1.0 / without 0 / Δ 1.0.
+- **v0.318.0 → v0.325.0 committed, none pushed (51 commits ahead of origin).** Each is a
+  `registry/CHANGELOG.md` section and a devlog entry; the RESUME no longer restates them (window
+  rule — moved, not trimmed, 2026-09-13). Headlines only: RESUME window (318) · `/skill-doctor` +
+  `/extract` description fix (319) · plugin eval suite, Δ 1.0 (320, 321) · `/boss-learn` folded into
+  `/extract` (322) · model attachment let go (323) · the board assessment applied, 16-skill MVP
+  unlock, `boss status` 2.4s→0.17s (324) · `/boss:welcome` the everyday door by pointer (325).
 - **Second tier landed under `## Unreleased` (2026-09-13)** — once-per-session conscience · `boss hooks
   enable|disable` (nothing lands until asked) · `modes:` label · manifest summaries one sentence ·
   checker hygiene + `parseEntries` in gen-site · MENTORS.md current. BOSS's own hooks re-synced.
@@ -102,20 +69,33 @@ npm run check            # zero findings = clean; check:published says how far n
 
 ## Next (in order)
 
-1. **The four Captured cards are the whole open queue** — 070 (what commits/what goes public: the
-   adopted-repo `.gitignore` gap), 074 (the contraction verb, n=0), 081 (Remote Control: two DECs to
-   write — per-person state, push), 087 (un-ignore `docs/` — Ajesh's door). None is a build today;
-   081's two DECs are the cheapest honest move.
-2. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:` on the
-   record — the mechanism's first real use.
-3. **`/vet` Cagan's 2026-09-11 retraction #2** (*"teams over-invest in validating problems"*). Inbox it first.
-4. **Watchlist needs a row for the project/PM rung** (`planner`, `boss board`, `program:`).
-5. **Docs-accuracy found task:** CLAUDE.md's repo map and `/vet` step 2 name `library/agents|skills|
+1. **FEAT-026 — Ajesh's turn.** Reject any of the seven assumptions in the FEAT in a word; hand-check
+   `boss playbook --open` in a real project (Lean toggle, copy a box into Keynote/Slides, ledger vs
+   files). Then **spec FEAT-027** (pitch chapters: Vision · Product · Customers · Problem · Market ·
+   Competition · Business model), **028** (proof: Evidence · Health · Learnings · Decisions · Risks),
+   **029** (the deck: VC cut / internal / everything, remove-and-restore, Export PDF). Prototype v6 is
+   the mockup for all three (link in IDEA-106). Same recipe: `/spec`, lane by message, commit by name.
+2. **The 27-row *Kicked up* table in IDEA-106** is the intake spec for what BOSS should ask a founder
+   and doesn't — sort it (task / new scope / question) before 027, because 027's chapters render the
+   fields it names: a person record + photos (#11), a `vision:` line (#12), prior capital (#18), the
+   compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
+   `/import` (#13), the ask record (#17).
+3. **`/vet` the persona sources** — `docs/research/inbox/persona-record-is-thin-against-the-craft.md`
+   (three pages + the example card; verdict per field; record or render).
+4. **IDEA-110 — the full showcase on oyeboss** (after 027–029): one worked example generated by the
+   real renderers. Reposition is IDEA-109's.
+5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
+6. **`/vet` Cagan's 2026-09-11 retraction #2** (*"teams over-invest in validating problems"*). Inbox it first.
+7. **Watchlist needs a row for the project/PM rung** (`planner`, `boss board`, `program:`).
+8. **Docs-accuracy found task:** CLAUDE.md's repo map and `/vet` step 2 name `library/agents|skills|
    hooks|memory-seed/` — none exist. Fix the sentences.
-6. **`npm run check` is red at 50 since `d20f15d` (IDEA-087):** `[[EVID-NNN]]` links in now-tracked
-   ideas/verdicts point at evidence that stays gitignored. Not a regression to chase — `check:refs` needs
-   to know evidence is private by design (skip or soften the EVID class), not un-ignore it.
-7. **Two dogfood gaps from the `/retro`:** `.boss/brain/` (run `/read-repo`), `/drift-deep` never run here.
+9. **`npm run check` is red at 50 since `d20f15d` (IDEA-087):** `[[EVID-NNN]]` links in now-tracked
+   ideas/verdicts point at evidence that stays gitignored; three tests fail on the same class. Not a
+   regression — `check:refs` needs to know evidence is private by design (skip or soften the EVID
+   class), not un-ignore it.
+10. **Two dogfood gaps from the `/retro`:** `.boss/brain/` (run `/read-repo`), `/drift-deep` never run here.
+    Plus two new: `.claude/rules/feature-context.md` now exists here (`/spec`/`/close` name it);
+    `docs/product/JOURNEY.md` not written (every row would be `assumed`) — write it at the second flow.
 
 **Above all of these, unchanged: publish (npm is behind — `npm run check:published` says by how
 much) and Phase 3 outreach. Both are Ajesh's.**
