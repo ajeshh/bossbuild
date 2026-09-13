@@ -47,65 +47,24 @@ npm run check            # zero findings = clean; check:published says how far n
 - **Landed under `## Unreleased`, not stamped** — DEC-019 (release-on-publish: `npm run stamp` at publish;
   `VERSION is honest` replaces `is next`) and BOSS's own install synced 0.267→0.325 + a dogfood row
   that fails past 3 behind. The next version is Ajesh's to stamp.
-- **Board pass, 2026-09-12/13 — Building and Taking shape both emptied, by finishing and by reading
-  (`1b91586` → `5d87a12`, all under Unreleased).** `ready` renders in Taking shape. Five records had
-  finished under other names and never said so (071, 084, 095, 096, 102) — flipped. Built: the return
-  path (`revisit-due` + `unticked-shipped` in `boss records`/`boss status`, `/log` stamps `outcome:` at
-  ship — first BOSS decision due **2026-09-20**); `/log`'s recipe as a script (measured: +4% body, the
-  newest-first invariant is the gain; the other four don't convert); the shelf's product half (three
-  shelves, provenance on the twelve, exactly-one check — found two more). Parked with triggers: 006
-  (the port), 047 (fake door, keyless — when strangers exist), 082, 075, 076; 036 dropped; 066 owns
-  outward research. Board: 4 captured · 0 taking shape · 0 building · 73 shipped · 29 parked.
-- **Playbook, 2026-09-13 — everything before the deck, done (Ajesh: *"do the deck last"*).** Under
-  Unreleased: the pull (`590748f`), FEAT-028 Proof chapters (`6736162`, `edf52cc`), Ajesh's answers
-  on 026/027/028 recorded — Learnings merges the IDEA capture logs, the URL prints, `docs/source/
-  README.md` ships (`1b1df27`); the kicked-up table sorted (`6a16e76`); **FEAT-035 the intake
-  doors** — `/import` takes pasted text, dates its snapshot, assesses what else a source fills (≤5,
-  yes/no, owning shapes, a document's number is never evidence), `/close` 3d notices what the
-  founder said (`61a7c2c`); **FEAT-036 the Company chapters** — Team from `docs/team/` person
-  records (`boss team add` stubs, photos inlined, never a stand-in), Brand as the doc holds it,
-  Values from `## How we build` (`3bfde2b`); **RVW-103** persona vetted at source — `photo:` and
-  `quote:` on the record, gated (`8da18b0`); four things BOSS never asked — `in_a_few_years:`,
-  `prior_capital:`, runway and defensibility/compliance sharpens (`1daf260`); the **BMC frame**
-  and the ask read from `business-<date>.md` (`ed46b24`). 16 chapters, 35 playbook tests, suite
-  529 pass + the 3 pre-existing. Then **FEAT-029 the deck** (`2d7563e`): Present with three cuts as
-  block-id lists (VC · Internal · Everything), remove/restore in the browser, Export PDF — **the
-  playbook's four slices are done.** 36 playbook tests; suite 535 pass + 3.
-- **The showcase — FEAT-039 (`6fe5942`).** IDEA-110's trigger fired and Ajesh added: rename (Tidewell
-  is real → **Kettlewick**), fully filled incl. design and board, a folders page, the shipped files as
-  examples, and a standing rule. Built: `demo/kettlewick/` (a tracked, fictional, full record set —
-  no faces, no real company), `scripts/gen-demo.js` (the real renderers → `site/demo/`: playbook,
-  design, board, folders-from-the-tree, inside-the-folder from `stages/`), *Demo* in the site nav,
-  and **`check:demo`** in `npm run check` — a hole on the demo fails the build, so a feature shipped
-  without demo content can't hide. Design records are the design lane's (in flight, unstaged).
-  **Then, the same evening:** the design half landed (design lane, `78d13f4`); the board joined the
-  dashboard on page-shell (`fd96771`); Organization + Learning replaced Folders + Inside; the demo
-  board got six ideas / six FEATs; playbook + board set in the venture's tokens, Kettlewick
-  recoloured sage/copper (`872e5c8`); the cut became a filter and Everything → All; the conscience
-  runs for real on the demo at build time and its signals sit on Learning (`a4187cc`).
-  **Last:** IDEA-065/104/106/110/111 flipped to `shipped` — `superseded`/`promoted` were off-vocabulary
-  and the board filed two as Captured (`ba38d62`); BOSS eats its dogfood with a local
-  `docs/design/tokens.json` so its own pages look like the site; the shell's default palette is
-  chosen, not inherited (warm stone · blue-cast ink · teal, `DEFAULT_ACCENT`), and the deck store is
-  keyed by project (`e6b4cdf`). Board: 4 captured · 0 taking shape · 2 building · 88 shipped · 28 parked.
-- **FEAT-027 landed under Unreleased (`48ff59c`)** — the Pitch chapters: eight sections + a rail, each a
-  projection over a record; a chapter line = the record's first sentence, tested.
-- **Earlier the same day:** FEAT-026 slice 1 (`55502e9`, the canvas as boxes) and IDEA-106 captured
-  absorbing 065 + 104, six prototype rounds (link in the record) — the devlog holds the detail.
+- **Shipped 2026-09-12/13, all under `## Unreleased` — the devlog holds each; RESUME keeps the pointer.**
+  · **Board pass** (`1b91586` → `5d87a12`): Building and Taking shape emptied by finishing and by reading;
+  the return path (`revisit-due`, `unticked-shipped`, `/log` stamps `outcome:` — first BOSS decision due
+  **2026-09-20**); five records flipped to `shipped`; 006/047/082/075/076 parked with triggers, 036 dropped.
+  · **Playbook** — FEAT-026/027/028/029 + the pull (`590748f`), FEAT-035 intake doors, FEAT-036 Company
+  chapters, RVW-103, the four never-asked fields, the BMC frame, the deck (`2d7563e`). Four slices done.
+  · **Showcase** — FEAT-039 Kettlewick (`6fe5942` → `a4187cc`, `e6b4cdf`): a fictional full record set,
+  `scripts/gen-demo.js` through the real renderers, `check:demo` red on a hole. **Standing rule: a new
+  chapter or record type adds its demo record in the same commit.** Board: 4 captured · 2 building · 88 shipped · 28 parked.
+  · **Board dates + the honest bar** (`3747bc9`): every card says `added <date>`, Shipped cards `shipped
+  <date>`; a Building FEAT's criteria bar renders at `0/N`, and no section at all renders as a hole.
+  Card shows **criteria, not todos** (the promise, fixed at spec time) — reasoning in the CHANGELOG entry.
+  · **Design lane** — FEAT-030/031/032/033 (`c2c63ea` → `c0b76fb`): `boss design`, seventeen sections, the
+  templates caught up. Open by design: IDEA-108 row 3 waits for a designer with a file; the data-viz
+  palette question (107 gap row 3) is still a question.
 - **The external evidence is still n=3 signals / n=2 founders, all `stated-pain`.** Nobody has been
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
-
-- **Design lane, 2026-09-13 — the design space is complete and the templates caught up (`c2c63ea` →
-  `c0b76fb`, all under Unreleased).** `boss design` renders seventeen sections from the files — the
-  people and the story, the language with contrast computed, the parts with Code and an SVG spec
-  frame on every component card, icons from files and as a sprite, the logo from the brand's file or
-  not at all, resources (the DTCG file, a derived variables block, kit coverage from `design:` links
-  nobody has written), exceptions grouped by rule; 27 tests. FEAT-030/031/032/033 shipped. IDEA-107's
-  kicks-up rows landed in the shipped templates (Statement/Grounded in · Logo · Layout's six sub-slots
-  · the three earned families · a `Principle` column on Ours only · research on a design object by
-  name via `about:`). Open by design: IDEA-108 row 3 (the `design:` link in the template) waits for a
-  designer with a file; the data-viz palette question (107 gap row 3) is still a question.
 
 ## Next (in order)
 
@@ -121,8 +80,12 @@ npm run check            # zero findings = clean; check:published says how far n
    compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
    `/import` (#13), the ask record (#17).
 3. ~~`/vet` the persona sources~~ — RVW-103 (ADAPT: `photo:` and `quote:` gated; the rest rejected).
-4. **IDEA-110 — the full showcase on oyeboss** (after 029): one worked example generated by the
-   real renderers. Reposition is IDEA-109's.
+3b. **FEAT-030 (11/11) and FEAT-031 (6/6) are full-bar in Building** — the board now says so out loud.
+   Design lane: flip them `shipped` (with `shipped_on:`) or say what's still open.
+4. **IDEA-114 slice 2 — the board's split.** `boss board` files the `kind: venture` idea as a card
+   among the capabilities; put it above the columns (beside the riskiest assumption, IDEA-015's
+   spot) or filter it. Also: two venture records on day 0 → `/canvas` asks which. Measure before
+   gating the venture fields on a capability (gap is 0 today). ~~IDEA-110~~ shipped (FEAT-039).
 5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
 6. **`/vet` Cagan's 2026-09-11 retraction #2** (*"teams over-invest in validating problems"*). Inbox it first.
 7. **Watchlist needs a row for the project/PM rung** (`planner`, `boss board`, `program:`).
