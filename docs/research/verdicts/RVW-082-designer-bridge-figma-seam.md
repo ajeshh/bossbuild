@@ -65,3 +65,14 @@ around it."*
   the same disease as [[RVW-078]]'s registry finding, in a different ecosystem. A portable component
   index is the vendor-free half of the same cure.
 - BOSS version when recorded: 0.171.0
+
+## Correction note — 2026-09-13
+
+The *Tokens · code ⇄ design tool · verified two-way* row is true **for Enterprise plans only**:
+developers.figma.com/docs/rest-api/variables/ gates both reading and writing variables to the
+Enterprise plan (read: "Any organization member … Enterprise"; write: "Full seats, admins …
+Enterprise"). Native import of a DTCG JSON without a plugin is **unverified** (not on the variables
+help page). For a founder on a free or professional plan the working path is a tokens plugin.
+The verdict's shape stands — the token layer is still the only honest seam — but "two-way" needs
+"for enterprises" after it in any shipped sentence. Found while drawing [[IDEA-107]]; the
+integration list lives in [[IDEA-108]].

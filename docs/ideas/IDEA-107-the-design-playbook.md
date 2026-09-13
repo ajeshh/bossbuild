@@ -84,6 +84,68 @@ actually about.
 
 Rows 2, 3, 7 are the real findings. Everything else is *material that exists and has no render*.
 
+## Three rules from the second seed (Ajesh, 2026-09-13)
+
+*"Same as we are doing for the actual website, we should be able to copy any of the values. I think
+of this website as being very key for engineers and designers … we need to build a very awesome
+way."* · *"figma integration as its own feature"* → [[IDEA-108]] · *"analyze carbon … go deeper"* →
+the read below · *"Im wondering if UX research should also show up on this"* → the answer below.
+
+1. **Every value is copyable, in the form each reader wants.** A colour copies as hex, as its token
+   name, or as `var(--…)`; a type role as its font stack or its token; a spacing step as `px` or its
+   token; an import line as itself; an icon as its SVG. Copy on the *block* (106's rule) stays for
+   decks; copy on the *value* is for the editor. An engineer never re-types a hex from a swatch, and
+   a designer never re-types a token name into a variable — that is the whole "reuse existing"
+   argument at the level where reuse actually fails.
+2. **The audience is engineers and designers, and the site is their reference** — so per-component
+   depth beats site breadth. The Carbon read says what depth means.
+3. **Research shows up on the thing it bears on, and in one ledger.** Never a second Evidence chapter.
+
+## Carbon, read at source (2026-09-13) — what to take, grepped against BOSS first
+
+Read from `carbon-design-system/carbon-website` `src/pages/` (the exact page tree) and the `carbon`
+monorepo `packages/`, not from the rendered site (a JS app; the fetch returned nothing).
+
+| Carbon has | Where (at source) | BOSS today (grepped) | Sort |
+|---|---|---|---|
+| **Every component page has four tabs: Usage · Style · Code · Accessibility** — Usage holds *anatomy, sizes, emphasis, content, states, best practices per variant*; Style holds the spec with tokens annotated; Accessibility holds *keyboard interactions*, *what Carbon provides*, *design recommendations*, *development considerations* | `components/button/{usage,style,code,accessibility}.mdx` | a card holds **Code** (import, variants, states) and nothing else. `anatomy`: 0 hits. `keyboard`: a reviewer's checklist line in `designer.md` / `design-review`, never a per-component table | **the big one — three slots per component**, filled per project (not the refused catalog): *Usage* = when / when not (the `when it applies` column, moved onto the card) · *Style* = anatomy with the token each part uses (derivable from the source by the guard) · *Accessibility* = the keyboard table + what has been tested with a person. Prototype v1 draws all four on Button |
+| **A definition of done per component** — Draft → Preview candidate → Preview → Stable — with a checklist across *design spec · code · testing · docs · kit* (rows include *4.5:1 on all text*, *works to ~320px*, *strings parameterized*, *screen reader manually tested in three readers*, *VRT*, *AVT*) | `contributing/component-checklist` | `Status` column (stable · experimental · deprecated); `definition of done`: 0 hits in the design surface; the *rows* map one-to-one onto BOSS's own mechanisms — `contrast-guard`, the layout hole, the i18n seam, *not checked* | **task:** a `done:` row per component in the manifest, mechanical where a guard exists (tokens · states · contrast · narrow · strings) and *not checked* where a person is needed (screen reader). Rendered as the checklist on the card; *Stable* is earned, never asserted |
+| **Patterns, 17 named** — common actions · dialog · disabled states · disclosures · empty states · filtering · fluid styles · forms · global header · loading · login · notification · overflow content · read-only states · search · status indicator · text toolbar | `patterns/*` | 10 AI-interaction patterns UP; `PATTERNS.md` seeds only what the project holds; the general catalog is **refused** ([[IDEA-092]]) | **practice row, not shipped text:** name Carbon's list, dated, as the seed vocabulary a founder can pick *one row at a time* — so nobody reinvents "empty state" under another name. The refusal (inventing a catalog) stands |
+| **Data visualization as its own section** — getting started · chart anatomy · chart types · color palettes · axes and labels · legends · dashboards · simple / spatial / flow / gantt | `data-visualization/*` (11 pages) | `chart`: 0 hits | confirms 107 gap row 3. The palette question first (`color.chart.*` categorical · sequential · diverging, derived from the token layer); the rest earned at the first chart |
+| **Elements as packages** — colors · type · layout · grid · motion · themes · icons · pictograms | `packages/{colors,type,layout,grid,motion,themes,icons,pictograms}` | one DTCG file → one derived stack file | fine as is for one product; the *icon build* (SVG source → generated) is the one to copy: **icons live as SVG files, the site renders from them** |
+| **2x Grid** as a first-class element | `elements/2x-grid` | layout: 0 hits — the hole on the prototype | confirms gap row 2 |
+| **Themes** (White · Gray 10 · Gray 90 · Gray 100) as token sets with a code page | `elements/themes` | deferred by rule (092) | not a gap; the dark *slot* on the prototype is the honest render |
+| **Carbon for AI** guideline + an `ai-label` component | `guidelines/carbon-for-ai`, `components/ai-label` | `ai-ux-patterns.md` (10 patterns, UP) — provenance / "why this" / confidence as a register | BOSS already holds the *guidance*; Carbon shipped the *component*. Nothing to add; note that the market now has a named component for pattern 1 |
+| **Carbon MCP** (public preview) with a *Token conservation* page | `developing/carbon-mcp/{overview,onboarding,prompts,token-conservation}` | `manifest.json` is the retrieval substrate ([[RVW-078]]); no server (host's job, [[RVW-081]]) | confirmation, not a build — IBM arrived at the same two conclusions BOSS did (retrieval over instruction; context tokens are a budget) |
+| **Migrating** + codemods · **Contributing** · **Community** · **Meetups** | `migrating/`, `contributing/`, `community/`, `whats-happening/` | versioning refused ([[RVW-080]]); multi-team ceremony | not for a solo founder; the *contributing* idea survives as BOSS's reuse / adjust / new boundary, already shipped |
+| **All about Carbon** — why it looks like this | `all-about-carbon` | the brief layer: `BRAND.md` + the anchor `DEC` | exists; chapter 1 of the prototype |
+| **Design kits** (Figma, Sketch) with a kit row in the definition of done | `designing/kits` | no design-tool link anywhere (`design tool`: 1 hit, prose) | → [[IDEA-108]] row 3: `design:` link + kit coverage |
+
+**The read in one line:** Carbon's depth is *per component* (four tabs, a definition of done, a
+keyboard table), not per site. BOSS's cards are one tab deep. That is where "go deeper" lands.
+
+## UX research on the site — yes, and where
+
+Research is evidence about design objects. BOSS already records it (`EVID` records graded on the
+ladder, personas with a `synthetic / real` ledger, `ux-check` findings marked *observed* /
+*inferred*, the persona's *what we don't know*), and the playbook's chapter 9 renders the ledger by
+date. The design site renders the **same records by the object they bear on**:
+
+- **On the block** — a pattern carries `EVID ×2 · stated-pain`; a component carries *tested with a
+  person: no*; a flow carries drop-off per step once `/measure` runs. Already the rule for the
+  canvas; the same chip, here.
+- **One Research section** — the ledger cut by rung: **observed** (someone was watched using it — n=0
+  today, so a hole with the verb: *hand the caregiver's yes / no screen to one caregiver*), **stated**
+  (what people said that bears on a design choice), **inferred** (what the founder assumed — the
+  persona's guesses, marked), and **the open questions** the personas hold. Plus the interview guide
+  as a printable block, because the persona's *don't know* list *is* one.
+- **Never** a second Evidence chapter. The playbook's chapter 9 links here and back.
+
+Carbon does not do this — its research is internal and unpublished. A design site that shows
+*which of its rules a real person has ever tested* would be BOSS's own thing, and it is the humane
+lens applied to the design system: the accessibility floor already says *not checked* is not a pass;
+research says the same about *nobody has watched a caregiver use this*.
+
 ## Figma — the answer already on record, and the one thing it was missing
 
 [[RVW-082]] (ADAPT, 2026-08-20) split "two-way with the design tool" into three mechanisms and
@@ -183,6 +245,27 @@ motion, the scale ratio — read as honest or as thin · (3) is a rendered do/do
 carries into a deck, or is it the component card · (4) does the Resources block read as a handoff a
 designer would accept · (5) the family bar — is three spaces the right count, and is *Design* the word.
 
+### Prototype v1 — republished 2026-09-13 (same link)
+
+Bug fixed first (Ajesh: *"the same bug that was on playbook for slide, where the slide takes over"*):
+the overlay's class was `.slide` and so was the *Slide* button's, so every block's button inherited
+`position: fixed; inset: 0` and covered the page. Overlay renamed; the same collision the playbook's
+v2 fixed — carried in from v0 by copying the code. Drawn in from the second seed: **every value copyable** (click a swatch, a type role, a spacing
+step, an import line, an icon — a small menu offers hex · token · `var(--…)` where it applies; the
+Colour block gains *Copy all as CSS*) · **Button as a four-tab component page** (Usage · Style ·
+Code · Accessibility — Carbon's shape: anatomy with the token each part uses, a keyboard table, what
+has and has not been tested with a person) · a **definition-of-done row** on the component index
+(tokens · states · contrast · narrow · strings · screen reader — mechanical where a guard exists,
+*not checked* where it needs a person) · **Open in your design tool** on components (one linked,
+three *no design file yet*; kit coverage *1 of 4* in the Resources table) · the Resources table says
+*two-way for Enterprise; a tokens plugin for everyone else; native import unverified* · **14 ·
+Research** — observed (a hole with the verb) · stated · inferred · the open questions · the interview
+guide as a block.
+
+**React to, in addition:** (6) is the value menu the right size, or should click copy the token
+name and hold the menu for a second click · (7) do four tabs on one card read as depth or as a
+wall · (8) is Research a section a designer would open, or is the chip on the block enough.
+
 ### The plan it was drawn from
 
 Hand-written, over **Tidewell**. Draw: Brand → Foundations with three swatches and their
@@ -252,3 +335,7 @@ asks what to import.**
   Brand → Design link. Found while drawing it: the prototype's own palette fails its own contrast
   arithmetic in three places (muted, placeholder, stale-on-soft) — the page shows them as findings
   with a token-level fix rather than hiding them, which is the whole point of computing the pairs.
+- 2026-09-13 — **second seed** (Ajesh): copy any value · design-tool integration as its own
+  feature → [[IDEA-108]] · read Carbon deeper · should research show up. Carbon read at source
+  (page tree from the website repo, packages from the monorepo); Figma's Variables API found to be
+  Enterprise-only both ways (RVW-082 correction note). Three rules added; prototype v1 republished.
