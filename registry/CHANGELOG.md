@@ -56,6 +56,13 @@ rule above still applies to the whole section once it is stamped.
   ≈4 people, inside the crawl band. Each run appends a dated line to `.boss/reach.jsonl`, since
   GitHub forgets traffic after two weeks. Flags a private repo as the thing that 404s
   `/feedback`'s issue path. A number to look at, not a gate — not in `npm run check`.
+- **The records are in the repo (IDEA-087).** `docs/ideas/` (IDEA + FEAT), `docs/extractions/`,
+  `docs/research/verdicts/`, `docs/RESUME.md`, `docs/devlog.md` and BOSS's own `CLAUDE.md` are
+  tracked — 220 files the CHANGELOG had been citing by name into a room no reader could open, and
+  the class of file that was destroyed twice with no way back. Evidence, the brain, the research
+  inbox and imported material stay local: real people's words and someone else's copyright are a
+  consent question, not a repo setting. The test was "fine public forever?", not "is the repo
+  private" — history goes with the toggle.
 > **For you:** the conscience says a thing once per session now. A moment whose predicate still holds
 > used to re-fire on every prompt; every frame promised "at most once this session" and nothing kept
 > it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's

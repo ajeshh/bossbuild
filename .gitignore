@@ -8,8 +8,8 @@ registry/projects.json
 
 # ── THREE tiers. Only two were ever declared, so the third became the default sink. ──
 #
-#   1. LOCAL       — everything listed below. The dogfood workspace: roadmap, research,
-#                    strategy, design. Never leaves this machine.
+#   1. LOCAL       — everything listed below. The dogfood workspace: research inbox, strategy,
+#                    design, evidence, the brain. Never leaves this machine.
 #                    EXCEPT the conscience EVAL SUITE, moved to tier 2 by DEC-013 (v0.213.0):
 #                    the cases and runners are TESTS, not strategy, and four public claims about
 #                    BOSS's own rigour were resting on evidence no reader could open. The
@@ -30,19 +30,28 @@ registry/projects.json
 # quietly disagree again; `check:boundary` does the same for agents and skills.
 #
 # Everything below is the dogfood workspace — roadmap, research, strategy, design.
+#
+# 2026-09-13 (IDEA-087): the RECORD classes moved to tier 2 — docs/ideas/ (IDEA + FEAT), docs/extractions/,
+# docs/research/verdicts/, docs/RESUME.md, docs/devlog.md and the root CLAUDE.md. Three reasons, in
+# order: two gitignored single-copy files were destroyed and unrecoverable (conscience-log 2026-08-21,
+# RESUME-ARCHIVE 2026-09-09); concurrent sessions writing untracked files produce duplicates instead
+# of conflicts; and registry/CHANGELOG.md — shipped in the tarball — cites these records ~124 times
+# by name. The test for tracking a directory is NOT "is the repo private" (a setting, one click from
+# public, and history goes with it) but "fine public forever?" What stays LOCAL below fails that
+# test for someone else's sake, not secrecy: docs/evidence/ is real people's words (consent), .boss/
+# is the conscience's read on the founder, research/inbox + source/ + dossier/ are pasted outside
+# material. CANVAS.md is the founder's own — held out per-file, his call.
 docs/business/
-docs/RESUME.md
-docs/devlog.md
 docs/evidence/
+docs/ideas/CANVAS.md
 # docs/decisions/ is DELIBERATELY ABSENT from this list — the one record class BOSS publishes.
 # A DEC's stated job is "the rationale future-you and a cofounder can read instead of guessing",
 # and 49 citations of them sit in registry/CHANGELOG.md, which ships inside the npm package. They
 # contain no personal, customer or financial content; the decision to publish was made per-record
 # on the 16 that existed, and is NOT a standing rule — a future DEC that should stay private stays
 # untracked, and check-refs handles its citation automatically (docs/IDS.md).
-docs/ideas/
-docs/extractions/
-docs/research/
+docs/research/*
+!docs/research/verdicts/
 docs/source/
 docs/dossier/
 docs/design/
@@ -57,7 +66,6 @@ docs/mentor-practitioners.md
 # BOSS's own dev workspace — root-anchored (leading slash) so the SHIPPED product
 # templates under stages/*/template/.claude/ and their CLAUDE.md stay public.
 # NOTE: gitignore has no inline comments — keep each pattern on its own line.
-/CLAUDE.md
 /.claude/
 /.boss/
 /bossbuild.code-workspace

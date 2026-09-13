@@ -201,9 +201,19 @@ const gitignored = new Set(
     .map((l) => l.trim()).filter((l) => l.startsWith('docs/'))
     .map((l) => l.slice('docs/'.length).replace(/\/$/, '')),
 );
+// 2026-09-13 (IDEA-087): `RESUME.md` and `devlog.md` are TRACKED now, so `.gitignore` can no
+// longer tell them apart from `MENTORS.md` — and this check flagged 34 `/close`, `/log`, `/extract`
+// call sites for pointing at the file they create, the first-cut bug back verbatim. The honest
+// discriminator was never "ignored here"; it was "a shipped capability WRITES it at runtime".
+// Nothing on disk computes that, so it is listed, the same way and for the same reason as
+// `BRAND.md` in class 3c: keep it at the length you can justify, one line each.
+const RUNTIME_DOCS = new Set([
+  'RESUME.md',  // written by /close in the founder's project
+  'devlog.md',  // written by /log
+]);
 const REPO_ONLY_DOCS = existsSync(join(ROOT, 'docs'))
   ? readdirSync(join(ROOT, 'docs'))
-    .filter((f) => f.endsWith('.md') && !templateDocs.has(f) && !gitignored.has(f))
+    .filter((f) => f.endsWith('.md') && !templateDocs.has(f) && !gitignored.has(f) && !RUNTIME_DOCS.has(f))
   : [];
 
 for (const f of files.filter((x) => /\.(md|js|json)$/.test(x))) {
@@ -245,10 +255,12 @@ const shippedDocDirs = new Set(
     .filter((r) => r.includes(`template${sep}docs${sep}`))
     .map((r) => r.split(`template${sep}docs${sep}`)[1].split(sep)[0]),
 );
+// `docs/foo/` and `docs/foo/*` both declare a local directory (the second form is how a
+// directory stays local while one child is un-ignored — `docs/research/*` + `!docs/research/verdicts/`).
 const repoOnlyDocDirs = readFileSync(join(ROOT, '.gitignore'), 'utf8').split('\n')
   .map((l) => l.trim())
-  .filter((l) => l.startsWith('docs/') && l.endsWith('/'))
-  .map((l) => l.slice('docs/'.length, -1))
+  .filter((l) => /^docs\/[^/]+\/\*?$/.test(l))
+  .map((l) => l.slice('docs/'.length).replace(/\/\*?$/, ''))
   .filter((d) => !shippedDocDirs.has(d));
 
 // ONE exception, and it is the trap class 3b already documented in its own words: a name can

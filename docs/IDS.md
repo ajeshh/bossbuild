@@ -24,10 +24,11 @@ Frontmatter on every doc: `id`, `type`, `owner`, `status`. On `IDEA`/`FEAT`, add
 
 **`[[DEC-011]]` promises the reader can open it. A bare `DEC-011` says a record exists.**
 
-The distinction is load-bearing because BOSS's own working records — ideas, decisions, evidence,
-research verdicts — are gitignored, while the files that cite them (`registry/CHANGELOG.md` above
-all, which ships inside the npm package) are not. 198 citations across 28 tracked files were
-offering a reader a door into a room that isn't there.
+The distinction is load-bearing because some of BOSS's own working records are gitignored —
+evidence above all, real people's words — while the files that cite them (`registry/CHANGELOG.md`
+above all, which ships inside the npm package) are not. 198 citations across 28 tracked files were
+offering a reader a door into a room that isn't there. (Ideas, extractions, verdicts, RESUME and
+the devlog have been tracked since 2026-09-13 — IDEA-087; the rule is per record, not per class.)
 
 `npm run check:refs` enforces it: **a tracked file may carry the link form only if that record is
 also tracked.** Nothing is exempt, including the CHANGELOG — an allowlist that excuses whole files
