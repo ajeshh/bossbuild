@@ -180,6 +180,14 @@
       "replacedBy": "read-repo",
       "why": "Nothing in \"comprehend\" says what gets comprehended, or by whom. The skill reads what is already here — the repo you adopted, or the idea and source material you brought — and tells you where you stand. `read-repo` says that; the old name asked you to remember it.",
       "migrate": "`/read-repo` is the same skill, unchanged. It is now the first thing an adopted repo runs, so it is worth knowing by the name that describes it."
+    },
+    {
+      "since": "0.322.0",
+      "kind": "skill",
+      "removed": "boss-learn",
+      "replacedBy": "extract",
+      "why": "`/boss-learn` routed a proven pattern UP into BOSS's own library — and that needs a BOSS source checkout, which an npm or Homebrew install does not have. Its own first step said so and pointed at `/extract`, and `/extract`'s last step pointed back. Two verbs for one act, and at Quickstart the only one you had was the one that could not act. `/extract` now does both halves: it records the pattern, routes it DOWN into your app, and runs `boss learn` for UP only where a checkout exists.",
+      "migrate": "Nothing to redo. If you are at MVP or above, `/extract` is the verb — same three signals, same EXTR-NNN record, and it will say plainly when UP is not possible from your machine. At Quickstart nothing replaces it: keep a reusable pattern as a dated line in your idea doc until you unlock MVP. `boss learn` (the CLI) is unchanged for anyone who does have a checkout."
     }
   ]
 }

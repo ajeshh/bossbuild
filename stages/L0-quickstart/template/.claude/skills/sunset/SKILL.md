@@ -71,7 +71,7 @@ The exit is the richest Principle-#1 breakpoint there is, and it's currently unc
 project closes:
 
 - Surface the reusable patterns — a build technique, a research move, a hard-won craft lesson — and
-  **offer to route each UP via `/boss-learn`** (offer; don't auto-run — the founder decides what
+  **offer to record each with `/extract`** — at Quickstart, where it isn't installed yet, a dated line in the idea doc (offer; don't auto-run — the founder decides what
   generalizes).
 - Write **`docs/POSTMORTEM.md`**: one page the founder keeps. The bet, the evidence, the lesson, the
   date. Short enough to actually re-read before the next project.
@@ -135,7 +135,7 @@ what you relied on," the silent removal, the sunset with no export path (data ho
 
 ## Move 4 — harvest, then remove
 
-- **Harvest** the reusable pattern (same as a project sunset — offer to route it UP via `/boss-learn`; the
+- **Harvest** the reusable pattern (same as a project sunset — offer to record it with `/extract`, or a line in the idea doc at Quickstart; the
   founder decides what generalizes). Even a killed feature usually taught something.
 - **Remove** the feature and record it: mark the FEAT `status: dropped (sunset {{today}} — <the usage
   evidence, in a few words>)` in `docs/ideas/FEAT-NNN-*.md`, a one-line devlog entry (`/log`) with the
@@ -215,7 +215,7 @@ experiment was thinking, not building.
 
 ## Idea-level guardrails
 
-- ⛔ **Do NOT offer `/boss-learn`.** The other two scopes harvest because something was *built* and a
+- ⛔ **Do NOT offer `/extract`.** The other two scopes harvest because something was *built* and a
   pattern was *proven*. An unbuilt idea has proven nothing, and routing it UP is how a practice shelf
   fills with things that merely sounded good. **The harvest is the one movement that doesn't shrink to
   this scale — it disappears.**

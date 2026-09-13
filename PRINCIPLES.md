@@ -34,7 +34,7 @@ and sort the pattern two ways:**
 - **DOWN** → into the app as **core functionality**. It's product, not scaffold.
 
 This bidirectional extraction is what makes the system compound: every project makes BOSS smarter,
-and every app's core stays clean. `/boss-learn` is therefore a **two-destination router**, not a
+and every app's core stays clean. `/extract` is therefore a **two-destination router**, not a
 one-way "promote to BOSS."
 
 ## 2. Just-in-time support, never premature ceremony

@@ -85,5 +85,5 @@ has answered it is a loop they will turn off.
 
 `/extract` (the UP/DOWN sort) · `/design-review` step 4b (the twice-is-a-pattern threshold) ·
 `docs/design/PATTERNS.md` **Ours** table. A pattern that proves out beyond this product is a
-`/boss-learn` candidate for the shelf it came from — which is the UP half, and the reason this loop
+`/extract` candidate for the shelf it came from — which is the UP half, and the reason this loop
 is a member of PRINCIPLE #1 rather than a design convenience.

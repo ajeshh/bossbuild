@@ -80,7 +80,7 @@ knowledge). The signal hands a frame and an ask, never canned copy.
   the canvas file's frontmatter (`framework: lean-canvas`).
 - **Author your own:** a *domain-specific* pressure-test loop (e.g., a regulatory-canvas-loop
   for a medical product; a fairness-canvas-loop for an algorithmic system). Author the loop
-  spec; `/boss-learn` UP if generalizable.
+  spec; `/extract` if generalizable.
 
 ## When this loop re-opens
 

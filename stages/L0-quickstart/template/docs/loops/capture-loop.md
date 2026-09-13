@@ -61,4 +61,4 @@ discipline of capture-something-before-thinking-bigger needs much policing.
   frontmatter (`captured_via: moesta-forces`) if remixing.
 - **Author your own:** rare — capture is foundational. If you find yourself wanting a
   *structured* capture loop instead of the living-doc one, that's a different upstream entirely
-  (maybe `interview-loop`?). Author it; `/boss-learn` UP if generalizable.
+  (maybe `interview-loop`?). Author it; `/extract` if generalizable.

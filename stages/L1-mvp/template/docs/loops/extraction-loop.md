@@ -123,6 +123,6 @@ nudge after the first time.
 ## Cite
 
 PRINCIPLE #1 — the rule this loop encodes, finally. *"Pause to extract patterns. UP into BOSS
-as a reusable superset practice. DOWN into the app as core functionality. `/boss-learn` is
-therefore a two-destination router."* The loop is the *when*; `/extract` (and `/boss-learn`)
+as a reusable superset practice. DOWN into the app as core functionality. `/extract` is
+therefore a two-destination router."* The loop is the *when*; `/extract` (and `boss learn`, the CLI under its UP half)
 are the *how*.

@@ -9,12 +9,6 @@
   "_enforced_by": "TWO gates, and this line used to claim ONE did both. `scripts/check-boundary.js` fails on an unexamined artifact and on a `crossed` verdict whose file does not exist — it has never contained a naming check, and the sentence asserting it did was corrected 2026-08-24 (v0.235.0). NAMING is `scripts/check-refs.js` class 4: a shipped file naming an `internal` or `not-yet` AGENT in backticks. Its scope was `stages/` + six named docs until v0.235.0, which added `library/` — practices ship in package.json `files:` and `boss craft` prints them to a founder's terminal, so `mentor-humane` sat backticked twice in `conscience-voicing.md` and no gate could see it. Two limits that remain, stated rather than implied: backticks are required (a bare word in prose is usually the concept), and SKILLS are covered only via the supersedes ledger, not this file — so a `not-yet` skill named in shipped prose is still caught by nothing here.",
   "artifacts": [
     {
-      "name": "boss-learn",
-      "kind": "skill",
-      "verdict": "crossed",
-      "why": "Ships at L0 and in library/. The router itself — a founder promoting a pattern UP is the same move BOSS makes."
-    },
-    {
       "name": "boss-sync",
       "kind": "skill",
       "verdict": "crossed",

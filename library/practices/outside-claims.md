@@ -84,7 +84,7 @@ re-litigate every time it comes round again. A `no` with no re-open condition ge
 - **Not a research process.** If a claim needs a literature review to settle, the honest answer is
   usually *"not now"* — and that is a complete answer.
 - **Not for your own proven patterns.** Something you built, that worked, that repeated, has earned
-  trust this practice is about *withholding*. That is `/practice` and `/boss-learn`.
+  trust this practice is about *withholding*. That is `/practice` and `/extract`.
 
 ## Related
 

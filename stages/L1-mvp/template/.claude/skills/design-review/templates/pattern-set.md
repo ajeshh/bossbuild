@@ -178,4 +178,4 @@ in six weeks, and stops a well-meaning agent proposing it again.
 - **At V1 `/design-library` renders it** into the rules section, with the do/don't pairs shown side
   by side rather than described. A rule you can *see* is one you stop arguing about.
 - **`/extract` promotes a repeated shape into the "Ours" table**, and a pattern that proves out
-  beyond this project is a `/boss-learn` candidate for the shelf it came from.
+  beyond this project is an `/extract` candidate for the shelf it came from.

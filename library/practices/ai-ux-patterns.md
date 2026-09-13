@@ -122,7 +122,7 @@ See [`deceptive-patterns.md`](deceptive-patterns.md).
 - **Apple HIG Generative AI**, **OpenAI Apps SDK UX**, **Anthropic "building effective agents"** —
   vendor-current; show-the-plan / checkpoint-before-irreversible / refine-and-feedback.
 - Community catalogs (e.g. agentic-design.ai) — vet one against your own build before adopting it;
-  `/boss-learn` is for the pattern you already proved, not the one you just read about.
+  `/extract` is for the pattern you already proved, not the one you just read about.
 
 
 ## Altitude / anti-rot

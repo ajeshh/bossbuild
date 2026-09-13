@@ -1,6 +1,6 @@
 ---
 name: incident
-description: The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production. What happened, what the user actually saw, a fix-first timeline, and the ONE systemic learning worth routing UP via /boss-learn. Not a blame doc, not a ticket. Usage - /incident [what broke]
+description: The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production. What happened, what the user actually saw, a fix-first timeline, and the ONE systemic learning worth recording with /extract. Not a blame doc, not a ticket. Usage - /incident [what broke]
 ---
 
 # /incident — what broke, what it taught, once
@@ -42,7 +42,7 @@ Write **one page** — `docs/incidents/INC-YYYY-MM-DD-<slug>.md` — with:
    about *why*. Don't moralize the root cause before the fire's out.
 4. **The one systemic learning.** Not ten action items — the single change that makes this *class* of
    failure less likely (a high-risk-path guardrail, a migration check, a rollback that actually
-   restores state, an eval case). **Route it UP with `/boss-learn`** if it generalizes beyond this
+   restores state, an eval case). **Record it with `/extract`** (which routes UP only where a BOSS checkout exists) if it generalizes beyond this
    project, or into a high-risk-paths entry in the Scale working rules if it's local.
 
 ## Ties into what already exists

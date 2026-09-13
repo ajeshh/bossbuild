@@ -327,7 +327,6 @@
       "\"make another\"; if they would, it belongs in the ladder."
     ],
     "boss": "the entry point; captures an idea into a new IDEA-NNN record",
-    "boss-learn": "BOSS's own learning loop, not a project artifact",
     "boss-sync": "BOSS's own distribution loop, not a project artifact",
     "read-repo": "the assessor itself — reads the repo, never produces a competing artifact",
     "welcome": "orientation; writes nothing durable",

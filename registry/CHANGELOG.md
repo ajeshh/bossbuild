@@ -16,6 +16,41 @@ Everything else (audits, refactors, doc sweeps, internal tooling, this repo's ow
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
 
+## 0.322.0 — 2026-09-12
+
+**`/boss-learn` leaves the template. `/extract` is the one verb for "I proved something" — it records,
+routes DOWN, and runs `boss learn` for UP only where a checkout exists.**
+
+> **For you:** if you are at MVP or above, `/extract` is the verb, unchanged in shape — same three
+> signals, same `EXTR-NNN` record — and it now says plainly when UP is not possible from your
+> machine instead of pointing you at a skill that could not do it either. At Quickstart nothing
+> replaces `/boss-learn`: keep a reusable pattern as a dated line in your idea doc until you unlock
+> MVP. `boss sync` will remove the old skill and tell you why (`registry/supersedes.json`).
+
+- **Why (IDEA-101, the distinctness read, reversed on reading).** `/boss-learn`'s own step 2a said:
+  *"routing UP needs a BOSS source checkout, and most installs don't have one … If you installed
+  BOSS from npm or Homebrew, that is you … capture the pattern where you are (`/extract` records
+  it)."* And `/extract`'s step 6 said: *"invoke `/boss-learn`."* Two verbs pointing at each other for
+  one act — and the one every founder had, at the lightest rung, was the one that could not act.
+  Then the number: `/skill-doctor` on this machine, all history — `boss-learn` 4× (BOSS itself, the
+  only place UP works), `extract` 0×. Ajesh: *"go for it i guess."*
+- **What moved.** The L0 template drops `boss-learn` (skills + aside); `registry/supersedes.json`
+  gains the row (`replacedBy: extract`, honest about Quickstart); `registry/boundary.json` and the
+  ladder's `_exempt` lose their rows. **`/extract` step 6 is rewritten** — check for a checkout first
+  (`$BOSS_SRC`, the self-hosted registry entry, or standing in one); if present, generalize, show the
+  command, run on their go, never auto-commit BOSS; if absent — the common case — record the
+  candidate as UP-pending *with the reason* and stop. **Thirty-eight shipped mentions** across skills,
+  loops, practices, manifests, `PRINCIPLES.md`, `GUIDE.md` and the CLI help now say `/extract` (or
+  `boss learn`, the CLI, where the mechanism is meant). `check-refs` found the last three itself:
+  a `celebration-of-done` provenance line, the L3 graduation hint, and `GUIDE.md`.
+- **BOSS's own workspace follows.** The root `.claude/skills/boss-learn/` is gone; `/vet`,
+  `/practice-refresh`, `/humane-refresh` and `/deep-research` hand ADOPT/ADAPT to `/extract` now
+  (BOSS has a checkout, so UP works there — through the same verb a founder has). One verb, two
+  altitudes, no fork.
+- **Not a count exercise.** 48 → 47 shipped skills is the side effect, not the reason. The reason
+  is that the model, and the founder, could not pick the right door from the descriptions alone —
+  which is the only test `context-discipline.md` move 1b allows for a cut.
+
 ## 0.321.0 — 2026-09-12
 
 **The second door has its eval too. And `effort:` is a shape, not a name.**

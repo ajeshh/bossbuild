@@ -17,7 +17,7 @@
 3. **The customer loop is the signal now.** Real users generate evidence; `/idea --feedback` is the
    register (bug → fix now / friction → observe / **feature request → a stated-pain `EVID`, never a
    spec** / churn → the loudest evidence there is). `/incident` runs the blameless post-mortem when
-   something breaks: fix first, analyze second, one systemic learning routed through `/boss-learn`.
+   something breaks: fix first, analyze second, one systemic learning recorded with `/extract`.
 4. **The conscience never fires at, evaluates, or reports on a non-founder.** When a roster grows, the
    conscience still coaches *the founder* only. It does not grade contractors or employees, does not
    surface per-person output, and never becomes a management surveillance tool. This is a hard line,

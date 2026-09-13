@@ -43,7 +43,6 @@ export const STANDING_COMMANDS = [
   ['boss conscience mute <moment>', 'turn down ONE moment; unmute to bring it back'],
   ['boss remove', 'take BOSS back out \u2014 preview first, --apply to do it'],
   ['/boss-sync', 'pull the latest BOSS practices into this project'],
-  ['/boss-learn', 'route a proven pattern UP into the library or DOWN into the app'],
 ];
 
 // The mode word a user types into `boss unlock` (strips the L#- level prefix).
@@ -100,7 +99,7 @@ export function loadModes() {
         // removed or disabled — they install, they run, they're one flag away.
         postLaunch: m.postLaunch || [],
         // Skills that are not about building the founder's company — BOSS's own upkeep
-        // (`/boss-sync`, `/boss-learn`, `/feedback`) and the verbs that END something
+        // (`/boss-sync`, `/feedback`) and the verbs that END something
         // (`/sunset`). `boss map` folds these behind one line, always, because a rung's list
         // is answering *what do I do next for my company* and these four never are. Distinct
         // from `postLaunch`, which folds work that is real but not yet EARNED; this folds work

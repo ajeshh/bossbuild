@@ -1,6 +1,6 @@
 ---
 name: judge-traces
-description: Error analysis on your real session traces — Hamel/Shankar's discipline applied to your own work. Reads .boss/trace.jsonl (what agents actually did), sorts what went wrong into a binary pass/fail failure taxonomy, and routes the recurring modes to /boss-learn. Usage - /judge-traces [last N | all]
+description: Error analysis on your real session traces — Hamel/Shankar's discipline applied to your own work. Reads .boss/trace.jsonl (what agents actually did), sorts what went wrong into a binary pass/fail failure taxonomy, and routes the recurring modes to /extract. Usage - /judge-traces [last N | all]
 ---
 
 # /judge-traces — read your real traces, find the real failure modes
@@ -49,14 +49,14 @@ opinions — make the call.
 *separate* pass from whatever produced it — and judge the **trajectory** (did the path make sense),
 not just whether the endpoint happened to be fine. A right outcome via a wrong path is still a finding.
 
-**5. Route the real modes.** A failure mode that recurs is a candidate for `/boss-learn` — UP (a
+**5. Route the real modes.** A failure mode that recurs is a candidate for `/extract` — UP (a
 practice/guard for every project) or DOWN (a fix in this app). A one-off is just a one-off; don't
 systematize noise. Name the count: *"`wrong-files` appeared 4× across 3 sessions — worth a guard."*
 
 ## Output
 
 A short report: the factual shape (agents × files × frequency), then the binary failure taxonomy with
-counts, then the 1–3 modes worth routing to `/boss-learn`. Keep it to what the trace actually shows.
+counts, then the 1–3 modes worth routing to `/extract`. Keep it to what the trace actually shows.
 
 ## Rules
 

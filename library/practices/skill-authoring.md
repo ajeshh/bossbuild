@@ -104,7 +104,7 @@ descriptions.
 **The BOSS adaptation:** pushy ≠ shouting. A description earns its triggers by being *concrete*
 ("when the user asks X, or is doing Y, or says any of …"), not by adding urgency words. List the
 real trigger phrases; name what it is *not* for (the boundary is as load-bearing as the trigger).
-Look at the existing skills — `/boss-learn`, `/consult` — for the pattern: a one-line *what*,
+Look at the existing skills — `/extract`, `/consult` — for the pattern: a one-line *what*,
 then a precise *when*, then the inverse it's distinct from.
 
 ## Self-check before shipping a skill

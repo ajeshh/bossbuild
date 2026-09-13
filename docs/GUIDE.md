@@ -194,7 +194,8 @@ fine, it just says out loud what you'd be carrying unearned.
   collaborator roles, and the give-away-your-Legos conscience moment. Each waits on a real project
   hitting the symptom — the same discipline as every other rung.
 - **Ready to climb when:** there is no next unlock. From here the loop is operate honestly,
-  delegate deliberately, and let `/boss-learn` carry what you've proven back UP.
+  delegate deliberately, and let `/extract` carry what you've proven back UP (via `boss learn`,
+  where a checkout exists).
 
 ---
 

@@ -133,7 +133,7 @@ export const HELP = {
   },
   learn: {
     usage: `boss learn <path> --as <category> [--mode <mode>] [--yes]   (${LEARN_CATEGORIES.join(' | ')})`,
-    what: `Promote a proven pattern UP into BOSS so every future project inherits it. Where it lands depends on the category: ${SHIPPED_CLASSES.join(', ')} go into a stage template and get registered in that stage's manifest — which is what makes them ship — so they need --mode (quickstart | mvp | v1 | scale). The shelf category (${SHELF_CATEGORIES.join(', ')}) goes into library/ and takes no --mode. Either way this writes into the BOSS SOURCE checkout — usually not the repo you're standing in — bumping its VERSION and CHANGELOG, so it names the target and asks before writing unless you pass --yes. Set BOSS_SRC to point it somewhere specific. The judgment layer over this is /boss-learn inside Claude (a two-way UP/DOWN router).`,
+    what: `Promote a proven pattern UP into BOSS so every future project inherits it. Where it lands depends on the category: ${SHIPPED_CLASSES.join(', ')} go into a stage template and get registered in that stage's manifest — which is what makes them ship — so they need --mode (quickstart | mvp | v1 | scale). The shelf category (${SHELF_CATEGORIES.join(', ')}) goes into library/ and takes no --mode. Either way this writes into the BOSS SOURCE checkout — usually not the repo you're standing in — bumping its VERSION and CHANGELOG, so it names the target and asks before writing unless you pass --yes. Set BOSS_SRC to point it somewhere specific. The judgment layer over this is /extract inside Claude (it records the pattern, routes DOWN or UP, and runs this only where a checkout exists).`,
     examples: ['boss learn ./my-practice.md --as practices', 'boss learn ./mentor-ops.md --as agents --mode v1', 'BOSS_SRC=~/code/bossbuild boss learn ./p.md --as practices --yes'],
     see: ['sync'],
   },
@@ -212,7 +212,7 @@ export const WAYFINDING = [
   ['know what the AI is costing me', ['/ai-cost', '/cost-review']],
   ['decide what to build next', ['/roadmap', '/revalidate']],
   ['handle something breaking in front of users', ['/incident', '/trust']],
-  ['stay current with how BOSS builds', ['/boss-sync', '/boss-learn', '/practice']],
+  ['stay current with how BOSS builds', ['/boss-sync', '/extract', '/practice']],
   ['get oriented for the first time', ['/welcome', 'boss help']],
 ];
 

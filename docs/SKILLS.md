@@ -3,7 +3,7 @@
 # BOSS Skill Reference
 
 > One line per skill, grouped by the mode that introduces it. Generated from each
-> skill's `SKILL.md` frontmatter, current as of **v0.321.0**.
+> skill's `SKILL.md` frontmatter, current as of **v0.322.0**.
 
 ## Quickstart
 
@@ -23,7 +23,6 @@
 - **`/read-repo`** — Read what BOSS can actually understand about this project (the captured idea, source material, or an adopted repo) and say where you stand - position, never a grade; what BOSS can't see; two or three options  _(/read-repo)_
 - **`/feedback`** — Send feedback about BOSS itself back to the people who build it  _(/feedback [what's on your mind])_
 - **`/boss-sync`** — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin  _(/boss-sync)_
-- **`/boss-learn`** — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality  _(/boss-learn [what to promote])_
 
 ## MVP
 

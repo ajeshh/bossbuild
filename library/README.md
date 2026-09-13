@@ -49,5 +49,5 @@ running `boss craft context-discipline` was told where the answer lived and coul
 
 ## How it grows
 
-`/boss-learn` promotes a proven pattern from a real project (human-gated), bumps BOSS's VERSION,
+`boss learn` (the CLI behind `/extract`'s UP half) promotes a proven pattern from a real project (human-gated), bumps BOSS's VERSION,
 and appends `registry/CHANGELOG.md`. Existing projects pull it via `/boss-sync`.

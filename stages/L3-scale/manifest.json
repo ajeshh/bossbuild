@@ -15,5 +15,5 @@
   "hooks": [],
   "loops": [],
   "unlocksNext": null,
-  "graduationHint": "There is no next unlock. From here the loop is: operate honestly, delegate deliberately, and let /boss-learn carry what you've proven back UP."
+  "graduationHint": "There is no next unlock. From here the loop is: operate honestly, delegate deliberately, and let /extract carry what you've proven back UP (via `boss learn`, where a checkout exists)."
 }

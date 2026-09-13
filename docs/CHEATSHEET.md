@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.321.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.322.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -30,7 +30,6 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 | `boss conscience mute <moment>` | turn down ONE moment; unmute to bring it back |
 | `boss remove` | take BOSS back out — preview first, --apply to do it |
 | `/boss-sync` | pull the latest BOSS practices into this project |
-| `/boss-learn` | route a proven pattern UP into the library or DOWN into the app |
 
 ## Quickstart  ·  unlock next: `boss unlock mvp`
 
@@ -52,7 +51,6 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/read-repo` — Read what BOSS can actually understand about this project (the captured idea, source material, or an adopted repo) and say where you stand - position, never a grade; what BOSS can't see; two or three options
 - `/feedback` — Send feedback about BOSS itself back to the people who build it
 - `/boss-sync` — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin
-- `/boss-learn` — Route a proven pattern two ways — UP into the BOSS library as a reusable superset practice, or DOWN into this app as hardened core functionality
 
 **Agents:** product-lead, coder, mentor-founder, prompt-coach  
 **Loops:** capture-loop, canvas-loop, pretotype-loop, harvest-loop, sustaining-loop  
@@ -117,7 +115,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 
 **Agents:** mentor-hiring  
 
-> _When to unlock next:_ There is no next unlock. From here the loop is: operate honestly, delegate deliberately, and let /boss-learn carry what you've proven back UP.
+> _When to unlock next:_ There is no next unlock. From here the loop is: operate honestly, delegate deliberately, and let /extract carry what you've proven back UP (via `boss learn`, where a checkout exists).
 
 ---
 

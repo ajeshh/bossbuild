@@ -115,7 +115,7 @@ The voice (cohort-aware per v0.20):
   Edit this loop spec's frontmatter; record the rationale in `docs/devlog.md`.
 - **Tighten predicate:** add detection for near-duplicate components (similar file sizes,
   similar import patterns) — V1+ heuristic. Author the predicate; consider promoting via
-  `/boss-learn` if it generalizes.
+  `/extract` if it generalizes.
 
 ## When this loop re-opens
 

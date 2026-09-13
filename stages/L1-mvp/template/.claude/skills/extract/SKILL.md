@@ -1,6 +1,6 @@
 ---
 name: extract
-description: Pause and sort patterns — Principle 1 as a skill. Reads recent work (git log, devlog, src/, library/) and proposes 1–3 extractions, each routed UP (BOSS's library, via /boss-learn) or DOWN (the app's own core). Records the decision in docs/extractions/EXTR-NNN-*.md. Claude's reading, not regex. Usage - /extract
+description: Pause and sort patterns — Principle 1 as a skill. Reads recent work (git log, devlog, src/, library/) and proposes 1–3 extractions, each routed UP (BOSS's library, where a source checkout exists) or DOWN (the app's own core). Records the decision in docs/extractions/EXTR-NNN-*.md. Claude's reading, not regex. Usage - /extract
 ---
 
 # /extract — pause and sort the pattern
@@ -84,8 +84,8 @@ Route each candidate based on the dominant signal:
   is the only place it ships from — so it also takes `--mode <quickstart|mvp|v1|scale>`. Run
   `boss learn <path> --as <cat> [--mode <mode>]` to copy + register + bump VERSION + add a
   CHANGELOG entry. (Requires a BOSS source checkout — `$BOSS_SRC`, a self-hosted registry entry, or
-  running from one. An npm/Homebrew install cannot promote; record the candidate instead — see
-  [`/boss-learn`](../boss-learn/SKILL.md).)
+  running from one. An npm/Homebrew install cannot promote; record the candidate instead — step 6
+  says how.)
 - **DOWN** → refactor the duplication into a named module/function/schema in `src/`. /extract
   doesn't execute the refactor (the founder owns the code); it names the target file path +
   the smallest valuable refactor.
@@ -106,13 +106,26 @@ sorting, it was collecting.
 Record it as a file alongside the ideas (or wherever your project tracks IDs) under an *Extractions*
 heading; allocate the next free `EXTR-NNN` integer by grepping `docs/extractions/*.md`.
 
-### 6. If any candidates are UP — invoke `/boss-learn`
+### 6. If any candidates are UP — check for a checkout, then promote or record
 
-For each UP-routed candidate, after the founder confirms:
-- Suggest the `boss learn <path> --as <cat>` invocation.
-- Hand off to `/boss-learn` for the two-way router judgment (it may re-route to DOWN if it
-  disagrees — that's the discipline's check on the discipline).
-- Record in the EXTR file whether the UP succeeded (bumped VERSION? CHANGELOG line written?).
+**UP needs a BOSS source checkout, and most installs don't have one.** `boss learn` writes into BOSS's
+own repo — bumps its VERSION, prepends its CHANGELOG — which the read-only npm/Homebrew package cannot
+do. It looks for that repo in order: `$BOSS_SRC`, a self-hosted entry in this machine's registry, then
+the current directory if it *is* a checkout. So, for each UP-routed candidate, after the founder confirms:
+
+- **Check first:** does a checkout exist? (`echo $BOSS_SRC`; `boss learn --help` says where it looks.)
+- **If yes** — generalize the artifact (strip every domain specific; a practice doc, a skill, an agent,
+  or a hook), show the command, and run it only on their go:
+  `boss learn <path-to-generalized-file-or-dir> --as <category> [--mode <mode>] --note "<what & why>"`.
+  Review its diff in the BOSS repo and commit deliberately — never auto-commit BOSS. Record in the
+  EXTR file whether the UP landed (VERSION bumped? CHANGELOG line written?).
+- **If no** — which is the common case — **record the candidate as UP-pending in the EXTR file, with
+  the reason** (*"no BOSS checkout on this machine"*), and stop. Say plainly that promotion needs a
+  checkout; never imply it happened. The record is the value; the promotion can follow from any
+  machine that has one.
+- Either way, the router may still disagree with itself here — a candidate that looked UP at propose
+  time often turns out DOWN once generalized, because most app code routes DOWN. That reversal is the
+  discipline's check on the discipline; write it in the EXTR.
 
 ### 7. If any candidates are DOWN — name the refactor
 
@@ -145,10 +158,9 @@ honestly; nothing was extractable yet."* That's the principle working.
 
 - **Triggered by:** `extraction-loop` (this skill's job is to close it). The loop opens at
   the heuristic breakpoint; the skill is the judgment.
-- **Routes to:** `/boss-learn` (for UP candidates) — see `library/` rules in the BOSS source
-  repo. `/boss-learn` is the two-destination router at the *promote* step; /extract is the
-  router at the *propose* step. They share PRINCIPLE #1; they sit at different inflection
-  points.
+- **Routes to:** `boss learn` (the CLI, for UP candidates where a checkout exists) — see `library/`
+  rules in the BOSS source repo. /extract is the router at both the *propose* and the *promote*
+  step since v0.322.0; the CLI is the mechanism under its UP half, never a second verb.
 - **Adjacent:** `/log` (devlog discipline produces the entry signal); `/close` (session-end
   may surface "consider /extract" when devlog has accumulated entries).
 
@@ -167,7 +179,7 @@ honestly; nothing was extractable yet."* That's the principle working.
   Treating extraction as one-way (always-UP) is the failure mode this skill exists to prevent.
 - **Three signals, not feelings.** Same-work-repeated / named-and-stable / load-bearing-
   decision. If you can't tie the candidate to one of the three, it's premature.
-- **Record before route.** Write the EXTR-NNN file FIRST; invoke `/boss-learn` or refactor
+- **Record before route.** Write the EXTR-NNN file FIRST; run `boss learn` or refactor
   AFTER. The record IS the discipline.
 - **Cite PRINCIPLE #1.** This skill exists to encode that principle. Naming it in the EXTR
   file ties the discipline back to its source.
