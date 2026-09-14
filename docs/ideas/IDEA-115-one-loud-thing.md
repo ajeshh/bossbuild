@@ -90,7 +90,19 @@ twin. **Lead: the benchmark** (a surveyor's cut mark — the fixed point everyth
 against; `⊼` U+22BC on the terminal line). Level second (`⊡`); the full stop is the system under
 whichever wins. Try square and north lose at 16px; plumb bob and B-monogram declined. The real
 finding: the star's problem is meaning, not age — it says *an AI did this*. The glyph is a literal
-in 20 files, so a change starts with one `MARK` constant in `src/ui.js`. Waits on Ajesh's pick.
+in 20 files, so a change starts with one `MARK` constant in `src/ui.js`.
+
+**Round two — β (Ajesh: *"a more interesting inspiring way for greek letter beta"*).** Six cuts on
+the same board. It is the name AND the job in one glyph: the B of BOSS, and the state every
+founder's thing is in until a real person says yes. **New lead: the block β (I1)** — stem, two
+bowls, counters cut square, descender through the floor; holds at 16px as a B with a tail;
+terminal twin is the letter itself (`β Created my-app`), in every font, no sweep needed for the
+site's claim to stay true. Stencil (I2) as the ≥48px cut of the same mark if wanted; the stamp
+(I4, β knocked out of a persimmon tile) is the strongest tab-row object and the weakest letter;
+β-on-benchmark and β. declined (say more, read less). The benchmark stays runner-up. Named
+tension: *beta* also means unfinished and BOSS is 0.3xx — the About page turns it into the claim
+(*everything is a beta until someone commits — that's the ladder*) or it reads as an admission.
+Waits on Ajesh's pick.
 
 ## Found while applying (2026-09-13) — tasks, not scope
 

@@ -113,10 +113,11 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
 - 🔷 **The mark (IDEA-115, second board).** Ajesh: *"the star seems hella outdated."* Eight candidates
-  drawn and published (link in the record); **lead: the benchmark** — the surveyor's cut mark, the fixed
-  point everything is measured against, `⊼` on the terminal line — level second, the full stop as the
-  system underneath. His pick. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` + a 20-file
-  sweep, og.png, DEC-021 (falsifier: a founder reads it as "upload").
+  drawn and published (link in the record), then his own direction — β — in six cuts. **Lead: the
+  block β** (the name and the job in one glyph; holds at 16px; terminal twin is the letter itself);
+  the benchmark is runner-up. His pick. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
+  a 20-file sweep to `β`, og.png, one About-page line that makes *beta* a claim not an admission,
+  DEC-021 (falsifier: a founder reads BOSS itself as beta software and says so).
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
   into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing
