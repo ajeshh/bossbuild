@@ -114,10 +114,11 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 - 🔷 **The mark (IDEA-115, second board).** Ajesh: *"the star seems hella outdated."* Eight candidates
   drawn and published (link in the record), then β in six cuts, then his reference — a ribbon β, one
-  continuous stroke with a hooked foot (*"more like this… the color is just an example"*). **Lead:
-  the ribbon β, flat** (one stroke, `currentColor`, reads at 16, terminal twin β); its hero render in
-  persimmon → cornflower for the og card. Decides two rules: the mark is the one drawn thing on a cut
-  site; gradients are hero-only. Block β is the fallback; the benchmark the best non-letter. His pick. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
+  continuous stroke with a hooked foot, then a second reference — **a built B**: a top slab and two
+  flat faces in sky, two curved bowls in persimmon, seams left dark. **Lead: the built B** — literally
+  *Build Out Solid Stuff*, and it wears the palette's rule (faces = structure, bowls = point). K2 the
+  one-colour cut is the mark; K1 two-colour is the hero; **K3 adds a foot → β** (restores the terminal
+  twin). His pick is K2 vs K3. The bowls want a weight pass. Ribbon β runner-up; ✦ retires either way. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
   a 20-file sweep to `β`, og.png, one About-page line that makes *beta* a claim not an admission,
   DEC-021 (falsifier: a founder reads BOSS itself as beta software and says so).
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*

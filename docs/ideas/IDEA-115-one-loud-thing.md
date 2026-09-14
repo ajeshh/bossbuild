@@ -112,7 +112,19 @@ favicon). **New lead: J1, the ribbon flat** — one colour, `currentColor`, read
 persimmon → cornflower, soft glow on deep — for the og card / About / an icon, never the favicon.
 Two things this decides: **the straight-cut rule gets one named exception** (the mark is the one
 drawn thing; everything else is cut) and **gradients are a hero treatment, not a mark**. The block β
-becomes the straight-cut fallback; the benchmark stays the best non-letter. Waits on Ajesh's pick.
+becomes the straight-cut fallback; the benchmark stays the best non-letter.
+
+**Round four — the built B (Ajesh's second reference, no words: a B seen from front-left-above,
+a top slab and two flat faces in sky, two curved bowls in persimmon, the seams between parts left
+dark).** The first candidate that is literally *Build Out Solid Stuff* — a solid made of parts —
+and it arrived speaking the palette's rule (faces = structure colour, bowls = the point). Redrawn
+as five polygons on the grid (corners by same-colour round-join stroke). **New lead: K2, the
+one-colour cut, as the mark; K1 (two colours: ice faces on deep, cornflower faces on ice, persimmon
+bowls) as the hero.** K3 extends the lower face into a foot → β, which restores the beta story and
+the terminal twin; one slab longer, otherwise identical — try both. Costs: no glyph twin for K1/K2
+(the CLI cannot print an isometric object — the site's mark stops being the CLI's glyph, said
+honestly); at 16 the seams close; the bowls in the first cut are thinner than the reference's (a
+weight pass). Ribbon β is runner-up. Waits on Ajesh's pick — K2 vs K3 is the only open question.
 
 ## Found while applying (2026-09-13) — tasks, not scope
 
