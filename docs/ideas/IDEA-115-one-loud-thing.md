@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: designer
 status: exploring (a brand decision, not a build — waits on Ajesh's tab-row read)
-gist: Re-open the hue of the brand's one loud colour — not the world (concrete, graphite, one fill, states kept out of the brand's reach; DEC-018 holds) but the accent. Two rounds on one board — round one the safe field, round two the mold-breakers after Ajesh said blue is boring and adjacency doesn't matter. Lead is rani pink; the dark-first three are a different decision.
+gist: Re-open the brand's colour. Two rounds on one board — round one the safe field, round two the mold-breakers after Ajesh said blue is boring and adjacency doesn't matter — then Ajesh's own set, sharpened into five tokens with one job each (off-white ground, ice surfaces, cornflower structure, persimmon the one loud thing, a cool ink). That set leads; rani pink is the strongest single hue; the dark-first three are a DEC-018-sized decision.
 proof: none
 proof_note: Captured. The board is published as an artifact; nothing in the tree changes until a hue is chosen. The one fix due regardless of hue — a per-theme twin for the FILL, because the light-theme mark is 2.47:1 on concrete — is a task, not a decision.
 created: 2026-09-13
@@ -69,6 +69,7 @@ Ajesh withdrew the adjacency argument and set blue aside. Round two, same five j
 | L | flag pair — rani + lime | two loud things, on purpose | one per surface: rani on concrete (site), lime on graphite (terminal — the CLI's ✦ is already the user's green); a rule to write |
 | M | IKB `#002FA7` | noted | if blue, this blue; loses the argument in the open |
 | N | **ice `#D7EFFF` + persimmon `#FF5C34`** — Ajesh's pair | proposed by Ajesh | a near-complement (204° vs 12°); persimmon is the current hi-vis coral-shifted (graphite on it 5.79, works everywhere); the NEW half is the ground — concrete → ice, tinted at DEC-018's hue; risks: the tint reaches every surface, persimmon is 12° from the stop red (`--stop-ink` would move toward crimson), light mark 2.59 |
+| O | **the set — off-white `#F6F6F3` · ice `#D7EFFF` · cornflower `#5089E0` (text twin `#2A5BAD`) · persimmon `#FF5C34` · ink `#14202B`** — Ajesh's, sharpened | **lead** | Ajesh: *"so its 3-4 colors, and offwhite"* + a cornflower swatch; one job each — off-white is the ground, ice is a SURFACE (install box, notes, table heads), cornflower is STRUCTURE (links, underline, chips — never emphasis), persimmon the one loud thing; three blues are one hue family at three lightnesses; dark theme: ink becomes ice, cornflower lightens to `#7FB0F5`; every pair checked, only the mark-on-off-white (2.84) and raw cornflower-as-text (3.23) need their twins; the rule to write: **cornflower structures, persimmon points** |
 
 **Finding:** every yellow (marigold, cadmium, lime) is 1.1–1.7:1 on light concrete and superb on
 graphite — yellow-family brands are *dark-first* brands. Choosing I, J or K means the site LEADS
@@ -82,7 +83,7 @@ dark; that is a decision to name, not a hue swap.
 
 ## Next step (one)
 
-Put N (Ajesh's pair) and H (rani) on the site for a day each — `web/styles/tokens.css` is three literals (+ `library/help/help.css`,
+Put O (Ajesh's set) and H (rani) on the site for a day each — `web/styles/tokens.css` is three literals (+ `library/help/help.css`,
 `scripts/og-card.html`, `scripts/gen-demo.js`, `src/board.js`, `docs/design/BRAND.md` `accent:`) — and
 look at it in both themes, on the phone, in a tab row. If it reads surveyed, `/decide` with "does a
 returning founder call it playful?" as the falsifier. If the read says the site wants to lead dark,
