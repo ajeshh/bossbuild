@@ -81,6 +81,17 @@ dark; that is a decision to name, not a hue swap.
 - Should the site lead dark? If yes, K is the conversation and it is DEC-018-sized.
 - If two surfaces get two colours (L), what is the rule, in one sentence, and who keeps it?
 
+## The mark, re-opened (2026-09-13, same evening) — its own board
+
+Ajesh: *"wondering if we should also think of a more interesting logo. the star seems hella outdated."*
+Board: https://claude.ai/code/artifact/7f04d48c-6c55-4f42-9f51-028631798202 — eight candidates in
+straight cuts at 96/32/16 on both grounds, tab row, terminal line, lockup, each with a terminal
+twin. **Lead: the benchmark** (a surveyor's cut mark — the fixed point everything is measured
+against; `⊼` U+22BC on the terminal line). Level second (`⊡`); the full stop is the system under
+whichever wins. Try square and north lose at 16px; plumb bob and B-monogram declined. The real
+finding: the star's problem is meaning, not age — it says *an AI did this*. The glyph is a literal
+in 20 files, so a change starts with one `MARK` constant in `src/ui.js`. Waits on Ajesh's pick.
+
 ## Found while applying (2026-09-13) — tasks, not scope
 
 - [ ] **The shell reads one accent; the brand now has two roles.** `src/page-shell.js` `shellCss(accent)`
