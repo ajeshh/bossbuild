@@ -110,7 +110,7 @@ much) and Phase 3 outreach. Both are Ajesh's.**
   (*"i dont think people care"*); round two breaks the mold. **Lead: rani pink `#E4007C`** — the
   surveyor's set-out colour and the vocative's, one dye; the only fill that passes the mark on both
   grounds. Dark-first three (marigold-on-indigo, cadmium, chalkboard) are a DEC-018-sized decision,
-  not a hue swap. **His call:** rani on the site for a day, both themes, phone. Copper is out —
+  not a hue swap. Then his own pair — **ice `#D7EFFF` + persimmon `#FF5C34`** (N): a coral shift of the accent plus a tinted ground; numbers match orange's, persimmon sits 12° from the stop red. **His call:** N and rani on the site a day each, both themes, phone. Copper is out —
   Kettlewick wears it.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block

@@ -68,6 +68,7 @@ Ajesh withdrew the adjacency argument and set blue aside. Round two, same five j
 | K | chalkboard | contender, the big move | the GROUND is the brand (board `#1E2A26`, chalk, one pink chalk line); reopens DEC-018; a classroom register to keep out of the copy |
 | L | flag pair — rani + lime | two loud things, on purpose | one per surface: rani on concrete (site), lime on graphite (terminal — the CLI's ✦ is already the user's green); a rule to write |
 | M | IKB `#002FA7` | noted | if blue, this blue; loses the argument in the open |
+| N | **ice `#D7EFFF` + persimmon `#FF5C34`** — Ajesh's pair | proposed by Ajesh | a near-complement (204° vs 12°); persimmon is the current hi-vis coral-shifted (graphite on it 5.79, works everywhere); the NEW half is the ground — concrete → ice, tinted at DEC-018's hue; risks: the tint reaches every surface, persimmon is 12° from the stop red (`--stop-ink` would move toward crimson), light mark 2.59 |
 
 **Finding:** every yellow (marigold, cadmium, lime) is 1.1–1.7:1 on light concrete and superb on
 graphite — yellow-family brands are *dark-first* brands. Choosing I, J or K means the site LEADS
@@ -81,7 +82,7 @@ dark; that is a decision to name, not a hue swap.
 
 ## Next step (one)
 
-Put H (rani) on the site for a day — `web/styles/tokens.css` is three literals (+ `library/help/help.css`,
+Put N (Ajesh's pair) and H (rani) on the site for a day each — `web/styles/tokens.css` is three literals (+ `library/help/help.css`,
 `scripts/og-card.html`, `scripts/gen-demo.js`, `src/board.js`, `docs/design/BRAND.md` `accent:`) — and
 look at it in both themes, on the phone, in a tab row. If it reads surveyed, `/decide` with "does a
 returning founder call it playful?" as the falsifier. If the read says the site wants to lead dark,
