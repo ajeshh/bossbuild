@@ -60,6 +60,21 @@ rule above still applies to the whole section once it is stamped.
   reads as capability, which is what every one of BOSS's own 113 ideas is; BOSS's venture idea is the
   canvas, and `CLAUDE.md` now says so. A field, not a new ID prefix — a second class would have
   re-filed 113 records for a distinction one line carries.
+- **The mark is the built B, in two colours, read from Ajesh's own SVG (DEC-021).** *"the star seems
+  hella outdated"* → two boards on IDEA-115 (eight straight cuts, six cuts of β, a ribbon β from a
+  reference, then his own reference and `boss-logo-mark.svg`) → *"K1 is great!! lets go with that."*
+  A cap and two facets in one colour, two curved ribbons in the other, the seams between the parts
+  left as ground — Build Out Solid Stuff as an object, and a picture of the palette's rule (faces =
+  structure, ribbons = the point). `scripts/mark.js` is the one reader of the SVG; the lockup, the
+  hero rail, the favicon, the demo ribbon and the share card (`npm run gen:og`, new) all come through
+  it, nothing retypes the paths. **Two cuts:** the file verbatim, and a small cut for ≤24px that insets
+  every part toward its own centre so the seams widen as it shrinks — Ajesh: *"when it shrinks, it
+  kinda looses and becomes blobby"*; at 16px the plain mark fused and the small cut doesn't. **Two
+  fills per ground:** cornflower + persimmon on ice, the authored sky `#55BDF5` + persimmon `#FF7148`
+  on deep (mark-only primitives; sky is 1.8:1 on ice, so it can't be the light pair). The favicon
+  takes the ice pair. **The `✦` lineage is retired honestly:** a built object cannot be a glyph, so
+  the CLI's success line keeps `✦` until a glyph is chosen for it (a task, not decided) and VISUAL.md
+  no longer claims they are the same thing. Three tests hold the reader and the cuts.
 - **The sky is the ground: ice and paper swapped roles, and the full form left the header.** Ajesh:
   *"i wonder if the sky blue and white is inversed. what would it look like. i think it would make it
   more pop out.. also boss full form can drop from the header."* Both rendered from the real site and

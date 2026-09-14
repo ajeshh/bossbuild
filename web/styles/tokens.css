@@ -72,6 +72,12 @@
   --persimmon-bright: #FF8A6A;  /* text weight, on deep — 7.5 */
   --persimmon-ink:    #A82E14;  /* text weight, on paper — 5.8 paper, 5.8 sunk */
 
+  /* The mark's own two colours, as Ajesh authored them (web/boss-logo-mark.svg) — a deep-ground
+     pair: sky is 8.2 on deep and 1.8 on ice. Used by the mark only; on ice the mark takes
+     cornflower and persimmon instead (see --color-mark-face / --color-mark-bowl). */
+  --mark-sky:        #55BDF5;
+  --mark-persimmon:  #FF7148;
+
   /* Cornflower — structure. As a FILL (an underline, a chip, a step number)
      it clears 3:1 on paper (3.2) and carries ink (5.0). As TEXT it does not
      (3.2), so links use --cornflower-ink; the raw value is never body text. */
@@ -135,6 +141,10 @@
   --color-on-structure:    var(--ink);
   --color-link:            var(--cornflower-ink);
   --color-link-hover:      var(--ink);
+  /* The mark: the cap and facets, and the ribbons. Cornflower + persimmon on ice; the authored
+     sky + persimmon on deep. The mark is the one thing on the site with two fills. */
+  --color-mark-face:       var(--cornflower);
+  --color-mark-bowl:       var(--persimmon);
   /* Text-weight accent for non-link marks — the `$` in a command box. Structure,
      not a point: it says "this is a command", it doesn't ask for the click. */
   --color-accent:          var(--cornflower-ink);
@@ -170,6 +180,8 @@
 
     --color-on-brand:        var(--deep);
     --color-on-structure:    var(--deep);
+    --color-mark-face:       var(--mark-sky);
+    --color-mark-bowl:       var(--mark-persimmon);
     --color-link:            var(--cornflower-bright);
     --color-link-hover:      var(--ice);
     --color-accent:          var(--cornflower-bright);
@@ -192,6 +204,8 @@
 
   --color-on-brand:        var(--deep);
   --color-on-structure:    var(--deep);
+  --color-mark-face:       var(--mark-sky);
+  --color-mark-bowl:       var(--mark-persimmon);
   --color-link:            var(--cornflower-bright);
   --color-link-hover:      var(--ice);
   --color-accent:          var(--cornflower-bright);
@@ -215,7 +229,7 @@
   --cta-text-hover:  var(--color-ground);
   --cta-radius:      var(--radius-md);
 
-  --mark-size:       1.15em;
+  --mark-size:       1.15em;   /* the mark's box is square; the B inside is taller than wide */
   --rail-width:      7.5rem;
   --rail-label:      var(--color-text-secondary);
 

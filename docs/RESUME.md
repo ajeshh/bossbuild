@@ -30,6 +30,14 @@ npm run check            # zero findings = clean; check:published says how far n
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
   IDEA is a capability; BOSS's venture is the canvas** (CLAUDE.md rule 3). Open: the board's split.
+- **DEC-021 (2026-09-14) — the mark is the built B, Ajesh's own SVG; applied.** Two boards on
+  IDEA-115 (marks: eight straight cuts, β in six cuts, a ribbon β, then his reference and file) →
+  *"K1 is great!! lets go with that."* `web/boss-logo-mark.svg` + `scripts/mark.js` (one reader; the
+  lockup, favicon, demo ribbon and `npm run gen:og` share card all through it); a small cut widens the
+  seams under 24px (*"becomes blobby"* — fixed, rendered 16/20/24/32/48 both ways); two fills per
+  ground (cornflower/persimmon on ice, authored sky/persimmon on deep). ✦ lineage retired honestly —
+  **the CLI's success glyph is an open task** (IDEA-115). Falsifier: a real reader calls it a template
+  3D icon, by 2026-10-14. Unreleased.
 - **DEC-020 (2026-09-13) — the brand is five colours with one job each; applied.** Ajesh: *"go back
   to the drawing board"* → *"not boring mandatory blue… break the mold"* → his own pair → *"3-4 colors,
   and offwhite"* → *"ok lets go with O."* Paper `#F6F6F3` ground · ice `#D7EFFF` surfaces · cornflower
@@ -112,17 +120,6 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
-- 🔷 **The mark (IDEA-115, second board).** Ajesh: *"the star seems hella outdated."* Eight candidates
-  drawn and published (link in the record), then β in six cuts, then his reference — a ribbon β, one
-  continuous stroke with a hooked foot, then a second reference — **a built B**: a top slab and two
-  flat faces in sky, two curved bowls in persimmon, seams left dark. **Lead: the built B** — literally
-  *Build Out Solid Stuff*, and it wears the palette's rule (faces = structure, bowls = point). K2 the
-  one-colour cut is the mark; K1 two-colour is the hero; **K3 adds a foot → β** (restores the terminal
-  twin). He supplied the SVG (2026-09-14; on the board verbatim; own colours sky `#55BDF5` / persimmon `#FF7148`,
-  a deep-ground render — on ice, cornflower faces). His pick is K2 vs K3, and whether the mark keeps its
-  own two colours or takes the tokens. Ribbon β runner-up; ✦ retires either way. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
-  a 20-file sweep to `β`, og.png, one About-page line that makes *beta* a claim not an admission,
-  DEC-021 (falsifier: a founder reads BOSS itself as beta software and says so).
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
   into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing

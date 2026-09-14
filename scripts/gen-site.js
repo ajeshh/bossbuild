@@ -22,6 +22,7 @@ import { loadModes, packageSkillMd, skillGloss, modeWord, STANDING_COMMANDS } fr
 import { forYou, parseEntries } from '../src/changelog.js';
 // The showcase (FEAT-039): demo/kettlewick/ rendered by the real renderers into site/demo/.
 import { generate as generateDemo } from './gen-demo.js';
+import { markSvg, faviconDataUri } from './mark.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // web/ is SOURCE (page fragments, the shell, the stylesheets).
@@ -37,21 +38,16 @@ const V = bossVersion();
 const modes = loadModes().filter((m) => m.authored);
 
 
-// The BOSS mark. It is not invented: `✦` is what the CLI already prints on every
-// success line (`✦ Created my-app`), so the terminal keeps printing the mark and the two can
-// never drift. Cut with STRAIGHT edges — a setting-out star, not a sparkle. The concave
-// version read as the "AI did something" glyph every product now ships — the one cluster this
-// world was picked to escape — and its tapered points dissolved at favicon size. Straight cuts
-// are also what tokens.css already says this world is built from: "signage is built from
-// straight cuts and stencils, not soft cards." currentColor so it inherits whatever it sits in.
-// Re-cut 2026-08-24. The glyph did NOT change, so `✦` still prints and the lineage holds.
-const MARK_PATH = 'M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z';
-const MARK = (cls = 'mark') =>
-  `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false">` +
-  `<path fill="currentColor" d="${MARK_PATH}"/></svg>`;
+// The BOSS mark — the built B, Ajesh's own (web/boss-logo-mark.svg; DEC-021, 2026-09-14). Read
+// through scripts/mark.js, never retyped: the lockup, the hero rail, the favicon and the demo
+// ribbon are one file. The site's small cut (≤ ~24px: the nav, the favicon) widens the seams so the
+// parts stay separate; the hero rail gets the large cut. Until 2026-09-14 the mark was the CLI's
+// `✦`, chosen because the terminal already printed it; the built B cannot be a glyph, so the site's
+// mark and the CLI's success glyph are now two things, and VISUAL.md says so.
+const MARK = (cls = 'mark', cut = 'small') => markSvg({ cls, cut });
 
-// The favicon is the same mark, and the ONE place the site needs a literal hex —
-// so it is READ from tokens.css rather than typed. A <link> and a <meta> cannot
+// The favicon is the same mark, and the ONE place the site needs literal hexes —
+// so they are READ from tokens.css rather than typed. A <link> and a <meta> cannot
 // reference a CSS custom property, and a second copy of the brand colour is
 // exactly the 47-blues failure tokens.css's header forbids.
 const TOKENS = readFileSync(join(SRC, 'styles', 'tokens.css'), 'utf8');
@@ -60,13 +56,9 @@ const token = (name) => {
   if (!m) throw new Error(`gen:site cannot read --${name} from tokens.css`);
   return m[1];
 };
-// Inline SVG favicon: no request, no binary, scales to any tab density, and it is
-// the mark the CLI already prints. Only `#` and the angle brackets need escaping.
-const favicon = () => {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">`
-    + `<path fill="${token('persimmon')}" d="${MARK_PATH}"/></svg>`;
-  return `data:image/svg+xml,${svg.replace(/#/g, '%23').replace(/</g, '%3C').replace(/>/g, '%3E').replace(/"/g, "'")}`;
-};
+// Inline SVG favicon: no request, no binary, scales to any tab density. The small cut, in the
+// ice-ground pair (cornflower reads on light and dark tab bars; the authored sky would not on light).
+const favicon = () => faviconDataUri({ face: token('cornflower'), bowl: token('persimmon') });
 // Painted before first paint, so the browser chrome matches the ground instead of
 // flashing white into a graphite page. Two values, one per scheme — same split as
 // the stylesheet, read from the same file.
@@ -834,7 +826,7 @@ blocks.COUNT_BUILDERS = () => String(data.builders);
 blocks.COUNT_PRACTICES = () => (data.practices == null ? '—' : String(data.practices));
 blocks.COUNT_VERDICTS = () => (data.verdicts == null ? '—' : String(data.verdicts.total));
 blocks.VERSION = () => V;
-blocks.MARK = () => MARK('mark mark-lg');
+blocks.MARK = () => MARK('mark mark-lg', 'large');
 
 // ---- build ----------------------------------------------------------------
 // Two levels: a light primary bar, and a sub-bar that only appears inside a

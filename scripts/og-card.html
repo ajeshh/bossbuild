@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><style>
+<!doctype html><html><head><meta charset="utf-8"><!-- source for web/og.png — render with `npm run gen:og` ({{MARK_PATHS}} is filled from web/boss-logo-mark.svg) --><style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1200px;height:630px}
 body{background:#0E1C28;color:#D7EFFF;
@@ -6,7 +6,7 @@ body{background:#0E1C28;color:#D7EFFF;
  display:flex;flex-direction:column;justify-content:center;
  padding:0 88px;position:relative;overflow:hidden}
 .tape{position:absolute;top:0;left:0;right:0;height:14px;background:#FF5C34}
-.mark{font-size:148px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.mark{font-size:148px;font-weight:700;letter-spacing:-.02em;line-height:1;display:flex;align-items:center;gap:40px}.mark .mk{height:190px;width:auto;display:block}
 .full{font-size:40px;font-weight:500;color:#9DB4C6;margin-top:26px;letter-spacing:-.01em}
 .slog{font-size:40px;font-weight:700;color:#FF8A6A;margin-top:6px;letter-spacing:-.01em}
 .foot{position:absolute;bottom:56px;left:88px;font-size:26px;color:#9DB4C6}
@@ -14,7 +14,7 @@ body{background:#0E1C28;color:#D7EFFF;
 .rule{position:absolute;bottom:0;left:0;right:0;height:6px;background:#5089E0}
 </style></head><body>
 <div class="tape"></div>
-<div class="mark">BOSS</div>
+<div class="mark"><svg class="mk" viewBox="103 36 334 428" aria-hidden="true">{{MARK_PATHS}}</svg><span>BOSS</span></div>
 <div class="full">Build Out Solid Stuff.</div>
 <div class="slog">Make it real.</div>
 <div class="foot"><b>$ npx oyeboss</b></div>

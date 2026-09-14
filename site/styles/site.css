@@ -215,7 +215,6 @@ footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0,
 }
 .sitenav a:hover { color: var(--color-text); }
 .sitenav a[aria-current="page"] { color: var(--color-text); border-bottom-color: var(--color-structure); }
-.sitenav .brand:hover .mark { color: var(--color-text); }
 /* The wordmark is spelled B.O.S.S. the way the hero rail spells it; the full form rode beside it
    for an afternoon and came out again (Ajesh, 2026-09-13: "boss full form can drop from the
    header") — the hero rail still reads it out on the home page. */
@@ -255,8 +254,8 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
    ========================================================================= */
 
 /* --- the mark ------------------------------------------------------------
-   `✦` is what the CLI prints on every success line; this is that, drawn. */
-.mark { width: var(--mark-size); height: var(--mark-size); display: inline-block; vertical-align: -0.14em; color: var(--color-brand); flex: none; }
+   The built B (web/boss-logo-mark.svg, DEC-021). Two fills, from --color-mark-face / -bowl. */
+.mark { width: var(--mark-size); height: var(--mark-size); display: inline-block; vertical-align: -0.18em; flex: none; }
 .mark-lg { --mark-size: 2.6em; }
 .sitenav .brand { display: inline-flex; align-items: center; gap: 0.45rem; }
 .wordmark { display: flex; align-items: center; gap: 0.5rem; }

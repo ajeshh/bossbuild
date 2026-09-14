@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">B.O.S.S. logo mark</title>
+  <desc id="desc">Geometric B-shaped mark in sky blue and persimmon.</desc>
+
+  <!-- Brand colors -->
+  <!-- Sky Blue: #55BDF5 | Persimmon: #FF7148 -->
+
+  <g id="boss-mark">
+    <!-- Top cap -->
+    <path fill="#55BDF5" d="
+      M142 117
+      Q137 111 143 105
+      L239 52
+      Q256 42 273 52
+      L369 105
+      Q375 111 370 118
+      L274 171
+      Q256 181 239 171
+      Z"/>
+
+    <!-- Upper left facet -->
+    <path fill="#55BDF5" d="
+      M123 145
+      Q117 141 113 145
+      Q109 148 109 155
+      L109 229
+      Q109 247 125 256
+      L221 309
+      L221 226
+      Q221 211 208 204
+      Z"/>
+
+    <!-- Lower left facet -->
+    <path fill="#55BDF5" d="
+      M123 282
+      Q117 278 113 282
+      Q109 285 109 292
+      L109 366
+      Q109 384 125 393
+      L234 453
+      Q243 458 249 454
+      Q255 451 255 441
+      L255 365
+      Q255 351 242 344
+      Z"/>
+
+    <!-- Upper persimmon ribbon -->
+    <path fill="#FF7148" d="
+      M370 106
+      C398 121 418 140 423 166
+      C431 207 406 236 372 255
+      L255 320
+      L255 236
+      L357 180
+      Q369 173 370 159
+      Z"/>
+
+    <!-- Lower persimmon ribbon -->
+    <path fill="#FF7148" d="
+      M255 365
+      L353 311
+      Q369 302 370 284
+      L370 247
+      L405 266
+      Q421 275 424 294
+      Q430 332 408 356
+      Q396 369 377 380
+      L255 447
+      Z"/>
+  </g>
+</svg>

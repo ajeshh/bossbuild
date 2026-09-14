@@ -131,11 +131,21 @@ left facets, two persimmon ribbons; its own colours sky `#55BDF5` and persimmon 
 now carries it verbatim; my approximation is gone. Numbers: sky is 8.2 on deep and 1.8 on ice, so
 the authored colours are a deep-ground render; on ice the faces go cornflower and the bowls token
 persimmon. Open: are the SVG's two colours mark-only primitives (`--mark-sky`, `--mark-persimmon`)
-or does the mark take the tokens (a shade apart on deep)? Waits on Ajesh's pick — K2 vs K3 (the
-foot), and the colour question above.
+or does the mark take the tokens (a shade apart on deep)?
+
+**Decided 2026-09-14 — K1 (DEC-021).** *"K1 is great!! lets go with that. especially on the sky blue
+it looks great!"* Two colours everywhere it is a mark. Applied: `web/boss-logo-mark.svg` + one reader
+(`scripts/mark.js`), two cuts (the small cut answers *"when it shrinks… becomes blobby"* — each part
+inset 14% so the seams widen), two fills per ground (cornflower/persimmon on ice; authored
+sky/persimmon on deep), favicon in the ice pair, `npm run gen:og` for the share card, VISUAL.md
+rewritten, 3 tests. **Open task: the CLI's success glyph** — `✦` stays on the terminal line until a
+glyph is chosen (one `MARK` constant in `src/ui.js`, then the twenty-file sweep); the site no longer
+claims the two are the same.
 
 ## Found while applying (2026-09-13) — tasks, not scope
 
+- [ ] **The CLI's success glyph.** `✦` prints on ~20 call sites; DEC-021 made it a glyph the site no
+  longer claims. Choose one (β? keep ✦?), introduce `MARK` in `src/ui.js`, sweep.
 - [ ] **The shell reads one accent; the brand now has two roles.** `src/page-shell.js` `shellCss(accent)`
   drives links, buttons and the on-tab from BRAND.md's single `accent:`. Cornflower (structure) cannot
   reach `boss board/design/playbook` until the shell has a second handle (`structure:` in BRAND.md
