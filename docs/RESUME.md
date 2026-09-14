@@ -30,6 +30,14 @@ npm run check            # zero findings = clean; check:published says how far n
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
   IDEA is a capability; BOSS's venture is the canvas** (CLAUDE.md rule 3). Open: the board's split.
+- **DEC-020 (2026-09-13) — the brand is five colours with one job each; applied.** Ajesh: *"go back
+  to the drawing board"* → *"not boring mandatory blue… break the mold"* → his own pair → *"3-4 colors,
+  and offwhite"* → *"ok lets go with O."* Paper `#F6F6F3` ground · ice `#D7EFFF` surfaces · cornflower
+  `#5089E0` structure · persimmon `#FF5C34` the one loud thing · ink `#14202B` / deep `#0E1C28`.
+  **Cornflower structures, persimmon points.** `tokens.css` is the mechanism; help.css, og-card
+  (og.png re-rendered), the demo ribbon, board.js, BRAND.md moved with it; VISUAL.md rewritten; stop
+  went crimson. The board with all fourteen candidates is linked from IDEA-115. Falsifier: a real
+  reader says *playful* or *clinical*, or a tap finds cornflower pointing — by 2026-10-13. Unreleased.
 - **IDEA-109 captured (2026-09-13) — the coach-in-residence positioning.** Ajesh: acquisition → acqui-hire →
   *"an incubator would wanna hire me… their coach, but also leverage this kind of tool for their cohorts."*
   Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
@@ -104,18 +112,6 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
-- 🔷 **IDEA-115 — the brand's accent hue.** Ajesh (2026-09-13): *"go back to the drawing board… new color
-  options for boss brand."* The board is published (link in the record): seven candidates, five jobs,
-  WCAG done, two rounds. He set blue aside (*"not boring mandatory blue"*) and withdrew adjacency
-  (*"i dont think people care"*); round two breaks the mold. **Lead: rani pink `#E4007C`** — the
-  surveyor's set-out colour and the vocative's, one dye; the only fill that passes the mark on both
-  grounds. Dark-first three (marigold-on-indigo, cadmium, chalkboard) are a DEC-018-sized decision,
-  not a hue swap. Then his own — *"3-4 colors, and offwhite"* — sharpened into **the set (O), which leads:** off-white
-  `#F6F6F3` ground · ice `#D7EFFF` as a surface · cornflower `#5089E0` as structure (links/underline/
-  chips, text twin `#2A5BAD`) · persimmon `#FF5C34` the one loud thing · ink `#14202B`. Every pair
-  checked. The rule to write: *cornflower structures, persimmon points*. **His call:** O on the site
-  for a day (seven literals + a `--struct` token), then rani, both themes, phone. Copper is out —
-  Kettlewick wears it.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
   into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing

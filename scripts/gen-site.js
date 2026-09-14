@@ -64,7 +64,7 @@ const token = (name) => {
 // the mark the CLI already prints. Only `#` and the angle brackets need escaping.
 const favicon = () => {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">`
-    + `<path fill="${token('hivis')}" d="${MARK_PATH}"/></svg>`;
+    + `<path fill="${token('persimmon')}" d="${MARK_PATH}"/></svg>`;
   return `data:image/svg+xml,${svg.replace(/#/g, '%23').replace(/</g, '%3C').replace(/>/g, '%3E').replace(/"/g, "'")}`;
 };
 // Painted before first paint, so the browser chrome matches the ground instead of
@@ -72,8 +72,8 @@ const favicon = () => {
 // the stylesheet, read from the same file.
 const HEAD_ICONS = () =>
   `<link rel="icon" href="${favicon()}" />\n`
-  + `<meta name="theme-color" content="${token('concrete')}" media="(prefers-color-scheme: light)" />\n`
-  + `<meta name="theme-color" content="${token('graphite')}" media="(prefers-color-scheme: dark)" />`;
+  + `<meta name="theme-color" content="${token('paper')}" media="(prefers-color-scheme: light)" />\n`
+  + `<meta name="theme-color" content="${token('deep')}" media="(prefers-color-scheme: dark)" />`;
 
 // Inline markdown → HTML, escape-first so nothing user-authored can inject markup.
 const md = (s) => esc(s)

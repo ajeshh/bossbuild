@@ -7,20 +7,22 @@
    The hexes are the same values as web/styles/tokens.css (concrete, graphite, one hi-vis);
    a file opened off the filesystem cannot share a stylesheet, so they are copied — move
    them together. Until 2026-09-12 this file carried its own warm-cream palette, which is
-   the commonest generated-UI tell and the one BOSS's own design practice names first. */
+   the commonest generated-UI tell and the one BOSS's own design practice names first.
+   2026-09-13: paper / ice / cornflower / persimmon (DEC-020) — links are cornflower's
+   text weight, the brand is persimmon; cornflower structures, persimmon points. */
 :root {
-  --ink: #16181A; --ink-2: #565C62; --ground: #E4E6E8; --surface: #D7DADD;
-  --rule: #C4C8CC; --brand: #FF5C00; --on-brand: #16181A; --link: #A63400; --code: #16181A;
-  --term-bg: #101214; --term-fg: #E2E5E7; --term-dim: #9AA0A6; --term-ok: #4FBF7F;
+  --ink: #14202B; --ink-2: #4A5A68; --ground: #F6F6F3; --surface: #E6EEF3;
+  --rule: #CDD5DB; --brand: #FF5C34; --on-brand: #14202B; --link: #2A5BAD; --code: #14202B;
+  --term-bg: #0A141D; --term-fg: #D7EFFF; --term-dim: #9DB4C6; --term-ok: #4FBF7F;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --measure: 68ch;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink: #E2E5E7; --ink-2: #9AA0A6; --ground: #16181A; --surface: #101214;
-    --rule: #2E3236; --brand: #FF5C00; --on-brand: #16181A; --link: #FF7A2E; --code: #E2E5E7;
-    --term-bg: #0B0D0E; --term-fg: #E2E5E7;
+    --ink: #D7EFFF; --ink-2: #9DB4C6; --ground: #0E1C28; --surface: #0A141D;
+    --rule: #27404F; --brand: #FF5C34; --on-brand: #0E1C28; --link: #7FB0F5; --code: #D7EFFF;
+    --term-bg: #0A141D; --term-fg: #D7EFFF;
   }
 }
 * { box-sizing: border-box; }

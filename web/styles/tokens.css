@@ -9,10 +9,24 @@
    THE ONE RULE: nothing outside this file writes a hex. If site.css contains a
    `#`, that's a bug — it's the 47-blues failure starting.
 
-   WORLD: site & signage. Build Out Solid Stuff, taken literally — concrete and
-   graphite, with ONE hi-vis construction accent used at roughly 2% coverage.
-   Colour is semantic the way site signage is semantic (ISO 3864: red stops you,
-   amber warns you, green says safe). Hi-vis is the BRAND, never a state.
+   WORLD: the drawing office, 2026-09-13 (DEC-020; IDEA-115 is the board it was
+   chosen from). Five colours, one job each — and the sentence that keeps them
+   five instead of two loud ones:
+
+       CORNFLOWER STRUCTURES, PERSIMMON POINTS.
+
+   Paper is the ground. Ice is a SURFACE — where things sit (the install box, a
+   note, a table head) — so the blue is felt everywhere and tints nothing.
+   Cornflower is STRUCTURE: links, the current-page underline, a chip's fill,
+   a step's number; visible, never loud. Persimmon is the ONE loud thing: the
+   mark, the button, the band. Ink is a cool near-black so the three blues and
+   the text are one temperature with one warm signal on it. Colour stays
+   semantic the way site signage is (red stops you, amber warns, green says
+   safe); the brand colours are never a state.
+
+   The previous world — concrete, graphite, one hi-vis orange — lives in git
+   and in DEC-018; its cool-ground finding (the ground must not be warm cream)
+   still holds here: paper is 1% saturated, hue 60°, and reads as paper.
 
    The terminal renderer is deliberately NOT bound to these hexes — src/ui.js
    uses basic ANSI so a founder's own terminal theme resolves it. Shared names,
@@ -22,40 +36,54 @@
 /* --- Layer 1 · primitives -------------------------------------------------
    Raw values. Never referenced by a component. Named for what they ARE. */
 :root {
-  /* Ground: poured concrete, and COOL — hue 210°, the same family as the graphite
-     below, so light and dark are one temperature. This was not true until
-     2026-09-12: the first values here sat at hue 43°, which is warm cream with the
-     saturation turned down (the 2026 tell is ~#F4F1EA at 42°). A rendered-page
-     linter measured it as cream while this comment said "deliberately NOT warm
-     cream". The comment was the claim; the value is the mechanism. DEC-018. */
-  --concrete:        #E4E6E8;
-  --concrete-raised: #F0F2F3;
-  --concrete-sunk:   #D7DADD;
+  /* Ground: off-white paper, NOT cream. #F4F1EA at 42° is the 2026 AI-default;
+     this is #F6F6F3 at 60° with 1% saturation — a neutral with the warmth of a
+     sheet, not a tint. The earlier concrete (#E4E6E8, 210°) was cool grey; the
+     move to paper keeps the "not cream" finding of DEC-018 and drops the grey. */
+  --paper:           #F6F6F3;
+  /* Ice: the surface colour. Where things SIT — a box, a note, a table head.
+     The page is never ice; only the objects on it are. Hue 204°. */
+  --ice:             #D7EFFF;
+  --ice-sunk:        #E6EEF3;   /* the <code> ground: below paper, quieter than ice */
 
-  --graphite:        #16181A;
-  --graphite-raised: #1F2225;
-  --graphite-sunk:   #101214;
-  --graphite-soft:   #2E3236;
+  /* Deep: the dark ground, the same family as ice taken down (hue 208°), so
+     light and dark are one temperature. Designed, not inverted. */
+  --deep:            #0E1C28;
+  --deep-raised:     #152636;
+  --deep-sunk:       #0A141D;
 
-  --chalk:           #E2E5E7;   /* text on graphite (was --bone, hue 43°) */
-  /* Muted text has to clear AA on EVERY light surface — the failing pair was slate on
-     --concrete-sunk, the <code> background (4.2:1). Checked pairs: ground 5.4, raised 6.0,
-     sunk 4.8. Run the WCAG arithmetic before changing either side. */
-  --slate:           #565C62;   /* muted on concrete */
-  --slate-light:     #9AA0A6;   /* muted on graphite */
-  --rule-light:      #C4C8CC;
-  --rule-dark:       #2E3236;
+  --ink:             #14202B;   /* text on paper and on ice — 15.3 / 13.9 */
+  /* Muted text has to clear AA on EVERY light surface — paper, ice AND ice-sunk
+     (the <code> background). Checked: paper 6.6, ice 6.0, sunk 6.1. Run the
+     WCAG arithmetic before changing either side. */
+  --slate:           #4A5A68;   /* muted on paper */
+  --slate-light:     #9DB4C6;   /* muted on deep — 8.0 ground, 7.2 raised */
+  --rule-light:      #CDD5DB;
+  --rule-dark:       #27404F;
 
-  /* Hi-vis — the one loud thing. A FILL colour: graphite sits on it (5.75:1).
-     Never small text on concrete; that's what --hivis-ink is for. */
-  --hivis:           #FF5C00;
-  --hivis-bright:    #FF7A2E;   /* text weight, on graphite */
-  --hivis-ink:       #A63400;   /* text weight, on concrete — 5.4 ground, 4.8 sunk */
+  /* Persimmon — the one loud thing. A FILL colour: ink sits on it (5.4:1).
+     Never small text on paper; that's what --persimmon-ink is for. The mark and
+     the favicon are persimmon on paper at 2.8:1 — under the 3:1 a graphic
+     needs, and exempt: WCAG 1.4.11 excludes logotypes, and the mark IS the
+     logotype. Nothing that carries meaning relies on that fill alone. */
+  --persimmon:        #FF5C34;
+  --persimmon-bright: #FF8A6A;  /* text weight, on deep — 7.5 */
+  --persimmon-ink:    #A82E14;  /* text weight, on paper — 5.8 paper, 5.8 sunk */
 
-  /* Signage states. Two variants each: one that survives concrete, one graphite. */
+  /* Cornflower — structure. As a FILL (an underline, a chip, a step number)
+     it clears 3:1 on paper (3.2) and carries ink (5.0). As TEXT it does not
+     (3.2), so links use --cornflower-ink; the raw value is never body text. */
+  --cornflower:        #5089E0;
+  --cornflower-bright: #7FB0F5; /* text weight, on deep — 7.8 */
+  --cornflower-ink:    #2A5BAD; /* text weight, on paper — 6.1 paper, 5.6 sunk */
+
+  /* Signage states. Two variants each: one that survives paper, one deep.
+     Stop moved from 0° to 345° (crimson) on 2026-09-13: persimmon sits at 12°,
+     and a brand twelve degrees from the error colour is a brand that reads as
+     an error. Crimson keeps them apart on both grounds. */
   --safe-ink:        #1A6B3D;   --safe-bright:    #4FBF7F;
   --caution-ink:     #7F5800;   --caution-bright: #E8A200;
-  --stop-ink:        #B71616;   --stop-bright:    #FF6B5A;
+  --stop-ink:        #B0123A;   --stop-bright:    #FF6B8A;
 
   /* Type — two stacks, zero network requests. See VISUAL.md.
      Display is the MONO stack used editorially: BOSS's headlines are set in the
@@ -74,7 +102,7 @@
   --space-4: 1.8rem;   --space-5: 2.8rem;   --space-6: 4.5rem;
   --space-7: 7rem;
 
-  /* Signage is built from straight cuts and stencils, not soft cards. */
+  /* Drawn with straight cuts and stencils, not soft cards. */
   --radius-sm: 2px;  --radius-md: 3px;  --radius-lg: 4px;
   --measure: 64ch;
 
@@ -89,82 +117,87 @@
   --font-prose:            var(--stack-sans);
   --font-mono:             var(--stack-mono);
 
-  --color-ground:          var(--concrete);
-  --color-surface:         var(--concrete-raised);
-  --color-surface-sunk:    var(--concrete-sunk);
-  --color-text:            var(--graphite);
+  --color-ground:          var(--paper);
+  --color-surface:         var(--ice);
+  --color-surface-sunk:    var(--ice-sunk);
+  --color-text:            var(--ink);
   --color-text-secondary:  var(--slate);
   --color-rule:            var(--rule-light);
 
-  /* The brand mark and every deliberate accent. A fill, used sparingly. */
-  --color-brand:           var(--hivis);
-  --color-on-brand:        var(--graphite);
-  --color-link:            var(--hivis-ink);
-  --color-link-hover:      var(--graphite);
-  /* Text-weight accent for non-link marks — the `$` in a command box. Same
-     concrete/graphite split as --color-link and for the same reason:
-     --color-brand is a FILL and fails as small text on concrete. */
-  --color-accent:          var(--hivis-ink);
+  /* The brand mark and every deliberate POINT. A fill, used sparingly. */
+  --color-brand:           var(--persimmon);
+  --color-on-brand:        var(--ink);
+  /* STRUCTURE: what holds the page together — links, the current-page underline,
+     a chip, a step's number. A fill and a text weight, never the loud one. */
+  --color-structure:       var(--cornflower);
+  --color-on-structure:    var(--ink);
+  --color-link:            var(--cornflower-ink);
+  --color-link-hover:      var(--ink);
+  /* Text-weight accent for non-link marks — the `$` in a command box. Structure,
+     not a point: it says "this is a command", it doesn't ask for the click. */
+  --color-accent:          var(--cornflower-ink);
 
   --color-signal-safe:     var(--safe-ink);
   --color-signal-caution:  var(--caution-ink);
   --color-signal-stop:     var(--stop-ink);
 
-  /* The terminal inset — graphite in BOTH themes. It's the product, not a theme. */
-  --color-terminal-ground: var(--graphite-sunk);
-  --color-terminal-text:   var(--chalk);
+  /* The terminal inset — deep in BOTH themes. It's the product, not a theme. */
+  --color-terminal-ground: var(--deep-sunk);
+  --color-terminal-text:   var(--ice);
   --color-terminal-dim:    var(--slate-light);
-  --color-terminal-accent: var(--hivis-bright);
+  --color-terminal-accent: var(--persimmon-bright);
   --color-terminal-safe:   var(--safe-bright);
   --color-terminal-caution:var(--caution-bright);
 
-  --focus-ring: 2px solid var(--color-brand);
-  --shadow-lift:  0 1px 0 rgba(22, 24, 26, 0.06), 0 10px 24px -16px rgba(22, 24, 26, 0.30);
+  --focus-ring: 2px solid var(--color-structure);
+  --shadow-lift:  0 1px 0 rgba(20, 32, 43, 0.06), 0 10px 24px -16px rgba(20, 32, 43, 0.30);
   --shadow-inset: 0 1px 0 rgba(0, 0, 0, 0.35), 0 20px 44px -24px rgba(0, 0, 0, 0.55);
 }
 
 /* Dark theme, defined in BOTH directions so an explicit toggle wins either way,
-   and never as the sole definition of any colour. Designed, not inverted:
-   graphite is a real ground with its own signal set, not the light one flipped. */
+   and never as the sole definition of any colour. Designed, not inverted: deep
+   is a real ground with its own signal set, and the ink becomes ice. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-ground:          var(--graphite);
-    --color-surface:         var(--graphite-raised);
-    --color-surface-sunk:    var(--graphite-sunk);
-    --color-text:            var(--chalk);
+    --color-ground:          var(--deep);
+    --color-surface:         var(--deep-raised);
+    --color-surface-sunk:    var(--deep-sunk);
+    --color-text:            var(--ice);
     --color-text-secondary:  var(--slate-light);
     --color-rule:            var(--rule-dark);
 
-    --color-link:            var(--hivis-bright);
-    --color-link-hover:      var(--chalk);
-    --color-accent:          var(--hivis-bright);
+    --color-on-brand:        var(--deep);
+    --color-on-structure:    var(--deep);
+    --color-link:            var(--cornflower-bright);
+    --color-link-hover:      var(--ice);
+    --color-accent:          var(--cornflower-bright);
 
     --color-signal-safe:     var(--safe-bright);
     --color-signal-caution:  var(--caution-bright);
     --color-signal-stop:     var(--stop-bright);
 
-    --color-terminal-ground: #0B0D0E;
     --shadow-lift:  0 1px 0 rgba(0, 0, 0, 0.5), 0 10px 24px -16px rgba(0, 0, 0, 0.8);
     --shadow-inset: 0 1px 0 rgba(0, 0, 0, 0.6), 0 20px 44px -24px rgba(0, 0, 0, 0.9);
   }
 }
 :root[data-theme="dark"] {
-  --color-ground:          var(--graphite);
-  --color-surface:         var(--graphite-raised);
-  --color-surface-sunk:    var(--graphite-sunk);
-  --color-text:            var(--chalk);
+  --color-ground:          var(--deep);
+  --color-surface:         var(--deep-raised);
+  --color-surface-sunk:    var(--deep-sunk);
+  --color-text:            var(--ice);
   --color-text-secondary:  var(--slate-light);
   --color-rule:            var(--rule-dark);
 
-  --color-link:            var(--hivis-bright);
-  --color-link-hover:      var(--chalk);
-  --color-accent:          var(--hivis-bright);
+  --color-on-brand:        var(--deep);
+  --color-on-structure:    var(--deep);
+  --color-link:            var(--cornflower-bright);
+  --color-link-hover:      var(--ice);
+  --color-accent:          var(--cornflower-bright);
 
   --color-signal-safe:     var(--safe-bright);
   --color-signal-caution:  var(--caution-bright);
   --color-signal-stop:     var(--stop-bright);
 
-  --color-terminal-ground: #0B0D0E;
   --shadow-lift:  0 1px 0 rgba(0, 0, 0, 0.5), 0 10px 24px -16px rgba(0, 0, 0, 0.8);
   --shadow-inset: 0 1px 0 rgba(0, 0, 0, 0.6), 0 20px 44px -24px rgba(0, 0, 0, 0.9);
 }
@@ -185,13 +218,15 @@
   --rail-label:      var(--color-text-secondary);
 
   --hairline:        1px solid var(--color-rule);
-  /* The rule that marks a turn (a note, a yield). It was `--hivis-rule`, 3px of brand on one
-     edge — a card side-tab, the most recognisable generated-UI tell. Hi-vis stays a FILL. */
+  /* The rule that marks a turn (a note, a yield). It was 3px of brand on one edge — a
+     card side-tab, the most recognisable generated-UI tell. The loud colour stays a FILL. */
   --turn-rule:       1px solid var(--color-text);
 
   --terminal-radius: var(--radius-lg);
   --terminal-pad:      1.1rem 1.25rem;
 
+  /* The train line: the travelled segment is structure; the stop you are at is a point. */
   --station-on:      var(--color-brand);
+  --station-line:    var(--color-structure);
   --station-off:     var(--color-rule);
 }

@@ -951,22 +951,25 @@ ${columnHtml}
      The hexes are a COPY of web/styles/tokens.css (a CLI cannot link a stylesheet);
      when that file moves, move these. 2026-09-12: the ground went cool (hue 210°,
      matching graphite) and --muted / --hivis-text darkened so they clear AA on
-     --sunk — muted-on-sunk was 4.2:1 on both surfaces, found on the site first. */
+     --sunk — muted-on-sunk was 4.2:1 on both surfaces, found on the site first.
+     2026-09-13 (DEC-020): paper ground, ice panels, persimmon where it pointed at
+     hi-vis — the variable names kept so nothing below had to move; the STOP state
+     went crimson so it stays apart from persimmon. */
   :root {
     color-scheme: light dark;
-    --bg: #E4E6E8; --panel: #F0F2F3; --sunk: #D7DADD;
-    --line: #C4C8CC;
-    --hivis: #FF5C00; --hivis-text: #A63400; --ink-on-hivis: #16181A;
-    --caution: #7F5800; --stop: #B71616;
-    --stage-0: #9AA0A6; --stage-1: #565C62; --stage-2: #2E3236; --stage-3: #16181A;
+    --bg: #F6F6F3; --panel: #D7EFFF; --sunk: #E6EEF3;
+    --line: #CDD5DB;
+    --hivis: #FF5C34; --hivis-text: #A82E14; --ink-on-hivis: #14202B;
+    --caution: #7F5800; --stop: #B0123A;
+    --stage-0: #9DB4C6; --stage-1: #4A5A68; --stage-2: #27404F; --stage-3: #14202B;
     }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #16181A; --panel: #1F2225; --sunk: #101214;
-      --line: #2E3236;
-      --hivis: #FF5C00; --hivis-text: #FF7A2E;
-      --caution: #E8A200; --stop: #FF6B5A;
-      --stage-0: #565C62; --stage-1: #9AA0A6; --stage-2: #C4C8CC; --stage-3: #E2E5E7;
+      --bg: #0E1C28; --panel: #152636; --sunk: #0A141D;
+      --line: #27404F;
+      --hivis: #FF5C34; --hivis-text: #FF8A6A;
+      --caution: #E8A200; --stop: #FF6B8A;
+      --stage-0: #4A5A68; --stage-1: #9DB4C6; --stage-2: #CDD5DB; --stage-3: #D7EFFF;
     }
   }
   .board-page { font: 15px/1.55 var(--body); color: var(--ink); }

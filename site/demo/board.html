@@ -67,22 +67,25 @@
      The hexes are a COPY of web/styles/tokens.css (a CLI cannot link a stylesheet);
      when that file moves, move these. 2026-09-12: the ground went cool (hue 210°,
      matching graphite) and --muted / --hivis-text darkened so they clear AA on
-     --sunk — muted-on-sunk was 4.2:1 on both surfaces, found on the site first. */
+     --sunk — muted-on-sunk was 4.2:1 on both surfaces, found on the site first.
+     2026-09-13 (DEC-020): paper ground, ice panels, persimmon where it pointed at
+     hi-vis — the variable names kept so nothing below had to move; the STOP state
+     went crimson so it stays apart from persimmon. */
   :root {
     color-scheme: light dark;
-    --bg: #E4E6E8; --panel: #F0F2F3; --sunk: #D7DADD;
-    --line: #C4C8CC;
-    --hivis: #FF5C00; --hivis-text: #A63400; --ink-on-hivis: #16181A;
-    --caution: #7F5800; --stop: #B71616;
-    --stage-0: #9AA0A6; --stage-1: #565C62; --stage-2: #2E3236; --stage-3: #16181A;
+    --bg: #F6F6F3; --panel: #D7EFFF; --sunk: #E6EEF3;
+    --line: #CDD5DB;
+    --hivis: #FF5C34; --hivis-text: #A82E14; --ink-on-hivis: #14202B;
+    --caution: #7F5800; --stop: #B0123A;
+    --stage-0: #9DB4C6; --stage-1: #4A5A68; --stage-2: #27404F; --stage-3: #14202B;
     }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #16181A; --panel: #1F2225; --sunk: #101214;
-      --line: #2E3236;
-      --hivis: #FF5C00; --hivis-text: #FF7A2E;
-      --caution: #E8A200; --stop: #FF6B5A;
-      --stage-0: #565C62; --stage-1: #9AA0A6; --stage-2: #C4C8CC; --stage-3: #E2E5E7;
+      --bg: #0E1C28; --panel: #152636; --sunk: #0A141D;
+      --line: #27404F;
+      --hivis: #FF5C34; --hivis-text: #FF8A6A;
+      --caution: #E8A200; --stop: #FF6B8A;
+      --stage-0: #4A5A68; --stage-1: #9DB4C6; --stage-2: #CDD5DB; --stage-3: #D7EFFF;
     }
   }
   .board-page { font: 15px/1.55 var(--body); color: var(--ink); }
@@ -219,13 +222,13 @@
   .board-page .board-foot code { font: 12px var(--mono); background: var(--sunk); padding: 2px 6px; border-radius: 2px; }
 </style>
 <style>
-  .site-ribbon { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; padding: 8px 20px; background: #E4E6E8; color: #16181A; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.5; border-bottom: 1px solid #C4C8CC; }
-  .site-ribbon a { color: #565C62; text-decoration: none; }
-  .site-ribbon a:hover, .site-ribbon a:focus-visible { color: #16181A; text-decoration: underline; }
-  .site-ribbon .wm { color: #16181A; font-weight: 700; letter-spacing: 0.06em; } .site-ribbon .wm .mk { width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-right: 6px; color: #FF5C00; } .site-ribbon .wm em { font-style: normal; color: #FF5C00; }
-  .site-ribbon .full { color: #565C62; letter-spacing: 0; margin-left: -8px; }
-  .site-ribbon nav { display: flex; flex-wrap: wrap; gap: 0 14px; } .site-ribbon nav a.on { color: #16181A; border-bottom: 2px solid #FF5C00; }
-  .site-ribbon .note { color: #565C62; margin-left: auto; max-width: 60ch; } .site-ribbon .note code { font: inherit; color: #16181A; }
+  .site-ribbon { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; padding: 8px 20px; background: #F6F6F3; color: #14202B; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.5; border-bottom: 1px solid #CDD5DB; }
+  .site-ribbon a { color: #4A5A68; text-decoration: none; }
+  .site-ribbon a:hover, .site-ribbon a:focus-visible { color: #14202B; text-decoration: underline; }
+  .site-ribbon .wm { color: #14202B; font-weight: 700; letter-spacing: 0.06em; } .site-ribbon .wm .mk { width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-right: 6px; color: #FF5C34; } .site-ribbon .wm em { font-style: normal; color: #FF5C34; }
+  .site-ribbon .full { color: #4A5A68; letter-spacing: 0; margin-left: -8px; }
+  .site-ribbon nav { display: flex; flex-wrap: wrap; gap: 0 14px; } .site-ribbon nav a.on { color: #14202B; border-bottom: 2px solid #5089E0; }
+  .site-ribbon .note { color: #4A5A68; margin-left: auto; max-width: 60ch; } .site-ribbon .note code { font: inherit; color: #14202B; }
   @media (max-width: 720px) { .site-ribbon .note { margin-left: 0; max-width: none; } .site-ribbon .full { display: none; } }</style>
 </head>
 <body>
@@ -369,7 +372,7 @@ Carer profiles — a photo, a yes-rate, a favourite-visits list — so owners ca
 </div>
 <footer class="site">
   <div>A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.</div>
-  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-09-13 23:55.</div>
+  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-09-14 00:29.</div>
   <div>set in the venture's own tokens — 10 taken from docs/design/tokens.json · light scheme only</div>
 </footer>
 <script>

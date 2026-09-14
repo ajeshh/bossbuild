@@ -134,12 +134,12 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 .pairs { display: grid; gap: var(--space-3); max-width: var(--measure); }
 .pairs + .prose { margin-top: var(--space-5); }
 .pair { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-1); padding-left: var(--space-3); border-left: 2px solid var(--color-rule); }
-.pair:hover { border-left-color: var(--color-brand); }
+.pair:hover { border-left-color: var(--color-structure); }
 .pair b { font-weight: 650; }
 .pair .k { font-family: var(--font-mono); font-size: var(--step--1); color: var(--color-text); font-weight: 650; }
 
 .modes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size: var(--step--1); margin: var(--space-3) 0 var(--space-4); }
-.modes b { background: var(--color-brand); color: var(--color-on-brand); padding: 0.28rem 0.6rem; border-radius: var(--radius-sm); font-weight: 600; }
+.modes b { background: var(--color-structure); color: var(--color-on-structure); padding: 0.28rem 0.6rem; border-radius: var(--radius-sm); font-weight: 600; }
 .modes span { color: var(--color-text-secondary); padding: 0.28rem 0.6rem; border: 1px solid var(--color-rule); border-radius: var(--radius-sm); }
 .modes i { font-style: normal; color: var(--color-text-secondary); }
 
@@ -152,7 +152,7 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 
 ul.plain { list-style: none; padding: 0; margin: 0 0 var(--space-3); max-width: var(--measure); }
 ul.plain li { padding-left: 1.5rem; position: relative; margin-bottom: var(--space-2); }
-ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.75rem; height: 2px; background: var(--color-brand); }
+ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.75rem; height: 2px; background: var(--color-structure); }
 
 code {
   font-family: var(--font-mono); font-size: 0.88em;
@@ -170,7 +170,7 @@ code {
 .step::before {
   content: counter(step); position: absolute; left: 0; top: 0.05rem;
   font-family: var(--font-mono); font-size: var(--step--1); font-weight: 700;
-  color: var(--color-on-brand); background: var(--color-brand); border-radius: var(--radius-sm);
+  color: var(--color-on-structure); background: var(--color-structure); border-radius: var(--radius-sm);
   width: 1.8rem; height: 1.8rem; display: grid; place-items: center;
 }
 .step h3 { margin-bottom: var(--space-1); }
@@ -214,7 +214,7 @@ footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0,
   padding: 0.2rem 0; border-bottom: 2px solid transparent;
 }
 .sitenav a:hover { color: var(--color-text); }
-.sitenav a[aria-current="page"] { color: var(--color-text); border-bottom-color: var(--color-brand); }
+.sitenav a[aria-current="page"] { color: var(--color-text); border-bottom-color: var(--color-structure); }
 .sitenav .brand:hover .mark { color: var(--color-text); }
 /* The full form rides with the wordmark, the way the hero rail spells it: the acronym is a joke
    until it is read out, and the nav is the one place every page shows it (Ajesh, 2026-09-13). */
@@ -241,7 +241,7 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 /* --- agent cards ---------------------------------------------------------- */
 .agents { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: var(--space-3); margin: var(--space-3) 0 var(--space-5); }
 .agent { border-top: 2px solid var(--color-rule); padding-top: var(--space-2); }
-.agent.mentor { border-top-color: var(--color-brand); }
+.agent.mentor { border-top-color: var(--color-structure); }
 .agent h3 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
 .agent h3 code { background: none; border: 0; padding: 0; }
 .agent .tag { font-family: var(--font-prose); font-size: 0.78rem; color: var(--color-text-secondary); font-weight: 600; }
@@ -279,7 +279,7 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .station:first-child::before { left: 0.44rem; border-radius: 2px 0 0 2px; }
 .station:last-child::before  { right: auto; width: 0.44rem; border-radius: 0 2px 2px 0; }
 /* the live segment — filled up to the last authored stop */
-.station:not(.thin)::before { background: var(--color-brand); }
+.station:not(.thin)::before { background: var(--station-line); }
 .station .dot {
   position: absolute; left: 0; top: 0; width: 0.9rem; height: 0.9rem;
   border-radius: 50%; background: var(--station-off);
@@ -306,7 +306,8 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 /* --- section variety -----------------------------------------------------
    Seven pages of the same rhythm reads as a template. These are the breaks. */
 
-/* A full-width hi-vis band: used once per page, maximum, for the turn. */
+/* A full-width persimmon band: used once per page, maximum, for the turn. The one place the
+   loud colour covers more than a mark — cornflower structures, persimmon points. */
 .band {
   background: var(--color-brand); color: var(--color-on-brand);
   margin: var(--space-5) 0; padding: var(--space-5) 0;
@@ -326,7 +327,7 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
   color: var(--color-text-secondary);
   display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-3);
 }
-.stencil::before { content: "▸"; color: var(--color-brand); }
+.stencil::before { content: "▸"; color: var(--color-structure); }
 h2.stencil { line-height: 1.4; letter-spacing: 0; }
 /* Group headings inside a labelled section (practice shelves, credit lists) and the paired
    h2s in a `.duo` sit one level under the label, so they take the h3 size. */
@@ -389,8 +390,8 @@ hr { border: 0; border-top: var(--hairline); margin: var(--space-4) 0; }
   padding: 0.12rem 0.42rem; margin: 0 0.25rem 0.3rem 0;
   color: var(--color-text); white-space: normal;
 }
-a.ref { text-decoration: none; border-color: var(--color-brand); }
-a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
+a.ref { text-decoration: none; border-color: var(--color-structure); }
+a.ref:hover { background: var(--color-structure); color: var(--color-on-structure); }
 .prov-full { margin-top: var(--space-2); }
 .prov-full summary {
   cursor: pointer; font-size: var(--step--1);
@@ -412,14 +413,14 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 .subnav ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; }
 .subnav a { font-size: var(--step--1); color: var(--color-text-secondary); text-decoration: none; }
 .subnav a:hover { color: var(--color-text); }
-.subnav a[aria-current="page"] { color: var(--color-text); font-weight: 650; box-shadow: inset 0 -2px 0 var(--color-brand); }
+.subnav a[aria-current="page"] { color: var(--color-text); font-weight: 650; box-shadow: inset 0 -2px 0 var(--color-structure); }
 
 /* --- credits -------------------------------------------------------------- */
 .credits { list-style: none; margin: 0 0 var(--space-5); padding: 0;
   display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: var(--space-3) var(--space-4); }
 .credit { border-top: var(--hairline); padding-top: var(--space-2); }
 .credit-name { font-family: var(--font-display); font-size: var(--step-0); font-weight: 650; letter-spacing: -0.02em; margin: 0 0 0.15rem; }
-.credit-name a { text-decoration: none; box-shadow: inset 0 -1px 0 var(--color-brand); }
+.credit-name a { text-decoration: none; box-shadow: inset 0 -1px 0 var(--color-structure); }
 .credit-for { display: block; font-size: var(--step--1); color: var(--color-text-secondary); margin-bottom: var(--space-2); }
 .credit-in { margin: 0; }
 .credit-in .chip { font-size: 0.78rem; }
@@ -446,7 +447,7 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
   padding: 0.34rem 0.7rem; color: var(--color-text-secondary);
   transition: color 0.15s var(--ease), border-color 0.15s var(--ease);
 }
-.picker .tabs label:hover { color: var(--color-text); border-color: var(--color-brand); }
+.picker .tabs label:hover { color: var(--color-text); border-color: var(--color-structure); }
 .picker .panel { display: none; }
 .picker .panel h3 { margin-top: 0; }
 #shape-new:checked    ~ .panels > .p-new,
@@ -455,7 +456,7 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
 #shape-new:checked    ~ .tabs label[for="shape-new"],
 #shape-repo:checked   ~ .tabs label[for="shape-repo"],
 #shape-many:checked   ~ .tabs label[for="shape-many"] {
-  background: var(--color-brand); color: var(--color-on-brand); border-color: var(--color-brand);
+  background: var(--color-structure); color: var(--color-on-structure); border-color: var(--color-structure);
 }
 /* The radio is off-screen, so the focus ring has to be drawn on its label or
    keyboard users get no indication of where they are in the group. */
@@ -508,7 +509,7 @@ a.ref:hover { background: var(--color-brand); color: var(--color-on-brand); }
   display: grid; grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr)); gap: var(--space-2) var(--space-5); }
 .quirks li { padding-left: var(--space-3); border-left: 2px solid var(--color-rule);
   font-size: var(--step--1); color: var(--color-text-secondary); }
-.quirks li:hover { border-left-color: var(--color-brand); }
+.quirks li:hover { border-left-color: var(--color-structure); }
 .quirks b { color: var(--color-text); font-weight: 650; }
 
 /* --- grouped sub-navigation ----------------------------------------------

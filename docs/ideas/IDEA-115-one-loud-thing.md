@@ -3,10 +3,10 @@ id: IDEA-115
 type: idea
 kind: capability
 owner: designer
-status: exploring (a brand decision, not a build — waits on Ajesh's tab-row read)
+status: shipped (decided — DEC-020, 2026-09-13: O, the five-token set; the tokens, five copies, VISUAL.md and og.png moved with it)
 gist: Re-open the brand's colour. Two rounds on one board — round one the safe field, round two the mold-breakers after Ajesh said blue is boring and adjacency doesn't matter — then Ajesh's own set, sharpened into five tokens with one job each (off-white ground, ice surfaces, cornflower structure, persimmon the one loud thing, a cool ink). That set leads; rani pink is the strongest single hue; the dark-first three are a DEC-018-sized decision.
-proof: none
-proof_note: Captured. The board is published as an artifact; nothing in the tree changes until a hue is chosen. The one fix due regardless of hue — a per-theme twin for the FILL, because the light-theme mark is 2.47:1 on concrete — is a task, not a decision.
+proof: web/styles/tokens.css
+proof_note: Ajesh chose O the same afternoon ("ok lets go with O"); DEC-020 records it. tokens.css is the mechanism; help.css, og-card.html (og.png re-rendered), gen-demo.js, board.js and BRAND.md's accent are the copies; VISUAL.md carries the world. The mark-on-light-ground fill twin is not needed: the logotype is exempt (WCAG 1.4.11) and nothing meaningful relies on the fill alone.
 created: 2026-09-13
 program: brand
 relates: DEC-018, DEC-002, IDEA-107, IDEA-110, FEAT-039
@@ -81,7 +81,11 @@ dark; that is a decision to name, not a hue swap.
 - Should the site lead dark? If yes, K is the conversation and it is DEC-018-sized.
 - If two surfaces get two colours (L), what is the rule, in one sentence, and who keeps it?
 
-## Next step (one)
+## Decided (2026-09-13)
+
+**O.** DEC-020. Applied the same afternoon; the day-test happens on the live site instead of before it.
+
+## Next step (one) — superseded by the decision above
 
 Put O (Ajesh's set) and H (rani) on the site for a day each — `web/styles/tokens.css` is three literals (+ `library/help/help.css`,
 `scripts/og-card.html`, `scripts/gen-demo.js`, `src/board.js`, `docs/design/BRAND.md` `accent:`) — and

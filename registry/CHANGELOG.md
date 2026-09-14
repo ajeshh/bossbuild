@@ -60,6 +60,22 @@ rule above still applies to the whole section once it is stamped.
   reads as capability, which is what every one of BOSS's own 113 ideas is; BOSS's venture idea is the
   canvas, and `CLAUDE.md` now says so. A field, not a new ID prefix — a second class would have
   re-filed 113 records for a distinction one line carries.
+- **The brand is five colours with one job each — cornflower structures, persimmon points (DEC-020).**
+  Ajesh re-opened the palette (*"go back to the drawing board… break the mold"*) and chose from a
+  board of fourteen (IDEA-115): paper `#F6F6F3` is the ground, ice `#D7EFFF` is a surface (the
+  install box, a note, a table head — the page is never blue), cornflower `#5089E0` is structure
+  (links at `#2A5BAD`, the current-page underline, chips, step numbers, the train line's travelled
+  segment), persimmon `#FF5C34` is the one loud thing (the mark, the CTA, the band, the current
+  station), ink `#14202B` on paper and deep `#0E1C28` in the dark where the ink becomes ice. Every
+  pair measured before it was written; stop moved to crimson so the brand at 12° never reads as the
+  error at 0°. `web/styles/tokens.css` is the mechanism (`--color-structure` is a new semantic
+  handle; fourteen `site.css` uses moved to it, use by use); `library/help/help.css`,
+  `scripts/og-card.html` (og.png re-rendered), the demo ribbon, `src/board.js` and BRAND.md's
+  `accent:` are the copies and moved with it. VISUAL.md carries the world; the previous
+  site-and-signage world stays in it as history. The product shell's default palette is untouched
+  on purpose. Website and `boss help --html` / `boss board --html`.
+  > **For you:** `boss board --html` and `boss help --html` render in BOSS's new colours — paper,
+  > ice, cornflower, persimmon. Nothing about your own project's tokens changes.
 - **The nav spells the name out, and the demo ribbon wears the header's look.** Ajesh: *"on the
   homesite we should spell out B.O.S.S."* and *"the ribbon color is not the same as the way it
   looks on the homepage, its black."* The site nav's wordmark was the one place that still said
