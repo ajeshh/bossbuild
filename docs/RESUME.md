@@ -118,7 +118,9 @@ much) and Phase 3 outreach. Both are Ajesh's.**
   flat faces in sky, two curved bowls in persimmon, seams left dark. **Lead: the built B** — literally
   *Build Out Solid Stuff*, and it wears the palette's rule (faces = structure, bowls = point). K2 the
   one-colour cut is the mark; K1 two-colour is the hero; **K3 adds a foot → β** (restores the terminal
-  twin). His pick is K2 vs K3. The bowls want a weight pass. Ribbon β runner-up; ✦ retires either way. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
+  twin). He supplied the SVG (2026-09-14; on the board verbatim; own colours sky `#55BDF5` / persimmon `#FF7148`,
+  a deep-ground render — on ice, cornflower faces). His pick is K2 vs K3, and whether the mark keeps its
+  own two colours or takes the tokens. Ribbon β runner-up; ✦ retires either way. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
   a 20-file sweep to `β`, og.png, one About-page line that makes *beta* a claim not an admission,
   DEC-021 (falsifier: a founder reads BOSS itself as beta software and says so).
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*

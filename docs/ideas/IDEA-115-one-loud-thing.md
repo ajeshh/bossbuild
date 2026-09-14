@@ -124,7 +124,15 @@ bowls) as the hero.** K3 extends the lower face into a foot → β, which restor
 the terminal twin; one slab longer, otherwise identical — try both. Costs: no glyph twin for K1/K2
 (the CLI cannot print an isometric object — the site's mark stops being the CLI's glyph, said
 honestly); at 16 the seams close; the bowls in the first cut are thinner than the reference's (a
-weight pass). Ribbon β is runner-up. Waits on Ajesh's pick — K2 vs K3 is the only open question.
+weight pass). Ribbon β is runner-up.
+
+**2026-09-14 — Ajesh supplied the geometry** (`boss-logo-mark.svg`, 512 grid, five paths: cap, two
+left facets, two persimmon ribbons; its own colours sky `#55BDF5` and persimmon `#FF7148`). The board
+now carries it verbatim; my approximation is gone. Numbers: sky is 8.2 on deep and 1.8 on ice, so
+the authored colours are a deep-ground render; on ice the faces go cornflower and the bowls token
+persimmon. Open: are the SVG's two colours mark-only primitives (`--mark-sky`, `--mark-persimmon`)
+or does the mark take the tokens (a shade apart on deep)? Waits on Ajesh's pick — K2 vs K3 (the
+foot), and the colour question above.
 
 ## Found while applying (2026-09-13) — tasks, not scope
 
