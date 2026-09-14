@@ -104,6 +104,12 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
+- 🔷 **IDEA-115 — the brand's accent hue.** Ajesh (2026-09-13): *"go back to the drawing board… new color
+  options for boss brand."* The board is published (link in the record): seven candidates, five jobs,
+  WCAG done. The world (DEC-018) holds; the hue is open. Two contenders — mandatory blue (the ISO
+  instruction colour) and survey pink (the set-out colour). **His call is one test:** each for a day in
+  a real tab row beside Claude, both themes. True whatever he picks: the light-theme mark is 2.47:1,
+  the fill needs a per-theme twin (a task). Copper is out — Kettlewick wears it.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
   into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing
