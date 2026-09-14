@@ -11,7 +11,7 @@ revisit_by: 2026-10-13
 falsifier: a returning-founder or domain-expert read that calls the site "playful" or "clinical" rather than calm, OR a rendered-page tap that finds cornflower used to point (two loud things), by 2026-10-13 → the rule has failed, not the hue; fix the use before reconsidering the colour
 supersedes: DEC-018 (partly — the ground; its two findings are kept, see Consequences)
 ---
-# DEC-020 — the brand is five colours with one job each: cornflower structures, persimmon points
+# DEC-020 — the brand anchor: five colours with one job each — cornflower structures, persimmon points
 
 > Ajesh, 2026-09-13, over one afternoon: *"go back to the drawing board and think of potential new
 > color options for boss brand"* → *"i disagree on being adjacent to claude. i dont think people

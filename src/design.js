@@ -26,7 +26,7 @@ import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { frontmatter } from './frontmatter.js';
 import { isRegistered } from './hooks.js';
-import { readBrand, verbLine } from './playbook.js';
+import { readBrand, brandPath, verbLine } from './playbook.js';
 import { esc, shellPage, NEUTRAL, DEFAULT_ACCENT } from './page-shell.js';
 
 // --- tokens: docs/design/tokens.json (DTCG) first; DESIGN_TOKENS.md names as the fallback --------
@@ -192,8 +192,8 @@ function section(text, headingRe) {
 
 const BRAND_LINES = [['Who it\'s for', /who it'?s for/i], ['What it promises', /what it promises/i], ['What it refuses', /what it refuses/i], ['How it sounds', /how it sounds/i], ['What it is NOT', /what it is not/i], ['The name, and why', /the name(?:, and why)?/i]];
 export function readBrandShape(projectDir) {
-  const p = join(projectDir, 'docs', 'BRAND.md');
-  const shape = { present: existsSync(p), lines: [], updated: null };
+  const p = brandPath(projectDir);
+  const shape = { present: !!p, lines: [], updated: null };
   if (!shape.present) return shape;
   let text = '';
   try { text = readFileSync(p, 'utf8'); } catch { return shape; }

@@ -126,6 +126,18 @@ test('the brand shape renders what is written and holes what is not — never in
   assert.equal(s.lines.find((l) => l.label === 'How it sounds').value, null);
 });
 
+test('the brand file is found at docs/design/BRAND.md too — one resolver for every reader of it', () => {
+  // BOSS's own brand bible predates the shipped path. Until 2026-09-13 readBrand accepted both
+  // while readBrandShape opened only docs/BRAND.md, so the six lines were written and invisible.
+  const dir = project({ 'docs/design/BRAND.md': BRAND });
+  const s = readBrandShape(dir);
+  assert.equal(s.present, true, 'present at the fallback path');
+  assert.equal(s.lines.find((l) => l.label === "Who it's for").value, '"I run a small care agency"');
+  const both = project({ 'docs/BRAND.md': BRAND.replace('"I run a small care agency"', '"the shipped path wins"'), 'docs/design/BRAND.md': BRAND });
+  assert.equal(readBrandShape(both).lines.find((l) => l.label === "Who it's for").value, '"the shipped path wins"', 'docs/BRAND.md is read first when both exist');
+  assert.equal(readBrandShape(project({})).present, false);
+});
+
 test('with nothing under docs/design/ every language chapter is a hole with the verb, and the page still renders', () => {
   const dir = project({ 'docs/BRAND.md': BRAND });
   const html = renderDesignHtml({ ...collectDesign(dir, 'Bare'), projectDir: dir }, 'x');

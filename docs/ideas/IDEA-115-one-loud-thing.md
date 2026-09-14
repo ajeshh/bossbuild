@@ -81,6 +81,17 @@ dark; that is a decision to name, not a hue swap.
 - Should the site lead dark? If yes, K is the conversation and it is DEC-018-sized.
 - If two surfaces get two colours (L), what is the rule, in one sentence, and who keeps it?
 
+## Found while applying (2026-09-13) — tasks, not scope
+
+- [ ] **The shell reads one accent; the brand now has two roles.** `src/page-shell.js` `shellCss(accent)`
+  drives links, buttons and the on-tab from BRAND.md's single `accent:`. Cornflower (structure) cannot
+  reach `boss board/design/playbook` until the shell has a second handle (`structure:` in BRAND.md
+  frontmatter, or `action.structure` read from tokens.json — the token now exists). Persimmon-ink is
+  the accent today, which is the right single answer.
+- [x] `readBrandShape` / `readBrandLine` opened only `docs/BRAND.md` — one resolver now (`brandPath`).
+- [x] BOSS's own BRAND.md lacked the shipped `## Current shape` — added, six lines.
+- [x] DEC-020 retitled *the brand anchor* so the design space's anchor slot recognises it.
+
 ## Decided (2026-09-13)
 
 **O.** DEC-020. Applied the same afternoon; the day-test happens on the live site instead of before it.

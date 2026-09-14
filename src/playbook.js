@@ -151,10 +151,18 @@ export function readEvidence(projectDir) {
 
 // docs/BRAND.md — three fields, each falling back on its own. `unknown` is a real answer and
 // means "the default", never an invented colour.
+// The template writes docs/BRAND.md; BOSS's own brand bible predates it at docs/design/BRAND.md.
+// ONE resolver for every reader of the file: until 2026-09-13 readBrand accepted both paths while
+// readBrandLine and readBrandShape opened only the first, so BOSS's own six shape lines were
+// written and invisible — the design space said "absent" about a file the same page's header
+// had just read the tagline from. A reader whose input lives elsewhere fails open, silently.
+export function brandPath(projectDir) {
+  return [join(projectDir, 'docs', 'BRAND.md'), join(projectDir, 'docs', 'design', 'BRAND.md')].find((x) => existsSync(x)) || null;
+}
+
 export function readBrand(projectDir, projectName) {
   const brand = { name: projectName, accent: null, tagline: null, present: false, nascent: false };
-  // The template writes docs/BRAND.md; BOSS's own brand bible predates it at docs/design/BRAND.md.
-  const p = [join(projectDir, 'docs', 'BRAND.md'), join(projectDir, 'docs', 'design', 'BRAND.md')].find((x) => existsSync(x));
+  const p = brandPath(projectDir);
   if (!p) return brand;
   brand.present = true;
   let text = '';
@@ -332,8 +340,8 @@ export function readAsk(projectDir) {
 
 // One line of docs/BRAND.md's current shape, by its bold label ("What it is NOT", "What it refuses").
 export function readBrandLine(projectDir, label) {
-  const p = join(projectDir, 'docs', 'BRAND.md');
-  if (!existsSync(p)) return '';
+  const p = brandPath(projectDir);
+  if (!p) return '';
   try {
     const m = readFileSync(p, 'utf8').match(new RegExp(`^[-*]\\s*\\*\\*${label}:?\\*\\*\\s*(.+)$`, 'im'));
     const v = m ? m[1].trim() : '';

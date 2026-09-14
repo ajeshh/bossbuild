@@ -60,6 +60,21 @@ rule above still applies to the whole section once it is stamped.
   reads as capability, which is what every one of BOSS's own 113 ideas is; BOSS's venture idea is the
   canvas, and `CLAUDE.md` now says so. A field, not a new ID prefix — a second class would have
   re-filed 113 records for a distinction one line carries.
+- **BOSS's own records wear DEC-020, and the test Ajesh asked for passed: it auto-flows.** Ajesh:
+  *"update the brand and design colors for boss to reflect it, wanna test if it auto flows to board."*
+  Changed only the records — `docs/design/tokens.json` (paper / ice / cornflower / persimmon; a new
+  `action.structure` token carries cornflower's text weight beside `action.primary`) and BRAND.md's
+  `accent:` — then ran `boss board --html`, `boss design`, `boss playbook`. All three came up in the
+  new colours untold: *10 taken from docs/design/tokens.json*. The design space then did its job on
+  BOSS itself and found two holes: **the anchor slot** wants a DEC whose title says *anchor* (DEC-020
+  is the anchor decision — retitled, it fills), and **the six shape lines** BOSS ships in
+  `docs/BRAND.md` were absent from BOSS's own bible (added). The second was half a bug:
+  `readBrandShape` and `readBrandLine` opened only `docs/BRAND.md` while `readBrand` accepted
+  `docs/design/BRAND.md` too, so BOSS's lines were written and invisible — the page said *absent*
+  about a file its own header had just read the tagline from. One resolver (`brandPath`) for all
+  three readers now; a test holds it. 7 → 8 of 16 slots. Found, not fixed: the shell has one accent
+  slot and the brand now has two roles (structure and point) — cornflower cannot reach the rendered
+  pages until the shell learns a second handle (a task on IDEA-115).
 - **The brand is five colours with one job each — cornflower structures, persimmon points (DEC-020).**
   Ajesh re-opened the palette (*"go back to the drawing board… break the mold"*) and chose from a
   board of fourteen (IDEA-115): paper `#F6F6F3` is the ground, ice `#D7EFFF` is a surface (the
