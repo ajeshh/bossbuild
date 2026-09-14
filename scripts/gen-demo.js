@@ -47,12 +47,11 @@ const RIBBON_CSS = `
   .site-ribbon a { color: #4A5A68; text-decoration: none; }
   .site-ribbon a:hover, .site-ribbon a:focus-visible { color: #14202B; text-decoration: underline; }
   .site-ribbon .wm { color: #14202B; font-weight: 700; letter-spacing: 0.06em; } .site-ribbon .wm .mk { width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-right: 6px; color: #FF5C34; } .site-ribbon .wm em { font-style: normal; color: #FF5C34; }
-  .site-ribbon .full { color: #4A5A68; letter-spacing: 0; margin-left: -8px; }
   .site-ribbon nav { display: flex; flex-wrap: wrap; gap: 0 14px; } .site-ribbon nav a.on { color: #14202B; border-bottom: 2px solid #5089E0; }
   .site-ribbon .note { color: #4A5A68; margin-left: auto; max-width: 60ch; } .site-ribbon .note code { font: inherit; color: #14202B; }
-  @media (max-width: 720px) { .site-ribbon .note { margin-left: 0; max-width: none; } .site-ribbon .full { display: none; } }`;
+  @media (max-width: 720px) { .site-ribbon .note { margin-left: 0; max-width: none; } }`;
 const RIBBON = `<div class="site-ribbon" role="banner">
-  <a class="wm" href="../index.html"><svg class="mk" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></a><span class="full">Build Out Solid Stuff</span>
+  <a class="wm" href="../index.html"><svg class="mk" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="M50 0 L64 36 L100 50 L64 64 L50 100 L36 64 L0 50 L36 36 Z"/></svg>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></a>
   <nav aria-label="oyeboss.build">${SITE_NAV.map(([f, l]) => `<a href="../${f}"${f === 'demo.html' ? ' class="on"' : ''}>${l}</a>`).join('')}</nav>
   <span class="note">The demo. ${BANNER}</span>
 </div>`;
