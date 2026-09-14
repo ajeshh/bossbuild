@@ -102,7 +102,17 @@ site's claim to stay true. Stencil (I2) as the ≥48px cut of the same mark if w
 β-on-benchmark and β. declined (say more, read less). The benchmark stays runner-up. Named
 tension: *beta* also means unfinished and BOSS is 0.3xx — the About page turns it into the claim
 (*everything is a beta until someone commits — that's the ladder*) or it reads as an admission.
-Waits on Ajesh's pick.
+
+**Round three — the ribbon (Ajesh sent a reference: β as one continuous stroke, hooked foot, the
+loops passing over the stem; *"more like this"* — and *"we don't need the color shown here. that's
+just an example"*).** Drawn as one path (`M60 90 C 58 100 42 102 40 90 L 40 24 C 40 8 54 4 64 5 C 82 6
+86 26 76 36 C 68 44 54 47 42 48 C 66 48 88 56 87 72 C 86 90 62 96 44 92`, stroke 12; 17 for the
+favicon). **New lead: J1, the ribbon flat** — one colour, `currentColor`, reads at 16, terminal twin
+β. J2 keeps the over/under with a ground-coloured halo (large sizes only). J3 is the hero render —
+persimmon → cornflower, soft glow on deep — for the og card / About / an icon, never the favicon.
+Two things this decides: **the straight-cut rule gets one named exception** (the mark is the one
+drawn thing; everything else is cut) and **gradients are a hero treatment, not a mark**. The block β
+becomes the straight-cut fallback; the benchmark stays the best non-letter. Waits on Ajesh's pick.
 
 ## Found while applying (2026-09-13) — tasks, not scope
 

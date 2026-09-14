@@ -113,9 +113,11 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
 - 🔷 **The mark (IDEA-115, second board).** Ajesh: *"the star seems hella outdated."* Eight candidates
-  drawn and published (link in the record), then his own direction — β — in six cuts. **Lead: the
-  block β** (the name and the job in one glyph; holds at 16px; terminal twin is the letter itself);
-  the benchmark is runner-up. His pick. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
+  drawn and published (link in the record), then β in six cuts, then his reference — a ribbon β, one
+  continuous stroke with a hooked foot (*"more like this… the color is just an example"*). **Lead:
+  the ribbon β, flat** (one stroke, `currentColor`, reads at 16, terminal twin β); its hero render in
+  persimmon → cornflower for the og card. Decides two rules: the mark is the one drawn thing on a cut
+  site; gradients are hero-only. Block β is the fallback; the benchmark the best non-letter. His pick. Then: `MARK_PATH` swap, one `MARK` constant in `src/ui.js` +
   a 20-file sweep to `β`, og.png, one About-page line that makes *beta* a claim not an admission,
   DEC-021 (falsifier: a founder reads BOSS itself as beta software and says so).
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
