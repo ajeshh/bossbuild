@@ -4,13 +4,14 @@ type: idea
 kind: capability
 owner: designer
 status: exploring (a brand decision, not a build — waits on Ajesh's tab-row read)
-gist: Re-open the hue of the brand's one loud colour — not the world (concrete, graphite, one fill, states kept out of the brand's reach; DEC-018, a day old, holds) but the accent. Seven options put through the same five jobs with the contrast arithmetic done; two contenders and a test the mocks can't do.
+gist: Re-open the hue of the brand's one loud colour — not the world (concrete, graphite, one fill, states kept out of the brand's reach; DEC-018 holds) but the accent. Two rounds on one board — round one the safe field, round two the mold-breakers after Ajesh said blue is boring and adjacency doesn't matter. Lead is rani pink; the dark-first three are a different decision.
 proof: none
 proof_note: Captured. The board is published as an artifact; nothing in the tree changes until a hue is chosen. The one fix due regardless of hue — a per-theme twin for the FILL, because the light-theme mark is 2.47:1 on concrete — is a task, not a decision.
 created: 2026-09-13
 program: brand
 relates: DEC-018, DEC-002, IDEA-107, IDEA-110, FEAT-039
 source: Ajesh, 2026-09-13 — "in general for branding, I think I wanna go back to the drawing board and think of potential new color options for boss brand. Lets evaluate potential new color options! and why"
+source_2: Ajesh, same day — "i disagree on being adjacent to claude. i dont think people care. I think it can be more interesting, and not boring mandatory blue. in general i think we can break the mold."
 altitude: BOSS's own brand (the site, the mark, the ribbon) — NOT the product shell's default palette, which is a founder's placeholder and answers a different question
 ---
 
@@ -55,14 +56,33 @@ No single mid-lightness fill clears 3:1 for the mark on **both** grounds — ora
 graphite and **2.47 on concrete** (the light-theme favicon, today). The text colours already have
 per-theme twins; the fill doesn't. Add one. A task; not on this decision's clock.
 
+## Round two — break the mold (2026-09-13, same day)
+
+Ajesh withdrew the adjacency argument and set blue aside. Round two, same five jobs, same arithmetic:
+
+| | hue | verdict | the one reason |
+|---|---|---|---|
+| H | **rani pink `#E4007C`** | **lead** | the surveyor's set-out colour AND the vocative's colour (rani, the Rajasthani magenta) — one dye; no dev tool wears it; **the only fill on either round that passes the mark on both grounds without a twin** (3.66 / 3.89); Copy button goes white-on-pink; cost is tone, not numbers |
+| I | marigold on indigo | contender, dark-first | the ink itself goes indigo, marigold sits on it at 8.4:1; light-theme mark 1.66 — the light favicon is an indigo star; marigold neighbours amber (caution) |
+| J | cadmium `#FFD100` | contender, dark-first | the hard hat; graphite on it 12:1; on concrete the mark is 1.17 — needs a graphite tag; reads caution tape |
+| K | chalkboard | contender, the big move | the GROUND is the brand (board `#1E2A26`, chalk, one pink chalk line); reopens DEC-018; a classroom register to keep out of the copy |
+| L | flag pair — rani + lime | two loud things, on purpose | one per surface: rani on concrete (site), lime on graphite (terminal — the CLI's ✦ is already the user's green); a rule to write |
+| M | IKB `#002FA7` | noted | if blue, this blue; loses the argument in the open |
+
+**Finding:** every yellow (marigold, cadmium, lime) is 1.1–1.7:1 on light concrete and superb on
+graphite — yellow-family brands are *dark-first* brands. Choosing I, J or K means the site LEADS
+dark; that is a decision to name, not a hue swap.
+
 ## Open questions (written as questions)
 
-- Is the tab row the deciding job? If yes → B. If the About-page story is worth its risk → C.
-- Does the mark's fill-twin land before or with the hue change?
+- Does rani read *surveyed* or *playful* to a returning founder? (The falsifier for the DEC.)
+- Should the site lead dark? If yes, K is the conversation and it is DEC-018-sized.
+- If two surfaces get two colours (L), what is the rule, in one sentence, and who keeps it?
 
 ## Next step (one)
 
-Run each contender for a day — `web/styles/tokens.css` is three literals (+ `library/help/help.css`,
-`scripts/og-card.html`, `scripts/gen-demo.js`, `src/board.js`, `docs/design/BRAND.md` `accent:`) — in
-a real tab row beside Claude and GitHub, both themes, on the phone. Then `/decide`, with the tab-row
-read as the falsifier.
+Put H (rani) on the site for a day — `web/styles/tokens.css` is three literals (+ `library/help/help.css`,
+`scripts/og-card.html`, `scripts/gen-demo.js`, `src/board.js`, `docs/design/BRAND.md` `accent:`) — and
+look at it in both themes, on the phone, in a tab row. If it reads surveyed, `/decide` with "does a
+returning founder call it playful?" as the falsifier. If the read says the site wants to lead dark,
+that is the K conversation.
