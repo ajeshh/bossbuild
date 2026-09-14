@@ -35,8 +35,8 @@ Five tokens, one job each (`web/styles/tokens.css`, the mechanism):
 
 | token | hex | job |
 |---|---|---|
-| paper | `#F6F6F3` | the ground — 1% saturated, 60°: a sheet, not cream, not a tint |
-| ice | `#D7EFFF` | a **surface** — the install box, a note, a table head; the page is never ice |
+| ice | `#D7EFFF` | the **ground** — the page is sky (inverted the same day: Ajesh looked at both rendered — *"i think it would make it more pop out"* — and chose the bolder one) |
+| paper | `#F6F6F3` | the **surface** — the install box, a note, a table head: white cards on the sky; 1% saturated, a sheet not a cream |
 | cornflower | `#5089E0` (text `#2A5BAD` / `#7FB0F5`) | **structure** — links, the current-page underline, a chip, a step number, the train line's travelled segment |
 | persimmon | `#FF5C34` (text `#A82E14` / `#FF8A6A`) | **the one loud thing** — the mark, the CTA, the band, the hazard rule, the current station |
 | ink / deep | `#14202B` / `#0E1C28` | text on paper; the dark ground, where the ink becomes ice |
@@ -54,9 +54,10 @@ and a brand twelve degrees from the error colour is a brand that reads as an err
 - **One temperature, one warm signal.** The three blues are one family (204°–216°) at three
   lightnesses; persimmon is the only warm thing on the page. That is the calm-until-it-points
   behaviour the previous world wanted, with more range to do it in.
-- **Ice as a surface, not a ground, is what made the set work.** The pair (N on the board) tinted
-  every surface; Ajesh's "3–4 colours and off-white" put the blue on the objects and left the page
-  paper. Every pair was checked before it was written — the only two that need a twin are raw
+- **Paper as a surface on an ice ground is what made the set work.** The pair (N on the board)
+  tinted every surface with no relief; "3–4 colours and off-white" added the white cards. It
+  shipped first as paper-page/ice-boxes (the calmer document) and was inverted within the hour
+  after both were rendered side by side (the bolder brand). Same five tokens, roles swapped. Every pair was checked before it was written — the only two that need a twin are raw
   cornflower as body text (3.2 → `#2A5BAD`) and the mark on paper (2.8, exempt: it is the
   logotype, WCAG 1.4.11).
 - **Persimmon is the old hi-vis with the blue channel opened.** The mark, the button and the

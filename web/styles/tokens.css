@@ -15,8 +15,10 @@
 
        CORNFLOWER STRUCTURES, PERSIMMON POINTS.
 
-   Paper is the ground. Ice is a SURFACE — where things sit (the install box, a
-   note, a table head) — so the blue is felt everywhere and tints nothing.
+   Ice is the ground and paper is the SURFACE — the page is sky, and the things
+   on it (the install box, a note, a table head) are white cards. It shipped the
+   other way round for an hour; Ajesh looked at both and inverted it ("i think it
+   would make it more pop out") — the bolder brand over the calmer document.
    Cornflower is STRUCTURE: links, the current-page underline, a chip's fill,
    a step's number; visible, never loud. Persimmon is the ONE loud thing: the
    mark, the button, the band. Ink is a cool near-black so the three blues and
@@ -36,15 +38,15 @@
 /* --- Layer 1 · primitives -------------------------------------------------
    Raw values. Never referenced by a component. Named for what they ARE. */
 :root {
-  /* Ground: off-white paper, NOT cream. #F4F1EA at 42° is the 2026 AI-default;
-     this is #F6F6F3 at 60° with 1% saturation — a neutral with the warmth of a
-     sheet, not a tint. The earlier concrete (#E4E6E8, 210°) was cool grey; the
-     move to paper keeps the "not cream" finding of DEC-018 and drops the grey. */
+  /* Paper: off-white, NOT cream. #F4F1EA at 42° is the 2026 AI-default; this is
+     #F6F6F3 at 60° with 1% saturation — a neutral with the warmth of a sheet.
+     The SURFACE: a box, a note, a table head — white cards on the sky. */
   --paper:           #F6F6F3;
-  /* Ice: the surface colour. Where things SIT — a box, a note, a table head.
-     The page is never ice; only the objects on it are. Hue 204°. */
+  /* Ice: the GROUND. Hue 204°, the same family as deep and cornflower. Ink on it
+     13.9, muted 6.0, links 6.4; the cornflower underline is 2.95 as a graphic —
+     a hair under 3:1, fine at 2px, and known. */
   --ice:             #D7EFFF;
-  --ice-sunk:        #E6EEF3;   /* the <code> ground: below paper, quieter than ice */
+  --ice-sunk:        #C6E4F7;   /* the <code> ground: one step deeper than the ice page */
 
   /* Deep: the dark ground, the same family as ice taken down (hue 208°), so
      light and dark are one temperature. Designed, not inverted. */
@@ -53,12 +55,12 @@
   --deep-sunk:       #0A141D;
 
   --ink:             #14202B;   /* text on paper and on ice — 15.3 / 13.9 */
-  /* Muted text has to clear AA on EVERY light surface — paper, ice AND ice-sunk
-     (the <code> background). Checked: paper 6.6, ice 6.0, sunk 6.1. Run the
+  /* Muted text has to clear AA on EVERY light surface — ice, paper AND ice-sunk
+     (the <code> background). Checked: ice 6.0, paper 6.6, sunk 5.4. Run the
      WCAG arithmetic before changing either side. */
-  --slate:           #4A5A68;   /* muted on paper */
+  --slate:           #4A5A68;   /* muted on ice and paper */
   --slate-light:     #9DB4C6;   /* muted on deep — 8.0 ground, 7.2 raised */
-  --rule-light:      #CDD5DB;
+  --rule-light:      #A9CBE0;   /* a hairline on ice; on paper it was #CDD5DB */
   --rule-dark:       #27404F;
 
   /* Persimmon — the one loud thing. A FILL colour: ink sits on it (5.4:1).
@@ -117,8 +119,8 @@
   --font-prose:            var(--stack-sans);
   --font-mono:             var(--stack-mono);
 
-  --color-ground:          var(--paper);
-  --color-surface:         var(--ice);
+  --color-ground:          var(--ice);
+  --color-surface:         var(--paper);
   --color-surface-sunk:    var(--ice-sunk);
   --color-text:            var(--ink);
   --color-text-secondary:  var(--slate);

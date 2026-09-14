@@ -72,7 +72,7 @@ const favicon = () => {
 // the stylesheet, read from the same file.
 const HEAD_ICONS = () =>
   `<link rel="icon" href="${favicon()}" />\n`
-  + `<meta name="theme-color" content="${token('paper')}" media="(prefers-color-scheme: light)" />\n`
+  + `<meta name="theme-color" content="${token('ice')}" media="(prefers-color-scheme: light)" />\n`
   + `<meta name="theme-color" content="${token('deep')}" media="(prefers-color-scheme: dark)" />`;
 
 // Inline markdown → HTML, escape-first so nothing user-authored can inject markup.

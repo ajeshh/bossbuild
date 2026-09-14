@@ -60,6 +60,14 @@ rule above still applies to the whole section once it is stamped.
   reads as capability, which is what every one of BOSS's own 113 ideas is; BOSS's venture idea is the
   canvas, and `CLAUDE.md` now says so. A field, not a new ID prefix — a second class would have
   re-filed 113 records for a distinction one line carries.
+- **The sky is the ground: ice and paper swapped roles, and the full form left the header.** Ajesh:
+  *"i wonder if the sky blue and white is inversed. what would it look like. i think it would make it
+  more pop out.. also boss full form can drop from the header."* Both rendered from the real site and
+  put side by side; he chose the inversion. Ice `#D7EFFF` is now the page, paper `#F6F6F3` the cards,
+  the sunk surface one step deeper (`#C6E4F7`), the hairline bluer (`#A9CBE0`), `theme-color` follows.
+  Same five tokens, two roles swapped; every copy (help.css, board.js, the demo ribbon, BOSS's own
+  tokens.json) moved with it and og.png re-rendered. The nav wordmark is `✦ B.O.S.S.` alone again; the
+  hero rail still reads the name out. `boss board --html` on BOSS's own tree came up sky/paper untold.
 - **BOSS's own records wear DEC-020, and the test Ajesh asked for passed: it auto-flows.** Ajesh:
   *"update the brand and design colors for boss to reflect it, wanna test if it auto flows to board."*
   Changed only the records — `docs/design/tokens.json` (paper / ice / cornflower / persimmon; a new

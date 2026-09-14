@@ -11,8 +11,8 @@
    2026-09-13: paper / ice / cornflower / persimmon (DEC-020) — links are cornflower's
    text weight, the brand is persimmon; cornflower structures, persimmon points. */
 :root {
-  --ink: #14202B; --ink-2: #4A5A68; --ground: #F6F6F3; --surface: #E6EEF3;
-  --rule: #CDD5DB; --brand: #FF5C34; --on-brand: #14202B; --link: #2A5BAD; --code: #14202B;
+  --ink: #14202B; --ink-2: #4A5A68; --ground: #D7EFFF; --surface: #F6F6F3;
+  --rule: #A9CBE0; --brand: #FF5C34; --on-brand: #14202B; --link: #2A5BAD; --code: #14202B;
   --term-bg: #0A141D; --term-fg: #D7EFFF; --term-dim: #9DB4C6; --term-ok: #4FBF7F;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;

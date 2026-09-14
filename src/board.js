@@ -957,8 +957,8 @@ ${columnHtml}
      went crimson so it stays apart from persimmon. */
   :root {
     color-scheme: light dark;
-    --bg: #F6F6F3; --panel: #D7EFFF; --sunk: #E6EEF3;
-    --line: #CDD5DB;
+    --bg: #D7EFFF; --panel: #F6F6F3; --sunk: #C6E4F7;
+    --line: #A9CBE0;
     --hivis: #FF5C34; --hivis-text: #A82E14; --ink-on-hivis: #14202B;
     --caution: #7F5800; --stop: #B0123A;
     --stage-0: #9DB4C6; --stage-1: #4A5A68; --stage-2: #27404F; --stage-3: #14202B;
