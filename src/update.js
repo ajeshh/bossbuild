@@ -36,6 +36,12 @@ export const PKG = 'oyeboss';
 // had one that could never run. Fully qualified is not belt-and-braces here; it is the only form
 // that resolves. Pinned by a REGRESSION test.
 export const TAP = 'ajeshh/boss';
+// The formula is PKG (`oyeboss`, renamed with the package at v0.177.0). Until 2026-09-14 the
+// commands below said `${TAP}/boss` — the old formula name — and resolved only because the tap
+// carries a `formula_renames.json` (boss → oyeboss). One JSON file in a second repo was the whole
+// reason the upgrade command worked, and the regression test pinned the old name. Name the formula
+// that exists; the rename map is for installs that predate it, not for BOSS to lean on.
+export const FORMULA = `${TAP}/${PKG}`;
 const REGISTRY = `https://registry.npmjs.org/${PKG}/latest`;
 const TIMEOUT_MS = 4000;
 const STALE_DAYS = 7;
@@ -68,7 +74,7 @@ export function installKind(root = BOSS_ROOT) {
 }
 
 export function updateCommand(kind = installKind()) {
-  return kind === 'brew' ? `brew upgrade ${TAP}/boss`
+  return kind === 'brew' ? `brew upgrade ${FORMULA}`
     : kind === 'source' ? 'git pull && npm i -g .'
       : `npm i -g ${PKG}@latest`;
 }
@@ -79,7 +85,7 @@ export function updateCommand(kind = installKind()) {
 // would have silently emitted "brew upgrade …" as the way to UNINSTALL. Two strings that must agree
 // with nothing checking is the defect this file already names about PKG; it applied to the exit too.
 export function uninstallCommand(kind = installKind()) {
-  return kind === 'brew' ? `brew uninstall ${TAP}/boss` : `npm uninstall -g ${PKG}`;
+  return kind === 'brew' ? `brew uninstall ${FORMULA}` : `npm uninstall -g ${PKG}`;
 }
 
 async function fetchLatest() {

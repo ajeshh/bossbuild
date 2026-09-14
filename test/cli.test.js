@@ -370,7 +370,7 @@ test('being AHEAD of the registry is never reported as behind', () => {
 test('the upgrade command matches how BOSS was actually installed', () => {
   // Telling a Homebrew user to run `npm i -g` is advice that fails silently — they run it, nothing
   // changes, and they conclude the check is broken.
-  assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/boss/0.1.0')), `brew upgrade ${TAP}/boss`);
+  assert.equal(updateCommand(installKind('/opt/homebrew/Cellar/oyeboss/0.1.0')), `brew upgrade ${TAP}/oyeboss`);
   assert.equal(updateCommand(installKind('/usr/local/lib/node_modules/oyeboss')), 'npm i -g oyeboss@latest');
   assert.match(updateCommand(installKind('/Users/x/Projects/bossbuild')), /git pull/);
 });
@@ -384,9 +384,13 @@ test('REGRESSION: the Homebrew commands are TAP-QUALIFIED, because a bare `boss`
   //
   // A version-qualified assertion would rot the same way, so this asserts the SHAPE that makes the
   // command resolve — a user/tap prefix — rather than any literal.
+  //
+  // And the formula name is the PACKAGE name. Until 2026-09-14 this matched `…/boss` — the pre-rename
+  // formula — which resolved only through the tap's formula_renames.json (boss → oyeboss). The test
+  // pinned the name that no longer exists; the rename map was the only thing keeping it green.
   for (const cmd of [updateCommand('brew'), uninstallCommand('brew')]) {
-    assert.match(cmd, /^brew (upgrade|uninstall) \S+\/\S+\/boss$/,
-      `\`${cmd}\` must name the tap — a bare \`boss\` loses to the homebrew-cask formula of the same name`);
+    assert.match(cmd, /^brew (upgrade|uninstall) \S+\/\S+\/oyeboss$/,
+      `\`${cmd}\` must name the tap AND the current formula — a bare \`boss\` loses to the homebrew-cask formula of the same name, and \`…/boss\` is the pre-rename formula`);
   }
 });
 

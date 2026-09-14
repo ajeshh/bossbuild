@@ -30,6 +30,14 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The CLI's Homebrew advice names the formula that exists.** `boss update` and `boss remove --global`
+  told a Homebrew install to run `brew upgrade ajeshh/boss/boss` — the pre-rename formula, gone since
+  v0.177.0. It worked only because the tap carries a `formula_renames.json` (boss → oyeboss), so one
+  JSON file in a second repo was the whole reason the command resolved, and the regression test
+  pinned the dead name. Now `brew upgrade ajeshh/boss/oyeboss`; the test pins the current one.
+  Same pass, the ask behind it — a bare `brew install oyeboss` — is IDEA-116: that is a homebrew-core
+  formula, and their notability rule (225 stars / 90 forks / 90 watchers for a self-submission)
+  refuses it today. The tap line stays the install line.
 - **The board says when a card was added and when it shipped, and a Building FEAT's criteria count
   never hides.** Ajesh: *"it's confusing to see when something was completed, or even how old a card
   is. ideally both dates should be there"* — the board carried an AGE (`3w untouched`, `shipped 12d`)
