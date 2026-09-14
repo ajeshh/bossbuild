@@ -169,7 +169,7 @@ if (tapRes.error) {
     } else {
       const behind = releasesBetween(f.url, target);
       console.log(`  ${err('✗')} tap  ${bold(f.url)} ${dim(`vs npm ${target}`)} — ${bold(String(behind))} behind`);
-      findings.push(`Formula/oyeboss.rb is ${behind} releases behind npm — \`brew install ajeshh/boss/boss\` serves ${f.url}.`);
+      findings.push(`Formula/oyeboss.rb is ${behind} releases behind npm — \`brew install ajeshh/boss/oyeboss\` serves ${f.url}.`);
     }
   }
 }
