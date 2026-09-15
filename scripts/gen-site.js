@@ -1196,6 +1196,13 @@ writeFileSync(join(SITE, 'humane-product-canvas.html'), `<!doctype html>
 <meta name="color-scheme" content="light dark" />
 <meta name="robots" content="index,follow" />
 <link rel="canonical" href="${SITE_URL}/humane-product-canvas" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BOSS" />
+<meta property="og:title" content="Humane Product Canvas — fill it in, print it" />
+<meta property="og:description" content="Thirteen cells, two of them no conventional canvas has. Type into it, print it; your words stay in your browser. CC BY-SA." />
+<meta property="og:url" content="${SITE_URL}/humane-product-canvas" />
+<meta property="og:image" content="${SITE_URL}/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
 ${HEAD_ICONS()}
 <style>${inlineCss}
 .hpc { max-width: 64rem; margin: 0 auto; padding: var(--space-4) var(--space-4) var(--space-6); }
