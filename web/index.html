@@ -314,7 +314,7 @@ nav: home
             until one of them is actually happening to you.
           </p>
         </div>
-        <div class="snags-by">
+        <div class="snags-by four">
           <div class="moment">
             <h3 class="moment-h">before you build</h3>
             <details class="snag" name="snags">
@@ -357,6 +357,17 @@ nav: home
               <div class="snag-body"><p>You don't set them up. BOSS ships a roster, builders who make the product and mentors who coach you, each with its tools already declared and scoped. They arrive rung by rung, so you're never handed eleven agents on day one.</p><ul class="chips"><li><code>the roster</code></li></ul></div>
             </details>
             <details class="snag" name="snags">
+              <summary>"I need a page up today, and I don't want it to be sleazy"</summary>
+              <div class="snag-body"><p><code>/landing</code> composes what BOSS already holds — the brand, the tokens, the canvas's Promises cell — into a real page in your repo, checked against the dark-pattern catalog so it converts without one. Then <code>/ship</code> runs the pre-flight (no secrets in the client bundle, server-side authorization actually on), picks the cheapest reversible host, and hands back the live URL and the rollback.</p><ul class="chips"><li><code>/landing</code></li><li><code>/ship</code></li></ul></div>
+            </details>
+            <details class="snag" name="snags">
+              <summary>"We're both moving fast and quietly drifting apart"</summary>
+              <div class="snag-body"><p>AI makes each of you faster, which left alone pulls a two-person team into parallel. BOSS notices when real work has happened and <em>nothing has been decided together</em>. It notices through an untouched decision log, <strong>never by asking how your teamwork is going</strong>, because self-report is exactly what's blind to this.</p><ul class="chips"><li><code>mentor-cofounder</code></li><li><code>the conscience</code></li></ul></div>
+            </details>
+          </div>
+          <div class="moment">
+            <h3 class="moment-h">what the AI brings with it</h3>
+            <details class="snag" name="snags">
               <summary>"The AI bill arrived and I hadn't thought about it"</summary>
               <div class="snag-body"><p>Declare a budget <em>before</em> the first model call, not after the invoice. <code>/ai-cost</code> wires a per-call ledger, <code>/cost-review</code> reads it back, and if you're charging for the thing, BOSS watches spend against your price rather than against a number you invented.</p><ul class="chips"><li><code>/ai-cost</code></li><li><code>/cost-review</code></li></ul></div>
             </details>
@@ -372,16 +383,16 @@ nav: home
               <summary>"I don't want to become the thing I used to complain about"</summary>
               <div class="snag-body"><p>Fake scarcity, the hidden unsubscribe, the confirmshame. One pass probes <em>your shipped product</em> against a catalog of these. A separate check reads what the <em>model</em> proposed, because the dark pattern to worry about now is the one you were never asked about. <strong>One audits what you built, the other reads what you were about to be talked into.</strong></p><ul class="chips"><li><code>/trust</code></li><li><code>the deception loop</code></li></ul></div>
             </details>
+            <details class="snag" name="snags">
+              <summary>"A customer asked for my privacy policy and I have nothing"</summary>
+              <div class="snag-body"><p><code>/trust</code> builds the AI-specific set without the SOC2 theatre: a data-minimisation privacy policy with a real deletion path, a subprocessor list derived from what the app actually uses, the provider training opt-out as an act rather than a promise, and a trust-page stub. Never legal advice, and it says so.</p><ul class="chips"><li><code>/trust</code></li></ul></div>
+            </details>
           </div>
           <div class="moment">
-            <h3 class="moment-h">after you ship, or when you come back</h3>
+            <h3 class="moment-h">after you ship</h3>
             <details class="snag" name="snags">
               <summary>"This works at ten users and I suspect it breaks at a thousand"</summary>
               <div class="snag-body"><p>There's an architecture mentor for exactly this, and its job is to name the load-bearing decision rather than start refactoring, including the answer <em>"not yet, and here's the signal to watch for."</em> Rebuilding early is as expensive as rebuilding late.</p><ul class="chips"><li><code>mentor-architect</code></li></ul></div>
-            </details>
-            <details class="snag" name="snags">
-              <summary>"We're both moving fast and quietly drifting apart"</summary>
-              <div class="snag-body"><p>AI makes each of you faster, which left alone pulls a two-person team into parallel. BOSS notices when real work has happened and <em>nothing has been decided together</em>. It notices through an untouched decision log, <strong>never by asking how your teamwork is going</strong>, because self-report is exactly what's blind to this.</p><ul class="chips"><li><code>mentor-cofounder</code></li><li><code>the conscience</code></li></ul></div>
             </details>
             <details class="snag" name="snags">
               <summary>"I came back after two weeks and lost the thread"</summary>
@@ -391,7 +402,25 @@ nav: home
               <summary>"We decided this months ago and nobody remembers why"</summary>
               <div class="snag-body"><p>A decision record with the context, the call, the reasoning, and a <strong>falsifier</strong>: what would prove this wrong, and by when. It also stamps <em>who</em> decided: you, or you ratifying the AI's suggestion, or the AI on its own. Six months later that distinction turns out to matter a lot.</p><ul class="chips"><li><code>/decide</code></li></ul></div>
             </details>
+            <details class="snag" name="snags">
+              <summary>"It's live and I can't tell if anyone is actually using it"</summary>
+              <div class="snag-body"><p><code>/measure</code> is the post-ship counterpart to the fake door: given they're using it, is it working and are they staying? One activation metric, one retention curve, five to ten events at most — plus what classic analytics misses for an AI product: task completion, edit rate, cost per successful outcome.</p><ul class="chips"><li><code>/measure</code></li></ul></div>
+            </details>
+            <details class="snag" name="snags">
+              <summary>"People sign up, poke around, and never come back"</summary>
+              <div class="snag-body"><p><code>/onboard</code> designs the path from signup to the aha-moment, the highest-leverage number in the funnel. It derives that moment from who stayed versus who left, shrinks time-to-value, and sets up the concierge onboarding you do by hand for the first users. <strong>Success fast, not hooked fast.</strong></p><ul class="chips"><li><code>/onboard</code></li></ul></div>
+            </details>
+            <details class="snag" name="snags">
+              <summary>"Someone wants to pay and I don't have a way to take it"</summary>
+              <div class="snag-body"><p><code>/money</code> reads where you are and routes: no yes yet, go talk to people; a yes but no way to pay, take the first dollar and record it as evidence; paying customers, operate it — upgrades, dunning, raises done humanely. Never legal advice.</p><ul class="chips"><li><code>/money</code></li></ul></div>
+            </details>
+            <details class="snag" name="snags">
+              <summary>"Is this working? I honestly can't tell"</summary>
+              <div class="snag-body"><p><code>/health</code> is the post-launch verdict and the diagnosis in one read. It renders product-market fit honestly, defaulting to <em>not yet</em>, says where a decaying curve dies — activation, engagement, or the wallet — and routes to the fix. Under ten users, its answer is: talk to them.</p><ul class="chips"><li><code>/health</code></li></ul></div>
+            </details>
           </div>
+        </div>
+        </div>
         </div>
         </div>
         <div class="prose">

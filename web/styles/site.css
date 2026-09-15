@@ -334,6 +334,9 @@ details.walk > .prose { padding: var(--space-1) 0 0 1.1rem; border-left: var(--h
    The quotes are the scannable layer; each opens to its answer, one at a time (native
    exclusive accordion via name=, no script). Three moments read as three columns. */
 .snags-by { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-3); }
+.snags-by.four { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+.snags-by.four details.snag > summary { font-size: var(--step--1); }
+@media (max-width: 72rem) { .snags-by.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .moment-h { font-family: var(--font-mono); font-size: var(--step--1); font-weight: 600; letter-spacing: 0.04em; color: var(--rail-label); margin: 0 0 var(--space-2); padding-bottom: 0.4rem; border-bottom: 2px solid var(--color-structure); }
 details.snag { border-top: var(--hairline); }
 details.snag:last-child { border-bottom: var(--hairline); }
@@ -345,7 +348,7 @@ details.snag > summary:hover { color: var(--color-link); }
 .snag-body { padding: 0 0 var(--space-3); }
 .snag-body p { font-size: var(--step--1); color: var(--color-text-secondary); margin: 0 0 var(--space-2); }
 .snag-body p strong, .snag-body p code { color: var(--color-text); }
-@media (max-width: 60rem) { .snags-by { grid-template-columns: 1fr; gap: var(--space-3); } }
+@media (max-width: 60rem) { .snags-by, .snags-by.four { grid-template-columns: 1fr; gap: var(--space-3); } }
 
 /* --- three moves in a row (IDEA-117 §11, the about page) ------------------------ */
 .tagline { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.03em; color: var(--color-text-secondary); margin: 0 0 var(--space-3); max-width: var(--measure); }
