@@ -27,17 +27,19 @@
 
 ### The Quickstart arc
 
-**capture → talk to one person → pressure-test → unlock MVP.**
+**capture → pressure-test · talk to one person (either order) → unlock MVP.**
 
 1. **Capture** the idea with `/idea` — a living `docs/ideas/IDEA-NNN.md` you keep adding to. No
    pressure to finish it; re-run `/idea` whenever a new thought lands.
-2. **Talk to one person.** `/interview` preps a 15-minute Mom-Test call; `/evidence` turns what you
+2. **Pressure-test** with `/canvas` — the humane business read that names the riskiest assumption
+   and one week's experiment. A few cells at a time; a half-filled canvas with a sharp riskiest
+   assumption beats a full one of guesses.
+3. **Talk to one person.** `/interview` preps a 15-minute Mom-Test call; `/evidence` turns what you
    heard into graded `EVID-NNN` records — one thing, your notes, or a whole transcript — and flags
-   where you pitched instead of listened. **This is the step that pays for the others**: one real
-   conversation beats another pass over the canvas, and the grade ladder (stated-pain →
-   observed-behavior → commitment) is what stops a compliment reading as a receipt.
-3. **Pressure-test** with `/canvas` once it has legs — the humane business read that names the
-   riskiest assumption and one week's experiment. It's a far better canvas after step 2.
+   where you pitched instead of listened. The grade ladder (stated-pain → observed-behavior →
+   commitment) is what stops a compliment reading as a receipt.
+   **2 and 3 have no order between them.** Each sharpens the other: the canvas tells you what to
+   ask, the conversation fills the cells you were guessing at. Take whichever the week allows.
 4. **Unlock MVP** (`boss unlock mvp`) when the canvas holds and you're ready to build.
 
 `/prototype` is a legitimate start too: build the smallest clickable version first, then fill the

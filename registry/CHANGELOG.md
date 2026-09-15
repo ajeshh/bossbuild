@@ -53,8 +53,11 @@ rule above still applies to the whole section once it is stamped.
   *mode*; Start said `/boss` asks two things (three), that the cohort changes where you start (it
   changes the tour and the framing), and told the high-stakes founder to run `/ai-failure-states`
   *from the start* (it arrives at MVP). The fillable canvas page carries the generator stamp the
-  deployed check reads. Ruled, not changed: the conversation-before-canvas sequence (Ajesh: *no
-  fixed order*) — noted on the record for the places that still sequence it.
+  deployed check reads. And the ruling: **there is no fixed order between the canvas and the
+  conversation** (Ajesh: *"talking can come whenever"*). The template's Quickstart arc, the manifest
+  summary, `/boss`'s router, `/welcome`'s close and the site all sequenced the conversation first; now
+  *capture → pressure-test · talk to one person (either order) → unlock*, and a `coreLoop` step may be
+  a pair with no order inside it — `boss map` draws `canvas · interview` between the arrows.
 - **The front door is seen, not read (IDEA-117).** oyeboss.build measured at 4,231 words in one
   visual grammar, the mark at 40px, the generated pages behind a text link. Now: the built B at
   104px in the hero rail; *Building got cheap. Being wrong didn't.* as one picture; the hero shows

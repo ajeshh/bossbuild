@@ -28,6 +28,7 @@ import { HELP, SYMBOLS, WAYFINDING } from './help.js';
 import { GLOSSARY } from './glossary.js';
 import { bossVersion } from './paths.js';
 import { isoDay } from './clock.js';
+import { loopLine } from './map.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const HELP_SRC = join(HERE, '..', 'library', 'help');
@@ -119,7 +120,8 @@ function skillsHtml(projectDir, stamp) {
     if (!mode) continue;
     const here = (mode.skills || []).filter((s) => have.has(s) && skillStage[s] === layerId);
     if (!here.length) continue;
-    const loop = (mode.coreLoop || []).filter((s) => here.includes(s));
+    const steps = (mode.coreLoopSteps || []).map((st) => st.filter((s) => here.includes(s))).filter((st) => st.length);
+    const loop = steps.flat();
     // `boss map` HIDES these until they are relevant. A guide is a reference, so it shows
     // them — but flags them, because an unflagged flat list says "all of these are your
     // next move" and four of Quickstart's seventeen are BOSS's own upkeep.
@@ -130,7 +132,7 @@ function skillsHtml(projectDir, stamp) {
       .sort((a, b) => (tag(a) ? 1 : 0) - (tag(b) ? 1 : 0));
     const ordered = [...loop, ...rest];
     out.push(`<div class="rung-group"><h3>${esc(mode.name)} <span class="n">${ordered.length} skills</span></h3>${
-      loop.length > 1 ? `<p class="loop">the loop: ${loop.map((s) => `/${esc(s)}`).join(' → ')}</p>` : ''
+      loop.length > 1 ? `<p class="loop">the loop: ${loopLine(steps, (s) => `/${esc(s)}`)}</p>` : ''
     }<div class="skills">${ordered.map((s) =>
       `<div class="skill"><b>/${esc(s)}</b>${tag(s) ? `<i class="tag">${esc(tag(s))}</i>` : ''}<span>${esc(gloss(s, layerId))}</span></div>`).join('')}</div></div>`);
   }

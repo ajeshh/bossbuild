@@ -1,7 +1,7 @@
 {
   "id": "L0-quickstart",
   "name": "Quickstart",
-  "summary": "Light idea capture: describe an idea, shape it, keep it — a product lead, a coder and a venture mentor, one conversation with a real person before any canvas, and a conscience that notices capturing without testing.",
+  "summary": "Light idea capture: describe an idea, shape it, keep it — a product lead, a coder and a venture mentor, a canvas to pressure-test it and a conversation with a real person (either order), and a conscience that notices capturing without testing.",
   "requires": null,
   "agents": [
     "product-lead",
@@ -42,8 +42,7 @@
   "coreLoop": [
     "boss",
     "idea",
-    "interview",
-    "canvas",
+    ["canvas", "interview"],
     "pretotype",
     "evidence"
   ],

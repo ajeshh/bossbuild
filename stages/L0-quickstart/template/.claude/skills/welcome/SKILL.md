@@ -267,13 +267,13 @@ for a fresh project, name A and B and let the founder pick.
 > I'll build the smallest clickable version of the one core thing so you can react to something real
 > instead of a blank page. Building first is a fine place to start; we fill in the rest after.*
 >
-> *Once you can say what it is and who it's for, the step that pays for the rest is `/interview` —
-> it preps a 15-minute Mom-Test call and turns your notes into a graded record of what you actually
-> learned. One real conversation beats another pass over the canvas.*
->
-> *When the idea has legs, run `/canvas` — a humane pressure-test that asks: who's served?
-> what's the tension? what's the promise? who could be harmed? what's the riskiest assumption?
-> Canvas is the gate before you unlock MVP mode and start building."*
+> *Once you can say what it is and who it's for, two things pay for the rest, and there's no order
+> between them. `/interview` preps a 15-minute Mom-Test call and turns your notes into a graded
+> record of what you actually learned. `/canvas` is a humane pressure-test, a few cells at a time:
+> who's served? what's the tension? what's the promise? who could be harmed? what's the riskiest
+> assumption? Each sharpens the other — the canvas tells you what to ask, the conversation fills
+> the cells you were guessing at. The canvas is the gate before you unlock MVP mode and start
+> building."*
 
 > **Pivot here — offer the rest, don't dump it.** The founder now has the shape and the next
 > step. The three topics below (how the conscience works, how modes level up, where to find help)

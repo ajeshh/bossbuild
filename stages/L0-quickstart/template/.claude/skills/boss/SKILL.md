@@ -30,7 +30,7 @@ menu**, and the position is on disk:
 | On disk | Where they are | The door that opens |
 |---|---|---|
 | no `kind: venture` idea in `docs/ideas/` (a file with none of the venture fields is a capability, not the venture) | day 0 | **spin-up** — steps 1 → 7 below |
-| an IDEA, no `docs/evidence/EVID-*` | an idea nobody has been asked about | **one conversation** — the smallest real step; `/interview prep` if they have a person, the demand test (`/pretotype`) if they have a crowd, `/prototype` if they need to see it before they can ask anyone anything |
+| an IDEA, no `docs/evidence/EVID-*` | an idea nobody has been asked about | **the cheapest real step, and there is no fixed order** — `/canvas` to pressure-test it a few cells at a time, `/interview prep` if they have a person, the demand test (`/pretotype`) if they have a crowd, `/prototype` if they need to see it before they can ask anyone anything. Pick the one the week allows; never tell them a conversation must come before the canvas, or after |
 | evidence, no FEAT in `docs/ideas/` | heard, not built | **the smallest build** — `/prototype` for a thing to react to; `boss unlock mvp` then `/spec` only when it is plainly a real build |
 | a FEAT at `building` | mid-build | **finish or shrink it** — the board's line (`boss status`); `/spec` to read what "done" was; `/sunset FEAT-NNN` if it has stopped being the point |
 | a FEAT at `shipped` | launched | **the after-launch reads** — `/measure`, `/health`; if those are not in the menu yet, `boss sync` lays them down (the rung held them back until now) |
@@ -40,7 +40,7 @@ only when this skill runs, which is why it can be this long and the menu can be 
 
 | They say something like | What it is | Do |
 |---|---|---|
-| "I don't know if anyone wants this" · "would people pay" | the demand question | if nobody has been spoken to, a conversation first (`/interview prep`); otherwise the demand test (`/pretotype`) |
+| "I don't know if anyone wants this" · "would people pay" | the demand question | if nobody has been spoken to, a conversation (`/interview prep`); otherwise the demand test (`/pretotype`) |
 | "I want to see it" · "get something on a screen" | build-first is legitimate | `/prototype` |
 | "I talked to someone" · "here are my notes" · a pasted transcript | evidence arriving | `/evidence` — it reads the size (one thing, a call's notes, a whole transcript) and does the right amount |
 | "should I build X or Y" · "is this worth it" | a judgment call | the canvas cell it turns on (`/canvas`), or `/consult` when it cuts across |

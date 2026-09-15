@@ -12,6 +12,11 @@ import { dim, bold } from './ui.js';
 // `hasShipped` lives in earned.js now — the fold and the lay-down read the same predicate.
 import { hasShipped, stillDeferred } from './earned.js';
 
+// The loop as one line: ` → ` between steps, ` · ` inside a step whose verbs have no order between
+// them (a rung says so in its manifest: a step that is a list). `canvas · interview` reads as a
+// pair, not a sequence — the pair is the information.
+export const loopLine = (steps, fmt = (s) => s) => steps.map((st) => st.map(fmt).join(' · ')).join(' → ');
+
 function projectSkillMd(projectDir, name) {
   return join(projectDir, '.claude', 'skills', name, 'SKILL.md');
 }
@@ -103,14 +108,16 @@ function renderMap(projectDir, stamp, opts = {}) {
     // 20th, `/spec` 21st of 21. So the first thing a freshly-unlocked founder read was AI-cost
     // infrastructure, and the sequence they were meant to repeat was invisible. Alphabetical order
     // is what a list looks like when nothing is sequencing it; a rung is a loop, not an index.
-    const loop = (mode.coreLoop || []).filter((s) => skillsHere.includes(s) && !post.has(s) && !aside.has(s));
+    const inStep = (s) => skillsHere.includes(s) && !post.has(s) && !aside.has(s);
+    const steps = (mode.coreLoopSteps || []).map((st) => st.filter(inStep)).filter((st) => st.length);
+    const loop = steps.flat();
     const inLoop = new Set(loop);
     const now = [...loop, ...skillsHere.filter((s) => !post.has(s) && !aside.has(s) && !inLoop.has(s))];
     lines.push(`    ${bold(mode.name)}`);
     // Name the sequence before listing it — the order alone reads as an accident unless something
     // says it isn't. One dim line, and only when there is a loop to name.
     if (loop.length > 1) {
-      lines.push(`      ${dim('the loop:')} ${dim(loop.join(' → '))}`);
+      lines.push(`      ${dim('the loop:')} ${dim(loopLine(steps))}`);
     }
     for (const s of now) {
       const { gloss } = installedGloss(projectDir, s, layerId);

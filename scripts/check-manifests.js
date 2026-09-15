@@ -92,7 +92,8 @@ function checkStage(stageId) {
   // a headline that loses an entry shows a shorter preview, while a coreLoop that loses one silently
   // drops that step out of the sequence the founder is being told to repeat. The rendered arrow line
   // ("spec → smoke → log → close") would still look complete and would be missing a station.
-  for (const s of manifest.coreLoop || []) {
+  // A step may be a list (verbs with no order between them) — flatten before checking.
+  for (const s of (manifest.coreLoop || []).flat()) {
     if (!(manifest.skills || []).includes(s)) {
       errors.push(`coreLoop lists '${s}' which is not in this stage's skills (the loop would render with a step missing)`);
     }
@@ -100,7 +101,7 @@ function checkStage(stageId) {
   // A skill can't be both the loop you repeat and an after-you-ship skill folded out of sight —
   // `boss map` filters postLaunch out of the loop, so this would be a silent no-op, not an error a
   // founder could see.
-  for (const s of manifest.coreLoop || []) {
+  for (const s of (manifest.coreLoop || []).flat()) {
     if ((manifest.postLaunch || []).includes(s)) {
       errors.push(`coreLoop lists '${s}' which is also postLaunch (it would be folded out of the loop it defines)`);
     }
@@ -123,7 +124,7 @@ function checkStage(stageId) {
     if (!(manifest.skills || []).includes(s)) {
       errors.push(`aside lists '${s}' which is not in this stage's skills (the fold count would lie)`);
     }
-    if ((manifest.coreLoop || []).includes(s)) {
+    if ((manifest.coreLoop || []).flat().includes(s)) {
       errors.push(`aside lists '${s}' which is also coreLoop (it would be folded out of the loop it defines)`);
     }
   }

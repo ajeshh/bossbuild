@@ -86,14 +86,19 @@ export function loadModes() {
         //
         // Each rung's loop is TAKEN FROM ITS OWN AUTHORED WORKING RULES, never invented here —
         // MVP's from `claude-append.md` rule 5 ("open → spec → build → smoke → log → close"),
-        // Quickstart's from its CLAUDE.md ("capture → talk to one person → pressure-test"), with
+        // Quickstart's from its CLAUDE.md ("capture → pressure-test · talk to one person"), with
         // `/evidence` as the step `/canvas` hands its one-week experiment to. `/interview` joined
         // the sequence in v0.258.0: Quickstart shipped the two verbs that turn a conversation into
         // a graded signal and narrated an arc that never told anyone to have one, so the rung's
         // loop went capture → canvas — pressure-testing an idea against nothing but the founder.
-        // Empty = no declared loop, render
-        // alphabetically as before; V1 and Scale ship 2 skills and 1, where ordering earns nothing.
-        coreLoop: m.coreLoop || [],
+        // A step may be a LIST of verbs with no order inside it — Quickstart's `["canvas",
+        // "interview"]`: Ajesh, 2026-09-14, "talking can come whenever" (IDEA-118). `coreLoop` is the
+        // flat list every membership test reads; `coreLoopSteps` keeps the grouping for the
+        // renderers, which draw ` · ` inside a step and ` → ` between them. Empty = no declared
+        // loop, render alphabetically as before; V1 and Scale ship 2 skills and 1, where ordering
+        // earns nothing.
+        coreLoop: (m.coreLoop || []).flat(),
+        coreLoopSteps: (m.coreLoop || []).map((s) => (Array.isArray(s) ? s : [s])),
         // Skills whose moment only arrives once something is LIVE — the "After you ship" arc
         // (GUIDE.md groups them the same way). `boss map` folds these to a single line until the
         // project has actually shipped a FEAT, so a founder at MVP with one idea isn't read a menu
