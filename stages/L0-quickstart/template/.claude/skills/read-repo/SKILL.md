@@ -68,7 +68,8 @@ Always include the legitimate **"nothing yet — keep building, BOSS stays quiet
 
 **4. How this changes your working model — honestly, and without numbers.** They're about to work
 differently, so say how: the conscience will speak occasionally and hand the decision back; `/spec`
-before a feature is the one habit that pays; `boss status` when they come back. **Never claim a
+before a feature is the one habit that pays (at MVP — name the unlock if they're at Quickstart);
+`boss status` when they come back. **Never claim a
 measured gain.** BOSS has no evidence for "you'll ship faster" or "30% fewer bugs" — promising a
 benefit nobody measured is the exact self-fooling BOSS exists to prevent, and the first founder who
 checks will find nothing behind it. *"Here's what changes"* is honest; *"here's what you'll gain"* is
@@ -90,8 +91,12 @@ position read is a conversation opener, not a preamble.
    flattery, no diagnosing the founder, no certainty the material doesn't support; if thin, say less.
 3. **Suggest the disciplines that fit** (recommend, don't auto-apply) — based on what you read, name
    the 1–3 optional disciplines worth turning on, and why: AI in the path → `/ai-first-init`; UI
-   accumulating → `/design-tokens-init`; untrusted input / regulated data → opt into `secrets-guard` +
-   `/red-team`; a target user worth modeling → `/persona`. The founder confirms each.
+   accumulating → `/design-tokens-init`; untrusted input / regulated data → `boss hooks enable
+   secrets-guard` + `/red-team`; a target user worth modeling → `/persona`. The founder confirms each.
+   **Check the rung before naming a verb** (`.boss/manifest.json` → `skills`): `/ai-first-init`,
+   `/design-tokens-init`, `/red-team` and `/spec` arrive with MVP. On a Quickstart adopt say so —
+   *"that's an MVP verb; `boss unlock mvp` lays it down"* — rather than naming a command that isn't
+   there. `boss map` shows what is.
 4. **Show your work** — end with a 3-line summary of exactly what you wrote (which files), so it's
    obvious what to keep or revert. *"I tailored AGENTS.md's overview, seeded the brain with a first
    read, and suggested `/ai-first-init`. All of it is in your working tree — diff or revert anything."*

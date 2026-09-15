@@ -38,11 +38,33 @@ const SOURCE_DIRS = ['src', 'app', 'lib', 'components', 'pages'];
 const SOURCE_EXT = /\.(js|mjs|cjs|ts|tsx|jsx|py|rb|go|rs|swift|kt|java|dart|php|ex|exs)$/;
 const MAX_FILES = 4000;
 
-/** Has this project shipped a FEAT? Frontmatter-true; false when the board cannot be read. */
+/** Has this project shipped? A FEAT in Shipped on the board (frontmatter-true), or a repo that was
+ * already live when adopted — `boss adopt` read a deploy config or CI plus tests and said "shipped
+ * and tested" out loud; the stamp records it as `shippedBefore` so the after-you-ship verbs are not
+ * folded away from an app with users (IDEA-118). False when nothing can be read. */
 export function hasShipped(projectDir) {
+  try {
+    const stamp = JSON.parse(readFileSync(join(projectDir, '.boss', 'manifest.json'), 'utf8'));
+    if (stamp.shippedBefore === true) return true;
+  } catch { /* no stamp — the board decides */ }
   try {
     return collectBoard(projectDir).cards.some((c) => c.column === 'Shipped' && /^FEAT/i.test(c.id));
   } catch { return false; }
+}
+
+/** For `boss adopt`: which of a stage's earned groups are already earned by the repo being adopted
+ * (evaluated now, with `shippedBefore` standing in for the board), and which stay held. Returns
+ * `{ skip, deferred }` — skill names to keep off disk, and the groups to record on the stamp. */
+export function holdAtAdopt(manifest, projectDir, { shippedBefore = false } = {}) {
+  const skip = [];
+  const deferred = {};
+  for (const g of earnedGroups(manifest)) {
+    const earned = g.until === 'shipped' ? (shippedBefore || hasShipped(projectDir)) : PREDICATE[g.until] ? PREDICATE[g.until](projectDir) : false;
+    if (earned) continue;
+    skip.push(...g.skills);
+    deferred[g.group] = g.skills;
+  }
+  return { skip, deferred };
 }
 
 /** Does the founder's code call a model? Same regex and roots as cost-budget-loop; fails closed. */

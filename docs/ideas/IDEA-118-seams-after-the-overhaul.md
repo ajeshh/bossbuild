@@ -84,6 +84,32 @@ then shipped. The MVP skills' hand-offs are clean (every verb they name is insta
 Not changed, noted: at MVP with zero code, `boss status`'s standing seam line is V1's
 (*a `created_at` on user rows…*) — true, cheap, and early. Leave until a founder says so.
 
+## The adopted-repo door (*"do the adopted-repo door"*, 2026-09-14)
+
+A throwaway repo with real code (manifest, source, tests, CI, a deploy config) at two sizes; `boss
+adopt`, the readers, `boss hooks`, `boss remove`, `/read-repo`. Three seams, one family — a rule
+added to `applyStage` (new/unlock) and not to `applyStageSafe` (adopt):
+
+- [x] **M. Adopt kept none of the holds.** At MVP it laid down all 28 skills (unlock holds 12 until
+  earned) and all ten opt-in hooks (new/unlock hold them until `boss hooks enable`). Now
+  `applyStageSafe` takes the same `skipSkills`/`skipHooks`; adopt evaluates the earned predicates
+  against the repo being adopted (`holdAtAdopt`) and prints the *held back … `boss sync` lays them
+  down* line unlock prints.
+- [x] **N. "Shipped" was board-only.** A live adopted repo — the deploy/CI + tests signal adopt itself
+  calls *shipped and tested* — had `/measure`, `/health` folded as *for after you ship*. The stamp
+  records `shippedBefore: true`; `hasShipped` reads it; the after-you-ship verbs are on disk and
+  unfolded for an app that has users.
+- [x] **O. The small-repo why line hid what it saw.** A repo under the five-file bar printed only
+  *2 source file(s)* — the manifest, tests, CI and deploy it read went unsaid, so the founder could
+  see neither why it stayed at Quickstart nor the bar. Now: *2 source file(s) — MVP starts at 5 with
+  a build manifest · package.json · tests · CI · deploy config (vercel.json)*.
+- [x] **P. `/read-repo`** named `/spec`, `/ai-first-init`, `/design-tokens-init`, `/red-team` with no
+  rung (all MVP; a Quickstart adopt has none) and *opt into `secrets-guard`* without the command.
+  One check-the-rung sentence and `boss hooks enable secrets-guard`.
+
+Clean as found: the adopt output and Next block, `boss status`'s adopted branch, `/welcome`'s
+Path 0, `boss remove`'s preview, the CLAUDE.md marked block.
+
 ## Not a task
 
 - **The site's "No analytics" footer beside the GA tag** — raised; Ajesh: *"site has nothing to do
@@ -93,3 +119,4 @@ Not changed, noted: at MVP with zero code, `boss status`'s standing seam line is
 - 2026-09-14 — the walk; seven seams; Ajesh took A–F, ruled G (no order), dropped the analytics note.
 - 2026-09-14 — *"continue"*: G applied; A–G done.
 - 2026-09-14 — the MVP rung walked (H–L); BOSS's own install synced (29 files, 13 retired loop copies removed, 7 BOSS-tuned agents kept).
+- 2026-09-14 — the adopted-repo door walked (M–P). All three doors done: new, adopt, unlock through ship.

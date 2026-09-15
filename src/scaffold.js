@@ -171,13 +171,14 @@ export function appendGitignoreBlock(stageIds, targetDir) {
 // Recursive copy-if-absent: copy every template file that doesn't already exist
 // in the target, skipping (never clobbering) any the founder already has. The
 // non-destructive half of `boss adopt`. Records copied + skipped paths.
-function cpSafeTree(srcDir, destDir, copied, skipped) {
+function cpSafeTree(srcDir, destDir, copied, skipped, held = new Set()) {
   mkdirSync(destDir, { recursive: true });
   for (const name of readdirSync(srcDir)) {
     const s = join(srcDir, name);
     const d = join(destDir, name);
+    if (held.has(s)) continue;   // held back until earned or asked for — not copied at all
     if (statSync(s).isDirectory()) {
-      cpSafeTree(s, d, copied, skipped);
+      cpSafeTree(s, d, copied, skipped, held);
     } else if (existsSync(d)) {
       skipped.push(d);
     } else {
@@ -191,7 +192,7 @@ function cpSafeTree(srcDir, destDir, copied, skipped) {
 // don't collide, substitute placeholders in just those (never touch the
 // founder's own files), and fold any claude-append.md block into CLAUDE.md.
 // Returns { copied, skipped, claudePreexisted, appendedClaude } for reporting.
-export function applyStageSafe(stageId, targetDir, vars) {
+export function applyStageSafe(stageId, targetDir, vars, { skipSkills = [], skipHooks = null } = {}) {
   const templateDir = join(STAGES_DIR, stageId, 'template');
   if (!existsSync(templateDir)) {
     throw new Error(`Stage ${stageId} has no template/ dir (not authored yet).`);
@@ -199,7 +200,16 @@ export function applyStageSafe(stageId, targetDir, vars) {
   const claudePreexisted = existsSync(join(targetDir, 'CLAUDE.md'));
   const copied = [];
   const skipped = [];
-  cpSafeTree(templateDir, targetDir, copied, skipped);
+  // The same holds `applyStage` keeps for `boss new` / `boss unlock`: earned-gated skills and the
+  // opt-in hooks stay off disk until earned or asked for. Adopt used to copy all of them — the
+  // one path most founders meet first got every verb and every guard the other path withholds
+  // (IDEA-118).
+  const hooksHeld = skipHooks ?? (readStageManifest(stageId).optionalHooks || []);
+  const held = new Set([
+    ...skipSkills.map((n) => join(templateDir, '.claude', 'skills', n)),
+    ...hooksHeld.map((n) => join(templateDir, '.claude', 'hooks', `${n}.js`)),
+  ]);
+  cpSafeTree(templateDir, targetDir, copied, skipped, held);
 
   // Substitute placeholders only in the files we actually wrote.
   for (const f of copied) {

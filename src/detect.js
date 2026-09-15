@@ -118,8 +118,15 @@ function suggestStage(scan) {
 
   if (!realBuild) {
     // Say what was missing, not just "nothing found" — the founder should be able to disagree.
+    // And say what WAS found: a repo with a manifest, tests, CI and a deploy config but two source
+    // files used to print only "2 source file(s)", so the founder could see neither why it stayed
+    // at Quickstart nor what the bar is (IDEA-118).
     if (scan.sourceFiles === 0) why.push('no source files yet');
-    else why.push(`${scan.sourceFiles} source file(s)${scan.manifests.length ? '' : ', no build manifest'}`);
+    else why.push(`${scan.sourceFiles} source file(s)${scan.manifests.length ? '' : ', no build manifest'} — MVP starts at ${REAL_BUILD_FILES} with a build manifest`);
+    if (scan.manifests.length) why.push(scan.manifests.join(' + '));
+    if (scan.testFiles || scan.hasTestDir) why.push('tests');
+    if (scan.hasCI) why.push('CI');
+    if (scan.deploy.length) why.push(`deploy config (${scan.deploy[0]})`);
     return { stage: 'L0-quickstart', why, beyond: false };
   }
 

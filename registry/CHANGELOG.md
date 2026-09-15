@@ -66,7 +66,15 @@ rule above still applies to the whole section once it is stamped.
   earned skills as *earned — `boss sync` lays them down* instead of dropping them until sync; and
   *Ready for V1: everything BOSS can check is in place* says, when the bar has conditions it cannot
   see, *what BOSS can check is in place; the rest is yours to judge* — no tally, by `readiness.js`'s
-  own rule.
+  own rule. **The adopted-repo door, same walk:** `boss adopt` kept none of the holds `boss new` and
+  `boss unlock` keep — at MVP it laid down all 28 skills and all ten opt-in hooks; now it holds the
+  earned groups (evaluated against the repo: a live repo — deploy config or CI, plus tests — counts
+  as shipped, recorded as `shippedBefore` on the stamp so `/measure` and `/health` are not folded
+  away from an app with users; a model call in the source earns the AI group) and the opt-in hooks
+  until `boss hooks enable`, and says what it held. A repo under the five-file bar now says what it
+  read and the bar (*2 source file(s) — MVP starts at 5 with a build manifest · package.json ·
+  tests · CI · deploy config*) instead of the count alone. `/read-repo` names the rung before it
+  names an MVP verb, and the command that turns `secrets-guard` on.
 - **The front door is seen, not read (IDEA-117).** oyeboss.build measured at 4,231 words in one
   visual grammar, the mark at 40px, the generated pages behind a text link. Now: the built B at
   104px in the hero rail; *Building got cheap. Being wrong didn't.* as one picture; the hero shows

@@ -5,7 +5,7 @@ import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from 
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
-import { heldBack, earnedGroups, newlyEarned, describeUntil, describeEarned } from './earned.js';
+import { heldBack, earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
 import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
@@ -201,12 +201,22 @@ function cmdAdopt(args) {
   const gitignorePreexisted = existsSync(join(targetDir, '.gitignore'));
   const copied = [];
   const skipped = [];
+  // The same holds `boss unlock` keeps, evaluated against the repo being adopted: a rung's
+  // earned-gated skills stay off disk until earned (a live repo — deploy config or CI, plus tests
+  // — counts as shipped; a model call in the source counts as calling a model), and the opt-in
+  // hooks stay off until `boss hooks enable`. Adopt used to lay down all of both (IDEA-118).
+  const shippedBefore = Boolean(detected && detected.beyond);
+  const deferred = {};
+  const heldSkills = [];
   for (const s of chain) {
     const m = readStageManifest(s);
-    const r = applyStageSafe(s, targetDir, stageVars(name, s, m.name));
+    const hold = holdAtAdopt(m, targetDir, { shippedBefore });
+    const r = applyStageSafe(s, targetDir, stageVars(name, s, m.name), { skipSkills: hold.skip });
     stampManaged(targetDir, [s]);
     copied.push(...r.copied);
     skipped.push(...r.skipped);
+    if (Object.keys(hold.deferred).length) deferred[s] = hold.deferred;
+    heldSkills.push(...hold.skip);
   }
 
   // 2a. If the repo already had an AGENTS.md, we skipped the template's — leave
@@ -263,9 +273,11 @@ function cmdAdopt(args) {
   }
   const stamp = {
     name, bossVersion: bossVersion(), stage: stageId, mode: manifest.name,
-    installedLayers: chain, agents: [...u.agents], skills: [...u.skills],
+    installedLayers: chain, agents: [...u.agents], skills: [...u.skills].filter((sk) => !heldSkills.includes(sk)),
     hooks: [...u.hooks], loops: [...u.loops],
     createdAt: new Date().toISOString(), adopted: true,
+    ...(shippedBefore ? { shippedBefore: true } : {}),
+    ...(Object.keys(deferred).length ? { deferred } : {}),
   };
   writeStamp(targetDir, stamp);
   // config.json only if absent — never clobber a founder's prefs.
@@ -305,6 +317,14 @@ function cmdAdopt(args) {
     if (detected.beyond) {
       console.log(`    ${warn('▸')} this looks past MVP — shipped and tested. ${bold('boss unlock v1')} adds the design`);
       console.log(`      system, db and board discipline ${dim("when you want it; BOSS won't climb there on its own.")}`);
+    }
+  }
+  // What stays held back, and what earns it — the line `boss unlock` prints, for the same reason.
+  for (const [s, groups] of Object.entries(deferred)) {
+    const m = readStageManifest(s);
+    for (const [group, sk] of Object.entries(groups)) {
+      const until = (m.earned || {})[group];
+      console.log(`    ${dim('·')} ${dim(`${sk.length} held back ${describeUntil(until)}:`)} ${skillsLine(sk, 3).replace(/ \(`boss map`\)$/, '')} ${dim('— `boss sync` lays them down then.')}`);
     }
   }
   // `skipped` counts COLLISIONS — files BOSS declined to overwrite because you already had them.

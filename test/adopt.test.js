@@ -115,3 +115,40 @@ test("adopt does not overwrite a founder's own Claude Code settings", () => {
   assert.ok(cmds.some((c) => c.includes('conscience.js')), "BOSS's hook must be added alongside");
   assert.ok((s.permissions.deny || []).length > 0, 'the secrets deny-list must be merged in');
 });
+
+// --- IDEA-118 — adopt keeps the holds `boss new` / `boss unlock` keep ------------------------------
+// Adopt used to lay down a rung's entire skill list and every opt-in hook, so the path most founders
+// meet first got twelve verbs and ten guards the other path withholds until earned or asked for.
+test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does; a live repo counts as shipped', () => {
+  const files = {
+    'package.json': '{"name":"x"}', 'vercel.json': '{}',
+    'test/a.test.js': "test('x',()=>{})\n", '.github/workflows/ci.yml': 'on: push\n',
+  };
+  for (let i = 0; i < 7; i++) files[`src/m${i}.js`] = `export const f${i} = ${i}\n`;
+  const dir = project(files);
+  const out = boss(['adopt'], dir);
+  assert.match(out, /MVP mode/);
+  const skills = readdirSync(join(dir, '.claude', 'skills'));
+  // shipped before adoption → the after-you-ship verbs are on disk, not folded away from a live app
+  for (const s of ['measure', 'health', 'landing']) assert.ok(skills.includes(s), `${s} laid down — the repo is live`);
+  // nothing calls a model → that group stays held, and the line says what earns it
+  for (const s of ['ai-cost', 'evals', 'ai-failure-states']) assert.ok(!skills.includes(s), `${s} held`);
+  assert.match(out, /5 held back when the app first calls a model/);
+  // opt-in hooks stay off disk until `boss hooks enable`
+  const hooks = readdirSync(join(dir, '.claude', 'hooks'));
+  assert.ok(!hooks.includes('secrets-guard.js') && !hooks.includes('smoke-guard.js'), 'opt-in hooks held');
+  assert.ok(hooks.includes('conscience.js'), 'the always-on hook lands');
+  const stamp = JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8'));
+  assert.equal(stamp.shippedBefore, true);
+  assert.deepEqual(Object.keys(stamp.deferred['L1-mvp']), ['aiMediated']);
+  assert.ok(!stamp.skills.includes('ai-cost') && stamp.skills.includes('measure'));
+  // and the map does not tell a live app its after-you-ship verbs are "for after you ship"
+  assert.doesNotMatch(boss(['map'], dir), /for after you ship/);
+});
+
+test('a small repo adopts at Quickstart and the why line names what it found and the bar', () => {
+  const dir = project({ 'package.json': '{"name":"x"}', 'src/a.js': '1\n', 'test/a.test.js': '1\n', 'vercel.json': '{}' });
+  const out = boss(['adopt'], dir);
+  assert.match(out, /Quickstart mode/);
+  assert.match(out, /2 source file\(s\) — MVP starts at 5 with a build manifest · package\.json · tests · deploy config \(vercel\.json\)/);
+});

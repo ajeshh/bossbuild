@@ -33,8 +33,9 @@ npm run check            # zero findings = clean; check:published says how far n
   recap reads the founder's canvas, the earned-seven fold after the first ship, no tally on *Ready
   for V1*). **Ruled: no fixed order between the conversation and the canvas** — the arc is now
   *capture → pressure-test · talk to one person (either order) → unlock*; a `coreLoop` step may be
-  a pair. BOSS's own install synced 2026-09-14 (`--keep-mine`; the 7 BOSS-tuned agents stay). **Not
-  walked: the adopted-repo door** (`boss adopt` → `/read-repo`) — same method, one pass, when asked.
+  a pair. BOSS's own install synced 2026-09-14 (`--keep-mine`; the 7 BOSS-tuned agents stay). The
+  adopted-repo door walked too: adopt now keeps the holds new/unlock keep, a live repo counts as
+  `shippedBefore`, the small-repo why line says what it read. All three doors done.
 - **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
