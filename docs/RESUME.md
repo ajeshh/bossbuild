@@ -3,7 +3,7 @@ id: RESUME
 type: resume
 owner: product-lead
 status: active
-updated: 2026-09-13
+updated: 2026-09-14
 version: 0.325.0
 ---
 
@@ -26,6 +26,12 @@ npm run check            # zero findings = clean; check:published says how far n
 
 ## Now
 
+- **IDEA-118 (2026-09-14, `94e800c`, Unreleased) — the seams after the overhaul.** Walked the founder
+  path end to end; seven seams fixed (day-0 collapse, `/boss` not `/idea` for the venture holes, the
+  verb gate in every reader, the duplicate team hole, one cohort vocabulary + `cohort: skipped`,
+  `src/clock.js` local dates, the small copy). **Ruled, not changed: no fixed order between the
+  conversation and the canvas** — the router row, the site's snag line and `boss map`'s loop still
+  sequence it; softening them is Ajesh's (task G on the record). Site's GA ≠ the CLI's claim — dropped.
 - **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
