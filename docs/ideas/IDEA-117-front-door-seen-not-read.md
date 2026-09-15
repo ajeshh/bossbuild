@@ -132,6 +132,11 @@ job is two clicks — Copy and Demo. Target ~1,200 words visible; the deep parag
     too much and not well distributed or designed."*). Read `team.html` first (it is the section's
     door), then `about.html`; measure words and grammar before touching either.
 
+**Pass two — started the same evening:** the snags landed first (Ajesh: *"wondering if a better or
+different way to represent or share this"*): seventeen, not twelve, sorted by the moment they bite —
+before you build (4) · while you build (9) · after you ship, or when you come back (4) — each quote a
+`<details name="snags">` that opens to its answer and verb, one at a time, no script.
+
 **Pass two (after a read of pass one):** the two-week timeline for *four things*; the records → pages
 flow for *what it adds up to*; the ladder with derived counts; the twelve snags as a scannable
 you-say / BOSS-runs list with `<details>`; the conscience loop as four nodes.
