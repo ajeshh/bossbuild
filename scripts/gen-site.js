@@ -216,6 +216,42 @@ ${stations}
   </div>`;
 };
 
+// One card per rung, read from the manifest the CLI reads (IDEA-117 §8): the summary, who
+// arrives, the core loop, what is folded until earned, and the unlock line. The guide's prose
+// folds under each card; the card itself cannot lag the product because it never typed a verb.
+const chips = (names, cls = '') => `<ul class="chips${cls ? ` ${cls}` : ''}">${names.map((n) => `<li><code>${esc(n)}</code></li>`).join('')}</ul>`;
+const EARNED = { shipped: 'folded until a feature ships', 'llm-in-source': 'folded until the app calls a model' };
+const rungCard = (m, i) => {
+  const mode = loadModes().find((x) => x.id === m.id);
+  const d = data.modes[i];
+  const core = mode.coreLoop || [];
+  const groups = [];
+  for (const [key, when] of Object.entries(mode.earned || {})) {
+    const names = (mode[key] || []).filter((s) => !core.includes(s));
+    if (names.length) groups.push({ label: EARNED[when] || `folded until ${when}`, names });
+  }
+  const grouped = new Set([...core, ...groups.flatMap((g) => g.names)]);
+  const rest = m.skills.map((s) => s.name).filter((s) => !grouped.has(s));
+  const agents = m.agents.map((a) => a.name);
+  const hint = esc(mode.graduationHint || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/(boss unlock [a-z0-9-]+)/g, '<code>$1</code>');
+  return `<div class="rung" id="rung-${esc(m.word)}">
+  <div class="rung-head">
+    <h3>${esc(m.name)}</h3>
+    <span class="rung-meta"><b>${d.cumAgents}</b> on the team · <b>${d.cumSkills}</b> skills</span>
+  </div>
+  <p class="rung-summary">${esc(mode.summary || '')}</p>
+  <dl class="rung-rows">
+    ${agents.length ? `<div><dt>arrives</dt><dd>${chips(agents, 'agents')}</dd></div>` : ''}
+    ${core.length ? `<div><dt>the loop</dt><dd>${chips(core.map((s) => `/${s}`))}</dd></div>` : ''}
+    ${rest.length ? `<div><dt>${core.length ? 'also' : 'verbs'}</dt><dd>${chips(rest.map((s) => `/${s}`))}</dd></div>` : ''}
+    ${groups.map((g) => `<div><dt>${esc(g.label)}</dt><dd>${chips(g.names.map((s) => `/${s}`), 'folded')}</dd></div>`).join('\n    ')}
+    ${hint ? `<div><dt>next</dt><dd class="rung-next">${hint}</dd></div>` : ''}
+  </dl>
+</div>`;
+};
+for (const [i, m] of roster.entries()) blocks[`RUNG_${m.word.toUpperCase().replace(/[^A-Z0-9]/g, '_')}`] = () => rungCard(m, i);
+
 blocks.ROSTER = () => roster.map((m) => {
   if (!m.agents.length) return '';
   const cards = m.agents.map((a) => `        <div class="agent ${a.kind}">
@@ -826,6 +862,9 @@ blocks.COUNT_BUILDERS = () => String(data.builders);
 blocks.COUNT_PRACTICES = () => (data.practices == null ? '—' : String(data.practices));
 blocks.COUNT_VERDICTS = () => (data.verdicts == null ? '—' : String(data.verdicts.total));
 blocks.VERSION = () => V;
+// "On this page": the h2s of the fragment, linked by the ids anchorHeadings() stamps. The block
+// leaves a marker because ids do not exist yet when blocks expand; the loop fills it after.
+blocks.TOC = () => '<!--TOC-->';
 blocks.MARK = () => MARK('mark mark-lg', 'large');
 
 // ---- build ----------------------------------------------------------------
@@ -1023,11 +1062,16 @@ for (const f of pages) {
     console.error(`  ✗ ${f}: fragments must not declare <footer> — the shell renders it (and stamps {{VERSION}})`);
     process.exitCode = 1;
   }
-  content = content.replace(/\{\{([A-Z_]+)\}\}/g, (m0, key) => {
+  content = content.replace(/\{\{([A-Z0-9_]+)\}\}/g, (m0, key) => {
     if (!blocks[key]) { console.error(`  ✗ ${f}: unknown block {{${key}}}`); process.exitCode = 1; return m0; }
     return blocks[key]();
   });
   content = anchorHeadings(content);
+  if (content.includes('<!--TOC-->')) {
+    const items = [...content.matchAll(/<h2 id="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/g)]
+      .map(([, id, inner]) => `<li><a href="#${id}">${inner.replace(/<[^>]+>/g, '')}</a></li>`);
+    content = content.replace('<!--TOC-->', `<nav class="toc" aria-label="On this page"><span class="toc-label">on this page</span><ol>${items.join('')}</ol></nav>`);
+  }
 
   const { primary: nav, sub: subnav, strip: substrip, end: pagenav } = navFor(meta.nav);
 
@@ -1057,7 +1101,7 @@ for (const f of pages) {
   // The content fragment's tokens are checked above; the SHELL's were not, and that
   // gap shipped 52 literal {{TITLE}}/{{DESCRIPTION}} into the og: tags the moment the
   // shell grew social metadata. Check the assembled page instead of either half.
-  const left = out.match(/\{\{[A-Z_]+\}\}/g);
+  const left = out.match(/\{\{[A-Z0-9_]+\}\}/g);
   if (left) {
     console.error(`  ✗ ${f}: unsubstituted token(s) ${[...new Set(left)].join(' ')}`);
     process.exitCode = 1;

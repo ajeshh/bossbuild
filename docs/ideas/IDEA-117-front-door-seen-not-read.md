@@ -121,7 +121,10 @@ job is two clicks — Copy and Demo. Target ~1,200 words visible; the deep parag
     `reviewed:` stamp asserts someone read it, and cannot see what shipped since (the
     [[checkers-state-intents-they-dont-enforce]] shape). `check:site`'s `describes:` line is the
     hook: a fragment that `covers:` a FEAT could be flagged when that FEAT's record moved after the
-    page's `reviewed:` date.
+    page's `reviewed:` date. **Correction, same hour:** it already does — `check:site` prints
+    *"may be behind: product — stages… changed 2026-09-13, reviewed 2026-09-12"* and twelve more,
+    counted as *13 trailing*. The checker was right and ran; nobody read it (the n=19 shape). The
+    gap is that `design.html` `covers:` nothing the design lane touched, so it is not even trailing.
 
 **Pass two (after a read of pass one):** the two-week timeline for *four things*; the records → pages
 flow for *what it adds up to*; the ladder with derived counts; the twelve snags as a scannable
