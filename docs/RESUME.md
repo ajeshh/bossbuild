@@ -26,12 +26,15 @@ npm run check            # zero findings = clean; check:published says how far n
 
 ## Now
 
-- **IDEA-118 (2026-09-14, `94e800c`, Unreleased) — the seams after the overhaul.** Walked the founder
-  path end to end; seven seams fixed (day-0 collapse, `/boss` not `/idea` for the venture holes, the
-  verb gate in every reader, the duplicate team hole, one cohort vocabulary + `cohort: skipped`,
-  `src/clock.js` local dates, the small copy). **Ruled, not changed: no fixed order between the
-  conversation and the canvas** — the router row, the site's snag line and `boss map`'s loop still
-  sequence it; softening them is Ajesh's (task G on the record). Site's GA ≠ the CLI's claim — dropped.
+- **IDEA-118 (2026-09-14, `94e800c` → `c72c385`, Unreleased) — the seams after the overhaul; shipped.**
+  Walked the founder path end to end (site → Quickstart → MVP → a FEAT shipped); twelve seams fixed,
+  one family — a rule kept in one reader and not its sibling (day-0 collapse, `/boss` not `/idea`
+  for the venture holes, the verb gate in every reader, `cohort: skipped`, `src/clock.js` local dates,
+  recap reads the founder's canvas, the earned-seven fold after the first ship, no tally on *Ready
+  for V1*). **Ruled: no fixed order between the conversation and the canvas** — the arc is now
+  *capture → pressure-test · talk to one person (either order) → unlock*; a `coreLoop` step may be
+  a pair. BOSS's own install synced 2026-09-14 (`--keep-mine`; the 7 BOSS-tuned agents stay). **Not
+  walked: the adopted-repo door** (`boss adopt` → `/read-repo`) — same method, one pass, when asked.
 - **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
