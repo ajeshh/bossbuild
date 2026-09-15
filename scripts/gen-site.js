@@ -23,6 +23,7 @@ import { forYou, parseEntries } from '../src/changelog.js';
 // The showcase (FEAT-039): demo/kettlewick/ rendered by the real renderers into site/demo/.
 import { generate as generateDemo } from './gen-demo.js';
 import { markSvg, faviconDataUri } from './mark.js';
+import { PROOF_ASSETS } from './proof-assets.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 // web/ is SOURCE (page fragments, the shell, the stylesheets).
@@ -984,7 +985,7 @@ for (const f of readdirSync(join(SRC, 'styles'))) {
 // is scripts/og-card.html, kept as source so the card can be re-rendered rather
 // than re-invented. Copied, never generated: this is a binary the build must not touch.
 // The proof strip's three renders (gen-proof.js) are binaries of the same kind.
-const ROOT_ASSETS = ['og.png', 'humane-product-canvas.md', 'proof-playbook.png', 'proof-design.png', 'proof-board.png'];
+const ROOT_ASSETS = ['og.png', 'humane-product-canvas.md', ...PROOF_ASSETS];
 for (const f of ROOT_ASSETS) {
   if (existsSync(join(SRC, f))) copyFileSync(join(SRC, f), join(SITE, f));
 }
