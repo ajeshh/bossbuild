@@ -46,9 +46,25 @@ so the 30-day rule is clear). A PR today is closed on that line.
 `brew bump-formula-pr oyeboss --url … --sha256 …` (or core's autobump). The tap stays for the
 rename map and for anyone who tapped it.
 
+## The formula, audited (2026-09-14)
+
+Ajesh ran `brew create --node` in a local `homebrew/core` checkout; the formula is on branch
+`oyeboss` at `$(brew --repository homebrew/core)/Formula/o/oyeboss.rb`, uncommitted. It is the
+tap's formula plus a functional `test do` (`boss new demo` → `CLAUDE.md` and `.boss/config.json`
+exist → `boss status` says `Quickstart`; brew's test HOME is sandboxed, the registry stays clean).
+
+- `brew style` — clean. `brew install --build-from-source` — builds. `brew test` — passes.
+- `brew audit --new --strict --online` — **one finding: `oyeboss.build` was registered
+  2026-08-20; homepages should exist for at least 30 days.** A second gate, calendar-shaped:
+  clears **2026-09-19**. Their CI runs this audit, so a PR before then fails mechanically.
+
+When both gates clear: bump `url`/`sha256` to the current version (`scripts/bump-formula.js`
+computes the hash), `gh repo fork Homebrew/homebrew-core --remote`, commit as
+`oyeboss <version> (new formula)`, push to the fork, `gh pr create --repo Homebrew/homebrew-core`.
+
 ## Falsifier
 
-- **Trigger:** `ajeshh/bossbuild` reaches 225 stars, 90 forks, or 90 watchers (self-submission), or
+- **Trigger (both):** the homepage is 30 days old (2026-09-19) AND `ajeshh/bossbuild` reaches 225 stars, 90 forks, or 90 watchers (self-submission), or
   75 / 30 / 30 and someone who is not Ajesh submits. `npm run check:reach` carries the numbers.
 - **Kill:** if by 2027-03-14 the numbers haven't moved, the tap line is the install line and this
   idea closes as "the tap is enough".
