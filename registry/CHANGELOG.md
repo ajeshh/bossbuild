@@ -58,6 +58,15 @@ rule above still applies to the whole section once it is stamped.
   summary, `/boss`'s router, `/welcome`'s close and the site all sequenced the conversation first; now
   *capture → pressure-test · talk to one person (either order) → unlock*, and a `coreLoop` step may be
   a pair with no order inside it — `boss map` draws `canvas · interview` between the arrows.
+  **The MVP rung, same walk:** `boss status`'s *Ready to build → /spec* on Quickstart now says
+  *boss unlock mvp, then /spec*; a cleared unlock bar says *Unlocking.* instead of *anyway… the
+  deviation is yours*; `boss recap`'s *The bet* reads the founder's `IDEA-NNN-canvas.md` (it opened
+  only BOSS's own `CANVAS.md`, so a named bet read back as *No canvas yet*); after the first ship,
+  status stops saying *Nothing in flight yet — capture an idea* and `boss map` shows the seven
+  earned skills as *earned — `boss sync` lays them down* instead of dropping them until sync; and
+  *Ready for V1: everything BOSS can check is in place* says, when the bar has conditions it cannot
+  see, *what BOSS can check is in place; the rest is yours to judge* — no tally, by `readiness.js`'s
+  own rule.
 - **The front door is seen, not read (IDEA-117).** oyeboss.build measured at 4,231 words in one
   visual grammar, the mark at 40px, the generated pages behind a text link. Now: the built B at
   104px in the hero rail; *Building got cheap. Being wrong didn't.* as one picture; the hero shows

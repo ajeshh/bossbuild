@@ -33,7 +33,7 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { timeline } from './records.js';
 import { collectBoard } from './board.js';
-import { hasVerb } from './playbook.js';
+import { hasVerb, findCanvas } from './playbook.js';
 import { dim, bold, warn } from './ui.js';
 import { isoDay } from './clock.js';
 
@@ -95,16 +95,19 @@ const grade = (projectDir, file) => {
   } catch { return null; }
 };
 
-// The canvas's riskiest assumption, read exactly the way `boss board` and the conscience read it —
-// one definition, so the three surfaces can never disagree about whether a bet has been named.
+// The canvas's riskiest assumption, read from the canvas the playbook reads (`findCanvas` — the
+// newest of `docs/ideas/CANVAS.md`, BOSS's own venture-level shape, and `IDEA-NNN-canvas.md`, the
+// shape `/canvas` writes for a founder). This used to open only `CANVAS.md`, so a founder's canvas
+// with a named bet read back as "No canvas yet" (IDEA-118). `open` says whether a canvas exists at
+// all, so the recap can tell "no canvas" from "a canvas with the bet still unnamed".
 function riskiest(projectDir) {
-  for (const rel of ['docs/ideas/CANVAS.md']) {
-    const p = join(projectDir, rel);
-    if (!existsSync(p)) continue;
+  const found = findCanvas(projectDir);
+  if (found) {
+    const p = found.path;
     try {
       const lines = readFileSync(p, 'utf8').split(/\r?\n/);
       const i = lines.findIndex((l) => /Riskiest assumption:\*\*/.test(l));
-      if (i < 0) continue;
+      if (i < 0) return { named: false, open: true };
       // Markdown hard-wraps. Reading only the matched line truncated BOSS's own assumption
       // mid-clause ("…will it change a decision they"), which reads as a bug in the record
       // rather than in the reader. Take the continuation lines too, stopping at the blank line
@@ -115,7 +118,7 @@ function riskiest(projectDir) {
         if (!l.trim() || /^\s*[-*]\s/.test(l) || /^#/.test(l)) break;
         text += ` ${l.trim()}`;
       }
-      if (!text || text.startsWith('_')) return { named: false };
+      if (!text || text.startsWith('_')) return { named: false, open: true };
       // A canvas cell can be a paragraph. Clipped at a word boundary with the cut marked, because
       // the recap is meant to be pasted and an unmarked truncation would misquote the founder's
       // own bet. The canvas remains the place to read it in full.
@@ -125,7 +128,7 @@ function riskiest(projectDir) {
         const sp = cut.lastIndexOf(' ');
         text = `${(sp > CAP * 0.6 ? cut.slice(0, sp) : cut).trimEnd()}…`;
       }
-      return { named: true, text };
+      return { named: true, text, open: true };
     } catch { /* unreadable — don't guess */ }
   }
   return null;

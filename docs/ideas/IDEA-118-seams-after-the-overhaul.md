@@ -57,6 +57,33 @@ conscience hook; read the Kettlewick demo; counted the competing nouns across si
   `boss map`'s loop — a `coreLoop` step may now be a list of verbs with no order inside it, drawn
   `canvas · interview` between the arrows (`coreLoopSteps`; the guide's chips carry no arrows).
 
+## The MVP rung (Ajesh: *"post mvp do we need to check anything"*, 2026-09-14)
+
+Same walk, next rung: a venture idea + canvas + one signal, `boss unlock mvp`, a FEAT at building,
+then shipped. The MVP skills' hand-offs are clean (every verb they name is installed by MVP or said
+*at V1*). Five seams in the readers:
+
+- [x] **H.** `boss status` on Quickstart: `Ready to build → /spec` — the gate class again; now
+  `→ boss unlock mvp, then /spec` until the verb is installed.
+- [x] **I.** `boss unlock` printed *Unlocking anyway… the deviation is yours to own* with every
+  checkable condition ✓ — a reproach for a lapse that did not happen. A cleared bar says
+  *Unlocking. What BOSS cannot check stays yours to judge.*
+- [x] **J.** `boss recap`'s *The bet* opened only `docs/ideas/CANVAS.md` (BOSS's own shape), so a
+  founder's `IDEA-NNN-canvas.md` with a named riskiest assumption read back as *No canvas yet*. Now
+  reads the canvas the playbook reads (`findCanvas`).
+- [x] **K.** After the first ship: `boss status` said *Nothing in flight yet — /boss or /idea to
+  capture an idea* to someone who had just shipped; now *the board is all shipped — /spec the next
+  piece, or /idea what came up while building*. And `boss map` dropped the seven earned skills
+  entirely between the predicate flipping and `boss sync` (out of `held`, not yet on disk); now a
+  fold line: *+7 earned — a FEAT shipped: /health, /landing, /measure … — `boss sync` lays them down*.
+- [x] **L.** `✓ Ready for V1: everything BOSS can check is in place` — V1's bar is one checkable
+  condition (a FEAT shipped) and two it cannot see (real users, more than one screen). No tally
+  (`readiness.js` refuses one on purpose, and a test pins it); in words: *what BOSS can check is in
+  place; the rest is yours to judge*.
+
+Not changed, noted: at MVP with zero code, `boss status`'s standing seam line is V1's
+(*a `created_at` on user rows…*) — true, cheap, and early. Leave until a founder says so.
+
 ## Not a task
 
 - **The site's "No analytics" footer beside the GA tag** — raised; Ajesh: *"site has nothing to do
@@ -65,3 +92,4 @@ conscience hook; read the Kettlewick demo; counted the competing nouns across si
 ## Capture log
 - 2026-09-14 — the walk; seven seams; Ajesh took A–F, ruled G (no order), dropped the analytics note.
 - 2026-09-14 — *"continue"*: G applied; A–G done.
+- 2026-09-14 — the MVP rung walked (H–L); BOSS's own install synced (29 files, 13 retired loop copies removed, 7 BOSS-tuned agents kept).

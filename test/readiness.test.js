@@ -91,6 +91,17 @@ test('boss status never renders a tally — no percentage, no "n of m"', () => {
   assert.doesNotMatch(out, /\d+%/);
 });
 
+test('a cleared bar unlocks without "anyway" — the deviation line is for a bar with something checkable missing (IDEA-118)', () => {
+  const dir = quickstart({
+    'docs/ideas/IDEA-001-a.md': idea('IDEA-001'),
+    'docs/evidence/EVID-001-a.md': evid('EVID-001', 'stated-pain'),
+  });
+  const out = boss(['unlock', 'mvp'], dir);
+  assert.match(out, /Unlocking\. What BOSS cannot check stays yours to judge\./);
+  assert.doesNotMatch(out, /Unlocking anyway|deviation/);
+  assert.match(out, /Unlocked MVP mode/);
+});
+
 test('unlock names the bar and crosses it anyway — BOSS never blocks', () => {
   const dir = quickstart();                      // nothing captured, nothing learned
   const out = boss(['unlock', 'mvp'], dir);

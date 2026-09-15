@@ -157,7 +157,12 @@ export function renderReadiness(r, { bold, dim, ok, warn }) {
   if (r.unknowns > 0) {
     out.push(dim(`  The unmarked ones BOSS cannot check — they are yours to judge, not its.`));
   }
-  out.push(dim('  Missing one? That\'s fine — but you\'ll be carrying ceremony you haven\'t earned.'));
-  out.push(dim('  Unlocking anyway (BOSS never blocks); the deviation is yours to own.'));
+  // "Anyway" and "deviation" are for a bar with something checkable missing. With every checkable
+  // condition met they read as a reproach for a lapse that did not happen (IDEA-118).
+  if (r.cleared) out.push(dim('  Unlocking. What BOSS cannot check stays yours to judge.'));
+  else {
+    out.push(dim('  Missing one? That\'s fine — but you\'ll be carrying ceremony you haven\'t earned.'));
+    out.push(dim('  Unlocking anyway (BOSS never blocks); the deviation is yours to own.'));
+  }
   return out;
 }

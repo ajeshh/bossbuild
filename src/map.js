@@ -10,7 +10,7 @@ import { STAGE_ORDER } from './paths.js';
 import { loadModes, packageSkillMd, skillGloss, modeWord } from './modes.js';
 import { dim, bold } from './ui.js';
 // `hasShipped` lives in earned.js now — the fold and the lay-down read the same predicate.
-import { hasShipped, stillDeferred } from './earned.js';
+import { hasShipped, stillDeferred, newlyEarned, describeEarned } from './earned.js';
 
 // The loop as one line: ` → ` between steps, ` · ` inside a step whose verbs have no order between
 // them (a rung says so in its manifest: a step that is a list). `canvas · interview` reads as a
@@ -60,6 +60,11 @@ function renderMap(projectDir, stamp, opts = {}) {
   // Held back until earned (src/earned.js): not on disk, so not in `stamp.skills` — listed under
   // the fold anyway, because "not yet" is information and absence is not.
   const held = stillDeferred(projectDir, stamp);
+  // Earned but not laid down yet — the predicate flipped (a FEAT shipped, the app calls a model)
+  // and `boss sync` has not run. Not in `held` any more, not in `stamp.skills` yet, so without this
+  // they vanished from the map at exactly the moment they became the work (IDEA-118).
+  const earnedGroups = newlyEarned(projectDir, stamp);
+  const earnedNow = new Map(earnedGroups.flatMap((g) => g.skills.map((s) => [s, g.until])));
   const installed = stamp.installedLayers || [stamp.stage];
   const deepest = installed[installed.length - 1];
 
@@ -90,13 +95,13 @@ function renderMap(projectDir, stamp, opts = {}) {
   for (const layerId of STAGE_ORDER) {
     if (!installed.includes(layerId)) continue;
     const mode = byId[layerId];
-    const skillsHere = [...new Set([...(stamp.skills || []), ...held])].filter((s) => skillStage[s] === layerId).sort();
+    const skillsHere = [...new Set([...(stamp.skills || []), ...held, ...earnedNow.keys()])].filter((s) => skillStage[s] === layerId).sort();
     if (!skillsHere.length) continue;
     // Fold this rung's post-launch skills until something has shipped. `--all` opens them; once a
     // FEAT ships they appear on their own under their own heading, because then they're the work.
     // Held-back groups (src/earned.js) fold too — those verbs are not on disk yet, and the fold
     // line says what earns them.
-    const post = new Set([...(shipped || showAll ? [] : (mode.postLaunch || [])), ...(showAll ? [] : held)]);
+    const post = new Set([...(shipped || showAll ? [] : (mode.postLaunch || [])), ...(showAll ? [] : held), ...earnedNow.keys()]);
     // `aside` folds unconditionally (see modes.js): these are BOSS's upkeep and the ending
     // verbs, never the founder's next move. Only `--all` opens them.
     const aside = new Set(showAll ? [] : (mode.aside || []));
@@ -126,8 +131,11 @@ function renderMap(projectDir, stamp, opts = {}) {
     if (later.length) {
       // One fold line per reason, so "after you ship" and "when the app calls a model" don't blur.
       const ai = new Set(mode.aiMediated || []);
-      const afterShip = later.filter((s) => !ai.has(s));
-      const onModel = later.filter((s) => ai.has(s));
+      const earned = later.filter((s) => earnedNow.has(s));
+      const afterShip = later.filter((s) => !ai.has(s) && !earnedNow.has(s));
+      const onModel = later.filter((s) => ai.has(s) && !earnedNow.has(s));
+      // Earned and waiting on disk: say what earned them and the one command that lays them down.
+      if (earned.length) lines.push(`      ${dim(`… +${earned.length} earned — ${describeEarned(earnedNow.get(earned[0]))}: ${earned.slice(0, 3).map((s) => '/' + s).join(', ')}${earned.length > 3 ? ' …' : ''} — \`boss sync\` lays them down`)}`);
       if (afterShip.length) lines.push(`      ${dim(`… +${afterShip.length} for after you ship — measuring, retention, pricing, trust  (\`boss map --all\`)`)}`);
       if (onModel.length) lines.push(`      ${dim(`… +${onModel.length} for when the app calls a model — cost, evals, failure states  (\`boss map --all\`)`)}`);
     }

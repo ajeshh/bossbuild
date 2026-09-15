@@ -543,7 +543,9 @@ function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
     // is a read of a file that already exists, not a new surface.
     console.log(`    ▸ ${bold('Building now:')}    ${f.id} — ${f.title}${more}   ${dim(`→ boss board ${f.id}`)}`);
   } else if (start.length) {
-    console.log(`    ▸ ${bold('Ready to build:')}  ${start[0].id} — ${start[0].title}   ${dim('→ /spec')}`);
+    // `/spec` is an MVP verb; on a Quickstart project the arrow says where it comes from instead
+    // of pointing at a command that is not installed (the playbook's gate, IDEA-118).
+    console.log(`    ▸ ${bold('Ready to build:')}  ${start[0].id} — ${start[0].title}   ${dim(hasVerb('/spec', projectDir) ? '→ /spec' : '→ boss unlock mvp, then /spec')}`);
   } else if (pressure.length) {
     console.log(`    ▸ ${bold('Next:')}            pressure-test ${pressure[0].id}   ${dim('→ /canvas')}`);
   } else if (adopted) {
@@ -553,6 +555,11 @@ function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
     // the same screen both saw their work and asked them to start. What they have not done is let
     // BOSS read it.
     console.log(`    ▸ ${dim('Nothing captured yet — expected here.')} ${bold('/read-repo')} ${dim('reads what you have built and says where you stand.')}`);
+  } else if (cards.some((c) => c.column === 'Shipped')) {
+    // Everything on the board has shipped. "Nothing in flight yet — capture an idea" is what an
+    // empty board says; said to someone who just shipped, it reads as BOSS having forgotten. The
+    // headway line below carries what shipped; this one carries the two doors that open after it.
+    console.log(`    ▸ ${dim('Nothing in flight — the board is all shipped. /spec the next piece, or /idea what came up while building.')}`);
   } else {
     console.log(`    ▸ ${dim('Nothing in flight yet — /boss or /idea to capture an idea.')}`);
   }
@@ -619,7 +626,11 @@ async function cmdStatus(args) {
     // and printing the label back at a founder as a command is how a copy-paste fails.
     let nextName = modeWord(nextStage);
     try { nextName = readStageManifest(nextStage).name || nextName; } catch { /* unauthored rung */ }
-    console.log(`    ${ok('✓')} ${bold(`Ready for ${nextName}:`)} ${dim('everything BOSS can check is in place —')} ${bold(`boss unlock ${modeWord(nextStage)}`)} ${dim('when you are.')}`);
+    // "Everything BOSS can check" read as the whole bar when V1's bar is one checkable condition
+    // and two it cannot see. No tally (readiness.js refuses one on purpose); the unknowns are
+    // named as yours, in words (IDEA-118).
+    const scope = nextBar.unknowns ? 'what BOSS can check is in place; the rest is yours to judge —' : 'everything BOSS can check is in place —';
+    console.log(`    ${ok('✓')} ${bold(`Ready for ${nextName}:`)} ${dim(scope)} ${bold(`boss unlock ${modeWord(nextStage)}`)} ${dim('when you are.')}`);
   }
   printBuiltAndSeam(process.cwd(), stamp);
   console.log('');
