@@ -30,6 +30,17 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The venture above the columns (IDEA-114 slice 2).** `boss board` filed the `kind: venture`
+  record as one card among the capabilities — *3 captured*, one of them the whole company. Now the
+  venture has its own line above the columns with its own state (*not pressure-tested yet →
+  `/canvas`* · *pressure-tested — the riskiest assumption is named* · building · shipped), in the
+  terminal and the HTML board; two venture records is a named state (*one project builds one;
+  `/canvas` asks which*). The capabilities keep the columns, and their line stops offering
+  `/canvas` — a capability is not pressure-tested as a business; the venture is — and says instead
+  *none ready to build yet — which does the venture need first?* `boss board --next` and `boss
+  status` follow the same rule: the venture is the canvas's candidate and never `/spec`'s; once it
+  is pressure-tested and only capabilities are captured, the next step is a *pick* (`status:
+  ready`, then `/spec`) rather than *nothing in flight — capture an idea*.
 - **The seams after the overhaul (IDEA-118).** Walked end to end as a first founder — site →
   `boss new` → `/welcome` and `/boss` as written → the readers on day 0, day 1 and after `boss unlock
   mvp`. The surfaces told one story; the seams between them didn't. Seven fixed, each a rule kept in

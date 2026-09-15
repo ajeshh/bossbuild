@@ -104,10 +104,8 @@ npm run check            # zero findings = clean; check:published says how far n
    compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
    `/import` (#13), the ask record (#17).
 3. ~~`/vet` the persona sources~~ — RVW-103 (ADAPT: `photo:` and `quote:` gated; the rest rejected).
-4. **IDEA-114 slice 2 — the board's split.** `boss board` files the `kind: venture` idea as a card
-   among the capabilities; put it above the columns (beside the riskiest assumption, IDEA-015's
-   spot) or filter it. Also: two venture records on day 0 → `/canvas` asks which. Measure before
-   gating the venture fields on a capability (gap is 0 today). ~~IDEA-110~~ shipped (FEAT-039).
+4. ~~IDEA-114 slice 2 — the board's split~~ — shipped 2026-09-14: the venture above the columns, the
+   capabilities' line and `computeNext` stop offering `/canvas` for a capability, the *pick* group.
 5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
 6. **`/vet` Cagan's 2026-09-11 retraction #2** (*"teams over-invest in validating problems"*). Inbox it first.
 7. **Watchlist needs a row for the project/PM rung** (`planner`, `boss board`, `program:`).

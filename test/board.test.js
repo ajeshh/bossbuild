@@ -521,3 +521,59 @@ test('every card carries a labelled "added" date; "shipped" only in the Shipped 
   assert.equal(json.cards.find((c) => c.id === 'FEAT-002').shippedOn, '2026-06-07');
   assert.ok(/added\s+2026-03-04/.test(renderBoardCard('p', { cards, hasIdeasDir: true }, 'IDEA-001')));
 });
+
+const textBoard = (dir) => {
+  const lines = [];
+  const orig = console.log; console.log = (...a) => lines.push(a.join(' '));
+  try { board(dir, 'app', {}); } finally { console.log = orig; }
+  return lines.join('\n');
+};
+
+// --- IDEA-114 slice 2 — the venture above the columns -------------------------------------------
+// `boss board` filed the `kind: venture` record as one card among the capabilities: three captured,
+// one of them the whole company. The venture is what the columns are FOR; it gets its own line.
+test('the venture record sits above the columns with its own state; the capabilities keep the columns', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001-v.md': idea('IDEA-001', { title: 'Shiftwise', kind: 'venture', status: 'seedling' }),
+    'docs/ideas/IDEA-002-a.md': idea('IDEA-002', { title: 'Blackout days', kind: 'capability', status: 'seedling' }),
+    'docs/ideas/IDEA-003-b.md': idea('IDEA-003', { title: 'Weekly digest', kind: 'capability', status: 'exploring' }),
+  });
+  const { cards } = collectBoard(dir);
+  assert.equal(cards.find((c) => c.id === 'IDEA-001').venture, true);
+  assert.equal(cards.find((c) => c.id === 'IDEA-002').venture, false);
+  // text: the venture line, then the capabilities' line — never "/canvas" for a capability
+  const out = textBoard(dir);
+  assert.match(out, /▸ the venture: IDEA-001 — Shiftwise · not pressure-tested yet → `\/canvas`/);
+  assert.match(out, /2 captured, none ready to build yet — which does the venture need first\?/);
+  assert.match(out, /Captured \(2\)/);
+  assert.doesNotMatch(out, /Captured \(3\)/);
+  // next: the venture is the canvas's candidate; a capability never is while a venture is on file
+  const n1 = computeNext(cards);
+  assert.deepEqual(n1.pressure.map((p) => p.id), ['IDEA-001']);
+  assert.equal(n1.pick.length, 0);
+  // once the venture is pressure-tested, the choice is which capability the venture needs first
+  writeFileSync(join(dir, 'docs/ideas/IDEA-001-canvas.md'), canvas('IDEA-001', 'owners trust a text'));
+  const { cards: c2 } = collectBoard(dir);
+  const n2 = computeNext(c2);
+  assert.equal(n2.pressure.length, 0, 'a canvassed venture is not re-offered');
+  assert.equal(n2.start.length, 0, 'the venture in Taking shape is never a /spec candidate');
+  assert.deepEqual(n2.pick.map((p) => p.id), ['IDEA-002', 'IDEA-003']);
+  const out2 = textBoard(dir);
+  assert.match(out2, /the venture: IDEA-001 — Shiftwise · pressure-tested — the riskiest assumption is named/);
+  // html carries the same line
+  const html = readFileSync(boardHtml(dir, 'app'), 'utf8');
+  assert.match(html, /<p class="venture"><span class="muted">the venture<\/span> IDEA-001 — Shiftwise/);
+});
+
+test('two venture records is a state the board names, and one project with none draws no venture line', () => {
+  const two = project({
+    'docs/ideas/IDEA-001-v.md': idea('IDEA-001', { title: 'A', kind: 'venture' }),
+    'docs/ideas/IDEA-002-w.md': idea('IDEA-002', { title: 'B', kind: 'venture' }),
+  });
+  const out = textBoard(two);
+  assert.match(out, /2 venture records — IDEA-001 — A · IDEA-002 — B — one project builds one; `\/canvas` asks which/);
+  const none = project({ 'docs/ideas/IDEA-001-x.md': idea('IDEA-001', { title: 'X' }) });
+  const out2 = textBoard(none);
+  assert.doesNotMatch(out2, /the venture:/);
+  assert.match(out2, /1 captured, nothing pressure-tested yet/);
+});

@@ -549,7 +549,7 @@ function printBuiltAndSeam(projectDir, stamp) {
 function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
   let cards;
   try { ({ cards } = collectBoard(projectDir)); } catch { return; }
-  const { finish, start, pressure } = computeNext(cards);
+  const { finish, start, pressure, pick } = computeNext(cards);
   console.log('');
   if (finish.length) {
     const f = finish[0];
@@ -568,6 +568,10 @@ function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
     console.log(`    ▸ ${bold('Ready to build:')}  ${start[0].id} — ${start[0].title}   ${dim(hasVerb('/spec', projectDir) ? '→ /spec' : '→ boss unlock mvp, then /spec')}`);
   } else if (pressure.length) {
     console.log(`    ▸ ${bold('Next:')}            pressure-test ${pressure[0].id}   ${dim('→ /canvas')}`);
+  } else if (pick.length) {
+    // A venture on file, pressure-tested, and only captured capabilities: the next step is a choice,
+    // not a verb — which piece does the venture need first (IDEA-114 slice 2).
+    console.log(`    ▸ ${bold('Next:')}            pick the piece the venture needs first — ${pick.map((p) => p.id).join(', ')}   ${dim('→ `status: ready`, then /spec')}`);
   } else if (adopted) {
     // An empty board in an ADOPTED repo is the expected state, not a prompt. The old line told
     // someone who had just handed BOSS a shipped app with tests, CI and a deploy config to go

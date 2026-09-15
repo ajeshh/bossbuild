@@ -3,7 +3,7 @@ id: IDEA-114
 type: idea
 kind: capability
 owner: product-lead
-status: building (slice 1 — `kind:` on the record, the writers and the pickers; the board's split is a task)
+status: shipped (slice 1 2026-09-13, slice 2 2026-09-14 — the board's split; under Unreleased)
 gist: An IDEA record is two different things wearing one word — the venture idea a founder walked in with (one per project; /boss writes it, /canvas tests it, the playbook renders it) and a capability idea ("add X"; many per project; /idea writes it, /spec promotes it). Name the kind on the record so the pickers stop guessing.
 proof: stages/L0-quickstart/template/.claude/skills/idea/SKILL.md
 proof_note: The shipped `/idea` template writes `kind: capability` and no venture fields; `/boss` writes `kind: venture`. `src/playbook.js readIdea()` and the loop runtime's `readIntentContext()` rank `kind: venture` first (tests in test/playbook.test.js and test/conscience.test.js). The board's split is not built.
@@ -74,3 +74,4 @@ capability unless it says "the venture".
   records is a real state. `/canvas` should then ask which, not pick. Written, not built.
 - Should `check:backlog` refuse the venture fields on a `kind: capability` record? Measure the gap
   first — today it is 0 violations because nobody fills them; a gate over a 0-gap is ceremony.
+- 2026-09-14 — slice 2 landed: the venture above the columns (text + HTML), capabilities' line and `computeNext` stop offering `/canvas` for a capability, the *pick* group. `/canvas` already asked which of two ventures (slice 1). Not gated: the venture fields on a capability (gap 0).

@@ -361,6 +361,9 @@ export function collectBoard(projectDir) {
         priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text) });
     } else {
       ideas.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+        // `kind: venture` — the thing they are building, one per project, written by /boss (IDEA-114).
+        // The renderers lift it above the columns; it is what every capability card is FOR.
+        venture: String(fm.kind || '').trim().toLowerCase() === 'venture',
         // An IDEA in Building ages exactly like a FEAT does. It did not, and the gap was
         // structural rather than an oversight: only the FEAT branch carried the field, so the
         // zombie-feature flag could not fire on an idea no matter how long it sat. That is the
@@ -467,6 +470,7 @@ export function collectBoard(projectDir) {
       shippedOn: id.shippedOn || null,
       addedOn: id.addedOn || null,
       program: id.program || null,
+      venture: id.venture === true,
       progress: null, // an idea carries no acceptance criteria; its hole, if any, is the FEAT
     });
   }
@@ -475,10 +479,29 @@ export function collectBoard(projectDir) {
   return { cards, hasIdeasDir: true };
 }
 
+// The venture, above the columns (IDEA-114 slice 2). `boss board` used to file the `kind: venture`
+// record as one card among the capabilities — three captured, one of them the whole company. The
+// venture is what the columns are for, so it gets its own line with its own state, read off the
+// same card: where it stands on the canvas, never a grade. Two venture records is a real state on
+// day 0 (a founder tried two shapes) and the line says so; `/canvas` asks which.
+export function ventureLine(ventures) {
+  if (!ventures.length) return null;
+  if (ventures.length > 1) {
+    return `${ventures.length} venture records — ${ventures.map((v) => `${v.id} — ${v.title}`).join(' · ')} — one project builds one; \`/canvas\` asks which`;
+  }
+  const v = ventures[0];
+  const state = v.column === 'Captured' ? 'not pressure-tested yet → `/canvas`'
+    : v.column === 'Taking shape' ? 'pressure-tested — the riskiest assumption is named'
+      : v.column === 'Building' ? 'building'
+        : v.column === 'Shipped' ? `shipped${v.shippedOn ? ` ${v.shippedOn}` : ''}`
+          : v.status || '';
+  return `${v.id} — ${v.title} · ${state}`;
+}
+
 // The line that sits above the columns. Plain and factual — never gamified
 // (voice-keeper). When there's motion but nothing pressure-tested, it says so:
 // that's the humane point of the surface.
-function evidenceLine(counts, total) {
+function evidenceLine(counts, total, { hasVenture = false } = {}) {
   // Same state, same first command as `boss status` says. These two surfaces used to disagree —
   // status offered `/boss or /idea`, this offered only `/idea` — so a founder who ran both in
   // their first ten minutes was given two different places to start, on the one screen where they
@@ -491,6 +514,10 @@ function evidenceLine(counts, total) {
   // 2026-09-13, the first time both columns reached zero).
   if (counts.Captured > 0 && counts['Taking shape'] === 0 && counts.Building === 0 && counts.Shipped === 0) {
     const n = counts.Captured;
+    // With a venture record on file the cards here are capabilities, and a capability is not
+    // pressure-tested as a business — the venture is (IDEA-114). Its next door is `ready`, then
+    // `/spec`; the question is which one the venture needs first.
+    if (hasVenture) return `${n} captured, none ready to build yet — which does the venture need first? (\`/idea\` to sharpen it; \`status: ready\` when it is)`;
     return `${n} captured, nothing pressure-tested yet — what would you learn first? (\`/canvas\`)`;
   }
   return COLUMNS
@@ -597,6 +624,9 @@ function renderBoardText(projectName, data, opts = {}) {
   // every time they look at the board. It is folded, never deleted — the reasoning is the point.
   const parked = cards.filter((c) => c.parked);
   cards = cards.filter((c) => !c.parked);
+  // The venture is not a card among the capabilities — it sits above them (IDEA-114 slice 2).
+  const ventures = cards.filter((c) => c.venture);
+  cards = cards.filter((c) => !c.venture);
   const lines = [];
   lines.push('');
   lines.push(`  ${bold(projectName + ' · board')}${opts.mine ? dim(' · ' + opts.mine) : ''}`);
@@ -604,7 +634,9 @@ function renderBoardText(projectName, data, opts = {}) {
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
 
-  lines.push(`  ▸ ${evidenceLine(counts, cards.length)}${parked.length ? dim(` · ${parked.length} parked`) : ''}`);
+  const vl = ventureLine(ventures);
+  if (vl) lines.push(`  ${dim('▸ the venture:')} ${vl}`);
+  lines.push(`  ▸ ${evidenceLine(counts, cards.length, { hasVenture: ventures.length > 0 })}${parked.length ? dim(` · ${parked.length} parked`) : ''}`);
   // The one thing you're on now, surfaced at the top — on a long board the Building
   // column sits below a wall of Captured cards, so a founder who lost the thread has
   // to hunt for it (EVID-001, facet 3: "I forget what feature I'm building"). Longest-
@@ -708,10 +740,12 @@ const COLUMN_INDEX = Object.fromEntries(COLUMNS.map((c, i) => [c, i]));
 function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt, projectDir = process.cwd()) {
   // Same rule as the terminal board: parked work leaves the flow but is never deleted.
   const parked = allCards.filter((c) => c.parked);
-  const cards = allCards.filter((c) => !c.parked);
+  const ventures = allCards.filter((c) => !c.parked && c.venture);
+  const cards = allCards.filter((c) => !c.parked && !c.venture);
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
-  const evidence = (hasIdeasDir ? evidenceLine(counts, cards.length) : 'no docs/ideas/ here — is this a BOSS project?')
+  const ventureHtml = ventureLine(ventures);
+  const evidence = (hasIdeasDir ? evidenceLine(counts, cards.length, { hasVenture: ventures.length > 0 }) : 'no docs/ideas/ here — is this a BOSS project?')
     + (parked.length ? ` · ${parked.length} parked` : '');
   // Hi-vis is BOSS pointing, never decoration (VISUAL.md). The only line that
   // earns it here is the humane-lens override: motion captured, nothing proven.
@@ -926,6 +960,7 @@ function shippedTimeline(cards) {
   <div class="board-page">
     <header class="board-head">
       <h1><small>the board</small>${esc(projectName)}</h1>
+      ${ventureHtml ? `<p class="venture"><span class="muted">the venture</span> ${esc(ventureHtml).replace(/`([^`]+)`/g, '<code>$1</code>')}</p>` : ''}
       <p class="evidence${pointing ? ' points' : ''}">${esc(evidence)}</p>
     </header>
     ${dueBanner}
@@ -984,6 +1019,8 @@ ${columnHtml}
      dimming is done with --muted, never opacity — the same floors the website holds. */
   .board-page h1 small { display: block; font: 500 13px/1.4 var(--mono); color: var(--muted); margin-bottom: 4px; }
   .board-page h1 { font: 650 24px/1.2 var(--mono); letter-spacing: -.02em; margin: 0; }
+  .venture { font-size: 14px; margin: 10px 0 0; max-width: 72ch; }
+  .venture .muted { margin-right: 6px; }
   .evidence { color: var(--muted); font-size: 13.5px; margin: 8px 0 0; max-width: 64ch; }
   .evidence.points { color: var(--hivis-text); font-weight: 600; }
   .pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 24px; }
@@ -1125,20 +1162,31 @@ export function computeNext(allCards) {
   // Parked work is not work waiting to be picked up. Without this, `--next` cheerfully told the
   // agent to `/canvas` an idea whose own record says the deferral is settled and DO-NOT-REHASH.
   const cards = allCards.filter((c) => !c.parked);
+  // The venture record (IDEA-114) is the canvas's candidate and never `/spec`'s — a venture is not
+  // specced, its capabilities are. And when a venture is on file, the captured capabilities are not
+  // the canvas's candidates either: a capability is not pressure-tested as a business.
+  const hasVenture = cards.some((c) => c.venture);
   const building = cards.filter((c) => c.column === 'Building');
   const finish = sortColumn(building.filter((c) => !c.blocked), 'Building')
     .map((c) => ({ id: c.id, title: c.title, group: 'finish', action: 'finish it', age: c.ageDays, priority: c.priority || null }));
-  const start = sortColumn(cards.filter((c) => c.column === 'Taking shape'), 'Taking shape')
+  const start = sortColumn(cards.filter((c) => c.column === 'Taking shape' && !c.venture), 'Taking shape')
     .map((c) => ({ id: c.id, title: c.title, group: 'start', action: '/spec to build', priority: c.priority || null }));
   const unblock = sortColumn(building.filter((c) => c.blocked), 'Building')
     .map((c) => ({ id: c.id, title: c.title, group: 'unblock', action: 'clear the blocker', priority: c.priority || null }));
   // Only suggest pressure-testing when there's nothing further along to move.
   const pressure = (finish.length || start.length)
     ? []
-    : sortColumn(cards.filter((c) => c.column === 'Captured'), 'Captured')
+    : sortColumn(cards.filter((c) => c.column === 'Captured' && (!hasVenture || c.venture)), 'Captured')
         .slice(0, 3)
         .map((c) => ({ id: c.id, title: c.title, group: 'pressure-test', action: '/canvas', priority: c.priority || null }));
-  return { finish, start, unblock, pressure };
+  // With a venture on file and nothing further along: the captured capabilities are the choice —
+  // which one does the venture need first. `ready` is the door; `/spec` is what it opens.
+  const pick = (hasVenture && !finish.length && !start.length && !pressure.length)
+    ? sortColumn(cards.filter((c) => c.column === 'Captured' && !c.venture), 'Captured')
+        .slice(0, 3)
+        .map((c) => ({ id: c.id, title: c.title, group: 'pick', action: 'status: ready, then /spec', priority: c.priority || null }))
+    : [];
+  return { finish, start, unblock, pressure, pick };
 }
 
 // "What's not moving?" — blocked, aging-in-build, and past-review, in one place.
@@ -1154,8 +1202,8 @@ export function computeStuck(allCards) {
 function renderBoardNext(projectName, { cards, hasIdeasDir }) {
   const lines = ['', `  ${projectName} · next`];
   if (!hasIdeasDir) { lines.push('  (no docs/ideas/ here — is this a BOSS project?)', ''); return lines.join('\n'); }
-  const { finish, start, unblock, pressure } = computeNext(cards);
-  if (!finish.length && !start.length && !unblock.length && !pressure.length) {
+  const { finish, start, unblock, pressure, pick } = computeNext(cards);
+  if (!finish.length && !start.length && !unblock.length && !pressure.length && !pick.length) {
     lines.push('  ▸ nothing in flight — `/idea` to capture or `/canvas` to pressure-test.', '');
     return lines.join('\n');
   }
@@ -1174,6 +1222,7 @@ function renderBoardNext(projectName, { cards, hasIdeasDir }) {
   block('Finish — in build', finish, true);
   block('Start — pressure-tested, ready to build', start, false);
   block('Pressure-test — only captured so far', pressure, false);
+  block('Pick — which does the venture need first', pick, false);
   block('Blocked — clear to move', unblock, false);
   return lines.join('\n');
 }
