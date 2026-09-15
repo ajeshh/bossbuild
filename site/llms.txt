@@ -1,0 +1,36 @@
+# BOSS
+
+> The team you hire, just in time. BOSS runs inside Claude Code: builders who make it, mentors who coach you, a conscience that says one thing when you drift — and what you write down reads back as a playbook, a design space and a board. Free, MIT, runs on your machine.
+
+BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, agents and hooks for founders. It sets a project up with only the structure it has earned, grows it through four modes (Quickstart → MVP → V1 → Scale), and says one thing when the founder drifts. Everything stays on the founder's machine. MIT licensed, free, v0.325.0. Install: `npm install -g oyeboss` or `brew install ajeshh/boss/oyeboss`; needs Node 18+ and Claude Code.
+
+## Pages
+
+- [About — the person who built this](https://oyeboss.build/about): BOSS was built by Ajesh Shah, a product leader who has worked in companies from a handful of people to the Fortune 500, and who has spent a long time getting one method right — scaffolding.
+- [The Humane Product Canvas — free, yours, no install](https://oyeboss.build/canvas): A one-page canvas for pressure-testing an idea as a humane business. It starts from the Business Model Canvas and asks what the humane version would ask. Free under CC BY-SA — take it, no install.
+- [Charter — a conscience, not a censor](https://oyeboss.build/charter): The humane line BOSS holds itself to: name the cost, hand the decision back, never remove the option. The mechanism, and the honest limits.
+- [The conscience — how it decides to speak](https://oyeboss.build/conscience): BOSS's most distinctive mechanism: a hook watches the state of the work, a model composes the voice, and it hands the decision back. Always overridable, never blocking.
+- [Credits — everyone BOSS learned from](https://oyeboss.build/credits): BOSS is a distillation of other people's published thinking. This is the roll call: the practitioners, labs, papers and specs behind every practice it ships.
+- [The demo — one venture, every piece, generated](https://oyeboss.build/demo): Kettlewick is a fictional venture that finds shift cover for small home-care agencies run through BOSS end to end. The playbook, the design space, the board, the folders and the shipped files — every page produced by the same code an install runs, from records you can read.
+- [Design — how BOSS approaches UI and UX](https://oyeboss.build/design): What goes wrong by default when AI writes your interface, the token discipline that prevents it, and the line between persuasion and manipulation.
+- [For engineers — how BOSS approaches agentic development](https://oyeboss.build/engineering): The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from.
+- [Governance — how BOSS decides what it believes](https://oyeboss.build/governance): Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught.
+- [Guide — using the team, rung by rung](https://oyeboss.build/guide): What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder.
+- [BOSS — Claude Code skills, agents and a conscience for founders](https://oyeboss.build/): The team you hire, just in time. BOSS runs inside Claude Code: builders who make it, mentors who coach you, a conscience that says one thing when you drift — and what you write down reads back as a playbook, a design space and a board. Free, MIT, runs on your machine.
+- [Keeping track — what BOSS writes down, so you don't have to](https://oyeboss.build/keeping-track): Twelve ideas, three half-finished specs, and a decision you can't remember making. BOSS gives every one of them a file, a status, and a place — and renders the board from the files so nothing can drift.
+- [For product people — the positions BOSS holds](https://oyeboss.build/product): Ceremony scaled to evidence, a canvas that is an answer store rather than a framework, an evidence ladder that grades what people did rather than what they said, and a roadmap with a mandatory no-list.
+- [For project management — progress you can't fake](https://oyeboss.build/project): The board is derived from files rather than maintained, the status vocabulary is closed, parked work carries a written re-open trigger, and every decision records who made it and what would prove it wrong.
+- [Start — your first hour with BOSS](https://oyeboss.build/start): Install, then either start something new or bring BOSS into a repo you already have. Both paths, the real output, and how to take it back out.
+- [The team — who BOSS hires, and when](https://oyeboss.build/team): BOSS staffs your project. Builders who make the thing, mentors who coach you — and they arrive just in time, as the project earns them.
+- [What BOSS refuses to do — and what would prove each refusal wrong](https://oyeboss.build/thinking): The things BOSS will not do to you — no scoring, no notifications while you are away, no assuming you are building a company — each recorded as a decision with the cost accepted and a pre-committed falsifier.
+- [What's new in BOSS](https://oyeboss.build/whats-new): Every release, generated from the same changelog `boss sync` reads to tell your project what changed since its pin.
+
+## Demo
+
+- [Kettlewick, one fictional venture run through BOSS end to end](https://oyeboss.build/demo): the playbook, the design space and the board, rendered by the same code an install runs.
+
+## Source
+
+- [GitHub](https://github.com/ajeshh/bossbuild)
+- [npm](https://www.npmjs.com/package/oyeboss)
+- [Changelog](https://oyeboss.build/whats-new)

@@ -968,6 +968,41 @@ const SITE_URL = 'https://oyeboss.build';
 // redirect is the same self-inflicted bug as two URLs serving one page, one level in.
 const canonical = (f) => (f === 'index.html' ? `${SITE_URL}/` : `${SITE_URL}/${f.replace(/\.html$/, '')}`);
 
+// The two stylesheets ride inside every page (IDEA-117 §5): one HTML response paints, no
+// render-blocking fetch, and the cache-lifetime question on /styles/* goes away. Comments and
+// runs of whitespace are dropped; nothing else is rewritten, so tokens stay readable in source
+// and identical in the page. The files are still copied to site/styles/ for the demo pages.
+const inlineCss = ['tokens.css', 'site.css']
+  .map((f) => readFileSync(join(SRC, 'styles', f), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/ ?([{};,>]) ?/g, '$1')
+    .trim())
+  .join('');
+
+// One machine-readable identity for the thing itself — what it is, who made it, that it is free
+// and MIT, where it installs from. Home page only; it is the entity, the other pages are about it.
+const jsonLd = (meta) => `<script type="application/ld+json">${JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'BOSS',
+  alternateName: ['oyeboss', 'Build Out Solid Stuff'],
+  description: meta.description || '',
+  url: `${SITE_URL}/`,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'macOS, Linux, Windows',
+  softwareVersion: V,
+  license: 'https://opensource.org/license/mit',
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  downloadUrl: 'https://www.npmjs.com/package/oyeboss',
+  softwareRequirements: 'Node.js 18+, Claude Code',
+  author: { '@type': 'Person', name: 'Ajesh Shah', url: 'https://www.linkedin.com/in/ajeshshah/' },
+  sameAs: ['https://github.com/ajeshh/bossbuild', 'https://www.npmjs.com/package/oyeboss'],
+  screenshot: `${SITE_URL}/og.png`,
+}).replace(/</g, '\\u003c')}</script>`;
+
+const pageMeta = [];
 for (const f of pages) {
   const raw = readFileSync(join(PAGES, f), 'utf8');
   const meta = {};
@@ -1010,6 +1045,8 @@ for (const f of pages) {
     // a per-page card is a generator nobody asked for.
     .replace(/\{\{OGIMAGE\}\}/g, () => esc(`${SITE_URL}/og.png`))
     .replace('{{HEAD_ICONS}}', HEAD_ICONS)
+    .replace('{{STYLES}}', () => `<style>${inlineCss}</style>`)
+    .replace('{{JSONLD}}', () => (f === 'index.html' ? jsonLd(meta) : ''))
     .replace('{{NAV}}', nav)
     .replace('{{SUBNAV}}', subnav)
     .replace('{{SUBSTRIP}}', substrip)
@@ -1027,6 +1064,7 @@ for (const f of pages) {
   }
 
   writeFileSync(join(SITE, f), out);
+  pageMeta.push({ f, title: meta.title || 'BOSS', description: meta.description || '', nav: meta.nav });
   built++;
 }
 
@@ -1046,6 +1084,20 @@ writeFileSync(join(SITE, '_headers'),
   '  Cache-Control: public, max-age=3600\n');
 writeFileSync(join(SITE, 'robots.txt'),
   `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+// llms.txt (llmstxt.org): the site as an assistant reads it — one paragraph of what BOSS is,
+// then every page with its own description, from the same list as the sitemap. An assistant
+// that cites this site should cite what the site says, so nothing here is written twice.
+const home = pageMeta.find((p) => p.f === 'index.html');
+writeFileSync(join(SITE, 'llms.txt'),
+  `# BOSS\n\n> ${home ? home.description : ''}\n\n`
+  + `BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, agents and hooks for founders. `
+  + `It sets a project up with only the structure it has earned, grows it through four modes (Quickstart → MVP → V1 → Scale), `
+  + `and says one thing when the founder drifts. Everything stays on the founder's machine. `
+  + `MIT licensed, free, v${V}. Install: \`npm install -g oyeboss\` or \`brew install ajeshh/boss/oyeboss\`; needs Node 18+ and Claude Code.\n\n`
+  + `## Pages\n\n`
+  + pageMeta.map((p) => `- [${p.title}](${canonical(p.f)}): ${p.description}`).join('\n')
+  + `\n\n## Demo\n\n- [Kettlewick, one fictional venture run through BOSS end to end](${SITE_URL}/demo): the playbook, the design space and the board, rendered by the same code an install runs.\n\n`
+  + `## Source\n\n- [GitHub](https://github.com/ajeshh/bossbuild)\n- [npm](https://www.npmjs.com/package/oyeboss)\n- [Changelog](${SITE_URL}/whats-new)\n`);
 writeFileSync(join(SITE, 'sitemap.xml'),
   '<?xml version="1.0" encoding="UTF-8"?>\n'
   + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

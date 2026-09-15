@@ -108,6 +108,21 @@ job is two clicks — Copy and Demo. Target ~1,200 words visible; the deep parag
    it. In its place, an open door: *"Maybe someone can hit me up if they have a cool new idea or
    approach? Happy to collab. HMU on LI"* — his words, a LinkedIn link, on voice.
 
+10. **`design.html`, `product.html`, `project.html` describe the product as it was; the playbook is
+    not on the site at all** (Ajesh, mid-build: *"The design and product and project spaces seem
+    outdated, especially design. We did a lot of changes to further improve the depth of it.
+    Especially the design guidelines, and more depth to the design system. We also add a whole
+    playbook dashboard, which is so critical, for creating presentations and or content and to
+    have an internal page for the team to align on, never got covered."*). A content pass, not a
+    layout one: read FEAT-030…033 (the design lane — seventeen sections, `boss design`) and
+    FEAT-026…029 / 035 / 036 (the playbook — sixteen chapters, Present → a deck or a VC cut, export
+    PDF, the copy sheet) against what the three pages say, and give the playbook its own page under
+    *what you get*. The `reviewed:` dates on those fragments said current; the content was not — a
+    `reviewed:` stamp asserts someone read it, and cannot see what shipped since (the
+    [[checkers-state-intents-they-dont-enforce]] shape). `check:site`'s `describes:` line is the
+    hook: a fragment that `covers:` a FEAT could be flagged when that FEAT's record moved after the
+    page's `reviewed:` date.
+
 **Pass two (after a read of pass one):** the two-week timeline for *four things*; the records → pages
 flow for *what it adds up to*; the ladder with derived counts; the twelve snags as a scannable
 you-say / BOSS-runs list with `<details>`; the conscience loop as four nodes.
