@@ -834,7 +834,8 @@ blocks.MARK = () => MARK('mark mark-lg', 'large');
 // stay light and pushes the detail onto subpages.
 const NAV = [
   { id: 'index', href: 'index.html', label: 'Home' },
-  { id: 'start', href: 'start.html', label: 'Start' },
+  // 'Get started', not 'Start': the bare word is on Lighthouse's non-descriptive-link list.
+  { id: 'start', href: 'start.html', label: 'Get started' },
   { id: 'guide', href: 'guide.html', label: 'Guide' },
   // The second door. Everything under here is depth someone came looking for, not a step
   // in the install path — so it stops competing with Start for a first-time visitor's
