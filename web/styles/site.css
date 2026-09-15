@@ -267,6 +267,28 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .hero .wordmark .mark { --mark-size: 6.5rem; }
 @media (max-width: 46rem) { .hero .wordmark .mark { --mark-size: 4.5rem; } }
 
+/* --- the proof strip (IDEA-117) -------------------------------------------
+   Three real renders of the demo venture (gen-proof.js), not drawings of them. */
+.proof { margin: var(--space-4) 0 0; width: min(100%, 54rem); }
+.proof-lead { margin: 0 0 var(--space-2); color: var(--color-text-secondary); font-size: var(--step-0); max-width: 44rem; }
+.proof .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+.proof .tile { display: block; text-decoration: none; color: inherit; min-width: 0; }
+.proof .tile img {
+  display: block; width: 100%; height: auto; aspect-ratio: 640 / 440;
+  border: 1px solid var(--color-rule); border-radius: 6px; background: var(--color-surface);
+  box-shadow: var(--shadow-inset); transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.proof .tile:hover img, .proof .tile:focus-visible img { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+.proof .cap { display: block; margin-top: 0.5rem; font-family: var(--font-mono); font-size: var(--step--1); color: var(--color-text); }
+.proof .cap code { color: var(--color-link); }
+.proof .tile:hover .cap { text-decoration: underline; text-underline-offset: 0.2em; }
+.proof + .small, .proof .small { margin-top: var(--space-2); }
+@media (max-width: 46rem) {
+  .proof .tiles { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: var(--space-2); padding-bottom: 0.5rem; -webkit-overflow-scrolling: touch; }
+  .proof .tile { flex: 0 0 78%; scroll-snap-align: start; }
+}
+@media (prefers-reduced-motion: reduce) { .proof .tile img { transition: none; } .proof .tile:hover img { transform: none; } }
+
 /* --- figures (IDEA-117) --------------------------------------------------
    Inline SVG, tokens only, so a diagram follows the scheme like the text does. */
 .figure { margin: var(--space-3) 0 var(--space-4); max-width: 40rem; }

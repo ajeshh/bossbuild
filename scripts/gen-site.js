@@ -910,7 +910,8 @@ for (const f of readdirSync(join(SRC, 'styles'))) {
 // one part of the front door a stranger judges before deciding to click. Its recipe
 // is scripts/og-card.html, kept as source so the card can be re-rendered rather
 // than re-invented. Copied, never generated: this is a binary the build must not touch.
-const ROOT_ASSETS = ['og.png', 'humane-product-canvas.md'];
+// The proof strip's three renders (gen-proof.js) are binaries of the same kind.
+const ROOT_ASSETS = ['og.png', 'humane-product-canvas.md', 'proof-playbook.png', 'proof-design.png', 'proof-board.png'];
 for (const f of ROOT_ASSETS) {
   if (existsSync(join(SRC, f))) copyFileSync(join(SRC, f), join(SITE, f));
 }

@@ -40,6 +40,7 @@
     "gen:docs": "node scripts/gen-docs.js",
     "gen:site": "node scripts/gen-site.js",
     "gen:og": "node scripts/gen-og.js",
+    "gen:proof": "node scripts/gen-proof.js",
     "check:wayfinding": "node scripts/check-wayfinding-drift.js",
     "check:manifests": "node scripts/check-manifests.js",
     "check:freshness": "node scripts/check-freshness.js",

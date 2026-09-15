@@ -90,6 +90,19 @@ job is two clicks — Copy and Demo. Target ~1,200 words visible; the deep parag
    (cannot advertise a page that isn't there); **stylesheets inlined at gen time** (kills
    render-blocking, cache-lifetime and minify audits at once; mobile LCP under 2.5s).
 
+6. **Wayfinding on the deep pages** (Ajesh, mid-build: *"Under how It thinks or anywhere, there is
+   no way to get back to the top, also the secondary menu hides under scroll, no way to hop around
+   between them!"*). The primary nav sticks (one row); the three-row subnav does not (180px of
+   sticky is the wall it replaces) — it is repeated at the end of the content with a *back to top*
+   link, so a reader who finished a page can hop without scrolling up.
+7. **Terminal blocks were double-spaced** (Ajesh: *"the spacing in blocks could not have additional
+   blank space"*) — a block per line inside `white-space: pre` also printed the newline. Fixed in 2/5.
+
+8. **`guide.html` needs a design lift and an organisation** (Ajesh, mid-build: *"Seems like it could
+   use a design lift, and a way to organize the content as well. open to other ideas"*). Read it
+   before proposing; the same two moves apply — a picture where a section is a mechanism, and
+   opt-in depth — plus a table of contents that stays reachable (item 6).
+
 **Pass two (after a read of pass one):** the two-week timeline for *four things*; the records → pages
 flow for *what it adds up to*; the ladder with derived counts; the twelve snags as a scannable
 you-say / BOSS-runs list with `<details>`; the conscience loop as four nodes.
