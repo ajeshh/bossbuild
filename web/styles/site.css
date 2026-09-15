@@ -335,7 +335,7 @@ details.walk > .prose { padding: var(--space-1) 0 0 1.1rem; border-left: var(--h
    exclusive accordion via name=, no script). Three moments read as three columns. */
 .snags-by { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-3); }
 /* Four moments as two rows of two: a quote gets a full line, and the pairs read as before/while, then the AI/after. */
-.snags-by.four { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); }
+.snags-by.four { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); margin-bottom: var(--space-5); }
 .moment-h { font-family: var(--font-mono); font-size: var(--step--1); font-weight: 600; letter-spacing: 0.04em; color: var(--rail-label); margin: 0 0 var(--space-2); padding-bottom: 0.4rem; border-bottom: 2px solid var(--color-structure); }
 details.snag { border-top: var(--hairline); }
 details.snag:last-child { border-bottom: var(--hairline); }
