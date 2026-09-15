@@ -18,6 +18,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, basename } from 'node:path';
 
+// The founder's calendar, not UTC — `toISOString()` at 21:00 in California stamps tomorrow.
+const localDay = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 function parseArgs(argv) {
   const out = {};
   for (let i = 0; i < argv.length; i++) {
@@ -82,7 +85,7 @@ if (import.meta.url === `file://${process.argv[1]}` || basename(process.argv[1] 
   const entry = appendEntry({
     file,
     projectName: typeof a.project === 'string' ? a.project : basename(process.cwd()),
-    date: typeof a.date === 'string' ? a.date : new Date().toISOString().slice(0, 10),
+    date: typeof a.date === 'string' ? a.date : localDay(),
     feat: typeof a.feat === 'string' ? a.feat : '',
     landed: a.landed,
     next: typeof a.next === 'string' ? a.next : '',

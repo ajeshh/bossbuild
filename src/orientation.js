@@ -44,6 +44,7 @@ import { readEvidenceContext, readIntentContext } from '../stages/L0-quickstart/
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
 import { REENTRY_DAYS, readDevlogHead, awayDays, reentryRead } from '../stages/L0-quickstart/template/.claude/hooks/lib/reentry.js';
 import { dim, bold, ok, warn } from './ui.js';
+import { hasVerb } from './playbook.js';
 
 // The re-entry FACTS now live in the TEMPLATE lib, because the `reentry` SessionStart hook
 // ships into the project and cannot import from `src/`. One implementation, two surfaces —
@@ -69,7 +70,7 @@ export function printReentry(projectDir, { now = Date.now(), threshold = REENTRY
   } else {
     // No `Next` recorded is worth naming once, plainly: it is the field that makes the
     // return cheap, and the founder is the only one who can fill it.
-    console.log(`    ${dim('No "next" was recorded — `/close` writes one, and it is what makes the next return cheap.')}`);
+    console.log(`    ${dim(hasVerb('/close', projectDir) ? 'No "next" was recorded — `/close` writes one, and it is what makes the next return cheap.' : 'No "next" was recorded — `/close` writes one when MVP is unlocked; until then, a line at the top of your idea doc does the same job.')}`);
   }
   console.log('');
   return true;

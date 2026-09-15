@@ -22,8 +22,9 @@ import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
 // as the playbook and the design space (Ajesh, 2026-09-13: "everything should feel like it's one
 // dashboard with different subpages"). The board keeps its own visual world inside main.
 import { shellPage } from './page-shell.js';
-import { readBrand } from './playbook.js';
+import { readBrand, hasVerb } from './playbook.js';
 import { readTokens, themeFromTokens } from './design.js';
+import { isoDay, isoMinute } from './clock.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -377,7 +378,7 @@ export function collectBoard(projectDir) {
   // `next_review:` date (set when it was paused / by /revalidate) that has passed.
   // We deliberately do NOT infer staleness from age — a guessed signal would add
   // noise the founder learns to ignore. No date → not due. (IDEA-027.)
-  const today = new Date().toISOString().slice(0, 10);
+  const today = isoDay();
   const reviewDue = (nextReview, status) => {
     const s = baseStatus(status);
     if (s === 'shipped' || s === 'done' || s === 'killed' || isParked(status)) return false;
@@ -673,7 +674,9 @@ function renderBoardText(projectName, data, opts = {}) {
   }
 
   lines.push('  The board is a read of the files. To change it, change the work:');
-  lines.push('  `/idea` to capture · `/canvas` to pressure-test · `/spec` to build.');
+  // `/spec` is an MVP verb; on a Quickstart project the footer says when it arrives rather than
+  // naming a command that is not installed (verbLine, the playbook's gate; IDEA-118).
+  lines.push(hasVerb('/spec', opts.projectDir) ? '  `/idea` to capture · `/canvas` to pressure-test · `/spec` to build.' : '  `/idea` to capture · `/canvas` to pressure-test · `/spec` to build, once MVP is unlocked.');
   if (!opts.detail) lines.push(dim('  `boss board --detail` for a line on each · `boss board <ID>` for one in full.'));
   lines.push('');
   return lines.join('\n');
@@ -1294,13 +1297,13 @@ export function board(projectDir, projectName, opts = {}) {
   if (opts.next) return console.log(renderBoardNext(projectName, data));
   if (opts.blocked) return console.log(renderBoardBlocked(projectName, data));
   if (opts.json) return console.log(JSON.stringify(boardJson(projectDir, projectName), null, 2));
-  console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine, detail: opts.detail }));
+  console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine, detail: opts.detail, projectDir }));
 }
 
 // Write the visual kanban to .boss/board.html and return its path.
 export function boardHtml(projectDir, projectName) {
   const data = collectBoard(projectDir);
-  const stampedAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
+  const stampedAt = isoMinute();
   const html = renderBoardHtml(projectName, data, stampedAt, projectDir);
   const dir = join(projectDir, '.boss');
   const out = join(dir, 'board.html');

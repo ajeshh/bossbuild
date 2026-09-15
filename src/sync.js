@@ -10,6 +10,7 @@ import { readSupersedes, findSupersede } from './supersede.js';
 import { stillDeferred, newlyEarned, markLaidDown } from './earned.js';
 import { readLadder, assess } from './ladder.js';
 import { provenance, recordManaged, backupManaged } from './managed.js';
+import { isoDay } from './clock.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
 // canonical current stage id by its level prefix. Returns undefined if it
@@ -441,7 +442,7 @@ export function planSync(projectDir, stamp) {
   const current = bossVersion();
   const vars = {
     PROJECT_NAME: stamp.name,
-    DATE: new Date().toISOString().slice(0, 10),
+    DATE: isoDay(),
     BOSS_VERSION: current,
   };
 

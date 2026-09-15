@@ -27,6 +27,7 @@ import { loadModes, packageSkillMd, skillGloss, STANDING_COMMANDS } from './mode
 import { HELP, SYMBOLS, WAYFINDING } from './help.js';
 import { GLOSSARY } from './glossary.js';
 import { bossVersion } from './paths.js';
+import { isoDay } from './clock.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const HELP_SRC = join(HERE, '..', 'library', 'help');
@@ -386,7 +387,7 @@ ${sections.join('\n')}
 export function helpHtml(projectDir, stamp) {
   const dir = join(projectDir, '.boss');
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  const stampedAt = new Date().toISOString().slice(0, 10);
+  const stampedAt = isoDay();
   const out = join(dir, 'help.html');
   writeFileSync(out, renderHelpHtml(projectDir, stamp, stampedAt));
   return out;

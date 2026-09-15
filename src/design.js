@@ -28,6 +28,7 @@ import { frontmatter } from './frontmatter.js';
 import { isRegistered } from './hooks.js';
 import { readBrand, brandPath, verbLine } from './playbook.js';
 import { esc, shellPage, NEUTRAL, DEFAULT_ACCENT } from './page-shell.js';
+import { isoDay, isoMinute } from './clock.js';
 
 // --- tokens: docs/design/tokens.json (DTCG) first; DESIGN_TOKENS.md names as the fallback --------
 
@@ -773,7 +774,7 @@ export function readDivergence(projectDir, components, days = 30) {
   let lines = [];
   try { lines = readFileSync(p, 'utf8').split(/\r?\n/).filter(Boolean); } catch { return out; }
   const cutoff = Date.now() - days * 86400000;
-  out.since = new Date(cutoff).toISOString().slice(0, 10);
+  out.since = isoDay(cutoff);
   const indexed = (n) => components.components.some((c) => c.name.toLowerCase() === String(n).toLowerCase());
   const retired = (n) => components.retired.some((r) => r.name.toLowerCase() === String(n).toLowerCase());
   const inTree = (n) => (components.tree || []).some((f) => f.name.toLowerCase() === String(n).toLowerCase());
@@ -1191,7 +1192,7 @@ export function renderDesignHtml(data, stampedAt) {
 export function designHtml(projectDir, projectName) {
   const data = collectDesign(projectDir, projectName);
   data.projectDir = projectDir;
-  const stampedAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
+  const stampedAt = isoMinute();
   const html = renderDesignHtml(data, stampedAt);
   const dir = join(projectDir, '.boss');
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });

@@ -24,6 +24,7 @@ import { shellPage } from './page-shell.js';
 // BOSS (Ajesh, 2026-09-13). Light scheme only: no dark tokens means dark isn't designed. Neutral
 // otherwise. A cycle with design.js (it imports verbLine) — function bindings used at call time only.
 import { readTokens, themeFromTokens } from './design.js';
+import { isoDay, isoMinute } from './clock.js';
 
 // --- the registry -----------------------------------------------------------------------------
 // `lean` is the Lean Canvas box the humane answer reads as (DEC-004 mapping); `area` its grid slot.
@@ -244,7 +245,7 @@ export function readIdea(projectDir, canvasId) {
     const fm = frontmatter(text);
     const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
     const skip = (v) => { const s = String(v ?? '').trim().replace(/^"|"$/g, ''); return !s || /^(unset|none|tbd)$/i.test(s) ? '' : s; };
-    return { file: pick.n, id: fm.id || null, title, gist: skip(fm.gist), motivation: skip(fm.motivation), success: skip(fm.success_looks_like), vision: skip(fm.in_a_few_years) || skip(fm.vision), priorCapital: (() => { const v = String(fm.prior_capital ?? '').trim().replace(/^"|"$/g, ''); return !v || /^unset$/i.test(v) ? '' : v; })(), shape: section(text, 'Current shape'), created: fm.created || null };
+    return { file: pick.n, id: fm.id || null, venture: pick.rank >= 1, title, gist: skip(fm.gist), motivation: skip(fm.motivation), success: skip(fm.success_looks_like), vision: skip(fm.in_a_few_years) || skip(fm.vision), priorCapital: (() => { const v = String(fm.prior_capital ?? '').trim().replace(/^"|"$/g, ''); return !v || /^unset$/i.test(v) ? '' : v; })(), shape: section(text, 'Current shape'), created: fm.created || null };
   } catch { return null; }
 }
 
@@ -317,7 +318,7 @@ export function readSources(projectDir) {
   if (!existsSync(dir)) return [];
   return readdirSync(dir).filter((n) => !n.startsWith('.') && !/^readme\.md$/i.test(n)).map((n) => {
     const p = join(dir, n); let st = null; try { st = statSync(p); } catch { return null; }
-    const d = (n.match(/\d{4}-\d{2}-\d{2}/) || [null])[0] || (st ? st.mtime.toISOString().slice(0, 10) : null);
+    const d = (n.match(/\d{4}-\d{2}-\d{2}/) || [null])[0] || (st ? isoDay(st.mtime) : null);
     return { name: n, dir: st && st.isDirectory(), date: d };
   }).filter(Boolean).sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
@@ -507,7 +508,7 @@ export function readDecisions(projectDir, today = Date.now()) {
 export function readTrust(projectDir) {
   const file = join(projectDir, 'docs', 'trust', 'TRUST.md');
   if (!existsSync(file)) return null;
-  try { const text = readFileSync(file, 'utf8'); return { file: 'docs/trust/TRUST.md', text: firstParagraph(text), updated: statSync(file).mtime.toISOString().slice(0, 10) }; } catch { return null; }
+  try { const text = readFileSync(file, 'utf8'); return { file: 'docs/trust/TRUST.md', text: firstParagraph(text), updated: isoDay(statSync(file).mtime) }; } catch { return null; }
 }
 
 // docs/health/HEALTH-<date>.md and docs/measure/MEASURE-<date>.md — the newest of each, its date
@@ -660,17 +661,22 @@ function pitchChapters(data) {
 
   // 1 · Vision — the Promise is the line; the founder's why; principles; two holes the records can't fill.
   const ideaSrc = idea ? `docs/ideas/${esc(idea.file)}` : 'docs/ideas — no IDEA doc';
+  // The venture fields live on the `kind: venture` record, which /boss writes; /idea asks nothing by
+  // its own rule. So a hole on those fields points at /boss until the venture record exists, and at
+  // /idea (edit the record you have) only after — never at the verb that would not ask (IDEA-118).
+  const venture = Boolean(idea && idea.venture);
+  const ideaVerb = venture ? '/idea' : '/boss <your idea>';
   out.push(chapter('vision', chapterHead(1, 'Vision', line(cell('promises'))),
     '<div class="blocks">'
     + (idea && (idea.motivation || idea.success)
       ? block({ id: 'vision-why', title: 'Why this, and what "it worked" looks like', body: (idea.motivation ? `<p><strong>Motivation:</strong> ${inline(idea.motivation)}</p>` : '') + (idea.success ? `<p><strong>Success looks like:</strong> ${inline(idea.success)}</p>` : ''), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · motivation · success_looks_like` })
-      : hole('vision-why', 'Why this, and what "it worked" looks like', 'Why are you building this, and what does success look like in three months? Two lines on the IDEA doc.', '/idea', ideaSrc))
+      : hole('vision-why', 'Why this, and what "it worked" looks like', 'Why are you building this, and what does success look like in three months? Two lines on the IDEA doc.', ideaVerb, ideaSrc))
     + cellBlock(cell('principles'), canvas, 'vision-principles', 'Principles', 'what we\'ll hold when it\'s costly')
     + (people.length
       ? block({ id: 'vision-team', title: 'Who is building it', body: people.map((p) => `<p><strong>${esc(p.name)}</strong> <span class="sub">${esc(p.role)}</span>${p.thing ? ` — ${inline(firstSentence(p.thing))}` : ''}</p>`).join('') + '<p class="xlink"><a href="#team">the team, in full →</a></p>', chip: '<span class="chip asserted">asserted</span>', src: `docs/team · ${people.length} ${people.length === 1 ? 'person' : 'people'}` })
       : hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'write docs/team/<you>.md — the README there has the shape', 'docs/team — none'))
     + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', body: `<p>${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · in_a_few_years` })
-      : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', idea ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : '/idea', `${ideaSrc} · no in_a_few_years line`))
+      : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', venture ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : ideaVerb, `${ideaSrc} · no in_a_few_years line`))
     + '</div>'));
 
   // 2 · Product — the IDEA doc's current shape, whole; the FEATs; what it is not.
@@ -681,7 +687,7 @@ function pitchChapters(data) {
   out.push(chapter('product', chapterHead(2, 'Product', shapeLine),
     '<div class="blocks">'
     + (idea && idea.shape ? block({ id: 'product-shape', title: 'What it is today', sub: 'the current shape, in the founder\'s words', body: blockMd(idea.shape), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · ## Current shape${idea.created ? ` · since ${esc(idea.created)}` : ''}` })
-      : hole('product-shape', 'What it is today', 'What is it, who is it for, and what is the smallest version that proves it? The IDEA doc\'s current shape.', '/idea', ideaSrc))
+      : hole('product-shape', 'What it is today', 'What is it, who is it for, and what is the smallest version that proves it? The IDEA doc\'s current shape.', ideaVerb, ideaSrc))
     + featList
     + (brandNot ? block({ id: 'product-not', title: 'What it is not', body: `<p>${inline(brandNot)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: 'docs/BRAND.md · What it is NOT' })
       : hole('product-not', 'What it is not', 'The nearest thing people will mistake it for — and what it refuses to be.', '/landing seeds docs/BRAND.md', 'docs/BRAND.md · What it is NOT'))
@@ -1109,9 +1115,18 @@ function playbookJs(brand) {
 // doesn't have yet is said so; when the hole is a record a document can fill (rivals, brand) it
 // points at /import instead — the record is ungated, only the deeper verb is. A FEAT or a mentor's
 // dossier is not something you drop in, so those just wait for the mode.
-const VERB_ORDER = ['/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/comp-eval', '/landing', '/trust', '/consult'];
+const VERB_ORDER = ['/boss', '/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/comp-eval', '/landing', '/trust', '/consult'];
 // A gated verb with a door that exists: the record can still be filled the plain way.
 const ALT = { 'comp-eval': ['or drop what you know', 'import'], landing: ['or drop what you know', 'import'], log: ['or add it to the idea', 'idea'] };
+// Is the verb's skill installed here? No skills folder at all (a bare adopt, a test tree) → nothing
+// can be said about gating, so yes. The readers that write a sentence rather than a list (recap,
+// the board's footer, the re-entry line) use this to phrase the wait themselves (IDEA-118).
+export function hasVerb(verb, projectDir) {
+  const m = /^\/([a-z-]+)/.exec(verb);
+  if (!m || !projectDir) return true;
+  const skillsDir = join(projectDir, '.claude', 'skills');
+  return !existsSync(skillsDir) || existsSync(join(skillsDir, m[1]));
+}
 // The verb as the founder should read it. No skills folder at all (a bare adopt, a test tree) →
 // nothing can be said about gating and the verb prints as is.
 export function verbLine(verb, projectDir) {
@@ -1125,7 +1140,12 @@ export function verbLine(verb, projectDir) {
 }
 export function openQuestions(data, projectDir) {
   const fromCanvas = data.boxes.filter((b) => b.state === 'hole').map((b) => ({ id: `canvas-${b.key}`, title: b.name, prompt: b.prompt, verb: '/canvas' }));
-  const fromChapters = (data.holes || []).filter((h) => h.verb !== '/canvas');
+  // Two chapters may hole on one missing file (Vision repeats Team's "who is building it" the way
+  // the chapters repeat canvas cells); the founder answers it once, so the list names it once — the
+  // owning chapter's, which is drawn after the repeat.
+  const byKey = new Map();
+  for (const h of (data.holes || []).filter((h) => h.verb !== '/canvas')) byKey.set(`${h.title}\u0000${h.src}`, h);
+  const fromChapters = [...byKey.values()];
   const rank = (v) => { const i = VERB_ORDER.findIndex((o) => v.startsWith(o)); return i < 0 ? VERB_ORDER.length : i; };
   return [...fromCanvas, ...fromChapters].sort((a, b) => rank(a.verb) - rank(b.verb)).map((q) => {
     const line = verbLine(q.verb, projectDir);
@@ -1145,7 +1165,7 @@ export function questionsLine(questions) {
 // Write the playbook to .boss/playbook.html and return its path — the board.html contract.
 export function playbookHtml(projectDir, projectName) {
   const data = collectPlaybook(projectDir, projectName);
-  const stampedAt = new Date().toISOString().slice(0, 16).replace('T', ' ');
+  const stampedAt = isoMinute();
   const html = renderPlaybookHtml(data, stampedAt);
   const dir = join(projectDir, '.boss');
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });

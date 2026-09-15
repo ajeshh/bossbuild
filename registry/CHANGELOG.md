@@ -30,6 +30,31 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The seams after the overhaul (IDEA-118).** Walked end to end as a first founder — site →
+  `boss new` → `/welcome` and `/boss` as written → the readers on day 0, day 1 and after `boss unlock
+  mvp`. The surfaces told one story; the seams between them didn't. Seven fixed, each a rule kept in
+  one reader and not its sibling: **day 0 collapses** — `boss playbook` printed 32 questions and
+  `boss design` 17 before an idea existed, where `boss board` said one sentence; all three now say
+  *nothing to read yet* and the one command that starts it, the page keeping its questions.
+  **The venture holes point at `/boss`** until the `kind: venture` record exists — they pointed at
+  `/idea`, the verb that by its own rule asks nothing; `/boss` leads the verb order, so the page's
+  `start:` on day 0 is the door. **The verb gate is in every reader**: `boss recap` (`/log`), the
+  re-entry line (`/close`) and the board's footer (`/spec`) named MVP verbs on a Quickstart project as
+  if installed; the playbook and design space already said *arrives with the next mode* — now the
+  siblings say when, in a sentence (`hasVerb`). **"Who is building it" is asked once** — Vision
+  repeated Team's hole and the list carried it twice. **One cohort vocabulary**: `/welcome` and
+  `/boss` ask *where you're starting from* in the site's plain phrases with the slug in parentheses;
+  a skip writes `cohort: skipped`, which every reader treats as unset and `/boss` step 6 reads as
+  *asked and declined* rather than asking again. **Local dates**: `boss recap`'s window, every
+  `added <date>`, the `/log` stamp and the page stamps used `toISOString()` — UTC, so 21:00 in
+  California dated everything tomorrow; `src/clock.js` is the founder's calendar (machine timestamps
+  stay ISO). And the small ones: `boss new` printed `cd my-app` then `code my-app`; `boss unlock`'s
+  *Now available* meant *added*; `/boss`'s description said *stage* where everything else says
+  *mode*; Start said `/boss` asks two things (three), that the cohort changes where you start (it
+  changes the tour and the framing), and told the high-stakes founder to run `/ai-failure-states`
+  *from the start* (it arrives at MVP). The fillable canvas page carries the generator stamp the
+  deployed check reads. Ruled, not changed: the conversation-before-canvas sequence (Ajesh: *no
+  fixed order*) — noted on the record for the places that still sequence it.
 - **The front door is seen, not read (IDEA-117).** oyeboss.build measured at 4,231 words in one
   visual grammar, the mark at 40px, the generated pages behind a text link. Now: the built B at
   104px in the hero rail; *Building got cheap. Being wrong didn't.* as one picture; the hero shows

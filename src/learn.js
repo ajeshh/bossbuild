@@ -4,6 +4,7 @@ import {
 import { join, basename, resolve } from 'node:path';
 import { BOSS_ROOT, isBossRepo, resolveStageId } from './paths.js';
 import { listProjects } from './registry.js';
+import { isoDay } from './clock.js';
 
 // TWO destinations, and the difference is not cosmetic.
 //
@@ -176,7 +177,7 @@ export function learn({
   }
 
   // Record it in the CHANGELOG (what /boss-sync reads to tell projects what's new).
-  const date = new Date().toISOString().slice(0, 10);
+  const date = isoDay();
   const relDest = join(relDir, name);
   const where = registered
     ? ` Registered as \`${registered.key}\` in the ${stageId} manifest, so it syncs.`

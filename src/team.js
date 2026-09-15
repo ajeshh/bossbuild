@@ -14,6 +14,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { bold } from './ui.js';
 import { readConfig, writeConfig } from './config.js';
+import { isoDay } from './clock.js';
 
 export { readConfig };
 
@@ -46,7 +47,7 @@ export function addCollaborator(dir, handle, name) {
   const cfg = readConfig(dir);
   const team = Array.isArray(cfg.team) ? cfg.team : [];
   if (team.some((m) => normHandle(m.handle) === h)) return { added: false, handle: '@' + h };
-  team.push({ handle: '@' + h, name: name || null, added: new Date().toISOString().slice(0, 10) });
+  team.push({ handle: '@' + h, name: name || null, added: isoDay() });
   cfg.team = team;
   writeConfig(dir, cfg);
   return { added: true, handle: '@' + h, person: writePersonStub(dir, h, name) };

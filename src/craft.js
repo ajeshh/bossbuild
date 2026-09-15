@@ -18,6 +18,7 @@ import { join } from 'node:path';
 import { PRACTICES_DIR } from './paths.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { printPatterns } from './patterns.js';
+import { isoDay } from './clock.js';
 
 // Minimal frontmatter read — same shape the freshness script uses. Zero-dep by rule.
 function frontmatter(text) {
@@ -201,7 +202,7 @@ export function printCraft(query, opts = {}) {
   const fm = frontmatter(text);
   if (fm.provenance_public) console.log(`  ${dim('sources')}  ${dim(fm.provenance_public)}\n`);
 
-  const stale = hit.reviewBy && hit.reviewBy < new Date().toISOString().slice(0, 10);
+  const stale = hit.reviewBy && hit.reviewBy < isoDay();
   const stamp = hit.reviewBy
     ? (stale ? warn(`review overdue (${hit.reviewBy})`) : ok(`fresh until ${hit.reviewBy}`))
     : dim('no review date');

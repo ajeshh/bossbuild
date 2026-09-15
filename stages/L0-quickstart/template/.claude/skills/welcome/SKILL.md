@@ -102,24 +102,26 @@ That's it. No more than 3-4 sentences. The founder is here to build, not to read
 
 ## 2. Ask the cohort question (if unset)
 
-Read `cohort` from `.boss/config.json`. If `null` (the default), ask the SAME open question
-`/boss` step 6 asks:
+Read `cohort` from `.boss/config.json`. If `null` (the default — never asked), ask the SAME open
+question `/boss` step 6 asks. If it is `skipped`, they were asked and declined: don't ask again.
 
-> *"Quick optional thing — which of these sounds most like where you're starting from? It lets
-> BOSS tune itself for you. If none fit, skip:*
-> - *`vibe-coder-newbie` — picked up Cursor/Claude Code recently, no eng/startup background*
-> - *`eng-builder` — strong eng background, first-time founder*
-> - *`non-tech-founder` — domain expertise, no coding background, AI is the bridge*
-> - *`first-product` — absolute first product ever, learning everything as you go*
-> - *`vibe-virtuoso` — ships a lot of projects, harder time sustaining one*
-> - *`indie-hacker` — building right-sized; calm-company, not venture*
-> - *`returning-founder` — shipped before; want depth, not 101*
-> - *`domain-expert` — deep expertise in a high-stakes domain (medical / legal / financial)*
+> *"Quick optional thing — which of these sounds most like where you're starting from? It changes
+> how much I explain and how BOSS frames a nudge, nothing else. If none fit, skip:*
+> - *this is the first thing you've built* (`first-product`)
+> - *you've shipped a couple of small things with AI; no engineering or startup background* (`vibe-coder-newbie`)
+> - *you know a business or a trade, and the AI is how you'll build* (`non-tech-founder`)
+> - *you've built real systems; this is your first company* (`eng-builder`)
+> - *you ship a lot; finishing one is the hard part* (`vibe-virtuoso`)
+> - *right-sized on purpose — a calm company, not a venture* (`indie-hacker`)
+> - *you've shipped real products before; depth, not 101* (`returning-founder`)
+> - *being wrong has real costs — health, legal, money, safety* (`domain-expert`)
 > - *skip — leave it generic"*
 
-On answer, write the value to `.boss/config.json` (don't disturb other fields). If they skip,
-leave `null`. Move on. **Don't argue their pick** — they can edit the file later, and live use
-will sharpen it.
+The phrase is the question; the slug in parentheses is what gets stored, and it is the same list
+the site's *where you're starting from* uses — one vocabulary, not two. On answer, write the slug
+to `.boss/config.json` (don't disturb other fields). **If they skip, write `"cohort": "skipped"`** —
+every reader treats it as unset, and it is how `/boss` knows not to ask again. Move on. **Don't
+argue their pick** — they can edit the file later, and live use will sharpen it.
 
 ## 2.5 Ask: solo, or building with someone? (light, optional)
 

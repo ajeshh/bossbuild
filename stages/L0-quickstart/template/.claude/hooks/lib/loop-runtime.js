@@ -568,7 +568,8 @@ export function readCohort(projectDir) {
   const f = join(projectDir, '.boss', 'config.json');
   if (!existsSync(f)) return null;
   try {
-    return JSON.parse(readFileSync(f, 'utf8')).cohort || null;
+    const c = JSON.parse(readFileSync(f, 'utf8')).cohort || null;
+    return c === 'skipped' ? null : c;   // asked and declined — generic voice, and never asked again
   } catch { return null; }
 }
 

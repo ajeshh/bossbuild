@@ -1191,6 +1191,7 @@ writeFileSync(join(SITE, 'humane-product-canvas.html'), `<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="BOSS ${V}" />
 <title>Humane Product Canvas — fill it in, print it</title>
 <meta name="description" content="The Humane Product Canvas as a board you can type into and print. Thirteen cells, two of them no conventional canvas has. Your words stay in your browser. CC BY-SA." />
 <meta name="color-scheme" content="light dark" />

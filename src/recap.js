@@ -33,13 +33,15 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { timeline } from './records.js';
 import { collectBoard } from './board.js';
+import { hasVerb } from './playbook.js';
 import { dim, bold, warn } from './ui.js';
+import { isoDay } from './clock.js';
 
 const DAY = 86400000;
 const DEFAULT_DAYS = 7;
 const DATE_HEADING = /^##\s+(\d{4}-\d{2}-\d{2})/;
 
-const iso = (t) => new Date(t).toISOString().slice(0, 10);
+const iso = (t) => isoDay(t);
 
 /** The window: `--since YYYY-MM-DD` wins, else `--days N`, else 7 days back. */
 export function resolveWindow({ since, days } = {}, now = Date.now()) {
@@ -151,6 +153,7 @@ export function collectRecap(projectDir, opts = {}) {
   try { board = collectBoard(projectDir); } catch { /* no board is not a finding */ }
 
   return {
+    projectDir,
     from,
     to,
     git,
@@ -186,7 +189,9 @@ export function renderRecap(projectName, d, { markdown = false } = {}) {
 
   head('Landed');
   if (d.shipped.length) for (const r of d.shipped) row(r.id, `shipped ${r.shipped}`);
-  if (d.devlog === null) none('No devlog yet — `/log` writes one, and it is what this reads.');
+  // `/log` arrives at MVP; on a Quickstart project the pointer says so instead of naming a verb
+  // that is not there (verbLine — the playbook's gate, applied to every reader; IDEA-118).
+  if (d.devlog === null) none(hasVerb('/log', d.projectDir) ? 'No devlog yet — `/log` writes one, and it is what this reads.' : 'No devlog yet — `/log` writes one, and it is what this reads; it arrives with MVP (`boss unlock mvp`).');
   else if (d.devlog.length) for (const e of d.devlog) row(e.date, e.landed || '(no Landed line)');
   else none('Nothing logged in this window.');   // prints even when a record shipped: "work landed"
                                                  // and "the week was written down" are different facts

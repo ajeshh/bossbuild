@@ -17,7 +17,7 @@ import { planRemove, applyRemove, machineState, removeMachineState } from './rem
 import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
-import { playbookHtml, questionsLine } from './playbook.js';
+import { playbookHtml, questionsLine, hasVerb } from './playbook.js';
 import { designHtml } from './design.js';
 import { recap } from './recap.js';
 import { map, renderLadder } from './map.js';
@@ -33,13 +33,14 @@ import { parseArgs } from './args.js';
 import { lookup, terms } from './glossary.js';
 import { HELP, SYMBOLS } from './help.js';
 import { helpHtml } from './help-html.js';
+import { isoDay } from './clock.js';
 
 const STAMP = '.boss/manifest.json';
 
 function stageVars(name, stageId, mode) {
   return {
     PROJECT_NAME: name,
-    DATE: new Date().toISOString().slice(0, 10),
+    DATE: isoDay(),
     BOSS_VERSION: bossVersion(),
     STAGE: stageId,
     MODE: mode || stageId,
@@ -154,7 +155,7 @@ function cmdNew(args) {
   console.log(`    skills: ${skillsLine(stamp.skills)}`);
   console.log(`\n  ${bold('Next')} ${dim('(these run in your terminal)')}`);
   console.log(`    cd ${name}`);
-  console.log(`    code ${name}        # or open the folder in your editor (Cursor, etc.)`);
+  console.log(`    code .              # or open the folder in your editor (Cursor, etc.)`);
   console.log(`    claude              # open Claude Code (works in the terminal or the editor panel)`);
   console.log(`    ${dim('then, inside Claude:')}`);
   console.log(`    > /boss <your idea>     # spin up — a sentence, a doc, a deck, or a link`);
@@ -444,7 +445,7 @@ function cmdUnlock(args) {
     [(m.loops || []).length, 'loop'],
   ].filter(([n]) => n > 0).map(([n, w]) => `${n} ${w}${n === 1 ? '' : 's'}`);
   if (arrived.length) {
-    console.log(`\n  ${bold('Now available')} ${dim(`(${arrived.join(' · ')})`)}`);
+    console.log(`\n  ${bold('This unlock adds')} ${dim(`(${arrived.join(' · ')})`)}`);
     if ((m.agents || []).length) console.log(`    agents: ${skillsLine(m.agents)}`);
     if (landed.length) console.log(`    skills: ${skillsLine(landed)}`);
   }
@@ -684,7 +685,10 @@ function cmdPlaybook(args = []) {
   if (error) console.error(`    ${warn('!')} ${error}`);
   // The pull (IDEA-111): the page's holes, read back — the founder sees what's open without opening
   // it. `--questions` lists each one with its verb; the page carries the prompt behind each.
-  console.log(`    ${questionsLine(data.questions)}`);
+  // Day 0 — no IDEA doc at all — collapses to the board's one sentence: thirty-two questions before
+  // there is an idea is a wall, and every one of them waits on the same first step (IDEA-118).
+  if (!data.idea) console.log(`    nothing to read yet — \`/boss <your idea>\` starts it; the page holds the ${data.questions.length} questions it will grow into.`);
+  else console.log(`    ${questionsLine(data.questions)}`);
   if (args.includes('--questions') && data.questions.length) {
     console.log('');
     for (const q of data.questions) console.log(`    ${dim('·')} ${q.title} ${dim('—')} ${q.line}`);
@@ -708,8 +712,10 @@ function cmdDesign(args = []) {
   console.log(`    ${data.tokens.source || 'no tokens file yet — /design-tokens-init writes docs/design/tokens.json'} · ${filled} of ${data.slots.length} slots filled · ${data.pairs.length} contrast pair${data.pairs.length === 1 ? '' : 's'} computed · ${data.findings} finding${data.findings === 1 ? '' : 's'}`);
   if (data.tokens.error) console.error(`    ${warn('!')} ${data.tokens.error}`);
   // The pull, as the playbook has it: the open slots read back, in build order, each with the verb
-  // that fills it and the moment that earns it. `--questions` lists them.
-  console.log(`    ${questionsLine(data.questions)}`);
+  // that fills it and the moment that earns it. `--questions` lists them. Nothing filled at all
+  // collapses to one sentence, as the playbook and the board do on day 0 (IDEA-118).
+  if (!filled) console.log(`    nothing to read yet — the first real screen earns this page; it holds the ${data.questions.length} slots that wait on it${hasVerb('/design-tokens-init', process.cwd()) ? ' (/design-tokens-init starts it)' : ' (/design-tokens-init starts it, at MVP)'}.`);
+  else console.log(`    ${questionsLine(data.questions)}`);
   if (args.includes('--questions') && data.questions.length) {
     console.log('');
     for (const q of data.questions) console.log(`    ${dim('·')} ${q.title} ${dim('—')} ${q.line} ${dim('· ' + q.moment)}`);
@@ -981,7 +987,7 @@ function cmdRetire(args) {
     console.log(`\n  ${ok('✦')} ${bold(stamp.name)} is active again. Nothing was ever deleted.\n`);
     return;
   }
-  const today = new Date().toISOString().slice(0, 10);
+  const today = isoDay();
   stamp.status = 'retired';
   stamp.retired_on = today;
   writeStamp(process.cwd(), stamp);

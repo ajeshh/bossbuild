@@ -36,9 +36,12 @@ export function writeConfig(pathOrDir, cfg) {
 }
 
 // The founder-cohort declaration, or null. Null means "compose the voice generically" —
-// an unset cohort is a legitimate state, never a prompt to fill something in.
+// an unset cohort is a legitimate state, never a prompt to fill something in. `skipped` is the
+// founder's answer to the question (asked once, declined) and reads as null everywhere but the
+// skills, which use it to not ask again (IDEA-118).
 export function readCohort(projectDir) {
-  return readConfig(projectDir).cohort || null;
+  const c = readConfig(projectDir).cohort || null;
+  return c === 'skipped' ? null : c;
 }
 
 // WHERE THE FOUNDER'S CODE LIVES. `src/` is a JavaScript convention, not a fact — Swift keeps

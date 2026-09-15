@@ -1,6 +1,6 @@
 ---
 name: boss
-description: The door, any day. Spin up a project from a rough idea or PRD - or tell BOSS what you're trying to do and it reads where you are and names the smallest next step. Says the idea back, asks why this one and what 'it worked' looks like, captures a living idea doc, recommends a stack and stage, creates a private repo with your OK. Usage - /boss [idea | PRD | what you're trying to do]
+description: The door, any day. Spin up a project from a rough idea or PRD - or tell BOSS what you're trying to do and it reads where you are and names the smallest next step. Says the idea back, asks why this one and what 'it worked' looks like, captures a living idea doc, recommends a stack and mode, creates a private repo with your OK. Usage - /boss [idea | PRD | what you're trying to do]
 ---
 
 # /boss — the door
@@ -315,22 +315,25 @@ and offer to retry.
 
 ## 6. Cohort (optional, low-friction)
 
-Read `cohort` from `.boss/config.json`. If `null` (the default), ask ONE open question:
+Read `cohort` from `.boss/config.json`. If `null` (the default — never asked), ask ONE open
+question, the same one `/welcome` asks. **If it is `skipped`, they were asked there and declined:
+don't ask again** — a second ask is the nag this skill's own step 3.5 refuses.
 
-> *"Quick optional thing — which of these sounds most like where you're starting from? It lets BOSS's
-> conscience tune its voice for you. If none fit, skip:*
-> - *`vibe-coder-newbie` — picked up Cursor/Claude Code recently, no eng/startup background*
-> - *`eng-builder` — strong eng background, first-time founder*
-> - *`non-tech-founder` — domain expertise, no coding background, AI is the bridge*
-> - *`first-product` — absolute first product ever, learning everything as you go*
-> - *`vibe-virtuoso` — ships a lot of projects, harder time sustaining one*
-> - *`indie-hacker` — building right-sized; calm-company, not venture*
-> - *`returning-founder` — shipped before; want depth, not 101*
-> - *`domain-expert` — deep expertise in a high-stakes domain (medical/legal/financial)*
+> *"Quick optional thing — which of these sounds most like where you're starting from? It changes
+> how BOSS frames a nudge, nothing else. If none fit, skip:*
+> - *this is the first thing you've built* (`first-product`)
+> - *you've shipped a couple of small things with AI; no engineering or startup background* (`vibe-coder-newbie`)
+> - *you know a business or a trade, and the AI is how you'll build* (`non-tech-founder`)
+> - *you've built real systems; this is your first company* (`eng-builder`)
+> - *you ship a lot; finishing one is the hard part* (`vibe-virtuoso`)
+> - *right-sized on purpose — a calm company, not a venture* (`indie-hacker`)
+> - *you've shipped real products before; depth, not 101* (`returning-founder`)
+> - *being wrong has real costs — health, legal, money, safety* (`domain-expert`)
 > - *skip — leave it generic"*
 
-On answer, write the value to `.boss/config.json` (don't disturb other fields). If they skip, leave `null`.
-Either way, move on. Don't argue with their choice; they can edit the file later.
+The phrase is the question; the slug is what gets stored. On answer, write the slug to
+`.boss/config.json` (don't disturb other fields). If they skip, write `"cohort": "skipped"`. Either
+way, move on. Don't argue with their choice; they can edit the file later.
 
 **Voice note:** these are *beginner personas*. The cohort declaration sharpens BOSS for
 this founder *as evidence comes in over time* — not the other way around. If the user mishears their own

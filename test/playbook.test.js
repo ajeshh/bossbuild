@@ -382,14 +382,18 @@ test('blockMd: the IDEA doc\'s bullets and helper line render, escaped', () => {
 import { openQuestions, questionsLine } from '../src/playbook.js';
 
 test('open questions are the page\'s holes, once each — every canvas hole and every chapter hole, no dormant cell, no duplicate', () => {
-  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-app.md': IDEA });
   const data = collectPlaybook(dir, 'tidewell');
   const html = renderPlaybookHtml(data, '2026-09-13 10:00');
   const qs = openQuestions(data, dir);
   const holeIds = [...html.matchAll(/class="block hole[^"]*" id="([^"]+)"/g)].map((m) => m[1]);
   // every terminal question is a hole on the page, and every non-canvas hole on the page is a question
   for (const q of qs) assert.ok(holeIds.includes(q.id), `${q.id} is on the page`);
-  for (const id of holeIds.filter((i) => !i.startsWith('canvas-'))) assert.ok(qs.some((q) => q.id === id), `${id} is in the list`);
+  // a chapter's repeat of another chapter's hole (Vision repeats Team) is on the page and off the list — once each
+  for (const id of holeIds.filter((i) => !i.startsWith('canvas-'))) {
+    const h = data.holes.find((x) => x.id === id);
+    assert.ok(qs.some((q) => q.id === id || (q.title === h.title && q.src === h.src)), `${id} is in the list, or its owner is`);
+  }
   // the chapters repeat canvas cells as holes; the list carries each cell once, and never a dormant one
   const canvasQs = qs.filter((q) => q.verb === '/canvas');
   assert.equal(canvasQs.length, data.boxes.filter((b) => b.state === 'hole').length);
@@ -408,7 +412,7 @@ test('a verb the project does not have yet: droppable records point at /import, 
   assert.equal(line('product-not'), '/landing seeds docs/BRAND.md — or drop what you know: /import');
   assert.equal(line('product-feats'), '/spec — arrives with the next mode (boss unlock)');
   assert.equal(line('persona-none'), '/persona derive');
-  assert.equal(line('vision-team'), 'write docs/team/<you>.md — the README there has the shape', 'a hole with no verb points at the record shape, without citing BOSS\'s own records');
+  assert.equal(line('team-none'), 'write docs/team/<you>.md — the README there has the shape; boss team add writes a cofounder\'s', 'a hole with no verb points at the record shape, without citing BOSS\'s own records');
   // skills folder present but no /import → the gated verb just waits
   const noImport = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/canvas/SKILL.md': '# canvas' });
   const d2 = collectPlaybook(noImport, 'tidewell'); renderPlaybookHtml(d2, '2026-09-13 10:00');
@@ -422,16 +426,16 @@ test('a verb the project does not have yet: droppable records point at /import, 
 test('the terminal: one summary line grouped by verb, --questions lists each with its verb, nothing open says so', () => {
   assert.equal(questionsLine([]), 'no questions open');
   assert.equal(questionsLine([{ line: '/canvas' }, { line: '/canvas' }, { line: '/idea' }]), '3 questions open · /canvas ×2 · /idea');
-  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-app.md': IDEA });
   const out = execFileSync('node', [BIN, 'playbook', '--questions'], { cwd: dir, encoding: 'utf8' });
-  assert.match(out, /\d+ questions open · \/canvas · \/idea ×3/);
+  assert.match(out, /\d+ questions open · \/canvas · \/decide/);
   assert.match(out, /· Who, exactly — \/persona derive/);
   const plain = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
   assert.doesNotMatch(plain, /· Who, exactly/, 'the list only with --questions');
 });
 
 test('the page says the same thing the terminal says: a gated hole\'s verb line matches, and the ledger carries the open count with the cheapest verb', () => {
-  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/import/SKILL.md': '# import', '.claude/skills/canvas/SKILL.md': '# canvas' });
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-app.md': IDEA, '.claude/skills/import/SKILL.md': '# import', '.claude/skills/canvas/SKILL.md': '# canvas' });
   const data = collectPlaybook(dir, 'tidewell');
   const html = renderPlaybookHtml(data, '2026-09-13 10:00');
   assert.ok(html.includes('not yet · /comp-eval — or drop what you know: /import'));
@@ -714,6 +718,33 @@ test('Company chapters: Team cards with the face inlined, who-is-missing as a ho
   const d2 = collectPlaybook(bare, 'tidewell'); const h2 = renderPlaybookHtml(d2, '2026-09-13 10:00');
   for (const id of ['team-none', 'brand-none', 'values-none']) assert.ok(h2.includes(`id="${id}"`) && d2.questions.some((q) => q.id === id), id);
   assert.match(h2, /<a href="#team" class="hole-link">/);
+  // Vision repeats Team's hole on the page; the list names "who is building it" once, the Team chapter's (IDEA-118)
+  assert.ok(h2.includes('id="vision-team"'));
+  assert.equal(d2.questions.filter((q) => q.title === 'Who is building it').length, 1);
+  assert.ok(!d2.questions.some((q) => q.id === 'vision-team'));
+});
+
+// --- IDEA-118 — day 0 -----------------------------------------------------------------------------
+test('day 0: with no IDEA doc the venture holes point at /boss (the verb that writes the record; /idea asks nothing), /boss leads the order, and the terminal collapses to one sentence', () => {
+  const dir = project({ ...stamp(), '.claude/skills/boss/SKILL.md': '# boss', '.claude/skills/idea/SKILL.md': '# idea', '.claude/skills/canvas/SKILL.md': '# canvas' });
+  const data = collectPlaybook(dir, 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-09-13 10:00');
+  for (const id of ['vision-why', 'vision-few-years', 'product-shape']) {
+    const q = data.questions.find((x) => x.id === id);
+    assert.ok(q && q.line === '/boss <your idea>', `${id} → /boss`);
+  }
+  assert.ok(!data.questions.some((q) => q.line === '/idea'), 'nothing points at /idea before the record exists');
+  assert.equal(data.questions[0].line, '/boss <your idea>');
+  assert.ok(html.includes('open · start: /boss &lt;your idea&gt;</div>'));
+  const out = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
+  assert.match(out, /nothing to read yet — `\/boss <your idea>` starts it; the page holds the \d+ questions/);
+  assert.doesNotMatch(out, /questions open ·/);
+  // once the venture record exists, the same holes point at /idea — edit the record you have
+  const later = project({ ...stamp(), 'docs/ideas/IDEA-001-app.md': IDEA.replace('motivation: own-problem\n', 'kind: venture\n').replace(/success_looks_like: .*\n/, ''), '.claude/skills/idea/SKILL.md': '# idea' });
+  const d2 = collectPlaybook(later, 'tidewell'); renderPlaybookHtml(d2, '2026-09-13 10:00');
+  assert.equal(d2.questions.find((x) => x.id === 'vision-why').line, '/idea');
+  const out2 = execFileSync('node', [BIN, 'playbook'], { cwd: later, encoding: 'utf8' });
+  assert.match(out2, /\d+ questions open ·/);
 });
 
 test('a person stub\'s placeholders never render — only what the person wrote', () => {

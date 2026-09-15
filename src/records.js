@@ -29,6 +29,7 @@ import { firstAdded } from './gitdates.js';
 import { join, sep, basename } from 'node:path';
 import { frontmatter, STATUS_VOCAB, baseStatus } from './frontmatter.js';
 import { cardGist, criteriaProgress } from './board.js';
+import { isoDay } from './clock.js';
 
 const RECORD = /^([A-Z]{3,4})-(\d+)[-.].*\.md$/;
 // The seven-word ladder governs the LIFECYCLE types only. `DEC` is decided|superseded, `PRAC` is
@@ -403,7 +404,7 @@ export function recordDrift(projectDir) {
   // win rate (three skills already refuse the scoreboard); one line, one record, and stamping
   // `outcome:` — held · fell · can't tell yet — silences it. Works for any record that carries
   // both fields; DECs are the ones that do.
-  const today = new Date().toISOString().slice(0, 10);
+  const today = isoDay();
   for (const r of records) {
     if (!r.revisitBy || r.outcome) continue;
     if (!/^\d{4}-\d{2}-\d{2}/.test(r.revisitBy)) continue;
