@@ -30,6 +30,19 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **The front door is seen, not read (IDEA-117).** oyeboss.build measured at 4,231 words in one
+  visual grammar, the mark at 40px, the generated pages behind a text link. Now: the built B at
+  104px in the hero rail; *Building got cheap. Being wrong didn't.* as one picture; the hero shows
+  the playbook, the design space and the board as real renders of the demo venture (`npm run
+  gen:proof`, never drawings); the guide organised by the ladder with one card per rung generated
+  from the manifests; a playbook page (the site had never mentioned `boss playbook`, and
+  `design.html` never mentioned `boss design`); a one-row strip of the current section once the
+  subnav scrolls away, the subnav again at the end of every page, an id on every h2; the title on
+  the term people type (*Claude Code skills, agents and a conscience for founders*); `llms.txt` and
+  JSON-LD from the page list; the stylesheets inlined. Terminal blocks were double-spaced — fixed.
+  Measured from now on: GA4 on the shell with consent denied by default and no banner (no cookies,
+  no ask), and a `copy_install` event on every Copy button — IDEA-047's *count the click*, landed.
+  Website only; nothing here reaches a project.
 - **The CLI's Homebrew advice names the formula that exists.** `boss update` and `boss remove --global`
   told a Homebrew install to run `brew upgrade ajeshh/boss/boss` — the pre-rename formula, gone since
   v0.177.0. It worked only because the tap carries a `formula_renames.json` (boss → oyeboss), so one

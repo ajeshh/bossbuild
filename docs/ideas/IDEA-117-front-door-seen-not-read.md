@@ -3,7 +3,7 @@ id: IDEA-117
 type: idea
 kind: capability
 owner: Ajesh
-status: building
+status: shipped (pass one, 2026-09-14, under Unreleased — items 1–10; pass two open)
 gist: The front door (oyeboss.build) is 4,231 words in one visual grammar, with the mark at 40px and the generated pages behind a text link. Make it seen rather than read — four pictures, two clicks — and make it findable where its audience actually looks (the Claude Code ecosystem, AI answers, distribution), with the click counted so the change can be graded.
 created: 2026-09-14
 program: distribution
@@ -132,6 +132,13 @@ you-say / BOSS-runs list with `<details>`; the conscience loop as four nodes.
 
 **Not in this record:** the Show HN, the recording, the Reddit posts, the plugin submission — all
 Ajesh's, all in RESUME's *Waiting on Ajesh*. This record makes the door ready for that traffic.
+
+## Landed (2026-09-14, twelve commits on `main`, all under `## Unreleased`)
+
+1–5 as planned · 6 the strip + end-of-page subnav + h2 ids · 7 the terminal spacing · 8 the guide by
+the ladder (`RUNG_*` cards from the manifests; `{{TOC}}`) · 9 the credits door · 10 `playbook.html`,
+the design space on `design.html`, pointers on keeping-track and product. `npm run check:site`:
+0 broken, trailing 13 → 10. Pass two is untouched.
 
 ## Falsifier
 
