@@ -186,7 +186,10 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    answered from the repo alone is still `_(not yet)_` on the evidence that matters.
 4. Leave `_(not yet)_` on anything unknown — blanks are honest signal, not failure. Re-run anytime.
 5. After each pass, name the **single riskiest assumption** and propose **one experiment this week**
-   to test it. Write both in. That's the heartbeat of incubation. If any `EVID-NNN` records in
+   to test it. Write both in. That's the heartbeat of incubation. **Where the bet usually lives:** in
+   the solution being good enough, the buyer paying, or the channel working — rarely in *"people have
+   this problem."* That cell is the easiest to feel sure about and the one Cagan (2026) says teams
+   over-validate while the product fails on the solution; reach for it last, not first. If any `EVID-NNN` records in
    `docs/evidence/` bear on this assumption (`/evidence` captures them; `/interview` debriefs into
    them), **cite their ids in the riskiest-assumption cell** — the bet should argue from receipts, not
    vibes, and their grades (stated-pain → observed-behavior → commitment) show how far it's really been

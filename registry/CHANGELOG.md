@@ -30,6 +30,12 @@ rule above still applies to the whole section once it is stamped.
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that
 > already has the files keeps them, and `boss sync` keeps enabled ones current.
 
+- **Where the bet usually lives (RVW-104, ADAPT).** `/canvas` step 5, after *name the single riskiest
+  assumption*: it usually lives in the solution being good enough, the buyer paying, or the channel
+  working — rarely in *"people have this problem"*, the cell that is easiest to feel sure about and,
+  per Cagan's 2026-09-11 reversal (read at source), the one teams over-validate while the product
+  fails on the solution. Reach for it last. Nothing else moves: the arc, the ladder and the demand
+  test stand — BOSS's founders start at n=0, and a compliment is still not a receipt.
 - **The venture above the columns (IDEA-114 slice 2).** `boss board` filed the `kind: venture`
   record as one card among the capabilities — *3 captured*, one of them the whole company. Now the
   venture has its own line above the columns with its own state (*not pressure-tested yet →

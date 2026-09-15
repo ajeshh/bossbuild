@@ -103,20 +103,18 @@ npm run check            # zero findings = clean; check:published says how far n
    earn a visual. Previously it named: a person record + photos (#11), a `vision:` line (#12), prior capital (#18), the
    compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
    `/import` (#13), the ask record (#17).
-3. ~~`/vet` the persona sources~~ — RVW-103 (ADAPT: `photo:` and `quote:` gated; the rest rejected).
-4. ~~IDEA-114 slice 2 — the board's split~~ — shipped 2026-09-14: the venture above the columns, the
-   capabilities' line and `computeNext` stop offering `/canvas` for a capability, the *pick* group.
 5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
-6. **`/vet` Cagan's 2026-09-11 retraction #2** (*"teams over-invest in validating problems"*). Inbox it first.
-7. **Watchlist needs a row for the project/PM rung** (`planner`, `boss board`, `program:`).
 8. **`npm run check` is GREEN and the suite is green (2026-09-14)** — the 50 `[[EVID-NNN]]` links
    became bare ids (evidence is private forever; brackets promise a door), `docs/design/tokens.json`
    joined the shared-names list (fourth instance of the `RESUME.md` shape), and the 21 backlog findings
    the red `&&` chain had hidden for two days were closed (proofs, promotion pairs, vocabulary, INDEX).
    **Keep it green** — a red gate hides everything behind it.
-9. **One dogfood gap from the `/retro`:** `/drift-deep` never run here (the brain exists since 09-12).
-   Plus: `.claude/rules/feature-context.md` now exists here (`/spec`/`/close` name it);
-   `docs/product/JOURNEY.md` not written (every row would be `assumed`) — write it at the second flow.
+9. **`/drift-deep` ran on this tree for the first time (2026-09-14) — verdict: drifting.**
+   `docs/drift-audits/DRIFT-2026-09-14.md`. The bet (*will a real founder return*) is sharp and its
+   experiment is written to the message; ~270 commits since 08-24 built what a returning founder
+   would read back, and the maintainer message drafted 08-23 is unsent. Smallest re-aim: send it.
+   Still open from the retro: `.claude/rules/feature-context.md` exists here; `docs/product/JOURNEY.md`
+   not written (every row would be `assumed`) — at the second flow.
 
 **Above all of these, unchanged: publish (npm is behind — `npm run check:published` says by how
 much) and Phase 3 outreach. Both are Ajesh's.**
