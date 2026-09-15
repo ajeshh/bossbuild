@@ -260,6 +260,10 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .sitenav .brand { display: inline-flex; align-items: center; gap: 0.45rem; }
 .wordmark { display: flex; align-items: center; gap: 0.5rem; }
 .wordmark .mark { --mark-size: 1.05em; }
+/* The hero rail is the one place the mark is seen at a size where the built B reads (IDEA-117). */
+.hero .wordmark { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+.hero .wordmark .mark { --mark-size: 6.5rem; }
+@media (max-width: 46rem) { .hero .wordmark .mark { --mark-size: 4.5rem; } }
 
 /* --- the train line ------------------------------------------------------
    The mode ladder as a line you can locate yourself on, not a table. */
