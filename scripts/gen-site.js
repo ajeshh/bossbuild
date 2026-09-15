@@ -257,7 +257,7 @@ blocks.ROSTER = () => roster.map((m) => {
   const cards = m.agents.map((a) => `        <div class="agent ${a.kind}">
           <h3><code>${esc(a.name)}</code> <span class="tag">${a.kind}</span></h3>
           <p>${esc(a.gloss)}.</p>
-          ${a.triggers ? `<p class="triggers"><span>ask it</span> ${esc(a.triggers)}</p>` : ''}
+          ${a.triggers ? `<details class="triggers"><summary>ask it</summary><p>${esc(a.triggers)}</p></details>` : ''}
         </div>`).join('\n');
   return `      <h3>Arrives at ${esc(m.name)}</h3>
       <div class="agents">

@@ -345,6 +345,17 @@ details.walk > .prose { padding: var(--space-1) 0 0 1.1rem; border-left: var(--h
   .steps li + li::before { content: "↓"; left: var(--space-3); top: -1.15rem; transform: none; }
 }
 
+/* --- folds on the team page (IDEA-117 §11) ------------------------------------- */
+.agent details.triggers { margin: 0 0 var(--space-1); }
+.agent details.triggers > summary { cursor: pointer; font-family: var(--font-mono); font-size: var(--step--1); color: var(--color-link); list-style: none; }
+.agent details.triggers > summary::-webkit-details-marker { display: none; }
+.agent details.triggers > summary::before { content: "▸ "; color: var(--rail-label); }
+.agent details.triggers[open] > summary::before { content: "▾ "; }
+.agent details.triggers p { color: var(--color-text-secondary); font-style: italic; margin-top: 0.25rem; }
+.folds { max-width: var(--measure); }
+details.walk.fold > summary { font-family: var(--font-display); font-size: var(--step-0); color: var(--color-text); letter-spacing: -0.01em; }
+details.walk.fold > p { padding: var(--space-1) 0 0 1.1rem; border-left: var(--hairline); margin: var(--space-1) 0 var(--space-2); }
+
 /* --- a real render as a figure (IDEA-117 §10) ---------------------------------- */
 .figure.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--color-rule); border-radius: 6px; box-shadow: var(--shadow-inset); }
 .figure.shot > a { display: block; }
