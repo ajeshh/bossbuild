@@ -1,0 +1,128 @@
+<!--
+title: The playbook — your records, read back as the company
+description: boss playbook renders what you wrote down — the idea, the people, the evidence, the decisions, the brand — into sixteen chapters on one page; press Present and it is a deck, in a VC cut or an internal one; export the PDF. Generated from the records, never written by hand.
+reviewed: 2026-09-14
+review_by: 2027-03-14
+describes: boss playbook — the sixteen chapters in three groups, the deck and its cuts, the holes, the intake doors
+covers: src/playbook.js src/page-shell.js
+nav: playbook
+-->
+  <header class="hero">
+    <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div></div>
+    <div class="body">
+      <h1>Your records, read back as the company<span class="dot">.</span></h1>
+      <p class="lede">
+        <code>boss playbook</code> renders what you already wrote down — the idea, who it's for, what
+        people told you, what you decided, who you are — into one page of sixteen chapters. Press
+        <em>Present</em> and it's a deck. Nothing on it was written for the page; every block names the
+        record it came from, and a chapter with nothing behind it renders as the question it's waiting on.
+      </p>
+      {{TOC}}
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="rail">▸<span>what it is</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>One page for the pitch, the proof and the company</h2>
+          <p>
+            Three things a founder keeps rewriting by hand: the deck for someone outside, the one-pager
+            for someone busy, and the page the team is supposed to be aligned on. They drift from each
+            other and from the work. The playbook is all three from one source — the records BOSS
+            already made you write as you went — so they cannot disagree with each other, or with the
+            build.
+          </p>
+        </div>
+        <figure class="figure shot">
+          <a href="demo/playbook.html"><img src="proof-playbook.png" width="640" height="440" alt="The playbook rendered for the demo venture: chapter rail on the left, the Vision chapter as boxes, Present and the cut picker in the chrome" /></a>
+          <figcaption class="small">The demo venture's playbook, exactly as <code>boss playbook</code> renders it. <a href="demo/playbook.html">Open it</a>.</figcaption>
+        </figure>
+        <div class="pairs">
+          <div class="pair">
+            <span class="k">Pitch — eight chapters</span>
+            <span>Vision · Product · Customers · Problem · Market · Competition · Canvas · Business
+              model. Each is a projection over a record that exists: the idea document, the personas,
+              the competitive set, the sources you imported, the capital mentor's dossier. The chapter
+              line is the first sentence of the record it renders.</span>
+          </div>
+          <div class="pair">
+            <span class="k">Proof — five chapters</span>
+            <span>Evidence · Learnings · Decisions · Risks &amp; harms · Health. Read from the evidence
+              records, the devlog, the decision records, the Risks cell and the newest health check.
+              <strong>Never a quote from a real person</strong> — the ladder grade and the title line,
+              not what they said.</span>
+          </div>
+          <div class="pair">
+            <span class="k">Company — three chapters</span>
+            <span>Team (a person record per founder, cofounder, team member and advisor, with a photo),
+              Brand (BRAND.md's current shape, the accent and tagline as they are, a link to the
+              <a href="design.html#the-design-space">design space</a>), and Values (the Principles cell
+              as headlines, plus how you build).</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the deck</span></div>
+      <div class="body prose">
+        <h2>Present, in one of three cuts</h2>
+        <p>
+          <em>Present</em> turns the page into slides. The cut decides which blocks are in: the
+          <strong>VC cut</strong>, the <strong>Internal</strong> one, or <strong>Everything</strong> —
+          each a list of block ids computed at render from the records, so a new decision is a new slide
+          without anyone editing a deck. Remove any slide from the current cut and restore it; that
+          memory lives in your browser, never in the records. <strong>BOSS's cut is the first draft;
+          your delete is the last word.</strong> <em>Export this cut</em> writes the PDF through the print
+          sheet.
+        </p>
+        <p>
+          Every block carries <em>Copy</em> and <em>Slide</em>: paste one box into a doc, or open one box
+          as a slide by itself. The copy sheet gathers the page as plain text for the tools that want
+          text. A view, never an app — there is nothing here to keep up to date.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the holes</span></div>
+      <div class="body prose">
+        <h2>A chapter with nothing behind it says so</h2>
+        <p>
+          A hole renders as a hole: the chapter is there, and it holds the question it is waiting on and
+          the verb that answers it. It is never padded, because a page that looks complete over records
+          that aren't is the most convincing wrong thing you can hand to someone. The evidence ladder sits
+          in the chrome — how much of this is stated pain, how much observed, how much committed — so a
+          reader can see what the page is standing on before they read a word of it.
+        </p>
+        <p>
+          The holes fill at your pace, through three doors, none of them a wizard. <code>/import</code>
+          takes a pasted paragraph as readily as a file, folds it into the idea, then says what else it
+          could fill — a count for People, two rivals, a tagline, a person — and writes each record only
+          on a yes. <code>/close</code> notices what you said this session that a record could hold.
+          And every chapter names the verb that fills it.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="rail">▸<span>the sibling</span></div>
+      <div class="body prose">
+        <h2>Two pages, one chrome</h2>
+        <p>
+          <code>boss design</code> renders the <a href="design.html#the-design-space">design space</a>
+          the same way, from the same records and the same page shell — the tokens, the people, the
+          components, the patterns — under <code>.boss/</code> next to the playbook. The board
+          (<code>boss board</code>) is the third view, read from each record's own status line. Three
+          pages, generated; the records are the only thing you write.
+        </p>
+        <p class="small">
+          <a href="keeping-track.html">What BOSS writes down</a> · <a href="demo.html">the whole demo venture</a>.
+        </p>
+      </div>
+    </section>
+
+  </main>

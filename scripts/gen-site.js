@@ -891,6 +891,7 @@ const NAV = [
     { label: 'what you get', items: [
       { id: 'team', href: 'team.html', label: 'The team' },
       { id: 'keeping-track', href: 'keeping-track.html', label: 'Keeping track' },
+      { id: 'playbook', href: 'playbook.html', label: 'The playbook' },
       { id: 'conscience', href: 'conscience.html', label: 'The conscience' },
     ] },
     { label: 'how it is built', items: [

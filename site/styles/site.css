@@ -330,6 +330,10 @@ details.walk > summary::before { content: "▸ "; color: var(--rail-label); }
 details.walk[open] > summary::before { content: "▾ "; }
 details.walk > .prose { padding: var(--space-1) 0 0 1.1rem; border-left: var(--hairline); margin-top: var(--space-1); }
 
+/* --- a real render as a figure (IDEA-117 §10) ---------------------------------- */
+.figure.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--color-rule); border-radius: 6px; box-shadow: var(--shadow-inset); }
+.figure.shot > a { display: block; }
+
 /* --- figures (IDEA-117) --------------------------------------------------
    Inline SVG, tokens only, so a diagram follows the scheme like the text does. */
 .figure { margin: var(--space-3) 0 var(--space-4); max-width: 40rem; }

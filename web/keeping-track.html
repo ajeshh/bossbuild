@@ -1,7 +1,7 @@
 <!--
 title: Keeping track — what BOSS writes down, so you don't have to
 description: Twelve ideas, three half-finished specs, and a decision you can't remember making. BOSS gives every one of them a file, a status, and a place — and renders the board from the files so nothing can drift.
-reviewed: 2026-09-12
+reviewed: 2026-09-14
 review_by: 2027-02-16
 describes: the record system — typed IDs, status in frontmatter, the rendered board
 covers: library/practices/documentation.md stages/L0-quickstart/template/docs
@@ -32,6 +32,12 @@ nav: keeping-track
             Talking to an AI produces a transcript, and a transcript is not a record: you can't grep it,
             link to it, or hand it to someone. So the verbs that matter write files instead. Not a
             summary of the conversation: a durable, addressable thing with an ID.
+          </p>
+          <p>
+            And because they are records, they read back: <code>boss playbook</code> renders them as
+            <a href="playbook.html">the company in sixteen chapters</a>, <code>boss design</code> as
+            <a href="design.html#the-design-space">the design space</a>, <code>boss board</code> as
+            the board. Three generated pages; the records are the only thing you write.
           </p>
           <p>
             <strong>The status vocabulary is closed, and the record types arrive by rung</strong>; you
