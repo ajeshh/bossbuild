@@ -51,13 +51,14 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<nav class="sitenav" aria-label="Site">
+<nav class="sitenav" id="top" aria-label="Site">
   <div class="sitenav-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="103 36 334 428" aria-hidden="true" focusable="false"><path fill="var(--color-mark-face)" transform="translate(256.0 111.5) scale(0.86) translate(-256.0 -111.5)" d="M142 117 Q137 111 143 105 L239 52 Q256 42 273 52 L369 105 Q375 111 370 118 L274 171 Q256 181 239 171 Z"/><path fill="var(--color-mark-face)" transform="translate(165.0 225.0) scale(0.86) translate(-165.0 -225.0)" d="M123 145 Q117 141 113 145 Q109 148 109 155 L109 229 Q109 247 125 256 L221 309 L221 226 Q221 211 208 204 Z"/><path fill="var(--color-mark-face)" transform="translate(182.0 368.0) scale(0.86) translate(-182.0 -368.0)" d="M123 282 Q117 278 113 282 Q109 285 109 292 L109 366 Q109 384 125 393 L234 453 Q243 458 249 454 Q255 451 255 441 L255 365 Q255 351 242 344 Z"/><path fill="var(--color-mark-bowl)" transform="translate(343.0 213.0) scale(0.86) translate(-343.0 -213.0)" d="M370 106 C398 121 418 140 423 166 C431 207 406 236 372 255 L255 320 L255 236 L357 180 Q369 173 370 159 Z"/><path fill="var(--color-mark-bowl)" transform="translate(342.5 347.0) scale(0.86) translate(-342.5 -347.0)" d="M255 365 L353 311 Q369 302 370 284 L370 247 L405 266 Q421 275 424 294 Q430 332 408 356 Q396 369 377 380 L255 447 Z"/></svg><span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></a>
     <ul><li><a href="index.html">Home</a></li><li><a href="start.html">Start</a></li><li><a href="guide.html">Guide</a></li><li><a href="team.html" aria-current="page">How it thinks</a></li><li><a href="demo.html">Demo</a></li><li><a href="about.html">About</a></li><li><a href="whats-new.html">What's new</a></li></ul>
   </div>
 </nav>
 <div class="subnav"><div class="subnav-in"><div class="subgroup"><span class="subnav-label">what you get</span><ul><li><a href="team.html">The team</a></li><li><a href="keeping-track.html">Keeping track</a></li><li><a href="conscience.html">The conscience</a></li></ul></div><div class="subgroup"><span class="subnav-label">how it is built</span><ul><li><a href="engineering.html">Engineering</a></li><li><a href="design.html">Design</a></li><li><a href="product.html">Product</a></li><li><a href="project.html">Project</a></li></ul></div><div class="subgroup"><span class="subnav-label">what it believes</span><ul><li><a href="thinking.html">What it refuses</a></li><li><a href="charter.html">Charter</a></li><li><a href="governance.html">Governance</a></li><li><a href="credits.html" aria-current="page">Credits</a></li><li><a href="canvas.html">The canvas</a></li></ul></div></div></div>
+<div class="substrip" aria-label="This section"><div class="substrip-in"><span class="subnav-label">what it believes</span><ul><li><a href="thinking.html">What it refuses</a></li><li><a href="charter.html">Charter</a></li><li><a href="governance.html">Governance</a></li><li><a href="credits.html" aria-current="page">Credits</a></li><li><a href="canvas.html">The canvas</a></li></ul><a class="totop" href="#top">Top ↑</a></div></div>
 
 <div class="shell">
 <header class="hero">
@@ -89,7 +90,7 @@
     <section class="section">
       <div class="rail">▸<span>the roll call</span></div>
       <div class="body">
-              <h2 class="group">People</h2>
+              <h2 id="people" class="group">People</h2>
       <p class="small">Practitioners and researchers whose published thinking is distilled into a practice BOSS ships.</p>
       <ul class="credits">
         <li class="credit">
@@ -224,7 +225,7 @@
         </li>
       </ul>
 
-      <h2 class="group">Labs, companies &amp; projects</h2>
+      <h2 id="labs-companies-projects" class="group">Labs, companies &amp; projects</h2>
       <p class="small">Engineering writing, open-source projects and published guidelines BOSS builds on.</p>
       <ul class="credits">
         <li class="credit">
@@ -379,7 +380,7 @@
         </li>
       </ul>
 
-      <h2 class="group">Research, reports &amp; incidents</h2>
+      <h2 id="research-reports-incidents" class="group">Research, reports &amp; incidents</h2>
       <p class="small">Papers, studies and the named failures BOSS designs against.</p>
       <ul class="credits">
         <li class="credit">
@@ -459,7 +460,7 @@
         </li>
       </ul>
 
-      <h2 class="group">Standards &amp; specifications</h2>
+      <h2 id="standards-specifications" class="group">Standards &amp; specifications</h2>
       <p class="small">The specs and canonical documentation BOSS reads directly.</p>
       <ul class="credits">
         <li class="credit">
@@ -519,7 +520,7 @@
     <section class="section">
       <div class="rail">▸<span>the other direction</span></div>
       <div class="body prose">
-        <h2>Crediting BOSS is optional, and it stays optional</h2>
+        <h2 id="crediting-boss-is-optional-and-it-stays-optional">Crediting BOSS is optional, and it stays optional</h2>
         <p>
           BOSS's own promise is that <strong>it never puts its name on your work — you ship it, your
           name's on it.</strong> That's a promise about <em>taking</em> credit, not about refusing to
@@ -556,7 +557,7 @@
     <section class="section">
       <div class="rail">▸<span>citation debt</span></div>
       <div class="body prose">
-        <h2>Naming everyone is right. Linking everyone is busywork.</h2>
+        <h2 id="naming-everyone-is-right-linking-everyone-is-busywork">Naming everyone is right. Linking everyone is busywork.</h2>
         <p>
           Everybody above is credited by name. Only the <strong>42 marked
           <span class="key-src">key</span></strong> owe a link — a named practitioner whose thinking is
@@ -583,6 +584,7 @@
     </section>
 
   </main>
+<nav class="pagenav" aria-label="More in this section"><div class="subnav"><div class="subnav-in"><div class="subgroup"><span class="subnav-label">what you get</span><ul><li><a href="team.html">The team</a></li><li><a href="keeping-track.html">Keeping track</a></li><li><a href="conscience.html">The conscience</a></li></ul></div><div class="subgroup"><span class="subnav-label">how it is built</span><ul><li><a href="engineering.html">Engineering</a></li><li><a href="design.html">Design</a></li><li><a href="product.html">Product</a></li><li><a href="project.html">Project</a></li></ul></div><div class="subgroup"><span class="subnav-label">what it believes</span><ul><li><a href="thinking.html">What it refuses</a></li><li><a href="charter.html">Charter</a></li><li><a href="governance.html">Governance</a></li><li><a href="credits.html" aria-current="page">Credits</a></li><li><a href="canvas.html">The canvas</a></li></ul></div></div></div><a class="totop" href="#top">Back to top ↑</a></nav>
 
   <footer>
     <div class="cols">
@@ -636,6 +638,13 @@
       l.style.animationDelay = Math.min(i * 55, 900) + "ms";
     });
   });
+  var subnav = document.querySelector(".subnav"), strip = document.querySelector(".substrip");
+  if (subnav && strip && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      var e = entries[0];
+      strip.classList.toggle("is-on", !e.isIntersecting && e.boundingClientRect.top < 0);
+    }).observe(subnav);
+  }
   document.querySelectorAll("button.copy").forEach(function (btn) {
     btn.addEventListener("click", async function () {
       var text = btn.getAttribute("data-copy");

@@ -872,6 +872,23 @@ const NAV = [
   { id: 'whats-new', href: 'whats-new.html', label: "What's new" },
 ];
 
+// Every h2 gets an id from its own text, so any section on any page has an address a link, a
+// table of contents or a search result can land on. No page had one until IDEA-117 §6 — the
+// subnav was the only way in, and it scrolls away. Ids are stable while the heading is; a
+// second heading with the same text gets a numbered id rather than a collision.
+function anchorHeadings(html) {
+  const seen = new Set();
+  return html.replace(/<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/g, (m, attrs = '', inner) => {
+    if (/\sid=/.test(attrs)) return m;
+    const text = inner.replace(/<[^>]+>/g, '').replace(/&[a-z]+;|&#\d+;/g, ' ');
+    const base = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 60).replace(/^-+|-+$/g, '') || 'section';
+    let id = base;
+    for (let n = 2; seen.has(id); n++) id = `${base}-${n}`;
+    seen.add(id);
+    return `<h2 id="${id}"${attrs}>${inner}</h2>`;
+  });
+}
+
 function navFor(current) {
   // A section declares EITHER a flat `children` list or labelled `groups`. `kids()` flattens
   // both so the active-section test and the primary bar stay identical either way.
@@ -894,7 +911,22 @@ function navFor(current) {
     sub = `<div class="subnav"><div class="subnav-in"><span class="subnav-label">${section.label}</span><ul>`
       + kids(section).map(link).join('') + '</ul></div></div>';
   }
-  return { primary, sub };
+  // The subnav scrolls away with the top of the page (IDEA-117 §6). Two answers, no sticky wall:
+  // a one-row strip of the current group's siblings that the shell shows once the subnav has
+  // left the viewport, and the whole subnav again at the end of the content with a way back up.
+  let strip = '';
+  let end = '';
+  if (section) {
+    const group = section.groups
+      ? section.groups.find((g) => g.items.some((c) => c.id === current))
+      : { label: section.label, items: kids(section) };
+    strip = `<div class="substrip" aria-label="This section"><div class="substrip-in">`
+      + `<span class="subnav-label">${group.label}</span><ul>${group.items.map(link).join('')}</ul>`
+      + `<a class="totop" href="#top">Top ↑</a></div></div>`;
+    end = `<nav class="pagenav" aria-label="More in this section">${sub}`
+      + `<a class="totop" href="#top">Back to top ↑</a></nav>`;
+  }
+  return { primary, sub, strip, end };
 }
 
 // Rebuild site/ from scratch every time: a page fragment that gets deleted must not
@@ -959,8 +991,9 @@ for (const f of pages) {
     if (!blocks[key]) { console.error(`  ✗ ${f}: unknown block {{${key}}}`); process.exitCode = 1; return m0; }
     return blocks[key]();
   });
+  content = anchorHeadings(content);
 
-  const { primary: nav, sub: subnav } = navFor(meta.nav);
+  const { primary: nav, sub: subnav, strip: substrip, end: pagenav } = navFor(meta.nav);
 
   const out = shell
     .replace(/\{\{MARK\}\}/g, MARK())
@@ -978,7 +1011,9 @@ for (const f of pages) {
     .replace('{{HEAD_ICONS}}', HEAD_ICONS)
     .replace('{{NAV}}', nav)
     .replace('{{SUBNAV}}', subnav)
-    .replace('{{CONTENT}}', content.trim())
+    .replace('{{SUBSTRIP}}', substrip)
+    .replace('{{CONTENT}}', () => content.trim())
+    .replace('{{PAGENAV}}', pagenav)
     .replace(/\{\{VERSION\}\}/g, V);
 
   // The content fragment's tokens are checked above; the SHELL's were not, and that

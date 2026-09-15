@@ -103,6 +103,11 @@ job is two clicks — Copy and Demo. Target ~1,200 words visible; the deep parag
    before proposing; the same two moves apply — a picture where a section is a mechanism, and
    opt-in depth — plus a table of contents that stays reachable (item 6).
 
+9. **`credits.html` — the *citation debt* section is internal bookkeeping on a public page** (Ajesh:
+   *"seems unnecessary to have here"*); it belongs in `check:site`'s output, which already prints
+   it. In its place, an open door: *"Maybe someone can hit me up if they have a cool new idea or
+   approach? Happy to collab. HMU on LI"* — his words, a LinkedIn link, on voice.
+
 **Pass two (after a read of pass one):** the two-week timeline for *four things*; the records → pages
 flow for *what it adds up to*; the ladder with derived counts; the twelve snags as a scannable
 you-say / BOSS-runs list with `<details>`; the conscience loop as four nodes.

@@ -49,16 +49,18 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<nav class="sitenav" aria-label="Site">
+<nav class="sitenav" id="top" aria-label="Site">
   <div class="sitenav-in">
     <a class="brand" href="index.html">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></a>
     <ul>{{NAV}}</ul>
   </div>
 </nav>
 {{SUBNAV}}
+{{SUBSTRIP}}
 
 <div class="shell">
 {{CONTENT}}
+{{PAGENAV}}
 
   <footer>
     <div class="cols">
@@ -112,6 +114,13 @@
       l.style.animationDelay = Math.min(i * 55, 900) + "ms";
     });
   });
+  var subnav = document.querySelector(".subnav"), strip = document.querySelector(".substrip");
+  if (subnav && strip && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      var e = entries[0];
+      strip.classList.toggle("is-on", !e.isIntersecting && e.boundingClientRect.top < 0);
+    }).observe(subnav);
+  }
   document.querySelectorAll("button.copy").forEach(function (btn) {
     btn.addEventListener("click", async function () {
       var text = btn.getAttribute("data-copy");
