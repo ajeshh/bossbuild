@@ -253,6 +253,59 @@ const rungCard = (m, i) => {
 };
 for (const [i, m] of roster.entries()) blocks[`RUNG_${m.word.toUpperCase().replace(/[^A-Z0-9]/g, '_')}`] = () => rungCard(m, i);
 
+// The Humane Product Canvas as a board (IDEA-117 pass two). One cell list renders twice: the
+// figure on canvas.html, and site/humane-product-canvas.html — the same board, editable in the
+// browser, printable, its state kept only in the visitor's own browser. The Markdown template is
+// the third form of the same thirteen cells; the headings there are the source of these words.
+const CANVAS = [
+  { label: '1 · Human Foundation', rows: [[
+    { name: 'People', q: 'who are you designing for, and what matters to them?' },
+    { name: 'Problem', q: 'what real human tension are you solving?' },
+    { name: 'Promises', q: 'what value will it deliver?' },
+  ]] },
+  { label: '2 · Product Expression', rows: [[
+    { name: 'Story', q: 'how does this show up in someone’s life?' },
+    { name: 'Modes of Engagement', q: 'how do people interact with it, humanely?' },
+    { name: 'Business Model', q: 'how will you sustain this without compromising your promise?', em: 'if it will earn · if it won’t' },
+  ], [
+    { name: 'Cost structure', q: 'once there’s a price, or a real cost', later: true },
+    { name: 'What it takes to deliver', q: 'once the answer isn’t “just me and a laptop”', later: true },
+    { name: 'Key partnerships', q: 'only if someone else is load-bearing', later: true },
+  ]] },
+  { label: '3 · Stewardship', rows: [[
+    { name: 'Metrics', q: 'what does meaningful success look like, for people and planet?' },
+    { name: 'Risks & Harms', q: 'what could go wrong, and who might be harmed or excluded?', flag: true },
+    { name: 'Build or buy?', q: 'for tool-shaped ideas' },
+    { name: 'Principles', q: 'what values will guide your decisions?', flag: true },
+  ]] },
+  { label: 'The riskiest assumption', rows: [[
+    { name: 'If this is wrong, the idea doesn’t work', q: '', strip: true },
+    { name: 'The experiment this week', q: 'the smallest test that would prove or disprove it', strip: true },
+    { name: 'What result would change the plan?', q: 'decide before you run it', strip: true },
+  ]] },
+];
+const canvasBoard = ({ editable = false } = {}) => {
+  const cell = (c) => {
+    const cls = ['cb-cell', c.flag ? 'flag' : ''].filter(Boolean).join(' ');
+    const slug = c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const write = editable ? `<div class="cb-write" contenteditable="true" data-cell="${slug}" aria-label="${esc(c.name)}"></div>` : '';
+    return `<div class="${cls}"><b>${esc(c.name)}</b>${c.q ? `<span>${esc(c.q)}${c.em ? ` <em>${esc(c.em)}</em>` : ''}</span>` : ''}${c.flag ? '<i>not on any conventional canvas</i>' : ''}${write}</div>`;
+  };
+  const row = (r) => {
+    const cls = ['cb-row', r.length === 4 ? 'four' : 'three', r[0].later ? 'later' : '', r[0].strip ? 'strip' : ''].filter(Boolean).join(' ');
+    return `<div class="${cls}">${r.map(cell).join('')}</div>`;
+  };
+  const meta = editable
+    ? '<span class="cb-meta">idea <span class="cb-write inline" contenteditable="true" data-cell="idea"></span> · date <span class="cb-write inline" contenteditable="true" data-cell="date"></span> · version <span class="cb-write inline" contenteditable="true" data-cell="version"></span></span>'
+    : '<span class="cb-meta">idea · date · version</span>';
+  return `<div class="cb-head"><span>Humane Product Canvas</span>${meta}</div>`
+    + CANVAS.map((g) => `<div class="cb-group"><div class="cb-label">${esc(g.label)}</div>${g.rows.map(row).join('')}</div>`).join('');
+};
+blocks.CANVAS_BOARD = () => `<figure class="canvas-board breakout" aria-label="The Humane Product Canvas, all thirteen cells">
+${canvasBoard()}
+<figcaption class="small">Thirteen cells and a strip, on one page. <a href="humane-product-canvas.html"><strong>Open the fillable board →</strong></a> type into it, print it or save the PDF; it keeps your words in your own browser and sends nothing. Or <a href="humane-product-canvas.md" download>download the Markdown</a>. Fork it, teach from it. No signup.</figcaption>
+</figure>`;
+
 blocks.ROSTER = () => roster.map((m) => {
   if (!m.agents.length) return '';
   const cards = m.agents.map((a) => `        <div class="agent ${a.kind}">
@@ -1130,6 +1183,77 @@ writeFileSync(join(SITE, '_headers'),
   '  Cache-Control: public, max-age=3600\n');
 writeFileSync(join(SITE, 'robots.txt'),
   `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+// The fillable board: the same cells, editable, printable, offline. Everything typed stays in the
+// visitor's own browser (localStorage on this origin) and nothing is sent anywhere — the same
+// promise the CLI makes. A standalone file, not a page fragment: no nav, no analytics, one job.
+writeFileSync(join(SITE, 'humane-product-canvas.html'), `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Humane Product Canvas — fill it in, print it</title>
+<meta name="description" content="The Humane Product Canvas as a board you can type into and print. Thirteen cells, two of them no conventional canvas has. Your words stay in your browser. CC BY-SA." />
+<meta name="color-scheme" content="light dark" />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="${SITE_URL}/humane-product-canvas" />
+${HEAD_ICONS()}
+<style>${inlineCss}
+.hpc { max-width: 64rem; margin: 0 auto; padding: var(--space-4) var(--space-4) var(--space-6); }
+.hpc-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-3); }
+.hpc-bar .t { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; margin-right: auto; }
+.hpc-bar button { font: inherit; font-size: var(--step--1); font-weight: 600; padding: 0.5rem 0.9rem; border-radius: var(--cta-radius); border: 1px solid var(--color-rule); background: var(--color-surface); color: var(--color-text); cursor: pointer; }
+.hpc-bar button.primary { background: var(--cta-bg); color: var(--cta-text); border-color: transparent; }
+.hpc .canvas-board { width: 100%; margin: 0; }
+.cb-cell { min-height: 9rem; }
+.cb-cell::after { display: none; }
+.cb-write { flex: 1; min-height: 4.5rem; margin-top: 0.3rem; padding: 0.15rem 0; outline: none; font-family: var(--font-prose); font-size: 0.86rem; line-height: 1.45; color: var(--color-text); white-space: pre-wrap; background-image: repeating-linear-gradient(to bottom, transparent 0 1.25rem, var(--color-rule) 1.25rem calc(1.25rem + 1px)); }
+.cb-write:focus { background-color: var(--color-surface-sunk); }
+.cb-write.inline { display: inline-block; min-width: 6ch; min-height: 0; flex: none; margin: 0; padding: 0 0.2rem; border-bottom: 1px solid var(--color-text-secondary); background: none; font-family: var(--font-mono); font-size: inherit; color: var(--color-text); }
+.hpc-foot { margin-top: var(--space-3); font-size: var(--step--1); color: var(--color-text-secondary); max-width: 40em; }
+@media print {
+  @page { size: landscape; margin: 10mm; }
+  body::before, .hpc-bar, .hpc-foot { display: none !important; }
+  body { background: #fff; color: #000; }
+  .hpc { padding: 0; max-width: none; }
+  .canvas-board { box-shadow: none; border-color: #000; background: #fff; }
+  .cb-cell { border-color: #000; min-height: 5.5rem; break-inside: avoid; }
+  .cb-write { background-image: none; }
+}
+</style>
+</head>
+<body>
+<div class="hpc">
+  <div class="hpc-bar">
+    <span class="t">Humane Product Canvas <span class="small">— type into any cell</span></span>
+    <button type="button" id="hpc-print" class="primary">Print / save as PDF</button>
+    <button type="button" id="hpc-clear">Clear</button>
+  </div>
+  <div class="canvas-board" aria-label="The Humane Product Canvas, fillable">
+${canvasBoard({ editable: true })}
+  </div>
+  <p class="hpc-foot">A snapshot, not a blueprint: fill a few cells at a time and leave <em>not yet</em> where you don’t know. Everything you type stays in this browser and is sent nowhere. Humane Product Canvas by Ajesh Shah, CC BY-SA 4.0 — <a href="${SITE_URL}/canvas">where it comes from</a>, or <a href="humane-product-canvas.md" download>the Markdown</a>.</p>
+</div>
+<script>
+(function () {
+  var KEY = "hpc.v1", cells = document.querySelectorAll(".cb-write"), saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (_) {}
+  cells.forEach(function (el) { var k = el.getAttribute("data-cell"); if (saved[k]) el.textContent = saved[k]; });
+  function save() {
+    var out = {}; cells.forEach(function (el) { var v = el.textContent.trim(); if (v) out[el.getAttribute("data-cell")] = v; });
+    try { localStorage.setItem(KEY, JSON.stringify(out)); } catch (_) {}
+  }
+  cells.forEach(function (el) { el.addEventListener("input", save); });
+  document.getElementById("hpc-print").addEventListener("click", function () { window.print(); });
+  document.getElementById("hpc-clear").addEventListener("click", function () {
+    if (!confirm("Clear every cell? This only affects this browser.")) return;
+    cells.forEach(function (el) { el.textContent = ""; }); save();
+  });
+})();
+</script>
+</body>
+</html>
+`);
+
 // llms.txt (llmstxt.org): the site as an assistant reads it — one paragraph of what BOSS is,
 // then every page with its own description, from the same list as the sitemap. An assistant
 // that cites this site should cite what the site says, so nothing here is written twice.
@@ -1143,11 +1267,13 @@ writeFileSync(join(SITE, 'llms.txt'),
   + `## Pages\n\n`
   + pageMeta.map((p) => `- [${p.title}](${canonical(p.f)}): ${p.description}`).join('\n')
   + `\n\n## Demo\n\n- [Kettlewick, one fictional venture run through BOSS end to end](${SITE_URL}/demo): the playbook, the design space and the board, rendered by the same code an install runs.\n\n`
+  + `## The canvas\n\n- [The Humane Product Canvas, fillable and printable](${SITE_URL}/humane-product-canvas): thirteen cells, two no conventional canvas has; CC BY-SA.\n- [The Markdown template](${SITE_URL}/humane-product-canvas.md)\n\n`
   + `## Source\n\n- [GitHub](https://github.com/ajeshh/bossbuild)\n- [npm](https://www.npmjs.com/package/oyeboss)\n- [Changelog](${SITE_URL}/whats-new)\n`);
 writeFileSync(join(SITE, 'sitemap.xml'),
   '<?xml version="1.0" encoding="UTF-8"?>\n'
   + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
   + pages.map((f) => `  <url><loc>${esc(canonical(f))}</loc></url>`).join('\n')
+  + `\n  <url><loc>${SITE_URL}/humane-product-canvas</loc></url>`
   + '\n</urlset>\n');
 
 const demo = generateDemo();

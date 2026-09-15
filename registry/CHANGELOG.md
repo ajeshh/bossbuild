@@ -42,6 +42,11 @@ rule above still applies to the whole section once it is stamped.
   JSON-LD from the page list; the stylesheets inlined. Terminal blocks were double-spaced — fixed.
   Measured from now on: GA4 on the shell with consent denied by default and no banner (no cookies,
   no ask), and a `copy_install` event on every Copy button — IDEA-047's *count the click*, landed.
+  Same evening: the snags as four moments (28 quotes, seven each, six of them new and written
+  from the post-launch verbs' own glosses); the Humane Product Canvas drawn as a board on its page,
+  and shipped as `humane-product-canvas.html` — the same thirteen cells, typed into in the browser,
+  printed or saved as PDF, kept only in the visitor's own browser; the Markdown template's footer
+  pointed at `boss.build`, the domain that never existed — now `oyeboss.build/canvas`.
   Website only; nothing here reaches a project.
 - **The CLI's Homebrew advice names the formula that exists.** `boss update` and `boss remove --global`
   told a Homebrew install to run `brew upgrade ajeshh/boss/boss` — the pre-rename formula, gone since

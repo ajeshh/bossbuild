@@ -30,6 +30,11 @@ BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, a
 
 - [Kettlewick, one fictional venture run through BOSS end to end](https://oyeboss.build/demo): the playbook, the design space and the board, rendered by the same code an install runs.
 
+## The canvas
+
+- [The Humane Product Canvas, fillable and printable](https://oyeboss.build/humane-product-canvas): thirteen cells, two no conventional canvas has; CC BY-SA.
+- [The Markdown template](https://oyeboss.build/humane-product-canvas.md)
+
 ## Source
 
 - [GitHub](https://github.com/ajeshh/bossbuild)

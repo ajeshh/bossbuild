@@ -4,7 +4,7 @@
 Blanks are honest signal — leave `_(not yet)_` on anything you don't know. Never
 fabricate an answer to make it look finished.
 
-Humane Product Canvas by Ajesh Shah · CC BY-SA 4.0 · https://boss.build
+Humane Product Canvas by Ajesh Shah · CC BY-SA 4.0 · https://oyeboss.build/canvas
 
 ---
 
