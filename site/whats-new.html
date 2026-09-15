@@ -36,7 +36,15 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
+  // No banner, no cookies: consent is denied by default and never asked for. GA sends
+  // cookieless pings, so page and copy_install counts still arrive; nothing is stored on
+  // the visitor's device. That is the same promise the footer makes for the CLI.
+  gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
   gtag('config', 'G-FDV098KCD2');
 </script>
 </head>
