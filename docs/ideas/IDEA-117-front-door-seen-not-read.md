@@ -126,6 +126,12 @@ job is two clicks — Copy and Demo. Target ~1,200 words visible; the deep parag
     counted as *13 trailing*. The checker was right and ran; nobody read it (the n=19 shape). The
     gap is that `design.html` `covers:` nothing the design lane touched, so it is not even trailing.
 
+11. **The *How it thinks* pages, the same treatment as the playbook page; and `about.html`** (Ajesh,
+    mid-build: *"like we are doing for playbook, maybe review how it thinks to see if we can make
+    similar visual adjustments and improve readability. Also then for my about page, it looks a bit
+    too much and not well distributed or designed."*). Read `team.html` first (it is the section's
+    door), then `about.html`; measure words and grammar before touching either.
+
 **Pass two (after a read of pass one):** the two-week timeline for *four things*; the records → pages
 flow for *what it adds up to*; the ladder with derived counts; the twelve snags as a scannable
 you-say / BOSS-runs list with `<details>`; the conscience loop as four nodes.

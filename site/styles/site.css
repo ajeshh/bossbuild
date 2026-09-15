@@ -330,6 +330,19 @@ details.walk > summary::before { content: "▸ "; color: var(--rail-label); }
 details.walk[open] > summary::before { content: "▾ "; }
 details.walk > .prose { padding: var(--space-1) 0 0 1.1rem; border-left: var(--hairline); margin-top: var(--space-1); }
 
+/* --- three moves in a row (IDEA-117 §11, the about page) ------------------------ */
+.steps { list-style: none; margin: var(--space-3) 0 var(--space-4); padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); max-width: 44rem; }
+.steps li { position: relative; padding: var(--space-3); background: var(--color-surface); border: var(--hairline); border-radius: 8px; display: grid; gap: 0.15rem; }
+.steps li + li::before { content: "→"; position: absolute; left: -1.1rem; top: 50%; transform: translateY(-50%); color: var(--rail-label); font-family: var(--font-mono); }
+.steps .n { font-family: var(--font-mono); font-size: var(--step--1); color: var(--rail-label); letter-spacing: 0.04em; }
+.steps b { font-family: var(--font-display); font-size: var(--step-1); letter-spacing: -0.02em; font-weight: 650; }
+.steps li > span:last-child { color: var(--color-text-secondary); font-size: var(--step--1); }
+.hero .chips { margin-top: var(--space-2); }
+@media (max-width: 46rem) {
+  .steps { grid-template-columns: 1fr; }
+  .steps li + li::before { content: "↓"; left: var(--space-3); top: -1.15rem; transform: none; }
+}
+
 /* --- a real render as a figure (IDEA-117 §10) ---------------------------------- */
 .figure.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--color-rule); border-radius: 6px; box-shadow: var(--shadow-inset); }
 .figure.shot > a { display: block; }
