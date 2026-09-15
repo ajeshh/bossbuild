@@ -109,7 +109,9 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
   overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 .terminal.breakout { width: min(100%, 54rem); }
-.terminal pre { margin: 0; white-space: pre; }
+/* Flex column: the newline between .line spans is whitespace-only and is not rendered,
+   so a block per line does not also print a blank one (IDEA-117). */
+.terminal pre { margin: 0; white-space: pre; display: flex; flex-direction: column; }
 .terminal .cap {
   display: block; font-family: var(--font-mono); font-size: var(--step--1);
   color: var(--color-terminal-dim); margin-bottom: var(--space-3);
@@ -264,6 +266,21 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 .hero .wordmark { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
 .hero .wordmark .mark { --mark-size: 6.5rem; }
 @media (max-width: 46rem) { .hero .wordmark .mark { --mark-size: 4.5rem; } }
+
+/* --- figures (IDEA-117) --------------------------------------------------
+   Inline SVG, tokens only, so a diagram follows the scheme like the text does. */
+.figure { margin: var(--space-3) 0 var(--space-4); max-width: 40rem; }
+.figure svg { display: block; width: 100%; height: auto; overflow: visible; }
+.figure figcaption { margin-top: var(--space-1); color: var(--color-text-secondary); }
+.figure .lbl { font-family: var(--font-mono); font-size: 13px; fill: var(--color-text-secondary); letter-spacing: 0.04em; }
+.figure .lbl.end { text-anchor: end; }
+.gap .axis { fill: none; stroke: var(--color-rule); stroke-width: 1.5; }
+.gap .fill { fill: var(--color-structure); opacity: 0.16; }
+.gap .building { fill: none; stroke: var(--color-text-secondary); stroke-width: 2.5; stroke-linecap: round; }
+.gap .wrong { fill: none; stroke: var(--color-brand); stroke-width: 3; stroke-linecap: round; }
+.gap .wrong-lbl { fill: var(--color-brand); font-weight: 700; }
+.gap .building-lbl { fill: var(--color-text-secondary); }
+.gap .gap-lbl { fill: var(--color-text); }
 
 /* --- the train line ------------------------------------------------------
    The mode ladder as a line you can locate yourself on, not a table. */
