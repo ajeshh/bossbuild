@@ -29,6 +29,12 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 - **Surprises / decisions:** Two rulings, both against my top findings. *"I disagree that they have to talk to 1 person before the canvas, talking can come whenever"* — so the arc is now *capture → pressure-test · talk to one person (either order) → unlock*, a `coreLoop` step may be an unordered pair, and the router/site/`/welcome` stopped sequencing it. *"Site has nothing to do with app"* — the footer's *no analytics* is the CLI's claim; the site's GA4 is a separate fact; dropped. Also: I wrote a *1 of 3* on the readiness line and reverted it — `readiness.js` refuses a tally on purpose and a test pins it; the authored rule was right.
 
 ## 2026-09-13
+- **FEAT:** _no FEAT — the second tier under `## Unreleased`_ (moved here from RESUME's *Now* on 2026-09-14, past the window)
+- **Landed:** once-per-session conscience · `boss hooks enable|disable` (nothing lands until asked) · `modes:` label · manifest summaries one sentence · checker hygiene + `parseEntries` in gen-site · MENTORS.md current. BOSS's own hooks re-synced.
+- **Next:** stamp (Ajesh's).
+- **Surprises / decisions:** —
+
+## 2026-09-13
 - **FEAT:** _no FEAT — the board, from Ajesh's read of it_
 - **Landed:** Every card carries a labelled `added <date>` (`created:` wins, git's add-date fills, prose after the day ignored) and Shipped cards add `shipped <date>`; `boss board <id>` gains `added`, `--json` gains `addedOn`/`shippedOn`/`criteria`. A Building FEAT's acceptance-criteria bar renders at `0/N` (all segments off) instead of hiding; a Building FEAT with no `## Acceptance criteria` section renders **no acceptance criteria** in caution — a hole in the spec, not a bar. Ideas still show no bar. `3747bc9`, under Unreleased; board tests 38 (+2).
 - **Next:** FEAT-030 (11/11) and FEAT-031 (6/6) sit full-bar in Building — the design lane's call to flip them `shipped`. `site/demo/board.html` picks the dates up on the next `gen:site` (peer's lane). IDEA-114 slice 2 (the venture card above the columns) is the next board question.

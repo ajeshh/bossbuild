@@ -66,9 +66,7 @@ npm run check            # zero findings = clean; check:published says how far n
   `/extract` description fix (319) · plugin eval suite, Δ 1.0 (320, 321) · `/boss-learn` folded into
   `/extract` (322) · model attachment let go (323) · the board assessment applied, 16-skill MVP
   unlock, `boss status` 2.4s→0.17s (324) · `/boss:welcome` the everyday door by pointer (325).
-- **Second tier landed under `## Unreleased` (2026-09-13)** — once-per-session conscience · `boss hooks
-  enable|disable` (nothing lands until asked) · `modes:` label · manifest summaries one sentence ·
-  checker hygiene + `parseEntries` in gen-site · MENTORS.md current. BOSS's own hooks re-synced.
+- **Second tier landed under `## Unreleased` (2026-09-13)** — moved to the devlog (2026-09-13 entry); the CHANGELOG holds each.
 - **Landed under `## Unreleased`, not stamped** — DEC-019 (release-on-publish: `npm run stamp` at publish;
   `VERSION is honest` replaces `is next`) and BOSS's own install synced 0.267→0.325 + a dogfood row
   that fails past 3 behind. The next version is Ajesh's to stamp.
