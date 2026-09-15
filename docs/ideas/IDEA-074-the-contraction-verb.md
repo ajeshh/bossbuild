@@ -104,13 +104,13 @@ side-effect of reading the code you were editing.* This is the genuinely-new ide
 rubric is *not* a 48th skill. It is a **question added to `/extract`'s existing pass**: `/extract`
 already stops at a breakpoint and already asks "what pattern is here?" — the missing half is "and what
 here has stopped earning its place?" Same trigger, same file, same record (`EXTR-NNN`). **Compose and
-subtract, per [[EVID-001]]'s standing mandate — never a new verb.**
+subtract, per EVID-001's standing mandate — never a new verb.**
 
 ## Why #4 is held — and this is the load-bearing restraint
 
 - **n=0.** No founder has asked. The symptom BOSS can point at is **BOSS's own** — 221 releases, 47
   shipped skills, a `RESUME.md` that needed three archive passes against its own 400-line gate.
-  Building a founder feature from BOSS's own itch is precisely the inversion [[EVID-001]] flagged:
+  Building a founder feature from BOSS's own itch is precisely the inversion EVID-001 flagged:
   seven post-launch releases for operators BOSS had zero of.
 - **It harms the cohorts BOSS most needs to reach.** A prompt to go tidy, aimed at a founder with no
   users, is the **pseudo-app trap wearing an engineering hat** — it feels like rigor and produces

@@ -3,7 +3,9 @@ id: IDEA-116
 type: idea
 kind: capability
 owner: Ajesh
-status: not-yet (gated on homebrew-core notability — see falsifier)
+status: deferred (gated on homebrew-core notability — see falsifier)
+proof: none
+proof_note: Not a build — a gate. Everything BOSS controls (the tap formula, the CLI naming the formula that exists, check:published) landed; the ask is a homebrew-core formula, refused today on notability. The trigger is on the record.
 gist: A bare `brew install oyeboss` — no tap prefix — means a formula in homebrew-core. Homebrew's acceptance policy refuses it today: a self-submission needs 90 forks, 90 watchers or 225 stars, and ajeshh/bossbuild is at 0/0/0. The only fix is public interest; everything BOSS controls is already in place.
 created: 2026-09-14
 program: distribution

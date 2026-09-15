@@ -129,7 +129,7 @@ last — the only one gated on evidence BOSS does not have yet.
 
 ## Refusals
 
-- ⛔ **No new agents.** [[EVID-001]]'s mandate is compose **and subtract**. This record removes two
+- ⛔ **No new agents.** EVID-001's mandate is compose **and subtract**. This record removes two
   and renames some; it adds none.
 - ⛔ **The mentor/builder line does not move.** A merged mentor+builder architect was the obvious
   read of *"kinda like a CTO role"* and it collapses the one boundary `docs/MENTORS.md` calls hard.

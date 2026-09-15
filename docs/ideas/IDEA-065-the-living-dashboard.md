@@ -117,7 +117,7 @@ private workbench that looks like a pitch, and a thin record starts reading as a
 
 ⚠️ **n=0.** No founder has asked for this. The mechanism is cheap precisely because the records
 already exist — which is exactly the condition under which something gets built because it would
-demo well rather than because someone needed it. [[EVID-001]]'s compose-and-subtract mandate applies.
+demo well rather than because someone needed it. EVID-001's compose-and-subtract mandate applies.
 
 **Re-open trigger:** a founder (or Ajesh, on a real project) goes looking for their own material —
 a persona, a canvas cell, an old decision — and cannot find it without grepping. That is the

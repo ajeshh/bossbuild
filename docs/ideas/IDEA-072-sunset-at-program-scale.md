@@ -50,7 +50,7 @@ both branches fail their own test today:
 single bet. BOSS's own repo has never run one; no founder has run one, because there are no
 founders yet. Deciding the shape of a container for a thing that has never existed is precisely the
 premature ceremony Principle 2 exists to refuse — and it would be **adding surface** while
-[[EVID-001]]'s mandate is *compose and subtract, never add.*
+EVID-001's mandate is *compose and subtract, never add.*
 
 ## What it would take to be worth building
 

@@ -137,13 +137,13 @@ the stack is declared**, not ship a better guess.
   `library/practices/git-workflow.md` (6 rules), a one-line version in the L1 DOWN, and `~4×` corrected.
   **Both `provenance` fields now say the section is NOT from the 2026-06-20 research** — without that,
   a sort-UP silently inherits a citation it did not come from, which is the bug `/vet` step 3 exists for.
-  No new skill, no new practice doc: [[EVID-001]]'s compose-and-subtract held.
+  No new skill, no new practice doc: EVID-001's compose-and-subtract held.
 - **Grow the ignore file JIT** when the stack becomes known, rather than guessing at scaffold time.
 - **The commit-assistance half needs the open question answered first** (below) before anything is designed.
 
 ## Refusals (candidate)
 
-- ⛔ **No `/commit` or `/gitignore` skill.** The surface is already ~47 skills and [[EVID-001]]'s standing
+- ⛔ **No `/commit` or `/gitignore` skill.** The surface is already ~47 skills and EVID-001's standing
   mandate is *compose and subtract, never add the 23rd*.
 - ⛔ **BOSS does not become a secret scanner.** `/red-team` and `agent-security` own that; a half-scanner
   that misses one key is worse than no scanner, because it gets trusted.

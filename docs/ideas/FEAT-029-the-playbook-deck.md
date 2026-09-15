@@ -3,6 +3,7 @@ id: FEAT-029
 type: feature
 owner: product-lead
 status: shipped (under Unreleased, 2026-09-13)
+proof: src/playbook.js
 shipped_on: 2026-09-13
 gist: `boss playbook`'s deck — Present the page as slides in one of three cuts (VC cut · Internal · Everything), each a list of block ids computed at render from the records; remove any slide from the current cut and restore it (remembered in the browser, never in the records); Export this cut as PDF through the print sheet. The founder's delete is the last word; BOSS's cut is the first draft.
 for: the same founder as FEAT-026 — has a room on Thursday and sixteen chapters

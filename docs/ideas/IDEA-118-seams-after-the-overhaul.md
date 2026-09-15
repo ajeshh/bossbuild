@@ -4,6 +4,7 @@ type: idea
 kind: capability
 owner: Ajesh
 status: shipped (2026-09-14, under Unreleased)
+proof: src/clock.js
 gist: After the 2026-09-10→14 overhaul (202 commits), the surfaces tell one story but the seams between them don't — a rule stated in one reader and not applied in its sibling. Walked end to end (site → boss new → the Quickstart skills → the readers on day 0, day 1, after unlock); seven seams, each small, each a place a first founder would trip.
 created: 2026-09-14
 program: founder-path

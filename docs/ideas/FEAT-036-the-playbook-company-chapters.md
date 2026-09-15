@@ -3,6 +3,7 @@ id: FEAT-036
 type: feature
 owner: product-lead
 status: shipped (under Unreleased, 2026-09-13)
+proof: src/team.js
 shipped_on: 2026-09-13
 gist: `boss playbook` grows the Company group — Team (a person record per founder, cofounder, team member and advisor, with a photo, written by hand from a README or stubbed by `boss team add`), Brand (BRAND.md's current shape, the accent and tagline as they are, the learned rows counted, a link to the Design space), and Values (the Principles cell as headlines plus a new `## How we build` section on BRAND.md — a headline, what it means, what it costs, per value). Photos inline as data URIs so a block still pastes.
 for: the same founder as FEAT-026 — asked for a page on how we build and a face beside each name

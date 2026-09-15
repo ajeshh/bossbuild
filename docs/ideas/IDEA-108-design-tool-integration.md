@@ -2,7 +2,7 @@
 id: IDEA-108
 type: idea
 owner: designer
-status: captured (the seam is real on one layer and gated on another; the honest list is below — build nothing until a designer arrives with a file)
+status: deferred (re-open when a designer arrives with a file — the seam is real on one layer and gated on another; the honest list is below)
 gist: Design-tool integration as its own feature — what BOSS can honestly do to let a designer open, import, and round-trip the design guidelines in their tool (Figma today), sorted by which direction actually works and on which plan; refuses the vendor-shaped mechanisms (a plugin, a .fig, an MCP BOSS ships).
 proof: none
 proof_note: Captured. The one build that stands on its own is a `design:` link per component and pattern, rendered as "Open in your design tool" — zero-dep, class-named, and the honest coverage number ("2 of 4 components have a design-file counterpart") comes free with it.

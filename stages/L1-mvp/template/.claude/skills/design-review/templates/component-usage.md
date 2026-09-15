@@ -17,7 +17,7 @@ adjust, or new?* at the write and says *if it IS new, say why in one line* — t
 line lives. A component whose *Why it exists* cannot name a behaviour no other component has is a
 variant that got forked into a file, and `boss design` says so.
 
-**A usage page written before the code is a request.** `status: proposed` and no file: a designer
+**A usage page written before the code is a request.** A status of `proposed` and no file: a designer
 or a teammate has asked for a part, said what it is for and why it is new, and the next
 `/design-review` picks it up. That is the front door — nobody has to build a thing to ask for it.
 

@@ -89,7 +89,7 @@ this rather than claiming enforcement a founder doesn't have.
 - **No claim of invention.** ADRs are Nygard 2011; render-from-frontmatter is what note tools do;
   discovery-over-documentation is Cagan. All registered in `sources.json` and named on the page. The
   narrow claim is the composition: *ceremony rationed by mode*, and *some docs execute*.
-- **No new skills.** [[EVID-001]] — compose and subtract. This shipped one page and removed a record
+- **No new skills.** EVID-001 — compose and subtract. This shipped one page and removed a record
   type; it added no verb.
 - **No `check:backlog`.** ⬜ See open item below — the mechanism is claimed but does not exist, and
   writing it was out of scope for a website ask.

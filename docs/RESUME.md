@@ -104,8 +104,6 @@ npm run check            # zero findings = clean; check:published says how far n
    compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
    `/import` (#13), the ask record (#17).
 3. ~~`/vet` the persona sources~~ — RVW-103 (ADAPT: `photo:` and `quote:` gated; the rest rejected).
-3b. **FEAT-030 (11/11) and FEAT-031 (6/6) are full-bar in Building** — the board now says so out loud.
-   Design lane: flip them `shipped` (with `shipped_on:`) or say what's still open.
 4. **IDEA-114 slice 2 — the board's split.** `boss board` files the `kind: venture` idea as a card
    among the capabilities; put it above the columns (beside the riskiest assumption, IDEA-015's
    spot) or filter it. Also: two venture records on day 0 → `/canvas` asks which. Measure before
@@ -113,15 +111,14 @@ npm run check            # zero findings = clean; check:published says how far n
 5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
 6. **`/vet` Cagan's 2026-09-11 retraction #2** (*"teams over-invest in validating problems"*). Inbox it first.
 7. **Watchlist needs a row for the project/PM rung** (`planner`, `boss board`, `program:`).
-8. **Docs-accuracy found task:** CLAUDE.md's repo map and `/vet` step 2 name `library/agents|skills|
-   hooks|memory-seed/` — none exist. Fix the sentences.
-9. **`npm run check` is red at 50 since `d20f15d` (IDEA-087):** `[[EVID-NNN]]` links in now-tracked
-   ideas/verdicts point at evidence that stays gitignored; three tests fail on the same class. Not a
-   regression — `check:refs` needs to know evidence is private by design (skip or soften the EVID
-   class), not un-ignore it.
-10. **Two dogfood gaps from the `/retro`:** `.boss/brain/` (run `/read-repo`), `/drift-deep` never run here.
-    Plus two new: `.claude/rules/feature-context.md` now exists here (`/spec`/`/close` name it);
-    `docs/product/JOURNEY.md` not written (every row would be `assumed`) — write it at the second flow.
+8. **`npm run check` is GREEN and the suite is green (2026-09-14)** — the 50 `[[EVID-NNN]]` links
+   became bare ids (evidence is private forever; brackets promise a door), `docs/design/tokens.json`
+   joined the shared-names list (fourth instance of the `RESUME.md` shape), and the 21 backlog findings
+   the red `&&` chain had hidden for two days were closed (proofs, promotion pairs, vocabulary, INDEX).
+   **Keep it green** — a red gate hides everything behind it.
+9. **One dogfood gap from the `/retro`:** `/drift-deep` never run here (the brain exists since 09-12).
+   Plus: `.claude/rules/feature-context.md` now exists here (`/spec`/`/close` name it);
+   `docs/product/JOURNEY.md` not written (every row would be `assumed`) — write it at the second flow.
 
 **Above all of these, unchanged: publish (npm is behind — `npm run check:published` says by how
 much) and Phase 3 outreach. Both are Ajesh's.**

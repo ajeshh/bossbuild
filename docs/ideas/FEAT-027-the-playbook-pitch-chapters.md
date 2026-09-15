@@ -3,6 +3,7 @@ id: FEAT-027
 type: feature
 owner: product-lead
 status: shipped (under Unreleased, 2026-09-13)
+proof: src/playbook.js
 gist: `boss playbook` grows from one page to the Pitch chapters — Vision · Product · Customers · Problem · Market · Competition · Canvas · Business model — each a projection over a record that exists (IDEA doc, personas, competition set, imported sources, the capital mentor's dossier), a chapter rail, and a chapter line that is the first sentence of the record it renders. Holes stay holes; personas are snippets that link to the Design space.
 for: the same founder as FEAT-026 — records in six folders, nothing that reads them together for a room
 created: 2026-09-13

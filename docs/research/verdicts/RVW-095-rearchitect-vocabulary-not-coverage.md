@@ -11,7 +11,7 @@ route: DOWN stages/L1-mvp/template/.claude/agents/mentor-architect.md (trigger p
 # RVW-095 — "when to rearchitect": BOSS has the answer and the founder's word doesn't reach it
 
 ## The claim
-- **Source:** [[EVID-001]], 2026-07-23 — a real founder, using BOSS, unprompted:
+- **Source:** EVID-001, 2026-07-23 — a real founder, using BOSS, unprompted:
   *"help me keep focus + **when to rearchitect**."*
 - **Core assertion (as filed):** `rearchitect` appears zero times in the repo, so BOSS has **no
   surface** for the moment a founder asks about.
@@ -52,7 +52,7 @@ debt": **zero occurrences across every shipped agent and skill.**
 ## Verdict: ADAPT
 
 Adopt the **corrected** claim, not the filed one. BOSS does not need a `/rearchitect` skill, a new
-practice, or a new mentor — [[EVID-001]]'s own mandate forbids all three and was right to. What it
+practice, or a new mentor — EVID-001's own mandate forbids all three and was right to. What it
 needs is for the founder's own words to reach the answer BOSS already wrote.
 
 This lands on the same axis as everything else in the EVID ledger: **BOSS emits and never mirrors.**

@@ -74,7 +74,15 @@ rule above still applies to the whole section once it is stamped.
   until `boss hooks enable`, and says what it held. A repo under the five-file bar now says what it
   read and the bar (*2 source file(s) — MVP starts at 5 with a build manifest · package.json ·
   tests · CI · deploy config*) instead of the count alone. `/read-repo` names the rung before it
-  names an MVP verb, and the command that turns `secrets-guard` on.
+  names an MVP verb, and the command that turns `secrets-guard` on. **And the gate is green:** the
+  50 `[[EVID-NNN]]` citations in tracked ideas and verdicts are bare ids now (evidence is private
+  forever — real people, in confidence — and the brackets promise a door); `docs/design/tokens.json`
+  is the fourth entry on `check:refs`'s shared-names list (written by `/design-tokens-init` into the
+  founder's project, resolving here only because BOSS dogfoods it); and the 21 `check:backlog`
+  findings the red `&&` chain had hidden for two days are closed — eleven records given a `proof:`
+  path, two promotion pairs completed, three statuses back on the vocabulary, one folded-paragraph
+  `proof:` made `none` with its words kept, the INDEX rows matched. `npm run check` exits 0 and the
+  suite is green for the first time since `d20f15d`.
 - **The front door is seen, not read (IDEA-117).** oyeboss.build measured at 4,231 words in one
   visual grammar, the mark at 40px, the generated pages behind a text link. Now: the built B at
   104px in the hero rail; *Building got cheap. Being wrong didn't.* as one picture; the hero shows

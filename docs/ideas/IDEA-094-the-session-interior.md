@@ -72,11 +72,11 @@ The design program (IDEA-091/092) and the product program (IDEA-093) were both *
 both say so. **This one is not.** It is the closest thing BOSS has to a founder describing a
 mechanism they want:
 
-> [[EVID-001]] — *"hard to gauge where i am / which stage / how it aligns with my roadmap; **i forget
+> EVID-001 — *"hard to gauge where i am / which stage / how it aligns with my roadmap; **i forget
 > what feature i'm building / get adhd**; help me keep focus; **knowing exactly where i am like a
 > train line, seeing my progress**; more visual cues to feel like i'm making great headway."*
 
-[[EVID-003]] is the second, independent founder and lands on the same axis from the other side —
+EVID-003 is the second, independent founder and lands on the same axis from the other side —
 `/boss` *"jumped straight into building, rather than checking or saying back."* **n=2 independent,
 still `stated-pain`.** Nobody has been observed losing a session to this, and convergence raises
 conviction without raising the grade. But it does mean this program **outranks** the two before it,

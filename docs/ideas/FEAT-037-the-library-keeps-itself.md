@@ -3,6 +3,7 @@ id: FEAT-037
 type: feature
 owner: designer
 status: shipped
+proof: stages/L1-mvp/template/.claude/skills/design-review/templates/component-usage.md
 gist: Four slices from IDEA-112 — element families 4 → 10 in the pattern set; a usage page per component written at its review and rendered on the card; the tree read for components with no row; a lifecycle with `proposed` as the front door for a designer or teammate to ask for a part.
 for: the founder, the agent that builds the next screen, and the designer or teammate who has no way to ask for a part today
 created: 2026-09-13

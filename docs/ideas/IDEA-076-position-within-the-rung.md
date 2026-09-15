@@ -8,7 +8,7 @@ proof: >
   and never where you are INSIDE one, and computes readiness to climb for exactly one rung — is
   [VERIFIED] mechanically against shipped code (`renderLadder` in src/map.js; `graduationHint` is a
   static manifest string; only `cmdUnlock`'s L3-scale branch names a bar). (2) FOUNDER DEMAND is
-  [stated-pain], the lowest rung of the ladder — [[EVID-001]] and [[EVID-003]], two independent
+  [stated-pain], the lowest rung of the ladder — EVID-001 and EVID-003, two independent
   founders, both asking for orientation and progress. Nobody has been OBSERVED failing at this.
 proof_note: >
   The gap between the two grades is the whole risk in this record. The defect is real and checkable;
@@ -18,7 +18,7 @@ proof_note: >
 gist: >
   The ladder shows four station NAMES and bolds the one you are at. A founder spends weeks inside a
   single rung, and for those weeks the surface says exactly the same thing on day 1 and day 40.
-  [[EVID-001]]'s own words were "knowing exactly where i am like a train line, seeing my progress" —
+  EVID-001's own words were "knowing exactly where i am like a train line, seeing my progress" —
   and a train line's whole information content is the stations you have passed and the ones ahead.
   BOSS ships the line's name. The second half — when do I climb, and am I ready — is unanswered too:
   `graduationHint` is a fixed sentence from the manifest, not a read of the project, and only
@@ -89,7 +89,7 @@ Recorded as a direction to pressure-test, **not** as a decision:
 ## What would move this
 
 - An **observed** session — a founder actually using BOSS while someone watches — rather than a third
-  statement of the same pain. [[EVID-001]]'s standing instruction is to hold until a founder moves
+  statement of the same pain. EVID-001's standing instruction is to hold until a founder moves
   from stated-pain to observed-behavior, and that has not happened.
 - Or a founder who climbs a rung and gets it WRONG in a way BOSS could have caught — which would tell
   us readiness is real and checkable, instead of assumed.

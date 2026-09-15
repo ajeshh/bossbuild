@@ -24,7 +24,7 @@ route: n/a
 | 2 | Evidence grade | 🔴 **Effectively n=0, and two headline numbers are DEAD.** "8,000 startups need rebuilds / $400M–$4B" traces to a vendor blog with **no methodology** — a table sourced to *"Industry estimates"* / *"Engineering firms"*, total marked *"Calculated"*, published by a company selling the remedy. "2.74x more vulnerabilities per Veracode" is **absent from Veracode's own blog on that report AND from the CSA's 2026-04-04 synthesis of the same report**; it survives only on vendor pages, attributed inconsistently to Veracode *or* Apiiro. What is real is **adjacent, not the claim**: Veracode's 45%, Apiiro's 10x findings, YC's 25%-of-W25-at-95%-AI-generated. **None of them say anyone rebuilt after funding.** No survey, no cohort study, no first-party VC or founder account exists. |
 | 3 | Duplicate or sharpen? | **Substantially duplicate at the layer that matters.** [[RVW-016]] already ADAPTed Cagan's *build to learn vs build to earn* DOWN into `/prototype` + `/spec` — that **is** the prototype-vs-production distinction, shipped since v0.52. The genuinely-missing piece is narrower and is **not this claim**: `rearchitect` appears **zero times anywhere in the repo**, including in the shipped `mentor-architect`. Split out — see *Notes*. |
 | 4 | Who serves / harms? | 🔴 **The killing finding.** Serves `eng-builder` and `returning-founder`, who already know what a rewrite is. **Harms `first-product`, `vibe-coder-newbie`, and `non-tech-founder` directly**: the claim's content is *"what you built isn't real and professionals will replace it,"* sourced from firms that sell the replacement. That is the precise message BOSS exists to refuse. `indie-hacker` is anti-VC by choice, so the arc does not apply to them at all — **three of eight cohorts harmed, one unserved, two served.** |
-| 5 | Cost / ceremony | **Heavier**, at the worst possible place: a new surface for a stage BOSS's founders have not reached, serving a cohort of **zero**. [[EVID-001]]'s own stated fear is app bloat, which is canvas Risk #1, and the standing mandate is *compose and SUBTRACT, never add another skill.* |
+| 5 | Cost / ceremony | **Heavier**, at the worst possible place: a new surface for a stage BOSS's founders have not reached, serving a cohort of **zero**. EVID-001's own stated fear is app bloat, which is canvas Risk #1, and the standing mandate is *compose and SUBTRACT, never add another skill.* |
 
 ## Verdict: REJECT
 
@@ -66,7 +66,7 @@ instinct.
 
 ## Notes
 - **Split out for its own pass (NOT covered by this verdict):** `rearchitect` has **zero occurrences**
-  anywhere in the repo while [[EVID-001]] asked for *"help me keep focus + when to rearchitect"* in
+  anywhere in the repo while EVID-001 asked for *"help me keep focus + when to rearchitect"* in
   those words. That is a **first-party founder ask with no surface** — a different claim, a different
   evidence grade, and it must not inherit this REJECT. Filed as
   `docs/research/inbox/rearchitect-has-no-surface.md`.

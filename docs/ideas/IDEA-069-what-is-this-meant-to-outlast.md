@@ -48,7 +48,7 @@ Succession is not the same question. *"Who carries this after you"* is about **n
   exactly.**
 - It is cheap if it exists at all: it is one question, and the natural home is the canvas's
   **Principles** cell (*"the non-negotiables you'll hold even when it's costly"*) or a second line in
-  the sustainability branch — **composition, not a new cell**, per [[EVID-001]].
+  the sustainability branch — **composition, not a new cell**, per EVID-001.
 - The honest answer is often *"I don't know yet"* or *"a year"* and **both must stay complete
   answers** — the same discipline as *"very little, and here's why"* (v0.201.0) and *"a 'no' is a real
   answer and the common one"* (the six shape questions).

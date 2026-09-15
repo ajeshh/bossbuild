@@ -223,7 +223,7 @@ Capture only.
 ## Refusals (standing)
 
 - ⛔ **No mobile mode, no per-platform skills, no app-store deploy table.** n=0 non-web founders.
-  That is addition against [[EVID-001]]/[[EVID-003]]'s compose-and-subtract mandate, aimed at a
+  That is addition against EVID-001/EVID-003's compose-and-subtract mandate, aimed at a
   cohort BOSS does not have, while the founders it *does* have said the offering isn't ready.
 - ⛔ **No 23rd skill.** Every item above is a config key, a glob, or a paragraph.
 - ⛔ **Do not "fix" range by widening every regex.** A wider regex that still cannot say *"I could

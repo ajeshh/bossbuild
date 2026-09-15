@@ -193,7 +193,7 @@ compose from the library once it exists. Prevention on one side, detection on th
    events as a proxy. It also separates severity the way this IDEA's own §"what's portable" section
    asked for: a broken claim is a hard fail, stale prose is a soft note.
    Building the loop would have added a **second, blinder watcher over one surface** — the exact
-   addition [[EVID-001]] rules out (*compose and subtract, never add*). Note the irony worth keeping:
+   addition EVID-001 rules out (*compose and subtract, never add*). Note the irony worth keeping:
    the warning attached to this item was *"a loop that overstates its reach is worse than one
    admitting a gap"* — and the honest answer to that warning turned out to be that the loop had no
    reach left to claim.
@@ -240,7 +240,7 @@ argument is about*), reach for `/landing` when the page will outlive the test.
 
 ## Refusals, decided up front
 
-- **No new skills.** [[EVID-001]]'s mandate is compose-and-subtract; the surface is already 47 skills,
+- **No new skills.** EVID-001's mandate is compose-and-subtract; the surface is already 47 skills,
   15 agents and 15 loops. Every item above is a composition or a practice edit.
 - **No CRO, no A/B infrastructure, no funnels, no heatmaps.** `landing-page.md` draws this line and it
   holds — useless at n≈0 anyway.

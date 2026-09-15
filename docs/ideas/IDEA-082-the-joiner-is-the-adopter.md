@@ -116,7 +116,7 @@ AI-autonomous); this is one more value in a field that already exists, not a new
 - **No accounts, no server, no permissions system.** Same call [[IDEA-037]] already made: build the
   view, refuse the app. Identity is the GitHub login BOSS already resolves, or it is nothing.
 - **Don't build a "joiner mode."** A second mode ladder is exactly the roster bloat [[IDEA-052]]
-  refuses. The [[EVID-001]] mandate is standing and unspent: **compose and subtract.** Every piece
+  refuses. The EVID-001 mandate is standing and unspent: **compose and subtract.** Every piece
   above is a composition of something shipped — `boss adopt`, the `decided_by` field, the roster.
 - **Don't let this re-open the non-tech-cofounder door** ([[IDEA-037]] slice 6). Different problem.
 - **The solo test still governs** ([[IDEA-037]]): build only what also earns its place at n=1. A
@@ -139,7 +139,7 @@ In order, each shippable alone:
 **n=0, and this is a hypothesis about a person who has not spoken.** BOSS's whole evidence discipline
 says a plausible persona is not a signal. This promotes to a FEAT via `/spec` when — and only when —
 **a real person who is not the founder of their venture asks for it**, in their own words. The two
-most plausible arrivals: someone in [[EVID-003]]'s orbit (a teammate of a founder who already
+most plausible arrivals: someone in EVID-003's orbit (a teammate of a founder who already
 installed BOSS), or an engineer who finds BOSS and says *"I joined a startup and it has no spine."*
 
 Absent that, this record is doing its whole job by existing.

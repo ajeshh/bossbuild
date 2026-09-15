@@ -143,7 +143,7 @@ for that.
 founder has asked. What changes it: **at n=0 this render is a conscience moment.** Its honest first
 output is *"here is what you can actually claim, and here are four things you'll have to say out
 loud that no record supports."* It cannot teach premature packaging, because premature is precisely
-what it reports. That's the version worth building, and it's compose-and-subtract ([[EVID-001]]) —
+what it reports. That's the version worth building, and it's compose-and-subtract (EVID-001) —
 a render over records that exist, not a 47th skill.
 
 ## Constraints — where this goes wrong

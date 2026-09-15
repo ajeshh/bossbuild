@@ -17,7 +17,7 @@ source: fable-campaign lifecycle pass (Fable 5, 2026-07-02 — "how does BOSS ex
 > **Parked with a fired trigger, deliberately — and that is the unusual part.** This record gates
 > `mentor-operations` on *"first-dollar exists somewhere"*; `/money` shipped in **v0.157.0**, so the
 > trigger **has fired** and the seat is buildable on its own terms. It is parked anyway, because what
-> it would do is **add a seat** — and [[EVID-001]]'s standing mandate is compose-and-subtract, from a
+> it would do is **add a seat** — and EVID-001's standing mandate is compose-and-subtract, from a
 > founder who named app bloat as their own fear. A fired trigger is a fact, not an obligation.
 >
 > ⚠️ **Two things a future session must not misread as permission:** the `/brief` handoff prompt below

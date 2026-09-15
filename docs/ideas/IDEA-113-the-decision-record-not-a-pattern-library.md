@@ -2,7 +2,9 @@
 id: IDEA-113
 type: idea
 owner: designer
-status: building
+status: shipped (2026-09-13 — rows 1–3 as FEAT-038, row 4 in `3e8c59b`)
+proof: stages/L1-mvp/template/.claude/hooks/design-decisions-guard.js
+promoted_to: FEAT-038
 gist: The design space is the decision record made visual — every block traces to a choice the product made — so the team, a designer and the agents build from those choices instead of drifting; it is not a pattern library, and nothing BOSS seeds is ever presented as the product's decision. Families are options BOSS knows about and appear only when the product uses them; the agent is handed the product's OWN decisions at the write; divergence is a number on the page.
 created: 2026-09-13
 from: IDEA-112

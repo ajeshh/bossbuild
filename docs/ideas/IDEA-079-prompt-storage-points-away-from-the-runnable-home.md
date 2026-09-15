@@ -87,7 +87,7 @@ Shipped as the smallest thing that closes the contradiction, and no more:
   the one piece of information the rule was standing in for.
 - **What was NOT built:** any authoring path, template, or scaffold for commands. The observation
   that `.claude/commands/` is *the rung below a skill* is real and stays a note — building a ladder
-  onto it would be the addition [[EVID-001]] forbids.
+  onto it would be the addition EVID-001 forbids.
 
 ## Open questions as originally filed
 
@@ -104,5 +104,5 @@ Shipped as the smallest thing that closes the contradiction, and no more:
 ## Related
 
 - [[IDEA-080]] — the other half of "where does a durable thing live"; same machine-local question.
-- [[EVID-001]] — bloat is the founder's stated fear; this adds a *file the founder writes*, not
+- EVID-001 — bloat is the founder's stated fear; this adds a *file the founder writes*, not
   surface BOSS ships, which is the correct side of that line.

@@ -3,6 +3,7 @@ id: FEAT-035
 type: feature
 owner: product-lead
 status: shipped (under Unreleased, 2026-09-13)
+proof: stages/L0-quickstart/template/.claude/skills/import/SKILL.md
 shipped_on: 2026-09-13
 gist: The playbook's holes get filled at the founder's pace through three doors, none a wizard — `/import` accepts pasted text as well as files and, after folding a source into the idea, assesses what else it fills (a count for People, two rivals, a tagline, a person) and writes each record only on a yes, in the owning verb's shape; `/close` gains a noticing step for what the founder said this session that no record holds; `boss playbook --questions` is the target list both read. Notice passively, write explicitly, never invent.
 for: the same founder as FEAT-026 — has a deck, a report, a head full of facts, and 23 questions open

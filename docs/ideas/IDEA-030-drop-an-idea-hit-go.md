@@ -203,7 +203,7 @@ what a founder needs to be told:
 | Generate 3 variants by default | Dow held prototype count **constant**; divergence did not predict quality; AI examples **increase** fixation (BF=124, CHI 2024); choosing among 3 AI options buys **zero** ownership over being handed 1 (p>.99); the number 3 has no empirical parent. Contradicts time-to-first-click and deletes step 2's correctable one-line pick. |
 | Sketchy/ugly styling so it reads as unfinished | The doctrine is **N=1** (Wong, CHI '92 poster). Landay's own lab failed to confirm it: "finished" 8.13→7.13 **ns**, and critique shifted to **visual nitpicking**. The one controlled test of sketchy rendering is null. Aesthetic-usability effect runs the other way. |
 | Domain-realistic mock content | 50–82% fabrication on domain details; JAMA Ophthalmology 2023 (fabricated "300 eyes… 250 patients"); Replit's *"4,000-record database full of fictional people"*. Obvious fakeness **is** a safety label. |
-| A new skill / a 23rd verb | [[EVID-001]]/[[EVID-003]] standing mandate: compose and subtract. |
+| A new skill / a 23rd verb | EVID-001/EVID-003 standing mandate: compose and subtract. |
 | Any ceremony before the first click | The skill's whole thesis, and it survived the pass intact. |
 
 ## Next steps, in order

@@ -62,7 +62,7 @@ answered before it goes on:
 2. **Ajesh is not the persona.** The conscience coaches a founder toward validation. Ajesh is
    building the tool that does the coaching. Some moments genuinely do not apply.
 3. **Turning it on is a real evidence opportunity, which is the actual argument FOR.** BOSS has
-   `stated-pain` from two founders and **zero observed sessions** ([[IDEA-076]], [[EVID-001]]).
+   `stated-pain` from two founders and **zero observed sessions** ([[IDEA-076]], EVID-001).
    The one founder BOSS can observe continuously is Ajesh. Running the conscience here is the
    cheapest observed-behavior BOSS will ever get about its own central mechanism — and if it turns
    out to be too loud, *that is the finding*, and it is one no eval suite has produced in 266
@@ -138,5 +138,5 @@ BOSS is exactly the kind of project it fires on.
   *"permanently, uselessly loud"* here given 93 records. After the calibration fix it is **silent**
   on an ordinary prompt — which is the designed behaviour, now observed rather than assumed.
 - **Standing value: this is the first OBSERVED-behavior data BOSS has about its own core mechanism**,
-  against `stated-pain` from two founders and zero observed sessions ([[IDEA-076]], [[EVID-001]]).
+  against `stated-pain` from two founders and zero observed sessions ([[IDEA-076]], EVID-001).
   `.boss/conscience-log.jsonl` is no longer 0 lines. Leave it running.

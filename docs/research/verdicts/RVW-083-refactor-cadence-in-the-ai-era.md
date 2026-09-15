@@ -29,7 +29,7 @@ sources:
 | 2 | Evidence grade | **Split, and the split is the verdict.** The *problem* is [EVIDENCE]: GitClear's 623M-change telemetry, moved-code 13%→3.8% (2023→2026). The *prescription* is contradicted by both named practitioners BOSS respects — Fowler (verified primary) and Beck (his own domain). GitClear is vendor telemetry, correlational, and narrows its own mechanism to workflow incentive, not model capability. |
 | 3 | Duplicate or sharpen? | **Mostly duplicate, one real gap.** Duplicated by PRINCIPLE #1, `/extract` (DOWN = "refactor the duplication into a named module"), `extraction-loop`, `quality-ratchet`, `scalable-architecture`, `data-schema`, and `/comprehend`'s *"a refactor that buys nothing this month is a refactor that can wait."* `/code-health` + `/refactor-wave` are already named at Scale as symptom-gated-not-yet. **The gap: every one of those is additive or holds-the-line. BOSS has no verb that asks "what should stop existing?" about the founder's own code.** |
 | 4 | Who serves / harms? | Serves `eng-builder`, `returning-founder`. **Harms `first-product`, `vibe-coder-newbie`, and — sharply — `vibe-virtuoso`**, whose failure mode is 50+ repos and zero traction: a refactor beat hands them a legitimate-sounding way to not ship. Telling a founder with no users to go tidy is the **pseudo-app trap wearing an engineering hat**. |
-| 5 | Cost / ceremony | **Heavier, against a standing mandate.** 47 skills ship across the four stages. [[EVID-001]]'s founder named **app bloat** as their own fear and the mandate is *compose + subtract, never add a 23rd skill*. Canvas Risk #1 is "BOSS bloats into a framework." A cadence is a fifth recurring obligation. |
+| 5 | Cost / ceremony | **Heavier, against a standing mandate.** 47 skills ship across the four stages. EVID-001's founder named **app bloat** as their own fear and the mandate is *compose + subtract, never add a 23rd skill*. Canvas Risk #1 is "BOSS bloats into a framework." A cadence is a fifth recurring obligation. |
 
 ## Verdict: ADAPT
 
@@ -62,7 +62,7 @@ founders who have something worth pruning. What dies: the clock, and any new ski
 - **Why the contraction verb is held:** **n=0 founder projects have hit this symptom.** BOSS's own repo
   has (221 releases, 47 skills, a RESUME that needed three archive passes against its own 400-line
   gate) — but that is BOSS's practice, not a founder's, and building a founder feature from BOSS's own
-  itch is the exact inversion [[EVID-001]] warned about. Scale already holds `/refactor-wave` as
+  itch is the exact inversion EVID-001 warned about. Scale already holds `/refactor-wave` as
   symptom-gated; opening a second front at MVP without evidence would jump that queue for no reason.
 - **Re-open condition:** a real founder project shows the symptom in a form BOSS can name — an
   `EVID` past `stated-pain`, or a `/health` / `/comprehend` run where the honest read is *"the code is

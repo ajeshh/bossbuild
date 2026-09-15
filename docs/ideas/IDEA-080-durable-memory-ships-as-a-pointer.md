@@ -114,7 +114,7 @@ already in the right place, and committing it would contradict a decision made t
 
 1. Is a seed even wanted? `durable-facts-example.md` exists in `library/` and has never been
    shipped into a project. Shipping an example file into every scaffold is surface, and
-   [[EVID-001]]'s fear is surface.
+   EVID-001's fear is surface.
 2. Does the CLAUDE.md line need a caveat? Auto-memory is subject to a rollout flag and a managed
    setting, so a founder in an enterprise org may not have it while BOSS's copy says they do.
    One clause, not a paragraph.

@@ -159,7 +159,7 @@ Two things make it a real design question rather than a copy-paste:
 
 ## The shape this should take (and the one it must not)
 
-⛔ **Not a 23rd skill.** [[EVID-001]]'s standing mandate is **compose + subtract, never add** — and a
+⛔ **Not a 23rd skill.** EVID-001's standing mandate is **compose + subtract, never add** — and a
 "`/setup-permissions`" skill would be the exact bloat the founder in that record named as their own
 fear. The host also already ships the interactive half: `/permissions`, `/sandbox`, `/doctor`, and a
 bundled `fewer-permission-prompts` skill that reads your own transcripts and proposes an allowlist

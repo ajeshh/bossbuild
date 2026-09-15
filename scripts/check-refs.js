@@ -287,6 +287,12 @@ const SHARED_NAMES = new Set([
   // and the file is gitignored in this tree — the manifest.json case exactly. Same rung as every
   // reader, so the reference is always satisfiable where it is made.
   'docs/design/FLOWS.md',
+  // Fourth instance, 2026-09-14 (IDEA-118). `/design-tokens-init` (L1) WRITES `docs/design/tokens.json`
+  // (the DTCG file — "written always" since the colour-is-a-fact-in-one-file pass) into the founder's
+  // project; the playbook, the board, the design space, the page shell and `design-tokens-guard` all
+  // read it. It resolves here only because BOSS's own tokens live in the gitignored `docs/design/`.
+  // Nine findings sat red on this for two days — the `RESUME.md` bug, fourth time, same shape.
+  'docs/design/tokens.json',
 ]);
 
 if (repoOnlyDocDirs.length) {

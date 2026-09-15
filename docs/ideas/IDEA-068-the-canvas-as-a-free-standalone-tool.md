@@ -68,7 +68,7 @@ became standards by being freely published, attributed and reusable — not by s
 Harms** and **Principles.** That is the entire pitch, and it is honest — the canvas asks two questions
 Lean doesn't.
 
-**It also answers the [[EVID-001]] signal better than a feature would.** The one piece of external
+**It also answers the EVID-001 signal better than a feature would.** The one piece of external
 evidence BOSS has says *the vision lands, the offering isn't ready.* A canvas someone can just use is a
 far lower-commitment entry than "install this CLI," and publishing something that already exists is
 not the kind of building EVID-001 told us to stop doing.

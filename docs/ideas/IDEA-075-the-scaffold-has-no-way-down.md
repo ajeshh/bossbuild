@@ -256,8 +256,8 @@ Each of these falls out of a source above, not out of taste:
 ## The case against — take it seriously
 
 - 🔴 **Nobody asked for this, and two of the three who did speak asked for the opposite.**
-  [[EVID-003]]'s founder wanted BOSS to *slow down and take another turn* on their idea;
-  [[EVID-001]] wanted *more visible progress*. Neither asked for a smaller tool. **A record arguing
+  EVID-003's founder wanted BOSS to *slow down and take another turn* on their idea;
+  EVID-001 wanted *more visible progress*. Neither asked for a smaller tool. **A record arguing
   for subtraction, written the same week as evidence asking for more presence, has to say so.**
 - **Inert is cheap.** An uninvoked skill costs disk and a line in `boss map --all`. The claimed cost
   is cognitive, and cognitive cost is exactly what nobody has measured here.
@@ -270,7 +270,7 @@ Each of these falls out of a source above, not out of taste:
 
 ## What this does NOT license
 
-- **Not a build.** [[EVID-001]]'s standing rule is compose and subtract; this record is a *concept*
+- **Not a build.** EVID-001's standing rule is compose and subtract; this record is a *concept*
   gap, filed, with n=0 demand.
 - **Not a `/fade` skill.** See sketch item 5.
 - **Not a claim that BOSS is harming founders.** Nothing in sources 1–6 measured a founder.
@@ -279,11 +279,11 @@ Each of these falls out of a source above, not out of taste:
 
 ## What would move this
 
-- **Cheapest, and it is a question not a build:** add one to [[EVID-003]]'s three interview
+- **Cheapest, and it is a question not a build:** add one to EVID-003's three interview
   questions — *"is there anything BOSS gave you that you've stopped needing?"* If the answer is
   consistently *no*, this record is theory and should be marked `deferred` with that as the trigger.
 - **The load read (cause 3) is worth its own line even if fading is never built** — it is also
-  [[EVID-001]]'s "where am I", told from the scaffold's side, and it is composition, not addition.
+  EVID-001's "where am I", told from the scaffold's side, and it is composition, not addition.
 - **A `/consult` with `mentor-humane` + `designer`:** does a tool that cannot be outgrown fail
   Principle 6 on autonomy grounds? Wood's *"too much dependency on the tutor"* is a humane-lens
   sentence, not a UX one.

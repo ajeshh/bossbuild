@@ -85,7 +85,7 @@ quo is how a shelf rots); **stamp even when nothing changed** ("checked, still c
 correct in place rather than appending dated addenda; prefer subtraction.
 
 **Internal only** — sits with `/vet` and `/humane-refresh`, not in the founder template. The founder surface
-is under an explicit compose-and-subtract mandate ([[EVID-001]]); this adds nothing to it.
+is under an explicit compose-and-subtract mandate (EVID-001); this adds nothing to it.
 
 ## Queued, deliberately not built
 

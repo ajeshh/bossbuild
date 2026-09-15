@@ -189,7 +189,7 @@ Nothing notices that new evidence should update an older artifact. Verified:
 > what stopped being true.** Every existing moment is an absence predicate. Harvesting is a staleness
 > predicate, and BOSS has none for founder artifacts.
 
-### The fix shape — composition, not new skills ([[EVID-001]])
+### The fix shape — composition, not new skills (EVID-001)
 1. **Close the highest-value link first.** `/research` and `/interview`, on producing real signal,
    **offer** to fold it into the persona — one step each, reusing `enrich`. Not automatic: the
    ledger's honesty depends on the founder seeing what shifted.
@@ -291,7 +291,7 @@ is the entire point.
 Rungs 3 and 4, and the investor update, are **n=0 on real founder demand**. The architecture is
 worth building because the records already exist and the render is cheap; the *ceremony* is not
 worth building ahead of a founder who wants it. Build 1–5 on the strength of the design. Build 6 and
-7 when someone asks. ([[EVID-001]] compose-and-subtract.)
+7 when someone asks. (EVID-001 compose-and-subtract.)
 
 ## Build log
 

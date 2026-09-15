@@ -3,7 +3,8 @@ id: IDEA-081
 type: idea
 owner: product-lead
 status: shipped (2026-09-13 — priorities 1–3 landed as DEC-015, DEC-016, IDEA-077; Finding 4's BOSS-side half closed by tracking RESUME (IDEA-087); the founder sentence in /close and Finding 5 ride IDEA-078)
-proof: >
+proof: none
+verified: >
   [VERIFIED] mechanically against Claude Code 2.1.132's shipped binary (strings + zod schemas +
   UI copy), and one claim verified by EXPERIMENT. What Remote Control is: a bridge from a session
   running on the founder's own machine out to claude.ai/code and the Claude mobile app —
@@ -141,7 +142,7 @@ sessions are genuinely being resumed across surfaces.
 - No sync layer, no server, no hosted BOSS. See the note above.
 - No mobile UI. `boss board --html` exists and is a projection; whether it is a phone answer is a
   separate question with n=0 behind it.
-- **No new skill.** [[EVID-001]]'s mandate holds: 48 before, 48 after.
+- **No new skill.** EVID-001's mandate holds: 48 before, 48 after.
 
 ## Priority (proposed)
 

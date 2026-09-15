@@ -14,7 +14,7 @@ source: Ajesh, 2026-07-23 — "do a usability assessment of the boss tool and se
 
 # IDEA-055 — CLI usability + visual encoding (the words are great; the pixels do almost none of the work)
 
-> **RE-GRADED 2026-07-23 by real external evidence ([[EVID-001]]).** This idea was filed as *"polish, not
+> **RE-GRADED 2026-07-23 by real external evidence (EVID-001).** This idea was filed as *"polish, not
 > the risk… low-cost housekeeping… none of this moves the riskiest assumption."* **A real non-Ajesh founder
 > just called this same gap the reason BOSS "isn't ready."** The *what* was right; the *weight* was wrong.
 > The founder's ask is broader than color/glyph encoding — it's **orientation + progress + focus** as a felt
@@ -24,7 +24,7 @@ source: Ajesh, 2026-07-23 — "do a usability assessment of the boss tool and se
 > spec). The re-grade is of *priority and framing*, not of the "capture, don't build" discipline. When a
 > build is earned, the mandate is **compose + subtract the existing surface into one "you are here," never add
 > a 23rd skill** — the founder's fear is *bloat*, and answering it with more surface is the trap. See
-> [[EVID-001]] for the decomposed pain and the thesis-lands-execution-doesn't split.
+> EVID-001 for the decomposed pain and the thesis-lands-execution-doesn't split.
 
 ## The seed
 
@@ -116,7 +116,7 @@ founder as *"I can't tell what worked, what's a warning, or what to do next."* T
 - **Color is enhancement, never the only channel.** Keep the glyph *and* the word — color is the third layer
   for the sighted-at-a-glance case, so `NO_COLOR` / a plain pipe / a screen reader loses nothing.
 - **Zero-dep holds** — no `chalk`/`kleur`. Raw ANSI in one `src/ui.js`, TTY- and `NO_COLOR`-aware.
-- **~~This is polish, not the risk.~~ Superseded 2026-07-23 (see the RE-GRADED note above / [[EVID-001]]).**
+- **~~This is polish, not the risk.~~ Superseded 2026-07-23 (see the RE-GRADED note above / EVID-001).**
   The original line read: *"none of this moves the riskiest assumption — only founder contact does… low-cost
   housekeeping, not roadmap priority."* Founder contact then happened, and it named **this** as a core reason
   BOSS "isn't ready." So the honest line now: this *is* on the demand axis, not beside it — orientation is part
@@ -141,7 +141,7 @@ Run the whole thing past `designer` (encoding) + `voice-keeper` (any changed str
 
 ## Implementation notes (2026-07-23) — built, 2 commits, VERSION bump pending
 
-Built the **entire punch-list (P0+P1+P2 code) + a wave 2** responding to [[EVID-001]], on Ajesh's "run the
+Built the **entire punch-list (P0+P1+P2 code) + a wave 2** responding to EVID-001, on Ajesh's "run the
 full idea and complete it" + "continue expanding." Two commits on `main`, **src-only** (see the concurrency
 note): `dd70947` (wave 1) + `f3fa1e4` (wave 2).
 
@@ -199,7 +199,7 @@ against what actually shipped produced a more uncomfortable answer than "yes, bu
 (rearchitect-timing prompt), and the wider half of facet 4 (the bloat guard beyond folding parked
 work away).
 
-🔴 **The observation worth more than the status change.** [[EVID-001]] said **CAPTURE + RE-AIM, BUILD
+🔴 **The observation worth more than the status change.** EVID-001 said **CAPTURE + RE-AIM, BUILD
 NOTHING YET** — hold until a second signal or until that founder moves from `stated-pain` to
 `observed-behavior`. **No second signal has arrived.** And yet two releases have now put real work on
 the exact axis the hold was about. Neither was a violation in the moment: v0.179.0 was a status line,
@@ -235,4 +235,4 @@ device*). That is not underdeveloped work; it is a decision with a written trigg
 
 **`deferred`, same trigger as [[IDEA-076]]: an OBSERVED session, not a third statement of pain.**
 The compose-and-subtract constraint the old note wanted preserved is preserved — it lives in
-[[EVID-001]], where it governs everything, not in this record's status word.
+EVID-001, where it governs everything, not in this record's status word.

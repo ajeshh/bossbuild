@@ -3,11 +3,12 @@ id: IDEA-112
 type: idea
 owner: designer
 status: shipped
+proof: stages/L1-mvp/template/.claude/skills/design-review/templates/component-usage.md
 gist: Everything the agent or the founder builds becomes a reusable, documented part of the design library without a separate act — and a new part is asked for, not slipped in. Families 4 → 10 (the decisions each forces, never a catalog); a usage page per component (when · when not · why it exists · variants · content · layout · accessibility · research) written at the review and read by agents, the founder, the team and the designer alike; a lifecycle (proposed → draft → stable → deprecated → retired) where a usage page written before the code IS the request; and a mechanical read of what is in the tree with no row, so the index cannot quietly lag.
 created: 2026-09-13
 from: IDEA-107
 relates: IDEA-108, FEAT-030, FEAT-033, IDEA-092
-promoted_to: FEAT-037
+promoted_to: FEAT-037, IDEA-113
 ---
 
 # The library keeps itself

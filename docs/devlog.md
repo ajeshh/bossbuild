@@ -25,7 +25,7 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 ## 2026-09-14
 - **FEAT:** _no FEAT — IDEA-118, the seams after the overhaul_
 - **Landed:** Walked the founder path end to end after 202 commits (site → `boss new` → `/welcome`, `/boss` as written → the readers on day 0 / day 1 / after unlock / a FEAT building / shipped). The surfaces told one story; the seams didn't — twelve fixed, all one family, *a rule kept in one reader and not its sibling*: day 0 collapses to one sentence in playbook and design as the board already did; the venture holes point at `/boss` until the record exists (they pointed at `/idea`, which asks nothing); the verb gate reaches recap, the re-entry line, the board footer and status's *Ready to build* arrow; *Who is building it* asked once; the cohort question in the site's phrases with `cohort: skipped` remembered; `src/clock.js` — every day-stamp local, not UTC; a cleared unlock bar says *Unlocking.*; recap's *The bet* reads the founder's `IDEA-NNN-canvas.md`; after the first ship, status stops asking for an idea and `boss map` shows the earned seven as *earned — `boss sync` lays them down* instead of dropping them; *Ready for V1* names the unknowns as yours, no tally. Plus the small copy (`code .`, *This unlock adds*, *stack and mode*, Start's three questions and MVP verbs said as MVP). BOSS's own install synced (29 files, 13 retired loop copies removed, the 7 BOSS-tuned agents kept); `relationship.md` flipped to `exercised`.
-- **Next:** push · stamp · the site redeploy (Ajesh's). Later the same evening the adopted-repo door was walked too (IDEA-118 M–P): adopt kept none of new/unlock's holds — all 28 MVP skills and all ten opt-in hooks landed; now the same holds, with a live repo counting as `shippedBefore`.
+- **Next:** stamp · the site redeploy (Ajesh's). Pushed 2026-09-14 (66 commits, `b4adcfb..e6a38bc`). Then `npm run check` went green: 50 EVID citations unbracketed, `tokens.json` on the shared-names list, and 21 backlog findings the red chain had hidden closed. Later the same evening the adopted-repo door was walked too (IDEA-118 M–P): adopt kept none of new/unlock's holds — all 28 MVP skills and all ten opt-in hooks landed; now the same holds, with a live repo counting as `shippedBefore`.
 - **Surprises / decisions:** Two rulings, both against my top findings. *"I disagree that they have to talk to 1 person before the canvas, talking can come whenever"* — so the arc is now *capture → pressure-test · talk to one person (either order) → unlock*, a `coreLoop` step may be an unordered pair, and the router/site/`/welcome` stopped sequencing it. *"Site has nothing to do with app"* — the footer's *no analytics* is the CLI's claim; the site's GA4 is a separate fact; dropped. Also: I wrote a *1 of 3* on the readiness line and reverted it — `readiness.js` refuses a tally on purpose and a test pins it; the authored rule was right.
 
 ## 2026-09-13
@@ -380,7 +380,7 @@ updated: 2026-09-12 — **v0.317.0** (/pretotype ↔ /prototype name each other;
   not code: `oyeboss` is on npm, MIT, through 0.245.0, and `npm pack` reads `src/`, `stages/` and
   `library/` today. It would also contradict the README's *"Open. Inspectable."* and DEC-011.
   🔷 **The standing read, and it is uncomfortable:** a long run of internal correction, all real,
-  none of it moving the **n=0** risk. [[EVID-001]]'s adjacency warning applies — *more surface ≠ more
+  none of it moving the **n=0** risk. EVID-001's adjacency warning applies — *more surface ≠ more
   readiness*. The two items above every engineering task are **publish** and **Phase 3 outreach**,
   and both are Ajesh's.
   ⚠️ **Treat every version number here as a FLOOR, not a reading.** Peer sessions write this tree —
@@ -421,16 +421,16 @@ Scaffolds at the right level of ceremony and grows the project through **modes**
 **All of it is `stated-pain`. Nobody has been observed using BOSS and nobody has committed anything.**
 Convergence raises conviction; it does not raise the grade. Ledger: `docs/evidence/` (gitignored).
 
-- **[[EVID-001]] · 2026-07-23 · a founder, using it.** BOSS's first-ever evidence file, ~120 releases
+- **EVID-001 · 2026-07-23 · a founder, using it.** BOSS's first-ever evidence file, ~120 releases
   in. *"hard to gauge where i am / which stage / how it aligns with my roadmap; i forget what feature
   i'm building / get adhd; worried about bloating my app; help me keep focus + when to rearchitect;
   knowing exactly where i am like a train line, seeing my progress; more visual cues to feel like i'm
   making great headway."* The praise around it (*"great app, love the direction"*) is Mom-Test fluff —
   **a compliment is not a receipt.** The load-bearing read is the **thesis/execution split**: the
   vision lands, the offering is what's unready.
-- **[[EVID-002]] · the website, weakest of the three.** *"the value is not being seen"* — 14 pages
+- **EVID-002 · the website, weakest of the three.** *"the value is not being seen"* — 14 pages
   describing the machinery, and no answer to *what would I get out of this?*
-- **[[EVID-003]] · 2026-08-21 · a founder who actually installed and ran it.** Setup was easy; then
+- **EVID-003 · 2026-08-21 · a founder who actually installed and ran it.** Setup was easy; then
   `/boss` *"jumped straight into building, rather than checking or giving feedback or saying back what
   the idea was."* ✅ **Provenance settled by Ajesh 2026-08-21: a DIFFERENT founder from EVID-001.
   n=2 independent** — so the old *"hold until a second signal"* condition is **MET**, on its own terms.
@@ -595,7 +595,7 @@ and the seventh (flows) is held *because* it would need one.
   `/extract` + the manifest's near-duplicate count) · flows (HELD) · the prototype seam (a closer).
   Six refusals are carried from RVW-078/079/080/081/082 so they are not re-proposed.
 - ⚠️ **This is craft-driven, not evidence-driven.** Nobody asked for it by using BOSS, and it does not
-  outrank **publish + Phase 3 outreach**. [[EVID-001]]'s adjacency warning applies to it like anything
+  outrank **publish + Phase 3 outreach**. EVID-001's adjacency warning applies to it like anything
   else: more surface ≠ more readiness.
 
 
@@ -990,7 +990,7 @@ remains: every live item below needs a human.** That is the state, not a gap in 
 3. 🔷 **Phase 3 outreach — human-only, and nothing blocks it.** Three maintainers chosen
    (`justinabrahms/agent-chat` · `hschne/puny-monitor` · `williamsharkey/shiro`), both messages
    drafted, in [`evidence/CANDIDATES-2026-08-23-maintainer-experiment.md`](evidence/CANDIDATES-2026-08-23-maintainer-experiment.md).
-   🔴 **The first message must not mention BOSS** — leading with the tool reproduces [[EVID-001]]'s weak
+   🔴 **The first message must not mention BOSS** — leading with the tool reproduces EVID-001's weak
    `stated-pain` grade. Metric: Activation, **watched not asked**. ⛔ **No features from this.**
 4. ⬜ **Work-order 2b — PREMISE WAS STALE; restated 2026-09-09 and now bigger than it looked.** It
    claimed the site still says *"tell a real business from a convincing demo."* **It does not** — both
@@ -1034,7 +1034,7 @@ remains: every live item below needs a human.** That is the state, not a gap in 
 - **[[IDEA-075]] — the scaffold has no way down.** BOSS ships one of scaffolding's three defining
   characteristics; `boss unlock` says *"Additive — nothing is ever removed."* **n=0 demand, and two of
   three signals asked for MORE presence, not less scaffold.** Cheapest move is not a build: add one
-  question to [[EVID-003]]'s three — *"anything BOSS gave you that you've stopped needing?"* Full
+  question to EVID-003's three — *"anything BOSS gave you that you've stopped needing?"* Full
   detail, including the ⚠️ attribution trap (Wood/Bruner/Ross 1976 has no withdrawal step; fading is
   Collins 2006), is in the archive.
 - **Tool-surface economy** — `docs/research/inbox/tool-surface-economy-has-no-practice.md`. **Deliberately
@@ -1328,7 +1328,7 @@ Ajesh's direction, onto **how the product functions as-is.** Five of six finding
 sixth was captured ([[IDEA-083]]).
 
 - **Everything shipped was subtraction or composition.** Nothing new was added except one CLI
-  command that maintains nothing. The standing [[EVID-001]] mandate held on its own terms.
+  command that maintains nothing. The standing EVID-001 mandate held on its own terms.
 - **The measurements are the durable part**, and none had been taken before: 16→45 verbs on one
   `boss unlock mvp` ([[IDEA-084]]) · ~24 KB of skill `description:` frontmatter, a second always-on
   cost nobody had weighed ([[IDEA-085]]) · three verbs sharing one job ([[IDEA-086]]) · 124 public
@@ -1357,7 +1357,7 @@ true**, because a gap that makes your idea necessary is where the check gets ski
 🔴 **Sorted UP because BOSS made this exact mistake TWICE in one session** — grep one word, conclude
 a gap, both times the concept shipped under other words. n=2 in one sitting is the breakpoint.
 
-**v0.262.0 — [[RVW-095]] ADAPT.** [[EVID-001]] asked for *"when to rearchitect"*; the word had zero
+**v0.262.0 — [[RVW-095]] ADAPT.** EVID-001 asked for *"when to rearchitect"*; the word had zero
 occurrences and the first read was a coverage gap. **Wrong.** The judgment ships twice and is good
 (`mentor-architect`'s *"breakpoint, not a calendar… debt is only worth naming once the code is what's
 slowing them down"*; `scalable-architecture`'s *"extract when forced"*). **The gap was vocabulary.**
@@ -1440,7 +1440,7 @@ door-1 cohort is **not enumerable** and door 2 is.
 - ⚠️ **`badlogic/vs-claude` is deliberately NOT top-three** despite 7,445 followers: not
   representative, and a famous maintainer's reaction is the easiest signal to over-read — the exact
   error made when persona output was treated as demand.
-- 🔴 **The first message must NOT mention BOSS.** [[EVID-001]] is graded `stated-pain` *because* the
+- 🔴 **The first message must NOT mention BOSS.** EVID-001 is graded `stated-pain` *because* the
   founder was shown BOSS and reacted to it. Lead with the tool and you reproduce the weak evidence.
   Ask what happened when their project went quiet; demo only if the pain is real. Both messages are
   drafted in the candidates doc.
@@ -1448,7 +1448,7 @@ door-1 cohort is **not enumerable** and door 2 is.
   **Watched, not asked** — where they stop, what they skip, what makes them close the terminal.
 - **Success** = a second unprompted session **and** a decision BOSS changed. **Kill** = not one
   willing maintainer out of twelve → distribution precedes product, and `mentor-customers` leads.
-- ⛔ **No features from this.** [[EVID-001]] stands: compose and subtract, never add. If it produces
+- ⛔ **No features from this.** EVID-001 stands: compose and subtract, never add. If it produces
   a second signal, THAT is what gets built — not more charter work.
 - ✅ **2d cleared** — `oyeboss@0.215.0` is on npm, so a maintainer installing today gets the licence
   ask, the planet question, the teeth limit and `sustaining`. Nothing blocks this now except sending
@@ -1474,7 +1474,7 @@ removes what BOSS retired; nothing removes what the FOUNDER outgrew, and its own
 - **McGrenere/Baecker/Booth CHI 2002 (n=20): adaptable BEAT adaptive** — invisible auto-hiding drove
   dissatisfaction, so any fix is founder-invoked and fades the **surface, never disk** (which dissolves
   the destructive-verb fear the 2026-08-21 incident earned). 🔴 **n=0 demand; two of three signals asked
-  for MORE presence, not less scaffold — not a build.** Cheapest move: add one question to [[EVID-003]]'s
+  for MORE presence, not less scaffold — not a build.** Cheapest move: add one question to EVID-003's
   three — *"anything BOSS gave you that you've stopped needing?"*
 
 ### Next tasks
@@ -1489,7 +1489,7 @@ removes what BOSS retired; nothing removes what the FOUNDER outgrew, and its own
    half IDEA-060 named itself — *at Quickstart, BOSS cannot put anything in front of anyone*
    (`/pretotype`, `/landing` and `/ship` are all behind the MVP unlock, so **the demand test is gated
    behind the build unlock**, inverting the thesis `/pretotype` opens with). That is a stage-boundary
-   call with an [[EVID-001]] cost — adding to the mode most protected from addition. **Founder decision.**
+   call with an EVID-001 cost — adding to the mode most protected from addition. **Founder decision.**
    *(Historic: items 1–5 shipped inside*
    `f6515a2` (`/design-library` scans the public surface · `/landing` composes from the library ·
    the share layer sorted up into `landing-page.md` · the §7 contradiction superseded · item 5's

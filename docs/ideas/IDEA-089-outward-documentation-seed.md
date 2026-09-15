@@ -50,7 +50,7 @@ Three readings, in order of usefulness:
 
 ## Why the thin top of the ladder is probably CORRECT, and must not be "fixed"
 
-🔴 **[[EVID-001]]'s adjacency warning applies directly.** In the same session a founder said *the
+🔴 **EVID-001's adjacency warning applies directly.** In the same session a founder said *the
 offering isn't ready and I can't tell where I am*, BOSS shipped **seven post-launch releases of
 operator surface for operators it had zero of.** Building out V1/Scale documentation rungs is that
 mistake again with a different noun. The ladder is thin at the top because nobody has climbed it.

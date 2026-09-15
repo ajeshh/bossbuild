@@ -56,7 +56,7 @@ and 5 are genuinely good. 2 and 6 are built and runged wrong. 0, 3, 4 and 7 are 
 
 ## The governing constraints — read before proposing a part
 
-1. **No new verbs.** The standing mandate from [[EVID-001]] is *compose and SUBTRACT, never add
+1. **No new verbs.** The standing mandate from EVID-001 is *compose and SUBTRACT, never add
    another skill*, and the founder's own named fear is app bloat. Six of the seven parts below are a
    composition or a rung move. The seventh (flows) is held **precisely because** it is the one that
    would need a verb.

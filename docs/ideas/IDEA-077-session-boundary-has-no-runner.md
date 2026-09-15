@@ -14,8 +14,8 @@ evidence: >
   `UserPromptSubmit`, `stages/L0-quickstart/template/.claude/settings.json`) and ships six
   dormant ones across `UserPromptSubmit`/`PreToolUse`/`PostToolUse`/`SubagentStop`. The strings
   `SessionStart` and `SessionEnd` appear NOWHERE in this repository — not in a skill, a practice,
-  an idea, a verdict, or the CHANGELOG. (2) FOUNDER DEMAND is [stated-pain] — [[EVID-001]]'s
-  "I forget what feature I'm building / get adhd" and [[EVID-003]]'s "jumped straight into
+  an idea, a verdict, or the CHANGELOG. (2) FOUNDER DEMAND is [stated-pain] — EVID-001's
+  "I forget what feature I'm building / get adhd" and EVID-003's "jumped straight into
   building". Nobody has been observed losing a session to this.
 proof_note: >
   The absence was checked, not assumed. `grep -rn "SessionStart\|SessionEnd\|PreCompact\|
@@ -71,7 +71,7 @@ opt-in does not transfer here.
 
 ## Why this is a composition, not an addition
 
-[[EVID-001]]'s mandate is *compose and SUBTRACT, never add another skill*. This adds:
+EVID-001's mandate is *compose and SUBTRACT, never add another skill*. This adds:
 
 - no skill (48 before, 48 after)
 - no loop (19 before, 19 after)

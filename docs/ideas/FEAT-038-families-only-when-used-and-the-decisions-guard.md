@@ -3,6 +3,7 @@ id: FEAT-038
 type: feature
 owner: designer
 status: shipped
+proof: stages/L1-mvp/template/.claude/hooks/design-decisions-guard.js
 gist: Rows 1–3 of IDEA-113 — a family renders only when the product uses it; `/design-review` seeds a family the first time a screen has it, keyed off shape; `design-decisions-guard` hands the agent the product's own decisions at the write and logs the fire so divergence can be counted.
 for: the founder scaling one taste across a team and agents; the agent about to write a screen; the designer who wants their decisions to hold without a meeting
 created: 2026-09-13

@@ -110,7 +110,7 @@ no branch for *not being in it*), scope `/comp-eval`'s relevance, and change wha
 document with a different reader.
 
 ⚠️ **This is the expensive rung and the one that could go wrong.** A second declaration axis is real
-machinery, and BOSS's own mandate is compose-and-subtract ([[EVID-001]]). It should not be built
+machinery, and BOSS's own mandate is compose-and-subtract (EVID-001). It should not be built
 until the charter question below is answered, because the answer determines whether it is a *first-class
 axis* or a *graceful edge case*.
 
@@ -139,7 +139,7 @@ falsifier:
 2. ⊘ **Not chosen — build tool for anyone making something, of which startups are the best-served case.** Rungs 1–2,
    and rung 3 when someone asks. Truer to *"Make it real"* and to the [[boss-ethos]] framing of BOSS
    as a **catalyst / build tool** rather than a startup-specific product — but it widens the surface
-   at exactly the moment [[EVID-001]] says compose and subtract.
+   at exactly the moment EVID-001 says compose and subtract.
 
 ## Gate
 

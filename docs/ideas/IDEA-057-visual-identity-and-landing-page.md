@@ -62,12 +62,12 @@ releases avoiding).
 
 - **Built:** the token layer, the style guide, the landing page.
 - **Mapped, not wired:** the ANSI column is documented per token; `src/` is untouched. No behavior
-  change, no founder-surface addition — [[EVID-001]]'s compose-and-subtract mandate holds, and
+  change, no founder-surface addition — EVID-001's compose-and-subtract mandate holds, and
   building IDEA-055 off n=1 stated-pain is exactly what that entry says not to do.
 
 ## Honest-conversion constraints (this page must pass BOSS's own bar)
 
-BOSS has **one** external user's reaction ([[EVID-001]]) and zero paying customers. So: no
+BOSS has **one** external user's reaction (EVID-001) and zero paying customers. So: no
 testimonials, no user counts, no "join N founders," no waitlist, no email capture, no urgency. The
 proof on the page is the *real terminal output* and the fact that the source is readable. If BOSS's
 own landing page manufactured social proof, the conscience would be a marketing claim.

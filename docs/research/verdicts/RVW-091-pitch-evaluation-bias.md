@@ -53,7 +53,7 @@ sources:
 | 2 | Evidence grade | **PNAS, four named authors at HBS/Wharton/MIT, three studies including a real-money field setting, read in full.** The strongest-sourced of the five claims in this sweep. |
 | 3 | Duplicate or sharpen? | **New.** Verified absent: zero mentions of bias in the shipped `harm-taxonomy.md` or `mentor-capital.md`. BOSS's canvas asks who a *product* could harm; nothing anywhere says the *funding process itself* is a biased filter. |
 | 4 | Who serves / harms? | 🔴 **The whole difficulty is here, and the inbox named it: "how does a mentor raise it without telling a founder their odds are fixed?"** Told badly — to a founder about to present — it is demoralizing and useless, and reads as a critique of their craft. Told at the right moment it is information about the room. Resolved by *placement*, below. |
-| 5 | Cost / ceremony | One bullet in an agent that exists. No new surface, no new skill — **compose, not add** ([[EVID-001]]/[[EVID-003]] mandate satisfied). |
+| 5 | Cost / ceremony | One bullet in an agent that exists. No new surface, no new skill — **compose, not add** (EVID-001/EVID-003 mandate satisfied). |
 
 ## Verdict: ADAPT
 Adopt the **fact**, refuse the **coaching**. BOSS has no business telling a founder how to present

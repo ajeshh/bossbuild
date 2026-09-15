@@ -107,7 +107,7 @@ against, and the cue version is only better, not obviously right.
 
 ## Open questions as originally filed
 
-1. Is the cue worth a sixth dormant hook, given [[EVID-001]]'s bloat fear? A hook nobody turns on
+1. Is the cue worth a sixth dormant hook, given EVID-001's bloat fear? A hook nobody turns on
    is the same as no hook — see the `boss hooks` catalog, which shipped precisely because five
    dormant hooks were undiscoverable.
 2. Does `feature-context.md` survive contact with reality at all? Nothing has ever written to it.

@@ -26,7 +26,7 @@ route: n/a
 | 1 | Contradicts a PRINCIPLE? | No — but #4 (stack-neutral; stacks are learned, not assumed) means BOSS has no position for it to move. |
 | 2 | Evidence grade | **n=1, self-published decision**, no counterfactual, no cost/headcount/defect comparison anywhere in either post (panel-confirmed). A timeline (12 weeks) is not a measurement. Corroborated only by press restating it. |
 | 3 | Duplicate or sharpen? | **Nothing to sharpen.** Grep of `/boss`, `library/practices/*`, the shipped `/boss` skill: zero mentions of mobile, React Native, Flutter, cross-platform, or native (panel-confirmed). BOSS never recommended the thing Shopify is leaving. |
-| 4 | Who serves / harms? | Serves a `returning-founder` weighing a mobile stack — as an *anecdote to read*, not a rule. Handed to `first-product` as a rule ("build it twice, agents make it cheap") it is harmful: it doubles surface for a founder whose stated risk is bloat ([[EVID-001]]). |
+| 4 | Who serves / harms? | Serves a `returning-founder` weighing a mobile stack — as an *anecdote to read*, not a rule. Handed to `first-product` as a rule ("build it twice, agents make it cheap") it is harmful: it doubles surface for a founder whose stated risk is bloat (EVID-001). |
 | 5 | Cost / ceremony | Adopting would mean giving BOSS a stack opinion it has deliberately refused. Heavier and off-thesis. |
 
 ## Verdict: REJECT

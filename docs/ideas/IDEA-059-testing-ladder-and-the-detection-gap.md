@@ -201,7 +201,7 @@ it is a conscience that never speaks about the one thing it is best positioned t
   today the stance is written once in `/smoke` and was never re-decided as models improved — the same
   "a deferral whose condition expired" shape `mcp.md` was caught by.
 - **L0 stays empty.** A Quickstart founder has no product to regress. Adding testing there is the
-  ceremony Principle #2 refuses, and [[EVID-001]] holds — a beginner told to write tests on day one
+  ceremony Principle #2 refuses, and EVID-001 holds — a beginner told to write tests on day one
   learns that BOSS is homework.
 - **No coverage percentage, ever.** A number that rewards writing tests for the easy half. The ratchet
   (one number, one direction) is the honest version and it already exists.
@@ -253,7 +253,7 @@ subtraction mandate — this is the one that would grow the surface, so it needs
 
 [[IDEA-056]] (the freshness discipline — testing's practice is fresh; the *ladder* is what rots) ·
 `testing-with-agents.md` · `quality-ratchet.md` · `git-workflow.md` (the review half) ·
-[[EVID-001]] (compose and subtract) · v0.165.0 (the same "owns the subject, never names it" defect).
+EVID-001 (compose and subtract) · v0.165.0 (the same "owns the subject, never names it" defect).
 
 ## Re-grade 2026-09-09 — nothing here is executable, and the gate section said otherwise
 

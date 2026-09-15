@@ -3,6 +3,7 @@ id: FEAT-028
 type: feature
 owner: product-lead
 status: shipped (under Unreleased, 2026-09-13)
+proof: src/playbook.js
 shipped_on: 2026-09-13
 gist: `boss playbook` grows the Proof group — Evidence · Learnings · Decisions · Risks & harms · Health — each a projection over a record that exists (EVID frontmatter and title lines, the devlog, DEC records, the Risks cell with the trust page, the newest HEALTH file), never a quote from a real person. First commit adopts the shared page shell so the playbook and the design space are one chrome.
 for: the same founder as FEAT-026 — six folders of records, a room that asks "and how do you know?"
