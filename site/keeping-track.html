@@ -399,6 +399,12 @@
   document.querySelectorAll("button.copy").forEach(function (btn) {
     btn.addEventListener("click", async function () {
       var text = btn.getAttribute("data-copy");
+      if (typeof gtag === "function") {
+        gtag("event", "copy_install", {
+          method: text.split(" ")[0],
+          placement: btn.closest("footer") ? "footer" : "page"
+        });
+      }
       try { await navigator.clipboard.writeText(text); }
       catch (_) {
         var ta = document.createElement("textarea");
