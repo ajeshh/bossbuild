@@ -25,6 +25,8 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+## 0.326.0 — 2026-09-14
+
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched
 > off, with a JSON block to copy by hand. `boss hooks` lists them; `boss hooks enable <name>` copies
 > the file and registers it in one move; `boss hooks disable <name>` reverses both. A project that

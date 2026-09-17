@@ -10,8 +10,9 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.325.0" />
+<meta name="generator" content="BOSS 0.326.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
+<link rel="alternate" type="application/atom+xml" title="BOSS — what's new" href="feed.xml" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="BOSS" />
 <meta property="og:title" content="What's new in BOSS" />
@@ -88,53 +89,54 @@
       <div class="rail">▸<span>releases</span></div>
       <div class="body">
         <ol class="releases">
-      <li>
+      <li id="v0-326-0">
+        <div class="rel"><span class="ver">v0.326.0</span><span class="when">2026-09-14</span></div>
+        <p>the ten opt-in hooks no longer land in your <code>.claude/hooks/</code> at scaffold, switched off, with a JSON block to copy by hand. <code>boss hooks</code> lists them; <code>boss hooks enable &lt;name&gt;</code> copies the file and registers it in one move; <code>boss hooks disable &lt;name&gt;</code> reverses both. A project that already has the files keeps them, and <code>boss sync</code> keeps enabled ones current.</p>
+        <p>the conscience says a thing once per session now. A moment whose predicate still holds used to re-fire on every prompt; every frame promised &quot;at most once this session&quot; and nothing kept it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's session id. A new session hears it again; a host that sends no session id gets the old behaviour.</p>
+      </li>
+      <li id="v0-325-0">
         <div class="rel"><span class="ver">v0.325.0</span><span class="when">2026-09-12</span></div>
         <p>if you installed BOSS as a plugin, <code>/boss:welcome</code> inside a BOSS project now does what the project's own <code>/boss</code> does: say what you're trying to do (or nothing) and it reads where you are and names the smallest next step. In a folder without BOSS it is unchanged.</p>
       </li>
-      <li>
+      <li id="v0-324-0">
         <div class="rel"><span class="ver">v0.324.0</span><span class="when">2026-09-12</span></div>
         <p><code>boss unlock mvp</code> lays down 16 skills, not 28 — the seven for after launch arrive when your first FEAT ships and the five for an AI product when your app first calls a model; <code>boss status</code> says when, <code>boss sync</code> lays them down. <code>/boss</code> now works on any day, not only day 0: say what you are trying to do (or nothing) and it reads where you are and names the smallest next step, naming the verb <em>after</em> the act. <code>/evidence</code> is the one capture verb — a thing that happened, your notes, or a whole transcript — and <code>/research</code> retires into it; <code>/interview</code> is the prep, only. <code>boss status</code> runs in a sixth of the time. Your <code>docs/loops/</code> moves to <code>.boss/loops/</code> on the next sync (<code>docs/</code> is yours again; the old copies are reported, never deleted without <code>--remove</code>). Nothing you wrote moves.</p>
       </li>
-      <li>
+      <li id="v0-323-0">
         <div class="rel"><span class="ver">v0.323.0</span><span class="when">2026-09-12</span></div>
         <p>four examples in <code>/cost-review</code>, its review template, the cost-budget loop and <code>/practice</code> said a vendor's model names where they meant <em>the cheap tier</em> and <em>the capable tier</em>. They say the tier now. Nothing else in your project changes.</p>
       </li>
-      <li>
+      <li id="v0-322-0">
         <div class="rel"><span class="ver">v0.322.0</span><span class="when">2026-09-12</span></div>
         <p>if you are at MVP or above, <code>/extract</code> is the verb, unchanged in shape — same three signals, same <code>EXTR-NNN</code> record — and it now says plainly when UP is not possible from your machine instead of pointing you at a skill that could not do it either. At Quickstart nothing replaces <code>/boss-learn</code>: keep a reusable pattern as a dated line in your idea doc until you unlock MVP. <code>boss sync</code> will remove the old skill and tell you why (<code>registry/supersedes.json</code>).</p>
       </li>
-      <li>
+      <li id="v0-320-0">
         <div class="rel"><span class="ver">v0.320.0</span><span class="when">2026-09-12</span></div>
         <p>nothing in your project changes. If you build on BOSS's plugin, <code>npm run eval:plugin</code> now runs the door case against a no-plugin baseline and prints the delta — needs a host with <code>claude plugin eval</code> out of early access (tested on 2.1.269).</p>
       </li>
-      <li>
+      <li id="v0-319-0">
         <div class="rel"><span class="ver">v0.319.0</span><span class="when">2026-09-12</span></div>
         <p><code>/extract</code>'s description reads whole again — it said <code>PRINCIPLE #1</code>, YAML treats <code> #</code> as a comment, and your host had been showing it as <em>&quot;Pause and sort patterns — PRINCIPLE&quot;</em> for as long as the line existed. <code>npm run check</code> now refuses <code> #</code> in any shipped description. Nothing else about your surface changed.</p>
       </li>
-      <li>
+      <li id="v0-318-0">
         <div class="rel"><span class="ver">v0.318.0</span><span class="when">2026-09-12</span></div>
         <p>if <code>docs/RESUME.md</code> grows past 200 lines, <code>boss status</code> says so in one line and tells you what to do — <em>move what has shipped to the devlog; don't trim.</em> <code>/close</code> now writes that rule into the RESUME header it creates. And <code>## 2026-09-12 (what today was about)</code> is a devlog heading <code>boss status</code> can read; before, only a bare date was, so a titled entry made the re-entry line quote an older session.</p>
       </li>
-      <li>
+      <li id="v0-317-0">
         <div class="rel"><span class="ver">v0.317.0</span><span class="when">2026-09-12</span></div>
         <p><code>/pretotype</code> opens <em>&quot;Test demand BEFORE you build (not <code>/prototype</code>, which builds)&quot;</em>; <code>/prototype</code> opens <em>&quot;Get the idea onto the screen, fast (not <code>/pretotype</code>, which tests demand)&quot;</em>. Same skills, same usage; the mis-type now corrects itself at the door.</p>
       </li>
-      <li>
+      <li id="v0-316-0">
         <div class="rel"><span class="ver">v0.316.0</span><span class="when">2026-09-12</span></div>
         <p>the 48 skill descriptions your host reads on every turn went from ~3,650 words to ~2,270 (roughly 4.8k → 3.0k tokens per session). Same skills, same triggers, same <code>Usage -</code> lines; shorter sentences. <code>boss map</code>, <code>boss help</code> and the docs regenerate from the same source.</p>
       </li>
-      <li>
+      <li id="v0-315-0">
         <div class="rel"><span class="ver">v0.315.0</span><span class="when">2026-09-12</span></div>
         <p>the <em>task hygiene</em> moment (v0.293.0) works again on every current model. It used to read your session's <code>TodoWrite</code> list; Claude Code 2.1.268 stopped offering that tool on Opus 4.8+, Sonnet 4.7+ and the Claude 5 family, so the moment had been silent for two weeks and could not say so. It now fires on time alone — the session has run 45+ minutes and nothing in <code>.claude/rules/feature-context.md</code> or <code>docs/devlog.md</code> has moved for that stretch — and hands the judgment (&quot;is anything only in this chat?&quot;) to the model, which can see the chat. Writing something down still silences it.</p>
       </li>
-      <li>
+      <li id="v0-314-0">
         <div class="rel"><span class="ver">v0.314.0</span><span class="when">2026-09-12</span></div>
         <p><code>boss board --html</code> renders with no tracked ALL-CAPS labels, nothing under 12px, no coloured tab down the side of every card, and dimming by colour rather than opacity. If you installed BOSS as a Claude Code plugin, the manifest version finally moves again (see below).</p>
-      </li>
-      <li>
-        <div class="rel"><span class="ver">v0.313.0</span><span class="when">2026-09-12</span></div>
-        <p><code>boss help --html</code> renders on the same concrete-and-graphite palette as everything else BOSS makes, with no tracked ALL-CAPS labels, every text pair over 4.5:1 (the project-name tag was white on hi-vis at 3.6:1), prose bounded at 80 characters at every size, and table cells that wrap. <code>boss board</code> gets the same contrast fix. Four practice titles lost a <code>WORD — fragment</code>.</p>
       </li>
     </ol>
         <p class="small">
@@ -181,7 +183,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.325.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.326.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

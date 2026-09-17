@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>BOSS — what's new</title>
+  <subtitle>Releases that changed something for a founder. The same entries boss changelog reads.</subtitle>
+  <link href="https://oyeboss.build/whats-new" />
+  <link rel="self" href="https://oyeboss.build/feed.xml" />
+  <id>https://oyeboss.build/</id>
+  <updated>2026-09-14T00:00:00Z</updated>
+  <author><name>Ajesh Shah</name></author>
+  <entry>
+    <title>v0.326.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-326-0" />
+    <id>https://oyeboss.build/whats-new#v0-326-0</id>
+    <updated>2026-09-14T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;the ten opt-in hooks no longer land in your &lt;code&gt;.claude/hooks/&lt;/code&gt; at scaffold, switched off, with a JSON block to copy by hand. &lt;code&gt;boss hooks&lt;/code&gt; lists them; &lt;code&gt;boss hooks enable &amp;lt;name&amp;gt;&lt;/code&gt; copies the file and registers it in one move; &lt;code&gt;boss hooks disable &amp;lt;name&amp;gt;&lt;/code&gt; reverses both. A project that already has the files keeps them, and &lt;code&gt;boss sync&lt;/code&gt; keeps enabled ones current.&lt;/p&gt;&lt;p&gt;the conscience says a thing once per session now. A moment whose predicate still holds used to re-fire on every prompt; every frame promised &amp;quot;at most once this session&amp;quot; and nothing kept it. It is kept in code — a small ledger in your person-state (off the repo), keyed by the host's session id. A new session hears it again; a host that sends no session id gets the old behaviour.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.325.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-325-0" />
+    <id>https://oyeboss.build/whats-new#v0-325-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;if you installed BOSS as a plugin, &lt;code&gt;/boss:welcome&lt;/code&gt; inside a BOSS project now does what the project's own &lt;code&gt;/boss&lt;/code&gt; does: say what you're trying to do (or nothing) and it reads where you are and names the smallest next step. In a folder without BOSS it is unchanged.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.324.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-324-0" />
+    <id>https://oyeboss.build/whats-new#v0-324-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;boss unlock mvp&lt;/code&gt; lays down 16 skills, not 28 — the seven for after launch arrive when your first FEAT ships and the five for an AI product when your app first calls a model; &lt;code&gt;boss status&lt;/code&gt; says when, &lt;code&gt;boss sync&lt;/code&gt; lays them down. &lt;code&gt;/boss&lt;/code&gt; now works on any day, not only day 0: say what you are trying to do (or nothing) and it reads where you are and names the smallest next step, naming the verb &lt;em&gt;after&lt;/em&gt; the act. &lt;code&gt;/evidence&lt;/code&gt; is the one capture verb — a thing that happened, your notes, or a whole transcript — and &lt;code&gt;/research&lt;/code&gt; retires into it; &lt;code&gt;/interview&lt;/code&gt; is the prep, only. &lt;code&gt;boss status&lt;/code&gt; runs in a sixth of the time. Your &lt;code&gt;docs/loops/&lt;/code&gt; moves to &lt;code&gt;.boss/loops/&lt;/code&gt; on the next sync (&lt;code&gt;docs/&lt;/code&gt; is yours again; the old copies are reported, never deleted without &lt;code&gt;--remove&lt;/code&gt;). Nothing you wrote moves.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.323.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-323-0" />
+    <id>https://oyeboss.build/whats-new#v0-323-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;four examples in &lt;code&gt;/cost-review&lt;/code&gt;, its review template, the cost-budget loop and &lt;code&gt;/practice&lt;/code&gt; said a vendor's model names where they meant &lt;em&gt;the cheap tier&lt;/em&gt; and &lt;em&gt;the capable tier&lt;/em&gt;. They say the tier now. Nothing else in your project changes.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.322.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-322-0" />
+    <id>https://oyeboss.build/whats-new#v0-322-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;if you are at MVP or above, &lt;code&gt;/extract&lt;/code&gt; is the verb, unchanged in shape — same three signals, same &lt;code&gt;EXTR-NNN&lt;/code&gt; record — and it now says plainly when UP is not possible from your machine instead of pointing you at a skill that could not do it either. At Quickstart nothing replaces &lt;code&gt;/boss-learn&lt;/code&gt;: keep a reusable pattern as a dated line in your idea doc until you unlock MVP. &lt;code&gt;boss sync&lt;/code&gt; will remove the old skill and tell you why (&lt;code&gt;registry/supersedes.json&lt;/code&gt;).&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.320.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-320-0" />
+    <id>https://oyeboss.build/whats-new#v0-320-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;nothing in your project changes. If you build on BOSS's plugin, &lt;code&gt;npm run eval:plugin&lt;/code&gt; now runs the door case against a no-plugin baseline and prints the delta — needs a host with &lt;code&gt;claude plugin eval&lt;/code&gt; out of early access (tested on 2.1.269).&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.319.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-319-0" />
+    <id>https://oyeboss.build/whats-new#v0-319-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;/extract&lt;/code&gt;'s description reads whole again — it said &lt;code&gt;PRINCIPLE #1&lt;/code&gt;, YAML treats &lt;code&gt; #&lt;/code&gt; as a comment, and your host had been showing it as &lt;em&gt;&amp;quot;Pause and sort patterns — PRINCIPLE&amp;quot;&lt;/em&gt; for as long as the line existed. &lt;code&gt;npm run check&lt;/code&gt; now refuses &lt;code&gt; #&lt;/code&gt; in any shipped description. Nothing else about your surface changed.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.318.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-318-0" />
+    <id>https://oyeboss.build/whats-new#v0-318-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;if &lt;code&gt;docs/RESUME.md&lt;/code&gt; grows past 200 lines, &lt;code&gt;boss status&lt;/code&gt; says so in one line and tells you what to do — &lt;em&gt;move what has shipped to the devlog; don't trim.&lt;/em&gt; &lt;code&gt;/close&lt;/code&gt; now writes that rule into the RESUME header it creates. And &lt;code&gt;## 2026-09-12 (what today was about)&lt;/code&gt; is a devlog heading &lt;code&gt;boss status&lt;/code&gt; can read; before, only a bare date was, so a titled entry made the re-entry line quote an older session.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.317.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-317-0" />
+    <id>https://oyeboss.build/whats-new#v0-317-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;/pretotype&lt;/code&gt; opens &lt;em&gt;&amp;quot;Test demand BEFORE you build (not &lt;code&gt;/prototype&lt;/code&gt;, which builds)&amp;quot;&lt;/em&gt;; &lt;code&gt;/prototype&lt;/code&gt; opens &lt;em&gt;&amp;quot;Get the idea onto the screen, fast (not &lt;code&gt;/pretotype&lt;/code&gt;, which tests demand)&amp;quot;&lt;/em&gt;. Same skills, same usage; the mis-type now corrects itself at the door.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.316.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-316-0" />
+    <id>https://oyeboss.build/whats-new#v0-316-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;the 48 skill descriptions your host reads on every turn went from ~3,650 words to ~2,270 (roughly 4.8k → 3.0k tokens per session). Same skills, same triggers, same &lt;code&gt;Usage -&lt;/code&gt; lines; shorter sentences. &lt;code&gt;boss map&lt;/code&gt;, &lt;code&gt;boss help&lt;/code&gt; and the docs regenerate from the same source.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.315.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-315-0" />
+    <id>https://oyeboss.build/whats-new#v0-315-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;the &lt;em&gt;task hygiene&lt;/em&gt; moment (v0.293.0) works again on every current model. It used to read your session's &lt;code&gt;TodoWrite&lt;/code&gt; list; Claude Code 2.1.268 stopped offering that tool on Opus 4.8+, Sonnet 4.7+ and the Claude 5 family, so the moment had been silent for two weeks and could not say so. It now fires on time alone — the session has run 45+ minutes and nothing in &lt;code&gt;.claude/rules/feature-context.md&lt;/code&gt; or &lt;code&gt;docs/devlog.md&lt;/code&gt; has moved for that stretch — and hands the judgment (&amp;quot;is anything only in this chat?&amp;quot;) to the model, which can see the chat. Writing something down still silences it.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.314.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-314-0" />
+    <id>https://oyeboss.build/whats-new#v0-314-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;boss board --html&lt;/code&gt; renders with no tracked ALL-CAPS labels, nothing under 12px, no coloured tab down the side of every card, and dimming by colour rather than opacity. If you installed BOSS as a Claude Code plugin, the manifest version finally moves again (see below).&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.313.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-313-0" />
+    <id>https://oyeboss.build/whats-new#v0-313-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;boss help --html&lt;/code&gt; renders on the same concrete-and-graphite palette as everything else BOSS makes, with no tracked ALL-CAPS labels, every text pair over 4.5:1 (the project-name tag was white on hi-vis at 3.6:1), prose bounded at 80 characters at every size, and table cells that wrap. &lt;code&gt;boss board&lt;/code&gt; gets the same contrast fix. Four practice titles lost a &lt;code&gt;WORD — fragment&lt;/code&gt;.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.312.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-312-0" />
+    <id>https://oyeboss.build/whats-new#v0-312-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;/smoke&lt;/code&gt; now plants the strict typecheck + formatter at its first run and offers &lt;code&gt;smoke-guard&lt;/code&gt; — a &lt;code&gt;Stop&lt;/code&gt; hook that runs your smoke when Claude finishes a turn that touched source and hands red back once. &lt;code&gt;/spec&lt;/code&gt; asks for a &lt;code&gt;program:&lt;/code&gt; slug on the second FEAT of the same thing. &lt;code&gt;boss help hooks&lt;/code&gt; describes the guard. All advisory, all fail-open, all silent until earned.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.311.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-311-0" />
+    <id>https://oyeboss.build/whats-new#v0-311-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;DESIGN_TOKENS.md&lt;/code&gt; gains a &lt;code&gt;## Deprecated&lt;/code&gt; table (&lt;code&gt;old&lt;/code&gt; → &lt;code&gt;use instead&lt;/code&gt; → &lt;code&gt;why&lt;/code&gt;), and &lt;code&gt;design-tokens-guard&lt;/code&gt; reads it — type a retired token name and you're told its successor, so a rename never has to be a deletion. &lt;code&gt;/ux-check&lt;/code&gt;, &lt;code&gt;/design-library&lt;/code&gt; and &lt;code&gt;/design-tokens-init&lt;/code&gt; now name the &lt;em&gt;class&lt;/em&gt; of tool where they used to name a product; &lt;code&gt;boss craft design-system&lt;/code&gt; carries the current names, dated.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.309.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-309-0" />
+    <id>https://oyeboss.build/whats-new#v0-309-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;three sentences v0.308.0 wrote into your project now have a check behind them. &lt;code&gt;boss help hooks&lt;/code&gt; describes the new one; &lt;code&gt;/design-tokens-init&lt;/code&gt; offers it the day a &lt;code&gt;features/&lt;/code&gt; directory appears beside &lt;code&gt;ui/&lt;/code&gt;. All advisory, all fail-open, all silent until earned.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.308.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-308-0" />
+    <id>https://oyeboss.build/whats-new#v0-308-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;code&gt;docs/design/COMPONENTS.md&lt;/code&gt; gains a &lt;code&gt;Status&lt;/code&gt; column (&lt;code&gt;draft&lt;/code&gt; · &lt;code&gt;stable&lt;/code&gt; · &lt;code&gt;deprecated → X&lt;/code&gt;) the agent reads before copying an import; the CLAUDE.md block &lt;code&gt;/design-tokens-init&lt;/code&gt; writes now carries the one-way import rule (&lt;code&gt;ui/ → features/ → app/&lt;/code&gt;); the style guide gains the four component-API floors and &lt;em&gt;behaviour from a primitive, style from tokens&lt;/em&gt;; &lt;code&gt;/design-library&lt;/code&gt; prints how much of your UI is on the system at all.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.307.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-307-0" />
+    <id>https://oyeboss.build/whats-new#v0-307-0</id>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;if you installed &lt;code&gt;impeccable&lt;/code&gt;, &lt;code&gt;ui-ux-pro-max&lt;/code&gt; or wrote a Google-style &lt;code&gt;DESIGN.md&lt;/code&gt; before running &lt;code&gt;/design-tokens-init&lt;/code&gt;, it now finds that file and builds &lt;em&gt;from&lt;/em&gt; it instead of generating a second system beside it. And &lt;code&gt;/ux-check&lt;/code&gt; names what would actually run the accessibility checks it cannot run from source.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.305.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-305-0" />
+    <id>https://oyeboss.build/whats-new#v0-305-0</id>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;strong&gt;If you installed BOSS as a plugin, the door now asks what you're building and says it back — before it offers to set anything up.&lt;/strong&gt; Four lines, in your words: what it is, who it's for, the smallest version that proves it, and which way it read any word that could go two ways. Then one question: &lt;em&gt;want me to set this up here as a project?&lt;/em&gt; Nothing is written until you say yes. This is step 0 of the ladder — the rung below Quickstart, where nothing exists yet but the conversation.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>v0.304.0</title>
+    <link href="https://oyeboss.build/whats-new#v0-304-0" />
+    <id>https://oyeboss.build/whats-new#v0-304-0</id>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <content type="html">&lt;p&gt;&lt;strong&gt;When &lt;code&gt;/consult&lt;/code&gt;'s mentors disagree, the two that split now hear each other once before the answer is written&lt;/strong&gt; — and the synthesis tells you &lt;em&gt;what moved&lt;/em&gt;, not just where the line was. A hold is reported as plainly as a move. If nobody split, nothing changes and nothing is said about it.&lt;/p&gt;</content>
+  </entry>
+</feed>
