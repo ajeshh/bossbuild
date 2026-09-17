@@ -12,6 +12,7 @@
 //   npm run gen:site
 //
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, copyFileSync, rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BOSS_ROOT, bossVersion } from '../src/paths.js';
@@ -353,7 +354,7 @@ blocks.WHATS_NEW = () => {
     // than one; `forYou` reads all of them.
     const forYouLines = forYou(entry);
     if (!forYouLines.length) continue;
-    out.push(`      <li>
+    out.push(`      <li id="v${esc(entry.version).replace(/\./g, '-')}">
         <div class="rel"><span class="ver">v${esc(entry.version)}</span><span class="when">${esc(entry.date || entry.title || '')}</span></div>
         ${forYouLines.map((t) => `<p>${md(t)}</p>`).join('\n        ')}
       </li>`);
@@ -1277,12 +1278,58 @@ writeFileSync(join(SITE, 'llms.txt'),
   + `\n\n## Demo\n\n- [Kettlewick, one fictional venture run through BOSS end to end](${SITE_URL}/demo): the playbook, the design space and the board, rendered by the same code an install runs.\n\n`
   + `## The canvas\n\n- [The Humane Product Canvas, fillable and printable](${SITE_URL}/humane-product-canvas): thirteen cells, two no conventional canvas has; CC BY-SA.\n- [The Markdown template](${SITE_URL}/humane-product-canvas.md)\n\n`
   + `## Source\n\n- [GitHub](https://github.com/ajeshh/bossbuild)\n- [npm](https://www.npmjs.com/package/oyeboss)\n- [Changelog](${SITE_URL}/whats-new)\n`);
+// <lastmod> is the date the page's SOURCE last changed, read from git — a crawler uses it to
+// decide what to fetch again, and a sitemap without it says every page is equally stale. The
+// shell's own changes are deliberately not counted (they touch every page at once and would
+// make the whole site look new on every redesign); a fragment with no history is today.
+const lastmod = (f) => {
+  try {
+    const d = execFileSync('git', ['log', '-1', '--format=%cI', '--', join('web', f)], { cwd: ROOT, encoding: 'utf8' }).trim();
+    return (d || new Date().toISOString()).slice(0, 10);
+  } catch { return new Date().toISOString().slice(0, 10); }
+};
+const url = (loc, f) => `  <url><loc>${esc(loc)}</loc><lastmod>${f ? lastmod(f) : lastmod('canvas.html')}</lastmod></url>`;
 writeFileSync(join(SITE, 'sitemap.xml'),
   '<?xml version="1.0" encoding="UTF-8"?>\n'
   + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-  + pages.map((f) => `  <url><loc>${esc(canonical(f))}</loc></url>`).join('\n')
-  + `\n  <url><loc>${SITE_URL}/humane-product-canvas</loc></url>`
+  + pages.map((f) => url(canonical(f), f)).join('\n')
+  + `\n${url(`${SITE_URL}/humane-product-canvas`)}`
   + '\n</urlset>\n');
+
+// IndexNow (indexnow.org): Bing, Yandex, Naver and Seznam accept URL submissions from a site that
+// hosts its key at the root. The key is web/indexnow.key (committed — it is not a secret, it is
+// proof of control by being served here); `npm run indexnow` submits every sitemap URL.
+const indexNowKey = readFileSync(join(SRC, 'indexnow.key'), 'utf8').trim();
+writeFileSync(join(SITE, `${indexNowKey}.txt`), indexNowKey);
+
+// feed.xml: the same entries What's new shows (releases with a "For you:" line), as Atom. A feed
+// is a subscription nobody has to remember to check, and a crawl path a reader polls for us.
+{
+  const cl = join(ROOT, 'registry', 'CHANGELOG.md');
+  const items = [];
+  if (existsSync(cl)) {
+    for (const entry of parseEntries(readFileSync(cl, 'utf8'))) {
+      const lines = forYou(entry);
+      if (!lines.length) continue;
+      items.push(entry);
+      if (items.length >= 20) break;
+    }
+  }
+  const iso = (d) => (d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? `${d}T00:00:00Z` : new Date().toISOString());
+  const updated = items.length ? iso(items[0].date) : new Date().toISOString();
+  writeFileSync(join(SITE, 'feed.xml'),
+    '<?xml version="1.0" encoding="utf-8"?>\n'
+    + '<feed xmlns="http://www.w3.org/2005/Atom">\n'
+    + `  <title>BOSS — what's new</title>\n`
+    + `  <subtitle>Releases that changed something for a founder. The same entries boss changelog reads.</subtitle>\n`
+    + `  <link href="${SITE_URL}/whats-new" />\n`
+    + `  <link rel="self" href="${SITE_URL}/feed.xml" />\n`
+    + `  <id>${SITE_URL}/</id>\n`
+    + `  <updated>${updated}</updated>\n`
+    + `  <author><name>Ajesh Shah</name></author>\n`
+    + items.map((e) => `  <entry>\n    <title>v${esc(e.version)}</title>\n    <link href="${SITE_URL}/whats-new#v${esc(e.version).replace(/\./g, '-')}" />\n    <id>${SITE_URL}/whats-new#v${esc(e.version).replace(/\./g, '-')}</id>\n    <updated>${iso(e.date)}</updated>\n    <content type="html">${esc(forYou(e).map((t) => `<p>${md(t)}</p>`).join(''))}</content>\n  </entry>`).join('\n')
+    + '\n</feed>\n');
+}
 
 const demo = generateDemo();
 console.log(`  ✦ demo → site/demo/ · ${demo.line}`);

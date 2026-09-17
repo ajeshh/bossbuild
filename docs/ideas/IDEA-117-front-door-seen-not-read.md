@@ -152,6 +152,25 @@ the ladder (`RUNG_*` cards from the manifests; `{{TOC}}`) · 9 the credits door 
 the design space on `design.html`, pointers on keeping-track and product. `npm run check:site`:
 0 broken, trailing 13 → 10. Pass two is untouched.
 
+## 2026-09-17 — "we lost 15%"; the site was never in the index
+
+Ajesh: *"i think our seo took a hit since we made the changes 24 hours ago, we lost some traffic… it
+15% drop… we arent pushing people to github its to the website."* Checked before opining: all 20
+sitemap URLs 200, canonicals exact, old `.html` paths 307 to clean ones, no noindex. Then
+`site:oyeboss.build` — **zero pages from the domain.** Google had never indexed the site, so there
+was no ranking to lose; the 15% is sent traffic ageing (a post's half-life), on the day two
+instruments changed (Cloudflare *Requests* fell with the inlined CSS; GA4 under consent-denied
+undercounts by design). The one result Google *does* hold is the GitHub repo, still described
+"BlueprintOS System", and **neither the README nor `package.json`'s `homepage` linked
+oyeboss.build at all** — the two pages Google crawls about BOSS never mentioned the site. Fixed.
+On-site, same day: `<lastmod>` from git in the sitemap; an IndexNow key at the root and
+`npm run indexnow` (Bing/Yandex/Naver/Seznam — Bing feeds ChatGPT search and Copilot); `feed.xml`
+(Atom, the What's-new entries) with autodiscovery in the shell. Google needs Search Console —
+Ajesh's login, his step. **Brand collision, noted:** "boss" is crowded — HeyBoss (a no-code AI site
+builder: it generates the app; BOSS is the conscience around whatever you build), Oye Boss (a Hong
+Kong delivery app that owns oyeboss.com), BuildBoss. Ajesh: *"they are similar but different from
+who we are."* The brand to own is `oyeboss` as one token; the title's category term does the rest.
+
 ## Falsifier
 
 By **2026-10-14**: `copy_install` per `page_view` on `/` does not move after pass one, or a real
