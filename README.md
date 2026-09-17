@@ -6,6 +6,8 @@
 
 > **BOSS is the conscience that keeps you honest while you build fast.** It runs inside Claude Code, sets a project up with only the structure it has earned, says one thing when you're drifting, and stays quiet the rest of the time.
 >
+> **[oyeboss.build](https://oyeboss.build/)** — the site: [get started](https://oyeboss.build/start), [the guide](https://oyeboss.build/guide), [one venture run through it end to end](https://oyeboss.build/demo), and [the Humane Product Canvas](https://oyeboss.build/canvas) (free, CC BY-SA).
+>
 > *Everyone can build now; almost no one can tell a real business from a convincing demo. Cursor
 > and Lovable generate the code. BOSS is the discipline on top, just-in-time — and it gets out of
 > your way on command.* Calm-company by default. Open. Inspectable. Local-only state.
