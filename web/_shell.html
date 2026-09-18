@@ -29,15 +29,25 @@
 {{HEAD_ICONS}}
 {{STYLES}}
 {{JSONLD}}
-<!-- Google tag (gtag.js). The consent default comes first, before the loader, as Google's
-     reference orders it. No banner, no cookies: consent is denied by default and never asked
-     for. GA sends cookieless pings, so page and copy_install counts still arrive; nothing is
-     stored on the visitor's device. That is the same promise the footer makes for the CLI. -->
+<!-- Google tag (gtag.js). The consent defaults come first, before the loader, as Google's
+     reference orders them. No banner anywhere. Where the law requires opt-in for an analytics
+     cookie (the EEA, the UK, Switzerland) analytics is denied and never asked for: those visitors
+     get the same page and are simply not counted. Everywhere else analytics is granted. Ads
+     storage is denied for everyone — this site runs no ads and no Google Signals. Measured
+     2026-09-18: with analytics denied for all, GA4 accepted every hit (204, gcs=G100) and reported
+     "no data" — cookieless pings only feed modeling, which a site this size never unlocks. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('consent', 'default', {
     analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    region: ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']
+  });
+  gtag('consent', 'default', {
+    analytics_storage: 'granted',
     ad_storage: 'denied',
     ad_user_data: 'denied',
     ad_personalization: 'denied'

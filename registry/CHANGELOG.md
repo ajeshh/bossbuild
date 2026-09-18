@@ -119,6 +119,10 @@ rule above still applies to the whole section once it is stamped.
   and shipped as `humane-product-canvas.html` — the same thirteen cells, typed into in the browser,
   printed or saved as PDF, kept only in the visitor's own browser; the Markdown template's footer
   pointed at `boss.build`, the domain that never existed — now `oyeboss.build/canvas`.
+  2026-09-18: GA4 consent by region — analytics denied for the EEA, UK and Switzerland (no banner,
+  not counted), granted elsewhere, ads denied for all; measured first: with analytics denied for
+  everyone GA4 accepted every hit and reported no data, since cookieless pings only feed a modelling
+  threshold this site cannot reach.
   Website only; nothing here reaches a project.
 - **The CLI's Homebrew advice names the formula that exists.** `boss update` and `boss remove --global`
   told a Homebrew install to run `brew upgrade ajeshh/boss/boss` — the pre-rename formula, gone since

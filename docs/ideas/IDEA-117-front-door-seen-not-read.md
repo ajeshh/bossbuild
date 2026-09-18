@@ -171,6 +171,18 @@ builder: it generates the app; BOSS is the conscience around whatever you build)
 Kong delivery app that owns oyeboss.com), BuildBoss. Ajesh: *"they are similar but different from
 who we are."* The brand to own is `oyeboss` as one token; the title's category term does the rest.
 
+## 2026-09-18 — GA4 "no data received": measured, then decided
+
+Four days of the tag on every page and GA4 reported nothing. A netlog run of the live page settled
+it: every load sent `page_view` and `user_engagement` to `G-FDV098KCD2` and Google answered 204 —
+with **`gcs=G100`**, analytics denied. Cookieless pings are accepted and feed only behavioural
+modelling, which needs ~1,000 consented events a day to switch on; a site this size never gets
+there, so the Sunday choice ("coarser") was, measured, "nothing." Two honest exits were put to
+Ajesh — consent by region (deny where opt-in is law, count elsewhere, no banner) or drop GA4 for a
+cookieless tool with events. He chose **A**: analytics denied for the EEA + UK + CH, granted
+elsewhere; ads denied for everyone; no banner anywhere. Verified before commit: a US-origin load
+now sends `gcs=G101`. The CLI's no-telemetry line in the footer is a separate fact and stands.
+
 ## Falsifier
 
 By **2026-10-14**: `copy_install` per `page_view` on `/` does not move after pass one, or a real
