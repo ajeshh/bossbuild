@@ -42,6 +42,7 @@
     "gen:og": "node scripts/gen-og.js",
     "gen:proof": "node scripts/gen-proof.js",
     "indexnow": "node scripts/indexnow.js",
+    "deploy": "npm run gen:site && npx --yes wrangler deploy && node scripts/check-deployed.js",
     "check:wayfinding": "node scripts/check-wayfinding-drift.js",
     "check:manifests": "node scripts/check-manifests.js",
     "check:freshness": "node scripts/check-freshness.js",

@@ -1,0 +1,17 @@
+// The site's deploy target: a Cloudflare Worker that serves site/ as static assets. This is the
+// Worker the dashboard shows as proud-meadow-ef1d with oyeboss.build bound to it (created by
+// upload 2026-09-11; the name is Cloudflare's, kept so the deploy updates that Worker rather than
+// making a second one beside it). `npm run deploy` = gen:site, then `wrangler deploy`, which
+// uploads only the files that changed. The login is per user (`npx wrangler login`, once).
+// `_headers` and the clean-URL 307s are assets features and keep working; `not_found_handling`
+// keeps a wrong path a real 404 rather than the home page pretending.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "proud-meadow-ef1d",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./site",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
