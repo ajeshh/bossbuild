@@ -183,6 +183,15 @@ cookieless tool with events. He chose **A**: analytics denied for the EEA + UK +
 elsewhere; ads denied for everyone; no banner anywhere. Verified before commit: a US-origin load
 now sends `gcs=G101`. The CLI's no-telemetry line in the footer is a separate fact and stands.
 
+## 2026-09-19 — the property was the wrong one
+
+The Realtime read never came because the GA account had two properties: "B.O.S.S. Build Out Solid
+Stuff" (stream 15777992859, `G-FDV098KCD2`, the ID the site sent to since 09-14) and "Oye Boss"
+under the Kincosma Substack account, which is the one the dashboard opened on. Ajesh: *"i think i set
+up google analytics incorrectly. here is a new one to install"* — a fresh property, `G-Z1KBVE95N3`.
+The site now sends there; consent-by-region and `copy_install` unchanged. The first property can be
+deleted in GA (Admin → Property → Move to Trash); nothing sends to it any more.
+
 ## Falsifier
 
 By **2026-10-14**: `copy_install` per `page_view` on `/` does not move after pass one, or a real
