@@ -30,6 +30,11 @@ rule above still applies to the whole section once it is stamped.
 > contrast get observed instead of inferred, with nothing to install. `/red-team --paths` hands its
 > generic security half to your host's own review of pending changes, and tells you what that
 > review cannot see.
+>
+> Also fixed, and worth knowing if you hit one: BOSS's hooks no longer die in a project whose
+> `package.json` says `"type": "commonjs"` (what `npm init` writes) — they had been failing on every
+> prompt, silently; `boss sync` brings the fix to an existing project. `boss team add` on a
+> `.boss/config.json` with a stray comma now stops and says so, instead of saving over your settings.
 
 - **`/ux-check` step 2 — render when the host can (IDEA-119).** A built-in launch-and-drive command
   is named as a class alongside the dev server and a browser you added; the session holding the
@@ -41,6 +46,17 @@ rule above still applies to the whole section once it is stamped.
   declined in the same pass: scheduling `/cost-review` or `/comp-eval` — the cost ledger is
   gitignored, so a scheduled cloud run would review an empty file, and four shipped skills already
   refuse a schedule BOSS chose.
+
+- **Four silent-damage bugs fixed (IDEA-121 tier 1), each with a test that fails on the old code**
+  (`test/silent-damage.test.js`). **The hooks pin `"type": "module"`** in a shipped
+  `.claude/hooks/package.json`, and sync carries it to existing projects — under a CommonJS project
+  both hooks exited 1 at import on every prompt. **`~/.boss/registry.json` is written under a lock and
+  renamed into place**, and a writer refuses a file it cannot parse instead of saving an empty list
+  over it (measured before: 30 concurrent registrations kept 26; a torn file plus one registration
+  kept 1). **Config writers refuse an unparseable `.boss/config.json`** (`readConfigForWrite`) and
+  write atomically, the hook's two writes included. **`boss learn` adds a bullet under
+  `## Unreleased`** and no longer bumps VERSION or package.json (DEC-019); `/extract` and
+  `library/README.md` say so.
 
 ## 0.326.0 — 2026-09-14
 

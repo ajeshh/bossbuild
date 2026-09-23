@@ -16,19 +16,23 @@ relates: IDEA-119, IDEA-120, IDEA-087, IDEA-102
 
 Ajesh: *"review how we build boss, and also over all boss architecture and implementation for
 potential improvements."* Four parallel read-only reviewers; the headline claims re-verified by hand
-(marked ✓v). Nothing below is fixed yet.
+(marked ✓v).
+
+**Tier 1 fixed 2026-09-23** — each with a test in `test/silent-damage.test.js` that fails on the
+old code (run against HEAD in a worktree). Not done in that pass: the dynamic `import()` inside the
+hook's try (conscience.js:19) — the package.json removes the crash that motivated it.
 
 ## Tier 1 — silent damage (fix first; each is small)
 
-- [ ] **Registry wipe / lost writes.** `src/registry.js:5-17` — `load()` returns `{projects:[]}` on a parse
+- [x] **Registry wipe / lost writes.** `src/registry.js:5-17` — `load()` returns `{projects:[]}` on a parse
   error, `save()` is a non-atomic `writeFileSync`. Measured: 30 concurrent registers → 26 kept; a torn
   file + one register → 1 entry. ✓v. Fix: temp+rename; writers throw on parse error.
-- [ ] **`boss team add` erases a hand-typo'd `config.json`.** `src/team.js:47,92` via `readConfig` → `{}`
+- [x] **`boss team add` erases a hand-typo'd `config.json`.** `src/team.js:47,92` via `readConfig` → `{}`
   (`src/config.js:19`). Measured: github/visibility/license/cohort gone. ✓v. Also the hook writes
   config non-atomically (`loop-runtime.js:811,863`). Fix: writers use the throwing reader; atomic write.
-- [ ] **`boss learn` breaks DEC-019.** `src/learn.js:167-186` bumps VERSION + package.json and prepends a
+- [x] **`boss learn` breaks DEC-019.** `src/learn.js:167-186` bumps VERSION + package.json and prepends a
   numbered section above `## Unreleased`. ✓v. Fix: bullet under Unreleased; no version writes; `cli.js:1407` copy.
-- [ ] **Shipped hooks crash under `"type": "commonjs"`** (what `npm init -y` writes). conscience + reentry
+- [x] **Shipped hooks crash under `"type": "commonjs"`** (what `npm init -y` writes). conscience + reentry
   exit 1 on every prompt; the conscience is silently dead. ✓v (Node 24). Fix: ship
   `.claude/hooks/package.json` = `{"type":"module"}`; dynamic import inside the try (conscience.js:19).
 
