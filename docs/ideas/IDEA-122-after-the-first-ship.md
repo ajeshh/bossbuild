@@ -58,12 +58,12 @@ Shape: **fold into `/ship`, don't add skills** (the EVID-001 mandate: compose + 
 - ~~Slice 3's moment~~ — answered: the MVP working rules (`claude-append.md`), because they are the
   one reader loaded on every turn, so any phrasing of *"run this overnight"* meets it. Not a
   conscience moment (it would fire on a keyword and has no timestamp to read), not a skill.
-- Existing MVP projects do not get the slice 3 rule: `claude-append.md` folds into the founder's
-  CLAUDE.md once, at unlock, and `boss sync` rightly never rewrites that file. `mentor-architect`'s
+- ~~Existing MVP projects do not get the slice 3 rule~~ (true when written: `claude-append.md`
+  folded into CLAUDE.md once, at unlock). `mentor-architect`'s
   *automation shape* (which does sync) carries the same three questions. ~~Is that enough?~~ —
-  answered by what already exists: `/boss-sync` never merges CLAUDE.md and surfaces what the
-  CHANGELOG says should change there. So the `For you:` line now carries the rule verbatim, to paste.
-  No new mechanism.
+  first answered with a paste-line in `For you:`, then overtaken the same afternoon: a peer's
+  `aaf0ad4` (IDEA-121) made `boss sync` update BOSS's CLAUDE.md block at region scope, so the rule
+  reaches existing projects unasked. The paste-line stays for founders who edited the block.
 - ~~Does the `/incident` seam move down?~~ — no; it stays Scale's, and now points back at the stack
   profile `/ship` wrote (seam edited in `registry/surface-ladder.json` and the skill together).
 
