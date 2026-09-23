@@ -25,6 +25,23 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+> **For you:** `/ux-check` now looks for your host's built-in way to launch and drive the app
+> before it marks the visual checks *not checked* — if it's there, hover, focus, tab order and
+> contrast get observed instead of inferred, with nothing to install. `/red-team --paths` hands its
+> generic security half to your host's own review of pending changes, and tells you what that
+> review cannot see.
+
+- **`/ux-check` step 2 — render when the host can (IDEA-119).** A built-in launch-and-drive command
+  is named as a class alongside the dev server and a browser you added; the session holding the
+  shell renders and hands what it saw on, because the `designer` agent has no Bash. The
+  observed / inferred split and *not checked, never pass* are unchanged.
+- **`/red-team --paths` — the host's security review for the generic half (IDEA-119).** Run it
+  instead of re-deriving the OWASP list, with the FEATs' three paths as context; its clean result
+  covers the diff, not the git history, the running app, or what shipped before. Considered and
+  declined in the same pass: scheduling `/cost-review` or `/comp-eval` — the cost ledger is
+  gitignored, so a scheduled cloud run would review an empty file, and four shipped skills already
+  refuse a schedule BOSS chose.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched

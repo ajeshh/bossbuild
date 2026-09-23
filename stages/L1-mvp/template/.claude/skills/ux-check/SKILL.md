@@ -56,8 +56,12 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    **Check what you can actually do before you promise that.** BOSS ships no browser and no
    renderer: the `designer` agent's tools are Read/Grep/Glob/Edit/Write, and no BOSS template
    installs Playwright, an MCP server, or anything that can draw a pixel. Your *host* may have
-   more — a Bash tool that can start the dev server, a browser you added yourself. Look, then
-   pick your lane:
+   more — a Bash tool that can start the dev server, a browser you added yourself, or **a built-in
+   command that launches the project's app and drives it** (browser-driven, with screenshots).
+   Check for that last one first: it needs nothing installed, and it is the difference between
+   *observed* and *not checked* for every item marked *observable only* below. The session that
+   holds the shell does the rendering and hands what it saw to the review; the `designer` agent
+   can't. Look, then pick your lane:
 
    - **Observed** — it was running and you drove it. Name the interaction: what you clicked and
      what came back.

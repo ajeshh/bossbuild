@@ -139,7 +139,11 @@ don't review it.**
   context; it says nothing about a *shipped app* exposing one. Scan the build output + git history.
 - **OWASP web basics** on any AI-generated code (Veracode's 2026 report: ~44% of AI generation tasks
   ship an OWASP-Top-10 vuln — 85% fail to defend XSS, 88% log injection, and it does *not* improve
-  with bigger models). Treat generated code as unreviewed, not done.
+  with bigger models). Treat generated code as unreviewed, not done. **If your host has a built-in
+  security review of pending changes, run it for this half rather than re-deriving the list** — and
+  hand it the FEATs' three paths as context, because it knows the generic vulnerabilities and not
+  which path would hurt this founder. Its clean result covers the diff: not the git history (the
+  secrets scan above), not the running app (the three paths), not what shipped before the diff.
 - **Known-vulnerable dependencies** — `npm audit` / `pip-audit` / `cargo audit`, whatever your stack
   ships. LLM04 asks whether deps are *pinned*; this asks whether the pinned one is *already broken*.
   Different question, and the one an agent never volunteers. Record the count and the highest severity.
