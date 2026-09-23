@@ -103,8 +103,11 @@ and tell them to check `git log` on that path first.
 - **Merges hook registrations into `.claude/settings.json`** additively — adds the `UserPromptSubmit`
   (etc.) entries BOSS ships, matched by command so it's idempotent, and **preserves your permissions and
   any hooks you added.** This is the one user-editable file sync touches, and only the `hooks` block.
-- Does **not** auto-merge `CLAUDE.md` or other `settings.json` keys. If the CHANGELOG implies those should
-  change, surface it and let the user merge by hand.
+- Updates BOSS's own block in `CLAUDE.md` — only the text between the `<!-- boss:<mode> start -->` and
+  `end` markers, and by the same rules as a file: untouched since BOSS wrote it → replaced; changed by the
+  user → left alone and named (merge it by hand); no record → backed up, then replaced. Everything outside
+  the markers is theirs and never read. A block they deleted is not put back. Other `settings.json` keys
+  are never merged.
 - New skills/agents/hooks added to a mode since the pin are pulled in; nothing is removed.
 
 ## Rules

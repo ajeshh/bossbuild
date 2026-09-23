@@ -426,6 +426,84 @@ export function orphanEdited(projectDir, kind, name, layers, vars = {}) {
 // `managedFiles()` the plan walks, deliberately: two lists of "what BOSS manages" would drift,
 // and a ledger that disagrees with the planner is worse than none — it would confidently report
 // "you edited this" about a file BOSS never wrote.
+// ── THE CLAUDE.md BLOCK ─────────────────────────────────────────────────────────────────────
+// Every rung past Quickstart appends its rules to the project's CLAUDE.md between
+// `<!-- boss:<rung> start/end -->` markers, and that block was written ONCE, at unlock, and never
+// again — the one always-loaded BOSS text a founder's session reads on every turn, and the one
+// thing sync could not update (IDEA-121). A trim or a fixed rule reached new projects only.
+//
+// The block is a REGION of a file the founder owns, so it gets the file rules at region scope:
+// same ledger (key `CLAUDE.md#boss:<rung>`), same tri-state, same backup, same --keep-mine and
+// --force. A block the founder deleted is never re-added: absence is an answer, not drift.
+const CLAUDE_FILE = 'CLAUDE.md';
+const blockKey = (stageId) => `${CLAUDE_FILE}#boss:${stageId}`;
+
+function findBlock(text, stageId) {
+  const start = `<!-- boss:${stageId} start -->\n`;
+  const end = `\n<!-- boss:${stageId} end -->`;
+  const i = text.indexOf(start);
+  if (i < 0) return null;
+  const j = text.indexOf(end, i + start.length);
+  if (j < 0) return null;
+  return { from: i + start.length, to: j, body: text.slice(i + start.length, j) };
+}
+
+// The block BOSS would write for this rung today, or null when the rung carries none.
+function templateBlock(stageId, vars) {
+  const f = join(STAGES_DIR, stageId, 'template', 'claude-append.md');
+  if (!existsSync(f)) return null;
+  return substitute(readFileSync(f, 'utf8'), vars).trim();
+}
+
+function planClaudeBlock(projectDir, stageId, vars) {
+  const body = templateBlock(stageId, vars);
+  if (body === null) return null;
+  const dest = join(projectDir, CLAUDE_FILE);
+  if (!existsSync(dest)) return null;
+  const cur = readFileSync(dest, 'utf8');
+  const b = findBlock(cur, stageId);
+  if (!b) return null;
+  const status = b.body.trim() === body ? 'ok' : 'changed';
+  return {
+    kind: 'claude-block',
+    name: stageId,
+    rel: CLAUDE_FILE,
+    ledgerKey: blockKey(stageId),
+    body,
+    status,
+    edited: status === 'changed' ? provenance(projectDir, blockKey(stageId), b.body.trim()) : false,
+    delta: status === 'changed' ? lineDelta(b.body.trim(), body) : 0,
+  };
+}
+
+// Rewrite one block in place, reading the file fresh so two blocks in one file cannot undo each other.
+function writeClaudeBlock(projectDir, stageId, body) {
+  const dest = join(projectDir, CLAUDE_FILE);
+  const cur = readFileSync(dest, 'utf8');
+  const b = findBlock(cur, stageId);
+  if (!b) return false;
+  writeFileSync(dest, cur.slice(0, b.from) + body + cur.slice(b.to));
+  return true;
+}
+
+// Record every block on disk that is exactly what BOSS would write now. Only those: stamping a
+// block the founder shaped would report it as BOSS's next time and hand it to the overwrite.
+function stampClaudeBlocks(projectDir, layers, exclude = new Set()) {
+  const dest = join(projectDir, CLAUDE_FILE);
+  if (!existsSync(dest)) return;
+  const text = readFileSync(dest, 'utf8');
+  const entries = [];
+  for (const stageId of layers || []) {
+    if (exclude.has(blockKey(stageId))) continue;
+    let manifest;
+    try { manifest = readStageManifest(stageId); } catch { continue; }
+    const body = templateBlock(stageId, { STAGE: stageId, MODE: manifest.name });
+    const b = findBlock(text, stageId);
+    if (body !== null && b && b.body.trim() === body) entries.push({ rel: blockKey(stageId), text: body });
+  }
+  recordManaged(projectDir, entries);
+}
+
 export function stampManaged(projectDir, layers, exclude = []) {
   const skip = new Set(exclude);
   const entries = [];
@@ -443,6 +521,7 @@ export function stampManaged(projectDir, layers, exclude = []) {
     }
   }
   recordManaged(projectDir, entries);
+  stampClaudeBlocks(projectDir, layers, skip);
   return entries.length;
 }
 
@@ -507,6 +586,8 @@ export function planSync(projectDir, stamp) {
       }
       entries.push({ ...f, stageId, status, next, edited, delta: exists ? lineDelta(cur, next) : 0, affects });
     }
+    const block = planClaudeBlock(projectDir, stageId, { ...vars, STAGE: stageId, MODE: manifest.name });
+    if (block) entries.push({ ...block, stageId });
   }
 
   return {
@@ -558,6 +639,10 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
   for (const e of plan.entries) {
     if (e.status === 'ok') continue;
     if (skipped.includes(e)) continue;
+    if (e.kind === 'claude-block') {
+      if (writeClaudeBlock(projectDir, e.name, e.body)) written.push(e);
+      continue;
+    }
     const dest = join(projectDir, e.rel);
     mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, e.next);
@@ -567,7 +652,7 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
   // only the writes leaves the untouched majority permanently `null`, so the first time any of
   // them changes upstream it gets backed up as "provenance unknown" forever. A sync is the moment
   // BOSS knows the whole tree; stamp the whole tree. Skipped files are excluded by name.
-  stampManaged(projectDir, plan.layers, skipped.map((e) => e.rel));
+  stampManaged(projectDir, plan.layers, skipped.map((e) => e.ledgerKey || e.rel));
   // Groups whose predicate came true were in this plan as `new` and are on disk now; say so in
   // the stamp, so status stops announcing them and the next plan treats them as ordinary.
   const earned = newlyEarned(projectDir, stamp).filter((g) => g.skills.every((sk) => existsSync(join(projectDir, '.claude', 'skills', sk, 'SKILL.md'))));

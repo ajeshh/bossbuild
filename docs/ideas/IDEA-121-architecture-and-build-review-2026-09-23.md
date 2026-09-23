@@ -64,7 +64,7 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
   printed bill omits agents + CLAUDE.md. Fix: apply DESCRIPTION_CAP to agents; count them.
 - [ ] **`{{DATE}}` filled at sync** (`src/sync.js:445`, 16 files) → 9 files "changed" daily; stale
   literal dates Claude obeys (`cost-review` REVIEW-<install date>). ✓v. Fix: leave a runtime placeholder.
-- [ ] **CLAUDE.md block never syncs** (not in managedFiles). ✓v. Fix: manage the marked block, report-only first.
+- [x] **CLAUDE.md block never syncs** (not in managedFiles). ✓v. Fix: manage the marked block, report-only first.
 - [ ] **MVP unlock cliff.** 15→31 skills; design skills + designer before any UI. Fix: an earned `ui` group.
 - [ ] **Merge candidates** (subtract mandate): health+measure+onboard; ai-first-init as the lay-down message;
   ai-cost+cost-review. ~28→24. Needs Ajesh's call — not mechanical.
@@ -73,7 +73,8 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
 - [ ] Mentor block copied into 6 files with no detector — one byte-identity assertion.
 
 Tier 3, first two items fixed 2026-09-23: fresh MVP scaffold 30.3KB → 24.0KB per turn (~7.6k → ~6.0k
-tokens). The CLAUDE.md block still does not sync, so existing projects keep the long version until it does.
+tokens). The CLAUDE.md block now syncs (region-scoped provenance, `test/claude-block-sync.test.js`), so existing
+projects get the trim on `boss sync --apply`.
 
 ## Tier 4 — how BOSS is built
 

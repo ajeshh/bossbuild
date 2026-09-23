@@ -109,7 +109,16 @@ rule above still applies to the whole section once it is stamped.
   agent fires, and **agents now fall under the same 420 B description cap as skills**, with a test
   that the gate fails. `check:manifests` prints the whole bill — skills, agents and CLAUDE.md — where
   it used to print skills alone and understate it by about half. An existing project gets the agent
-  descriptions through `boss sync`; its CLAUDE.md block does not sync yet (IDEA-121, open).
+  descriptions and the shorter CLAUDE.md block through `boss sync` (entry above).
+
+- **`boss sync` updates BOSS's block in your CLAUDE.md (IDEA-121).** The rules a rung appends between
+  `<!-- boss:<mode> start/end -->` were written once at unlock and never again, so a trimmed or
+  corrected rule reached new projects only. The block now syncs by the file rules, at region scope:
+  untouched since BOSS wrote it → replaced; changed by you → left alone and named; no record (every
+  project unlocked before this) → the whole CLAUDE.md copied to `.boss/backups/`, then replaced, or
+  left alone with `--keep-mine`. Nothing outside the markers is read or written, and a block you
+  deleted is not put back. Unlock records the block in the provenance ledger from its first write.
+  Measured on a project unlocked before today's trim: CLAUDE.md 13.9KB → 10.3KB. `/boss-sync` says so.
 
 ## 0.326.0 — 2026-09-14
 
