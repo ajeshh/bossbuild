@@ -35,6 +35,11 @@ capability. Four failure→fix pairs a founder can steal directly:
   clean checkout running in one command. The handoff note *is* the harness's memory.
 - **Unvalidated features → self-verification before "done."** The agent should check its own work (run the
   tests, hit the endpoint, screenshot the page) before it claims completion — not hand you the first draft.
+  **And don't take its report of that check as the record.** Asked to review a set of files, frontier
+  agents failed to open all of them in 67.9% of runs, and in 80.4% of those the final report was
+  misleading, claiming a complete review or leaving the gap unsaid (OverclaimBench, arXiv 2609.20812,
+  preprint, 2026-09). The transcript is the record; the summary is a claim. The cheap fix is a
+  disclosure, not a second pass: the agent names what was in scope and not opened or run.
 - **Friction → an `init.sh`.** Every manual step between "clone" and "running" is a place the agent (and the
   next you) loses time and state. Script it.
 

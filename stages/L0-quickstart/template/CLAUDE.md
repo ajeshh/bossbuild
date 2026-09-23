@@ -48,7 +48,7 @@ gaps once you can see it. The conscience nudges once if you keep capturing witho
 
 ## The four modes (unlock additively)
 
-This project is in **{{MODE}}** mode. Modes level up as the project earns it:
+`boss status` names the mode this project is in. Modes level up as the project earns it:
 
 | Mode | Adds | When |
 |---|---|---|

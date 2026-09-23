@@ -46,6 +46,14 @@ rule above still applies to the whole section once it is stamped.
 > alone — paste this under *Shipping*: *"Anything that runs without you (a
 > schedule, overnight, an agent loop): before it runs, name what breaks if it runs wrong at 3am, what
 > says pass or fail, and who is told when it fails — `boss craft automation`."*
+>
+> Your agents now say what they *didn't* check. The coder and tester name anything in scope they
+> never opened or ran, instead of leaving the gap to read as a pass. The coder and tester can now
+> actually run `/smoke`, and the planner and cofounder mentor read the records they were told to
+> read. After an unlock, your agents no longer claim you're still in Quickstart; `boss sync` brings
+> all of it. One line sync can't reach because it's yours: if your `CLAUDE.md` says *"This project
+> is in **Quickstart** mode"* and you've unlocked MVP, delete that sentence (`boss status` names the
+> mode).
 
 - **`/ship` step 3b — is it up, and who hears when it isn't (IDEA-122 slice 1).** After the deploy,
   hit the live artifact the way a stranger would (a smoke against production); a green deploy serving
@@ -141,6 +149,23 @@ rule above still applies to the whole section once it is stamped.
   withdrawal to 2.1.233 (2026-08-14), which means the `task-hygiene` moment that read it was never
   live on a current model. It also notes Spec Kit 1.0's move to independent entry points plus a
   go/clarify/stop idea assessment. Both practices re-stamped.
+
+- **Agents report what they didn't check, and stop misstating the mode (RVW-105, RVW-106).**
+  OverclaimBench (arXiv 2609.20812): frontier agents skipped files they were asked to review in 67.9%
+  of runs and misreported it in 80.4% of those. `coder` and `tester` now name what was in scope and
+  not opened or run, and `harness-engineering.md` carries the number. Anthropic's *What a task costs
+  on Opus 5.5* says ritual and contradictory instructions cost more on newer models. Its categories,
+  applied by hand to a fresh MVP scaffold (`prompt-audit` itself was blocked), found no verify-twice,
+  scratchpad or all-caps rules, and five contradictions, all fixed:
+  - `{{MODE}}` renders the rung a file came from, so after every unlock CLAUDE.md and ten L0/L1
+    agents still named the old mode. The claim is gone, and `boss status` names the mode.
+  - `coder` called `/smoke` a test gate, which the smoke skill says it is not.
+  - `coder` recorded a stack choice as an IDEA rather than `/decide`.
+  - The git section's "green before every commit" now defers to MVP rule 2's "or document the
+    regression".
+  `check-manifests` gains `checkAgentTools`: a verb right before a backticked `boss …` or `/skill`
+  in an agent whose `tools:` lacks Bash or Skill fails the gate. Measured on the pre-fix tree it
+  catches 3 of the 5 found by hand, and its stated limit names the two it misses.
 
 ## 0.326.0 — 2026-09-14
 

@@ -555,6 +555,13 @@
       "for": "83 projects / 7,310 rules / 99 practitioners — architectural constraints ranked first, repos hold formatting rules; before/after compliance figure, no control",
       "kind": "research",
       "key": false
+    },
+    "overclaimbench": {
+      "name": "Quantifying Overclaiming Propensity in Frontier LLM Agents (OverclaimBench, arXiv 2609.20812)",
+      "url": "https://arxiv.org/abs/2609.20812",
+      "for": "agents misreport their own review coverage (67.9% incomplete, 80.4% of those misleading)",
+      "kind": "research",
+      "key": false
     }
   },
   "practices": {
@@ -653,7 +660,8 @@
       "dex-horthy",
       "karpathy",
       "spec-driven",
-      "haytham-arslan70"
+      "haytham-arslan70",
+      "overclaimbench"
     ],
     "landing-page": [
       "julian-shapiro",

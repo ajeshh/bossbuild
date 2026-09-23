@@ -395,6 +395,60 @@ function checkShippedText() {
   return errors;
 }
 
+// --- an agent is told to run what its `tools:` line forbids ------------------
+// The `/practice-refresh agents` sweep (2026-09-23) read all twelve shipped agents against the host's
+// sub-agents doc and found five told to do something they could not: three with no Bash were told to
+// read `boss board --next` / `boss team` / `boss craft …`, and `coder` + `tester` were told to run
+// `/smoke` with no `Skill` in `tools:` — which, per the host, blocks skill invocation entirely. The
+// heuristic that finds this ("grep an agent's `tools:` against the verbs it is given") had been in
+// the audit notes since /ux-check's designer finding and had never been run over the whole roster.
+// A method you remember to use is a method that runs when someone remembers.
+//
+// THE RULE: an imperative verb IMMEDIATELY before a backticked command. ``Read `boss team` `` fires;
+// ``Depth: `boss craft mcp` `` and ``hand the founder `boss …` `` do not — a pointer for the founder
+// is not an instruction to the agent. No `tools:` line means the agent inherits every tool, so it is
+// never flagged.
+// ⚠️ STATED LIMIT: this reads syntax, not intent. It misses a gate phrased as a condition (``If `boss
+// team` shows…`` was one of the five) and an unbackticked "run smoke first". It catches the shape
+// that recurs; the sweep still owns the rest. Measured on the pre-fix tree: 3 of the 5 (coder,
+// planner, mentor-cofounder:73); designer ("Read it") and tester ("Run smoke first") are the misses.
+const RUN_VERB = String.raw`\b(?:run|read|check|open|call|execute|invoke|use)\s+`;
+export function agentToolGaps(text) {
+  const fm = /^---\n([\s\S]*?)\n---/.exec(text);
+  const toolsLine = fm && /^tools:\s*(.*)$/m.exec(fm[1]);
+  if (!toolsLine) return [];
+  const tools = new Set(toolsLine[1].split(',').map((t) => t.trim()).filter(Boolean));
+  const gaps = [];
+  text.split('\n').forEach((line, i) => {
+    if (fm && i <= fm[0].split('\n').length - 1) return;
+    if (!tools.has('Bash')) {
+      for (const m of line.matchAll(new RegExp(RUN_VERB + '`(boss [^`]+)`', 'gi'))) {
+        gaps.push({ line: i + 1, what: `\`${m[1]}\``, needs: 'Bash' });
+      }
+    }
+    if (!tools.has('Skill')) {
+      for (const m of line.matchAll(new RegExp(RUN_VERB + '`(/[a-z][a-z0-9-]*)[^`]*`', 'gi'))) {
+        gaps.push({ line: i + 1, what: `\`${m[1]}\``, needs: 'Skill' });
+      }
+    }
+  });
+  return gaps;
+}
+function checkAgentTools() {
+  const errors = [];
+  for (const stageId of STAGE_ORDER) {
+    const dir = join(tplDir(stageId), '.claude', 'agents');
+    if (!existsSync(dir)) continue;
+    for (const n of readdirSync(dir).filter((f) => f.endsWith('.md'))) {
+      const rel = join(dir, n).replace(BOSS_ROOT + '/', '');
+      for (const g of agentToolGaps(readFileSync(join(dir, n), 'utf8'))) {
+        errors.push(`${rel}:${g.line} tells the agent to run ${g.what}, and its \`tools:\` has no ${g.needs} — add it, or point the founder at the command instead`);
+      }
+    }
+  }
+  return errors;
+}
+
 // --- 3. every declared drift_moment has an authored voicing frame ---------
 // Probes the REAL function rather than comparing against a hand-kept list of moment
 // names — a parallel list is the same class of drift this check exists to catch.
@@ -502,6 +556,7 @@ export function checkManifests() {
     ...voicing.errors,
     ...checkModelPins(),
     ...checkShippedText(),
+    ...checkAgentTools(),
     ...budget.errors,
     ...plugin.errors,
   ];

@@ -18,7 +18,7 @@ Review is the bottleneck now, not typing — keep batches small enough to stand 
 test diff harder than the code. `boss craft git-workflow` holds the rest (worktrees capped at review
 capacity, risk-tiered review, who owns an agent's merge, local / tracked / public).
 
-- **Trunk-based.** Short-lived branches, merge daily. `/smoke` green before every commit — your smoke
+- **Trunk-based.** Short-lived branches, merge daily. `/smoke` green before every commit, or the regression written down (rule 2) — your smoke
   check *is* your CI until a push deploys by itself — then it runs where the deploy runs, and gates it.
 - **Localhost is not shipped.** Get a real URL early, cheap and reversible — `/ship`, and
   `boss craft ship-it-live` for why and how.
