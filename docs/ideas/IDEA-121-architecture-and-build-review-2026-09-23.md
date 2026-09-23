@@ -62,7 +62,7 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
   `claude-append.md` "Git workflow" + "Shipping" (~4KB) duplicate practices. Fix: 2-line pointers to `boss craft`.
 - [x] **Agent descriptions uncapped and uncounted.** mentor-capital 1,073B, designer 871B; check-manifests'
   printed bill omits agents + CLAUDE.md. Fix: apply DESCRIPTION_CAP to agents; count them.
-- [ ] **`{{DATE}}` filled at sync** (`src/sync.js:445`, 16 files) → 9 files "changed" daily; stale
+- [x] **`{{DATE}}` filled at sync** (`src/sync.js:445`, 16 files) → 9 files "changed" daily; stale
   literal dates Claude obeys (`cost-review` REVIEW-<install date>). ✓v. Fix: leave a runtime placeholder.
 - [x] **CLAUDE.md block never syncs** (not in managedFiles). ✓v. Fix: manage the marked block, report-only first.
 - [ ] **MVP unlock cliff.** 15→31 skills; design skills + designer before any UI. Fix: an earned `ui` group.

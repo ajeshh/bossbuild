@@ -41,8 +41,9 @@ rule above still applies to the whole section once it is stamped.
 > free uptime check, or errors logged somewhere you can read), or records *not yet* and never asks again.
 > Ship the same thing by hand twice and it offers, once, to make a push to `main` deploy it — with
 > your smoke check gating the deploy and the live check running after. Projects unlocking MVP also
-> get a working rule for anything that runs while you sleep. Already at MVP? Sync doesn't edit your
-> `CLAUDE.md`, so if you want it, paste this under *Shipping*: *"Anything that runs without you (a
+> get a working rule for anything that runs while you sleep, and `boss sync` brings it to a project
+> already at MVP with the rest of BOSS's `CLAUDE.md` block. If you've edited that block, sync leaves it
+> alone — paste this under *Shipping*: *"Anything that runs without you (a
 > schedule, overnight, an agent loop): before it runs, name what breaks if it runs wrong at 3am, what
 > says pass or fail, and who is told when it fails — `boss craft automation`."*
 
@@ -58,9 +59,9 @@ rule above still applies to the whole section once it is stamped.
   and the MVP rules now name the moment `/smoke`-as-CI is outgrown: a push that deploys by itself.
 - **Running without you (IDEA-122 slice 3).** One line in the MVP working rules carries
   `automation.md`'s three questions for anything scheduled or unattended — blast radius, a pass/fail
-  signal, who is told when it fails — and points at the practice for the rest. Lands at `boss unlock mvp`; an existing
-  project's CLAUDE.md is the founder's and sync doesn't rewrite it (`mentor-architect` carries the
-  same questions and does sync). The `For you:` line carries the rule verbatim to paste. `/incident`'s early-rung
+  signal, who is told when it fails — and points at the practice for the rest. Lands at `boss unlock mvp`, and reaches an
+  existing project through the CLAUDE.md block sync (entry above); a block the founder edited is left
+  alone, so the `For you:` line carries the rule verbatim to paste. `/incident`'s early-rung
   seam (and its `surface-ladder.json` source) now points at the stack profile `/ship` wrote.
 
 - **`/ux-check` step 2 — render when the host can (IDEA-119).** A built-in launch-and-drive command
@@ -119,6 +120,13 @@ rule above still applies to the whole section once it is stamped.
   left alone with `--keep-mine`. Nothing outside the markers is read or written, and a block you
   deleted is not put back. Unlock records the block in the provenance ledger from its first write.
   Measured on a project unlocked before today's trim: CLAUDE.md 13.9KB → 10.3KB. `/boss-sync` says so.
+
+- **Skills no longer carry the day you installed them (IDEA-121).** `{{DATE}}` is filled when BOSS writes
+  a file, and 24 of them sat inside skill templates the model fills later — so `/cost-review` was told to
+  write `REVIEW-<install date>.md`, and a `boss sync` on any later day listed 9 skill files as changed with
+  nothing new in them, the noise that hides a real update. They read `YYYY-MM-DD` now (the convention the
+  other twenty used); a test keeps `{{DATE}}` out of shipped skills. Measured: a sync three days after
+  unlock went from 9 changed files to none.
 
 ## 0.326.0 — 2026-09-14
 

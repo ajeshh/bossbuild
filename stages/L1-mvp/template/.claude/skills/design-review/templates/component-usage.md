@@ -27,7 +27,7 @@ component: <Name>
 status: proposed          # proposed · draft · stable · deprecated · retired — the index's Status column wins if they disagree
 source: <src/components/<Name>.tsx — blank while proposed>
 design: <optional — a URL into your design tool's file and node>
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # <Name>

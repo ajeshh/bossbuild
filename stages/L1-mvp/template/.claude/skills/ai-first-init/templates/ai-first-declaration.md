@@ -8,7 +8,7 @@ id: ai-first
 type: declaration
 owner: product-lead
 status: declared
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # AI-first declaration — {{PROJECT_NAME}}

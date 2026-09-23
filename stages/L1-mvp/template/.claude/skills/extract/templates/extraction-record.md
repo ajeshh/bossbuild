@@ -9,7 +9,7 @@ id: EXTR-NNN
 type: extraction
 owner: product-lead
 status: recorded
-created: {{DATE}}
+created: YYYY-MM-DD
 trigger: <devlog-3-entries | FEAT-NNN-shipped | mode-unlock | third-repetition | manual>
 ---
 

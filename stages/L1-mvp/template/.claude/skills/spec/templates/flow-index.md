@@ -51,7 +51,7 @@ id: flows
 type: design
 owner: designer
 status: active
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # Flows — {{PROJECT_NAME}}

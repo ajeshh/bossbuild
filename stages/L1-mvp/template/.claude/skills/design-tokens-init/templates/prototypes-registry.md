@@ -32,7 +32,7 @@ id: prototypes
 type: design
 owner: designer
 status: active
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # Prototype registry — {{PROJECT_NAME}}
@@ -44,7 +44,7 @@ updated: {{DATE}}
 
 | Prototype | Explores | Tokens | Status | Notes |
 |---|---|---|---|---|
-| `prototype/onboarding-v2.html` | can signup fit in one screen | ✅ imports | `exploring` | started {{DATE}} |
+| `prototype/onboarding-v2.html` | can signup fit in one screen | ✅ imports | `exploring` | started YYYY-MM-DD |
 | `prototype/dashboard.html` | density for power users | ✅ imports | `adopted` → `FEAT-012` | the compact table won |
 
 **Status vocabulary** — `sketch` (throwaway, off-system, decides nothing) · `exploring` (live
@@ -57,7 +57,7 @@ deleting the row means paying for the answer twice.
 
 | Prototype | Explored | Why discarded | Answered on |
 |---|---|---|---|
-| `prototype/sidebar-nav.html` | sidebar vs top nav | sidebar cost too much width at the mobile breakpoint we actually need | {{DATE}} |
+| `prototype/sidebar-nav.html` | sidebar vs top nav | sidebar cost too much width at the mobile breakpoint we actually need | YYYY-MM-DD |
 
 ## Graduation checklist
 

@@ -11,7 +11,7 @@ id: ai-failure-states
 type: design-decisions
 owner: product-lead
 status: declared
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # AI failure states — {{PROJECT_NAME}}

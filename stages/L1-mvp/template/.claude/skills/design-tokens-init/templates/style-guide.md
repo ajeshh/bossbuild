@@ -16,7 +16,7 @@ id: style-guide
 type: design
 owner: designer
 status: active
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # Style guide — {{PROJECT_NAME}}

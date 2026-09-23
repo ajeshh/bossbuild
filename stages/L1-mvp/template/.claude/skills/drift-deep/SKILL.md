@@ -94,7 +94,7 @@ id: DRIFT-YYYY-MM-DD
 type: drift-audit
 owner: product-lead
 status: recorded
-created: {{DATE}}
+created: YYYY-MM-DD
 verdict: on-aim | drifting | mixed
 ---
 

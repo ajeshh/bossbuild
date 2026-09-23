@@ -87,7 +87,7 @@ The whole point of the review is to find things you'd otherwise miss. Look for:
 
 ### 5. Write the review file
 
-Writes `docs/cost-reviews/REVIEW-{{DATE}}.md`. Skeleton: **[`templates/review-file.md`](templates/review-file.md)**.
+Writes `docs/cost-reviews/REVIEW-YYYY-MM-DD.md`. Skeleton: **[`templates/review-file.md`](templates/review-file.md)**.
 
 The section that earns its place is **gross margin** — cost-per-user against the price you charge.
 A cost review that reports spend without margin tells you the bill went up; it can't tell you whether

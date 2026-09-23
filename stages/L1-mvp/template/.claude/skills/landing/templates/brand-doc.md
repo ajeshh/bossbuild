@@ -46,7 +46,7 @@ id: brand
 type: brand
 owner: "@you"          # the founder. No agent owns this — any lens may add to it
 status: nascent
-updated: {{DATE}}
+updated: YYYY-MM-DD
 readers: /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers · boss playbook · boss design
 tagline: unknown          # one line, when there is one — the pages carry it under the name
 accent: unknown           # the one owned colour, as hex, once /design-tokens-init's anchor chooses it
@@ -85,7 +85,7 @@ The half that makes this a brand rather than a guess. Every row is something tha
 
 | Date | What happened | What it says about the brand |
 |---|---|---|
-| {{DATE}} | a user called it "the thing that nags me nicely" | the conscience reads as care, not surveillance — keep that |
+| YYYY-MM-DD | a user called it "the thing that nags me nicely" | the conscience reads as care, not surveillance — keep that |
 | | a competitor comparison someone made unprompted | |
 | | a word that landed, or one that got a blank look | |
 

@@ -40,7 +40,7 @@ id: journey
 type: product
 owner: product-lead
 status: active
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # The journey — {{PROJECT_NAME}}
@@ -82,7 +82,7 @@ rather than answering them all._
 _Dated, append-only. A journey is a claim about people; when you learn they were doing something
 else, the correction is the most valuable line on the page._
 
-- {{DATE}} — first draft, mostly assumed.
+- YYYY-MM-DD — first draft, mostly assumed.
 ```
 
 ## Rules

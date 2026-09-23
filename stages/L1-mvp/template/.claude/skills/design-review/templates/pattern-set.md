@@ -59,7 +59,7 @@ id: patterns
 type: design
 owner: designer
 status: active
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # Patterns — {{PROJECT_NAME}}
@@ -239,7 +239,7 @@ in six weeks, and stops a well-meaning agent proposing it again.
 
 | Pattern | Why refused | On |
 |---|---|---|
-| streak counter | engagement-shaped, not value-shaped — we measure graduation, not return visits | {{DATE}} |
+| streak counter | engagement-shaped, not value-shaped — we measure graduation, not return visits | YYYY-MM-DD |
 ```
 
 ## After seeding

@@ -1,19 +1,19 @@
 # `/cost-review` — the review file skeleton (bundled resource)
 
-> Loaded **on demand** from step 5 of `SKILL.md`. Write this to `docs/cost-reviews/REVIEW-{{DATE}}.md`.
+> Loaded **on demand** from step 5 of `SKILL.md`. Write this to `docs/cost-reviews/REVIEW-YYYY-MM-DD.md`.
 
 ```markdown
 ---
-id: REVIEW-{{DATE}}
+id: REVIEW-YYYY-MM-DD
 type: cost-review
 owner: product-lead
 status: recorded
-created: {{DATE}}
+created: YYYY-MM-DD
 budget_version: <date the budget doc was last updated>
 window: <last 7 days | since-last-review | custom>
 ---
 
-# AI cost review — {{PROJECT_NAME}} — {{DATE}}
+# AI cost review — {{PROJECT_NAME}} — YYYY-MM-DD
 
 ## Headline
 _One sentence the founder reads in the inbox / Slack scroll. If only this line is read, the

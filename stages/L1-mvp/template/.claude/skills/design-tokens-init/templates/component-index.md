@@ -45,7 +45,7 @@ id: components
 type: design
 owner: designer
 status: active
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # Component index — {{PROJECT_NAME}}
@@ -124,7 +124,7 @@ search will find it. Delete it, and keep the row here with the reason.
 
 | Component | Why retired | On |
 |---|---|---|
-| `CTAButton` | was `Button variant="primary"` all along — merged | {{DATE}} |
+| `CTAButton` | was `Button variant="primary"` all along — merged | YYYY-MM-DD |
 ```
 
 ## The rule that goes with it

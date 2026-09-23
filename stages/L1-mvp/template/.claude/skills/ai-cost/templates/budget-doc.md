@@ -9,7 +9,7 @@ id: ai-cost-budget
 type: budget
 owner: product-lead
 status: declared
-updated: {{DATE}}
+updated: YYYY-MM-DD
 ---
 
 # AI cost budget — {{PROJECT_NAME}}
