@@ -1,7 +1,11 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { REGISTRY_FILE } from './paths.js';
+import { writeFileAtomic, withLock } from './atomic.js';
 
+// Reads are forgiving (a portfolio view must not die on a bad file). WRITES are not: a registry
+// that cannot be parsed read as "no projects", and the next save wrote that empty list back over
+// every entry on the machine (IDEA-121). A writer now refuses, and says which file to look at.
 function load() {
   if (!existsSync(REGISTRY_FILE)) return { projects: [] };
   try {
@@ -11,9 +15,27 @@ function load() {
   }
 }
 
-function save(data) {
+function loadForWrite() {
+  if (!existsSync(REGISTRY_FILE)) return { projects: [] };
+  const raw = readFileSync(REGISTRY_FILE, 'utf8');
+  let data;
+  try { data = JSON.parse(raw); } catch {
+    throw new Error(`${REGISTRY_FILE} can't be parsed, so BOSS won't write over it. Fix the JSON or move the file aside, then retry.`);
+  }
+  if (!Array.isArray(data?.projects)) data = { ...data, projects: [] };
+  return data;
+}
+
+// Every write is read-modify-write under one lock, saved atomically. `fn` mutates `data` and
+// returns a result; returning `undefined` from a no-op is fine — `changed === false` skips the save.
+function mutate(fn) {
   mkdirSync(dirname(REGISTRY_FILE), { recursive: true }); // ensure ~/.boss exists
-  writeFileSync(REGISTRY_FILE, JSON.stringify(data, null, 2) + '\n');
+  return withLock(REGISTRY_FILE, () => {
+    const data = loadForWrite();
+    const { result, changed = true } = fn(data);
+    if (changed) writeFileAtomic(REGISTRY_FILE, JSON.stringify(data, null, 2) + '\n');
+    return result;
+  });
 }
 
 export function listProjects() {
@@ -22,11 +44,12 @@ export function listProjects() {
 
 // Upsert by absolute path — a project is identified by where it lives on disk.
 export function registerProject(entry) {
-  const data = load();
-  const idx = data.projects.findIndex((p) => p.path === entry.path);
-  if (idx >= 0) data.projects[idx] = { ...data.projects[idx], ...entry };
-  else data.projects.push(entry);
-  save(data);
+  mutate((data) => {
+    const idx = data.projects.findIndex((p) => p.path === entry.path);
+    if (idx >= 0) data.projects[idx] = { ...data.projects[idx], ...entry };
+    else data.projects.push(entry);
+    return {};
+  });
 }
 
 export function findByPath(absPath) {
@@ -81,31 +104,31 @@ export function onDisk(entry) {
 // death that didn't happen, in the one surface that tells a founder how their ventures have gone.
 // BOSS has no business tracking a project it is no longer installed in.
 export function deregisterProject(absPath) {
-  const data = load();
-  const before = data.projects.length;
-  data.projects = data.projects.filter((p) => p.path !== absPath);
-  if (data.projects.length === before) return false;
-  save(data);
-  return true;
+  return mutate((data) => {
+    const before = data.projects.length;
+    data.projects = data.projects.filter((p) => p.path !== absPath);
+    const changed = data.projects.length !== before;
+    return { result: changed, changed };
+  });
 }
 
 export function retireProject(absPath, retiredOn) {
-  const data = load();
-  const p = data.projects.find((p) => p.path === absPath);
-  if (!p) return null;
-  p.status = 'retired';
-  p.retired_on = retiredOn;
-  save(data);
-  return p;
+  return mutate((data) => {
+    const p = data.projects.find((p) => p.path === absPath);
+    if (!p) return { result: null, changed: false };
+    p.status = 'retired';
+    p.retired_on = retiredOn;
+    return { result: p };
+  });
 }
 
 // Reverse a retirement (the guardrail: retiring is reversible). Returns the entry or null.
 export function reviveProject(absPath) {
-  const data = load();
-  const p = data.projects.find((p) => p.path === absPath);
-  if (!p) return null;
-  delete p.status;
-  delete p.retired_on;
-  save(data);
-  return p;
+  return mutate((data) => {
+    const p = data.projects.find((p) => p.path === absPath);
+    if (!p) return { result: null, changed: false };
+    delete p.status;
+    delete p.retired_on;
+    return { result: p };
+  });
 }
