@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Put {{PROJECT_NAME}} where a real user can hit it, the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz actually on), picks the cheapest reversible host, deploys, checks the live thing actually answers, asks once who hears when it goes down, hands back the live URL and rollback. Usage - /ship [--preview | --rollback]
+description: Put {{PROJECT_NAME}} where a real user can hit it, and know when it stops answering. The CD half of building - a pre-flight (no secrets in the client, authz on), the cheapest reversible host, a live check, who hears when it's down, deploy-on-push once earned, the rollback. Usage - /ship [--preview | --rollback]
 ---
 
 # /ship — localhost is not shipped
@@ -132,6 +132,32 @@ real answer: say once that the founder will hear about an outage from a user, re
 ask again. The next `/ship` reads the profile instead of asking. (The depth — what else runs
 unattended and who gets told when it fails — is `boss craft automation`.)
 
+### 3c. Shipping this by hand again? Offer to make the push deploy (once)
+**The first ship is by hand on purpose** — you learn the recipe. The signal that it's been learned is
+this: **the stack profile already exists and nothing deploys on push** — you are running `/ship` for the
+same thing a second time. Then, and not before, offer once: *"you've shipped this by hand twice; want a
+push to `main` to do it?"*
+
+If yes, the cheapest rung first:
+
+- **The host's own git integration** — most hosts deploy on push and build a preview per branch once
+  the repo is connected. One setting, nothing to maintain. Usually the whole answer.
+- **A CI job** — only when the host has no integration or the deploy needs a step it can't run. One job,
+  not a matrix.
+
+Either way, **two things travel with it, or it isn't safe to hand over:**
+
+1. **The smoke gates the deploy.** The command in `.boss/smoke.json` runs before the deploy, and a red
+   one stops it. Without that, every push is an unreviewed deploy.
+2. **Step 3b runs without you.** Nobody is at the keyboard to hit the live URL anymore, so the pipeline
+   does it after the deploy and fails loudly if it doesn't answer, or the step 3b channel is what
+   catches it. If 3b was answered `not yet`, say once: *from here, a broken deploy reaches users before
+   it reaches you.* Don't re-ask the 3am question.
+
+Write *"deploys on push"* into the stack profile so this is never offered again, and name the new
+rollback (usually the host's *redeploy previous*, or a revert commit). Declined is fine; record it and
+don't re-offer. `--preview` is the one-branch version of the same thing.
+
 ### 4. Name the rollback path (every time)
 State the one command/click that restores the last-good build — and the honest caveat: **rollback restores
 the app, not the database.** A migration that already ran does not un-run on rollback. If this deploy
@@ -215,6 +241,8 @@ too, and a small current corpus beats a big one with good search. Depth is in `b
   actually use is — a URL, an install line, a TestFlight build, an endpoint with an example.
 - **Shipped means checked, and someone hears when it breaks.** Hit the live artifact before calling
   it shipped; ask the 3am question once per stack, set up one rung or record `not yet`, never re-ask.
+- **Deploy-on-push is earned by the second hand ship, and carries its gates.** Offer once; the smoke
+  gates the deploy and the live check runs after it, or the offer isn't made.
 - **Reversibility is part of shipping.** No deploy without a named revert path, and an honest word that the
   database isn't part of it.
 - **Offer the flag, don't impose it.** For a risky/AI-mediated deploy, offer to ship it dark / behind a kill

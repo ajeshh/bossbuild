@@ -37,6 +37,12 @@ each short-lived, integrated continuously.
   green and merge small — that's the whole discipline. Add the hosted pipeline when surface area grows,
   not before (premature ceremony — Principle #2). Don't cargo-cult a 12-stage GitHub Actions matrix onto
   a repo two people share.
+- **The moment it's outgrown is concrete: when a push deploys by itself.** Until then the smoke runs
+  on the laptop of whoever is about to deploy, which is the right place. Once a push to `main` ships
+  (`/ship` offers it after the second hand ship), nobody's laptop is in the path — the smoke has to run
+  where the deploy runs, gate it, and check the live URL after. That is the first real pipeline, and it
+  is one job. (A second person who merges without running the smoke is the other signal; it gets the
+  same one job.)
 
 ## Worktrees are the AI-parallelism primitive — capped at your review capacity
 

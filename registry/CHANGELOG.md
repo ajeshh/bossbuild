@@ -39,13 +39,26 @@ rule above still applies to the whole section once it is stamped.
 > `/ship` now checks the live thing actually answers before it calls it shipped, and asks once who
 > finds out if it goes down at 3am — then sets up the cheapest answer with you (the host's logs, a
 > free uptime check, or errors logged somewhere you can read), or records *not yet* and never asks again.
+> Ship the same thing by hand twice and it offers, once, to make a push to `main` deploy it — with
+> your smoke check gating the deploy and the live check running after. Projects unlocking MVP also
+> get a working rule for anything that runs while you sleep: three questions before it runs, the
+> failure channel named before the trigger.
 
 - **`/ship` step 3b — is it up, and who hears when it isn't (IDEA-122 slice 1).** After the deploy,
   hit the live artifact the way a stranger would (a smoke against production); a green deploy serving
   an error is not shipped. Once per stack, the 3am question, one rung set up (host logs → an external
   uptime check → errors with a timestamp) or `not yet`, written into the stack profile so no later
-  `/ship` asks. `--rollback` verifies the restored build the same way. CD-when-earned and
-  running-without-you are slices 2 and 3, not built.
+  `/ship` asks. `--rollback` verifies the restored build the same way.
+- **`/ship` step 3c — deploy-on-push when earned (IDEA-122 slice 2).** Offered once, when the stack
+  profile exists and nothing deploys on push — the second hand ship. Host's git integration before a
+  CI job; the `.boss/smoke.json` command gates the deploy and step 3b's live check runs after it, or
+  the offer isn't made; `not yet` on the 3am question is named once as the cost. `git-workflow.md`
+  and the MVP rules now name the moment `/smoke`-as-CI is outgrown: a push that deploys by itself.
+- **Running without you (IDEA-122 slice 3).** One line in the MVP working rules carries
+  `automation.md`'s three questions for anything scheduled or unattended — blast radius, a pass/fail
+  signal, who is told when it fails — and points at the practice for the rest. Lands at `boss unlock mvp`; an existing
+  project's CLAUDE.md is the founder's and sync doesn't rewrite it (`mentor-architect` carries the
+  same questions and does sync).
 
 - **`/ux-check` step 2 — render when the host can (IDEA-119).** A built-in launch-and-drive command
   is named as a class alongside the dev server and a browser you added; the session holding the
