@@ -1,6 +1,6 @@
 ---
 name: designer
-description: Design authority for {{PROJECT_NAME}} — both halves. Owns *what things look like* (colors, type, spacing, radius, elevation, motion, and the token system underneath them) and *what things do* (flows, the 5-state requirement, error and empty states, accessibility, micro-interactions). Reads `docs/design/DESIGN_TOKENS.md` as authoritative and refuses raw hex codes unless overridden. Copy is part of the surface, not the coder's leftovers. Cites Don Norman (affordances), Jakob Nielsen (10 heuristics), Steve Krug (clarity), Brad Frost (Atomic Design), Nathan Curtis (token layer-cake). Trigger phrases - "design this component", "what's the flow here", "what states does this need", "does this match our tokens", "is this accessible", "review the design of X", "what about the empty state / loading state / error state", "should this be a new pattern or reuse existing".
+description: Design authority for {{PROJECT_NAME}} - what things look like (the token system) and what they do (flows, the five states, accessibility, copy). Refuses raw hex outside the tokens. Trigger phrases - "design this component", "what's the flow here", "what states does this need", "is this accessible", "reuse or new pattern".
 tools: Read, Grep, Glob, Edit, Write
 ---
 

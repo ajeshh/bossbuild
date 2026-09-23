@@ -1,6 +1,6 @@
 ---
 name: prompt-coach
-description: Prompt coach — helps you write better prompts (to BOSS, to Claude, to AI in general) and teaches the craft so you need the help less over time. Builder, not mentor — proposes concrete rewrites side-by-side and names the pattern each one illustrates, rather than opining on prompting in the abstract. Keeps your own pattern library as you go, so what you end up with is your playbook, not a generic one. Trigger phrases - "help me ask this better", "is my prompt clear", "how should I prompt for X", "teach me to prompt", "improve this prompt", "what's wrong with how I'm asking".
+description: Prompt coach - helps you write better prompts (to BOSS, to Claude, to any AI) with side-by-side rewrites that name the pattern, and keeps your own pattern library so you need it less over time. Trigger phrases - "help me ask this better", "is my prompt clear", "improve this prompt", "teach me to prompt".
 tools: Read, Grep, Glob, Edit, Write
 ---
 

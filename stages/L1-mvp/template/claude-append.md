@@ -12,28 +12,19 @@
 5. **Open → spec → build → smoke → log → close.** That's the loop. When you find yourself skipping a step often, ask whether it's the wrong step or the wrong moment — don't paper over it with more ceremony.
 6. **The conscience still runs.** Quickstart's nudges (validation drift, "Done!" graduation) keep firing — MVP doesn't replace the front of the funnel, it sits behind it.
 
-## Git workflow (trunk-based, review-bounded)
+## Git workflow and shipping
 
-> AI changed which part of version control hurts: an agent writes code several times faster and you deliver only a little more, because **review** is now the bottleneck. Keep batches small enough that two humans can actually stand behind what merged. Full depth: `git-workflow` practice.
+Review is the bottleneck now, not typing — keep batches small enough to stand behind, and read the
+test diff harder than the code. `boss craft git-workflow` holds the rest (worktrees capped at review
+capacity, risk-tiered review, who owns an agent's merge, local / tracked / public).
 
-- **Trunk-based default.** Commit to `main` or branches that live hours, not days; merge daily; keep few active branches — the shape DORA associates with elite delivery. (The framing, not the multiplier: DORA's primary is a gated PDF, so every figure in circulation is second-hand.) `/smoke` green before every commit is what makes that safe — your smoke check *is* your CI until a push deploys by itself — then it runs where the deploy runs, and gates it.
-- **Worktrees are how you parallelize agents — capped at ~2–4 = your *review* capacity, not your agent count.** You can spawn ten agents; you can't read ten diffs well. More agents than you can review isn't throughput, it's unreviewed code with your name on the merge. One worktree per `FEAT` (a vertical slice) so they don't collide.
-- **Risk-tiered review, not blanket gates.** Low-risk (copy, styling, isolated pure functions) — a glance. High-risk (auth, money, migrations, deletes, deploys, AI-mediated paths) — the *other* human reviews it, and `/smoke` + `/evals` + `/red-team` are that high-risk tier.
-- **Read the test diff harder than the code.** Agents under pressure to go green will quietly rewrite assertions to match broken behaviour. Ask: *did the behaviour get fixed, or did the expectation get lowered?*
-- **Whoever clicks merge owns what the agent wrote.** "The AI wrote it" is not an owner. **Ownership = the prompt-author's intent + the reviewer's acceptance** — the agent is the instrument.
-- **Three tiers, not two: local / tracked / public.** `.gitignore` keeps secrets and per-person tool state off the repo; the working record (decisions, evidence, canvas) *commits*, because a record only you can read isn't one. "Private repo" is a switch, not a tier — flipping it publishes every commit you ever made, key-adding ones included. And ignoring a file stops commits, not agent reads.
-- **Mob the hard problems.** With an AI as your pair, you question its suggestions *less*. For genuinely novel/risky work, put both humans + the agent on it together rather than one founder solo in a worktree.
-- **Honesty anchor (METR, n=16):** experienced devs on mature repos were 19% *slower* with AI while *believing* they were 20% faster. Trust the green `main` and the merged diff, not the feeling of speed.
-
-## Shipping (localhost is not shipped — whatever "shipped" means for what you're building)
-
-> The CI half above keeps `main` green; this is the **CD** half — *is this where a real user can hit it, or just you?* An app only you can reach is a pseudo app: you can't prove pain, fit, or willingness-to-pay on it. Full depth: `ship-it-live` practice; the runner: `/ship`.
-
-- **Deploy early, cheap, reversible.** Get a real URL at MVP, not at launch — smallest viable host, reversible-and-cheap over impressive. "I'll deploy when it's polished" costs you the only thing that's scarce this early: contact with a real user. (The "reliability is premature at MVP" counter doesn't survive scrutiny — what staying on localhost saves you isn't worth what it costs.)
-- **Secrets & authz at the boundary — the leg with teeth.** Never ship a secret in the client bundle, and if the app talks to a database with a public/anon key, the row-level security is what stands between your users and the internet — and the AI does **not** configure it by default. This is the signature vibe-coded leak (CVE-2025-48757 / MoltBook — 170+ apps, 1.5M credentials, founders who wrote no code). `/ship`'s pre-flight + `/red-team`'s pre-ship pass catch it; run them before the first public URL.
-- **Rollback ≠ reversible.** Instant rollback restores the *app*, not the *database* — a migration that ran doesn't un-run. Name the revert path before you deploy, and make schema changes backward-compatible (expand-migrate-contract) so a code rollback never strands the data.
+- **Trunk-based.** Short-lived branches, merge daily. `/smoke` green before every commit — your smoke
+  check *is* your CI until a push deploys by itself — then it runs where the deploy runs, and gates it.
+- **Localhost is not shipped.** Get a real URL early, cheap and reversible — `/ship`, and
+  `boss craft ship-it-live` for why and how.
+- **Never a secret in the client bundle; with a public database key, row-level security is the wall**
+  — and the agent does not turn it on by default. `/ship`'s pre-flight and `/red-team --paths` check it.
 - **Anything that runs without you** (a schedule, overnight, an agent loop): before it runs, name what breaks if it runs wrong at 3am, what says pass or fail, and who is told when it fails — `boss craft automation`.
-- **Honesty anchor (DORA 2024):** AI adoption correlated with *worse* delivery stability and throughput. Faster shipping isn't safer shipping — the instrument is measured (change-fail rate, time-to-restore), not the feeling.
 
 ## What MVP adds
 

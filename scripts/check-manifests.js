@@ -284,17 +284,46 @@ function skillDescriptions(stageId) {
   return out;
 }
 
+// Agents carry the same always-on cost — the host lists every agent's description so it can pick
+// one — and had no cap and no line in the printed bill: eleven at MVP averaged 596 B against the
+// skills' 326, with one at 1,087 (IDEA-121). Same cap, same reason, and the `/` prefix is dropped
+// in messages because an agent is not a slash command.
+function agentDescriptions(stageId) {
+  const dir = join(tplDir(stageId), '.claude', 'agents');
+  const out = [];
+  if (!existsSync(dir)) return out;
+  for (const n of readdirSync(dir).filter((f) => f.endsWith('.md'))) {
+    const line = (readFileSync(join(dir, n), 'utf8').split('\n').find((l) => l.startsWith('description:')) || '');
+    out.push({ name: n.replace(/\.md$/, ''), line, bytes: Buffer.byteLength(line, 'utf8') + 1, agent: true });
+  }
+  return out;
+}
+
+// The rung's CLAUDE.md contribution: L0 ships CLAUDE.md itself, every later rung appends a block.
+// Loaded on every turn like the descriptions, and the largest single part of the bill at MVP.
+function claudeMdBytes(stageId) {
+  for (const f of ['CLAUDE.md', 'claude-append.md']) {
+    const p = join(tplDir(stageId), f);
+    if (existsSync(p)) return Buffer.byteLength(readFileSync(p, 'utf8'), 'utf8');
+  }
+  return 0;
+}
+
 function checkDescriptionBudget() {
   const errors = [];
   const totals = [];
   for (const stageId of STAGE_ORDER) {
-    const descs = skillDescriptions(stageId);
+    const skills = skillDescriptions(stageId);
+    const agents = agentDescriptions(stageId);
+    const descs = [...skills, ...agents];
     // Every authored rung reports, zeros included — an unauthored one has nothing to say and
     // printing "0 B" for it would read as a measurement rather than an absence.
     if (descs.length) {
-      totals.push({ stageId, count: descs.length, bytes: descs.reduce((a, d) => a + d.bytes, 0) });
+      const sum = (xs) => xs.reduce((a, d) => a + d.bytes, 0);
+      totals.push({ stageId, count: skills.length, bytes: sum(skills), agentBytes: sum(agents), claudeMd: claudeMdBytes(stageId) });
     }
     for (const d of descs) {
+      const who = d.agent ? `the ${d.name} agent` : `/${d.name}`;
       // A description is a YAML plain scalar, and ` #` starts a comment in one. The host honours
       // that: /extract's description read "…PRINCIPLE #1 as a skill…" and /skill-doctor reported
       // it at "< 20" tokens — the listing had been cut at "PRINCIPLE" for as long as the line
@@ -303,14 +332,14 @@ function checkDescriptionBudget() {
       // Same family as the ` - ` house style that already avoids `: ` — one more character.
       if (/ #/.test(d.line)) {
         errors.push(
-          `${stageId}: /${d.name}'s description contains " #", which YAML reads as the start of a `
+          `${stageId}: ${who}'s description contains " #", which YAML reads as the start of a `
           + 'comment — the host truncates the description there. Write "no. 1", "Principle 1", or '
           + 'drop the hash.',
         );
       }
       if (d.bytes > DESCRIPTION_CAP) {
         errors.push(
-          `${stageId}: /${d.name}'s description is ${d.bytes} B (cap ${DESCRIPTION_CAP}). It is read on `
+          `${stageId}: ${who}'s description is ${d.bytes} B (cap ${DESCRIPTION_CAP}). It is read on `
           + 'EVERY turn in every project at this rung. A description says WHEN the skill fires; move '
           + 'the what into the body, which loads only when it runs.',
         );
@@ -501,15 +530,15 @@ export function reportManifests() {
   // The standing per-turn cost, printed whether or not anything failed. It is the number that
   // was invisible for 48 skills; a check that only speaks when something breaks would let it go
   // back to being invisible the moment it was under the cap.
-  const carried = [];
-  let running = 0;
-  for (const t of budget.totals) {
-    running += t.bytes;
-    carried.push(`${t.stageId.replace(/^L\d-/, '')} ${(t.bytes / 1024).toFixed(1)}K`);
-  }
-  console.log(`    always-on descriptions: ${carried.join(' · ')} — a project at MVP carries `
-    + `${((budget.totals.filter((t) => ['L0-quickstart', 'L1-mvp'].includes(t.stageId))
-      .reduce((a, t) => a + t.bytes, 0)) / 1024).toFixed(1)}K of them on every turn.`);
+  // Skill descriptions, agent descriptions and the CLAUDE.md block, per rung — the three things a
+  // founder's session carries on every turn. Printing skills alone understated the bill by ~2x.
+  const K = (b) => `${(b / 1024).toFixed(1)}K`;
+  const carried = budget.totals.map((t) => `${t.stageId.replace(/^L\d-/, '')} ${K(t.bytes + t.agentBytes + t.claudeMd)}`);
+  const mvp = budget.totals.filter((t) => ['L0-quickstart', 'L1-mvp'].includes(t.stageId));
+  const part = (k) => mvp.reduce((a, t) => a + t[k], 0);
+  console.log(`    always-on per rung: ${carried.join(' · ')} — a project at MVP carries up to `
+    + `${K(part('bytes') + part('agentBytes') + part('claudeMd'))} on every turn `
+    + `(skill descriptions ${K(part('bytes'))} · agent descriptions ${K(part('agentBytes'))} · CLAUDE.md ${K(part('claudeMd'))}).`);
   if (exempt.length) {
     console.log(`    (dormant-by-design hooks, unregistered on purpose: ${exempt.join(', ')})`);
   }

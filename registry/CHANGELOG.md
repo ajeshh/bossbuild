@@ -95,6 +95,19 @@ rule above still applies to the whole section once it is stamped.
   (`**/test/**` no longer matches `src/latest/`), and `not_path_glob` is expanded once per check
   instead of once per file.
 
+- **An MVP project carries about a fifth less on every turn (IDEA-121 tier 3).** Measured in a fresh
+  scaffold: 30.3KB → 24.0KB (~7.6k → ~6.0k tokens) of skill descriptions, agent descriptions and
+  CLAUDE.md, loaded on every turn. The MVP block's *Git workflow* and *Shipping* sections (9.4KB of
+  `claude-append.md`) repeated the `git-workflow` and `ship-it-live` practices; they are now one short
+  section of the rules that should hold on every turn — trunk-based with `/smoke` as CI until a push
+  deploys by itself, localhost is not shipped, never a secret in the client bundle and row-level
+  security is the wall, and the three questions before anything runs without you — each pointing at
+  `boss craft` for the rest. Nine agent descriptions (up to 1,087 B) were cut to what decides when the
+  agent fires, and **agents now fall under the same 420 B description cap as skills**, with a test
+  that the gate fails. `check:manifests` prints the whole bill — skills, agents and CLAUDE.md — where
+  it used to print skills alone and understate it by about half. An existing project gets the agent
+  descriptions through `boss sync`; its CLAUDE.md block does not sync yet (IDEA-121, open).
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched

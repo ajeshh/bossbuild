@@ -70,6 +70,12 @@ test('the cap is enforced by a gate that actually fails', () => {
   assert.equal(gateExit(root), 1, 'an oversized description must fail the release gate');
 });
 
+test('an agent description over the cap fails the gate too — agents are listed on every turn as well', () => {
+  const root = sandbox();
+  const victim = join(root, 'stages', 'L1-mvp', 'template', '.claude', 'agents', 'tester.md');
+  writeFileSync(victim, readFileSync(victim, 'utf8').replace(/^description: /m, `description: ${'x'.repeat(CAP)} `));
+  assert.equal(gateExit(root), 1, 'an oversized agent description must fail the release gate');
+});
 test('a " #" in a description fails the gate — YAML reads it as a comment and the host truncates there', () => {
   // Found by running /skill-doctor in a scaffolded project (2026-09-12): /extract listed at "< 20"
   // tokens because its description said "PRINCIPLE #1". Same proof shape as the cap test above.

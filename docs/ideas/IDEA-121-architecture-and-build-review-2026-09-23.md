@@ -58,9 +58,9 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
 
 ## Tier 3 — always-on cost and drift in what ships
 
-- [ ] **MVP per-turn bill ~7.6k tokens** (skills 10.1KB + agents 6.6KB + CLAUDE.md 13.6KB). L1
+- [x] **MVP per-turn bill ~7.6k tokens** (skills 10.1KB + agents 6.6KB + CLAUDE.md 13.6KB). L1
   `claude-append.md` "Git workflow" + "Shipping" (~4KB) duplicate practices. Fix: 2-line pointers to `boss craft`.
-- [ ] **Agent descriptions uncapped and uncounted.** mentor-capital 1,073B, designer 871B; check-manifests'
+- [x] **Agent descriptions uncapped and uncounted.** mentor-capital 1,073B, designer 871B; check-manifests'
   printed bill omits agents + CLAUDE.md. Fix: apply DESCRIPTION_CAP to agents; count them.
 - [ ] **`{{DATE}}` filled at sync** (`src/sync.js:445`, 16 files) → 9 files "changed" daily; stale
   literal dates Claude obeys (`cost-review` REVIEW-<install date>). ✓v. Fix: leave a runtime placeholder.
@@ -71,6 +71,9 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
 - [ ] **secrets-guard bypasses** (`cat .env|head`, `cat <.env`, Grep tool, .pem/.ssh/.aws). Fix: boundary
   chars, Grep/Glob, mirror deny globs; header says speed bump, not boundary.
 - [ ] Mentor block copied into 6 files with no detector — one byte-identity assertion.
+
+Tier 3, first two items fixed 2026-09-23: fresh MVP scaffold 30.3KB → 24.0KB per turn (~7.6k → ~6.0k
+tokens). The CLAUDE.md block still does not sync, so existing projects keep the long version until it does.
 
 ## Tier 4 — how BOSS is built
 
