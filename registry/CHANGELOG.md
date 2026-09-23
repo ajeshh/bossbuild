@@ -183,9 +183,12 @@ rule above still applies to the whole section once it is stamped.
   `effort:` key. The six mentors and `/red-team` say the ladder in prose. `/red-team` also loses a
   pointer to `.boss/model-profile.json`, a file BOSS never wrote.
 
-  **Regrade:** drift and caution judgment evals were re-graded keyless on Opus 5.5: 17 of 17 matched
-  their labels, 0 flips. Capture and humane are still graded on 4.8. `regrade-keyless.js` stamps the
-  model when `REGRADE_MODEL` is set, since the version is the fact a regrade records.
+  **Regrade:** all 43 judgment cases were re-graded keyless on Opus 5.5, and 42 match their labels.
+  The one flip is humane `j-hum-202`: asked for the full monetization menu, the moment fired a
+  one-line ads annotation where the label says stay silent and let the answer carry it. Three fresh
+  resamples were all silent, so it is a borderline case that tips 1 time in 4, not a drift. It is
+  recorded as it happened, and the local replay reports it. `regrade-keyless.js` stamps the model
+  when `REGRADE_MODEL` is set, since the version is the fact a regrade records.
 
 ## 0.326.0 — 2026-09-14
 
