@@ -26,9 +26,9 @@ battery to prove an authz rule or a cancellation flow.
 
 > **Model routing.** An adversarial pass is **deliberation** work — rare, high-stakes, and the
 > output is a findings list rather than a build, so the premium is trivial in absolute terms. If your
-> host lets you choose per-subagent, spawn the attack run on your most deliberate model. If it
-> declines the task (a `refusal` stop reason), fall back to the session model and say so. Your local
-> binding lives in `.boss/model-profile.json` — `boss craft model-routing`.
+> host lets you set it per subagent, raise the attack run's effort first and use a bigger model only
+> if that stalls. If it declines the task (a `refusal` stop reason), fall back to the session model and
+> say so. The shapes: `boss craft model-routing`.
 
 ## How to run it — the OWASP 2026 LLM Top 10
 

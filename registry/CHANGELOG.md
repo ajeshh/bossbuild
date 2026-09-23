@@ -54,6 +54,10 @@ rule above still applies to the whole section once it is stamped.
 > all of it. One line sync can't reach because it's yours: if your `CLAUDE.md` says *"This project
 > is in **Quickstart** mode"* and you've unlocked MVP, delete that sentence (`boss status` names the
 > mode).
+>
+> When a mentor's call matters, BOSS now says to raise your host's effort for that agent first, and
+> move to a bigger model only if it stalls on the same question twice. That's cheaper than switching
+> models, and it is the current guidance for the newest ones. BOSS still pins neither.
 
 - **`/ship` step 3b — is it up, and who hears when it isn't (IDEA-122 slice 1).** After the deploy,
   hit the live artifact the way a stranger would (a smoke against production); a green deploy serving
@@ -166,6 +170,22 @@ rule above still applies to the whole section once it is stamped.
   `check-manifests` gains `checkAgentTools`: a verb right before a backticked `boss …` or `/skill`
   in an agent whose `tools:` lacks Bash or Skill fails the gate. Measured on the pre-fix tree it
   catches 3 of the 5 found by hand, and its stated limit names the two it misses.
+
+- **Effort before a bigger model (`/recalibrate`, event: Opus 5.5 and per-model effort at host
+  2.1.280).** `model-routing.md`'s three shapes are re-read against the host docs and Anthropic's
+  *What a task costs on Opus 5.5*:
+  - **deliberation** is now a ladder: more effort on the same model, then a bigger model on a second
+    stall.
+  - **volume**'s lever is a check the model can run, not more effort.
+  - **cheap-bulk** now inherits by default: since host 2.1.198 even the built-in search agent takes
+    the session model, and an inheriting subagent inherits its price.
+  The 2026-09-12 effort question is closed: yes for deliberation's first step, and still no shipped
+  `effort:` key. The six mentors and `/red-team` say the ladder in prose. `/red-team` also loses a
+  pointer to `.boss/model-profile.json`, a file BOSS never wrote.
+
+  **Regrade:** drift and caution judgment evals were re-graded keyless on Opus 5.5: 17 of 17 matched
+  their labels, 0 flips. Capture and humane are still graded on 4.8. `regrade-keyless.js` stamps the
+  model when `REGRADE_MODEL` is set, since the version is the fact a regrade records.
 
 ## 0.326.0 — 2026-09-14
 

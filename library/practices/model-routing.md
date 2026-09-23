@@ -5,9 +5,9 @@ owner: mentor-architect
 status: active
 host: host-neutral
 curve: craft
-last_reviewed: 2026-08-01
-review_by: 2027-08-01
-provenance: Extracted at v0.135.0 from a real mistake. BOSS pinned `model: fable` in 8 shipped agent files + hardcoded model ids and per-token prices in `.boss/model-profile.json`. Within four weeks the pin was stale (the session model moved on), the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install — while `/recalibrate`, the discipline built to catch exactly this, never fired. The audit (REVIEW-2026-07-28 §E2) caught it instead. Root cause named by BOSS's own PRINCIPLE #3 - a model name buried in an agent file is *locked into code*; the reusable thing is the INTENT, which is stable, not the name, which is not. · **one paragraph added 2026-09-12 (v0.321.0), clock NOT moved** — the host's `effort:` frontmatter (2.1.267) is a shape knob, not a name; artifacts still inherit; the binding question goes to the next model-recalibration pass.
+last_reviewed: 2026-09-23
+review_by: 2027-09-23
+provenance: Extracted at v0.135.0 from a real mistake. BOSS pinned `model: fable` in 8 shipped agent files + hardcoded model ids and per-token prices in `.boss/model-profile.json`. Within four weeks the pin was stale (the session model moved on), the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install — while `/recalibrate`, the discipline built to catch exactly this, never fired. The audit (REVIEW-2026-07-28 §E2) caught it instead. Root cause named by BOSS's own PRINCIPLE #3 - a model name buried in an agent file is *locked into code*; the reusable thing is the INTENT, which is stable, not the name, which is not. · **one paragraph added 2026-09-12 (v0.321.0), clock NOT moved** — the host's `effort:` frontmatter (2.1.267) is a shape knob, not a name; artifacts still inherit; the binding question goes to the next model-recalibration pass. · **/recalibrate 2026-09-23 (event: Opus 5.5, effort per-model at host 2.1.280)** — deliberation became a ladder (effort first, bigger model on a second stall); volume's lever is a check; cheap-bulk now inherits by default (built-in search agent inherits since 2.1.198). Binding still nowhere shipped.
 provenance_public: Extracted from a real mistake. BOSS pinned a model alias in eight shipped agent files and hardcoded model ids and per-token prices. Within four weeks the pin was stale, the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install. Root cause is BOSS's own PRINCIPLE #3 — a model name buried in an agent file is locked into code; the reusable thing is the intent, which is stable, not the name, which is not.
 ---
 
@@ -48,9 +48,9 @@ You almost never need "a model." You need one of three shapes. Name the shape; l
 
 | Shape | The work | The question it answers |
 |---|---|---|
-| **deliberation** | rare, high-stakes, ambiguous. A mentor's judgment call, an adversarial pass, a verdict that shapes a decision. | *Would being wrong here cost a week?* If yes, deliberation is worth its premium — precisely **because** it's rare, the premium is trivial in absolute terms. |
-| **volume** | frequent, well-specified, the default. Building, editing, reading, the session's actual work. | *Is this most of what happens?* Then it wants the balanced default the founder already chose. |
-| **cheap-bulk** | high-frequency, low-stakes, mechanical, or public-facing at scale. Classification, extraction, a demand surface anyone can hit. | *Could this run ten thousand times?* Then unit cost dominates and quality has headroom. |
+| **deliberation** | rare, high-stakes, ambiguous. A mentor's judgment call, an adversarial pass, a verdict that shapes a decision. Also: a long run nobody supervises, a problem with no pattern in the codebase yet. | *Would being wrong here cost a week?* If yes, deliberation is worth its premium — precisely **because** it's rare, the premium is trivial in absolute terms. **It is a ladder now, not a switch:** more effort on the model you're on first; a bigger model when that stalls on the same problem twice; back down once it's solved. |
+| **volume** | frequent, well-specified, the default. Building, editing, reading, the session's actual work. | *Is this most of what happens?* Then it wants the balanced default the founder already chose — at a middling effort, not the top one. **Its best lever is a check, not more thinking:** a test the model can run costs one turn; more effort costs every turn. |
+| **cheap-bulk** | high-frequency, low-stakes, mechanical, or public-facing at scale. Classification, extraction, lookups and log-reading, a demand surface anyone can hit. | *Could this run ten thousand times?* Then unit cost dominates and quality has headroom. **Inheriting is expensive here, and it is now the default everywhere:** every subagent that inherits the session model inherits its price, and since Claude Code v2.1.198 even the host's built-in search agent inherits rather than dropping to a small model. A cheap lookup tier is the operator's choice to make, in their own config. |
 
 **Most work is `volume`, and `volume` means "whatever the founder is already using."** That is not a
 cop-out — it's the correct default, and it's free.
@@ -67,15 +67,18 @@ The founder's host has already resolved the question, and the artifact stays por
 
 That sentence is true forever, on any host, and it hands the founder the decision instead of taking it.
 
-**A host axis that is not a model name, noted 2026-09-12 (Claude Code 2.1.267):** skills, commands and
-subagents can carry an `effort:` frontmatter key, and the host now honours it even on models whose
-default effort is pinned. That is a *shape* knob, not a *name* — "deliberation" can be spelled as
-effort on the same model rather than as a different model. The rule above does not change: a shipped
-artifact still says nothing and inherits, because an `effort:` key is one more host-specific line
-BOSS would sign up to sweep (the v0.218.0 cost), and the prose sentence already carries the intent to
-any host. The next model-recalibration pass (IDEA-014) should ask one question of the three shapes: *does any of them now
-want an effort level rather than a model, and if so, is that binding local (`.boss/model-profile.json`)
-or shipped?* Recommended: local — and only once a paid surface exists.
+**Effort is the first rung of deliberation, not a model (resolved 2026-09-23).** Skills, commands and
+subagents can carry an `effort:` frontmatter key (Claude Code 2.1.267), and since 2.1.280 effort is
+saved per model, so a level picked for one model does not follow you to the next. Anthropic's own
+guidance for the current generation is the ladder in the table: *"Try medium for well-scoped,
+day-to-day work. When medium stalls, try high. It spends more per turn than medium, but less than
+moving to a bigger model"*, and *"before you raise effort, check whether the model has a way to check
+its work"* (*What a task costs on Opus 5.5*, 2026-09-22). So the 2026-09-12 question, *does a shape now
+want an effort level rather than a model?*, is answered **yes, for deliberation's first step**. Where
+the binding lives is unchanged: **nowhere shipped.** An `effort:` key is one more host-specific line
+BOSS would sign up to sweep (the v0.218.0 cost), and levels differ per model (*"available levels
+depend on the model"*). The shipped sentence names the ladder in prose, and the founder sets it,
+per agent, in their host.
 
 **When you must bind concretely** — a paid API surface where you're spending real money per call, like
 a public demand page — bind it in **one place, locally, and say why**: a single config the operator

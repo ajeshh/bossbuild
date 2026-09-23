@@ -24,6 +24,9 @@
 //        → writes transcripts/<moment>/<id>.json in the exact format replay.js
 //          reads (same voice-hash stamping as regrade.js). Commit them; replay
 //          grades against them free on every commit.
+//        Set REGRADE_MODEL=<model id> to stamp which model the subagents ran on. The
+//        version IS the fact a regrade records (model-routing's honest exception); without
+//        it the stamp says only "keyless", and a later reader can't tell 4.8 from 5.5.
 //
 // decisionsFile schema (array): [{ moment, id, decision:"fires"|"silent", nudge:"…" }]
 // judgesFile schema   (array): [{ moment, id, verdict:"pass"|"fail",
@@ -105,7 +108,7 @@ function write(decisionsFile, judgesFile) {
     mkdirSync(outDir, { recursive: true });
     writeFileSync(join(outDir, `${d.id}.json`), JSON.stringify({
       recorded_against_voice_hash: voiceHash(d.moment),
-      model: 'claude-code-subagent (keyless)',
+      model: process.env.REGRADE_MODEL ? `${process.env.REGRADE_MODEL} (in-session subagents — keyless decision+judge passes)` : 'claude-code-subagent (keyless)',
       recorded_at: now,
       decision: fires ? 'fires' : 'silent',
       named_gap: !!j.names_specific_gap,
