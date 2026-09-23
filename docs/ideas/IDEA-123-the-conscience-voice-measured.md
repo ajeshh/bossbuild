@@ -3,7 +3,7 @@ id: IDEA-123
 type: idea
 kind: capability
 owner: Ajesh
-status: captured
+status: seedling
 proof: none
 proof_note: warrant is the craft curve and BOSS's own stated rule, not demand. The rule ("once, briefly, no sermon. One sentence.") is BOSS's; the measurement shows the output doesn't keep it.
 gist: The conscience's rules are right and its output doesn't keep them — measured on 17 Opus 5.5 nudges, median 97 words against a one-sentence rule, "Your call" in 11 of 17, a skill menu in 8. The judge never checks length or tics, so every one passed. Measure first, then tighten the frames, then re-grade.
