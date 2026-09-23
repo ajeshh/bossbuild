@@ -186,9 +186,14 @@ rule above still applies to the whole section once it is stamped.
   **Regrade:** all 43 judgment cases were re-graded keyless on Opus 5.5, and 42 match their labels.
   The one flip is humane `j-hum-202`: asked for the full monetization menu, the moment fired a
   one-line ads annotation where the label says stay silent and let the answer carry it. Three fresh
-  resamples were all silent, so it is a borderline case that tips 1 time in 4, not a drift. It is
-  recorded as it happened, and the local replay reports it. `regrade-keyless.js` stamps the model
-  when `REGRADE_MODEL` is set, since the version is the fact a regrade records.
+  resamples were all silent, so it was a borderline case that tipped 1 time in 4. The cause was in
+  the text: the eval's restatement of the humane lens said *"a conscience annotates"* and dropped
+  *who* annotates. `conscience-voicing.md` now says it outright (the answer carries the one-line
+  note on a menu request; the conscience stays silent), and the eval frame matches. On re-grade, both
+  menu cases stayed silent and all five should-fire cases still fired. `j-hum-101` fired correctly
+  but pointed the founder at desk research rather than at a person who would know; that is a
+  content miss, not a gate failure, and is carried into the voice pass. `regrade-keyless.js` stamps
+  the model when `REGRADE_MODEL` is set, since the version is the fact a regrade records.
 
 ## 0.326.0 — 2026-09-14
 

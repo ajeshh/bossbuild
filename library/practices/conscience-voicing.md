@@ -32,7 +32,10 @@ The two failure modes this prevents:
 - **Filtering the menu** — omitting an option BOSS disapproves of (a pricing model, a stack, a path).
   Withholding it "to protect them" is itself a *dignity cost*: it makes the choice for them. Present
   the full menu; annotate the one you're wary of. (See the [`mentor-capital`] metering axis: every
-  model is shown, each with its tension named — none withheld.)
+  model is shown, each with its tension named — none withheld.) **The answer does the annotating,
+  not the conscience.** When the founder asked for the options, the one-line tension belongs in the
+  answer and the conscience moment stays silent. Firing on top of an honest menu turns a note into
+  an alarm.
 - **Nagging** — raising a concern the founder has already heard and moved past. Repetition reads as
   *I don't trust you*.
 
