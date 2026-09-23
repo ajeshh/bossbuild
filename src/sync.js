@@ -123,6 +123,14 @@ function managedFiles(stageId, manifest, projectDir = null) {
       });
     }
   }
+  // The hooks' own package.json pins `"type": "module"`. Without it Node takes the module type from
+  // the founder's nearest package.json, and `"type": "commonjs"` (npm init's default) made every
+  // hook exit 1 at import — the conscience silently dead on every prompt (IDEA-121). Scaffold copies
+  // it; this line is what reaches a project scaffolded before it existed.
+  const hooksPkg = join(base, 'hooks', 'package.json');
+  if (existsSync(hooksPkg)) {
+    out.push({ kind: 'hook-lib', name: 'package.json', src: hooksPkg, rel: join('.claude', 'hooks', 'package.json') });
+  }
   // Loop specs live in .boss/loops/ (they are the hook's data; docs/ is the founder's). Each is
   // a managed markdown file with YAML frontmatter that the runtime parses.
   for (const l of manifest.loops || []) {

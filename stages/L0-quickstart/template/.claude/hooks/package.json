@@ -1,0 +1,4 @@
+{
+  "//": "BOSS hooks are ES modules. This pins that for Node, so a project whose own package.json says \"type\": \"commonjs\" (what npm init writes) cannot make them fail to load.",
+  "type": "module"
+}
