@@ -4,7 +4,6 @@ import {
 import { join, basename, resolve } from 'node:path';
 import { BOSS_ROOT, isBossRepo, resolveStageId } from './paths.js';
 import { listProjects } from './registry.js';
-import { isoDay } from './clock.js';
 
 // TWO destinations, and the difference is not cosmetic.
 //
@@ -68,26 +67,34 @@ function resolveBossSource() {
   return { root: null, how: null };
 }
 
-function bump(version, kind) {
-  const [x, y, z] = version.trim().split('.').map((n) => parseInt(n, 10));
-  if (kind === 'major') return `${x + 1}.0.0`;
-  if (kind === 'patch') return `${x}.${y}.${z + 1}`;
-  return `${x}.${y + 1}.0`; // minor (default)
-}
-
-function prependChangelog(file, version, date, lines) {
+// A promotion is a capability, so it lands as a bullet under `## Unreleased` and VERSION does not
+// move (DEC-019). This used to bump VERSION + package.json and insert a numbered section above the
+// first heading — which, once `## Unreleased` existed, put a version nobody stamped ABOVE it
+// (IDEA-121). The releaser stamps at publish; `boss learn` never picks a number.
+export function appendUnreleased(file, lines) {
   const body = readFileSync(file, 'utf8');
-  const entry = `## ${version} — ${date}\n\n${lines.map((l) => `- ${l}`).join('\n')}\n\n`;
-  const at = body.indexOf('\n## ');
-  if (at < 0) return writeFileSync(file, body.trimEnd() + '\n\n' + entry);
-  // Insert just before the first existing version heading.
-  writeFileSync(file, body.slice(0, at + 1) + entry + body.slice(at + 1));
+  const bullets = lines.map((l) => `- ${l}`).join('\n') + '\n';
+  const head = '\n## Unreleased\n';
+  const at = body.indexOf(head);
+  if (at < 0) {
+    // No Unreleased section yet: open one above the first version heading.
+    const first = body.indexOf('\n## ');
+    const section = `## Unreleased\n\n${bullets}\n`;
+    if (first < 0) return writeFileSync(file, body.trimEnd() + '\n\n' + section);
+    return writeFileSync(file, body.slice(0, first + 1) + section + body.slice(first + 1));
+  }
+  // Append at the end of the Unreleased section — just before the next heading.
+  const start = at + head.length;
+  const next = body.indexOf('\n## ', start);
+  const end = next < 0 ? body.length : next + 1;
+  const section = body.slice(start, end).trimEnd();
+  writeFileSync(file, body.slice(0, start) + (section ? section + '\n' : '\n') + bullets + '\n' + body.slice(end));
 }
 
-// Route a proven pattern UP into the BOSS library + record the version bump.
+// Route a proven pattern UP into the BOSS library + record it under `## Unreleased`.
 // Returns a result object; throws Error (with a usage-friendly message) on misuse.
 export function learn({
-  srcPath, category, mode, note, versionKind = 'minor', explicitVersion, confirmed = false,
+  srcPath, category, mode, note, confirmed = false,
 }) {
   if (!srcPath) throw new Error('usage: boss learn <path> --as <category> [--mode <mode>] [--note "..."]');
   if (!LEARN_CATEGORIES.includes(category)) {
@@ -163,28 +170,14 @@ export function learn({
     }
   }
 
-  // Bump VERSION + keep package.json in sync.
-  const versionFile = join(root, 'VERSION');
-  const prev = readFileSync(versionFile, 'utf8').trim();
-  const next = explicitVersion || bump(prev, versionKind);
-  writeFileSync(versionFile, next + '\n');
-
-  const pkgFile = join(root, 'package.json');
-  if (existsSync(pkgFile)) {
-    const pkg = JSON.parse(readFileSync(pkgFile, 'utf8'));
-    pkg.version = next;
-    writeFileSync(pkgFile, JSON.stringify(pkg, null, 2) + '\n');
-  }
-
-  // Record it in the CHANGELOG (what /boss-sync reads to tell projects what's new).
-  const date = isoDay();
+  // Record it in the CHANGELOG under Unreleased (what /boss-sync reads once it is stamped).
   const relDest = join(relDir, name);
   const where = registered
     ? ` Registered as \`${registered.key}\` in the ${stageId} manifest, so it syncs.`
     : '';
   const lines = [`Learned \`${name}\` into \`${relDest}\`.${where}${note ? ' ' + note : ''}`];
   const changelog = join(root, 'registry', 'CHANGELOG.md');
-  if (existsSync(changelog)) prependChangelog(changelog, next, date, lines);
+  if (existsSync(changelog)) appendUnreleased(changelog, lines);
 
-  return { root, how, dest: relDest, prev, next, category, name, stageId, registered };
+  return { root, how, dest: relDest, category, name, stageId, registered };
 }

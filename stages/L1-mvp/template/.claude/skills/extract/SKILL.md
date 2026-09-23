@@ -82,8 +82,8 @@ Route each candidate based on the dominant signal:
 - **UP** → into BOSS, in one of two homes. A **practice** or a **memory seed** goes onto BOSS's
   shelf (`library/`); an **agent**, **skill** or **hook** goes into a mode's template, because that
   is the only place it ships from — so it also takes `--mode <quickstart|mvp|v1|scale>`. Run
-  `boss learn <path> --as <cat> [--mode <mode>]` to copy + register + bump VERSION + add a
-  CHANGELOG entry. (Requires a BOSS source checkout — `$BOSS_SRC`, a self-hosted registry entry, or
+  `boss learn <path> --as <cat> [--mode <mode>]` to copy + register + add a bullet
+  under the CHANGELOG's `## Unreleased` (the version is stamped at release, not here). (Requires a BOSS source checkout — `$BOSS_SRC`, a self-hosted registry entry, or
   running from one. An npm/Homebrew install cannot promote; record the candidate instead — step 6
   says how.)
 - **DOWN** → refactor the duplication into a named module/function/schema in `src/`. /extract

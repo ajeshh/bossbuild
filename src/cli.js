@@ -1381,7 +1381,6 @@ function cmdSync(args) {
 
 function cmdLearn(args) {
   const f = parseArgs(args);
-  const versionKind = f.major ? 'major' : f.patch ? 'patch' : 'minor';
   let res;
   try {
     res = learn({
@@ -1389,8 +1388,6 @@ function cmdLearn(args) {
       category: f.as,
       mode: typeof f.mode === 'string' ? f.mode : undefined,
       note: typeof f.note === 'string' ? f.note : undefined,
-      versionKind,
-      explicitVersion: typeof f.version === 'string' ? f.version : undefined,
       confirmed: f.yes === true,
     });
   } catch (e) {
@@ -1405,7 +1402,7 @@ function cmdLearn(args) {
       console.log(`    ${dim('Filed as OPTIONAL. Whether it fires for every founder is a decision, not a side effect.')}`);
     }
   }
-  console.log(`    BOSS ${res.prev} → ${res.next}  (VERSION + package.json + CHANGELOG updated)`);
+  console.log(`    Added under ${bold('## Unreleased')} in registry/CHANGELOG.md — VERSION does not move; the releaser stamps it.`);
   console.log(`    in ${res.root}   ${dim('(' + res.how + ')')}`);
   console.log('    Review, then commit. Connected projects pull it via `boss sync` / `/boss-sync`.\n');
 }
