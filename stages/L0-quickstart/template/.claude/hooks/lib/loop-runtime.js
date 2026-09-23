@@ -58,7 +58,7 @@
 //     just-closed transitions and emit "done" signals).
 //   - Entry predicates not satisfied → loop is UNOPENABLE; no signal.
 
-import { readFileSync, writeFileSync, appendFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, appendFileSync, readdirSync, existsSync, statSync, renameSync } from 'node:fs';
 import { join, dirname, basename, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseFrontmatter } from './yaml.js';
@@ -797,6 +797,15 @@ export function readPauseState(projectDir) {
   } catch { return null; }
 }
 
+// The founder's config is written whole-or-not-at-all: a sibling temp file renamed into place, so a
+// CLI command reading it mid-write never sees half of it (IDEA-121). The CLI has the same rule in
+// `src/atomic.js`; this copy exists because the hook ships into the project and cannot import src/.
+function writeConfigAtomic(f, cfg) {
+  const tmp = `${f}.${process.pid}.tmp`;
+  writeFileSync(tmp, JSON.stringify(cfg, null, 2) + '\n');
+  renameSync(tmp, f);
+}
+
 // Clear the conscience pause state (set mode: 'active'). Called by the hook when
 // it detects an expired pause — the auto-resume IS the kindness. The founder
 // learns the pause ended because the conscience starts speaking again on the
@@ -808,7 +817,7 @@ export function clearPauseState(projectDir) {
   try {
     const cfg = JSON.parse(readFileSync(f, 'utf8'));
     cfg.conscience = { mode: 'active' };
-    writeFileSync(f, JSON.stringify(cfg, null, 2) + '\n');
+    writeConfigAtomic(f, cfg);
   } catch { /* fail silent — hook must never block */ }
 }
 
@@ -860,7 +869,7 @@ export function clearExpiredMutes(projectDir) {
     if (changed) {
       if (Object.keys(mutes).length === 0) delete cfg.conscienceMutes;
       else cfg.conscienceMutes = mutes;
-      writeFileSync(f, JSON.stringify(cfg, null, 2) + '\n');
+      writeConfigAtomic(f, cfg);
     }
     return changed;
   } catch { return false; }

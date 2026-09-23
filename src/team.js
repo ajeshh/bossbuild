@@ -13,7 +13,7 @@ import { execSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { bold } from './ui.js';
-import { readConfig, writeConfig } from './config.js';
+import { readConfig, readConfigForWrite, writeConfig } from './config.js';
 import { isoDay } from './clock.js';
 
 export { readConfig };
@@ -44,7 +44,7 @@ export function addCollaborator(dir, handle, name) {
   if (!h) throw new Error('need a @github-username');
   const me = normHandle(resolveIdentity().handle);
   if (me && h.toLowerCase() === me.toLowerCase()) return { added: false, self: true, handle: '@' + h };
-  const cfg = readConfig(dir);
+  const cfg = readConfigForWrite(dir);
   const team = Array.isArray(cfg.team) ? cfg.team : [];
   if (team.some((m) => normHandle(m.handle) === h)) return { added: false, handle: '@' + h };
   team.push({ handle: '@' + h, name: name || null, added: isoDay() });
@@ -89,7 +89,7 @@ status: active
 
 export function removeCollaborator(dir, handle) {
   const h = normHandle(handle);
-  const cfg = readConfig(dir);
+  const cfg = readConfigForWrite(dir);
   const team = Array.isArray(cfg.team) ? cfg.team : [];
   cfg.team = team.filter((m) => normHandle(m.handle) !== h);
   writeConfig(dir, cfg);

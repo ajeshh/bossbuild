@@ -10,8 +10,9 @@
 // own. `conscience` and `conscienceMutes` are deliberately separate top-level keys so
 // pause/resume (which overwrite `conscience` wholesale) can never wipe a per-moment mute.
 
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { writeFileAtomic } from './atomic.js';
 
 const configPath = (projectDir) => join(projectDir, '.boss', 'config.json');
 
@@ -30,9 +31,21 @@ export function readConfigOrFail(projectDir) {
   return { path, cfg: JSON.parse(readFileSync(path, 'utf8')) };
 }
 
+// Read the config for a WRITE: absent is `{}` (the writer creates it), unparseable THROWS. The
+// forgiving reader above is right for reads and was wrong for writes — `boss team add` on a config
+// with a stray comma read `{}`, added the roster and saved, erasing github/visibility/license/cohort
+// (IDEA-121). "Never take the CLI down" was about reads; a write must never take the file down.
+export function readConfigForWrite(projectDir) {
+  const p = configPath(projectDir);
+  if (!existsSync(p)) return {};
+  try { return JSON.parse(readFileSync(p, 'utf8')); } catch {
+    throw new Error(`.boss/config.json can't be parsed, so BOSS won't write over it — fix the JSON (a stray comma is the usual one) and retry.`);
+  }
+}
+
 export function writeConfig(pathOrDir, cfg) {
   const p = pathOrDir.endsWith('.json') ? pathOrDir : configPath(pathOrDir);
-  writeFileSync(p, JSON.stringify(cfg, null, 2) + '\n');
+  writeFileAtomic(p, JSON.stringify(cfg, null, 2) + '\n');
 }
 
 // The founder-cohort declaration, or null. Null means "compose the voice generically" —
