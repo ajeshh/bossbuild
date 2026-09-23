@@ -4,10 +4,10 @@ type: practice
 owner: product-lead
 status: active
 host: claude-code
-provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned. · **one citation added 2026-09-12 (v0.315.0, RVW-101), clock NOT moved** — Cai et al. 2606.12231 corroborates move #1's architecture-over-formatting line from mined rule files; preprint, before/after only. · **move 1b added 2026-09-12 (v0.318.0, RVW-102), clock NOT moved** — the tool list is always-on context; measured with `/skill-doctor` (45 resident, ~4.7k tokens/turn); the ` #` truncation found by the instrument.
+provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned. · **one citation added 2026-09-12 (v0.315.0, RVW-101), clock NOT moved** — Cai et al. 2606.12231 corroborates move #1's architecture-over-formatting line from mined rule files; preprint, before/after only. · **move 1b added 2026-09-12 (v0.318.0, RVW-102), clock NOT moved** — the tool list is always-on context; measured with `/skill-doctor` (45 resident, ~4.7k tokens/turn); the ` #` truncation found by the instrument. · **swept 2026-09-23 (`/practice-refresh agents`)** — the AGENTS.md line REVERSED: *"Claude Code reads `CLAUDE.md`, not `AGENTS.md`"* stopped being true at host v2.1.277 (reads `AGENTS.md` when no `CLAUDE.md`/`CLAUDE.local.md` exists); BOSS's import shape unaffected.
 provenance_public: Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.
-last_reviewed: 2026-09-08
-review_by: 2026-12-07
+last_reviewed: 2026-09-23
+review_by: 2026-12-22
 curve: host
 ---
 
@@ -109,10 +109,14 @@ curve: host
   its owner.
 - `<!-- HTML comments -->` are stripped before injection (zero-token notes for humans).
 - **Which file the words go in is a two-file split — and it's the one BOSS has scaffolded since
-  v0.58.0.** *Verified against the primary docs 2026-08-17:* **Claude Code reads `CLAUDE.md`, not
-  `AGENTS.md`** — *"If your repository already uses `AGENTS.md` for other coding agents, create a
-  `CLAUDE.md` that imports it so both tools read the same instructions without duplicating them."*
-  That's exactly the shape BOSS ships: host-neutral working rules and conventions live in `AGENTS.md`
+  v0.58.0.** *Re-verified against the primary docs 2026-09-23:* from **v2.1.277** Claude Code reads
+  `AGENTS.md` directly — but **only when no `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md`
+  exists** in the working directory or above it. Once one does, it reads the `CLAUDE.md` files only,
+  unless that file imports `AGENTS.md`. The import is still the host's own answer where direct reading
+  is unavailable (*"In some sessions Claude can't read `AGENTS.md`, so import it from a `CLAUDE.md`
+  there instead"*), and it is the only shape that works on every version. **Watch `CLAUDE.local.md`:**
+  it counts, so adding one to an `AGENTS.md`-only repo silently stops Claude reading `AGENTS.md`.
+  Import-from-`CLAUDE.md` is exactly the shape BOSS ships: host-neutral working rules and conventions live in `AGENTS.md`
   (read directly by Codex, Cursor, Copilot and the rest); `CLAUDE.md` opens with `@AGENTS.md` and adds
   only the Claude-specific layer. **Keep new rules on the right side of that cut** — a host-neutral
   convention written into `CLAUDE.md` is invisible to every other tool you or a collaborator use.

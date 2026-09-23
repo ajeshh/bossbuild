@@ -128,6 +128,20 @@ rule above still applies to the whole section once it is stamped.
   other twenty used); a test keeps `{{DATE}}` out of shipped skills. Measured: a sync three days after
   unlock went from 9 changed files to none.
 
+- **Agents can do what they're told to (`/practice-refresh agents`, 2026-09-23).** Five shipped agents
+  were told to run something their `tools:` line doesn't allow. `coder` and `tester` were told to run
+  `/smoke`, but a `tools:` list without `Skill` blocks skill invocation (host sub-agents doc), so both
+  now carry `Skill`. `planner` (`boss board --next`), `mentor-cofounder` (`boss team`, which gates
+  whether it speaks at all) and `designer` (`boss craft accessibility`) have no shell. They now read
+  the records those commands render (`docs/ideas/`, `docs/team/`), or hand the founder the command.
+  No agent gained a shell. `context-discipline.md`'s *"Claude Code reads `CLAUDE.md`, not
+  `AGENTS.md`"* is **reversed**: from host v2.1.277 it reads `AGENTS.md` when no `CLAUDE.md` exists.
+  The `CLAUDE.md`-imports-`AGENTS.md` shape BOSS scaffolds is unaffected, and it is still the only
+  shape that works on every host version. `harness-engineering.md` re-dates the `TodoWrite`
+  withdrawal to 2.1.233 (2026-08-14), which means the `task-hygiene` moment that read it was never
+  live on a current model. It also notes Spec Kit 1.0's move to independent entry points plus a
+  go/clarify/stop idea assessment. Both practices re-stamped.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched

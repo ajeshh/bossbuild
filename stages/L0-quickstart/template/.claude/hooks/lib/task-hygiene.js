@@ -16,10 +16,11 @@
 //
 // ⚠️ HOST-VERSION-DEPENDENT. What this reads, and what it stopped reading:
 //   · v0.293.0 read the session's `TodoWrite` list out of the transcript and compared the time the
-//     list last moved against the newest durable file. Claude Code 2.1.268 stopped offering
-//     `TodoWrite`/`TaskCreate` on current models (retained: Claude 3.x, Opus 4.0–4.7, Sonnet
-//     4.0–4.6, Haiku 4.5) — so on every default model the list never existed and the moment went
-//     permanently silent, two weeks after shipping, and nothing could tell (RVW-098). The primitive
+//     list last moved against the newest durable file. Claude Code 2.1.233 (2026-08-14) had already
+//     stopped offering `TodoWrite`/`TaskCreate` on the Claude 5 family and Opus 4.8+, and 2.1.268
+//     narrowed it to Claude 3.x, Opus 4.0–4.7, Sonnet 4.0–4.6, Haiku 4.5 — so on every current
+//     model the list never existed and the moment was silent from its first turn, and nothing could
+//     tell (RVW-098; re-dated 2026-09-23 from the host CHANGELOG + npm publish dates). The primitive
 //     is not read any more, on any model; re-enabling it would mean writing a host env key into a
 //     founder's config, which BOSS declined.
 //   · What it reads NOW is only the transcript file's TIMES (created / last written) and the

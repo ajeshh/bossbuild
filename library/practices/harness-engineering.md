@@ -4,10 +4,10 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0. · **one section added 2026-09-11 (v0.306.0)** from a competitor source read — haytham ADR-026's single-vs-split synthesis measurement; not a refresh, the freshness clock is held. · **one paragraph added 2026-09-12 (v0.315.0, RVW-098), clock NOT moved** — the seam rule gains its detection half after Claude Code 2.1.268 withdrew `TodoWrite` and a two-week-old BOSS moment that read nothing else went silently vacuous.
+provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0. · **one section added 2026-09-11 (v0.306.0)** from a competitor source read — haytham ADR-026's single-vs-split synthesis measurement; not a refresh, the freshness clock is held. · **one paragraph added 2026-09-12 (v0.315.0, RVW-098), clock NOT moved** — the seam rule gains its detection half after Claude Code 2.1.268 withdrew `TodoWrite` and a two-week-old BOSS moment that read nothing else went silently vacuous. · **swept 2026-09-23 (`/practice-refresh agents`)** — the `TodoWrite` dating corrected (2.1.233, not 2.1.268: the moment was never live on a current model), Spec Kit 1.0's recast noted; two sharpenings sent to `/vet`, not adopted.
 provenance_public: Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (GitHub Spec Kit, AWS Kiro). Two independent research threads named the harness as the biggest gap in how BOSS was building.
-last_reviewed: 2026-08-11
-review_by: 2026-11-09
+last_reviewed: 2026-09-23
+review_by: 2026-12-22
 curve: model
 ---
 
@@ -57,9 +57,13 @@ instinct, IDEA-028).
 2026's loudest build-workflow idea — **spec-driven development** (GitHub Spec Kit, AWS Kiro: *the spec is the
 durable artifact, the code is regenerable output*) — is a strong form of what BOSS's `/spec` already does
 (IDEA → FEAT → acceptance criteria → smoke). **Adopt the stance** (the spec, not the code, is the source of
-truth an agent regenerates against) and **reject the ceremony** — the multi-file `specify → plan → tasks →
-implement` scaffold is premature for a day-one founder (Principle #2). A one-page FEAT spec with acceptance
-criteria *is* the executable artifact; you don't need the framework to get the discipline.
+truth an agent regenerates against) and **reject the ceremony** — a multi-file spec scaffold is premature
+for a day-one founder (Principle #2). A one-page FEAT spec with acceptance criteria *is* the executable
+artifact; you don't need the framework to get the discipline. *(Spec Kit itself moved: 1.0, 2026-08-21,
+recast `specify → plan → tasks` as **"independent entry points, not three mandatory phases"** and added an
+idea-assessment step ending in a *"go, clarify, or stop decision."* The lineage now claims the* whether
+*layer too, so "a spec tool can't tell you whether to build it" is no longer a safe generalisation. It is
+still true of the host's `Plan` agent, below.)*
 
 ### The spec's *format* is a lever too (2026-08)
 
@@ -140,11 +144,13 @@ The rule, in two halves:
 
 **The seam needs a tripwire, and the design test above cannot supply one.** *"If this vanished
 tomorrow, what breaks?"* is answered *"nothing"* by any mechanism that fails open — and *nothing
-breaking* is exactly what going vacuous looks like. The second instance made this concrete: Claude Code
-2.1.268 stopped offering `TodoWrite` on current models, and a BOSS conscience moment shipped two weeks
-earlier that read nothing else. It had been designed to fail silent; it did; for two weeks it was a
-promised mechanism nobody could tell was absent (RVW-098). So, for any hook or check that reads a host
-primitive:
+breaking* is exactly what going vacuous looks like. The second instance made this concrete: a BOSS
+conscience moment shipped on 2026-09-10 that read nothing but `TodoWrite` — and Claude Code **2.1.233
+(2026-08-14)** had already stopped offering that tool on the Claude 5 family and Opus 4.8+ (2.1.268
+narrowed it further the day the moment shipped). It was designed to fail silent, and on every current
+model it was silent **from its first turn**: a promised mechanism that was never alive, which nobody
+could tell (RVW-098; the verdict dated the withdrawal to 2.1.268 — corrected 2026-09-23 from the host
+CHANGELOG and npm publish dates). So, for any hook or check that reads a host primitive:
 
 - **Name the primitive in a dated header** — which tool, event, file or field, and when you last saw
   it in the host. A header that says *"host-version-dependent"* without naming the dependency listed

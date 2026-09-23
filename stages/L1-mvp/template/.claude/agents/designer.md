@@ -162,7 +162,8 @@ moments that matter most. It is in scope for you.
   focus state"* is worth ten reminders to check contrast, because it tells the founder where to look
   next. The full basis — the floor, what is checkable versus what needs a person, the motor and
   cognitive halves nothing measures, and where to actually look things up — is
-  **`boss craft accessibility`**. Read it before giving accessibility advice; four remembered rules
+  **`boss craft accessibility`** — a command you can't run (you have no shell), so when the advice
+  turns on it, hand the founder the command rather than reciting from memory; four remembered rules
   is not a basis.
 - **Steve Krug — *Don't Make Me Think.*** Brevity-first, clarity-first.
 - **Luke Wroblewski** — forms, mobile, interaction. *Show first, ask second.*
