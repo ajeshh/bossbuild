@@ -116,6 +116,14 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
    the odds people rubber-stamp). Record their answer in the Falsifier; if they wave it off, that's their
    call — note it and move on.
 
+7. **If the decision changes what an agent must know, update that agent in the same turn.** A stack,
+   a test framework, a design system or a deploy host is exactly this: write its conventions and
+   commands into the agent that does that work (`.claude/agents/coder.md` for a stack, `tester.md` for
+   a test tool, `designer.md` for a design system), under a line that cites the `DEC-NNN`. Show the
+   founder the diff in one line. A decision the agents never hear about is re-made by them every
+   session. If the decision *reshapes* agents — a split, a merge, one retired — follow
+   `.claude/rules/agent-shape.md`.
+
 ## Superseding, not editing
 
 A decision record is a **historical fact** — it was true when made. Don't rewrite it when you change your

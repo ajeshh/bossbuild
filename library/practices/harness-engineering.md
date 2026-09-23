@@ -125,6 +125,36 @@ and synthesizes once; the conscience judges in one place — and this is the rec
 should stay that way. (arslan70/haytham, `docs/system-evolution.md`, read at source 2026-09-11; the
 tool itself is retired, the measurement stands.)
 
+### Agent shape over time — the ladder BOSS ships (IDEA-124)
+
+The split rule above answers *whether* to split. A project also needs to know **what to do instead**,
+because most reasons that feel like "we need another agent" are answered lower down. BOSS ships this
+ladder as `.claude/rules/agent-shape.md`. It loads only when an agent file is touched, and it holds
+for every agent, not just the coder. Take the cheapest rung that answers the signal:
+
+1. **Specialize.** A stack, test tool or design system got pinned, so write it into the agent's file.
+   `/decide` does this in the same turn.
+2. **Scope.** A second surface with its own conventions gets a path-scoped rule. Still one agent.
+3. **Remember.** A correction given twice goes into the file. When the file overflows, use the
+   host's per-agent memory.
+4. **Run on.** Long work runs in the background and resumes; parallel work gets a worktree each.
+5. **Split.** Only on the reasons above (tools, tier, independence), plus **ownership**: two people
+   who each own a surface.
+6. **Merge or retire.** Use the trace (`/judge-traces`): agents that always hand off to each other,
+   agents nobody calls.
+
+Host facts it rests on, read at code.claude.com/docs/en/sub-agents on 2026-09-23 (the docs give no
+version for `memory:`):
+- `memory: user|project|local` is a per-agent directory; `project` lives at
+  `.claude/agent-memory/<name>/` and loads the first 200 lines of its `MEMORY.md`.
+- `background: true`, `isolation: worktree`, and resuming an agent by message all exist.
+- An agent file created or edited mid-session is picked up within seconds. A brand-new
+  `.claude/agents/` directory needs a restart.
+
+A retired agent has to stay retired, and until IDEA-124 it did not: `boss sync` planned a deleted
+managed file as `new`, so it came back on the next apply. Sync now reads the provenance ledger, and
+a file BOSS wrote that is missing now counts as the founder's decision.
+
 ## Don't author what the host ships — name the seam instead
 
 The harness is yours; a growing amount of its *plumbing* isn't. Claude Code now ships built-in

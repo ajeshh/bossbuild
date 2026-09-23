@@ -34,6 +34,16 @@ Never fabricate a taxonomy from no data. An honest "nothing to judge yet" is the
 files. This is the cheap deterministic pass — counts, not opinions. (Hamel's cost hierarchy: cheap
 assertions before any judgment.)
 
+The same counts answer **whether the agents are the right shape** — the evidence
+`.claude/rules/agent-shape.md` asks for, so read them for it too:
+- **Never called** — an agent in `.claude/agents/` with no trace line in the window. A retire candidate.
+- **Always paired** — two agents that follow each other in the same session on most of their calls.
+  Every handoff is lost context; a merge candidate.
+- **One agent, two worlds** — one agent's files split into trees that never mix (`web/` and `api/`).
+  A path-scoped rule per tree first (rung 2); a second agent only for a reason the rule names.
+Name each with its count and the rung. The founder reshapes; this skill only reads. Too few lines to
+tell — under ~20 calls — is "not enough trace yet", never a verdict.
+
 **3. Help the founder do error analysis — binary, not scored.** Walk the traces and sort what you can
 see into **pass / fail**, never a 1–5 score. Failure modes to look for in agent work:
 - `wrong-files` — an agent touched files outside its lane (a coder editing docs, a doc agent editing src)

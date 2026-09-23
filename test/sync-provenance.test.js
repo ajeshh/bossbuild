@@ -7,7 +7,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileHash, readLedger, recordManaged, provenance, backupManaged } from '../src/managed.js';
 import { execFileSync } from 'node:child_process';
@@ -233,4 +233,57 @@ test('the default still replaces unclaimed files, with a backup — pre-ledger p
   assert.doesNotMatch(readFileSync(join(dir, '.claude/agents/coder.md'), 'utf8'), /MINE/,
     'default behaviour is deliberately unchanged');
   assert.ok(existsSync(join(dir, '.boss', 'backups')), 'and it is recoverable');
+});
+
+// IDEA-124 — deleting an agent is a decision. Before this, a managed file missing from disk
+// planned as `new`, so a founder who split `coder` or retired `designer` got it back on the next
+// --apply: "delete the agent you no longer need" could not stick.
+test('REGRESSION: an agent the founder deleted stays deleted; --force restores it', () => {
+  const { dir, stamp } = synced();
+  applySync(dir, planSync(dir, stamp), stamp, {});
+  const target = planSync(dir, stamp).entries.find((e) => e.kind === 'agent');
+  rmSync(join(dir, target.rel));
+
+  const plan = planSync(dir, stamp);
+  assert.equal(plan.entries.find((e) => e.rel === target.rel).status, 'declined');
+  applySync(dir, plan, stamp, {});
+  assert.ok(!existsSync(join(dir, target.rel)), 'a plain --apply must not resurrect it');
+  assert.equal(planSync(dir, stamp).entries.find((e) => e.rel === target.rel).status, 'declined',
+    'and it stays declined on the sync after — the ledger entry is not dropped');
+
+  applySync(dir, planSync(dir, stamp), stamp, { force: true });
+  assert.ok(existsSync(join(dir, target.rel)), '--force is the way back');
+});
+
+test('a missing agent BOSS has no record of writing is still offered as new', () => {
+  // Pre-ledger projects, and agents a later rung adds: absence alone is not a decision.
+  const { dir, stamp } = synced();
+  const e = planSync(dir, stamp).entries.find((x) => x.kind === 'agent');
+  assert.equal(e.status, 'new');
+});
+
+test('sync names the removed agent as the founder\'s decision, not as pending work', () => {
+  const { dir, stamp } = synced();
+  applySync(dir, planSync(dir, stamp), stamp, {});
+  write(dir, '.boss/manifest.json', JSON.stringify({ ...stamp, loops: [] }));
+  write(dir, '.boss/config.json', '{}');
+  const target = planSync(dir, stamp).entries.find((e) => e.kind === 'agent');
+  rmSync(join(dir, target.rel));
+  const out = boss(['sync'], dir);
+  assert.match(out, /Removed by you/);
+  assert.doesNotMatch(out, new RegExp(`\\+ new\\s+agent/${target.name}\\b`));
+});
+
+test('a rule BOSS ships is managed: laid down, kept current, and left alone once edited', () => {
+  const { dir, stamp } = synced();
+  const e = planSync(dir, stamp).entries.find((x) => x.kind === 'rule' && x.name === 'agent-shape');
+  assert.ok(e, 'Quickstart ships agent-shape as a managed rule');
+  applySync(dir, planSync(dir, stamp), stamp, {});
+  assert.ok(existsSync(join(dir, '.claude/rules/agent-shape.md')));
+  writeFileSync(join(dir, '.claude/rules/agent-shape.md'), 'MY RULE\n');
+  const res = applySync(dir, planSync(dir, stamp), stamp, {});
+  assert.ok(res.skipped.some((x) => x.rel === e.rel), 'an edited rule is the founder\'s');
+  // The founder's own rule files are never in the plan at all.
+  write(dir, '.claude/rules/your-app-code.md', 'mine');
+  assert.ok(!planSync(dir, stamp).entries.some((x) => x.rel.endsWith('your-app-code.md')));
 });

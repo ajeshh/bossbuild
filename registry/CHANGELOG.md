@@ -58,6 +58,37 @@ rule above still applies to the whole section once it is stamped.
 > When a mentor's call matters, BOSS now says to raise your host's effort for that agent first, and
 > move to a bigger model only if it stalls on the same question twice. That's cheaper than switching
 > models, and it is the current guidance for the newest ones. BOSS still pins neither.
+>
+> Your agents now know when to change shape, and it goes beyond the coder. The rule is to take the
+> cheapest step that answers what the work is showing you: write the stack into the agent, give a
+> second surface its own rule file, let the agent keep notes, run long work in the background. Make
+> a second agent only for a real reason: different tools, different model settings, independent
+> work, or two people owning two parts. When you pick a stack with `/decide`, the coder learns it in
+> the same step. `/judge-traces` now points out agents nobody calls and pairs that always hand off to
+> each other. And if you delete an agent you don't need, `boss sync` no longer puts it back.
+
+- **Agent shape, one ladder for every agent (IDEA-124).** New managed rule
+  `.claude/rules/agent-shape.md` (Quickstart). It is path-scoped to `.claude/agents/**`, so it loads
+  only when an agent file is touched. Rungs: specialize → scope (a path-scoped rule per surface) →
+  remember (the file first, then the host's per-agent memory) → run on (background, worktree) →
+  split (only for different tools, model tier, independent work, or ownership; never split
+  synthesis) → merge or retire (read from the trace). Changes elsewhere:
+  - `coder` drops *"split into stack-specific coders in V1/Scale mode"*: a mode that ships no agents
+    was the only moment that promise had.
+  - `designer`, `tester`, `planner` and `product-lead` each carry the signal that fits their role.
+  - `product-lead` and `planner` no longer grow a PM org by mode, and `product-lead` no longer says
+    design unlocks at V1 (it has been MVP's).
+  - `/decide` step 7 writes a stack, test tool or design-system decision into the agent that does
+    that work.
+  - `/judge-traces` reads for never-called, always-paired and one-agent-two-worlds.
+  - `harness-engineering.md` carries the ladder plus the host facts, dated.
+- **`boss sync` leaves a deleted agent deleted (IDEA-124).** A managed agent or rule the ledger
+  says BOSS wrote, now missing, plans as `declined` instead of `new`. It is shown under *Removed by
+  you* and never written; `--force` restores it. Before this, splitting `coder` or retiring
+  `designer` was undone by the next `--apply`. Skills and hooks keep the old behaviour, since a
+  missing one of those is more likely damage than a decision. Sync also manages BOSS-owned rules now
+  (a `rules` manifest list), so a rule BOSS ships reaches existing projects, and the founder's own
+  rule files are never touched.
 
 - **`/ship` step 3b — is it up, and who hears when it isn't (IDEA-122 slice 1).** After the deploy,
   hit the live artifact the way a stranger would (a smoke against production); a green deploy serving

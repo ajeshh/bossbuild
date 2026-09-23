@@ -12,7 +12,7 @@ This project ships with **no assumed tech stack**. The first real build decision
 
 1. Record the choice with `/decide` — a stack is a load-bearing decision, and a `DEC-NNN` holds why and what would reverse it.
 2. Specialize *this file* — add the stack's conventions, build command, and test command inline below, so future sessions inherit them.
-3. If the project grows multiple stacks/surfaces, propose splitting into stack-specific coders in V1/Scale mode.
+3. **A second stack or surface is not a second coder.** Give each surface a path-scoped rule first. Split only for a reason `.claude/rules/agent-shape.md` names — different tools, a different model tier, work that never needs the other's output, or two people owning two surfaces — and say it once in your report before anyone makes the file.
 
 ## How you build
 

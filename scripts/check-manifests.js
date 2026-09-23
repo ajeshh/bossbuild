@@ -63,6 +63,7 @@ function checkStage(stageId) {
     ...(manifest.agents || []).map((n) => ({ kind: 'agent', name: n, file: join(claude, 'agents', `${n}.md`) })),
     ...(manifest.skills || []).map((n) => ({ kind: 'skill', name: n, file: join(claude, 'skills', n, 'SKILL.md') })),
     ...(manifest.loops || []).map((n) => ({ kind: 'loop', name: n, file: join(base, '.boss', 'loops', `${n}.md`) })),
+    ...(manifest.rules || []).map((n) => ({ kind: 'rule', name: n, file: join(claude, 'rules', `${n}.md`) })),
   ];
   for (const h of manifest.hooks || []) {
     const js = join(claude, 'hooks', `${h}.js`);

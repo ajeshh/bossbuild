@@ -9,7 +9,7 @@ import { readStageManifest, sameAsTemplate } from './scaffold.js';
 import { readSupersedes, findSupersede } from './supersede.js';
 import { stillDeferred, newlyEarned, markLaidDown } from './earned.js';
 import { readLadder, assess } from './ladder.js';
-import { provenance, recordManaged, backupManaged } from './managed.js';
+import { provenance, recordManaged, backupManaged, readLedger } from './managed.js';
 import { isoDay } from './clock.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
@@ -76,6 +76,17 @@ function managedFiles(stageId, manifest, projectDir = null) {
         rel: join('.claude', 'skills', s, rel),
       });
     }
+  }
+  // BOSS-owned rules (IDEA-124). `.claude/rules/` also holds the founder's own — `your-app-code.md`
+  // is a template they rewrite — so only rules a manifest names are BOSS's; the rest are theirs and
+  // never touched. Without this list a rule BOSS ships reached new projects and never existing ones.
+  for (const r of manifest.rules || []) {
+    out.push({
+      kind: 'rule',
+      name: r,
+      src: join(base, 'rules', `${r}.md`),
+      rel: join('.claude', 'rules', `${r}.md`),
+    });
   }
   for (const h of manifest.hooks || []) {
     // Hook scripts may be .js (v0.18.0+ Node-based) or .sh (legacy). Prefer .js
@@ -545,6 +556,14 @@ export function planSync(projectDir, stamp) {
   // predicate is false — they would show as `new` every sync and be laid down before their time.
   // Once the predicate holds they ARE `new`, and the ordinary path installs them.
   const held = stillDeferred(projectDir, stamp);
+  // A file BOSS wrote (the ledger never forgets an entry) that is no longer on disk was removed
+  // by the founder. For an agent or a rule that is a decision — they split `coder`, or retired
+  // `designer` — and planning it as `new` put it straight back on the next --apply, so "delete
+  // the agent you no longer need" could not stick (IDEA-124). `declined` is reported, never
+  // written; `--force` restores it. Kept to agents and rules: a skill is a tree, and a hook is
+  // wired into settings.json, so a missing one of those is more likely damage than a decision.
+  const ledger = readLedger(projectDir);
+  const DECLINABLE = new Set(['agent', 'rule']);
   const entries = [];
   for (const stageId of layers) {
     let manifest;
@@ -563,7 +582,7 @@ export function planSync(projectDir, stamp) {
       const exists = existsSync(dest);
       const cur = exists ? readFileSync(dest, 'utf8') : '';
       let status = 'ok';
-      if (!exists) status = 'new';
+      if (!exists) status = (DECLINABLE.has(f.kind) && ledger[f.rel]) ? 'declined' : 'new';
       else if (cur !== next) status = 'changed';
       // Did the founder shape this, or did BOSS move on? A `changed` status alone cannot say —
       // it is true in both cases and means opposite things. `null` where BOSS has no record.
@@ -631,6 +650,7 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
   const keepMine = opts.keepMine === true;
   for (const e of plan.entries) {
     if (e.status === 'ok') continue;
+    if (e.status === 'declined' && !force) continue;
     if (e.status === 'changed' && e.edited === true && !force) { skipped.push(e); continue; }
     if (e.status === 'changed' && e.edited === null && keepMine) { skipped.push(e); continue; }
     if (e.status === 'changed' && (e.edited === null || (e.edited === true && force))) toBackUp.push(e.rel);
@@ -638,6 +658,7 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
   const backupDir = backupManaged(projectDir, toBackUp);
   for (const e of plan.entries) {
     if (e.status === 'ok') continue;
+    if (e.status === 'declined' && !force) continue;
     if (skipped.includes(e)) continue;
     if (e.kind === 'claude-block') {
       if (writeClaudeBlock(projectDir, e.name, e.body)) written.push(e);

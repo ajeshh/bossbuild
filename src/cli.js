@@ -1247,7 +1247,10 @@ function cmdSync(args) {
   if (!stamp) return failNotAProject();
 
   const plan = planSync(process.cwd(), stamp);
-  const changed = plan.entries.filter((e) => e.status !== 'ok');
+  // `declined`: a BOSS agent or rule the founder deleted. Their decision, so not pending work —
+  // unless `--force`, which takes BOSS's version of everything and so restores these too.
+  const declined = plan.entries.filter((e) => e.status === 'declined');
+  const changed = plan.entries.filter((e) => e.status !== 'ok' && (e.status !== 'declined' || force));
   const settingsChanged = !!(plan.settings && plan.settings.changed);
   // An orphan the founder already deleted is history, not work. Only surface what's still here.
   const orphans = (plan.orphans || []).filter((o) => o.present);
@@ -1267,7 +1270,7 @@ function cmdSync(args) {
       // but indistinguishable, which is the half that mattered.
       const mark = e.status === 'new'
         ? ok('+ new    ')
-        : (e.edited === null ? warn(`? unclaimed (${e.delta} lines)`) : warn(`~ changed (${e.delta} lines)`));
+        : e.status === 'declined' ? warn('+ restore') : (e.edited === null ? warn(`? unclaimed (${e.delta} lines)`) : warn(`~ changed (${e.delta} lines)`));
       console.log(`    ${mark}  ${e.kind}/${e.name}  →  ${e.rel}`);
       // The unit of an update is the ARTIFACT, not the file — a founder who has the thing this
       // skill makes is the only one for whom "it changed" means anything.
@@ -1297,6 +1300,12 @@ function cmdSync(args) {
         console.log(`    ${dim('               your mode preference is yours again — set it in ~/.claude/settings.json')}`);
       }
     }
+  }
+
+  if (declined.length && !force) {
+    console.log(`\n  ${bold('Removed by you')} ${dim('— BOSS will not put these back')}`);
+    for (const e of declined) console.log(`    ${dim('×')} ${e.kind}/${e.name}   ${dim(e.rel)}`);
+    console.log(`    ${dim('`boss sync --apply --force` restores them (and takes BOSS\'s version of everything else).')}`);
   }
 
   // Retired by BOSS, still on disk. Reported ALWAYS, removed only on explicit `--remove`
