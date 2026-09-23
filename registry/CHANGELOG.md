@@ -35,6 +35,17 @@ rule above still applies to the whole section once it is stamped.
 > `package.json` says `"type": "commonjs"` (what `npm init` writes) — they had been failing on every
 > prompt, silently; `boss sync` brings the fix to an existing project. `boss team add` on a
 > `.boss/config.json` with a stray comma now stops and says so, instead of saving over your settings.
+>
+> `/ship` now checks the live thing actually answers before it calls it shipped, and asks once who
+> finds out if it goes down at 3am — then sets up the cheapest answer with you (the host's logs, a
+> free uptime check, or errors logged somewhere you can read), or records *not yet* and never asks again.
+
+- **`/ship` step 3b — is it up, and who hears when it isn't (IDEA-122 slice 1).** After the deploy,
+  hit the live artifact the way a stranger would (a smoke against production); a green deploy serving
+  an error is not shipped. Once per stack, the 3am question, one rung set up (host logs → an external
+  uptime check → errors with a timestamp) or `not yet`, written into the stack profile so no later
+  `/ship` asks. `--rollback` verifies the restored build the same way. CD-when-earned and
+  running-without-you are slices 2 and 3, not built.
 
 - **`/ux-check` step 2 — render when the host can (IDEA-119).** A built-in launch-and-drive command
   is named as a class alongside the dev server and a browser you added; the session holding the

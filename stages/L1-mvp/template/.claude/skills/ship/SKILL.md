@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Put {{PROJECT_NAME}} where a real user can hit it, the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz actually on), picks the cheapest reversible host, deploys, hands back the live URL and rollback. Usage - /ship [--preview | --rollback]
+description: Put {{PROJECT_NAME}} where a real user can hit it, the CD half of building. Detects the stack, runs a deploy-time pre-flight (no secrets in the client bundle; server-side authz actually on), picks the cheapest reversible host, deploys, checks the live thing actually answers, asks once who hears when it goes down, hands back the live URL and rollback. Usage - /ship [--preview | --rollback]
 ---
 
 # /ship — localhost is not shipped
@@ -100,12 +100,45 @@ TestFlight link, the endpoint plus its example. That's the proof the work is now
 proof is the *thing a stranger can use*, never "it deployed". Note what it cost (free tier vs. paid)
 so the founder keeps optionality in view.
 
+### 3b. Is it up — and who hears when it isn't?
+**"It deployed" is the host's claim; check it.** Before you hand anything back, hit the live artifact
+the way a stranger would — fetch the URL and look at what came back, call the endpoint with its
+worked example, install the package from the registry in a clean directory, open the build on a
+device. This is `/smoke` against production, not localhost. The common failure is a green deploy
+serving an error: an env var set locally and never on the host, a build-time value read at runtime,
+a database the host can't reach. If it fails, say so plainly, offer step 4's rollback, and do not
+call it shipped.
+
+Then, **once, at the first ship of this stack**, the question nothing else in the build asks:
+
+> **If this goes down at 3am, who finds out — and how?**
+
+If the honest answer is *"a user tells me"*, set up the cheapest rung with the founder, now, one
+rung only:
+
+- **Know where the host's logs are** — the page or command for this host, named. Free, and most
+  outages are readable there.
+- **An external uptime check** — a free-tier service that requests the URL every few minutes and
+  emails or pings a phone when it stops answering. Name the class, never a vendor; the founder picks.
+  For a web app this is usually the right first rung.
+- **Errors with a timestamp somewhere you can read later** — the server's unhandled errors logged,
+  not swallowed. A file or the host's log is fine; an error-tracking service is a later rung.
+
+Non-web shapes: a package's channel is its issue tracker and a periodic install from the registry;
+a store build's is the crash reports the store console already collects — point there.
+
+**Write the answer into the stack profile (step 1) — the channel, or `not yet`.** `not yet` is a
+real answer: say once that the founder will hear about an outage from a user, record it, and never
+ask again. The next `/ship` reads the profile instead of asking. (The depth — what else runs
+unattended and who gets told when it fails — is `boss craft automation`.)
+
 ### 4. Name the rollback path (every time)
 State the one command/click that restores the last-good build — and the honest caveat: **rollback restores
 the app, not the database.** A migration that already ran does not un-run on rollback. If this deploy
 includes a schema change, it should be backward-compatible (expand-migrate-contract — see
 `boss craft scalable-architecture`) so a code rollback never
-strands the data.
+strands the data. **`--rollback` checks the restored build the way step 3b checks a new one** — a
+rollback nobody hit is a second unverified deploy.
 
 ### 4b. Risky or AI-mediated? Offer the kill switch (a check, not a gate)
 If this deploy is a **risky or AI-mediated feature** — an LLM in the user path, a payment flow, anything that
@@ -162,7 +195,8 @@ too, and a small current corpus beats a big one with good search. Depth is in `b
 
 - `first-product` / `vibe-coder-newbie` — plain language; the pre-flight is **non-negotiable** (they can't
   spot a leaked key themselves) but framed as protection, not a scolding. Default to the simplest host with
-  the most forgiving free tier.
+  the most forgiving free tier. For step 3b, walk them through the uptime check click by click — they
+  won't know one exists.
 - `non-tech-founder` — lead with "here's your live link" and the one-line rollback; keep the secrets check
   but explain *why* in their terms (your users' data is reachable if this is wrong).
 - `eng-builder` / `returning-founder` — terse; assume they know deploy mechanics, lead with the pre-flight
@@ -179,6 +213,8 @@ too, and a small current corpus beats a big one with good search. Depth is in `b
   never blocks the deploy. (Conscience-not-censor.)
 - **Hand back the real artifact.** "It deployed" is not the result. The thing a stranger can
   actually use is — a URL, an install line, a TestFlight build, an endpoint with an example.
+- **Shipped means checked, and someone hears when it breaks.** Hit the live artifact before calling
+  it shipped; ask the 3am question once per stack, set up one rung or record `not yet`, never re-ask.
 - **Reversibility is part of shipping.** No deploy without a named revert path, and an honest word that the
   database isn't part of it.
 - **Offer the flag, don't impose it.** For a risky/AI-mediated deploy, offer to ship it dark / behind a kill
