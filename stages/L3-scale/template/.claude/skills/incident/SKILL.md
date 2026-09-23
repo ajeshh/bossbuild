@@ -20,7 +20,7 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 *specific* edit when it's behind. Never quietly generate a second one.
 
 **Rung: Scale.** If this project is **earlier** than that, don't run this — leave the seam instead:
-**Log errors with a timestamp somewhere you can read later. Not a service — a file is fine.** That is the whole ask; it is *not* a runbook, an on-call rotation, an slo, alerting, a status page, a postmortem template. A runbook genuinely costs the same written later, and pretending otherwise would be ceremony. But you cannot investigate an outage you have no record of, and the first real one is exactly when you find out which it was.
+**Log errors with a timestamp somewhere you can read later. Not a service — a file is fine. If `/ship` already asked who hears when it's down, its stack profile has the answer — start there.** That is the whole ask; it is *not* a runbook, an on-call rotation, an slo, alerting, a status page, a postmortem template. A runbook genuinely costs the same written later, and pretending otherwise would be ceremony. But you cannot investigate an outage you have no record of, and the first real one is exactly when you find out which it was.
 
 ## The one rule
 

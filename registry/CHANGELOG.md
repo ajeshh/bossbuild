@@ -41,8 +41,10 @@ rule above still applies to the whole section once it is stamped.
 > free uptime check, or errors logged somewhere you can read), or records *not yet* and never asks again.
 > Ship the same thing by hand twice and it offers, once, to make a push to `main` deploy it — with
 > your smoke check gating the deploy and the live check running after. Projects unlocking MVP also
-> get a working rule for anything that runs while you sleep: three questions before it runs, the
-> failure channel named before the trigger.
+> get a working rule for anything that runs while you sleep. Already at MVP? Sync doesn't edit your
+> `CLAUDE.md`, so if you want it, paste this under *Shipping*: *"Anything that runs without you (a
+> schedule, overnight, an agent loop): before it runs, name what breaks if it runs wrong at 3am, what
+> says pass or fail, and who is told when it fails — `boss craft automation`."*
 
 - **`/ship` step 3b — is it up, and who hears when it isn't (IDEA-122 slice 1).** After the deploy,
   hit the live artifact the way a stranger would (a smoke against production); a green deploy serving
@@ -58,7 +60,8 @@ rule above still applies to the whole section once it is stamped.
   `automation.md`'s three questions for anything scheduled or unattended — blast radius, a pass/fail
   signal, who is told when it fails — and points at the practice for the rest. Lands at `boss unlock mvp`; an existing
   project's CLAUDE.md is the founder's and sync doesn't rewrite it (`mentor-architect` carries the
-  same questions and does sync).
+  same questions and does sync). The `For you:` line carries the rule verbatim to paste. `/incident`'s early-rung
+  seam (and its `surface-ladder.json` source) now points at the stack profile `/ship` wrote.
 
 - **`/ux-check` step 2 — render when the host can (IDEA-119).** A built-in launch-and-drive command
   is named as a class alongside the dev server and a browser you added; the session holding the

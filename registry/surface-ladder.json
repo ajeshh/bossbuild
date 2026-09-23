@@ -310,7 +310,7 @@
         "docs/postmortems/**"
       ]
     },
-    "seam": "Log errors with a timestamp somewhere you can read later. Not a service — a file is fine.",
+    "seam": "Log errors with a timestamp somewhere you can read later. Not a service — a file is fine. If `/ship` already asked who hears when it's down, its stack profile has the answer — start there.",
     "seamNot": "A runbook, an on-call rotation, an SLO, alerting, a status page, a postmortem template.",
     "seamWhy": "A runbook genuinely costs the same written later, and pretending otherwise would be ceremony. But you cannot investigate an outage you have no record of, and the first real one is exactly when you find out which it was."
   },

@@ -60,10 +60,12 @@ Shape: **fold into `/ship`, don't add skills** (the EVID-001 mandate: compose + 
   conscience moment (it would fire on a keyword and has no timestamp to read), not a skill.
 - Existing MVP projects do not get the slice 3 rule: `claude-append.md` folds into the founder's
   CLAUDE.md once, at unlock, and `boss sync` rightly never rewrites that file. `mentor-architect`'s
-  *automation shape* (which does sync) carries the same three questions. Is that enough, or does
-  `/boss-sync` name new working rules it can't apply? Open.
-- Does the Scale `/incident` seam line move down to MVP now that `/ship` asks the question? (Probably
-  it becomes a pointer back to the stack profile.)
+  *automation shape* (which does sync) carries the same three questions. ~~Is that enough?~~ —
+  answered by what already exists: `/boss-sync` never merges CLAUDE.md and surfaces what the
+  CHANGELOG says should change there. So the `For you:` line now carries the rule verbatim, to paste.
+  No new mechanism.
+- ~~Does the `/incident` seam move down?~~ — no; it stays Scale's, and now points back at the stack
+  profile `/ship` wrote (seam edited in `registry/surface-ladder.json` and the skill together).
 
 ## Log
 
@@ -75,3 +77,6 @@ Shape: **fold into `/ship`, don't add skills** (the EVID-001 mandate: compose + 
   it, or the offer isn't made. `git-workflow.md` names the outgrown moment (a push that deploys by
   itself). MVP working rules: the three questions before anything runs unattended, and the CI line
   in the Git section now points at the same moment.
+- 2026-09-23 — both open questions closed without a new mechanism: the paste-line in `For you:`,
+  and `/incident`'s seam pointing at `/ship`'s stack profile. Nothing left on this record but the
+  proof — a founder who ships with it.
