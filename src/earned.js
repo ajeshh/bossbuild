@@ -24,19 +24,21 @@
 // Backwards compatible: a stamp with no `deferred` (every project unlocked before this) has
 // everything on disk already and nothing here changes.
 
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { STAGES_DIR } from './paths.js';
 import { collectBoard } from './board.js';
-import { readConfig } from './config.js';
+import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
+import { classifyLoop } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 
 export const PREDICATES = ['shipped', 'llm-in-source'];
 
-// The cost-budget loop's entry pattern, verbatim — one regex, two readers, so they cannot disagree.
-const LLM_CALL = /(anthropic|@anthropic-ai\/sdk|openai|OpenAI\(|Anthropic\(|messages\.create|chat\.completions\.create|generateText|streamText)/;
-const SOURCE_DIRS = ['src', 'app', 'lib', 'components', 'pages'];
-const SOURCE_EXT = /\.(js|mjs|cjs|ts|tsx|jsx|py|rb|go|rs|swift|kt|java|dart|php|ex|exs)$/;
-const MAX_FILES = 4000;
+// "Does the code call a model" is the cost-budget loop's ENTRY predicate, evaluated by the hook's
+// own runtime. This file used to hold a verbatim copy of that loop's regex — "one regex, two
+// readers" — which drifted the moment either was edited, and which matched ITSELF: the copy sat in
+// `src/`, so BOSS's own conscience fired the cost and failure-mode moments on 43 of 57 prompts off
+// this line (IDEA-121). Now there is one definition, in the loop file, and one evaluator.
+const COST_LOOP = join(STAGES_DIR, 'L1-mvp', 'template', '.boss', 'loops', 'cost-budget-loop.md');
 
 /** Has this project shipped? A FEAT in Shipped on the board (frontmatter-true), or a repo that was
  * already live when adopted — `boss adopt` read a deploy config or CI plus tests and said "shipped
@@ -67,36 +69,15 @@ export function holdAtAdopt(manifest, projectDir, { shippedBefore = false } = {}
   return { skip, deferred };
 }
 
-/** Does the founder's code call a model? Same regex and roots as cost-budget-loop; fails closed. */
+/** Does the founder's code call a model? The cost-budget loop's entry predicate, run by the hook
+ * runtime against the project — same pattern, same exclusions, same `sourceGlobs`. Fails closed. */
 export function llmInSource(projectDir) {
-  const roots = sourceRoots(projectDir);
-  let seen = 0;
-  const walk = (dir) => {
-    let names;
-    try { names = readdirSync(dir); } catch { return false; }
-    for (const n of names) {
-      if (n === 'node_modules' || n.startsWith('.')) continue;
-      const p = join(dir, n);
-      let st;
-      try { st = statSync(p); } catch { continue; }
-      if (st.isDirectory()) { if (walk(p)) return true; continue; }
-      if (!SOURCE_EXT.test(n) || ++seen > MAX_FILES) continue;
-      try { if (LLM_CALL.test(readFileSync(p, 'utf8'))) return true; } catch { /* unreadable */ }
-    }
-    return false;
-  };
-  return roots.some((r) => existsSync(r) && walk(r));
-}
-
-// `.boss/config.json` may name `sourceGlobs` (the loop runtime honours the same key); a glob's
-// leading directory is what matters here.
-function sourceRoots(projectDir) {
-  let globs = [];
-  try { globs = readConfig(projectDir).sourceGlobs || []; } catch { /* default */ }
-  const dirs = (Array.isArray(globs) && globs.length ? globs : SOURCE_DIRS.map((d) => `${d}/**`))
-    .map((g) => String(g).split(/[*{]/)[0].replace(/\/+$/, ''))
-    .filter(Boolean);
-  return [...new Set(dirs)].map((d) => join(projectDir, d));
+  try {
+    const loop = parseFrontmatter(readFileSync(COST_LOOP, 'utf8'));
+    if (!loop?.entry) return false;
+    const { entry } = classifyLoop({ entry: loop.entry, exit: [] }, projectDir);
+    return entry.all_ok && !entry.results.some((r) => r.evidence?.blind);
+  } catch { return false; }
 }
 
 const PREDICATE = { shipped: hasShipped, 'llm-in-source': llmInSource };

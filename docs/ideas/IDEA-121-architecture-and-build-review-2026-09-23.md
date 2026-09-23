@@ -38,10 +38,10 @@ hook's try (conscience.js:19) — the package.json removes the crash that motiva
 
 ## Tier 2 — the conscience breaks its own thesis ("says one thing")
 
-- [ ] **No cap on injected signals.** `moment-frames.js:68-109` joins every open signal. bossbuild's first
+- [x] **No cap on injected signals.** `moment-frames.js:68-109` joins every open signal. bossbuild's first
   prompt: 11.4KB / 5 signals. Real ledger: 57 fires, median 7.4k chars, 489k total. Fix: rank, inject one
   frame + a one-line list of the other loop ids.
-- [ ] **"Calls an LLM" is a word match.** cost-budget + ai-failure-state loops fire on a README, a JSON
+- [x] **"Calls an LLM" is a word match.** cost-budget + ai-failure-state loops fire on a README, a JSON
   fixture, a test comment — and on `src/earned.js:36`, BOSS's own copy of the regex; misses a real
   Gemini call. Fired on 43/57 prompts here. Fix: extension filter (`SOURCE_EXT`), exclude fixtures/tests/evals,
   match import/constructor shapes, build earned.js's copy from fragments.
@@ -51,6 +51,10 @@ hook's try (conscience.js:19) — the package.json removes the crash that motiva
   field: 37–157 keys across this repo (25 IDEAs lose `created`); read by `orientation.js` (boss status),
   the hook, check-freshness/manifests. Plus `craft.js:24` and `help-html.js:192` regexes. Fix: port the
   multi-line block into yaml.js + a parity test over docs/** and library/**.
+
+Tier 2, first two items fixed 2026-09-23 (`test/conscience-one-thing.test.js`, 27 cases, 14 fail on the
+old code). Still open: cross-session dedup (a new session re-voices the top signal), and the parser parity.
+Voiced + named signals are all marked said — the rest wait for the next session, never drip per prompt.
 
 ## Tier 3 — always-on cost and drift in what ships
 

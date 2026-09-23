@@ -69,6 +69,19 @@ rule above still applies to the whole section once it is stamped.
   `## Unreleased`** and no longer bumps VERSION or package.json (DEC-019); `/extract` and
   `library/README.md` say so.
 
+- **The conscience says one thing (IDEA-121 tier 2).** When several moments are open, the hook voices
+  the highest-stakes one and names the rest in a line (`rankSignals`: harm to someone else, then the
+  riskiest assumption, then build discipline, then upkeep; ties by confidence). Every named signal is
+  marked said, so the rest wait for the next session rather than dripping out one per prompt. BOSS's
+  own first prompt went from 11.4KB and five full frames to one frame and two names. **"The code calls
+  a model" now means a call**: the cost-budget and ai-failure-state loops match an SDK import, a client
+  constructed or a model call (Gemini and the AI SDK included), and skip markdown, JSON, fixtures, tests
+  and evals — a README, a fixture and a test comment used to open both, and a real Gemini call did not.
+  `src/earned.js` evaluates that same predicate through the hook runtime instead of keeping a copy of
+  the regex, which had been matching itself. Also: `**/` in a loop glob now means whole directories
+  (`**/test/**` no longer matches `src/latest/`), and `not_path_glob` is expanded once per check
+  instead of once per file.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched

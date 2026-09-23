@@ -8,7 +8,12 @@ also_relevant: [Mollick, Rauch, Willison]
 entry:
   - count_at_least:
       path_glob: $source
-      pattern: '(anthropic|@anthropic-ai/sdk|openai|OpenAI\(|Anthropic\(|messages\.create|chat\.completions\.create|generateText|streamText)'
+      # A CALL, not a word: an import of a model SDK, a client constructed, or a model call made.
+      # The old pattern was the bare words (anthropic|openai|generateText…) with no path filter, so a
+      # README, a JSON fixture and a test comment all opened it, and a Gemini call did not.
+      # BOSS decides when to lay down the AI skills with this same predicate, so there is one copy.
+      pattern: '(from\s+[\x22\x27](openai|@anthropic-ai/sdk|@google/generative-ai|@google/genai|ai|@ai-sdk/[\w-]+)[\x22\x27]|require\([\x22\x27](openai|@anthropic-ai/sdk|@google/generative-ai|@google/genai|ai)[\x22\x27]\)|^\s*(import|from)\s+(openai|anthropic|google\.generativeai|google\.genai|litellm)\b|\b(OpenAI|AsyncOpenAI|Anthropic|AsyncAnthropic|GoogleGenerativeAI)\(|\b(openai|anthropic)\.NewClient\(|\.messages\.create\(|\.chat\.completions\.create\(|\.responses\.create\(|\b(generateText|streamText|generateObject|streamObject)\()'
+      not_path_glob: '**/*.md,**/*.mdx,**/*.json,**/*.txt,**/__fixtures__/**,**/fixtures/**,**/__tests__/**,**/test/**,**/tests/**,**/evals/**,**/*.test.*,**/*.spec.*'
       min: 1
 exit:
   - exists: { path: docs/ai-failure-states.md }

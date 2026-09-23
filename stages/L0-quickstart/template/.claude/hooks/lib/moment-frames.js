@@ -48,8 +48,8 @@ const COHORT_FRAMING = {
     'This founder has 10+ years in a high-stakes domain (medical/legal/financial). Real stakes; real regulatory context. Caveat appropriately. Ask about who specifically could be harmed; lean into the humane lens. Avoid generic startup advice that won\'t fit the domain.',
 };
 
-// Compose `additionalContext` for hosts that consume the flat field. For one
-// signal, a single nudge; for multiple, a brief enumeration. Voice stays with
+// Compose `additionalContext` for hosts that consume the flat field: one nudge, whatever the
+// count — the rest are named in a line. Voice stays with
 // the model — this hands signal + ask + cohort frame, not canned voice.
 // A frame may point at a verb the rung is still holding back (`/ai-cost` arrives when the app
 // first calls a model — which is the very predicate that fires the cost moment). Pointing a founder
@@ -102,11 +102,15 @@ export function composeContext(signals, opts = {}) {
   const intentLine = opts.intent
     ? `\n\nWhy they're building this (their own words, from ${opts.intent.id}): ${intentSummary(opts.intent)}. Calibrate the ASK to it, not the tone: a revenue motivation earns the commitment question (who paid, who gave up a slot); community → point at observed behaviour (did anyone come back a second time); learning or own-problem → the honest question is "did it teach you the thing / does it solve it for you yet", and "will anyone pay" is the wrong question for them — don't ask it. Credibility → who outside saw it. Never re-ask the motivation, never grade it, never quote their success sentence back at them as a target.`
     : '';
-  if (signals.length === 1) {
-    return signalAsContext(signals[0]) + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine + notYetInstalledLine(signalAsContext(signals[0]), opts.isInstalled);
-  }
-  const parts = signals.map((s, i) => `(${i + 1}) ${signalAsContext(s)}`);
-  return `[BOSS conscience — ${signals.length} signals]\n` + parts.join('\n') + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine + notYetInstalledLine(parts.join('\n'), opts.isInstalled);
+  // One voiced frame. The caller ranks (`rankSignals`); the rest are NAMED, not framed — the
+  // founder can ask, and the model knows they exist, but a turn carries one thing to say. It used to
+  // carry every frame in full (IDEA-121).
+  const lead = signalAsContext(signals[0]);
+  const rest = signals.slice(1);
+  const alsoLine = rest.length
+    ? `\n\nAlso open, not voiced this time — do not raise these unless the founder asks: ${rest.map((s) => `${s.loop_id || 'loop'} (${s.moment || 'attention'})`).join(', ')}. \`boss conscience\` lists them.`
+    : '';
+  return lead + alsoLine + cohortLine + brainLine + relationshipLine + evidenceLine + intentLine + notYetInstalledLine(lead, opts.isInstalled);
 }
 
 // One-line summary of the founder's stated intent for the voicing frame (IDEA-097).

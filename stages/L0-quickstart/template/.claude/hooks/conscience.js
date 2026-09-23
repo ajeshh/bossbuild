@@ -16,7 +16,7 @@
 //
 // Always exits 0. Empty output = no signal = stay silent.
 
-import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readIntentContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity, notYetSaid, markSaid } from './lib/loop-runtime.js';
+import { detectSignals, composeContext, readCohort, readBrainContext, readRelationshipContext, readEvidenceContext, readIntentContext, readPauseState, clearPauseState, readMuteState, isMomentMuted, clearExpiredMutes, logActivity, notYetSaid, markSaid, rankSignals } from './lib/loop-runtime.js';
 import { detectTaskHygiene } from './lib/task-hygiene.js';
 import process from 'node:process';
 import { existsSync } from 'node:fs';
@@ -98,7 +98,10 @@ try {
   // Said this session already? Every judged frame promises "at most once this session"; this is
   // where the promise is kept. A moment whose predicate still holds is not re-voiced until the
   // next session — the founder answered it, or chose not to, and either is an answer.
-  const signals = notYetSaid(projectDir, sessionId, detected.filter((s) => !isMomentMuted(mutes, s.moment)));
+  // Ranked so the one that gets voiced is the one with the most at stake (rankSignals). Every
+  // signal is still NAMED in the context and marked said below, so the rest wait for the next
+  // session rather than dripping out one per prompt.
+  const signals = rankSignals(notYetSaid(projectDir, sessionId, detected.filter((s) => !isMomentMuted(mutes, s.moment))));
   if (signals.length === 0) {
     process.exit(0);
   }

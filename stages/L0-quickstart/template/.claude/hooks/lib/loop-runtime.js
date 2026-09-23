@@ -138,13 +138,18 @@ function readSourceGlobs(projectDir) {
 
 export const isSourceGlob = (g) => typeof g === 'string' && g.trim() === '$source';
 
-// Project-relative glob -> anchored regex. `**` crosses `/`, a single `*` does not.
+// Project-relative glob -> anchored regex. `**` crosses `/`, a single `*` does not. `**/` is zero
+// or more WHOLE directories: it used to emit `.*` and drop the slash, so `**/test/**` matched
+// `src/latest/x.js` — a path exclusion that ate real source (IDEA-121).
 function globToRegex(rel) {
   let out = '';
   for (let i = 0; i < rel.length; i++) {
     const c = rel[i];
     if (c === '*') {
-      if (rel[i + 1] === '*') { out += '.*'; i++; if (rel[i + 1] === '/') i++; }
+      if (rel[i + 1] === '*') {
+        i++;
+        if (rel[i + 1] === '/') { out += '(?:.*/)?'; i++; } else out += '.*';
+      }
       else out += '[^/]*';
     } else if ('.+?^${}()|[]\\'.includes(c)) { out += '\\' + c; }
     else { out += c; }
@@ -209,10 +214,6 @@ function expandGlob(pattern, projectDir) {
   return files.filter((f) => re.test(f.slice(cut).split(sep).join('/')));
 }
 
-function matchesGlob(filePath, pattern, projectDir) {
-  return expandGlob(pattern, projectDir).includes(filePath);
-}
-
 // ---------------------------------------------------------------------------
 // Predicate evaluators.
 // ---------------------------------------------------------------------------
@@ -230,7 +231,10 @@ function countMatches({ path_glob, pattern, exclude_files_matching, not_path_glo
   let files = expandGlob(path_glob, projectDir);
   const blind = isSourceGlob(path_glob) && files.length === 0;
   if (not_path_glob) {
-    files = files.filter((f) => !matchesGlob(f, not_path_glob, projectDir));
+    // Expanded ONCE. Testing each file against the glob separately re-walked the tree for every file — quadratic
+    // on the per-prompt path, and it went unnoticed only because no shipped loop used this key.
+    const excluded = new Set(expandGlob(not_path_glob, projectDir));
+    files = files.filter((f) => !excluded.has(f));
   }
   if (exclude_files_matching) {
     const exclRe = new RegExp(exclude_files_matching, 'm');
@@ -544,6 +548,29 @@ export function detectSignals(projectDir) {
     });
   }
   return signals;
+}
+
+// ONE thing, not five. The conscience's own promise is "says one thing when you're drifting", and
+// composeContext used to join every open signal: BOSS's first prompt carried 11.4KB and 5 signals,
+// the ledger's median fire was 7.4k chars (IDEA-121). The hook now voices the top-ranked signal and
+// only NAMES the rest. The order is a judgment about stakes, written down so it can be argued with:
+// harm to someone else first, then building the wrong thing, then building it badly, then upkeep.
+// A moment missing from the list ranks after every listed one. Ties go to confidence, then to the
+// order the loops were read in (stable sort), so the output is deterministic.
+export const MOMENT_PRIORITY = [
+  'deception',                                   // harm to the people the product touches
+  'drift', 'caution', 'restraint', 'outpaced',   // building around the riskiest assumption
+  'unverified', 'focus', 'margin-trap', 'coordination',
+  'failure-mode', 'cost',                        // AI-specific build discipline
+  'sustaining', 'coherence', 'capture', 'harvest',
+  'cost-stale', 'field-stale', 'task-hygiene',   // upkeep
+];
+const CONFIDENCE_RANK = { high: 0, medium: 1, low: 2 };
+
+export function rankSignals(signals) {
+  const at = (m) => { const i = MOMENT_PRIORITY.indexOf(m); return i < 0 ? MOMENT_PRIORITY.length : i; };
+  return [...signals].sort((a, b) => (at(a.moment) - at(b.moment))
+    || ((CONFIDENCE_RANK[a.confidence] ?? 3) - (CONFIDENCE_RANK[b.confidence] ?? 3)));
 }
 
 // Confidence: scales with how much "drift overshoot" exists past the entry
