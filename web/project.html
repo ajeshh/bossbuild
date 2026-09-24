@@ -1,7 +1,7 @@
 <!--
 title: For project management — progress you can't fake
 description: A board derived from files, never maintained; a closed status vocabulary; parked work with a written re-open trigger; decisions that say what proves them wrong.
-reviewed: 2026-09-13
+reviewed: 2026-09-23
 review_by: 2027-03-13
 describes: BOSS's own positions on tracking work — derived progress, closed vocabulary, parked vs queued
 covers: docs/IDS.md src/board.js src/records.js
@@ -89,7 +89,8 @@ nav: project
           <strong>Captured → Taking shape → Building → Shipped</strong>, plus
           <strong>Parked</strong>. It looks like every board you've used and behaves like none of
           them, because there is nothing to drag: a card sits in a column <em>because of what its
-          record says</em>, and the only way to move it is to change the work.
+          record says</em>, and the only way to move it is to change the work. The venture itself sits
+          above the columns, on its own line.
         </p>
         <p>
           One column has proved harder than the rest, and it's an honest problem rather than a
@@ -150,7 +151,9 @@ nav: project
       <div class="body prose">
         <h2>Typed records, and a promotion you can read from both ends</h2>
         <p>
-          An idea is <code>IDEA-NNN</code>. When it earns a build contract it becomes
+          An idea is <code>IDEA-NNN</code>, and it comes in two kinds: the one venture you walked in
+          with, which gets pressure-tested and is validated or killed, and the capabilities you add to
+          it. A capability that earns a build contract becomes
           <code>FEAT-NNN</code>, and <strong>the link is written at both ends</strong>, so you can
           stand at a feature and find the thinking that produced it, or stand at an idea and find
           what became of it. A promotion legible from only one side is how work gets rebuilt.

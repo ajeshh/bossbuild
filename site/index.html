@@ -321,8 +321,8 @@
                 <span class="cap">joining a project that already had its own <code>coder</code> file</span>
 <pre><span class="line"><span class="t-cmd">boss adopt</span></span>
 <span class="line"><span class="t-ok">  ✦ Adopted booking-app into BOSS</span> — Quickstart mode (L0-quickstart, BOSS 0.326.0)</span>
-<span class="line"><span class="t-dim">    read from your repo: 1 source file(s), no build manifest</span></span>
-<span class="line">    43 file(s) added · <span class="t-accent">nothing of yours overwritten · 1 of yours kept as-is</span></span>
+<span class="line"><span class="t-dim">    read from your repo: 1 source file(s), no build manifest — MVP starts at 5 with a build manifest</span></span>
+<span class="line">    46 file(s) added · <span class="t-accent">nothing of yours overwritten · 1 of yours kept as-is</span></span>
 <span class="line"> </span>
 <span class="line">  Next</span>
 <span class="line">    <span class="t-accent">&gt; /read-repo</span>       <span class="t-dim"># start here — BOSS reads what you've built</span></span>
@@ -448,7 +448,7 @@
             <h3 class="moment-h">what the AI brings with it</h3>
             <details class="snag" name="snags">
               <summary>"The AI bill arrived and I hadn't thought about it"</summary>
-              <div class="snag-body"><p>Declare a budget <em>before</em> the first model call, not after the invoice. <code>/ai-cost</code> wires a per-call ledger, <code>/cost-review</code> reads it back, and if you're charging for the thing, BOSS watches spend against your price rather than against a number you invented.</p><ul class="chips"><li><code>/ai-cost</code></li><li><code>/cost-review</code></li></ul></div>
+              <div class="snag-body"><p>Declare a budget the moment your code first calls a model, not after the invoice. <code>/ai-cost</code> wires a per-call ledger, <code>/cost-review</code> reads it back, and if you're charging for the thing, BOSS watches spend against your price rather than against a number you invented.</p><ul class="chips"><li><code>/ai-cost</code></li><li><code>/cost-review</code></li></ul></div>
             </details>
             <details class="snag" name="snags">
               <summary>"I can't afford a security audit and don't know what I'd ask for"</summary>

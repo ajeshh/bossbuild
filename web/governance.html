@@ -1,7 +1,7 @@
 <!--
 title: Governance — how BOSS decides what it believes
 description: Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught.
-reviewed: 2026-09-12
+reviewed: 2026-09-23
 review_by: 2027-02-16
 describes: the /vet pipeline and freshness discipline
 covers: .claude/skills/vet/SKILL.md library/practices
@@ -110,9 +110,10 @@ nav: governance
             log, the devlog, the code) and proposes one to three candidates, each routed one of two
             ways: <strong>UP</strong> into BOSS's library as a practice other projects inherit, or
             <strong>DOWN</strong> into your own app as hardened code that stops being a pattern you have
-            to remember. <code>/boss-learn</code> is the judgment step over that routing, because those
+            to remember. <code>/extract</code> is the judgment step over that routing, because those
             two destinations are not interchangeable and guessing wrong is how a library fills with
-            things nobody needed.
+            things nobody needed; it says plainly when UP isn't possible from your machine (that needs a
+            BOSS source checkout).
           </p>
           <p class="small">
             It proposes; you decide. Nothing enters the library because a machine thought it was clever,
@@ -190,7 +191,7 @@ nav: governance
         <h2>What this doesn't prove</h2>
         <p>
           A rigorous filter on incoming advice is not the same as evidence that the advice
-          <em>works</em>. BOSS has one external founder's reaction on record and no long-run outcome data,
+          <em>works</em>. BOSS has two external founders' reactions on record, both stated-pain, and no long-run outcome data,
           so what's claimed here is process, not proof. The pipeline stops bad claims getting in. It
           does not establish that the good ones made anyone's company better. That would take users and
           time, and BOSS has very little of either yet.

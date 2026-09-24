@@ -68,8 +68,8 @@ a tool that manages you. Stated as the rule we hold ourselves to:
 - **Voice the tension, never filter the menu.** Withholding an option "to protect you" is itself a
   dignity cost — it makes the choice for you. Show the full menu; annotate the one we'd think twice
   about.
-- **Once, briefly, no sermon.** The moment a concern becomes a paragraph, it's a lecture, and a
-  lecture says *I don't trust you.*
+- **Once, as long as the stakes need, no sermon.** Minimal by default; the first sentence that
+  carries nothing you need is where it becomes a lecture, and a lecture says *I don't trust you.*
 - **Fill the knowledge gap, never imply an intelligence gap.** Surface the second-order consequence
   you might not know. Never explain the obvious to a competent adult.
 - **Proportionality.** Friction scales to stakes. A reversible, self-regarding choice gets a feather
