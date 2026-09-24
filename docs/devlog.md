@@ -22,6 +22,22 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-09-23 — IDEA-125/126: merges, shipped-text hygiene, and Ajesh's calls
+
+A second whole-BOSS assessment (code, shipped prompts, process) overlapped IDEA-121 almost entirely;
+what it added went into IDEA-125 and IDEA-126. **Merges:** `/measure` → `/health` (the seam first,
+whatever n — bossbuild-ca's catch), `/ai-first-init` → `/spec`'s per-FEAT *Model or code*; MVP 28 → 26;
+six pairs declined with reopen triggers; the cost pair waits on the conscience. A blind router over the
+shipped descriptions still sends 7/10 old `/measure` phrases to `/health`, the rest correctly elsewhere.
+**Hygiene:** history out of nine skill lines; `settings.json` written atomically; `/design-tokens-init`'s
+content half and later guards to `reference/`. **Fixed on the way:** the pre-commit hook left a deleted
+skill's empty folder (every skill deletion failed); `withLock` threw on Windows' EPERM (CI, once).
+**Ajesh's calls:** worktree trial next session; V1/Scale thin on purpose; site frozen except correctness;
+a new gate needs a bug that reached a user; reproduce before fixing; "For you" capped at ~5 lines.
+**Surprised:** a reviewed-and-relayed CRLF bug was not one — the test passed on the old code, which is
+what rule 8 now says to check first. **Next:** the page re-read before the stamp (18 site pages, 4 help
+fragments behind their sources); the maintainer message still has no date.
+
 ## 2026-09-23 — IDEA-121: the review, and finishing it
 
 Four read-only reviewers (build process, CLI, hook runtime, shipped content), headline claims re-verified
