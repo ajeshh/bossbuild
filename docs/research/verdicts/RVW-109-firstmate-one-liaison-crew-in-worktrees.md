@@ -98,6 +98,14 @@ transient files. **One gap, reproduced:** `boss hooks disable` deleted an edited
 then promised `enable` would bring it back. **Fixed:** the hook is unregistered and kept if it
 differs from what BOSS ships; the test failed first.
 
+**Lesson 5 (2026-09-24, Ajesh: "continue"; the split is proposed, theirs to correct):** the
+rule is *typed or kept = vocabulary, only-BOSS-says = machinery*. Measured `console.log` output:
+`moment` and `hook` are command arguments (vocabulary); `loop` lives in the `--conscience` diagnostic
+view (exempt); the leaks were "climb a rung" (cli, modes, map) and "ledger" twice in sync.
+**Landed:** the table in `skill-authoring.md` beside the voice test, and the four lines fixed. A table,
+not a gate: no founder has hit this. `docs/CHEATSHEET.md` still says "climb a rung" until the next
+release regenerates it.
+
 Already on BOSS's shelf, so nothing to take: knowledge routed to its most specific owner (IDEA-102);
 "a current explicit instruction overrides a standing rule, never by analogy"; prune over append.
 

@@ -1289,7 +1289,7 @@ function cmdSync(args) {
     if (unclaimed.length) {
       console.log('');
       console.log(`    ${warn('?')} ${bold(`${unclaimed.length} file(s) BOSS has no record of writing.`)} ${dim('Either it wrote them before it')}`);
-      console.log(`      ${dim('kept a ledger, or they are yours and share a name with something BOSS ships.')}`);
+      console.log(`      ${dim('kept a record of its own files, or they are yours and share a name with something BOSS ships.')}`);
       console.log(`      ${dim('--apply copies them to')} ${bold('.boss/backups/')} ${dim('and replaces them.')} ${bold('boss sync --apply --keep-mine')}`);
       console.log(`      ${dim('leaves them alone and applies everything else.')}`);
     }
@@ -1354,7 +1354,7 @@ function cmdSync(args) {
   }
   const unknown = changed.filter((e) => e.edited === null);
   if (unknown.length) {
-    console.log(`\n    ${dim(`${unknown.length} predate the provenance ledger — BOSS cannot tell whether you`)}`);
+    console.log(`\n    ${dim(`${unknown.length} were written before BOSS kept a record of its own files, so it cannot tell whether you`)}`);
     console.log(`    ${dim('changed them, so each is copied to `.boss/backups/` before being written.')}`);
   }
 
@@ -1756,7 +1756,7 @@ function printHelp() {
   console.log(row('boss playbook [--open] [--questions]', 'your venture as one page in .boss/ — holes stay holes; --questions lists what\'s open'));
   console.log(row('boss design [--open] [--questions]', 'your design system as one page in .boss/ — holes stay holes; --questions lists what\'s open, with the moment that earns it'));
   console.log(row('boss status [--conscience]', 'mode + pinned version + drift (--conscience: loop states)'));
-  console.log(row('boss unlock <mode>', 'climb a rung: quickstart → mvp → v1 → scale'));
+  console.log(row('boss unlock <mode>', 'move up a mode: quickstart → mvp → v1 → scale'));
   console.log(row('boss brain [--diff|--relationship]', 'the conscience\'s read on this venture'));
   console.log(row('boss insights', 'how far your ventures have gotten (local · nothing sent)'));
   console.log(row('boss team [add @user]', 'who\'s on the venture (solo by default)'));

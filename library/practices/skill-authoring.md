@@ -119,7 +119,31 @@ A short read, not a harness:
 - **Interface test:** for every example in the file — could a better-named argument or a real enum
   have carried it instead?
 - **Voice test:** does it assume intelligence and never assume knowledge? (Unsure? Read it aloud to
-  someone who has not seen it — that catches more than any checklist.)
+  someone who has not seen it — that catches more than any checklist.) Then check the words against
+  the table below.
+
+### The founder's words, and BOSS's (added 2026-09-24)
+
+One rule decides it: **a word the founder types, or files BOSS asks them to keep, is vocabulary —
+define it once and use it. A word only BOSS says is machinery — translate it before it reaches
+them.** Skill instructions the model reads may use machinery freely; the translation happens at
+what the founder sees. A diagnostic view that exists to show the machinery (`boss status
+--conscience --verbose`) is exempt, the way an engineer's log is.
+
+| Vocabulary — they type it or keep it | Machinery — say this instead |
+|---|---|
+| `IDEA`, `FEAT`, `EVID`, `DEC`, and their numbers | **rung** → mode |
+| Quickstart · MVP · V1 · Scale (the modes) | **loop** → the check (*"the focus check"*) |
+| canvas, riskiest assumption, board | **gate** → what it asks before you can go on |
+| conscience, nudge | **seam** → the cheap part worth doing now |
+| `moment` and `hook`, where they are command arguments | **ledger** → BOSS's record of what it wrote |
+| the status words (`building`, `shipped`, …) and fields they write (`proof:`, `waiting_on:`) | **fail-open / fail-closed** → steps aside if it can't check / stops rather than guess |
+| | **cohort** → never as a label for a person; name what changes for them |
+| | **RVW-, EXTR-, and BOSS's own record ids** → never; say the finding |
+
+Borrowed in shape from a crew-runner's instruction file, which keeps a list of its own internal
+words and the plain word each becomes before it reaches the person, and forbids relaying a status
+line verbatim. A voice rule in prose can't be checked; a table can be read against a screen.
 
 ## What's left out (deliberately)
 

@@ -27,6 +27,10 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **BOSS says "mode", not "rung", and "record", not "ledger".** `boss help`, `boss map` and
+  `boss sync` used words from BOSS's own workings where yours belong. The skill-writing practice now
+  holds the rule that caught them: a word you type is vocabulary, and a word only BOSS says gets
+  translated. A table lists both sides. (RVW-109)
 - **`boss hooks disable` no longer deletes a hook you changed.** It removed the file every time and
   then said `boss hooks enable` would bring it back, which was true for BOSS's copy and false for your
   edits, which were gone. Now a hook that differs from the one BOSS ships is turned off and left in
