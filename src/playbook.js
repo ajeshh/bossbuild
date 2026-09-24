@@ -18,7 +18,7 @@
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { frontmatter, revisitDue } from './frontmatter.js';
-import { shellPage, esc } from './page-shell.js';
+import { shellPage, esc, lightScheme, DEFAULT_ACCENT } from './page-shell.js';
 // The venture's own tokens set the page when docs/design/tokens.json exists — ground, paper, ink,
 // rules, faces, radius — so a founder's playbook looks like their product and BOSS's looks like
 // BOSS (Ajesh, 2026-09-13). Light scheme only: no dark tokens means dark isn't designed. Neutral
@@ -1025,8 +1025,11 @@ ${company.html}`;
     'coverage is a fact · readiness is a verdict this page doesn\'t render',
   ];
   const theme = themeFromTokens(readTokens(data.projectDir).tokens);
+  // The deck and the PDF are the venture's, shown on someone else's screen: always the brand's light
+  // scheme, never the presenter's dark mode (Ajesh, 2026-09-23). The page itself follows the viewer.
+  const deckScheme = `\n  .deck, .printdeck { ${lightScheme(brand.accent || DEFAULT_ACCENT)} ${theme.decls || ''} }\n`;
   if (theme.used.length) footerLines.push(`set in the venture's own tokens — ${esc(theme.used.length)} taken from docs/design/tokens.json · light scheme only`);
-  return shellPage({ title: `${brand.name} — Playbook`, brand, projectDir: data.projectDir, current: 'playbook', ledgerHtml, rail, mainHtml, footerLines, extraCss: PLAYBOOK_CSS + theme.css, extraJs: playbookJs(brand) });
+  return shellPage({ title: `${brand.name} — Playbook`, brand, projectDir: data.projectDir, current: 'playbook', ledgerHtml, rail, mainHtml, footerLines, extraCss: PLAYBOOK_CSS + theme.css + deckScheme, extraJs: playbookJs(brand) });
 }
 
 // What the playbook adds to the shell: the frame toggle, the canvas grid in both frames, the deck.

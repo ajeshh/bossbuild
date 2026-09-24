@@ -855,7 +855,7 @@ test('the page is set in the founder\'s own tokens — ground, paper, ink, rule,
   assert.ok(th.css.includes('--display: Newsreader, Georgia, serif') && th.css.includes('--body: "Public Sans", Arial, sans-serif'));
   assert.ok(th.css.includes('@media (prefers-color-scheme: light)') && th.css.includes(':root[data-theme="light"]') && !th.css.includes('[data-theme="dark"] {'), 'never applied to the dark scheme');
   assert.ok(!th.css.includes('--ink-2: #9AA5A1'), 'the deprecated placeholder is not a theme token');
-  assert.deepEqual(themeFromTokens([]), { css: '', used: [] });
+  assert.deepEqual(themeFromTokens([]), { css: '', used: [], decls: '' });
   const dir = tidewell();
   const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
   assert.match(html, /this page is set in your own tokens — ground ← color\.surface\.ground/);

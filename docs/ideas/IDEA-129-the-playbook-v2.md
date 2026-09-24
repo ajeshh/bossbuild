@@ -72,6 +72,10 @@ Nothing below composes a sentence.
   first version jumping nowhere). Found on the way: the ledger counted an unanswered cell as backed when
   an EVID's assumption shared a word with its name — BOSS's own top bar said *2 of 13 backed* with
   zero answered cells backed. Fixed: backed means answered and evidenced.
+- [x] **10. The deck is the brand's, on any screen.** Ajesh (2026-09-23): brand colours, not black
+  and white, in Present and the PDF. They already took the tokens, but only in the light scheme, so a
+  presenter in dark mode showed neutral dark slides. Now `.deck` and `.printdeck` always carry the
+  light scheme plus the tokens; the page follows the viewer. Print keeps backgrounds (`print-color-adjust`).
 - [ ] **9. BOSS's own records.** Its Vision and Product chapters read IDEA-001 (*Learning loop*), a
   capability written before `kind:` existed. The render is right for founder projects; this tree needs
   `kind: capability` on its old IDEAs, or a `kind: venture` record for BOSS itself. Ajesh's call.

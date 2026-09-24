@@ -840,7 +840,7 @@ export function themeFromTokens(tokens) {
     display: fam(/display|heading|brand/i), body: fam(/body|text|ui|sans/i), mono: fam(/mono|code|data/i), radius: dimT(/^radius\.(surface|card|default|md)$/i),
   };
   const used = Object.entries(th).filter(([, v]) => v);
-  if (!used.length) return { css: '', used: [] };
+  if (!used.length) return { css: '', used: [], decls: '' };
   const vars = [];
   if (th.ground) vars.push(`--ground: ${th.ground.value}`);
   if (th.paper) vars.push(`--paper: ${th.paper.value}`);
@@ -853,7 +853,7 @@ export function themeFromTokens(tokens) {
   if (th.mono) vars.push(`--mono: ${th.mono.value}`);
   const light = `:root:not([data-theme="dark"]) { ${vars.join('; ')}; }`;
   const radius = th.radius ? ` .block { border-radius: ${th.radius.value}; }` : '';
-  return { css: `\n  /* the founder's tokens, light scheme */ @media (prefers-color-scheme: light) { ${light} } :root[data-theme="light"] { ${vars.join('; ')}; }${radius}\n`, used: used.map(([k, v]) => `${k} ← ${v.name}`) };
+  return { decls: `${vars.join('; ')};`, css: `\n  /* the founder's tokens, light scheme */ @media (prefers-color-scheme: light) { ${light} } :root[data-theme="light"] { ${vars.join('; ')}; }${radius}\n`, used: used.map(([k, v]) => `${k} ← ${v.name}`) };
 }
 
 // --- render -------------------------------------------------------------------------------------------

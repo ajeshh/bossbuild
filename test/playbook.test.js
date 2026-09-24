@@ -149,6 +149,17 @@ test('chips and the ledger are counted from the files — EVID naming a cell bac
   assert.match(html, /<b class="tab">3 of \d+<\/b> cells backed by graded evidence · <b>3<\/b> signals, top <b>commitment<\/b>/);
 });
 
+test('the deck and the PDF wear the brand\'s light scheme whatever the viewer\'s dark mode (IDEA-129)', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/BRAND.md': '---\nid: BRAND\naccent: "#B84E12"\n---\n# Brand\n', 'docs/design/tokens.json': JSON.stringify({ surface: { paper: { $type: 'color', $value: '#FFF8EE' } } }) });
+  playbookHtml(dir, 'tidewell');
+  const html = readFileSync(join(dir, '.boss', 'playbook.html'), 'utf8');
+  const rule = [...html.matchAll(/\.deck, \.printdeck \{[^}]*\}/g)].map((m) => m[0]).find((r) => r.includes('--accent')) || '';
+  assert.ok(rule.includes('color-scheme: light'), 'light, never the presenter\'s scheme');
+  assert.ok(rule.includes('--accent: #B84E12'), 'the brand accent');
+  assert.ok(rule.includes('--paper: #FFF8EE'), 'the brand tokens, after the neutral light defaults');
+  assert.ok(rule.indexOf('--paper: #FFF8EE') > rule.indexOf('--paper: #F7F5EF'), 'tokens win over the neutral');
+});
+
 test('an EVID that matches an unanswered cell backs nothing: the ledger and the cover count answered cells only (IDEA-129)', () => {
   const dir = project({
     ...stamp(),

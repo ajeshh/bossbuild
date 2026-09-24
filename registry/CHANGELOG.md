@@ -50,7 +50,8 @@ rule above still applies to the whole section once it is stamped.
   cut, and a tile jumps to wherever that cell is showing. The *cells backed* count no longer includes an
   unanswered cell whose name happens to share a word with an evidence record. In slides, each block keeps
   its grade and drops the file path. The exported PDF keeps its colours even when the print dialog's
-  background setting is off. (IDEA-129)
+  background setting is off, and Present and the PDF always use your brand's light colours, even on a
+  laptop set to dark mode; the page itself still follows the viewer. (IDEA-129)
 - **The demo venture wears a warmer palette.** Kettlewick's sage ground, sage cards and green-black
   text sat at one hue and one lightness, so nothing on the page drew the eye and the copper accent read
   as rust. Its tokens are now oat and cream under brown-black, with a brighter copper (`#B84E12`, still

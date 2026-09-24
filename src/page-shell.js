@@ -54,6 +54,10 @@ export const DEFAULT_ACCENT = '#1F6F78';
 const DEFAULT_ACCENT_DARK = '#6FB7BF';
 const vars = (t) => `--ground: ${t.ground}; --paper: ${t.paper}; --ink: ${t.ink}; --ink-2: ${t.ink2}; --muted: ${t.muted}; --hole: ${t.hole}; --rule: ${t.rule}; --rule-2: ${t.rule2}; --accent-ink: ${t.accentInk};`;
 
+// The light scheme as bare declarations, for a surface that must look the same on every screen
+// whatever the viewer's dark-mode setting — the playbook's deck and its PDF (IDEA-129).
+export const lightScheme = (accent) => `--accent: ${accent}; ${vars(NEUTRAL.light)} --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--paper)); --chip-ev: #2F5D8A; --chip-ev-soft: #E3ECF5; --stale: #A8681A; --stale-soft: #F6ECDA; --bad: #A33A2E; --bad-soft: #F8E4E1; --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08); color-scheme: light;`;
+
 export function shellCss(accent) {
   const darkAccent = accent === DEFAULT_ACCENT ? ` --accent: ${DEFAULT_ACCENT_DARK};` : '';
   return `
