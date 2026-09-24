@@ -18,7 +18,7 @@
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { frontmatter, revisitDue } from './frontmatter.js';
-import { shellPage } from './page-shell.js';
+import { shellPage, esc } from './page-shell.js';
 // The venture's own tokens set the page when docs/design/tokens.json exists — ground, paper, ink,
 // rules, faces, radius — so a founder's playbook looks like their product and BOSS's looks like
 // BOSS (Ajesh, 2026-09-13). Light scheme only: no dark tokens means dark isn't designed. Neutral
@@ -72,7 +72,6 @@ const CREDITS = { humane: 'Humane Product Canvas · Ajesh Shah', lean: 'Lean Can
 const GRADES = ['stated-pain', 'observed-behavior', 'commitment'];
 
 const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 // --- reading ------------------------------------------------------------------------------------
 

@@ -21,7 +21,7 @@ import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
 // One chrome for every generated page in .boss/ — the board is a subpage of the same dashboard
 // as the playbook and the design space (Ajesh, 2026-09-13: "everything should feel like it's one
 // dashboard with different subpages"). The board keeps its own visual world inside main.
-import { shellPage } from './page-shell.js';
+import { shellPage, esc } from './page-shell.js';
 import { readBrand, hasVerb } from './playbook.js';
 import { readTokens, themeFromTokens } from './design.js';
 import { isoDay, isoMinute } from './clock.js';
@@ -720,8 +720,6 @@ function renderBoardText(projectName, data, opts = {}) {
 // re-run the command; the file is a pure projection of the files, exactly like
 // the text board. Calm palette, not a startup-bro dashboard (voice-keeper).
 
-const esc = (s) =>
-  String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 // Columns are a MONOCHROME progression, not four hues — and that is a design
 // decision, not a simplification. BOSS's visual language locks hi-vis as the

@@ -28,14 +28,13 @@ import { HELP, SYMBOLS, WAYFINDING } from './help.js';
 import { GLOSSARY } from './glossary.js';
 import { bossVersion } from './paths.js';
 import { isoDay } from './clock.js';
+import { esc } from './page-shell.js';
 import { field } from './frontmatter.js';
 import { loopLine } from './map.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const HELP_SRC = join(HERE, '..', 'library', 'help');
 
-const esc = (s) => String(s == null ? '' : s)
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 // Skill glosses carry template tokens meant for a scaffolded file; a reader should never
 // meet `{{PROJECT_NAME}}` in prose. Substitute the one we know and drop the rest.

@@ -113,10 +113,13 @@ projects get the trim on `boss sync --apply`.
   *Done 2026-09-23 for registry (`test/registry.test.js`, under a temp BOSS_HOME), pause/mute end to
   end through the hook (`test/conscience-pause-mute.test.js`) and insights (`test/insights.test.js`).
   map gained coverage via the adopt test's fold line; help-html is still only exercised by hand.*
-- [ ] Readers duplicated across board/design/playbook (two readDecisions, five esc); playbook's revisit-due
+- [x] Readers duplicated across board/design/playbook (two readDecisions, five esc); playbook's revisit-due
   ignores status and uses UTC (`playbook.js:498` vs `records.js:407`). *Revisit half fixed 2026-09-23:
-  one `revisitDue()` in `src/frontmatter.js` read by both (`test/revisit-due.test.js`); the
-  duplicated readers are still open.*
+  one `revisitDue()` in `src/frontmatter.js` read by both (`test/revisit-due.test.js`). esc done
+  the same day: board, playbook and help-html import page-shell's (demo render byte-identical);
+  the two in-browser copies stay, they ship inside page scripts. The two `readDecisions` stay
+  apart on purpose — design needs each DEC's full text for token lookup, playbook parses sections,
+  and a shared reader would need a new module to dodge the playbook→design import.*
 - [ ] IDEA-120 (worktree per session) would retire ~6 standing rules.
 
 ## Keep — the reviewers agreed these are right
