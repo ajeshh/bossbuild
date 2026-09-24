@@ -2,7 +2,7 @@
 title: The conscience — how it decides to speak, and every way to quiet it
 section: conscience
 covers: src/conscience.js stages/L0-quickstart/template/.boss/loops
-reviewed: 2026-09-12
+reviewed: 2026-09-23
 review_by: 2027-03-09
 describes: the hook/model split, what a moment is, and the off switches
 -->
@@ -36,9 +36,11 @@ describes: the hook/model split, what a moment is, and the off switches
 </p>
 <h3>Turning it down</h3>
 <ul>
-  <li><code>boss conscience pause --for 8h</code> — silence everything for a bounded sprint. It
-    comes back on its own, because a permanent off switch you set once during a bad afternoon is
-    not a choice you get to revisit.</li>
+  <li><code>boss conscience pause --for 8h</code> — silence everything for a bounded sprint. The
+    default comes back on its own, because an off switch set during a bad afternoon should not
+    outlive it.</li>
+  <li><code>boss conscience pause --until-resume</code> — silence it until you run
+    <code>boss conscience resume</code>, for when you really do mean indefinitely.</li>
   <li><code>boss conscience mute &lt;moment&gt;</code> — turn down one nudge while the rest keep
     speaking. <code>unmute</code> brings it back.</li>
   <li><code>boss conscience activity</code> — how often it has actually fired. Run this if it
