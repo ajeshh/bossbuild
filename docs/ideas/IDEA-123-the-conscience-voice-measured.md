@@ -3,7 +3,8 @@ id: IDEA-123
 type: idea
 kind: capability
 owner: Ajesh
-status: building
+status: shipped
+spun_to: IDEA-128 (the three follow-ups: judged proportionality in the verdict, the voicing clause for the other moments, voiced vs silent per moment)
 proof: none
 proof_note: warrant is the craft curve and BOSS's own stated rule, not demand. The rule ("once, briefly, no sermon. One sentence.") is BOSS's; the measurement shows the output doesn't keep it.
 gist: How BOSS talks — the conscience, the skills, the agents, the CLAUDE.md block — should be as minimal as the moment allows and as full as the stakes need, never a fixed length. Measured first on 17 Opus 5.5 nudges (median 97 words, "Your call" in 11 of 17, a skill menu in 8, a judge that checks none of it). Make proportionality checkable, pilot on the conscience, then the most-used skills.
@@ -15,12 +16,10 @@ relates: IDEA-039, IDEA-121
 
 ## Current shape
 
-> **Where it stands (2026-09-23, end of day).** Steps 1–3 are done across the conscience, every flagged
-> skill and agent, and the CLI. What's left is three follow-ups, not the pass itself:
-> (a) move judged proportionality into the verdict, now that the frames were tightened against it;
-> (b) give the other judged moments (focus, margin-trap, coherence, sustaining…) the shared voicing
-> clause, which first needs graded cases, since they have none; (c) record voiced vs silent per moment
-> (see Open questions; not yet confirmed with Ajesh). Separate scope: IDEA-127.
+> **Shipped 2026-09-23.** Steps 1–3 done across the conscience, every flagged skill and agent, and the
+> CLI. The three follow-ups (judged proportionality in the verdict; the voicing clause for the other
+> judged moments, once they have graded cases; voiced vs silent per moment) moved to **IDEA-128**.
+> Separate scope: IDEA-127.
 
 **Ajesh's correction, 2026-09-23 (it governs everything below):** *"it shouldnt be limited to 60,
 sometimes more is needed, so its more about knowing when to be minimal, or needing more. Also its not
