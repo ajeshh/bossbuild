@@ -237,6 +237,51 @@ is noise at this size. smoke C (fixed): both personas asked for **BOSS's pick, s
 step 2 now leads with it. **Diminishing returns reached for these two skills.** Single-vote graders
 flip on a single optional sentence, so the next gain is the next skill, not another pass here.
 
+### `/log` and `/ux-check` (runs only; the graders were lost to a delegation mistake)
+
+- **`/log`** needs no change. Both runs were proportionate. With a summary, it logged the entry and
+  asked one question (*"Tick it as done, or add the ward check first?"*), having caught that the claim
+  flow never checks the ward. Bare after a long debugging session, it named the stakes (*"every
+  night-shift swap is quietly wrong in the data… the common case, not an edge"*) and put the model fix
+  before the claim flow. One mild receipt (*"Logged it. Today's entry is at the top…"*), which is fine
+  here: the entry *is* the content.
+- **`/ux-check`** needs no voice change. It actually rendered the page (390px phone emulation) and
+  split observed / inferred / not checked. It led with *"Don't show it to the ward yet"* and four
+  blockers, one of which is the misleading privacy line, measured at 1.92:1 contrast, the hardest
+  thing on the page to read. Then it asked one question. It's long, but on heavy stakes that length is
+  earned.
+
+### The full text audit (all 72 founder-facing skill/agent/rules files, read-only)
+
+Totals: **receipts 7 · scripted or stacked asks 22 · serious demoted 11 · internal words 13.** Clean:
+idea, interview, pretotype, onboard, practice, revalidate, roadmap, health, comp-eval, ai-cost,
+drift-deep, design-library, incident, 10 of 12 agents, all templates, CLAUDE.md, AGENTS.md, the three
+claude-append files. The line references come from readers and haven't all been spot-checked; verify
+each at edit time.
+
+Fix order (core loop first):
+1. **boss**. Day-0 ends in a six-field receipt (:344). Four scripted "why" questions in one turn
+   (:182-195), then repo, licence and a 9-option cohort ask in a row (:269, 278-282, 322-332).
+2. **spec**. Three quoted asks (:209-218), three path questions (:239-253), six schema questions
+   (:392-407), a fixed closing ask (:367-368), and loop mechanics told to the founder (:260-266).
+3. **evidence**. Three offers at once (:142-143, :158), plus "venture brain's read.md".
+4. **canvas**. Repeats /boss's why-questions verbatim (:175-180).
+5. **ship**. For non-tech founders it leads with the live link ahead of a secrets finding (:226-227,
+   contradicting step 2). Up to ~6 asks on a first ship, two scripted. Mentions `PRAC-NNN`.
+6. **tester**. Negative-path failures come after the acceptance list, and nothing stops a
+   "recommend shipped".
+7. **welcome** · 8. **prototype** (two scripted questions after every run, plus a receipt) ·
+   9. **read-repo** (a 3-line receipt; a regulated-data gap demoted) · 10. **red-team** (OWASP order;
+   live fails become future tasks).
+Then trust, design-tokens-init, sunset, consult (humane override 4th), design-review, cost-review, board.
+
+**Outside the four patterns:** `/incident` has no step to tell users when their data was exposed or
+lost, and project-level `/sunset` has the same gap. That's a humane gap, not a voice one; it needs its
+own record.
+
+**Lane note:** canvas, sunset, consult, evidence, design-tokens-init and design-review are held by a
+peer session (IDEA-125 follow-up: internal-history removal). Take them after that session releases them.
+
 ### Found by the pilot, not about voice: skills still describe hooks the pre-0.326 way
 
 0.326.0 stopped copying the ten opt-in hooks at scaffold (`boss hooks enable <name>` copies and
