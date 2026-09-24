@@ -26,15 +26,35 @@
 //                                                             surface it to the human instead).
 //   - MCP tool call whose input references a secret   -> ASK  (unknown semantics; let the human judge).
 //   - everything else                                  -> ALLOW.
+//   - Grep whose path or glob targets a secrets file  -> DENY (content mode prints the secret).
 // Fail-open: any parse/runtime surprise exits 0 (allow). A guard that breaks the session is worse
 // than one that occasionally misses — the deny-list floor still hard-blocks the common vectors.
+//
+// A SPEED BUMP, NOT A BOUNDARY. It matches strings, so a command built to hide the path (a variable,
+// `printf`, a base64'd name, `sh -c`) gets past it, and so does anything a script opens at runtime.
+// It catches the ordinary ways an agent reaches for a secret, which is where leaks come from. The
+// boundary is keeping secrets out of the repo and in the environment or a secret manager.
 //
 // Output contract (Claude Code PreToolUse): JSON on stdout with a permissionDecision, exit 0.
 
 import fs from 'node:fs';
 
-// A path is "secret" if its basename is .env / .env.<suffix>, or it sits under a secrets/ segment.
-const SECRET_RE = /(^|[\/\s'"=:])\.env(\.[\w.-]+)?($|[\/\s'"])|(^|[\/\s'"=:])secrets\//i;
+// What counts as a secret mirrors the `permissions.deny` floor in settings.json, so the hook never
+// guards less than the floor does: `.env` / `.env.<suffix>`, anything under `secrets/`, `.ssh/` or
+// `.aws/`, `*.pem`, `*.key`, and SSH private keys.
+//
+// The boundaries are the part that was wrong (IDEA-121). A path was only recognised between spaces,
+// slashes, quotes, `=` and `:`, so `cat .env|head`, `cat <.env`, `x=$(cat .env)` and `cat .env;`
+// all walked past. Shell punctuation is a boundary too, and `*` ends a name (`grep x .env*`).
+const B = `(?<=^|[\\s'"=:<>|;&(){}\`,/])`;          // before a name
+const E = `(?=$|[\\s'"<>|;&(){}\`,/*])`;            // after a name
+const SECRET_RE = new RegExp([
+  `${B}\\.env(?:\\.[\\w.-]+)?${E}`,
+  `${B}secrets/`,
+  `${B}\\.(?:ssh|aws)/`,
+  `${B}[\\w.-]*\\.(?:pem|key)${E}`,
+  `${B}id_(?:rsa|dsa|ecdsa|ed25519)(?!\\.pub)[\\w.-]*${E}`,
+].join('|'), 'i');
 
 const touchesSecret = (s) => typeof s === 'string' && SECRET_RE.test(s);
 
@@ -66,6 +86,14 @@ try {
       decide('deny',
         `secrets-guard: refusing to ${tool} a secrets file (${p}). Reading secret contents into ` +
         `context risks leakage. Read secrets from the environment at runtime, or use a secret manager.`);
+    }
+  } else if (tool === 'Grep') {
+    // Grep reads contents, so it is Read by another name — the pattern is not the risk, the target is.
+    const where = [input.path, input.glob].filter(Boolean).join(' ');
+    if (touchesSecret(where)) {
+      decide('deny',
+        `secrets-guard: refusing to Grep inside a secrets file (${where}). Search the code that reads ` +
+        `the secret instead; the value itself should never enter the session.`);
     }
   } else if (tool === 'Bash') {
     if (touchesSecret(input.command || '')) {

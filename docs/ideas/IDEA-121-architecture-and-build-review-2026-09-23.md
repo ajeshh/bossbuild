@@ -74,8 +74,10 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
 - [ ] **MVP unlock cliff.** 15→31 skills; design skills + designer before any UI. Fix: an earned `ui` group.
 - [ ] **Merge candidates** (subtract mandate): health+measure+onboard; ai-first-init as the lay-down message;
   ai-cost+cost-review. ~28→24. Needs Ajesh's call — not mechanical.
-- [ ] **secrets-guard bypasses** (`cat .env|head`, `cat <.env`, Grep tool, .pem/.ssh/.aws). Fix: boundary
-  chars, Grep/Glob, mirror deny globs; header says speed bump, not boundary.
+- [x] **secrets-guard bypasses** (`cat .env|head`, `cat <.env`, Grep tool, .pem/.ssh/.aws). Fix: boundary
+  chars, Grep/Glob, mirror deny globs; header says speed bump, not boundary. *Fixed 2026-09-23:
+  shell punctuation is a boundary, Grep denied on a secret path/glob (Glob left alone — names, not
+  contents), the deny floor mirrored; `test/secrets-guard.test.js`, the hook's first direct test.*
 - [ ] Mentor block copied into 6 files with no detector — one byte-identity assertion.
 
 Tier 3, first two items fixed 2026-09-23: fresh MVP scaffold 30.3KB → 24.0KB per turn (~7.6k → ~6.0k

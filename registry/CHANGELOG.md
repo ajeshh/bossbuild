@@ -75,6 +75,13 @@ rule above still applies to the whole section once it is stamped.
   fold into one token. `craft.js` and `help-html.js` drop their hand-rolled regexes for
   `src/frontmatter.js`, and `test/yaml-parity.test.js` holds both parsers to every doc in the repo.
   `boss sync` brings the fixed hook to existing projects.
+- **secrets-guard closes the ways past it (IDEA-121).** The opt-in PreToolUse hook only recognised
+  `.env` between spaces, slashes, quotes, `=` and `:`, so `cat .env|head`, `cat <.env`,
+  `x=$(cat .env)` and `grep x .env*` all got through. It also never checked the Grep tool, and it
+  guarded less than the settings.json deny floor, which already named `*.pem`, `*.key`, SSH keys,
+  `.ssh/` and `.aws/`. Shell punctuation now counts as a boundary, Grep on a secret path is refused,
+  and the hook mirrors the floor. The header now says it is a speed bump, not a boundary. This is
+  its first direct test.
 - **A decision's revisit date means the same thing everywhere (IDEA-121).** The playbook's decision
   cards compared `Date.parse(revisit_by) < now`. That means UTC midnight against a timestamp, so the
   due day itself didn't count, and superseded or dropped decisions still showed *overdue*. `boss
