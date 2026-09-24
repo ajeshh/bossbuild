@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`boss hooks disable` no longer deletes a hook you changed.** It removed the file every time and
+  then said `boss hooks enable` would bring it back, which was true for BOSS's copy and false for your
+  edits, which were gone. Now a hook that differs from the one BOSS ships is turned off and left in
+  place, and BOSS tells you so; `enable` turns it back on as you left it. An unchanged hook is removed
+  as before. (RVW-109)
 - **What's waiting on someone lives on the record, and the board lists it.** Add
   `waiting_on: <who> — <the question>` to any idea or feature (a `(since <date>)` at the end is
   optional) and `boss board --blocked` shows it under *Waiting on <who>*, oldest first. The list is

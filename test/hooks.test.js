@@ -2,7 +2,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
 import { applyStage, readStageManifest } from '../src/scaffold.js';
@@ -60,10 +60,28 @@ test('enable lays the file down and registers it; twice is idempotent; disable r
   assert.deepEqual(opt, ['smoke-guard'], 'only the enabled hook is managed');
 
   const r3 = disableHook(dir, 'smoke-guard');
-  assert.deepEqual(r3, { unregistered: true, removed: true });
+  assert.deepEqual(r3, { unregistered: true, removed: true, kept: false });
   assert.equal(existsSync(join(dir, '.claude', 'hooks', 'smoke-guard.js')), false);
   const after_ = JSON.parse(readFileSync(join(dir, '.claude', 'settings.json'), 'utf8'));
   assert.equal(after_.hooks.Stop, undefined);
   assert.ok(after_.hooks.UserPromptSubmit, 'and the always-on ones are untouched');
   assert.throws(() => enableHook(dir, 'nope', layers), /no opt-in hook named/);
+});
+
+// RVW-109 lesson 4 — the code that deletes decides what is safe to delete. `disable` removed the
+// file unconditionally and then said `enable` "brings it back": true for BOSS's copy, false for a
+// founder's uncommitted edit, which was gone. `boss remove` already keeps what the founder changed.
+test('disable keeps a hook the founder edited — unregistered, never deleted', () => {
+  const dir = project({});
+  const layers = ['L0-quickstart', 'L1-mvp'];
+  applyStage('L0-quickstart', dir, vars);
+  enableHook(dir, 'secrets-guard', layers);
+  const file = join(dir, '.claude', 'hooks', 'secrets-guard.js');
+  writeFileSync(file, readFileSync(file, 'utf8') + '// my own tweak\n');
+  const r = disableHook(dir, 'secrets-guard');
+  assert.deepEqual(r, { unregistered: true, removed: false, kept: true });
+  assert.match(readFileSync(file, 'utf8'), /my own tweak/, 'the edit survives');
+  assert.equal(isRegistered(dir, 'secrets-guard'), false, 'and it is off');
+  enableHook(dir, 'secrets-guard', layers);
+  assert.match(readFileSync(file, 'utf8'), /my own tweak/, 'enable re-registers the kept file, never overwrites it');
 });

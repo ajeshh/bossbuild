@@ -1632,7 +1632,12 @@ function cmdHooks(args) {
   if (sub === 'disable') {
     if (!name) return fail('usage: boss hooks disable <name>');
     const r = disableHook(process.cwd(), name);
-    if (!r.unregistered && !r.removed) return fail(`'${name}' was not on.`);
+    if (!r.unregistered && !r.removed && !r.kept) return fail(`'${name}' was not on.`);
+    if (r.kept) {
+      console.log(`\n  ${ok('✦')} ${bold('/' + name)} is off${r.unregistered ? ', unregistered' : ''}. ${bold('Your file is kept')} — it differs from the one BOSS ships,`);
+      console.log(`  so it's yours: \`boss hooks enable ${name}\` turns it back on as it is; delete .claude/hooks/${name}.js to be rid of it.\n`);
+      return;
+    }
     console.log(`\n  ${ok('✦')} ${bold('/' + name)} is off${r.removed ? ' — file removed' : ''}${r.unregistered ? ', unregistered' : ''}. \`boss hooks enable ${name}\` brings it back.\n`);
     return;
   }

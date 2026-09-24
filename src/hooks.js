@@ -16,7 +16,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'node
 import { writeFileAtomic } from './atomic.js';
 import { join, dirname } from 'node:path';
 import { STAGES_DIR, STAGE_ORDER } from './paths.js';
-import { readStageManifest } from './scaffold.js';
+import { readStageManifest, sameAsTemplate } from './scaffold.js';
 
 const MARKER = /TO TURN IT ON/;
 
@@ -98,7 +98,12 @@ export function enableHook(projectDir, name, layers) {
   return { file, registered };
 }
 
-/** Disable: unregister, and remove the file (it came from BOSS; `enable` brings it back). */
+/**
+ * Disable: unregister, and remove the file ONLY if it is still BOSS's copy — then `enable` really
+ * does bring it back. A file the founder changed is unregistered and KEPT (RVW-109: the code that
+ * deletes decides what is safe to delete; `boss remove` already worked this way). Returns
+ * { unregistered, removed, kept }.
+ */
 export function disableHook(projectDir, name) {
   const s = readSettings(projectDir);
   let unregistered = false;
@@ -110,7 +115,12 @@ export function disableHook(projectDir, name) {
   if (s.hooks && !Object.keys(s.hooks).length) delete s.hooks;
   if (unregistered) writeFileAtomic(settingsPath(projectDir), JSON.stringify(s, null, 2) + '\n');
   const dest = join(projectDir, '.claude', 'hooks', `${name}.js`);
-  const removed = existsSync(dest);
-  if (removed) rmSync(dest);
-  return { unregistered, removed };
+  if (!existsSync(dest)) return { unregistered, removed: false, kept: false };
+  // Hooks carry no placeholders, so "unchanged" is the shipped text; any rung's copy will do. No
+  // shipped copy to compare against means BOSS can't show it is its own — keep it.
+  const src = optionalHooks().find((h) => h.name === name)?.src;
+  const ours = src && existsSync(src) && sameAsTemplate(readFileSync(dest, 'utf8'), readFileSync(src, 'utf8'));
+  if (!ours) return { unregistered, removed: false, kept: true };
+  rmSync(dest);
+  return { unregistered, removed: true, kept: false };
 }

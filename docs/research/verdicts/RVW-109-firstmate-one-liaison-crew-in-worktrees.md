@@ -60,8 +60,8 @@ Taken as mechanisms, not as a product to install. Each is sorted by altitude.
    edits a project; workers do, each in a disposable worktree. This is IDEA-120's answer to six peers
    on one HEAD.
 4. **The code that tears down is the code that decides "landed".** Teardown refuses rather than
-   trusting the caller, which is the guard BOSS added after the 08-21 `boss remove` loss, applied to
-   every destructive path.
+   trusting the caller. BOSS had that guard in `boss remove` (after the 08-21 loss) but not
+   everywhere; see the audit below.
 
 **What BOSS ships (founder-facing):**
 5. **Talk in outcomes, with a translation table.** firstmate lists its internal words (worktree,
@@ -90,6 +90,13 @@ RESUME keeps only questions with no record. **Lesson 2 folded into 1**, because 
 removes the second copy that drifts, and a mechanical check would misfire (a shipped record can
 legitimately still owe an answer, as IDEA-129 does). Not done: DEC records (the board doesn't read
 `docs/decisions/`, so DEC-018's question stays in RESUME), and the HTML board shows no waiting flag.
+
+**Lesson 4 audited (2026-09-24):** every delete in `src/`. `boss remove` keeps edited files and
+backs up `.boss/` first; `sync --remove` never deletes an edited orphan; `remove --global` previews
+unless `--apply`; the scaffold's `claude-append.md` and the atomic-write lock are BOSS's own
+transient files. **One gap, reproduced:** `boss hooks disable` deleted an edited hook outright and
+then promised `enable` would bring it back. **Fixed:** the hook is unregistered and kept if it
+differs from what BOSS ships; the test failed first.
 
 Already on BOSS's shelf, so nothing to take: knowledge routed to its most specific owner (IDEA-102);
 "a current explicit instruction overrides a standing rule, never by analogy"; prune over append.
