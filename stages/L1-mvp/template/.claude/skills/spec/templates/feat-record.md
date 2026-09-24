@@ -50,6 +50,8 @@ from: IDEA-NNN
 ## Goal
 _One sentence. The user-visible change. Not the implementation._
 
+> _The one concrete instance, in the founder's words, unedited: who, what happened, start to finish._
+
 ## Assumptions (the plan-time record)
 _Every place the spec was filled in **without being told**. One line each, phrased so it can be
 rejected in a word. The founder corrects these before a line of code is written — and a correction

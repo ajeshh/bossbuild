@@ -76,6 +76,13 @@ Taken as mechanisms, not as a product to install. Each is sorted by altitude.
 7. **Silence is a reply shape.** Unchanged state is not progress, and the no-op answer is one fixed
    line. BOSS already believes this ("stays quiet the rest of the time"), so this is confirmation.
 
+**Lesson 6 checked against `/spec` (2026-09-24, Ajesh: "lets go"):** out-of-scope, the assumptions
+list and new-scope-gets-a-new-id were all already there; the assumptions list is *stronger* than
+firstmate's rule. The gap was the founder's words: step 3's "one concrete instance, in their words"
+(the skill's own highest-yield question) had no home in the FEAT template, so it died with the chat
+and the coder never saw it. None of this repo's 19 FEATs carries one. **Landed:** the template quotes
+it under Goal, and step 3 says it is what criteria are checked against.
+
 Already on BOSS's shelf, so nothing to take: knowledge routed to its most specific owner (IDEA-102);
 "a current explicit instruction overrides a standing rule, never by analogy"; prune over append.
 

@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`/spec` keeps your own words.** It always asked you to walk through one real example, and
+  called it the most useful question it asks, but it had nowhere to put the answer, so it was lost
+  when the chat ended. The FEAT now quotes it, unedited, under the Goal. It's the line the coder and
+  the reviewer check the criteria against: a criterion your example can't reach is BOSS widening your
+  ask, and it moves to Assumptions or gets its own id. (RVW-109)
 - **The component guard finds a component by its job, not only its name.** When an agent wrote a new
   `Badge` and your index already had a `Tag` whose *What it's for* said "status badge", the guard
   listed five unrelated rows and left out the one it needed: it matched names only. It reads the job

@@ -214,7 +214,10 @@ that when you're choosing among many candidates, not just reacting to one.)_
      the idea was already sharp.
    - **"Walk me through one concrete instance."** One real example, start to finish, in their words.
      **This is the highest-yield question in the skill** — a single worked example surfaces
-     constraints, states, and vocabulary that no checklist thinks to ask for.
+     constraints, states, and vocabulary that no checklist thinks to ask for. **Quote the answer
+     under Goal, unedited.** The Goal is your sentence; this is theirs, and it is the line the coder
+     and the reviewer check the criteria against. A criterion the instance can't reach is a widening:
+     move it to Assumptions or give it a new id.
    - **"What would make you say this is broken even if it technically works?"** The inverse question.
      Most real acceptance criteria come from here, not from restating the goal. Record it under
      **What "wrong" looks like**.
