@@ -19,7 +19,12 @@ export const PRACTICES_DIR = join(BOSS_ROOT, 'library', 'practices');
 // Mutable, machine-local state lives in the user's home — NOT in the package.
 // This keeps the published package immutable and keeps a user's project list
 // (with absolute paths) out of the repo.
-export const BOSS_HOME = join(homedir(), '.boss');
+//
+// `BOSS_HOME` in the environment moves it. A throwaway run (the smoke, a `/tmp` check of a new
+// command) points it at a temp dir and never touches the real registry, so the rule "prune your
+// /tmp rows from ~/.boss/registry.json afterwards" stops depending on memory (IDEA-121). The hook's
+// per-person state (`hooks/lib/person-state.js`) and the update cache read the same variable.
+export const BOSS_HOME = process.env.BOSS_HOME ? resolve(process.env.BOSS_HOME) : join(homedir(), '.boss');
 export const REGISTRY_FILE = join(BOSS_HOME, 'registry.json');
 
 // Is this directory BOSS's OWN source checkout — the repo that SHIPS BOSS, rather than a

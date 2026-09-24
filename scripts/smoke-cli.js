@@ -14,8 +14,8 @@
 //                        whether the HOST invokes it through a POSIX shell on Windows is a separate
 //                        question this script cannot answer (IDEA-095 says so).
 //
-// Cleans up after itself, including its own row in ~/.boss/registry.json — the registry is
-// per-machine and a smoke run must not leave a ghost project in `boss list`.
+// Cleans up after itself and never touches the real ~/.boss. Every command runs with `BOSS_HOME`
+// pointed inside the temp dir, so there is no registry row to prune and none to leave behind.
 
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync, mkdirSync, existsSync, readFileSync, realpathSync } from 'node:fs';
@@ -25,14 +25,13 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const BOSS = join(ROOT, 'bin', 'boss');
-const REGISTRY = join(process.env.HOME || process.env.USERPROFILE || tmpdir(), '.boss', 'registry.json');
 
 let failures = 0;
 const ok = (label) => console.log(`  ✓ ${label}`);
 const fail = (label, detail) => { failures++; console.log(`  ✗ ${label}\n      ${String(detail).split('\n').join('\n      ')}`); };
 
 function boss(args, cwd) {
-  const r = spawnSync(process.execPath, [BOSS, ...args], { cwd, encoding: 'utf8' });
+  const r = spawnSync(process.execPath, [BOSS, ...args], { cwd, encoding: 'utf8', env: ENV });
   return { code: r.status, out: (r.stdout || '') + (r.stderr || '') };
 }
 
@@ -46,6 +45,7 @@ function expect(label, r, { code = 0, match } = {}) {
 // the prune below matches on the registered path. Without this the first run left a ghost row.
 const work = realpathSync(mkdtempSync(join(tmpdir(), 'boss-smoke-')));
 const app = join(work, 'smoke-app');
+const ENV = { ...process.env, BOSS_HOME: join(work, '.boss-home') };
 console.log(`\nBOSS · CLI smoke   node ${process.version} · ${process.platform}/${process.arch}\n  ${work}\n`);
 
 try {
@@ -74,20 +74,13 @@ try {
   // The hook under node, fed what the host would send. Exit 0 and no `[conscience hook error]`
   // is the bar — the moment it chooses (or silence) is judgment, not smoke.
   const hook = spawnSync(process.execPath, [join(app, '.claude', 'hooks', 'conscience.js')], {
-    cwd: app, encoding: 'utf8', env: { ...process.env, CLAUDE_PROJECT_DIR: app },
+    cwd: app, encoding: 'utf8', env: { ...ENV, CLAUDE_PROJECT_DIR: app },
     input: JSON.stringify({ hook_event_name: 'UserPromptSubmit', prompt: 'add a login page', cwd: app }),
   });
   if (hook.status !== 0 || /hook error/.test(hook.stderr || '')) fail('conscience hook runs under node', `exit ${hook.status}\n${(hook.stderr || hook.stdout || '').trim()}`);
   else ok('conscience hook runs under node');
 } finally {
-  // Prune our row from the machine registry, then the tree. Both best-effort: a smoke that
-  // cannot clean up is still a smoke that ran.
-  try {
-    const reg = JSON.parse(readFileSync(REGISTRY, 'utf8'));
-    const before = reg.projects.length;
-    reg.projects = reg.projects.filter((p) => !p.path || !p.path.startsWith(work));
-    if (reg.projects.length !== before) writeFileSync(REGISTRY, JSON.stringify(reg, null, 2) + '\n');
-  } catch { /* no registry, nothing to prune */ }
+  // Best-effort: a smoke that cannot clean up is still a smoke that ran.
   try { rmSync(work, { recursive: true, force: true }); } catch { /* leave it */ }
 }
 

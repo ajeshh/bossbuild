@@ -18,11 +18,11 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { homedir } from 'node:os';
-import { BOSS_ROOT, bossVersion } from './paths.js';
+import { BOSS_ROOT, BOSS_HOME, bossVersion } from './paths.js';
 import { cmpVersion } from './changelog.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 
-const CACHE = join(homedir(), '.boss', 'update-check.json');
+const CACHE = join(BOSS_HOME, 'update-check.json');
 // Renamed bossbuild → oyeboss (v0.177.0, BRAND.md). An install predating the rename keeps
 // polling the OLD name and would be told "current" forever while oyeboss moves on — the two-hop
 // trap wearing a new hat. `npm deprecate bossbuild` is what actually reaches those installs.

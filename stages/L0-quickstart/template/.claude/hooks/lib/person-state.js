@@ -61,7 +61,9 @@ export function projectKey(projectDir) {
 
 export function personStateDir(projectDir) {
   const key = projectKey(projectDir);
-  return key ? join(homedir(), '.boss', 'projects', key) : null;
+  // `BOSS_HOME` moves it, same as the CLI's src/paths.js (this file ships alone, so it reads the
+  // variable itself rather than importing).
+  return key ? join(process.env.BOSS_HOME || join(homedir(), '.boss'), 'projects', key) : null;
 }
 
 // The path to read from and write to. `rel` is one of PERSON_FILES.

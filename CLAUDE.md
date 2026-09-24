@@ -11,7 +11,7 @@
 3b. **Write a found task down before you act on it.** The things identified mid-session — "this also needs a rollback", "the adjacent rule is probably wrong too" — live only in the chat until something durable holds them, and a compaction takes them silently. Put them somewhere on disk as you find them (the active IDEA/FEAT record, `docs/RESUME.md`, or a devlog line), sorted three ways: a **task** stays on a list, genuinely **new scope** becomes its own id, and an **open question** gets written as a question rather than carried. The conscience's `task-hygiene` moment notices when the chat's list has outrun the files, but it fires on a **timestamp** and cannot see whether you already wrote them down — a reminder, never a referee. Recovering by re-reading what you built tells you what you *did*; it can never tell you what you *meant to do next*.
 4. **Zero-dependency CLI.** `src/` stays dependency-free (Node built-ins only). Machine state is JSON (`.boss/`, `registry/`).
 5. **Every capability = a commit + a bullet under `## Unreleased` in `registry/CHANGELOG.md`. VERSION does not move** (DEC-019). Ajesh stamps a version when he publishes: `npm run stamp`, then `npm publish`. The CHANGELOG is what `boss sync` reads to tell projects what's new — stamped entries only.
-6. **Test the CLI before claiming done.** Scaffold a throwaway in `/tmp`, exercise the command, then clean it (and prune its entry from `~/.boss/registry.json` — the registry is per-machine, never in the repo).
+6. **Test the CLI before claiming done.** Scaffold a throwaway in `/tmp` with `BOSS_HOME` pointed at a temp dir (`BOSS_HOME=$(mktemp -d) boss new …`), exercise the command, then delete both. With `BOSS_HOME` set, nothing reaches the real `~/.boss/registry.json`, so there is no row to prune. Without it, prune the row by hand; the registry is per-machine and never in the repo.
 7. **Small, reversible steps.** One concern per change. Don't break the working `boss` CLI.
 
 ## Operating conditions of this tree (standing — moved out of RESUME, IDEA-102)
@@ -48,8 +48,8 @@
   skipped). **`node scripts/release.js` is not read-only** — it regenerates `docs/CHEATSHEET.md`,
   `docs/SKILLS.md` and `site/`; never run it to "just check" a tree someone else is releasing into.
 - Commit with the GH noreply env-var: `NR=$(gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"')`.
-  After CLI changes: `npm i -g ~/Projects/bossbuild`, test in `/tmp`, prune `/tmp` entries from
-  `~/.boss/registry.json`. `npm run pack:preview` confirms only the package ships.
+  After CLI changes: `npm i -g ~/Projects/bossbuild`, then test in `/tmp` with `BOSS_HOME` set to a
+  temp dir (rule 6). `npm run pack:preview` confirms only the package ships.
 - **Confirm the altitude before analysing.** BOSS is self-hosted: *BOSS's own practice* and *what BOSS
   ships a founder* are the same file and look like the same question. Ask which one is meant.
 

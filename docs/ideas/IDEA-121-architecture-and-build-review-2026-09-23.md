@@ -91,8 +91,10 @@ projects get the trim on `boss sync --apply`.
 - [ ] **RESUME carries computed facts that went wrong**: version 0.325.0, "51 commits ahead" (real: 1 ✓v),
   a due date already past. Fix: delete them; check-dogfood fails on version ≠ VERSION.
 - [ ] **No commit-time gate.** `npm test` is ~5s. Fix: tracked `scripts/hooks/pre-commit` + `core.hooksPath`.
-- [ ] **`BOSS_HOME` override** (`src/paths.js:22`) so smoke/tests/throwaways never touch `~/.boss`
-  (2 /tmp entries leaked; retires rule 6's prune step).
+- [x] **`BOSS_HOME` override** (`src/paths.js:22`) so smoke/tests/throwaways never touch `~/.boss`
+  (2 /tmp entries leaked; retires rule 6's prune step). *Done 2026-09-23: paths.js, update.js and
+  the hook's person-state read it; `scripts/smoke-cli.js` runs under it and lost its prune; CLAUDE.md
+  rule 6 says to use it; `test/boss-home.test.js`.*
 - [ ] **Session read-in ~11k tokens; MEMORY.md is 4.2k of it** (one entry 5.7k chars on one line). Cap
   entries ~300 chars; history into topic files.
 - [ ] Commit subjects median 104 / p90 323 chars — ≤72, rationale in the CHANGELOG.

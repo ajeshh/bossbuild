@@ -75,6 +75,9 @@ rule above still applies to the whole section once it is stamped.
   fold into one token. `craft.js` and `help-html.js` drop their hand-rolled regexes for
   `src/frontmatter.js`, and `test/yaml-parity.test.js` holds both parsers to every doc in the repo.
   `boss sync` brings the fixed hook to existing projects.
+- **`BOSS_HOME` moves BOSS's machine-local state (IDEA-121).** Set it and the registry, the update
+  cache and the hook's per-person state (`projects/<key>/`) go there instead of `~/.boss`. The CLI
+  smoke runs under it, so it no longer writes a row into the real registry and then prunes it.
 - **secrets-guard closes the ways past it (IDEA-121).** The opt-in PreToolUse hook only recognised
   `.env` between spaces, slashes, quotes, `=` and `:`, so `cat .env|head`, `cat <.env`,
   `x=$(cat .env)` and `grep x .env*` all got through. It also never checked the Grep tool, and it
