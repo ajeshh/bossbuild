@@ -41,6 +41,10 @@
   that manufactures a record nobody wrote.
 - **`npm publish` and `npm run bump:formula` are Ajesh's.** Never run them for him. `check:published`
   says how far npm is behind; that is his number, not a task.
+- **Every commit runs the STAGED tree through `npm run test:ci`** (`scripts/hooks/pre-commit`, ~9s: a
+  throwaway worktree at HEAD with the index copied over it, so peers' unstaged edits never count).
+  On per clone with `npm run hooks`; `git commit --no-verify` skips once. It is the CI half only —
+  `npm run check` still needs the gitignored records, so run it by hand as below.
 - **Verify with `npm run check`, never a hand-rolled loop over `npm run check:*`** — several print
   errors and exit 0 without `--strict`. `npm run release` before every release; a red gate is not a
   suggestion (v0.228.0: `package.json` sat six versions behind `VERSION` over a gate that checks

@@ -100,14 +100,14 @@ projects get the trim on `boss sync --apply`.
   a due date already past. Fix: delete them; check-dogfood fails on version ≠ VERSION. *Done
   2026-09-23: the counts became the commands that compute them (`git rev-list`, `check:published`),
   `gh run list -L1` joined the ground-truth block, and check-dogfood fails on a stale `version:`.*
-- [ ] **No commit-time gate.** `npm test` is ~5s. Fix: tracked `scripts/hooks/pre-commit` + `core.hooksPath`.
+- [x] **No commit-time gate.** `npm test` is ~5s. Fix: tracked `scripts/hooks/pre-commit` + `core.hooksPath`.
 - [x] **`BOSS_HOME` override** (`src/paths.js:22`) so smoke/tests/throwaways never touch `~/.boss`
   (2 /tmp entries leaked; retires rule 6's prune step). *Done 2026-09-23: paths.js, update.js and
   the hook's person-state read it; `scripts/smoke-cli.js` runs under it and lost its prune; CLAUDE.md
   rule 6 says to use it; `test/boss-home.test.js`.*
 - [ ] **Session read-in ~11k tokens; MEMORY.md is 4.2k of it** (one entry 5.7k chars on one line). Cap
   entries ~300 chars; history into topic files.
-- [ ] Commit subjects median 104 / p90 323 chars — ≤72, rationale in the CHANGELOG.
+- [x] Commit subjects median 104 / p90 323 chars — ≤72, rationale in the CHANGELOG.
 - [ ] CHANGELOG 1.14MB = 30% of the npm package. Ship a recent-N file.
 - [x] Untested: registry, conscience pause/mute, help-html, insights, map. registry test would have caught tier 1.
   *Done 2026-09-23 for registry (`test/registry.test.js`, under a temp BOSS_HOME), pause/mute end to

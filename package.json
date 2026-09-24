@@ -51,6 +51,7 @@
     "check:site": "node scripts/check-site.js",
     "check:demo": "node scripts/check-demo.js",
     "test": "npm run check --silent && node --test \"test/*.test.js\"",
+    "hooks": "git config core.hooksPath scripts/hooks",
     "test:ci": "node scripts/check-boundary.js && node scripts/check-ladder.js && node --test \"test/*.test.js\"",
     "smoke:cli": "node scripts/smoke-cli.js",
     "release": "node scripts/release.js",

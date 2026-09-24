@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+// commit-msg — advise when a subject line runs past 72 characters (IDEA-121). Never blocks.
+//
+// Since 2026-09-01 the median subject here was 104 characters and the p90 323: the rationale was
+// being written three times, in the subject, the CHANGELOG and the devlog. The reasoning belongs in
+// the CHANGELOG, which is what founders read; the subject is what `git log --oneline`, `gh run list`
+// and every tool that truncates at ~72 shows. A warning, not a wall — a long subject is untidy, not
+// wrong.
+import { readFileSync } from 'node:fs';
+
+const subject = (readFileSync(process.argv[2], 'utf8').split('\n').find((l) => l.trim() && !l.startsWith('#')) || '').trim();
+if (subject.length > 72) {
+  process.stderr.write(`  commit-msg: subject is ${subject.length} chars (aim for ≤72; the why goes in the CHANGELOG bullet or the body).\n`);
+}
+process.exit(0);

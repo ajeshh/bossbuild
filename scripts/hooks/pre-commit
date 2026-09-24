@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+// pre-commit — run the CI suite against exactly what is being committed (IDEA-121).
+//
+// Nothing ran the gate at commit time; "verify with npm run check" and "a red gate is not a
+// suggestion" were rules a human had to remember, and Windows CI sat red for ten days. This makes
+// the rule a mechanism, with one constraint that comes from this tree: several sessions share one
+// checkout and commit hunk-only while other sessions' half-done edits sit in the working tree. So
+// the WORKING tree is never tested — the INDEX is: a throwaway worktree at HEAD, the staged files
+// copied over it, `npm run test:ci` (the suite CI runs on a clean checkout) inside it, then removed.
+//
+// Skip once with `git commit --no-verify`. Turned on per clone with `npm run hooks`.
+import { execFileSync, spawnSync } from 'node:child_process';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+const git = (...a) => execFileSync('git', a, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+const staged = git('diff', '--cached', '--name-only').trim();
+if (!staged) process.exit(0);
+
+const dir = join(mkdtempSync(join(tmpdir(), 'boss-precommit-')), 'tree');
+let status = 1;
+try {
+  git('worktree', 'add', '--detach', '--quiet', dir, 'HEAD');
+  git('checkout-index', '--all', '--force', `--prefix=${dir}/`);
+  // Files deleted in the index still sit in the HEAD checkout; remove them so the test sees the commit.
+  for (const f of git('diff', '--cached', '--name-only', '--diff-filter=D').split('\n').filter(Boolean)) {
+    rmSync(join(dir, f), { force: true });
+  }
+  const t0 = Date.now();
+  const r = spawnSync('npm', ['run', 'test:ci', '--silent'], { cwd: dir, encoding: 'utf8', shell: process.platform === 'win32' });
+  status = r.status ?? 1;
+  if (status !== 0) {
+    process.stderr.write((r.stdout || '').split('\n').filter((l) => /✖|not ok|Error|finding/.test(l)).slice(0, 25).join('\n') + '\n');
+    process.stderr.write(`\n  pre-commit: the staged tree fails \`npm run test:ci\`. Fix it, or \`git commit --no-verify\` if red is expected.\n`);
+  } else {
+    process.stderr.write(`  pre-commit: staged tree green (${((Date.now() - t0) / 1000).toFixed(1)}s)\n`);
+  }
+} catch (e) {
+  // A hook that cannot set itself up must not block a commit — say so and let it through.
+  process.stderr.write(`  pre-commit: could not test the staged tree (${e.message.split('\n')[0]}); committing untested.\n`);
+  status = 0;
+} finally {
+  try { git('worktree', 'remove', '--force', dir); } catch { rmSync(dir, { recursive: true, force: true }); try { git('worktree', 'prune'); } catch { /* best effort */ } }
+}
+process.exit(status);

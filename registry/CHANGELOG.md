@@ -71,6 +71,13 @@ rule above still applies to the whole section once it is stamped.
 > the same step. `/judge-traces` now points out agents nobody calls and pairs that always hand off to
 > each other. And if you delete an agent you don't need, `boss sync` no longer puts it back.
 
+- **Commits in this repo run the staged tree through `npm run test:ci` (IDEA-121).** `scripts/hooks/pre-commit`
+  builds a throwaway worktree at HEAD, copies the index over it and runs the CI suite there — never the
+  working tree, where other sessions' half-done edits sit. ~9s; `git commit --no-verify` skips once;
+  `npm run hooks` turns it on per clone. `commit-msg` warns (never blocks) past a 72-character subject.
+  Windows CI had been red for ten days before anyone looked; this is the local half of not letting that
+  happen again. Repo tooling — nothing ships.
+
 - **The conscience doesn't open every session with the same thing (IDEA-121).** "Once a session" held,
   and a condition true for weeks was still voiced in full at the top of each new session — `/clear`
   included. The loop that was actually voiced is now remembered with the condition it spoke about (which
