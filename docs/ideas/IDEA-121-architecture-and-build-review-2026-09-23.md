@@ -47,10 +47,16 @@ hook's try (conscience.js:19) — the package.json removes the crash that motiva
   match import/constructor shapes, build earned.js's copy from fragments.
 - [ ] **Dedup is per session, keyed by moment.** New session / `/clear` re-sends the full block; loops
   sharing a moment silence each other. Fix: key on loop id + evidence hash; re-voice on change.
-- [ ] **Two frontmatter parsers disagree.** hooks `lib/yaml.js` drops every key after a wrapped/`>`
+- [x] **Two frontmatter parsers disagree.** hooks `lib/yaml.js` drops every key after a wrapped/`>`
   field: 37–157 keys across this repo (25 IDEAs lose `created`); read by `orientation.js` (boss status),
   the hook, check-freshness/manifests. Plus `craft.js:24` and `help-html.js:192` regexes. Fix: port the
   multi-line block into yaml.js + a parity test over docs/** and library/**.
+
+Tier 2 parser parity fixed 2026-09-23 (IDEA-124's session): `yaml.js` folds block, wrapped-plain and
+open-quoted values into one token, measured from the key's column (a `- id:` item's siblings sit at
+that column). 102 lost keys → 0 across 537 docs; every changed `.md` value is a completion of the
+old one; the one eval-file change is a `why: >` that read as `>`. `craft.js` and `help-html.js` now
+call `src/frontmatter.js`. `test/yaml-parity.test.js` walks docs/library/stages both ways.
 
 Tier 2, first two items fixed 2026-09-23 (`test/conscience-one-thing.test.js`, 27 cases, 14 fail on the
 old code). Still open: cross-session dedup (a new session re-voices the top signal), and the parser parity.

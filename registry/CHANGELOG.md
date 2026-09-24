@@ -67,6 +67,14 @@ rule above still applies to the whole section once it is stamped.
 > the same step. `/judge-traces` now points out agents nobody calls and pairs that always hand off to
 > each other. And if you delete an agent you don't need, `boss sync` no longer puts it back.
 
+- **The hook's frontmatter reader stops dropping fields (IDEA-121 tier 2).** The hook parser
+  (`.claude/hooks/lib/yaml.js`) ended a mapping at the first multi-line value, so every key after a
+  folded `gist: >` or a wrapped line was silently absent. It is read by the conscience, `boss
+  status`, check-freshness and check-manifests. In BOSS's own tree that was 102 keys across 42 of
+  537 docs, plus one eval whose `why:` read as `>`. Block, wrapped-plain and open-quoted values now
+  fold into one token. `craft.js` and `help-html.js` drop their hand-rolled regexes for
+  `src/frontmatter.js`, and `test/yaml-parity.test.js` holds both parsers to every doc in the repo.
+  `boss sync` brings the fixed hook to existing projects.
 - **Agent shape, one ladder for every agent (IDEA-124).** New managed rule
   `.claude/rules/agent-shape.md` (Quickstart). It is path-scoped to `.claude/agents/**`, so it loads
   only when an agent file is touched. Rungs: specialize → scope (a path-scoped rule per surface) →

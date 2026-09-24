@@ -6,7 +6,9 @@
 //   - inline sequences ([a, b, c])
 //   - scalars: bare string, quoted string, int, true/false, null
 //   - comments (# ...) and blank lines
-// NOT supported: anchors, aliases, multi-line scalars, flow-style mixing.
+//   - multi-line scalars: block (`>` folds, `|` keeps), a plain value wrapped onto deeper lines,
+//     and a quoted value that runs past its line
+// NOT supported: anchors, aliases, flow-style mixing, explicit indentation indicators (`>2`).
 // Lifted from BOSS's own conscience-eval runner so the same parser
 // is available to the project-side hook.
 
@@ -101,11 +103,69 @@ function indentOf(line) {
   return i;
 }
 
+// A multi-line value used to end the mapping it sat in: its continuation lines are indented deeper
+// than the key, and `parseMapping` stops at the first line whose indent differs — so every key
+// AFTER a folded `gist: >` or a wrapped `proof_note:` was silently dropped. Measured 2026-09-23:
+// 102 keys across 42 of 537 docs, read by `boss status`, the hook and two gates (IDEA-121).
+// So multi-line values are folded into ONE token here, with the value already parsed, and the
+// block/mapping logic below never sees their continuation lines. Mirrors `src/frontmatter.js`,
+// which is the CLI's reader; `test/yaml-parity.test.js` holds the two together.
+const BLOCK_HEAD = /^(-\s+)?([^:#\s][^:]*):\s*([>|])[-+]?\s*$/;
+const PLAIN_HEAD = /^(-\s+)?([^:#\s][^:]*):\s+(\S.*)$/;
+
 function tokenize(text) {
-  return text.split(/\r?\n/)
-    .map((line, i) => ({ raw: line, lineNum: i + 1 }))
-    .filter((t) => t.raw.trim().length > 0 && !t.raw.trim().startsWith('#'))
-    .map((t) => ({ ...t, indent: indentOf(t.raw), body: t.raw.trim() }));
+  const lines = text.split(/\r?\n/);
+  const out = [];
+  for (let n = 0; n < lines.length; n++) {
+    const raw = lines[n];
+    const body = raw.trim();
+    if (!body || body.startsWith('#')) continue;
+    const indent = indentOf(raw);
+    const deeperAhead = (m, dash) => {
+      // Continuation = blank lines and lines indented past the KEY, stopping at the first that isn't.
+      // Past the key, not the line: in `- id: x` the key sits after the dash, and the item's
+      // sibling keys sit at exactly that column — measuring from the dash swallowed the whole item.
+      const keyCol = indent + (dash ? dash.length : 0);
+      const rows = [];
+      let k = m;
+      while (k + 1 < lines.length && (lines[k + 1].trim() === '' || indentOf(lines[k + 1]) > keyCol)) rows.push(lines[++k]);
+      while (rows.length && rows[rows.length - 1].trim() === '') { rows.pop(); k--; }
+      return [rows, k];
+    };
+
+    const block = BLOCK_HEAD.exec(body);
+    if (block) {
+      const [rows, k] = deeperAhead(n, block[1]);
+      const margin = Math.min(...rows.filter((l) => l.trim()).map(indentOf), Infinity);
+      const cut = rows.map((l) => (l.trim() ? l.slice(Number.isFinite(margin) ? margin : 0) : ''));
+      const value = block[3] === '|'
+        ? cut.join('\n').trim()
+        : cut.reduce((acc, row) => (row === '' ? acc + '\n' : acc + (acc === '' || acc.endsWith('\n') ? '' : ' ') + row.trim()), '').trim();
+      out.push({ raw, lineNum: n + 1, indent, body: `${block[1] || ''}${block[2].trim()}:`, value });
+      n = k;
+      continue;
+    }
+
+    const plain = PLAIN_HEAD.exec(body);
+    if (plain) {
+      const v = plain[3];
+      const q = v[0];
+      const openQuote = (q === '"' || q === "'") && !(v.length > 1 && v.endsWith(q));
+      const flow = q === '[' || q === '{';
+      const [rows, k] = deeperAhead(n, plain[1]);
+      // A deeper line after a key WITH a value can only be a continuation (YAML has no other
+      // reading), unless the value is a flow collection, which this parser keeps on one line.
+      if (rows.length && !flow && (openQuote || !/^['"]/.test(v))) {
+        const joined = [v, ...rows.map((l) => l.trim())].reduce((acc, row) => (row === '' ? acc + '\n' : acc + (acc === '' || acc.endsWith('\n') ? '' : ' ') + row), '').trim();
+        out.push({ raw, lineNum: n + 1, indent, body: `${plain[1] || ''}${plain[2].trim()}:`, value: parseScalar(joined) });
+        n = k;
+        continue;
+      }
+    }
+
+    out.push({ raw, lineNum: n + 1, indent, body });
+  }
+  return out;
 }
 
 function parseBlock(tokens, startIdx, indent) {
@@ -147,7 +207,10 @@ function parseMapping(tokens, startIdx, indent) {
     if (colonIdx < 0) { i++; continue; }
     const key = line.slice(0, colonIdx).trim();
     const valStr = line.slice(colonIdx + 1).trim();
-    if (valStr) {
+    if ('value' in tokens[i]) {
+      obj[key] = tokens[i].value;
+      i++;
+    } else if (valStr) {
       obj[key] = parseScalar(valStr);
       i++;
     } else {

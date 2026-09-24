@@ -28,6 +28,7 @@ import { HELP, SYMBOLS, WAYFINDING } from './help.js';
 import { GLOSSARY } from './glossary.js';
 import { bossVersion } from './paths.js';
 import { isoDay } from './clock.js';
+import { field } from './frontmatter.js';
 import { loopLine } from './map.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -189,8 +190,9 @@ function agentDescription(projectDir, name, stageId) {
   const pkg = join(HERE, '..', 'stages', stageId || '', 'template', '.claude', 'agents', `${name}.md`);
   const file = existsSync(own) ? own : (stageId && existsSync(pkg) ? pkg : null);
   if (!file) return '';
-  const head = (readFileSync(file, 'utf8').match(/^---\n([\s\S]*?)\n---/) || [, ''])[1];
-  let d = (head.match(/^description:\s*(.*)$/m) || [, ''])[1].trim();
+  // The CLI's one frontmatter reader (src/frontmatter.js): this was a fourth hand-rolled regex,
+  // blind to CRLF and to a folded `description: >` (IDEA-121).
+  let d = String(field(readFileSync(file, 'utf8'), 'description') || '').trim();
   d = d.split(/\s+Trigger phrases?\s*[-–—:]/)[0].trim();
   const stop = d.search(/\.\s/);
   if (stop > 40) d = d.slice(0, stop + 1);

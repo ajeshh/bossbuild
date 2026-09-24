@@ -19,18 +19,8 @@ import { PRACTICES_DIR } from './paths.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 import { printPatterns } from './patterns.js';
 import { isoDay } from './clock.js';
+import { frontmatter } from './frontmatter.js';
 
-// Minimal frontmatter read — same shape the freshness script uses. Zero-dep by rule.
-function frontmatter(text) {
-  const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!m) return {};
-  const out = {};
-  for (const line of m[1].split(/\r?\n/)) {
-    const kv = line.match(/^([a-z_]+):\s*(.*)$/i);
-    if (kv) out[kv[1]] = kv[2].trim();
-  }
-  return out;
-}
 
 // Strip the frontmatter before printing. `provenance:` is INTERNAL — it names IDEA / REVIEW /
 // RVW records that exist only in BOSS's own repo, and every one of them rendered straight into a
