@@ -321,6 +321,13 @@ rule above still applies to the whole section once it is stamped.
   re-graded on Opus 5.5: 14 right-sized (was 8), 0 stock sign-offs (was 9), 0 lists of skills (was 8),
   0 internal labels (was 3), and every fire-or-stay-silent decision still matches its label.
 
+- **Three skills told you to paste a hook block from a file that isn't there.** Since 0.326.0 the
+  opt-in hooks aren't in your project until `boss hooks enable <name>` copies and registers them.
+  `/smoke` (smoke-guard), `/design-tokens-init` (design-tokens-guard) and `/judge-traces` (auto-log)
+  still said the file was already in `.claude/hooks/` with a settings block in its header. Each now
+  gives the one command. It was found when a scripted `/smoke` run on a fresh MVP project looked for
+  the file.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched

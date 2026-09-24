@@ -47,11 +47,11 @@ convention there is and the most painful one to retrofit onto a codebase an agen
 for three months. If the stack has neither, say so and move on — nothing to plant.
 
 **Then offer the runner, once.** The gate only holds if something runs it at the moment nobody
-remembers to — when Claude finishes a turn and says "done." `.claude/hooks/smoke-guard.js` is that:
-a dormant `Stop` hook that runs this command once per turn that touched source, reports green in
-one line, and hands red back as a reason to keep going (exactly once — it never blocks twice on the
-same failure). The file's header has the settings.json block to paste; `boss help hooks` lists it
-with the other guards. **Documented conventions rot; enforced ones compound** — `/smoke` documents
+remembers to — when Claude finishes a turn and says "done." `smoke-guard` is that: an opt-in
+`Stop` hook that runs this command once per turn that touched source, reports green in one line,
+and hands red back as a reason to keep going (exactly once — it never blocks twice on the same
+failure). It isn't in the project until they turn it on: `boss hooks enable smoke-guard` copies it
+and registers it in one move (`boss hooks` lists the others). **Documented conventions rot; enforced ones compound** — `/smoke` documents
 the gate, `smoke-guard` is what enforces it. Offer it; don't register it for them.
 
 ## What smoke is and isn't

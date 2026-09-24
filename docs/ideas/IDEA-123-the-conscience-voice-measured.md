@@ -151,6 +151,38 @@ heavy and right-sized.
 - The other judged moments (focus, margin-trap, coherence, sustaining…) don't carry `VOICE_CRAFT` yet.
   They have no graded cases to measure it against, which is its own gap.
 
+## Step 3 — in progress: `/close` and `/smoke` (pilot)
+
+**Method.** A throwaway MVP project (`boss new` + `unlock mvp`, seeded as a nurses' shift-swap app:
+canvas bet on the charge nurse, FEAT-001 half-built, devlog, RESUME, found items, a brain read). One
+copy per scenario. A runner subagent follows the skill exactly and returns only what the founder
+would see. Then separate graders read that output: the proportionality judge, plus
+`persona-first-product` and `persona-returning-founder`.
+
+Scenarios:
+- `/close` A: an ordinary session, nothing crossed, facts said in passing, the conscience fired once.
+- `/close` B: a threshold crossed (the charge nurse approved two real swaps).
+- `/close` C: a 10-minute typo fix. The skill says not to run on a one-line session.
+- `/smoke` A: green. `/smoke` B: red. `/smoke` C: never configured.
+
+**From reading the text, before any run.** `/close` can stack four separate asks on a founder who is
+leaving: mark a threshold, confirm the brain read, the learning-pulse question, and up to five
+"write it in?" lines. The pulse is **prescribed verbatim and asked at every close**
+(*"What did this stretch teach you that a conversation — not a commit — taught you?"*). That is the
+"Your call" mechanism again, designed in. The closing report is a fixed one-line template.
+`/smoke` already says *"Report the result in one line"*. Its first run asks up to three things in
+sequence (the command, strict typecheck/formatter, the smoke-guard offer).
+
+### Found by the pilot, not about voice: skills still describe hooks the pre-0.326 way
+
+0.326.0 stopped copying the ten opt-in hooks at scaffold (`boss hooks enable <name>` copies and
+registers one). Three shipped skills still tell the founder the file is already there with a block to
+paste: `/smoke` (smoke-guard), `/design-tokens-init` step "add the `PostToolUse` block from the header
+of `.claude/hooks/design-tokens-guard.js`", and `/judge-traces` (*"`.claude/hooks/auto-log.js`, already
+in this project"*). `/spec` says `schema-guard` is "opt-in, `.claude/hooks/`" (softer). Found when the
+`/smoke` C runner looked for the file and it wasn't in a fresh MVP scaffold. `/spec` is in the IDEA-125
+lane; the other three are not.
+
 ## Open questions
 
 - ~~Is ~60 words the right ceiling?~~ Answered by Ajesh 2026-09-23: no ceiling, proportionality.

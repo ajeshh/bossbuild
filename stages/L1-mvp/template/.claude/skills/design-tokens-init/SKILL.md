@@ -517,8 +517,8 @@ the other field worth filling — it is what an editor shows on hover, and the a
   > your token names instead. It stays silent unless this tokens file exists, and it only has an
   > opinion about a family you actually defined tokens for. Costs a process per file write."*
 
-  If yes, add the `PostToolUse` block from the header of `.claude/hooks/design-tokens-guard.js` to
-  `.claude/settings.json`. If no, **drop it and don't re-ask** — the tokens file alone is a real
+  If yes, run `boss hooks enable design-tokens-guard`: it copies the hook into the project and
+  registers it in `.claude/settings.json` in one move. If no, **drop it and don't re-ask** — the tokens file alone is a real
   choice, and `boss hooks` will still list it whenever they want it.
 
 - **Offer `component-reuse-guard` when the index has real rows.** The index made *reuse first*
