@@ -1249,7 +1249,8 @@ function cmdSync(args) {
   const plan = planSync(process.cwd(), stamp);
   // `declined`: a BOSS agent or rule the founder deleted. Their decision, so not pending work —
   // unless `--force`, which takes BOSS's version of everything and so restores these too.
-  const declined = plan.entries.filter((e) => e.status === 'declined');
+  // A declined skill's resources are declined with it; name the skill once, not each file in it.
+  const declined = plan.entries.filter((e) => e.status === 'declined' && e.kind !== 'skill-resource');
   const changed = plan.entries.filter((e) => e.status !== 'ok' && (e.status !== 'declined' || force));
   const settingsChanged = !!(plan.settings && plan.settings.changed);
   // An orphan the founder already deleted is history, not work. Only surface what's still here.

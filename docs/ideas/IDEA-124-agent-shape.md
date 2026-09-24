@@ -73,8 +73,9 @@ to create or edit or delete agents accordingly."*
 
 ## Open questions / found tasks
 
-- **Skills have the same resurrection bug** (a deleted skill dir plans as `new`). Not in slice 1 —
-  a skill is a tree (SKILL.md + resources) and earned groups interact. Task, not new scope.
+- ~~**Skills have the same resurrection bug**~~ — fixed 2026-09-23: the whole skill directory gone =
+  `declined` (its resources with it); a folder still there with SKILL.md missing is damage and is
+  repaired. Hooks are never declined (wired into settings.json).
 - A rule removed from a manifest later is not reported as an orphan (slice 2 manages, doesn't retire).
 - Should agent memory ever be default-on for `coder`? No until a real project shows file-level
   specialization running out. Question, not a task.

@@ -104,8 +104,10 @@ rule above still applies to the whole section once it is stamped.
 - **`boss sync` leaves a deleted agent deleted (IDEA-124).** A managed agent or rule the ledger
   says BOSS wrote, now missing, plans as `declined` instead of `new`. It is shown under *Removed by
   you* and never written; `--force` restores it. Before this, splitting `coder` or retiring
-  `designer` was undone by the next `--apply`. Skills and hooks keep the old behaviour, since a
-  missing one of those is more likely damage than a decision. Sync also manages BOSS-owned rules now
+  `designer` was undone by the next `--apply`. The same holds for a skill whose whole directory the
+  founder deleted, along with its resources. A skill folder that is still there with `SKILL.md`
+  missing is treated as damage and repaired. Hooks are never declined, because a missing hook that
+  settings.json still calls would break the session. Sync also manages BOSS-owned rules now
   (a `rules` manifest list), so a rule BOSS ships reaches existing projects, and the founder's own
   rule files are never touched.
 

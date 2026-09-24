@@ -560,10 +560,14 @@ export function planSync(projectDir, stamp) {
   // by the founder. For an agent or a rule that is a decision — they split `coder`, or retired
   // `designer` — and planning it as `new` put it straight back on the next --apply, so "delete
   // the agent you no longer need" could not stick (IDEA-124). `declined` is reported, never
-  // written; `--force` restores it. Kept to agents and rules: a skill is a tree, and a hook is
-  // wired into settings.json, so a missing one of those is more likely damage than a decision.
+  // written; `--force` restores it. A skill is a tree, so for a skill the decision is the whole
+  // directory gone — a folder still there with its SKILL.md missing is damage, and is repaired.
+  // Hooks are never declined: one is wired into settings.json, so a missing file breaks a session.
   const ledger = readLedger(projectDir);
   const DECLINABLE = new Set(['agent', 'rule']);
+  const skillGone = (name) => !existsSync(join(projectDir, '.claude', 'skills', name.split('/')[0]));
+  const declined = (f) => !!ledger[f.rel] && (DECLINABLE.has(f.kind)
+    || ((f.kind === 'skill' || f.kind === 'skill-resource') && skillGone(f.name)));
   const entries = [];
   for (const stageId of layers) {
     let manifest;
@@ -582,7 +586,7 @@ export function planSync(projectDir, stamp) {
       const exists = existsSync(dest);
       const cur = exists ? readFileSync(dest, 'utf8') : '';
       let status = 'ok';
-      if (!exists) status = (DECLINABLE.has(f.kind) && ledger[f.rel]) ? 'declined' : 'new';
+      if (!exists) status = declined(f) ? 'declined' : 'new';
       else if (cur !== next) status = 'changed';
       // Did the founder shape this, or did BOSS move on? A `changed` status alone cannot say —
       // it is true in both cases and means opposite things. `null` where BOSS has no record.

@@ -287,3 +287,25 @@ test('a rule BOSS ships is managed: laid down, kept current, and left alone once
   write(dir, '.claude/rules/your-app-code.md', 'mine');
   assert.ok(!planSync(dir, stamp).entries.some((x) => x.rel.endsWith('your-app-code.md')));
 });
+
+// IDEA-124 follow-up — the same resurrection, for a skill. A skill is a TREE, so the decision is the
+// whole directory gone; a folder still there with its SKILL.md missing reads as damage and is repaired.
+test('a skill the founder deleted stays deleted; a skill with only its SKILL.md missing is repaired', () => {
+  const { dir, stamp } = synced();
+  applySync(dir, planSync(dir, stamp), stamp, {});
+  const skills = planSync(dir, stamp).entries.filter((e) => e.kind === 'skill');
+  assert.ok(skills.length >= 2, 'Quickstart ships skills');
+  const [gone, damaged] = skills;
+
+  rmSync(join(dir, '.claude', 'skills', gone.name), { recursive: true });
+  rmSync(join(dir, damaged.rel));
+  const plan = planSync(dir, stamp);
+  assert.equal(plan.entries.find((e) => e.rel === gone.rel).status, 'declined');
+  assert.ok(plan.entries.filter((e) => e.kind === 'skill-resource' && e.name.startsWith(`${gone.name}/`))
+    .every((e) => e.status === 'declined'), 'its resources go with it');
+  assert.equal(plan.entries.find((e) => e.rel === damaged.rel).status, 'new', 'a half-present skill is damage');
+
+  applySync(dir, plan, stamp, {});
+  assert.ok(!existsSync(join(dir, '.claude', 'skills', gone.name)), 'not resurrected');
+  assert.ok(existsSync(join(dir, damaged.rel)), 'repaired');
+});
