@@ -27,10 +27,19 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    - `package.json` → `"scripts": { "smoke": "..." }`.
    - The project's stack convention (Node: `npm run build`; Python: `python -m <pkg> --version` or `pytest -x tests/smoke`; Rust: `cargo check`; Go: `go build ./...`).
 2. **If no smoke is configured yet:** don't guess silently. Ask the user what proves the app is
-   alive — one command, fast (under ~30s), no network if possible. Save it to `.boss/smoke.json`
-   and append a one-line note to `docs/devlog.md` recording the choice.
+   alive — one command, fast (under ~30s), no network if possible. If they may not have met the term,
+   say it in one plain line first (*"one quick command that proves the app still turns on"*). Lead
+   with your pick and why, then the alternatives, each with its trade-off in the same terms (how long
+   it takes, what it would miss). A stated pick is what someone new to this can act on, and the costs
+   are what lets someone experienced overrule it. Save it to
+   `.boss/smoke.json` and append a one-line note to `docs/devlog.md` recording the choice. Ask the
+   next question when this one is answered, not in advance.
 3. Run it. Stream output. Report the result in one line:
-   - **Green:** `✓ smoke — <cmd> (<duration>)`. Done.
+   - **Green:** `✓ smoke — <cmd> (<duration>) — <what it proved, in a few words>`, e.g. *"the app
+     loads and one swap posts"*. A bare tick reads as "my change is right", and smoke never says
+     that. Add a sentence only if they'd be surprised without it, such as green not covering
+     something they just built. No word on where the command
+     came from, and no permission to commit; they didn't ask for either.
    - **Red:** `✗ smoke — <cmd>` plus the first failing chunk of output. Don't try to fix it inside
      this skill — surface it; the user (or the `tester` agent) decides.
 4. If the FEAT-NNN being built specifies its own smoke check in its spec, run that *in addition*

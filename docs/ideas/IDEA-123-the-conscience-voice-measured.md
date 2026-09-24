@@ -173,6 +173,70 @@ leaving: mark a threshold, confirm the brain read, the learning-pulse question, 
 `/smoke` already says *"Report the result in one line"*. Its first run asks up to three things in
 sequence (the command, strict typecheck/formatter, the smoke-guard offer).
 
+### Pilot result, before any edit (6 runs, 18 independent graders)
+
+| Run | Stakes | Size | Asks at the end | Unneeded sentences |
+|---|---|---|---|---|
+| close A (ordinary) | light | over | 5 | 9 |
+| close B (threshold) | **heavy** | over | 4 | 9 |
+| close C (typo fix) | light | over | 1 | 3 |
+| smoke A (green) | light | over | 0 | 4 |
+| smoke B (red) | light | **right** | 1 | 1 |
+| smoke C (first run) | light | over | 1 | 3 |
+
+The judge was harsh in places (it flagged close B's Dee paragraph, whose facts are needed and whose
+repetition isn't). The four patterns the judge and both personas agree on, each traced to the skill text:
+
+1. **Receipts.** Lists of files written, and where the gate came from. `/close` step 5 *prescribes*
+   *"One line: 'RESUME updated · devlog entry added · brain read appended…'"*. first-product: *"a receipt
+   for somebody else."*
+2. **Stacked asks at the door.** close A had 5 and close B had 4, and the learning pulse came in all
+   three closes because step 3c asks it at every close, verbatim. returning-founder on close C: *"'Nothing
+   is a fine answer' is the tell. If nothing is the likely answer, don't ask."* In close B it asked what
+   a conversation taught them right after narrating the conversation with Dee.
+3. **The most serious thing is buried.** In close B, real nurses on other wards can see this ward's
+   swaps *today*, and it was framed as *"Ship it now, or after the filter?"* after the celebration.
+   Both personas wanted *"this is a problem tonight — here's the smallest fix."* It's the j-drift-002
+   loss one level up: harm to someone not in the room, demoted.
+4. **Internal words.** FEAT-001, RESUME, brain read, `observed-behavior` and "commit" reach a first-product
+   founder with no gloss. BOSS's own rule is *assume intelligence, never assume knowledge*.
+
+A smaller one: BOSS narrating its own behaviour defensively (*"not me missing one you already have"*,
+*"this is a light close"*, *"you didn't argue"*). smoke B, the only right-sized run, has none of it:
+cause, one choice handed back, next step.
+
+### After the `/close` + `/smoke` edits (re-run, same 6 scenarios, 18 fresh graders)
+
+`/close` gained a "How the close sounds" section: lead with what can't wait, no receipt, one numbered
+list of asks, the founder's words, no self-narration. The learning pulse became conditional and
+un-scripted. The brain-read confirmation and the record prompts moved into the one list. `/smoke`
+first-run defines the term plainly and gives each option its trade-off; green is one line.
+
+| Run | Before | After |
+|---|---|---|
+| close A | over · 5 asks · 9 unneeded | over · 4 asks (one list) · 2 unneeded · the leak stated first |
+| close B | over · 4 asks · 9 · leak buried | over · 2 asks · 5 · **leak leads** |
+| close C | over · 3 | **right** (*"Typo's fixed. Next session picks up at the claim flow."*) |
+| smoke A | over · 4 | **right** (one line) |
+| smoke B | right | right |
+| smoke C | over | over, **fixture flaw**: the runner found `.boss/smoke.json` deleted-but-uncommitted and correctly said so |
+
+Right-sized: 1 of 6 → 3 of 6, with smoke C confounded. What the graders still asked for, and the
+follow-up edit for each:
+- close B explained the founder's bet back to them. The threshold step now says re-anchor *in a line*.
+- Both personas asked of close B: is it safe to leave running tonight? The lead-with rule now answers
+  that question, with the smallest thing to do before closing the laptop.
+- Both personas read a bare ✓ as "my change is right". Green now names what it proved in a few words.
+
+**Targeted re-run of the three follow-ups** (close B, smoke A, smoke C with the setup fixed):
+close B now opens *"Before you close the laptop: nurses on other wards can currently see every swap…
+stop it tonight"*, and it found a new live risk (swaps are in memory, so a restart wipes Dee's two).
+It still marked the win three times, so the threshold step now says *say it once*. smoke A's green
+line names what it proved; the judge called one caveat surplus, but the personas split on which, which
+is noise at this size. smoke C (fixed): both personas asked for **BOSS's pick, stated first**, and
+step 2 now leads with it. **Diminishing returns reached for these two skills.** Single-vote graders
+flip on a single optional sentence, so the next gain is the next skill, not another pass here.
+
 ### Found by the pilot, not about voice: skills still describe hooks the pre-0.326 way
 
 0.326.0 stopped copying the ten opt-in hooks at scaffold (`boss hooks enable <name>` copies and

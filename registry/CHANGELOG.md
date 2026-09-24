@@ -59,6 +59,10 @@ rule above still applies to the whole section once it is stamped.
 > move to a bigger model only if it stalls on the same question twice. That's cheaper than switching
 > models, and it is the current guidance for the newest ones. BOSS still pins neither.
 >
+> `/close` now leads with anything that can't wait (and whether it's safe to leave running tonight),
+> skips the list of files it wrote, and asks everything it needs in one numbered list. A typo-fix
+> session gets one line.
+>
 > If your app has no screens (a CLI, an API, a pipeline), MVP no longer hands you the design-token
 > and UX-check skills; they arrive with the first styled file. `/design-review` is still there
 > before you build one.
@@ -327,6 +331,18 @@ rule above still applies to the whole section once it is stamped.
   still said the file was already in `.claude/hooks/` with a settings block in its header. Each now
   gives the one command. It was found when a scripted `/smoke` run on a fresh MVP project looked for
   the file.
+
+- **`/close` and `/smoke` say what you need before you go, and stop (IDEA-123 step 3).**
+  - **`/close`:** if the session found something live that can hurt someone not in the room, it now
+    says so first, whether it's safe to leave running tonight, and the smallest thing to do before
+    you close the laptop. A win is marked once. There's no receipt of the files it wrote, all its
+    questions come in one numbered list you can answer with numbers, and it uses your words rather
+    than record ids. The "what did a conversation teach you" question is now asked only when there's
+    likely an answer, in words that fit.
+  - **`/smoke`:** green is one line that says what it proved. A first run defines the term plainly and
+    leads with a recommended command, with each option's cost.
+  - Measured on six scripted sessions with independent graders: right-sized outputs went from 1 of 6
+    to 3 of 6, and the one live privacy gap moved from a "ship now or later?" question to the first line.
 
 ## 0.326.0 — 2026-09-14
 

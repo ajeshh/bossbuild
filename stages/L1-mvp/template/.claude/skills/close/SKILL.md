@@ -12,6 +12,26 @@ walk back into cold.
 
 It's the counterpart to *read `docs/RESUME.md` first thing*.
 
+## How the close sounds (the founder is leaving)
+
+The records are the summary. What you *say* is only what they need before they close the laptop.
+
+- **Lead with what can't wait.** If the session surfaced something live that can hurt someone who
+  isn't in the room — another customer's data showing, a real user on a broken path — that is your
+  first line, in plain words. Then answer the question they'll have: is it safe to leave as it is
+  tonight? If not, the smallest thing to do before they close the laptop (turn it off, hide the
+  list, the one-line fix). It is never a "next task" and never a release-labelling question, and it
+  goes above any celebration.
+- **Don't list what you wrote.** No receipt of files updated. Mention a record only when they need to
+  act on it or would be surprised by it.
+- **One ask, or one short list.** Everything that needs their answer goes in a single numbered list
+  at the end, so they can reply "1, 3" and go. Nothing that doesn't need them gets asked.
+- **Their words, not BOSS's.** Say "the post-a-swap feature", not "FEAT-001"; "your notes for next
+  time", not "RESUME"; "BOSS's read on how it's going", not "the brain". Give an id only beside what
+  it is. A term they haven't met gets a plain gloss, or gets left out.
+- **Don't narrate yourself.** No "this is a light close", no grading how they took a nudge. Proportion
+  shows in the length, not in a sentence about it.
+
 ## Before the housekeeping: mark what was crossed
 
 `/close` is also the natural moment to *register a threshold* — because the relentless build never makes
@@ -23,10 +43,12 @@ ahead to what's next.
 
 - **Name what's real, specifically** — not "great session," but *what* got done and *what it now unlocks*.
 - **Re-anchor on the why and the who** — reconnect the thing you crossed to the bet (why it mattered) and
-  the person you built it for. The build pulls you into the *how*; this pulls you back to the *why*.
+  the person you built it for, in a line. They know their own bet; don't explain it back to them. The build pulls you into the *how*; this pulls you back to the *why*.
 - **Let it turn into curiosity** — *"does this land for them now?"* is the honest next feeling, and it's
   the bridge back to the real user. A well-marked threshold makes the founder *want* to go find out — the
   validation instinct, arriving through satisfaction instead of obligation.
+- **Say it once.** What crossed, why it mattered, and the question it opens: two or three
+  sentences, not a paragraph per point. Marking it twice reads as a victory lap.
 - **Proportional, no performed warmth, no streak.** Real thresholds only; most sessions cross none, and
   silence is correct. This is the conscience's restraint with the polarity flipped — never "🎉 great job!"
   (the exact flattery the brain-read step below forbids). Emotional acknowledgement is *making space for
@@ -117,7 +139,8 @@ ahead to what's next.
    - **Honest when thin.** One session in, you don't have a read yet — write that, or write nothing.
      Don't manufacture depth.
    - **Confirmable.** Show the founder the section you're about to write and let them correct it before
-     it lands. It's an opinion *about them* — they get the edit. (This stays confirmable until the
+     it lands. It's an opinion *about them* — they get the edit. It is one item in the list at the end
+     ("3. BOSS's read on how it's going — ok as written, or change it?"), not a separate stop. (This stays confirmable until the
      brain-write eval proves the reads are trustworthy; then it can graduate to silent-but-inspectable.)
    - **Stamp the index** after the prose lands: `boss brain record --headline "<one-line of the read>"`
      so `boss brain` / `boss brain --diff` stay truthful without parsing the prose.
@@ -141,9 +164,15 @@ ahead to what's next.
      conscience reads this next session (bounded) to *calibrate* — it won't re-nag a point you've
      already answered, and it can build on a nudge that landed. View it: `boss brain --relationship`.
 
-3c. **The learning pulse** — ask **one** question, once:
+3c. **The learning pulse** — at most one question, and only when it can find something:
 
-   > *"What did this stretch teach you that a conversation — not a commit — taught you?"*
+   > *What did this stretch teach you that a conversation — not a commit — taught you?* (the intent,
+   > not a line to recite: ask it in words that fit what happened)
+
+   **Skip it** when the session was short or mechanical (a typo fix has nothing to find), or when the
+   session already answered it (they just watched a user use the thing; name that instead of asking).
+   Never add a softener like "'Nothing' is a fine answer." If "nothing" is the likely answer, don't ask.
+   When you do ask, it goes in the one list at the end, not as its own question.
 
    The thesis cares about one ratio — build vs. learn — and nothing else in BOSS makes it visible. A
    cadence *hook* would be the over-fire trap the conscience has correctly refused (Red-Light,
@@ -161,13 +190,13 @@ ahead to what's next.
    founder stated **in their own words** that no record carries: a count (*"the register has 6,400
    agencies"*), a price, a rival named in passing, a tagline, who is on the team. Run
    `boss playbook --questions` — the open holes with the verb that fills each — and match what was
-   said against it. Then, at most **five** lines, ask:
+   said against it. These go in the one numbered list at the end, at most **five** of them, in plain
+   words:
 
-   > You said three things this session that no record holds —
-   > · *"6,400 agencies on the register"* → **People** (canvas), with today as the date · write it in?
-   > · *"CareSheet does rotas too"* → a row in **Competition** · add it?
-   > · *"Priya said she'd pay £40"* → that's a real person's words → `/evidence`, graded · record it?
-   > Yes to any?
+   > Before you go — reply with the numbers you want:
+   > 1. *"6,400 agencies on the register"* → keep it as your market count, dated today?
+   > 2. *"CareSheet does rotas too"* → add them to your competitors?
+   > 3. *"Priya said she'd pay £40"* → a real person's words, worth recording as evidence?
 
    Each yes is written **in the owning verb's shape** — a canvas cell with its date, a rival row in
    `/comp-eval`'s columns, an `EVID` through `/evidence`'s ladder, a persona line in `/persona`'s
@@ -180,9 +209,10 @@ ahead to what's next.
 4. **Check the working tree.** If there are uncommitted changes the user wants to keep but isn't
    committing now, mention them in RESUME's *State* so next-you isn't surprised. Don't auto-commit.
 
-5. **Report what you wrote.** One line: "RESUME updated · devlog entry added · brain read appended ·
-   2 records written from what you said · N uncommitted change(s) noted." Then stop — don't summarize the session further; the artifacts are
-   the summary.
+5. **Stop.** Don't report what you wrote; the records are the summary, and a list of files reads like
+   a receipt for somebody else. Say only what they need: the thing that can't wait (if any), the one
+   list of answers you need (if any), and uncommitted work they'd be surprised by. If there's none of
+   that, one line on where the next session starts is the whole close.
 
 ## The RESUME template (used when none exists yet)
 
