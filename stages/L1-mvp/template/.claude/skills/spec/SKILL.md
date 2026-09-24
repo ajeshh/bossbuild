@@ -408,7 +408,7 @@ any FEAT that creates or changes stored data, answer these in the record:
 - **AI-specific:** if an LLM's output drives a write, **schema the output** — free-form prose in a
   column is poison. Mark model-generated rows as model-generated. Keep eval data out of prod tables.
 
-`schema-guard` (opt-in, `.claude/hooks/`) catches the RLS half at edit time; `/ship` and
+`schema-guard` (opt-in: `boss hooks enable schema-guard`) catches the RLS half at edit time; `/ship` and
 `/red-team` catch it at deploy time. **Both can only catch it — this step is where it gets
 prevented.** Full practice: `boss craft data-schema`. For the judgment calls — one table or two,
 will this query scale, is this premature — ask `mentor-architect`.
