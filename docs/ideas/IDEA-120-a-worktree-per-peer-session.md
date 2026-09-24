@@ -35,7 +35,7 @@ worktree isolation for subagents (`isolation: "worktree"`) and for a session (`E
 
 ## Reference (2026-09-24, RVW-109)
 
-An open-source crew runner (`github.com/kunchenguid/firstmate`) is the most complete worked answer to the
+An open-source crew runner (source in the gitignored sessions file RVW-109 names) is the most complete worked answer to the
 open questions above: one integrator that **never edits** the projects (single-writer), every worker in a
 disposable worktree, supervision state **on disk** so a restart or compaction loses nothing, and a
 zero-token watcher that wakes the integrator only on an event. Read its `docs/architecture.md` before

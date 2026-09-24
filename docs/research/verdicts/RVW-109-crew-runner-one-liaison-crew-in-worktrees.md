@@ -7,11 +7,10 @@ created: 2026-09-24
 verdict: NOT-YET
 route: n/a
 sources:
-  - https://github.com/kunchenguid/firstmate (README read at source 2026-09-24; 7,140 stars, created 2026-06-12, pushed 2026-09-24)
-  - https://www.youtube.com/watch?v=kPN564Kol14 (title and author via oEmbed only; not watched)
+  - an open-source crew runner's README, AGENTS.md and architecture doc, read at source 2026-09-24 (names and URLs: docs/research/sessions/2026-09-24-agent-distros-private-sources.md, gitignored, by Ajesh's call)
 ---
 
-# RVW-109 — firstmate: talk to one agent, and it runs a crew in disposable worktrees
+# RVW-109 — a crew runner: talk to one agent, and it runs a crew in disposable worktrees
 
 ## The claim
 - **Source:** linked in the RVW-108 thread by u/hotmerc007 ("no relationship… utterly amazing").
@@ -27,7 +26,7 @@ sources:
 |---|---|---|
 | 1 | Contradicts a PRINCIPLE? | No. |
 | 2 | Evidence grade | **Real, adopted open-source artifact** (7k stars in three months, maintained today). There is no outcome data: stars measure interest, not quality. |
-| 3 | Duplicate or sharpen? | **For founders: duplicate.** `git-workflow.md` already prescribes one worktree per task, capped at ≈2–4 by review capacity, and the host now ships worktree isolation natively. **For BOSS's own tree: a sharpening of IDEA-120.** This checkout carries three standing rules and several incidents *because* six peer sessions share one HEAD. firstmate's shape (one integrator that never edits, workers in disposable worktrees, state on disk) is the most complete worked answer to IDEA-120's open questions that BOSS has seen. |
+| 3 | Duplicate or sharpen? | **For founders: duplicate.** `git-workflow.md` already prescribes one worktree per task, capped at ≈2–4 by review capacity, and the host now ships worktree isolation natively. **For BOSS's own tree: a sharpening of IDEA-120.** This checkout carries three standing rules and several incidents *because* six peer sessions share one HEAD. the crew runner's shape (one integrator that never edits, workers in disposable worktrees, state on disk) is the most complete worked answer to IDEA-120's open questions that BOSS has seen. |
 | 4 | Who serves / harms? | For founders, it serves `vibe-virtuoso` and `eng-builder` with fleets, and harms everyone below the review cap: more agents than you can review is "unreviewed code with your name on the merge" (`git-workflow.md`). |
 | 5 | Cost / ceremony | Heavy for a founder (tmux or another backend, a distro, a watcher). For BOSS's own practice it would *remove* the three shared-tree rules if it held. |
 
@@ -40,7 +39,7 @@ Install nothing.
 
 ## If REJECT / NOT-YET
 - **Re-open condition:** the IDEA-120 trial holds and more than one peer session needs coordinating.
-  Then read firstmate's `docs/architecture.md` before designing BOSS's own merge-back. The founder
+  Then read its architecture doc (private sources file) before designing BOSS's own merge-back. The founder
   side re-opens only if a real founder is observed running more than four parallel agents.
 
 ## What BOSS learns from it (read at source: `AGENTS.md` §1–12, 2026-09-24)
@@ -64,12 +63,12 @@ Taken as mechanisms, not as a product to install. Each is sorted by altitude.
    everywhere; see the audit below.
 
 **What BOSS ships (founder-facing):**
-5. **Talk in outcomes, with a translation table.** firstmate lists its internal words (worktree,
+5. **Talk in outcomes, with a translation table.** It lists its internal words (worktree,
    hold, gate, wake, fail-closed…) with the plain word each becomes before it reaches the captain,
    and forbids relaying status lines verbatim. BOSS's voice rule ("assume intelligence, never assume
    knowledge") has no such list and no check, and BOSS's own output carries FEAT, rung, loop, RVW and
    moment. **Lesson: the voice rule wants a table, which is checkable where prose is not.** Candidate.
-6. **Keep the founder's words verbatim in the brief, and name what's out of scope.** firstmate's
+6. **Keep the founder's words verbatim in the brief, and name what's out of scope.** the crew runner's
    `Captain's intent` holds the ask word for word and is never widened into a goal, "because the
    reviewer treats that as acceptance criteria"; any generalisation becomes follow-up work. This bears
    on `/spec`: are acceptance criteria the founder's words, or BOSS's widening of them? Unchecked.
@@ -78,7 +77,7 @@ Taken as mechanisms, not as a product to install. Each is sorted by altitude.
 
 **Lesson 6 checked against `/spec` (2026-09-24, Ajesh: "lets go"):** out-of-scope, the assumptions
 list and new-scope-gets-a-new-id were all already there; the assumptions list is *stronger* than
-firstmate's rule. The gap was the founder's words: step 3's "one concrete instance, in their words"
+the crew runner's rule. The gap was the founder's words: step 3's "one concrete instance, in their words"
 (the skill's own highest-yield question) had no home in the FEAT template, so it died with the chat
 and the coder never saw it. None of this repo's 19 FEATs carries one. **Landed:** the template quotes
 it under Goal, and step 3 says it is what criteria are checked against.
@@ -110,8 +109,8 @@ Already on BOSS's shelf, so nothing to take: knowledge routed to its most specif
 "a current explicit instruction overrides a standing rule, never by analogy"; prune over append.
 
 ## Attribution
-The README was verified at source. The video is by the repo's author (Kun Chen) and is their own
-promotion; its title claims "L8 Principal", which was not verified. The recommender's "no
+The README was verified at source. The linked video is the author's own promotion; its title's
+credential was not verified. The recommender's "no
 relationship" cannot be checked.
 
 ## Notes

@@ -49,5 +49,5 @@ agent-written and agent-reviewed" comment (u/ResponsibleOven6) **does not verify
   human or straight through (500+ a11y PRs, Mar–Sep). This is risk-tiered review with an agent
   doing the tiering. It would be a Scale/team question under `git-workflow.md` and has no BOSS
   trigger today.
-- The firstmate link in the same thread is a separate claim → RVW-109.
+- A crew-runner repo linked in the same thread is a separate claim → RVW-109.
 - BOSS version when recorded: 0.327.0

@@ -141,9 +141,7 @@ what the founder sees. A diagnostic view that exists to show the machinery (`bos
 | | **cohort** → never as a label for a person; name what changes for them |
 | | **RVW-, EXTR-, and BOSS's own record ids** → never; say the finding |
 
-Borrowed in shape from a crew-runner's instruction file, which keeps a list of its own internal
-words and the plain word each becomes before it reaches the person, and forbids relaying a status
-line verbatim. A voice rule in prose can't be checked; a table can be read against a screen.
+A voice rule in prose can't be checked; a table can be read against a screen.
 
 ## What's left out (deliberately)
 
