@@ -41,8 +41,11 @@ pairs share 0–1 sentences — so no gate can see them, and merging changes wha
   an older `docs/ai-first.md` if present. MVP 28 → 26, still opens on 14.
 - [ ] `/ai-cost` + `/cost-review` → after the conscience rework (IDEA-123) releases
   `cost-review-loop` and `margin-trap-loop`.
-- [ ] Trigger check before/after (`/skill-doctor` or the plugin eval): does "what should I track",
-  "set up analytics", "activation metric" still reach `/health`?
+- [x] Trigger check: does "what should I track", "set up analytics", "activation metric" still
+  reach `/health`? *Checked 2026-09-23 by proxy (a blind router over the shipped descriptions, ten
+  phrases; not the plugin eval): 7/10 → `/health`. The other three went where they should —
+  "activation metric" → `/onboard` (which derives it; `/health` runner-up), "is my app working" →
+  `/smoke`, "is the AI output useful" → `/evals`. None fell through.*
 
 **Declined — don't reopen without the trigger named.** Each was read end to end, not judged from
 cross-references; the overlap is real in *vocabulary*, not in *job*.
