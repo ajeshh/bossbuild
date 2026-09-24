@@ -106,6 +106,26 @@ Either path is a **recalibration engine** ([MODEL-RECALIBRATION.md](../../MODEL-
 re-running against a new model is how BOSS rides the model curve — the transcripts refresh and
 `replay.js` shows what changed. Default to the keyless path; reach for the keyed one only when you must.
 
+## How it talks, not only whether it fires (IDEA-123) — report-only
+
+A pass says the moment fired when it should and named the gap. It says nothing about whether the nudge
+was the right *size*. BOSS's rule is proportionality, not a length (`conscience-voicing.md` rules 2 + 4:
+minimal by default, more when the stakes need it, never a word count). Two halves, neither in the verdict
+yet:
+
+- **Judged.** The grader also returns `stakes` (light/heavy), `proportion` (right/over/under) and
+  `unneeded_sentences`, the sentences that carry nothing the founder needs. `regrade-keyless write`
+  stores them, plus the full `nudge`, on each transcript.
+- **Mechanical.** `node voice-lint.js [moment]` reads the transcripts, or `--files` reads decision files,
+  for what one nudge can't show: the same phrase across different cases (a tic), more than one skill
+  offered, internal labels reaching the founder. Word counts are printed as a fact, never judged.
+
+Baseline, Opus 5.5, 2026-09-23, 17 fired nudges. Judged: 8 right-sized, 9 over, 0 under; 11 unneeded
+sentences across the 9, never more than 1 per nudge except j-hum-101 (3). The longest drift nudge
+(heavy stakes, 136 words) was judged right, which is the rule working. Mechanical: "your call" in 9,
+more than one skill in 8, taxonomy labels in 3. None of it moves into the verdict until the frames
+have been tightened against it and re-graded. Single-vote judges: treat any one call as a hypothesis.
+
 ## The zero-dep line
 
 The rule (CLAUDE.md #4) is **the shipped surface (`src/`, the `files` allowlist) stays dependency-

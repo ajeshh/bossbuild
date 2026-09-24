@@ -30,6 +30,7 @@
 //
 // decisionsFile schema (array): [{ moment, id, decision:"fires"|"silent", nudge:"…" }]
 // judgesFile schema   (array): [{ moment, id, verdict:"pass"|"fail",
+//                                 stakes?, proportion?, unneeded_sentences? (report-only, IDEA-123),
 //                                 names_specific_gap?:bool, violates_must_not?:bool }]
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -115,6 +116,10 @@ function write(decisionsFile, judgesFile) {
       judge_verdict: j.verdict || 'unjudged',
       label_match: labelMatch,
       nudge_excerpt: String(d.nudge || '').slice(0, 200),
+      nudge: String(d.nudge || ''),
+      stakes: j.stakes || null,
+      proportion: j.proportion || null,
+      unneeded_sentences: Array.isArray(j.unneeded_sentences) ? j.unneeded_sentences : null,
     }, null, 2) + '\n');
     written++;
     perMoment[d.moment] = (perMoment[d.moment] || 0) + 1;

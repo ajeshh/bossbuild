@@ -88,6 +88,30 @@ frames. Fix the frames first and nothing can tell whether they worked.
 5. **The CLAUDE.md block and CLI copy last.** They are read on every turn and every command, so
    they cost the most per word, but they are also the most stable.
 
+## Step 1 — done 2026-09-23: the baseline
+
+Proportionality is now checkable, with no count. The judge returns `stakes`, `proportion` and
+`unneeded_sentences` (report-only). `voice-lint.js` finds tics, skill menus and internal labels across
+a set. 17 fired Opus 5.5 nudges:
+
+| | Result |
+|---|---|
+| Judged proportion | **8 right · 9 over · 0 under** |
+| Unneeded sentences | 11, in 9 nudges; one each, except j-hum-101 with 3 |
+| "your call" as a sign-off | 9 of 17 |
+| More than one skill offered | 8 of 17 (all drift and caution) |
+| Taxonomy labels to the founder | 3 of 17 (humane) |
+
+**What the unneeded sentences are** (they point step 2 at the frames, not at length):
+- *Throat-clearing openers:* "One thing before you tune further." · "There's also a legal side you may not know about."
+- *Labels:* "(Axes: emotional-dependence, psychological, manipulation.)" · "…(overreliance)."
+- *A second rhetorical question after the real one:* "What's the smallest test?" · "Who is the first family… you'd ask?"
+- *Commentary that restates the gap:* "It spends the time the bet said you could save." · "It isn't a measurement."
+- *Meta about the nudge itself:* "Say the word and I'll drop this."
+
+**The heaviest drift nudge (136 words, "the patient") was judged right.** The data agrees with
+Ajesh's correction: length isn't the fault; filler is.
+
 ## Open questions
 
 - ~~Is ~60 words the right ceiling?~~ Answered by Ajesh 2026-09-23: no ceiling, proportionality.

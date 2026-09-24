@@ -274,6 +274,13 @@ rule above still applies to the whole section once it is stamped.
   minimal by default, more only where each sentence carries something the founder needs, and no
   stock sign-off said the same way every time.
 
+- **How the conscience talks is now measured, not only whether it fires (IDEA-123 step 1).** The judge
+  also grades proportionality: stakes, whether the nudge is right-sized, and which sentences carry
+  nothing the founder needs. It uses no word count. `voice-lint.js` finds repeated sign-offs, skill
+  menus and internal labels across a set. Both are report-only. Opus 5.5 baseline: 8 of 17 right-sized
+  and 9 over, each over by a sentence of filler (openers, a second rhetorical question, a taxonomy
+  label), never by length alone.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched
