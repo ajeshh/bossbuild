@@ -43,7 +43,9 @@ export function withLock(file, fn) {
   const start = Date.now();
   for (;;) {
     try { mkdirSync(lock); break; } catch (e) {
-      if (e.code !== 'EEXIST') throw e;
+      // Windows answers EPERM/EACCES, not EEXIST, while another process is still removing the lock
+      // (CI 2026-09-23, the concurrent-registration test) — contended, not broken.
+      if (e.code !== 'EEXIST' && !RETRY.has(e.code)) throw e;
       let age = 0;
       try { age = Date.now() - statSync(lock).mtimeMs; } catch { continue; } // released meanwhile
       if (age > STALE_MS) { rmSync(lock, { recursive: true, force: true }); continue; }
