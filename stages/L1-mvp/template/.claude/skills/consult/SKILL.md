@@ -37,8 +37,7 @@ mentors who have nothing to add is noise). Read which mentors are installed (`.b
   `mentor-customers`; a growth-vs-margin question → `mentor-customers` + `mentor-capital`.
 - **One seat can still hold a split.** `mentor-capital` covers the model, the raise and the story, and
   is required to surface its *own* internal tension rather than resolve it quietly. On a raise
-  question, expect a divided answer from it — and put that division on the panel as though it came
-  from two mentors, because it used to.
+  question, expect a divided answer from it — and put that division on the panel as two voices.
 - **The humane lens has no chair, on purpose** — an ethics advisor is a door you can decline to open.
   *You* carry it, in step 4, on every panel. Don't route it to an agent; there isn't one.
 

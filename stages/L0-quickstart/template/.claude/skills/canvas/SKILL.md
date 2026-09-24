@@ -313,13 +313,6 @@ That is the one answer that saves work three times later — `/red-team --humane
 boss craft deceptive-patterns --shape <the tags you just picked>
 ```
 
-> ⚠️ **This paragraph used to claim those three skills already read the tags. They did not.**
-> The tags went into a prose cell and nowhere else; `/trust` contained no reference to shape at
-> all, and the other two re-asked or inferred. `cohort` — *who the founder is* — had been
-> persisted in the config and read everywhere for a hundred releases, while `shape` — *what they
-> are building* — was asked and thrown away. A producer/consumer contract that lives only in
-> prose is a claim, not a mechanism.
-
 **A "no" is a real answer and the common one.** Four noes and a shape of `cli` is a complete,
 honest pass — it means most of the catalog is inert for you, which is exactly what you wanted to
 find out. Don't manufacture a yes to look thorough.

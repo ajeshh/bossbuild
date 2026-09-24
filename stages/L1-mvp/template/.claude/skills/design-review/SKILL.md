@@ -6,7 +6,7 @@ description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed U
 # /design-review — before-code design review
 
 Catch design failures *before* they're in production code, where they're cheapest to fix. Most
-of the AI-generated-UI failure modes from IDEA-010 (the 47 blues, pattern reinvention, billion-
+of the AI-generated-UI failure modes (the 47 blues, pattern reinvention, billion-
 line drift, missing states, brand-default) are catchable at this stage with a structured
 review. After-code review (`/ux-check`) is the second gate; this is the first.
 
@@ -18,10 +18,9 @@ review. After-code review (`/ux-check`) is the second gate; this is the first.
 
 ## Step 0 — read the shape, and be willing to stop
 
-Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). **`/ux-check`
-has always done this and this skill never did** — so the before-code gate has been walking CLI
-founders through hover states and token layer-cakes, which is the exact ceremony BOSS exists to
-prevent (Principle #2).
+Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). `/ux-check`
+reads it too. Walking a CLI founder through hover states and token layer-cakes is the exact
+ceremony BOSS exists to prevent (Principle #2).
 
 Everything in *How to run it* assumes a graphical interface. If that's not what's being specced:
 

@@ -7,7 +7,7 @@ description: Scaffold the minimal three-layer design token system at the first U
 
 The discipline that prevents the most-common AI-generated-UI failure modes. Without it, every new
 screen Claude generates will derive its own colors, spacing, and component patterns — and the
-codebase grows linearly with screens (the "billion-line drift" from IDEA-010). With it, the
+codebase grows linearly with screens (the "billion-line drift"). With it, the
 tokens file is the single source of truth that survives AI generation because the AI is
 *explicitly told to use it.*
 
@@ -35,11 +35,10 @@ file is the source of truth either way, and both docs describe it.
 
 ## Step 0b — read the shape before you build the system
 
-Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). **`/design-review`
-and `/ux-check` have always done this and this skill never did** — so BOSS has been *building* a
-three-layer colour token cake and an HTML component gallery for founders whose surface is a terminal,
-and then correctly refusing to *review* it. Building a system for a surface you will not review is the
-ceremony Principle #2 exists to prevent, and it is the same bug `/design-review` fixed for itself.
+Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). `/design-review`
+and `/ux-check` read it too, so all three agree on which surface exists. A three-layer colour token
+cake and an HTML component gallery for a founder whose surface is a terminal is the ceremony
+Principle #2 exists to prevent: build only for a surface that will be reviewed.
 
 **What is universal, whatever the surface** — do these for everybody: hierarchy · contrast · the five
 states · one word per concept (terminology) · error copy that says what to do next · reuse before

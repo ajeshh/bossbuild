@@ -15,9 +15,8 @@ still arguing from vibes.
 
 ## Read the size, do the right amount
 
-Three verbs used to turn *what a real person said* into `EVID` records, and a founder could not tell them
-apart from the menu — all three said "graded EVID records". The difference was never the verb; it was
-**how much the founder handed over.** So there is one verb, and it reads what it was given:
+What decides the work is **how much the founder handed over**, not which verb they typed. One verb,
+and it reads what it was given:
 
 | You gave it | What it does |
 |---|---|
