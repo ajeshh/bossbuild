@@ -34,11 +34,6 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   pre-commit hook tests the STAGED tree (`npm run hooks`, ~9s, `--no-verify` skips).** Open: `npm run check`
   is red only in BOSS's own gitignored install (still has /measure, /ai-first-init) — `boss sync --apply`
   after the next stamp. Spun out: IDEA-120 (worktrees), IDEA-125 (merges; landed by a peer).
-- **IDEA-122 (2026-09-23, `a9c4a2a` `9c5f4cd` `6fee2db`, Unreleased) — after the first ship; shipped.**
-  Ajesh asked how good BOSS is at CD, monitoring and 24/7 agents for founders: first deploy strong,
-  everything after it thin. Folded into `/ship`, no new skill: 3b live check + *who hears at 3am*
-  (one rung, recorded in the stack profile), 3c deploy-on-push after the second hand ship, gated;
-  one MVP rule for unattended work. Proof: none — no founder has shipped with it. (IDEA-118 → devlog.)
 - **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
