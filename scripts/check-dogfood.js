@@ -93,6 +93,20 @@ for (const r of rows) {
   }
 }
 
+// The RESUME's `version:` is the one computed fact its header still carries, and it went stale
+// under a gate that never read it (0.325.0 against a VERSION of 0.326.0, IDEA-121). Every session
+// here starts from that file, so a version it states must be the version on disk.
+{
+  try {
+    const head = readFileSync(join(ROOT, 'docs', 'RESUME.md'), 'utf8').replace(/\r\n?/g, '\n').split('\n---\n')[0];
+    const stated = (head.match(/^version:\s*(\S+)/m) || [])[1];
+    const actual = readFileSync(join(ROOT, 'VERSION'), 'utf8').trim();
+    if (stated && stated !== actual) {
+      drifted.push(['docs/RESUME.md', `says \`version: ${stated}\`; VERSION is ${actual}. Fix the header, or drop the field — \`cat VERSION\` is in the ground-truth block.`]);
+    }
+  } catch { /* no RESUME (a fork, a fresh checkout) — nothing to compare */ }
+}
+
 const exercised = rows.filter((r) => r.verdict === 'exercised').length;
 const exempt = rows.filter((r) => r.verdict === 'exempt').length;
 

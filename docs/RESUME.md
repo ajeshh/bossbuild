@@ -4,7 +4,7 @@ type: resume
 owner: product-lead
 status: active
 updated: 2026-09-23
-version: 0.325.0
+version: 0.326.0
 ---
 
 # RESUME — BOSS
@@ -22,6 +22,8 @@ Peer sessions write this tree; every number in this file is a floor. Before anyt
 ```
 cat VERSION && git log -3 --format='%h %ad %s' --date=format:%H:%M && git status --short
 npm run check            # zero findings = clean; check:published says how far npm is behind
+git rev-list --count origin/main..HEAD   # commits not pushed
+gh run list -L1          # CI — it sat red on Windows for ten days with nobody reading it
 ```
 
 ## Now
@@ -56,7 +58,7 @@ npm run check            # zero findings = clean; check:published says how far n
   Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
   nothing to *sell* but the person, which is the acqui-hire's point. Licence: **keep MIT and the words**
   (a copy edit claws nothing back; diligence reads `LICENSE`). Next step is one call, not a build.
-- **v0.318.0 → v0.325.0 committed, none pushed (51 commits ahead of origin).** Each is a
+- **v0.318.0 → v0.325.0 committed, not pushed (`git rev-list` above says how many).** Each is a
   `registry/CHANGELOG.md` section and a devlog entry; the RESUME no longer restates them (window
   rule — moved, not trimmed, 2026-09-13). Headlines only: RESUME window (318) · `/skill-doctor` +
   `/extract` description fix (319) · plugin eval suite, Δ 1.0 (320, 321) · `/boss-learn` folded into
@@ -120,7 +122,7 @@ much) and Phase 3 outreach. Both are Ajesh's.**
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
   into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing
   left to build until one of those says something.
-- ⛔ **`npm run stamp` → `npm publish`** (18 behind; DEC-019 — the stamp makes the version), then `npm run bump:formula`. He publishes himself — never run it for him.
+- ⛔ **`npm run stamp` → `npm publish`** (`npm run check:published` says how far; DEC-019 — the stamp makes the version), then `npm run bump:formula`. He publishes himself — never run it for him.
 - 🔷 **Submit the plugin to `claude-community`** (DEC-017; `claude plugin validate . --strict`
   passes; platform.claude.com/plugins/submit). `boss-ai-agent` exists there — lead with what BOSS is not.
 - 🔴 **IDEA-087 — un-ignore `docs/`.** A one-way door. Two demonstrations now, not an argument:

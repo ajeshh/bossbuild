@@ -96,8 +96,10 @@ projects get the trim on `boss sync --apply`.
 
 - [ ] **CI red on Windows since 2026-09-13** (11 tests; last green `f87a62d`). ✓v. Nobody reads it. Fix the
   tests (path separators/CRLF, inferred) and add `gh run list -L1` to RESUME's ground-truth block.
-- [ ] **RESUME carries computed facts that went wrong**: version 0.325.0, "51 commits ahead" (real: 1 ✓v),
-  a due date already past. Fix: delete them; check-dogfood fails on version ≠ VERSION.
+- [x] **RESUME carries computed facts that went wrong**: version 0.325.0, "51 commits ahead" (real: 1 ✓v),
+  a due date already past. Fix: delete them; check-dogfood fails on version ≠ VERSION. *Done
+  2026-09-23: the counts became the commands that compute them (`git rev-list`, `check:published`),
+  `gh run list -L1` joined the ground-truth block, and check-dogfood fails on a stale `version:`.*
 - [ ] **No commit-time gate.** `npm test` is ~5s. Fix: tracked `scripts/hooks/pre-commit` + `core.hooksPath`.
 - [x] **`BOSS_HOME` override** (`src/paths.js:22`) so smoke/tests/throwaways never touch `~/.boss`
   (2 /tmp entries leaked; retires rule 6's prune step). *Done 2026-09-23: paths.js, update.js and
