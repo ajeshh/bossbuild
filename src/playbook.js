@@ -806,7 +806,7 @@ function proofChapters(data) {
   out.push(chapter('health', chapterHead(13, 'Health', h.health && h.health.text ? firstSentence(h.health.text) : ''),
     healthBlocks
       ? `<div class="blocks">${healthBlocks}</div>`
-      : `<div class="blocks">${block({ id: 'health-dormant', title: 'How it is going', state: 'dormant', body: '<p class="prompt">Acquisition, activation, retention — and the day each starts to mean something.</p><span class="cond">dormant — live once there are users to read: /measure picks the metric, /health reads the curve</span>', src: 'docs/health · docs/measure — none yet' })}</div>`));
+      : `<div class="blocks">${block({ id: 'health-dormant', title: 'How it is going', state: 'dormant', body: '<p class="prompt">Acquisition, activation, retention — and the day each starts to mean something.</p><span class="cond">dormant — live once there are users to read: /health picks the metric, then reads the curve</span>', src: 'docs/health · docs/measure — none yet' })}</div>`));
 
   return { html: out.join('\n'), empty };
 }

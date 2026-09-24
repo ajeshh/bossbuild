@@ -4,7 +4,7 @@ type: practice
 owner: mentor-customers
 status: active
 host: stack-neutral
-provenance: post-launch program (2026-07-23 SESSION, JOB 2). The gap the map found — /measure *reads* the retention curve; nothing helped *fix* it. Distilled from Casey Winters (activation > acquisition; the retention curve must flatten) + Bangaly Kaba (best-retained-users method) + Brian Balfour (retention is the engine, not a metric) + a16z/ChartMogul (the AI-"tourist" churn wave; rebase to Month 3) + Lincoln Murphy / ProfitWell-Campbell (involuntary churn is 20–40% of the total and the most recoverable) + Lenny Rachitsky (there is no retention silver bullet — it's the product). Pairs with analytics-for-ai-products.md (the measuring half), /health (the runner), /onboard + activation (build #4), /health (a flattening curve IS a PMF lens), the humane lens (ai-ux-patterns.md). BOSS v0.121.0.
+provenance: post-launch program (2026-07-23 SESSION, JOB 2). The gap the map found — a measure skill (now /health) *reads* the retention curve; nothing helped *fix* it. Distilled from Casey Winters (activation > acquisition; the retention curve must flatten) + Bangaly Kaba (best-retained-users method) + Brian Balfour (retention is the engine, not a metric) + a16z/ChartMogul (the AI-"tourist" churn wave; rebase to Month 3) + Lincoln Murphy / ProfitWell-Campbell (involuntary churn is 20–40% of the total and the most recoverable) + Lenny Rachitsky (there is no retention silver bullet — it's the product). Pairs with analytics-for-ai-products.md (the measuring half), /health (the runner), /onboard + activation (build #4), /health (a flattening curve IS a PMF lens), the humane lens (ai-ux-patterns.md). BOSS v0.121.0.
 provenance_public: Distilled from Casey Winters and Brian Balfour (the curve has to flatten; retention is the engine, not a metric), Bangaly Kaba's best-retained-users method, Lenny Rachitsky (there is no retention hack — it is always the product), Patrick Campbell / ProfitWell and Lincoln Murphy on involuntary churn (the most recoverable bucket), and a16z / Tomasz Tunguz on the AI-"tourist" churn wave. Written when BOSS could read a retention curve and had nothing to say about fixing one.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
@@ -13,7 +13,7 @@ curve: market
 
 # Practice — Fixing the retention curve (there is no hack; the fix is always the product — the question is *which part*)
 
-> **Where this sits.** `analytics-for-ai-products.md` + `/measure` *read* the retention curve. This is the
+> **Where this sits.** `analytics-for-ai-products.md` + `/health`'s setup *read* the retention curve. This is the
 > other half: **the curve is decaying — now what?** The load-bearing idea founders miss: retention is not a
 > lever you pull, it's an *outcome you diagnose.* There is no notification-nag, no "we miss you" email, no
 > streak mechanic that fixes a curve the product earned. The fix is always the product — but *where* the curve
@@ -64,7 +64,7 @@ This is the diagnostic spine. Find *where* on the curve the drop happens:
    but the product doesn't earn a return. Usually one of: the core value is **one-and-done** (a real ceiling,
    not a bug — maybe the honest answer is it's a tool people use twice a year, and you price/position for that,
    not fight it); or there's **no trigger** back into it (no natural reason to return); or, for an AI product,
-   **the quality slid** (the output stopped being good enough to come back to — read `/measure`'s edit-rate /
+   **the quality slid** (the output stopped being good enough to come back to — read `/health`'s edit-rate /
    regeneration / frustration index). Fix → **the product and the roadmap** (see the next section), and
    `/interview` the *churned* to hear why. Never a nag.
 
@@ -101,14 +101,14 @@ silent-majority *churn* is telling you, not what the loudest surviving user is a
 ## What BOSS refuses here (name it, don't build it)
 
 Churn-prediction ML (premature for essentially every BOSS founder — the curve + a few `/interview`s tell you
-more than a model you can't yet train or trust); a retention *dashboard* (the curve lives in `/measure`, one
+more than a model you can't yet train or trust); a retention *dashboard* (the curve lives in `/health`'s setup, one
 number); winback dark-patterns and engagement-maximization mechanics (anti-humane by construction); a billing/
 dunning *system* (point at Stripe — it's plumbing, not a product you build).
 
 ## Ties + altitude
 
 Silent until a project is live with a real, decaying curve past n≥~30–50 (involuntary-churn plumbing earlier,
-at first paying user). Surfaces via **`/health`** (the runner) and a pointer from `/measure` when it reads a
+at first paying user). Surfaces via **`/health`** (the runner) and its own setup step when it reads a
 sliding curve. Feeds `/health` (a flattening curve is one of its three fit lenses) and IDEA-051
 (operate-mode customer loop). Post-ship retention is `observed-behavior` / `commitment` **EVID** — record the
 real signal. Cite: Winters (activation > acquisition; the curve must flatten), Bangaly Kaba (best-retained-

@@ -57,12 +57,6 @@
       "why": "BOSS is a zero-dependency CLI that never calls a model. There is no per-call spend to log. The conscience runs inside the founder's own Claude session, on their subscription — which is why IDEA-013 reframed BOSS's own version from cost to FREQUENCY in the first place."
     },
     {
-      "path": "docs/ai-first.md",
-      "capability": "/ai-first-init",
-      "verdict": "exempt",
-      "why": "For a founder's AI product. BOSS has no LLM in the product."
-    },
-    {
       "path": "docs/ai-failure-states.md",
       "capability": "/ai-failure-states",
       "verdict": "exempt",

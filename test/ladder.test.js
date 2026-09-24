@@ -38,7 +38,7 @@ function boss(args, cwd) {
 const stamp = (over = {}) => ({
   name: 'testproj', bossVersion: '0.0.1', stage: 'L1-mvp', mode: 'MVP',
   installedLayers: ['L0-quickstart', 'L1-mvp'], agents: [], hooks: [], loops: [],
-  skills: ['landing', 'ship', 'measure'], ...over,
+  skills: ['landing', 'ship', 'health'], ...over,
 });
 
 // Carries a source file: `nextSeam` is gated on the project having actually started, and a

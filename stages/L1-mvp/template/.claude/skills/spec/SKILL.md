@@ -125,7 +125,7 @@ articulately are rarely the users who pay.
 **Gate — surface this only when BOTH hold** (otherwise skip it entirely; it's not a checklist):
 
 1. **There are real users** — a `--feedback` register with entries (`docs/feedback/` or the register
-   `/idea --feedback` writes), an EVID ledger, or a live analytics read (`/measure`). Pre-launch there
+   `/idea --feedback` writes), an EVID ledger, or a live analytics read (`/health`). Pre-launch there
    is no vocal minority yet, so this stays silent — restraint (above) is the only check that fires.
 2. **This FEAT traces to a request/complaint**, not to a founder-named bet — the source is a feature
    request, a friction complaint, or "a few users asked." (If the source is the canvas's *riskiest
@@ -142,12 +142,12 @@ line, the specific version of:
 > is evidence of *a* pain, not a mandate to build (it's a `stated-pain` EVID — the weakest grade; the
 > quiet majority's *observed behavior* outranks a loud request). Before you spend the build on it, two
 > cheaper reads: what does **the silent majority** — the users who *didn't* write in — actually *do*
-> (`/measure` — behavior over volume)? And what is your **quiet churn** telling you — the people who
+> (`/health` — behavior over volume)? And what is your **quiet churn** telling you — the people who
 > left without a word are the loudest evidence there is, and this feature probably isn't why (talk to
 > them: `/interview`; the `--feedback` register's churn entries)? If those still point here, build it
 > with conviction. If they point elsewhere, you were about to serve the few at the expense of the many.
 
-Point at `/measure` (what behavior says), `/interview` (talk to the silent / the churned), the
+Point at `/health` (what behavior says), `/interview` (talk to the silent / the churned), the
 `--feedback` register (is the request a *pattern* or a one-off), and `mentor-founder` (is this the right
 bet). Cohort decides framing — returning-founder gets the blunt "the loudest user isn't your median
 user — who are you actually building for?"; first-product gets "one person asking loudly can feel like
@@ -338,8 +338,8 @@ that when you're choosing among many candidates, not just reacting to one.)_
    **Why a second file and not a heading in `FLOWS.md`.** The flow index holds in-app sequences, and
    it is structurally unable to hold the two places users are most often lost: **before they sign
    up**, and **after they have succeeded once and are deciding whether you are part of their week.**
-   Four skills are already standing on different parts of that arc — `/landing`, `/onboard`,
-   `/measure`, `/health` — and until this file exists none of them shares a map, which is how a
+   Three skills are already standing on different parts of that arc — `/landing`, `/onboard`,
+   `/health` — and until this file exists none of them shares a map, which is how a
    product ends up with a good landing page, a good first run, and nobody in week three.
 
    Two things make it worth the ten minutes, and neither is the table itself:
@@ -412,6 +412,21 @@ any FEAT that creates or changes stored data, answer these in the record:
 `/red-team` catch it at deploy time. **Both can only catch it — this step is where it gets
 prevented.** Full practice: `boss craft data-schema`. For the judgment calls — one table or two,
 will this query scale, is this premature — ask `mentor-architect`.
+
+## If this FEAT calls a model, draw the line here
+
+Before the first LLM call in a FEAT, fill its **Model or code** section: which step genuinely needs the
+model, and which stays deterministic. The instinct is to route everything through the model; every
+step kept in code is one that can't hallucinate, and costs nothing per call. The rungs, lowest first:
+a script on a schedule → a fixed path with one schema'd model *step* → an agent loop → several agents.
+**Climb on a failure you actually hit, never one you anticipate** (`boss craft automation`).
+
+Then the three that make a model step safe to ship, each its own verb: an eval set before it ships
+(`/evals` — five cases beat none), a declared response to each failure state (`/ai-failure-states`),
+and a budget with a logger (`/ai-cost`). For the output shape, reach for the provider's **native
+strict structured output** first; keep Zod/Pydantic for ranges, enums and cross-field rules. If the
+step reads untrusted input *and* can reach private data *and* can act, that's the lethal trifecta —
+remove one leg (`boss craft agent-security`).
 
 ## Ship the most executable artifact you can (not just prose about it)
 

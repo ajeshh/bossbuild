@@ -33,7 +33,7 @@ menu**, and the position is on disk:
 | an IDEA, no `docs/evidence/EVID-*` | an idea nobody has been asked about | **the cheapest real step, and there is no fixed order** — `/canvas` to pressure-test it a few cells at a time, `/interview prep` if they have a person, the demand test (`/pretotype`) if they have a crowd, `/prototype` if they need to see it before they can ask anyone anything. Pick the one the week allows; never tell them a conversation must come before the canvas, or after |
 | evidence, no FEAT in `docs/ideas/` | heard, not built | **the smallest build** — `/prototype` for a thing to react to; `boss unlock mvp` then `/spec` only when it is plainly a real build |
 | a FEAT at `building` | mid-build | **finish or shrink it** — the board's line (`boss status`); `/spec` to read what "done" was; `/sunset FEAT-NNN` if it has stopped being the point |
-| a FEAT at `shipped` | launched | **the after-launch reads** — `/measure`, `/health`; if those are not in the menu yet, `boss sync` lays them down (the rung held them back until now) |
+| a FEAT at `shipped` | launched | **the after-launch read** — `/health`; if those are not in the menu yet, `boss sync` lays them down (the rung held them back until now) |
 
 When they *say* what they want, match the intent before the position — the table below is loaded
 only when this skill runs, which is why it can be this long and the menu can be this short:
@@ -47,7 +47,7 @@ only when this skill runs, which is why it can be this long and the menu can be 
 | "am I still on track" · "am I fooling myself" | the honest read | at Quickstart, the canvas's riskiest-assumption line against what they did this week; at MVP, `/drift-deep` |
 | "ready to build for real" | the graduation | `boss unlock mvp`, then `/spec` on the idea |
 | "I'm stuck" · "what now" · nothing at all | position | the row above that matches — say it in one line, then the one step |
-| "we shipped" | the after-launch arc | `/measure`, then `/health` when there is something to read |
+| "we shipped" | the after-launch arc | `/health` — it sets up the reading first, then reads it |
 | "I'm done with this" · "it's not working" | an honest ending | `/sunset` — an experiment that returned an answer, never a failure |
 
 **Three rules for this door, in order of importance:**
@@ -256,10 +256,10 @@ theirs and, incidentally, opens `canvas-loop` — which is how BOSS earns the ri
   doesn't work without it — a chatbot, a copilot, an LLM-pipeline, a generation tool, a
   RAG-mediated product), name it explicitly back to the founder: *"This sounds AI-native —
   the model is doing the work, not just polishing it."* Then **recommend the AI-first sequence**:
-  *"After `boss unlock mvp`, run `/ai-first-init` — it bakes in cost discipline, eval discipline,
-  structured outputs, and failure-state design from day one. Cheaper to declare upfront than
-  to retrofit after the first bill, the first hallucination, or the first refusal in front of
-  a user."* Don't run anything for them; the recommendation is the artifact.
+  *"After `boss unlock mvp`, the first FEAT that calls a model: `/spec` draws the line between
+  what the model does and what stays code, then `/evals`, `/ai-failure-states` and `/ai-cost`.
+  Cheaper to declare upfront than to retrofit after the first bill, the first hallucination, or
+  the first refusal in front of a user."* Don't run anything for them; the recommendation is the artifact.
 
 ## 5. GitHub repo (the gated step)
 

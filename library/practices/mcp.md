@@ -153,7 +153,7 @@ domain practices).
 the wall, and that still hasn't happened. But the assessment found the real defect was never the missing
 skill: **`mentor-architect` owns this practice in its own frontmatter and named MCP nowhere in its AI-MVP
 decision set**, so the decision had no route to a founder at all. That's a composition bug, not a missing
-verb. Fixed by adding the row to the mentor and the deterministic/agentic split to `/ai-first-init` step 1.
+verb. Fixed by adding the row to the mentor and the deterministic/agentic split to what is now `/spec`'s model-or-code line.
 **The skill stays deferred, and the demand trigger is unchanged** — but the thing it was supposed to deliver
 now ships without it, which raises the bar for ever building it.
 
@@ -161,7 +161,7 @@ now ships without it, which raises the bar for ever building it.
 
 Silent on a Quickstart. Surfaces the first time a founder says "should I add MCP / an integration / expose my
 API to agents?" — never as a wall, one shape at a time. **The route is `mentor-architect`'s AI-MVP decision
-set** (the integration-shape row), with `/ai-first-init` step 1 catching the adjacent automation question;
+set** (the integration-shape row), with `/spec`'s model-or-code line catching the adjacent automation question;
 full depth is `boss craft mcp`. **Refresh on the spec curve** (`curve: protocol`,
 90d) — and on the event, not the date: this doc was wrong seven days after it was written because a spec
 landed on a Tuesday. Watch the [deprecated-features registry](https://modelcontextprotocol.io/specification/2026-07-28/deprecated)

@@ -3,7 +3,7 @@
 **Kettlewick is fictional.** A home-care shift-cover venture that does not exist, run by people who do
 not exist, with rivals that do not exist. Every file in this folder is in the exact shape the
 shipped BOSS verbs write (`/idea`, `/canvas`, `/persona`, `/evidence`, `/decide`, `/log`,
-`/comp-eval`, `/trust`, `/health`, `/measure`, `boss team add`), so that `scripts/gen-demo.js` can
+`/comp-eval`, `/trust`, `/health`, `boss team add`), so that `scripts/gen-demo.js` can
 hand the folder to the same renderers an install runs — `boss playbook`, `boss design`,
 `boss board --html` — and publish the result at `oyeboss.build/demo/`.
 

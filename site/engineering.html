@@ -410,9 +410,9 @@
         </div>
         <div class="pairs">
           <div class="pair">
-            <span class="k">/ai-first-init: decide what's AI-mediated, on purpose</span>
-            <span>Write down which parts of the product actually route through a model, and seed the
-              structured outputs and schemas underneath them. Cheap on day one; archaeology later.</span>
+            <span class="k">/spec: decide what's AI-mediated, on purpose</span>
+            <span>For each feature that calls a model, write down which steps actually need it and
+              which stay plain code, and schema the output. Cheap on day one; archaeology later.</span>
           </div>
           <div class="pair">
             <span class="k">/evals: “is it correct?” beside /smoke's “is it alive?”</span>
@@ -462,15 +462,15 @@
           <h3>Harness engineering (design the thing <em>around</em> the model, not just the prompt)</h3>
           <p class="meta"><code>harness-engineering</code>, owned by <code>mentor-architect</code>, on a
             <span class="curve" title="how fast this ground moves">model-moving curve</span>;
-            last checked 2026-08-11.</p>
-          <p class="prov"><span>learned from</span> <a class="ref" href="https://www.anthropic.com/engineering" rel="noopener">Anthropic engineering</a> <a class="ref" href="https://github.com/humanlayer/12-factor-agents" rel="noopener">Dex Horthy — 12-factor agents</a> <span class="ref">Andrej Karpathy — the verifiability thesis</span> <span class="ref">GitHub Spec Kit / AWS Kiro</span> <a class="ref" href="https://github.com/arslan70/haytham/blob/main/docs/system-evolution.md" rel="noopener">Haytham (arslan70) — system-evolution ADRs</a></p>
+            last checked 2026-09-23.</p>
+          <p class="prov"><span>learned from</span> <a class="ref" href="https://www.anthropic.com/engineering" rel="noopener">Anthropic engineering</a> <a class="ref" href="https://github.com/humanlayer/12-factor-agents" rel="noopener">Dex Horthy — 12-factor agents</a> <span class="ref">Andrej Karpathy — the verifiability thesis</span> <span class="ref">GitHub Spec Kit / AWS Kiro</span> <a class="ref" href="https://github.com/arslan70/haytham/blob/main/docs/system-evolution.md" rel="noopener">Haytham (arslan70) — system-evolution ADRs</a> <a class="ref" href="https://arxiv.org/abs/2609.20812" rel="noopener">Quantifying Overclaiming Propensity in Frontier LLM Agents (OverclaimBench, arXiv 2609.20812)</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (GitHub Spec Kit, AWS Kiro). Two independent research threads named the harness as the biggest gap in how BOSS was building.</p></details>
         </div>
         <div class="practice">
           <h3>Context discipline</h3>
           <p class="meta"><code>context-discipline</code>, owned by <code>product-lead</code>, on a
             <span class="curve" title="how fast this ground moves">host-moving curve</span>;
-            last checked 2026-09-08.</p>
+            last checked 2026-09-23.</p>
           <p class="prov"><span>learned from</span> <a class="ref" href="https://arxiv.org/abs/2606.12231" rel="noopener">Rule Taxonomy and Evolution in AI IDEs (Cai, Li, Liang, Li, Shahin — arXiv 2606.12231)</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.</p></details>
         </div>
@@ -494,7 +494,7 @@
           <h3>Route by capability, never by model name</h3>
           <p class="meta"><code>model-routing</code>, owned by <code>mentor-architect</code>, on a
             <span class="curve" title="how fast this ground moves">craft-moving curve</span>;
-            last checked 2026-08-01.</p>
+            last checked 2026-09-23.</p>
           <p class="prov"><span>source</span> BOSS’s own practice, extracted from its build, not from outside</p>
           <details class="prov-full"><summary>where this came from</summary><p>Extracted from a real mistake. BOSS pinned a model alias in eight shipped agent files and hardcoded model ids and per-token prices. Within four weeks the pin was stale, the prices were unverifiable, and nobody could confirm the alias even resolved in a founder's install. Root cause is BOSS's own PRINCIPLE #3 — a model name buried in an agent file is locked into code; the reusable thing is the intent, which is stable, not the name, which is not.</p></details>
         </div>

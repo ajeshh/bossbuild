@@ -4,7 +4,7 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: written 2026-08-20 (v0.165.0) to close a coverage gap found by the MCP-and-automation assessment — 28 practices and none about automation, while `/ai-first-init` step 1 has been shipping the load-bearing line ("the hardest line to fill honestly is what stays deterministic") with nothing backing it. Same shape as testing-with-agents.md: a stranded line gets a home. Rung 0 + the four-rung ladder extend RVW-008's three categories downward (most founder "automation" is a cron job; the categories start one rung too high). RVW-011 governs the vendor tier — name the rung, never the stack (PRINCIPLE #4). The rent-don't-author rule is harness-engineering.md's host-seam rule applied to automation for the first time.
+provenance: written 2026-08-20 (v0.165.0) to close a coverage gap found by the MCP-and-automation assessment — 28 practices and none about automation, while an ai-first-init skill's step 1 (now `/spec`'s model-or-code line) had been shipping the load-bearing line ("the hardest line to fill honestly is what stays deterministic") with nothing backing it. Same shape as testing-with-agents.md: a stranded line gets a home. Rung 0 + the four-rung ladder extend RVW-008's three categories downward (most founder "automation" is a cron job; the categories start one rung too high). RVW-011 governs the vendor tier — name the rung, never the stack (PRINCIPLE #4). The rent-don't-author rule is harness-engineering.md's host-seam rule applied to automation for the first time.
 provenance_public: Written to close a coverage gap: BOSS had been shipping the load-bearing line — *the hardest line to fill honestly is what stays deterministic* — with no practice behind it. The four-rung ladder deliberately starts one rung lower than the usual categories, because most founder "automation" is a cron job. The vendor tier follows PRINCIPLE #4: name the rung, never the stack.
 last_reviewed: 2026-08-20
 review_by: 2027-02-16
@@ -21,7 +21,7 @@ curve: craft-ai
 
 ## BOSS already ships the answer's first half
 
-`/ai-first-init` step 1 asks the founder what's AI-mediated and what is **explicitly deterministic**, and
+`/spec`'s model-or-code line (for a FEAT that calls a model) asks what's AI-mediated and what is **explicitly deterministic**, and
 tells them *"the hardest line to fill honestly is what stays deterministic — the instinct is to route
 everything through the model."*
 
@@ -103,8 +103,8 @@ command" is a seam. "The business stops" is a dependency you took on without dec
 
 Silent on a Quickstart — a founder with no product has nothing worth running unattended. Surfaces the first
 time someone says *"can this run on a schedule / without me / overnight?"*, and then **one rung at a time**,
-never as the whole ladder. `mentor-architect` carries it into the AI-MVP decision set; `/ai-first-init` step
-1 is where the deterministic-core half already lands.
+never as the whole ladder. `mentor-architect` carries it into the AI-MVP decision set; `/spec`'s model-or-code
+line is where the deterministic-core half already lands.
 
 ## One line for the conscience
 

@@ -70,6 +70,21 @@ rule above still applies to the whole section once it is stamped.
 > work, or two people owning two parts. When you pick a stack with `/decide`, the coder learns it in
 > the same step. `/judge-traces` now points out agents nobody calls and pairs that always hand off to
 > each other. And if you delete an agent you don't need, `boss sync` no longer puts it back.
+>
+> Two MVP skills folded into others. `/measure` is now `/health`'s first run: it plants the analytics
+> seam whatever your user count, then picks the one metric and curve, then reads them. `/ai-first-init`
+> is gone; `/spec` now asks, for each feature that calls a model, which steps need it and which stay
+> plain code. `boss sync` says so, and your `docs/measure/` and `docs/ai-first.md` are still read.
+
+- **`/measure` folds into `/health`; `/ai-first-init` retires into `/spec` (IDEA-125).** Both halves of
+  the retention read were one question asked by two verbs; `/health` now plants the seam first (the
+  order matters — its n<10 gate would otherwise stop a just-shipped founder before `created_at` lands),
+  sets up the reading, then gives the verdict, and still writes `docs/measure/`. `/ai-first-init` was
+  mostly a conductor over `/evals`, `/ai-cost` and `/ai-failure-states`; its one unique question moved
+  into a per-FEAT **Model or code** section in `/spec`. MVP 28 → 26 skills, still opens on 14. Two
+  `supersedes.json` entries; the surface ladder's `measure` seam now belongs to `health`. Merges read and
+  declined — `/onboard`, `/design-review` + `/ux-check`, and four more — are recorded with reopen
+  triggers in IDEA-125. `/ai-cost` + `/cost-review` waits on the conscience rework.
 
 - **Commits in this repo run the staged tree through `npm run test:ci` (IDEA-121).** `scripts/hooks/pre-commit`
   builds a throwaway worktree at HEAD, copies the index over it and runs the CI suite there — never the

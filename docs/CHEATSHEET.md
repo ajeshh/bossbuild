@@ -71,7 +71,6 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/design-tokens-init` — Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two
 - `/ai-cost` — Establish AI spend discipline for your app — per-user, per-feature and monthly budgets, the model choices, a per-call cost logger, a review cadence
 - `/cost-review` — Read the AI cost ledger and produce a dated review
-- `/ai-first-init` — Bake the AI-first discipline into your app from day one
 - `/ai-failure-states` — Design what your app does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens
 - `/extract` — Pause and sort patterns — Principle 1 as a skill
 - `/drift-deep` — The deep, whole-project version of the conscience's drift check — "am I fooling myself across everything I've built?" Reads the canvas, devlog, FEAT specs, code and ideas, and judges whether the work validates the riskiest assumption or builds around it
@@ -80,13 +79,12 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/consult` — Convene the mentor board on a cross-cutting question
 - `/red-team` — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent against the Agentic ASI Top 10
 - `/practice` — Capture a craft learning (a better way to build with AI) as a shared, attributed PRAC-NNN record your cofounder gets too
-- `/ship` — Put your app where a real user can hit it, the CD half of building
+- `/ship` — Put your app where a real user can hit it, and know when it stops answering
 - `/landing` — Generate the founder's FIRST landing page - on-brand, honest, out the block fast
-- `/measure` — The post-ship counterpart to /pretotype — given they're using it, is it working and are they staying? Picks ONE activation metric and ONE retention curve, names 5–10 events max, and adds what classic analytics misses for an AI product (task-completion, edit rate, cost-per-successful-outcome)
 - `/onboard` — Design the path from signup to the aha-moment - activation, the highest-leverage number in the funnel
 - `/roadmap` — Weigh what to build next, feedback against behavior, into a SMALL bet-list with a mandatory NO-list
 - `/trust` — Earn trust honestly - the AI-specific privacy and compliance set without the SOC2 theater
-- `/health` — The post-launch verdict and the diagnosis in one read - is this working, and if not, where is it breaking? Renders product-market fit honestly (defaulting to pre-PMF), says where a decaying curve dies (activation, engagement, the wallet) and routes to the fix
+- `/health` — Is the shipped thing working, and if not, where is it breaking? First run sets up the reading - the analytics seam, ONE activation metric, ONE retention curve, at most ten events (plus task-completion and edit rate for an AI product)
 - `/money` — The money verb, from the first dollar to operating it
 - `/design-review` — Before-code design review for your app
 - `/ux-check` — After-code UX review for your app

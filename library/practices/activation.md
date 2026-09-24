@@ -4,7 +4,7 @@ type: practice
 owner: mentor-customers
 status: active
 host: stack-neutral
-provenance: post-launch program (2026-07-23 SESSION, JOB 1). The gap the map found — BOSS *reads* the activation metric (/measure) but was silent on *designing* activation. Distilled from Casey Winters (activation > acquisition — the highest-leverage retention lever) + Bangaly Kaba (find the behavior that predicts retention — the "best-retained-users" method) + the aha-moment / time-to-value canon (Chamath's magic-moment framing; the Facebook "friends in N days" illustration, treated as illustration not template) + Superhuman (concierge onboarding, do-it-shamelessly) + Paul Graham (do things that don't scale). Pairs with retention.md (activation-failure is its top-of-curve decay), /onboard (the runner), /measure (reads the activation metric), /health (the 40% test surveys the *activated* core), /interview (concierge onboarding IS talking to your first users). BOSS v0.122.0.
+provenance: post-launch program (2026-07-23 SESSION, JOB 1). The gap the map found — BOSS *reads* the activation metric (then a measure skill, now /health) but was silent on *designing* activation. Distilled from Casey Winters (activation > acquisition — the highest-leverage retention lever) + Bangaly Kaba (find the behavior that predicts retention — the "best-retained-users" method) + the aha-moment / time-to-value canon (Chamath's magic-moment framing; the Facebook "friends in N days" illustration, treated as illustration not template) + Superhuman (concierge onboarding, do-it-shamelessly) + Paul Graham (do things that don't scale). Pairs with retention.md (activation-failure is its top-of-curve decay), /onboard (the runner), /health (reads the activation metric), /health (the 40% test surveys the *activated* core), /interview (concierge onboarding IS talking to your first users). BOSS v0.122.0.
 provenance_public: Distilled from Casey Winters (activation over acquisition — the highest-leverage retention lever), Bangaly Kaba (find the behaviour your best-retained users share), the aha-moment / time-to-value canon, Superhuman's concierge onboarding, and Paul Graham's *do things that don't scale*. Written when BOSS could read an activation number and had nothing to say about designing for one.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
@@ -13,7 +13,7 @@ curve: market
 
 # Practice — Activation (get them to *success* fast — not *hooked* fast)
 
-> **Where this sits.** `/measure` *reads* an activation metric; this designs the thing being measured, and
+> **Where this sits.** `/health` *reads* an activation metric; this designs the thing being measured, and
 > `/onboard` is its runner. The load-bearing idea: **activation is the first-session success rate — the % of new
 > users who reach real value — and it's the highest-leverage number in the whole funnel**, because it's the top
 > of the retention curve. Fix activation and every downstream cohort lifts at once (Winters: *activation >
@@ -36,7 +36,7 @@ what did the retained users *do in their first session* that the churned ones di
 threshold, is your aha. (The canonical illustration is Facebook's "connect with N friends in your first days" —
 treat it as an *illustration of the method*, not a number to copy; yours will be specific to your product, e.g.
 "sent their first real document," "got one useful answer they kept.") For an AI product the aha is almost always
-**a first *successful* output the user actually keeps** — tie it to `/measure`'s Task-Completion-Rate, not to
+**a first *successful* output the user actually keeps** — tie it to `/health`'s Task-Completion-Rate, not to
 "they clicked generate."
 
 ## Step 2 — shrink time-to-value (TTV)
@@ -71,7 +71,7 @@ onboarding turns dark, so name it:
 ## Ties + altitude
 
 Silent until a project is live with new users past n<10. Activation-failure is **`/health`'s top-of-curve
-decay** (a D0→D1 cliff routes here — this is that fix); the aha becomes a **`/measure` activation metric**; the
+decay** (a D0→D1 cliff routes here — this is that fix); the aha becomes **`/health`'s activation metric**; the
 activated cohort is exactly who **`/health`'s 40% test** must survey; concierge onboarding *is* `/interview`
 pointed at your first users. Surfaces via **`/onboard`** (the runner). Real first-session success is
 `observed-behavior` **EVID**. Cite: Winters (activation > acquisition), Bangaly Kaba (best-retained-users →
@@ -82,5 +82,5 @@ scale).
 
 Gamified/streak onboarding designed to hook rather than help; forced tutorials that gate the product; "complete
 your profile" dark-pattern nags; an onboarding *analytics dashboard* (the one activation metric lives in
-`/measure`); A/B onboarding tooling (premature for essentially every BOSS founder — concierge + eyeballs beat it
+`/health`); A/B onboarding tooling (premature for essentially every BOSS founder — concierge + eyeballs beat it
 until real volume).

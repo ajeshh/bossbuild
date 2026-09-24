@@ -4,7 +4,7 @@ type: practice
 owner: mentor-customers
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (post-ship validation thread) — the "model accuracy != user success" doctrine (iamprayerson 2026), AI product metrics (TianPan 2026 — TCR, retained-character rate, frustration index), PostHog LLM analytics (product+observability convergence), Hamel Husain & Shreya Shankar (online evals on production traffic), the Camuffo RCT (validation buys faster quitting). Pairs with /measure (the runner), /evals + /judge-traces (correctness), /ai-cost + /cost-review (spend), the EVID ladder, and the humane lens (ai-ux-patterns.md). BOSS v0.113.0. · **the seam section added 2026-08-20 (v0.176.0)** — not a refresh, so the freshness clock is deliberately HELD (the v0.150.0 correction: one section is not a sweep). The gap: the JIT boundary said "don't instrument" and never said what to leave behind, so the no was only half-honest — a founder who obeyed it correctly still lost the history they already had. The load-bearing half (`created_at` as the un-backfillable seam) belonged in data-schema.md's one-way doors and wasn't there either.
+provenance: distilled from the 2026-07-23 research sweep (post-ship validation thread) — the "model accuracy != user success" doctrine (iamprayerson 2026), AI product metrics (TianPan 2026 — TCR, retained-character rate, frustration index), PostHog LLM analytics (product+observability convergence), Hamel Husain & Shreya Shankar (online evals on production traffic), the Camuffo RCT (validation buys faster quitting). Pairs with /health (the runner), /evals + /judge-traces (correctness), /ai-cost + /cost-review (spend), the EVID ladder, and the humane lens (ai-ux-patterns.md). BOSS v0.113.0. · **the seam section added 2026-08-20 (v0.176.0)** — not a refresh, so the freshness clock is deliberately HELD (the v0.150.0 correction: one section is not a sweep). The gap: the JIT boundary said "don't instrument" and never said what to leave behind, so the no was only half-honest — a founder who obeyed it correctly still lost the history they already had. The load-bearing half (`created_at` as the un-backfillable seam) belonged in data-schema.md's one-way doors and wasn't there either.
 provenance_public: Distilled from Hamel Husain and Shreya Shankar (online evals on production traffic), TianPan's AI product metrics (task-completion rate, retained-character rate, a frustration index), PostHog's LLM analytics (product analytics and observability converging), the *model accuracy is not user success* line, and Camuffo et al.'s randomized trial on the scientific approach (validation buys faster quitting). Written for the seam classic analytics misses in a product that is itself an AI.
 last_reviewed: 2026-07-23
 review_by: 2027-01-19
@@ -14,7 +14,7 @@ curve: market
 # Practice — Analytics for products that ARE AI (measure the right thing; don't surveil the human)
 
 > **Where this sits.** BOSS owns *pre-build* validation (`/pretotype`, `/evidence`,
-> `/interview`). This is the *post-ship* half, for AI products specifically — and its `/measure` skill is the
+> `/interview`). This is the *post-ship* half, for AI products specifically — and `/health`'s setup step is the
 > runner. The load-bearing idea: **classic analytics assumes deterministic output; an AI product violates
 > that, so measurement partly breaks and must fuse with the eval loop.** The humane clause below is the part
 > no listicle carries and the part BOSS won't drop.
@@ -22,7 +22,7 @@ curve: market
 ## First, the JIT boundary (the strongest one in this whole practice)
 
 **A founder at 0–10 users needs none of this.** Analytics on ten users is noise — you *talk* to ten users.
-The correct output of `/measure` at n<10 is *"close this and go talk to them."* Instrument at roughly **n≥30–50**
+The correct output of `/health` at n<10 is *"close this and go talk to them."* Instrument at roughly **n≥30–50**
 (when you can no longer eyeball every session), and even then: **one activation metric, one retention curve,
 ≤10 events.** Dashboards, 200-event taxonomies, a "North Star committee," paid tiers, warehouse analytics —
 all premature ceremony before you have a retention curve worth reading (Principle #2).
@@ -116,7 +116,7 @@ just shipping faster into the dark. Feeds IDEA-051 (operate-mode customer loop).
 ## Altitude / JIT
 
 Silent until a project is AI-mediated **and** live with real users past the n<10 boundary. Surfaces via
-`/measure` (the runner) and around `/ship`'s "who's the first real user?" voicing. The A/B / experimentation
+`/health` (the runner — its setup step) and around `/ship`'s "who's the first real user?" voicing. The A/B / experimentation
 half (nondeterminism = test a *distribution*, randomize on users, bigger variance-aware samples, offline-eval-
 can-lie) is a `mentor-customers` pointer for *later* — real conversion volume (~100+ per arm) is far off for most.
 Multivariate stays premature for essentially every BOSS founder.

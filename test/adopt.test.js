@@ -130,10 +130,10 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
   assert.match(out, /MVP mode/);
   const skills = readdirSync(join(dir, '.claude', 'skills'));
   // shipped before adoption → the after-you-ship verbs are on disk, not folded away from a live app
-  for (const s of ['measure', 'health', 'landing']) assert.ok(skills.includes(s), `${s} laid down — the repo is live`);
+  for (const s of ['health', 'onboard', 'landing']) assert.ok(skills.includes(s), `${s} laid down — the repo is live`);
   // nothing calls a model → that group stays held, and the line says what earns it
   for (const s of ['ai-cost', 'evals', 'ai-failure-states']) assert.ok(!skills.includes(s), `${s} held`);
-  assert.match(out, /5 held back when the app first calls a model/);
+  assert.match(out, /4 held back when the app first calls a model/);
   // opt-in hooks stay off disk until `boss hooks enable`
   const hooks = readdirSync(join(dir, '.claude', 'hooks'));
   assert.ok(!hooks.includes('secrets-guard.js') && !hooks.includes('smoke-guard.js'), 'opt-in hooks held');
@@ -143,7 +143,7 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
   // no styled screen either (plain modules) → the UI pair is held too
   assert.match(out, /2 held back when the app gets its first styled screen/);
   assert.deepEqual(Object.keys(stamp.deferred['L1-mvp']), ['aiMediated', 'uiBuilt']);
-  assert.ok(!stamp.skills.includes('ai-cost') && stamp.skills.includes('measure'));
+  assert.ok(!stamp.skills.includes('ai-cost') && stamp.skills.includes('health'));
   // and the map does not tell a live app its after-you-ship verbs are "for after you ship"
   assert.doesNotMatch(boss(['map'], dir), /for after you ship/);
 });

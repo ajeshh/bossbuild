@@ -275,7 +275,7 @@ export function readJourney(projectDir) {
 export const METHODS = [
   ['interview', 'Interviews', 'stated', '/interview · /evidence'],
   ['observation', 'Watching someone use it', 'observed', '/interview → the last question: "could I sit with you?"'],
-  ['metric', 'Product events · drop-off', 'observed', '/measure — a few events, not ten'],
+  ['metric', 'Product events · drop-off', 'observed', '/health — a few events, not ten'],
   ['pretotype', 'A pretotype (fake door · concierge)', 'observed', '/pretotype'],
   ['commitment-test', 'A commitment asked for', 'observed', '/money · the ask at the end of a call'],
   ['desk', 'Desk · competitive', 'inferred', '/comp-eval'],

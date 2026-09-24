@@ -108,7 +108,7 @@ function renderMap(projectDir, stamp, opts = {}) {
     const later = skillsHere.filter((s) => post.has(s) && !aside.has(s));
     const asides = skillsHere.filter((s) => aside.has(s));
     // The rung's own loop first, IN ORDER, then the rest alphabetically. This list used to be
-    // sorted end-to-end, which put `/ai-cost`, `/ai-failure-states` and `/ai-first-init` at the top
+    // sorted end-to-end, which put `/ai-cost`, `/ai-failure-states` and `/cost-review` at the top
     // of MVP and scattered the loop the rung actually runs — `/close` 4th, `/log` 14th, `/smoke`
     // 20th, `/spec` 21st of 21. So the first thing a freshly-unlocked founder read was AI-cost
     // infrastructure, and the sequence they were meant to repeat was invisible. Alphabetical order

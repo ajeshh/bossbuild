@@ -33,7 +33,6 @@
 - **`/design-tokens-init`** — Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two  _(/design-tokens-init)_
 - **`/ai-cost`** — Establish AI spend discipline for your app — per-user, per-feature and monthly budgets, the model choices, a per-call cost logger, a review cadence  _(/ai-cost)_
 - **`/cost-review`** — Read the AI cost ledger and produce a dated review  _(/cost-review)_
-- **`/ai-first-init`** — Bake the AI-first discipline into your app from day one  _(/ai-first-init)_
 - **`/ai-failure-states`** — Design what your app does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens  _(/ai-failure-states)_
 - **`/extract`** — Pause and sort patterns — Principle 1 as a skill  _(/extract)_
 - **`/drift-deep`** — The deep, whole-project version of the conscience's drift check — "am I fooling myself across everything I've built?" Reads the canvas, devlog, FEAT specs, code and ideas, and judges whether the work validates the riskiest assumption or builds around it  _(/drift-deep)_
@@ -42,13 +41,12 @@
 - **`/consult`** — Convene the mentor board on a cross-cutting question  _(/consult <question>)_
 - **`/red-team`** — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent against the Agentic ASI Top 10  _(/red-team [FEAT-NNN])_
 - **`/practice`** — Capture a craft learning (a better way to build with AI) as a shared, attributed PRAC-NNN record your cofounder gets too  _(/practice <what you learned>)_
-- **`/ship`** — Put your app where a real user can hit it, the CD half of building  _(/ship [--preview | --rollback])_
+- **`/ship`** — Put your app where a real user can hit it, and know when it stops answering  _(/ship [--preview | --rollback])_
 - **`/landing`** — Generate the founder's FIRST landing page - on-brand, honest, out the block fast  _(/landing [--demand | --product])_
-- **`/measure`** — The post-ship counterpart to /pretotype — given they're using it, is it working and are they staying? Picks ONE activation metric and ONE retention curve, names 5–10 events max, and adds what classic analytics misses for an AI product (task-completion, edit rate, cost-per-successful-outcome)  _(/measure)_
 - **`/onboard`** — Design the path from signup to the aha-moment - activation, the highest-leverage number in the funnel  _(/onboard)_
 - **`/roadmap`** — Weigh what to build next, feedback against behavior, into a SMALL bet-list with a mandatory NO-list  _(/roadmap)_
 - **`/trust`** — Earn trust honestly - the AI-specific privacy and compliance set without the SOC2 theater  _(/trust)_
-- **`/health`** — The post-launch verdict and the diagnosis in one read - is this working, and if not, where is it breaking? Renders product-market fit honestly (defaulting to pre-PMF), says where a decaying curve dies (activation, engagement, the wallet) and routes to the fix  _(/health)_
+- **`/health`** — Is the shipped thing working, and if not, where is it breaking? First run sets up the reading - the analytics seam, ONE activation metric, ONE retention curve, at most ten events (plus task-completion and edit rate for an AI product)  _(/health)_
 - **`/money`** — The money verb, from the first dollar to operating it  _(/money)_
 - **`/design-review`** — Before-code design review for your app  _(/design-review [FEAT-NNN | path-to-component-spec])_
 - **`/ux-check`** — After-code UX review for your app  _(/ux-check [route-or-component-path | FEAT-NNN])_

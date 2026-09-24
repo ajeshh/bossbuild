@@ -90,16 +90,16 @@ position read is a conversation opener, not a preamble.
    one (it can voice *with* this read). Honor the brain's must-nots: no
    flattery, no diagnosing the founder, no certainty the material doesn't support; if thin, say less.
 3. **Suggest the disciplines that fit** (recommend, don't auto-apply) — based on what you read, name
-   the 1–3 optional disciplines worth turning on, and why: AI in the path → `/ai-first-init`; UI
+   the 1–3 optional disciplines worth turning on, and why: AI in the path → `/spec`'s model-or-code line + `/evals`; UI
    accumulating → `/design-tokens-init`; untrusted input / regulated data → `boss hooks enable
    secrets-guard` + `/red-team`; a target user worth modeling → `/persona`. The founder confirms each.
-   **Check the rung before naming a verb** (`.boss/manifest.json` → `skills`): `/ai-first-init`,
+   **Check the rung before naming a verb** (`.boss/manifest.json` → `skills`): `/evals`,
    `/design-tokens-init`, `/red-team` and `/spec` arrive with MVP. On a Quickstart adopt say so —
    *"that's an MVP verb; `boss unlock mvp` lays it down"* — rather than naming a command that isn't
    there. `boss map` shows what is.
 4. **Show your work** — end with a 3-line summary of exactly what you wrote (which files), so it's
    obvious what to keep or revert. *"I tailored AGENTS.md's overview, seeded the brain with a first
-   read, and suggested `/ai-first-init`. All of it is in your working tree — diff or revert anything."*
+   read, and suggested `/evals`. All of it is in your working tree — diff or revert anything."*
 
 ## Cohort-aware
 - `first-product` / `non-tech-founder` — plain language; frame it as "I read what's here and wrote down

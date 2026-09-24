@@ -30,7 +30,7 @@
 > | **Engineering** (`coder`, `tester`, `mentor-architect`) | Data shape (before the migration) · Paths that must not break · Smoke check | `/smoke` · `/evals` · `/red-team --paths` | `schema-guard` · `smoke-guard` |
 > | **Project** (`planner`) | `program:` · order and blockers via `boss board` · found tasks in `.claude/rules/feature-context.md` | `/close` ticks the criteria | `reentry`, the WIP watch |
 >
-> And it closes back on itself: `/measure` → `/health` → `/roadmap` → the next `/spec`.
+> And it closes back on itself: `/health` → `/roadmap` → the next `/spec`.
 
 ```markdown
 ---
@@ -126,6 +126,13 @@ it," **don't build this**. The MVP is the minimum experiment that produces valid
 the minimum product to polish (Eric Ries, **The Lean Startup**). Smallest cut, highest leverage._
 - **Learning hypothesis:** …
 - **What result would change the plan:** …
+
+## Model or code (for AI-mediated FEATs only)
+_Which step needs the model, and which stays deterministic — and why. Every step on the code side is
+one that can't hallucinate. If a step is on the model side only because listing its branches felt
+like work, it belongs in code. Omit this section if no LLM in control flow._
+- **Model does:** …
+- **Code does (and why):** …
 
 ## Evals (for AI-mediated FEATs only)
 _If this FEAT involves an LLM call in control flow, name the eval set this FEAT ships against. See

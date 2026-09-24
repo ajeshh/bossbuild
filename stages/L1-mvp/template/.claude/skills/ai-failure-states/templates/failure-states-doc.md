@@ -18,7 +18,7 @@ updated: YYYY-MM-DD
 
 ## Cohort + context
 - Cohort: <cohort name from .boss/config.json>
-- AI-mediated surfaces: <which features depend on the model; pulled from docs/ai-first.md>
+- AI-mediated surfaces: <which features depend on the model; pulled from each FEAT's Model or code section>
 - Stakes: <low / moderate / high — names the regulatory or human-stakes context>
 
 ## The five failure states

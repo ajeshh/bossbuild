@@ -196,6 +196,22 @@
       "replacedBy": "evidence",
       "why": "Three verbs turned what a real person said into graded EVID records — `/evidence` for one thing, `/interview debrief` for a call's notes, `/research` for a transcript — and from the menu all three said \"graded EVID records\". The difference was never the verb; it was how much you handed over. `/evidence` now reads the size and does the right amount: a record, a debrief (with the one moment you pitched), or a digest (pains, jobs, verbatim words, objections, where you led the witness). `/interview` keeps the half only it had: prepping the call.",
       "migrate": "Paste the transcript into `/evidence` instead — same records in docs/evidence/, same synthesis, same grades. Notes from a call go there too; `/interview` is for before the call now, not after. Nothing already written moves."
+    },
+    {
+      "since": "0.327.0",
+      "kind": "skill",
+      "removed": "measure",
+      "replacedBy": "health",
+      "why": "`/measure` and `/health` read the same retention curve — one set it up, the other read it — so a founder had to know which half they were in before either could tell them. `/health` now does both: with nothing instrumented it plants the seam (a `created_at` column and a `track()` stub) whatever your user count, picks the one activation metric and the one retention curve once you have users, and gives the verdict once there is data to read.",
+      "migrate": "Run `/health` where you ran `/measure`. Your `docs/measure/` files stay where they are and `/health` reads them — nothing to move or redo."
+    },
+    {
+      "since": "0.327.0",
+      "kind": "skill",
+      "removed": "ai-first-init",
+      "replacedBy": "spec",
+      "why": "`/ai-first-init` mostly called three other skills (`/evals`, `/ai-cost`, `/ai-failure-states`) and repeated advice `/spec` and `/red-team` already give. The one thing only it asked — which steps need the model and which stay plain code — was asked once for the whole project, then drifted as features were added. `/spec` now asks it per feature, in a **Model or code** section, for any FEAT that calls a model.",
+      "migrate": "Nothing breaks: an existing `docs/ai-first.md` is still read by `/ai-failure-states`. For the next feature that calls a model, `/spec` asks the model-or-code question; then `/evals`, `/ai-failure-states` and `/ai-cost` as before."
     }
   ]
 }

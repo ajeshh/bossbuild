@@ -242,7 +242,7 @@ test('the post-launch arc folds until something ships, then opens by itself', ()
       name: 'p', bossVersion: '0.0.1', stage: 'L1-mvp', mode: 'MVP',
       installedLayers: ['L0-quickstart', 'L1-mvp'],
       agents: [], hooks: [], loops: [],
-      skills: ['idea', 'spec', 'smoke', 'measure', 'pmf-check', 'retain', 'trust'],
+      skills: ['idea', 'spec', 'smoke', 'health', 'trust'],
     }),
     '.boss/config.json': '{}',
   };
@@ -250,13 +250,13 @@ test('the post-launch arc folds until something ships, then opens by itself', ()
   const preLaunch = project({ ...mvp, 'docs/ideas/IDEA-001.md': idea('IDEA-001') });
   const folded = boss(['map'], preLaunch).out;
   assert.match(folded, /for after you ship/, 'post-launch skills must fold before launch');
-  assert.ok(!/^ +\/measure/m.test(folded), '/measure must not be listed pre-launch');
-  assert.match(boss(['map', '--all'], preLaunch).out, /^ +\/measure/m, '--all must open the fold');
+  assert.ok(!/^ +\/health/m.test(folded), '/health must not be listed pre-launch');
+  assert.match(boss(['map', '--all'], preLaunch).out, /^ +\/health/m, '--all must open the fold');
 
   const shipped = project({ ...mvp, 'docs/ideas/FEAT-001.md': feat('FEAT-001', { status: 'shipped', shipped_on: '2026-08-01' }) });
   const open = boss(['map'], shipped).out;
   assert.ok(!/for after you ship/.test(open), 'a shipped FEAT must open the fold with no flag');
-  assert.match(open, /^ +\/measure/m, '/measure is the work once something is live');
+  assert.match(open, /^ +\/health/m, '/health is the work once something is live');
 });
 
 test('boss map previews the next rung without dumping it', () => {

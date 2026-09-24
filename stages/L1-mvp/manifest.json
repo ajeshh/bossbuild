@@ -21,7 +21,6 @@
     "design-tokens-init",
     "ai-cost",
     "cost-review",
-    "ai-first-init",
     "ai-failure-states",
     "extract",
     "drift-deep",
@@ -32,7 +31,6 @@
     "practice",
     "ship",
     "landing",
-    "measure",
     "onboard",
     "roadmap",
     "trust",
@@ -68,7 +66,6 @@
   ],
   "postLaunch": [
     "landing",
-    "measure",
     "health",
     "onboard",
     "roadmap",
@@ -76,7 +73,6 @@
     "trust"
   ],
   "aiMediated": [
-    "ai-first-init",
     "ai-cost",
     "cost-review",
     "ai-failure-states",

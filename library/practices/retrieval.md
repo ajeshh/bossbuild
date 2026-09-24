@@ -82,4 +82,4 @@ Silent until a founder's app must answer over data it can't hold in context. Fir
 ("can the agent just grep it?"), then the ~200k-token line, then the ladder — one rung per real miss. Refresh on
 the model/window curve (IDEA-014): the skip-RAG threshold moves as context windows and context-rot behavior
 change. Related: [`context-discipline`](context-discipline.md) (the dumb zone is why long-context isn't free
-retrieval), `ai-first-init`, [`harness-engineering`](harness-engineering.md).
+retrieval), `/spec`'s model-or-code line, [`harness-engineering`](harness-engineering.md).

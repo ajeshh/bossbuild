@@ -14,7 +14,7 @@ retention curve*. This is the fix `/health` routes to when the curve dies at the
 
 ## Step 0 — the JIT gate
 
-Read the new-user count (`/measure`, `/ship` context, the EVID ledger).
+Read the new-user count (`/health`'s setup, `/ship` context, the EVID ledger).
 - **n<10 → don't model an activation funnel. Watch them onboard one at a time, by hand** (that hand-watching IS
   the practice — Step 3). Point at `/interview`.
 - **n≥~30 (a readable activation rate) → proceed** — you can see what fraction reach value and derive the aha.
@@ -56,7 +56,7 @@ The **aha-moment** is the first action that reliably predicts retention. Derive 
 cohort and find the early behavior that separates them — *what did the retained users do in their first session
 that the churned didn't?* That behavior, at that threshold, is the aha. (Facebook's "connect with N friends
 early" is the canonical *illustration of the method*, not a number to copy.) **For an AI product the aha is
-almost always a first *successful* output the user keeps** — anchor it to `/measure`'s Task-Completion-Rate, not
+almost always a first *successful* output the user keeps** — anchor it to `/health`'s Task-Completion-Rate, not
 "they clicked generate."
 
 ## Step 2 — shrink time-to-value (TTV)
@@ -87,7 +87,7 @@ concierge version — never guess it ahead of the hand-done one.**
 
 A short `docs/onboard/ONBOARD-<date>.md`: the **aha-moment** (and the data it was derived from), the current
 **TTV** and the steps you're cutting, the **magic-first-run** design (for AI products), and the **concierge
-plan** for the next N users. Name the ONE activation metric so `/measure` can track it. First-session success is
+plan** for the next N users. Name the ONE activation metric so `/health` can track it. First-session success is
 `observed-behavior` **EVID** — record it via `/evidence`.
 
 ## Cohort-aware
@@ -113,4 +113,4 @@ plan** for the next N users. Name the ONE activation metric so `/measure` can tr
   **streaks and variable rewards** (→ measure whether they got what they came for, not how long they
   stayed), **the forced tutorial** (→ let them skip it and reach the thing they came for). Full rows:
   `boss craft deceptive-patterns --surface notifications-and-engagement`.
-- **One activation metric**, handed to `/measure`. This is `/health`'s top-of-curve fix — close that loop.
+- **One activation metric**, handed to `/health`. This is its top-of-curve fix — close that loop.

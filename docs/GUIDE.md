@@ -57,7 +57,7 @@ things actually get lost:
 |---|---|
 | *How do I build this?* Write it, fix it, refactor it, explain it. | **Just Claude.** No skill, no ceremony. |
 | *Should I build this?* Is the bet real, who's it for, what would prove it? | **BOSS** — `/canvas`, `/pretotype`, `/interview` |
-| *Is this working?* Did anyone use it, is it worth continuing? | **BOSS** — `/evidence`, `/measure`, `/health` |
+| *Is this working?* Did anyone use it, is it worth continuing? | **BOSS** — `/evidence`, `/health` |
 | *What did I decide, and why?* The thing future-you will have forgotten. | **BOSS** — `/decide`, `/log`, `/close` |
 
 You don't have to memorize any of it. `boss map` lists what *this* project has; the conscience points
@@ -160,7 +160,7 @@ your product leans on a model.
   `/smoke` (is it even running?), `/pretotype` (test demand *before* you build), `/log` + `/close`
   (keep a devlog + a clean session-end — and the conscience updates its read on your venture),
   `/revalidate` (the 3-line gate before paused work re-enters the build, so you never ship a zombie
-  feature). If you're AI-native: `/ai-first-init`, `/ai-cost` (+ `/cost-review` to read the spend ledger against
+  feature). If you're AI-native: `/spec` draws the model-or-code line per feature, then `/ai-cost` (+ `/cost-review` to read the spend ledger against
   budget), `/evals`, `/ai-failure-states`,
   `/judge-traces` (error-analysis on your real sessions), `/red-team` (test your defenses against the
   OWASP LLM Top-10 — turns prevention into evidence).
@@ -211,7 +211,7 @@ its moment actually arrives, and most of them will say "not yet, go talk to your
   secrets, row-level security nobody actually switched on). `localhost` is not a product; the URL is
   the proof. `/landing` writes the first honest landing page from your brand voice, tokens, and the
   canvas's Promises cell — it will refuse fake urgency and confirmshaming.
-- **Find out if it's working.** `/measure` picks ONE activation metric and ONE retention curve —
+- **Find out if it's working.** `/health`'s first run picks ONE activation metric and ONE retention curve —
   ten events, not an analytics department — plus the numbers classic tools miss for AI products
   (task-completion rate, edit-rate, cost per *successful* outcome). At fewer than ten users it tells
   you to go talk to them instead.

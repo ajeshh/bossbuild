@@ -1,6 +1,6 @@
 ---
 name: ai-failure-states
-description: Design what {{PROJECT_NAME}} does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens. Cohort-aware. Run during /ai-first-init, or whenever a FEAT puts an LLM in the user-facing path. Usage - /ai-failure-states
+description: Design what {{PROJECT_NAME}} does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens. Cohort-aware. Run whenever a FEAT puts an LLM in the user-facing path. Usage - /ai-failure-states
 ---
 
 # /ai-failure-states — name the failure before the user finds it
@@ -39,7 +39,6 @@ are the **load-bearing** ones — every AI-mediated FEAT has all five. Design re
 
 ## When to run it
 
-- During `/ai-first-init` — the conductor calls this as step 5.
 - Before any FEAT that puts an LLM call in the user-visible path ships (acceptance criteria
   should reference the failure-state response, not assume the happy path).
 - When the `ai-failure-state-loop` opens — the conscience surfaces a `failure-mode` moment
@@ -50,10 +49,12 @@ are the **load-bearing** ones — every AI-mediated FEAT has all five. Design re
 
 ## How to run it
 
-### 1. Read the cohort + the project's AI-first declaration
+### 1. Read the cohort + what's AI-mediated
 
-Read `cohort` from `.boss/config.json`. If `docs/ai-first.md` exists, read it — it names what's
-AI-mediated in this project (decides which failure states warrant the most design).
+Read `cohort` from `.boss/config.json`. Then find what's AI-mediated: the **Model or code** section of
+each FEAT spec that calls a model, and the call sites in `docs/ai-cost-budget.md` if it exists (an older
+project may also have a `docs/ai-first.md` — read it too). That decides which failure states warrant
+the most design.
 
 ### 2. Walk the founder through each failure state
 

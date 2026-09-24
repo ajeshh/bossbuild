@@ -2,7 +2,7 @@
   "version": "0.326.0",
   "generated_from": "stages/*/manifest.json via src/modes.js",
   "agents": 12,
-  "skills": 46,
+  "skills": 44,
   "mentors": 6,
   "builders": 6,
   "modes": [
@@ -18,9 +18,9 @@
       "word": "mvp",
       "name": "MVP",
       "agents": 7,
-      "skills": 28,
+      "skills": 26,
       "cumAgents": 11,
-      "cumSkills": 43
+      "cumSkills": 41
     },
     {
       "word": "v1",
@@ -28,7 +28,7 @@
       "agents": 0,
       "skills": 2,
       "cumAgents": 11,
-      "cumSkills": 45
+      "cumSkills": 43
     },
     {
       "word": "scale",
@@ -36,14 +36,14 @@
       "agents": 1,
       "skills": 1,
       "cumAgents": 12,
-      "cumSkills": 46
+      "cumSkills": 44
     }
   ],
   "practices": 34,
   "verdicts": {
-    "total": 105,
+    "total": 107,
     "ADOPT": 11,
-    "ADAPT": 62,
+    "ADAPT": 64,
     "REJECT": 16,
     "NOT-YET": 16
   }

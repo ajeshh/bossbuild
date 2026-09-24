@@ -22,7 +22,7 @@ dated bet-list you *use and discard*, then re-run when the picture has genuinely
 Read two columns, and keep them apart:
 - **What users *say*** — the `--feedback` register (feature requests, friction), support threads, `/interview`
   notes. Requests are `stated-pain` — the *weakest* evidence grade.
-- **What users *do*** — `/measure` (where they succeed/stall), the retention curve and *churn* (`/health` — who
+- **What users *do*** — `/health` (where they succeed/stall), the retention curve and *churn* (`/health` — who
   left and where), usage concentration. Behavior is `observed-behavior` / `commitment` — the *stronger* grade.
 
 **When they disagree, behavior wins.** The loudest requesters are rarely the median user; the churn you can't

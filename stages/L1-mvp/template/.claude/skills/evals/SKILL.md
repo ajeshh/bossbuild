@@ -150,7 +150,7 @@ distribution shift a model/prompt change introduces.
 - **Offline eval can lie.** A documented case had the *lower*-offline-scoring variant win on business results —
   so treat offline as a *filter*, not a green light; the live A/B on a real outcome metric is the real signal.
 - **Tooling is a pointer, not a dependency:** self-hosted Langfuse/Phoenix (OSS) for the inner loop, PostHog for
-  the product-outcome loop. See [`/measure`](../measure/SKILL.md) + `analytics-for-ai-products` for the
+  the product-outcome loop. See [`/health`](../health/SKILL.md) + `analytics-for-ai-products` for the
   post-ship metric vocabulary (task-completion, cost-per-successful-outcome) this feeds.
 
 ## Structured outputs (Liu discipline) — strongly recommended

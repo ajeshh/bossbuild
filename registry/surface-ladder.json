@@ -116,19 +116,6 @@
     "seam": null,
     "seamWhy": "A failure-state design costs the same written later. The recoverable-only-now half is the specific weird output you saw and closed the tab on — that seam belongs to `evals`, and duplicating it here would be a second ask for the same habit."
   },
-  "ai-first-init": {
-    "stepZeroMarker": "## Step 0 — does it already exist, and is this the right rung?",
-    "rung": "MVP",
-    "appliesWhen": "the project is AI-native",
-    "produces": {
-      "what": "the AI-first declaration",
-      "files": [
-        "docs/ai-first.md"
-      ]
-    },
-    "seam": null,
-    "seamWhy": "A conductor over capabilities that carry their own seams. It has none of its own, and giving it one would ask for the same thing twice."
-  },
   "design-tokens-init": {
     "stepZeroMarker": "## Step 0 — does it already exist, and is this the right rung?",
     "rung": "MVP",
@@ -200,10 +187,10 @@
     "seamNot": "A landing page, a waitlist product, a CRM, an email tool, a form service, copy.",
     "seamWhy": "You can rewrite a page any day. You cannot go back and ask the people who already showed up and left — and at this rung those are the only people who found you without being told to."
   },
-  "measure": {
+  "health": {
     "stepZeroMarker": "First, look for what's already there.",
     "rung": "V1",
-    "rungNote": "Genuinely post-first-users. Below ~10 users the honest answer is 'go talk to them', which /measure says itself.",
+    "rungNote": "Genuinely post-first-users for the reading half. Below ~10 users the honest answer is 'go talk to them', which /health says itself — but it plants the seam first, whatever n is.",
     "produces": {
       "what": "analytics instrumentation",
       "deps": [
@@ -348,7 +335,6 @@
     "revalidate": "a gate; the output is a routing decision",
     "red-team": "a check; findings are append-only",
     "cost-review": "a reader over the cost ledger; the review file is append-only",
-    "health": "a verdict, not an artifact",
     "judge-traces": "a reader over trace data",
     "drift-deep": "an audit; append-only",
     "roadmap": "explicitly a snapshot you use and discard, never a plan you tend",

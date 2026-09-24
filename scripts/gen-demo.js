@@ -146,7 +146,7 @@ const WRITES = {
   'docs/design/library': { verbs: ['/design-tokens-init'], line: 'the component manifest — what exists, so the second button is never invented' },
   'docs/product': { verbs: ['/spec'], line: 'JOURNEY.md — the flows as a founder would walk them, written at the first flow' },
   'docs/health': { verbs: ['/health'], line: 'HEALTH-<date> — a verdict, dated: pre-fit by default, the curve when there is one, the one next move' },
-  'docs/measure': { verbs: ['/measure'], line: 'MEASURE-<date> — the one activation metric, the one retention curve, at most ten events, the humane note' },
+  'docs/measure': { verbs: ['/health'], line: 'MEASURE-<date> — the one activation metric, the one retention curve, at most ten events, the humane note' },
   'docs/trust': { verbs: ['/trust'], line: 'TRUST.md — what you collect, who processes it, how someone reaches you about their data; one honest paragraph' },
   '.boss': { verbs: ['boss'], line: 'the stamp, the config, the conscience\'s read on the venture, the rendered pages — machine state, gitignored' },
   '.claude': { verbs: ['boss new', 'boss unlock'], line: 'agents, skills, hooks and rules for the host — laid down by mode, only what the venture has earned' },

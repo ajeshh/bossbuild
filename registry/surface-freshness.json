@@ -76,13 +76,6 @@
     {
       "kind": "skill",
       "stage": "L0-quickstart",
-      "rel": "stages/L0-quickstart/template/.claude/skills/boss-learn/SKILL.md",
-      "curve": "host",
-      "last_reviewed": "2026-09-08"
-    },
-    {
-      "kind": "skill",
-      "stage": "L0-quickstart",
       "rel": "stages/L0-quickstart/template/.claude/skills/boss-sync/SKILL.md",
       "curve": "host",
       "last_reviewed": "2026-08-17"
@@ -170,13 +163,6 @@
       "rel": "stages/L0-quickstart/template/.claude/skills/read-repo/SKILL.md",
       "curve": "host",
       "last_reviewed": "2026-09-12"
-    },
-    {
-      "kind": "skill",
-      "stage": "L0-quickstart",
-      "rel": "stages/L0-quickstart/template/.claude/skills/research/SKILL.md",
-      "curve": "craft",
-      "last_reviewed": "2026-07-02"
     },
     {
       "kind": "skill",
@@ -272,6 +258,13 @@
     {
       "kind": "hook",
       "stage": "L1-mvp",
+      "rel": "stages/L1-mvp/template/.claude/hooks/design-decisions-guard.js",
+      "curve": "host",
+      "last_reviewed": "2026-09-23"
+    },
+    {
+      "kind": "hook",
+      "stage": "L1-mvp",
       "rel": "stages/L1-mvp/template/.claude/hooks/design-tokens-guard.js",
       "curve": "host",
       "last_reviewed": "2026-08-17"
@@ -308,13 +301,6 @@
       "kind": "skill",
       "stage": "L1-mvp",
       "rel": "stages/L1-mvp/template/.claude/skills/ai-failure-states/SKILL.md",
-      "curve": "model",
-      "last_reviewed": "2026-08-17"
-    },
-    {
-      "kind": "skill",
-      "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/skills/ai-first-init/SKILL.md",
       "curve": "model",
       "last_reviewed": "2026-08-17"
     },
@@ -408,13 +394,6 @@
       "rel": "stages/L1-mvp/template/.claude/skills/log/SKILL.md",
       "curve": "craft",
       "last_reviewed": "2026-05-22"
-    },
-    {
-      "kind": "skill",
-      "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/skills/measure/SKILL.md",
-      "curve": "market",
-      "last_reviewed": "2026-08-17"
     },
     {
       "kind": "skill",

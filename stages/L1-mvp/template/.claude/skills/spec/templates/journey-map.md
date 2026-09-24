@@ -16,9 +16,9 @@ A journey is the tier above. It is the arc a person travels from *first hearing 
 *being the kind of person who uses it*, and its job is to make the **gaps between flows** visible —
 because that is where the product loses people and no single FEAT owns it.
 
-**The tell that you need this file:** four skills are already standing on different parts of this
-arc — `/landing` (they hear about it), `/onboard` (they reach value), `/measure` (do they come back),
-`/health` (where the curve dies) — and until this file exists **none of them shares a map.** Each one
+**The tell that you need this file:** three skills are already standing on different parts of this
+arc — `/landing` (they hear about it), `/onboard` (they reach value), `/health`
+(do they come back, and where the curve dies) — and until this file exists **none of them shares a map.** Each one
 optimizes its own segment, which is exactly how a product ends up with a good landing page, a good
 first run, and nobody in week three.
 

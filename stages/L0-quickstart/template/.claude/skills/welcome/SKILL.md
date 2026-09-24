@@ -172,8 +172,8 @@ Then **stop**. Don't elaborate. They'll ask if they want more.
 ### 3c. Domain-expert → middle path
 
 If cohort is `domain-expert`, do the full tour but **emphasize the high-stakes framing**
-inline: BOSS treats hallucination as a human-in-the-loop event for this cohort; the AI-first
-template (`/ai-first-init`, MVP-mode) defaults to privacy-first logging; the conscience errs
+inline: BOSS treats hallucination as a human-in-the-loop event for this cohort; the AI cost
+logger (`/ai-cost`, MVP-mode) defaults to privacy-first logging; the conscience errs
 on the side of speaking when stakes are real. Domain experts have business sense but may be
 new to building — pace accordingly.
 
