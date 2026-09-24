@@ -111,7 +111,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
 
    > *"You're using two type roles, not four. Everything raised uses a border — except the menu,
    > which uses a shadow. And what carries emphasis is space, consistently. Want those written down
-   > as `observed`?"*
+   > as what the product does today? You can still change any of them."*
 
    **Mark it `observed`, not `declared`.** An observed answer is a description the founder can still
    change their mind about; a declared one is a decision to defend. Graduating a row from observed to
@@ -203,13 +203,16 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    **Say which one you are doing.** "Recording an exception" and "this rule needs to change" are
    different acts and the table cannot tell them apart on its own.
 
-5. **Synthesize.** Output:
+5. **Synthesize.** Output, worst first — anything that would lock a user out or let the AI act
+   unsafely on them leads, in plain words, above the drift:
+   - **Accessibility issues** — blockers first (a user who can't complete the task at all), each
+     listed by WCAG / Nielsen heuristic violated
+   - **AI-UX issues** (where applicable) — unsafe AI behaviour first (an irreversible action without
+     a confirm, output shown as fact with no way to check or undo), then the rest, listed
    - **Token violations** — list each; propose the right token; flag if a new token is
      legitimately needed and which layer
    - **Missing states** — list each missing state; propose what each should be
    - **Brand drift** — flag any visual choices that contradict the canvas Promises voice
-   - **Accessibility issues** — listed by WCAG / Nielsen heuristic violated
-   - **AI-UX issues** (where applicable) — listed
    - **Content issues** — terminology violations (name the word and its replacement), off-voice
      strings (quote them, propose the rewrite), missing error-recovery or empty-state copy
    - **Pattern findings** — each one cited to its row in `PATTERNS.md`, plus any row this review

@@ -40,7 +40,8 @@ The same counts answer **whether the agents are the right shape** — the eviden
   Every handoff is lost context; a merge candidate.
 - **One agent, two worlds** — one agent's files split into trees that never mix (`web/` and `api/`).
   A path-scoped rule per tree first (rung 2); a second agent only for a reason the rule names.
-Name each with its count and the rung. The founder reshapes; this skill only reads. Too few lines to
+Name each with its count and the smallest fix, in plain words (retire it, merge the two, a rule per
+tree), never "rung N". The founder reshapes; this skill only reads. Too few lines to
 tell — under ~20 calls — is "not enough trace yet", never a verdict.
 
 **3. Help the founder do error analysis — binary, not scored.** Walk the traces and sort what you can

@@ -22,8 +22,8 @@ diagnostics dump.
 ## 1. Get the feedback
 
 - If the founder typed something after `/feedback`, that's it.
-- If not, ask **one** open question: *"What's on your mind — a bug, something confusing, a wish, or
-  something that got in your way? A sentence is plenty."*
+- If not, ask **one** open question, in words that fit: what's on their mind — a bug, something
+  confusing, a wish, something that got in the way. Don't recite it.
 - Don't interrogate. One round. Take what they give you.
 
 ## 2. Draft it — and show it before sending
@@ -33,8 +33,9 @@ Compose a short issue. Title = a tight one-liner. Body =
 - **Context** (the *only* thing attached, and you state it plainly): `BOSS <version> · <mode> mode ·
   <OS>`. Nothing else — no file contents, no paths, no transcript.
 
-Then **show the founder the full title + body** and ask: *"Send this to BOSS's repo as a public GitHub
-issue? It'll be visible at github.com/ajeshh/bossbuild. Yes / edit / keep it local."*
+Then **show the founder the full title + body** and ask whether to send it, in words that fit. The ask
+must always say it becomes a **public** GitHub issue, visible at github.com/ajeshh/bossbuild, and
+offer the three answers: yes, edit, or keep it local.
 
 - **Yes** → step 3.
 - **Edit** → take their changes, re-show, re-ask.

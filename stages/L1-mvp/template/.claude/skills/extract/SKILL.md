@@ -151,7 +151,7 @@ honestly; nothing was extractable yet."* That's the principle working.
 | `eng-builder` | Terse. They'll spot extractables fast; the question is whether they'll *do* the work. The skill's job is to anchor the decision in the EXTR file, not to teach. |
 | `vibe-virtuoso` | They have a backlog of extractable patterns from past projects. The skill's leverage here is *"which of THESE three from THIS project is the load-bearing one?"* — not the full inventory. |
 | `indie-hacker` | Calm-company framing. UP is investment in the system; DOWN is investment in this product. NOT-YET is the most-used route — patience is the discipline. |
-| `returning-founder` | Skip the routing-question table; they know it. Ask: *"Three sessions in. What did you do twice? What did you almost do a third time?"* They'll name the candidates without prompting. |
+| `returning-founder` | Skip the routing-question table; they know it. Ask, in words that fit, what they've done twice and nearly did a third time. They'll name the candidates without prompting. |
 | `domain-expert` | High-stakes: extractions involving regulated logic (PHI handling, financial calculations, legal templates) lean NOT-YET-with-caveats *"this is too domain-specific to generalize; document the project-internal abstraction; do NOT lift to library/."* The default is conservative. |
 
 ## Connection to other loops + skills

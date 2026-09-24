@@ -72,46 +72,41 @@ creation.
 
 ## How to run it — cohort-aware delivery
 
-Read `.boss/config.json` for the `cohort` field. Adjust the delivery accordingly:
+Read `.boss/config.json` for the `cohort` field. What each cohort needs to hear is below; say it in
+words that fit this project, not as a script.
 
 ### `vibe-coder-newbie` / `first-product` — SHOW
 
 Generate the tokens file + a worked example. Don't just create — refactor one existing component
-to use the new tokens so the founder *sees* the pattern. Plain language:
-
-> *"I'm setting up a tokens file. Colors, spacing, typography in one place. I'll also refactor
-> your `<existing-button>` to use the tokens — so you can see what the pattern looks like.
-> From now on, when you ask me for new UI, I'll reference these tokens. New colors only get
-> added here; never inline. Sound good?"*
+to use the new tokens so the founder *sees* the pattern. In plain language, they need: colors,
+spacing and type now live in one file; which component you refactored so they can look at it; and
+that from now on new UI references these tokens, and a new color gets added there, never inline.
 
 ### `eng-builder` / `returning-founder` — OFFER + SKIP THE 101
 
-> *"Setting up three-layer tokens: primitives → semantic → component. Standard architecture.
-> Want me to scaffold the Style Dictionary config too, or are you using your own pipeline?"*
+Name the architecture in a line (three layers: primitives → semantic → component) and ask the one
+real question: scaffold a Style Dictionary config, or do they have their own pipeline?
 
 ### `vibe-virtuoso` — OVERRIDE-FRIENDLY
 
-> *"Tokens system, three layers. The override pattern's there if you want to skip — record
-> rationale in the devlog. Most likely failure mode you'll hit if you skip: 47 blues by sprint
-> 3. Your call."*
+Terse. The override is there if they want to skip it (rationale goes in the devlog), and the failure
+they'd most likely hit by skipping is 47 blues within a few sprints. The choice stays theirs.
 
 ### `non-tech-founder` / `domain-expert` — PLAIN-LANGUAGE COACH
 
-> *"Quick setup before the UI accumulates. The problem this prevents: as you build more
-> screens, each one will use slightly different colors and spacing unless we put them in one
-> file the AI reads every time. I'll do that now — takes a minute. Domain-specific note: if
-> your colors carry meaning (e.g., medical severity, regulated states), name them by meaning
-> in the tokens, not by hue."*
+Say the problem this prevents in plain words: as screens pile up, each drifts to slightly different
+colors and spacing unless they live in one file the AI reads every time — and it takes a minute.
+For `domain-expert`: if colors carry meaning (medical severity, regulated states), name them by
+meaning in the tokens, not by hue.
 
 ### `indie-hacker` — RIGHT-SIZED
 
-> *"Minimal tokens setup. Stack-portable — won't lock you into a tooling choice. I'll skip the
-> heavy Style Dictionary / Theo machinery; we can add it later if the system earns it."*
+Minimal and stack-portable, no tooling lock-in; skip the heavy Style Dictionary / Theo machinery
+until the system earns it.
 
 ### Unspecified — neutral plain language
 
-> *"Setting up a tokens file so style stays one source of truth. Reduces the chance the
-> codebase grows 47 shades of blue. Takes about a minute."*
+One source of truth for style, so the codebase doesn't grow 47 shades of blue. About a minute.
 
 ## The minimum three-layer token system (Nathan Curtis layer-cake)
 
@@ -247,10 +242,10 @@ gradually drift off it.
 **Offer `/decide` once, with the five choices as one record.** Not five records: they were made
 together, for one reason, and splitting them would be the ceremony PRINCIPLE #2 refuses.
 
-> *"That's your brand anchor — the neutral, the radius, the type pairing, the accent, the signature.
-> Want me to record it as a decision (`/decide`)? It takes the reasoning and a falsifier, so the next
-> session knows these were chosen rather than defaulted. Two minutes, and it's the difference between
-> a design system and a set of values nobody will defend."*
+What they need to hear, in words that fit: these five (the neutral, the radius, the type pairing,
+the accent, the signature) are their brand anchor, and recording them keeps the reasoning and a
+falsifier so the next session knows they were chosen rather than defaulted. It is one item in the
+end-of-run list (Rules, *Offers due at the end go out as one list*), not an ask of its own.
 
 Set `reversibility: costly` — a retheme touches every use site — and write a falsifier that is
 actually cheap to check, e.g. *"if three people describe the product as generic-looking by <date>,
@@ -444,13 +439,16 @@ the other field worth filling — it is what an editor shows on hover, and the a
   prose**, because prose is obviously incomplete while a mockup is a confident, complete-looking
   answer the implementation will reproduce faithfully — raw hexes and all. Don't create the registry
   for a single sketch; that's ceremony. Create it when prototypes start accumulating.
+- **Offers due at the end go out as one list.** The anchor record, the token guard, and any later
+  guard whose condition already holds (below) land at the same moment — ask them as one numbered
+  list the founder can answer by number ("1 and 3"), never as a run of separate yes/no turns. Each
+  item keeps its own rule: offered once, only when its condition holds, dropped after a no.
 - **Offer the guard once, here, at the end.** The moment the tokens file exists is the moment a
-  check has something to point at — so this is the JIT on-switch, not a V1 afterthought:
-
-  > *"Tokens are in. Want me to turn on `design-tokens-guard`? It's a hook that catches a hardcoded
-  > style value the moment it's written — color, radius, type, spacing, elevation — and hands Claude
-  > your token names instead. It stays silent unless this tokens file exists, and it only has an
-  > opinion about a family you actually defined tokens for. Costs a process per file write."*
+  check has something to point at — so this is the JIT on-switch, not a V1 afterthought. What the
+  founder needs to know: `design-tokens-guard` is a hook that catches a hardcoded style value (color,
+  radius, type, spacing, elevation) as it's written and hands Claude their token names instead; it is
+  silent unless this tokens file exists, has an opinion only about a family they defined tokens for,
+  and costs a process per file write.
 
   If yes, run `boss hooks enable design-tokens-guard`: it copies the hook into the project and
   registers it in `.claude/settings.json` in one move. If no, **drop it and don't re-ask** — the tokens file alone is a real
@@ -459,8 +457,9 @@ the other field worth filling — it is what an editor shows on hover, and the a
 - **Offer the other three guards later, each once, when its condition first holds** — never before,
   never re-asked after a no: `component-reuse-guard` when `COMPONENTS.md` has real rows,
   `ui-boundary-guard` the day a `features/` directory appears beside `ui/` or `components/`,
-  `content-terminology-guard` when the terminology table has a real row. What to say for each, and
-  why each earns a hook: [`reference/guards.md`](reference/guards.md).
+  `content-terminology-guard` when the terminology table has a real row. When one comes due at the
+  same moment as another offer, it joins that one list. What each needs to say, and why each earns a
+  hook: [`reference/guards.md`](reference/guards.md).
 - **JIT — only scaffold when needed.** Don't init tokens before there's UI to use them. The
   loop's entry predicate is the trigger; don't pre-empt it.
 - **Override is recorded, not blocked.** A founder skipping this skill is legitimate; record

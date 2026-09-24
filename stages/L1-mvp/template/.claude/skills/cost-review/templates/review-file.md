@@ -15,6 +15,10 @@ window: <last 7 days | since-last-review | custom>
 
 # AI cost review — {{PROJECT_NAME}} — YYYY-MM-DD
 
+## Security (only if there is one — delete this heading otherwise)
+<!-- A likely prompt injection, or personal data where the ledger should hold only metadata. Plain
+words, whose data or what request, and the smallest fix. It leads because it is not a cost question. -->
+
 ## Headline
 _One sentence the founder reads in the inbox / Slack scroll. If only this line is read, the
 review should still land. Examples: "On-budget; one outlier user worth investigating."

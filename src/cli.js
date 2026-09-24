@@ -461,15 +461,16 @@ function cmdUnlock(args) {
   // cumulative install, which is what `boss map` is for.
   // Held-back skills are not "available" — they are on disk when earned, and the lines above said so.
   const landed = (m.skills || []).filter((sk) => !held.includes(sk));
+  // Said the way a founder uses it (IDEA-123): the loop they'll run, not a receipt of every agent and
+  // skill name. Loops are the conscience's machinery, so they're not counted to the founder at all.
   const arrived = [
     [(m.agents || []).length, 'agent'],
     [landed.length, 'skill'],
-    [(m.loops || []).length, 'loop'],
   ].filter(([n]) => n > 0).map(([n, w]) => `${n} ${w}${n === 1 ? '' : 's'}`);
   if (arrived.length) {
     console.log(`\n  ${bold('This unlock adds')} ${dim(`(${arrived.join(' · ')})`)}`);
-    if ((m.agents || []).length) console.log(`    agents: ${skillsLine(m.agents)}`);
-    if (landed.length) console.log(`    skills: ${skillsLine(landed)}`);
+    const loop = (m.coreLoop || []).map((st) => (Array.isArray(st) ? st : [st]).map((k) => `/${k}`).join(' or '));
+    if (loop.length) console.log(`    the loop you'll run: ${loop.join(' → ')}`);
   }
 
   const note = ROLE_SHIFT[target];

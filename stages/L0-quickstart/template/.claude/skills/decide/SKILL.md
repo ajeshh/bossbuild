@@ -110,8 +110,8 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
      · why-not). These are the calls worth the extra minutes.
 
 6. **If `decided_by` is `ai-suggested-ratified` or `ai-autonomous` AND it's `costly`/`one-way`, ask one
-   skeptical question — then stop.** *"This came from the model — what's the one thing you'd check before
-   you can't undo it?"* Disposition (a moment of skepticism) catches more than any process; install it at
+   skeptical question — then stop.** The intent, in words that fit this decision: it came from the
+   model, so what's the one thing they'd check before it can't be undone? Disposition (a moment of skepticism) catches more than any process; install it at
    the single moment it matters. **It's a prompt, never a gate** — forcing verification backfires (it raises
    the odds people rubber-stamp). Record their answer in the Falsifier; if they wave it off, that's their
    call — note it and move on.
@@ -119,8 +119,9 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
 7. **If the decision changes what an agent must know, update that agent in the same turn.** A stack,
    a test framework, a design system or a deploy host is exactly this: write its conventions and
    commands into the agent that does that work (`.claude/agents/coder.md` for a stack, `tester.md` for
-   a test tool, `designer.md` for a design system), under a line that cites the `DEC-NNN`. Show the
-   founder the diff in one line. A decision the agents never hear about is re-made by them every
+   a test tool, `designer.md` for a design system), under a line that cites the `DEC-NNN`. Since this
+   edits their file, tell them in plain words which agent now knows it (*"the coder now works in your
+   stack"*), so they can revert it. A decision the agents never hear about is re-made by them every
    session. If the decision *reshapes* agents — a split, a merge, one retired — follow
    `.claude/rules/agent-shape.md`.
 

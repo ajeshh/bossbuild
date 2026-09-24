@@ -50,18 +50,23 @@ The discipline: `boss craft seed-to-scale`.
 
 ## 3. Review the changed files (the judgment)
 
+**First, before anything is offered: can they undo it?** Many projects gitignore `.claude/` — run
+`git check-ignore .claude`. If it is ignored, a sync leaves no history to revert from, so that leads
+what you say, in plain words, above everything else: `.boss/backups/` is then the only way back.
+
 Before applying, for each **changed** file:
 - Read the project's current copy and the incoming version. Summarize what actually changes.
-- **Flag conflicts:** if the project edited a BOSS-managed file locally, a sync overwrites it. Call this
-  out by name and ask before clobbering. (v1 syncs BOSS-managed skills/agents only — see scope below.)
+- **Flag conflicts:** if the project edited a BOSS-managed file locally, a sync overwrites it. Call each
+  out by name; the ask before clobbering goes in the one numbered list at the end of step 4, not a
+  question per file. (v1 syncs BOSS-managed skills/agents only — see scope below.)
 - Tie changes back to the CHANGELOG entries so the user understands *why*, not just *what*.
 
 ## 4. Retired — the part that needs a real conversation
 
 `boss sync` lists anything under **"No longer shipped by BOSS — still in your project"**: things BOSS
 installed here and has since retired. Each carries what replaced it and why, from the supersede
-ledger. **This is not a file list; it's the one place BOSS changes how the founder works.** Walk it
-in this order, per item:
+ledger. **This is not a file list; it's the one place BOSS changes how the founder works.** Do 1 and
+2 for every item, then ask once (3):
 
 1. **Say what changed and why** — in their terms, from the ledger's `why` + `migrate`, not
    "deprecated." If BOSS has *no* record (the CLI says so), say that plainly rather than inventing a
@@ -69,8 +74,9 @@ in this order, per item:
 2. **Say what it means for their project specifically.** Did they use it? Check — grep their `docs/`
    for artifacts it produced, look for it in `devlog`/`RESUME`. *"You ran this twice in June; those
    notes stay where they are"* is worth ten lines of general explanation.
-3. **Then ask. It is their call, and a "no" is a complete answer.** Keeping a retired skill is
-   legitimate — it still works, it's just no longer maintained. Record a "no" with `/decide` so it
+3. **Then ask — once, as one numbered list** covering every retired item and every conflicting file
+   from step 3, so they can answer by number. It is their call, and a "no" is a complete answer. Keeping
+   a retired skill is legitimate — it still works, it's just no longer maintained. Record a "no" with `/decide` so it
    isn't re-litigated next sync.
 4. **If yes — you do the migration, not just the delete.** `boss sync --apply --remove` removes the
    files; that is the *smallest* part. The work is moving them across: point their habits at the
@@ -90,10 +96,9 @@ and tell them to check `git log` on that path first.
   **It removes nothing**, by design.
 - `boss sync --apply --remove` — the same, plus removes the retired files they agreed to drop.
   Only after step 4.
-- **Check `git diff` actually shows the writes before you promise it will.** Many projects gitignore
-  `.claude/` — run `git check-ignore .claude` first. If it is ignored, the diff is EMPTY and there is
-  no history to revert from, so say that plainly and point at `.boss/backups/` instead, which is then
-  the only way back.
+- **Check `git diff` actually shows the writes before you promise it will.** If `.claude/` is ignored
+  (the check at the top of step 3), the diff is EMPTY and there is no history to revert from; point at
+  `.boss/backups/` instead, which is then the only way back.
 - Then show `git diff` and let the user review and commit. The project is the source of truth for its
   own history; BOSS just proposes the update.
 

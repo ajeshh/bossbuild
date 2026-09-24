@@ -53,8 +53,9 @@ pushes.
 Read what the project actually recorded — don't make the founder reconstruct it from memory:
 `docs/ideas/CANVAS.md` (the bet), `docs/ideas/` (what was captured), `docs/devlog.md` (what
 happened), and `docs/evidence/` if it exists (the graded EVID ledger — the real signal). Then ask at
-most **three questions**, Mom-Test discipline on their own narrative (separate what they *observed*
-from what they still just *believe*):
+most **three questions**, in **one message, numbered** so they can answer by number, in words that fit
+this project — Mom-Test discipline on their own narrative (separate what they *observed* from what
+they still just *believe*):
 
 1. **What was the bet?** The riskiest assumption this project was really testing.
 2. **What evidence actually came in?** Observed, not hoped. If the EVID ledger is thin, say so — a
@@ -176,14 +177,15 @@ first is a sunset.
 
 - **Decided against** → continue below.
 - **Never got to it** → that isn't a decision, and `dropped` would be a lie about your own backlog.
-  Leave it: *"this is still `seedling` — nothing has been decided, and that's a fine place for it to
-  sit."* **Do not talk someone into closing an idea to tidy the list.** A tidy backlog is not the
+  Leave it: *"this is still just an idea you wrote down — nothing has been decided, and that's a fine
+  place for it to sit."* **Do not talk someone into closing an idea to tidy the list.** A tidy backlog is not the
   goal; an honest one is.
 
 ## Three questions, then stop
 
 Same frame as the other two scopes — *an experiment that returned an answer* — except here the
-experiment was thinking, not building.
+experiment was thinking, not building. Once they've said *decided against*, ask all three in **one
+message, numbered**, in words that fit this idea, so they can answer by number.
 
 1. **What was the bet?** What did you believe was true when you captured it?
 2. **What did you learn deciding against it?** Often the sharpest of the three. An idea dropped for a

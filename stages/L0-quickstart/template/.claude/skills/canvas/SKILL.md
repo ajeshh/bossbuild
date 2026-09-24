@@ -172,12 +172,13 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    **Business Model** to open (`revenue` → the earning branch; anything else → the *not every
    project is trying to earn* branch, and don't offer both), and what sits in **Metrics** beside
    "for people and planet" — their own sentence for *it worked*, quoted, not paraphrased. **If both
-   are `unset` / empty, ask them here as one of your first cells** — *"before the grid: why this
-   one, for you, and what would 'it worked' look like in three months?"* — write the answers back to
+   are `unset` / empty, ask them here as one of your first cells** — the intent is why this one, for
+   them, and what "it worked" would look like in a few months, in words that fit this idea (never
+   `/boss`'s wording recited; any field already filled is not asked again) — write the answers back to
    the IDEA doc's two fields (mapping the why to `learning` · `revenue` · `community` · `credibility`
-   · `own-problem`, shown before saving), and only then open Business Model. If
-   `in_a_few_years:` is still empty, add its one line to the same question — *"and if it works,
-   what's here in a few years?"* — verbatim into the field. *Skip* is an answer;
+   · `own-problem`, shown before saving in their words, not the slug), and only then open Business
+   Model. If `in_a_few_years:` is still empty, fold into the same question what would be here in a few
+   years if it works, verbatim into the field. *Skip* is an answer;
    leave them empty and open the earning branch with the not-earning note in view.
    **On an adopted repo, also read `.boss/brain/read.md`** — `/read-repo` put its read of the
    existing codebase there, and several cells (People, Problem, Story, Business Model) often have a

@@ -81,8 +81,10 @@ Answer **in the persona's voice**, and run in whichever direction fits:
   do · where she'd bounce · what she'd want different), so you can compare versions over time.
 
 Every consult: **balance interest with concerns** (don't just cheerlead), **name what the persona
-can't know** (the blind spots from the ledger), and **close with the caveat** — *"that's a synthetic
-read at <real%> real evidence; go ask <N> real ones before you bet on it."*
+can't know** (the blind spots from the ledger), and **say it's a proxy when it matters** — when the
+read is mostly synthetic and they're about to lean on it (a build, a price, a bet), name the real-evidence
+share and the real people worth asking first, in words that fit. Not a fixed line on every consult;
+once said this session and nothing's changed, don't repeat it.
 
 ## The discipline (why this is honest and not snake oil)
 

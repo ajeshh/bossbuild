@@ -58,7 +58,8 @@ the most design.
 
 ### 2. Walk the founder through each failure state
 
-For each of the five, ask **two questions**:
+For each of the five, **draft** two answers from what the code, the FEAT specs and the UI already
+show, then send the founder the drafts plus **one numbered list** of only what you couldn't infer:
 - **What does it look like in this project?** (Concrete, not abstract — "the user asked for
   a recipe and got a wall of unrelated text" beats "garbage output.")
 - **What does the UI do?** (Concrete — "show the structured-error card with a retry button"

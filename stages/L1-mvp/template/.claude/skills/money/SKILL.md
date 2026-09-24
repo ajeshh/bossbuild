@@ -72,7 +72,8 @@ saying so is the point.
 ## A2 — record the two load-bearing calls
 
 Price and refund posture are exactly the decisions future-you will have forgotten the reasoning for.
-Offer to record each as a **`/decide` DEC** (what, why, how reversible). Cheap, and it stops the
+Offer once, for both, to write them down as decision records (**`/decide`**: what, why, how
+reversible); call them "decision records" to the founder, not "DEC". Cheap, and it stops the
 "wait — what did we decide to charge?" drift.
 
 ## A3 — capture the commitment-grade EVID (the whole point)

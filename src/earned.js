@@ -154,7 +154,7 @@ export function markLaidDown(stamp, groups) {
 
 // One line for `boss unlock`: what is held back and what earns it.
 export function describeUntil(until) {
-  return until === 'shipped' ? 'after the first FEAT ships'
+  return until === 'shipped' ? 'after your first feature ships'
     : until === 'llm-in-source' ? 'when the app first calls a model'
       : until === 'ui-in-source' ? 'when the app gets its first styled screen'
         : 'when earned';

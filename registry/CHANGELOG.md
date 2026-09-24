@@ -365,6 +365,18 @@ rule above still applies to the whole section once it is stamped.
   - `/welcome`: its two questions are one message.
   - `/red-team`: a live fail leads the chat and holds the next ship.
 
+- **The rest of BOSS's skills ask once and lead with what hurts (IDEA-123 step 3, complete).**
+  Twenty more skills and one agent follow the same rules: questions due together go in one numbered
+  list, no receipts, BOSS's internal words kept off the founder, and anything that can hurt someone
+  not in the room said first.
+  - `/consult` puts the humane override first.
+  - `/design-review` puts accessibility blockers and unsafe AI behaviour above style drift.
+  - `/trust` and `/cost-review` lead with a live data leak or a likely prompt injection.
+  - `/boss-sync` leads with the one change you couldn't undo.
+  - `/feedback` always says the issue will be public.
+  - `boss unlock` now shows the loop you'll run (`/spec → /smoke → /log → /close`) instead of
+    every agent and skill name.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched

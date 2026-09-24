@@ -72,6 +72,12 @@ Rules of the round, and they are the whole point:
 - **If nobody split, this step does not run**, and you say nothing about it having not run.
 
 **4. Synthesize — keep the disagreement visible.** Compose the panel's answer:
+- **The humane override — you run it, every panel, before you synthesize.** No mentor holds this
+  lens, so ask it yourself: *who could this harm, who gets excluded, what does it cost them in
+  attention, agency or dignity?* Ground it in the canvas's **Risks & Harms** cell and
+  `boss craft harm-taxonomy`. If a real harm surfaces, **that lens wins regardless of the viability
+  case** — it is the first thing the founder reads, in plain words, above the convergence and the
+  split; say which mentor it overrules (Principle #6, *humane before viable*).
 - **Where they converge** — the points all (or most) lenses agree on. Usually the safe ground.
 - **Where they diverge** — name it plainly: *"`mentor-customers` says the channel only works if you
   can spend to acquire; `mentor-capital` says the margin doesn't survive paid acquisition yet."* The
@@ -86,11 +92,6 @@ Rules of the round, and they are the whole point:
   the margin question is second; `mentor-customers` held."* A hold is a result too — say it as
   plainly as a move. This is the sentence a static panel can never give: not just *where* seasoned
   advisors split, but whether the split survives contact.
-- **The humane override — you run it, every panel, before you synthesize.** No mentor holds this
-  lens, so ask it yourself: *who could this harm, who gets excluded, what does it cost them in
-  attention, agency or dignity?* Ground it in the canvas's **Risks & Harms** cell and
-  `boss craft harm-taxonomy`. If a real harm surfaces, **that lens wins regardless of the viability
-  case** — say so plainly, and say which mentor it overrules (Principle #6, *humane before viable*).
 - **The riskiest assumption** — tie the decision back to the canvas's named bet where relevant.
 
 **5. Hand the decision back.** End with the call that's *yours* to make, framed: *"the board's split is

@@ -25,28 +25,33 @@ By default (`/board` with no flags):
   evals: 12 / 14 cases passing across 3 FEATs  (2 failing in FEAT-007)
 
   In flight (3):
-    ⊙ FEAT-005  user-onboarding-flow      acceptance: 3/5  smoke: ✓  evals: n/a
-    ⊙ FEAT-007  AI-summarization-prompt   acceptance: 1/4  smoke: ✓  evals: 4/6 ⚠
-    ⊙ FEAT-008  schema-migration-v2       acceptance: 0/3  smoke: ✗  blocked: schema review
+    ⊙ FEAT-005  new users get set up in one sitting     acceptance: 3/5  smoke: ✓  evals: n/a
+    ⊙ FEAT-007  the AI summary of a long thread         acceptance: 1/4  smoke: ✓  evals: 4/6 ⚠
+    ⊙ FEAT-008  moving the data to the new layout       acceptance: 0/3  smoke: ✗  blocked: schema review
 
   Next-up (2, ordered):
-    ◯ FEAT-009  empty-state-illustrations  deps: FEAT-005 done
-    ◯ FEAT-010  hover-state-microinteractions  deps: design-tokens-loop closed
+    ◯ FEAT-009  pictures for the empty screens     waits on: new-user setup (FEAT-005) done
+    ◯ FEAT-010  small hover touches                waits on: the shared colours and spacing being set up
 
   Blocked (1):
-    ▣ FEAT-006  team-permissions           blocked: needs mentor-capital call (pricing tier shape)
+    ▣ FEAT-006  who on a team can see what         blocked: needs your pricing-tier decision (the business-model mentor can help)
 
   Deferred (1):
-    ⌀ FEAT-011  ai-suggest-completion      override: skipped — rationale: re-open after FEAT-007 evals stabilize
+    ⌀ FEAT-011  AI suggests how to finish a line   skipped by you — reopen when the AI summary (FEAT-007) passes its checks
 
   Recently shipped (3, last 14 days):
     ✓ FEAT-002 ✓ FEAT-003 ✓ FEAT-004
 ```
 
+Each FEAT shows its `gist:` (the one line from its frontmatter; fall back to the title) beside the id,
+never the id or slug alone. Blockers and dependencies are said in plain words: what has to happen, not
+the loop or agent name (`design-tokens-loop closed` → "the shared colours and spacing being set up";
+`mentor-capital call` → "your pricing decision").
+
 ## How to run it
 
 1. **Walk `docs/ideas/FEAT-*.md`** to enumerate every FEAT. Read each one's frontmatter
-   (`status`), acceptance-criteria checklist progress, smoke field, evals field.
+   (`status`, `gist`), acceptance-criteria checklist progress, smoke field, evals field.
 2. **Walk `docs/devlog.md`** for override entries naming FEATs. Filter recent ones.
 3. **Walk `.boss/loops/*.md` state** (use the same logic `boss status --conscience` uses) to
    identify loops that gate any FEATs (e.g., a FEAT depends on `design-tokens-loop` being
@@ -74,7 +79,7 @@ By default (`/board` with no flags):
 The board is `planner`'s view; the conscience's loops are independent. But they
 intersect at the boundaries:
 - A FEAT in *Next-up* whose `spec-loop`'s entry isn't satisfied (canvas-loop not closed) is
-  arguably premature; flag with `⚠` and a one-liner.
+  arguably premature; flag with `⚠` and a plain one-liner (e.g. "the canvas isn't done yet").
 - A FEAT in *Blocked* on `design-tokens-loop` is signal that `/design-tokens-init` should run.
 - Multiple FEATs *Deferred* with overrides pointing at the same upstream concern is signal
   for `product-lead` or `mentor-founder` — there's a real bottleneck, not just incidental skips.

@@ -46,8 +46,8 @@
      confident-looking answer nobody consults. *"Pick the words for your two or three main things and
      stay consistent. That's the whole job today."*
    - **`eng-builder` / `returning-founder`** — offer the full set tersely; they've argued about a
-     terminology table before. *"Terminology, voice traits, tone-by-context. Want all three or just
-     the terms?"*
+     terminology table before: name the three (terminology, voice traits, tone by context) and ask
+     whether they want all three or just the terms.
    - **`vibe-virtuoso`** — lead with the mechanism: the terminology guard is checkable, voice/tone
      are not, and here's why that asymmetry is real rather than a missing feature.
    - **`domain-expert` — TONE FIRST, not terminology.** In a regulated or high-stakes domain the

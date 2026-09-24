@@ -19,6 +19,10 @@ Check `app/page.tsx`, `src/app/page.tsx`, `pages/index.tsx`, `app/routes/_index.
 landing page very often lives *outside* the repo: Framer, Carrd, Webflow, a Notion page, a GitHub
 Pages branch. A page you cannot see is still a page they have.
 
+**Ask once, before anything is generated.** This question, the product-or-demand choice (Step 1) and
+any gap in the brief you'd fill first (Step 0b) go out as **one numbered message**, and only the ones
+the repo, the flag and BOSS's records don't already answer. Often that is one item, or none.
+
 Four honest answers, and only one of them is "generate":
 
 - **Nothing there** → continue to Step 0b. The normal path.
@@ -43,7 +47,7 @@ people who found you without being told to.
 ## Step 0b — read the brief (refuse to generate from blank)
 
 The whole anti-slop mechanism is that the page is born from the brand, not from "make me a landing page." Read,
-and if missing, say so and offer to fill the gap first:
+and if missing, say so and offer to fill the gap first (the offer rides in the one message from Step 0a):
 - **`docs/BRAND.md`** (the shared brand doc) → voice, positioning, story = the **copy** brief.
   **If `docs/BRAND.md` doesn't exist, seed it — don't just report the gap.** Telling a founder a
   brand doc is missing and handing them no way to make one is how that file stayed unwritten while
@@ -71,7 +75,8 @@ never invent a brand the founder didn't choose.
 
 ## Step 1 — product page or demand page?
 
-Ask once (or read the flag). This decides the whole shape:
+Read the flag, or infer it (does the thing run yet?); ask only if neither settles it, in the Step 0a
+message. This decides the whole shape:
 - **Product page** (`--product`): the thing works → CTA to the real product, hero **shows it working**
   (screenshot/GIF).
 - **Demand / waitlist page** (`--demand`): not built yet → CTA to email capture, hero = the promise. **This is

@@ -290,6 +290,27 @@ on the runs). Still open: evidence, canvas, sunset, consult, design-tokens-init 
 (peer lane), then trust, cost-review, board, import, persona, decide, evals, landing, extract,
 ai-failure-states and boss-sync.
 
+**The rest, 2026-09-23 (all 20 remaining audit files + the CLI):**
+- **L0:** evidence (three offers → one list at step 6; "BOSS's read on how it's going") · canvas
+  (the why-questions as intent, never /boss's wording recited) · sunset (asks in one numbered
+  message; "just an idea you wrote down", not `seedling`) · decide (a plain note on which agent now
+  knows it; step 7's behaviour kept) · import (no receipt) · persona (the proxy caveat when it
+  matters, not on every consult) · boss-sync (the gitignored-`.claude/` loss check leads; all asks in
+  one list) · feedback (the public-issue warning now *required* in the ask, not only in a quoted line).
+- **L1:** consult (the humane override leads the synthesis) · design-tokens-init + reference/
+  (cohort speeches → intent; end-of-run offers → one list) · design-review (worst first:
+  accessibility and unsafe AI before drift) · trust (a live data leak leads) · cost-review (a security
+  finding leads, plus a Security slot in its report template) · evals (a harmful fail leads; the
+  per-case lines stay out of the message) · landing (three asks → one) · extract, ai-failure-states
+  (draft, then ask only what can't be inferred), judge-traces, money.
+- **L2 board:** a gist beside every id, and blockers in plain words. **mentor-cofounder:** no recited line.
+- **CLI:** `boss unlock` shows the loop you'll run instead of every agent and skill name, drops the
+  internal loops count, and says "after your first feature ships" rather than "FEAT". `boss status`
+  and `boss new` were already proportionate.
+Edits made by three editor subagents under shared rules (scratchpad `voice-rules.md`); every diff
+read before commit; the safety-bearing ones (feedback's public warning, boss-sync's unrecoverable
+loss) checked line by line. Not individually re-measured.
+
 **Outside the four patterns:** `/incident` has no step to tell users when their data was exposed or
 lost, and project-level `/sunset` has the same gap. That's a humane gap, not a voice one; it needs its
 own record.

@@ -138,8 +138,7 @@ save on the founder's OK. One call can yield several — don't force one.
    the back half.
 2. **Extract graded evidence at scale** — each real signal a record as above. Batch, show, save on OK.
 3. **Synthesize the product context — what it all means.** Above the individual signals, a short plain
-   summary (offer to write it into the canvas, seed the venture brain's `read.md` so the conscience
-   carries it forward, and fold it into the persona):
+   summary (where it can go is offered once, in step 6):
    - **The pain, in their words** — quote *verbatim*. The exact phrasing is the copy you'll write later
      and the language your user actually uses; don't paraphrase it into marketing-speak.
    - **The job they're hiring for** — what were they actually trying to get done?
@@ -154,9 +153,15 @@ save on the founder's OK. One call can yield several — don't force one.
 5. **Point at the next test.** If a pain looks real but under-proven (all stated-pain, no commitment),
    name the one cheapest test that would raise the grade — often a follow-up commitment ask, sometimes
    `/prototype` to watch them use it. Hand the decision back.
-6. **Offer the persona fold** as in a debrief. A transcript is the **strongest enrichment source that
-   exists** — real research outweighs your own knowledge, which outweighs online averages. No persona
-   yet, but the transcript clearly describes one kind of person? Offer `/persona derive` instead.
+6. **Offer where the synthesis can go — one numbered list, answered by number.** Write nothing until
+   they pick. Only the items that apply:
+   1. write it into the canvas;
+   2. add it to BOSS's read on how it's going (`.boss/brain/read.md`), so the conscience carries it
+      forward;
+   3. fold it into the persona (`/persona enrich <slug>`), as in a debrief. A transcript is the
+      **strongest enrichment source that exists** — real research outweighs your own knowledge, which
+      outweighs online averages. No persona yet, but the transcript clearly describes one kind of
+      person? Offer `/persona derive` instead.
 
 ## Guardrails
 

@@ -77,7 +77,8 @@ For each declared budget line in `docs/ai-cost-budget.md`, name the actual:
 
 The whole point of the review is to find things you'd otherwise miss. Look for:
 - **Cost outliers** — calls > 10x the median. Probable causes: prompt injection eating
-  context, runaway output, a workflow that's looping when it shouldn't.
+  context, runaway output, a workflow that's looping when it shouldn't. If injection is the likely
+  cause, it is a security finding, not a surprise — it leads the review (Rules).
 - **User outliers** — single users spending > 10x the cohort median. Either a power user
   (interesting; flag for product) or a misbehaving client (interesting; flag for fix).
 - **FEAT skew** — one FEAT eating > 80% of spend that wasn't designed to. Often a sign
@@ -148,8 +149,10 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
 
 ## Rules
 
-- **Numbers before narrative.** Lead with the top-line spend, then the percentile, then the
-  variance. The founder's eye goes to numbers; structure for that.
+- **A security finding leads, then numbers before narrative.** A likely prompt injection (or PII
+  where the ledger should hold only metadata) goes first, in plain words, with the smallest fix.
+  Then the top-line spend, the percentile, the variance. The founder's eye goes to numbers;
+  structure for that.
 - **Surprises are the point.** A review with no surprises section is a stamp; a review with
   named surprises is a tool. Empty *"no surprises"* is honest when it's true; never fabricate.
 - **Actions are dated.** *"Improve cost"* is not an action. *"A/B the cheap tier on FEAT-007 by

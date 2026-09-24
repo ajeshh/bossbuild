@@ -51,8 +51,10 @@ under attack is `/red-team`; shipping an AI feature needs **both**, not either a
    - A runner script (Node, ~150 lines like BOSS's own `docs/architecture/conscience-evals/
      runner.js`) — preferred, machine-runnable, becomes a CI gate
    - Or manually walk each case, recording pass/fail and what failed
-4. **Report.** One line per case: `✓ <id>  <scenario>` or `✗ <id>  → <reason>`. Summary table by
-   failure category — the categorized failure count IS the design signal for next iteration.
+4. **Report.** Lead with any failure that could hurt a user (a wrong medical, legal or money answer,
+   another user's data), in plain words. Then the count (`N of M pass`) and the failures by
+   category — the categorized failure count IS the design signal for next iteration. The per-case
+   lines (`✓ <id>  <scenario>` or `✗ <id>  → <reason>`) stay in the run's output, not the message.
 5. **Add the failure** when something breaks live. Each real-world bug becomes a case in the set;
    the set grows from real friction.
 
