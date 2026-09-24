@@ -58,13 +58,23 @@ Nothing below composes a sentence.
 - [x] **5. Long records fold, never cut.** A block body past a length shows its first paragraph and
   the rest under *the whole record*; Copy and Slide still carry all of it. The FEAT list shows
   building + newest shipped, the rest under the same fold.
-- [ ] **6. A cover.** Mark (when the brand has one), name, tagline, and three counted numbers — cells
+- [x] **6. A cover.** Mark (when the brand has one), name, tagline, and three counted numbers — cells
   backed, signals and top grade, FEATs shipped. Replaces opening on the Present bar.
-- [ ] **7. What's backed, as a picture.** The thirteen cells as a small grid, each coloured by the
+- [x] **7. What's backed, as a picture.** The thirteen cells as a small grid, each coloured by the
   grade behind it (commitment · observed · stated · asserted · hole). The *"and how do you know?"*
   answer at a glance; lives on the cover and at the top of Evidence.
-- [ ] **8. Quieter provenance in the room.** In Present and print, the source line drops to the grade
+- [x] **8. Quieter provenance in the room.** In Present and print, the source line drops to the grade
   chip; the path stays on the page view.
+
+  _Landed:_ the cover opens every cut and the deck; the tiles live on the cover only (one id per
+  block — a second copy at the top of Evidence would duplicate them). A tile jumps to the chapter that
+  renders its cell, else the canvas grid, and opens *All* when the cut hides the grid (Ajesh caught the
+  first version jumping nowhere). Found on the way: the ledger counted an unanswered cell as backed when
+  an EVID's assumption shared a word with its name — BOSS's own top bar said *2 of 13 backed* with
+  zero answered cells backed. Fixed: backed means answered and evidenced.
+- [ ] **9. BOSS's own records.** Its Vision and Product chapters read IDEA-001 (*Learning loop*), a
+  capability written before `kind:` existed. The render is right for founder projects; this tree needs
+  `kind: capability` on its old IDEAs, or a `kind: venture` record for BOSS itself. Ajesh's call.
 
 ## Open questions
 

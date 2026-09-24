@@ -572,7 +572,9 @@ export function collectPlaybook(projectDir, projectName) {
       state: cellState(c.answer), condition: c.condition, evidence: 0, topGrade: null, known: false });
   }
   const live = boxes.filter((b) => b.state !== 'dormant');
-  const backed = boxes.filter((b) => b.evidence > 0).length;
+  // Backed = an ANSWERED cell with evidence on it. An EVID whose assumption shares a word with an empty
+  // cell's name ("deliver", "build") backs nothing — it was counting holes as backed (IDEA-129).
+  const backed = boxes.filter((b) => b.evidence > 0 && b.state === 'filled').length;
   const dates = evidence.map((e) => Date.parse(e.date || '')).filter((d) => !Number.isNaN(d));
   const newestDays = dates.length ? Math.max(0, Math.round((Date.now() - Math.max(...dates)) / 86400000)) : null;
   const gradeCounts = Object.fromEntries(GRADES.map((g) => [g, evidence.filter((e) => e.grade === g).length]));
@@ -914,7 +916,7 @@ function companyChapters(data) {
 // persona stays on the page and off this cut (Ajesh, 2026-09-13). The founder's removals live in
 // the browser; these are the first draft.
 const CHAPTER_CELLS = ['problem', 'story', 'people', 'risks', 'bizmodel', 'cost', 'principles'];
-const VC_IDS = new Set(['vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'problem-story', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
+const VC_IDS = new Set(['cover', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'problem-story', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
 const VC_PREFIXES = ['rival-', 'person-', 'value-'];
 export function deckCuts(mainHtml, data) {
   const blocks = [...String(mainHtml).matchAll(/<article class="([^"]*)" id="([^"]+)"/g)].map((m) => ({ id: m[2], cls: m[1].split(/\s+/) }));
@@ -926,6 +928,32 @@ export function deckCuts(mainHtml, data) {
     internal: all.filter((b) => filled(b) && !CHAPTER_CELLS.some((k) => b.id === `canvas-${k}`)).map((b) => b.id),
     vc: all.filter((b) => VC_IDS.has(b.id) || VC_PREFIXES.some((p) => b.id.startsWith(p)) || real.has(b.id)).map((b) => b.id),
   };
+}
+
+// The cover — what a room sees first (IDEA-129). The mark and tagline as BRAND.md holds them, the
+// venture's name, three counts and the canvas as thirteen tiles, each shaded by the grade behind it:
+// "and how do you know?" answered before anyone asks. Every number is counted; no sentence is BOSS's.
+const CELL_HOME = { principles: 'vision-principles', problem: 'problem-cell', story: 'problem-story', people: 'market-people', bizmodel: 'model-revenue', cost: 'model-cost', risks: 'risks-harms' };
+const TILE_LABEL = { commitment: 'commitment', 'observed-behavior': 'observed', 'stated-pain': 'stated pain', asserted: 'asserted', hole: 'not yet', dormant: 'dormant' };
+function coverBlock(data) {
+  const { boxes, ledger, brand } = data;
+  const logo = data.brandDoc && data.brandDoc.logo && data.brandDoc.logo.dataUri;
+  const tileState = (b) => (b.state === 'hole' ? 'hole' : b.state === 'dormant' ? 'dormant' : b.topGrade || 'asserted');
+  const cells = boxes.filter((b) => b.known);
+  // A tile jumps to wherever its cell is showing: the chapter that renders it first, else the canvas
+  // grid — which a cut can hide, so the page's script picks the first target that is visible.
+  const tiles = cells.map((b) => { const st = tileState(b); const t = [CELL_HOME[b.key], `canvas-${b.key}`].filter(Boolean);
+    return `<a class="tile t-${esc(st)}" href="#${esc(t[0])}" data-targets="${esc(t.join(' '))}" title="${esc(b.name)} — ${esc(TILE_LABEL[st] || st)}"><span>${esc(b.name)}</span></a>`; }).join('');
+  const count = {}; cells.forEach((b) => { const st = tileState(b); count[st] = (count[st] || 0) + 1; });
+  const legend = ['commitment', 'observed-behavior', 'stated-pain', 'asserted', 'hole', 'dormant'].filter((k) => count[k])
+    .map((k) => `<span class="key"><i class="t-${k}"></i>${esc(TILE_LABEL[k])} <b class="tab">${count[k]}</b></span>`).join('');
+  const feats = data.feats || [];
+  const shipped = feats.filter((f) => /^shipped/i.test(f.status || '')).length;
+  const stat = (n, label) => `<div class="stat"><b class="tab">${n}</b><span>${label}</span></div>`;
+  const body = `<div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>`
+    + `<div class="stats">${stat(`${ledger.backed}<small> / ${ledger.live}</small>`, 'canvas cells backed by graded evidence')}${stat(ledger.signals, `signal${ledger.signals === 1 ? '' : 's'}${ledger.signals ? ` · top <em>${esc(ledger.topOverall)}</em>` : ''}`)}${stat(shipped, `feature${shipped === 1 ? '' : 's'} shipped${feats.length > shipped ? ` · ${feats.length - shipped} not yet` : ''}`)}</div>`
+    + `<div class="backed"><p class="backed-k">The canvas, by what backs each cell</p><div class="tiles">${tiles}</div><div class="legend">${legend}</div></div>`;
+  return `<section class="chapter cover-ch" id="cover-ch">${block({ id: 'cover', title: 'At a glance', cls: 'cover', body, src: 'counted from the canvas, docs/evidence and the FEAT records' })}</section>`;
 }
 
 export function renderPlaybookHtml(data, stampedAt) {
@@ -979,7 +1007,8 @@ ${floor.map((b) => boxHtml(b, canvas)).join('\n')}
 ${chapters.after}
 ${proof.html}
 ${company.html}`;
-  const cuts = deckCuts(chaptersHtml, data);
+  const coverHtml = coverBlock(data);
+  const cuts = deckCuts(coverHtml + chaptersHtml, data);
   data.cuts = cuts;
   const presentBar = `<div class="present" id="present" data-cuts="${esc(JSON.stringify(cuts))}">
     <span class="label">Present</span>
@@ -989,7 +1018,7 @@ ${company.html}`;
     <span class="cut-note t-small"></span>
     <div class="removed" id="present-removed" hidden><span class="label">removed</span><span class="chips"></span><button type="button" class="restore-all">restore all</button></div>
   </div>`;
-  const mainHtml = presentBar + chaptersHtml;
+  const mainHtml = coverHtml + presentBar + chaptersHtml;
   const footerLines = [
     brandLine,
     `a read of your files — ${canvasLine} · docs/evidence · regenerated, never edited · rendered ${esc(stampedAt)} · re-run <code>boss playbook</code> to refresh`,
@@ -1010,6 +1039,19 @@ const PLAYBOOK_CSS = `
   .present .removed { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 8px; border-top: 1px solid var(--rule-2); } .present .removed .chips { display: contents; } .present .removed .rm { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px dashed var(--rule); border-radius: 99px; font-size: 12px; color: var(--ink-2); } .present .removed .rm button { font-family: var(--mono); font-size: 11px; color: var(--accent); } .present .removed .restore-all { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--accent); }
   .deck .chrome .cut { color: var(--ground); } .deck .chrome .remove { margin-left: 0; color: var(--muted); border-color: color-mix(in srgb, var(--muted) 40%, transparent); } .deck .chrome .close { margin-left: auto; }
   .printdeck { display: none; }
+  .cover-ch { margin-top: 0; padding-top: 0; border-top: 0; } .block.cover { padding: 28px 30px 16px; } .block.cover .head { display: none; }
+  .cover-id { display: flex; align-items: center; gap: 18px; } .cover-mark { width: 64px; height: 64px; object-fit: contain; border-radius: 12px; }
+  .cover-name { font-family: var(--display); font-size: clamp(32px, 5vw, 52px); line-height: 1.05; margin: 0; } .cover-tag { margin: 6px 0 0; font-size: 18px; color: var(--ink-2); }
+  .block.cover .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 22px; } .block.cover .stat { border-top: 2px solid var(--accent); padding-top: 8px; } .block.cover .stat b { display: block; font-family: var(--display); font-size: 34px; font-weight: 400; line-height: 1.1; } .block.cover .stat small { font-size: 18px; color: var(--muted); } .block.cover .stat span { font-size: 13px; color: var(--muted); }
+  .backed-k { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; } .block .body .tiles + .legend { margin-top: 10px; }
+  .tile { display: flex; align-items: flex-end; min-height: 52px; padding: 7px 9px; border-radius: 6px; border: 1px solid transparent; font-size: 12.5px; line-height: 1.25; color: var(--ink); text-decoration: none; }
+  .t-commitment { background: var(--accent); color: var(--accent-ink); } .t-observed-behavior { background: color-mix(in srgb, var(--accent) 55%, var(--paper)); } .t-stated-pain { background: color-mix(in srgb, var(--accent) 22%, var(--paper)); }
+  .t-asserted { background: transparent; border-color: var(--rule); } .t-hole { background: transparent; border: 1px dashed var(--hole); color: var(--hole); } .t-dormant { background: transparent; border: 1px dotted var(--rule); color: var(--muted); }
+  .block.flash { outline: 2px solid var(--accent); outline-offset: 3px; transition: outline-color .6s; }
+  .legend i { border: 1px solid transparent; } .legend i.t-asserted { border-color: var(--ink-2); } .legend i.t-hole { border: 1px dashed var(--hole); } .legend i.t-dormant { border: 1px dotted var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); } .legend .key { display: inline-flex; align-items: center; gap: 6px; } .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; } .legend b { color: var(--ink-2); font-weight: 500; }
+  @media (max-width: 640px) { .block.cover .stats { grid-template-columns: 1fr; } .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .block.long:not(.open) .body { max-height: 380px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
   .block .more { align-self: flex-start; margin: 8px 0 2px; padding: 3px 9px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12px; color: var(--ink-2); background: transparent; } .block .more:hover { border-color: var(--accent); color: var(--ink); }
   @media print {
@@ -1073,7 +1115,7 @@ function playbookJs(brand) {
    it. No word moves — Copy, Slide and the PDF clone .body whole, so they carry all of it. */
 (function () {
   const TALL = 560;
-  document.querySelectorAll('.block .body').forEach((b) => {
+  document.querySelectorAll('.block:not(.cover) .body').forEach((b) => {
     if (b.scrollHeight <= TALL) return;
     const blk = b.closest('.block'); blk.classList.add('long');
     const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'more'; btn.setAttribute('aria-expanded', 'false');
@@ -1127,12 +1169,23 @@ function playbookJs(brand) {
   $$('[data-cut]', present).forEach((x) => x.addEventListener('click', () => setCut(x.dataset.cut)));
   $('.restore-all', present).addEventListener('click', () => { store.set('removed-' + cut, []); renderBar(); if (deckEl && !deckEl.hidden) render(); });
   $('#present-go').addEventListener('click', () => openDeck(0));
+  /* cover tiles: the first visible target; a cell only the hidden canvas holds opens All to reach it */
+  $$('.tile[data-targets]').forEach((a) => a.addEventListener('click', (e) => {
+    const ids = a.dataset.targets.split(' ');
+    const shown = () => ids.map((id) => document.getElementById(id)).find((el) => el && el.offsetParent !== null);
+    let el = shown();
+    if (!el) { setCut('all'); el = shown(); }
+    if (!el) return;
+    e.preventDefault(); history.replaceState(null, '', '#' + el.id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1400);
+  }));
   $('#present-pdf').addEventListener('click', () => exportPdf());
   setCut(cut);
 
   let deckEl = null, cur = 0;
   const LEDGER = $('.ledger').innerText;
-  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); $$('.actions', body).forEach((x) => x.remove()); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(BRAND) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '<span>' + esc($('.src', b) ? $('.src', b).innerText : '') + '</span></div>'); return sl; }
+  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); $$('.actions', body).forEach((x) => x.remove()); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(BRAND) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '</div>'); /* the room gets the grade, not the file path — the page keeps it (IDEA-129) */ return sl; }
   function openDeck(i, block) {
     let l = list();
     if (block) { let j = l.indexOf(block); if (j < 0) { setCut('all'); l = list(); j = l.indexOf(block); } cur = Math.max(0, j); } else cur = i;

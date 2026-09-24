@@ -149,6 +149,22 @@ test('chips and the ledger are counted from the files — EVID naming a cell bac
   assert.match(html, /<b class="tab">3 of \d+<\/b> cells backed by graded evidence · <b>3<\/b> signals, top <b>commitment<\/b>/);
 });
 
+test('an EVID that matches an unanswered cell backs nothing: the ledger and the cover count answered cells only (IDEA-129)', () => {
+  const dir = project({
+    ...stamp(),
+    'docs/ideas/IDEA-001-canvas.md': CANVAS.replace(/\| \*\*What it takes to deliver\*\*[^\n]*/, '| **What it takes to deliver** | _(not yet)_ |'),
+    'docs/evidence/EVID-001.md': EVID(1, 'stated-pain', 'founders cannot deliver alone', '2026-08-10'),
+  });
+  const { data } = playbookHtml(dir, 'tidewell');
+  const html = readFileSync(join(dir, '.boss', 'playbook.html'), 'utf8');
+  const d = data.boxes.find((b) => b.key === 'deliver');
+  assert.equal(d.state, 'hole'); assert.equal(d.evidence, 1, 'the match still exists');
+  assert.equal(data.ledger.backed, 0, 'but a hole is not backed');
+  assert.match(html, /class="tile t-hole" href="#canvas-deliver" data-targets="canvas-deliver"/, 'the cover draws it as a hole');
+  assert.ok(html.includes('id="cover"'), 'the cover renders');
+  assert.ok(data.cuts.vc[0] === 'cover', 'and opens the VC cut');
+});
+
 test('single-file: nothing is fetched — no external script, stylesheet, font or image request', () => {
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
   playbookHtml(dir, 'tidewell');
