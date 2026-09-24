@@ -330,6 +330,15 @@ lane; the other three are not.
 
 ## Open questions
 
+- **Record voiced vs silent per moment.** Proposed by a peer session (bossbuild-79, 2026-09-23,
+  relaying that Ajesh approved it; not yet confirmed with Ajesh here). Today `logActivity` records
+  injected characters, not whether a fire ended in speech or silence, so nobody can tell which
+  moments mostly fire for nothing. That per-moment ratio would let a moment that's mostly silent be
+  retired or tightened on evidence. Two data points from 2026-09-23: task-hygiene fired and was right
+  (the found items lived only in chat), and focus-loop fired on parallel work being finished and was
+  noise. **Design constraint:** the UserPromptSubmit hook only injects, and whether the model then
+  spoke is only visible after the turn (a Stop-time read of the transcript), so logActivity alone
+  can't record it.
 - ~~Is ~60 words the right ceiling?~~ Answered by Ajesh 2026-09-23: no ceiling, proportionality.
 - Conscience cross-session dedup (IDEA-121 tier 2, offered by the peer session): it's the "once"
   half of rule 2 across sessions. Take it here if the pilot shows repeats.
