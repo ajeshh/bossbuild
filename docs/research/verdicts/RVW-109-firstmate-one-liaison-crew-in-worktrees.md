@@ -43,6 +43,42 @@ Install nothing.
   Then read firstmate's `docs/architecture.md` before designing BOSS's own merge-back. The founder
   side re-opens only if a real founder is observed running more than four parallel agents.
 
+## What BOSS learns from it (read at source: `AGENTS.md` §1–12, 2026-09-24)
+
+Taken as mechanisms, not as a product to install. Each is sorted by altitude.
+
+**BOSS's own practice (this tree):**
+1. **Open items print themselves until they are closed.** Every session start prints `OPEN DECISIONS`,
+   and a wake stays on disk until the turn that *handled* it acknowledges it. An interruption leaves it
+   there to be handled again. BOSS's version is rule 3b (prose) plus a timestamp reminder that is
+   "never a referee", and a hand-typed *Waiting on Ajesh* list with items marked "offered 09-23,
+   unanswered". **Lesson: derive the waiting list; don't type it.** Candidate, not built.
+2. **Contradiction between two records is surfaced, never resolved silently.** `RECORD DIVERGENCE`
+   fires when the log says a call was answered but the item is still held. BOSS already has the
+   shape in `unticked-shipped`. Extending it to decisions is the same move.
+3. **A second session that can't take the lock is read-only, and says so.** The integrator never
+   edits a project; workers do, each in a disposable worktree. This is IDEA-120's answer to six peers
+   on one HEAD.
+4. **The code that tears down is the code that decides "landed".** Teardown refuses rather than
+   trusting the caller, which is the guard BOSS added after the 08-21 `boss remove` loss, applied to
+   every destructive path.
+
+**What BOSS ships (founder-facing):**
+5. **Talk in outcomes, with a translation table.** firstmate lists its internal words (worktree,
+   hold, gate, wake, fail-closed…) with the plain word each becomes before it reaches the captain,
+   and forbids relaying status lines verbatim. BOSS's voice rule ("assume intelligence, never assume
+   knowledge") has no such list and no check, and BOSS's own output carries FEAT, rung, loop, RVW and
+   moment. **Lesson: the voice rule wants a table, which is checkable where prose is not.** Candidate.
+6. **Keep the founder's words verbatim in the brief, and name what's out of scope.** firstmate's
+   `Captain's intent` holds the ask word for word and is never widened into a goal, "because the
+   reviewer treats that as acceptance criteria"; any generalisation becomes follow-up work. This bears
+   on `/spec`: are acceptance criteria the founder's words, or BOSS's widening of them? Unchecked.
+7. **Silence is a reply shape.** Unchanged state is not progress, and the no-op answer is one fixed
+   line. BOSS already believes this ("stays quiet the rest of the time"), so this is confirmation.
+
+Already on BOSS's shelf, so nothing to take: knowledge routed to its most specific owner (IDEA-102);
+"a current explicit instruction overrides a standing rule, never by analogy"; prune over append.
+
 ## Attribution
 The README was verified at source. The video is by the repo's author (Kun Chen) and is their own
 promotion; its title claims "L8 Principal", which was not verified. The recommender's "no
