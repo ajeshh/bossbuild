@@ -33,6 +33,12 @@ rule above still applies to the whole section once it is stamped.
 > the live thing answers and asks who hears if it breaks at 3am; your agents now say what they didn't
 > check. After an MVP unlock, delete *"This project is in Quickstart mode"* from your `CLAUDE.md`.
 
+- **The documentation practice teaches `covers:` + `reviewed:` for a project's own help pages.** §7
+  said to date what's version-specific but gave founders no way to tell *which* page a code change made
+  wrong. The habit BOSS keeps on its own guide (`library/help/`, `check:help`) is now a paragraph there:
+  name the paths each hand-written page depends on and when it was last reread against them. A habit,
+  not a command; no founder has user-facing docs yet.
+
 - **Shipped skills stop telling BOSS's history; `settings.json` writes are atomic (IDEA-126).** Nine
   lines in six skills narrated how BOSS got there or cited its own `IDEA-010` — an id a founder's tree
   has too. Each keeps its rule. `/design-tokens-init`'s content half and its three later guard offers

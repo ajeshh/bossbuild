@@ -314,6 +314,17 @@ So the discipline is **subtraction, not infrastructure**: prune dead pages, merg
 delete anything describing a version nobody runs. If you genuinely outgrow one context window, climb
 `retrieval.md`'s ladder on a metric — one rung at a time — rather than reaching for the top of it.
 
+### Name what each page depends on
+
+A help page goes stale when the code under it changes and nobody rereads it, and nothing tells you
+which change did it. The cheap guard is two lines of frontmatter on every hand-written page: **`covers:`**
+(the paths whose change means this page may now be wrong) and **`reviewed:`** (when someone last read it
+against those paths). Any page whose `reviewed:` date is older than the last commit to its `covers:` paths
+is a page to reread. BOSS keeps its own guide this way (`library/help/`, `npm run check:help`); a project
+needs only the habit until its help runs to more pages than you can reread in one sitting. **A page with
+no `covers:` is a page that can only go stale silently.** Anything a manifest or the code can answer —
+counts, command lists, settings — should be generated rather than written, and needs no date at all.
+
 ## Self-check before writing a doc
 
 1. **What decision does this change?** No answer means don't write it.
