@@ -94,7 +94,7 @@ projects get the trim on `boss sync --apply`.
 
 ## Tier 4 — how BOSS is built
 
-- [ ] **CI red on Windows since 2026-09-13** (11 tests; last green `f87a62d`). ✓v. Nobody reads it. Fix the
+- [x] **CI red on Windows since 2026-09-13** (11 tests; last green `f87a62d`). ✓v. Nobody reads it. Fix the
   tests (path separators/CRLF, inferred) and add `gh run list -L1` to RESUME's ground-truth block.
 - [x] **RESUME carries computed facts that went wrong**: version 0.325.0, "51 commits ahead" (real: 1 ✓v),
   a due date already past. Fix: delete them; check-dogfood fails on version ≠ VERSION. *Done

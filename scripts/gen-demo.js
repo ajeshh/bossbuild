@@ -17,7 +17,7 @@
 
 import { markSvg } from './mark.js';
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, cpSync, rmSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, dirname, relative } from 'node:path';
+import { join, dirname, relative, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -162,7 +162,7 @@ function scanTree(dir) {
     for (const n of readdirSync(d).sort()) {
       const p = join(d, n); let st; try { st = statSync(p); } catch { continue; }
       if (!st.isDirectory()) continue;
-      const rel = relative(dir, p);
+      const rel = relative(dir, p).split(sep).join('/'); // WRITES is keyed by `docs/team`, never `docs\\team`
       const files = readdirSync(p).filter((f) => { try { return statSync(join(p, f)).isFile(); } catch { return false; } });
       rows.set(rel, { rel, count: files.length, sample: files.filter((f) => !/^readme/i.test(f)).slice(0, 5) });
       walk(p);

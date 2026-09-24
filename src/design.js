@@ -22,7 +22,7 @@
 // once for everything that needs a person.
 
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { frontmatter } from './frontmatter.js';
 import { isRegistered } from './hooks.js';
@@ -712,7 +712,9 @@ export function scanTree(projectDir) {
       files.push(p);
       const name = n.replace(/\.[a-z]+$/i, '');
       if (!/^[A-Z][A-Za-z0-9]*$/.test(name) || NOT_A_COMPONENT.test(name)) continue;
-      if (!found.some((f) => f.name === name)) found.push({ name, path: p.slice(projectDir.length + 1) });
+      // Shown to the founder and matched against COMPONENTS.md paths, so always `/` — on Windows the
+      // slice carried `\\` and every component read as unindexed (IDEA-121).
+      if (!found.some((f) => f.name === name)) found.push({ name, path: p.slice(projectDir.length + 1).split(sep).join('/') });
     }
   };
   for (const d of TREE_DIRS) walk(join(projectDir, d), 0);

@@ -68,7 +68,9 @@ test('reports green in one line when source changed and the smoke passes', () =>
 });
 
 test('hands red back as a reason to keep going — with the failing chunk', () => {
-  const dir = repo({}, 'echo "TypeError: boom at app.js:3" >&2; exit 1');
+  // `node -e`, not `echo …; exit 1`: the hook runs the command in the platform shell, and cmd.exe does
+  // not split on `;` — the POSIX spelling exited 0 on Windows and the test read green as "no block".
+  const dir = repo({}, 'node -e "console.error(\'TypeError: boom at app.js:3\'); process.exit(1)"');
   writeFileSync(join(dir, 'src', 'app.js'), 'export const ok = 2;\n');
   const out = run(dir);
   assert.equal(out.decision, 'block', 'red on this turn\'s changes is the one thing this hook exists to say');

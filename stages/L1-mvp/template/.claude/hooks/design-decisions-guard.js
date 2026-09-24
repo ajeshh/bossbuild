@@ -85,7 +85,8 @@ try {
   const input = event.tool_input || {};
   const path = input.file_path || '';
   if (!path || SKIP_PATH.test(path) || !UI_EXT.test(path)) process.exit(0);
-  const rel = path.startsWith(projectDir) ? path.slice(projectDir.length + 1) : path;
+  // `/` always: decisions and exceptions name paths with `/`, and the trace is read on every OS.
+  const rel = (path.startsWith(projectDir) ? path.slice(projectDir.length + 1) : path).replace(/\\/g, '/');
   const added = addedText(input);
   if (!added.trim()) process.exit(0);
   const lower = added.toLowerCase();

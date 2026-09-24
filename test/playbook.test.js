@@ -8,6 +8,7 @@ import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { project, cleanup } from './helpers.js';
 import { CELLS, parseCanvas, collectPlaybook, renderPlaybookHtml, playbookHtml, inline, readBrand } from '../src/playbook.js';
@@ -15,7 +16,8 @@ import { DEFAULT_ACCENT } from '../src/page-shell.js';
 
 after(cleanup);
 
-const ROOT = new URL('..', import.meta.url).pathname;
+// fileURLToPath, never `.pathname`: on Windows `.pathname` is `/D:/a/...`, and join() made it `\\D:\\...`.
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const BIN = join(ROOT, 'bin', 'boss');
 
 const stamp = () => ({ '.boss/manifest.json': JSON.stringify({ name: 'tidewell', stage: 'L0-quickstart', version: '0.0.0' }) });

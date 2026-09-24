@@ -190,7 +190,7 @@ try {
 
   // One line in the trace per question asked — { kind: "component-new", name, path, near } — so
   // `boss design` can say later whether the question got answered: a row, a merge, or nothing.
-  try { appendFileSync(join(projectDir, '.boss', 'trace.jsonl'), JSON.stringify({ ts: new Date().toISOString(), kind: 'component-new', name, path: path.startsWith(projectDir) ? path.slice(projectDir.length + 1) : path, near: near.map((r) => r.name) }) + '\n'); } catch { /* the trace is optional */ }
+  try { appendFileSync(join(projectDir, '.boss', 'trace.jsonl'), JSON.stringify({ ts: new Date().toISOString(), kind: 'component-new', name, path: (path.startsWith(projectDir) ? path.slice(projectDir.length + 1) : path).replace(/\\/g, '/'), near: near.map((r) => r.name) }) + '\n'); } catch { /* the trace is optional */ }
   out(
     (notes.length ? `component-reuse-guard: ${notes.join(' ')}\n\n` : '') +
     `component-reuse-guard: \`${name}\` was just written to \`${path}\` and has no row in ` +

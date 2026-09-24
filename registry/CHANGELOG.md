@@ -71,6 +71,13 @@ rule above still applies to the whole section once it is stamped.
 > the same step. `/judge-traces` now points out agents nobody calls and pairs that always hand off to
 > each other. And if you delete an agent you don't need, `boss sync` no longer puts it back.
 
+- **Windows: component and decision paths read with `/` (IDEA-121).** On Windows `boss design` listed
+  every component as unindexed (its paths carried `\`, `COMPONENTS.md` uses `/`), and the
+  design-decisions guard never matched an exception recorded at a path. Both now normalise, as does the
+  reuse guard's trace line and the demo generator. The other seven red Windows tests were the tests'
+  own: a repo root taken from `URL.pathname` (use `fileURLToPath`), and a POSIX-only smoke command in
+  the smoke-guard test. CI on Windows had been red since 2026-09-13 with no one reading it.
+
 - **The hook's frontmatter reader stops dropping fields (IDEA-121 tier 2).** The hook parser
   (`.claude/hooks/lib/yaml.js`) ended a mapping at the first multi-line value, so every key after a
   folded `gist: >` or a wrapped line was silently absent. It is read by the conscience, `boss
