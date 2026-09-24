@@ -90,7 +90,9 @@ rule above still applies to the whole section once it is stamped.
   design-decisions guard never matched an exception recorded at a path. Both now normalise, as does the
   reuse guard's trace line and the demo generator. The other seven red Windows tests were the tests'
   own: a repo root taken from `URL.pathname` (use `fileURLToPath`), and a POSIX-only smoke command in
-  the smoke-guard test. CI on Windows had been red since 2026-09-13 with no one reading it.
+  the smoke-guard test. CI on Windows had been red since 2026-09-13 with no one reading it. One more
+  surfaced on the first green-elsewhere run: `boss playbook`'s bookmark printed `file://C:\Users\…`, a URL
+  no browser opens; it is built with `pathToFileURL` now (`file:///C:/Users/…`).
 
 - **The hook's frontmatter reader stops dropping fields (IDEA-121 tier 2).** The hook parser
   (`.claude/hooks/lib/yaml.js`) ended a mapping at the first multi-line value, so every key after a

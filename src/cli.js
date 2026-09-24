@@ -34,6 +34,7 @@ import { lookup, terms } from './glossary.js';
 import { HELP, SYMBOLS } from './help.js';
 import { helpHtml } from './help-html.js';
 import { isoDay } from './clock.js';
+import { pathToFileURL } from 'node:url';
 
 const STAMP = '.boss/manifest.json';
 
@@ -715,7 +716,8 @@ function cmdPlaybook(args = []) {
   const { out, data } = playbookHtml(process.cwd(), stamp.name);
   const { ledger, canvas, error } = data;
   console.log(`\n  ${ok('✦')} Playbook → ${out}`);
-  console.log(`    ${dim('bookmark:')} file://${out}`);
+  // pathToFileURL, not `file://` + a path: on Windows that printed `file://C:\\Users\\…`, which no browser opens.
+  console.log(`    ${dim('bookmark:')} ${pathToFileURL(out).href}`);
   console.log(`    ${canvas ? `docs/ideas/${canvas.file}` : 'no canvas yet — every box is a question; /canvas fills them'} · ${ledger.backed} of ${ledger.live} cells backed by evidence · ${ledger.signals} signal${ledger.signals === 1 ? '' : 's'}`);
   if (error) console.error(`    ${warn('!')} ${error}`);
   // The pull (IDEA-111): the page's holes, read back — the founder sees what's open without opening
