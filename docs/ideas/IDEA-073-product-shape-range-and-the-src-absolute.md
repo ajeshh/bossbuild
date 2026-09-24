@@ -121,6 +121,8 @@ or crates.io anywhere in `stages/`. For a CLI, localhost genuinely *is* where it
 rotor, Dynamic Type, touch targets), no API equivalent (error shape, status codes, pagination).
 `design-tokens-init`'s model is colour/spacing/radius/**elevation**/motion — a visual-UI ontology.
 
+> Carried forward (2026-09-23): the design-space half of A5 is IDEA-130 — no shipped phase here closed it.
+
 ### A6 — `waiting` conflates two different states (naming; the one that hides the rest)
 `src/conscience.js:427` renders the internal `unopenable` as **"waiting"** to the founder. BOSS
 means that as *"you haven't earned this rung yet"* — temporary, correct, encouraging. It reads
