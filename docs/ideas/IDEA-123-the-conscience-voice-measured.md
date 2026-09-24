@@ -6,21 +6,31 @@ owner: Ajesh
 status: seedling
 proof: none
 proof_note: warrant is the craft curve and BOSS's own stated rule, not demand. The rule ("once, briefly, no sermon. One sentence.") is BOSS's; the measurement shows the output doesn't keep it.
-gist: The conscience's rules are right and its output doesn't keep them — measured on 17 Opus 5.5 nudges, median 97 words against a one-sentence rule, "Your call" in 11 of 17, a skill menu in 8. The judge never checks length or tics, so every one passed. Measure first, then tighten the frames, then re-grade.
+gist: How BOSS talks — the conscience, the skills, the agents, the CLAUDE.md block — should be as minimal as the moment allows and as full as the stakes need, never a fixed length. Measured first on 17 Opus 5.5 nudges (median 97 words, "Your call" in 11 of 17, a skill menu in 8, a judge that checks none of it). Make proportionality checkable, pilot on the conscience, then the most-used skills.
 created: 2026-09-23
 relates: IDEA-039, IDEA-121
 ---
 
-# IDEA-123 — The conscience's voice, measured against its own rules
+# IDEA-123 — How BOSS talks, measured against its own rules
 
 ## Current shape
+
+**Ajesh's correction, 2026-09-23 (it governs everything below):** *"it shouldnt be limited to 60,
+sometimes more is needed, so its more about knowing when to be minimal, or needing more. Also its not
+just the conscience but also the rest of the prompts in boss, the language, and the way we interact
+with the user."* So: **no word ceiling anywhere.** The principle is proportionality. Minimal is the
+default, more is earned by the stakes, and the test is whether each sentence carries something the
+founder needs. `conscience-voicing.md` rule 2 said *"One sentence"*, which contradicted its own rule 4
+(*"friction scales to stakes"*); rule 2 now defers to rule 4.
+
+**Scope, widened by the same message:** every surface where BOSS speaks to a founder. That covers the
+conscience frames, the 48 skills, the 12 agents, the CLAUDE.md / AGENTS.md block, and hook and CLI output.
 
 Ajesh, 2026-09-23: *"the language of the conscience and how boss talks, wondering if we should make it
 even better now that you are smarter and can see how to improve it."*
 
-**Altitude:** the conscience is one mechanism that runs on BOSS's own sessions and on every founder's,
-so this is **what BOSS ships**. "How BOSS talks" beyond the conscience (skill output, CLI copy, the
-mentors) is wider and is not in this slice.
+**Altitude:** what BOSS ships. The conscience is the pilot because it is the only surface with a
+graded eval harness already; the rest follows the same method.
 
 ### What was measured (not opined)
 
@@ -57,21 +67,32 @@ frames. Fix the frames first and nothing can tell whether they worked.
 
 ## Proposed order (nothing built yet)
 
-1. **Make the rule checkable.** Add to the judge rubric, or a deterministic pass over transcripts:
-   a word ceiling (propose ~60, since one sentence plus a hand-back is ~40), repeated stock phrases
-   across a set, and internal labels in founder copy. Re-score today's 17 and expect most to fail.
-   That is the baseline.
+1. **Make proportionality checkable, without a count.** Two halves. A *judged* half, added to the
+   judge rubric: for each sentence, does it carry the founder's own words or state, the gap, a
+   consequence they may not know, who it lands on, the path, or the hand-back? And does the total
+   match the stakes (reversible and self-regarding gets a feather; hard-to-undo and other-harming
+   earns more)? A *deterministic* half, over a set of outputs: the same stock phrase repeated
+   (a tic), more than one skill pointer, internal labels or record ids in founder copy. Re-score
+   today's 17 as the baseline.
 2. **Tighten the frames** where the measurement points: one pointer rather than a skill menu, the
    hand-back said in the moment's own words or not at all, no taxonomy labels, the humane lens's
    "point at who'd know". Voice changes go through `voice-keeper` and the `boss-voice` constants.
 3. **Re-grade and compare** against the baseline, keeping the specificity. A shorter nudge that
    drops the founder's quoted words is a regression, not a win.
-4. **Only then** look past the conscience (mentor and skill copy), as its own slice.
+4. **Then the skills and agents, most-used first.** `/close` and `/smoke` (59 invocations each on
+   this machine), `/log` (18), `/ux-check` (9), then the mentors. Skills are instructions, not
+   output, so measure what they *produce*: run each in a scratch project, then have `voice-keeper`
+   and two personas at opposite ends (`first-product`, `returning-founder`) read the real output
+   against the same proportionality rubric. Also audit the prompt text for what forces length:
+   mandated templates, prescribed verbatim lines, "always end with…".
+5. **The CLAUDE.md block and CLI copy last.** They are read on every turn and every command, so
+   they cost the most per word, but they are also the most stable.
 
 ## Open questions
 
-- Is ~60 words the right ceiling, or should it vary by moment? Humane third-party harm may earn more
-  than a drift nudge.
+- ~~Is ~60 words the right ceiling?~~ Answered by Ajesh 2026-09-23: no ceiling, proportionality.
+- Conscience cross-session dedup (IDEA-121 tier 2, offered by the peer session): it's the "once"
+  half of rule 2 across sessions. Take it here if the pilot shows repeats.
 - Should the "Your call" hand-back survive in some form? The practice wants the decision handed back;
   the tic is the same four words every time.
 

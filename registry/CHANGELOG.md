@@ -261,6 +261,12 @@ rule above still applies to the whole section once it is stamped.
   content miss, not a gate failure, and is carried into the voice pass. `regrade-keyless.js` stamps
   the model when `REGRADE_MODEL` is set, since the version is the fact a regrade records.
 
+- **The conscience speaks as long as the stakes need, not one sentence.** `conscience-voicing.md`
+  rule 2 said *"One sentence"* while rule 4 said *"friction scales to stakes"*, and a humane warning
+  about harm to someone outside the room can need more than a sentence. Rule 2 now defers to rule 4:
+  minimal by default, more only where each sentence carries something the founder needs, and no
+  stock sign-off said the same way every time.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched
