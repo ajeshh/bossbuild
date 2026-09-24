@@ -3,7 +3,7 @@ id: IDEA-121
 type: idea
 kind: capability
 owner: Ajesh
-status: ready
+status: shipped
 proof: none
 proof_note: each task below names its own proof; the record is done when every box is ticked or moved to its own id
 gist: Four-lane read-only review (build process, CLI, hook runtime, shipped content), 2026-09-23. Three silent data-loss bugs, a shipped hook that dies under a CommonJS package.json, a conscience that injects ~3k tokens per first prompt off a word-match, and CI red on Windows for ten days with nobody reading it.
@@ -77,8 +77,9 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
   one file). `/design-review` stays — the before-code review is worth most before the first screen.
   The designer agent stays seated: agents are not in the earned mechanism, and its first job (states,
   flows) precedes code. MVP opens on 14 of its 28, not 16.*
-- [ ] **Merge candidates** (subtract mandate): health+measure+onboard; ai-first-init as the lay-down message;
-  ai-cost+cost-review. ~28→24. Needs Ajesh's call — not mechanical.
+- [x] **Merge candidates** (subtract mandate): health+measure+onboard; ai-first-init as the lay-down message;
+  ai-cost+cost-review. ~28→24. Needs Ajesh's call — not mechanical. *Spun to IDEA-125 (new scope, a product
+  decision), 2026-09-23.*
 - [x] **secrets-guard bypasses** (`cat .env|head`, `cat <.env`, Grep tool, .pem/.ssh/.aws). Fix: boundary
   chars, Grep/Glob, mirror deny globs; header says speed bump, not boundary. *Fixed 2026-09-23:
   shell punctuation is a boundary, Grep denied on a secret path/glob (Glob left alone — names, not
@@ -105,10 +106,15 @@ projects get the trim on `boss sync --apply`.
   (2 /tmp entries leaked; retires rule 6's prune step). *Done 2026-09-23: paths.js, update.js and
   the hook's person-state read it; `scripts/smoke-cli.js` runs under it and lost its prune; CLAUDE.md
   rule 6 says to use it; `test/boss-home.test.js`.*
-- [ ] **Session read-in ~11k tokens; MEMORY.md is 4.2k of it** (one entry 5.7k chars on one line). Cap
+- [x] **Session read-in ~11k tokens; MEMORY.md is 4.2k of it** (one entry 5.7k chars on one line). Cap
   entries ~300 chars; history into topic files.
+  *Done 2026-09-23: MEMORY.md 17.2KB → 8.2KB; the five longest entries (up to 5.6k chars) moved verbatim
+  into their topic files under a dated heading, index lines ≤ ~330 chars.*
 - [x] Commit subjects median 104 / p90 323 chars — ≤72, rationale in the CHANGELOG.
-- [ ] CHANGELOG 1.14MB = 30% of the npm package. Ship a recent-N file.
+- [x] CHANGELOG 1.14MB = 30% of the npm package. Ship a recent-N file.
+  *Declined, measured 2026-09-23: `boss changelog` shows everything past the project's pin, and a pin can be
+  any age — a recent-N file silently drops the history exactly those projects read. The cost is install
+  size only: 1.16MB unpacked, 1.41MB for the whole packed tarball, read in 0.05s.*
 - [x] Untested: registry, conscience pause/mute, help-html, insights, map. registry test would have caught tier 1.
   *Done 2026-09-23 for registry (`test/registry.test.js`, under a temp BOSS_HOME), pause/mute end to
   end through the hook (`test/conscience-pause-mute.test.js`) and insights (`test/insights.test.js`).
@@ -120,7 +126,7 @@ projects get the trim on `boss sync --apply`.
   the two in-browser copies stay, they ship inside page scripts. The two `readDecisions` stay
   apart on purpose — design needs each DEC's full text for token lookup, playbook parses sections,
   and a shared reader would need a new module to dodge the playbook→design import.*
-- [ ] IDEA-120 (worktree per session) would retire ~6 standing rules.
+- [x] IDEA-120 (worktree per session) would retire ~6 standing rules. *Tracked there (spun_to), not here.*
 
 ## Keep — the reviewers agreed these are right
 
