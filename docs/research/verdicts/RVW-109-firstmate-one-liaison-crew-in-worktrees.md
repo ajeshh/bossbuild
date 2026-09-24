@@ -83,6 +83,14 @@ firstmate's rule. The gap was the founder's words: step 3's "one concrete instan
 and the coder never saw it. None of this repo's 19 FEATs carries one. **Landed:** the template quotes
 it under Goal, and step 3 says it is what criteria are checked against.
 
+**Lessons 1 and 2 (2026-09-24, Ajesh: "continue"):** reproduced first: RESUME's hand list carried
+IDEA-087 (shipped 09-13) and IDEA-098's gate (closed 09-11) as open. **Landed:** `waiting_on:` read
+by `boss board --blocked` and `--json`; `/close` and both `IDS.md` copies say where a question goes;
+RESUME keeps only questions with no record. **Lesson 2 folded into 1**, because deriving the list
+removes the second copy that drifts, and a mechanical check would misfire (a shipped record can
+legitimately still owe an answer, as IDEA-129 does). Not done: DEC records (the board doesn't read
+`docs/decisions/`, so DEC-018's question stays in RESUME), and the HTML board shows no waiting flag.
+
 Already on BOSS's shelf, so nothing to take: knowledge routed to its most specific owner (IDEA-102);
 "a current explicit instruction overrides a standing rule, never by analogy"; prune over append.
 

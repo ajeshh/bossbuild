@@ -90,6 +90,18 @@ once — *did it fire?* — and `outcome: held | fell | can't tell yet — <why>
 asks the same of a FEAT at the moment it ships. Not a score; nothing counts these. A superseded or
 dropped record is never asked.
 
+## `waiting_on:` — a question someone owes, kept on the record it is about
+
+```
+waiting_on: Sam — do pilots pay monthly or per seat? (since 2026-09-23)
+```
+
+Who owes the answer, a dash, the question; the date is optional and sorts the list oldest first.
+`boss board --blocked` lists every one under *Waiting on <who>*, so the list of what is waiting is
+**read from your records, never typed** — a typed list is a second copy, and a copy drifts. Any
+status can wait (a shipped record can still owe one answer about its last task); a deferred or
+dropped one never shows. Delete the line when the answer lands, and put the answer in the record.
+
 ## `proof:` — how a status stays honest (optional, and worth it)
 
 A status is a **claim about your code**. `shipped` means the thing exists. Nothing checks that for

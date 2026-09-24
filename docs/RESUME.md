@@ -122,7 +122,10 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
-- 🔷 **BOSS's own playbook leads with IDEA-001** (a pre-`kind:` capability): tag the old IDEAs `kind: capability`, or write a `kind: venture` record for BOSS? (IDEA-129 task 9)
+**A question that belongs to one record lives on it** as `waiting_on:` (`docs/IDS.md`), and
+`boss board --blocked` lists those. What's below has no record to live on. (RVW-109; two of these
+were already settled in their records, IDEA-087 and IDEA-098, and stayed here for 11 and 13 days.)
+
 - 🔷 **`boss board --open`?** The playbook and design have `--open`, the board only `--html`; one line. Offered 09-23, unanswered.
 - 🔷 **The maintainer message — what holds it?** Drafted 08-23, still unsent. No gating rule (09-23); a date by which it's sent is the open ask.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
@@ -132,16 +135,10 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 - ⛔ **`npm run stamp` → `npm publish`** (`npm run check:published` says how far; DEC-019 — the stamp makes the version), then `npm run bump:formula`. He publishes himself — never run it for him.
 - 🔷 **Submit the plugin to `claude-community`** (DEC-017; `claude plugin validate . --strict`
   passes; platform.claude.com/plugins/submit). `boss-ai-agent` exists there — lead with what BOSS is not.
-- 🔴 **IDEA-087 — un-ignore `docs/`.** A one-way door. Two demonstrations now, not an argument:
-  `.boss/conscience-log.jsonl` (08-21) and `RESUME-ARCHIVE.md` (09-09) were both destroyed because
-  they were gitignored. Cheapest half first: `docs/research/verdicts/` (96 files, measured clean,
-  resolves 27 dangling `RVW` refs in the tracked CHANGELOG). Decisions are already published (v0.264.0).
-  Ideas stay private by his call; evidence permanently — real people spoke in confidence.
 - 🔷 **Phase 3 outreach** — three maintainers chosen, two messages drafted, in
   `docs/evidence/CANDIDATES-2026-08-23-maintainer-experiment.md`. The first message must not mention
   BOSS. Metric: activation, watched not asked. No features from this.
-- 🔷 **IDEA-098 gate leg 2:** did the `/consult` movement line beat the plain split? Both reads are in
-  IDEA-099. And EVID-003's *did you come back?* — still unasked.
+- 🔷 **EVID-003's *did you come back?*** — still unasked.
 - ⬜ **`venture` as the default noun** (19 template files + `docs/venture-brain.md`) — a rename with a
   migration cost, re-proposed four times as if cheap. Rename · leave · or stop proposing it.
 - ⬜ **The seven `building_since:` dates** — the CHANGELOG fallback clusters four on one day and the
@@ -153,9 +150,6 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 - ⬜ **IDEA-047 re-aimed keyless (2026-09-13)** — the fake door: drop `pretotype/api/`, one labelled
   recording, CTA = plugin install, count the click. Parked on a trigger: strangers exist (plugin listed / outreach live) and installs stay flat.
   IDEA-036 dropped; IDEA-066 is the one owner of outward research (093 p7's trigger carried in).
-- ⬜ **IDEA-109 — the `README.md` §License line *"never the CLI itself"*.** Stronger than "open source"
-  and it closes a door the coach-in-residence shape may want open. Keep · soften · or write the DEC.
-  (Not: drop "open source" from the site while `LICENSE` stays MIT.)
 - 🔷 **DEC-018 — the ground moved from 43° to 210°** on the strength of a brief; `AI-suggested-ratified`.
   Confirm or reverse.
 

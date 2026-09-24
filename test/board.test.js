@@ -219,6 +219,33 @@ test('computeStuck gathers blocked, aging and review-due without overlap in bloc
   assert.equal(s.reviewDue.length, 0, 'a blocked card is reported as blocked, not as review-due');
 });
 
+// RVW-109 lesson 1: a question waiting on a person lives on the record it is about, and the
+// "not moving" view lists it. BOSS's own RESUME typed that list by hand and was carrying IDEA-087
+// as open eleven days after the record said shipped — a copy drifts; a derived list cannot.
+test('a record waiting on someone is listed under not-moving, oldest first, with its question', () => {
+  const dir = project({
+    'docs/ideas/IDEA-001.md': idea('IDEA-001', { status: 'shipped', waiting_on: 'Ajesh — tag the old IDEAs, or write a venture record? (since 2026-09-23)' }),
+    'docs/ideas/FEAT-002.md': feat('FEAT-002', { waiting_on: 'the lawyer — is the waiver enforceable? (since 2026-09-01)' }),
+    'docs/ideas/IDEA-003.md': idea('IDEA-003', { status: 'deferred', waiting_on: 'Ajesh — a parked record is deliberately stopped' }),
+    'docs/ideas/IDEA-004.md': idea('IDEA-004'),
+  });
+  const { waiting } = computeStuck(collectBoard(dir).cards);
+  assert.deepEqual(waiting.map((c) => c.id), ['FEAT-002', 'IDEA-001'], 'oldest question first; parked is not waiting');
+  assert.equal(waiting[1].waitingOn.who, 'Ajesh');
+  assert.equal(waiting[1].waitingOn.question, 'tag the old IDEAs, or write a venture record?');
+  assert.equal(waiting[1].waitingOn.since, '2026-09-23');
+
+  const lines = [];
+  const orig = console.log; console.log = (...a) => lines.push(a.join(' '));
+  try { board(dir, 'app', { blocked: true }); } finally { console.log = orig; }
+  const out = lines.join('\n');
+  assert.match(out, /Waiting on Ajesh/);
+  assert.match(out, /IDEA-001.*tag the old IDEAs/);
+  assert.match(out, /Waiting on the lawyer/);
+  assert.doesNotMatch(out, /board is moving/, 'a waiting question means something is not moving');
+  assert.deepEqual(boardJson(dir, 'p').stuck.waiting.map((w) => w.id), ['FEAT-002', 'IDEA-001']);
+});
+
 test('boardJson is a stable machine contract', () => {
   const dir = project({ 'docs/ideas/IDEA-001.md': idea('IDEA-001') });
   const j = boardJson(dir, 'proj');

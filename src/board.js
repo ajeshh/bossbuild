@@ -358,9 +358,11 @@ export function collectBoard(projectDir) {
         ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
         addedOn: addedOn(projectDir, fm, `docs/ideas/${f}`),
-        priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text) });
+        priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text),
+        waitingOn: parseWaiting(fm.waiting_on) });
     } else {
       ideas.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+        waitingOn: parseWaiting(fm.waiting_on),
         // `kind: venture` — the thing they are building, one per project, written by /boss (IDEA-114).
         // The renderers lift it above the columns; it is what every capability card is FOR.
         venture: String(fm.kind || '').trim().toLowerCase() === 'venture',
@@ -443,6 +445,7 @@ export function collectBoard(projectDir) {
       // draw that as a hole rather than a bar, because it is the spec that is missing, not the
       // work. Ideas carry no criteria and render none (their hole, if any, is the FEAT itself).
       progress: column === 'Building' ? (ft.progress || { done: 0, total: 0 }) : null,
+      waitingOn: ft.waitingOn,
     });
   }
   for (const id of ideas) {
@@ -472,6 +475,7 @@ export function collectBoard(projectDir) {
       program: id.program || null,
       venture: id.venture === true,
       progress: null, // an idea carries no acceptance criteria; its hole, if any, is the FEAT
+      waitingOn: id.waitingOn,
     });
   }
 
@@ -1187,10 +1191,26 @@ export function computeNext(allCards) {
   return { finish, start, unblock, pressure, pick };
 }
 
-// "What's not moving?" — blocked, aging-in-build, and past-review, in one place.
+// `waiting_on: <who> — <the question> (since YYYY-MM-DD)` — a question owed by a person, kept on
+// the record it is about (RVW-109). The list of what is waiting is DERIVED from these, never typed:
+// BOSS's own RESUME kept one by hand and carried a shipped decision as open for eleven days.
+// Any status can wait — a shipped IDEA can still owe one answer about its last task.
+export function parseWaiting(value) {
+  const v = unquote(String(value || '')).trim();
+  if (!v) return null;
+  const since = (v.match(/\(since (\d{4}-\d{2}-\d{2})\)\s*$/) || [])[1] || null;
+  const body = v.replace(/\s*\(since \d{4}-\d{2}-\d{2}\)\s*$/, '');
+  const m = body.match(/^(.+?)\s+(?:—|–|--)\s+(.+)$/);
+  return m ? { who: m[1].trim(), question: m[2].trim(), since } : { who: body, question: '', since };
+}
+
+// "What's not moving?" — blocked, aging-in-build, past-review and waiting-on-someone, in one place.
 export function computeStuck(allCards) {
   const cards = allCards.filter((c) => !c.parked);   // deliberately stopped is not stuck
   return {
+    // Oldest question first; an undated one sorts last rather than pretending to be new.
+    waiting: cards.filter((c) => c.waitingOn)
+      .sort((a, b) => (a.waitingOn.since || '9999').localeCompare(b.waitingOn.since || '9999')),
     blocked: cards.filter((c) => c.blocked),
     aging: cards.filter((c) => c.aging).sort((a, b) => b.ageDays - a.ageDays),
     reviewDue: cards.filter((c) => c.reviewDue && !c.blocked),
@@ -1228,8 +1248,8 @@ function renderBoardNext(projectName, { cards, hasIdeasDir }) {
 function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
   const lines = ['', `  ${projectName} · not moving`];
   if (!hasIdeasDir) { lines.push('  (no docs/ideas/ here — is this a BOSS project?)', ''); return lines.join('\n'); }
-  const { blocked, aging, reviewDue } = computeStuck(cards);
-  if (!blocked.length && !aging.length && !reviewDue.length) {
+  const { waiting, blocked, aging, reviewDue } = computeStuck(cards);
+  if (!waiting.length && !blocked.length && !aging.length && !reviewDue.length) {
     lines.push('  ▸ nothing blocked, nothing stale — the board is moving.', '');
     return lines.join('\n');
   }
@@ -1243,6 +1263,16 @@ function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
     for (const c of items) lines.push(`    ${c.id.padEnd(10)} ${col(c.title, 40)} ${flag(c)}`);
     lines.push('');
   };
+  // Grouped by who owes the answer, because that is who has to act on the list.
+  for (const who of [...new Set(waiting.map((c) => c.waitingOn.who))]) {
+    const mine = waiting.filter((c) => c.waitingOn.who === who);
+    lines.push(`  Waiting on ${who} (${mine.length})`);
+    for (const c of mine) {
+      const since = c.waitingOn.since ? dim(`  since ${c.waitingOn.since}`) : '';
+      lines.push(`    ${c.id.padEnd(10)} ${c.waitingOn.question || c.title}${since}`);
+    }
+    lines.push('');
+  }
   block('Blocked', blocked, () => '— status: blocked');
   block('Aging', aging, (c) => `⌛ ${agePhrase(c)} — finish or /revalidate`);
   block('Review due', reviewDue, (c) => `↻ run /revalidate ${c.id}`);
@@ -1261,7 +1291,7 @@ export function boardJson(projectDir, projectName) {
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
   const { finish, start, unblock, pressure } = computeNext(cards);
-  const { blocked, aging, reviewDue } = computeStuck(cards);
+  const { waiting, blocked, aging, reviewDue } = computeStuck(cards);
   // Present cards in display order (by column, then priority/age within) so a JSON
   // consumer reads them the same way the board renders.
   const ordered = COLUMNS.flatMap((col) => sortColumn(cards.filter((c) => c.column === col), col));
@@ -1288,6 +1318,7 @@ export function boardJson(projectDir, projectName) {
     })),
     next: { finish, start, pressureTest: pressure, unblock },
     stuck: {
+      waiting: waiting.map((c) => ({ id: c.id, ...c.waitingOn })),
       blocked: blocked.map((c) => c.id),
       aging: aging.map((c) => ({ id: c.id, ageDays: c.ageDays, ageSource: c.ageSource ?? null })),
       reviewDue: reviewDue.map((c) => c.id),

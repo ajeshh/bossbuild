@@ -4,6 +4,7 @@ type: idea
 kind: capability
 owner: Ajesh
 status: shipped (Unreleased, 2026-09-23 — task 9 waits on Ajesh)
+waiting_on: Ajesh — BOSS's own playbook leads with IDEA-001 (a pre-kind capability): tag the old IDEAs kind: capability, or write a kind: venture record for BOSS? (since 2026-09-23)
 proof: src/playbook.js
 proof_note: read against two rendered playbooks (the Kettlewick demo and BOSS's own `.boss/playbook.html`), 2026-09-23; no founder has opened either
 gist: The playbook, second pass — fix what a real record set breaks (hard-wrapped paragraphs shatter, a capability IDEA renders as the venture, a heading over an empty cut), then make it read as a story rather than a record dump - a cover, a picture of what's backed, long records folded not cut, quieter provenance in the room.

@@ -3,6 +3,7 @@ id: IDEA-109
 type: idea
 owner: mentor-customers
 status: seedling (a positioning, not a build — the next step is one conversation)
+waiting_on: Ajesh — README §License says "never the CLI itself", which closes a door this shape may want open: keep, soften, or write the DEC? (since 2026-09-13)
 gist: Position BOSS so an incubator hires Ajesh — a coach-in-residence role (the kind accelerators already have) where he coaches their cohorts AND brings BOSS as the tool that runs alongside every company. An acqui-hire shape, not a sale; the buyer gets the person, the year of judgment calls, and a head start they can run in ten minutes.
 proof: none
 proof_note: Captured. n=0 founders outside Ajesh have used BOSS; the wedge for this shape is n=1 — one founder in a target incubator's orbit who ran it and said something.

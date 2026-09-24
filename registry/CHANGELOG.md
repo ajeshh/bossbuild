@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **What's waiting on someone lives on the record, and the board lists it.** Add
+  `waiting_on: <who> — <the question>` to any idea or feature (a `(since <date>)` at the end is
+  optional) and `boss board --blocked` shows it under *Waiting on <who>*, oldest first. The list is
+  read from your records instead of kept by hand, so it can't go stale: BOSS's own hand-kept list was
+  carrying two decisions as open that their records had closed 11 and 13 days earlier. `/close` now
+  puts a question about one record on that record, and `docs/IDS.md` describes the field. (RVW-109)
 - **`/spec` keeps your own words.** It always asked you to walk through one real example, and
   called it the most useful question it asks, but it had nowhere to put the answer, so it was lost
   when the chat ended. The FEAT now quotes it, unedited, under the Goal. It's the line the coder and

@@ -93,6 +93,9 @@ ahead to what's next.
      bar()", not "improve the feature."
    - **Open decisions:** things waiting on a call (yours or someone else's). Each with a tentative
      direction so you don't re-litigate from scratch.
+     **A question about one record goes on that record** as `waiting_on: <who> — <question>`
+     (`docs/IDS.md`); `boss board --blocked` lists them. This section keeps only the questions no
+     record owns, so nothing is written down twice.
    - **Prompt for the next session:** keep it **evergreen** — a pointer + procedure, never a
      status report. *State* and *Next tasks* already carry the current-state surface; restating
      them here just doubles the drift surface. Save kickoff prompts somewhere stable — the
