@@ -14,21 +14,28 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-const git = (...a) => execFileSync('git', a, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+// Inside a hook git exports GIT_INDEX_FILE (and, for some commits, GIT_DIR / GIT_WORK_TREE). Reading
+// the staged index needs them; making a worktree and running tests in it must NOT see them, or the
+// worktree is built against the commit's index and the tests' own `git` calls hit this repo.
+const hookEnv = process.env;
+const cleanEnv = Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^GIT_(INDEX_FILE|DIR|WORK_TREE|PREFIX|OBJECT_DIRECTORY|ALTERNATE_OBJECT_DIRECTORIES)$/.test(k)));
+const run = (env) => (...a) => execFileSync('git', a, { env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+const git = run(hookEnv);
+const gitClean = run(cleanEnv);
 const staged = git('diff', '--cached', '--name-only').trim();
 if (!staged) process.exit(0);
 
 const dir = join(mkdtempSync(join(tmpdir(), 'boss-precommit-')), 'tree');
 let status = 1;
 try {
-  git('worktree', 'add', '--detach', '--quiet', dir, 'HEAD');
+  gitClean('worktree', 'add', '--detach', '--quiet', dir, 'HEAD');
   git('checkout-index', '--all', '--force', `--prefix=${dir}/`);
   // Files deleted in the index still sit in the HEAD checkout; remove them so the test sees the commit.
   for (const f of git('diff', '--cached', '--name-only', '--diff-filter=D').split('\n').filter(Boolean)) {
     rmSync(join(dir, f), { force: true });
   }
   const t0 = Date.now();
-  const r = spawnSync('npm', ['run', 'test:ci', '--silent'], { cwd: dir, encoding: 'utf8', shell: process.platform === 'win32' });
+  const r = spawnSync('npm', ['run', 'test:ci', '--silent'], { cwd: dir, env: cleanEnv, encoding: 'utf8', shell: process.platform === 'win32' });
   status = r.status ?? 1;
   if (status !== 0) {
     process.stderr.write((r.stdout || '').split('\n').filter((l) => /✖|not ok|Error|finding/.test(l)).slice(0, 25).join('\n') + '\n');
@@ -38,9 +45,9 @@ try {
   }
 } catch (e) {
   // A hook that cannot set itself up must not block a commit — say so and let it through.
-  process.stderr.write(`  pre-commit: could not test the staged tree (${e.message.split('\n')[0]}); committing untested.\n`);
+  process.stderr.write(`  pre-commit: could not test the staged tree (${String(e.stderr || e.message).trim().split('\n')[0]}); committing untested.\n`);
   status = 0;
 } finally {
-  try { git('worktree', 'remove', '--force', dir); } catch { rmSync(dir, { recursive: true, force: true }); try { git('worktree', 'prune'); } catch { /* best effort */ } }
+  try { gitClean('worktree', 'remove', '--force', dir); } catch { rmSync(dir, { recursive: true, force: true }); try { gitClean('worktree', 'prune'); } catch { /* best effort */ } }
 }
 process.exit(status);
