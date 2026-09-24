@@ -67,6 +67,8 @@ conflating "not yet" with "never here") showing up again in the design space.
 4. **BOSS goes first.** Its own design space should describe the conscience and the CLI,
    not only the site. If it can't, it's not ready to ship to a founder.
 
+**Held by Ajesh (2026-09-23)** until they revisit this idea. First step when it re-opens: step 4, BOSS's own pages.
+
 ## Open questions
 
 - Is the surface list above the right cut, or is "AI" a layer over any surface rather than its

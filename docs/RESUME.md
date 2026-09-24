@@ -94,7 +94,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 0. **Worktree trial (IDEA-120, Ajesh yes 09-23)** — the next session runs in its own worktree and records what broke.
 1. **Ajesh's browser read of the demo** — `npm run gen:site` → `site/demo/index.html`: does it read
-   as *BOSS running*; the Kettlewick name; sage/copper. His playbook hand-checks: Present → VC cut
+   as *BOSS running*; the Kettlewick name (palette settled 09-23: oat/copper, devlog). Their playbook hand-checks: Present → VC cut
    (now also a filter), Export PDF in the sandbox, a removed slide after a re-render, the copy sheet,
    a Keynote paste, `/import` on a real deck. The design lane's sweep of the token descriptions
    still saying "blue" is theirs.
@@ -123,6 +123,7 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
 - 🔷 **BOSS's own playbook leads with IDEA-001** (a pre-`kind:` capability): tag the old IDEAs `kind: capability`, or write a `kind: venture` record for BOSS? (IDEA-129 task 9)
+- 🔷 **`boss board --open`?** The playbook and design have `--open`, the board only `--html`; one line. Offered 09-23, unanswered.
 - 🔷 **The maintainer message — what holds it?** Drafted 08-23, still unsent. No gating rule (09-23); a date by which it's sent is the open ask.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
@@ -160,6 +161,8 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Held — not decisions; each has its re-open condition
 
+- **IDEA-130 design beyond the screen** — held by Ajesh 09-23; re-open when they revisit the idea. First step on the table: BOSS's own conversation and CLI pages before any `src/design.js` change.
+- **The two watchlist markers `check:freshness` flags** — deliberately unstamped (targeted passes, logged); stamp only after a full sweep.
 - **IDEA-076 position within a rung** — re-open on an OBSERVED session, not a third statement.
 - **IDEA-075 the scaffold has no way down** — n=0; add *"anything BOSS gave you that you've stopped
   needing?"* to EVID-003's questions before building anything.

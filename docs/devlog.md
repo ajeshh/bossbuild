@@ -36,6 +36,43 @@ Present/PDF always in the brand's light scheme (Ajesh: brand colours, not black 
 - **Next:** BOSS's own Vision/Product still read IDEA-001 (a capability from before `kind:`); a records
   call for Ajesh. *Since you last shared it* stays an open question on IDEA-129.
 
+## 2026-09-23 — IDEA-130: the design playbook, beyond the screen (`5d22f3e`)
+
+Ajesh, reading `.boss/design.html`: the design space is built for UI projects; a chat product, an AI,
+a device or other tech has design too. They're right, and it was known: IDEA-073 A5 (*"UX means a GUI"*)
+was the one finding no shipped phase closed. Of the 17 chapters, about ten fit any surface; six (colour,
+type, space, icons, layout, components) are a screen's materials. Captured the surface table
+(conversation, CLI, API, device) and the render rule: *not your surface*, never *empty*.
+Asked whether to merge 073 and 130: no. 073 is shipped with a verified table; 130 carries A5 forward.
+- **Surprise:** half of the plan already existed. 073 P2 persists `shape` in `.boss/config.json`; the
+  design renderer just doesn't read it. Grepping 073 before planning would have caught it.
+- **Gate:** `[[IDEA-130]]` in 073 was refused as a dead citation (the pre-commit tree reads HEAD);
+  wrote the bare id.
+- **Next:** held by Ajesh until they revisit the idea. When it re-opens, start with BOSS's own conversation and CLI pages.
+
+## 2026-09-23 — the demo venture gets a warmer palette (`70d4a03`)
+
+Ajesh: the demo's pistachio green "doesn't feel alive or like a good marketing idea." The green was
+Kettlewick's own tokens, not the site's: sage ground, sage paper, sage rules, green-black text, one hue
+at one lightness, with the copper reading as rust against it. Went warm (oat `#F3ECE1`, cream
+`#FFFBF4`, brown-black `#2A1E17`, copper `#B84E12`). The first-choice copper `#C4561B` failed AA
+with white text on it (4.22), so the brightest one that passes shipped. DEC-004, BRAND accent, mark and
+STYLE_GUIDE follow the tokens; the demo is still rendered, not painted. The site freeze set today was
+waived by Ajesh for this one. **Left as it is, on purpose:** the board keeps BOSS's own blue-grey
+cards on any venture's ground (`src/board.js`, "the tool is the product"), so on the demo board the
+cards sit cool on warm. That's a product question if it's ever raised, not a demo one.
+
+## 2026-09-23 — docs process read; `covers:` taught to founders (`9bb475f`)
+
+Ajesh asked whether the way BOSS keeps its wiki, help and business docs current should improve, for
+BOSS and for founders. **Read:** BOSS's own three layers each have a mechanism (ids + one home per fact;
+`covers:`/`reviewed:` + `check:help` on hand prose; the playbook rendered from records). Founders get the
+record spine and the playbook, but §7 of `documentation.md` gave their user-facing docs advice with no
+way to find the page a change broke. **Landed:** a §7 paragraph teaching the `covers:` habit — no command,
+no founder has user docs yet. **Surprised:** I proposed stamping the two watchlist markers
+`check:freshness` flags; the build-craft log says twice they are unstamped on purpose (targeted passes,
+not sweeps). Not stamped. **Next:** `boss board --open` offered, unanswered.
+
 ## 2026-09-23 — IDEA-125/126: merges, shipped-text hygiene, and Ajesh's calls
 
 A second whole-BOSS assessment (code, shipped prompts, process) overlapped IDEA-121 almost entirely;
