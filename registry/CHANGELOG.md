@@ -80,6 +80,14 @@ rule above still applies to the whole section once it is stamped.
 > is gone; `/spec` now asks, for each feature that calls a model, which steps need it and which stay
 > plain code. `boss sync` says so, and your `docs/measure/` and `docs/ai-first.md` are still read.
 
+- **Shipped skills stop telling BOSS's history; `settings.json` writes are atomic (IDEA-126).** Nine
+  lines in six skills narrated how BOSS got there or cited its own `IDEA-010` — an id a founder's tree
+  has too. Each keeps its rule. `/design-tokens-init`'s content half and its three later guard offers
+  moved to `reference/` files read only when they apply (body 5,949 → 5,020 words). The five places
+  BOSS writes `.claude/settings.json` go through `writeFileAtomic`, which now retries a rename Windows
+  refuses while another process holds the file. A reported CRLF bug in the board's gist was checked
+  and is not one.
+
 - **`/measure` folds into `/health`; `/ai-first-init` retires into `/spec` (IDEA-125).** Both halves of
   the retention read were one question asked by two verbs; `/health` now plants the seam first (the
   order matters — its n<10 gate would otherwise stop a just-shipped founder before `created_at` lands),

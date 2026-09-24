@@ -3,7 +3,7 @@ id: IDEA-126
 type: idea
 kind: capability
 owner: Ajesh
-status: building
+status: shipped
 proof: none
 proof_note: each task names its own check — a grep that comes back empty, a test that fails on the old code, a word count
 gist: Three leftovers from the 2026-09-23 review. Shipped skills still tell BOSS's history and cite its internal ids. settings.json is written non-atomically. The board strips frontmatter with a regex blind to CRLF. And the longest skill carries every branch inline.
@@ -40,6 +40,12 @@ Ajesh: *"3,4,5 lets go."*
   twin on the unchanged code; the gist path downstream absorbs it. The test that would have guarded
   the fix passed on the old code, so neither shipped. The reviewer's claim was read from the regex,
   never run — the same shape as IDEA-121's "measure the gap before building the gate".
-- [ ] **The longest skill carries every branch inline.** `/design-tokens-init` is ~6k words; the
+- [x] **The longest skill carries every branch inline.** `/design-tokens-init` is ~6k words; the
   per-surface branches (web / CLI / agent / mobile) belong in `reference/` files read only on that
   branch. Check: body word count before and after, and the branches still reachable from step 1.
+  *Done 2026-09-23 — and the premise was half wrong. The surface branches are short and read on every
+  run; the weight was the content half (voice, terminology, cohort scoping — runs only once the style
+  guide has voice) and three guard offers that fire on later conditions. Those moved verbatim to
+  `reference/content.md` and `reference/guards.md`; steps 2–4 (V1 notes) condensed to one. Body
+  5,949 → 5,020 words. The cohort section stays: every run reads it, so moving it saves nothing — a
+  SKILL body only loads when the skill runs, and a reference file only pays off on runs that skip it.*

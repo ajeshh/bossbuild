@@ -352,65 +352,10 @@ the other field worth filling — it is what an editor shows on hover, and the a
    Inlining the map in CLAUDE.md (not just `DESIGN_TOKENS.md`) means the agent inherits the
    brand for free on every turn — the single most useful artifact for a Claude-Code-native scaffold.
 
-1b. **Inline the voice the same way — it's the same trick, and copy needs it more.** Once
-   `STYLE_GUIDE.md` has voice traits and a terminology list, add this block right underneath:
-
-   ```markdown
-   ## Voice (added by /design-tokens-init)
-
-   Voice is constant; tone shifts by context. Full table in `docs/design/STYLE_GUIDE.md`.
-
-   | trait | giving up |
-   |---|---|
-   | <trait 1> | <the tradeoff> |
-   | <trait 2> | <the tradeoff> |
-
-   Terminology — use the left column, never the right:
-   | use | never |
-   |---|---|
-   | <the word> | <the synonyms> |
-
-   When writing ANY user-facing string (button, error, empty state, confirm dialog,
-   system prompt, refusal message):
-   1. Errors say what to do next, not what failed.
-   2. Destructive confirms name the consequence, not "are you sure".
-   3. Empty states say what to do next, not "nothing here".
-   4. Use the terminology table. One word per concept.
-   ```
-
-   **Why this matters more for copy than for color:** the model reverts to the mean harder on
-   words than on values. Nobody has to prompt an LLM into writing *"Oops! Something went wrong."*
-   — that **is** the mean. It's the 47 blues, in sentences. And unlike a hex code there is no
-   regex for off-voice, so the guard-hook boundary that saves the token system does not transfer
-   here. **Terminology is the exception — it's a word list, so it's the one content rule a check
-   can actually enforce.** Everything else in this block is a filter, and worth shipping anyway.
-
-1c. **Cohort-scope the content half — do NOT hand everyone the full matrix** (the vetted source's required
-   modification). The token half of this skill is carefully cohort-aware and the content half must
-   be too, for the same reason: *a table filled in because it was asked for steers nothing.*
-
-   - **`first-product` / `vibe-coder-newbie` — TERMINOLOGY ONLY.** One table, the checkable one,
-     three rows max. **Defer voice and tone entirely** — say the section exists and that it's worth
-     doing once they've watched real users read their screens. Someone who hasn't shipped cannot yet
-     tell "plain over clever" from "friendly over formal," and asking them to decide produces a
-     confident-looking answer nobody consults. *"Pick the words for your two or three main things and
-     stay consistent. That's the whole job today."*
-   - **`eng-builder` / `returning-founder`** — offer the full set tersely; they've argued about a
-     terminology table before. *"Terminology, voice traits, tone-by-context. Want all three or just
-     the terms?"*
-   - **`vibe-virtuoso`** — lead with the mechanism: the terminology guard is checkable, voice/tone
-     are not, and here's why that asymmetry is real rather than a missing feature.
-   - **`domain-expert` — TONE FIRST, not terminology.** In a regulated or high-stakes domain the
-     load-bearing decision is how the product speaks when it's *uncertain or wrong* — hedging,
-     escalation language, what a refusal says. That outranks vocabulary consistency. Start there.
-   - **`non-tech-founder`** — plain language, one concrete example: *"if your app says 'client' in
-     one place and 'customer' in another, people notice and it reads as sloppy. Pick one."*
-   - **`indie-hacker`** — right-sized: terminology plus one voice trait. No matrix, no ceremony.
-
-   **The general rule this encodes:** ship the *checkable* content rule to everyone and the
-   *judgment-shaped* ones only to founders who have enough product to judge against. Content
-   discipline that arrives before there is copy to be inconsistent about is PRINCIPLE #2's premature
-   ceremony wearing a design-system hat.
+1b. **Once `STYLE_GUIDE.md` has voice traits or a terminology list, inline them into CLAUDE.md the
+   same way** — then scope that content half by cohort (terminology to everyone, voice and tone only to
+   founders with copy to judge). The block to paste, why copy needs it more than colour, and who gets
+   which half: [`reference/content.md`](reference/content.md). Skip it until the style guide has either.
 
 1d. **Write the component index — and the one rule that outranks it.** `DESIGN_TOKENS.md` governs
    *values*. The more expensive AI-UI failures are **component-shaped**: `Button` → `CTAButton` →
@@ -452,23 +397,14 @@ the other field worth filling — it is what an editor shows on hover, and the a
    source hash, and **supersedes this file rather than sitting beside it** — two definitions of a
    button is the trap that skill exists to refuse.
 
-   **This one is not cohort-scoped, and that follows the rule 1c just set:** ship the *checkable*
+   **This one is not cohort-scoped, and that follows the rule in 1b:** ship the *checkable*
    thing to everyone, cohort-scope only the judgment-shaped ones. An index is an index. What varies is
    how much you explain — SHOW cohorts get one walked example (*"you already have a Button; that's
    what this row is for"*); terse cohorts get the path and nothing else.
 
-2. The `design-tokens-loop` exit predicate now passes — loop closes.
-
-3. Going forward, `design-drift-loop` (V1) watches for raw hex codes appearing in source — **that
-   is all it watches; it's a single regex.** The component-shaped failures the catalog also names
-   (near-duplicate components, code growing linearly with screens) need `/design-library` at V1,
-   which reads every component into a manifest and can actually see them.
-
-4. **At V1, `/design-library` makes the system visible** — one self-contained HTML page with the
-   foundations, the rule sets, and every component in all five states, generated from the code so it
-   can't drift. That's the artifact a founder spot-checks against and a designer gets handed. It
-   **generates over `COMPONENTS.md`'s shape rather than introducing it**: same fields, plus a source
-   hash and a usage count the generator can compute and an author can't.
+2. The `design-tokens-loop` exit predicate now passes — loop closes. At V1, `design-drift-loop`
+   watches for raw hex in source (one regex, nothing more), and `/design-library` generates the
+   visible system over `COMPONENTS.md`'s shape — it sees the component-shaped failures this rung can't.
 
 ## Rules
 
@@ -520,41 +456,11 @@ the other field worth filling — it is what an editor shows on hover, and the a
   registers it in `.claude/settings.json` in one move. If no, **drop it and don't re-ask** — the tokens file alone is a real
   choice, and `boss hooks` will still list it whenever they want it.
 
-- **Offer `component-reuse-guard` when the index has real rows.** The index made *reuse first*
-  checkable; this is what makes it a **boundary**, and it closes the one honest weakness of the index
-  itself — nothing noticed a component written without consulting it.
-
-  > *"Your index has components in it now. Want `component-reuse-guard` on? When a component gets
-  > written that isn't in the index, it hands Claude the rows it should have compared against and
-  > asks the actual question — reuse, adjust, or new? It fires once per new component, never on an
-  > edit to one you already have, and it stays silent until this index exists."*
-
-  **Why it earns a hook when a prompt rule doesn't:** writing a new file is easier for a generating
-  model than reading an existing one and widening it, so *create* is the path of least resistance and
-  the default silently lands there. The cost arrives later and one reasonable decision at a time —
-  `Button`, `CTAButton`, `PrimaryButton`. Same JIT gate and same drop-it-if-declined rule as the
-  others.
-
-- **Offer `ui-boundary-guard` when the layout becomes layered** — the day a `features/` directory
-  appears beside `ui/` or `components/`. The one-way import rule in CLAUDE.md is a filter until
-  then; this is its boundary, and it reads paths rather than syntax so it needs no stack-specific
-  linter:
-
-  > *"You've got `features/` next to `ui/` now. Want `ui-boundary-guard` on? When a write adds an
-  > import that points the wrong way — a system component reaching into a feature, a feature reaching
-  > into another's internals — it names the crossing and the usual fix. Silent on every import that
-  > flows down."*
-
-- **Offer the terminology guard the same way — but only once a terminology table has real rows.**
-  Voice and tone can't be checked by a regex and this hook doesn't try. **Terminology can**, because
-  it's a word list:
-
-  > *"You've got a terminology table now. Want `content-terminology-guard` on? It watches the
-  > strings your UI actually shows and flags a word the table rules out — `org` when you decided on
-  > `team`. Copy only; your variable names are your business."*
-
-  Same JIT gate as the token guard: **a skeleton table is not a decision**, so the hook stays silent
-  until at least one real row exists. Same rule if they decline — drop it, don't re-ask.
+- **Offer the other three guards later, each once, when its condition first holds** — never before,
+  never re-asked after a no: `component-reuse-guard` when `COMPONENTS.md` has real rows,
+  `ui-boundary-guard` the day a `features/` directory appears beside `ui/` or `components/`,
+  `content-terminology-guard` when the terminology table has a real row. What to say for each, and
+  why each earns a hook: [`reference/guards.md`](reference/guards.md).
 - **JIT — only scaffold when needed.** Don't init tokens before there's UI to use them. The
   loop's entry predicate is the trigger; don't pre-empt it.
 - **Override is recorded, not blocked.** A founder skipping this skill is legitimate; record
