@@ -10,7 +10,7 @@
      fetches the live page and reads this; without it the only version on the page is prose
      ("Where this actually is: v0.237.0") and a check would be scraping a sentence someone is
      free to reword. Every page carries it, so any URL answers the question. -->
-<meta name="generator" content="BOSS 0.326.0" />
+<meta name="generator" content="BOSS 0.327.0" />
 <link rel="canonical" href="https://oyeboss.build/whats-new" />
 <link rel="alternate" type="application/atom+xml" title="BOSS — what's new" href="feed.xml" />
 <meta property="og:type" content="website" />
@@ -99,6 +99,10 @@
       <div class="rail">▸<span>releases</span></div>
       <div class="body">
         <ol class="releases">
+      <li id="v0-327-0">
+        <div class="rel"><span class="ver">v0.327.0</span><span class="when">2026-09-23</span></div>
+        <p>Run <code>boss sync</code> — BOSS's hooks had been failing silently in any project whose <code>package.json</code> says <code>&quot;type&quot;: &quot;commonjs&quot;</code>, and sync brings the fix. <code>/measure</code> is now <code>/health</code>'s first run; <code>/ai-first-init</code> is gone, and <code>/spec</code> asks per feature which steps need the model. <code>/ship</code> checks the live thing answers and asks who hears if it breaks at 3am; your agents now say what they didn't check. After an MVP unlock, delete <em>&quot;This project is in Quickstart mode&quot;</em> from your <code>CLAUDE.md</code>.</p>
+      </li>
       <li id="v0-326-0">
         <div class="rel"><span class="ver">v0.326.0</span><span class="when">2026-09-14</span></div>
         <p>the ten opt-in hooks no longer land in your <code>.claude/hooks/</code> at scaffold, switched off, with a JSON block to copy by hand. <code>boss hooks</code> lists them; <code>boss hooks enable &lt;name&gt;</code> copies the file and registers it in one move; <code>boss hooks disable &lt;name&gt;</code> reverses both. A project that already has the files keeps them, and <code>boss sync</code> keeps enabled ones current.</p>
@@ -143,10 +147,6 @@
       <li id="v0-315-0">
         <div class="rel"><span class="ver">v0.315.0</span><span class="when">2026-09-12</span></div>
         <p>the <em>task hygiene</em> moment (v0.293.0) works again on every current model. It used to read your session's <code>TodoWrite</code> list; Claude Code 2.1.268 stopped offering that tool on Opus 4.8+, Sonnet 4.7+ and the Claude 5 family, so the moment had been silent for two weeks and could not say so. It now fires on time alone — the session has run 45+ minutes and nothing in <code>.claude/rules/feature-context.md</code> or <code>docs/devlog.md</code> has moved for that stretch — and hands the judgment (&quot;is anything only in this chat?&quot;) to the model, which can see the chat. Writing something down still silences it.</p>
-      </li>
-      <li id="v0-314-0">
-        <div class="rel"><span class="ver">v0.314.0</span><span class="when">2026-09-12</span></div>
-        <p><code>boss board --html</code> renders with no tracked ALL-CAPS labels, nothing under 12px, no coloured tab down the side of every card, and dimming by colour rather than opacity. If you installed BOSS as a Claude Code plugin, the manifest version finally moves again (see below).</p>
       </li>
     </ol>
         <p class="small">
@@ -193,7 +193,7 @@
           <code>src/update.js</code> and you can read them.
         </p>
         <p class="small">
-          <strong>Where this actually is:</strong> v0.326.0, built in the open and used daily by its
+          <strong>Where this actually is:</strong> v0.327.0, built in the open and used daily by its
           author. Very few other people have used it yet. BOSS is its own first project: it runs its own
           modes, files its own ideas, and its conscience nudges the person building it. If that sounds
           like a reason to wait, that’s a fair read.

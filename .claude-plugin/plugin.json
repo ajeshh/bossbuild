@@ -1,7 +1,7 @@
 {
   "name": "boss",
   "displayName": "BOSS — Build Out Solid Stuff",
-  "version": "0.326.0",
+  "version": "0.327.0",
   "description": "BOSS is the conscience that keeps you honest while you build fast. It runs inside Claude Code, sets a project up with only the structure it has earned, says one thing when you're drifting, and stays quiet the rest of the time. This plugin is the front door: it puts `boss` on your PATH and orients you; the full surface lives in your project after `boss new` or `boss adopt`.",
   "author": {
     "name": "Ajesh Shah",

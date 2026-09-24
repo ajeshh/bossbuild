@@ -27,6 +27,8 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+## 0.327.0 — 2026-09-23
+
 > **For you:** Run `boss sync` — BOSS's hooks had been failing silently in any project whose
 > `package.json` says `"type": "commonjs"`, and sync brings the fix. `/measure` is now `/health`'s first
 > run; `/ai-first-init` is gone, and `/spec` asks per feature which steps need the model. `/ship` checks
