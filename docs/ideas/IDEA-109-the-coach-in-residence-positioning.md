@@ -96,3 +96,15 @@ Mom-Test: how their cohort loses weeks today; one commitment ask. Not a feature.
 
 Capture; build nothing. Re-open the build side when one incubator conversation has happened and
 says what they would need to see.
+
+## Capture log
+
+- **2026-09-19 — the paper trail as résumé, started as a folder.** Ajesh is building a personal site
+  (ajesh.net) and wants BOSS on it as case studies plus one overarching piece, the argument being that
+  five hats together (PM · designer · project manager · entrepreneur · engineer) are what made BOSS
+  possible, with the humane lens as the tiebreaker. Lives **outside this tree** at
+  `~/Projects/ajesh-net/` (its own repo; will become its own Claude project) — `README.md` there
+  holds the study list, the exhibits to generate from this tree, and the do-not-inflate list.
+  Classification settled: LinkedIn *Experience* (not Projects); the canvas as a separate Project;
+  the essay under *Writing* on the site, not under BOSS. Carries item 2 of *What carries the
+  acqui-hire shape* above. Nothing in this tree changes for it.
