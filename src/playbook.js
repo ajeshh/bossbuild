@@ -204,22 +204,31 @@ function section(text, heading) {
 }
 
 // Markdown block → HTML for the small set a record body uses: paragraphs, `- ` lists, `_italic_`
-// helper lines. Every line goes through `inline` (escaped first).
+// helper lines. Consecutive lines are ONE paragraph and a line under a list item continues it —
+// records are hard-wrapped at ~100 columns, and a line per <p> shattered them (and split any
+// emphasis that crossed the wrap into raw asterisks; IDEA-129). `inline` runs on the joined text.
 export function blockMd(md) {
   const lines = String(md || '').replace(/\r\n?/g, '\n').split('\n');
   const out = [];
   let list = [];
-  const flush = () => { if (list.length) { out.push(`<ul>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</ul>`); list = []; } };
+  let para = [];
+  const flushPara = () => {
+    if (!para.length) return;
+    const t = para.join(' ');
+    out.push(/^_[^_].*_$/.test(t) ? `<p class="helper">${inline(t.slice(1, -1))}</p>` : `<p>${inline(t)}</p>`);
+    para = [];
+  };
+  const flushList = () => { if (list.length) { out.push(`<ul>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</ul>`); list = []; } };
   for (const raw of lines) {
     const l = raw.trim();
-    if (!l) { flush(); continue; }
+    if (!l) { flushPara(); flushList(); continue; }
     const li = l.match(/^[-*]\s+(.*)$/);
-    if (li) { list.push(li[1]); continue; }
-    flush();
-    if (/^_.*_$/.test(l)) out.push(`<p class="helper">${inline(l.slice(1, -1))}</p>`);
-    else out.push(`<p>${inline(l)}</p>`);
+    if (li) { flushPara(); list.push(li[1]); continue; }
+    if (list.length && !para.length) { list[list.length - 1] += ' ' + l; continue; }
+    flushList();
+    para.push(l);
   }
-  flush();
+  flushPara(); flushList();
   return out.join('');
 }
 
@@ -228,17 +237,25 @@ export function blockMd(md) {
 // with (`kind: venture`, written by /boss, one per project) or a capability ("add X", `kind: capability`,
 // written by /idea, many). The Vision chapter renders the venture; picking the newest file rendered
 // whatever feature was captured last. Rank: `kind: venture` · then a record carrying `motivation:` at
-// all (the pre-field /boss template always wrote it) · then newest, so nothing older regresses.
+// all (the /boss template has written it since 2026-09-11) · then the OLDEST unmarked record: before
+// either field, /boss wrote the venture at spin-up and every later IDEA was a feature (IDEA-129).
 export function readIdea(projectDir, canvasId) {
   const dir = join(projectDir, 'docs', 'ideas');
   if (!existsSync(dir)) return null;
   const m = String(canvasId || '').match(/^(IDEA-\d+)/i);
   let names = readdirSync(dir).filter((n) => /^IDEA-\d+.*\.md$/i.test(n) && !/-canvas\.md$/i.test(n));
-  if (m) { const mine = names.filter((n) => n.toUpperCase().startsWith(m[1].toUpperCase() + '-') || n.toUpperCase() === m[1].toUpperCase() + '.md'); if (mine.length) names = mine; }
+  let paired = false;
+  if (m) { const mine = names.filter((n) => n.toUpperCase().startsWith(m[1].toUpperCase() + '-') || n.toUpperCase() === m[1].toUpperCase() + '.md'); if (mine.length) { names = mine; paired = true; } }
   if (!names.length) return null;
-  const rank = (fm) => (String(fm.kind || '').trim().toLowerCase() === 'venture' ? 2 : 'motivation' in fm ? 1 : 0);
-  const pick = names.map((n) => { const p = join(dir, n); let fm = {}; try { fm = frontmatter(readFileSync(p, 'utf8')); } catch { /* keep going */ } return { n, p, rank: rank(fm), when: Date.parse(fm.created || '') || statSync(p).mtimeMs }; })
-    .sort((a, b) => b.rank - a.rank || b.when - a.when)[0];
+  // `kind: capability` says in so many words it is not the venture — never fall back to one. A
+  // project whose IDEAs are all capabilities (BOSS's own: its venture is the canvas) gets the
+  // Vision holes, not its newest feature as the headline (IDEA-129). The canvas pairing still wins.
+  const kindOf = (fm) => String(fm.kind || '').trim().toLowerCase();
+  const rank = (fm) => (kindOf(fm) === 'venture' ? 2 : 'motivation' in fm ? 1 : 0);
+  const pick = names.map((n) => { const p = join(dir, n); let fm = {}; try { fm = frontmatter(readFileSync(p, 'utf8')); } catch { /* keep going */ } return { n, p, rank: rank(fm), capability: kindOf(fm) === 'capability', when: Date.parse(fm.created || '') || statSync(p).mtimeMs }; })
+    .filter((x) => paired || !x.capability)
+    .sort((a, b) => b.rank - a.rank || (a.rank ? b.when - a.when : a.when - b.when))[0];
+  if (!pick) return null;
   try {
     const text = readFileSync(pick.p, 'utf8');
     const fm = frontmatter(text);
@@ -1063,6 +1080,8 @@ function playbookJs(brand) {
   function filterPage() {
     const inCut = new Set(cut === 'all' ? blocks.map((b) => b.id) : (cuts[cut] || []));
     blocks.forEach((b) => { b.hidden = !inCut.has(b.id); });
+    /* a tier heading never stands over an empty group (IDEA-129) */
+    $$('.tier-title').forEach((t) => { const g = t.nextElementSibling; t.hidden = !!(g && $$('.block', g).length && $$('.block', g).every((b) => b.hidden)); });
     $$('.chapter').forEach((ch) => { const any = $$('.block:not(.pointer)', ch).some((b) => !b.hidden); ch.classList.toggle('cut-empty', !any); });
     $$('.rail a').forEach((a) => { const ch = $(a.getAttribute('href')); a.classList.toggle('cut-out', !!(ch && ch.classList.contains('cut-empty'))); });
     const note = $('.cut-note', present); if (note) note.textContent = cut === 'all' ? '' : 'showing the ' + NAMES[cut] + ' \u2014 ' + inCut.size + ' block' + (inCut.size === 1 ? '' : 's') + '; All shows the page whole';

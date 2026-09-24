@@ -33,6 +33,12 @@ rule above still applies to the whole section once it is stamped.
 > the live thing answers and asks who hears if it breaks at 3am; your agents now say what they didn't
 > check. After an MVP unlock, delete *"This project is in Quickstart mode"* from your `CLAUDE.md`.
 
+- **The playbook reads records the way they're written.** A paragraph wrapped across lines in your
+  records rendered as a stack of broken lines, and emphasis that crossed a wrap showed raw asterisks;
+  it's one paragraph now. With no venture record, the Vision and Product chapters led with whatever
+  feature you captured last; an IDEA marked `kind: capability` is never taken for the venture, and an
+  older project falls back to the record `/boss` wrote first. In a presentation cut, a sub-heading no
+  longer stands over a group the cut left out. (IDEA-129)
 - **The demo venture wears a warmer palette.** Kettlewick's sage ground, sage cards and green-black
   text sat at one hue and one lightness, so nothing on the page drew the eye and the copper accent read
   as rust. Its tokens are now oat and cream under brown-black, with a brighter copper (`#B84E12`, still

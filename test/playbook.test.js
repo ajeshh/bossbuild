@@ -331,6 +331,23 @@ test('with no canvas, readIdea picks the kind: venture record over a newer capab
   assert.equal(readIdea(dir2).id, 'IDEA-001', 'pre-field project: the record /boss wrote, by its motivation: line');
 });
 
+test('readIdea never takes a kind: capability as the venture; the canvas pairing still wins (IDEA-129)', () => {
+  const bare = (id, extra, created) => `---\nid: ${id}\ntype: idea\nowner: product-lead\nstatus: seedling\ngist: x\n${extra}created: ${created}\n---\n\n# ${id}\n`;
+  const dir = project({
+    ...stamp(),
+    'docs/ideas/IDEA-001-a.md': bare('IDEA-001', 'kind: capability\n', '2026-08-01'),
+    'docs/ideas/IDEA-002-b.md': bare('IDEA-002', 'kind: capability\n', '2026-09-01'),
+  });
+  assert.equal(readIdea(dir), null, 'all capabilities: no venture, so the Vision holes');
+  assert.equal(readIdea(dir, 'IDEA-002-canvas').id, 'IDEA-002', 'a canvas paired to a capability still reads it');
+  const old = project({
+    ...stamp(),
+    'docs/ideas/IDEA-001-app.md': bare('IDEA-001', '', '2026-06-01'),
+    'docs/ideas/IDEA-002-feature.md': bare('IDEA-002', '', '2026-07-01'),
+  });
+  assert.equal(readIdea(old).id, 'IDEA-001', 'pre-field project, no motivation: the spin-up record, not the newest feature');
+});
+
 test('eight chapters, each line a substring of a record on disk or absent — BOSS writes no chapter line', () => {
   const files = {
     ...stamp(),
@@ -374,6 +391,12 @@ test('the Design link renders only when .boss/design.html is on disk, and is rel
   const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
   assert.ok(html.includes('href="design.html#persona-dee"'));
   assert.doesNotMatch(html, /https:\/\/claude\.ai/);
+});
+
+test('blockMd: a hard-wrapped paragraph is one <p>, and emphasis across the wrap renders (IDEA-129)', () => {
+  assert.equal(blockMd('Ajesh said: *"improve how we do it for\nshipped."* Then more.\n\nNext para.'), '<p>Ajesh said: <em>&quot;improve how we do it for shipped.&quot;</em> Then more.</p><p>Next para.</p>');
+  assert.equal(blockMd('- **A.** first line\n  wraps here\n- second'), '<ul><li><strong>A.</strong> first line wraps here</li><li>second</li></ul>');
+  assert.equal(blockMd('_a helper that\nwraps_'), '<p class="helper">a helper that wraps</p>');
 });
 
 test('blockMd: the IDEA doc\'s bullets and helper line render, escaped', () => {

@@ -5,6 +5,7 @@ owner: product-lead
 status: shipped (FEAT-026..029, all four slices, 2026-09-13; FEAT-035/036/039 grew from it)
 shipped_on: 2026-09-13
 promoted_to: FEAT-026, FEAT-027, FEAT-028, FEAT-029, FEAT-036
+spun_to: IDEA-129
 gist: Everything a founder has uncovered about the venture — the why, the people, the canvas as boxes, the rivals, the evidence, the decisions — rendered as one beautifully designed, on-brand, single-file HTML space; every block deep-linkable and copyable into a deck. A view over records, never a document; holes and the evidence ledger survive the polish. Absorbs the living dashboard (065) and the case + deck (104).
 proof: none
 proof_note: Captured with a design and a prototype plan, not built. If it earns a build, the path is `src/playbook.js` (the fourth use of the `boss board --html` pattern) and the first slice is the canvas-as-boxes page alone.
@@ -647,3 +648,9 @@ picture? Write the reactions into the capture log below.
   is answered there — a guaranteed DTCG `tokens.json`. Decided the same day: **one renderer, three
   spaces** (playbook · design · board), each its own file and URL, joined by a family bar in the top
   bar; prototype v1.1 carries it and chapter 11 links across. Nothing else here changes.
+- 2026-09-23 — **found on the rendered demo (VC cut):** the tier title *Also on the field* stays on the
+  page while its only block (`competition-watch`) is left out of the cut, so a heading sits over nothing
+  (`src/playbook.js:728`). A task, not new scope. Same read, as open questions for Ajesh ("push it
+  further"): a cover page · headlines from a field chosen for the job, not the first sentence · a
+  provenance line for the room and a separate one for the founder · pictures from counts already on the
+  page (evidence-by-cell, health 9→6→1) · *since you last shared it*.
