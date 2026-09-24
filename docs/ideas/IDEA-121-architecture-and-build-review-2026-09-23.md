@@ -109,7 +109,10 @@ projects get the trim on `boss sync --apply`.
   entries ~300 chars; history into topic files.
 - [ ] Commit subjects median 104 / p90 323 chars — ≤72, rationale in the CHANGELOG.
 - [ ] CHANGELOG 1.14MB = 30% of the npm package. Ship a recent-N file.
-- [ ] Untested: registry, conscience pause/mute, help-html, insights, map. registry test would have caught tier 1.
+- [x] Untested: registry, conscience pause/mute, help-html, insights, map. registry test would have caught tier 1.
+  *Done 2026-09-23 for registry (`test/registry.test.js`, under a temp BOSS_HOME), pause/mute end to
+  end through the hook (`test/conscience-pause-mute.test.js`) and insights (`test/insights.test.js`).
+  map gained coverage via the adopt test's fold line; help-html is still only exercised by hand.*
 - [ ] Readers duplicated across board/design/playbook (two readDecisions, five esc); playbook's revisit-due
   ignores status and uses UTC (`playbook.js:498` vs `records.js:407`). *Revisit half fixed 2026-09-23:
   one `revisitDue()` in `src/frontmatter.js` read by both (`test/revisit-due.test.js`); the
