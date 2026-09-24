@@ -13,6 +13,7 @@
 // sync still updates those files, `enable` still registers, `disable` still unregisters.
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { writeFileAtomic } from './atomic.js';
 import { join, dirname } from 'node:path';
 import { STAGES_DIR, STAGE_ORDER } from './paths.js';
 import { readStageManifest } from './scaffold.js';
@@ -93,7 +94,7 @@ export function enableHook(projectDir, name, layers) {
     }
   }
   mkdirSync(dirname(settingsPath(projectDir)), { recursive: true });
-  writeFileSync(settingsPath(projectDir), JSON.stringify(s, null, 2) + '\n');
+  writeFileAtomic(settingsPath(projectDir), JSON.stringify(s, null, 2) + '\n');
   return { file, registered };
 }
 
@@ -107,7 +108,7 @@ export function disableHook(projectDir, name) {
     if (kept.length) s.hooks[event] = kept; else delete s.hooks[event];
   }
   if (s.hooks && !Object.keys(s.hooks).length) delete s.hooks;
-  if (unregistered) writeFileSync(settingsPath(projectDir), JSON.stringify(s, null, 2) + '\n');
+  if (unregistered) writeFileAtomic(settingsPath(projectDir), JSON.stringify(s, null, 2) + '\n');
   const dest = join(projectDir, '.claude', 'hooks', `${name}.js`);
   const removed = existsSync(dest);
   if (removed) rmSync(dest);

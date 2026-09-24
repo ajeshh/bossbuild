@@ -11,6 +11,7 @@ import { stillDeferred, newlyEarned, markLaidDown } from './earned.js';
 import { readLadder, assess } from './ladder.js';
 import { provenance, recordManaged, backupManaged, readLedger } from './managed.js';
 import { isoDay } from './clock.js';
+import { writeFileAtomic } from './atomic.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
 // canonical current stage id by its level prefix. Returns undefined if it
@@ -706,7 +707,7 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
   if (plan.settings && plan.settings.changed) {
     const dest = join(projectDir, plan.settings.rel);
     mkdirSync(dirname(dest), { recursive: true });
-    writeFileSync(dest, JSON.stringify(plan.settings.merged, null, 2) + '\n');
+    writeFileAtomic(dest, JSON.stringify(plan.settings.merged, null, 2) + '\n');
     written.push({ kind: 'settings', name: 'settings.json', rel: plan.settings.rel });
   }
 

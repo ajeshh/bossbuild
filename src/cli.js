@@ -2,6 +2,7 @@ import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, basename, sep } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from './paths.js';
+import { writeFileAtomic } from './atomic.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
@@ -303,7 +304,7 @@ function cmdAdopt(args) {
   if (settings && settings.changed) {
     const dest = join(targetDir, settings.rel);
     mkdirSync(join(targetDir, '.claude'), { recursive: true });
-    writeFileSync(dest, JSON.stringify(settings.merged, null, 2) + '\n');
+    writeFileAtomic(dest, JSON.stringify(settings.merged, null, 2) + '\n');
   }
 
   // 5. Register as a normal (not self-hosted) project — rides the usual sync loop.

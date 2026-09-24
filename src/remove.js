@@ -22,6 +22,7 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync, rmSync, statSync, mkdirSync, cpSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { STAGES_DIR, BOSS_HOME } from './paths.js';
+import { writeFileAtomic } from './atomic.js';
 import { sameAsTemplate, readStageManifest } from './scaffold.js';
 import { hookKey } from './sync.js';
 
@@ -271,7 +272,7 @@ export function applyRemove(projectDir, plan, opts = {}) {
     try {
       if (plan.settings.drop) { rmSync(abs, { force: true }); done.push(`${plan.settings.rel} (removed — BOSS wrote it and you never changed it)`); }
       else {
-        writeFileSync(abs, JSON.stringify(plan.settings.merged, null, 2) + '\n');
+        writeFileAtomic(abs, JSON.stringify(plan.settings.merged, null, 2) + '\n');
         done.push(`${plan.settings.rel} (${plan.settings.removed} BOSS hook registration(s) removed)`);
       }
     } catch { /* skip */ }

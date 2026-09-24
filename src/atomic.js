@@ -18,11 +18,20 @@ const STALE_MS = 10_000;
 const WAIT_MS = 5_000;
 const sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 
+// On Windows a rename over a file another process holds open (Claude Code reading settings.json)
+// fails with EPERM/EBUSY for a moment; a few short retries ride that out.
+const RETRY = new Set(['EPERM', 'EBUSY', 'EACCES']);
+
 export function writeFileAtomic(file, data) {
   const tmp = `${file}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
   try {
     writeFileSync(tmp, data);
-    renameSync(tmp, file);
+    for (let i = 0; ; i++) {
+      try { renameSync(tmp, file); break; } catch (e) {
+        if (!RETRY.has(e.code) || i >= 5) throw e;
+        sleep(20 * (i + 1));
+      }
+    }
   } catch (e) {
     try { unlinkSync(tmp); } catch { /* never written */ }
     throw e;
