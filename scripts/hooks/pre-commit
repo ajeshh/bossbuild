@@ -10,9 +10,9 @@
 //
 // Skip once with `git commit --no-verify`. Turned on per clone with `npm run hooks`.
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readdirSync, rmdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, sep } from 'node:path';
 
 // Inside a hook git exports GIT_INDEX_FILE (and, for some commits, GIT_DIR / GIT_WORK_TREE). Reading
 // the staged index needs them; making a worktree and running tests in it must NOT see them, or the
@@ -31,8 +31,10 @@ try {
   gitClean('worktree', 'add', '--detach', '--quiet', dir, 'HEAD');
   git('checkout-index', '--all', '--force', `--prefix=${dir}/`);
   // Files deleted in the index still sit in the HEAD checkout; remove them so the test sees the commit.
+  // And the folders they leave empty: a retired skill's empty `skills/<name>/` still reads as a skill.
   for (const f of git('diff', '--cached', '--name-only', '--diff-filter=D').split('\n').filter(Boolean)) {
     rmSync(join(dir, f), { force: true });
+    for (let d = dirname(join(dir, f)); d.startsWith(dir + sep) && readdirSync(d).length === 0; d = dirname(d)) rmdirSync(d);
   }
   const t0 = Date.now();
   const r = spawnSync('npm', ['run', 'test:ci', '--silent'], { cwd: dir, env: cleanEnv, encoding: 'utf8', shell: process.platform === 'win32' });
