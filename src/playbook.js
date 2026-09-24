@@ -950,9 +950,9 @@ function coverBlock(data) {
   const feats = data.feats || [];
   const shipped = feats.filter((f) => /^shipped/i.test(f.status || '')).length;
   const stat = (n, label) => `<div class="stat"><b class="tab">${n}</b><span>${label}</span></div>`;
-  const body = `<div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>`
+  const body = `<div class="cover-body"><div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>`
     + `<div class="stats">${stat(`${ledger.backed}<small> / ${ledger.live}</small>`, 'canvas cells backed by graded evidence')}${stat(ledger.signals, `signal${ledger.signals === 1 ? '' : 's'}${ledger.signals ? ` · top <em>${esc(ledger.topOverall)}</em>` : ''}`)}${stat(shipped, `feature${shipped === 1 ? '' : 's'} shipped${feats.length > shipped ? ` · ${feats.length - shipped} not yet` : ''}`)}</div>`
-    + `<div class="backed"><p class="backed-k">The canvas, by what backs each cell</p><div class="tiles">${tiles}</div><div class="legend">${legend}</div></div>`;
+    + `<div class="backed"><p class="backed-k">The canvas, by what backs each cell</p><div class="tiles">${tiles}</div><div class="legend">${legend}</div></div></div>`;
   return `<section class="chapter cover-ch" id="cover-ch">${block({ id: 'cover', title: 'At a glance', cls: 'cover', body, src: 'counted from the canvas, docs/evidence and the FEAT records' })}</section>`;
 }
 
@@ -1042,16 +1042,20 @@ const PLAYBOOK_CSS = `
   .cover-ch { margin-top: 0; padding-top: 0; border-top: 0; } .block.cover { padding: 28px 30px 16px; } .block.cover .head { display: none; }
   .cover-id { display: flex; align-items: center; gap: 18px; } .cover-mark { width: 64px; height: 64px; object-fit: contain; border-radius: 12px; }
   .cover-name { font-family: var(--display); font-size: clamp(32px, 5vw, 52px); line-height: 1.05; margin: 0; } .cover-tag { margin: 6px 0 0; font-size: 18px; color: var(--ink-2); }
-  .block.cover .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 22px; } .block.cover .stat { border-top: 2px solid var(--accent); padding-top: 8px; } .block.cover .stat b { display: block; font-family: var(--display); font-size: 34px; font-weight: 400; line-height: 1.1; } .block.cover .stat small { font-size: 18px; color: var(--muted); } .block.cover .stat span { font-size: 13px; color: var(--muted); }
+  .cover-body .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 22px; } .cover-body .stat { border-top: 2px solid var(--accent); padding-top: 8px; } .cover-body .stat b { display: block; font-family: var(--display); font-size: 34px; font-weight: 400; line-height: 1.1; } .cover-body .stat small { font-size: 18px; color: var(--muted); } .cover-body .stat span { font-size: 13px; color: var(--muted); }
   .backed-k { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
   .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; } .block .body .tiles + .legend { margin-top: 10px; }
   .tile { display: flex; align-items: flex-end; min-height: 52px; padding: 7px 9px; border-radius: 6px; border: 1px solid transparent; font-size: 12.5px; line-height: 1.25; color: var(--ink); text-decoration: none; }
   .t-commitment { background: var(--accent); color: var(--accent-ink); } .t-observed-behavior { background: color-mix(in srgb, var(--accent) 55%, var(--paper)); } .t-stated-pain { background: color-mix(in srgb, var(--accent) 22%, var(--paper)); }
   .t-asserted { background: transparent; border-color: var(--rule); } .t-hole { background: transparent; border: 1px dashed var(--hole); color: var(--hole); } .t-dormant { background: transparent; border: 1px dotted var(--rule); color: var(--muted); }
   .block.flash { outline: 2px solid var(--accent); outline-offset: 3px; transition: outline-color .6s; }
+  .cover-body { font-family: var(--body); font-size: 15px; line-height: 1.4; } .sl.cover .sl-title { display: none; } .sl.cover .sl-body { overflow: hidden; }
+  /* a deck keeps its colours on paper: the print dialog drops backgrounds unless told not to, and the
+     grade tiles and the accent are information, not decoration (IDEA-129) */
+  .deck, .printdeck { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .legend i { border: 1px solid transparent; } .legend i.t-asserted { border-color: var(--ink-2); } .legend i.t-hole { border: 1px dashed var(--hole); } .legend i.t-dormant { border: 1px dotted var(--muted); }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); } .legend .key { display: inline-flex; align-items: center; gap: 6px; } .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; } .legend b { color: var(--ink-2); font-weight: 500; }
-  @media (max-width: 640px) { .block.cover .stats { grid-template-columns: 1fr; } .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .cover-body .stats { grid-template-columns: 1fr; } .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .block.long:not(.open) .body { max-height: 380px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
   .block .more { align-self: flex-start; margin: 8px 0 2px; padding: 3px 9px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12px; color: var(--ink-2); background: transparent; } .block .more:hover { border-color: var(--accent); color: var(--ink); }
   @media print {
@@ -1185,7 +1189,7 @@ function playbookJs(brand) {
 
   let deckEl = null, cur = 0;
   const LEDGER = $('.ledger').innerText;
-  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : ''); const body = $('.body', b).cloneNode(true); $$('.actions', body).forEach((x) => x.remove()); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(BRAND) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '</div>'); /* the room gets the grade, not the file path — the page keeps it (IDEA-129) */ return sl; }
+  function slide(b) { const sl = document.createElement('div'); sl.className = 'sl ' + (b.classList.contains('hole') ? 'hole' : b.classList.contains('dormant') ? 'dormant' : '') + (b.classList.contains('cover') ? ' cover' : ''); const body = $('.body', b).cloneNode(true); $$('.actions', body).forEach((x) => x.remove()); body.className = 'sl-body'; sl.innerHTML = '<div class="eyebrow"><span class="wm">' + esc(BRAND) + '</span>' + esc((b.closest('.chapter') && $('.label', b.closest('.chapter'))) ? $('.label', b.closest('.chapter')).innerText : '') + '</div><div class="sl-title">' + esc(b.dataset.title) + '</div>'; sl.appendChild(body); sl.insertAdjacentHTML('beforeend', '<div class="sl-foot">' + ($('.chip', b) ? $('.chip', b).outerHTML : '') + '</div>'); /* the room gets the grade, not the file path — the page keeps it (IDEA-129) */ return sl; }
   function openDeck(i, block) {
     let l = list();
     if (block) { let j = l.indexOf(block); if (j < 0) { setCut('all'); l = list(); j = l.indexOf(block); } cur = Math.max(0, j); } else cur = i;
