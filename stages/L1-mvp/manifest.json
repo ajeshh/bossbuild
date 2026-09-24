@@ -82,9 +82,14 @@
     "ai-failure-states",
     "evals"
   ],
+  "uiBuilt": [
+    "design-tokens-init",
+    "ux-check"
+  ],
   "earned": {
     "postLaunch": "shipped",
-    "aiMediated": "llm-in-source"
+    "aiMediated": "llm-in-source",
+    "uiBuilt": "ui-in-source"
   },
   "loops": [
     "spec-loop",

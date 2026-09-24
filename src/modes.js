@@ -106,6 +106,7 @@ export function loadModes() {
         // removed or disabled — they install, they run, they're one flag away.
         postLaunch: m.postLaunch || [],
         aiMediated: m.aiMediated || [],
+        uiBuilt: m.uiBuilt || [],
         earned: m.earned || {},
         // Skills that are not about building the founder's company — BOSS's own upkeep
         // (`/boss-sync`, `/feedback`) and the verbs that END something

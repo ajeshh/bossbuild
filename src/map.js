@@ -131,13 +131,16 @@ function renderMap(projectDir, stamp, opts = {}) {
     if (later.length) {
       // One fold line per reason, so "after you ship" and "when the app calls a model" don't blur.
       const ai = new Set(mode.aiMediated || []);
+      const ui = new Set(mode.uiBuilt || []);
       const earned = later.filter((s) => earnedNow.has(s));
-      const afterShip = later.filter((s) => !ai.has(s) && !earnedNow.has(s));
+      const afterShip = later.filter((s) => !ai.has(s) && !ui.has(s) && !earnedNow.has(s));
       const onModel = later.filter((s) => ai.has(s) && !earnedNow.has(s));
+      const onScreen = later.filter((s) => ui.has(s) && !earnedNow.has(s));
       // Earned and waiting on disk: say what earned them and the one command that lays them down.
       if (earned.length) lines.push(`      ${dim(`… +${earned.length} earned — ${describeEarned(earnedNow.get(earned[0]))}: ${earned.slice(0, 3).map((s) => '/' + s).join(', ')}${earned.length > 3 ? ' …' : ''} — \`boss sync\` lays them down`)}`);
       if (afterShip.length) lines.push(`      ${dim(`… +${afterShip.length} for after you ship — measuring, retention, pricing, trust  (\`boss map --all\`)`)}`);
       if (onModel.length) lines.push(`      ${dim(`… +${onModel.length} for when the app calls a model — cost, evals, failure states  (\`boss map --all\`)`)}`);
+      if (onScreen.length) lines.push(`      ${dim(`… +${onScreen.length} for when the app has a screen — design tokens, the after-code UX check  (\`boss map --all\`)`)}`);
     }
     if (asides.length) {
       lines.push(`      ${dim(`… +${asides.length} that aren't about your company — BOSS upkeep, and ending something honestly  (\`boss map --all\`)`)}`);

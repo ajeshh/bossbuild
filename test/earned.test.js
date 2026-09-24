@@ -3,7 +3,7 @@
 // What is asserted: the manifest declares the groups; unlock does not lay them down; the two
 // predicates are file-true; sync leaves a held group alone while its predicate is false and lays
 // it down the moment it is true; and the stamp names only what is on disk at every step. The
-// numbers matter — this is the mechanism under "MVP opens on 16 verbs, not 28".
+// numbers matter — this is the mechanism under "MVP opens on 14 verbs, not 28".
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -11,7 +11,7 @@ import { existsSync, mkdirSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
 import { readStageManifest, applyStage } from '../src/scaffold.js';
-import { heldBack, earnedGroups, llmInSource, hasShipped, stillDeferred, newlyEarned, markLaidDown } from '../src/earned.js';
+import { heldBack, earnedGroups, llmInSource, uiInSource, hasShipped, stillDeferred, newlyEarned, markLaidDown } from '../src/earned.js';
 import { planSync, applySync } from '../src/sync.js';
 import { forgetGitDates } from '../src/gitdates.js';
 
@@ -34,11 +34,12 @@ function mvpProject() {
   return { dir, stamp, held };
 }
 
-test('the MVP manifest holds back the post-launch seven and the AI-mediated five', () => {
+test('the MVP manifest holds back the post-launch seven, the AI-mediated five and the UI two', () => {
   const groups = earnedGroups(L1);
   assert.deepEqual(groups.map((g) => [g.group, g.until, g.skills.length]),
-    [['postLaunch', 'shipped', 7], ['aiMediated', 'llm-in-source', 5]]);
-  assert.equal(heldBack(L1).length, 12);
+    [['postLaunch', 'shipped', 7], ['aiMediated', 'llm-in-source', 5], ['uiBuilt', 'ui-in-source', 2]]);
+  assert.equal(heldBack(L1).length, 14);
+  assert.ok(!heldBack(L1).includes('design-review'), 'the before-code review stays: it is worth most before the first screen');
   for (const s of heldBack(L1)) assert.ok(L1.skills.includes(s), `${s} must be a skill of the rung`);
 });
 
@@ -60,13 +61,20 @@ test('llm-in-source reads the same call shapes as the cost-budget loop, only und
   assert.equal(llmInSource(custom), true, 'sourceGlobs in .boss/config.json names the roots');
 });
 
+test('ui-in-source reads the design-tokens loop\'s pattern, from the first styled file', () => {
+  assert.equal(uiInSource(project({ 'src/App.tsx': 'export const A = () => <div className="p-4">hi</div>;\n' })), true,
+    'one styled component is the first UI commit');
+  assert.equal(uiInSource(project({ 'src/cli.js': 'console.log("hi");\n', 'docs/ui.md': '<div class="x">\n' })), false,
+    'a CLI with a doc that mentions markup has no screen');
+});
+
 test('sync leaves a held group alone while its predicate is false', () => {
   const { dir, stamp, held } = mvpProject();
   forgetGitDates(dir);
   const plan = planSync(dir, stamp);
   const added = plan.entries.filter((e) => e.status === 'new').map((e) => e.name.split('/')[0]);
   for (const s of held) assert.ok(!added.includes(s), `${s} must not be proposed before it is earned`);
-  assert.equal(stillDeferred(dir, stamp).size, 12);
+  assert.equal(stillDeferred(dir, stamp).size, 14);
   assert.deepEqual(newlyEarned(dir, stamp), []);
 });
 
@@ -77,14 +85,14 @@ test('a shipped FEAT earns the post-launch group; sync lays it down and the stam
   forgetGitDates(dir);
   assert.equal(hasShipped(dir), true);
   assert.deepEqual(newlyEarned(dir, stamp).map((g) => g.group), ['postLaunch']);
-  assert.equal(stillDeferred(dir, stamp).size, 5, 'the AI group is still held');
+  assert.equal(stillDeferred(dir, stamp).size, 7, 'the AI and UI groups are still held');
 
   const plan = planSync(dir, stamp);
   const added = plan.entries.filter((e) => e.status === 'new' && e.kind === 'skill').map((e) => e.name);
   assert.deepEqual(added.sort(), [...L1.postLaunch].sort(), 'exactly the earned group is new');
   const { stamp: next } = applySync(dir, plan, stamp, {});
   for (const s of L1.postLaunch) assert.ok(existsSync(join(dir, '.claude', 'skills', s, 'SKILL.md')), `${s} laid down`);
-  assert.deepEqual(next.deferred, { 'L1-mvp': { aiMediated: L1.aiMediated } }, 'only the AI group stays deferred');
+  assert.deepEqual(next.deferred, { 'L1-mvp': { aiMediated: L1.aiMediated, uiBuilt: L1.uiBuilt } }, 'only the AI and UI groups stay deferred');
   for (const s of L1.postLaunch) assert.ok(next.skills.includes(s));
   for (const s of L1.aiMediated) assert.ok(!next.skills.includes(s), `${s} is not on disk and must not be stamped`);
   assert.equal(next.skills.length, readdirSync(join(dir, '.claude', 'skills')).length, 'the stamp names what is on disk');

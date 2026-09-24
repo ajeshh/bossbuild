@@ -140,7 +140,9 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
   assert.ok(hooks.includes('conscience.js'), 'the always-on hook lands');
   const stamp = JSON.parse(readFileSync(join(dir, '.boss', 'manifest.json'), 'utf8'));
   assert.equal(stamp.shippedBefore, true);
-  assert.deepEqual(Object.keys(stamp.deferred['L1-mvp']), ['aiMediated']);
+  // no styled screen either (plain modules) → the UI pair is held too
+  assert.match(out, /2 held back when the app gets its first styled screen/);
+  assert.deepEqual(Object.keys(stamp.deferred['L1-mvp']), ['aiMediated', 'uiBuilt']);
   assert.ok(!stamp.skills.includes('ai-cost') && stamp.skills.includes('measure'));
   // and the map does not tell a live app its after-you-ship verbs are "for after you ship"
   assert.doesNotMatch(boss(['map'], dir), /for after you ship/);

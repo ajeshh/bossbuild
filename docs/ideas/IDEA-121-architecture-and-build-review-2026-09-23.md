@@ -71,7 +71,12 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
 - [x] **`{{DATE}}` filled at sync** (`src/sync.js:445`, 16 files) → 9 files "changed" daily; stale
   literal dates Claude obeys (`cost-review` REVIEW-<install date>). ✓v. Fix: leave a runtime placeholder.
 - [x] **CLAUDE.md block never syncs** (not in managedFiles). ✓v. Fix: manage the marked block, report-only first.
-- [ ] **MVP unlock cliff.** 15→31 skills; design skills + designer before any UI. Fix: an earned `ui` group.
+- [x] **MVP unlock cliff.** 15→31 skills; design skills + designer before any UI. Fix: an earned `ui` group.
+  *Done 2026-09-23 (Ajesh: "whichever we can go for with most confidence"): `uiBuilt` =
+  `/design-tokens-init` + `/ux-check`, earned by `ui-in-source` (the design-tokens loop's pattern at
+  one file). `/design-review` stays — the before-code review is worth most before the first screen.
+  The designer agent stays seated: agents are not in the earned mechanism, and its first job (states,
+  flows) precedes code. MVP opens on 14 of its 28, not 16.*
 - [ ] **Merge candidates** (subtract mandate): health+measure+onboard; ai-first-init as the lay-down message;
   ai-cost+cost-review. ~28→24. Needs Ajesh's call — not mechanical.
 - [x] **secrets-guard bypasses** (`cat .env|head`, `cat <.env`, Grep tool, .pem/.ssh/.aws). Fix: boundary

@@ -59,6 +59,10 @@ rule above still applies to the whole section once it is stamped.
 > move to a bigger model only if it stalls on the same question twice. That's cheaper than switching
 > models, and it is the current guidance for the newest ones. BOSS still pins neither.
 >
+> If your app has no screens (a CLI, an API, a pipeline), MVP no longer hands you the design-token
+> and UX-check skills; they arrive with the first styled file. `/design-review` is still there
+> before you build one.
+>
 > Your agents now know when to change shape, and it goes beyond the coder. The rule is to take the
 > cheapest step that answers what the work is showing you: write the stack into the agent, give a
 > second surface its own rule file, let the agent keep notes, run long work in the background. Make
@@ -75,6 +79,13 @@ rule above still applies to the whole section once it is stamped.
   fold into one token. `craft.js` and `help-html.js` drop their hand-rolled regexes for
   `src/frontmatter.js`, and `test/yaml-parity.test.js` holds both parsers to every doc in the repo.
   `boss sync` brings the fixed hook to existing projects.
+- **MVP holds the UI pair until there is UI (IDEA-121).** `/design-tokens-init` and `/ux-check`
+  join the earned groups under a new predicate, `ui-in-source`: the design-tokens loop's own
+  pattern, earned at the first styled file. A CLI, an API or a pipeline no longer gets two design
+  verbs it will never use. `/design-review` stays at unlock, because the before-code review is worth
+  most before the first screen. `boss map` gives the pair its own fold line. `boss sync` lays them
+  down when earned, and until then the conscience says so when it points at one. MVP now opens with
+  14 of its 28 skills instead of 16.
 - **`BOSS_HOME` moves BOSS's machine-local state (IDEA-121).** Set it and the registry, the update
   cache and the hook's per-person state (`projects/<key>/`) go there instead of `~/.boss`. The CLI
   smoke runs under it, so it no longer writes a row into the real registry and then prunes it.

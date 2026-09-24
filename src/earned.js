@@ -20,6 +20,10 @@
 //   llm-in-source  the founder's code calls a model — the cost-budget loop's own entry regex,
 //                  over the same source globs, so the moment that nudges toward /ai-cost is the
 //                  moment that can install it
+//   ui-in-source   the founder's code styles a screen — the design-tokens loop's own entry
+//                  pattern, at ONE file instead of that loop's three: `/design-tokens-init` says it
+//                  runs "at the first UI commit", and `/ux-check` reviews UI that exists. A CLI, an
+//                  API or a data pipeline never sees either (IDEA-121, the MVP unlock cliff).
 //
 // Backwards compatible: a stamp with no `deferred` (every project unlocked before this) has
 // everything on disk already and nothing here changes.
@@ -31,7 +35,7 @@ import { collectBoard } from './board.js';
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
 import { classifyLoop } from '../stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js';
 
-export const PREDICATES = ['shipped', 'llm-in-source'];
+export const PREDICATES = ['shipped', 'llm-in-source', 'ui-in-source'];
 
 // "Does the code call a model" is the cost-budget loop's ENTRY predicate, evaluated by the hook's
 // own runtime. This file used to hold a verbatim copy of that loop's regex — "one regex, two
@@ -39,6 +43,7 @@ export const PREDICATES = ['shipped', 'llm-in-source'];
 // `src/`, so BOSS's own conscience fired the cost and failure-mode moments on 43 of 57 prompts off
 // this line (IDEA-121). Now there is one definition, in the loop file, and one evaluator.
 const COST_LOOP = join(STAGES_DIR, 'L1-mvp', 'template', '.boss', 'loops', 'cost-budget-loop.md');
+const TOKENS_LOOP = join(STAGES_DIR, 'L1-mvp', 'template', '.boss', 'loops', 'design-tokens-loop.md');
 
 /** Has this project shipped? A FEAT in Shipped on the board (frontmatter-true), or a repo that was
  * already live when adopted — `boss adopt` read a deploy config or CI plus tests and said "shipped
@@ -80,7 +85,21 @@ export function llmInSource(projectDir) {
   } catch { return false; }
 }
 
-const PREDICATE = { shipped: hasShipped, 'llm-in-source': llmInSource };
+/** Does the founder's code style a screen? The design-tokens loop's entry pattern and source globs,
+ * lowered to one file: the loop waits for SPREAD (three files) before it nudges, but the skills it
+ * points at belong from the first styled file. Fails closed. */
+export function uiInSource(projectDir) {
+  try {
+    const loop = parseFrontmatter(readFileSync(TOKENS_LOOP, 'utf8'));
+    const count = (loop?.entry || []).map((p) => p.count_at_least).find(Boolean);
+    if (!count) return false;
+    const entry = [{ count_at_least: { ...count, min: 1, min_files: 1 } }];
+    const res = classifyLoop({ entry, exit: [] }, projectDir).entry;
+    return res.all_ok && !res.results.some((r) => r.evidence?.blind);
+  } catch { return false; }
+}
+
+const PREDICATE = { shipped: hasShipped, 'llm-in-source': llmInSource, 'ui-in-source': uiInSource };
 
 /** [{ group, until, skills }] for a stage manifest — empty when it declares none. */
 export function earnedGroups(manifest) {
@@ -137,12 +156,14 @@ export function markLaidDown(stamp, groups) {
 export function describeUntil(until) {
   return until === 'shipped' ? 'after the first FEAT ships'
     : until === 'llm-in-source' ? 'when the app first calls a model'
-      : 'when earned';
+      : until === 'ui-in-source' ? 'when the app gets its first styled screen'
+        : 'when earned';
 }
 
 // And for `boss status`, once it has happened.
 export function describeEarned(until) {
   return until === 'shipped' ? 'a FEAT shipped'
     : until === 'llm-in-source' ? 'the app calls a model now'
-      : 'earned';
+      : until === 'ui-in-source' ? 'the app has a screen now'
+        : 'earned';
 }

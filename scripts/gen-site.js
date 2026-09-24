@@ -222,7 +222,7 @@ ${stations}
 // arrives, the core loop, what is folded until earned, and the unlock line. The guide's prose
 // folds under each card; the card itself cannot lag the product because it never typed a verb.
 const chips = (names, cls = '') => `<ul class="chips${cls ? ` ${cls}` : ''}">${names.map((n) => `<li><code>${esc(n)}</code></li>`).join('')}</ul>`;
-const EARNED = { shipped: 'folded until a feature ships', 'llm-in-source': 'folded until the app calls a model' };
+const EARNED = { shipped: 'folded until a feature ships', 'llm-in-source': 'folded until the app calls a model', 'ui-in-source': 'folded until the app has a screen' };
 const rungCard = (m, i) => {
   const mode = loadModes().find((x) => x.id === m.id);
   const d = data.modes[i];
