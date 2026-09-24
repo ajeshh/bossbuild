@@ -28,6 +28,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-129 (2026-09-23, Unreleased) — the playbook, second pass; shipped.** Real-record bugs fixed, a cover
+  with the canvas tiled by grade, folds, the deck/PDF always in the brand's light scheme. Devlog has the rest.
 - **IDEA-121 (2026-09-23, closed, pushed; CI green on all six jobs incl. Windows) — architecture and build review.**
   Four silent-damage bugs, the conscience saying one ranked thing (and not re-opening each session on the
   same condition), MVP ~7.6k → ~6.0k tokens/turn, the CLAUDE.md block syncs, Windows fixed. **New here: a
@@ -120,6 +122,7 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
+- 🔷 **BOSS's own playbook leads with IDEA-001** (a pre-`kind:` capability): tag the old IDEAs `kind: capability`, or write a `kind: venture` record for BOSS? (IDEA-129 task 9)
 - 🔷 **The maintainer message — what holds it?** Drafted 08-23, still unsent. No gating rule (09-23); a date by which it's sent is the open ask.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block

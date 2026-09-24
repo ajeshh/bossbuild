@@ -22,6 +22,20 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-09-23 — IDEA-129: the playbook, second pass (`784f2fb` → `a60f891`)
+
+Ajesh: *"great v1… how can we push it further"*, then BOSS's own `.boss/playbook.html` as the second
+example. The demo fits the renderer; BOSS's real records broke it: wrapped paragraphs shattered, a
+capability rendered as the venture, a heading sat over an empty cut. Fixed those, then headline hygiene,
+folds for long records, a cover (counts + the canvas tiled by grade, first slide of every cut), and
+Present/PDF always in the brand's light scheme (Ajesh: brand colours, not black and white).
+- **Surprise:** the ledger had been counting unanswered cells as *backed* — an EVID's words matched a
+  cell's name. BOSS's top bar said 2 of 13; the truth was 0. The cover's tiles showed it first.
+- **Surprise:** the first cover tiles jumped nowhere in the VC cut (their target, the canvas, was
+  hidden) — Ajesh caught it by clicking. The cover also fell apart as a slide; only a PDF export showed it.
+- **Next:** BOSS's own Vision/Product still read IDEA-001 (a capability from before `kind:`); a records
+  call for Ajesh. *Since you last shared it* stays an open question on IDEA-129.
+
 ## 2026-09-23 — IDEA-125/126: merges, shipped-text hygiene, and Ajesh's calls
 
 A second whole-BOSS assessment (code, shipped prompts, process) overlapped IDEA-121 almost entirely;
