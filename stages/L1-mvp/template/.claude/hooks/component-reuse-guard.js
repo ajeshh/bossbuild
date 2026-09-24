@@ -173,20 +173,31 @@ try {
   }
   if (!rows.length) process.exit(0); // a skeleton index has nothing to compare against
 
+  // Score the job as well as the name: `Badge` must find a `Tag` whose purpose says "status badge".
+  // A synonym is how the canonical component hides (RVW-110). A name match still weighs more.
   const mine = new Set(words(name));
+  const jobWords = (text) => text.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   const scored = rows
-    .map((r) => ({ ...r, shared: words(r.name).filter((w) => mine.has(w)).length }))
+    .map((r) => {
+      const byName = words(r.name).filter((w) => mine.has(w)).length;
+      const byJob = new Set(jobWords(r.purpose).filter((w) => mine.has(w))).size;
+      return { ...r, byName, shared: byName * 2 + byJob };
+    })
     .sort((a, b) => b.shared - a.shared);
   const near = scored.filter((r) => r.shared > 0).slice(0, 3);
+  const sameName = near.filter((r) => r.byName > 0);
 
   const listing = (near.length ? near : scored.slice(0, 5))
     .map((r) => `\`${r.name}\`${r.purpose ? ` (${r.purpose})` : ''}`)
     .join(', ');
 
-  const nearNote = near.length
-    ? ` **\`${name}\` shares a name with ${near.map((r) => `\`${r.name}\``).join(' / ')}** — that is the ` +
+  const nearNote = sameName.length
+    ? ` **\`${name}\` shares a name with ${sameName.map((r) => `\`${r.name}\``).join(' / ')}** — that is the ` +
       `canonical tell of a variant that got forked into a file.`
-    : '';
+    : near.length
+      ? ` **What it's for already names this job: ${near.map((r) => `\`${r.name}\``).join(' / ')}** — ` +
+        `a different name for the same job is the likeliest reuse.`
+      : '';
 
   // One line in the trace per question asked — { kind: "component-new", name, path, near } — so
   // `boss design` can say later whether the question got answered: a row, a merge, or nothing.

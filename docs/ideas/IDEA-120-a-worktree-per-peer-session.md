@@ -33,6 +33,14 @@ worktree isolation for subagents (`isolation: "worktree"`) and for a session (`E
 - Merge-back: who rebases onto `main`, and does `registry/CHANGELOG.md` `## Unreleased` still conflict?
 - Does `npm i -g ~/Projects/bossbuild` (the install every session tests against) point at the right tree?
 
+## Reference (2026-09-24, RVW-109)
+
+An open-source crew runner (`github.com/kunchenguid/firstmate`) is the most complete worked answer to the
+open questions above: one integrator that **never edits** the projects (single-writer), every worker in a
+disposable worktree, supervision state **on disk** so a restart or compaction loses nothing, and a
+zero-token watcher that wakes the integrator only on an event. Read its `docs/architecture.md` before
+designing merge-back here. Borrow the shape; install nothing.
+
 ## Tasks
 
 - [ ] Trial in one session on a one-file change; record what broke.

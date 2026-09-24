@@ -59,6 +59,25 @@ test('names the near-name it should have been compared against', () => {
 });
 
 // The silence that keeps it usable: editing a component you already have must never speak.
+// A synonym hides the canonical component: the job is in the purpose column, not the name. Before
+// RVW-110 the guard scored names only and, finding no shared word, listed the first five rows in
+// file order — every row except the one it needed.
+test('finds a component by what it is FOR when the name is a synonym', () => {
+  const dir = project({});
+  mkdirSync(join(dir, 'docs', 'design'), { recursive: true });
+  writeFileSync(join(dir, 'docs', 'design', 'COMPONENTS.md'), [
+    '| Component | What it\'s for | Import | Variants | Missing states |',
+    '|---|---|---|---|---|',
+    ...['Button', 'Card', 'Modal', 'Input', 'Avatar', 'Tooltip'].map((c) => `| \`${c}\` | something else | \`import { ${c} }\` | — | — |`),
+    '| `Tag` | status badge or pill: priority, state, counts | `import { Tag }` | status | — |',
+    '',
+  ].join('\n'));
+  for (const name of ['Badge', 'StatusBadge']) {
+    const out = run(dir, { file_path: `src/components/${name}.tsx`, content: `export function ${name}(){}` });
+    assert.match(out, /`Tag`/, `${name}: the row whose job says "badge" must be shown`);
+  }
+});
+
 test('stays SILENT for a component already in the index', () => {
   const dir = withIndex();
   assert.equal(run(dir, { file_path: 'src/components/Button.tsx', content: 'x' }), '', 'known component');

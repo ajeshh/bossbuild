@@ -52,6 +52,8 @@ updated: YYYY-MM-DD
 
 > **Open this before creating a component.** Reuse first, extend second, create last.
 > A new component gets its row in the same change that creates it.
+> **Write "What it's for" in the words someone would search for.** A `Tag` whose job reads
+> *"status badge or pill"* is found when an agent reaches for `Badge`; one that reads *"variant 2"* isn't.
 
 | Component | What it's for | Import | Variants | Missing states | Status |
 |---|---|---|---|---|---|

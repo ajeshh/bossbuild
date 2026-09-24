@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The component guard finds a component by its job, not only its name.** When an agent wrote a new
+  `Badge` and your index already had a `Tag` whose *What it's for* said "status badge", the guard
+  listed five unrelated rows and left out the one it needed: it matched names only. It reads the job
+  column now, and the index template asks you to write that column in the words someone would search
+  for. (RVW-110)
+
 ## 0.327.0 — 2026-09-23
 
 > **For you:** Run `boss sync` — BOSS's hooks had been failing silently in any project whose
