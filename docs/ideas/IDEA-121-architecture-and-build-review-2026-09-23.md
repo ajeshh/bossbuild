@@ -78,7 +78,10 @@ Voiced + named signals are all marked said — the rest wait for the next sessio
   chars, Grep/Glob, mirror deny globs; header says speed bump, not boundary. *Fixed 2026-09-23:
   shell punctuation is a boundary, Grep denied on a secret path/glob (Glob left alone — names, not
   contents), the deny floor mirrored; `test/secrets-guard.test.js`, the hook's first direct test.*
-- [ ] Mentor block copied into 6 files with no detector — one byte-identity assertion.
+- [x] Mentor block copied into 6 files with no detector — one byte-identity assertion. *Done
+  2026-09-23: `test/mentor-shared-block.test.js`. Three shared sections, identical except three
+  named, deliberate differences (dossier slug, Quickstart's `/consult` clause, paragraphs added after
+  the shared first one); plus one dossier per mentor.*
 
 Tier 3, first two items fixed 2026-09-23: fresh MVP scaffold 30.3KB → 24.0KB per turn (~7.6k → ~6.0k
 tokens). The CLAUDE.md block now syncs (region-scoped provenance, `test/claude-block-sync.test.js`), so existing
