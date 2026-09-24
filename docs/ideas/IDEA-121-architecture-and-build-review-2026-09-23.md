@@ -45,7 +45,7 @@ hook's try (conscience.js:19) — the package.json removes the crash that motiva
   fixture, a test comment — and on `src/earned.js:36`, BOSS's own copy of the regex; misses a real
   Gemini call. Fired on 43/57 prompts here. Fix: extension filter (`SOURCE_EXT`), exclude fixtures/tests/evals,
   match import/constructor shapes, build earned.js's copy from fragments.
-- [ ] **Dedup is per session, keyed by moment.** New session / `/clear` re-sends the full block; loops
+- [x] **Dedup is per session, keyed by moment.** New session / `/clear` re-sends the full block; loops
   sharing a moment silence each other. Fix: key on loop id + evidence hash; re-voice on change.
 - [x] **Two frontmatter parsers disagree.** hooks `lib/yaml.js` drops every key after a wrapped/`>`
   field: 37–157 keys across this repo (25 IDEAs lose `created`); read by `orientation.js` (boss status),

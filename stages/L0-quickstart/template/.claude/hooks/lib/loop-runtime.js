@@ -937,16 +937,57 @@ function readSaid(projectDir) {
   } catch { return {}; }
 }
 
-/** Drop the signals whose moment was already voiced in this session. Pure on the signals. */
-export function notYetSaid(projectDir, sessionId, signals) {
-  if (!sessionId) return signals;
-  const said = readSaid(projectDir)[sessionId] || {};
-  return signals.filter((s) => !said[s.moment]);
+// --- voiced across sessions -------------------------------------------------------------------
+// The session ledger above made "once a session" true, and exposed the next thing: a condition
+// that holds for weeks was voiced again, in full, at the top of EVERY session — `/clear` included,
+// since that is a new session id (IDEA-121). So the one signal that was actually VOICED (the lead,
+// never the ones only named) is remembered per loop with the condition it spoke about: which exit
+// predicates were unmet. Counts are deliberately left out — "≥3 devlog entries" grows every session,
+// and a key that moves with it would re-voice every session anyway. The same loop on the same
+// condition is quiet for VOICED_COOLDOWN_DAYS, then may speak once more; a changed condition (an
+// exit met, another one broken) speaks at once. Only with a session id, like the ledger above, so a
+// runner that sends none (the eval suites, a hand-run) sees exactly the old behaviour.
+const VOICED_FILE = 'conscience-voiced.json';
+const VOICED_COOLDOWN_DAYS = 7;
+
+export const conditionOf = (s) => (s && s.loop_id && s.type === 'stalled')
+  ? `${s.loop_id}|${(s.evidence?.exit || []).map((e) => (e && e.ok ? 1 : 0)).join('')}`
+  : null;
+
+function readVoiced(projectDir) {
+  try {
+    const f = personStatePath(projectDir, VOICED_FILE);
+    return f && existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : {};
+  } catch { return {}; }
 }
 
-/** Record that these moments were voiced in this session. Fails silent. */
-export function markSaid(projectDir, sessionId, signals) {
+/** Drop the signals already voiced this session, and any loop voiced on this same condition
+ * within the cooldown in any session. Pure on the signals. */
+export function notYetSaid(projectDir, sessionId, signals, now = Date.now()) {
+  if (!sessionId) return signals;
+  const said = readSaid(projectDir)[sessionId] || {};
+  const voiced = readVoiced(projectDir);
+  const cutoff = now - VOICED_COOLDOWN_DAYS * 86400000;
+  return signals.filter((s) => {
+    if (said[s.moment]) return false;
+    const c = conditionOf(s);
+    const v = c && voiced[s.loop_id];
+    return !(v && v.condition === c && Date.parse(v.ts) > cutoff);
+  });
+}
+
+/** Record that these moments were voiced (or named) in this session, and that `lead` — the one
+ * actually voiced; the caller ranks, so it is the first — spoke on its condition. Fails silent. */
+export function markSaid(projectDir, sessionId, signals, lead = signals?.[0]) {
   if (!sessionId || !signals?.length) return;
+  try {
+    const c = conditionOf(lead);
+    if (c) {
+      const voiced = readVoiced(projectDir);
+      voiced[lead.loop_id] = { condition: c, ts: new Date().toISOString() };
+      writeFileSync(personStatePathForWrite(projectDir, VOICED_FILE), JSON.stringify(voiced, null, 2) + '\n');
+    }
+  } catch { /* fail silent — a ledger, never a gate */ }
   try {
     const all = readSaid(projectDir);
     const cutoff = Date.now() - SAID_TTL_DAYS * 86400000;

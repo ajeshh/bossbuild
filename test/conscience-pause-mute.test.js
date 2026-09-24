@@ -5,7 +5,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { BOSS_ROOT } from '../src/paths.js';
@@ -26,6 +26,9 @@ function mvpFiring() {
   writeFileSync(join(dir, 'docs', 'devlog.md'), '# Devlog\n\n## 2026-09-01\n\nx\n\n## 2026-09-02\n\ny\n\n## 2026-09-03\n\nz\n');
   let n = 0;
   const hook = () => {
+    // Nor the cross-session memory of what was voiced: this file tests pause and mute, and a loop
+    // voiced on the same condition a call ago is otherwise quiet for a week, by design.
+    rmSync(join(env.BOSS_HOME, 'projects'), { recursive: true, force: true });
     const r = spawnSync('node', [join(dir, '.claude', 'hooks', 'conscience.js')], {
       cwd: dir, env: { ...env, CLAUDE_PROJECT_DIR: dir }, encoding: 'utf8',
       // A new session each call: "said once this session" must not be what silences it.

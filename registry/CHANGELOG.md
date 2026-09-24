@@ -71,6 +71,13 @@ rule above still applies to the whole section once it is stamped.
 > the same step. `/judge-traces` now points out agents nobody calls and pairs that always hand off to
 > each other. And if you delete an agent you don't need, `boss sync` no longer puts it back.
 
+- **The conscience doesn't open every session with the same thing (IDEA-121).** "Once a session" held,
+  and a condition true for weeks was still voiced in full at the top of each new session — `/clear`
+  included. The loop that was actually voiced is now remembered with the condition it spoke about (which
+  exits were unmet; growing counts don't count), and stays quiet on that same condition for seven days.
+  A changed condition speaks at once, and a signal that was only named leads the next session instead.
+  Only with a session id, so the eval suites and hand-runs behave as before.
+
 - **Windows: component and decision paths read with `/` (IDEA-121).** On Windows `boss design` listed
   every component as unindexed (its paths carried `\`, `COMPONENTS.md` uses `/`), and the
   design-decisions guard never matched an exception recorded at a path. Both now normalise, as does the

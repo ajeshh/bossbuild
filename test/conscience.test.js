@@ -505,6 +505,22 @@ test('loops at the old docs/loops/ path are still read, and .boss/loops/ shadows
   assert.match(shadowed[0]._file, /\.boss[\\/]loops[\\/]t\.md$/, 'the new location wins');
 });
 
+// --- voiced across sessions — a standing condition is not re-announced every session ----------
+test('the voiced loop stays quiet in the next session on the same condition, speaks when it changes, and again after the cooldown', () => {
+  const dir = project({});
+  const drift = (exitOk) => ({ loop_id: 'drift-loop', type: 'stalled', moment: 'drift', confidence: 'high', evidence: { entry: [{ count: 3 }], exit: exitOk.map((ok) => ({ ok })) } });
+  const focus = { loop_id: 'focus-loop', type: 'stalled', moment: 'focus', confidence: 'high', evidence: { exit: [{ ok: false }] } };
+  markSaid(dir, 's1', [drift([false, false]), focus]); // drift voiced, focus only named
+  assert.deepEqual(notYetSaid(dir, 's2', [drift([false, false]), focus]).map((s) => s.loop_id), ['focus-loop'],
+    'next session: the voiced loop is quiet on the same condition; the one only NAMED leads now');
+  const grown = drift([false, false]); grown.evidence.entry = [{ count: 9 }];
+  assert.equal(notYetSaid(dir, 's3', [grown]).length, 0, 'counts growing is not a new condition');
+  assert.equal(notYetSaid(dir, 's3', [drift([true, false])]).length, 1, 'an exit met or broken is — it speaks at once');
+  const later = Date.now() + 8 * 86400000;
+  assert.equal(notYetSaid(dir, 's4', [drift([false, false])], later).length, 1, 'after the cooldown it may speak once more');
+  assert.equal(notYetSaid(dir, null, [drift([false, false])]).length, 1, 'no session id → the old behaviour');
+});
+
 // --- said this session — "at most once this session" as a mechanism ------------------------
 test('a moment voiced in a session is not voiced again in that session; a new session hears it', () => {
   const dir = project({});
