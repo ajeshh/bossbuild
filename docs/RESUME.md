@@ -28,6 +28,12 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-121 (2026-09-23, closed, pushed; CI green on all six jobs incl. Windows) — architecture and build review.**
+  Four silent-damage bugs, the conscience saying one ranked thing (and not re-opening each session on the
+  same condition), MVP ~7.6k → ~6.0k tokens/turn, the CLAUDE.md block syncs, Windows fixed. **New here: a
+  pre-commit hook tests the STAGED tree (`npm run hooks`, ~9s, `--no-verify` skips).** Open: `npm run check`
+  is red only in BOSS's own gitignored install (still has /measure, /ai-first-init) — `boss sync --apply`
+  after the next stamp. Spun out: IDEA-120 (worktrees), IDEA-125 (merges; landed by a peer).
 - **IDEA-122 (2026-09-23, `a9c4a2a` `9c5f4cd` `6fee2db`, Unreleased) — after the first ship; shipped.**
   Ajesh asked how good BOSS is at CD, monitoring and 24/7 agents for founders: first deploy strong,
   everything after it thin. Folded into `/ship`, no new skill: 3b live check + *who hears at 3am*

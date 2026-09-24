@@ -22,6 +22,18 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-09-23 — IDEA-121: the review, and finishing it
+
+Four read-only reviewers (build process, CLI, hook runtime, shipped content), headline claims re-verified
+by hand, every finding in IDEA-121. Then worked down it with three peer sessions sharing the tree:
+atomic + locked registry/config writes, hooks pinned to ESM, `boss learn` under Unreleased; the conscience
+ranks and voices one signal, "calls a model" means a call, and a voiced loop stays quiet 7 days on the same
+condition; agent descriptions capped, MVP CLAUDE.md block trimmed and made to sync; skills stopped carrying
+the install date; Windows CI green for the first time since 09-13 (three real path bugs, the rest POSIX
+tests); a pre-commit hook on the staged tree. **Surprised:** I swept a peer's CHANGELOG hunk once more —
+a clean diff goes stale while a peer is busy (memory updated). **Next:** Ajesh's stamp, then re-sync BOSS's
+own install so `npm run check` goes green.
+
 ## 2026-09-23
 - **FEAT:** _no FEAT — IDEA-122, after the first ship_
 - **Landed:** Ajesh: *"for deployments, continuous deployments, having agents constantly work 24/7, monitoring on deployment .. i am not sure how good boss is."* Measured against the shipped tree: `/ship` strong to the first URL; nothing checked the live thing, nothing asked who hears when it's down (the only ops line sat in Scale's `/incident`), no CD, and `automation.md`'s three questions reachable only by `boss craft`. Three slices, all in existing surfaces: `/ship` 3b (live check, the 3am question once per stack, one rung or `not yet` in the stack profile; `--rollback` verifies too), 3c (deploy-on-push offered once the stack profile exists and nothing deploys on push — the smoke gates it, the live check runs after, or no offer), `git-workflow.md` names the outgrown moment, one MVP working rule for unattended work, `/incident`'s seam points back at the stack profile.
