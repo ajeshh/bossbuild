@@ -42,7 +42,7 @@ updated: 2026-09-10
 
 The one thing someone could describe about this interface without naming the product.
 
-- **It is:** the status chip — a shape before a colour (a hollow ring for *uncovered*, a half-filled ring for *asked*, a filled disc for *covered*), the same three shapes on the owner's laptop, the carer's phone, and the printed Monday; and the sage ground under everything, so paper reads as paper without a shadow.
+- **It is:** the status chip — a shape before a colour (a hollow ring for *uncovered*, a half-filled ring for *asked*, a filled disc for *covered*), the same three shapes on the owner's laptop, the carer's phone, and the printed Monday; and the oat ground under everything, so paper reads as paper without a shadow.
 - **It appears:** on every row and on the carer's ask card; deliberately not in navigation, never as a badge.
 
 ## Logo

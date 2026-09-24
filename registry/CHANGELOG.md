@@ -33,6 +33,11 @@ rule above still applies to the whole section once it is stamped.
 > the live thing answers and asks who hears if it breaks at 3am; your agents now say what they didn't
 > check. After an MVP unlock, delete *"This project is in Quickstart mode"* from your `CLAUDE.md`.
 
+- **The demo venture wears a warmer palette.** Kettlewick's sage ground, sage cards and green-black
+  text sat at one hue and one lightness, so nothing on the page drew the eye and the copper accent read
+  as rust. Its tokens are now oat and cream under brown-black, with a brighter copper (`#B84E12`, still
+  AA with white text on it); its brand anchor, mark and style guide say the same. The pages are still
+  rendered from its records by the same renderers an install runs. The board keeps BOSS's own palette.
 - **The documentation practice teaches `covers:` + `reviewed:` for a project's own help pages.** §7
   said to date what's version-specific but gave founders no way to tell *which* page a code change made
   wrong. The habit BOSS keeps on its own guide (`library/help/`, `check:help`) is now a paragraph there:
