@@ -15,6 +15,8 @@ behaviour change — **or** if it integrates a new/updated best practice their p
 Everything else (audits, refactors, doc sweeps, internal tooling, this repo's own website) gets **no
 line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
 that lists every version is a commit log, and a commit log is not useful to anyone building a company.
+**Cap it at about five lines per release** (Ajesh, 2026-09-23): what the founder must *do* first,
+then what changes what they *type*. Everything else stays in the bullets.
 
 **Since DEC-019 (2026-09-13), a capability lands as a commit plus a bullet under `## Unreleased`
 below — VERSION does not move.** The releaser stamps a version at publish: `npm run stamp` turns the
@@ -25,60 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
-> **For you:** `/ux-check` now looks for your host's built-in way to launch and drive the app
-> before it marks the visual checks *not checked* — if it's there, hover, focus, tab order and
-> contrast get observed instead of inferred, with nothing to install. `/red-team --paths` hands its
-> generic security half to your host's own review of pending changes, and tells you what that
-> review cannot see.
->
-> Also fixed, and worth knowing if you hit one: BOSS's hooks no longer die in a project whose
-> `package.json` says `"type": "commonjs"` (what `npm init` writes) — they had been failing on every
-> prompt, silently; `boss sync` brings the fix to an existing project. `boss team add` on a
-> `.boss/config.json` with a stray comma now stops and says so, instead of saving over your settings.
->
-> `/ship` now checks the live thing actually answers before it calls it shipped, and asks once who
-> finds out if it goes down at 3am — then sets up the cheapest answer with you (the host's logs, a
-> free uptime check, or errors logged somewhere you can read), or records *not yet* and never asks again.
-> Ship the same thing by hand twice and it offers, once, to make a push to `main` deploy it — with
-> your smoke check gating the deploy and the live check running after. Projects unlocking MVP also
-> get a working rule for anything that runs while you sleep, and `boss sync` brings it to a project
-> already at MVP with the rest of BOSS's `CLAUDE.md` block. If you've edited that block, sync leaves it
-> alone — paste this under *Shipping*: *"Anything that runs without you (a
-> schedule, overnight, an agent loop): before it runs, name what breaks if it runs wrong at 3am, what
-> says pass or fail, and who is told when it fails — `boss craft automation`."*
->
-> Your agents now say what they *didn't* check. The coder and tester name anything in scope they
-> never opened or ran, instead of leaving the gap to read as a pass. The coder and tester can now
-> actually run `/smoke`, and the planner and cofounder mentor read the records they were told to
-> read. After an unlock, your agents no longer claim you're still in Quickstart; `boss sync` brings
-> all of it. One line sync can't reach because it's yours: if your `CLAUDE.md` says *"This project
-> is in **Quickstart** mode"* and you've unlocked MVP, delete that sentence (`boss status` names the
-> mode).
->
-> When a mentor's call matters, BOSS now says to raise your host's effort for that agent first, and
-> move to a bigger model only if it stalls on the same question twice. That's cheaper than switching
-> models, and it is the current guidance for the newest ones. BOSS still pins neither.
->
-> `/close` now leads with anything that can't wait (and whether it's safe to leave running tonight),
-> skips the list of files it wrote, and asks everything it needs in one numbered list. A typo-fix
-> session gets one line.
->
-> If your app has no screens (a CLI, an API, a pipeline), MVP no longer hands you the design-token
-> and UX-check skills; they arrive with the first styled file. `/design-review` is still there
-> before you build one.
->
-> Your agents now know when to change shape, and it goes beyond the coder. The rule is to take the
-> cheapest step that answers what the work is showing you: write the stack into the agent, give a
-> second surface its own rule file, let the agent keep notes, run long work in the background. Make
-> a second agent only for a real reason: different tools, different model settings, independent
-> work, or two people owning two parts. When you pick a stack with `/decide`, the coder learns it in
-> the same step. `/judge-traces` now points out agents nobody calls and pairs that always hand off to
-> each other. And if you delete an agent you don't need, `boss sync` no longer puts it back.
->
-> Two MVP skills folded into others. `/measure` is now `/health`'s first run: it plants the analytics
-> seam whatever your user count, then picks the one metric and curve, then reads them. `/ai-first-init`
-> is gone; `/spec` now asks, for each feature that calls a model, which steps need it and which stay
-> plain code. `boss sync` says so, and your `docs/measure/` and `docs/ai-first.md` are still read.
+> **For you:** Run `boss sync` — BOSS's hooks had been failing silently in any project whose
+> `package.json` says `"type": "commonjs"`, and sync brings the fix. `/measure` is now `/health`'s first
+> run; `/ai-first-init` is gone, and `/spec` asks per feature which steps need the model. `/ship` checks
+> the live thing answers and asks who hears if it breaks at 3am; your agents now say what they didn't
+> check. After an MVP unlock, delete *"This project is in Quickstart mode"* from your `CLAUDE.md`.
 
 - **Shipped skills stop telling BOSS's history; `settings.json` writes are atomic (IDEA-126).** Nine
   lines in six skills narrated how BOSS got there or cited its own `IDEA-010` — an id a founder's tree

@@ -10,9 +10,10 @@
 3. **Capture before building.** New ideas → `docs/ideas/IDEA-NNN`. Features being built → promote to a spec. Track in `docs/ideas/INDEX.md`. **Every IDEA in this repo is a `kind: capability`** — BOSS's *venture* idea is the canvas, not an IDEA record (`docs/IDS.md` § Two kinds; IDEA-114).
 3b. **Write a found task down before you act on it.** The things identified mid-session — "this also needs a rollback", "the adjacent rule is probably wrong too" — live only in the chat until something durable holds them, and a compaction takes them silently. Put them somewhere on disk as you find them (the active IDEA/FEAT record, `docs/RESUME.md`, or a devlog line), sorted three ways: a **task** stays on a list, genuinely **new scope** becomes its own id, and an **open question** gets written as a question rather than carried. The conscience's `task-hygiene` moment notices when the chat's list has outrun the files, but it fires on a **timestamp** and cannot see whether you already wrote them down — a reminder, never a referee. Recovering by re-reading what you built tells you what you *did*; it can never tell you what you *meant to do next*.
 4. **Zero-dependency CLI.** `src/` stays dependency-free (Node built-ins only). Machine state is JSON (`.boss/`, `registry/`).
-5. **Every capability = a commit + a bullet under `## Unreleased` in `registry/CHANGELOG.md`. VERSION does not move** (DEC-019). Ajesh stamps a version when he publishes: `npm run stamp`, then `npm publish`. The CHANGELOG is what `boss sync` reads to tell projects what's new — stamped entries only.
+5. **Every capability = a commit + a bullet under `## Unreleased` in `registry/CHANGELOG.md`. VERSION does not move** (DEC-019). Ajesh stamps a version when they publish: `npm run stamp`, then `npm publish`. The CHANGELOG is what `boss sync` reads to tell projects what's new — stamped entries only.
 6. **Test the CLI before claiming done.** Scaffold a throwaway in `/tmp` with `BOSS_HOME` pointed at a temp dir (`BOSS_HOME=$(mktemp -d) boss new …`), exercise the command, then delete both. With `BOSS_HOME` set, nothing reaches the real `~/.boss/registry.json`, so there is no row to prune. Without it, prune the row by hand; the registry is per-machine and never in the repo.
 7. **Small, reversible steps.** One concern per change. Don't break the working `boss` CLI.
+8. **Reproduce before you fix or gate.** Run the failure first. If the test you wrote passes on the old code, there is no bug: record that, ship nothing (2026-09-23 — a reviewer's CRLF bug, read from a regex, passed unchanged).
 
 ## Operating conditions of this tree (standing — moved out of RESUME, IDEA-102)
 
@@ -27,7 +28,7 @@
   tracked since 2026-09-13 (IDEA-087 — two unrecoverable losses, duplicates from concurrent writes,
   124 dead CHANGELOG citations).** Still gitignored, for someone else's sake: `evidence/` (real
   people's words), `.boss/` (the brain), `research/inbox|sessions`, `source/`, `dossier/`,
-  `business/`, and `ideas/CANVAS.md` (Ajesh's own — his call, per file). The test for tracking is
+  `business/`, and `ideas/CANVAS.md` (Ajesh's own — their call, per file). The test for tracking is
   *"fine public forever?"*, never *"is the repo private"* — history goes with the toggle. Read
   before you write there all the same; git now saves you, but only what you committed.
 - 🔴 **Never open a file for writing before you have finished reading it.** `open(p,'w')` truncates on
@@ -39,8 +40,8 @@
   shape above destroyed `RESUME-ARCHIVE.md` (~600 lines of narrative for v0.223–0.254; the releases
   themselves are all in the CHANGELOG). **Do not "restore" either by re-deriving from the CHANGELOG** —
   that manufactures a record nobody wrote.
-- **`npm publish` and `npm run bump:formula` are Ajesh's.** Never run them for him. `check:published`
-  says how far npm is behind; that is his number, not a task.
+- **`npm publish` and `npm run bump:formula` are Ajesh's.** Never run them for them. `check:published`
+  says how far npm is behind; that is their number, not a task.
 - **Every commit runs the STAGED tree through `npm run test:ci`** (`scripts/hooks/pre-commit`, ~9s: a
   throwaway worktree at HEAD with the index copied over it, so peers' unstaged edits never count).
   On per clone with `npm run hooks`; `git commit --no-verify` skips once. It is the CI half only —
@@ -51,6 +52,11 @@
   exactly that — two *generated* docs frozen at the same old version is the tell that a gate was
   skipped). **`node scripts/release.js` is not read-only** — it regenerates `docs/CHEATSHEET.md`,
   `docs/SKILLS.md` and `site/`; never run it to "just check" a tree someone else is releasing into.
+- **A new gate needs a bug that reached a user** (Ajesh, 2026-09-23) — not a near miss, not prose
+  disagreeing with prose. Name that bug in the gate's header.
+- **Site work is frozen except for correctness** (Ajesh, 2026-09-23) until `copy_install` shows
+  traffic; first read 2026-10-14. A wrong claim, a dead link, a count the gate flags: fix it. New
+  pages, redesigns, copy polish: no.
 - Commit with the GH noreply env-var: `NR=$(gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"')`.
   After CLI changes: `npm i -g ~/Projects/bossbuild`, then test in `/tmp` with `BOSS_HOME` set to a
   temp dir (rule 6). `npm run pack:preview` confirms only the package ships.

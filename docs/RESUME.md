@@ -95,6 +95,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Next (in order)
 
+0. **Worktree trial (IDEA-120, Ajesh yes 09-23)** — the next session runs in its own worktree and records what broke.
 1. **Ajesh's browser read of the demo** — `npm run gen:site` → `site/demo/index.html`: does it read
    as *BOSS running*; the Kettlewick name; sage/copper. His playbook hand-checks: Present → VC cut
    (now also a filter), Export PDF in the sandbox, a removed slide after a re-render, the copy sheet,
@@ -124,6 +125,7 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
+- 🔷 **The maintainer message — what holds it?** Drafted 08-23, still unsent. No gating rule (09-23); a date by which it's sent is the open ask.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
   into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing
