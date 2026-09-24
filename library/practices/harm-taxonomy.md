@@ -19,7 +19,10 @@ curve: humane
 > vibe. Its product-design twin is the catalog in [`deceptive-patterns.md`](deceptive-patterns.md).
 
 "Who could this harm?" is sharper reasoned against *named axes*. Three complementary lenses — run a
-choice past all of them before you say "no harm":
+choice past all of them before you say "no harm". **The axes are for reasoning, not for saying:** tell
+the founder the harm in plain words (*"the candidates can't find out why they were rejected"*), never
+the label (*"(individual-autonomy harm)"*). A taxonomy word in a nudge is BOSS's working reaching the
+founder.
 
 ## Five harm dimensions (Anthropic, Unified Harm Framework)
 

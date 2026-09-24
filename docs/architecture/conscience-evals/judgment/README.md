@@ -126,6 +126,10 @@ sentences across the 9, never more than 1 per nudge except j-hum-101 (3). The lo
 more than one skill in 8, taxonomy labels in 3. None of it moves into the verdict until the frames
 have been tightened against it and re-graded. Single-vote judges: treat any one call as a hypothesis.
 
+After step 2 (frames tightened, same model, same day): 14 right-sized · 3 over · 0 under; 0 tics, 0
+skill menus, 0 labels; 43/43 decisions still match their labels. See IDEA-123 for the one regression
+the first pass caused (a third-party harm cut as filler) and the clause that fixed it.
+
 ## The zero-dep line
 
 The rule (CLAUDE.md #4) is **the shipped surface (`src/`, the `files` allowlist) stays dependency-

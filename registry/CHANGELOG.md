@@ -297,6 +297,15 @@ rule above still applies to the whole section once it is stamped.
   and 9 over, each over by a sentence of filler (openers, a second rhetorical question, a taxonomy
   label), never by length alone.
 
+- **The conscience says what it came to say, and stops (IDEA-123 step 2).** The filler had come from
+  BOSS's own instructions: the drift moment listed four skills to point at, the caution moment asked
+  for two questions, the humane lens said to "name the axis", and the voicing practice prescribed
+  "Your call" word for word. Each moment now points at the one next step that fits, asks one
+  question, hands the decision back in its own words, and keeps harm labels for its reasoning.
+  When being wrong lands on someone outside the room, the nudge always says who. Across 17 nudges
+  re-graded on Opus 5.5: 14 right-sized (was 8), 0 stock sign-offs (was 9), 0 lists of skills (was 8),
+  0 internal labels (was 3), and every fire-or-stay-silent decision still matches its label.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched
