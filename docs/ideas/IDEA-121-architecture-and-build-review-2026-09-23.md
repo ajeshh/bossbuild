@@ -97,7 +97,9 @@ projects get the trim on `boss sync --apply`.
 - [ ] CHANGELOG 1.14MB = 30% of the npm package. Ship a recent-N file.
 - [ ] Untested: registry, conscience pause/mute, help-html, insights, map. registry test would have caught tier 1.
 - [ ] Readers duplicated across board/design/playbook (two readDecisions, five esc); playbook's revisit-due
-  ignores status and uses UTC (`playbook.js:498` vs `records.js:407`).
+  ignores status and uses UTC (`playbook.js:498` vs `records.js:407`). *Revisit half fixed 2026-09-23:
+  one `revisitDue()` in `src/frontmatter.js` read by both (`test/revisit-due.test.js`); the
+  duplicated readers are still open.*
 - [ ] IDEA-120 (worktree per session) would retire ~6 standing rules.
 
 ## Keep — the reviewers agreed these are right

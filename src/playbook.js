@@ -17,7 +17,7 @@
 
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { frontmatter } from './frontmatter.js';
+import { frontmatter, revisitDue } from './frontmatter.js';
 import { shellPage } from './page-shell.js';
 // The venture's own tokens set the page when docs/design/tokens.json exists — ground, paper, ink,
 // rules, faces, radius — so a founder's playbook looks like their product and BOSS's looks like
@@ -495,7 +495,7 @@ export function readDecisions(projectDir, today = Date.now()) {
       const decision = firstParagraph('\n' + (section(text, 'Decision') || ''));
       const falsifier = firstSentence(sectionStartingWith(text, 'Falsifier') || '');
       const revisitBy = dateOf(fm.revisit_by);
-      const overdue = !!revisitBy && !fm.outcome && Date.parse(revisitBy) < today;
+      const overdue = revisitDue({ revisitBy, outcome: fm.outcome, status: fm.status }, isoDay(today));
       out.push({ id, file: n, title: stripMd(h1), created: dateOf(fm.created), reversibility: String(fm.reversibility || '').trim().split(/\s/)[0], decidedBy: String(fm.decided_by || '').trim(), status: String(fm.status || '').trim(),
         decision, falsifier, revisitBy, outcome: fm.outcome ? String(fm.outcome).trim() : '', overdue, supersedes: (String(fm.supersedes || '').match(/DEC-\d+/i) || [null])[0], supersededBy: null });
     } catch { /* skip */ }

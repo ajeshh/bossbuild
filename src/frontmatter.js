@@ -109,3 +109,16 @@ export function baseStatus(s) {
 // them beside fresh captures is what makes a board unreadable — the founder re-reads a settled
 // question every time they look.
 export const isParked = (s) => ['deferred', 'dropped'].includes(baseStatus(s));
+
+// --- the return path ------------------------------------------------------------------------
+// Is a record's `revisit_by:` due? ONE rule, because two surfaces read it and disagreed:
+// `boss status` (records.js) compared local calendar days and skipped superseded/dropped
+// records, while the playbook compared `Date.parse(date) < now` — UTC midnight against a
+// timestamp, so the due day itself never counted and the evening before could flip early —
+// and ignored status (IDEA-121). Due = a date, no `outcome:`, not ended, and today ≥ the date.
+export function revisitDue({ revisitBy, outcome, status } = {}, today) {
+  const d = String(revisitBy || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || outcome) return false;
+  if (['superseded', 'dropped'].includes(baseStatus(status))) return false;
+  return d <= today;
+}

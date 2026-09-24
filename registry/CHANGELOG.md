@@ -75,6 +75,10 @@ rule above still applies to the whole section once it is stamped.
   fold into one token. `craft.js` and `help-html.js` drop their hand-rolled regexes for
   `src/frontmatter.js`, and `test/yaml-parity.test.js` holds both parsers to every doc in the repo.
   `boss sync` brings the fixed hook to existing projects.
+- **A decision's revisit date means the same thing everywhere (IDEA-121).** The playbook's decision
+  cards compared `Date.parse(revisit_by) < now`. That means UTC midnight against a timestamp, so the
+  due day itself didn't count, and superseded or dropped decisions still showed *overdue*. `boss
+  status` already had it right. Both now read one `revisitDue()`.
 - **Agent shape, one ladder for every agent (IDEA-124).** New managed rule
   `.claude/rules/agent-shape.md` (Quickstart). It is path-scoped to `.claude/agents/**`, so it loads
   only when an agent file is touched. Rungs: specialize → scope (a path-scoped rule per surface) →

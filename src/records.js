@@ -27,7 +27,7 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { firstAdded } from './gitdates.js';
 import { join, sep, basename } from 'node:path';
-import { frontmatter, STATUS_VOCAB, baseStatus } from './frontmatter.js';
+import { frontmatter, STATUS_VOCAB, baseStatus, revisitDue } from './frontmatter.js';
 import { cardGist, criteriaProgress } from './board.js';
 import { isoDay } from './clock.js';
 
@@ -406,10 +406,7 @@ export function recordDrift(projectDir) {
   // both fields; DECs are the ones that do.
   const today = isoDay();
   for (const r of records) {
-    if (!r.revisitBy || r.outcome) continue;
-    if (!/^\d{4}-\d{2}-\d{2}/.test(r.revisitBy)) continue;
-    if (baseStatus(r.status) === 'superseded' || baseStatus(r.status) === 'dropped') continue;
-    if (r.revisitBy.slice(0, 10) <= today) {
+    if (revisitDue(r, today)) {
       findings.push({ kind: 'revisit-due', id: r.id, file: r.file,
         what: `\`revisit_by: ${r.revisitBy.slice(0, 10)}\` has passed and there is no \`outcome:\` — did the falsifier fire? Stamp \`outcome:\` (held · fell · can't tell yet, and why)` });
     }
