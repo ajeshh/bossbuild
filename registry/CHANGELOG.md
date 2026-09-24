@@ -39,6 +39,11 @@ rule above still applies to the whole section once it is stamped.
   feature you captured last; an IDEA marked `kind: capability` is never taken for the venture, and an
   older project falls back to the record `/boss` wrote first. In a presentation cut, a sub-heading no
   longer stands over a group the cut left out. (IDEA-129)
+- **The playbook is easier to scan.** A chapter heading no longer starts with a status mark, a
+  version stamp or a field label (`What:`); what's left is still your sentence, word for word. A long
+  record folds behind *the whole record* instead of stretching its row to thousands of pixels; Copy,
+  Slide and the PDF still carry every word. What's being built now leads the shipped list, then the
+  newest. (IDEA-129)
 - **The demo venture wears a warmer palette.** Kettlewick's sage ground, sage cards and green-black
   text sat at one hue and one lightness, so nothing on the page drew the eye and the copper accent read
   as rust. Its tokens are now oat and cream under brown-black, with a brighter copper (`#B84E12`, still

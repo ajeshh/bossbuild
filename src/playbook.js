@@ -664,8 +664,20 @@ const cellBlock = (b, canvas, id, title, sub = '') => {
   const srcLine = `canvas · ${esc(b.name)}${canvas && canvas.updated ? ` · rev. ${esc(canvas.updated)}` : ''}`;
   return block({ id, title, sub, body: `<div class="answer">${inline(b.answer)}</div>`, chip: chipFor(b), src: srcLine });
 };
-const chapterHead = (n, label, line, lead = '') =>
-  `<div class="chapter-head"><div class="label">${n} · ${esc(label)}</div>${line ? `<h2>${esc(line)}</h2>` : ''}${lead ? `<p>${lead}</p>` : ''}</div>`;
+// A chapter line is the record's own first sentence, minus the record-keeping in front of it: a
+// status mark and version stamp (`🟢 v0.5 (2026-08-21) — `) or a field label (`What: `). What is left
+// is still a substring of the record — trimmed, never reworded (IDEA-129).
+export function headline(line) {
+  const t = String(line || '')
+    .replace(/^(?:[\p{Extended_Pictographic}\uFE0F\u200D]+\s*)+/u, '')
+    .replace(/^v\d+(?:\.\d+)*\s*(?:\([^)]*\))?\s*[—–-]\s*/i, '')
+    .replace(/^(?:[A-Z][\w'’]*(?:\s[\w'’]+){0,2}):\s+(?=\S)/u, '');
+  return t.length >= 8 ? t : String(line || '');
+}
+const chapterHead = (n, label, line, lead = '') => {
+  const h = headline(line);
+  return `<div class="chapter-head"><div class="label">${n} · ${esc(label)}</div>${h ? `<h2>${esc(h)}</h2>` : ''}${lead ? `<p>${lead}</p>` : ''}</div>`;
+};
 const chapter = (id, headHtml, inner) => `<section class="chapter" id="${id}">${headHtml}${inner}</section>`;
 const slug = (s) => norm(s).replace(/ /g, '-');
 
@@ -695,10 +707,13 @@ function pitchChapters(data) {
       : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', venture ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : ideaVerb, `${ideaSrc} · no in_a_few_years line`))
     + '</div>'));
 
-  // 2 · Product — the IDEA doc's current shape, whole; the FEATs; what it is not.
+  // 2 · Product — the IDEA doc's current shape, whole; the FEATs; what it is not. What is being built
+  // leads, then the newest shipped — a long list folds, and the fold should hide the oldest (IDEA-129).
+  const featOrder = (fs) => { const num = (f) => parseInt(String(f.id).replace(/\D/g, ''), 10) || 0; const done = (f) => /^shipped/i.test(f.status || '');
+    return [...fs].sort((a, b) => (done(a) - done(b)) || num(b) - num(a)); };
   const shapeLine = idea && idea.shape ? firstSentence(idea.shape.split('\n').filter((l) => !/^_.*_$/.test(l.trim())).join('\n')) : '';
   const featList = feats.length
-    ? block({ id: 'product-feats', title: 'What has shipped', sub: 'and what is being built', body: `<ul>${feats.map((f) => `<li><strong>${esc(f.id)}</strong> · ${inline(f.gist)} — <em>${esc(f.status || 'unknown')}</em>${f.shippedOn ? ` · ${esc(f.shippedOn)}` : ''}</li>`).join('')}</ul>`, chip: `<span class="chip ev">${feats.length} FEAT${feats.length === 1 ? '' : 's'} · ${feats.filter((f) => /^shipped/i.test(f.status)).length} shipped</span>`, src: 'docs/ideas/FEAT-*.md · boss board' })
+    ? block({ id: 'product-feats', title: 'What has shipped', sub: 'and what is being built', body: `<ul>${featOrder(feats).map((f) => `<li><strong>${esc(f.id)}</strong> · ${inline(f.gist)} — <em>${esc(f.status || 'unknown')}</em>${f.shippedOn ? ` · ${esc(f.shippedOn)}` : ''}</li>`).join('')}</ul>`, chip: `<span class="chip ev">${feats.length} FEAT${feats.length === 1 ? '' : 's'} · ${feats.filter((f) => /^shipped/i.test(f.status)).length} shipped</span>`, src: 'docs/ideas/FEAT-*.md · boss board' })
     : hole('product-feats', 'What has shipped', 'Nothing has a build contract yet. The first FEAT is where "we should build this" becomes "here is how we\'ll know it\'s done."', '/spec', 'docs/ideas/FEAT-*.md — none');
   out.push(chapter('product', chapterHead(2, 'Product', shapeLine),
     '<div class="blocks">'
@@ -995,6 +1010,8 @@ const PLAYBOOK_CSS = `
   .present .removed { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding-top: 8px; border-top: 1px solid var(--rule-2); } .present .removed .chips { display: contents; } .present .removed .rm { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px dashed var(--rule); border-radius: 99px; font-size: 12px; color: var(--ink-2); } .present .removed .rm button { font-family: var(--mono); font-size: 11px; color: var(--accent); } .present .removed .restore-all { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--accent); }
   .deck .chrome .cut { color: var(--ground); } .deck .chrome .remove { margin-left: 0; color: var(--muted); border-color: color-mix(in srgb, var(--muted) 40%, transparent); } .deck .chrome .close { margin-left: auto; }
   .printdeck { display: none; }
+  .block.long:not(.open) .body { max-height: 380px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+  .block .more { align-self: flex-start; margin: 8px 0 2px; padding: 3px 9px; border: 1px solid var(--rule); border-radius: 5px; font-size: 12px; color: var(--ink-2); background: transparent; } .block .more:hover { border-color: var(--accent); color: var(--ink); }
   @media print {
     @page { size: landscape; margin: 0; }
     .topbar, .shell, footer.site, .deck, .sheet, .valmenu { display: none !important; }
@@ -1052,6 +1069,19 @@ const PLAYBOOK_CSS = `
 // Slide on every block (appended after the shell's Link · Copy), the frame toggle, the deck.
 function playbookJs(brand) {
   return `
+/* A long record folds, never cuts (IDEA-129): the body is clamped by CSS and a button beside it opens
+   it. No word moves — Copy, Slide and the PDF clone .body whole, so they carry all of it. */
+(function () {
+  const TALL = 560;
+  document.querySelectorAll('.block .body').forEach((b) => {
+    if (b.scrollHeight <= TALL) return;
+    const blk = b.closest('.block'); blk.classList.add('long');
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'more'; btn.setAttribute('aria-expanded', 'false');
+    btn.textContent = 'the whole record';
+    btn.addEventListener('click', () => { const open = blk.classList.toggle('open'); btn.setAttribute('aria-expanded', String(open)); btn.textContent = open ? 'fold it' : 'the whole record'; });
+    b.after(btn);
+  });
+})();
 (function () {
   const SLIDE_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="12" rx="1.5"/><path d="M12 17v3M8 20h8"/></svg>';
   const esc = (s) => String(s).replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));

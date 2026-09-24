@@ -53,9 +53,9 @@ Nothing below composes a sentence.
   still reads IDEA-001 (a capability from before the field); the fix there is the record, not the render.
 - [x] **3. No heading over an empty cut.** A tier title hides when every block under it is out of
   the current cut.
-- [ ] **4. Headline hygiene, no rewriting.** A chapter line drops a leading field label (`What:`)
+- [x] **4. Headline hygiene, no rewriting.** A chapter line drops a leading field label (`What:`)
   and a leading status mark / version stamp (`🟢 v0.5 (2026-08-21) —`). Metadata, not the sentence.
-- [ ] **5. Long records fold, never cut.** A block body past a length shows its first paragraph and
+- [x] **5. Long records fold, never cut.** A block body past a length shows its first paragraph and
   the rest under *the whole record*; Copy and Slide still carry all of it. The FEAT list shows
   building + newest shipped, the rest under the same fold.
 - [ ] **6. A cover.** Mark (when the brand has one), name, tagline, and three counted numbers — cells

@@ -237,7 +237,7 @@ test('help lists the command and the template gitignores the output', () => {
 
 // --- FEAT-027 — the Pitch chapters ---------------------------------------------------------------
 
-import { firstSentence, readPersonas, readCompetition, readIdea, blockMd } from '../src/playbook.js';
+import { firstSentence, readPersonas, readCompetition, readIdea, blockMd, headline } from '../src/playbook.js';
 
 const IDEA = `---
 id: IDEA-001
@@ -286,6 +286,14 @@ updated: 2026-08-30
 | **ShiftLoop** | adjacent — generic shifts | £3 / user | cheaper, slicker | no visit model | 2026-05-02 |
 `;
 const ROTAWISE = `# Rotawise\n\n## Where it breaks\n- caregivers rate the phone app 2.1 — "it logs me out on every visit"\n- cover-finding is still a phone call\n\n## How they do it\n- rota: office-first\n`;
+
+test('headline: a chapter line drops a status mark, a version stamp and a field label — trimmed, never reworded (IDEA-129)', () => {
+  assert.equal(headline('🟢 v0.5 (2026-08-21) — RE-AIMED, not swept.'), 'RE-AIMED, not swept.');
+  assert.equal(headline('What: One tap when someone calls in sick.'), 'One tap when someone calls in sick.');
+  assert.equal(headline('We find cover before the kettle boils.'), 'We find cover before the kettle boils.');
+  assert.equal(headline('Note: ok'), 'Note: ok', 'too little left: the line stays whole');
+  for (const x of ['🟢 v0.5 — UNCHANGED BY DECISION.', 'What: One tap.']) assert.ok(x.includes(headline(x)), 'still a substring of the record');
+});
 
 test('firstSentence: the record\'s own first sentence, markdown stripped, never composed', () => {
   assert.equal(firstSentence('We help **small** agencies fill every shift. Then more.'), 'We help small agencies fill every shift.');
