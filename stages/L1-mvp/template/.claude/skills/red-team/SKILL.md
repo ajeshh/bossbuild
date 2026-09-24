@@ -249,6 +249,11 @@ land; it proves nothing about the ones you skipped, so list them.
 
 ## Output
 
+**What you say in chat comes before the file, and leads with what's live.** A fail that is reachable
+now (in production, or touching real users' data) goes first, in plain words (*"anyone logged in can
+read another customer's orders"*), with the smallest fix and the advice to hold the next ship until
+it's in. It isn't a future task. Everything else is a line pointing at the report.
+
 A dated report — `docs/red-team/RT-YYYY-MM-DD.md` (or inline for `--self`):
 - **Per category:** `pass` / `fail` / `n/a` + the attack attempted + (on fail) the fix.
 - **For `--paths`, one line per rung, by name** — `**Negative path:** pass — as user A, GET

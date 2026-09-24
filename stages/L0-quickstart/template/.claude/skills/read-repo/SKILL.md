@@ -89,7 +89,10 @@ position read is a conversation opener, not a preamble.
    `boss brain record --headline "<one line>"`. This is what gives the conscience continuity from day
    one (it can voice *with* this read). Honor the brain's must-nots: no
    flattery, no diagnosing the founder, no certainty the material doesn't support; if thin, say less.
-3. **Suggest the disciplines that fit** (recommend, don't auto-apply) — based on what you read, name
+3. **If you read something that can hurt someone outside the room, say it first**, above the position
+   read: regulated data (health, money, children's), or untrusted input reaching a model or the database.
+   It changes what "ready" means for everything else you say. Still recommend, don't apply.
+   **Then suggest the disciplines that fit** (recommend, don't auto-apply) — based on what you read, name
    the 1–3 optional disciplines worth turning on, and why: AI in the path → `/spec`'s model-or-code line + `/evals`; UI
    accumulating → `/design-tokens-init`; untrusted input / regulated data → `boss hooks enable
    secrets-guard` + `/red-team`; a target user worth modeling → `/persona`. The founder confirms each.
@@ -98,8 +101,9 @@ position read is a conversation opener, not a preamble.
    *"that's an MVP verb; `boss unlock mvp` lays it down"* — rather than naming a command that isn't
    there. `boss map` shows what is.
 4. **Show your work** — end with a 3-line summary of exactly what you wrote (which files), so it's
-   obvious what to keep or revert. *"I tailored AGENTS.md's overview, seeded the brain with a first
-   read, and suggested `/evals`. All of it is in your working tree — diff or revert anything."*
+   obvious what to keep or revert: this is their repo, so the list earns its place. *"I rewrote the
+   overview in AGENTS.md, wrote down BOSS's first read of where this stands, and suggested `/evals`. All
+   of it is in your working tree — diff or revert anything."*
 
 ## Cohort-aware
 - `first-product` / `non-tech-founder` — plain language; frame it as "I read what's here and wrote down

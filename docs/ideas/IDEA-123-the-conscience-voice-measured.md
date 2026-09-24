@@ -275,6 +275,21 @@ Fix order (core loop first):
    live fails become future tasks).
 Then trust, design-tokens-init, sunset, consult (humane override 4th), design-review, cost-review, board.
 
+**Fixed from the audit, 2026-09-23:** boss (the "why" beat is intent not script; confirm the
+motivation in their words; repo + licence + cohort in one numbered message; the wrap-up receipt
+replaced by where the idea lives + repo URL) · spec (the elicitation, path and data questions in one
+numbered message; plan mode offered only when it's worth it; the negative-path consequence in plain
+words) · ship (a leak always leads, including for non-tech founders; a first ship's one-time questions
+in one list; "deploy recipe", not PRAC-NNN) · tester (worst first; never "recommend shipped" over a
+failing named path) · read-repo (a regulated-data or untrusted-input finding leads; the file list
+stays, since it's their repo) · welcome (cohort + solo/cofounder in one message; no moment names) ·
+red-team (a live fail leads the chat and holds the next ship). **Not re-measured one by one:** these
+apply the pattern the `/close` pilot validated. Re-run a scenario per skill if one misbehaves.
+Deliberately unchanged: prototype (its one line is a real safety fact) and log/ux-check (proportionate
+on the runs). Still open: evidence, canvas, sunset, consult, design-tokens-init and design-review
+(peer lane), then trust, cost-review, board, import, persona, decide, evals, landing, extract,
+ai-failure-states and boss-sync.
+
 **Outside the four patterns:** `/incident` has no step to tell users when their data was exposed or
 lost, and project-level `/sunset` has the same gap. That's a humane gap, not a voice one; it needs its
 own record.

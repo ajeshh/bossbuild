@@ -344,6 +344,19 @@ rule above still applies to the whole section once it is stamped.
   - Measured on six scripted sessions with independent graders: right-sized outputs went from 1 of 6
     to 3 of 6, and the one live privacy gap moved from a "ship now or later?" question to the first line.
 
+- **Seven more skills and agents ask once, and lead with what hurts (IDEA-123 step 3).** A read of
+  all 72 founder-facing skill and agent files found 7 fixed receipts, 22 scripted or stacked asks, 11
+  places a serious finding came after routine ones, and 13 internal words shown to founders. The
+  highest-traffic ones are fixed:
+  - `/boss`: setup is one numbered message, not three turns, and there's no wrap-up receipt.
+  - `/spec`: its questions are one numbered message, and plan mode is offered only when it's worth it.
+  - `/ship`: a leak always comes before the live link, including for non-technical founders (the
+    cohort line had it the other way round), and a first ship's one-time questions are one list.
+  - `tester`: worst first, and never "recommend shipped" over a failing path.
+  - `/read-repo`: a regulated-data or untrusted-input finding leads.
+  - `/welcome`: its two questions are one message.
+  - `/red-team`: a live fail leads the chat and holds the next ship.
+
 ## 0.326.0 — 2026-09-14
 
 > **For you:** the ten opt-in hooks no longer land in your `.claude/hooks/` at scaffold, switched

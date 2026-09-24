@@ -204,7 +204,9 @@ that when you're choosing among many candidates, not just reacting to one.)_
    in.** This is the cheapest step in the whole skill and the one that decides whether the build
    matches the founder's head: a model asked to spec a feature will complete every gap fluently,
    and the founder cannot correct a guess they never saw. Ask, in one short pass — never an
-   interrogation, and never more than fits on a screen:
+   interrogation, and never more than fits on a screen. **This pass and step 4's path questions (and
+   the one data question below, if the FEAT stores data) reach the founder as ONE numbered message,**
+   not rounds; they answer by number. The quoted lines are the intent, in words that fit the feature:
 
    - **"Here's what I had to assume."** List every gap you filled without being told, each phrased
      so it can be rejected in one word. Put them in the FEAT's **Assumptions** section with the
@@ -257,11 +259,12 @@ that when you're choosing among many candidates, not just reacting to one.)_
    writing `n/a`, and don't manufacture a path to look thorough; a fabricated negative path is worse
    than none, because it turns on a bar this project hasn't earned (below).
 
-   > **Two things follow from writing the negative-path line, and the founder should know both.**
-   > `/red-team --paths` is what turns it into evidence — the probe actually attempts the read as the
-   > wrong user rather than reviewing the code that should prevent it. And `verification-loop` reads
-   > these FEAT records: once any FEAT names a negative path, the conscience stops accepting one
-   > recorded smoke command as enough verification for this project. **That bar rises because the
+   > **Two things follow from writing the negative-path line, and the founder should know both, in
+   > plain words** (not the machinery's names). `/red-team --paths` is what turns it into evidence:
+   > it actually tries the read as the wrong user rather than reviewing the code that should prevent
+   > it. And once any feature names someone who must not see it, BOSS stops treating the quick smoke
+   > check as enough for this project and will ask for that check. (Internally: `verification-loop`
+   > reads these FEAT records.) **That bar rises because the
    > founder described a risk, not because BOSS inferred one** — which is why the honest answer to
    > "who must not see this?" being *"nobody, it's single-user"* costs nothing and should be given
    > freely.
@@ -360,16 +363,13 @@ that when you're choosing among many candidates, not just reacting to one.)_
    **Skip all of this for a FEAT with no surface.** A background job has no flow, and asking for one
    is the ceremony PRINCIPLE #2 refuses.
 
-8. **Offer plan mode before the coder.** The FEAT says *what* and *how we'll know it's done*; it
-   deliberately doesn't say *how*. On this host, the built-in `Plan` agent reads the actual codebase
-   and returns an implementation route — which is the half a spec shouldn't contain and shouldn't guess:
-
-   > *"The spec's set. Want me to plan the implementation against the code first (plan mode), or go
-   > straight to building?"*
-
-   Straight-to-building is a fine answer for a small, obvious FEAT — don't push. Reach for the plan
-   when the FEAT touches code you haven't read, spans more than a couple of files, or has an
-   out-of-scope line you're worried about crossing.
+8. **Offer plan mode before the coder, when it's worth it.** The FEAT says *what* and *how we'll know
+   it's done*; it deliberately doesn't say *how*. On this host, the built-in `Plan` agent reads the
+   actual codebase and returns an implementation route — which is the half a spec shouldn't contain
+   and shouldn't guess. Offer it only when the FEAT touches code you haven't read, spans more than a
+   couple of files, or has an out-of-scope line you're worried about crossing — in words that say
+   why, e.g. *"This touches the payment code I haven't read — plan it against the code first, or
+   straight to building?"* For a small, obvious FEAT, don't ask: say you're starting and hand off.
 
    **`/spec` decides the destination; the plan picks the road.** Keep them separate: a route that
    arrives without a spec is a well-planned trip to nowhere, and an implementation plan is *not* a
@@ -389,7 +389,9 @@ and start being migrations with a rollback plan. The cheapest moment to get the 
 while the FEAT is still prose.
 
 It's a step rather than someone to consult, because a step fires and a door has to be opened. For
-any FEAT that creates or changes stored data, answer these in the record:
+any FEAT that creates or changes stored data, **you** answer these in the record from what the FEAT
+already says. Ask the founder only what you can't infer, usually *who can read a row*, and put it in
+step 3's one message rather than a new round:
 
 - **What entities does this need, and why is each its own thing** rather than a field on an
   existing one?

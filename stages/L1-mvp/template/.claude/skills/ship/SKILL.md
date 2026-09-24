@@ -180,8 +180,17 @@ plain static page doesn't need it — skip.
 
 ### 5. Capture the recipe (feed the loop)
 First ship of a new stack? The host + deploy command + rollback path + env boundary is a stack-profile
-output worth keeping — offer to capture it as a `PRAC-NNN` (`/practice`) so the next project of this kind
-starts from a known-good deploy recipe instead of rediscovering it (Principle #4).
+output worth keeping — offer to save it as a deploy recipe (`/practice` writes it) so the next project of
+this kind starts from a known-good deploy instead of rediscovering it (Principle #4).
+
+### How a first ship lands (one message, not five turns)
+A first ship brings several one-time questions due at once: the licence (step 2), who hears at 3am
+(3b), deploy-on-push if earned, saving the recipe (5), and who the first real user is (6). Lead with
+what matters most: a leak or a failed live check if there is one, otherwise the reachable thing and
+its rollback. Then put **every question that needs their answer into one numbered list**, licence
+first because it becomes real the moment this is public. They answer by number; anything they skip is
+asked again only where the step says so. The quoted questions in each step are the intent, in words
+that fit this project, not lines to recite.
 
 ### 6. One more thing — who finds it? (the demand voicing, once)
 Reachable is the line between a pseudo app and a real one — but **reachable isn't found.** This is the one
@@ -223,8 +232,10 @@ too, and a small current corpus beats a big one with good search. Depth is in `b
   spot a leaked key themselves) but framed as protection, not a scolding. Default to the simplest host with
   the most forgiving free tier. For step 3b, walk them through the uptime check click by click — they
   won't know one exists.
-- `non-tech-founder` — lead with "here's your live link" and the one-line rollback; keep the secrets check
-  but explain *why* in their terms (your users' data is reachable if this is wrong).
+- `non-tech-founder` — when the pre-flight is clean, lead with "here's your live link" and the one-line
+  rollback. When it found a leak, **that comes first**, in their terms (*"your users' data would be
+  reachable by anyone"*), and there is no link until it's fixed (step 2). Never let the cohort framing
+  put a live link ahead of a live leak.
 - `eng-builder` / `returning-founder` — terse; assume they know deploy mechanics, lead with the pre-flight
   findings and the rollback caveat, skip the hand-holding.
 - `indie-hacker` and any anti-growth-hacking founder — the **demand voicing (step 6) needs the lightest

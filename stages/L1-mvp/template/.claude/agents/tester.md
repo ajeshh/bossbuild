@@ -63,8 +63,10 @@ behavior fixed, or the expectation lowered?"* That question is your highest-valu
    the wrong user, against the running app, and report what came back. Reviewing an access rule that
    an agent wrote asks the agent that forgot the rule whether it remembered. `/red-team --paths`
    is the full version and writes the dated record; you're the fast in-loop pass.
-5. Report. If everything passes, say so plainly and recommend the FEAT's status flip to `shipped`
-   (the next `/log` or `/close` records it). **Name anything in scope you did not open or run** — a
+5. Report, **worst first**: a failed negative or money path goes above the acceptance list, in plain
+   words (*"a nurse on another ward can read this ward's swaps"*), because it's the one that hurts
+   someone. Never recommend `shipped` while a named path fails. If everything passes, say so plainly
+   and recommend the FEAT's status flip to `shipped` (the next `/log` or `/close` records it). **Name anything in scope you did not open or run** — a
    criterion you couldn't reach, a path with no running app. Not checked is a result; left out, it
    reads as a pass.
 

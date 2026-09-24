@@ -183,6 +183,9 @@ once, and take *"skip"* as a complete answer:
 > would **'it worked'** look like three months from now — and **if it works, what's here in a few
 > years?**"*
 
+That is the intent, not a line to recite: ask it in words that fit *this* idea and how they wrote
+it, and keep all three in one breath.
+
 Then the check, ordered by cohort (read `cohort` from `.boss/config.json`) — in the same message,
 not a second turn:
 
@@ -199,8 +202,9 @@ not a second turn:
 - **Write their sentence verbatim** into `success_looks_like:` and as a dated **Capture log** line
   (*"— why: … / it worked = …"*). Their words; don't tidy them.
 - **Map the why to one of** `learning` · `revenue` · `community` · `credibility` · `own-problem`
-  and write it to `motivation:`. **Show the mapping before saving** — *"I'll file that as
-  `community` — right?"* — and take their correction. If it doesn't fit, leave `unset` and keep the
+  and write it to `motivation:`. **Show the mapping before saving**, in their words, not the slug
+  (*"so this is mainly about something the people around you will use — right?"*), and take their
+  correction. If it doesn't fit, leave `unset` and keep the
   sentence; the sentence is what matters, the enum is for the readers.
 - **The few-years line goes verbatim into `in_a_few_years:`** — it is the one far-horizon
   sentence BOSS holds, and the playbook renders it under Vision. Not five years, not a forecast: a
@@ -260,6 +264,13 @@ theirs and, incidentally, opens `canvas-loop` — which is how BOSS earns the ri
   what the model does and what stays code, then `/evals`, `/ai-failure-states` and `/ai-cost`.
   Cheaper to declare upfront than to retrofit after the first bill, the first hallucination, or
   the first refusal in front of a user."* Don't run anything for them; the recommendation is the artifact.
+
+## 5–6. The setup, in one message
+
+The repo, the licence and the optional cohort question are **one message with numbered items**, not
+three turns. The founder answers *"1 private, 2 not yet, 3 skip"* and is done. Each item keeps its
+full content below (the licence's two costs especially: it can be irreversible); only the turns
+merge. Skip an item whose config already answers it.
 
 ## 5. GitHub repo (the gated step)
 
@@ -341,14 +352,13 @@ cohort, real use will reveal it; the file is editable.
 
 ## 7. Wrap up
 
-Give a tight summary: what the idea is, where it's captured (`IDEA-NNN`), the stack decision (or that
-it's pending), the mode, the cohort (if set), and the repo URL if created.
+Say only what they'll act on next, not a receipt of the setup they just answered (they know the
+stack, the mode and the cohort; they chose them):
 
-**Then say the return path — once, in one line.** The idea doc is *living*, and if nobody says so, the
-insights that arrive tomorrow have nowhere to go. That is the gap this line exists to close:
-
-> *"`docs/ideas/IDEA-NNN` is a living doc, not a filing. When more lands — and it usually does, once
-> it's out of your head — `/idea <the thought>` adds to it."*
+- **Where the idea lives, and that it's living.** The idea doc is *living*, and if nobody says so,
+  the insights that arrive tomorrow have nowhere to go. One line, in words that fit, e.g. *"Your idea
+  is in `docs/ideas/IDEA-NNN` — it's meant to grow; `/idea <the thought>` adds to it when more lands."*
+- **The repo URL**, if one was created.
 
 Then the single best next step (usually: start building the smallest version, or `boss unlock mvp` if
 it's clearly a real build).

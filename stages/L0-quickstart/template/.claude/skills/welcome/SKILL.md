@@ -102,6 +102,10 @@ That's it. No more than 3-4 sentences. The founder is here to build, not to read
 
 ## 2. Ask the cohort question (if unset)
 
+**Steps 2 and 2.5 go out as one message, two numbered items** (*"1. which of these sounds like you
+(optional)… 2. solo, or with someone?"*). They answer both in one reply. Skip an item whose answer is
+already on file.
+
 Read `cohort` from `.boss/config.json`. If `null` (the default — never asked), ask the SAME open
 question `/boss` step 6 asks. If it is `skipped`, they were asked and declined: don't ask again.
 
@@ -160,8 +164,8 @@ If cohort is `eng-builder`, `vibe-virtuoso`, `indie-hacker`, or `returning-found
 > exists (a sentence, a file, a Google Doc / Obsidian / PDF / deck, a URL, or several); it pulls
 > a copy into `docs/source/` and shapes it. `/import` adds more material to an idea later.
 > The conscience (`UserPromptSubmit` hook) will nudge if it sees drift; `boss conscience pause`
-> silences all of it, or `boss conscience mute <moment>` turns down just one (drift|caution|…)
-> if a single nudge keeps missing.*
+> silences all of it, or you can turn down just the kind of nudge that keeps missing
+> (`boss conscience` lists them by name).*
 >
 > *Nothing about how you work with me changes — BOSS adds verbs for the seams between building,
 > not a layer in front of it. `boss status` when you come back; `boss map` for the whole surface.
