@@ -27,6 +27,10 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The guide's *I want to…* map reads right again.** In `boss help --html` every row showed its verbs
+  as locked skills, doubled and mislabelled (`//boss`, `/@mentor-founder`, `/boss status`) and "at
+  undefined", including the ones you already had. Now what you have shows as yours, terminal commands
+  show as always available, and the rest name the mode that brings them. Re-run `boss help --html`.
 - **You can find the MCP question from the guide.** `boss help --html` has a row for *hook my tools up to
   the AI (MCP), and know whether it is time*, pointing at `boss craft mcp` from Quickstart on and at
   `mentor-architect` from MVP. `boss craft` is now listed among the commands that work in every mode;

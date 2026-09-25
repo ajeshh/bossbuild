@@ -24,7 +24,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { STAGE_ORDER } from './paths.js';
 import { loadModes, packageSkillMd, skillGloss, STANDING_COMMANDS } from './modes.js';
-import { HELP, SYMBOLS, WAYFINDING } from './help.js';
+import { HELP, SYMBOLS, WAYFINDING, wayfindingKind } from './help.js';
 import { GLOSSARY } from './glossary.js';
 import { bossVersion } from './paths.js';
 import { isoDay } from './clock.js';
@@ -158,20 +158,33 @@ function skillsHtml(projectDir, stamp) {
 // orients better than an intent that silently isn't there.
 function wayfindingHtml(stamp) {
   const modes = loadModes();
-  const skillStage = {};
+  const stageOf = {};
   const modeName = Object.fromEntries(modes.map((m) => [m.id, m.name]));
-  for (const m of modes) for (const s of m.skills || []) if (!(s in skillStage)) skillStage[s] = m.id;
-  const have = new Set(stamp.skills || []);
-  return `<div class="want">${WAYFINDING.map(([want, verbs]) => {
-    const mine = verbs.filter((v) => have.has(v));
-    const later = verbs.filter((v) => !have.has(v));
+  for (const m of modes) {
+    for (const s of m.skills || []) if (!(`skill:${s}` in stageOf)) stageOf[`skill:${s}`] = m.id;
+    for (const a of m.agents || []) {
+      const n = typeof a === 'string' ? a : a.name;
+      if (!(`agent:${n}` in stageOf)) stageOf[`agent:${n}`] = m.id;
+    }
+  }
+  const have = new Set([...(stamp.skills || []).map((s) => `skill:${s}`),
+    ...(stamp.agents || []).filter(Boolean).map((a) => `agent:${a}`)]);
+  // Tokens are `/skill`, `@agent` or `boss cmd` (src/help.js). A command works in every mode;
+  // a skill or agent is either installed here or arrives at a named rung. Rendering the raw
+  // token as a skill printed `//boss … — at undefined` on every row from v0.275.0 to 2026-09-25.
+  return `<div class="want">${WAYFINDING.map(([want, tokens]) => {
+    const mine = [];
+    const byRung = {};
+    for (const t of tokens) {
+      const { kind, name } = wayfindingKind(t);
+      const code = `<code>${esc(t)}</code>`;
+      if (kind === 'command' || have.has(`${kind}:${name}`)) mine.push(code);
+      else (byRung[stageOf[`${kind}:${name}`]] ||= []).push(code);
+    }
     const parts = [];
-    if (mine.length) parts.push(mine.map((v) => `<code>/${esc(v)}</code>`).join(' · '));
-    if (later.length) {
-      const byRung = {};
-      for (const v of later) (byRung[skillStage[v]] ||= []).push(v);
-      parts.push(Object.entries(byRung).map(([id, vs]) =>
-        `<span class="soon">${vs.map((v) => `<code>/${esc(v)}</code>`).join(' · ')} — at ${esc(modeName[id] || id)}</span>`).join(' · '));
+    if (mine.length) parts.push(mine.join(' · '));
+    for (const [id, codes] of Object.entries(byRung)) {
+      parts.push(`<span class="soon">${codes.join(' · ')} — at ${esc(modeName[id] || id)}</span>`);
     }
     return `<div><span class="q">…${esc(want)}</span><span class="a">${parts.join(' · ')}</span></div>`;
   }).join('')}</div>`;
