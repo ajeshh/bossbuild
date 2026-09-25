@@ -37,6 +37,7 @@ export const STANDING_COMMANDS = [
   ['boss playbook [--open]', 'the venture as sixteen chapters over your records \u2014 present it, export the PDF'],
   ['boss design [--open]', 'the design space: tokens, parts, patterns, exceptions \u2014 read from docs/design/'],
   ['boss recap [--md]', 'what happened this week, read back out of your own records'],
+  ['boss craft [<name>]', 'the practice shelf — how BOSS thinks about building with AI, one doc at a time'],
   ['boss id [TYPE]', 'the next free record number \u2014 computed, never counted by hand'],
   ['boss records', 'check the record set: duplicate IDs, off-vocabulary status, broken promotions'],
   ['boss unlock <mode>', 'move up a mode: quickstart \u2192 mvp \u2192 v1 \u2192 scale'],

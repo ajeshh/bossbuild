@@ -228,6 +228,7 @@ export const WAYFINDING = [
   ['stop working on something', ['/sunset', '/revalidate']],
   ['put AI in my product without regretting it', ['/spec', '/evals', '/ai-failure-states']],
   ['know what the AI is costing me', ['/ai-cost']],
+  ['hook my tools up to the AI (MCP), and know whether it is time', ['boss craft mcp', '@mentor-architect']],
   ['decide what to build next', ['/roadmap', '/revalidate']],
   ['handle something breaking in front of users', ['/incident', '/trust']],
   ['stay current with how BOSS builds', ['/boss-sync', '/extract', '/practice']],
@@ -238,5 +239,7 @@ export const WAYFINDING = [
 export function wayfindingKind(token) {
   if (token.startsWith('/')) return { kind: 'skill', name: token.slice(1) };
   if (token.startsWith('@')) return { kind: 'agent', name: token.slice(1) };
-  return { kind: 'command', name: token.replace(/^boss /, '') };
+  // A command token may carry its argument (`boss craft mcp`) so a row can point at one practice;
+  // the name is the verb alone, which is what STANDING_COMMANDS lists.
+  return { kind: 'command', name: token.replace(/^boss /, '').split(' ')[0] };
 }

@@ -27,6 +27,10 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **You can find the MCP question from the guide.** `boss help --html` has a row for *hook my tools up to
+  the AI (MCP), and know whether it is time*, pointing at `boss craft mcp` from Quickstart on and at
+  `mentor-architect` from MVP. `boss craft` is now listed among the commands that work in every mode;
+  it always did. (IDEA-131)
 - **MCP now comes with a *when*, not only a *which*.** `boss craft mcp` shows what MCP is usually worth
   at each mode: nothing to wire in Quickstart, your stack's servers in your own dev loop in MVP, a server
   your app calls when a feature needs one in V1, exposing your product in Scale. It also gives the sign
