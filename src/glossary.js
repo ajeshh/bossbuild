@@ -93,11 +93,17 @@ export const GLOSSARY = {
   },
   agent: { what: 'A named role Claude takes on for a piece of work. BOSS ships two kinds: BUILDERS make the product (coder, tester, designer), MENTORS coach you (architect, capital, cofounder).', see: 'boss map' },
   hook: { what: 'Something BOSS runs automatically at a moment in your session, rather than when you ask. The conscience is one. Most others ship dormant and turn on only if you want them.', see: 'boss help hooks' },
+  mcp: {
+    what: 'Model Context Protocol: the standard way an AI tool connects to other software, like your database, your issue tracker or a payments service. Each connection is an MCP server. Chat apps often call the same thing a connector.',
+    more: 'Worth wiring when it replaces something you already do by hand, more than once, which is usually later than it feels. A server is someone else\'s code that can put words in front of your AI, so read what it says before you add it.',
+    see: 'boss craft mcp',
+  },
 };
 
 // Alias → canonical. The word a founder types is not always the word the entry is filed under.
 const ALIASES = {
   modes: 'mode', rungs: 'rung', stage: 'mode', level: 'mode',
+  'model context protocol': 'mcp', 'mcp server': 'mcp', 'mcp servers': 'mcp', connector: 'mcp', connectors: 'mcp',
   skills: 'skill', agents: 'agent', hooks: 'hook', loops: 'loop', moments: 'moment',
   ideas: 'idea', feats: 'feat', decs: 'dec', evids: 'evid', 'evid-grade': 'stated-pain',
   'stated pain': 'stated-pain', statedpain: 'stated-pain',
