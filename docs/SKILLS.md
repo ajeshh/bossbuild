@@ -31,8 +31,7 @@
 - **`/close`** — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)  _(/close)_
 - **`/evals`** — Build and run the eval set for an AI-mediated FEAT - "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to your app - look at your data, build the eval set first, categorize failures by mode  _(/evals [FEAT-NNN | --new <feat>])_
 - **`/design-tokens-init`** — Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two  _(/design-tokens-init)_
-- **`/ai-cost`** — Establish AI spend discipline for your app — per-user, per-feature and monthly budgets, the model choices, a per-call cost logger, a review cadence  _(/ai-cost)_
-- **`/cost-review`** — Read the AI cost ledger and produce a dated review  _(/cost-review)_
+- **`/ai-cost`** — AI spend for your app, from budget to bill  _(/ai-cost [review])_
 - **`/ai-failure-states`** — Design what your app does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens  _(/ai-failure-states)_
 - **`/extract`** — Pause and sort patterns — Principle 1 as a skill  _(/extract)_
 - **`/drift-deep`** — The deep, whole-project version of the conscience's drift check — "am I fooling myself across everything I've built?" Reads the canvas, devlog, FEAT specs, code and ideas, and judges whether the work validates the riskiest assumption or builds around it  _(/drift-deep)_

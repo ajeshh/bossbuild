@@ -59,7 +59,7 @@ Two facts, both structural:
    This is the "cost-log exists" precondition literally: there's real cost-per-user data *and* the raw
    trail where retries/regenerations show up.
 2. **≥1 cost review with real numbers** — `docs/cost-reviews/REVIEW-*.md` containing a
-   `- **Total spend:**` line (the same artifact `/cost-review` writes). This is the "operating, and
+   `- **Total spend:**` line (the same artifact `/ai-cost review` writes). This is the "operating, and
    watching the economics" signal: the founder has real usage and is far enough along that
    cost-vs-*price* is a live question, not premature ceremony.
 
@@ -80,7 +80,7 @@ evidence before asking.
 A cost review that actually **examines margin** — `docs/cost-reviews/REVIEW-*.md` containing a
 gross-margin / cost-as-%-of-price / cost-per-user-vs-price line (`Gross margin`, `margin band`,
 `% of ARPU|price|revenue`, `cost-per-user vs`). Once a review has looked at the margin (the Tier-2
-`/cost-review` gross-margin band writes exactly this; a founder addressing it by hand writes the same
+`/ai-cost review` gross-margin band writes exactly this; a founder addressing it by hand writes the same
 line), the trap has been *seen* — the loop closes. Watching cost against budget was never the same as
 watching it against price; the exit is the moment those two finally meet on the page.
 
@@ -105,14 +105,14 @@ per-outcome economics have to hold).
 - The read is **bounded** — the latest review + a tail of the ledger + the one place a price lives,
   never the whole project.
 - The model fires **at most once per session** and stays silent when the margin is healthy and the
-  cost isn't struggle-driven. It **points**, never gates: `/cost-review` (the margin band) and
+  cost isn't struggle-driven. It **points**, never gates: `/ai-cost review` (the margin band) and
   `mentor-capital` (price/packaging) do the work; this only makes the cost visible.
 
 ## Known limitation (documented, like cost-review-loop's)
 
-The gate keys on `/cost-review` having run (a review with real spend on file). A founder operating a
-priced AI product who never runs `/cost-review` — reviewing spend elsewhere, or not at all — won't get
-the auto-nudge; they reach the same judgment by running `/cost-review` (which now carries the
+The gate keys on `/ai-cost review` having run (a review with real spend on file). A founder operating a
+priced AI product who never runs `/ai-cost review` — reviewing spend elsewhere, or not at all — won't get
+the auto-nudge; they reach the same judgment by running `/ai-cost review` (which now carries the
 gross-margin band) or asking `mentor-capital` directly. This is the deliberate Principle-#2 trade:
 better to stay quiet until there's real operating evidence than to fire on a milestone. The predicate
 vocabulary also can't compute the ratio itself — that's the model's job by design, the same split

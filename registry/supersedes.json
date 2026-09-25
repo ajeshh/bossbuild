@@ -212,6 +212,14 @@
       "replacedBy": "spec",
       "why": "`/ai-first-init` mostly called three other skills (`/evals`, `/ai-cost`, `/ai-failure-states`) and repeated advice `/spec` and `/red-team` already give. The one thing only it asked — which steps need the model and which stay plain code — was asked once for the whole project, then drifted as features were added. `/spec` now asks it per feature, in a **Model or code** section, for any FEAT that calls a model.",
       "migrate": "Nothing breaks: an existing `docs/ai-first.md` is still read by `/ai-failure-states`. For the next feature that calls a model, `/spec` asks the model-or-code question; then `/evals`, `/ai-failure-states` and `/ai-cost` as before."
+    },
+    {
+      "since": "0.328.0",
+      "kind": "skill",
+      "removed": "cost-review",
+      "replacedBy": "ai-cost",
+      "why": "`/ai-cost` declared the budget and `/cost-review` read the bill against it, so you had to know which half you were in before either could help. `/ai-cost` now does both: with no budget it writes one and wires the logger; with a budget and calls in the ledger it reads them, flags overages and surprises, and writes the dated review with gross margin.",
+      "migrate": "Run `/ai-cost review` where you ran `/cost-review` (plain `/ai-cost` picks it too, once there is spend to read). Your `docs/cost-reviews/` files and `docs/ai-cost-budget.md` stay where they are and are read as before."
     }
   ]
 }

@@ -3,10 +3,10 @@ id: IDEA-125
 type: idea
 kind: capability
 owner: Ajesh
-status: building
+status: shipped
 proof: none
 proof_note: a decision first — which merges, if any — then each merge proves itself by a skill count and a /skill-doctor pass that still fires the merged skill on its old trigger phrases
-gist: Merge MVP skills that overlap in job, not text. Landed — /measure into /health, /ai-first-init into /spec's model-or-code line (28 → 26). Deferred — /ai-cost + /cost-review, behind the conscience rework. Declined with reopen triggers — /onboard, /design-review + /ux-check, and four more.
+gist: Merge MVP skills that overlap in job, not text. Landed — /measure into /health, /ai-first-init into /spec's model-or-code line, /cost-review into /ai-cost (28 → 25). Declined with reopen triggers — /onboard, /design-review + /ux-check, and four more.
 created: 2026-09-23
 relates: IDEA-121, IDEA-114
 ---
@@ -39,8 +39,16 @@ pairs share 0–1 sentences — so no gate can see them, and merging changes wha
 - [x] `/ai-first-init` retired — landed 2026-09-23. Its one unique question is `/spec`'s **Model or
   code** section (per FEAT, in the FEAT template); `/ai-failure-states` reads that and the budget, and
   an older `docs/ai-first.md` if present. MVP 28 → 26, still opens on 14.
-- [ ] `/ai-cost` + `/cost-review` → after the conscience rework (IDEA-123) releases
-  `cost-review-loop` and `margin-trap-loop`.
+- [x] `/ai-cost` + `/cost-review` — landed 2026-09-25, after IDEA-123 shipped. `/ai-cost` reads
+  where the project is: no budget → declare it; a budget and calls in the ledger (or `/ai-cost
+  review`) → open the bundled `review.md` and write `docs/cost-reviews/REVIEW-*.md`; a budget and an
+  empty ledger → say the logger isn't wired. The loops keep their ids; the conscience frames and
+  `margin-trap-loop` point at `/ai-cost review`. Supersedes entry (`since 0.328.0`). MVP 26 → 25.
+  *Trigger check, weaker than /health's: a blind router over the shipped descriptions sent 10/10
+  cost phrases ("read the cost log", "weekly cost review", "is our gross margin OK"…) to `/ai-cost`,
+  runner-up `/money` — but the other descriptions were shortened in the prompt, so it may flatter.*
+- **Re-asked 2026-09-25 and held:** `/design-review` + `/ux-check` was proposed again from an outside
+  field read that hadn't seen this file. The decline and its trigger stand.
 - [x] Trigger check: does "what should I track", "set up analytics", "activation metric" still
   reach `/health`? *Checked 2026-09-23 by proxy (a blind router over the shipped descriptions, ten
   phrases; not the plugin eval): 7/10 → `/health`. The other three went where they should —

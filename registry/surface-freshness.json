@@ -328,13 +328,6 @@
     {
       "kind": "skill",
       "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/skills/cost-review/SKILL.md",
-      "curve": "model",
-      "last_reviewed": "2026-08-17"
-    },
-    {
-      "kind": "skill",
-      "stage": "L1-mvp",
       "rel": "stages/L1-mvp/template/.claude/skills/design-review/SKILL.md",
       "curve": "craft",
       "last_reviewed": "2026-08-20"

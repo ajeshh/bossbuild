@@ -119,7 +119,7 @@ the customer say the extra spend was worth it?*
 
 In an AI product, **cost-per-user scales with engagement — your heaviest, most expandable users can be
 your least profitable** (AI gross margins ~50–65% vs SaaS 70–85%). Before an upgrade or expansion
-push, read the gross margin: run **`/cost-review`** (cost-per-active-user vs price, plus the
+push, read the gross margin: run **`/ai-cost review`** (cost-per-active-user vs price, plus the
 Evergreen-Ratio of cached ÷ total tokens), and heed the **margin-trap** conscience moment if it has
 fired. **Expanding below margin just loses money faster.**
 

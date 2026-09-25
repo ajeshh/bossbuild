@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`/cost-review` is now `/ai-cost review`.** `/ai-cost` set the budget and `/cost-review` read the
+  bill, so you had to know which half you were in. `/ai-cost` now reads where you are: with no budget
+  it writes one and wires the logger; with a budget and calls in the ledger it reads them and writes
+  the dated review, gross margin included. `/ai-cost review` asks for the review directly. Your
+  budget and past reviews stay where they are. `boss sync` names the change, and the conscience's
+  cost and margin nudges point at the new command. (IDEA-125)
 - **BOSS says "mode", not "rung", and "record", not "ledger".** `boss help`, `boss map` and
   `boss sync` used words from BOSS's own workings where yours belong. The skill-writing practice now
   holds the rule that caught them: a word you type is vocabulary, and a word only BOSS says gets

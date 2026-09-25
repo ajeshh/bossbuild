@@ -32,7 +32,10 @@ try {
   git('checkout-index', '--all', '--force', `--prefix=${dir}/`);
   // Files deleted in the index still sit in the HEAD checkout; remove them so the test sees the commit.
   // And the folders they leave empty: a retired skill's empty `skills/<name>/` still reads as a skill.
-  for (const f of git('diff', '--cached', '--name-only', '--diff-filter=D').split('\n').filter(Boolean)) {
+  // `--no-renames`: a `git mv` is staged as a rename, which `--diff-filter=D` never lists, so the old
+  // path stayed behind — `/cost-review`'s template moved into `/ai-cost` and a `cost-review/` folder
+  // survived in the copy, failing a commit whose tree was green (IDEA-125, 2026-09-25).
+  for (const f of git('diff', '--cached', '--name-only', '--no-renames', '--diff-filter=D').split('\n').filter(Boolean)) {
     rmSync(join(dir, f), { force: true });
     for (let d = dirname(join(dir, f)); d.startsWith(dir + sep) && readdirSync(d).length === 0; d = dirname(d)) rmdirSync(d);
   }

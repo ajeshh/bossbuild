@@ -1,6 +1,6 @@
-# `/cost-review` — the review file skeleton (bundled resource)
+# `/ai-cost review` — the review file skeleton (bundled resource)
 
-> Loaded **on demand** from step 5 of `SKILL.md`. Write this to `docs/cost-reviews/REVIEW-YYYY-MM-DD.md`.
+> Loaded **on demand** from step 5 of `review.md`. Write this to `docs/cost-reviews/REVIEW-YYYY-MM-DD.md`.
 
 ```markdown
 ---

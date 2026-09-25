@@ -227,7 +227,7 @@ export const WAYFINDING = [
   ['work well with a cofounder', ['boss team', '@mentor-cofounder', '/practice']],
   ['stop working on something', ['/sunset', '/revalidate']],
   ['put AI in my product without regretting it', ['/spec', '/evals', '/ai-failure-states']],
-  ['know what the AI is costing me', ['/ai-cost', '/cost-review']],
+  ['know what the AI is costing me', ['/ai-cost']],
   ['decide what to build next', ['/roadmap', '/revalidate']],
   ['handle something breaking in front of users', ['/incident', '/trust']],
   ['stay current with how BOSS builds', ['/boss-sync', '/extract', '/practice']],

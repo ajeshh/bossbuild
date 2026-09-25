@@ -1,9 +1,9 @@
 ---
 name: ai-cost
-description: Establish AI spend discipline for {{PROJECT_NAME}} — per-user, per-feature and monthly budgets, the model choices, a per-call cost logger, a review cadence. Cohort-aware - a tight cap for first-product, inspect-only for vibe-virtuoso, privacy-first logging for domain-expert. Run when the app first calls an LLM. Usage - /ai-cost
+description: AI spend for {{PROJECT_NAME}}, from budget to bill. First run declares per-user and monthly budgets, the model choices and a per-call cost logger. Later runs read the ledger against the budget, flag overages and surprises, and write a dated review with gross margin. Cohort-aware. Run when the app first calls an LLM, then weekly. Usage - /ai-cost [review]
 ---
 
-# /ai-cost — name the bill before it surprises you
+# /ai-cost — name the bill before it surprises you, then read it
 
 The cost of an AI-mediated app is the single most-load-bearing operating decision you make once
 your code reaches the model. Token math is small per call and large per cohort. *"Just call the
@@ -12,12 +12,22 @@ biggest model and see"* is a perfectly fine demo posture and a perfectly destruc
 This skill is the gate between *"the app calls an LLM"* and *"the app is in front of users."* It
 makes you declare the budget BEFORE the bill, wire a logger so you can SEE the bill, and pair
 the cost shape with the right mentor (architecture for shape; business for unit economics).
+Then it comes back and **reads** the bill: the budget is what you intend to spend, the ledger is
+what you spent, and the discipline only works when both halves run.
 
 ## Step 0 — does it already exist, and is this the right rung?
 
-**Look for an AI spend budget before you make one** — `docs/ai-cost-budget.md`, `.boss/cost-log.jsonl`. If it's there: say so and stop
-when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
-*specific* edit when it's behind. Never quietly generate a second one.
+**Read where the project is, and that picks the half:**
+
+- **No `docs/ai-cost-budget.md`** → declare it: steps 1–8 below.
+- **A budget, and `.boss/cost-log.jsonl` has calls in it** (or you were run as `/ai-cost review`) →
+  read the bill: open **[`review.md`](review.md)** and follow it. It writes
+  `docs/cost-reviews/REVIEW-YYYY-MM-DD.md`.
+- **A budget and an empty ledger** → the logger isn't wired, or nothing has called the model yet.
+  Say which, and offer step 5. Don't review an empty file.
+
+Never quietly generate a second budget. If the one there is behind (a model swap, a new call
+site), name the *specific* gap and offer the *specific* edit.
 
 **Rung: MVP.** Applies only when the project makes its first LLM call. If this project is **earlier** than that, don't run this — leave the seam instead:
 **One line per call: model, tokens in/out, timestamp. Append to a file. Nothing reads it yet.** That is the whole ask; it is *not* a budget, a review cadence, alerts, a dashboard, a per-user attribution scheme. Same shape as the analytics history seam — you cannot backfill what past calls cost, so the day you finally care about margin, your ledger starts at day zero and the whole build you already paid for is invisible.
@@ -114,7 +124,7 @@ highest-ROI / lowest-effort lever on the list — reach for it before downgradin
 
 ### 5. Wire the logger
 
-A ~30-line wrapper around the LLM SDK that records each call, so the ledger `/cost-review` reads
+A ~30-line wrapper around the LLM SDK that records each call, so the ledger the review reads
 actually fills. TypeScript and Python implementations, the wiring rules, and the privacy constraint
 for regulated work: **[`templates/cost-logger.md`](templates/cost-logger.md)** — open it now.
 
@@ -133,8 +143,9 @@ A/B they haven't run.
 
 ### 7. Set the review cadence
 
-Add a reminder to `docs/RESUME.md` next-tasks: *"Review `.boss/cost-log.jsonl` weekly through
-MVP."* This is the discipline part — without the cadence, the ledger fills up unread.
+Add a reminder to `docs/RESUME.md` next-tasks: *"`/ai-cost review` weekly through MVP."* This is
+the discipline part — without the cadence, the ledger fills up unread. The conscience's `cost-stale`
+moment says so once if a budget sits with no review on record.
 
 ### 8. Pair with mentors (when warranted)
 
@@ -153,7 +164,9 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
 - **Upstream:** `pretotype-loop` closed — you know the demand exists. Don't optimize cost
   before you've validated the bet; you'll spend on the wrong thing.
 - **Downstream:** `cost-budget-loop` — the conscience moment that fires when LLM calls are
-  present and the budget doc is missing (or breaches it). This skill closes that loop.
+  present and the budget doc is missing (or breaches it). The first run closes it.
+  `cost-review-loop` — opens when a budget exists with no review on record; the first review
+  closes it.
 - **Adjacent:** `/evals` — the eval set IS a cost lever (Husain). Cheaper models pass enough
   evals → ship the cheaper model.
 

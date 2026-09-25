@@ -20,7 +20,6 @@
     "evals",
     "design-tokens-init",
     "ai-cost",
-    "cost-review",
     "ai-failure-states",
     "extract",
     "drift-deep",
@@ -74,7 +73,6 @@
   ],
   "aiMediated": [
     "ai-cost",
-    "cost-review",
     "ai-failure-states",
     "evals"
   ],

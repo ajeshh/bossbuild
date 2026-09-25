@@ -1,20 +1,12 @@
----
-name: cost-review
-description: Read the AI cost ledger and produce a dated review. Reads .boss/cost-log.jsonl (the per-call ledger /ai-cost wires), summarizes spend by FEAT + user + cohort, compares against docs/ai-cost-budget.md, flags overages and surprises, and writes docs/cost-reviews/REVIEW-YYYY-MM-DD.md. Closes the cadence that /ai-cost only declared. Cohort-aware. Usage - /cost-review
----
+# `/ai-cost` — the second half: read the bill, not just the budget (bundled resource)
 
-# /cost-review — read the bill, not just the budget
-
-`/ai-cost` writes the **budget** — what you intend to spend. `/cost-review` reads the
-**ledger** — what you actually spent. The discipline only works when both halves run.
-
-An audit named this as a gap: *"the weekly review cadence is declared in `/ai-cost` but
-no skill reads `.boss/cost-log.jsonl`. The cadence is unenforced."* This skill closes that. It
-doesn't replace the founder's judgment — it surfaces the numbers so the judgment has data.
+> Loaded **on demand** from `SKILL.md` when a budget exists and the ledger has calls in it, or when
+> run as `/ai-cost review`. The first half declared what you intend to spend; this reads what you
+> spent. It doesn't replace the founder's judgment — it surfaces the numbers so the judgment has data.
 
 ## When to run it
 
-- The conscience surfaced the `cost-stale` moment (cost-review-loop opened — you have a
+- The conscience surfaced the `cost-stale` moment (`cost-review-loop` opened — you have a
   budget declared but no review on record).
 - Weekly during MVP — pair with `/close` at session end on the first session of each week.
   The ritual is what makes the discipline stick.
@@ -132,8 +124,8 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
   nothing to review.
 - **Same loop:** `cost-review-loop` — opens when the budget exists but no review has been
   recorded. Closes when this skill writes the first review file.
-- **Adjacent:** `/ai-cost` (re-run if the budget shape needs to change based on review
-  findings); `/ai-failure-states` (cost-spike handler is in scope here too — if reviews show
+- **Adjacent:** the budget half in `SKILL.md` (re-run it if the budget shape needs to change
+  based on review findings); `/ai-failure-states` (cost-spike handler is in scope here too — if reviews show
   recurring cost-spikes, the handler should fire).
 
 ## What this skill is NOT
@@ -144,7 +136,7 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
 - **Not a budget-enforcement gate.** It surfaces variance; it doesn't block calls. The
   override grammar applies — if the review shows a legitimate overage (single
   product launch event, expected spike), record the override in the review file itself.
-- **Not a substitute for the budget doc.** `/ai-cost` declares; this skill reads. Both halves
+- **Not a substitute for the budget doc.** The first half declares; this reads. Both halves
   required; running only one is half the discipline.
 
 ## Rules
@@ -159,7 +151,7 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
   2026-06-15"* is.
 - **Privacy-first for domain-expert cohort.** No PII, no prompt bodies, no model output text
   in the review. Token counts + metadata only.
-- **The review IS the cadence.** A skill that's run once isn't enforcing a cadence — it's a
-  one-off. Pair with `/close` weekly; consider `/cost-review` part of session-end ritual.
+- **The review IS the cadence.** A review run once isn't a cadence — it's a one-off. Pair
+  `/ai-cost review` with `/close` weekly.
 - **Cite the budget version.** Reviews compare against a specific budget snapshot. When the
   budget changes, name which version this review was against.

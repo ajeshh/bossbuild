@@ -161,8 +161,8 @@ your product leans on a model.
   `/smoke` (is it even running?), `/pretotype` (test demand *before* you build), `/log` + `/close`
   (keep a devlog + a clean session-end — and the conscience updates its read on your venture),
   `/revalidate` (the 3-line gate before paused work re-enters the build, so you never ship a zombie
-  feature). If you're AI-native: `/spec` draws the model-or-code line per feature, then `/ai-cost` (+ `/cost-review` to read the spend ledger against
-  budget), `/evals`, `/ai-failure-states`,
+  feature). If you're AI-native: `/spec` draws the model-or-code line per feature, then `/ai-cost` (run again, it reads the spend ledger against
+  the budget), `/evals`, `/ai-failure-states`,
   `/judge-traces` (error-analysis on your real sessions), `/red-team` (test your defenses against the
   OWASP LLM Top-10 — turns prevention into evidence).
 - **Ask:** `mentor-architect` (load-bearing tradeoffs, what to defer), `mentor-customers` (first users,

@@ -133,7 +133,7 @@ test('adopt at MVP holds the earned groups and the opt-in hooks like unlock does
   for (const s of ['health', 'onboard', 'landing']) assert.ok(skills.includes(s), `${s} laid down — the repo is live`);
   // nothing calls a model → that group stays held, and the line says what earns it
   for (const s of ['ai-cost', 'evals', 'ai-failure-states']) assert.ok(!skills.includes(s), `${s} held`);
-  assert.match(out, /4 held back when the app first calls a model/);
+  assert.match(out, /3 held back when the app first calls a model/);
   // opt-in hooks stay off disk until `boss hooks enable`
   const hooks = readdirSync(join(dir, '.claude', 'hooks'));
   assert.ok(!hooks.includes('secrets-guard.js') && !hooks.includes('smoke-guard.js'), 'opt-in hooks held');

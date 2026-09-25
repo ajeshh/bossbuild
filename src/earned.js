@@ -1,7 +1,7 @@
 // earned — the skills a rung holds back until the project has earned them.
 //
 // `boss unlock mvp` used to lay down 28 skills in one move: 17 → 45 verbs in the host's slash
-// menu, opening on /ai-cost, /ai-failure-states, /cost-review, with /money, /trust and /landing
+// menu, opening on /ai-cost, /ai-failure-states, with /money, /trust and /landing
 // resident on every turn of a project that had not shipped anything. `boss map` already FOLDED the
 // post-launch seven until a FEAT shipped — but a fold is a display choice, and the founder lives in
 // the slash menu, which BOSS cannot fold. The only lever there is whether the file exists.

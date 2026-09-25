@@ -334,7 +334,6 @@
     "extract": "routes a pattern UP or DOWN; the record is append-only",
     "revalidate": "a gate; the output is a routing decision",
     "red-team": "a check; findings are append-only",
-    "cost-review": "a reader over the cost ledger; the review file is append-only",
     "judge-traces": "a reader over trace data",
     "drift-deep": "an audit; append-only",
     "roadmap": "explicitly a snapshot you use and discard, never a plan you tend",

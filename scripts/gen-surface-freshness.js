@@ -58,7 +58,7 @@ const EXCEPTIONS = {
   host: ['boss-sync', 'boss-learn', 'read-repo', 'welcome', 'feedback', 'practice', 'extract'],
   // Describe what the MODEL layer does by default — cost shape, eval technique, trace analysis,
   // failure modes. These move with the frontier, not with the host.
-  model: ['ai-cost', 'cost-review', 'ai-failure-states', 'evals', 'judge-traces'],
+  model: ['ai-cost', 'ai-failure-states', 'evals', 'judge-traces'],
   // Adversarial ground: the attack surface moves because someone is trying to move it.
   threat: ['red-team', 'ship', 'trust', 'secrets-guard'],
   // Research + regulation keep naming new patterns; /humane-refresh owns the sweep.
