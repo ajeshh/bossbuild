@@ -47,8 +47,7 @@
 - **`/trust`** — Earn trust honestly - the AI-specific privacy and compliance set without the SOC2 theater  _(/trust)_
 - **`/health`** — Is the shipped thing working, and if not, where is it breaking? First run sets up the reading - the analytics seam, ONE activation metric, ONE retention curve, at most ten events (plus task-completion and edit rate for an AI product)  _(/health)_
 - **`/money`** — The money verb, from the first dollar to operating it  _(/money)_
-- **`/design-review`** — Before-code design review for your app  _(/design-review [FEAT-NNN | path-to-component-spec])_
-- **`/ux-check`** — After-code UX review for your app  _(/ux-check [route-or-component-path | FEAT-NNN])_
+- **`/design-review`** — Design review for your app, before or after the code  _(/design-review [FEAT-NNN | spec | route] [before|after])_
 - **`/comp-eval`** — Find out who else is solving this, and keep knowing  _(/comp-eval [<space> | add])_
 
 ## V1

@@ -212,7 +212,7 @@ export const WAYFINDING = [
   ['see something move today', ['/prototype']],
   ['build the thing properly', ['/spec', '/smoke', '/log', '/close']],
   ['work out how to build it — or whether to rebuild', ['@mentor-architect']],
-  ['keep the design from drifting', ['/design-tokens-init', '/design-library', '/design-review', '/ux-check', '@designer']],
+  ['keep the design from drifting', ['/design-tokens-init', '/design-library', '/design-review', '@designer']],
   ['write better prompts, and get better at it', ['@prompt-coach']],
   ['pick up where I left off', ['boss status', 'boss recap']],
   ['see everything in flight at once', ['boss board', 'boss map']],

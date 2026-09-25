@@ -26,7 +26,7 @@
 > | Craft | Writes | Checks it | Holds it |
 > |---|---|---|---|
 > | **Product** (`product-lead`) | Goal · `for:` · Acceptance criteria · Validated learning | `/spec`'s restraint + loud≠important | `focus-loop`, `canvas-drift-loop` |
-> | **Design** (`designer`) | Flow — decided here, in prose · the five states · the copy in them | `/design-review` before code · `/ux-check` after | the design guards (tokens, contrast, reuse, boundary, terminology) |
+> | **Design** (`designer`) | Flow — decided here, in prose · the five states · the copy in them | `/design-review` before code and after | the design guards (tokens, contrast, reuse, boundary, terminology) |
 > | **Engineering** (`coder`, `tester`, `mentor-architect`) | Data shape (before the migration) · Paths that must not break · Smoke check | `/smoke` · `/evals` · `/red-team --paths` | `schema-guard` · `smoke-guard` |
 > | **Project** (`planner`) | `program:` · order and blockers via `boss board` · found tasks in `.claude/rules/feature-context.md` | `/close` ticks the criteria | `reentry`, the WIP watch |
 >

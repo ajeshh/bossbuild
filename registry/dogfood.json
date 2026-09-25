@@ -100,7 +100,7 @@
     },
     {
       "path": "docs/design/ux-check-summary.md",
-      "capability": "/ux-check",
+      "capability": "/design-review after",
       "verdict": "exempt",
       "why": "Aimed at a founder's app UI. BOSS's user surface is a CLI and a static site; the site is covered by check:site, which is a stricter and automated equivalent."
     },

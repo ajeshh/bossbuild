@@ -460,13 +460,6 @@
     },
     {
       "kind": "skill",
-      "stage": "L1-mvp",
-      "rel": "stages/L1-mvp/template/.claude/skills/ux-check/SKILL.md",
-      "curve": "craft",
-      "last_reviewed": "2026-08-20"
-    },
-    {
-      "kind": "skill",
       "stage": "L2-v1",
       "rel": "stages/L2-v1/template/.claude/skills/board/SKILL.md",
       "curve": "craft",

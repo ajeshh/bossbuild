@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`/ux-check` is now `/design-review after`.** One design review, before the code and after it.
+  Point `/design-review` at a spec or a feature that isn't built yet and it reviews the plan; point it
+  at a route, a component or a shipped feature and it walks what shipped, marking what it saw and what
+  it only inferred, as `/ux-check` did. If it can't tell which you mean, it asks once, and `before` or
+  `after` skips the question. Findings still go to `docs/design/ux-check-*.md`, so earlier reviews
+  read as before. `boss sync` names the change. (IDEA-125)
 - **`/cost-review` is now `/ai-cost review`.** `/ai-cost` set the budget and `/cost-review` read the
   bill, so you had to know which half you were in. `/ai-cost` now reads where you are: with no budget
   it writes one and wires the logger; with a budget and calls in the ledger it reads them and writes

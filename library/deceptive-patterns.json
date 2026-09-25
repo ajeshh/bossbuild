@@ -1,7 +1,7 @@
 {
   "id": "CATALOG-deceptive-patterns",
   "schema": 1,
-  "note": "The deceptive-pattern catalog as DATA, not prose. It is allowed to grow without bound because nobody reads it whole: a founder sees only the rows for the surfaces their product actually has. Prose judgment (effect-not-intent, symmetry-in-choice, humane defaults, the record-the-crossing mechanism) lives in library/practices/deceptive-patterns.md and is NOT duplicated here. Consumers: `boss craft deceptive-patterns [--shape X] [--surface Y]`, /red-team --humane, /ux-check, /trust, the deception conscience moment, and scripts/check-pattern-coverage.js. MINORS IS A MODIFIER, NOT A SURFACE (decided 2026-08-21): every other surface is a PLACE in the product, while \"minors\" is a property of the USER — so it never had a coherent home and sat at 2 rows. Rows now carry an optional stricter_when_minors (same pattern, higher bar), and `boss craft deceptive-patterns --minors` lists every row that has one.",
+  "note": "The deceptive-pattern catalog as DATA, not prose. It is allowed to grow without bound because nobody reads it whole: a founder sees only the rows for the surfaces their product actually has. Prose judgment (effect-not-intent, symmetry-in-choice, humane defaults, the record-the-crossing mechanism) lives in library/practices/deceptive-patterns.md and is NOT duplicated here. Consumers: `boss craft deceptive-patterns [--shape X] [--surface Y]`, /red-team --humane, /design-review after, /trust, the deception conscience moment, and scripts/check-pattern-coverage.js. MINORS IS A MODIFIER, NOT A SURFACE (decided 2026-08-21): every other surface is a PLACE in the product, while \"minors\" is a property of the USER — so it never had a coherent home and sat at 2 rows. Rows now carry an optional stricter_when_minors (same pattern, higher bar), and `boss craft deceptive-patterns --minors` lists every row that has one.",
   "last_reviewed": "2026-08-20",
   "review_by": "2026-11-18",
   "shapes": {
@@ -164,12 +164,12 @@
     "consent-ui": {
       "label": "The consent surface",
       "detect": "Is there a cookie banner, a consent dialog, or a privacy toggle anywhere?",
-      "note": "Visible. /ux-check can read this one — button weight, default state, what the copy says."
+      "note": "Visible. /design-review after can read this one — button weight, default state, what the copy says."
     },
     "tracking-and-telemetry": {
       "label": "Tracking & telemetry",
       "detect": "Do you send anything about a user to a third party — analytics, ads, a pixel, an SDK, a model provider?",
-      "note": "The pattern family with almost NO UI. There is nothing to look at, which is why /ux-check cannot catch it and /trust must."
+      "note": "The pattern family with almost NO UI. There is nothing to look at, which is why /design-review after cannot catch it and /trust must."
     },
     "checkout-and-pricing": {
       "label": "Checkout & pricing",

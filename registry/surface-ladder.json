@@ -338,8 +338,7 @@
     "drift-deep": "an audit; append-only",
     "roadmap": "explicitly a snapshot you use and discard, never a plan you tend",
     "board": "a reader over the project's own files",
-    "design-review": "a check over an existing design",
-    "ux-check": "a check over an existing flow"
+    "design-review": "a check over an existing design"
   },
   "comp-eval": {
     "stepZeroMarker": "## Step 0 — does it already exist, and is this the right rung?",

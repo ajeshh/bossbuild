@@ -22,7 +22,7 @@
 //                  moment that can install it
 //   ui-in-source   the founder's code styles a screen — the design-tokens loop's own entry
 //                  pattern, at ONE file instead of that loop's three: `/design-tokens-init` says it
-//                  runs "at the first UI commit", and `/ux-check` reviews UI that exists. A CLI, an
+//                  runs "at the first UI commit", and `/design-review` reviews UI both before and after it exists. A CLI, an
 //                  API or a data pipeline never sees either (IDEA-121, the MVP unlock cliff).
 //
 // Backwards compatible: a stamp with no `deferred` (every project unlocked before this) has

@@ -36,7 +36,7 @@ file is the source of truth either way, and both docs describe it.
 ## Step 0b — read the shape before you build the system
 
 Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). `/design-review`
-and `/ux-check` read it too, so all three agree on which surface exists. A three-layer colour token
+reads it too, before code and after, so both agree on which surface exists. A three-layer colour token
 cake and an HTML component gallery for a founder whose surface is a terminal is the ceremony
 Principle #2 exists to prevent: build only for a surface that will be reviewed.
 
@@ -310,7 +310,7 @@ the other field worth filling — it is what an editor shows on hover, and the a
    **Then run `boss design`.** It renders the system as it is — every slot you just left as a
    `<placeholder>` is a hole on the page, and `boss design --questions` lists them in build order
    with the verb and the *moment* that earns each: `/design-review` reads layout, icons, the
-   five-state row and a do/don't back from the first screen that decides them; `/ux-check` fills the
+   five-state row and a do/don't back from the first screen that decides them; `/design-review after` fills the
    tone table from the strings that shipped; `/spec` writes the flows; a logo needs a file. Nothing
    here is filled by asking the founder a form — each slot has a moment, and the page says which.
 

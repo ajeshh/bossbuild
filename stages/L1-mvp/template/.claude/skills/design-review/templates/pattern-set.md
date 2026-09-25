@@ -246,7 +246,7 @@ in six weeks, and stops a well-meaning agent proposing it again.
 
 - **`designer` reads this before proposing interaction**, the same way it reads `COMPONENTS.md`
   before proposing a component.
-- **`/ux-check` checks shipped UI against it** — a pattern with no enforcement is a preference.
+- **`/design-review`'s after-code half checks shipped UI against it** — a pattern with no enforcement is a preference.
 - **At V1 `/design-library` renders it** into the rules section, with the do/don't pairs shown side
   by side rather than described. A rule you can *see* is one you stop arguing about.
 - **`/extract` promotes a repeated shape into the "Ours" table**, and a pattern that proves out

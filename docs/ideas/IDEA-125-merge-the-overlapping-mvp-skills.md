@@ -6,7 +6,7 @@ owner: Ajesh
 status: shipped
 proof: none
 proof_note: a decision first — which merges, if any — then each merge proves itself by a skill count and a /skill-doctor pass that still fires the merged skill on its old trigger phrases
-gist: Merge MVP skills that overlap in job, not text. Landed — /measure into /health, /ai-first-init into /spec's model-or-code line, /cost-review into /ai-cost (28 → 25). Declined with reopen triggers — /onboard, /design-review + /ux-check, and four more.
+gist: Merge MVP skills that overlap in job, not text. Landed — /measure into /health, /ai-first-init into /spec's model-or-code line, /cost-review into /ai-cost, /ux-check into /design-review (28 → 24). Declined with reopen triggers — /onboard and four more.
 created: 2026-09-23
 relates: IDEA-121, IDEA-114
 ---
@@ -47,8 +47,17 @@ pairs share 0–1 sentences — so no gate can see them, and merging changes wha
   *Trigger check, weaker than /health's: a blind router over the shipped descriptions sent 10/10
   cost phrases ("read the cost log", "weekly cost review", "is our gross margin OK"…) to `/ai-cost`,
   runner-up `/money` — but the other descriptions were shortened in the prompt, so it may flatter.*
-- **Re-asked 2026-09-25 and held:** `/design-review` + `/ux-check` was proposed again from an outside
-  field read that hadn't seen this file. The decline and its trigger stand.
+- [x] `/ux-check` → `/design-review` — **reopened and landed 2026-09-25** (Ajesh: *"it may be okay
+  now"*). What changed: the 09-23 decline assumed the only way to hold the after-code half back was
+  the earned mechanism, which gates whole skills. `/health` and `/ai-cost` since showed the other way —
+  the skill reads what it's pointed at and picks the half. The catch that shaped it: route by the
+  **target**, never by "does the project have a screen" (a project with ten screens still wants a
+  before-code review of its next feature). A spec or unbuilt FEAT → the before half in `SKILL.md`; a
+  route, component or shipped FEAT → the bundled `after.md`; ambiguous → ask once, or `before`/`after`.
+  Findings still go to `docs/design/ux-check-*.md` (the deception loop and `boss design` read them).
+  `uiBuilt` now holds only `/design-tokens-init`. MVP 25 → 24. *Trigger check: a blind router over the
+  full-length shipped descriptions sent 10/10 design phrases (five before-code, five after-code) to
+  `/design-review`. It tests finding the skill, not picking the half.*
 - [x] Trigger check: does "what should I track", "set up analytics", "activation metric" still
   reach `/health`? *Checked 2026-09-23 by proxy (a blind router over the shipped descriptions, ten
   phrases; not the plugin eval): 7/10 → `/health`. The other three went where they should —
@@ -61,7 +70,7 @@ cross-references; the overlap is real in *vocabulary*, not in *job*.
 | Pair | Why not | Reopen only if |
 |---|---|---|
 | `/onboard` into `/health` | `/health` *diagnoses* where the curve dies; `/onboard` is the *fix* it routes to at the D0→D1 cliff. Merging buries the one doing-verb under a reading-verb and makes `/health` the largest MVP skill. The real shared text was one gate (n<10 → go talk), now said once in `/health`. | a founder runs `/health`, gets routed, and doesn't find `/onboard` |
-| `/design-review` + `/ux-check` | Split *on purpose* by IDEA-121: `/ux-check` is earned at the first screen (`uiBuilt`), `/design-review` stays ungated because before-code is where it's worth most. A merge either gates the before-code review behind code, or hands the after-code check to a project with no screen. | the earned mechanism can gate *halves* of a skill |
+| ~~`/design-review` + `/ux-check`~~ | *Reopened and merged 2026-09-25 — see Tasks.* The objection held for the earned mechanism; routing by target inside the skill answers it without one. | — |
 | `/evidence` + `/interview` | Before the call vs after it. `/interview` is 725 words and prints a page; `/evidence` grades what came back. | never — different moments, different outputs |
 | `/pretotype` + `/prototype` | Demand test vs build. The names collide; the jobs don't. Fix is in the descriptions, not a merge. | — |
 | `/drift-deep` + the conscience's drift moment | The audit vs the tripwire — one is deliberate and whole-project, the other one line, JIT. | — |
@@ -100,7 +109,7 @@ Read all eight skills end to end. Three changes to the table above:
   is reworking — sequence it behind that.
 - **`/design-review` + `/ux-check`: drop the row.** IDEA-121 split them on purpose (`uiBuilt` earns
   `/ux-check` at the first screen; `/design-review` stays ungated because before-code is where it's
-  worth most). A merge would undo the better answer.
+  worth most). A merge would undo the better answer. *(Superseded 2026-09-25 — merged; see Tasks.)*
 
 Net: MVP 28 → 25, not 24. Order: measure→health (now) · ai-first-init retired, declaration into
 `/spec` · ai-cost+cost-review after the conscience lands. Each: a `supersedes.json` entry, the

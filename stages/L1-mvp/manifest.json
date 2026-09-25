@@ -36,7 +36,6 @@
     "health",
     "money",
     "design-review",
-    "ux-check",
     "comp-eval"
   ],
   "hooks": [],
@@ -77,8 +76,7 @@
     "evals"
   ],
   "uiBuilt": [
-    "design-tokens-init",
-    "ux-check"
+    "design-tokens-init"
   ],
   "earned": {
     "postLaunch": "shipped",

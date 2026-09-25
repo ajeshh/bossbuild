@@ -34,7 +34,7 @@ lines read on *every* turn, and it drifted from the manifest the moment either m
 
 - **Builders:** `tester` (the smoke gate + acceptance checks), `planner` (sequencing — the *when*, as
   against `product-lead`'s *what*), `designer` (the whole surface: tokens, the five states, a11y and
-  the copy inside them — `/design-review` before code, `/ux-check` after).
+  the copy inside them — `/design-review`, before code and after).
 - **Mentors:** `mentor-architect` (stack + architecture), `mentor-customers` (first 100, channels,
   positioning), `mentor-capital` (model, pricing, what someone would actually pay), `mentor-cofounder`
   (a founding *team* across different skill sets — dormant while you're solo). **You don't have to

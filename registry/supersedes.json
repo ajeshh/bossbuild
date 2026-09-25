@@ -220,6 +220,14 @@
       "replacedBy": "ai-cost",
       "why": "`/ai-cost` declared the budget and `/cost-review` read the bill against it, so you had to know which half you were in before either could help. `/ai-cost` now does both: with no budget it writes one and wires the logger; with a budget and calls in the ledger it reads them, flags overages and surprises, and writes the dated review with gross margin.",
       "migrate": "Run `/ai-cost review` where you ran `/cost-review` (plain `/ai-cost` picks it too, once there is spend to read). Your `docs/cost-reviews/` files and `docs/ai-cost-budget.md` stay where they are and are read as before."
+    },
+    {
+      "since": "0.328.0",
+      "kind": "skill",
+      "removed": "ux-check",
+      "replacedBy": "design-review",
+      "why": "`/design-review` checked a design before the code and `/ux-check` walked it after, so you needed two commands for one review at two moments. `/design-review` now does both, and picks by what you point it at: a spec or an unbuilt feature gets the review of the plan; a route, a component or a shipped feature gets the walk of what shipped, with observed and inferred findings marked as before.",
+      "migrate": "Run `/design-review after` (or point `/design-review` at the shipped screen) where you ran `/ux-check`. Its findings still go to `docs/design/ux-check-*.md`, so your earlier reviews read as before."
     }
   ]
 }

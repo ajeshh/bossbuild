@@ -140,7 +140,7 @@ const WRITES = {
   'docs/source': { verbs: ['/import'], line: 'your own material — a deck, a report, a saved page — dated in the name; /import reads it and offers the records it could fill' },
   'docs/dossier': { verbs: ['/consult'], line: 'the mentors\' positions, dated — the capital mentor\'s not-yet with its reason is what the playbook quotes as the ask' },
   'docs/brand': { verbs: ['/landing'], line: 'the mark, when there is a file — the brand doc itself lives beside the devlog' },
-  'docs/design': { verbs: ['/design-tokens-init', '/design-review', '/ux-check'], line: 'tokens.json, the style guide, components, patterns, flows, the reviews — the design space is a read of these' },
+  'docs/design': { verbs: ['/design-tokens-init', '/design-review'], line: 'tokens.json, the style guide, components, patterns, flows, the reviews — the design space is a read of these' },
   'docs/design/components': { verbs: ['/design-review'], line: 'one usage page per component, written at its review — when to use it, when not' },
   'docs/design/icons': { verbs: ['/design-review'], line: 'the icon set as SVG files; the design page draws them from here and copies them as a sprite' },
   'docs/design/library': { verbs: ['/design-tokens-init'], line: 'the component manifest — what exists, so the second button is never invented' },

@@ -1,25 +1,40 @@
 ---
 name: design-review
-description: Before-code design review for {{PROJECT_NAME}}. Runs the proposed UI through `designer` in two passes (the visual system, then flows and the five states) and names what recurs as a pattern. Reads tokens, style guide and FEAT spec; outputs concrete diffs. Pairs with `/ux-check`. Usage - /design-review [FEAT-NNN | path-to-component-spec]
+description: Design review for {{PROJECT_NAME}}, before or after the code. On a spec or unbuilt FEAT, `designer` reviews the proposed UI in two passes (visual system, then flows and the five states). On a route, component or shipped FEAT, it walks what shipped - states, accessibility, copy, deceptive patterns - saying what it observed. Usage - /design-review [FEAT-NNN | spec | route] [before|after]
 ---
 
-# /design-review — before-code design review
+# /design-review — design review, before the code and after it
 
 Catch design failures *before* they're in production code, where they're cheapest to fix. Most
 of the AI-generated-UI failure modes (the 47 blues, pattern reinvention, billion-
 line drift, missing states, brand-default) are catchable at this stage with a structured
-review. After-code review (`/ux-check`) is the second gate; this is the first.
+review. The same skill is the second gate too: once the UI ships, it walks what actually shipped,
+because the gap between the spec and the shipped screen is where most production UX failures live.
+
+## Which half — decided by what you point it at, never by whether the project has a screen
+
+A project with ten screens still wants a before-code review of its next feature, so the choice is
+per target:
+
+- **A spec, a sketch, or a FEAT whose UI isn't built yet** → **before code**: carry on below.
+- **A route, a component on disk, or a FEAT whose UI has shipped** → **after code**: open
+  **[`after.md`](after.md)** and follow it instead of the rest of this file. It writes
+  `docs/design/ux-check-<feat-or-date>.md`, the same file name earlier reviews used.
+- **A FEAT that could be either** (partly built, or you can't tell) → ask once: *"review the plan
+  before it's built, or walk what's there?"* `before` or `after` as an argument skips the question.
 
 ## When to run it
 
 - A FEAT introduces or significantly modifies UI — *before* `coder` writes the code.
 - A new component is being added — *before* the file lands.
 - The founder wants a second look on a design decision they made — anytime.
+- **After code:** a FEAT's UI just landed and works — *before* it's called shipped; a user reported
+  a UX issue; a routine pass over the last shipped FEATs every week or two.
 
 ## Step 0 — read the shape, and be willing to stop
 
-Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). `/ux-check`
-reads it too. Walking a CLI founder through hover states and token layer-cakes is the exact
+Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). The
+after-code half reads it too. Walking a CLI founder through hover states and token layer-cakes is the exact
 ceremony BOSS exists to prevent (Principle #2).
 
 Everything in *How to run it* assumes a graphical interface. If that's not what's being specced:
@@ -223,7 +238,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
 ## What this skill does NOT do
 
 - Doesn't write the implementation. After review passes, `coder` writes the code.
-- Doesn't run on existing shipped code. That's `/ux-check`'s job.
+- Doesn't review shipped code from this file — that's [`after.md`](after.md), the after-code half.
 - Doesn't approve when an override is recorded. The founder can override a finding (record in
   the review doc with substantive rationale); the review respects.
 
@@ -241,8 +256,9 @@ Per `.boss/config.json` cohort declaration:
 
 ## Rules
 
-- **Before code.** This review is BEFORE the implementation. If you're reviewing shipped code,
-  you're running the wrong skill — use `/ux-check`.
+- **Before code, in this file.** Everything above is for UI not yet built. Shipped UI is reviewed
+  by walking it, in [`after.md`](after.md) — reviewing a spec when the screen exists checks the plan,
+  not the product.
 - **Propose, don't just critique.** Every finding includes a specific change suggestion.
 - **Reuse first.** The first question on every new component: *does a similar pattern exist?*
 - **Every layer has a demotion path, not just a promotion path.** A pattern nobody cites, a token

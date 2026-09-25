@@ -85,8 +85,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/trust` — Earn trust honestly - the AI-specific privacy and compliance set without the SOC2 theater
 - `/health` — Is the shipped thing working, and if not, where is it breaking? First run sets up the reading - the analytics seam, ONE activation metric, ONE retention curve, at most ten events (plus task-completion and edit rate for an AI product)
 - `/money` — The money verb, from the first dollar to operating it
-- `/design-review` — Before-code design review for your app
-- `/ux-check` — After-code UX review for your app
+- `/design-review` — Design review for your app, before or after the code
 - `/comp-eval` — Find out who else is solving this, and keep knowing
 
 **Agents:** tester, planner, mentor-architect, mentor-customers, mentor-cofounder, mentor-capital, designer  

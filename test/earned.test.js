@@ -34,11 +34,11 @@ function mvpProject() {
   return { dir, stamp, held };
 }
 
-test('the MVP manifest holds back the post-launch six, the AI-mediated three and the UI two', () => {
+test('the MVP manifest holds back the post-launch six, the AI-mediated three and the UI one', () => {
   const groups = earnedGroups(L1);
   assert.deepEqual(groups.map((g) => [g.group, g.until, g.skills.length]),
-    [['postLaunch', 'shipped', 6], ['aiMediated', 'llm-in-source', 3], ['uiBuilt', 'ui-in-source', 2]]);
-  assert.equal(heldBack(L1).length, 11);
+    [['postLaunch', 'shipped', 6], ['aiMediated', 'llm-in-source', 3], ['uiBuilt', 'ui-in-source', 1]]);
+  assert.equal(heldBack(L1).length, 10);
   assert.ok(!heldBack(L1).includes('design-review'), 'the before-code review stays: it is worth most before the first screen');
   for (const s of heldBack(L1)) assert.ok(L1.skills.includes(s), `${s} must be a skill of the rung`);
 });
@@ -74,7 +74,7 @@ test('sync leaves a held group alone while its predicate is false', () => {
   const plan = planSync(dir, stamp);
   const added = plan.entries.filter((e) => e.status === 'new').map((e) => e.name.split('/')[0]);
   for (const s of held) assert.ok(!added.includes(s), `${s} must not be proposed before it is earned`);
-  assert.equal(stillDeferred(dir, stamp).size, 11);
+  assert.equal(stillDeferred(dir, stamp).size, 10);
   assert.deepEqual(newlyEarned(dir, stamp), []);
 });
 
@@ -85,7 +85,7 @@ test('a shipped FEAT earns the post-launch group; sync lays it down and the stam
   forgetGitDates(dir);
   assert.equal(hasShipped(dir), true);
   assert.deepEqual(newlyEarned(dir, stamp).map((g) => g.group), ['postLaunch']);
-  assert.equal(stillDeferred(dir, stamp).size, 5, 'the AI and UI groups are still held');
+  assert.equal(stillDeferred(dir, stamp).size, 4, 'the AI and UI groups are still held');
 
   const plan = planSync(dir, stamp);
   const added = plan.entries.filter((e) => e.status === 'new' && e.kind === 'skill').map((e) => e.name);

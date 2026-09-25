@@ -326,7 +326,7 @@ function cmdAdopt(args) {
     const m = readStageManifest(s);
     for (const [group, sk] of Object.entries(groups)) {
       const until = (m.earned || {})[group];
-      console.log(`    ${dim('·')} ${dim(`${sk.length} held back ${describeUntil(until)}:`)} ${skillsLine(sk, 3).replace(/ \(`boss map`\)$/, '')} ${dim('— `boss sync` lays them down then.')}`);
+      console.log(`    ${dim('·')} ${dim(`${sk.length} held back ${describeUntil(until)}:`)} ${skillsLine(sk, 3).replace(/ \(`boss map`\)$/, '')} ${dim(`— \`boss sync\` lays ${sk.length === 1 ? 'it' : 'them'} down then.`)}`);
     }
   }
   // `skipped` counts COLLISIONS — files BOSS declined to overwrite because you already had them.
@@ -450,7 +450,7 @@ function cmdUnlock(args) {
   console.log(`\n  ${ok('✦')} Unlocked ${bold(m.name + ' mode')} (${target}).`);
   if (applied.appendedClaude) console.log(`    ${ok('+')} appended ${m.name} working rules to CLAUDE.md`);
   for (const g of groups) {
-    console.log(`    ${dim('·')} ${dim(`${g.skills.length} held back ${describeUntil(g.until)}:`)} ${skillsLine(g.skills, 3).replace(/ \(`boss map`\)$/, '')} ${dim('— `boss sync` lays them down then.')}`);
+    console.log(`    ${dim('·')} ${dim(`${g.skills.length} held back ${describeUntil(g.until)}:`)} ${skillsLine(g.skills, 3).replace(/ \(`boss map`\)$/, '')} ${dim(`— \`boss sync\` lays ${g.skills.length === 1 ? 'it' : 'them'} down then.`)}`);
   }
 
   // Say what actually arrived, and where to go next — the parity `boss new` has always had and this
@@ -627,7 +627,7 @@ async function cmdStatus(args) {
   console.log(`    ${renderLadder(stamp.installedLayers, stamp.stage)}`);
   printFocusAndHeadway(process.cwd(), { adopted: stamp.adopted === true });
   for (const g of newlyEarned(process.cwd(), stamp)) {
-    console.log(`    ${ok('▸')} ${bold('Earned:')}          ${skillsLine(g.skills, 3).replace(/ \(`boss map`\)$/, '')} ${dim(`— ${describeEarned(g.until)}. \`boss sync\` lays them down.`)}`);
+    console.log(`    ${ok('▸')} ${bold('Earned:')}          ${skillsLine(g.skills, 3).replace(/ \(`boss map`\)$/, '')} ${dim(`— ${describeEarned(g.until)}. \`boss sync\` lays ${g.skills.length === 1 ? 'it' : 'them'} down.`)}`);
   }
   // Toward what (IDEA-097): the founder's own sentence for "it worked", if they gave one.
   // Silent otherwise — see src/orientation.js.

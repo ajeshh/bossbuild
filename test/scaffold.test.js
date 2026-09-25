@@ -304,7 +304,7 @@ test('REGRESSION: shipped files never name an agent the founder will not have', 
       if (!/\.(md|js|json)$/.test(e.name)) continue;
       // Backticks only: `mentor-humane` is a name the model will try to route to; the same word
       // in prose is the concept. Matching prose would flag `persona-cohort` in /board and
-      // `persona-reaction` in /ux-check, and a check that cries wolf is a check nobody runs.
+      // `persona-reaction` in /design-review, and a check that cries wolf is a check nobody runs.
       for (const m of readFileSync(p, 'utf8').matchAll(/`([a-z][a-z0-9-]*)`/g)) {
         const n = m[1];
         if (shipped.has(n)) continue;
@@ -350,7 +350,7 @@ test('every design doc a consumer reads is a design doc some skill writes', () =
   const read = (p) => readFileSync(join(STAGES_DIR, p), 'utf8');
   const consumers = [
     'L1-mvp/template/.claude/skills/design-review/SKILL.md',
-    'L1-mvp/template/.claude/skills/ux-check/SKILL.md',
+    'L1-mvp/template/.claude/skills/design-review/after.md',
     'L1-mvp/template/.claude/agents/designer.md',
   ].map(read).join('\n');
 

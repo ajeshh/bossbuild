@@ -62,7 +62,7 @@ Two consequences, and they are the whole point of writing this down:
 ⚠️ **Grade this as direction, not magnitude.** The source is a June 2026 arXiv preprint (UXBench,
 Wang et al.), not peer-reviewed; its absolute effects are small and its headline metric is scored by
 another model. The *relative* pattern — feedback and scannability move, flow doesn't — is the part
-worth planning around, and it matches what BOSS already ships: `/design-review` and `/ux-check` are
+worth planning around, and it matches what BOSS already ships: `/design-review` (before and after code) is
 both **checkers**, and no amount of checking produces a flow nobody designed.
 
 ### The seed-that-scales test (added 2026-08-20)
@@ -234,7 +234,7 @@ and three things changed what this practice says:
 
 1. **The rendered-output check exists; don't build it, point at it.** `impeccable` ships 61
    deterministic tells that run against a live page — contrast, overflow, touch targets, skipped
-   headings, design-system drift — with no API key. `/ux-check`'s *"not checked — needs a rendered
+   headings, design-system drift — with no API key. `/design-review after`'s *"not checked — needs a rendered
    page, and say what would run it"* now names it. BOSS's four hooks stay what they are: the
    source-level, token-vocabulary half. The arithmetic half of accessibility and the *rendered*
    half of drift are somebody else's maintained list, and that is the right place for them.
@@ -418,7 +418,7 @@ delivery the cohort guidance already prescribes, made structural instead of conv
 
 Three consequences worth naming:
 
-1. **Drift renders on the component, not in a report.** `/ux-check` writes findings to
+1. **Drift renders on the component, not in a report.** `/design-review after` writes findings to
    `docs/design/ux-check-*.md`; those files are correct and nobody opens them twice. A badge on the
    card — *off-token · missing state · near-duplicate · stale · unused* — puts the finding where the
    eye already is. A clean library is a page with no badges, which is a **positive** signal as much
@@ -542,13 +542,13 @@ never written down.
 
 ### The definition layer is now surface-gated (added v0.286.0)
 
-🔴 **The finding that occasioned it:** `/design-review` and `/ux-check` branch on `shape` from
+🔴 **The finding that occasioned it:** `/design-review`, before code and after, branches on `shape` from
 `.boss/config.json`. **`/design-tokens-init` and `/design-library` never read it** — every `shape` in
 those files is the English word. So BOSS *built* a three-layer colour cake and an HTML component
 gallery for founders whose surface is a terminal, and then correctly *refused to review it*.
 
 **Building a system for a surface you will not review is the ceremony Principle #2 exists to prevent**,
-and it is the same bug `/design-review`'s own Step 0 records fixing for itself — *"`/ux-check` has
+and it is the same bug `/design-review`'s own Step 0 records fixing for itself — *"the after-code review has
 always done this and this skill never did."* **The fix was applied to one skill and never asked of its
 neighbours**, which is the generalizable half: when a skill fixes a class of bug, the next question is
 which of its siblings has it.
@@ -784,7 +784,7 @@ converge instead of wander:
   `features/` exists beside `ui/`; offered by `/design-tokens-init` when it does. In the same
   release `component-reuse-guard` learned the index's `Status` column and the boolean pile, so the
   lifecycle and the API-shape floor have a check and not only a sentence.
-- **MVP:** `designer` unlocks, with `/design-review` before code and `/ux-check` after — moved
+- **MVP:** `designer` unlocks, with `/design-review` before code and after — moved
   down from V1 in v0.189.0 (DEC-005). AI-generated UI nails the happy path and skips
   empty/loading/disabled/error, and that lands the first week someone builds a screen.
   From v0.276.0 it also writes **`docs/design/COMPONENTS.md`** — the authored component index, plus
@@ -801,7 +801,7 @@ converge instead of wander:
 Everything the V1 design layer needed now exists — the list below was carried as *"to author"* long
 after it was built, which is exactly the rot the build-craft watchlist predicted for this doc:
 
-- ✅ `/design-review` (before code) · `/ux-check` (after code) · `/design-tokens-init` (L1, at the
+- ✅ `/design-review` (before code, and after) · `/design-tokens-init` (L1, at the
   first UI commit) — the latter **writes** `docs/design/DESIGN_TOKENS.md` at runtime, which is right:
   tokens are project-specific, not template-shippable.
 - ✅ `designer` — both halves in one agent (visual system + flows/states). Superseded the
@@ -862,7 +862,7 @@ after it was built, which is exactly the rot the build-craft watchlist predicted
 - ✅ `docs/design/PATTERNS.md` — **the pattern layer** (v0.278.0), born in the first
   `/design-review` and grown one review at a time. The middle of the ladder: a token is a value, a
   component is a thing, **a pattern is a recurring decision with a rule** — and it is what Material
-  and HIG mostly *are*. Read by `designer`, checked by `/ux-check`, rendered as do/don't pairs by
+  and HIG mostly *are*. Read by `designer`, checked by `/design-review after`, rendered as do/don't pairs by
   `/design-library`. Threshold for a new row: **the same decision comes up twice.**
   ⚠️ **Its honest limit is written into the template rather than papered over:** BOSS holds the
   five-state requirement, the content rules and the AI-interaction patterns — it does **not** ship a

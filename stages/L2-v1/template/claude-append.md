@@ -13,7 +13,7 @@
    **What `design-drift-loop` watches is raw hex codes in source, and that is all** — one regex.
    It cannot see near-duplicate components or a tokens file going stale while components grow.
    Those are component-shaped failures, and `/design-library` is what reads them.
-2. **You already have `/design-review` and `/ux-check`** — they arrived at MVP with `designer`
+2. **You already have `/design-review`** (before code and after) — it arrived at MVP with `designer`
    (v0.189.0), and the 5-state requirement has been non-optional since then. What V1 adds is the
    half that needs a real component set to exist first: `/design-library` renders the system from
    your code — foundations, rule sets, every component in all five states — and reports the

@@ -184,7 +184,7 @@ has been a polite sentence in a prompt. This gives it something to actually look
 
 ## Drift is rendered ON the component, not filed in a report
 
-`/ux-check` writes findings to `docs/design/ux-check-*.md`. Those files are correct and nobody opens
+`/design-review after` writes findings to `docs/design/ux-check-*.md`. Those files are correct and nobody opens
 them twice. Put the finding where the eye already is:
 
 | Badge | Meaning |

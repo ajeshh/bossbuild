@@ -307,7 +307,7 @@ durable. Add or update a `shape` key holding the tags as an array (leave every o
 "shape": ["mobile-app", "edtech"]
 ```
 
-That is the one answer that saves work three times later — `/red-team --humane`, `/ux-check` and
+That is the one answer that saves work three times later — `/red-team --humane`, `/design-review` and
 `/trust` each read `shape` from the config and skip what doesn't apply to you. Then see your rows:
 
 ```

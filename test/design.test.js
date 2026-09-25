@@ -667,7 +667,7 @@ test('the open slots read back in build order, each with its verb and the moment
   const layout = data.questions.find((q) => q.id === 'layout-hole');
   assert.equal(layout.verb, '/design-review'); assert.equal(layout.moment, 'at the first screen with a grid');
   assert.equal(data.questions.find((q) => q.id === 'logo').verb, 'docs/BRAND.md · logo: <path>');
-  assert.equal(data.questions.find((q) => q.id === 'content-voice').verb, '/ux-check');
+  assert.equal(data.questions.find((q) => q.id === 'content-voice').verb, '/design-review after');
   const rest = withRest();
   const q2 = collectDesign(rest, 'Tidewell').questions.map((q) => q.id);
   assert.ok(!q2.includes('logo') && !q2.includes('icons-set') && !q2.includes('components-none') && !q2.includes('content-voice'), 'filled slots are not questions');

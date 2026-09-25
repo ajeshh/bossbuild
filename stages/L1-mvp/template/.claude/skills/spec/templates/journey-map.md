@@ -74,7 +74,7 @@ rather than answering them all._
 | the user with no data yet | stage 3 — the whole product is empty | the magic first run (`/onboard`) |
 | the user with 10,000 rows | stage 3 — the screen was designed for 5 | not yet decided |
 | **the person who is not the buyer** | stage 5 — they can't approve the spend | not yet decided |
-| someone using a screen reader | every stage | `/ux-check` accessibility pass |
+| someone using a screen reader | every stage | `/design-review after` accessibility pass |
 | someone acting in bad faith | stage 2 — signup is the attack surface | `/red-team --paths` |
 
 ## What changed, and when

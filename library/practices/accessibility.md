@@ -4,7 +4,7 @@ type: practice
 owner: designer
 status: active
 host: stack-neutral
-provenance: authored 2026-09-10 after Ajesh named the gap directly — *"it's more about the principle rather than being able to enforce accessibility, but knowing the guidelines and being able to recommend or look up based on best practices."* BOSS had shipped a11y as scattered reminders (a four-line floor in the STYLE_GUIDE skeleton, bullets in /design-review and /ux-check, honest `not checked` labels) with **no practice behind them** — so its agents could repeat rules without being able to reason from a basis or point anywhere. Structure is W3C's own (the four POUR principles + WCAG conformance levels), which is deliberate: the lookup structure should match the standard's, or a founder cannot follow a recommendation back to its source. The checkable/not-checkable split is BOSS's own and comes from `/ux-check`'s observed/inferred discipline (v0.218.0). The beyond-the-visual half was an open gap on IDEA-092.
+provenance: authored 2026-09-10 after Ajesh named the gap directly — *"it's more about the principle rather than being able to enforce accessibility, but knowing the guidelines and being able to recommend or look up based on best practices."* BOSS had shipped a11y as scattered reminders (a four-line floor in the STYLE_GUIDE skeleton, bullets in /design-review before and after code, honest `not checked` labels) with **no practice behind them** — so its agents could repeat rules without being able to reason from a basis or point anywhere. Structure is W3C's own (the four POUR principles + WCAG conformance levels), which is deliberate: the lookup structure should match the standard's, or a founder cannot follow a recommendation back to its source. The checkable/not-checkable split is BOSS's own and comes from `/design-review after`'s observed/inferred discipline (v0.218.0). The beyond-the-visual half was an open gap on IDEA-092.
 provenance_public: Structured on W3C's own framing — the four POUR principles and the WCAG conformance levels — so a recommendation can always be followed back to the standard it came from. The split between what a tool can check and what needs a person is BOSS's, inherited from the observed/inferred discipline its after-code review already uses.
 last_reviewed: 2026-09-10
 review_by: 2027-09-10
@@ -103,7 +103,7 @@ anything: **a recommendation you can trust is one that says what it did not look
 | **Cognitive load** | ❌ | a person who is tired, distracted, or new |
 
 **BOSS ships no renderer**, so every visual verdict it gives is `inferred` unless something computed
-it. That is stated rather than hidden: `/ux-check` marks findings `observed` / `inferred` /
+it. That is stated rather than hidden: `/design-review after` marks findings `observed` / `inferred` /
 `not checked`, and **`not checked` is never a pass.**
 
 **The one exception is contrast**, and it is worth understanding *why* it is the exception rather than
@@ -154,7 +154,7 @@ which is the same argument the component index makes, pointed at a different fai
 
 - **`STYLE_GUIDE.md` → Accessibility floor** — non-negotiable, and deliberately short.
 - **`designer`** — the lens. Reasons from POUR; grades its own visual findings honestly.
-- **`/design-review`** (before code) and **`/ux-check`** (after) — the checks, with the
+- **`/design-review`** (before code, and `after` once it ships) — the checks, with the
   observed / inferred / not-checked split.
 - **`contrast-guard`** — the arithmetic half, and the only one.
 - **`/design-library`** — renders contrast per swatch pair, computed rather than estimated.

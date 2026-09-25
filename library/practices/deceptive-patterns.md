@@ -17,7 +17,7 @@ curve: humane
 > behave toward a person. This owns the manipulative inverse — the named bad shapes, so a founder
 > can catch one **while building it**. The harm axes they are reasoned against live in
 > [`harm-taxonomy.md`](harm-taxonomy.md). The runtime tests are `/red-team --humane` (behaviour)
-> and `/ux-check` (the shipped markup).
+> and `/design-review after` (the shipped markup).
 
 **The patterns are not in this file.** They are in `library/deceptive-patterns.json`, and you read
 them filtered:
@@ -54,7 +54,7 @@ its training data. That happens in the markup (a pre-ticked box in a generated f
 behaviour (sycophancy, guilt on exit), so the tag spans surfaces and **must never be used to route
 work between skills.** Route on the **surface**: `ai-voice` and `agent-actions` are probed by
 conversation (`/red-team --humane`), `generated-markup` and the visible rows are read off the page
-(`/ux-check`), `tracking-and-telemetry` is read off the network tab (`/trust`). Routing on the tag
+(`/design-review after`), `tracking-and-telemetry` is read off the network tab (`/trust`). Routing on the tag
 instead sends the entire behavioural battery to a skill that can only read markup, which is how a
 clean report comes back for a probe nobody ran.
 
@@ -95,7 +95,7 @@ confirmshaming in the decline copy — pulled from the average of its training d
 vibe-coder is more exposed here, not less.** This is the sharpest case of effect-not-intent: the
 intent wasn't even theirs. It is also the moment the catalog can't reach — the failure happens while
 someone is *typing a prompt*, not while they're reading a doc. Hence the `deception` conscience
-moment and `/ux-check`'s markup walk: read what the model wrote, not what the founder meant.
+moment and `/design-review after`'s markup walk: read what the model wrote, not what the founder meant.
 
 ## Symmetry in choice — the testable bar
 
@@ -207,7 +207,7 @@ tells you what moved.
 
 ## Altitude / anti-rot
 
-These are **runtime heuristics the conscience, `/ux-check` and `/red-team --humane` apply** — not a
+These are **runtime heuristics the conscience, `/design-review after` and `/red-team --humane` apply** — not a
 static checklist to freeze into one skill (the RVW-001 anti-pattern). On a Quickstart almost all of
 it is silent default; it surfaces as the project earns real surfaces (Principle #2). A day-one
 founder with an idea doc has nothing to deceive anyone with yet.

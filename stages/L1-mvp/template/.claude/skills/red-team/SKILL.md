@@ -203,7 +203,7 @@ below, including seven of the nine `ai-voice` rows. Routing on it skips the beha
   hallucinate? Act without consent?
 - **Markup — read it.** The `generated-markup` surface, plus the *visible* rows on `consent-ui`,
   `signup-and-identity` and `checkout-and-pricing` — default state, button weight, decline copy.
-  `/ux-check` §8 owns the routine walk; cover them here only if `/ux-check` hasn't run.
+  `/design-review after` §8 owns the routine walk; cover them here only if it hasn't run.
 - **Invisible — instrument it.** `tracking-and-telemetry` has almost no UI. You cannot see a pixel
   by looking at a page. Open the network tab, read the outbound requests, and check what the
   third-party tag actually sends on a sensitive route. `/trust` §3.5 owns this surface — verify it

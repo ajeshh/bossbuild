@@ -1,26 +1,22 @@
----
-name: ux-check
-description: After-code UX review for {{PROJECT_NAME}}. Run against shipped UI to catch what slipped through `/design-review` or accumulated as drift - walks the actual user journey, checks the five states are real, runs accessibility heuristics, applies AI-specific UX where relevant. Same lens, different timing. Usage - /ux-check [route-or-component-path | FEAT-NNN]
----
+# `/design-review` — the after-code half: walk what shipped (bundled resource)
 
-# /ux-check — after-code UX review
-
-The before-code review catches design-spec failures; this skill catches *implementation*
-failures — the gap between what was specced and what shipped. Most production UX failures
-live in this gap: the empty state was designed but never built; the loading state defaults to
-a spinner instead of the designed skeleton; the error state shows raw stack traces because
-the recovery path was an afterthought.
-
-This is also where AI-generated drift becomes visible. Even with `/design-review` upstream, the
-`coder` (or AI doing the same role) sometimes ships a slight variant that
-accumulates. `/ux-check` catches that.
+> Loaded **on demand** from `SKILL.md` when the target is a route, a component on disk, or a FEAT
+> whose UI has shipped (or the run said `after`). The before-code half catches design-spec
+> failures; this catches *implementation* failures — the gap between what was specced and what
+> shipped. Most production UX failures live in this gap: the empty state was designed but never
+> built; the loading state defaults to a spinner instead of the designed skeleton; the error state
+> shows raw stack traces because the recovery path was an afterthought.
+>
+> This is also where AI-generated drift becomes visible. Even with the before-code review
+> upstream, the `coder` (or AI doing the same role) sometimes ships a slight variant that
+> accumulates. This half catches that.
 
 ## When to run it
 
 - A FEAT just landed and is functionally working — *before* it's considered "shipped."
-- A user reported a UX issue — start `/ux-check` here, walk to where the issue surfaces.
+- A user reported a UX issue — start here, walk to where the issue surfaces.
 - Routine audit — run against the most-recently-shipped FEATs every 1-2 weeks.
-- A new persona-reaction surfaced a UX concern — `/ux-check` validates whether the
+- A new persona-reaction surfaced a UX concern — this half validates whether the
   persona's read matches the shipped reality.
 
 ## Step 0 — read the shape, and be willing to stop
@@ -154,7 +150,7 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    for a signup flow or an upgrade modal and it frequently ships a fake countdown, a pre-ticked
    opt-in, or confirmshaming in the decline copy — unprompted, from the average of its training
    data (Vaccaro et al., *Deception at Scale*, CHI 2026). The founder never designed it and often
-   can't see it. `/ux-check` is the routine that catches it, because this skill is already
+   can't see it. This walk is the routine that catches it, because it is already
    standing in front of the shipped page.
 
    Pull the rows for the surfaces this flow touches — don't work from memory:
@@ -232,13 +228,13 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    finding writes itself: *"the delete confirm says 'Are you sure?'; our destructive-confirm pattern
    says name the consequence."*
 
-   **A pattern with no enforcement is a preference.** `/design-review` names them before code; this
+   **A pattern with no enforcement is a preference.** The before-code half names them; this
    is where they are checked after. If a row is violated in more than one place, the finding is not
    the screen — it is that the pattern never reached the code, and the fix belongs upstream in the
    component or in `CLAUDE.md`.
 
-   No `PATTERNS.md`? Say so once and move on. It is created by the first `/design-review`, and
-   telling a founder to go run another skill mid-review is worse than a missing section.
+   No `PATTERNS.md`? Say so once and move on. It is created by the first before-code review, and
+   telling a founder to go run another review mid-walk is worse than a missing section.
 
 9. **Capture findings** in `docs/design/ux-check-<feat-or-date>.md`. Each issue: severity
    (blocking / serious / minor / nit), the specific scene, the proposed fix — and **`observed` or
@@ -254,7 +250,7 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
    **`not checked` is a real category and it must appear**, or the unrenderable checks quietly
    read as passes. Same discipline as `/persona`'s synthetic/real ledger: the count is the honesty.
 
-## What this skill does NOT do
+## What this half does NOT do
 
 - Doesn't fix the code. Findings route to `coder` (or stack-specific coder) for
   fixes.
@@ -289,7 +285,7 @@ Everything below assumes a GUI. If step 0 sent you elsewhere, you are already do
   don't flatten the list.
 - **Capture every check.** Without `docs/design/ux-check-*.md` files, the discipline doesn't
   compound.
-- **Walk `docs/product/JOURNEY.md`, not a journey you improvise.** This skill's whole
+- **Walk `docs/product/JOURNEY.md`, not a journey you improvise.** This half's whole
   premise is *walk the actual user journey, not the spec* — without a journey
   on disk to walk, every run invents one, which means two runs a month apart checked different
   products. Read the map: which **stage** does this surface sit in, what is the row's *where they
