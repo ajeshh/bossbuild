@@ -124,7 +124,9 @@ opens — the **agent itself** going wrong. Two things to hold:
   wrote; hidden instructions in one are indirect prompt injection wearing a schema, and OWASP files it under
   **ASI01 (agent goal hijack)**, not under supply chain. Most published servers are unreviewed, and the
   registry is still **preview** — an entry is a lead, not a vetting. The pre-install pass, in order:
-  **verify the publisher · read every tool description and every parameter description · pin the version ·
+  **verify the publisher · read every tool description and every parameter description · read the server's
+  `instructions`** (the spec lets a client place them in the system prompt, above anything a tool says)
+  **· pin the version ·
   scope the token to the minimum · require approval for anything destructive · re-read the descriptions on
   update** (a rug-pull is a *later* version, which is exactly how postmark-mcp worked). Scanners for poisoned
   descriptions exist and are worth running, but they are a second pair of eyes, not the first pair.

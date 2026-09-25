@@ -138,6 +138,17 @@ founder is asking yet (Principle 2), so **don't port now.** The three moves, in 
   at session start (seen live in a Claude Code session today — no spec read yet). If that holds, it is a
   SessionStart-equivalent for the conscience's opening read on hosts with no hooks — not per-turn firing,
   so the moat claim stands. To settle: read the 2026-07-28 spec on `instructions` + which clients honour it.
+- 2026-09-25 — **settled at source: half true, and the half that matters is the one we had.** In the
+  2026-07-28 schema (`schema/2026-07-28/schema.ts`, read raw), `instructions?: string` sits on
+  `DiscoverResult` — *"Natural-language guidance describing the server… can be used by clients to improve
+  an LLM's understanding… (e.g., by including it in a system prompt)."* Optional for the server, a *can*
+  for the client (no MUST), and clients **MAY** skip `server/discover` entirely. The changelog doesn't touch
+  it: it survived the handshake's removal by moving to discovery. Claude Code does load it (seen in-session).
+  **What it changes:** a BOSS server could compute its instructions from `.boss/` at discover time, so on a
+  host that honours the field the conscience's *opening read* ports — once per session, cached by
+  `ttlMs`. **What it doesn't:** nothing re-fires mid-session, so the moments still need a hook, and the
+  "MCP can't reach" line above stands for everything past the first turn. The re-open trigger is unchanged.
+  Spun out: the security practice's pre-install pass now says to read a server's `instructions` too.
 
 ## Open questions (carried forward)
 - **What exactly is the host contract?** Enumerate the primitives the conscience uses in Claude Code

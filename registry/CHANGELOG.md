@@ -27,6 +27,10 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
+  `boss craft agent-security` already said to read every tool and parameter description as untrusted
+  text. A server can also send free-text instructions that your AI tool may put in the model's system
+  prompt, above anything a tool description says, and the pass never named them. It does now.
 - **The guide's *I want to…* map reads right again.** In `boss help --html` every row showed its verbs
   as locked skills, doubled and mislabelled (`//boss`, `/@mentor-founder`, `/boss status`) and "at
   undefined", including the ones you already had. Now what you have shows as yours, terminal commands
