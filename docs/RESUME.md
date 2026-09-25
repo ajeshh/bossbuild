@@ -4,7 +4,7 @@ type: resume
 owner: product-lead
 status: active
 updated: 2026-09-25
-version: 0.327.0
+version: 0.328.0
 ---
 
 # RESUME — BOSS

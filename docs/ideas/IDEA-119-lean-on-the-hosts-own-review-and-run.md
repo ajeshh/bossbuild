@@ -4,7 +4,8 @@ type: idea
 kind: capability
 owner: Ajesh
 status: shipped (2026-09-23, under Unreleased)
-proof: stages/L1-mvp/template/.claude/skills/ux-check/SKILL.md
+proof: stages/L1-mvp/template/.claude/skills/design-review/after.md
+proof_note: moved 2026-09-25 — IDEA-125 folded /ux-check into /design-review after; part A's host-render step lives on in after.md step 2.
 gist: The host now ships a command that launches and drives the app, and a security review of pending changes. /ux-check was marking rendered checks "not checked" for want of the first; /red-team --paths was re-deriving the generic half of the second. Point both at the host, keep BOSS's own half.
 created: 2026-09-23
 program: harness
