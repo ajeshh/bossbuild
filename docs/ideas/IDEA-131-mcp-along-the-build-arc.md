@@ -45,6 +45,11 @@ _Append-only. Newest at the bottom. Don't edit old entries._
   config-read idea (candidate 2); reframed by that sentence into the timing question.
 - 2026-09-25 — Ajesh: *"go for it"* on 1 + 3. Shipped as text in the practice and the mentor. Candidate 2
   stays unbuilt: nothing has shown it answers a question a founder asks.
+- 2026-09-25 — Ajesh: *"lets continue with implementation"*. The practice had no route in Quickstart
+  (mentor-architect arrives at MVP), so the guide's WAYFINDING map gained a row in founder words →
+  `boss craft mcp` + `@mentor-architect`; `boss craft` joined STANDING_COMMANDS. Rendering it exposed a
+  bug since v0.275.0: the HTML map printed every token as a locked skill "at undefined". Fixed, with a
+  test that fails on the old renderer.
 
 ## Open questions
 - Is this real founder demand or our guess at it? n=0 founders have asked (see
