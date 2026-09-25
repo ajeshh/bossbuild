@@ -22,6 +22,25 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-09-25 — IDEA-131: MCP gets a *when*; the guide's map was broken (`88ad0bb` → `d100eff`)
+
+Ajesh asked how BOSS approaches MCP, how to help a new founder set it up, and how BOSS itself could
+lean further into it. The read: `mcp.md` answers *which shape* and *is it safe*; founders ask *when*
+(*"oo we should have a smart way of how we do mcp, when to do it"*). A config-reading check was offered
+and doubted — a safety check nobody asked for. Shipped, all text or lookup, no skill:
+- `mcp.md` *Along the arc*: what MCP is worth per mode, the sign it's time, one question ("what would it
+  replace that you already do by hand?"); `mentor-architect` asks it.
+- A route before MVP: a WAYFINDING row → `boss craft mcp`; `boss craft` joined STANDING_COMMANDS.
+- `boss help mcp` / `connectors` in the glossary.
+- **Bug found by rendering the new row:** since v0.275.0 the HTML guide's *I want to…* map printed every
+  token as a locked skill (`//boss`, `/@mentor-…`, "at undefined"). Fixed with a test that fails on the
+  old renderer.
+- IDEA-006's open question settled at the schema source: `instructions` lives on `DiscoverResult`, a
+  client *can* put it in the system prompt. The conscience's opening read could port; the moments can't.
+  Spun out: agent-security's pre-install pass now names a server's `instructions`.
+
+**Next:** nothing owed on MCP. The config check stays unbuilt unless a founder asks.
+
 ## 2026-09-23 — IDEA-129: the playbook, second pass (`784f2fb` → `a60f891`)
 
 Ajesh: *"great v1… how can we push it further"*, then BOSS's own `.boss/playbook.html` as the second

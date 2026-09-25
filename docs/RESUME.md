@@ -3,7 +3,7 @@ id: RESUME
 type: resume
 owner: product-lead
 status: active
-updated: 2026-09-23
+updated: 2026-09-25
 version: 0.327.0
 ---
 
@@ -28,6 +28,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-131 (2026-09-25, Unreleased) — MCP gets a *when*; shipped as text + a lookup, no skill.** Also fixed
+  the HTML guide's *I want to…* map (broken since v0.275.0) and settled IDEA-006's server-instructions question. Devlog.
 - **IDEA-129 (2026-09-23, Unreleased) — the playbook, second pass; shipped.** Real-record bugs fixed, a cover
   with the canvas tiled by grade, folds, the deck/PDF always in the brand's light scheme. Devlog has the rest.
 - **IDEA-121 (2026-09-23, closed, pushed; CI green on all six jobs incl. Windows) — architecture and build review.**
