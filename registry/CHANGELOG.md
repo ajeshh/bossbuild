@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **MCP now comes with a *when*, not only a *which*.** `boss craft mcp` shows what MCP is usually worth
+  at each mode: nothing to wire in Quickstart, your stack's servers in your own dev loop in MVP, a server
+  your app calls when a feature needs one in V1, exposing your product in Scale. It also gives the sign
+  that it's time at each stage. One question decides it everywhere: what would this server replace that you
+  already do by hand, more than once? `mentor-architect` asks it when the question is *when*. (IDEA-131)
 - **`/ux-check` is now `/design-review after`.** One design review, before the code and after it.
   Point `/design-review` at a spec or a feature that isn't built yet and it reviews the plan; point it
   at a route, a component or a shipped feature and it walks what shipped, marking what it saw and what

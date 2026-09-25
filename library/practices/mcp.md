@@ -4,7 +4,7 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (MCP thread) — MCP donated to the Linux Foundation / Agentic AI Foundation (Dec 2025), WorkOS/Anthropic ecosystem reads, Willison on MCP prompt-injection. Updates RVW-019 (NOT-YET → the standard is now durable). Security half lives in agent-security.md, not here (don't duplicate). BOSS v0.109.0 · **refreshed 2026-07-31 (v0.136.0) against the SHIPPED 2026-07-28 revision, read from the primary changelog** — the first event-fired run of /practice-refresh. What changed here is the *judgment*, not just the date: this doc called the ground "still moving" and said build against-not-toward; the revision landed with a formal feature-lifecycle + 12-month deprecation policy, which is the ground acquiring rules for how it moves. Caught by IDEA-056's audit at 7 days old — cadence would not have flagged it until October. · **swept again 2026-08-20 (v0.165.0)** — the prior pass read the revision as *governance* and treated the extensions framework as a footnote, which under-read the two extensions that change decisions rather than plumbing: MCP Apps (GA Jan 2026) makes shape (b) a product-surface call, not only a distribution one, and Tasks is the long-running seam that ties this doc to automation.md. Registry maturity (still preview) was never stated. Nothing here was found *wrong*; it was found under-weighted.
+provenance: distilled from the 2026-07-23 research sweep (MCP thread) — MCP donated to the Linux Foundation / Agentic AI Foundation (Dec 2025), WorkOS/Anthropic ecosystem reads, Willison on MCP prompt-injection. Updates RVW-019 (NOT-YET → the standard is now durable). Security half lives in agent-security.md, not here (don't duplicate). BOSS v0.109.0 · **refreshed 2026-07-31 (v0.136.0) against the SHIPPED 2026-07-28 revision, read from the primary changelog** — the first event-fired run of /practice-refresh. What changed here is the *judgment*, not just the date: this doc called the ground "still moving" and said build against-not-toward; the revision landed with a formal feature-lifecycle + 12-month deprecation policy, which is the ground acquiring rules for how it moves. Caught by IDEA-056's audit at 7 days old — cadence would not have flagged it until October. · **swept again 2026-08-20 (v0.165.0)** — the prior pass read the revision as *governance* and treated the extensions framework as a footnote, which under-read the two extensions that change decisions rather than plumbing: MCP Apps (GA Jan 2026) makes shape (b) a product-surface call, not only a distribution one, and Tasks is the long-running seam that ties this doc to automation.md. Registry maturity (still preview) was never stated. Nothing here was found *wrong*; it was found under-weighted. · **2026-09-25 (IDEA-131)** — added the arc by mode and the replace-what-you-do-by-hand question: the doc answered *which shape*, while the question founders ask is *when*. Not a sweep; dates unchanged.
 provenance_public: Distilled from the protocol's own record — MCP donated to the Linux Foundation / Agentic AI Foundation (Dec 2025), WorkOS and Anthropic ecosystem reads, Willison on MCP prompt injection — then refreshed against the shipped 2026-07-28 revision, read from the primary changelog. What changed on that pass was the judgment, not just the date: this doc had called the ground "still moving" and said build against it rather than toward it, and then the revision landed with a formal feature-lifecycle and a 12-month deprecation policy, which is the ground acquiring rules for how it moves. A later sweep found the extensions under-weighted rather than wrong — MCP Apps (GA Jan 2026) makes the integration shape a product-surface call and not only a distribution one, and Tasks is the long-running seam. The registry is still preview. The security half lives in agent-security.md, deliberately not duplicated here.
 last_reviewed: 2026-08-20
 review_by: 2026-11-18
@@ -122,12 +122,31 @@ the one to gate hardest. And note: a founder building *in Claude Code* already h
 use for free — grep/file-search over a repo is "retrieval as a tool" with no server at all. Many founders'
 "I need MCP" is smaller than they think.
 
+## Along the arc — when it starts paying for itself
+
+The shapes answer *which*. What founders actually ask is *when*: "we should have a smart way of doing
+MCP — when do we do it, and when is it worth it?" The honest answer is usually **later than
+you think**, and one question decides it at every stage:
+
+> **What would this replace that you already do by hand, more than once?** No answer means not yet.
+
+| Mode | What MCP is usually worth | The sign it's time |
+|---|---|---|
+| **Quickstart** | Nothing to wire. You're finding out whether the idea is real, and a server doesn't talk to anyone for you. A connector you already use in your chat app (docs, calendar, files) is fine — that's shape (c), and it's yours, not the project's. | — |
+| **MVP** | Shape (c), for the stack you picked: the database, the host's logs, the issue tracker, so the agent reads the real thing instead of what you pasted. One server at a time, each through the pre-install checklist in `agent-security.md`. | The third time you paste the same kind of thing (a schema, a deploy error, an issue) into the chat. |
+| **V1** | Shape (a), at runtime, when a FEAT needs an outside system and a maintained server exists — and a direct API call you control didn't win. It goes on the FEAT's model-or-code line in `/spec`. | A spec names an outside system the feature can't work without. |
+| **Scale** | Shape (b), if agents are a real way your users reach you: read-only first, write tools after the auth checklist, an App last. A `mentor-customers` question before an engineering one. | Users, not you, ask to use the product from inside their assistant. |
+
+**The impulse, named.** *"We should have an MCP strategy"* with no pasted-it-three-times moment and no
+FEAT behind it is usually the same pull as a new framework: it feels like progress and replaces nothing.
+Don't argue with it. Ask the replace question, and let the answer decide.
+
 ## One line for the conscience
 
 *"MCP is settled plumbing now — stable enough to build on, with a twelve-month deprecation window as your
 insurance. That was never the reason to wait. Consume a server when a feature demands it, expose one only
 when you have a product worth distributing, and never wire an untrusted server into an agent that holds your
-secrets."*
+secrets. And before any of it: what would it replace that you already do by hand?"*
 
 ## Deferred (don't build yet) — re-decided 2026-07-31
 

@@ -84,7 +84,9 @@ keep them live (this is the model-recalibration discipline, IDEA-014):
     beats a server you don't), *expose* your product as one (a distribution decision, pre-PMF premature, and
     gated on auth not effort — and with MCP Apps it can mean shipping UI into a client you don't control,
     which is a `mentor-customers` question first), or just *use* servers in your own dev loop (fine whenever it
-    saves time, never with an untrusted server near your secrets). Depth: `boss craft mcp`; the pre-install
+    saves time, never with an untrusted server near your secrets). When the question is *when*, not
+    *which*, ask what the server would replace that the founder already does by hand, more than once;
+    no answer means not yet. Depth: `boss craft mcp` (the arc by mode); the pre-install
     pass and the auth cliff are in `boss craft agent-security`.
   - **Reliability strategy** — what eval set, what failure taxonomy, what regression catches.
     "Vibes-driven" works for a demo and is poison for a product. Evals before scale, not after. For an

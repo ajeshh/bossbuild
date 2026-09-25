@@ -133,6 +133,11 @@ founder is asking yet (Principle 2), so **don't port now.** The three moves, in 
   installs inside Cursor, so a founder in Cursor gets full BOSS today with zero port — which makes
   the port strictly less urgent than it was in June, not more. Presence/copy split out to
   [[IDEA-096]]; OS portability to [[IDEA-095]].
+- 2026-09-25 — **open question, unverified: the "no MCP primitive for unprompted guidance" line may be
+  half-stale.** MCP servers can send *server instructions* that some hosts load into the model's context
+  at session start (seen live in a Claude Code session today — no spec read yet). If that holds, it is a
+  SessionStart-equivalent for the conscience's opening read on hosts with no hooks — not per-turn firing,
+  so the moat claim stands. To settle: read the 2026-07-28 spec on `instructions` + which clients honour it.
 
 ## Open questions (carried forward)
 - **What exactly is the host contract?** Enumerate the primitives the conscience uses in Claude Code
