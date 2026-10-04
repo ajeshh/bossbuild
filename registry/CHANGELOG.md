@@ -27,6 +27,16 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Your design system's map now has edges, and a component can say where it never goes.** At V1,
+  `/design-library`'s `manifest.json` records two more things for each component: the tokens its
+  source reads (`tokens`) and the other components it renders (`composes`). An agent can now answer
+  *what moves if I change this colour* and *what is this dialog made of* from one file, without
+  grepping. `boss design` shows both directions on the card (*composes*, *inside*), and its **Code**
+  button copies the tokens. The skill already promised that; until now the manifest had no field for
+  it. A component's usage page gains a **Composition** section, left blank until a bad nesting has
+  actually happened. Once a page says *Never holds: Card — a box in a box*, the opt-in
+  `design-decisions-guard` passes that rule to the next write that opens both tags.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

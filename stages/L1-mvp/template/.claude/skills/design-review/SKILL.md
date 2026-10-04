@@ -155,7 +155,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
    - **The component's usage page** — `docs/design/components/<Name>.md` from
      **[`templates/component-usage.md`](templates/component-usage.md)**: *why it exists* (reuse ·
      adjust · new, and the behaviour no other component has), when it applies, when it doesn't,
-     the variants and when, content, layout, accessibility, research. This review is the only moment
+     the variants and when, content, layout, composition, accessibility, research. This review is the only moment
      those get decided, and the page is what the agent, the founder, a teammate and a designer all
      read before the next screen. **Start from a `proposed` page if one exists** — someone asked for
      this part; the review answers whether it is new or a variant of what is already there.

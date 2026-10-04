@@ -863,3 +863,34 @@ test('the page is set in the founder\'s own tokens — ground, paper, ink, rule,
   const html2 = renderDesignHtml({ ...collectDesign(bare, 'Tidewell'), projectDir: bare }, 'x');
   assert.match(html2, /set in the shell's neutral palette with your accent/);
 });
+
+// --- IDEA-132: the manifest's edges and the usage page's Composition ---------------------------------
+
+test('the manifest\'s edges render both ways — composes, inside (the inverse, never stored), and Code copies the tokens it reads', () => {
+  const manifest = JSON.stringify({ generated: '2026-10-04', components: [
+    { name: 'Button', import: "import { Button } from '@/components/Button'", tokens: ['color.action.primary', 'radius.control'], composes: ['Icon'], usedIn: 3 },
+    { name: 'Icon', import: "import { Icon } from '@/components/Icon'", usedIn: 9 },
+    { name: 'Dialog', import: "import { Dialog } from '@/components/Dialog'", composes: ['Button'], usedIn: 2 },
+  ] });
+  const dir = tidewell({ 'docs/design/library/manifest.json': manifest });
+  const [b] = readComponents(dir).components;
+  assert.deepEqual(b.tokens, ['color.action.primary', 'radius.control']); assert.deepEqual(b.composes, ['Icon']);
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  const card = (n) => html.slice(html.indexOf(`id="component-${n}"`), html.indexOf('</article>', html.indexOf(`id="component-${n}"`)));
+  assert.match(card('button'), /data-code="[^"]*Tokens it reads \(JSON\)[^"]*color\.action\.primary/);
+  assert.match(card('button'), /<strong>composes<\/strong> Icon · <strong>inside<\/strong> Dialog · <strong>reads<\/strong> 2 tokens/);
+  assert.match(card('button'), /<em>Code<\/em> copies the import line or the tokens it reads\./);
+  assert.match(card('icon'), /<strong>inside<\/strong> Button/); assert.ok(!card('icon').includes('Tokens it reads'), 'no tokens, no claim');
+});
+
+test('Composition renders when written and stays silent while it is the template\'s placeholders — earned, never a hole', () => {
+  const written = USAGE_BUTTON.replace('## Accessibility', '## Composition\n- Inside: a Dialog footer\n- Never inside: Link — a button in a link is two targets\n- Never holds: <Name — and why>\n\n## Accessibility');
+  const dir = withLibrary({ 'docs/design/components/Button.md': written });
+  const [b] = readUsagePages(dir);
+  assert.deepEqual(b.composition, ['Inside: a Dialog footer', 'Never inside: Link — a button in a link is two targets']);
+  assert.equal(b.filled, 6, 'composition is earned, not counted');
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  assert.match(html, /<h4>Composition<\/h4><ul><li>Inside: a Dialog footer<\/li><li>Never inside: Link — a button in a link is two targets<\/li><\/ul>/);
+  const bare = renderDesignHtml({ ...collectDesign(withLibrary(), 'Tidewell'), projectDir: withLibrary() }, 'x');
+  assert.ok(!bare.includes('<h4>Composition</h4>'), 'unwritten composition is not drawn as a hole');
+});

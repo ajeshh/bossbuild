@@ -52,6 +52,12 @@ Button that says Ask" is a variant; "an act that needs a second person to accept
 ## Layout
 - <where it sits, what it sits next to, how it reflows on the narrow surface>
 
+## Composition
+- Inside: <what it sits in — "a Dialog footer, a Toolbar">
+- Holds: <what goes in it — "text, one Icon">
+- Never inside: <Name, Name — and why: "Link — a link in a button is two targets">
+- Never holds: <Name — and why: "Card — a box in a box">
+
 ## Accessibility
 - <the name a screen reader gets · the focus order · the target size · what is *not checked*>
 
@@ -65,6 +71,12 @@ Button that says Ask" is a variant; "an act that needs a second person to accept
   the `<placeholder>` — `boss design` renders a placeholder as a hole, and a hole is honest.
 - **One page per component, named for it.** `Button.md` for `Button`; a subpart (`Button.Group`)
   lives on its parent's page.
+- **Composition is earned, like a slot.** Leave the four lines as placeholders until a bad nesting
+  has actually been written — then the *Never* line names it, with the reason after a dash. Name
+  components exactly as the index does: `design-decisions-guard` reads the *Never* lines and hands
+  the rule to the next write that opens both tags. *Inside* and *Holds* are for people; only *Never*
+  is a rule. What a component **is** made of is the manifest's `composes` at V1, generated, never
+  this section.
 - **The index row stays the index.** Import line, variants, missing states and status are read from
   `COMPONENTS.md` / the manifest; this page does not repeat them. When the page's `status:` and the
   row's disagree, the row wins and the page says so.

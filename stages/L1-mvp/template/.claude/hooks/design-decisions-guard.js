@@ -14,6 +14,13 @@
 //   - `docs/design/STYLE_GUIDE.md` · the **Do / Don't** table: the rule rung, as pairs.
 //   - `docs/design/STYLE_GUIDE.md` · the **Exceptions** table: a departure recorded at a path is a
 //     decision the next edit to that path should know about.
+//   - `docs/design/components/<Name>.md` · the **Composition** section's *Never inside* / *Never
+//     holds* lines (IDEA-132): a nesting the product ruled out, with its reason after a dash.
+//     *Inside* and *Holds* are for people and are not read; placeholders are not read.
+//
+// A NESTING matches when the added text opens both tags (`<Card` and `<Card`, `<Button` and `<Link`).
+// Co-occurrence, not a parse: two siblings in one write get the reminder too, and a reminder of a
+// rule the product wrote costs one line.
 //
 // HOW IT MATCHES, and why it is deliberately crude: a decision's situation is a few words
 // ("a shift needs cover", "delete, revoke, cancel"). Two or more of its content words (five letters
@@ -38,11 +45,12 @@
 //
 // Fail-open: any surprise exits 0 silently. A missed reminder is fine; a broken session is not.
 
-import { readFileSync, existsSync, writeFileSync, appendFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, appendFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 
 const PATTERNS_REL = join('docs', 'design', 'PATTERNS.md');
 const GUIDE_REL = join('docs', 'design', 'STYLE_GUIDE.md');
+const USAGE_REL = join('docs', 'design', 'components');
 const STATE_REL = join('.boss', 'decisions-guard.json');
 const TRACE_REL = join('.boss', 'trace.jsonl');
 const UI_EXT = /\.(tsx|jsx|vue|svelte|astro|html|swift|kt|dart|erb|njk|hbs)$/i;
@@ -132,6 +140,29 @@ try {
       }
     }
   }
+  // --- The nestings it ruled out: a usage page's Never lines (IDEA-132). ----------------------------
+  const usageDir = join(projectDir, USAGE_REL);
+  if (existsSync(usageDir)) {
+    const opens = (n, times = 1) => (added.match(new RegExp(`<${n.replace(/\./g, '\\.')}(?=[\\s/>.])`, 'g')) || []).length >= times;
+    for (const f of readdirSync(usageDir).filter((x) => /\.md$/i.test(x) && !/^README/i.test(x)).sort()) {
+      let text = ''; try { text = readFileSync(join(usageDir, f), 'utf8'); } catch { continue; }
+      const name = clean((text.match(/^component:\s*(\S+)/m) || [])[1]) || f.replace(/\.md$/i, '');
+      const sec = text.split(/^##\s+/m).find((x) => /^composition\b/i.test(x));
+      if (!sec || !opens(name)) continue;
+      for (const line of sec.split(/\r?\n/)) {
+        const m = clean(line).match(/^[-*]\s+never (inside|holds):?\s*(.+)$/i);
+        if (!m || m[2].startsWith('<')) continue;
+        const [list, ...why] = m[2].split(/\s+[—–-]\s+/);
+        for (const other of list.split(/[,·]/).map((x) => x.trim()).filter((x) => /^[A-Z][\w.]*$/.test(x))) {
+          if (!opens(other, other === name ? 2 : 1)) continue; // Card in Card needs two Cards
+          const [outer, inner] = /inside/i.test(m[1]) ? [other, name] : [name, other];
+          decisions.push({ id: `nest-${outer}>${inner}`, say: `**${inner} never goes inside ${outer}**${why.length ? ` — ${why.join(' — ')}` : ''} (docs/design/components/${f}).` });
+        }
+      }
+    }
+  }
+  const seen = new Set();
+  for (let i = decisions.length - 1; i >= 0; i--) if (seen.has(decisions[i].id)) decisions.splice(i, 1); else seen.add(decisions[i].id);
   if (!decisions.length) process.exit(0);
 
   // --- Once per file per decision. --------------------------------------------------------------
@@ -145,7 +176,7 @@ try {
   try { mkdirSync(dirname(statePath), { recursive: true }); writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n'); } catch { /* memory is a courtesy */ }
   try { appendFileSync(join(projectDir, TRACE_REL), JSON.stringify({ ts: new Date().toISOString(), kind: 'design-decision', file: rel, ids: fresh.map((d) => d.id) }) + '\n'); } catch { /* the trace is optional */ }
 
-  out(`design-decisions-guard: this write is in a situation the product already decided.\n` + fresh.map((d) => `- ${d.say}`).join('\n') + `\n(Your own decisions — \`${PATTERNS_REL}\` Ours and \`${GUIDE_REL}\`; \`boss design\` shows them. Follow, widen, or record an exception — never quietly diverge.)`);
+  out(`design-decisions-guard: this write is in a situation the product already decided.\n` + fresh.map((d) => `- ${d.say}`).join('\n') + `\n(Your own decisions — \`${PATTERNS_REL}\` Ours, \`${GUIDE_REL}\` and the usage pages; \`boss design\` shows them. Follow, widen, or record an exception — never quietly diverge.)`);
 } catch {
   process.exit(0); // fail-open
 }

@@ -157,6 +157,8 @@ ever syncs it — see the handoff section. If they never do, it's an inert comme
       "variants": ["primary", "secondary", "ghost"],
       "states": { "default": true, "hover": true, "active": true, "disabled": true, "empty": "n/a" },
       "usedIn": 14,
+      "tokens": ["color.action.primary", "color.text.on-action", "radius.control", "space.2"],
+      "composes": ["Icon", "Spinner"],
       "findings": [
         { "severity": "serious", "kind": "raw-value", "detail": "#3B82F6 at line 42 — should be color.action.primary" }
       ]
@@ -176,6 +178,15 @@ component with an explicit *accept as baseline* step, which is what a component 
 test runner does. Where one is already present, turn it on; the accept step
 is the governance act — a diff nobody approved is drift by definition. Where it is not, this hash is
 the honest half, and the page should say which half it is.
+
+**`tokens` and `composes` are the edges, and they make the manifest the system's graph.** The rest
+of an entry describes a node; these two say what it is connected to — the semantic tokens its source
+reads, and the indexed components its source renders. Both are generated at step 3, never written by
+hand. With them the agent answers the two questions it otherwise greps the tree for: *what moves if I
+change `color.action.primary`* (every entry whose `tokens` holds it) and *what is a Dialog made of*
+(its `composes`, recursively). The inverse — what a component sits inside — is the same list read the
+other way, so it is not stored twice. **This file is the map; do not write a second one beside it.**
+A hand-kept graph of the design system is the two-sources trap in a new shape.
 
 **The manifest is also the agent's reuse index.** `name` + `purpose` + `import` + `variants` is
 exactly what an agent needs to answer *"does something like this already exist?"* before writing a
@@ -233,7 +244,10 @@ warning. It shows what you've built, not only what's wrong.
    `not examined` rather than leaving them out.
 3. **Read each component.** Extract: exported name, the props that create variants, which states it
    handles, the import path, and any raw style values. One line of purpose — from a doc comment if
-   there is one, otherwise inferred and marked as inferred.
+   there is one, otherwise inferred and marked as inferred. **And the edges:** every token name the
+   source references (`tokens` — the semantic names, deduplicated; a raw value is a finding, not an
+   edge) and every *indexed* component it renders (`composes` — a tag or call whose name is another
+   row; HTML elements and third-party parts are not edges).
 4. **Count usage.** Grep the import across the repo. Zero means ⚪ unused. Then **count the other
    direction — how much of the UI is on the system at all.** Files that style by hand (the same
    pattern `design-tokens-loop` opens on) versus files that consume tokens or system components.
