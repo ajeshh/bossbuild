@@ -217,8 +217,8 @@ else we should add… missed or not done? or even in terms of design"*)
   the why again; `/evidence` marking echoes.
 - **Done 2026-10-04, last:** the story as text (`6ea0e27`); `/close` 3e asks *still true?* rarely,
   event-first and then about every 30 days (open questions 1 and 2 answered as recommended: both
-  triggers, and a changed why recorded neutrally as a new dated line). **Still open:** `/evidence`
-  marking customer words that echo the why; phase 4 (whether anything comes back unprompted) waits
+  triggers, and a changed why recorded neutrally as a new dated line). `/evidence` marks a row
+  `echoes your why:` (`next commit`). **Still open:** phase 4 (whether anything comes back unprompted) waits
   until these have been used.
 - **Design tweaks:** chapter headlines start lowercase when the record does ("one owner pre-paid…",
   "the ninth owner…"); capitalise the first letter for display only, never the stored words. On the

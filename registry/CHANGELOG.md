@@ -122,6 +122,10 @@ rule above still applies to the whole section once it is stamped.
   as a new dated line; the old one is never edited. *Not any more* is a real answer, recorded and
   left alone. It never argues for carrying on.
 
+- **`/evidence` notices when a customer says your why back to you.** If their words echo why you
+  started, it says so once and marks the brand row `echoes your why:`. Those are the lines most
+  worth leading a page with.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

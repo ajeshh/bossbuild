@@ -138,6 +138,9 @@ save on the founder's OK. One call can yield several — don't force one.
    are words to lead with. These rows are what the playbook quotes and what a landing page can
    borrow. No brand doc yet? Offer to start one from that template. Show the row and write it only
    on a yes.
+   **When their words echo the founder's own why** (the venture idea's newest `— why:` line), say so
+   once, and start the row's third column `echoes your why:`. A stranger saying the thing you started
+   for, unprompted, is the line most worth leading a page with. Never stretch a loose match into one.
 
 ## A digest — a whole transcript
 
