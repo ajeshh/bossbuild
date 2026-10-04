@@ -1,6 +1,7 @@
 ---
 id: IDEA-035
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: A scope-aware nudge when something genuinely new is named nowhere a founder would look. Deliberately not an enumeration gate — the prose is drift-resistant by design.

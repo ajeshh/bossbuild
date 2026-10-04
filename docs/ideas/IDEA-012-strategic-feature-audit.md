@@ -1,6 +1,7 @@
 ---
 id: IDEA-012
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (adopted as the working backlog, 2026-05-23 — the record says so in its own body)
 gist: A pause to re-examine a roadmap sketched six capability releases ago, and check whether the remaining queue still captures the right things.

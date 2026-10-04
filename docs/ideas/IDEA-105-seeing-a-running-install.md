@@ -1,6 +1,7 @@
 ---
 id: IDEA-105
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger: `check:reach` shows a human count that stays inside the crawl band for a month, or a founder asks "how many people use this")
 gist: The public counters (`npm run check:reach`) can estimate installs and never see a running one; the only instrument that could is a phone-home, and `/feedback` ships "never background telemetry" — so whether to point `boss update`'s version check at a host with logs is a DEC, not a script.

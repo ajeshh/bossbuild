@@ -1,6 +1,7 @@
 ---
 id: IDEA-060
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (build order 1-5 done; 6 superseded v0.182.0; 7 gated on a real demand page)
 program: public-surface

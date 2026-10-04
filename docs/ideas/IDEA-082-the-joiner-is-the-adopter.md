@@ -1,6 +1,7 @@
 ---
 id: IDEA-082
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated — a real non-founder joiner asks for it, in their own words; the record does its whole job by existing)
 program: founding-teams

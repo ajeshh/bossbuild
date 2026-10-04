@@ -1,6 +1,7 @@
 ---
 id: IDEA-030
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: Idea in, hit go, a running thing you can click in five minutes. BOSS stops at scaffold today; the magic moment is a live prototype real enough to react to.

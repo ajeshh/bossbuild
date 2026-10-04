@@ -1,6 +1,7 @@
 ---
 id: IDEA-113
 type: idea
+kind: capability
 owner: designer
 status: shipped (2026-09-13 — rows 1–3 as FEAT-038, row 4 in `3e8c59b`)
 proof: stages/L1-mvp/template/.claude/hooks/design-decisions-guard.js

@@ -1,6 +1,7 @@
 ---
 id: IDEA-099
 type: idea
+kind: capability
 owner: designer
 status: shipped (v0.305.0, 2026-09-11 — the board's subtracted scope; `--idea` deferred with its spec)
 gist: A founder's first five minutes with BOSS are all BOSS's furniture and none of their idea — install, name a folder, cd, restart, and only then does anyone hear what they're building. The plugin makes the reorder possible for the first time - hear it, say it back, THEN offer to scaffold. Value before the scaffold.

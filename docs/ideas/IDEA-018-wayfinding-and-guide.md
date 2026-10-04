@@ -1,6 +1,7 @@
 ---
 id: IDEA-018
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: There was no 'how to use BOSS' guide at all — the README is a pitch, not wayfinding, and nothing answered 'I ran boss new and typed /boss; now what?'

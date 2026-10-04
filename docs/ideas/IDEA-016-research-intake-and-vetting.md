@@ -1,6 +1,7 @@
 ---
 id: IDEA-016
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: A drop folder for outside claims plus the skeptical panel that pressure-tests each one. Reddit is full of best practices; that doesn't make them good ideas. The filter IS the product.

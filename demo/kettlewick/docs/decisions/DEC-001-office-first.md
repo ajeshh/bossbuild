@@ -3,6 +3,7 @@ id: DEC-001
 type: decision
 owner: "@marta"
 decided_by: founder
+scope: venture
 status: superseded
 created: 2026-06-14
 reversibility: reversible

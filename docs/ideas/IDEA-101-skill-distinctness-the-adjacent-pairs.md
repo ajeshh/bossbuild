@@ -1,6 +1,7 @@
 ---
 id: IDEA-101
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.322.0, 2026-09-12 — `/boss-learn` → `/extract`; `/pretotype` ↔ `/prototype` v0.317.0; nine keeps stand)
 gist: 48 skills cost ~3k always-loaded tokens (v0.316.0) — small. What 48 costs is CHOICE - can the model, and the founder, pick the right one from the description alone? This is the written read of the adjacent pairs, judged on distinguishability, with keep / sharpen / merge proposals. No cut is made here.

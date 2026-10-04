@@ -1,6 +1,7 @@
 ---
 id: IDEA-014
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: Riding the model curve on purpose instead of ad hoc. Fires when the SHAPE of the tradeoff moves — not when a model ships, since BOSS pins capability shapes rather than model names.

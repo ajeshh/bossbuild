@@ -1,6 +1,7 @@
 ---
 id: IDEA-057
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (identity + `gen-site.js` + the site, serving at oyeboss.build)
 program: public-surface

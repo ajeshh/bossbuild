@@ -148,6 +148,10 @@ rule above still applies to the whole section once it is stamped.
   carries it. There's no field to edit. A card without a photo says how in its footer, which shows
   on the page but not in slides or copies, and BOSS never draws a stand-in face.
 
+- **A feature that already shipped is never taken as your venture.** When the playbook pairs your
+  canvas with an idea by number, it skips a record with `shipped_on:`, so an old feature can't
+  become your Product chapter.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

@@ -1,6 +1,7 @@
 ---
 id: IDEA-003
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: A second class of agents beyond builders: mentors that sit outside the app and coach the founder, accumulating a dossier that eventually helps real funding or hiring.

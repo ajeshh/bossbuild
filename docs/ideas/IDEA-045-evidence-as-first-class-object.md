@@ -1,6 +1,7 @@
 ---
 id: IDEA-045
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 proof: stages/L0-quickstart/template/.claude/skills/evidence

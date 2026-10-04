@@ -1,6 +1,7 @@
 ---
 id: IDEA-043
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: Six jobs an agentic build has to do, used as a checklist against BOSS's 360° claim. Not tools BOSS should own — moments BOSS should have a voice at.

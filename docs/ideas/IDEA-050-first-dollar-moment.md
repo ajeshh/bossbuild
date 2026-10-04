@@ -1,6 +1,7 @@
 ---
 id: IDEA-050
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.125.0, 2026-07-23 — post-launch program build #7a)
 program: post-launch

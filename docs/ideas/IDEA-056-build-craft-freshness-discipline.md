@@ -1,6 +1,7 @@
 ---
 id: IDEA-056
 type: idea
+kind: capability
 owner: mentor-architect
 status: shipped (v0.135)
 program: standing-freshness

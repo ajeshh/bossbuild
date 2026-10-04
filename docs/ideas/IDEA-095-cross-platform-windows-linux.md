@@ -1,6 +1,7 @@
 ---
 id: IDEA-095
 type: idea
+kind: capability
 owner: coder
 status: shipped (v0.296.0 → v0.300.0 — matrix green on six cells, README/site claim three OSes, exec-form hooks; `engines` floor left as a one-line follow-up)
 gist: BOSS runs on Linux already and is wrong on Windows in four places, all the same shape — a path built with `join()` then handled as a `/`-string. Nothing proves either, because there is no CI. Mechanism first, claim second.

@@ -1,6 +1,7 @@
 ---
 id: IDEA-051
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: Everything BOSS ships is build-facing. The moment real customers arrive the centre of gravity flips to the people using the thing — and BOSS goes silent exactly when the founder's job changes most.

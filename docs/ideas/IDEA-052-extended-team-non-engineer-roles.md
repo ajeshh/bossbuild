@@ -1,6 +1,7 @@
 ---
 id: IDEA-052
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 program: founding-teams

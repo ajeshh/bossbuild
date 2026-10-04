@@ -1,6 +1,7 @@
 ---
 id: IDEA-109
 type: idea
+kind: capability
 owner: mentor-customers
 status: seedling (a positioning, not a build — the next step is one conversation)
 waiting_on: Ajesh — README §License says "never the CLI itself", which closes a door this shape may want open: keep, soften, or write the DEC? (since 2026-09-13)

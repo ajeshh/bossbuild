@@ -1,6 +1,7 @@
 ---
 id: IDEA-005
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 proof: src/detect.js

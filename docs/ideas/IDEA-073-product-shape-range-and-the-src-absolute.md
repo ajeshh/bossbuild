@@ -1,6 +1,7 @@
 ---
 id: IDEA-073
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (P0–P3 + P5; P4 partial — see below)
 proof: stages/L0-quickstart/template/.claude/hooks/lib/loop-runtime.js

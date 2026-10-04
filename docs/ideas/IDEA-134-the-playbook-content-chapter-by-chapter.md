@@ -97,6 +97,21 @@ hashes, file diagnostics) stays one click away in the file, never in the sentenc
    already on the list (RESUME, 2026-10-04).
 5. **The screenshot slot** (A), when `/ship` next changes, or on its own if the demo screen proves the shape.
 
+## Built (2026-10-04, Ajesh: *"fix the rest"*; portraits: *"implement, it was more of what is on kettlewick real or fake photos"*)
+- `839f60d` prose-ready: P1 (`History:`, current answer only), P2 (ids out of reader prose), P3 (Learnings =
+  devlog + the venture's log, no hashes), P4 (`/decide` `scope:`; build decisions one line each), P5 (no file
+  notes on the page; a hand-written DEC shows its first paragraph). Kettlewick's DEC-004 was in the wrong shape.
+- `2f83c0a` Vision leads with the few-years line (the echoing card hides on the page, stays a slide);
+  Product leads with the gist, then **How it works** (the Story cell, once; Problem points there), then
+  *What it looks like* from `docs/product/screens/` (and `/ship` keeps one).
+- `cc363e9` the photo mechanism: `marta.jpg` beside `marta.md` shows, and a faceless card says how in its foot.
+- Next commit: a shipped record is never the venture; Kettlewick gets its wordmark and decision scopes; 112 BOSS
+  IDEA records get the `kind: capability` that CLAUDE.md always claimed for them.
+- **Still open:** Kettlewick's faces, **real or fictional photos, Ajesh's call** (the mechanism is built, the
+  demo stays faceless until then); a Kettlewick product screen (its `src/` is `.tsx` with no build, so there's
+  no honest capture yet); **BOSS's own `docs/ideas/CANVAS.md` (Ajesh's, gitignored) needs its revision notes
+  moved under `History:`** before its headlines read as prose; BOSS's DECs (gitignored) need `scope:`.
+
 ## Decisions for Ajesh
 1. **Kettlewick's portraits.** They're fictional people. Options: (a) illustrated portraits that read as drawings,
    which are honest about being fictional (recommended); (b) generated photo-real faces of nobody, which look more

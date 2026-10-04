@@ -1,6 +1,7 @@
 ---
 id: IDEA-071
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.218.0 — `defaultMode: auto` gone, `$schema` in, allow list dropped; the sandbox and `init.sh` named in the practices; nothing left that is a build)
 proof: stages/L0-quickstart/template/.claude/settings.json

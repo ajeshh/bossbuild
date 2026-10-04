@@ -1,6 +1,7 @@
 ---
 id: IDEA-111
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (FEAT-035, 2026-09-13)
 promoted_to: FEAT-035

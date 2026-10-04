@@ -1,6 +1,7 @@
 ---
 id: IDEA-036
 type: idea
+kind: capability
 owner: product-lead
 status: dropped (2026-09-13, Ajesh — the trigger fired, the page got its sentence from PRINCIPLES.md, and the 10/90 number is Schoening's framing, not anything BOSS measured; "considered, didn't earn it", exactly as the record said it would end)
 gist: The first 10% — the polished prototype — is now free. BOSS is the layer for the 90% that decides whether it's a real business. A sharper, more quotable restatement of the pseudo-vs-real 'why'.

@@ -1,6 +1,7 @@
 ---
 id: IDEA-096
 type: idea
+kind: capability
 owner: mentor-customers
 status: shipped (the copy v0.296.0 and the plugin door v0.302.0; the port is IDEA-006, parked)
 gist: BOSS already runs at full strength inside VS Code, Cursor, JetBrains and other VS Code forks — through the Claude Code extension — and tells nobody. The Cursor answer is copy, not a port. What is genuinely open is presence: where founders find BOSS, not where it runs.

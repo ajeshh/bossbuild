@@ -1,6 +1,7 @@
 ---
 id: IDEA-027
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 proof: library/practices/quality-ratchet.md

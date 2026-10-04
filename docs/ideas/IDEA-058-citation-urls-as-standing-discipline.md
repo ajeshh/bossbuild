@@ -1,6 +1,7 @@
 ---
 id: IDEA-058
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.194.0 — 17 of 18 verified and filled; 1 deliberately null)
 program: public-surface

@@ -1,6 +1,7 @@
 ---
 id: IDEA-007
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: The double meaning already in the name — BOSS doesn't boss you, it makes you the boss — plus a contained bad-boss easter egg that teaches the good boss by inverting it. Brand direction, nothing to build.

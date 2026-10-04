@@ -1,6 +1,7 @@
 ---
 id: IDEA-085
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 proof: none

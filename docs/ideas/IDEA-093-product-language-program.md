@@ -1,6 +1,7 @@
 ---
 id: IDEA-093
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (parts 1–6 on disk — 1–5 v0.284.0, 6 Unreleased 2026-09-13; part 7 is IDEA-066's; part 8 deferred until the first BOSS project reaches V1)
 gist: BOSS writes down what it is betting in four places and reads none of them back — the product practice has both ends of the loop and not the return path.

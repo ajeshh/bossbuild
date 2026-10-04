@@ -1,6 +1,7 @@
 ---
 id: IDEA-041
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (the voicing slice; full hook deferred)
 gist: PRINCIPLES names a path to distribution as a leg of real business value, and the conscience never once voiced it. Resolved as a third answer — neither a mentor nor a leg.

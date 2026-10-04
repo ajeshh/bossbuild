@@ -1,6 +1,7 @@
 ---
 id: IDEA-048
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.104.0 — the one question in `/close`)
 proof: stages/L1-mvp/template/.claude/skills/close

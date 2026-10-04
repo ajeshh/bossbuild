@@ -1,6 +1,7 @@
 ---
 id: IDEA-062
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.181.0 — page + the three template fixes)
 program: the-record-system

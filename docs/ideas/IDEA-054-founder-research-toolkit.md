@@ -1,6 +1,7 @@
 ---
 id: IDEA-054
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (keystone; folded into /evidence 2026-09-12 — one verb reads the size and does the record, the debrief, or the digest)
 proof: stages/L0-quickstart/template/.claude/skills/evidence/SKILL.md

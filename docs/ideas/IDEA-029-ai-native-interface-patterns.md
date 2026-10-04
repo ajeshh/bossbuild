@@ -1,6 +1,7 @@
 ---
 id: IDEA-029
 type: idea
+kind: capability
 owner: designer
 status: shipped
 gist: BOSS's AI-UX heuristics are 2024–25-correct — single-turn, single-agent, human-in-the-loop. The frontier moved to plural, background, long-running, risk-tiered work, and the gaps are missing heuristics rather than wrong ones.

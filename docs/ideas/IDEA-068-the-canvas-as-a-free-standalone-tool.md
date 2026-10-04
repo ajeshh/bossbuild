@@ -1,6 +1,7 @@
 ---
 id: IDEA-068
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.198.0)
 gist: The Humane Product Canvas published as a free CC BY-SA artifact — the only thing BOSS has that works without installing BOSS. Shipped after the attribution question was answered.

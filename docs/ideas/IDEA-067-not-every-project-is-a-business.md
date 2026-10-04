@@ -1,6 +1,7 @@
 ---
 id: IDEA-067
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (rung 1, v0.195.0) — rungs 2-3 deferred by DEC-009
 gist: BOSS has one axis for who the founder is (cohort) and none for what the project is for. Commercial intent is assumed in exactly one load-bearing place — and BOSS's own project is the counter-example.

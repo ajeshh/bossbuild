@@ -1,6 +1,7 @@
 ---
 id: IDEA-044
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: BOSS had birth and life and no death. A way to end a project honestly, harvest what it taught, and mark it retired — quitting faster is the payoff validation promises.

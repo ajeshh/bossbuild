@@ -1,6 +1,7 @@
 ---
 id: IDEA-009
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: Proto-personas as one instrument doing two jobs — steering what to build before it exists, and reacting to what got built after. Not a fixed cast: an artifact that evolves as real founders are met.

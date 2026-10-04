@@ -1,6 +1,7 @@
 ---
 id: IDEA-112
 type: idea
+kind: capability
 owner: designer
 status: shipped
 proof: stages/L1-mvp/template/.claude/skills/design-review/templates/component-usage.md

@@ -1,6 +1,7 @@
 ---
 id: IDEA-025
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: Judge the real session, not a golden one — error analysis over actual traces, binary pass/fail, failure modes discovered before evaluators get built.

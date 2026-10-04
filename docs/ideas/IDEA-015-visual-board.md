@@ -1,6 +1,7 @@
 ---
 id: IDEA-015
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: A board showing what's in flight — captured, taking shape, building, shipped — so the arc is visible at a glance instead of reconstructed from scattered files. Trello in spirit; its opposite in mechanics: nothing is maintained, everything is projected.

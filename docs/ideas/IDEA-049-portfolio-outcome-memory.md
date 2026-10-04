@@ -1,6 +1,7 @@
 ---
 id: IDEA-049
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: Real incubators compound on portfolio outcomes: which bets lived, which died, what the survivors had in common. BOSS's registry knows projects exist and never learns whether they lived.

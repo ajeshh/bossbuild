@@ -1,6 +1,7 @@
 ---
 id: IDEA-077
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 proof: stages/L0-quickstart/template/.claude/hooks/reentry.js

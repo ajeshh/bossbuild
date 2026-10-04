@@ -1,6 +1,7 @@
 ---
 id: IDEA-034
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: Turn the board from a mirror into something the founder and the agent steer by — --next, --blocked, --json, aging, priority, and the program roll-up.

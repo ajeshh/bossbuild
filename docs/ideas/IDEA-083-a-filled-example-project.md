@@ -1,6 +1,7 @@
 ---
 id: IDEA-083
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 proof: none

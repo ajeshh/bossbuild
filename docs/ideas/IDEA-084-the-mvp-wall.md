@@ -1,6 +1,7 @@
 ---
 id: IDEA-084
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (fix 1, v0.324.0 — `earned` in the MVP manifest: 16 verbs at unlock; postLaunch lays down after the first ship, aiMediated on the first model call. Fix 2 refused; fix 3 was already `boss map`)
 proof: src/earned.js

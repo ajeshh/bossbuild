@@ -1,6 +1,7 @@
 ---
 id: IDEA-047
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (re-aimed keyless 2026-09-13 — the fake door, no model, no key. Re-open when a source of strangers exists — the plugin listed in claude-community, or Phase 3 outreach live — AND installs stay flat; a door with no traffic measures nothing)
 program: public-surface

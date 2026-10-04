@@ -1,6 +1,7 @@
 ---
 id: IDEA-053
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.105.0 — `founder-role-shifts.md` + the mode unlocks)
 proof: library/practices/founder-role-shifts.md

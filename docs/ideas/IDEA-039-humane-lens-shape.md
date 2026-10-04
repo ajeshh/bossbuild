@@ -1,6 +1,7 @@
 ---
 id: IDEA-039
 type: idea
+kind: capability
 owner: mentor-architect
 status: shipped
 gist: The humane lens is already at Quickstart, woven through the canvas and the pressure-tests; only the standalone consultable agent is gated at Scale. So the real question is whether the lens wants to be an agent at all.

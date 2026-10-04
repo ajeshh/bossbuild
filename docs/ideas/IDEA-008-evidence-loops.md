@@ -1,6 +1,7 @@
 ---
 id: IDEA-008
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.18.0)
 gist: Loops keyed to evidence instead of time — because AI broke the link between wallclock and output, and every sprint-shaped scaffold inherited the rot.

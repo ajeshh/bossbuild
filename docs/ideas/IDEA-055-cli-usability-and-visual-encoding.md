@@ -1,6 +1,7 @@
 ---
 id: IDEA-055
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (axis landed in pieces — v0.179.0, v0.191.0, v0.262.0, v0.231.0; facets 2 and 4 re-open on an OBSERVED session)
 gist: A usability pass over the whole CLI: the words are great and the pixels do almost none of the work. Re-graded by EVID-001 into the orientation-and-progress axis — knowing where you are, like a train line.

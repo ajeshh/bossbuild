@@ -1,6 +1,7 @@
 ---
 id: IDEA-031
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.55.0 — /persona derive · enrich · consult, at L0)
 proof: stages/L0-quickstart/template/.claude/skills/persona/SKILL.md

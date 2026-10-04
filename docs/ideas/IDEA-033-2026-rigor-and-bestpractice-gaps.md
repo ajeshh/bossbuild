@@ -1,6 +1,7 @@
 ---
 id: IDEA-033
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: A bundle of smaller 2026 rigor gaps held in one place — per-skill versioning, validate-and-repair enforcement, and the rest — none of which earns its own record yet.

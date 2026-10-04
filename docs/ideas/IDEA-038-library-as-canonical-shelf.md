@@ -1,6 +1,7 @@
 ---
 id: IDEA-038
 type: idea
+kind: capability
 owner: mentor-architect
 status: shipped
 gist: library/agents|skills|hooks was a shelf nothing read, nothing deployed from, and nothing had ever written to. Cut in v0.248.0 — the shelf holds what BOSS knows, the stages hold what BOSS ships.

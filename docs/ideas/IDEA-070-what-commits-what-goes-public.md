@@ -1,6 +1,7 @@
 ---
 id: IDEA-070
 type: idea
+kind: capability
 owner: product-lead
 status: exploring (F1 shipped v0.217.0 · F3+F5 shipped v0.219.0)
 proof: none

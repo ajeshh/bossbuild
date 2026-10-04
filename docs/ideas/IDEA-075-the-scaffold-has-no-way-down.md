@@ -1,6 +1,7 @@
 ---
 id: IDEA-075
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (n=0 — re-open when EVID-003's questions gain *"anything BOSS gave you that you've stopped needing?"* and someone answers it; not before)
 proof: >

@@ -375,6 +375,8 @@ test('readIdea never takes a kind: capability as the venture; the canvas pairing
   });
   assert.equal(readIdea(dir), null, 'all capabilities: no venture, so the Vision holes');
   assert.equal(readIdea(dir, 'IDEA-002-canvas').id, 'IDEA-002', 'a canvas paired to a capability still reads it');
+  const shipped = project({ ...stamp(), 'docs/ideas/IDEA-001-loop.md': bare('IDEA-001', 'kind: capability\nshipped_on: 2026-05-21\n', '2026-05-21') });
+  assert.equal(readIdea(shipped, 'IDEA-001-canvas'), null, 'a shipped feature is never the venture, even paired by number (IDEA-134)');
   const old = project({
     ...stamp(),
     'docs/ideas/IDEA-001-app.md': bare('IDEA-001', '', '2026-06-01'),

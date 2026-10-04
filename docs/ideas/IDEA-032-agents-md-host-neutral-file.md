@@ -1,6 +1,7 @@
 ---
 id: IDEA-032
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: BOSS scaffolds only CLAUDE.md, which locks every venture it creates to one host — contradicting both its own host-agnostic claim and the optionality principle. AGENTS.md is the cross-tool answer.

@@ -1,6 +1,7 @@
 ---
 id: IDEA-013
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: Measure how often the conscience fires rather than estimating what it costs, so BOSS doesn't become the expensive-AI app it warns founders about.

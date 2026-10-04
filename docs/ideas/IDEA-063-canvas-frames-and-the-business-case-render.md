@@ -1,6 +1,7 @@
 ---
 id: IDEA-063
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (frames v0.191.0; the render layer above rung 1 remains)
 proof: none

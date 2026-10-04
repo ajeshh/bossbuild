@@ -1,6 +1,7 @@
 ---
 id: IDEA-064
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.189.0 — all 5 slices; 7 of 8 proposed renames landed, 1 rejected by the gate)
 gist: 15 agents, 10 of whose names fail BOSS's own voice rule — and two of those rows are count problems wearing naming clothes. Subtract first, name second, or you rename twice.

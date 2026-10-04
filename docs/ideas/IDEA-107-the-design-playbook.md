@@ -1,6 +1,7 @@
 ---
 id: IDEA-107
 type: idea
+kind: capability
 owner: designer
 status: building
 building_since: 2026-09-13

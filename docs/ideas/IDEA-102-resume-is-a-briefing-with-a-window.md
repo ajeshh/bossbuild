@@ -1,6 +1,7 @@
 ---
 id: IDEA-102
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.318.0 — the 200-line window in `boss status`, the rule in both /close copies, the archive folded into the devlog, the length check in `npm run check`)
 gist: docs/RESUME.md is read first every session and reached 737 lines / ~15.6k tokens two days after an archive pass. The concept (a handoff briefing) is right; the design has three defects - it is the only guaranteed-read file so everything leaks into it, its compaction rule has no number and no runner, and it is a rewrite-shaped file being append-written with facts a command computes. Fix by subtraction, here and in the shipped /close.

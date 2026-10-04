@@ -1,6 +1,7 @@
 ---
 id: IDEA-074
 type: idea
+kind: capability
 owner: product-lead
 status: exploring
 proof: ⚠️ EVIDENCE→CONTESTED (the problem — see the 2026-08-24 appendix), REFUTED (the proposed cure), n=0 (founder demand)

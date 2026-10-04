@@ -1,6 +1,7 @@
 ---
 id: IDEA-028
 type: idea
+kind: capability
 owner: mentor-architect
 status: shipped
 program: host-and-portability

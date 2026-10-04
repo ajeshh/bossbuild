@@ -1,6 +1,7 @@
 ---
 id: IDEA-006
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (the port — re-open when a founder on a non-Claude-Code host asks, or a plugin design note answers the substrate question; IDEA-096 closed at the copy + plugin door and handed its gate back here)
 program: host-and-portability

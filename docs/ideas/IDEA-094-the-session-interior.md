@@ -1,6 +1,7 @@
 ---
 id: IDEA-094
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (parts 0–2 and 6 on disk; 3–4 deferred until the host ships a session-list primitive again; 5 folded into IDEA-093 part 6)
 gist: BOSS models the session's two boundaries well and its interior not at all — the checklist exists, is durable, and nothing loads it, updates it, or checks it while the work is happening.

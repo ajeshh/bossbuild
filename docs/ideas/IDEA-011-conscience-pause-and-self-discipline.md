@@ -1,6 +1,7 @@
 ---
 id: IDEA-011
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 program: ai-native-boss

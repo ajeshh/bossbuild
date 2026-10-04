@@ -1,6 +1,7 @@
 ---
 id: IDEA-059
 type: idea
+kind: capability
 owner: tester
 status: deferred (candidate 1 shipped v0.170.0; the rung 2-4 band v0.179.0; candidates 2 and 3 re-open on a real signal)
 proof: stages/L1-mvp/template/.claude/skills/spec

@@ -1,6 +1,7 @@
 ---
 id: IDEA-076
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (re-open on an OBSERVED session, not a third statement of the pain)
 proof: >

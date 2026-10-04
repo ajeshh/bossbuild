@@ -1,6 +1,7 @@
 ---
 id: IDEA-092
 type: idea
+kind: capability
 owner: designer
 status: shipped (every item built or explicitly refused, v0.286.0 → v0.292.0; see the close-out at the foot)
 gist: After the eight-layer ladder was filled, the five things still missing that an advanced design system has — ranked, with the two that are decisions rather than gaps called out so they are not re-proposed.

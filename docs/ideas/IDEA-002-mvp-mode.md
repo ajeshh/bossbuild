@@ -1,6 +1,7 @@
 ---
 id: IDEA-002
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.14.0)
 gist: The 'ready to build the first working version' layer, authored by extracting the practices already working in this repo UP into a mode: /spec + FEAT, a smoke gate, the devlog, /close.

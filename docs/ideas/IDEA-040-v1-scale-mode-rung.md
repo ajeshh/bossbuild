@@ -1,6 +1,7 @@
 ---
 id: IDEA-040
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: The unauthored V1→Scale rung. Deferred on purpose: nothing is at that altitude yet, and the re-open trigger is a real coordination symptom, not a hypothetical.

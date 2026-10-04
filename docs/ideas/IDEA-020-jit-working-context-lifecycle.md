@@ -1,6 +1,7 @@
 ---
 id: IDEA-020
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: Keep the always-loaded context tiny and pull the right slice just-in-time. The token saving is the easy half — the lifecycle (what clears, what gets promoted, how it avoids drifting) is the actual design problem.

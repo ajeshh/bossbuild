@@ -1,6 +1,7 @@
 ---
 id: IDEA-021
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: How BOSS learns how BOSS is used, without becoming the surveillance it warns founders about. Mostly already-built primitives read differently, plus one genuinely dangerous deferred piece.

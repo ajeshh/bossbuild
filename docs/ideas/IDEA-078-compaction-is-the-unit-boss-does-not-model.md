@@ -1,6 +1,7 @@
 ---
 id: IDEA-078
 type: idea
+kind: capability
 owner: product-lead
 status: deferred
 proof: >

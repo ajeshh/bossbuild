@@ -1,6 +1,7 @@
 ---
 id: IDEA-066
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 proof: none

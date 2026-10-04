@@ -1,6 +1,7 @@
 ---
 id: IDEA-065
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (as IDEA-106 → FEAT-026..029, 2026-09-13 — the workbench is `boss playbook`, browsed; folded on Ajesh's "lets combine all ideas into one")
 superseded_by: IDEA-106

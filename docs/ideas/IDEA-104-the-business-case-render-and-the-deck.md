@@ -1,6 +1,7 @@
 ---
 id: IDEA-104
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (as IDEA-106 → FEAT-026..029, 2026-09-13 — the case is the playbook; the deck is Present over its blocks)
 superseded_by: IDEA-106

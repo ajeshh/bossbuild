@@ -1,6 +1,7 @@
 ---
 id: IDEA-110
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (FEAT-039, 2026-09-13 — oyeboss.build/demo)
 promoted_to: FEAT-039

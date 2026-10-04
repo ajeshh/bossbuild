@@ -1,6 +1,7 @@
 ---
 id: IDEA-017
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 proof: library/practices/founder-domain-practices.md

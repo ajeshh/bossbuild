@@ -1,6 +1,7 @@
 ---
 id: IDEA-010
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 program: design-system

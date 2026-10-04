@@ -1,6 +1,7 @@
 ---
 id: IDEA-106
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (FEAT-026..029, all four slices, 2026-09-13; FEAT-035/036/039 grew from it)
 shipped_on: 2026-09-13

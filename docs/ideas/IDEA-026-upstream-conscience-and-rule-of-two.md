@@ -1,6 +1,7 @@
 ---
 id: IDEA-026
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: Fire the conscience at planning rather than review, where a misalignment is still cheap — plus the Rule-of-Two ring for agents that touch untrusted input, private data and the outside world.

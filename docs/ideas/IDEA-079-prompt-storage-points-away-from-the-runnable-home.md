@@ -1,6 +1,7 @@
 ---
 id: IDEA-079
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 proof: stages/L0-quickstart/template/.claude/agents/prompt-coach.md

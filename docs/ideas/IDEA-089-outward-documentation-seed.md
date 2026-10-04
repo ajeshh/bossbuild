@@ -1,6 +1,7 @@
 ---
 id: IDEA-089
 type: idea
+kind: capability
 owner: product-lead
 status: deferred
 gist: The outward half of documentation is zero at every rung; the fix is one seed at the ship moment, as a loop with a checkable predicate, not a skill.

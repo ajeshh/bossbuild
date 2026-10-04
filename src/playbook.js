@@ -271,8 +271,11 @@ export function readIdea(projectDir, canvasId) {
   // Vision holes, not its newest feature as the headline (IDEA-129). The canvas pairing still wins.
   const kindOf = (fm) => String(fm.kind || '').trim().toLowerCase();
   const rank = (fm) => (kindOf(fm) === 'venture' ? 2 : 'motivation' in fm ? 1 : 0);
-  const pick = names.map((n) => { const p = join(dir, n); let fm = {}; try { fm = frontmatter(readFileSync(p, 'utf8')); } catch { /* keep going */ } return { n, p, rank: rank(fm), capability: kindOf(fm) === 'capability', when: Date.parse(fm.created || '') || statSync(p).mtimeMs }; })
-    .filter((x) => paired || !x.capability)
+  // A record that already shipped (`shipped_on:`) is a feature, never the venture — even through a pairing
+  // by number. BOSS's own canvas paired with the shipped /boss-learn record and the playbook described
+  // that feature as the product (IDEA-134). A canvas paired to an unshipped capability still reads it (IDEA-129).
+  const pick = names.map((n) => { const p = join(dir, n); let fm = {}; try { fm = frontmatter(readFileSync(p, 'utf8')); } catch { /* keep going */ } return { n, p, rank: rank(fm), capability: kindOf(fm) === 'capability', shipped: kindOf(fm) !== 'venture' && Boolean(fm.shipped_on), when: Date.parse(fm.created || '') || statSync(p).mtimeMs }; })
+    .filter((x) => !x.shipped && (paired || !x.capability))
     .sort((a, b) => b.rank - a.rank || (a.rank ? b.when - a.when : a.when - b.when))[0];
   if (!pick) return null;
   try {

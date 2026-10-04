@@ -1,6 +1,7 @@
 ---
 id: IDEA-087
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v-unreleased, 2026-09-13 — the first fix, per record class: ideas, extractions, verdicts, RESUME, devlog, CLAUDE.md tracked; evidence, brain, inbox, source, dossier, business and CANVAS.md stay local)
 proof: none

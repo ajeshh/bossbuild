@@ -1,6 +1,7 @@
 ---
 id: IDEA-098
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.304.0, 2026-09-11 — gate closed: Ajesh read both versions, kept the round)
 gist: /consult's mentors answer in isolated contexts and never see each other — so the synthesis can show WHERE they split but never whether one would MOVE on hearing the other. One conditional round, only for the disagreeing pair, turns the split from a list into a movement.

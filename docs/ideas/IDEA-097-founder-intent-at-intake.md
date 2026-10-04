@@ -1,6 +1,7 @@
 ---
 id: IDEA-097
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (v0.303.0, 2026-09-11)
 gist: BOSS asks What / Who / Smallest-version and never *why you* — so every downstream read (canvas branch, mentor advice, the conscience's ladder nudges) assumes a founder who wants a paying customer. One question at intake, one field, and the readers that already exist.

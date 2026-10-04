@@ -1,6 +1,7 @@
 ---
 id: IDEA-001
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: The two-way router that closes Principle #1 — a proven pattern goes UP into BOSS's library as a reusable practice, or DOWN into the app's own core, and `boss sync` carries it back to every project.

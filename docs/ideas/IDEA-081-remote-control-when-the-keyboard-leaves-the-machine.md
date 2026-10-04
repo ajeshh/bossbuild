@@ -1,6 +1,7 @@
 ---
 id: IDEA-081
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (2026-09-13 — priorities 1–3 landed as DEC-015, DEC-016, IDEA-077; Finding 4's BOSS-side half closed by tracking RESUME (IDEA-087); the founder sentence in /close and Finding 5 ride IDEA-078)
 proof: none

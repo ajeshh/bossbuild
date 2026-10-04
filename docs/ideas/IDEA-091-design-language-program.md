@@ -1,6 +1,7 @@
 ---
 id: IDEA-091
 type: idea
+kind: capability
 owner: designer
 status: shipped (all seven parts, v0.276.0 → v0.282.0, one branch; ONE new loop and NO new verbs)
 gist: BOSS has a design system's floor and its roof and not its middle — the plan that fills in components, patterns, flows and the language that grows from what gets built.

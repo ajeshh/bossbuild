@@ -1,6 +1,7 @@
 ---
 id: IDEA-100
 type: idea
+kind: capability
 owner: mentor-architect
 status: shipped (the /log pilot, 2026-09-13 — body +4%, the newest-first invariant now code; the other four do not convert on that number)
 gist: BOSS ships 48 skills and 0 executable scripts. That is not wrong by construction — judgment belongs in prose — but a skill whose steps are a fixed recipe the agent re-derives every run (append a dated entry, count, compare dates) is a script wearing a skill hat, and it costs tokens and varies each time. The test is per skill, not a direction; the pilot is /log.

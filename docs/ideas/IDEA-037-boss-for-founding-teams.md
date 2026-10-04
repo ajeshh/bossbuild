@@ -1,6 +1,7 @@
 ---
 id: IDEA-037
 type: idea
+kind: capability
 owner: product-lead
 status: building (slices 1–5a shipped via FEAT-021; the rest gated on a real team, n=0)
 program: founding-teams

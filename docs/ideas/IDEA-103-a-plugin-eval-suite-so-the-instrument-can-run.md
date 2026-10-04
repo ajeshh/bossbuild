@@ -1,6 +1,7 @@
 ---
 id: IDEA-103
 type: idea
+kind: capability
 owner: tester
 status: shipped (v0.320.0, 2026-09-12 — one case, two graders, Δ = 1.0)
 gist: Claude Code ships `claude plugin eval` (scored, reproducible, with a no-plugin baseline arm) and BOSS ships as a plugin with no `evals/` cases — so the second instrument on the watchlist cannot run. One case is enough to start, and the door is the case - `/boss:welcome` hears the idea and says it back (IDEA-099), graded by whether the reply contains the founder's own words.

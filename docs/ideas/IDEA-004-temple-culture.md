@@ -1,6 +1,7 @@
 ---
 id: IDEA-004
 type: idea
+kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: Values as a decision infrastructure agents can actually consult — a do/avoid/escalate table per value, plus an elevation ladder where humans and agents earn scope instead of being granted it by prompt quality.

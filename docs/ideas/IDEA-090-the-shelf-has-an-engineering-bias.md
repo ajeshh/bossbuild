@@ -1,6 +1,7 @@
 ---
 id: IDEA-090
 type: idea
+kind: capability
 owner: product-lead
 status: shipped (2026-09-13 — three shelves, provenance_public on the twelve, the exactly-one check; it found two more)
 gist: 12 of 33 practices are surfaced on no page and 12 of 33 carry no public provenance — and they are almost the same 12, all product-shaped.

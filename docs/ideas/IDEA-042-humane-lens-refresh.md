@@ -1,6 +1,7 @@
 ---
 id: IDEA-042
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: The standing sweep that keeps the dark-pattern catalog from freezing at the date it was adopted. Dark patterns are an arms race; a snapshot rots.

@@ -1,6 +1,7 @@
 ---
 id: IDEA-024
 type: idea
+kind: capability
 owner: product-lead
 status: shipped
 gist: The two-way channel a public alpha needs: pushing updates out (largely built) and hearing back in (missing). Naming which half exists is most of the work.

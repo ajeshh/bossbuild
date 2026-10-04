@@ -6,6 +6,7 @@ status: nascent
 updated: 2026-09-02
 readers: /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers · boss playbook · boss design
 tagline: Cover found before the kettle boils
+wordmark: Kettlewick
 accent: "#B84E12"
 logo: brand/mark.svg
 story: "Small agencies run their week on a spreadsheet and the owner is the only one who knows who can cover, but one sick text still means eight calls before 8am, so Kettlewick asks the right three carers and the first yes fills the visit."
