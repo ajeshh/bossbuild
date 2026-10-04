@@ -350,6 +350,24 @@ display was the problem: the block's fold hid 97 of 98 chips, so 100 looked like
 vanished at exactly the scale it exists for. Past a dozen unmet, the block shows the count large,
 one small dashed square per thing (half built = half filled), and the names behind a fold.
 
+## Features bloat themselves (Ajesh, 2026-10-04: *"features may get bloated themselves. so how to find a way to show the right signals"*)
+
+A count of FEATs counts how the founder chose to label the work: one FEAT can hold ten things, and
+ten can be lumped into one. The signal has to survive relabelling. In order of strength:
+
+1. **Time since someone outside last met the work** (newest EVID date). Not inflatable or splittable.
+2. **How much changed since then** (`$source` files/lines newer than that EVID; the same measure the
+   `unseen` loops use). Unit-free, so a bloated FEAT and ten lumped ones read the same. This is the
+   owned surface.
+3. **Growth inside a FEAT**: acceptance criteria at spec vs now (needs git history), and days in
+   build (the board's aged flag already has it).
+
+**Proposed:** the built block's headline becomes *"Last met by someone 30 days ago. Since then: 34
+files changed across 6 features."*; the met-first list stays under it; a FEAT whose scope grew gets
+a small mark (*3 → 11 criteria*). The feature count becomes the least prominent number. The page
+and the conscience then read the same two numbers. None of this says whether the work is right;
+only what a person did says that.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
