@@ -181,6 +181,56 @@ Also asked *who* to show it to.
 **Subtract alongside:** the never-read fields above, the second success vocabulary, and the
 proposed `next_outcome:` field.
 
+**Naming (Ajesh, 2026-10-04):** *"what we are testing next"*, not *this week*; "this week"
+assumes a weekly build. If the canvas cell is the home, it is renamed accordingly (drift-loop's
+exit regex and `moment-frames.js` read the old label).
+
+**Questioned (Ajesh, 2026-10-04):** *"is outcome even the right approach? or is it an assumption
+itself?"* Open. A research pass on what product leaders and founders say about off-base agentic
+building, including the case against outcome-first, is running.
+
+## On "done" — Ajesh's note (2026-10-04, verbatim; reads as dictated)
+
+> "Done is a threshold, it is a milestone for crossing over into where we can best take it
+> together, and then trusting that afterwards, the in relationship to add, subtract will keep
+> changing. In tech or art projects, is this question of like, well, how much more can you do? And
+> I think this is where the narrative of perfection, a fear of releasing it and being like, well,
+> is it gonna be accepted? Are gonna people want one more thing? And I think. Instead, oh, it is a
+> form of debt. And bringing to life, and it is the jet of, hey, all the ways we have worked till
+> this point are ending, We have to leave that container collectively and being available to new
+> signals … the constraints that they have been playing with come alive in a new way, which is, how
+> does time relate, how does culture relate, how to resources, how does humanity? Are they
+> available for more?"
+>
+> "I do agree half build is a failure."
+>
+> "… What is a consent for continued engagement? And what is the true cost? Are you available to
+> receiving? And the feedback that pays your additional pursuit had this impact. If it's just you
+> pursuing it, then that's okay, but again, to what extent … are you still in your own
+> availability to continue doing it … Or you think your needs are so important, that you can
+> impact the rest of the people. And it's a careful dance because both things can be true … being
+> available to sit with the discomfort. But you may have overtaken one too many steps."
+
+**Read (mine, for Ajesh to correct):**
+- **Done is a threshold, not a finish line**: the point where the work leaves the founder's
+  container and is met by others. After it, adding and subtracting is guided by that relationship.
+  The test is *ready to be met*, not *complete*. That fits "half-built is a failure": a thin thing
+  that works end to end can cross; ten half-things can't.
+- **Unreleased work is a debt.** Perfection and the fear of not being accepted keep the work
+  inside. *Hypothesis:* the ten features in EVID-004 were partly that. Adding features and
+  reporting a count is a way to keep showing progress without being exposed to a verdict.
+- **The true cost is wider than code.** Time, the people around the founder, resources and the
+  founder's own capacity. Continuing past the threshold needs **consent** from whoever else pays,
+  and the founder's honest **availability** (including to *receive* feedback). Pursuing it alone
+  is fine; the question is to what extent, and at whose expense.
+- **Both can be true.** The founder's need to keep going and the cost to others; the dance is the
+  interplay, and sitting with the discomfort of crossing before it feels finished.
+
+**What it might change:** the moment's question becomes *is this ready to be met, and who meets it
+next?* rather than *does this move the outcome?*; the carry cost names time and people, not only
+code; and the humane lens (consent, availability) belongs in it. Not decided; waiting on the
+research pass.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
