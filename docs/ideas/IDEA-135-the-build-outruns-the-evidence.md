@@ -368,6 +368,32 @@ a small mark (*3 → 11 criteria*). The feature count becomes the least prominen
 and the conscience then read the same two numbers. None of this says whether the work is right;
 only what a person did says that.
 
+## "Met someone" is a start, not the signal (Ajesh, 2026-10-04)
+
+> *"its not just met someone, what if you have 10 customers, but stagnated or stopped growing… how
+> does it help someone to keep asking and getting more feedback. also even if you had 1000s
+> customers, its not the same as ux research and getting feedback right?"*
+
+Right on both. *Met* is binary and front-loaded; the real question at every scale is **is learning
+still happening, and is it still changing what gets built?** And usage is not understanding:
+numbers say *what* people do, conversations say *why*. A thousand customers with no research is
+all *what*.
+
+**Three dials, all from records BOSS already has:**
+1. **Freshness of contact**: days since the last conversation or observation (EVID `method:`
+   interview / observation / commitment-test), separate from usage. Holds at 0 customers or 1,000.
+2. **Learning → change**: has anything heard recently changed a decision or a build (a DEC or FEAT
+   citing an EVID)? Stagnation reads two ways: nothing arriving, or evidence arriving and nothing
+   changing.
+3. **Behaviour, separately**: the usage trend from `/health` (activation, the retention curve),
+   when there is one. Shown beside the conversations, never instead of them.
+
+**On the page:** the built block's headline grows into *how we're learning*: last heard from
+someone (and how: conversation or usage); the last thing it changed; the usage trend if measured.
+The per-feature squares stay as the build-level picture. **For the conscience:** `unseen-since`
+already fires when code moves after the last EVID, which covers "customers, but stopped learning"
+while building continues; a stalled product with flat usage is `/health`'s and `sustaining`'s.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
