@@ -231,6 +231,39 @@ next?* rather than *does this move the outcome?*; the carry cost names time and 
 code; and the humane lens (consent, availability) belongs in it. Not decided; waiting on the
 research pass.
 
+## Is outcome-first right? Research pass 2 (2026-10-04)
+
+Notes and sources: gitignored `docs/research/sessions/SESSION-2026-10-04-against-agent-drift.md`
+(practitioners, 2025–26; all opinion, no comparative study; re-open before quoting).
+
+- **Before users, a measured outcome is contested; naming what you are testing is not.** Nobody
+  found argues a venture should build with no declared test, and nobody asks a pre-user founder
+  for a behaviour-change number.
+- **The build-to-think camp still chooses by use.** Those who say "throw it away and redo it" or
+  "demos before memos" keep what real people adopt. They observe the outcome after the fact
+  instead of declaring it, and they have an audience on tap; a pre-user founder doesn't.
+- **Against "just build":** Shreyas Doshi (Dec 2025) on becoming attached to, and shackled by,
+  everything you build. That is EVID-004.
+- **Convergence:** a person who used it decides what survives; a short written intent before the
+  agent starts; small steps, and stop when it builds what you didn't ask for (Kent Beck's signal);
+  throwing work away is cheap and normal; judgment and saying no are now the scarce work.
+
+**It meets Ajesh's note on "done":** a threshold where the work is met by someone else, and
+unreleased work as debt. Both say the unit is **the meeting** (who sees it, and what they do),
+not a pre-declared metric.
+
+### Shape, third revision (not decided)
+
+1. **What we're testing next, and who will see it.** No behaviour-change framing until there are
+   users; a date is a timebox, not a target.
+2. **Done = ready to be met:** one thin thing working end to end. It closes with the existing
+   vocabulary when the timebox ends; no extension by default.
+3. **Playbook:** what we're testing → what we built for it (state) → **who saw it and what they
+   did**. *Untried* offers throw-away or restart as easily as `/sunset`.
+4. **Conscience moment on the third thing built since anyone outside saw it:** *who has seen the
+   last three?* It names the true cost (time, people, capacity, not only code), offers restart,
+   throw-away or the NO-list, and logs the answer as the receipt. Best-supported of the four.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
