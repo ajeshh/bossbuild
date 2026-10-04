@@ -27,6 +27,19 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The conscience now notices when a lot has been built and nobody outside has seen it.** AI
+  makes code nearly free to write and exactly as expensive to own: a small prototype meant for
+  feedback can quietly become ten half-built features nobody has tried. Every guard BOSS had for
+  this counted records (specs, the canvas, the devlog), so a founder who simply kept asking for
+  the next feature, and wrote none of them, was invisible to all of them. Two new Quickstart loops
+  read the build itself: `unseen` (about 1,500 lines of your own code and no evidence record yet)
+  and `unseen-since` (six or more source files changed since the newest one). Both speak through
+  the existing `focus` moment, once a session, and only after reading what changed: many things
+  started gets one plain line and *who has seen the last few?*; one thing getting deeper gets
+  silence. It offers four doors (show the smallest working thing to one person, throw it away or
+  restart, park the rest, or `/evidence` if someone already saw it) and never blocks. Code
+  outside your source folders isn't counted; `sourceGlobs` in `.boss/config.json` points it there.
+
 - **`boss status` no longer stops with an error on a manifest that lacks its layer list.** If
   `.boss/manifest.json` had no `installedLayers`, `boss status` printed most of its page, then
   ended on *Cannot read properties of undefined (reading 'map')*; `boss unlock` failed the same

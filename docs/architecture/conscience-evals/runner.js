@@ -175,6 +175,11 @@ const FIXTURES = {
   app_source:
     `export function handler(req) {\n  return { status: 200, body: 'ok' };\n}\n`,
 
+  // Source by size (IDEA-135 — the unseen loops count lines of the founder's own code). 1,600 lines
+  // clears unseen-loop's 1,500 gate; 300 is a starter app's worth and must stay quiet.
+  source_1600_lines: 'export const step = () => null;\n'.repeat(1600),
+  source_300_lines: 'export const step = () => null;\n'.repeat(300),
+
   // Cost-review record fixture (v0.30 — closes cost-review-loop).
   cost_review_record:
     `---\nid: REVIEW-2026-05-27\ntype: cost-review\nowner: pm\nstatus: recorded\ncreated: 2026-05-27\nwindow: last 7 days\n---\n\n# AI cost review — 2026-05-27\n\n## Headline\nOn-budget; one outlier worth investigating.\n\n## Numbers\n- **Window:** 2026-05-20 to 2026-05-27\n- **Total spend:** $12.34  (240 calls, 8 users, 3 FEATs)\n- **Per-user/day:** observed $0.22 (median) vs. declared $5.00 budget\n`,
