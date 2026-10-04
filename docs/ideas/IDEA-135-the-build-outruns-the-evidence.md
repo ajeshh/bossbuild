@@ -337,6 +337,13 @@ Order: testing next → what we built, and who has met it → how it works → s
   one who records.
 - The testing block is wide with empty space under one sentence; it may want to be narrower.
 
+**Second pass (Ajesh: *"nobody asked for it yet, too wordy… a better way to show unvalidated
+ones"*):** the list splits in two. What someone has met comes first, in full, with the grade, what
+they did and when; everything else is one line of dashed chips under *Not in front of anyone yet*,
+names cut to 30 characters, `½` marking half built (with a one-line key). Dashed is the page's
+existing "nothing here" convention, so the unmet state costs no words. The fold no longer hides
+what was met.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
