@@ -317,6 +317,26 @@ would change the plan* (drift-loop's exit regex and `moment-frames.js` read the 
 Left over from testing: `~/.boss/projects/walkies-1ebcc07f/` (a test run's conscience state,
 written to the real `~/.boss` because the test exported the wrong variable; safe to delete).
 
+## Slice 2 mocked (2026-10-04, in a scratch worktree, nothing tracked changed)
+
+Product chapter on Kettlewick, two renders: the real record set, and a runaway copy (no evidence,
+testing line blank, ten FEATs all half built). Mechanism: the canvas line is read as *What we're
+testing next* (old label still accepted); an EVID's existing `about:` field naming a FEAT says who
+met it (no new field); each FEAT shows its state (works · half built) and its Goal as *for:*.
+Order: testing next → what we built, and who has met it → how it works → screens → shape → not.
+`product-testing` joins the VC and Story cuts.
+
+**What the renders showed:**
+- Filled: reads as intended (*6 built · 2 met by someone*), but the list folds after three, and
+  the two things someone met (FEAT-001/002, older) are the ones folded. Met things should sort first.
+- Runaway: the dashed hole and *10 built · 0 met by someone* say it with no lecture. But *nobody
+  outside has met this yet* repeats ten times; when nothing is met, say it once. A `_not yet_`
+  Goal prints as *for: not yet*; a placeholder should read as absent.
+- **Limit:** the page shows only recorded work. EVID-004's founder wrote no FEATs, so their page
+  would be empty, not a mirror. The conscience (slice 1) covers that founder; the page covers the
+  one who records.
+- The testing block is wide with empty space under one sentence; it may want to be narrower.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
