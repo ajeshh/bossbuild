@@ -210,6 +210,11 @@ else we should add… missed or not done? or even in terms of design"*)
   day-one founder to invent a hard moment that hasn't happened. That's the tone matrix the research said
   to refuse. Now: traits written *X, not Y* with their cost, plus one optional real *Example* (a sentence
   that got a reaction, with its record). A real hard moment becomes a `voice:` learned row once it happens.
+- **Done 2026-10-04, later:** IDS declares `nascent | active` for the brand doc; headline capitals,
+  beat connectors and chart-point links (`1e91d67`); `/landing` + `/pretotype` lift `story:`, ★ rows
+  and Origin, **plus a consent step the playbook never needed: a learned row is evidence, not
+  permission to quote someone in public.** Still open: copy the story as prose; `/close` asking for
+  the why again; `/evidence` marking echoes.
 - **Design tweaks:** chapter headlines start lowercase when the record does ("one owner pre-paid…",
   "the ninth owner…"); capitalise the first letter for display only, never the stored words. On the
   chart, a hover or tap on a point could jump to its row in the ladder table. The beats could get a

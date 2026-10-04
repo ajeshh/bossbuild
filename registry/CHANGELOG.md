@@ -103,6 +103,13 @@ rule above still applies to the whole section once it is stamped.
   time* jumps to its row in the ladder. `docs/IDS.md` now says what `docs/BRAND.md`'s status means:
   `nascent` while it's mostly unknown, `active` once you say it holds. Only you flip it.
 
+- **`/landing` and `/pretotype` use your story and your customers' real words, with their
+  permission.** Both now lift `story:` from `docs/BRAND.md` as written (a ready subhead), and
+  `/landing` takes your Origin for an About section. The only testimonials either page may carry are
+  your ★ learned rows, quoted exactly and credited as the row credits them. Before any of them goes
+  on a public page, BOSS asks whether that person would be fine seeing it there: a row is evidence,
+  not permission. A brand line ending `— belief` is copy, never a claim.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

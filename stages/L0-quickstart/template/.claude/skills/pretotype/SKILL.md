@@ -61,7 +61,10 @@ is running a **fake door**, **Pinocchio** or **Impresario** pattern, offer to pu
 
 **Compose it from what BOSS already holds** — don't interview them for copy they've written already:
 the canvas's **People** (who it's for), **Problem** (the tension, in their words), and **Promises**
-(the value), plus **`docs/BRAND.md`** voice and the design tokens if they exist. **No brand doc?**
+(the value), plus **`docs/BRAND.md`** voice and the design tokens if they exist. If the brand doc holds
+`story:`, that one line is your subhead, as written. Its ★ learned rows are real words a person said;
+one can sit on the page only quoted exactly, credited as the row credits it, and only after the
+founder says that person would be fine seeing it in public. A row is evidence, not permission. **No brand doc?**
 Seed one — it is a living, lens-neutral file that any skill can start and none owns (the skeleton is
 `.claude/skills/canvas/templates/brand-doc.md`); mark it `nascent` and move on. A fake door
 generated from a nascent brand should read *plainer* than the real thing will, never invent

@@ -57,6 +57,12 @@ and if missing, say so and offer to fill the gap first (the offer rides in the o
   real people say — then get on with what they actually asked for. **Note the path: `docs/BRAND.md`,
   not `docs/design/`. Brand is upstream of design and feeds marketing, the pitch and the words in a
   sales call; it belongs to no single lens.**
+  **Lift these from it as written, never rewritten into marketing:** `story:` (the story in one line, a
+  ready subhead or the lead of an About section) · the ★ rows in *What we've learned* (the only
+  testimonials this page may carry: the quote exactly, credited exactly as the row credits it, never
+  a name the row doesn't have) · `## Origin, as it happened` (an About section in the founder's own
+  words). A *Current shape* line ending `— EVID-NNN` / `— DEC-NNN` can be a claim; one ending `—
+  belief`, or with no pointer, is copy, not proof.
 
 - **The design tokens** (`DESIGN_TOKENS.md` / the token layer) → visuals, referenced **by semantic name**
   (`color.action.primary`, never `indigo-600` — that's the AI-slop default).
@@ -90,7 +96,9 @@ Static HTML or a Next.js page + the project's CSS/Tailwind, tokens **by name**. 
 - Descriptive **headline = the value prop** (not a slogan; Shapiro's "would they know exactly what you sell?").
 - A subhead that does two jobs (how it works + why the claim is believable).
 - **One CTA, repeated**, phrased as the headline's promise continued. No nav. Fast, mobile-first.
-- **Proof in the eye-path** — real testimonials/counts only.
+- **Proof in the eye-path** — real testimonials/counts only: the brand doc's ★ rows, as written. **A learned
+  row is evidence, not permission:** before a person's words go on a public page, ask the founder whether
+  that person would be fine seeing them there, and leave the quote off until the answer is yes.
 - The `design-system` anti-slop pass: one committed palette, a real type pairing, a couple of intentional
   motion moments — *spend the saved hours on the 5% that's the brand*. Floors are non-negotiable: a11y, the five
   states, performance.
