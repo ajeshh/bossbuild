@@ -136,6 +136,13 @@ rule above still applies to the whole section once it is stamped.
   about your files (*no ## Decision section*) no longer appear on the page. A hand-written decision
   shows its first paragraph.
 
+- **Vision leads with where it goes; Product leads with what the whole product is.** Vision's
+  headline is now your *in a few years* line (your promise moves to where it belongs, under
+  Product), and the why and principles follow. Product opens on your idea's own one-line
+  description, then **How it works**: your canvas Story, how it shows up in someone's day. Problem
+  points there instead of repeating it. Save a screenshot as `docs/product/screens/01-<what>.png`
+  and Product shows *What it looks like*; `/ship` now keeps one when the thing has a screen.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

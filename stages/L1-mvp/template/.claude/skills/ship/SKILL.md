@@ -100,6 +100,12 @@ TestFlight link, the endpoint plus its example. That's the proof the work is now
 proof is the *thing a stranger can use*, never "it deployed". Note what it cost (free tier vs. paid)
 so the founder keeps optionality in view.
 
+**Then keep one picture of it.** If the thing has a screen, save what a person first sees as
+`docs/product/screens/01-<what-it-shows>.png` (the file name is the caption). Take it yourself when the
+host can render the live URL; otherwise ask the founder to drop one there. The playbook's Product chapter
+shows it under *What it looks like*: the one thing a deck needs that no record held. A CLI, an API or a
+service has no screen; skip this, and never draw one for them.
+
 ### 3b. Is it up — and who hears when it isn't?
 **"It deployed" is the host's claim; check it.** Before you hand anything back, hit the live artifact
 the way a stranger would — fetch the URL and look at what came back, call the endpoint with its

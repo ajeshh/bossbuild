@@ -484,6 +484,24 @@ export function readPhoto(baseDir, ref) {
   } catch { return null; }
 }
 
+// docs/product/screens/*.png|jpg|webp — what the product looks like, from files the founder (or /ship)
+// saved; inlined like a face, so a copied block carries it. The file name is the caption. No file, no
+// block: a picture is never drawn for them.
+const SCREEN_CAP = 1536 * 1024;
+export function readScreens(projectDir) {
+  const dir = join(projectDir, 'docs', 'product', 'screens');
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const n of readdirSync(dir).filter((x) => /\.(png|jpe?g|webp)$/i.test(x)).sort().slice(0, 4)) {
+    try {
+      if (statSync(join(dir, n)).size > SCREEN_CAP) continue;
+      const ph = readPhoto(dir, n); if (!ph || !ph.dataUri) continue;
+      out.push({ file: n, dataUri: ph.dataUri, caption: n.replace(/\.[a-z]+$/i, '').replace(/^\d+[-_ ]*/, '').replace(/[-_]+/g, ' ').trim() });
+    } catch { /* skip */ }
+  }
+  return out;
+}
+
 // docs/team/<slug>.md — a person, in their own words: the three sections, a role, a photo by choice.
 const ROLES = ['founder', 'cofounder', 'team', 'advisor', 'missing'];   // `missing` = a role you need and don't have, written plainly
 export function readTeam(projectDir) {
@@ -645,7 +663,7 @@ export function collectPlaybook(projectDir, projectName) {
     evidenceRows: evidence, devlog: readLearnings(projectDir, 8, idea && idea.venture ? idea.file : null), decisions: readDecisions(projectDir),
     trust: readTrust(projectDir), health: readHealth(projectDir),
     // slice 4 (FEAT-036) — the Company records
-    team: readTeam(projectDir), brandDoc: readBrandDoc(projectDir),
+    team: readTeam(projectDir), brandDoc: readBrandDoc(projectDir), screens: readScreens(projectDir),
   };
 }
 
@@ -749,12 +767,16 @@ function pitchChapters(data) {
   const venture = Boolean(idea && idea.venture);
   const ideaVerb = venture ? '/idea' : '/boss <your idea>';
   const story = data.brand && data.brand.story;
-  out.push(chapter('vision', chapterHead(1, 'Vision', line(cell('promises'))),
+  // Vision leads with where it goes — the founder's own few-years line; the promise is Product's line (IDEA-134:
+  // the chapter opened on a product promise and buried the vision fourth). Falls back to the promise.
+  out.push(chapter('vision', chapterHead(1, 'Vision', idea && idea.vision ? firstSentence(prose(idea.vision)) : line(cell('promises'))),
     '<div class="blocks">'
     // The story in one line (IDEA-133): the founder's sentence, which /canvas asks for — never composed here.
     // Written, the cover carries it (one place, never twice on the first screen); unwritten, Vision asks.
     + (story ? ''
       : hole('vision-story', 'The story in one line', 'This AND this, BUT the problem is this, THEREFORE what you do — one sentence, yours. The cover and the first slide carry it.', '/canvas', 'docs/BRAND.md · story — none'))
+    + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', cls: 'echo', body: `<p class="lede">${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">aspiration</span>', src: `${ideaSrc} · in_a_few_years` })
+      : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', venture ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : ideaVerb, `${ideaSrc} · no in_a_few_years line`))
     // The why leads with their own sentence (the capture log's `why:` line); the motivation slug is
     // said in words, never shown raw.
     + (idea && (idea.why || idea.motivation || idea.success)
@@ -764,8 +786,6 @@ function pitchChapters(data) {
     + (people.length
       ? block({ id: 'vision-team', title: 'Who is building it', body: people.map((p) => `<p><strong>${esc(p.name)}</strong> <span class="sub">${esc(p.role)}</span>${p.thing ? ` — ${inline(firstSentence(p.thing))}` : ''}</p>`).join('') + '<p class="xlink"><a href="#team">the team, in full →</a></p>', chip: '<span class="chip asserted">asserted</span>', src: `docs/team · ${people.length} ${people.length === 1 ? 'person' : 'people'}` })
       : hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'write docs/team/<you>.md — the README there has the shape', 'docs/team — none'))
-    + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', body: `<p class="lede">${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">aspiration</span>', src: `${ideaSrc} · in_a_few_years` })
-      : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', venture ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : ideaVerb, `${ideaSrc} · no in_a_few_years line`))
     + storyTextBlock(data)
     + '</div>'));
 
@@ -777,8 +797,14 @@ function pitchChapters(data) {
   const featList = feats.length
     ? block({ id: 'product-feats', title: 'What has shipped', sub: 'and what is being built', body: `<ul>${featOrder(feats).map((f) => `<li><strong>${esc(f.id)}</strong> · ${inline(f.gist)} — <em>${esc(f.status || 'unknown')}</em>${f.shippedOn ? ` · ${esc(f.shippedOn)}` : ''}</li>`).join('')}</ul>`, chip: `<span class="chip ev">${feats.length} FEAT${feats.length === 1 ? '' : 's'} · ${feats.filter((f) => /^shipped/i.test(f.status)).length} shipped</span>`, src: 'docs/ideas/FEAT-*.md · boss board' })
     : hole('product-feats', 'What has shipped', 'Nothing has a build contract yet. The first FEAT is where "we should build this" becomes "here is how we\'ll know it\'s done."', '/spec', 'docs/ideas/FEAT-*.md — none');
-  out.push(chapter('product', chapterHead(2, 'Product', shapeLine),
+  // Product leads with what the whole product is: the idea's own one-line description (`gist:`), then how it
+  // shows up in someone's day (the canvas Story cell, whole), then what it looks like — before the shape
+  // bullets and the build list (IDEA-134: the gist appeared nowhere on the page).
+  const screens = data.screens || [];
+  out.push(chapter('product', chapterHead(2, 'Product', idea && idea.gist ? firstSentence(prose(idea.gist), 220) : shapeLine),
     '<div class="blocks">'
+    + cellBlock(cell('story'), canvas, 'product-how', 'How it works', 'how it shows up in someone\'s day — and why now')
+    + (screens.length ? block({ id: 'product-screens', title: 'What it looks like', sub: `${screens.length} screen${screens.length === 1 ? '' : 's'}`, cls: 'screens wide', body: screens.map((x) => `<figure class="screen"><img src="${x.dataUri}" alt="${esc(x.caption)}"><figcaption>${esc(x.caption)}</figcaption></figure>`).join(''), src: 'docs/product/screens' }) : '')
     + (idea && idea.shape ? block({ id: 'product-shape', title: 'What it is today', sub: 'the current shape, in the founder\'s words', body: blockMd(idea.shape), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · ## Current shape${idea.created ? ` · since ${esc(idea.created)}` : ''}` })
       : hole('product-shape', 'What it is today', 'What is it, who is it for, and what is the smallest version that proves it? The IDEA doc\'s current shape.', ideaVerb, ideaSrc))
     + featList
@@ -800,7 +826,10 @@ function pitchChapters(data) {
 
   // 4 · Problem — the cell, and the Story cell (why-now is inside it; the render never splits a cell).
   out.push(chapter('problem', chapterHead(4, 'Problem', line(cell('problem'))),
-    '<div class="blocks">' + cellBlock(cell('problem'), canvas, 'problem-cell', 'The problem') + cellBlock(cell('story'), canvas, 'problem-story', 'Story — and why now', 'what changed that makes this newly possible') + '</div>'));
+    '<div class="blocks">' + cellBlock(cell('problem'), canvas, 'problem-cell', 'The problem')
+    // the Story cell renders whole, once, in Product (IDEA-134); here, a pointer — never split, never twice
+    + `<article class="block pointer" id="problem-how" data-title="How it shows up"><div class="head"><h3>How it shows up, and why now</h3></div><div class="body"><p>In someone's day, with what changed that makes it newly possible: <a href="#product-how">How it works, in Product →</a></p></div><div class="foot"><span class="src">canvas · Story</span></div><div class="actions"></div></article>`
+    + '</div>'));
 
   // 5 · Market — the count and how you know; what you imported. No arithmetic.
   const srcList = sources.length
@@ -1096,12 +1125,12 @@ function companyChapters(data) {
 // persona stays on the page and off this cut (Ajesh, 2026-09-13). The founder's removals live in
 // the browser; these are the first draft.
 const CHAPTER_CELLS = ['problem', 'story', 'people', 'risks', 'bizmodel', 'cost', 'principles'];
-const VC_IDS = new Set(['cover', 'vision-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'problem-story', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
+const VC_IDS = new Set(['cover', 'vision-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'product-how', 'product-screens', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
 const VC_PREFIXES = ['rival-', 'person-', 'value-'];
 // The Story cut (IDEA-133): the venture as a narrative a founder hands to someone — the cover with its
 // story and heart, why, the problem, how sure over time, how it grew, the words that landed, where it
 // started, where it goes. Page order, like every cut; a hole stays a hole.
-const STORY_IDS = new Set(['cover', 'vision-why', 'vision-few-years', 'problem-cell', 'problem-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'brand-origin']);
+const STORY_IDS = new Set(['cover', 'vision-why', 'vision-few-years', 'product-how', 'product-screens', 'problem-cell', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'brand-origin']);
 export function deckCuts(mainHtml, data) {
   const blocks = [...String(mainHtml).matchAll(/<article class="([^"]*)" id="([^"]+)"/g)].map((m) => ({ id: m[2], cls: m[1].split(/\s+/) }));
   const real = new Set((data.personas || []).filter((p) => p.real > 0).map((p) => `persona-${slug(p.slug)}`));
@@ -1118,7 +1147,7 @@ export function deckCuts(mainHtml, data) {
 // The cover — what a room sees first (IDEA-129). The mark and tagline as BRAND.md holds them, the
 // venture's name, three counts and the canvas as thirteen tiles, each shaded by the grade behind it:
 // "and how do you know?" answered before anyone asks. Every number is counted; no sentence is BOSS's.
-const CELL_HOME = { principles: 'vision-principles', problem: 'problem-cell', story: 'problem-story', people: 'market-people', bizmodel: 'model-revenue', cost: 'model-cost', risks: 'risks-harms' };
+const CELL_HOME = { principles: 'vision-principles', problem: 'problem-cell', story: 'product-how', people: 'market-people', bizmodel: 'model-revenue', cost: 'model-cost', risks: 'risks-harms' };
 const TILE_LABEL = { commitment: 'commitment', 'observed-behavior': 'observed', 'stated-pain': 'stated pain', asserted: 'asserted', hole: 'not yet', dormant: 'dormant' };
 function coverBlock(data) {
   const { boxes, ledger, brand } = data;
@@ -1266,6 +1295,8 @@ const PLAYBOOK_CSS = `
   .kv { display: grid; grid-template-columns: fit-content(38%) minmax(0, 1fr); /* a long label wraps; it never takes the value's room (IDEA-133) */ gap: 6px 14px; margin: 0; } .kv dt { overflow-wrap: anywhere; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
   .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
   .samples { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 2px solid var(--accent-soft); display: grid; gap: 4px; font-family: var(--display); font-size: 15.5px; line-height: 1.4; } .samples .label { margin-right: 6px; } .chip.ptr { text-decoration: none; margin-left: 2px; vertical-align: 1px; }
+  .block.screens .body { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; } .screen { margin: 0; } .screen img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 6px; } .screen figcaption { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+  .chapter .blocks > .block.echo { display: none; } /* the headline already says it on the page; the slide still needs it standalone */
   .block.story-text { grid-column: 1 / -1; } @media (min-width: 1100px) { .blocks > .block.wide { grid-column: span 2; } }
   .block.story-text .body p + p { margin-top: 10px; } .block.story-text .body { max-width: 70ch; }
   details.history { margin-top: 10px; font-size: 13px; color: var(--muted); } details.history summary { cursor: pointer; font-family: var(--mono); font-size: 11px; } .sl details.history, .printdeck details.history { display: none; }

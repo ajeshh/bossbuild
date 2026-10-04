@@ -942,7 +942,11 @@ test('IDEA-133 story weave: the story on the cover (asked for in Vision when mis
   assert.ok(h2.includes('id="vision-story"') && !h2.includes('class="cover-story"'));
   assert.ok(d2.questions.some((q) => q.id === 'vision-story' && q.verb === '/canvas'));
   // the Story cut: the narrative, in page order, opening on the cover that carries the story and the heart
-  assert.deepEqual(data.cuts.story, ['cover', 'vision-why', 'vision-few-years', 'problem-cell', 'problem-story', 'learnings-beats', 'brand-learned', 'brand-origin'].filter((id) => html.includes(`id="${id}"`)));
+  assert.deepEqual(data.cuts.story, ['cover', 'vision-few-years', 'vision-why', 'product-how', 'problem-cell', 'learnings-beats', 'brand-learned', 'brand-origin'].filter((id) => html.includes(`id="${id}"`)));
+  // IDEA-134: Vision leads with where it goes; Product with the idea's own line and how it works; Problem points there
+  assert.ok(html.includes('<h2>Every agency in the county runs on it.</h2>'), 'Vision\'s headline is the few-years line');
+  assert.ok(html.includes('<h2>A phone-first rota for small home-care agencies.</h2>'), 'Product\'s headline is the gist');
+  assert.ok(html.includes('id="product-how"') && html.includes('<a href="#product-how">How it works, in Product →</a>') && !html.includes('id="problem-story"'), 'the Story cell renders once, in Product; Problem points to it');
   assert.ok(html.includes('data-cut="story"') && html.includes('class="cover-heart"'));
   // the story as text: their lines in order, one Copy away; a part nothing holds is left out
   assert.match(html, /id="story-text"[\s\S]*?<p>Agencies run on a spreadsheet[\s\S]*?<strong>Why:<\/strong> “every Monday I lose an hour to the cover call”[\s\S]*?<strong>In their words:<\/strong> “it just texts the right three” \(an owner, nine-carer agency\)[\s\S]*?<strong>Where it goes:<\/strong> Every agency in the county runs on it\./);
@@ -1000,4 +1004,13 @@ test('IDEA-134 prose-ready: a cell reads its current answer (history folds), rec
   assert.ok(html.includes('the cover flow</h3>') && html.includes('phone-first cover</p>') && !html.includes('c2c7e21') && !html.includes('abcdef1'), 'commit trails are dropped');
   assert.match(html, /id="decisions-build"[\s\S]*?Node, no framework/);
   assert.ok(!html.includes('id="dec-002"'), 'a build decision is a line, not a card');
+});
+
+test('IDEA-134 Product shows what it looks like only from files in docs/product/screens — the name is the caption, no file no block', () => {
+  const none = collectPlaybook(project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS }), 'tidewell');
+  assert.ok(!renderPlaybookHtml(none, '2026-10-04 10:00').includes('id="product-screens"'), 'never a drawn stand-in');
+  const data = collectPlaybook(project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/product/screens/01-the-monday-view.png': PNG }), 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-10-04 10:00');
+  assert.match(html, /id="product-screens"[\s\S]*?<img src="data:image\/png;base64,[^"]+" alt="the monday view"><figcaption>the monday view<\/figcaption>/);
+  assert.ok(data.cuts.vc.includes('product-screens') && data.cuts.story.includes('product-screens'));
 });
