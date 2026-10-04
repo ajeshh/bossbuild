@@ -3,25 +3,38 @@ id: DEC-004
 type: decision
 owner: "@marta"
 status: decided
-date: 2026-09-02
+scope: build
+reversibility: costly
+decided_by: founder
+created: 2026-09-02
 revisit_by: 2026-12-01
 relates: DEC-002, DEC-003
 ---
-
 # DEC-004 — The brand anchor: kettle copper, brown-black, two radii, one shadow
 
-The five choices that get expensive to reverse, chosen once at the first UI commit:
+## Context
+The first screen was about to be built, and every choice made by default on that day would spread to
+every screen after it. Five of them get expensive to reverse once they're everywhere.
 
-- **The one owned accent** is `color.action.primary` (#B84E12, the kettle copper) — the same hex as
-  the brand's `accent:`; it appears on the one act and on *covered*, nowhere else.
+## Decision
+The five, chosen once at the first UI commit and recorded together:
+
+- **The one owned accent** is `color.action.primary` (#B84E12, the kettle copper), the same hex as the
+  brand's `accent:`; it appears on the one act and on *covered*, nowhere else.
 - **The neutral** is `color.text.body` (#2A1E17, brown-black, not black) on a warm oat ground
   (`color.surface.ground`), so paper reads as raised without a shadow.
 - **Radius** is two values: `radius.control` (6) for anything you tap, `radius.surface` (8) for
   anything that holds content.
 - **Type pairing** is Newsreader over Public Sans, with JetBrains Mono for times.
-- **The signature** is the status chip — a shape before a colour.
+- **The signature** is the status chip: a shape before a colour.
 
+## Why
+Owners read the screen at 7:40 on a Monday with a kettle on. Warm, plain and one loud thing reads as
+calm; the copper marks the only act that matters.
+
+## Falsifier — what would prove this wrong, and by when?
+If three owners describe it as generic-looking by 2026-12-01, the anchor didn't do its job. If nine
+owners become forty, the accent needs a second value for the carer's side, and this decision says which.
+
+## Consequences
 Off the scale on the day it was decided: the day list's 14px gutter → `space.3` (12).
-
-**Revisit by 2026-12-01:** if nine owners become forty, the accent needs a second value for the
-carer's side, and this decision says which.

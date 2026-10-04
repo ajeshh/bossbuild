@@ -66,6 +66,7 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
    status: decided
    created: {{today}}
    reversibility: reversible | costly | one-way
+   scope: venture | build     # venture = what the venture is, who it's for, what it refuses, how it earns; build = the stack, a file, a tool, a process
    revisit_by: <YYYY-MM-DD>   # optional — the "by when" of the Falsifier below
    # supersedes: DEC-MMM      # only if this replaces an earlier decision
    ---
@@ -99,6 +100,11 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
 4. **Fill from what the founder gave you.** If they only have the one-liner, write Context + Decision and
    leave **Why** as a single honest question prompt rather than inventing rationale. Blanks are honest;
    fabricated reasoning is worse than a gap.
+
+4b. **Set `scope` without a question when it's obvious, and ask once when it isn't.** A decision naming code,
+   a file, a library, a host or a process is `build`. A decision about who it's for, what it refuses, what it
+   costs, or whether to keep going is `venture`. The playbook shows venture decisions to whoever it's handed
+   to, and lists build decisions in one line each, so a reader isn't asked to care about the test runner.
 
 5. **Scale the ceremony to `reversibility` — never block, just match the rigor:**
    - **`reversible`** (undo in minutes) — keep it to a line or two. The bar isn't "is this provably right?"

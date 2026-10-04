@@ -247,7 +247,8 @@ the accent, the signature) are their brand anchor, and recording them keeps the 
 falsifier so the next session knows they were chosen rather than defaulted. It is one item in the
 end-of-run list (Rules, *Offers due at the end go out as one list*), not an ask of its own.
 
-Set `reversibility: costly` — a retheme touches every use site — and write a falsifier that is
+Set `reversibility: costly` — a retheme touches every use site — and `scope: build` (the playbook lists it
+in one line rather than as a card a reader must weigh), and write a falsifier that is
 actually cheap to check, e.g. *"if three people describe the product as generic-looking by <date>,
 the anchor didn't do its job."* If they decline, drop it and don't re-ask; the tokens file alone is
 a real choice.

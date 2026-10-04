@@ -186,6 +186,11 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    filled cells: code tells you what someone decided to build, not whether anyone wanted it. A cell
    answered from the repo alone is still `_(not yet)_` on the evidence that matters.
 4. Leave `_(not yet)_` on anything unknown — blanks are honest signal, not failure. Re-run anytime.
+   **When an answer changes, the new answer replaces the old at the front of the cell, and the old one moves
+   after a `History:` marker in the same cell, dated** (`… new answer. History: 2026-08-21, was "…" —
+   changed because …`). The playbook, its headlines and the story read only the current answer; the history
+   stays in the file and folds away under the canvas. Never lead a cell with a revision note
+   (*"Updated — re-aimed after the second call…"*): a reader who wasn't in the room gets your edit log instead of your answer.
    **Once Problem, Promises and Story all hold an answer, offer the story in one line** — once,
    never as a gate. Lay their own words into the frame, as fragments quoted from those cells with
    nothing added — *"<who and what> AND <what's true>, BUT <the problem>, THEREFORE <what you

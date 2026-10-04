@@ -126,6 +126,16 @@ rule above still applies to the whole section once it is stamped.
   started, it says so once and marks the brand row `echoes your why:`. Those are the lines most
   worth leading a page with.
 
+- **The playbook reads as prose, not as your working notes.** A canvas cell shows its current answer;
+  when you revise one, `/canvas` moves the old answer after a `History:` marker in the same cell, which
+  folds away under the canvas and never becomes a chapter headline. Record ids and trailing
+  `— EVID-001` pointers leave the cover and the story as text (the chips keep the trail). Learnings
+  reads your devlog and your venture's own capture log, not every feature's, without commit hashes.
+  `/decide` records `scope: venture | build`; build decisions (the stack, a tool, a process) become
+  one line each under *Build decisions*, so a reader isn't asked to weigh your test runner. Notes
+  about your files (*no ## Decision section*) no longer appear on the page. A hand-written decision
+  shows its first paragraph.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

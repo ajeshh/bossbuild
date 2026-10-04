@@ -975,3 +975,29 @@ test('IDEA-133 story weave: how sure over time is drawn only from dated, graded 
   const told = storyTextBlock({ idea: { why: 'w', vision: 'v' }, brand: {}, boxes: [], evidenceRows: [], decisions: [{ id: 'DEC-001', created: '2026-06-14', decision: 'Office first.', supersededBy: 'DEC-002' }, { id: 'DEC-002', created: '2026-07-02', decision: 'Phone first.' }] });
   assert.match(told, /2026-06-14: Office first \(reversed by DEC-002\)\. 2026-07-02: Phone first\./, 'a reversed decision says so');
 });
+
+// --- IDEA-134 — prose-ready: the reader gets the answer, the file keeps the trail -----------------
+test('IDEA-134 prose-ready: a cell reads its current answer (history folds), record ids leave the reader prose, the renderer\'s file notes never reach the page, Learnings is the venture\'s log without commit trails, build decisions are one line', async () => {
+  const { splitHistory, prose } = await import('../src/playbook.js');
+  assert.deepEqual(splitHistory('Owners lose Monday. **History:** 2026-08-21, was "agencies".'), ['Owners lose Monday.', '2026-08-21, was "agencies".']);
+  assert.deepEqual(splitHistory('no history here'), ['no history here', '']);
+  assert.equal(prose('two doors (DEC-009; IDEA-114) and one method — EVID-001'), 'two doors and one method');
+  assert.equal(prose('a sentence (with a normal aside)'), 'a sentence (with a normal aside)');
+  const canvas = CANVAS.replace('| **Problem** |', '| **Problem** |').replace(/(\| \*\*Problem\*\* \| )([^|]+)\|/, '$1Every Monday the owner rebuilds cover by phone. History: 2026-08-21, was "RE-AIMED WITH AJESH, not swept." |');
+  const devlog = '# Devlog\n\n## 2026-09-02 — the cover flow (`c2c7e21`, `1f254f1`, Unreleased)\n- **Landed:** phone-first cover (`abcdef1`)\n\n## 2026-09-01 — a heading alone\n';
+  const venture = IDEA.replace('status: building', 'status: building\nkind: venture');
+  const cap = '---\nid: IDEA-002\ntype: idea\nkind: capability\ncreated: 2026-09-03\n---\n# X\n\n## Capture log\n- 2026-09-03 — Trap in move 3: git history is the editors\'\n';
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': canvas, 'docs/ideas/IDEA-001-tidewell.md': venture, 'docs/ideas/IDEA-002-x.md': cap, 'docs/devlog.md': devlog,
+    'docs/decisions/DEC-001-x.md': '---\nid: DEC-001\ncreated: 2026-07-01\n---\n# DEC-001 — hand-written\n\nWe keep the schedule a spreadsheet.\n',
+    'docs/decisions/DEC-002-y.md': '---\nid: DEC-002\ncreated: 2026-07-02\nscope: build\n---\n# DEC-002 — Node, no framework\n\n## Decision\nPlain Node.\n',
+    'docs/competition/README.md': COMP });
+  const data = collectPlaybook(dir, 'tidewell'); const html = renderPlaybookHtml(data, '2026-10-04 10:00');
+  assert.ok(html.includes('<h2>Every Monday the owner rebuilds cover by phone.</h2>'), 'the headline is the current answer');
+  assert.ok(!/<h2>[^<]*RE-AIMED/.test(html) && html.includes('<details class="history"><summary>How this answer changed</summary>'), 'history folds under the canvas cell, never in a headline');
+  for (const note of ['no ## Decision section', 'Where it breaks</code> in', 'an entry with only a heading']) assert.ok(!html.includes(note), note);
+  assert.ok(html.includes('We keep the schedule a spreadsheet.'), 'a hand-written decision says what it decided');
+  assert.ok(!html.includes('Trap in move 3'), 'a capability\'s capture log is not the venture\'s story');
+  assert.ok(html.includes('the cover flow</h3>') && html.includes('phone-first cover</p>') && !html.includes('c2c7e21') && !html.includes('abcdef1'), 'commit trails are dropped');
+  assert.match(html, /id="decisions-build"[\s\S]*?Node, no framework/);
+  assert.ok(!html.includes('id="dec-002"'), 'a build decision is a line, not a card');
+});

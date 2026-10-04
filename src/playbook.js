@@ -186,6 +186,22 @@ export function readBrand(projectDir, projectName) {
 const stripMd = (s) => String(s).replace(/^\s*[-*]\s+/gm, '').replace(/\[\[([^\]]+)\]\]/g, '$1').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
   .replace(/[*_`]/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
+// A canvas cell is its CURRENT answer; how it got there goes after a `History:` marker in the same
+// cell, and the page, the headlines and the story read only the answer (IDEA-134: BOSS's own cells
+// carried "🟢 v0.5 — RE-AIMED WITH AJESH, not swept." and that became the Vision headline).
+export function splitHistory(answer) {
+  const a = String(answer || '');
+  const m = a.match(/(?:^|\s|<br\s*\/?>)+(?:\*\*|_)?History(?::(?:\*\*|_)?|(?:\*\*|_):)\s*/);
+  return m ? [a.slice(0, m.index).trim(), a.slice(m.index + m[0].length).trim()] : [a, ''];
+}
+// Prose for a reader who wasn't in the room: a parenthetical that only cites records, and a trailing
+// `— EVID-001` pointer, are the trail; the page's chips carry it, the sentence doesn't (IDEA-134).
+export function prose(t) {
+  return String(t || '').replace(/\s*\((?=[^()]*\b(?:DEC|EVID|IDEA|FEAT|RVW|PRAC|EXTR)-\d+)[^()]*\)/g, '').replace(/\s+[—–]\s+(?:(?:EVID|DEC)-\d+[\s,·&]*)+$/i, '').trim();
+}
+// A devlog line's commit trail — `(\`c2c7e21\`, \`1f254f1\`, Unreleased)` and bare hashes — is the build's, not the story's.
+const dropHashes = (t) => String(t || '').replace(/\s*\((?:\s*`[0-9a-f]{7,40}`\s*[,·]?|\s*Unreleased\s*[,·]?|\s*v?\d+\.\d+\.\d+\s*[,·]?)+\)/g, '').replace(/\s*`[0-9a-f]{7,40}`/g, '').trim();
+
 // The first sentence of a record's text — the chapter line (IDEA-106 §8). BOSS writes none of
 // these: if the sentence is bad, the record wants a better first sentence, not the render.
 export function firstSentence(md, max = 180) {
@@ -439,10 +455,12 @@ export function readCaptureLogs(projectDir) {
 }
 
 // The story so far: devlog entries and capture-log bullets as one list, newest first, up to `max`.
-export function readLearnings(projectDir, max = 8) {
+// Capture logs: the venture's own only (IDEA-134) — every capability's log is the build, and on a
+// project with many ideas it buried the story under "IDEA-133: Trap in move 3…".
+export function readLearnings(projectDir, max = 8, ventureFile = null) {
   const devlog = readDevlog(projectDir, Infinity);
   const fromLog = devlog ? devlog.entries.map((e) => ({ ...e, date: dateOf(e.heading) || '', source: 'docs/devlog.md' })) : [];
-  const all = [...fromLog, ...readCaptureLogs(projectDir)];
+  const all = [...fromLog, ...readCaptureLogs(projectDir).filter((e) => ventureFile && e.source === `docs/ideas/${ventureFile}`)];
   // the devlog is newest-first on disk; a stable sort by date keeps its order inside a day
   const sorted = all.map((e, i) => [e, i]).sort((a, b) => String(b[0].date).localeCompare(String(a[0].date)) || a[1] - b[1]).map(([e]) => e);
   return { entries: sorted.slice(0, max), total: sorted.length, files: [...new Set(sorted.map((e) => e.source))] };
@@ -538,12 +556,13 @@ export function readDecisions(projectDir, today = Date.now()) {
       const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
       const id = String(fm.id || n.replace(/\.md$/i, '')).trim();
       const h1 = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].replace(/^DEC-\d+\s*[—–-]\s*/i, '').trim();
-      const decision = firstParagraph('\n' + (section(text, 'Decision') || ''));
+      // a hand-written record with no `## Decision` still says what it decided: its first paragraph
+      const decision = firstParagraph('\n' + (section(text, 'Decision') || '')) || firstParagraph('\n' + (('\n' + text.replace(/^---[\s\S]*?\n---\s*/, '')).split(/\n#\s[^\n]*\n/)[1] || '').split(/\n##\s/)[0]);
       const falsifier = firstSentence(sectionStartingWith(text, 'Falsifier') || '');
       const revisitBy = dateOf(fm.revisit_by);
       const overdue = revisitDue({ revisitBy, outcome: fm.outcome, status: fm.status }, isoDay(today));
       out.push({ id, file: n, title: stripMd(h1), created: dateOf(fm.created), reversibility: String(fm.reversibility || '').trim().split(/\s/)[0], decidedBy: String(fm.decided_by || '').trim(), status: String(fm.status || '').trim(),
-        decision, falsifier, revisitBy, outcome: fm.outcome ? String(fm.outcome).trim() : '', overdue, supersedes: (String(fm.supersedes || '').match(/DEC-\d+/i) || [null])[0], supersededBy: null });
+        decision, falsifier, revisitBy, outcome: fm.outcome ? String(fm.outcome).trim() : '', overdue, supersedes: (String(fm.supersedes || '').match(/DEC-\d+/i) || [null])[0], supersededBy: null, scope: String(fm.scope || '').trim().toLowerCase().split(/\s/)[0] });
     } catch { /* skip */ }
   }
   for (const d of out) if (d.supersedes) { const t = out.find((x) => x.id.toLowerCase() === d.supersedes.toLowerCase()); if (t) t.supersededBy = d.id; }
@@ -586,13 +605,13 @@ export function collectPlaybook(projectDir, projectName) {
   for (const reg of CELLS) {
     const c = byName.get(norm(reg.name));
     byName.delete(norm(reg.name));
-    const answer = c ? c.answer : '';
+    const [answer, history] = splitHistory(c ? c.answer : '');
     const state = c ? (c.condition && cellState(answer) === 'hole' ? 'dormant' : cellState(answer)) : 'hole';
     const words = norm(reg.name).split(' ');
     const hits = evidence.filter((e) => e.names && words.some((w) => w.length > 3 && e.names.split(' ').includes(w)));
     const top = hits.map((e) => GRADES.indexOf(e.grade)).filter((i) => i >= 0).sort((a, b) => b - a)[0];
     boxes.push({
-      ...reg, answer, state, condition: c ? c.condition : '',
+      ...reg, answer, history, state, condition: c ? c.condition : '',
       evidence: hits.length, topGrade: top === undefined ? null : GRADES[top], known: true,
     });
   }
@@ -623,7 +642,7 @@ export function collectPlaybook(projectDir, projectName) {
     brandNot: readBrandLine(projectDir, 'What it is NOT'),
     designExists: existsSync(join(projectDir, '.boss', 'design.html')),
     // slice 3 (FEAT-028) — the Proof records; `evidence` above already carries the rows
-    evidenceRows: evidence, devlog: readLearnings(projectDir), decisions: readDecisions(projectDir),
+    evidenceRows: evidence, devlog: readLearnings(projectDir, 8, idea && idea.venture ? idea.file : null), decisions: readDecisions(projectDir),
     trust: readTrust(projectDir), health: readHealth(projectDir),
     // slice 4 (FEAT-036) — the Company records
     team: readTeam(projectDir), brandDoc: readBrandDoc(projectDir),
@@ -663,7 +682,8 @@ function boxHtml(b, canvas) {
   } else if (b.state === 'dormant') {
     body = `<p class="prompt">${esc(b.prompt)}</p><span class="cond">dormant — ${esc(b.condition || b.answer.replace(/^_\(|\)_$/g, ''))}</span>`;
   } else {
-    body = (b.prompt ? `<p class="prompt">${esc(b.prompt)}</p>` : '') + `<div class="answer">${inline(b.answer)}</div>`;
+    body = (b.prompt ? `<p class="prompt">${esc(b.prompt)}</p>` : '') + `<div class="answer">${inline(b.answer)}</div>`
+      + (b.history ? `<details class="history"><summary>How this answer changed</summary><div>${inline(b.history)}</div></details>` : '');
   }
   return `<article class="${cls}" id="canvas-${esc(b.key)}" data-cell="${esc(b.key)}" data-title="${esc(b.name)}"${area}>
   <div class="head">${title}</div>
@@ -798,7 +818,7 @@ function pitchChapters(data) {
     const table = `<div class="tscroll"><table class="rivals"><thead><tr>${competition.columns.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${r.cells.map((c, j) => `<td>${inline(c)}${j === r.cells.length - 1 && r.stale ? ` <span class="chip stale">stale · ${r.ageDays} d</span>` : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     const keys = rows.filter((r) => r.key), watch = rows.filter((r) => !r.key);
     compInner = `<div class="blocks one">${block({ id: 'competition-table', title: 'Who else fixes it', sub: 'docs/competition/README.md', body: table, chip: `<span class="chip ev">${rows.length} on the field · ${keys.length} key · ${rows.filter((r) => r.stale).length} stale</span>`, src: `docs/competition/README.md${competition.updated ? ` · updated ${esc(String(competition.updated).slice(0, 10))}` : ''}` })}</div>`
-      + (keys.length ? `<div class="tier-title"><h3>Key rivals</h3><span>direct, or named by a real person in evidence</span></div><div class="blocks">${keys.map((r) => block({ id: `rival-${esc(slug(r.name))}`, title: r.name, sub: 'key', cls: 'rival', body: (r.why ? `<p class="win-line">They might win because ${inline(r.why)}</p>` : '') + (r.breaks.length ? `<p><strong>Where it breaks:</strong></p><ul>${r.breaks.map((b) => `<li>${inline(b)}</li>`).join('')}</ul>` : `<p class="helper">no <code>## Where it breaks</code> in ${r.file ? esc(r.file) : 'its file'} yet</p>`), chip: r.stale ? `<span class="chip stale">stale · checked ${r.ageDays} days ago</span>` : `<span class="chip ev">checked ${esc(r.checked || '—')}</span>`, src: `docs/competition/${esc(r.file || 'README.md')}` })).join('')}</div>` : '')
+      + (keys.length ? `<div class="tier-title"><h3>Key rivals</h3><span>direct, or named by a real person in evidence</span></div><div class="blocks">${keys.map((r) => block({ id: `rival-${esc(slug(r.name))}`, title: r.name, sub: 'key', cls: 'rival', body: (r.why ? `<p class="win-line">They might win because ${inline(r.why)}</p>` : '') + (r.breaks.length ? `<p><strong>Where it breaks:</strong></p><ul>${r.breaks.map((b) => `<li>${inline(b)}</li>`).join('')}</ul>` : ''), chip: r.stale ? `<span class="chip stale">stale · checked ${r.ageDays} days ago</span>` : `<span class="chip ev">checked ${esc(r.checked || '—')}</span>`, src: `docs/competition/${esc(r.file || 'README.md')}` })).join('')}</div>` : '')
       + (watch.length ? `<div class="tier-title"><h3>Also on the field</h3><span>watch — real, filed, not yet in anyone's mouth · one line each</span></div><div class="blocks one">${block({ id: 'competition-watch', title: 'Watch list', body: `<ul>${watch.map((r) => `<li><strong>${esc(r.name)}</strong>${r.why ? ` — ${inline(r.why)}` : ''}${r.stale ? ` <span class="chip stale">stale · ${r.ageDays} d</span>` : ''}</li>`).join('')}</ul>`, chip: `<span class="chip asserted">${watch.length} on watch</span>`, src: 'docs/competition/README.md · watch rows' })}</div>` : '');
   }
   const compLine = competition && competition.rows.length ? `${competition.rows.length} on the field; ${competition.rows.filter((r) => r.key).length} of them key.` : '';
@@ -823,17 +843,17 @@ function pitchChapters(data) {
 export function storyTextBlock(data) {
   const { idea, brand, brandDoc } = data; const prob = (data.boxes || []).find((b) => b.key === 'problem');
   const ev = (data.evidenceRows || []).filter((e) => e.date).sort((a, b) => a.date.localeCompare(b.date));
-  const decs = [...(data.decisions || [])].filter((d) => d.created && d.decision).sort((a, b) => a.created.localeCompare(b.created));
+  const decs = [...(data.decisions || [])].filter((d) => d.created && d.decision && d.scope !== 'build').sort((a, b) => a.created.localeCompare(b.created));
   const turns = [...ev.slice(0, 1).map((e) => [e.date, e.title]), ...decs.map((d) => [d.created, firstSentence(d.decision).replace(/\.$/, '') + (d.supersededBy ? ` (reversed by ${d.supersededBy})` : '')]), ...ev.filter((e) => e.grade === 'commitment').slice(-1).map((e) => [e.date, e.title])]
     .sort((a, b) => a[0].localeCompare(b[0]));
   const heard = brandDoc ? brandDoc.learned.rows.filter((r) => r.star && r.quote) : [];
   const parts = [
-    brand && brand.story ? `<p>${inline(brand.story)}</p>` : '',
-    idea && idea.why ? `<p><strong>Why:</strong> “${inline(idea.why)}”${idea.success ? ` It worked when: ${inline(idea.success)}` : ''}</p>` : '',
-    prob && prob.state === 'filled' ? `<p><strong>The problem:</strong> ${inline(stripMd(prob.answer))}</p>` : '',
+    brand && brand.story ? `<p>${inline(prose(brand.story))}</p>` : '',
+    idea && idea.why ? `<p><strong>Why:</strong> “${inline(prose(idea.why))}”${idea.success ? ` It worked when: ${inline(prose(idea.success))}` : ''}</p>` : '',
+    prob && prob.state === 'filled' ? `<p><strong>The problem:</strong> ${inline(prose(stripMd(prob.answer)))}</p>` : '',
     turns.length ? `<p><strong>How it's gone:</strong> ${turns.map(([d, t]) => `${esc(d)}: ${inline(t)}`).join('. ').replace(/\.\./g, '.')}.</p>` : '',
     heard.length ? `<p><strong>In their words:</strong> ${heard.map((r) => `“${inline(r.quote)}” (${inline(r.credit)})`).join(' · ')}</p>` : '',
-    idea && idea.vision ? `<p><strong>Where it goes:</strong> ${inline(idea.vision)}</p>` : '',
+    idea && idea.vision ? `<p><strong>Where it goes:</strong> ${inline(prose(idea.vision))}</p>` : '',
   ].filter(Boolean);
   if (parts.length < 2) return '';
   return block({ id: 'story-text', title: 'The story, as text', sub: 'your lines in order, for an About page or an intro email: Copy takes it', cls: 'story-text', body: parts.join('') + (heard.length ? '<p class="helper">The quotes are evidence, not permission: ask before they go somewhere public.</p>' : ''), chip: '<span class="chip asserted">asserted</span>', src: 'docs/BRAND.md · the venture IDEA · canvas · docs/evidence · docs/decisions' });
@@ -881,7 +901,7 @@ export function overTimeBlock(evidenceRows, decisions = []) {
 // "until finally" holds only a commitment, and the few-years line is shown apart, as theirs.
 export function beatsBlock(data) {
   const { idea } = data; const ev = (data.evidenceRows || []).filter((e) => e.date).sort((a, b) => a.date.localeCompare(b.date));
-  const decs = [...(data.decisions || [])].filter((d) => d.created).sort((a, b) => a.created.localeCompare(b.created));
+  const decs = [...(data.decisions || [])].filter((d) => d.created && d.scope !== 'build').sort((a, b) => a.created.localeCompare(b.created));
   if (!idea && !ev.length && !decs.length) return '';
   const beats = [];
   if (idea) beats.push({ spine: 'Once upon a time', when: idea.created, title: 'The idea', line: idea.gist || idea.title, rec: idea.id || idea.file });
@@ -921,19 +941,19 @@ function proofChapters(data) {
   const strip = `<div class="ladder" aria-label="Signals by grade">${[...counts].reverse().map(([g, n]) => `<div class="rung"><span class="g">${esc(g)}</span><span class="bar"><i style="width:${Math.round((n / maxC) * 100)}%"></i></span><b class="tab">${n}</b></div>`).join('')}</div>`;
   const evTable = rows.length ? `<div class="tscroll"><table class="t ev"><thead><tr><th>Grade</th><th>Date</th><th>Signal</th><th>Method</th><th>Bears on</th><th>Record</th></tr></thead><tbody>${rows.map((e) => `<tr id="${esc(slug(e.id))}"><td>${gradeChip(e.grade)}</td><td class="mono">${esc(e.date || 'undated')}</td><td>${esc(e.title || '—')}</td><td class="mono">${esc(e.method || '—')}</td><td class="t-small">${esc(e.assumption || '—')}</td><td class="mono">${esc(e.id)}</td></tr>`).join('')}</tbody></table></div>` : '';
   empty.evidence = !rows.length;
-  const overTime = overTimeBlock(evidenceRows, decisions);
+  const overTime = overTimeBlock(evidenceRows, decisions.filter((d) => d.scope !== 'build'));
   out.push(chapter('evidence', chapterHead(9, 'Evidence', newest ? newest.title : ''),
     rows.length
       ? `<div class="blocks one">${overTime}${block({ id: 'evidence-ladder', title: 'The ladder', sub: `${rows.length} signal${rows.length === 1 ? '' : 's'}, graded — the grade is the founder's, the count is the file's`, body: strip + evTable, src: `docs/evidence · ${rows.length} record${rows.length === 1 ? '' : 's'} · bodies stay in the files` })}</div>`
       : `<div class="blocks">${hole('evidence-none', 'What backs this', 'Nothing graded yet. The first signal is a conversation written down honestly — what they said, what they did, what they committed to — and graded on the ladder.', '/evidence', 'docs/evidence — none')}</div>`));
 
   // 10 · Learnings — the devlog's own lines, newest first.
-  const entries = devlog ? devlog.entries : [];
+  const entries = devlog ? devlog.entries.filter((e) => e.landed || e.surprises) : [];
   empty.learnings = !entries.length;
-  const entryBlock = (e, i) => block({ id: `learn-${i + 1}`, title: e.heading, body: (e.landed ? `<p>${e.source === 'docs/devlog.md' ? '<strong>Landed:</strong> ' : ''}${inline(e.landed)}</p>` : '') + (e.surprises ? `<p><strong>Surprises / decisions:</strong> ${inline(e.surprises)}</p>` : '') || '<p class="helper">an entry with only a heading</p>', src: `${esc(e.source)} · ${esc(e.date || e.heading.slice(0, 10))}` });
+  const entryBlock = (e, i) => block({ id: `learn-${i + 1}`, title: dropHashes(e.heading), body: (e.landed ? `<p>${e.source === 'docs/devlog.md' ? '<strong>Landed:</strong> ' : ''}${inline(dropHashes(e.landed))}</p>` : '') + (e.surprises ? `<p><strong>Surprises / decisions:</strong> ${inline(dropHashes(e.surprises))}</p>` : ''), src: `${esc(e.source)} · ${esc(e.date || e.heading.slice(0, 10))}` });
   const grew = beatsBlock(data);
   const grewHtml = grew ? `<div class="blocks one">${grew}</div>` : '';
-  out.push(chapter('learnings', chapterHead(10, 'Learnings', entries[0] && entries[0].landed ? firstSentence(entries[0].landed) : ''),
+  out.push(chapter('learnings', chapterHead(10, 'Learnings', entries[0] && entries[0].landed ? firstSentence(dropHashes(entries[0].landed)) : ''),
     grewHtml + (entries.length
       ? `<div class="blocks">${entries.map(entryBlock).join('')}</div>${devlog.total > entries.length ? `<p class="more">${devlog.total - entries.length} earlier entr${devlog.total - entries.length === 1 ? 'y' : 'ies'} in ${esc(devlog.files.join(' · '))}</p>` : ''}`
       : `<div class="blocks">${hole('learnings-none', 'The story so far', 'What landed, what surprised you, what you decided — one entry a session, in your words; the idea\'s capture log counts too. Nothing logged yet.', '/log', 'docs/devlog.md · docs/ideas capture logs — none')}</div>`)));
@@ -941,15 +961,19 @@ function proofChapters(data) {
   // 11 · Decisions — cards with their falsifiers; superseded ones dimmed, overdue ones said so.
   empty.decisions = !decisions.length;
   const decBlock = (d) => block({ id: slug(d.id), title: d.title || d.id, sub: d.id, cls: d.supersededBy ? 'superseded' : '',
-    body: (d.decision ? `<p>${inline(d.decision)}</p>` : '<p class="helper">no ## Decision section</p>')
+    body: (d.decision ? `<p>${inline(d.decision)}</p>` : '')
       + (d.falsifier ? `<p class="fals"><strong>Falsifier —</strong> ${inline(d.falsifier)}${d.revisitBy ? ` <span class="date">by ${esc(d.revisitBy)}</span>` : ''}</p>` : '')
       + (d.supersededBy ? `<p class="helper">superseded by ${esc(d.supersededBy)}</p>` : ''),
     chip: [d.reversibility ? `<span class="chip dec">${esc(d.reversibility)}</span>` : '', d.decidedBy ? `<span class="chip asserted">${esc(d.decidedBy)}</span>` : '', d.overdue ? `<span class="chip bad">overdue · revisit ${esc(d.revisitBy)}</span>` : '', d.outcome ? `<span class="chip ev">outcome recorded</span>` : ''].join(''),
     src: `docs/decisions/${esc(d.file)}${d.created ? ` · ${esc(d.created)}` : ''}` });
-  const live = decisions.filter((d) => !d.supersededBy), old = decisions.filter((d) => d.supersededBy);
+  // Venture decisions are the cards a reader needs; build decisions (scope: build) are one line each,
+  // so the test runner never sits beside "who it's for" (IDEA-134). Unset counts as venture: never hidden.
+  const ventureDecs = decisions.filter((d) => d.scope !== 'build'), buildDecs = decisions.filter((d) => d.scope === 'build');
+  const live = ventureDecs.filter((d) => !d.supersededBy), old = ventureDecs.filter((d) => d.supersededBy);
+  const buildList = buildDecs.length ? block({ id: 'decisions-build', title: 'Build decisions', sub: `${buildDecs.length}, one line each`, body: `<ul class="origin-list">${buildDecs.map((d) => `<li>${esc(d.title || d.id)} <span class="date">${esc(d.id)}${d.created ? ` · ${esc(d.created)}` : ''}</span></li>`).join('')}</ul>`, src: 'docs/decisions · scope: build' }) : '';
   out.push(chapter('decisions', chapterHead(11, 'Decisions', live[0] && live[0].decision ? firstSentence(live[0].decision) : ''),
     decisions.length
-      ? `<div class="blocks">${live.map(decBlock).join('')}${old.map(decBlock).join('')}</div>`
+      ? `<div class="blocks">${live.map(decBlock).join('')}${old.map(decBlock).join('')}${buildList}</div>`
       : `<div class="blocks">${hole('decisions-none', 'What you decided, and what would prove it wrong', 'A decision with its context, its reasoning, and the cheapest signal it was wrong — by when. None recorded yet.', '/decide', 'docs/decisions — none')}</div>`));
 
   // 12 · Risks & harms — the floor cell, and the trust page.
@@ -1116,9 +1140,9 @@ function coverBlock(data) {
   // Vision and Problem ask. The counts follow as "and how do you know".
   const { idea } = data; const prob = boxes.find((b) => b.key === 'problem');
   const heart = [
-    idea && (idea.why || idea.success) ? ['Why this, for them', idea.why ? `“${inline(idea.why)}”` : inline(idea.success), idea.why && idea.success ? `It worked when: ${inline(idea.success)}` : ''] : null,
-    prob && prob.state === 'filled' ? ['The problem they saw', inline(firstSentence(prob.answer, 240)), ''] : null,
-    idea && idea.vision ? ['Where it goes', inline(idea.vision), 'their aspiration'] : null,
+    idea && (idea.why || idea.success) ? ['Why this, for them', idea.why ? `“${inline(prose(idea.why))}”` : inline(prose(idea.success)), idea.why && idea.success ? `It worked when: ${inline(prose(idea.success))}` : ''] : null,
+    prob && prob.state === 'filled' ? ['The problem they saw', inline(firstSentence(prose(prob.answer), 240)), ''] : null,
+    idea && idea.vision ? ['Where it goes', inline(prose(idea.vision)), 'their aspiration'] : null,
   ].filter(Boolean);
   const heartHtml = heart.length ? `<div class="cover-heart">${heart.map(([k, v, sub]) => `<div><p class="backed-k">${k}</p><p class="h">${v}</p>${sub ? `<p class="hs">${sub}</p>` : ''}</div>`).join('')}</div>` : '';
   const body = `<div class="cover-body"><div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>${brand.story ? `<p class="cover-story">${esc(brand.story)}</p>` : ''}${heartHtml}`
@@ -1244,6 +1268,7 @@ const PLAYBOOK_CSS = `
   .samples { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 2px solid var(--accent-soft); display: grid; gap: 4px; font-family: var(--display); font-size: 15.5px; line-height: 1.4; } .samples .label { margin-right: 6px; } .chip.ptr { text-decoration: none; margin-left: 2px; vertical-align: 1px; }
   .block.story-text { grid-column: 1 / -1; } @media (min-width: 1100px) { .blocks > .block.wide { grid-column: span 2; } }
   .block.story-text .body p + p { margin-top: 10px; } .block.story-text .body { max-width: 70ch; }
+  details.history { margin-top: 10px; font-size: 13px; color: var(--muted); } details.history summary { cursor: pointer; font-family: var(--mono); font-size: 11px; } .sl details.history, .printdeck details.history { display: none; }
   .lede { font-family: var(--display); font-size: 20px; line-height: 1.35; } .lede + p { margin-top: 10px; }
   /* on a slide the body text scales with the screen; the story's own pieces scale with it (IDEA-133) */
   .sl .lede { font-size: 1.15em; } .sl .helper { font-family: var(--body); font-size: 14px; color: var(--muted); }
