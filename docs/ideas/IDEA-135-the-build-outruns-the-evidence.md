@@ -344,6 +344,12 @@ names cut to 30 characters, `½` marking half built (with a one-line key). Dashe
 existing "nothing here" convention, so the unmet state costs no words. The fold no longer hides
 what was met.
 
+**At 100 features (Ajesh: *"what a 100 features look like, and how bad it would be to keep
+loading"*):** loading is fine: the whole demo renders in 0.2 s and the page grows ~14 KB. The
+display was the problem: the block's fold hid 97 of 98 chips, so 100 looked like 6, and the mirror
+vanished at exactly the scale it exists for. Past a dozen unmet, the block shows the count large,
+one small dashed square per thing (half built = half filled), and the names behind a fold.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
