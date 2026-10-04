@@ -111,6 +111,76 @@ and that counts. Blank is shown as blank, never filled by BOSS.
 outcome, shown in the playbook) rather than adding a field. One at a time per venture; FEATs point
 at it.
 
+## After research, audit and a persona read (2026-10-04)
+
+Three passes: outside frameworks (notes and sources in the gitignored
+`docs/research/sessions/SESSION-2026-10-04-outcome-over-output.md`; re-open any page before quoting
+it in shipped text), an overlap audit of what BOSS already ships, and the vibe-virtuoso persona
+(synthetic, not evidence).
+
+**The audit changes the shape: about 70% of this exists, under four names, and the playbook shows
+none of it.**
+- *What we'll test next*: canvas *Experiment this week*, pretotype *Designed to test*, FEAT
+  *Learning hypothesis*, the top ROADMAP bet.
+- *What result counts*: canvas and FEAT *What result would change the plan*, pretotype *Threshold
+  for yes*, DEC *Falsifier*.
+- *How it turned out*: `outcome: held · fell · can't tell yet` (DEC, FEAT), pretotype *Decision*.
+  So **drop the proposed `hit · missed · learned`**; it would be a fifth vocabulary.
+- Written and never read: canvas *What result would change the plan*, the pretotype log's fields,
+  FEAT *Goal* and *Validated learning*, `/onboard`'s docs, ROADMAP bets outside `/spec`. The
+  `/prototype` core thing is never written at all.
+- Already free: the conscience injects `success_looks_like` into every moment it fires, so the
+  current outcome can ride the same channel.
+
+**Gaps the outside read found in the proposal:**
+1. *It asks only about benefit, never cost.* Fowler's YAGNI names the **cost of carry**, which is
+   Ajesh's "surface you own" with a source behind it. Keep candidate 4's carry clause.
+2. *No "done".* Half-built is the failure; walking skeleton and tracer bullet both mean one thin
+   slice working end to end before the next starts. Ten half-built features can all honestly
+   "move the outcome". Each built row needs a state: works end to end · half built · untried.
+3. *Feature tied straight to outcome, skipping the person.* Torres puts the need between them;
+   Adzic makes the actor required. The outcome names **who does what by when**; each built row
+   shows the need (an EVID) or a hole.
+4. *No clock.* Torres's unit is weekly contact; Shape Up's circuit breaker gives no extension by
+   default. Keep candidate 1's clock (build since the last EVID).
+5. *Filters, never removes.* Adzic treats unattached work as a problem to fix or remove. *Untried*
+   can lead to `/sunset`; a "no" parks the feature (the existing NO-LIST), not just a question.
+
+**Overbuild risks:**
+- Outputs dressed as outcomes, and Goodhart. The model checks the sentence's *shape* (a person, a
+  verb they do, a date) and reshapes an output-shaped answer; it never scores a number or blocks.
+- A north-star number before any users. Before users, the outcome is a **learning outcome** tied
+  to the riskiest-assumption cell, or BOSS ends up with two aims.
+- Importing the frameworks' artifacts (an opportunity tree, an impact map, a PR/FAQ). Each shrinks
+  to a clause on what already exists.
+
+**Persona (synthetic):** would write mush ("get feedback from 5 builders"), answer "does this
+move it?" with a reflexive yes, and pick "learned" every time. What bites is a **receipt**: the
+yes logged beside the feature and shown later next to *nobody used it*. Wants a count, not a
+moral (*4 built for this, 0 tried, asking for a 5th*), one outcome as a hard limit, the question
+on the 3rd feature rather than every one, and the page framed as a better build-in-public post.
+Also asked *who* to show it to.
+
+### Revised shape (merge four into one; show it)
+
+1. **One current outcome per venture, hard limit**: *who · does what · by when*. Before users, it
+   is a learning outcome tied to the riskiest assumption. Home: the canvas heartbeat, merging
+   *Experiment this week* + *What result would change the plan*, rather than a new field.
+   `/prototype` writes its core thing as the first draft.
+2. **Closes with the existing vocabulary**, plus one sentence on why. `revisitDue()` fires on the
+   date; no extension by default. The pretotype *Decision* and FEAT *Learning hypothesis* point at
+   it instead of restating it.
+3. **Playbook Product chapter leads with it**: outcome → what we built for it (each with a state
+   and the need it answers) → what people did. Unattached work sits under *untried*, which can
+   lead to `/sunset`.
+4. **One conscience moment, keyed to the build, not records**: fires on the third thing built
+   since the last EVID. Says the count plainly, asks *does this move <outcome>?* and names the
+   carry. The answer is logged and becomes the receipt on the page. A "no" offers the NO-LIST.
+   Offers `/interview` for *who to show it to*.
+
+**Subtract alongside:** the never-read fields above, the second success vocabulary, and the
+proposed `next_outcome:` field.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
