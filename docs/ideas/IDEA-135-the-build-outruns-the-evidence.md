@@ -294,6 +294,22 @@ candidate loop specs. No runtime change.
   in `.boss/config.json`), and fresh clones reset modification times, so it under-fires.
 - Cost: the `$source` walk already runs per prompt for other loops (capped at 1,500 files).
 
+## Slice 1 drafted (2026-10-04, uncommitted, waiting on Ajesh's read)
+
+`stages/L0-quickstart/template/.boss/loops/unseen-loop.md` (≥1,500 source lines, no EVID) and
+`unseen-since-loop.md` (≥6 source files newer than the newest EVID), both on the existing `focus`
+moment with their own branch in `moment-frames.js`; registered in the L0 manifest. Tested with the
+real hook on a throwaway project: silent on a fresh scaffold, a 300-line starter, code in an
+unknown folder, evidence newer than the code, and five changed files; fires on ten features with
+no evidence and on six files changed after evidence. Voiced by a model in two cases: the runaway
+gets one plain line and *who has seen the last few?*; one feature getting deeper gets silence.
+Unit tests 658/658, conscience evals 154/154.
+
+**Still to do before it ships:** eval cases for both loops in `conscience-evals/` (none yet);
+the CHANGELOG bullet; the thresholds (1,500 lines, 6 files) are guesses to tune on real trees.
+Left over from testing: `~/.boss/projects/walkies-1ebcc07f/` (a test run's conscience state,
+written to the real `~/.boss` because the test exported the wrong variable; safe to delete).
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
