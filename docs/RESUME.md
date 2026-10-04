@@ -94,6 +94,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Next (in order)
 
+- **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
+
 0. **Worktree trial (IDEA-120, Ajesh yes 09-23)** — the next session runs in its own worktree and records what broke.
 1. **Ajesh's browser read of the demo** — `npm run gen:site` → `site/demo/index.html`: does it read
    as *BOSS running*; the Kettlewick name (palette settled 09-23: oat/copper, devlog). Their playbook hand-checks: Present → VC cut

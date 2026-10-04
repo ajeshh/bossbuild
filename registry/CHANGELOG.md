@@ -37,6 +37,17 @@ rule above still applies to the whole section once it is stamped.
   actually happened. Once a page says *Never holds: Card — a box in a box*, the opt-in
   `design-decisions-guard` passes that rule to the next write that opens both tags.
 
+- **Your brand doc starts at the canvas, and it can hold your story in one line.** Once Problem,
+  Promises and Story are written, `/canvas` offers the story in one line: your own words from those
+  cells laid into *this AND this, BUT the problem, THEREFORE what you do*, which you then say as one
+  sentence. It saves that as `story:` in `docs/BRAND.md`. If there's no brand doc yet, it seeds a
+  nascent one from People and Promises, so the brand starts with the venture, not with the first
+  landing page. The brand-doc skeleton gains *What they use instead today*; a pointer on each line
+  to what backs it (an `EVID`, a `DEC`, or `belief`); a voice sample and a hard-moment line under
+  *How it sounds*; `## Origin, as it happened` (nothing in it a witness would dispute); and
+  `shape:` / `voice:` rows in the learned log that keep the *why* of each change. The playbook
+  doesn't render these yet.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

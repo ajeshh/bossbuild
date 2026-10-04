@@ -32,9 +32,12 @@ information is worse than a blank, because a blank invites a question and a conf
 
 ## Who seeds it, which is deliberately not one skill
 
-**Whoever needs it first.** `/landing`, `/pretotype` and `/design-tokens-init` all read it, and
-whichever one runs first creates it from the canvas **Promises** cell plus whatever the founder has
-already said. Seed it, mark it nascent, say out loud that it is a living doc — then get on with the
+**Whoever needs it first.** Usually that's `/canvas`: once Problem, Promises and Story are written, it
+seeds a nascent doc (who it's for, what it promises, the story in one line) so the brand starts
+with the venture, not with the first page. `/landing`, `/pretotype` and `/design-tokens-init` all
+read it, and if none has created it yet, whichever runs first does, from the canvas **Promises** cell
+plus whatever the founder has already said. A later seeder fills in the skeleton's missing sections
+and never rewrites a line already written. Seed it, mark it nascent, say out loud that it is a living doc — then get on with the
 thing they actually asked for.
 
 No single owner is the point, not an oversight. A shared artifact with one owning skill becomes that
@@ -47,8 +50,9 @@ type: brand
 owner: "@you"          # the founder. No agent owns this — any lens may add to it
 status: nascent
 updated: YYYY-MM-DD
-readers: /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers · boss playbook · boss design
+readers: /canvas · /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers · boss playbook · boss design
 tagline: unknown          # one line, when there is one — the pages carry it under the name
+story: unknown            # the story in one line, yours: "<this> AND <this>, BUT <the problem>, THEREFORE <what you do>" — the cover and slide one carry it
 accent: unknown           # the one owned colour, as hex, once /design-tokens-init's anchor chooses it
 logo: unknown             # path to the mark (.svg) when there is a file — no file, no drawing, never a placeholder
 ---
@@ -67,8 +71,25 @@ logo: unknown             # path to the mark (.svg) when there is a file — no 
 - **What it promises:** <from the canvas Promises cell — the one thing it's for>
 - **What it refuses:** <the thing you will not do, and competitors will. The sharpest line here>
 - **How it sounds:** <2–3 traits, each with what you're giving up — "plain over clever" costs you delight>
+  - *Sounds like:* <one or two sentences you actually wrote or said that got a reaction — the traits
+    alone don't carry a voice; an example does>
+  - *When it's hard:* <one line for the hard moment — an error, a refund, asking for money>
 - **What it is NOT:** <the nearest thing people will mistake it for>
+- **What they use instead today:** <what your person does about this now, without you — the phone
+  tree, a spreadsheet, a rival, nothing. From `/interview`, in their words>
 - **The name, and why:** <if it means something, say what. If it doesn't, say that too>
+
+**Where each line comes from.** End a line with what backs it — `— EVID-NNN`, `— DEC-NNN`, a
+learned-row date, or `— belief`. A page, a deck or a pitch can then lift the lines that something
+backs and say the beliefs are beliefs. A line with no pointer reads as a belief.
+
+## Origin, as it happened
+
+How it really started — dated, plain, and the honest motive. **Nothing here that a witness would
+dispute.** Origin stories get checked, and a polished one that turns out to be marketing costs more
+than a plain one ever earns. If it started with an itch at work, say that; nobody needs a garage.
+
+- <YYYY-MM-DD — what happened, who was there, what you noticed>
 
 ## How we build
 
@@ -92,6 +113,12 @@ The half that makes this a brand rather than a guess. Every row is something tha
 **Where rows come from:** `/evidence` debriefs and digests · a support thread · what someone
 called it when they explained it to a friend · the phrase that made a stranger nod. **Not from
 brainstorming.** A row you invented is the failure mode above, wearing a table.
+
+**When the shape itself changes, log the change here too.** Rewrite the line in *Current shape*,
+then append a row whose third column starts `shape:` or `voice:` and says what it was and why it
+moved — `voice: plain over playful (was: playful) — two users read the jokes as not taking their
+data seriously`. Git keeps the diff; only this row keeps the *why*, and the why is the brand. The
+playbook reads these rows as the brand's history.
 
 ## Decided
 
