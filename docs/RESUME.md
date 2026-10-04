@@ -180,6 +180,10 @@ were already settled in their records, IDEA-087 and IDEA-098, and stayed here fo
   once more, never twice? Cheap; after the first real founder.
 - **RubyGems agent attack** (rubyhack.ai, 2026-09-11) — inboxed as an event for the agent-security
   sweep (2026-11-09). Attribution is the authors' inference.
+- **CI runner warnings (seen on run 36174154875, 2026-09-25, all six jobs green).** `actions/checkout@v4`
+  and `actions/setup-node@v4` target Node 20, which GitHub deprecated; they're forced onto Node 24
+  for now. Bump both to their current major when it next touches `.github/`. `ubuntu-latest` becomes
+  Ubuntu 26 from **2026-10-19**: re-open only if the Linux jobs break after that date.
 
 ## Prompt for the next session
 
