@@ -199,6 +199,12 @@ else we should add… missed or not done? or even in terms of design"*)
   text** (`— EVID-001`), not as chips that link to the Evidence row. **Present and Export PDF were not
   checked** with the new blocks: the beats grid and the SVG on a 16:9 slide, and print. `nascent`
   still has no row in IDS. The `/close` why-again step and `/evidence` echo marking aren't built.
+- **Done 2026-10-04 (Ajesh: *"ok go for it"*):** voice samples render and proof pointers are chips
+  (`6f93af6`); Present and Export PDF checked headless, all 33 slides, with the story pieces scaled to
+  the slide; the heart on the cover and the **Story** cut (`5e30b2e`; web/playbook.html said three
+  cuts, now four). **Still open:** copy the story as prose; `/landing` and `/pretotype` reading the
+  story and the quotes; `/close` asking for the why again; `/evidence` marking echoes; IDS `nascent`;
+  the design tweaks below.
 - **Design tweaks:** chapter headlines start lowercase when the record does ("one owner pre-paid…",
   "the ninth owner…"); capitalise the first letter for display only, never the stored words. On the
   chart, a hover or tap on a point could jump to its row in the ladder table. The beats could get a
