@@ -48,6 +48,13 @@ rule above still applies to the whole section once it is stamped.
   `shape:` / `voice:` rows in the learned log that keep the *why* of each change. The playbook
   doesn't render these yet.
 
+- **The brand-doc skeleton ships with Quickstart, so the skills that seed it can find it.** It used to
+  live inside `/landing`, which only installs once a feature has shipped. So `/pretotype` and
+  `/design-tokens-init` told you to seed the brand doc from a file that wasn't in your project.
+  It now sits beside `/canvas`, which is where the brand usually starts, and all four skills point there.
+  `boss sync --apply` adds it. An old copy under `/landing` is listed as an orphan and stays until
+  you remove it.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

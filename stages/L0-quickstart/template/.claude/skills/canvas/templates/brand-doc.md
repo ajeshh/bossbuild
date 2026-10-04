@@ -1,6 +1,8 @@
 # The brand doc (bundled resource — shared, not owned)
 
 > Loaded **on demand**. Write this to **`docs/BRAND.md`** — note the path: **not** `docs/design/`.
+> It lives beside `/canvas` because that's where the brand usually starts, and because Quickstart
+> skills stay on disk at every rung. `/pretotype`, `/design-tokens-init` and `/landing` all point here.
 
 ## Why it is not a design document
 
@@ -13,7 +15,7 @@ the designer's, and it isn't.**
 > how it sounds. Any lens can grow it, and none of them owns it.
 
 **And it is not marketing.** Marketing is what you *do* with a brand — positioning, channels,
-campaigns, the launch. That is downstream, it belongs with `mentor-customers` and `/landing`, and it
+campaigns, the launch. That is downstream, it belongs with the go-to-market work (`/landing`, and the customers mentor once MVP is unlocked), and it
 has its own artifacts. Collapsing the two is how a brand doc quietly becomes a landing-page brief and
 stops being read by everything else.
 
@@ -50,7 +52,7 @@ type: brand
 owner: "@you"          # the founder. No agent owns this — any lens may add to it
 status: nascent
 updated: YYYY-MM-DD
-readers: /canvas · /landing · /pretotype · /design-tokens-init · /design-review · designer · mentor-customers · boss playbook · boss design
+readers: /canvas · /landing · /pretotype · /design-tokens-init · /design-review · boss playbook · boss design · the design and customer mentors, from MVP
 tagline: unknown          # one line, when there is one — the pages carry it under the name
 story: unknown            # the story in one line, yours: "<this> AND <this>, BUT <the problem>, THEREFORE <what you do>" — the cover and slide one carry it
 accent: unknown           # the one owned colour, as hex, once /design-tokens-init's anchor chooses it
@@ -59,8 +61,8 @@ logo: unknown             # path to the mark (.svg) when there is a file — no 
 
 # Brand — {{PROJECT_NAME}}
 
-> **Living, and yours.** No agent owns this file — `designer`, `mentor-customers`, `/landing` and
-> `/pretotype` all read it and any of them may add to the log. The shape at the top sharpens as you
+> **Living, and yours.** No skill or agent owns this file — `/canvas`, `/pretotype`, `/landing` and the
+> design and customer mentors all read it and any of them may add to the log. The shape at the top sharpens as you
 > learn; the log below is append-only.
 > Mark anything you don't know yet as `unknown` and leave it — a confident answer arrived at with no
 > information is worse than a blank.
@@ -137,6 +139,6 @@ change, a positioning shift. Link them; don't restate them.
 - **`/landing` and `/pretotype` read it for voice and positioning** — and a page generated from a
   nascent brand should *say* it is plainer than it will be, rather than inventing personality to fill
   the gap.
-- **`mentor-customers` reads it for positioning**, which is the clearest demonstration that this file
+- **The customers mentor reads it for positioning** (from MVP), which is the clearest demonstration that this file
   is not the designer's: the same document feeds the design system and the go-to-market, and neither
   gets to own it.

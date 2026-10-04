@@ -193,38 +193,11 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    `story:` in `docs/BRAND.md`'s frontmatter; it is the line the playbook's cover and the first
    slide carry. *Skip* is an answer: leave `story: unknown`, and don't ask again this pass.
    **No `docs/BRAND.md` yet? Seed it here, so the brand starts with the canvas and not the first
-   page.** Only the two lines the canvas already holds get filled; everything else stays `unknown`:
-
-   ```markdown
-   ---
-   id: brand
-   type: brand
-   owner: "@you"
-   status: nascent
-   story: <their one line, or unknown>
-   tagline: unknown
-   ---
-
-   # Brand — <name>
-
-   ## Current shape
-
-   - **Who it's for:** <from People>
-   - **What it promises:** <from Promises>
-   - **What it refuses:** unknown
-   - **How it sounds:** unknown
-   - **What it is NOT:** unknown
-   - **What they use instead today:** unknown
-   - **The name, and why:** unknown
-
-   ## What we've learned (append-only — never rewrite a row)
-
-   | Date | What happened | What it says about the brand |
-   |---|---|---|
-   ```
-
-   Say in one line that it's a living doc any skill can add to. When `/landing` runs, its skeleton
-   fills in the missing sections and never overwrites a line that's already written.
+   page.** Write it from [`templates/brand-doc.md`](templates/brand-doc.md): fill only what the canvas
+   already holds (*Who it's for* from People, *What it promises* from Promises, `story:` if they
+   gave one) and write `unknown` for every other line, rather than the template's prompts. Say in one
+   line that it's a living doc any skill can add to. A later skill fills in what's missing and never
+   rewrites a line that's already written.
 5. After each pass, name the **single riskiest assumption** and propose **one experiment this week**
    to test it. Write both in. That's the heartbeat of incubation. **Where the bet usually lives:** in
    the solution being good enough, the buyer paying, or the channel working — rarely in *"people have

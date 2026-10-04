@@ -52,7 +52,7 @@ and if missing, say so and offer to fill the gap first (the offer rides in the o
   **If `docs/BRAND.md` doesn't exist, seed it — don't just report the gap.** Telling a founder a
   brand doc is missing and handing them no way to make one is how that file stayed unwritten while
   three skills read it. Create it from
-  [`templates/brand-doc.md`](templates/brand-doc.md) using the canvas **Promises** cell and whatever
+  the skeleton in [`../canvas/templates/brand-doc.md`](../canvas/templates/brand-doc.md) (it ships at Quickstart, so every project has it) using the canvas **Promises** cell and whatever
   they have already said, mark it `nascent`, say once that it is a living doc that grows from what
   real people say — then get on with what they actually asked for. **Note the path: `docs/BRAND.md`,
   not `docs/design/`. Brand is upstream of design and feeds marketing, the pitch and the words in a
