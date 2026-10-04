@@ -44,3 +44,11 @@ _The best articulation so far. Rewrite this as the idea sharpens._
 - **2026-10-04 · Ajesh** — pasted the thread and a founder's design-system repo shape (DTCG tokens,
   YAML anatomy, Style Dictionary, a React library in a component explorer, skills for patterns): *"anything
   we can learn or improve?"* → read against BOSS → *"ok lets fix and complete it."*
+- **2026-10-04 · Ajesh** — the full text of a brand-as-software essay (2026-08), read for the design
+  system only. Already held: the correction feeds back (Ours rows + the guard; exceptions counted),
+  repetition becomes infrastructure (`/design-library` step 4's promotion threshold), output is
+  editable (Code · SVG), the system says where it is not reliable (*not checked*), and the logo-off
+  recognition test is the signature's *"describe it without naming the product."* The one design-system
+  item — an expression range, quiet to loud, with what stays true in every mode (*"if the identity
+  only knows one move, automation will scale sameness"*) — is already parked in IDEA-133 item 8, gated
+  on a second surface. Not duplicated here.
