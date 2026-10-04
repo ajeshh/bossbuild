@@ -120,3 +120,17 @@ test('readBuildSince: counts source files git last touched after the newest EVID
   assert.equal(since.total, 3);
   assert.equal(typeof since.days, 'number');
 });
+
+const featWith = (n, gist, criteria) => `---\nid: FEAT-${n}\ntype: feat\nstatus: building\ngist: ${gist}\ncreated: 2026-08-01\n---\n\n# FEAT-${n}\n\n## Acceptance criteria\n${Array.from({ length: criteria }, (_, i) => `- [ ] criterion ${i + 1}`).join('\n')}\n\n## Paths that must not break\n- none\n`;
+
+test('a FEAT that bloated inside itself is marked: criteria when first committed → now, only on real growth; no git, no mark', () => {
+  const dir = project({ ...stamp, 'docs/ideas/FEAT-001-booking.md': featWith('001', 'Booking — pick a slot', 2), 'docs/ideas/FEAT-002-chat.md': featWith('002', 'Chat — message carers', 3) });
+  git(dir, 'init', '-q'); git(dir, 'add', '-A'); commitAt(dir, '2026-08-01', 'spec');
+  execFileSync('node', ['-e', "const f=require('fs');f.writeFileSync('docs/ideas/FEAT-001-booking.md', f.readFileSync('docs/ideas/FEAT-001-booking.md','utf8').replace('- [ ] criterion 2', ['2','3','4','5','6','7'].map(n=>'- [ ] criterion '+n).join('\\n')));f.writeFileSync('docs/ideas/FEAT-002-chat.md', f.readFileSync('docs/ideas/FEAT-002-chat.md','utf8').replace('- [ ] criterion 3','- [ ] criterion 3\\n- [ ] criterion 4'))"], { cwd: dir });
+  git(dir, 'add', '-A'); commitAt(dir, '2026-09-01', 'grew');
+  const html = render(dir);
+  assert.match(html, /Booking[^<]*<span class="muted">· ½<\/span> <span class="muted"[^>]*>· scope 2→7<\/span>/, '2 → 7 is growth');
+  assert.doesNotMatch(html, /scope 3→4/, '3 → 4 is ordinary refinement, not bloat');
+  const noGit = project({ ...stamp, 'docs/ideas/FEAT-001-booking.md': featWith('001', 'Booking — pick a slot', 7) });
+  assert.doesNotMatch(render(noGit), /scope \d/, 'without history, nothing is invented');
+});

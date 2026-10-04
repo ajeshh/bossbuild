@@ -16,6 +16,7 @@
 // by hand (a test holds them in step). The parser bends to the template, never the reverse.
 
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { frontmatter, revisitDue } from './frontmatter.js';
 import { shellPage, esc, lightScheme, DEFAULT_ACCENT } from './page-shell.js';
@@ -27,6 +28,7 @@ import { readTokens, themeFromTokens } from './design.js';
 import { isoDay, isoMinute } from './clock.js';
 import { gitDates } from './gitdates.js';
 import { readSourceGlobs } from './config.js';
+import { criteriaProgress } from './board.js';
 
 // --- the registry -----------------------------------------------------------------------------
 // `lean` is the Lean Canvas box the humane answer reads as (DEC-004 mapping); `area` its grid slot.
@@ -666,6 +668,41 @@ export function readChanges(projectDir) {
   return out.sort((a, b) => String(a.date).localeCompare(String(b.date)));
 }
 
+// IDEA-135: a FEAT can bloat inside itself, which no count of FEATs sees. Its acceptance criteria when
+// it was first committed, against now. Two git spawns whatever the FEAT count (the N+1 gitdates.js
+// exists to avoid): the commit that added each FEAT file, then every first version through one
+// `cat-file --batch`. Not a checkout, no git, nothing committed: an empty map, and no mark is drawn.
+export function readFeatGrowth(projectDir) {
+  const out = new Map();
+  try {
+    const log = execFileSync('git', ['log', '--diff-filter=A', '--format=%x00%H', '--name-only', '--', 'docs/ideas'],
+      { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 });
+    const added = new Map(); let rev = null;
+    for (const line of log.split('\n')) {
+      if (line.startsWith('\0')) { rev = line.slice(1).trim(); continue; }
+      const path = line.trim();
+      if (rev && /^docs\/ideas\/FEAT-\d+[^/]*\.md$/i.test(path)) added.set(path, rev); // newest-first: the last sighting is the first add
+    }
+    if (!added.size) return out;
+    const paths = [...added.keys()];
+    const batch = execFileSync('git', ['cat-file', '--batch'], { cwd: projectDir, input: paths.map((p) => `${added.get(p)}:${p}`).join('\n') + '\n', stdio: ['pipe', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 });
+    let at = 0;
+    for (const path of paths) {
+      const nl = batch.indexOf(10, at); if (nl < 0) break;
+      const head = batch.subarray(at, nl).toString('utf8').split(' ');
+      at = nl + 1;
+      if (head[1] !== 'blob') continue;
+      const size = Number(head[2]);
+      const first = criteriaProgress(batch.subarray(at, at + size).toString('utf8'));
+      at += size + 1;
+      let now = null;
+      try { now = criteriaProgress(readFileSync(join(projectDir, path), 'utf8')); } catch { /* gone since */ }
+      if (first && now) out.set(path.split('/').pop().replace(/\.md$/i, '').match(/^FEAT-\d+/i)[0].toUpperCase(), { start: first.total, now: now.total });
+    }
+  } catch { /* not a checkout, or git absent: no growth is known, and none is invented */ }
+  return out;
+}
+
 export function collectPlaybook(projectDir, projectName) {
   const found = findCanvas(projectDir);
   let parsed = { cells: [], updated: null, id: null };
@@ -714,7 +751,7 @@ export function collectPlaybook(projectDir, projectName) {
     ledger: { backed, live: live.length, signals: evidence.length, gradeCounts, topOverall, newestDays },
     brand: readBrand(projectDir, projectName),
     // slice 2 (FEAT-027) — each null/empty renders as a hole, never invented
-    since: readBuildSince(projectDir, evidence), changes: readChanges(projectDir),
+    since: readBuildSince(projectDir, evidence), changes: readChanges(projectDir), growth: readFeatGrowth(projectDir),
     testing: found ? (() => { try { return readTesting(readFileSync(found.path, 'utf8')); } catch { return null; } })() : null,
     idea, feats: readFeats(projectDir), personas: readPersonas(projectDir),
     competition: readCompetition(projectDir), sources: readSources(projectDir), ask: readAsk(projectDir),
@@ -869,10 +906,13 @@ function pitchChapters(data) {
   const real = (v) => v && !/^_.*_$/.test(String(v).trim()) ? v : '';
   const shortName = (f) => { const n = prose(String(f.gist || f.id).split(/\s+[—–-]\s+/)[0]); return n.length <= 30 ? n : n.slice(0, 30).replace(/\s+\S*$/, '') + '…'; };
   const ordered = featOrder(feats);
+  const growth = data.growth || new Map();
+  const grew = (f) => { const g = growth.get(String(f.id).toUpperCase()); return g && g.now - g.start >= 3 && g.now >= g.start * 2 ? g : null; };
+  const growMark = (f) => { const g = grew(f); return g ? ` <span class="chip bad" title="acceptance criteria when first written → now">scope ${g.start}→${g.now}</span>` : ''; };
   const met = ordered.filter((f) => metBy(f).length);
   const unmet = ordered.filter((f) => !metBy(f).length);
-  const metRow = (f) => `<li><strong>${inline(shortName(f))}</strong> <em class="muted">— ${esc(stateOf(f))}</em>${real(f.goal) ? `<br><span class="muted">for: ${inline(f.goal)}</span>` : ''}<br>${metBy(f).map((e) => `<span class="chip ev">${esc(e.grade || 'ungraded')}</span> ${inline(e.title)}${e.date ? ` <span class="muted">· ${esc(e.date)}</span>` : ''}`).join('<br>')}</li>`;
-  const unmetChip = (f) => `<span class="chip" style="border:1px dashed var(--muted);background:none" title="${esc(f.id)} · ${esc(stateOf(f))}">${esc(shortName(f))}${stateOf(f) === 'half built' ? ' <span class="muted">· ½</span>' : ''}</span>`;
+  const metRow = (f) => `<li><strong>${inline(shortName(f))}</strong> <em class="muted">— ${esc(stateOf(f))}</em>${growMark(f)}${real(f.goal) ? `<br><span class="muted">for: ${inline(f.goal)}</span>` : ''}<br>${metBy(f).map((e) => `<span class="chip ev">${esc(e.grade || 'ungraded')}</span> ${inline(e.title)}${e.date ? ` <span class="muted">· ${esc(e.date)}</span>` : ''}`).join('<br>')}</li>`;
+  const unmetChip = (f) => `<span class="chip" style="border:1px dashed var(--muted);background:none" title="${esc(f.id)} · ${esc(stateOf(f))}">${esc(shortName(f))}${stateOf(f) === 'half built' ? ' <span class="muted">· ½</span>' : ''}${grew(f) ? ` <span class="muted" title="acceptance criteria when first written → now">· scope ${grew(f).start}→${grew(f).now}</span>` : ''}</span>`;
   // Past a dozen, names stop being readable and the fold would hide the scale, which is the point:
   // the count and one square per thing say it at a glance (half built = half filled); names fold.
   const half = unmet.filter((f) => stateOf(f) === 'half built').length;
@@ -906,7 +946,7 @@ function pitchChapters(data) {
   // One square per built thing, every one of them, before any detail can fold: solid = someone has met it,
   // dashed = nobody yet, half filled = half built. The picture carries the scale; the text below carries who.
   const square = (f) => { const m = metBy(f).length, h = stateOf(f) === 'half built';
-    return `<span title="${esc(f.id)} · ${esc(shortName(f))} · ${esc(stateOf(f))}${m ? ' · met' : ''}" style="display:inline-block;width:11px;height:11px;border-radius:2px;${m ? 'background:var(--accent);border:1px solid var(--accent)' : `border:1px dashed var(--muted);${h ? 'background:linear-gradient(135deg,var(--muted) 50%,transparent 50%);opacity:.6' : ''}`}"></span>`; };
+    return `<span title="${esc(f.id)} · ${esc(shortName(f))} · ${esc(stateOf(f))}${m ? ' · met' : ''}${grew(f) ? ` · scope ${grew(f).start}→${grew(f).now}` : ''}" style="display:inline-block;width:11px;height:11px;border-radius:2px;${m ? 'background:var(--accent);border:1px solid var(--accent)' : `border:1px dashed var(--muted);${h ? 'background:linear-gradient(135deg,var(--muted) 50%,transparent 50%);opacity:.6' : ''}`}"></span>`; };
   const strip = `<p style="display:flex;flex-wrap:wrap;gap:3px;margin:0 0 .3em">${[...met, ...unmet].map(square).join('')}</p><p class="muted" style="font-size:.85em;margin:0 0 .9em">${met.length} met · ${unmet.length} not in front of anyone yet${half ? ` · ${half} half built` : ''}</p>`;
   const featBody = headline + strip + (met.length ? `<ul>${met.map(metRow).join('')}</ul>` : '')
     + (unmet.length > 12 ? `<details><summary class="muted">the ${unmet.length} names</summary><p style="display:flex;flex-wrap:wrap;gap:6px">${unmet.map((f) => `<span class="chip" style="border:1px dashed var(--muted);background:none">${esc(shortName(f))}</span>`).join('')}</p></details>` : unmet.length ? `${met.length ? '<p class="muted" style="margin:.8em 0 .4em">Not in front of anyone yet <span style="font-size:.85em">· ½ = half built</span></p>' : '<p class="muted" style="margin:0 0 .4em;font-size:.85em">½ = half built</p>'}<p style="display:flex;flex-wrap:wrap;gap:6px">${unmet.map(unmetChip).join('')}</p>` : '');

@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A feature that grew inside itself is marked on the playbook.** Counting features can't see one
+  that quietly became ten things. When a feature's acceptance criteria have at least doubled since
+  it was first written down, and grown by three or more, its row says so: *scope 2→7*. The count
+  comes from git history, so it needs no extra field and is never guessed: no history, no mark.
+
 - **The canvas's *Experiment this week* line is now *What we're testing next*, and asks who will
   see it.** "This week" assumed a weekly rhythm most founders don't keep. A canvas written before
   the rename keeps its old line and nothing needs changing: the drift check, the conscience and the
