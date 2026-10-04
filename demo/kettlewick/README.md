@@ -13,6 +13,9 @@ Rules for editing it:
   **illustration that reads as a drawing** (`.svg`, flat, in the demo's palette), never a photograph or
   a photo-real face: a drawing can't be mistaken for someone who exists (Ajesh, 2026-10-04). BOSS
   itself still never draws a stand-in for a real founder; these are the demo's own files.
+- **The product screens are mock-ups.** `docs/product/screens/` holds two phone screens drawn in
+  Kettlewick's own tokens and component rules, because its `src/` is never built. A real founder's
+  screens come from their running app (`/ship` keeps one).
 - **No real company as a rival.** Shiftwise, CareSheet and the phone tree are fiction.
 - **Fully filled.** A hole on the demo is a bug; `npm run check:demo` fails on one. When a new
   chapter or record type ships, add its record here in the same commit.

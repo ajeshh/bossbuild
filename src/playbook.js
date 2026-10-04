@@ -1308,7 +1308,7 @@ const PLAYBOOK_CSS = `
   .kv { display: grid; grid-template-columns: fit-content(38%) minmax(0, 1fr); /* a long label wraps; it never takes the value's room (IDEA-133) */ gap: 6px 14px; margin: 0; } .kv dt { overflow-wrap: anywhere; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
   .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
   .samples { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 2px solid var(--accent-soft); display: grid; gap: 4px; font-family: var(--display); font-size: 15.5px; line-height: 1.4; } .samples .label { margin-right: 6px; } .chip.ptr { text-decoration: none; margin-left: 2px; vertical-align: 1px; }
-  .block.screens .body { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; } .screen { margin: 0; } .screen img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 6px; } .screen figcaption { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+  .block.screens .body { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; } .screen { flex: 0 1 240px; } .screen { margin: 0; } .screen img { display: block; width: 100%; max-width: 240px; height: auto; border: 1px solid var(--rule); border-radius: 6px; } .screen figcaption { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
   .chapter .blocks > .block.echo { display: none; } /* the headline already says it on the page; the slide still needs it standalone */
   .block.story-text { grid-column: 1 / -1; } @media (min-width: 1100px) { .blocks > .block.wide { grid-column: span 2; } }
   .block.story-text .body p + p { margin-top: 10px; } .block.story-text .body { max-width: 70ch; }
@@ -1387,7 +1387,7 @@ function playbookJs(brand) {
    it. No word moves — Copy, Slide and the PDF clone .body whole, so they carry all of it. */
 (function () {
   const TALL = 560;
-  document.querySelectorAll('.block:not(.cover) .body').forEach((b) => {
+  document.querySelectorAll('.block:not(.cover):not(.screens) .body').forEach((b) => {   /* a picture is never folded */
     /* measure the content, not the card: a short block in a tall row is stretched by the grid, and its
        stretched height is not a long record (IDEA-133 — the few-years line folded beside the story) */
     b.style.flex = 'none'; const h = b.scrollHeight; b.style.flex = '';
