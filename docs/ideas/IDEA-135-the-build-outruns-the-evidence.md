@@ -432,6 +432,24 @@ verb), evals 160/160, `boss playbook` run end to end in a throwaway. `site/demo`
 exit regex, `moment-frames.js`); the per-FEAT growth mark; the receipt (the founder's answer to the
 `unseen` moment logged beside the work).
 
+## Slice 3 (2026-10-04, Ajesh: "continue")
+
+- **Landed `e402fee`:** `/canvas` writes *What we're testing next* (and asks who will see it);
+  drift-loop's exit, the drift frame and the playbook read both labels; a drift eval proves the
+  new line closes the loop. The old pattern does not match the new line (checked), so the rename
+  without the regex would have nagged every new canvas forever. The site's canvas page
+  (`web/humane-product-canvas.md`, `scripts/gen-site.js`) still says *The experiment this week*:
+  that canvas is Ajesh's own published work, left for them.
+- **Landed `9b361c9`:** the scope-growth mark. Acceptance criteria at first commit vs now, two git
+  spawns whatever the FEAT count; marked at +3 and at least double; no history, no mark.
+- **The receipt: a decision, not built.** The founder's answer to the `unseen` moment lives in the
+  per-person conscience log (`~/.boss/projects/<key>/`), private by DEC-001/DEC-015. Printing it
+  on the playbook would publish a private log. Options: (a) the receipt stays private, and the
+  conscience voices it the next time `unseen` fires ("last time you said this moved the card
+  form; nobody has met it since"); the relationship log may already carry enough for that;
+  (b) the founder writes the claim into the FEAT (a shared `moves:` line) and the page shows it
+  next to *nobody has met this*. Leaning (a): no new field, nothing private leaves the person.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
