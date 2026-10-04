@@ -38,6 +38,10 @@ status: <one of the seven below>
 ---
 ```
 
+**One exception: `docs/BRAND.md`.** It's a living doc, not a record, so it has its own two words:
+`nascent` while it is mostly `unknown` (pages built from it should read plainer than they will), and
+`active` once you say it holds. `/canvas` starts it nascent; nothing flips it but you.
+
 ## Status — a closed vocabulary
 
 **The file's frontmatter is truth.** Any index, board, or summary is a *view* of it. When the two

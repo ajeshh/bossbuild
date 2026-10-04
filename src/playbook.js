@@ -840,7 +840,8 @@ export function overTimeBlock(evidenceRows, decisions = []) {
       top = g;
     }
   }
-  const pts = ev.map((e) => `<circle class="pt" cx="${x(e.date)}" cy="${Y[GRADES.indexOf(e.grade)]}" r="5"><title>${esc(e.id)} · ${esc(e.date)} · ${esc(e.grade)}</title></circle>`).join('');
+  // a point is a link to its row in the ladder table below — the chart and the table are one record
+  const pts = ev.map((e) => `<a href="#${esc(slug(e.id))}"><circle class="pt" cx="${x(e.date)}" cy="${Y[GRADES.indexOf(e.grade)]}" r="5"><title>${esc(e.id)} · ${esc(e.date)} · ${esc(e.grade)}</title></circle></a>`).join('');
   const dia = decs.map((d) => { const cx = x(d.created); return `<g><path class="dec${d.supersededBy || /superseded/i.test(d.status) ? ' old' : ''}" d="M${cx} ${AX - 6} l6 6 -6 6 -6 -6z"><title>${esc(d.id)} · ${esc(d.created)}${d.supersededBy ? ` · superseded by ${esc(d.supersededBy)}` : ''}</title></path><text x="${cx}" y="${AX + 22}" text-anchor="middle">${esc(d.id)}</text></g>`; }).join('');
   let ticks = '';
   const t0 = new Date(lo - pad); const t = new Date(Date.UTC(t0.getUTCFullYear(), t0.getUTCMonth() + 1, 1));
@@ -1231,7 +1232,10 @@ const PLAYBOOK_CSS = `
   .overtime { overflow-x: auto; } .overtime svg { display: block; width: 100%; min-width: 560px; height: auto; } .overtime + .helper { margin-top: 6px; }
   .overtime text { font-family: var(--mono); font-size: 11px; fill: var(--muted); } .overtime .lbl { font-family: var(--body); font-size: 12px; fill: var(--ink); } .overtime .grid line { stroke: var(--rule-2); } .overtime .axis { stroke: var(--rule); }
   .overtime .step { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; } .overtime .pt { fill: var(--accent); } .overtime .dec { fill: var(--ink); } .overtime .dec.old { fill: var(--paper); stroke: var(--muted); stroke-width: 1.5; }
-  .beats { display: grid; grid-template-columns: repeat(auto-fit, minmax(136px, 1fr)); gap: 10px; } .beat { display: grid; gap: 5px; align-content: start; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
+  .chapter-head h2::first-letter { text-transform: uppercase; } /* the record's words stay as written; the display starts a sentence */
+  .overtime a .pt { cursor: pointer; } .overtime a:hover .pt, .overtime a:focus .pt { r: 7; }
+  .beat + .beat::before { content: ""; position: absolute; left: -11px; top: 20px; width: 11px; height: 1.5px; background: var(--accent); } /* the beats read as a sequence */
+  .beats { display: grid; grid-template-columns: repeat(auto-fit, minmax(136px, 1fr)); gap: 10px; } .beat { position: relative; display: grid; gap: 5px; align-content: start; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
   .beat.mini-hole { border-style: dashed; border-color: var(--hole); background: transparent; color: var(--muted); } .beat.asp { border-style: dashed; border-color: var(--accent); }
   .beat .spine { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); } .beat .when, .beat .rec { font-family: var(--mono); font-size: 11px; color: var(--muted); } .beat strong { font-size: 13.5px; }
   .beat .line { font-family: var(--display); font-size: 16px; line-height: 1.35; } .beat .line.struck { text-decoration: line-through; color: var(--muted); } .beat.mini-hole .line { font-family: var(--body); font-size: 13.5px; }

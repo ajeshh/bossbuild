@@ -97,6 +97,12 @@ rule above still applies to the whole section once it is stamped.
   All in Present and Export PDF: the cover, why, the problem, how sure over time, how it grew,
   the words that landed and where it started, as a short deck to hand to someone.
 
+- **Small playbook polish, and the brand doc's status words are declared.** Chapter headlines
+  start with a capital even when the record's first sentence doesn't (the record stays as you wrote
+  it); the beats in *How it grew* are joined so they read as a sequence; a point on *How sure, over
+  time* jumps to its row in the ladder. `docs/IDS.md` now says what `docs/BRAND.md`'s status means:
+  `nascent` while it's mostly unknown, `active` once you say it holds. Only you flip it.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

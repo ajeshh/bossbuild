@@ -50,7 +50,7 @@ skill's artifact, and then the other lenses stop writing to it.
 id: brand
 type: brand
 owner: "@you"          # the founder. No agent owns this — any lens may add to it
-status: nascent
+status: nascent         # nascent | active — the brand doc's own two words (docs/IDS.md); only you flip it
 updated: YYYY-MM-DD
 readers: /canvas · /landing · /pretotype · /design-tokens-init · /design-review · boss playbook · boss design · the design and customer mentors, from MVP
 tagline: unknown          # one line, when there is one — the pages carry it under the name
