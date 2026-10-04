@@ -18,10 +18,9 @@ story: "Small agencies run their week on a spreadsheet and the owner is the only
 - **Who it's for:** owner-operators who do the Monday schedule by hand and would keep the spreadsheet forever.
 - **What it promises:** cover found before the kettle boils.
 - **What it refuses:** it will not rank carers, track carers, or text anyone after 8pm. — DEC-003
-- **How it sounds:** plain over clever (costs us delight); calm over urgent (costs us the "act now" conversion); the owner's words over ours.
-  - *Sounds like:* "Mrs H at 9 is covered. Priya said yes." (the confirm text owners forward to
-    each other) — EVID-003
-  - *When it's hard:* "Nobody could take Mrs H at 9. We've stopped asking; it's yours now."
+- **How it sounds:** plain, not clever (costs us delight); calm, not urgent (costs us the "act now" conversion); the owner's words, not ours.
+  - *Example:* "Mrs H at 9 is covered. Priya said yes." (the confirm text owners forward to each
+    other) — EVID-003
 - **What it is NOT:** agency software. A marketplace. A scheduling tool.
 - **What they use instead today:** the phone tree, an hour of calls every Monday; a few try CareSheet's add-on, which texts everyone. — EVID-001
 - **The name, and why:** the kettle is the owner's Monday morning; the wick is the bit that catches. It means nothing to a stranger and everything to an owner.

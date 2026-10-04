@@ -205,6 +205,11 @@ else we should add… missed or not done? or even in terms of design"*)
   cuts, now four). **Still open:** copy the story as prose; `/landing` and `/pretotype` reading the
   story and the quotes; `/close` asking for the why again; `/evidence` marking echoes; IDS `nascent`;
   the design tweaks below.
+- **Corrected 2026-10-04 (Ajesh: *"does this even make sense, doesnt seem usual?"*):** the *Sounds like* /
+  *When it's hard* sub-fields were my labels; no voice guide uses them, and *When it's hard* asked a
+  day-one founder to invent a hard moment that hasn't happened. That's the tone matrix the research said
+  to refuse. Now: traits written *X, not Y* with their cost, plus one optional real *Example* (a sentence
+  that got a reaction, with its record). A real hard moment becomes a `voice:` learned row once it happens.
 - **Design tweaks:** chapter headlines start lowercase when the record does ("one owner pre-paid…",
   "the ninth owner…"); capitalise the first letter for display only, never the stored words. On the
   chart, a hover or tap on a point could jump to its row in the ladder table. The beats could get a

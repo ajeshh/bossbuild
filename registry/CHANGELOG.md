@@ -51,8 +51,8 @@ rule above still applies to the whole section once it is stamped.
   sentence. It saves that as `story:` in `docs/BRAND.md`. If there's no brand doc yet, it seeds a
   nascent one from People and Promises, so the brand starts with the venture, not with the first
   landing page. The brand-doc skeleton gains *What they use instead today*; a pointer on each line
-  to what backs it (an `EVID`, a `DEC`, or `belief`); a voice sample and a hard-moment line under
-  *How it sounds*; `## Origin, as it happened` (nothing in it a witness would dispute); and
+  to what backs it (an `EVID`, a `DEC`, or `belief`); traits written *X, not Y* under *How it sounds*, with one
+  optional real *Example*; `## Origin, as it happened` (nothing in it a witness would dispute); and
   `shape:` / `voice:` rows in the learned log that keep the *why* of each change. The playbook
   doesn't render these yet.
 
@@ -84,8 +84,8 @@ rule above still applies to the whole section once it is stamped.
   playbook`.
 
 - **Your brand's voice samples and its record links show up in the playbook, and the new story
-  blocks present well.** The *Sounds like* and *When it's hard* lines under *How it sounds* used
-  to be collected and never shown; they now render under it. A line in your brand's shape that ends
+  blocks present well.** The real *Example* under *How it sounds* (a sentence you wrote
+  that got a reaction) used to be collected and never shown; it now renders under the traits. A line in your brand's shape that ends
   `— EVID-001` or `— DEC-002` shows a chip that jumps to that record on the page, and `— belief`
   says so. In Present and Export PDF, the why, the quotes and the chart caption now scale with the
   slide.

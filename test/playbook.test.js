@@ -893,9 +893,9 @@ story: "Agencies run on a spreadsheet, but one sick text means eight calls, so w
 - **Who it's for:** owner-operators
 - **What they use instead today:** the phone tree — EVID-001
 - **How it sounds:** plain over clever
-  - *Sounds like:* "Mrs H at 9 is covered." — EVID-003
-  - *When it's hard:* <one line for the hard moment,
-    an error or a refund>
+  - *Example:* "Mrs H at 9 is covered." — EVID-003
+  - *Example:* <optional — one real sentence,
+    and where it came from>
 - **What it refuses:** ranking carers — belief
 
 ## Origin, as it happened
@@ -935,7 +935,7 @@ test('IDEA-133 story weave: the story on the cover (asked for in Vision when mis
   assert.ok(!html.includes('witness would dispute.</li>') && !html.includes('&lt;YYYY'), 'guidance prose and placeholders stay in the file');
   assert.ok(html.includes('<dt>What they use instead today</dt><dd>the phone tree <a class="chip ev ptr" href="#evid-001">EVID-001</a></dd>'), 'a proof pointer is a chip to its row');
   assert.ok(html.includes('ranking carers <span class="chip asserted ptr">belief</span>'), 'a belief says so');
-  assert.match(html, /<ul class="samples"><li><span class="label">Sounds like<\/span> &quot;Mrs H at 9 is covered.&quot; <a class="chip ev ptr" href="#evid-003">EVID-003<\/a><\/li><\/ul>/, 'a voice sample renders; a placeholder sample, wrapped or not, does not');
+  assert.match(html, /<ul class="samples"><li><span class="label">Example<\/span> &quot;Mrs H at 9 is covered.&quot; <a class="chip ev ptr" href="#evid-003">EVID-003<\/a><\/li><\/ul>/, 'a voice sample renders; a placeholder sample, wrapped or not, does not');
   // no story → Vision asks, and the question reaches the list (a /canvas hole is not a canvas cell here)
   const bare = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/BRAND.md': STORY_BRAND.replace(/^story:.*\n/m, '') });
   const d2 = collectPlaybook(bare, 'tidewell'); const h2 = renderPlaybookHtml(d2, '2026-10-04 10:00');

@@ -493,7 +493,7 @@ export function readBrandDoc(projectDir) {
   if (!existsSync(p)) return null;
   let text; try { text = readFileSync(p, 'utf8'); } catch { return null; }
   const fm = frontmatter(text);
-  // A shape line, plus the indented `*Sounds like:*` / `*When it's hard:*` samples under it (IDEA-133:
+  // A shape line, plus the indented `*Example:*` under *How it sounds* (IDEA-133 — any `*Label:*` sub-line:
   // the template asks for them; a parser that read only top-level lines dropped them). A wrapped line
   // continues the sample above it; a `<…>` placeholder, and its wrap, is not a sample.
   const shape = []; let open = null;

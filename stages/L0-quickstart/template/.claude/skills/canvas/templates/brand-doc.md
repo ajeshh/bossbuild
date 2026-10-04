@@ -72,10 +72,11 @@ logo: unknown             # path to the mark (.svg) when there is a file — no 
 - **Who it's for:** <the person, in the words they'd use about themselves>
 - **What it promises:** <from the canvas Promises cell — the one thing it's for>
 - **What it refuses:** <the thing you will not do, and competitors will. The sharpest line here>
-- **How it sounds:** <2–3 traits, each with what you're giving up — "plain over clever" costs you delight>
-  - *Sounds like:* <one or two sentences you actually wrote or said that got a reaction — the traits
-    alone don't carry a voice; an example does>
-  - *When it's hard:* <one line for the hard moment — an error, a refund, asking for money>
+- **How it sounds:** <2–3 traits, each "X, not Y", with what it costs you — "plain, not clever"
+  costs you delight>
+  - *Example:* <optional — one real sentence you wrote that got a reaction, and where it came from
+    (`— EVID-NNN`). Traits alone don't carry a voice; one true example does. Leave it out until you
+    have one>
 - **What it is NOT:** <the nearest thing people will mistake it for>
 - **What they use instead today:** <what your person does about this now, without you — the phone
   tree, a spreadsheet, a rival, nothing. From `/interview`, in their words>
