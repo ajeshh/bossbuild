@@ -394,6 +394,29 @@ The per-feature squares stay as the build-level picture. **For the conscience:**
 already fires when code moves after the last EVID, which covers "customers, but stopped learning"
 while building continues; a stalled product with flat usage is `/health`'s and `sustaining`'s.
 
+## Slice 2 mock, current shape (2026-10-04, scratch worktree; Ajesh: "just go for it")
+
+The built block became **How we're learning — and what was built for it**, the wide block of the
+Product chapter (testing next sits beside it, narrow). Top to bottom:
+1. *Last heard from someone outside N days ago. Since then, M source files changed.* (newest EVID
+   date; git's last-touched dates for `$source`, so a fresh clone doesn't fool it) and that EVID's
+   title with its method.
+2. **What it changed:** the newest DEC or FEAT that cites an EVID that exists, and *N things heard
+   since haven't changed anything on record* — the stagnation line.
+3. **Usage:** the first sentence of the newest HEALTH record, or *not measured yet*.
+4. One square per FEAT, met first (solid), then not yet (dashed; half built half filled), with a
+   one-line count; met FEATs in full; unmet names as chips (≤12) or behind a fold.
+
+Rendered on three projects with real backdated git history: healthy (29 days · 3 files · DEC-002 ·
+2 heard since unchanged), runaway (nobody yet · 58 files · nothing changed), 100 features (29 days ·
+62 files · a wall of 98 dashed squares beside 2 solid). Two bugs found and fixed on the way: the
+fold hid the squares (the block is now wide), and a DEC citing deleted EVIDs still counted.
+Kettlewick's DEC-002 gained `(EVID-001, EVID-002)` in its Context in the mock copy; the real demo
+has no record citing evidence, which is itself the gap this line exposes.
+
+**Not yet:** a prompt to keep asking (the block could offer `/interview` beside the stagnation
+line); the per-FEAT growth mark (criteria at spec vs now).
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
