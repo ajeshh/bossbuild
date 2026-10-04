@@ -108,13 +108,23 @@ The half that makes this a brand rather than a guess. Every row is something tha
 
 | Date | What happened | What it says about the brand |
 |---|---|---|
-| YYYY-MM-DD | a user called it "the thing that nags me nicely" | the conscience reads as care, not surveillance — keep that |
+| YYYY-MM-DD | ★ a user, two weeks in, called it "the thing that nags me nicely" — EVID-NNN | the conscience reads as care, not surveillance — keep that |
 | | a competitor comparison someone made unprompted | |
 | | a word that landed, or one that got a blank look | |
 
 **Where rows come from:** `/evidence` debriefs and digests · a support thread · what someone
 called it when they explained it to a friend · the phrase that made a stranger nod. **Not from
 brainstorming.** A row you invented is the failure mode above, wearing a table.
+
+**Their words get quoted, so write the row so a quote can travel.** `boss playbook` puts the
+words in quotation marks on the Brand chapter, and a deck or a landing page can lift them. So:
+- **Quote exactly**, inside the quotation marks. No tidying.
+- **Credit by role, not by name.** Write *an owner, nine-carer agency*, never *Sarah at Brightcare*,
+  unless that person said yes to being named; then write their name and `(named with consent)`.
+- **End the row with where it came from** (`— EVID-NNN`, `— interview 2026-06-04`, `— support
+  thread`), so anyone reading the page can trace the quote back to the study or the insight.
+- **Star the key ones.** Start the row with ★ when those are the words to lead with. Starred rows
+  are shown large; the rest smaller. With nothing starred, the newest lead.
 
 **When the shape itself changes, log the change here too.** Rewrite the line in *Current shape*,
 then append a row whose third column starts `shape:` or `voice:` and says what it was and why it

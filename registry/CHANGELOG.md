@@ -55,6 +55,14 @@ rule above still applies to the whole section once it is stamped.
   `boss sync --apply` adds it. An old copy under `/landing` is listed as an orphan and stays until
   you remove it.
 
+- **What real people said about your product now has a way into your brand doc, and the playbook
+  will quote it.** After a call, `/evidence` offers one *What we've learned* row in `docs/BRAND.md`;
+  after a whole transcript, up to three. Each row quotes their exact words, credits them by role
+  (*an owner, nine-carer agency*, never a name without their consent), and ends with the record it
+  came from (`— EVID-NNN`), so any quote traces back to the study. Start a row with ★ to lead with
+  it. Before this, the brand doc said its rows came from `/evidence`, and `/evidence` never wrote
+  one.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

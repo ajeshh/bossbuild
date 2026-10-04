@@ -130,6 +130,14 @@ save on the founder's OK. One call can yield several — don't force one.
    with what the call actually showed — the source that shrinks the synthetic share fastest, and the
    whole point of having gone. Offer it; never do it silently. The founder should see which parts of
    their assumed user just got contradicted.
+5. **Offer the words that landed to the brand doc.** If they said something about the product or
+   the problem in words worth keeping (a name for it, a line they'd repeat to a friend, a word that
+   got a blank look), offer **one** learned row in `docs/BRAND.md`, written the way
+   `.claude/skills/canvas/templates/brand-doc.md` says: their words quoted exactly, credited by role
+   and never by name without their consent, ending `— EVID-NNN`, and ★ only if the founder says these
+   are words to lead with. These rows are what the playbook quotes and what a landing page can
+   borrow. No brand doc yet? Offer to start one from that template. Show the row and write it only
+   on a yes.
 
 ## A digest — a whole transcript
 
@@ -162,6 +170,8 @@ save on the founder's OK. One call can yield several — don't force one.
       **strongest enrichment source that exists** — real research outweighs your own knowledge, which
       outweighs online averages. No persona yet, but the transcript clearly describes one kind of
       person? Offer `/persona derive` instead.
+   4. the words that landed, as learned rows in `docs/BRAND.md` (no more than three, in the debrief's
+      step-5 shape: quoted, credited by role, `— EVID-NNN`). The founder picks which ones to ★.
 
 ## Guardrails
 

@@ -128,7 +128,7 @@ headline is the promise, and its cards are the why, Principles and *In a few yea
 | Where it goes | **Vision** `vision-few-years` (exists) | chip `aspiration`, not `asserted` | one chip class |
 | How sure, over time | **Evidence**, first block | the strip (SVG), a pure projection of EVID dates and grades plus DEC dates | the SVG only |
 | How it grew (the beats) | **Learnings**, above *The story so far* | beat cards: each a record's own line, spine label, date, chip | a small grid inside one block |
-| Words that landed | **Brand** `brand-learned` (exists, counted) | quoted, **if Ajesh reverses FEAT-036's counted-never-quoted rule** | none |
+| Words that landed | **Brand** `brand-learned` (exists, counted) | **quoted: decided by Ajesh 2026-10-04** (*"quote .. especially key ones!! and credit it and date it, so its easy to track it back to ux study? or insight?"*). ★ rows large, the rest smaller, newest lead if none starred; each with its date, a role credit (a name only with consent), and its record (`— EVID-NNN`) | none |
 | What they use instead | **Brand** current shape (a new line in BRAND.md) | a `kv` row | none |
 | Origin, as it happened | **Brand**, new block | the founder's section verbatim; hole → BRAND.md | none |
 
@@ -152,6 +152,9 @@ someone asks.
   `src/playbook.js` reads it, but there is no vocabulary row for `type: brand`. `check:backlog` is
   right to flag it inline; A2 uses a fenced template, which is the checker's documented case for a
   typed record. Declaring the brand doc's vocabulary is a small follow-up.
+- **Nothing wrote learned rows.** The brand doc said rows come from `/evidence` debriefs, but
+  `/evidence` never mentioned BRAND.md. Fixed with the quote decision: a debrief offers one row and a
+  digest up to three, in the template's quote convention, written only on a yes.
 - **Future todo (Ajesh):** *"kettlewick demo or kettlewick itself its a bit weak overall, and we
   could do it better"*. This is a separate pass on the showcase (FEAT-039), not this IDEA.
 

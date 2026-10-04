@@ -74,7 +74,11 @@ is theirs to add. The README says both are shared once committed.
 ## What "wrong" looks like
 - A silhouette, an initial in a circle, or any drawn stand-in for a person with no photo.
 - A value BOSS wrote (a headline composed from the cell).
-- A user's quote from the brand doc's learned table on the page.
+- ~~A user's quote from the brand doc's learned table on the page.~~ **Reversed by Ajesh, 2026-10-04
+  (IDEA-133):** *"quote .. especially key ones!! and credit it and date it, so its easy to track it back
+  to ux study? or insight?"* What still holds is the reason this rule existed, a real person's name
+  on a page built to be pasted: a quote credits a role, never a name without consent, with its date
+  and the record it came from. Evidence *bodies* and `source:` stay off the page (FEAT-028), unchanged.
 - A card for someone on the roster who never wrote themselves down — the roster is handles, not people.
 
 ## Paths that must not break
