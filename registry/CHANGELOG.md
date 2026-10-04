@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The canvas's *Experiment this week* line is now *What we're testing next*, and asks who will
+  see it.** "This week" assumed a weekly rhythm most founders don't keep. A canvas written before
+  the rename keeps its old line and nothing needs changing: the drift check, the conscience and the
+  playbook read both. Without that, a founder using the new line would have been told forever that
+  they had no plan.
+
 - **The playbook's Product chapter now shows how you're learning, not how much you've built.** A
   count of features is easy to fool: one feature can hold ten things, and ten can be lumped into
   one. So the chapter opens with *What we're testing next* (the canvas line, with the assumption

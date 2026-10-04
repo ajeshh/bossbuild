@@ -306,10 +306,13 @@ function buildCanvasFile(ideaFile, canvas) {
   // Default: absent (legacy cases test the riskiest-assumption gate only). With
   // `experiment_text` it's a real plan (satisfies drift-loop's exit); with
   // `experiment_placeholder: true` it's the `_(...)_` stub (does NOT satisfy exit).
+  // `experiment_label` (IDEA-135): the line was renamed *What we're testing next*; older canvases keep
+  // the old label, so cases default to it and one case proves the new one closes the loop too.
+  const expLabel = canvas.experiment_label || 'Experiment this week';
   if (canvas.experiment_text !== undefined && canvas.experiment_text !== '') {
-    body.push(`- **Experiment this week:** ${canvas.experiment_text}`);
+    body.push(`- **${expLabel}:** ${canvas.experiment_text}`);
   } else if (canvas.experiment_placeholder) {
-    body.push(`- **Experiment this week:** _(the smallest test to prove/disprove it)_`);
+    body.push(`- **${expLabel}:** _(the smallest test to prove/disprove it)_`);
   }
   body.push('');
   return { file: canvasFile, body: body.join('\n') };

@@ -38,5 +38,5 @@ updated: 2026-08-30
 
 ## Incubation heartbeat
 - **Riskiest assumption:** owners will pay £4 a carer for cover alone, without the schedule — one has (EVID-004); the next four haven't been asked.
-- **Experiment this week:** put the card form (FEAT-003) in front of the three owners who filled twice; ask for the first month, not a promise.
+- **What we're testing next:** put the card form (FEAT-003) in front of the three owners who filled twice; ask for the first month, not a promise.
 - **What result would change the plan?** two of three say no to paying for cover alone → the schedule question reopens (DEC-002's falsifier, early).

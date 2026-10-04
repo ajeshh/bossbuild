@@ -17,7 +17,7 @@ entry:
 exit:
   - any_file_matches:
       path_glob: docs/ideas/*-canvas.md, docs/ideas/CANVAS.md
-      pattern: 'Experiment this week:\*\*\s+[^_].*[a-zA-Z0-9]{3,}'
+      pattern: '(?:What we.?re testing next|Experiment this week):\*\*\s+[^_].*[a-zA-Z0-9]{3,}'
       related_idea_not_matching: '^status:\s+dropped'
 drift_moment: drift
 ---
@@ -41,7 +41,8 @@ nothing you've built tests it."
 ## The judgment the predicate can't do (and the model can)
 
 The predicate gate is deliberately cheap and structural: *a riskiest assumption is filled in, work
-has accumulated (≥3 devlog entries), and no "Experiment this week" validation plan exists yet.*
+has accumulated (≥3 devlog entries), and no "What we're testing next" validation plan exists yet* (older canvases say "Experiment this
+week"; the exit reads both).
 That's all regex can prove. It cannot read the five recent devlog entries and tell whether the work
 is **about** the named risk or **around** it. That semantic comparison — stated bet vs. actual
 work — is the model's job, and it's the whole value of this moment.
@@ -81,7 +82,7 @@ generation; this loop is the counter-pressure.
 
 ## Exit artifact
 
-The canvas's **Experiment this week** line is filled with a real validation plan (not the
+The canvas's **What we're testing next** line (or the older **Experiment this week**) is filled with a real validation plan (not the
 `_(the smallest test…)_` placeholder) — the same artifact the `done` graduation moment looks for.
 Recording how you'll test the risk closes the loop. The good outcome of a drift nudge is the
 founder writing (or running) that experiment.

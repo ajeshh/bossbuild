@@ -203,8 +203,9 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    gave one) and write `unknown` for every other line, rather than the template's prompts. Say in one
    line that it's a living doc any skill can add to. A later skill fills in what's missing and never
    rewrites a line that's already written.
-5. After each pass, name the **single riskiest assumption** and propose **one experiment this week**
-   to test it. Write both in. That's the heartbeat of incubation. **Where the bet usually lives:** in
+5. After each pass, name the **single riskiest assumption** and propose **what to test next**, and
+   who will see it. Write both in. (A canvas written before this line was renamed says *Experiment
+   this week*; leave it, everything that reads the line reads both.) That's the heartbeat of incubation. **Where the bet usually lives:** in
    the solution being good enough, the buyer paying, or the channel working — rarely in *"people have
    this problem."* That cell is the easiest to feel sure about and the one Cagan (2026) says teams
    over-validate while the product fails on the solution; reach for it last, not first. If any `EVID-NNN` records in
@@ -337,7 +338,7 @@ find out. Don't manufacture a yes to look thorough.
 
 ## Incubation heartbeat
 - **Riskiest assumption:** _(the one most likely to be fatal and least proven)_
-- **Experiment this week:** _(the smallest test to prove/disprove it — often a 15-minute call with the right person; `/interview` preps it and debriefs it into graded evidence)_
+- **What we're testing next:** _(the smallest test to prove/disprove it, and who will see it — often a 15-minute call with the right person; `/interview` preps it and debriefs it into graded evidence)_
 - **What result would change the plan?** _(decide before you run it)_
 ```
 

@@ -121,6 +121,24 @@
     fires: false
   why: "Exit satisfied: the named risk has a validation plan. The good outcome — the founder recorded how they'll test the bet. Loop closed."
 
+- id: m-drift-101b
+  category: should-not-fire
+  scenario: "Same as 101, but the canvas uses the renamed line `What we're testing next` (IDEA-135)."
+  project_state:
+    ideas:
+      - file: IDEA-001-foo.md
+        capture_log_entries: 0
+        canvas:
+          riskiest_assumption_text: "teams will switch from spreadsheets to this"
+          experiment_label: "What we're testing next"
+          experiment_text: "fake-door landing + 20 outreach DMs; ship if ≥5 book a call"
+    docs_files:
+      - { path: docs/devlog.md, fixture: devlog_3_entries }
+      - { path: docs/extractions/EXTR-001.md, fixture: extraction_record_up }
+  expected_detection:
+    fires: false
+  why: "The renamed line is the same exit artifact: a canvas written after the rename must not read as having no plan."
+
 - id: m-drift-102
   category: should-not-fire
   scenario: "Risk filled; no experiment; only 2 devlog entries — under the work threshold."
