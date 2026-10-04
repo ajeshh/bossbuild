@@ -115,6 +115,13 @@ rule above still applies to the whole section once it is stamped.
   in your own words. Its Copy gives you an About section or an intro email. A decision you
   reversed says so, and a part you haven't written is left out.
 
+- **`/close` asks whether your why is still true, rarely.** When something happened (a decision
+  reversed, a mode unlocked, stopping talked about), or when it's been about a month, `/close`
+  adds one line to its end-of-session list: your own sentence from `/boss`, quoted, and *still
+  true?* Yes stamps `why_checked:`. A changed why is added to your idea's capture log in your words
+  as a new dated line; the old one is never edited. *Not any more* is a real answer, recorded and
+  left alone. It never argues for carrying on.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system
