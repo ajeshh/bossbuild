@@ -1014,3 +1014,13 @@ test('IDEA-134 Product shows what it looks like only from files in docs/product/
   assert.match(html, /id="product-screens"[\s\S]*?<img src="data:image\/png;base64,[^"]+" alt="the monday view"><figcaption>the monday view<\/figcaption>/);
   assert.ok(data.cuts.vc.includes('product-screens') && data.cuts.story.includes('product-screens'));
 });
+
+test('IDEA-134 Team: a photo dropped beside the person file, named like it, shows with no field to edit; with none, the how sits in the card foot, never in the body or a stand-in face', () => {
+  const dir = project({ ...stamp(), 'docs/team/marta.md': PERSON('Marta', 'founder', 'unknown'), 'docs/team/marta.png': PNG, 'docs/team/dev.md': PERSON('Dev', 'advisor') });
+  const team = readTeam(dir);
+  assert.match(team.find((p) => p.slug === 'marta').photo.dataUri, /^data:image\/png;base64,/);
+  assert.equal(team.find((p) => p.slug === 'dev').photo, null);
+  const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-10-04 10:00');
+  assert.match(html, /id="person-marta"[\s\S]*?<img class="face"/);
+  assert.match(html, /id="person-dev"[\s\S]*?<div class="foot"><span class="src">docs\/team\/dev\.md · no photo — drop dev\.jpg beside it<\/span>/);
+});

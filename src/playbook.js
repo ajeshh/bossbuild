@@ -502,6 +502,13 @@ export function readScreens(projectDir) {
   return out;
 }
 
+// A photo dropped beside the person's file, named like it (marta.md → marta.jpg), is the choice made by
+// dropping it — no field to edit (IDEA-134). `photo: unknown` with no such file stays faceless.
+function photoByName(dir, slugName) {
+  const hit = ['jpg', 'jpeg', 'png', 'webp'].map((e) => `${slugName}.${e}`).find((f) => existsSync(join(dir, f)));
+  return hit ? readPhoto(dir, hit) : null;
+}
+
 // docs/team/<slug>.md — a person, in their own words: the three sections, a role, a photo by choice.
 const ROLES = ['founder', 'cofounder', 'team', 'advisor', 'missing'];   // `missing` = a role you need and don't have, written plainly
 export function readTeam(projectDir) {
@@ -516,7 +523,7 @@ export function readTeam(projectDir) {
       const sec = (h) => (sectionStartingWith(text, h) || '').split('\n').filter((l) => l.trim() && !/^(?:[-*]\s*)?(?:\*\*[^*]+\*\*\s*)?<[^>]*>\s*$/.test(l.trim())).join('\n').trim();
       const role = String(fm.role || '').trim().toLowerCase().split(/\s/)[0];
       out.push({ slug: n.replace(/\.md$/i, ''), name: String(fm.name || title.split(/\s+[—–-]\s+/)[0] || n.replace(/\.md$/i, '')).trim(), handle: String(fm.handle || '').replace(/^"|"$/g, ''),
-        role: ROLES.includes(role) ? role : 'team', thing: sec('The specific thing'), brings: sec('What they bring'), bio: sec('Bio'), photo: readPhoto(dir, fm.photo) });
+        role: ROLES.includes(role) ? role : 'team', thing: sec('The specific thing'), brings: sec('What they bring'), bio: sec('Bio'), photo: readPhoto(dir, fm.photo) || photoByName(dir, n.replace(/\.md$/i, '')) });
     } catch { /* skip */ }
   }
   return out.sort((a, b) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role) || a.name.localeCompare(b.name));
@@ -1049,7 +1056,8 @@ function companyChapters(data) {
       + (p.thing ? `<p class="thing">${inline(p.thing)}</p>` : '<p class="helper">the specific thing — not written yet</p>')
       + (p.brings ? blockMd(p.brings) : '')
       + (p.bio ? `<p class="bio">${inline(p.bio)}</p>` : ''),
-    src: `docs/team/${esc(p.slug)}.md` });
+    // no face: the how, in the foot — the page only; a slide carries the chip and a copy the body, never this
+    src: `docs/team/${esc(p.slug)}.md${p.photo ? '' : ` · no photo — drop ${esc(p.slug)}.jpg beside it`}` });
   empty.team = !people.length;
   const missing = gaps.length
     ? block({ id: 'team-missing', title: 'Who is missing', sub: `${gaps.length} role${gaps.length === 1 ? '' : 's'}, named`, body: gaps.map((g) => `<p><strong>${esc(g.name)}</strong>${g.thing ? ` — ${inline(g.thing)}` : ''}</p>${g.brings ? blockMd(g.brings) : ''}`).join(''), chip: '<span class="chip asserted">asserted</span>', src: gaps.map((g) => `docs/team/${esc(g.slug)}.md`).join(' · ') })

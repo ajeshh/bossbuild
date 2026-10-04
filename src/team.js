@@ -68,7 +68,7 @@ type: person
 name: ${who}
 handle: "@${handle}"
 role: cofounder            # founder | cofounder | team | advisor
-photo: unknown             # a file beside this one (./${handle}.jpg) — your choice to add; no file, no face
+photo: unknown             # or just drop ${handle}.jpg beside this file and it shows; no file, no face
 status: active
 ---
 

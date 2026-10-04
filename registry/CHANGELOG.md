@@ -143,6 +143,11 @@ rule above still applies to the whole section once it is stamped.
   points there instead of repeating it. Save a screenshot as `docs/product/screens/01-<what>.png`
   and Product shows *What it looks like*; `/ship` now keeps one when the thing has a screen.
 
+- **Add a face to your team page by dropping a photo in the folder.** Put `marta.jpg` (or `.png`,
+  `.webp`) beside `docs/team/marta.md` and the playbook shows it, inlined so a deck you paste into
+  carries it. There's no field to edit. A card without a photo says how in its footer, which shows
+  on the page but not in slides or copies, and BOSS never draws a stand-in face.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

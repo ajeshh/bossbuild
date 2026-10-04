@@ -21,7 +21,7 @@ type: person
 name: <Name>
 handle: "@<github-username>"
 role: founder            # founder | cofounder | team | advisor | missing (a role you need and don't have — the name is the role)
-photo: unknown           # a file beside this one (./name.jpg) — your choice to add; no file, no face
+photo: unknown           # or just drop <your-handle>.jpg beside this file and it shows; no file, no face
 status: active
 ---
 
@@ -38,6 +38,7 @@ status: active
 <three lines, first person or third — the ones you'd want under your name on a slide>
 ```
 
-**A photo is a choice.** The page you paste into a deck will carry it. Leave `photo: unknown` and
-the card shows the name; BOSS never draws a stand-in face. Files in this folder commit with the
+**A photo is a choice: dropping it is the choice.** Put `marta.jpg` (or `.png`, `.webp`) beside
+`marta.md` and the playbook shows it, inlined, so a deck you paste it into carries it. No file, and the
+card shows the name; BOSS never draws a stand-in face. Keep it under 600 KB. Files in this folder commit with the
 repo — a cofounder who clones sees them.
