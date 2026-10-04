@@ -26,7 +26,7 @@ import { designHtml } from '../src/design.js';
 import { boardHtml } from '../src/board.js';
 import { loadModes } from '../src/modes.js';
 import { STAGE_ORDER } from '../src/paths.js';
-import { readEvidence, readPersonas, readDecisions, readBrandDoc, readHealth, readLearnings } from '../src/playbook.js';
+import { readEvidence, readPersonas, readDecisions, readBrandDoc, readHealth, readLearnings, readBrand } from '../src/playbook.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const DEMO = join(ROOT, 'demo', 'kettlewick');
@@ -235,7 +235,7 @@ export function learningHtml(dir, project, conscience = { ran: false, signals: [
   const modeCards = modes.map((m) => `<article class="block filled" id="learn-mode-${esc(m.id)}" data-title="${esc(m.name)}"><div class="head"><h3>${esc(m.name)}</h3></div><div class="body"><p class="t-small">${esc(m.summary || '')}</p><div class="verbs">${(m.skills || []).map((sk) => `<span class="verb-chip">/${esc(sk.name || sk)}</span>`).join('')}</div></div><div class="foot"><span class="src">stages/${esc(m.id)}/manifest.json</span></div><div class="actions"></div></article>`).join('');
   const block = (id, title, sub, body, src) => `<article class="block filled" id="${id}" data-title="${esc(title)}"><div class="head"><h3>${esc(title)}${sub ? ` <span class="sub">— ${esc(sub)}</span>` : ''}</h3></div><div class="body">${body}</div><div class="foot"><span class="src">${esc(src)}</span></div><div class="actions"></div></article>`;
   return page(project, 'Learning', `
-<div class="chapter-head"><div class="label">How it learns</div><h2>What ${esc(project.name)} found out, in the order it found it out — read from the records.</h2>
+<div class="chapter-head"><div class="label">How it learns</div><h2>What ${esc(displayName(project))} found out, in the order it found it out — read from the records.</h2>
 <p>BOSS doesn't grade a venture; it keeps the trail honest. Each block below is a record class doing the thing it exists for: evidence climbing a ladder, a persona getting less made-up, a decision failing its own test, a brand learning the words real people use, and a health read turning into the next idea.</p></div>
 <div class="blocks">
 ${block('learn-ladder', 'Evidence climbed the ladder', climbed, `<ol class="trail">${ladder}</ol><p class="t-small">stated-pain is what someone said; observed-behavior is what you watched them do; commitment is what they gave up — money, time, a name.</p>`, 'docs/evidence · four records, graded')}
@@ -258,7 +258,7 @@ function page(project, title, inner) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(project.name)} — ${esc(title)}</title>
+<title>${esc(displayName(project))} — ${esc(title)}</title>
 <style>${SHELL_CSS || ''}
   .verbs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; } .verb-chip { display: inline-flex; padding: 2px 9px; border-radius: 99px; background: var(--accent); color: var(--accent-ink); font-family: var(--mono); font-size: 11px; letter-spacing: .02em; }
   .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0 0 28px; } .fact { background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; } .fact b { display: block; font-family: var(--display); font-size: 34px; line-height: 1; margin-bottom: 6px; } .fact span { font-size: 13px; color: var(--ink-2); }
@@ -273,7 +273,7 @@ ${RIBBON_CSS}
 <body>
 ${RIBBON}
 <header class="topbar">
-  <div class="wordmark">${esc(project.name)}</div>
+  <div class="wordmark">${esc(displayName(project))}</div>
   <nav class="family" aria-label="Spaces"><a href="index.html">Demo</a><a href="playbook.html">Playbook</a><a href="design.html">Design</a><a href="board.html">Board</a><a href="organization.html"${title === 'Organization' ? ' class="on" aria-current="page"' : ''}>Organization</a><a href="learning.html"${title === 'Learning' ? ' class="on" aria-current="page"' : ''}>Learning</a></nav>
 </header>
 <main class="one">
@@ -293,6 +293,29 @@ function stamp(html) {
   return out.replace('<nav class="family" aria-label="Spaces">', '<nav class="family" aria-label="Spaces"><a href="index.html">Demo</a>');
 }
 
+// What Kettlewick IS, first and in plain words, read from its own records: the story in one line, why
+// it exists in the founder's words, the first thing watched rather than said, what the name means.
+// Ajesh, 2026-10-04: "I couldnt quite get what kettlewick was about" — the page led with BOSS.
+// The venture's name as its brand doc writes it (`wordmark:`), never the folder slug — the playbook's own reader.
+function displayName(project) { try { return readBrand(DEMO, project.name).name || project.name; } catch { return project.name; } }
+
+function ventureHead(data) {
+  const b = data.brand || {}; const idea = data.idea || {};
+  const line = (label) => ((data.brandDoc && data.brandDoc.shape.find((l) => l.label === label)) || {}).value || '';
+  const founder = ((data.team || []).find((p) => p.role === 'founder') || {}).name || '';
+  const seen = (data.evidenceRows || []).filter((e) => e.grade === 'observed-behavior' && e.date).sort((x, y) => x.date.localeCompare(y.date))[0];
+  const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+  const rows = [
+    idea.why ? ['Why it exists', `“${esc(idea.why)}”${founder ? ` — ${esc(founder)}, the founder` : ''}`] : null,
+    seen ? ['The first proof', `${esc(cap(seen.title))} (${esc(seen.date)}, watched, not told)`] : null,
+    line('The name, and why') ? ['The name', esc(line('The name, and why'))] : null,
+  ].filter(Boolean);
+  return `<div class="chapter-head"><div class="label">The demo · a fictional venture</div><h2>${esc(b.name || 'Kettlewick')}${b.tagline ? `: ${esc(b.tagline.toLowerCase())}.` : ''}</h2>`
+    + (b.story ? `<p style="font-family:var(--display);font-size:20px;line-height:1.4;color:var(--ink);max-width:62ch">${esc(b.story)}</p>` : '') + '</div>'
+    + (rows.length ? `<dl class="kv" style="max-width:820px;margin:0 0 22px">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : '')
+    + `<p class="t-small" style="max-width:70ch;margin:0 0 22px">None of it is real. Every page below is what <code>boss playbook</code>, <code>boss design</code> and <code>boss board --html</code> produce from the records in <code>demo/kettlewick/</code>, which you can read in the repo.</p>`;
+}
+
 export function generate({ out = SITE_DEMO, check = false } = {}) {
   const { dir, project, data, design, pages, conscience } = renderDemo();
   try {
@@ -309,15 +332,15 @@ export function generate({ out = SITE_DEMO, check = false } = {}) {
     writeFileSync(join(out, 'organization.html'), organizationHtml(dir, project));
     writeFileSync(join(out, 'learning.html'), learningHtml(dir, project, conscience));
     writeFileSync(join(out, 'index.html'), page(project, 'Demo', `
-<div class="chapter-head"><div class="label">The demo</div><h2>One venture, every piece, generated.</h2><p>Kettlewick is a fictional venture that finds shift cover for small home-care agencies — a phone-first way to find cover when a carer calls in sick. Nothing here is a mock-up: the pages below are what <code>boss playbook</code>, <code>boss design</code> and <code>boss board --html</code> produce from the records in <code>demo/kettlewick/</code>, which you can read in the repo.</p></div>
+${ventureHead(data)}
 <div class="blocks">
-  <article class="block filled" id="demo-playbook" data-title="Playbook"><div class="head"><h3><a href="playbook.html">The playbook →</a></h3></div><div class="body"><p>Sixteen chapters over the records: the pitch, the proof, the company. The canvas in three frames. Present it as a deck — the VC cut, or everything — and export the cut as a PDF.</p></div><div class="foot"><span class="src">boss playbook · ${questions.length} question${questions.length === 1 ? '' : 's'} open</span></div></article>
+  <article class="block filled" id="demo-playbook" data-title="Playbook"><div class="head"><h3><a href="playbook.html">The playbook →</a></h3></div><div class="body"><p>Sixteen chapters over the records: the pitch, the proof, the company. The canvas in three frames. Present it as a deck (the VC cut, the story, or everything) and export the cut as a PDF.</p></div><div class="foot"><span class="src">boss playbook · ${questions.length} question${questions.length === 1 ? '' : 's'} open</span></div></article>
   <article class="block filled" id="demo-design" data-title="Design"><div class="head"><h3><a href="design.html">The design space →</a></h3></div><div class="body"><p>Tokens as swatches with the decision that chose them, contrast computed, the people, the parts, the patterns — every value copies in the form an editor wants.</p></div><div class="foot"><span class="src">boss design</span></div></article>
   <article class="block filled" id="demo-board" data-title="Board"><div class="head"><h3><a href="board.html">The board →</a></h3></div><div class="body"><p>Every idea and feature by where it stands — captured, taking shape, building, shipped, parked — read from the records' own status lines.</p></div><div class="foot"><span class="src">boss board --html</span></div></article>
   <article class="block filled" id="demo-organization" data-title="Organization"><div class="head"><h3><a href="organization.html">Organization →</a></h3></div><div class="body"><p>Every record has a home, a shape and one verb that writes it — the filing BOSS does so the founder never has to, grouped by what you're doing, read from the tree after rendering.</p></div><div class="foot"><span class="src">the demo project's tree</span></div></article>
   <article class="block filled" id="demo-learning" data-title="Learning"><div class="head"><h3><a href="learning.html">How it learns →</a></h3></div><div class="body"><p>Evidence climbing the ladder, a persona getting less made-up, a decision failing its own test, a brand learning real words, a health read becoming the next idea — and the conscience run for real against the records while the page was built.</p></div><div class="foot"><span class="src">read from the records · the shipped hook, run at build time</span></div></article>
 </div>
-<p class="t-small" style="margin-top:24px">No faces: the founders are fictional, and BOSS never draws a stand-in for a person with no photo. No real company is a rival here. What you see is the render's honesty, not a brochure — the questions still open on the playbook are open on purpose only when a page says so.</p>`));
+<p class="t-small" style="margin-top:24px">The faces are illustrations, because the founders are fictional; BOSS never draws a stand-in for a real person. The two product screens are drawn too, since Kettlewick's code is never built. No real company is a rival here. What you see is the render's honesty, not a brochure — the questions still open on the playbook are open on purpose only when a page says so.</p>`));
     return { out, questions, line: questionsLine(questions) };
   } finally {
     rmSync(dir, { recursive: true, force: true });
