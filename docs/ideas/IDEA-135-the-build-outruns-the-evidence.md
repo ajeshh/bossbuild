@@ -294,7 +294,7 @@ candidate loop specs. No runtime change.
   in `.boss/config.json`), and fresh clones reset modification times, so it under-fires.
 - Cost: the `$source` walk already runs per prompt for other loops (capped at 1,500 files).
 
-## Slice 1 drafted (2026-10-04, uncommitted, waiting on Ajesh's read)
+## Slice 1 landed (2026-10-04, `3cf20a9`, Unreleased; Ajesh: "continue")
 
 `stages/L0-quickstart/template/.boss/loops/unseen-loop.md` (≥1,500 source lines, no EVID) and
 `unseen-since-loop.md` (≥6 source files newer than the newest EVID), both on the existing `focus`
@@ -305,8 +305,15 @@ no evidence and on six files changed after evidence. Voiced by a model in two ca
 gets one plain line and *who has seen the last few?*; one feature getting deeper gets silence.
 Unit tests 658/658, conscience evals 154/154.
 
-**Still to do before it ships:** eval cases for both loops in `conscience-evals/` (none yet);
-the CHANGELOG bullet; the thresholds (1,500 lines, 6 files) are guesses to tune on real trees.
+Six gate evals in `conscience-evals/moment-unseen.yml` (160/160 with them); CHANGELOG bullet under
+Unreleased. **Still open:** the thresholds (1,500 lines, 6 files) are guesses to tune on real
+trees; which records besides EVID count as "seen"; no judgment-layer eval (voicing) yet.
+
+**Next slices, in order:** (2) the playbook's Product chapter leads with *what we're testing
+next → what we built for it → who saw it and what they did*, mocked on Kettlewick first;
+(3) the canvas heartbeat cell renamed *What we're testing next* and merged with *What result
+would change the plan* (drift-loop's exit regex and `moment-frames.js` read the old label);
+(4) the receipt: the founder's answer to the moment logged beside the work it was about.
 Left over from testing: `~/.boss/projects/walkies-1ebcc07f/` (a test run's conscience state,
 written to the real `~/.boss` because the test exported the wrong variable; safe to delete).
 
