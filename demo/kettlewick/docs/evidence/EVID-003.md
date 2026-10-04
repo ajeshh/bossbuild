@@ -9,7 +9,7 @@ method: observation
 grade: observed-behavior
 cells: Story · Promises
 assumption: owners will cover a visit from their phone
-about: VisitRow, Button, the day view
+about: FEAT-001, FEAT-002, VisitRow, Button, the day view
 ---
 
 # EVID-003 — an owner covered a Monday visit from the school gate

@@ -25,6 +25,8 @@ import { shellPage, esc, lightScheme, DEFAULT_ACCENT } from './page-shell.js';
 // otherwise. A cycle with design.js (it imports verbLine) — function bindings used at call time only.
 import { readTokens, themeFromTokens } from './design.js';
 import { isoDay, isoMinute } from './clock.js';
+import { gitDates } from './gitdates.js';
+import { readSourceGlobs } from './config.js';
 
 // --- the registry -----------------------------------------------------------------------------
 // `lean` is the Lean Canvas box the humane answer reads as (DEC-004 mapping); `area` its grid slot.
@@ -143,7 +145,7 @@ export function readEvidence(projectDir) {
       const names = [fm.cell, fm.cells, fm.assumption, fm.relates].filter(Boolean).map(String).join(' ');
       // FEAT-028: the title line is the founder's own summary; the body and `source:` never leave the file
       const h1 = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].replace(/^EVID-\d+\s*[—–-]\s*/i, '').trim();
-      out.push({ id: fm.id || n.replace(/\.md$/i, ''), file: n, grade, date, names: norm(names), title: stripMd(h1), method: String(fm.method || '').trim().toLowerCase(), assumption: stripMd(String(fm.assumption || '')) });
+      out.push({ id: fm.id || n.replace(/\.md$/i, ''), file: n, grade, date, names: norm(names), title: stripMd(h1), meets: [...new Set(String([fm.about, fm.relates].filter(Boolean).join(' ')).match(/FEAT-\d+/gi) || [])].map((x) => x.toUpperCase()), method: String(fm.method || '').trim().toLowerCase(), assumption: stripMd(String(fm.assumption || '')) });
     } catch { /* an unreadable record is not a signal */ }
   }
   return out;
@@ -297,7 +299,7 @@ export function readFeats(projectDir) {
   for (const n of readdirSync(dir).filter((x) => /^FEAT-\d+.*\.md$/i.test(x)).sort()) {
     try {
       const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
-      out.push({ id: fm.id || n.replace(/\.md$/, ''), gist: String(fm.gist || (text.match(/^#\s+(.+)$/m) || [null, ''])[1] || '').trim(), status: String(fm.status || '').split(/\s*[(—-]/)[0].trim(), shippedOn: fm.shipped_on || null });
+      out.push({ id: fm.id || n.replace(/\.md$/, ''), gist: String(fm.gist || (text.match(/^#\s+(.+)$/m) || [null, ''])[1] || '').trim(), status: String(fm.status || '').split(/\s*[(—-]/)[0].trim(), shippedOn: fm.shipped_on || null, goal: ((text.match(/^## Goal\s*\n+([^\n]+)/m) || [null, ''])[1]).trim() });
     } catch { /* skip */ }
   }
   return out;
@@ -619,6 +621,51 @@ export function readHealth(projectDir) {
   return { health: one('health', 'HEALTH'), measure: one('measure', 'MEASURE') };
 }
 
+// The canvas heartbeat: what is being tested next, what result would change the plan, and the
+// assumption it serves (IDEA-135 mock). Accepts the old label so a canvas written before the rename reads.
+export function readTesting(text) {
+  const line = (re) => { const m = text.match(re); const v = m ? m[1].trim() : ''; return !v || /^_.*_$/.test(v) ? '' : v; };
+  const next = line(/^-\s*\*\*(?:What we'?re testing next|Experiment this week):?\*\*:?\s*(.+)$/im);
+  const change = line(/^-\s*\*\*What result would change the plan\??:?\*\*:?\s*(.+)$/im);
+  const risk = line(/^-\s*\*\*Riskiest assumption:?\*\*:?\s*(.+)$/im);
+  return { next, change, risk };
+}
+
+// IDEA-135 mock: the two signals that survive relabelling. When someone outside was last heard from
+// (the newest EVID), and how many of the founder's source files git says changed after that day.
+// Counts files, not features, so a bloated FEAT and ten lumped ones read the same. No git → no count.
+export function readBuildSince(projectDir, evidence) {
+  const last = evidence.map((e) => e.date).filter(Boolean).sort().pop() || null;
+  const lastId = last ? (evidence.find((e) => e.date === last) || {}).id : null;
+  const days = last ? Math.max(0, Math.round((Date.parse(isoDay(new Date())) - Date.parse(last)) / 86400000)) : null;
+  const gd = gitDates(projectDir);
+  if (!gd) return { last, lastId, days, changed: null, total: null };
+  const res = readSourceGlobs(projectDir).map((g) => new RegExp('^' + g.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*\*/g, '\u0000').replace(/\*/g, '[^/]*').replace(/\u0000/g, '.*') + '$'));
+  const src = [...gd.touched].filter(([path]) => res.some((r) => r.test(path)) && existsSync(join(projectDir, path)));
+  return { last, lastId, days, changed: last ? src.filter(([, d]) => d > last).length : src.length, total: src.length };
+}
+
+// IDEA-135 mock: what the evidence CHANGED. A decision or a build record that cites an EVID is learning that
+// moved something; the newest one is "the last thing it changed". Evidence after it that nothing cites is the
+// stagnation signal: still hearing, nothing moving.
+export function readChanges(projectDir) {
+  const out = [];
+  for (const [sub, re] of [['decisions', /^DEC-\d+.*\.md$/i], ['ideas', /^FEAT-\d+.*\.md$/i]]) {
+    const dir = join(projectDir, 'docs', sub);
+    if (!existsSync(dir)) continue;
+    for (const n of readdirSync(dir).filter((x) => re.test(x))) {
+      try {
+        const text = readFileSync(join(dir, n), 'utf8'); const fm = frontmatter(text);
+        const cites = [...new Set((text.match(/EVID-\d+/gi) || []).map((x) => x.toUpperCase()))];
+        if (!cites.length) continue;
+        const h1 = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].replace(/^(DEC|FEAT)-\d+\s*[—–:-]\s*/i, '').trim();
+        out.push({ id: fm.id || n.replace(/\.md$/, ''), title: stripMd(h1 || String(fm.gist || '')), date: (String(fm.created || fm.date || '').match(/\d{4}-\d{2}-\d{2}/) || [null])[0], cites });
+      } catch { /* unreadable: not a signal */ }
+    }
+  }
+  return out.sort((a, b) => String(a.date).localeCompare(String(b.date)));
+}
+
 export function collectPlaybook(projectDir, projectName) {
   const found = findCanvas(projectDir);
   let parsed = { cells: [], updated: null, id: null };
@@ -667,6 +714,8 @@ export function collectPlaybook(projectDir, projectName) {
     ledger: { backed, live: live.length, signals: evidence.length, gradeCounts, topOverall, newestDays },
     brand: readBrand(projectDir, projectName),
     // slice 2 (FEAT-027) — each null/empty renders as a hole, never invented
+    since: readBuildSince(projectDir, evidence), changes: readChanges(projectDir),
+    testing: found ? (() => { try { return readTesting(readFileSync(found.path, 'utf8')); } catch { return null; } })() : null,
     idea, feats: readFeats(projectDir), personas: readPersonas(projectDir),
     competition: readCompetition(projectDir), sources: readSources(projectDir), ask: readAsk(projectDir),
     brandNot: readBrandLine(projectDir, 'What it is NOT'),
@@ -806,20 +855,75 @@ function pitchChapters(data) {
   const featOrder = (fs) => { const num = (f) => parseInt(String(f.id).replace(/\D/g, ''), 10) || 0; const done = (f) => /^shipped/i.test(f.status || '');
     return [...fs].sort((a, b) => (done(a) - done(b)) || num(b) - num(a)); };
   const shapeLine = idea && idea.shape ? firstSentence(idea.shape.split('\n').filter((l) => !/^_.*_$/.test(l.trim())).join('\n')) : '';
-  const featList = feats.length
-    ? block({ id: 'product-feats', title: 'What has shipped', sub: 'and what is being built', body: `<ul>${featOrder(feats).map((f) => `<li><strong>${esc(f.id)}</strong> · ${inline(f.gist)} — <em>${esc(f.status || 'unknown')}</em>${f.shippedOn ? ` · ${esc(f.shippedOn)}` : ''}</li>`).join('')}</ul>`, chip: `<span class="chip ev">${feats.length} FEAT${feats.length === 1 ? '' : 's'} · ${feats.filter((f) => /^shipped/i.test(f.status)).length} shipped</span>`, src: 'docs/ideas/FEAT-*.md · boss board' })
-    : hole('product-feats', 'What has shipped', 'Nothing has a build contract yet. The first FEAT is where "we should build this" becomes "here is how we\'ll know it\'s done."', '/spec', 'docs/ideas/FEAT-*.md — none');
+  // IDEA-135 mock: the build is shown against what is being tested and who has met it, not as a count.
+  // `meets` comes from an EVID's `about:` naming a FEAT. A thing nobody has met is said plainly, never hidden.
+  const evRows = data.evidenceRows || [];
+  const metBy = (f) => evRows.filter((e) => (e.meets || []).includes(String(f.id).toUpperCase()));
+  const t = data.testing || {};
+  const testingBlock = t.next
+    ? block({ id: 'product-testing', title: 'What we\'re testing next', sub: t.risk ? `the assumption it serves: ${firstSentence(prose(t.risk), 140)}` : 'the assumption it serves is not named yet',
+        body: `<p class="lede">${inline(t.next)}</p>` + (t.change ? `<p><strong>What would change the plan:</strong> ${inline(t.change)}</p>` : '<p class="muted">What result would change the plan is not written down yet.</p>'),
+        chip: '<span class="chip asserted">the founder\'s bet</span>', src: `${data.canvas ? esc(data.canvas.file) : 'canvas'} · What we're testing next` })
+    : hole('product-testing', 'What we\'re testing next', 'What are you putting in front of someone next, and who? One thing, in a sentence. Before there are users it is something to find out, not a number to hit.', '/canvas', 'canvas · What we\'re testing next — blank');
+  const stateOf = (f) => /^shipped/i.test(f.status || '') ? 'works' : /^(building|drafting|blocked)/i.test(f.status || '') ? 'half built' : (f.status || 'unknown');
+  const real = (v) => v && !/^_.*_$/.test(String(v).trim()) ? v : '';
+  const shortName = (f) => { const n = prose(String(f.gist || f.id).split(/\s+[—–-]\s+/)[0]); return n.length <= 30 ? n : n.slice(0, 30).replace(/\s+\S*$/, '') + '…'; };
+  const ordered = featOrder(feats);
+  const met = ordered.filter((f) => metBy(f).length);
+  const unmet = ordered.filter((f) => !metBy(f).length);
+  const metRow = (f) => `<li><strong>${inline(shortName(f))}</strong> <em class="muted">— ${esc(stateOf(f))}</em>${real(f.goal) ? `<br><span class="muted">for: ${inline(f.goal)}</span>` : ''}<br>${metBy(f).map((e) => `<span class="chip ev">${esc(e.grade || 'ungraded')}</span> ${inline(e.title)}${e.date ? ` <span class="muted">· ${esc(e.date)}</span>` : ''}`).join('<br>')}</li>`;
+  const unmetChip = (f) => `<span class="chip" style="border:1px dashed var(--muted);background:none" title="${esc(f.id)} · ${esc(stateOf(f))}">${esc(shortName(f))}${stateOf(f) === 'half built' ? ' <span class="muted">· ½</span>' : ''}</span>`;
+  // Past a dozen, names stop being readable and the fold would hide the scale, which is the point:
+  // the count and one square per thing say it at a glance (half built = half filled); names fold.
+  const half = unmet.filter((f) => stateOf(f) === 'half built').length;
+  const sq = (f) => `<span title="${esc(f.id)} · ${esc(shortName(f))} · ${esc(stateOf(f))}" style="display:inline-block;width:11px;height:11px;border:1px dashed var(--muted);border-radius:2px;${stateOf(f) === 'half built' ? 'background:linear-gradient(135deg,var(--muted) 50%,transparent 50%);opacity:.55' : ''}"></span>`;
+  const unmetMany = unmet.length > 12
+    ? `<p style="margin:.8em 0 .4em"><strong style="font-size:1.6em">${unmet.length}</strong> <span class="muted">not in front of anyone yet${half ? ` · ${half} half built` : ''}</span></p><p style="display:flex;flex-wrap:wrap;gap:3px;margin:0 0 .6em">${unmet.map(sq).join('')}</p><details><summary class="muted">the names</summary><p style="display:flex;flex-wrap:wrap;gap:6px">${unmet.map((f) => `<span class="chip" style="border:1px dashed var(--muted);background:none">${esc(shortName(f))}</span>`).join('')}</p></details>`
+    : '';
+  const since = data.since || {};
+  const ago = (n) => n === 0 ? 'today' : n === 1 ? 'yesterday' : `${n} days ago`;
+  const files = (n) => `${n} source file${n === 1 ? '' : 's'}`;
+  // How we're learning: three dials. Contact (when, and what they did), what it changed, and usage beside it.
+  const evNewest = since.last ? evRows.filter((e) => e.date === since.last).pop() : null;
+  const known = new Set(evRows.map((e) => String(e.id).toUpperCase()));
+  const changes = (data.changes || []).filter((c) => c.cites.some((id) => known.has(id)));
+  const lastChange = changes[changes.length - 1] || null;
+  const heardSince = lastChange && lastChange.date ? evRows.filter((e) => e.date && e.date > lastChange.date).length : 0;
+  const usage = data.health && data.health.health ? data.health.health : null;
+  const dial = (label, html) => `<p style="margin:.35em 0"><strong>${label}</strong> ${html}</p>`;
+  const headline = (since.last
+      ? `<p class="lede" style="margin:0 0 .5em">Last heard from someone outside <strong>${ago(since.days)}</strong>.${since.changed === null ? '' : since.changed === 0 ? ' Nothing in the code has changed since.' : ` Since then, <strong>${files(since.changed)}</strong> changed.`}</p>`
+        + (evNewest ? `<p class="muted" style="margin:0 0 .6em">${inline(evNewest.title)} <span class="chip ev">${esc(evNewest.method || evNewest.grade || 'evidence')}</span></p>` : '')
+      : `<p class="lede" style="margin:0 0 .5em">Nobody outside has been recorded seeing it yet.${since.total ? ` The build is <strong>${files(since.total)}</strong>.` : ''}</p>`)
+    + dial('What it changed:', lastChange
+      ? `${esc(lastChange.id)} · ${inline(lastChange.title)}${lastChange.date ? ` <span class="muted">· ${esc(lastChange.date)}</span>` : ''}${heardSince ? `<br><span class="muted">${heardSince} thing${heardSince === 1 ? '' : 's'} heard since ${heardSince === 1 ? 'hasn\'t' : 'haven\'t'} changed anything on record</span>` : ''}`
+      : `<span class="muted">${since.last ? 'nothing on record cites what someone said' : '—'}</span>`)
+    // Keep asking: a prompt only when learning has gone quiet — nobody yet, a month without contact, or things
+    // heard that changed nothing. Never when the founder is plainly in conversation.
+    + (!since.last || since.days >= 21 || heardSince ? `<p class="muted" style="margin:.2em 0 .5em">Ask someone next — <code>/interview</code> preps the call.</p>` : '')
+    + dial('Usage:', usage ? `${inline(firstSentence(prose(usage.text), 160))}${usage.date ? ` <span class="muted">· ${esc(usage.date)}</span>` : ''}` : '<span class="muted">not measured yet</span>')
+    + '<hr style="border:0;border-top:1px solid var(--line, rgba(0,0,0,.08));margin:.8em 0">';
+  // One square per built thing, every one of them, before any detail can fold: solid = someone has met it,
+  // dashed = nobody yet, half filled = half built. The picture carries the scale; the text below carries who.
+  const square = (f) => { const m = metBy(f).length, h = stateOf(f) === 'half built';
+    return `<span title="${esc(f.id)} · ${esc(shortName(f))} · ${esc(stateOf(f))}${m ? ' · met' : ''}" style="display:inline-block;width:11px;height:11px;border-radius:2px;${m ? 'background:var(--accent);border:1px solid var(--accent)' : `border:1px dashed var(--muted);${h ? 'background:linear-gradient(135deg,var(--muted) 50%,transparent 50%);opacity:.6' : ''}`}"></span>`; };
+  const strip = `<p style="display:flex;flex-wrap:wrap;gap:3px;margin:0 0 .3em">${[...met, ...unmet].map(square).join('')}</p><p class="muted" style="font-size:.85em;margin:0 0 .9em">${met.length} met · ${unmet.length} not in front of anyone yet${half ? ` · ${half} half built` : ''}</p>`;
+  const featBody = headline + strip + (met.length ? `<ul>${met.map(metRow).join('')}</ul>` : '')
+    + (unmet.length > 12 ? `<details><summary class="muted">the ${unmet.length} names</summary><p style="display:flex;flex-wrap:wrap;gap:6px">${unmet.map((f) => `<span class="chip" style="border:1px dashed var(--muted);background:none">${esc(shortName(f))}</span>`).join('')}</p></details>` : unmet.length ? `${met.length ? '<p class="muted" style="margin:.8em 0 .4em">Not in front of anyone yet <span style="font-size:.85em">· ½ = half built</span></p>' : '<p class="muted" style="margin:0 0 .4em;font-size:.85em">½ = half built</p>'}<p style="display:flex;flex-wrap:wrap;gap:6px">${unmet.map(unmetChip).join('')}</p>` : '');
+  const featList = feats.length || evRows.length
+    ? block({ id: 'product-feats', title: 'How we\'re learning', sub: 'and what was built for it', cls: 'wide', body: featBody, chip: `<span class="chip ev">${feats.length} built · ${met.length} met</span>`, src: 'docs/ideas/FEAT-*.md · docs/evidence (about:)' })
+    : hole('product-feats', 'How we\'re learning', 'Who outside has seen it, and what did they do? Nothing is built or heard on record yet. A conversation is the cheapest start.', '/interview', 'docs/evidence · docs/ideas/FEAT-*.md — none');
   // Product leads with what the whole product is: the idea's own one-line description (`gist:`), then how it
   // shows up in someone's day (the canvas Story cell, whole), then what it looks like — before the shape
   // bullets and the build list (IDEA-134: the gist appeared nowhere on the page).
   const screens = data.screens || [];
   out.push(chapter('product', chapterHead(2, 'Product', idea && idea.gist ? firstSentence(prose(idea.gist), 220) : shapeLine),
     '<div class="blocks">'
+    + testingBlock + featList
     + cellBlock(cell('story'), canvas, 'product-how', 'How it works', 'how it shows up in someone\'s day — and why now')
     + (screens.length ? block({ id: 'product-screens', title: 'What it looks like', sub: `${screens.length} screen${screens.length === 1 ? '' : 's'}`, cls: 'screens wide', body: screens.map((x) => `<figure class="screen"><img src="${x.dataUri}" alt="${esc(x.caption)}"><figcaption>${esc(x.caption)}</figcaption></figure>`).join(''), src: 'docs/product/screens' }) : '')
     + (idea && idea.shape ? block({ id: 'product-shape', title: 'What it is today', sub: 'the current shape, in the founder\'s words', body: blockMd(idea.shape), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · ## Current shape${idea.created ? ` · since ${esc(idea.created)}` : ''}` })
       : hole('product-shape', 'What it is today', 'What is it, who is it for, and what is the smallest version that proves it? The IDEA doc\'s current shape.', ideaVerb, ideaSrc))
-    + featList
     + (brandNot ? block({ id: 'product-not', title: 'What it is not', body: `<p>${inline(brandNot)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: 'docs/BRAND.md · What it is NOT' })
       : hole('product-not', 'What it is not', 'The nearest thing people will mistake it for — and what it refuses to be.', '/canvas seeds docs/BRAND.md', 'docs/BRAND.md · What it is NOT'))
     + '</div>'));
@@ -1138,7 +1242,7 @@ function companyChapters(data) {
 // persona stays on the page and off this cut (Ajesh, 2026-09-13). The founder's removals live in
 // the browser; these are the first draft.
 const CHAPTER_CELLS = ['problem', 'story', 'people', 'risks', 'bizmodel', 'cost', 'principles'];
-const VC_IDS = new Set(['cover', 'vision-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'product-how', 'product-screens', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
+const VC_IDS = new Set(['cover', 'product-testing', 'vision-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'product-how', 'product-screens', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
 const VC_PREFIXES = ['rival-', 'person-', 'value-'];
 // The Story cut (IDEA-133): the venture as a narrative a founder hands to someone — the cover with its
 // story and heart, why, the problem, how sure over time, how it grew, the words that landed, where it
@@ -1313,7 +1417,8 @@ const PLAYBOOK_CSS = `
   .block.story-text { grid-column: 1 / -1; } @media (min-width: 1100px) { .blocks > .block.wide { grid-column: span 2; } }
   .block.story-text .body p + p { margin-top: 10px; } .block.story-text .body { max-width: 70ch; }
   details.history { margin-top: 10px; font-size: 13px; color: var(--muted); } details.history summary { cursor: pointer; font-family: var(--mono); font-size: 11px; } .sl details.history, .printdeck details.history { display: none; }
-  .lede { font-family: var(--display); font-size: 20px; line-height: 1.35; } .lede + p { margin-top: 10px; }
+  .lede { font-family: var(--display); font-size: 20px; line-height: 1.35; }
+.muted { color: var(--muted); } .lede + p { margin-top: 10px; }
   /* on a slide the body text scales with the screen; the story's own pieces scale with it (IDEA-133) */
   .sl .lede { font-size: 1.15em; } .sl .helper { font-family: var(--body); font-size: 14px; color: var(--muted); }
   .sl .quote blockquote { font-size: 1.05em; } .sl .quote.lead blockquote { font-size: 1.55em; line-height: 1.2; } .sl .quote figcaption, .sl .quote .says { font-family: var(--body); font-size: 14px; }
@@ -1516,7 +1621,7 @@ export function verbLine(verb, projectDir) {
 }
 // A chapter hole whose verb is /canvas usually repeats a canvas cell the list already names; these
 // ask for something no cell holds (the story in one line lives in BRAND.md), so they stay listed.
-const NOT_A_CELL = new Set(['vision-story']);
+const NOT_A_CELL = new Set(['vision-story', 'product-testing']);
 export function openQuestions(data, projectDir) {
   const fromCanvas = data.boxes.filter((b) => b.state === 'hole').map((b) => ({ id: `canvas-${b.key}`, title: b.name, prompt: b.prompt, verb: '/canvas' }));
   // Two chapters may hole on one missing file (Vision repeats Team's "who is building it" the way

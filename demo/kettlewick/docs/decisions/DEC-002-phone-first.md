@@ -14,7 +14,7 @@ supersedes: DEC-001
 # DEC-002 — Phone-first, and the schedule stays a spreadsheet
 
 ## Context
-Four owners covered from a phone in June. The office screen was where Shiftwise lives, not where Monday happens.
+Four owners covered from a phone in June (EVID-001, EVID-002). The office screen was where Shiftwise lives, not where Monday happens.
 
 ## Decision
 The cover flow is phone-first; the office screen is the same page, wider. The schedule stays the owner's spreadsheet; Kettlewick reads it and never edits it.

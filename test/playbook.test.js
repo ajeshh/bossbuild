@@ -419,7 +419,7 @@ test('eight chapters, each line a substring of a record on disk or absent — BO
 test('first run of the chapters: no idea, personas, competition, sources or dossier → every chapter is questions and verbs', () => {
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
   const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
-  for (const v of ['/idea', '/persona derive', '/comp-eval', '/import', '/consult · mentor-capital', '/spec']) assert.ok(html.includes(v), v);
+  for (const v of ['/idea', '/persona derive', '/comp-eval', '/import', '/consult · mentor-capital', '/interview']) assert.ok(html.includes(v), v);
   assert.ok(html.includes('id="persona-none"') && html.includes('id="competition-none"'));
 });
 
@@ -457,10 +457,12 @@ test('open questions are the page\'s holes, once each — every canvas hole and 
     assert.ok(qs.some((q) => q.id === id || (q.title === h.title && q.src === h.src)), `${id} is in the list, or its owner is`);
   }
   // the chapters repeat canvas cells as holes; the list carries each cell once, and never a dormant one
-  // (the story in one line is a /canvas question that is not a cell — IDEA-133 — and is listed on its own)
-  const canvasQs = qs.filter((q) => q.verb === '/canvas' && q.id !== 'vision-story');
+  // (the story in one line and what we're testing next are /canvas questions that are not cells —
+  // IDEA-133, IDEA-135 — and are listed on their own)
+  const NOT_CELLS = ['vision-story', 'product-testing'];
+  const canvasQs = qs.filter((q) => q.verb === '/canvas' && !NOT_CELLS.includes(q.id));
   assert.equal(canvasQs.length, data.boxes.filter((b) => b.state === 'hole').length);
-  assert.equal(qs.filter((q) => q.id === 'vision-story').length, 1);
+  for (const id of NOT_CELLS) assert.equal(qs.filter((q) => q.id === id).length, 1, id);
   assert.equal(new Set(canvasQs.map((q) => q.id)).size, canvasQs.length);
   assert.ok(!qs.some((q) => data.boxes.find((b) => b.state === 'dormant' && `canvas-${b.key}` === q.id)));
   // cheapest first: every /canvas before any other verb
@@ -474,7 +476,7 @@ test('a verb the project does not have yet: droppable records point at /import, 
   const line = (id) => openQuestions(data, dir).find((q) => q.id === id).line;
   assert.equal(line('competition-none'), '/comp-eval — or drop what you know: /import');
   assert.equal(line('product-not'), '/canvas seeds docs/BRAND.md — or drop what you know: /import');
-  assert.equal(line('product-feats'), '/spec — arrives with the next mode (boss unlock)');
+  assert.equal(line('risks-trust'), '/trust — arrives with the next mode (boss unlock)');
   assert.equal(line('persona-none'), '/persona derive');
   assert.equal(line('team-none'), 'write docs/team/<you>.md — the README there has the shape; boss team add writes a cofounder\'s', 'a hole with no verb points at the record shape, without citing BOSS\'s own records');
   // skills folder present but no /import → the gated verb just waits
@@ -492,7 +494,7 @@ test('the terminal: one summary line grouped by verb, --questions lists each wit
   assert.equal(questionsLine([{ line: '/canvas' }, { line: '/canvas' }, { line: '/idea' }]), '3 questions open · /canvas ×2 · /idea');
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-app.md': IDEA });
   const out = execFileSync('node', [BIN, 'playbook', '--questions'], { cwd: dir, encoding: 'utf8' });
-  assert.match(out, /\d+ questions open · \/canvas ×2 · \/canvas seeds docs\/BRAND\.md ×2 · .*\/decide/, 'grouped by verb, cheapest first; the story line is a /canvas question of its own (IDEA-133)');
+  assert.match(out, /\d+ questions open · \/canvas ×3 · \/canvas seeds docs\/BRAND\.md ×2 · .*\/decide/, 'grouped by verb, cheapest first; the story line and what we\'re testing next are /canvas questions of their own (IDEA-133, IDEA-135)');
   assert.match(out, /· Who, exactly — \/persona derive/);
   const plain = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
   assert.doesNotMatch(plain, /· Who, exactly/, 'the list only with --questions');
@@ -503,7 +505,7 @@ test('the page says the same thing the terminal says: a gated hole\'s verb line 
   const data = collectPlaybook(dir, 'tidewell');
   const html = renderPlaybookHtml(data, '2026-09-13 10:00');
   assert.ok(html.includes('not yet · /comp-eval — or drop what you know: /import'));
-  assert.ok(html.includes('not yet · /spec — arrives with the next mode (boss unlock)'));
+  assert.ok(html.includes('not yet · /trust — arrives with the next mode (boss unlock)'));
   assert.ok(html.includes(`<b class="tab">${data.questions.length}</b> open · start: /canvas</div>`), 'the open line closes the ledger');
 });
 

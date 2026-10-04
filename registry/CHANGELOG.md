@@ -27,6 +27,18 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The playbook's Product chapter now shows how you're learning, not how much you've built.** A
+  count of features is easy to fool: one feature can hold ten things, and ten can be lumped into
+  one. So the chapter opens with *What we're testing next* (the canvas line, with the assumption
+  it serves and what would change the plan) and a *How we're learning* block: when someone
+  outside was last heard from and how many source files git says changed since; the last
+  decision or feature that cites what someone said, and how many things heard since changed
+  nothing; and the usage line from your latest `/health` read. Under it, one square per feature,
+  solid where someone has used it (an evidence record's `about:` names it) and dashed where
+  nobody has yet, half-filled when half built. What someone used comes first, in full; past a
+  dozen untried, the names fold behind a count so the scale stays visible. When learning has
+  gone quiet, it offers `/interview`. The old *Experiment this week* label still reads.
+
 - **The conscience now notices when a lot has been built and nobody outside has seen it.** AI
   makes code nearly free to write and exactly as expensive to own: a small prototype meant for
   feedback can quietly become ten half-built features nobody has tried. Every guard BOSS had for
