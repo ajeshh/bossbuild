@@ -144,7 +144,10 @@ someone asks.
   This is a seam bug; reproduce it before fixing (CLAUDE.md rule 8). **Wider than it looked
   (verified 2026-10-04 in a throwaway with `BOSS_HOME` set):** after `boss unlock mvp`, `/landing`
   is still not installed (it's an earned verb), so `templates/brand-doc.md` is on disk for almost
-  nobody. The `/canvas` seed (A2) carries its own fenced template for that reason.
+  nobody. **Fixed in `bf02333`:** the skeleton moved to `canvas/templates/brand-doc.md` (Quickstart
+  skills stay on disk at every rung); `/pretotype`, `/design-tokens-init` and `/landing` point there;
+  `/canvas`'s inline seed became a pointer. Verified in throwaways: present at Quickstart and after
+  `unlock mvp`, and `boss sync --apply` adds it to an older install.
 - **`nascent` is not declared in `docs/IDS.md`.** The brand-doc template writes it and
   `src/playbook.js` reads it, but there is no vocabulary row for `type: brand`. `check:backlog` is
   right to flag it inline; A2 uses a fenced template, which is the checker's documented case for a
