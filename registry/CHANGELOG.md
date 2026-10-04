@@ -27,6 +27,14 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`boss status` no longer stops with an error on a manifest that lacks its layer list.** If
+  `.boss/manifest.json` had no `installedLayers`, `boss status` printed most of its page, then
+  ended on *Cannot read properties of undefined (reading 'map')*; `boss unlock` failed the same
+  way. A missing `bossVersion` showed as *pinned: undefined*. Both now fall back to the manifest's
+  `stage`, and the pin shows as *unknown* (in `boss sync` too). No `boss new` or `boss adopt` has
+  ever written a manifest without these fields, so this only affected hand-edited manifests and the
+  site's demo, which wrote a stand-in. The demo now writes the same fields a real install does.
+
 - **Your design system's map now has edges, and a component can say where it never goes.** At V1,
   `/design-library`'s `manifest.json` records two more things for each component: the tokens its
   source reads (`tokens`) and the other components it renders (`composes`). An agent can now answer

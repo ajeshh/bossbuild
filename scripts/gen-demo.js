@@ -25,6 +25,7 @@ import { playbookHtml, questionsLine } from '../src/playbook.js';
 import { designHtml } from '../src/design.js';
 import { boardHtml } from '../src/board.js';
 import { loadModes } from '../src/modes.js';
+import { STAGE_ORDER } from '../src/paths.js';
 import { readEvidence, readPersonas, readDecisions, readBrandDoc, readHealth, readLearnings } from '../src/playbook.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -64,7 +65,10 @@ export function renderDemo() {
   const dir = mkdtempSync(join(tmpdir(), 'boss-demo-'));
   cpSync(DEMO, dir, { recursive: true });
   mkdirSync(join(dir, '.boss'), { recursive: true });
-  writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({ name: project.name, stage: project.stage, mode: project.mode, cohort: project.cohort, version: project.bossVersion, created: project.created }, null, 2));
+  // Stamped with the keys a real install writes (`boss new`/`adopt`), not a stand-in: `boss status`
+  // run in this folder used to throw on the missing `installedLayers` and print "pinned: undefined".
+  const installedLayers = STAGE_ORDER.slice(0, STAGE_ORDER.indexOf(project.stage) + 1);
+  writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({ name: project.name, bossVersion: project.bossVersion, stage: project.stage, mode: project.mode, installedLayers, cohort: project.cohort, createdAt: project.created }, null, 2));
   if (project.cohort) writeFileSync(join(dir, '.boss', 'config.json'), JSON.stringify({ cohort: project.cohort, team: [{ handle: '@ola', name: 'Ola Bennett', added: '2026-06-01' }] }, null, 2));
   // the loops and hooks an install lays down for this stage — copied from the templates, so the
   // conscience can be run for real against the records (never a manufactured log)

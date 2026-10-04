@@ -57,7 +57,11 @@ function writeStamp(targetDir, stamp) {
 function readStamp(dir) {
   const file = join(dir, STAMP);
   if (!existsSync(file)) return null;
-  return JSON.parse(readFileSync(file, 'utf8'));
+  const stamp = JSON.parse(readFileSync(file, 'utf8'));
+  // Every `boss new`/`adopt` writes `installedLayers`; a hand-edited manifest may not, and
+  // status/unlock read it bare. Same fallback sync, map and help-html already use.
+  if (!Array.isArray(stamp.installedLayers) && stamp.stage) stamp.installedLayers = [stamp.stage];
+  return stamp;
 }
 
 // A mode's skill list is a wall the moment you adopt above Quickstart — MVP is 44 names, which is
@@ -662,7 +666,7 @@ async function cmdStatus(args) {
   printBuiltAndSeam(process.cwd(), stamp);
   console.log('');
   console.log(`    ${dim('modes:')}        ${stamp.installedLayers.map(modeWord).join(' → ')}`);
-  console.log(`    ${dim('BOSS pinned:')}  ${stamp.bossVersion}   ${dim('current:')} ${current}`);
+  console.log(`    ${dim('BOSS pinned:')}  ${stamp.bossVersion || 'unknown'}   ${dim('current:')} ${current}`);
   if (stamp.bossVersion !== current) {
     console.log(`    ${warn('⟳')} newer practices available — ${bold('boss changelog')} ${dim('to read what changed,')}`);
     console.log(`      ${bold('/boss-sync')} ${dim('to review the diff and apply it (inside Claude)')}`);
@@ -1261,7 +1265,7 @@ function cmdSync(args) {
   const orphans = (plan.orphans || []).filter((o) => o.present);
 
   console.log(`\n  ${bold(stamp.name + ' — sync')}`);
-  console.log(`    pin:    ${plan.pin}${plan.drift ? `  →  current ${plan.current}` : '  (current)'}`);
+  console.log(`    pin:    ${plan.pin || 'unknown'}${plan.drift ? `  →  current ${plan.current}` : '  (current)'}`);
   console.log(`    modes: ${plan.layers.map(modeWord).join(' → ')}\n`);
 
   if (!changed.length && !settingsChanged) {

@@ -502,6 +502,22 @@ test('REGRESSION: unlocking a rung you skipped never moves you back down', () =>
   assert.match(boss(['status'], p, home).out, /You are here: V1/);
 });
 
+// 2026-10-04: a manifest with no `installedLayers` or `bossVersion` (hand-edited, or the demo's
+// old stand-in) threw "Cannot read properties of undefined (reading 'map')" at the end of
+// `boss status`, after printing "pinned: undefined". No `boss new`/`adopt` ever wrote one.
+test('REGRESSION: status and unlock survive a manifest missing installedLayers and bossVersion', () => {
+  const home = project({});
+  const p = project({ '.boss/manifest.json': JSON.stringify({ name: 'bare', stage: 'L0-quickstart', mode: 'Quickstart' }) });
+  const s = boss(['status'], p, home);
+  assert.equal(s.code, 0, s.out);
+  assert.match(s.out, /modes:\s+quickstart/);
+  assert.match(s.out, /BOSS pinned:\s+unknown/);
+  assert.doesNotMatch(s.out, /undefined|Cannot read/);
+  assert.equal(boss(['unlock', 'mvp', '--yes'], p, home).code, 0);
+  const after = JSON.parse(readFileSync(join(p, '.boss', 'manifest.json'), 'utf8'));
+  assert.deepEqual(after.installedLayers, ['L0-quickstart', 'L1-mvp']);
+});
+
 test('skipping a rung says so, names what is being skipped, and proceeds anyway', () => {
   const home = project({});
   const r = boss(['unlock', 'v1', '--yes'], bossProject(), home);
