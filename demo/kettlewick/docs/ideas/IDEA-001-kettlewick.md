@@ -23,6 +23,7 @@ _The best articulation so far._
 
 ## Capture log
 - 2026-05-12 — seed: "every Monday I lose an hour to the cover call. I want the hour back."
+- 2026-05-12 — why: "every Monday I lose an hour to the cover call, and so does every owner I know" / it worked = "Five agencies I don't know run their Monday on it."
 - 2026-05-20 — from the first three calls: nobody wants a new schedule. They want the *cover* done.
 - 2026-06-02 — imported the register extract: about 6,400 small agencies in England (docs/source).
 - 2026-07-15 — owner survey notes: the phone tree is the job they hate most; the spreadsheet they'd keep.

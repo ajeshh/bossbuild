@@ -402,7 +402,7 @@ test('eight chapters, each line a substring of a record on disk or absent — BO
     assert.ok(corpus.includes(l.replace(/…$/, '')), `chapter line not from a record: "${l}"`);
   }
   // the pieces
-  assert.ok(html.includes('Motivation:</strong> own-problem'));
+  assert.ok(html.includes('Mainly about:</strong> a problem of their own'), 'the motivation slug, said in words (IDEA-133)');
   assert.ok(html.includes('One tap when someone calls in sick'));
   assert.ok(html.includes('agency software. A marketplace.'));
   assert.ok(html.includes('id="persona-dee"') && html.includes('synthetic 60% · real 40%'));
@@ -455,8 +455,10 @@ test('open questions are the page\'s holes, once each — every canvas hole and 
     assert.ok(qs.some((q) => q.id === id || (q.title === h.title && q.src === h.src)), `${id} is in the list, or its owner is`);
   }
   // the chapters repeat canvas cells as holes; the list carries each cell once, and never a dormant one
-  const canvasQs = qs.filter((q) => q.verb === '/canvas');
+  // (the story in one line is a /canvas question that is not a cell — IDEA-133 — and is listed on its own)
+  const canvasQs = qs.filter((q) => q.verb === '/canvas' && q.id !== 'vision-story');
   assert.equal(canvasQs.length, data.boxes.filter((b) => b.state === 'hole').length);
+  assert.equal(qs.filter((q) => q.id === 'vision-story').length, 1);
   assert.equal(new Set(canvasQs.map((q) => q.id)).size, canvasQs.length);
   assert.ok(!qs.some((q) => data.boxes.find((b) => b.state === 'dormant' && `canvas-${b.key}` === q.id)));
   // cheapest first: every /canvas before any other verb
@@ -469,7 +471,7 @@ test('a verb the project does not have yet: droppable records point at /import, 
   const data = collectPlaybook(dir, 'tidewell'); renderPlaybookHtml(data, '2026-09-13 10:00');
   const line = (id) => openQuestions(data, dir).find((q) => q.id === id).line;
   assert.equal(line('competition-none'), '/comp-eval — or drop what you know: /import');
-  assert.equal(line('product-not'), '/landing seeds docs/BRAND.md — or drop what you know: /import');
+  assert.equal(line('product-not'), '/canvas seeds docs/BRAND.md — or drop what you know: /import');
   assert.equal(line('product-feats'), '/spec — arrives with the next mode (boss unlock)');
   assert.equal(line('persona-none'), '/persona derive');
   assert.equal(line('team-none'), 'write docs/team/<you>.md — the README there has the shape; boss team add writes a cofounder\'s', 'a hole with no verb points at the record shape, without citing BOSS\'s own records');
@@ -488,7 +490,7 @@ test('the terminal: one summary line grouped by verb, --questions lists each wit
   assert.equal(questionsLine([{ line: '/canvas' }, { line: '/canvas' }, { line: '/idea' }]), '3 questions open · /canvas ×2 · /idea');
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-app.md': IDEA });
   const out = execFileSync('node', [BIN, 'playbook', '--questions'], { cwd: dir, encoding: 'utf8' });
-  assert.match(out, /\d+ questions open · \/canvas · \/decide/);
+  assert.match(out, /\d+ questions open · \/canvas ×2 · \/canvas seeds docs\/BRAND\.md ×2 · .*\/decide/, 'grouped by verb, cheapest first; the story line is a /canvas question of its own (IDEA-133)');
   assert.match(out, /· Who, exactly — \/persona derive/);
   const plain = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
   assert.doesNotMatch(plain, /· Who, exactly/, 'the list only with --questions');
@@ -751,7 +753,7 @@ test('Team: person files read with role order, sections and a photo only from a 
   assert.ok(readFileSync(join(dir, 'docs/team/marta.md'), 'utf8').includes('Marta owned Tidewell'));
 });
 
-test('Company chapters: Team cards with the face inlined, who-is-missing as a hole; Brand as the doc holds it, never a learned row\'s words; Values from How we build', () => {
+test('Company chapters: Team cards with the face inlined, who-is-missing as a hole; Brand as the doc holds it, a learned row quoted with its credit and date; Values from How we build', () => {
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/team/marta.md': PERSON('Marta', 'founder', './marta.png'), 'docs/team/marta.png': PNG, 'docs/BRAND.md': BRAND_DOC, '.boss/design.html': '<p>d</p>' });
   const data = collectPlaybook(dir, 'tidewell');
   const html = renderPlaybookHtml(data, '2026-09-13 10:00');
@@ -765,8 +767,9 @@ test('Company chapters: Team cards with the face inlined, who-is-missing as a ho
   assert.ok(html.includes('<dt>How it sounds</dt><dd><em class="hole-text">unknown</em></dd>'), 'a template placeholder renders unknown');
   assert.ok(html.includes('4 of 6 known'));
   assert.ok(html.includes('<code>#2F5D8A</code> accent') && html.includes('<p class="specimen">Cover found before the kettle boils</p>'));
-  assert.ok(html.includes('<b class="tab">1</b> thing that actually happened, newest 2026-08-30'));
-  assert.ok(!html.includes('the thing that finds cover'), 'a learned row\'s words never render');
+  // IDEA-133 (Ajesh, 2026-10-04): a learned row is quoted — the words, the credit as written, the date
+  assert.ok(html.includes('<blockquote>“the thing that finds cover”</blockquote>'));
+  assert.ok(html.includes('<figcaption>Marta called it · 2026-08-30</figcaption>'));
   assert.ok(html.includes('href="design.html">tokens and type, in Design'));
   assert.ok(html.includes('<h2>it will not rank carers against each other.</h2>'));
   // values
@@ -873,4 +876,84 @@ test('deck cuts: Everything is every block in page order; Internal has no hole, 
   assert.ok(html.includes('page-break-after: always') && html.includes('@page { size: landscape; margin: 0; }'));
   assert.ok(html.includes('class="remove" title="Take this slide out of the current cut'));
   assert.ok(!/addEventListener\('load'|DOMContentLoaded.*openDeck|openDeck\(0\);\s*$/m.test(html), 'Present opens on click only');
+});
+
+// --- IDEA-133 — the story, woven into the chapters that exist -----------------------------------
+const STORY_BRAND = `---
+id: brand
+type: brand
+status: nascent
+story: "Agencies run on a spreadsheet, but one sick text means eight calls, so we ask the right three."
+---
+
+# Brand — Tidewell
+
+## Current shape
+
+- **Who it's for:** owner-operators
+- **What they use instead today:** the phone tree — EVID-001
+
+## Origin, as it happened
+
+How it really started — dated, plain. Nothing here that a witness would dispute.
+
+- 2026-08-04 — another Monday lost to the cover call; I wrote the idea down.
+- <YYYY-MM-DD — what happened>
+
+## What we've learned (append-only — never rewrite a row)
+
+| Date | What happened | What it says about the brand |
+|---|---|---|
+| 2026-08-30 | ★ an owner, nine-carer agency: "it just texts the right three" — EVID-003 | the promise people repeat |
+| 2026-08-20 | an owner called it "the thing that finds cover" — EVID-002 | the verb is the brand |
+| 2026-09-01 | an owner said the reminder "sounded like the council" | voice: plain over formal (was: formal) — official wording read as a telling-off |
+`;
+
+test('IDEA-133 story weave: the story on the cover (asked for in Vision when missing), the why in their words, quotes led by ★, Origin as bullets, a voice row as a change', () => {
+  const ideaWithWhy = IDEA.replace('- 2026-08-04 — seed\n', '- 2026-08-04 — seed\n- 2026-08-04 — why: "every Monday I lose an hour to the cover call" / it worked = "five agencies"\n') .replace('created: 2026-08-04', 'created: 2026-08-04\nin_a_few_years: "Every agency in the county runs on it."');
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-tidewell.md': ideaWithWhy, 'docs/BRAND.md': STORY_BRAND });
+  const data = collectPlaybook(dir, 'tidewell');
+  const html = renderPlaybookHtml(data, '2026-10-04 10:00');
+  assert.ok(html.includes('<p class="cover-story">Agencies run on a spreadsheet, but one sick text means eight calls, so we ask the right three.</p>'));
+  assert.ok(!html.includes('id="vision-story"'), 'written, the story is on the cover only — never twice on the first screen');
+  assert.ok(html.includes('<p class="lede">“every Monday I lose an hour to the cover call”</p>'), 'the why is their sentence, quoted');
+  assert.ok(html.includes('<strong>Mainly about:</strong> a problem of their own') && !html.includes('own-problem</p>'), 'the slug is said in words');
+  assert.match(html, /id="vision-few-years"[\s\S]*?<span class="chip asserted">aspiration<\/span>/);
+  // quotes: ★ leads and is the large one; the others smaller; the voice row is a change, not a quote
+  const words = html.slice(html.indexOf('id="brand-learned"'), html.indexOf('id="brand-origin"'));
+  assert.ok(words.indexOf('right three') < words.indexOf('finds cover'), '★ leads');
+  assert.match(words, /<figure class="quote lead"><blockquote>“it just texts the right three”<\/blockquote><figcaption>an owner, nine-carer agency · 2026-08-30 · EVID-003<\/figcaption>/);
+  assert.match(words, /<figure class="quote"><blockquote>“the thing that finds cover”/);
+  assert.ok(!words.includes('sounded like the council'));
+  assert.match(html, /id="brand-changed"[\s\S]*?voice: plain over formal/);
+  assert.match(html, /id="brand-origin"[\s\S]*?<li>2026-08-04 — another Monday lost to the cover call; I wrote the idea down.<\/li><\/ul>/);
+  assert.ok(!html.includes('witness would dispute.</li>') && !html.includes('&lt;YYYY'), 'guidance prose and placeholders stay in the file');
+  assert.ok(html.includes('<dt>What they use instead today</dt>'));
+  // no story → Vision asks, and the question reaches the list (a /canvas hole is not a canvas cell here)
+  const bare = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/BRAND.md': STORY_BRAND.replace(/^story:.*\n/m, '') });
+  const d2 = collectPlaybook(bare, 'tidewell'); const h2 = renderPlaybookHtml(d2, '2026-10-04 10:00');
+  assert.ok(h2.includes('id="vision-story"') && !h2.includes('class="cover-story"'));
+  assert.ok(d2.questions.some((q) => q.id === 'vision-story' && q.verb === '/canvas'));
+});
+
+test('IDEA-133 story weave: how sure over time is drawn only from dated, graded records and stops at the last; how it grew holds a commitment in "until finally" or a dashed card, never the vision', async () => {
+  const { overTimeBlock, beatsBlock } = await import('../src/playbook.js');
+  const ev = (n, date, grade) => ({ id: `EVID-00${n}`, date, grade, title: `signal ${n}` });
+  assert.equal(overTimeBlock([ev(1, '2026-05-20', 'stated-pain')]), '', 'one dated signal draws no line, so no block');
+  const svg = overTimeBlock([ev(1, '2026-05-20', 'stated-pain'), ev(2, '2026-08-30', 'observed-behavior'), ev(3, '2026-09-05', 'commitment'), { id: 'EVID-009', date: null, grade: 'commitment' }],
+    [{ id: 'DEC-001', created: '2026-06-14', supersededBy: 'DEC-002', status: 'superseded' }, { id: 'DEC-002', created: '2026-07-02', status: 'decided' }]);
+  assert.ok(svg.includes('id="evidence-over-time"') && svg.includes('class="step"'));
+  assert.equal((svg.match(/<circle class="pt"/g) || []).length, 3, 'an undated signal is not placed');
+  assert.ok(svg.includes('class="dec old"') && svg.includes('class="dec"'), 'a superseded decision is hollow');
+  assert.match(svg, /aria-label="3 signals from 2026-05-20 to 2026-09-05; the strongest so far is commitment \(EVID-003, 2026-09-05\); 2 decisions on the axis\."/);
+  // beats
+  assert.equal(beatsBlock({ idea: null, evidenceRows: [], decisions: [] }), '', 'nothing on record, no block — the chapter keeps its own hole');
+  const day1 = beatsBlock({ idea: { id: 'IDEA-001', created: '2026-05-12', gist: 'one tap when a carer calls in sick', vision: 'every agency in the county' }, evidenceRows: [], decisions: [] });
+  assert.equal((day1.match(/class="beat mini-hole"/g) || []).length, 3, 'day one: the first signal, the first decision, the commitment are dashed');
+  assert.match(day1, /Until finally[\s\S]*?Only a commitment fills this/);
+  assert.match(day1, /class="beat asp"><span class="spine">And one day<\/span>[\s\S]*?every agency in the county/, 'the vision is shown apart, as theirs');
+  const grown = beatsBlock({ idea: { id: 'IDEA-001', created: '2026-05-12', gist: 'g' }, evidenceRows: [ev(1, '2026-05-20', 'stated-pain'), ev(3, '2026-09-05', 'commitment')],
+    decisions: [{ id: 'DEC-002', created: '2026-07-02', decision: 'Phone first.' }, { id: 'DEC-001', created: '2026-06-14', decision: 'Office first.', supersededBy: 'DEC-002' }] });
+  assert.match(grown, /The first bet[\s\S]*?class="line struck">Office first\.[\s\S]*?But then[\s\S]*?Phone first\.[\s\S]*?Until finally[\s\S]*?signal 3/);
+  assert.ok(!grown.includes('mini-hole'));
 });

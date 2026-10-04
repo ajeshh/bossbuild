@@ -8,6 +8,7 @@ readers: /landing · /pretotype · /design-tokens-init · /design-review · desi
 tagline: Cover found before the kettle boils
 accent: "#B84E12"
 logo: brand/mark.svg
+story: "Small agencies run their week on a spreadsheet and the owner is the only one who knows who can cover, but one sick text still means eight calls before 8am, so Kettlewick asks the right three carers and the first yes fills the visit."
 ---
 
 # Brand — Kettlewick
@@ -19,7 +20,13 @@ logo: brand/mark.svg
 - **What it refuses:** it will not rank carers, track carers, or text anyone after 8pm.
 - **How it sounds:** plain over clever (costs us delight); calm over urgent (costs us the "act now" conversion); the owner's words over ours.
 - **What it is NOT:** agency software. A marketplace. A scheduling tool.
+- **What they use instead today:** the phone tree, an hour of calls every Monday; a few try CareSheet's add-on, which texts everyone. — EVID-001
 - **The name, and why:** the kettle is the owner's Monday morning; the wick is the bit that catches. It means nothing to a stranger and everything to an owner.
+
+## Origin, as it happened
+
+- 2026-05-12 — another Monday lost to the cover call: a text at 7:40, eight calls, one yes. I wrote the idea down that morning. I want the hour back, and so does every owner I know.
+- 2026-05-20 — three owners, three calls, the same hour described unprompted. Nobody asked for a new schedule; they asked for the cover to be done. — EVID-001
 
 ## How we build
 
@@ -31,8 +38,9 @@ logo: brand/mark.svg
 
 | Date | What happened | What it says about the brand |
 |---|---|---|
-| 2026-06-04 | an owner called it "the thing that finds cover" | the verb is the brand; the product name isn't |
-| 2026-08-30 | an owner showed it to another owner as "it just texts the right three" | the *right three* is the promise people repeat |
+| 2026-06-04 | an owner, nine-carer agency, called it "the thing that finds cover" — EVID-002 | the verb is the brand; the product name isn't |
+| 2026-08-30 | ★ an owner, showing it to another owner at the school gate: "it just texts the right three" — EVID-003 | the *right three* is the promise people repeat |
+| 2026-07-15 | an owner said the first reminder text "sounded like the council" | voice: the owner's words over ours (was: formal and complete) — official wording read as being told off |
 
 ## Decided
 

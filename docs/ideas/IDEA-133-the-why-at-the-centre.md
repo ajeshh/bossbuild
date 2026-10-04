@@ -168,6 +168,19 @@ someone asks.
   canvas, not the first page**.
 - **B · the weave** (`src/playbook.js` + tests + the Kettlewick records in the same commit): rows 1–8
   of the table above.
+- **B landed (2026-10-04):** everything in the weave table, with no new chapter. Cover: the story under the
+  tagline (Vision asks for it only when it's missing; written, it is never on the first screen
+  twice). Vision: the why as their quoted sentence (the capture log's newest `why:`), the slug in
+  words, *In a few years* chipped `aspiration`. Evidence: *How sure, over time*, with no line under two
+  dated signals and none past the last record. Learnings: *How it grew*, the beats as dashed cards when
+  nothing backs them; the vision is shown apart and never fills *until finally*. Brand: *Words that
+  landed* (★ leads), *Origin*, *How it changed* (`shape:`/`voice:` rows). Three things it fixed on the
+  way: the story hole would have been filtered off the questions list (a `/canvas` chapter hole is
+  assumed to repeat a cell), so there's now an explicit `NOT_A_CELL`; the three `/landing seeds
+  docs/BRAND.md` hole verbs now say `/canvas`; a credit kept its trailing colon. Kettlewick gained a
+  story, an Origin, starred and traced quotes, a voice row and a `why:` line. `check:demo` is full.
+  `site/demo/` is not regenerated in this commit, because a version stamp is in flight; `release.js`
+  regenerates it.
 - **Later:** `/close` offers the why again; `/evidence` marks echoes; then decide on the conscience.
 
 ### Earlier slice list (kept for reference; phases 3–4 of the order above)

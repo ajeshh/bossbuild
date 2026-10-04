@@ -71,6 +71,18 @@ rule above still applies to the whole section once it is stamped.
   it. Before this, the brand doc said its rows came from `/evidence`, and `/evidence` never wrote
   one.
 
+- **The playbook tells your story, inside the chapters you already have.** The cover carries your
+  story in one line under the tagline; Vision asks for it until you've written it (`/canvas`).
+  Vision quotes *why this, for you* in your own words from the capture log, says your motivation in
+  words rather than as a label, and marks *In a few years* as your aspiration. Evidence opens with
+  *How sure, over time*: your strongest grade by date, with decisions on the axis, and the line stops
+  at your last record. Learnings opens with *How it grew*: the idea, the first signal, the bet you
+  changed, what changed it, and the first commitment, each in its record's own words. A turn nothing
+  backs yet is a dashed card naming the verb that fills it. Brand now **quotes** *Words that
+  landed* (your ★ rows first, each with its credit, date and record), and shows your *Origin* and
+  *How it changed*. Your Vision, Evidence, Learnings and VC cut gain these blocks on the next `boss
+  playbook`.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

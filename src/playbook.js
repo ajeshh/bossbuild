@@ -174,6 +174,9 @@ export function readBrand(projectDir, projectName) {
   brand.accent = hex(fm.accent) || hex((text.match(/accent[^\n]*?(#[0-9a-fA-F]{6})/i) || [])[0]);
   brand.tagline = pick(fm.tagline) || pick((text.match(/^-\s*\*\*tagline:?\*\*\s*(.+)$/im) || [])[1]);
   brand.name = pick(fm.wordmark) || pick(fm.name) || projectName;
+  // The story in one line (IDEA-133) — the founder's own sentence, which `/canvas` asks for and saves
+  // verbatim. The cover and Vision carry it; nothing composes it.
+  brand.story = pick(String(fm.story || '').replace(/^"|"$/g, ''));
   return brand;
 }
 
@@ -261,7 +264,10 @@ export function readIdea(projectDir, canvasId) {
     const fm = frontmatter(text);
     const title = (text.match(/^#\s+(.+)$/m) || [null, ''])[1].trim();
     const skip = (v) => { const s = String(v ?? '').trim().replace(/^"|"$/g, ''); return !s || /^(unset|none|tbd)$/i.test(s) ? '' : s; };
-    return { file: pick.n, id: fm.id || null, venture: pick.rank >= 1, title, gist: skip(fm.gist), motivation: skip(fm.motivation), success: skip(fm.success_looks_like), vision: skip(fm.in_a_few_years) || skip(fm.vision), priorCapital: (() => { const v = String(fm.prior_capital ?? '').trim().replace(/^"|"$/g, ''); return !v || /^unset$/i.test(v) ? '' : v; })(), shape: section(text, 'Current shape'), created: fm.created || null };
+    // The why in their own words (IDEA-133): `/boss` writes `— why: … / it worked = …` into the
+    // capture log, verbatim. The newest such line wins — a why that changed is a new line, not an edit.
+    const whys = [...(section(text, 'Capture log') || '').matchAll(/\bwhy:\s*(.+?)(?:\s*\/\s*it worked\b.*)?$/gim)].map((x) => x[1].trim().replace(/^["“]|["”]$/g, ''));
+    return { file: pick.n, id: fm.id || null, venture: pick.rank >= 1, title, gist: skip(fm.gist), why: whys.pop() || '', motivation: skip(fm.motivation), success: skip(fm.success_looks_like), vision: skip(fm.in_a_few_years) || skip(fm.vision), priorCapital: (() => { const v = String(fm.prior_capital ?? '').trim().replace(/^"|"$/g, ''); return !v || /^unset$/i.test(v) ? '' : v; })(), shape: section(text, 'Current shape'), created: fm.created || null };
   } catch { return null; }
 }
 
@@ -492,9 +498,24 @@ export function readBrandDoc(projectDir) {
   const values = (sectionStartingWith(text, 'How we build') || '').split('\n').map((l) => l.match(/^[-*]\s*\*\*([^*]+?)\*\*\s*[—–:-]\s*(.*)$/)).filter(Boolean)
     .map((m) => { const rest = m[2].trim(); const c = rest.match(/\*Costs?:\*\s*(.*)$/i); return { headline: m[1].trim(), meaning: (c ? rest.slice(0, c.index) : rest).trim(), cost: c ? c[1].replace(/\*$/, '').trim() : '' }; })
     .filter((v) => !/^<.*>$/.test(v.headline));
-  const learned = (sectionStartingWith(text, "What we've learned") || '').split('\n').filter((l) => /^\|\s*\d{4}-\d{2}-\d{2}/.test(l)).map((l) => (l.match(/\d{4}-\d{2}-\d{2}/) || [''])[0]);
+  // A learned row is quoted (Ajesh, 2026-10-04, reversing FEAT-036's count-only rule): the words in
+  // quotation marks, the rest of the cell as the credit (a role, as the founder wrote it), a trailing
+  // `— EVID-NNN` / `— interview …` as where it came from, a leading ★ as a row to lead with.
+  const rows = (sectionStartingWith(text, "What we've learned") || '').split('\n').filter((l) => /^\|\s*\d{4}-\d{2}-\d{2}/.test(l)).map((l) => {
+    const cells = l.split('|').map((c) => c.trim());
+    let what = cells[2] || '';
+    const star = /^★/.test(what); what = what.replace(/^★\s*/, '');
+    const srcM = what.match(/\s+[—–]\s+([^—–"“”]{2,48})$/); const from = srcM ? srcM[1].trim() : '';
+    if (srcM) what = what.slice(0, srcM.index).trim();
+    const q = what.match(/["“]([^"”]+)["”]/);
+    return { date: (cells[1].match(/\d{4}-\d{2}-\d{2}/) || [''])[0], star, quote: q ? q[1].trim() : '', credit: (q ? what.replace(q[0], '') : what).replace(/\s+/g, ' ').replace(/\s+([,.;:])/g, '$1').replace(/[\s,:;—–-]+$/, '').trim(), what, from, says: cells[3] || '' };
+  });
+  const learned = rows.map((r) => r.date);
   const logo = readPhoto(join(projectDir, 'docs'), fm.logo);
-  return { file: 'docs/BRAND.md', updated: dateOf(fm.updated), status: String(fm.status || '').trim(), shape, values, learned: { count: learned.length, newest: learned.sort().pop() || null }, logo };
+  // Origin: the founder's bullets only — the template's guidance prose stays in the file, a `<…>`
+  // placeholder is not a line.
+  const origin = (sectionStartingWith(text, 'Origin') || '').split('\n').filter((l) => /^[-*]\s+\S/.test(l) && !/^[-*]\s*</.test(l)).map((l) => l.replace(/^[-*]\s+/, '').trim());
+  return { file: 'docs/BRAND.md', updated: dateOf(fm.updated), status: String(fm.status || '').trim(), shape, values, learned: { count: learned.length, newest: [...learned].sort().pop() || null, rows }, origin, logo };
 }
 
 // docs/decisions/DEC-*.md — `/decide`'s record: the title line, the frontmatter chips, the Decision
@@ -683,6 +704,8 @@ const chapterHead = (n, label, line, lead = '') => {
 const chapter = (id, headHtml, inner) => `<section class="chapter" id="${id}">${headHtml}${inner}</section>`;
 const slug = (s) => norm(s).replace(/ /g, '-');
 
+// `/boss` maps the why to one of five words; the page says it in words, never the slug.
+const MOTIVE = { 'own-problem': 'a problem of their own', learning: 'learning', revenue: 'earning from it', community: 'the people around them', credibility: 'credibility' };
 function pitchChapters(data) {
   const { canvas, cell, idea, feats, personas, competition, sources, ask, brandNot, designExists } = data;
   const people = (data.team || []).filter((p) => p.role !== 'missing');
@@ -696,16 +719,23 @@ function pitchChapters(data) {
   // /idea (edit the record you have) only after — never at the verb that would not ask (IDEA-118).
   const venture = Boolean(idea && idea.venture);
   const ideaVerb = venture ? '/idea' : '/boss <your idea>';
+  const story = data.brand && data.brand.story;
   out.push(chapter('vision', chapterHead(1, 'Vision', line(cell('promises'))),
     '<div class="blocks">'
-    + (idea && (idea.motivation || idea.success)
-      ? block({ id: 'vision-why', title: 'Why this, and what "it worked" looks like', body: (idea.motivation ? `<p><strong>Motivation:</strong> ${inline(idea.motivation)}</p>` : '') + (idea.success ? `<p><strong>Success looks like:</strong> ${inline(idea.success)}</p>` : ''), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · motivation · success_looks_like` })
+    // The story in one line (IDEA-133): the founder's sentence, which /canvas asks for — never composed here.
+    // Written, the cover carries it (one place, never twice on the first screen); unwritten, Vision asks.
+    + (story ? ''
+      : hole('vision-story', 'The story in one line', 'This AND this, BUT the problem is this, THEREFORE what you do — one sentence, yours. The cover and the first slide carry it.', '/canvas', 'docs/BRAND.md · story — none'))
+    // The why leads with their own sentence (the capture log's `why:` line); the motivation slug is
+    // said in words, never shown raw.
+    + (idea && (idea.why || idea.motivation || idea.success)
+      ? block({ id: 'vision-why', title: 'Why this, and what "it worked" looks like', body: (idea.why ? `<p class="lede">“${inline(idea.why)}”</p>` : '') + (idea.motivation ? `<p><strong>Mainly about:</strong> ${esc(MOTIVE[idea.motivation.toLowerCase()] || idea.motivation)}</p>` : '') + (idea.success ? `<p><strong>It worked when:</strong> ${inline(idea.success)}</p>` : ''), chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · ${idea.why ? 'capture log · why · ' : ''}motivation · success_looks_like` })
       : hole('vision-why', 'Why this, and what "it worked" looks like', 'Why are you building this, and what does success look like in three months? Two lines on the IDEA doc.', ideaVerb, ideaSrc))
     + cellBlock(cell('principles'), canvas, 'vision-principles', 'Principles', 'what we\'ll hold when it\'s costly')
     + (people.length
       ? block({ id: 'vision-team', title: 'Who is building it', body: people.map((p) => `<p><strong>${esc(p.name)}</strong> <span class="sub">${esc(p.role)}</span>${p.thing ? ` — ${inline(firstSentence(p.thing))}` : ''}</p>`).join('') + '<p class="xlink"><a href="#team">the team, in full →</a></p>', chip: '<span class="chip asserted">asserted</span>', src: `docs/team · ${people.length} ${people.length === 1 ? 'person' : 'people'}` })
       : hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'write docs/team/<you>.md — the README there has the shape', 'docs/team — none'))
-    + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', body: `<p>${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: `${ideaSrc} · in_a_few_years` })
+    + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', body: `<p class="lede">${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">aspiration</span>', src: `${ideaSrc} · in_a_few_years` })
       : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', venture ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : ideaVerb, `${ideaSrc} · no in_a_few_years line`))
     + '</div>'));
 
@@ -723,7 +753,7 @@ function pitchChapters(data) {
       : hole('product-shape', 'What it is today', 'What is it, who is it for, and what is the smallest version that proves it? The IDEA doc\'s current shape.', ideaVerb, ideaSrc))
     + featList
     + (brandNot ? block({ id: 'product-not', title: 'What it is not', body: `<p>${inline(brandNot)}</p>`, chip: '<span class="chip asserted">asserted</span>', src: 'docs/BRAND.md · What it is NOT' })
-      : hole('product-not', 'What it is not', 'The nearest thing people will mistake it for — and what it refuses to be.', '/landing seeds docs/BRAND.md', 'docs/BRAND.md · What it is NOT'))
+      : hole('product-not', 'What it is not', 'The nearest thing people will mistake it for — and what it refuses to be.', '/canvas seeds docs/BRAND.md', 'docs/BRAND.md · What it is NOT'))
     + '</div>'));
 
   // 3 · Customers — snippets; the full card is the Design space's (IDEA-107).
@@ -777,6 +807,70 @@ function pitchChapters(data) {
   return { before: out.slice(0, 6).join('\n'), after: out.slice(6).join('\n') };
 }
 
+// --- the story's two pictures (IDEA-133) — projections of dated records, nothing composed ----------
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const day = (d) => Date.parse(d + 'T00:00:00Z');
+// How sure, over time: the strongest grade on record by date, a point per signal at its own grade,
+// decisions as diamonds on the axis. The line stops at the last record; it never draws past what is
+// known, and under two dated signals there is no line to draw, so there is no block.
+export function overTimeBlock(evidenceRows, decisions = []) {
+  const ev = evidenceRows.filter((e) => e.date && GRADES.includes(e.grade)).sort((a, b) => a.date.localeCompare(b.date));
+  if (ev.length < 2) return '';
+  const decs = decisions.filter((d) => d.created);
+  const all = [...ev.map((e) => day(e.date)), ...decs.map((d) => day(d.created))];
+  const lo = Math.min(...all), hi = Math.max(...all), pad = Math.max(86400000 * 4, (hi - lo) * 0.04);
+  const X0 = 120, X1 = 870, x = (d) => Math.round(X0 + ((day(d) - (lo - pad)) / ((hi + pad) - (lo - pad))) * (X1 - X0));
+  const Y = [140, 90, 40], AX = 172;
+  let top = -1, path = '', labels = '';
+  for (const e of ev) {
+    const g = GRADES.indexOf(e.grade);
+    if (g > top) {
+      path += path ? ` H${x(e.date)} V${Y[g]}` : `M${x(e.date)} ${Y[g]}`;
+      const right = x(e.date) > (X0 + X1) / 2; // past the middle, the label sits left of its point, clear of the step
+      labels += `<text class="lbl" x="${x(e.date) + (right ? -9 : 7)}" y="${Y[g] - 9}"${right ? ' text-anchor="end"' : ''}>${esc(e.id)}</text>`;
+      top = g;
+    }
+  }
+  const pts = ev.map((e) => `<circle class="pt" cx="${x(e.date)}" cy="${Y[GRADES.indexOf(e.grade)]}" r="5"><title>${esc(e.id)} · ${esc(e.date)} · ${esc(e.grade)}</title></circle>`).join('');
+  const dia = decs.map((d) => { const cx = x(d.created); return `<g><path class="dec${d.supersededBy || /superseded/i.test(d.status) ? ' old' : ''}" d="M${cx} ${AX - 6} l6 6 -6 6 -6 -6z"><title>${esc(d.id)} · ${esc(d.created)}${d.supersededBy ? ` · superseded by ${esc(d.supersededBy)}` : ''}</title></path><text x="${cx}" y="${AX + 22}" text-anchor="middle">${esc(d.id)}</text></g>`; }).join('');
+  let ticks = '';
+  const t0 = new Date(lo - pad); const t = new Date(Date.UTC(t0.getUTCFullYear(), t0.getUTCMonth() + 1, 1));
+  for (let i = 0; i < 24 && t.getTime() <= hi + pad; i++, t.setUTCMonth(t.getUTCMonth() + 1)) { const iso = t.toISOString().slice(0, 10); ticks += `<text x="${x(iso)}" y="${AX + 40}" text-anchor="middle">${MONTHS[t.getUTCMonth()]}</text>`; }
+  const strongest = [...ev].reverse().find((e) => GRADES.indexOf(e.grade) === top);
+  const said = `${ev.length} signals from ${ev[0].date} to ${ev[ev.length - 1].date}; the strongest so far is ${GRADES[top]} (${strongest.id}, ${strongest.date})${decs.length ? `; ${decs.length} decision${decs.length === 1 ? '' : 's'} on the axis` : ''}.`;
+  const svg = `<div class="overtime"><svg viewBox="0 0 900 222" role="img" aria-label="${esc(said)}"><g class="grid">${Y.map((y) => `<line x1="${X0}" y1="${y}" x2="${X1}" y2="${y}"/>`).join('')}</g>`
+    + `<text x="${X0 - 10}" y="44" text-anchor="end">commitment</text><text x="${X0 - 10}" y="94" text-anchor="end">observed</text><text x="${X0 - 10}" y="144" text-anchor="end">stated pain</text>`
+    + `<line class="axis" x1="${X0}" y1="${AX}" x2="${X1}" y2="${AX}"/>${ticks}<path class="step" d="${path}"/>${pts}${labels}${dia}</svg></div>`;
+  return block({ id: 'evidence-over-time', title: 'How sure, over time', sub: 'the strongest grade on record by date; decisions on the axis', body: svg + `<p class="helper">${esc(said)}</p>`, chip: '<span class="chip ev">from evidence</span>', src: 'docs/evidence · docs/decisions · dates and grades only' });
+}
+// How it grew: the turns as beats, each a record's own line (Adams' story spine, Ganz's challenge →
+// choice → outcome). A beat nothing backs is a dashed card naming the verb, never a sentence BOSS wrote;
+// "until finally" holds only a commitment, and the few-years line is shown apart, as theirs.
+export function beatsBlock(data) {
+  const { idea } = data; const ev = (data.evidenceRows || []).filter((e) => e.date).sort((a, b) => a.date.localeCompare(b.date));
+  const decs = [...(data.decisions || [])].filter((d) => d.created).sort((a, b) => a.created.localeCompare(b.created));
+  if (!idea && !ev.length && !decs.length) return '';
+  const beats = [];
+  if (idea) beats.push({ spine: 'Once upon a time', when: idea.created, title: 'The idea', line: idea.gist || idea.title, rec: idea.id || idea.file });
+  if (ev[0]) beats.push({ spine: 'But one day', when: ev[0].date, title: 'The first signal', line: ev[0].title, rec: ev[0].id, grade: ev[0].grade });
+  else beats.push({ hole: true, spine: 'But one day', title: 'The first signal', line: 'Nobody on record yet.', verb: '/interview → /evidence' });
+  const old = decs.find((d) => d.supersededBy);
+  if (old) {
+    const next = decs.find((d) => d.id === old.supersededBy);
+    beats.push({ spine: 'Because of that', when: old.created, title: 'The first bet', line: firstSentence(old.decision || old.title), rec: old.id, struck: true });
+    if (next) beats.push({ spine: 'But then', when: next.created, title: 'What changed', line: firstSentence(next.decision || next.title), rec: next.id });
+  } else if (decs[0]) beats.push({ spine: 'Because of that', when: decs[0].created, title: 'The first decision', line: firstSentence(decs[0].decision || decs[0].title), rec: decs[0].id });
+  else beats.push({ hole: true, spine: 'Because of that', title: 'The first decision', line: 'No decision recorded.', verb: '/decide' });
+  const commit = [...ev].reverse().find((e) => e.grade === 'commitment');
+  if (commit) beats.push({ spine: 'Until finally', when: commit.date, title: 'Someone committed', line: commit.title, rec: commit.id, grade: commit.grade });
+  else beats.push({ hole: true, spine: 'Until finally', title: 'Someone commits', line: 'Only a commitment fills this: time, money, a slot.', verb: '/evidence' });
+  if (idea && idea.vision) beats.push({ spine: 'And one day', when: 'in a few years', title: 'Where it goes', line: idea.vision, asp: true });
+  const card = (b) => `<div class="beat${b.hole ? ' mini-hole' : ''}${b.asp ? ' asp' : ''}"><span class="spine">${esc(b.spine)}</span><span class="when">${esc(b.when || '—')}</span><strong>${esc(b.title)}</strong>`
+    + `<p class="line${b.struck ? ' struck' : ''}">${inline(b.line || '')}</p>`
+    + `<span class="rec">${b.hole ? `not yet · ${esc(b.verb)}` : b.asp ? 'their aspiration' : `${esc(b.rec || '')}${b.grade ? ` · ${esc(b.grade)}` : ''}${b.struck ? ' · superseded' : ''}`}</span></div>`;
+  return block({ id: 'learnings-beats', title: 'How it grew', sub: 'the turns, each in the record\'s own words', body: `<div class="beats">${beats.map(card).join('')}</div>`, src: 'the venture IDEA · docs/evidence · docs/decisions' });
+}
+
 // --- the Proof chapters (FEAT-028) --------------------------------------------------------------
 // What backs the pitch: the ladder, the story so far, the decisions, the harms, the health read.
 // Every line is a record's own; the only numbers are counts.
@@ -794,19 +888,22 @@ function proofChapters(data) {
   const strip = `<div class="ladder" aria-label="Signals by grade">${[...counts].reverse().map(([g, n]) => `<div class="rung"><span class="g">${esc(g)}</span><span class="bar"><i style="width:${Math.round((n / maxC) * 100)}%"></i></span><b class="tab">${n}</b></div>`).join('')}</div>`;
   const evTable = rows.length ? `<div class="tscroll"><table class="t ev"><thead><tr><th>Grade</th><th>Date</th><th>Signal</th><th>Method</th><th>Bears on</th><th>Record</th></tr></thead><tbody>${rows.map((e) => `<tr id="${esc(slug(e.id))}"><td>${gradeChip(e.grade)}</td><td class="mono">${esc(e.date || 'undated')}</td><td>${esc(e.title || '—')}</td><td class="mono">${esc(e.method || '—')}</td><td class="t-small">${esc(e.assumption || '—')}</td><td class="mono">${esc(e.id)}</td></tr>`).join('')}</tbody></table></div>` : '';
   empty.evidence = !rows.length;
+  const overTime = overTimeBlock(evidenceRows, decisions);
   out.push(chapter('evidence', chapterHead(9, 'Evidence', newest ? newest.title : ''),
     rows.length
-      ? `<div class="blocks one">${block({ id: 'evidence-ladder', title: 'The ladder', sub: `${rows.length} signal${rows.length === 1 ? '' : 's'}, graded — the grade is the founder's, the count is the file's`, body: strip + evTable, src: `docs/evidence · ${rows.length} record${rows.length === 1 ? '' : 's'} · bodies stay in the files` })}</div>`
+      ? `<div class="blocks one">${overTime}${block({ id: 'evidence-ladder', title: 'The ladder', sub: `${rows.length} signal${rows.length === 1 ? '' : 's'}, graded — the grade is the founder's, the count is the file's`, body: strip + evTable, src: `docs/evidence · ${rows.length} record${rows.length === 1 ? '' : 's'} · bodies stay in the files` })}</div>`
       : `<div class="blocks">${hole('evidence-none', 'What backs this', 'Nothing graded yet. The first signal is a conversation written down honestly — what they said, what they did, what they committed to — and graded on the ladder.', '/evidence', 'docs/evidence — none')}</div>`));
 
   // 10 · Learnings — the devlog's own lines, newest first.
   const entries = devlog ? devlog.entries : [];
   empty.learnings = !entries.length;
   const entryBlock = (e, i) => block({ id: `learn-${i + 1}`, title: e.heading, body: (e.landed ? `<p>${e.source === 'docs/devlog.md' ? '<strong>Landed:</strong> ' : ''}${inline(e.landed)}</p>` : '') + (e.surprises ? `<p><strong>Surprises / decisions:</strong> ${inline(e.surprises)}</p>` : '') || '<p class="helper">an entry with only a heading</p>', src: `${esc(e.source)} · ${esc(e.date || e.heading.slice(0, 10))}` });
+  const grew = beatsBlock(data);
+  const grewHtml = grew ? `<div class="blocks one">${grew}</div>` : '';
   out.push(chapter('learnings', chapterHead(10, 'Learnings', entries[0] && entries[0].landed ? firstSentence(entries[0].landed) : ''),
-    entries.length
+    grewHtml + (entries.length
       ? `<div class="blocks">${entries.map(entryBlock).join('')}</div>${devlog.total > entries.length ? `<p class="more">${devlog.total - entries.length} earlier entr${devlog.total - entries.length === 1 ? 'y' : 'ies'} in ${esc(devlog.files.join(' · '))}</p>` : ''}`
-      : `<div class="blocks">${hole('learnings-none', 'The story so far', 'What landed, what surprised you, what you decided — one entry a session, in your words; the idea\'s capture log counts too. Nothing logged yet.', '/log', 'docs/devlog.md · docs/ideas capture logs — none')}</div>`));
+      : `<div class="blocks">${hole('learnings-none', 'The story so far', 'What landed, what surprised you, what you decided — one entry a session, in your words; the idea\'s capture log counts too. Nothing logged yet.', '/log', 'docs/devlog.md · docs/ideas capture logs — none')}</div>`)));
 
   // 11 · Decisions — cards with their falsifiers; superseded ones dimmed, overdue ones said so.
   empty.decisions = !decisions.length;
@@ -888,12 +985,29 @@ function companyChapters(data) {
     const anchorBlock = (brand.accent || brand.tagline || (b.logo && b.logo.dataUri))
       ? block({ id: 'brand-anchor', title: 'The anchor', sub: 'what is decided', body: `${b.logo && b.logo.dataUri ? `<img class="logo" src="${b.logo.dataUri}" alt="${esc(brand.name)} mark">` : ''}${brand.accent ? `<p class="swatch"><i style="background:${esc(brand.accent)}"></i><code>${esc(brand.accent)}</code> accent</p>` : '<p class="helper">accent: unknown</p>'}${brand.tagline ? `<p class="specimen">${esc(brand.tagline)}</p>` : '<p class="helper">tagline: unknown</p>'}`, src: `${esc(b.file)} · frontmatter` + (designExists ? ` · <a class="xlink" href="design.html">tokens and type, in Design →</a>` : '') })
       : hole('brand-anchor', 'The anchor', 'The one owned colour, the tagline, the mark — each unknown until it is decided. /design-tokens-init chooses the anchor; a file beside BRAND.md is the mark.', '/design-tokens-init', `${b.file} · accent, tagline, logo all unknown`);
-    const learnedBlock = b.learned.count
-      ? block({ id: 'brand-learned', title: 'What the brand has learned', sub: 'rows, counted — the words stay in the file', body: `<p><b class="tab">${b.learned.count}</b> thing${b.learned.count === 1 ? '' : 's'} that actually happened${b.learned.newest ? `, newest ${esc(b.learned.newest)}` : ''}.</p>`, chip: '<span class="chip ev">from evidence</span>', src: `${esc(b.file)} · What we've learned` })
-      : hole('brand-learned', 'What the brand has learned', 'Every row is something that actually happened — what a real person called it, the word that landed. None yet.', '/evidence', `${b.file} · What we've learned — no dated rows`);
-    brandInner = `<div class="blocks">${shapeBlock}${anchorBlock}${learnedBlock}</div>`;
+    // Words that landed — quoted, credited by role, dated, traced (Ajesh, 2026-10-04: "quote ..
+    // especially key ones!! and credit it and date it"). ★ rows lead; with none starred, the newest two.
+    // A `shape:` / `voice:` row is a change to the brand, not a quote; it goes to "How it changed".
+    const isChange = (r) => /^(shape|voice):/i.test(r.says);
+    const heard = b.learned.rows.filter((r) => !isChange(r)).sort((x, y) => y.date.localeCompare(x.date));
+    const changes = b.learned.rows.filter(isChange).sort((x, y) => y.date.localeCompare(x.date));
+    const starred = heard.some((r) => r.star);
+    const lead = (r, i) => (starred ? r.star : i < 2);
+    const quote = (r, i) => `<figure class="quote${lead(r, i) ? ' lead' : ''}">${r.quote ? `<blockquote>“${inline(r.quote)}”</blockquote>` : `<p class="what">${inline(r.what)}</p>`}`
+      + `<figcaption>${r.quote && r.credit ? `${inline(r.credit)} · ` : ''}${esc(r.date)}${r.from ? ` · ${esc(r.from)}` : ''}</figcaption>${r.says ? `<p class="says">${inline(r.says)}</p>` : ''}</figure>`;
+    const ordered = starred ? [...heard.filter((r) => r.star), ...heard.filter((r) => !r.star)] : heard;
+    const learnedBlock = heard.length
+      ? block({ id: 'brand-learned', title: 'Words that landed', sub: 'theirs, quoted; credited by role, dated, traced to the record', body: ordered.map(quote).join(''), chip: '<span class="chip ev">from evidence</span>', src: `${esc(b.file)} · What we've learned · ${heard.length} row${heard.length === 1 ? '' : 's'}` })
+      : hole('brand-learned', 'Words that landed', 'What a real person called it, the line they repeated to a friend, the word that got a blank look — quoted, credited by role, with the record it came from. None yet.', '/evidence', `${b.file} · What we've learned — no dated rows`);
+    const originBlock = b.origin.length
+      ? block({ id: 'brand-origin', title: 'Origin, as it happened', body: `<ul class="origin-list">${b.origin.map((l) => `<li>${inline(l)}</li>`).join('')}</ul>`, chip: '<span class="chip asserted">asserted</span>', src: `${esc(b.file)} · Origin` })
+      : hole('brand-origin', 'Origin, as it happened', 'How it really started — dated, plain, the honest motive. Nothing in it a witness would dispute.', 'add ## Origin, as it happened to docs/BRAND.md', `${b.file} · Origin — none`);
+    const changedBlock = changes.length
+      ? block({ id: 'brand-changed', title: 'How it changed', sub: 'each change with its why, newest first', body: `<ul class="origin-list">${changes.map((r) => `<li><span class="date">${esc(r.date)}</span> ${inline(r.says)}${r.what ? ` <span class="helper">— ${inline(r.what)}</span>` : ''}</li>`).join('')}</ul>`, chip: '<span class="chip asserted">asserted</span>', src: `${esc(b.file)} · What we've learned · shape: / voice: rows` })
+      : '';
+    brandInner = `<div class="blocks">${shapeBlock}${learnedBlock}${originBlock}${anchorBlock}${changedBlock}</div>`;
   } else {
-    brandInner = `<div class="blocks">${hole('brand-none', 'The brand, as it is', 'Who it\'s for, what it promises, what it refuses, how it sounds, what it is not, the name and why — written when known, unknown when not.', '/landing seeds docs/BRAND.md', 'docs/BRAND.md — none')}</div>`;
+    brandInner = `<div class="blocks">${hole('brand-none', 'The brand, as it is', 'Who it\'s for, what it promises, what it refuses, how it sounds, what it is not, the name and why — written when known, unknown when not.', '/canvas seeds docs/BRAND.md', 'docs/BRAND.md — none')}</div>`;
   }
   const refuses = b && (b.shape.find((l) => /refuses/i.test(l.label)) || {}).value;
   out.push(chapter('brand', chapterHead(15, 'Brand', refuses ? firstSentence(refuses) : ''), brandInner));
@@ -904,7 +1018,7 @@ function companyChapters(data) {
   empty.values = !(principles && principles.state === 'filled') && !values.length;
   const valueBlock = (v, i) => block({ id: `value-${i + 1}`, title: v.headline, cls: 'value', body: `<p class="meaning">${inline(v.meaning)}</p>${v.cost ? `<p class="cost"><span class="label">costs</span> ${inline(v.cost)}</p>` : '<p class="helper">no cost named — a value with no cost is a slogan</p>'}`, src: `docs/BRAND.md · How we build` });
   out.push(chapter('values', chapterHead(16, 'Values', values[0] ? values[0].headline : (principles && principles.state === 'filled' ? firstSentence(principles.answer) : '')),
-    `<div class="blocks">${cellBlock(principles, canvas, 'values-principles', 'Principles', 'the short form')}${values.length ? values.map(valueBlock).join('') : hole('values-none', 'How we build', 'One headline per value, what it means in practice, what it costs you. Three is plenty.', b ? 'add ## How we build to docs/BRAND.md' : '/landing seeds docs/BRAND.md — then ## How we build', 'docs/BRAND.md · How we build — none')}</div>`));
+    `<div class="blocks">${cellBlock(principles, canvas, 'values-principles', 'Principles', 'the short form')}${values.length ? values.map(valueBlock).join('') : hole('values-none', 'How we build', 'One headline per value, what it means in practice, what it costs you. Three is plenty.', b ? 'add ## How we build to docs/BRAND.md' : '/canvas seeds docs/BRAND.md — then ## How we build', 'docs/BRAND.md · How we build — none')}</div>`));
 
   return { html: out.join('\n'), empty };
 }
@@ -916,7 +1030,7 @@ function companyChapters(data) {
 // persona stays on the page and off this cut (Ajesh, 2026-09-13). The founder's removals live in
 // the browser; these are the first draft.
 const CHAPTER_CELLS = ['problem', 'story', 'people', 'risks', 'bizmodel', 'cost', 'principles'];
-const VC_IDS = new Set(['cover', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'problem-story', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
+const VC_IDS = new Set(['cover', 'vision-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'problem-story', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
 const VC_PREFIXES = ['rival-', 'person-', 'value-'];
 export function deckCuts(mainHtml, data) {
   const blocks = [...String(mainHtml).matchAll(/<article class="([^"]*)" id="([^"]+)"/g)].map((m) => ({ id: m[2], cls: m[1].split(/\s+/) }));
@@ -950,7 +1064,7 @@ function coverBlock(data) {
   const feats = data.feats || [];
   const shipped = feats.filter((f) => /^shipped/i.test(f.status || '')).length;
   const stat = (n, label) => `<div class="stat"><b class="tab">${n}</b><span>${label}</span></div>`;
-  const body = `<div class="cover-body"><div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>`
+  const body = `<div class="cover-body"><div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>${brand.story ? `<p class="cover-story">${esc(brand.story)}</p>` : ''}`
     + `<div class="stats">${stat(`${ledger.backed}<small> / ${ledger.live}</small>`, 'canvas cells backed by graded evidence')}${stat(ledger.signals, `signal${ledger.signals === 1 ? '' : 's'}${ledger.signals ? ` · top <em>${esc(ledger.topOverall)}</em>` : ''}`)}${stat(shipped, `feature${shipped === 1 ? '' : 's'} shipped${feats.length > shipped ? ` · ${feats.length - shipped} not yet` : ''}`)}</div>`
     + `<div class="backed"><p class="backed-k">The canvas, by what backs each cell</p><div class="tiles">${tiles}</div><div class="legend">${legend}</div></div></div>`;
   return `<section class="chapter cover-ch" id="cover-ch">${block({ id: 'cover', title: 'At a glance', cls: 'cover', body, src: 'counted from the canvas, docs/evidence and the FEAT records' })}</section>`;
@@ -967,7 +1081,7 @@ export function renderPlaybookHtml(data, stampedAt) {
     + (ledger.newestDays === null ? '' : ` · newest <b>${ledger.newestDays} day${ledger.newestDays === 1 ? '' : 's'}</b> ago`);
   const brandLine = brand.present
     ? `brand: ${esc(brand.name)} · docs/BRAND.md${brand.accent ? '' : ' (accent unknown → default)'}${brand.nascent ? ' · nascent' : ''}`
-    : 'brand: nascent — no docs/BRAND.md yet; rendered in the default. /landing seeds it.';
+    : 'brand: nascent — no docs/BRAND.md yet; rendered in the default. /canvas seeds it.';
   const canvasLine = canvas
     ? `docs/ideas/${esc(canvas.file)}${canvas.others.length ? ` · newest of ${canvas.others.length + 1} (${canvas.others.map(esc).join(', ')})` : ''}`
     : 'no canvas yet — this page fills itself as you answer · /canvas';
@@ -1070,6 +1184,17 @@ const PLAYBOOK_CSS = `
   .block.person .thing { font-family: var(--display); font-size: 18px; line-height: 1.3; margin-bottom: 8px; } .block.person .bio { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
   .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
   .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
+  .lede { font-family: var(--display); font-size: 20px; line-height: 1.35; } .lede + p { margin-top: 10px; }
+  .cover-story { margin: 14px 0 0; max-width: 62ch; font-family: var(--display); font-size: 19px; line-height: 1.4; color: var(--ink); }
+  .overtime { overflow-x: auto; } .overtime svg { display: block; width: 100%; min-width: 560px; height: auto; } .overtime + .helper { margin-top: 6px; }
+  .overtime text { font-family: var(--mono); font-size: 11px; fill: var(--muted); } .overtime .lbl { font-family: var(--body); font-size: 12px; fill: var(--ink); } .overtime .grid line { stroke: var(--rule-2); } .overtime .axis { stroke: var(--rule); }
+  .overtime .step { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; } .overtime .pt { fill: var(--accent); } .overtime .dec { fill: var(--ink); } .overtime .dec.old { fill: var(--paper); stroke: var(--muted); stroke-width: 1.5; }
+  .beats { display: grid; grid-template-columns: repeat(auto-fit, minmax(136px, 1fr)); gap: 10px; } .beat { display: grid; gap: 5px; align-content: start; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
+  .beat.mini-hole { border-style: dashed; border-color: var(--hole); background: transparent; color: var(--muted); } .beat.asp { border-style: dashed; border-color: var(--accent); }
+  .beat .spine { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); } .beat .when, .beat .rec { font-family: var(--mono); font-size: 11px; color: var(--muted); } .beat strong { font-size: 13.5px; }
+  .beat .line { font-family: var(--display); font-size: 16px; line-height: 1.35; } .beat .line.struck { text-decoration: line-through; color: var(--muted); } .beat.mini-hole .line { font-family: var(--body); font-size: 13.5px; }
+  .quote { margin: 0; display: grid; gap: 4px; } .quote + .quote { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule-2); } .quote blockquote { margin: 0; font-family: var(--display); font-size: 17px; line-height: 1.35; } .quote.lead blockquote { font-size: 24px; line-height: 1.25; }
+  .quote figcaption { font-size: 12.5px; color: var(--muted); } .quote .says { font-size: 13.5px; color: var(--ink-2); } .origin-list { margin: 0; padding-left: 18px; display: grid; gap: 6px; } .origin-list .date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
   .block.value .meaning { font-family: var(--display); font-size: 19px; line-height: 1.35; } .block.value .cost { margin-top: 10px; color: var(--ink-2); font-size: 14px; } .block.value .cost .label { margin-right: 6px; }
   .ladder { display: grid; gap: 6px; margin-bottom: 14px; } .rung { display: grid; grid-template-columns: 150px 1fr 32px; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); } .rung .bar { height: 10px; background: var(--rule-2); border-radius: 3px; overflow: hidden; } .rung .bar i { display: block; height: 100%; background: var(--accent); border-radius: 3px; } .rung b { text-align: right; color: var(--ink); }
   table.t.ev td { font-size: 13.5px; } .block.superseded { opacity: .62; } .block .fals { margin-top: 8px; font-size: 14px; color: var(--ink-2); } .more { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
@@ -1225,7 +1350,7 @@ function playbookJs(brand) {
 // dossier is not something you drop in, so those just wait for the mode.
 const VERB_ORDER = ['/boss', '/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/comp-eval', '/landing', '/trust', '/consult'];
 // A gated verb with a door that exists: the record can still be filled the plain way.
-const ALT = { 'comp-eval': ['or drop what you know', 'import'], landing: ['or drop what you know', 'import'], log: ['or add it to the idea', 'idea'] };
+const ALT = { 'comp-eval': ['or drop what you know', 'import'], canvas: ['or drop what you know', 'import'], landing: ['or drop what you know', 'import'], log: ['or add it to the idea', 'idea'] };
 // Is the verb's skill installed here? No skills folder at all (a bare adopt, a test tree) → nothing
 // can be said about gating, so yes. The readers that write a sentence rather than a list (recap,
 // the board's footer, the re-entry line) use this to phrase the wait themselves (IDEA-118).
@@ -1246,13 +1371,16 @@ export function verbLine(verb, projectDir) {
   const alt = ALT[m[1]];
   return alt && has(alt[1]) ? `${verb} — ${alt[0]}: /${alt[1]}` : `${verb} — arrives with the next mode (boss unlock)`;
 }
+// A chapter hole whose verb is /canvas usually repeats a canvas cell the list already names; these
+// ask for something no cell holds (the story in one line lives in BRAND.md), so they stay listed.
+const NOT_A_CELL = new Set(['vision-story']);
 export function openQuestions(data, projectDir) {
   const fromCanvas = data.boxes.filter((b) => b.state === 'hole').map((b) => ({ id: `canvas-${b.key}`, title: b.name, prompt: b.prompt, verb: '/canvas' }));
   // Two chapters may hole on one missing file (Vision repeats Team's "who is building it" the way
   // the chapters repeat canvas cells); the founder answers it once, so the list names it once — the
   // owning chapter's, which is drawn after the repeat.
   const byKey = new Map();
-  for (const h of (data.holes || []).filter((h) => h.verb !== '/canvas')) byKey.set(`${h.title}\u0000${h.src}`, h);
+  for (const h of (data.holes || []).filter((h) => h.verb !== '/canvas' || NOT_A_CELL.has(h.id))) byKey.set(`${h.title}\u0000${h.src}`, h);
   const fromChapters = [...byKey.values()];
   const rank = (v) => { const i = VERB_ORDER.findIndex((o) => v.startsWith(o)); return i < 0 ? VERB_ORDER.length : i; };
   return [...fromCanvas, ...fromChapters].sort((a, b) => rank(a.verb) - rank(b.verb)).map((q) => {
