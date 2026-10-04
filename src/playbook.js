@@ -169,7 +169,7 @@ export function readBrand(projectDir, projectName) {
   try { text = readFileSync(p, 'utf8'); } catch { return brand; }
   const fm = frontmatter(text);
   if (String(fm.status || '').toLowerCase().includes('nascent')) brand.nascent = true;
-  const pick = (v) => { const s = String(v || '').trim(); return !s || /^unknown\b/i.test(s) ? null : s; };
+  const pick = (v) => { const s = String(v || '').replace(/\s+#\s.*$/, '').trim(); return !s || /^unknown\b/i.test(s) ? null : s; };   // a template comment kept after the value is not the value
   const hex = (v) => { const m = String(v || '').match(/#[0-9a-fA-F]{6}\b/); return m ? m[0] : null; };
   brand.accent = hex(fm.accent) || hex((text.match(/accent[^\n]*?(#[0-9a-fA-F]{6})/i) || [])[0]);
   brand.tagline = pick(fm.tagline) || pick((text.match(/^-\s*\*\*tagline:?\*\*\s*(.+)$/im) || [])[1]);
@@ -473,7 +473,9 @@ export function readLearnings(projectDir, max = 8, ventureFile = null) {
 // the cap → the name renders alone with a note. No file, no face, never a placeholder.
 const PHOTO_CAP = 600 * 1024;
 export function readPhoto(baseDir, ref) {
-  const r = String(ref || '').trim();
+  // a YAML comment after the value is not part of the path: the README and the team stub both write one,
+  // and a founder who swaps `unknown` for `./me.jpg` keeps it (IDEA-134 — the face read as not found)
+  const r = String(ref || '').replace(/\s+#.*$/, '').trim();
   if (!r || /^unknown\b/i.test(r) || /^</.test(r)) return null;
   const file = join(baseDir, r.replace(/^\.\//, ''));
   if (!existsSync(file)) return { file: r, missing: true };
@@ -508,7 +510,7 @@ export function readScreens(projectDir) {
 // A photo dropped beside the person's file, named like it (marta.md → marta.jpg), is the choice made by
 // dropping it — no field to edit (IDEA-134). `photo: unknown` with no such file stays faceless.
 function photoByName(dir, slugName) {
-  const hit = ['jpg', 'jpeg', 'png', 'webp'].map((e) => `${slugName}.${e}`).find((f) => existsSync(join(dir, f)));
+  const hit = ['jpg', 'jpeg', 'png', 'webp', 'svg'].map((e) => `${slugName}.${e}`).find((f) => existsSync(join(dir, f)));
   return hit ? readPhoto(dir, hit) : null;
 }
 

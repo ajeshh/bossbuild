@@ -9,8 +9,10 @@ hand the folder to the same renderers an install runs — `boss playbook`, `boss
 
 Rules for editing it:
 
-- **No real person.** No name, photo or quote of anyone who exists. `photo: unknown` everywhere —
-  a fictional founder gets no face, because a drawn stand-in is what the playbook refuses.
+- **No real person.** No name, photo or quote of anyone who exists. A fictional person's face is an
+  **illustration that reads as a drawing** (`.svg`, flat, in the demo's palette), never a photograph or
+  a photo-real face: a drawing can't be mistaken for someone who exists (Ajesh, 2026-10-04). BOSS
+  itself still never draws a stand-in for a real founder; these are the demo's own files.
 - **No real company as a rival.** Shiftwise, CareSheet and the phone tree are fiction.
 - **Fully filled.** A hole on the demo is a bug; `npm run check:demo` fails on one. When a new
   chapter or record type ships, add its record here in the same commit.

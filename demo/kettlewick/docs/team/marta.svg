@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Marta Kowalczyk, illustrated">
+  <title>Marta Kowalczyk — an illustration (Kettlewick and its people are fictional)</title>
+  <rect width="160" height="160" fill="#F3ECE1"/>
+  <path d="M22 160c4-34 28-50 58-50s54 16 58 50z" fill="#B84E12"/>
+  <path d="M64 112h32v-14H64z" fill="#C98C6B"/>
+  <path d="M68 116c4 6 20 6 24 0" fill="none" stroke="#FFFBF4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M42 78c-6-34 14-56 38-56s44 22 38 56c-2 14-8 22-12 26l-6-30H60l-6 30c-4-4-10-12-12-26z" fill="#8F8478"/>
+  <ellipse cx="80" cy="74" rx="25" ry="30" fill="#D9A07F"/>
+  <path d="M55 66c4-20 18-28 28-28 14 0 26 10 26 26-10-10-28-14-54 2z" fill="#A79B8E"/>
+  <circle cx="70" cy="76" r="2.6" fill="#2A1E17"/><circle cx="90" cy="76" r="2.6" fill="#2A1E17"/>
+  <path d="M65 69q5-3 10 0M85 69q5-3 10 0" fill="none" stroke="#6B5A4C" stroke-width="2" stroke-linecap="round"/>
+  <path d="M80 80q-2 7 1 9" fill="none" stroke="#B57C5E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M71 93q9 7 18 0" fill="none" stroke="#2A1E17" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

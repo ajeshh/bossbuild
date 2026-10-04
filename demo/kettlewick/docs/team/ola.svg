@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Ola Bennett, illustrated">
+  <title>Ola Bennett — an illustration (Kettlewick and its people are fictional)</title>
+  <rect width="160" height="160" fill="#E4E8DE"/>
+  <path d="M22 160c4-34 28-50 58-50s54 16 58 50z" fill="#4E5E40"/>
+  <path d="M64 112h32v-14H64z" fill="#8A5A3C"/>
+  <path d="M66 112l14 12 14-12" fill="#FFFBF4"/>
+  <ellipse cx="80" cy="74" rx="24" ry="29" fill="#A9714E"/>
+  <path d="M55 70c-2-26 12-38 26-38 15 0 27 11 25 38-4-12-14-20-26-20s-21 8-25 20z" fill="#2A1E17"/>
+  <rect x="61" y="70" width="16" height="12" rx="4" fill="none" stroke="#2A1E17" stroke-width="2.4"/>
+  <rect x="83" y="70" width="16" height="12" rx="4" fill="none" stroke="#2A1E17" stroke-width="2.4"/>
+  <path d="M77 75h6" stroke="#2A1E17" stroke-width="2.4"/>
+  <circle cx="69" cy="76" r="2.4" fill="#2A1E17"/><circle cx="91" cy="76" r="2.4" fill="#2A1E17"/>
+  <path d="M80 83q-2 6 1 8" fill="none" stroke="#7E5137" stroke-width="2" stroke-linecap="round"/>
+  <path d="M72 94q8 5 16 0" fill="none" stroke="#2A1E17" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

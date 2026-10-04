@@ -4,7 +4,7 @@ type: person
 name: Ola Bennett
 handle: "@ola"
 role: cofounder
-photo: unknown
+photo: ./ola.svg   # an illustration: Kettlewick and its people are fictional
 status: active
 ---
 

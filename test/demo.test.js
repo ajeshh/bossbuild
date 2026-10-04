@@ -35,7 +35,8 @@ test('the six pages: every one says fictional, links stay relative, nothing is f
       assert.doesNotMatch(html, /<img\b(?![^>]*src="data:)/i, `${p}: an image only inline`);
     }
     const pb = readFileSync(join(out, 'playbook.html'), 'utf8');
-    assert.ok(!pb.includes('class="face"'), 'no faces on the demo');
+    // a face on the demo is the demo's own illustration, inlined as SVG, never a photograph (README, 2026-10-04)
+    for (const m of pb.matchAll(/<img class="face" src="data:([^;]+);/g)) assert.equal(m[1], 'image/svg+xml', 'a demo face is a drawing');
     assert.ok(pb.includes('<img class="logo" src="data:image/svg+xml'), 'the mark renders from its file');
     assert.ok(pb.includes('href="design.html#persona-marta"'), 'the Design link survives as a sibling');
   } finally { rmSync(out, { recursive: true, force: true }); }
@@ -103,7 +104,7 @@ test('nothing in the demo names a real person or a real rival — the fiction ru
   const text = files.map((f) => readFileSync(f, 'utf8')).join('\n');
   assert.ok(files.length >= 35);
   assert.doesNotMatch(text, /Tidewell/, 'the old name is gone');
-  assert.doesNotMatch(text, /photo:\s*\.\//, 'no photo file for a person');
+  for (const m of text.matchAll(/photo:\s*\.\/(\S+)/g)) assert.match(m[1], /\.svg$/, 'a person\'s face is an illustration, never a photo file');
   assert.ok(!existsSync(join(DEMO, 'docs', 'evidence', 'CANDIDATES-2026-08-23-maintainer-experiment.md')), 'nothing copied from BOSS\'s own evidence');
 });
 

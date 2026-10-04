@@ -152,6 +152,11 @@ rule above still applies to the whole section once it is stamped.
   canvas with an idea by number, it skips a record with `shipped_on:`, so an old feature can't
   become your Product chapter.
 
+- **A comment after a value no longer breaks it.** The team stub and the brand-doc template write
+  a `# …` comment after `photo:`, `story:` and `tagline:`. If you replaced `unknown` with your own
+  value and kept the comment, the playbook read the comment as part of the value, so a photo showed
+  as *not found*. It doesn't now. A team photo can also be an `.svg` dropped beside the person.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

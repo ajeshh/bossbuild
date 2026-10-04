@@ -1022,6 +1022,7 @@ test('IDEA-134 Team: a photo dropped beside the person file, named like it, show
   const team = readTeam(dir);
   assert.match(team.find((p) => p.slug === 'marta').photo.dataUri, /^data:image\/png;base64,/);
   assert.equal(team.find((p) => p.slug === 'dev').photo, null);
+  assert.match(readPhoto(join(dir, 'docs', 'team'), './marta.png   # a comment the stub wrote').dataUri, /^data:image\/png/, 'a trailing comment is not part of the path');
   const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-10-04 10:00');
   assert.match(html, /id="person-marta"[\s\S]*?<img class="face"/);
   assert.match(html, /id="person-dev"[\s\S]*?<div class="foot"><span class="src">docs\/team\/dev\.md · no photo — drop dev\.jpg beside it<\/span>/);

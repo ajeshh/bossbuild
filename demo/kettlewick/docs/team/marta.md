@@ -4,7 +4,7 @@ type: person
 name: Marta Kowalczyk
 handle: "@marta"
 role: founder
-photo: unknown
+photo: ./marta.svg   # an illustration: Kettlewick and its people are fictional
 status: active
 ---
 
