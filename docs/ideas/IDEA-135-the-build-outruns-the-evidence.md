@@ -417,6 +417,21 @@ has no record citing evidence, which is itself the gap this line exposes.
 **Not yet:** a prompt to keep asking (the block could offer `/interview` beside the stagnation
 line); the per-FEAT growth mark (criteria at spec vs now).
 
+## Slice 2 landed (2026-10-04, `f97b320`, Unreleased; Ajesh: "go for it")
+
+Ported from the mock, plus: `/interview` offered when learning has gone quiet (nobody yet, 21+
+days, or things heard that changed nothing); the block renders whenever there is evidence OR a
+FEAT (a test caught it holing over real evidence when no FEAT existed); `product-testing` is in
+the VC cut and `NOT_A_CELL`, not the Story cut. Kettlewick: DEC-002 cites EVID-001/002, EVID-003's
+`about:` names FEAT-001/002; the canvas keeps *Experiment this week* (drift-loop's exit reads it).
+Tests 666/666 (eight new; four playbook tests re-pointed at honest examples, `/trust` as the gated
+verb), evals 160/160, `boss playbook` run end to end in a throwaway. `site/demo` not regenerated
+(a peer's uncommitted stamp is in `site/`); the release regenerates it.
+
+**Next:** slice 3, the canvas line renamed *What we're testing next* in `/canvas` (and drift-loop's
+exit regex, `moment-frames.js`); the per-FEAT growth mark; the receipt (the founder's answer to the
+`unseen` moment logged beside the work).
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
