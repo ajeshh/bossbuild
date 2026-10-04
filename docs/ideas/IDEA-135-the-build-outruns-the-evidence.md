@@ -264,6 +264,36 @@ not a pre-declared metric.
    last three?* It names the true cost (time, people, capacity, not only code), offers restart,
    throw-away or the NO-list, and logs the answer as the receipt. Best-supported of the four.
 
+## Can the conscience see the build? Probed 2026-10-04: yes, with existing predicates
+
+A throwaway project per case; the real `loop-runtime.js` (`loadLoops` + `classifyLoop`), with two
+candidate loop specs. No runtime change.
+
+| Case | `outpaced_by: {path_glob: $source, behind: docs/evidence/EVID-*.md, min: 3}` | `count_at_least $source ≥3` + `count_at_most EVID-* ≤0` |
+|---|---|---|
+| A: no EVID, 10 files in `src/` | unopenable (silent) | **open** |
+| B: EVID, then 3 newer files | **open** | unopenable |
+| C: EVID, then 2 newer files | unopenable | unopenable |
+| D: no EVID, code in `server/` | unopenable | unopenable (blind: `server/` isn't in the default `$source` globs) |
+
+**What it means:**
+- **Two loop files, one moment.** Entry predicates only AND, and `outpaced_by` deliberately goes
+  quiet when the artifact it measures against doesn't exist. EVID-004's founder is case A (no
+  evidence ever), which only the second spec sees. Two loops can share one moment; no runtime
+  change is needed.
+- **Re-key the existing `focus` moment, don't add one.** `focus` is used only by `focus-loop`
+  (L1, FEAT-counting). These belong in **L0**: the runaway founder is likely still in Quickstart
+  with no FEATs.
+- **The unit is files changed, not things built.** Ten features in one file reads as 1; one
+  feature across eight files reads as 8. It is a coarse gate; the model judges what is behind it,
+  as `focus` already does. "The third thing" in the shape becomes "enough has changed since anyone
+  saw it", with the threshold tuned on real trees.
+- **"Seen by someone" is wider than an EVID.** `behind` takes a comma list, so a pretotype log or
+  a shipped-and-shown record can count too. Which ones is open.
+- **Known blind spots, all failing quiet:** code outside the default `$source` globs (configurable
+  in `.boss/config.json`), and fresh clones reset modification times, so it under-fires.
+- Cost: the `$source` walk already runs per prompt for other loops (capped at 1,500 files).
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
