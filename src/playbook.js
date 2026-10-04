@@ -1050,6 +1050,10 @@ function companyChapters(data) {
 const CHAPTER_CELLS = ['problem', 'story', 'people', 'risks', 'bizmodel', 'cost', 'principles'];
 const VC_IDS = new Set(['cover', 'vision-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'vision-why', 'vision-few-years', 'vision-principles', 'product-shape', 'product-feats', 'product-not', 'problem-cell', 'problem-story', 'market-people', 'market-sources', 'competition-table', 'model-revenue', 'model-cost', 'model-capital', 'model-ask', 'evidence-ladder', 'risks-harms', 'risks-trust', 'health-read', 'health-measure', 'brand-anchor']);
 const VC_PREFIXES = ['rival-', 'person-', 'value-'];
+// The Story cut (IDEA-133): the venture as a narrative a founder hands to someone — the cover with its
+// story and heart, why, the problem, how sure over time, how it grew, the words that landed, where it
+// started, where it goes. Page order, like every cut; a hole stays a hole.
+const STORY_IDS = new Set(['cover', 'vision-why', 'vision-few-years', 'problem-cell', 'problem-story', 'evidence-over-time', 'learnings-beats', 'brand-learned', 'brand-origin']);
 export function deckCuts(mainHtml, data) {
   const blocks = [...String(mainHtml).matchAll(/<article class="([^"]*)" id="([^"]+)"/g)].map((m) => ({ id: m[2], cls: m[1].split(/\s+/) }));
   const real = new Set((data.personas || []).filter((p) => p.real > 0).map((p) => `persona-${slug(p.slug)}`));
@@ -1059,6 +1063,7 @@ export function deckCuts(mainHtml, data) {
     all: all.map((b) => b.id),
     internal: all.filter((b) => filled(b) && !CHAPTER_CELLS.some((k) => b.id === `canvas-${k}`)).map((b) => b.id),
     vc: all.filter((b) => VC_IDS.has(b.id) || VC_PREFIXES.some((p) => b.id.startsWith(p)) || real.has(b.id)).map((b) => b.id),
+    story: all.filter((b) => STORY_IDS.has(b.id)).map((b) => b.id),
   };
 }
 
@@ -1082,7 +1087,17 @@ function coverBlock(data) {
   const feats = data.feats || [];
   const shipped = feats.filter((f) => /^shipped/i.test(f.status || '')).length;
   const stat = (n, label) => `<div class="stat"><b class="tab">${n}</b><span>${label}</span></div>`;
-  const body = `<div class="cover-body"><div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>${brand.story ? `<p class="cover-story">${esc(brand.story)}</p>` : ''}`
+  // The heart (IDEA-133): why this, for them · the problem they saw · where it goes — each in their own
+  // words, each only when written. A cover shows what a room sees first, so it never shows a hole;
+  // Vision and Problem ask. The counts follow as "and how do you know".
+  const { idea } = data; const prob = boxes.find((b) => b.key === 'problem');
+  const heart = [
+    idea && (idea.why || idea.success) ? ['Why this, for them', idea.why ? `“${inline(idea.why)}”` : inline(idea.success), idea.why && idea.success ? `It worked when: ${inline(idea.success)}` : ''] : null,
+    prob && prob.state === 'filled' ? ['The problem they saw', inline(firstSentence(prob.answer, 240)), ''] : null,
+    idea && idea.vision ? ['Where it goes', inline(idea.vision), 'their aspiration'] : null,
+  ].filter(Boolean);
+  const heartHtml = heart.length ? `<div class="cover-heart">${heart.map(([k, v, sub]) => `<div><p class="backed-k">${k}</p><p class="h">${v}</p>${sub ? `<p class="hs">${sub}</p>` : ''}</div>`).join('')}</div>` : '';
+  const body = `<div class="cover-body"><div class="cover-id">${logo ? `<img class="cover-mark" src="${logo}" alt="${esc(brand.name)} mark">` : ''}<div><p class="cover-name">${esc(brand.name)}</p>${brand.tagline ? `<p class="cover-tag">${esc(brand.tagline)}</p>` : ''}</div></div>${brand.story ? `<p class="cover-story">${esc(brand.story)}</p>` : ''}${heartHtml}`
     + `<div class="stats">${stat(`${ledger.backed}<small> / ${ledger.live}</small>`, 'canvas cells backed by graded evidence')}${stat(ledger.signals, `signal${ledger.signals === 1 ? '' : 's'}${ledger.signals ? ` · top <em>${esc(ledger.topOverall)}</em>` : ''}`)}${stat(shipped, `feature${shipped === 1 ? '' : 's'} shipped${feats.length > shipped ? ` · ${feats.length - shipped} not yet` : ''}`)}</div>`
     + `<div class="backed"><p class="backed-k">The canvas, by what backs each cell</p><div class="tiles">${tiles}</div><div class="legend">${legend}</div></div></div>`;
   return `<section class="chapter cover-ch" id="cover-ch">${block({ id: 'cover', title: 'At a glance', cls: 'cover', body, src: 'counted from the canvas, docs/evidence and the FEAT records' })}</section>`;
@@ -1144,7 +1159,7 @@ ${company.html}`;
   data.cuts = cuts;
   const presentBar = `<div class="present" id="present" data-cuts="${esc(JSON.stringify(cuts))}">
     <span class="label">Present</span>
-    <div class="seg" role="group" aria-label="Cut"><button type="button" data-cut="vc" aria-pressed="true">VC cut <b class="tab n-vc">${cuts.vc.length}</b></button><button type="button" data-cut="internal" aria-pressed="false">Internal <b class="tab n-internal">${cuts.internal.length}</b></button><button type="button" data-cut="all" aria-pressed="false">All <b class="tab n-all">${cuts.all.length}</b></button></div>
+    <div class="seg" role="group" aria-label="Cut"><button type="button" data-cut="vc" aria-pressed="true">VC cut <b class="tab n-vc">${cuts.vc.length}</b></button><button type="button" data-cut="story" aria-pressed="false">Story <b class="tab n-story">${cuts.story.length}</b></button><button type="button" data-cut="internal" aria-pressed="false">Internal <b class="tab n-internal">${cuts.internal.length}</b></button><button type="button" data-cut="all" aria-pressed="false">All <b class="tab n-all">${cuts.all.length}</b></button></div>
     <button type="button" class="go" id="present-go">Present</button>
     <button type="button" class="pdf" id="present-pdf" title="Print the current cut, one slide per page">Export PDF</button>
     <span class="cut-note t-small"></span>
@@ -1208,6 +1223,10 @@ const PLAYBOOK_CSS = `
   .sl .lede { font-size: 1.15em; } .sl .helper { font-family: var(--body); font-size: 14px; color: var(--muted); }
   .sl .quote blockquote { font-size: 1.05em; } .sl .quote.lead blockquote { font-size: 1.55em; line-height: 1.2; } .sl .quote figcaption, .sl .quote .says { font-family: var(--body); font-size: 14px; }
   .sl .samples { font-size: .8em; } .sl .origin-list { font-size: .85em; }
+  .cover-heart { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin: 22px 0 4px; border-top: 2px solid var(--ink); } .cover-heart > div { padding: 12px 18px 4px 0; } .cover-heart > div + div { padding-left: 18px; border-left: 1px solid var(--rule); }
+  .cover-heart .h { font-family: var(--display); font-size: 17px; line-height: 1.38; } .cover-heart .hs { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+  @media (max-width: 640px) { .cover-heart > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); } }
+  .sl.cover .backed { display: none; } .sl.cover .cover-heart .h { font-size: 16px; }
   .cover-story { margin: 14px 0 0; max-width: 62ch; font-family: var(--display); font-size: 19px; line-height: 1.4; color: var(--ink); }
   .overtime { overflow-x: auto; } .overtime svg { display: block; width: 100%; min-width: 560px; height: auto; } .overtime + .helper { margin-top: 6px; }
   .overtime text { font-family: var(--mono); font-size: 11px; fill: var(--muted); } .overtime .lbl { font-family: var(--body); font-size: 12px; fill: var(--ink); } .overtime .grid line { stroke: var(--rule-2); } .overtime .axis { stroke: var(--rule); }
@@ -1296,8 +1315,8 @@ function playbookJs(brand) {
   /* keyed by project: every .boss/ page shares the file:// origin, so one browser sees many playbooks */
   const KEY = 'boss-playbook-' + BRAND.replace(/[^a-z0-9]+/gi, '-').toLowerCase() + '-';
   const store = { get(k) { try { return JSON.parse(localStorage.getItem(KEY + k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) {} } };
-  const NAMES = { vc: 'VC cut', internal: 'Internal', all: 'All' };
-  let cut = ['vc', 'internal', 'all'].includes(store.get('cut')) ? store.get('cut') : 'vc';
+  const NAMES = { vc: 'VC cut', story: 'Story', internal: 'Internal', all: 'All' };
+  let cut = ['vc', 'story', 'internal', 'all'].includes(store.get('cut')) ? store.get('cut') : 'vc';
   const byId = (id) => blocks.find((b) => b.id === id);
   const removed = () => (store.get('removed-' + cut) || []).filter((id) => byId(id));
   const list = () => (cuts[cut] || []).filter((id) => !removed().includes(id)).map(byId).filter(Boolean);
@@ -1317,7 +1336,7 @@ function playbookJs(brand) {
     const rm = removed(); const box = $('#present-removed'); box.hidden = !rm.length;
     $('.chips', box).innerHTML = rm.map((id) => '<span class="rm">' + esc(byId(id).dataset.title || id) + '<button type="button" data-restore="' + esc(id) + '" title="Put this slide back">↺</button></span>').join('');
     $$('[data-restore]', box).forEach((x) => x.addEventListener('click', () => restore(x.dataset.restore)));
-    ['vc', 'internal', 'all'].forEach((c) => { const n = $('.n-' + c, present); if (n) n.textContent = String((cuts[c] || []).filter((id) => byId(id) && !(store.get('removed-' + c) || []).includes(id)).length); });
+    ['vc', 'story', 'internal', 'all'].forEach((c) => { const n = $('.n-' + c, present); if (n) n.textContent = String((cuts[c] || []).filter((id) => byId(id) && !(store.get('removed-' + c) || []).includes(id)).length); });
   }
   function remove(id) { const r = removed(); if (!r.includes(id)) r.push(id); store.set('removed-' + cut, r); renderBar(); }
   function restore(id) { store.set('removed-' + cut, removed().filter((x) => x !== id)); renderBar(); if (deckEl && !deckEl.hidden) render(); }

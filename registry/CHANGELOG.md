@@ -90,6 +90,13 @@ rule above still applies to the whole section once it is stamped.
   says so. In Present and Export PDF, the why, the quotes and the chart caption now scale with the
   slide.
 
+- **The playbook's cover opens on the heart, and Present has a Story cut.** Under your story
+  line, the cover now shows *why this, for you* (your own sentence), *the problem you saw* and
+  *where it goes*, each only once you've written it, so the cover never shows a gap. The counts
+  and the canvas tiles follow as *and how do you know*. **Story** joins VC cut, Internal and
+  All in Present and Export PDF: the cover, why, the problem, how sure over time, how it grew,
+  the words that landed and where it started, as a short deck to hand to someone.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

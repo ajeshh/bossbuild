@@ -941,6 +941,10 @@ test('IDEA-133 story weave: the story on the cover (asked for in Vision when mis
   const d2 = collectPlaybook(bare, 'tidewell'); const h2 = renderPlaybookHtml(d2, '2026-10-04 10:00');
   assert.ok(h2.includes('id="vision-story"') && !h2.includes('class="cover-story"'));
   assert.ok(d2.questions.some((q) => q.id === 'vision-story' && q.verb === '/canvas'));
+  // the Story cut: the narrative, in page order, opening on the cover that carries the story and the heart
+  assert.deepEqual(data.cuts.story, ['cover', 'vision-why', 'vision-few-years', 'problem-cell', 'problem-story', 'learnings-beats', 'brand-learned', 'brand-origin'].filter((id) => html.includes(`id="${id}"`)));
+  assert.ok(html.includes('data-cut="story"') && html.includes('class="cover-heart"'));
+  assert.match(html, /<p class="backed-k">Why this, for them<\/p><p class="h">“every Monday I lose an hour to the cover call”<\/p>/, 'the heart on the cover, in their words');
 });
 
 test('IDEA-133 story weave: how sure over time is drawn only from dated, graded records and stops at the last; how it grew holds a commitment in "until finally" or a dashed card, never the vision', async () => {
