@@ -183,6 +183,27 @@ someone asks.
   regenerates it.
 - **Later:** `/close` offers the why again; `/evidence` marks echoes; then decide on the conscience.
 
+### After B: what's next, and the gaps B left (2026-10-04, Ajesh: *"so much better!!! love it!!!! anything
+else we should add… missed or not done? or even in terms of design"*)
+- **Adds, ranked:** (1) **a Story cut in Present**, a one-click narrative deck (cover story → why →
+  how it grew → words that landed → where it goes); cuts are block-id lists, so it's cheap. This is
+  the "narrative the entrepreneur uses to share" ask. (2) **The heart on the cover**: why · the
+  problem seen · where it goes, as v2 had it, above or instead of the BOSS-internal counts (*5/13
+  cells backed* means nothing to an investor). (3) **Copy the story as prose**: one copy that gives a
+  website About section or an intro email, in the founder's own lines. (4) **`/landing` and
+  `/pretotype` read `story:` and the ★ quotes**, and use only the lines a proof pointer backs as
+  claims (build step 7).
+- **Gaps B left (mine):** **the voice samples are collected and dropped.** The template's
+  `*Sounds like:*` / `*When it's hard:*` sub-bullets are indented, and `readBrandDoc`'s shape parser
+  reads only top-level `- **X:**` lines, so they never render. **The proof pointers render as plain
+  text** (`— EVID-001`), not as chips that link to the Evidence row. **Present and Export PDF were not
+  checked** with the new blocks: the beats grid and the SVG on a 16:9 slide, and print. `nascent`
+  still has no row in IDS. The `/close` why-again step and `/evidence` echo marking aren't built.
+- **Design tweaks:** chapter headlines start lowercase when the record does ("one owner pre-paid…",
+  "the ninth owner…"); capitalise the first letter for display only, never the stored words. On the
+  chart, a hover or tap on a point could jump to its row in the ladder table. The beats could get a
+  thin connecting rule so they read as a sequence rather than a card grid.
+
 ### Earlier slice list (kept for reference; phases 3–4 of the order above)
 
 1. **The conscience says the why back, in the founder's own words, when it matters.** When a drift

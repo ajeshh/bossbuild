@@ -83,6 +83,13 @@ rule above still applies to the whole section once it is stamped.
   *How it changed*. Your Vision, Evidence, Learnings and VC cut gain these blocks on the next `boss
   playbook`.
 
+- **Your brand's voice samples and its record links show up in the playbook, and the new story
+  blocks present well.** The *Sounds like* and *When it's hard* lines under *How it sounds* used
+  to be collected and never shown; they now render under it. A line in your brand's shape that ends
+  `— EVID-001` or `— DEC-002` shows a chip that jumps to that record on the page, and `— belief`
+  says so. In Present and Export PDF, the why, the quotes and the chart caption now scale with the
+  slide.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

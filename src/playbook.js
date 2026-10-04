@@ -493,8 +493,17 @@ export function readBrandDoc(projectDir) {
   if (!existsSync(p)) return null;
   let text; try { text = readFileSync(p, 'utf8'); } catch { return null; }
   const fm = frontmatter(text);
-  const shape = (section(text, 'Current shape') || '').split('\n').map((l) => l.match(/^[-*]\s*\*\*([^*]+?):?\*\*\s*(.*)$/)).filter(Boolean)
-    .map((m) => ({ label: m[1].trim(), value: /^<.*>$/.test(m[2].trim()) || /^unknown\b/i.test(m[2].trim()) ? '' : m[2].trim() }));
+  // A shape line, plus the indented `*Sounds like:*` / `*When it's hard:*` samples under it (IDEA-133:
+  // the template asks for them; a parser that read only top-level lines dropped them). A wrapped line
+  // continues the sample above it; a `<…>` placeholder, and its wrap, is not a sample.
+  const shape = []; let open = null;
+  for (const l of (section(text, 'Current shape') || '').split('\n')) {
+    const top = l.match(/^[-*]\s*\*\*([^*]+?):?\*\*\s*(.*)$/);
+    if (top) { const v = top[2].trim(); shape.push({ label: top[1].trim(), value: /^<.*>$/.test(v) || /^unknown\b/i.test(v) ? '' : v, samples: [] }); open = null; continue; }
+    const sub = l.match(/^\s+[-*]\s*\*([^*]+?)\*\s*(.*)$/);
+    if (sub && shape.length) { const v = sub[2].trim(); open = !v || /^</.test(v) || /^unknown\b/i.test(v) ? 'skip' : { label: sub[1].replace(/:\s*$/, '').trim(), text: v }; if (open !== 'skip') shape[shape.length - 1].samples.push(open); continue; }
+    if (open && open !== 'skip' && /^\s{2,}\S/.test(l)) open.text += ' ' + l.trim();
+  }
   const values = (sectionStartingWith(text, 'How we build') || '').split('\n').map((l) => l.match(/^[-*]\s*\*\*([^*]+?)\*\*\s*[—–:-]\s*(.*)$/)).filter(Boolean)
     .map((m) => { const rest = m[2].trim(); const c = rest.match(/\*Costs?:\*\s*(.*)$/i); return { headline: m[1].trim(), meaning: (c ? rest.slice(0, c.index) : rest).trim(), cost: c ? c[1].replace(/\*$/, '').trim() : '' }; })
     .filter((v) => !/^<.*>$/.test(v.headline));
@@ -979,7 +988,16 @@ function companyChapters(data) {
   let brandInner;
   if (b) {
     const known = b.shape.filter((l) => l.value);
-    const shapeBlock = block({ id: 'brand-shape', title: 'Current shape', sub: b.status || '', body: b.shape.length ? `<dl class="kv">${b.shape.map((l) => `<dt>${esc(l.label)}</dt><dd>${l.value ? inline(l.value) : '<em class="hole-text">unknown</em>'}</dd>`).join('')}</dl>` : '<p class="helper">no ## Current shape section</p>',
+    // A line's proof pointer (`— EVID-001`, `— DEC-002`, `— belief`) becomes a chip: a record links to
+    // its row on this page, a belief says so (IDEA-133).
+    const pointed = (v) => {
+      const m = v.match(/\s+[—–]\s+((?:(?:EVID|DEC)-\d+(?:\s*[,·&]\s*)?)+|belief)\s*$/i);
+      if (!m) return inline(v);
+      const ids = m[1].match(/(?:EVID|DEC)-\d+/gi) || [];
+      return `${inline(v.slice(0, m.index))} ${ids.length ? ids.map((id) => `<a class="chip ev ptr" href="#${esc(slug(id))}">${esc(id.toUpperCase())}</a>`).join(' ') : '<span class="chip asserted ptr">belief</span>'}`;
+    };
+    const samples = (l) => (l.samples && l.samples.length ? `<ul class="samples">${l.samples.map((x) => `<li><span class="label">${esc(x.label)}</span> ${pointed(x.text)}</li>`).join('')}</ul>` : '');
+    const shapeBlock = block({ id: 'brand-shape', title: 'Current shape', sub: b.status || '', body: b.shape.length ? `<dl class="kv">${b.shape.map((l) => `<dt>${esc(l.label)}</dt><dd>${l.value ? pointed(l.value) : '<em class="hole-text">unknown</em>'}${samples(l)}</dd>`).join('')}</dl>` : '<p class="helper">no ## Current shape section</p>',
       chip: `<span class="chip asserted">${known.length} of ${b.shape.length} known</span>`, src: `${esc(b.file)}${b.updated ? ` · ${esc(b.updated)}` : ''}` });
     const { brand } = data;
     const anchorBlock = (brand.accent || brand.tagline || (b.logo && b.logo.dataUri))
@@ -1184,7 +1202,12 @@ const PLAYBOOK_CSS = `
   .block.person .thing { font-family: var(--display); font-size: 18px; line-height: 1.3; margin-bottom: 8px; } .block.person .bio { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
   .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
   .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
+  .samples { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 2px solid var(--accent-soft); display: grid; gap: 4px; font-family: var(--display); font-size: 15.5px; line-height: 1.4; } .samples .label { margin-right: 6px; } .chip.ptr { text-decoration: none; margin-left: 2px; vertical-align: 1px; }
   .lede { font-family: var(--display); font-size: 20px; line-height: 1.35; } .lede + p { margin-top: 10px; }
+  /* on a slide the body text scales with the screen; the story's own pieces scale with it (IDEA-133) */
+  .sl .lede { font-size: 1.15em; } .sl .helper { font-family: var(--body); font-size: 14px; color: var(--muted); }
+  .sl .quote blockquote { font-size: 1.05em; } .sl .quote.lead blockquote { font-size: 1.55em; line-height: 1.2; } .sl .quote figcaption, .sl .quote .says { font-family: var(--body); font-size: 14px; }
+  .sl .samples { font-size: .8em; } .sl .origin-list { font-size: .85em; }
   .cover-story { margin: 14px 0 0; max-width: 62ch; font-family: var(--display); font-size: 19px; line-height: 1.4; color: var(--ink); }
   .overtime { overflow-x: auto; } .overtime svg { display: block; width: 100%; min-width: 560px; height: auto; } .overtime + .helper { margin-top: 6px; }
   .overtime text { font-family: var(--mono); font-size: 11px; fill: var(--muted); } .overtime .lbl { font-family: var(--body); font-size: 12px; fill: var(--ink); } .overtime .grid line { stroke: var(--rule-2); } .overtime .axis { stroke: var(--rule); }
