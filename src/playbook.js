@@ -1021,7 +1021,7 @@ function companyChapters(data) {
       return `${inline(v.slice(0, m.index))} ${ids.length ? ids.map((id) => `<a class="chip ev ptr" href="#${esc(slug(id))}">${esc(id.toUpperCase())}</a>`).join(' ') : '<span class="chip asserted ptr">belief</span>'}`;
     };
     const samples = (l) => (l.samples && l.samples.length ? `<ul class="samples">${l.samples.map((x) => `<li><span class="label">${esc(x.label)}</span> ${pointed(x.text)}</li>`).join('')}</ul>` : '');
-    const shapeBlock = block({ id: 'brand-shape', title: 'Current shape', sub: b.status || '', body: b.shape.length ? `<dl class="kv">${b.shape.map((l) => `<dt>${esc(l.label)}</dt><dd>${l.value ? pointed(l.value) : '<em class="hole-text">unknown</em>'}${samples(l)}</dd>`).join('')}</dl>` : '<p class="helper">no ## Current shape section</p>',
+    const shapeBlock = block({ id: 'brand-shape', title: 'Current shape', sub: b.status || '', cls: 'wide', body: b.shape.length ? `<dl class="kv">${b.shape.map((l) => `<dt>${esc(l.label)}</dt><dd>${l.value ? pointed(l.value) : '<em class="hole-text">unknown</em>'}${samples(l)}</dd>`).join('')}</dl>` : '<p class="helper">no ## Current shape section</p>',
       chip: `<span class="chip asserted">${known.length} of ${b.shape.length} known</span>`, src: `${esc(b.file)}${b.updated ? ` · ${esc(b.updated)}` : ''}` });
     const { brand } = data;
     const anchorBlock = (brand.accent || brand.tagline || (b.logo && b.logo.dataUri))
@@ -1239,9 +1239,10 @@ const PLAYBOOK_CSS = `
   }
   .face { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; border: 1px solid var(--rule); } .block.snippet .face { float: right; margin: 0 0 8px 12px; width: 56px; height: 56px; }
   .block.person .thing { font-family: var(--display); font-size: 18px; line-height: 1.3; margin-bottom: 8px; } .block.person .bio { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
-  .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
+  .kv { display: grid; grid-template-columns: fit-content(38%) minmax(0, 1fr); /* a long label wraps; it never takes the value's room (IDEA-133) */ gap: 6px 14px; margin: 0; } .kv dt { overflow-wrap: anywhere; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
   .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
   .samples { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 2px solid var(--accent-soft); display: grid; gap: 4px; font-family: var(--display); font-size: 15.5px; line-height: 1.4; } .samples .label { margin-right: 6px; } .chip.ptr { text-decoration: none; margin-left: 2px; vertical-align: 1px; }
+  .block.story-text { grid-column: 1 / -1; } @media (min-width: 1100px) { .blocks > .block.wide { grid-column: span 2; } }
   .block.story-text .body p + p { margin-top: 10px; } .block.story-text .body { max-width: 70ch; }
   .lede { font-family: var(--display); font-size: 20px; line-height: 1.35; } .lede + p { margin-top: 10px; }
   /* on a slide the body text scales with the screen; the story's own pieces scale with it (IDEA-133) */
@@ -1318,7 +1319,10 @@ function playbookJs(brand) {
 (function () {
   const TALL = 560;
   document.querySelectorAll('.block:not(.cover) .body').forEach((b) => {
-    if (b.scrollHeight <= TALL) return;
+    /* measure the content, not the card: a short block in a tall row is stretched by the grid, and its
+       stretched height is not a long record (IDEA-133 — the few-years line folded beside the story) */
+    b.style.flex = 'none'; const h = b.scrollHeight; b.style.flex = '';
+    if (h <= TALL) return;
     const blk = b.closest('.block'); blk.classList.add('long');
     const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'more'; btn.setAttribute('aria-expanded', 'false');
     btn.textContent = 'the whole record';
