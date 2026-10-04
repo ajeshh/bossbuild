@@ -944,6 +944,9 @@ test('IDEA-133 story weave: the story on the cover (asked for in Vision when mis
   // the Story cut: the narrative, in page order, opening on the cover that carries the story and the heart
   assert.deepEqual(data.cuts.story, ['cover', 'vision-why', 'vision-few-years', 'problem-cell', 'problem-story', 'learnings-beats', 'brand-learned', 'brand-origin'].filter((id) => html.includes(`id="${id}"`)));
   assert.ok(html.includes('data-cut="story"') && html.includes('class="cover-heart"'));
+  // the story as text: their lines in order, one Copy away; a part nothing holds is left out
+  assert.match(html, /id="story-text"[\s\S]*?<p>Agencies run on a spreadsheet[\s\S]*?<strong>Why:<\/strong> “every Monday I lose an hour to the cover call”[\s\S]*?<strong>In their words:<\/strong> “it just texts the right three” \(an owner, nine-carer agency\)[\s\S]*?<strong>Where it goes:<\/strong> Every agency in the county runs on it\./);
+  assert.ok(!h2.includes('id="story-text"') || !h2.includes('<strong>Why:</strong>'), 'no venture IDEA, no why line');
   assert.match(html, /<p class="backed-k">Why this, for them<\/p><p class="h">“every Monday I lose an hour to the cover call”<\/p>/, 'the heart on the cover, in their words');
 });
 
@@ -967,4 +970,8 @@ test('IDEA-133 story weave: how sure over time is drawn only from dated, graded 
     decisions: [{ id: 'DEC-002', created: '2026-07-02', decision: 'Phone first.' }, { id: 'DEC-001', created: '2026-06-14', decision: 'Office first.', supersededBy: 'DEC-002' }] });
   assert.match(grown, /The first bet[\s\S]*?class="line struck">Office first\.[\s\S]*?But then[\s\S]*?Phone first\.[\s\S]*?Until finally[\s\S]*?signal 3/);
   assert.ok(!grown.includes('mini-hole'));
+  const { storyTextBlock } = await import('../src/playbook.js');
+  assert.equal(storyTextBlock({ idea: { vision: 'v' }, brand: {}, boxes: [] }), '', 'one part is not a story to copy');
+  const told = storyTextBlock({ idea: { why: 'w', vision: 'v' }, brand: {}, boxes: [], evidenceRows: [], decisions: [{ id: 'DEC-001', created: '2026-06-14', decision: 'Office first.', supersededBy: 'DEC-002' }, { id: 'DEC-002', created: '2026-07-02', decision: 'Phone first.' }] });
+  assert.match(told, /2026-06-14: Office first \(reversed by DEC-002\)\. 2026-07-02: Phone first\./, 'a reversed decision says so');
 });

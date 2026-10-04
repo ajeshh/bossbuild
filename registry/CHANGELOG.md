@@ -110,6 +110,11 @@ rule above still applies to the whole section once it is stamped.
   on a public page, BOSS asks whether that person would be fine seeing it there: a row is evidence,
   not permission. A brand line ending `— belief` is copy, never a claim.
 
+- **Copy your story as text.** Vision ends with *The story, as text*: your story line, your why,
+  the problem, the turns with their dates, your ★ quotes and where it goes, as plain paragraphs
+  in your own words. Its Copy gives you an About section or an intro email. A decision you
+  reversed says so, and a part you haven't written is left out.
+
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
   text. A server can also send free-text instructions that your AI tool may put in the model's system

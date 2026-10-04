@@ -746,6 +746,7 @@ function pitchChapters(data) {
       : hole('vision-team', 'Who is building it', 'Who is building it, and what makes that believable to a stranger — the specific thing seen, built, sold or lived, not a CV?', 'write docs/team/<you>.md — the README there has the shape', 'docs/team — none'))
     + (idea && idea.vision ? block({ id: 'vision-few-years', title: 'In a few years', body: `<p class="lede">${inline(idea.vision)}</p>`, chip: '<span class="chip asserted">aspiration</span>', src: `${ideaSrc} · in_a_few_years` })
       : hole('vision-few-years', 'In a few years', 'If this works, what\'s here in a few years? One line, yours — not a forecast.', venture ? 'add in_a_few_years: to the IDEA doc — /canvas asks it' : ideaVerb, `${ideaSrc} · no in_a_few_years line`))
+    + storyTextBlock(data)
     + '</div>'));
 
   // 2 · Product — the IDEA doc's current shape, whole; the FEATs; what it is not. What is being built
@@ -814,6 +815,28 @@ function pitchChapters(data) {
     '<div class="blocks">' + cellBlock(cell('bizmodel'), canvas, 'model-revenue', 'Who pays, how much') + cellBlock(cell('cost'), canvas, 'model-cost', 'What it costs to serve') + capitalBlock + askBlock + '</div>'));
 
   return { before: out.slice(0, 6).join('\n'), after: out.slice(6).join('\n') };
+}
+
+// The story, as text (IDEA-133): the founder's own lines in story order, as paragraphs, so the block's
+// Copy hands over an About section or an intro email. BOSS adds labels and order, never a sentence; a
+// part nothing holds is left out, and with fewer than two parts there is nothing to copy, so no block.
+export function storyTextBlock(data) {
+  const { idea, brand, brandDoc } = data; const prob = (data.boxes || []).find((b) => b.key === 'problem');
+  const ev = (data.evidenceRows || []).filter((e) => e.date).sort((a, b) => a.date.localeCompare(b.date));
+  const decs = [...(data.decisions || [])].filter((d) => d.created && d.decision).sort((a, b) => a.created.localeCompare(b.created));
+  const turns = [...ev.slice(0, 1).map((e) => [e.date, e.title]), ...decs.map((d) => [d.created, firstSentence(d.decision).replace(/\.$/, '') + (d.supersededBy ? ` (reversed by ${d.supersededBy})` : '')]), ...ev.filter((e) => e.grade === 'commitment').slice(-1).map((e) => [e.date, e.title])]
+    .sort((a, b) => a[0].localeCompare(b[0]));
+  const heard = brandDoc ? brandDoc.learned.rows.filter((r) => r.star && r.quote) : [];
+  const parts = [
+    brand && brand.story ? `<p>${inline(brand.story)}</p>` : '',
+    idea && idea.why ? `<p><strong>Why:</strong> “${inline(idea.why)}”${idea.success ? ` It worked when: ${inline(idea.success)}` : ''}</p>` : '',
+    prob && prob.state === 'filled' ? `<p><strong>The problem:</strong> ${inline(stripMd(prob.answer))}</p>` : '',
+    turns.length ? `<p><strong>How it's gone:</strong> ${turns.map(([d, t]) => `${esc(d)}: ${inline(t)}`).join('. ').replace(/\.\./g, '.')}.</p>` : '',
+    heard.length ? `<p><strong>In their words:</strong> ${heard.map((r) => `“${inline(r.quote)}” (${inline(r.credit)})`).join(' · ')}</p>` : '',
+    idea && idea.vision ? `<p><strong>Where it goes:</strong> ${inline(idea.vision)}</p>` : '',
+  ].filter(Boolean);
+  if (parts.length < 2) return '';
+  return block({ id: 'story-text', title: 'The story, as text', sub: 'your lines in order, for an About page or an intro email: Copy takes it', cls: 'story-text', body: parts.join('') + (heard.length ? '<p class="helper">The quotes are evidence, not permission: ask before they go somewhere public.</p>' : ''), chip: '<span class="chip asserted">asserted</span>', src: 'docs/BRAND.md · the venture IDEA · canvas · docs/evidence · docs/decisions' });
 }
 
 // --- the story's two pictures (IDEA-133) — projections of dated records, nothing composed ----------
@@ -1219,6 +1242,7 @@ const PLAYBOOK_CSS = `
   .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; } .kv dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 3px; } .kv dd { margin: 0; }
   .logo { display: block; max-height: 56px; max-width: 220px; margin-bottom: 10px; } .swatch { display: flex; align-items: center; gap: 8px; } .swatch i { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--rule); } .specimen { font-family: var(--display); font-size: 22px; line-height: 1.25; margin-top: 8px; }
   .samples { list-style: none; margin: 8px 0 0; padding: 0 0 0 12px; border-left: 2px solid var(--accent-soft); display: grid; gap: 4px; font-family: var(--display); font-size: 15.5px; line-height: 1.4; } .samples .label { margin-right: 6px; } .chip.ptr { text-decoration: none; margin-left: 2px; vertical-align: 1px; }
+  .block.story-text .body p + p { margin-top: 10px; } .block.story-text .body { max-width: 70ch; }
   .lede { font-family: var(--display); font-size: 20px; line-height: 1.35; } .lede + p { margin-top: 10px; }
   /* on a slide the body text scales with the screen; the story's own pieces scale with it (IDEA-133) */
   .sl .lede { font-size: 1.15em; } .sl .helper { font-family: var(--body); font-size: 14px; color: var(--muted); }
