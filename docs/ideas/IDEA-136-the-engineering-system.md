@@ -4,8 +4,9 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: exploring (hold lifted 2026-10-04 — built from docs/ECOSYSTEMS.md; B first, then A)
+status: building (B — BOSS's own engineering — written; A — what ships to founders — open)
 proof: docs/ENGINEERING.md
+proof_note: docs/ENGINEERING.md is the B track (BOSS's own code). The record is done when the A track ships to founders — the practice (A1) and the seed in the founder's template (A2) — so the proof moves there then.
 gist: Code gets the same ladder the design system has — principles a reasonable person could argue with, a map of what exists to check reuse against, rules an agent can act on, checks at the write, and a way to retire them — extracted from BOSS's own src/ before it ships to a founder.
 created: 2026-10-04
 ---
@@ -346,7 +347,7 @@ killed. Inputs, not decisions.
 - [x] **B1** · Inventory the conventions `src/`, `scripts/`, `test/` and the hooks actually keep, each
   with a file:line receipt. Include the deliberate exceptions (parity duplicates) — an exception with a
   reason is a convention too.
-- [ ] **B2** · Sort each into principle / guideline / rule. Test: could a reasonable person argue the
+- [x] **B2** · Sort each into principle / guideline / rule. Test: could a reasonable person argue the
   opposite? Three to five principles, no more.
 - [x] **B3** · Mark every rule *enforced (by which check or test)* or *written only*. The written-only
   list is the rot list (the checkers-state-intents heuristic).
@@ -354,8 +355,15 @@ killed. Inputs, not decisions.
   find before writing one (`atomic`, `frontmatter`, `paths`, `clock`, `args`, `records`, …).
 - [x] **B5** · BOSS's testing conventions as practised: regression test named for the bug, reproduce
   first, `test:ci` vs `check`, the staged-tree hook, gates name their bug.
-- [ ] **B6** · Write it as BOSS's engineering document (tracked; renderable later) and move the code
+- [x] **B6** · Write it as BOSS's engineering document (tracked; renderable later) and move the code
   rules out of CLAUDE.md into it, leaving a pointer — CLAUDE.md is past the length where it gets read.
+  **Done 2026-10-04:** `docs/ENGINEERING.md` — the eight parts, five principles (P5 concurrency, P6
+  reason-in-code and P8 derive-don't-restate folded in as guidelines), every rule marked E / P / W, the
+  map and the helpers table. **Held back:** moving the code rules out of CLAUDE.md — CLAUDE.md carries
+  another session's uncommitted edits; do it when that lands (task **B6b**). Engineering column of
+  `docs/ECOSYSTEMS.md` filled; four disagreements with the draft guide recorded in ENGINEERING.md for C7.
+- [ ] **B6b** · Move the code rules out of CLAUDE.md into `docs/ENGINEERING.md`, leaving a pointer —
+  after the uncommitted CLAUDE.md edits from another session land.
 - [x] **B7** · Read the one duplicate (`section`) and anything B1 turns up: real reuse miss, or a
   name collision with two jobs?
 - [ ] **B8** · `/extract` the result: what routes UP (the shape) and what stays BOSS-only. EXTR record.

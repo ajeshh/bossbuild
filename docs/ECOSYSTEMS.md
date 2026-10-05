@@ -82,19 +82,19 @@ it is wrong.
 
 ## The anatomy — eight parts every ecosystem has
 
-Read from what the design system already does. The engineering column is IDEA-136's to fill; it is
-empty on purpose.
+Read from what the design system already does. The engineering column was filled from BOSS's own code
+(IDEA-136, 2026-10-04) — and left empty where engineering has nothing, rather than invented.
 
 | # | Part | What it does | Design has it as | Engineering (IDEA-136) |
 |---|---|---|---|---|
-| 1 | **Principles → guidelines → rules** | taste the founder argues with → decisions → what an agent can check | `STYLE_GUIDE.md`; § *Authoring your design principles* | — |
-| 2 | **A seed that scales** | the few decisions that get dearer to reverse; everything else deferred | the seed-that-scales table | — |
-| 3 | **A map of what exists** | the thing an agent checks before making a new one | `COMPONENTS.md` → `manifest.json` at V1 | — |
-| 4 | **A planting moment** | the trigger, and what gets planted then | `design-tokens-loop` → `/design-tokens-init` | — |
-| 5 | **Checks at the write** | boundaries, not reminders — they fire when the file is written | the design guards (tokens, reuse, decisions, boundary, terminology) | — |
-| 6 | **A drift reader** | how far the real thing has moved from the map (V1) | `/design-library` | — |
-| 7 | **Retirement** | what leaves, and what replaces it | unused → delete in this pass; `deprecated → X` | — |
-| 8 | **Amendment** | how a rule changes, and who changes it | three exceptions → the rule is wrong; a DEC to override | — |
+| 1 | **Principles → guidelines → rules** | taste the founder argues with → decisions → what an agent can check | `STYLE_GUIDE.md`; § *Authoring your design principles* | five in `docs/ENGINEERING.md` §1, each rule marked enforced / partly / written-only |
+| 2 | **A seed that scales** | the few decisions that get dearer to reverse; everything else deferred | the seed-that-scales table | zero-dep, ESM, state under `BOSS_HOME`, hook lib below `src/`, atomic writes, plan-then-apply (§2) |
+| 3 | **A map of what exists** | the thing an agent checks before making a new one | `COMPONENTS.md` → `manifest.json` at V1 | the layer map + *find this before you write one* (§3) |
+| 4 | **A planting moment** | the trigger, and what gets planted then | `design-tokens-loop` → `/design-tokens-init` | **empty** — BOSS's grew; the founder's is IDEA-136 · Q3 |
+| 5 | **Checks at the write** | boundaries, not reminders — they fire when the file is written | the design guards (tokens, reuse, decisions, boundary, terminology) | **empty at the write** — at commit (pre-commit `test:ci`) and on push (CI) |
+| 6 | **A drift reader** | how far the real thing has moved from the map (V1) | `/design-library` | **empty** — done once by hand (IDEA-136 · B1/B3/B7 → F1–F10) |
+| 7 | **Retirement** | what leaves, and what replaces it | unused → delete in this pass; `deprecated → X` | a helper absorbs its copies and its header names them; `supersedes.json` for shipped parts |
+| 8 | **Amendment** | how a rule changes, and who changes it | three exceptions → the rule is wrong; a DEC to override | three exceptions → the rule is wrong; a `/decide` record; Ajesh decides |
 
 **The fractal test:** the whole should have the same anatomy as each part. Today the ecosystem of
 ecosystems has its principles (above) and part 8 (this file changes when the reader disagrees). It
