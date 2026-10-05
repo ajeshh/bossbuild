@@ -45,7 +45,9 @@ rule above still applies to the whole section once it is stamped.
   and tells the agent what to do when two design docs disagree: say which one it followed. And BOSS
   stops calling the token system "three-layer" when it builds two. It's primitives under semantic
   names, with a component layer only when a component earns one, and semantic names never carry a
-  theme (`surface.strong`, not `surface.dark`), so a dark mode doesn't make them lie.
+  theme (`surface.strong`, not `surface.dark`), so a dark mode doesn't make them lie. Already have the
+  old block? It's yours, so `boss sync` leaves it alone. `/boss-sync` points it out and offers the
+  names-only version as one edit, never a re-run.
 
 - **`/design-library` asks before it deletes.** A component nothing imports used to be removed in the
   same pass. Now it's flagged and proposed, and you delete it, the same rule every BOSS project

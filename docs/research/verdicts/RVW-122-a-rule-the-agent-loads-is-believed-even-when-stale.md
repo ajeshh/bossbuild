@@ -63,4 +63,5 @@ were not verified and are not used.
 ## Notes
 - Prior related verdicts: RVW-078 (retrieval beats instruction), RVW-117, RVW-124.
 - Outcome (2026-10-05): landed DOWN. The CLAUDE.md block lists semantic names with what each is for, not values, and says the values live in `tokens.json`. The "search src/components/" line is replaced by the index. The open question about existing projects stands.
+- Open question closed (2026-10-05, Ajesh: "following whatever recommendation"): `/boss-sync` names the old block, it doesn't rewrite it. `boss sync` already flags *you already have a design token system* when the skill changes. The CHANGELOG bullet tells `/boss-sync` the CLAUDE.md block is part of that artifact and to offer the swap as one edit, and the ladder entry's `alsoLookFor` says the same at `/design-tokens-init`'s step 0. Founder text outside BOSS's markers is still never rewritten unasked.
 - BOSS version when recorded: 0.329.0
