@@ -9,6 +9,7 @@ proof: none
 proof_note: every path this would create already exists (landing/SKILL.md, landing-page.md, registry/flows.json). Done is a declared take landing ← evidence in registry/flows.json, held by check-refs class 7 — a declaration, not a new file.
 gist: Claims — what a project says about itself to someone who can't check it — gets its own ecosystem, centred on the landing page. Every line on the page is no stronger than what backs it. Extracted from how BOSS already checks its own front door, which has been doing this for 150 releases and never sorted it down.
 created: 2026-10-04
+anatomy: 3
 ---
 
 # The claims ecosystem — every line no stronger than what backs it

@@ -9,6 +9,7 @@ provenance_public: The limits of an AI-run design review — it reliably improve
 last_reviewed: 2026-08-20
 review_by: 2027-02-16
 curve: craft-ai
+anatomy: 0
 ---
 
 # Practice: Design system, or style never locked into code

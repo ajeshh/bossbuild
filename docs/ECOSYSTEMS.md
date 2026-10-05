@@ -156,7 +156,13 @@ For IDEA-136 first, then claims, data & trust, operations.
    its giver is missing.
 6. **Write how its rules get amended**, and by whom.
 7. **Write how it leaves.** What replaces each part as the project grows; readers follow the successor.
-8. **Run the test** (below) before calling it planted.
+8. **Run the test** (below) before calling it planted, then stamp its record or practice with
+   `anatomy: N` — the revision of this guide (§ Revisions) it was planted against.
+9. **When this guide moves, every ladder follows.** A change to a principle, a part, a declaration or
+   a step gets a row in § Revisions saying what a ladder must do about it (*review — …* or
+   *nothing*). `npm run check:freshness` then names each ladder behind it. Read the revision, change
+   the ladder or write in its record why not, and set `anatomy:` — a stamp is set by the review,
+   never by touching the file.
 
 ## Liveliness — a design test for BOSS, never a reading of the founder
 
@@ -238,3 +244,18 @@ pollutant, not planted yet.*
 - Do *returns* exist for most flows, or is it rare and the declaration noise?
 - Does *not planted* separate cleanly from *broken* on a real Quickstart project?
 - Is principle 2's partner — *stands alone* — a sixth principle or a property of the first?
+
+## Revisions
+
+What changed in this guide, and what each ladder must do about it. A ladder's `anatomy:` names the
+last revision it was reviewed against; `npm run check:freshness` names a ladder behind a revision
+that asks for a review. Rows 1–3 were written after the fact, from git (`60bb3c9`, `f6de36a`,
+`bf0a180`) — a change that only filled one ecosystem's own column (`64b5f25`, engineering) is not a
+revision.
+
+| Rev | Date | What changed | A ladder must |
+|---|---|---|---|
+| 1 | 2026-10-04 | Drafted: five shared principles, the eight parts, the connection declarations, steps 1–8, liveliness as a design test, handing over, the test | review — fill the eight parts (empty where empty), declare its connections, say how its rules are amended and how it leaves |
+| 2 | 2026-10-04 | Handing over decided: the second repair offers a check (DEC-022); BOSS can always be needed less, held by the removal test (DEC-023) | review — a founder-caused break that recurs here gets a check offered; whatever this ladder installs in the app survives `boss remove` |
+| 3 | 2026-10-04 | Step 2 gains the purpose line — what the ecosystem is for, and what the project is worse at without it; two anatomies (how it runs, how it explains itself) | review — write the purpose line |
+| 4 | 2026-10-05 | Steps 8–9: a ladder stamps `anatomy:`, and follows this guide when it moves; this table | nothing — the stamp is the step |

@@ -216,6 +216,65 @@ function readMarkers(asof) {
   });
 }
 
+// --- the LADDER sweep (IDEA-137 · C11) ----------------------------------------------------
+// The event half this file's header admits it can't see, for one model. docs/ECOSYSTEMS.md is the
+// anatomy every ladder (design, engineering, claims, AI behaviour) is planted from, and it changes
+// on an event — a decision, a lens read at source — not on a clock. Before this, a revision reached
+// the ladders only if someone remembered: engineering was planted twenty minutes before the guide
+// gained its purpose line, and nothing could say so.
+//
+// The guide keeps a § Revisions table (`| rev | date | what changed | a ladder must |`); a ladder
+// stamps `anatomy: N` in its frontmatter — the revision it was last REVIEWED against, set by the
+// review, never by touching the file (the `last_reviewed` rule). A revision whose last column says
+// `nothing` asks nothing. Files that cite the guide without a stamp are listed to read, not graded.
+const LADDER_SCAN = ['docs', 'library', 'stages'];
+const NOT_A_CITER = /^docs\/(research\/|devlog\.md$|RESUME\.md$|ECOSYSTEMS\.md$)/;
+
+export function readLadders(root = BOSS_ROOT) {
+  const guide = join(root, 'docs', 'ECOSYSTEMS.md');
+  if (!existsSync(guide)) return null;
+
+  const revisions = [];
+  let inTable = false;
+  for (const line of readFileSync(guide, 'utf8').split('\n')) {
+    if (/^##\s/.test(line)) inTable = /^##\s+Revisions\b/i.test(line);
+    const m = inTable && line.match(/^\|\s*(\d+)\s*\|\s*([^|]*)\|\s*([^|]*)\|\s*([^|]*)\|/);
+    if (m) revisions.push({ rev: Number(m[1]), date: m[2].trim(), what: m[3].trim(), must: m[4].trim() });
+  }
+  const current = revisions.reduce((n, r) => Math.max(n, r.rev), 0);
+
+  const files = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.name.startsWith('.') && e.name !== '.claude') continue;
+      if (e.name === 'node_modules') continue;
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith('.md')) files.push(p);
+    }
+  };
+  for (const d of LADDER_SCAN) if (existsSync(join(root, d))) walk(join(root, d));
+
+  const ladders = [];
+  const citers = [];
+  for (const abs of files) {
+    const rel = abs.slice(root.length + 1).split('\\').join('/');
+    const text = readFileSync(abs, 'utf8');
+    const stamp = (parseFrontmatter(text) || {}).anatomy;
+    if (stamp !== undefined && stamp !== null && stamp !== '') {
+      const n = Number(stamp);
+      if (!Number.isInteger(n) || n < 0) {
+        ladders.push({ file: rel, anatomy: stamp, missed: [], problem: `\`anatomy: ${stamp}\` is not a revision number of docs/ECOSYSTEMS.md` });
+      } else {
+        ladders.push({ file: rel, anatomy: n, missed: revisions.filter((r) => r.rev > n && !/^nothing\b/i.test(r.must)) });
+      }
+    } else if (!NOT_A_CITER.test(rel) && text.includes('ECOSYSTEMS.md')) {
+      citers.push(rel);
+    }
+  }
+  return { current, revisions, ladders: ladders.sort((a, b) => a.file.localeCompare(b.file)), citers: citers.sort() };
+}
+
 function report() {
   const asof = argValue('--asof') || isoDay(); // local — review dates are a person's calendar (IDEA-136 · F7)
   const all = process.argv.includes('--all');
@@ -323,6 +382,25 @@ function report() {
         console.log(`  ${' '.repeat(16)}  Dead? quiet? missing? still the right person? A 404 tap is silent and permanent.`);
       }
       console.log(`\n  ${drifted.length} unstamped · ${due.length} due · ${tapsStale.length + tapsMissing.length} tap list(s) unchecked`);
+    }
+  }
+
+  const lad = readLadders();
+  if (lad && lad.ladders.length) {
+    const behind = lad.ladders.filter((l) => l.problem || l.missed.length);
+    if (behind.length || all) {
+      console.log(`\nBOSS · ladders against the ecosystem model — docs/ECOSYSTEMS.md is at revision ${lad.current}\n`);
+      for (const l of lad.ladders) {
+        if (l.problem) { console.log(`  ✗ ${l.file}\n      → ${l.problem}`); continue; }
+        if (!l.missed.length) { if (all) console.log(`    ${l.file}  reviewed at ${l.anatomy}`); continue; }
+        console.log(`  ! ${l.file}  reviewed at ${l.anatomy} — missed ${l.missed.length}:`);
+        for (const r of l.missed) console.log(`      rev ${r.rev} · ${r.what}\n        → ${r.must}`);
+      }
+      if (behind.length) {
+        console.log('\n  Review each against the revision, change the ladder or write why not, then set `anatomy:`');
+        console.log('  (docs/ECOSYSTEMS.md § Building a new ecosystem, step 9). Touching the file is not a review.');
+        if (lad.citers.length) console.log(`  Also cite the guide — read when you review: ${lad.citers.join(', ')}`);
+      }
     }
   }
 

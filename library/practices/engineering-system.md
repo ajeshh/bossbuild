@@ -9,6 +9,7 @@ provenance_public: Extracted from how BOSS's own code is actually built — its 
 last_reviewed: 2026-10-04
 review_by: 2027-04-02
 curve: craft-ai
+anatomy: 2
 ---
 
 # Practice — The engineering system: the design system's ladder, for code
