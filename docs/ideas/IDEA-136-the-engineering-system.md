@@ -389,9 +389,10 @@ killed. Inputs, not decisions.
   rules. Two flows declared in `registry/flows.json` (smoke → coder, smoke → tester), and the check was
   broken on purpose to see it fire. **Not exercised end to end:** the planting itself is Claude following
   `/smoke`; the CLI test covers what ships, not the model's run of it.
-- [ ] **A4** · The code map at MVP: authored, read before creating a module or helper; carries the
+- [x] **A4** · The code map at MVP: authored, read before creating a module or helper; carries the
   negative-finding rule (an agent's "nothing like this exists" is a claim about its searches — synonym
   pass first, `testing-with-agents.md`).
+  **Done:** the map slot in the seed, with the negative-finding rule beside it.
 - [ ] **A5** · Reuse for code: widen `component-reuse-guard` (or a mode of it) to check a new
   module/helper name against the map. Advisory, once per new name.
 - [ ] **A6** · Boundaries for every surface: `ui-boundary-guard` reads its layers from the map, not only
@@ -404,18 +405,21 @@ killed. Inputs, not decisions.
   the source). Only with a named incident (Q4).
 - [x] **A10** · Step 0 for brownfield and experienced founders: read the lint config, CONTRIBUTING,
   AGENTS.md first; offer, don't seed over. Cohort-aware like `/design-tokens-init`.
-- [ ] **A11** · Retirement for code: deprecate with a successor, delete the unused, three exceptions
+- [x] **A11** · Retirement for code: deprecate with a successor, delete the unused, three exceptions
   means the rule is wrong.
+  **Done:** the seed's *Changing these* and the practice's thresholds (three exceptions; an absorbed pattern leaves).
 - [x] **A12** · Wire the agents: `coder.md` and `tester.md` point at the seed; `mentor-architect` owns it.
 - [ ] **A13** · V1 drift reader (generated code map + duplicate finder, the `/design-library` twin) —
   **deferred**; re-open when a project's authored map is seen going stale.
-- [ ] **A14** · Kettlewick demo record if a new record type appears (standing rule); CHANGELOG bullet
+- [x] **A14** · Kettlewick demo record if a new record type appears (standing rule); CHANGELOG bullet
   in product terms only.
-- [ ] **A15** · On the site: **the Engineering page already exists** (`site/engineering.html`), generated
+  **N/A:** no new record type — the seed is a rule file, not a playbook record.
+- [x] **A15** · On the site: **the Engineering page already exists** (`site/engineering.html`), generated
   from `library/practices/*.md` and grouped by `ENG_GROUPS` in `scripts/gen-site.js` — which fails if
   a practice is in no group. So capturing A1 as a practice puts it on the page at the next regenerate:
   one row in `ENG_GROUPS` and a `provenance_public:` line, no new page, nothing the freeze forbids.
   Regenerating and deploying stay Ajesh's.
+  **Done (not deployed):** the practice is on the Engineering page by regeneration; deploy is Ajesh's.
 
 ## Open questions
 - **Decided (Ajesh, 2026-10-04, A-track shape):** **Q2** the rule file only — no founder `docs/` doc;
