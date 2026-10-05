@@ -20,11 +20,13 @@
 //   · only what BOSS wrote        · never what the founder edited        · consent is a separate act
 
 import { readFileSync, writeFileSync, existsSync, readdirSync, rmSync, statSync, mkdirSync, cpSync } from 'node:fs';
-import { join, relative, sep } from 'node:path';
+import { isAbsolute, join, relative, sep } from 'node:path';
 import { STAGES_DIR, BOSS_HOME } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
 import { sameAsTemplate, readStageManifest } from './scaffold.js';
 import { hookKey } from './sync.js';
+import { execFileSync } from 'node:child_process';
+import { SHIM, SHIM_MARK } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 
 const MARKER = /<!-- boss:[^>]*? start -->[\s\S]*?<!-- boss:[^>]*? end -->\n?/g;
 
@@ -104,6 +106,17 @@ export function planRemove(projectDir, stamp) {
     catch { changed = false; }
     (changed ? edited : files).push({ rel, kind: 'file' });
   }
+
+  // The commit check's shim (IDEA-142) lives outside every template tree, in the clone's hooks
+  // dir, so the derived boundary above never sees it. Same rule as the rest: exactly what BOSS
+  // wrote goes; a shim the founder changed is theirs, kept and named.
+  try {
+    let hooks = execFileSync('git', ['rev-parse', '--git-path', 'hooks'], { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (!isAbsolute(hooks)) hooks = join(projectDir, hooks);
+    const shim = join(hooks, 'pre-commit');
+    const body = existsSync(shim) ? readFileSync(shim, 'utf8') : '';
+    if (body.includes(SHIM_MARK)) (body === SHIM ? files : edited).push({ rel: relative(projectDir, shim), kind: 'file' });
+  } catch { /* no git, no shim */ }
 
   // BOSS's own state dir. Mostly BOSS's — the manifest, config, the conscience's log.
   const bossDir = existsSync(join(projectDir, '.boss'));

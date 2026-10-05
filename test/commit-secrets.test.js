@@ -12,6 +12,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFi
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { STAGES_DIR } from '../src/paths.js';
+import { planRemove, applyRemove } from '../src/remove.js';
 import { scan, isEnvFile, installCommitGuard, SHIM } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 
 const dirs = [];
@@ -98,6 +99,28 @@ test('an older shim of ours is refreshed in place', () => {
   writeFileSync(p, '#!/bin/sh\n# boss: commit-secrets — old\nexit 0\n');
   assert.equal(installCommitGuard(d).state, 'installed');
   assert.equal(readFileSync(p, 'utf8'), SHIM);
+});
+
+// IDEA-142 — `boss remove` takes the shim back out. Reproduced 2026-10-05: it lived outside every
+// template tree, so the derived boundary never saw it and `--apply` left it in .git/hooks.
+test('boss remove takes out the shim BOSS wrote, and keeps one the founder changed', () => {
+  const stamp = { name: 't', stage: 'L0-quickstart', mode: 'Quickstart', installedLayers: ['L0-quickstart'] };
+  const { d } = repo();
+  installCommitGuard(d);
+  const shim = join(d, '.git', 'hooks', 'pre-commit');
+  const plan = planRemove(d, stamp);
+  assert.ok(plan.files.some((f) => f.rel.endsWith(join('hooks', 'pre-commit'))), 'named in the preview');
+  applyRemove(d, plan, { root: mkdtempSync(join(tmpdir(), 'boss-rm-')) });
+  assert.throws(() => statSync(shim), 'gone after --apply');
+
+  const other = repo();
+  installCommitGuard(other.d);
+  const theirs = join(other.d, '.git', 'hooks', 'pre-commit');
+  writeFileSync(theirs, readFileSync(theirs, 'utf8') + 'npm test\n');
+  const p2 = planRemove(other.d, stamp);
+  assert.ok(p2.edited.some((f) => f.rel.endsWith(join('hooks', 'pre-commit'))), 'an edited shim is theirs');
+  applyRemove(other.d, p2, { root: mkdtempSync(join(tmpdir(), 'boss-rm-')) });
+  assert.ok(readFileSync(theirs, 'utf8').endsWith('npm test\n'), 'and stays');
 });
 
 // IDEA-142 — a cofounder's fresh clone has no hooks (git copies none) and may have no BOSS CLI.

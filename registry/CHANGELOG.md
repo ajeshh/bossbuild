@@ -52,7 +52,8 @@ rule above still applies to the whole section once it is stamped.
   never the key. It runs on every commit, whoever makes it. It doesn't guess at passwords, so it
   won't cry wolf; `git commit --no-verify` skips it once. A project you already have gets it from
   `boss sync --apply`; a cofounder's fresh clone gets it at their first session, even without the BOSS
-  CLI, and the session says so. A pre-commit hook you wrote yourself is never replaced.
+  CLI, and the session says so. A pre-commit hook you wrote yourself is never replaced, and
+  `boss remove` takes the check back out with everything else BOSS wrote.
 - **The git commands that throw work away ask first.** Force-push, `reset --hard`, `clean`, a
   checkout or restore that discards changes, dropping a stash, deleting a branch: the agent now
   stops and asks before each one, even in auto mode and even if you allowed git commands broadly.
