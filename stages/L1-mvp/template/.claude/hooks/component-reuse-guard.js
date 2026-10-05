@@ -76,7 +76,10 @@ const COMPONENT_EXT = /\.(tsx|jsx|vue|svelte|astro|swift|kt|dart)$/i;
 const COMPONENT_DIR = /(^|[\\/])(components?|ui|widgets|views|elements)[\\/]/i;
 const SKIP_PATH = /(^|[\\/])(node_modules|dist|build|out|coverage|\.next|\.svelte-kit)[\\/]|\.(test|spec|stories)\./i;
 // Barrels and pages are not components. A page is a composition; flagging it would be noise.
-const NOT_A_COMPONENT = /^(index|main|app|page|layout|route|root)$/i;
+// Exact names in any case (App.tsx, index.ts); page-shaped suffixes case-sensitively (DashboardPage).
+// KEEP IN STEP with src/design.js — this file ships alone and can't import it; the two drifted once
+// (IDEA-136 · F2) and test/not-a-component-parity.test.js now holds them.
+const notAComponent = (n) => /^(index|main|app|page|layout|route|root)$/i.test(n) || /(Page|Route|Layout)$/.test(n);
 
 const out = (additionalContext) => {
   process.stdout.write(JSON.stringify({
@@ -154,7 +157,7 @@ try {
     }
   }
 
-  const isComponent = !NOT_A_COMPONENT.test(name) &&
+  const isComponent = !notAComponent(name) &&
     // Either it lives in a components directory, or it is PascalCase — the two conventions that
     // actually signal "this is a component" across web and native.
     (COMPONENT_DIR.test(path) || /^[A-Z][A-Za-z0-9]*$/.test(name));

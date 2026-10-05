@@ -221,3 +221,12 @@ test('B1.1 — at V1 a deprecated import from the manifest is still named', () =
 test('B1.1 — at V1 a component already in the manifest stays SILENT', () => {
   assert.equal(run(atV1(), { file_path: 'src/components/Button.tsx', content: 'export function Button(){}' }), '');
 });
+
+test('REGRESSION (IDEA-136 · F2): a page-shaped file is not a component — no reuse question', () => {
+  // `boss design` has always excluded *Page / *Route / *Layout; this guard didn't, so it asked
+  // "reuse, adjust, or new?" about files the design page would never list.
+  for (const n of ['DashboardPage', 'SettingsLayout', 'UserRoute']) {
+    const out = run(withIndex(), { file_path: `src/components/${n}.tsx`, content: `export function ${n}(){}` });
+    assert.doesNotMatch(out, /reuse, adjust, or new/i, `${n} is page-shaped`);
+  }
+});

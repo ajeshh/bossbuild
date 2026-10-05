@@ -905,3 +905,12 @@ test('B1.3 — the logo is read from the brand file wherever brandPath finds it'
   writeFileSync(join(dir, 'mark.svg'), '<svg xmlns="http://www.w3.org/2000/svg"></svg>');
   assert.equal(readLogo(dir).mark, 'mark.svg');
 });
+
+test('REGRESSION (IDEA-136 · F2): scanTree does not list App (any case) or page-shaped files', () => {
+  const dir = project({
+    'src/components/App.tsx': 'export function App(){}',
+    'src/components/Button.tsx': 'export function Button(){}',
+    'src/components/DashboardPage.tsx': 'export function DashboardPage(){}',
+  });
+  assert.deepEqual(scanTree(dir).map((f) => f.name), ['Button']);
+});

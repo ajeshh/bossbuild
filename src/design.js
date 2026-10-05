@@ -704,7 +704,9 @@ export function readUsagePages(projectDir) {
 // The conventional locations /design-library scans; PascalCase files with the usual extensions;
 // tests, stories, barrels and page-shaped names skipped. A boundary at MVP — it reports, never writes.
 const TREE_DIRS = ['src/components', 'app/components', 'lib/components', 'components', 'src/ui', 'ui', 'src/lib/components'];
-const NOT_A_COMPONENT = /^(index|main|app|page|layout|route|root)$|Page$|Route$|Layout$/;
+// Exact names in any case, page-shaped suffixes case-sensitively. The shipped reuse guard keeps its own
+// copy (it can't import src/); test/not-a-component-parity.test.js holds the two in step (IDEA-136 · F2).
+const notAComponent = (n) => /^(index|main|app|page|layout|route|root)$/i.test(n) || /(Page|Route|Layout)$/.test(n);
 export function scanTree(projectDir) {
   const found = [];
   const files = []; // every source file seen, for the usage count
@@ -717,7 +719,7 @@ export function scanTree(projectDir) {
       if (!SRC_EXT.some((e) => n.endsWith(e)) || /\.(test|spec|stories|story|d)\.[a-z]+$/i.test(n)) continue;
       files.push(p);
       const name = n.replace(/\.[a-z]+$/i, '');
-      if (!/^[A-Z][A-Za-z0-9]*$/.test(name) || NOT_A_COMPONENT.test(name)) continue;
+      if (!/^[A-Z][A-Za-z0-9]*$/.test(name) || notAComponent(name)) continue;
       // Shown to the founder and matched against COMPONENTS.md paths, so always `/` — on Windows the
       // slice carried `\\` and every component read as unindexed (IDEA-121).
       if (!found.some((f) => f.name === name)) found.push({ name, path: p.slice(projectDir.length + 1).split(sep).join('/') });

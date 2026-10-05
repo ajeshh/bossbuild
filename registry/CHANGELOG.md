@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The duplicate-component check and the design page agree on what a component is.** The check
+  asked *reuse, adjust or new?* about page files like `DashboardPage` or `SettingsLayout`, which the
+  design page never lists; and the design page listed `App` as a component. Both now skip the same
+  files, and a test keeps the two in step.
+
 - **When the same break comes back, the coder offers to catch it for good.** After fixing something
   in your code that it has fixed in that file before, the coder says so once and offers to write a
   check that catches it at the write — a test or a lint rule, added to your engineering file. Or say
