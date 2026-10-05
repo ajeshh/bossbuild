@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`/design-library` asks before it deletes.** A component nothing imports used to be removed in the
+  same pass. Now it's flagged and proposed, and you delete it, the same rule every BOSS project
+  starts with: ask before anything irreversible. *Imported nowhere* is what a search saw, and a
+  component loaded by name at runtime can look unused when it isn't.
+
 - **`boss unlock` no longer holds back what you've already earned.** An app that already calls a model
   gets `/ai-cost`, `/ai-failure-states` and `/evals` with MVP, instead of being told they'd arrive *when
   the app first calls a model*. The same goes for any skill a project has already earned. `/red-team

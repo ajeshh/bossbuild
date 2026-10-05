@@ -204,7 +204,7 @@ them twice. Put the finding where the eye already is:
 | 🟠 **missing state** | a state the five-state rule requires and the component doesn't have |
 | 🟠 **near-duplicate** | another component shares most of this one's shape — pattern reinvention |
 | 🟡 **stale card** | source hash moved since generation — re-run |
-| ⚪ **unused** | imported nowhere — **delete it in this pass.** A component nobody uses isn't neutral: it's a wrong answer sitting in the reuse index where the next search will find it |
+| ⚪ **unused** | imported nowhere — **propose deleting it; the founder deletes.** A component nobody uses isn't neutral: it's a wrong answer sitting in the reuse index where the next search will find it. That is why it's flagged, not a reason to remove it unasked |
 
 A clean library is a page of components with no badges. That is a status you can take in at a
 glance, and — unusually for this codebase's design surface — it's a **positive** signal as much as a

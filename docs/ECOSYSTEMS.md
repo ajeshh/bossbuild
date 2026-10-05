@@ -93,7 +93,7 @@ Read from what the design system already does. The engineering column was filled
 | 4 | **A planting moment** | the trigger, and what gets planted then | `design-tokens-loop` → `/design-tokens-init` | **empty** — BOSS's grew; the founder's is IDEA-136 · Q3 |
 | 5 | **Checks at the write** | they fire when the file is written, and each says whether it **stops** (waits for a person) or **warns** (the work goes on) — a warning is not a boundary | the design guards (tokens, reuse, decisions, boundary, terminology) — all **warn** | **empty at the write** — at commit (pre-commit `test:ci`, **stops**) and on push (CI) |
 | 6 | **A drift reader** | how far the real thing has moved from the map (V1) | `/design-library` | **empty** — done once by hand (IDEA-136 · B1/B3/B7 → F1–F10) |
-| 7 | **Retirement** | what leaves, and what replaces it | unused → delete in this pass; `deprecated → X` | a helper absorbs its copies and its header names them; `supersedes.json` for shipped parts |
+| 7 | **Retirement** | what leaves, and what replaces it | unused → proposed for deletion, the founder deletes; `deprecated → X` | a helper absorbs its copies and its header names them; `supersedes.json` for shipped parts |
 | 8 | **Amendment** | how a rule changes, and who changes it | three exceptions → the rule is wrong; a DEC to override | three exceptions → the rule is wrong; a `/decide` record; Ajesh decides |
 
 **The fractal test:** the whole should have the same anatomy as each part. Today the ecosystem of
