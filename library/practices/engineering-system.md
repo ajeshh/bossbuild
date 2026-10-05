@@ -9,7 +9,7 @@ provenance_public: Extracted from how BOSS's own code is actually built — its 
 last_reviewed: 2026-10-04
 review_by: 2027-04-02
 curve: craft-ai
-anatomy: 5
+anatomy: 6
 ---
 
 # Practice — The engineering system: the design system's ladder, for code
@@ -175,3 +175,8 @@ is how a W rule becomes an E without a big-bang cleanup.
 clock, and what changes reaches your project by `boss sync`. **Could you run it by hand?** Yes — the
 rules are a file you own (`.claude/rules/engineering.md`), the map is a file, and every check is a
 command you can run yourself. Nothing here works only while BOSS is installed.
+
+**Its maps, and what they can't see.** The helpers map (above) and the layer map the boundary check
+reads are both **written by a person** — the check never infers a layer it can't resolve. Each
+leaves out what wasn't listed, which is why an agent's *"nothing like this exists"* is a claim about
+its searches, not your code. Neither acts on its own: the checks flag and ask.

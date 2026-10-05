@@ -9,7 +9,7 @@ proof: test/earned.test.js
 proof_note: step 3 items 0–5 landed 2026-10-05 (Unreleased). The test reproduces T1 and failed on the old code. Done is the return path declared — evals ← red-team and evals ← ai-failure-states as takes in registry/flows.json, held by check-refs class 7 — plus the reproduced stack-miss fix in src/earned.js with its test. Both takes were mutation-tested. Open: T5 and Q2 are Ajesh's.
 gist: AI behaviour — what the founder's product does when it asks a model (what it costs, how it fails, whether it's right, whether it can be turned) — gets its own ecosystem, centred on the first place the founder's code calls a model. The four skills already exist and agree on a shared vocabulary; what is missing is the way back. Every finding is told to "become an eval case" and nothing that writes eval cases reads a finding.
 created: 2026-10-05
-anatomy: 5
+anatomy: 6
 ---
 
 # The AI behaviour ecosystem — no output trusted further than what tested it
@@ -238,6 +238,12 @@ The founder's own door is a model swap or prompt change: `/evals` says re-run th
 the judgment half never gates (**warns**), and the founder's loops **warn** at prompt time; the
 logger-only-path rule is checked by nothing. *By hand* — the failure states, the eval cases and the
 cost ledger are files the founder owns and can read and re-run without BOSS. Owner may correct.
+
+**Reviewed against rev 6 (2026-10-05, bossbuild-ee):** its maps are the failure-state doc and the
+eval cases (written with the founder), and the cost ledger (recorded by the logger, not inferred —
+facts with a source). *Leaves out* — failures nobody has seen yet, which is why cases grow from real
+failures. *Acts without asking?* No — evals and the cost review report; nothing is changed for the
+founder. *Written or inferred?* Written, apart from the ledger's recorded calls. Owner may correct.
 
 ## Step 3 — what a founder gets (proposed 2026-10-05, smallest first; Ajesh: *"go for it"*)
 
