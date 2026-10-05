@@ -79,21 +79,28 @@ test('check:demo fails on a manufactured hole and passes on the tree as committe
   assert.match(ok, /the demo is full/);
   // a copy of the record set with the trust page removed → one hole → exit 1
   const copy = mkdtempSync(join(tmpdir(), 'boss-demo-copy-'));
+  const sandbox = mkdtempSync(join(tmpdir(), 'boss-demo-sandbox-'));
   try {
     cpSync(DEMO, copy, { recursive: true });
     rmSync(join(copy, 'docs', 'trust'), { recursive: true, force: true });
-    const script = readFileSync(join(BOSS_ROOT, 'scripts', 'gen-demo.js'), 'utf8').replace("export const DEMO = join(ROOT, 'demo', 'kettlewick');", `export const DEMO = ${JSON.stringify(copy)};`);
-    writeFileSync(join(BOSS_ROOT, 'scripts', '__gen-demo-probe.js'), script);
-    const check = readFileSync(join(BOSS_ROOT, 'scripts', 'check-demo.js'), 'utf8').replace("'./gen-demo.js'", "'./__gen-demo-probe.js'");
-    writeFileSync(join(BOSS_ROOT, 'scripts', '__check-demo-probe.js'), check);
+    // The probe scripts go in a throwaway copy of what the generator reads — never into the shared
+    // working tree, where peers' `git status` and commits see them (IDEA-136 · F8; the shape
+    // always-on-cost.test.js retired).
+    for (const part of ['src', 'scripts', 'stages', 'library', 'registry', 'web', 'VERSION', 'package.json']) {
+      if (existsSync(join(BOSS_ROOT, part))) cpSync(join(BOSS_ROOT, part), join(sandbox, part), { recursive: true });
+    }
+    const script = readFileSync(join(sandbox, 'scripts', 'gen-demo.js'), 'utf8').replace("export const DEMO = join(ROOT, 'demo', 'kettlewick');", `export const DEMO = ${JSON.stringify(copy)};`);
+    writeFileSync(join(sandbox, 'scripts', '__gen-demo-probe.js'), script);
+    const check = readFileSync(join(sandbox, 'scripts', 'check-demo.js'), 'utf8').replace("'./gen-demo.js'", "'./__gen-demo-probe.js'");
+    writeFileSync(join(sandbox, 'scripts', '__check-demo-probe.js'), check);
     let code = 0, err = '';
-    try { execFileSync('node', [join(BOSS_ROOT, 'scripts', '__check-demo-probe.js')], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }); } catch (e) { code = e.status; err = String(e.stderr); }
+    try { execFileSync('node', [join(sandbox, 'scripts', '__check-demo-probe.js')], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }); } catch (e) { code = e.status; err = String(e.stderr); }
     assert.equal(code, 1);
     assert.match(err, /Trust/);
     assert.match(err, /missing folder: .*docs\/trust/);
   } finally {
     rmSync(copy, { recursive: true, force: true });
-    for (const f of ['__gen-demo-probe.js', '__check-demo-probe.js']) rmSync(join(BOSS_ROOT, 'scripts', f), { force: true });
+    rmSync(sandbox, { recursive: true, force: true });
   }
 });
 
