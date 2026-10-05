@@ -15,7 +15,7 @@
     "moving alone breaks the take. The path is the truth of what the giver writes — declaring the reader's",
     "stale path instead just moves the finding to the giver's side.",
     "",
-    "A SUCCESSION says a path is replaced at a rung; every reader of the old path must also read the new one.",
+    "A SUCCESSION says a path is replaced at a rung; every shipped reader of the old path, declared or not, must also name the new one. pointer: true — the old file stays as a one-line pointer, so only code readers are bound.",
     "",
     "Fields: reader (repo-relative file), path (a glob; NNN and <slug> in prose match *), from (the giving",
     "skill's directory name), why (one line). 'store' and 'returns' come later (docs/ECOSYSTEMS.md).",
@@ -186,7 +186,15 @@
       "new": "docs/design/library/manifest.json",
       "by": "design-library",
       "at": "V1",
-      "why": "the manifest supersedes the authored index — both on disk is two definitions of a button"
+      "why": "the manifest supersedes the authored index — both on disk is two definitions of a button",
+      "pointer": true
+    },
+    {
+      "old": "docs/ideas/CANVAS.md",
+      "new": "docs/ideas/IDEA-*-canvas.md",
+      "by": "canvas",
+      "at": "Quickstart",
+      "why": "/canvas writes one canvas per idea; a project scaffolded since then has no CANVAS.md, so a reader that opens only the old name finds nothing (IDEA-118, IDEA-137 B1.2)"
     }
   ],
   "ladder_stack_bound": {

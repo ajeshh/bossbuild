@@ -80,7 +80,7 @@ test('B1.1 — a succession the reader does not follow → named; following it �
   };
   const ledger = {
     takes: [take('stages/L1-mvp/template/.claude/hooks/component-reuse-guard.js', 'docs/design/COMPONENTS.md', 'design-tokens-init')],
-    successions: [{ old: 'docs/design/COMPONENTS.md', new: 'docs/design/library/manifest.json', by: 'design-library', at: 'V1' }],
+    successions: [{ old: 'docs/design/COMPONENTS.md', new: 'docs/design/library/manifest.json', by: 'design-library', at: 'V1', pointer: true }],
   };
   const root = fixture(files);
   try {
@@ -94,6 +94,23 @@ test('B1.1 — a succession the reader does not follow → named; following it �
     const led = { ...ledger, takes: [...ledger.takes, take('stages/L1-mvp/template/.claude/hooks/component-reuse-guard.js', 'docs/design/library/manifest.json', 'design-library')] };
     assert.deepEqual(checkFlows(fixed, led), []);
   } finally { rmSync(fixed, { recursive: true, force: true }); }
+});
+
+// IDEA-137 · C6.4: a reader nobody declared still has to follow. B1.2 was seven readers of CANVAS.md
+// that no ledger listed — the declared-only check would have passed every one of them.
+test('a succession is followed by every shipped reader of the old path, declared or not', () => {
+  const files = {
+    [skill('canvas', 'L0-quickstart')]: 'Open (or create) `docs/ideas/IDEA-NNN-canvas.md` from the template.\n',
+    [skill('pricing')]: 'Read `docs/ideas/CANVAS.md` for the willingness-to-pay cell.\n',
+    [skill('hedged')]: 'Read `docs/ideas/IDEA-NNN-canvas.md` (an older project\'s `docs/ideas/CANVAS.md` still counts).\n',
+    'library/practices/old.md': 'Open `docs/ideas/CANVAS.md` before pricing.\n',
+  };
+  const ledger = { takes: [], successions: [{ old: 'docs/ideas/CANVAS.md', new: 'docs/ideas/IDEA-*-canvas.md', by: 'canvas', at: 'Quickstart' }] };
+  const root = fixture(files);
+  try {
+    const f = checkFlows(root, ledger).map(([file]) => file).sort();
+    assert.deepEqual(f, ['library/practices/old.md', skill('pricing')]);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
 test('B1.6 — the ladder declares an output the skill never writes → named; stack-bound → skipped by name', () => {

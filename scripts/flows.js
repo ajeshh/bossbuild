@@ -142,6 +142,39 @@ const readAll = (root, name) => {
   return filesUnder(d).filter((f) => /\.(md|json|js|txt)$/.test(f)).map((f) => readFileSync(f, 'utf8')).join('\n');
 };
 
+// Does this text point at `path` at all — the looser question a succession asks? A broader glob counts
+// (`docs/ideas/*-canvas.md` covers `IDEA-*-canvas.md`), so does a bare filename, and so does code that
+// finds the file by its glob's literal tail (`/-canvas\.md$/`). All eleven of the first run's false
+// alarms were one of those three.
+function follows(text, path) {
+  if (mentions(text, path).length) return true;
+  const target = sample(path);
+  const base = basename(target);
+  for (const m of foldJoins(text).matchAll(TOKEN)) {
+    const t = m[0].replace(/[/.]+$/, '').replace(/\{\{[^}]*\}\}|<[^>]*>|NNN/g, '*');
+    const re = globRe(t);
+    if (re.test(target) || (!t.includes('/') && re.test(base))) return true;
+  }
+  if (!path.includes('*')) return false;
+  const tail = basename(path).split('*').pop();
+  return tail.length > 4 && (text.includes(tail) || text.includes(tail.replace(/\./g, '\\.')));
+}
+
+// Everything that ships or runs: stage templates, the practices, the CLI. rel path → text.
+function shippedText(root) {
+  const out = new Map();
+  const roots = [join(root, 'library', 'practices'), join(root, 'src')];
+  const stages = join(root, 'stages');
+  if (existsSync(stages)) for (const st of readdirSync(stages)) roots.push(join(stages, st, 'template'));
+  for (const d of roots) {
+    if (!existsSync(d)) continue;
+    for (const f of filesUnder(d)) {
+      if (/\.(md|json|js|txt)$/.test(f)) out.set(f.slice(root.length + 1).split('\\').join('/'), readFileSync(f, 'utf8'));
+    }
+  }
+  return out;
+}
+
 // Returns [file, message] pairs — the check-refs findings shape.
 export function checkFlows(root, ledger, ladder = {}) {
   const findings = [];
@@ -165,11 +198,23 @@ export function checkFlows(root, ledger, ladder = {}) {
     }
   }
 
+  // A succession binds EVERY shipped reader of the old path, declared or not (IDEA-137 · C6.4, M12:
+  // a pioneer names its successor and its readers follow). Declared-only would have passed B1.2 —
+  // seven readers of CANVAS.md that no ledger listed. A file that names both paths is following
+  // (the hedged "an older project's CANVAS.md still counts" is the right shape). `pointer: true` means
+  // the old file stays behind as a one-line pointer to the new — a person or an agent reading it is
+  // sent on, so only CODE that parses it goes blind (B1.1's guard), and only code is bound.
+  const shipped = shippedText(root);
   for (const s of ledger.successions || []) {
-    const oldReaders = new Set((ledger.takes || []).filter((t) => t.path === s.old).map((t) => t.reader));
     const newReaders = new Set((ledger.takes || []).filter((t) => t.path === s.new).map((t) => t.reader));
-    for (const r of oldReaders) {
-      if (!newReaders.has(r)) findings.push([r, `reads ${s.old}, which /${s.by} replaces with ${s.new} at ${s.at} — this reader doesn't follow, so it goes blind there`]);
+    // Declared readers of the old path must declare the new one too; undeclared ones must name it.
+    const blind = new Set((ledger.takes || []).filter((t) => t.path === s.old && !newReaders.has(t.reader)).map((t) => t.reader));
+    for (const [rel, text] of shipped) {
+      if (s.pointer && !rel.endsWith('.js')) continue;
+      if (mentions(text, s.old).some((m) => m.read) && !follows(text, s.new)) blind.add(rel);
+    }
+    for (const r of blind) {
+      findings.push([r, `reads ${s.old}, which /${s.by} replaces with ${s.new} at ${s.at} — this reader doesn't follow, so it goes blind there`]);
     }
   }
 
