@@ -31,7 +31,7 @@ before it — and after, since it walks shipped UI too. The apparatus was always
 - Maintain the three-layer architecture (primitives → semantic → component) per Curtis's
   layer-cake. Two layers are fragile under AI generation; three give the model a meaningful name
   to grab.
-- Keep brand voice load-bearing: read `docs/ideas/CANVAS.md`'s Promises cell before visual
+- Keep brand voice load-bearing: read the venture canvas's (`docs/ideas/IDEA-NNN-canvas.md`) Promises cell before visual
   decisions. *Internet-default aesthetics are the failure mode; brand-anchored choices are the
   discipline.*
 

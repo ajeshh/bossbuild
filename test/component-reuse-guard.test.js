@@ -184,3 +184,40 @@ test('a new component with a pile gets both the pile and the three-way question,
   });
   assert.ok(out.indexOf('boolean piles') < out.indexOf('reuse, adjust, or new'));
 });
+
+// B1.1 (IDEA-137): at V1 `/design-library` replaces COMPONENTS.md with a one-line pointer and moves the
+// rows into the manifest. The guard read only COMPONENTS.md, found no rows, and fell silent — the reuse
+// and deprecated-import checks stopped exactly when a project scaled. Reproduced 2026-10-04: the same
+// write that drew two warnings at MVP drew nothing at V1.
+function atV1() {
+  const dir = project({});
+  mkdirSync(join(dir, 'docs', 'design', 'library'), { recursive: true });
+  writeFileSync(join(dir, 'docs', 'design', 'COMPONENTS.md'),
+    '# Components\n\nThe index moved to the design library: `docs/design/library/` (manifest.json).\n');
+  writeFileSync(join(dir, 'docs', 'design', 'library', 'manifest.json'), JSON.stringify({
+    generated: '2026-10-04',
+    components: [
+      { name: 'Button', purpose: 'primary and secondary actions', usedIn: 4, status: 'stable' },
+      { name: 'OldCard', purpose: 'content card', usedIn: 2, status: 'deprecated → Card' },
+      { name: 'Card', purpose: 'content card', usedIn: 3, status: 'stable' },
+    ],
+  }));
+  return dir;
+}
+
+test('B1.1 — at V1 it reads the manifest: the three-way question still fires, and names the manifest', () => {
+  const out = run(atV1(), NEW);
+  assert.match(out, /reuse, adjust, or new/);
+  assert.match(out, /`Button`/);
+  assert.match(out, /docs\/design\/library\/manifest\.json/);
+  assert.match(out, /re-run `\/design-library`/);
+});
+
+test('B1.1 — at V1 a deprecated import from the manifest is still named', () => {
+  const out = run(atV1(), { file_path: 'src/app/page.tsx', content: 'import { OldCard } from "@/components/OldCard"' });
+  assert.match(out, /`OldCard` is marked \*\*deprecated → `Card`\*\*/);
+});
+
+test('B1.1 — at V1 a component already in the manifest stays SILENT', () => {
+  assert.equal(run(atV1(), { file_path: 'src/components/Button.tsx', content: 'export function Button(){}' }), '');
+});

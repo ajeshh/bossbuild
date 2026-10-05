@@ -166,13 +166,13 @@ this layer until V1. If you're reaching for it at MVP, you're probably premature
 
 ### The brand-anchor
 
-**Read `docs/BRAND.md` first if it exists, and `docs/ideas/CANVAS.md`'s Promises cell either way.**
+**Read `docs/BRAND.md` first if it exists, and the venture canvas's (`docs/ideas/IDEA-NNN-canvas.md`) Promises cell either way.**
 The brand doc is *upstream of this skill and not owned by it* — it also feeds `/landing`,
 `/pretotype`, the pitch and the words in a sales call. If it doesn't exist, seed it (the skeleton is
 `.claude/skills/canvas/templates/brand-doc.md`, which every project has from Quickstart), mark it `nascent`, and take the anchor from
 it rather than inventing one here. **Design consumes brand; it does not define it.**
 
-Read `docs/ideas/CANVAS.md` Promises cell. The brand voice declared there should anchor the
+Read the venture canvas's Promises cell (`docs/ideas/IDEA-NNN-canvas.md`). The brand voice declared there should anchor the
 *choice of primitives*. Don't default to Tailwind blues; pick primitives that match the
 declared brand. If the canvas's Promises cell is `_(not yet)_`, flag it — design tokens without
 a brand anchor will drift back to internet-defaults.

@@ -103,7 +103,7 @@ roadmap. Build fast, mark the threshold, start the next. That rhythm *is* the re
   celebration is voiced (it's a conscience moment with the polarity flipped: same restraint, opposite sign).
 - `deceptive-patterns.md` — the `notifications-and-engagement` rows that keep celebration from curdling into a streak/engagement
   mechanic.
-- Voice: no performed warmth. Check any celebration copy that ships against `docs/design/BRAND.md`
+- Voice: no performed warmth. Check any celebration copy that ships against `docs/BRAND.md`
   **if you have one** (`/landing` writes it), and cut anything that performs enthusiasm you do not
   feel. The test survives without the file: read it aloud and see whether you'd say it.
 - `ship-it-live.md` (FEAT-024) — the technical threshold this marks.

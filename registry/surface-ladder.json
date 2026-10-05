@@ -40,6 +40,7 @@
     "produces": {
       "what": "the venture canvas",
       "files": [
+        "docs/ideas/IDEA-*-canvas.md",
         "docs/ideas/CANVAS.md"
       ]
     },
@@ -52,6 +53,7 @@
     "produces": {
       "what": "feature specs",
       "files": [
+        "docs/ideas/FEAT-*.md",
         "docs/features/FEAT-*.md",
         "docs/specs/**"
       ]
@@ -207,6 +209,8 @@
         "rudder-sdk-js"
       ],
       "files": [
+        "docs/measure/MEASURE-*.md",
+        "docs/health/HEALTH-*.md",
         "docs/metrics.md",
         "docs/measurement.md"
       ]
@@ -222,6 +226,7 @@
     "produces": {
       "what": "an onboarding flow",
       "files": [
+        "docs/onboard/ONBOARD-*.md",
         "docs/onboarding.md",
         "docs/activation.md"
       ]
@@ -244,6 +249,7 @@
         "paddle-sdk"
       ],
       "files": [
+        "docs/money/MONEY-*.md",
         "docs/pricing.md"
       ]
     },
@@ -258,6 +264,7 @@
     "produces": {
       "what": "a privacy policy + ToS",
       "files": [
+        "docs/trust/PRIVACY.md",
         "PRIVACY.md",
         "privacy.md",
         "TERMS.md",

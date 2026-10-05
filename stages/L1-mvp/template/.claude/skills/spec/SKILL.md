@@ -12,7 +12,7 @@ the build contract.
 
 ## Step 0 — does it already exist, and is this the right rung?
 
-**Look for feature specs before you make one** — `docs/features/FEAT-*.md`, `docs/specs/**`. If it's there: say so and stop
+**Look for feature specs before you make one** — `docs/ideas/FEAT-*.md` (in an adopted repo, also `docs/features/` or `docs/specs/`). If it's there: say so and stop
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 

@@ -59,7 +59,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
 1. **Read the spec.** The FEAT being reviewed, the proposed component (sketch / mockup /
    description), and the relevant section of any design brief.
 2. **Read the system.** `docs/design/DESIGN_TOKENS.md` (authoritative tokens), `docs/design/
-   STYLE_GUIDE.md` (how tokens compose into patterns), `docs/ideas/CANVAS.md` (Promises cell —
+   STYLE_GUIDE.md` (how tokens compose into patterns), `docs/ideas/IDEA-NNN-canvas.md` (Promises cell —
    the brand anchor), **`docs/design/COMPONENTS.md`** (the component index at MVP, superseded by
    **`docs/design/library/manifest.json`** at V1 — read whichever exists, never both), **`docs/design/PATTERNS.md`** (the pattern set — see step 4b), and `STYLE_GUIDE.md`'s
    **Composition** slots (see step 4a).

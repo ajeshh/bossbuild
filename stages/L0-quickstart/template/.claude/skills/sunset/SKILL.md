@@ -51,7 +51,7 @@ pushes.
 ## Movement 1 — the honest post-mortem
 
 Read what the project actually recorded — don't make the founder reconstruct it from memory:
-`docs/ideas/CANVAS.md` (the bet), `docs/ideas/` (what was captured), `docs/devlog.md` (what
+`docs/ideas/IDEA-NNN-canvas.md` (the bet), `docs/ideas/` (what was captured), `docs/devlog.md` (what
 happened), and `docs/evidence/` if it exists (the graded EVID ledger — the real signal). Then ask at
 most **three questions**, in **one message, numbered** so they can answer by number, in words that fit
 this project — Mom-Test discipline on their own narrative (separate what they *observed* from what

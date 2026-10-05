@@ -106,7 +106,7 @@ idea — it's whether two people kept telling each other the truth. Help them do
 You are worth more than a fresh Claude tab only if you already know this venture. Before you answer,
 read what exists (degrade gracefully when a file is absent — a new project has little):
 
-- **the canvas** — `docs/ideas/CANVAS.md` (or the project's canvas): the bet, who's served, what could kill it.
+- **the canvas** — `docs/ideas/IDEA-NNN-canvas.md`: the bet, who's served, what could kill it.
 - **a bounded slice of the venture brain** — `.boss/brain/read.md`: the standing summary + the most recent
   dated read (the same bound the conscience uses). It's the continuity that makes you an advisor, not a roleplay.
 - **the 3 most recent decisions** — `docs/decisions/DEC-*.md`: what's already been settled, and why.

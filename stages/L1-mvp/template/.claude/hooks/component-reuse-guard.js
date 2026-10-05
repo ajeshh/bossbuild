@@ -29,6 +29,13 @@
 // a founder who hasn't run `/design-tokens-init` is not doing anything wrong, and a hook that nags
 // them is the unearned ceremony BOSS refuses (Principle #2). The index IS the opt-in signal.
 //
+// AT V1 THE INDEX MOVES, AND THE GUARD FOLLOWS IT. `/design-library` replaces COMPONENTS.md with a
+// one-line pointer and carries every row into `docs/design/library/manifest.json`. Until IDEA-137
+// this guard read only COMPONENTS.md, found zero rows in the pointer, and fell silent — the reuse
+// and deprecated-import checks stopped exactly when a project scaled, and nothing could see it. The
+// manifest, when it exists, is the index; COMPONENTS.md is the fallback. registry/flows.json declares
+// both reads, so check-refs names it if either end moves again.
+//
 // WHY IT STAYS QUIET IN PRACTICE: it fires only on files whose name is not already in the index —
 // i.e. once per new component, not once per edit. Editing `Button.tsx` forever is silent.
 //
@@ -56,6 +63,14 @@ import { readFileSync, existsSync, appendFileSync } from 'node:fs';
 import { join, basename, extname } from 'node:path';
 
 const INDEX_REL = join('docs', 'design', 'COMPONENTS.md');
+const MANIFEST_REL = join('docs', 'design', 'library', 'manifest.json');
+
+// The manifest's components as index rows, so one reader serves both rungs:
+// | `Name` | purpose | `import` | status |
+const manifestAsIndex = (json) => (JSON.parse(json).components || [])
+  .filter((c) => c && c.name)
+  .map((c) => `| \`${c.name}\` | ${String(c.purpose || '').replace(/\|/g, '/')} | \`${c.import || ''}\` | ${c.status || ''} |`)
+  .join('\n');
 const COMPONENT_EXT = /\.(tsx|jsx|vue|svelte|astro|swift|kt|dart)$/i;
 // A components directory by any of its usual names, on any platform separator.
 const COMPONENT_DIR = /(^|[\\/])(components?|ui|widgets|views|elements)[\\/]/i;
@@ -99,16 +114,23 @@ try {
 try {
   const projectDir = process.env.CLAUDE_PROJECT_DIR || event.cwd || process.cwd();
 
-  // --- The JIT gate: no index, no opinion. --------------------------------------------------
+  // --- The JIT gate: no index, no opinion. The manifest (V1) wins over the authored index. ----
+  const manifestPath = join(projectDir, MANIFEST_REL);
   const indexPath = join(projectDir, INDEX_REL);
-  if (!existsSync(indexPath)) process.exit(0);
+  let index = null;
+  let indexRel = INDEX_REL;
+  if (existsSync(manifestPath)) {
+    try { index = manifestAsIndex(readFileSync(manifestPath, 'utf8')); indexRel = MANIFEST_REL; } catch { index = null; }
+  }
+  if (index == null && existsSync(indexPath)) index = readFileSync(indexPath, 'utf8');
+  if (index == null) process.exit(0);
+  const atV1 = indexRel === MANIFEST_REL;
 
   const input = event.tool_input || {};
   const path = input.file_path || '';
   if (!path || SKIP_PATH.test(path) || !COMPONENT_EXT.test(path)) process.exit(0);
 
   const name = basename(path, extname(path));
-  const index = readFileSync(indexPath, 'utf8');
   const added = addedText(input);
   const notes = [];
 
@@ -125,7 +147,7 @@ try {
     if (old === name) continue; // the deprecated component's own file is allowed to exist
     if (new RegExp(`\\b${old}\\b`).test(added)) {
       notes.push(
-        `\`${old}\` is marked **deprecated → \`${next}\`** in \`${INDEX_REL}\` and this write just ` +
+        `\`${old}\` is marked **deprecated → \`${next}\`** in \`${indexRel}\` and this write just ` +
         `referenced it. Use \`${next}\`. The old row stays until its last import is gone — this is ` +
         `one of the imports keeping it alive.`
       );
@@ -205,15 +227,18 @@ try {
   out(
     (notes.length ? `component-reuse-guard: ${notes.join(' ')}\n\n` : '') +
     `component-reuse-guard: \`${name}\` was just written to \`${path}\` and has no row in ` +
-    `\`${INDEX_REL}\`. Before continuing, answer the three-way question the index exists for — ` +
+    `\`${indexRel}\`. Before continuing, answer the three-way question the index exists for — ` +
     `**reuse, adjust, or new?**${nearNote} Already there: ${listing}. ` +
     `Match on the JOB, not the look: same job and a different look is a **variant** (a prop, not a ` +
     `file); same job and a slightly different need means **widen** the existing one; a different job ` +
     `that happens to look similar is genuinely **new**. If you cannot tell, it is probably a variant — ` +
     `forking is cheap now and expensive forever, while extending is slightly expensive now and free ` +
     `forever. If it IS new, say why in one line — as the **Why it exists** line of ` +
-    `\`docs/design/components/${name}.md\` (the usage page; \`/design-review\` fills the rest) — and add ` +
-    `its row to the index in this same change; an index that lags the code is one the next search ` +
+    `\`docs/design/components/${name}.md\` (the usage page; \`/design-review\` fills the rest) — and ` +
+    (atV1
+      ? `re-run \`/design-library\` so the manifest carries it; `
+      : `add its row to the index in this same change; `) +
+    `an index that lags the code is one the next search ` +
     `will trust and be wrong about. \`boss design\` lists components with no row and no page.`
   );
 } catch {

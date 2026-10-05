@@ -46,7 +46,7 @@ Unlike the hook moment's bounded ~5-entry read, here you read **everything that 
 - **The canvas** — `docs/ideas/*-canvas.md`: the riskiest assumption (the bet), the experiment line
   (the plan, if any), and the surrounding cells (people, problem, metrics, risks & harms).
 - **The full devlog** — `docs/devlog.md`, *all* entries, not the last five. The arc, not the tail.
-- **Every FEAT spec** — `docs/specs/FEAT-*.md` (or wherever specs live): what was committed to build
+- **Every FEAT spec** — `docs/ideas/FEAT-*.md` (in an adopted repo, also `docs/specs/` or `docs/features/`): what was committed to build
   and its acceptance criteria. Specs are the stated intent; compare against the bet.
 - **The actual code** — `src/` structurally: what modules/features exist, what the app *does*. What
   you built is the truest record of what you bet on. Read the shape, not every line; follow the

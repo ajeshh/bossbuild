@@ -551,9 +551,12 @@ export function readIconDecision(guideText) {
 // --- the logo: a path in docs/BRAND.md's frontmatter (`logo:` the mark, `wordmark:` when it is a file);
 // the lockups draw from those files or the slot stays a slot. No placeholder mark, ever.
 export function readLogo(projectDir) {
-  const p = join(projectDir, 'docs', 'BRAND.md');
+  // Through brandPath, like every other reader of the brand file (playbook.js says why there is ONE
+  // resolver). This one opened docs/BRAND.md directly, so a brand at docs/design/BRAND.md had its
+  // tagline read and its logo missed on the same page (IDEA-137 · B1.3, reproduced 2026-10-04).
+  const p = brandPath(projectDir);
   const out = { mark: null, markSvg: '', wordmarkFile: null, wordmarkSvg: '', minimum: '', clearSpace: '', colour: '', tagline: '', misuse: '' };
-  if (!existsSync(p)) return out;
+  if (!p) return out;
   let text = '';
   try { text = readFileSync(p, 'utf8'); } catch { return out; }
   const fm = frontmatter(text);

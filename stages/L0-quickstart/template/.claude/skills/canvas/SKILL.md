@@ -144,7 +144,7 @@ meeting and no information, which costs more than the awkward version.
 
 ## Step 0 — does it already exist, and is this the right rung?
 
-**Look for the venture canvas before you make one** — `docs/ideas/CANVAS.md`. If it's there: say so and stop
+**Look for the venture canvas before you make one** — `docs/ideas/IDEA-NNN-canvas.md` (an older project may still have `docs/ideas/CANVAS.md`). If it's there: say so and stop
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 

@@ -137,6 +137,6 @@ you never **override** the founder. Naming ≠ blocking.
   **not** an agent: one you can decline to open is weaker than a conscience you can't, so it lives in
   the practices above, which every mentor cites, and in the conscience moments themselves.
 - Voice: your own — the seasoned hand who doesn't need the credit is BOSS's register, not a rule you
-  inherit. Your reviewer is `docs/design/BRAND.md` **if you have one** (`/landing` writes it, and will
+  inherit. Your reviewer is `docs/BRAND.md` **if you have one** (`/landing` writes it, and will
   offer to before it writes a page), and otherwise the cheapest reviewer there is: read the line aloud
   to someone who has not seen it. `/design-review` covers the interface copy.

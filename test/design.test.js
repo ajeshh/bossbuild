@@ -5,7 +5,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, statSync, readFileSync } from 'node:fs';
+import { readdirSync, statSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
 import { contrast, grade, contrastPairs, readTokens, readStyleGuide, readBrandShape, readPersonasFull, readJourney, readResearch, readComponents, resolveImport, specFrameSvg, readPatterns, readFlows, readGuards, readIcons, readIconDecision, readLogo, readExceptions, tokensCss, readKitLinks, researchOn, openSlots, readUsagePages, scanTree, readDivergence, themeFromTokens, collectDesign, renderDesignHtml, designHtml } from '../src/design.js';
@@ -893,4 +893,15 @@ test('Composition renders when written and stays silent while it is the template
   assert.match(html, /<h4>Composition<\/h4><ul><li>Inside: a Dialog footer<\/li><li>Never inside: Link — a button in a link is two targets<\/li><\/ul>/);
   const bare = renderDesignHtml({ ...collectDesign(withLibrary(), 'Tidewell'), projectDir: withLibrary() }, 'x');
   assert.ok(!bare.includes('<h4>Composition</h4>'), 'unwritten composition is not drawn as a hole');
+});
+
+// B1.3 (IDEA-137): readLogo opened docs/BRAND.md directly while every other brand reader goes through
+// brandPath, so a brand bible at docs/design/BRAND.md (the older path brandPath still accepts) had its
+// tagline read and its logo missed on the same page. Reproduced 2026-10-04.
+test('B1.3 — the logo is read from the brand file wherever brandPath finds it', () => {
+  const dir = project({});
+  mkdirSync(join(dir, 'docs', 'design'), { recursive: true });
+  writeFileSync(join(dir, 'docs', 'design', 'BRAND.md'), '---\nlogo: mark.svg\n---\n# Brand\n');
+  writeFileSync(join(dir, 'mark.svg'), '<svg xmlns="http://www.w3.org/2000/svg"></svg>');
+  assert.equal(readLogo(dir).mark, 'mark.svg');
 });

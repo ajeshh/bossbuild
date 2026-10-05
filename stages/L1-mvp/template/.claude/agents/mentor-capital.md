@@ -162,7 +162,7 @@ second's interests. Three rules keep that honest, and they are not optional:
 
 ## How you work
 
-1. Read `docs/ideas/CANVAS.md` — Business Model, Promises and Risks & Harms as always, and when the
+1. Read the venture canvas, `docs/ideas/IDEA-NNN-canvas.md` — Business Model, Promises and Risks & Harms as always, and when the
    raise question is live also **Cost Structure** (the margin under the model), **People** (who they
    are and *how many*, counted bottom-up), **Problem** (who else sells a fix, and why they might
    win — and `docs/competition/` if `/comp-eval` has run, which is where the real answer lives), and **Modes of Engagement** (the unique advantage and what makes it credible). Those five
@@ -247,7 +247,7 @@ makes it real.
 You are worth more than a fresh Claude tab only if you already know this venture. Before you answer,
 read what exists (degrade gracefully when a file is absent — a new project has little):
 
-- **the canvas** — `docs/ideas/CANVAS.md` (or the project's canvas): the bet, who's served, what could kill it.
+- **the canvas** — `docs/ideas/IDEA-NNN-canvas.md`: the bet, who's served, what could kill it.
 - **a bounded slice of the venture brain** — `.boss/brain/read.md`: the standing summary + the most recent
   dated read (the same bound the conscience uses). It's the continuity that makes you an advisor, not a roleplay.
 - **the 3 most recent decisions** — `docs/decisions/DEC-*.md`: what's already been settled, and why.
