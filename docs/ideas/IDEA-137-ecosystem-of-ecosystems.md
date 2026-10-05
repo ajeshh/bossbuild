@@ -5,7 +5,7 @@ kind: capability
 owner: mentor-architect
 status: exploring (research landed 2026-10-04; nothing built)
 program: ecosystem-of-ecosystems
-proof: none
+proof: docs/ECOSYSTEMS.md
 proof_note: this record holds the cross-ladder reasoning, which belongs to no single ladder — the graduation test for a `PROG-NNN` in docs/IDS.md § program. It graduates when the PROG record type is built (records.js keeps it deliberately unbuilt until a real program needs it — this may be that program).
 gist: Inside a founder's project, BOSS lays down an ecosystem of ecosystems — design, engineering, evidence, claims, trust… each governing itself, all living by one set of principles, with governance and support for liveliness between them. Scaffolding is how the first ones get planted. BOSS → project flows one way.
 created: 2026-10-04
@@ -384,6 +384,122 @@ M4 can't be measured from the trace as drafted.
   moment. No new skill.
 - [ ] **A2** · The first guild to plant for a founder (lean: launch).
 
+## Build checklist (2026-10-04 — Ajesh: *"create a checklist of everything to build, and share what it will create or generate"*)
+
+Order: **seams before ecosystems; BOSS's own repo before what ships** (B then A). Each phase says what
+it creates. Ids: `IDEA-137 · C2.3`. Every capability = a commit + an `## Unreleased` bullet in product
+terms (no research in the CHANGELOG).
+
+**C0 · Decide before building** (no code)
+- [ ] C0.1 · Q6 — where the reader lives. Lean: a 7th class in `scripts/check-refs.js` (*readers and
+  writers*), whose header already names this bug (`STYLE_GUIDE.md` read by three consumers, written by
+  nothing). Its *gives* source: `registry/surface-ladder.json`, corrected.
+- [ ] C0.2 · The declaration shape — where a *take* is declared (skill/hook/practice frontmatter or the
+  ladder JSON), and the `store` and `not planted yet` markers.
+- [x] C0.3 · H1 — `mentor-humane` read the draft (2026-10-04), and the draft changed: **liveliness
+  stays internal** (a design test on BOSS's own ecosystems, never a founder reading — its opposite is
+  *dead*, the virtual-pet guilt pattern); sign 1 becomes **drift from the seed**, never *unchanged
+  since planted*; signs 3–4 check that retirement and amendment **exist** (fails BOSS's build), never
+  whether the founder **used** them; **no grid, no count, no "since last time"**; a founder sees only
+  **a broken flow, one end moved, as a fix in `/close`'s numbered list**, else nothing; never at a
+  graduation; the reader reads **declared paths and BOSS-planted files, paths never authors**;
+  *not planted*, never *not planted yet* (DEC-011 — a commons with no money ecosystem isn't behind);
+  *pollutant* internal only, unread founder outputs never reported; **mute stays free** (N12 is an
+  extra door); P3 offered, never gated; **Quiet is not broken.** N11 only for breaks the founder's
+  work causes, same file + class, *"keep fixing it for me"* first-class; N13 reframed **"BOSS can
+  always be needed less — the founder decides when."** All applied to `docs/ECOSYSTEMS.md`.
+- *Creates:* answers written into this record (Q6, Q10 below). Nothing in code.
+
+**C1 · Reproduce the six breaks** (rule 8 — run each before fixing)
+- [x] **C1.1 · B1.1 reproduced (2026-10-04).** Same write — a new `CTAButton` importing a
+  `deprecated → Card` component — against an MVP index: both warnings fire. Against the V1 handover
+  (`COMPONENTS.md` a pointer, rows in `docs/design/library/manifest.json`): **silent, exit 0.** First
+  run was a false silence — zsh `echo` turned the event's `\n` into a newline and the guard failed
+  open on bad JSON; use `printf '%s'` for hook events.
+- [x] **C1.2 · B1.2 reproduced** — a fresh MVP scaffold (`boss new`, `BOSS_HOME` temp) has no
+  `docs/ideas/CANVAS.md`; `/canvas` writes `IDEA-NNN-canvas.md` (`canvas/SKILL.md:167`); the seven
+  lines read only `CANVAS.md`. (mentor-hiring also has a hedged second mention at `:102`.)
+- [x] **C1.3 · B1.3 reproduced** — one brand file with `logo: mark.svg`: at `docs/BRAND.md`
+  `readLogo` finds the mark; at `docs/design/BRAND.md` (which `brandPath` accepts) it returns
+  **null**. The two practice lines send founders to `docs/design/BRAND.md`; `/landing` writes
+  `docs/BRAND.md` (`landing/SKILL.md:57`).
+- [x] **C1.4 · B1.4 confirmed, hedged** — `/drift-deep` reads `docs/specs/FEAT-*.md` "(or wherever
+  specs live)"; specs live in `docs/ideas/`. The hedge may save it; the path is still wrong.
+- [x] **C1.5 · B1.5 confirmed** — `/spec` step 0 looks in `docs/features/` and `docs/specs/**`
+  (`:15`), writes to `docs/ideas/` (`:275`) — it can't find its own output.
+- [x] **C1.6 · B1.6 reproduced** — `detectArtifact` on a canvas and a spec where the skills write them:
+  `exists: false` both; moved to the ledger's paths: `exists: true`. BOSS believes they don't exist.
+- *Creates:* a reproduction line per break in this record; the six become the reader's test fixtures.
+
+**C2 · M2 — the reader, on BOSS's own repo** (maintain-level work: it keeps flows from breaking)
+- [ ] C2.1 · Correct `registry/surface-ladder.json`'s six wrong outputs (B1.6) — also fixes `boss`'s
+  "already built" line for canvas, spec, health, onboard, money, trust.
+- [ ] C2.2 · Declare the *takes* for the 44 flows B1 found.
+- [ ] C2.3 · The reader: a *take* nothing writes · a *give* nothing reads (unless `store`) · a path
+  only one end changed · *not planted yet* stays silent (N6) · every *take* names its return (N10).
+- [ ] C2.4 · Tests: finds all six breaks; **zero findings on a fresh Quickstart scaffold**.
+- *Creates:* a new section in `npm run check:refs` output (one line per broken flow, file:line);
+  `test/` cases; a corrected ledger. *Generates:* BOSS's own flow map (44+ flows) as the report.
+
+**C3 · Fix what the reader finds** (each its own commit)
+- [ ] C3.1 · B1.1 — the reuse guard follows `manifest.json` at V1 (M12, live in shipped code).
+- [ ] C3.2 · B1.2 — seven skills/agents read the founder's real canvas path.
+- [ ] C3.3 · B1.3 — BRAND path in two practices and `readLogo`.
+- [ ] C3.4 · B1.4, B1.5 — `/drift-deep` and `/spec` look where FEATs live.
+- [ ] C3.5 · N5 — `/sunset` writes its lesson into the FEAT/IDEA record `/spec` and `/roadmap` read,
+  not a `POSTMORTEM.md` nothing reads.
+- [ ] C3.6 · B1.7 — each prose-only hand-off: wire it, or mark it `store` honestly.
+- *Creates:* edits to ~15 shipped skill/agent/practice/hook files; CHANGELOG bullets; the reader
+  goes quiet on BOSS's own repo.
+
+**C4 · Return paths** (N10 — the absent flows, chosen one by one)
+- [ ] C4.1 · pretotype result → an EVID · C4.2 · `/landing --demand` collecting emails → `/trust` ·
+  C4.3 · `/spec` reads the DECs · C4.4 · `/drift-deep` reads the evidence · C4.5 · schema one-way
+  door → `/decide`.
+- *Creates:* a step or a line in each skill. No new skill.
+
+**C5 · Liveliness — split by H1** (a) founders: the broken-flow line only; (b) the four signs: a design test on BOSS's own ecosystems; (c) falsifier: more only if a founder unprompted asks twice. *(Original plan below, superseded where it conflicts.)*
+- [ ] C5.1 · The four signs per ecosystem — rewritten by the work (git) · outputs read (the reader)
+  · can retire · authored from within — compared with last time, never a total.
+- [ ] C5.2 · Shown once in `/close` (and at a mode graduation), mutable; says what it can't read.
+- *Creates:* a short section in `/close`'s output. *Generates:* nothing stored beyond what `/close`
+  already writes.
+
+**C6 · Governance** (some need Ajesh's `/decide`)
+- [ ] C6.1 · N12 — each ecosystem's practice names how its rules get amended, by whom (anatomy #8).
+- [ ] C6.2 · N11 — the second repair of a kind offers a check the founder's project owns. **Touches
+  DEC-003 → `/decide`.**
+- [ ] C6.3 · M11 reworded in the practices — the latent centre that most helps the whole.
+- [ ] C6.4 · M12 — a pioneer names its successor; readers follow (generalises C3.1).
+- [ ] C6.5 · N13 — BOSS aims to be needed less. **A PRINCIPLES-level aim → Ajesh, `/decide`.**
+- *Creates:* practice text; possibly one DEC each for C6.2 and C6.5.
+
+**C7.0 · ✅ Drafted first (Ajesh, 2026-10-04: draft the guide before the reader, so IDEA-136 can
+resume against it)** — [`docs/ECOSYSTEMS.md`](../ECOSYSTEMS.md): five shared principles, the eight-part
+anatomy with design's instance of each (engineering's column left for IDEA-136), the connection
+declarations (gives / takes / returns / store / not planted yet / steward), the steps for building a
+new ecosystem, liveliness, handover, the test. **A hypothesis**: the reader (C2) revises it; it moves
+to `library/practices/` only at C7.
+
+**C7 · The anatomy and the charter — written last** (M1) — **finalised** after the reader
+- [ ] C7.1 · The shared anatomy (eight parts) from what design, engineering and the reader actually
+  share — extend `seed-to-scale.md`, don't add a practice unless it's a different subject.
+- [ ] C7.2 · Test: three throwaway scaffolds — do the ecosystems hang together (brown's fractal: the
+  whole has the same anatomy as each part)?
+- *Creates:* practice text; the site's Engineering page picks it up when Ajesh regenerates.
+
+**C8 · Ship to founders** (A)
+- [ ] C8.1 · The founder's reader — quiet in Quickstart (N6), counts flows the founder made (N14),
+  speaks once where they act. Likely inside an existing verb (`boss map` / `/close`), not a new one.
+- [ ] C8.2 · Kettlewick demo record if a new record type appears; CHANGELOG bullets.
+- [ ] C8.3 · **Release IDEA-136's hold** — engineering becomes the first ecosystem planted from the
+  anatomy.
+- *Creates:* CLI/skill changes that reach founders on `boss sync`.
+
+**C9 · When the ebooks land** — one pass re-grades the *waits on the books* list above.
+**C10 · Q8 — the sentence** — PRINCIPLES' one sentence moves only by Ajesh's `/decide`, after C2–C5 show
+the ecosystems are real.
+
 ## Open questions
 - **Q1** · ~~Is M2 the same as M10?~~ **Settled at R5:** one mechanism, two link axes — sideways in
   frontmatter (the index), up/down in prose (the language); the reader is what makes either real.
@@ -400,6 +516,8 @@ M4 can't be measured from the trace as drafted.
   layers a stack; climbing modes is what slows a layer (a Quickstart schema is V1 structure).
 - **Q6** · Where M2's reader lives: a new class in `check-refs.js`, `registry/surface-ladder.json`
   corrected and generalised, or `boss map`? · settles before A1.
+- **Q10** · The declaration shape (C0.2) — frontmatter on each skill/practice, or one ledger (the
+  ladder JSON grown)? Lean: the ledger — one place to read, and it already exists.
 - **Q8** · Is scaffolding one part of a larger thing — **BOSS lays down a venture's internal
   ecosystems** (and the scaffold is how the first ones get planted)? That touches the one sentence in
   `PRINCIPLES.md` (*"sets a project up with only the structure it has earned"*), which is quoted
