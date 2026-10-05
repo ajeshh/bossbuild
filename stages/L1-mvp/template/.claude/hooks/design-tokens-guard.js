@@ -6,7 +6,8 @@
 // survives. Its prescribed prevention was *"reference tokens by name in every prompt."* That is a
 // **filter**: it depends on every future prompt remembering. The same lesson `agent-security.md`
 // took from CVE-2026-22708 applies here — **bound the capability, don't enumerate the route.** What
-// actually stops the 47 blues is a check that fires on a raw hex. This is that check.
+// catches the 47 blues as they're written is a check that fires on a raw hex. This is that check —
+// it warns the model the moment the hex lands; it can't stop the write.
 //
 // WHAT IT DOES: after a write to a style-bearing file, scan for hardcoded style values and hand
 // Claude the token vocabulary it should have used instead. Advisory, never blocking (PostToolUse

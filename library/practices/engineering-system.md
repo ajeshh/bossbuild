@@ -151,8 +151,8 @@ missing.
   lint rule, a hook). Asking an agent in a context file to run the checks itself is unreliable; a hook
   that runs them is not (Böckeler, 2026 — one practitioner, one app).
 - **Put the fix in the failure message.** The agent reads it and acts on what it says.
-- **Advisory first; block only with an incident.** A warning is not a boundary — say which each check
-  is. A check that never fires is a candidate for removal.
+- **Advisory first; block only with an incident.** A check that fires at the write still only warns
+  unless it stops — say which each is. A check that never fires is a candidate for removal.
 - **Three exceptions to the same rule mean the rule is wrong.** Narrow it, split it, or retire it.
 
 ## Altitude — the right rung
