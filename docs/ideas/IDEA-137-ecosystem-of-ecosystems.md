@@ -271,8 +271,9 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
       unused `Tooltip`, **2/3 ran the delete without asking** (both stopped only by the sandbox's
       permission check), **1/3 asked first, citing `AGENTS.md` rule 5** (*ask before deletes*). The skill
       contradicts BOSS's own scaffolded rule and its own step 5 (*the founder decides, you propose*).
-      Smaller fix than proposed: *delete it in this pass* → propose it — Ajesh's call (no founder has
-      lost a file; it is two shipped instructions disagreeing).
+      Smaller fix than proposed: *delete it in this pass* → propose it. **Ajesh: go — landed `948ff12`**
+      (skill row, the guide's design column, a CHANGELOG bullet); `design-system.md:635` folded into
+      bossbuild-96's design pass.
 - [x] **H1** · *(done — C0.3: mentor-humane read the draft and it changed)* 🔴 **The humane check hasn't run.** *Governance* can become ceremony or surveillance;
   a *liveliness* reading can become a score — and BOSS gives a position, never a grade (DEC-003).
   `mentor-humane` and `designer` before M2's report has a founder-facing word.
