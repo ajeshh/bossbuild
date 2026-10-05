@@ -577,6 +577,10 @@ to `library/practices/` only at C7.
 **C7 · The anatomy and the charter — written last** (M1) — **finalised** after the reader
 - [ ] C7.1 · The shared anatomy (eight parts) from what design, engineering and the reader actually
   share — extend `seed-to-scale.md`, don't add a practice unless it's a different subject.
+- [ ] C7.3 · *(from IDEA-139 Q3, handed over by its session 2026-10-05)* **A skill that spans ecosystems** —
+  `/red-team`: the LLM battery is AI behaviour, `--paths` engineering, `--humane` claims and trust. Are
+  its *gives* declared per mode? Data point: `--self` now writes `docs/red-team/SELF-*.md`, apart from
+  `RT-*`, because its reader differs (BOSS via `/feedback`, not the product's `/evals`).
 - [ ] C7.2 · Test: three throwaway scaffolds — do the ecosystems hang together (brown's fractal: the
   whole has the same anatomy as each part)?
 - *Creates:* practice text; the site's Engineering page picks it up when Ajesh regenerates.
