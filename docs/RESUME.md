@@ -86,7 +86,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 - **The ladders still to plant — for Ajesh to review** (order from IDEA-137 · B4; each follows `docs/ECOSYSTEMS.md` § steps, modelled on IDEA-138):
   1. ✅ **Claims** — planted, IDEA-138 (2026-10-04). Left: the drift reader, until a founder's page outlives its evidence.
-  2. ⏳ **AI behaviour** — kicked off 2026-10-05 in another session: compose `/ai-cost`, `/ai-failure-states`, `/evals`, `/red-team`; BOSS's conscience evals are the instance.
+  2. ✅ **AI behaviour** — planted as IDEA-139 (2026-10-05, Unreleased): `/evals` reads what already failed (red-team fails, STUB states, `docs/evals/seen/`); a widened loop now earns the skills it names (reproduced bug, AI and design-tokens). Ajesh's: re-grade the 10 stale `drift` transcripts (`/regrade`), and whether `/red-team --self` writes a record (IDEA-139 Q2).
   3. **Data & trust** — highest stakes, but BOSS has no instance of its own: plant from `/trust` + `schema-guard` + the data-schema practice, or on a founder's first personal-data table.
   4. **Operations.** 5. **Money** — waits for a first dollar.
   · **When the guide moves, the ladders follow (IDEA-137 · C11, 2026-10-05):** `docs/ECOSYSTEMS.md` § Revisions + `anatomy: N` on each ladder; `npm run check:freshness` names one behind. **Due: design → revs 1–3** (never read back against the guide). Lenses R11.1–R11.4 being read at source → may add a revision.
