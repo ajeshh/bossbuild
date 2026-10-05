@@ -493,9 +493,16 @@ to `library/practices/` only at C7.
 - [ ] C8.1 · The founder's reader — quiet in Quickstart (N6), counts flows the founder made (N14),
   speaks once where they act. Likely inside an existing verb (`boss map` / `/close`), not a new one.
 - [ ] C8.2 · Kettlewick demo record if a new record type appears; CHANGELOG bullets.
-- [ ] C8.3 · **Release IDEA-136's hold** — engineering becomes the first ecosystem planted from the
+- [x] C8.3 · **Released early (Ajesh, 2026-10-04)** — IDEA-136 resumes against the draft guide, as its second real instance. Was: **Release IDEA-136's hold** — engineering becomes the first ecosystem planted from the
   anatomy.
 - *Creates:* CLI/skill changes that reach founders on `boss sync`.
+
+**Order after the reader (decided 2026-10-04, on the recommendation):** engineering (IDEA-136) is
+planted next from the draft guide — the guide's second real instance; **C7 finalises after it lands**,
+from where design and engineering overlap. **C8 (the founder's reader) is deferred** until its trigger:
+the first observed break in a flow the *founder* made, or in a BOSS file they edited — every break so
+far was in files BOSS ships, which BOSS's own build now catches. **No backfill of the remaining B1
+flows** — each ecosystem declares its own as it's planted. Small, any time: DEC-023's removal test (C6.5).
 
 **C9 · When the ebooks land** — one pass re-grades the *waits on the books* list above.
 **C10 · Q8 — the sentence** — PRINCIPLES' one sentence moves only by Ajesh's `/decide`, after C2–C5 show

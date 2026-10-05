@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: deferred (on hold until IDEA-137 sets it up — Ajesh, 2026-10-04; investigation R1–R6 done; then B first, then A)
+status: exploring (hold lifted 2026-10-04 — built from docs/ECOSYSTEMS.md; B first, then A)
 proof: docs/ENGINEERING.md
 gist: Code gets the same ladder the design system has — principles a reasonable person could argue with, a map of what exists to check reuse against, rules an agent can act on, checks at the write, and a way to retire them — extracted from BOSS's own src/ before it ships to a founder.
 created: 2026-10-04
@@ -34,6 +34,19 @@ _The best articulation so far. Rewrite this as the idea sharpens._
   (principles every discipline lives by, each governing itself, the support between them) — is built
   first; this record is one of its ecosystems and takes its shape from it. Until then: **investigate,
   don't build.** No B2/B6/A-track writing before IDEA-137 lands.
+- **Hold lifted (Ajesh, 2026-10-04): *"lift hold"*.** IDEA-137 produced what this waited for — build
+  engineering **as the first ecosystem planted from [`docs/ECOSYSTEMS.md`](../ECOSYSTEMS.md)** (a draft;
+  this record is its second real instance, after design):
+  1. **Fill the engineering column** of the eight-part anatomy (principles → guidelines → rules · seed ·
+     map · planting moment · checks at the write · drift reader · retirement · amendment) — and leave a
+     part empty rather than invent it.
+  2. **Name its centre** and what it's planted with (§ *Building a new ecosystem*).
+  3. **Declare its flows** in `registry/flows.json` as they're built — gives, takes, the giver's write
+     and the reader's read must name the same path; `npm run check:refs` (class 7) holds them. No
+     backfill sweep: each ecosystem declares its own.
+  4. **Where engineering disagrees with the draft, write it down** — IDEA-137 · C7 finalises the guide
+     from the overlaps between design and engineering, not before.
+  5. Live by DEC-022 (the second repair offers a check) and DEC-023 (BOSS can always be needed less).
 - **Mandate:** compose and subtract, never add a skill. Keeping BOSS current with the craft of
   building with agents is its own warrant (no founder evidence needed); a new *gate* still needs a bug
   that reached a user.
