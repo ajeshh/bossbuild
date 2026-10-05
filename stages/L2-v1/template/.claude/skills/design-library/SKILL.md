@@ -243,7 +243,9 @@ warning. It shows what you've built, not only what's wrong.
    no row reads as *"doesn't exist"* when it usually means *"nobody looked."* Mark those
    `not examined` rather than leaving them out.
 3. **Read each component.** Extract: exported name, the props that create variants, which states it
-   handles, the import path, and any raw style values. One line of purpose — from a doc comment if
+   handles, the import path, and any raw style values. A variant value another component already
+   spells is spelled the same way: `outline`, never `outline` here and `outlined` there (`boss design`
+   flags the pair on both cards). One line of purpose — from a doc comment if
    there is one, otherwise inferred and marked as inferred. **And the edges:** every token name the
    source references (`tokens` — the semantic names, deduplicated; a raw value is a finding, not an
    edge) and every *indexed* component it renders (`composes` — a tag or call whose name is another

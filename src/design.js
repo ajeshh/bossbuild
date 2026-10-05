@@ -519,7 +519,7 @@ export function readFlows(projectDir) {
 }
 
 // --- accessibility: the guards that are on. A registered hook is a fact in .claude/settings.json ------
-export const GUARDS = [['contrast-guard', 'contrast, per declared pair, at every tokens change'], ['design-tokens-guard', 'a raw colour caught at the write'], ['component-reuse-guard', 'a second Button asked about before it exists'], ['content-terminology-guard', 'a refused word caught in a string']];
+export const GUARDS = [['contrast-guard', 'contrast, per declared pair, at every tokens change'], ['design-tokens-guard', 'a raw colour caught at the write; a deprecated name gets its successor'], ['component-reuse-guard', 'a second Button asked about before it exists'], ['content-terminology-guard', 'a refused word caught in a string'], ['design-decisions-guard', 'the product\'s own decision handed over at the write that touches it'], ['ui-boundary-guard', 'a system component reaching into a feature, caught at the import']];
 export function readGuards(projectDir) { return GUARDS.map(([name, does]) => ({ name, does, on: isRegistered(projectDir, name) })); }
 
 // --- icons: docs/design/icons/*.svg, drawn from the file; the set copies as one sprite ---------------
@@ -648,6 +648,7 @@ export function collectDesign(projectDir, projectName) {
   patterns0.inUse = familiesInUse([...components.components.map((c) => c.name), ...components.tree.map((f) => f.name), ...usage.map((u) => u.name)]);
   for (const r of patterns0.ours) r.familyKey = familyOfRow(r);
   const patterns = patterns0;
+  variantVocabulary(components.components);
   const flows = readFlows(projectDir);
   const guards = readGuards(projectDir);
   const divergence = readDivergence(projectDir, components);
@@ -665,9 +666,48 @@ export function collectDesign(projectDir, projectName) {
     ['components', components.components.length > 0], ['patterns', patterns.ours.length > 0], ['flows', flows.flows.length > 0], ['content', content.terms.length + content.tone.length + content.voiceTraits.length > 0], ['a11y', (guide.floor || []).length > 0 || pairs.length > 0],
     ['research', research.evid.length > 0],
   ];
-  const data = { projectName, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, divergence, findings: pairs.filter((p) => p.grade !== 'AA').length };
+  const tasks = readTasks(components.components, patterns);
+  const data = { projectName, tasks, brand, shape, tokens: tok, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, divergence, findings: pairs.filter((p) => p.grade !== 'AA').length };
   data.questions = openSlots(data, projectDir);
   return data;
+}
+
+// --- one variant, one spelling (RVW-115): `outline` on one card and `outlined` on the next is the
+// synonym that makes an agent coin a third. Read off the index and the usage pages, compared across
+// components, rendered on both cards. Deterministic and descriptive: it names the drift, resolves nothing.
+const SIZE_WORDS = { xs: 'xsmall', xsmall: 'xsmall', 'extra-small': 'xsmall', sm: 'small', small: 'small', md: 'medium', medium: 'medium', lg: 'large', large: 'large', xl: 'xlarge', xlarge: 'xlarge', 'extra-large': 'xlarge' };
+export function variantKey(v) {
+  const w = String(v).toLowerCase().trim();
+  if (SIZE_WORDS[w]) return SIZE_WORDS[w];
+  const a = w.replace(/[^a-z0-9]+/g, '');
+  const k = a.replace(/e?d$/, '').replace(/e?s$/, '').replace(/e$/, '');
+  return k.length >= 3 ? k : a;
+}
+export function variantVocabulary(components) {
+  const vals = components.map((c) => ({ c, vs: [...new Set([...(c.variants || []), ...((c.usage && c.usage.variants) || []).map((u) => u.variant)].map((v) => String(v).trim()).filter(Boolean))] }));
+  for (const { c, vs } of vals) {
+    for (const v of vs) {
+      const others = new Map();
+      for (const o of vals) if (o.c !== c) for (const w of o.vs) if (w !== v && variantKey(w) === variantKey(v)) others.set(w, [...(others.get(w) || []), o.c.name]);
+      for (const [w, names] of others) c.findings.push({ severity: 'info', kind: 'vocabulary', detail: `${v} here, ${w} on ${names.join(', ')}` });
+    }
+  }
+}
+
+// --- "I need to…" (RVW-127): the way in for someone arriving with a job, not a component name. Gathered
+// from words the founder already wrote — each usage page's *When it applies*, each Ours pattern's
+// situation — and linked to the card. A projection, never prose: a task that isn't here is a bullet
+// that isn't written yet. A proposed page is a request, so it is not a thing to reach for.
+export function readTasks(components, patterns) {
+  const out = [];
+  const seen = new Set();
+  const add = (text, href, label) => { const k = text.toLowerCase(); if (!text || seen.has(k)) return; seen.add(k); out.push({ text, href, label }); };
+  for (const c of components) {
+    if (!c.usage || c.status === 'retired' || c.status === 'deprecated') continue;
+    for (const a of c.usage.applies || []) add(a, `#component-${c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`, c.name);
+  }
+  for (const r of (patterns && patterns.ours) || []) if (r.situation) add(r.situation, '#patterns-ours', r.id || r.pattern);
+  return out;
 }
 
 // --- usage pages: docs/design/components/<Name>.md — the WHEN, written at the review (IDEA-112) --------
@@ -890,6 +930,14 @@ export function renderDesignHtml(data, stampedAt) {
   const src = tokens.source || 'no tokens file';
 
   // 1 · Start here
+  // The two things a newcomer needs before the book: a way in by the job in hand, and what will hold
+  // them to it — so the first hook message is one the page already named (RVW-116, RVW-127).
+  const tasks = data.tasks || [];
+  const taskBlock = tasks.length >= 3
+    ? `<article class="block" id="brand-tasks" data-title="I need to…"><div class="head"><h3>I need to… <span class="sub">— the way in by the job, not the name</span></h3></div><div class="body"><ul class="tasks">${tasks.map((t) => `<li>${esc(t.text)} → <a href="${esc(t.href)}">${esc(t.label)}</a></li>`).join('')}</ul></div><div class="foot"><span class="chip dec">${tasks.length} written</span><span class="src">docs/design/components/*.md · When it applies · docs/design/PATTERNS.md · Ours</span></div><div class="actions"></div></article>`
+    : hole('brand-tasks', 'I need to…', `<p>The way in for someone arriving with a job instead of a component name. Every usage page's <em>When it applies</em> and every pattern's situation becomes a line here, linked to its card${tasks.length ? ` — ${tasks.length} so far, three makes a list` : ''}.</p>`, '/design-review writes the usage pages · a pattern lands in PATTERNS.md · Ours', 'docs/design/components/ · When it applies');
+  const checkRows = guards.map((g) => `<tr><td class="mono">${esc(g.name)}</td><td>${esc(g.does)}</td><td class="${g.on ? 'ok' : 'q'}">${g.on ? 'on' : `off · <code>boss hooks enable ${esc(g.name)}</code>`}</td></tr>`).join('');
+  const checksBlock = `<article class="block" id="brand-checks" data-title="What checks the work"><div class="head"><h3>What checks the work <span class="sub">— at the write, before it ships</span></h3></div><div class="body"><p class="t-small">Each guard reads the files on this page and speaks at the moment a write breaks one. A message from one of these is this page talking.</p><div class="tscroll"><table class="t"><thead><tr><th>Guard</th><th>What it holds</th><th>State</th></tr></thead><tbody>${checkRows}</tbody></table></div></div><div class="foot"><span class="chip asserted">${guards.filter((g) => g.on).length} of ${guards.length} on</span><span class="src">.claude/settings.json</span></div><div class="actions"></div></article>`;
   const shapeRows = shape.present
     ? shape.lines.map((l) => `<li><strong>${esc(l.label)}:</strong> ${l.value ? esc(l.value) : '<span class="unk">unknown — not written; nothing invented</span>'}</li>`).join('')
     : '';
@@ -900,6 +948,10 @@ export function renderDesignHtml(data, stampedAt) {
           : hole('brand-shape', 'Current shape', '<p>Who it\'s for, what it promises, what it refuses, how it sounds, what it is NOT, the name and why — six lines, none written yet.</p>', '/landing seeds docs/BRAND.md · /boss asks the first two', 'docs/BRAND.md · absent')}
         ${anchor ? `<article class="block" id="brand-anchor" data-title="The anchor — ${esc(anchor.id)}"><div class="head"><h3>The anchor <span class="sub">— the choices that get expensive to reverse</span></h3></div><div class="body"><p>${esc(anchor.title.replace(/^DEC-\d+\s*[—-]\s*/, ''))}</p></div><div class="foot"><span class="chip dec">chosen · ${esc(anchor.id)}</span>${anchor.revisit ? `<span class="src">revisit ${esc(String(anchor.revisit))}</span>` : ''}<span class="src">docs/decisions/${esc(anchor.file)}</span></div><div class="actions"></div></article>`
           : hole('brand-anchor', 'The anchor', '<p>Neutral temperature · radius · type pairing · the one owned accent · the signature. Five choices that get expensive to reverse, and no record yet says which were chosen and which are defaults.</p>', '/decide writes the anchor as a DEC · the 5-token pass in /design-tokens-init proposes it', 'docs/decisions/ · no brand-anchor DEC')}
+      </div>
+      <div class="blocks one">
+        ${taskBlock}
+        ${checksBlock}
       </div>`);
 
   // 4 · Principles
@@ -1091,12 +1143,11 @@ export function renderDesignHtml(data, stampedAt) {
 
   // 14 · Accessibility
   const floorList = (guide.floor || []).length ? `<ul>${guide.floor.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` : '<p class="unk">No floor written — the style guide template carries four lines: contrast by token pair, a visible focus state, reduced motion honoured, nothing by colour alone.</p>';
-  const guardRows = guards.map((g) => `<tr><td class="mono">${esc(g.name)}</td><td>${esc(g.does)}</td><td class="${g.on ? 'ok' : 'q'}">${g.on ? 'on' : `off · <code>boss hooks enable ${esc(g.name)}</code>`}</td></tr>`).join('');
   const a11yCh = chapter('a11y', 14, 'Accessibility', pairs.length ? `${pairs.length} pair${pairs.length === 1 ? '' : 's'} computed, ${findings} finding${findings === 1 ? '' : 's'}; everything else needs a person.` : 'Nothing computed yet; everything needs a person.',
     'One check here is arithmetic — contrast over two declared numbers — and it is computed. Every other check is a judgment or needs a rendered page, and the honest word for those is <em>not checked</em>, said once, never mistaken for a pass.',
     `      <div class="blocks one">
         <article class="block" id="a11y-floor" data-title="Accessibility — the floor"><div class="head"><h3>The floor <span class="sub">— not negotiable, not a phase</span></h3></div><div class="body">${floorList}</div><div class="foot"><span class="src">docs/design/STYLE_GUIDE.md · Accessibility floor</span></div><div class="actions"></div></article>
-        <article class="block" id="a11y-computed" data-title="Accessibility — what is computed"><div class="head"><h3>Computed <span class="sub">— contrast, once, where the tokens are</span></h3></div><div class="body"><p>${pairs.length ? `<strong>${pairs.length} declared text-on-surface pair${pairs.length === 1 ? '' : 's'}</strong>, <strong>${findings} under AA</strong> — the table is in <a href="#colour-contrast">Colour → Contrast</a>, once. A pair that fails is a token finding: fix it in ${esc(src)} and every screen moves.` : 'No pair to compute yet — name a colour like text and one like a surface and the arithmetic follows.'}</p><div class="tscroll" style="margin-top:10px"><table class="t"><thead><tr><th>Guard</th><th>What it holds</th><th>State</th></tr></thead><tbody>${guardRows}</tbody></table></div></div><div class="foot"><span class="chip ${findings ? 'find' : 'dec'}">${findings} finding${findings === 1 ? '' : 's'} · token-level</span><span class="chip asserted">${guards.filter((g) => g.on).length} of ${guards.length} guards on</span><span class="src">.claude/settings.json · ${esc(src)}</span></div><div class="actions"></div></article>
+        <article class="block" id="a11y-computed" data-title="Accessibility — what is computed"><div class="head"><h3>Computed <span class="sub">— contrast, once, where the tokens are</span></h3></div><div class="body"><p>${pairs.length ? `<strong>${pairs.length} declared text-on-surface pair${pairs.length === 1 ? '' : 's'}</strong>, <strong>${findings} under AA</strong> — the table is in <a href="#colour-contrast">Colour → Contrast</a>, once. A pair that fails is a token finding: fix it in ${esc(src)} and every screen moves.` : 'No pair to compute yet — name a colour like text and one like a surface and the arithmetic follows.'}</p><p class="t-small" style="margin-top:10px">The guards that hold this at the write are listed once, under <a href="#brand-checks">Start here → What checks the work</a>.</p></div><div class="foot"><span class="chip ${findings ? 'find' : 'dec'}">${findings} finding${findings === 1 ? '' : 's'} · token-level</span><span class="chip asserted">${guards.filter((g) => g.on).length} of ${guards.length} guards on</span><span class="src">.claude/settings.json · ${esc(src)}</span></div><div class="actions"></div></article>
         <article class="block" id="a11y-notchecked" data-title="Accessibility — not checked"><div class="head"><h3>Not checked <span class="sub">— said once, for everything below</span></h3></div><div class="body"><ul><li><strong>Focus</strong> — every interactive element has a visible focus state</li><li><strong>Keyboard</strong> — every flow completes without a pointer</li><li><strong>Screen reader</strong> — names, roles, the order things are announced</li><li><strong>Colour alone</strong> — nothing is communicated only by hue</li><li><strong>Motion</strong> — <code>prefers-reduced-motion</code> honoured by every animation</li><li><strong>Text over an image, a gradient, a translucent overlay</strong> — composites at runtime; the token pairs cannot see it</li><li><strong>320px</strong> — reads and works at the narrowest width</li></ul><p class="t-small" style="margin-top:10px">Each needs a rendered page or a person. <code>/design-review after</code> walks them against shipped UI and writes <em>not checked</em> where it cannot see — the same word as here, never a pass by omission.</p></div><div class="foot"><span class="chip asserted">7 · not checked</span><span class="src">needs a render or a person · /design-review after</span></div><div class="actions"></div></article>
       </div>`);
 

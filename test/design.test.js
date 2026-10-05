@@ -502,7 +502,7 @@ test('content renders the terms, the traits, the tone rows with a real string an
   assert.match(html, /1 of 2 contexts have a real string/);
   assert.match(html, /no string yet — an agent can't act on an adjective/);
   const guards = readGuards(dir);
-  assert.deepEqual(guards.map((x) => [x.name, x.on]), [['contrast-guard', true], ['design-tokens-guard', false], ['component-reuse-guard', false], ['content-terminology-guard', false]]);
+  assert.deepEqual(guards.map((x) => [x.name, x.on]), [['contrast-guard', true], ['design-tokens-guard', false], ['component-reuse-guard', false], ['content-terminology-guard', false], ['design-decisions-guard', false], ['ui-boundary-guard', false]]);
   assert.match(html, /<td class="mono">contrast-guard<\/td><td>[^<]*<\/td><td class="ok">on<\/td>/);
   assert.match(html, /<b class="tab">10 of 16<\/b> slots/, 'the parts fill four more slots; layout, people, journey and research stay empty');
 });
@@ -913,4 +913,46 @@ test('REGRESSION (IDEA-136 · F2): scanTree does not list App (any case) or page
     'src/components/DashboardPage.tsx': 'export function DashboardPage(){}',
   });
   assert.deepEqual(scanTree(dir).map((f) => f.name), ['Button']);
+});
+
+// --- RVW-116 · RVW-127 · RVW-115 (2026-10-05): the playbook as the onboarding -------------------------
+
+test('every design guard BOSS ships is on the list, and Start here says what checks the work', () => {
+  const shipped = ['contrast-guard', 'design-tokens-guard', 'component-reuse-guard', 'content-terminology-guard', 'design-decisions-guard', 'ui-boundary-guard'];
+  for (const g of shipped) assert.ok(readFileSync(new URL(`../stages/L1-mvp/template/.claude/hooks/${g}.js`, import.meta.url)), `${g} ships`);
+  const dir = withParts();
+  assert.deepEqual(readGuards(dir).map((g) => g.name).sort(), [...shipped].sort(), 'a guard that ships and is missing here is one a newcomer meets with no warning');
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  const start = html.slice(html.indexOf('id="brand"'), html.indexOf('id="people"'));
+  assert.match(start, /id="brand-checks"[\s\S]*What checks the work/);
+  assert.match(start, /<td class="mono">ui-boundary-guard<\/td>/);
+  assert.match(start, /<td class="mono">contrast-guard<\/td><td>[^<]*<\/td><td class="ok">on<\/td>/);
+});
+
+test('Start here gathers "I need to…" from what the founder already wrote — usage pages and Ours — linked to the card', () => {
+  const dir = withLibrary({ 'docs/design/components/ShiftRow.md': '---\ncomponent: ShiftRow\nstatus: draft\n---\n# ShiftRow\n\n## When it applies\n- one shift on the week, with who is on it\n' });
+  const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
+  const start = html.slice(html.indexOf('id="brand"'), html.indexOf('id="people"'));
+  assert.match(start, /id="brand-tasks"[\s\S]*I need to/);
+  assert.match(start, /one shift on the week[\s\S]*?href="#component-shiftrow"/);
+  assert.match(start, /the one act a screen exists for[\s\S]*?href="#component-button"/, 'a usage page bullet links to its component');
+  assert.match(start, /a shift needs cover[\s\S]*?href="#patterns-ours"/, 'an Ours situation links to the pattern');
+  assert.doesNotMatch(start, /the owner prints the week/, 'a proposed page is a request, not a thing to reach for');
+  assert.doesNotMatch(start, /lands here/, 'the placeholder row is not a task');
+  const bare = tidewell();
+  const h2 = renderDesignHtml({ ...collectDesign(bare, 'Tidewell'), projectDir: bare }, 'x');
+  assert.match(h2, /id="brand-tasks"[^>]*class="block hole"|class="block hole" id="brand-tasks"/, 'nothing written yet is a hole with its verb');
+});
+
+test('a variant spelled two ways across components is a finding on both cards; one spelling is not', () => {
+  const idx = (rows) => `# Component index\n\n| Component | What it's for | Import | Variants | Missing states | Status |\n|---|---|---|---|---|---|\n${rows}\n`;
+  const drift = project({ 'docs/design/COMPONENTS.md': idx(`| \`Button\` | the act | \`import { Button } from '@/components/Button'\` | primary · outline · sm | — | stable |\n| \`Chip\` | a tag | \`import { Chip } from '@/components/Chip'\` | outlined · small | — | stable |\n| \`Card\` | a surface | \`import { Card } from '@/components/Card'\` | outline | — | stable |`) });
+  const d = collectDesign(drift, 'X');
+  const by = (n) => d.components.components.find((c) => c.name === n).findings.filter((f) => f.kind === 'vocabulary');
+  assert.equal(by('Chip').length, 2, 'outlined vs outline, small vs sm');
+  assert.match(by('Chip').map((f) => f.detail).join(' '), /outlined[\s\S]*outline/);
+  assert.equal(by('Button').length, 2);
+  assert.equal(by('Card').length, 1, 'Card says outline, Chip says outlined');
+  const same = project({ 'docs/design/COMPONENTS.md': idx(`| \`Button\` | the act | \`import { Button } from '@/components/Button'\` | outline | — | stable |\n| \`Card\` | a surface | \`import { Card } from '@/components/Card'\` | outline | — | stable |`) });
+  assert.equal(collectDesign(same, 'X').components.components.flatMap((c) => c.findings).length, 0);
 });

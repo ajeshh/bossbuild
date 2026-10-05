@@ -27,6 +27,17 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The design page opens with a way in.** Someone joining your project (a designer, a cofounder, you
+  after three weeks away) used to land on the brand and then a book of chapters. `boss design`'s *Start
+  here* now lists **I need to…**, every *When it applies* line from your usage pages and every situation
+  from your own patterns, each linked to its card, so a person arriving with a job finds the part
+  without knowing its name. Beside it, **What checks the work** lists the guards that hold the system
+  at the write, on or off, so the first hook message is one the page already named. The list now
+  includes the two it was missing: the guard that hands over your own design decisions and the one
+  that keeps system components out of features. And a variant spelled two ways across components
+  (`outline` on one card, `outlined` on the next) is flagged on both, because it's the synonym an
+  agent uses to invent a third.
+
 - **The design block BOSS writes into your CLAUDE.md no longer goes stale.** It copied each token's
   value next to its name, and nothing updated the copy. After a retheme, the agent was reading the old
   colours as fact. It now lists the semantic names and says the values live in `tokens.json`. It also
