@@ -22,6 +22,20 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-04 — IDEA-136: the engineering ecosystem, investigated then built (`fe47b69` → `8f0cc9a`, Unreleased)
+
+- **FEAT:** none. Investigation first (R1–R6: atomic design for code, the layers, XP and XP with agents, pattern
+  libraries — each 3-vote verified), held for IDEA-137, then built as the guide's second ecosystem.
+- **Landed:** `docs/ENGINEERING.md` (BOSS's own, extracted from `src/` with receipts) · EXTR-003 (six things UP,
+  four stay home) · `library/practices/engineering-system.md` (on the Engineering page by regeneration) · `/smoke`'s
+  first run offers `.claude/rules/engineering.md` · coder/tester read it, two flows declared · CLAUDE.md rule 4
+  points at the doc. Found tasks F1–F19: 18 closed — fixed with a reproduction and a test, closed as not
+  reproducing, or decided under principle 4.
+- **Surprised:** the suite wrote a registry and a `boss remove` backup into an exported `BOSS_HOME` (11 tests
+  failed) — now `test/env-guard.js`. And a peer's commit swept my staged files during a pre-commit run:
+  both sessions now commit by path (`git commit -- <paths>`).
+- **Next:** F11 stays Ajesh's; A5/A6/A7/A9 wait on a founder using the seed; IDEA-137 · C7 can start.
+
 ## 2026-10-04 — IDEA-137, second session: removal test, the second repair, successions followed, Done (`ef84359` → `24d808a`, Unreleased)
 
 - **FEAT:** none — IDEA-137's governance step (C6) finished, plus T1, N4, R9.1 and a rename Ajesh asked

@@ -28,16 +28,16 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
+  principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
+  plants `.claude/rules/engineering.md` (founder-owned). 18 of 19 found tasks closed with reproductions — incl. the
+  suite leaking into an exported `BOSS_HOME` (`test/env-guard.js`). Open: F11 (deferred), A5–A9 wait on evidence.
 - **IDEA-137 (2026-10-04, Unreleased) — the ecosystem of ecosystems.** Inside a founder's project BOSS lays
   down ecosystems that govern themselves, live by shared principles, and get governance and support for
   liveliness between them; BOSS → project is one-way. Draft guide `docs/ECOSYSTEMS.md`; **the flow reader**
   (`registry/flows.json`, check-refs class 7) holds 24 hand-offs and binds every reader to a moved path;
   DEC-022 (the second repair, built in `coder`), DEC-023 (removal test — it caught the `/ai-cost` logger).
   The practice is now **Done** (`done.md`, Ajesh's own account). Checklist and order: IDEA-137.
-- **IDEA-131 (2026-09-25, Unreleased) — MCP gets a *when*; shipped as text + a lookup, no skill.** Also fixed
-  the HTML guide's *I want to…* map (broken since v0.275.0) and settled IDEA-006's server-instructions question. Devlog.
-- **IDEA-129 (2026-09-23, Unreleased) — the playbook, second pass; shipped.** Real-record bugs fixed, a cover
-  with the canvas tiled by grade, folds, the deck/PDF always in the brand's light scheme. Devlog has the rest.
 - **IDEA-121 (2026-09-23, closed, pushed; CI green on all six jobs incl. Windows) — architecture and build review.**
   Four silent-damage bugs, the conscience saying one ranked thing (and not re-opening each session on the
   same condition), MVP ~7.6k → ~6.0k tokens/turn, the CLAUDE.md block syncs, Windows fixed. **New here: a
@@ -87,8 +87,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 - **IDEA-138 — the claims ecosystem, steps 1–2 written; step 3 waits on Ajesh's yes** (order: IDEA-137 · B4 —
   claims → AI behaviour → data & trust). Proposed, smallest first: derive the site's decision count (16 and
   21 on the page, 23 in the repo) · `/landing` reads the evidence grades before writing a line · the two
-  `check:site` rules go DOWN into `landing-page.md` · the demand page's result returns as an EVID (Q1 first). · C7 finalises the guide **after** IDEA-136 lands · the ebooks → C9 · C5/C8 wait on a founder's own broken flow. **`npm run check`
-  is red on a peer's `src/playbook.js` → `docs/ENGINEERING.md` (IDEA-136 F1; they were told).**
+  `check:site` rules go DOWN into `landing-page.md` · the demand page's result returns as an EVID (Q1 first). · C7 finalises the guide **after** IDEA-136 lands · the ebooks → C9 · C5/C8 wait on a founder's own broken flow. **IDEA-136 has landed** —
+  its four disagreements with the draft guide are in `docs/ENGINEERING.md` for C7.
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
   Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
 
