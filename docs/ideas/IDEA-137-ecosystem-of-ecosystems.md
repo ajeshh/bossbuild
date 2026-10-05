@@ -262,6 +262,17 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
       words at `design-system.md:630` and `ECOSYSTEMS.md:96`. Needs a CHANGELOG bullet and a `/tmp` test.
       The map test (*what does it omit that its job needs · does BOSS act without asking · did a person
       write it?*) passes `flows.js`, `ui-boundary-guard`, `ladder.js`, the conscience.
+      **Reproduced (rule 8), 2026-10-05 — the hypothesis did NOT hold.** A V1 scaffold, six components:
+      `Banner` loaded only by ``import(`../components/notices/${kind}.tsx`)`` with the kind from an API
+      (no literal anywhere), `Tooltip` truly unused. `/design-library` run by three unprompted agents:
+      **Banner kept 3/3** — each read past the grep to the loader (the first fixture, three components,
+      stopped at the skill's ~5 floor 3/3 and proved nothing). So Claude running the skill is not the
+      grep it describes; **nothing ships for the dynamic-import case.** What *did* reproduce: on the truly
+      unused `Tooltip`, **2/3 ran the delete without asking** (both stopped only by the sandbox's
+      permission check), **1/3 asked first, citing `AGENTS.md` rule 5** (*ask before deletes*). The skill
+      contradicts BOSS's own scaffolded rule and its own step 5 (*the founder decides, you propose*).
+      Smaller fix than proposed: *delete it in this pass* → propose it — Ajesh's call (no founder has
+      lost a file; it is two shipped instructions disagreeing).
 - [x] **H1** · *(done — C0.3: mentor-humane read the draft and it changed)* 🔴 **The humane check hasn't run.** *Governance* can become ceremony or surveillance;
   a *liveliness* reading can become a score — and BOSS gives a position, never a grade (DEC-003).
   `mentor-humane` and `designer` before M2's report has a founder-facing word.
