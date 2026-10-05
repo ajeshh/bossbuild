@@ -230,3 +230,49 @@ test('REGRESSION (IDEA-136 · F2): a page-shaped file is not a component — no 
     assert.doesNotMatch(out, /reuse, adjust, or new/i, `${n} is page-shaped`);
   }
 });
+
+// --- A5 (IDEA-136): reuse for code — a new exported helper checked against the seed's helper table. ---
+// Agents copy-paste on the third or fourth repeat unless nudged (one practitioner's agent-built app,
+// 2026). The founder's `.claude/rules/engineering.md` holds the table; the guard reads it and nothing
+// else. Silent with no table, with an empty table, for names the table already knows, and once asked.
+
+const TABLE = [
+  '# Engineering', '', '## Find this before you write one', '',
+  '| You need | Use | Not |', '|---|---|---|',
+  '| a day a person reads | `formatDay()` in `lib/time` | `toISOString().slice(0, 10)` |',
+  '| a price shown to a customer | `formatPrice()` in `lib/money` | `toFixed(2)` |', '',
+].join('\n');
+const withTable = (table = TABLE) => project({ '.claude/rules/engineering.md': table, '.boss/.keep': '' });
+
+test('A5: SILENT with no engineering file, and with an empty helper table', () => {
+  const w = { file_path: 'src/lib/currency.ts', content: 'export function formatAmount(n) { return n }' };
+  assert.equal(run(project({}), w), '');
+  assert.equal(run(withTable('# Engineering\n\n## Find this before you write one\n\n| You need | Use | Not |\n|---|---|---|\n| | | |\n'), w), '');
+});
+
+test('A5: asks reuse / widen / inline / copy for a new exported helper, naming the near row', () => {
+  const out = run(withTable(), { file_path: 'src/lib/currency.ts', content: 'export function formatAmount(n) { return n.toFixed(2) }' });
+  assert.match(out, /formatAmount/);
+  assert.match(out, /formatPrice/, 'shares a word with formatAmount, and the job says price');
+  assert.match(out, /inline/i, 'carries the code-specific answer: inline back on the parameter-plus-conditional tell');
+  assert.match(out, /engineering\.md/);
+});
+
+test('A5: SILENT for a name the table already knows, for unexported code, and for tests', () => {
+  const dir = withTable();
+  assert.equal(run(dir, { file_path: 'src/lib/money.ts', content: 'export function formatPrice(n) { return n }' }), '');
+  assert.equal(run(dir, { file_path: 'src/lib/money.ts', content: 'function localHelper(n) { return n }' }), '');
+  assert.equal(run(dir, { file_path: 'src/lib/money.test.ts', content: 'export function formatAmount() {}' }), '');
+});
+
+test('A5: asks once per name — the second write of the same new helper is silent', () => {
+  const dir = withTable();
+  const w = { file_path: 'src/lib/currency.ts', content: 'export const formatAmount = (n) => n' };
+  assert.match(run(dir, w), /formatAmount/);
+  assert.equal(run(dir, w), '');
+});
+
+test('A5: reads Python and Go exports too', () => {
+  assert.match(run(withTable(), { file_path: 'app/utils/days.py', content: 'def format_day_label(d):\n    return d\n' }), /format_day_label/);
+  assert.match(run(withTable(), { file_path: 'internal/money/fmt.go', content: 'func FormatAmount(n int) string { return "" }' }), /FormatAmount/);
+});

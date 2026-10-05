@@ -38,7 +38,8 @@ convenience."_
 ## Find this before you write one
 
 _Add a row the second time you see the same helper written — the third time, it becomes the helper.
-Point at a live file, never a pasted snippet. The last column is the tempting wrong thing._
+Point at a live file, never a pasted snippet. The last column is the tempting wrong thing. With
+`boss hooks enable component-reuse-guard` on, a new exported helper with no row here gets asked about._
 
 | You need | Use | Not |
 |---|---|---|

@@ -186,6 +186,18 @@
       "why": "the project's own testing conventions, held in review"
     },
     {
+      "reader": "stages/L1-mvp/template/.claude/hooks/component-reuse-guard.js",
+      "path": ".claude/rules/engineering.md",
+      "from": "smoke",
+      "why": "the helper table — a new exported helper is checked against it"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/hooks/ui-boundary-guard.js",
+      "path": ".claude/rules/engineering.md",
+      "from": "smoke",
+      "why": "the declared Layers line — the only map the boundary check holds"
+    },
+    {
       "reader": "stages/L1-mvp/template/.claude/skills/evals/SKILL.md",
       "path": "docs/red-team/RT-*.md",
       "from": "red-team",

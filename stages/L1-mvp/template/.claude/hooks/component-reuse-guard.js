@@ -48,6 +48,15 @@
 //     and the shape a model produces by default. When a component's props reach three `isX`-shaped
 //     booleans and this write added one, it asks for an enumerated `variant`/`size` instead.
 //
+// AND FOR CODE (IDEA-136 · A5): the same question for a new exported helper — `formatAmount` written
+// beside a `formatPrice` nobody looked for. The index here is the helper table the guard reads from the
+// founder's `.claude/rules/engineering.md`; no table, or an empty one, means no opinion. Code gets four answers, not three: reuse, widen, INLINE back when widening would take a new
+// parameter plus a new conditional for one caller (the sign of the wrong abstraction), or copy it and
+// note it — duplication is cheaper than the wrong abstraction, and the third copy shows the real shape.
+// Once per name, recorded in the trace. Agents copy-paste on the third or fourth repeat unless nudged
+// (one practitioner's agent-built app, 2026); a name check misses a helper written under another name,
+// so the job column is scored too.
+//
 // TO TURN IT ON — add to .claude/settings.json (same block as design-tokens-guard; both can share it):
 //   "hooks": { "PostToolUse": [ { "matcher": "Edit|Write|MultiEdit",
 //     "hooks": [ { "type": "command",
@@ -107,6 +116,58 @@ const addedText = (input) => {
 const BOOL_PROP = /\b((?:is|has|show|hide|can|should)[A-Z]\w*)\??\s*:\s*(?:boolean|Boolean|Bool)\b/g;
 const boolProps = (text) => [...new Set([...text.matchAll(BOOL_PROP)].map((m) => m[1]))];
 
+
+// --- Code helpers (IDEA-136 · A5) ------------------------------------------------------------------
+const RULES_REL = join('.claude', 'rules', 'engineering.md');
+const CODE_EXT = /\.(ts|mts|cts|js|mjs|cjs|py|go|rb|rs|java|cs|php)$/i;
+const CODE_TEST = /(^|[\\/])(tests?|__tests__|spec)[\\/]|(^|[\\/])test_[^\\/]+\.py$|_test\.(go|py|rb)$/i;
+const EXPORTS = [
+  /\bexport\s+(?:default\s+)?(?:async\s+)?function\s*\*?\s*([A-Za-z_$][\w$]*)/g,
+  /\bexport\s+(?:const|let|var|class)\s+([A-Za-z_$][\w$]*)/g,
+  /^def\s+([A-Za-z]\w*)\s*\(/gm,            // Python, module level, not _private
+  /^func\s+([A-Z]\w*)\s*\(/gm,               // Go, exported
+  /\bpub\s+(?:async\s+)?fn\s+([A-Za-z_]\w*)/g, // Rust
+];
+// undefined → not a code file (the design branch decides) · '' → silent · string → the question.
+function helperQuestion(projectDir, input) {
+  const path = String(input.file_path || '');
+  if (!path || !CODE_EXT.test(path) || SKIP_PATH.test(path) || CODE_TEST.test(path)) return undefined;
+  let rules;
+  try { rules = readFileSync(join(projectDir, RULES_REL), 'utf8'); } catch { return ''; }
+  const sec = rules.split(/^## /m).find((b) => /^find this before you write one/i.test(b));
+  if (!sec) return '';
+  const rows = sec.split(/\r?\n/).filter((l) => /^\|/.test(l)).map((l) => l.split('|').slice(1, -1).map((c) => c.trim()))
+    .filter((c) => c.length >= 2 && c[1] && !/^-+$/.test(c[1].replace(/[:\s]/g, '')) && !/^use$/i.test(c[1]));
+  if (!rows.length) return ''; // an empty table has nothing to compare against
+  const added = addedText(input);
+  const names = [...new Set(EXPORTS.flatMap((re) => [...added.matchAll(re)].map((m) => m[1])))];
+  const tableText = sec;
+  let asked = '';
+  try { asked = readFileSync(join(projectDir, '.boss', 'trace.jsonl'), 'utf8'); } catch { /* none yet */ }
+  const fresh = names.filter((n) => !new RegExp(`\\b${n.replace(/[$]/g, '\\$')}\\b`).test(tableText)
+    && !asked.includes(`"kind":"helper-new","name":"${n}"`));
+  if (!fresh.length) return '';
+  const name = fresh[0];
+  const mine = new Set(words(name));
+  const scored = rows.map((c) => ({
+    need: c[0], use: c[1],
+    shared: words(c[1].replace(/[`()]/g, ' ')).filter((w) => mine.has(w)).length * 2
+      + new Set(c[0].toLowerCase().split(/[^a-z0-9]+/).filter((w) => mine.has(w))).size,
+  })).sort((a, b) => b.shared - a.shared);
+  const near = scored.filter((r) => r.shared > 0).slice(0, 3);
+  const rel = path.startsWith(projectDir) ? path.slice(projectDir.length + 1).replace(/\\/g, '/') : path;
+  try { appendFileSync(join(projectDir, '.boss', 'trace.jsonl'), JSON.stringify({ ts: new Date().toISOString(), kind: 'helper-new', name, path: rel, near: near.map((r) => r.use) }) + '\n'); } catch { /* the trace is optional */ }
+  const nearLine = near.length
+    ? ` **Near it: ${near.map((r) => `${r.use}${r.need ? ` (${r.need})` : ''}`).join(' · ')}.**`
+    : ` Already in the table: ${scored.slice(0, 4).map((r) => r.use).join(' · ')}.`;
+  return `component-reuse-guard: \`${name}\` is a new exported helper in \`${rel}\` with no row in the ` +
+    `helper table in \`${RULES_REL.replace(/\\/g, '/')}\`.${nearLine} Before keeping it: **reuse** the one that exists; ` +
+    `**widen** it if it's the same job — unless that takes a new parameter *and* a new conditional for ` +
+    `this one caller, which is the sign of the wrong abstraction: then **inline** instead; or, if you ` +
+    `can't tell, **copy it and note it** with a row in the table — the third copy shows what the shared ` +
+    `shape really is. If it's new and will be used again, add its row in this same change.`;
+}
+
 let event;
 try {
   event = JSON.parse(readFileSync(0, 'utf8') || '{}');
@@ -116,6 +177,10 @@ try {
 
 try {
   const projectDir = process.env.CLAUDE_PROJECT_DIR || event.cwd || process.cwd();
+
+  // Code files take the helper branch and never reach the component one (IDEA-136 · A5).
+  const codeNote = helperQuestion(projectDir, event.tool_input || {});
+  if (codeNote !== undefined) { if (codeNote) out(codeNote); process.exit(0); }
 
   // --- The JIT gate: no index, no opinion. The manifest (V1) wins over the authored index. ----
   const manifestPath = join(projectDir, MANIFEST_REL);

@@ -10,7 +10,7 @@ import { writeFileAtomic } from './atomic.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
-import { heldBack, earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
+import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
 import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
@@ -412,10 +412,14 @@ function cmdUnlock(args) {
     console.log(dim(`  Want them too? \`boss unlock ${names[0]}\` — additive, and it will not move you back down.`));
   }
 
-  let m, applied, held = [];
+  let m, applied, held = [], hold = { skip: [], deferred: {} };
   try {
     m = readStageManifest(target);
-    held = heldBack(m);
+    // A group the project has ALREADY earned arrives with the rung, as it does at adopt: an app that
+    // calls a model was told its AI skills were "held back when the app first calls a model" and left
+    // them off disk until a sync (IDEA-139 T7, found by the planting test).
+    hold = holdAtAdopt(m, process.cwd());
+    held = hold.skip;
     applied = applyStage(target, process.cwd(), stageVars(stamp.name, target, m.name), { skipSkills: held });
     stampManaged(process.cwd(), [target]);
   } catch (e) {
@@ -423,7 +427,7 @@ function cmdUnlock(args) {
   }
   // What this rung holds back until earned, recorded so `boss sync` knows what to lay down later
   // and what to leave alone until then (src/earned.js).
-  const groups = earnedGroups(m);
+  const groups = earnedGroups(m).filter((g) => hold.deferred[g.group]);
   if (groups.length) {
     stamp.deferred = stamp.deferred || {};
     stamp.deferred[target] = Object.fromEntries(groups.map((g) => [g.group, g.skills]));
@@ -1573,7 +1577,7 @@ const OPTIONAL_HOOKS = [
     name: 'component-reuse-guard',
     event: 'PostToolUse',
     mode: 'MVP',
-    does: "Asks the question that keeps a codebase a system. When a component gets written whose name has no row in `docs/design/COMPONENTS.md`, it hands Claude the ones that already exist — near-names first — and asks: reuse, adjust, or new? It carries the test, because the question is hard: match on the JOB, not the look. Fires once per new component name, never on an edit to one you already have, and never at all until the index exists. It also reads the index's `Status` column — a write that references a component marked `deprecated → X` is told to use `X` — and the API-shape floor: three `isX`-style booleans on one component is eight undesigned states, and it asks for an enumerated `variant` instead.",
+    does: "Asks the question that keeps a codebase a system. When a component gets written whose name has no row in `docs/design/COMPONENTS.md`, it hands Claude the ones that already exist — near-names first — and asks: reuse, adjust, or new? It carries the test, because the question is hard: match on the JOB, not the look. Fires once per new component name, never on an edit to one you already have, and never at all until the index exists. It also reads the index's `Status` column — a write that references a component marked `deprecated → X` is told to use `X` — and the API-shape floor: three `isX`-style booleans on one component is eight undesigned states, and it asks for an enumerated `variant` instead. For code: a new exported helper with no row in your engineering file's helper table gets the same question, with a fourth answer — inline it back when widening would need a new parameter and a new conditional for one caller.",
     cost: 'a process after each file write',
     worth: "you have more than a couple of components and want to keep it that way — writing a new file is easier for a model than reading an existing one and widening it, so `create` is the default unless something asks. This is what stops Button, CTAButton and PrimaryButton",
   },

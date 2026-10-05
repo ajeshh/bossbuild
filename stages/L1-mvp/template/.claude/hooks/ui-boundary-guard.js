@@ -17,8 +17,8 @@
 // prop or child. Advisory, never blocking.
 //
 // DECLARED LAYERS, FOR ANY SURFACE (IDEA-136 · A6): a CLI, an API or an agent has no `ui/`, so the
-// built-in map below says nothing about it. If the founder wrote a layer order in
-// `.claude/rules/engineering.md` — `- **Layers, top to bottom:** \`src/cli\` → \`src/commands\` → \`src/lib\``
+// built-in map below says nothing about it. When the founder's `.claude/rules/engineering.md` names a
+// layer order — `- **Layers, top to bottom:** \`src/cli\` → \`src/commands\` → \`src/lib\``
 // — the guard holds THAT map instead: a lower layer importing a higher one is named. It never infers a
 // map: a boundary check faithfully enforces a wrong one (a large Rails monolith's boundary tool did,
 // for years), so the only map held is one a person wrote. Dependency rules with a fix in the message are

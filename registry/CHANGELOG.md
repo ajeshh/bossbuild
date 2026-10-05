@@ -39,6 +39,12 @@ rule above still applies to the whole section once it is stamped.
   `boss sync` lays the skills down. Before, the conscience named `/ai-cost` or `/design-tokens-init`
   and the skill never arrived. Narrowing the pattern quiets the reminder and still never holds them back.
 
+- **The reuse check covers code, not only components.** When your agent adds a new exported helper —
+  a `formatAmount` next to the `formatPrice` you already have — `component-reuse-guard` checks it
+  against the helper table in `.claude/rules/engineering.md` and asks once: reuse it, widen it, put the
+  code back where it was if widening would need a special case for one caller, or keep the copy and add
+  a row. Silent until that table has a row in it.
+
 - **A check for the test that got loosened to pass.** When your agent edits a test so it removes an
   assertion or skips a case, in the same stretch of work that changed the code, `test-assertion-guard`
   names it and asks for the reason: a bug fix adds a test, and only a real change in behaviour should
