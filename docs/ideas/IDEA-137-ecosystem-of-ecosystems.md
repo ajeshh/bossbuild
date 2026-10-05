@@ -209,6 +209,36 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
   Brown, Palmer, the Clarks, Kornfield), the founder and the why (Sinek, Whyte, Macy & Johnstone,
   Bateson, Scharmer), craft (Sennett), rethinking (Grant), designing with people (Jordan & Fuller).
   Lens cards when that ecosystem is being built, not now.
+- [ ] **R11** · **Ten more lenses, sorted by what they would change (2026-10-05 — Ajesh: *"what else
+  is compatible or would further strengthen it… which make the best sense to integrate"*).** None in
+  tracked docs before today. Proposed from memory — **nothing below is quotable until read at source**
+  (lens cards in `SESSION-2026-10-05-lenses`, gitignored). Sorted by the program's own test: *a lens
+  that changes no behaviour is lineage, not architecture.*
+  - **Integrate — each names the behaviour it changes:**
+    - **R11.1 · Beer's Viable System Model + Ashby's requisite variety** → C7.1. Recursion is the
+      fractal test; its five functions check the eight parts. Suspected gaps: *identity* (only step
+      2's purpose line) and *outside-and-future* (BOSS's refresh disciplines watch the shelf, no part
+      of an ecosystem does). Ashby is the reason the conscience says one thing. Also the frame for C11
+      (audit of the parts against the whole).
+    - **R11.2 · Poka-yoke / jidoka (Shingo, Toyota)** → part 5. One test for every check: *does it
+      prevent the mistake or make it obvious at the write, or report it later?* Applied to the guards
+      already shipped, not a new gate.
+    - **R11.3 · Illich, *Tools for Conviviality* (1973)** → § Handing over, DEC-023. The removal test
+      says nothing *breaks* when BOSS leaves; Illich asks whether the founder *can do it* without
+      BOSS. Pairs with IDEA-075 (held, n=0) — a design question for each new ecosystem, never a
+      reading of the founder.
+    - **R11.4 · Scott, *Seeing Like a State* (1998)** → principle 5, the reader, C8. Every map is a
+      simplification; acting on it as the territory destroys local knowledge (*metis*). One design
+      test for any reader or map BOSS ships: *what does this map leave out, and does BOSS ever act on
+      the map instead of asking?*
+  - **Lineage only — one line in the guide, no mechanism:** stigmergy (Grassé 1959; Heylighen 2016 —
+    coordination through traces, which is principle 5 and how peer sessions already work here) ·
+    panarchy / the adaptive cycle (Gunderson & Holling 2002 — release as a phase, part 7) · calm
+    technology (Weiser & Brown 1995 — centre and periphery, the conscience's posture).
+  - **Not now, with a trigger:** DDD context maps (Evans 2003) — when a broken flow appears that
+    gives/takes/returns can't name · Cynefin — never as a founder-facing classification; at most a
+    reason inside the modes · motivational interviewing / self-determination theory — the voice
+    program (`conscience-voicing.md`), at its next refresh, not this one.
 - [x] **H1** · *(done — C0.3: mentor-humane read the draft and it changed)* 🔴 **The humane check hasn't run.** *Governance* can become ceremony or surveillance;
   a *liveliness* reading can become a score — and BOSS gives a position, never a grade (DEC-003).
   `mentor-humane` and `designer` before M2's report has a founder-facing word.
@@ -532,6 +562,27 @@ flows** — each ecosystem declares its own as it's planted. DEC-023's removal t
 **C9 · When the ebooks land** — one pass re-grades the *waits on the books* list above.
 **C10 · Q8 — the sentence** — PRINCIPLES' one sentence moves only by Ajesh's `/decide`, after C2–C5 show
 the ecosystems are real.
+
+**C11 · The model moves, the ladders follow** (2026-10-05 — Ajesh: *"when we update the ecosystem or
+model, we need a way to review and update existing ladders and other places"*). Today a change to
+`docs/ECOSYSTEMS.md` reaches design, engineering and claims only if someone remembers; R11.1 may add a
+part, and the AI-behaviour ladder is being planted against the draft right now. This is M12
+(succession followed) one level up — the fractal test's missing *check*, named in § anatomy.
+`check-freshness.js` says its own honest limit: cadence can't catch an event. This is that event.
+- [ ] C11.1 · **The model gets revisions.** `docs/ECOSYSTEMS.md` § Revisions: rev, date, what changed,
+  which part or principle — and what a ladder must do about it (*review* / *nothing*).
+- [ ] C11.2 · **Each ladder says which revision it was last reviewed against** — `anatomy: N` in its
+  practice's frontmatter (only BOSS reads practice frontmatter, so no founder pays for it). A stamp
+  is set by a review, never by touching the file (same rule as `last_reviewed`).
+- [ ] C11.3 · **`npm run check:freshness` names a ladder behind the model**, with the revisions it
+  missed — beside the cadence report, not a new script. Also lists the other files that cite the
+  guide (`ENGINEERING.md`, IDEA-136/138, DEC-022) as *read these too*, without a stamp.
+- [ ] C11.4 · Test, rule 8 first: a ladder at rev 1 with the model at rev 2 → named; at rev 2 → silent;
+  a practice with no `anatomy:` → not a ladder, silent.
+- [ ] C11.5 · The review itself: the guide's step list gets a step 9 (*when the model moves*) — read
+  the revision, change the ladder or write why not, re-stamp. First real run: R11.1's outcome.
+- Not a CHANGELOG bullet — BOSS-only plumbing. (`/recalibrate` already owns *AI model* changes; this
+  is the *ecosystem* model.)
 
 ## Open questions
 - **Q1** · ~~Is M2 the same as M10?~~ **Settled at R5:** one mechanism, two link axes — sideways in
