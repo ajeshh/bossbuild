@@ -350,6 +350,16 @@ transcriptions agree, book not opened). When the ebooks land: one pass re-grades
   frequency rather than guessing.
 - [ ] **B4** · Name the beds BOSS has and the candidates (claims, data & trust, operations, money,
   team) with their planting triggers.
+  **Order set with Ajesh, 2026-10-04** (temple culture/team stays parked): existing — design (091),
+  engineering (136, in build), agents (124, shipped), evidence (the grade ladder, never framed as one),
+  product language (093), outward docs (089, parked). **Next: 1 claims** (BOSS's own claim checks are
+  the richest instance to extract from; the harm reaches strangers; B1's missing EVID → headline flow)
+  · **2 AI behaviour** (compose `/ai-cost`, `/ai-failure-states`, `/evals`, `/red-team` into one
+  ladder; BOSS's conscience evals as the instance) · **3 data & trust** (highest stakes, but BOSS has
+  no instance — plant from `/trust` + `schema-guard` + data-schema, or on a founder's first
+  personal-data table) · 4 operations · 5 money (waits for a first dollar). **The founder is not a
+  ladder** — governance pointed at a person is surveillance (H1: read the plumbing, never the
+  gardener); it stays in IDEA-133 and `founder-role-shifts`.
 
 **B1 findings (2026-10-04, read-only inventory — 44 flows with file:line receipts)**
 
