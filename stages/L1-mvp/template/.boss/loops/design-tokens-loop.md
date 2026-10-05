@@ -49,9 +49,10 @@ components syntax). Threshold of 3 is the *"the first UI commit"* signal — one
 exploratory file; three is the founder starting to *build*. Stack-agnostic enough to catch most
 common React / Vue / Svelte / Solid projects today.
 
-For projects in stacks the regex misses, the founder can either:
-- Edit this loop spec's entry pattern to match their stack
-- Or simply run `/design-tokens-init` manually (the loop respects override)
+For projects in stacks the regex misses, the founder widens this file's entry pattern. BOSS reads
+this copy as well as its own when it decides the app has a screen, so the next `boss sync` lays down
+`/design-tokens-init`. Narrowing or deleting the pattern quiets this moment; it never holds the skill
+back.
 
 ## Purpose
 

@@ -53,8 +53,10 @@ first call* — there's no "exploratory" version of token spend. The first call 
 billing meter.
 
 Stack misses: founders on stacks the regex doesn't catch (LangChain wrappers, Replicate, Cohere,
-Bedrock client libs, etc.) can either edit this loop's entry pattern, or simply run `/ai-cost`
-manually (the loop respects override).
+Bedrock client libs, etc.) widen this file's entry pattern. BOSS reads this copy as well as its own
+when it decides the app calls a model, so the next `boss sync` lays down `/ai-cost`,
+`/ai-failure-states` and `/evals`. Narrowing or deleting the pattern quiets this moment; it never
+holds those skills back.
 
 ## Purpose
 

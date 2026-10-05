@@ -75,28 +75,38 @@ export function holdAtAdopt(manifest, projectDir, { shippedBefore = false } = {}
 }
 
 /** Does the founder's code call a model? The cost-budget loop's entry predicate, run by the hook
- * runtime against the project — same pattern, same exclusions, same `sourceGlobs`. Fails closed. */
+ * runtime against the project — same pattern, same exclusions, same `sourceGlobs`. Fails closed.
+ *
+ * Either copy of the loop earns: BOSS's, or the project's own. The loop tells a founder whose stack
+ * the pattern misses to widen it there, and the conscience then reads their copy — so reading only
+ * BOSS's named /ai-cost and never laid it down (IDEA-139 T1, reproduced). A union, never the
+ * project's alone: narrowing or deleting their copy quiets the moment and must not hold the skills
+ * back (mute never feeds a reading — docs/ECOSYSTEMS.md principle 4). */
 export function llmInSource(projectDir) {
-  try {
-    const loop = parseFrontmatter(readFileSync(COST_LOOP, 'utf8'));
-    if (!loop?.entry) return false;
-    const { entry } = classifyLoop({ entry: loop.entry, exit: [] }, projectDir);
-    return entry.all_ok && !entry.results.some((r) => r.evidence?.blind);
-  } catch { return false; }
+  return [COST_LOOP, join(projectDir, '.boss', 'loops', 'cost-budget-loop.md')].some((file) => {
+    try {
+      const loop = parseFrontmatter(readFileSync(file, 'utf8'));
+      if (!loop?.entry) return false;
+      const { entry } = classifyLoop({ entry: loop.entry, exit: [] }, projectDir);
+      return entry.all_ok && !entry.results.some((r) => r.evidence?.blind);
+    } catch { return false; }
+  });
 }
 
 /** Does the founder's code style a screen? The design-tokens loop's entry pattern and source globs,
  * lowered to one file: the loop waits for SPREAD (three files) before it nudges, but the skills it
- * points at belong from the first styled file. Fails closed. */
+ * points at belong from the first styled file. Fails closed. Either copy earns, as for llmInSource. */
 export function uiInSource(projectDir) {
-  try {
-    const loop = parseFrontmatter(readFileSync(TOKENS_LOOP, 'utf8'));
-    const count = (loop?.entry || []).map((p) => p.count_at_least).find(Boolean);
-    if (!count) return false;
-    const entry = [{ count_at_least: { ...count, min: 1, min_files: 1 } }];
-    const res = classifyLoop({ entry, exit: [] }, projectDir).entry;
-    return res.all_ok && !res.results.some((r) => r.evidence?.blind);
-  } catch { return false; }
+  return [TOKENS_LOOP, join(projectDir, '.boss', 'loops', 'design-tokens-loop.md')].some((file) => {
+    try {
+      const loop = parseFrontmatter(readFileSync(file, 'utf8'));
+      const count = (loop?.entry || []).map((p) => p.count_at_least).find(Boolean);
+      if (!count) return false;
+      const entry = [{ count_at_least: { ...count, min: 1, min_files: 1 } }];
+      const res = classifyLoop({ entry, exit: [] }, projectDir).entry;
+      return res.all_ok && !res.results.some((r) => r.evidence?.blind);
+    } catch { return false; }
+  });
 }
 
 const PREDICATE = { shipped: hasShipped, 'llm-in-source': llmInSource, 'ui-in-source': uiInSource };

@@ -7,13 +7,14 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, mkdirSync, writeFileSync, readdirSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { project, cleanup } from './helpers.js';
 import { readStageManifest, applyStage } from '../src/scaffold.js';
 import { heldBack, earnedGroups, llmInSource, uiInSource, hasShipped, stillDeferred, newlyEarned, markLaidDown } from '../src/earned.js';
 import { planSync, applySync } from '../src/sync.js';
 import { forgetGitDates } from '../src/gitdates.js';
+import { STAGES_DIR } from '../src/paths.js';
 
 after(cleanup);
 
@@ -59,6 +60,39 @@ test('llm-in-source reads the same call shapes as the cost-budget loop, only und
   assert.equal(llmInSource(quiet), false, 'a mention in docs is not a call in source');
   const custom = project({ 'Sources/App/ai.swift': 'let a = Anthropic()\n', '.boss/config.json': '{"sourceGlobs":["Sources/**"]}' });
   assert.equal(llmInSource(custom), true, 'sourceGlobs in .boss/config.json names the roots');
+});
+
+// IDEA-139 T1, reproduced 2026-10-05: the loop tells a founder on a stack the pattern misses to edit
+// its entry pattern. They did; the conscience then named /ai-cost, and /ai-cost never arrived, because
+// this predicate read only BOSS's copy. Either copy earns — and a narrowed project copy (a founder
+// quieting the moment) never withholds the skills: mute stays free and never feeds a reading.
+test('llm-in-source honours the project\'s own widened loop, and a narrowed one never withholds', () => {
+  const bossLoop = readFileSync(join(STAGES_DIR, 'L1-mvp', 'template', '.boss', 'loops', 'cost-budget-loop.md'), 'utf8');
+  const langchain = 'import { ChatAnthropic } from "@langchain/anthropic";\nconst m = new ChatAnthropic({});\n';
+  assert.equal(llmInSource(project({ 'src/agent.ts': langchain })), false, 'the shipped pattern misses this stack');
+  const widened = bossLoop.replace("pattern: '(", "pattern: '(@langchain/[a-z-]+|");
+  assert.notEqual(widened, bossLoop, 'the fixture must actually widen the pattern');
+  assert.equal(llmInSource(project({ 'src/agent.ts': langchain, '.boss/loops/cost-budget-loop.md': widened })), true,
+    'the founder widened the trigger as the loop told them to');
+  const narrowed = bossLoop.replace(/pattern: '.*'$/m, "pattern: 'NEVER_MATCHES_ANYTHING'");
+  assert.equal(llmInSource(project({ 'src/a.ts': 'const r = await client.chat.completions.create({});\n', '.boss/loops/cost-budget-loop.md': narrowed })), true,
+    'a narrowed project loop quiets the moment; it does not hold the skills back');
+});
+
+// The same hatch, the same bug, one loop over: design-tokens-loop tells a missed stack to edit its
+// pattern, and `/design-tokens-init` is held on this predicate (IDEA-139, found beside T1).
+test('ui-in-source honours the project\'s own widened loop, and a narrowed one never withholds', () => {
+  const bossLoop = readFileSync(join(STAGES_DIR, 'L1-mvp', 'template', '.boss', 'loops', 'design-tokens-loop.md'), 'utf8');
+  const elm = 'view model =\n    div [ Html.Attributes.attribute "data-x" "y" ] []\n';
+  assert.equal(uiInSource(project({ 'src/Main.elm': elm })), false, 'the shipped pattern misses this stack');
+  const widened = bossLoop.replace("pattern: '(className=", "pattern: '(Html\\.Attributes\\.|className=");
+  assert.notEqual(widened, bossLoop, 'the fixture must actually widen the pattern');
+  assert.equal(uiInSource(project({ 'src/Main.elm': elm, '.boss/loops/design-tokens-loop.md': widened })), true,
+    'the founder widened the trigger as the loop told them to');
+  const narrowed = bossLoop.replace(/pattern: '\(className=.*'$/m, "pattern: 'NEVER_MATCHES_ANYTHING'");
+  assert.notEqual(narrowed, bossLoop);
+  assert.equal(uiInSource(project({ 'src/App.tsx': 'export const A = () => <div className="p-4">hi</div>;\n', '.boss/loops/design-tokens-loop.md': narrowed })), true,
+    'a narrowed project loop quiets the moment; it does not hold the skill back');
 });
 
 test('ui-in-source reads the design-tokens loop\'s pattern, from the first styled file', () => {
