@@ -58,3 +58,14 @@ test('a card gist gets ONE rule regardless of where it came from', () => {
   assert.equal(g, 'The ladder shows four station NAMES and bolds the one you are at.');
   assert.ok(g.length <= 200, 'a board card is scannable or it is a document');
 });
+
+test('REGRESSION (IDEA-136 · F5): a folded proof: reads as its path, and check-backlog uses this reader', async () => {
+  // v0.269.0 fixed the parser, but check-backlog kept a bare-regex copy of `field`, so a folded
+  // `proof: >` still read as ">" there. One parser only works if every reader uses it.
+  const { field } = await import('../src/frontmatter.js');
+  const { readFileSync } = await import('node:fs');
+  assert.equal(field('---\nid: IDEA-1\nproof: >\n  src/learn.js\n---\n', 'proof'), 'src/learn.js');
+  const src = readFileSync(new URL('../scripts/check-backlog.js', import.meta.url), 'utf8');
+  assert.match(src, /import \{[^}]*\bfield\b[^}]*\} from '\.\.\/src\/frontmatter\.js'/);
+  assert.doesNotMatch(src, /const field = /, 'no local copy of the field reader');
+});

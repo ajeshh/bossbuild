@@ -31,7 +31,7 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { STATUS_VOCAB, baseStatus } from '../src/frontmatter.js';
+import { STATUS_VOCAB, baseStatus, field } from '../src/frontmatter.js';
 import { recordDrift } from '../src/records.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -103,10 +103,9 @@ if (!existsSync(IDEAS)) {
 }
 
 const RECORD = /^(IDEA|FEAT)-(\d+)-.*\.md$/;
-const field = (text, name) => {
-  const m = text.match(new RegExp(`^${name}:\\s*(.+)$`, 'm'));
-  return m ? m[1].trim() : null;
-};
+// `field` is the CLI's own frontmatter reader, not a bare regex: the regex read a folded
+// `proof: >` as the literal ">" and reported the record as claiming a file that isn't there
+// (IDEA-136 · F5 — reproduced in a worktree before this change).
 const base = baseStatus;
 
 const findings = { skillVocab, links: [], vocab: [], collisions: [], missingRows: [], orphanRows: [], disagreements: [], proof: [], unproven: [] };
