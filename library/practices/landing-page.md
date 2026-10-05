@@ -95,6 +95,20 @@ AI"). BOSS already holds every input to beat it — so *feed them into generatio
   and a11y / five-states / performance are floors, not trade-offs. *Spend the hours the AI just saved on the 5%
   that's the brand* — the landing page is the highest-leverage place to spend it.
 
+## What the page may say is true
+
+A headline is a **promise**. It can be written on the first day, before anyone has said yes. What a
+stranger takes as **fact** is different: the subhead's *why it's believable*, a number, a quote, a
+logo, what the product does. Each of those should point at something that backs it: a record of what a
+real person said or did, or a line in the brand doc that names one. A page with less behind it says
+less; it never says it louder. Two rules carry it as the page grows:
+
+- **Derive the claim; never retype it.** A count on the page comes from where it is true (the
+  database, the repo, the records) at build time. A number typed by hand starts going stale the day it
+  is typed.
+- **A broken claim gets fixed now; stale prose can wait.** A page that promises something the
+  product doesn't do is worse than a page that's a little behind. Know which one you're looking at.
+
 ## Convert honestly (persuasion, not manipulation)
 
 Landing pages are the densest breeding ground for the patterns in [`deceptive-patterns`](deceptive-patterns.md) —

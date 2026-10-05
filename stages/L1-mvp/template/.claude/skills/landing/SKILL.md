@@ -68,6 +68,15 @@ and if missing, say so and offer to fill the gap first (the offer rides in the o
   (`color.action.primary`, never `indigo-600` — that's the AI-slop default).
 - **The canvas Promises cell** → the value proposition (feed it through Shapiro's *Bad Alternative → Better
   Solution → Action Statement*).
+- **The evidence** — `docs/evidence/EVID-NNN.md` → **what the page is allowed to say is true.** Read
+  each record's grade and date, nothing else; the body stays in the file. The headline is the promise,
+  written as a promise, at any grade. A line that tells a stranger something *is* true is different:
+  the subhead's *why it's believable*, a number, a quote, what the product does. Each one points at a
+  record, or at a brand-doc line ending `— EVID-NNN`. If nothing backs it, take it off the page. A
+  page with less behind it says less; it never says it louder. A demand page with only `stated-pain`
+  behind it claims nothing about users: the page is the test, so the promise and the ask are the whole
+  of it. The onepager's rules hold here too (`/canvas`, *the evidence ledger*): no "N of M" ratio, say
+  how old the evidence is, never invent.
 - **`docs/design/library/`** if it exists (V1) → the components to compose from, instead of redrawing them.
 - **`docs/competition/README.md`** if it exists → the rivals' own positioning quotes and
   their `why they might win` lines. A landing page's whole job is to make one choice obvious, and
@@ -98,7 +107,8 @@ message. This decides the whole shape:
 
 Static HTML or a Next.js page + the project's CSS/Tailwind, tokens **by name**. Apply the minimum-that-converts:
 - Descriptive **headline = the value prop** (not a slogan; Shapiro's "would they know exactly what you sell?").
-- A subhead that does two jobs (how it works + why the claim is believable).
+- A subhead that does two jobs (how it works + why the claim is believable). The second job comes
+  only from a record (Step 0b). With nothing behind it, the subhead says how it works and stops.
 - **One CTA, repeated**, phrased as the headline's promise continued. No nav. Fast, mobile-first.
 - **Proof in the eye-path** — real testimonials/counts only: the brand doc's ★ rows, as written. **A learned
   row is evidence, not permission:** before a person's words go on a public page, ask the founder whether

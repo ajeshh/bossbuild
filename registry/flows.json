@@ -156,6 +156,12 @@
       "why": "the demand page's threshold is the one /pretotype set before it ran (C4)"
     },
     {
+      "reader": "stages/L1-mvp/template/.claude/skills/landing/SKILL.md",
+      "path": "docs/evidence/EVID-*.md",
+      "from": "evidence",
+      "why": "a line on the page that says something is true points at a record, or comes off (IDEA-138)"
+    },
+    {
       "reader": "stages/L1-mvp/template/.claude/skills/drift-deep/SKILL.md",
       "path": "docs/evidence/EVID-*.md",
       "from": "evidence",

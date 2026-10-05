@@ -27,6 +27,14 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Your landing page says only what something backs.** `/landing` now reads your evidence records
+  (their grades and dates) before it writes a line. The headline stays your promise, and a promise can
+  be made on day one. But the lines a stranger reads as fact (why it's believable, a number, a quote,
+  what the product does) each point at a record or come off the page. A demand page with only stated
+  pain behind it makes no claims about users; the page is the test. The landing-page practice gains
+  the two rules that keep a page honest as it grows: derive a count from where it's true instead of
+  retyping it, and fix a broken claim now while stale wording can wait.
+
 - **The security practices stop overstating what a guard can do.** `secrets-guard` was called the
   boundary around your secrets; it catches any command that names a secret file, but a script that
   loads `.env` itself gets past it — the sandbox is the boundary, and the practices now say so. A

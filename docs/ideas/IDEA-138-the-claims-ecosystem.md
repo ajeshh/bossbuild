@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: exploring (step 1 inventory and step 2 parts written 2026-10-04; step 3 proposed, not built)
+status: building (steps 1–2 written; step 3 items 0–2 landed 2026-10-04, item 3 waits on Q1)
 proof: none
 proof_note: every path this would create already exists (landing/SKILL.md, landing-page.md, registry/flows.json). Done is a declared take landing ← evidence in registry/flows.json, held by check-refs class 7 — a declaration, not a new file.
 gist: Claims — what a project says about itself to someone who can't check it — gets its own ecosystem, centred on the landing page. Every line on the page is no stronger than what backs it. Extracted from how BOSS already checks its own front door, which has been doing this for 150 releases and never sorted it down.
@@ -156,7 +156,11 @@ Three crossings of the same rule mean the rule is wrong (ECOSYSTEMS principle 4)
 when the project has a site generator, the counts move from typed to derived. That is BOSS's own
 `gen-site` path, and `/landing`'s text should name it as the successor.
 
-## Step 3 — what a founder gets (proposed 2026-10-04, smallest first; not built, shown to Ajesh)
+## Step 3 — what a founder gets (proposed 2026-10-04, smallest first; Ajesh: *"lets start"*)
+
+**Landed 2026-10-04:** 0 (`7c763ce`; only index and thinking regenerated, in a worktree. A full
+`gen:site` would publish the Done practice, which waits on the share-sort) · 1 and 2 (the take is
+mutation-tested: moving the path in `/landing` turns class 7 red, with the file and line) · Unreleased bullet.
 
 0. **BOSS's own, a correctness fix (site freeze allows it):** derive the decision count with a
    `COUNT_DECISIONS` block in `gen-site.js` and use it on `index.html:614` and `thinking.html:156`.
@@ -183,6 +187,13 @@ when the project has a site generator, the counts move from typed to derived. Th
 reader for part 6; wait for a founder whose page outlived its evidence).
 
 ## Open questions
+
+- **Q4** · *(found while testing item 1)* `/landing` is a `postLaunch` skill (`stages/L1-mvp/manifest.json`,
+  `earned.postLaunch: shipped`, `src/earned.js`): it reaches the project only once a FEAT ships. Its
+  `--demand` page is the **pre-build** test, so a founder who wants to test demand first has no
+  `/landing` (`/pretotype` designs the door and can publish one). IDEA-060 · 5 named this mis-staging
+  before `earned` existed. Is it still true in practice, or does `/pretotype`'s publish cover it? Read
+  `/pretotype` before proposing anything.
 
 - **Q1** · What grade is a demand-page signup? `/landing` says *"a signup measures curiosity, not
   intent"*. The ladder has `observed-behavior` (*watched them… bounce*) and `commitment` (*gave up
