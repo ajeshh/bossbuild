@@ -42,12 +42,15 @@ test('the six pages: every one says fictional, links stay relative, nothing is f
   } finally { rmSync(out, { recursive: true, force: true }); }
 });
 
-test('the organization page is read from the tree and grouped, verbs as chips; the learning page reads the records', () => {
+test('the where-things-live page is read from the tree and grouped, verbs as chips; the learning page reads the records', () => {
   const out = mkdtempSync(join(tmpdir(), 'boss-demo-out-'));
   try {
     generate({ out });
     const org = readFileSync(join(out, 'organization.html'), 'utf8');
     for (const d of ['docs/ideas', 'docs/evidence', 'docs/team', 'docs/competition', 'docs/design']) assert.ok(org.includes(`<code>${d}/</code>`), d);
+    assert.ok(org.includes('<a href="https://github.com/ajeshh/bossbuild/tree/main/demo/kettlewick/docs/ideas"><code>docs/ideas/</code></a>'), 'a tracked folder links to the repo');
+    assert.ok(!org.includes('kettlewick/.boss') && !org.includes('kettlewick/.claude'), 'the machine folders, filled at render time, do not link');
+    assert.ok(!/>Organization</.test(org), 'the page is "Where things live", not an org chart');
     assert.ok(org.includes('<span class="verb-chip">/comp-eval</span>') && org.includes('<span class="verb-chip">boss team add</span>'));
     for (const g of ['org-idea', 'org-people', 'org-field', 'org-made', 'org-going', 'org-machine']) assert.ok(org.includes(`id="${g}"`), g);
     assert.match(org, /<b class="tab">\d+<\/b><span>records on disk<\/span>/);

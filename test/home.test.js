@@ -43,3 +43,25 @@ test('the family bar leads with Home and dims a page not generated yet, Guide in
   assert.match(bar, /class="dim"[^>]*title="not generated yet — boss help --html" data-space="guide">Guide/);
   assert.ok(!existsSync(join(dir, '.boss', 'help.html')));
 });
+
+test('where things live lists only the folders and key files on disk, each with Open and Copy path', () => {
+  const dir = project({ 'docs/ideas/IDEA-001.md': idea('IDEA-001'), 'docs/ideas/IDEA-002.md': idea('IDEA-002'), 'docs/RESUME.md': '# r\n' });
+  const html = readFileSync(homeHtml(dir, 'demo'), 'utf8');
+  assert.match(html, /id="where-things-live"/);
+  assert.match(html, /<code>docs\/ideas\/<\/code><\/a> <span class="pl-meta">2 files · \/idea/);
+  assert.ok(html.includes(`data-path="${join(dir, 'docs', 'ideas')}"`), 'Copy path carries the OS path, not a URL');
+  assert.match(html, /href="file:\/\/\/[^"]*\/docs\/ideas\/"/);
+  assert.match(html, /<code>docs\/RESUME\.md<\/code>/);
+  assert.ok(!html.includes('docs/evidence/'), 'a folder not on disk is not listed');
+  assert.ok(!html.includes('CLAUDE.md</code>'), 'a key file not on disk is not listed');
+});
+
+test('a bare project lists only .boss/ — the folder the home itself lives in — and no empty group', () => {
+  const html = readFileSync(homeHtml(project({}), 'demo'), 'utf8');
+  assert.match(html, /<code>\.boss\/<\/code>/);
+  assert.equal((html.match(/class="label pl-group"/g) || []).length, 1, 'only the machine group');
+});
+
+test('the board leads the spaces: it is the page opened most', () => {
+  assert.match(familyBar(project({}), 'home'), /data-space="home">Home<\/a><a [^>]*data-space="board"/);
+});

@@ -21,10 +21,13 @@ export const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (m) => ({ '&': '&am
 // The spaces and the file each one lives in. `current` is the page being rendered; a sibling is a
 // live link only when its file exists — a dimmed entry says "not generated yet", never 404. `cmd`
 // is what makes it, for the dimmed title and the home page's empty card (IDEA-144).
+// Ordered by how often a founder opens each, not by when it was built (Ajesh, 2026-10-05: "board in
+// the middle seems wrong since it might be frequently visited"): the board is where-am-I, most days;
+// the playbook is the venture, now and then; design waits on UI; the guide is reference.
 export const SPACES = [
+  { key: 'board', label: 'Board', file: 'board.html', cmd: 'boss board --html' },
   { key: 'playbook', label: 'Playbook', file: 'playbook.html', cmd: 'boss playbook' },
   { key: 'design', label: 'Design', file: 'design.html', cmd: 'boss design' },
-  { key: 'board', label: 'Board', file: 'board.html', cmd: 'boss board --html' },
   { key: 'guide', label: 'Guide', file: 'help.html', cmd: 'boss help --html' },
 ];
 

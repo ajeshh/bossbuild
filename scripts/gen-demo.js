@@ -28,6 +28,7 @@ import { boardHtml } from '../src/board.js';
 import { loadModes } from '../src/modes.js';
 import { STAGE_ORDER } from '../src/paths.js';
 import { readEvidence, readPersonas, readDecisions, readBrandDoc, readHealth, readLearnings, readBrand } from '../src/playbook.js';
+import { GROUPS, WRITES } from '../src/places.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 export const DEMO = join(ROOT, 'demo', 'kettlewick');
@@ -116,46 +117,13 @@ export function runConscience(dir) {
   return { ran: true, signals, cohort: j && j.cohort };
 }
 
-// The organization page — from the tree that was just rendered, grouped by what the founder is
-// doing, each folder with the verb that writes it and one line that says what a record there IS.
-// Never a typed tree: a folder that isn't on disk isn't on the page. The stronger lines below
-// are BOSS's own description of its record classes; the counts and samples are read.
-const GROUPS = [
-  { key: 'idea', title: 'The idea, and what you decided', lead: 'One living doc per idea, a canvas that pressure-tests it, a build contract when it earns one, and every load-bearing call with the signal that would prove it wrong.',
-    folders: ['docs/ideas', 'docs/decisions'] },
-  { key: 'people', title: 'The people — real and drawn', lead: 'Who it is for as a persona with a ledger that says how much of it is real, and what real people actually said or did, graded — a compliment never reads as a receipt.',
-    folders: ['docs/personas', 'docs/evidence', 'docs/team'] },
-  { key: 'field', title: 'The field, and what you dropped in', lead: 'Rivals with a checked date and the honest "why they might win"; your own decks and reports, dated on the way in, so a figure from March is never a fact about today.',
-    folders: ['docs/competition', 'docs/source', 'docs/dossier'] },
-  { key: 'made', title: 'How it looks and sounds', lead: 'The brand as a living doc that starts nascent; the design system as tokens, a style guide, components with usage pages, patterns and flows — each with the decision that chose it.',
-    folders: ['docs/brand', 'docs/design', 'docs/design/components', 'docs/design/icons', 'docs/design/library', 'docs/product'] },
-  { key: 'going', title: 'How it is going', lead: 'After the first user: one activation metric, one retention curve, a dated health verdict that defaults to pre-fit, and the trust page a buyer can read. The story so far, one entry a session.',
-    folders: ['docs/health', 'docs/measure', 'docs/trust', 'docs'] },
-  { key: 'machine', title: 'The machine', lead: 'What BOSS installed for the host and the state it keeps for itself — local, never in the repo, and never the founder\'s to maintain.',
-    folders: ['.claude', '.boss'] },
-];
-const WRITES = {
-  'docs': { verbs: ['/log', '/close'], line: 'the devlog (what landed, what surprised you, one entry a session), the brand doc, the resume the next session reads first' },
-  'docs/ideas': { verbs: ['/idea', '/canvas', '/spec'], line: 'IDEA-NNN — a living idea doc with a sharpening current shape and an append-only capture log; the canvas as thirteen cells; FEAT-NNN — the build contract with acceptance criteria and the paths that must not break' },
-  'docs/decisions': { verbs: ['/decide'], line: 'DEC-NNN — context, decision, why, and a falsifier with a date; superseded, never edited' },
-  'docs/personas': { verbs: ['/persona'], line: 'one persona per file: who, context, jobs, pains, values, what you don\'t know yet — and a ledger, synthetic vs real, that moves as evidence lands' },
-  'docs/evidence': { verbs: ['/evidence', '/interview'], line: 'EVID-NNN — one signal per file, dated, graded stated-pain → observed-behavior → commitment, tied to the assumption it bears on' },
-  'docs/team': { verbs: ['boss team add'], line: 'one person per file — the specific thing seen, built, sold or lived; what they bring and don\'t; a role you need and don\'t have, written plainly' },
-  'docs/competition': { verbs: ['/comp-eval'], line: 'the field as one table, one file per rival with where it breaks and how they do it, every row with a checked date' },
-  'docs/source': { verbs: ['/import'], line: 'your own material — a deck, a report, a saved page — dated in the name; /import reads it and offers the records it could fill' },
-  'docs/dossier': { verbs: ['/consult'], line: 'the mentors\' positions, dated — the capital mentor\'s not-yet with its reason is what the playbook quotes as the ask' },
-  'docs/brand': { verbs: ['/landing'], line: 'the mark, when there is a file — the brand doc itself lives beside the devlog' },
-  'docs/design': { verbs: ['/design-tokens-init', '/design-review'], line: 'tokens.json, the style guide, components, patterns, flows, the reviews — the design space is a read of these' },
-  'docs/design/components': { verbs: ['/design-review'], line: 'one usage page per component, written at its review — when to use it, when not' },
-  'docs/design/icons': { verbs: ['/design-review'], line: 'the icon set as SVG files; the design page draws them from here and copies them as a sprite' },
-  'docs/design/library': { verbs: ['/design-tokens-init'], line: 'the component manifest — what exists, so the second button is never invented' },
-  'docs/product': { verbs: ['/spec'], line: 'JOURNEY.md — the flows as a founder would walk them, written at the first flow' },
-  'docs/health': { verbs: ['/health'], line: 'HEALTH-<date> — a verdict, dated: pre-fit by default, the curve when there is one, the one next move' },
-  'docs/measure': { verbs: ['/health'], line: 'MEASURE-<date> — the one activation metric, the one retention curve, at most ten events, the humane note' },
-  'docs/trust': { verbs: ['/trust'], line: 'TRUST.md — what you collect, who processes it, how someone reaches you about their data; one honest paragraph' },
-  '.boss': { verbs: ['boss'], line: 'the stamp, the config, the conscience\'s read on the venture, the rendered pages — machine state, gitignored' },
-  '.claude': { verbs: ['boss new', 'boss unlock'], line: 'agents, skills, hooks and rules for the host — laid down by mode, only what the venture has earned' },
-};
+// The "Where things live" page (organization.html — the file name kept so no link breaks; the
+// label was "Organization", which read as an org chart) — from the tree that was just rendered,
+// grouped by what the founder is doing, each folder with the verb that writes it and one line that
+// says what a record there IS (src/places.js). Never a typed tree: a folder that isn't on disk isn't
+// on the page. A folder tracked in demo/kettlewick/ links to it in the repo; the machine folders are
+// mostly filled at render time, so a link would show less than the card counts.
+const REPO_TREE = 'https://github.com/ajeshh/bossbuild/tree/main/demo/kettlewick/';
 function readmeLine(md) {
   const body = String(md).replace(/^---\n[\s\S]*?\n---\n?/, '').split('\n').filter((l) => l.trim() && !/^#/.test(l) && !/^\|/.test(l)).join(' ');
   const m = body.match(/^(.{12,}?[.!?])(\s|$)/);
@@ -193,13 +161,15 @@ export function organizationHtml(dir, project) {
   const groups = GROUPS.map((g) => {
     const cards = g.folders.filter((f) => tree.has(f)).map((f) => {
       const r = tree.get(f); const w = WRITES[f] || { verbs: [], line: '' };
-      return `<article class="block filled org" id="org-${esc(f.replace(/\W+/g, '-'))}" data-title="${esc(f)}/"><div class="head"><h3><code>${esc(f)}/</code></h3></div><div class="body"><div class="verbs">${verbChips(w.verbs)}</div><p>${esc(w.line)}</p></div><div class="foot"><span class="src">${r.count} file${r.count === 1 ? '' : 's'}${r.sample.length ? ' · ' + esc(r.sample.join(' · ')) : ''}</span></div><div class="actions"></div></article>`;
+      const inRepo = f.startsWith('docs') && existsSync(join(DEMO, f));
+      const name = `<code>${esc(f)}/</code>`;
+      return `<article class="block filled org" id="org-${esc(f.replace(/\W+/g, '-'))}" data-title="${esc(f)}/"><div class="head"><h3>${inRepo ? `<a href="${REPO_TREE}${esc(f)}">${name}</a>` : name}</h3></div><div class="body"><div class="verbs">${verbChips(w.verbs)}</div><p>${esc(w.line)}</p></div><div class="foot"><span class="src">${r.count} file${r.count === 1 ? '' : 's'}${r.sample.length ? ' · ' + esc(r.sample.join(' · ')) : ''}</span></div><div class="actions"></div></article>`;
     });
     return cards.length ? `<section class="chapter" id="org-${g.key}"><div class="chapter-head"><div class="label">${esc(g.title)}</div><p>${esc(g.lead)}</p></div><div class="blocks">${cards.join('')}</div></section>` : '';
   }).join('\n');
   const modeStrip = stageDocs.map((m) => `<div class="mode"><div class="label">${esc(m.name)}</div><p><b class="tab">${m.skills}</b> verbs${m.dirs.length ? ` · lays down <code>${m.dirs.join('</code> <code>')}</code>` : ''}${m.written.length ? ` · its verbs write <code>${m.written.join('</code> <code>')}</code>` : (m.dirs.length ? '' : ' · adds no folder of its own')}</p></div>`).join('');
-  return page(project, 'Organization', `
-<div class="chapter-head"><div class="label">Organization</div><h2>Every record has a home, a shape, and one verb that writes it.</h2>
+  return page(project, 'Where things live', `
+<div class="chapter-head"><div class="label">Where things live</div><h2>Every record has a home, a shape, and one verb that writes it.</h2>
 <p>This is the part of BOSS that does the filing so the founder never has to. Nothing lives in the chat: what you say becomes a record in a folder, in a fixed shape, with an id and a status line — and the playbook, the design space and the board are <em>reads</em> of those folders, never documents anyone maintains. Change the work and the pages change; there is nothing else to update.</p></div>
 <div class="facts"><div class="fact"><b class="tab">${records}</b><span>records on disk</span></div><div class="fact"><b class="tab">${[...tree.keys()].filter((k) => k.startsWith('docs')).length}</b><span>folders under <code>docs/</code></span></div><div class="fact"><b class="tab">${verbs.size}</b><span>verbs that write them</span></div><div class="fact"><b class="tab">4</b><span>id classes — IDEA · FEAT · DEC · EVID</span></div></div>
 <section class="chapter" id="org-rules"><div class="chapter-head"><div class="label">The four rules it keeps</div></div>
@@ -275,7 +245,7 @@ ${RIBBON_CSS}
 ${RIBBON}
 <header class="topbar">
   <div class="wordmark">${esc(displayName(project))}</div>
-  <nav class="family" aria-label="Spaces"><a href="index.html">Demo</a><a href="playbook.html">Playbook</a><a href="design.html">Design</a><a href="board.html">Board</a><a href="organization.html"${title === 'Organization' ? ' class="on" aria-current="page"' : ''}>Organization</a><a href="learning.html"${title === 'Learning' ? ' class="on" aria-current="page"' : ''}>Learning</a></nav>
+  <nav class="family" aria-label="Spaces"><a href="index.html">Demo</a><a href="board.html">Board</a><a href="playbook.html">Playbook</a><a href="design.html">Design</a><a href="organization.html"${title === 'Where things live' ? ' class="on" aria-current="page"' : ''}>Where things live</a><a href="learning.html"${title === 'Learning' ? ' class="on" aria-current="page"' : ''}>Learning</a></nav>
 </header>
 <main class="one">
 ${inner}
@@ -341,7 +311,7 @@ ${ventureHead(data)}
   <article class="block filled" id="demo-playbook" data-title="Playbook"><div class="head"><h3><a href="playbook.html">The playbook →</a></h3></div><div class="body"><p>Sixteen chapters over the records: the pitch, the proof, the company. The canvas in three frames. Present it as a deck (the VC cut, the story, or everything) and export the cut as a PDF.</p></div><div class="foot"><span class="src">boss playbook · ${questions.length} question${questions.length === 1 ? '' : 's'} open</span></div></article>
   <article class="block filled" id="demo-design" data-title="Design"><div class="head"><h3><a href="design.html">The design space →</a></h3></div><div class="body"><p>Tokens as swatches with the decision that chose them, contrast computed, the people, the parts, the patterns — every value copies in the form an editor wants.</p></div><div class="foot"><span class="src">boss design</span></div></article>
   <article class="block filled" id="demo-board" data-title="Board"><div class="head"><h3><a href="board.html">The board →</a></h3></div><div class="body"><p>Every idea and feature by where it stands — captured, taking shape, building, shipped, parked — read from the records' own status lines.</p></div><div class="foot"><span class="src">boss board --html</span></div></article>
-  <article class="block filled" id="demo-organization" data-title="Organization"><div class="head"><h3><a href="organization.html">Organization →</a></h3></div><div class="body"><p>Every record has a home, a shape and one verb that writes it — the filing BOSS does so the founder never has to, grouped by what you're doing, read from the tree after rendering.</p></div><div class="foot"><span class="src">the demo project's tree</span></div></article>
+  <article class="block filled" id="demo-organization" data-title="Where things live"><div class="head"><h3><a href="organization.html">Where things live →</a></h3></div><div class="body"><p>Every record has a home, a shape and one verb that writes it — the filing BOSS does so the founder never has to, grouped by what you're doing, read from the tree after rendering.</p></div><div class="foot"><span class="src">the demo project's tree</span></div></article>
   <article class="block filled" id="demo-learning" data-title="Learning"><div class="head"><h3><a href="learning.html">How it learns →</a></h3></div><div class="body"><p>Evidence climbing the ladder, a persona getting less made-up, a decision failing its own test, a brand learning real words, a health read becoming the next idea — and the conscience run for real against the records while the page was built.</p></div><div class="foot"><span class="src">read from the records · the shipped hook, run at build time</span></div></article>
 </div>
 <p class="t-small" style="margin-top:24px">The faces are illustrations, because the founders are fictional; BOSS never draws a stand-in for a real person. The two product screens are drawn too, since Kettlewick's code is never built. No real company is a rival here. What you see is the render's honesty, not a brochure — the questions still open on the playbook are open on purpose only when a page says so.</p>`));
