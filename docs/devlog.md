@@ -22,6 +22,29 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-05 — IDEA-137: five more lenses read into the guide; the ladders follow the guide (`f10467b` → `74e1c66`, Unreleased)
+
+- **FEAT:** none — IDEA-137 R11 and C11. Ajesh asked what else fits the ecosystem beyond permaculture
+  and the Atom of Work, then for a plan and a way to keep the ladders current when the model moves.
+- **Landed:** ten lenses sorted by what they would change (4 integrate · 3 lineage · 3 parked, each
+  with a trigger); the four read at source by an agent (lens cards gitignored). **The guide got
+  revisions** — § Revisions in `docs/ECOSYSTEMS.md`, `anatomy: N` on each ladder, and
+  `npm run check:freshness` names a ladder behind (`test/ladder-review.test.js`, 7). Revision 5 (Beer:
+  where it learns of outside change · Shingo: each check stops or warns · Illich: could the founder do
+  it by hand) and revision 6 (Scott: three questions for every map · Ashby: why one thing, why mute
+  stays free). All four ladders — design, engineering, claims, AI behaviour — reviewed through to 6.
+  Design gained its purpose line and lost *"actually stops the 47 blues"*: every design check warns.
+  `/design-library` now proposes an unused component's deletion instead of running it (CHANGELOG).
+  IDEA-143 opened as the website backlog.
+- **Surprise:** the loop found real gaps on its first run — engineering planted twenty minutes before
+  the purpose line existed, design never read back against the anatomy it was read from. The
+  `/design-library` worry did **not** reproduce: three runs read past the grep to a dynamic `import()`
+  and kept the live component; what reproduced was smaller — 2/3 deleted a truly unused one unasked,
+  against the scaffold's own *ask before deletes*. And revision 5 nearly redefined BOSS's word
+  *boundary* (fires at the write, vs a filter) — the overclaim was only ever *stops*.
+- **Next:** three lineage lenses wait on a read at source (at the next revision, not now). IDEA-143
+  waits on the 2026-10-14 read. C7.3 (a skill spanning ecosystems, from IDEA-139) is open.
+
 ## 2026-10-04 — IDEA-136: the engineering ecosystem, investigated then built (`fe47b69` → `8f0cc9a`, Unreleased)
 
 - **FEAT:** none. Investigation first (R1–R6: atomic design for code, the layers, XP and XP with agents, pattern
