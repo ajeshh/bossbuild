@@ -45,9 +45,17 @@ There is no weekly cadence; the site moves with releases. Three loops, each with
 - [ ] **M0 · Start where the founder already is** (2026-10-05, EVID-005, EVID-002). A non-technical
   founder, already building with AI tools and unhappy with what they'd built, read the site and could
   not say how or when BOSS would help; it read as too long. The overview pass's first test: **can that
-  reader, on the first screen, see their situation and what BOSS does about it?** Probably by
-  subtraction — the home page answering *"I've got an AI-built thing I don't like"* before any
-  machinery. Not a new page.
+  reader, on the first screen, see their situation and what BOSS does about it?** Not a new page.
+  - **Two doors, not one** (Ajesh, same day: *"its not just for folks who built something with ai,
+    but its also for folks starting a new app idea. How do they supercharge it like a Boss?"*).
+    *Starting from an idea* → `/boss <idea>`; *already building, and it's drifting* → `boss adopt`.
+    Both exist; on 2026-10-05 the home page reaches them only after the definition line and the
+    install commands, and the second door is a one-line aside.
+  - **Order the first screen by the reader, not the product:** which door is yours → what BOSS does
+    on day one for that door (one concrete before/after each) → *then* install. Requirements (Node,
+    Claude Code) after the reader has a reason to care.
+  - Ajesh's *"supercharge it like a Boss"* is a candidate line for the voice pass, not copy yet; the
+    one sentence in PRINCIPLES stays the definition and moves only by `/decide`.
 
 - [ ] **M1 · The ecosystem, shown not named** (2026-10-05). No *Ecosystems* page and no architecture
   diagram. The ecosystem is real only where BOSS's parts hand work to each other, so show the hand-offs
