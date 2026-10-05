@@ -27,6 +27,13 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Two practices say what's actually true.** `boss craft data-schema` no longer calls every schema
+  decision a one-way door: changing a table's shape is mostly cheap now, and what can't be undone is
+  information you never captured or deleted — so that's where it asks you to slow down. It also
+  stops implying a UUID protects a row; it only makes it harder to guess. `boss craft design-system`
+  explains why a pattern is named at two but a rule is retired at three, instead of calling them the
+  same threshold.
+
 - **Done, not just the celebration of it.** The practice is now `boss craft done` (the old name still
   works). It still says how to mark a finished thing without hollow praise, and now says what done is
   *for*: past the point where the work meets its purpose, every extra step costs time, the team, other

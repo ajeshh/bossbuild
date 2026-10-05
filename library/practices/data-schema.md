@@ -64,11 +64,13 @@ model is not a control in your app.**
   through your UI. Your UI filters by user because you told it to; the API doesn't unless the
   *database* says so. **Test the layer the attacker uses, not the layer you built.**
 
-## Schema decisions are one-way doors
+## Schema shape is cheap to change; what it remembers is not
 
-Most code an agent writes is cheap to change. **Schema is not** — once there is production data, a
-schema decision is a migration, a backfill, and a window where both shapes must work. That makes it
-one of the few places a solo founder should slow down deliberately.
+Changing a table's **shape** is mostly cheap now — a migration, a backfill, a window where both shapes
+work, and the tooling for doing it without downtime is years old. What no migration and no revert can
+undo is **information the schema never captured, or destroyed**: a column added in month six holds
+nothing from months one to five, and a row hard-deleted is gone. That — what the schema *remembers* —
+is the one place a solo founder should slow down deliberately.
 
 Worth a `/decide` → `DEC-NNN` before the agent writes the migration:
 
@@ -76,7 +78,8 @@ Worth a `/decide` → `DEC-NNN` before the agent writes the migration:
   This is the hardest thing to change later and the easiest to get wrong early. Default to
   **`tenant_id` + RLS** until you have a reason not to.
 - **Identity of a row.** UUID vs. sequential integer — sequential IDs in a URL are enumerable, which
-  is how the RLS hole above gets *found*.
+  is how the RLS hole above gets *found*. A UUID makes rows harder to guess; it never protects them —
+  the standard itself says not to use one as a security capability. The access control is RLS.
 - **Soft vs. hard delete.** Ties directly to what you promised users about deletion, and to
   regulation. **Say which one you do** — a soft delete presented as deletion is a named pattern
   (`boss craft deceptive-patterns --surface cancel-and-delete`), not a shortcut. And if you have
@@ -124,8 +127,8 @@ A short read, not a ceremony:
 **Quickstart:** none of this. A prototype with no users and no real data doesn't have a data layer
 worth governing — and demanding one is the ceremony that makes founders quit.
 **MVP, the moment real user data exists:** RLS on + the negative test. That's it — two things,
-non-negotiable, and they're 90% of the risk. (Plus `created_at` on user + core rows — listed under the
-one-way doors above, but it belongs *here* in effort: it costs one line, needs no decision, and is the only
+non-negotiable, and they're 90% of the risk. (Plus `created_at` on user + core rows — listed under
+*what the schema remembers* above, but it belongs *here* in effort: it costs one line, needs no decision, and is the only
 item on this page that gets strictly more expensive every day you don't do it.)
 **V1:** the tenancy `DEC`, migrations discipline, the review list, `db-architect`.
 **Scale:** retention, PII classification, access review.

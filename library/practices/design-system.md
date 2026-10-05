@@ -617,7 +617,9 @@ drift*) and incomplete, because nobody ever asked what a *repeated* exception me
 > A rule with three standing exceptions is not being followed — it is being worked around, and the
 > working-around is the real convention now.
 
-Same threshold as promotion, pointed the other way. Narrow the rule, split it, or retire it.
+Pointed the other way from promotion, and deliberately a higher bar: a pattern is named at **two**
+because naming is cheap and easy to undo; a rule is retired at **three** because people have built on
+it. Narrow the rule, split it, or retire it.
 
 **The general form, which applies at every layer:**
 
