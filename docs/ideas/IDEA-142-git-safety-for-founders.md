@@ -39,10 +39,10 @@ no new skill (the founder-evidence mandate: compose and subtract).
       `branch -D`. Merged by `boss sync` like the deny floor: an ask entry can only add a prompt,
       never grant (docs 2026-10-05: ask beats a user's allow, is split per subcommand, and is honored
       in auto and bypass modes).
-- [ ] **T3 — a save point at every working point.** After `/prototype`, nothing establishes the commit
+- [x] **T3 — a save point at every working point.** After `/prototype`, nothing establishes the commit
       habit; for the non-technical cohort git is the only real undo (`/rewind` misses shell and
       subagent edits). One line in `coder`: commit when it works, say *"saved — you can get back here."*
-- [ ] **T4 — unpushed work named at `/close`.** The `.gitignore` says pushing backs up your thinking;
+- [x] **T4 — unpushed work named at `/close`.** The `.gitignore` says pushing backs up your thinking;
       nothing notices a week of commits on one laptop. `/close` step 4 adds the unpushed count.
 - [ ] **T5 — worktrees: trial before recommending.** The practice recommends one worktree per agent;
       BOSS's own trial (IDEA-120) is open. Known snag: a fresh worktree has no `.env`, so the app
@@ -57,6 +57,11 @@ no new skill (the founder-evidence mandate: compose and subtract).
   not `core.hooksPath`, which would hang on npm keeping an exec bit and would switch off the founder's
   other hooks). Called by `boss new`, `boss adopt`, `boss sync --apply`. `test/commit-secrets.test.js`.
 - T2: `permissions.ask` in the L0 template settings; `src/sync.js` merges `deny` and `ask` alike.
+- T3: one bullet in `coder` — commit each working point, never a half-done state, never push; the
+  founder can opt out (remembered under *Left to the agent*) and is asked instead. Same shape as
+  `/prototype`'s step 4.5, which already commits without asking.
+- T4: `/close` step 4 counts commits not on the upstream and offers the push (only on a yes); no
+  remote at all is named once. `/close` ships at MVP — a Quickstart founder has no close to hear it.
 - Found while building, not done: `boss remove --apply` leaves the shim behind (harmless — it exits 0
   when the scan file is gone — but it is a BOSS-written file left in `.git/hooks/`).
 

@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Every working point is a save point.** The coder now commits each change that works (the smoke
+  passes, or it runs) and says so in a line, so there is always a version to get back to: the
+  editor's undo misses shell commands and subagent edits, and git doesn't. It never commits a
+  half-done state and never pushes. Rather commit yourself? Say so once and it asks instead. And
+  `/close` now tells you when commits exist only on this machine, with an offer to push.
+
 - **A key is stopped at the commit, not found later.** A key pasted into the code used to commit
   without a word, and `/ship` looked for it only after it was already in git history, where deleting
   the line doesn't remove it. New projects now check every commit for key shapes that are almost

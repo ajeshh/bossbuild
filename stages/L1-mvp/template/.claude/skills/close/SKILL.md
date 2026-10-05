@@ -224,10 +224,14 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
 
 4. **Check the working tree.** If there are uncommitted changes the user wants to keep but isn't
    committing now, mention them in RESUME's *State* so next-you isn't surprised. Don't auto-commit.
+   Then the copy off this machine: `git rev-list --count @{upstream}..HEAD`. Commits that exist only
+   on this laptop are not a backup and haven't reached a cofounder. Any? Say the count in step 5 and
+   offer to push; push only on a yes — it is the one act here that leaves the machine. No remote at
+   all (`git remote` prints nothing)? Say once that `/boss` makes a private repo, and drop it.
 
 5. **Stop.** Don't report what you wrote; the records are the summary, and a list of files reads like
    a receipt for somebody else. Say only what they need: the thing that can't wait (if any), the one
-   list of answers you need (if any), and uncommitted work they'd be surprised by. If there's none of
+   list of answers you need (if any), and uncommitted or unpushed work they'd be surprised by. If there's none of
    that, one line on where the next session starts is the whole close.
 
 ## The RESUME template (used when none exists yet)
