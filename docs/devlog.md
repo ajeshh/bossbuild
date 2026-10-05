@@ -22,6 +22,29 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-04 — IDEA-137, second session: removal test, the second repair, successions followed, Done (`ef84359` → `24d808a`, Unreleased)
+
+- **FEAT:** none — IDEA-137's governance step (C6) finished, plus T1, N4, R9.1 and a rename Ajesh asked
+  for. Order held: IDEA-136 (engineering) is planted in a peer session; C7 waits on it.
+- **Landed:** **C6.5** — DEC-023's falsifier is a test (`test/removal-leaves-founder-work.test.js`):
+  scaffold, unlock MVP, add the founder's app with the `/ai-cost` logger as the template hands it over,
+  `boss remove --apply`, their app still runs. **First run failed** — the logger appended to
+  `.boss/cost-log.jsonl` with no mkdir, so every wrapped LLM call threw once `.boss/` left; fixed in
+  both stacks. **C6.2** — DEC-022 built as one bullet in the `coder` agent; the remembered answer is a
+  line under *Left to the agent* in the founder's `engineering.md`, no state file. **C6.4** — a
+  succession now binds every shipped reader of the old path, declared or not (`pointer: true` binds
+  only code); replayed on `f4c6b14`'s parent with nothing declared, it catches nine of the canvas
+  breaks the old rule missed. C6.1, C6.3 already held. **T1** — the trace stays in-project
+  (DEC-015's open follow-on closed). **N4** — `/canvas`'s earning branch asks what would make you
+  stop. **R9.1** — Ajesh's Menu is a second anatomy (how an ecosystem explains itself to a person);
+  the guide's step 2 gains a purpose line. **Done** — Ajesh: *"its just done now"*; the practice is
+  `done.md`, reworked from their own account (past done, more is a debt; done ends the container;
+  continuing needs consent and has a true cost); `/close` names work kept past its criteria.
+- **Surprise:** the shared index moved during my own pre-commit hook — `29a0889` carried a peer's
+  staged IDEA-136 F4 files. Both sessions now commit with `git commit -- <paths>`.
+- **Next:** C7 after IDEA-136 lands · the ebooks → C9 · `check:refs` is red on a peer's
+  `src/playbook.js` → `docs/ENGINEERING.md` (theirs, told) · Ajesh: is `done.md` still a draft?
+
 ## 2026-10-04 — IDEA-137: the ecosystem of ecosystems — researched, guide drafted, the flow reader built (`fa3e7ab` → `c03cb5a`, Unreleased)
 
 - **FEAT:** none — IDEA-137, captured and built in the session. Ajesh asked what other ladders BOSS
