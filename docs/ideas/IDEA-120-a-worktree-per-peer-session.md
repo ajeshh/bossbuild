@@ -3,7 +3,7 @@ id: IDEA-120
 type: idea
 kind: capability
 owner: Ajesh
-status: ready
+status: building
 proof: none
 proof_note: a trial record in this file (what broke in one worktree session) is the first proof; a CLAUDE.md rule change is the second
 gist: Peer sessions share one checkout, which is why CLAUDE.md carries never-checkout, never-stash and stage-one-hunk. The host can now give an agent or a session its own git worktree. Trial it in one session before any rule moves.
@@ -41,7 +41,62 @@ disposable worktree, supervision state **on disk** so a restart or compaction lo
 zero-token watcher that wakes the integrator only on an event. Read its `docs/architecture.md` before
 designing merge-back here. Borrow the shape; install nothing.
 
+## Trial (2026-10-05) — it holds
+
+One session, one real change (`boss remove` takes IDEA-142's commit shim back out: `src/remove.js`
++ a test + a CHANGELOG clause), done start to finish in `.claude/worktrees/idea-120` on branch
+`trial/idea-120`. Same session, earlier that day, in the shared tree: four commits staged hunk-by-hunk
+through synthetic blobs to keep a peer's uncommitted INDEX row out, one wait on a peer's `index.lock`,
+two lane-claim messages. In the worktree: a plain `git add`, a green pre-commit (9.2s), a clean rebase.
+
+What broke or rubbed, in the order it happened:
+
+1. **The host branches from `origin/main` by default** (`worktree.baseRef: fresh`), 5 commits behind
+   local main — the worktree would have lacked the code being changed. Created by hand at local HEAD
+   (`git worktree add -b <branch> .claude/worktrees/<name> HEAD`), then entered by path.
+2. **Every gitignored thing is absent**: `.boss/`, `docs/evidence/`, the research sessions, CANVAS,
+   and all of `.claude/` — so a session *started* in a worktree runs with none of BOSS's own hooks or
+   settings. No `node_modules` to miss (zero deps): `npm run test:ci` passed (732) untouched.
+3. **`npm run check` went red — 73 broken links**, every one into a gitignored record; the `&&` chain
+   stopped there, so the later checks never ran.
+4. **Symlinks, not copies.** The records are the single-copy files behind both unrecoverable losses;
+   a copy per worktree is a fork. Linking the main tree's paths keeps one copy. The set is DERIVED
+   (walk the main tree, `git check-ignore --no-index` from the worktree), and two traps: a directory
+   ignored as a whole can still hold tracked files (`docs/research/verdicts/`, `docs/architecture/`) —
+   linking it would hide the worktree's own tracked copies, so descend and link the ignored children;
+   and never link `.claude/worktrees` (a loop). With the links, the check matched main's exactly.
+5. **A trailing-slash ignore rule doesn't match a symlink** (git sees a file), so 12 links showed as
+   untracked — one `git add -A` from committing absolute paths into a public repo. Fixed locally in
+   `.git/info/exclude` (shared by every worktree, tracked by none).
+6. **CLAUDE.md's list of what is gitignored is incomplete** — it omits `docs/architecture/*` (most),
+   `docs/design/`, the research compendium/SOURCES/watchlists, `docs/exports/`, `docs/loops/`,
+   `docs/fable-campaign/`, `plugin/evals/results/`. The derivation found them; the list never would.
+7. **The host fences the session in.** It refuses any git command aimed at the main checkout, and any
+   command it can't prove stays inside — a `find -path ./.git`, a Python heredoc whose text mentions
+   git. Workable: git commands alone, file edits through the editor tool. The fence is the point.
+8. **Testing the CLI needs no global install** — `node <worktree>/bin/boss` in a throwaway with
+   `BOSS_HOME` set. The `npm i -g` question answers itself: don't, from a worktree.
+9. **Merge-back**: `git rebase main` in the worktree was clean, `## Unreleased` included (737 green
+   after). Landing is one `git merge --ff-only trial/idea-120` run IN the main checkout — the single
+   moment the shared tree is touched, and git refuses rather than clobbers if a peer holds a dirty
+   copy of a touched file. Never `git push . HEAD:main` from the worktree: it would move main's ref
+   under a checkout whose files didn't move.
+10. **…and it did refuse — the finding that matters most.** A peer working *in the main checkout*
+    held an uncommitted row in `docs/ideas/INDEX.md`; the fast-forward touched that file, so git
+    aborted (safely — nothing of theirs moved). Main also moved twice while landing (peer commits), so
+    the rebase ran three times. The INDEX change came out of the branch and went in by the old blob
+    dance. **Worktrees retire the staging pain only when the main checkout is nobody's workbench:**
+    if one session still edits there, every landing that touches a shared file waits on it. The rule
+    has to be all sessions, or it is a fourth rule beside the three.
+
 ## Tasks
 
-- [ ] Trial in one session on a one-file change; record what broke.
-- [ ] Only if it holds: rewrite the three CLAUDE.md rules as one, and say which incidents it closes.
+- [x] Trial in one session on a one-file change; record what broke. (2026-10-05, above)
+- [ ] Rewrite the three CLAUDE.md rules (no checkout, no stash/pop, stage one hunk) as one: *work in
+      your own worktree; land with `--ff-only` from the main checkout.* Closes the 2026-09-13 stash
+      incident (five UU files), the five staging sweeps, and the `index.lock` collisions. **Ajesh's call**
+      — CLAUDE.md is read by every peer, and the rule changes how all of them work.
+- [ ] The setup is a script today (`link.mjs` in a session scratchpad, findings 1, 4, 5): make it
+      `scripts/worktree.js` (create at HEAD, link derived records, exclude the links) once the rule
+      above is adopted — not before.
+- [ ] Correct CLAUDE.md's gitignored list (finding 6) or point it at the derivation instead.
