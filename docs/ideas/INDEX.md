@@ -174,6 +174,7 @@ BOSS's own backlog, dogfooding its own ID system.
 | [IDEA-105](IDEA-105-seeing-a-running-install.md) | Seeing a running install | deferred | 2026-09-13 · `npm run check:reach` ships the estimate (≈4/week, inside the crawl band); whether a version-check phone-home breaks the *never background telemetry* promise is the parked DEC |
 | [IDEA-104](IDEA-104-the-business-case-render-and-the-deck.md) | The business case render and the deck | shipped (as IDEA-106 → FEAT-026..029) | 2026-09-12 · spun from FEAT-025 (rungs 3–4) · trigger: a founder asks for a data room or a deck |
 | [IDEA-103](IDEA-103-a-plugin-eval-suite-so-the-instrument-can-run.md) | A plugin eval suite, so `claude plugin eval` can run | shipped | **v0.320.0** · one case (the door, IDEA-099), two LLM graders · host's with-without ablation: **with 1.0 / without 0 / Δ 1.0**, ~$0.20 a run · `npm run eval:plugin` · first run failed on the CASE (no Bash → the door apologised; a named command read as an act), not the door · `tool_used: Skill` is not the indicator for a slash command |
+| [IDEA-143](IDEA-143-the-website-pass-after-the-freeze.md) | The website pass after the freeze — assess the overview first | deferred (trigger: the 2026-10-14 `copy_install` read lifts the site freeze) | Ajesh 2026-10-05: the website backlog, as maybes; the overview is read first. M1: the ecosystem shown on existing pages as tested hand-offs, never named or diagrammed |
 
 Canvas for BOSS itself: [CANVAS.md](CANVAS.md).
 
