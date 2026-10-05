@@ -29,6 +29,7 @@ import { appendFileSync, existsSync, readFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { BOSS_ROOT } from '../src/paths.js';
+import { isoDay } from '../src/clock.js';
 import { PKG } from '../src/update.js';
 import { dim, bold, ok, warn, err } from '../src/ui.js';
 
@@ -84,7 +85,7 @@ const delta = (now, then, key) => {
 
 console.log(`\n  ${bold('BOSS reach')}  ${dim('· what the public counters can see')}\n`);
 
-const snap = { date: new Date().toISOString().slice(0, 10) };
+const snap = { date: isoDay() };
 const prev = readLedger().at(-1);
 
 // --- npm ------------------------------------------------------------------

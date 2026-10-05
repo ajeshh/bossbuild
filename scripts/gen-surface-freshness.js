@@ -30,6 +30,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { BOSS_ROOT, STAGES_DIR } from '../src/paths.js';
+import { isoDay } from '../src/clock.js';
 
 const LEDGER = join(BOSS_ROOT, 'registry', 'surface-freshness.json');
 
@@ -130,7 +131,7 @@ const entries = collect().map(({ kind, stage, rel }) => {
     rel,
     // Judgment and stamp both survive regeneration — only the file list is refreshed.
     curve: kept?.curve || assignCurve(kind, rel),
-    last_reviewed: kept?.last_reviewed || lastTouched(rel) || new Date().toISOString().slice(0, 10),
+    last_reviewed: kept?.last_reviewed || lastTouched(rel) || isoDay(),
   };
 }).sort((a, b) => a.rel.localeCompare(b.rel));
 

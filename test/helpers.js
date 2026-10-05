@@ -7,6 +7,7 @@
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
+import { isoDay } from '../src/clock.js';
 
 const roots = [];
 
@@ -47,7 +48,8 @@ export function canvas(ideaId, risk) {
   return `---\nid: ${ideaId}-canvas\ntype: canvas\nowner: pm\nstatus: draft\n---\n\n# Canvas\n\n- **Riskiest assumption:** ${line}\n`;
 }
 
-// Today/offset as YYYY-MM-DD, for date-sensitive projections (aging, review-due).
+// Today/offset as YYYY-MM-DD, for date-sensitive projections (aging, review-due). LOCAL, like the
+// code it feeds (src/clock.js) — a UTC day here disagreed with the code every evening (IDEA-136 · F7).
 export function daysAgo(n) {
-  return new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+  return isoDay(Date.now() - n * 86400000);
 }

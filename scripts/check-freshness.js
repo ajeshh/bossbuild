@@ -25,6 +25,7 @@ import { join } from 'node:path';
 import { realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { BOSS_ROOT } from '../src/paths.js';
+import { isoDay } from '../src/clock.js';
 import { parseFrontmatter } from '../stages/L0-quickstart/template/.claude/hooks/lib/yaml.js';
 
 const PRACTICES_DIR = join(BOSS_ROOT, 'library', 'practices');
@@ -216,7 +217,7 @@ function readMarkers(asof) {
 }
 
 function report() {
-  const asof = argValue('--asof') || new Date().toISOString().slice(0, 10);
+  const asof = argValue('--asof') || isoDay(); // local — review dates are a person's calendar (IDEA-136 · F7)
   const all = process.argv.includes('--all');
   const practices = readPractices(asof);
   const unreadable = practices.some((p) => p.state === 'UNREADABLE')
