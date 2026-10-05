@@ -84,11 +84,12 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Next (in order)
 
-- **IDEA-138 — the claims ecosystem, steps 1–2 written; step 3 waits on Ajesh's yes** (order: IDEA-137 · B4 —
-  claims → AI behaviour → data & trust). Proposed, smallest first: derive the site's decision count (16 and
-  21 on the page, 23 in the repo) · `/landing` reads the evidence grades before writing a line · the two
-  `check:site` rules go DOWN into `landing-page.md` · the demand page's result returns as an EVID (Q1 first). · C7 finalises the guide **after** IDEA-136 lands · the ebooks → C9 · C5/C8 wait on a founder's own broken flow. **IDEA-136 has landed** —
-  its four disagreements with the draft guide are in `docs/ENGINEERING.md` for C7.
+- **IDEA-138 — the claims ecosystem is planted (2026-10-04, Unreleased).** `/landing` reads the evidence
+  before it writes a line, and the demand page's result returns as an EVID. The landing-page practice
+  carries *derive, never retype*. The site's decision count is derived (it said 16 and 21; there are 23).
+  `/pretotype`'s false *"after unlock"* is fixed. **Not done:** a full `gen:site` (it waits on the
+  share-sort). Left on the record: the drift reader (part 6) waits for a founder whose page outlived its
+  evidence. **Next ecosystem: AI behaviour** (IDEA-137 · B4).
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
   Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
 
