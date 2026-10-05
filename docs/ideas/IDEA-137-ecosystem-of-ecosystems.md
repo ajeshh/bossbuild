@@ -468,7 +468,7 @@ terms (no research in the CHANGELOG).
 
 **C6 · Governance** (some need Ajesh's `/decide`)
 - [ ] C6.1 · N12 — each ecosystem's practice names how its rules get amended, by whom (anatomy #8).
-- [~] C6.2 · **Decided: DEC-022** (2026-10-04) — the behaviour itself is still to build. N11 — the second repair of a kind offers a check the founder's project owns. **Touches
+- [x] C6.2 · **Decided: DEC-022, built (2026-10-04)** — a bullet in the `coder` agent (the one implementer): after fixing a founder-caused break, `git log -p` the file for the same kind of fix; if found, offer once in DEC-022's words. The answer lives where the founder reads and amends it — yes becomes an E rule in `.claude/rules/engineering.md`; *keep fixing it* becomes a line under its new *Left to the agent* section (end of `coder.md` in Quickstart). No counter, no state file. Not built: the conscience noticing a repeat on its own — no trigger has earned it. N11 — the second repair of a kind offers a check the founder's project owns. **Touches
   DEC-003 → `/decide`.**
 - [ ] C6.3 · M11 reworded in the practices — the latent centre that most helps the whole.
 - [ ] C6.4 · M12 — a pioneer names its successor; readers follow (generalises C3.1).

@@ -60,6 +60,13 @@ others, and search by what the code would do, before writing a new one.
   database. — (E if `schema-guard` is on)
 - **One word per concept** — the same noun in the schema, the code and the copy. — W
 
+## Left to the agent
+
+_Breaks you'd rather the agent keep fixing than add a check for — one line each, file and kind. The
+agent won't offer a check for these again; delete a line to hear the offer next time._
+
+-
+
 ## Changing these
 
 Change a rule here, in the open. Three exceptions to the same rule mean the rule is wrong — narrow it,

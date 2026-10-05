@@ -27,6 +27,13 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **When the same break comes back, the coder offers to catch it for good.** After fixing something
+  in your code that it has fixed in that file before, the coder says so once and offers to write a
+  check that catches it at the write — a test or a lint rule, added to your engineering file. Or say
+  *"keep fixing it for me"*: it writes that down under *Left to the agent* and doesn't ask again for
+  that file and kind. It never counts the repeats or says whose change caused it, and it never offers
+  for files BOSS shipped — those get fixed in BOSS.
+
 - **Your app keeps working if you take BOSS out.** The AI-cost logger `/ai-cost` gives your app wrote
   its ledger into BOSS's folder and assumed the folder was there — so after `boss remove`, a fresh
   clone, or a deploy that can't write to disk, every model call it wrapped would fail. It now makes

@@ -63,4 +63,5 @@ reword, or drop the offer.
 - Commits BOSS to remembering one answer per kind of break, per project — in the project, never as a
   reading of the founder (paths, never people: `docs/ECOSYSTEMS.md`).
 - Rules out a repair counter, a streak, or any "you've had this N times" wording.
-- Not built yet: IDEA-137 · C6.2. Nothing changes for a founder until it is.
+- Built 2026-10-04 (IDEA-137 · C6.2) as text the `coder` agent follows; the remembered answer is a
+  line in the founder's `.claude/rules/engineering.md` under *Left to the agent* — theirs to read and delete.
