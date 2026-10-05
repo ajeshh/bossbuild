@@ -66,12 +66,12 @@ Screenshots and measurements were session-local (scratchpad, not kept). Home: **
 screen 3 on a phone; *is this for me* (the shape picker) at screen 5.8.
 
 **Correctness — allowed under the freeze:**
-- [ ] **C1 · Home scrolls sideways on phones.** `.quirks` `minmax(24rem,1fr)` (`web/styles/site.css:691`)
-  is wider than a 390px column; layout viewport measured 413. Fix: `minmax(min(24rem,100%),1fr)`.
-- [ ] **C2 · `start.html:78` "asks three things nobody else does"** is an *only BOSS* claim with no
-  `/comp-eval` behind it, and our own competition notes contradict it. Reword.
-- [ ] **C3 · Terminals clip or scroll sideways** (3 of 4 on home at 390; a line cut mid-sentence on
-  start at desktop). `.terminal pre { white-space: pre-wrap }` under 46rem (`site.css:114`).
+- [x] **C1 · Home scrolls sideways on phones.** `.quirks` `minmax(24rem,1fr)` (`web/styles/site.css:691`)
+  is wider than a 390px column; layout viewport measured 413. Fix: `minmax(min(24rem,100%),1fr)`. **Fixed 2026-10-05** — 390 measured 390.
+- [x] **C2 · `start.html:78` "asks three things nobody else does"** is an *only BOSS* claim with no
+  `/comp-eval` behind it, and our own competition notes contradict it. **Fixed 2026-10-05** — *asks three things*.
+- [x] **C3 · Terminals clip or scroll sideways** (3 of 4 on home at 390; a line cut mid-sentence on
+  start at desktop). `.terminal pre { white-space: pre-wrap }` under 46rem (`site.css:114`). **Fixed 2026-10-05** at every width (no terminal draws boxes); 0 overflowing at 390 and 1440.
 
 **Maybes — for the overview pass:**
 - [ ] **P1 · Hero line.** Lead with the reader's situation; keep the PRINCIPLES sentence verbatim as
