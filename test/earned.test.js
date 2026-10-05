@@ -14,7 +14,8 @@ import { readStageManifest, applyStage } from '../src/scaffold.js';
 import { heldBack, earnedGroups, llmInSource, uiInSource, hasShipped, stillDeferred, newlyEarned, markLaidDown } from '../src/earned.js';
 import { planSync, applySync } from '../src/sync.js';
 import { forgetGitDates } from '../src/gitdates.js';
-import { STAGES_DIR } from '../src/paths.js';
+import { STAGES_DIR, BOSS_ROOT } from '../src/paths.js';
+import { execFileSync } from 'node:child_process';
 
 after(cleanup);
 
@@ -154,4 +155,32 @@ test('markLaidDown removes a group and collapses an empty deferred map', () => {
   const stamp = { skills: ['a'], deferred: { 'L1-mvp': { g: ['b', 'c'] } } };
   markLaidDown(stamp, [{ stage: 'L1-mvp', group: 'g', skills: ['b', 'c'] }]);
   assert.deepEqual(stamp, { skills: ['a', 'b', 'c'] });
+});
+
+// IDEA-139 T7, found by the planting test 2026-10-05: `boss unlock mvp` on an app that ALREADY calls
+// a model printed "3 held back when the app first calls a model" — untrue for that project — and left
+// them off disk until a `boss sync`. Adopt has always evaluated the predicates (holdAtAdopt); unlock
+// now does the same, so a group already earned arrives with the rung and is never named as held.
+test('unlock lays down a group the project has already earned, and never calls it held', () => {
+  const home = project({});
+  const p = project({
+    '.boss/manifest.json': JSON.stringify({
+      name: 'earned-at-unlock', bossVersion: '0.0.1', stage: 'L0-quickstart', mode: 'Quickstart',
+      installedLayers: ['L0-quickstart'], agents: [], skills: [], hooks: [], loops: [],
+    }),
+    '.boss/config.json': JSON.stringify({ cohort: null }),
+    'src/a.ts': 'import OpenAI from "openai";\nconst c = new OpenAI();\n',
+  });
+  const out = execFileSync('node', [join(BOSS_ROOT, 'bin', 'boss'), 'unlock', 'mvp', '--yes'], {
+    cwd: p, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
+    env: { ...process.env, NO_COLOR: '1', HOME: home, USERPROFILE: home, BOSS_HOME: join(home, '.boss') },
+  });
+  assert.doesNotMatch(out, /held back when the app first calls a model/, 'the app already calls a model');
+  assert.match(out, /held back after your first feature ships/, 'groups not yet earned are still named');
+  for (const s of ['ai-cost', 'ai-failure-states', 'evals']) {
+    assert.ok(existsSync(join(p, '.claude', 'skills', s, 'SKILL.md')), `${s} arrives with the rung`);
+  }
+  const stamp = JSON.parse(readFileSync(join(p, '.boss', 'manifest.json'), 'utf8'));
+  assert.ok(!stamp.deferred?.['L1-mvp']?.aiMediated, 'an earned group is not recorded as deferred');
+  assert.ok(stamp.skills.includes('evals'), 'and the stamp names what is on disk');
 });
