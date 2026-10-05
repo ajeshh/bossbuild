@@ -176,7 +176,7 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
 - [ ] **N3 · Where a practice was proven** (sharpens, c2) — a `grown_in:` line (mode, stack class,
   n projects); `/boss-sync` says *"proven in BOSS's own repo only"* or *"in 3 projects like yours"*.
   Most practices are n=1.
-- [ ] **N4 · Founder stamina on the earning branch too** (sharpens, b2) — `/canvas` asks whose hours
+- [x] **N4 · Founder stamina on the earning branch too** *(2026-10-04 — one clause on the Cost Structure runway line, not a new question: the runway was already asked; the stopping condition wasn't)* (sharpens, b2) — `/canvas` asks whose hours
   carry it and what would make you stop only when the project won't earn (`:266-275`); ask once on
   the earning branch until it pays. A canvas question, never a hook.
 - [x] **N5 · Chop and drop** *(done — C3.5)* (sharpens M2/M7, a30) — `/sunset FEAT` writes its lesson into the

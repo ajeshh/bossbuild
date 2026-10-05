@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`/canvas` asks a project that means to earn what would make you stop.** It already asked how long
+  your runway lasts; it now also asks, once, what would make you stop if the runway ends before the
+  thing works. The not-earning branch has always asked it. A condition you name early keeps stopping
+  a decision instead of a slow fade. Skip is still an answer.
+
 - **The duplicate-component check and the design page agree on what a component is.** The check
   asked *reuse, adjust or new?* about page files like `DashboardPage` or `SettingsLayout`, which the
   design page never lists; and the design page listed `App` as a component. Both now skip the same

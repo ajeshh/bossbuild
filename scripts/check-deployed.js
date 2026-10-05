@@ -43,16 +43,13 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { bold, dim, ok, warn, err } from '../src/ui.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = join(ROOT, 'site');
 const TIMEOUT_MS = 8000;
 
-const bold = (s) => `\x1b[1m${s}\x1b[0m`;
-const dim = (s) => `\x1b[2m${s}\x1b[0m`;
-const ok = (s) => `\x1b[32m${s}\x1b[0m`;
-const warn = (s) => `\x1b[33m${s}\x1b[0m`;
-const err = (s) => `\x1b[31m${s}\x1b[0m`;
+// Terminal styling from src/ui.js — the local copies ignored NO_COLOR (IDEA-136 · F4).
 
 const strict = process.argv.includes('--strict');
 

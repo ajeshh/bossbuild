@@ -28,13 +28,12 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { bold, dim, warn } from '../src/ui.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const WORKSPACE = join(ROOT, '.claude');
 
-const bold = (s) => `\x1b[1m${s}\x1b[0m`;
-const dim = (s) => `\x1b[2m${s}\x1b[0m`;
-const warn = (s) => `\x1b[33m${s}\x1b[0m`;
+// Terminal styling from src/ui.js — the local copies ignored NO_COLOR (IDEA-136 · F4).
 
 // The workspace is gitignored, so it is ABSENT in CI and in anyone else's clone. That is not a
 // failure — there is simply nothing to rule on. Saying so beats 26 phantom findings.
