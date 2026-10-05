@@ -111,7 +111,9 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 .terminal.breakout { width: min(100%, 54rem); }
 /* Flex column: the newline between .line spans is whitespace-only and is not rendered,
    so a block per line does not also print a blank one (IDEA-117). */
-.terminal pre { margin: 0; white-space: pre; display: flex; flex-direction: column; }
+/* pre-wrap, not pre: a line wider than the box wrapped on a phone and was cut mid-sentence on
+   desktop (IDEA-143 C3). No terminal on the site draws boxes, so wrapping breaks no alignment. */
+.terminal pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; display: flex; flex-direction: column; }
 .terminal .cap {
   display: block; font-family: var(--font-mono); font-size: var(--step--1);
   color: var(--color-terminal-dim); margin-bottom: var(--space-3);
@@ -688,7 +690,7 @@ a.ref:hover { background: var(--color-structure); color: var(--color-on-structur
    this" — which is what actually makes a tool feel trustworthy. Deliberately
    terse: one claim each, no elaboration, scan-and-move-on. */
 .quirks { list-style: none; margin: var(--space-3) 0; padding: 0; max-width: none;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr)); gap: var(--space-2) var(--space-5); }
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr)); gap: var(--space-2) var(--space-5); }
 .quirks li { padding-left: var(--space-3); border-left: 2px solid var(--color-rule);
   font-size: var(--step--1); color: var(--color-text-secondary); }
 .quirks li:hover { border-left-color: var(--color-structure); }
