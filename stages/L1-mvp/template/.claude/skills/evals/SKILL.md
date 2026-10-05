@@ -28,10 +28,14 @@ places may already hold one. Write their cases first, before inventing any:
   becomes a case — the same rule `/ai-cost` holds for the ledger.
 - `docs/red-team/RT-*.md` — every `fail` that `/red-team` recorded and no case asserts yet. Each becomes
   a `should-fail` case asserting the guard now catches it.
-- `docs/ai-failure-states.md` — every state whose **Eval-tested** still reads `STUB` with no override.
-  When you write its case, put the case id in that field.
+- `docs/ai-failure-states.md` — every state whose **Eval-tested** still reads `STUB`, or names a case
+  that doesn't exist yet (write it under that id). A `STUB` under an override waits for its re-open
+  condition, unless something you read above exercises it: then write the case and tell the founder
+  the override can go — it's their line to remove. When you write a case, put its id in that field.
 
-None of them there is a complete answer: build from what you saw.
+Give every case a `source:` — the file it came from, or *the FEAT's criteria* when you wrote it from
+the spec. Nothing in any of the three is a complete answer: start from the FEAT's acceptance criteria,
+mark those cases as written from the spec, and let the first real failure replace one.
 
 **Rung: MVP.** Applies only when the project has an LLM in control flow. If this project is **earlier** than that, don't run this — leave the seam instead:
 **Keep the bad outputs. One folder, `docs/evals/seen/`, paste the failure in, no format. That is eval case #1 and it exists for about thirty seconds before someone closes the tab.** That is the whole ask; it is *not* an eval harness, a judge, a rubric, a ci gate, a scoring loop. Every eval set is built from real failures you actually saw. You can write the harness any day; you cannot recover the weird output you deleted, and reproducing it on demand is exactly the thing a non-deterministic system will not do for you.
@@ -58,8 +62,8 @@ under attack is `/red-team`; shipping an AI feature needs **both**, not either a
    current spec template), add it: declare an `Eval set path: docs/evals/FEAT-NNN.yml`.
 2. **Create or open** `docs/evals/FEAT-NNN.yml`. Format: a YAML list of cases, each with
    `id / category / scenario / inputs / expected / why`. Categorize `should-pass` and
-   `should-fail` (the latter sub-categorized by failure mode per Husain's discipline —
-   `over-applies / hallucinates / refuses-wrongly / format-violation / etc.`).
+   `should-fail` (the latter sub-categorized by failure mode per Husain's discipline — the same five
+   names `/ai-failure-states` uses, listed under the format below).
 3. **Run them.** Either:
    - A runner script (Node, ~150 lines like BOSS's own `docs/architecture/conscience-evals/
      runner.js`) — preferred, machine-runnable, becomes a CI gate
@@ -82,10 +86,12 @@ under attack is `/red-team`; shipping an AI feature needs **both**, not either a
   expected:
     <pass/fail criteria — what "right" looks like>
   why: <why this case matters>
+  source: the FEAT's criteria  # or the file it came from: docs/evals/seen/…, docs/red-team/RT-…, docs/ai-failure-states.md
 
 - id: feat-007-fail-001
   category: should-fail
   failure_mode: hallucination  # one of: garbage | refusal | hallucination | timeout | cost-spike | other
+                               # (a red-team fail is usually `other` — name the attack, e.g. OWASP LLM01, beside it)
   scenario: <one-line>
   inputs: …
   expected:

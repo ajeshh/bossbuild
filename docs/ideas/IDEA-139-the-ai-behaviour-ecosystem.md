@@ -145,6 +145,11 @@ findings **cannot** return, because they are never written down.
   **154** gate cases, and the 2026-10-05 run passed **161** (IDEA-135 added cases). `npm run release`
   catches this by design (`release.js:310-340`), so it's the release-time gate doing its job, not a
   miss. Fix the numbers at the next release, not here: the release regenerates generated docs.
+- **T7** · found by the planting test: `boss unlock mvp` on an app that **already** calls a model
+  prints *"3 held back when the app first calls a model"*, which is untrue for that project. `boss status`
+  corrects it one step later (*"Earned … `boss sync` lays them down"*). `holdAtAdopt` already evaluates
+  the predicates at adopt; unlock doesn't. Fix: unlock reads the predicates too. That's in `src/cli.js`,
+  which carried another session's uncommitted hunks on 2026-10-05, so it's written here, not done.
 
 ## Step 2 — the eight parts
 
@@ -270,6 +275,28 @@ CI · online-eval machinery (n<10) · adding `/red-team` to the `aiMediated` gro
 without a model) · pointing `/ai-failure-states` at `ai-ux-patterns.md` §6/§8 (true, but an addition
 with no bug behind it; offer at the next practice refresh).
 
+## The test (docs/ECOSYSTEMS.md step 8, run 2026-10-05)
+
+A throwaway in `/tmp` with `BOSS_HOME` set to a temp dir, using the CLI from this tree:
+
+- **Wrong mode** (Quickstart, the app calls a model): none of the four skills, no loop, no moment,
+  nothing in `boss status`. **Silent** ✓
+- **Neighbours missing** (MVP; no budget, style guide, red-team report or evidence): the skills arrive
+  on `boss sync`, and only the two AI moments speak (`cost`, `failure-mode`). Nothing names a missing
+  neighbour ✓. Found T7.
+- **A neighbour's path moved** (`docs/redteam/`): silent in the founder's project. That is by design
+  until the founder-side reader exists (IDEA-137 · C8). In BOSS's own repo, class 7 names it with the file and
+  line (the two mutation tests) ✓
+- **The return, run by following the skill** (subagents acting as the founder's session, three runs):
+  - *empty* (no failures anywhere): no error; the cases were written from the FEAT and labelled that way ✓
+  - *full* (a red-team fail, a STUB, a dangling id, a STUB under an override, a kept failure): every
+    source became a case, and every id went back on its state ✓
+  - The runs found four gaps in the new text: nothing seen at all · a STUB under an override · a dangling
+    Eval-tested id · no `source:` on a case. Each was fixed, and a re-run on a fresh copy handled the
+    override as written. The same pass aligned the two spellings of the failure modes
+    (`hallucinates` → the five canonical names).
+- **Fits the eight parts?** Yes. Nothing was invented to fill a row; parts 4 and 5 are honestly empty for B.
+
 ## Open questions
 
 - **Q1** · Steward: the failure-states doc (names the response *and* its case) or the eval set (holds the
@@ -279,9 +306,13 @@ with no bug behind it; offer at the next practice refresh).
   *"fine public forever?"* (CLAUDE.md).
 - **Q3** · `/red-team` spans three ecosystems (C7 · 4). Are its *gives* declared per mode, or is it AI
   behaviour's with two lent out?
-- **Q4** · Does `docs/evals/seen/` hold model outputs that contain user data? For `domain-expert` the
+- **Q4** · *(answered 2026-10-05: `/evals` Step 0 now says to strip anyone else's personal data before a kept failure becomes a case, the rule `/ai-cost` holds for the ledger)* Does `docs/evals/seen/` hold model outputs that contain user data? For `domain-expert` the
   privacy rule from `/ai-cost` (*no PII, no prompt body unless redacted*, `:89`, `:182-183`) has to reach
   this folder too. Probably one clause in item 2.
+- **Q5** · *(found by the test; it predates this record)* `/evals` says *"write 20+ cases before the
+  LLM call ships"* and also *"error analysis first, on real traces, not invented cases"*. All three runs
+  hit it, and two stopped at 6–8 real or spec cases. Which rule wins at MVP? Lean: real failures
+  first, with the FEAT's criteria as the floor. *20* stays a target, not a gate.
 
 ## Capture log
 
@@ -289,3 +320,6 @@ with no bug behind it; offer at the next practice refresh).
   were written read-only from the repo, and T1 was reproduced in a throwaway scaffold. The hypothesis
   (findings don't flow back) is confirmed for a founder. For BOSS it holds only because one person runs both ends.
   Step 3 is proposed to Ajesh, not built.
+- **2026-10-05** — Ajesh: *"go for it"* → step 3 built (`083b3ed`, `6060c85`). Then Ajesh asked, *"is this
+  idea complete"*: no, the guide's test hadn't run. Ran it (§ The test). It passed after four gaps in the new
+  `/evals` text were fixed; it also found T7 and Q5.
