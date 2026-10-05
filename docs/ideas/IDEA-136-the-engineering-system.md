@@ -366,7 +366,9 @@ killed. Inputs, not decisions.
   after the uncommitted CLAUDE.md edits from another session land.
 - [x] **B7** · Read the one duplicate (`section`) and anything B1 turns up: real reuse miss, or a
   name collision with two jobs?
-- [ ] **B8** · `/extract` the result: what routes UP (the shape) and what stays BOSS-only. EXTR record.
+- [x] **B8** · `/extract` the result: what routes UP (the shape) and what stays BOSS-only. EXTR record. **Done:** `docs/extractions/EXTR-003-the-engineering-ladder.md` — six
+  candidates UP (E/P/W marks; the need·use·not map; two-then-three with the inline-back tell; forgive what
+  a person wrote; test the contract and add a test per bug; parity-pin forced copies), four stay home.
 
 **A — what ships to a founder (after B8)**
 - [ ] **A1** · The practice: engineering principles ladder, a seed-that-scales table for code, reuse /
