@@ -26,7 +26,28 @@ _The best articulation so far. Rewrite this as the idea sharpens._
   claims ecosystem, applied to BOSS's own front door); no *"only BOSS"* claim before a `/comp-eval`;
   PRINCIPLES' one sentence moves only by Ajesh's `/decide`.
 
+## How the site is run (2026-10-05)
+
+There is no weekly cadence; the site moves with releases. Three loops, each with a trigger:
+
+- **Every deploy** (Ajesh's: stamp → publish → `npm run deploy`): clear what `npm run check:site`
+  lists as *trailing* (18 pages on 2026-10-05) — re-read the page against what moved, then bump its
+  `reviewed:`. Broken claims already block the release; trailing pages never did, so they pile up.
+- **The overview pass** — whole site read as a stranger, reorganise or *subtract* — runs when the
+  freeze lifts, then **quarterly**, or sooner when real evidence says a reader couldn't place BOSS
+  (EVID-002, EVID-005). Adding a page is the last answer, not the first (EVID-002's falsifier).
+- **Intake:** a shipped capability a founder would *feel* gets a one-line maybe below, the same day.
+  Internal plumbing doesn't (the CHANGELOG rule). Evidence about the site is cited by id here, never
+  quoted — the words stay in `docs/evidence/`.
+
 ## Backlog — maybes, for the overview pass to sort
+
+- [ ] **M0 · Start where the founder already is** (2026-10-05, EVID-005, EVID-002). A non-technical
+  founder, already building with AI tools and unhappy with what they'd built, read the site and could
+  not say how or when BOSS would help; it read as too long. The overview pass's first test: **can that
+  reader, on the first screen, see their situation and what BOSS does about it?** Probably by
+  subtraction — the home page answering *"I've got an AI-built thing I don't like"* before any
+  machinery. Not a new page.
 
 - [ ] **M1 · The ecosystem, shown not named** (2026-10-05). No *Ecosystems* page and no architecture
   diagram. The ecosystem is real only where BOSS's parts hand work to each other, so show the hand-offs
