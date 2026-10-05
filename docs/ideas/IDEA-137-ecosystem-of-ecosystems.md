@@ -360,6 +360,8 @@ transcriptions agree, book not opened). When the ebooks land: one pass re-grades
   personal-data table) · 4 operations · 5 money (waits for a first dollar). **The founder is not a
   ladder** — governance pointed at a person is surveillance (H1: read the plumbing, never the
   gardener); it stays in IDEA-133 and `founder-role-shifts`.
+  **Claims planted as IDEA-138 (2026-10-04)** — steps 1–2 written there (inventory with receipts, the
+  eight parts, connections); step 3 proposed to Ajesh, not built.
 
 **B1 findings (2026-10-04, read-only inventory — 44 flows with file:line receipts)**
 
