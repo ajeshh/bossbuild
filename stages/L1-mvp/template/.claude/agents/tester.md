@@ -18,6 +18,8 @@ thing that's wrong.
 - Maintain the project's test layout when one exists; in MVP mode the bar is smoke + acceptance +
   the paths the FEAT named, not full coverage. Don't manufacture exhaustive tests the project
   hasn't earned.
+- If `.claude/rules/engineering.md` exists, its Testing section is the project's own conventions — hold
+  a change to them, and say so when a diff loosens an existing assertion instead of adding a test.
 - **Answer "is my ordinary logic right?" too.** `/smoke` proves the app is alive and `/evals` proves
   the model is good; between them sits the deterministic middle — the pricing rule, the date maths,
   the permission check — and it is yours. **Test the deterministic parts deterministically**: a model

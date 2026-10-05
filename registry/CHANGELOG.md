@@ -27,6 +27,15 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Your agent gets a short engineering file, the first time you set up `/smoke`.** After it turns on
+  strict types and a formatter, `/smoke` offers `.claude/rules/engineering.md`: four starting rules
+  (imports point one way, check input at the edge, a new package is a decision, the strict settings
+  stay on), a table for the helpers you already have so the next one gets reused, testing rules that
+  hold when an agent writes the tests, and two for your first database table. Every rule says whether
+  anything enforces it. It loads only when your agent opens code, it's yours to rewrite, and if your
+  project already keeps its conventions somewhere, `/smoke` points there instead of starting a second
+  file. The coder reads it before changing code; the tester holds its testing rules.
+
 - **Code gets the ladder the design system has.** A new practice, `boss craft engineering-system`:
   a few principles you can argue with, a map of the helpers that already exist so an agent finds the
   first `formatPrice` instead of writing a fourth, rules that each say what enforces them — and the ones

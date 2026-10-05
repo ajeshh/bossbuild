@@ -166,6 +166,18 @@
       "path": "docs/decisions/DEC-*.md",
       "from": "decide",
       "why": "a new feature is checked against the decisions it would have to live with (C4.3)"
+    },
+    {
+      "reader": "stages/L0-quickstart/template/.claude/agents/coder.md",
+      "path": ".claude/rules/engineering.md",
+      "from": "smoke",
+      "why": "the project's engineering rules and helper table, read before changing code"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/agents/tester.md",
+      "path": ".claude/rules/engineering.md",
+      "from": "smoke",
+      "why": "the project's own testing conventions, held in review"
     }
   ],
   "successions": [

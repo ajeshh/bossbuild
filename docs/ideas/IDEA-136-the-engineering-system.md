@@ -377,10 +377,18 @@ killed. Inputs, not decisions.
   **Done 2026-10-04:** a new practice, `library/practices/engineering-system.md` — not an extension of
   `scalable-architecture` (a different subject: the code twin of `design-system`, which owns the climb). In
   the Engineering page's *Building with agents* group; site regenerated (practice count 34 → 35), not deployed.
-- [ ] **A2** · The founder's seed: fill `.claude/rules/your-app-code.md` (ships at Quickstart, loads
+- [x] **A2** · The founder's seed: fill `.claude/rules/your-app-code.md` (ships at Quickstart, loads
   only when code is open) — principles slot, module map slot, testing slot. **Floors pre-filled,
   values blank until earned** (`design-system.md` § Craft floors).
-- [ ] **A3** · The planting moment — where the seed gets filled in, with no new skill (see Q3).
+- [x] **A3** · The planting moment — where the seed gets filled in, with no new skill (see Q3).
+  **Done 2026-10-04 (A2, A3, A8, A10, A12):** `/smoke`'s first run offers `.claude/rules/engineering.md`
+  from `skills/smoke/templates/engineering.md` — founder-owned (not in `manifest.rules`, so sync never
+  touches it; the template reaches existing projects as a skill resource — verified with `boss sync`).
+  Floors pre-filled, principles and map blank; code + testing + data; every rule marked E/P/W; looks for
+  an existing conventions home first. `coder` reads it before changing code; `tester` holds its testing
+  rules. Two flows declared in `registry/flows.json` (smoke → coder, smoke → tester), and the check was
+  broken on purpose to see it fire. **Not exercised end to end:** the planting itself is Claude following
+  `/smoke`; the CLI test covers what ships, not the model's run of it.
 - [ ] **A4** · The code map at MVP: authored, read before creating a module or helper; carries the
   negative-finding rule (an agent's "nothing like this exists" is a claim about its searches — synonym
   pass first, `testing-with-agents.md`).
@@ -389,16 +397,16 @@ killed. Inputs, not decisions.
 - [ ] **A6** · Boundaries for every surface: `ui-boundary-guard` reads its layers from the map, not only
   from `ui/` + `features/`, so a CLI, API or agent gets one-way imports too.
 - [ ] **A7** · One word per concept, in code: the copy glossary also names identifiers.
-- [ ] **A8** · Testing guidelines that ship: tests from acceptance criteria before code; a negative test
+- [x] **A8** · Testing guidelines that ship: tests from acceptance criteria before code; a negative test
   for each of the three must-not-break paths; reproduce before fix; a regression test named for its
   bug; never weaken an assertion to pass; model output goes to `/evals`, not `assert`.
 - [ ] **A9** · Candidate: an assertion-weakening guard (test assertion loosened in the turn that changed
   the source). Only with a named incident (Q4).
-- [ ] **A10** · Step 0 for brownfield and experienced founders: read the lint config, CONTRIBUTING,
+- [x] **A10** · Step 0 for brownfield and experienced founders: read the lint config, CONTRIBUTING,
   AGENTS.md first; offer, don't seed over. Cohort-aware like `/design-tokens-init`.
 - [ ] **A11** · Retirement for code: deprecate with a successor, delete the unused, three exceptions
   means the rule is wrong.
-- [ ] **A12** · Wire the agents: `coder.md` and `tester.md` point at the seed; `mentor-architect` owns it.
+- [x] **A12** · Wire the agents: `coder.md` and `tester.md` point at the seed; `mentor-architect` owns it.
 - [ ] **A13** · V1 drift reader (generated code map + duplicate finder, the `/design-library` twin) —
   **deferred**; re-open when a project's authored map is seen going stale.
 - [ ] **A14** · Kettlewick demo record if a new record type appears (standing rule); CHANGELOG bullet
@@ -410,6 +418,10 @@ killed. Inputs, not decisions.
   Regenerating and deploying stay Ajesh's.
 
 ## Open questions
+- **Decided (Ajesh, 2026-10-04, A-track shape):** **Q2** the rule file only — no founder `docs/` doc;
+  **Q5** the MVP rung; **Q3** filled at `/smoke`'s first run (which already plants strict types and a
+  formatter); **Q7** code + testing + data in the first slice — the other layers stay practice rows on
+  their triggers.
 - **Q1** · One ladder per discipline, or one *system* shape with design and engineering as two
   instances of it? (Lean: one shape, two files — the thresholds table in `design-system.md` already
   generalizes.) · settles at A1.

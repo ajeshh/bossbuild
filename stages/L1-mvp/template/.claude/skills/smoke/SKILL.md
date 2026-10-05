@@ -63,6 +63,24 @@ failure). It isn't in the project until they turn it on: `boss hooks enable smok
 and registers it in one move (`boss hooks` lists the others). **Documented conventions rot; enforced ones compound** — `/smoke` documents
 the gate, `smoke-guard` is what enforces it. Offer it; don't register it for them.
 
+**Then offer the engineering seed, once.** An agent re-reads the codebase every session and copies
+whatever it finds nearest, so the code needs a short file that says how it's built here. If
+`.claude/rules/engineering.md` doesn't exist, offer it in one line — *"Want a short engineering file
+your agent reads whenever it touches code? It starts with four rules and grows as you do."*
+
+- **Look first.** If the project already says how its code is built — a `CONTRIBUTING`, an `AGENTS.md`,
+  a conventions section in `CLAUDE.md`, a lint config with real rules — point at that and offer to add
+  only what's missing. Never write a second home for the same rules.
+- **On a yes,** copy [`templates/engineering.md`](templates/engineering.md) to
+  `.claude/rules/engineering.md`, then fill what this first run just learned: rescope `paths:` to where
+  the code lives (`.boss/config.json`'s `sourceGlobs` if set); put the test command in the Testing
+  section if there is one; and if you folded the typecheck into the smoke command, mark that rule **E**.
+  Leave the principles and the map empty — they're earned, not seeded.
+- **On a no,** it's done. Don't offer it again unless they ask.
+
+The file is theirs from the moment it's written; BOSS never updates it. Why each rule is there:
+`boss craft engineering-system`.
+
 ## What smoke is and isn't
 
 - **Is:** does the app start, build, or run its happiest path without exploding.

@@ -18,6 +18,7 @@ This project ships with **no assumed tech stack**. The first real build decision
 
 - Smallest reversible change that satisfies the intent. No speculative abstractions, no error handling for impossible states, no comments that restate code.
 - Read before you write. Match existing patterns over inventing new ones.
+- If `.claude/rules/engineering.md` exists, read it before changing code, and check its helper table before adding a new helper — the thing you need may already be there under another name.
 - Source files and shared state are precious — ask before destructive or irreversible actions.
 - In MVP mode you must run `/smoke` (the is-it-alive gate, not the test suite) before claiming any task done. In Quickstart there's no formal gate yet; verify your change runs.
 - When you report done, name what you were asked to cover and didn't open or run. Agents misreport their own coverage more often than not, so the founder can't find the gap unless you name it.
