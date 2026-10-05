@@ -9,7 +9,7 @@ provenance_public: Extracted from how BOSS's own code is actually built — its 
 last_reviewed: 2026-10-04
 review_by: 2027-04-02
 curve: craft-ai
-anatomy: 3
+anatomy: 5
 ---
 
 # Practice — The engineering system: the design system's ladder, for code
@@ -42,7 +42,7 @@ to five, no more.
 
 | Mark | Means |
 |---|---|
-| **E** | a named check fails when the rule is broken |
+| **E** | a named check fails when the rule is broken — and says whether it **stops** (waits for you) or **warns** (the work goes on) |
 | **P** | something catches some of it |
 | **W** | written only — nothing fails |
 
@@ -151,7 +151,8 @@ missing.
   lint rule, a hook). Asking an agent in a context file to run the checks itself is unreliable; a hook
   that runs them is not (Böckeler, 2026 — one practitioner, one app).
 - **Put the fix in the failure message.** The agent reads it and acts on what it says.
-- **Advisory first; block only with an incident.** A check that never fires is a candidate for removal.
+- **Advisory first; block only with an incident.** A warning is not a boundary — say which each check
+  is. A check that never fires is a candidate for removal.
 - **Three exceptions to the same rule mean the rule is wrong.** Narrow it, split it, or retire it.
 
 ## Altitude — the right rung
@@ -169,3 +170,8 @@ owns the climb (modular monolith, the schema as the one-way door); [`testing-wit
 owns why an agent going green isn't the code being right; [`data-schema`](data-schema.md) and
 [`agent-security`](agent-security.md) own their layers in depth; [`quality-ratchet`](quality-ratchet.md)
 is how a W rule becomes an E without a big-bang cleanup.
+
+**Where it learns what changed outside it:** this practice is re-read against the agent tools on its own
+clock, and what changes reaches your project by `boss sync`. **Could you run it by hand?** Yes — the
+rules are a file you own (`.claude/rules/engineering.md`), the map is a file, and every check is a
+command you can run yourself. Nothing here works only while BOSS is installed.
