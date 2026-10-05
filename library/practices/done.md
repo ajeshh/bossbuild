@@ -2,7 +2,7 @@
 id: PRACTICE-done
 type: practice
 owner: designer
-status: draft
+status: active
 host: stack-neutral
 provenance: composted from Ajesh's humane-tech corpus — the Done pillar (was "Celebration of Done"; renamed by Ajesh 2026-10-04, "its just done now") and their dictated philosophy of done, captured verbatim in IDEA-137's capture log 2026-10-04 (threshold crossed together; past it, more is a debt; done ends the container; continuing needs consent and has a true cost; one's own need and everyone else's, both true). The marking rules are the earlier practice's (sev-puri; AIR's "done is an exhale, not an end").
 provenance_public: Composted from the author's own humane-tech notes — the *Done* pillar and the author's own account of what done means. The generative half of BOSS's humane lens.
