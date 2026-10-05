@@ -430,16 +430,20 @@ rate; opt-in, advisory, once-per-name and *a sensor that never fires is a remova
   negative-finding rule (an agent's "nothing like this exists" is a claim about its searches — synonym
   pass first, `testing-with-agents.md`).
   **Done:** the map slot in the seed, with the negative-finding rule beside it.
-- [ ] **A5** · Reuse for code: widen `component-reuse-guard` (or a mode of it) to check a new
+- [x] **A5** · Reuse for code: widen `component-reuse-guard` (or a mode of it) to check a new
   module/helper name against the map. Advisory, once per new name.
-- [ ] **A6** · Boundaries for every surface: `ui-boundary-guard` reads its layers from the map, not only
+  **Done (98f91f1):** `component-reuse-guard`'s code branch — a new exported helper with no row in the seed's table is asked reuse / widen / inline / copy-and-note, once per name.
+- [x] **A6** · Boundaries for every surface: `ui-boundary-guard` reads its layers from the map, not only
   from `ui/` + `features/`, so a CLI, API or agent gets one-way imports too.
-- [ ] **A7** · One word per concept, in code: the copy glossary also names identifiers.
+  **Done (be194ae):** `ui-boundary-guard` holds a founder-declared *Layers, top to bottom* line; never inferred; the template placeholder declares nothing.
+- [x] **A7** · One word per concept, in code: the copy glossary also names identifiers.
+  **Decided: no check** (field read above) — stays a W rule in the seed.
 - [x] **A8** · Testing guidelines that ship: tests from acceptance criteria before code; a negative test
   for each of the three must-not-break paths; reproduce before fix; a regression test named for its
   bug; never weaken an assertion to pass; model output goes to `/evals`, not `assert`.
-- [ ] **A9** · Candidate: an assertion-weakening guard (test assertion loosened in the turn that changed
+- [x] **A9** · Candidate: an assertion-weakening guard (test assertion loosened in the turn that changed
   the source). Only with a named incident (Q4).
+  **Done (108b5e4):** `test-assertion-guard`, opt-in — names a test edit that drops an assertion or adds a skip while source also changed. Advisory.
 - [x] **A10** · Step 0 for brownfield and experienced founders: read the lint config, CONTRIBUTING,
   AGENTS.md first; offer, don't seed over. Cohort-aware like `/design-tokens-init`.
 - [x] **A11** · Retirement for code: deprecate with a successor, delete the unused, three exceptions
@@ -457,6 +461,75 @@ rate; opt-in, advisory, once-per-name and *a sensor that never fires is a remova
   one row in `ENG_GROUPS` and a `provenance_public:` line, no new page, nothing the freeze forbids.
   Regenerating and deploying stay Ajesh's.
   **Done (not deployed):** the practice is on the Engineering page by regeneration; deploy is Ajesh's.
+
+## The engineering space — the Design space's sibling in the playbook (2026-10-05, thinking, not building)
+
+Ajesh, 2026-10-05: an engineering page in the **founder's playbook**, like the Design space
+(`src/design.js` → `.boss/design.html`) — architecture, DB, security, components, the agents that
+help with code, flowcharts; for founders *and* engineering founders.
+
+**The contract it inherits from the Design space:** a projection of files, never authored; every hole
+a hole; *not checked* said once for what needs a person. A hand-drawn architecture diagram is the
+stale map agents follow faithfully (R5 caution) — so anything that can't be read from the repo is
+either left out or shown with the date it was written and whether the code moved since.
+
+**Two readers, one page.** The non-technical / vibe founder can't read the code: *what did my agent
+build, where does my data live, who can see it, what does my app talk to.* Pictures, plain words.
+The engineering founder reads code fine: the value is *declared vs actual* — a boundary broken, a
+table without row-level security, a helper written twice — terse, every diagram copyable as text.
+
+- [ ] **P1** · **Data — the ERD.** Read the schema (SQL migrations, Prisma; other ORMs a named hole)
+  → tables, keys, relations, drawn in the page's own SVG like the Design space's spec frames, the
+  Mermaid `erDiagram` text as the copy payload. Annotated per table: which module writes it, row-level
+  security on/off, which columns hold personal data. First, because the schema is the one-way door
+  and nothing else shows it to a founder who can't read SQL.
+- [ ] **P2** · **Architecture — two C4 levels, no more.** (a) *Context:* the app, who uses it, the
+  outside services it calls — read from dependencies + `.env.example` names (the same list `/trust`
+  derives as subprocessors). (b) *Modules:* the code map (A4) as a graph from the imports, the declared
+  one-way layers (A6) with any break drawn red. Levels 3–4 are the code itself — not drawn.
+- [ ] **P3** · **Security, reframed as "Who can see what".** No security panel and no score — a green
+  panel is a checker stating an intent it doesn't enforce. Only what is computable: each FEAT's *who
+  must NOT see this* path and whether a negative test covers it (A8); RLS per table (from P1); the
+  secrets guard on; which outside services receive user data (from P2a). Everything else, one line:
+  *not checked — `/red-team --paths` is the pass.* This is the surface the Data & trust ladder (IDEA-137
+  · B4 #3) has been missing.
+- [ ] **P4** · **Who builds — the agents and guards on the code.** Mirror the Design space's
+  `readGuards`: `coder`, `tester`, `mentor-architect`, `planner` — what each reads (the seed, the map),
+  which guards are on at the write, and **whether `coder` has been specialized to the stack** (still
+  stack-neutral = a hole, IDEA-124 rung 1). Shows the agents; adds none.
+- [ ] **P5** · **Flows — one generated, three authored.** (a) *Personal-data flow:* where a person's
+  data enters, where it is stored, which services it leaves to, how it is deleted — assembled from
+  P1 + P2a + `/trust`'s deletion path. (b) Sequence diagrams for **the three must-not-break paths only**
+  (money, destructive, who must not see), written in the FEAT at `/spec`, shown with their date and
+  whether the files they name changed since. No generic flowcharts; user flows stay in the Design space.
+- [ ] **P6** · Components for code = the authored map (A4) as cards; A13 (generated map + duplicates)
+  stays deferred on its trigger.
+- [ ] **P7** · An instance to build against: BOSS has no database and neither does Kettlewick
+  (`demo/kettlewick` has no schema). Either a founder's first table, or give Kettlewick a small schema
+  in the FEAT-039 redo.
+- **Open:** a sibling page (`.boss/engineering.html`) or a chapter of the Design space? Lean: sibling,
+  same shell (`page-shell.js`). Which rung opens it — MVP at the first table or first module boundary?
+- **Open (Ajesh, 2026-10-05): which drawings does agentic development actually need?** P5 was a
+  question, not a request. Candidates, ranked by the reasoning (not yet research — the check is
+  `/deep-research`, and a founder's answer outranks both):
+  1. **The change view** — the architecture *diff* per session: tables, outside services, modules
+     added; boundaries broken. A founder can't review a 2,000-line diff; they can review "this added a
+     table holding emails and a new outside service." The most agent-specific of the set.
+  2. **The AI call map** — every model call: what goes in (prompt, user data, retrieved text), what
+     comes out, what trusts the output; flag a call that touches private data, untrusted content and
+     an outbound channel together. Belongs to IDEA-139 more than here.
+  3. **Trust boundaries on the context view** (P2a) — the threat-model drawing; this is what
+     "security" looks like as a picture.
+  4. **State diagrams** for anything with a lifecycle on the money path (subscription, order) — where
+     agents ship invalid transitions.
+  5. **Agent topology** (agents → tools → permissions, handoffs) — only for a founder whose *product*
+     is an agent; their own build agents are P4 / IDEA-141.
+  Not: UML class diagrams, deployment diagrams before V1, sequence diagrams for every path.
+- [ ] **R6** · `/deep-research` on the open question above (launched 2026-10-05, Ajesh: *"what kind of
+  documentation would be good enough"*): five angles — diagrams in agentic work · review above the
+  diff · security and AI-call drawings · generated vs authored, and staleness · what non-technical
+  founders need. Context files for agents are not re-researched (S17/S18 in the code-pattern-library
+  session). Session: `docs/research/sessions/SESSION-2026-10-05-the-engineering-page.md`.
 
 ## Open questions
 - **Decided (Ajesh, 2026-10-04, A-track shape):** **Q2** the rule file only — no founder `docs/` doc;
@@ -499,3 +572,8 @@ rate; opt-in, advisory, once-per-name and *a sensor that never fires is a remova
 - **2026-10-04 · Ajesh** — *"lets build it, where we capture it, so that we can put it on our website
   under engineering if needed"*; bring in existing practice and research — atomic design for code, and
   senior engineering thinking → R1/R2.
+- **2026-10-05 · Ajesh** — *"for the engineer ladder, like we have for design system for the playbook…
+  key architecture, wether its DB, security, overall architecture, or components"* → *"yes founder's
+  playbook… what are the key engineering agents that help with coding? DB: I think it would be an ERD?
+  … Not sure about security… any flow charts needed? … the end users, who could be founders or
+  engineering founders."* → the engineering space section, P1–P7. The org-chart thought went to IDEA-141.

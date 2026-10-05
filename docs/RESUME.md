@@ -31,7 +31,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 - **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
   principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
   plants `.claude/rules/engineering.md` (founder-owned). 18 of 19 found tasks closed with reproductions — incl. the
-  suite leaking into an exported `BOSS_HOME` (`test/env-guard.js`). Open: F11 (deferred), A5–A9 wait on evidence.
+  suite leaking into an exported `BOSS_HOME` (`test/env-guard.js`). A5/A6/A9 built as opt-in guards (code reuse, declared layers, loosened tests); A7 stays a rule. Open: F11 (deferred).
 - **IDEA-137 (2026-10-04, Unreleased) — the ecosystem of ecosystems.** Inside a founder's project BOSS lays
   down ecosystems that govern themselves, live by shared principles, and get governance and support for
   liveliness between them; BOSS → project is one-way. Draft guide `docs/ECOSYSTEMS.md`; **the flow reader**
