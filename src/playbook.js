@@ -31,7 +31,7 @@ import { readSourceGlobs } from './config.js';
 // board.js imports this file too, so this edge closes a cycle (board ↔ playbook ↔ design). It holds
 // only because criteriaProgress is a function binding read at call time, never at import. A stated
 // exception, not a pattern: if a value from board.js is ever needed at module load, move
-// criteriaProgress to a leaf instead (IDEA-136 · F1; docs/ENGINEERING.md, principle 2).
+// criteriaProgress to a leaf instead (IDEA-136 · F1).
 import { criteriaProgress } from './board.js';
 
 // --- the registry -----------------------------------------------------------------------------
