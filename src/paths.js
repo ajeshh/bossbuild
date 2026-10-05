@@ -1,3 +1,7 @@
+// src/paths.js — every path BOSS resolves, in one place: the package (read-only at runtime), the
+// stages, the practice shelf, and machine state under BOSS_HOME. `homedir()` is read here and nowhere
+// else in src/, which is what lets BOSS_HOME point a whole run — a test, a throwaway — somewhere else.
+
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
 import { readFileSync, existsSync } from 'node:fs';

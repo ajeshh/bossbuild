@@ -1,3 +1,7 @@
+// `boss sync` — plan, then apply: bring a project's BOSS-managed files up to the installed BOSS.
+// Preview by default, act only on --apply. Provenance (managed.js) decides whether an overwrite is safe,
+// so a file the founder edited is backed up and named, never silently replaced.
+
 import {
   readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync,
 } from 'node:fs';

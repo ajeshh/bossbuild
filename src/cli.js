@@ -1,3 +1,7 @@
+// `boss <verb>` — the dispatcher. One switch maps each verb to a `cmd<Verb>` handler; this is the only
+// module `bin/boss` imports, and nothing else imports it. Failures go through `fail()`; src never calls
+// process.exit() — handlers set process.exitCode, and `bin/boss` is the one place that exits.
+
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, basename, sep } from 'node:path';
 import { execSync, spawn } from 'node:child_process';

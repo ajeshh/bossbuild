@@ -1,3 +1,7 @@
+// src/scaffold.js — copy a stage template into a project and append its marked blocks (CLAUDE.md,
+// .gitignore) idempotently, so unlocking a mode adds to what the project and earlier modes wrote and
+// never clobbers it. `boss new`, `unlock`, `sync` and `remove` all lay files down through here.
+
 import {
   cpSync, readdirSync, statSync, readFileSync, writeFileSync, existsSync, rmSync, mkdirSync,
 } from 'node:fs';
