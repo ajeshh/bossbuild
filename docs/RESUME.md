@@ -86,7 +86,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 - **The ladders still to plant — for Ajesh to review** (order from IDEA-137 · B4; each follows `docs/ECOSYSTEMS.md` § steps, modelled on IDEA-138):
   1. ✅ **Claims** — planted, IDEA-138 (2026-10-04). Left: the drift reader, until a founder's page outlives its evidence.
-  2. ✅ **AI behaviour** — planted as IDEA-139 (2026-10-05, Unreleased): `/evals` reads what already failed (red-team fails, STUB states, `docs/evals/seen/`); a widened loop now earns the skills it names (reproduced bug, AI and design-tokens). Ajesh's: re-grade the 10 stale `drift` transcripts (`/regrade`), and whether `/red-team --self` writes a record (IDEA-139 Q2).
+  2. ✅ **AI behaviour** — planted as IDEA-139 (2026-10-05, Unreleased): `/evals` reads what already failed (red-team fails, STUB states, `docs/evals/seen/`); a widened loop now earns the skills it names (reproduced bug, AI and design-tokens). Since closed: the drift judgment re-graded (10/10, 0 stale), `--self` writes a `SELF-` record, `boss unlock` lays down what's already earned. Nothing open.
   3. **Data & trust** — highest stakes, but BOSS has no instance of its own: plant from `/trust` + `schema-guard` + the data-schema practice, or on a founder's first personal-data table.
   4. **Operations.** 5. **Money** — waits for a first dollar.
   · **When the guide moves, the ladders follow (IDEA-137 · C11, 2026-10-05):** `docs/ECOSYSTEMS.md` § Revisions (now **6** — five lenses read at source, R11) + `anatomy: N` on each ladder; `npm run check:freshness` names one behind. **All four ladders at 6.** Left: three lineage lenses (stigmergy, panarchy, calm tech) await a read at source.
