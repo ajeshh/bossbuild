@@ -52,5 +52,8 @@ asking. By **2027-04-04** — and the removal test should become a real test bef
   survive BOSS leaving?*
 - `/boss-sync`'s existing `--remove` consent and the free mute stay first-class; nothing here adds a
   prompt to keep BOSS.
+- **The removal test exists** (2026-10-04, `test/removal-leaves-founder-work.test.js`). Its first run
+  found the aim broken once: the `/ai-cost` logger BOSS hands the founder's app assumed `.boss/` was
+  there. Fixed in the template. Anything a skill installs into the founder's app joins that test.
 - **PRINCIPLES.md does not change on this decision.** Whether it becomes a principle is part of IDEA-137's
   Q8, and that sentence moves only after the mechanisms are real.

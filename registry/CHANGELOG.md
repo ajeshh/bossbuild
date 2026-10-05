@@ -27,6 +27,13 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Your app keeps working if you take BOSS out.** The AI-cost logger `/ai-cost` gives your app wrote
+  its ledger into BOSS's folder and assumed the folder was there — so after `boss remove`, a fresh
+  clone, or a deploy that can't write to disk, every model call it wrapped would fail. It now makes
+  the folder when it needs to, and a ledger it can't write warns instead of breaking the call. The
+  logger is yours once installed; move the ledger wherever you like. If you already wired it, ask
+  your agent to apply the same two-line change.
+
 - **Your agent gets a short engineering file, the first time you set up `/smoke`.** After it turns on
   strict types and a formatter, `/smoke` offers `.claude/rules/engineering.md`: four starting rules
   (imports point one way, check input at the edge, a new package is a decision, the strict settings

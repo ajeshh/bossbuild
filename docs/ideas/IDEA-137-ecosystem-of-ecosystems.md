@@ -472,7 +472,7 @@ terms (no research in the CHANGELOG).
   DEC-003 → `/decide`.**
 - [ ] C6.3 · M11 reworded in the practices — the latent centre that most helps the whole.
 - [ ] C6.4 · M12 — a pioneer names its successor; readers follow (generalises C3.1).
-- [~] C6.5 · **Decided: DEC-023** (2026-10-04) — *BOSS can always be needed less, the founder decides when*; next: turn its falsifier into a real removal test. N13 — BOSS aims to be needed less. **A PRINCIPLES-level aim → Ajesh, `/decide`.**
+- [x] C6.5 · **Decided: DEC-023** (2026-10-04) — *BOSS can always be needed less, the founder decides when*. **The removal test is real** (`test/removal-leaves-founder-work.test.js`): scaffold, unlock MVP, add the founder's app with the `/ai-cost` logger as BOSS hands it over, their idea, their own hook; `boss remove --apply`; their app still runs, their files stay, no registered hook dangles. **First run failed** — the logger appended to `.boss/cost-log.jsonl` with no mkdir, so every wrapped LLM call threw once `.boss/` left (ENOENT). Fixed in the template (both stacks): makes its folder, never lets a ledger write break the call. Not covered yet: what other skills install into the app (each new one should join this test). N13 — BOSS aims to be needed less. **A PRINCIPLES-level aim → Ajesh, `/decide`.**
 - *Creates:* practice text; possibly one DEC each for C6.2 and C6.5.
 
 **C7.0 · ✅ Drafted first (Ajesh, 2026-10-04: draft the guide before the reader, so IDEA-136 can
@@ -502,7 +502,7 @@ planted next from the draft guide — the guide's second real instance; **C7 fin
 from where design and engineering overlap. **C8 (the founder's reader) is deferred** until its trigger:
 the first observed break in a flow the *founder* made, or in a BOSS file they edited — every break so
 far was in files BOSS ships, which BOSS's own build now catches. **No backfill of the remaining B1
-flows** — each ecosystem declares its own as it's planted. Small, any time: DEC-023's removal test (C6.5).
+flows** — each ecosystem declares its own as it's planted. DEC-023's removal test (C6.5) — done.
 
 **C9 · When the ebooks land** — one pass re-grades the *waits on the books* list above.
 **C10 · Q8 — the sentence** — PRINCIPLES' one sentence moves only by Ajesh's `/decide`, after C2–C5 show

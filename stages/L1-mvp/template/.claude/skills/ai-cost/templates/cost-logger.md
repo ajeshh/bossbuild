@@ -21,9 +21,10 @@ template is wrong the week a new model lands. A **cost logger is the one place a
 
 ```typescript
 // src/lib/ai-cost-logger.ts
-import { appendFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { appendFileSync, mkdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 
+// Yours once installed: the path is a convention, not a dependency on BOSS (see Wiring rules).
 const LEDGER = join(process.cwd(), '.boss', 'cost-log.jsonl');
 
 // Prices in USD per million tokens. FILL FROM YOUR PROVIDER'S PRICING PAGE.
@@ -48,7 +49,13 @@ export function logCall({ feat, model, inputTokens, outputTokens, userId }) {
     estimated_usd: Number(usd.toFixed(6)),
     priced: Boolean(p),
   };
-  appendFileSync(LEDGER, JSON.stringify(entry) + '\n');
+  try {
+    mkdirSync(dirname(LEDGER), { recursive: true });
+    appendFileSync(LEDGER, JSON.stringify(entry) + '\n');
+  } catch (e) {
+    // A ledger that can't be written must never break the call it measures.
+    console.warn(`[ai-cost] could not write ${LEDGER}: ${e.message}`);
+  }
   return entry;
 }
 ```
@@ -59,6 +66,7 @@ export function logCall({ feat, model, inputTokens, outputTokens, userId }) {
 # src/ai_cost_logger.py
 import json, os, datetime, warnings
 
+# Yours once installed: the path is a convention, not a dependency on BOSS (see Wiring rules).
 LEDGER = os.path.join(os.getcwd(), ".boss", "cost-log.jsonl")
 
 # Prices in USD per million tokens. FILL FROM YOUR PROVIDER'S PRICING PAGE.
@@ -80,13 +88,21 @@ def log_call(feat, model, input_tokens, output_tokens, user_id=None):
         "estimated_usd": round(usd, 6),
         "priced": p is not None,
     }
-    with open(LEDGER, "a") as f:
-        f.write(json.dumps(entry) + "\n")
+    try:
+        os.makedirs(os.path.dirname(LEDGER), exist_ok=True)
+        with open(LEDGER, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+    except OSError as e:
+        # A ledger that can't be written must never break the call it measures.
+        warnings.warn(f"[ai-cost] could not write {LEDGER}: {e}")
     return entry
 ```
 
 ## Wiring rules
 
+- **The logger is the app's, not BOSS's.** It creates its folder and swallows its own write errors, so
+  the app keeps working if `.boss/` is gone (BOSS removed, a fresh clone, a read-only deploy). Move
+  `LEDGER` anywhere you like; `/ai-cost review` reads `.boss/cost-log.jsonl`, so tell it if you do.
 - **The wrapper is the only path to the SDK.** Make bypassing it a bug: a lint rule, or a review note
   saying *"if you imported the provider SDK directly, that's a bug — go through `lib/ai-cost-logger`."*
   A logger with three call sites around it measures nothing.
