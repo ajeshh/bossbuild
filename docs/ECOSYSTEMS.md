@@ -97,9 +97,19 @@ Read from what the design system already does. The engineering column was filled
 | 8 | **Amendment** | how a rule changes, and who changes it | three exceptions → the rule is wrong; a DEC to override | three exceptions → the rule is wrong; a `/decide` record; Ajesh decides |
 
 **The fractal test:** the whole should have the same anatomy as each part. Today the ecosystem of
-ecosystems has its principles (above) and part 8 (this file changes when the reader disagrees). It
-lacks a map (the declarations, C2), a drift reader (the flow reader, C2) and retirement. That is the
-build list, stated as anatomy.
+ecosystems has its principles (above), a map (`registry/flows.json`), a drift reader (`scripts/flows.js`,
+`npm run check:refs`), retirement for paths (a declared succession binds every reader of the old one)
+and part 8 (this file changes when the reader disagrees). It lacks a planting moment of its own and
+checks at the write — the reader runs at commit, not when a skill is written. That is the build list,
+stated as anatomy.
+
+**Two anatomies, not one** (IDEA-137 · R9.1). The eight parts are how an ecosystem *runs*. Ajesh's
+culture frameworks give every pillar a second anatomy, for how it *explains itself to a person*:
+Concept · Importance · Key Learnings · Ways to Implement · Ingredients · Thinkers. They meet in three
+places — *Ingredients* is part 2's seed, *Ways to Implement* is part 1's guidelines, *Thinkers* is a
+practice's lineage — and the purpose line in step 2 below is *Concept* and *Importance* in one. The
+governance parts (3, 5, 6, 7, 8) appear in no pillar's anatomy: in Ajesh's frameworks they live
+**between** pillars (co-governance, renewal, graceful transitions) — which is this guide's third layer.
 
 ## Connections — what an ecosystem declares
 
@@ -133,9 +143,11 @@ For IDEA-136 first, then claims, data & trust, operations.
 
 1. **Find it already living.** Before writing a principle, inventory what the project (or BOSS's own
    repo) already does in this discipline, with file:line receipts. Extract, don't invent.
-2. **Name its centre.** What does it grow around? (Design: the component. Claims: the landing page.
-   Data & trust: the first table holding personal data.) It gets planted *with* its neighbours around
-   that centre, not alone.
+2. **Name its centre and its purpose.** What does it grow around? (Design: the component. Claims: the
+   landing page. Data & trust: the first table holding personal data.) It gets planted *with* its
+   neighbours around that centre, not alone. And one line: **what it is for, and what the project is
+   worse at without it** — the boundary that says what belongs inside it. (Ajesh's own culture
+   frameworks open every pillar this way, *Concept* then *Importance*, before any practice.)
 3. **Fill the eight parts** — and leave a part empty rather than invent it. An empty seam column is
    an honest answer.
 4. **Write its trigger and its yield.** It gives something on first use, **or** it is named a store —

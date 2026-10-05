@@ -235,9 +235,22 @@ ritual nobody engages is *a sign for renewal* (before Mollison's pollutant), *cu
 it — not the other way round.** Two tensions for Ajesh: *Small and Slow* leans on slow, which the
 research found inverts before fit; the Compass's 1–5 scoring tool pulls toward the score their own
 navigation move left behind.
-- [ ] **R9.1** · Read the Menu's anatomy and the Done cycle against IDEA-137's anatomy and M2 — does
-  Ajesh's anatomy replace the draft one?
-- [ ] **R9.2** · Q9 candidate in Ajesh's words: *engagement as a pulse* (used), *Living Inertia*
+- [x] **R9.1** · Read the Menu's anatomy and the Done cycle against IDEA-137's anatomy and M2 — does
+  Ajesh's anatomy replace the draft one? **No — it is a second anatomy, and it adds one line
+  (2026-10-04, read at source: `ALLFramework.md`, `Done Notes.md`).** The eight parts say how an
+  ecosystem *runs*; each Menu pillar says how it *explains itself to a person* (Concept · Importance ·
+  Key Learnings · Ways to Implement · Ingredients · Thinkers · Books). They meet three times —
+  Ingredients = the seed (#2), Ways to Implement = guidelines (#1), Thinkers = lineage — and the
+  Menu's opening pair has no part: **added to the guide as step 2's purpose line** (*what it is for,
+  what the project is worse at without it* — N14's *boundary of meaning*, now in Ajesh's form). The
+  governance parts (#3, #5–#8) are in no pillar: in Ajesh's frameworks they live *between* pillars
+  (Kinship's co-governance, Living Tradition's renewal, Belonging's graceful transitions) — the third
+  layer, confirmed from inside. **The Done cycle** (Welcome → Vision → Values → Done, Done Notes:39-49,
+  621-635) is already held at the founder scale: `/welcome`, `/boss` + the canvas why, `PRINCIPLES.md`
+  + the canvas's humane foundation, and `/close` + `library/practices/celebration-of-done.md` — which
+  has sat `status: draft`, *"pending wiring"*, since 2026-06-21. Not this program's to wire; noted.
+  Caveat kept: the corpus's thinker quotes are AI paraphrases — never quote them.
+- [x] **R9.2** · *(absorbed by the R8 synthesis — the four signs carry these words; H1 then made them a design test, never a founder reading)* Q9 candidate in Ajesh's words: *engagement as a pulse* (used), *Living Inertia*
   (changes), *repairing cultural debt* (repairs), *graceful transitions* (sheds) — read at **Done**
   moments (`/close`, a mode graduation), not as a standing dashboard.
 
