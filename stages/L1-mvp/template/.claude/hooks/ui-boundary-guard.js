@@ -16,6 +16,15 @@
 // move the shared thing DOWN, route through the other feature's public `index`, or pass it in as a
 // prop or child. Advisory, never blocking.
 //
+// DECLARED LAYERS, FOR ANY SURFACE (IDEA-136 · A6): a CLI, an API or an agent has no `ui/`, so the
+// built-in map below says nothing about it. If the founder wrote a layer order in
+// `.claude/rules/engineering.md` — `- **Layers, top to bottom:** \`src/cli\` → \`src/commands\` → \`src/lib\``
+// — the guard holds THAT map instead: a lower layer importing a higher one is named. It never infers a
+// map: a boundary check faithfully enforces a wrong one (a large Rails monolith's boundary tool did,
+// for years), so the only map held is one a person wrote. Dependency rules with a fix in the message are
+// what kept an agent-built app's structure where a written guide didn't — the agent crossed them a few
+// times, then corrected itself from the message.
+//
 // THE JIT GATE: it does NOTHING unless the layout is actually layered — a `features/` (or
 // `modules/`, `domains/`) directory AND a `ui/`-layer directory beside it, at the root the written
 // file belongs to. A flat `components/` folder is not wrong; it is earlier. No layers, no opinion.
@@ -78,6 +87,29 @@ function locate(path) {
   return null;
 }
 
+
+// --- Declared layers (IDEA-136 · A6) --------------------------------------------------------------
+// One line in the founder's engineering file, backticked paths in order, top first. Fewer than two
+// paths is not a map. The template's placeholder carries no backticks, so it declares nothing.
+const RULES_REL = '.claude/rules/engineering.md';
+function readDeclaredLayers(projectDir) {
+  const file = join(projectDir, ...RULES_REL.split('/'));
+  if (!existsSync(file)) return null;
+  const line = readFileSync(file, 'utf8').split(/\r?\n/)
+    .find((l) => /^\s*[-*]\s*\*\*\s*layers,?\s*top to bottom\s*:?\s*\*\*/i.test(l));
+  if (!line) return null;
+  const paths = [...line.matchAll(/`([^`]+)`/g)]
+    .map((m) => norm(m[1]).trim().replace(/^\.\//, '').replace(/\/+$/, ''))
+    .filter(Boolean);
+  return paths.length >= 2 ? paths : null;
+}
+// Index of the layer a path sits in (0 = top), by longest declared prefix; -1 when it's in none.
+function layerIndex(layers, path) {
+  let best = -1, len = -1;
+  layers.forEach((l, i) => { if ((path === l || path.startsWith(l + '/')) && l.length > len) { best = i; len = l.length; } });
+  return best;
+}
+
 let event;
 try {
   event = JSON.parse(readFileSync(0, 'utf8') || '{}');
@@ -95,6 +127,38 @@ try {
   const rel = filePath.startsWith(norm(projectDir) + '/')
     ? filePath.slice(norm(projectDir).length + 1)
     : filePath.replace(/^\//, '');
+  // A declared map, when there is one, is the only map — the built-in ui/features/app rule stays out.
+  const declared = readDeclaredLayers(projectDir);
+  if (declared) {
+    const hereIdx = layerIndex(declared, rel);
+    if (hereIdx === -1) process.exit(0); // outside every declared layer — not the founder's map
+    const text = addedText(input);
+    const fileDir = posix.dirname(rel);
+    const findings = [];
+    for (const m of text.matchAll(IMPORT_RE)) {
+      const spec = m[1].trim();
+      let target;
+      if (spec.startsWith('.')) target = posix.normalize(posix.join(fileDir, spec));
+      else if (/^[@~#]\//.test(spec)) target = posix.join('src', spec.slice(2));
+      else target = spec; // `src/...`, or a path that starts with a declared layer
+      const thereIdx = layerIndex(declared, target);
+      if (thereIdx === -1 || thereIdx >= hereIdx) continue; // a package, same layer, or downward
+      findings.push(
+        `\`${spec}\` — **\`${declared[hereIdx]}\` importing from \`${declared[thereIdx]}\`** points UP. ` +
+        `A lower layer must not know a higher one exists. Move the shared piece down into ` +
+        `\`${declared[hereIdx]}\` or below, or pass it in from the layer that calls this one.`
+      );
+    }
+    if (!findings.length) process.exit(0);
+    out(
+      `ui-boundary-guard: \`${rel}\` just gained ${findings.length === 1 ? 'an import that crosses' : `${findings.length} imports that cross`} ` +
+      `your declared layers (${declared.map((l) => `\`${l}\``).join(' → ')}, top to bottom, from ` +
+      `\`${RULES_REL}\`):\n- ${findings.join('\n- ')}\n` +
+      `If the crossing is deliberate, say why in one line where the import is. If the map itself is ` +
+      `wrong, change the Layers line — the guard holds whatever you wrote there.`
+    );
+  }
+
   const here = locate(rel);
   if (!here) process.exit(0); // not inside any layer — nothing to judge
 

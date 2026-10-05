@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The import check works for any kind of project, on the layers you name.** It only understood a
+  UI layout (`ui/` → `features/` → `app/`), so a CLI, an API or an agent got nothing. Now you can write
+  one line in `.claude/rules/engineering.md` — your layers, top to bottom — and the check names any
+  import that points up, with how to fix it. It never guesses a map you didn't write, and with the line
+  blank it stays silent. Turn it on with `boss hooks enable ui-boundary-guard`.
+
 - **`/pretotype` no longer says the in-repo demand page arrives when you unlock MVP.** It arrives
   once your first feature has shipped; until then, the page `/pretotype` publishes is the test.
 

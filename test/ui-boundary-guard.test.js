@@ -114,3 +114,49 @@ test('fails open on garbage input', () => {
   const stdout = execFileSync('node', [HOOK], { input: 'not json', encoding: 'utf8' });
   assert.equal(stdout, '');
 });
+
+// --- A6 (IDEA-136): layers the founder DECLARED, for any surface — a CLI, an API, an agent. ----------
+// The founder writes one line in .claude/rules/engineering.md; the guard reads it and nothing else.
+// It never infers a layer map — a boundary check faithfully enforces a wrong map (Shopify's Packwerk
+// retrospective), so the only map it holds is the one a person wrote down.
+
+const LAYERS_LINE = '- **Layers, top to bottom:** `src/cli` → `src/commands` → `src/lib`';
+function declared(line = LAYERS_LINE) {
+  const dir = project({ '.claude/rules/engineering.md': `# Engineering\n\n## Rules\n\n${line}\n` });
+  for (const d of ['src/cli', 'src/commands', 'src/lib']) mkdirSync(join(dir, d), { recursive: true });
+  return dir;
+}
+
+test('A6: stays SILENT with no declared layers — no inferred map for a non-UI layout', () => {
+  const dir = project({});
+  for (const d of ['src/cli', 'src/lib']) mkdirSync(join(dir, d), { recursive: true });
+  assert.equal(run(dir, { file_path: 'src/lib/db.ts', content: "import { main } from '../cli/main'" }), '');
+});
+
+test('A6: stays SILENT on the template placeholder (no backticked paths, nothing declared)', () => {
+  const dir = declared('- **Layers, top to bottom:** _fill in, e.g. src/app → src/features → src/lib_');
+  assert.equal(run(dir, { file_path: 'src/lib/db.ts', content: "import { main } from '../cli/main'" }), '');
+});
+
+test('A6: flags a lower declared layer importing a higher one, naming both and the declared order', () => {
+  const out = run(declared(), { file_path: 'src/lib/db.ts', content: "import { run } from '../commands/run'" });
+  assert.match(out, /src\/lib/);
+  assert.match(out, /src\/commands/);
+  assert.match(out, /points UP/);
+  assert.match(out, /engineering\.md/, 'it says where the map came from, so the founder can change it');
+});
+
+test('A6: stays SILENT on downward imports, same-layer imports, packages, and files outside every layer', () => {
+  const dir = declared();
+  assert.equal(run(dir, { file_path: 'src/cli/main.ts', content: "import { run } from '../commands/run'\nimport { db } from '../lib/db'" }), '');
+  assert.equal(run(dir, { file_path: 'src/lib/db.ts', content: "import { x } from './pool'\nimport pg from 'pg'" }), '');
+  assert.equal(run(dir, { file_path: 'scripts/seed.ts', content: "import { main } from '../src/cli/main'" }), '');
+});
+
+test('A6: a declared map takes precedence over the built-in ui/features/app layout', () => {
+  const dir = declared('- **Layers, top to bottom:** `src/app` → `src/ui`');
+  for (const d of ['src/app', 'src/ui', 'src/features']) mkdirSync(join(dir, d), { recursive: true });
+  // features/ is not in the founder's map, so the built-in rule must not speak for it
+  assert.equal(run(dir, { file_path: 'src/ui/Button.tsx', content: "import { x } from '../features/billing/x'" }), '');
+  assert.match(run(dir, { file_path: 'src/ui/Button.tsx', content: "import { x } from '../app/shell'" }), /points UP/);
+});

@@ -25,7 +25,10 @@ convenience."_
 ## Rules
 
 - **Imports point one way.** Shared code never imports a feature; a feature never reaches into another
-  feature's internals — it goes through that feature's public entry. — W
+  feature's internals — it goes through that feature's public entry. — W (P once the line below is
+  filled and `boss hooks enable ui-boundary-guard` is on: it names an import that points up)
+- **Layers, top to bottom:** _fill in once the folders exist — each path in backticks on this one line, highest first,
+  e.g. src/app → src/features → src/lib. A higher layer may import a lower one, never the reverse._
 - **Check input once, at the edge; fail loud inside.** Parse what comes in (requests, files, config,
   model output) where it enters; past that point, code trusts its types and throws on the impossible. — W
 - **Adding a package is a decision.** Confirm a package an agent named actually exists and is the one you
