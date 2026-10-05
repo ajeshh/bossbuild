@@ -186,8 +186,11 @@ practice eliminates ~80% of LLM-pipeline brittleness (Jason Liu).
 
 ## Rules
 
-- **Eval-set first.** Write 20+ cases before the LLM call ships, not retrofitted after. If you
-  don't know what 20 cases are, you don't yet know what the FEAT does.
+- **Eval-set first — from what you saw, then from the spec.** Before the call ships, every failure
+  already kept (Step 0) is a case, and every acceptance criterion has one. That is the floor, and it
+  can be six cases. **Twenty is a target, not a gate:** grow toward it from real failures, never by
+  inventing cases to hit the number. A set padded to twenty measures your imagination of the model,
+  not the model.
 - **Categorize failures.** Failure-mode categorization is more valuable than success count.
   Husain: *failure modes are more valuable than success modes — categorize systematically.*
 - **Vibes are a starting point.** First 5 iterations on vibes is fine; the 6th wants rubrics.

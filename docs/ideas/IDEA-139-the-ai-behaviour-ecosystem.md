@@ -141,11 +141,11 @@ findings **cannot** return, because they are never written down.
   stale since DEC-019 (`## Unreleased`; Ajesh stamps). One line.
 - **T5** · BOSS-only: the 10 `drift` judgment transcripts are STALE. Re-grade with `/regrade` when the
   drift frame settles (IDEA-135 touched it on 2026-10-04). That is Ajesh's call on the token spend.
-- **T6** · BOSS-only: `README.md:244`, `docs/PATTERNS.md:33` and `registry/dogfood.json:51`, `:135` say
+- **T6** · *(fixed `e898c0c`: 161 in all four places)* BOSS-only: `README.md:244`, `docs/PATTERNS.md:33` and `registry/dogfood.json:51`, `:135` say
   **154** gate cases, and the 2026-10-05 run passed **161** (IDEA-135 added cases). `npm run release`
   catches this by design (`release.js:310-340`), so it's the release-time gate doing its job, not a
   miss. Fix the numbers at the next release, not here: the release regenerates generated docs.
-- **T7** · found by the planting test: `boss unlock mvp` on an app that **already** calls a model
+- **T7** · *(fixed 2026-10-05: unlock evaluates the predicates as adopt does. The code landed inside `98f91f1`, swept from the shared tree by another session; its test is `30231ba`)* found by the planting test: `boss unlock mvp` on an app that **already** calls a model
   prints *"3 held back when the app first calls a model"*, which is untrue for that project. `boss status`
   corrects it one step later (*"Earned … `boss sync` lays them down"*). `holdAtAdopt` already evaluates
   the predicates at adopt; unlock doesn't. Fix: unlock reads the predicates too. That's in `src/cli.js`,
@@ -231,8 +231,10 @@ online evals on sampled production traffic (`evals:141-156`). The hand-written i
 auto-curated, and the folder's reader follows. Nothing replaces `/ai-failure-states`; it stays the steward.
 
 **Reviewed against ECOSYSTEMS rev 5 (2026-10-05, bossbuild-ee):** *Outside change* — two doors:
-`/recalibrate` when the shape of the model tradeoff moves, `/practice-refresh` for the rest; a founder
-gets both by `boss sync`. *Stops or warns* — per the part 5 row: BOSS's release-time evals **stop**,
+`/recalibrate` when the shape of the model tradeoff moves, `/practice-refresh` for the rest. *(Owner's
+correction: both are BOSS's own passes and never ship. A founder gets their **results** by `boss sync`.
+The founder's own door is a model swap or prompt change: `/evals` says re-run the set (`:41`),
+`/ai-cost` says re-check the budget. Both are prose, so they warn.)* *Stops or warns* — per the part 5 row: BOSS's release-time evals **stop**,
 the judgment half never gates (**warns**), and the founder's loops **warn** at prompt time; the
 logger-only-path rule is checked by nothing. *By hand* — the failure states, the eval cases and the
 cost ledger are files the founder owns and can read and re-run without BOSS. Owner may correct.
@@ -306,17 +308,17 @@ A throwaway in `/tmp` with `BOSS_HOME` set to a temp dir, using the CLI from thi
 
 ## Open questions
 
-- **Q1** · Steward: the failure-states doc (names the response *and* its case) or the eval set (holds the
+- **Q1** · *(settled 2026-10-05 on the lean: the doc. The planting test showed why. The return writes the case id back into it, so it is the one file that holds both ends)* Steward: the failure-states doc (names the response *and* its case) or the eval set (holds the
   cases)? Lean: the doc. It is the contract, and the eval set is part 3's map.
-- **Q2** · Should `/red-team --self` write a record? Today BOSS's own adversarial findings can't come back
+- **Q2** · *(answered 2026-10-05: yes, as `docs/red-team/SELF-YYYY-MM-DD.md`, never an `RT-` file, because it is about BOSS's conscience, not the product, so `/evals` and the loops must not count it. In a founder's project a `fail` goes back to BOSS only through `/feedback`, which the founder chooses to send. In BOSS's own tree, `SELF-*` is gitignored until it's fixed, and the fix is a tracked eval case. The conscience-evals README names it as an intake.)* Should `/red-team --self` write a record? Today BOSS's own adversarial findings can't come back
   because they're never written down. For BOSS a record lands in its own tree, so the first question is
   *"fine public forever?"* (CLAUDE.md).
-- **Q3** · `/red-team` spans three ecosystems (C7 · 4). Are its *gives* declared per mode, or is it AI
+- **Q3** · *(carried to IDEA-137 · C7. It is a question about the guide, not about this ecosystem. Q2's answer is one instance: `--self` already writes to a different file because its reader is different)* `/red-team` spans three ecosystems (C7 · 4). Are its *gives* declared per mode, or is it AI
   behaviour's with two lent out?
 - **Q4** · *(answered 2026-10-05: `/evals` Step 0 now says to strip anyone else's personal data before a kept failure becomes a case, the rule `/ai-cost` holds for the ledger)* Does `docs/evals/seen/` hold model outputs that contain user data? For `domain-expert` the
   privacy rule from `/ai-cost` (*no PII, no prompt body unless redacted*, `:89`, `:182-183`) has to reach
   this folder too. Probably one clause in item 2.
-- **Q5** · *(found by the test; it predates this record)* `/evals` says *"write 20+ cases before the
+- **Q5** · *(answered 2026-10-05: `/evals` Rules now say real failures and the FEAT's criteria are the floor, and twenty is a target, not a gate. Never pad to the number)* *(found by the test; it predates this record)* `/evals` says *"write 20+ cases before the
   LLM call ships"* and also *"error analysis first, on real traces, not invented cases"*. All three runs
   hit it, and two stopped at 6–8 real or spec cases. Which rule wins at MVP? Lean: real failures
   first, with the FEAT's criteria as the floor. *20* stays a target, not a gate.

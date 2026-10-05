@@ -44,6 +44,10 @@ registry/projects.json
 docs/business/
 docs/evidence/
 docs/ideas/CANVAS.md
+# `/red-team --self` on BOSS's own tree: an attack on the conscience that landed is not "fine public
+# forever" until it's fixed — and once fixed, the durable record is its case in the tracked eval suite
+# (docs/architecture/conscience-evals/). IDEA-139 Q2.
+docs/red-team/SELF-*
 # docs/decisions/ is DELIBERATELY ABSENT from this list — the one record class BOSS publishes.
 # A DEC's stated job is "the rationale future-you and a cofounder can read instead of guessing",
 # and 49 citations of them sit in registry/CHANGELOG.md, which ships inside the npm package. They

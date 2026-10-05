@@ -98,7 +98,9 @@ case fails (so CI can use this as a gate).
 
 ## How to add an example
 
-When the conscience fires wrongly (or fails to fire when it should), add a case:
+When the conscience fires wrongly (or fails to fire when it should), add a case. That includes a
+`fail` in a `/red-team --self` report (`docs/red-team/SELF-*.md`), whether from this tree or arriving
+by a founder's `/feedback`: a finding that never becomes a case comes back.
 
 1. Identify which moment + which side (should-fire / should-NOT-fire).
 2. If should-NOT-fire: pick the closest failure_mode (or add a new one to this README + the

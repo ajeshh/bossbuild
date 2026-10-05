@@ -27,6 +27,14 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`boss unlock` no longer holds back what you've already earned.** An app that already calls a model
+  gets `/ai-cost`, `/ai-failure-states` and `/evals` with MVP, instead of being told they'd arrive *when
+  the app first calls a model*. The same goes for any skill a project has already earned. `/red-team
+  --self`, the pass that attacks BOSS's own conscience, now keeps a report (`docs/red-team/SELF-…`)
+  apart from your product's, so it never counts as testing your app. If something landed, `/feedback`
+  can send it to BOSS, showing you what it sends first. And `/evals` treats twenty cases as a target to
+  grow toward from real failures, never a number to pad to.
+
 - **AI tests start from what already went wrong.** Before it writes a case, `/evals` now reads what
   has already failed: a `fail` in a `/red-team` report, a failure state still marked `STUB`, and
   anything you kept in `docs/evals/seen/`, the folder the *keep the bad outputs* tip now names. When it

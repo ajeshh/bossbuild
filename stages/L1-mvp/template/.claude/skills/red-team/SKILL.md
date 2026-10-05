@@ -244,7 +244,11 @@ not a prompt-in/text-out path.** Three probes it specifically needs:
 - **Trusted ≠ safe.** Can anything the agent already did change what an *allowed* command does — an
   env var, `PATH`, shell config, the repo's own tooling?
 
-`--self` reports inline rather than to `docs/red-team/`. A pass proves the attacks you tried didn't
+`--self` writes `docs/red-team/SELF-YYYY-MM-DD.md`, never an `RT-` file. Its findings are about
+BOSS's conscience, not this product, so nothing that reads `RT-*.md` should count them: not `/evals`,
+and not the loops that look for a recorded result. A `fail` is BOSS's to fix, and the one way it
+reaches BOSS is the founder's choice: offer `/feedback`, which shows exactly what it would send before
+anything leaves. Kept or not, the file is the founder's. A pass proves the attacks you tried didn't
 land; it proves nothing about the ones you skipped, so list them.
 
 ## Output
@@ -254,7 +258,7 @@ now (in production, or touching real users' data) goes first, in plain words (*"
 read another customer's orders"*), with the smallest fix and the advice to hold the next ship until
 it's in. It isn't a future task. Everything else is a line pointing at the report.
 
-A dated report — `docs/red-team/RT-YYYY-MM-DD.md` (or inline for `--self`):
+A dated report — `docs/red-team/RT-YYYY-MM-DD.md` (`SELF-YYYY-MM-DD.md` for `--self`, above):
 - **Per category:** `pass` / `fail` / `n/a` + the attack attempted + (on fail) the fix.
 - **For `--paths`, one line per rung, by name** — `**Negative path:** pass — as user A, GET
   /api/orders/8812 (user B's) returned 403` — the attempt included, never just the verdict. Write the
