@@ -1,18 +1,21 @@
 <!--
 title: BOSS — Claude Code skills, agents and a conscience for founders
-description: The team you hire, just in time. BOSS runs inside Claude Code: builders, mentors, and a conscience that says one thing when you drift. Free, MIT, local.
-reviewed: 2026-09-23
+description: Your AI can build anything. BOSS keeps it building the one thing — inside Claude Code it finds the smallest version of a new idea, reads a drifting build back to you, and says one thing when you drift. Free, MIT, local.
+reviewed: 2026-10-05
 review_by: 2027-03-13
-describes: the pitch, what you end up with, what it adds up to (playbook, design space, board, the demo), the three shapes, the ladder
+describes: the pitch, the two ways in, what you end up with, what it adds up to (playbook, design space, board, the demo), the snags, the ladder
 covers: README.md PRINCIPLES.md
 nav: home
 -->
 <header class="hero">
     <div class="rail"><div class="wordmark">{{MARK}}<span>B<em>.</em>O<em>.</em>S<em>.</em>S<em>.</em></span></div><span>Build Out Solid Stuff</span></div>
     <div class="body">
-      <h1>The conscience that keeps you honest while you build fast<span class="dot">.</span></h1>
+      <h1>Your AI can build anything. BOSS keeps it building the one thing<span class="dot">.</span></h1>
+      <p class="def"><strong>BOSS is the conscience that keeps you honest while you build fast.</strong></p>
       <p class="lede">
-        It runs inside Claude&nbsp;Code, sets a project up with only the structure it has earned, says one thing when you're drifting, and stays quiet the rest of the time. Free, MIT, zero dependencies, runs entirely on your machine.
+        Starting from an idea, it finds the smallest version that would prove it. Already building,
+        it reads what you've made and tells you where you stand. Then it says one thing when the
+        build drifts, and stays quiet the rest of the time.
       </p>
 
       <div class="install">
@@ -20,40 +23,105 @@ nav: home
           <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span id="install-cmd">npm install -g oyeboss</span></div>
           <button class="copy" type="button" data-copy="npm install -g oyeboss">Copy</button>
         </div>
-        <div class="cta">
-          <div class="cmd"><span class="prompt" aria-hidden="true">$</span><span>brew install ajeshh/boss/oyeboss</span></div>
-          <button class="copy" type="button" data-copy="brew install ajeshh/boss/oyeboss">Copy</button>
-        </div>
       </div>
-      <p class="small">Then <code>boss new my-app</code>. Needs
-        <a href="https://nodejs.org">Node 18+</a> and
-        <a href="https://claude.com/claude-code">Claude&nbsp;Code</a>, in the terminal, VS Code, Cursor
-        or JetBrains; the CLI sets the project up and the skills run inside Claude. Already have a repo?
-        <code>boss adopt</code>. <a href="start.html">Both paths, step by step</a>.</p>
-
-      <div class="proof breakout">
-        <p class="proof-lead">The build it watches is the whole venture, not only the code — the idea, who you talked to, what you decided, the design, the pitch — written down as you go and read back as pages you can hand to someone. These three are real, from one fictional venture:</p>
-        <div class="tiles">
-          <a class="tile" href="demo/playbook.html">
-            <img src="proof-playbook.png" srcset="proof-playbook-320.webp 320w, proof-playbook.webp 640w" sizes="(max-width: 46rem) 78vw, 17rem" width="640" height="440" decoding="async" alt="The playbook: sixteen chapters generated from the venture's records" />
-            <span class="cap">The playbook <code>boss playbook</code></span>
-          </a>
-          <a class="tile" href="demo/design.html">
-            <img src="proof-design.png" srcset="proof-design-320.webp 320w, proof-design.webp 640w" sizes="(max-width: 46rem) 78vw, 17rem" width="640" height="440" decoding="async" alt="The design space: tokens, components and the decision behind each" />
-            <span class="cap">The design space <code>boss design</code></span>
-          </a>
-          <a class="tile" href="demo/board.html">
-            <img src="proof-board.png" srcset="proof-board-320.webp 320w, proof-board.webp 640w" sizes="(max-width: 46rem) 78vw, 17rem" width="640" height="440" decoding="async" alt="The board: every idea and feature by where it stands, read from the records" />
-            <span class="cap">The board <code>boss board</code></span>
-          </a>
-        </div>
-        <p class="small">Rendered by the same code an install runs, from records you can read. <a href="demo.html">Every page of the demo</a>.</p>
-      </div>
+      <p class="small">Then <code>boss new my-app</code>, or <code>boss adopt</code> in a repo you already
+        have (Homebrew works too: <a href="start.html">Get started</a>). Runs inside
+        <a href="https://claude.com/claude-code">Claude&nbsp;Code</a> (terminal, VS Code, Cursor or
+        JetBrains) and needs <a href="https://nodejs.org">Node 18+</a>. Free, MIT, zero dependencies,
+        runs entirely on your machine. <a href="start.html">Both paths, step by step</a>.</p>
     </div>
   </header>
 
   <main id="main">
 
+    <section class="section">
+      <div class="rail">▸<span>is this you?</span></div>
+      <div class="body">
+        <div class="prose">
+          <h2>Two ways in</h2>
+          <p class="small">Pick the one that sounds like your week.</p>
+        </div>
+
+        <div class="picker">
+          <input type="radio" name="shape" id="shape-new" checked>
+          <input type="radio" name="shape" id="shape-repo">
+          <div class="tabs">
+            <label for="shape-new">starting from an idea</label>
+            <label for="shape-repo">already building</label>
+          </div>
+          <div class="panels">
+            <div class="panel p-new">
+              <div class="prose">
+                <h3>An idea you can't stop thinking about</h3>
+                <p>
+                  You've been building with AI for a few months. You shipped one small thing, there
+                  are two more in <code>~/projects/</code> you didn't finish, and a folder of ideas
+                  you never started. This one feels different. So did those.
+                </p>
+                <p>
+                  <strong>What BOSS does:</strong> helps you find the smallest version that would
+                  actually prove it: something you can put in front of one real person this week,
+                  before you spend a month building the version in your head. If the idea isn't
+                  real, you find that out in days instead of at launch.
+                </p>
+                <p class="small">
+                  Day one is {{Q_AGENTS}} agents and {{Q_SKILLS}} skills, and four files that are
+                  yours to read. No specs, no tests, no design system; those arrive later, if the
+                  thing works. The command is <code>boss new</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="panel p-repo">
+              <div class="prose">
+                <h3>Something you're already building, and it's drifting</h3>
+                <p>
+                  You've been building with an AI tool for a few weeks. It runs. There are more
+                  features than you planned, several of them half done, and you couldn't say in one
+                  line who it's for any more.
+                </p>
+                <p>
+                  <strong>What BOSS does:</strong> reads what's already there and tells you where
+                  you stand: what it thinks this is, who it's for, what stage it's at, what it can't
+                  see, and two or three ways forward. A position, never a grade.
+                  <strong>Your code is not touched.</strong> Anything you wrote yourself stays
+                  yours; it tells you what it added, and later updates skip your files.
+                </p>
+                <p class="small">
+                  Nothing is overwritten and nothing is permanent; <code>boss remove</code> takes it
+                  back out. The command is <code>boss adopt</code>.
+                </p>
+              </div>
+              <div class="terminal breakout">
+                <span class="cap">joining a project that already had its own <code>coder</code> file</span>
+<pre><span class="line"><span class="t-cmd">boss adopt</span></span>
+<span class="line"><span class="t-ok">  ✦ Adopted booking-app into BOSS</span> — Quickstart mode (L0-quickstart, BOSS {{VERSION}})</span>
+<span class="line"><span class="t-dim">    read from your repo: 1 source file(s), no build manifest — MVP starts at 5 with a build manifest</span></span>
+<span class="line">    46 file(s) added · <span class="t-accent">nothing of yours overwritten · 1 of yours kept as-is</span></span>
+<span class="line"> </span>
+<span class="line">  Next</span>
+<span class="line">    <span class="t-accent">&gt; /read-repo</span>       <span class="t-dim"># start here — BOSS reads what you've built</span></span>
+<span class="line"><span class="t-dim">                       #   and says where you stand. Reversible.</span></span>
+</pre>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="note">
+          <p>
+            <strong>Not for three cases, and it'll say so.</strong> If you don't use Claude&nbsp;Code,
+            BOSS runs inside it, so it can't help you yet. A codebase that already has a product
+            team around it: you have the structure, and this would be a second one arguing with the
+            first. And a weekend throwaway you'll delete on Monday: <code>git init</code> is enough, and
+            anything more is the ceremony BOSS exists to prevent.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <hr>
     <section class="section">
       <div class="rail">▸<span>the problem</span></div>
       <div class="body prose">
@@ -158,6 +226,26 @@ nav: home
             question it's waiting on, not as filler.
           </p>
         </div>
+        <div class="proof breakout">
+        <div class="tiles">
+          <a class="tile" href="demo/playbook.html">
+            <img src="proof-playbook.png" srcset="proof-playbook-320.webp 320w, proof-playbook.webp 640w" sizes="(max-width: 46rem) 78vw, 17rem" width="640" height="440" decoding="async" alt="The playbook: sixteen chapters generated from the venture's records" />
+            <span class="cap">The playbook <code>boss playbook</code></span>
+          </a>
+          <a class="tile" href="demo/design.html">
+            <img src="proof-design.png" srcset="proof-design-320.webp 320w, proof-design.webp 640w" sizes="(max-width: 46rem) 78vw, 17rem" width="640" height="440" decoding="async" alt="The design space: tokens, components and the decision behind each" />
+            <span class="cap">The design space <code>boss design</code></span>
+          </a>
+          <a class="tile" href="demo/board.html">
+            <img src="proof-board.png" srcset="proof-board-320.webp 320w, proof-board.webp 640w" sizes="(max-width: 46rem) 78vw, 17rem" width="640" height="440" decoding="async" alt="The board: every idea and feature by where it stands, read from the records" />
+            <span class="cap">The board <code>boss board</code></span>
+          </a>
+        </div>
+        <p class="small">Rendered by the same code an install runs, from records you can read. <a href="demo.html">Every page of the demo</a>.</p>
+        </div>
+        <details class="walk">
+          <summary>What's on each page</summary>
+          <div class="prose">
         <ul class="yield">
           <li>
             <h3>The playbook <code>boss playbook</code></h3>
@@ -179,125 +267,8 @@ nav: home
               status line</strong>. Nothing to keep up to date, so it can't be out of date.</p>
           </li>
         </ul>
-        <div class="note">
-          <p class="q"><a href="demo.html">See all of it on one venture.</a></p>
-          <p class="small">Kettlewick is a fictional home-care shift-cover venture run through BOSS end to end: the
-            playbook, the design space, the board, the folders, the shipped files. Nothing there is
-            a mock-up. Every page is produced by the same code an install runs, from records you can
-            read, because a demo prettier than what <code>boss</code> prints is a lie the first
-            install exposes.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="rail">▸<span>is this you?</span></div>
-      <div class="body">
-        <div class="prose">
-          <h2>Three shapes this actually fits</h2>
-          <p class="small">Pick the one that sounds like your week.</p>
-        </div>
-
-        <div class="picker">
-          <input type="radio" name="shape" id="shape-new" checked>
-          <input type="radio" name="shape" id="shape-repo">
-          <input type="radio" name="shape" id="shape-many">
-          <div class="tabs">
-            <label for="shape-new">starting something new</label>
-            <label for="shape-repo">a repo I already have</label>
-            <label for="shape-many">several at once</label>
           </div>
-          <div class="panels">
-
-            <div class="panel p-new">
-              <div class="prose">
-                <h3>An idea you can't stop thinking about</h3>
-                <p>
-                  You've been building with AI for a few months. You shipped one small thing, there
-                  are two more in <code>~/projects/</code> you didn't finish, and a folder of ideas
-                  you never started. This one feels different. So did those.
-                </p>
-                <p>
-                  <strong>What BOSS does:</strong> helps you find the smallest version that would
-                  actually prove it: something you can put in front of one real person this week,
-                  before you spend a month building the version in your head. If the idea isn't
-                  real, you find that out in days instead of at launch.
-                </p>
-                <p class="small">
-                  Day one is {{Q_AGENTS}} agents and {{Q_SKILLS}} skills, and four files that are
-                  yours to read. No specs, no tests, no design system; those arrive later, if the
-                  thing works. The command is <code>boss new</code>.
-                </p>
-              </div>
-            </div>
-
-            <div class="panel p-repo">
-              <div class="prose">
-                <h3>An app that's live, with people paying for it</h3>
-                <p>
-                  It works. Now an AI feature is going in, and the hard question isn't how to build
-                  it. It's whether it's worth building at all, and what it will cost per customer
-                  once real people are using it.
-                </p>
-                <p>
-                  <strong>What BOSS does:</strong> reads what's already there and tells you where
-                  you stand, then helps with the decision rather than the typing.
-                  <strong>Your code is not touched.</strong> Anything you wrote yourself stays
-                  yours; it tells you what it added, and later updates skip your files.
-                </p>
-                <p class="small">
-                  Nothing is overwritten and nothing is permanent; <code>boss remove</code> takes it
-                  back out. The command is <code>boss adopt</code>.
-                </p>
-              </div>
-              <div class="terminal breakout">
-                <span class="cap">joining a project that already had its own <code>coder</code> file</span>
-<pre><span class="line"><span class="t-cmd">boss adopt</span></span>
-<span class="line"><span class="t-ok">  ✦ Adopted booking-app into BOSS</span> — Quickstart mode (L0-quickstart, BOSS {{VERSION}})</span>
-<span class="line"><span class="t-dim">    read from your repo: 1 source file(s), no build manifest — MVP starts at 5 with a build manifest</span></span>
-<span class="line">    46 file(s) added · <span class="t-accent">nothing of yours overwritten · 1 of yours kept as-is</span></span>
-<span class="line"> </span>
-<span class="line">  Next</span>
-<span class="line">    <span class="t-accent">&gt; /read-repo</span>       <span class="t-dim"># start here — BOSS reads what you've built</span></span>
-<span class="line"><span class="t-dim">                       #   and says where you stand. Reversible.</span></span>
-</pre>
-              </div>
-            </div>
-
-            <div class="panel p-many">
-              <div class="prose">
-                <h3>Several of these going at once</h3>
-                <p>
-                  Three side projects of your own, or a room full of other people's. Either way the
-                  question stops being <em>how do I build this</em> and becomes <em>which of these
-                  is still alive, and how would I know without asking everyone</em>.
-                </p>
-                <p>
-                  <strong>What BOSS does:</strong> every project writes things down the same way, so
-                  you can open any one of them and see where it actually got to: what was decided,
-                  what was learned, what's still in the air. <strong>There's nothing to keep up to
-                  date.</strong> It's read straight from the files, so it can't quietly disagree
-                  with the work.
-                </p>
-                <p class="small">
-                  Runs per-project on the machine. No account, no server, no telemetry of any kind;
-                  nothing to set up and nothing that phones anyone.
-                  <a href="keeping-track.html">What BOSS writes down</a>
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="note">
-          <p>
-            <strong>Not for two cases, and it'll say so.</strong> A codebase that already has a product
-            team around it: you have the structure, and this would be a second one arguing with the
-            first. And a weekend throwaway you'll delete on Monday: <code>git init</code> is enough, and
-            anything more is the ceremony BOSS exists to prevent.
-          </p>
-        </div>
+        </details>
       </div>
     </section>
 
@@ -325,6 +296,28 @@ nav: home
               <summary>"I built the whole thing and still don't know if anyone wants it"</summary>
               <div class="snag-body"><p>The one that costs the most and gets skipped the most. BOSS designs a fake door (or a wizard-of-oz, or a concierge version) for the riskiest demand assumption, and it runs in days, before the build. Savoia's rule, plainly: make sure you're building the right it before you build it right.</p><ul class="chips"><li><code>/pretotype</code></li></ul></div>
             </details>
+          </div>
+          <div class="moment">
+            <h3 class="moment-h">while you build</h3>
+            <details class="snag" name="snags">
+              <summary>"I keep saying yes and the scope keeps growing"</summary>
+              <div class="snag-body"><p>A short bet-list with a <strong>mandatory no-list</strong>, because a roadmap that only says yes isn't a decision. It has a fixed appetite, it gets thrown away rather than tended, and each bet's confidence is the evidence grade behind it, so wishful ones look wishful.</p><ul class="chips"><li><code>/roadmap</code></li></ul></div>
+            </details>
+            <details class="snag" name="snags">
+              <summary>"Four things are half-built and none of them are done"</summary>
+              <div class="snag-body"><p>BOSS notices when too much is in flight at once and asks which one is actually moving. It won't reorganise your work; it names the pile, which is usually enough.</p><ul class="chips"><li><code>the conscience</code></li></ul></div>
+            </details>
+            <details class="snag" name="snags">
+              <summary>"It looks right and I can't tell if it works"</summary>
+              <div class="snag-body"><p>The honest failure mode of building fast. <code>/spec</code> makes you say what "working" means <em>before</em> you build it, <code>/smoke</code> is the gate that answers "is it alive", and <code>/evals</code> is the separate question for anything an AI decides, because alive and correct are not the same test.</p><ul class="chips"><li><code>/spec</code></li><li><code>/smoke</code></li><li><code>/evals</code></li></ul></div>
+            </details>
+          </div>
+        </div>
+        <details class="walk fold">
+          <summary>More of them, from the AI bill to the privacy policy</summary>
+          <div class="snags-by four">
+            <div class="moment">
+              <h3 class="moment-h">before you build</h3>
             <details class="snag" name="snags">
               <summary>"I talked to six people and can't tell what I actually learned"</summary>
               <div class="snag-body"><p>Paste the transcript (an interview, a sales call, a support thread) and it comes back as honestly-graded records, plus the pains, the jobs and the words people actually used. <strong>It also flags the moment you led the witness</strong>, which is the part you can't see yourself.</p><ul class="chips"><li><code>/interview</code></li><li><code>/evidence</code></li></ul></div>
@@ -345,21 +338,9 @@ nav: home
               <summary>"My user is 'everyone', which I know isn't an answer"</summary>
               <div class="snag-body"><p><code>/persona</code> derives one from the idea, grows it from research and any real user data you drop in, and lets you consult it as a voice for product calls and QA. It carries a visible ledger of how much is evidence and how much is still a guess — and it starts at <em>all guess</em>. It sharpens what you ask real people; it never replaces them.</p><ul class="chips"><li><code>/persona</code></li></ul></div>
             </details>
-          </div>
-          <div class="moment">
-            <h3 class="moment-h">while you build</h3>
-            <details class="snag" name="snags">
-              <summary>"I keep saying yes and the scope keeps growing"</summary>
-              <div class="snag-body"><p>A short bet-list with a <strong>mandatory no-list</strong>, because a roadmap that only says yes isn't a decision. It has a fixed appetite, it gets thrown away rather than tended, and each bet's confidence is the evidence grade behind it, so wishful ones look wishful.</p><ul class="chips"><li><code>/roadmap</code></li></ul></div>
-            </details>
-            <details class="snag" name="snags">
-              <summary>"Four things are half-built and none of them are done"</summary>
-              <div class="snag-body"><p>BOSS notices when too much is in flight at once and asks which one is actually moving. It won't reorganise your work; it names the pile, which is usually enough.</p><ul class="chips"><li><code>the conscience</code></li></ul></div>
-            </details>
-            <details class="snag" name="snags">
-              <summary>"It looks right and I can't tell if it works"</summary>
-              <div class="snag-body"><p>The honest failure mode of building fast. <code>/spec</code> makes you say what "working" means <em>before</em> you build it, <code>/smoke</code> is the gate that answers "is it alive", and <code>/evals</code> is the separate question for anything an AI decides, because alive and correct are not the same test.</p><ul class="chips"><li><code>/spec</code></li><li><code>/smoke</code></li><li><code>/evals</code></li></ul></div>
-            </details>
+            </div>
+            <div class="moment">
+              <h3 class="moment-h">while you build</h3>
             <details class="snag" name="snags">
               <summary>"My AI writes a different button on every screen"</summary>
               <div class="snag-body"><p>Design tokens get scaffolded the moment there's real UI, not at the start, when they'd be ceremony. BOSS watches for styling spread across several files and offers then, so style never gets welded into code one component at a time.</p><ul class="chips"><li><code>/design-tokens-init</code></li></ul></div>
@@ -376,9 +357,9 @@ nav: home
               <summary>"We're both moving fast and quietly drifting apart"</summary>
               <div class="snag-body"><p>AI makes each of you faster, which left alone pulls a two-person team into parallel. BOSS notices when real work has happened and <em>nothing has been decided together</em>. It notices through an untouched decision log, <strong>never by asking how your teamwork is going</strong>, because self-report is exactly what's blind to this.</p><ul class="chips"><li><code>mentor-cofounder</code></li><li><code>the conscience</code></li></ul></div>
             </details>
-          </div>
-          <div class="moment">
-            <h3 class="moment-h">what the AI brings with it</h3>
+            </div>
+            <div class="moment">
+              <h3 class="moment-h">what the AI brings with it</h3>
             <details class="snag" name="snags">
               <summary>"The AI bill arrived and I hadn't thought about it"</summary>
               <div class="snag-body"><p>Declare a budget the moment your code first calls a model, not after the invoice. <code>/ai-cost</code> wires a per-call ledger and, run again, reads it back, and if you're charging for the thing, BOSS watches spend against your price rather than against a number you invented.</p><ul class="chips"><li><code>/ai-cost</code></li><li><code>/ai-cost review</code></li></ul></div>
@@ -407,9 +388,9 @@ nav: home
               <summary>"It shipped a screen with no empty state, and I didn't notice"</summary>
               <div class="snag-body"><p><code>/design-review</code> runs the proposed UI through the designer before the code — the visual system, then the flows and the five states — and outputs concrete diffs. Run it again after the code: it walks the real journey, checks the five states are real, and says <em>not checked</em> where it couldn't look rather than passing what it couldn't see.</p><ul class="chips"><li><code>/design-review</code></li><li><code>/design-review after</code></li></ul></div>
             </details>
-          </div>
-          <div class="moment">
-            <h3 class="moment-h">after you ship</h3>
+            </div>
+            <div class="moment">
+              <h3 class="moment-h">after you ship</h3>
             <details class="snag" name="snags">
               <summary>"This works at ten users and I suspect it breaks at a thousand"</summary>
               <div class="snag-body"><p>There's an architecture mentor for exactly this, and its job is to name the load-bearing decision rather than start refactoring, including the answer <em>"not yet, and here's the signal to watch for."</em> Rebuilding early is as expensive as rebuilding late.</p><ul class="chips"><li><code>mentor-architect</code></li></ul></div>
@@ -438,8 +419,9 @@ nav: home
               <summary>"Is this working? I honestly can't tell"</summary>
               <div class="snag-body"><p><code>/health</code> is the post-launch verdict and the diagnosis in one read. It renders product-market fit honestly, defaulting to <em>not yet</em>, says where a decaying curve dies — activation, engagement, or the wallet — and routes to the fix. Under ten users, its answer is: talk to them.</p><ul class="chips"><li><code>/health</code></li></ul></div>
             </details>
+            </div>
           </div>
-        </div>
+        </details>
         <div class="prose">
           <h3>And the small ones, which say more about it than the big ones</h3>
         </div>
@@ -475,11 +457,33 @@ nav: home
           <h2>What it looks like when BOSS actually speaks</h2>
           <p>
             Four ideas captured over a couple of weeks, none of them pressure-tested. You open Claude
-            and ask for something unrelated: <em>"add a settings page"</em>. Here is exactly what
-            happens, in two halves.
+            and ask for something unrelated: <em>"add a settings page"</em>. The four captures really
+            were four different products, so it speaks, once:
           </p>
         </div>
 
+        <div class="terminal breakout">
+          <span class="cap">what BOSS says, before the settings page gets built</span>
+<pre><span class="line"><span class="voice"><span class="voice-mark">▸ </span>Four captures, four different products — none of them narrowing</span></span>
+<span class="line"><span class="voice">  on who actually has the problem. What would you want to learn</span></span>
+<span class="line"><span class="voice">  before building any of them? <span class="t-accent">/canvas</span> sharpens the bet; if you</span></span>
+<span class="line"><span class="voice">  already know whose problem it is, <span class="t-accent">/interview</span> preps the call.</span></span>
+<span class="line"> </span>
+<span class="line"><span class="after">Then it stops. Your settings page gets built either way.</span></span>
+</pre>
+        </div>
+
+        <div class="prose">
+          <p class="small">
+            The words are composed fresh each time, so yours will not be these. It did not block the
+            prompt, did not repeat itself, did not grade you, and pointed at a conversation rather
+            than at more BOSS.
+          </p>
+        </div>
+
+        <details class="walk">
+          <summary>How it decided to speak, in two halves</summary>
+          <div class="prose">
         <div class="terminal breakout">
           <span class="cap">1. the part that decides <em>whether</em> to speak — real output, no model involved</span>
 <pre><span class="line"><span class="t-dim">a hook reads the project's own files and returns:</span></span>
@@ -517,27 +521,12 @@ nav: home
             thinking carefully is worse than saying nothing.
           </p>
         </div>
-
-        <div class="terminal breakout">
-          <span class="cap">3. here the four captures really were four different products, so it speaks — once</span>
-<pre><span class="line"><span class="voice"><span class="voice-mark">▸ </span>Four captures, four different products — none of them narrowing</span></span>
-<span class="line"><span class="voice">  on who actually has the problem. What would you want to learn</span></span>
-<span class="line"><span class="voice">  before building any of them? <span class="t-accent">/canvas</span> sharpens the bet; if you</span></span>
-<span class="line"><span class="voice">  already know whose problem it is, <span class="t-accent">/interview</span> preps the call.</span></span>
-<span class="line"> </span>
-<span class="line"><span class="after">Then it stops. Your settings page gets built either way.</span></span>
-</pre>
-        </div>
-
-        <div class="prose">
-          <p class="small">
-            The first two blocks are copied from a real run; you can reproduce them by putting four
-            captures in a project and typing anything. <strong>The third is composed fresh each
-            time</strong>, so the words you get will not be these words; that is the half a model
-            does. It did not block the prompt, did not repeat itself, did not grade you, and pointed
-            at a conversation rather than at more BOSS. <a href="conscience.html">How it decides</a>.
-          </p>
-        </div>
+            <p class="small">
+              Both blocks are copied from a real run; you can reproduce them by putting four
+              captures in a project and typing anything. <a href="conscience.html">How it decides</a>.
+            </p>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -606,25 +595,6 @@ nav: home
       </div>
     </section>
 
-    <div class="band">
-      <div class="band-in">
-        <h2>The claims on this page are checkable.</h2>
-        <p class="lede">
-          BOSS asks you to write down what you decided and what would prove it wrong, so it does the
-          same in public. Its <a href="https://github.com/ajeshh/bossbuild/tree/main/docs/decisions">decision
-          records</a> are in the repo, {{COUNT_DECISIONS}} of them, including the ones that make it look bad, because
-          they were written before anyone was reading. So is the conscience's own eval suite, so you
-          can run the judgment it will apply to you.
-        </p>
-        <p class="small">
-          Every practice it ships names who it was learned from, when it was last checked, and what
-          would make it wrong: {{COUNT_PRACTICES}} of them, and {{COUNT_VERDICTS}} outside claims put
-          through the filter, most of which were turned down.
-          <a href="governance.html">How BOSS decides what it believes</a>.
-        </p>
-      </div>
-    </div>
-
     <section class="section">
       <div class="rail">▸<span>go on</span></div>
       <div class="body">
@@ -649,21 +619,17 @@ nav: home
           </div>
           <div class="pair">
             <span class="k"><a href="team.html">See how it thinks</a></span>
-            <span>Ten pages in three parts. <strong>What you get</strong>:
-              <a href="team.html">the team</a>, <a href="keeping-track.html">what it writes down</a>,
-              <a href="conscience.html">how the conscience decides to speak</a>.
-              <strong>How it's built</strong>: the positions BOSS holds on
-              <a href="product.html">product</a>, <a href="project.html">project</a>,
-              <a href="design.html">design</a> and <a href="engineering.html">engineering</a>, each
-              one a mechanism rather than a philosophy, and all four meeting on one record, the
-              FEAT, where product writes the goal, design decides the flow, engineering shapes the data
-              and the smoke, and the planner sets the order, before a line of code exists.
-              <strong>What it believes</strong>: <a href="thinking.html">what it refuses to do to
-              you</a> and what would prove each refusal wrong, the
-              <a href="charter.html">humane line</a>, <a href="governance.html">how it decides what
-              to believe</a>, and <a href="credits.html">everyone it learned from</a>.</span>
+            <span>Ten pages in three parts: what you get, how it's built, and what it believes.
+              Start with <a href="conscience.html">how the conscience decides to speak</a>.</span>
           </div>
         </div>
+        <p class="small prose">
+          The claims on this page are checkable. BOSS's
+          <a href="https://github.com/ajeshh/bossbuild/tree/main/docs/decisions">decision records</a>
+          are in the repo, {{COUNT_DECISIONS}} of them, including the ones that make it look bad, and
+          every one of its {{COUNT_PRACTICES}} practices names who it was learned from.
+          <a href="governance.html">How BOSS decides what it believes</a>.
+        </p>
         <p class="small prose">
           Also free, no install: <a href="canvas.html">the Humane Product Canvas</a> as a standalone
           page you can just take. And when the scaffolding is holding nothing up, it comes down:
