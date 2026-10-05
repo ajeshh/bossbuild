@@ -126,7 +126,8 @@ Don't auto-invoke either. Surface the question; let the founder decide whether t
   recorded. Closes when this skill writes the first review file.
 - **Adjacent:** the budget half in `SKILL.md` (re-run it if the budget shape needs to change
   based on review findings); `/ai-failure-states` (cost-spike handler is in scope here too — if reviews show
-  recurring cost-spikes, the handler should fire).
+  recurring cost-spikes, the handler should fire — and one spike goes in `docs/evals/seen/`, so `/evals`
+  writes the `cost-spike` case that proves it does).
 
 ## What this skill is NOT
 

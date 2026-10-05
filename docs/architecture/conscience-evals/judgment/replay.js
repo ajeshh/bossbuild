@@ -293,7 +293,7 @@ function main() {
   console.log(`    blocking failures: ${blocking ? red('YES') : green('none')}`);
   if (neverGraded || stale) {
     console.log(yellow(`\n  NOTE: ${neverGraded} never-graded, ${stale} stale across all moments. The judgment is`));
-    console.log(yellow(`  NOT yet model-verified — run regrade.js when an API key is available (judgment/README.md).`));
+    console.log(yellow(`  NOT yet model-verified — run /regrade (keyless, in-session: npm run regrade:keyless), never the paid regrade.js.`));
     console.log(yellow(`  A green replay ≠ a graded judgment.`));
   }
   console.log('');

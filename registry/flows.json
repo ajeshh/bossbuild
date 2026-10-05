@@ -184,6 +184,18 @@
       "path": ".claude/rules/engineering.md",
       "from": "smoke",
       "why": "the project's own testing conventions, held in review"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/evals/SKILL.md",
+      "path": "docs/red-team/RT-*.md",
+      "from": "red-team",
+      "why": "a red-team fail no case asserts yet is the first should-fail case to write (IDEA-139)"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/evals/SKILL.md",
+      "path": "docs/ai-failure-states.md",
+      "from": "ai-failure-states",
+      "why": "one should-fail case per declared state; a STUB is a case still owed, and its id goes back in Eval-tested"
     }
   ],
   "successions": [

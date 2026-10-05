@@ -86,7 +86,7 @@
         "evals/**"
       ]
     },
-    "seam": "Keep the bad outputs. One folder, paste the failure in, no format. That is eval case #1 and it exists for about thirty seconds before someone closes the tab.",
+    "seam": "Keep the bad outputs. One folder, `docs/evals/seen/`, paste the failure in, no format. That is eval case #1 and it exists for about thirty seconds before someone closes the tab.",
     "seamNot": "An eval harness, a judge, a rubric, a CI gate, a scoring loop.",
     "seamWhy": "Every eval set is built from real failures you actually saw. You can write the harness any day; you cannot recover the weird output you deleted, and reproducing it on demand is exactly the thing a non-deterministic system will not do for you."
   },

@@ -20,8 +20,21 @@ no eval set ever could. Categorize failures so the next iteration can target a c
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 
+**Then read what already failed, if any.** Every case starts from a failure somebody saw, and three
+places may already hold one. Write their cases first, before inventing any:
+
+- `docs/evals/seen/` — raw failures you or a user kept (the seam below). Raw material, not an eval
+  set: a file here never means the set "already exists". Strip anyone else's personal data before it
+  becomes a case — the same rule `/ai-cost` holds for the ledger.
+- `docs/red-team/RT-*.md` — every `fail` that `/red-team` recorded and no case asserts yet. Each becomes
+  a `should-fail` case asserting the guard now catches it.
+- `docs/ai-failure-states.md` — every state whose **Eval-tested** still reads `STUB` with no override.
+  When you write its case, put the case id in that field.
+
+None of them there is a complete answer: build from what you saw.
+
 **Rung: MVP.** Applies only when the project has an LLM in control flow. If this project is **earlier** than that, don't run this — leave the seam instead:
-**Keep the bad outputs. One folder, paste the failure in, no format. That is eval case #1 and it exists for about thirty seconds before someone closes the tab.** That is the whole ask; it is *not* an eval harness, a judge, a rubric, a ci gate, a scoring loop. Every eval set is built from real failures you actually saw. You can write the harness any day; you cannot recover the weird output you deleted, and reproducing it on demand is exactly the thing a non-deterministic system will not do for you.
+**Keep the bad outputs. One folder, `docs/evals/seen/`, paste the failure in, no format. That is eval case #1 and it exists for about thirty seconds before someone closes the tab.** That is the whole ask; it is *not* an eval harness, a judge, a rubric, a ci gate, a scoring loop. Every eval set is built from real failures you actually saw. You can write the harness any day; you cannot recover the weird output you deleted, and reproducing it on demand is exactly the thing a non-deterministic system will not do for you.
 
 ## Correctness ≠ safety — the adversarial half
 
@@ -115,8 +128,11 @@ The 2026 update to the eval discipline, from the people who teach it. Fold these
 - **Error analysis comes first — on *real* traces, not invented cases.** Read your actual
   session/agent traces, sort the failures into a taxonomy, *then* build evaluators for the modes you
   actually see. Inventing eval cases before you've looked at real failures is "eval-driven
-  development" done backwards. (If the project runs BOSS's `auto-log` trace substrate, `.boss/trace.jsonl`
-  is exactly this raw material.) Error analysis is 60–80% of the work.
+  development" done backwards. The raw material is **the product's own outputs** — what you saw, what a
+  user reported — landing in `docs/evals/seen/`. `.boss/cost-log.jsonl` says *which* calls to open (the
+  outliers by FEAT and by tokens) and never what they said; it is privacy-first by design.
+  (`.boss/trace.jsonl` is a different trace: which files BOSS's own agents touched, read by
+  `/judge-traces`. It holds nothing your model said.) Error analysis is 60–80% of the work.
 - **Binary pass/fail, not 1–5 scores.** A Likert score hides the decision. Force each case to a
   yes/no — "did it do the thing or not" — and let the *categorized* failures carry the nuance. Scores
   feel rigorous and measure nothing.

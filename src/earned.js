@@ -81,7 +81,7 @@ export function holdAtAdopt(manifest, projectDir, { shippedBefore = false } = {}
  * the pattern misses to widen it there, and the conscience then reads their copy — so reading only
  * BOSS's named /ai-cost and never laid it down (IDEA-139 T1, reproduced). A union, never the
  * project's alone: narrowing or deleting their copy quiets the moment and must not hold the skills
- * back (mute never feeds a reading — docs/ECOSYSTEMS.md principle 4). */
+ * back: a mute never feeds a reading. */
 export function llmInSource(projectDir) {
   return [COST_LOOP, join(projectDir, '.boss', 'loops', 'cost-budget-loop.md')].some((file) => {
     try {

@@ -4,9 +4,9 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: exploring
-proof: none
-proof_note: steps 1–2 written read-only (2026-10-05); step 3 is proposed, not built. Done is the return path declared — evals ← red-team and evals ← ai-failure-states as takes in registry/flows.json, held by check-refs class 7 — plus the reproduced stack-miss fix in src/earned.js with its test.
+status: shipped
+proof: test/earned.test.js
+proof_note: step 3 items 0–5 landed 2026-10-05 (Unreleased). The test reproduces T1 and failed on the old code. Done is the return path declared — evals ← red-team and evals ← ai-failure-states as takes in registry/flows.json, held by check-refs class 7 — plus the reproduced stack-miss fix in src/earned.js with its test. Both takes were mutation-tested. Open: T5 and Q2 are Ajesh's.
 gist: AI behaviour — what the founder's product does when it asks a model (what it costs, how it fails, whether it's right, whether it can be turned) — gets its own ecosystem, centred on the first place the founder's code calls a model. The four skills already exist and agree on a shared vocabulary; what is missing is the way back. Every finding is told to "become an eval case" and nothing that writes eval cases reads a finding.
 created: 2026-10-05
 anatomy: 3
@@ -225,7 +225,20 @@ this product, and the doc grows a sixth. **How it leaves:** at real traffic, off
 online evals on sampled production traffic (`evals:141-156`). The hand-written intake becomes
 auto-curated, and the folder's reader follows. Nothing replaces `/ai-failure-states`; it stays the steward.
 
-## Step 3 — what a founder gets (proposed 2026-10-05, smallest first; not built)
+## Step 3 — what a founder gets (proposed 2026-10-05, smallest first; Ajesh: *"go for it"*)
+
+**Landed 2026-10-05:**
+- **0** (`083b3ed`) — and the same bug one loop over: `design-tokens-loop` had the identical hatch
+  and `uiInSource` read only BOSS's copy. Reproduced by a test first, then fixed the same way.
+- **1–4** — the `/evals` Step 0 intake, `docs/evals/seen/`, the trace pointer corrected, and
+  `/ai-cost review`'s spike line. Two takes were added to `flows.json`. Each was mutation-tested:
+  moving the path in `/evals` turns class 7 red, with the file and line.
+- **5** — T3 (replay's hint now names `/regrade`) and T4 (`/recalibrate`, gitignored, local only).
+- Two Unreleased bullets. Rule 6: a `/tmp` scaffold earned the AI skills from a widened loop on a
+  LangChain call, and the new text arrived on `boss sync --apply`.
+- Fixed in passing: the first commit's comment in `src/earned.js` cited `docs/ECOSYSTEMS.md`, which
+  doesn't ship. `test:ci` doesn't run check-refs, so `npm run check` caught it after the commit.
+
 
 0. **Fix T1, reproduced.** `llmInSource` reads BOSS's loop **and** the project's
    `.boss/loops/cost-budget-loop.md` when present, earning if **either** matches (union: the founder can

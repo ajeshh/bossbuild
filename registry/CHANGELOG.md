@@ -27,6 +27,18 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **AI tests start from what already went wrong.** Before it writes a case, `/evals` now reads what
+  has already failed: a `fail` in a `/red-team` report, a failure state still marked `STUB`, and
+  anything you kept in `docs/evals/seen/`, the folder the *keep the bad outputs* tip now names. When it
+  writes a case for a failure state, it puts the case id back on that state. `/ai-cost review` sends a
+  recurring cost spike there too. And `/evals` no longer points at BOSS's agent log as if it held what
+  your model said.
+
+- **The AI and design skills arrive on a stack BOSS doesn't recognise.** If BOSS's pattern misses your
+  model library or UI framework, widen it in the project's own loop file, as the loop says, and the next
+  `boss sync` lays the skills down. Before, the conscience named `/ai-cost` or `/design-tokens-init`
+  and the skill never arrived. Narrowing the pattern quiets the reminder and still never holds them back.
+
 - **A check for the test that got loosened to pass.** When your agent edits a test so it removes an
   assertion or skips a case, in the same stretch of work that changed the code, `test-assertion-guard`
   names it and asks for the reason: a bug fix adds a test, and only a real change in behaviour should

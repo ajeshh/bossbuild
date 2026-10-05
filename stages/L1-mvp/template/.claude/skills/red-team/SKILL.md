@@ -262,8 +262,9 @@ A dated report — `docs/red-team/RT-YYYY-MM-DD.md` (or inline for `--self`):
   the reason. That line is also what `verification-loop` reads to stop asking: the conscience treats a
   recorded *result* as verification and an intention as nothing, which is the same standard the rest
   of this skill holds.
-- **Failures are findings** — each becomes a `/spec` fix or an `/evals` case (a `should-fail` case that
-  asserts the guard now catches it). Defense → test → regression-proof.
+- **Failures are findings** — each becomes a `/spec` fix or an `/evals` case. `/evals` reads this
+  report's `fail` lines at its Step 0 and writes the `should-fail` case there, so write the attack
+  exactly enough to replay. Defense → test → regression-proof.
 - **For `--humane`, one line per surface the shape gave you** — `boss craft deceptive-patterns
   --shape <x>` prints that list with counts, so the report is checkable against it. Write the line
   even when the result is `n/a`, with the reason. Same mechanism as the Negative-path rule above, and
