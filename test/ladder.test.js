@@ -129,7 +129,9 @@ test('a planted seam stops being offered', () => {
   const bare = mvpProject();
   const before = nextSeam(bare, stamp());
   const after = nextSeam(mvpProject({
-    [LADDER[before.name].produces.files?.[0] || 'docs/onboarding.md']: 'planted',
+    // `produces` may be a pattern (`docs/measure/MEASURE-*.md`): plant a file it matches — `*` is not
+    // a legal filename character on Windows, and a pattern is not a path anywhere.
+    [(LADDER[before.name].produces.files?.[0] || 'docs/onboarding.md').replace(/\*/g, 'x')]: 'planted',
   }), stamp());
   assert.notEqual(after?.name, before.name, 'the seam BOSS just asked for must not be asked for again');
 });

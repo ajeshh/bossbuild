@@ -11,6 +11,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { BOSS_ROOT } from '../src/paths.js';
 
 const ZONES = ['Pacific/Kiritimati', 'Pacific/Pago_Pago']; // UTC+14, UTC-11
@@ -20,8 +21,9 @@ const asOf = (tz) => {
     { env: { ...process.env, TZ: tz, NO_COLOR: '1' }, encoding: 'utf8' });
   return (r.stdout.match(/as of (\d{4}-\d{2}-\d{2})/) || [])[1];
 };
+// A file URL, not a path: on Windows `import('C:/…')` is not a valid specifier (CI caught it).
 const localToday = (tz) => spawnSync('node', ['-e',
-  "import('" + join(BOSS_ROOT, 'src', 'clock.js').replace(/\\/g, '/') + "').then((m) => process.stdout.write(m.isoDay()))"],
+  "import('" + pathToFileURL(join(BOSS_ROOT, 'src', 'clock.js')).href + "').then((m) => process.stdout.write(m.isoDay()))"],
   { env: { ...process.env, TZ: tz }, encoding: 'utf8' }).stdout;
 
 test('REGRESSION: check-freshness reads "today" in local time', () => {

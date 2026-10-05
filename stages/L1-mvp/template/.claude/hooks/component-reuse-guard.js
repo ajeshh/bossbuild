@@ -193,6 +193,7 @@ try {
   if (index == null && existsSync(indexPath)) index = readFileSync(indexPath, 'utf8');
   if (index == null) process.exit(0);
   const atV1 = indexRel === MANIFEST_REL;
+  const indexShown = indexRel.replace(/\\/g, '/'); // a path a person reads, the same on every OS
 
   const input = event.tool_input || {};
   const path = input.file_path || '';
@@ -215,7 +216,7 @@ try {
     if (old === name) continue; // the deprecated component's own file is allowed to exist
     if (new RegExp(`\\b${old}\\b`).test(added)) {
       notes.push(
-        `\`${old}\` is marked **deprecated → \`${next}\`** in \`${indexRel}\` and this write just ` +
+        `\`${old}\` is marked **deprecated → \`${next}\`** in \`${indexShown}\` and this write just ` +
         `referenced it. Use \`${next}\`. The old row stays until its last import is gone — this is ` +
         `one of the imports keeping it alive.`
       );
@@ -295,7 +296,7 @@ try {
   out(
     (notes.length ? `component-reuse-guard: ${notes.join(' ')}\n\n` : '') +
     `component-reuse-guard: \`${name}\` was just written to \`${path}\` and has no row in ` +
-    `\`${indexRel}\`. Before continuing, answer the three-way question the index exists for — ` +
+    `\`${indexShown}\`. Before continuing, answer the three-way question the index exists for — ` +
     `**reuse, adjust, or new?**${nearNote} Already there: ${listing}. ` +
     `Match on the JOB, not the look: same job and a different look is a **variant** (a prop, not a ` +
     `file); same job and a slightly different need means **widen** the existing one; a different job ` +
