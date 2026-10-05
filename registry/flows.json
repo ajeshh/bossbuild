@@ -136,6 +136,36 @@
       "path": "docs/ai-cost-budget.md",
       "from": "ai-cost",
       "why": "a cost spike is measured against the declared budget"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/spec/SKILL.md",
+      "path": "docs/ideas/FEAT-*.md",
+      "from": "sunset",
+      "why": "a dropped FEAT's lesson meets the next attempt before it repeats the mistake (N5)"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/health/SKILL.md",
+      "path": "docs/onboard/ONBOARD-*.md",
+      "from": "onboard",
+      "why": "the activation metric /onboard derived is the one /health tracks"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/landing/SKILL.md",
+      "path": "docs/ideas/IDEA-*.md",
+      "from": "pretotype",
+      "why": "the demand page's threshold is the one /pretotype set before it ran (C4)"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/drift-deep/SKILL.md",
+      "path": "docs/evidence/EVID-*.md",
+      "from": "evidence",
+      "why": "an audit of 'am I fooling myself' reads the only record of the world answering back (C4.4)"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/spec/SKILL.md",
+      "path": "docs/decisions/DEC-*.md",
+      "from": "decide",
+      "why": "a new feature is checked against the decisions it would have to live with (C4.3)"
     }
   ],
   "successions": [

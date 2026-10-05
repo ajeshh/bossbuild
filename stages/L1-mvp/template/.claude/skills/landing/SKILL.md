@@ -87,8 +87,12 @@ message. This decides the whole shape:
   (screenshot/GIF).
 - **Demand / waitlist page** (`--demand`): not built yet → CTA to email capture, hero = the promise. **This is
   `/pretotype`'s fake door** — this skill builds the door `/pretotype` designs. Set the threshold *before* it
-  ships (Savoia); remember a signup measures curiosity, not intent. A confirmation page that restates + asks one
-  qualifying question beats a dead "thanks."
+  ships (Savoia): read the idea's `## Pretotype log` in `docs/ideas/IDEA-NNN.md` for the one already set, and
+  if there isn't one, set it there now, before the page goes live. Remember a signup measures curiosity, not
+  intent. A confirmation page that restates + asks one qualifying question beats a dead "thanks."
+  **An email field is personal data.** Before the page goes live, run `/trust`'s first step (the privacy
+  policy, linked beside the field) — or say plainly that it's missing. Collecting addresses with no stated
+  use is the one thing on this page that can hurt someone who isn't in the room.
 
 ## Step 2 — generate a real page in-repo
 

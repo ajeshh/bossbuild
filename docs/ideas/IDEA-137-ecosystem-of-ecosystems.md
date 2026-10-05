@@ -446,16 +446,17 @@ terms (no research in the CHANGELOG).
 - [x] C3.2 · B1.2 — **eleven** files (the sweep found four more than B1) — seven skills/agents read the founder's real canvas path.
 - [x] C3.3 · B1.3 — BRAND path in two practices and `readLogo`.
 - [x] C3.4 · B1.4, B1.5 (adopted repos' `docs/specs/` / `docs/features/` still named) — `/drift-deep` and `/spec` look where FEATs live.
-- [ ] C3.5 · N5 — `/sunset` writes its lesson into the FEAT/IDEA record `/spec` and `/roadmap` read,
+- [x] C3.5 · N5 (2026-10-04) — the lesson goes in the FEAT record; `/spec` step 0 reads dropped FEATs; the project `POSTMORTEM.md` is named a store, the founder's to keep (one-way: the next project is another repo). Was: N5 — `/sunset` writes its lesson into the FEAT/IDEA record `/spec` and `/roadmap` read,
   not a `POSTMORTEM.md` nothing reads.
-- [ ] C3.6 · B1.7 — each prose-only hand-off: wire it, or mark it `store` honestly.
+- [~] C3.6 · B1.7 — `/onboard` → `/health` wired and declared. `/ship` and `/money` → `/trust` are **routes** (run a skill), not file flows — left as is. Schema → `/decide` → C4.5. **New task T1:** `trace.jsonl` is listed per-person (`person-state.js:4,40`) but written and read in-project — a DEC-015 inconsistency, its own fix. Was: B1.7 — each prose-only hand-off: wire it, or mark it `store` honestly.
 - *Creates:* edits to ~15 shipped skill/agent/practice/hook files; CHANGELOG bullets; the reader
   goes quiet on BOSS's own repo.
 
 **C4 · Return paths** (N10 — the absent flows, chosen one by one)
-- [ ] C4.1 · pretotype result → an EVID · C4.2 · `/landing --demand` collecting emails → `/trust` ·
-  C4.3 · `/spec` reads the DECs · C4.4 · `/drift-deep` reads the evidence · C4.5 · schema one-way
-  door → `/decide`.
+- [x] C4.1 · pretotype result → an EVID · C4.2 ✓ · `/landing --demand` collecting emails → `/trust` (and the threshold read from the pretotype log) ·
+  C4.3 ✓ · `/spec` reads the DECs · C4.4 ✓ · `/drift-deep` reads the evidence (and the DECs) · C4.5 · schema one-way
+  door → `/decide` — **deferred**: it means teaching `schema-guard` a migration's shape; prose already routes it (`data-schema.md`, `/spec`).
+- **Found by the reader, fixed:** `/evidence` never named the file it writes (only the folder and the id), while the conscience, the playbook and `/drift-deep` read `docs/evidence/EVID-*.md` — now it says so. **Declared flows: 24.**
 - *Creates:* a step or a line in each skill. No new skill.
 
 **C5 · Liveliness — split by H1** (a) founders: the broken-flow line only; (b) the four signs: a design test on BOSS's own ecosystems; (c) falsifier: more only if a founder unprompted asks twice. *(Original plan below, superseded where it conflicts.)*

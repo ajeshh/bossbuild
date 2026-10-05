@@ -140,6 +140,11 @@ page is lying, and the signal it produces is worthless anyway.
      - Decision: <persevere / pivot / kill the bet>
    ```
 
+   **Then record the result with `/evidence`.** A number from real people is the strongest thing a
+   pretotype produces, and in the log alone it never reaches the canvas, the roadmap or the conscience.
+   A signup is `observed-behavior` (it measures curiosity); a pre-order or a deposit is `commitment`.
+   `/evidence` grades it — say which assumption it tests.
+
 7. **YODA — Your Own Data > Anything.** Don't lean on benchmarks, surveys, or "the market." Run
    *your own* pretotype with *your* audience in *your* context.
 

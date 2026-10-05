@@ -48,6 +48,12 @@ Unlike the hook moment's bounded ~5-entry read, here you read **everything that 
 - **The full devlog** — `docs/devlog.md`, *all* entries, not the last five. The arc, not the tail.
 - **Every FEAT spec** — `docs/ideas/FEAT-*.md` (in an adopted repo, also `docs/specs/` or `docs/features/`): what was committed to build
   and its acceptance criteria. Specs are the stated intent; compare against the bet.
+- **The evidence** — `docs/evidence/EVID-*.md`: what real people said and did, graded. This is the
+  only record of the world answering back; an audit of *"am I fooling myself"* that skips it is grading
+  the plan against itself. Weigh `commitment` over `observed-behavior` over `stated-pain`, and say
+  plainly when the ledger is thin or empty — that is itself the finding.
+- **The decisions** — `docs/decisions/DEC-*.md`: what was decided, and each one's falsifier. A DEC
+  whose falsifier has quietly fired is drift with a receipt.
 - **The actual code** — `src/` structurally: what modules/features exist, what the app *does*. What
   you built is the truest record of what you bet on. Read the shape, not every line; follow the
   parts that touch (or conspicuously avoid) the named risk.

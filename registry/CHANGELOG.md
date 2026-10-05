@@ -44,6 +44,22 @@ rule above still applies to the whole section once it is stamped.
   put them, and `boss` was looking elsewhere — so it could tell you to make one you had. It looks
   in the right place now.
 
+- **What a dropped feature taught waits where the next attempt will look.** `/sunset` used to file
+  the lesson in a postmortem nothing reads. Now it adds a short *What this taught* to the feature's
+  own record, and `/spec` reads it before you spec something close — so the lesson meets the next
+  idea at the moment it would repeat the mistake. The project-level postmortem stays yours to keep.
+
+- **Parts that should have been talking now do.** `/spec` reads your decisions first and says when a
+  new feature would contradict one. `/drift-deep` reads your evidence and your decisions, so the *am
+  I fooling myself* audit isn't grading the plan against itself. `/health` tracks the activation
+  metric `/onboard` already derived instead of naming a second one. A pretotype's result goes into
+  your evidence, and a demand page uses the threshold you set before it ran. `/evidence` now says
+  the file it writes.
+
+- **A waitlist page asks about privacy before it goes live.** An email field is personal data, so
+  `/landing --demand` now points at `/trust`'s first step — a privacy policy beside the field — or
+  says plainly that it's missing.
+
 - **BOSS checks that its own hand-offs still meet.** Every place one part of BOSS reads what another
   part writes is now declared, and BOSS's build fails when the two ends stop naming the same file —
   the shape all of the above had. It reads BOSS's own files, never yours.

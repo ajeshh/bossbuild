@@ -83,7 +83,7 @@ them. When in doubt, grade *down*, and name the specific thing that would raise 
 5. **Link the assumption.** If a canvas exists (`docs/ideas/*-canvas.md` or `docs/ideas/CANVAS.md`),
    read its riskiest-assumption line and put a short phrase of it in `assumption:`. If none exists, ask
    the founder which bet this bears on in one sentence — don't block.
-6. **Draft the file, show it, then save:**
+6. **Draft the file, show it, then save it as `docs/evidence/EVID-NNN-<slug>.md`** (the `EVID-` prefix and the number are how the conscience, the playbook and `/drift-deep` find it):
 
    ```markdown
    ---

@@ -57,6 +57,10 @@ user first gets the core value — named in the product's terms, e.g. "sent firs
 retention curve (D1/D7/D30 or weekly, whichever matches the use). **5–10 events maximum**, each tied to
 activation or retention. Anything else is analytics theater — refuse it, and say why.
 
+**If `/onboard` has run, its metric is the one.** Read the newest `docs/onboard/ONBOARD-*.md` first: it
+names the aha-moment and the ONE activation metric, derived from who stayed. Track that event rather
+than naming a second one — two activation metrics is a disagreement nobody decided.
+
 **For an AI product, add what classic analytics misses** (model accuracy ≠ user success) — the few
 that matter for *this* product, not all of them:
 - **Task Completion Rate** — the AI north star (initiated → successful end state).

@@ -16,6 +16,16 @@ the build contract.
 when it's fine (a complete outcome, not a failure to act), or name the *specific* gap and offer the
 *specific* edit when it's behind. Never quietly generate a second one.
 
+**A dropped FEAT counts too.** If one is close to this idea (`status: dropped`), read its `## What this
+taught` before writing — say the lesson back in one line, and let the founder decide whether this
+attempt is different. Speccing the same feature twice without reading why the first one ended is the
+loop `/sunset` exists to close.
+
+**And the decisions it would have to live with.** Read `docs/decisions/DEC-*.md` — the build-scope ones
+first. If this feature contradicts a standing decision (a stack, a boundary, a refusal), say which, in one
+line, before writing anything: either the feature changes, or the decision is revisited with `/decide`.
+A spec that quietly overrides a DEC is two sources of truth.
+
 **Rung: MVP.** If this project is **earlier** than that, don't run this — leave the seam instead:
 **Write down what 'working' means for the feature while you are building it — one sentence, in the commit or a comment. It costs nothing now and it is the only thing that makes a test writable later.** That is the whole ask; it is *not* a spec convention, an id scheme, acceptance-criteria fields, a template. You can write a spec any day. You cannot reconstruct what you MEANT by 'correct' six months after you built it — and an agent asked to test that feature later will happily write assertions against whatever the code already does.
 
