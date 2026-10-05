@@ -36,6 +36,10 @@ already has a slot in the style-guide template, and versioning was separately re
 > and a semantic token named `color.surface.background` pointing at `gray.100` is a light-mode
 > assumption wearing a semantic name. If a real project ever pays a retheme, that is the evidence,
 > and the fix is a sentence in the token guidance, not a theming system.
+>
+> **The sentence, written 2026-10-05 (RVW-117):** `/design-tokens-init` Layer 2 now says names carry
+> the role, *never the value or the theme* — `color.surface.strong`, not `color.surface.dark`. Still no
+> theming system; still waiting on a project that pays a retheme.
 
 ## The five real ones, ranked
 

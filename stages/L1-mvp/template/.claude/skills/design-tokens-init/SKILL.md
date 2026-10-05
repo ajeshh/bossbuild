@@ -1,6 +1,6 @@
 ---
 name: design-tokens-init
-description: Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two. Prevents the 47-blues, pattern-reinvention and billion-line-drift failures AI-generated UI produces by default. Cohort-aware delivery. Runs when design-tokens-loop opens. Usage - /design-tokens-init
+description: Scaffold the minimal design token system (primitives under semantic names) at the first UI commit, plus the component index the agent opens before creating component number two. Prevents the 47-blues, pattern-reinvention and billion-line-drift failures AI-generated UI produces by default. Cohort-aware delivery. Runs when design-tokens-loop opens. Usage - /design-tokens-init
 ---
 
 # /design-tokens-init — scaffold the design tokens system
@@ -36,7 +36,7 @@ file is the source of truth either way, and both docs describe it.
 ## Step 0b — read the shape before you build the system
 
 Read `shape` from `.boss/config.json` (`/canvas` writes it; it is a list of tags). `/design-review`
-reads it too, before code and after, so both agree on which surface exists. A three-layer colour token
+reads it too, before code and after, so both agree on which surface exists. A layered colour token
 cake and an HTML component gallery for a founder whose surface is a terminal is the ceremony
 Principle #2 exists to prevent: build only for a surface that will be reviewed.
 
@@ -56,7 +56,7 @@ creation.
 - **`agent` / `chatbot` with no screen** — the surface is the **transcript**, so the content half *is*
   the whole system: voice, tone, terminology, what it says when uncertain, when refusing, before
   something irreversible. Type, layout and surface language are nil. Do not scaffold tokens.
-- **`mobile-app`** — tokens, the three layers and every composition slot hold. The **units and the
+- **`mobile-app`** — tokens, the layers and every composition slot hold. The **units and the
   mechanics** don't: pt/dp rather than px, Dynamic Type / font-scale reflow instead of a fixed type
   scale, safe areas in the rhythm slot, and touch targets as a floor with no web equivalent.
 - **Web / desktop GUI, or a GUI shape alongside any of the above** — everything below applies as
@@ -84,7 +84,7 @@ that from now on new UI references these tokens, and a new color gets added ther
 
 ### `eng-builder` / `returning-founder` — OFFER + SKIP THE 101
 
-Name the architecture in a line (three layers: primitives → semantic → component) and ask the one
+Name the architecture in a line (primitives → semantic, a component layer when one earns it) and ask the one
 real question: scaffold a Style Dictionary config, or do they have their own pipeline?
 
 ### `vibe-virtuoso` — OVERRIDE-FRIENDLY
@@ -108,7 +108,7 @@ until the system earns it.
 
 One source of truth for style, so the codebase doesn't grow 47 shades of blue. About a minute.
 
-## The minimum three-layer token system (Nathan Curtis layer-cake)
+## The minimum token system: two layers, a third when earned (Nathan Curtis layer-cake)
 
 Create three files, in this order — **`docs/design/tokens.json`** (the tokens themselves, in the W3C
 DTCG format — the one file a colour is a fact in, whatever the stack), `docs/design/DESIGN_TOKENS.md`
@@ -133,7 +133,9 @@ spacing.l: 16
 
 ### Layer 2 — Semantic (meaning)
 
-Names describe the *role*, not the value. AI uses these. **This is the AI-tolerant layer.**
+Names describe the *role*, never the value **or the theme**: `color.surface.strong`, not
+`color.surface.dark`. A name that says *dark* is a retheme waiting to lie. AI uses these. **This is
+the AI-tolerant layer.**
 
 ```yaml
 color.action.primary: { ref: color.blue.500 }
@@ -320,33 +322,36 @@ the other field worth filling — it is what an editor shows on hover, and the a
    ```markdown
    ## Design tokens (added by /design-tokens-init)
 
-   This project uses three-layer design tokens. **All style values come from
+   This project uses design tokens: primitives under semantic names. **All style values come from
    `docs/design/tokens.json` (DTCG — the source), read as `docs/design/DESIGN_TOKENS.md` and
-   consumed through the derived code file.**
+   consumed through the derived code file. Read values there; this block names, it never copies.**
 
    When generating new UI:
-   1. Search `src/components/` for similar patterns first; reuse before creating.
+   1. Open `docs/design/COMPONENTS.md` before creating a component; reuse before creating.
    2. Reference tokens by semantic name (`color.action.primary`), never raw hex.
    3. Specify all 5 states (default / hover / active / disabled / empty) explicitly.
    4. Reject "make it pretty" prompts; anchor to the canvas Promises cell.
    5. Imports flow one way: `ui/` (system components — know nothing about the product) →
       `features/` (product) → `app/` (routes, shell). A system component never imports a
-      feature; a feature never reaches into another feature's internals. Open
-      `docs/design/COMPONENTS.md` before creating a component; read its `Status` column
-      before copying an import — `deprecated → X` means use `X`.
+      feature; a feature never reaches into another feature's internals. Read the index's
+      `Status` column before copying an import — `deprecated → X` means use `X`.
+   6. If two design docs disagree, say which you followed and why. The component index wins on
+      status, `tokens.json` wins on a value; anything else is a question for the founder.
 
-   Semantic → primitive map (the AI reads this without opening another file):
-   | semantic                 | primitive        |
-   |--------------------------|------------------|
-   | color.action.primary     | <your accent>    |
-   | color.surface.background  | <your neutral>   |
-   | color.text.body           | <your ink>       |
-   | radius.default            | <your radius>    |
-   | font.display / font.body  | <your pairing>   |
-   | <signature token>         | <the one that's yours> |
+   The semantic names to reach for (values live in `tokens.json`):
+   | name                      | for                          |
+   |---------------------------|------------------------------|
+   | color.action.primary      | the one act a screen exists for |
+   | color.surface.background  | the page                     |
+   | color.text.body           | reading text                 |
+   | radius.default            | every corner unless a DEC says otherwise |
+   | font.display / font.body  | the promise / the work       |
+   | <signature token>         | <the one that's yours>       |
    ```
-   Inlining the map in CLAUDE.md (not just `DESIGN_TOKENS.md`) means the agent inherits the
-   brand for free on every turn — the single most useful artifact for a Claude-Code-native scaffold.
+   Inlining the **names** in CLAUDE.md means the agent inherits the brand's vocabulary on every
+   turn. **Never inline the values.** Nothing rewrites this block when a token changes, so a copied
+   hex is true until the first retheme and then confidently wrong; the guard and the
+   agent read the value from the source.
 
 1b. **Once `STYLE_GUIDE.md` has voice traits or a terminology list, inline them into CLAUDE.md the
    same way** — then scope that content half by cohort (terminology to everyone, voice and tone only to
@@ -412,8 +417,9 @@ the other field worth filling — it is what an editor shows on hover, and the a
   buttons and inputs defined inline) are the upstream cause of both *pattern reinvention* and
   *billion-line drift* — every inlined primitive is one the next screen reinvents. One sentence at
   seed; a refactor across every screen at V1.
-- **Three layers, not two.** Two-layer (primitives → component) is fragile under AI generation.
-  Three layers (primitives → semantic → component) gives AI a meaningful name to grab.
+- **A semantic layer, always; a component layer when earned.** Primitives → component with no
+  semantic layer is fragile under AI generation; primitives → semantic gives AI a meaningful name to
+  grab, and is the whole system at MVP.
 - **Brand-anchor the primitives.** Don't default to internet-aesthetic. Canvas Promises cell IS
   the brief.
 - **Tokens file LIVES in the prompt context.** When asking AI for UI work, *always* pass
@@ -465,7 +471,7 @@ the other field worth filling — it is what an editor shows on hover, and the a
   loop's entry predicate is the trigger; don't pre-empt it.
 - **Override is recorded, not blocked.** A founder skipping this skill is legitimate; record
   in devlog with substantive rationale.
-- **Run the 5-token distinctiveness pass.** Three layers prevent drift; the 5 overrides prevent
+- **Run the 5-token distinctiveness pass.** The semantic layer prevents drift; the 5 overrides prevent
   *sameness* (the generic-AI-app look). Both, not one. The "signature token" is the brandable one.
 - **Name by purpose; `tokens.json` is DTCG, always, and the stack file is derived from it.**
   Semantic tokens reason about intent (`color.text.error`), not hue (`color.red.500`); DTCG keeps it

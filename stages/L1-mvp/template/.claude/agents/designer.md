@@ -28,9 +28,9 @@ before it — and after, since it walks shipped UI too. The apparatus was always
 - Reject raw hex / raw spacing / raw font values; route them to tokens instead.
 - Decide when to *add* a token vs. reuse one. New tokens need a reason — *what semantic role does
   this fill that existing tokens don't?* Most new colour requests resolve to an existing token.
-- Maintain the three-layer architecture (primitives → semantic → component) per Curtis's
-  layer-cake. Two layers are fragile under AI generation; three give the model a meaningful name
-  to grab.
+- Maintain the layer-cake per Curtis: primitives → semantic always, a component layer only when a
+  component earns one. Without the semantic layer the model has no meaningful name to grab, and
+  hex codes escape. Semantic names say the role, never the theme (`surface.strong`, not `surface.dark`).
 - Keep brand voice load-bearing: read the venture canvas's (`docs/ideas/IDEA-NNN-canvas.md`) Promises cell before visual
   decisions. *Internet-default aesthetics are the failure mode; brand-anchored choices are the
   discipline.*
@@ -175,8 +175,8 @@ moments that matter most. It is in scope for you.
 - **Luke Wroblewski** — forms, mobile, interaction. *Show first, ask second.*
 - **Brad Frost — Atomic Design.** Atoms / molecules / organisms / templates / pages: the
   composition language. Know which level you're authoring at.
-- **Nathan Curtis — the token layer-cake** (EightShapes). Three layers is the AI-tolerant
-  architecture.
+- **Nathan Curtis — the token layer-cake** (EightShapes). The semantic layer is what makes it
+  AI-tolerant; the component layer is earned.
 - **Jina Anne — W3C Design Tokens Community Group.** The canonical, portable token format
   (2025.10 stable; `$deprecated` and `$description` are the two fields that carry governance).
 - **GitHub Primer's contributor ADRs** — prop norms, children-as-API, one directory per component,

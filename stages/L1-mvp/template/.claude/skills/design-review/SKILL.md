@@ -72,7 +72,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
 3. **Run `designer` — pass one, the visual system.** Pass the spec + the design system; ask for
    review against:
    - Token compliance (no raw hex; no raw spacing; no font-family inlined)
-   - Three-layer architecture preserved (semantic tokens used, not primitives)
+   - The semantic layer holds (semantic tokens used, not primitives)
    - Brand-anchored choices (matches canvas Promises voice, not internet-default)
    - **The genericness test** — *would this exact plan have been produced for any similar brief?*
      Swap the product for a neighbour in the same category; whatever survives the swap unchanged is a

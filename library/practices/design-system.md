@@ -121,10 +121,15 @@ The AI-design-failure-mode literature is more developed than founders typically 
 
 ### The minimum AI-tolerant architecture
 
-From the field consensus: **three-layer tokens** (primitives → semantic → component), not
-two. Two layers is fragile under AI generation — the AI takes the easier path and hex-codes
-escape. Three layers gives the AI a semantic name to grab (`color.action.primary` not
-`blue.500`) so the token system survives generation.
+**A semantic layer, always; a component layer when a component earns one.** Primitives used
+directly, or primitives → component with nothing between, is fragile under AI generation — the AI
+takes the easier path and hex codes escape. The semantic layer gives it a name to grab
+(`color.action.primary`, not `blue.500`) so the token system survives generation. At MVP the system
+is two layers, primitives → semantic; Curtis's component layer arrives at V1 if a component's
+constraints earn it. *(Corrected 2026-10-05, RVW-117: this section said "three layers, not two" while
+`/design-tokens-init` scaffolded two and called the third premature, and its reason for three was the
+reason for having a semantic layer.)* Semantic names carry the role, **never the theme**:
+`color.surface.strong`, not `color.surface.dark` — a theme word in a name is the retheme that lies.
 
 ### Cohort-aware scaffolding (added v0.20.x; aligns with v0.20 cohort-aware conscience)
 
@@ -132,8 +137,8 @@ The intervention *shape* varies per cohort (per `.boss/config.json` cohort decla
 
 - `vibe-coder-newbie` / `first-product` — **SHOW**: scaffold a minimal `DESIGN_TOKENS.md` +
   one example component refactored. The teaching IS the intervention.
-- `eng-builder` / `returning-founder` — **OFFER**: "want me to scaffold the three-layer
-  token system now or later?" Skip the 101.
+- `eng-builder` / `returning-founder` — **OFFER**: "want me to scaffold the token system
+  (primitives → semantic) now or later?" Skip the 101.
 - `vibe-virtuoso` — **OVERRIDE-FRIENDLY**: "you know this; here's the override pattern."
 - `indie-hacker` — **RIGHT-SIZED**: minimum portable system; no stack lock-in.
 - `non-tech-founder` / `domain-expert` — **PLAIN-LANGUAGE COACH**: describe the failure
@@ -545,7 +550,7 @@ never written down.
 
 🔴 **The finding that occasioned it:** `/design-review`, before code and after, branches on `shape` from
 `.boss/config.json`. **`/design-tokens-init` and `/design-library` never read it** — every `shape` in
-those files is the English word. So BOSS *built* a three-layer colour cake and an HTML component
+those files is the English word. So BOSS *built* a layered colour cake and an HTML component
 gallery for founders whose surface is a terminal, and then correctly *refused to review it*.
 
 **Building a system for a surface you will not review is the ceremony Principle #2 exists to prevent**,
@@ -627,7 +632,7 @@ it. Narrow the rule, split it, or retire it.
 | Layer | Promotes when | Demotes when |
 |---|---|---|
 | Pattern | the same decision comes up twice | nothing cites it · three exceptions against it |
-| Component | it is used in more than one place | nobody imports it (⚪ unused → delete in this pass) |
+| Component | it is used in more than one place | nobody imports it (⚪ unused → propose deleting it) |
 | Token | a value recurs with a meaning | nothing references it |
 | Principle | it survives being argued with | it is contradicted more often than it is applied |
 | Rule in the style guide | a review keeps re-deriving it | **three exceptions of the same kind** |

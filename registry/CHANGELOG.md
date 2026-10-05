@@ -27,6 +27,15 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The design block BOSS writes into your CLAUDE.md no longer goes stale.** It copied each token's
+  value next to its name, and nothing updated the copy. After a retheme, the agent was reading the old
+  colours as fact. It now lists the semantic names and says the values live in `tokens.json`. It also
+  dropped a second, older instruction for finding components (open the index, not a folder search),
+  and tells the agent what to do when two design docs disagree: say which one it followed. And BOSS
+  stops calling the token system "three-layer" when it builds two. It's primitives under semantic
+  names, with a component layer only when a component earns one, and semantic names never carry a
+  theme (`surface.strong`, not `surface.dark`), so a dark mode doesn't make them lie.
+
 - **`/design-library` asks before it deletes.** A component nothing imports used to be removed in the
   same pass. Now it's flagged and proposed, and you delete it, the same rule every BOSS project
   starts with: ask before anything irreversible. *Imported nowhere* is what a search saw, and a

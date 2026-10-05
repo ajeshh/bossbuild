@@ -128,12 +128,12 @@
     <section class="section">
       <div class="rail">▸<span>the discipline</span></div>
       <div class="body">
-        <h2 id="three-layers-not-two" class="stencil">three layers, not two</h2>
+        <h2 id="a-semantic-layer-always" class="stencil">a semantic layer, always</h2>
         <div class="prose">
           <p>
-            Tokens go <strong>primitives → semantic → component</strong>. Two layers is fragile under AI
-            generation: the model takes the easier path and hex codes escape. Three gives it a semantic
-            name to grab (<code>color.action.primary</code>, never <code>indigo-600</code>) so the
+            Tokens go <strong>primitives → semantic</strong>, with a component layer only when a component
+            earns one. Without the semantic layer the model takes the easier path and hex codes escape;
+            with it, the model has a name to grab (<code>color.action.primary</code>, never <code>indigo-600</code>) so the
             system survives being generated against.
           </p>
           <p>
@@ -411,7 +411,7 @@
           </div>
           <div class="pair">
             <span class="k">/design-tokens-init</span>
-            <span>Scaffolds the three-layer token system and refactors one component as the worked
+            <span>Scaffolds the token system and refactors one component as the worked
               example. Lands at MVP, the moment UI appears.</span>
           </div>
           <div class="pair">
