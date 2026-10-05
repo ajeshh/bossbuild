@@ -3,7 +3,7 @@ id: IDEA-137
 type: idea
 kind: capability
 owner: mentor-architect
-status: exploring (research landed 2026-10-04; nothing built)
+status: building (C0–C4 and C6 landed 2026-10-04; C7 waits on IDEA-136; C5/C8 wait on their triggers)
 program: ecosystem-of-ecosystems
 proof: docs/ECOSYSTEMS.md
 proof_note: this record holds the cross-ladder reasoning, which belongs to no single ladder — the graduation test for a `PROG-NNN` in docs/IDS.md § program. It graduates when the PROG record type is built (records.js keeps it deliberately unbuilt until a real program needs it — this may be that program).
@@ -179,7 +179,7 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
 - [ ] **N4 · Founder stamina on the earning branch too** (sharpens, b2) — `/canvas` asks whose hours
   carry it and what would make you stop only when the project won't earn (`:266-275`); ask once on
   the earning branch until it pays. A canvas question, never a hook.
-- [ ] **N5 · Chop and drop** (sharpens M2/M7, a30) — `/sunset FEAT` writes its lesson into the
+- [x] **N5 · Chop and drop** *(done — C3.5)* (sharpens M2/M7, a30) — `/sunset FEAT` writes its lesson into the
   FEAT/IDEA record `/spec` and `/roadmap` already read, not a `POSTMORTEM.md` nothing reads. Fixes a
   B1 broken flow **without adding a reader**.
 - [ ] **N6 · Beds that stand alone** (sharpens M2, a13) — each *take* says what its bed does without
@@ -209,14 +209,14 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
   Brown, Palmer, the Clarks, Kornfield), the founder and the why (Sinek, Whyte, Macy & Johnstone,
   Bateson, Scharmer), craft (Sennett), rethinking (Grant), designing with people (Jordan & Fuller).
   Lens cards when that ecosystem is being built, not now.
-- [ ] **H1** · 🔴 **The humane check hasn't run.** *Governance* can become ceremony or surveillance;
+- [x] **H1** · *(done — C0.3: mentor-humane read the draft and it changed)* 🔴 **The humane check hasn't run.** *Governance* can become ceremony or surveillance;
   a *liveliness* reading can become a score — and BOSS gives a position, never a grade (DEC-003).
   `mentor-humane` and `designer` before M2's report has a founder-facing word.
-- [ ] **L1** · Link the related records: [[IDEA-132]] (the design system as a graph — M2 inside the
+- [x] **L1** · Link the related records: [[IDEA-132]] (the design system as a graph — M2 inside the
   design ecosystem, already shipped), [[IDEA-004]] (temple culture, parked — the culture ecosystem and
   its council of thinkers), [[IDEA-093]], [[IDEA-135]], [[IDEA-133]] (the why — the founder scale).
 - [ ] **F1** · No founder-side read yet — what a founder *meets* (cohort-aware). After M2 exists.
-- [ ] **S1** · Session end: `docs/RESUME.md`, devlog line. (Capture committed `fa3e7ab`.)
+- [x] **S1** · Session end: `docs/RESUME.md`, devlog line. (Capture committed `fa3e7ab`.)
 - **IDEA-136 is on hold until this program sets it up** (Ajesh, 2026-10-04) — status `deferred` on
   its record and INDEX row. The engineering ecosystem gets planted *from* the anatomy and M2 this
   record produces, not alongside.
@@ -272,18 +272,18 @@ The thinkers converge — and converge on **Ajesh's own frame** (R9), from outsi
   back (M12, N7).
 
 **New mechanics from R8** (candidates; each changes a behaviour, none adds a skill):
-- [ ] **N10 · A return path on every take** (Kimmerer, Johnson) — each take names what it gives back
+- [~] **N10 · A return path on every take** *(four returns built — C4; the `returns` field in the ledger is still unbuilt)* (Kimmerer, Johnson) — each take names what it gives back
   to its giver; most of B1's absent flows are missing returns (pretotype → EVID, landing → /trust,
   sunset → spec). Design's *three exceptions → demote the rule* is the one return path BOSS built,
   and the healthiest seam in the inventory. **No Kimmerer wording in shipped text** — her reciprocity
   is an Indigenous ethic between persons; borrowing it for files without return breaks its first rule.
-- [ ] **N11 · The second repair hands over** (Senge, *shifting the burden*) — the second time BOSS
+- [x] **N11 · The second repair hands over** *(DEC-022; built — C6.2)* (Senge, *shifting the burden*) — the second time BOSS
   repairs the same kind of thing, it names a check the founder's own project could own and offers
   that instead. Tension with DEC-003's *"BOSS does the migration"* — fair once, harmful as a habit.
-- [ ] **N12 · Every ecosystem names how its rules get amended, and by whom** (Ostrom: operational /
+- [x] **N12 · Every ecosystem names how its rules get amended, and by whom** *(already held — C6.1)* (Ostrom: operational /
   collective-choice / constitutional). A founder who disagrees **amends the rule**, not mutes the hook.
   Anatomy item 8.
-- [ ] **N13 · BOSS aims to be needed less** (Sanford's test; Meadows: *"restore… the system's own
+- [x] **N13 · BOSS aims to be needed less** *(reframed by H1; DEC-023; removal test — C6.5)* (Sanford's test; Meadows: *"restore… the system's own
   ability… then remove yourself"*) — nothing in the repo names this aim; N7 retires skills, not the
   conscience's voice. Ajesh: *"Let Go of Ownership."*
 - [ ] **N14 · Flows the founder made count** (Capra) — M2 treats flows outside BOSS's map as
@@ -346,26 +346,26 @@ flows are code; claims, money, trust and ops flows are almost all **skill-step r
 the exact class an M2 gives/takes reader would catch. Each below is a task; rule 8 holds —
 reproduce in a `/tmp` scaffold before fixing.
 
-- [ ] **B1.1** · 🔴 **COMPONENTS.md → manifest.json handover isn't wired.** At V1 `/design-library`
+- [x] **B1.1** · *(fixed — C3.1)* 🔴 **COMPONENTS.md → manifest.json handover isn't wired.** At V1 `/design-library`
   replaces `COMPONENTS.md` with a pointer and moves deprecated rows to the manifest
   (`stages/L2-v1/template/.claude/skills/design-library/SKILL.md:220-226`); `component-reuse-guard.js`
   reads only `COMPONENTS.md` (`:58`, `:103-111`) and exits on zero rows (`:172`) — **the reuse and
   deprecated-import checks go silent at V1.** The CLAUDE.md line `/design-tokens-init` writes still
   says "Open COMPONENTS.md" (`design-tokens-init/SKILL.md:334-336`). `src/design.js:1008` already
   knows. M12's failure, live.
-- [ ] **B1.2** · Skills that read only `docs/ideas/CANVAS.md` while `/canvas` writes
+- [x] **B1.2** · *(fixed — C3.2; the reader now binds every reader — C6.4)* Skills that read only `docs/ideas/CANVAS.md` while `/canvas` writes
   `IDEA-NNN-canvas.md` (the IDEA-118 bug, fixed in `src/recap.js:98-101`, still in prose):
   `design-tokens-init:169,175`, `design-review:62`, `agents/designer.md:34`, `mentor-capital.md:165`,
   `sunset:54`, L3 `mentor-hiring.md:51`.
-- [ ] **B1.3** · BRAND path drift: `conscience-voicing.md:140` and `celebration-of-done.md:106` say
+- [x] **B1.3** · *(fixed — C3.3)* BRAND path drift: `conscience-voicing.md:140` and `celebration-of-done.md:106` say
   `docs/design/BRAND.md`; `src/design.js:554` (`readLogo`) bypasses the `brandPath` resolver.
-- [ ] **B1.4** · `/drift-deep` reads FEATs at `docs/specs/` (`:49`); they live in `docs/ideas/`.
-- [ ] **B1.5** · `/spec` Step 0 looks in `docs/features/` and `docs/specs/**` (`:15`) — it writes to
+- [x] **B1.4** · *(fixed — C3.4)* `/drift-deep` reads FEATs at `docs/specs/` (`:49`); they live in `docs/ideas/`.
+- [x] **B1.5** · *(fixed — C3.4)* `/spec` Step 0 looks in `docs/features/` and `docs/specs/**` (`:15`) — it writes to
   `docs/ideas/`, so it can't find its own output.
-- [ ] **B1.6** · `registry/surface-ladder.json` declares outputs the skills don't write (canvas `:43`,
+- [x] **B1.6** · *(fixed — C2.1)* `registry/surface-ladder.json` declares outputs the skills don't write (canvas `:43`,
   spec `:55`, health `:210`, onboard `:225`, money `:247`, trust `:261-269`), so `src/ladder.js`'s
   "already built" misses them. **This file is the nearest existing thing to M2's *gives*.**
-- [ ] **B1.7** · PROSE-ONLY flows: `/onboard`'s activation metric → `/health` (health never reads
+- [x] **B1.7** · *(C3.6: onboard → health wired; the /trust hand-offs are routes, not files; schema → /decide deferred as C4.5)* PROSE-ONLY flows: `/onboard`'s activation metric → `/health` (health never reads
   `docs/onboard/`); `/pretotype` threshold → `/landing --demand`; `/ship` and `/money` privacy →
   `/trust` (hand-off only); schema one-way door → `/decide` (`schema-guard` covers RLS only);
   `trace.jsonl` listed as per-person (`person-state.js:4,40`) but written in-project.
@@ -380,7 +380,7 @@ something (M2's reader, unbuilt) · **nothing observes reads** — `trace.jsonl`
 M4 can't be measured from the trace as drafted.
 
 **A — what ships (after B, after the mechanics are cut down)**
-- [ ] **A1** · Which mechanics ship, and as what — practice text, frontmatter, a report, a conscience
+- [~] **A1** · *(partly answered: practice text for the second repair and the removal promise; the founder's reader waits on C8's trigger)* Which mechanics ship, and as what — practice text, frontmatter, a report, a conscience
   moment. No new skill.
 - [ ] **A2** · The first guild to plant for a founder (lean: launch).
 

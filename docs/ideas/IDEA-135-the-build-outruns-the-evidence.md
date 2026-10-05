@@ -9,6 +9,7 @@ created: 2026-10-04
 relates: IDEA-133, IDEA-055, EVID-004, EVID-001, EVID-003
 altitude: what BOSS ships a founder (not BOSS's own practice)
 source: Ajesh, 2026-10-04, relaying a founder (EVID-004) — "how do we prevent the runaway expensive building, because 1 line of code is expensive, 10000s with ai, people forget the cost.. not from oh it took 10 tokens to build it, but it creates a lot of complexity tht they now have to solve for..."
+related: IDEA-137 — the evidence ecosystem's return paths (pretotype → EVID, /drift-deep reads evidence) were built in IDEA-137 · C4
 ---
 
 # IDEA-135: The build outruns the evidence

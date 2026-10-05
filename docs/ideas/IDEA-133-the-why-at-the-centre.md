@@ -523,3 +523,5 @@ is dated by rows, not git. Q2 and Q4 stand.
   FEAT-036's *counted, never quoted* rule.)
   Proposed re-aim: the why is the root; the brand's promise, the marketing words and the story are
   downstream of it. See *Re-aim* below once Ajesh picks the job.
+
+- **2026-10-04** — related: [[IDEA-137]] (the ecosystem of ecosystems) — the why is the founder scale of IDEA-137's frame; its open tension: Wheatley says identity is the stablest layer, and before fit the why moves fastest.

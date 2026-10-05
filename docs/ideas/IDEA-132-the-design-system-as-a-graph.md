@@ -52,3 +52,5 @@ _The best articulation so far. Rewrite this as the idea sharpens._
   item — an expression range, quiet to loud, with what stays true in every mode (*"if the identity
   only knows one move, automation will scale sameness"*) — is already parked in IDEA-133 item 8, gated
   on a second surface. Not duplicated here.
+
+- **2026-10-04** — related: [[IDEA-137]] (the ecosystem of ecosystems) — this record is the flow map (M2) inside one ecosystem, design, built before the cross-ecosystem reader existed.

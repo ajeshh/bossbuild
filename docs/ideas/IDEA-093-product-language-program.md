@@ -13,6 +13,7 @@ proof_note: >
   NO-LIST.md renders as an answer when it is an absence.
 created: 2026-09-10
 relates: IDEA-066, IDEA-090, IDEA-049, IDEA-091, IDEA-089, IDEA-054
+related: IDEA-137 — this record's finding (a bet recorded in four places, read back in none) is the missing layer between ecosystems, seen once
 ---
 
 # IDEA-093 — the product language: the return path BOSS never built

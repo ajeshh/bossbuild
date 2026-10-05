@@ -74,6 +74,7 @@ project pulls for them — the Humane Product Canvas is already the spine (Princ
 Pairs with [IDEA-003](IDEA-003-mentor-layer.md) (mentors coach the founder; this coaches *how the team —
 human + agent — works*). The "values are discovered, not declared" insight is a candidate `/canvas`
 heartbeat prompt. Likely lands as a practice via `/boss-learn`, not a mode feature.
+[[IDEA-137]] (2026-10-04) names culture as one of a project's ecosystems, and keeps its council of thinkers (R10) for when this one is planted.
 
 ## Gate
 
