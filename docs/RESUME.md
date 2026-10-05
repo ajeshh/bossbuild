@@ -28,6 +28,11 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-137 (2026-10-04, Unreleased) — the ecosystem of ecosystems.** Inside a founder's project BOSS lays
+  down ecosystems that govern themselves, live by shared principles, and get governance and support for
+  liveliness between them; BOSS → project is one-way. Draft guide `docs/ECOSYSTEMS.md`; **the flow reader**
+  (`registry/flows.json`, check-refs class 7) holds 24 hand-offs; ten broken ones fixed; DEC-022, DEC-023.
+  IDEA-136 (engineering) is being planted from the guide in another session. Checklist and order: IDEA-137.
 - **IDEA-131 (2026-09-25, Unreleased) — MCP gets a *when*; shipped as text + a lookup, no skill.** Also fixed
   the HTML guide's *I want to…* map (broken since v0.275.0) and settled IDEA-006's server-instructions question. Devlog.
 - **IDEA-129 (2026-09-23, Unreleased) — the playbook, second pass; shipped.** Real-record bugs fixed, a cover
@@ -78,6 +83,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Next (in order)
 
+- **IDEA-137 next:** C7 finalises the guide **after** IDEA-136 lands (from where design and engineering
+  overlap) · DEC-023's removal test · Ajesh's ebooks → one re-grade of the book-only quotes.
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
   Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
 

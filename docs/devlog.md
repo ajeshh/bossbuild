@@ -22,6 +22,35 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-04 — IDEA-137: the ecosystem of ecosystems — researched, guide drafted, the flow reader built (`fa3e7ab` → `c03cb5a`, Unreleased)
+
+- **FEAT:** none — IDEA-137, captured and built in the session. Ajesh asked what other ladders BOSS
+  could have beside design and engineering; it became a program: inside one founder's project BOSS
+  lays down **ecosystems** (design, engineering, evidence, claims, trust…) that each govern themselves,
+  live by shared principles, with governance and support for liveliness between them. BOSS → project
+  is one-way (Ajesh corrected a "network of projects" read — memory note written).
+- **Research:** permaculture, Alexander, Brand and software gardening, then 13 thinkers from Ajesh's own
+  list, read at source into lens cards; 13 claims 3-vote verified, 5 killed — including *"nobody else
+  does this"* (3-0). Ajesh's humane-tech notes turned out to hold the frame already (the Menu, the Done
+  cycle, the Compass's scoring → navigation). Session record gitignored.
+- **What landed:** `docs/ECOSYSTEMS.md` (draft guide: five principles, the eight-part anatomy, the steps
+  for a new ecosystem) — reshaped by a humane review before anything was built (liveliness stays
+  internal; a founder sees only a broken flow, offered as a fix). **The flow reader** —
+  `registry/flows.json` + `scripts/flows.js`, check-refs class 7: a hand-off holds only when the giver
+  *writes* the path and the reader *reads* it, judged by sentence. **Ten fixes**, the six inventory
+  breaks reproduced first (the reuse guard silent at V1; eleven skills on the old canvas path; specs
+  looked for where /spec never writes; the ladder blind to six skills' output; readLogo; /evidence
+  never naming its file), plus the hand-offs: /sunset's lesson into the FEAT that /spec reads, /spec ←
+  decisions, /drift-deep ← evidence, /health ← /onboard, pretotype → evidence → /landing → /trust.
+  **DEC-022** (the second repair offers a check), **DEC-023** (BOSS can always be needed less).
+  IDEA-136's hold lifted — engineering is planted next, from the guide.
+- **Surprises:** the reader's first run found readers the hand inventory missed (mentor-founder and
+  four more). Its first versions raised false alarms and missed a real break — the sentence, not the
+  line, is the unit. My own first reproduction was a false silence (zsh `echo` corrupted the hook's
+  JSON) — `printf '%s'` for hook events.
+- **Next:** IDEA-136 (other chat) fills the engineering column; then IDEA-137 · C7 finalises the guide
+  from the overlaps. The founder-side reader waits for a founder-caused break. Ebooks → one re-grade.
+
 ## 2026-10-04 — IDEA-135: the build outruns the evidence (`3cf20a9` → `ccb3a61`, released in 0.329.0)
 
 **What landed.** A founder (EVID-004, relayed by Ajesh) asked AI for a small prototype for feedback
