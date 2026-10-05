@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: deferred (on hold until IDEA-137 sets it up — Ajesh, 2026-10-04; then B first, then A)
+status: deferred (on hold until IDEA-137 sets it up — Ajesh, 2026-10-04; investigation R1–R6 done; then B first, then A)
 proof: docs/ENGINEERING.md
 gist: Code gets the same ladder the design system has — principles a reasonable person could argue with, a map of what exists to check reuse against, rules an agent can act on, checks at the write, and a way to retire them — extracted from BOSS's own src/ before it ships to a founder.
 created: 2026-10-04
@@ -269,6 +269,43 @@ Inputs, not decisions; the record ends with six candidate layer rows.
   contained `.env` — a false positive, not reproduced; which guard fired is unknown.
 - **Confirmed, no change:** `agent-security.md`'s OWASP 2026 claim (release dated 2026-08-04).
 
+## R4 findings (2026-10-04) — Extreme Programming, and XP with agents
+
+`docs/research/sessions/SESSION-2026-10-04-xp-and-agents.md`: five angles, 47 sources read, 22
+load-bearing claims 3-voted — 15 confirmed (most with caveats), 3 narrowed, 4 killed, 3 transfers
+killed. Inputs, not decisions.
+
+- **Restraint is only safe beside the practices that keep change cheap.** XP's own premise (Beck 1999;
+  Fowler 2004): YAGNI and simple design hold *only* when tests, CI and refactoring keep change cheap. An
+  agent removes refactoring's natural host — so "build only what's needed" loses its licence unless the
+  enabling practices arrive **with or before** the restraint. (Argument; Beck's cost-curve evidence is
+  his own anecdote.) Bears on every ecosystem in IDEA-137, not only code.
+- **XP's answer to "authors can't test their own code" was the pair.** An agent writing and checking its
+  own tests is the arrangement XP designed out (sharpens `testing-with-agents.md` §2). **A red test counts
+  only if someone checks *why* it is red.**
+- **Discard on red:** first-edition CI — if the tests can't get to 100%, throw the change away and start
+  again (lineage to test-commit-revert and Beck's own restarts). Cheap when an agent wrote the change.
+- **Parallel change** — the old and new implementation side by side, then switch — named by Beck as the
+  technique agents lack.
+- **Beck, 2025–26:** XP *"manufactured trust"*; the practice set for agent work is *"not yet settled"*;
+  YAGNI survives free code generation. One measured echo: refactoring cut an agent's input tokens per
+  change by 83% (one app, July 2026).
+- **Pace and the human:** comprehension falls when AI writes the code (an RCT, n=52: 50% vs 67%, biggest
+  gap in debugging); cognitive debt; small batches help but *feel* slower (DORA 2025). Survivor rule:
+  **at least one human understands what changed and why.**
+- **Shape inputs:** XP 2nd edition's *primary vs corollary* practices is a seed-that-scales shape;
+  *"just rules"* — a rule may change if you say how you will judge the change; XP's own documented
+  retirement of practices (metaphor dropped as a practice) is a precedent for retirement in IDEA-137.
+- **Contradictions to carry:** once-and-only-once vs Metz / rule of three (a third voice in the
+  widen-vs-inline tension); agent-internal TDD is contested — **no support for a TDD mandate** (agent
+  runs with tests first showed no benefit; the human-writes-the-test mode is untested); Beck is now
+  *"iffy about simplicity as a value"*; **XP assumes a team** — every claim resting on a second human
+  fails to transfer, and every survivor assumes the founder can read code or read what a test checks.
+- **Killed / corrected:** the "3,308 students" figure belongs to a 2017 meta-analysis, not Hannay 2009;
+  Arisholm 2007 doesn't refute "about the same time" but does undercut "better code"; *"make it work,
+  make it right, make it fast"* is not Beck's; *"TDD is a superpower"* is a newsletter heading, not Beck;
+  *"energized work replaced the 40-hour week"* is a commentator's reading.
+
 ## Work — every item has an id; cite as `IDEA-136 · B3`
 
 **R — bring the research in (first; feeds both tracks)**
@@ -280,7 +317,7 @@ Inputs, not decisions; the record ends with six candidate layer rows.
   on who said it). Killed claims recorded beside confirmed ones.
 - [x] **R3** · Research the layers BOSS can't demonstrate (data, API, errors/observability,
   dependencies, prompts-as-code) — a second pass once R1 lands, so R1 stays focused.
-- [ ] **R4** · Extreme Programming at source — the values, principles and practices (Beck 1999/2004:
+- [x] **R4** · Extreme Programming at source — the values, principles and practices (Beck 1999/2004:
   pairing, TDD, simple design, refactoring, collective ownership, coding standards, small releases,
   continuous integration, sustainable pace) — and **XP with AI and agents** (2024–26): what
   practitioners carry over, what breaks, what the agent changes about pairing and test-first.
