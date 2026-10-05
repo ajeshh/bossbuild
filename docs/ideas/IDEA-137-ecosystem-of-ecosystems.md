@@ -572,17 +572,17 @@ model, we need a way to review and update existing ladders and other places"*). 
 part, and the AI-behaviour ladder is being planted against the draft right now. This is M12
 (succession followed) one level up — the fractal test's missing *check*, named in § anatomy.
 `check-freshness.js` says its own honest limit: cadence can't catch an event. This is that event.
-- [ ] C11.1 · **The model gets revisions.** `docs/ECOSYSTEMS.md` § Revisions: rev, date, what changed,
+- [x] C11.1 · *(2026-10-05, `143b133` — rows 1–3 written after the fact from git; row 4 is this)* **The model gets revisions.** `docs/ECOSYSTEMS.md` § Revisions: rev, date, what changed,
   which part or principle — and what a ladder must do about it (*review* / *nothing*).
-- [ ] C11.2 · **Each ladder says which revision it was last reviewed against** — `anatomy: N` in its
+- [x] C11.2 · *(2026-10-05 — stamped from git, not by review: design `0` (the source the anatomy was read from, never reviewed against it), engineering `2` (planted 20:06, before the purpose line at 20:27), claims `3`, AI behaviour `3`. Ladders whose parts live in a record stamp the record, IDEA-138/139.)* **Each ladder says which revision it was last reviewed against** — `anatomy: N` in its
   practice's frontmatter (only BOSS reads practice frontmatter, so no founder pays for it). A stamp
   is set by a review, never by touching the file (same rule as `last_reviewed`).
-- [ ] C11.3 · **`npm run check:freshness` names a ladder behind the model**, with the revisions it
+- [x] C11.3 · *(information, never a gate — exit code unchanged)* **`npm run check:freshness` names a ladder behind the model**, with the revisions it
   missed — beside the cadence report, not a new script. Also lists the other files that cite the
   guide (`ENGINEERING.md`, IDEA-136/138, DEC-022) as *read these too*, without a stamp.
-- [ ] C11.4 · Test, rule 8 first: a ladder at rev 1 with the model at rev 2 → named; at rev 2 → silent;
+- [x] C11.4 · *(`test/ladder-review.test.js`, 7 — failed before the code existed)* Test, rule 8 first: a ladder at rev 1 with the model at rev 2 → named; at rev 2 → silent;
   a practice with no `anatomy:` → not a ladder, silent.
-- [ ] C11.5 · The review itself: the guide's step list gets a step 9 (*when the model moves*) — read
+- [~] C11.5 · *(step 9 written. **First review done: engineering → rev 3** — the purpose line added to `engineering-system.md`, stamped 3. **Open: design → revs 1–3**, the largest, since the guide was read from design but design was never read back against it; BOSS's own `docs/ENGINEERING.md` has a centre and no purpose line — a citer, not stamped.)* The review itself: the guide's step list gets a step 9 (*when the model moves*) — read
   the revision, change the ladder or write why not, re-stamp. First real run: R11.1's outcome.
 - Not a CHANGELOG bullet — BOSS-only plumbing. (`/recalibrate` already owns *AI model* changes; this
   is the *ecosystem* model.)

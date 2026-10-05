@@ -9,7 +9,7 @@ provenance_public: Extracted from how BOSS's own code is actually built — its 
 last_reviewed: 2026-10-04
 review_by: 2027-04-02
 curve: craft-ai
-anatomy: 2
+anatomy: 3
 ---
 
 # Practice — The engineering system: the design system's ladder, for code
@@ -18,6 +18,11 @@ anatomy: 2
 > finds nearest. So the code needs what the design system gives the screens: **a few principles you
 > can argue with, a map of what already exists, rules an agent can act on — each saying what enforces
 > it — and a way to retire them.** Not more rules. Fewer, marked honestly, at the rung that earned them.
+
+**What it is for:** keeping the code a place an agent can add to without making it worse — it finds
+what already exists before writing another, and knows which rules are real. **What the project is
+worse at without it:** every session copies whatever is nearest, so one shortcut becomes the pattern,
+and the rules nothing checks are the ones that quietly stop being true.
 
 ## The ladder — principle, guideline, rule
 

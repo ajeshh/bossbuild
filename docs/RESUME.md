@@ -89,6 +89,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   2. ⏳ **AI behaviour** — kicked off 2026-10-05 in another session: compose `/ai-cost`, `/ai-failure-states`, `/evals`, `/red-team`; BOSS's conscience evals are the instance.
   3. **Data & trust** — highest stakes, but BOSS has no instance of its own: plant from `/trust` + `schema-guard` + the data-schema practice, or on a founder's first personal-data table.
   4. **Operations.** 5. **Money** — waits for a first dollar.
+  · **When the guide moves, the ladders follow (IDEA-137 · C11, 2026-10-05):** `docs/ECOSYSTEMS.md` § Revisions + `anatomy: N` on each ladder; `npm run check:freshness` names one behind. **Due: design → revs 1–3** (never read back against the guide). Lenses R11.1–R11.4 being read at source → may add a revision.
   · **Already living, never framed as ladders:** evidence (the grade ladder) · product language (IDEA-093) · outward docs (IDEA-089, parked).
   · **Not ladders:** the founder (governance pointed at a person is surveillance — H1; stays in IDEA-133) · temple culture / team (IDEA-004, parked).
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.

@@ -9,6 +9,7 @@ proof: none
 proof_note: steps 1–2 written read-only (2026-10-05); step 3 is proposed, not built. Done is the return path declared — evals ← red-team and evals ← ai-failure-states as takes in registry/flows.json, held by check-refs class 7 — plus the reproduced stack-miss fix in src/earned.js with its test.
 gist: AI behaviour — what the founder's product does when it asks a model (what it costs, how it fails, whether it's right, whether it can be turned) — gets its own ecosystem, centred on the first place the founder's code calls a model. The four skills already exist and agree on a shared vocabulary; what is missing is the way back. Every finding is told to "become an eval case" and nothing that writes eval cases reads a finding.
 created: 2026-10-05
+anatomy: 3
 ---
 
 # The AI behaviour ecosystem — no output trusted further than what tested it
