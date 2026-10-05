@@ -67,10 +67,6 @@ rule above still applies to the whole section once it is stamped.
   `/landing --demand` now points at `/trust`'s first step — a privacy policy beside the field — or
   says plainly that it's missing.
 
-- **BOSS checks that its own hand-offs still meet.** Every place one part of BOSS reads what another
-  part writes is now declared, and BOSS's build fails when the two ends stop naming the same file —
-  the shape all of the above had. It reads BOSS's own files, never yours.
-
 ## 0.329.0 — 2026-10-04
 
 - **A feature that grew inside itself is marked on the playbook.** Counting features can't see one
