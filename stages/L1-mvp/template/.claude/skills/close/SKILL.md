@@ -32,30 +32,22 @@ The records are the summary. What you *say* is only what they need before they c
 - **Don't narrate yourself.** No "this is a light close", no grading how they took a nudge. Proportion
   shows in the length, not in a sentence about it.
 
-## Before the housekeeping: mark what was crossed
+## A pause, not an ending
 
-`/close` is also the natural moment to *register a threshold* — because the relentless build never makes
-room for it, and a builder who only ever measures what's left slowly forgets that anything was achieved
-(see the `done` practice). If this session genuinely crossed one — a FEAT closed, the
-first live URL, a mode graduation, the riskiest assumption finally tested — pause and mark it **before**
-the forward-looking housekeeping below. The order matters: look back at what you crossed before you look
-ahead to what's next. **And the other side of a threshold:** if this session kept working on something
-already past its own — a FEAT whose acceptance criteria were met, still being polished — say so once,
-plainly, and offer the two honest names for it: *done*, or a new FEAT with its cost said out loud. Never
-a tally, and silence when nothing was.
+`/close` is **close for now**: nothing ends. The work, the way you're working and the people in it all
+carry on next session; the job is only to leave the thread findable. **Wrapping up a feature is a
+different moment** — Done (`boss craft done`): the feature met its purpose, the container it was built
+in ends, and what comes next is a new decision with a cost. Don't do that here; send it where it lives.
 
-- **Name what's real, specifically** — not "great session," but *what* got done and *what it now unlocks*.
-- **Re-anchor on the why and the who** — reconnect the thing you crossed to the bet (why it mattered) and
-  the person you built it for, in a line. They know their own bet; don't explain it back to them. The build pulls you into the *how*; this pulls you back to the *why*.
-- **Let it turn into curiosity** — *"does this land for them now?"* is the honest next feeling, and it's
-  the bridge back to the real user. A well-marked threshold makes the founder *want* to go find out — the
-  validation instinct, arriving through satisfaction instead of obligation.
-- **Say it once.** What crossed, why it mattered, and the question it opens: two or three
-  sentences, not a paragraph per point. Marking it twice reads as a victory lap.
-- **Proportional, no performed warmth, no streak.** Real thresholds only; most sessions cross none, and
-  silence is correct. This is the conscience's restraint with the polarity flipped — never "🎉 great job!"
-  (the exact flattery the brain-read step below forbids). Emotional acknowledgement is *making space for
-  the founder to feel it*, not BOSS emoting at them.
+- **A feature reached its threshold this session** (criteria met, smoke green) and `/log`'s Done step
+  hasn't run → run it first: it ships the record, reads the bet back and marks it.
+- **Another threshold crossed** — the first thing a stranger can reach, a mode graduation, the riskiest
+  assumption tested — and nothing marked it yet → say it in one or two sentences by the `done`
+  practice's marking rules: what's real, what it unlocks, the question it opens. Real thresholds only;
+  most sessions cross none, and silence is correct. Never "🎉 great job!".
+- **Something was worked on past its own threshold** — a FEAT whose acceptance criteria were met, still
+  being polished → say so once, plainly: it's *done* (run the Done step), or the extra work is a new
+  FEAT with its cost said out loud. Never a tally, and silence when nothing was.
 
 ## How to run it
 

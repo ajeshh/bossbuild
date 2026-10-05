@@ -38,9 +38,13 @@ rule above still applies to the whole section once it is stamped.
   works). It still says how to mark a finished thing without hollow praise, and now says what done is
   *for*: past the point where the work meets its purpose, every extra step costs time, the team, other
   people's patience, and the signal you only get by letting it go. It asks who has agreed to that cost
-  before one more step. `/close` now also notices when a session kept polishing something already past
-  its own acceptance criteria, and offers the two honest names for it: done, or a new feature with its
-  cost said out loud.
+  before one more step.
+- **Closing for now and finishing a feature are two different moments.** `/close` is the pause:
+  nothing ends, it leaves the thread findable. Finishing a feature is **Done**, a named step in `/log`
+  when every criterion is met: it ships the record, reads back the bet you wrote at spec time, marks
+  what was crossed, and makes the next step a new decision with its cost said. `/close` sends you
+  there when a feature crossed its threshold, and notices when something is still being polished past
+  its own criteria.
 
 - **`/canvas` asks a project that means to earn what would make you stop.** It already asked how long
   your runway lasts; it now also asks, once, what would make you stop if the runway ends before the

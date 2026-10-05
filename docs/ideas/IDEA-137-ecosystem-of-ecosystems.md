@@ -604,3 +604,7 @@ the ecosystems are real.
   many steps."* → `library/practices/celebration-of-done.md` renamed `done.md` and reworked around it:
   past done, more is a debt; done ends the container; continuing needs consent and has a true cost;
   one's own need and everyone else's, both true. Marking it (the old practice) is now one section.
+- **2026-10-04 · Ajesh** — *"there is a difference between close for now, vs wrap up of feature close
+  right?"* → yes; BOSS ran both through `/close`. Split: `/close` is the pause (nothing ends);
+  **Done** is `/log`'s step 5, named, carrying the marking moved out of `/close` and the next-step
+  question (cost, who agreed). `/close` only notices and points there. No new skill (Ajesh: "ok go for it").

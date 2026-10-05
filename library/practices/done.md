@@ -77,9 +77,10 @@ hand who doesn't need the credit; **"🎉 Amazing job!!" is an instant tell.**
 
 - **`/ship` hands back something a stranger can reach** — a live URL, an install line, a TestFlight
   build, an endpoint with a worked example: whatever *reachable* means for what they built.
-- **`/close`** — say what the session crossed, not only what it logged; and whether anything was
-  worked on past its threshold.
-- **A FEAT's criteria met** — done; more is a new FEAT or an agreed cost.
+- **A FEAT's criteria met** — `/log`'s **Done** step: ship the record, read the bet back, mark it,
+  and make the next step a new decision. More is a new FEAT or an agreed cost.
+- **`/close` is not Done.** It is close *for now*, a pause where nothing ends. It only notices: a
+  feature that reached its threshold (and sends it to the Done step), or work still going past one.
 - **A mode graduation (`boss unlock`)** — a rung crossed; mark it, don't unlock it silently.
 - **A riskiest assumption tested** — the canvas's own graduation moment.
 

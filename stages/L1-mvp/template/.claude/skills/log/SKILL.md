@@ -1,6 +1,6 @@
 ---
 name: log
-description: Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you. Lighter than commit messages, denser than CHANGELOG. The thing future-you reads before starting work. Usage - /log <one-line summary or detailed entry>
+description: Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you. Lighter than commit messages, denser than CHANGELOG. The thing future-you reads before starting work. When a feature's criteria are all met, its Done step ships the record and reads the bet back. Usage - /log <one-line summary or detailed entry>
 ---
 
 # /log — the devlog
@@ -45,8 +45,9 @@ If you only read one thing when picking the project back up, read the last devlo
      surprise in it. The devlog entry you just wrote is per *session*; this is the same day's work
      filed under the *feature*, so its arc stays whole across releases. **Don't mirror the devlog
      line into it** — if the only thing you'd write is a restatement, write nothing.
-5. If a FEAT closed (all criteria ticked + smoke green), close it out in the FEAT doc — **three
-   lines, not one**:
+5. **Done — if a FEAT closed** (all criteria ticked + smoke green). This is the wrap-up, not a pause
+   (`/close` is the pause): the feature met its purpose and the container it was built in ends —
+   `boss craft done`. First, close it out in the FEAT doc — **three lines, not one**:
    - `status: shipped`
    - **stamp `shipped_on: {{today}}`** — the board's Shipped column folds anything older than ~30
      days into "shipped earlier", and that window only works on a real date. With no stamp it
@@ -62,6 +63,15 @@ If you only read one thing when picking the project back up, read the last devlo
    wrote down, and what happened to it.* If a *Still unknown* line got answered by building, write
    the answer next to it; if it is still unknown, say so and leave it. Decisions get the same
    question from `boss status` when their `revisit_by:` date passes.
+
+   **Mark it — once, without performed warmth.** Name what's real (*what* got done and *what it now
+   unlocks*, never "great work"), reconnect it in a line to the bet and the person it was for, and let
+   it turn into the honest next question: *does this land for them now?* Two or three sentences.
+   Proportional: a closed FEAT is a threshold; most `/log` runs cross none.
+
+   **Then the next step is a new decision.** Before anything more goes into this feature, ask once:
+   what would it cost — time, the team, other people's patience — and who has agreed to that? More
+   work is a new FEAT, or a cost someone chose; never quiet polishing on a closed one.
 
    > This step used to read *"flip its status to `shipped` — that one field is the whole update"*,
    > while `/spec` (which a founder reads once, months earlier) carried the other two. `/log` is
