@@ -169,6 +169,43 @@ full, 15 load-bearing claims put to three adversarial verifiers — 12 survived 
   (the method transfers, the levels don't — size-layering gives business logic no home).
 - **Dated, not wrong:** Shopify's 2.8M lines is a 2020 figure and needs its year in the practice.
 
+## R5 findings (2026-10-04) — pattern libraries for code; ⚠ evidence-checked only
+
+`docs/research/sessions/SESSION-2026-10-04-code-pattern-library.md`: five angles, 38 sources read,
+20 claims to the panel. **Only the evidence verifier reported** (13 confirmed, 7 with caveats, 0
+refuted); attribution and fit-for-a-founder are **unvoted** — R6 finishes them before any of this
+reaches a practice. Inputs, not decisions.
+
+- **The record form is small.** The minimum the pattern community agreed: name · context · problem ·
+  forces · solution; the rest optional, and a weak placeholder is worse than a gap. A one-sentence
+  problem and one-sentence solution is already a table row. **The design `PATTERNS.md` has no *forces*
+  (why) column** — the field says that is the part that makes a pattern reusable.
+- **Two vs three, resolved rather than chosen (sharpens R1's tension).** "Rule of three" is two rules:
+  three uses *inside one codebase* before you abstract (Roberts), and three *independent systems*
+  before a pattern is published (the pattern community). A single project can only meet the first. So:
+  **name the decision at two, write the helper at three, and three separate projects is the bar for
+  `/extract` UP** — never for the project's own list.
+- **A proto-pattern tier** — a named, short, not-yet-proven entry. The design side has none.
+- **The exit door (new, and the most portable):** a pattern lives at three levels — written in prose,
+  built as a helper, absorbed by the language or framework until it disappears (Norvig). When the
+  project writes the helper or the framework absorbs it, **the entry leaves the list.** Retiring
+  patterns is historically hard (the original authors' own attempts stayed drafts) — so it needs a
+  mechanism, not good intentions.
+- **Keeping a list alive:** cite entries by shorthand in review (the design side already does — `PAT-n`);
+  admit a pattern on evidence it is used and is not a duplicate, start it on trial, stable after a
+  quiet period (GOV.UK: six months); update the entry in the same change as the code it describes;
+  flag new uses of anything deprecated so a retired pattern can't creep back.
+- **The agent era — a caution for A4 (the code map):** one 2026 study found agents *follow*
+  context-file instructions, yet the files did not generally raise task success and cost 20%+ more;
+  repository overviews did not help. Another: context files grow by small additions and almost never
+  shrink. A tuned-guidance study points the other way (kept as counter-evidence). **Nothing found
+  tests a named pattern list against "copy the nearest code"** — the open question for this whole idea.
+- **Killed:** R1's *"16 of 23 GoF patterns vanish"* (Norvig wrote *invisible or simpler*, for some
+  uses); treating the two rules of three as one; *"Coplien established the rule of three"*
+  (snippet only); a paper about training data cited as evidence agents copy nearby code; and three more.
+- **Name collision:** BOSS's own `docs/PATTERNS.md` is an outward essay, not a pattern list — a code
+  `PATTERNS.md` beside it would collide (Q8).
+
 ## Work — every item has an id; cite as `IDEA-136 · B3`
 
 **R — bring the research in (first; feeds both tracks)**
@@ -184,10 +221,12 @@ full, 15 load-bearing claims put to three adversarial verifiers — 12 survived 
   pairing, TDD, simple design, refactoring, collective ownership, coding standards, small releases,
   continuous integration, sustainable pace) — and **XP with AI and agents** (2024–26): what
   practitioners carry over, what breaks, what the agent changes about pairing and test-first.
-- [ ] **R5** · Pattern libraries for code — the design side has `docs/design/PATTERNS.md`; what is the
+- [x] **R5** · Pattern libraries for code — the design side has `docs/design/PATTERNS.md`; what is the
   code twin? Gang of Four, Fowler's enterprise patterns and refactoring catalogue, the Portland Pattern
   Repository, pattern form (name · problem · forces · solution · consequences), anti-patterns, and how
   a project keeps *its own* pattern list alive. Builds on IDEA-137's Alexander research, doesn't repeat it.
+- [ ] **R6** · Finish R5's verification — the attribution and fit-for-a-founder votes on its claim
+  list — and re-check the A4 study (arXiv 2602.11988 v3) at source before the code map leans on it.
 
 **B — BOSS's own code (extract from practice, don't invent)**
 - [x] **B1** · Inventory the conventions `src/`, `scripts/`, `test/` and the hooks actually keep, each
@@ -257,6 +296,9 @@ full, 15 load-bearing claims put to three adversarial verifiers — 12 survived 
 - **Q7** · Which layer rows ship in the first slice? Lean: code + testing + data (the three a founder
   meets before anything is live); API, errors, dependencies, AI calls as candidate rows with triggers;
   infra deferred. · settles after B8.
+- **Q8** · One pattern record shape for every ecosystem (IDEA-137) — design and code as two lists of
+  one form, with a *forces* column and a proto tier — or separate files? And what to call the code list
+  so it doesn't collide with BOSS's own `docs/PATTERNS.md`. · settles after IDEA-137.
 - **Q6** · Naming conventions: own or leverage? Lean: leverage the stack's linter for casing and style
   (stack-bound), own only what is stack-neutral — domain vocabulary, names say purpose, one job per name.
 
