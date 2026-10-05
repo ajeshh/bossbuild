@@ -22,6 +22,8 @@ import { frontmatter, unquote, baseStatus, isParked } from './frontmatter.js';
 // as the playbook and the design space (Ajesh, 2026-09-13: "everything should feel like it's one
 // dashboard with different subpages"). The board keeps its own visual world inside main.
 import { shellPage, esc } from './page-shell.js';
+// playbook.js and design.js both import back into this cycle; every edge uses function bindings at
+// call time only (IDEA-136 · F1 — a stated exception to "no cycles", see playbook.js).
 import { readBrand, hasVerb } from './playbook.js';
 import { readTokens, themeFromTokens } from './design.js';
 import { isoDay, isoMinute } from './clock.js';
