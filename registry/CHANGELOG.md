@@ -27,6 +27,14 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A key is stopped at the commit, not found later.** A key pasted into the code used to commit
+  without a word, and `/ship` looked for it only after it was already in git history, where deleting
+  the line doesn't remove it. New projects now check every commit for key shapes that are almost
+  certainly real (live payment keys, cloud and token prefixes, private keys, a Supabase service-role
+  key, an `.env` added on purpose past the ignore file) and stop the commit with the file and line,
+  never the key. It runs on every commit, whoever makes it. It doesn't guess at passwords, so it
+  won't cry wolf; `git commit --no-verify` skips it once. A project you already have gets it from
+  `boss sync --apply`, and a pre-commit hook you wrote yourself is never replaced.
 - **The git commands that throw work away ask first.** Force-push, `reset --hard`, `clean`, a
   checkout or restore that discards changes, dropping a stash, deleting a branch: the agent now
   stops and asks before each one, even in auto mode and even if you allowed git commands broadly.

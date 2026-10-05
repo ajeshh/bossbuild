@@ -135,6 +135,11 @@ bites, because it only shows up the day a private repo goes public.
 - **"Private repo" is not a tier, it's a switch.** Flipping it publishes everything ever committed —
   including the commit that added a key and the commit that removed it. Decide what a file is *for*
   before you decide what the repo is set to.
+- **`.gitignore` stops a file, not a line.** A key pasted into source code commits straight past it,
+  and from then on it is in every clone. The check belongs at the commit, the last reversible moment —
+  BOSS projects run one on every commit (key shapes that are almost certainly real, never a guess at
+  passwords, because a check that cries wolf teaches `--no-verify`). The git commands that discard
+  work ask before they run, for the same reason: the cheap moment to stop is before.
 - **`.gitignore` stops commits, not reads.** An agent opens an ignored file happily. Anything secret
   needs a deny rule as well as an ignore rule — see [`agent-security.md`](agent-security.md).
 - **Write the reason beside the rule.** A bare pattern is a rule nobody can safely delete: the next

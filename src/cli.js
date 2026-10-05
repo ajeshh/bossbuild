@@ -40,6 +40,7 @@ import { HELP, SYMBOLS } from './help.js';
 import { helpHtml } from './help-html.js';
 import { isoDay } from './clock.js';
 import { pathToFileURL } from 'node:url';
+import { installCommitGuard } from './commit-guard.js';
 
 const STAMP = '.boss/manifest.json';
 
@@ -150,6 +151,7 @@ function cmdNew(args) {
   try {
     execSync('git init -q', { cwd: targetDir });
   } catch { /* git optional */ }
+  const guard = installCommitGuard(targetDir);
 
   registerProject({
     name,
@@ -163,6 +165,7 @@ function cmdNew(args) {
   console.log(`\n  ${ok('✦')} Created ${bold(name)} — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
   console.log(`    agents: ${stamp.agents.join(', ') || '—'}`);
   console.log(`    skills: ${skillsLine(stamp.skills)}`);
+  commitGuardLine(guard);
   console.log(`\n  ${bold('Next')} ${dim('(these run in your terminal)')}`);
   console.log(`    cd ${name}`);
   console.log(`    code .              # or open the folder in your editor (Cursor, etc.)`);
@@ -180,6 +183,15 @@ function cmdNew(args) {
 // "Lite BOSS" is the design, not a fallback (Principle 2): adopt at the lightest
 // register that matches where the app already is, then `boss unlock` upward on
 // evidence. ≈ a safe scaffold (copy-if-absent) + settings merge + stamp + register.
+// IDEA-142 — one line, only when something changed or the founder's own hook holds the slot.
+function commitGuardLine(r) {
+  if (r.state === 'installed') {
+    console.log(`    ${dim('commits are checked for keys before they reach git history (skip once: git commit --no-verify)')}`);
+  } else if (r.state === 'theirs' || r.state === 'hooks-path') {
+    console.log(`    ${dim(`your own pre-commit hook is kept; to check commits for keys, call .claude/hooks/lib/commit-secrets.js from it`)}`);
+  }
+}
+
 function cmdAdopt(args) {
   const flags = parseArgs(args);
   const targetDir = process.cwd();
@@ -322,6 +334,7 @@ function cmdAdopt(args) {
   });
 
   console.log(`\n  ${ok('✦')} Adopted ${bold(name)} into BOSS — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
+  commitGuardLine(installCommitGuard(targetDir));
   if (detected) {
     console.log(`    ${dim('read from your repo:')} ${detected.why.join(' · ')}`);
     if (detected.beyond) {
@@ -1382,6 +1395,8 @@ function cmdSync(args) {
     name: next.name, path: process.cwd(), stage: next.stage, mode: next.mode, bossVersion: next.bossVersion,
   });
   console.log(`\n  ${ok('✦')} Synced ${written.length} file(s)${removed.length ? `, removed ${removed.length}` : ''}; pin now ${bold(next.bossVersion)}.`);
+  const guard = installCommitGuard(process.cwd());
+  if (guard.state === 'installed') commitGuardLine(guard); // their own hook was named once, at new/adopt
   if (skipped.length) {
     // Two reasons to skip, and they are not the same claim. "You changed them" is TRUE for an
     // edited managed file and FALSE for an unclaimed one — there, BOSS simply has no record, which
