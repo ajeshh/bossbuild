@@ -650,7 +650,7 @@ const byId = Object.fromEntries(practiceDocs.map((p) => [p.id, p]));
 // vanishing from the site. (It has already caught one: automation.md, added mid-flight.)
 const ENG_GROUPS = [
   ['Building with agents', 'The harness, the context window, what gets written down — and what stays deterministic.',
-   ['harness-engineering', 'context-discipline', 'documentation', 'skill-authoring', 'model-routing', 'automation']],
+   ['harness-engineering', 'engineering-system', 'context-discipline', 'documentation', 'skill-authoring', 'model-routing', 'automation']],
   ['Security', 'The failure modes specific to agentic systems, and the ones AI-written code introduces.',
    ['agent-security', 'data-schema']],
   ['Testing & quality', 'Why an agent going green is not the same as the code being right.',

@@ -371,9 +371,12 @@ killed. Inputs, not decisions.
   a person wrote; test the contract and add a test per bug; parity-pin forced copies), four stay home.
 
 **A — what ships to a founder (after B8)**
-- [ ] **A1** · The practice: engineering principles ladder, a seed-that-scales table for code, reuse /
+- [x] **A1** · The practice: engineering principles ladder, a seed-that-scales table for code, reuse /
   adjust / new for code, promotion and demotion thresholds, leverage-or-own for linters. Extend
   `scalable-architecture.md` rather than add a practice, unless R1 shows it is a different subject.
+  **Done 2026-10-04:** a new practice, `library/practices/engineering-system.md` — not an extension of
+  `scalable-architecture` (a different subject: the code twin of `design-system`, which owns the climb). In
+  the Engineering page's *Building with agents* group; site regenerated (practice count 34 → 35), not deployed.
 - [ ] **A2** · The founder's seed: fill `.claude/rules/your-app-code.md` (ships at Quickstart, loads
   only when code is open) — principles slot, module map slot, testing slot. **Floors pre-filled,
   values blank until earned** (`design-system.md` § Craft floors).

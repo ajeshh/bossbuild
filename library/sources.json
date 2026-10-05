@@ -562,6 +562,69 @@
       "for": "agents misreport their own review coverage (67.9% incomplete, 80.4% of those misleading)",
       "kind": "research",
       "key": false
+    },
+    "david-parnas": {
+      "name": "David Parnas — On the Criteria To Be Used in Decomposing Systems into Modules (1972)",
+      "url": null,
+      "for": "hide in each module the decision most likely to change",
+      "kind": "person",
+      "key": false
+    },
+    "john-ousterhout": {
+      "name": "John Ousterhout — A Philosophy of Software Design",
+      "url": "https://github.com/johnousterhout/aposd-vs-clean-code",
+      "for": "deep modules over shallow; over-splitting is its own failure",
+      "kind": "person",
+      "key": true
+    },
+    "sandi-metz": {
+      "name": "Sandi Metz — The Wrong Abstraction (2016)",
+      "url": "https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction",
+      "for": "duplication is cheaper than the wrong abstraction; the parameter-plus-conditional tell",
+      "kind": "person",
+      "key": true
+    },
+    "kent-beck": {
+      "name": "Kent Beck",
+      "url": "https://tidyfirst.substack.com/p/augmented-coding-beyond-the-vibes",
+      "for": "simple design; structure and behaviour in separate changes; restraint needs cheap change; augmented coding",
+      "kind": "person",
+      "key": true
+    },
+    "google-swe-book": {
+      "name": "Software Engineering at Google (Winters, Manshreck, Wright)",
+      "url": "https://abseil.io/resources/swe-book/html/ch12.html",
+      "for": "the four kinds of change and which may edit a test; rules cost what must be remembered",
+      "kind": "publication",
+      "key": true
+    },
+    "peter-norvig": {
+      "name": "Peter Norvig — Design Patterns in Dynamic Languages (1996)",
+      "url": "https://norvig.com/design-patterns/design-patterns.pdf",
+      "for": "patterns become invisible or simpler once the language absorbs them",
+      "kind": "person",
+      "key": false
+    },
+    "eric-evans": {
+      "name": "Eric Evans — Domain-Driven Design",
+      "url": null,
+      "for": "one language per bounded context",
+      "kind": "person",
+      "key": false
+    },
+    "alexis-king": {
+      "name": "Alexis King — Parse, don't validate (2019)",
+      "url": "https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/",
+      "for": "check input once, at the boundary",
+      "kind": "person",
+      "key": false
+    },
+    "birgitta-bockeler": {
+      "name": "Birgitta Böckeler — Sensors for coding agents (2026)",
+      "url": "https://martinfowler.com/articles/sensors-for-coding-agents.html",
+      "for": "guides before, sensors after; the fix in the failure message",
+      "kind": "person",
+      "key": true
     }
   },
   "practices": {
@@ -727,6 +790,18 @@
     "accessibility": [
       "w3c-wai",
       "aria-apg"
+    ],
+    "engineering-system": [
+      "david-parnas",
+      "john-ousterhout",
+      "sandi-metz",
+      "fowler",
+      "kent-beck",
+      "google-swe-book",
+      "peter-norvig",
+      "eric-evans",
+      "alexis-king",
+      "birgitta-bockeler"
     ]
   }
 }

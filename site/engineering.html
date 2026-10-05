@@ -360,7 +360,7 @@
         <tbody>
         <tr>
           <th scope="row"><code>mentor-architect</code></th>
-          <td><span class="chip">agent-security</span> <span class="chip">automation</span> <span class="chip">data-schema</span> <span class="chip">feature-flags</span> <span class="chip">git-workflow</span> <span class="chip">harness-engineering</span> <span class="chip">mcp</span> <span class="chip">model-routing</span> <span class="chip">retrieval</span> <span class="chip">scalable-architecture</span> <span class="chip">ship-it-live</span></td>
+          <td><span class="chip">agent-security</span> <span class="chip">automation</span> <span class="chip">data-schema</span> <span class="chip">engineering-system</span> <span class="chip">feature-flags</span> <span class="chip">git-workflow</span> <span class="chip">harness-engineering</span> <span class="chip">mcp</span> <span class="chip">model-routing</span> <span class="chip">retrieval</span> <span class="chip">scalable-architecture</span> <span class="chip">ship-it-live</span></td>
         </tr>
         <tr>
           <th scope="row"><code>product-lead</code></th>
@@ -444,7 +444,7 @@
       <div class="band-in">
         <h2 id="every-one-of-these-has-a-receipt">Every one of these has a receipt.</h2>
         <p class="lede">
-          <strong>22</strong> technical practices, each carrying who it was
+          <strong>23</strong> technical practices, each carrying who it was
           learned from, the date it was last checked against reality, and the <em>curve</em> that says
           how fast its ground moves. The table below is generated from those files, attribution that
           has to be retyped is attribution that goes stale.
@@ -465,6 +465,14 @@
             last checked 2026-09-23.</p>
           <p class="prov"><span>learned from</span> <a class="ref" href="https://www.anthropic.com/engineering" rel="noopener">Anthropic engineering</a> <a class="ref" href="https://github.com/humanlayer/12-factor-agents" rel="noopener">Dex Horthy — 12-factor agents</a> <span class="ref">Andrej Karpathy — the verifiability thesis</span> <span class="ref">GitHub Spec Kit / AWS Kiro</span> <a class="ref" href="https://github.com/arslan70/haytham/blob/main/docs/system-evolution.md" rel="noopener">Haytham (arslan70) — system-evolution ADRs</a> <a class="ref" href="https://arxiv.org/abs/2609.20812" rel="noopener">Quantifying Overclaiming Propensity in Frontier LLM Agents (OverclaimBench, arXiv 2609.20812)</a></p>
           <details class="prov-full"><summary>where this came from</summary><p>Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (GitHub Spec Kit, AWS Kiro). Two independent research threads named the harness as the biggest gap in how BOSS was building.</p></details>
+        </div>
+        <div class="practice">
+          <h3>The engineering system: the design system's ladder, for code</h3>
+          <p class="meta"><code>engineering-system</code>, owned by <code>mentor-architect</code>, on a
+            <span class="curve" title="how fast this ground moves">craft-ai-moving curve</span>;
+            last checked 2026-10-04.</p>
+          <p class="prov"><span>learned from</span> <span class="ref">David Parnas — On the Criteria To Be Used in Decomposing Systems into Modules (1972)</span> <a class="ref" href="https://github.com/johnousterhout/aposd-vs-clean-code" rel="noopener">John Ousterhout — A Philosophy of Software Design</a> <a class="ref" href="https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction" rel="noopener">Sandi Metz — The Wrong Abstraction (2016)</a> <a class="ref" href="https://martinfowler.com/bliki/MonolithFirst.html" rel="noopener">Martin Fowler</a> <a class="ref" href="https://tidyfirst.substack.com/p/augmented-coding-beyond-the-vibes" rel="noopener">Kent Beck</a> <a class="ref" href="https://abseil.io/resources/swe-book/html/ch12.html" rel="noopener">Software Engineering at Google (Winters, Manshreck, Wright)</a> <a class="ref" href="https://norvig.com/design-patterns/design-patterns.pdf" rel="noopener">Peter Norvig — Design Patterns in Dynamic Languages (1996)</a> <span class="ref">Eric Evans — Domain-Driven Design</span> <a class="ref" href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/" rel="noopener">Alexis King — Parse, don't validate (2019)</a> <a class="ref" href="https://martinfowler.com/articles/sensors-for-coding-agents.html" rel="noopener">Birgitta Böckeler — Sensors for coding agents (2026)</a></p>
+          <details class="prov-full"><summary>where this came from</summary><p>Extracted from how BOSS's own code is actually built — its conventions read from the source with receipts, its broken rules counted — and from five research passes read at source and checked claim by claim. Lineage — David Parnas (hide the decision most likely to change, 1972), John Ousterhout (deep modules), Sandi Metz (duplication is cheaper than the wrong abstraction), Don Roberts' rule of three as popularised by Martin Fowler, Kent Beck (simple design; structure and behaviour in separate changes), Google's software engineering book (the four kinds of change; rules cost what must be remembered), Peter Norvig (patterns the language absorbs), Eric Evans (one language per context), Alexis King (parse, don't validate), Birgitta Böckeler (guides and sensors for coding agents).</p></details>
         </div>
         <div class="practice">
           <h3>Context discipline</h3>

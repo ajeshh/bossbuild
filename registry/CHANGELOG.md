@@ -27,6 +27,13 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Code gets the ladder the design system has.** A new practice, `boss craft engineering-system`:
+  a few principles you can argue with, a map of the helpers that already exist so an agent finds the
+  first `formatPrice` instead of writing a fourth, rules that each say what enforces them — and the ones
+  nothing enforces marked, because that's the list that rots. It covers when to reuse, widen, inline
+  back or copy; testing conventions that hold when an agent writes the tests; and the layers that
+  arrive later (data, errors, dependencies, config, model calls, an API), each on its own trigger.
+
 - **The duplicate-component check keeps working after V1.** When `/design-library` moves the
   component index into the library's manifest, the check that asks *reuse, adjust or new?* and
   the warning on a deprecated import went silent — exactly when a project had the most components
