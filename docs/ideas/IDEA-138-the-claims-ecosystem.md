@@ -9,7 +9,7 @@ proof: none
 proof_note: every path this would create already exists (landing/SKILL.md, landing-page.md, registry/flows.json). Done is a declared take landing ← evidence in registry/flows.json, held by check-refs class 7 — a declaration, not a new file.
 gist: Claims — what a project says about itself to someone who can't check it — gets its own ecosystem, centred on the landing page. Every line on the page is no stronger than what backs it. Extracted from how BOSS already checks its own front door, which has been doing this for 150 releases and never sorted it down.
 created: 2026-10-04
-anatomy: 3
+anatomy: 5
 ---
 
 # The claims ecosystem — every line no stronger than what backs it
@@ -156,6 +156,13 @@ neighbour is missing. It says less.
 Three crossings of the same rule mean the rule is wrong (ECOSYSTEMS principle 4). **How it leaves:**
 when the project has a site generator, the counts move from typed to derived. That is BOSS's own
 `gen-site` path, and `/landing`'s text should name it as the successor.
+
+**Reviewed against ECOSYSTEMS rev 5 (2026-10-05):** *Outside change* — `landing-page.md` (curve `market`)
+is re-read by `/practice-refresh`; what changes reaches a founder by `boss sync`. *Stops or warns* —
+in BOSS's own repo the release gates (`check-site`, `check-roster-claims`) **stop**; in a founder's
+project the deception moment **warns**, and nothing stops an unbacked claim (part 5 stays empty for
+that, honestly). *By hand* — yes: every line's backing is an EVID file, so a founder can hold a line
+against `docs/evidence/` without BOSS.
 
 ## Step 3 — what a founder gets (proposed 2026-10-04, smallest first; Ajesh: *"lets start"*)
 
