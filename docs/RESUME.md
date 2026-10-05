@@ -84,7 +84,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 ## Next (in order)
 
 - **IDEA-137 next:** C7 finalises the guide **after** IDEA-136 lands (from where design and engineering
-  overlap) · DEC-023's removal test · Ajesh's ebooks → one re-grade of the book-only quotes.
+  overlap) · Ajesh's ebooks → one re-grade of the book-only quotes. (DEC-023's removal test landed
+  `ef84359` — it caught the `/ai-cost` logger breaking the founder's app once `.boss/` left; fixed.)
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
   Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
 
