@@ -239,6 +239,29 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
     gives/takes/returns can't name · Cynefin — never as a founder-facing classification; at most a
     reason inside the modes · motivational interviewing / self-determination theory — the voice
     program (`conscience-voicing.md`), at its next refresh, not this one.
+  - **R11 read at source (2026-10-05, `SESSION-2026-10-05-lenses`, gitignored; Beer's books and Ohno 1978
+    unread — those definitions stay [UNREAD]). All four integrate, each as one edit, no new gate:**
+    - **R11.1 → rev 5 candidate.** The eight parts are all management functions; System 2 (seed, map) and
+      3* (drift reader) are held — *killed* as gaps. **System 4, outside-and-future, has no part**:
+      step 3 gains *say where this ecosystem learns what changed outside it*. Part 1 is two things
+      (principles ≈ identity, rules ≈ control) — noted, not split. Watch item, n=0: between ecosystems,
+      the after-write guards each speak on one write while the conscience ranks its own. *Corrected:*
+      Ashby's law alone argues for more regulator variety; *one thing* comes from his channel limit and
+      Beer's attenuation — which is also why mute must stay free.
+    - **R11.2 → rev 5 candidate.** Part 5's *boundaries, not reminders* overstates: by their own headers
+      the design guards **warn**; `secrets-guard`, `smoke-guard` and `permissions.deny` **stop**. The row
+      says each check's type (stops / warns). `schema-guard` warns where the stakes say stop — stays a
+      warning until a founder ships that bug (the new-gate rule).
+    - **R11.3 → rev 5 candidate.** Distinct from DEC-023: that keeps the founder's *files*; Illich keeps
+      their *ability* (radical monopoly — noticed only when too late, so asked at planting, never read
+      off the founder). Step 7 / § Handing over: *could the founder do each part's job by hand from
+      what this ecosystem wrote down?* IDEA-075 stays held.
+    - **R11.4 → a founder-facing fix.** `/design-library` (`SKILL.md:207`) says *unused → delete it in this
+      pass* on an import grep that can't see dynamic `import()`, string-keyed registries or stories —
+      BOSS acting on its map without asking. Becomes an offer naming what the grep can't see; same
+      words at `design-system.md:630` and `ECOSYSTEMS.md:96`. Needs a CHANGELOG bullet and a `/tmp` test.
+      The map test (*what does it omit that its job needs · does BOSS act without asking · did a person
+      write it?*) passes `flows.js`, `ui-boundary-guard`, `ladder.js`, the conscience.
 - [x] **H1** · *(done — C0.3: mentor-humane read the draft and it changed)* 🔴 **The humane check hasn't run.** *Governance* can become ceremony or surveillance;
   a *liveliness* reading can become a score — and BOSS gives a position, never a grade (DEC-003).
   `mentor-humane` and `designer` before M2's report has a founder-facing word.
