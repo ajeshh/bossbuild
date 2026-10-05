@@ -380,13 +380,19 @@ killed. Inputs, not decisions.
   map and the helpers table. **Held back:** moving the code rules out of CLAUDE.md — CLAUDE.md carries
   another session's uncommitted edits; do it when that lands (task **B6b**). Engineering column of
   `docs/ECOSYSTEMS.md` filled; four disagreements with the draft guide recorded in ENGINEERING.md for C7.
-- [ ] **B6b** · **Proposed, not done — Ajesh's call:** CLAUDE.md loads every session and docs/ENGINEERING.md doesn't, so moving rules out lowers how often agents see them; the alternative is one pointer line. Original task: Move the code rules out of CLAUDE.md into `docs/ENGINEERING.md`, leaving a pointer —
-  after the uncommitted CLAUDE.md edits from another session land.
+- [x] **B6b** · **Done as a pointer, not a move (680c0ad):** rule 4 in CLAUDE.md links `docs/ENGINEERING.md`.
+  CLAUDE.md loads every session and the engineering doc doesn't, so the rules stay where agents see them.
 - [x] **B7** · Read the one duplicate (`section`) and anything B1 turns up: real reuse miss, or a
   name collision with two jobs?
 - [x] **B8** · `/extract` the result: what routes UP (the shape) and what stays BOSS-only. EXTR record. **Done:** `docs/extractions/EXTR-003-the-engineering-ladder.md` — six
   candidates UP (E/P/W marks; the need·use·not map; two-then-three with the inline-back tell; forgive what
   a person wrote; test the contract and add a test per bug; parity-pin forced copies), four stay home.
+
+**The guide's planting test (ECOSYSTEMS step 8), run 2026-10-04** in a throwaway with `BOSS_HOME` set:
+wrong rung (Quickstart) — no `/smoke`, no seed, and the coder's line is conditional, so silent; MVP with
+the design neighbour missing (no component index) — the seed stands alone and the reuse guard stays silent
+on a helper; `boss remove` keeps `.claude/rules/engineering.md` as founder-authored (DEC-023 holds).
+Not testable yet: *a moved path is named* — the founder-side flow reader is IDEA-137 · C8.
 
 **A — what ships to a founder (after B8)**
 - [x] **A1** · The practice: engineering principles ladder, a seed-that-scales table for code, reuse /
