@@ -22,6 +22,51 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-04 — IDEA-135: the build outruns the evidence (`3cf20a9` → `ccb3a61`, released in 0.329.0)
+
+**What landed.** A founder (EVID-004, relayed by Ajesh) asked AI for a small prototype for feedback
+and got ten half-built features nobody tried. Measured first: every guard BOSS had for this counted
+records (FEATs, canvas, devlog), so the founder who just keeps asking for the next feature was
+invisible to all four. By composition, no new skill:
+- `unseen-loop` + `unseen-since-loop` (Quickstart) read the code: ~1,500 source lines and no EVID, or
+  6+ source files changed after the newest EVID. Both speak through `focus`, model-judged; silent when
+  the work is one thing getting deeper. Six gate evals.
+- The playbook's Product chapter: *What we're testing next*, then *How we're learning* (last heard
+  from someone + source files changed since, from git; what that evidence changed and what heard since
+  changed nothing; the `/health` line), one square per FEAT met/unmet, `/interview` when learning goes
+  quiet. Iterated with Ajesh through mocks at healthy / runaway / 100-feature scale.
+- *Experiment this week* → *What we're testing next* (Ajesh: "this week" assumes a weekly build);
+  every reader accepts both. A FEAT whose acceptance criteria doubled since first commit is marked.
+- The site caught up (canvas line, the new moment, the playbook proof shot), regenerated at 0.327.0
+  from a worktree; then Ajesh stamped 0.329.0.
+
+**Surprised me.** Ajesh's own questions moved it further than the research did: *is outcome even the
+right approach?* (no: the unit is the meeting, not a declared metric), *features bloat themselves*
+(so signals must survive relabelling: time and change, not counts), and *1000s of customers is not UX
+research* (usage says what, conversations say why).
+
+**Next.** The receipt: the founder's answer to `unseen`, private (conscience voices it next time) or on
+the page. Thresholds (1,500 lines, 6 files) are guesses to tune on real trees.
+
+**Moved from RESUME (window, 2026-10-04), verbatim:**
+
+- **DEC-021 (2026-09-14) — the mark is the built B, Ajesh's own SVG; applied.** Two boards on
+  IDEA-115 (marks: eight straight cuts, β in six cuts, a ribbon β, then his reference and file) →
+  *"K1 is great!! lets go with that."* `web/boss-logo-mark.svg` + `scripts/mark.js` (one reader; the
+  lockup, favicon, demo ribbon and `npm run gen:og` share card all through it); a small cut widens the
+  seams under 24px (*"becomes blobby"* — fixed, rendered 16/20/24/32/48 both ways); two fills per
+  ground (cornflower/persimmon on ice, authored sky/persimmon on deep). ✦ lineage retired honestly —
+  **the CLI's success glyph is an open task** (IDEA-115). Falsifier: a real reader calls it a template
+  3D icon, by 2026-10-14. Unreleased.
+- **DEC-020 (2026-09-13) — the brand is five colours with one job each; applied.** Ajesh: *"go back
+  to the drawing board"* → *"not boring mandatory blue… break the mold"* → his own pair → *"3-4 colors,
+  and offwhite"* → *"ok lets go with O."* Paper `#F6F6F3` ground · ice `#D7EFFF` surfaces · cornflower
+  `#5089E0` structure · persimmon `#FF5C34` the one loud thing · ink `#14202B` / deep `#0E1C28`.
+  **Cornflower structures, persimmon points.** `tokens.css` is the mechanism; help.css, og-card
+  (og.png re-rendered), the demo ribbon, board.js, BRAND.md moved with it; VISUAL.md rewritten; stop
+  went crimson. The board with all fourteen candidates is linked from IDEA-115. Falsifier: a real
+  reader says *playful* or *clinical*, or a tap finds cornflower pointing — by 2026-10-13. Unreleased.
+
 ## 2026-09-25 — IDEA-131: MCP gets a *when*; the guide's map was broken (`88ad0bb` → `d100eff`)
 
 Ajesh asked how BOSS approaches MCP, how to help a new founder set it up, and how BOSS itself could

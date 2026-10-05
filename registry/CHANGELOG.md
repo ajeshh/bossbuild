@@ -27,6 +27,8 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+## 0.329.0 — 2026-10-04
+
 - **A feature that grew inside itself is marked on the playbook.** Counting features can't see one
   that quietly became ten things. When a feature's acceptance criteria have at least doubled since
   it was first written down, and grown by three or more, its row says so: *scope 2→7*. The count
@@ -192,6 +194,8 @@ rule above still applies to the whole section once it is stamped.
   a `# …` comment after `photo:`, `story:` and `tagline:`. If you replaced `unknown` with your own
   value and kept the comment, the playbook read the comment as part of the value, so a photo showed
   as *not found*. It doesn't now. A team photo can also be an `.svg` dropped beside the person.
+
+## 0.328.0 — 2026-09-25
 
 - **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
   `boss craft agent-security` already said to read every tool and parameter description as untrusted
@@ -2621,9 +2625,8 @@ down — a reminder, never a referee.**
 root, and `CLAUDE.md` gained the same interior rule. Verified end-to-end against the real project
 directory: the moment fires with `docs/devlog.md` named as the file that had fallen behind.
 
-🔴 **Unlike the design and product programs, this one is evidence-aimed.** EVID-001 — *"i forget
-what feature i'm building / get adhd… knowing exactly where i am like a train line"* — and
-EVID-003 is a second independent founder on the same axis. Still `stated-pain`; nobody has been
+🔴 **Unlike the design and product programs, this one is evidence-aimed:** two founders, separately,
+lost the thread of what they were building and couldn't see where they were. Still `stated-pain`; nobody has been
 observed losing a session to it. **And the trap is named in advance:** IDEA-076 is held because
 *a progress surface that cannot go down is a comfort device*, so the working file says out loud that
 un-ticking is free and a tick is a claim.
@@ -3512,7 +3515,7 @@ plus `boss map` for the live read. What it had no answer for is the founder who 
 page, and the only page that existed was the website — which describes **the superset**. A founder
 standing in a Quickstart project has **17 skills and 4 agents** and the site lists 48 and 12 with no
 way to tell which are theirs. *The surface with the most content was the one least able to answer
-"what can I run".* That is the same shape as EVID-001's *"I can't tell where I am"*, one altitude up.
+"what can I run".* That is the same shape as a founder not being able to tell where they are, one altitude up.
 
 **Generated on demand, never scaffolded — and that is the load-bearing choice.** A guide written
 into the repo at install is wrong by the second unlock and nothing would be watching it. So this
@@ -3991,7 +3994,7 @@ acted on yet.
 
 ### The readiness half of the train line (IDEA-076)
 
-EVID-001's words were *"knowing exactly where i am like a train line, seeing my progress."* Until
+The ask was to see where you are on the line, and that you are moving. Until
 now `renderLadder` printed four station NAMES and bolded one — the same output on a project's first
 day and its fortieth — and `graduationHint` was a fixed sentence read out of the manifest. Exactly
 **one** rung named a bar before you crossed it: `boss unlock scale`, hard-coded inline. So the rung
@@ -4216,7 +4219,7 @@ and this pass makes it visible without pretending to solve it.
 > **For you:** ask the architecture mentor *"when should I rearchitect?"* or *"do I need to rebuild
 > this?"* and it now answers. It always knew — it just didn't recognise the question.
 
-EVID-001 asked, in the founder's own words, for help knowing *"when to rearchitect."* `rearchitect`
+A founder asked for help knowing when to rearchitect. `rearchitect`
 appeared **zero times** anywhere in this repo, and the first read of that was a coverage gap.
 
 **It wasn't.** The judgment ships, twice, and it is good: `mentor-architect` — *"a **breakpoint, not a
@@ -5744,7 +5747,7 @@ moves feedback and scannability and catches flow problems at approximately zero.
   day** — ended in a full stop, while three lower-priority lines below it each carried a pointer.
   Being told the id is not the same as being told how to get back in. It now points at the card
   (`boss board FEAT-NNN`): goal, acceptance criteria, the paths that must not break. **This is
-  EVID-001's *"I forget what feature I'm building"* answered on the surface that had already
+  "which feature am I building?" answered on the surface that had already
   computed the answer** — a read of a file that exists, not a new skill.
 - 🔴 **`boss status` grew the chore line its own comment forbade — 22nd
   [[checkers-state-intents-they-dont-enforce]], and a new flavour: the intent statement sat three
@@ -5778,7 +5781,7 @@ moves feedback and scannability and catches flow problems at approximately zero.
 - **Two surfaces disagreed about where to start.** `boss status` offered `/boss or /triage`;
   `boss board` offered only `/triage` — the same state, two different front doors, on the one screen
   where a founder has the least basis for choosing. Aligned.
-- **Captured, not built — IDEA-076.** The remaining half of EVID-001's *"train line"*: the ladder
+- **Captured, not built — IDEA-076.** The remaining half of the "where am I on the line" ask: the ladder
   renders four mode names with the current one bolded and **never shows position WITHIN a rung**,
   which is where a founder spends weeks. Nothing computes readiness either — `graduationHint` is a
   static manifest string, and only `unlock scale` names a bar (the two rungs people actually climb
@@ -5838,9 +5841,8 @@ reads added, both composed entirely from records BOSS was already writing and ne
   14 tests, and one relocated sentence. **The founder's own stated fear is app bloat.**
 
 **The evidence behind this, stated honestly:** EVID-001 (2026-07-23) and EVID-003 (2026-08-21)
-are two independent founders who each described losing the thread — *"hard to gauge where I am… I
-forget what I'm building"* and *"it jumped straight into building rather than saying back what the
-idea was."* That is **n=2, and all of it is `stated-pain`. Nobody has been observed using BOSS, and
+are two independent founders who each described losing the thread — one could not tell where they
+were or what they were building; the other's idea was never said back before building began. That is **n=2, and all of it is `stated-pain`. Nobody has been observed using BOSS, and
 nobody has committed.** Convergence raises conviction, not the grade. This release is aimed by that
 evidence; it is not proof the aim was right.
 
@@ -6700,14 +6702,11 @@ nobody had run `npm run release` for v0.211.0 → v0.214.0, and that check is ad
 committed a different 0.213.0 (the conscience eval suite going public, work-order 2e) while this was in
 the working tree, and swept the version files into it. Nothing was lost; the two releases are unrelated.
 
-**A founder emptied their head into `/boss`, and BOSS filed it and moved on.** EVID-003, relayed
-2026-08-21 — BOSS's third external signal and the first from someone who actually ran the tool:
+**`/boss` filed the idea and moved on.** A first telling of an idea is usually a run-on draft, and
+once it is out of the founder's head they often have more to add. `/boss` said it back and went
+straight to building, without stopping to check it had heard it right.
 
-> *"it's almost like the idea was stream of the idea, just a run on, but then now that it's outta
-> their system they have more insights or want to keep contouring the idea… boss jumped straight into
-> building, rather than checking or giving feedback or saying back what the idea was."*
-
-**That is not a tone complaint — it is the skill's control flow.** Once the idea arrived, every
+**That was the skill's control flow, not its tone.** Once the idea arrived, every
 question `/boss` asked was administrative: repo? · private or public? · licence? · cohort? Step 2
 reflected the idea back in 3–5 lines and moved on without stopping; step 7 closed on *"start
 building."* BOSS's first conversation with a founder asked them about paperwork, not about their idea.
@@ -8616,8 +8615,8 @@ and found a missing mechanism.**
   record's first commit is when it was captured, its `proof:` artifact's first commit is when the
   thing appeared. **`boss records --timeline`** reports it, with a median idea→built. Nobody
   remembers anything and the dates cannot drift, because they *are* what happened.
-- **`boss board --html` gained a "Shipped over time" strip**, which is EVID-001's ask in its most
-  literal form — *"knowing exactly where I am, like a train line, seeing my progress."* It is the
+- **`boss board --html` gained a "Shipped over time" strip**, which answers "where am I, and am I
+  moving?" in its most literal form. It is the
   first element on the board that looks **backward**; everything else answers *what now?*. It is
   deliberately **not a contribution graph**: no streaks, no intensity ramp, no empty-square guilt for
   a quiet fortnight. A month with one ship and a month with six are both just months with ships in
@@ -8941,7 +8940,7 @@ and know where it should fit, or add a kernel of it as a seed and then scale."*
 - **0 new skills (47 → 47), 1 new practice (30 → 31).** Compose + subtract per EVID-001 — the
   three questions live in the always-loaded `CLAUDE.md`, and each skill only names its own specifics.
   **`boss status`'s "Already built" line is the positive register EVID-001 asked for**: ~120 releases
-  spoke only in the conscience's caution voice, and a founder who said *"I can't tell where I am"* now
+  spoke only in the conscience's caution voice, and a founder who can't tell where they are now
   gets told what's real, derived from evidence on disk, never a grade.
 
 ### Three things the build caught on itself
@@ -9914,8 +9913,8 @@ concave sides that holds at favicon size and hero size — and used for the lock
 - **Dark is designed, not inverted** — graphite is a real ground with its own signal set. **Every pair
   in both themes measured at AA** (worst case 4.73:1); two candidate values failed on first measure and
   were darkened rather than re-described.
-- **The ladder is now a train line, not a table.** EVID-001's founder asked in as many words for *"a
-  train line where I can see where I am and that I'm moving"* — and the roster count is what grows
+- **The ladder is now a train line, not a table.** The ask was a line where you can see where you
+  are and that you're moving — and the roster count is what grows
   along it (3 → 8 → 15). It had been sitting there rendered as a spreadsheet.
 - **Ten pages no longer share one rhythm.** Added per-page devices — a hi-vis `band`, a `stencil`
   section label, a `stat` for where a number *is* the argument, a `hazard` rule for the charter, `duo`
@@ -10984,7 +10983,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 - **The post-launch arc folds until you've shipped something — the reversible half of the
   subtraction question (checklist 5.3, option C).** At MVP a founder with one idea was read **44
   skills, nine of them about measuring, retention, pricing and trust** — for a product with no
-  users. That is EVID-001's *"worried about bloating my app"* rendered as a menu.
+  users. That is the app bloat a founder fears, rendered as a menu.
   **44 → 35 listed; 72 → 64 lines.**
   - **Nothing is removed, disabled, or made harder to run.** The nine still install, still work, and
     are one flag away (`boss map --all`). This is the `headline` pattern from v0.130.0 applied to
@@ -11336,8 +11335,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   - **🎯 `boss map` no longer hands an empty Quickstart project a wall of 29 verbs it can't run.**
     The "One unlock away" block printed *every* skill of the next rung — for MVP that was 29 entries,
     making the map **68 lines, ~2/3 of it unavailable**. That is premature ceremony rendered as text
-    (PRINCIPLE #2 inverted, on the surface whose whole job is orientation) and a direct hit on
-    EVID-001: *"hard to gauge where I am"* and *"worried about bloating my app."* A rung now
+    (PRINCIPLE #2 inverted, on the surface whose whole job is orientation) and a direct hit on the
+    two things a founder said they struggle with: knowing where they are, and app bloat. A rung now
     declares a **`headline`** in its manifest — the few skills worth naming at the transition (MVP:
     `/spec` `/smoke` `/pretotype` `/close`) — and the rest fold into `… +24 more when you get there`.
     **`boss map --next` opens the full list** whenever the founder actually wants it. Map: **68 → 45
@@ -11434,8 +11433,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
 ## 0.128.0 — 2026-07-23
 
 - **CLI usability + visual encoding (IDEA-055) — legibility, wayfinding, and a "you are here" orientation
-  home.** The visual-encoding + wayfinding layer that EVID-001 (BOSS's first real external founder signal)
-  named as core to the offering — *"I can't tell where I am / did it work / what now."* **Composes and
+  home.** The visual-encoding + wayfinding layer a founder named as core to the offering — where am I, did
+  it work, what now. **Composes and
   subtracts the existing surface; adds no new command or skill.** Conscience gate held **129/0** throughout
   (runtime untouched); reviewed by `designer` (encoding) + `voice-keeper` (strings). Four commits
   (`dd70947` · `f3fa1e4` · `5dc93a3` · this bump).
@@ -13246,11 +13245,9 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     material-first ordering (point at material → BOSS names the folder), binary/OCR formats
     (`.pptx` text, image-only PDFs), live-source re-pull vs. one-time snapshot, and a CLI
     `boss import` second door (only if the skill path proves it's wanted outside Claude).
-  - Dogfood target: `~/Projects/fraands` (the project that surfaced the gap). Surfaced + captured in
-    [SESSION-2026-06-19-founder-test](../docs/research/sessions/SESSION-2026-06-19-founder-test.md)
-    (OBS-002/003/005).
+  - Dogfood target: `~/Projects/fraands` (the project that surfaced the gap).
 - **`/welcome` closes on the action — long content no longer buries the next step (OBS-001).**
-  Same founder-test: *"the welcome message is a bit too long… I forget what I'm supposed to do next."*
+  The welcome ran long enough that the next step got lost.
   The skill already had an "end on one next step" rule, but the beginner tour printed three full
   reference sections (conscience / modes / help) *after* the next step, walling it off. Fix: a new
   voice rule ("close on the action — long content must tie back to the next step"), and a structural

@@ -3,8 +3,8 @@ id: RESUME
 type: resume
 owner: product-lead
 status: active
-updated: 2026-09-25
-version: 0.328.0
+updated: 2026-10-04
+version: 0.329.0
 ---
 
 # RESUME — BOSS
@@ -42,37 +42,17 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
   IDEA is a capability; BOSS's venture is the canvas** (CLAUDE.md rule 3). Open: the board's split.
-- **DEC-021 (2026-09-14) — the mark is the built B, Ajesh's own SVG; applied.** Two boards on
-  IDEA-115 (marks: eight straight cuts, β in six cuts, a ribbon β, then his reference and file) →
-  *"K1 is great!! lets go with that."* `web/boss-logo-mark.svg` + `scripts/mark.js` (one reader; the
-  lockup, favicon, demo ribbon and `npm run gen:og` share card all through it); a small cut widens the
-  seams under 24px (*"becomes blobby"* — fixed, rendered 16/20/24/32/48 both ways); two fills per
-  ground (cornflower/persimmon on ice, authored sky/persimmon on deep). ✦ lineage retired honestly —
-  **the CLI's success glyph is an open task** (IDEA-115). Falsifier: a real reader calls it a template
-  3D icon, by 2026-10-14. Unreleased.
-- **DEC-020 (2026-09-13) — the brand is five colours with one job each; applied.** Ajesh: *"go back
-  to the drawing board"* → *"not boring mandatory blue… break the mold"* → his own pair → *"3-4 colors,
-  and offwhite"* → *"ok lets go with O."* Paper `#F6F6F3` ground · ice `#D7EFFF` surfaces · cornflower
-  `#5089E0` structure · persimmon `#FF5C34` the one loud thing · ink `#14202B` / deep `#0E1C28`.
-  **Cornflower structures, persimmon points.** `tokens.css` is the mechanism; help.css, og-card
-  (og.png re-rendered), the demo ribbon, board.js, BRAND.md moved with it; VISUAL.md rewritten; stop
-  went crimson. The board with all fourteen candidates is linked from IDEA-115. Falsifier: a real
-  reader says *playful* or *clinical*, or a tap finds cornflower pointing — by 2026-10-13. Unreleased.
 - **IDEA-109 captured (2026-09-13) — the coach-in-residence positioning.** Ajesh: acquisition → acqui-hire →
   *"an incubator would wanna hire me… their coach, but also leverage this kind of tool for their cohorts."*
   Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
   nothing to *sell* but the person, which is the acqui-hire's point. Licence: **keep MIT and the words**
   (a copy edit claws nothing back; diligence reads `LICENSE`). Next step is one call, not a build.
-- **v0.318.0 → v0.325.0 committed, not pushed (`git rev-list` above says how many).** Each is a
-  `registry/CHANGELOG.md` section and a devlog entry; the RESUME no longer restates them (window
-  rule — moved, not trimmed, 2026-09-13). Headlines only: RESUME window (318) · `/skill-doctor` +
-  `/extract` description fix (319) · plugin eval suite, Δ 1.0 (320, 321) · `/boss-learn` folded into
-  `/extract` (322) · model attachment let go (323) · the board assessment applied, 16-skill MVP
-  unlock, `boss status` 2.4s→0.17s (324) · `/boss:welcome` the everyday door by pointer (325).
-- **Second tier landed under `## Unreleased` (2026-09-13)** — moved to the devlog (2026-09-13 entry); the CHANGELOG holds each.
-- **Landed under `## Unreleased`, not stamped** — DEC-019 (release-on-publish: `npm run stamp` at publish;
-  `VERSION is honest` replaces `is next`) and BOSS's own install synced 0.267→0.325 + a dogfood row
-  that fails past 3 behind. The next version is Ajesh's to stamp.
+- **v0.318.0 → v0.325.0, and the 2026-09-13 second tier** — each is a `registry/CHANGELOG.md` section; the headlines are in the devlog (the 2026-10-04 IDEA-132 entry and the 2026-09-13 entry).
+- **IDEA-132 (2026-10-04, Unreleased, not pushed) — the design system's manifest gets its edges.** `tokens` + `composes`,
+  Composition on the usage page, a never-inside rule at the write. Devlog.
+- **Release (2026-10-04): 0.328.0 was published to npm on 2026-09-25 (its stamp sat uncommitted until
+  now); 0.329.0 is stamped and committed.** `npm publish` and `npm run deploy` are Ajesh's; the live
+  site was at 0.327.0. `check:published` / `check:deployed` say how far behind each is.
 - **Shipped 2026-09-12/13, all under `## Unreleased` — the devlog holds each; RESUME keeps the pointer.**
   · **Board pass** (`1b91586` → `5d87a12`): Building and Taking shape emptied by finishing and by reading;
   the return path (`revisit-due`, `unticked-shipped`, `/log` stamps `outcome:` — first BOSS decision due
@@ -88,13 +68,18 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   · **Design lane** — FEAT-030/031/032/033 (`c2c63ea` → `c0b76fb`): `boss design`, seventeen sections, the
   templates caught up. Open by design: IDEA-108 row 3 waits for a designer with a file; the data-viz
   palette question (107 gap row 3) is still a question.
-- **The external evidence is still n=3 signals / n=2 founders, all `stated-pain`.** Nobody has been
+- **IDEA-135 (2026-10-04, in 0.329.0) — the build outruns the evidence.** EVID-004: a third founder, AI
+  building ten half-built features nobody tried. Shipped by composition, no new skill: the `unseen` loops
+  read the code, the playbook shows *how we're learning*, the canvas line is *What we're testing next*,
+  a FEAT that bloated is marked. Open: the receipt (private vs on the page). Devlog has the rest.
+- **The external evidence is n=4 signals / n=3 founders, all `stated-pain`.** Nobody has been
   observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
   never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
 
 ## Next (in order)
 
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
+  Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
 
 0. **Worktree trial (IDEA-120, Ajesh yes 09-23)** — the next session runs in its own worktree and records what broke.
 1. **Ajesh's browser read of the demo** — `npm run gen:site` → `site/demo/index.html`: does it read
