@@ -136,6 +136,10 @@ projection over stored state.
   did write (lint-enforced guidelines). Correctness — the freeze allows it; regenerating and deploying
   stay Ajesh's. Old CHANGELOG entries are history: correct forward, don't rewrite.
   **Deferred (Ajesh, 2026-10-04: *"no"* to fixing it now)** — stays open, not dropped.
+- [ ] **F12** · `library/practices/design-system.md:620` says demotion uses the *"same threshold as
+  promotion"* — but promotion is **twice** (`:570`, `:608`) and demotion is **three exceptions**
+  (verified 2026-10-04). Shipped text disagreeing with itself. Either the sentence is wrong or the
+  asymmetry is intended and should say why (R5: promotion is cheap and reversible; a rule is not).
 
 ## R1 findings (2026-10-04) — the research session is gitignored beside the inventory
 
@@ -169,12 +173,12 @@ full, 15 load-bearing claims put to three adversarial verifiers — 12 survived 
   (the method transfers, the levels don't — size-layering gives business logic no home).
 - **Dated, not wrong:** Shopify's 2.8M lines is a 2020 figure and needs its year in the practice.
 
-## R5 findings (2026-10-04) — pattern libraries for code; ⚠ evidence-checked only
+## R5 findings (2026-10-04) — pattern libraries for code
 
 `docs/research/sessions/SESSION-2026-10-04-code-pattern-library.md`: five angles, 38 sources read,
 20 claims to the panel. **Only the evidence verifier reported** (13 confirmed, 7 with caveats, 0
-refuted); attribution and fit-for-a-founder are **unvoted** — R6 finishes them before any of this
-reaches a practice. Inputs, not decisions.
+refuted). The fit and attribution votes landed late and are folded in (R6, done): the 3-vote is
+complete for all 20 claims. Inputs, not decisions.
 
 - **The record form is small.** The minimum the pattern community agreed: name · context · problem ·
   forces · solution; the rest optional, and a weak placeholder is worse than a gap. A one-sentence
@@ -192,14 +196,30 @@ reaches a practice. Inputs, not decisions.
   patterns is historically hard (the original authors' own attempts stayed drafts) — so it needs a
   mechanism, not good intentions.
 - **Keeping a list alive:** cite entries by shorthand in review (the design side already does — `PAT-n`);
-  admit a pattern on evidence it is used and is not a duplicate, start it on trial, stable after a
-  quiet period (GOV.UK: six months); update the entry in the same change as the code it describes;
+  admit a pattern only if it is not a duplicate; update the entry in the same change as the code it describes;
   flag new uses of anything deprecated so a retired pattern can't creep back.
 - **The agent era — a caution for A4 (the code map):** one 2026 study found agents *follow*
   context-file instructions, yet the files did not generally raise task success and cost 20%+ more;
   repository overviews did not help. Another: context files grow by small additions and almost never
   shrink. A tuned-guidance study points the other way (kept as counter-evidence). **Nothing found
   tests a named pattern list against "copy the nearest code"** — the open question for this whole idea.
+- **The fit vote — what survives for one founder, one repo, an agent reading at write time:**
+  - **Fewer columns, not more.** Name · context · rule · maybe forces; the old-book headings don't scale
+    down. List only what an agent **would not infer by reading the code** — the context-file study's
+    own finding is that guidance helps with *non-standard* practice, and its cost argues for brevity.
+  - **Point at a live file, never a pasted snippet** — snippets drift, and the agent copies the example
+    literally, flaws included. So never cite a file that contains the anti-pattern.
+  - **The anti-pattern row's useful shape:** why the wrong thing looks attractive, and what to use
+    instead — agents choose the attractive wrong thing.
+  - **A smell is a prompt to look, not a ban.**
+  - **Doesn't transfer:** trial-then-stable after six months (one person just leaves entries in limbo);
+    "three systems" (nothing to count across in one repo); the small single-author study.
+  - **Don't claim a list improves consistency** — no study found measures it.
+- **Attribution, for whoever writes the practice:** cite the GoF headings as *Fowler's summary of the
+  GoF form* (second-hand); the three-systems rule as *Appleton (2000), reporting community usage*; Johnson
+  only *as quoted by Dominus*; the review-comments page as *the Go Wiki*, not "the Go team". **Refuted:**
+  *"Coplien (1996) originated the rule of three"* — his 1996 text never says it. The A4 study is
+  confirmed at source (add *"on average"* to its 20%).
 - **Killed:** R1's *"16 of 23 GoF patterns vanish"* (Norvig wrote *invisible or simpler*, for some
   uses); treating the two rules of three as one; *"Coplien established the rule of three"*
   (snippet only); a paper about training data cited as evidence agents copy nearby code; and three more.
@@ -225,8 +245,9 @@ reaches a practice. Inputs, not decisions.
   code twin? Gang of Four, Fowler's enterprise patterns and refactoring catalogue, the Portland Pattern
   Repository, pattern form (name · problem · forces · solution · consequences), anti-patterns, and how
   a project keeps *its own* pattern list alive. Builds on IDEA-137's Alexander research, doesn't repeat it.
-- [ ] **R6** · Finish R5's verification — the attribution and fit-for-a-founder votes on its claim
-  list — and re-check the A4 study (arXiv 2602.11988 v3) at source before the code map leans on it.
+- [x] **R6** · Finish R5's verification — the **attribution** vote on its claim list (the fit vote
+  landed late, folded in below) — and re-check the A4 study (arXiv 2602.11988 v3) at source before the
+  code map leans on it.
 
 **B — BOSS's own code (extract from practice, don't invent)**
 - [x] **B1** · Inventory the conventions `src/`, `scripts/`, `test/` and the hooks actually keep, each
