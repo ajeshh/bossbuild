@@ -71,6 +71,9 @@ opposite?* If one stops passing, it goes.
    read, what moved — and says what it found, once, where the founder already stops. Never a score,
    never a level, never a reading of the founder's effort. (DEC-003: a position, never a grade.)
    *Opposite:* measure progress so the founder can see it.
+   **Why one thing:** BOSS can never match everything a founder is doing, so it chooses what to drop
+   and says one thing. Because BOSS does the choosing, the founder has to be able to mute it — free,
+   always (principle 4).
 
 **The tension to keep, not resolve:** principle 2 connects; every ecosystem must also **stand alone**
 — do its job with its neighbours not planted. A project has missing neighbours by design — and not
@@ -131,6 +134,15 @@ each, with the file and line. **In a founder's project** (C8), only the class th
 
 **What the reader may read:** declared paths and files BOSS planted — never a crawl of the founder's
 files. **Paths, never authors:** no `git log --author`, no blame, no flow attributed to a person.
+
+**Every map BOSS ships gets three questions** — the flow ledger, a component index or manifest, a
+layer map, the ladder. A map always leaves things out; that's only a fault when its job needs what it
+left out.
+1. **What does it leave out that its job needs?** An import count can't see a component loaded by name.
+2. **Does BOSS act on it without asking?** A map may flag and propose; anything irreversible waits for
+   the founder's yes (`/design-library` once deleted *unused* components in the same pass).
+3. **Did a person write it, or did BOSS infer it?** Say which on the map. An inferred map is a guess
+   with a source, and is never shown as the founder's own decision.
 
 **Why this, first:** in BOSS's own repo, all six broken flows are one shape — a path or a handover
 changed, and only one end noticed (IDEA-137 · B1). At V1 the reuse guard keeps reading
@@ -236,7 +248,7 @@ from scoring to navigation); a humane review before anything was built (IDEA-137
 Holmgren and Bill Mollison, Donella Meadows, Margaret Wheatley & Myron Kellner-Rogers, Fritjof Capra,
 Carol Sanford, Edgar Schein, Brian Foote & Joseph Yoder, Richard Gabriel; and since revision 5,
 Stafford Beer (the viable system's recursion), W. Ross Ashby, Shigeo Shingo (control versus warning),
-Ivan Illich (radical monopoly) and James C. Scott (a map is judged by what its job needs). The research
+Ivan Illich (radical monopoly) and James C. Scott (a map is judged by what its job needs, revision 6). The research
 and its killed claims: IDEA-137.
 
 **Don't use:** *edges are productive* · *guild* · *slow it, spread it, sink it* · Alexander's
@@ -268,3 +280,4 @@ revision.
 | 3 | 2026-10-04 | Step 2 gains the purpose line — what the ecosystem is for, and what the project is worse at without it; two anatomies (how it runs, how it explains itself) | review — write the purpose line |
 | 4 | 2026-10-05 | Steps 8–9: a ladder stamps `anatomy:`, and follows this guide when it moves; this table | nothing — the stamp is the step |
 | 5 | 2026-10-05 | Three lenses read at source (IDEA-137 · R11): step 3 says where an ecosystem learns what changed outside it; part 5 marks each check **stops** or **warns**; step 7 and § Handing over ask whether the founder could do each part's job by hand | review — name where it learns of outside change; mark each of its checks stops or warns; answer the by-hand question per part |
+| 6 | 2026-10-05 | Two more lenses read at source (IDEA-137 · R11): every map BOSS ships gets three questions (what it leaves out that its job needs · does BOSS act on it without asking · written or inferred); principle 5 says why BOSS says one thing, and why mute stays free | review — name each map this ecosystem ships and answer the three questions for it |
