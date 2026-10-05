@@ -145,6 +145,9 @@ function verdictSplit() {
 const prev = existsSync(DATA) ? JSON.parse(readFileSync(DATA, 'utf8')) : {};
 const practices = countDir('library/practices') ?? prev.practices ?? null;
 const verdicts = verdictSplit() ?? prev.verdicts ?? null;
+// Decision records are tracked, so this never needs carrying forward. It was typed by hand on two
+// pages and had drifted to 16 and 21 while the repo held 23 (IDEA-138).
+const decisions = countDir('docs/decisions', (f) => /^DEC-\d+.*\.md$/.test(f));
 if (countDir('library/practices') === null || verdictSplit() === null) {
   console.log('  note: dev-workspace sources unavailable — carrying forward committed counts.');
 }
@@ -163,6 +166,7 @@ const data = {
   })),
   practices,
   verdicts,
+  decisions,
 };
 let ca = 0, cs = 0;
 for (const m of data.modes) { ca += m.agents; cs += m.skills; m.cumAgents = ca; m.cumSkills = cs; }
@@ -916,6 +920,7 @@ blocks.COUNT_MENTORS = () => String(data.mentors);
 blocks.COUNT_BUILDERS = () => String(data.builders);
 blocks.COUNT_PRACTICES = () => (data.practices == null ? '—' : String(data.practices));
 blocks.COUNT_VERDICTS = () => (data.verdicts == null ? '—' : String(data.verdicts.total));
+blocks.COUNT_DECISIONS = () => (data.decisions == null ? '—' : String(data.decisions));
 blocks.VERSION = () => V;
 // "On this page": the h2s of the fragment, linked by the ids anchorHeadings() stamps. The block
 // leaves a marker because ids do not exist yet when blocks expand; the loop fills it after.
