@@ -91,7 +91,7 @@ Read from what the design system already does. The engineering column was filled
 | 2 | **A seed that scales** | the few decisions that get dearer to reverse; everything else deferred | the seed-that-scales table | zero-dep, ESM, state under `BOSS_HOME`, hook lib below `src/`, atomic writes, plan-then-apply (§2) |
 | 3 | **A map of what exists** | the thing an agent checks before making a new one | `COMPONENTS.md` → `manifest.json` at V1 | the layer map + *find this before you write one* (§3) |
 | 4 | **A planting moment** | the trigger, and what gets planted then | `design-tokens-loop` → `/design-tokens-init` | **empty** — BOSS's grew; the founder's is IDEA-136 · Q3 |
-| 5 | **Checks at the write** | boundaries, not reminders — they fire when the file is written | the design guards (tokens, reuse, decisions, boundary, terminology) | **empty at the write** — at commit (pre-commit `test:ci`) and on push (CI) |
+| 5 | **Checks at the write** | they fire when the file is written, and each says whether it **stops** (waits for a person) or **warns** (the work goes on) — a warning is not a boundary | the design guards (tokens, reuse, decisions, boundary, terminology) — all **warn** | **empty at the write** — at commit (pre-commit `test:ci`, **stops**) and on push (CI) |
 | 6 | **A drift reader** | how far the real thing has moved from the map (V1) | `/design-library` | **empty** — done once by hand (IDEA-136 · B1/B3/B7 → F1–F10) |
 | 7 | **Retirement** | what leaves, and what replaces it | unused → delete in this pass; `deprecated → X` | a helper absorbs its copies and its header names them; `supersedes.json` for shipped parts |
 | 8 | **Amendment** | how a rule changes, and who changes it | three exceptions → the rule is wrong; a DEC to override | three exceptions → the rule is wrong; a `/decide` record; Ajesh decides |
@@ -149,13 +149,15 @@ For IDEA-136 first, then claims, data & trust, operations.
    worse at without it** — the boundary that says what belongs inside it. (Ajesh's own culture
    frameworks open every pillar this way, *Concept* then *Importance*, before any practice.)
 3. **Fill the eight parts** — and leave a part empty rather than invent it. An empty seam column is
-   an honest answer.
+   an honest answer. Then say **where it learns what changed outside it** — no part does that on its
+   own; for a founder's ecosystem it is BOSS's refresh disciplines, arriving by `boss sync`.
 4. **Write its trigger and its yield.** It gives something on first use, **or** it is named a store —
    a one-way door whose yield comes later.
 5. **Declare its connections** — gives, takes, returns, steward. Check each *take* stands alone when
    its giver is missing.
 6. **Write how its rules get amended**, and by whom.
 7. **Write how it leaves.** What replaces each part as the project grows; readers follow the successor.
+   And ask, for each part: **could the founder do its job by hand from what this ecosystem wrote down?**
 8. **Run the test** (below) before calling it planted, then stamp its record or practice with
    `anatomy: N` — the revision of this guide (§ Revisions) it was planted against.
 9. **When this guide moves, every ladder follows.** A change to a principle, a part, a declaration or
@@ -211,6 +213,10 @@ founder, unprompted, asks twice how their project's parts are connected.
   steps back on its own read.** (An aim to *be* needed less invites a measure — fewer interventions —
   that rewards silence.) The one thing never retired: the line about harm to someone not in the room.
   Test: remove BOSS from a throwaway scaffold; nothing the founder built breaks.
+  That keeps the founder's **files**. The second test keeps their **ability**: could they do each
+  part's job by hand from what the ecosystem wrote down? A tool people can no longer work without is
+  noticed only when it's too late, so this is asked when the ecosystem is planted (step 7) — never
+  read off the founder.
 
 ## The test
 
@@ -228,8 +234,10 @@ same anatomy at every scale — or is each a different shape wearing the same na
 (the Menu of pillars on one anatomy, the Welcome → Vision → Values → Done cycle, the Compass's move
 from scoring to navigation); a humane review before anything was built (IDEA-137 · H1); and, read at source, Christopher Alexander, Elinor Ostrom, David
 Holmgren and Bill Mollison, Donella Meadows, Margaret Wheatley & Myron Kellner-Rogers, Fritjof Capra,
-Carol Sanford, Edgar Schein, Brian Foote & Joseph Yoder, Richard Gabriel. The research and its killed
-claims: IDEA-137.
+Carol Sanford, Edgar Schein, Brian Foote & Joseph Yoder, Richard Gabriel; and since revision 5,
+Stafford Beer (the viable system's recursion), W. Ross Ashby, Shigeo Shingo (control versus warning),
+Ivan Illich (radical monopoly) and James C. Scott (a map is judged by what its job needs). The research
+and its killed claims: IDEA-137.
 
 **Don't use:** *edges are productive* · *guild* · *slow it, spread it, sink it* · Alexander's
 fifteen properties as **checks** (they're vocabulary for a person) · Kimmerer's Honorable Harvest
@@ -259,3 +267,4 @@ revision.
 | 2 | 2026-10-04 | Handing over decided: the second repair offers a check (DEC-022); BOSS can always be needed less, held by the removal test (DEC-023) | review — a founder-caused break that recurs here gets a check offered; whatever this ladder installs in the app survives `boss remove` |
 | 3 | 2026-10-04 | Step 2 gains the purpose line — what the ecosystem is for, and what the project is worse at without it; two anatomies (how it runs, how it explains itself) | review — write the purpose line |
 | 4 | 2026-10-05 | Steps 8–9: a ladder stamps `anatomy:`, and follows this guide when it moves; this table | nothing — the stamp is the step |
+| 5 | 2026-10-05 | Three lenses read at source (IDEA-137 · R11): step 3 says where an ecosystem learns what changed outside it; part 5 marks each check **stops** or **warns**; step 7 and § Handing over ask whether the founder could do each part's job by hand | review — name where it learns of outside change; mark each of its checks stops or warns; answer the by-hand question per part |
