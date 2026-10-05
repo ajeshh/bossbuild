@@ -216,8 +216,10 @@ rows (c) are out of scope; what stands is the in-project scale (a) and the found
   design ecosystem, already shipped), [[IDEA-004]] (temple culture, parked — the culture ecosystem and
   its council of thinkers), [[IDEA-093]], [[IDEA-135]], [[IDEA-133]] (the why — the founder scale).
 - [ ] **F1** · No founder-side read yet — what a founder *meets* (cohort-aware). After M2 exists.
-- [ ] **S1** · Session end: commit, `docs/RESUME.md`, devlog line. IDEA-136 was touched (one
-  `program:` line) — check no peer holds it before committing.
+- [ ] **S1** · Session end: `docs/RESUME.md`, devlog line. (Capture committed `fa3e7ab`.)
+- **IDEA-136 is on hold until this program sets it up** (Ajesh, 2026-10-04) — status `deferred` on
+  its record and INDEX row. The engineering ecosystem gets planted *from* the anatomy and M2 this
+  record produces, not alongside.
 
 **R9 finding (2026-10-04) — Ajesh already designed the ecosystem of ecosystems.** The humane-tech
 corpus (gitignored; detail in the session record) holds it as practice, not theory: **the Menu** —
@@ -301,6 +303,30 @@ wording; *liveliness score*; "five capacities" (Sanford's list is three criteria
 source of *clear yes / clear no* or *less but better* (Sivers; Rams); *adjacent possible* as
 Johnson's (Kauffman's). Wheatley's articles are **Wheatley & Kellner-Rogers**; most Regenesis quotes
 are **Mang & Reed**.
+
+**What stands without the books (2026-10-04 — Ajesh: the ebooks land in a day or two; go on)**
+
+Graded by what each finding actually rests on. **Nothing on the build path waits on a book.** The
+books firm up quotes and attributions for anything public; they do not move a mechanic.
+
+| Finding | Rests on | Stands now? |
+|---|---|---|
+| M2 the flow map + reader | B1's 44 flows with file:line (the repo itself); Mollison's pollutant (Holmgren's own PDF); Ostrom's Nobel lecture; Meadows' essay; Wheatley & Kellner-Rogers' articles — all fetched | **yes — strongest** |
+| M12 succession that's followed | Holmgren's *Essence* (fetched); B1.1, a live bug | **yes** |
+| M11 the latent centre | Alexander's own 2009 paper (fetched); *Oregon* only via Gabriel | **yes**; the book adds page numbers |
+| M1 the charter, written last | *Timeless Way* full text (archive.org) | **yes** |
+| Q9 — four signs, no score | Capra interview, Meadows, Wheatley & Kellner-Rogers, Sanford, Alexander 2009 (fetched) + Ajesh's own corpus | **yes** |
+| N10 return paths · N12 amendment paths · N14 founder's flows | B1's absent flows; Ostrom lecture pp.413-14; Capra interview | **yes** |
+| N11 second repair hands over | Senge 1990 article (fetched); the archetype detail partly from snippets | **yes as a behaviour**; cite only the article |
+| N13 BOSS aims to be needed less | Sanford (fetched); Meadows' *"remove yourself"* is secondary | **yes as an aim**; Meadows quote waits |
+| M3 pace (demoted) · M4 zones (parked) | Brand's book unread; quotes via others | unchanged — not on the build path |
+
+**Waits on the books** (for quoting, not for building): Alexander's fifteen properties and *Nature of
+Order* page refs · *A Pattern Language* page refs · Holmgren 2002 and Mollison 1988/1991 attributions
+(who said zones, guilds) · Ostrom 1990's original eight-principle wording (the lecture uses the
+2009 revised list) · Brand's *"all buildings are predictions"* and the low road · *Thinking in
+Systems* traps · Schein (read from a copy of doubtful provenance) · brown's principle list (two
+transcriptions agree, book not opened). When the ebooks land: one pass re-grades exactly this list.
 
 **B — BOSS's own land (extract, don't invent)**
 - [x] **B1** · Inventory the flows that already exist between BOSS's beds, each with a file:line

@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: exploring (B first — BOSS's own code — then A, what ships)
+status: deferred (on hold until IDEA-137 sets it up — Ajesh, 2026-10-04; then B first, then A)
 proof: docs/ENGINEERING.md
 gist: Code gets the same ladder the design system has — principles a reasonable person could argue with, a map of what exists to check reuse against, rules an agent can act on, checks at the write, and a way to retire them — extracted from BOSS's own src/ before it ships to a founder.
 created: 2026-10-04
@@ -29,6 +29,11 @@ _The best articulation so far. Rewrite this as the idea sharpens._
 - **Where it gets captured:** BOSS's own principles in a tracked `docs/ENGINEERING.md` (B6); the
   founder-facing system as a practice in `library/practices/` (A1), which the site's existing
   *Engineering* page renders by generation — see A15.
+- **Order (Ajesh, 2026-10-04):** *"wait for idea-137… we will first build that before building this,
+  as it will create more guidance for how to build this."* [[IDEA-137]] — the ecosystem of ecosystems
+  (principles every discipline lives by, each governing itself, the support between them) — is built
+  first; this record is one of its ecosystems and takes its shape from it. Until then: **investigate,
+  don't build.** No B2/B6/A-track writing before IDEA-137 lands.
 - **Mandate:** compose and subtract, never add a skill. Keeping BOSS current with the craft of
   building with agents is its own warrant (no founder evidence needed); a new *gate* still needs a bug
   that reached a user.
@@ -130,6 +135,7 @@ projection over stored state.
   own compression. Repair: keep the line as BOSS's, unquoted, and credit Factory for the sentence they
   did write (lint-enforced guidelines). Correctness — the freeze allows it; regenerating and deploying
   stay Ajesh's. Old CHANGELOG entries are history: correct forward, don't rewrite.
+  **Deferred (Ajesh, 2026-10-04: *"no"* to fixing it now)** — stays open, not dropped.
 
 ## R1 findings (2026-10-04) — the research session is gitignored beside the inventory
 
@@ -174,6 +180,14 @@ full, 15 load-bearing claims put to three adversarial verifiers — 12 survived 
   on who said it). Killed claims recorded beside confirmed ones.
 - [ ] **R3** · Research the layers BOSS can't demonstrate (data, API, errors/observability,
   dependencies, prompts-as-code) — a second pass once R1 lands, so R1 stays focused.
+- [ ] **R4** · Extreme Programming at source — the values, principles and practices (Beck 1999/2004:
+  pairing, TDD, simple design, refactoring, collective ownership, coding standards, small releases,
+  continuous integration, sustainable pace) — and **XP with AI and agents** (2024–26): what
+  practitioners carry over, what breaks, what the agent changes about pairing and test-first.
+- [ ] **R5** · Pattern libraries for code — the design side has `docs/design/PATTERNS.md`; what is the
+  code twin? Gang of Four, Fowler's enterprise patterns and refactoring catalogue, the Portland Pattern
+  Repository, pattern form (name · problem · forces · solution · consequences), anti-patterns, and how
+  a project keeps *its own* pattern list alive. Builds on IDEA-137's Alexander research, doesn't repeat it.
 
 **B — BOSS's own code (extract from practice, don't invent)**
 - [x] **B1** · Inventory the conventions `src/`, `scripts/`, `test/` and the hooks actually keep, each
@@ -254,6 +268,12 @@ full, 15 load-bearing claims put to three adversarial verifiers — 12 survived 
   what exists (table above).
 - **2026-10-04 · Ajesh** — altitude: *"what boss ships to the founder, for their agentic work"*; B then
   A; *"ID all the work"*; capture as an idea.
+- **2026-10-04 · Ajesh** — *"also im wondering if we should expand this to database and other stuff as
+  well"* → the Scope table, Q7, R3.
+- **2026-10-04 · Ajesh** — F11: *"no"* (not now). *"anything from extreme programming, especially extreme
+  programming with AI and agentic AI… Also pattern library. also wait for idea-137… we will first build
+  that before building this… lets continue expanding our investigation"* → R4, R5, R3 launched; the
+  build waits on IDEA-137.
 - **2026-10-04 · Ajesh** — *"lets build it, where we capture it, so that we can put it on our website
   under engineering if needed"*; bring in existing practice and research — atomic design for code, and
   senior engineering thinking → R1/R2.
