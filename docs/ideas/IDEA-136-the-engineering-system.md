@@ -394,6 +394,19 @@ the design neighbour missing (no component index) — the seed stands alone and 
 on a helper; `boss remove` keeps `.claude/rules/engineering.md` as founder-authored (DEC-023 holds).
 Not testable yet: *a moved path is named* — the founder-side flow reader is IDEA-137 · C8.
 
+**A5/A6/A7/A9 read against the field (2026-10-04, from R1/R4/R5 — Ajesh: *"what does the best engineering say… can we do it without their input"*).**
+Correction first: the hold cited DEC-022, but DEC-022 is how a *founder's own* check gets born after a
+repeated break — not a bar on BOSS shipping an opt-in, advisory guard. And keeping BOSS current with the
+craft needs no founder evidence (the craft-curve warrant). What founder use would add is the false-positive
+rate; opt-in, advisory, once-per-name and *a sensor that never fires is a removal candidate* cover that.
+
+| Item | What the field says | Verdict |
+|---|---|---|
+| **A6** boundaries for every surface | Strongest of the four. Dependency rules held an agent-built app's structure where a markdown guide didn't; the agent broke them a few times, then self-corrected from the check's message (Böckeler 2026, n=1). Layers-point-down + no sibling imports are stack-neutral (FSD). Tools exist per stack (dependency-cruiser, Nx tags) — leverage, don't own. Caution: a boundary check faithfully enforces a *wrong* map (Shopify's Packwerk retrospective, 2024). | **Build** — widen `ui-boundary-guard` to layers the founder *declared*, never inferred. |
+| **A9** weakened assertions | Agents do edit tests to pass; read-only test access stops that move without hurting legitimate work (ImpossibleBench, 2025 — measured under impossible tasks; the everyday rate is unmeasured). An agent loosened the one threshold that had no self-correction message, and *"the exceptions AI created… was a good point to start my code review"* (Böckeler). | **Build, advisory** — flag a test edit that removes or loosens an assertion in a turn that also changed source; ask for the reason, never block. |
+| **A5** reuse for code | Agents copy-paste on the third or fourth repeat without a nudge (Böckeler, n=1); duplicate code is something computational sensors catch reliably; the AI-duplication *numbers* were killed, only the direction survives. A name check misses a helper written under another name (the negative-finding problem). | **Build, narrow** — the design guard's proven shape against the seed's helper table, once per new exported name; the duplicate-code detector stays the stack's tool, pointed at, not shipped. |
+| **A7** one word per concept, in code | Ubiquitous language is Evans' core rule, but no source tests a glossary-vs-identifier checker, naming linters only do casing, and names mislead placement (Shopify 2024). | **Don't build a check** — it stays a rule in the seed (W). |
+
 **A — what ships to a founder (after B8)**
 - [x] **A1** · The practice: engineering principles ladder, a seed-that-scales table for code, reuse /
   adjust / new for code, promotion and demotion thresholds, leverage-or-own for linters. Extend
