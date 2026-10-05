@@ -3,7 +3,7 @@ id: IDEA-136
 type: idea
 kind: capability
 owner: mentor-architect
-program: the-land
+program: ecosystem-of-ecosystems
 status: exploring (B first — BOSS's own code — then A, what ships)
 proof: docs/ENGINEERING.md
 gist: Code gets the same ladder the design system has — principles a reasonable person could argue with, a map of what exists to check reuse against, rules an agent can act on, checks at the write, and a way to retire them — extracted from BOSS's own src/ before it ships to a founder.
