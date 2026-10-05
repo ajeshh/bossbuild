@@ -27,11 +27,15 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **`/pretotype` no longer says the in-repo demand page arrives when you unlock MVP.** It arrives
+  once your first feature has shipped; until then, the page `/pretotype` publishes is the test.
+
 - **Your landing page says only what something backs.** `/landing` now reads your evidence records
   (their grades and dates) before it writes a line. The headline stays your promise, and a promise can
   be made on day one. But the lines a stranger reads as fact (why it's believable, a number, a quote,
   what the product does) each point at a record or come off the page. A demand page with only stated
-  pain behind it makes no claims about users; the page is the test. The landing-page practice gains
+  pain behind it makes no claims about users; the page is the test, and when it ends its result is
+  recorded as evidence, so the next version of the page can say it. The landing-page practice gains
   the two rules that keep a page honest as it grows: derive a count from where it's true instead of
   retyping it, and fix a broken claim now while stale wording can wait.
 

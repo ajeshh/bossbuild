@@ -99,6 +99,9 @@ message. This decides the whole shape:
   ships (Savoia): read the idea's `## Pretotype log` in `docs/ideas/IDEA-NNN.md` for the one already set, and
   if there isn't one, set it there now, before the page goes live. Remember a signup measures curiosity, not
   intent. A confirmation page that restates + asks one qualifying question beats a dead "thanks."
+  **When the test ends, the result becomes a record:** `/evidence`, graded the way `/pretotype`'s log
+  says (a signup is `observed-behavior`, a pre-order `commitment`). A result that stays in the form
+  tool never reaches the canvas, and the next version of this page can't say it.
   **An email field is personal data.** Before the page goes live, run `/trust`'s first step (the privacy
   policy, linked beside the field) — or say plainly that it's missing. Collecting addresses with no stated
   use is the one thing on this page that can hurt someone who isn't in the room.

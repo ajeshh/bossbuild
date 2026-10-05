@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: building (steps 1–2 written; step 3 items 0–2 landed 2026-10-04, item 3 waits on Q1)
+status: building (steps 1–2 written; step 3 items 0–3 landed 2026-10-04)
 proof: none
 proof_note: every path this would create already exists (landing/SKILL.md, landing-page.md, registry/flows.json). Done is a declared take landing ← evidence in registry/flows.json, held by check-refs class 7 — a declaration, not a new file.
 gist: Claims — what a project says about itself to someone who can't check it — gets its own ecosystem, centred on the landing page. Every line on the page is no stronger than what backs it. Extracted from how BOSS already checks its own front door, which has been doing this for 150 releases and never sorted it down.
@@ -158,7 +158,7 @@ when the project has a site generator, the counts move from typed to derived. Th
 
 ## Step 3 — what a founder gets (proposed 2026-10-04, smallest first; Ajesh: *"lets start"*)
 
-**Landed 2026-10-04:** 0 (`7c763ce`; only index and thinking regenerated, in a worktree. A full
+**Landed 2026-10-04:** 3 (the demand page's result → `/evidence`, by reference to `/pretotype`'s grading) · 0 (`7c763ce`; only index and thinking regenerated, in a worktree. A full
 `gen:site` would publish the Done practice, which waits on the share-sort) · 1 and 2 (the take is
 mutation-tested: moving the path in `/landing` turns class 7 red, with the file and line) · Unreleased bullet.
 
@@ -188,14 +188,18 @@ reader for part 6; wait for a founder whose page outlived its evidence).
 
 ## Open questions
 
-- **Q4** · *(found while testing item 1)* `/landing` is a `postLaunch` skill (`stages/L1-mvp/manifest.json`,
+- **Q4** · *(answered 2026-10-04 — the split is deliberate: `/pretotype` is the pre-build test at
+  Quickstart and publishes the door itself (`pretotype/SKILL.md:55-106`); `/landing` is for a page you
+  keep. **But its table claimed `/landing --demand` was available "after `boss unlock mvp`" — false
+  since `earned`; corrected to "once a first feature has shipped".** Reproduced in a scaffold first.)* `/landing` is a `postLaunch` skill (`stages/L1-mvp/manifest.json`,
   `earned.postLaunch: shipped`, `src/earned.js`): it reaches the project only once a FEAT ships. Its
   `--demand` page is the **pre-build** test, so a founder who wants to test demand first has no
   `/landing` (`/pretotype` designs the door and can publish one). IDEA-060 · 5 named this mis-staging
   before `earned` existed. Is it still true in practice, or does `/pretotype`'s publish cover it? Read
   `/pretotype` before proposing anything.
 
-- **Q1** · What grade is a demand-page signup? `/landing` says *"a signup measures curiosity, not
+- **Q1** · *(answered — already settled in `pretotype/SKILL.md:145`: a signup is `observed-behavior`,
+  a pre-order `commitment`; item 3 points there instead of restating it, landed 2026-10-04)* What grade is a demand-page signup? `/landing` says *"a signup measures curiosity, not
   intent"*. The ladder has `observed-behavior` (*watched them… bounce*) and `commitment` (*gave up
   something real*). An email address is a small reputation cost. Lean: `observed-behavior`, with the
   curiosity caveat in the record. That's the ladder's owner's call, not this ecosystem's.

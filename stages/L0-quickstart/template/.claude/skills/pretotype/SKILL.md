@@ -97,7 +97,7 @@ better — and the rungs they sit on say the same thing the table does:
 
 | | **Publish here (Artifact)** | **`/landing --demand`** |
 |---|---|---|
-| Available | now, in Quickstart | after `boss unlock mvp` |
+| Available | now, in Quickstart | at MVP, once a first feature has shipped |
 | Cost to first URL | this turn — no host, no account | a deploy |
 | Lives in | the artifact, not the repo | the repo, under version control |
 | Best when | you are testing and expect to throw it away | the page will outlive the test, or the brand matters |
