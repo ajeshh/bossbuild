@@ -180,11 +180,16 @@ function templateHooks(stageId) {
 // a hardening fix could never reach a project already in the wild — a security floor that
 // can't be updated is not a floor. Never removes an entry; the founder can always delete
 // one and it will come back on the next sync, which is the intended nag.
-function templateDenies(stageId) {
+//
+// `ask` joined it (IDEA-142) on the same property: an ask entry can only add a prompt, never
+// grant — the host puts it above any `allow`, the founder's own included. The shipped list is
+// the git commands that throw work away (force-push, `reset --hard`, `clean`, a discarding
+// checkout/restore, `stash drop`) — the stash and checkout kinds cost BOSS's own tree real work.
+function templatePermissions(stageId, key) {
   const f = join(STAGES_DIR, stageId, 'template', '.claude', 'settings.json');
   if (!existsSync(f)) return [];
   try {
-    return JSON.parse(readFileSync(f, 'utf8')).permissions?.deny || [];
+    return JSON.parse(readFileSync(f, 'utf8')).permissions?.[key] || [];
   } catch { return []; }
 }
 
@@ -297,15 +302,16 @@ export function computeSettingsMerge(projectDir, layers) {
         changed = true;
       }
     }
-    // The deny floor — additive only (see templateDenies above).
-    const denies = templateDenies(stageId);
-    if (denies.length) {
+    // The deny floor and the ask list — additive only (see templatePermissions above).
+    for (const key of ['deny', 'ask']) {
+      const patterns = templatePermissions(stageId, key);
+      if (!patterns.length) continue;
       merged.permissions ||= {};
-      merged.permissions.deny ||= [];
-      const have = new Set(merged.permissions.deny);
-      for (const pattern of denies) {
+      merged.permissions[key] ||= [];
+      const have = new Set(merged.permissions[key]);
+      for (const pattern of patterns) {
         if (have.has(pattern)) continue;
-        merged.permissions.deny.push(pattern);
+        merged.permissions[key].push(pattern);
         have.add(pattern);
         changed = true;
       }

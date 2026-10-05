@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The git commands that throw work away ask first.** Force-push, `reset --hard`, `clean`, a
+  checkout or restore that discards changes, dropping a stash, deleting a branch: the agent now
+  stops and asks before each one, even in auto mode and even if you allowed git commands broadly.
+  `boss sync` adds the list to projects you already have, and never removes an entry you added.
+
 - **The design page opens with a way in.** Someone joining your project (a designer, a cofounder, you
   after three weeks away) used to land on the brand and then a book of chapters. `boss design`'s *Start
   here* now lists **I need to…**, every *When it applies* line from your usage pages and every situation

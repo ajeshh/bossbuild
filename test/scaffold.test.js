@@ -248,6 +248,25 @@ test('the deny floor merges into an existing project without touching allow or d
   assert.equal(computeSettingsMerge(dir, ['L0-quickstart']).changed, false, 're-merging the floor is a no-op');
 });
 
+// IDEA-142 — the git commands that throw work away ask first, in a project already in the wild.
+// Reproduced 2026-10-05: a fresh project's settings had no `ask` key at all.
+test('the git ask list merges in beside a founder allow, and never removes theirs', () => {
+  const dir = project({
+    '.claude/settings.json': JSON.stringify({
+      permissions: { allow: ['Bash(git reset *)'], ask: ['Bash(rm -rf *)'] },
+    }, null, 2),
+  });
+  const { merged, changed } = computeSettingsMerge(dir, ['L0-quickstart']);
+  assert.equal(changed, true);
+  assert.deepEqual(merged.permissions.allow, ['Bash(git reset *)'], 'allow is theirs; ask outranks it at the host');
+  assert.ok(merged.permissions.ask.includes('Bash(rm -rf *)'), "the founder's own ask survives");
+  for (const p of ['Bash(git push --force*)', 'Bash(git reset --hard*)', 'Bash(git clean*)', 'Bash(git stash drop*)']) {
+    assert.ok(merged.permissions.ask.includes(p), `${p} is merged`);
+  }
+  writeFileSync(join(dir, '.claude', 'settings.json'), JSON.stringify(merged, null, 2));
+  assert.equal(computeSettingsMerge(dir, ['L0-quickstart']).changed, false, 're-merging is a no-op');
+});
+
 // --- sync planning --------------------------------------------------------
 
 // v0.147.0 — nothing BOSS ships into a founder's project may point at a path only BOSS's own
