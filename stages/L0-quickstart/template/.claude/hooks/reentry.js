@@ -36,6 +36,13 @@
 //     not replay the same line three times. The marker lives in the per-person state dir (DEC-015),
 //     so it is keyed to you and this project and survives a worktree.
 //
+// ONE MORE JOB, ON EVERY REAL ARRIVAL (IDEA-142): lay down the commit-time key check if this clone
+// lacks it. Git copies no hooks, so a cofounder's fresh clone arrives without it — and may never have
+// installed the BOSS CLI that `boss sync --apply` needs. This hook already runs from the repo, so it
+// is the one place that reaches them. It writes only into a free slot (never over their own
+// pre-commit, never past `core.hooksPath`), and the session hears about it once — the write is to
+// their `.git/`, and a write nobody is told about is not one BOSS makes.
+//
 // ⛔ IT NEVER FIRES AT SOMEONE WHO IS AWAY. It fires when they COME BACK, which is the only moment
 // it can observe and the only kind one — and per DEC-016 that is now a decision, not a limit.
 //
@@ -87,12 +94,35 @@ const main = async () => {
 
   if (!ARRIVALS.has(source)) return;
 
-  const read = reentryRead(projectDir);
-  if (!read) return;
-  if (alreadyGiven(read.date)) return;
+  const lines = [];
+  // Dynamic and caught: a project mid-sync without the lib must still get its session start.
+  try {
+    const { installCommitGuard } = await import('./lib/commit-secrets.js');
+    if (installCommitGuard(projectDir).state === 'installed') {
+      lines.push(
+        'BOSS just turned on its commit check for this clone (.git/hooks/pre-commit): a commit carrying',
+        'a key-shaped secret is stopped before it reaches git history. Tell the founder in one short line',
+        'at a natural point — it is a write to their .git — and that `git commit --no-verify` skips it once.',
+        '',
+      );
+    }
+  } catch { /* fail-open */ }
 
+  const read = reentryRead(projectDir);
+  if (read && !alreadyGiven(read.date)) lines.push(...reentryLines(read));
+  if (!lines.length) return;
+
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: {
+      hookEventName: 'SessionStart',
+      additionalContext: lines.join('\n'),
+    },
+  }));
+};
+
+function reentryLines(read) {
   const last = read.landed || read.feat;
-  const lines = [
+  return [
     `The founder is back after ${read.days} days away. Their own record of where they stopped:`,
     last ? `- Last session (${read.date}): ${last}` : `- Last logged ${read.date}; they did not record what landed.`,
     read.next
@@ -104,13 +134,6 @@ const main = async () => {
     'do not summarise the project. If their first message is already about something else, drop it',
     'entirely and follow them: this is a way back in, never an agenda.',
   ];
-
-  process.stdout.write(JSON.stringify({
-    hookSpecificOutput: {
-      hookEventName: 'SessionStart',
-      additionalContext: lines.join('\n'),
-    },
-  }));
-};
+}
 
 main().catch(() => { /* fail-open, always */ });

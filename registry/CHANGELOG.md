@@ -27,6 +27,9 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **An agent in its own worktree can run your app.** A new worktree starts without your ignored
+  files, so there's no `.env` and the app won't start. The agent rules now say to list `.env` in
+  `.worktreeinclude`, which copies it in — just that file, since every copy is one more place the key lives.
 - **Every working point is a save point.** The coder now commits each change that works (the smoke
   passes, or it runs) and says so in a line, so there is always a version to get back to: the
   editor's undo misses shell commands and subagent edits, and git doesn't. It never commits a
@@ -40,7 +43,8 @@ rule above still applies to the whole section once it is stamped.
   key, an `.env` added on purpose past the ignore file) and stop the commit with the file and line,
   never the key. It runs on every commit, whoever makes it. It doesn't guess at passwords, so it
   won't cry wolf; `git commit --no-verify` skips it once. A project you already have gets it from
-  `boss sync --apply`, and a pre-commit hook you wrote yourself is never replaced.
+  `boss sync --apply`; a cofounder's fresh clone gets it at their first session, even without the BOSS
+  CLI, and the session says so. A pre-commit hook you wrote yourself is never replaced.
 - **The git commands that throw work away ask first.** Force-push, `reset --hard`, `clean`, a
   checkout or restore that discards changes, dropping a stash, deleting a branch: the agent now
   stops and asks before each one, even in auto mode and even if you allowed git commands broadly.

@@ -12,8 +12,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFi
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { STAGES_DIR } from '../src/paths.js';
-import { installCommitGuard, SHIM } from '../src/commit-guard.js';
-import { scan, isEnvFile } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
+import { scan, isEnvFile, installCommitGuard, SHIM } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 
 const dirs = [];
 after(() => { for (const d of dirs) rmSync(d, { recursive: true, force: true }); });
@@ -99,4 +98,26 @@ test('an older shim of ours is refreshed in place', () => {
   writeFileSync(p, '#!/bin/sh\n# boss: commit-secrets — old\nexit 0\n');
   assert.equal(installCommitGuard(d).state, 'installed');
   assert.equal(readFileSync(p, 'utf8'), SHIM);
+});
+
+// IDEA-142 — a cofounder's fresh clone has no hooks (git copies none) and may have no BOSS CLI.
+// The reentry hook runs from the repo at session start, so it is what lays the shim down there.
+test('a fresh clone gets the check at session start, says so once, and never on clear/compact', () => {
+  const { d } = repo();
+  cpSync(join(STAGES_DIR, 'L0-quickstart', 'template', '.claude', 'hooks'), join(d, '.claude', 'hooks'), { recursive: true });
+  const home = mkdtempSync(join(tmpdir(), 'boss-home-'));
+  dirs.push(home);
+  const start = (source) => spawnSync('node', [join(d, '.claude', 'hooks', 'reentry.js')], {
+    input: JSON.stringify({ source }), encoding: 'utf8',
+    env: { ...process.env, CLAUDE_PROJECT_DIR: d, BOSS_HOME: home },
+  });
+  const shim = join(d, '.git', 'hooks', 'pre-commit');
+
+  assert.equal(start('compact').stdout, '', 'mid-session events write nothing');
+  assert.throws(() => statSync(shim), 'and lay nothing down');
+
+  const first = start('startup');
+  assert.match(JSON.parse(first.stdout).hookSpecificOutput.additionalContext, /commit check for this clone/);
+  assert.equal(readFileSync(shim, 'utf8'), SHIM);
+  assert.equal(start('startup').stdout, '', 'already there: silent');
 });

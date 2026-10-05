@@ -18,7 +18,7 @@ context gets lost. This holds for every agent — the coder, the designer, the t
 | A stack, a test tool or a design system got picked | **1 · Specialize** | Write its conventions and commands into the agent's own file. The file *is* the expertise — reviewed, and shared with whoever works here next. |
 | A second surface with its own conventions (web and mobile, app and API) | **2 · Scope** | A path-scoped rule per surface in `.claude/rules/`, with `paths:` set to that surface's folder. Still one agent; each surface's context loads only where it applies. |
 | You corrected the same thing twice | **3 · Remember** | Write it into the agent's file. When the learnings outgrow the file, turn on the host's per-agent memory (`memory: project` in the agent's frontmatter): the agent keeps its own notes under `.claude/agent-memory/<name>/`, committed. The agent writes those, so read them like code. |
-| The work runs long, or several pieces run at once | **4 · Run on** | Run it in the background and resume it. Give agents that work in parallel on one repo their own worktree (`isolation: worktree`). Neither needs a second agent. |
+| The work runs long, or several pieces run at once | **4 · Run on** | Run it in the background and resume it. Give agents that work in parallel on one repo their own worktree (`isolation: worktree`); list `.env` in `.worktreeinclude` or the app won't run there. Neither needs a second agent. |
 | One of the four reasons below | **5 · Split** | Make a second agent. Name both for the work they do, not the org chart. |
 | Two agents hand off on nearly every task, or one is never called | **6 · Merge or retire** | Merge the pair. Delete the unused one. `boss sync` leaves a deleted BOSS agent deleted. |
 

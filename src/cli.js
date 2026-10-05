@@ -40,7 +40,7 @@ import { HELP, SYMBOLS } from './help.js';
 import { helpHtml } from './help-html.js';
 import { isoDay } from './clock.js';
 import { pathToFileURL } from 'node:url';
-import { installCommitGuard } from './commit-guard.js';
+import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 
 const STAMP = '.boss/manifest.json';
 

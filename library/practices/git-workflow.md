@@ -60,6 +60,11 @@ limit. More agents than you can review isn't throughput; it's unreviewed code wi
 - **Vertical slices keep the worktrees from colliding.** Give each agent a feature end-to-end — a `FEAT`
   is a natural slice — so the worktrees touch different code and merge cleanly. Informal ownership ("you
   take checkout, I take auth") beats a formal locking scheme at this size.
+- **A new worktree has none of your ignored files** — no `.env`, no installed dependencies — so the app
+  won't start there. List what it needs in `.worktreeinclude` at the repo root (`.gitignore` syntax; the
+  host copies only files that are both ignored and listed): usually `.env` and nothing else. Install
+  dependencies in the worktree rather than copying them. Every copy of `.env` is one more place the
+  key lives, so name the file you need, never `.env*`.
 
 ## Risk-tiered review, not blanket gates
 

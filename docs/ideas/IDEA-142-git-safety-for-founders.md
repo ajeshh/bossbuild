@@ -3,7 +3,7 @@ id: IDEA-142
 type: idea
 kind: capability
 owner: Ajesh
-status: building
+status: shipped
 proof: none
 proof_note: both gaps reproduced in a throwaway project on 2026-10-05 before anything was built (a live-key-shaped string committed silently; the shipped settings had no `ask` block)
 gist: What BOSS ships a founder for git is sound at the practice level; five gaps sit at the one-way doors — a key reaches history before /ship scans for it, destructive git commands run unasked, no save point after /prototype, unpushed work isn't a backup, and worktrees are recommended untried.
@@ -44,7 +44,7 @@ no new skill (the founder-evidence mandate: compose and subtract).
       subagent edits). One line in `coder`: commit when it works, say *"saved — you can get back here."*
 - [x] **T4 — unpushed work named at `/close`.** The `.gitignore` says pushing backs up your thinking;
       nothing notices a week of commits on one laptop. `/close` step 4 adds the unpushed count.
-- [ ] **T5 — worktrees: trial before recommending.** The practice recommends one worktree per agent;
+- [x] **T5 — worktrees: name `.worktreeinclude` (rescoped 2026-10-05, see below).** Was: trial before recommending. The practice recommends one worktree per agent;
       BOSS's own trial (IDEA-120) is open. Known snag: a fresh worktree has no `.env`, so the app
       won't run there — the host's `.worktreeinclude` (confirmed in host docs 2026-10-05) is the
       answer to name. Then `/practice-refresh git-workflow` (last reviewed 2026-06-20; predates
@@ -65,10 +65,17 @@ no new skill (the founder-evidence mandate: compose and subtract).
 - Found while building, not done: `boss remove --apply` leaves the shim behind (harmless — it exits 0
   when the scan file is gone — but it is a BOSS-written file left in `.git/hooks/`).
 
+- T5, rescoped (Ajesh: *"do u recommend worktree?"*): yes for founders, only once they run agents in
+  parallel — which the practice already says. Waiting on IDEA-120 conflated two problems: that trial is
+  BOSS's *many sessions in one checkout*; a founder's problem is that an agent's fresh worktree has no
+  `.env`, which the host's `.worktreeinclude` answers. Named in `git-workflow` and in `agent-shape`
+  rung 4 (one clause — that rule loads every turn). IDEA-120 stays BOSS's own.
+- Clone (Ajesh: *"fresh clone do whats best"*): the reentry hook lays the shim down on a real session
+  start. Chosen over `boss sync --apply` because a cofounder may never install the CLI, and the hook
+  already runs from the repo. The installer moved into the template lib so CLI and hook share one copy
+  (`src/commit-guard.js` is gone). The write is told once through the session context — never silent.
+
 ## Open questions
 
-- A cofounder's fresh clone has no shim (git copies no hooks). Today they get it from their own
-  `boss sync --apply`. Should the reentry hook lay it down at session start instead? It would be a
-  quiet write into `.git/` — not decided.
 - GitHub's own push protection: free on public repos; for private repos it may be a paid product.
   Unverified — not to be stated in shipped text until checked at source.

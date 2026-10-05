@@ -3,10 +3,14 @@
 // `git commit` in this repo, whoever or whatever makes it, because a key is lost the moment it is in
 // history — deleting the line later leaves it in every earlier commit, and in every clone.
 //
-// HOW IT IS WIRED: `boss new` (and `boss sync --apply`, where nothing else holds the slot) writes a
-// three-line `.git/hooks/pre-commit` that runs this file. That shim is per clone — git does not copy
-// hooks — so a cofounder's clone gets it from their own `boss sync --apply`. If this file is gone,
-// the shim does nothing.
+// HOW IT IS WIRED: `installCommitGuard` below writes a three-line `.git/hooks/pre-commit` that runs
+// this file. Git copies no hooks on clone, so it is called from three places: `boss new` / `adopt` /
+// `sync --apply`, and the reentry hook at session start — the one that reaches a cofounder's fresh
+// clone, who may never have installed the CLI. It writes only into a free slot:
+//   - `core.hooksPath` set (husky, lefthook, a team convention) → their hooks live elsewhere.
+//   - a `pre-commit` already there that isn't ours → theirs; never overwritten, never chained.
+// The shim's mode is set by the writer, so nothing relies on npm or a copy keeping an exec bit.
+// If this file is gone, the shim does nothing.
 //
 // WHAT IT CATCHES: the staged ADDED lines only, against key shapes specific enough that a match is
 // almost certainly real (a provider's prefix, a fixed length, a PEM header) — plus a `.env` file that
@@ -21,8 +25,45 @@
 // Skip once (a test fixture, a documented example): `git commit --no-verify`.
 
 import { execFileSync } from 'node:child_process';
-import { basename } from 'node:path';
+import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, dirname, isAbsolute, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+
+export const SHIM_MARK = '# boss: commit-secrets';
+const SCRIPT = '.claude/hooks/lib/commit-secrets.js';
+
+export const SHIM = `#!/bin/sh
+${SHIM_MARK} — stops a commit that would put a key into git history (written by BOSS).
+s="$(git rev-parse --show-toplevel)/${SCRIPT}"
+[ -f "$s" ] && command -v node >/dev/null 2>&1 || exit 0
+exec node "$s"
+`;
+
+const gitIn = (dir, ...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+
+/**
+ * Lay down the pre-commit shim if the slot is free. Returns { state, path }:
+ * installed | current | no-script | no-git | hooks-path | theirs.
+ */
+export function installCommitGuard(projectDir) {
+  if (!existsSync(join(projectDir, SCRIPT))) return { state: 'no-script' };
+  try { gitIn(projectDir, 'rev-parse', '--git-dir'); } catch { return { state: 'no-git' }; }
+  let hooksPath = '';
+  try { hooksPath = gitIn(projectDir, 'config', '--get', 'core.hooksPath'); } catch { /* unset */ }
+  if (hooksPath) return { state: 'hooks-path', path: hooksPath };
+  let hooksDir = gitIn(projectDir, 'rev-parse', '--git-path', 'hooks');
+  if (!isAbsolute(hooksDir)) hooksDir = join(projectDir, hooksDir);
+  const path = join(hooksDir, 'pre-commit');
+  if (existsSync(path)) {
+    const cur = readFileSync(path, 'utf8');
+    if (!cur.includes(SHIM_MARK)) return { state: 'theirs', path };
+    if (cur === SHIM) return { state: 'current', path };
+  }
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, SHIM);
+  chmodSync(path, 0o755);
+  return { state: 'installed', path };
+}
 
 export const SHAPES = [
   ['AWS access key', /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g],
