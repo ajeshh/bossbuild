@@ -167,8 +167,8 @@ Everything above is downstream of this one.
 
 >
 
-**The experiment this week** — the smallest test that would prove or disprove it. Often a
-15-minute conversation with the right person.
+**What we're testing next** — the smallest test that would prove or disprove it, and who will
+see it. Often a 15-minute conversation with the right person.
 
 >
 
