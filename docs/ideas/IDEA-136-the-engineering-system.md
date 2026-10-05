@@ -3,6 +3,7 @@ id: IDEA-136
 type: idea
 kind: capability
 owner: mentor-architect
+program: the-land
 status: exploring (B first — BOSS's own code — then A, what ships)
 proof: docs/ENGINEERING.md
 gist: Code gets the same ladder the design system has — principles a reasonable person could argue with, a map of what exists to check reuse against, rules an agent can act on, checks at the write, and a way to retire them — extracted from BOSS's own src/ before it ships to a founder.
@@ -120,15 +121,56 @@ projection over stored state.
   research; `kind: capability` has no reader; reproduce-before-fix and gates-name-their-bug held by habit;
   zero-dep enforced only because CI has no install step. Not all need a gate — B3 asks which do.
 - [ ] **F10** · Four core modules (`cli`, `paths`, `scaffold`, `sync`) have no WHY header.
+- [ ] **F11** · 🔴 **A misattribution, live on the site.** *"Documented conventions rot; enforced
+  conventions compound"* is shipped in quotation marks as Factory.ai's — `scalable-architecture.md`
+  (spine + both provenance fields), `library/sources.json` (`factory-ai.for`, so the Credits page
+  credits them with it), `smoke-guard.js:9`, `smoke/SKILL.md:63`, two CHANGELOG entries, and the
+  generated `site/engineering.html` + `site/credits.html`. R2 downloaded the source the research
+  compendium cites and Factory's two nearest pages: the words are not there (killed 3-0). It is BOSS's
+  own compression. Repair: keep the line as BOSS's, unquoted, and credit Factory for the sentence they
+  did write (lint-enforced guidelines). Correctness — the freeze allows it; regenerating and deploying
+  stay Ajesh's. Old CHANGELOG entries are history: correct forward, don't rewrite.
+
+## R1 findings (2026-10-04) — the research session is gitignored beside the inventory
+
+`docs/research/sessions/SESSION-2026-10-04-engineering-system.md`: six angles, 52 sources read in
+full, 15 load-bearing claims put to three adversarial verifiers — 12 survived (most with caveats),
+3 killed. **Inputs, not decisions.**
+
+- **Principles with lineage:** hide the decision most likely to change, one per module (Parnas, 1972 —
+  the seed-that-scales test, pointed at modules); deep modules over shallow, and over-decomposition is
+  its own failure (Ousterhout); fewest elements (Beck's rules of simple design).
+- **Two tensions with what BOSS ships — to settle at A1, not paper over:**
+  1. *Widen vs inline.* `design-system.md`'s reuse table says *widen the one that exists*; Metz says
+     duplication is cheaper than the wrong abstraction, and the tell is **a new parameter plus a
+     conditional** in shared code — the fix is to inline back. Code may need a fifth row the UI table lacks.
+  2. *Two vs three.* The design side promotes at two (*twice is a pattern*); the code field abstracts
+     at three (rule of three — Don Roberts, popularised by Fowler). Possibly both right: a design
+     decision recurring twice is cheap to name; a code abstraction is expensive to undo.
+- **Boundaries:** layers by responsibility, imports point down, no sibling imports within a layer —
+  stack-neutral; already held for UI only (A6). Counter-evidence kept: a boundary tool enforces a
+  *wrong* map faithfully; push enforcement only where the map is right.
+- **Testing:** of four kinds of change, only a *behaviour* change edits an existing test; a bug fix
+  *adds* one (Google SWE book, ch. 12); never mix structural and behavioural change in one commit
+  (Beck). Agents edit tests to pass, and read-only tests remove that move (a 2025 benchmark — measured
+  on deliberately impossible tasks). Mutation testing over coverage. → A8, A9.
+- **Enforcement:** guides steer before, sensors check after; the fix goes *in* the failure message;
+  dependency rules beat prose for holding structure; asking an agent in a context file to run checks
+  was unreliable; a sensor that never fires is a removal candidate (Böckeler, 2026 — one practitioner,
+  one app). Rules only cost what must be *remembered* — automated ones are free (Google SWE book, ch. 8).
+- **Killed:** the Factory.ai quote (F11); every *"AI causes N× more clones"* figure (one vendor, four
+  incompatible numbers — only the direction survives); *atomic design's five levels transfer to code*
+  (the method transfers, the levels don't — size-layering gives business logic no home).
+- **Dated, not wrong:** Shopify's 2.8M lines is a 2020 figure and needs its year in the practice.
 
 ## Work — every item has an id; cite as `IDEA-136 · B3`
 
 **R — bring the research in (first; feeds both tracks)**
-- [ ] **R1** · Read at source the "atomic design for code" lineage and senior-engineering thinking
+- [x] **R1** · Read at source the "atomic design for code" lineage and senior-engineering thinking
   (module design, boundaries, naming, abstraction thresholds, testing, agent-era conventions). Cited
   session record in `docs/research/sessions/` (gitignored — outside sources never named in tracked
   text); person and standard citations may travel into the practice.
-- [ ] **R2** · Verify every attribution that makes it into tracked text (the memory note: claims bend
+- [x] **R2** · Verify every attribution that makes it into tracked text (the memory note: claims bend
   on who said it). Killed claims recorded beside confirmed ones.
 - [ ] **R3** · Research the layers BOSS can't demonstrate (data, API, errors/observability,
   dependencies, prompts-as-code) — a second pass once R1 lands, so R1 stays focused.
