@@ -392,6 +392,9 @@ transcriptions agree, book not opened). When the ebooks land: one pass re-grades
   gardener); it stays in IDEA-133 and `founder-role-shifts`.
   **Claims planted as IDEA-138 (2026-10-04)** — steps 1–2 written there (inventory with receipts, the
   eight parts, connections); step 3 proposed to Ajesh, not built.
+  **AI behaviour planted as IDEA-139 (2026-10-05)**: steps 1–2 written, with four disagreements with
+  the draft guide for C7 (internal flows, weight at the return, an amendable trigger, one skill across
+  three ecosystems). Step 3 proposed, not built.
 
 **B1 findings (2026-10-04, read-only inventory — 44 flows with file:line receipts)**
 
