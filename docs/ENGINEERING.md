@@ -54,10 +54,12 @@ Change one by the door in §8, not by working around it.
     a second copy (`stages/L0-quickstart/template/.claude/hooks/lib/reentry.js:10-13`).
 - **Rules:**
   - Check the map (§3) before writing a helper. — **W**
-  - A copy forced by a boundary says so in its header **and** has a parity test. — **P**: one pair of
-    six is pinned (`test/yaml-parity.test.js`); `NOT_A_COMPONENT` has already drifted (IDEA-136 · F2).
-  - No import cycles; small shared utilities live at the leaves (`src/args.js:3-5`). — **W**, and
-    already broken: `board ↔ playbook ↔ design` (IDEA-136 · F1).
+  - A copy forced by a boundary says so in its header **and** has a parity test. — **P**: two pairs
+    are pinned (`test/yaml-parity.test.js`, `test/not-a-component-parity.test.js` — the second after
+    the copy drifted and reached founders, IDEA-136 · F2); four are identical today and unpinned.
+  - No import cycles; small shared utilities live at the leaves (`src/args.js:3-5`). — **W**. One stated
+    exception: `board ↔ playbook ↔ design`, every edge annotated with its condition (call-time bindings
+    only) and its exit (IDEA-136 · F1).
 
 ### 3. Honest output over confident output
 *Opposite:* be helpful — infer, fill the gap, keep going.
@@ -80,8 +82,7 @@ Change one by the door in §8, not by working around it.
     (`secrets-guard.test.js`, `smoke-cli.js`; not every hook)
   - A network failure never exits non-zero. — **E** (`test/cli.test.js:421`)
   - `render*` returns a string and never touches the console; `print*` writes. — **W** (16 of 16 hold)
-  - Every module opens with a WHY header. — **W** (38 of 42; `cli`, `paths`, `scaffold`, `sync` don't —
-    IDEA-136 · F10)
+  - Every module opens with a WHY header. — **W** (42 of 42)
 
 ### 4. A mechanism over a remembered rule — where a bug reached a user
 *Opposite:* write the convention down and trust people; or add the check before anything breaks.
@@ -101,7 +102,9 @@ Change one by the door in §8, not by working around it.
     **E** for the registry (`silent-damage.test.js`: concurrent registrations all survive)
   - Machine state lives under `BOSS_HOME`; the package is never written at runtime (`src/paths.js`). —
     **E** (`test/boss-home.test.js`)
-  - Tests never write the shared tree. — **W**, broken once (`test/demo.test.js:86-88`, IDEA-136 · F8)
+  - Tests never write the shared tree, and never inherit the shell's `BOSS_HOME`. — **P**: the suite
+    preloads `test/env-guard.js` (held by `test/test-env-isolation.test.js`); the tree rule is by habit
+    (the last offender, `demo.test.js`, now sandboxes — IDEA-136 · F8)
   - A gate names its bug. — **W** (14 of 16)
 
 ### 5. Test the contract a person touches, not the implementation
@@ -122,7 +125,8 @@ Change one by the door in §8, not by working around it.
   - `node:test` and `node:assert/strict` only; fixtures are `{path: body}` maps (`test/helpers.js`). —
     **W**
   - CLI tests shell out to `bin/boss`; hook tests drive stdin → stdout the way the host does. — **W**
-  - Anything that spawns runs with `NO_COLOR=1` and a temp `HOME` / `BOSS_HOME`. — **W**
+  - Anything that spawns runs with `NO_COLOR=1` and a temp `HOME` / `BOSS_HOME`. — **P** (`BOSS_HOME`
+    is cleared for every test by the env guard)
   - A regression test is titled `REGRESSION:` (61 today). — **W**
   - Every test file opens with why: the incident, the invariant, or the FEAT it accepts. — **W** (61 of 62)
   - Every commit runs the **staged** tree through `test:ci` (`scripts/hooks/pre-commit`). — **P**: on per
@@ -168,8 +172,8 @@ reaching into a command module); `earned → board` (the earned check computes t
 | Write a file another process reads | `atomic.writeFileAtomic`; read-modify-write: `withLock` | `writeFileSync` on settings, config, registry |
 | Any path to the package, stages, shelf or machine state | `paths.*` — `BOSS_ROOT`, `STAGES_DIR`, `PRACTICES_DIR`, `BOSS_HOME`, `REGISTRY_FILE` | `homedir()`, a local `ROOT` |
 | "Is this BOSS's own repo?" | `paths.isBossRepo(dir)` | the registry's `selfHosted` flag |
-| A day a person reads | `clock.isoDay` / `isoMinute` | `toISOString().slice(0, 10)` (UTC) |
-| Terminal colour | `ui.dim` / `bold` / `ok` / `warn` / `err` | raw `\x1b[` (ignores `NO_COLOR`) |
+| A day a person reads (src or scripts) | `clock.isoDay` / `isoMinute` | `toISOString().slice(0, 10)` (UTC — held for four scripts by `test/local-day-scripts.test.js`) |
+| Terminal colour (src or scripts) | `ui.dim` / `bold` / `ok` / `warn` / `err` | raw `\x1b[` (ignores `NO_COLOR` — held by `test/scripts-honour-no-color.test.js`) |
 | A doc's frontmatter, a field, a date, a status | `frontmatter.frontmatter`, `field`, `dateField`, `baseStatus`, `isParked`, `revisitDue` | `text.match(/^key:\s*(.+)$/m)` — breaks on `key: >` |
 | `.boss/config.json` | `config.readConfig` / `readConfigForWrite` + `writeConfig`; `readCohort`, `readSourceGlobs` | inline `JSON.parse(readFileSync(…))` |
 | The registry, a project's stamp or pin | `registry.readProjectStamp`, `projectPin` | another stamp reader (three exist — F3) |

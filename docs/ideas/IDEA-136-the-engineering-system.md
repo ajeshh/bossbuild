@@ -115,31 +115,41 @@ for concurrent writers · the reason in the code · test the contract a person t
 projection over stored state.
 
 **Found while building — each a task; reproduce before fixing (rule 8). Ids `F`, cited `IDEA-136 · F2`.**
-- [ ] **F1** · `board ↔ playbook ↔ design` is a three-way import cycle, against the rule `args.js:3-5`
+- [x] **F1** · `board ↔ playbook ↔ design` is a three-way import cycle, against the rule `args.js:3-5`
   states (verified 2026-10-04). Exception with a reason, or a small records-text leaf module — which
   would also take most of F3.
-- [ ] **F2** · Boundary copies drift: 1 of 6 is pinned by a parity test. `NOT_A_COMPONENT` already
+  **Done (40cc037, 73ba0f2):** a stated exception — every edge annotated with its condition and its exit. Breaking the cycle waits for a bug (principle 4).
+- [x] **F2** · Boundary copies drift: 1 of 6 is pinned by a parity test. `NOT_A_COMPONENT` already
   differs — `src/design.js:704` excludes `*Page/*Route/*Layout`, `component-reuse-guard.js:64` does not
   (verified). Founder-facing: the guard can ask about a file `boss design` would never list.
-- [ ] **F3** · Same-job duplicates in `src/`: the markdown section slicer (×4: design, playbook,
+  **Fixed (3873700):** reproduced — the guard asked about `DashboardPage`/`SettingsLayout`/`UserRoute`, and `boss design` listed `App`. One `notAComponent` in both, pinned by `test/not-a-component-parity.test.js`.
+- [x] **F3** · Same-job duplicates in `src/`: the markdown section slicer (×4: design, playbook,
   changelog, recap — playbook's interpolates a string into a regex unescaped); title-from-H1 (~13, each
   strips the id differently); the project stamp read 3 ways, `installedLayers || [stamp.stage]` retyped
   7×, `insights.js:84` answers differently.
-- [ ] **F4** · Script copies of `src/` helpers: `esc` (gen-site's turns `0` into `''`), ANSI colours
+  **Closed, not refactored:** the stamp fallbacks give the same answer at all eight sites (the inventory's "answers differently" did not reproduce); the four section slicers stop at different places and each caller relies on its own — merging is a behaviour change with no bug. Kept in `docs/ENGINEERING.md` §3 as *helpers that don't exist yet*.
+- [x] **F4** · Script copies of `src/` helpers: `esc` (gen-site's turns `0` into `''`), ANSI colours
   ignoring NO_COLOR, `cmpVersion`, a day formatter, three timed HTTP `get`s, a byte-identical placeholder
   cleaner.
-- [ ] **F5** · ~10 bare-regex frontmatter reads; `check-backlog.js:106` would read a folded `proof: >` as
+  **NO_COLOR fixed (landed inside a peer's 29a0889 — the shared index swept it):** reproduced, 5 escapes under `NO_COLOR=1`; both scripts use `src/ui.js`, held by `test/scripts-honour-no-color.test.js`. `esc(0)` didn't reproduce (every call passes a string); `cmpVersion`, timed `get`, placeholder cleaner are identical duplicates — noted, not refactored.
+- [x] **F5** · ~10 bare-regex frontmatter reads; `check-backlog.js:106` would read a folded `proof: >` as
   `">"` — latent (no shipped record folds `proof:` today).
-- [ ] **F6** · Hooks are "self-contained" by claim: 1 of 13 is run from a scaffolded copy; the 9 L1
+  **Fixed (5f6ae4d):** reproduced in a worktree; check-backlog uses the shared `field`; test fails on the old script.
+- [x] **F6** · Hooks are "self-contained" by claim: 1 of 13 is run from a scaffolded copy; the 9 L1
   hooks are tested in place, where an import from `src/` would still resolve.
-- [ ] **F7** · Local-day stamps held in `src/`, broken in 4 scripts; `check-freshness.js:219` and
+  **Verified, no check added:** 0 of 13 hooks import outside their own folder; opt-in hooks import only built-ins. No bug, so no gate (principle 4).
+- [x] **F7** · Local-day stamps held in `src/`, broken in 4 scripts; `check-freshness.js:219` and
   `helpers.daysAgo` default to UTC (not reproduced).
-- [ ] **F8** · `demo.test.js:86-88` writes the working tree; tests isolated only through `HOME` inherit an
+  **Fixed (ba8509f):** reproduced live ("as of 2026-10-05" at 20:21 Pacific on the 4th); four scripts and `test/helpers.js` use `isoDay`; test runs two zones 25h apart.
+- [x] **F8** · `demo.test.js:86-88` writes the working tree; tests isolated only through `HOME` inherit an
   exported `BOSS_HOME` (not reproduced).
-- [ ] **F9** · Written-only rules with no runner: CHANGELOG bullet per capability; CHANGELOG shows no
+  **Fixed (e393b62):** demo probes sandboxed; and reproduced worse than suspected — with `BOSS_HOME` exported the suite wrote 8 files (a registry, a `boss remove` backup) and 11 tests failed. `test/env-guard.js` preloaded by both test scripts; 0 files after.
+- [x] **F9** · Written-only rules with no runner: CHANGELOG bullet per capability; CHANGELOG shows no
   research; `kind: capability` has no reader; reproduce-before-fix and gates-name-their-bug held by habit;
   zero-dep enforced only because CI has no install step. Not all need a gate — B3 asks which do.
-- [ ] **F10** · Four core modules (`cli`, `paths`, `scaffold`, `sync`) have no WHY header.
+  **Decided, no mechanism:** each rule stays W until a bug reaches a user (principle 4); they're marked W in `docs/ENGINEERING.md` so the rot list is visible.
+- [x] **F10** · Four core modules (`cli`, `paths`, `scaffold`, `sync`) have no WHY header.
+  **Done (c3e1833):** 42 of 42 modules carry a header.
 - [ ] **F11** · 🔴 **A misattribution, live on the site.** *"Documented conventions rot; enforced
   conventions compound"* is shipped in quotation marks as Factory.ai's — `scalable-architecture.md`
   (spine + both provenance fields), `library/sources.json` (`factory-ai.for`, so the Credits page
@@ -150,10 +160,11 @@ projection over stored state.
   did write (lint-enforced guidelines). Correctness — the freeze allows it; regenerating and deploying
   stay Ajesh's. Old CHANGELOG entries are history: correct forward, don't rewrite.
   **Deferred (Ajesh, 2026-10-04: *"no"* to fixing it now)** — stays open, not dropped.
-- [ ] **F12** · `library/practices/design-system.md:620` says demotion uses the *"same threshold as
+- [x] **F12** · `library/practices/design-system.md:620` says demotion uses the *"same threshold as
   promotion"* — but promotion is **twice** (`:570`, `:608`) and demotion is **three exceptions**
   (verified 2026-10-04). Shipped text disagreeing with itself. Either the sentence is wrong or the
   asymmetry is intended and should say why (R5: promotion is cheap and reversible; a rule is not).
+  **Fixed (be0a992):** the sentence now says why two and three differ.
 
 ## R1 findings (2026-10-04) — the research session is gitignored beside the inventory
 
@@ -266,21 +277,28 @@ Inputs, not decisions; the record ends with six candidate layer rows.
   install hallucinated packages is unmeasured.
 
 **Flagged in BOSS's shipped practices — each a task, reproduce before changing (rule 8):**
-- [ ] **F13** · `context-discipline.md:226` — *"a `Read(...)` deny does NOT block Bash (`cat .env` still
+- [x] **F13** · `context-discipline.md:226` — *"a `Read(...)` deny does NOT block Bash (`cat .env` still
   works)"* may be stale: R3 reports the host's deny rules now cover `cat`/`head`/`tail`/`sed`/`tee`.
-- [ ] **F14** · `context-discipline.md:243-247` and `agent-security.md` call `secrets-guard` *the
+  **Fixed (9faad31):** host docs confirm Read/Edit deny rules reach `cat/head/tail/sed/tee` and redirections, not `grep -r` or scripts.
+- [x] **F14** · `context-discipline.md:243-247` and `agent-security.md` call `secrets-guard` *the
   boundary*; it matches tool-call text, so a script or `grep -r` that reads `.env` without naming it
   passes. The host — and the practice's own sandbox section — say the sandbox is the boundary.
-- [ ] **F15** · `model-routing.md:36` *"it fails silently"* — false on the API surface (a bad id
+  **Fixed (9faad31):** reproduced — `cat .env` caught, `node scripts/load-config.js` and `grep -r API_KEY .` pass. Both practices now say the sandbox is the boundary.
+- [x] **F15** · `model-routing.md:36` *"it fails silently"* — false on the API surface (a bad id
   errors); check the host surface before rewording.
-- [ ] **F16** · `data-schema.md:78` gives enumeration as the reason for UUIDs (verified). Narrow it:
+  **Narrowed (9faad31):** host docs — a skill's pin is silently unused; an agent's falls back with a warning only interactively. "Fails quietly", with the documented behaviour.
+- [x] **F16** · `data-schema.md:78` gives enumeration as the reason for UUIDs (verified). Narrow it:
   enumeration is how the hole gets *found*; a UUID is not the protection (RFC 9562).
-- [ ] **F17** · `agent-security.md` says *pin and review* with no lockfile, minimum release age, upgrade
+  **Fixed (be0a992):** a UUID makes rows harder to guess, never protects them.
+- [x] **F17** · `agent-security.md` says *pin and review* with no lockfile, minimum release age, upgrade
   path or post-leak step.
-- [ ] **F18** · `data-schema.md:67` keeps the *"Schema decisions are one-way doors"* header a 2026-08-24
+  **Fixed (9faad31):** confirm an agent-named package exists, commit the lockfile, minimum release age, revoke a leaked key first.
+- [x] **F18** · `data-schema.md:67` keeps the *"Schema decisions are one-way doors"* header a 2026-08-24
   research session refuted.
-- [ ] **F19** · During R3 a guard refused a grep over downloaded public docs because the *pattern*
+  **Fixed (be0a992):** *schema shape is cheap to change; what it remembers is not.*
+- [x] **F19** · During R3 a guard refused a grep over downloaded public docs because the *pattern*
   contained `.env` — a false positive, not reproduced; which guard fired is unknown.
+  **Did not reproduce:** `secrets-guard` lets a grep whose pattern contains `.env` through. Whatever blocked the research agent was its own session's settings. Nothing shipped.
 - **Confirmed, no change:** `agent-security.md`'s OWASP 2026 claim (release dated 2026-08-04).
 
 ## R4 findings (2026-10-04) — Extreme Programming, and XP with agents
@@ -362,7 +380,7 @@ killed. Inputs, not decisions.
   map and the helpers table. **Held back:** moving the code rules out of CLAUDE.md — CLAUDE.md carries
   another session's uncommitted edits; do it when that lands (task **B6b**). Engineering column of
   `docs/ECOSYSTEMS.md` filled; four disagreements with the draft guide recorded in ENGINEERING.md for C7.
-- [ ] **B6b** · Move the code rules out of CLAUDE.md into `docs/ENGINEERING.md`, leaving a pointer —
+- [ ] **B6b** · **Proposed, not done — Ajesh's call:** CLAUDE.md loads every session and docs/ENGINEERING.md doesn't, so moving rules out lowers how often agents see them; the alternative is one pointer line. Original task: Move the code rules out of CLAUDE.md into `docs/ENGINEERING.md`, leaving a pointer —
   after the uncommitted CLAUDE.md edits from another session land.
 - [x] **B7** · Read the one duplicate (`section`) and anything B1 turns up: real reuse miss, or a
   name collision with two jobs?
