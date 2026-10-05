@@ -281,7 +281,7 @@ const CANVAS = [
   ]] },
   { label: 'The riskiest assumption', rows: [[
     { name: 'If this is wrong, the idea doesn’t work', q: '', strip: true },
-    { name: 'The experiment this week', q: 'the smallest test that would prove or disprove it', strip: true },
+    { name: 'What we’re testing next', q: 'the smallest test that would prove or disprove it, and who will see it', strip: true },
     { name: 'What result would change the plan?', q: 'decide before you run it', strip: true },
   ]] },
 ];
