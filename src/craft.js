@@ -90,9 +90,14 @@ function listPractices() {
 // Resolve a user-typed name: exact, then prefix, then substring. A founder types
 // `boss craft testing` and means `testing-with-agents`; making them type the full
 // slug is the kind of friction that stops a pointer from being followed.
+// A renamed practice keeps its old name working: a project that hasn't run `boss sync` still has
+// skills that name the old slug, and "No practice matches" there is a dead end BOSS made.
+const RENAMED = { 'celebration-of-done': 'done' };
+
 export function resolvePractice(query) {
   const all = listPractices();
-  const q = String(query || '').toLowerCase().replace(/\.md$/, '');
+  const typed = String(query || '').toLowerCase().replace(/\.md$/, '');
+  const q = RENAMED[typed] || typed;
   const exact = all.find((p) => p.name === q);
   if (exact) return { hit: exact };
   const matches = all.filter((p) => p.name.startsWith(q))

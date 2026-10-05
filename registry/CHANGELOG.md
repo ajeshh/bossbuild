@@ -27,6 +27,14 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Done, not just the celebration of it.** The practice is now `boss craft done` (the old name still
+  works). It still says how to mark a finished thing without hollow praise, and now says what done is
+  *for*: past the point where the work meets its purpose, every extra step costs time, the team, other
+  people's patience, and the signal you only get by letting it go. It asks who has agreed to that cost
+  before one more step. `/close` now also notices when a session kept polishing something already past
+  its own acceptance criteria, and offers the two honest names for it: done, or a new feature with its
+  cost said out loud.
+
 - **`/canvas` asks a project that means to earn what would make you stop.** It already asked how long
   your runway lasts; it now also asks, once, what would make you stop if the runway ends before the
   thing works. The not-earning branch has always asked it. A condition you name early keeps stopping
@@ -12193,7 +12201,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   harm*). This batch begins the *generative* half — *cultivate flourishing* — drawn from a founder
   humane-tech corpus (the Humane Product Canvas lineage, permaculture, the "Celebration of Done," play,
   kinship). All judgment/voice/default touches, no new gates.
-  - **New [`library/practices/celebration-of-done.md`](../library/practices/celebration-of-done.md) +
+  - **New [`library/practices/celebration-of-done.md`](../library/practices/done.md) +
     wired into `/close`.** BOSS *records* done everywhere and *marks* it nowhere. Done is a threshold, not
     perfection: a pause that registers what was crossed (against AI-speed build-amnesia), re-anchors on the
     *why* and the *who*, and turns into curiosity about whether it resonates *now* — the bridge back to the

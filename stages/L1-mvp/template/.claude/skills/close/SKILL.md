@@ -36,10 +36,13 @@ The records are the summary. What you *say* is only what they need before they c
 
 `/close` is also the natural moment to *register a threshold* — because the relentless build never makes
 room for it, and a builder who only ever measures what's left slowly forgets that anything was achieved
-(see the `celebration-of-done` practice). If this session genuinely crossed one — a FEAT closed, the
+(see the `done` practice). If this session genuinely crossed one — a FEAT closed, the
 first live URL, a mode graduation, the riskiest assumption finally tested — pause and mark it **before**
 the forward-looking housekeeping below. The order matters: look back at what you crossed before you look
-ahead to what's next.
+ahead to what's next. **And the other side of a threshold:** if this session kept working on something
+already past its own — a FEAT whose acceptance criteria were met, still being polished — say so once,
+plainly, and offer the two honest names for it: *done*, or a new FEAT with its cost said out loud. Never
+a tally, and silence when nothing was.
 
 - **Name what's real, specifically** — not "great session," but *what* got done and *what it now unlocks*.
 - **Re-anchor on the why and the who** — reconnect the thing you crossed to the bet (why it mattered) and

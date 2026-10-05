@@ -248,7 +248,7 @@ navigation move left behind.
   layer, confirmed from inside. **The Done cycle** (Welcome → Vision → Values → Done, Done Notes:39-49,
   621-635) is already held at the founder scale: `/welcome`, `/boss` + the canvas why, `PRINCIPLES.md`
   + the canvas's humane foundation, and `/close` + `library/practices/celebration-of-done.md` — which
-  has sat `status: draft`, *"pending wiring"*, since 2026-06-21. Not this program's to wire; noted.
+  had sat `status: draft`, *"pending wiring"*, since 2026-06-21. **Ajesh, same day: it is *Done*, not *Celebration of Done*** — renamed `done.md` and reworked from their own account (capture log, last entry); `/close` now names work carried past its threshold.
   Caveat kept: the corpus's thinker quotes are AI paraphrases — never quote them.
 - [x] **R9.2** · *(absorbed by the R8 synthesis — the four signs carry these words; H1 then made them a design test, never a founder reading)* Q9 candidate in Ajesh's words: *engagement as a pulse* (used), *Living Inertia*
   (changes), *repairing cultural debt* (repairs), *graceful transitions* (sheds) — read at **Done**
@@ -582,3 +582,25 @@ the ecosystems are real.
   ecosystems… its not about the land.. but the ecosystem of ecosystems, and how there is governance and
   support for liveliness, while still living in principles"* → renamed; N1, N2 refused; network scale
   out; Q2 settled; Q9 (liveliness) opened.
+- **2026-10-04 · Ajesh** — on R9.1's note: *"i think its just done now, not celebration of done"*, then
+  the philosophy of Done (dictated, verbatim): *"Done is a threshold, it is a milestone for crossing
+  over into where we can best take it together, and then trusting that afterwards, the in relationship
+  to add, subtract will keep changing. In tech or art projects, is this question of like, well, how
+  much more can you do? And I think this is where the narrative of perfection, a fear of releasing it
+  and being like, well, is it gonna be accepted? Are gonna people want one more thing? And I think.
+  Instead, oh, it is a form of debt. And bringing to life, and it is the jet of, hey, all the ways we
+  have worked till this point are ending, We have to leave that container collectively and being
+  available to new signals, and that is the part of the process in pursuing. Perfection or anything,
+  you know, the constraints that they have been playing with come alive in a new way, which is, how
+  does time relate, how does culture relate, how to resources, how does humanity? Are they available
+  for more? Or are you playing? Where one of them maybe impacted severely? And to what availability?
+  What is a consent for continued engagement? And what is the true cost? Are you available to
+  receiving? And the feedback that pays your additional pursuit had this impact. If it's just you
+  pursuing it, then that's okay, but again, to what extent, to what extent is the altar not done, to
+  what extent are you still in your own availability to continue doing it, and then are you there for
+  your own meat? Or you think your needs are so important, that you can impact the rest of the people.
+  And it's a careful dance because both things can be true, so it is the interplay between the two. So
+  knowing that, and then being available to sit with the discomfort. But you may have overtaken one too
+  many steps."* → `library/practices/celebration-of-done.md` renamed `done.md` and reworked around it:
+  past done, more is a debt; done ends the container; continuing needs consent and has a true cost;
+  one's own need and everyone else's, both true. Marking it (the old practice) is now one section.

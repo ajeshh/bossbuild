@@ -686,7 +686,7 @@ const PRODUCT_GROUPS = [
 ];
 const PROJECT_GROUPS = [
   ['The founder', 'How the job changes as the thing grows, and how a threshold gets marked.',
-   ['founder-role-shifts', 'celebration-of-done']],
+   ['founder-role-shifts', 'done']],
   ['The team', 'Bringing AI to people without breeding resentment.',
    ['ai-adoption-culture']],
 ];

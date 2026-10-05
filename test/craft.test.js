@@ -100,3 +100,11 @@ test('no practice prints a link a founder cannot follow', () => {
     );
   }
 });
+
+// A renamed practice still answers to its old name — an unsynced project's /close names
+// `celebration-of-done` until `boss sync` brings the new text (renamed `done`, 2026-10-04).
+test('a renamed practice resolves from its old name', async () => {
+  const { resolvePractice } = await import('../src/craft.js');
+  assert.equal(resolvePractice('celebration-of-done').hit?.name, 'done');
+  assert.equal(resolvePractice('done').hit?.name, 'done');
+});
