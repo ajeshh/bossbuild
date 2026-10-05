@@ -621,7 +621,7 @@ part, and the AI-behaviour ladder is being planted against the draft right now. 
   guide (`ENGINEERING.md`, IDEA-136/138, DEC-022) as *read these too*, without a stamp.
 - [x] C11.4 · *(`test/ladder-review.test.js`, 7 — failed before the code existed)* Test, rule 8 first: a ladder at rev 1 with the model at rev 2 → named; at rev 2 → silent;
   a practice with no `anatomy:` → not a ladder, silent.
-- [~] C11.5 · *(step 9 written. **First review done: engineering → rev 3** — the purpose line added to `engineering-system.md`, stamped 3. **Open: design → revs 1–3**, the largest, since the guide was read from design but design was never read back against it; BOSS's own `docs/ENGINEERING.md` has a centre and no purpose line — a citer, not stamped.)*
+- [x] C11.5 · *(done 2026-10-05: design reviewed against revs 1–6 — purpose line, *catches* not *stops*, every design check warns, § As an ecosystem names its maps; written `COMPONENTS.md` vs inferred `manifest.json`. Revs 5–6 then ran the loop twice more over all four ladders; all at 6.)* *(step 9 written. **First review done: engineering → rev 3** — the purpose line added to `engineering-system.md`, stamped 3. **Open: design → revs 1–3**, the largest, since the guide was read from design but design was never read back against it; BOSS's own `docs/ENGINEERING.md` has a centre and no purpose line — a citer, not stamped.)*
   **Design review drafted read-only (2026-10-05; applies when bossbuild-96 leaves `design-system.md`):**
   rev 1 — the eight parts are in the practice (seed table, index → manifest, `/design-tokens-init`, the
   guards, `/design-library`, § Retirement, three exceptions) — **passes**; rev 2 — the second repair is

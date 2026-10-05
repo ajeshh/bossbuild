@@ -9,7 +9,7 @@ provenance_public: The limits of an AI-run design review — it reliably improve
 last_reviewed: 2026-08-20
 review_by: 2027-02-16
 curve: craft-ai
-anatomy: 0
+anatomy: 6
 ---
 
 # Practice: Design system, or style never locked into code
@@ -23,6 +23,11 @@ anatomy: 0
 > founder asks Claude for UI work without design discipline. See [IDEA-010](../../docs/ideas/IDEA-010-scalable-ai-design.md)
 > for the BOSS-specific design (loops, cohort-aware scaffolding, prompt patterns) — that's the
 > live spec; this practice doc is the always-true ground.
+
+**What it is for:** keeping how the product looks and speaks a set of decisions the founder made once,
+that every screen and every agent builds from. **What the project is worse at without it:** each new
+screen invents its own blue, its own button and its own word for the same thing, and an agent copies
+whichever it saw last. Nobody chose the inconsistency; nothing kept the choice.
 
 ## AI-failure-mode catalog (added v0.20.x)
 
@@ -762,8 +767,8 @@ converge instead of wander:
 > prescribes *"reference tokens by name in every prompt"* — worth doing, and **not** a boundary: it
 > depends on every future prompt remembering. The same lesson [`agent-security`](agent-security.md)
 > took from CVE-2026-22708 applies to design — *bound the capability, don't enumerate the route.* The
-> thing that actually stops the 47 blues is a check that **fails on a raw hex**, not a sentence asking
-> nicely. Ship the convention; know it's a speed bump; put the hook in as soon as the UI is worth keeping.
+> thing that catches the 47 blues is a check that **fires on a raw hex** the moment it's written, not a
+> sentence asking nicely. Ship the convention; know it's a speed bump; put the hook in as soon as the UI is worth keeping.
 
 - **Quickstart / MVP:** no design enforcement. Hardcoded styles in a throwaway are fine; don't
   impose ceremony unearned. But the *moment* a UI is worth keeping, create the tokens file so style
@@ -803,6 +808,29 @@ converge instead of wander:
   rendered from the code (it **generates over the MVP index's shape and supersedes it**, never beside
   it), and `design-drift-loop`.
 - **Scale:** design drift audits, token versioning, multi-surface theming.
+
+**Every design check warns; none stops.** They run after the write, so each hands the model the fix
+and the work goes on. That still makes them boundaries in this practice's sense (they fire at the
+write and need no one to remember them), but none of them is a wall. If one ever needs to stop a
+write, that waits for a bug that reached a user.
+
+## As an ecosystem
+
+Design was the first ecosystem, and BOSS's shared anatomy was read from it. Reviewed against that
+anatomy (2026-10-05):
+
+- **Its centre** is the component. Its eight parts are all above: the seed table, the index and then
+  the manifest, `/design-tokens-init` as the planting moment, the guards, `/design-library` as the drift
+  reader, § Retirement, and *three exceptions mean the rule is wrong* as the way a rule changes.
+- **Where it learns what changed outside it:** § *The tells move* keeps a dated list, this practice is
+  re-read against the AI tools on its own clock, and what changes reaches your project by `boss sync`.
+- **Its maps:** `COMPONENTS.md` is **written** (by you and the `designer`). `manifest.json` is
+  **inferred** — `/design-library` reads it off the code, marks an inferred purpose as inferred, and
+  can't see a component loaded by a name built at runtime. So it flags and proposes; it never deletes.
+- **Could you run it by hand?** Yes. The tokens, the style guide and the index are files you own,
+  and every guard says in its message what it would have you do. When a break you caused comes back a
+  second time, `coder` offers a check instead of fixing it again, and *keep fixing it* is a fine
+  answer. Removing BOSS removes the guards and leaves the files.
 
 ## Shipped (this section was a TODO until 2026-08-11)
 
