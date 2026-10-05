@@ -84,12 +84,13 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Next (in order)
 
-- **IDEA-138 — the claims ecosystem is planted (2026-10-04, Unreleased).** `/landing` reads the evidence
-  before it writes a line, and the demand page's result returns as an EVID. The landing-page practice
-  carries *derive, never retype*. The site's decision count is derived (it said 16 and 21; there are 23).
-  `/pretotype`'s false *"after unlock"* is fixed. **Not done:** a full `gen:site` (it waits on the
-  share-sort). Left on the record: the drift reader (part 6) waits for a founder whose page outlived its
-  evidence. **Next ecosystem: AI behaviour** (IDEA-137 · B4).
+- **The ladders still to plant — for Ajesh to review** (order from IDEA-137 · B4; each follows `docs/ECOSYSTEMS.md` § steps, modelled on IDEA-138):
+  1. ✅ **Claims** — planted, IDEA-138 (2026-10-04). Left: the drift reader, until a founder's page outlives its evidence.
+  2. ⏳ **AI behaviour** — kicked off 2026-10-05 in another session: compose `/ai-cost`, `/ai-failure-states`, `/evals`, `/red-team`; BOSS's conscience evals are the instance.
+  3. **Data & trust** — highest stakes, but BOSS has no instance of its own: plant from `/trust` + `schema-guard` + the data-schema practice, or on a founder's first personal-data table.
+  4. **Operations.** 5. **Money** — waits for a first dollar.
+  · **Already living, never framed as ladders:** evidence (the grade ladder) · product language (IDEA-093) · outward docs (IDEA-089, parked).
+  · **Not ladders:** the founder (governance pointed at a person is surveillance — H1; stays in IDEA-133) · temple culture / team (IDEA-004, parked).
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
   Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
 
@@ -106,11 +107,6 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
    compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
    `/import` (#13), the ask record (#17).
 5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
-8. **`npm run check` is GREEN and the suite is green (2026-09-14)** — the 50 `[[EVID-NNN]]` links
-   became bare ids (evidence is private forever; brackets promise a door), `docs/design/tokens.json`
-   joined the shared-names list (fourth instance of the `RESUME.md` shape), and the 21 backlog findings
-   the red `&&` chain had hidden for two days were closed (proofs, promotion pairs, vocabulary, INDEX).
-   **Keep it green** — a red gate hides everything behind it.
 9. **`/drift-deep` ran on this tree for the first time (2026-09-14) — verdict: drifting.**
    `docs/drift-audits/DRIFT-2026-09-14.md`. The bet (*will a real founder return*) is sharp and its
    experiment is written to the message; ~270 commits since 08-24 built what a returning founder
