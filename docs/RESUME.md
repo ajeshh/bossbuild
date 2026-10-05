@@ -84,8 +84,9 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Next (in order)
 
-- **IDEA-137 next:** C7 finalises the guide **after** IDEA-136 lands (from where design and engineering
-  overlap; B4 with it) · the ebooks → C9 · C5/C8 wait on a founder's own broken flow. **`npm run check`
+- **IDEA-137 next: plant the claims ecosystem** (order set 2026-10-04 in IDEA-137 · B4: claims → AI behaviour →
+  data & trust; agents already shipped; founder is not a ladder; temple culture parked) — step 1 is a read-only
+  inventory of BOSS's own claim checks. · C7 finalises the guide **after** IDEA-136 lands · the ebooks → C9 · C5/C8 wait on a founder's own broken flow. **`npm run check`
   is red on a peer's `src/playbook.js` → `docs/ENGINEERING.md` (IDEA-136 F1; they were told).**
 - **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
   Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
