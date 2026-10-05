@@ -226,6 +226,49 @@ complete for all 20 claims. Inputs, not decisions.
 - **Name collision:** BOSS's own `docs/PATTERNS.md` is an outward essay, not a pattern list — a code
   `PATTERNS.md` beside it would collide (Q8).
 
+## R3 findings (2026-10-04) — the layers BOSS's own code can't demonstrate
+
+`docs/research/sessions/SESSION-2026-10-04-layers.md`: six finders (one per layer), ~150 sources read,
+28 load-bearing claims 3-voted — 24 confirmed (most narrowed), 2 killed outright plus 17 sub-claims.
+Inputs, not decisions; the record ends with six candidate layer rows.
+
+- **One principle runs across four layers** (data, API, config, AI calls) and came from the sources,
+  not a metaphor: **parse at the boundary, fail loud inside** (fail-fast — Shore; parse, don't validate
+  — Alexis King). Evidence for IDEA-137's question of whether principles are shared between ecosystems.
+- **API arrives on a test, not a feeling:** published vs public (Fowler) — can you find and change every
+  caller? The large API guides say in their own text that their strict rules don't apply to an API one
+  team calls. That is the *second consumer* trigger, sourced.
+- **Errors & observability at MVP traffic:** an error-rate alert fires on a single failure (Google SRE
+  workbook), and an uptime check must look for expected content, not just a 200.
+- **Dependencies:** before installing a package an agent named, confirm it exists and is the one meant;
+  commit the lockfile; set a minimum release age. **After a leak, revoke the key first.**
+- **AI calls:** a model id change is a code change — retired ids fail, old request settings 400 on new models.
+- **Killed:** *agents swallow errors more than humans* (one author, own scanner); *agent commits leak
+  secrets 2×* (vendor, method gated); *UUIDs stop enumeration* and *RFC 9562 recommends v7 over v4* (it
+  prefers v7 over v1/v6, and says UUIDs must not be security capabilities); *a fifth of AI-suggested
+  packages don't exist* (mostly early-2024 open models; commercial 5.2%); *Twelve-Factor now says no env
+  vars for secrets*; *"a dependency is a liability"* is not Cox's line.
+- **Open:** no primary source answers *which module may write a table*; how often tool-using agents
+  install hallucinated packages is unmeasured.
+
+**Flagged in BOSS's shipped practices — each a task, reproduce before changing (rule 8):**
+- [ ] **F13** · `context-discipline.md:226` — *"a `Read(...)` deny does NOT block Bash (`cat .env` still
+  works)"* may be stale: R3 reports the host's deny rules now cover `cat`/`head`/`tail`/`sed`/`tee`.
+- [ ] **F14** · `context-discipline.md:243-247` and `agent-security.md` call `secrets-guard` *the
+  boundary*; it matches tool-call text, so a script or `grep -r` that reads `.env` without naming it
+  passes. The host — and the practice's own sandbox section — say the sandbox is the boundary.
+- [ ] **F15** · `model-routing.md:36` *"it fails silently"* — false on the API surface (a bad id
+  errors); check the host surface before rewording.
+- [ ] **F16** · `data-schema.md:78` gives enumeration as the reason for UUIDs (verified). Narrow it:
+  enumeration is how the hole gets *found*; a UUID is not the protection (RFC 9562).
+- [ ] **F17** · `agent-security.md` says *pin and review* with no lockfile, minimum release age, upgrade
+  path or post-leak step.
+- [ ] **F18** · `data-schema.md:67` keeps the *"Schema decisions are one-way doors"* header a 2026-08-24
+  research session refuted.
+- [ ] **F19** · During R3 a guard refused a grep over downloaded public docs because the *pattern*
+  contained `.env` — a false positive, not reproduced; which guard fired is unknown.
+- **Confirmed, no change:** `agent-security.md`'s OWASP 2026 claim (release dated 2026-08-04).
+
 ## Work — every item has an id; cite as `IDEA-136 · B3`
 
 **R — bring the research in (first; feeds both tracks)**
@@ -235,7 +278,7 @@ complete for all 20 claims. Inputs, not decisions.
   text); person and standard citations may travel into the practice.
 - [x] **R2** · Verify every attribution that makes it into tracked text (the memory note: claims bend
   on who said it). Killed claims recorded beside confirmed ones.
-- [ ] **R3** · Research the layers BOSS can't demonstrate (data, API, errors/observability,
+- [x] **R3** · Research the layers BOSS can't demonstrate (data, API, errors/observability,
   dependencies, prompts-as-code) — a second pass once R1 lands, so R1 stays focused.
 - [ ] **R4** · Extreme Programming at source — the values, principles and practices (Beck 1999/2004:
   pairing, TDD, simple design, refactoring, collective ownership, coding standards, small releases,
