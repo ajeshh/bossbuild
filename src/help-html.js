@@ -371,7 +371,7 @@ ${stylesheet()}
 </head><body>
 <div class="wrap">
 <header class="top">
-  <p class="kicker"><b>${esc(stamp.name)}</b>, the guide</p>
+  <p class="kicker"><a href="index.html">Home</a> · <b>${esc(stamp.name)}</b>, the guide</p>
   <h1>Everything this project has, and why.</h1>
   <p class="lede">Generated from this project — not the BOSS website. Every skill and command
     below is one you actually have right now. Rebuild it any time with

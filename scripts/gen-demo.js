@@ -285,13 +285,16 @@ ${inner}
 `;
 }
 
-// Stamp the rendered spaces with the site's ribbon (above the venture's topbar) and a Demo link in
-// the family nav.
+// Stamp the rendered spaces with the site's ribbon (above the venture's topbar). In the family nav
+// the project's Home becomes the demo's index (same file name), and the Guide goes: the site has
+// its own guide, and the demo never generates the project's one.
 function stamp(html) {
   const out = html
     .replace('</head>', `<style>${RIBBON_CSS}</style>\n</head>`)
     .replace(/<body[^>]*>/, (m) => `${m}\n${RIBBON}`);
-  return out.replace('<nav class="family" aria-label="Spaces">', '<nav class="family" aria-label="Spaces"><a href="index.html">Demo</a>');
+  return out
+    .replace('<a href="index.html" data-space="home">Home</a>', '<a href="index.html">Demo</a>')
+    .replace(/<a [^>]*data-space="guide"[^>]*>Guide<\/a>/, '');
 }
 
 // What Kettlewick IS, first and in plain words, read from its own records: the story in one line, why

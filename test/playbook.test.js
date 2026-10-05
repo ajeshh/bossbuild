@@ -514,7 +514,7 @@ test('the playbook renders through the shared shell: family bar (siblings live o
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
   let html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
   assert.ok(html.includes('<nav class="family"'));
-  assert.ok(html.includes('class="on" aria-current="page">Playbook</a>'));
+  assert.match(html, /class="on" aria-current="page"[^>]*>Playbook<\/a>/);
   assert.match(html, /class="dim" aria-disabled="true"[^>]*>Design<\/a>/, 'no design.html → dimmed');
   assert.ok(html.includes("sheet.className = 'sheet'"), 'the copy sheet is the shell\'s');
   assert.ok(!html.includes('id="toast"'), 'the toast is gone');
@@ -523,7 +523,7 @@ test('the playbook renders through the shared shell: family bar (siblings live o
   assert.equal((html.match(/<header class="topbar">/g) || []).length, 1);
   const withDesign = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.boss/design.html': '<p>d</p>' });
   html = renderPlaybookHtml(collectPlaybook(withDesign, 'tidewell'), '2026-09-13 10:00');
-  assert.ok(html.includes('<a href="design.html">Design</a>'));
+  assert.match(html, /<a href="design\.html"[^>]*>Design<\/a>/);
 });
 
 // --- FEAT-028 — the Proof chapters ---------------------------------------------------------------
@@ -677,7 +677,7 @@ test('Learnings merges the devlog with the IDEA capture logs by date (Ajesh, 202
   assert.equal(data.sources.length, 0, 'the folder README is not a source');
   assert.ok(html.includes('id="market-sources"'), 'Market still renders the import hole');
   const out = execFileSync('node', [BIN, 'playbook'], { cwd: dir, encoding: 'utf8' });
-  assert.match(out, /bookmark: file:\/\/.*\/\.boss\/playbook\.html/);
+  assert.match(out, /bookmark: file:\/\/.*\/\.boss\/index\.html/, 'the bookmark is the home, one link to every page (IDEA-144)');
 });
 
 // --- FEAT-036 — the Company chapters -------------------------------------------------------------

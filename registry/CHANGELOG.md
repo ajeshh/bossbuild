@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **One page to bookmark for all your pages.** The playbook, design, board and guide pages live in
+  `.boss/`, a folder your file browser hides, and each one was its own link. Now each command also
+  writes `.boss/index.html`, a home that lists every page with when it was made (or the command that
+  makes it), and prints that one link to bookmark. Every page links back to it.
+
 - **An agent in its own worktree can run your app.** A new worktree starts without your ignored
   files, so there's no `.env` and the app won't start. The agent rules now say to list `.env` in
   `.worktreeinclude`, which copies it in — just that file, since every copy is one more place the key lives.

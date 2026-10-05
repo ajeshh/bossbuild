@@ -38,8 +38,8 @@ import { parseArgs } from './args.js';
 import { lookup, terms } from './glossary.js';
 import { HELP, SYMBOLS } from './help.js';
 import { helpHtml } from './help-html.js';
+import { homeHtml, homeUrl } from './home.js';
 import { isoDay } from './clock.js';
-import { pathToFileURL } from 'node:url';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
 
 const STAMP = '.boss/manifest.json';
@@ -743,8 +743,7 @@ function cmdPlaybook(args = []) {
   const { out, data } = playbookHtml(process.cwd(), stamp.name);
   const { ledger, canvas, error } = data;
   console.log(`\n  ${ok('✦')} Playbook → ${out}`);
-  // pathToFileURL, not `file://` + a path: on Windows that printed `file://C:\\Users\\…`, which no browser opens.
-  console.log(`    ${dim('bookmark:')} ${pathToFileURL(out).href}`);
+  printHome(stamp);
   console.log(`    ${canvas ? `docs/ideas/${canvas.file}` : 'no canvas yet — every box is a question; /canvas fills them'} · ${ledger.backed} of ${ledger.live} cells backed by evidence · ${ledger.signals} signal${ledger.signals === 1 ? '' : 's'}`);
   if (error) console.error(`    ${warn('!')} ${error}`);
   // The pull (IDEA-111): the page's holes, read back — the founder sees what's open without opening
@@ -764,6 +763,14 @@ function cmdPlaybook(args = []) {
   }
 }
 
+// Every page command rewrites the home (.boss/index.html) and prints IT as the bookmark, not the
+// page: one link to all of them, in a folder Finder hides (IDEA-144). homeUrl is pathToFileURL, not
+// `file://` + a path: on Windows that printed `file://C:\\Users\\…`, which no browser opens.
+function printHome(stamp) {
+  homeHtml(process.cwd(), stamp.name);
+  console.log(`    ${dim('bookmark:')} ${homeUrl(process.cwd())} ${dim('— one page for all of them')}`);
+}
+
 // `boss design` — the founder's design system as one page in .boss/, a sibling of the playbook
 // (FEAT-030). Same contract: a pure projection of docs/design/*, docs/BRAND.md and the DECs;
 // contrast computed for the declared pairs; every hole a hole; re-run to refresh.
@@ -773,6 +780,7 @@ function cmdDesign(args = []) {
   const { out, data } = designHtml(process.cwd(), stamp.name);
   const filled = data.slots.filter(([, ok]) => ok).length;
   console.log(`\n  ${ok('✦')} Design → ${out}`);
+  printHome(stamp);
   console.log(`    ${data.tokens.source || 'no tokens file yet — /design-tokens-init writes docs/design/tokens.json'} · ${filled} of ${data.slots.length} slots filled · ${data.pairs.length} contrast pair${data.pairs.length === 1 ? '' : 's'} computed · ${data.findings} finding${data.findings === 1 ? '' : 's'}`);
   if (data.tokens.error) console.error(`    ${warn('!')} ${data.tokens.error}`);
   // The pull, as the playbook has it: the open slots read back, in build order, each with the verb
@@ -797,6 +805,7 @@ function cmdBoard(args = []) {
   if (args.includes('--html')) {
     const out = boardHtml(process.cwd(), stamp.name);
     console.log(`\n  ${ok('✦')} Visual board → ${out}`);
+    printHome(stamp);
     console.log('    A read of your files. Re-run `boss board --html` to refresh.\n');
     // Best-effort open in the default browser; printing the path is the contract.
     const opener = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
@@ -1848,6 +1857,7 @@ function cmdHelpHtml() {
   }
   const out = helpHtml(process.cwd(), stamp);
   console.log(`\n  ${ok('✦')} Guide → ${out}`);
+  printHome(stamp);
   console.log(`    ${dim('Everything this project has, and why. A read of your install — re-run to refresh.')}\n`);
 }
 

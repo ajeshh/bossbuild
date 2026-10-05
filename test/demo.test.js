@@ -66,8 +66,13 @@ test('the board is a subpage of the same dashboard: the shared top bar, the fami
   try {
     generate({ out });
     const board = readFileSync(join(out, 'board.html'), 'utf8');
-    assert.ok(board.includes('<header class="topbar">') && board.includes('class="on" aria-current="page">Board</a>'));
-    assert.ok(board.includes('<a href="playbook.html">Playbook</a>') && board.includes('<a href="design.html">Design</a>'));
+    assert.ok(board.includes('<header class="topbar">'));
+    assert.match(board, /class="on" aria-current="page"[^>]*>Board<\/a>/);
+    assert.match(board, /<a href="playbook\.html"[^>]*>Playbook<\/a>/);
+    assert.match(board, /<a href="design\.html"[^>]*>Design<\/a>/);
+    // The project's Home becomes the demo's index, and the project guide (never generated here) goes.
+    const family = board.match(/<nav class="family"[^]*?<\/nav>/)[0];
+    assert.ok(family.includes('<a href="index.html">Demo</a>') && !family.includes('>Home</a>') && !family.includes('>Guide</a>'));
     assert.ok(board.includes('href="#col-0"') && board.includes('href="#parked"') && board.includes('href="#timeline"'));
     assert.equal((board.match(/class="pills"/g) || []).length, 0, 'the pills are the ledger, once');
     assert.ok(board.includes('id="parked"') && board.includes('IDEA-005'), 'a dropped idea sits in Parked with its reason');

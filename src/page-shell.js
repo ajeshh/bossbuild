@@ -1,6 +1,6 @@
 // page-shell — the chrome every generated page in .boss/ shares: the neutral palette (board.js's
 // inlined tokens; the founder's accent is the only thing BRAND.md changes), the top bar with the
-// family bar (playbook · design · board — relative links, dimmed when the sibling file isn't on
+// family bar (home · playbook · design · board · guide — relative links, dimmed when the sibling file isn't on
 // disk), the rail, the block with Link · Copy, value copy, and the copy sheet.
 //
 // One renderer, three spaces (IDEA-107): the playbook and the design space are two chapter sets
@@ -18,24 +18,30 @@ import { join } from 'node:path';
 
 export const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
 
-// The three spaces and the file each one lives in. `current` is the page being rendered; a
-// sibling is a live link only when its file exists — a dimmed entry says "not generated yet",
-// never 404.
+// The spaces and the file each one lives in. `current` is the page being rendered; a sibling is a
+// live link only when its file exists — a dimmed entry says "not generated yet", never 404. `cmd`
+// is what makes it, for the dimmed title and the home page's empty card (IDEA-144).
 export const SPACES = [
-  { key: 'playbook', label: 'Playbook', file: 'playbook.html' },
-  { key: 'design', label: 'Design', file: 'design.html' },
-  { key: 'board', label: 'Board', file: 'board.html' },
+  { key: 'playbook', label: 'Playbook', file: 'playbook.html', cmd: 'boss playbook' },
+  { key: 'design', label: 'Design', file: 'design.html', cmd: 'boss design' },
+  { key: 'board', label: 'Board', file: 'board.html', cmd: 'boss board --html' },
+  { key: 'guide', label: 'Guide', file: 'help.html', cmd: 'boss help --html' },
 ];
 
+// Home leads the bar and is always live: every command that writes a page writes the home with it
+// (src/home.js), so it is on disk by the time anyone clicks.
 export function familyBar(projectDir, current) {
+  const home = current === 'home'
+    ? '<a href="#" class="on" aria-current="page" data-space="home">Home</a>'
+    : '<a href="index.html" data-space="home">Home</a>';
   const items = SPACES.map((s) => {
-    if (s.key === current) return `<a href="#" class="on" aria-current="page">${s.label}</a>`;
+    if (s.key === current) return `<a href="#" class="on" aria-current="page" data-space="${s.key}">${s.label}</a>`;
     const there = existsSync(join(projectDir, '.boss', s.file));
     return there
-      ? `<a href="${s.file}">${s.label}</a>`
-      : `<a href="#" class="dim" aria-disabled="true" tabindex="-1" title="not generated yet — boss ${s.key === 'board' ? 'board --html' : s.key}">${s.label}</a>`;
+      ? `<a href="${s.file}" data-space="${s.key}">${s.label}</a>`
+      : `<a href="#" class="dim" aria-disabled="true" tabindex="-1" title="not generated yet — ${s.cmd}" data-space="${s.key}">${s.label}</a>`;
   });
-  return `<nav class="family" aria-label="Spaces">${items.join('')}</nav>`;
+  return `<nav class="family" aria-label="Spaces">${home}${items.join('')}</nav>`;
 }
 
 // The default palette — what a founder with no tokens.json and no brand accent sees. It used to be

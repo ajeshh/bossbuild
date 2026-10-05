@@ -156,9 +156,9 @@ test('a tokens.json that is not JSON renders the error as a block and the rest o
 test('the family bar links siblings by RELATIVE path and dims the ones not on disk', () => {
   const dir = tidewell({ '.boss/playbook.html': '<p>x</p>' });
   const html = renderDesignHtml({ ...collectDesign(dir, 'Tidewell'), projectDir: dir }, 'x');
-  assert.match(html, /<a href="playbook\.html">Playbook<\/a>/);
+  assert.match(html, /<a href="playbook\.html"[^>]*>Playbook<\/a>/);
   assert.match(html, /class="dim"[^>]*>Board<\/a>/);
-  assert.match(html, /class="on" aria-current="page">Design<\/a>/);
+  assert.match(html, /class="on" aria-current="page"[^>]*>Design<\/a>/);
   assert.ok(!/claude\.ai/.test(html), 'no artifact URL in generated output');
 });
 
