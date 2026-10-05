@@ -55,7 +55,55 @@ There is no weekly cadence; the site moves with releases. Three loops, each with
     on day one for that door (one concrete before/after each) → *then* install. Requirements (Node,
     Claude Code) after the reader has a reason to care.
   - Ajesh's *"supercharge it like a Boss"* is a candidate line for the voice pass, not copy yet; the
-    one sentence in PRINCIPLES stays the definition and moves only by `/decide`.
+    one sentence in PRINCIPLES stays the definition and moves only by `/decide`. The marketing read
+    (2026-10-05) argues against it: *supercharge* sells speed, which these founders already have
+    too much of; the page already owns *"You're the boss. BOSS just has your back."* (`index.html:605`).
+
+## Review 2026-10-05 — marketing + design/mobile reads (live site at 0.329.0)
+
+Screenshots and measurements were session-local (scratchpad, not kept). Home: **18.2 phone screens,
+12.5 desktop, ~2,700 rendered words** (start ~800, demo ~300). *What it does for you* first appears at
+screen 3 on a phone; *is this for me* (the shape picker) at screen 5.8.
+
+**Correctness — allowed under the freeze:**
+- [ ] **C1 · Home scrolls sideways on phones.** `.quirks` `minmax(24rem,1fr)` (`web/styles/site.css:691`)
+  is wider than a 390px column; layout viewport measured 413. Fix: `minmax(min(24rem,100%),1fr)`.
+- [ ] **C2 · `start.html:78` "asks three things nobody else does"** is an *only BOSS* claim with no
+  `/comp-eval` behind it, and our own competition notes contradict it. Reword.
+- [ ] **C3 · Terminals clip or scroll sideways** (3 of 4 on home at 390; a line cut mid-sentence on
+  start at desktop). `.terminal pre { white-space: pre-wrap }` under 46rem (`site.css:114`).
+
+**Maybes — for the overview pass:**
+- [ ] **P1 · Hero line.** Lead with the reader's situation; keep the PRINCIPLES sentence verbatim as
+  the definition line under it (a placement, not a rewrite — Ajesh's call whether that needs
+  `/decide`). Candidates: *"Your AI can build anything. BOSS keeps it building the one thing."* ·
+  *"Ten features in, and not sure what it's for?"* · promote the existing h2 *"Building got cheap.
+  Being wrong didn't."*
+- [ ] **P2 · Reorder home:** hero → the two doors (move the shape picker, `index.html:193–302`, up;
+  cut to *new idea* / *a repo I already have*; drop *several at once*) → install → requirements →
+  proof. The door-2 panel (`:236–241`) describes a live, paying app; door 2 is *already building and
+  drifting* — rewrite, with a short sample of what `/read-repo` says back.
+- [ ] **P3 · Subtract:** 28 snags (`:317–441`) → the ~5 that describe this reader (`:321, :325, :352,
+  :356, :360`); the rest to guide.html or one `<details class="walk">`. *It working* (`:471–542`)
+  keeps setup + the one line BOSS says; hook JSON to conscience.html. Band (`:609–626`) → one line,
+  below the CTA (it is the biggest persimmon object on a phone — two loud things, DEC-020).
+  *Three ways down* (`:652–664`) → three links.
+- [ ] **P4 · "Not for" gets:** *not on Claude Code yet — not for you today* (`:295`). Kinder than
+  finding out at install.
+- [ ] **D1 · Phone hero:** hide `.hero .rail` under 46rem (the nav already carries the mark — +170px);
+  nav one row or not sticky (now 133px pinned = 16% of every screen; links 24px tall, under 44);
+  one install command (npm), Homebrew as a link — the wrapped brew box makes two persimmon buttons.
+- [ ] **D2 · Proof tiles** render ~280px wide and unreadable: one large tile + two thumbnails, or
+  crop each to one legible region. **demo.html has no images** — reuse the tiles there.
+- [ ] **D3 · Small:** `.yield` default `ul` padding (`site.css:654`); picker tabs 34px; inline code
+  11.6px; footer Copy buttons misaligned (shared width, or drop brew).
+
+**Distribution, ranked by cost-to-signal** (not site work; recorded so the pass doesn't forget):
+watched sessions on real drifting repos (read the home page aloud 5 min, then `boss adopt` →
+`/read-repo`; each an EVID) → one before/after write-up of `/read-repo` on Ajesh's own project, UTM
+per channel → the plugin directory listing → one program-director conversation (IDEA-109) after a
+session exists. Deferred: launch-day sites, paid, anything with countdowns or invented proof.
+The 10-14 `copy_install` read will be near zero either way — evidence, not traffic, should decide M0.
 
 - [ ] **M1 · The ecosystem, shown not named** (2026-10-05). No *Ecosystems* page and no architecture
   diagram. The ecosystem is real only where BOSS's parts hand work to each other, so show the hand-offs
