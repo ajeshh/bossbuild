@@ -27,6 +27,27 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The duplicate-component check keeps working after V1.** When `/design-library` moves the
+  component index into the library's manifest, the check that asks *reuse, adjust or new?* and
+  the warning on a deprecated import went silent — exactly when a project had the most components
+  to duplicate. Both now read the manifest when it's there, and the old index when it isn't.
+
+- **Skills look for your canvas and your specs where they actually live.** Eleven skills and
+  agents opened `docs/ideas/CANVAS.md`, a file `/canvas` stopped writing; they now read
+  `docs/ideas/IDEA-NNN-canvas.md` (an older project's `CANVAS.md` still counts). `/spec` and
+  `/drift-deep` looked for specs in `docs/specs/` and `docs/features/` while `/spec` writes them
+  to `docs/ideas/` — so `/spec` couldn't see one it had already written. Two practices sent you to
+  the brand doc's old path, and the design page missed a logo kept there.
+
+- **`boss` sees what you've already made with six more skills.** Your canvas, specs, measurement
+  and health reads, onboarding plan, money record and privacy policy are written where the skills
+  put them, and `boss` was looking elsewhere — so it could tell you to make one you had. It looks
+  in the right place now.
+
+- **BOSS checks that its own hand-offs still meet.** Every place one part of BOSS reads what another
+  part writes is now declared, and BOSS's build fails when the two ends stop naming the same file —
+  the shape all of the above had. It reads BOSS's own files, never yours.
+
 ## 0.329.0 — 2026-10-04
 
 - **A feature that grew inside itself is marked on the playbook.** Counting features can't see one

@@ -391,10 +391,10 @@ it creates. Ids: `IDEA-137 · C2.3`. Every capability = a commit + an `## Unrele
 terms (no research in the CHANGELOG).
 
 **C0 · Decide before building** (no code)
-- [ ] C0.1 · Q6 — where the reader lives. Lean: a 7th class in `scripts/check-refs.js` (*readers and
+- [x] C0.1 · Q6 — where the reader lives. **Settled: class 7 of `check-refs.js`, logic in `scripts/flows.js`.** Lean: a 7th class in `scripts/check-refs.js` (*readers and
   writers*), whose header already names this bug (`STYLE_GUIDE.md` read by three consumers, written by
   nothing). Its *gives* source: `registry/surface-ladder.json`, corrected.
-- [ ] C0.2 · The declaration shape — where a *take* is declared (skill/hook/practice frontmatter or the
+- [x] C0.2 · The declaration shape **— settled: its own ledger, `registry/flows.json` (takes · successions · a named stack-bound exemption), beside the ladder rather than inside it (a key there would read as a capability).** Was: — where a *take* is declared (skill/hook/practice frontmatter or the
   ladder JSON), and the `store` and `not planted yet` markers.
 - [x] C0.3 · H1 — `mentor-humane` read the draft (2026-10-04), and the draft changed: **liveliness
   stays internal** (a design test on BOSS's own ecosystems, never a founder reading — its opposite is
@@ -432,20 +432,20 @@ terms (no research in the CHANGELOG).
 - *Creates:* a reproduction line per break in this record; the six become the reader's test fixtures.
 
 **C2 · M2 — the reader, on BOSS's own repo** (maintain-level work: it keeps flows from breaking)
-- [ ] C2.1 · Correct `registry/surface-ladder.json`'s six wrong outputs (B1.6) — also fixes `boss`'s
+- [x] C2.1 · Correct `registry/surface-ladder.json`'s six wrong outputs (B1.6) — also fixes `boss`'s
   "already built" line for canvas, spec, health, onboard, money, trust.
-- [ ] C2.2 · Declare the *takes* for the 44 flows B1 found.
-- [ ] C2.3 · The reader: a *take* nothing writes · a *give* nothing reads (unless `store`) · a path
+- [~] C2.2 · Declare the *takes* — **19 declared** (the six breaks, the readers the sweep found beyond them, and controls). The other path-shaped flows of B1's 44 still to declare; hook/loop predicates and EVID reads are a different shape.
+- [x] C2.3 · The reader (`scripts/flows.js`) — **a take holds only when both ends name the same path: the giver in a sentence that writes it, the reader in one that reads it.** Sentence, not line, is the unit; a path under `## Output` is a write; fenced trees count both ways; a bare filename never matches a directory it doesn't name. Not yet: *returns* (N10), *store*, *not planted* (those are C8's, in a founder's project). Was: a *take* nothing writes · a *give* nothing reads (unless `store`) · a path
   only one end changed · *not planted yet* stays silent (N6) · every *take* names its return (N10).
-- [ ] C2.4 · Tests: finds all six breaks; **zero findings on a fresh Quickstart scaffold**.
+- [x] C2.4 · Tests — `test/flows.test.js` (10: each break as a fixture, the sentence and Output rules, BOSS's own repo clean); B1.1 and B1.3 regression tests **fail on the old code** (rule 8). **First run on the real repo found all six breaks plus readers B1 missed** (`mentor-founder` and four hedged mentors on the canvas path). Two false alarms (ship, landing — stack-bound, exempted by name) and one miss (trust's root `PRIVACY.md`, fixed by hand). Was: finds all six breaks; **zero findings on a fresh Quickstart scaffold**.
 - *Creates:* a new section in `npm run check:refs` output (one line per broken flow, file:line);
   `test/` cases; a corrected ledger. *Generates:* BOSS's own flow map (44+ flows) as the report.
 
 **C3 · Fix what the reader finds** (each its own commit)
-- [ ] C3.1 · B1.1 — the reuse guard follows `manifest.json` at V1 (M12, live in shipped code).
-- [ ] C3.2 · B1.2 — seven skills/agents read the founder's real canvas path.
-- [ ] C3.3 · B1.3 — BRAND path in two practices and `readLogo`.
-- [ ] C3.4 · B1.4, B1.5 — `/drift-deep` and `/spec` look where FEATs live.
+- [x] C3.1 · B1.1 — the reuse guard follows `manifest.json` at V1 (M12, live in shipped code).
+- [x] C3.2 · B1.2 — **eleven** files (the sweep found four more than B1) — seven skills/agents read the founder's real canvas path.
+- [x] C3.3 · B1.3 — BRAND path in two practices and `readLogo`.
+- [x] C3.4 · B1.4, B1.5 (adopted repos' `docs/specs/` / `docs/features/` still named) — `/drift-deep` and `/spec` look where FEATs live.
 - [ ] C3.5 · N5 — `/sunset` writes its lesson into the FEAT/IDEA record `/spec` and `/roadmap` read,
   not a `POSTMORTEM.md` nothing reads.
 - [ ] C3.6 · B1.7 — each prose-only hand-off: wire it, or mark it `store` honestly.

@@ -38,6 +38,11 @@
 //                   during the rebrand, then it got advertised as product here.
 //
 //   5. WORKSPACE  — a shipped file naming a SKILL that lives only in BOSS's gitignored /.claude/.
+//   7. FLOWS      — a declared hand-off (registry/flows.json) whose two ends stopped naming the same
+//                   file: the giver moved, the reader looks elsewhere, a successor the reader doesn't
+//                   follow, or a ladder entry blind to what its skill writes. IDEA-137 found six in
+//                   BOSS's own repo, all one shape — the reuse guard went silent at V1 when the
+//                   component index moved to manifest.json. The logic lives in scripts/flows.js.
 //   6. CITATIONS  — a TRACKED file offering `[[DEC-011]]` for a record that is not tracked. The
 //                   link form is a promise the reader can open it; BOSS's ideas, decisions,
 //                   evidence and verdicts are all gitignored, so 198 citations across 28 files
@@ -63,6 +68,7 @@ import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { checkFlows } from './flows.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SKIP = new Set(['.git', 'node_modules', '.boss', 'coverage', 'dist']);
@@ -84,7 +90,7 @@ function walk(dir, out = []) {
 const files = walk(ROOT);
 const md = files.filter((f) => f.endsWith('.md'));
 const rel = (p) => relative(ROOT, p);
-const findings = { links: [], predicates: [], escapes: [], agents: [], workspaceSkills: [], citations: [] };
+const findings = { links: [], predicates: [], escapes: [], agents: [], workspaceSkills: [], citations: [], flows: [] };
 
 // --- 1. relative markdown links --------------------------------------------------------
 const LINK = /\[[^\]]*\]\(([^)#\s]+)(?:#[^)]*)?\)/g;
@@ -774,6 +780,21 @@ if (tracked) {
   }
 }
 
+// --- 7. flows: the two ends of every declared hand-off name the same file -----------------
+// Above the tally for the same reason class 6 is (see the note below). A ledger that doesn't parse
+// is a finding, not a skip: a reader that silently reads nothing is the failure this class exists for.
+{
+  let ledger = null;
+  let ladder = {};
+  try { ledger = JSON.parse(readFileSync(join(ROOT, 'registry', 'flows.json'), 'utf8')); }
+  catch (e) { findings.flows.push(['registry/flows.json', `does not parse — ${e.message}`]); }
+  try {
+    const raw = JSON.parse(readFileSync(join(ROOT, 'registry', 'surface-ladder.json'), 'utf8'));
+    ladder = Object.fromEntries(Object.entries(raw).filter(([k]) => !k.startsWith('_')));
+  } catch { /* check-ladder.js owns a ledger that won't parse */ }
+  if (ledger) findings.flows.push(...checkFlows(ROOT, ledger, ladder));
+}
+
 // NOTE ON PLACEMENT — this class runs HERE, above the tally, and that is not cosmetic. It was
 // first written below it, after `const total` and after the `total === 0` early exit, so on a
 // clean tree the loop never ran and check-refs printed "Everything BOSS points at exists." while
@@ -812,6 +833,8 @@ report('agents', 'PHANTOM AGENTS',
 
 report('workspaceSkills', 'WORKSPACE-ONLY SKILLS',
   "a SHIPPED file naming a skill that exists only in BOSS's gitignored /.claude/ workspace.\n  It resolves when you run it from here and dangles in every founder's install. Either ship it\n  under stages/<id>/template/.claude/skills/, or say what the founder actually does instead.");
+report('flows', 'BROKEN FLOWS',
+  "a declared hand-off whose two ends no longer name the same file — one end moved and the other\n  didn't notice. Fix the end that's wrong (the giver's write is the truth), or update registry/flows.json\n  if the flow itself changed. See docs/ECOSYSTEMS.md § Connections.");
 report('citations', 'DEAD CITATIONS',
   'a tracked file offering `[[ID]]` for a record that is not in the repository.\n' +
   '`[[ID]]` promises the reader can open it; a bare `ID` says a record exists.\n' +

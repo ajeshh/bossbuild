@@ -1,0 +1,154 @@
+{
+  "_readme": [
+    "The FLOW ledger — what one ecosystem in a founder's project takes from another, declared so a check",
+    "can say when the two ends stop agreeing. Read by scripts/flows.js (check-refs class 7). IDEA-137 · C2;",
+    "the shape is docs/ECOSYSTEMS.md § Connections.",
+    "",
+    "WHY THIS EXISTS: IDEA-137's inventory (B1) found 44 flows between BOSS's ecosystems and six broken ones,",
+    "and all six were one shape — a path or a handover changed, and only one end noticed. /canvas writes",
+    "IDEA-NNN-canvas.md and seven readers kept opening CANVAS.md; at V1 the component index moved to",
+    "manifest.json and the reuse guard kept reading the old file and went silent. Nothing could see it,",
+    "because nothing said which file read which.",
+    "",
+    "A TAKE is satisfied only when BOTH ends name the same path: the GIVER (a skill's own files) names it on",
+    "a line that writes it, and the READER (one shipped file) names it on a line that does not. Either end",
+    "moving alone breaks the take. The path is the truth of what the giver writes — declaring the reader's",
+    "stale path instead just moves the finding to the giver's side.",
+    "",
+    "A SUCCESSION says a path is replaced at a rung; every reader of the old path must also read the new one.",
+    "",
+    "Fields: reader (repo-relative file), path (a glob; NNN and <slug> in prose match *), from (the giving",
+    "skill's directory name), why (one line). 'store' and 'returns' come later (docs/ECOSYSTEMS.md).",
+    "",
+    "ladder_stack_bound: ladder entries whose output path is decided by the founder's stack (the host's config file, the framework's page file) — the skill detects all of them and can name none as its own write, so the ledger check skips them, by name, with the reason."
+  ],
+  "takes": [
+    {
+      "reader": "stages/L0-quickstart/template/.claude/agents/mentor-founder.md",
+      "path": "docs/ideas/IDEA-*-canvas.md",
+      "from": "canvas",
+      "why": "what they're chasing — the cornerstone mentor reads the bet first"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/design-tokens-init/SKILL.md",
+      "path": "docs/ideas/IDEA-*-canvas.md",
+      "from": "canvas",
+      "why": "the Promises cell anchors the brand voice in the tokens"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/design-review/SKILL.md",
+      "path": "docs/ideas/IDEA-*-canvas.md",
+      "from": "canvas",
+      "why": "Promises, read before a review"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/agents/designer.md",
+      "path": "docs/ideas/IDEA-*-canvas.md",
+      "from": "canvas",
+      "why": "brand voice is load-bearing"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/agents/mentor-capital.md",
+      "path": "docs/ideas/IDEA-*-canvas.md",
+      "from": "canvas",
+      "why": "Business Model, Promises, Risks & Harms"
+    },
+    {
+      "reader": "stages/L0-quickstart/template/.claude/skills/sunset/SKILL.md",
+      "path": "docs/ideas/IDEA-*-canvas.md",
+      "from": "canvas",
+      "why": "the bet being ended"
+    },
+    {
+      "reader": "stages/L3-scale/template/.claude/agents/mentor-hiring.md",
+      "path": "docs/ideas/IDEA-*-canvas.md",
+      "from": "canvas",
+      "why": "the bet, in the founder's words"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/design-tokens-init/SKILL.md",
+      "path": "docs/BRAND.md",
+      "from": "landing",
+      "why": "voice and positioning before tokens"
+    },
+    {
+      "reader": "library/practices/conscience-voicing.md",
+      "path": "docs/BRAND.md",
+      "from": "landing",
+      "why": "the founder's voice is the reviewer"
+    },
+    {
+      "reader": "library/practices/celebration-of-done.md",
+      "path": "docs/BRAND.md",
+      "from": "landing",
+      "why": "celebration copy checked against the brand"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/drift-deep/SKILL.md",
+      "path": "docs/ideas/FEAT-*.md",
+      "from": "spec",
+      "why": "the stated intent, compared against the bet"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/spec/SKILL.md",
+      "path": "docs/ideas/FEAT-*.md",
+      "from": "spec",
+      "why": "step 0 — does a spec already exist?"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/hooks/component-reuse-guard.js",
+      "path": "docs/design/COMPONENTS.md",
+      "from": "design-tokens-init",
+      "why": "reuse, adjust or new — checked at the write"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/hooks/component-reuse-guard.js",
+      "path": "docs/design/library/manifest.json",
+      "from": "design-library",
+      "why": "at V1 the manifest is the index — the guard follows it (B1.1)"
+    },
+    {
+      "reader": "src/design.js",
+      "path": "docs/design/COMPONENTS.md",
+      "from": "design-tokens-init",
+      "why": "the design page's component index at MVP"
+    },
+    {
+      "reader": "src/design.js",
+      "path": "docs/design/library/manifest.json",
+      "from": "design-library",
+      "why": "the design page's component index at V1"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/spec/SKILL.md",
+      "path": "docs/roadmap/NO-LIST.md",
+      "from": "roadmap",
+      "why": "a spec checks the standing refusals first"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/onboard/SKILL.md",
+      "path": "docs/product/JOURNEY.md",
+      "from": "spec",
+      "why": "onboarding starts from the journey"
+    },
+    {
+      "reader": "stages/L1-mvp/template/.claude/skills/ai-failure-states/SKILL.md",
+      "path": "docs/ai-cost-budget.md",
+      "from": "ai-cost",
+      "why": "a cost spike is measured against the declared budget"
+    }
+  ],
+  "successions": [
+    {
+      "old": "docs/design/COMPONENTS.md",
+      "new": "docs/design/library/manifest.json",
+      "by": "design-library",
+      "at": "V1",
+      "why": "the manifest supersedes the authored index — both on disk is two definitions of a button"
+    }
+  ],
+  "ladder_stack_bound": {
+    "ship": "the host decides the config file (vercel.json, fly.toml, …); /ship's step 0 looks for all of them",
+    "landing": "the framework decides the page file (app/page.tsx, index.html, …); /landing's step 0 looks for all of them"
+  }
+}
