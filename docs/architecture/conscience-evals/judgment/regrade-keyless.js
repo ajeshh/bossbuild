@@ -128,7 +128,7 @@ function write(decisionsFile, judgesFile) {
   console.log(`\n  keyless re-grade — transcripts written: ${written}`);
   for (const [m, n] of Object.entries(perMoment)) console.log(`    ${m}: ${n}`);
   console.log(`    label mismatches: ${mismatches}  ${mismatches ? '(model disagreed with a human label — investigate)' : '(model agrees with every label)'}`);
-  console.log(`\n  Commit the transcripts; replay.js grades against them every commit.\n`);
+  console.log(`\n  Transcripts stay local (gitignored by design, DEC-013); replay.js grades against them.\n`);
 }
 
 switch (cmd) {

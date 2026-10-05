@@ -139,7 +139,7 @@ findings **cannot** return, because they are never written down.
   available"*, against the keyless discipline (`/regrade`). One line.
 - **T4** · BOSS-only, gitignored: `/recalibrate:59` says *"a practice change = a VERSION bump"*, which is
   stale since DEC-019 (`## Unreleased`; Ajesh stamps). One line.
-- **T5** · BOSS-only: the 10 `drift` judgment transcripts are STALE. Re-grade with `/regrade` when the
+- **T5** · *(done 2026-10-05 by `/regrade`, keyless: 10 independent deciders and 4 separate judges. drift is GRADED 10/10 with 0 label mismatches, and all five moments are GRADED with 0 STALE. One heavy-stakes nudge, j-drift-002, was judged slightly over-long and still passed. The same pass found that `regrade-keyless.js` said *"commit the transcripts"*, against DEC-013, which keeps them local; fixed.)* BOSS-only: the 10 `drift` judgment transcripts are STALE. Re-grade with `/regrade` when the
   drift frame settles (IDEA-135 touched it on 2026-10-04). That is Ajesh's call on the token spend.
 - **T6** · *(fixed `e898c0c`: 161 in all four places)* BOSS-only: `README.md:244`, `docs/PATTERNS.md:33` and `registry/dogfood.json:51`, `:135` say
   **154** gate cases, and the 2026-10-05 run passed **161** (IDEA-135 added cases). `npm run release`
