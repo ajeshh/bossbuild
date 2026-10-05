@@ -124,6 +124,7 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 `boss board --blocked` lists those. What's below has no record to live on. (RVW-109; two of these
 were already settled in their records, IDEA-087 and IDEA-098, and stayed here for 11 and 13 days.)
 
+- 🔷 **What the site shares (for the 2026-10-14 read)** — marked share · hint · keep in `docs/business/SHARE-SORT-2026-10-04.md` (gitignored). Decide before the next `gen:site`: it renders the Done practice in full by default.
 - 🔷 **`boss board --open`?** The playbook and design have `--open`, the board only `--html`; one line. Offered 09-23, unanswered.
 - 🔷 **The maintainer message — what holds it?** Drafted 08-23, still unsent. No gating rule (09-23); a date by which it's sent is the open ask.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
