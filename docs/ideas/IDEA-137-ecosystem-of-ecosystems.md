@@ -468,11 +468,11 @@ terms (no research in the CHANGELOG).
 
 **C6 · Governance** (some need Ajesh's `/decide`)
 - [ ] C6.1 · N12 — each ecosystem's practice names how its rules get amended, by whom (anatomy #8).
-- [ ] C6.2 · N11 — the second repair of a kind offers a check the founder's project owns. **Touches
+- [~] C6.2 · **Decided: DEC-022** (2026-10-04) — the behaviour itself is still to build. N11 — the second repair of a kind offers a check the founder's project owns. **Touches
   DEC-003 → `/decide`.**
 - [ ] C6.3 · M11 reworded in the practices — the latent centre that most helps the whole.
 - [ ] C6.4 · M12 — a pioneer names its successor; readers follow (generalises C3.1).
-- [ ] C6.5 · N13 — BOSS aims to be needed less. **A PRINCIPLES-level aim → Ajesh, `/decide`.**
+- [~] C6.5 · **Decided: DEC-023** (2026-10-04) — *BOSS can always be needed less, the founder decides when*; next: turn its falsifier into a real removal test. N13 — BOSS aims to be needed less. **A PRINCIPLES-level aim → Ajesh, `/decide`.**
 - *Creates:* practice text; possibly one DEC each for C6.2 and C6.5.
 
 **C7.0 · ✅ Drafted first (Ajesh, 2026-10-04: draft the guide before the reader, so IDEA-136 can

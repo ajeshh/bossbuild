@@ -181,14 +181,14 @@ founder, unprompted, asks twice how their project's parts are connected.
 - **A pioneer leaves when its successor matures, and its readers follow.** Name the successor; check
   the readers moved (the `COMPONENTS.md` → manifest break is what happens when they don't). Some
   pioneers should stay.
-- **The second repair offers a check** *(candidate — touches DEC-003)*. Only for breaks the
+- **The second repair offers a check** *(decided — DEC-022, refines DEC-003)*. Only for breaks the
   **founder's work** causes — BOSS's own breaks (all six B1 found) get fixed upstream and arrive by
   `boss sync`; handing those over would shift BOSS's burden onto the founder. Only when the **same
   file and the same class** recur. Worded without counting or blame — *"This has come up before. I've
   fixed it. Want a check that catches it at the write? I'll write it."* — with **"keep fixing it for
   me"** as a first-class answer, recorded once, never re-offered for that kind. Repairing quietly
   forever stops the founder's own capacity from growing — *if they didn't choose it*.
-- **BOSS can always be needed less** *(candidate — a PRINCIPLES-level aim, Ajesh's call)*. Every part
+- **BOSS can always be needed less** *(decided — DEC-023; whether it becomes a principle waits on IDEA-137 Q8)*. Every part
   can be handed over, turned off or removed, with no lock-in — **the founder decides when; BOSS never
   steps back on its own read.** (An aim to *be* needed less invites a measure — fewer interventions —
   that rewards silence.) The one thing never retired: the line about harm to someone not in the room.
