@@ -3,7 +3,7 @@ id: IDEA-143
 type: idea
 kind: capability
 owner: Ajesh
-status: deferred (trigger — the site freeze lifts: the 2026-10-14 `copy_install` read, then Ajesh's go)
+status: active (Ajesh lifted the freeze for this pass 2026-10-05: "lets make them"; home reorder shipped `5ff59d8`)
 proof: none
 proof_note: a backlog for the next website pass, not a build. Nothing on the site changes while it is frozen (CLAUDE.md, 2026-09-23); its proof is the pass itself, recorded when it runs.
 gist: The website backlog. When the site freeze lifts, assess the overall overview first, as one read of the whole site, before adding anything. Items wait here as maybes until that pass, starting with how the ecosystem shows up without a page about it.
@@ -42,7 +42,7 @@ There is no weekly cadence; the site moves with releases. Three loops, each with
 
 ## Backlog — maybes, for the overview pass to sort
 
-- [ ] **M0 · Start where the founder already is** (2026-10-05, EVID-005, EVID-002). A non-technical
+- [x] **M0 · Start where the founder already is** (2026-10-05, EVID-005, EVID-002). A non-technical
   founder, already building with AI tools and unhappy with what they'd built, read the site and could
   not say how or when BOSS would help; it read as too long. The overview pass's first test: **can that
   reader, on the first screen, see their situation and what BOSS does about it?** Not a new page.
@@ -74,29 +74,48 @@ screen 3 on a phone; *is this for me* (the shape picker) at screen 5.8.
   start at desktop). `.terminal pre { white-space: pre-wrap }` under 46rem (`site.css:114`). **Fixed 2026-10-05** at every width (no terminal draws boxes); 0 overflowing at 390 and 1440.
 
 **Maybes — for the overview pass:**
-- [ ] **P1 · Hero line.** Lead with the reader's situation; keep the PRINCIPLES sentence verbatim as
+- [x] **P1 · Hero line.** Lead with the reader's situation; keep the PRINCIPLES sentence verbatim as
   the definition line under it (a placement, not a rewrite — Ajesh's call whether that needs
   `/decide`). Candidates: *"Your AI can build anything. BOSS keeps it building the one thing."* ·
   *"Ten features in, and not sure what it's for?"* · promote the existing h2 *"Building got cheap.
   Being wrong didn't."*
-- [ ] **P2 · Reorder home:** hero → the two doors (move the shape picker, `index.html:193–302`, up;
+- [x] **P2 · Reorder home:** hero → the two doors (move the shape picker, `index.html:193–302`, up;
   cut to *new idea* / *a repo I already have*; drop *several at once*) → install → requirements →
   proof. The door-2 panel (`:236–241`) describes a live, paying app; door 2 is *already building and
   drifting* — rewrite, with a short sample of what `/read-repo` says back.
-- [ ] **P3 · Subtract:** 28 snags (`:317–441`) → the ~5 that describe this reader (`:321, :325, :352,
+- [x] **P3 · Subtract:** 28 snags (`:317–441`) → the ~5 that describe this reader (`:321, :325, :352,
   :356, :360`); the rest to guide.html or one `<details class="walk">`. *It working* (`:471–542`)
   keeps setup + the one line BOSS says; hook JSON to conscience.html. Band (`:609–626`) → one line,
   below the CTA (it is the biggest persimmon object on a phone — two loud things, DEC-020).
   *Three ways down* (`:652–664`) → three links.
-- [ ] **P4 · "Not for" gets:** *not on Claude Code yet — not for you today* (`:295`). Kinder than
+- [x] **P4 · "Not for" gets:** *not on Claude Code yet — not for you today* (`:295`). Kinder than
   finding out at install.
-- [ ] **D1 · Phone hero:** hide `.hero .rail` under 46rem (the nav already carries the mark — +170px);
+- [x] **D1 · Phone hero:** hide `.hero .rail` under 46rem (the nav already carries the mark — +170px);
   nav one row or not sticky (now 133px pinned = 16% of every screen; links 24px tall, under 44);
   one install command (npm), Homebrew as a link — the wrapped brew box makes two persimmon buttons.
 - [ ] **D2 · Proof tiles** render ~280px wide and unreadable: one large tile + two thumbnails, or
   crop each to one legible region. **demo.html has no images** — reuse the tiles there.
 - [ ] **D3 · Small:** `.yield` default `ul` padding (`site.css:654`); picker tabs 34px; inline code
   11.6px; footer Copy buttons misaligned (shared width, or drop brew).
+
+**Shipped 2026-10-05** (`5ff59d8` home, `6ee90f0` demo; live on Ajesh's next deploy): hero *"Your AI
+can build anything. BOSS keeps it building the one thing."* with the PRINCIPLES sentence verbatim under
+it; two doors directly under the hero; 5 snags shown, 23 folded; hook JSON folded under the spoken
+line; band → one line; Not-for names Claude Code; phone hero = one mark, one-row unpinned nav, 44px
+targets, `--step-3` h1, one install command. Measured on a local build: **18 → 14 phone screens**,
+install at 0.72, doors at 1.16 (was 5.8), no sideways scroll; desktop 12.5 → 9.6. demo.html carries
+the three renders. D3 done except the footer.
+
+**Still open:**
+- [ ] **D2b · Proof tiles are unreadable at any size** — the renders are 640px captures of a 1280px
+  page (`gen-proof.js`), so enlarging only blurs. Needs a sharper render or tight crops of one region.
+- [ ] **D4 · Footer install:** npm + brew Copy buttons land at different x on desktop (`_shell.html:82–90`).
+- [ ] **D5 · *How it thinks* subnav** adds ~570px on a phone, so /design's first screen is nav + h1.
+- [ ] **V1 · Watch one reader with the new first screen** — the hero line is a candidate until a
+  stranger reads it aloud (the watched sessions below). If they still can't say how or when, the line
+  changes, not the length.
+- [ ] **CLAUDE.md's freeze line** still says frozen until the 10-14 read; Ajesh's call whether it
+  stands for the next pass.
 
 **Distribution, ranked by cost-to-signal** (not site work; recorded so the pass doesn't forget):
 watched sessions on real drifting repos (read the home page aloud 5 min, then `boss adopt` →
