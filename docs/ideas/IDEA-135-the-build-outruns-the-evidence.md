@@ -450,6 +450,16 @@ exit regex, `moment-frames.js`); the per-FEAT growth mark; the receipt (the foun
   (b) the founder writes the claim into the FEAT (a shared `moves:` line) and the page shows it
   next to *nobody has met this*. Leaning (a): no new field, nothing private leaves the person.
 
+## The site caught up (2026-10-04, `ccb3a61`, `6ab0795`; Ajesh: "update the website now")
+
+Ajesh's canvas (`web/humane-product-canvas.md`) and the site's canvas board say *What we're
+testing next*; the conscience page's sample of moments gains *you've built a lot, and nobody
+outside has seen it*; the playbook proof shot is retaken from the new demo. `site/` was
+regenerated from a worktree at HEAD (0.327.0), by Ajesh's choice, so the uncommitted 0.328.0
+stamp's version strings in `site/` were replaced; its VERSION/package.json/CHANGELOG edits are
+untouched. Not deployed: `npm run deploy` regenerates from the working tree (which would bake the
+stamp back in) and publishes; that is Ajesh's to run. The receipt decision is still open.
+
 ## Open questions
 
 - One current outcome per venture, or one per FEAT? (Leaning: per venture; focus is the point.)
