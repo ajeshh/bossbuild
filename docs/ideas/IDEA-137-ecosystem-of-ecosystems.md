@@ -448,7 +448,7 @@ terms (no research in the CHANGELOG).
 - [x] C3.4 · B1.4, B1.5 (adopted repos' `docs/specs/` / `docs/features/` still named) — `/drift-deep` and `/spec` look where FEATs live.
 - [x] C3.5 · N5 (2026-10-04) — the lesson goes in the FEAT record; `/spec` step 0 reads dropped FEATs; the project `POSTMORTEM.md` is named a store, the founder's to keep (one-way: the next project is another repo). Was: N5 — `/sunset` writes its lesson into the FEAT/IDEA record `/spec` and `/roadmap` read,
   not a `POSTMORTEM.md` nothing reads.
-- [~] C3.6 · B1.7 — `/onboard` → `/health` wired and declared. `/ship` and `/money` → `/trust` are **routes** (run a skill), not file flows — left as is. Schema → `/decide` → C4.5. **New task T1:** `trace.jsonl` is listed per-person (`person-state.js:4,40`) but written and read in-project — a DEC-015 inconsistency, its own fix. Was: B1.7 — each prose-only hand-off: wire it, or mark it `store` honestly.
+- [~] C3.6 · B1.7 — `/onboard` → `/health` wired and declared. `/ship` and `/money` → `/trust` are **routes** (run a skill), not file flows — left as is. Schema → `/decide` → C4.5. **T1 ✓ (2026-10-04):** `trace.jsonl` was listed per-person (`person-state.js:40`) but written and read in-project. DEC-015 had already narrowed it (*did not move*, follow-on open); closed as **stays** — the design guards write it and `boss design` reads it as a fact about the build. The list and comment now say so; DEC-015 carries the close. Was: B1.7 — each prose-only hand-off: wire it, or mark it `store` honestly.
 - *Creates:* edits to ~15 shipped skill/agent/practice/hook files; CHANGELOG bullets; the reader
   goes quiet on BOSS's own repo.
 

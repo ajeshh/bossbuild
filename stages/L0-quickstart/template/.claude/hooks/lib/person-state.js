@@ -34,10 +34,13 @@ import { join, dirname } from 'node:path';
 import { homedir } from 'node:os';
 import { createHash } from 'node:crypto';
 
-// The three files DEC-015 moves. `cost-log.jsonl` deliberately does NOT move: spend reads as a
-// venture fact a cofounder plausibly should see, which is a different question with a different
-// answer, and bundling it would smuggle a second decision through this one.
-export const PERSON_FILES = ['conscience-log.jsonl', 'trace.jsonl', join('brain', 'relationship.md')];
+// The two files DEC-015 moves. Two do NOT, each for its own reason:
+// · `cost-log.jsonl` — spend reads as a venture fact a cofounder plausibly should see.
+// · `trace.jsonl` — DEC-001 called it per-person and DEC-015's draft moved it; it stayed, and has since
+//   become a record of the BUILD: the design guards log each decision handed and each new component
+//   asked about, and `boss design` reads that as "did the build follow its own decisions". It stays in
+//   `.boss/`, gitignored — local to each clone, never committed (IDEA-137 · T1).
+export const PERSON_FILES = ['conscience-log.jsonl', join('brain', 'relationship.md')];
 
 const keyCache = new Map();
 

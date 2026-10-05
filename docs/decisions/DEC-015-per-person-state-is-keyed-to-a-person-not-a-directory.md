@@ -114,6 +114,10 @@ is worth less than one that shows where the reasoning was corrected by contact w
   Moving it is four prose edits and a cross-stage import for a file nobody's conscience reads.
   **Follow-on, not dropped** — and it carries no harm while it waits, because a dormant hook writes
   nothing. Re-open with the next `auto-log` change.
+  **Closed 2026-10-04 (IDEA-137 · T1): it stays.** The trace stopped being only `auto-log`'s: two
+  design guards write it, and `boss design`'s *Divergence* block reads it as a fact about the build.
+  Gitignored in `.boss/` keeps DEC-001's promise (never committed); a worktree starts without it, which
+  costs a divergence count, never a re-fired nudge. `person-state.js` no longer lists it.
 - ✅ **WIDER than the draft, and it had to be: `.boss/brain/index.json`.** It is **tracked**, it
   **commits**, and it carried `kind: 'relationship'` headlines — *"flagged drift, they overrode it"*.
   So one founder's nudge history reached the other through the index while `relationship.md` was
