@@ -27,6 +27,14 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The security practices stop overstating what a guard can do.** `secrets-guard` was called the
+  boundary around your secrets; it catches any command that names a secret file, but a script that
+  loads `.env` itself gets past it — the sandbox is the boundary, and the practices now say so. A
+  deny rule now does block `cat .env` on current hosts, and the practice says that too. Dependency
+  advice gains the concrete steps: confirm a package an agent named actually exists, commit the
+  lockfile, wait before installing a version published minutes ago, and when a key leaks, revoke it
+  first. And a pinned model the host won't use is described as it really behaves: quietly replaced.
+
 - **Two practices say what's actually true.** `boss craft data-schema` no longer calls every schema
   decision a one-way door: changing a table's shape is mostly cheap now, and what can't be undone is
   information you never captured or deleted — so that's where it asks you to slow down. It also

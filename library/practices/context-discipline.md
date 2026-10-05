@@ -223,10 +223,14 @@ Claude Code glob syntax (`./` = relative to cwd; `**` = any depth):
 ```
 - **Write the bare path *and* the `./` form.** `Read(./.env)` and `Read(.env)` are different patterns;
   shipping only one leaves the other open. Same for `**/` (a `.env` in a subdirectory).
-- **A `Read(...)` deny does NOT block Bash** (`cat .env` still works) — add the `Bash(...)` rules too.
-- **The Bash half is the enumeration you can't finish.** The list above covers the frequent readers.
-  It does not cover `awk`, `sed`, `python -c`, `node -e`, a shell built-in, or anything an attacker
-  renames. Don't grow this list toward completeness — it has no end. Escalate to the hook instead.
+- **A `Read(...)` deny now reaches the common Bash readers.** The host applies Read and Edit deny rules
+  to the file commands it recognises — `cat`, `head`, `tail`, `sed`, `tee` — and to `>`/`<`
+  redirections (its permissions docs, 2026-10). It does **not** reach a command that reads without
+  naming the file (`grep -r pattern .`) or a script that opens it itself (`python -c`, `node -e`, your
+  own loader). The `Bash(...)` rules above stay as belt-and-braces for older hosts.
+- **The Bash half is the enumeration you can't finish.** Don't grow this list toward completeness —
+  it has no end. The hook (below) catches anything that *names* a secret path; only the sandbox stops a
+  process that reaches it without naming it.
 - **BOSS merges this floor on `boss sync`** (v0.141.0), because a security floor that only reaches
   *new* projects is not a floor. The merge is **additive and deny-only** — a deny entry can only ever
   restrict, never grant, so merging it can't break a project. `allow` and `defaultMode` stay yours.
@@ -243,10 +247,13 @@ Claude Code glob syntax (`./` = relative to cwd; `**` = any depth):
   - **The trigger for turning it on moved (2026-08).** This bullet used to read as "nice-to-have
     breadth." CVE-2026-22708 reframes it: the hook matches on the **path**, so it catches `head`,
     `grep`, `xxd`, `source`, a renamed binary and a shell built-in alike — the exact surface the
-    command list structurally cannot reach. It is no longer "broader coverage"; it is **the only
-    layer here that is actually a boundary.** The per-call latency argument still stands, so it
-    stays opt-in — but the honest recommendation is now: **turn it on as soon as the project holds a
-    real credential**, not only for regulated work.
+    command list structurally cannot reach. It is no longer "broader coverage"; it is **the strongest
+    of the two guards here** — but still a guard, not the boundary: it reads the text of the tool
+    call, so a script that loads `.env` (`node scripts/load-config.js`) or a recursive grep that never
+    names the file passes it (checked 2026-10-04). The boundary is the sandbox — what the process can
+    open at all (`boss craft agent-security`, the mount tiers). The per-call latency argument still
+    stands, so it stays opt-in — but the honest recommendation is now: **turn it on as soon as the
+    project holds a real credential**, not only for regulated work.
   - **BOSS ships this hook dormant** as `.claude/hooks/secrets-guard.js` — one copy, in the
     Quickstart template, which is the only place it ships from: Read/Edit of a secrets file → **deny**, Bash/MCP referencing
     one → **ask**, else allow; fail-open. It is **not registered by default** (an unregistered hook

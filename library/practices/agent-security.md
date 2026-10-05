@@ -89,9 +89,11 @@ opens — the **agent itself** going wrong. Two things to hold:
   loses to an unbounded surface. Defend on the **thing being protected** — the path, the credential,
   the egress destination — not on the verb. That is the same shape as the mount tiers and the
   tool-layer memory bound below: *bound the capability, don't enumerate the route.* Concretely, this
-  is why `secrets-guard` (path-matched) is the boundary and the deny-list (command-matched) is the
-  speed bump — **turn the hook on once the project holds a real credential**, not only for regulated
-  work.
+  is why `secrets-guard` (path-matched) beats the deny-list (command-matched) — and why neither is
+  the boundary: both read the text of a tool call, so a script that loads `.env` without naming it
+  passes both (checked 2026-10-04). The boundary is the sandbox and the mount tiers above — what the
+  process can open at all. **Turn the hook on once the project holds a real credential**, not only for
+  regulated work, and box the steps that run untrusted code.
 - **Trusted ≠ safe: an allowlisted command can be turned against you.** The Cursor bug worked by
   **poisoning the environment** the trusted command runs in, not by smuggling an untrusted command
   past the check. So the review question is not only *"is this command on the list?"* but *"can
@@ -106,7 +108,13 @@ opens — the **agent itself** going wrong. Two things to hold:
   untrusted input. And **inspect tool *returns* before they re-enter context** — a poisoned tool
   result is just untrusted input arriving through the back door.
 - **Pin dependencies.** Unpinned deps are an untrusted-input channel (supply chain). Pin versions;
-  review what an agent adds. (This is ASI04 — the agentic supply chain — in practice.)
+  review what an agent adds. (This is ASI04 — the agentic supply chain — in practice.) Concretely:
+  **before installing a package an agent named, confirm it exists and is the one you meant** — models
+  suggest packages that don't exist, and attackers register the names; **commit the lockfile**; and
+  **set a minimum release age** so a version published an hour ago isn't installed before anyone has
+  looked at it. Upgrade on purpose, not as a side effect of an agent's install.
+- **When a key leaks, revoke it first.** Rotating, scrubbing history and investigating all come after
+  the old key stops working — a deleted commit is still in every clone and cache.
 - **Human-in-the-loop on the irreversible.** The actions that can't be undone (push, deploy, delete,
   send) get an explicit gate — and the gate is a real stop, not a sentence in a system prompt. Where a
   human can't be in the loop, put a *cheaper, trusted check* in front of the autonomous one (Redwood's

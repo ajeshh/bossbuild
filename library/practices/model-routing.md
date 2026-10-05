@@ -33,9 +33,11 @@ Four costs, all of them paid:
 1. **It rots on a clock you don't control.** A pin is stale the moment the vendor ships. You inherit
    a maintenance obligation with no trigger — and a discipline that fires on nothing is a discipline
    that doesn't exist.
-2. **It fails silently.** An unrecognised model name doesn't throw. It falls back, or it errors
-   somewhere the founder never sees, and the agent quietly runs on something else. You cannot debug
-   what doesn't announce itself.
+2. **It fails quietly.** A pin the host won't use doesn't stop anything — it falls back. A skill's
+   pin is simply not used and the session keeps its model, with no word; an agent's pin is swapped for
+   the inherited model, with a warning only in an interactive session (the host's own docs, 2026-10).
+   Either way the work runs on something other than what the file says, and in a headless run nobody
+   is told. You cannot debug what doesn't announce itself.
 3. **It overrides a choice the founder already made.** They picked a model when they opened their
    host — for cost, for speed, for their plan. Second-guessing that from a template is presumptuous,
    and on a cheaper plan it can mean the pin simply doesn't work.
