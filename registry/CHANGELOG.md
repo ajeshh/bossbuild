@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A check for the test that got loosened to pass.** When your agent edits a test so it removes an
+  assertion or skips a case, in the same stretch of work that changed the code, `test-assertion-guard`
+  names it and asks for the reason: a bug fix adds a test, and only a real change in behaviour should
+  edit one. It never blocks, says nothing about ordinary test-writing, and is off until you run
+  `boss hooks enable test-assertion-guard`.
+
 - **The import check works for any kind of project, on the layers you name.** It only understood a
   UI layout (`ui/` → `features/` → `app/`), so a CLI, an API or an agent got nothing. Now you can write
   one line in `.claude/rules/engineering.md` — your layers, top to bottom — and the check names any

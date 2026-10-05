@@ -48,7 +48,8 @@
     "ui-boundary-guard",
     "contrast-guard",
     "schema-guard",
-    "smoke-guard"
+    "smoke-guard",
+    "test-assertion-guard"
   ],
   "coreLoop": [
     "spec",

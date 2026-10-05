@@ -1617,6 +1617,14 @@ const OPTIONAL_HOOKS = [
     cost: 'your smoke command, once per turn that changed source',
     worth: "you have a smoke configured and want it to actually hold — an agent that says \"done\" is the moment the gate is least likely to be remembered, and a red base is what the next change builds on",
   },
+  {
+    name: 'test-assertion-guard',
+    event: 'PostToolUse',
+    mode: 'MVP',
+    does: "Names a test edit that removes an assertion or adds a skip while the code beside it also changed, and asks for the reason — a bug fix adds a test; only a real change in behaviour edits one. Says nothing about ordinary test-writing, and nothing outside a git repo. Never blocks.",
+    cost: 'a process after each file write; a git status only when a test file lost an assertion',
+    worth: 'an agent writes most of your tests and your code — loosening a test until it passes is the shortest path to green, and the one you can\'t see in a diff you didn\'t read',
+  },
 ];
 
 // `boss hooks` — list the opt-in hooks; `enable <name>` lays one down AND registers it from the

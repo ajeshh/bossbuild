@@ -52,7 +52,8 @@ others, and search by what the code would do, before writing a new one.
 - Test command: `` — (fill in; `/smoke` runs the aliveness check, this runs the tests)
 - **Reproduce before you fix:** the test fails on the current code first. If it passes, there was no bug. — W
 - **A bug fix adds a test named for the bug. Only an intended behaviour change edits an existing test.**
-  Never loosen an assertion to make it pass. — W
+  Never loosen an assertion to make it pass. — W (P once `boss hooks enable test-assertion-guard` is on:
+  it names a test edit that drops an assertion or adds a skip while the code changed too)
 - **Structural change and behaviour change go in separate commits.** — W
 - **Test what a person touches** — the route, the command, the screen — not the internals. — W
 - Model output is judged by evals (`/evals`), never by `assert`.
