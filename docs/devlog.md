@@ -183,6 +183,24 @@ describe rivals by their shape. `check:refs` stopped scanning other sessions' wo
 
 **Next.** `npm i -g ~/Projects/bossbuild` to run today's CLI locally; the open items stay in RESUME.
 
+## 2026-10-05 — IDEA-149: Kettlewick, live, with every piece (landed 2026-10-07)
+
+- **FEAT:** none — IDEA-149. Ajesh: *"build kettlewick into a full local demo, so we dont have to do a whole
+  throwaway app often to validate"*, then *"what kettlewick doesnt have, lets build it, so its always got all the pieces."*
+- **Landed:** `npm run demo` (`scripts/demo.js`) — the record set laid down outside the repo, a git history from the
+  records' dates, BOSS's own `adopt`, its own `BOSS_HOME`, `env.sh` pointing `boss` at this checkout; refuses any folder
+  inside a checkout or one it didn't mark. Then three builder lanes in parallel: the app as real code (tokens, a
+  dependency-free core + tests + smoke, CI, Dockerfile), FEAT-007 with its whole AI chain, and a record for every MVP verb.
+  `check:demo` maps all 39 Quickstart+MVP skills (34 to a record, 5 to a reason) and fails an unmapped one. S9:
+  `src/places.js` gained 11 folders the home page was silently dropping (CHANGELOG bullet).
+- **Next:** IDEA-147 C7.2 runs on it.
+  S3 (`--at v1`) when a check first needs that stage.
+- **Surprises / decisions:** a fresh lay-down had been holding 4 MVP skills back — the stubs gave `adopt` no styled screen
+  and no model call; the demo now earns all 39. The new main guards compared a symlinked temp path, so the probe test passed
+  by never running (the IDEA-095 shape again; fixed with `realpathSync`). Lanes disagreed on facts (7am vs 6:30, qualified
+  carers, a built QuietNotice that is meant to stay a proposal) — reconciled in the records, not by rewriting shipped criteria.
+  A rebase onto main conflicted only on the CHANGELOG head; both bullets kept.
+
 ## 2026-10-05 — IDEA-145: programs that emerge (`514615e` → `3202d5d`+, Unreleased)
 
 - **FEAT:** none — IDEA-145. Began as a board tidy (136/138 → Shipped, 135/143 → Building); Ajesh: the

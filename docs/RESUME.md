@@ -43,6 +43,9 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   `coder` stops on a test/spec conflict and asks one question on a real fork. MVP rule 1 now defines
   non-trivial. RVW-150…153; sources in SESSION-2026-10-06. Open: T2, the always-loaded audit (waits on
   Ajesh's scope call; IDEA-157 already cut part of it — re-measure first). Landed 2026-10-07.
+- **IDEA-149 (2026-10-05, landed 2026-10-07, Unreleased) — Kettlewick, live.** `npm run demo` lays the demo down as a
+  lived-in project (real `adopt`, dated history, own `BOSS_HOME`, `boss` = this checkout); use it instead of a throwaway
+  (CLAUDE.md rule 6). Kettlewick has every MVP piece; `check:demo` keeps every skill mapped. Open: S3 `--at quickstart`, S4.
 - **IDEA-144 (2026-10-05, Unreleased) — one home for the generated pages.** `.boss/index.html`: every page with its age, *Where things live* (folders + key files, Open / Copy path), a bookmark hint; every page command prints it as the one bookmark. Spaces ordered Board · Playbook · Design · Guide. Demo: "Organization" → *Where things live* (GitHub links), and the opening says what Kettlewick does. Each card says when its page is out of date (a file it reads changed since). No machine-wide home: each project has its own (Ajesh). Open: the home re-checks only on a page command.
 - **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
   principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
