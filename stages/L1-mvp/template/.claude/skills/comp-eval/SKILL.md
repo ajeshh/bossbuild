@@ -1,6 +1,7 @@
 ---
 name: comp-eval
 description: Find out who else is solving this, and keep knowing. Researches the competitive field for {{PROJECT_NAME}} (features, pricing, the honest "why they might win") into a living set under docs/competition/. Every claim carries a source URL and checked date, or is marked unverified. Usage - /comp-eval [<space> | add]
+argument-hint: "[<space> | add]"
 ---
 
 # /comp-eval — who else is solving this, and what would make them win

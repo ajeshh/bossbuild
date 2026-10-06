@@ -1,6 +1,7 @@
 ---
 name: prototype
 description: Get the idea onto the screen, fast (not /pretotype, which tests demand). Builds the smallest runnable, clickable version (one core thing, fastest stack) and runs it, so you react to something tangible, not a blank page. Fill the gaps once you can see it. Usage - /prototype [IDEA-NNN | idea]
+argument-hint: "[IDEA-NNN | idea]"
 ---
 
 # /prototype — drop an idea, hit go, see something tangible

@@ -1,6 +1,7 @@
 ---
 name: design-library
 description: Generate the visual design library for {{PROJECT_NAME}} - a self-contained HTML gallery of foundations, every component variant in all five states, and the rule sets, rendered from the code and tokens so it cannot drift. Writes docs/design/library/ plus a manifest that doubles as the reuse index. Usage - /design-library [--check]
+argument-hint: "[--check]"
 ---
 
 # /design-library — the system you can actually look at

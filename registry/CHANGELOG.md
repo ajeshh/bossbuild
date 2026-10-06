@@ -28,6 +28,12 @@ rule above still applies to the whole section once it is stamped.
 ## Unreleased
 
 ## 0.330.0 — 2026-10-05
+- **Where you are, without asking, and what to type, without guessing.** Typing `/canvas ` in Claude
+  Code now shows what it takes, greyed, as you type — every skill that takes an argument says so. Bare
+  `boss` inside a project opens with where you are and the three commands you'd reach for, instead of
+  the whole manual. `boss unlock` with no mode names the next one and shows what it asks of you, rather
+  than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
+  status bar or your shell prompt.
 
 - **A security problem has a private way in.** `/feedback` used to file everything as a public issue, a
   way past the secrets guard included. Now it sends a security hole to the private report form instead, and

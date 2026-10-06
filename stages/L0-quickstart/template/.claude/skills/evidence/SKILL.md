@@ -1,6 +1,7 @@
 ---
 name: evidence
 description: Write down what a real person told you, graded honestly, as EVID-NNN records. One thing that happened, your notes from a call, or a whole transcript - it reads the size and does the right amount (a record, a debrief with the one moment you pitched, or a synthesis of pains, jobs and objections). Ladder - stated-pain, observed-behavior, commitment. Usage - /evidence [what happened | notes | transcript]
+argument-hint: "[what happened | notes | transcript]"
 ---
 
 # /evidence — evidence as a first-class object

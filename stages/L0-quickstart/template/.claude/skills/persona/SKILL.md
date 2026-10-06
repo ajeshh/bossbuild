@@ -1,6 +1,7 @@
 ---
 name: persona
 description: Build your app's target-user persona from your idea, grow it from research and any real user data you drop in, and consult it as an agent voice for product decisions and QA. Sharpens what you ask real users; never replaces them. Usage - /persona [derive | enrich | consult <slug>]
+argument-hint: "[derive | enrich | consult <slug>]"
 ---
 
 # /persona — your user's voice, as a thinking tool

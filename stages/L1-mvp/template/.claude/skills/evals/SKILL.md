@@ -1,6 +1,7 @@
 ---
 name: evals
 description: Build and run the eval set for an AI-mediated FEAT - "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to {{PROJECT_NAME}} - look at your data, build the eval set first, categorize failures by mode. Usage - /evals [FEAT-NNN | --new <feat>]
+argument-hint: "[FEAT-NNN | --new <feat>]"
 ---
 
 # /evals — the AI-correctness gate

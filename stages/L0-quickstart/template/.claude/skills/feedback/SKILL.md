@@ -1,6 +1,7 @@
 ---
 name: feedback
 description: Send feedback about BOSS itself back to the people who build it. Shows you exactly what it will send before anything leaves your machine, then files a GitHub issue upstream or hands you a prefilled link. Never background telemetry. Usage - /feedback [what's on your mind]
+argument-hint: "[what's on your mind]"
 ---
 
 # /feedback — tell BOSS's makers what's working and what isn't

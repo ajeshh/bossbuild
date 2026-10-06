@@ -1,6 +1,7 @@
 ---
 name: ship
 description: Put {{PROJECT_NAME}} where a real user can hit it, and know when it stops answering. The CD half of building - a pre-flight (no secrets in the client, authz on), the cheapest reversible host, a live check, who hears when it's down, deploy-on-push once earned, the rollback. Usage - /ship [--preview | --rollback]
+argument-hint: "[--preview | --rollback]"
 ---
 
 # /ship — localhost is not shipped

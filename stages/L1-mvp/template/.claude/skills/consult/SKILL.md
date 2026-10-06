@@ -1,6 +1,7 @@
 ---
 name: consult
 description: Convene the mentor board on a cross-cutting question. Routes it to the mentors with a stake, gets each take in its own lens, lets a real split hear itself once, and synthesizes with the disagreements kept visible. The humane lens can override. You decide. Usage - /consult <question>
+argument-hint: "<question>"
 ---
 
 # /consult — convene the board on a real question

@@ -1,6 +1,7 @@
 ---
 name: boss
 description: The door, any day. Spin up a project from a rough idea or PRD - or tell BOSS what you're trying to do and it reads where you are and names the smallest next step. Says the idea back, asks why this one and what 'it worked' looks like, captures a living idea doc, recommends a stack and mode, creates a private repo with your OK. Usage - /boss [idea | PRD | what you're trying to do]
+argument-hint: "[idea | PRD | what you're trying to do]"
 ---
 
 # /boss — the door

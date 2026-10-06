@@ -1,6 +1,7 @@
 ---
 name: revalidate
 description: The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature. Usage - /revalidate [ID or paused item]
+argument-hint: "[ID or paused item]"
 ---
 
 # /revalidate — don't build the zombie

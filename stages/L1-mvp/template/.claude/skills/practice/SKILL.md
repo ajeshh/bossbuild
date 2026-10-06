@@ -1,6 +1,7 @@
 ---
 name: practice
 description: Capture a craft learning (a better way to build with AI) as a shared, attributed PRAC-NNN record your cofounder gets too. The team's commons for staying current on a fast-moving craft, building on each other's discoveries instead of re-learning them. Carries a review date. Usage - /practice <what you learned>
+argument-hint: "<what you learned>"
 ---
 
 # /practice — the shared craft commons

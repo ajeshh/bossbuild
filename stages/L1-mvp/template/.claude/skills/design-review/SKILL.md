@@ -1,6 +1,7 @@
 ---
 name: design-review
 description: Design review for {{PROJECT_NAME}}, before or after the code. On a spec or unbuilt FEAT, `designer` reviews the proposed UI in two passes (visual system, then flows and the five states). On a route, component or shipped FEAT, it walks what shipped - states, accessibility, copy, deceptive patterns - saying what it observed. Usage - /design-review [FEAT-NNN | spec | route] [before|after]
+argument-hint: "[FEAT-NNN | spec | route] [before|after]"
 ---
 
 # /design-review — design review, before the code and after it

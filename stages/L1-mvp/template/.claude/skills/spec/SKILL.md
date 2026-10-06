@@ -1,6 +1,7 @@
 ---
 name: spec
 description: Promote an idea into a buildable spec - IDEA-NNN becomes FEAT-NNN with a goal, acceptance criteria, a smoke check, and the three paths that must not break (money, destructive, who must NOT see this). Where "we should build this" becomes "here's how we'll know it's done." Usage - /spec [IDEA-NNN]
+argument-hint: "[IDEA-NNN]"
 ---
 
 # /spec — promote an idea into a buildable feature

@@ -1,6 +1,7 @@
 ---
 name: interview
 description: Prep a customer conversation under Mom-Test discipline - 5 to 7 questions about their past and their life, never your idea, one commitment ask at the end, on one printable page in five minutes. The bridge from "go talk to one person" to actually going. After the call, /evidence grades what you heard. Usage - /interview [who or what the call is about]
+argument-hint: "[who or what the call is about]"
 ---
 
 # /interview — the Mom-Test bridge

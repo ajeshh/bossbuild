@@ -1,6 +1,7 @@
 ---
 name: welcome
 description: Start here if you installed BOSS as a plugin. In a folder without BOSS - says what it is in a paragraph, hears what you're building and says it back, then on your go opens one of two doors (`boss new` for an idea, `boss adopt` for a repo). In a BOSS project - the everyday door: say what you're trying to do and it names the smallest next step. Usage - /boss:welcome [what you're trying to do]
+argument-hint: "[what you're trying to do]"
 ---
 
 # /boss:welcome — the front door

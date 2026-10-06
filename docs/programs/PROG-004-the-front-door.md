@@ -70,4 +70,4 @@ refuses).
 ## Log
 
 - **2026-10-05** — graduated from `front-door`; IDEA-152 is the first slice (argument hints, `unlock`
-  with no mode, `status --line`, bare `boss` in a project).
+  with no mode, `status --line`, bare `boss` in a project). Shipped the same day, Unreleased.

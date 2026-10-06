@@ -34,7 +34,7 @@ export function parseArgs(args) {
 export const KNOWN_FLAGS = new Set([
   'ai', 'all', 'apply', 'as', 'before', 'blocked', 'conscience', 'days', 'detail', 'diff', 'file', 'for',
   'force', 'full', 'gists', 'global', 'headline', 'help', 'html', 'id', 'json', 'keep-mine', 'kind',
-  'markdown', 'md', 'mine', 'minors', 'mode', 'next', 'note', 'open', 'outline', 'program', 'programs',
+  'line', 'markdown', 'md', 'mine', 'minors', 'mode', 'next', 'note', 'open', 'outline', 'program', 'programs',
   'prose', 'prune', 'questions', 'quiet', 'reason', 'relationship', 'remove', 'shape', 'since', 'surface',
   'timeline', 'title', 'undo', 'until-resume', 'v', 'verbose', 'version', 'what', 'yes',
 ]);

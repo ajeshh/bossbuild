@@ -391,11 +391,28 @@ function cmdAdopt(args) {
   console.log('');
 }
 
+function previewUnlock(stamp) {
+  const next = STAGE_ORDER[STAGE_ORDER.indexOf(stamp.stage) + 1];
+  const here = stamp.mode || stamp.stage;
+  if (!next) return console.log(`\n  ${bold(here)} is the top rung — nothing left to unlock.\n`);
+  let nextName = modeWord(next);
+  try { nextName = readStageManifest(next).name || nextName; } catch { /* unauthored rung */ }
+  console.log(`\n  ${dim('You are here:')} ${here}   ${dim('next:')} ${bold(nextName)}`);
+  const bar = readiness(next, process.cwd());
+  if (bar) {
+    console.log('');
+    for (const line of renderReadiness(bar, { bold, dim, ok, warn }, { preview: true })) console.log(line);
+  }
+  console.log(`\n  ${bold(`boss unlock ${modeWord(next)}`)} ${dim('when you are — it never blocks.')}\n`);
+}
+
 function cmdUnlock(args) {
   const layer = args[0];
   const stamp = readStamp(process.cwd());
   if (!stamp) return failNotAProject();
-  if (!layer) return fail(`usage: boss unlock <mode>   (current: ${stamp.mode || stamp.stage})`);
+  // No mode given: BOSS knows the next rung, so it names it and shows its bar instead of failing with
+  // the syntax (PROG-004: a missing argument names the obvious one). A preview — nothing installs.
+  if (!layer) return previewUnlock(stamp);
 
   const target = resolveStageId(layer);
   // Speak the words `unlock` actually accepts, not the internal stage ids — `boss help
@@ -587,6 +604,22 @@ function printBuiltAndSeam(projectDir, stamp) {
   }
 }
 
+// `boss status --line` — where you are in one plain line, for a status bar or a prompt (Claude Code's
+// `statusLine`, a Starship module): mode, then the one thing in focus, picked the way
+// printFocusAndHeadway picks it. No colour, no count of anything done — a position, never a score.
+export function statusLine(projectDir, stamp, { brand = true } = {}) {
+  const parts = [...(brand ? ['BOSS'] : []), stamp.mode || stamp.stage];
+  try {
+    const { cards } = collectBoard(projectDir);
+    const { finish, start, pressure, pick } = computeNext(cards);
+    if (finish.length) parts.push(`building ${finish[0].id}${finish.length > 1 ? ` (+${finish.length - 1})` : ''}`);
+    else if (start.length) parts.push(`ready to build ${start[0].id}`);
+    else if (pressure.length) parts.push(`next: pressure-test ${pressure[0].id}`);
+    else if (pick.length) parts.push('next: pick the piece the venture needs first');
+  } catch { /* a status bar never breaks on a malformed record */ }
+  return parts.join(' · ');
+}
+
 // The orientation core of `boss status` (EVID-001): what you're building right now,
 // and that you're making headway. Reads the same board projection so status, board,
 // and insights all agree on "in flight." Prints nothing it can't derive honestly.
@@ -648,9 +681,16 @@ function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
 }
 
 async function cmdStatus(args) {
+  const f = parseArgs(args || []);
+  // `--line` feeds a status bar or a prompt, which runs in every folder: outside a project it prints
+  // nothing and exits 0 rather than an error into someone's prompt (PROG-004).
+  if (f.line) {
+    const stamp = readStamp(process.cwd());
+    if (stamp) console.log(statusLine(process.cwd(), stamp));
+    return;
+  }
   const stamp = readStamp(process.cwd());
   if (!stamp) return failNotAProject();
-  const f = parseArgs(args || []);
   // `boss status --conscience` — drill into the conscience-state surface
   // (asked-for by eng-builder / indie-hacker / vibe-virtuoso personas in
   // v0.19 reactions: "I want to see what fired and why").
@@ -1890,6 +1930,16 @@ function printHelp() {
   console.log(`  ${dim('Commands starting with / (e.g. /boss, /canvas) run inside Claude Code, not the shell.')}\n`);
 }
 
+function printDoorstep(stamp) {
+  console.log(`\n  ${bold(stamp.name)}   ${dim(statusLine(process.cwd(), stamp, { brand: false }))}\n`);
+  const row = (cmd, desc) => `    ${bold(cmd.padEnd(22))} ${dim(desc)}`;
+  console.log(row('boss status', 'the full read: where you are, what moved, what is next'));
+  console.log(row('boss board --next', 'what to pick up'));
+  console.log(row('boss unlock', 'the next mode and what it asks of you'));
+  console.log(row('boss help', 'every command'));
+  console.log(`\n  ${dim('Inside Claude Code: /boss and say what you are trying to do.')}\n`);
+}
+
 function cmdHelp(args) {
   const topic = args.find((a) => !a.startsWith('-'));
   // `--html` is a RENDERER, not a topic: it answers the same questions as everything below,
@@ -2053,7 +2103,14 @@ export async function run(argv) {
       if (checkout) try { unreleasedText = readFileSync(join(BOSS_ROOT, 'registry', 'CHANGELOG.md'), 'utf8'); } catch { /* none */ }
       return console.log(versionLine(bossVersion(), { checkout, unreleasedText }));
     }
-    case undefined: case 'help': case '--help': case '-h':
+    case undefined: {
+      // Bare `boss` inside a project answers "where am I" before "what can I type" (PROG-004) — the
+      // manual is one word away. Outside a project there is nowhere to be, so it is the manual.
+      const stamp = readStamp(process.cwd());
+      if (stamp) return printDoorstep(stamp);
+      return cmdHelp(args);
+    }
+    case 'help': case '--help': case '-h':
       return cmdHelp(args);
     default: {
       // An unknown command shouldn't silently dump the manual — say so first, offer

@@ -1,6 +1,7 @@
 ---
 name: ai-cost
 description: AI spend for {{PROJECT_NAME}}, from budget to bill. First run declares per-user and monthly budgets, the model choices and a per-call cost logger. Later runs read the ledger against the budget, flag overages and surprises, and write a dated review with gross margin. Cohort-aware. Run when the app first calls an LLM, then weekly. Usage - /ai-cost [review]
+argument-hint: "[review]"
 ---
 
 # /ai-cost — name the bill before it surprises you, then read it

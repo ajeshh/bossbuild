@@ -1,6 +1,7 @@
 ---
 name: decide
 description: Record a load-bearing decision as a durable DEC-NNN record (Context, Decision, Why, a cheap Falsifier with a date, Consequences), stamped with who decided and how reversible it is. Lighter than an RFC, denser than a commit message. Usage - /decide <the decision, or describe it>
+argument-hint: "<the decision, or describe it>"
 ---
 
 # /decide — the decision record

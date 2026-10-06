@@ -1,6 +1,7 @@
 ---
 name: canvas
 description: Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them. One set of answers, several frames (Humane by default, Lean, BMC, a onepager with the evidence ledger). A few cells at a time; the Quickstart→MVP gate. Usage - /canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager]
+argument-hint: "[IDEA-NNN] [--frame humane|lean|bmc|onepager]"
 ---
 
 # /canvas — pressure-test the idea (humanely)

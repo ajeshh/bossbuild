@@ -146,7 +146,7 @@ export function readiness(targetStage, projectDir) {
 
 // Rendered at the moment of crossing. Markers are per-condition STATE, never a tally: there is no
 // "2 of 3" line here on purpose, and there must never be one.
-export function renderReadiness(r, { bold, dim, ok, warn }) {
+export function renderReadiness(r, { bold, dim, ok, warn }, { preview = false } = {}) {
   const out = [`  ${r.lead}`];
   for (const c of r.conditions) {
     if (c.state === MET) out.push(`    ${ok('✓')} ${c.text}${c.detail ? dim(`  (${c.detail})`) : ''}`);
@@ -157,6 +157,8 @@ export function renderReadiness(r, { bold, dim, ok, warn }) {
   if (r.unknowns > 0) {
     out.push(dim(`  The unmarked ones BOSS cannot check — they are yours to judge, not its.`));
   }
+  // A preview (`boss unlock` with no mode) is not a crossing, so it says nothing about unlocking.
+  if (preview) return out;
   // "Anyway" and "deviation" are for a bar with something checkable missing. With every checkable
   // condition met they read as a reproach for a lapse that did not happen (IDEA-118).
   if (r.cleared) out.push(dim('  Unlocking. What BOSS cannot check stays yours to judge.'));

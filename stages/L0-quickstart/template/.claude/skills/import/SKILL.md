@@ -1,6 +1,7 @@
 ---
 name: import
 description: Bring existing material in — a file, a folder, a URL, or text you paste. BOSS keeps a dated copy in docs/source/, folds it into your idea, then says what else it could fill (a count, a rival, a tagline, a persona line) and writes each record only when you say yes. Any time, not just at spin-up. Usage - /import <path-or-url | pasted text> [more] [IDEA-NNN]
+argument-hint: "<path-or-url | pasted text> [more] [IDEA-NNN]"
 ---
 
 # /import — bring your own material in

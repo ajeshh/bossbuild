@@ -1,6 +1,7 @@
 ---
 name: log
 description: Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you. Lighter than commit messages, denser than CHANGELOG. The thing future-you reads before starting work. When a feature's criteria are all met, its Done step ships the record and reads the bet back. Usage - /log <one-line summary or detailed entry>
+argument-hint: "<one-line summary or detailed entry>"
 ---
 
 # /log — the devlog

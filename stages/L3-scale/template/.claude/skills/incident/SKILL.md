@@ -1,6 +1,7 @@
 ---
 name: incident
 description: The blameless one-page post-mortem for an outage — /sunset's honest-accounting shape, scoped to something that broke in production. What happened, what the user actually saw, a fix-first timeline, and the ONE systemic learning worth recording with /extract. Not a blame doc, not a ticket. Usage - /incident [what broke]
+argument-hint: "[what broke]"
 ---
 
 # /incident — what broke, what it taught, once

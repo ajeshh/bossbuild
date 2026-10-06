@@ -1,6 +1,7 @@
 ---
 name: sunset
 description: End something honestly, at whatever size it is - the whole project, one zombie feature, or one captured idea; the argument picks the scope. An experiment that returned an answer, never a failure; retiring is reversible. The conscience never suggests quitting. Usage - /sunset [FEAT-NNN | IDEA-NNN | name]
+argument-hint: "[FEAT-NNN | IDEA-NNN | name]"
 ---
 
 # /sunset — projects can end well

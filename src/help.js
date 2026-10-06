@@ -30,9 +30,9 @@ export const HELP = {
     see: ['map', 'status'],
   },
   status: {
-    usage: 'boss status [--conscience] [--verbose]',
-    what: 'This project at a glance: mode, installed layers, pinned vs current BOSS version, and any drift. --conscience shows the loop states, cohort, and recent overrides; add --verbose for the full ledger.',
-    examples: ['boss status', 'boss status --conscience', 'boss status --conscience --verbose'],
+    usage: 'boss status [--conscience] [--verbose] [--line]',
+    what: 'This project at a glance: mode, installed layers, pinned vs current BOSS version, and any drift. --conscience shows the loop states, cohort, and recent overrides; add --verbose for the full ledger. --line is the same read in one plain line, for a status bar or a shell prompt — it prints nothing outside a project.',
+    examples: ['boss status', 'boss status --line', 'boss status --conscience', 'boss status --conscience --verbose'],
     see: ['map', 'sync', 'conscience'],
   },
   playbook: {

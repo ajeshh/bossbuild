@@ -3,7 +3,8 @@ id: IDEA-152
 type: idea
 kind: capability
 owner: product-lead
-status: building
+status: shipped
+shipped_on: 2026-10-05
 proof: test/front-door.test.js
 program: PROG-004
 created: 2026-10-05
@@ -19,14 +20,14 @@ today before it was written down (did-you-mean, examples in help, project-scoped
 
 ## Tasks
 
-- [ ] **Q1 · `argument-hint` on every shipped skill**, derived from its `Usage -` tail. The host shows
+- [x] **Q1 · `argument-hint` on every shipped skill**, derived from its `Usage -` tail. The host shows
   it greyed after `/canvas ` as you type; today the usage sits at the end of a description the `/`
   menu truncates. A test keeps the two in step.
-- [ ] **Q2 · `boss unlock` with no mode** names the next rung and shows its bar, ending in the command
+- [x] **Q2 · `boss unlock` with no mode** names the next rung and shows its bar, ending in the command
   to type. Today: `usage: boss unlock <mode> (current: MVP)` — it knew the answer and didn't say it.
-- [ ] **Q3 · `boss status --line`** — one plain line (mode · building now · what needs you) for any
+- [x] **Q3 · `boss status --line`** — one plain line (mode · building now · what needs you) for any
   status bar or prompt: Claude Code's `statusLine`, a Starship custom module. Plain text, no colour.
-- [ ] **Q4 · Bare `boss` inside a project** opens with that line and points at `boss status`, then help.
+- [x] **Q4 · Bare `boss` inside a project** opens with that line and points at `boss status`, then help.
   Outside a project it is unchanged.
 
 ## Not in this slice
