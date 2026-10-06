@@ -65,3 +65,25 @@ test('a bare project lists only .boss/ — the folder the home itself lives in �
 test('the board leads the spaces: it is the page opened most', () => {
   assert.match(familyBar(project({}), 'home'), /data-space="home">Home<\/a><a [^>]*data-space="board"/);
 });
+
+test('a page is out of date when a file it reads changed after it was made — and names the newest', async () => {
+  const { utimesSync } = await import('node:fs');
+  const dir = project({ 'docs/ideas/IDEA-001.md': idea('IDEA-001'), 'docs/design/tokens.json': '{}' });
+  const old = new Date(Date.now() - 3 * 86400000);
+  utimesSync(join(dir, 'docs/ideas/IDEA-001.md'), old, old);
+  utimesSync(join(dir, 'docs/design/tokens.json'), old, old);
+  boardHtml(dir, 'demo');
+  let html = readFileSync(homeHtml(dir, 'demo'), 'utf8');
+  assert.match(html, /nothing changed since/, 'fresh right after it was made');
+  const later = new Date(Date.now() + 60000);
+  utimesSync(join(dir, 'docs/ideas/IDEA-001.md'), later, later);
+  utimesSync(join(dir, 'docs/design/tokens.json'), later, later);   // the board does not read docs/design
+  html = readFileSync(homeHtml(dir, 'demo'), 'utf8');
+  assert.match(html, /out of date: 1 file changed since/);
+  assert.match(html, /newest change: docs\/ideas\/IDEA-001\.md · boss board --html to refresh/);
+});
+
+test('the home says when it checked, so an old home never reads as a current "up to date"', () => {
+  const html = readFileSync(homeHtml(project({}), 'demo'), 'utf8');
+  assert.match(html, /<span class="checked" data-made="\d{4}-\d\d-\d\dT[^"]+">checked /);
+});

@@ -77,8 +77,13 @@ Board · Playbook · Design · Guide; the demo opens with what Kettlewick does (
 then what it is, the problem, the first proof, why, and the name last — rewritten in the records
 (BRAND story, gist, canvas Problem, EVID-003's title), so the playbook's cover reads plainly too.
 
-## Open questions
+## Decided after (Ajesh, 2026-10-05: "Stalesness. One hom for every machine, if they have other projects then they should have their own home pages right")
 
-- Is a page's *age* enough, or should the home say a page is **stale** (its sources changed since)?
-  That needs each page's source list — bigger; wait for someone to trust an old page.
-- One home per machine at `~/.boss/` listing every project — hold until a founder with several projects asks.
+- **Staleness, built.** Each space declares what it reads (`SPACES[].reads` in `src/page-shell.js`); a
+  page is *out of date* when a file under those changed after it was written, and the card names the
+  newest. Generous on purpose: a false flag costs a re-run, a missed one is a page lying. The check is
+  as old as the home, so the home says when it checked (aged in the browser) — nothing rewrites it
+  between page commands. Age alone no longer turns amber: an old page with nothing changed is fine.
+- **No machine-wide home.** Each project has its own; a founder with several bookmarks several.
+- Open, not urgent: the home re-checks only on a page command. If a stale "checked 9 days ago" turns
+  out to be what people see, the session-start hook could rewrite it — wait for that to happen.

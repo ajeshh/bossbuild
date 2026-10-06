@@ -24,11 +24,14 @@ export const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (m) => ({ '&': '&am
 // Ordered by how often a founder opens each, not by when it was built (Ajesh, 2026-10-05: "board in
 // the middle seems wrong since it might be frequently visited"): the board is where-am-I, most days;
 // the playbook is the venture, now and then; design waits on UI; the guide is reference.
+// `reads` is what each page is a read of — the home calls a page out of date when a file under one
+// of these changed after the page was written (IDEA-144). Generous on purpose: a page flagged that
+// would have come out the same costs a re-run; one that changed and says nothing is a page lying.
 export const SPACES = [
-  { key: 'board', label: 'Board', file: 'board.html', cmd: 'boss board --html' },
-  { key: 'playbook', label: 'Playbook', file: 'playbook.html', cmd: 'boss playbook' },
-  { key: 'design', label: 'Design', file: 'design.html', cmd: 'boss design' },
-  { key: 'guide', label: 'Guide', file: 'help.html', cmd: 'boss help --html' },
+  { key: 'board', label: 'Board', file: 'board.html', cmd: 'boss board --html', reads: ['docs/ideas', 'docs/decisions', 'docs/evidence'] },
+  { key: 'playbook', label: 'Playbook', file: 'playbook.html', cmd: 'boss playbook', reads: ['docs'] },
+  { key: 'design', label: 'Design', file: 'design.html', cmd: 'boss design', reads: ['docs/design', 'docs/BRAND.md', 'docs/decisions', 'docs/personas', 'docs/evidence', 'docs/product'] },
+  { key: 'guide', label: 'Guide', file: 'help.html', cmd: 'boss help --html', reads: ['.claude'] },
 ];
 
 // Home leads the bar and is always live: every command that writes a page writes the home with it

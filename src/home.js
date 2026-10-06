@@ -6,10 +6,11 @@
 // the problem — the missing front page was. So every command that writes a page writes this one
 // with it, and prints it as the bookmark.
 //
-// It lists each page with WHEN it was made, never whether it is still right: age is a fact this file
-// can read (the file's own date); staleness would need each page's sources, and a guess here would
-// be the flattery the playbook refuses. The age is computed in the viewer's browser from the stamped
-// date, so a page opened a month later says a month, not "today".
+// It lists each page with when it was made and whether it is out of date: a page is out of date when
+// a file it reads (SPACES[].reads) changed after the page was written — file dates, both sides, no
+// guessing. That check is as old as this file: nothing rewrites the home between page commands, so
+// the page says when it checked, and the ages are computed in the viewer's browser from stamped
+// dates — a home opened a month later says "checked a month ago", never a stale "up to date".
 //
 // The bookmark hint can't vanish on its own when the page is bookmarked — no browser tells a page
 // that. It has a Done button, remembered in the browser; with no storage (some browsers give a
@@ -35,12 +36,31 @@ const WHAT = {
 export function homePath(projectDir) { return join(projectDir, '.boss', 'index.html'); }
 export function homeUrl(projectDir) { return pathToFileURL(homePath(projectDir)).href; }
 
+// The files under `reads` changed after `since`: how many, and the newest. Dot-entries below the
+// roots are skipped (.DS_Store, an editor's swap files), and so is anything in .boss — the pages
+// themselves live there.
+export function changedSince(projectDir, reads, since) {
+  let count = 0; let newest = null;
+  const visit = (abs, rel, depth) => {
+    let st; try { st = statSync(abs); } catch { return; }
+    if (st.isDirectory()) {
+      let names = []; try { names = readdirSync(abs); } catch { return; }
+      for (const n of names) if (!n.startsWith('.') && n !== 'node_modules') visit(join(abs, n), `${rel}/${n}`, depth + 1);
+    } else if (st.mtime > since) {
+      count++;
+      if (!newest || st.mtime > newest.mtime) newest = { rel, mtime: st.mtime };
+    }
+  };
+  for (const r of reads || []) if (!r.startsWith('.boss')) visit(join(projectDir, r), r, 0);
+  return { count, newest: newest && newest.rel };
+}
+
 export function collectHome(projectDir) {
   return SPACES.map((s) => {
     const p = join(projectDir, '.boss', s.file);
     let made = null;
     try { made = statSync(p).mtime; } catch { /* not generated yet */ }
-    return { ...s, what: WHAT[s.key] || '', made };
+    return { ...s, what: WHAT[s.key] || '', made, changed: made ? changedSince(projectDir, s.reads, made) : null };
   });
 }
 
@@ -76,13 +96,15 @@ function renderPlaces({ files, groups }) {
   </section>`;
 }
 
-export function renderHomeHtml(projectDir, projectName, spaces, stampedAt, places = { files: [], groups: [] }) {
+export function renderHomeHtml(projectDir, projectName, spaces, stampedAt, places = { files: [], groups: [] }, checkedAt = Date.now()) {
   const brand = readBrand(projectDir, projectName);
   const cards = spaces.map((s) => s.made
     ? `<a class="block card" href="${esc(s.file)}">
     <div class="head"><h3>${esc(s.label)}</h3></div>
-    <div class="body"><p>${esc(s.what)}</p></div>
-    <div class="foot"><span class="age" data-made="${s.made.toISOString()}">made ${esc(isoDay(s.made))}</span><span class="src">${esc(s.cmd)} to refresh</span></div>
+    <div class="body"><p>${esc(s.what)}</p>${s.changed && s.changed.count ? `<span class="verb">newest change: ${esc(s.changed.newest)} · ${esc(s.cmd)} to refresh</span>` : ''}</div>
+    <div class="foot">${s.changed && s.changed.count
+      ? `<span class="chip stale">out of date: ${s.changed.count} file${s.changed.count === 1 ? '' : 's'} changed since</span>`
+      : '<span class="chip ev">nothing changed since</span>'}<span class="age" data-made="${s.made.toISOString()}">made ${esc(isoDay(s.made))}</span></div>
   </a>`
     : `<div class="block card hole">
     <div class="head"><h3>${esc(s.label)}</h3></div>
@@ -105,7 +127,7 @@ export function renderHomeHtml(projectDir, projectName, spaces, stampedAt, place
   .home .blocks { margin-top: 28px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
   a.card { text-decoration: none; color: inherit; } a.card:hover { border-color: var(--accent); } a.card h3 { font-size: 16px; color: var(--accent); }
   .card.hole h3 { color: var(--hole); }
-  .age.old { color: var(--stale); }
+a.card .verb { font-style: normal; font-family: var(--mono); font-size: 11.5px; color: var(--stale); display: block; margin-top: 10px; overflow-wrap: anywhere; }
   .where-live { margin-top: 44px; } .where-live h2 { font-family: var(--display); font-size: 26px; }
   .pl-group { margin: 22px 0 6px; } ul.places { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule-2); }
   .place { display: flex; gap: 8px 18px; align-items: baseline; justify-content: space-between; padding: 10px 2px; border-bottom: 1px solid var(--rule-2); }
@@ -123,7 +145,7 @@ export function renderHomeHtml(projectDir, projectName, spaces, stampedAt, place
 </header>
 <main class="home">
   <h1>Everything BOSS has made for ${esc(brand.name)}</h1>
-  <p class="lede">Each page is a read of your project's files. A command rewrites its page, and this one with it, so this list is never out of date. The pages themselves can be: each card says when it was made.</p>
+  <p class="lede">Each page is a read of your project's files. Each card says when its page was made and whether any file it reads has changed since — <span class="checked" data-made="${esc(new Date(checkedAt).toISOString())}">checked ${esc(stampedAt)}</span>. Any page command re-checks.</p>
   <aside class="mark" id="mark" aria-label="Bookmark this page">
     <p><b>Bookmark this page.</b> It's the one link to all of them. Press <kbd id="key">Ctrl+D</kbd>. The folder it lives in, <code>.boss/</code>, starts with a dot, so Finder and most file browsers hide it: the bookmark is the easy way back.</p>
     <button type="button" id="done">Done, hide this</button>
@@ -163,7 +185,11 @@ export function renderHomeHtml(projectDir, projectName, spaces, stampedAt, place
     var t = Date.parse(el.getAttribute('data-made')); if (isNaN(t)) return;
     var d = Math.floor((now - t) / day);
     el.textContent = d < 1 ? 'made today' : d === 1 ? 'made yesterday' : 'made ' + d + ' days ago';
-    if (d >= 14) el.classList.add('old');
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.checked[data-made]'), function (el) {
+    var t = Date.parse(el.getAttribute('data-made')); if (isNaN(t)) return;
+    var m = Math.floor((now - t) / 6e4), d = Math.floor(m / 1440);
+    el.textContent = m < 2 ? 'checked just now' : m < 60 ? 'checked ' + m + ' minutes ago' : d < 1 ? 'checked today' : d === 1 ? 'checked yesterday' : 'checked ' + d + ' days ago';
   });
 })();
 </script>

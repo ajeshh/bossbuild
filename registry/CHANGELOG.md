@@ -30,7 +30,9 @@ rule above still applies to the whole section once it is stamped.
 - **One page to bookmark for all your pages.** The playbook, design, board and guide pages live in
   `.boss/`, a folder your file browser hides, and each one was its own link. Now each command also
   writes `.boss/index.html`, a home that lists every page with when it was made (or the command that
-  makes it), and prints that one link to bookmark. Every page links back to it. Below the pages,
+  makes it), and prints that one link to bookmark. Each card also says when a page is **out of
+  date** (a file it reads has changed since it was made) and names the newest change, so you know
+  which one to refresh. Every page links back to it. Below the pages,
   **Where things live** lists each folder and key file your project has, with what it holds, and
   Open and Copy path, so the files are one click away too. The board now comes first in the bar,
   since it's the page you open most.
