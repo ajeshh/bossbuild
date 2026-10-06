@@ -10,7 +10,7 @@ updated: 2026-09-08
 **Why it exists:** new — the carer's whole product: one visit, one question, yes or no with one thumb, between visits. Nothing else is the carer's.
 
 ## When it applies
-- the carer's phone, when an ask arrives (7am–8pm only — DEC-003)
+- the carer's phone, when an ask arrives (6:30am–8pm only — DEC-003, FEAT-005)
 - the carer's phone, after answering — the same card says who covered it
 
 ## When it doesn't
@@ -24,7 +24,7 @@ updated: 2026-09-08
 
 ## Content
 - the time and the client's first name; who is asking; *Yes* / *Not this one* — never "Accept" / "Decline"
-- after 8pm the card is disabled and says "This ask goes out at 7am" (the disabled state says why)
+- after 8pm the card is disabled and says "This ask goes out at 6:30" (the disabled state says why)
 
 ## Layout
 - fills the phone width; yes / no fill the width side by side, 44px each; nothing above the fold but the visit and the two buttons

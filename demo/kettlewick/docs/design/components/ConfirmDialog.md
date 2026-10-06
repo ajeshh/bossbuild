@@ -11,6 +11,7 @@ updated: 2026-09-05
 
 ## When it applies
 - cancelling a visit; removing a carer — the two acts that tell someone something they can't un-hear
+- leaving Kettlewick (Settings → "Delete your agency…", FEAT-006) — "Keep it" is the way out, and it's the default
 
 ## When it doesn't
 - anything reversible — an ask can be withdrawn from the row, no dialog

@@ -1,0 +1,37 @@
+<!-- on-system: imports src/styles/tokens.css and uses token names only. A prototype for FEAT-007,
+     adopted 2026-09-14 (docs/design/PROTOTYPES.md). Canned drafts, no model, nothing sends. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype — the draft sheet</title>
+<link rel="stylesheet" href="../src/styles/tokens.css">
+<style>
+  body { margin: 0; background: var(--color-surface-ground); color: var(--color-text-body); font-family: var(--font-body); font-size: var(--type-size-body); }
+  .day { padding: var(--space-4); max-width: var(--breakpoint-phone); margin: 0 auto; }
+  .row { background: var(--color-surface-paper); border-bottom: 1px solid var(--color-border-subtle); padding: var(--space-2) var(--space-3); display: flex; gap: var(--space-3); align-items: center; min-height: var(--target-min); }
+  .row time { font-family: var(--font-mono); }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; max-width: var(--breakpoint-phone); margin: 0 auto; background: var(--color-surface-raised); box-shadow: var(--shadow-raised); border-radius: var(--radius-surface) var(--radius-surface) 0 0; padding: var(--space-4); z-index: var(--z-index-overlay); }
+  .from { color: var(--color-text-muted); font-size: var(--type-size-small); margin: 0 0 var(--space-3); }
+  label { display: block; font-size: var(--type-size-small); margin: var(--space-3) 0 var(--space-1); }
+  textarea { width: 100%; box-sizing: border-box; font: inherit; padding: var(--space-2); border: 1px solid var(--color-border-default); border-radius: var(--radius-control); background: var(--color-surface-paper); }
+  button { width: 100%; margin-top: var(--space-4); min-height: var(--target-min); border: 0; border-radius: var(--radius-control); background: var(--color-action-primary); color: var(--color-text-on-primary); font: inherit; font-weight: 500; }
+</style>
+</head>
+<body>
+<main class="day">
+  <div class="row"><time>09:00</time><strong>Mrs H</strong><span>uncovered</span></div>
+</main>
+<section class="sheet" aria-label="The ask for the 9 o'clock">
+  <p class="from">Drafted for you. Change anything.</p>
+  <label for="d1">To Priya</label>
+  <textarea id="d1" rows="2">Morning Priya, could you take a visit tomorrow at 9 in Church End? Reply YES and it's yours.</textarea>
+  <label for="d2">To Sam</label>
+  <textarea id="d2" rows="2">Morning Sam, could you take a visit tomorrow at 9 in Church End? Reply YES and it's yours.</textarea>
+  <label for="d3">To Jo</label>
+  <textarea id="d3" rows="2">Morning Jo, could you take a visit tomorrow at 9 in Church End? Reply YES and it's yours.</textarea>
+  <button type="button">Ask Priya, Sam and Jo</button>
+</section>
+</body>
+</html>

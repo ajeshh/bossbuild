@@ -14,7 +14,7 @@ updated: 2026-09-05
 - after an ask fails to send — "Couldn't reach anyone — try again, or ask three more."
 
 ## When it doesn't
-- a standing fact ("3 asks go out at 7am") — that is the proposed `QuietNotice`, not a toast
+- a standing fact ("3 asks go out at 6:30") — that is the proposed `QuietNotice`, not a toast
 - anything with a question in it — a toast never asks
 
 ## Variants, and when

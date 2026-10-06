@@ -1,0 +1,82 @@
+<!doctype html>
+<!-- /landing --product, 2026-09-14. Born from docs/BRAND.md (story, ★ row), the canvas Promises cell,
+     docs/design/tokens.json (by semantic name) and docs/competition/README.md (the phone tree is the
+     alternative; no rival is named). Humane check: one CTA, no countdown, no fake scarcity, no email
+     field — so no personal data collected here. The quote's owner was asked on 2026-09-14 and said yes. -->
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kettlewick — cover for a sick carer, found in one tap</title>
+  <meta name="description" content="When a carer calls in sick, Kettlewick texts the three carers most likely to say yes. The first yes takes the visit. For home-care agencies with 3 to 15 carers.">
+  <link rel="canonical" href="https://kettlewick.example/">
+  <meta property="og:title" content="Kettlewick — cover for a sick carer, found in one tap">
+  <meta property="og:description" content="When a carer calls in sick, Kettlewick texts the three carers most likely to say yes. The first yes takes the visit.">
+  <meta property="og:image" content="https://kettlewick.example/screens/01-the-monday-view-just-after-a-cover.png">
+  <meta property="og:url" content="https://kettlewick.example/">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    /* tokens by semantic name — values from docs/design/tokens.json, never typed elsewhere */
+    :root {
+      --color-surface-ground: #F3ECE1; --color-surface-paper: #FFFBF4; --color-surface-raised: #FFFFFF;
+      --color-text-body: #2A1E17; --color-text-muted: #665247; --color-text-on-primary: #FFF7F0;
+      --color-action-primary: #B84E12; --color-action-primary-hover: #A74813;
+      --color-signal-covered: #2E6B4F; --color-border-subtle: #E8DFD2;
+      --font-display: Newsreader, Georgia, serif; --font-body: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+      --type-display: 28px; --type-heading: 20px; --type-body: 15px; --type-small: 13px;
+      --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px; --space-8: 32px;
+      --radius-control: 6px; --radius-surface: 8px; --target-min: 44px;
+      --shadow-raised: 0 1px 2px rgba(42,30,23,.06), 0 8px 24px rgba(42,30,23,.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--color-surface-ground); color: var(--color-text-body); font: var(--type-body)/1.55 var(--font-body); }
+    main { max-width: 640px; margin: 0 auto; padding: var(--space-8) var(--space-4); }
+    h1 { font: 600 var(--type-display)/1.2 var(--font-display); margin: 0 0 var(--space-3); }
+    h2 { font: 600 var(--type-heading)/1.3 var(--font-display); margin: var(--space-8) 0 var(--space-3); }
+    p { margin: 0 0 var(--space-3); }
+    .sub { color: var(--color-text-muted); }
+    .cta { display: inline-flex; align-items: center; min-height: var(--target-min); padding: 0 var(--space-6); margin: var(--space-4) 0; border-radius: var(--radius-control); background: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: 600; text-decoration: none; }
+    .cta:hover, .cta:focus-visible { background: var(--color-action-primary-hover); }
+    .cta:focus-visible { outline: 3px solid var(--color-text-body); outline-offset: 2px; }
+    figure { margin: var(--space-6) 0; background: var(--color-surface-raised); border-radius: var(--radius-surface); box-shadow: var(--shadow-raised); overflow: hidden; }
+    figure img { display: block; width: 100%; height: auto; }
+    figcaption { padding: var(--space-3) var(--space-4); font-size: var(--type-small); color: var(--color-text-muted); }
+    ol { padding-left: var(--space-6); } li { margin-bottom: var(--space-2); }
+    blockquote { margin: var(--space-6) 0; padding: var(--space-4); border-left: 3px solid var(--color-signal-covered); background: var(--color-surface-paper); }
+    blockquote footer { font-size: var(--type-small); color: var(--color-text-muted); margin-top: var(--space-2); }
+    .fine { font-size: var(--type-small); color: var(--color-text-muted); border-top: 1px solid var(--color-border-subtle); padding-top: var(--space-4); margin-top: var(--space-8); }
+    .fine a { color: inherit; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>When a carer calls in sick, Kettlewick finds the cover in one tap.</h1>
+  <p class="sub">It texts the three carers most likely to say yes. The first yes takes the visit, and you see it covered. Your schedule stays in your spreadsheet.</p>
+  <a class="cta" href="https://app.kettlewick.example/start">Find your next cover with Kettlewick</a>
+
+  <figure>
+    <img src="../docs/product/screens/01-the-monday-view-just-after-a-cover.png" alt="The Monday view on a phone: the 9 o'clock visit marked covered, with the carer who said yes." width="720" height="1280">
+    <figcaption>The Monday view, a minute after a cover.</figcaption>
+  </figure>
+
+  <h2>Instead of the phone tree</h2>
+  <p>The phone tree costs you an hour of calls on a Monday, and it costs the carers their evening. Kettlewick does those calls as three texts.</p>
+  <ol>
+    <li>A carer texts in sick. You tap the visit.</li>
+    <li>Kettlewick drafts the ask; you can change it before it goes.</li>
+    <li>The three carers most likely to be free get it. The first yes takes the visit.</li>
+  </ol>
+  <p>It never ranks your carers, never tracks where they are, and never texts anyone after 8pm.</p>
+
+  <blockquote>
+    “it just texts the right three”
+    <footer>an owner, showing it to another owner at the school gate</footer>
+  </blockquote>
+
+  <p>£4 a carer a month, paid by the agency. Free for carers.</p>
+  <a class="cta" href="https://app.kettlewick.example/start">Find your next cover with Kettlewick</a>
+
+  <p class="fine"><a href="https://kettlewick.example/privacy">Privacy</a> · <a href="https://kettlewick.example/trust">What we keep, and who processes it</a> · Kettlewick is fictional — the worked example in BOSS's demo.</p>
+</main>
+</body>
+</html>

@@ -2,8 +2,11 @@
 
 **Kettlewick is fictional.** A home-care shift-cover venture that does not exist, run by people who do
 not exist, with rivals that do not exist. Every file in this folder is in the exact shape the
-shipped BOSS verbs write (`/idea`, `/canvas`, `/persona`, `/evidence`, `/decide`, `/log`,
-`/scout market`, `/trust`, `/health`, `boss team add`), so that `scripts/gen-demo.js` can
+shipped BOSS verbs write — every Quickstart and MVP verb that leaves a record (`/idea`, `/canvas`,
+`/evidence`, `/decide`, `/spec`, `/log`, `/close`, `/extract`, `/red-team`, `/drift-deep`, `/roadmap`,
+`/money`, `/onboard`, `/practice`, `/design-review`, `/smoke`, `/ship` and the rest; the full map
+from verb to record is `COVERAGE` in `scripts/check-demo.js`), plus `boss team add` — so that
+`scripts/gen-demo.js` can
 hand the folder to the same renderers an install runs — `boss playbook`, `boss design`,
 `boss board --html` — and publish the result at `oyeboss.build/demo/`.
 

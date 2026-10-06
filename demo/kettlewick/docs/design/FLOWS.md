@@ -16,6 +16,7 @@ updated: 2026-09-08
 | Find cover for a visit | the uncovered row | 3 | the visit is covered and the owner has confirmed | `FEAT-001` |
 | Answer an ask | the carer's phone | 1 | a yes or a not-this-one, one thumb | `FEAT-002` |
 | Import the week | the owner's spreadsheet | 2 | Monday's visits on the day view | `FEAT-004` |
+| Draft the ask | *Ask* on an uncovered visit | 3 | the edited asks in the send queue | `FEAT-007` |
 
 ---
 

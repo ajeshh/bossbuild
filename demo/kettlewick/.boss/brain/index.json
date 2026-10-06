@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "created": "2026-09-14T21:10:00.000Z",
+  "last_write_ts": "2026-09-24T21:35:00.000Z",
+  "next_seq": 9,
+  "entries": [
+    { "id": "b1", "ts": "2026-09-14T21:10:00.000Z", "kind": "read", "headline": "They let owners correct them fast; the pretotype missed its threshold and was read as a miss" },
+    { "id": "b2", "ts": "2026-09-14T21:11:00.000Z", "kind": "relationship", "headline": "threshold before sending → landed; failure states before the prompt → landed" },
+    { "id": "b3", "ts": "2026-09-15T22:05:00.000Z", "kind": "relationship", "headline": "drift: payment is the bet, the week is the draft → overrode, money ask after the ship" },
+    { "id": "b4", "ts": "2026-09-17T22:40:00.000Z", "kind": "relationship", "headline": "the draft route has no session check → overrode, comes with FEAT-003's accounts" },
+    { "id": "b5", "ts": "2026-09-19T20:30:00.000Z", "kind": "read", "headline": "FEAT-007 shipped carefully; open items get recorded, not hidden" },
+    { "id": "b6", "ts": "2026-09-20T19:15:00.000Z", "kind": "relationship", "headline": "card-on-file is billing before three customers → landed, payment links instead" },
+    { "id": "b7", "ts": "2026-09-22T21:00:00.000Z", "kind": "relationship", "headline": "drift-deep: mixed → pushed back, partly right: the voice may be why they pay" },
+    { "id": "b8", "ts": "2026-09-24T21:35:00.000Z", "kind": "read", "headline": "Re-aimed at payment; until three strangers pay, it's a product nine use and one pays for" }
+  ]
+}

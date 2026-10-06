@@ -19,7 +19,7 @@
 // and destroyed a single-copy file. So: never inside a git checkout that isn't the demo's own, and
 // `--fresh` deletes only a dir carrying the `.boss-demo` marker this script writes.
 
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, chmodSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync, chmodSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
@@ -113,7 +113,7 @@ export function layDown({ dir = join(tmpdir(), 'boss-kettlewick'), fresh = false
   return { dir, project, home, reused: false };
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+if (process.argv[1] && realpathSync(fileURLToPath(import.meta.url)) === realpathSync(process.argv[1])) {
   const a = process.argv.slice(2);
   const at = a.indexOf('--dir');
   try {

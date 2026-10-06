@@ -33,7 +33,7 @@ Split out of IDEA-137 on 2026-10-05 (C7, with B2), when that record graduated to
   mark what differs and why.
 - [ ] **C7.3** · A skill that spans ecosystems — `/red-team` (LLM battery = AI behaviour, `--paths` =
   engineering, `--humane` = claims and trust): are its *gives* declared per mode?
-- [ ] **C7.2** · Test on three throwaway scaffolds: does the whole have the same anatomy as each part?
+- [ ] **C7.2** · Test on Kettlewick, live (`npm run demo`, IDEA-149), not on three throwaway scaffolds (Ajesh, 2026-10-05): does the whole have the same anatomy as each part?
 - [ ] The site's Engineering page picks it up on the next regeneration; a CHANGELOG bullet if a founder
   feels it.
 

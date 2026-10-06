@@ -52,7 +52,7 @@ test('the where-things-live page is read from the tree and grouped, verbs as chi
     assert.ok(!org.includes('kettlewick/.boss') && !org.includes('kettlewick/.claude'), 'the machine folders, filled at render time, do not link');
     assert.ok(!/>Organization</.test(org), 'the page is "Where things live", not an org chart');
     assert.ok(org.includes('<span class="verb-chip">/scout market</span>') && org.includes('<span class="verb-chip">boss team add</span>'));
-    for (const g of ['org-idea', 'org-people', 'org-field', 'org-made', 'org-going', 'org-machine']) assert.ok(org.includes(`id="${g}"`), g);
+    for (const g of ['org-idea', 'org-people', 'org-field', 'org-made', 'org-going', 'org-checked', 'org-machine']) assert.ok(org.includes(`id="${g}"`), g);
     assert.match(org, /<b class="tab">\d+<\/b><span>records on disk<\/span>/);
     assert.ok(org.includes('Quickstart</div><p><b class="tab">'), 'the modes strip is read from the manifests');
     const learn = readFileSync(join(out, 'learning.html'), 'utf8');

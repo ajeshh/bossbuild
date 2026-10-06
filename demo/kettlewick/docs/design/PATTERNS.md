@@ -3,7 +3,7 @@ id: patterns
 type: design
 owner: designer
 status: active
-updated: 2026-09-08
+updated: 2026-09-14
 ---
 
 # Patterns — Kettlewick
@@ -20,6 +20,13 @@ updated: 2026-09-08
 | **Error copy** | any failure a user can see | say what to do next, not what failed | "Oops! Something went wrong." |
 | **Destructive confirm** | delete, revoke, cancel | name the consequence and whether it can be undone | "Are you sure?" |
 | **Terminology** | every user-facing string | one word per concept, from the table in `STYLE_GUIDE.md` | *visit* here, *shift* there, *slot* in the text message |
+
+## If the product is AI-mediated — seeded 2026-09-14 by the FEAT-007 review
+
+| Pattern | The situation | The rule | Anti-pattern |
+|---|---|---|---|
+| **Risk-tiered gate** | the model has written something that will go out in the owner's name | the owner reads it and taps Ask; edit is always there; nothing sends around the tap | a draft that sends itself after a countdown |
+| **Degraded-state honesty** | the model is slow, refused, or returned something unusable | say which in one line ("The usual wording this time.") and show what still works: the template, in the same field | a spinner that never resolves; an empty field |
 
 ## Element families — seeded the first time a screen had one
 
@@ -73,7 +80,7 @@ updated: 2026-09-08
 | **PAT-1** | Shape before colour | a visit's state anywhere — row, card, paper | a hollow ring, a half-filled ring, a filled disc; colour is the second channel | a coloured dot; a tick icon | feedback | 1 · Calm over urgent | 2026-08-26 |
 | **PAT-2** | The act on the row | a visit needs cover; the owner is scanning | the ghost *Ask* sits on the row; it names who will be asked; the row never opens a page | a detail page with the act at the bottom | data display | 2 · The row is the unit | 2026-09-02 |
 | **PAT-3** | Ask three, first yes fills | an uncovered visit; the owner taps Ask | the three who could — no ranking, no league table (DEC-003); the first yes fills; the owner confirms | broadcast to everyone; auto-assign; a "best match" score | feedback | 3 · Ask, don't assign | 2026-09-02 |
-| **PAT-4** | Say when, after 8pm | anything queued by the 8pm rule (DEC-003) | the screen says the time it will go — "goes out at 7am" — on the carer's card and the owner's day | a silent queue; a disabled control with no reason | feedback | 1 · Calm over urgent | 2026-09-08 |
+| **PAT-4** | Say when, after 8pm | anything queued by the 8pm rule (DEC-003) | the screen says the time it will go — "goes out at 6:30" — on the carer's card and the owner's day | a silent queue; a disabled control with no reason | feedback | 1 · Calm over urgent | 2026-09-08 |
 | **PAT-6** | One question, then it closes | any destructive act — cancel a visit, remove a carer | the `ConfirmDialog` asks one question with the consequence in its title, the danger button repeats the consequence, and it closes; the day is never hidden behind two dialogs | "Are you sure?"; a dialog with a form in it | overlays | 1 · Calm over urgent | 2026-09-03 |
 | **PAT-7** | Three places, one rail | any screen — the owner is always in Today, Carers or Settings | the `Rail` is the laptop's left rail and the phone's bottom bar, the same three places in the same order; the current one is marked; nothing else navigates | a hamburger menu; a back button that goes somewhere else | navigation | 2 · The row is the unit | 2026-08-30 |
 | **PAT-8** | Paste, don't map | the owner brings the week from her spreadsheet | one multiline `TextField`, paste as-is; the parse guesses the columns and the check screen catches it — never a column-mapping form | a wizard that asks which column is the time | inputs | 3 · Ask, don't assign | 2026-09-06 |

@@ -1,0 +1,36 @@
+/* What a style prop can't say: focus, hover, media queries, motion, print. Tokens only. */
+body {
+  margin: 0;
+  background: var(--color-surface-ground);
+  color: var(--color-text-body);
+  font: var(--type-size-body) / 1.5 var(--font-body);
+}
+
+.kw-button:focus-visible,
+.kw-rail a:focus-visible {
+  outline: calc(var(--space-1) / 2) solid var(--color-action-primary);
+  outline-offset: calc(var(--space-1) / 2);
+}
+.kw-button--primary:hover:not(:disabled) { background: var(--color-action-primary-hover); }
+
+.kw-shell { display: flex; min-height: 100vh; }
+.kw-main { flex: 1; padding: var(--space-6); }
+.kw-rail { width: calc(var(--space-8) * 7.5); }
+
+/* the phone (breakpoint.phone; a media query cannot read a var): the rail becomes a bottom bar */
+@media (max-width: 480px) {
+  .kw-shell { flex-direction: column; }
+  .kw-main { padding: var(--space-4); padding-bottom: calc(var(--target-min) + var(--space-4)); }
+  .kw-rail { position: fixed; inset: auto 0 0 0; width: auto; z-index: var(--z-index-sticky); }
+  .kw-rail ul { flex-direction: row; justify-content: space-around; }
+  .kw-visit { flex-wrap: wrap; }
+}
+
+.kw-skeleton { animation: kw-shimmer 1.2s ease-in-out infinite alternate; }
+@keyframes kw-shimmer { from { opacity: 1; } to { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .kw-skeleton { animation: none; } }
+
+@media print {
+  @page { margin: 6mm; }
+  .kw-rail, .kw-no-print { display: none; }
+}

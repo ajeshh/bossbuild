@@ -1,0 +1,26 @@
+{
+  "name": "kettlewick",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "node src/server.ts",
+    "test": "node --test \"test/*.test.js\"",
+    "smoke": "node scripts/smoke.js",
+    "tokens": "node scripts/tokens.js"
+  },
+  "dependencies": {
+    "ai": "^5.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.1.0"
+  }
+}

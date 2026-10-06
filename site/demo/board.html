@@ -265,11 +265,11 @@
 <header class="topbar">
   <div class="wordmark">Kettlewick<span class="tag">Cover found before the kettle boils</span></div>
   <nav class="family" aria-label="Spaces"><a href="index.html">Demo</a><a href="#" class="on" aria-current="page" data-space="board">Board</a><a href="playbook.html" data-space="playbook">Playbook</a><a href="design.html" data-space="design">Design</a></nav>
-  <div class="ledger"><span class="pill" style="--hue:var(--stage-0)"><i></i>Captured <b>2</b></span><span class="pill" style="--hue:var(--stage-1)"><i></i>Taking shape <b>1</b></span><span class="pill" style="--hue:var(--stage-2)"><i></i>Building <b>2</b></span><span class="pill" style="--hue:var(--stage-3)"><i></i>Shipped <b>4</b></span></div>
+  <div class="ledger"><span class="pill" style="--hue:var(--stage-0)"><i></i>Captured <b>3</b></span><span class="pill" style="--hue:var(--stage-1)"><i></i>Taking shape <b>0</b></span><span class="pill" style="--hue:var(--stage-2)"><i></i>Building <b>2</b></span><span class="pill" style="--hue:var(--stage-3)"><i></i>Shipped <b>5</b></span></div>
 </header>
 <div class="shell">
   <nav class="rail" aria-label="Sections">
-    <div class="label group">By stage</div><ol><li><a href="#col-0"><span class="n">1</span>Captured</a></li><li><a href="#col-1"><span class="n">2</span>Taking shape</a></li><li><a href="#col-2"><span class="n">3</span>Building</a></li><li><a href="#col-3"><span class="n">4</span>Shipped</a></li></ol>
+    <div class="label group">By stage</div><ol><li><a href="#col-0"><span class="n">1</span>Captured</a></li><li><a href="#col-1" class="hole-link"><span class="n">2</span>Taking shape</a></li><li><a href="#col-2"><span class="n">3</span>Building</a></li><li><a href="#col-3"><span class="n">4</span>Shipped</a></li></ol>
 <div class="label group">By program</div><ol><li><a href="#lane-onboarding"><span class="n">5</span>onboarding</a></li><li><a href="#lane-prog-001"><span class="n">6</span>Cover</a></li><li><a href="#lane-none"><span class="n">7</span>Not part of a program</a></li></ol>
 <div class="label group">Over time</div><ol><li><a href="#timeline"><span class="n">8</span>Shipped, by month</a></li><li><a href="#parked"><span class="n">9</span>Parked</a></li></ol>
   </nav>
@@ -279,19 +279,25 @@
     <header class="board-head">
       <h1><small>the board</small>kettlewick</h1>
       
-      <p class="evidence">2 captured · 1 taking shape · 2 building · 4 shipped · 2 parked</p>
+      <p class="evidence">3 captured · 0 taking shape · 2 building · 5 shipped · 2 parked</p>
     </header>
     
     
     <nav class="viewswitch" aria-label="View"><a class="vs-stage" href="#by-stage">By stage</a><a class="vs-prog" href="#by-program">By program</a></nav>
     <div class="board" id="by-stage">
 <section class="col" id="col-0" style="--hue:var(--stage-0)">
-        <h2><span class="label">Captured</span> <span class="n">2</span></h2>
+        <h2><span class="label">Captured</span> <span class="n">3</span></h2>
         <div class="cards"><div class="card" tabindex="0" title="IDEA-003 — Invoice export
 
 Export the month's filled visits as the line an invoice needs. (d)">
             <div class="id">IDEA-003</div>
             <div class="title">Invoice export</div><p class="gist">Export the month's filled visits as the line an invoice needs. <span class="muted">(d)</span></p><div class="dates"><span><em>added</em> 2026-09-01</span></div>
+          </div>
+<div class="card" tabindex="0" title="IDEA-004 — The second-Monday nudge
+
+One message to an owner who filled a visit last Monday and hasn't opened Kettlewick this one — the second-Monday nudge, sent once, never twice. (pretotype 2026-09-14: one of three filled; the silence was partly our quiet hours)">
+            <div class="id">IDEA-004</div>
+            <div class="title">The second-Monday nudge</div><p class="gist">One message to an owner who filled a visit last Monday and hasn't opened Kettlewick this one — the second-Monday nudge, sent once, never twice. <span class="muted">(pretotype 2026-09-14: one of three filled; the silence was partly our quiet hours)</span></p><div class="dates"><span><em>added</em> 2026-09-06</span></div>
           </div>
 <div class="card" tabindex="0" title="IDEA-006 — The owners' group referral
 
@@ -301,13 +307,8 @@ A one-line referral an owner can forward in the county owners' group — &quot;t
           </div></div>
       </section>
 <section class="col" id="col-1" style="--hue:var(--stage-1)">
-        <h2><span class="label">Taking shape</span> <span class="n">1</span></h2>
-        <div class="cards"><div class="card" tabindex="0" title="IDEA-004 — The second-Monday nudge
-
-One message to an owner who filled a visit last Monday and hasn't opened Kettlewick this one — the second-Monday nudge, sent once, never twice. (y)">
-            <div class="id">IDEA-004</div>
-            <div class="title">The second-Monday nudge</div><p class="gist">One message to an owner who filled a visit last Monday and hasn't opened Kettlewick this one — the second-Monday nudge, sent once, never twice. <span class="muted">(y)</span></p><div class="dates"><span><em>added</em> 2026-09-06</span></div>
-          </div></div>
+        <h2><span class="label">Taking shape</span> <span class="n">0</span></h2>
+        <div class="cards"><div class="empty">—</div></div>
       </section>
 <section class="col" id="col-2" style="--hue:var(--stage-2)">
         <h2><span class="label">Building</span> <span class="n">2</span></h2>
@@ -325,8 +326,14 @@ Import an owner's carer list from the register extract instead of typing it. (g)
           </div></div>
       </section>
 <section class="col" id="col-3" style="--hue:var(--stage-3)">
-        <h2><span class="label">Shipped</span> <span class="n">4</span></h2>
-        <div class="cards"><div class="card" tabindex="0" title="FEAT-006 — Cancel in one tap
+        <h2><span class="label">Shipped</span> <span class="n">5</span></h2>
+        <div class="cards"><div class="card" tabindex="0" title="FEAT-007 — Draft the ask
+
+Draft the ask — when a visit is uncovered, a model drafts the text to each of the three carers in the owner's words; she reads it, edits if she likes, and asks. (d)">
+            <div class="id">FEAT-007</div>
+            <div class="title">Draft the ask</div><p class="gist">Draft the ask — when a visit is uncovered, a model drafts the text to each of the three carers in the owner's words; she reads it, edits if she likes, and asks. <span class="muted">(d)</span></p><div class="dates"><span class="pgm" title="program: PROG-001"><em>program</em> Cover</span><span><em>added</em> 2026-09-12</span><span><em>shipped</em> 2026-09-19</span></div>
+          </div>
+<div class="card" tabindex="0" title="FEAT-006 — Cancel in one tap
 
 Cancel in one tap — an agency leaves without a call, a form or a guilt screen; the schedule was always theirs. (d)">
             <div class="id">FEAT-006</div>
@@ -355,11 +362,11 @@ Quiet hours — nothing sends between 8pm and 6:30am; a late cancellation waits 
     </div>
     <section class="lanes" id="by-program" aria-label="By program">
       <div class="lgrid"><div></div><div class="ch">Captured</div><div class="ch">Taking shape</div><div class="ch">Building</div><div class="ch">Shipped</div></div>
-      <div class="lane" id="lane-onboarding"><div class="lh"><div class="ln">onboarding</div></div><div class="cell" data-col="Captured"><div class="e">·</div></div><div class="cell" data-col="Taking shape"><div class="e">·</div></div><div class="cell" data-col="Building"><div class="lc" title="FEAT-004 — The register import"><b>FEAT-004</b>The register import</div></div><div class="cell ship" data-col="Shipped"><div class="e">—</div></div></div><div class="lane" id="lane-prog-001"><div class="lh"><div class="ln">Cover</div><div class="lm">PROG-001 · 1 task open</div></div><div class="cell" data-col="Captured"><div class="e">·</div></div><div class="cell" data-col="Taking shape"><div class="e">·</div></div><div class="cell" data-col="Building"><div class="lc" title="FEAT-003 — Pay for cover"><b>FEAT-003</b>Pay for cover</div></div><div class="cell ship" data-col="Shipped"><div class="sq"><i title="FEAT-001 — The cover flow"></i><i title="FEAT-002 — The Monday view"></i><i title="FEAT-005 — Quiet hours"></i><i title="FEAT-006 — Cancel in one tap"></i></div><div class="sn">4 shipped</div></div></div><div class="lane" id="lane-none"><div class="lh"><div class="ln">Not part of a program</div><div class="lm">no program</div></div><div class="cell" data-col="Captured"><div class="lc" title="IDEA-003 — Invoice export"><b>IDEA-003</b>Invoice export</div><div class="lc" title="IDEA-006 — The owners' group referral"><b>IDEA-006</b>The owners' group referral</div></div><div class="cell" data-col="Taking shape"><div class="lc" title="IDEA-004 — The second-Monday nudge"><b>IDEA-004</b>The second-Monday nudge</div></div><div class="cell" data-col="Building"><div class="e">·</div></div><div class="cell ship" data-col="Shipped"><div class="e">—</div></div></div>
+      <div class="lane" id="lane-onboarding"><div class="lh"><div class="ln">onboarding</div></div><div class="cell" data-col="Captured"><div class="e">·</div></div><div class="cell" data-col="Taking shape"><div class="e">·</div></div><div class="cell" data-col="Building"><div class="lc" title="FEAT-004 — The register import"><b>FEAT-004</b>The register import</div></div><div class="cell ship" data-col="Shipped"><div class="e">—</div></div></div><div class="lane" id="lane-prog-001"><div class="lh"><div class="ln">Cover</div><div class="lm">PROG-001 · 1 task open</div></div><div class="cell" data-col="Captured"><div class="e">·</div></div><div class="cell" data-col="Taking shape"><div class="e">·</div></div><div class="cell" data-col="Building"><div class="lc" title="FEAT-003 — Pay for cover"><b>FEAT-003</b>Pay for cover</div></div><div class="cell ship" data-col="Shipped"><div class="sq"><i title="FEAT-001 — The cover flow"></i><i title="FEAT-002 — The Monday view"></i><i title="FEAT-005 — Quiet hours"></i><i title="FEAT-006 — Cancel in one tap"></i><i title="FEAT-007 — Draft the ask"></i></div><div class="sn">5 shipped</div></div></div><div class="lane" id="lane-none"><div class="lh"><div class="ln">Not part of a program</div><div class="lm">no program</div></div><div class="cell" data-col="Captured"><div class="lc" title="IDEA-003 — Invoice export"><b>IDEA-003</b>Invoice export</div><div class="lc" title="IDEA-004 — The second-Monday nudge"><b>IDEA-004</b>The second-Monday nudge</div><div class="lc" title="IDEA-006 — The owners' group referral"><b>IDEA-006</b>The owners' group referral</div></div><div class="cell" data-col="Taking shape"><div class="e">·</div></div><div class="cell" data-col="Building"><div class="e">·</div></div><div class="cell ship" data-col="Shipped"><div class="e">—</div></div></div>
       <p class="tl-foot"><span class="muted">One line — <code>program:</code> — groups records; a <code>docs/programs/PROG-NNN</code> record holds what they share. <code>boss board PROG-NNN</code> opens one.</span></p>
     </section>
     <section class="timeline" id="timeline">
-      <h2><span class="label">Shipped over time</span> <span class="n">4</span></h2>
+      <h2><span class="label">Shipped over time</span> <span class="n">5</span></h2>
       <div class="tl"><div class="tl-m">
         <div class="tl-marks"><i title="FEAT-005 — Quiet hours · shipped 2026-07-18"></i></div>
         <div class="tl-label">Jul</div>
@@ -367,10 +374,10 @@ Quiet hours — nothing sends between 8pm and 6:30am; a late cancellation waits 
         <div class="tl-marks"><i title="FEAT-001 — The cover flow · shipped 2026-08-28"></i><i title="FEAT-002 — The Monday view · shipped 2026-08-28"></i></div>
         <div class="tl-label">Aug</div>
       </div><div class="tl-m">
-        <div class="tl-marks"><i title="FEAT-006 — Cancel in one tap · shipped 2026-09-06"></i></div>
+        <div class="tl-marks"><i title="FEAT-006 — Cancel in one tap · shipped 2026-09-06"></i><i title="FEAT-007 — Draft the ask · shipped 2026-09-19"></i></div>
         <div class="tl-label">Sep</div>
       </div></div>
-      <p class="tl-foot">2026-07-18 → 2026-09-06 <span class="muted">· dates derived from your repo, not stamped by hand</span></p>
+      <p class="tl-foot">2026-07-18 → 2026-09-19 <span class="muted">· dates derived from your repo, not stamped by hand</span></p>
     </section>
     <section class="parked" id="parked">
       <details><summary>Parked <b>2</b> <span class="muted">— decided, not queued; each carries a written re-open trigger</span></summary>
@@ -393,7 +400,7 @@ Carer profiles — a photo, a yes-rate, a favourite-visits list — so owners ca
 </div>
 <footer class="site">
   <div>A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.</div>
-  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-10-05 22:05.</div>
+  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-10-05 21:08.</div>
   <div>set in the venture's own tokens — 10 taken from docs/design/tokens.json · light scheme only</div>
 </footer>
 <script>

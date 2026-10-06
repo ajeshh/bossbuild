@@ -129,7 +129,7 @@ The stroke is in the file, not in the CSS.
 | Button | ✓ | ✓ | ✓ | ✓ | ✓ loading — the label becomes the participle ("Asking…") |
 | VisitRow | ✓ | ✓ | ✓ | — | ✓ the empty day says "Nothing uncovered today." |
 | StatusChip | ✓ | n/a | n/a | n/a | n/a |
-| AskCard | ✓ | ✓ | ✓ | ✓ after 8pm — "This ask goes out at 7am" | ✓ answered — the card says who covered it |
+| AskCard | ✓ | ✓ | ✓ | ✓ after 8pm — "This ask goes out at 6:30" | ✓ answered — the card says who covered it |
 | EmptyState | ✓ | n/a | n/a | n/a | n/a |
 | ConfirmDialog | ✓ | ✓ | ✓ | ✓ while the cancel is sending | n/a |
 | Toast | ✓ | ✓ pauses the dismiss | n/a | n/a | n/a |
@@ -158,7 +158,7 @@ The stroke is in the file, not in the CSS.
 | one primary action per view | two buttons competing for the same weight | a second primary means the view has two jobs |
 | amber for an uncovered visit | red for anything but the destructive confirm | red is a siren, and Monday is loud enough (principle 1) |
 | the act on the row — *Ask* | a detail page with the act at the bottom | the row is the unit (principle 2) |
-| disabled controls say why — "goes out at 7am" | a greyed-out button with no explanation | the owner can't act on a dead end she can't diagnose |
+| disabled controls say why — "goes out at 6:30" | a greyed-out button with no explanation | the owner can't act on a dead end she can't diagnose |
 
 ## Terminology
 

@@ -1,0 +1,218 @@
+# Eval set — FEAT-007, draft the ask
+#
+# One expert decides what "pass" means: Marta. Every case is binary.
+# Model cases (should-pass) call the model and run k=2; a case passes only if both runs pass (pass^2).
+# Detector cases (should-fail) stub the provider's reply, so they are deterministic and free.
+# Every check is code; there is no model judging a model here.
+#
+# Runs:
+#   2026-09-18  14 of 14 pass (5 model cases pass^2, 10 calls; 9 detector cases). Shipped 2026-09-19.
+#   2026-09-24  15 of 15 pass (fail-008 added from REVIEW-2026-09-24; detector cases only).
+#
+# Fictional throughout: carers, areas and owners are Kettlewick's own inventions.
+
+- id: feat-007-pass-001
+  category: should-pass
+  scenario: a Monday 9am visit in Church End, three carers
+  inputs:
+    day: Monday
+    time: "tomorrow at 9"
+    area: Church End
+    carers: [Priya, Sam, Dee]
+  expected:
+    - three asks, one per carer
+    - each text names its own carer and says "tomorrow at 9" and "Church End"
+    - each text is under 300 characters
+    - no number other than the 9; no word from the pressure list
+  why: the happy path, as Marta described it
+  source: the FEAT's criteria
+
+- id: feat-007-pass-002
+  category: should-pass
+  scenario: a Sunday-evening ask for an early visit
+  inputs:
+    day: Monday
+    time: "tomorrow at 7"
+    area: Mill Lane side
+    carers: [Dee, Tomasz, Ruth]
+  expected:
+    - no apology for the hour and no mention of how late it is
+    - says "tomorrow at 7", not "07:00" or a date
+  why: Sunday at 6:50pm is when most asks are drafted, and the model's instinct is to apologise
+  source: the FEAT's criteria
+
+- id: feat-007-pass-003
+  category: should-pass
+  scenario: each carer's text names only that carer (the negative path)
+  inputs:
+    day: Tuesday
+    time: "Tuesday at 2"
+    area: Wellbridge town centre
+    carers: [Sam, Priya, Jo]
+  expected:
+    - Sam's text contains "Sam" and neither "Priya" nor "Jo"; the same for each
+    - no text says how many others were asked, or "first to reply"
+  why: a text that names the others is the league table DEC-003 refused
+  source: docs/evals/seen/2026-09-16-first-dev-drafts.md (draft 2)
+
+- id: feat-007-pass-004
+  category: should-pass
+  scenario: an area with an apostrophe
+  inputs:
+    day: Wednesday
+    time: "tomorrow at 11"
+    area: "St Agnes' Row"
+    carers: [Ruth, Dee, Sam]
+  expected:
+    - the area appears exactly as given
+    - the name check doesn't mistake "Agnes" for a carer it wasn't given
+  why: the hallucination check reads capitalised words, and an area can contain a name
+  source: the FEAT's criteria
+
+- id: feat-007-pass-005
+  category: should-pass
+  scenario: a carer with a short or uncommon first name
+  inputs:
+    day: Thursday
+    time: "Thursday at 8"
+    area: Church End
+    carers: [Bo, Oluwaseun, Priya]
+  expected:
+    - each name spelled exactly as given; no nickname, no correction
+  why: a carer whose name is "fixed" by a model reads it as the agency not knowing them
+  source: the FEAT's criteria
+
+- id: feat-007-fail-001
+  category: should-fail
+  failure_mode: garbage
+  scenario: the reply is prose, not the schema, twice
+  inputs:
+    stubbed_reply: ["Sure! Here are three friendly messages...", "Sure! Here are three friendly messages..."]
+  expected:
+    fires: true
+    retries: 1
+    shows: the template, with "The usual wording this time."
+  why: a schema failure must never reach the sheet as raw text
+  source: docs/ai-failure-states.md
+
+- id: feat-007-fail-002
+  category: should-fail
+  failure_mode: garbage
+  scenario: one text is 640 characters
+  inputs:
+    stubbed_reply: "{ asks: [ {carer: Priya, text: <640 chars>}, ... ] }"
+  expected:
+    fires: true
+    shows: the template
+  why: over 300 characters is three text messages and a carer scrolling at a red light
+  source: docs/ai-failure-states.md
+
+- id: feat-007-fail-003
+  category: should-fail
+  failure_mode: refusal
+  scenario: the provider refuses
+  inputs:
+    stubbed_reply: refusal stop reason, text "I can't help with that request."
+  expected:
+    fires: true
+    retries: 0
+    shows: the template
+    app_log: one line, reason refusal, with the area name
+  why: retrying a refusal costs a call and returns the same refusal
+  source: docs/ai-failure-states.md
+
+- id: feat-007-fail-004
+  category: should-fail
+  failure_mode: hallucination
+  scenario: the draft invents a visit length
+  inputs:
+    stubbed_reply: "Morning Priya, could you take a quick 30-minute one tomorrow at 9 in Church End?"
+  expected:
+    fires: true
+    retries: 0
+    shows: the template
+  why: a carer plans their morning on "30 minutes", and we never said it
+  source: docs/evals/seen/2026-09-16-first-dev-drafts.md (draft 1)
+
+- id: feat-007-fail-005
+  category: should-fail
+  failure_mode: hallucination
+  scenario: the draft names a carer it wasn't given, or a reason
+  inputs:
+    stubbed_reply: "Hi Sam, Jo's off sick so could you take tomorrow at 9 in Church End?"
+  expected:
+    fires: true
+    shows: the template
+  why: it tells one carer something about another, and it's invented
+  source: docs/ai-failure-states.md
+
+- id: feat-007-fail-006
+  category: should-fail
+  failure_mode: timeout
+  scenario: the provider hangs for 10 seconds
+  inputs:
+    stubbed_delay_ms: 10000
+  expected:
+    fires: true
+    template_shown_by_ms: 4000
+    spinner_after_ms: none
+  why: the owner is at the school gate with the sheet open
+  source: docs/ai-failure-states.md
+
+- id: feat-007-fail-007
+  category: should-fail
+  failure_mode: cost-spike
+  scenario: the prompt builder is handed forty carers (a mis-imported list)
+  inputs:
+    carers: 40 first names
+  expected:
+    fires: true
+    model_called: false
+    shows: the template
+    app_log: one loud line, reason input-cap
+  why: a big prompt here means the allowlist broke, and that's a DEC-005 question before a cost one
+  source: docs/ai-failure-states.md
+
+- id: feat-007-fail-008
+  category: should-fail
+  failure_mode: cost-spike
+  scenario: the reply runs to the 200-token output cap and is cut off mid-JSON
+  inputs:
+    stubbed_reply: a valid start, truncated at 200 tokens
+  expected:
+    fires: true
+    shows: the template
+  why: it happened live on 2026-09-22 and the handler held; this keeps it held
+  source: docs/cost-reviews/REVIEW-2026-09-24.md
+
+- id: feat-007-fail-009
+  category: should-fail
+  failure_mode: other   # pressure: PROG-001's no-guilt rule
+  scenario: the draft leans on the carer
+  inputs:
+    stubbed_reply: "Morning Priya! We're really stuck for tomorrow at 9 in Church End. Sorry to ask!"
+  expected:
+    fires: true
+    shows: the template
+  why: a carer can say no without a reason, and a text that makes no feel like letting someone down breaks that
+  source: docs/evals/seen/2026-09-16-first-dev-drafts.md (draft 1)
+
+- id: feat-007-fail-010
+  category: should-fail
+  failure_mode: other   # data minimisation, DEC-005 (OWASP LLM02, sensitive information disclosure)
+  scenario: the prompt is built from a visit row that carries everything the spreadsheet has
+  inputs:
+    visit_row:
+      client: Mrs Halloran
+      address: 14 Orchard Way
+      note: "hoist, two carers; diabetic"
+      day: Monday
+      time: "09:00"
+      area: Church End
+    carers: [Priya, Sam, Dee]
+  expected:
+    fires: true
+    prompt_contains: none of "Halloran", "Orchard", "14", "hoist", "diabetic"
+    prompt_fields: exactly day, time, area, carers
+  why: this is the line the model provider is on the far side of; it runs on every eval run, not once
+  source: docs/decisions/DEC-005-the-model-never-sees-a-client.md

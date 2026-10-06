@@ -28,3 +28,4 @@ An owner covers a visit from their phone in under five minutes without a call.
 
 ## Build log
 - 2026-08-28 — shipped to nine owners.
+- 2026-09-20 — *qualified* is now the owner's call, not the app's: the register import keeps four fields (day, time, area, the client's first name — PRIVACY.md, DEC-005), so the three asked are the area's three free carers and the owner's confirm is where qualification is checked. The criterion above was met at ship; this is what it became. Re-open if an owner confirms a carer who couldn't do the visit.

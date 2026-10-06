@@ -1,0 +1,45 @@
+/* Generated from docs/design/tokens.json by scripts/tokens.js. Never edit by hand. */
+:root {
+  --color-surface-ground: #F3ECE1;
+  --color-surface-paper: #FFFBF4;
+  --color-surface-raised: #FFFFFF;
+  --color-text-body: #2A1E17;
+  --color-text-muted: #665247;
+  --color-text-on-primary: #FFF7F0;
+  --color-text-on-danger: #FFFFFF;
+  --color-action-primary: #B84E12;
+  --color-action-primary-hover: #A74813;
+  --color-action-danger: #A33A2E;
+  --color-signal-uncovered: #955A12;
+  --color-signal-asked: #665247;
+  --color-signal-covered: #2E6B4F;
+  --color-border-default: #D9CCBB;
+  --color-border-subtle: #E8DFD2;
+  --color-gray-100: #F3ECE1;
+  --color-gray-300: #D9CCBB;
+  --color-gray-500: #665247;
+  --color-gray-900: #2A1E17;
+  --font-display: Newsreader, Georgia, serif;
+  --font-body: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", Menlo, monospace;
+  --type-size-display: 28px;
+  --type-size-heading: 20px;
+  --type-size-body: 15px;
+  --type-size-small: 13px;
+  --type-size-label: 11px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-control: 6px;
+  --radius-surface: 8px;
+  --shadow-raised: 0 1px 2px rgba(42,30,23,.06), 0 8px 24px rgba(42,30,23,.08);
+  --breakpoint-phone: 480px;
+  --breakpoint-laptop: 960px;
+  --target-min: 44px;
+  --z-index-sticky: 10;
+  --z-index-overlay: 20;
+  --z-index-toast: 30;
+}
