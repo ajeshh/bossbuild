@@ -142,3 +142,34 @@ test('a decision naming its program is reasoning across members — listed in th
   assert.match(out, /Decided across them \(1\)[\s\S]*DEC-001\s+One shell for every page/);
   rmSync(d, { recursive: true, force: true });
 });
+
+test('the board by program: no program, no switch — the word never appears', async () => {
+  const { boardHtml } = await import('../src/board.js');
+  const { readFileSync } = await import('node:fs');
+  const d = tmp();
+  write(d, 'docs/ideas/IDEA-001-a.md', '---\nid: IDEA-001\nstatus: building\n---\n\n# A\n');
+  const h = readFileSync(boardHtml(d, 't'), 'utf8').replace(/<style>[\s\S]*?<\/style>/g, '');   // the markup, not the stylesheet
+  assert.doesNotMatch(h, /class="viewswitch"|id="by-program"|By program/);
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('the board by program: lanes with work in flight first, settled folded, unprogrammed work last', async () => {
+  const { boardHtml } = await import('../src/board.js');
+  const { readFileSync } = await import('node:fs');
+  const d = tmp();
+  write(d, 'docs/programs/PROG-001-w.md', '---\nid: PROG-001\nstatus: active\n---\n\n# PROG-001 — The website\n');
+  write(d, 'docs/ideas/IDEA-001-a.md', '---\nid: IDEA-001\nstatus: building\nprogram: small\n---\n\n# One in flight\n');
+  write(d, 'docs/ideas/IDEA-002-b.md', '---\nid: IDEA-002\nstatus: seedling\nprogram: PROG-001\n---\n\n# Two\n');
+  write(d, 'docs/ideas/IDEA-003-c.md', '---\nid: IDEA-003\nstatus: seedling\nprogram: PROG-001\n---\n\n# Three\n');
+  write(d, 'docs/ideas/IDEA-004-d.md', '---\nid: IDEA-004\nstatus: shipped\nprogram: done-one\n---\n\n# Done\n');
+  write(d, 'docs/ideas/IDEA-005-e.md', '---\nid: IDEA-005\nstatus: seedling\n---\n\n# Loose\n');
+  const h = readFileSync(boardHtml(d, 't'), 'utf8');
+  assert.match(h, /class="viewswitch"/);
+  assert.match(h, /<div class="board" id="by-stage">/, 'By stage stays the page the board opens on');
+  const order = [...h.matchAll(/<div class="lane" id="(lane-[a-z0-9-]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(order, ['lane-prog-001', 'lane-small', 'lane-none'], 'most in flight first; no program last; settled not a lane');
+  assert.match(h, /<div class="ln">The website<\/div>/, 'a PROG lane is named by its record');
+  assert.match(h, /id="lane-settled"[\s\S]*?1 program with nothing in flight/);
+  assert.match(h, /By program[\s\S]*href="#lane-prog-001"/, 'the rail has a By program level');
+  rmSync(d, { recursive: true, force: true });
+});

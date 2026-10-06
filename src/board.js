@@ -855,45 +855,75 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
     ? `<div class="banner aging-banner">⌛ ${agingCards.length} not moving — <code>${esc(agingCards[0].id)}</code> ${esc(agePhrase(agingCards[0]))} <span class="muted">finish it, or</span> <code>/revalidate ${esc(agingCards[0].id)}</code></div>`
     : '';
 
-// --- programs: the umbrella roll-up ---------------------------------------------------------
-// Ajesh, thinking the shape through out loud: *"there might be a log or notes that roll up all the
-// features under it."* This is that roll-up at its cheapest — a bar per program, shipped vs open,
-// derived from one frontmatter line. It answers the question a column board structurally cannot:
-// not "what is in flight" but "which of the things I decided to do is actually stuck."
+// --- programs: the board by program (IDEA-145 S10/S11) ----------------------------------------
+// One row per program, across the same four columns — the same cards grouped a second way, never a
+// second board. It answers what the stage view can't at a glance: WHICH effort the open work sits in,
+// and which effort has stalled. It replaced a bar per program (shipped vs open), which said a program
+// was stuck but never showed what was in it.
 //
-// Same restraint as the timeline: this is not a completion percentage and not a burndown. An
-// umbrella with nothing shipped is a fact worth seeing, not a failing grade — BOSS's own
-// `public-surface` sat at 0-of-5 while `ai-native-boss` finished 6-of-6, and both are just true.
-function programRollup(cards) {
+// The hierarchy (S11): venture → programs → cards → tasks. By stage stays the default, always — it
+// is the ground truth a cold reader expects; this is a lens. It exists only once a program does: a
+// project with none sees no switch and never meets the word.
+//
+// Restraint carried over from the roll-up it replaced: not a completion percentage, not a burndown.
+// Shipped is a count and one square per record — 112 shipped cards would bury the rows. Rows with
+// work in flight come first; programs with nothing in flight fold into one line; work with no program
+// gets the last row, because it is work too.
+const laneId = (name) => `lane-${String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+
+function programLanes(cards, parked, progRecords, progLabel) {
+  const NONE = '';
   const by = new Map();
-  for (const c of cards) {
-    if (!c.program) continue;
-    if (!by.has(c.program)) by.set(c.program, []);
-    by.get(c.program).push(c);
+  for (const c of [...cards, ...parked]) {
+    const k = c.program || NONE;
+    if (!by.has(k)) by.set(k, { live: [], parked: [] });
+    by.get(k)[c.parked ? 'parked' : 'live'].push(c);
   }
-  if (!by.size) return '';
-  const rows = [...by.entries()]
-    .map(([name, members]) => ({
-      name,
-      shipped: members.filter((m) => m.column === 'Shipped').length,
-      total: members.length,
-      tasks: progRecords.get(name) ? progRecords.get(name).work.open : 0,
-    }))
-    .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
-    .map((p) => {
-      const pct = p.total ? Math.round((p.shipped / p.total) * 100) : 0;
-      const stuck = p.shipped === 0 && p.total > 1;
-      return `<div class="prog${stuck ? ' stuck' : ''}">
-          <div class="prog-name" title="${esc(p.name)}">${esc(progLabel(p.name))}${p.tasks ? ` <span class="muted">· ${p.tasks} task${p.tasks === 1 ? '' : 's'} open</span>` : ''}</div>
-          <div class="prog-bar"><i style="width:${pct}%"></i></div>
-          <div class="prog-n">${p.shipped}<span class="muted">/${p.total}</span></div>
-        </div>`;
+  for (const id of progRecords.keys()) if (!by.has(id)) by.set(id, { live: [], parked: [] });
+  const named = [...by.keys()].filter((k) => k !== NONE);
+  if (!named.length) return { html: '', rail: [] };
+  const lanes = [...by.entries()].map(([k, g]) => ({
+    k, ...g,
+    flight: g.live.filter((c) => c.column !== 'Shipped'),
+    shipped: g.live.filter((c) => c.column === 'Shipped'),
+  }));
+  const active = lanes.filter((l) => l.k !== NONE && l.flight.length)
+    .sort((a, b) => b.flight.length - a.flight.length || a.k.localeCompare(b.k));
+  const none = lanes.find((l) => l.k === NONE);
+  const settled = lanes.filter((l) => l.k !== NONE && !l.flight.length)
+    .sort((a, b) => b.shipped.length - a.shipped.length || a.k.localeCompare(b.k));
+  const mini = (c) => `<div class="lc" title="${esc(`${c.id} — ${c.title}`)}"><b>${esc(c.id)}</b>${esc(clip(c.title, 60))}</div>`;
+  const lane = (l) => {
+    const rec = progRecords.get(l.k);
+    const meta = l.k === NONE ? 'no program'
+      : [rec ? esc(l.k) : '', rec && rec.work.open ? `${rec.work.open} task${rec.work.open === 1 ? '' : 's'} open` : '', l.parked.length ? `${l.parked.length} parked` : '']
+        .filter(Boolean).join(' · ');
+    const cells = COLUMNS.map((col) => {
+      if (col === 'Shipped') {
+        const n = l.shipped.length;
+        return `<div class="cell ship" data-col="${col}">${n
+          ? `<div class="sq">${l.shipped.map((c) => `<i title="${esc(`${c.id} — ${c.title}`)}"></i>`).join('')}</div><div class="sn">${n} shipped</div>`
+          : '<div class="e">—</div>'}</div>`;
+      }
+      const inCol = l.flight.filter((c) => c.column === col);
+      return `<div class="cell" data-col="${col}">${inCol.length ? inCol.map(mini).join('') : '<div class="e">·</div>'}</div>`;
     }).join('');
-  return `<section class="programs" id="programs">
-      <h2><span class="label">Programs</span> <span class="n">${by.size}</span></h2>
-      <div class="progs">${rows}</div>
-      <p class="tl-foot"><span class="muted">One frontmatter line — <code>program:</code> — grouping records that belong together.</span></p>
+    return `<div class="lane" id="${laneId(l.k || 'none')}"><div class="lh"><div class="ln">${esc(l.k === NONE ? 'Not part of a program' : progLabel(l.k))}</div>${meta ? `<div class="lm">${meta}</div>` : ''}</div>${cells}</div>`;
+  };
+  const settledHtml = settled.length
+    ? `<details class="settled" id="lane-settled"><summary>${settled.length} program${settled.length === 1 ? '' : 's'} with nothing in flight <span>— shipped or parked</span></summary><div class="sl">${settled.map((l) => `<span title="${esc(l.k)}">${esc(progLabel(l.k))} <b>${l.shipped.length}</b>${l.parked.length ? ` <em>+${l.parked.length} parked</em>` : ''}</span>`).join('')}</div></details>`
+    : '';
+  const html = `<section class="lanes" id="by-program" aria-label="By program">
+      <div class="lgrid"><div></div>${COLUMNS.map((c) => `<div class="ch">${esc(c)}</div>`).join('')}</div>
+      ${active.map(lane).join('')}${none && none.flight.length ? lane(none) : ''}${settledHtml}
+      <p class="tl-foot"><span class="muted">One line — <code>program:</code> — groups records; a <code>docs/programs/PROG-NNN</code> record holds what they share. <code>boss board PROG-NNN</code> opens one.</span></p>
     </section>`;
+  const rail = [
+    ...active.map((l) => ({ href: laneId(l.k), label: progLabel(l.k) })),
+    ...(none && none.flight.length ? [{ href: laneId('none'), label: 'Not part of a program' }] : []),
+    ...(settled.length ? [{ href: 'lane-settled', label: `${settled.length} with nothing in flight` }] : []),
+  ];
+  return { html, rail };
 }
 
 // --- the shipped timeline -------------------------------------------------------------------
@@ -954,7 +984,7 @@ function shippedTimeline(cards) {
 }
 
   const timelineHtml = shippedTimeline(cards);
-  const programHtml = programRollup(cards);
+  const lanes = programLanes(cards, parked, progRecords, progLabel);
   const parkedHtml = parked.length
     ? `<section class="parked" id="parked">
       <details><summary>Parked <b>${parked.length}</b> <span class="muted">— decided, not queued; each carries a written re-open trigger</span></summary>
@@ -968,12 +998,21 @@ function shippedTimeline(cards) {
     `<span class="pill" style="--hue:var(--stage-${COLUMN_INDEX[col]})"><i></i>${esc(col)} <b>${counts[col] || 0}</b></span>`
   ).join('');
 
-  const rail = [{ group: 'Board', items: [
-    ...COLUMNS.map((col, i) => ({ href: `col-${COLUMN_INDEX[col]}`, n: i + 1, label: col, hole: !(counts[col] || 0) })),
-    ...(programHtml ? [{ href: 'programs', n: COLUMNS.length + 1, label: 'Programs' }] : []),
-    ...(timelineHtml ? [{ href: 'timeline', n: COLUMNS.length + 2, label: 'Shipped, by month' }] : []),
-    ...(parkedHtml ? [{ href: 'parked', n: COLUMNS.length + 3, label: 'Parked' }] : []),
-  ] }];
+  // Two levels once a program exists (IDEA-145 S11): By stage, then By program, then the rest.
+  // With no program the rail is what it always was, under the one heading.
+  let n = 0;
+  const rail = !lanes.html ? [{ group: 'Board', items: [
+    ...COLUMNS.map((col) => ({ href: `col-${COLUMN_INDEX[col]}`, n: ++n, label: col, hole: !(counts[col] || 0) })),
+    ...(timelineHtml ? [{ href: 'timeline', n: ++n, label: 'Shipped, by month' }] : []),
+    ...(parkedHtml ? [{ href: 'parked', n: ++n, label: 'Parked' }] : []),
+  ] }] : [
+    { group: 'By stage', items: COLUMNS.map((col) => ({ href: `col-${COLUMN_INDEX[col]}`, n: ++n, label: col, hole: !(counts[col] || 0) })) },
+    { group: 'By program', items: lanes.rail.map((it) => ({ ...it, n: ++n })) },
+    ...((timelineHtml || parkedHtml) ? [{ group: 'Over time', items: [
+      ...(timelineHtml ? [{ href: 'timeline', n: ++n, label: 'Shipped, by month' }] : []),
+      ...(parkedHtml ? [{ href: 'parked', n: ++n, label: 'Parked' }] : []),
+    ] }] : []),
+  ];
   const brand = readBrand(projectDir, projectName);
   const theme = themeFromTokens(readTokens(projectDir).tokens);
   const mainHtml = `
@@ -985,10 +1024,11 @@ function shippedTimeline(cards) {
     </header>
     ${dueBanner}
     ${agingBanner}
-    <div class="board">
+    ${lanes.html ? '<nav class="viewswitch" aria-label="View"><a class="vs-stage" href="#by-stage">By stage</a><a class="vs-prog" href="#by-program">By program</a></nav>' : ''}
+    <div class="board" id="by-stage">
 ${columnHtml}
     </div>
-    ${programHtml}
+    ${lanes.html}
     ${timelineHtml}
     ${parkedHtml}
   </div>
@@ -1053,18 +1093,41 @@ ${columnHtml}
 
   /* Programs — which umbrella is moving, which is stuck. Not a burndown: an umbrella
      with nothing shipped is a fact worth seeing, not a failing grade. */
-  .programs { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
-  .programs h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px;
-    font: 600 12px/1 var(--mono); color: var(--muted); }
-  .programs h2 .n { font-weight: 700; color: var(--ink); }
-  .progs { display: grid; gap: 7px; }
-  .prog { display: grid; grid-template-columns: minmax(120px, 200px) 1fr auto; gap: 12px; align-items: center; }
-  .prog-name { font: 12px/1 var(--mono); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .prog-bar { height: 8px; background: var(--sunk); border-radius: 2px; overflow: hidden; }
-  .prog-bar i { display: block; height: 100%; background: var(--stage-3); }
-  .prog.stuck .prog-bar { box-shadow: inset 0 0 0 1px var(--caution); }
-  .prog-n { font: 12px/1 var(--mono); color: var(--ink); min-width: 34px; text-align: right; }
-  .prog-n .muted { color: var(--muted); }
+  /* By program (IDEA-145 S10/S11) — the URL picks the view, no script: #by-program (or a lane in it)
+     shows the lanes and hides the columns; anything else is the stage board, the default. */
+  .viewswitch { display: inline-flex; gap: 2px; margin: 0 0 14px; padding: 2px; border: 1px solid var(--line); border-radius: 3px; }
+  .viewswitch a { font: 600 12px/1 var(--mono); padding: 7px 11px; border-radius: 2px; text-decoration: none; color: var(--muted); }
+  .viewswitch a.vs-stage { background: var(--sunk); color: var(--ink); }
+  .lanes { display: none; scroll-margin-top: 120px; }
+  .board-page:has(#by-program:target, #by-program :target) .lanes { display: block; }
+  .board-page:has(#by-program:target, #by-program :target) #by-stage { display: none; }
+  .board-page:has(#by-program:target, #by-program :target) .viewswitch a.vs-stage { background: none; color: var(--muted); }
+  .board-page:has(#by-program:target, #by-program :target) .viewswitch a.vs-prog { background: var(--sunk); color: var(--ink); }
+  .lgrid, .lane { display: grid; grid-template-columns: minmax(150px, 200px) repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .lgrid .ch { font: 650 12px/1 var(--mono); color: var(--muted); padding: 0 2px 8px; border-bottom: 2px solid var(--line); }
+  .lane { border-bottom: 1px solid var(--line); padding: 10px 0; scroll-margin-top: 70px; }
+  .lane:target { background: color-mix(in srgb, var(--hivis) 6%, transparent); }
+  .lane .ln { font-weight: 650; font-size: 14px; overflow-wrap: anywhere; }
+  .lane .lm { font: 12px/1.4 var(--mono); color: var(--muted); margin-top: 3px; }
+  .lane .cell { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .lane .lc { background: var(--panel); border: 1px solid var(--line); border-radius: 2px; padding: 6px 8px; font-size: 12.5px; line-height: 1.35; overflow-wrap: anywhere; }
+  .lane .lc b { display: block; font: 650 11px var(--mono); color: var(--muted); }
+  .lane .e { color: var(--muted); opacity: .5; font: 12px var(--mono); padding: 6px 2px; }
+  .lane .sq { display: flex; flex-wrap: wrap; gap: 3px; }
+  .lane .sq i { width: 9px; height: 9px; background: var(--stage-0); opacity: .75; border-radius: 1px; }
+  .lane .sn { font: 12px var(--mono); color: var(--muted); margin-top: 4px; }
+  .settled { margin-top: 12px; scroll-margin-top: 70px; }
+  .settled summary { cursor: pointer; font: 600 12px var(--mono); color: var(--muted); }
+  .settled summary span { font-weight: 400; }
+  .settled .sl { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 13px; }
+  .settled .sl b { font: 12px var(--mono); color: var(--muted); } .settled .sl em { font-style: normal; color: var(--muted); font-size: 12px; }
+  /* Phones: a row stacks — the program, then its cards, each column labelled; empty columns drop out. */
+  @media (max-width: 720px) {
+    .lgrid { display: none; }
+    .lane { grid-template-columns: 1fr; gap: 6px; }
+    .lane .cell:has(.e) { display: none; }
+    .lane .cell::before { content: attr(data-col); font: 600 11px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  }
   /* Shipped over time — cadence, never a scoreboard. One mark per shipped item,
      stacked in its month. No intensity ramp and no empty-square guilt: a quiet
      month is a fact about the month, not a verdict on the founder. */
