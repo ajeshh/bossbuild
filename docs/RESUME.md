@@ -28,6 +28,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-144 (2026-10-05, Unreleased) — one home for the generated pages.** `.boss/index.html`: every page with its age, *Where things live* (folders + key files, Open / Copy path), a bookmark hint; every page command prints it as the one bookmark. Spaces ordered Board · Playbook · Design · Guide. Demo: "Organization" → *Where things live* (GitHub links), and the opening says what Kettlewick does. Open: age vs staleness; a per-machine home.
 - **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
   principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
   plants `.claude/rules/engineering.md` (founder-owned). 18 of 19 found tasks closed with reproductions — incl. the
