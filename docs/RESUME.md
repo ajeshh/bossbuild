@@ -67,8 +67,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   · **Playbook** — FEAT-026/027/028/029 + the pull (`590748f`), FEAT-035 intake doors, FEAT-036 Company
   chapters, RVW-103, the four never-asked fields, the BMC frame, the deck (`2d7563e`). Four slices done.
   · **Showcase** — FEAT-039 Kettlewick (`6fe5942` → `a4187cc`, `e6b4cdf`): a fictional full record set,
-  `scripts/gen-demo.js` through the real renderers, `check:demo` red on a hole. **Standing rule: a new
-  chapter or record type adds its demo record in the same commit.** Board: 4 captured · 2 building · 88 shipped · 28 parked.
+  `scripts/gen-demo.js` through the real renderers, `check:demo` red on a hole. The demo rule (a new chapter or
+  record type adds its demo record in the same commit) now lives in PROG-003. Board: 4 captured · 2 building · 88 shipped · 28 parked.
   · **Board dates + the honest bar** (`3747bc9`): every card says `added <date>`, Shipped cards `shipped
   <date>`; a Building FEAT's criteria bar renders at `0/N`, and no section at all renders as a hole.
   Card shows **criteria, not todos** (the promise, fixed at spec time) — reasoning in the CHANGELOG entry.

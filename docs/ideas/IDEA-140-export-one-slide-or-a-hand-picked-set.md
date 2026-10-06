@@ -3,7 +3,7 @@ id: IDEA-140
 type: idea
 kind: capability
 owner: product-lead
-program: business-profile
+program: PROG-003
 status: captured
 proof: none
 gist: The playbook deck exports a whole cut (VC · Story · Internal · All) as one PDF. Two shapes are missing — export ONE slide (a block's own Slide → its own page), and pick what to export without starting from BOSS's cut. Half of the second already exists: removals in a cut already drop out of Export PDF.
