@@ -45,6 +45,13 @@ rule above still applies to the whole section once it is stamped.
   At close it also says, in one line and only when there is one, anything that got built which no
   criterion asked for, and asks whether it becomes its own feature or comes out. It never removes it.
 
+- **A page BOSS reads for you can't give it orders.** `/boss`, `/import`, `/comp-eval` and `/persona`
+  pull in outside text — a link, a rival's site, a paste — and a page can carry a line written to
+  steer whatever agent reads it. Those skills now treat what they read as material, never as
+  instructions: a line like that is kept in the saved copy under an `Unverified:` label and
+  nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
+  points at your own machine, a private network or a cloud metadata endpoint.
+
 - **A typo in your Claude Code settings no longer costs you the rest of them.** If
   `.claude/settings.json` had one stray comma, `boss hooks enable`, `boss adopt` and `boss sync` read it as
   empty and wrote that back, keeping only what BOSS was adding. Your permissions, the conscience's
