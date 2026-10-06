@@ -796,7 +796,11 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
     // "shipped" only in the Shipped column (a `proof:` date exists for in-flight records too,
     // and printing it there claims the thing shipped). Absolute dates: the age flags already say
     // "3w untouched" where that matters; a founder asking "how old is this card" wants the day.
+    // The program, by its title, in the same line as the dates and in the same words (IDEA-145).
+    // It was a corner chip clipped to 14 characters — "The playbo…" — and read as nothing (Ajesh:
+    // "i didnt see any program reference"). A fact on the card, written out, like the others.
     const dates = [
+      c.program && `<span class="pgm" title="program: ${esc(c.program)}"><em>program</em> ${esc(progLabel(c.program))}</span>`,
       c.addedOn && `<span><em>added</em> ${esc(c.addedOn)}</span>`,
       c.column === 'Shipped' && c.shippedOn && `<span><em>shipped</em> ${esc(c.shippedOn)}</span>`,
     ].filter(Boolean);
@@ -813,7 +817,7 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
       : '';
     const tip = esc(`${c.id} — ${c.title}${peek ? `\n\n${peek}` : ''}`);
     return `<div class="card${cls}" tabindex="0" title="${tip}">
-            <div class="id">${esc(c.id)}${prio}${c.program ? `<span class="pchip" title="program: ${esc(c.program)}">${esc(progLabel(c.program))}</span>` : ''}</div>
+            <div class="id">${esc(c.id)}${prio}</div>
             <div class="title">${esc(c.title)}</div>${gist}${prog}${flag}${when}
           </div>`;
   };
@@ -1128,9 +1132,7 @@ ${columnHtml}
   .parked .cards { margin-top: 12px; display: grid; gap: 8px;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .parked .card .title { color: var(--muted); }
-  .card .pchip { font: 500 11px/1 var(--mono); color: var(--muted); border: 1px solid var(--line);
-                 border-radius: 2px; padding: 3px 6px; margin-left: auto; max-width: 14ch;
-                 overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card .dates .pgm { flex-basis: 100%; color: var(--ink); }
   .card .prio { font: 700 12px/1 var(--mono); color: var(--hivis-text);
                 border: 1px solid color-mix(in srgb, var(--hivis) 45%, transparent);
                 border-radius: 2px; padding: 3px 6px; }
