@@ -8,6 +8,7 @@ created: 2026-08-21
 reversibility: partially-reversible
 revisit_by: 2026-11-21
 follows: DEC-012
+scope: build
 ---
 
 # DEC-013 — The conscience eval suite is tests, not strategy, and moves to the public tier

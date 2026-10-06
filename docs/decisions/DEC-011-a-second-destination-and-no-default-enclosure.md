@@ -8,6 +8,7 @@ created: 2026-08-21
 reversibility: reversible
 revisit_by: 2026-11-21
 supersedes: DEC-009 §5 (positioning held fixed)
+scope: venture
 ---
 
 # DEC-011 — BOSS names a second destination, and stops deciding enclosure for the founder

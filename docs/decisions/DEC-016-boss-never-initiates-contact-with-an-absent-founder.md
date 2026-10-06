@@ -8,6 +8,7 @@ created: 2026-09-08
 confirmed: 2026-09-08 — Ajesh, "lets do it accordingly and execute"
 reversibility: one-way
 revisit_by: 2027-03-08
+scope: venture
 ---
 
 # DEC-016 — BOSS never initiates contact with an absent founder

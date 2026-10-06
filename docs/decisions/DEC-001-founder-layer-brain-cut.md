@@ -7,6 +7,7 @@ status: decided
 created: 2026-06-20
 reversibility: costly
 revisit_by: 2026-09-20
+scope: build
 ---
 
 # DEC-001 — The founder-layer state cut: shared venture brain, per-person conscience relationship

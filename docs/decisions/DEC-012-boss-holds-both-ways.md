@@ -8,6 +8,7 @@ created: 2026-08-21
 reversibility: reversible
 revisit_by: 2026-11-21
 follows: DEC-011
+scope: venture
 ---
 
 # DEC-012 — BOSS holds both ways, and its mission is unadvertised rather than enforced

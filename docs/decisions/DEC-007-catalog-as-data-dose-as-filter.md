@@ -7,6 +7,7 @@ status: decided
 created: 2026-08-20
 reversibility: reversible
 revisit_by: 2026-11-18
+scope: build
 ---
 
 # DEC-007 — The catalog is data; the dose is a filter

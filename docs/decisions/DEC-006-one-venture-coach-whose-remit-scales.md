@@ -7,6 +7,7 @@ status: decided
 created: 2026-08-20
 reversibility: reversible
 revisit_by: 2026-11-20
+scope: build
 ---
 
 # DEC-006 — One venture coach, whose remit scales by rung

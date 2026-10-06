@@ -8,6 +8,7 @@ created: 2026-08-21
 reversibility: reversible
 revisit_by: 2026-11-21
 follows: DEC-011, DEC-012
+scope: venture
 ---
 
 # DEC-014 — The website stops assuming the destination, and claims nothing about commons

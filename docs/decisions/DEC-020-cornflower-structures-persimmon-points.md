@@ -10,6 +10,7 @@ reversibility: reversible — one token file plus five literal copies (help.css,
 revisit_by: 2026-10-13
 falsifier: a returning-founder or domain-expert read that calls the site "playful" or "clinical" rather than calm, OR a rendered-page tap that finds cornflower used to point (two loud things), by 2026-10-13 → the rule has failed, not the hue; fix the use before reconsidering the colour
 supersedes: DEC-018 (partly — the ground; its two findings are kept, see Consequences)
+scope: build
 ---
 # DEC-020 — the brand anchor: five colours with one job each — cornflower structures, persimmon points
 

@@ -79,6 +79,31 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 - **Next:** three lineage lenses wait on a read at source (at the next revision, not now). IDEA-143
   waits on the 2026-10-14 read. C7.3 (a skill spanning ecosystems, from IDEA-139) is open.
 
+## 2026-10-05 — design-system reading piles vetted; the playbook as onboarding (`50b4811` → `3b40026`, Unreleased)
+
+- **Landed:** 28 outside pieces on design systems vetted as RVW-111…135 (7 ADAPT, 4 NOT-YET, 14 REJECT;
+  sources described by shape, names in the gitignored session file). Built the seven ADAPTs. `boss
+  design`'s *Start here* gained **I need to…** (generated from *When it applies* + Ours situations) and
+  **What checks the work** (the guard table, now with the two guards it was missing). A variant
+  spelled two ways across components is a finding on both cards. The CLAUDE.md block
+  `/design-tokens-init` writes lists names, not copied values, and says what to do when two docs
+  disagree. "Three-layer" corrected everywhere, including the site. `/boss-sync` names an old block
+  and never rewrites it.
+- **Surprise:** most of the pile was BOSS already. The two real findings came from re-reading BOSS
+  against the claims: the tokens skill said "three-layer" while it scaffolded two, and its own CLAUDE.md
+  block copied values that nothing updated, which is the stale-rule failure one essay described.
+  Ajesh's reframe ("the playbook is part of the onboarding") turned an org-scale NOT-YET into a page change.
+- **Next:** nothing in this lane. The nudge for existing projects rides on `/boss-sync` reading the
+  CHANGELOG. If a real sync misses it, have `boss sync` print the hint (RVW-122).
+
+## 2026-10-05 — IDEA-140 captured: export one slide, or a hand-picked set (`76a8324`)
+- **Landed:** the idea record + index row. No code.
+- **Surprise:** half of "customise what to export" already ships: Export PDF prints the current cut
+  *minus its removals* (`exportPdf()` walks the same `list()` the deck steps through). The two real
+  gaps are a single-slide export and a cut that starts empty instead of from BOSS's draft.
+- **Next:** Ajesh reviews the two open questions on the record (`waiting_on`) when the deck is picked
+  back up. Nothing is built until a founder has used the deck at all.
+
 ## 2026-10-04 — IDEA-136: the engineering ecosystem, investigated then built (`fe47b69` → `8f0cc9a`, Unreleased)
 
 - **FEAT:** none. Investigation first (R1–R6: atomic design for code, the layers, XP and XP with agents, pattern
@@ -189,6 +214,52 @@ the page. Thresholds (1,500 lines, 6 files) are guesses to tune on real trees.
   (og.png re-rendered), the demo ribbon, board.js, BRAND.md moved with it; VISUAL.md rewritten; stop
   went crimson. The board with all fourteen candidates is linked from IDEA-115. Falsifier: a real
   reader says *playful* or *clinical*, or a tap finds cornflower pointing — by 2026-10-13. Unreleased.
+
+## 2026-10-04 — IDEA-132: the design system's manifest gets its edges (`c2c7e21`, `1f254f1`, Unreleased)
+
+- **FEAT:** none — IDEA-132, captured and shipped in the session. Ajesh brought a practitioner thread
+  on design-system sources of truth and asked what BOSS could learn; read against BOSS (grep first).
+- **Landed:** `manifest.json` gains `tokens` + `composes` (the map an agent reads instead of grepping);
+  `boss design` renders *composes* / *inside* and **Code** copies the tokens; the usage page gains
+  **Composition** (earned, blank until a bad nesting happens); `design-decisions-guard` hands over a
+  *Never inside / Never holds* rule when a write opens both tags (two of the same tag for self-nesting).
+  Tests: 652/652, `npm run check` green, enabled-hook smoke in a `BOSS_HOME` throwaway.
+- **Surprises:** (1) the first answer to Ajesh named "per-component rules" a gap; the usage page
+  (IDEA-112) already was that file — the real gap was narrower (nesting + no route to the write).
+  Grep-first held, but only after the first answer went out. (2) The skill had promised *"Code copies
+  the tokens from the manifest"* with no field behind it — one more stated-intent-unenforced.
+  (3) A stray `cat >` in a shell line waited on stdin for 15 minutes and looked like a slow check.
+- **Also read:** a brand-as-software essay, for the design system only. Everything in it BOSS already
+  holds but one: an **expression range** (quiet → loud, with what stays true in every mode) — parked in
+  IDEA-133 item 8 by the brand window (bossbuild-2b), gated on a founder's second surface. When built,
+  it is a `STYLE_GUIDE.md` slot: the design side owns it.
+- **Next:** none from this lane.
+- **Moved from RESUME (window, 2026-10-04) — the v0.318.0 → v0.325.0 headlines, verbatim:** committed,
+  not pushed at the time. RESUME window (318) · `/skill-doctor` + `/extract` description fix (319) ·
+  plugin eval suite, Δ 1.0 (320, 321) · `/boss-learn` folded into `/extract` (322) · model attachment
+  let go (323) · the board assessment applied, 16-skill MVP unlock, `boss status` 2.4s→0.17s (324) ·
+  `/boss:welcome` the everyday door by pointer (325).
+
+## 2026-10-04 — portfolio studies of BOSS written in the hive; BOSS read-only (no commit here)
+
+- **FEAT:** none — this session wrote *about* BOSS, outside the tree: seven case studies + an
+  overarching piece for Ajesh's personal site, in the private hive (`~/Projects/hive/work/boss/`),
+  with a sources table, a do-not-inflate list, 21 screenshots, and `refresh.mjs` (tells when the
+  studies need updating). Nothing in bossbuild was written; the tree was read and rendered in temp copies.
+- **Found in BOSS while checking claims** (each verified; full list in the hive's `ONLY-AJESH.md`):
+  - `boss status` throws on a manifest without `installedLayers` (`src/cli.js`, `cmdStatus`), and shows
+    "pinned: undefined" when the pin is under `version`; `scripts/gen-demo.js` writes exactly that
+    manifest. Reproduced. **Fixed in another window: `0e8b00b`** (bullet at the top of `## Unreleased`).
+  - `registry/CHANGELOG.md` quoted two founders verbatim (EVID-001 ~12 places, EVID-003 in 0.214.0) —
+    **removed this session** at Ajesh's call, with a new rule in CLAUDE.md: the CHANGELOG never shows research.
+    Still to do: the ~50 EVID and ~140 RVW citations left in older entries (a separate pass).
+  - `docs/HUMANE.md` and IDEA-068 (both tracked) still tell the canvas lineage Ajesh corrected 2026-09-10.
+  - DEC-001 and DEC-002 are past `revisit_by` with no `outcome:`.
+  - Stale figures: IDEA-109 / RESUME "196 of 196 commits" (459 that day); IDEA-088's "never installed,
+    260 releases" (hand-installed at v0.187.0, then went missing); "five collisions" (devlog dates four).
+- **Next:** none in this tree from this session; the findings above are Ajesh's call to route.
+- **Surprise:** a fact-check of seven studies against the tree found the record contradicting itself
+  more often than the drafts did — the same *checkers state intents* pattern, in prose.
 
 ## 2026-09-25 — IDEA-131: MCP gets a *when*; the guide's map was broken (`88ad0bb` → `d100eff`)
 

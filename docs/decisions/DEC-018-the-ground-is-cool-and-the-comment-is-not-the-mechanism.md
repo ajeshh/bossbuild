@@ -8,6 +8,7 @@ created: 2026-09-12
 confirmed: 2026-09-12 — Ajesh's brief for the session: "either it is not cream and the token comment is right (then say what it IS), or move it"; the record chooses "move it" and says why
 reversibility: reversible
 revisit_by: 2027-03-12
+scope: build
 ---
 
 # DEC-018 — the ground is cool, and a token comment is not a mechanism

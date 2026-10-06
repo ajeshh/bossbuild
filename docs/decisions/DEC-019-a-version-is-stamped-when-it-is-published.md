@@ -9,6 +9,7 @@ confirmed: 2026-09-12 — Ajesh, on the recommendation ("yes, as a DEC with a fa
 reversibility: reversible — three files change back (CLAUDE.md rule 5, scripts/release.js, the CHANGELOG heading); nothing a founder installed depends on it
 revisit_by: 2026-10-12
 falsifier: a collision on the `## Unreleased` section, or a session that cannot tell what shipped from what merely landed, by 2026-10-12 → revert
+scope: build
 ---
 # DEC-019 — a version is stamped when it is published, not when a capability lands
 

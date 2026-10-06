@@ -8,6 +8,7 @@ created: 2026-09-11
 confirmed: 2026-09-11 — Ajesh, "I think i do want to publish to claude plugins"
 reversibility: two-way
 revisit_by: 2027-03-11
+scope: venture
 ---
 
 # DEC-017 — the plugin is the front door, never the body

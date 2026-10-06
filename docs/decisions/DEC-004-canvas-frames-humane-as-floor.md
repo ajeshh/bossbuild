@@ -7,6 +7,7 @@ status: decided
 created: 2026-08-20
 reversibility: reversible
 revisit_by: 2026-11-20
+scope: venture
 ---
 
 # DEC-004 — The canvas is an answer store with frames; humane is the floor, not the default

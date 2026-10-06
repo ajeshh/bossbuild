@@ -7,6 +7,7 @@ status: decided
 created: 2026-08-21
 reversibility: reversible
 revisit_by: 2026-11-21
+scope: venture
 ---
 
 # DEC-009 — BOSS stays an incubator, and stops assuming a business

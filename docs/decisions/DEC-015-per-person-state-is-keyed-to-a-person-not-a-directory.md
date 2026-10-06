@@ -9,6 +9,7 @@ confirmed: 2026-09-08 — Ajesh, "lets do it accordingly and execute"
 reversibility: reversible
 revisit_by: 2026-12-08
 extends: DEC-001
+scope: build
 ---
 
 # DEC-015 — Per-person conscience state is keyed to a person, not to a directory

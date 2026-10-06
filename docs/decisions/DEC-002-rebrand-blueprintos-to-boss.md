@@ -7,6 +7,7 @@ status: decided
 created: 2026-06-23
 reversibility: costly
 revisit_by: 2026-09-23
+scope: venture
 ---
 
 # DEC-002 — Rebrand: "BlueprintOS" → BOSS (Build Out Solid Stuff)

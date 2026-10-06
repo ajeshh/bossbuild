@@ -7,6 +7,7 @@ status: decided
 created: 2026-08-21
 reversibility: one-way (loosening stays possible; revocation never does)
 revisit_by: 2027-02-21
+scope: venture
 ---
 
 # DEC-010 — The Humane Product Canvas is published CC BY-SA 4.0

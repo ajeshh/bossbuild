@@ -7,6 +7,7 @@ status: decided
 created: 2026-08-17
 reversibility: reversible
 revisit_by: 2026-11-17
+scope: venture
 ---
 
 # DEC-003 — Position, not verdict: BOSS names, the founder chooses, BOSS then does the work

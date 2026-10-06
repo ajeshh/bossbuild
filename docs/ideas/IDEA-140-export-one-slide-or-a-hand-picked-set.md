@@ -6,6 +6,7 @@ owner: product-lead
 program: PROG-003
 status: captured
 proof: none
+waiting_on: Ajesh — is the hand-picked set real, or does remove-from-All already serve it? And one slide as PDF, PNG, or both? (since 2026-10-05)
 gist: The playbook deck exports a whole cut (VC · Story · Internal · All) as one PDF. Two shapes are missing — export ONE slide (a block's own Slide → its own page), and pick what to export without starting from BOSS's cut. Half of the second already exists: removals in a cut already drop out of Export PDF.
 created: 2026-10-05
 relates: FEAT-026, FEAT-029, IDEA-106

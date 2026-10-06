@@ -508,6 +508,10 @@ table without row-level security, a helper written twice — terse, every diagra
 - [ ] **P7** · An instance to build against: BOSS has no database and neither does Kettlewick
   (`demo/kettlewick` has no schema). Either a founder's first table, or give Kettlewick a small schema
   in the FEAT-039 redo.
+- **⏸ Paused (Ajesh, 2026-10-05): *"we can pause for now. can reassess later."*** Nothing built. On
+  resume: `/revalidate`, then `/vet` R7's findings that would change P1–P7 (the page shows what each
+  policy *allows*, not that one exists; plain words beside every drawing); the two unstudied gaps go
+  to a founder interview, not more research.
 - **Open:** a sibling page (`.boss/engineering.html`) or a chapter of the Design space? Lean: sibling,
   same shell (`page-shell.js`). Which rung opens it — MVP at the first table or first module boundary?
 - **Open (Ajesh, 2026-10-05): which drawings does agentic development actually need?** P5 was a
@@ -526,11 +530,32 @@ table without row-level security, a helper written twice — terse, every diagra
   5. **Agent topology** (agents → tools → permissions, handoffs) — only for a founder whose *product*
      is an agent; their own build agents are P4 / IDEA-141.
   Not: UML class diagrams, deployment diagrams before V1, sequence diagrams for every path.
-- [ ] **R6** · `/deep-research` on the open question above (launched 2026-10-05, Ajesh: *"what kind of
+- [x] **R7** · `/deep-research` on the open question above (2026-10-05, Ajesh: *"what kind of
   documentation would be good enough"*): five angles — diagrams in agentic work · review above the
   diff · security and AI-call drawings · generated vs authored, and staleness · what non-technical
-  founders need. Context files for agents are not re-researched (S17/S18 in the code-pattern-library
-  session). Session: `docs/research/sessions/SESSION-2026-10-05-the-engineering-page.md`.
+  founders need. Context files for agents not re-researched (S17/S18, code-pattern-library session).
+  Session (gitignored): `docs/research/sessions/SESSION-2026-10-05-the-engineering-page.md` — 15
+  claims to a 3-vote panel, 2 killed as worded, ~16 more killed by the finders.
+  **What it bears on — findings, not decisions (each goes through `/vet` before it changes P1–P7):**
+  - *P3 / RLS:* the founder-facing failure that recurs is **access control** — the top finding class in
+    a sample of deployed agent-built apps, and the cause of a large public exposure where the platform's
+    own scanner only checked that *a policy existed*. "RLS on" is not "RLS correct": a per-table
+    policy-exists flag would repeat that scanner.
+  - *Diagrams vs words:* untrained readers understand text better than diagrams; the diagram's form
+    doesn't beat equivalent text for a strong agent, though diagrams carrying real structure help one.
+    → plain words beside every drawing, for the non-technical reader.
+  - *Generated vs authored:* hand-drawn models are mostly never updated; AI-drawn diagrams are the
+    most fragile part of AI-written docs, and AI repo wikis mislead in checkable ways. Drawing from the
+    schema and imports (P1, P2) is the one form the evidence doesn't argue against. Authored parts
+    (P5b, P6) keep to stable facts in prose.
+  - *A drawing reads as complete:* threat models leave over-confidence; security scores mispredict.
+    The *not checked* line in P3 has support.
+  - *Candidate 1, the change view:* no controlled evidence either way for diagrams; prose change
+    summaries have observational support only. Candidate 2 (AI call map) has a well-attributed frame —
+    the lethal trifecta (Willison, May/Jun 2025) and the Rule of Two — for products that call a model
+    with tools or outbound reach. Candidate 5 (agent topology): only the MCP spec's own diagrams.
+  - *Gaps no one has studied:* whether non-technical founders understand their app's structure at all;
+    ERD vs plain-language data descriptions for that reader. Only a founder can answer these.
 
 ## Open questions
 - **Decided (Ajesh, 2026-10-04, A-track shape):** **Q2** the rule file only — no founder `docs/` doc;
@@ -578,3 +603,6 @@ table without row-level security, a helper written twice — terse, every diagra
   playbook… what are the key engineering agents that help with coding? DB: I think it would be an ERD?
   … Not sure about security… any flow charts needed? … the end users, who could be founders or
   engineering founders."* → the engineering space section, P1–P7. The org-chart thought went to IDEA-141.
+- **2026-10-05 · Ajesh** — *"lets continue to capture or do deep research on what would be helpful for
+  our eng page in the playbook. What kind of documentation would be good enough."* → R7. Then: *"nah, i
+  think we can pause for now. can reassess later."* → the engineering space is paused; `/vet` not run.

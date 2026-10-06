@@ -10,6 +10,7 @@ reversibility: reversible — one SVG file, one reader module, the favicon and o
 revisit_by: 2026-10-14
 falsifier: a founder (returning-founder or domain-expert cohort, a real one) reads the mark as a 3D icon from a template library and says so, or reads it as anything other than a B, by 2026-10-14 → back to the board, with the ribbon β as the first alternative
 supersedes: the ✦ mark and its lineage claim (VISUAL.md, 2026-08-19 / re-cut 2026-08-24)
+scope: build
 ---
 # DEC-021 — the mark is the built B, in two colours, read from Ajesh's SVG
 
