@@ -7,7 +7,7 @@ gist: Take the first £4 — a card on file per agency, billed monthly per carer
 for: marta
 created: 2026-09-03
 from: IDEA-001
-program: cover
+program: PROG-001
 ---
 
 # Pay for cover

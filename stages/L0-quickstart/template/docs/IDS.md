@@ -224,6 +224,21 @@ instead. The field doesn't change shape, so nothing you already wrote has to be 
 **Don't graduate on a count.** "Three or more" is a rule that generates paperwork. Graduate when you
 notice you're about to lose the reasoning that spans them — that's the thing a slug can't hold.
 
+**You don't have to notice alone.** BOSS offers it — once, never doing it for you — when:
+- one record still in progress holds several separate efforts (`boss records --programs` says
+  *might want to be a program*: three or more tracks of numbered items still open, or a dozen open items);
+- the same rule got written into two records;
+- something with no finish line (*every release*, *keep X current*) was captured as an idea — an idea
+  gets to be done; upkeep never is;
+- a new idea relates only to records already in one program.
+
+**Inside or its own?** Could it ship alone and be worth something? No → a task in the program's file.
+Yes → its own idea, with `program:` pointing at the program.
+
+**Where it lives and how you see it:** `docs/programs/PROG-NNN-<slug>.md` (`boss id PROG` for the
+number). `boss board PROG-NNN` shows the program — its records by column, its open tasks;
+`boss board --program <name>` shows only its cards. The tasks stay in the file, not on the board.
+
 ## Numbering
 
 Allocate the next free integer per prefix. Before reserving one, grep all of `docs/` — not just an

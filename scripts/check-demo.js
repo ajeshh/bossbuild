@@ -20,7 +20,7 @@ const ALLOWED = {
   'proposed-quietnotice': 'a usage page with status: proposed is a REQUEST — the front door for a designer or teammate to ask for a part (FEAT-037). The demo shows one on purpose; it is not an empty slot.',
 };
 // Every folder a renderer reads. A missing one is a record class the demo never got.
-const FOLDERS = ['docs/ideas', 'docs/personas', 'docs/evidence', 'docs/decisions', 'docs/competition', 'docs/source', 'docs/team', 'docs/dossier', 'docs/health', 'docs/measure', 'docs/trust', 'docs/brand', 'docs/design', 'docs/design/components', 'docs/design/icons', 'docs/product'];
+const FOLDERS = ['docs/ideas', 'docs/personas', 'docs/evidence', 'docs/decisions', 'docs/competition', 'docs/source', 'docs/team', 'docs/dossier', 'docs/health', 'docs/measure', 'docs/trust', 'docs/brand', 'docs/design', 'docs/design/components', 'docs/design/icons', 'docs/product', 'docs/programs'];
 
 const problems = [];
 for (const f of FOLDERS) if (!existsSync(join(DEMO, f))) problems.push(`missing folder: demo/kettlewick/${f}`);

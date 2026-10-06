@@ -13,7 +13,18 @@ thought lands — the first run creates the doc, every later run adds to it.
 
 1. Skim existing `docs/ideas/IDEA-*.md` titles (the files are the record — there is no index to read).
 2. If the user's thought clearly extends an existing idea → **append** to that doc (don't make a new one).
-3. Otherwise → **create** a new `IDEA-NNN`. **Get the number by running `boss id IDEA`** — it prints
+3. **Part of something already running?** Ask once, and only on one of these — never by default:
+   - **It lands inside an effort.** The records this thought relates to all share one `program:`
+     (or one `docs/programs/PROG-*.md` covers it). Say which, by its title: *"This reads like part
+     of <title>. Add it there as a task, or keep it as its own idea?"* The test behind the question:
+     **could it ship alone and be worth something?** No → a line in that program's backlog. Yes → its
+     own IDEA, with `program:` pointing at the parent.
+   - **It's upkeep, not an idea.** The thought has a cadence and no finish line (*every release*,
+     *each quarter*, *keep X current*). An idea gets to be done; upkeep never is. Offer to put it in
+     the program it serves as standing work, or in a loop — not on the board.
+   The founder's answer stands; don't offer the same pair again. Never move or merge a record
+   unasked. To someone who doesn't use `program:`, say *"the same effort"*, not the field name.
+4. Otherwise → **create** a new `IDEA-NNN`. **Get the number by running `boss id IDEA`** — it prints
    the next free one, computed from every `.md` under `docs/` (filenames *and* prose, because a
    number reserved in an index is taken even when no file exists yet). Do not count by hand: two
    files claiming one number makes every reference to it ambiguous, and it is invisible until it

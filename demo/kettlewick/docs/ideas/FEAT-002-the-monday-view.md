@@ -8,7 +8,7 @@ for: marta
 created: 2026-07-02
 shipped_on: 2026-08-28
 from: IDEA-001
-program: cover
+program: PROG-001
 ---
 
 # The Monday view

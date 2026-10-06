@@ -222,6 +222,23 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
    it twice in a session, and leave it out of a close that opens with something live that can hurt
    someone. They skipped the why at `/boss`, or skipped this question? Say nothing.
 
+3f. **Belongs together? Offered, never done.** Some work outgrows the record it was captured in. At
+   most **one item** in the same numbered list, and only when one of these is true of the files:
+   - **Grown** — `boss records --programs` ends with *might want to be a program*: one record still
+     in flight holds several tracks of work. Name it and its open tracks.
+   - **Said twice** — this session wrote the same rule or decision into two or more records. It
+     belongs in one place they both point at.
+   - **A rule living in a to-do** — `CLAUDE.md` or `RESUME` sends people to an IDEA for standing
+     rules (how something is run). An IDEA can ship and close; the rules can't.
+
+   > 5. IDEA-012 now holds three separate efforts (checkout, refunds, receipts). Give them one
+   > place — a program — so the pieces that could ship alone become their own ideas?
+
+   **Yes** → make `docs/programs/PROG-NNN-<slug>.md` (`boss id PROG`): what ties them, the shared
+   rules, the leftover tasks; point each member's `program:` at it. The grown record stays as the
+   history, with a line at its top saying where the work went. **No** → leave it, and don't offer the
+   same one again unless the record grows a new track. Never on a count of records; never moved unasked.
+
 4. **Check the working tree.** If there are uncommitted changes the user wants to keep but isn't
    committing now, mention them in RESUME's *State* so next-you isn't surprised. Don't auto-commit.
    Then the copy off this machine: `git rev-list --count @{upstream}..HEAD`. Commits that exist only

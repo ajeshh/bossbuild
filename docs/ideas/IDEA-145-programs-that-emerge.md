@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 program: the-record-system
-status: building (S1–S4 landed 2026-10-05; S5–S7 open)
+status: building (S1–S5 and S7 landed 2026-10-05; S6, the one-time sweep, open)
 proof: src/records.js
 proof_note: done when programs() reads PROG records and flags grown ones (S1–S2), the board filters by program (S3–S4), and /idea and /close carry the offer (S5).
 gist: Programs should emerge, not be declared. BOSS notices when related work wants a parent — the same rule restated across records, an IDEA that is really recurring upkeep, one topic split across slugs — and offers the elevation once, in a sentence. The founder never has to know `program:` exists to get one.
@@ -100,10 +100,12 @@ No → a task in the program's backlog. Yes → its own IDEA with `program:` poi
   *Not built:* a filter on the HTML board — the page has no script, by design; the roll-up row names
   the program and `--program` is the filter.
 - [x] **S4 · The program view.** `boss board PROG-001` — gist, members by column, open tasks, grown members.
-- [ ] **S5 · The judgment rules in the skills.** `/idea` (E2, E6 at capture) and `/close` (E1–E3), one
+- [x] **S5 · The judgment rules in the skills.** `/idea` (E2, E6 at capture) and `/close` (E1–E3), one
   offer each, both copies; the founder's IDS.md gains the rules in its own words, cohort-aware.
 - [ ] **S6 · The one-time sweep** — the Tasks item below, with E1–E6 in hand.
-- [ ] **S7 · CHANGELOG bullet** (a founder feels S3–S5), Kettlewick gets a program if the demo has none.
+- [x] **S7 · CHANGELOG bullet** (a founder feels S3–S5), and the standing demo rule: Kettlewick's
+  `cover` graduates to its own PROG-001 (the board on the demo names it), and `check:demo` now
+  requires `docs/programs/`.
 
 **Found while building S2 (2026-10-05):** a track counts only while it has an open item. Run on a
 throwaway scaffold, a record whose tracks were all ticked read as *grown*; a finished track is

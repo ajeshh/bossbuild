@@ -8,7 +8,7 @@ for: marta
 created: 2026-08-31
 shipped_on: 2026-09-06
 from: IDEA-001
-program: cover
+program: PROG-001
 ---
 
 # Cancel in one tap

@@ -8,7 +8,7 @@ for: marta
 created: 2026-06-14
 shipped_on: 2026-08-28
 from: IDEA-001
-program: cover
+program: PROG-001
 ---
 
 # The cover flow

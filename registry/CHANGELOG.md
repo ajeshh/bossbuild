@@ -27,6 +27,17 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **When one idea has grown into several, BOSS says so — and a program gets its own view.** Ideas
+  that belong together could share a `program:` line, but nothing told you when that effort had
+  earned its own page, and the board never showed which program a card was in. Now
+  `boss records --programs` names an idea still in progress that holds several separate efforts
+  (*might want to be a program*), `/close` offers that once, and `/idea` asks whether a new thought
+  is part of an effort you already have — or is upkeep with no finish line, which is never an idea.
+  Nothing moves unless you say yes. A program record (`docs/programs/PROG-NNN`) is read by title;
+  `boss board PROG-001` shows its cards by column and its open tasks, `boss board --program <name>`
+  shows only its cards, and every card on the HTML board names its program. Tasks stay in the
+  program's file, not on the board.
+
 - **Several chat windows, one project, nobody's work mixed up.** Each window is its own session and
   can't see what another is building, so any of them could commit a change that was another's.
   When pieces of work have their own worktrees, a new session now opens by naming them once (which
