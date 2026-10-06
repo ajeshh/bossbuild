@@ -48,11 +48,13 @@ which records are tracked, not the door. Left as is; move it if a pass wants it 
   founder's own record ids (`boss board IDEA-1⇥`), mode words for `unlock`, moment names for
   `conscience mute`, help topics — the places people guess today.
 - [ ] **B3 · Hide internal skills from the `/` menu.** Anything a founder never calls by name
-  (`user-invocable: false` or equivalent — check the host's current frontmatter first).
+  `user-invocable: false` (documented in the host's skills reference, checked 2026-10-05: hidden from
+  the `/` menu, Claude can still run it). Check what `/boss` and the CLI's skill lists read first.
 - [ ] **B4 · Verb-first descriptions**, so the `/` menu scans: every description opens with its verb.
 - [ ] **B5 · An explain layer for findings** — the `rustc --explain` shape: a one-line finding carries a
   key, `boss help <key>` says why it matters. Read `boss help glossary` first; it may be most of it.
-- [ ] **B6 · Mode tips in the host's spinner** — only if the host still supports custom spinner tips,
+- [ ] **B6 · Mode tips in the host's spinner** — custom spinner tips are NOT in the host's settings docs
+  (checked 2026-10-05), so this waits until they are; then
   only the current rung's, and only if it stays quiet (Principle: says one thing, stays quiet).
 - [ ] **B7 · A clig.dev pass over `boss`** — an audit against the Command Line Interface Guidelines,
   findings as lines here, not a build.
