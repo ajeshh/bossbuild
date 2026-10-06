@@ -7,7 +7,7 @@ status: shipped (fix 1, v0.324.0 — `earned` in the MVP manifest: 16 verbs at u
 proof: src/earned.js
 proof_note: Fix 1 landed as `earned` in the MVP manifest (v0.324.0) — the predicate that lays a group down when the project earns it, not the rung. The count-first rule was overtaken by the board assessment of 2026-09-12; the split is by project property, which is what fix 1 asked for.
 shipped_on: 2026-09-12
-program: front-door
+program: PROG-004
 created: 2026-09-08
 source: |
   Measured during the 2026-09-08 partner-review pass. Not reported by anyone — counted off the

@@ -6,7 +6,7 @@ owner: product-lead
 status: shipped
 proof: none
 proof_note: The measurement is reproducible from the manifests today. The proof of a fix would be a description-budget rule in scripts/check-manifests.js — deliberately unbuilt until the cap is set from the real distribution rather than guessed.
-program: front-door
+program: PROG-004
 created: 2026-09-08
 source: |
   Measured 2026-09-08 while cutting the always-on CLAUDE.md tax in v0.258.0 — the second half of

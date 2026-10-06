@@ -6,7 +6,7 @@ owner: product-lead
 status: shipped
 proof: none
 proof_note: The cheap resolution is a routing line inside the existing /evidence skill; the proof would be that line in stages/L0-quickstart/template/.claude/skills/evidence/SKILL.md. Held until a founder is observed bouncing between the three.
-program: front-door
+program: PROG-004
 created: 2026-09-08
 source: |
   Surfaced 2026-09-08 while making /interview the lead verb of the Quickstart arc (v0.258.0) —

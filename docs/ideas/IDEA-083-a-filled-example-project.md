@@ -6,7 +6,7 @@ owner: product-lead
 status: deferred (trigger-gated)
 proof: none
 proof_note: Nothing exists yet and nothing should until the trigger fires. When built, the proof is the generated fixture tree plus the check that regenerates it — a hand-written example is a claim about the output, not a sample of it.
-program: front-door
+program: PROG-004
 created: 2026-09-08
 source: |
   A partner-review read of BOSS as a *tool someone would recommend* rather than as a business

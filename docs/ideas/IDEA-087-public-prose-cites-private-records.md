@@ -10,7 +10,7 @@ proof_note: |
   prose cites, or stop citing private records in public prose. The proof of either would be a
   change to `.gitignore` plus a check; neither should be written before Ajesh decides which,
   because one of them publishes content that was private and that is not a reversible call.
-program: front-door
+program: PROG-004
 created: 2026-09-08
 source: |
   Found 2026-09-08 while trying to commit four captured ideas — `git commit` reported nothing to

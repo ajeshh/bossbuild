@@ -182,6 +182,7 @@ BOSS's own backlog, dogfooding its own ID system.
 | [IDEA-146](IDEA-146-the-founders-flow-reader.md) | The founder's flow reader — the hand-off reader BOSS runs on itself, turned toward the founder's project; quiet in Quickstart, one broken-flow line where they act, never a score | deferred (trigger: the first break in a flow the founder made) | 2026-10-05 · spun from IDEA-137 (C8 + C5's founder half, N6, N14, F1) at its graduation to PROG-002 |
 | [IDEA-147](IDEA-147-the-shared-anatomy-finalised.md) | The shared anatomy, finalised — the eight parts every ecosystem shares, read from the four that exist, written into seed-to-scale.md | ready | 2026-10-05 · spun from IDEA-137 (C7 + B2); its wait on IDEA-136 is over |
 | [IDEA-150](IDEA-150-what-the-spec-toolkits-taught.md) | What the spec toolkits taught — CLI craft, the done-check carries evidence, bug discipline, untrusted fetches, a private security route; each reproduced or vetted first | shipped 2026-10-05 | 2026-10-05 · Ajesh: *"go for all the fixes and improvements"* · from three spec-toolkit reads + RVW-136…144 |
+| [IDEA-152](IDEA-152-the-front-door-quick-wins.md) | The front door, quick wins — the slash menu shows what to type, `boss unlock` with no mode names the next one, one status line for any bar, bare `boss` in a project says where you are | building | 2026-10-05 · Ajesh: *"start with the easiest and quickest ones that deliver the most… make the cli related work as a program"* · first slice of PROG-004 (graduated from `front-door`) |
 
 Canvas for BOSS itself: [CANVAS.md](CANVAS.md).
 
