@@ -4,6 +4,7 @@ type: idea
 kind: capability
 owner: Ajesh
 status: shipped
+proof: src/home.js
 gist: The generated pages (playbook, design, board, guide) live in a hidden .boss/ folder with no front page and four separate links; one stable home at .boss/index.html lists them with their age, and every page command prints that one link to bookmark.
 created: 2026-10-05
 program: PROG-003
