@@ -3,7 +3,7 @@ id: IDEA-139
 type: idea
 kind: capability
 owner: mentor-architect
-program: ecosystem-of-ecosystems
+program: PROG-002
 status: shipped
 proof: test/earned.test.js
 proof_note: step 3 items 0–5 landed 2026-10-05 (Unreleased). The test reproduces T1 and failed on the old code. Done is the return path declared — evals ← red-team and evals ← ai-failure-states as takes in registry/flows.json, held by check-refs class 7 — plus the reproduced stack-miss fix in src/earned.js with its test. Both takes were mutation-tested. Open: T5 and Q2 are Ajesh's.

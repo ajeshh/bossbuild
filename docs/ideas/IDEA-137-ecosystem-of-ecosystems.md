@@ -3,15 +3,23 @@ id: IDEA-137
 type: idea
 kind: capability
 owner: mentor-architect
-status: building (C0–C4 and C6 landed 2026-10-04; C7 waits on IDEA-136; C5/C8 wait on their triggers)
-program: ecosystem-of-ecosystems
+status: shipped (C0–C4, C6 and C11 landed 2026-10-04/05 — the flow reader, DEC-022, DEC-023, the model's revisions; graduated to PROG-002 on 2026-10-05, the open work split by the ships-alone test)
+shipped_on: 2026-10-05
+spun_to: IDEA-146 (C8, the founder's flow reader, with C5's founder half, N6, N14, F1), IDEA-147 (C7 + B2, the shared anatomy finalised)
+program: PROG-002
 proof: docs/ECOSYSTEMS.md
-proof_note: this record holds the cross-ladder reasoning, which belongs to no single ladder — the graduation test for a `PROG-NNN` in docs/IDS.md § program. It graduates when the PROG record type is built (records.js keeps it deliberately unbuilt until a real program needs it — this may be that program).
+proof_note: this record held the cross-ladder reasoning until the PROG record type existed; on 2026-10-05 it graduated — PROG-002 holds what belongs to no single member, and docs/ECOSYSTEMS.md the principles and anatomy.
 gist: Inside a founder's project, BOSS lays down an ecosystem of ecosystems — design, engineering, evidence, claims, trust… each governing itself, all living by one set of principles, with governance and support for liveliness between them. Scaffolding is how the first ones get planted. BOSS → project flows one way.
 created: 2026-10-04
 ---
 
 # IDEA-137 — the ecosystem of ecosystems: governance and support for liveliness, inside the founder's project
+
+> **Graduated to [PROG-002](../programs/PROG-002-ecosystems.md) on 2026-10-05** (IDEA-145 rule E5: nine
+> tracks of work in one record). What could ship alone became its own idea — C8 → IDEA-146 (the
+> founder's flow reader, with C5's founder half, N6, N14, F1) and C7 + B2 → IDEA-147 (the shared
+> anatomy). The rest of the open items below are now PROG-002's tasks, under the same ids. This record
+> keeps the frame, the research and the history; its open boxes are not worked here any more.
 
 ## Current shape
 _The best articulation so far. Rewrite this as the idea sharpens._

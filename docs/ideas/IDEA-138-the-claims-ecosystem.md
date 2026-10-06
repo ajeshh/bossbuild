@@ -3,7 +3,7 @@ id: IDEA-138
 type: idea
 kind: capability
 owner: mentor-architect
-program: ecosystem-of-ecosystems
+program: PROG-002
 status: shipped (step 3 items 0–3 landed 2026-10-04, Unreleased; the not-now list and Q2/Q3 stay open)
 shipped_on: 2026-10-04
 proof: none

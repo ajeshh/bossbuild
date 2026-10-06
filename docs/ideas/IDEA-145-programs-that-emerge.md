@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 program: the-record-system
-status: building (S1–S5 and S7 landed 2026-10-05; S6, the one-time sweep, open)
+status: building (S1–S7 landed 2026-10-05; the other 23 umbrellas not yet read against E1–E6)
 proof: src/records.js
 proof_note: done when programs() reads PROG records and flags grown ones (S1–S2), the board filters by program (S3–S4), and /idea and /close carry the offer (S5).
 gist: Programs should emerge, not be declared. BOSS notices when related work wants a parent — the same rule restated across records, an IDEA that is really recurring upkeep, one topic split across slugs — and offers the elevation once, in a sentence. The founder never has to know `program:` exists to get one.
@@ -102,7 +102,10 @@ No → a task in the program's backlog. Yes → its own IDEA with `program:` poi
 - [x] **S4 · The program view.** `boss board PROG-001` — gist, members by column, open tasks, grown members.
 - [x] **S5 · The judgment rules in the skills.** `/idea` (E2, E6 at capture) and `/close` (E1–E3), one
   offer each, both copies; the founder's IDS.md gains the rules in its own words, cohort-aware.
-- [ ] **S6 · The one-time sweep** — the Tasks item below, with E1–E6 in hand.
+- [x] **S6 · The one-time sweep** (2026-10-05, Ajesh: *"yup"*). IDEA-137 → PROG-002: C8 → IDEA-146, C7 + B2
+  → IDEA-147, the rest as program tasks. **Correction on the way:** C5 looked like a third idea, but H1
+  had already made the four signs a design test, never a founder reading — its founder half is one line
+  of IDEA-146, the rest a BOSS-only task. *Read the record's own decisions before splitting it.*
 - [x] **S7 · CHANGELOG bullet** (a founder feels S3–S5), and the standing demo rule: Kettlewick's
   `cover` graduates to its own PROG-001 (the board on the demo names it), and `check:demo` now
   requires `docs/programs/`.
