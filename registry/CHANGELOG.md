@@ -32,6 +32,16 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 ## Unreleased
 
 ### What you'll notice
+- **Your home page now shows every folder BOSS writes, not only the ones it started with.** *Where things
+  live* (`.boss/index.html`) only knew the folders that existed when it was built. Your red-team
+  passes, eval sets, roadmaps, programs, design reviews, drift audits, onboarding and money reads, AI
+  cost reviews, extractions and practices were on disk but never listed. They now sit in their groups
+  with the verb that writes them, and a new group, *How it is checked*, holds the ones that try to
+  break the work.
+
+- **The coder reproduces a bug before it fixes one.** It now says what it ran and what it saw before
+  changing anything, and stops to tell you when the bug won't reproduce. When a fix doesn't make the
+  problem go away, it says what it got wrong about the cause instead of piling a second change on top.
 
 - **`boss sources` — who to read first, from what has held up.** For every person or publisher your
   research cites, how many of their claims held up, how many didn't, and when one last held — counted
