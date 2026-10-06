@@ -50,8 +50,8 @@ opens — the **agent itself** going wrong. Two things to hold:
   2025), not the stateless LLM list.** An agent's real attack surface: goal hijack, **tool misuse**, identity/privilege abuse,
   **agentic supply chain** (a poisoned MCP server or tool), unexpected code execution, **memory /
   context poisoning**, insecure inter-agent comms, cascading failures, human-agent trust exploitation,
-  rogue agents. Each has a real 2025 incident behind it (EchoLeak, the GitHub-MCP exploit, the Replit
-  production-DB wipe). If you ship an agent, this is the list to defend — and the one to `/red-team`
+  rogue agents. Each has a real 2025 incident behind it (EchoLeak, the GitHub-MCP exploit, an app-builder
+  agent's production-DB wipe). If you ship an agent, this is the list to defend — and the one to `/red-team`
   against. The stateless LLM Top 10 still covers a plain prompt-in/text-out path — **note its 2026
   edition (2026-08-04) renumbered eight of ten entries and renamed System Prompt Leakage to LLM08
   *Hidden Context Exposure*, widening it to cover developer instructions, policy text and every tool

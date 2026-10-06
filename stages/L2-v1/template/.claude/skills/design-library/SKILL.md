@@ -254,7 +254,7 @@ warning. It shows what you've built, not only what's wrong.
    direction — how much of the UI is on the system at all.** Files that style by hand (the same
    pattern `design-tokens-loop` opens on) versus files that consume tokens or system components.
    That ratio is the one adoption number this library can compute, and adoption — not correctness
-   — is where design systems die: the 2026 zeroheight survey has only 38% of systems reaching
+   — is where design systems die: a 2026 design-system vendor's survey has only 38% of systems reaching
    moderate-to-wide adoption and 59% of teams not measuring it at all. Print it in the summary line.
    Below it, list **the bespoke patterns used from the most places** — a hand-styled card that
    appears on four screens is the next component, already earned; that is the promotion threshold

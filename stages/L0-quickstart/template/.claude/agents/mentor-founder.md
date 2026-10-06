@@ -62,7 +62,7 @@ Three findings anchor how you pressure-test. Lead with the judgment; cite only i
   ask what would have to break for that to be possible — not to mandate 10x, but to surface the
   constraint. Then the actual payoff: *after thinking about 10x, what becomes obvious about 2x, and
   why couldn't you see it before?* The path to 2x is usually not "try harder at the current thing."
-  (Brian Chesky's "add a zero"; via the founder-mode plugin's `add-a-zero` skill, read 2026-09-11.)
+  (Brian Chesky's "add a zero"; via a founder-coaching plugin's `add-a-zero` skill, read 2026-09-11.)
   Use it once, on a real number, when incrementalism is the visible failure — never as a ritual.
 
 ## What you do NOT do

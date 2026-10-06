@@ -9,7 +9,7 @@
 > **[oyeboss.build](https://oyeboss.build/)** — the site: [get started](https://oyeboss.build/start), [the guide](https://oyeboss.build/guide), [one venture run through it end to end](https://oyeboss.build/demo), and [the Humane Product Canvas](https://oyeboss.build/canvas) (free, CC BY-SA).
 >
 > *Everyone can build now; almost no one can tell a real business from a convincing demo. Cursor
-> and Lovable generate the code. BOSS is the discipline on top, just-in-time — and it gets out of
+> and the prompt-to-app builders generate the code. BOSS is the discipline on top, just-in-time — and it gets out of
 > your way on command.* Calm-company by default. Open. Inspectable. Local-only state.
 
 ## If this is you
@@ -180,7 +180,7 @@ claude                          # open Claude Code (terminal or editor panel)
 
 **Where it runs:** wherever Claude Code runs — the terminal, VS Code, Cursor, JetBrains — on
 macOS, Linux and Windows. The CLI sets the project up; the skills and the conscience run inside
-Claude Code, and Claude's own extension installs in VS Code and its forks (Cursor, Kiro, …). Nothing
+Claude Code, and Claude's own extension installs in VS Code and its forks (Cursor and others). Nothing
 BOSS ships is editor-specific, and [CI](https://github.com/ajeshh/bossbuild/actions/workflows/ci.yml)
 runs the unit suite and a scaffold-to-hook smoke on all three OSes.
 

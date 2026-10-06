@@ -35,7 +35,7 @@ adopted as a **disclosure norm**, not a verification procedure: an agent reporti
 was asked to cover and did not open or run. The paper's other half (*"requiring delegation to
 subagents increases coverage"*) is **not** adopted, because splitting work across agents to raise
 coverage is exactly the multi-agent move `harness-engineering` refuses without a reason (RVW via
-haytham ADR-026).
+an idea-to-MVP pipeline's ADR-026).
 
 ## If ADOPT / ADAPT
 - **UP:** `harness-engineering.md`: the *self-verification* bullet gains the unreliable-report

@@ -133,7 +133,7 @@ were already settled in their records, IDEA-087 and IDEA-098, and stayed here fo
   left to build until one of those says something.
 - ⛔ **`npm run stamp` → `npm publish`** (`npm run check:published` says how far; DEC-019 — the stamp makes the version), then `npm run bump:formula`. He publishes himself — never run it for him.
 - 🔷 **Submit the plugin to `claude-community`** (DEC-017; `claude plugin validate . --strict`
-  passes; platform.claude.com/plugins/submit). `boss-ai-agent` exists there — lead with what BOSS is not.
+  passes; platform.claude.com/plugins/submit). A plugin with a near-identical name exists there — lead with what BOSS is not.
 - 🔷 **Phase 3 outreach** — three maintainers chosen, two messages drafted, in
   `docs/evidence/CANDIDATES-2026-08-23-maintainer-experiment.md`. The first message must not mention
   BOSS. Metric: activation, watched not asked. No features from this.

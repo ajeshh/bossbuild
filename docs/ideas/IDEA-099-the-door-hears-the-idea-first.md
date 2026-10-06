@@ -14,14 +14,14 @@ proof_note: >
   --strict on a renamed heading — proved). /canvas's "no rung below" line names step 0. `claude
   plugin validate --strict` passes. NOT verified: a live founder walking the door — n=0, which is
   the point of the three behaviours to measure. Two of BOSS's three evidence records describe the
-  old ordering (EVID-002, EVID-003); pattern from product-discovery's FIRST-LAUNCH rule.
+  old ordering (EVID-002, EVID-003); pattern from a discovery plugin's FIRST-LAUNCH rule.
 created: 2026-09-11
 relates: EVID-002, EVID-003, DEC-017, IDEA-096, IDEA-097, IDEA-098, COMP-founder-plugins-source-read
 ---
 
 # IDEA-099 — the door hears the idea first
 
-> Seed: product-discovery's FIRST-LAUNCH rule, read at source 2026-09-11 — *"deliver the result in
+> Seed: a discovery plugin's FIRST-LAUNCH rule, read at source 2026-09-11 — *"deliver the result in
 > the chat. This is the moment the tool proves its value. Do not mention templates, checklists, or
 > CONTEXT.md yet. Then offer persistence (one line)… An unsaved good answer beats a saved empty
 > scaffold."* Design target: **TTFV ≤ 60 seconds.** Ajesh: *"like it! lets see how to best go about it."*
@@ -69,7 +69,7 @@ it across.
 | Option | How | Cost |
 |---|---|---|
 | **A. Point, don't copy** | The plugin's skill says *"follow steps 1–3 of `${CLAUDE_PLUGIN_ROOT}/stages/L0-quickstart/template/.claude/skills/boss/SKILL.md`"* — the plugin *is* the repo, so the file is there | zero duplication; one source of truth; the skill text stays a door |
-| B. Duplicate the steps | Paste `/boss` steps 1–3 into `plugin/skills/welcome/SKILL.md` | two copies drift; `check:*` would need a sameness gate — the *patch* haytham's constitution warns against |
+| B. Duplicate the steps | Paste `/boss` steps 1–3 into `plugin/skills/welcome/SKILL.md` | two copies drift; `check:*` would need a sameness gate — the *patch* an idea-to-MVP pipeline's constitution warns against |
 | C. Plugin writes the IDEA doc itself | Skip `--idea`; the plugin creates the file after `boss new` | breaks DEC-017's *"the CLI is the only writer"*; founder-owned content, but still the plugin reaching into the project |
 
 **Recommendation: A + `boss new --idea`.** The plugin points at the shipped skill; the CLI does the
@@ -159,7 +159,7 @@ door was never the problem."* And `mentor-founder`'s standing point: EVID-003's 
 
 ## Refusals
 
-- **No generated value beyond the reflection.** product-discovery delivers *hypotheses*; haytham
+- **No generated value beyond the reflection.** A discovery plugin delivers *hypotheses*; an idea-to-MVP pipeline
   delivers a *verdict*. BOSS's first artifact is the founder's own idea said back plainly, with
   one question — because a founder corrects a wrong reflection faster than they answer anything.
 - **Never scaffold without the go.** DEC-017 and the existing skill both say it; the reorder makes

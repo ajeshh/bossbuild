@@ -781,7 +781,7 @@ rule above still applies to the whole section once it is stamped.
   The `CLAUDE.md`-imports-`AGENTS.md` shape BOSS scaffolds is unaffected, and it is still the only
   shape that works on every host version. `harness-engineering.md` re-dates the `TodoWrite`
   withdrawal to 2.1.233 (2026-08-14), which means the `task-hygiene` moment that read it was never
-  live on a current model. It also notes Spec Kit 1.0's move to independent entry points plus a
+  live on a current model. It also notes a spec toolkit's 1.0 move to independent entry points plus a
   go/clarify/stop idea assessment. Both practices re-stamped.
 
 - **Agents report what they didn't check, and stop misstating the mode (RVW-105, RVW-106).**
@@ -2126,7 +2126,7 @@ measurement via `npx`, never a dependency or a hook in BOSS's own tree. The page
 
 An outside read — DORA's AI Capabilities Model, Thoughtworks Radar vol 34, six Linear Method pages
 and their Agent Interaction Guidelines, Cagan's *Strong Opinions, Loosely Held* (2026-09-11),
-Karpathy's own Sequoia Ascent post, the Beads README — grepped against `stages/` and `library/`
+Karpathy's own Sequoia Ascent post, an agent-native issue tracker's README — grepped against `stages/` and `library/`
 before anything was called a gap. **Fifteen of ~eighteen claims were already held** (curated shared
 instructions in service templates = the Radar's Adopt = BOSS's whole distribution mechanism; *"an
 agent cannot be held accountable"* = the merge-owner rule; the throwaway `/roadmap` = Cagan retracting
@@ -2159,7 +2159,7 @@ predictability). The two that survived had one shape: **BOSS held the rule and s
   the planner sets the order — and the site's four *How it's built* pages described each craft alone.
   A four-row table in the FEAT template header (writes / checks / holds, per craft) and one sentence
   on the site's index. Not a fifth page.
-- **Beads** filed in `docs/competition/` as `watch` — the Radar's *"agent-native project memory"*
+- **An agent-native issue tracker** filed in `docs/competition/` as `watch` — the Radar's *"agent-native project memory"*
   category, ★27k, and BOSS's project rung with the venture removed. Study `ready` (a derived
   unblocked column); do not adopt the graph.
 - **Named, not built:** rework rate / first-pass acceptance as a `/judge-traces` header (substrate
@@ -2192,7 +2192,7 @@ tap ran against BOSS's own site for the first time — and BOSS failed it.**
   *deprecated*. Matches `tokens.color.brand` and `--color-brand`, not `color.brandmark`. Speaks on
   its own when there is no raw value in the write; leads the message when there is. Mirror into
   DTCG `$deprecated` where the code file has the field; the doc is what the guard reads. 3 tests.
-- **The tap, executed:** `npx impeccable@4.1.0 detect https://oyeboss.build` — the watchlist's
+- **The tap, executed:** an open-source design linter's `detect`, run against https://oyeboss.build — the watchlist's
   output-observing tap, pointed at ourselves. **40 findings:** a cream background our tokens claim is
   "deliberately not warm cream" · ALL-CAPS body text ×5 · a kicker above an h2 · side-tab borders ·
   75 em-dashes · **11 text/surface pairs at 4.2:1** (AA is 4.5) · 17 measures over the 80-character
@@ -2258,7 +2258,7 @@ organized so that is possible.
 - **Sources, all at source:** GitHub Primer's contributor docs and ADRs (the deprecation
   checklist — `@deprecated` in source *and* `"status": "deprecated"` in docs metadata *and* a
   Deprecation section with the replacement; semver table; prop norms; children-as-API; one
-  directory per component; `Breadcrumbs2` never `NewBreadcrumbs`) · zeroheight *Design Systems
+  directory per component; `Breadcrumbs2` never `NewBreadcrumbs`) · a design-system docs vendor's *Design Systems
   Report 2026* (n=147: 51/31/13 centralized/hybrid/federated · **only 41% measure adoption, 38%
   reach moderate-to-wide** · 61% worried about AI-generated design) · Omlet · DTCG 2025.10, stable,
   `$deprecated` verified on the published spec, not the editor's draft · Chromatic ·
@@ -2305,31 +2305,31 @@ organized so that is possible.
 **The design-system tooling field, read at source — nine tools, three already vetted, one decision
 changed. `/design-tokens-init` now reads the design system a founder arrives carrying.**
 
-> **For you:** if you installed `impeccable`, `ui-ux-pro-max` or wrote a Google-style `DESIGN.md`
+> **For you:** if you installed a design linter or design skill that writes its own system file, or wrote a Google-style `DESIGN.md`
 > before running `/design-tokens-init`, it now finds that file and builds *from* it instead of
 > generating a second system beside it. And `/ux-check` names what would actually run the
 > accessibility checks it cannot run from source.
 
-- **`docs/competition/design-system-tooling.md` — the field in three kinds that don't compete:**
-  skills the agent reads (impeccable, web-interface-guidelines, ui-ux-pro-max, Google DESIGN.md),
+- **The design-system tooling field, in three kinds that don't compete:**
+  skills the agent reads (design linters, interface-guideline skills, Google DESIGN.md),
   the code's own components served to the agent (Storybook MCP, shadcn registries), a design tool as
-  source of truth (Figma MCP, Supernova, zeroheight, Claude Design). Each grepped against `stages/`
+  source of truth (Figma MCP, design-system docs platforms, Claude Design). Each grepped against `stages/`
   and `library/` before it was written down; three carry a BOSS verdict already (RVW-079/081/082)
   and nothing found changes them. Pricing opened at source, one ambiguity recorded as ambiguous.
-- **impeccable is the row that matters** — `frontend-design`'s self-declared successor (★67.5k,
+- **An open-source design linter is the row that matters** — the self-declared successor to the host vendor's design skill (★67.5k,
   17 hosts, Apache-2.0): 23 design verbs, `PRODUCT.md` + `DESIGN.md` + per-route surface files
   written into the repo, and a **61-rule deterministic detector that runs against a rendered page**.
   That is the output-observing tap §7b of the build-craft watchlist named on 2026-09-11 — found built
-  one day later, and now tap 1's third source. Its tells and `frontend-design`'s **disagree on tint**;
+  one day later, and now tap 1's third source. Its tells and the design skill's **disagree on tint**;
   the skill's stamp text now says so: *the tint is not the tell, the combination is.*
 - **`/design-tokens-init` step 0 also looks for a system another tool wrote** — root `DESIGN.md`,
-  `PRODUCT.md`, `.impeccable/`, `design-system/*/MASTER.md` — and treats a hit as prior art to build
+  `PRODUCT.md`, the linter's own dot-directory, `design-system/*/MASTER.md` — and treats a hit as prior art to build
   from, never converting or re-emitting it. This is RVW-079's own re-open condition #2 (*a founder
   arrives carrying one → read it, cheaper than emitting it*), which two ~95k-star tools just made the
-  common case. The FORMAT verdict stays NOT-YET: the spec is still alpha, and impeccable's `DESIGN.md`
+  common case. The FORMAT verdict stays NOT-YET: the spec is still alpha, and the linter's `DESIGN.md`
   is a *different format under the same filename* — a collision, not a standard.
 - **`/ux-check` — "say what would run it" now says.** The rendered-page checks it marks *not checked*
-  name two runners that exist today and need no account: `npx impeccable detect <url>` and Storybook
+  name two runners that exist today and need no account: a rendered-page design linter run with `npx` and Storybook
   MCP's `test-run`. BOSS's four hooks stay the source-level, token-vocabulary half; the rendered half
   is somebody else's maintained list, which is where it belongs.
 - **`/design-library` (V1) defers to Storybook MCP where present.** Storybook ≥ 10.6 serves
@@ -2337,10 +2337,10 @@ changed. `/design-tokens-init` now reads the design system a founder arrives car
   the library's manifest would be the second copy. The library keeps what Storybook cannot render:
   the rule sets and drift shown on the component. The MVP-rung authored `COMPONENTS.md` is untouched.
 - **`design-system.md` — one thing that did *not* change, now with evidence:** the most-starred
-  design skill in the field (ui-ux-pro-max, ★127k) sells **palettes by industry** — the attractor as
+  design skill in the field (★127k) sells **palettes by industry** — the attractor as
   a product. *Values blank until earned* is the contrarian bet in this market; hold it and say so.
 - Small: a `docs/competition/…` path that v0.299.0 shipped inside `/design-tokens-init` (dangles in
-  every founder install) is removed; `frontend-design.md` and RVW-079 carry dated addenda; the
+  every founder install) is removed; the local notes on the design skill and RVW-079 carry dated addenda; the
   competition README's synthesis is one current read with the earlier reads folded under it.
 
 ## 0.306.0 — 2026-09-11
@@ -2349,19 +2349,19 @@ changed. `/design-tokens-init` now reads the design system a founder arrives car
 surface.**
 
 - **`library/practices/harness-engineering.md` — *Split the gathering, never the synthesis.*** An
-  outside number for a rule BOSS already keeps: haytham's ADR-026 measured a single agent with full
+  outside number for a rule BOSS already keeps: an idea-to-MVP agent pipeline's ADR-026 measured a single agent with full
   context at **8 PASS / 4 PARTIAL / 0 FAIL** against a 4-agent + 6-validator pipeline at **1 / 3 / 8**
   on the same inputs. *"If you're adding a validator to fix disagreements between two agents, you have
   an architecture problem."* The receipt for `/consult` synthesizing once and the conscience judging
   in one place. Freshness clock held — a section, not a sweep.
 - **`library/practices/testing-with-agents.md` — rule 7: *if you can't name the data that populates
-  a score, delete the score.*** haytham's ADR-023: eight scoring dimensions, five evidence clusters,
+  a score, delete the score.*** the same pipeline's ADR-023: eight scoring dimensions, five evidence clusters,
   three dimensions hallucinated. BOSS's own denominator lesson (`check:site` at "95% clean") stated
-  as a design rule before the fact. Both cited to `arslan70/haytham/docs/system-evolution.md`, read
-  at source 2026-09-11; the source is in `library/sources.json` with a URL.
+  as a design rule before the fact. Both cited to that project's `docs/system-evolution.md`, read
+  at source 2026-09-11; the source is in `library/sources.json`.
 - **`mentor-founder` — the 10x → 2x move**, for a stuck growth question only: multiply the goal by
   ten to surface the constraint, then ask what became obvious about 2x. Chesky's *add a zero*, via
-  the founder-mode plugin's skill of that name. Once, on a real number, never a ritual.
+  a founder-coaching plugin's skill of that name. Once, on a real number, never a ritual.
 - **`docs/retros/2026-09-11-never-run-skills.md` — which of the 48 skills has ever run on BOSS
   itself.** No invocation record exists, so the denominator is *the artifact each skill leaves*, on
   disk: **22 ran · 11 rung-not-reached · 5 superseded on BOSS's own altitude · 6 should have run and
@@ -2448,8 +2448,8 @@ call is handed back to the founder, per step 5.
 > had to choose — *"I'm reading 'marketplace' as two-sided with payments; if it's a directory, say
 > so"* — because a stated reading is cheaper to correct than a question is to answer.
 
-**IDEA-097 — founder intent at intake.** Learned from a rival, verified against BOSS first: haytham
-(the retired idea-to-MVP plugin, read at source in `docs/competition/founder-plugins-source-read.md`)
+**IDEA-097 — founder intent at intake.** Learned from a rival, verified against BOSS first: a retired
+idea-to-MVP plugin, read at source
 asks a founder's motivation *before* any analysis and calibrates every downstream agent to it. BOSS
 asked What / Who / Smallest-version and never *why you* — `grep -ri motivation stages/ src/` found
 one hit, `/idea`'s rule never to invent one. So every reader downstream assumed a founder who wants a
@@ -2533,10 +2533,10 @@ and no tap on the watchlist observed output.
 > sameness is bad. Only output says what sameness looks like this quarter.
 
 - **Watchlist §7b — the AI-design attractor**, with taps that see *output*, not commentary:
-  1. **The tools' own maintained lists, read as a diff.** `git log -p` on Anthropic's
-     `frontend-design` `SKILL.md` is a primary record of every time their view of the attractor moved
-     (June: "bold maximalism" → September: cream/serif/terracotta named as a tell). v0's Design
-     Systems skill is the second of the kind.
+  1. **The tools' own maintained lists, read as a diff.** `git log -p` on the host vendor's
+     own design skill's `SKILL.md` is a primary record of every time their view of the attractor moved
+     (June: "bold maximalism" → September: cream/serif/terracotta named as a tell). A prompt-to-app builder's design-systems
+     skill is the second of the kind.
   2. **The defaults that become the tells** — Tailwind/shadcn release notes; the "indigo apology" is
      the canonical case of a framework default becoming a model default becoming a tell.
   3. **Practitioners cataloguing tells, found fresh each sweep** — deliberately **not pre-listed**,
@@ -2588,13 +2588,13 @@ silent one, which is the right failure. Ajesh's own machine was on 2.1.132 until
 > *sameness* visible before you build, and craft floors pre-filled in your style guide so "name the
 > slot" stops withholding facts.
 
-**Three things learned from running `/comp-eval` on Anthropic's `frontend-design` skill**
-(`docs/competition/frontend-design.md`, read from the marketplace's own cache the same morning).
+**Three things learned from running `/comp-eval` on the host vendor's own design skill**
+(read from the marketplace's own cache the same morning).
 
 - **The anti-slop catalog was from 2024.** The "shadcn trap" — slate, Inter, 8px radius, indigo — was
   what generated UI converged on then, and BOSS's first override, *warm the neutral scale*, is now
   **the single commonest tell**: warm cream + high-contrast serif + terracotta. The catalog is
-  replaced with the five current clusters (quoted from `frontend-design`, Apache-2.0, with
+  replaced with the five current clusters (quoted from that skill, Apache-2.0, with
   attribution) and **stamped with a date**, because the lesson underneath is portable: **the tells
   are not a list, they are the current attractor, and the attractor moves.** A catalog without a
   date and an owner becomes last year's list while reading as current — which is worse than none.
@@ -2606,14 +2606,14 @@ silent one, which is the right failure. Ajesh's own machine was on 2.1.132 until
   pass one. It is a filter, but it is the one filter that makes *sameness* visible to the model that
   produced it. The best single idea in that skill.
 - **Craft floors and brand values are different kinds of thing**, and *name the slot, earn the value*
-  had been overreaching. `frontend-design` hands over *measure under 80*, *one family or two, clearly
+  had been overreaching. That skill hands over *measure under 80*, *one family or two, clearly
   distinct*, *serif gets more line-height* on turn one, and it is right to: those are **floors** —
   true for almost every product, known to the craft — and withholding them is withholding a fact. A
   **value** (*which* face, *what* ratio) is a decision and stays blank. Every composition slot now
   carries a `Floor (pre-filled)` line above its empty value lines, with Bringhurst as the reference.
   The rule survives sharper: a slot can carry its floor and leave its value empty.
 
-**Also true, and worth saying plainly:** `frontend-design` is not a rival. It is stateless and
+**Also true, and worth saying plainly:** that skill is not a rival. It is stateless and
 operates at generation time; BOSS is all state and operates at project time. Its own text wishes for
 *"a space to quickly jot down notes… for future passes"* — which is BOSS. A founder should install
 both. RVW-014, which vetted an earlier version of the skill in June, carries an addendum: the restraint
@@ -2735,7 +2735,7 @@ through Git Bash or through cmd; if the latter, the conscience never fires and n
 **The other half of the question — *"a lot of folks use VS Code, Cursor"* — turned out to be
 copy, not a port.** Verified against Claude's own docs (code.claude.com/docs/en/vs-code, read
 2026-09-11): the Claude Code extension has an explicit *Install for Cursor* link and installs in
-other VS Code forks (Kiro, Devin Desktop, Open VSX). **So BOSS has run at full strength inside Cursor
+other VS Code forks (Devin Desktop and others, via Open VSX). **So BOSS has run at full strength inside Cursor
 for months, conscience included, and told nobody** — the README said `code .` once and the site
 said nothing. One sentence in README, `web/_shell.html`, `web/index.html`, `web/start.html`.
 Separately, Cursor's *native* agent now ships hooks (`sessionStart` + `additional_context`,
@@ -2777,11 +2777,11 @@ have come to expect (the one place 4–5★ reviews are read). `/spec` reads it 
 
 **Also found, then done the same day:** BOSS ships this skill and had never run it on itself.
 `docs/competition/` now exists — `README.md` with the *doing nothing* row (raw Claude Code, where
-EVID-001 and EVID-003 both came from) and **v0** filed in full following the method: docs before
+EVID-001 and EVID-003 both came from) and **a prompt-to-app builder** filed in full following the method: docs before
 marketing (which is where every real finding was — the homepage and FAQ said nothing about
 Instructions, Design Systems 2.0, or what a Project holds), the changelog, their forum's complaints
 dated and quoted, and `How they do it` for the three features that touch BOSS's bet. Sort: `watch`.
-Two things it found: **v0 has no "why" layer at all** (a Project holds deployment, domains and env
+Two things it found: **that builder has no "why" layer at all** (a Project holds deployment, domains and env
 vars — the memory is git), and their Design Systems 2.0 is the same *shape* as IDEA-091's retrieval
 thesis shipped as product, grounded by a sentence to the model rather than a check on the output.
 Step 5 of the method — use the product — is the one an agent cannot do alone; left open, and named.
@@ -3936,7 +3936,7 @@ reader is external; no number, quote, logo or testimonial that is not already in
 
 Rendered against BOSS's own canvas + 3 `EVID` records before shipping. It behaved — two cells came
 out as visible holes (no bottom-up count of the audience; no competitive research), the rivals section
-said why Lovable/v0/Bolt might win, and the page opened with what is *not* known rather than with
+said why the prompt-to-app builders might win, and the page opened with what is *not* known rather than with
 enthusiasm.
 
 🔴 **But the ledger line the first draft specified was wrong, in the exact way this repo keeps
@@ -6463,11 +6463,11 @@ headline on a security vendor's marketing post.**
 - **Replaced with better, verified evidence** — Veracode's 2025 GenAI Code Security Report: 100+
   models, 80 curated tasks, **45% of AI-generated samples fail security tests against the OWASP Top
   10**, and *flat across model generations*, so waiting for a better model is not a plan. Plus the
-  real Lovable magnitude (**303 vulnerable endpoints across 170 apps in a scan of 1,645 — ~10% of the
+  real magnitude (**303 vulnerable endpoints across 170 apps in a scan of 1,645 — ~10% of the
   platform's public sites**) and MoltBook's true size (**~4.75M records**, not just the 1.5M tokens).
 - **The CVE is now labelled honestly.** CVE-2025-48757 is **CVSS 9.3 and disputed by the vendor** —
-  BOSS said neither. And it named it *"the Lovable/Supabase RLS class"* when **the CVE names Lovable
-  only**; Supabase is not in it. A vendor's name attached to a CVE that does not carry it is the
+  BOSS said neither. And it named the database host alongside the app builder when **the CVE names the app
+  builder only**; the host is not in it. A vendor's name attached to a CVE that does not carry it is the
   lane-blend `SOURCES.md` forbids. Kept, because it is the sharpest framing available: *the root
   cause was the tool's default, not any one app.*
 - **Guards:** a 7th `/prototype` test requires the cap **and forbids the unverified figure** — the
@@ -9724,7 +9724,7 @@ independent pass is recorded as **still owed**.
 landed the same way for the same reason: *outside design advice is sound in substance and wrong in
 dose for a green founder.*
 
-- **Attribution: the zeroheight numbers DO NOT VERIFY and are quarantined.** Tokens 56%→84%, "8% very
+- **Attribution: the design-system vendor report's numbers DO NOT VERIFY and are quarantined.** Tokens 56%→84%, "8% very
   stable", "56% using AI / 15% living up to the hype" — all taken from search summaries, **the report
   body was never read.** Vendor-run, self-selected, enterprise-skewed. They appear in no shipped doc,
   and they must not.
@@ -10235,7 +10235,7 @@ who we learnt the best practices for agentic development."*
   **generated attribution**. Every practice already carries `provenance:`, `curve:` and
   `last_reviewed:`, so the page **renders that metadata rather than restating it** — Anthropic
   engineering, Dex Horthy, Karpathy, Simon Willison, Hamel Husain + Shreya Shankar, OWASP, Veracode,
-  Chroma, Jason Liu, the Spec Kit / Kiro lineage. Attribution that has to be retyped is attribution
+  Chroma, Jason Liu, the spec-driven toolkit lineage. Attribution that has to be retyped is attribution
   that goes stale.
 - **Two diagrams, each making one claim.** Hand-authored inline SVG — no library, `currentColor` so
   both themes work, one hi-vis element carrying the point. *(1)* **The conscience:** a mechanical hook
@@ -11406,7 +11406,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     load-bearing half. Re-open on demand alone.
   - **RLS is now part of schema design, not just the deploy checklist** (`db-architect`, L2). The agent that
     owns the data model never mentioned row-level security, while `ship-it-live.md` named it as *the*
-    signature vibe-coded breach class (CVE-2025-48757/Lovable — 303 endpoints across 170+ apps; MoltBook —
+    signature vibe-coded breach class (CVE-2025-48757, an AI app builder — 303 endpoints across 170+ apps; MoltBook —
     1.5M tokens, founder wrote no code). Added as a design-time discipline: per table, *who can read a row,
     who can write it, which column proves it*; **policies belong in migrations**, not a dashboard; enabling
     RLS ≠ writing a policy; and the plain-words version for a non-technical founder. `/ship` and `/red-team`
@@ -12106,7 +12106,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   acceptance criteria → `RESUME`/`/close` → `/evals`+`/red-team`), so the win is naming the shape. Carries
   three durable stances: **the model is a dependency you don't control** (build assuming it improves; delete
   scaffolding it outgrew — ties IDEA-014/IDEA-028); **spec-driven development** (BOSS's `/spec` already
-  *is* SDD — adopt the stance, reject Spec-Kit's multi-file ceremony); **Karpathy's verifiability thesis**
+  *is* SDD — adopt the stance, reject the spec toolkits' multi-file ceremony); **Karpathy's verifiability thesis**
   (build the features with a verification signal first; the harness's job is to expand what's verifiable).
   **`context-discipline.md` promoted** from host-mechanics to the named discipline it serves — the **dumb
   zone** (~60–70% of the window is usable; context rot degrades even simple tasks — Chroma 2026), **intentional
@@ -12474,7 +12474,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     Principle #4 — no baked-in deploy target): **"localhost is not shipped"**; **deploy early/cheap/reversible**
     (the *"reliability is premature at MVP"* counter was killed 0-3 — the headline stands un-hedged);
     **secrets & authz at the boundary = the leg with teeth** — the signature vibe-coded failure is a
-    client-bundled DB key + RLS the AI never configured (**CVE-2025-48757 / Lovable** — 170+ apps, ~10.3%
+    client-bundled DB key + RLS the AI never configured (**CVE-2025-48757 / an AI app builder** — 170+ apps, ~10.3%
     leaking PII + keys; **MoltBook** — 1.5M credentials, founder wrote no code) [EVIDENCE]; **rollback ≠
     reversible** (instant rollback restores the *app*, not the *database* — Vercel documents this against its
     own feature → expand-migrate-contract, Fowler); a **deploy honesty anchor** (DORA 2024: AI ↔ *worse*
@@ -13173,14 +13173,14 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     IDEA-014 / Principle #2 stance applied to *how we write skills*), progressive disclosure, and
     descriptions that earn their triggers — plus a ship-time self-check. The heavy with/without
     **eval-harness is deliberately left out** (duplicates `/vet` + `conscience-evals/`); deferred to IDEA-033.
-  - **`design-system.md` → "Aesthetic ambition — past the slop default"** — from Anthropic's
-    `frontend-design` ([RVW-014](../docs/research/verdicts/RVW-014-frontend-design-aesthetic-ambition.md),
+  - **`design-system.md` → "Aesthetic ambition — past the slop default"** — from the host vendor's
+    own design skill ([RVW-014](../docs/research/verdicts/RVW-014-aesthetic-ambition.md),
     ADAPT). The practice owned the *discipline* axis (tokens, the 47 blues, missing states) but was
     silent on the *taste* axis. Adds the anti-AI-slop stance, the five aesthetic dimensions, and a
     one-paragraph design-thinking pre-pass — **bounded by BOSS's restraint** (a11y + five states + perf
     are floors; minimalism is the safer default for a green founder, against the source's maximalist lean).
-  - **Three rejected, recorded:** `ui-ux-pro-max` (checklist mined into IDEA-033; CLI+DB machinery
-    rejected — zero-dep ethos), obra/superpowers `brainstorming` (its "every project, no exceptions"
+  - **Three rejected, recorded:** the most-starred UI/UX skill (checklist mined into IDEA-033; CLI+DB machinery
+    rejected — zero-dep ethos), the most-installed build-craft skill pack's `brainstorming` (its "every project, no exceptions"
     is the literal anti-thesis of BOSS's JIT bet; two micro-techniques harvested to IDEA-033),
     `code-reviewer` (already dominated by Claude Code's own `/code-review`).
   - IDEA-033 backlog extended (items 6–8: skill-eval harness, UI/UX pre-delivery checklist, `/spec`+`/consult`
@@ -14432,8 +14432,8 @@ you did NOT design for.** One real bug, and confirmation on the rest.
     as a secondary descriptor.
   - **Cohort-tailored variants:** 8 versions (one per persona archetype). Pattern: cohort-
     naming first phrase + feature-that-lands-hardest second.
-  - **What BOSS doesn't compete on, named explicitly:** code generation (Lovable / v0 / Bolt).
-    BOSS is *complementary* to those — a founder could use Lovable to scaffold the app + BOSS
+  - **What BOSS doesn't compete on, named explicitly:** code generation (the prompt-to-app builders).
+    BOSS is *complementary* to those — a founder could use one to scaffold the app + BOSS
     to scaffold the thinking about it.
 - **README updated** — the TL;DR replaced with the v0.24 positioning. Old: *"a just-in-time
   incubator for AI-native projects."* New: the candidate #8 framing above.

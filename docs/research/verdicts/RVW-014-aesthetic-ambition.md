@@ -8,16 +8,16 @@ verdict: ADAPT
 route: UP library/practices/design-system.md
 ---
 
-# RVW-014 — Anthropic's frontend-design (aesthetic ambition / anti-AI-slop)
+# RVW-014 — the host vendor's design skill (aesthetic ambition / anti-AI-slop)
 
 ## The claim
-- **Source:** https://skillsmp.com/creators/anthropics/claude-code/plugins-frontend-design-skills-frontend-design
-  — Anthropic's official frontend-design skill.
+- **Source:** the host vendor's official design skill, as listed on a community skills directory
+  (name and URL kept in the local research notes since 2026-10-05).
 - **Core assertion:** AI defaults to "generic AI slop" (Inter/Roboto, purple gradients, cookie-cutter
   layouts) unless pushed toward *aesthetic intentionality*. Do a design-thinking pass first, then
   master five dimensions: typography, color/theme, motion, spatial composition, visual details.
   "Bold maximalism and refined minimalism both work — the key is intentionality, not intensity."
-- **Inbox file:** `docs/research/inbox/frontend-design-anthropic.md`
+- **Inbox file:** in `docs/research/inbox/` (local).
 
 ## Rubric
 | # | Question | Finding |
@@ -57,4 +57,4 @@ on 2026-09-11 no longer says *"bold maximalism"*; it says *"spend your boldness 
 motion *"sparingly and deliberately"*, and names the cream/serif/terracotta cluster — the look the
 June version would have produced — as a tell. **The restraint this ADAPT added has been absorbed
 upstream.** The verdict stands; its description of the source does not. Current read:
-`docs/competition/frontend-design.md`.
+kept in the local `docs/competition/`.

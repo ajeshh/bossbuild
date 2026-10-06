@@ -29,7 +29,7 @@ family, not a nudged version of the same one."* The design practice BOSS ships t
 cool, or a warm that isn't cream, or a genuine tint.*
 
 On 2026-09-12 the build-craft watchlist's tap 1 was run for the first time:
-`npx impeccable@4.1.0 detect https://oyeboss.build --json`. It reported `cream-palette` on
+an open-source rendered-page design linter's `detect` run against https://oyeboss.build (v4.1.0, `--json`). It reported `cream-palette` on
 `rgb(232, 230, 225)`. The arithmetic agrees with the linter and not with the comment:
 
 | value | hue | saturation | lightness |

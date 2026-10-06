@@ -271,10 +271,10 @@ design-system.md), publish as blog / arXiv. Acknowledge field honestly; claim na
 - **Where the brand voice comes from.** The brand-default problem is real. BOSS's canvas
   has a Promises cell; could the tokens loop READ the canvas's Promises + Story to generate
   a brand-anchored starter (vs. internet-default)? Possible novel angle.
-- **Lovable / v0 / Bolt overlap.** These tools have opinions about design system scaffolding
+- **Prompt-to-app builder overlap.** These tools have opinions about design system scaffolding
   baked in. BOSS is downstream of them (operates in Claude Code, not the design tools). The
-  intervention needs to handle the case where the founder's code originated in v0 and has
-  the v0-defaults already baked. Adoption story (per IDEA-005 brownfield).
+  intervention needs to handle the case where the founder's code originated in one of them and has
+  its defaults already baked. Adoption story (per IDEA-005 brownfield).
 - **Persona file split for design-skill?** Today the 8 personas don't distinguish design
   fluency vs. eng fluency. `eng-builder` might be design-savvy or not; same for `non-tech-
   founder`. As real evidence arrives, may want a `design-skill` axis added to the cohort

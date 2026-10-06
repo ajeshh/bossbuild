@@ -35,7 +35,7 @@ created: 2026-06-20
 
 It restates the PRINCIPLES.md "why" (pseudo app vs. real-business-value app) in a sharper, more
 quotable shape, with an outside credibility anchor (Schoening / Notion). The "free 10%" maps cleanly
-onto what code-gen tools (Lovable/v0/Bolt) already own; the "90%" maps onto BOSS's complementary
+onto what code-gen tools (the prompt-to-app builders) already own; the "90%" maps onto BOSS's complementary
 thinking layer (the v0.24 positioning line).
 
 ## The open question (is it worthy?)

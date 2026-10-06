@@ -9,7 +9,7 @@
 //
 // THE FAILURE IT CATCHES is the best-evidenced one in the whole vibe-coded stack, and it is a
 // DATA-MODEL failure, not a deployment one:
-//   · CVE-2025-48757 (Lovable/Supabase class) — AI-generated frontends called the database directly
+//   · CVE-2025-48757 (the AI app-builder / hosted-Postgres class) — AI-generated frontends called the database directly
 //     with the public anon key, relying on RLS nobody configured. 303 endpoints across 170+ apps
 //     leaked PII and third-party keys.
 //   · MoltBook — a hardcoded database key plus disabled RLS leaked 1.5M API tokens and 35K emails.

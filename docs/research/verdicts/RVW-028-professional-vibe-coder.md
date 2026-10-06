@@ -11,7 +11,7 @@ route: n/a
 # RVW-028 — "Non-technical people can ship enterprise-grade products without code; plan more, prompt less"
 
 ## The claim
-- **Source:** https://www.lennysnewsletter.com/p/getting-paid-to-vibe-code — Lazar Jovanovic (Lovable's first professional vibe coder)
+- **Source:** https://www.lennysnewsletter.com/p/getting-paid-to-vibe-code — Lazar Jovanovic (an AI app builder's first professional vibe coder)
 - **Core assertion:** A non-technical person can ship "enterprise-grade" products purely with AI; a no-code background is an *advantage*; most time should go to planning/chat not prompting; a PRD + markdown file system keeps agents aligned; kick off 4–5 parallel prototypes; design taste is the future-defining skill.
 - **Inbox file:** docs/research/inbox/professional-vibe-coder-jovanovic.md
 

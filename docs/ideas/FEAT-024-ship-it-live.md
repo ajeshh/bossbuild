@@ -29,7 +29,7 @@ SESSION doc above). Three findings reshape the starter plan:
 
 1. **The secrets/RLS leg is the load-bearing one, not a cross-reference.** The best-evidenced, most
    on-ethos finding is the **client-bundled-DB-key + missing-RLS** trap — two named incidents where *the
-   AI created the hole and the founder wrote no code* (**CVE-2025-48757 / Lovable**, 170+ apps leaking PII
+   AI created the hole and the founder wrote no code* (**CVE-2025-48757 / an AI app builder**, 170+ apps leaking PII
    + keys; **MoltBook**, 1.5M credentials). This IS the pseudo→real thesis made literal. It moves from a
    "cross-reference `agent-security.md`" aside (original slice 1) to a **named, [EVIDENCE]-anchored section
    of the practice** — because it bites *at deploy*, which is exactly what `agent-security`'s `secrets-guard`
@@ -94,7 +94,7 @@ The inheritable spine, ordered by what the research proved load-bearing (de-carg
   *amount of ceremony*, not *whether to be reachable* — see Altitude.)
 - **Secrets & authz at the boundary — the LEG WITH TEETH** (promote, [EVIDENCE]-anchor, don't bury as a
   cross-ref). Never client-bundled secrets; enforce server-side authz / RLS **before** the first public
-  URL; a human security gate at first deploy. Cite the named incidents (**CVE-2025-48757 / Lovable** —
+  URL; a human security gate at first deploy. Cite the named incidents (**CVE-2025-48757 / an AI app builder** —
   170+ apps, ~10.3% leaking PII + keys; **MoltBook** — 1.5M credentials, founder wrote no code) as the
   proof that *the AI ships the hole*. This is where `agent-security.md`'s `secrets-guard` client-side-key
   gap actually bites — name the trap here (it's a deploy-time failure), cross-ref `agent-security` for the

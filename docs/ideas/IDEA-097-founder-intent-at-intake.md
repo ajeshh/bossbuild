@@ -13,7 +13,7 @@ proof_note: >
   /boss 3.5 and the two fields in /boss + /idea templates; readers in /canvas, /consult,
   /interview; fields declared in docs/IDS.md. 7 tests. The gap it closed was verified first:
   `grep -ri motivation stages/ src/` returned one hit, `/idea`'s rule never to INVENT one. Source
-  was a rival's design (docs/competition/founder-plugins-source-read.md, haytham Step 0), not a
+  was a rival's design (docs/competition/founder-plugins-source-read.md, an idea-to-MVP pipeline's Step 0), not a
   founder — compose-on-a-hypothesis, held to the mandate: no skill, no loop, no command.
 created: 2026-09-11
 relates: EVID-001, EVID-003, DEC-011, IDEA-096, IDEA-099, COMP-founder-plugins-source-read
@@ -21,7 +21,7 @@ relates: EVID-001, EVID-003, DEC-011, IDEA-096, IDEA-099, COMP-founder-plugins-s
 
 # IDEA-097 — founder intent at intake
 
-> Seed: the source read of five founder plugins, 2026-09-11. haytham's Step 0 asks three things
+> Seed: the source read of five founder plugins, 2026-09-11. An idea-to-MVP pipeline's Step 0 asks three things
 > before any analysis — *why are you building this*, *what does success look like in 3 months*,
 > *what are you working with* — and every downstream agent calibrates to the answer: a `learning`
 > founder gets no revenue tables; `community` motivation is not scored on willingness-to-pay.
@@ -50,7 +50,7 @@ relates: EVID-001, EVID-003, DEC-011, IDEA-096, IDEA-099, COMP-founder-plugins-s
 > *"Two more things and then we set it up: why this one — and what would 'it worked' look like in
 > three months?"*
 
-Quick answers are fine; *"skip"* is a complete answer and writes nothing (haytham's rule, kept:
+Quick answers are fine; *"skip"* is a complete answer and writes nothing (that pipeline's rule, kept:
 never infer what they declined to say).
 
 **One field, in the IDEA doc frontmatter**, plus the answer *verbatim* as a Capture-log line:
@@ -94,7 +94,7 @@ the mapping before saving — it is their idea and their words.
 
 - **No motivation is inferred.** If they skip, the field is `unset` and every reader behaves as
   today. `read.md`'s rule holds: an opinion about the person must be one they can inspect and edit.
-- **No scoring against motivation.** haytham calibrates a *verdict* to intent; BOSS renders no
+- **No scoring against motivation.** That pipeline calibrates a *verdict* to intent; BOSS renders no
   verdict (canvas: *"coverage is a fact; readiness is a verdict"*). The field changes which
   question gets asked, never a grade.
 - **No new skill, loop or command.** This is one question and five readers.

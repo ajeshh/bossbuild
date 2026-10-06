@@ -7,8 +7,8 @@ status: captured
 
 # Retro: which of the 48 shipped skills has ever run on BOSS itself — 2026-09-11
 
-> The `/retro` question from the comp-read batch (RESUME item 4), asked the way founder-mode's
-> `bureaucracy-detector` ends: *"just stop doing it and see what breaks."* Both alive rivals in the
+> The `/retro` question from the comp-read batch (RESUME item 4), asked the way a founder-coaching
+> plugin's `bureaucracy-detector` ends: *"just stop doing it and see what breaks."* Both alive rivals in the
 > source read subtracted their way to health. BOSS is at 48 skills / 19 loops with a standing
 > *compose and subtract* mandate and, until this file, no denominator.
 

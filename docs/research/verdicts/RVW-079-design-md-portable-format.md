@@ -72,13 +72,13 @@ Added as a **tap** under build-craft watchlist domain 7 so it can't rot unnotice
 - **Spec status unchanged:** still `alpha` (*"Expect changes to the format as it matures"*); CLI
   grew `lint`/`diff`/`export` (Tailwind, DTCG); `@google/design.md` 0.4.0 on npm; ★27.9k.
   Condition #1 (stable version + deprecation policy) **not met**.
-- **Condition #3 inverted rather than met:** `impeccable` (★67.5k, 17 hosts) now writes a root
+- **Condition #3 inverted rather than met:** an open-source design linter (★67.5k, 17 hosts) now writes a root
   `DESIGN.md` in **its own format** (Color/Type/Shape/Components, no YAML), mentioning Google's spec
   only as a comparison. Two tools, one filename, two formats. That is a namespace collision, not a
   second consumer — and it argues *harder* for NOT-YET on emitting.
-- **Condition #2 is now ordinary:** any founder who installed impeccable or ui-ux-pro-max
+- **Condition #2 is now ordinary:** any founder who installed that linter or the most-starred UI/UX skill
   (`design-system/<slug>/MASTER.md`) arrives carrying a design system. The verdict's own answer —
   *read it, cheaper than emitting it* — shipped in **v0.307.0**: `/design-tokens-init` step 0 looks
-  for root `DESIGN.md`, `PRODUCT.md`, `.impeccable/**`, `design-system/*/MASTER.md`, and treats a
+  for root `DESIGN.md`, `PRODUCT.md`, the linter's own dot-directory, `design-system/*/MASTER.md`, and treats a
   hit as prior art to build on, never as a signal to generate a second system beside it.
 - Verdict on the FORMAT: **NOT-YET, reaffirmed.** Source: `docs/competition/design-system-tooling.md`.

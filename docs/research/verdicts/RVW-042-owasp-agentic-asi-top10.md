@@ -11,7 +11,7 @@ route: UP → /red-team (agent-native dimensions) + library/practices/agent-secu
 # RVW-042 — the OWASP Top 10 for Agentic Applications (ASI), Dec 2025
 
 ## The claim
-- **Source:** OWASP **Top 10 for Agentic Applications (ASI)**, released Dec 9 2025 — ASI01 Goal Hijack, ASI02 Tool Misuse, ASI03 Identity/Privilege Abuse, ASI04 Agentic Supply Chain, ASI05 Unexpected Code Execution, ASI06 Memory/Context Poisoning, ASI07 Insecure Inter-Agent Comms, ASI08 Cascading Failures, ASI09 Human-Agent Trust Exploitation, ASI10 Rogue Agents (each tied to a real 2025 incident: EchoLeak, GitHub MCP exploit, Replit meltdown).
+- **Source:** OWASP **Top 10 for Agentic Applications (ASI)**, released Dec 9 2025 — ASI01 Goal Hijack, ASI02 Tool Misuse, ASI03 Identity/Privilege Abuse, ASI04 Agentic Supply Chain, ASI05 Unexpected Code Execution, ASI06 Memory/Context Poisoning, ASI07 Insecure Inter-Agent Comms, ASI08 Cascading Failures, ASI09 Human-Agent Trust Exploitation, ASI10 Rogue Agents (each tied to a real 2025 incident: EchoLeak, GitHub MCP exploit, an app-builder agent's production meltdown).
 - **Core assertion:** An agent builder's real attack surface is the *agentic* Top 10 (tool misuse, MCP supply chain, memory poisoning), not the stateless LLM Top 10.
 
 ## Rubric

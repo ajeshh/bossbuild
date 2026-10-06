@@ -43,7 +43,7 @@ how they should have been.
 |---|---|
 | DESIGN.md covers visual design only, no voice/tone/content | ⚠️ **SUBSTANCE VERIFIED — QUOTE FABRICATED (corrected 2026-08-24).** The sentence *"The specification covers only visual design"* **does not exist** in [spec.md](https://raw.githubusercontent.com/google-labs-code/design.md/main/docs/spec.md); re-fetched raw, and the file is unchanged since 2026-07-27, so it was never there. What the primary *does* say: *"DESIGN.md is a self-contained, plain-text representation of a design system. It **defines the visual identity** of a brand and product…"* — and `voice`, `tone`, `content design` appear **zero** times. The negative result stands on scope, not on the quote. 🔴 **A fabricated quotation, stamped "read directly", inside the attribution step that exists to prevent exactly this.** |
 | BOSS's own content gap (one substantive hit; `voice-keeper` in the gitignored dev workspace, shipping to nobody) | ✅ **Verified against BOSS's filesystem** — the strongest grade available for a claim about BOSS itself. |
-| zeroheight *Design Systems Report 2026*: tokens 56%→84%, 8% "very stable", 56% using AI / 15% living up to hype | ❌ **DOES NOT VERIFY — quarantined.** Taken from search-result summaries; **the report body was never read.** Vendor-run survey, self-selected respondents (~300), enterprise-skewed. Must not be cited in any shipped doc. |
+| A design-system docs vendor's *Design Systems Report 2026*: tokens 56%→84%, 8% "very stable", 56% using AI / 15% living up to hype | ❌ **DOES NOT VERIFY — quarantined.** Taken from search-result summaries; **the report body was never read.** Vendor-run survey, self-selected respondents (~300), enterprise-skewed. Must not be cited in any shipped doc. |
 | "Practitioner consensus" on voice-for-AI (Glean, WordStream, UX Content Collective, uxwritinghub, Eric Wong) | ❌ **No respected practitioner verified.** These are vendor blogs and course sellers — Glean sells enterprise search, uxwritinghub sells a workshop. This is an n=1-blog tier wearing the word "consensus." |
 
 **Effect on the grade:** strip the borrowed authority and the *external* case is blog-grade. What
@@ -84,7 +84,7 @@ sound in substance and wrong in dose for a green founder.**
    **terminology only** — one table, the checkable one — and the voice/tone matrix is deferred, not
    presented-and-skipped. `eng-builder` / `vibe-virtuoso` get the full set offered tersely.
    `domain-expert` gets tone-for-high-stakes first.
-2. **Quarantine the zeroheight numbers permanently.** They appear in no shipped doc today — verified.
+2. **Quarantine the vendor-report numbers permanently.** They appear in no shipped doc today — verified.
    Keep it that way unless someone reads the report.
 3. **Keep the honest bound already shipped** — *there is no regex for off-voice; terminology is the
    exception.* That line is what keeps this layer from overclaiming, and it's the reason the guard
@@ -117,7 +117,7 @@ genuinely cohort-scoped and JIT-gated. What did not survive is the **evidence ta
    the capture quotes as the hit (`:48`, empty-state copy) **matches none of the six pattern terms**;
    it was found by reading and attributed to the grep. **The direction is strengthened, not weakened**
    — the only regex hit is a book title, so pre-arc content discipline was even thinner than claimed.
-3. ✅ **The zeroheight quarantine was right, and is now a refutation.** Read 2026-08-24: **147
+3. ✅ **The vendor-report quarantine was right, and is now a refutation.** Read 2026-08-24: **147
    respondents, not ~300**; the 8%/34%/10% stability split matches exactly; the token and AI-hype
    figures do not match as captured. Correctly kept out of every shipped doc (grep clean).
 4. 🔴 **`v0.168.0` claimed the guard was "Verified across seven cases including the negatives" — and

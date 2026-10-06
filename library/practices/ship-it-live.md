@@ -4,8 +4,8 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-06-21 CD/deploy deep-research pass (SESSION-2026-06-20-cd-deploy-research — 21 sources, 25 claims adversarially verified 3-vote, 22 confirmed / 3 killed) — DORA/Accelerate 2022-2024 [EVIDENCE], Fowler ParallelChange [EVIDENCE], Willison lethal-trifecta + OWASP LLM Top 10, CVE-2025-48757 (Lovable) + the MoltBook breach as the named vibe-coded incidents — BOSS v0.92.0, FEAT-024
-provenance_public: Distilled from a CD/deploy deep-research pass — 21 sources, 25 claims adversarially verified by 3-vote, 22 confirmed and 3 killed. DORA/Accelerate 2022–2024, Fowler's ParallelChange, Willison's lethal trifecta and the OWASP LLM Top 10, with CVE-2025-48757 (Lovable) and the MoltBook breach as the named vibe-coded incidents.
+provenance: distilled from the 2026-06-21 CD/deploy deep-research pass (SESSION-2026-06-20-cd-deploy-research — 21 sources, 25 claims adversarially verified 3-vote, 22 confirmed / 3 killed) — DORA/Accelerate 2022-2024 [EVIDENCE], Fowler ParallelChange [EVIDENCE], Willison lethal-trifecta + OWASP LLM Top 10, CVE-2025-48757 (the AI app-builder RLS class) + the MoltBook breach as the named vibe-coded incidents — BOSS v0.92.0, FEAT-024
+provenance_public: Distilled from a CD/deploy deep-research pass — 21 sources, 25 claims adversarially verified by 3-vote, 22 confirmed and 3 killed. DORA/Accelerate 2022–2024, Fowler's ParallelChange, Willison's lethal trifecta and the OWASP LLM Top 10, with CVE-2025-48757 (the AI app-builder RLS class) and the MoltBook breach as the named vibe-coded incidents.
 last_reviewed: 2026-07-23
 review_by: 2027-07-23
 curve: craft
@@ -48,7 +48,7 @@ the founder never saw the hole.
 
 This is not hypothetical — it's the best-evidenced finding in the whole research pass [EVIDENCE]:
 
-- **CVE-2025-48757 (Lovable)** — AI-generated frontends made direct calls to the database via the
+- **CVE-2025-48757 (the AI app-builder RLS class)** — AI-generated frontends made direct calls to the database via the
   public anon key, relying solely on row-level security the AI never set up. **303 endpoints across
   170+ apps (~10.3% of those scanned)** leaked PII and third-party API keys. (CVSS is disputed — 8.26
   vs 9.3, supplier-contested — so trust the *mechanism*, not the score.)

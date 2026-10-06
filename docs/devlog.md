@@ -579,11 +579,11 @@ own install so `npm run check` goes green.
   documentation — idea → major initiative; competition + thought leaders; the four crafts in sync."*
   Record: `docs/research/sessions/SESSION-2026-09-12-engineering-and-pm-as-a-system.md`.
 - **Landed:** six primaries at source (DORA capabilities model, Radar vol 34, Linear Method + AIG,
-  Cagan 2026-09-11, Karpathy's own post, Beads). 15 of ~18 claims already held. Two gaps, one shape —
+  Cagan 2026-09-11, Karpathy's own post, an agent-native issue tracker). 15 of ~18 claims already held. Two gaps, one shape —
   **rule held, runner absent**: `smoke-guard` (Stop hook, dormant; 7 tests; driven from a real
   scaffold) · `/smoke` plants strict typecheck + formatter at first run · `/spec` step 0b asks for
   `program:` on the second sibling FEAT · the four-crafts table in the FEAT template header + one
-  sentence on the site index · Beads filed `watch`. 48 skills before and after.
+  sentence on the site index · the agent-native issue tracker filed `watch`. 48 skills before and after.
 - **Next:** still **publish** (npm at 0.306.0, now six behind) and Phase 3 outreach. Then: send
   Cagan's *"teams over-invest in validating problems"* through `/vet` — it rubs against the
   conscience's validation nudges and deserves a verdict; add a watchlist row for the project/PM rung
@@ -698,7 +698,7 @@ id: RESUME
 type: resume
 owner: product-lead
 status: active
-updated: 2026-09-12 — **v0.317.0** (/pretotype ↔ /prototype name each other; freshness ledger regenerated — 8 files had no row; IDEA-101's merge REVERSED on the altitude read, waiting; vet sweep → RVW-098→101; v0.315.0 task-hygiene reads the transcript's clock, not the withdrawn `TodoWrite`; v0.316.0 all 48 descriptions ≤50 words, cap 700→420 B; IDEA-100/101 filed, two per-pair decisions waiting; before that: the plugin gate moved into `check`, the board on the same floors; v0.313.0: the site and the shipped guide measured against their own floors: 40 → 0 on every floor, DEC-018 moved the ground cool; before that, v0.312.0: engineering + PM read as one system — `smoke-guard`, the `/smoke` seam, `program:` offered by `/spec`, the four-crafts table, Beads filed; the same hour, peers cut v0.309.0 and v0.311.0 — design-system tooling field, governance/code-shape seeds, then the two guards behind them; a peer's batch was v0.303–v0.306 the day before; the whole comp-read batch shipped: IDEA-097/098/099 + citations + retro) alongside a peer's v0.299/v0.301 — all PUSHED; CI green ×6 on every push since v0.298.0. npm + Homebrew tap both serve 0.273.0; `npm run check` at zero findings.
+updated: 2026-09-12 — **v0.317.0** (/pretotype ↔ /prototype name each other; freshness ledger regenerated — 8 files had no row; IDEA-101's merge REVERSED on the altitude read, waiting; vet sweep → RVW-098→101; v0.315.0 task-hygiene reads the transcript's clock, not the withdrawn `TodoWrite`; v0.316.0 all 48 descriptions ≤50 words, cap 700→420 B; IDEA-100/101 filed, two per-pair decisions waiting; before that: the plugin gate moved into `check`, the board on the same floors; v0.313.0: the site and the shipped guide measured against their own floors: 40 → 0 on every floor, DEC-018 moved the ground cool; before that, v0.312.0: engineering + PM read as one system — `smoke-guard`, the `/smoke` seam, `program:` offered by `/spec`, the four-crafts table, the agent-native tracker filed; the same hour, peers cut v0.309.0 and v0.311.0 — design-system tooling field, governance/code-shape seeds, then the two guards behind them; a peer's batch was v0.303–v0.306 the day before; the whole comp-read batch shipped: IDEA-097/098/099 + citations + retro) alongside a peer's v0.299/v0.301 — all PUSHED; CI green ×6 on every push since v0.298.0. npm + Homebrew tap both serve 0.273.0; `npm run check` at zero findings.
   Per-release detail is in `registry/CHANGELOG.md` and the *State* sections below. **This block is a
   briefing, not a log — if you find yourself narrating releases here, it belongs in *State*.**
   ✅ **npm HOLD LIFTED. Ajesh, 2026-09-09: *"lets commit, and then i can publish to npm."*
@@ -1060,24 +1060,24 @@ pointer that `recordDrift` structurally cannot see while status ≠ `shipped` (I
   root as `"./"`), `plugin/skills/welcome/` → `/boss:welcome`, `bin/` on Claude's PATH. No hooks,
   no agents, no settings in the plugin — the substrate stays per project. Release gate checks
   `plugin.json` version = `VERSION`. README has the `/plugin install boss@bossbuild` path.
-- **`/comp-eval`**: `docs/competition/superpowers.md` (adjacent — craft half, ★285k, fourteen hosts
+- **`/comp-eval`**: the most-installed build-craft skill pack (adjacent — craft half, ★285k, fourteen hosts
   from one repo, no venture) + `claude-plugin-field.md` (2,282 community plugins keyword-scanned; the
-  founder niche is a graveyard of one-shot pipelines at 0–33★; haytham retired 2026-07; study
-  product-discovery's REAL/SYNTHETIC/INFERRED evidence rung). Method holes named in the file.
+  founder niche is a graveyard of one-shot pipelines at 0–33★; the idea-to-MVP pipeline retired 2026-07; study
+  a discovery plugin's REAL/SYNTHETIC/INFERRED evidence rung). Method holes named in the file.
 - **Peer session** shipped v0.299.0 and v0.301.0 (design-system) in the same hours; the version
   handshake worked — both sides re-read `VERSION` and renumbered. Nothing was clobbered.
 - **v0.307.0 (2026-09-12, the design session) — the design-system tooling field.** Nine tools read at
   source (`docs/competition/design-system-tooling.md`); three already had verdicts (RVW-079/081/082),
-  unchanged. **impeccable** (★67.5k, `frontend-design`'s successor) ships the executable anti-slop
+  unchanged. **An open-source design linter** (★67.5k, the host vendor's design skill's successor) ships the executable anti-slop
   detector §7b of the build-craft watchlist asked for a day earlier — now tap 1's third source.
   `/design-tokens-init` step 0 reads a `DESIGN.md`/`PRODUCT.md`/`MASTER.md` a founder arrives
   carrying (RVW-079 condition #2, now ordinary); `/ux-check` names the runners for its *not checked*
   rows; `/design-library` defers to Storybook MCP's index where present. **Open, not built:** run
-  `npx impeccable detect https://oyeboss.build` on BOSS's own site as the first execution of tap 1 —
+  that linter's `detect` against https://oyeboss.build on BOSS's own site as the first execution of tap 1 —
   cheap, and it would say whether BOSS's tokens pass somebody else's tells list.
 - **v0.308.0 (same session) — governance and the shape of UI code.** Ajesh redirected: *not
   templates — governance, scaling, documentation, drift, and how UI code is organized.* Read at
-  source: Primer contributor docs + ADRs, zeroheight DS Report 2026 (n=147), Omlet, DTCG 2025.10
+  source: Primer contributor docs + ADRs, a design-system docs vendor's DS Report 2026 (n=147), Omlet, DTCG 2025.10
   (`$deprecated` verified on the stable spec), Chromatic, FSD, bulletproof-react, Radix, Curtis.
   Seeded at MVP: index `Status` column (`deprecated → X`, replaced ≠ unused), one-directory-per-
   component, partials-are-components, one-way import rule in CLAUDE.md, component API floors,
@@ -1249,7 +1249,7 @@ month's enforcement work had not gone.)*
 3. ✅ **The four crafts meet on the FEAT, written down** — the writes/checks/holds table in the FEAT
    template header + one sentence on the site index (edited in `web/`, the SOURCE — `site/` is build
    output and `gen:site` overwrites it; learned twice this session).
-4. ✅ **Beads** filed `watch` (`docs/competition/beads.md`) — the Radar's *agent-native project memory*
+4. ✅ **An agent-native issue tracker** filed `watch` (in the local `docs/competition/`) — the Radar's *agent-native project memory*
    category; study `ready`, don't adopt the graph.
 5. 🟡 **`/vet` Cagan's 2026-09-11 retraction #2** — *"teams over-invest in validating problems… when a
    product fails it's almost always because the solution just wasn't good enough."* It rubs against
@@ -1288,8 +1288,8 @@ this list before touching a skill.)*
    22 ran · 11 rung-not-reached · 5 superseded-on-self · **6 should-have** · 4 unknowable. Sunset
    nothing. 🔴 **Two dogfood gaps it found: `.boss/brain/` does not exist here (run `/read-repo`), and
    `/drift-deep` has never been run on BOSS.** Both are next-session actions, neither is a build.
-5. ✅ **Two citations landed** (v0.306.0): haytham ADR-026 → `harness-engineering.md`; ADR-023 →
-   `testing-with-agents.md` rule 7. Source in `sources.json` with URL.
+5. ✅ **Two citations landed** (v0.306.0): an idea-to-MVP pipeline's ADR-026 → `harness-engineering.md`; ADR-023 →
+   `testing-with-agents.md` rule 7. Source in `sources.json` (its URL kept local since 2026-10-05).
 6. ✅ **10x→2x paragraph** in `mentor-founder` (v0.306.0).
 
 **Batch complete — six of six.** Three releases unpublished (v0.303–0.306; npm at 0.295). Publish is yours.
@@ -1317,7 +1317,7 @@ remains: every live item below needs a human.** That is the state, not a gap in 
 0. 🔷 **Submit the plugin to `claude-community` — your form.** BOSS is a Claude Code plugin as of
    v0.302.0 (DEC-017: *the front door, never the body* — one skill `/boss:welcome` + `bin/` on
    PATH; the incubator still arrives per project). `claude plugin validate . --strict` passes.
-   Console form: platform.claude.com/plugins/submit. ⚠️ `boss-ai-agent` already exists there and
+   Console form: platform.claude.com/plugins/submit. ⚠️ a plugin with a near-identical name already exists there and
    does chase-reminders — the first line of the submission should say what BOSS is *not*.
    ✅ Exec-form hooks: decided by your "move to 2.1.139", shipped v0.300.0, verified on 2.1.236.
 1. ⛔ **`npm publish` — HELD BY YOU.** npm at 0.295.0 vs repo 0.302.0, **seven behind** (one publish covers all). Then

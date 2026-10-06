@@ -4,8 +4,8 @@ type: practice
 owner: mentor-architect
 status: active
 host: stack-neutral
-provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (GitHub Spec Kit / AWS Kiro). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0. · **one section added 2026-09-11 (v0.306.0)** from a competitor source read — haytham ADR-026's single-vs-split synthesis measurement; not a refresh, the freshness clock is held. · **one paragraph added 2026-09-12 (v0.315.0, RVW-098), clock NOT moved** — the seam rule gains its detection half after Claude Code 2.1.268 withdrew `TodoWrite` and a two-week-old BOSS moment that read nothing else went silently vacuous. · **swept 2026-09-23 (`/practice-refresh agents`)** — the `TodoWrite` dating corrected (2.1.233, not 2.1.268: the moment was never live on a current model), Spec Kit 1.0's recast noted; two sharpenings sent to `/vet`, not adopted.
-provenance_public: Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (GitHub Spec Kit, AWS Kiro). Two independent research threads named the harness as the biggest gap in how BOSS was building.
+provenance: distilled from the 2026-07-23 research sweep (architecture + experts threads) — Anthropic engineering ("Effective harnesses for long-running agents"; "Scaling managed agents"; the Agent-Computer Interface), Dex Horthy (12-factor agents), Karpathy (verifiability thesis), the spec-driven-development lineage (a code host's spec toolkit and a cloud vendor's spec-first IDE). Named by two independent threads as BOSS's biggest architecture gap. BOSS v0.110.0. · **one section added 2026-09-11 (v0.306.0)** from a competitor source read — an idea-to-MVP agent pipeline's ADR-026 single-vs-split synthesis measurement; not a refresh, the freshness clock is held. · **one paragraph added 2026-09-12 (v0.315.0, RVW-098), clock NOT moved** — the seam rule gains its detection half after Claude Code 2.1.268 withdrew `TodoWrite` and a two-week-old BOSS moment that read nothing else went silently vacuous. · **swept 2026-09-23 (`/practice-refresh agents`)** — the `TodoWrite` dating corrected (2.1.233, not 2.1.268: the moment was never live on a current model), the code host's spec toolkit's 1.0 recast noted; two sharpenings sent to `/vet`, not adopted.
+provenance_public: Distilled from Anthropic's engineering writing on harnesses for long-running agents, scaling managed agents, and the Agent-Computer Interface; Dex Horthy's 12-factor agents; Karpathy's verifiability thesis; and the spec-driven-development lineage (a code host's spec toolkit and a cloud vendor's spec-first IDE). Two independent research threads named the harness as the biggest gap in how BOSS was building.
 last_reviewed: 2026-09-23
 review_by: 2026-12-22
 curve: model
@@ -59,12 +59,12 @@ instinct, IDEA-028).
 
 ## Spec-driven, before it had the name
 
-2026's loudest build-workflow idea — **spec-driven development** (GitHub Spec Kit, AWS Kiro: *the spec is the
+2026's loudest build-workflow idea — **spec-driven development** (a code host's spec toolkit, a cloud vendor's spec-first IDE: *the spec is the
 durable artifact, the code is regenerable output*) — is a strong form of what BOSS's `/spec` already does
 (IDEA → FEAT → acceptance criteria → smoke). **Adopt the stance** (the spec, not the code, is the source of
 truth an agent regenerates against) and **reject the ceremony** — a multi-file spec scaffold is premature
 for a day-one founder (Principle #2). A one-page FEAT spec with acceptance criteria *is* the executable
-artifact; you don't need the framework to get the discipline. *(Spec Kit itself moved: 1.0, 2026-08-21,
+artifact; you don't need the framework to get the discipline. *(The code host's toolkit itself moved: 1.0, 2026-08-21,
 recast `specify → plan → tasks` as **"independent entry points, not three mandatory phases"** and added an
 idea-assessment step ending in a *"go, clarify, or stop decision."* The lineage now claims the* whether
 *layer too, so "a spec tool can't tell you whether to build it" is no longer a safe generalisation. It is
@@ -107,7 +107,7 @@ they need the architecture: **anything you can't afford to lose belongs in the s
 the agent's context** — which is the same instinct as `/close` and `RESUME.md`, and the reason a
 crashed session should cost you a restart rather than the work.
 
-## Split the gathering, never the synthesis (haytham, ADR-026)
+## Split the gathering, never the synthesis (an agent pipeline's ADR-026)
 
 One outside number, from a builder who measured it on their own pipeline: a **single agent with full
 upstream context scored 8 PASS / 4 PARTIAL / 0 FAIL** on report-quality criteria; a **4-agent
@@ -122,7 +122,7 @@ model tiers, or genuinely independent tasks — gathering, adversarial review of
 Synthesis is not one of those.** Anything that has to cross-reference findings belongs in one call
 with everything in front of it. BOSS already builds this way — `/consult` gathers mentors separately
 and synthesizes once; the conscience judges in one place — and this is the receipt for why it
-should stay that way. (arslan70/haytham, `docs/system-evolution.md`, read at source 2026-09-11; the
+should stay that way. (An open-source idea-to-MVP agent pipeline's `docs/system-evolution.md`, read at source 2026-09-11; the
 tool itself is retired, the measurement stands.)
 
 ### Agent shape over time — the ladder BOSS ships (IDEA-124)

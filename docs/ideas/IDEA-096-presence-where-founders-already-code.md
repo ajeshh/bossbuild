@@ -39,7 +39,7 @@ Today's ask adds a third, and it is the one nobody has held:
 
 - **Claude Code's extension installs in Cursor and other forks.** Its own docs carry an explicit
   *"Install for Cursor"* link (`cursor:extension/anthropic.claude-code`) and say *"The extension also
-  installs in other VS Code forks like Devin Desktop or Kiro,"* with a fallback to the Open VSX
+  installs in other VS Code forks like Devin Desktop or [a spec-first IDE],"* with a fallback to the Open VSX
   registry. Source: code.claude.com/docs/en/vs-code, read 2026-09-11.
   **So BOSS in Cursor is already true, conscience included** — via the Claude Code extension, not
   Cursor's own agent.
@@ -56,7 +56,7 @@ Today's ask adds a third, and it is the one nobody has held:
 | Claude Code — terminal | full BOSS | done |
 | VS Code + Claude Code extension | full BOSS | **copy** — README says `code .` once; the site says nothing |
 | **Cursor** + Claude Code extension | full BOSS | **copy** — nobody is told this works |
-| Kiro / Windsurf / other forks + the extension | full BOSS (per Claude's docs; unverified by us) | copy, hedged until someone runs it |
+| Windsurf / other forks + the extension | full BOSS (per Claude's docs; unverified by us) | copy, hedged until someone runs it |
 | JetBrains + Claude Code plugin | full BOSS | copy |
 | Cursor's **own** agent | Layer 1 today; a port is now *possible* (hooks exist) | a port — [[IDEA-006]], still gated |
 | Codex CLI / Gemini CLI / Copilot CLI / Zed / OpenCode / Aider | Layer 1; `AGENTS.md` already read ([[IDEA-032]]) | unknown — hooks/commands per host **not surveyed; don't claim** |
@@ -101,9 +101,9 @@ design note answers the substrate question above.
 - 2026-09-11 (evening) — **row 2 shipped: BOSS is a Claude Code plugin (v0.302.0, DEC-017 — the
   front door, never the body).** `/plugin marketplace add ajeshh/bossbuild` → `/plugin install
   boss@bossbuild`. Submission to `claude-community` is Ajesh's form. Same day, `/comp-eval` filed
-  the plugin field (`docs/competition/claude-plugin-field.md` + `superpowers.md`): **superpowers
+  the plugin field (`docs/competition/claude-plugin-field.md` and a file on the most-installed build-craft skill pack): **that pack
   ships to fourteen hosts from one repo with per-host adapter dirs** — the worked example for this
-  record's table if IDEA-006 ever re-opens; and **`boss-ai-agent` already exists in the community
+  record's table if IDEA-006 ever re-opens; and **a plugin with a near-identical name already exists in the community
   marketplace** doing chase-reminders (DEC-016's forbidden thing) — the `boss` submission's first
   line must say what BOSS is not.
 - 2026-09-11 (later) — row 1 shipped in v0.296.0: one sentence in README, `web/_shell.html` (every

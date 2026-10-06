@@ -54,13 +54,12 @@ created: 2026-06-20
    landed (`library/practices/skill-authoring.md`); this is the deferred *machinery*. *Build when a
    shipped skill's value is genuinely disputed and a careful read can't settle it* — until then it
    duplicates `/vet` + `conscience-evals/`. (https://skillsmp.com/creators/anthropics/skills/skills-skill-creator)
-7. **UI/UX pre-delivery checklist (a11y + touch + safe-area).** Mined from the `ui-ux-pro-max` skill
+7. **UI/UX pre-delivery checklist (a11y + touch + safe-area).** Mined from the most-starred UI/UX design skill
    (machinery rejected — CLI + searchable DB conflicts with zero-dep ethos; checklist kept): a
    verification gate for V1 UI — contrast/light-dark parity, 44×44px touch targets, no-emoji-as-icons
    (SVG only), reduced-motion respect, safe-area compliance, no layout shift on interaction. *Fold
    into the design-system practice's V1 enforcement when `/ux-check` is authored.*
-   (https://skillsmp.com/creators/nextlevelbuilder/ui-ux-pro-max-skill)
-8. **`/spec` + `/consult` question discipline.** ~~Harvested from obra/superpowers' `brainstorming`~~
+8. **`/spec` + `/consult` question discipline.** ~~Harvested from the most-installed build-craft skill pack's `brainstorming`~~
    — **AUDITED, NOT A GAP (2026-06-20). Closed.** Both micro-techniques are already present, or
    deliberately bounded:
    - **One question at a time** — already embodied, *better* than the generic version. `/spec`'s
@@ -75,7 +74,6 @@ created: 2026-06-20
      `/triage` upstream of the build contract).
    - **Verdict:** nothing to adopt. The one piece BOSS doesn't do (collapse to a single rec) it
      withholds *on purpose*. Recorded so the claim doesn't resurface.
-   (https://skillsmp.com/creators/obra/superpowers/skills-brainstorming)
 
 ## Explicitly NOT in scope (research said: covered / hype / host-provided)
 - **OTel-GenAI semconv** — pre-stable (schema URL still TODO). Design the trace schema *mappable* to

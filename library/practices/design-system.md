@@ -31,7 +31,7 @@ whichever it saw last. Nobody chose the inconsistency; nothing kept the choice.
 
 ## AI-failure-mode catalog (added v0.20.x)
 
-When founders ask AI (Claude / Cursor / Lovable / v0) to "build me a UI" without design
+When founders ask AI (an AI coding agent, or a prompt-to-app builder) to "build me a UI" without design
 discipline, these failure modes appear by default. Naming them is half the fix:
 
 | Failure | What it looks like | Prevention |
@@ -151,7 +151,7 @@ The intervention *shape* varies per cohort (per `.boss/config.json` cohort decla
 
 ## Aesthetic ambition — past the slop default (added v0.61.0)
 
-> Adapted from Anthropic's own `frontend-design` skill, vetted into BOSS's practice shelf (RVW-014).
+> Adapted from the host vendor's own design skill, vetted into BOSS's practice shelf (RVW-014).
 > The failure-mode catalog above is the *discipline* axis — don't drift. This is the *taste* axis —
 > don't be generic. They are different failures: "the 47 blues" is drift; "AI slop" is genericness.
 > A codebase can be perfectly token-disciplined and still look like every other AI-built app.
@@ -206,8 +206,8 @@ genericness starts to cost.
 ### The tells move — a dated list, or last year's list (added v0.299.0)
 
 **The anti-slop catalog above was a 2024 list, and the fix it prescribed became the 2026 tell.**
-Found by running `/comp-eval` on Anthropic's own `frontend-design` skill (Apache-2.0, read at source
-2026-09-11 — `docs/competition/frontend-design.md`): the "shadcn trap" (slate, Inter, 8px, indigo) was
+Found by running `/comp-eval` on the host vendor's own design skill (Apache-2.0, read at source
+2026-09-11; BOSS's notes on it are kept locally): the "shadcn trap" (slate, Inter, 8px, indigo) was
 what generated UI converged on in 2024, and BOSS's first override — *warm the neutral scale* — is now
 the single commonest tell: **warm cream + high-contrast serif + terracotta.**
 
@@ -215,7 +215,7 @@ the single commonest tell: **warm cream + high-contrast serif + terracotta.**
 > and the prompts do. Any anti-slop catalog needs a **date and an owner**, or it quietly becomes a
 > catalog of last year's tells — worse than none, because it reads as current.
 
-**Current as of 2026-09** (the five, per `frontend-design`, quoted with attribution): warm cream +
+**Current as of 2026-09** (the five, per that design skill, quoted with attribution): warm cream +
 serif display + terracotta · near-black + acid green or vermilion · the broadsheet (hairlines, zero
 radius, dense columns) · the SaaS-card kit (identical rounded cards, one radius everywhere, the same
 `rgba(0,0,0,.1)` shadow, gradient washes) · template chrome regardless of subject (ALL-CAPS eyebrows,
@@ -233,17 +233,17 @@ fresh each sweep, and BOSS's own projects once there are any) and fires on **the
 the calendar**: a new frontier model is what moves the attractor, so it is the event that re-opens
 this list.
 
-**The genericness test** (also from `frontend-design`, and the best single idea in it): before
+**The genericness test** (also from that design skill, and the best single idea in it): before
 building, *would this exact plan have been produced for any similar brief?* Swap the product for a
 neighbour in the same category; whatever survives the swap unchanged is a default, not a choice. It is
 a filter — but it is the one filter that makes *sameness* visible to the model that produced it.
 
 ### The field, read together — the index is being host-shipped and the detector exists (added v0.307.0)
 
-Nine design-system tools read at source on 2026-09-12 (`docs/competition/design-system-tooling.md`),
+Nine design-system tools read at source on 2026-09-12 (BOSS's notes are kept locally),
 and three things changed what this practice says:
 
-1. **The rendered-output check exists; don't build it, point at it.** `impeccable` ships 61
+1. **The rendered-output check exists; don't build it, point at it.** An open-source rendered-page design linter ships 61
    deterministic tells that run against a live page — contrast, overflow, touch targets, skipped
    headings, design-system drift — with no API key. `/design-review after`'s *"not checked — needs a rendered
    page, and say what would run it"* now names it. BOSS's four hooks stay what they are: the
@@ -254,8 +254,8 @@ and three things changed what this practice says:
    now defers to it where present and keeps what Storybook cannot render — the rule sets and drift
    shown on the component. The MVP-rung authored `COMPONENTS.md` is unaffected: it exists for
    component two, before anyone has installed Storybook.
-3. **Founders now arrive carrying a design system.** impeccable writes `PRODUCT.md` + `DESIGN.md`,
-   ui-ux-pro-max writes `MASTER.md`, Google's spec claims `DESIGN.md` in a different format. Step 0
+3. **Founders now arrive carrying a design system.** That linter writes `PRODUCT.md` + `DESIGN.md`,
+   the most-starred design skill writes `MASTER.md`, Google's spec claims `DESIGN.md` in a different format. Step 0
    of `/design-tokens-init` looks for all of them and treats a hit as prior art — the alternative is
    the second-system failure step 0 was written to prevent, arriving from outside.
 
@@ -269,7 +269,7 @@ just pick them a palette.
 Second pass on the field, same day, different corner: not what generates a screen but **how a system
 is governed, scaled, documented and held against drift** — and how its code is organized so it can
 be. Sources opened: GitHub Primer's contributor docs and ADRs (deprecation, versioning, prop norms,
-children-as-API, file structure, experimental components), the zeroheight *Design Systems Report
+children-as-API, file structure, experimental components), a design-system docs vendor's *Design Systems Report
 2026* (n=147 practitioners), Omlet (adoption analytics from static analysis), DTCG 2025.10 (stable),
 Chromatic's visual-test model, Feature-Sliced Design and bulletproof-react (the two widely-used
 layered-import conventions), Radix (the headless-primitive argument), and Nathan Curtis's team models.
@@ -360,9 +360,10 @@ fork it.** Tap the maintained one on the watchlist; a copied list rots and reads
 **Where the names live.** Skills, templates and agents name the *class* — "a rendered-page design
 linter", "the project's component explorer" — because they are durable instructions and tools
 change faster than the rule. **This practice names the tools, dated**, because it is the reference
-layer — the one with a review date, re-read on the model curve. Person and standard citations (Frost, Curtis, DTCG, the
+layer — the one with a review date, re-read on the model curve — **except a rival's**: a product BOSS
+learns from or competes with is described by its shape here too, because this repo is public (2026-10-05). Person and standard citations (Frost, Curtis, DTCG, the
 APG) are attribution, not tools, and appear anywhere. As of 2026-09-12: the rendered-page linter is
-`impeccable` (Apache-2.0, `npx`, no account; 61 rules, reads a root `DESIGN.md`); the component
+an open-source design tool (Apache-2.0, `npx`, no account; 61 rules, reads a root `DESIGN.md`); the component
 explorer serving an index and a test runner to the agent is Storybook ≥ 10.6 with its MCP addon;
 the visual-test accept-as-baseline step is Chromatic's or Storybook's own test runner. **BOSS does
 not install any of these into itself or a founder's project.** It reads what they leave behind
@@ -377,8 +378,8 @@ that has never been pointed at yourself is a claim with better posture. Recorded
 
 ### Craft floors and brand values are different kinds of thing (added v0.299.0)
 
-*Name the slot, earn the value* is the composition layer's governing rule, and `frontend-design`
-exposed where it overreaches. That skill hands over *line length under 80*, *one family or two,
+*Name the slot, earn the value* is the composition layer's governing rule, and the host vendor's own
+design skill exposed where it overreaches. That skill hands over *line length under 80*, *one family or two,
 clearly distinct*, *serif gets more line-height* on turn one — and it is right to, because those are
 not decisions. They are **floors**: true for almost every product, known to the craft, and
 withholding them is withholding a fact.
@@ -391,7 +392,7 @@ withholding them is withholding a fact.
 | Example | measure under ~80 characters | *which* typeface, *what* ratio |
 
 The composition slots now carry both — a `Floor (pre-filled)` line and the empty value lines
-beneath it. Bringhurst is the reference for the typographic floors; `frontend-design` is where BOSS
+beneath it. Bringhurst is the reference for the typographic floors; that design skill is where BOSS
 took the short form. **The rule survives sharper than before:** a slot can carry its floor and leave
 its value empty, and a founder who fills the floor line with a value has confused the two.
 
