@@ -4,7 +4,8 @@ type: idea
 kind: capability
 owner: product-lead
 program: the-record-system
-status: building (S1–S7 landed 2026-10-05; the other 23 umbrellas not yet read against E1–E6)
+status: shipped (core S1–S8, the board by program S10–S11, the /close line — 2026-10-05; S9 deferred with a trigger; G3, G6–G8 open as tasks)
+shipped_on: 2026-10-05
 proof: src/records.js
 proof_note: done when programs() reads PROG records and flags grown ones (S1–S2), the board filters by program (S3–S4), and /idea and /close carry the offer (S5).
 gist: Programs should emerge, not be declared. BOSS notices when related work wants a parent — the same rule restated across records, an IDEA that is really recurring upkeep, one topic split across slugs — and offers the elevation once, in a sentence. The founder never has to know `program:` exists to get one.
@@ -243,7 +244,8 @@ lanes, rail) → the playbook block (S9) → the `/close` line.
 **Built 2026-10-05 (the board):** a *By stage | By program* switch driven by the URL anchor (`#by-program`,
 or any lane), no script; By stage stays the page the board opens on. Lanes replaced the per-program bar
 strip. The rail has two levels once a program exists, and is unchanged when none does. Phones stack each
-lane with column labels. Open: the playbook block (S9), the `/close` line.
+lane with column labels. The `/close` line landed the same day (3f, *spread thin*: work in flight in
+3+ programs). The playbook block (S9) is deferred with a trigger.
 
 ## Candidates — compose, no new skill
 
