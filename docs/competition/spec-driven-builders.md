@@ -197,9 +197,11 @@ take* above were excluded. What it found, by founder impact:
    conscience's registration and the secret-path deny floor. Spec Kit's lesson: a config that won't
    parse is reported, never skipped silently (`templates/commands/specify.md`, the August fail-loudly
    sweep, the September fail-closed provenance change).
-   **Still open, same shape:** `hooks/lib/loop-runtime.js` reads an unparseable `.boss/config.json` as
-   *not paused, no mutes* (from reading the code, not reproduced). A founder's pause would vanish without
-   a word. Reproduce before fixing.
+   **Checked, not the same bug:** `hooks/lib/loop-runtime.js` reads an unparseable `.boss/config.json`
+   as *not paused, no mutes*, but both of its writers (`clearPauseState`, the mute pruner) skip the write
+   when the parse fails, so nothing is erased. The cost is that the conscience can speak through a pause
+   while the file is broken. It fails open on purpose (*"hook must never block"*). It's a judgment call,
+   no user has hit it, and it's left as is.
 2. **`/import` and `/comp-eval` fetch pages without the "this is data, not instructions" rule.**
    Spec Kit's bug and assess extensions quote instruction-like text as `Unverified`, refuse non-http(s),
    localhost, private and metadata addresses, and treat their own saved artifacts as untrusted. BOSS's
