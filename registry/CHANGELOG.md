@@ -27,6 +27,10 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **The coder reproduces a bug before it fixes one.** It now says what it ran and what it saw before
+  changing anything, and stops to tell you when the bug won't reproduce. When a fix doesn't make the
+  problem go away, it says what it got wrong about the cause instead of piling a second change on top.
+
 - **A fix now names what it must leave alone.** When the feature you're speccing is a bug fix,
   `/spec` asks one more question: what next to the bug has to keep working exactly as it does, written
   as a concrete pair. It goes under *Paths that must not break* and becomes a test that passes before
