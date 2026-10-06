@@ -184,6 +184,9 @@ Mocked on a scratch copy of Kettlewick (Cover: 5 features, 2 met by EVID-003; On
   in. A PROG's `gist:` describes its members; the playbook needs the outcome, the way a FEAT has `for:`.
   Lean: the PROG template leads its gist with the outcome — no new field.
 - Records with no program need a group too (*Not part of a program*), or they vanish from the block.
+- **It was invisible where it sat** (Ajesh: *"i didnt see the mock being there"*). The *How we're learning*
+  block folds after a few lines, so the program view, placed below its learning lines, was behind
+  *the whole record*. Built, it gets its own block (*What was built, by what it's for*) — never inside a fold.
 - Open: show the program's decisions here, or only on `boss board PROG-NNN`? Lean: board only — the
   playbook is shared outward, decisions are internal.
 
