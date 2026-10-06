@@ -41,7 +41,7 @@ which records are tracked, not the door. Left as is; move it if a pass wants it 
 
 ## Backlog — saved for later passes (pick, cut or keep)
 
-- [ ] **B1 · Plant the status line.** Opt-in through `boss hooks enable statusline` (the optional-hooks
+- [ ] **B1 · Plant the status line** — *the next piece; Ajesh: a bigger feature, think it through first (2026-10-05).* Opt-in through `boss hooks enable statusline` (the optional-hooks
   door that exists), writing `statusLine` into the project's `.claude/settings.json` with
   `boss status --line`. Never overwrite a founder's own `statusLine`.
 - [ ] **B2 · Shell completion.** `boss completion zsh|bash|fish` prints a script; it completes the
@@ -73,3 +73,6 @@ refuses).
 
 - **2026-10-05** — graduated from `front-door`; IDEA-152 is the first slice (argument hints, `unlock`
   with no mode, `status --line`, bare `boss` in a project). Shipped the same day, Unreleased.
+- **2026-10-05 (close)** — paused before B1. Questions for it: opt-in or default; the host passes JSON on stdin
+  (`workspace.current_dir`) — read that instead of the cwd; never overwrite a founder's own `statusLine`; what the
+  line says when nothing is in flight; does it carry the conscience (paused, one ranked nudge) or stay position-only.

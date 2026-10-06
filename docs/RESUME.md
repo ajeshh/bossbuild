@@ -30,15 +30,9 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 - **IDEA-151 (2026-10-05, landed in 0.330.0) — release notes weighed per bullet + a line after an update.**
   0.330.0 is stamped with weights (13 notice · 33 smaller · 1 under the hood), not yet published. Before
   `npm publish`: `npm run release` regenerates the site's What's new. Open: O1 (founders who never type `boss`).
-- **IDEA-150 (2026-10-05, shipped, pushed; CI green) — what the spec toolkits taught.** Three reads of the
-  spec-driven field, then RVW-136…149 and the build: a tick carries its evidence (`/log` owns ticking), the
-  CLI's first-command craft (quoted `cd`, errors name the next step, unknown flags refused), `amends:` links,
-  named slices, repro-first `coder`, `/spec` 502 → 340 lines, fetched text is data, a private security route
-  (`SECURITY.md`, reporting on), the CHANGELOG merges as a union. Plus a real bug fixed: an unparseable
-  `settings.json` was rewritten as `{}` (`dbf0ae5`). **No rival is named in tracked text any more** —
-  `docs/competition/` is gitignored; names live in `docs/research/sessions/`. Devlog has the entry.
+- **IDEA-150 (2026-10-05, shipped, pushed) — what the spec toolkits taught.** Devlog has the entry. Standing:
+  **no rival is named in tracked text** — `docs/competition/` is gitignored; names live in `docs/research/sessions/`.
 - **IDEA-144 (2026-10-05, Unreleased) — one home for the generated pages.** `.boss/index.html`: every page with its age, *Where things live* (folders + key files, Open / Copy path), a bookmark hint; every page command prints it as the one bookmark. Spaces ordered Board · Playbook · Design · Guide. Demo: "Organization" → *Where things live* (GitHub links), and the opening says what Kettlewick does. Each card says when its page is out of date (a file it reads changed since). No machine-wide home: each project has its own (Ajesh). Open: the home re-checks only on a page command.
-- **Design-system reading (2026-10-05, Unreleased)** — RVW-111…135 vetted, seven ADAPTs built: the playbook's *Start here* onboards (I need to… · What checks the work), a variant-spelling finding, and the CLAUDE.md token block names values instead of copying them. Devlog has the entry. Nothing open in the lane.
 - **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
   principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
   plants `.claude/rules/engineering.md` (founder-owned). 18 of 19 found tasks closed with reproductions — incl. the
@@ -58,7 +52,11 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
   nothing to *sell* but the person, which is the acqui-hire's point. Licence: **keep MIT and the words**
   (a copy edit claws nothing back; diligence reads `LICENSE`). Next step is one call, not a build.
-- **v0.318.0 → v0.325.0, and the 2026-09-13 second tier** — each is a `registry/CHANGELOG.md` section; the headlines are in the devlog (the 2026-10-04 IDEA-132 entry and the 2026-09-13 entry).
+- **PROG-004 the front door (2026-10-05, Unreleased) — graduated from `front-door`.** IDEA-152 shipped the quick
+  wins: `argument-hint` on every skill, `boss unlock` with no mode previews the next rung, `boss status --line`,
+  bare `boss` in a project says where you are. **Next (Ajesh: "a bigger feature… more thinking, tomorrow"): B1,
+  the status line in Claude Code** — opt-in or default, reading the host's stdin `workspace.current_dir`, never
+  overwriting a founder's own `statusLine`, and what the line says when nothing is in flight. Backlog B2–B8 in PROG-004.
 - **IDEA-132 (2026-10-04, Unreleased, not pushed) — the design system's manifest gets its edges.** `tokens` + `composes`,
   Composition on the usage page, a never-inside rule at the write. Devlog.
 - **Release (2026-10-04): 0.328.0 was published to npm on 2026-09-25 (its stamp sat uncommitted until

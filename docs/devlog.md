@@ -22,6 +22,26 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-05 — PROG-004 the front door; IDEA-152 quick wins (Unreleased)
+
+**Landed.** Ajesh asked what CLI tools people rave about and what BOSS could learn; then *"start with
+the easiest and quickest ones that deliver the most… make the cli related work as a program."* The slug
+`front-door` (IDEA-083…087) already held the CLI's first run, so it graduated to PROG-004 instead of a new
+umbrella. IDEA-152: `argument-hint` on all 42 skills that take an argument (derived from the `Usage -`
+tail; `test/front-door.test.js` keeps them in step), `boss unlock` with no mode previews the next rung
+(`renderReadiness(..., { preview })`), `boss status --line` (0.24s, silent outside a project), bare
+`boss` in a project prints a doorstep instead of the manual.
+
+**Surprised by.** Most of the ideas were already there: did-you-mean for commands, flags and help topics,
+examples in `boss help <cmd>`, project-scoped `boss help --html`, `/boss` as a palette. My first count —
+39 skills in the `/` menu at MVP — was wrong: IDEA-084 made it 16 at unlock, the rest earned. A
+docs-reading subagent said `argument-hint` is not documented for skills; the skills reference lists it.
+Read the page before trusting the summary. `user-invocable: false` exists (B3); custom spinner tips are
+not documented (B6 waits).
+
+**Next.** B1, the status line in Claude Code — Ajesh: a bigger feature, more thinking first (tomorrow).
+Open questions are in RESUME's PROG-004 bullet.
+
 ## 2026-10-05 — IDEA-151: what you'll notice (landed into 0.330.0, unpublished)
 
 **Landed.** Release notes are weighed per bullet: *What you'll notice*, *Smaller
