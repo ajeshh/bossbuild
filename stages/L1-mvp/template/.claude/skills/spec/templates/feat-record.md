@@ -28,7 +28,7 @@
 > | **Product** (`product-lead`) | Goal · `for:` · Acceptance criteria · Validated learning | `/spec`'s restraint + loud≠important | `focus-loop`, `canvas-drift-loop` |
 > | **Design** (`designer`) | Flow — decided here, in prose · the five states · the copy in them | `/design-review` before code and after | the design guards (tokens, contrast, reuse, boundary, terminology) |
 > | **Engineering** (`coder`, `tester`, `mentor-architect`) | Data shape (before the migration) · Paths that must not break · Smoke check | `/smoke` · `/evals` · `/red-team --paths` | `schema-guard` · `smoke-guard` |
-> | **Project** (`planner`) | `program:` · order and blockers via `boss board` · found tasks in `.claude/rules/feature-context.md` | `/close` ticks the criteria | `reentry`, the WIP watch |
+> | **Project** (`planner`) | `program:` · order and blockers via `boss board` · found tasks in `.claude/rules/feature-context.md` | `/log` ticks the criteria, with evidence | `reentry`, the WIP watch |
 >
 > And it closes back on itself: `/health` → `/roadmap` → the next `/spec`.
 
@@ -66,7 +66,8 @@ reader got wrong._
 
 ## Acceptance criteria
 _Checkable. A reader who's never seen the code should be able to verify these._
-_Tick them as they land — `/close` does this, and `boss board` renders the fraction._
+_`/log` ticks each one as it lands, with its evidence on the line (`— <ran → saw>` or `— tester ✓`);
+`boss board` renders the fraction. The FEAT ships when every box carries evidence._
 - [ ] …
 - [ ] …
 - [ ] …

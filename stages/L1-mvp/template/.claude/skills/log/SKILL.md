@@ -41,11 +41,16 @@ If you only read one thing when picking the project back up, read the last devlo
    - **Tick the acceptance criteria** that are now true (`- [ ]` → `- [x]`) in the FEAT doc. They
      ship as checkboxes and nothing used to check them, so a half-built feature and an untouched one
      looked identical. Ticking is what lets `boss board` show *how far*, not just *in flight*.
+     **This is the one place criteria get ticked**; `/close` and the FEAT template point here.
+   - **A tick carries its evidence, on the same line:** `- [x] <criterion> — <what you ran → what
+     you saw>`, or `— tester ✓`. A box ticked on the builder's word is a claim, and the founder who
+     can't read the code can only trust the box. Something built this session but not checked stays
+     unticked: say it back once as *built, not yet checked*, and offer to hand it to `tester`.
    - **Append one dated line to the FEAT's `## Build log`** — but only if there's a decision or a
      surprise in it. The devlog entry you just wrote is per *session*; this is the same day's work
      filed under the *feature*, so its arc stays whole across releases. **Don't mirror the devlog
      line into it** — if the only thing you'd write is a restatement, write nothing.
-5. **Done — if a FEAT closed** (all criteria ticked + smoke green). This is the wrap-up, not a pause
+5. **Done — if a FEAT closed** (every criterion ticked with its evidence + smoke green). This is the wrap-up, not a pause
    (`/close` is the pause): the feature met its purpose and the container it was built in ends —
    `boss craft done`. First, close it out in the FEAT doc — **three lines, not one**:
    - `status: shipped`

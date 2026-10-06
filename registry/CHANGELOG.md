@@ -27,6 +27,13 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A ticked criterion now says how it was checked.** A feature's acceptance criteria could be
+  ticked on the agent's word, so a box looked the same whether anyone had tried it or not. Now `/log`
+  ticks a criterion with what was run and what was seen on the same line, keeps anything built but
+  unchecked unticked as "built, not yet checked" with an offer to hand it to `tester`, and closes a
+  feature only when every box carries that evidence. `/log` is the one place ticking happens; `/close`
+  and the feature template point to it.
+
 - **A typo in your Claude Code settings no longer costs you the rest of them.** If
   `.claude/settings.json` had one stray comma, `boss hooks enable`, `boss adopt` and `boss sync` read it as
   empty and wrote that back, keeping only what BOSS was adding. Your permissions, the conscience's

@@ -51,9 +51,9 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
 
 ## How to run it
 
-1. **Append a devlog entry** by running the `/log` flow (FEAT, landed, next, surprises) — which
-   also ticks the active FEAT's acceptance criteria and appends to its `## Build log` when there's a
-   decision or surprise worth keeping. If `/log` already ran this session, skip — don't duplicate.
+1. **Append a devlog entry** by running the `/log` flow (FEAT, landed, next, surprises). Ticking the
+   active FEAT's acceptance criteria, each with its evidence, and appending to its `## Build log`
+   happen there (`/log` step 4), not here. If `/log` already ran this session, skip — don't duplicate.
 
 1b. **Compress `.claude/rules/feature-context.md` (the promise it makes).**
    That file told every founder *"when the feature ships, `/close` will compress this to a one-line
