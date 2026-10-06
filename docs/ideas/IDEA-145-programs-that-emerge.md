@@ -190,6 +190,26 @@ Mocked on a scratch copy of Kettlewick (Cover: 5 features, 2 met by EVID-003; On
 - Open: show the program's decisions here, or only on `boss board PROG-NNN`? Lean: board only — the
   playbook is shared outward, decisions are internal.
 
+## S10 · The board, by program — swimlanes, mocked 2026-10-05 (Ajesh: *"how to show the kanban of programs for the board"*)
+
+Mocked on BOSS's own board (scratch copy, nothing tracked): **one row per program across the same four
+columns**. In-flight cards as small cards; Shipped as a count and one square per record (112 shipped
+cards would bury the rows); rows with work in flight first, by how much; *Not part of a program* last;
+programs with nothing in flight folded into one line.
+
+**What the render showed (BOSS's own data):** 7 programs in flight, 14 settled, 5 unprogrammed in flight.
+- It answers the question the stage view can't at a glance: **where the open work sits** — the playbook
+  holds 2 captured, the ecosystems 1 taking shape, the record system the one thing building.
+- **Captured dominates.** Most rows are a card or two in Captured and nothing else — the honest picture of
+  a backlog spread thin across umbrellas.
+- *Not part of a program* carries 45 shipped and 18 parked — older work from before programs. Fine; it
+  says where the umbrellas start.
+- A slug program prints its name twice (title = slug). Show the slug line only for PROG records.
+- **Placement:** above the columns it doubles the page. Lean: a **By stage | By program** switch at the
+  top, CSS-only (the board page has no script by design) — radio inputs, no JS.
+- **Phones:** five columns won't fit 390px — each row stacks to the program name and its cards with a
+  column label on each.
+
 ## Candidates — compose, no new skill
 
 - **`/idea` asks once at capture:** *"This reads like part of PROG-001 (the website). Add it there as a
