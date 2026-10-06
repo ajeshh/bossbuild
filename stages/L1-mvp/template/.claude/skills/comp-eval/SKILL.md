@@ -196,3 +196,5 @@ each rival's file, keyed to features already decided.
 - **Not a tracker.** No pipelines, no alerts, no monitoring daemon. This is a view you refresh
   deliberately, not a service that watches the market for you.
 - **"Doing nothing" is always a row.**
+- **End on one next step, not the table.** Usually the canvas cell this run changed; when a rival
+  lands on the differentiator, `/pretotype`'s *"would you switch?"* test instead.

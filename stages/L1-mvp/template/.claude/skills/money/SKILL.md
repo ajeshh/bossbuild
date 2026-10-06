@@ -149,6 +149,9 @@ the defer reason), the first price, the refund posture, and a pointer to the `co
 the DECs. **Part B:** which move was run, what changed, the margin read, and any DEC (a price raise
 always gets one). **Record the event, never the stream.**
 
+End on one next step. After Part A: getting the person who paid to what they paid for (`/onboard`).
+After Part B: the date you'll look at whether the move worked.
+
 ## Cohort-aware
 - `first-product` / `vibe-coder-newbie`: plain language, one move at a time. The first price is the
   scary one — name that it's scary, then help them say a number. Defer everything deferrable.

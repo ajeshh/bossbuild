@@ -234,6 +234,7 @@ Everything in *How to run it* assumes a graphical interface. If that's not what'
      *added*, and the decision you deliberately left un-patterned
 6. **Capture the review** in `docs/design/reviews/<feat-nnn-or-date>.md`. The review is a
    diff against the proposed design, not a critique-only doc — propose every change concretely.
+   Close on one next step: the worst finding, and who fixes it (usually `coder`).
 
 ## What this skill does NOT do
 

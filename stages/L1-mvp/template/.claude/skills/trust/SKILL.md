@@ -162,6 +162,8 @@ firing before consent, a third party reading a sensitive route, a deletion that 
 opt-out turned out to be off, that comes first, in plain words — whose data, going where — with the
 smallest fix (pull the tag, turn it off). Then a short summary of what's done vs. deferred (and the
 trigger that would un-defer SOC2). Record load-bearing calls (retention period, opt-out) as `/decide` DECs.
+End on one next step: the live fix if there was one; otherwise linking `PRIVACY.md` from the place
+the app collects data.
 
 ## Cohort-aware
 - `first-product` / `vibe-coder-newbie`: the privacy policy + the opt-out config are the whole job; define

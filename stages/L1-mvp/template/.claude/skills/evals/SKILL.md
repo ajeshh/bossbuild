@@ -72,6 +72,7 @@ under attack is `/red-team`; shipping an AI feature needs **both**, not either a
    another user's data), in plain words. Then the count (`N of M pass`) and the failures by
    category — the categorized failure count IS the design signal for next iteration. The per-case
    lines (`✓ <id>  <scenario>` or `✗ <id>  → <reason>`) stay in the run's output, not the message.
+   End on one next step: the largest failure category, and the one change aimed at it.
 5. **Add the failure** when something breaks live. Each real-world bug becomes a case in the set;
    the set grows from real friction.
 

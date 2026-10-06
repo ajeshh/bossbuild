@@ -45,6 +45,12 @@ rule above still applies to the whole section once it is stamped.
   At close it also says, in one line and only when there is one, anything that got built which no
   criterion asked for, and asks whether it becomes its own feature or comes out. It never removes it.
 
+- **Eleven skills that used to just stop now say what comes next — one thing.** `/decide`,
+  `/evidence`, `/persona`, `/comp-eval`, `/evals`, `/ai-failure-states`, `/design-review`, `/money`,
+  `/trust`, `/board` and `/design-library` finished their work and left you to work out the next move.
+  Each now closes on a single next step that fits what it just found: the worst finding to fix, the
+  unknown to ask a real person about, the date a decision gets checked.
+
 - **A page BOSS reads for you can't give it orders.** `/boss`, `/import`, `/comp-eval` and `/persona`
   pull in outside text — a link, a rival's site, a paste — and a page can carry a line written to
   steer whatever agent reads it. Those skills now treat what they read as material, never as

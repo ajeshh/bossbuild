@@ -126,6 +126,11 @@ For each `docs/ideas/FEAT-NNN.md` that puts an LLM in the user-visible path:
 - Update **Acceptance criteria** to include at least one failure-state path (e.g., *"refusal
   routes to /support, not the spinner"*).
 
+### 6. Name the one next step
+
+Close on what you wrote and one next step: the most harmful state still marked `STUB`, turned into
+a case with `/evals`.
+
 ## The copy nobody reviewed
 
 Every failure state above ends in **words a user reads**, and those words are the least-reviewed

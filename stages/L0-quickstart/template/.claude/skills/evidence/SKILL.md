@@ -105,6 +105,9 @@ them. When in doubt, grade *down*, and name the specific thing that would raise 
    If you pitched instead of listened, say so — that context matters to future-you.>
    ```
 
+7. **Then one line: the cheapest thing that would move this signal up a rung** — usually a
+   commitment ask. Already `commitment`? Name the canvas cell it now backs.
+
 ## A debrief — notes from a call
 
 Do these in order, briefly. Each signal becomes a record exactly as above; batch the drafts, show them,

@@ -54,7 +54,8 @@ but the face is a file the founder adds or nothing. A drawn stand-in makes a syn
 finished, and a finished-looking guess lies better than a blank.
 
 Name what's a guess. The `what we don't know` block is the most valuable part — it's the interview
-guide for when you talk to a real one.
+guide for when you talk to a real one. End there: point at `/interview`, with the top unknown as
+what the call is about.
 
 ### `enrich <slug>` — grow it from evidence
 Offer the four sources; fold in what they choose; **shift the ledger** (real grows, synthetic shrinks):

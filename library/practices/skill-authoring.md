@@ -121,6 +121,9 @@ A short read, not a harness:
 - **Voice test:** does it assume intelligence and never assume knowledge? (Unsure? Read it aloud to
   someone who has not seen it — that catches more than any checklist.) Then check the words against
   the table below.
+- **Ending test:** what does the skill's last step tell the founder? It should say what it wrote and
+  name **one** next step — never a menu, never a recap. A skill whose work genuinely ends there (a
+  smoke run, a sunset) says nothing more, and that is fine; one that just stops is not.
 
 ### The founder's words, and BOSS's (added 2026-09-24)
 

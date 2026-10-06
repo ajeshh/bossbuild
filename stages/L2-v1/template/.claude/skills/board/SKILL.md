@@ -63,7 +63,8 @@ the loop or agent name (`design-tokens-loop closed` → "the shared colours and 
      was recorded
    - **Deferred** — `status: deferred` or an override entry naming this FEAT exists
    - **Recently shipped** — `status: shipped` within last 14 days (cap at 5)
-5. **Output the board** in a readable Markdown-friendly text format.
+5. **Output the board** in a readable Markdown-friendly text format. End with one line: the FEAT
+   you'd pick up next, and why.
 
 ## Flags
 

@@ -272,7 +272,8 @@ warning. It shows what you've built, not only what's wrong.
    every card, and a summary line: *"14 components · 71% of UI files on-system · 3 findings ·
    generated <date>."*
 8. **Write `manifest.json`** with a source hash per component.
-9. **Report** the findings list in the session, ordered by severity, and point at the library path.
+9. **Report** the findings list in the session, ordered by severity, point at the library path, and
+   name the one finding to fix first.
 
 `--check` runs steps 1–5 and 8, reports drift, and **writes nothing but the manifest.** Use it in a
 review pass when you want the verdict without regenerating the pages.

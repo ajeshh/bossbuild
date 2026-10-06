@@ -132,6 +132,9 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
    session. If the decision *reshapes* agents — a split, a merge, one retired — follow
    `.claude/rules/agent-shape.md`.
 
+8. **Close on the file and one next step:** the date its Falsifier gets checked, if it has one;
+   otherwise the work this decision unblocks.
+
 ## Superseding, not editing
 
 A decision record is a **historical fact** — it was true when made. Don't rewrite it when you change your
