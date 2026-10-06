@@ -22,6 +22,22 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-05 — IDEA-144: one home for the generated pages (`9214f91` → `867ce24`, Unreleased)
+
+- **FEAT:** none — IDEA-144. Ajesh: the playbook and the other pages are "not easy to discover",
+  then "i didnt see this inside bossbuild for bossbuild itself" — `.boss/` is a dot-folder Finder hides.
+- **Landed:** `.boss/index.html`, written by every page command and printed as the one bookmark: each
+  page with when it was made and whether a file it reads changed since (`SPACES[].reads`), naming the
+  newest change; *Where things live* (folders + key files from `src/places.js`, Open / Copy path); a
+  bookmark hint with Done. Spaces ordered Board · Playbook · Design · Guide (by how often opened).
+  Demo: "Organization" → *Where things live*, docs folders linked to GitHub; the opening rewritten in
+  Kettlewick's records — the gist as headline, then what it is, problem, proof, why, name last.
+- **Surprise:** the folder was never the problem, the missing front page was. And the demo read
+  clearly to the person who wrote it and to nobody else: "cover" is industry slang the page never
+  glossed, and the headline was the tagline.
+- **Next:** nothing in the lane. If "checked 9 days ago" turns out to be what people see, the
+  session-start hook could rewrite the home.
+
 ## 2026-10-05 — IDEA-137: five more lenses read into the guide; the ladders follow the guide (`f10467b` → `74e1c66`, Unreleased)
 
 - **FEAT:** none — IDEA-137 R11 and C11. Ajesh asked what else fits the ecosystem beyond permaculture
