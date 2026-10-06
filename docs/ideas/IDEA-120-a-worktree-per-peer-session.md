@@ -3,7 +3,7 @@ id: IDEA-120
 type: idea
 kind: capability
 owner: Ajesh
-status: building
+status: shipped
 proof: none
 proof_note: a trial record in this file (what broke in one worktree session) is the first proof; a CLAUDE.md rule change is the second
 gist: Chat windows share one checkout, so each can commit another's half-done work — which is why CLAUDE.md carries never-checkout, never-stash and stage-one-hunk. One worktree per piece of work, named by its ID; a second window on the same work joins it; the main checkout only lands.
@@ -103,7 +103,7 @@ What broke or rubbed, in the order it happened:
 ## Tasks
 
 - [x] Trial in one session on a one-file change; record what broke. (2026-10-05, above)
-- [ ] Rewrite the three CLAUDE.md rules (no checkout, no stash/pop, stage one hunk) as one: *work in
+- [x] Rewrite the three CLAUDE.md rules (no checkout, no stash/pop, stage one hunk) as one: *work in
       your own worktree; land with `--ff-only` from the main checkout.* Closes the 2026-09-13 stash
       incident (five UU files), the five staging sweeps, and the `index.lock` collisions. **Ajesh's call**
       — CLAUDE.md is read by every peer, and the rule changes how all of them work.
@@ -117,4 +117,10 @@ What broke or rubbed, in the order it happened:
       `test/worktree-script.test.js`. Building it found one more trap: a `dir/` ignore rule matches
       nothing in `check-ignore --stdin` unless the path carries its trailing slash.
       Built inside `.claude/worktrees/idea-120` and landed with the script itself.
-- [ ] Correct CLAUDE.md's gitignored list (finding 6) or point it at the derivation instead.
+- [x] Correct CLAUDE.md's gitignored list (finding 6) or point it at the derivation instead.
+- Done 2026-10-05 (Ajesh: *"fine to make changes to claude as needed"*): CLAUDE.md's concurrent-
+  sessions bullet now says *each piece of work gets its own worktree; the main checkout only lands*,
+  with editing in main kept as the named fallback; the gitignored list points at the derivation.
+  Only checkout and lane-claims were in CLAUDE.md — the stash and stage-one-hunk rules lived in
+  memory, now pointed at this rule. Landed by hunk from main: a peer's uncommitted CLAUDE.md
+  paragraph would have stopped a worktree landing (finding 10, live).

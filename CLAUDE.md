@@ -19,16 +19,26 @@
 
 - **Concurrent sessions are the norm, not an anomaly.** Six peer sessions were live on 2026-08-21;
   it cost five version collisions before DEC-019 moved the unit: capabilities land under
-  `## Unreleased`, nobody bumps VERSION, and `npm run release` refuses a stale read. Before any
-  commit: `git log -1`, `git status`. Claim a lane (message the peers the files you'll touch) for
-  anything wider than one file. **The tree is one shared checkout — do not `git checkout` a branch
-  in it; that switches HEAD under every peer.** `registry/CHANGELOG.md` is the only surface that can
-  describe a tree with many writers.
+  `## Unreleased`, nobody bumps VERSION, and `npm run release` refuses a stale read.
+  `registry/CHANGELOG.md` is the only surface that can describe a tree with many writers.
+- **Each piece of work gets its own worktree; the main checkout only lands** (IDEA-120, 2026-10-05).
+  Chat windows can't see each other, so in one shared checkout any of them can commit another's
+  half-done change. `node scripts/worktree.js <ID>` creates the work's worktree at local HEAD — or
+  **joins** it, when another window is already on the same work — with the gitignored records
+  linked in, never copied. Everything inside is that work's, so committing all of it is right.
+  `land <ID>` rebases and fast-forwards main, and stops with nothing moved when the main checkout
+  holds a dirty copy of a file the work touched; `done <ID>` unlinks, then removes. A session start
+  names the open work once — say which you're part of. Never `git checkout` a branch in the main
+  checkout (it switches HEAD under every peer); never `git stash` anywhere (one stack, every
+  worktree). Editing in the main checkout is the fallback, not the way: there, `git log -1` and
+  `git status` before a commit, stage only your own hunks, and claim a lane by message.
 - **`docs/RESUME.md`, `devlog.md`, `CLAUDE.md`, `ideas/`, `extractions/`, `research/verdicts/` are
   tracked since 2026-09-13 (IDEA-087 — two unrecoverable losses, duplicates from concurrent writes,
   124 dead CHANGELOG citations).** Still gitignored, for someone else's sake: `evidence/` (real
   people's words), `.boss/` (the brain), `research/inbox|sessions`, `source/`, `dossier/`,
-  `business/`, and `ideas/CANVAS.md` (Ajesh's own — their call, per file). The test for tracking is
+  `business/`, and `ideas/CANVAS.md` (Ajesh's own — their call, per file) — the full set is whatever
+  `.gitignore` says, which `scripts/worktree.js` derives (this list was missing seven areas on
+  2026-10-05; don't extend it by hand). The test for tracking is
   *"fine public forever?"*, never *"is the repo private"* — history goes with the toggle. Read
   before you write there all the same; git now saves you, but only what you committed.
 - 🔴 **Never open a file for writing before you have finished reading it.** `open(p,'w')` truncates on
