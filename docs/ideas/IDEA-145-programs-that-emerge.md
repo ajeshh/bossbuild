@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 program: the-record-system
-status: building (rules written 2026-10-05; S1–S7 open)
+status: building (S1–S4 landed 2026-10-05; S5–S7 open)
 proof: src/records.js
 proof_note: done when programs() reads PROG records and flags grown ones (S1–S2), the board filters by program (S3–S4), and /idea and /close carry the offer (S5).
 gist: Programs should emerge, not be declared. BOSS notices when related work wants a parent — the same rule restated across records, an IDEA that is really recurring upkeep, one topic split across slugs — and offers the elevation once, in a sentence. The founder never has to know `program:` exists to get one.
@@ -61,7 +61,7 @@ Each signal was present before anyone acted; none needs a new record type to rea
 | E2 | **Upkeep** — work with a cadence and no finish line is a program's standing work, never an IDEA (signal 1) | judgment — `/close`, `/idea` |
 | E3 | **A rules file points at a closable record** as the home of standing rules (signal 2) | judgment — `/close` |
 | E4 | **One topic, several umbrellas** — or none (signal 3) | judgment — the one-time sweep |
-| E5 | **Grown** — an in-flight record with **3+ tracks** of ids in its checklists, or **12+ open items** (signal 6) | code — `boss records --programs` |
+| E5 | **Grown** — an in-flight record with **3+ tracks still open** (ids in its checklists; a finished track is history), or **12+ open items** (signal 6) | code — `boss records --programs` |
 | E6 | **Capture lands inside one** — a new IDEA whose `relates:` all share one program (signal 5) | `/idea`, at capture |
 
 **Where new work goes** (the IDS.md test, unchanged): could it ship alone and be worth something?
@@ -92,16 +92,23 @@ No → a task in the program's backlog. Yes → its own IDEA with `program:` poi
 
 ## Build — slices, smallest first (kicked off 2026-10-05, Ajesh: *"lets kick off this and set it off"*)
 
-- [ ] **S1 · Read the PROG record.** `programs()` reads `docs/programs/PROG-*.md` — title, gist, status,
+- [x] **S1 · Read the PROG record.** `programs()` reads `docs/programs/PROG-*.md` — title, gist, status,
   open/done tasks; `boss records --programs` and the HTML roll-up print the title, not the bare id.
-- [ ] **S2 · E5 in code.** A record's tracks and open items, counted; `boss records --programs` ends with
+- [x] **S2 · E5 in code.** A record's tracks and open items, counted; `boss records --programs` ends with
   *might want a program* for in-flight records over the line. Test on the threshold both ways.
-- [ ] **S3 · The kanban.** Program chip on HTML cards; `boss board --program <x>` in the terminal.
-- [ ] **S4 · The program view.** `boss board PROG-001` — gist, members by column, open tasks, grown members.
+- [x] **S3 · The kanban.** Program chip on HTML cards; `boss board --program <x>` in the terminal.
+  *Not built:* a filter on the HTML board — the page has no script, by design; the roll-up row names
+  the program and `--program` is the filter.
+- [x] **S4 · The program view.** `boss board PROG-001` — gist, members by column, open tasks, grown members.
 - [ ] **S5 · The judgment rules in the skills.** `/idea` (E2, E6 at capture) and `/close` (E1–E3), one
   offer each, both copies; the founder's IDS.md gains the rules in its own words, cohort-aware.
 - [ ] **S6 · The one-time sweep** — the Tasks item below, with E1–E6 in hand.
 - [ ] **S7 · CHANGELOG bullet** (a founder feels S3–S5), Kettlewick gets a program if the demo has none.
+
+**Found while building S2 (2026-10-05):** a track counts only while it has an open item. Run on a
+throwaway scaffold, a record whose tracks were all ticked read as *grown*; a finished track is
+history. IDEA-137 still crosses the line (6 of its 9 tracks open). `PROG-1` pads to `PROG-001`, as
+card ids already do.
 
 ## Candidates — compose, no new skill
 

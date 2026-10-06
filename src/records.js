@@ -30,6 +30,7 @@ import { join, sep, basename } from 'node:path';
 import { frontmatter, STATUS_VOCAB, baseStatus, revisitDue } from './frontmatter.js';
 import { cardGist, criteriaProgress } from './board.js';
 import { isoDay } from './clock.js';
+import { readPrograms, workShape, isGrown } from './programs.js';
 
 const RECORD = /^([A-Z]{3,4})-(\d+)[-.].*\.md$/;
 // The seven-word ladder governs the LIFECYCLE types only. `DEC` is decided|superseded, `PRAC` is
@@ -146,6 +147,7 @@ function readRecords(projectDir) {
           from: field(text, 'from'),
           promotedTo: field(text, 'promoted_to'),
           program: field(text, 'program'),
+          work: workShape(text),
           buildingSince: field(text, 'building_since'),
           criteria: criteriaProgress(text),
           revisitBy: field(text, 'revisit_by'),
@@ -631,6 +633,10 @@ export function timeline(projectDir) {
 //
 // Only the seed ships here. The graduation is documented so it is legible when it is earned, and
 // deliberately unbuilt until a real program needs it.
+//
+// The graduation is built now (IDEA-145 S1, 2026-10-05): a graduated program carries its own
+// record — title, gist, status, its backlog's open items — read by src/programs.js. A PROG record
+// no member points at yet is still listed: the umbrella exists because someone wrote it down.
 export function programs(projectDir) {
   const byName = new Map();
   for (const r of readRecords(projectDir)) {
@@ -638,13 +644,26 @@ export function programs(projectDir) {
     if (!byName.has(r.program)) byName.set(r.program, []);
     byName.get(r.program).push(r);
   }
+  const records = readPrograms(projectDir);
+  for (const id of records.keys()) if (!byName.has(id)) byName.set(id, []);
   return [...byName.entries()]
     .map(([name, members]) => ({
       name,
       graduated: /^[A-Z]{3,4}-\d+$/.test(name),   // the value is an id, not a slug
+      record: records.get(name) || null,
       members: members.sort((a, b) => a.id.localeCompare(b.id)),
       shipped: members.filter((m) => baseStatus(m.status) === 'shipped').length,
       open: members.filter((m) => !['shipped', 'dropped'].includes(baseStatus(m.status))).length,
     }))
     .sort((a, b) => b.members.length - a.members.length);
+}
+
+// IDEA-145 E5 — the record that has grown into a program: still in flight, and holding several
+// tracks of work (or a backlog's worth of open items) in one file. Offered by the readers, never
+// acted on: the founder decides whether it becomes a program's first page.
+export function grownRecords(projectDir) {
+  return readRecords(projectDir)
+    .filter((r) => r.work && isGrown(r.status, r.work))
+    .map((r) => ({ id: r.id, file: r.file, status: r.status, program: r.program, work: r.work }))
+    .sort((a, b) => b.work.tracks.length - a.work.tracks.length || b.work.open - a.work.open);
 }

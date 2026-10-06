@@ -48,7 +48,7 @@ export const HELP = {
     see: ['playbook', 'design-tokens-init'],
   },
   board: {
-    usage: 'boss board [<ID>] [--detail] [--html] [--next|--blocked|--json] [--all] [--mine]',
+    usage: 'boss board [<ID>|PROG-NNN] [--detail] [--html] [--next|--blocked|--json] [--all] [--mine] [--program <name>]',
     what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. Pass an ID for one card in full, or --detail for a line under every card. Deferred and dropped work is folded into Parked — decided, not queued. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',
     examples: ['boss board', 'boss board --detail', 'boss board IDEA-004', 'boss board --next', 'boss board --html'],
     see: ['insights', 'brain'],

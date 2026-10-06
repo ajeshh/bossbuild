@@ -29,7 +29,7 @@ import { map, renderLadder } from './map.js';
 import { modeWord, loadModes } from './modes.js';
 import { brain } from './brain.js';
 import { insights } from './insights.js';
-import { gistWork, recordDrift, driftLine, nextId, idCensus, timeline, programs } from './records.js';
+import { gistWork, recordDrift, driftLine, nextId, idCensus, timeline, programs, grownRecords } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { printReentry, printEvidenceHeadway, printIntent, printResumeWindow } from './orientation.js';
 import { readiness, renderReadiness } from './readiness.js';
@@ -824,9 +824,14 @@ function cmdBoard(args = []) {
   const me = args.includes('--mine') ? resolveIdentity().handle : null;
   // A bare argument is a card id — `boss board IDEA-004`, or just `boss board 4`. The terminal's
   // equivalent of hovering one card: what is this, where is it, what does its status actually say.
-  const card = args.find((a) => !a.startsWith('-')) || null;
+  // `--program <slug|PROG-NNN>` takes a value, so that value is not a card id (IDEA-145).
+  const pi = args.indexOf('--program');
+  const program = pi !== -1 ? (args[pi + 1] && !args[pi + 1].startsWith('-') ? args[pi + 1] : '') : null;
+  if (program === '') { console.error('  `--program` needs a name — a slug or a PROG id. `boss records --programs` lists them.'); process.exitCode = 1; return; }
+  const card = args.find((a, i) => !a.startsWith('-') && !(pi !== -1 && i === pi + 1)) || null;
   board(process.cwd(), stamp.name, {
     card,
+    program,
     next: args.includes('--next'),
     blocked: args.includes('--blocked'),
     json: args.includes('--json'),
@@ -925,6 +930,12 @@ function recordPrograms(dir) {
   for (const p of progs) {
     const bar = `${'▮'.repeat(p.shipped)}${dim('▯'.repeat(p.open))}`;
     console.log(`    ${bold(p.name.padEnd(22))} ${bar}  ${dim(`${p.shipped} shipped · ${p.open} open`)}`);
+    // A graduated program says what it is, and how much of its own backlog is open — the tasks
+    // that live in the program record rather than as members (IDEA-145).
+    if (p.record) {
+      const tasks = p.record.work.open ? ` · ${p.record.work.open} task${p.record.work.open === 1 ? '' : 's'} open in ${p.record.file}` : '';
+      console.log(`      ${p.record.title}${dim(tasks)}`);
+    }
     for (const m of p.members) {
       const done = (m.status || '').startsWith('shipped');
       console.log(`      ${done ? dim(m.id) : m.id}  ${dim((m.status || '').split('(')[0].trim())}`);
@@ -933,6 +944,17 @@ function recordPrograms(dir) {
   const stuck = progs.filter((p) => p.open && !p.shipped);
   if (stuck.length) {
     console.log(`\n  ${bold(`${stuck[0].name}`)} has ${stuck[0].open} open and nothing shipped — the umbrella to look at first.`);
+  }
+  // IDEA-145 E5 — offered, never done. One line per grown record; the founder decides.
+  let grown = [];
+  try { grown = grownRecords(dir); } catch { grown = []; }
+  if (grown.length) {
+    console.log(`\n  ${bold('Might want to be a program')} ${dim('— still in flight, and holding several efforts in one file')}`);
+    for (const g of grown) {
+      const what = [g.work.openTracks.length > 1 ? `${g.work.openTracks.length} tracks open (${g.work.openTracks.join(' ')})` : '', `${g.work.open} items open`].filter(Boolean).join(' · ');
+      console.log(`    ${g.id.padEnd(10)} ${dim(what)}`);
+    }
+    console.log(dim('    The pieces that could ship alone become members; the rest stay as its tasks.'));
   }
   console.log(dim('\n  A program is one frontmatter line until it earns a file. When there is something to'));
   console.log(dim('  write down that belongs to NO single member — why these go together, what got'));
@@ -1796,6 +1818,7 @@ function printHelp() {
   console.log(row('boss board [--html]', 'what\'s in flight (captured → shipped); --html = kanban'));
   console.log(row('boss recap [--md]', 'what happened this week, from your own records; --md to paste'));
   console.log(row('boss board <ID> | --detail', 'one card in full · a line under every card'));
+  console.log(row('boss board --program <name>', 'one program\'s cards · `boss board PROG-NNN` = the program'));
   console.log(row('boss board --next|--blocked|--json', 'what to pick up · what\'s stuck · JSON (agent-readable)'));
   console.log(row('boss playbook [--open] [--questions]', 'your venture as one page in .boss/ — holes stay holes; --questions lists what\'s open'));
   console.log(row('boss design [--open] [--questions]', 'your design system as one page in .boss/ — holes stay holes; --questions lists what\'s open, with the moment that earns it'));

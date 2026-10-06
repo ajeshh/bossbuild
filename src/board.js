@@ -27,6 +27,7 @@ import { shellPage, esc } from './page-shell.js';
 import { readBrand, hasVerb } from './playbook.js';
 import { readTokens, themeFromTokens } from './design.js';
 import { isoDay, isoMinute } from './clock.js';
+import { readPrograms, isGrown, workShape, programId } from './programs.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -360,10 +361,11 @@ export function collectBoard(projectDir) {
         ageSource: fm.building_since ? 'authored' : 'derived',
         shippedOn: fm.shipped_on || gitFirst(projectDir, fm.proof),
         addedOn: addedOn(projectDir, fm, `docs/ideas/${f}`),
-        priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text),
+        priority, owner: fm.owner, program: fm.program || null, progress: criteriaProgress(text), work: workShape(text),
         waitingOn: parseWaiting(fm.waiting_on) });
     } else {
       ideas.push({ id, title, gist, file: `docs/ideas/${f}`, status: fm.status, nextReview: fm.next_review, priority, owner: fm.owner,
+        work: workShape(text),
         waitingOn: parseWaiting(fm.waiting_on),
         // `kind: venture` — the thing they are building, one per project, written by /boss (IDEA-114).
         // The renderers lift it above the columns; it is what every capability card is FOR.
@@ -436,6 +438,7 @@ export function collectBoard(projectDir) {
       shippedOn: ft.shippedOn || null,
       addedOn: ft.addedOn || null,
       program: ft.program || null,
+      work: ft.work || null,
       archived: shippedAgeDays != null && shippedAgeDays > SHIPPED_WINDOW_DAYS,
       priority: ft.priority,
       owner: personOwner(ft.owner),
@@ -475,6 +478,7 @@ export function collectBoard(projectDir) {
       shippedOn: id.shippedOn || null,
       addedOn: id.addedOn || null,
       program: id.program || null,
+      work: id.work || null,
       venture: id.venture === true,
       progress: null, // an idea carries no acceptance criteria; its hole, if any, is the FEAT
       waitingOn: id.waitingOn,
@@ -625,6 +629,9 @@ function renderBoardText(projectName, data, opts = {}) {
   // I on the hook for." A team lens; harmless solo (matches nothing until @owners exist).
   let cards = data.cards;
   if (opts.mine) cards = cards.filter((c) => c.owner && c.owner.toLowerCase() === opts.mine.toLowerCase());
+  // `--program <slug|PROG-NNN>` — one program's cards in their columns: a swimlane without a second
+  // board (IDEA-145). Its tasks are not cards; `boss board PROG-NNN` shows those.
+  if (opts.program) cards = cards.filter((c) => c.program && c.program.toLowerCase() === opts.program.toLowerCase());
   // Parked work leaves the flow. A `deferred`/`dropped` record is a decision that was already
   // made, and standing it beside fresh captures asks the founder to re-read a settled question
   // every time they look at the board. It is folded, never deleted — the reasoning is the point.
@@ -635,7 +642,7 @@ function renderBoardText(projectName, data, opts = {}) {
   cards = cards.filter((c) => !c.venture);
   const lines = [];
   lines.push('');
-  lines.push(`  ${bold(projectName + ' · board')}${opts.mine ? dim(' · ' + opts.mine) : ''}`);
+  lines.push(`  ${bold(projectName + ' · board')}${opts.mine ? dim(' · ' + opts.mine) : ''}${opts.program ? dim(' · program ' + opts.program) : ''}`);
 
   const counts = Object.fromEntries(COLUMNS.map((c) => [c, 0]));
   for (const c of cards) counts[c.column] = (counts[c.column] || 0) + 1;
@@ -742,6 +749,10 @@ function renderBoardText(projectName, data, opts = {}) {
 const COLUMN_INDEX = Object.fromEntries(COLUMNS.map((c, i) => [c, i]));
 
 function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt, projectDir = process.cwd()) {
+  // A graduated program is named by its record's title on cards and in the roll-up (IDEA-145).
+  let progRecords = new Map();
+  try { progRecords = readPrograms(projectDir); } catch { progRecords = new Map(); }
+  const progLabel = (name) => (progRecords.get(name) && progRecords.get(name).title) || name;
   // Same rule as the terminal board: parked work leaves the flow but is never deleted.
   const parked = allCards.filter((c) => c.parked);
   const ventures = allCards.filter((c) => !c.parked && c.venture);
@@ -802,7 +813,7 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
       : '';
     const tip = esc(`${c.id} — ${c.title}${peek ? `\n\n${peek}` : ''}`);
     return `<div class="card${cls}" tabindex="0" title="${tip}">
-            <div class="id">${esc(c.id)}${prio}</div>
+            <div class="id">${esc(c.id)}${prio}${c.program ? `<span class="pchip" title="program: ${esc(c.program)}">${esc(progLabel(c.program))}</span>` : ''}</div>
             <div class="title">${esc(c.title)}</div>${gist}${prog}${flag}${when}
           </div>`;
   };
@@ -862,13 +873,14 @@ function programRollup(cards) {
       name,
       shipped: members.filter((m) => m.column === 'Shipped').length,
       total: members.length,
+      tasks: progRecords.get(name) ? progRecords.get(name).work.open : 0,
     }))
     .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
     .map((p) => {
       const pct = p.total ? Math.round((p.shipped / p.total) * 100) : 0;
       const stuck = p.shipped === 0 && p.total > 1;
       return `<div class="prog${stuck ? ' stuck' : ''}">
-          <div class="prog-name">${esc(p.name)}</div>
+          <div class="prog-name" title="${esc(p.name)}">${esc(progLabel(p.name))}${p.tasks ? ` <span class="muted">· ${p.tasks} task${p.tasks === 1 ? '' : 's'} open</span>` : ''}</div>
           <div class="prog-bar"><i style="width:${pct}%"></i></div>
           <div class="prog-n">${p.shipped}<span class="muted">/${p.total}</span></div>
         </div>`;
@@ -1116,6 +1128,9 @@ ${columnHtml}
   .parked .cards { margin-top: 12px; display: grid; gap: 8px;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .parked .card .title { color: var(--muted); }
+  .card .pchip { font: 500 11px/1 var(--mono); color: var(--muted); border: 1px solid var(--line);
+                 border-radius: 2px; padding: 3px 6px; margin-left: auto; max-width: 14ch;
+                 overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .card .prio { font: 700 12px/1 var(--mono); color: var(--hivis-text);
                 border: 1px solid color-mix(in srgb, var(--hivis) 45%, transparent);
                 border-radius: 2px; padding: 3px 6px; }
@@ -1371,13 +1386,58 @@ export function renderBoardCard(projectName, { cards, hasIdeasDir }, id) {
   return lines.join('\n');
 }
 
+// `boss board PROG-NNN` — the program view (IDEA-145 S4). One card's detail, widened to an umbrella:
+// what it is, its members by column, its own backlog, and any member that has grown into a program
+// of its own. Tasks are counted here and never become cards — the board shows criteria, not todos.
+export function renderProgramView(projectName, { cards }, id, projectDir = process.cwd()) {
+  const want = programId(id);
+  let rec = null;
+  try { rec = readPrograms(projectDir).get(want) || null; } catch { rec = null; }
+  const members = cards.filter((c) => c.program && c.program.toUpperCase() === want);
+  const lines = [''];
+  if (!rec && !members.length) {
+    lines.push(`  ${bold(want)} ${dim('— no such program here.')}`);
+    lines.push(dim('  `boss records --programs` lists them.'));
+    return lines.concat('').join('\n');
+  }
+  lines.push(`  ${bold(want)} ${dim('·')} ${rec ? rec.title : dim('(no record yet — members point at it)')}`);
+  lines.push('');
+  if (rec && rec.gist) { for (const l of wrap(rec.gist, 74)) lines.push(`  ${l}`); lines.push(''); }
+  const live = members.filter((c) => !c.parked);
+  for (const col of COLUMNS) {
+    const inCol = live.filter((c) => c.column === col);
+    if (!inCol.length) continue;
+    lines.push(`  ${col} (${inCol.length})`);
+    for (const c of inCol) lines.push(`    ${c.id.padEnd(10)} ${clip(c.title, TITLE_COLS)}`);
+  }
+  const parked = members.filter((c) => c.parked);
+  if (parked.length) lines.push(dim(`  Parked (${parked.length}): ${parked.map((c) => c.id).join(' · ')}`));
+  if (rec) {
+    const w = rec.work;
+    lines.push('');
+    lines.push(`  ${dim('tasks'.padEnd(9))} ${w.open} open · ${w.done} done ${dim('— in the program record, not on the board')}`);
+    lines.push(`  ${dim('status'.padEnd(9))} ${rec.status || dim('(none)')}`);
+  }
+  const grown = members.filter((c) => c.work && isGrown(c.status, c.work));
+  if (grown.length) {
+    lines.push('');
+    for (const g of grown) lines.push(`  ${bold(g.id)} has grown — ${g.work.openTracks.length} tracks open, ${g.work.open} items. ${dim('Its pieces that could ship alone may want to be members.')}`);
+  }
+  lines.push('');
+  if (rec) lines.push(dim(`  ${rec.file}`));
+  lines.push(dim(`  \`boss board --program ${want}\` shows these cards on the board.`));
+  lines.push('');
+  return lines.join('\n');
+}
+
 export function board(projectDir, projectName, opts = {}) {
   const data = collectBoard(projectDir);
+  if (opts.card && /^prog-\d+$/i.test(String(opts.card).trim())) return console.log(renderProgramView(projectName, data, opts.card, projectDir));
   if (opts.card) return console.log(renderBoardCard(projectName, data, opts.card));
   if (opts.next) return console.log(renderBoardNext(projectName, data));
   if (opts.blocked) return console.log(renderBoardBlocked(projectName, data));
   if (opts.json) return console.log(JSON.stringify(boardJson(projectDir, projectName), null, 2));
-  console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine, detail: opts.detail, projectDir }));
+  console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine, program: opts.program, detail: opts.detail, projectDir }));
 }
 
 // Write the visual kanban to .boss/board.html and return its path.
