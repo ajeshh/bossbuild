@@ -78,6 +78,11 @@ If you only read one thing when picking the project back up, read the last devlo
    what would it cost — time, the team, other people's patience — and who has agreed to that? More
    work is a new FEAT, or a cost someone chose; never quiet polishing on a closed one.
 
+   **And say what got built that nobody asked for.** Hold what you built against the criteria. If
+   something is there that no criterion names (a setting, an extra screen, a refactor along the way),
+   say one line: what it is, and whether it goes to `spun_to:` or comes out. The founder decides;
+   never delete it on your own. Nothing extra, say nothing.
+
    > This step used to read *"flip its status to `shipped` — that one field is the whole update"*,
    > while `/spec` (which a founder reads once, months earlier) carried the other two. `/log` is
    > the skill that actually runs at ship time, so the two it didn't mention are the two that

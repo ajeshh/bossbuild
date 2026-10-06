@@ -33,6 +33,8 @@ rule above still applies to the whole section once it is stamped.
   unchecked unticked as "built, not yet checked" with an offer to hand it to `tester`, and closes a
   feature only when every box carries that evidence. `/log` is the one place ticking happens; `/close`
   and the feature template point to it.
+  At close it also says, in one line and only when there is one, anything that got built which no
+  criterion asked for, and asks whether it becomes its own feature or comes out. It never removes it.
 
 - **A typo in your Claude Code settings no longer costs you the rest of them.** If
   `.claude/settings.json` had one stray comma, `boss hooks enable`, `boss adopt` and `boss sync` read it as
