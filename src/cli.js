@@ -3,7 +3,7 @@
 // process.exit() — handlers set process.exitCode, and `bin/boss` is the one place that exits.
 
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
-import { join, resolve, basename, sep } from 'node:path';
+import { join, resolve, basename, sep, delimiter } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
@@ -78,6 +78,18 @@ function skillsLine(skills, limit = 8) {
   if (skills.length <= limit) return skills.join(', ');
   return `${skills.slice(0, limit).join(', ')} … +${skills.length - limit} more (\`boss map\`)`;
 }
+
+// Is `claude` somewhere this shell would find it? `boss new` and `adopt` tell the founder to type it,
+// and when it isn't installed that line is a dead end. Also looks where Claude Code's local installer
+// puts it. Said only when it's missing (IDEA-150 A5).
+function claudeInstalled(env = process.env) {
+  const exts = process.platform === 'win32' ? ['.exe', '.cmd', '.ps1', ''] : [''];
+  const dirs = (env.PATH || '').split(delimiter).filter(Boolean);
+  const home = env.HOME || env.USERPROFILE || '';
+  if (home) dirs.push(join(home, '.claude', 'local'), join(home, '.claude', 'local', 'node_modules', '.bin'));
+  return dirs.some((d) => exts.some((x) => existsSync(join(d, 'claude' + x))));
+}
+const CLAUDE_MISSING = '                        # not installed yet? https://claude.com/claude-code';
 
 function cmdNew(args) {
   const name = args.find((a) => !a.startsWith('--'));
@@ -171,6 +183,7 @@ function cmdNew(args) {
   console.log(`    cd ${shellArg(name)}`);
   console.log(`    code .              # or open the folder in your editor (Cursor, etc.)`);
   console.log(`    claude              # open Claude Code (works in the terminal or the editor panel)`);
+  if (!claudeInstalled()) console.log(dim(CLAUDE_MISSING));
   console.log(`    ${dim('then, inside Claude:')}`);
   console.log(`    > /boss <your idea>     # spin up — a sentence, a doc, a deck, or a link`);
   console.log(`                            #   (first time? /welcome · already written it down? /import <file|url>)`);
@@ -370,6 +383,7 @@ function cmdAdopt(args) {
   // arc — read to someone with a working codebase, that is a tool that didn't bother to look.
   console.log(`\n  ${bold('Next')}`);
   console.log(`    claude              # open Claude Code here ${dim('(terminal)')}`);
+  if (!claudeInstalled()) console.log(dim(CLAUDE_MISSING));
   console.log(`    > /read-repo            # start here — BOSS reads what you've built and says where you stand.`);
   console.log(`                            #   Additive and reversible; diff or revert anything.`);
   console.log(`    > /welcome              # then, if you want it: what BOSS added + how the conscience works`);

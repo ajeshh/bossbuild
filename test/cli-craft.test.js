@@ -9,8 +9,8 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { HELP } from '../src/help.js';
 import { KNOWN_FLAGS } from '../src/args.js';
@@ -110,4 +110,26 @@ test('every flag help documents and every flag a shipped skill passes is a known
   const NOT_BUILT = new Set(['idea']);
   const missing = [...seen].filter((f) => !KNOWN_FLAGS.has(f) && !NOT_BUILT.has(f));
   assert.deepEqual(missing, [], 'add these to KNOWN_FLAGS in src/args.js');
+});
+
+// A5 — `boss new` says "type `claude`"; when there is no claude to type, it says so once.
+function bossWithPath(args, cwd, pathDirs) {
+  return execFileSync(process.execPath, [BIN, ...args], {
+    cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
+    env: { NO_COLOR: '1', HOME: cwd, USERPROFILE: cwd, BOSS_HOME: join(cwd, '.boss-home'), PATH: pathDirs.join(process.platform === 'win32' ? ';' : ':'), SystemRoot: process.env.SystemRoot || '' },
+  });
+}
+test('A5: no `claude` on PATH → one line saying where to get it', () => {
+  const dir = project({});
+  const out = bossWithPath(['new', 'p1'], dir, [dirname(process.execPath)]);
+  assert.match(out, /claude\.com\/claude-code/);
+});
+test('A5: `claude` on PATH → nothing extra', () => {
+  const dir = project({});
+  const bin = join(dir, 'bin');
+  mkdirSync(bin);
+  const name = process.platform === 'win32' ? 'claude.cmd' : 'claude';
+  writeFileSync(join(bin, name), '');
+  const out = bossWithPath(['new', 'p2'], dir, [bin, dirname(process.execPath)]);
+  assert.doesNotMatch(out, /claude\.com\/claude-code/);
 });

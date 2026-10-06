@@ -66,7 +66,8 @@ rule above still applies to the whole section once it is stamped.
   `boss adopt`, a mistyped `--mode` lists the modes, and `boss hooks` outside a project shows the same
   way out the other commands do. A flag no command knows (`boss board --nxt`) now stops and names the
   nearest real one instead of being ignored. `--json` on a command with no JSON output says so instead of
-  printing prose, and a `--json` failure is one JSON object, so a script or an agent can read it.
+  printing prose, and a `--json` failure is one JSON object, so a script or an agent can read it. When
+  `boss new` or `boss adopt` tells you to type `claude` and Claude Code isn't installed, it says where to get it.
 
 - **A typo in your Claude Code settings no longer costs you the rest of them.** If
   `.claude/settings.json` had one stray comma, `boss hooks enable`, `boss adopt` and `boss sync` read it as
