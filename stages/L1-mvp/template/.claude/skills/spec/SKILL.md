@@ -252,8 +252,8 @@ that when you're choosing among many candidates, not just reacting to one.)_
    band — and this is where they get named, because a path is cheapest to name at the moment you're
    deciding what "done" means, and nearly impossible to retrofit once the feature is built.
 
-   Ask three questions, in one short pass. Each answer becomes a **line under "Paths that must not
-   break"** in the FEAT, phrased as something a person could actually check:
+   Ask three questions (a fourth, for a fix), in one short pass. Each answer becomes a **line under
+   "Paths that must not break"** in the FEAT, phrased as something a person could actually check:
 
    - **The money path.** *Is this on the flow that, broken, means there's no product?* Signup,
      checkout, the core action. If yes, say which flow and note that it gets tested **for real, not
@@ -267,6 +267,9 @@ that when you're choosing among many candidates, not just reacting to one.)_
      one BOSS's own practice calls **non-negotiable once there are two users**, because what it
      catches is not a bug but a **missing security property**: every screen renders correctly, every
      click succeeds, and the data is readable by the wrong person. No amount of clicking finds it.
+   - **The neighbour path — only when this FEAT is a fix.** *What sits next to the bug that must keep
+     working exactly as it does?* Write the concrete pair ("saving a draft still works when the title
+     is empty"). A fix that breaks its neighbour is the commonest way a repair goes wrong.
 
    **Silence is a real answer, and the common one.** A settings toggle, a copy change, an internal
    report — plenty of FEATs touch none of the three. Omit the lines that don't apply rather than
@@ -469,6 +472,8 @@ produce **that too**. It usually costs less than the paragraphs it replaces:
   expressed as one is usually a criterion that isn't checkable yet — which is worth finding out now,
   not at review. See `boss craft testing-with-agents`: a test derived from the spec can
   fail; a test derived from the implementation cannot.
+- **Fixing a bug?** Two tests: one that fails on the bug today, and one for the neighbour path that
+  passes before the fix and still passes after it.
 - **Judging something fuzzy** (tone, quality, "did it capture the point")? Write the **rubric** the
   verifier reads. That's a spec the harness can actually gate on.
 

@@ -27,6 +27,11 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A fix now names what it must leave alone.** When the feature you're speccing is a bug fix,
+  `/spec` asks one more question: what next to the bug has to keep working exactly as it does, written
+  as a concrete pair. It goes under *Paths that must not break* and becomes a test that passes before
+  the fix and after it, so a repair that breaks its neighbour gets caught.
+
 - **A ticked criterion now says how it was checked.** A feature's acceptance criteria could be
   ticked on the agent's word, so a box looked the same whether anyone had tried it or not. Now `/log`
   ticks a criterion with what was run and what was seen on the same line, keeps anything built but

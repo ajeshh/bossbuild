@@ -88,6 +88,8 @@ real and common answer (a settings toggle, a copy change, an internal report)._
   human gate — name both._
 - **Negative path:** _who must **not** be able to see or do this, and what stops them. Write the
   actual pair — "user A cannot read user B's orders" — not "auth works."_
+- **Neighbour path (fixes only):** _the behaviour next to this fix that must not change, as the
+  concrete pair — "saving a draft still works when the title is empty." It becomes the regression test._
 
 > **The negative path is the one nobody writes, because the happy path looks perfect.** It is also
 > the one BOSS's own practice calls **non-negotiable once there are two users**, and the failure it
