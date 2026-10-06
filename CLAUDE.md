@@ -54,9 +54,10 @@
   `docs/SKILLS.md` and `site/`; never run it to "just check" a tree someone else is releasing into.
 - **A new gate needs a bug that reached a user** (Ajesh, 2026-09-23) — not a near miss, not prose
   disagreeing with prose. Name that bug in the gate's header.
-- **Site work is frozen except for correctness** (Ajesh, 2026-09-23) until `copy_install` shows
-  traffic; first read 2026-10-14. A wrong claim, a dead link, a count the gate flags: fix it. New
-  pages, redesigns, copy polish: no.
+- **Site work is open** (Ajesh, 2026-10-05 — lifts the 2026-09-23 freeze, which waited on
+  `copy_install` traffic). The backlog and how the site is run live in `docs/ideas/IDEA-143`:
+  look at the whole site before adding anything, subtract before you add a page, and preview
+  the BUILT page (`site/`, or a worktree build), never `web/*.html`, which has no shell or CSS.
 - Commit with the GH noreply env-var: `NR=$(gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"')`.
   After CLI changes: `npm i -g ~/Projects/bossbuild`, then test in `/tmp` with `BOSS_HOME` set to a
   temp dir (rule 6). `npm run pack:preview` confirms only the package ships.
