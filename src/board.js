@@ -27,7 +27,7 @@ import { shellPage, esc } from './page-shell.js';
 import { readBrand, hasVerb } from './playbook.js';
 import { readTokens, themeFromTokens } from './design.js';
 import { isoDay, isoMinute } from './clock.js';
-import { readPrograms, isGrown, workShape, programId } from './programs.js';
+import { readPrograms, isGrown, workShape, programId, programDecisions } from './programs.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -1301,8 +1301,11 @@ function renderBoardBlocked(projectName, { cards, hasIdeasDir }) {
 // The full projection as JSON — the actual agent-readability contract. Stable,
 // machine-parseable; an agent (or the `/board` skill) reads this instead of
 // re-deriving state from the files.
-export function boardJson(projectDir, projectName) {
-  const { cards: allCards, hasIdeasDir } = collectBoard(projectDir);
+export function boardJson(projectDir, projectName, opts = {}) {
+  let { cards: allCards, hasIdeasDir } = collectBoard(projectDir);
+  const everyCard = allCards;   // the programs list always describes the whole board
+  // `--program` narrows the JSON the same way it narrows the text board (IDEA-145 G2).
+  if (opts.program) allCards = allCards.filter((c) => c.program && c.program.toLowerCase() === opts.program.toLowerCase());
   // The counts must be the ones the board RENDERS, or the agent and the founder are looking at
   // two different boards. Parked is its own number, never folded into a column total.
   const cards = allCards.filter((c) => !c.parked);
@@ -1334,7 +1337,11 @@ export function boardJson(projectDir, projectName) {
       archived: c.archived || false, shippedAgeDays: c.shippedAgeDays ?? null,
       addedOn: c.addedOn ?? null, shippedOn: c.column === 'Shipped' ? (c.shippedOn ?? null) : null,
       criteria: c.progress ? { done: c.progress.done, total: c.progress.total } : null,
+      program: c.program || null,
     })),
+    // Every program, with its record when it has one — the grouping an agent needs to find the rules a
+    // card's program holds (IDEA-145 G2: the JSON carried no program at all, on 92 records that had one).
+    programs: programsJson(projectDir, everyCard),
     next: { finish, start, pressureTest: pressure, unblock },
     stuck: {
       waiting: waiting.map((c) => ({ id: c.id, ...c.waitingOn })),
@@ -1343,6 +1350,25 @@ export function boardJson(projectDir, projectName) {
       reviewDue: reviewDue.map((c) => c.id),
     },
   };
+}
+
+function programsJson(projectDir, cards) {
+  let recs = new Map();
+  try { recs = readPrograms(projectDir); } catch { recs = new Map(); }
+  const names = new Set([...recs.keys(), ...cards.filter((c) => c.program).map((c) => c.program)]);
+  return [...names].sort().map((name) => {
+    const members = cards.filter((c) => c.program === name);
+    const r = recs.get(name) || null;
+    return {
+      name,
+      title: r ? r.title : null,
+      file: r ? r.file : null,
+      status: r ? r.status : null,
+      members: members.map((c) => c.id),
+      shipped: members.filter((c) => c.column === 'Shipped').length,
+      tasksOpen: r ? r.work.open : 0,
+    };
+  });
 }
 
 // One card, in full — the terminal's answer to "let me hover over that." A founder who has lost
@@ -1414,6 +1440,13 @@ export function renderProgramView(projectName, { cards }, id, projectDir = proce
   }
   const parked = members.filter((c) => c.parked);
   if (parked.length) lines.push(dim(`  Parked (${parked.length}): ${parked.map((c) => c.id).join(' · ')}`));
+  let decs = [];
+  try { decs = programDecisions(projectDir, want); } catch { decs = []; }
+  if (decs.length) {
+    lines.push('');
+    lines.push(`  Decided across them (${decs.length})`);
+    for (const d of decs) lines.push(`    ${d.id.padEnd(10)} ${clip(d.title, TITLE_COLS)}`);
+  }
   if (rec) {
     const w = rec.work;
     lines.push('');
@@ -1436,9 +1469,13 @@ export function board(projectDir, projectName, opts = {}) {
   const data = collectBoard(projectDir);
   if (opts.card && /^prog-\d+$/i.test(String(opts.card).trim())) return console.log(renderProgramView(projectName, data, opts.card, projectDir));
   if (opts.card) return console.log(renderBoardCard(projectName, data, opts.card));
-  if (opts.next) return console.log(renderBoardNext(projectName, data));
-  if (opts.blocked) return console.log(renderBoardBlocked(projectName, data));
-  if (opts.json) return console.log(JSON.stringify(boardJson(projectDir, projectName), null, 2));
+  // `--program` narrows every view, not only the columns (IDEA-145 G2).
+  const narrowed = opts.program
+    ? { ...data, cards: data.cards.filter((c) => c.program && c.program.toLowerCase() === opts.program.toLowerCase()) }
+    : data;
+  if (opts.next) return console.log(renderBoardNext(projectName, narrowed));
+  if (opts.blocked) return console.log(renderBoardBlocked(projectName, narrowed));
+  if (opts.json) return console.log(JSON.stringify(boardJson(projectDir, projectName, { program: opts.program }), null, 2));
   console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine, program: opts.program, detail: opts.detail, projectDir }));
 }
 

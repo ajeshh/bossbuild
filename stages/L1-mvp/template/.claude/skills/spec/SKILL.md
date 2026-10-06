@@ -179,7 +179,8 @@ that when you're choosing among many candidates, not just reacting to one.)_
    than one release** (`boss craft` · `docs/IDS.md`). A one-release change stays an IDEA and goes
    straight to `shipped` — a second document for it is ceremony. If you promote, **run `boss id FEAT`**
    for the number, and link both ways: the IDEA gets `promoted_to: FEAT-NNN`, the FEAT gets
-   `from: IDEA-NNN`. `boss records` checks both directions.
+   `from: IDEA-NNN`. `boss records` checks both directions. **If the IDEA has a `program:`, the FEAT
+   gets the same line** — a feature doesn't leave its program by being specced.
 1. Pick the source: `[IDEA-NNN]` if given, else the idea the user names, else the most active idea
    currently in `building` status.
 2. Allocate the next free `FEAT-NNN` (parallel numbering to IDEA — same N if it's a clean promotion,
@@ -294,7 +295,10 @@ that when you're choosing among many candidates, not just reacting to one.)_
    compressed them; it is not always run). Carry across the **Still unknown** lines you just wrote
    into that file's Open questions block — **same content, two lifetimes**: the FEAT keeps the
    record of what you didn't know when you specced it, and the working file is the copy that gets
-   worked on and answered during the build.
+   worked on and answered during the build. If the FEAT's `program:` names a `docs/programs/PROG-NNN`
+   record, set **Program** too — and read that record's rules into the spec before you draft the
+   criteria: what was decided across its members binds this one, and the build agent only sees the
+   rules if this line points at them.
 
 7. Nothing else to register — `boss board` picks the FEAT up from its frontmatter and shows it
    alongside the ideas.

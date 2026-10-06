@@ -69,6 +69,28 @@ export function programId(raw) {
   return m ? `PROG-${m[1].padStart(3, '0')}` : s;
 }
 
+/** Decisions that name the program they govern (`program:` on a DEC) — the "decided across members"
+ *  a program exists to hold. Read straight from docs/decisions/; [{ id, title, file }] by id. */
+export function programDecisions(projectDir, program) {
+  const dir = join(projectDir, 'docs', 'decisions');
+  if (!existsSync(dir)) return [];
+  const want = String(program || '').toLowerCase();
+  const out = [];
+  let names = [];
+  try { names = readdirSync(dir); } catch { return out; }
+  for (const n of names.sort()) {
+    if (!/^DEC-\d+[-.].*\.md$/.test(n)) continue;
+    try {
+      const text = readFileSync(join(dir, n), 'utf8');
+      const fm = frontmatter(text) || {};
+      if (String(fm.program || '').toLowerCase() !== want) continue;
+      const id = fm.id || n.split('-').slice(0, 2).join('-');
+      out.push({ id, title: titleOf(text, id), file: `docs/decisions/${n}` });
+    } catch { /* skipped, never fatal */ }
+  }
+  return out;
+}
+
 /** Map of PROG id → { id, file, title, gist, status, work } for every PROG record on disk. */
 export function readPrograms(projectDir) {
   const out = new Map();

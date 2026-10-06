@@ -114,3 +114,31 @@ test('REGRESSION: boss id PROG works in a project whose IDS.md table predates PR
   assert.equal(nextId(d, 'CVE'), null, 'still only declared types, plus PROG');
   rmSync(d, { recursive: true, force: true });
 });
+
+test('REGRESSION: board --json carries each card\'s program and every program — agents read this, not the HTML', async () => {
+  const { boardJson } = await import('../src/board.js');
+  const d = tmp();
+  write(d, 'docs/programs/PROG-001-w.md', '---\nid: PROG-001\nstatus: active\n---\n\n# PROG-001 — The website\n\n- [ ] **D1** · crop\n');
+  write(d, 'docs/ideas/IDEA-001-a.md', '---\nid: IDEA-001\nstatus: building\nprogram: PROG-001\n---\n\n# A\n');
+  write(d, 'docs/ideas/IDEA-002-b.md', '---\nid: IDEA-002\nstatus: building\nprogram: other\n---\n\n# B\n');
+  const all = boardJson(d, 't');
+  assert.equal(all.cards.find((c) => c.id === 'IDEA-001').program, 'PROG-001');
+  const p = all.programs.find((x) => x.name === 'PROG-001');
+  assert.deepEqual([p.title, p.members, p.tasksOpen], ['The website', ['IDEA-001'], 1]);
+  const only = boardJson(d, 't', { program: 'prog-001' });
+  assert.deepEqual(only.cards.map((c) => c.id), ['IDEA-001'], '--program narrows the cards');
+  assert.ok(only.programs.find((x) => x.name === 'other').members.length === 1, 'the programs list still describes the whole board');
+  rmSync(d, { recursive: true, force: true });
+});
+
+test('a decision naming its program is reasoning across members — listed in the view, never counted open', async () => {
+  const d = tmp();
+  write(d, 'docs/programs/PROG-001-w.md', '---\nid: PROG-001\nstatus: active\n---\n\n# PROG-001 — The website\n');
+  write(d, 'docs/ideas/IDEA-001-a.md', '---\nid: IDEA-001\nstatus: shipped\nprogram: PROG-001\n---\n\n# A\n');
+  write(d, 'docs/decisions/DEC-001-one-shell.md', '---\nid: DEC-001\nstatus: decided\nprogram: PROG-001\n---\n\n# DEC-001 — One shell for every page\n');
+  const p = programs(d).find((x) => x.name === 'PROG-001');
+  assert.deepEqual([p.shipped, p.open, p.decisions], [1, 0, ['DEC-001']]);
+  const out = renderProgramView('t', collectBoard(d), 'PROG-001', d);
+  assert.match(out, /Decided across them \(1\)[\s\S]*DEC-001\s+One shell for every page/);
+  rmSync(d, { recursive: true, force: true });
+});

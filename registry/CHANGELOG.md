@@ -36,7 +36,10 @@ rule above still applies to the whole section once it is stamped.
   Nothing moves unless you say yes. A program record (`docs/programs/PROG-NNN`) is read by title;
   `boss board PROG-001` shows its cards by column and its open tasks, `boss board --program <name>`
   shows only its cards, and every card on the HTML board names its program. Tasks stay in the
-  program's file, not on the board.
+  program's file, not on the board. A program's shared rules now reach the work: `/spec` carries an
+  idea's program onto its feature and points the build at the program's rules, the build agent reads
+  them before writing code, `boss status` names the program you're building in, `/decide` can say
+  which program a decision governs, and `boss board --json` carries every card's program.
 
 - **Several chat windows, one project, nobody's work mixed up.** Each window is its own session and
   can't see what another is building, so any of them could commit a change that was another's.

@@ -69,6 +69,7 @@ If it's a reversible two-way door, don't ceremonialize it — a `/log` line is e
    scope: venture | build     # venture = what the venture is, who it's for, what it refuses, how it earns; build = the stack, a file, a tool, a process
    revisit_by: <YYYY-MM-DD>   # optional — the "by when" of the Falsifier below
    # supersedes: DEC-MMM      # only if this replaces an earlier decision
+   # program: PROG-NNN        # only if this governs several records of one program — `boss board PROG-NNN` lists it under *Decided across them*
    ---
 
    # DEC-NNN — <the decision, in one line>

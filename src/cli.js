@@ -22,6 +22,7 @@ import { planRemove, applyRemove, machineState, removeMachineState } from './rem
 import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
+import { readPrograms } from './programs.js';
 import { playbookHtml, questionsLine, hasVerb } from './playbook.js';
 import { designHtml } from './design.js';
 import { recap } from './recap.js';
@@ -590,6 +591,11 @@ function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
     // The card is the answer — goal, acceptance criteria, the paths that must not break — and it
     // is a read of a file that already exists, not a new surface.
     console.log(`    ▸ ${bold('Building now:')}    ${f.id} — ${f.title}${more}   ${dim(`→ boss board ${f.id}`)}`);
+    // Part of a program with a record? Say which, and where its shared rules are (IDEA-145 G5).
+    let prog = null;
+    const fc = cards.find((c) => c.id === f.id);   // computeNext's entries are trimmed; the card has it
+    try { prog = fc && fc.program ? readPrograms(projectDir).get(fc.program) : null; } catch { prog = null; }
+    if (prog) console.log(`      ${dim(`part of ${prog.title} — its rules: ${prog.file}`)}`);
   } else if (start.length) {
     // `/spec` is an MVP verb; on a Quickstart project the arrow says where it comes from instead
     // of pointing at a command that is not installed (the playbook's gate, IDEA-118).

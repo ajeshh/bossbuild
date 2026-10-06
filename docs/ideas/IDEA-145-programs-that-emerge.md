@@ -143,21 +143,21 @@ row, and `/close` and IDS.md tell them to run it) — reproduced in a fresh scaf
 fails on the old code; PROG is now always a prefix, and the row is in the template and the demo.
 
 Open, most load-bearing first:
-- [ ] **G1 · Agents aren't told to read the program.** A program exists to hold the rules its members
+- [x] **G1 · Agents aren't told to read the program.** *(2026-10-05: a **Program** line in `feature-context.md`, stamped by `/spec` 6b; `coder` reads a program's rules before writing.)* A program exists to hold the rules its members
   share (E1), and nothing an agent loads says so: `feature-context.md`, `coder.md`, the CLAUDE.md block
   don't mention it. Smallest: `/spec` stamps *Program: PROG-NNN — read its rules first* into
   `feature-context.md`; one line in `coder.md`.
-- [ ] **G2 · `boss board --json` is blind to programs** — no `program` per card, no programs list (0 of
+- [x] **G2 · `boss board --json` is blind to programs** *(2026-10-05: `program` per card, a `programs` list over the whole board; `--program` narrows `--json`, `--next`, `--blocked`.)* — no `program` per card, no programs list (0 of
   125 cards carry it here). `--json`, `--next`, `--blocked` also ignore `--program`. Agents read the JSON.
 - [ ] **G3 · No drift check for programs.** `docs/programs/` is outside `RECORD_DIRS`: a member pointing
   at a PROG with no file, a duplicate PROG id, and a PROG `status:` outside any vocabulary all pass.
   IDS.md's PROG row declares no status words (lean: `active | paused | closed`). *A gate needs a bug that
   reached a user — this is a check on records, not a gate; decide which.*
-- [ ] **G4 · Membership leaks at creation.** `/spec` doesn't carry the IDEA's `program:` to the FEAT
+- [x] **G4 · Membership leaks at creation.** *(2026-10-05: `/spec` step 0 carries the IDEA's `program:`; the FEAT template has the line; `/decide` takes an optional `program:`; `boss board PROG-NNN` lists them under *Decided across them*; a DEC no longer counts as an open member.)* `/spec` doesn't carry the IDEA's `program:` to the FEAT
   (only proposes one when a sibling FEAT exists); `/decide` can't name the program a decision governs,
   and a PROG lists none of its decisions — the *"decided across members"* that is a program's reason to
   exist. (`programs()` would count a tagged DEC as an open member — exclude it.)
-- [ ] **G5 · The briefing doesn't name the program.** `boss status`'s *Building now* line, the session
+- [x] **G5 · The briefing doesn't name the program.** *(2026-10-05: `boss status` adds *part of <title> — its rules: <file>* under *Building now*. RESUME template and session start: not done — the status line is what both point at.)* `boss status`'s *Building now* line, the session
   start hook and `/close`'s RESUME template carry no program. Smallest: *Building now* names the PROG
   title when the FEAT has one.
 - [ ] **G6 · Ending a program.** `/sunset` has project/FEAT/IDEA scopes, no PROG. **IDEA-072's re-open

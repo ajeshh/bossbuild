@@ -43,6 +43,7 @@ for: <persona slug from docs/personas/, or a plain phrase — who this is for>
 created: {{today}}
 building_since: {{today}}
 from: IDEA-NNN
+# program: <the IDEA's program, carried over — a slug or PROG-NNN; delete if it has none>
 ---
 
 # <Feature name — one plain line, present tense>

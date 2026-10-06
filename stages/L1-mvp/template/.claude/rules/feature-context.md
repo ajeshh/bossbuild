@@ -17,6 +17,7 @@ paths:
 _What the model needs **while** building the live FEAT. Ephemeral by design — prune when it ships._
 
 - **Active FEAT:** (e.g. FEAT-003 — checkout flow)
+- **Program:** (e.g. PROG-002 — checkout. Read its *rules every change keeps* before writing code: they were decided across features, and this one has to keep them too. No program? Delete this line.)
 - **Local decisions:** (the choices that bind this feature's code, with a one-line why)
 - **Gotchas / don't-redo:** (the traps you already hit, so the model doesn't re-walk them)
 

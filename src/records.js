@@ -656,8 +656,11 @@ export function programs(projectDir) {
       graduated: /^[A-Z]{3,4}-\d+$/.test(name),   // the value is an id, not a slug
       record: records.get(name) || null,
       members: members.sort((a, b) => a.id.localeCompare(b.id)),
-      shipped: members.filter((m) => baseStatus(m.status) === 'shipped').length,
-      open: members.filter((m) => !['shipped', 'dropped'].includes(baseStatus(m.status))).length,
+      // A decision that names its program is reasoning across members, not a member in flight —
+      // `decided` is neither shipped nor dropped, and counting it open made a decided program look stuck.
+      shipped: members.filter((m) => !/^DEC-/.test(m.id) && baseStatus(m.status) === 'shipped').length,
+      open: members.filter((m) => !/^DEC-/.test(m.id) && !['shipped', 'dropped'].includes(baseStatus(m.status))).length,
+      decisions: members.filter((m) => /^DEC-/.test(m.id)).map((m) => m.id),
     }))
     .sort((a, b) => b.members.length - a.members.length);
 }
