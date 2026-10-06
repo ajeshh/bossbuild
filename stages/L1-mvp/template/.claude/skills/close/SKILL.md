@@ -239,6 +239,11 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
    history, with a line at its top saying where the work went. **No** → leave it, and don't offer the
    same one again unless the record grows a new track. Never on a count of records; never moved unasked.
 
+   **Spread thin?** With no elevation to offer, one other line can take the item: when `boss board --json`
+   shows work in flight (a card not yet shipped) in **three or more programs**, say once — *"Work is
+   spread over 4 programs. `boss board --html` → By program shows where."* A pointer, not a judgement;
+   not again until the count changes.
+
 4. **Check the working tree.** If there are uncommitted changes the user wants to keep but isn't
    committing now, mention them in RESUME's *State* so next-you isn't surprised. Don't auto-commit.
    Then the copy off this machine: `git rev-list --count @{upstream}..HEAD`. Commits that exist only
