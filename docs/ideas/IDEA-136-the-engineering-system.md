@@ -4,7 +4,8 @@ type: idea
 kind: capability
 owner: mentor-architect
 program: ecosystem-of-ecosystems
-status: building (B — BOSS's own engineering — written; A — what ships to founders — open)
+status: shipped (B and A built 2026-10-04, Unreleased; left: A13 the V1 drift reader, F11 deferred; the engineering space paused 2026-10-05)
+shipped_on: 2026-10-04
 proof: docs/ENGINEERING.md
 proof_note: docs/ENGINEERING.md is the B track (BOSS's own code). The record is done when the A track ships to founders — the practice (A1) and the seed in the founder's template (A2) — so the proof moves there then.
 gist: Code gets the same ladder the design system has — principles a reasonable person could argue with, a map of what exists to check reuse against, rules an agent can act on, checks at the write, and a way to retire them — extracted from BOSS's own src/ before it ships to a founder.

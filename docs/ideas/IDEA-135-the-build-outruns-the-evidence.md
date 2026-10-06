@@ -3,7 +3,9 @@ id: IDEA-135
 type: idea
 kind: capability
 owner: product-lead
-status: seedling
+status: building (slice 1 landed 2026-10-04, `3cf20a9`; slice 2 mocked, not built)
+proof: stages/L0-quickstart/template/.boss/loops/unseen-loop.md
+proof_note: slice 1 (the conscience moment on a build nobody outside has seen). Done when slice 2 (the playbook Product chapter leads with the outcome) lands.
 gist: Every guard BOSS has against runaway building counts records (FEAT files, canvas cells, devlog entries), and the founder who builds by asking the AI for feature after feature writes none of them, so all four stay silent for exactly the case they exist for. Read the build itself against the last time a real person was heard from, and make the cost of a feature the surface you now own, not the tokens it took.
 created: 2026-10-04
 relates: IDEA-133, IDEA-055, EVID-004, EVID-001, EVID-003
