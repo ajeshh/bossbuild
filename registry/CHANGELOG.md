@@ -27,6 +27,10 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A security problem has a private way in.** `/feedback` used to file everything as a public issue, a
+  way past the secrets guard included. Now it sends a security hole to the private report form instead, and
+  `SECURITY.md` in the repo says what counts and where it goes.
+
 - **A feature that changes what a shipped one promised now says so, at both ends.** When you spec a change to
   something already shipped, `/spec` adds `amends:` to the new feature and `amended_by:` to the old one, and
   `boss records` checks the pair. Anyone reading the shipped feature can see its promise moved, without reading

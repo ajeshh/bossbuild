@@ -26,6 +26,11 @@ diagnostics dump.
   confusing, a wish, something that got in the way. Don't recite it.
 - Don't interrogate. One round. Take what they give you.
 
+- **A security hole goes private, never into a public issue.** If it's a way past the secrets guard, a
+  hook that runs something it shouldn't, or BOSS exposing what it says it keeps local, don't draft an
+  issue. Point them to the private report form,
+  `https://github.com/ajeshh/bossbuild/security/advisories/new`, and stop.
+
 ## 2. Draft it — and show it before sending
 
 Compose a short issue. Title = a tight one-liner. Body =
