@@ -1,3 +1,7 @@
 # LF everywhere, including Windows checkouts. The shipped hooks parse frontmatter and devlogs
 # line by line; a CRLF checkout made every loop spec unparseable on the first Windows CI run.
 * text=auto eol=lf
+
+# Concurrent work adds bullets under `## Unreleased`; a rebase that meets two new bullets keeps both
+# instead of stopping on a conflict (RVW-149: seven such conflicts in one day, all resolved "keep both").
+registry/CHANGELOG.md merge=union
