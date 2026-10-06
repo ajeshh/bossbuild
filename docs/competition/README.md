@@ -3,7 +3,7 @@ id: COMPETITION
 type: competition
 owner: product-lead
 status: living
-updated: 2026-10-05 (zeroheight given its own row; 2026-09-12: beads, impeccable and the design-system tooling field)
+updated: 2026-10-05 (spec-driven builders + BMAD filed, with what BOSS could take; zeroheight given its own row earlier the same day)
 ---
 
 # The field — who else is solving this
@@ -22,6 +22,8 @@ updated: 2026-10-05 (zeroheight given its own row; 2026-09-12: beads, impeccable
 | [**impeccable** (Paul Bakaus)](design-system-tooling.md) | adjacent — `frontend-design`'s self-declared successor: 23 design verbs, writes `PRODUCT.md` + `DESIGN.md` + per-route surface files into the repo, **61-rule deterministic detector** that runs on source *or a rendered page* | free, Apache-2.0 · npm 4.1.0 (2026-09-08) · ★67.5k · 17 hosts | **the detector is the output-observing tap BOSS's watchlist asked for, already executable** · reads audience/context/voice before every design command · its verbs are becoming *the* vocabulary | no rung, no *why*, no floor/value split — `DESIGN.md` is regenerated from code and records nothing about when a value was earned · 61 rules with no stated retirement policy · its `DESIGN.md` is a different format from Google's under the same filename · web-only | `watch` | 2026-09-12 |
 | [**design-system tooling, the field**](design-system-tooling.md) — web-interface-guidelines · ui-ux-pro-max · Google DESIGN.md · Storybook MCP · shadcn registries · Figma MCP · Supernova · [zeroheight](zeroheight.md) (own row below) | three kinds that don't compete: skills the agent reads (A), the code's components served to the agent (B), a design tool as source of truth (C) | free → $35–49/seat/mo (Supernova Pro, zeroheight Starter, verified 2026-09-12) | **Storybook MCP host-ships the generated component index** (React/Vue/Angular) with a test-and-fix loop · **ui-ux-pro-max ★127k sells palettes-by-industry** — the attractor as a product, and proof BOSS's *values-blank-until-earned* is the contrarian bet | (A) is stateless and rung-less · (B) needs a framework manifest and renders no rule sets · (C) is the two-sources-of-truth shape BOSS refuses, priced per editor for teams · three of these already carry a BOSS verdict (RVW-079/081/082) and nothing found changes them | `watch` | 2026-09-12 |
 | [**zeroheight**](zeroheight.md) | adjacent — a design-system docs platform now sold as *"the context layer for every AI tool your teams build with"*: remote MCP (read tools + `lint-code` against tokens), Claude Code/Cursor/Codex/Zed plugins | Free $0 (1 editor, 500 MCP calls/mo) · Starter **$49/editor/mo** (≤5 editors; now also 500 MCP calls/mo) · Enterprise not public | **first to sell the design system as governed agent context, with a price** · its MCP lints code for hardcoded values and tells the agent it *"MUST fix them"* · drafts stay invisible to agents until merged · counts AI reads (AI Analytics) · weekly–fortnightly releases | **the tool is the source of truth, code a destination** — the two-sources shape BOSS refuses, with sync sold as the fix · no why, no rung, no venture · priced for a design-system *team*, not one founder · help centre and G2 unreadable (403), so no verified 1–2★ text | `watch` | 2026-10-05 |
+| [**spec-driven builders**](spec-driven-builders.md) — GitHub Spec Kit · Kiro (AWS) · Tessl | adjacent — idea → spec → plan → tasks → code, records in the repo; the nearest shape to `/idea` → `/spec` → FEAT. **Tessl left the field** (Nov 2025) for skill registries and evals | Spec Kit free, MIT · Kiro Free 50 credits, $20–200/user/mo · Tessl Free, Team $100/mo | **Spec Kit is the default** — ★140k, 42 hosts, 104 releases in six months · its `converge` checks code against spec because *"completion claims are not evidence"* · Kiro checks requirements for contradictions and draws property tests from them · both shipped ceremony levels after users complained | **no venture** — Spec Kit's opt-in `assess` is the closest (desk evidence only, nothing after the verdict) · weight is their users' top complaint · specs can't evolve or retire (Spec Kit #1191, 115 reactions) · spec drift goes unnoticed · spec-as-source didn't hold | `watch` | 2026-10-05 |
+| [**BMAD Method**](bmad.md) | adjacent — five persona agents (analyst, PM, UX, architect, dev) carry an idea through brief → PRD → spec → tickets → Build, on 48 hosts | free, MIT (the marks are not) · consulting and certification, no prices published | ★53.8k, 75k npm/mo · **decides ceremony after reading the code** (intent gaps, irreversible actions, footprint) · `forge-idea` can end *Killed* · it subtracts (nine agents → five) | **all builders, no mentors** — no venture, no real-person evidence, nothing after launch · tokens (*"80k–100k per step"*) · *"either for non-programmers… or it requires technical supervision"* · v6/v7 split confuses installs | `watch` | 2026-10-05 |
 | [**v0** (Vercel)](v0.md) | adjacent — builds and hosts the app; not the company | Free $0 (7 msgs/day) · Plus $30/user/mo · Business $100/user/mo · Enterprise not public | **owns the runtime** — prompt → deployed URL in an hour; a retrieval-shaped design-system "skill"; 2–3 releases/mo | **no "why" layer at all** — memory is git; Instructions are opt-in per chat and static; credit burn is the #1 complaint; degrades past ~30 prompts | `watch` | 2026-09-11 |
 | [**superpowers** (obra)](superpowers.md) | adjacent — the build-craft methodology: 14 skills (brainstorm → plan → subagent TDD → review), one `SessionStart` hook, **on fourteen hosts from one repo**, in the official marketplace | free, MIT · enterprise support = a sales email, not public | **it is the default** — ★285k, *"skills trigger automatically"*, zero ceremony; its brainstorming skill is a real front door | **no venture at all** — never asks why or for whom; no memory across sessions; one fixed register for everyone; usage telemetry via a remote logo, on by default; 1 commit in 30 days vs 353 open issues | `watch` | 2026-09-11 |
 | [**the Claude plugin field**](claude-plugin-field.md) — haytham · product-discovery · founder-mode · arness · harnesskit · the SSS suite · boss-ai-agent | direct — every marketplace plugin that says *founder / startup idea / co-founder* | free; ★0–33 each; several created and abandoned the same day; **haytham retired itself 2026-07** | product-discovery's **typed evidence (REAL / SYNTHETIC / INFERRED + confidence)**; arness's **three ceremony tiers**; haytham's twenty-minute GO/NO-GO — founders want a verdict | all one-shot pipelines: idea → verdict → spec → nothing; no re-entry, no ledger that changes what the tool says next; synthetic research graded as evidence; your product lives in *their* folder | `watch` | 2026-09-11 |
@@ -34,12 +36,8 @@ _Rows a founder would expect and this file does not have. Listing them is rule 4
 is a `/comp-eval add`._
 
 - **Lovable / Bolt / Replit Agent** — the other prompt-to-app builders; same kind as v0.
-- **Spec-driven builders — GitHub Spec Kit, Kiro, Tessl** _(named 2026-10-05, not researched)_ — idea →
-  spec → tasks → code, with the records in the repo. The nearest shape to `/idea` → `/spec` → FEAT,
-  and probably the closest rivals not yet in this table.
-- **Agent-team methods — BMAD Method, Taskmaster** _(named 2026-10-05, not researched)_ — PM, architect
-  and dev personas, or PRD → task graph, run inside the same hosts. BMAD's role cast looks like BOSS's
-  builders and mentors from the outside; whether it has a venture layer is the question to open.
+- **Taskmaster** _(named 2026-10-05, not researched)_ — PRD → task graph inside the same hosts; split off
+  when BMAD was filed.
 - **Prompt-to-design — Figma Make, Claude Design** _(named 2026-10-05; Claude Design already has RVW-081)_
   — the design corner's v0. zeroheight lists both as MCP clients.
 - **The unglamorous ones** _(named 2026-10-05)_ — a general chat assistant used as a cofounder, a
@@ -58,11 +56,25 @@ is a `/comp-eval add`._
 
 ## What this field says, read together
 
+**Twelve rows, and the build half has a crowd.** The spec-driven builders and BMAD are the closest shape to
+BOSS's `/idea` → `/spec` → FEAT, and every one of them is builders all the way down: no venture, no
+evidence from a real person, nothing after launch. Spec Kit's `assess` and BMAD's `forge-idea` reach toward
+*"should this exist?"*, both from desk research, and both stop at the verdict. Two field-wide facts matter
+for BOSS. **Everyone retreated from weight**: Kiro shipped Quick Spec, Spec Kit a `lean` preset, BMAD cut nine
+agents to five, and Tessl left spec-driven development entirely. And **the build half is ahead of BOSS in
+one place: closing the loop.** BOSS lets the builder tick its own criteria. The candidates to `/vet` are
+listed in [spec-driven-builders.md](spec-driven-builders.md#what-boss-could-take--candidates-not-decisions)
+and [bmad.md](bmad.md#what-boss-could-take--candidates-for-vet).
+
+<details><summary>The eight-row read (2026-09-12)</summary>
+
 **Eight rows, and the project corner now has a name that isn't BOSS's.** Beads (★27k) is what the
 Radar calls *agent-native project memory* — a task graph with an unblocked-work column, a session-start
 injection and compaction, and nothing about why, for whom, or the person. It is the project rung with the
 venture removed, and the one mechanism worth studying is `ready`. Everything the seven-row read said still holds — BOSS's bet
 (the value is in staying) remains the one shape nobody in the field tried, now including the tracker corner.
+
+</details>
 
 <details><summary>Earlier reads, kept as the record of what was seen when</summary>
 
