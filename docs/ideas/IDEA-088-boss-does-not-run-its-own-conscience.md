@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: shipped
-program: dogfood
+program: ai-native-boss
 proof: .claude/hooks/conscience.js
 proof_verified: >
   ⚠️ THE FINDING AS IT STOOD, now RESOLVED — read in past tense; the conscience is installed and

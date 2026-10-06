@@ -9,7 +9,7 @@ for: the same founder as FEAT-026 — records in six folders, nothing that reads
 created: 2026-09-13
 shipped_on: 2026-09-13
 from: IDEA-106
-program: business-profile
+program: PROG-003
 relates: FEAT-026, IDEA-107, FEAT-025, DEC-004
 ---
 

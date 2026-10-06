@@ -4,6 +4,7 @@ type: idea
 kind: capability
 owner: designer
 status: seedling
+program: design-system
 proof: none
 proof_note: read against BOSS's own `.boss/design.html` (a CLI + chat product whose design space is about its website), 2026-09-23; no founder building a non-screen product has opened one
 gist: The design space assumes a screen. Its skeleton (people, journey, principles, flows, content, patterns, exceptions, research) fits any product; its foundations (colour, type, space, icons, layout, components) are one surface's materials. Read the product's surface and show the materials that surface has — conversation, command line, API, device — with "not your surface" instead of "empty".

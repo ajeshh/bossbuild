@@ -9,7 +9,7 @@ gist: The playbook's holes get filled at the founder's pace through three doors,
 for: the same founder as FEAT-026 — has a deck, a report, a head full of facts, and 23 questions open
 created: 2026-09-13
 from: IDEA-111
-program: business-profile
+program: PROG-003
 relates: FEAT-026, FEAT-028, IDEA-106, DEC-008, DEC-003
 ---
 

@@ -9,7 +9,7 @@ gist: One complete worked example on oyeboss.build — Kettlewick, a fictional h
 for: a stranger on oyeboss.build who has read that BOSS exists and wants to see it run, end to end, before installing it
 created: 2026-09-13
 from: IDEA-110
-program: business-profile
+program: PROG-003
 relates: IDEA-106, FEAT-026, FEAT-029, FEAT-030, IDEA-109, IDEA-057
 ---
 

@@ -9,7 +9,7 @@ for: a founder in Quickstart or MVP whose canvas, personas, rivals, evidence and
 created: 2026-09-13
 shipped_on: 2026-09-13
 from: IDEA-106
-program: business-profile
+program: PROG-003
 relates: FEAT-025, DEC-004, IDEA-065, IDEA-104
 ---
 

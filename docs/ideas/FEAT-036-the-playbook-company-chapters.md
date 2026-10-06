@@ -9,7 +9,7 @@ gist: `boss playbook` grows the Company group — Team (a person record per foun
 for: the same founder as FEAT-026 — asked for a page on how we build and a face beside each name
 created: 2026-09-13
 from: IDEA-106
-program: business-profile
+program: PROG-003
 relates: FEAT-026, FEAT-027, FEAT-028, FEAT-021, IDEA-107
 ---
 

@@ -8,7 +8,7 @@ gist: An IDEA record is two different things wearing one word — the venture id
 proof: stages/L0-quickstart/template/.claude/skills/idea/SKILL.md
 proof_note: The shipped `/idea` template writes `kind: capability` and no venture fields; `/boss` writes `kind: venture`. `src/playbook.js readIdea()` and the loop runtime's `readIntentContext()` rank `kind: venture` first (tests in test/playbook.test.js and test/conscience.test.js). The board's split is not built.
 created: 2026-09-13
-program: records
+program: the-record-system
 relates: IDEA-106, IDEA-015, IDEA-111, DEC-008
 source: Ajesh, 2026-09-13 — "what is an idea in boss? I think its getting interchanged.. A founder may have a new idea for an app.. Thats one.. The other is.. when they have a new feature or something they are exploring.. we default and save it as idea right? … i also just dont wanna get it confused in our own building."
 ---

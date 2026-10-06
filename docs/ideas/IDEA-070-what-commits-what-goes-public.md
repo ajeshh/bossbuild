@@ -4,6 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: exploring (F1 shipped v0.217.0 · F3+F5 shipped v0.219.0)
+program: harness
 proof: none
 proof_note: One half needs no proof — F1 is a verified privacy hole on the `boss adopt` path and is a bug fix, not a feature. The other half (commit-time public/private judgment) is n=0 and gated.
 gist: BOSS learned the LOCAL / PUBLIC-REPO / INSTALLED cut the expensive way in its own repo, built two checkers so the tiers can't disagree again, and never sorted any of it UP. The founder gets a two-tier `.gitignore` — and on the brownfield path, doesn't get it at all.

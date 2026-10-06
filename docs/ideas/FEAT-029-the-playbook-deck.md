@@ -9,7 +9,7 @@ gist: `boss playbook`'s deck — Present the page as slides in one of three cuts
 for: the same founder as FEAT-026 — has a room on Thursday and sixteen chapters
 created: 2026-09-13
 from: IDEA-106
-program: business-profile
+program: PROG-003
 relates: FEAT-026, FEAT-027, FEAT-028, FEAT-036, DEC-004
 ---
 

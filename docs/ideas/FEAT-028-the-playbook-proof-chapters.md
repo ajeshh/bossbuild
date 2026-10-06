@@ -9,7 +9,7 @@ gist: `boss playbook` grows the Proof group — Evidence · Learnings · Decisio
 for: the same founder as FEAT-026 — six folders of records, a room that asks "and how do you know?"
 created: 2026-09-13
 from: IDEA-106
-program: business-profile
+program: PROG-003
 relates: FEAT-026, FEAT-027, FEAT-030, DEC-004, DEC-008, IDEA-111
 ---
 

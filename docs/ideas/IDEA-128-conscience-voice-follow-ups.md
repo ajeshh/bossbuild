@@ -4,6 +4,7 @@ type: idea
 kind: capability
 owner: Ajesh
 status: seedling
+program: ai-native-boss
 proof: none
 proof_note: follow-ups from IDEA-123's measured pass; the warrant is the same (BOSS's own rule, measured), and none of the three has been measured yet
 spun_from: IDEA-123 (the three follow-ups left when the voice pass itself shipped, 2026-09-23)

@@ -4,6 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: seedling
+program: PROG-003
 gist: A chapter-by-chapter read of what the playbook says, against what a reader or a deck needs. Most weak spots are the page leading with the wrong record (Vision opens on the promise, Product never shows the idea's own one-line description), not missing records; the real gaps are a product picture and faces on Team.
 created: 2026-10-04
 relates: IDEA-133, IDEA-106, IDEA-129, FEAT-027, FEAT-036, FEAT-039

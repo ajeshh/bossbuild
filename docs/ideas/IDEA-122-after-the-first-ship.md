@@ -8,7 +8,7 @@ proof: none
 proof_note: warrant is the craft curve, not demand — Ajesh 2026-09-23, "its fine if no input from founder atm. i think its more of doing the right thing based on advancing tech." Hosts now ship scheduled agents and git-connected deploys; a founder building with them in 2026 hits this seam by default. The first founder who ships with 3b/3c is still the check that the wording works, not that the need exists
 gist: BOSS gets a founder to the first deploy well and stops there. After it — is it up, who hears when it isn't, does the next push deploy itself, what runs while you sleep — is advice at best. Fold the missing half into /ship, one rung at a time; no new skills.
 created: 2026-09-23
-program: operate
+program: post-launch
 relates: IDEA-119, IDEA-121
 ---
 

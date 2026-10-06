@@ -115,17 +115,17 @@ throwaway scaffold, a record whose tracks were all ticked read as *grown*; a fin
 history. IDEA-137 still crosses the line (6 of its 9 tracks open). `PROG-1` pads to `PROG-001`, as
 card ids already do.
 
-## S6b · The other 22 umbrellas, read against E1–E6 (2026-10-05, Ajesh: *"continue"*) — offers, not moves
+## S6b · The other 22 umbrellas, read against E1–E6 (2026-10-05, Ajesh: *"continue"*, then *"whichever makes sense"* — all three applied)
 
-- **E3 + E1 → graduate `business-profile` as PROG-003, the playbook.** A standing rule lives in RESUME's
+- **Done · E3 + E1 → graduate `business-profile` as PROG-003, the playbook.** A standing rule lives in RESUME's
   dated bullet about a shipped FEAT: *"a new chapter or record type adds its demo record in the same
   commit"* (FEAT-039). Every playbook chapter (FEAT-026…036) obeys it and `check:demo` enforces it; RESUME
   is a briefing, not a rules file. Members: 10; IDEA-134 (*the playbook's content, chapter by chapter*)
   is unprogrammed and belongs. The strongest case after PROG-002.
-- **E4 → one umbrella, two slugs (a one-line fix each, no PROG):** `records` (IDEA-114) is
+- **Done · E4 → one umbrella, two slugs (a one-line fix each, no PROG):** `records` (IDEA-114) is
   `the-record-system`; `operate` (IDEA-122, after the first ship) is `post-launch`; `dogfood` (IDEA-088,
   BOSS doesn't run its own conscience) is `ai-native-boss`.
-- **E4 → in-flight records with no umbrella that clearly have one:** IDEA-130 → `design-system`;
+- **Done (but IDEA-141, a peer's uncommitted file — its session adds the line) · E4 → in-flight records with no umbrella that clearly have one:** IDEA-130 → `design-system`;
   IDEA-128 (conscience voice) → `ai-native-boss`; IDEA-141 (who does what) → `founding-teams`; IDEA-070
   (what commits, what goes public) → `harness`, beside IDEA-142's git safety.
 - **Not now:** `design-system` (11) has no grown record (IDEA-107 is long but has no tracks) and its
