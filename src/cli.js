@@ -16,7 +16,7 @@ import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './le
 import { printCraft } from './craft.js';
 import { printChangelog, cmpVersion, versionLine } from './changelog.js';
 import { detectStage, inferSourceGlobs } from './detect.js';
-import { printUpdate, updateNote, installKind, uninstallCommand } from './update.js';
+import { printUpdate, updateNote, installKind, uninstallCommand, versionChange, versionChangeLine } from './update.js';
 import { printCredit } from './credit.js';
 import { planRemove, applyRemove, machineState, removeMachineState } from './remove.js';
 import { built, nextSeam } from './ladder.js';
@@ -2052,6 +2052,12 @@ export async function run(argv) {
   const [cmd, ...args] = argv;
   jsonErrors = args.includes('--json');
   if (KNOWN_COMMANDS.includes(cmd) && unknownFlag(cmd, args)) return;
+  // Once per update, to a person at a terminal: never into piped or --json output, and not ahead
+  // of `boss whatsnew`, which is already the answer (IDEA-151).
+  if (process.stdout.isTTY && !argv.includes('--json')) {
+    const change = versionChange();
+    if (change && !['changelog', 'whatsnew', 'version', '--version', '-v'].includes(cmd)) console.log(`\n${versionChangeLine(change)}`);
+  }
   switch (cmd) {
     case 'new': return cmdNew(args);
     case 'adopt': return cmdAdopt(args);

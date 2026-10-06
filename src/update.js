@@ -19,7 +19,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { homedir } from 'node:os';
 import { BOSS_ROOT, BOSS_HOME, bossVersion } from './paths.js';
-import { cmpVersion } from './changelog.js';
+import { cmpVersion, newsBetween } from './changelog.js';
 import { dim, bold, ok, warn, err } from './ui.js';
 
 const CACHE = join(BOSS_HOME, 'update-check.json');
@@ -175,3 +175,33 @@ export function updateNote(installed = bossVersion(), cache = readCache(), now =
 }
 
 export { err };
+
+// --- The first run after an update says so, once (IDEA-151) ----------------------------------
+// Updating the tool was silent: `npm i -g oyeboss@latest` finished and nothing ever said what the
+// new version changed, so the changelog existed only for someone who already knew to ask. BOSS now
+// remembers the last version it ran as on this machine, and the first command after that changes
+// gets one line pointing at what's new. Local only: a file in BOSS_HOME, no network, nothing about
+// the project. A first-ever run, or a downgrade, records the version and says nothing.
+const SEEN = join(BOSS_HOME, 'seen-version.json');
+
+export function versionChange({ installed = bossVersion(), file = SEEN } = {}) {
+  let seen = null;
+  try { seen = JSON.parse(readFileSync(file, 'utf8')).version || null; } catch { /* first run */ }
+  if (seen === installed) return null;
+  try {
+    mkdirSync(dirname(file), { recursive: true });
+    writeFileSync(file, JSON.stringify({ version: installed, seen: new Date().toISOString() }, null, 2) + '\n');
+  } catch { /* a machine we can't write to just doesn't get the line */ }
+  if (!seen || cmpVersion(installed, seen) <= 0) return null;
+  return { from: seen, to: installed };
+}
+
+/** The one line, or '' — kept apart from the I/O so it can be read in a test. */
+export function versionChangeLine(change, news = change ? newsBetween(change.from, change.to) : null) {
+  if (!change) return '';
+  const parts = [];
+  if (news.notice) parts.push(`${news.notice} thing${news.notice === 1 ? '' : 's'} you'll notice`);
+  if (news.improve) parts.push(`${news.improve} smaller improvement${news.improve === 1 ? '' : 's'}`);
+  const what = parts.length ? parts.join(', ') : 'nothing that changes how you work';
+  return `  ${ok('✦')} BOSS updated ${change.from} → ${bold(change.to)}: ${what}.  ${dim(`boss whatsnew --since ${change.from}`)}`;
+}

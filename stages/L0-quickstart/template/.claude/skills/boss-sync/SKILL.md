@@ -14,9 +14,11 @@ own permissions or hooks.
 ## 0. Orient (silent)
 
 - `boss status` — current mode, the project's BOSS pin, and whether newer practices exist.
-- `boss changelog --full` — **what changed since this project's pin**, straight from the installed
-  package. This is the narration you'll give the user (not just a file list); without it you are
-  describing files moving, which is the blind sync this skill exists to prevent.
+- `boss changelog` — **what changed since this project's pin**, straight from the installed package,
+  already sorted by weight. This is the narration you'll give the user (not just a file list); without
+  it you are describing files moving, which is the blind sync this skill exists to prevent. Lead with
+  *What you'll notice*, in the user's terms; give *Smaller improvements* a sentence, not a list; say
+  nothing of *Under the hood* unless they ask. `--full` has every bullet, for step 2's artifact question.
 
 ## 1. Preview
 

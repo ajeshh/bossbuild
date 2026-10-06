@@ -95,7 +95,7 @@ test('boss changelog renders a citation plain, for the tarballs already in the w
   // matters: whatever form an OLD installed changelog uses, a founder never sees the link form.
   const src = readFileSync(join(BOSS_ROOT, 'src', 'changelog.js'), 'utf8');
   assert.match(src, /plainCitations/);
-  assert.equal((src.match(/plainCitations\(/g) || []).length, 3, 'all three render paths must strip it');
+  assert.equal((src.match(/plainCitations\(/g) || []).length, 4, 'all four render paths must strip it (the weighed view, IDEA-151, is the fourth)');
   assert.ok(typeof mod.printChangelog === 'function');
   void fs;
 });

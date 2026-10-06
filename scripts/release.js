@@ -28,7 +28,7 @@ import { loadModes } from '../src/modes.js';
 import { dim, bold, ok, warn, err } from '../src/ui.js';
 import { RESUME_WINDOW, resumeLines } from '../src/orientation.js';
 
-import { unreleased, unreleasedHasContent, nextVersion, stampUnreleased } from '../src/changelog.js';
+import { unreleased, unreleasedHasContent, nextVersion, stampUnreleased, unweighed } from '../src/changelog.js';
 
 const fast = process.argv.includes('--fast');
 
@@ -45,6 +45,16 @@ if (process.argv.includes('--stamp')) {
   if (!unreleasedHasContent(cl)) {
     console.log(`\n  ${warn('⚠')} Nothing under \`## Unreleased\` — nothing to stamp. VERSION stays ${current}.\n`);
     process.exit(0);
+  }
+  // Every bullet carries a weight before it reaches a founder (IDEA-151). 0.329.0 shipped 22
+  // bullets and no `For you:` line, and `boss whatsnew` told a founder one release behind that
+  // nothing in it changed what they do. The writer knows the weight; the stamp only checks it's there.
+  const loose = unweighed(cl);
+  if (loose.length) {
+    console.log(`\n  ${err('✗')} ${loose.length} bullet(s) under \`## Unreleased\` sit under no weight heading — nothing stamped.`);
+    for (const b of loose.slice(0, 8)) console.log(`    · ${b.slice(0, 90)}`);
+    console.log(`  Move each under \`### What you'll notice\`, \`### Smaller improvements\` or \`### Under the hood\`.\n`);
+    process.exit(1);
   }
   const next = nextVersion(current);
   const today = new Date();

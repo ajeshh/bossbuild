@@ -9,21 +9,25 @@ The convention is enforced by `npm run check:refs` and holds repo-wide: **`[[ID]
 open it; a bare `ID` says a record exists.** If a record class is ever published, its citations get
 their brackets back and the check starts requiring them.
 
-**The `> **For you:**` line is opt-in, and the bar is high on purpose.** Add one ONLY if the release
-changes something a BOSS user *does, sees, or can rely on* — a command, a fix they'd have hit, a
-behaviour change — **or** if it integrates a new/updated best practice their project now inherits.
-Everything else (audits, refactors, doc sweeps, internal tooling, this repo's own website) gets **no
-line and never reaches oyeboss.build/whats-new.html**. Most releases should have no line. A release feed
-that lists every version is a commit log, and a commit log is not useful to anyone building a company.
-**Cap it at about five lines per release** (Ajesh, 2026-09-23): what the founder must *do* first,
-then what changes what they *type*. Everything else stays in the bullets.
+**Every bullet sits under one of three headings, chosen by whoever writes it** (IDEA-151, 2026-10-05):
+
+- `### What you'll notice`: it changes what a BOSS user *types or sees*, or fixes something they
+  would have hit. This is what `boss whatsnew`, the line after an update and oyeboss.build/whats-new
+  lead with, in full. Keep it to the few that matter; when in doubt, it is the next one.
+- `### Smaller improvements`: on by default, and noticed only by someone looking: a practice that
+  got sharper, a skill that asks better, a quieter fix. One line each in `boss whatsnew`.
+- `### Under the hood`: nothing a founder would feel. A count, and `--full`. BOSS-only plumbing
+  (its own checks and gates) gets no bullet at all.
+
+`npm run stamp` refuses a bullet that sits under no heading, and a fresh `## Unreleased` arrives with
+all three. Releases before 0.328.0 used one `> **For you:**` line per release instead; the readers
+still honour it there.
 
 **Since DEC-019 (2026-09-13), a capability lands as a commit plus a bullet under `## Unreleased`
 below — VERSION does not move.** The releaser stamps a version at publish: `npm run stamp` turns the
 heading into the next number and date, moves VERSION / package.json / plugin.json with it, and runs
 the gate. `boss sync`, `boss changelog` and the site read only stamped versions, so a founder never
-sees a number they cannot install. Write the bullet the way a stamped entry reads; the `For you:`
-rule above still applies to the whole section once it is stamped.
+sees a number they cannot install. Write the bullet the way a stamped entry reads, under the heading for its weight.
 
 ## Unreleased
 
@@ -48,20 +52,15 @@ rule above still applies to the whole section once it is stamped.
 - **The coder reproduces a bug before it fixes one.** It now says what it ran and what it saw before
   changing anything, and stops to tell you when the bug won't reproduce. When a fix doesn't make the
   problem go away, it says what it got wrong about the cause instead of piling a second change on top.
+### What you'll notice
 
-- **A fix now names what it must leave alone.** When the feature you're speccing is a bug fix,
-  `/spec` asks one more question: what next to the bug has to keep working exactly as it does, written
-  as a concrete pair. It goes under *Paths that must not break* and becomes a test that passes before
-  the fix and after it, so a repair that breaks its neighbour gets caught.
-
-- **A ticked criterion now says how it was checked.** A feature's acceptance criteria could be
-  ticked on the agent's word, so a box looked the same whether anyone had tried it or not. Now `/log`
-  ticks a criterion with what was run and what was seen on the same line, keeps anything built but
-  unchecked unticked as "built, not yet checked" with an offer to hand it to `tester`, and closes a
-  feature only when every box carries that evidence. `/log` is the one place ticking happens; `/close`
-  and the feature template point to it.
-  At close it also says, in one line and only when there is one, anything that got built which no
-  criterion asked for, and asks whether it becomes its own feature or comes out. It never removes it.
+- **After you update BOSS, it tells you what changed, and what you'll notice comes first.** Updating
+  used to finish in silence, and `boss whatsnew` could call a release full of changes *internal*. Now
+  the first `boss` command after an update says so once (*BOSS updated 0.328.0 → 0.329.0: 5 things
+  you'll notice, 16 smaller improvements*) and names the command for the detail. `boss whatsnew`
+  leads with what you'll notice, in full, then lists smaller improvements one line each, and counts
+  the rest. The website's What's new shows the same. Nothing is sent anywhere: BOSS keeps the last
+  version it ran as in its own folder on your machine.
 
 - **Eleven skills that used to just stop now say what comes next — one thing.** `/decide`,
   `/evidence`, `/persona`, `/comp-eval`, `/evals`, `/ai-failure-states`, `/design-review`, `/money`,
@@ -135,9 +134,6 @@ rule above still applies to the whole section once it is stamped.
   Open and Copy path, so the files are one click away too. The board now comes first in the bar,
   since it's the page you open most.
 
-- **An agent in its own worktree can run your app.** A new worktree starts without your ignored
-  files, so there's no `.env` and the app won't start. The agent rules now say to list `.env` in
-  `.worktreeinclude`, which copies it in — just that file, since every copy is one more place the key lives.
 - **Every working point is a save point.** The coder now commits each change that works (the smoke
   passes, or it runs) and says so in a line, so there is always a version to get back to: the
   editor's undo misses shell commands and subagent edits, and git doesn't. It never commits a
@@ -154,10 +150,57 @@ rule above still applies to the whole section once it is stamped.
   `boss sync --apply`; a cofounder's fresh clone gets it at their first session, even without the BOSS
   CLI, and the session says so. A pre-commit hook you wrote yourself is never replaced, and
   `boss remove` takes the check back out with everything else BOSS wrote.
+
 - **The git commands that throw work away ask first.** Force-push, `reset --hard`, `clean`, a
   checkout or restore that discards changes, dropping a stash, deleting a branch: the agent now
   stops and asks before each one, even in auto mode and even if you allowed git commands broadly.
   `boss sync` adds the list to projects you already have, and never removes an entry you added.
+
+- **`boss unlock` no longer holds back what you've already earned.** An app that already calls a model
+  gets `/ai-cost`, `/ai-failure-states` and `/evals` with MVP, instead of being told they'd arrive *when
+  the app first calls a model*. The same goes for any skill a project has already earned. `/red-team
+  --self`, the pass that attacks BOSS's own conscience, now keeps a report (`docs/red-team/SELF-…`)
+  apart from your product's, so it never counts as testing your app. If something landed, `/feedback`
+  can send it to BOSS, showing you what it sends first. And `/evals` treats twenty cases as a target to
+  grow toward from real failures, never a number to pad to.
+
+- **Your app keeps working if you take BOSS out.** The AI-cost logger `/ai-cost` gives your app wrote
+  its ledger into BOSS's folder and assumed the folder was there — so after `boss remove`, a fresh
+  clone, or a deploy that can't write to disk, every model call it wrapped would fail. It now makes
+  the folder when it needs to, and a ledger it can't write warns instead of breaking the call. The
+  logger is yours once installed; move the ledger wherever you like. If you already wired it, ask
+  your agent to apply the same two-line change.
+
+### Smaller improvements
+
+- **The coder reproduces a bug before it fixes one.** It now says what it ran and what it saw before
+  changing anything, and stops to tell you when the bug won't reproduce. When a fix doesn't make the
+  problem go away, it says what it got wrong about the cause instead of piling a second change on top.
+
+- **A fix now names what it must leave alone.** When the feature you're speccing is a bug fix,
+  `/spec` asks one more question: what next to the bug has to keep working exactly as it does, written
+  as a concrete pair. It goes under *Paths that must not break* and becomes a test that passes before
+  the fix and after it, so a repair that breaks its neighbour gets caught.
+
+- **A ticked criterion now says how it was checked.** A feature's acceptance criteria could be
+  ticked on the agent's word, so a box looked the same whether anyone had tried it or not. Now `/log`
+  ticks a criterion with what was run and what was seen on the same line, keeps anything built but
+  unchecked unticked as "built, not yet checked" with an offer to hand it to `tester`, and closes a
+  feature only when every box carries that evidence. `/log` is the one place ticking happens; `/close`
+  and the feature template point to it.
+  At close it also says, in one line and only when there is one, anything that got built which no
+  criterion asked for, and asks whether it becomes its own feature or comes out. It never removes it.
+
+- **A page BOSS reads for you can't give it orders.** `/boss`, `/import`, `/comp-eval` and `/persona`
+  pull in outside text — a link, a rival's site, a paste — and a page can carry a line written to
+  steer whatever agent reads it. Those skills now treat what they read as material, never as
+  instructions: a line like that is kept in the saved copy under an `Unverified:` label and
+  nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
+  points at your own machine, a private network or a cloud metadata endpoint.
+
+- **An agent in its own worktree can run your app.** A new worktree starts without your ignored
+  files, so there's no `.env` and the app won't start. The agent rules now say to list `.env` in
+  `.worktreeinclude`, which copies it in — just that file, since every copy is one more place the key lives.
 
 - **The design page opens with a way in.** Someone joining your project (a designer, a cofounder, you
   after three weeks away) used to land on the brand and then a book of chapters. `boss design`'s *Start
@@ -185,14 +228,6 @@ rule above still applies to the whole section once it is stamped.
   same pass. Now it's flagged and proposed, and you delete it, the same rule every BOSS project
   starts with: ask before anything irreversible. *Imported nowhere* is what a search saw, and a
   component loaded by name at runtime can look unused when it isn't.
-
-- **`boss unlock` no longer holds back what you've already earned.** An app that already calls a model
-  gets `/ai-cost`, `/ai-failure-states` and `/evals` with MVP, instead of being told they'd arrive *when
-  the app first calls a model*. The same goes for any skill a project has already earned. `/red-team
-  --self`, the pass that attacks BOSS's own conscience, now keeps a report (`docs/red-team/SELF-…`)
-  apart from your product's, so it never counts as testing your app. If something landed, `/feedback`
-  can send it to BOSS, showing you what it sends first. And `/evals` treats twenty cases as a target to
-  grow toward from real failures, never a number to pad to.
 
 - **AI tests start from what already went wrong.** Before it writes a case, `/evals` now reads what
   has already failed: a `fail` in a `/red-team` report, a failure state still marked `STUB`, and
@@ -256,6 +291,7 @@ rule above still applies to the whole section once it is stamped.
   *for*: past the point where the work meets its purpose, every extra step costs time, the team, other
   people's patience, and the signal you only get by letting it go. It asks who has agreed to that cost
   before one more step.
+
 - **Closing for now and finishing a feature are two different moments.** `/close` is the pause:
   nothing ends, it leaves the thread findable. Finishing a feature is **Done**, a named step in `/log`
   when every criterion is met: it ships the record, reads back the bet you wrote at spec time, marks
@@ -268,24 +304,12 @@ rule above still applies to the whole section once it is stamped.
   thing works. The not-earning branch has always asked it. A condition you name early keeps stopping
   a decision instead of a slow fade. Skip is still an answer.
 
-- **The duplicate-component check and the design page agree on what a component is.** The check
-  asked *reuse, adjust or new?* about page files like `DashboardPage` or `SettingsLayout`, which the
-  design page never lists; and the design page listed `App` as a component. Both now skip the same
-  files, and a test keeps the two in step.
-
 - **When the same break comes back, the coder offers to catch it for good.** After fixing something
   in your code that it has fixed in that file before, the coder says so once and offers to write a
   check that catches it at the write — a test or a lint rule, added to your engineering file. Or say
   *"keep fixing it for me"*: it writes that down under *Left to the agent* and doesn't ask again for
   that file and kind. It never counts the repeats or says whose change caused it, and it never offers
   for files BOSS shipped — those get fixed in BOSS.
-
-- **Your app keeps working if you take BOSS out.** The AI-cost logger `/ai-cost` gives your app wrote
-  its ledger into BOSS's folder and assumed the folder was there — so after `boss remove`, a fresh
-  clone, or a deploy that can't write to disk, every model call it wrapped would fail. It now makes
-  the folder when it needs to, and a ledger it can't write warns instead of breaking the call. The
-  logger is yours once installed; move the ledger wherever you like. If you already wired it, ask
-  your agent to apply the same two-line change.
 
 - **Your agent gets a short engineering file, the first time you set up `/smoke`.** After it turns on
   strict types and a formatter, `/smoke` offers `.claude/rules/engineering.md`: four starting rules
@@ -336,12 +360,16 @@ rule above still applies to the whole section once it is stamped.
   `/landing --demand` now points at `/trust`'s first step — a privacy policy beside the field — or
   says plainly that it's missing.
 
+### Under the hood
+
+- **The duplicate-component check and the design page agree on what a component is.** The check
+  asked *reuse, adjust or new?* about page files like `DashboardPage` or `SettingsLayout`, which the
+  design page never lists; and the design page listed `App` as a component. Both now skip the same
+  files, and a test keeps the two in step.
+
 ## 0.329.0 — 2026-10-04
 
-- **A feature that grew inside itself is marked on the playbook.** Counting features can't see one
-  that quietly became ten things. When a feature's acceptance criteria have at least doubled since
-  it was first written down, and grown by three or more, its row says so: *scope 2→7*. The count
-  comes from git history, so it needs no extra field and is never guessed: no history, no mark.
+### What you'll notice
 
 - **The canvas's *Experiment this week* line is now *What we're testing next*, and asks who will
   see it.** "This week" assumed a weekly rhythm most founders don't keep. A canvas written before
@@ -374,6 +402,36 @@ rule above still applies to the whole section once it is stamped.
   restart, park the rest, or `/evidence` if someone already saw it) and never blocks. Code
   outside your source folders isn't counted; `sourceGlobs` in `.boss/config.json` points it there.
 
+- **Your brand doc starts at the canvas, and it can hold your story in one line.** Once Problem,
+  Promises and Story are written, `/canvas` offers the story in one line: your own words from those
+  cells laid into *this AND this, BUT the problem, THEREFORE what you do*, which you then say as one
+  sentence. It saves that as `story:` in `docs/BRAND.md`. If there's no brand doc yet, it seeds a
+  nascent one from People and Promises, so the brand starts with the venture, not with the first
+  landing page. The brand-doc skeleton gains *What they use instead today*; a pointer on each line
+  to what backs it (an `EVID`, a `DEC`, or `belief`); traits written *X, not Y* under *How it sounds*, with one
+  optional real *Example*; `## Origin, as it happened` (nothing in it a witness would dispute); and
+  `shape:` / `voice:` rows in the learned log that keep the *why* of each change. The playbook
+  doesn't render these yet.
+
+- **The playbook tells your story, inside the chapters you already have.** The cover carries your
+  story in one line under the tagline; Vision asks for it until you've written it (`/canvas`).
+  Vision quotes *why this, for you* in your own words from the capture log, says your motivation in
+  words rather than as a label, and marks *In a few years* as your aspiration. Evidence opens with
+  *How sure, over time*: your strongest grade by date, with decisions on the axis, and the line stops
+  at your last record. Learnings opens with *How it grew*: the idea, the first signal, the bet you
+  changed, what changed it, and the first commitment, each in its record's own words. A turn nothing
+  backs yet is a dashed card naming the verb that fills it. Brand now **quotes** *Words that
+  landed* (your ★ rows first, each with its credit, date and record), and shows your *Origin* and
+  *How it changed*. Your Vision, Evidence, Learnings and VC cut gain these blocks on the next `boss
+  playbook`.
+
+### Smaller improvements
+
+- **A feature that grew inside itself is marked on the playbook.** Counting features can't see one
+  that quietly became ten things. When a feature's acceptance criteria have at least doubled since
+  it was first written down, and grown by three or more, its row says so: *scope 2→7*. The count
+  comes from git history, so it needs no extra field and is never guessed: no history, no mark.
+
 - **`boss status` no longer stops with an error on a manifest that lacks its layer list.** If
   `.boss/manifest.json` had no `installedLayers`, `boss status` printed most of its page, then
   ended on *Cannot read properties of undefined (reading 'map')*; `boss unlock` failed the same
@@ -392,17 +450,6 @@ rule above still applies to the whole section once it is stamped.
   actually happened. Once a page says *Never holds: Card — a box in a box*, the opt-in
   `design-decisions-guard` passes that rule to the next write that opens both tags.
 
-- **Your brand doc starts at the canvas, and it can hold your story in one line.** Once Problem,
-  Promises and Story are written, `/canvas` offers the story in one line: your own words from those
-  cells laid into *this AND this, BUT the problem, THEREFORE what you do*, which you then say as one
-  sentence. It saves that as `story:` in `docs/BRAND.md`. If there's no brand doc yet, it seeds a
-  nascent one from People and Promises, so the brand starts with the venture, not with the first
-  landing page. The brand-doc skeleton gains *What they use instead today*; a pointer on each line
-  to what backs it (an `EVID`, a `DEC`, or `belief`); traits written *X, not Y* under *How it sounds*, with one
-  optional real *Example*; `## Origin, as it happened` (nothing in it a witness would dispute); and
-  `shape:` / `voice:` rows in the learned log that keep the *why* of each change. The playbook
-  doesn't render these yet.
-
 - **The brand-doc skeleton ships with Quickstart, so the skills that seed it can find it.** It used to
   live inside `/landing`, which only installs once a feature has shipped. So `/pretotype` and
   `/design-tokens-init` told you to seed the brand doc from a file that wasn't in your project.
@@ -418,18 +465,6 @@ rule above still applies to the whole section once it is stamped.
   it. Before this, the brand doc said its rows came from `/evidence`, and `/evidence` never wrote
   one.
 
-- **The playbook tells your story, inside the chapters you already have.** The cover carries your
-  story in one line under the tagline; Vision asks for it until you've written it (`/canvas`).
-  Vision quotes *why this, for you* in your own words from the capture log, says your motivation in
-  words rather than as a label, and marks *In a few years* as your aspiration. Evidence opens with
-  *How sure, over time*: your strongest grade by date, with decisions on the axis, and the line stops
-  at your last record. Learnings opens with *How it grew*: the idea, the first signal, the bet you
-  changed, what changed it, and the first commitment, each in its record's own words. A turn nothing
-  backs yet is a dashed card naming the verb that fills it. Brand now **quotes** *Words that
-  landed* (your ★ rows first, each with its credit, date and record), and shows your *Origin* and
-  *How it changed*. Your Vision, Evidence, Learnings and VC cut gain these blocks on the next `boss
-  playbook`.
-
 - **Your brand's voice samples and its record links show up in the playbook, and the new story
   blocks present well.** The real *Example* under *How it sounds* (a sentence you wrote
   that got a reaction) used to be collected and never shown; it now renders under the traits. A line in your brand's shape that ends
@@ -443,12 +478,6 @@ rule above still applies to the whole section once it is stamped.
   and the canvas tiles follow as *and how do you know*. **Story** joins VC cut, Internal and
   All in Present and Export PDF: the cover, why, the problem, how sure over time, how it grew,
   the words that landed and where it started, as a short deck to hand to someone.
-
-- **Small playbook polish, and the brand doc's status words are declared.** Chapter headlines
-  start with a capital even when the record's first sentence doesn't (the record stays as you wrote
-  it); the beats in *How it grew* are joined so they read as a sequence; a point on *How sure, over
-  time* jumps to its row in the ladder. `docs/IDS.md` now says what `docs/BRAND.md`'s status means:
-  `nascent` while it's mostly unknown, `active` once you say it holds. Only you flip it.
 
 - **`/landing` and `/pretotype` use your story and your customers' real words, with their
   permission.** Both now lift `story:` from `docs/BRAND.md` as written (a ready subhead), and
@@ -504,60 +533,83 @@ rule above still applies to the whole section once it is stamped.
   value and kept the comment, the playbook read the comment as part of the value, so a photo showed
   as *not found*. It doesn't now. A team photo can also be an `.svg` dropped beside the person.
 
+### Under the hood
+
+- **Small playbook polish, and the brand doc's status words are declared.** Chapter headlines
+  start with a capital even when the record's first sentence doesn't (the record stays as you wrote
+  it); the beats in *How it grew* are joined so they read as a sequence; a point on *How sure, over
+  time* jumps to its row in the ladder. `docs/IDS.md` now says what `docs/BRAND.md`'s status means:
+  `nascent` while it's mostly unknown, `active` once you say it holds. Only you flip it.
+
 ## 0.328.0 — 2026-09-25
 
-- **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
-  `boss craft agent-security` already said to read every tool and parameter description as untrusted
-  text. A server can also send free-text instructions that your AI tool may put in the model's system
-  prompt, above anything a tool description says, and the pass never named them. It does now.
-- **The guide's *I want to…* map reads right again.** In `boss help --html` every row showed its verbs
-  as locked skills, doubled and mislabelled (`//boss`, `/@mentor-founder`, `/boss status`) and "at
-  undefined", including the ones you already had. Now what you have shows as yours, terminal commands
-  show as always available, and the rest name the mode that brings them. Re-run `boss help --html`.
-- **`boss help mcp` says what MCP is.** In plain words: the standard way an AI tool connects to other
-  software, what a server is, and that a chat app's *connector* is the same thing (`boss help connectors`
-  lands there too). Then when it's worth wiring, and where to read more. (IDEA-131)
-- **You can find the MCP question from the guide.** `boss help --html` has a row for *hook my tools up to
-  the AI (MCP), and know whether it is time*, pointing at `boss craft mcp` from Quickstart on and at
-  `mentor-architect` from MVP. `boss craft` is now listed among the commands that work in every mode;
-  it always did. (IDEA-131)
-- **MCP now comes with a *when*, not only a *which*.** `boss craft mcp` shows what MCP is usually worth
-  at each mode: nothing to wire in Quickstart, your stack's servers in your own dev loop in MVP, a server
-  your app calls when a feature needs one in V1, exposing your product in Scale. It also gives the sign
-  that it's time at each stage. One question decides it everywhere: what would this server replace that you
-  already do by hand, more than once? `mentor-architect` asks it when the question is *when*. (IDEA-131)
+### What you'll notice
+
 - **`/ux-check` is now `/design-review after`.** One design review, before the code and after it.
   Point `/design-review` at a spec or a feature that isn't built yet and it reviews the plan; point it
   at a route, a component or a shipped feature and it walks what shipped, marking what it saw and what
   it only inferred, as `/ux-check` did. If it can't tell which you mean, it asks once, and `before` or
   `after` skips the question. Findings still go to `docs/design/ux-check-*.md`, so earlier reviews
   read as before. `boss sync` names the change. (IDEA-125)
+
 - **`/cost-review` is now `/ai-cost review`.** `/ai-cost` set the budget and `/cost-review` read the
   bill, so you had to know which half you were in. `/ai-cost` now reads where you are: with no budget
   it writes one and wires the logger; with a budget and calls in the ledger it reads them and writes
   the dated review, gross margin included. `/ai-cost review` asks for the review directly. Your
   budget and past reviews stay where they are. `boss sync` names the change, and the conscience's
   cost and margin nudges point at the new command. (IDEA-125)
-- **BOSS says "mode", not "rung", and "record", not "ledger".** `boss help`, `boss map` and
-  `boss sync` used words from BOSS's own workings where yours belong. The skill-writing practice now
-  holds the rule that caught them: a word you type is vocabulary, and a word only BOSS says gets
-  translated. A table lists both sides. (RVW-109)
+
 - **`boss hooks disable` no longer deletes a hook you changed.** It removed the file every time and
   then said `boss hooks enable` would bring it back, which was true for BOSS's copy and false for your
   edits, which were gone. Now a hook that differs from the one BOSS ships is turned off and left in
   place, and BOSS tells you so; `enable` turns it back on as you left it. An unchanged hook is removed
   as before. (RVW-109)
+
 - **What's waiting on someone lives on the record, and the board lists it.** Add
   `waiting_on: <who> — <the question>` to any idea or feature (a `(since <date>)` at the end is
   optional) and `boss board --blocked` shows it under *Waiting on <who>*, oldest first. The list is
   read from your records instead of kept by hand, so it can't go stale: BOSS's own hand-kept list was
   carrying two decisions as open that their records had closed 11 and 13 days earlier. `/close` now
   puts a question about one record on that record, and `docs/IDS.md` describes the field. (RVW-109)
+
+### Smaller improvements
+
+- **Before you connect an MCP server, read its `instructions` too.** The pre-install pass in
+  `boss craft agent-security` already said to read every tool and parameter description as untrusted
+  text. A server can also send free-text instructions that your AI tool may put in the model's system
+  prompt, above anything a tool description says, and the pass never named them. It does now.
+
+- **The guide's *I want to…* map reads right again.** In `boss help --html` every row showed its verbs
+  as locked skills, doubled and mislabelled (`//boss`, `/@mentor-founder`, `/boss status`) and "at
+  undefined", including the ones you already had. Now what you have shows as yours, terminal commands
+  show as always available, and the rest name the mode that brings them. Re-run `boss help --html`.
+
+- **`boss help mcp` says what MCP is.** In plain words: the standard way an AI tool connects to other
+  software, what a server is, and that a chat app's *connector* is the same thing (`boss help connectors`
+  lands there too). Then when it's worth wiring, and where to read more. (IDEA-131)
+
+- **You can find the MCP question from the guide.** `boss help --html` has a row for *hook my tools up to
+  the AI (MCP), and know whether it is time*, pointing at `boss craft mcp` from Quickstart on and at
+  `mentor-architect` from MVP. `boss craft` is now listed among the commands that work in every mode;
+  it always did. (IDEA-131)
+
+- **MCP now comes with a *when*, not only a *which*.** `boss craft mcp` shows what MCP is usually worth
+  at each mode: nothing to wire in Quickstart, your stack's servers in your own dev loop in MVP, a server
+  your app calls when a feature needs one in V1, exposing your product in Scale. It also gives the sign
+  that it's time at each stage. One question decides it everywhere: what would this server replace that you
+  already do by hand, more than once? `mentor-architect` asks it when the question is *when*. (IDEA-131)
+
+- **BOSS says "mode", not "rung", and "record", not "ledger".** `boss help`, `boss map` and
+  `boss sync` used words from BOSS's own workings where yours belong. The skill-writing practice now
+  holds the rule that caught them: a word you type is vocabulary, and a word only BOSS says gets
+  translated. A table lists both sides. (RVW-109)
+
 - **`/spec` keeps your own words.** It always asked you to walk through one real example, and
   called it the most useful question it asks, but it had nowhere to put the answer, so it was lost
   when the chat ended. The FEAT now quotes it, unedited, under the Goal. It's the line the coder and
   the reviewer check the criteria against: a criterion your example can't reach is BOSS widening your
   ask, and it moves to Assumptions or gets its own id. (RVW-109)
+
 - **The component guard finds a component by its job, not only its name.** When an agent wrote a new
   `Badge` and your index already had a `Tag` whose *What it's for* said "status badge", the guard
   listed five unrelated rows and left out the one it needed: it matched names only. It reads the job

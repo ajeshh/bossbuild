@@ -4,6 +4,7 @@ import {
 import { join, basename, resolve } from 'node:path';
 import { BOSS_ROOT, isBossRepo, resolveStageId } from './paths.js';
 import { listProjects } from './registry.js';
+import { addUnreleased } from './changelog.js';
 
 // TWO destinations, and the difference is not cosmetic.
 //
@@ -71,24 +72,10 @@ function resolveBossSource() {
 // move (DEC-019). This used to bump VERSION + package.json and insert a numbered section above the
 // first heading — which, once `## Unreleased` existed, put a version nobody stamped ABOVE it
 // (IDEA-121). The releaser stamps at publish; `boss learn` never picks a number.
-export function appendUnreleased(file, lines) {
-  const body = readFileSync(file, 'utf8');
-  const bullets = lines.map((l) => `- ${l}`).join('\n') + '\n';
-  const head = '\n## Unreleased\n';
-  const at = body.indexOf(head);
-  if (at < 0) {
-    // No Unreleased section yet: open one above the first version heading.
-    const first = body.indexOf('\n## ');
-    const section = `## Unreleased\n\n${bullets}\n`;
-    if (first < 0) return writeFileSync(file, body.trimEnd() + '\n\n' + section);
-    return writeFileSync(file, body.slice(0, first + 1) + section + body.slice(first + 1));
-  }
-  // Append at the end of the Unreleased section — just before the next heading.
-  const start = at + head.length;
-  const next = body.indexOf('\n## ', start);
-  const end = next < 0 ? body.length : next + 1;
-  const section = body.slice(start, end).trimEnd();
-  writeFileSync(file, body.slice(0, start) + (section ? section + '\n' : '\n') + bullets + '\n' + body.slice(end));
+export function appendUnreleased(file, lines, weight = 'improve') {
+  // A learned pattern is something every project inherits — a smaller improvement unless the
+  // writer says otherwise. `addUnreleased` puts it under that weight heading (IDEA-151).
+  writeFileSync(file, addUnreleased(readFileSync(file, 'utf8'), lines, weight));
 }
 
 // Route a proven pattern UP into the BOSS library + record it under `## Unreleased`.

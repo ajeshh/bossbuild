@@ -81,7 +81,7 @@ test('`boss learn` records under ## Unreleased and never picks a version', () =>
   writeFileSync(file, '# BOSS Changelog\n\n## 0.326.0 — 2026-09-14\n\n- old\n');
   appendUnreleased(file, ['z']);
   const out2 = readFileSync(file, 'utf8');
-  assert.ok(out2.indexOf('## Unreleased\n\n- z') >= 0 && out2.indexOf('## Unreleased') < out2.indexOf('## 0.326.0'), out2);
+  assert.ok(out2.indexOf("### Smaller improvements\n\n- z") >= 0 && out2.indexOf('## Unreleased') < out2.indexOf('## 0.326.0'), out2);
 });
 
 test('the shipped hooks load in a project whose package.json says "type": "commonjs"', () => {

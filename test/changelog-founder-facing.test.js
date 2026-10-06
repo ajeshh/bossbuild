@@ -64,8 +64,8 @@ test('a For-you line wins over the internal headline', () => {
 // two copies of a rule is how the rule drifts — which is the whole subject of this file.
 test('the website reads the shared extractor rather than its own copy', () => {
   const site = readFileSync(join(BOSS_ROOT, 'scripts', 'gen-site.js'), 'utf8');
-  assert.match(site, /import \{ forYou, parseEntries \} from '\.\.\/src\/changelog\.js'/,
-    'gen-site.js must import forYou AND parseEntries — the entry splitter was its own copy too, and mis-filed a titled heading as a date');
+  assert.match(site, /import \{[^}]*\bfounderFacing\b[^}]*\bparseEntries\b[^}]*\} from '\.\.\/src\/changelog\.js'/,
+    'gen-site.js must import founderFacing AND parseEntries — the entry splitter was its own copy too, and mis-filed a titled heading as a date');
   assert.equal(/split\(\/\^## \/m\)/.test(site), false, 'no private CHANGELOG splitter in gen-site.js');
   assert.equal(
     /For you:\\\*\\\*/.test(site), false,
@@ -83,7 +83,7 @@ test('an Unreleased section is invisible to parseEntries and to the site, until 
   assert.equal(unreleased(text).body.filter((l) => l.trim()).length, 1);
   const stamped = stampUnreleased(text, nextVersion('0.325.0'), '2026-09-13');
   assert.deepEqual(parseEntries(stamped).map((e) => [e.version, e.date]), [['0.326.0', '2026-09-13'], ['0.325.0', '2026-09-12']]);
-  assert.match(stamped, /^## Unreleased\n\n## 0\.326\.0 — 2026-09-13\n\n- \*\*A thing\.\*\*/m, 'a fresh empty Unreleased heading sits above the stamped entry');
+  assert.match(stamped, /^## Unreleased\n\n### What you'll notice\n\n### Smaller improvements\n\n### Under the hood\n\n## 0\.326\.0 — 2026-09-13\n\n- \*\*A thing\.\*\*/m, 'a fresh Unreleased, seeded with the weight headings, sits above the stamped entry');
   assert.equal(unreleasedHasContent(stamped), false, 'and nothing is pending after the stamp');
   assert.equal(stampUnreleased(stamped, '0.327.0', '2026-09-14'), null, 'stamping nothing is a no-op, not an empty version');
 });
@@ -91,4 +91,81 @@ test('an Unreleased section is invisible to parseEntries and to the site, until 
 test('a template comment under Unreleased is not content', () => {
   const text = '## Unreleased\n\n<!-- bullets land here -->\n\n## 0.1.0 — 2026-01-01\n';
   assert.equal(unreleasedHasContent(text), false);
+});
+
+// --- Weights (IDEA-151) — what a founder will notice, apart from the rest --------------------
+// The bug that reached a user: 0.329.0 shipped 22 bullets and no `For you:` line, and `boss whatsnew`
+// told a founder one release behind *"Internal release — nothing here changes what you do."* The
+// site's What's new stopped at 0.327.0 for the same reason. The weight now lives on each bullet.
+import { weighed, unweighed, addUnreleased, founderFacing, newsBetween, bulletParts } from '../src/changelog.js';
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { versionChange, versionChangeLine } from '../src/update.js';
+
+const W = "## Unreleased\n\n### What you'll notice\n\n- **Big.** You will see it\n  on two lines.\n\n### Smaller improvements\n\n- **Small.** Quiet.\n\n### Under the hood\n\n- **Plumbing.** None of yours.\n\n## 0.1.0 — 2026-01-01\n\n- old\n";
+
+test('bullets are read by the heading they sit under, wrapped lines and all', () => {
+  const w = weighed(unreleased(W).body);
+  assert.equal(w.sectioned, true);
+  assert.deepEqual(w.notice, ['**Big.** You will see it on two lines.']);
+  assert.deepEqual([w.improve.length, w.internal.length, w.loose.length], [1, 1, 0]);
+  assert.deepEqual(bulletParts(w.notice[0]), { lead: 'Big.', rest: 'You will see it on two lines.' });
+  assert.equal(weighed({ body: ['- **a** b'] }).sectioned, false, 'a release before the headings is not weighed');
+});
+
+test('the stamp refuses what has no weight, keeps what has one, and reseeds the headings', () => {
+  assert.deepEqual(unweighed('## Unreleased\n\n- **Loose.** x\n\n### Smaller improvements\n\n- y\n'), ['**Loose.** x']);
+  assert.deepEqual(unweighed(W), []);
+  const stamped = stampUnreleased(W.replace('- **Plumbing.** None of yours.\n\n', ''), '0.2.0', '2026-10-05');
+  const [e] = parseEntries(stamped);
+  assert.equal(e.version, '0.2.0');
+  assert.equal(/### Under the hood/.test(e.body.join('\n')), false, 'an empty weight heading is dropped from the stamped entry');
+  assert.match(stamped, /^## Unreleased\n\n### What you'll notice\n\n### Smaller improvements\n\n### Under the hood\n\n## 0\.2\.0/m);
+  assert.equal(unreleasedHasContent(stamped), false, 'three empty headings are not something to stamp');
+});
+
+test('addUnreleased writes under the named heading, opening it in order if missing', () => {
+  const out = addUnreleased(W, ['**New.** z'], 'notice');
+  assert.deepEqual(weighed(unreleased(out).body).notice.map((b) => bulletParts(b).lead), ['Big.', 'New.']);
+  const bare = addUnreleased('# C\n\n## 0.1.0 — 2026-01-01\n\n- old\n', ['z'], 'internal');
+  assert.deepEqual(weighed(unreleased(bare).body).internal, ['z']);
+  assert.ok(bare.indexOf('## Unreleased') < bare.indexOf('## 0.1.0'));
+  const missing = addUnreleased("## Unreleased\n\n### Under the hood\n\n- p\n\n## 0.1.0 — 2026-01-01\n", ['n'], 'notice');
+  assert.ok(missing.indexOf("### What you'll notice") < missing.indexOf('### Under the hood'), missing);
+});
+
+test('every bullet under Unreleased in the real CHANGELOG carries a weight', () => {
+  const loose = unweighed(readFileSync(join(BOSS_ROOT, 'registry', 'CHANGELOG.md'), 'utf8'));
+  assert.deepEqual(loose.map((b) => b.slice(0, 80)), [],
+    "put each under ### What you'll notice, ### Smaller improvements or ### Under the hood (the file's header says which)");
+});
+
+test('0.329.0 speaks to a founder again, and older releases keep their For-you line', () => {
+  const v329 = entries.find((e) => e.version === '0.329.0');
+  assert.ok(founderFacing(v329).length >= 3, '0.329.0 has notices');
+  const old = entries.find((e) => forYou(e).length && !weighed(e).sectioned);
+  assert.deepEqual(founderFacing(old), forYou(old));
+  const n = newsBetween('0.327.0', '0.329.0', readFileSync(join(BOSS_ROOT, 'registry', 'CHANGELOG.md'), 'utf8'));
+  assert.equal(n.releases, 2);
+  assert.ok(n.notice >= 5 && n.improve >= 10, JSON.stringify(n));
+});
+
+test('`boss whatsnew` one release behind leads with what you will notice', () => {
+  const r = spawnSync(process.execPath, [join(BOSS_ROOT, 'bin', 'boss'), 'whatsnew', '--since', '0.328.0'],
+    { cwd: tmpdir(), env: { ...process.env, NO_COLOR: '1', BOSS_HOME: mkdtempSync(join(tmpdir(), 'bh-')) }, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /What you'll notice/);
+  assert.doesNotMatch(r.stdout, /Internal release/);
+});
+
+test('the line after an update says it once, and a first run says nothing', () => {
+  const file = join(mkdtempSync(join(tmpdir(), 'seen-')), 'seen-version.json');
+  assert.equal(versionChange({ installed: '0.328.0', file }), null, 'first run: recorded, silent');
+  const change = versionChange({ installed: '0.329.0', file });
+  assert.deepEqual(change, { from: '0.328.0', to: '0.329.0' });
+  assert.equal(versionChange({ installed: '0.329.0', file }), null, 'once');
+  assert.equal(versionChange({ installed: '0.328.0', file }), null, 'a downgrade is silent');
+  const line = versionChangeLine(change, { releases: 1, notice: 5, improve: 16 });
+  assert.match(line, /0\.328\.0 → .*0\.329\.0.*5 things you'll notice, 16 smaller improvements.*boss whatsnew --since 0\.328\.0/);
 });

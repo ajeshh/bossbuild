@@ -20,7 +20,7 @@ import { loadModes, packageSkillMd, skillGloss, modeWord, STANDING_COMMANDS } fr
 // ONE implementation of "what did this release say to a founder", read by both surfaces. The CLI
 // had no copy of this at all until v0.256.0 and printed the raw entry instead; giving it one would
 // have made two, and two copies of a rule is how the rule drifts. See src/changelog.js.
-import { forYou, parseEntries } from '../src/changelog.js';
+import { founderFacing, weighed, bulletParts, parseEntries } from '../src/changelog.js';
 // The showcase (FEAT-039): demo/kettlewick/ rendered by the real renderers into site/demo/.
 import { generate as generateDemo } from './gen-demo.js';
 import { markSvg, faviconDataUri } from './mark.js';
@@ -342,6 +342,13 @@ ${rows}
 
 // "What's new", generated from registry/CHANGELOG.md — the same file `boss sync`
 // reads to tell a project what changed since its pin. One source, two audiences.
+// A bullet's bold lead-in is rendered on its own: `md` can't nest italics inside bold, and a
+// lead-in like **The canvas's *Experiment this week* line…** came out as stray asterisks.
+const releasePara = (t) => {
+  const { lead, rest } = bulletParts(t);
+  return lead ? `<p><strong>${md(lead)}</strong> ${md(rest)}</p>` : `<p>${md(t)}</p>`;
+};
+
 blocks.WHATS_NEW = () => {
   const cl = join(ROOT, 'registry', 'CHANGELOG.md');
   if (!existsSync(cl)) return '<p class="small">Changelog unavailable at build time.</p>';
@@ -352,15 +359,15 @@ blocks.WHATS_NEW = () => {
   // date column).
   const out = [];
   for (const entry of parseEntries(readFileSync(cl, 'utf8'))) {
-    // OPT-IN: a release reaches the public feed only if it carries a "For you:" line. Most
-    // releases are internal — audits, refactors, doc sweeps — and a feed that lists those is a
-    // commit log, not a reason for anyone to care. The block is multi-line and there can be more
-    // than one; `forYou` reads all of them.
-    const forYouLines = forYou(entry);
-    if (!forYouLines.length) continue;
+    // A release reaches the public feed only if it says something to a founder: its *What you'll
+    // notice* bullets, or (before the weight headings, IDEA-151) its "For you:" line. A feed that
+    // lists audits and refactors is a commit log, not a reason for anyone to care.
+    const lines = founderFacing(entry);
+    if (!lines.length) continue;
+    const smaller = weighed(entry).improve.length;
     out.push(`      <li id="v${esc(entry.version).replace(/\./g, '-')}">
         <div class="rel"><span class="ver">v${esc(entry.version)}</span><span class="when">${esc(entry.date || entry.title || '')}</span></div>
-        ${forYouLines.map((t) => `<p>${md(t)}</p>`).join('\n        ')}
+        ${lines.map(releasePara).join('\n        ')}${smaller ? `\n        <p class="small">And ${smaller} smaller improvement${smaller === 1 ? '' : 's'}: <code>boss whatsnew</code> lists them.</p>` : ''}
       </li>`);
     if (out.length >= 12) break;
   }
@@ -1307,15 +1314,14 @@ writeFileSync(join(SITE, 'sitemap.xml'),
 const indexNowKey = readFileSync(join(SRC, 'indexnow.key'), 'utf8').trim();
 writeFileSync(join(SITE, `${indexNowKey}.txt`), indexNowKey);
 
-// feed.xml: the same entries What's new shows (releases with a "For you:" line), as Atom. A feed
+// feed.xml: the same entries What's new shows (releases that say something to a founder), as Atom. A feed
 // is a subscription nobody has to remember to check, and a crawl path a reader polls for us.
 {
   const cl = join(ROOT, 'registry', 'CHANGELOG.md');
   const items = [];
   if (existsSync(cl)) {
     for (const entry of parseEntries(readFileSync(cl, 'utf8'))) {
-      const lines = forYou(entry);
-      if (!lines.length) continue;
+      if (!founderFacing(entry).length) continue;
       items.push(entry);
       if (items.length >= 20) break;
     }
@@ -1332,7 +1338,7 @@ writeFileSync(join(SITE, `${indexNowKey}.txt`), indexNowKey);
     + `  <id>${SITE_URL}/</id>\n`
     + `  <updated>${updated}</updated>\n`
     + `  <author><name>Ajesh Shah</name></author>\n`
-    + items.map((e) => `  <entry>\n    <title>v${esc(e.version)}</title>\n    <link href="${SITE_URL}/whats-new#v${esc(e.version).replace(/\./g, '-')}" />\n    <id>${SITE_URL}/whats-new#v${esc(e.version).replace(/\./g, '-')}</id>\n    <updated>${iso(e.date)}</updated>\n    <content type="html">${esc(forYou(e).map((t) => `<p>${md(t)}</p>`).join(''))}</content>\n  </entry>`).join('\n')
+    + items.map((e) => `  <entry>\n    <title>v${esc(e.version)}</title>\n    <link href="${SITE_URL}/whats-new#v${esc(e.version).replace(/\./g, '-')}" />\n    <id>${SITE_URL}/whats-new#v${esc(e.version).replace(/\./g, '-')}</id>\n    <updated>${iso(e.date)}</updated>\n    <content type="html">${esc(founderFacing(e).map(releasePara).join(''))}</content>\n  </entry>`).join('\n')
     + '\n</feed>\n');
 }
 

@@ -48,10 +48,94 @@ export function unreleased(text) {
   return { present: true, body };
 }
 
-/** Is there anything to stamp? Bullets or prose, not blank lines or the template comment. */
+/** Is there anything to stamp? Bullets or prose, not blank lines, the template comment or the weight headings. */
 export function unreleasedHasContent(text) {
-  return unreleased(text).body.some((l) => l.trim() && !/^<!--/.test(l.trim()));
+  return unreleased(text).body.some((l) => l.trim() && !/^<!--/.test(l.trim()) && !weightOf(l));
 }
+
+// --- Weights: what a founder will notice, apart from the rest (IDEA-151) -----------------------
+// Until DEC-019 a release was one capability, and one `> **For you:**` line per release could carry
+// its founder half. Since then a release is a bundle of 20–60 bullets, the per-release line stopped
+// being written (0.327.0: one; 0.328.0 and 0.329.0: none), and the readers took that silence as a
+// verdict: a founder one release behind ran `boss whatsnew` on 0.329.0, which changed the playbook,
+// the canvas, the conscience and `boss status`, and was told *"Internal release — nothing here
+// changes what you do."* The site's What's new stopped at 0.327.0. So the weight moved to where the
+// unit now is, the bullet: every bullet sits under one of three headings, chosen by whoever writes
+// it — the one person who knows. Readable on GitHub with no parser; the parser just groups.
+export const WEIGHTS = [
+  { key: 'notice', heading: "What you'll notice", re: /^###\s+what you.?ll notice\b/i },
+  { key: 'improve', heading: 'Smaller improvements', re: /^###\s+smaller improvements\b/i },
+  { key: 'internal', heading: 'Under the hood', re: /^###\s+under the hood\b/i },
+];
+const weightOf = (line) => WEIGHTS.find((w) => w.re.test(line))?.key || null;
+
+// A top-level bullet runs until the next unindented non-blank line, so its wrapped continuation and
+// nested sub-bullets stay inside it, and a bold lead-in paragraph (the pre-DEC-019 shape) ends it.
+function bulletsIn(lines) {
+  const out = [];
+  let cur = null;
+  for (const l of lines) {
+    if (/^-\s/.test(l)) { cur = [l.replace(/^-\s+/, '')]; out.push(cur); } else if (cur && (!l.trim() || /^\s/.test(l))) cur.push(l);
+    else cur = null;
+  }
+  return out.map((b) => b.map((l) => l.trim()).filter(Boolean).join(' '));
+}
+
+/**
+ * An entry's bullets by weight. `sectioned` is false for a release written before the headings
+ * existed; those keep the For-you reading. `loose` holds bullets under no weight heading.
+ */
+export function weighed(entry) {
+  const lines = Array.isArray(entry) ? entry : Array.isArray(entry?.body) ? entry.body : String(entry || '').split(/\r?\n/);
+  const out = { sectioned: false, notice: [], improve: [], internal: [], loose: [] };
+  let at = 'loose';
+  let chunk = [];
+  const flush = () => { out[at].push(...bulletsIn(chunk)); chunk = []; };
+  for (const l of lines) {
+    if (/^###\s/.test(l)) {
+      flush();
+      const w = weightOf(l);
+      if (w) out.sectioned = true;
+      at = w || 'loose';
+    } else chunk.push(l);
+  }
+  flush();
+  return out;
+}
+
+/** The bullets under `## Unreleased` that carry no weight — what the stamp refuses to publish. */
+export function unweighed(text) {
+  return weighed(unreleased(text).body).loose;
+}
+
+/** "**Lead.** Rest of it" → { lead: 'Lead.', rest: 'Rest of it' }. A bullet without a bold lead is all rest. */
+export function bulletParts(b) {
+  const m = String(b).match(/^\*\*([\s\S]+?)\*\*\s*([\s\S]*)$/);
+  return m ? { lead: m[1].trim(), rest: m[2].trim() } : { lead: '', rest: String(b).trim() };
+}
+
+/**
+ * What a release says to a founder, as markdown paragraphs: its *What you'll notice* bullets when
+ * it is weighed, its For-you lines when it predates the headings. Empty = nothing for a founder.
+ * The site, the feed and `boss whatsnew` all read this, so the rule exists once.
+ */
+export function founderFacing(entry) {
+  const w = weighed(entry);
+  return w.sectioned ? w.notice : forYou(entry);
+}
+
+/** What landed after `from`, up to and including `to`: counts a one-line notice can carry. */
+export function newsBetween(from, to, text = existsSync(CHANGELOG) ? readFileSync(CHANGELOG, 'utf8') : '') {
+  const span = parseEntries(text).filter((e) => cmpVersion(e.version, from) > 0 && cmpVersion(e.version, to) <= 0);
+  const count = (k) => span.reduce((n, e) => n + weighed(e)[k].length, 0);
+  return {
+    releases: span.length,
+    notice: span.reduce((n, e) => n + founderFacing(e).length, 0),
+    improve: count('improve') + count('loose'),
+  };
+}
+
+const SEED = WEIGHTS.flatMap((w) => [`### ${w.heading}`, '']);
 
 /** The next minor version after `current` (BOSS releases are 0.N.0). */
 export function nextVersion(current) {
@@ -67,7 +151,57 @@ export function stampUnreleased(text, version, date) {
   if (!unreleasedHasContent(text)) return null;
   const lines = text.split(/\r?\n/);
   const i = lines.findIndex((l) => /^##\s+Unreleased\s*$/i.test(l));
-  lines.splice(i, 1, '## Unreleased', '', `## ${version} — ${date}`);
+  let end = i + 1;
+  while (end < lines.length && !/^##\s/.test(lines[end])) end++;
+  // A weight heading with nothing under it is dropped from the stamped entry, and the fresh
+  // Unreleased gets all three back, so the next writer sees where a bullet goes.
+  const body = lines.slice(i + 1, end);
+  const kept = [];
+  for (let j = 0; j < body.length; j++) {
+    if (weightOf(body[j])) {
+      let k = j + 1;
+      while (k < body.length && !/^###?\s/.test(body[k]) && !body[k].trim()) k++;
+      if (k >= body.length || /^###?\s/.test(body[k])) { j = k - 1; continue; }
+    }
+    kept.push(body[j]);
+  }
+  lines.splice(i, end - i, '## Unreleased', '', ...SEED, `## ${version} — ${date}`, ...kept);
+  return lines.join('\n');
+}
+
+/**
+ * Add bullets under `## Unreleased`, beneath the weight heading named (opened if missing). Pure.
+ * One writer for the CLI's own appends (`boss learn`), so none of them lands a bullet with no weight.
+ */
+export function addUnreleased(text, bullets, weight = 'improve') {
+  const w = WEIGHTS.find((x) => x.key === weight) || WEIGHTS[1];
+  const add = bullets.map((b) => `- ${b}`);
+  let lines = text.split(/\r?\n/);
+  let i = lines.findIndex((l) => /^##\s+Unreleased\s*$/i.test(l));
+  if (i < 0) {
+    const first = lines.findIndex((l) => /^##\s/.test(l));
+    const at = first < 0 ? lines.length : first;
+    lines.splice(at, 0, '## Unreleased', '', ...SEED);
+    i = at;
+  }
+  let end = i + 1;
+  while (end < lines.length && !/^##\s/.test(lines[end])) end++;
+  let h = lines.slice(i + 1, end).findIndex((l) => w.re.test(l));
+  if (h < 0) {
+    // Open it in its canonical order: before the first weight heading that follows it.
+    const after = WEIGHTS.slice(WEIGHTS.indexOf(w) + 1);
+    let at = lines.slice(i + 1, end).findIndex((l) => after.some((x) => x.re.test(l)));
+    at = at < 0 ? end : i + 1 + at;
+    lines.splice(at, 0, `### ${w.heading}`, '');
+    end += 2;
+    h = at - (i + 1);
+  }
+  // The end of that heading's section: the next heading of any depth.
+  let s = i + 1 + h + 1;
+  while (s < end && !/^###?\s/.test(lines[s])) s++;
+  let last = s;
+  while (last > i + 1 + h + 1 && !lines[last - 1].trim()) last--;
+  lines = [...lines.slice(0, last), '', ...add, '', ...lines.slice(s)];
   return lines.join('\n');
 }
 
@@ -152,6 +286,51 @@ const truncate = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 // it is true that a record exists, and provenance is worth reading even when the door is shut.
 const plainCitations = (line) => line.replace(/\[\[([A-Z]{3,4}-\d+)\]\]/g, '$1');
 
+// Markdown as a terminal reads it: bold and italic markers dropped, backticks kept (they are commands).
+const plain = (t) => plainCitations(String(t)).replace(/\*\*([^*]+)\*\*/g, '$1').replace(/(^|[\s(])\*([^*\s][^*]*?)\*(?=[\s.,;:)!?]|$)/g, '$1$2');
+
+function reflow(text, width = 76, indent = '      ') {
+  const out = [];
+  let line = '';
+  for (const w of text.split(/\s+/).filter(Boolean)) {
+    if (line && line.length + 1 + w.length > width) { out.push(indent + line); line = w; } else line = line ? `${line} ${w}` : w;
+  }
+  if (line) out.push(indent + line);
+  return out.join('\n');
+}
+
+// The weighed reading. Notices print in full while there are few enough to read; past six, each is
+// its lead-in, and `--full` has the rest. Newest release first, as everywhere else in this file.
+export function printWeighed(entries, all = false) {
+  const tag = (e) => (entries.length > 1 ? dim(`  ${e.version}`) : '');
+  const pick = (k) => entries.flatMap((e) => weighed(e)[k].concat(k === 'improve' ? weighed(e).loose : []).map((b) => ({ e, ...bulletParts(b) })));
+  const notice = pick('notice');
+  const improve = pick('improve');
+  const internal = pick('internal');
+  const span = entries.length > 1 ? `${entries[entries.length - 1].version} → ${entries[0].version}` : entries[0].version;
+  console.log(`  ${dim(span)}\n`);
+  if (notice.length) {
+    console.log(`  ${bold("What you'll notice")}\n`);
+    const inFull = all || notice.length <= 6;
+    for (const n of notice) {
+      console.log(`  ${ok('✦')} ${bold(plain(n.lead || truncate(n.rest, 70)))}${tag(n.e)}`);
+      if (inFull && n.lead && n.rest) console.log(reflow(plain(n.rest), 74, '    '));
+      if (inFull) console.log('');
+    }
+    if (!inFull) console.log('');
+  } else {
+    console.log(`  ${dim('Nothing here changes how you work.')}\n`);
+  }
+  if (improve.length) {
+    console.log(`  ${bold('Smaller improvements')}`);
+    const list = all ? improve : improve.slice(0, 12);
+    for (const i of list) console.log(`  · ${truncate(plain(i.lead || i.rest), 72)}${tag(i.e)}`);
+    if (improve.length > list.length) console.log(`  ${dim(`… +${improve.length - list.length} more`)}`);
+    console.log('');
+  }
+  if (internal.length) console.log(`  ${dim(`Under the hood: ${internal.length} change${internal.length === 1 ? '' : 's'} — --full for them.`)}\n`);
+}
+
 export function printChangelog({ since, all = false, full = false, pin = null } = {}) {
   if (!existsSync(CHANGELOG)) {
     console.log(`\n  ${err('✗')} no changelog in this BOSS install (${CHANGELOG}).\n`);
@@ -192,25 +371,36 @@ export function printChangelog({ since, all = false, full = false, pin = null } 
       for (const line of e.body) console.log(line ? `  ${plainCitations(line)}` : '');
       console.log('');
     }
-  } else if (shown.length === 1) {
-    // One entry still earns more than a truncated row — but it earns the FOUNDER-FACING half.
-    const [e] = shown;
-    console.log(`  ${bold(e.version)}${e.date ? dim(`  — ${e.date}`) : ''}\n`);
-    const lines = forYou(e);
-    if (lines.length) for (const l of lines) console.log(`  ${plainCitations(l)}\n`);
-    else console.log(`  ${dim('Internal release — nothing here changes what you do.')}\n`);
-    console.log(`  ${dim('--full for the engineering detail')}`);
   } else {
-    const list = shown.slice(0, all ? shown.length : 25);
-    for (const e of list) {
-      // Prefer what the release said TO A FOUNDER; fall back to the first finding only when the
-      // release never spoke to one. Truncating an internal bullet was never the right summary.
-      const h = forYou(e)[0] || e.title || headline(e);
-      console.log(`  ${bold(e.version.padEnd(9))}${dim((e.date || '').padEnd(12))}${h ? truncate(plainCitations(h), 62) : ''}`);
+    // Releases written with weight headings are read by weight, across every release shown: what a
+    // founder will notice in full, smaller improvements one line each, the rest as a count. A release
+    // from before the headings keeps the old reading below — its For-you line, or its headline.
+    const weighedOnes = shown.filter((e) => weighed(e).sectioned);
+    const legacy = shown.filter((e) => !weighed(e).sectioned);
+    if (weighedOnes.length) printWeighed(weighedOnes, all);
+    if (legacy.length === 1 && !weighedOnes.length) {
+      // One entry still earns more than a truncated row — but it earns the FOUNDER-FACING half.
+      const [e] = legacy;
+      console.log(`  ${bold(e.version)}${e.date ? dim(`  — ${e.date}`) : ''}\n`);
+      const lines = forYou(e);
+      if (lines.length) for (const l of lines) console.log(`  ${plainCitations(l)}\n`);
+      else console.log(`  ${dim('Internal release — nothing here changes what you do.')}\n`);
+      console.log(`  ${dim('--full for the engineering detail')}`);
+    } else if (legacy.length) {
+      if (weighedOnes.length) console.log(`  ${bold('Earlier releases')}`);
+      const list = legacy.slice(0, all ? legacy.length : 25);
+      for (const e of list) {
+        // Prefer what the release said TO A FOUNDER; fall back to the first finding only when the
+        // release never spoke to one. Truncating an internal bullet was never the right summary.
+        const h = forYou(e)[0] || e.title || headline(e);
+        console.log(`  ${bold(e.version.padEnd(9))}${dim((e.date || '').padEnd(12))}${h ? truncate(plainCitations(h), 62) : ''}`);
+      }
+      if (legacy.length > list.length) console.log(`  ${dim(`… +${legacy.length - list.length} older`)}`);
+      console.log('');
+      console.log(`  ${dim('--full for the entries in detail · --all for the whole history')}`);
+    } else {
+      console.log(`  ${dim('--full for the entries in detail')}`);
     }
-    if (shown.length > list.length) console.log(`  ${dim(`… +${shown.length - list.length} older`)}`);
-    console.log('');
-    console.log(`  ${dim('--full for the entries in detail · --all for the whole history')}`);
   }
 
   if (floor && shown.length) {
