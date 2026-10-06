@@ -190,7 +190,7 @@ Mocked on a scratch copy of Kettlewick (Cover: 5 features, 2 met by EVID-003; On
 - Open: show the program's decisions here, or only on `boss board PROG-NNN`? Lean: board only — the
   playbook is shared outward, decisions are internal.
 
-## S10 · The board, by program — swimlanes, mocked 2026-10-05 (Ajesh: *"how to show the kanban of programs for the board"*)
+## S10 · The board, by program — swimlanes, mocked 2026-10-05, built the same day (Ajesh: *"how to show the kanban of programs for the board"*)
 
 Mocked on BOSS's own board (scratch copy, nothing tracked): **one row per program across the same four
 columns**. In-flight cards as small cards; Shipped as a count and one square per record (112 shipped
@@ -231,6 +231,11 @@ always** — it is the ground truth and what a cold reader expects; By program i
 The rail becomes two levels: **By stage** (the four columns) and **By program** (each program, in-flight
 first, linking to its lane), then *Shipped, by month* and *Parked*. Build order: the board (switch,
 lanes, rail) → the playbook block (S9) → the `/close` line.
+
+**Built 2026-10-05 (the board):** a *By stage | By program* switch driven by the URL anchor (`#by-program`,
+or any lane), no script; By stage stays the page the board opens on. Lanes replaced the per-program bar
+strip. The rail has two levels once a program exists, and is unchanged when none does. Phones stack each
+lane with column labels. Open: the playbook block (S9), the `/close` line.
 
 ## Candidates — compose, no new skill
 

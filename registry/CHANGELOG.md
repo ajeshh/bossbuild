@@ -39,7 +39,10 @@ rule above still applies to the whole section once it is stamped.
   program's file, not on the board. A program's shared rules now reach the work: `/spec` carries an
   idea's program onto its feature and points the build at the program's rules, the build agent reads
   them before writing code, `boss status` names the program you're building in, `/decide` can say
-  which program a decision governs, and `boss board --json` carries every card's program.
+  which program a decision governs, and `boss board --json` carries every card's program. Once a
+  program exists, the HTML board gets a **By stage | By program** switch: By program shows one row per
+  program across the same four columns, the ones with work in flight first, so you can see which
+  effort the open work is in and which has stalled. By stage is still where it opens.
 
 - **Several chat windows, one project, nobody's work mixed up.** Each window is its own session and
   can't see what another is building, so any of them could commit a change that was another's.
