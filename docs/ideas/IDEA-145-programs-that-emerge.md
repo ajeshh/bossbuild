@@ -210,6 +210,28 @@ programs with nothing in flight folded into one line.
 - **Phones:** five columns won't fit 390px — each row stacks to the program name and its cards with a
   column label on each.
 
+## S11 · The hierarchy, and when each view leads (2026-10-05, Ajesh: *"when to show the normal board in hierarchy which comprises of everything vs program"*)
+
+```
+Venture        the playbook — what this is, for whom
+  Programs     board · By program — where the work sits, per effort
+    Cards      board · By stage — everything, captured → shipped
+      Tasks    inside a card or a program file — never on the board
+```
+
+The two board views are the same cards grouped two ways, not rivals. **By stage stays the default,
+always** — it is the ground truth and what a cold reader expects; By program is a lens.
+
+| Project state | Board |
+|---|---|
+| no programs | By stage only — no switch, the word *program* never appears |
+| programs exist, in-flight work in 0–1 of them | By stage; the switch and a **Programs** rail group appear |
+| in-flight work spread over 3+ programs | By stage; `/close` says once *"work is spread over N programs — By program shows where"* |
+
+The rail becomes two levels: **By stage** (the four columns) and **By program** (each program, in-flight
+first, linking to its lane), then *Shipped, by month* and *Parked*. Build order: the board (switch,
+lanes, rail) → the playbook block (S9) → the `/close` line.
+
 ## Candidates — compose, no new skill
 
 - **`/idea` asks once at capture:** *"This reads like part of PROG-001 (the website). Add it there as a
