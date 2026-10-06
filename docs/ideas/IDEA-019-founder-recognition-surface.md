@@ -5,7 +5,7 @@ kind: capability
 owner: product-lead
 status: deferred (trigger-gated)
 gist: Founder-facing personas doing triple duty — self-ID wayfinding, reusable marketing, and a self-understanding mirror. Not the same thing as target-user personas (IDEA-031); this one is about recognising the founder.
-program: public-surface
+program: PROG-001
 proof: site/for-founders.html
 created: 2026-06-02
 ---

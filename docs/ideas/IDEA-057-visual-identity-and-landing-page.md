@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: shipped (identity + `gen-site.js` + the site, serving at oyeboss.build)
-program: public-surface
+program: PROG-001
 proof: docs/design/BRAND.md
 proof_note: The site is built (`site/`); what is missing is a bought domain to serve it from. Not a build task.
 created: 2026-08-18

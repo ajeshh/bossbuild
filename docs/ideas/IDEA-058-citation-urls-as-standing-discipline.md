@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: shipped (v0.194.0 — 17 of 18 verified and filled; 1 deliberately null)
-program: public-surface
+program: PROG-001
 proof: library/sources.json
 proof_note: Completed on its CONDITION, not a file. Citation debt went 18 of 20 → 1 of 20 in v0.194.0: every URL was fetched and read before it was written down, never recalled. The last one is a DECISION, not debt — Karpathy's verifiability line resolves only to secondary write-ups, so it stays `url: null` with the search recorded in `url_note`. Zero would have required inventing a plausible link, which is the exact failure /vet step 3 exists to catch.
 created: 2026-08-20

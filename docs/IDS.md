@@ -11,6 +11,7 @@ status: active
 |---|---|---|
 | `IDEA-NNN` | An idea — of two kinds, named by `kind:` (see below): the **venture** idea a founder walked in with, or a **capability** idea ("add X") | `docs/ideas/` |
 | `FEAT-NNN` | An idea that earned a **build contract** — named slices, or a build spanning more than one release | `docs/ideas/` |
+| `PROG-NNN` | A program — an umbrella graduated from a `program:` slug once it holds reasoning no single member does (see below) | `docs/programs/` |
 | `DEC-NNN` | A load-bearing / hard-to-reverse decision record (ADR-lite; `status: decided \| superseded`, supersede-don't-edit) | `docs/decisions/` |
 | `PRAC-NNN` | A shared craft learning — a better way to build with AI (`status: active \| stale \| retired`, staleness-aware via `review_by:`) | `docs/practices/` |
 | `EVID-NNN` | A single piece of evidence bearing on a canvas assumption — one signal per file, graded on a fixed 3-rung ladder (`stated-pain` → `observed-behavior` → `commitment`) | `docs/evidence/` |
@@ -221,6 +222,8 @@ program: PROG-001
 ```
 
 **The field never changes shape; only its value does.** Nothing migrates, no member is rewritten.
+First in this repo: [PROG-001](programs/PROG-001-the-website.md), the website (2026-10-05), graduated
+from `public-surface` when its upkeep kept turning into a new IDEA per pass.
 
 **The trigger is not a member count.** *"Three or more records"* is arbitrary ceremony, and ceremony
 you don't need is what makes people stop keeping records at all. It is the seam test from

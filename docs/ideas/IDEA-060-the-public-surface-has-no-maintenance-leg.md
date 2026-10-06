@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: shipped (build order 1-5 done; 6 superseded v0.182.0; 7 gated on a real demand page)
-program: public-surface
+program: PROG-001
 proof: scripts/check-site.js
 proof_note: Items 1-5 shipped, item 6 superseded by `check:site` itself, item 7 trigger-gated. `og:image` closed in v0.194.0 once the domain was registered. What is left is the stage-boundary decision — the demand test still sits behind the build unlock.
 findings: docs/dossier/website-refactor-pass-001.md (2026-08-22) — audit ahead of the site refactor: the 62/38 self-description ratio, the freshness gauge amber at 10/15 permanently, one broken counted claim (charter.html "37-pattern" vs 89) that no generated placeholder covers, and team.html carrying pre-v0.216.0 --humane copy.

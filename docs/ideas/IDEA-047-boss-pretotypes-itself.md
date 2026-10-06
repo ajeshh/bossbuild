@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: deferred (re-aimed keyless 2026-09-13 — the fake door, no model, no key. Re-open when a source of strangers exists — the plugin listed in claude-community, or Phase 3 outreach live — AND installs stay flat; a door with no traffic measures nothing)
-program: public-surface
+program: PROG-001
 proof: pretotype/index.html
 proof_note: Built and still unreachable, but no longer WRONG. v0.194.0 found its single call to action reading `npx bossbuild` — a package that no longer exists — because check:site only ever scanned web/ and this public page lives outside it. Fixed, and the scan now covers it. Both original blockers are gone (oyeboss is published; the domain was registered 2026-08-20); what remains is the deploy itself, which is not a build task.
 created: 2026-07-02

@@ -21,7 +21,7 @@ source: Ajesh, 2026-08-20 — "should we have better names for the agents and me
   "i like the designer combining, also i think we should bring designer into mvp, and not keep it at
   v1? im also thinking what if the db-architect is elevated into just one architect? its kinda like a
   cto role, and maybe the mentor and role for architect can be combined? not sure."
-program: public-surface
+program: PROG-001
 ---
 
 # IDEA-064 — The roster has a count problem wearing a naming problem's clothes

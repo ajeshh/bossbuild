@@ -3,7 +3,8 @@ id: IDEA-143
 type: idea
 kind: capability
 owner: Ajesh
-status: building (Ajesh lifted the freeze for this pass 2026-10-05: "lets make them"; home reorder shipped `5ff59d8`)
+status: shipped (the first overview pass, 2026-10-05 — `5ff59d8` home, `6ee90f0` demo; folded into PROG-001 the same day: website upkeep is a program's standing work, not an idea)
+program: PROG-001
 proof: none
 proof_note: a backlog for the next website pass, not a build. Nothing on the site changes while it is frozen (CLAUDE.md, 2026-09-23); its proof is the pass itself, recorded when it runs.
 gist: The website backlog. When the site freeze lifts, assess the overall overview first, as one read of the whole site, before adding anything. Items wait here as maybes until that pass, starting with how the ecosystem shows up without a page about it.
@@ -12,6 +13,10 @@ relates: IDEA-137, IDEA-138, IDEA-060, IDEA-110
 ---
 
 # The website pass after the freeze — assess the overview first
+
+> **Folded into [PROG-001](../programs/PROG-001-the-website.md) (2026-10-05).** How the site is run, the
+> rules, and every open item below now live there; this record keeps the first pass's history.
+> Ajesh: *"the website pass was more of a chore not an idea."*
 
 ## Current shape
 _The best articulation so far. Rewrite this as the idea sharpens._

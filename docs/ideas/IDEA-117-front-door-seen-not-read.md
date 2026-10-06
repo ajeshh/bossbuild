@@ -7,7 +7,7 @@ status: shipped (pass one, 2026-09-14, under Unreleased — items 1–10; pass t
 proof: scripts/gen-proof.js
 gist: The front door (oyeboss.build) is 4,231 words in one visual grammar, with the mark at 40px and the generated pages behind a text link. Make it seen rather than read — four pictures, two clicks — and make it findable where its audience actually looks (the Claude Code ecosystem, AI answers, distribution), with the click counted so the change can be graded.
 created: 2026-09-14
-program: distribution
+program: PROG-001
 relates: IDEA-047, IDEA-057, IDEA-106, IDEA-115, IDEA-116, DEC-020, DEC-021
 ---
 
