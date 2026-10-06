@@ -3,7 +3,7 @@ id: IDEA-136
 type: idea
 kind: capability
 owner: mentor-architect
-program: ecosystem-of-ecosystems
+program: PROG-002
 status: shipped (B and A built 2026-10-04, Unreleased; left: A13 the V1 drift reader, F11 deferred; the engineering space paused 2026-10-05)
 shipped_on: 2026-10-04
 proof: docs/ENGINEERING.md
