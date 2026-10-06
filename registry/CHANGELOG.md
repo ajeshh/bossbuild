@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A feature that changes what a shipped one promised now says so, at both ends.** When you spec a change to
+  something already shipped, `/spec` adds `amends:` to the new feature and `amended_by:` to the old one, and
+  `boss records` checks the pair. Anyone reading the shipped feature can see its promise moved, without reading
+  every later one. A feature big enough to have slices now names them, and the build agent does one slice per
+  run, checking and ticking each before starting the next.
+
 - **The coder reproduces a bug before it fixes one.** It now says what it ran and what it saw before
   changing anything, and stops to tell you when the bug won't reproduce. When a fix doesn't make the
   problem go away, it says what it got wrong about the cause instead of piling a second change on top.

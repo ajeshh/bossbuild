@@ -418,3 +418,30 @@ test('`from: none` needs no reciprocal — a feature can come straight from a co
   ]);
   assert.deepEqual(kinds(d).filter((k) => k === 'unlinked-promotion'), []);
 });
+
+// --- an amendment: a later FEAT that changes what a shipped one promised (RVW-145) --------------
+// Without a link, someone reading the shipped FEAT can't see that its promise changed; the only way to
+// know what the system does would be to read every FEAT. `amends:` / `amended_by:` hold the same
+// two-ends rule as a split.
+test('an amendment is legible from both ends', () => {
+  const d = project([
+    ['FEAT-001-a.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none'],
+    ['FEAT-002-b.md', 'id: FEAT-002\nstatus: building\nfrom: none\nproof: none\namends: FEAT-001 (exports become CSV only)'],
+  ]);
+  assert.ok(kinds(d).includes('broken-amend'), 'FEAT-001 does not say amended_by');
+  rmSync(d, { recursive: true, force: true });
+
+  const ok = project([
+    ['FEAT-001-a.md', 'id: FEAT-001\nstatus: shipped\nfrom: none\nproof: none\namended_by: FEAT-002'],
+    ['FEAT-002-b.md', 'id: FEAT-002\nstatus: building\nfrom: none\nproof: none\namends: FEAT-001 (exports become CSV only)'],
+  ]);
+  assert.deepEqual(kinds(ok).filter((k) => k === 'broken-amend'), []);
+  rmSync(ok, { recursive: true, force: true });
+});
+
+test('an amendment pointing at a record that does not exist is caught', () => {
+  const d = project([
+    ['FEAT-002-b.md', 'id: FEAT-002\nstatus: building\nfrom: none\nproof: none\namends: FEAT-404'],
+  ]);
+  assert.ok(recordDrift(d).some((f) => f.kind === 'broken-amend' && /no such record/.test(f.what)));
+});

@@ -155,6 +155,8 @@ function readRecords(projectDir) {
           outcome: field(text, 'outcome'),
           spunTo: splitLinks(field(text, 'spun_to')),
           spunFrom: splitLinks(field(text, 'spun_from')),
+          amends: splitLinks(field(text, 'amends')),
+          amendedBy: splitLinks(field(text, 'amended_by')),
           aliases: ALIASES.map(([dead, live, idShaped]) => {
             const v = field(text, dead);
             if (v === null) return null;
@@ -233,7 +235,7 @@ export function gistWork(projectDir) {
 /**
  * Findings, most-actionable first. Never throws.
  * kind: 'built-not-recorded' | 'claimed-not-built' | 'no-proof' | 'off-vocabulary' | 'duplicate-id'
- *     | 'unlinked-promotion' | 'broken-split' | 'stale-field' | 'unticked-shipped' | 'revisit-due'
+ *     | 'unlinked-promotion' | 'broken-split' | 'broken-amend' | 'stale-field' | 'unticked-shipped' | 'revisit-due'
  */
 export function recordDrift(projectDir) {
   const findings = [];
@@ -367,6 +369,31 @@ export function recordDrift(projectDir) {
     }
   }
 
+  // --- an amendment, legible from both ends (RVW-145) -------------------------------------
+  // A later FEAT that changes what a shipped one promised says `amends:`, and the shipped one says
+  // `amended_by:`. Without the second end, someone reading the shipped record can't see its promise
+  // moved, and knowing what the system does means reading every FEAT. Same two-ends rule as a split.
+  for (const r of records) {
+    for (const target of r.amends || []) {
+      if (!ids.has(target)) {
+        findings.push({ kind: 'broken-amend', id: r.id, file: r.file,
+          what: `\`amends: ${target}\` — no such record` });
+      } else if (!(byId.get(target)[0].amendedBy || []).includes(r.id)) {
+        findings.push({ kind: 'broken-amend', id: r.id, file: r.file,
+          what: `\`amends: ${target}\`, but ${target} does not say \`amended_by: ${r.id}\` — whoever reads ${target} still sees the old promise` });
+      }
+    }
+    for (const source of r.amendedBy || []) {
+      if (!ids.has(source)) {
+        findings.push({ kind: 'broken-amend', id: r.id, file: r.file,
+          what: `\`amended_by: ${source}\` — no such record` });
+      } else if (!(byId.get(source)[0].amends || []).includes(r.id)) {
+        findings.push({ kind: 'broken-amend', id: r.id, file: r.file,
+          what: `\`amended_by: ${source}\`, but ${source} does not say \`amends: ${r.id}\`` });
+      }
+    }
+  }
+
   // --- the field nothing reads --------------------------------------------------------------
   // Reported per record, not per field, so a record with two of them is one line to go fix.
   for (const r of records) {
@@ -416,7 +443,7 @@ export function recordDrift(projectDir) {
   }
 
   // The expensive direction first: work you finished and did not write down.
-  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'unticked-shipped': 2, 'revisit-due': 3, 'duplicate-id': 4, 'unlinked-promotion': 5, 'broken-split': 6, 'stale-field': 7, 'off-vocabulary': 8, 'no-proof': 9 };
+  const rank = { 'built-not-recorded': 0, 'claimed-not-built': 1, 'unticked-shipped': 2, 'revisit-due': 3, 'duplicate-id': 4, 'unlinked-promotion': 5, 'broken-split': 6, 'broken-amend': 6, 'stale-field': 7, 'off-vocabulary': 8, 'no-proof': 9 };
   return findings.sort((a, b) => (rank[a.kind] ?? 9) - (rank[b.kind] ?? 9));
 }
 

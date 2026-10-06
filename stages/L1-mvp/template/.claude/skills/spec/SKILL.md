@@ -26,6 +26,11 @@ first. If this feature contradicts a standing decision (a stack, a boundary, a r
 line, before writing anything: either the feature changes, or the decision is revisited with `/decide`.
 A spec that quietly overrides a DEC is two sources of truth.
 
+**And a shipped feature whose promise this changes.** If this FEAT changes what a shipped FEAT promised
+(a behaviour, a limit, a flow), say which: `amends: FEAT-NNN` on this one, `amended_by: FEAT-MMM` on the
+shipped one, and nothing else edited there. Its record of what it promised stays true to when it
+shipped; `boss records` checks both ends. Nothing changes? Say nothing.
+
 **Rung: MVP.** If this project is **earlier** than that, don't run this — leave the seam instead:
 **Write down what 'working' means for the feature while you are building it — one sentence, in the commit or a comment. It costs nothing now and it is the only thing that makes a test writable later.** That is the whole ask; it is *not* a spec convention, an id scheme, acceptance-criteria fields, a template. You can write a spec any day. You cannot reconstruct what you MEANT by 'correct' six months after you built it — and an agent asked to test that feature later will happily write assertions against whatever the code already does.
 

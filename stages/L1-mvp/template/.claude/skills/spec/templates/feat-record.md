@@ -44,6 +44,7 @@ created: {{today}}
 building_since: {{today}}
 from: IDEA-NNN
 # program: <the IDEA's program, carried over — a slug or PROG-NNN; delete if it has none>
+# amends: FEAT-NNN <what changes> — only if this changes what a shipped FEAT promised; that FEAT gets `amended_by:`
 ---
 
 # <Feature name — one plain line, present tense>
@@ -68,6 +69,8 @@ reader got wrong._
 _Checkable. A reader who's never seen the code should be able to verify these._
 _`/log` ticks each one as it lands, with its evidence on the line (`— <ran → saw>` or `— tester ✓`);
 `boss board` renders the fraction. The FEAT ships when every box carries evidence._
+_More than one slice? Group the criteria under `### Slice N — what a person can do after it`; each slice
+is built, checked and ticked in its own run. One slice needs no heading._
 - [ ] …
 - [ ] …
 - [ ] …
