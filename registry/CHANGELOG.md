@@ -68,21 +68,6 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   Each now closes on a single next step that fits what it just found: the worst finding to fix, the
   unknown to ask a real person about, the date a decision gets checked.
 
-- **A page BOSS reads for you can't give it orders.** `/boss`, `/import`, `/comp-eval` and `/persona`
-  pull in outside text — a link, a rival's site, a paste — and a page can carry a line written to
-  steer whatever agent reads it. Those skills now treat what they read as material, never as
-  instructions: a line like that is kept in the saved copy under an `Unverified:` label and
-  nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
-  points at your own machine, a private network or a cloud metadata endpoint.
-
-- **The guide has a "When it doesn't work" section, and the start page says how to install offline.** The
-  messages you're most likely to meet, word for word, with what each one means. And because BOSS has no
-  dependencies, one package file carried to an offline machine is a complete install.
-
-- **`boss id` no longer hands out a number another worktree already used.** When work happens in
-  separate git worktrees, a record created in one was invisible from the others until it was merged, so
-  the same number could be given out twice. `boss id` now counts every open worktree of the repo.
-
 - **BOSS now says it needs Node 22 or newer, which is what it is tested on.** It used to say Node 18,
   a version no test ever ran and one that is past its end of life.
 
@@ -173,9 +158,34 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### Smaller improvements
 
+- **A security problem has a private way in.** `/feedback` used to file everything as a public issue, a
+  way past the secrets guard included. Now it sends a security hole to the private report form instead, and
+  `SECURITY.md` in the repo says what counts and where it goes.
+
+- **A feature that changes what a shipped one promised now says so, at both ends.** When you spec a change to
+  something already shipped, `/spec` adds `amends:` to the new feature and `amended_by:` to the old one, and
+  `boss records` checks the pair. Anyone reading the shipped feature can see its promise moved, without reading
+  every later one. A feature big enough to have slices now names them, and the build agent does one slice per
+  run, checking and ticking each before starting the next.
+
 - **The coder reproduces a bug before it fixes one.** It now says what it ran and what it saw before
   changing anything, and stops to tell you when the bug won't reproduce. When a fix doesn't make the
   problem go away, it says what it got wrong about the cause instead of piling a second change on top.
+
+- **A page BOSS reads for you can't give it orders.** `/boss`, `/import`, `/comp-eval` and `/persona`
+  pull in outside text — a link, a rival's site, a paste — and a page can carry a line written to
+  steer whatever agent reads it. Those skills now treat what they read as material, never as
+  instructions: a line like that is kept in the saved copy under an `Unverified:` label and
+  nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
+  points at your own machine, a private network or a cloud metadata endpoint.
+
+- **The guide has a "When it doesn't work" section, and the start page says how to install offline.** The
+  messages you're most likely to meet, word for word, with what each one means. And because BOSS has no
+  dependencies, one package file carried to an offline machine is a complete install.
+
+- **`boss id` no longer hands out a number another worktree already used.** When work happens in
+  separate git worktrees, a record created in one was invisible from the others until it was merged, so
+  the same number could be given out twice. `boss id` now counts every open worktree of the repo.
 
 - **A fix now names what it must leave alone.** When the feature you're speccing is a bug fix,
   `/spec` asks one more question: what next to the bug has to keep working exactly as it does, written
@@ -190,13 +200,6 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   and the feature template point to it.
   At close it also says, in one line and only when there is one, anything that got built which no
   criterion asked for, and asks whether it becomes its own feature or comes out. It never removes it.
-
-- **A page BOSS reads for you can't give it orders.** `/boss`, `/import`, `/comp-eval` and `/persona`
-  pull in outside text — a link, a rival's site, a paste — and a page can carry a line written to
-  steer whatever agent reads it. Those skills now treat what they read as material, never as
-  instructions: a line like that is kept in the saved copy under an `Unverified:` label and
-  nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
-  points at your own machine, a private network or a cloud metadata endpoint.
 
 - **An agent in its own worktree can run your app.** A new worktree starts without your ignored
   files, so there's no `.env` and the app won't start. The agent rules now say to list `.env` in

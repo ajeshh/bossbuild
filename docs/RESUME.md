@@ -27,6 +27,10 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-151 (2026-10-05, worktree `idea-151`, NOT landed) — release notes weighed per bullet + a line after an update.**
+  Waits on the main checkout's uncommitted 0.330.0 stamp (old stamper, unweighed). After it commits:
+  `git rebase main` in the worktree, move the weight headings into 0.330.0's section, then
+  `node scripts/worktree.js land IDEA-151` and `done IDEA-151`. Publish 0.330.0 only after. Open: O1.
 - **IDEA-150 (2026-10-05, shipped, pushed; CI green) — what the spec toolkits taught.** Three reads of the
   spec-driven field, then RVW-136…149 and the build: a tick carries its evidence (`/log` owns ticking), the
   CLI's first-command craft (quoted `cd`, errors name the next step, unknown flags refused), `amends:` links,
