@@ -58,6 +58,9 @@ rule above still applies to the whole section once it is stamped.
   nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
   points at your own machine, a private network or a cloud metadata endpoint.
 
+- **BOSS now says it needs Node 22 or newer, which is what it is tested on.** It used to say Node 18,
+  a version no test ever ran and one that is past its end of life.
+
 - **The first commands say what to do next, and catch a typo.** The `cd` line `boss new` prints now
   works when the name has a space in it. `boss new` on a folder that already exists points you to
   `boss adopt`, a mistyped `--mode` lists the modes, and `boss hooks` outside a project shows the same

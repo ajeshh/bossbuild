@@ -78,6 +78,6 @@
     "stamp": "node scripts/release.js --stamp"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   }
 }

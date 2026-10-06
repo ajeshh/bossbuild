@@ -1277,7 +1277,7 @@ writeFileSync(join(SITE, 'llms.txt'),
   + `BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, agents and hooks for founders. `
   + `It sets a project up with only the structure it has earned, grows it through four modes (Quickstart → MVP → V1 → Scale), `
   + `and says one thing when the founder drifts. Everything stays on the founder's machine. `
-  + `MIT licensed, free, v${V}. Install: \`npm install -g oyeboss\` or \`brew install ajeshh/boss/oyeboss\`; needs Node 18+ and Claude Code.\n\n`
+  + `MIT licensed, free, v${V}. Install: \`npm install -g oyeboss\` or \`brew install ajeshh/boss/oyeboss\`; needs Node 22+ and Claude Code.\n\n`
   + `## Pages\n\n`
   + pageMeta.map((p) => `- [${p.title}](${canonical(p.f)}): ${p.description}`).join('\n')
   + `\n\n## Demo\n\n- [Kettlewick, one fictional venture run through BOSS end to end](${SITE_URL}/demo): the playbook, the design space and the board, rendered by the same code an install runs.\n\n`
