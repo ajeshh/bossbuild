@@ -31,6 +31,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ## Unreleased
 
+### What you'll notice
+
+### Smaller improvements
+
+### Under the hood
+
 ## 0.330.0 — 2026-10-05
 - **Where you are, without asking, and what to type, without guessing.** Typing `/canvas ` in Claude
   Code now shows what it takes, greyed, as you type — every skill that takes an argument says so. Bare
@@ -39,19 +45,6 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
   status bar or your shell prompt.
 
-- **A security problem has a private way in.** `/feedback` used to file everything as a public issue, a
-  way past the secrets guard included. Now it sends a security hole to the private report form instead, and
-  `SECURITY.md` in the repo says what counts and where it goes.
-
-- **A feature that changes what a shipped one promised now says so, at both ends.** When you spec a change to
-  something already shipped, `/spec` adds `amends:` to the new feature and `amended_by:` to the old one, and
-  `boss records` checks the pair. Anyone reading the shipped feature can see its promise moved, without reading
-  every later one. A feature big enough to have slices now names them, and the build agent does one slice per
-  run, checking and ticking each before starting the next.
-
-- **The coder reproduces a bug before it fixes one.** It now says what it ran and what it saw before
-  changing anything, and stops to tell you when the bug won't reproduce. When a fix doesn't make the
-  problem go away, it says what it got wrong about the cause instead of piling a second change on top.
 ### What you'll notice
 
 - **After you update BOSS, it tells you what changed, and what you'll notice comes first.** Updating

@@ -22,9 +22,9 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
-## 2026-10-05 — IDEA-151: what you'll notice (worktree `idea-151`, not landed)
+## 2026-10-05 — IDEA-151: what you'll notice (landed into 0.330.0, unpublished)
 
-**Landed (in the worktree).** Release notes are weighed per bullet: *What you'll notice*, *Smaller
+**Landed.** Release notes are weighed per bullet: *What you'll notice*, *Smaller
 improvements*, *Under the hood*. `boss whatsnew`, the site's What's new and feed and `/boss-sync` lead
 with the notices; the stamp refuses an unweighed bullet and a test fails the commit that adds one; the
 first `boss` command at a terminal after an update prints one line (local `~/.boss/seen-version.json`).
@@ -35,9 +35,9 @@ so `boss whatsnew` called 0.329.0 an internal release and the site's What's new 
 per-release rule didn't survive the release becoming a bundle. On its first rebase the new test caught
 three peer bullets with no weight, and the merge had left two bullets in Unreleased twice.
 
-**Next.** Land it *before* 0.330.0 is published: a stamp by the old stamper sat uncommitted in the
-main checkout at close. Once it's committed, rebase and put the weight headings into 0.330.0's
-section. Open: founders who never type `boss` don't see the update line (IDEA-151 O1).
+**Next.** The 0.330.0 stamp (made by the old stamper) was committed as-is, and this work rebased onto
+it: 0.330.0's section carries the weights. `npm run release` before publishing regenerates the site.
+Open: founders who never type `boss` don't see the update line (IDEA-151 O1).
 
 ## 2026-10-05 — IDEA-150: what the spec toolkits taught; rival names out of the repo (`dbf0ae5` → `c1f0686e`, pushed)
 
