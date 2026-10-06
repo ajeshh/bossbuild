@@ -299,6 +299,11 @@ const SHARED_NAMES = new Set([
   // read it. It resolves here only because BOSS's own tokens live in the gitignored `docs/design/`.
   // Nine findings sat red on this for two days — the `RESUME.md` bug, fourth time, same shape.
   'docs/design/tokens.json',
+  // Fifth instance, 2026-10-05. `/comp-eval` (L1) and `/import` (L0) WRITE `docs/competition/README.md`
+  // into the founder's project; the playbook, the design space and `/landing` read it. It resolves
+  // here only because BOSS ran /comp-eval on itself, and BOSS's own copy went local the same day
+  // (it names rivals, and the repo is public).
+  'docs/competition/README.md',
 ]);
 
 if (repoOnlyDocDirs.length) {

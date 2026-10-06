@@ -54,6 +54,8 @@ docs/red-team/SELF-*
 # contain no personal, customer or financial content; the decision to publish was made per-record
 # on the 16 that existed, and is NOT a standing rule — a future DEC that should stay private stays
 # untracked, and check-refs handles its citation automatically (docs/IDS.md).
+# docs/competition/ names and links rival products, and the repo is public: names live only on this machine (2026-10-05).
+docs/competition/
 docs/research/*
 !docs/research/verdicts/
 docs/source/
