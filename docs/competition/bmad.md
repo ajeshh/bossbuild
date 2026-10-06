@@ -94,6 +94,9 @@ certification that *"opens soon"* (bmadcode.com). No prices are published.
 
 ## What BOSS could take — candidates for `/vet`
 
+> **Vetted 2026-10-05:** 1 → RVW-142 REJECT (BOSS asks all three already, spread across `/spec`) ·
+> 2 → RVW-143 NOT-YET (no founder repo shows the problem) · 3 → RVW-144 REJECT (sections, not tags).
+
 1. **Decide the rung after reading the code: intent gaps, irreversible actions, footprint.** BOSS's
    `/spec` step 0 decides FEAT-or-not from *named slices or more than one release*, which is the
    founder's estimate. BMAD's three facts are observable, and the second is already BOSS's destructive

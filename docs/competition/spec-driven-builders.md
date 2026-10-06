@@ -131,15 +131,19 @@ lives in config, not the check. A check is promoted to `error` once it is reliab
 
 ## What BOSS could take — candidates, not decisions
 
+> **Vetted 2026-10-05:** 1 → RVW-136 ADAPT · 2 → RVW-137 ADAPT · 3 → RVW-138 ADAPT · 4 → RVW-139 REJECT
+> (BOSS already recommends where it is safe) · 5 → RVW-140 REJECT (derivable from `created:`) ·
+> 6 → RVW-141 NOT-YET (baseline half ruled in RVW-013).
+
 Each was checked against BOSS first (grep of `stages/`, `src/`, `library/`, 2026-10-05). These are
 claims from strangers, so each goes through `/vet` (default NO) before anything is built. Ranked
 by what they would change for a founder:
 
 1. **"Done" needs evidence, not the builder's tick.** `/log` step 4 has the session *"tick the
    acceptance criteria that are now true"*. That is usually the same agent that built it. The `tester`
-   agent walks criteria with evidence, but nothing requires its pass before a tick. Spec Kit learned
-   this the hard way: *"completion claims are not evidence,"* and the agent must not tick its own
-   checklist. *Shape for BOSS:* a tick carries one line of evidence (the command and what was
+   agent walks criteria with evidence, but nothing requires its pass before a tick. Spec Kit's `converge`
+   says it plainly: *"completion claims are not evidence."* (Its *must-not-tick* rule is about
+   requirements-quality checklists, not done-ness, so it is not support here. Corrected in RVW-136.) *Shape for BOSS:* a tick carries one line of evidence (the command and what was
    observed), or it stays unticked. `boss board`'s *how far* then means verified. Small change,
    high value.
 2. **Ask at done what got built that nobody asked for.** Converge's `unrequested` gap: agents add code
