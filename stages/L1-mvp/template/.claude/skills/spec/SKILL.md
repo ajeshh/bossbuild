@@ -50,33 +50,9 @@ Read both, and say something **once**. Never block; this is a mirror, not a gate
   plenty of good FEATs are a bug, a small fix, or something the founder simply decided to do. **The
   point is that it was noticed, not that it was authorized.**
 
-- **`docs/competition/` — two reads, and the second is narrower than it looks.**
-  *When this FEAT is the differentiator:* the rival's **`why they might win`** line, held against the
-  acceptance criteria — *does what I'm about to build actually beat their reason?* *When a rival
-  simply also has this feature:* that rival's **`## Where it breaks`** section, read into **What
-  "wrong" looks like**. Their users' complaints about this exact thing are the cheapest failure
-  modes you will ever get, and they are the ones your first users will hit too.
-
-  *And, for a feature you have already decided to build:* the rival's **`## How they do it`** entry
-  for this feature, if `/comp-eval` captured one — the flow, the defaults, what they ask the user
-  for and what they do automatically, the limits. **This is design reference, not parity.** The
-  decision to build X was made upstream, in `/roadmap` or by you; what you are reading now is how
-  the people who already shipped X shaped it, and what their users therefore expect. Read it into
-  the **Flow** section and into the *Assumptions* you would otherwise have guessed.
-
-  **The line, and it is about timing, not content.** Reading how rivals implement a feature
-  *after* deciding to build it sharpens the spec. Reading their feature *list* to decide *what* to
-  build is the parity trap — and that read belongs to `/roadmap`, where the NO-list and the EVID
-  grade outrank *"a rival has it."* Their users' **praise** stays out of *what wrong looks like*,
-  which the template defines as failure modes, not missing features. For an ordinary FEAT — a
-  settings toggle, a fix, internal plumbing — **skip all of this and stay silent.** Opening a
-  competitor file to spec a copy change is the ceremony that gets the whole step ignored.
-
-  ⚠️ **Carry the file's age with you.** Every cell in that table has a `checked` date, and
-  `field-stale-loop` fires when the field hasn't been touched in ~90 days. A pricing figure from
-  March is not a fact about today, and a FEAT argued against a stale rival is argued against a
-  memory. If the rows are old, say so in the FEAT's **Assumptions** rather than letting the number
-  pass as current.
+- **`docs/competition/`** — only when this FEAT is the differentiator, or a rival already ships
+  the feature you've decided to build: open [`templates/competition-reads.md`](templates/competition-reads.md).
+  For an ordinary FEAT (a toggle, a fix, plumbing), skip it and say nothing.
 
 **No roadmap files? Skip this entirely and say nothing.** Pre-PMF, at n<10, `/roadmap` correctly
 refuses to run at all — so their absence is the expected state for most projects at this rung, and
@@ -123,55 +99,11 @@ riskiest assumption is unfilled — **surface BOSS's restraint nudge in your own
 Then proceed with the spec if the founder confirms — overriding the conscience is a legitimate move;
 *recording the override* is the contract.
 
-## The loud ≠ important check (post-launch — the `drift` twin at decide-time)
+## The loud ≠ important check (post-launch only)
 
-Restraint (above) is the *pre-launch* question — *is this worth building at all?* This is its
-**post-launch sibling**, and it fires on a different symptom: **the source of this FEAT is a user
-request.** When the project has real users, the trap flips from "no evidence" to "the wrong evidence" —
-building around **the loudest few** while the **silent majority** (who never wrote in) and the **quiet
-churn** (who just left) go unheard. Loud is not the same as important; the users who complain the
-articulately are rarely the users who pay.
-
-**Gate — surface this only when BOTH hold** (otherwise skip it entirely; it's not a checklist):
-
-1. **There are real users** — a `--feedback` register with entries (`docs/feedback/` or the register
-   `/idea --feedback` writes), an EVID ledger, or a live analytics read (`/health`). Pre-launch there
-   is no vocal minority yet, so this stays silent — restraint (above) is the only check that fires.
-2. **This FEAT traces to a request/complaint**, not to a founder-named bet — the source is a feature
-   request, a friction complaint, or "a few users asked." (If the source is the canvas's *riskiest
-   assumption* backed by broad or commitment-grade evidence, this isn't the loud-minority trap — stay
-   silent; that's `drift`'s territory, not this.)
-
-When it fits, **surface BOSS's nudge in your own voice** (cohort-aware; read `.boss/config.json`
-`cohort`; lean Fitzpatrick-plain). Do the judgment before speaking — silently read the source request +
-the `--feedback` register (or EVID ledger): is this a *pattern across your active core*, or **one loud
-voice** the register itself says to treat as a `stated-pain` EVID, not a spec? Then say, in one spare
-line, the specific version of:
-
-> **How many users actually asked for this — and are they your active core, or a vocal few?** A request
-> is evidence of *a* pain, not a mandate to build (it's a `stated-pain` EVID — the weakest grade; the
-> quiet majority's *observed behavior* outranks a loud request). Before you spend the build on it, two
-> cheaper reads: what does **the silent majority** — the users who *didn't* write in — actually *do*
-> (`/health` — behavior over volume)? And what is your **quiet churn** telling you — the people who
-> left without a word are the loudest evidence there is, and this feature probably isn't why (talk to
-> them: `/interview`; the `--feedback` register's churn entries)? If those still point here, build it
-> with conviction. If they point elsewhere, you were about to serve the few at the expense of the many.
-
-Point at `/health` (what behavior says), `/interview` (talk to the silent / the churned), the
-`--feedback` register (is the request a *pattern* or a one-off), and `mentor-founder` (is this the right
-bet). Cohort decides framing — returning-founder gets the blunt "the loudest user isn't your median
-user — who are you actually building for?"; first-product gets "one person asking loudly can feel like
-everyone; here's how to check" taught plainly; indie-hacker gets the calm "serve the quiet ones who
-stayed, not just the loud one who's leaving anyway"; domain-expert gets the who-is-actually-harmed lens
-on over-serving an edge case. **Suggestive, once, never a gate** — the founder may have every reason to
-build it (a strategic account, a load-bearing workflow); the nudge just makes the silent majority
-*visible* before the build, and recording the reason is the honest close. **Humane note (PRINCIPLE #6):
-protect the silent majority who actually drive the value** — the anti-pattern is a roadmap captured by
-whoever shouts, which quietly degrades the product for everyone who doesn't.
-
-_(This fires on a *single* request at decide-time. The fuller version — weighing *all* the signal, behavior
-vs. requests, across the whole register into a small bet-list + a mandatory NO-list — is **`/roadmap`**. Run
-that when you're choosing among many candidates, not just reacting to one.)_
+When the project has real users **and** this FEAT traces to a user request rather than a bet the
+founder named, open [`templates/loud-not-important.md`](templates/loud-not-important.md) before
+writing. Otherwise skip it entirely; it is not a checklist.
 
 ## How to run it
 
@@ -322,67 +254,10 @@ that when you're choosing among many candidates, not just reacting to one.)_
      level by design (no P0/P1/P2 ladder — that turns the board into a planning surface you tend
      instead of ship). The honest caveat the seasoned hand would add: *re-prioritizing isn't progress;
      finishing is.* Most FEATs need no priority field at all.
-7b. **If this FEAT has a user-facing surface, name the flow — and cut a step.** Step 4
-   asked which paths must not break. This asks the question upstream of it: **is this sequence right
-   at all?**
-
-   It is a step and not a review because it is the one design judgment a review structurally cannot
-   give you. An AI design review reliably improves feedback and scannability and moves **flow
-   efficiency by almost nothing** — whether two screens should be one, whether the person should have
-   been asked this at all, survives the review intact. **No amount of checking produces a flow nobody
-   designed.** So it gets decided here, while the FEAT is still prose and changing it is free.
-
-   In the record's **Flow** section, write:
-
-   - **The steps, each with what it asks the user for and why it is needed *now*.** One line each.
-   - **The cut.** *A step that cannot say why it is needed now is the step to cut.* Cut at least one
-     or say plainly that you tried and every step held — that sentence is a real answer, and it is
-     different from not having looked. *"We need company size for pricing tiers"* is a reason to
-     collect it eventually; it is not a reason to ask before they have seen the product work.
-     **Keep the cut rows** — a question you decided not to ask is the decision most likely to be
-     silently reversed by someone who assumes it was an oversight.
-   - **Three paths, not one.** The happy path, the **first-run path** (the same flow when the user
-     has nothing — almost always the one that ships broken, because the builder never sees it after
-     day one), and the **failure path** (a step can't complete: where do they land, what do they
-     still have, can they get back in). This is the five-state requirement raised one level.
-
-   Then add one row to **`docs/design/FLOWS.md`** — name, entry, step count, where it ends, which
-   FEAT owns it. Create it from [`templates/flow-index.md`](templates/flow-index.md) if it isn't
-   there. **The index, not a second copy**: two copies of a flow diverge, and the one people read is
-   never the one that got updated. Read it first — a new flow composes with the ones already there
-   rather than inventing a second navigation model.
-
-   Then, **the first time** a flow is written and **only then**, create
-   `docs/product/JOURNEY.md` from [`templates/journey-map.md`](templates/journey-map.md) — the tier
-   above the flow index, and one page for the whole product rather than a section per feature.
-   Afterwards just check it: does this FEAT's flow serve a stage that's already on the map, or does
-   it add one?
-
-   **Why a second file and not a heading in `FLOWS.md`.** The flow index holds in-app sequences, and
-   it is structurally unable to hold the two places users are most often lost: **before they sign
-   up**, and **after they have succeeded once and are deciding whether you are part of their week.**
-   Three skills are already standing on different parts of that arc — `/landing`, `/onboard`,
-   `/health` — and until this file exists none of them shares a map, which is how a
-   product ends up with a good landing page, a good first run, and nobody in week three.
-
-   Two things make it worth the ten minutes, and neither is the table itself:
-
-   - **The gaps section.** The stages with no serving flow and no FEAT that owns them. That list is
-     the output; a journey where every stage is covered is either a finished product or a map drawn
-     to look tidy.
-   - **The edge users.** Not edge *cases* — the three paths above already own those. **People** the
-     happy journey assumes away: the user with no data, the user with ten thousand rows, the person
-     who is not the buyer, someone on a screen reader, someone acting in bad faith. Name the ones
-     that are real here and delete the rest.
-
-   ⚠️ **Label every stage `observed` / `said` / `assumed`.** Most start assumed and that is fine. An
-   assumed row that stops being labelled becomes "research" in about six weeks — to you as much as
-   to anyone else — and a journey map invented at a desk is more dangerous than none, because it
-   looks like it came from somewhere.
-
-   **Skip all of this for a FEAT with no surface.** A background job has no flow, and asking for one
-   is the ceremony PRINCIPLE #2 refuses.
-
+7b. **If this FEAT has a user-facing surface, name the flow and cut a step:** open
+   [`templates/flow-and-journey.md`](templates/flow-and-journey.md). It fills the record's **Flow**
+   section, adds a row to `docs/design/FLOWS.md`, and the first time, writes `docs/product/JOURNEY.md`.
+   No surface, skip it.
 8. **Offer plan mode before the coder, when it's worth it.** The FEAT says *what* and *how we'll know
    it's done*; it deliberately doesn't say *how*. On this host, the built-in `Plan` agent reads the
    actual codebase and returns an implementation route — which is the half a spec shouldn't contain
@@ -404,51 +279,14 @@ Template: **[`templates/feat-record.md`](templates/feat-record.md)**.
 
 ## If this FEAT touches data, shape it here — not in the migration
 
-**Design schema before code.** Once real users have entered data, schema changes stop being edits
-and start being migrations with a rollback plan. The cheapest moment to get the shape right is
-while the FEAT is still prose.
-
-It's a step rather than someone to consult, because a step fires and a door has to be opened. For
-any FEAT that creates or changes stored data, **you** answer these in the record from what the FEAT
-already says. Ask the founder only what you can't infer, usually *who can read a row*, and put it in
-step 3's one message rather than a new round:
-
-- **What entities does this need, and why is each its own thing** rather than a field on an
-  existing one?
-- **Which columns are queried?** Index those. Don't index speculatively.
-- **What's the narrowest type that holds the data?** A type is documentation. So is every
-  NOT NULL / UNIQUE / CHECK / foreign key — they're cheaper in the database than in app code.
-- **Who can read a row, who can write it, and which column proves it?** (usually an owner or
-  tenant id). **A table whose answer is "the app checks" is unprotected the moment anything else —
-  an agent, a script, a leaked key — talks to the database.** If this project reaches the database
-  from the client with a publishable key, that rule is the only thing between your users and the
-  internet, and the model does not write it unless asked. This is CVE-2025-48757 (303 endpoints,
-  170+ apps) and MoltBook (1.5M tokens, 35K emails) — a **data-model** failure, not a deploy one.
-- **Is the change additive or destructive?** Destructive needs a migration plan and a rollback,
-  and deserves a `DEC` before the migration is written. Mark each call **reversible** / **costly to
-  reverse** / **one-way door** so you know where to slow down.
-- **AI-specific:** if an LLM's output drives a write, **schema the output** — free-form prose in a
-  column is poison. Mark model-generated rows as model-generated. Keep eval data out of prod tables.
-
-`schema-guard` (opt-in: `boss hooks enable schema-guard`) catches the RLS half at edit time; `/ship` and
-`/red-team` catch it at deploy time. **Both can only catch it — this step is where it gets
-prevented.** Full practice: `boss craft data-schema`. For the judgment calls — one table or two,
-will this query scale, is this premature — ask `mentor-architect`.
+For any FEAT that creates or changes stored data, open [`templates/data-shape.md`](templates/data-shape.md)
+and answer it in the record before code. Ask the founder only what you can't infer (usually *who can
+read a row*), inside step 3's one message.
 
 ## If this FEAT calls a model, draw the line here
 
-Before the first LLM call in a FEAT, fill its **Model or code** section: which step genuinely needs the
-model, and which stays deterministic. The instinct is to route everything through the model; every
-step kept in code is one that can't hallucinate, and costs nothing per call. The rungs, lowest first:
-a script on a schedule → a fixed path with one schema'd model *step* → an agent loop → several agents.
-**Climb on a failure you actually hit, never one you anticipate** (`boss craft automation`).
-
-Then the three that make a model step safe to ship, each its own verb: an eval set before it ships
-(`/evals` — five cases beat none), a declared response to each failure state (`/ai-failure-states`),
-and a budget with a logger (`/ai-cost`). For the output shape, reach for the provider's **native
-strict structured output** first; keep Zod/Pydantic for ranges, enums and cross-field rules. If the
-step reads untrusted input *and* can reach private data *and* can act, that's the lethal trifecta —
-remove one leg (`boss craft agent-security`).
+Before the first LLM call in a FEAT, open [`templates/model-call.md`](templates/model-call.md) and fill
+the record's **Model or code** section from it.
 
 ## Ship the most executable artifact you can (not just prose about it)
 
