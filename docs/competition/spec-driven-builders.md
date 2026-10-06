@@ -236,3 +236,61 @@ That last one is BOSS's *checkers state intents they don't enforce*, refused in 
 **Where BOSS is ahead:** re-reading a shipped FEAT (`/revalidate`), reading a dropped FEAT's lesson
 before re-speccing, checking DECs at spec time, two-way `spun_to` checks (`src/records.js`), sync that
 never clobbers founder edits (`src/managed.js`), and a tester that refuses mocks on the money path.
+
+## Spec Kit deep dive, part 2 (2026-10-05) — everything around the method
+
+A third pass read the CLI, install, upgrades, docs, CI, release process and community handling (clone at
+`2dda047`). Items marked ✓ were reproduced against BOSS the same day. The rest are as reported.
+
+**Small craft, founder-facing:**
+1. ✓ **The `cd` line `boss new` prints breaks on names with spaces.** `boss new "my proj"` → `cd my proj`
+   (`src/cli.js:171`, also `:1534`). Spec Kit shell-quotes it (`command_init.py:192-208`). One quoting
+   helper in `ui.js`.
+2. ✓ **Errors that stop without a next step.** `boss new .` → *"'.' already exists here."* with no
+   mention of `boss adopt` (`cli.js:87`). `adopt --mode mvpp` → *"unknown mode"* with no list
+   (`:209`; `unlock` does list them, `:390`). `hooks enable` outside a project gives a bare message
+   (`:1695`) instead of the shared hint. Spec Kit names the command to run in every prerequisite error.
+3. ✓ **Unknown flags are ignored.** `boss status --bogus` exits 0. `boss status --json` prints prose,
+   because only `board` takes `--json`. An agent asking for JSON is never told. *Shape:* an optional
+   known-flags list in `src/args.js`, using the existing *did you mean* suggester (`cli.js:2002`).
+   Grep `stages/**` for every flag the skills pass first.
+4. **No private route for security reports.** No `SECURITY.md`. GitHub private vulnerability reporting
+   is off (`gh api …/private-vulnerability-reporting` → `enabled:false`). `/feedback` files public
+   issues only. **This is Ajesh's call: a repo setting, outward-facing.**
+5. ✓ **"Node 18+" is claimed but never run.** `package.json:81` says `>=18`, while the CI matrix is `[22, 24]`.
+   Either add 18 and 20 to the matrix, or raise the floor to what CI runs. This is *a checker states an
+   intent it doesn't enforce*.
+6. **Check `claude` is on PATH, at the moment it matters.** `boss new` tells the founder to type `claude`
+   and never looks. Spec Kit's `specify check` also looks in Claude's two local install paths. *Shape:*
+   one line in the `new`/`adopt` ending, shown only when it's missing.
+7. **"When it doesn't work" in GUIDE.md**, keyed on BOSS's literal error strings: `/boss` typed in
+   the shell, the wrong folder, a session started before `sync`.
+8. **Every skill ends with one next step.** Spec Kit's commands end with a *Completion Report*.
+   A keyword grep found no next-step ending in 26 of 42 BOSS skills. That could be a grep miss, so
+   check by reading. This speaks to the orientation finding behind BOSS's re-aim.
+9. **JSON errors in `--json` mode** (stderr is prose today). **Undo a half-built `boss new`** on failure
+   (not reproduced, so rule 8 applies: no fix without a failing test). **Say that the npm tarball installs
+   offline** (`web/start.html`).
+
+**Maintainer-facing:**
+10. **CI hardening.** ✓ `ci.yml` has no `permissions:` block, and actions are pinned by tag, not SHA.
+11. **`src/cli.js` is 2,009 lines with 23 handlers.** It's the most-touched file and the one peers collide on.
+    Spec Kit gives each command its own file. *Shape:* when a handler is next touched, move it into its
+    domain module, so `cli.js` becomes a dispatch table. No big refactor.
+12. **CHANGELOG collisions.** Per-capability fragments joined at `npm run stamp`. Measure how often
+    `land` actually conflicts on it first.
+13. **A source checkout reports the last stamped version** while running unreleased work. Spec Kit bumps
+    main to `X.Y.Z+1.dev0`. *Shape:* `bossVersion()` appends `+unreleased` in a git checkout.
+
+**What they reversed:** a removed flag stays as a hidden no-op with a deprecation note, and the removal
+version is announced ahead of time. Template zips were dropped so the CLI and templates can't drift. Shell
+scripts were ported to one language to end parity bugs. Their 1.0 was *"just a number"*. Config fields
+that aren't wired are documented as *"reserved and not consulted"*. And they say no by pointing a core
+request to a community extension.
+
+**Where BOSS is ahead:** sync previews by default, while Spec Kit's upgrade runs straight away; BOSS
+backs up edited files where Spec Kit's halt needs `--force`. `supersedes.json` retires commands
+automatically, where Spec Kit's docs say to `rm` duplicates by hand. BOSS detects a pin newer than the
+CLI, has a stated and tested no-telemetry stance, honours `NO_COLOR`, ships `llms.txt` (theirs 404s),
+orients with `boss status` and re-entry, checks its docs for drift, and writes product prose in its CHANGELOG
+where theirs is a list of PR titles.
