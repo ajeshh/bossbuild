@@ -5,7 +5,7 @@
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, basename, sep, delimiter } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
-import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME } from './paths.js';
+import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME, BOSS_ROOT } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
@@ -14,7 +14,7 @@ import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt }
 import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
-import { printChangelog, cmpVersion } from './changelog.js';
+import { printChangelog, cmpVersion, versionLine } from './changelog.js';
 import { detectStage, inferSourceGlobs } from './detect.js';
 import { printUpdate, updateNote, installKind, uninstallCommand } from './update.js';
 import { printCredit } from './credit.js';
@@ -2042,8 +2042,12 @@ export async function run(argv) {
     case 'update': case 'outdated': return void printUpdate().then((c) => { process.exitCode = c; });
     case 'conscience': return cmdConscience(args);
     case 'hooks': return cmdHooks(args);
-    case 'version': case '--version': case '-v':
-      return console.log(bossVersion());
+    case 'version': case '--version': case '-v': {
+      const checkout = existsSync(join(BOSS_ROOT, '.git'));
+      let unreleasedText = '';
+      if (checkout) try { unreleasedText = readFileSync(join(BOSS_ROOT, 'registry', 'CHANGELOG.md'), 'utf8'); } catch { /* none */ }
+      return console.log(versionLine(bossVersion(), { checkout, unreleasedText }));
+    }
     case undefined: case 'help': case '--help': case '-h':
       return cmdHelp(args);
     default: {

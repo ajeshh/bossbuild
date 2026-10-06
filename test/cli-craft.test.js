@@ -14,6 +14,7 @@ import { join, dirname } from 'node:path';
 import { BOSS_ROOT } from '../src/paths.js';
 import { HELP } from '../src/help.js';
 import { KNOWN_FLAGS } from '../src/args.js';
+import { versionLine } from '../src/changelog.js';
 import { project, cleanup } from './helpers.js';
 
 after(cleanup);
@@ -132,4 +133,13 @@ test('A5: `claude` on PATH → nothing extra', () => {
   writeFileSync(join(bin, name), '');
   const out = bossWithPath(['new', 'p2'], dir, [bin, dirname(process.execPath)]);
   assert.doesNotMatch(out, /claude\.com\/claude-code/);
+});
+
+// A8 — a source checkout running unreleased work says so, after the number.
+test('A8: version names unreleased work only in a source checkout that has some', () => {
+  const withWork = '## Unreleased\n\n- a thing\n\n## 0.1.0\n';
+  const empty = '## Unreleased\n\n<!-- nothing yet -->\n\n## 0.1.0\n';
+  assert.equal(versionLine('0.3.0', { checkout: false, unreleasedText: withWork }), '0.3.0');
+  assert.equal(versionLine('0.3.0', { checkout: true, unreleasedText: empty }), '0.3.0');
+  assert.match(versionLine('0.3.0', { checkout: true, unreleasedText: withWork }), /^0\.3\.0 \(\+ unreleased/);
 });

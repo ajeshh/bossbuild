@@ -219,3 +219,13 @@ export function printChangelog({ since, all = false, full = false, pin = null } 
   }
   return 0;
 }
+
+/**
+ * What `boss version` prints. A source checkout (a `.git` beside the package) carrying work under
+ * `## Unreleased` is running more than the stamped number says, so it says so after the number.
+ * The number stays first: callers match `^\d+\.\d+\.\d+` (IDEA-150 A8).
+ */
+export function versionLine(version, { checkout = false, unreleasedText = '' } = {}) {
+  if (!checkout || !unreleasedHasContent(unreleasedText)) return version;
+  return `${version} (+ unreleased work — running from a source checkout)`;
+}
