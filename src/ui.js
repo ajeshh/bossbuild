@@ -28,3 +28,11 @@ export const bold = wrap(1, 22);  // structure: section headers, the word that a
 export const ok   = wrap(32, 39); // success — a thing happened and it worked (green)
 export const warn = wrap(33, 39); // a soft warning — worth a look, not a failure (yellow)
 export const err  = wrap(31, 39); // an error — the command could not do the thing (red)
+
+// A path as a person will paste it into their shell. `boss new "my proj"` used to print `cd my proj`,
+// which fails when pasted. Plain names stay bare; anything else is quoted for the shell this runs on.
+export function shellArg(s, platform = process.platform) {
+  if (/^[A-Za-z0-9._\/:@+-]+$/.test(s)) return s;
+  if (platform === 'win32') return `"${s.replace(/"/g, '""')}"`;
+  return `'${s.replace(/'/g, `'\\''`)}'`;
+}

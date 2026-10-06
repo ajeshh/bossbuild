@@ -58,6 +58,13 @@ rule above still applies to the whole section once it is stamped.
   nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
   points at your own machine, a private network or a cloud metadata endpoint.
 
+- **The first commands say what to do next, and catch a typo.** The `cd` line `boss new` prints now
+  works when the name has a space in it. `boss new` on a folder that already exists points you to
+  `boss adopt`, a mistyped `--mode` lists the modes, and `boss hooks` outside a project shows the same
+  way out the other commands do. A flag no command knows (`boss board --nxt`) now stops and names the
+  nearest real one instead of being ignored. `--json` on a command with no JSON output says so instead of
+  printing prose, and a `--json` failure is one JSON object, so a script or an agent can read it.
+
 - **A typo in your Claude Code settings no longer costs you the rest of them.** If
   `.claude/settings.json` had one stray comma, `boss hooks enable`, `boss adopt` and `boss sync` read it as
   empty and wrote that back, keeping only what BOSS was adding. Your permissions, the conscience's

@@ -25,3 +25,16 @@ export function parseArgs(args) {
   }
   return out;
 }
+
+// Every flag some command reads. `run()` refuses one that is in no command's vocabulary (a typo:
+// `boss board --nxt` used to print the whole board and exit 0), naming the nearest real flag.
+// Per-command lists would be stricter, but twelve real flags appear in no help text, so a strict
+// list would break working calls. test/cli-craft.test.js holds this set to every flag help
+// documents and every flag a shipped skill passes. A new flag goes here too.
+export const KNOWN_FLAGS = new Set([
+  'ai', 'all', 'apply', 'as', 'before', 'blocked', 'conscience', 'days', 'detail', 'diff', 'file', 'for',
+  'force', 'full', 'gists', 'global', 'headline', 'help', 'html', 'id', 'json', 'keep-mine', 'kind',
+  'markdown', 'md', 'mine', 'minors', 'mode', 'next', 'note', 'open', 'outline', 'program', 'programs',
+  'prose', 'prune', 'questions', 'quiet', 'reason', 'relationship', 'remove', 'shape', 'since', 'surface',
+  'timeline', 'title', 'undo', 'until-resume', 'v', 'verbose', 'version', 'what', 'yes',
+]);

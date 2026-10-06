@@ -34,8 +34,8 @@ import { gistWork, recordDrift, driftLine, nextId, idCensus, timeline, programs,
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { printReentry, printEvidenceHeadway, printIntent, printResumeWindow } from './orientation.js';
 import { readiness, renderReadiness } from './readiness.js';
-import { dim, bold, ok, warn, err } from './ui.js';
-import { parseArgs } from './args.js';
+import { dim, bold, ok, warn, err, shellArg } from './ui.js';
+import { parseArgs, KNOWN_FLAGS } from './args.js';
 import { lookup, terms } from './glossary.js';
 import { HELP, SYMBOLS } from './help.js';
 import { helpHtml } from './help-html.js';
@@ -84,7 +84,7 @@ function cmdNew(args) {
   const aiNative = args.includes('--ai'); // IDEA-022 Track 3 — additive, opt-in
   if (!name) return fail('usage: boss new <project-name> [--ai]');
   const targetDir = resolve(process.cwd(), name);
-  if (existsSync(targetDir)) return fail(`'${name}' already exists here.`);
+  if (existsSync(targetDir)) return fail(`'${name}' already exists here. To bring BOSS into a folder you already have, run \`boss adopt\` inside it.`);
 
   const stageId = STAGE_ORDER[0]; // L0-quickstart
   const manifest = readStageManifest(stageId);
@@ -168,7 +168,7 @@ function cmdNew(args) {
   console.log(`    skills: ${skillsLine(stamp.skills)}`);
   commitGuardLine(guard);
   console.log(`\n  ${bold('Next')} ${dim('(these run in your terminal)')}`);
-  console.log(`    cd ${name}`);
+  console.log(`    cd ${shellArg(name)}`);
   console.log(`    code .              # or open the folder in your editor (Cursor, etc.)`);
   console.log(`    claude              # open Claude Code (works in the terminal or the editor panel)`);
   console.log(`    ${dim('then, inside Claude:')}`);
@@ -206,7 +206,7 @@ function cmdAdopt(args) {
   // auto-climbs to V1, because ceremony added is ceremony sync cannot yet remove.
   const detected = flags.mode ? null : detectStage(targetDir);
   const stageId = flags.mode ? resolveStageId(flags.mode) : detected.stage;
-  if (!stageId) return fail(`unknown mode '${flags.mode}'.`);
+  if (!stageId) return fail(`unknown mode '${flags.mode}'. options: ${STAGE_ORDER.map(modeWord).join(' | ')}`);
   let manifest;
   try { manifest = readStageManifest(stageId); }
   catch { return fail(`mode '${flags.mode}' isn't authored yet.`); }
@@ -1512,7 +1512,16 @@ async function cmdConscience(args) {
   }
 }
 
+// Set by run() when the caller asked for --json: a failure is then one JSON object on stderr and
+// nothing on stdout, so an agent parsing the output gets an error it can read, not prose.
+let jsonErrors = false;
+function failJson(error, hint) {
+  console.error(JSON.stringify(hint ? { error, hint } : { error }));
+  process.exitCode = 1;
+}
+
 function fail(msg) {
+  if (jsonErrors) return failJson(msg);
   console.error(`  ${err('Error')} ${msg}`);
   process.exitCode = 1;
 }
@@ -1525,6 +1534,7 @@ function fail(msg) {
 // keeps a registry and `boss list` reads it — so the recovery was always computable and simply
 // never offered. An error that knows the answer and withholds it is the least forgivable kind.
 function failNotAProject() {
+  if (jsonErrors) return failJson("this folder isn't a BOSS project.", 'run it inside a project: `boss list` shows where they are; `boss new <name>` or `boss adopt` starts one.');
   console.error(`  ${err('Error')} this folder isn't a BOSS project.`);
   let projects = [];
   try { projects = (listProjects() || []).filter((p) => p && p.path && p.status !== 'retired'); } catch { /* registry optional */ }
@@ -1533,7 +1543,7 @@ function failNotAProject() {
     if (here.length) {
       // The single likeliest case: they are standing one level above the project they mean.
       console.error(dim(`  ${here.length === 1 ? 'It looks like it is' : 'They look like they are'} just below you:`));
-      for (const p of here.slice(0, 3)) console.error(`    cd ${basename(p.path)}`);
+      for (const p of here.slice(0, 3)) console.error(`    cd ${shellArg(basename(p.path))}`);
     } else {
       console.error(dim(`  You have ${projects.length} project${projects.length === 1 ? '' : 's'} on this machine — \`boss list\` shows where.`));
     }
@@ -1692,7 +1702,7 @@ function cmdHooks(args) {
   const [sub, name] = pos;
   if (!sub) return printHooks(process.cwd());
   const stamp = readStamp(process.cwd());
-  if (!stamp) return fail('not a BOSS project here — run this inside one.');
+  if (!stamp) return failNotAProject();
   const layers = stamp.installedLayers || [stamp.stage];
   if (sub === 'enable') {
     if (!name) return fail('usage: boss hooks enable <name>   (`boss hooks` lists them)');
@@ -1946,8 +1956,33 @@ function nearestCommand(input) {
   return bestD <= 3 ? best : null; // only suggest when it's plausibly a typo
 }
 
+// Commands that print JSON on --json. Anywhere else the flag used to be ignored and the command
+// printed prose to a caller that had asked for JSON, with nothing saying so.
+const JSON_COMMANDS = new Set(['board']);
+
+// A flag no command reads is a typo: refuse it and name the nearest real one, rather than run the
+// command as if it weren't there (`boss board --nxt` printed the whole board and exited 0).
+function unknownFlag(cmd, args) {
+  for (const a of args) {
+    if (!a.startsWith('--') || a === '--') continue;
+    const name = a.slice(2).split('=')[0];
+    if (name === 'json' && !JSON_COMMANDS.has(cmd)) {
+      fail(`\`boss ${cmd}\` has no --json output. \`boss board --json\` does.`);
+      return true;
+    }
+    if (KNOWN_FLAGS.has(name)) continue;
+    let best = null, bestD = Infinity;
+    for (const f of KNOWN_FLAGS) { const d = editDistance(name, f); if (d < bestD) { bestD = d; best = f; } }
+    fail(`unknown flag ${bold('--' + name)}.${best && bestD <= 2 ? ` Did you mean ${bold('--' + best)}?` : ''} \`boss help ${cmd}\` lists what it takes.`);
+    return true;
+  }
+  return false;
+}
+
 export async function run(argv) {
   const [cmd, ...args] = argv;
+  jsonErrors = args.includes('--json');
+  if (KNOWN_COMMANDS.includes(cmd) && unknownFlag(cmd, args)) return;
   switch (cmd) {
     case 'new': return cmdNew(args);
     case 'adopt': return cmdAdopt(args);
