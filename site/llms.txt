@@ -1,8 +1,8 @@
 # BOSS
 
-> The team you hire, just in time. BOSS runs inside Claude Code: builders, mentors, and a conscience that says one thing when you drift. Free, MIT, local.
+> Your AI can build anything. BOSS keeps it building the one thing — inside Claude Code it finds the smallest version of a new idea, reads a drifting build back to you, and says one thing when you drift. Free, MIT, local.
 
-BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, agents and hooks for founders. It sets a project up with only the structure it has earned, grows it through four modes (Quickstart → MVP → V1 → Scale), and says one thing when the founder drifts. Everything stays on the founder's machine. MIT licensed, free, v0.329.0. Install: `npm install -g oyeboss` or `brew install ajeshh/boss/oyeboss`; needs Node 18+ and Claude Code.
+BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, agents and hooks for founders. It sets a project up with only the structure it has earned, grows it through four modes (Quickstart → MVP → V1 → Scale), and says one thing when the founder drifts. Everything stays on the founder's machine. MIT licensed, free, v0.330.0. Install: `npm install -g oyeboss` or `brew install ajeshh/boss/oyeboss`; needs Node 22+ and Claude Code.
 
 ## Pages
 
@@ -16,7 +16,7 @@ BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, a
 - [For engineers — how BOSS approaches agentic development](https://oyeboss.build/engineering): The technical positions BOSS actually holds on harnesses, context, agent security, testing and retrieval — and, for each one, who it learned that from.
 - [Governance — how BOSS decides what it believes](https://oyeboss.build/governance): Every practice BOSS ships is attributed, dated, and has a review trigger. Here's the pipeline an outside claim has to survive, and how staleness gets caught.
 - [Guide — using the team, rung by rung](https://oyeboss.build/guide): What each mode adds, when to unlock, what happens after you ship, and how it works with a cofounder.
-- [BOSS — Claude Code skills, agents and a conscience for founders](https://oyeboss.build/): The team you hire, just in time. BOSS runs inside Claude Code: builders, mentors, and a conscience that says one thing when you drift. Free, MIT, local.
+- [BOSS — Claude Code skills, agents and a conscience for founders](https://oyeboss.build/): Your AI can build anything. BOSS keeps it building the one thing — inside Claude Code it finds the smallest version of a new idea, reads a drifting build back to you, and says one thing when you drift. Free, MIT, local.
 - [Keeping track — what BOSS writes down, so you don't have to](https://oyeboss.build/keeping-track): Twelve ideas, three half-finished specs, a decision you can't remember making. BOSS gives each a file, a status and a place, and renders the board from them.
 - [The playbook — your records, read back as the company](https://oyeboss.build/playbook): boss playbook turns your records — idea, people, evidence, decisions, brand — into sixteen chapters. Press Present for a deck, VC or internal cut; export PDF.
 - [For product people — the positions BOSS holds](https://oyeboss.build/product): Ceremony scaled to evidence, a canvas that is an answer store not a framework, an evidence ladder that grades what people did, and a roadmap with a no-list.

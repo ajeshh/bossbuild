@@ -27,6 +27,8 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+## 0.330.0 — 2026-10-05
+
 - **A security problem has a private way in.** `/feedback` used to file everything as a public issue, a
   way past the secrets guard included. Now it sends a security hole to the private report form instead, and
   `SECURITY.md` in the repo says what counts and where it goes.

@@ -111,18 +111,41 @@
 
   /* Programs — which umbrella is moving, which is stuck. Not a burndown: an umbrella
      with nothing shipped is a fact worth seeing, not a failing grade. */
-  .programs { margin: 22px 0 0; border-top: 1px solid var(--line); padding-top: 16px; }
-  .programs h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px;
-    font: 600 12px/1 var(--mono); color: var(--muted); }
-  .programs h2 .n { font-weight: 700; color: var(--ink); }
-  .progs { display: grid; gap: 7px; }
-  .prog { display: grid; grid-template-columns: minmax(120px, 200px) 1fr auto; gap: 12px; align-items: center; }
-  .prog-name { font: 12px/1 var(--mono); color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .prog-bar { height: 8px; background: var(--sunk); border-radius: 2px; overflow: hidden; }
-  .prog-bar i { display: block; height: 100%; background: var(--stage-3); }
-  .prog.stuck .prog-bar { box-shadow: inset 0 0 0 1px var(--caution); }
-  .prog-n { font: 12px/1 var(--mono); color: var(--ink); min-width: 34px; text-align: right; }
-  .prog-n .muted { color: var(--muted); }
+  /* By program (IDEA-145 S10/S11) — the URL picks the view, no script: #by-program (or a lane in it)
+     shows the lanes and hides the columns; anything else is the stage board, the default. */
+  .viewswitch { display: inline-flex; gap: 2px; margin: 0 0 14px; padding: 2px; border: 1px solid var(--line); border-radius: 3px; }
+  .viewswitch a { font: 600 12px/1 var(--mono); padding: 7px 11px; border-radius: 2px; text-decoration: none; color: var(--muted); }
+  .viewswitch a.vs-stage { background: var(--sunk); color: var(--ink); }
+  .lanes { display: none; scroll-margin-top: 120px; }
+  .board-page:has(#by-program:target, #by-program :target) .lanes { display: block; }
+  .board-page:has(#by-program:target, #by-program :target) #by-stage { display: none; }
+  .board-page:has(#by-program:target, #by-program :target) .viewswitch a.vs-stage { background: none; color: var(--muted); }
+  .board-page:has(#by-program:target, #by-program :target) .viewswitch a.vs-prog { background: var(--sunk); color: var(--ink); }
+  .lgrid, .lane { display: grid; grid-template-columns: minmax(150px, 200px) repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .lgrid .ch { font: 650 12px/1 var(--mono); color: var(--muted); padding: 0 2px 8px; border-bottom: 2px solid var(--line); }
+  .lane { border-bottom: 1px solid var(--line); padding: 10px 0; scroll-margin-top: 70px; }
+  .lane:target { background: color-mix(in srgb, var(--hivis) 6%, transparent); }
+  .lane .ln { font-weight: 650; font-size: 14px; overflow-wrap: anywhere; }
+  .lane .lm { font: 12px/1.4 var(--mono); color: var(--muted); margin-top: 3px; }
+  .lane .cell { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .lane .lc { background: var(--panel); border: 1px solid var(--line); border-radius: 2px; padding: 6px 8px; font-size: 12.5px; line-height: 1.35; overflow-wrap: anywhere; }
+  .lane .lc b { display: block; font: 650 11px var(--mono); color: var(--muted); }
+  .lane .e { color: var(--muted); opacity: .5; font: 12px var(--mono); padding: 6px 2px; }
+  .lane .sq { display: flex; flex-wrap: wrap; gap: 3px; }
+  .lane .sq i { width: 9px; height: 9px; background: var(--stage-0); opacity: .75; border-radius: 1px; }
+  .lane .sn { font: 12px var(--mono); color: var(--muted); margin-top: 4px; }
+  .settled { margin-top: 12px; scroll-margin-top: 70px; }
+  .settled summary { cursor: pointer; font: 600 12px var(--mono); color: var(--muted); }
+  .settled summary span { font-weight: 400; }
+  .settled .sl { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 13px; }
+  .settled .sl b { font: 12px var(--mono); color: var(--muted); } .settled .sl em { font-style: normal; color: var(--muted); font-size: 12px; }
+  /* Phones: a row stacks — the program, then its cards, each column labelled; empty columns drop out. */
+  @media (max-width: 720px) {
+    .lgrid { display: none; }
+    .lane { grid-template-columns: 1fr; gap: 6px; }
+    .lane .cell:has(.e) { display: none; }
+    .lane .cell::before { content: attr(data-col); font: 600 11px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  }
   /* Shipped over time — cadence, never a scoreboard. One mark per shipped item,
      stacked in its month. No intensity ramp and no empty-square guilt: a quiet
      month is a fact about the month, not a verdict on the founder. */
@@ -190,6 +213,7 @@
   .parked .cards { margin-top: 12px; display: grid; gap: 8px;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .parked .card .title { color: var(--muted); }
+  .card .dates .pgm { flex-basis: 100%; color: var(--ink); }
   .card .prio { font: 700 12px/1 var(--mono); color: var(--hivis-text);
                 border: 1px solid color-mix(in srgb, var(--hivis) 45%, transparent);
                 border-radius: 2px; padding: 3px 6px; }
@@ -245,7 +269,9 @@
 </header>
 <div class="shell">
   <nav class="rail" aria-label="Sections">
-    <div class="label group">Board</div><ol><li><a href="#col-0"><span class="n">1</span>Captured</a></li><li><a href="#col-1"><span class="n">2</span>Taking shape</a></li><li><a href="#col-2"><span class="n">3</span>Building</a></li><li><a href="#col-3"><span class="n">4</span>Shipped</a></li><li><a href="#programs"><span class="n">5</span>Programs</a></li><li><a href="#timeline"><span class="n">6</span>Shipped, by month</a></li><li><a href="#parked"><span class="n">7</span>Parked</a></li></ol>
+    <div class="label group">By stage</div><ol><li><a href="#col-0"><span class="n">1</span>Captured</a></li><li><a href="#col-1"><span class="n">2</span>Taking shape</a></li><li><a href="#col-2"><span class="n">3</span>Building</a></li><li><a href="#col-3"><span class="n">4</span>Shipped</a></li></ol>
+<div class="label group">By program</div><ol><li><a href="#lane-onboarding"><span class="n">5</span>onboarding</a></li><li><a href="#lane-prog-001"><span class="n">6</span>Cover</a></li><li><a href="#lane-none"><span class="n">7</span>Not part of a program</a></li></ol>
+<div class="label group">Over time</div><ol><li><a href="#timeline"><span class="n">8</span>Shipped, by month</a></li><li><a href="#parked"><span class="n">9</span>Parked</a></li></ol>
   </nav>
   <main>
 
@@ -257,7 +283,8 @@
     </header>
     
     
-    <div class="board">
+    <nav class="viewswitch" aria-label="View"><a class="vs-stage" href="#by-stage">By stage</a><a class="vs-prog" href="#by-program">By program</a></nav>
+    <div class="board" id="by-stage">
 <section class="col" id="col-0" style="--hue:var(--stage-0)">
         <h2><span class="label">Captured</span> <span class="n">2</span></h2>
         <div class="cards"><div class="card" tabindex="0" title="IDEA-003 — Invoice export
@@ -288,13 +315,13 @@ One message to an owner who filled a visit last Monday and hasn't opened Kettlew
 
 Take the first £4 — a card on file per agency, billed monthly per carer, cancel in one tap. (g)">
             <div class="id">FEAT-003</div>
-            <div class="title">Pay for cover</div><p class="gist">Take the first £4 — a card on file per agency, billed monthly per carer, cancel in one tap. <span class="muted">(g)</span></p><div class="prog" title="0 of 2 acceptance criteria"><i></i><i></i><b>0/2</b></div><div class="dates"><span><em>added</em> 2026-09-03</span></div>
+            <div class="title">Pay for cover</div><p class="gist">Take the first £4 — a card on file per agency, billed monthly per carer, cancel in one tap. <span class="muted">(g)</span></p><div class="prog" title="0 of 2 acceptance criteria"><i></i><i></i><b>0/2</b></div><div class="dates"><span class="pgm" title="program: PROG-001"><em>program</em> Cover</span><span><em>added</em> 2026-09-03</span></div>
           </div>
 <div class="card" tabindex="0" title="FEAT-004 — The register import
 
 Import an owner's carer list from the register extract instead of typing it. (g)">
             <div class="id">FEAT-004</div>
-            <div class="title">The register import</div><p class="gist">Import an owner's carer list from the register extract instead of typing it. <span class="muted">(g)</span></p><div class="prog none" title="no ## Acceptance criteria section in the record">no acceptance criteria</div><div class="dates"><span><em>added</em> 2026-09-08</span></div>
+            <div class="title">The register import</div><p class="gist">Import an owner's carer list from the register extract instead of typing it. <span class="muted">(g)</span></p><div class="prog none" title="no ## Acceptance criteria section in the record">no acceptance criteria</div><div class="dates"><span class="pgm" title="program: onboarding"><em>program</em> onboarding</span><span><em>added</em> 2026-09-08</span></div>
           </div></div>
       </section>
 <section class="col" id="col-3" style="--hue:var(--stage-3)">
@@ -303,41 +330,33 @@ Import an owner's carer list from the register extract instead of typing it. (g)
 
 Cancel in one tap — an agency leaves without a call, a form or a guilt screen; the schedule was always theirs. (d)">
             <div class="id">FEAT-006</div>
-            <div class="title">Cancel in one tap</div><p class="gist">Cancel in one tap — an agency leaves without a call, a form or a guilt screen; the schedule was always theirs. <span class="muted">(d)</span></p><div class="dates"><span><em>added</em> 2026-08-31</span><span><em>shipped</em> 2026-09-06</span></div>
+            <div class="title">Cancel in one tap</div><p class="gist">Cancel in one tap — an agency leaves without a call, a form or a guilt screen; the schedule was always theirs. <span class="muted">(d)</span></p><div class="dates"><span class="pgm" title="program: PROG-001"><em>program</em> Cover</span><span><em>added</em> 2026-08-31</span><span><em>shipped</em> 2026-09-06</span></div>
           </div>
 <details class="more"><summary>+3 shipped earlier</summary>
 <div class="cards rest"><div class="card" tabindex="0" title="FEAT-001 — The cover flow
 
 The cover flow — one tap on the visit, the ask to three carers, the first yes fills it, the owner confirms. (d)">
             <div class="id">FEAT-001</div>
-            <div class="title">The cover flow</div><p class="gist">The cover flow — one tap on the visit, the ask to three carers, the first yes fills it, the owner confirms. <span class="muted">(d)</span></p><div class="dates"><span><em>added</em> 2026-06-14</span><span><em>shipped</em> 2026-08-28</span></div>
+            <div class="title">The cover flow</div><p class="gist">The cover flow — one tap on the visit, the ask to three carers, the first yes fills it, the owner confirms. <span class="muted">(d)</span></p><div class="dates"><span class="pgm" title="program: PROG-001"><em>program</em> Cover</span><span><em>added</em> 2026-06-14</span><span><em>shipped</em> 2026-08-28</span></div>
           </div>
 <div class="card" tabindex="0" title="FEAT-002 — The Monday view
 
 The Monday view — every visit for the day, the uncovered ones first, on one phone screen. (d)">
             <div class="id">FEAT-002</div>
-            <div class="title">The Monday view</div><p class="gist">The Monday view — every visit for the day, the uncovered ones first, on one phone screen. <span class="muted">(d)</span></p><div class="dates"><span><em>added</em> 2026-07-02</span><span><em>shipped</em> 2026-08-28</span></div>
+            <div class="title">The Monday view</div><p class="gist">The Monday view — every visit for the day, the uncovered ones first, on one phone screen. <span class="muted">(d)</span></p><div class="dates"><span class="pgm" title="program: PROG-001"><em>program</em> Cover</span><span><em>added</em> 2026-07-02</span><span><em>shipped</em> 2026-08-28</span></div>
           </div>
 <div class="card" tabindex="0" title="FEAT-005 — Quiet hours
 
 Quiet hours — nothing sends between 8pm and 6:30am; a late cancellation waits for morning and says so to the owner. (d)">
             <div class="id">FEAT-005</div>
-            <div class="title">Quiet hours</div><p class="gist">Quiet hours — nothing sends between 8pm and 6:30am; a late cancellation waits for morning and says so to the owner. <span class="muted">(d)</span></p><div class="dates"><span><em>added</em> 2026-07-10</span><span><em>shipped</em> 2026-07-18</span></div>
+            <div class="title">Quiet hours</div><p class="gist">Quiet hours — nothing sends between 8pm and 6:30am; a late cancellation waits for morning and says so to the owner. <span class="muted">(d)</span></p><div class="dates"><span class="pgm" title="program: PROG-001"><em>program</em> Cover</span><span><em>added</em> 2026-07-10</span><span><em>shipped</em> 2026-07-18</span></div>
           </div></div></details></div>
       </section>
     </div>
-    <section class="programs" id="programs">
-      <h2><span class="label">Programs</span> <span class="n">2</span></h2>
-      <div class="progs"><div class="prog">
-          <div class="prog-name">cover</div>
-          <div class="prog-bar"><i style="width:80%"></i></div>
-          <div class="prog-n">4<span class="muted">/5</span></div>
-        </div><div class="prog">
-          <div class="prog-name">onboarding</div>
-          <div class="prog-bar"><i style="width:0%"></i></div>
-          <div class="prog-n">0<span class="muted">/1</span></div>
-        </div></div>
-      <p class="tl-foot"><span class="muted">One frontmatter line — <code>program:</code> — grouping records that belong together.</span></p>
+    <section class="lanes" id="by-program" aria-label="By program">
+      <div class="lgrid"><div></div><div class="ch">Captured</div><div class="ch">Taking shape</div><div class="ch">Building</div><div class="ch">Shipped</div></div>
+      <div class="lane" id="lane-onboarding"><div class="lh"><div class="ln">onboarding</div></div><div class="cell" data-col="Captured"><div class="e">·</div></div><div class="cell" data-col="Taking shape"><div class="e">·</div></div><div class="cell" data-col="Building"><div class="lc" title="FEAT-004 — The register import"><b>FEAT-004</b>The register import</div></div><div class="cell ship" data-col="Shipped"><div class="e">—</div></div></div><div class="lane" id="lane-prog-001"><div class="lh"><div class="ln">Cover</div><div class="lm">PROG-001 · 1 task open</div></div><div class="cell" data-col="Captured"><div class="e">·</div></div><div class="cell" data-col="Taking shape"><div class="e">·</div></div><div class="cell" data-col="Building"><div class="lc" title="FEAT-003 — Pay for cover"><b>FEAT-003</b>Pay for cover</div></div><div class="cell ship" data-col="Shipped"><div class="sq"><i title="FEAT-001 — The cover flow"></i><i title="FEAT-002 — The Monday view"></i><i title="FEAT-005 — Quiet hours"></i><i title="FEAT-006 — Cancel in one tap"></i></div><div class="sn">4 shipped</div></div></div><div class="lane" id="lane-none"><div class="lh"><div class="ln">Not part of a program</div><div class="lm">no program</div></div><div class="cell" data-col="Captured"><div class="lc" title="IDEA-003 — Invoice export"><b>IDEA-003</b>Invoice export</div><div class="lc" title="IDEA-006 — The owners' group referral"><b>IDEA-006</b>The owners' group referral</div></div><div class="cell" data-col="Taking shape"><div class="lc" title="IDEA-004 — The second-Monday nudge"><b>IDEA-004</b>The second-Monday nudge</div></div><div class="cell" data-col="Building"><div class="e">·</div></div><div class="cell ship" data-col="Shipped"><div class="e">—</div></div></div>
+      <p class="tl-foot"><span class="muted">One line — <code>program:</code> — groups records; a <code>docs/programs/PROG-NNN</code> record holds what they share. <code>boss board PROG-NNN</code> opens one.</span></p>
     </section>
     <section class="timeline" id="timeline">
       <h2><span class="label">Shipped over time</span> <span class="n">4</span></h2>
@@ -374,7 +393,7 @@ Carer profiles — a photo, a yes-rate, a favourite-visits list — so owners ca
 </div>
 <footer class="site">
   <div>A read of the files: to change the board, change the work, with <code>/idea</code>, <code>/canvas</code> or <code>/spec</code>.</div>
-  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-10-05 17:11.</div>
+  <div>Re-run <code>boss board --html</code> to refresh. Rendered 2026-10-05 21:56.</div>
   <div>set in the venture's own tokens — 10 taken from docs/design/tokens.json · light scheme only</div>
 </footer>
 <script>

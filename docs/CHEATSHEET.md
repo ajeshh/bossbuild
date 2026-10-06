@@ -3,7 +3,7 @@
 # BOSS Cheatsheet
 
 > The whole ladder at a glance — every mode and what it adds. Generated from the stage
-> manifests, current as of **v0.329.0**. Inside a project, run `boss map` for the live,
+> manifests, current as of **v0.330.0**. Inside a project, run `boss map` for the live,
 > personalized version (where you are + what’s one unlock away).
 
 ## The ladder
@@ -69,7 +69,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/log` — Append a dated entry to docs/devlog.md — what landed this session, what's next, what surprised you
 - `/close` — Session-end ritual — update docs/RESUME.md (state + next tasks + open decisions), append a /log entry, and let the conscience update its read on the venture (.boss/brain/)
 - `/evals` — Build and run the eval set for an AI-mediated FEAT - "is it correct?" paired with /smoke's "is it alive?" Husain's discipline applied to your app - look at your data, build the eval set first, categorize failures by mode
-- `/design-tokens-init` — Scaffold the minimal three-layer design token system at the first UI commit, plus the component index the agent opens before creating component number two
+- `/design-tokens-init` — Scaffold the minimal design token system (primitives under semantic names) at the first UI commit, plus the component index the agent opens before creating component number two
 - `/ai-cost` — AI spend for your app, from budget to bill
 - `/ai-failure-states` — Design what your app does when the AI fails — the five failure states (garbage, refusal, hallucination, timeout, cost-spike) and the declared response to each, named BEFORE the failure happens
 - `/extract` — Pause and sort patterns — Principle 1 as a skill

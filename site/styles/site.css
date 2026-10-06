@@ -111,7 +111,9 @@ button.copy[data-done="true"] { background: var(--color-signal-safe); color: var
 .terminal.breakout { width: min(100%, 54rem); }
 /* Flex column: the newline between .line spans is whitespace-only and is not rendered,
    so a block per line does not also print a blank one (IDEA-117). */
-.terminal pre { margin: 0; white-space: pre; display: flex; flex-direction: column; }
+/* pre-wrap, not pre: a line wider than the box wrapped on a phone and was cut mid-sentence on
+   desktop (IDEA-143 C3). No terminal on the site draws boxes, so wrapping breaks no alignment. */
+.terminal pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; display: flex; flex-direction: column; }
 .terminal .cap {
   display: block; font-family: var(--font-mono); font-size: var(--step--1);
   color: var(--color-terminal-dim); margin-bottom: var(--space-3);
@@ -157,7 +159,7 @@ ul.plain li { padding-left: 1.5rem; position: relative; margin-bottom: var(--spa
 ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.75rem; height: 2px; background: var(--color-structure); }
 
 code {
-  font-family: var(--font-mono); font-size: 0.88em;
+  font-family: var(--font-mono); font-size: max(0.88em, 12px);
   background: var(--color-surface-sunk); border: 1px solid var(--color-rule);
   border-radius: var(--radius-sm); padding: 0.08em 0.35em;
   /* A boxed token that wraps mid-phrase draws two half-boxes and lands on its neighbour.
@@ -217,6 +219,14 @@ footer .cols { display: grid; grid-template-columns: var(--rail-width) minmax(0,
 }
 .sitenav a:hover { color: var(--color-text); }
 .sitenav a[aria-current="page"] { color: var(--color-text); border-bottom-color: var(--color-structure); }
+/* Phone: seven links wrapped to two rows and stayed pinned — 133px, 16% of every screen, links
+   24px tall. One row that scrolls, not pinned, 44px targets (IDEA-143 D1). */
+@media (max-width: 46rem) {
+  .sitenav { position: static; }
+  .sitenav-in { row-gap: 0; padding-top: var(--space-2); }
+  .sitenav ul { flex: 1 1 100%; min-width: 0; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sitenav a { display: inline-block; padding: 0.7rem 0; white-space: nowrap; }
+}
 /* The wordmark is spelled B.O.S.S. the way the hero rail spells it; the full form rode beside it
    for an afternoon and came out again (Ajesh, 2026-09-13: "boss full form can drop from the
    header") — the hero rail still reads it out on the home page. */
@@ -265,7 +275,13 @@ table code { background: none; border: 0; padding: 0; color: var(--color-text-se
 /* The hero rail is the one place the mark is seen at a size where the built B reads (IDEA-117). */
 .hero .wordmark { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
 .hero .wordmark .mark { --mark-size: 6.5rem; }
-@media (max-width: 46rem) { .hero .wordmark .mark { --mark-size: 4.5rem; } }
+/* On a phone the nav already carries the mark; the rail's second copy cost the first screen
+   ~170px and pushed the install command below it (IDEA-143 D1). */
+@media (max-width: 46rem) { .hero > .rail { display: none; } }
+/* The definition line under the hero: PRINCIPLES' one sentence, quoted, never rewritten. */
+.hero .def { margin: var(--space-3) 0 var(--space-2); font-size: var(--step-0); color: var(--color-text); }
+/* The hero line is a sentence now, not a slogan: at --step-4 it ran six lines on a phone. */
+@media (max-width: 46rem) { .hero h1 { font-size: var(--step-3); } }
 
 /* --- the proof strip (IDEA-117) -------------------------------------------
    Three real renders of the demo venture (gen-proof.js), not drawings of them. */
@@ -610,7 +626,7 @@ a.ref:hover { background: var(--color-structure); color: var(--color-on-structur
   font-weight: 650; color: var(--color-link); margin-left: 0.4rem; }
 
 /* --- the picker ----------------------------------------------------------
-   "Is this you?" as three things you choose between, not three paragraphs to
+   "Is this you?" as things you choose between (two since IDEA-143), not paragraphs to
    read. Pure CSS — hidden radios drive `:checked ~` on the panels, so it works
    with JS off, arrow-keys work for free (it IS a radio group), and every panel
    ships in the HTML where a crawler can still read it.
@@ -627,6 +643,7 @@ a.ref:hover { background: var(--color-structure); color: var(--color-on-structur
   font-family: var(--font-mono); font-size: var(--step--1); cursor: pointer;
   border: var(--hairline); border-radius: var(--radius-sm);
   padding: 0.34rem 0.7rem; color: var(--color-text-secondary);
+  display: inline-flex; align-items: center; min-height: 2.75rem;
   transition: color 0.15s var(--ease), border-color 0.15s var(--ease);
 }
 .picker .tabs label:hover { color: var(--color-text); border-color: var(--color-structure); }
@@ -651,7 +668,7 @@ a.ref:hover { background: var(--color-structure); color: var(--color-on-structur
 
 /* --- what you end up with ------------------------------------------------
    Artifacts, not features. Each one is a file the founder can open. */
-.yield { display: grid; gap: var(--space-4); max-width: var(--measure); margin: var(--space-4) 0; }
+.yield { display: grid; gap: var(--space-4); max-width: var(--measure); margin: var(--space-4) 0; padding: 0; }
 .yield > li { list-style: none; border-left: var(--turn-rule); padding-left: var(--space-3); }
 .yield h3 { margin: 0 0 var(--space-1); font-family: var(--font-display); font-size: var(--step-0); letter-spacing: -0.02em; }
 .yield h3 code { background: none; border: 0; padding: 0; color: var(--color-link); font-size: 0.9em; }
@@ -688,7 +705,7 @@ a.ref:hover { background: var(--color-structure); color: var(--color-on-structur
    this" — which is what actually makes a tool feel trustworthy. Deliberately
    terse: one claim each, no elaboration, scan-and-move-on. */
 .quirks { list-style: none; margin: var(--space-3) 0; padding: 0; max-width: none;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr)); gap: var(--space-2) var(--space-5); }
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr)); gap: var(--space-2) var(--space-5); }
 .quirks li { padding-left: var(--space-3); border-left: 2px solid var(--color-rule);
   font-size: var(--step--1); color: var(--color-text-secondary); }
 .quirks li:hover { border-left-color: var(--color-structure); }
