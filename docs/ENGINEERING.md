@@ -152,6 +152,11 @@ TypeScript.
 **Direction.** Imports point down: shipped hook lib → leaves → state readers → domain → renderers →
 `cli.js`. Nothing imports `cli.js` except `bin/boss`.
 
+**`cli.js` shrinks as it's touched.** It holds 2,000+ lines and 23 `cmd*` handlers, and it's the file
+concurrent sessions collide on most. When you change a handler, move it into the domain module it
+already calls (`cmdSync` → `sync.js`, `cmdBoard` → `board.js`) and leave `cli.js` the dispatch line.
+Never a big-bang split, which would collide with every open worktree. — **W** (IDEA-150 D3)
+
 | Layer | Modules |
 |---|---|
 | Shipped hook lib (below `src/`) | `stages/L0-quickstart/template/.claude/hooks/lib/*` |

@@ -317,6 +317,27 @@ exact block to paste into `.claude/settings.json`. `boss sync` keeps them curren
   at one — BOSS defaults to right-sized and makes you *earn* the heavier path on evidence. It will
   never push you toward a shape because the shape is impressive.
 
+## When it doesn't work
+
+The messages you're most likely to meet, word for word, and what each one means.
+
+- **`no such file or directory: /boss`** (or `command not found`) — a slash command was typed into the
+  terminal. Those run inside Claude Code: type `claude` first, then `/boss`.
+- **`claude: command not found`** — Claude Code isn't installed yet: <https://claude.com/claude-code>.
+  `boss new` says the same when it can't find it.
+- **`this folder isn't a BOSS project.`** — you're outside the project. `cd` into it; if you've lost it,
+  `boss list` shows where your projects are.
+- **`/boss` isn't offered inside Claude** — Claude was opened in a different folder, or the session started
+  before `boss new` or `boss sync`. Open Claude in the project folder, or start a new session.
+- **`'<name>' already exists here.`** — there's already a folder by that name. To bring BOSS into a
+  folder you already have, run `boss adopt` inside it.
+- **`.claude/settings.json can't be parsed`** — that file has a JSON typo, usually a stray comma.
+  BOSS leaves it exactly as it is until you fix it, so nothing in it is lost.
+- **`unknown flag --…`** — the flag isn't one BOSS knows; the message names the nearest real one, and
+  `boss help <command>` lists what each command takes.
+
+Still stuck? `/feedback` tells the people who build BOSS, and shows you what it sends first.
+
 ---
 
 ## Reference

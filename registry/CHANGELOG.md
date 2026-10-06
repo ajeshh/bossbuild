@@ -58,6 +58,10 @@ rule above still applies to the whole section once it is stamped.
   nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
   points at your own machine, a private network or a cloud metadata endpoint.
 
+- **The guide has a "When it doesn't work" section, and the start page says how to install offline.** The
+  messages you're most likely to meet, word for word, with what each one means. And because BOSS has no
+  dependencies, one package file carried to an offline machine is a complete install.
+
 - **`boss id` no longer hands out a number another worktree already used.** When work happens in
   separate git worktrees, a record created in one was invisible from the others until it was merged, so
   the same number could be given out twice. `boss id` now counts every open worktree of the repo.
