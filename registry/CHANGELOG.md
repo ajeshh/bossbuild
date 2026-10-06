@@ -27,6 +27,13 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **A typo in your Claude Code settings no longer costs you the rest of them.** If
+  `.claude/settings.json` had one stray comma, `boss hooks enable`, `boss adopt` and `boss sync` read it as
+  empty and wrote that back, keeping only what BOSS was adding. Your permissions, the conscience's
+  registration and the rules that keep secret files out of the agent's reach were gone, and the command
+  said it worked. Now BOSS leaves the file exactly as it was and says it can't be parsed: `boss hooks`
+  stops there, while `boss sync` and `boss adopt` carry on with everything else.
+
 - **When one idea has grown into several, BOSS says so — and a program gets its own view.** Ideas
   that belong together could share a `program:` line, but nothing told you when that effort had
   earned its own page, and the board never showed which program a card was in. Now

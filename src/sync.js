@@ -16,6 +16,7 @@ import { readLadder, assess } from './ladder.js';
 import { provenance, recordManaged, backupManaged, readLedger } from './managed.js';
 import { isoDay } from './clock.js';
 import { writeFileAtomic } from './atomic.js';
+import { readSettingsForWrite } from './hooks.js';
 
 // Resolve a possibly-stale layer id (e.g. an old "L0-sketch" pin) to the
 // canonical current stage id by its level prefix. Returns undefined if it
@@ -263,9 +264,12 @@ function applyHookMigrations(merged) {
 export function computeSettingsMerge(projectDir, layers) {
   const rel = join('.claude', 'settings.json');
   const dest = join(projectDir, rel);
-  let merged = {};
-  if (existsSync(dest)) {
-    try { merged = JSON.parse(readFileSync(dest, 'utf8')); } catch { merged = {}; }
+  // Unparseable → skip it and say so, never merge into {} and write that back: that erased a
+  // founder's permissions and deny floor (test/unparseable-settings-left-alone.test.js). The rest
+  // of a sync or adopt goes on — one bad file is no reason to hold back every other update.
+  let merged;
+  try { merged = readSettingsForWrite(projectDir); } catch (e) {
+    return { changed: false, merged: null, rel, migrated: [], unparseable: e.message };
   }
   let changed = false;
   const migrated = [];

@@ -322,6 +322,7 @@ function cmdAdopt(args) {
   // 4. Merge the conscience hook registration into settings.json (additive —
   //    preserves the founder's permissions + any hooks they already wired).
   const settings = computeSettingsMerge(targetDir, chain);
+  if (settings?.unparseable) console.log(`  ${warn('!')} ${settings.unparseable}`);
   if (settings && settings.changed) {
     const dest = join(targetDir, settings.rel);
     mkdirSync(join(targetDir, '.claude'), { recursive: true });
@@ -1325,6 +1326,7 @@ function cmdSync(args) {
   console.log(`\n  ${bold(stamp.name + ' — sync')}`);
   console.log(`    pin:    ${plan.pin || 'unknown'}${plan.drift ? `  →  current ${plan.current}` : '  (current)'}`);
   console.log(`    modes: ${plan.layers.map(modeWord).join(' → ')}\n`);
+  if (plan.settings?.unparseable) console.log(`    ${warn('!')} ${plan.settings.unparseable}\n`);
 
   if (!changed.length && !settingsChanged) {
     console.log(`    ${ok('✓')} BOSS-managed skills/agents/hooks are up to date.`);

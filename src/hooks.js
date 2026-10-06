@@ -60,6 +60,18 @@ function settingsPath(projectDir) { return join(projectDir, '.claude', 'settings
 function readSettings(projectDir) {
   try { return JSON.parse(readFileSync(settingsPath(projectDir), 'utf8')); } catch { return {}; }
 }
+/**
+ * settings.json for a read-modify-write: {} when absent, and a refusal when it won't parse. Reading
+ * an unparseable file as {} and writing it back erased a founder's permissions, the conscience's
+ * registration and the secret-path deny floor (test/unparseable-settings-left-alone.test.js).
+ */
+export function readSettingsForWrite(projectDir) {
+  const p = settingsPath(projectDir);
+  if (!existsSync(p)) return {};
+  try { return JSON.parse(readFileSync(p, 'utf8')); } catch {
+    throw new Error(`.claude/settings.json can't be parsed, so BOSS won't write over it — fix the JSON (a stray comma is the usual one) and retry.`);
+  }
+}
 function commandsOf(entry) { return (entry.hooks || []).map((h) => h.command || ''); }
 
 /** Is this hook registered in the project's settings.json? */
@@ -83,7 +95,7 @@ export function enableHook(projectDir, name, layers) {
   mkdirSync(dirname(dest), { recursive: true });
   const file = !existsSync(dest);
   if (file) writeFileSync(dest, text);
-  const s = readSettings(projectDir);
+  const s = readSettingsForWrite(projectDir);
   s.hooks = s.hooks || {};
   let registered = false;
   for (const [event, entries] of Object.entries(sw.hooks)) {
@@ -105,7 +117,7 @@ export function enableHook(projectDir, name, layers) {
  * { unregistered, removed, kept }.
  */
 export function disableHook(projectDir, name) {
-  const s = readSettings(projectDir);
+  const s = readSettingsForWrite(projectDir);
   let unregistered = false;
   for (const [event, entries] of Object.entries(s.hooks || {})) {
     const kept = (entries || []).filter((e) => !commandsOf(e).some((c) => c.includes(`/.claude/hooks/${name}.js`)));
