@@ -22,6 +22,24 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-05 — IDEA-145: programs that emerge (`514615e` → `3202d5d`+, Unreleased)
+
+- **FEAT:** none — IDEA-145. Began as a board tidy (136/138 → Shipped, 135/143 → Building); Ajesh: the
+  website pass *"was more of a chore not an idea"*, then *"we should know when to elevate it to program"*.
+- **Landed:** the PROG record built (`src/programs.js`): titles, backlogs, *grown* = 3+ open tracks or 12+ open
+  items; rules E1–E6 for when to elevate, offered by `/idea` and `/close`, never done unasked. Three programs:
+  PROG-001 the website, PROG-002 the ecosystems (IDEA-137 graduated and split → IDEA-146, IDEA-147), PROG-003
+  the playbook; three duplicate umbrellas merged. The board: a program line on every card, `boss board PROG-NNN`,
+  `--program`, and *By stage | By program* swimlanes with a two-level rail. Agents: `/spec` carries the program
+  and stamps it in feature-context, `coder` reads the rules first, `--json` carries it, `/decide` names it.
+- **Bug found by audit, fixed:** `boss id PROG` failed in every founder project while `/close` told them to run
+  it (the template's ID table had no row). Reproduced in a fresh scaffold first.
+- **Surprises:** line count is the wrong *grown* test (a 657-line record was all history; tracks are right). A
+  split nearly made a third idea out of C5 — the record's own humane review had already ruled it out. The
+  program chip was there and read as nothing (clipped to 14 characters). The playbook mock sat behind a fold.
+  `check:refs` scans open worktrees (logged on IDEA-120).
+- **Next:** let the board's By-program view get used; the open items are G3, G6–G8 in IDEA-145.
+
 ## 2026-10-05 — IDEA-144: one home for the generated pages (`9214f91` → `867ce24`, Unreleased)
 
 - **FEAT:** none — IDEA-144. Ajesh: the playbook and the other pages are "not easy to discover",

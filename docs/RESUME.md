@@ -33,12 +33,10 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
   plants `.claude/rules/engineering.md` (founder-owned). 18 of 19 found tasks closed with reproductions — incl. the
   suite leaking into an exported `BOSS_HOME` (`test/env-guard.js`). A5/A6/A9 built as opt-in guards (code reuse, declared layers, loosened tests); A7 stays a rule. Open: F11 (deferred).
-- **IDEA-137 (2026-10-04, Unreleased) — the ecosystem of ecosystems.** Inside a founder's project BOSS lays
-  down ecosystems that govern themselves, live by shared principles, and get governance and support for
-  liveliness between them; BOSS → project is one-way. Draft guide `docs/ECOSYSTEMS.md`; **the flow reader**
-  (`registry/flows.json`, check-refs class 7) holds 24 hand-offs and binds every reader to a moved path;
-  DEC-022 (the second repair, built in `coder`), DEC-023 (removal test — it caught the `/ai-cost` logger).
-  The practice is now **Done** (`done.md`, Ajesh's own account). Checklist and order: IDEA-137.
+- **IDEA-145 (2026-10-05, shipped, Unreleased) — programs.** Three graduated: PROG-001 the website (was IDEA-143),
+  PROG-002 the ecosystems (IDEA-137 split: IDEA-146 deferred, IDEA-147 ready), PROG-003 the playbook (the demo rule
+  moved out of here). Rules E1–E6 in IDEA-145; the board has *By stage | By program*; `/spec`, `coder`, `/decide`,
+  `boss status` and `--json` carry the program. Open: G3, G6 (`/revalidate IDEA-072`), G7, G8; playbook block deferred.
 - **IDEA-121 (2026-09-23, closed, pushed; CI green on all six jobs incl. Windows) — architecture and build review.**
   Four silent-damage bugs, the conscience saying one ranked thing (and not re-opening each session on the
   same condition), MVP ~7.6k → ~6.0k tokens/turn, the CLAUDE.md block syncs, Windows fixed. **New here: a
