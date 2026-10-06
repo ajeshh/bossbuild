@@ -3,7 +3,7 @@ id: RESUME
 type: resume
 owner: product-lead
 status: active
-updated: 2026-10-04
+updated: 2026-10-05
 version: 0.329.0
 ---
 
@@ -28,6 +28,13 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-150 (2026-10-05, shipped, pushed; CI green) — what the spec toolkits taught.** Three reads of the
+  spec-driven field, then RVW-136…149 and the build: a tick carries its evidence (`/log` owns ticking), the
+  CLI's first-command craft (quoted `cd`, errors name the next step, unknown flags refused), `amends:` links,
+  named slices, repro-first `coder`, `/spec` 502 → 340 lines, fetched text is data, a private security route
+  (`SECURITY.md`, reporting on), the CHANGELOG merges as a union. Plus a real bug fixed: an unparseable
+  `settings.json` was rewritten as `{}` (`dbf0ae5`). **No rival is named in tracked text any more** —
+  `docs/competition/` is gitignored; names live in `docs/research/sessions/`. Devlog has the entry.
 - **IDEA-144 (2026-10-05, Unreleased) — one home for the generated pages.** `.boss/index.html`: every page with its age, *Where things live* (folders + key files, Open / Copy path), a bookmark hint; every page command prints it as the one bookmark. Spaces ordered Board · Playbook · Design · Guide. Demo: "Organization" → *Where things live* (GitHub links), and the opening says what Kettlewick does. Each card says when its page is out of date (a file it reads changed since). No machine-wide home: each project has its own (Ajesh). Open: the home re-checks only on a page command.
 - **Design-system reading (2026-10-05, Unreleased)** — RVW-111…135 vetted, seven ADAPTs built: the playbook's *Start here* onboards (I need to… · What checks the work), a variant-spelling finding, and the CLAUDE.md token block names values instead of copying them. Devlog has the entry. Nothing open in the lane.
 - **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
@@ -38,12 +45,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   PROG-002 the ecosystems (IDEA-137 split: IDEA-146 deferred, IDEA-147 ready), PROG-003 the playbook (the demo rule
   moved out of here). Rules E1–E6 in IDEA-145; the board has *By stage | By program*; `/spec`, `coder`, `/decide`,
   `boss status` and `--json` carry the program. Open: G3, G6 (`/revalidate IDEA-072`), G7, G8; playbook block deferred.
-- **IDEA-121 (2026-09-23, closed, pushed; CI green on all six jobs incl. Windows) — architecture and build review.**
-  Four silent-damage bugs, the conscience saying one ranked thing (and not re-opening each session on the
-  same condition), MVP ~7.6k → ~6.0k tokens/turn, the CLAUDE.md block syncs, Windows fixed. **New here: a
-  pre-commit hook tests the STAGED tree (`npm run hooks`, ~9s, `--no-verify` skips).** Open: `npm run check`
-  is red only in BOSS's own gitignored install (still has /measure, /ai-first-init) — `boss sync --apply`
-  after the next stamp. Spun out: IDEA-120 (worktrees), IDEA-125 (merges; landed by a peer).
+- **IDEA-121 (2026-09-23, closed)** — history in the devlog. One thing open: `boss sync --apply` in BOSS's own
+  install after the next stamp (it still carries /measure, /ai-first-init).
 - **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every

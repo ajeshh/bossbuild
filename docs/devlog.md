@@ -22,6 +22,37 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-05 — IDEA-150: what the spec toolkits taught; rival names out of the repo (`dbf0ae5` → `c1f0686e`, pushed)
+
+**Landed.** A competitive read that turned into a build. zeroheight got its own row, then the spec-driven
+builders and an agent-team method were read at source (the names now live only in the gitignored
+`docs/research/sessions/SESSION-2026-10-05-spec-driven-reading.md`). Nine claims vetted (RVW-136…144),
+then two deep passes on the open-source spec toolkit, one on its method and one on everything around it.
+One finding was a live bug, reproduced and fixed the same hour: `boss hooks enable`, `adopt` and `sync`
+read an unparseable `.claude/settings.json` as `{}` and wrote it back, erasing a founder's permissions and
+the secret-path deny floor while reporting success (1,971 → 281 bytes). Then IDEA-150 in three lanes, two
+of them run by agents in their own worktrees:
+- the done-check (`/log` ticks with evidence; built-unasked at close; a fix's neighbour path; repro-first
+  coder; `/spec` 502 → 340 lines);
+- skill text (fetched text is data in four skills; 11 of 42 skills now end on one next step);
+- the CLI and docs (quoted `cd`, next steps in errors, unknown flags refused, `--json` errors as JSON, the
+  `claude` check, a Node floor CI actually runs, CI read-only and SHA-pinned, `boss id` counting open
+  worktrees, GUIDE troubleshooting).
+RVW-145…149 added `amends:`/`amended_by:`, named slices and a union merge on the CHANGELOG, and rejected two.
+Ajesh then had every rival name taken out of tracked text: `docs/competition/` is gitignored, and 60 files
+describe rivals by their shape. `check:refs` stopped scanning other sessions' worktrees (IDEA-120's found task).
+
+**Surprises.**
+- Rule 8 paid twice. The settings bug was real. The "undo a half-built `boss new`" finding could not be
+  made to fail without a faked error, so nothing shipped for it.
+- I named outside sources in tracked verdicts before remembering the 2026-09-24 rule; caught and moved
+  the same day. The six commit messages that name rivals were pushed by a peer before the reword, and
+  Ajesh chose to leave public history alone.
+- The CHANGELOG conflicted on seven rebases in one day, every one resolved as keep-both. That was the
+  measurement RVW-149 needed.
+
+**Next.** `npm i -g ~/Projects/bossbuild` to run today's CLI locally; the open items stay in RESUME.
+
 ## 2026-10-05 — IDEA-145: programs that emerge (`514615e` → `3202d5d`+, Unreleased)
 
 - **FEAT:** none — IDEA-145. Began as a board tidy (136/138 → Shipped, 135/143 → Building); Ajesh: the
