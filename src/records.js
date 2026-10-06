@@ -24,7 +24,8 @@
 // Zero-dep. Never throws at a caller: `boss status` must not die on a malformed record. The
 // deliberate reader (`boss records`) is where problems get reported loudly.
 
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, realpathSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { firstAdded } from './gitdates.js';
 import { join, sep, basename } from 'node:path';
 import { frontmatter, STATUS_VOCAB, baseStatus, revisitDue } from './frontmatter.js';
@@ -579,10 +580,23 @@ export function idCensus(projectDir) {
 }
 
 /** The next free number for a prefix, zero-padded to the width already in use. */
+// The other open worktrees of this repo. A peer's newest record lives in its own worktree until it
+// lands, invisible from here; `boss id` handed out IDEA-148 while a peer held it
+// (test/id-sees-open-worktrees.test.js). Fails open: not git, no worktrees, no answer.
+function otherWorktrees(projectDir) {
+  try {
+    const out = execFileSync('git', ['worktree', 'list', '--porcelain'], { cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 });
+    const here = realpathSync(projectDir);
+    return out.split(/\r?\n/).filter((l) => l.startsWith('worktree ')).map((l) => l.slice(9))
+      .filter((w) => { try { return realpathSync(w) !== here && existsSync(join(w, 'docs')); } catch { return false; } });
+  } catch { return []; }
+}
+
 export function nextId(projectDir, prefix) {
   const p = String(prefix || '').toUpperCase().replace(/-.*$/, '');
   if (!declaredPrefixes(projectDir).includes(p)) return null;
-  const highest = idCensus(projectDir).get(p) ?? 0;
+  let highest = idCensus(projectDir).get(p) ?? 0;
+  for (const w of otherWorktrees(projectDir)) highest = Math.max(highest, idCensus(w).get(p) ?? 0);
   return `${p}-${String(highest + 1).padStart(3, '0')}`;
 }
 

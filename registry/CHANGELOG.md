@@ -58,6 +58,10 @@ rule above still applies to the whole section once it is stamped.
   nothing acts on it. They also refuse to fetch anything that isn't an `http(s)` address, or that
   points at your own machine, a private network or a cloud metadata endpoint.
 
+- **`boss id` no longer hands out a number another worktree already used.** When work happens in
+  separate git worktrees, a record created in one was invisible from the others until it was merged, so
+  the same number could be given out twice. `boss id` now counts every open worktree of the repo.
+
 - **BOSS now says it needs Node 22 or newer, which is what it is tested on.** It used to say Node 18,
   a version no test ever ran and one that is past its end of life.
 

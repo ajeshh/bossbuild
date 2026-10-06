@@ -23,18 +23,19 @@ stranger's idea goes through `/vet` first. BOSS applying its own stated rule doe
 ## Tasks
 
 **A — CLI craft** (worktree `idea-150`)
-- [ ] A1 `boss new "my proj"` prints `cd my proj`; quote it (`cli.js:171`, `:1534`). Reproduced.
-- [ ] A2 Errors that stop without naming the next step: `new .` (point to `adopt`), `adopt --mode` (list
+- [x] A1 `boss new "my proj"` prints `cd my proj`; quote it (`cli.js:171`, `:1534`). Reproduced.
+- [x] A2 Errors that stop without naming the next step: `new .` (point to `adopt`), `adopt --mode` (list
   the modes), and `hooks enable` outside a project (use the shared hint). Reproduced.
-- [ ] A3 Unknown flags are silently ignored (`status --bogus` exits 0; `status --json` prints prose).
+- [x] A3 Unknown flags are silently ignored (`status --bogus` exits 0; `status --json` prints prose).
   Reproduced.
-- [ ] A4 `engines: node >=18` but CI runs only 22 and 24. Make the claim match what runs. Reproduced.
-- [ ] A5 `boss new` / `adopt` say "type `claude`"; check it's on PATH and say so only when it's missing.
-- [ ] A6 `--json` failures: a JSON error on stderr.
-- [ ] A7 CI: `permissions: contents: read`; pin actions by SHA. Reproduced (neither is there).
-- [ ] A8 A source checkout reports the last stamped version while running unreleased work.
-- [ ] A9 A failed `boss new` leaves a half-built folder. Not reproduced; needs a failing test first.
-- [ ] A10 `boss id IDEA` offered IDEA-148 while a peer's open worktree held it. Reproduced in this session.
+- [x] A4 `engines: node >=18` but CI runs only 22 and 24. Make the claim match what runs. Reproduced.
+- [x] A5 `boss new` / `adopt` say "type `claude`"; check it's on PATH and say so only when it's missing.
+- [x] A6 `--json` failures: a JSON error on stderr.
+- [x] A7 CI: `permissions: contents: read`; pin actions by SHA. Reproduced (neither is there).
+- [x] A8 A source checkout reports the last stamped version while running unreleased work.
+- [x] A9 A failed `boss new` leaves a half-built folder. **Not reproduced, so nothing shipped** (rule 8):
+  nothing in `cmdNew` fails after `mkdirSync` without an injected fault. Reopen if a founder hits it.
+- [x] A10 `boss id IDEA` offered IDEA-148 while a peer's open worktree held it. Reproduced in this session.
 
 **B — the spec loop** (worktree `idea-150-spec`)
 - [ ] B1 RVW-136: a tick carries evidence; settle who ticks (`/log`, `/close`, `feat-record.md:31`).
@@ -68,5 +69,9 @@ stranger's idea goes through `/vet` first. BOSS applying its own stated rule doe
 - [ ] F1 Turn on GitHub private vulnerability reporting; add `SECURITY.md`; one line in `/feedback`.
 
 ## Capture log
+
+- 2026-10-05 — lane A done, each with a test that failed first: `888b007` (A1–A3, A6), `76a35bb` (A4, A7:
+  the floor is now Node 22, the version CI runs), `17b53a9` (A5), `b89fcf99` (A8, display only), and A10 (`boss id`
+  counts open worktrees).
 
 - 2026-10-05 — opened from the spec-toolkit reads; Ajesh: *"go for all the fixes and improvements."*
