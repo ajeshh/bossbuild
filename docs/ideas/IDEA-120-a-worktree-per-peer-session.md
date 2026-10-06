@@ -124,3 +124,9 @@ What broke or rubbed, in the order it happened:
   Only checkout and lane-claims were in CLAUDE.md — the stash and stage-one-hunk rules lived in
   memory, now pointed at this rule. Landed by hunk from main: a peer's uncommitted CLAUDE.md
   paragraph would have stopped a worktree landing (finding 10, live).
+- [ ] **Found 2026-10-05 (IDEA-145's session): `check:refs` scans `.claude/worktrees/`.** With one
+      worktree open it read 1,453 markdown files instead of 873 and reported a broken link in the
+      worktree's copy of `landing/SKILL.md` (a link to a gitignored file the worktree doesn't link);
+      gone the moment `done` removed it. So `npm run check` can go red on a false finding whenever
+      any session has a worktree open. Likely fix: skip `.claude/worktrees/` in the scanners' walk —
+      reproduce first (open a worktree, run `check:refs`), and look for the same walk in the other checks.
