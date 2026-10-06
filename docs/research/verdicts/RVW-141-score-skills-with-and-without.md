@@ -10,9 +10,8 @@ verdict: NOT-YET
 # RVW-141 — score each skill with and without it, and reward standing down
 
 ## The claim
-- **Source:** Tessl docs (opened by the research pass 2026-10-05,
-  https://docs.tessl.io/improving-your-skills/evaluate-skill-quality-using-scenarios.md). `tessl eval run`
-  defaults to two variants, without and with the skill. Its SDD plugin's `trivial-change-exception` eval
+- **Source:** an agent-skills platform's eval docs (opened by the research pass 2026-10-05;
+  `docs/research/sessions/SESSION-2026-10-05-spec-driven-reading.md` (gitignored; names and URLs live there)). Its eval run defaults to two variants, without and with the skill. Its SDD plugin's `trivial-change-exception` eval
   awards points for *not* writing a spec on a typo fix.
 - **Core assertion:** a skill is proven only by a baseline delta, and a discipline is proven by when it
   declines.
@@ -39,7 +38,7 @@ build.
 
 ## Attribution
 **Partly verified.** The docs page was opened by the research pass. The `trivial-change-exception` eval
-is on GitHub (`tesslio/spec-driven-development-tile/evals`) and was not re-opened for this verdict.
+is in the platform's public spec plugin and was not re-opened for this verdict.
 
 ## Notes
 - Prior related: RVW-013 (skill-creator: adopt the wisdom, leave the harness).

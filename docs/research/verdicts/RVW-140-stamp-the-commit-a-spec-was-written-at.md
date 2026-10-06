@@ -10,8 +10,8 @@ verdict: REJECT
 # RVW-140 — stamp the git commit a spec was written against, so drift can be detected
 
 ## The claim
-- **Source:** Kiro issue #9435 (2026-06-15, backlogged by Kiro;
-  https://github.com/kirodotdev/Kiro/issues/9435): *"the codebase may have changed in ways that invalidate
+- **Source:** a user's issue on a cloud vendor's spec-driven IDE (2026-06-15, backlogged by the vendor;
+  `docs/research/sessions/SESSION-2026-10-05-spec-driven-reading.md` (gitignored; names and URLs live there)): *"the codebase may have changed in ways that invalidate
   assumptions… Currently, there's no way to know."* Proposes storing the git ref when a spec is created.
 - **Core assertion:** a spec should carry its base commit, so a later reader can see what moved since.
 
@@ -36,7 +36,7 @@ from `created:` at read time. Don't store what a command computes.
   (`revalidate/SKILL.md:29`), as a computed diff.
 
 ## Attribution
-**Verified** at the issue. It is a user's request, not a Kiro feature.
+**Verified** at the issue. It is a user's request, not a shipped feature.
 
 ## Notes
 - BOSS version when recorded: 0.329.0

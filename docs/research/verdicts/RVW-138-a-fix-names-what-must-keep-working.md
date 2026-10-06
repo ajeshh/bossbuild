@@ -11,7 +11,7 @@ route: UP stages/L1-mvp/template/.claude/skills/spec/ (SKILL.md step 4 + templat
 # RVW-138 — a bug-fix spec names the behaviour next door that must not change
 
 ## The claim
-- **Source:** Kiro bugfix specs (opened 2026-10-05, https://kiro.dev/docs/specs/bugfix-specs/). `bugfix.md` holds
+- **Source:** a cloud vendor's spec-driven IDE, its bug-fix spec docs (opened 2026-10-05; `docs/research/sessions/SESSION-2026-10-05-spec-driven-reading.md` (gitignored; names and URLs live there)). `bugfix.md` holds
   Current, Expected and **Unchanged** blocks: *"WHEN [condition] THEN the system SHALL CONTINUE TO [existing
   behavior]"*. A regression test is generated from the Unchanged block.
 - **Core assertion:** a fix is safest when it states what it must leave alone, because that line becomes

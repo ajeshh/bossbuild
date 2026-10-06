@@ -10,7 +10,8 @@ verdict: NOT-YET
 # RVW-143 — agent context holds only what the code can't say ("the suite takes eleven minutes" in, "pnpm test" out)
 
 ## The claim
-- **Source:** BMAD `bmad-project-context` (v6.11.0), as read by the research pass on 2026-10-05:
+- **Source:** an open-source agent-team method's project-context skill, as read by the research pass on
+  2026-10-05 (`docs/research/sessions/SESSION-2026-10-05-spec-driven-reading.md` (gitignored; names and URLs live there)):
   *"anything derivable from source is read live and never stored, so `pnpm test` stays out while 'the
   suite takes eleven minutes' goes in."*
 - **Core assertion:** the founder's context file should carry only facts the agent can't derive.
@@ -34,7 +35,7 @@ pre-emptively is the weight BOSS refuses.
   writing happens, not into always-on context.
 
 ## Attribution
-**Partly verified.** The quote was read from the BMAD repo by the research pass and not re-opened for
+**Partly verified.** The quote was read from that method's repo by the research pass and not re-opened for
 this verdict.
 
 ## Notes

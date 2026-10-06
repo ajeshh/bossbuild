@@ -10,9 +10,9 @@ verdict: REJECT
 # RVW-139 — give every clarifying question a recommended answer, so "yes" is a complete reply
 
 ## The claim
-- **Source:** Spec Kit `clarify.md:141-165` (opened 2026-10-05): *"Present EXACTLY ONE question at a time"*,
+- **Source:** the open-source spec toolkit's clarify step (opened 2026-10-05; `docs/research/sessions/SESSION-2026-10-05-spec-driven-reading.md` (gitignored; names and URLs live there)): *"Present EXACTLY ONE question at a time"*,
   *"Present your recommended option prominently"*, *"accept the recommendation by saying 'yes'"*. The same
-  shape appears in Kiro Plan (numbered multiple choice) and BMAD `forge-idea`.
+  shape appears in a spec-driven IDE's plan mode and an agent-team method's idea session.
 - **Core assertion:** a suggested answer on each question makes clarifying cheap and fast.
 
 ## Rubric
@@ -34,7 +34,7 @@ gap fluently, and the founder cannot correct a guess they never saw."*
 - **Why not:** a duplicate where it fits, and harmful where it doesn't.
 
 ## Attribution
-**Verified** — `clarify.md:141`, `:154-155`, `:165`.
+**Verified** at the source.
 
 ## Notes
 - The one-at-a-time half was also considered. BOSS's *one numbered message* (`spec/SKILL.md` step 3) is a
