@@ -13,7 +13,7 @@ updated: 2026-08-30
 | Cell | Answer |
 |---|---|
 | **People** | Owner-operators of small home-care agencies — 3 to 15 carers, run from a kitchen table or a back office. **About 6,400** such agencies in England (register extract, 2026-06-02, docs/source). We know from nine of them, in person. |
-| **Problem** | Every Monday morning — and every Sunday night — the owner rebuilds cover by phone. One sick text means eight calls. The visit is the thing that can't slip; the owner is the only one who knows who can take it. |
+| **Problem** | Finding someone to take a sick carer's visit is done by phone: about eight calls before 8am, every Monday and most Sunday nights. The owner is the only one who knows who could step in, and the visit can't slip. |
 | **Promises** | We find cover before the kettle boils. One tap; the right three carers get the ask; the first yes fills the visit; the owner sees it filled. |
 
 ## 2 · Product Expression

@@ -267,9 +267,12 @@ function stamp(html) {
     .replace(/<a [^>]*data-space="guide"[^>]*>Guide<\/a>/, '');
 }
 
-// What Kettlewick IS, first and in plain words, read from its own records: the story in one line, why
-// it exists in the founder's words, the first thing watched rather than said, what the name means.
-// Ajesh, 2026-10-04: "I couldnt quite get what kettlewick was about" — the page led with BOSS.
+// What Kettlewick IS, first and in plain words, read from its own records, in the order a stranger
+// needs it: what it does (the gist, as the headline), what it is (the story), the problem (the canvas
+// cell), the first thing watched rather than said, why it exists in the founder's words, and the name
+// last — it only lands once you know the story. Ajesh, 2026-10-04: "I couldnt quite get what
+// kettlewick was about"; 2026-10-05: "cover what? which kind of small agencies? … even the name why
+// seems out of order" — the headline was the tagline and the jargon was never explained.
 // The venture's name as its brand doc writes it (`wordmark:`), never the folder slug — the playbook's own reader.
 function displayName(project) { try { return readBrand(DEMO, project.name).name || project.name; } catch { return project.name; } }
 
@@ -279,13 +282,18 @@ function ventureHead(data) {
   const founder = ((data.team || []).find((p) => p.role === 'founder') || {}).name || '';
   const seen = (data.evidenceRows || []).filter((e) => e.grade === 'observed-behavior' && e.date).sort((x, y) => x.date.localeCompare(y.date))[0];
   const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+  // The gist's first clause, read as a sentence after the name: "Finds a stand-in carer …" → "Kettlewick finds …".
+  const gist = String(idea.gist || '').split(' — ')[0].replace(/\.$/, '');
+  const headline = gist ? gist.charAt(0).toLowerCase() + gist.slice(1) : '';
+  const problem = data.cell && data.cell('problem');
   const rows = [
-    idea.why ? ['Why it exists', `“${esc(idea.why)}”${founder ? ` — ${esc(founder)}, the founder` : ''}`] : null,
+    b.story ? ['What it is', esc(b.story)] : null,
+    problem && problem.state === 'filled' ? ['The problem', esc(problem.answer)] : null,
     seen ? ['The first proof', `${esc(cap(seen.title))} (${esc(seen.date)}, watched, not told)`] : null,
+    idea.why ? ['Why it exists', `“${esc(idea.why)}”${founder ? ` — ${esc(founder)}, the founder` : ''}`] : null,
     line('The name, and why') ? ['The name', esc(line('The name, and why'))] : null,
   ].filter(Boolean);
-  return `<div class="chapter-head"><div class="label">The demo · a fictional venture</div><h2>${esc(b.name || 'Kettlewick')}${b.tagline ? `: ${esc(b.tagline.toLowerCase())}.` : ''}</h2>`
-    + (b.story ? `<p style="font-family:var(--display);font-size:20px;line-height:1.4;color:var(--ink);max-width:62ch">${esc(b.story)}</p>` : '') + '</div>'
+  return `<div class="chapter-head"><div class="label">The demo · a fictional venture</div><h2>${esc(b.name || 'Kettlewick')}${headline ? ` ${esc(headline)}.` : ''}</h2></div>`
     + (rows.length ? `<dl class="kv" style="max-width:820px;margin:0 0 22px">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : '')
     + `<p class="t-small" style="max-width:70ch;margin:0 0 22px">None of it is real. Every page below is what <code>boss playbook</code>, <code>boss design</code> and <code>boss board --html</code> produce from the records in <code>demo/kettlewick/</code>, which you can read in the repo.</p>`;
 }

@@ -3,7 +3,7 @@ id: IDEA-144
 type: idea
 kind: capability
 owner: Ajesh
-status: building
+status: shipped
 gist: The generated pages (playbook, design, board, guide) live in a hidden .boss/ folder with no front page and four separate links; one stable home at .boss/index.html lists them with their age, and every page command prints that one link to bookmark.
 created: 2026-10-05
 program: business-profile
@@ -53,24 +53,29 @@ place to start.
 *"The org page seems misleading in name, should show critical folders (some of it which you do), also
 we should link them so people can easily open the file / folder in browser or on desktop?"*
 
-- [ ] The demo's **Organization** page (`scripts/gen-demo.js`, site only) reads as a team/org chart; it
+- [x] The demo's **Organization** page (`scripts/gen-demo.js`, site only) reads as a team/org chart; it
       is about where records live. Rename it. (A misleading name is a correctness fix under the site freeze.)
-- [ ] Its folder cards link nowhere. On the site the demo files are public in this repo, so each card can
+- [x] Its folder cards link nowhere. On the site the demo files are public in this repo, so each card can
       link to its folder on GitHub. Linking is new site work: Ajesh's call under the freeze.
-- [ ] The founder's own project has no such page. The home (this IDEA) is where it belongs: a
+- [x] The founder's own project has no such page. The home (this IDEA) is where it belongs: a
       *where things live* section listing the critical folders and files that exist, each with what it
       holds, a count, and a link. A `file://` link opens a folder as a listing in Chrome and Firefox
       (Safari does nothing); **no web page can open Finder or Explorer**, so desktop = a Copy path button,
       plus optionally an editor link (`vscode://file/…`, which Cursor also answers).
 
-- [ ] **The demo's copy doesn't say what Kettlewick is** (Ajesh, 2026-10-05): *"cover what? which kind
+- [x] **The demo's copy doesn't say what Kettlewick is** (Ajesh, 2026-10-05): *"cover what? which kind
       of small agencies? the problem and statement seem super confusing … not clear what the problem is,
       what the first proof is. even the name why seems out of order."* Read the opening of the demo (the
       index's "what it is" block and the playbook cover/Vision) against demo/kettlewick's records; the fix
       is in the records (they are the source), never in the renderer.
-- [ ] **The order of the pages** (Ajesh): *"board in the middle seems wrong since it might be frequently
+- [x] **The order of the pages** (Ajesh): *"board in the middle seems wrong since it might be frequently
       visited"*. Order by how often each is opened, not by when it was built: one `SPACES` list drives
       the family bar and the home's cards.
+
+Done 2026-10-05: *Where things live* (both places; Open + Copy path, Ajesh's picks); the spaces ordered
+Board · Playbook · Design · Guide; the demo opens with what Kettlewick does (the gist as the headline),
+then what it is, the problem, the first proof, why, and the name last — rewritten in the records
+(BRAND story, gist, canvas Problem, EVID-003's title), so the playbook's cover reads plainly too.
 
 ## Open questions
 

@@ -3,7 +3,7 @@ id: IDEA-001
 type: idea
 owner: product-lead
 status: building
-gist: Shift cover by phone for small home-care agencies — one tap when a carer calls in sick, and the cover is found before the kettle boils.
+gist: Finds a stand-in carer when one calls in sick — for small home-care agencies, one tap, and the first yes takes the visit.
 motivation: own-problem
 success_looks_like: "Five agencies I don't know run their Monday on it."
 in_a_few_years: "Every small agency in the county runs its week on it, and the phone tree is a story the owners tell new staff."

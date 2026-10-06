@@ -9,7 +9,7 @@ tagline: Cover found before the kettle boils
 wordmark: Kettlewick
 accent: "#B84E12"
 logo: brand/mark.svg
-story: "Small agencies run their week on a spreadsheet and the owner is the only one who knows who can cover, but one sick text still means eight calls before 8am, so Kettlewick asks the right three carers and the first yes fills the visit."
+story: "Home-care agencies send carers into people's homes for visits all day. When a carer texts in sick, the owner has to find someone else to take the visit; Kettlewick texts the three carers most likely to say yes, and the first yes takes it."
 ---
 
 # Brand — Kettlewick
