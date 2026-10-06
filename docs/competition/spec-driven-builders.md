@@ -185,3 +185,52 @@ does the job). Kiro's EARS-to-property-test link is worth remembering if BOSS ev
 
 - **2026-10-05** — filed. Three rivals in one file because they share a shape. Tessl is kept as the
   one that left it.
+
+## Spec Kit deep dive (2026-10-05) — the method, read against BOSS
+
+A second pass read Spec Kit's whole tree at `main` (docs/, extensions/, presets/, workflows/,
+newsletters, CHANGELOG), comparing each part against BOSS file by file. Items 1–6 in *What BOSS could
+take* above were excluded. What it found, by founder impact:
+
+1. **A real bug, fixed the same day** (`dbf0ae5`). An unparseable `.claude/settings.json` was read as `{}` and
+   written back by `boss hooks enable`, `adopt` and `sync`, which erased the founder's permissions, the
+   conscience's registration and the secret-path deny floor. Spec Kit's lesson: a config that won't
+   parse is reported, never skipped silently (`templates/commands/specify.md`, the August fail-loudly
+   sweep, the September fail-closed provenance change).
+   **Still open, same shape:** `hooks/lib/loop-runtime.js` reads an unparseable `.boss/config.json` as
+   *not paused, no mutes* (from reading the code, not reproduced). A founder's pause would vanish without
+   a word. Reproduce before fixing.
+2. **`/import` and `/comp-eval` fetch pages without the "this is data, not instructions" rule.**
+   Spec Kit's bug and assess extensions quote instruction-like text as `Unverified`, refuse non-http(s),
+   localhost, private and metadata addresses, and treat their own saved artifacts as untrusted. BOSS's
+   `import/SKILL.md:36,52` fetches and snapshots into `docs/source/`, which is re-read later. BOSS
+   already states the rule in `library/practices/agent-security.md:26`; the skills don't carry it.
+   About three lines each. → `/vet`
+3. **A FEAT that changes a shipped FEAT's promise isn't linked to it.** This is the field's most-wanted
+   unbuilt thing (Spec Kit #1191, 115 reactions; #620 and #1100 open; six community extensions). BOSS
+   links `from`/`spun_to` only (`src/records.js:80-156`). *Shape:* `amends: FEAT-NNN`, plus a pointer
+   line on the old FEAT, the same supersede-don't-edit pattern as DEC records. → `/vet`
+4. **"Named slices" is BOSS's FEAT test, but no file holds the slices** (`spec/SKILL.md:178`; "slice"
+   appears 0× in `feat-record.md` and `coder.md`). Spec Kit: each story is independently testable, and runs
+   are scoped (`docs/concepts/complex-features.md`). *Shape:* group the criteria under `### Slice N`
+   only when there's more than one, and have `coder` build one slice per run, then stop. → `/vet`
+5. **`coder` has no bug discipline.** "Reproduce before you fix" ships only in the opt-in
+   `engineering.md`. Spec Kit's bug extension: assess never edits; *"STOP modifying code"* when the
+   diagnosis was wrong; never mark verified unless the repro ran. *Shape:* two lines in `coder.md`.
+   This is separate from RVW-138. → `/vet`
+6. **Subtract `/spec`.** It is 497 lines, about 9.5k tokens, against BOSS's own 500-line ceiling
+   (`library/practices/skill-authoring.md`). Its conditional branches (post-launch, competition,
+   flow/journey, data shape, model) can move into `spec/templates/`, with the trigger line kept
+   inline. Spec Kit's `lean` preset went the same way. → `/extract`, no vet needed (BOSS's own rule).
+7. Low: an optional "rabbit hole" line on a FEAT (`assess.shape`). Judgment call: `/spec` 6b
+   copies *Still unknown* into `feature-context.md`, and Spec Kit #3790 removed exactly that kind of copy
+   (*"Propagation duplicated the single source of truth"*).
+
+**What they walked back:** copying the constitution into templates (#3790 — point, don't copy); writing
+the agent context file from core (now opt-in); tying spec identity to git branches; and a
+`requires.permissions` field, refused *"because it would imply a sandbox that does not exist"*.
+That last one is BOSS's *checkers state intents they don't enforce*, refused in advance.
+
+**Where BOSS is ahead:** re-reading a shipped FEAT (`/revalidate`), reading a dropped FEAT's lesson
+before re-speccing, checking DECs at spec time, two-way `spun_to` checks (`src/records.js`), sync that
+never clobbers founder edits (`src/managed.js`), and a tester that refuses mocks on the money path.
