@@ -167,7 +167,15 @@ Open, most load-bearing first:
 - [ ] **G8 · Other pages.** The playbook, the home page and `boss map` don't know programs; the
   organization page's *Where things live* lacks `docs/programs/` (`src/places.js`).
 
-## S9 · The program view in the playbook — mocked 2026-10-05, not built (Ajesh: *"a more visual way to do the program overview, and also showcase what features for it have been implemented"*)
+## S9 · The program view in the playbook — mocked 2026-10-05, **deferred** (Ajesh: *"is the playbook block needed?"* — not now)
+
+> **Deferred, with a trigger.** The playbook is read outward; programs organise the work for the founder,
+> and the board now does that. Pre-fit most projects have one program or none, so the block would be one
+> box around the list *How we're learning* already shows honestly (built beside met). **Re-open when** a
+> playbook's built list spans 2+ programs with work in flight, or grows past the block's fold (~12). The
+> mock's fixes below stand for that day.
+
+### The mock, as read (Ajesh: *"a more visual way to do the program overview, and also showcase what features for it have been implemented"*)
 
 **Not a showcase list.** A program view that lists what got built is the feature list IDEA-135 exists
 to stop. So it reuses the Product chapter's *How we're learning* block (IDEA-135 slice 2, live) —
