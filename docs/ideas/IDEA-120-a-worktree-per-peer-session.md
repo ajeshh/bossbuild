@@ -6,15 +6,26 @@ owner: Ajesh
 status: building
 proof: none
 proof_note: a trial record in this file (what broke in one worktree session) is the first proof; a CLAUDE.md rule change is the second
-gist: Peer sessions share one checkout, which is why CLAUDE.md carries never-checkout, never-stash and stage-one-hunk. The host can now give an agent or a session its own git worktree. Trial it in one session before any rule moves.
+gist: Chat windows share one checkout, so each can commit another's half-done work — which is why CLAUDE.md carries never-checkout, never-stash and stage-one-hunk. One worktree per piece of work, named by its ID; a second window on the same work joins it; the main checkout only lands.
 created: 2026-09-23
 program: harness
 relates: IDEA-087, IDEA-119
 ---
 
-# IDEA-120 — A worktree per peer session
+# IDEA-120 — A worktree per piece of work, which chats join
 
 ## Current shape
+
+**Rescoped 2026-10-05 (Ajesh): a worktree per piece of WORK, which chats join — not per chat.**
+*"people often have multiple chat windows open, so its about best managing, and not letting that
+chat checkin or commit code for someone else … maybe someone can say, hey its part of the same
+thing that is being built on another window?"* Each window is its own session; all they share is
+the disk, so a window cannot know another is building the same thing unless told. So the unit is
+the work, named by its ID (`.claude/worktrees/idea-142`, branch `work/idea-142`): a new piece of work
+gets one; a second window on the same work joins it by naming the ID; everything inside belongs to
+that work, so committing all of it is right. The main checkout is for landing only. A session start
+names the open work once, so joining is a reply, not a rule to remember. Proved here first; the
+same shape then ships (agent-shape rung 4, the planner's parallel FEATs).
 
 **Decided 2026-09-23 (Ajesh: yes) — trial it next session.** One session works in its own worktree;
 this file records what broke. Today's case for it: two staging sweeps, an `index.lock` collision and
@@ -96,7 +107,14 @@ What broke or rubbed, in the order it happened:
       your own worktree; land with `--ff-only` from the main checkout.* Closes the 2026-09-13 stash
       incident (five UU files), the five staging sweeps, and the `index.lock` collisions. **Ajesh's call**
       — CLAUDE.md is read by every peer, and the rule changes how all of them work.
-- [ ] The setup is a script today (`link.mjs` in a session scratchpad, findings 1, 4, 5): make it
-      `scripts/worktree.js` (create at HEAD, link derived records, exclude the links) once the rule
-      above is adopted — not before.
+- [x] `scripts/worktree.js <ID>` — create the work's worktree at local HEAD or join it if it exists;
+      link the derived gitignored records; exclude the links; list open work; land (rebase, then
+      `--ff-only` from the main checkout, refusing loudly); `done` (unlink, remove, delete the merged
+      branch). Was gated on the rule; Ajesh 2026-10-05 said build it with the rescope.
+- [x] The session start names the open work (the reentry hook): one line — which worktrees exist, how
+      far ahead, how fresh — so a new window can say "that's mine" and join. Silent with none.
+      Built 2026-10-05: `hooks/lib/open-work.js` (shared by the hook and the script),
+      `test/worktree-script.test.js`. Building it found one more trap: a `dir/` ignore rule matches
+      nothing in `check-ignore --stdin` unless the path carries its trailing slash.
+      Built inside `.claude/worktrees/idea-120` and landed with the script itself.
 - [ ] Correct CLAUDE.md's gitignored list (finding 6) or point it at the derivation instead.

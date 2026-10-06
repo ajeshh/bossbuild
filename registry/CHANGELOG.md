@@ -27,6 +27,12 @@ rule above still applies to the whole section once it is stamped.
 
 ## Unreleased
 
+- **Several chat windows, one project, nobody's work mixed up.** Each window is its own session and
+  can't see what another is building, so any of them could commit a change that was another's.
+  When pieces of work have their own worktrees, a new session now opens by naming them once (which
+  ones, how far along, what's uncommitted), so you can say "this is part of that" and carry on
+  there. New work gets offered its own. With no worktrees it says nothing.
+
 - **One page to bookmark for all your pages.** The playbook, design, board and guide pages live in
   `.boss/`, a folder your file browser hides, and each one was its own link. Now each command also
   writes `.boss/index.html`, a home that lists every page with when it was made (or the command that

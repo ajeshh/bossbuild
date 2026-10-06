@@ -108,6 +108,15 @@ const main = async () => {
     }
   } catch { /* fail-open */ }
 
+  // Open work (IDEA-120): each chat window is its own session and can't see another's. If pieces of
+  // work have their own worktrees, name them once, so a new window can say "that's mine" and join
+  // it rather than build a second copy in the shared checkout. Silent when there are none.
+  try {
+    const { openWork, describe } = await import('./lib/open-work.js');
+    const open = openWork(projectDir);
+    if (open && open.items.length) lines.push(...openWorkLines(open, describe));
+  } catch { /* fail-open */ }
+
   const read = reentryRead(projectDir);
   if (read && !alreadyGiven(read.date)) lines.push(...reentryLines(read));
   if (!lines.length) return;
@@ -119,6 +128,18 @@ const main = async () => {
     },
   }));
 };
+
+function openWorkLines(open, describe) {
+  const shown = open.items.slice(0, 6);
+  const more = open.items.length - shown.length;
+  return [
+    `Open work in this repo, one worktree each: ${shown.map((i) => `${describe(i)} at ${i.path}`).join(' · ')}${more ? ` · +${more} more` : ''}.`,
+    open.current
+      ? `This session is in ${open.current}'s worktree, so what changes here is ${open.current}'s. If the founder's first message is about different work, say which worktree it belongs in before changing anything.`
+      : `This session is in the main checkout. If the founder's first message is part of one of these, name it in one line and offer to continue there (enter the worktree by path). New work: offer it its own worktree before editing. Otherwise say nothing about this list.`,
+    '',
+  ];
+}
 
 function reentryLines(read) {
   const last = read.landed || read.feat;
