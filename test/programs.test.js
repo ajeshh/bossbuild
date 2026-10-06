@@ -103,3 +103,14 @@ test('the program view: members by column, the backlog counted not carded, a gro
   assert.match(out, /IDEA-001.*has grown/);
   rmSync(d, { recursive: true, force: true });
 });
+
+test('REGRESSION: boss id PROG works in a project whose IDS.md table predates PROG', async () => {
+  const { nextId } = await import('../src/records.js');
+  const d = tmp();
+  write(d, 'docs/IDS.md', '| `IDEA-NNN` | an idea | `docs/ideas/` |\n| `DEC-NNN` | a decision | `docs/decisions/` |\n');
+  assert.equal(nextId(d, 'PROG'), 'PROG-001', '/close and /idea tell a founder to run it');
+  write(d, 'docs/programs/PROG-001-x.md', '---\nid: PROG-001\n---\n');
+  assert.equal(nextId(d, 'PROG'), 'PROG-002');
+  assert.equal(nextId(d, 'CVE'), null, 'still only declared types, plus PROG');
+  rmSync(d, { recursive: true, force: true });
+});

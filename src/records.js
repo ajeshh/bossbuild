@@ -511,14 +511,18 @@ export function driftLine(projectDir) {
 // algorithm and a conference in the prose. A project's record types are declared in its own
 // IDS.md, so that is the vocabulary — the same computed-membership rule `check-refs` uses for
 // agents and skills. Add a type to IDS.md and this follows, with no edit here.
-const DEFAULT_PREFIXES = ['IDEA', 'FEAT', 'DEC', 'EVID', 'PRAC', 'EXTR', 'RFC', 'EXP'];
+const DEFAULT_PREFIXES = ['IDEA', 'FEAT', 'DEC', 'EVID', 'PRAC', 'EXTR', 'RFC', 'EXP', 'PROG'];
+// PROG is always a prefix: `/close` and `/idea` tell a founder to run `boss id PROG`, and a project
+// scaffolded before 2026-10-05 has an IDS.md table without the row — it answered "Not a record
+// prefix" to BOSS's own instruction (IDEA-145, found by audit, reproduced in a fresh scaffold).
+const ALWAYS = ['PROG'];
 
 function declaredPrefixes(projectDir) {
   for (const f of ['docs/IDS.md', 'IDS.md']) {
     try {
       const text = readFileSync(join(projectDir, f), 'utf8');
       const found = [...text.matchAll(/`([A-Z]{3,4})-NNN`/g)].map((m) => m[1]);
-      if (found.length) return [...new Set(found)];
+      if (found.length) return [...new Set([...found, ...ALWAYS])];
     } catch { /* try the next location */ }
   }
   return DEFAULT_PREFIXES;

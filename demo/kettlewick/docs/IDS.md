@@ -16,6 +16,7 @@ Stable IDs make work addressable across sessions and docs. New types unlock as t
 | `IDEA-NNN` | A raw idea, bug, or ask | `docs/ideas/` |
 | `EVID-NNN` | One real signal about your riskiest assumption, honestly graded | `docs/evidence/` |
 | `DEC-NNN` | A load-bearing or hard-to-reverse call, with a falsifier. Supersede, don't edit | `docs/decisions/` |
+| `PROG-NNN` | A program — records that are one effort, once there's something to write down that belongs to none of them alone (see `program:` below) | `docs/programs/` |
 
 ## Unlocks later
 
