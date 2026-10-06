@@ -77,10 +77,16 @@ const SKIP = new Set(['.git', 'node_modules', '.boss', 'coverage', 'dist']);
 // fill in — flagging it would train everyone to ignore this script, which is how a checker dies.
 const PLACEHOLDER = /[<>{}]|NNN|…|\{\{/;
 
+// Other sessions' worktrees are other copies of this repo, mid-change. Walking them reported a
+// worktree's broken links as this tree's (829 false findings with three open, 2026-10-05) and
+// turned `npm run check` red whenever any session had work open (IDEA-120 found task).
+const WORKTREES = join(ROOT, '.claude', 'worktrees');
+
 function walk(dir, out = []) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     if (SKIP.has(e.name)) continue;
     const p = join(dir, e.name);
+    if (p === WORKTREES) continue;
     if (e.isDirectory()) walk(p, out);
     else out.push(p);
   }
