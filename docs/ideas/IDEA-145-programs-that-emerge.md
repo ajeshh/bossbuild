@@ -167,6 +167,26 @@ Open, most load-bearing first:
 - [ ] **G8 · Other pages.** The playbook, the home page and `boss map` don't know programs; the
   organization page's *Where things live* lacks `docs/programs/` (`src/places.js`).
 
+## S9 · The program view in the playbook — mocked 2026-10-05, not built (Ajesh: *"a more visual way to do the program overview, and also showcase what features for it have been implemented"*)
+
+**Not a showcase list.** A program view that lists what got built is the feature list IDEA-135 exists
+to stop. So it reuses the Product chapter's *How we're learning* block (IDEA-135 slice 2, live) —
+**grouped by program**: name · what it's for · one square per feature (filled = works and someone met
+it, outlined = works, half = half built, dashed = not started) · what someone met, in full, with its
+grade · the rest as dashed chips under *Not in front of anyone yet* · the program's rules in one line.
+Mocked on a scratch copy of Kettlewick (Cover: 5 features, 2 met by EVID-003; Onboarding: 1, half).
+
+**What the render showed:**
+- The grouping reads; the met-first order survives it.
+- **The count lies twice:** *5 built* counts a half-built feature, and *Onboarding · 0 built* sits beside
+  a half-built square. Say *5 features · 2 met by someone*.
+- **No field holds what a program is for.** The mock's line (*an owner finds cover in minutes*) was typed
+  in. A PROG's `gist:` describes its members; the playbook needs the outcome, the way a FEAT has `for:`.
+  Lean: the PROG template leads its gist with the outcome — no new field.
+- Records with no program need a group too (*Not part of a program*), or they vanish from the block.
+- Open: show the program's decisions here, or only on `boss board PROG-NNN`? Lean: board only — the
+  playbook is shared outward, decisions are internal.
+
 ## Candidates — compose, no new skill
 
 - **`/idea` asks once at capture:** *"This reads like part of PROG-001 (the website). Add it there as a
