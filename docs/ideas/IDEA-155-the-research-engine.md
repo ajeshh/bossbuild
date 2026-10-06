@@ -161,13 +161,21 @@ Each domain keeps what is genuinely its own and borrows the rest from A.
 
 ### G. Hygiene — cheap, now
 
-- **G1** · `/boss-learn` → `/extract` in `SOURCES.md`, both watchlists, the verdicts README,
-  `mentor-practitioners.md`.
-- **G2** · `SOURCES.md` routes to `mentor-venture/business/gtm/talent` — none exist.
-- **G3** · `/practice-refresh` routes to a `db-architect` agent that exists only in a worktree.
-- **G4** · The humane watchlist diffs against `ai-ux-patterns.md`; the skill diffs against the JSON.
-- **G5** · `/vet`'s skeleton has no `sources:` block although its own step asks for one (105 of 149
-  RVWs lack it).
+- [x] **G1** · `/boss-learn` → `/extract` in `SOURCES.md`, both watchlists, both research READMEs,
+  `mentor-practitioners.md` (2026-10-06). The dated row in build-craft's refresh log keeps the old
+  name — it is history.
+- [x] **G2** · `SOURCES.md` fed `mentor-venture/business/gtm/talent`, none of which exist →
+  `mentor-founder/capital/customers/hiring` (2026-10-06).
+- [ ] **G3** · `/practice-refresh` routes to `db-architect`, retired in v0.189.0. Proposed: *"mostly in
+  the `tester` prompt and `data-schema.md`"*.
+- [ ] **G4** · The humane watchlist's diagram diffs against `ai-ux-patterns.md`; the skill diffs against
+  `library/deceptive-patterns.json`. Proposed: name the JSON first.
+- [ ] **G5** · `/vet`'s skeleton has no `sources:` block although its own step 3 asks for one (105 of
+  149 RVWs lack it). Proposed: `sources:` under `route:`, URLs opened, vendor/outside-repo sources
+  described with *"URL kept local"* (the shape RVW-085 already uses).
+
+  G3–G5 edit the shared dev-workspace skills and a watchlist every session reads; the permission
+  check held them on 2026-10-06. **Waiting on Ajesh's go-ahead.**
 
 ## Program shape
 
@@ -178,6 +186,21 @@ IDEA-042 (humane refresh), IDEA-054 (founder research toolkit).
 
 **Suggested order:** G (hygiene) → A3 + B1 as a measurement first (can a track record be computed
 from what exists? if not, A3 is the fix) → A1/A2 → C1/C2 → F1.
+
+### H. After the engine stands — review the four surfaces on it
+
+Ajesh, 2026-10-06: *"once we establish research engine, then lets review: /deep-research, /vet,
+/comp-eval, /import. maybe some need further expansion or consolidation or rework or improved ux. We
+may also see market research other items. But lets do that once we have the research engine built
+out."* **Not before A is built** — reviewing them now would redesign each against a core that
+doesn't exist yet.
+
+- **H1** · `/deep-research` — expand, consolidate, rework or UX?
+- **H2** · `/vet` — same four questions.
+- **H3** · `/comp-eval` — same; it is the likely first shipped user of the core (E3).
+- **H4** · `/import` — same.
+- **H5** · Market research — which other items surface (E4 / IDEA-066 Tier 1 and 2) once the core
+  makes them cheap?
 
 ## Open questions
 
