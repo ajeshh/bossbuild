@@ -24,7 +24,8 @@
   lands (IDEA-120). `node scripts/worktree.js <ID>` creates it — or **joins** a peer already on that id,
   so check `git log --all` for the id first. `land <ID>` rebases and fast-forwards main, and stops if
   main holds a dirty copy of a file the work touched; `done <ID>` removes it. Never `git checkout` a
-  branch in the main checkout; never `git stash` anywhere. In the main checkout (the fallback): `git
+  branch in the main checkout; never `git stash` anywhere (one stack for every worktree — to compare
+  against a clean baseline, `git show HEAD:<file>` or a throwaway worktree). In the main checkout (the fallback): `git
   status` first, stage only your own hunks.
 - **Tracked vs gitignored** (IDEA-087): `.gitignore` is the list. The test for tracking is *"fine public
   forever?"*, never *"is the repo private"*. Real people's words (`evidence/`), the brain (`.boss/`),
@@ -44,7 +45,12 @@
   `NR=$(gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"')`. After CLI changes:
   `npm i -g ~/Projects/bossbuild`; `npm run pack:preview` confirms only the package ships.
 - **Confirm the altitude before analysing**: *BOSS's own practice* and *what BOSS ships a founder* are the
-  same files. Ask which one is meant.
+  same files. Ask which one is meant; the npm `files` list is the exact test of what ships.
+
+- **One home per fact** (IDEA-158). A rule for every session → this file · about Ajesh, how they decide
+  → auto-memory · a decision → `docs/decisions/` DEC · a pattern with cases → a record
+  (`docs/research/heuristics/`, gitignored) and memory keeps the lesson + pointer · what's in flight → its
+  record · what's next → RESUME · what happened → devlog. A fact in two homes drifts; move, don't copy.
 
 ## Where things are
 
