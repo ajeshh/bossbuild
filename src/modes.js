@@ -156,3 +156,13 @@ export function skillGloss(skillMdPath) {
   gloss = gloss.replace(/\.$/, '').trim();
   return { gloss, usage };
 }
+
+// ── Moved from cli.js (IDEA-160 S3): new, adopt, unlock and status all name a mode's skills this way.
+// A mode's skill list is a wall the moment you adopt above Quickstart — MVP is 44 names, which is
+// the exact Principle #2 inversion v0.130.0 fixed for `boss map` (68 lines → 45). Name the few a
+// founder acts on first, count the rest, and point at the surface that exists to list them.
+export function skillsLine(skills, limit = 8) {
+  if (!skills.length) return '—';
+  if (skills.length <= limit) return skills.join(', ');
+  return `${skills.slice(0, limit).join(', ')} … +${skills.length - limit} more (\`boss map\`)`;
+}

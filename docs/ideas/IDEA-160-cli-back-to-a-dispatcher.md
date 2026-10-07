@@ -65,16 +65,26 @@ bug from them, so they don't meet the bar for a new gate. The fix is to do the m
 - [x] **S1** · `cmdSync` (~171 lines) → `sync.js` (`cli.js` 2,193 → 2,024). Verified: 822 tests; one
   `/tmp` project (pin behind, a founder-edited skill, a deleted agent) through preview, `--apply
   --keep-mine`, re-preview and outside a project: main and this branch byte-identical (168 lines).
-- [x] **S2** · `cmdRemove` (~112) → `remove.js` (`cli.js` 2,024 → 1,910). Split in two on the way, because
+- [x] **S2** · `cmdRemove` (~112) → `remove.js` (`cli.js` 2,024 → 1,911). Split in two on the way, because
   `remove.js` importing `update.js` would point an import up a layer: the project exit is
   `remove.cmdRemove`, the machine exit (`--global`) is `update.cmdRemoveGlobal`, beside the install
   facts it names, and the dispatch line picks on `--global`. Verified: 822 tests; `/tmp` preview,
   `--apply`, the `uninstall` alias, the self-hosted refusal, outside a project, `--global` and
   `--global --apply` — main and this branch identical except the backup folder's timestamp.
-- [ ] **S3** · `cmdStatus` (~95) and its `print*` helpers → see Q2
-- [ ] **S4** · `cmdUnlock` (~165) → see Q3
-- [ ] **S5** · `cmdNew` (~108) → see Q3
-- [ ] **S6** · `cmdAdopt` (~186) → see Q3
+- [x] **S3** · `cmdStatus` (~95) and its helpers (`printBuiltAndSeam`, `printFocusAndHeadway`,
+  `justScaffolded`, and `statusLine`, which `cli.js` exported though nothing imported it) →
+  `orientation.js` (Q2); `skillsLine` → `modes.js` beside `skillGloss` (`cli.js` 1,911 → 1,685).
+  Ten imports `cli.js` no longer uses went with them; five unused before this work stay (move as-is).
+  Import cycles: the same three as main. Verified: 822 tests; `/tmp` Quickstart, MVP with a venture
+  IDEA, an adopted repo, outside a project — `status`, `--line`, bare `boss` — identical to main
+  (91 lines).
+- [ ] **S4** · `cmdUnlock` (~165) + `previewUnlock` → new `install.js` (Q3)
+  — and `stages/L3-scale/README.md:20` (shipped) says the unlock gate is *in `src/cli.js`*: move the
+  path with it.
+- [ ] **S5** · `cmdNew` (~108) + `claudeInstalled` → `install.js`
+- [ ] **S6** · `cmdAdopt` (~186) → `install.js`
+- [ ] **S6b** · `cmdConscience` (~167) → `conscience.js`. Found 2026-10-07 while answering Q2/Q3: the
+  original list ranked by an awk pass that missed it.
 - [ ] **S7** · ENGINEERING.md §3: the new line count and the map's layer table; the "shrinks as it's
   touched" line says the handlers left, not that they will.
 
@@ -84,11 +94,11 @@ command passes its `/tmp` exercise.
 ## Open questions
 
 - ~~**Q1**~~ · Answered in S0: `src/fail.js`, a state reader (it reads the registry), owns the switch.
-- **Q2** · Is `cmdStatus` a renderer (beside `orientation`/`readiness`) or does it need a home of
-  its own? Read its `print*` helpers before choosing.
-- **Q3** · `new`/`adopt`/`unlock` all install a stage. `scaffold.js` sits in the state-reader layer
-  and doesn't print. One new domain module (`install.js`) for the three, or keep them apart?
-  Fewer moving parts argues for one.
+- ~~**Q2**~~ · Ajesh, 2026-10-07: `orientation.js`. Its header is *the reads `boss status` could not
+  answer*, and `cli.js` is its only importer; the command joins its own helpers.
+- ~~**Q3**~~ · Ajesh, 2026-10-07: one new domain module, `install.js`, for all three. They share a
+  job and helpers; `scaffold.js` would have to import the domain (up a layer), and three modules
+  would still need a shared home for `claudeInstalled`.
 
 ## Found while building
 
