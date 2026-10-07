@@ -177,6 +177,24 @@ Each domain keeps what is genuinely its own and borrows the rest from A.
   G3–G5 edit the shared dev-workspace skills and a watchlist every session reads; the permission
   check held them on 2026-10-06. **Waiting on Ajesh's go-ahead.**
 
+## Measured: can a track record be computed from what exists? (2026-10-06) — **no**
+
+A read-only script over the local record (kept in the session scratchpad, not the repo):
+
+- **Sessions:** 9 of 38 have claim → verdict rows a script can find (107 rows). **20 rows carry a
+  URL and 12 a ledger reference** — about 30 joinable claims across all of BOSS's research history.
+- **RVWs:** 42 of 149 carry a URL; 41 distinct domains; **6 domains appear in three or more verdicts,
+  and all six are platforms** (a preprint server, a code host, a forum, a newsletter, two vendor
+  sites), not authors. A domain is not a source.
+- **And the RVW verdict is the wrong signal anyway.** ADOPT / ADAPT / REJECT says whether a claim
+  *fits BOSS*, not whether its source *was right*: a true claim that adds ceremony is REJECTed. Only
+  the session's three-skeptic result (confirmed / killed) speaks to the source.
+
+**So:** standing must come from session claim results, never from verdicts; the unit is the author or
+publisher, not the domain; and A3 (one claim row with a source id) is the prerequisite, not an
+optimisation. B1–B3 can start counting only from the first pass that writes A3 rows — there is no
+history to backfill worth the fuzzy matching.
+
 ## Program shape
 
 **`research-engine`, a `program:` slug for now.** It graduates to a PROG when the shared-core vs
@@ -184,8 +202,8 @@ per-domain reasoning (A vs E) needs a home no single member gives it, which may 
 first member ships. Likely members: this record, IDEA-066 (market research), IDEA-016 (`/vet`),
 IDEA-042 (humane refresh), IDEA-054 (founder research toolkit).
 
-**Suggested order:** G (hygiene) → A3 + B1 as a measurement first (can a track record be computed
-from what exists? if not, A3 is the fix) → A1/A2 → C1/C2 → F1.
+**Suggested order:** G (hygiene) → ~~A3 + B1 as a measurement~~ (done: no — see *Measured*) → **A3 first**,
+then A1/A2 → B1–B3 counting forward → C1/C2 → F1 → H (the four-surface review).
 
 ### H. After the engine stands — review the four surfaces on it
 
@@ -194,6 +212,22 @@ Ajesh, 2026-10-06: *"once we establish research engine, then lets review: /deep-
 may also see market research other items. But lets do that once we have the research engine built
 out."* **Not before A is built** — reviewing them now would redesign each against a core that
 doesn't exist yet.
+
+**What each was for — the baseline the review judges against** (read from the origin records
+2026-10-06):
+
+| Surface | Born | The original intent | What became of it |
+|---|---|---|---|
+| `/boss-learn` | v0.8.0, IDEA-001 (2026-05-21) | PRINCIPLE #1 as a verb: route a pattern **you already proved** UP into `library/` or DOWN into the app's core. One half of the learning loop with `/boss-sync`. | Retired v0.322.0 (IDEA-101): it and `/extract` pointed at each other for one act, UP only works from a BOSS checkout, and it ran 4× (all in BOSS) vs `/extract` 0×. `/extract` is the one verb now. |
+| `/vet` | v0.40.0, IDEA-016 (2026-06-01) | *"reddit is full of best practices, but that doesnt mean all are good ideas"* — **the inverse of `/boss-learn`**: judge a claim from a stranger that has earned nothing. The filter is the product, biased to NO. Internal first; founder version and a mentor+persona panel deferred until it beats a careful read. | Still internal, single voter. Gained the attribution step at v0.159.0. |
+| `/import` | v0.46.0, IDEA-023 (2026-06-19) | Not research at all: **the on-ramp.** A founder's idea lived in a doc somewhere and a scaffolded-but-empty project read as *"empty… im stuck."* Bring the material in. | Grew into one of the three intake doors (FEAT-035): pasted text, dated snapshots, "what else this fills". It ends up citing sources as a side effect. |
+| `/comp-eval` | v0.190.0, IDEA-066 correction (2026-08-20) | *"find me all the competition for x… help do research and organize… i can add names"* — the one place BOSS **should fetch**, because you can't list rivals you don't know exist, and a rival set is a living table. Biggest named risk: invented pricing, hence URL + checked date or `unverified` on every cell. | Ships at MVP. The best founder-facing honesty bar BOSS has. |
+| `/deep-research` | v0.190.x (2026-08-20) | Didn't exist while four skills named it — including shipped `/persona`, which told founders to run a phantom. **Ten passes had run by hand**; the skill wrote down what they did. It finds; it never judges. | Internal. Followed fully in about a third of sessions since. |
+
+Read together: **three were built for BOSS curating itself and two for a founder**, and the founder
+two came from different needs (getting started, finding rivals). Nothing was ever designed as one
+system. That is this record's premise, and the reason to review the four against the core rather
+than one by one.
 
 - **H1** · `/deep-research` — expand, consolidate, rework or UX?
 - **H2** · `/vet` — same four questions.
