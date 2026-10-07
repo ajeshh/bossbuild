@@ -62,7 +62,9 @@ bug from them, so they don't meet the bar for a new gate. The fix is to do the m
   `run()`). `claudeInstalled` stays: only `new`/`adopt` use it, so it moves with them (Q3).
   Verified: 822 tests; `/tmp` new, status, sync, adopt, the not-a-project hint, and `board --json`
   outside a project byte-identical to main.
-- [ ] **S1** · `cmdSync` (~171 lines) → `sync.js`. This is the doc's own example.
+- [x] **S1** · `cmdSync` (~171 lines) → `sync.js` (`cli.js` 2,193 → 2,024). Verified: 822 tests; one
+  `/tmp` project (pin behind, a founder-edited skill, a deleted agent) through preview, `--apply
+  --keep-mine`, re-preview and outside a project: main and this branch byte-identical (168 lines).
 - [ ] **S2** · `cmdRemove` (~112) → `remove.js`
 - [ ] **S3** · `cmdStatus` (~95) and its `print*` helpers → see Q2
 - [ ] **S4** · `cmdUnlock` (~165) → see Q3
