@@ -121,6 +121,22 @@ research skills get tracked.
   doors on one job (IDEA-086's lesson). `/scout` is the front door for the outside world.
 
 ## Open questions (Q1–Q4 answered above; kept for the reasoning)
+- **Q5 · Does `/import` fold into `/scout`?** Ajesh 2026-10-06: *"scout is our intake of research,
+  materials from outside… it can id if its research or something else."* **Pushed back — keep two
+  verbs, share the routing:**
+  - **Different direction.** `/import` brings in what you *already have* (your notes, your PRD — the
+    founder's own material, IDEA-023); `/scout` goes out for what you *don't*. "Scout my notes.docx"
+    names the wrong act, and the founder who most needs `/import` is the one who can't guess past a
+    wrong name.
+  - **Different rung.** `/import` is day one (L0) — it fixed *"empty… im stuck"*. `/scout` is MVP. One
+    verb either drags a research loop into Quickstart or pushes the on-ramp out of it (PRINCIPLE #2).
+  - **Distinguishable by input**, which is IDEA-101's test for keeping two doors: a path or paste you
+    hold vs a question you can't answer yet. `/research` merged into `/evidence` because its input
+    *wasn't* distinguishable.
+  - **What survives of the idea:** each door recognises the other's input in one line and hands it
+    over (IDEA-086's routing line) — a URL to a rival handed to `/import` → `/scout rivals`; a doc
+    handed to `/scout` → filed through `/import`'s snapshot. Both cite the engine's source rules, so
+    an imported source and a scouted one carry the same row. Awaiting Ajesh.
 
 - **Q1 · The finder's name.** `/research` is taken in the supersedes ledger (retired into `/evidence`,
   v0.324.0) — reusing it would tell a syncing founder two different things.
