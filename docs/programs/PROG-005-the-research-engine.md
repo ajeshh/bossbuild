@@ -242,8 +242,14 @@ starter pack?"* The mechanism (proposed, part of T1):
     decisions, never questioned. Frame: ask where it's from, three doors (write it beside it ·
     `/scout market size` · mark `unverified`); the regex is only the gate. Ranked beside
     `unverified`. Eval gate: `moment-unsourced.yml`, 6 cases, 167/167.
-    - [ ] **Judgment not model-graded** — add `unsourced` cases to the judgment set and run `/regrade`
-      (keyless). Same state as 50 existing never-graded cases; a green replay is not a graded judgment.
+    - [x] **Judgment graded** (2026-10-07, keyless `/regrade`, in-session subagents, stamped
+      `claude-opus-5-5`) — `unsourced.judgment.yml`, 8 cases: 3 fire, 2 source-named-in-words, 1 own
+      target, 1 mid-outage, 1 ambiguous. **8/8 decisions match the labels; 3/3 fired nudges pass the
+      judge.** Frame gained *"stay silent if they're clearly mid-other-work"* before grading. One
+      report-only note: u-f-001 judged **over** by one sentence — *"A number without a source can't be
+      checked, by you or by anyone else"* — the frame's first-product line, used when no cohort was
+      given. Watch, don't fix on n=1. Transcripts local (DEC-013), copied into main's
+      `transcripts/unsourced/`.
 - [x] **T2 · `/inbox`** (2026-10-06) — `/import` became `/inbox` (receive: dated copy, the original's
   location on the first line, page-is-data) and handed its fold and assess steps to `/scout sort`
   (`scout/sort.md`), run in the same turn. `boss inbox [<folder>] [--json]` is the view — new · held

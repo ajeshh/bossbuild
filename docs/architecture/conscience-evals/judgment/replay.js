@@ -161,6 +161,23 @@ function checkHumaneCase(c) {
   return errs;
 }
 
+// unsourced (PROG-005 T1c): the read surface is the People line and this turn. A fire case must
+// carry must_not — the failures here are tonal (asserting the number is wrong, a sourcing lecture),
+// and an untested ban is not a ban.
+function checkUnsourcedCase(c) {
+  const errs = [];
+  const ej = c.expected_judgment || {};
+  const ctx = c.context || {};
+  if (!ctx.people_line) errs.push('no context.people_line (the bounded read)');
+  if (!ctx.asking) errs.push('no context.asking (this turn — whether now is the moment is half the judgment)');
+  if (c.category.startsWith('should-fire') && (!Array.isArray(ej.must_not) || !ej.must_not.length)) {
+    errs.push('fire case must carry must_not');
+  }
+  checkLabel(c, errs);
+  if (!c.why) errs.push('missing why');
+  return errs;
+}
+
 // ---------------------------------------------------------------------------
 // The moment registry — add a row to cover a new judgment moment.
 // ---------------------------------------------------------------------------
@@ -210,6 +227,15 @@ const MOMENTS = [
     floors: { 'should-fire-stated-condition-met': 1, 'should-fire-arrangement-untrue': 1, 'should-not-fire-revenue-sustained': 1, 'should-not-fire-arrangement-already-honest': 1, 'should-not-fire-already-raised': 1, 'should-not-fire-no-cadence-claimed': 1, ambiguous: 1 },
     grow: { category: 'should-not-fire-arrangement-already-honest', target: 4 },
     check: checkSustainingCase,
+  },
+  {
+    // PROG-005 T1c. The silent classes are the trust-critical ones: a source named in words the
+    // gate can't read, the founder's own target, and a moment that isn't this one.
+    moment: 'unsourced',
+    casesFile: 'unsourced.judgment.yml',
+    floors: { 'should-fire-unsourced-claim': 3, 'should-not-fire-source-in-words': 2, 'should-not-fire-own-target': 1, 'should-not-fire-mid-other-work': 1, ambiguous: 1 },
+    grow: { category: 'should-not-fire-source-in-words', target: 4 },
+    check: checkUnsourcedCase,
   },
 ];
 

@@ -21,6 +21,8 @@ export const MOMENT_SIGNALS = {
   // reviewer or a persona catching a specific bad sentence. If the frame is edited, these
   // transcripts go STALE and demand a re-grade — which is exactly what should happen.
   sustaining: { moment: 'sustaining', loop_id: 'sustaining-loop', confidence: 'low', evidence: {} },
+  // PROG-005 T1c: a count of people on the canvas with nowhere it came from.
+  unsourced: { moment: 'unsourced', loop_id: 'unsourced-loop', confidence: 'low', evidence: {} },
 };
 
 // The HUMANE lens is the gateless judgment moment (IDEA-039). It has NO hook

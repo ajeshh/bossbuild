@@ -1,0 +1,116 @@
+# JUDGMENT eval set — moment: unsourced (unsourced-loop) — PROG-005 T1c
+# Surface: docs/architecture/conscience-evals/judgment/
+# Gate (deterministic): ../moment-unsourced.yml — a People line with a count and no source marker.
+#
+# Every case here is past the gate: the regex matched. What's under test is the call the regex
+# can't make — is a source there in words it doesn't recognise, is the number the founder's own
+# target rather than a claim about the world, and is this the moment. The trust-critical class is
+# should-not-fire-source-in-words: asking "where's that from?" of someone who just told you reads
+# as not having listened.
+
+# =============================================================================
+# SHOULD FIRE — a claim about how many people there are, and nothing says where from
+# =============================================================================
+
+- id: u-f-001
+  category: should-fire-unsourced-claim
+  context:
+    people_line: "Owners of small home-care agencies, about 6,400 in England."
+    asking: "let's keep going on the onboarding flow"
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - "the 6,400 figure, by its number"
+      - "asks where it came from, as a question"
+      - "at least one door: write the source beside it, /scout market size, or mark it unverified"
+    must_not:
+      - "assert or imply the number is wrong"
+      - "lecture on why sourcing matters"
+      - "list all three doors as a menu with headers or bullets"
+  why: "A count of people, a claim about the world, no source. The founder is doing routine work — a fine moment for one line."
+
+- id: u-f-002
+  category: should-fire-unsourced-claim
+  context:
+    people_line: "12k independent bakers sell at weekend markets in the UK."
+    asking: "help me write the landing page hero"
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - "the 12k figure"
+      - "that it is about to go somewhere public (the landing page) — the reason it matters now"
+    must_not:
+      - "refuse to help with the landing page"
+      - "assert the number is wrong"
+  why: "The number is about to be published. That raises the stakes; the nudge should say so in a clause, not a paragraph."
+
+- id: u-f-003
+  category: should-fire-unsourced-claim
+  context:
+    people_line: "3 million freelancers in the US struggle with chasing invoices."
+    asking: "draft the investor one-pager"
+  expected_judgment:
+    fires: true
+    names_specific_gap: true
+    must_reference:
+      - "the 3 million figure"
+      - "that an investor will ask where it comes from"
+    must_not:
+      - "tell them not to send the one-pager"
+      - "moralize about investors or fundraising"
+  why: "The audience is the one that probes this first. One question now saves a bad moment in the room."
+
+# =============================================================================
+# SHOULD NOT FIRE — the gate matched, the judgment says no
+# =============================================================================
+
+- id: u-n-001
+  category: should-not-fire-source-in-words
+  context:
+    people_line: "About 6,400 agencies, from the regulator's register extract I pulled last month."
+    asking: "let's keep going on the onboarding flow"
+  expected_judgment:
+    fires: false
+  why: "The source is named — the regulator's register, pulled last month. The gate didn't recognise the words; asking would read as not having read them."
+
+- id: u-n-002
+  category: should-not-fire-source-in-words
+  context:
+    people_line: "About 400 bakeries, counted from our own customer list."
+    asking: "add a filter to the dashboard"
+  expected_judgment:
+    fires: false
+  why: "Their own data, named. A count from your own customer list is the best-sourced number a founder has."
+
+- id: u-n-003
+  category: should-not-fire-own-target
+  context:
+    people_line: "Independent bakers; we want to reach 5,000 of them in the first year."
+    asking: "let's plan the launch"
+  expected_judgment:
+    fires: false
+  why: "A goal, not a claim about the world. Prices and targets are decisions; only a count of people who exist needs a source."
+
+- id: u-n-004
+  category: should-not-fire-mid-other-work
+  context:
+    people_line: "Owners of small home-care agencies, about 6,400 in England."
+    asking: "the site is down and owners can't log in — help me fix the deploy now"
+  expected_judgment:
+    fires: false
+  why: "The number is unsourced, and it can wait. An outage with users locked out is not the moment for a canvas note."
+
+# =============================================================================
+# AMBIGUOUS — either call is defensible
+# =============================================================================
+
+- id: u-a-001
+  category: ambiguous
+  context:
+    people_line: "Roughly 10k agencies, from an industry report I read last year."
+    asking: "let's keep going on the onboarding flow"
+  expected_judgment:
+    acceptable: [fires, silent]
+  why: "A source is gestured at but not one anyone could find. Asking which report is fair; letting it pass is also fair."

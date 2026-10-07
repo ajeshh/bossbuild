@@ -110,6 +110,17 @@ export const MOMENTS = {
       return `The canvas's Business Model cell says:\n  "${ctx.business_model_cell}"\n\nThe most recent devlog entries:\n${String(SUSTAINING_DEVLOGS[ctx.devlog_ref] || '').trim()}\n\nToday is ${ctx.today}.${prior}`;
     },
   },
+  // unsourced (PROG-005 T1c). Context-shaped: the People line the gate matched, and what the founder
+  // is doing this turn. The gate only says "a count with no source marker"; the judgment is whether
+  // a source is there in words the regex can't read, whether it's a target rather than a claim, and
+  // whether this is the moment.
+  unsourced: {
+    casesFile: 'unsourced.judgment.yml',
+    boundedRead(c) {
+      const ctx = c.context || {};
+      return `The canvas's People cell says:\n  "${ctx.people_line}"\n\nThis turn, the founder asked:\n${ctx.asking || '(continuing to build)'}`;
+    },
+  },
 };
 
 // ---- the two model calls ---------------------------------------------------
