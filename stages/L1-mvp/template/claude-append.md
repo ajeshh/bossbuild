@@ -5,8 +5,9 @@
 
 0. **Open the session before you work in it.** The session start hands Claude where you stopped and
    what is in flight; `boss status` and `docs/RESUME.md` have the rest. A way back in, not an agenda.
-1. **Spec before code.** A non-trivial change starts with `/spec` (`FEAT-NNN`: goal, acceptance
-   criteria, smoke check). Throwaway one-liners don't need it.
+1. **Spec before code.** A change you can't say in one sentence, or one that touches money, deletes
+   data or changes who can see what, starts with `/spec` (`FEAT-NNN`: goal, acceptance criteria, smoke
+   check). Anything else, just build it.
 2. **Smoke before commit.** `/smoke` green before the commit; red is information — fix it, or write
    the regression down.
 3. **Devlog every session.** `/log` — what landed, what's next, what surprised you.

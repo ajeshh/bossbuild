@@ -3,7 +3,7 @@ id: IDEA-154
 type: idea
 kind: capability
 owner: product-lead
-status: captured
+status: building
 created: 2026-10-06
 relates: IDEA-150
 gist: A wider read of spec- and agent-driven practice found BOSS's loop mostly ahead of the field. Five small gaps go to /vet first (a sanctioned stop when a test and the spec disagree, less text always loaded, the one-sentence-diff line, each criterion naming its test, one question on an unclear ask), plus a NO-list.
@@ -40,7 +40,7 @@ small, and three of them are subtractions.
 
 ## Tasks — each goes through `/vet` before anything is built
 
-- [ ] **T1 — A sanctioned stop when a test and the FEAT disagree.** When unit tests contradicted the
+- [x] **T1 — A sanctioned stop when a test and the FEAT disagree.** When unit tests contradicted the
   spec, frontier agents "passed" by cheating about half the time. Giving them an explicit *flag for a
   human* exit cut that sharply for two vendors' models, but **much less for Claude**. For Claude the
   lever was read-only tests, which still miss special-casing. Telling a model "don't cheat" alone was
@@ -63,14 +63,14 @@ small, and three of them are subtractions.
     before and after.
   - *BOSS's own:* this repo's `CLAUDE.md` is 1,705 words before memory. The same test applies; it's
     Ajesh's call whether it's in scope.
-- [ ] **T3 — Replace "non-trivial" with the one-sentence-diff line.** `claude-append.md:7` says *"Any
+- [x] **T3 — Replace "non-trivial" with the one-sentence-diff line.** `claude-append.md:7` says *"Any
   non-trivial change starts with `/spec`… Throwaway one-liners don't need it."* "Non-trivial" is
   undefined, and the middle is where ceremony bloats (a small bug once became four user stories with
   16 criteria in one toolkit).
   - The host's docs give a test a founder can apply: *if you could describe the diff in one sentence,
     skip the plan*.
   - *Shape:* that sentence as BOSS's line between "just do it" and `/spec`. Wording only.
-- [ ] **T4 — Each acceptance criterion names the test that proves it.** Living specs drift. The
+- [x] **T4 — Each acceptance criterion names the test that proves it.** Living specs drift. The
   delta-merge camp is fragile, and the other camp says *code remains the source of truth*. Coverage
   overstates what tests check (one suite had 100% coverage and a 4% mutation score).
   - BOSS today: the *most executable artifact* ladder, evidence on the tick (`/log`), `amends:`, and
@@ -79,7 +79,7 @@ small, and three of them are subtractions.
     stay checked by the suite: drift shows up as red, and no merge step is needed.
   - Check first: RVW-140 rejected `specced_at`, and RVW-136 set the tick's evidence format. This may
     already be one word away.
-- [ ] **T5 — One question when a request is unclear.** Models can't tell a well-specified request from
+- [x] **T5 — One question when a request is unclear.** Models can't tell a well-specified request from
   an underspecified one, and asking recovers a lot (up to 74% on one benchmark, a ceiling).
   - BOSS today: `/spec`'s elicitation pass covers FEATs. `coder` has no rule for an ambiguous ask that
     arrives without a FEAT (grep: no "ambig", "unclear" or "clarif" in coder or the CLAUDE blocks).
@@ -112,6 +112,13 @@ small, and three of them are subtractions.
   code. `tester` with evidence stays.
 
 ## Capture log
+
+- 2026-10-06 — Ajesh: *"lets do what best recommended but not over do it."* Vetted T1, T3, T4 and T5:
+  RVW-150 ADAPT (one line in `coder`; the guard stays opt-in, per the gate rule), RVW-151 ADAPT (the
+  one-sentence test, with the three paths overriding it), RVW-152 ADAPT (one question, only on a real
+  fork), RVW-153 REJECT (already covered by the tick format, the ladder and `engineering.md`). Built the
+  three. **T2 (subtracting the always-loaded text) is left open on purpose**: it's an audit, not a
+  sentence, and it waits for Ajesh to take it up.
 
 - 2026-10-06 — opened from SESSION-2026-10-06 (7 angles, 19 claims 3-vote verified, 2 killed). Nothing
   built. T1–T5 wait on `/vet`.

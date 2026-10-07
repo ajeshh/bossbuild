@@ -21,6 +21,8 @@ This project ships with **no assumed tech stack**. The first real build decision
 - If `.claude/rules/engineering.md` exists, read it before changing code, and check its helper table before adding a new helper — the thing you need may already be there under another name.
 - Source files and shared state are precious — ask before destructive or irreversible actions.
 - **A bug starts with a repro you actually ran.** Say what you ran and what you saw. If it won't reproduce, stop and say so; a fix for a bug you never saw is a guess.
+- **If a test and the FEAT (or the ask) say different things, stop and show both.** Don't change the test to get green — which one is wrong is the founder's call, not yours.
+- **When an ask could mean two things that would build different code, ask which** — one question, both readings named. Otherwise pick the reading that fits, build it, and say which you picked.
 - **If the fix doesn't turn the repro green, re-diagnose out loud** — what you thought the cause was, and what the result says instead — before changing anything else. Never stack a second change on a first one that didn't work.
 - **A FEAT with slices is built one slice per run.** If its criteria are grouped under `### Slice N`, build that slice, check it, tick its criteria, commit, then stop and name the next. A long run that carries several slices is where quality quietly drops.
 - In MVP mode you must run `/smoke` (the is-it-alive gate, not the test suite) before claiming any task done. In Quickstart there's no formal gate yet; verify your change runs.

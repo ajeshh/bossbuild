@@ -226,6 +226,13 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### Smaller improvements
 
+- **The builder stops instead of bending a test, and asks when your ask reads two ways.** If a test and
+  the feature you asked for disagree, `coder` now shows you both instead of editing the test until it
+  passes; which one is wrong is your call. When a request could mean two things that would build different
+  code, it asks one question naming both, and otherwise says which reading it picked. And MVP's *spec
+  before code* rule now says what "non-trivial" meant: a change you can't say in one sentence, or one that
+  touches money, deletes data or changes who can see what (IDEA-154).
+
 ### Under the hood
 
 ## 0.330.0 — 2026-10-05
