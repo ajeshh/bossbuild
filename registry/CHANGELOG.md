@@ -32,6 +32,7 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 ## Unreleased
 
 ### What you'll notice
+
 - **Your home page now shows every folder BOSS writes, not only the ones it started with.** *Where things
   live* (`.boss/index.html`) only knew the folders that existed when it was built. Your red-team
   passes, eval sets, roadmaps, programs, design reviews, drift audits, onboarding and money reads, AI
@@ -57,62 +58,6 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   rules and tasks of the program it belongs to. Where the summary and the record disagree, the record
   wins. Nothing is written for you; what you put in the record is what comes back.
 
-### Smaller improvements
-
-- **Bringing material in ends on the answer, not a receipt.** When what you dropped in touched rivals
-  or the market, `/inbox` finishes on one screen: the rivals found and which ones someone you spoke to
-  actually named, how many people there are and the part that's yours, what couldn't be verified, and
-  the next step. And to share your research folders with a cofounder, just ask — the agent sets it up
-  and writes the note to send them.
-
-- **`/spec` ends by starting the build fresh.** Once the spec is written, it suggests clearing the
-  context and starting the build from the record — a clean window for the code, nothing lost — and an
-  approved plan is written into the feature's build log instead of living only in the chat.
-- **`/close` tidies the feature's own record** — ticked items out, open ones kept word for word,
-  anything found this session and not yet written down put in — so the next start reads back what is
-  really in flight.
-- **Your CLAUDE.md tells a compaction what to keep** — the files changed and why, the decisions made,
-  and any task or question not yet in a record. V1 and Scale add less to it: the inventory of what each
-  mode brings is `boss map`'s job, not something read on every turn.
-- **A skill reads the part it needs, not all of it.** Twelve of the longest skills now keep the part
-  every run uses in one file and open the rest only when a run goes there: `/canvas` reads the Lean,
-  BMC or one-pager frame only when you ask for one, `/red-team` reads its `--paths`, `--humane` or
-  `--self` pass only on that flag, `/close` reads the why-check only when a decision was reversed.
-  A typical run of those twelve loads about a third less into Claude's context, so there's more
-  room left for your code. Nothing was cut or reworded; `boss sync` brings the new files over.
-- **You hear about the other shapes of your canvas when you'd use one.** Mention who's going to read
-  it — an advisor, an investor — and `/canvas` names the version made for them, with the command. Your
-  first `/evidence` record says the canvas can now be a two-minute one-pager. And `/red-team`'s menu
-  hint now shows its `--paths` and `--humane` passes.
-
-- **Your session carries less on every turn.** The rules BOSS adds to CLAUDE.md now say each rule in a
-  line or two and where to look; the reasoning stays in the skill or guide you open when the rule
-  applies. The rules themselves are about 40% smaller at MVP and later, and everything a session reads
-  before you type anything about a fifth smaller.
-  Existing projects get the shorter rules with `boss sync`, unless you edited them yourself.
-
-- **What you decided not to build stays decided.** After Claude Code compacts a long session, the
-  feature's *Out of scope* lines and the options you turned down now come back first, before the open
-  work — a summary keeps what was done and tends to drop what was decided against.
-- **Extra work is named by a reviewer that didn't build it.** When a feature's criteria are all met,
-  `/log` hands a fresh reviewer just the changes and the feature record, and it names anything no
-  criterion asked for — a setting, a screen, a deletion. You decide what stays; nothing is removed for
-  you.
-
-- **`boss hooks` describes the component check as it works at V1.** The reuse check follows your
-  component index into the design library's manifest once V1 replaces it; its one-line description
-  named only the old index. It names both now.
-
-### Under the hood
-
-- **The working-state file is retired from new MVP projects.** `.claude/rules/feature-context.md`
-  lived where a compaction drops it; its two lists are now sections of the feature record (*Found while
-  building*, *Open questions*). A project that already has the file keeps it — BOSS reads its open items
-  and never moves or deletes it — and `/close` offers to move them into the record.
-
-## 0.331.0 — 2026-10-05
-
-### What you'll notice
 - **Your research and the people in it stay on your machine.** Interview notes, what you import,
   and what you find about rivals and the market (`docs/evidence/`, `docs/source/`,
   `docs/competition/`, `docs/research/`) are no longer committed: interview notes are other people's
@@ -121,6 +66,7 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   lists each, and if any of those folders are already committed it says so plainly — ignoring stops new
   files, it does not take old ones out of your history — and gives the one command that stops tracking
   them. Delete a line to commit a folder after all; sync won't put it back.
+
 - **Share interview notes with a cofounder without putting them in git.** `boss team share <folder>`
   points your interview notes, your inbox and your notes on rivals at a folder your team already syncs
   (a shared drive folder for this project); each teammate runs it once with their own path, and
@@ -158,14 +104,56 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   one command that stops tracking them. Delete a line to commit a folder after all; sync won't put it
   back.
 
-- **The work in flight survives a compaction.** When Claude Code compacts a long session, or you
-  `/clear` it, the next turn used to know only what the summary kept — and the tasks you'd spotted at
-  hour three were usually not in it. Now every session start reads the feature you're building back
-  from its record: the criteria still open, what you found while building, the open questions, and the
-  rules and tasks of the program it belongs to. Where the summary and the record disagree, the record
-  wins. Nothing is written for you; what you put in the record is what comes back.
-
 ### Smaller improvements
+
+- **Bringing material in ends on the answer, not a receipt.** When what you dropped in touched rivals
+  or the market, `/inbox` finishes on one screen: the rivals found and which ones someone you spoke to
+  actually named, how many people there are and the part that's yours, what couldn't be verified, and
+  the next step. And to share your research folders with a cofounder, just ask — the agent sets it up
+  and writes the note to send them.
+
+- **`/spec` ends by starting the build fresh.** Once the spec is written, it suggests clearing the
+  context and starting the build from the record — a clean window for the code, nothing lost — and an
+  approved plan is written into the feature's build log instead of living only in the chat.
+
+- **`/close` tidies the feature's own record** — ticked items out, open ones kept word for word,
+  anything found this session and not yet written down put in — so the next start reads back what is
+  really in flight.
+
+- **Your CLAUDE.md tells a compaction what to keep** — the files changed and why, the decisions made,
+  and any task or question not yet in a record. V1 and Scale add less to it: the inventory of what each
+  mode brings is `boss map`'s job, not something read on every turn.
+
+- **A skill reads the part it needs, not all of it.** Twelve of the longest skills now keep the part
+  every run uses in one file and open the rest only when a run goes there: `/canvas` reads the Lean,
+  BMC or one-pager frame only when you ask for one, `/red-team` reads its `--paths`, `--humane` or
+  `--self` pass only on that flag, `/close` reads the why-check only when a decision was reversed.
+  A typical run of those twelve loads about a third less into Claude's context, so there's more
+  room left for your code. Nothing was cut or reworded; `boss sync` brings the new files over.
+
+- **You hear about the other shapes of your canvas when you'd use one.** Mention who's going to read
+  it — an advisor, an investor — and `/canvas` names the version made for them, with the command. Your
+  first `/evidence` record says the canvas can now be a two-minute one-pager. And `/red-team`'s menu
+  hint now shows its `--paths` and `--humane` passes.
+
+- **Your session carries less on every turn.** The rules BOSS adds to CLAUDE.md now say each rule in a
+  line or two and where to look; the reasoning stays in the skill or guide you open when the rule
+  applies. The rules themselves are about 40% smaller at MVP and later, and everything a session reads
+  before you type anything about a fifth smaller.
+  Existing projects get the shorter rules with `boss sync`, unless you edited them yourself.
+
+- **What you decided not to build stays decided.** After Claude Code compacts a long session, the
+  feature's *Out of scope* lines and the options you turned down now come back first, before the open
+  work — a summary keeps what was done and tends to drop what was decided against.
+
+- **Extra work is named by a reviewer that didn't build it.** When a feature's criteria are all met,
+  `/log` hands a fresh reviewer just the changes and the feature record, and it names anything no
+  criterion asked for — a setting, a screen, a deletion. You decide what stays; nothing is removed for
+  you.
+
+- **`boss hooks` describes the component check as it works at V1.** The reuse check follows your
+  component index into the design library's manifest once V1 replaces it; its one-line description
+  named only the old index. It names both now.
 
 - **One way in for what you bring.** A deck you start with through `/boss` is now sorted the way
   `/inbox` sorts anything — its rivals, its count of people and its tagline are offered to their
@@ -190,31 +178,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   so a new voice who measured the thing gets in by being right, and an old one fades if nothing of
   theirs has held lately. It sits beside `boss craft outside-claims`: one finds, the other judges.
 
-- **`/spec` ends by starting the build fresh.** Once the spec is written, it suggests clearing the
-  context and starting the build from the record — a clean window for the code, nothing lost — and an
-  approved plan is written into the feature's build log instead of living only in the chat.
-- **`/close` tidies the feature's own record** — ticked items out, open ones kept word for word,
-  anything found this session and not yet written down put in — so the next start reads back what is
-  really in flight.
-- **Your CLAUDE.md tells a compaction what to keep** — the files changed and why, the decisions made,
-  and any task or question not yet in a record. V1 and Scale add less to it: the inventory of what each
-  mode brings is `boss map`'s job, not something read on every turn.
-- **A skill reads the part it needs, not all of it.** Twelve of the longest skills now keep the part
-  every run uses in one file and open the rest only when a run goes there: `/canvas` reads the Lean,
-  BMC or one-pager frame only when you ask for one, `/red-team` reads its `--paths`, `--humane` or
-  `--self` pass only on that flag, `/close` reads the why-check only when a decision was reversed.
-  A typical run of those twelve loads about a third less into Claude's context, so there's more
-  room left for your code. Nothing was cut or reworded; `boss sync` brings the new files over.
-- **You hear about the other shapes of your canvas when you'd use one.** Mention who's going to read
-  it — an advisor, an investor — and `/canvas` names the version made for them, with the command. Your
-  first `/evidence` record says the canvas can now be a two-minute one-pager. And `/red-team`'s menu
-  hint now shows its `--paths` and `--humane` passes.
-
-- **Your session carries less on every turn.** The rules BOSS adds to CLAUDE.md now say each rule in a
-  line or two and where to look; the reasoning stays in the skill or guide you open when the rule
-  applies. The rules themselves are about 40% smaller at MVP and later, and everything a session reads
-  before you type anything about a fifth smaller.
-  Existing projects get the shorter rules with `boss sync`, unless you edited them yourself.
+- **The builder stops instead of bending a test, and asks when your ask reads two ways.** If a test and
+  the feature you asked for disagree, `coder` now shows you both instead of editing the test until it
+  passes; which one is wrong is your call. When a request could mean two things that would build different
+  code, it asks one question naming both, and otherwise says which reading it picked. And MVP's *spec
+  before code* rule now says what "non-trivial" meant: a change you can't say in one sentence, or one that
+  touches money, deletes data or changes who can see what (IDEA-154).
 
 ### Under the hood
 
@@ -233,17 +202,6 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   the whole manual. `boss unlock` with no mode names the next one and shows what it asks of you, rather
   than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
   status bar or your shell prompt.
-
-### Smaller improvements
-
-- **The builder stops instead of bending a test, and asks when your ask reads two ways.** If a test and
-  the feature you asked for disagree, `coder` now shows you both instead of editing the test until it
-  passes; which one is wrong is your call. When a request could mean two things that would build different
-  code, it asks one question naming both, and otherwise says which reading it picked. And MVP's *spec
-  before code* rule now says what "non-trivial" meant: a change you can't say in one sentence, or one that
-  touches money, deletes data or changes who can see what (IDEA-154).
-
-### Under the hood
 
 ## 0.330.0 — 2026-10-05
 

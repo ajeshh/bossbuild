@@ -10,15 +10,15 @@
       "word": "quickstart",
       "name": "Quickstart",
       "agents": 4,
-      "skills": 15,
+      "skills": 16,
       "cumAgents": 4,
-      "cumSkills": 15
+      "cumSkills": 16
     },
     {
       "word": "mvp",
       "name": "MVP",
       "agents": 7,
-      "skills": 24,
+      "skills": 23,
       "cumAgents": 11,
       "cumSkills": 39
     },
@@ -39,12 +39,12 @@
       "cumSkills": 42
     }
   ],
-  "practices": 35,
+  "practices": 36,
   "verdicts": {
-    "total": 150,
+    "total": 154,
     "ADOPT": 11,
-    "ADAPT": 77,
-    "REJECT": 39,
+    "ADAPT": 80,
+    "REJECT": 40,
     "NOT-YET": 23
   },
   "decisions": 23
