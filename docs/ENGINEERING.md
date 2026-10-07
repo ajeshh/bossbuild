@@ -163,7 +163,7 @@ Never a big-bang split, which would collide with every open worktree. — **W** 
 | Leaves (no internal imports) | `args` `atomic` `clock` `paths` `ui` `frontmatter` `page-shell` `glossary` `gitdates` `detect` `managed` |
 | State readers | `config` `registry` `scaffold` `supersede` `modes` `fail` |
 | Domain | `board` (projection) `records` `earned` `ladder` `sync` `remove` `hooks` `learn` `team` `brain` `conscience` |
-| Renderers and verbs | `playbook` `design` `recap` `map` `help` `help-html` `craft` `patterns` `changelog` `update` `orientation` `readiness` `insights` `credit` |
+| Renderers and verbs | `playbook` `design` `recap` `map` `help` `help-html` `craft` `patterns` `changelog` `update` `orientation` `readiness` `insights` `credit` `install` |
 | Top | `cli` |
 
 **Against the grain today:** `board ↔ playbook ↔ design` (a cycle, F1); `design → hooks` (a renderer

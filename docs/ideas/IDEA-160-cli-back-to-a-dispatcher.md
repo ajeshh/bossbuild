@@ -86,12 +86,16 @@ bug from them, so they don't meet the bar for a new gate. The fix is to do the m
   824 tests; `/tmp` bare `unlock`, `mvp` twice, `v1`, `scale`, a skip, a bogus mode, outside a
   project — identical to main (145 lines).
 - [x] **S5** · `cmdNew` (~108) + `claudeInstalled` + `CLAUDE_MISSING` → `install.js` (`cli.js` 1,509 →
-  1,386; `cmdAdopt` imports the two back until S6). It surfaced a masked finding: `check-refs` had
+  1,394; `cmdAdopt` imports the two back until S6). It surfaced a masked finding: `check-refs` had
   counted a bare `manifest.json` in a `cmdNew` comment as `cli.js` following the design library's
   succession, so `boss hooks`' description of the reuse check never named the V1 index. Fixed in its
   own commit first (f98efb29, with a bullet). Verified: 824 tests; `/tmp` `new`, `new` again, `--ai`
   (whole tree), no name, `claude` not on PATH — identical to main (192 lines).
-- [ ] **S6** · `cmdAdopt` (~186) → `install.js`
+- [x] **S6** · `cmdAdopt` (~186) → `install.js` (`cli.js` 1,394 → 1,202; `install.js` 508). Twenty-six
+  imports only the install trio used left `cli.js` with it. Verified: 824 tests; `/tmp` adopt into an
+  empty repo, a repo with code (detected as MVP), one with its own CLAUDE.md/.gitignore/settings and
+  pre-commit hook, a folder with no git, each adopted twice, and `--mode mvp` — identical to main
+  (663 lines).
 - [ ] **S6b** · `cmdConscience` (~167) → `conscience.js`. Found 2026-10-07 while answering Q2/Q3: the
   original list ranked by an awk pass that missed it.
 - [ ] **S7** · ENGINEERING.md §3: the new line count and the map's layer table; the "shrinks as it's

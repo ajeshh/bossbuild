@@ -4,12 +4,12 @@
 // copying itself is scaffold.js's; this is the part a founder reads.
 
 import { mkdirSync, existsSync, writeFileSync } from 'node:fs';
-import { join, resolve, delimiter } from 'node:path';
+import { join, resolve, delimiter, basename } from 'node:path';
 import { execSync } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
-import { stageVars, applyStage, readStageManifest, recordIgnoreOffered } from './scaffold.js';
-import { readStamp, writeStamp, registerProject } from './registry.js';
-import { stampManaged } from './sync.js';
+import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
+import { readStamp, writeStamp, registerProject, STAMP } from './registry.js';
+import { stampManaged, computeSettingsMerge } from './sync.js';
 import { earnedGroups, describeUntil, holdAtAdopt } from './earned.js';
 import { modeWord, skillsLine } from './modes.js';
 import { readiness, renderReadiness } from './readiness.js';
@@ -17,6 +17,12 @@ import { dim, bold, ok, warn, shellArg } from './ui.js';
 import { fail, failNotAProject } from './fail.js';
 import { commitGuardLine } from './hooks.js';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
+import { writeFileAtomic } from './atomic.js';
+import { detectStage, inferSourceGlobs } from './detect.js';
+import { parseArgs } from './args.js';
+
+
+
 
 // The role-shift ladder (IDEA-053). Each rung quietly asks the founder to become someone slightly
 // different — builder → seller → operator → leader. Named once, at the founder's own invoked unlock;
@@ -198,7 +204,7 @@ export function cmdUnlock(args) {
 // Is `claude` somewhere this shell would find it? `boss new` and `adopt` tell the founder to type it,
 // and when it isn't installed that line is a dead end. Also looks where Claude Code's local installer
 // puts it. Said only when it's missing (IDEA-150 A5).
-export function claudeInstalled(env = process.env) {
+function claudeInstalled(env = process.env) {
   const exts = process.platform === 'win32' ? ['.exe', '.cmd', '.ps1', ''] : [''];
   const dirs = (env.PATH || '').split(delimiter).filter(Boolean);
   const home = env.HOME || env.USERPROFILE || '';
@@ -206,7 +212,7 @@ export function claudeInstalled(env = process.env) {
   return dirs.some((d) => exts.some((x) => existsSync(join(d, 'claude' + x))));
 }
 
-export const CLAUDE_MISSING = '                        # not installed yet? https://claude.com/claude-code';
+const CLAUDE_MISSING = '                        # not installed yet? https://claude.com/claude-code';
 
 export function cmdNew(args) {
   const name = args.find((a) => !a.startsWith('--'));
@@ -308,5 +314,195 @@ export function cmdNew(args) {
   if (aiNative) {
     console.log(`    > /read-repo           # AI-native: tailor the scaffold to what BOSS understands (augments, never replaces)`);
   }
+  console.log('');
+}
+
+// boss adopt — bring BOSS into an ALREADY-STARTED repo, non-destructively.
+// "Lite BOSS" is the design, not a fallback (Principle 2): adopt at the lightest
+// register that matches where the app already is, then `boss unlock` upward on
+// evidence. ≈ a safe scaffold (copy-if-absent) + settings merge + stamp + register.
+export function cmdAdopt(args) {
+  const flags = parseArgs(args);
+  const targetDir = process.cwd();
+  if (existsSync(join(targetDir, STAMP))) {
+    return fail('already a BOSS project (.boss/manifest.json here). Use `boss sync` to update or `boss unlock <mode>` to add a mode.');
+  }
+  // Read how far along the repo already is, unless the founder named a mode. Adopting a
+  // half-built app at Quickstart hands it the idea-capture arc it finished months ago; the old
+  // default did that every time and told the founder to figure the mode out themselves. The
+  // detection is deliberately cheap and SHOWN (see src/detect.js) — it caps at MVP and never
+  // auto-climbs to V1, because ceremony added is ceremony sync cannot yet remove.
+  const detected = flags.mode ? null : detectStage(targetDir);
+  const stageId = flags.mode ? resolveStageId(flags.mode) : detected.stage;
+  if (!stageId) return fail(`unknown mode '${flags.mode}'. options: ${STAGE_ORDER.map(modeWord).join(' | ')}`);
+  let manifest;
+  try { manifest = readStageManifest(stageId); }
+  catch { return fail(`mode '${flags.mode}' isn't authored yet.`); }
+
+  const name = basename(targetDir);
+
+  // 1. Non-destructive scaffold of the FULL chain up to the target mode — adopting
+  //    at MVP must also lay down Quickstart's foundation (welcome/boss/idea/...),
+  //    exactly as `boss new` + `boss unlock mvp` would. Copy-if-absent throughout.
+  const chain = STAGE_ORDER
+    .slice(0, STAGE_ORDER.indexOf(stageId) + 1)
+    .filter((s) => { try { readStageManifest(s); return true; } catch { return false; } });
+  const claudePreexisted = existsSync(join(targetDir, 'CLAUDE.md'));
+  const agentsPreexisted = existsSync(join(targetDir, 'AGENTS.md'));
+  const gitignorePreexisted = existsSync(join(targetDir, '.gitignore'));
+  const copied = [];
+  const skipped = [];
+  // The same holds `boss unlock` keeps, evaluated against the repo being adopted: a rung's
+  // earned-gated skills stay off disk until earned (a live repo — deploy config or CI, plus tests
+  // — counts as shipped; a model call in the source counts as calling a model), and the opt-in
+  // hooks stay off until `boss hooks enable`. Adopt used to lay down all of both (IDEA-118).
+  const shippedBefore = Boolean(detected && detected.beyond);
+  const deferred = {};
+  const heldSkills = [];
+  for (const s of chain) {
+    const m = readStageManifest(s);
+    const hold = holdAtAdopt(m, targetDir, { shippedBefore });
+    const r = applyStageSafe(s, targetDir, stageVars(name, s, m.name), { skipSkills: hold.skip });
+    stampManaged(targetDir, [s]);
+    copied.push(...r.copied);
+    skipped.push(...r.skipped);
+    if (Object.keys(hold.deferred).length) deferred[s] = hold.deferred;
+    heldSkills.push(...hold.skip);
+  }
+
+  // 2a. If the repo already had an AGENTS.md, we skipped the template's — leave
+  //     the founder's host-neutral rules intact and append BOSS's as a marked block
+  //     (so BOSS's working discipline lands alongside theirs).
+  if (agentsPreexisted) {
+    appendMarkedBlock(join(targetDir, 'AGENTS.md'), 'adopt',
+      `## BOSS working rules — adopted ${stageVars(name, stageId, manifest.name).DATE}\n\n` +
+      `1. **Capture before you build** (every idea → an \`IDEA-NNN\` file in \`docs/ideas/\`).\n` +
+      `2. **Stack-neutral until decided.** 3. **Docs are source of truth, not chat.**\n` +
+      `4. **Small, reversible steps.** 5. **Ask before irreversible actions.** 6. **Don't over-build.**\n` +
+      `7. **Grow through modes** (Quickstart → MVP → V1 → Scale): \`boss unlock <mode>\`.`);
+  }
+
+  // 2b. If the repo already had a CLAUDE.md, we skipped the template's — leave the
+  //     founder's rules intact, import the (now-present) AGENTS.md so the rules
+  //     reach Claude, and append a small marked BOSS orientation block.
+  if (claudePreexisted) {
+    // THE AGENT ROSTER IS THE LOAD-BEARING HALF, and it was missing until v0.265.0. A repo that
+    // already has a CLAUDE.md never receives the template's — so the Quickstart layer, which is the
+    // ONLY place `coder`, `mentor-founder` and `prompt-coach` are named, never lands. Three of the
+    // four day-one agents shipped into the repo and were named nowhere, which is the exact condition
+    // `check-manifests` fails a release for ("it will never be invoked"). That gate reads the
+    // TEMPLATE; nothing read the ADOPTED RESULT, so the rule held for `boss new` and quietly did not
+    // for `boss adopt` — on the path that is most people's first contact with BOSS.
+    //
+    // Derived from the manifests, never typed: this block cannot drift from what was installed.
+    const roster = [...new Set(chain.flatMap((s) => readStageManifest(s).agents || []))];
+    appendClaudeBlock('adopt', targetDir,
+      `@AGENTS.md\n\n` +
+      `## BOSS — adopted ${stageVars(name, stageId, manifest.name).DATE}\n\n` +
+      `This repo was adopted into BOSS at **${manifest.name}** mode (non-destructively — your files were untouched).\n` +
+      `Host-neutral working rules are imported from \`@AGENTS.md\` above. New: \`.claude/skills/\` + \`.claude/agents/\` for this mode, a conscience hook, and \`docs/\` capture surfaces.\n\n` +
+      `**Start with \`/read-repo\`** — it reads what you've actually built and says where you stand, which is the useful first thing to know about a repo that already exists. Then \`/welcome\` if you want the tour, and \`boss map\` for everything available.\n\n` +
+      `**Agents you can call by name:** ${roster.map((a) => `\`${a}\``).join(', ')}. \`boss map\` lists the skills.\n\n` +
+      `Grow ceremony as the project earns it: \`boss unlock <mode>\`.`);
+  }
+
+  // 2c. If the repo already had a .gitignore, we skipped the template's — and that file is
+  //     what keeps `.boss/brain/relationship.md` (per-person conscience state, DEC-001) out of
+  //     a shared repo. Merge BOSS's rules in as a marked `#` block instead of shipping the
+  //     guarantee in a file this path never installs. Only rules they lack are added.
+  const ignored = gitignorePreexisted ? appendGitignoreBlock(chain, targetDir) : { added: [], applied: false };
+  if (!gitignorePreexisted) recordIgnoreOffered(targetDir, chain);
+
+  // 3. Stamp .boss/ (mode + not-self-hosted) so it's a real BOSS project. Agents /
+  //    skills / hooks / loops are the UNION across the installed chain.
+  const u = { agents: new Set(), skills: new Set(), hooks: new Set(), loops: new Set() };
+  for (const s of chain) {
+    const m = readStageManifest(s);
+    (m.agents || []).forEach((x) => u.agents.add(x));
+    (m.skills || []).forEach((x) => u.skills.add(x));
+    (m.hooks || []).forEach((x) => u.hooks.add(x));
+    (m.loops || []).forEach((x) => u.loops.add(x));
+  }
+  const stamp = {
+    name, bossVersion: bossVersion(), stage: stageId, mode: manifest.name,
+    installedLayers: chain, agents: [...u.agents], skills: [...u.skills].filter((sk) => !heldSkills.includes(sk)),
+    hooks: [...u.hooks], loops: [...u.loops],
+    createdAt: new Date().toISOString(), adopted: true,
+    ...(shippedBefore ? { shippedBefore: true } : {}),
+    ...(Object.keys(deferred).length ? { deferred } : {}),
+  };
+  writeStamp(targetDir, stamp);
+  // config.json only if absent — never clobber a founder's prefs.
+  const cfgPath = join(targetDir, '.boss', 'config.json');
+  if (!existsSync(cfgPath)) {
+    // `sourceGlobs` is written ONLY when the tree actually shows us where the code is. A null
+    // inference stays absent rather than being stamped with the default: an absent key means
+    // "nobody has said", and the conscience can then report honestly that it could not look.
+    // A key written as a guess would make a wrong answer look like the founder's own decision.
+    const sourceGlobs = inferSourceGlobs(targetDir);
+    writeFileSync(cfgPath, JSON.stringify({
+      // license: null — undecided, and BOSS doesn't decide it (DEC-011). See `boss new` above.
+      github: 'ask', visibility: 'private', license: null, cohort: null,
+      ...(sourceGlobs ? { sourceGlobs } : {}),
+      // `shareUp` and `aiNative` dropped v0.252.0 — nothing read either. See `boss new` above.
+    }, null, 2) + '\n');
+  }
+
+  // 4. Merge the conscience hook registration into settings.json (additive —
+  //    preserves the founder's permissions + any hooks they already wired).
+  const settings = computeSettingsMerge(targetDir, chain);
+  if (settings?.unparseable) console.log(`  ${warn('!')} ${settings.unparseable}`);
+  if (settings && settings.changed) {
+    const dest = join(targetDir, settings.rel);
+    mkdirSync(join(targetDir, '.claude'), { recursive: true });
+    writeFileAtomic(dest, JSON.stringify(settings.merged, null, 2) + '\n');
+  }
+
+  // 5. Register as a normal (not self-hosted) project — rides the usual sync loop.
+  registerProject({
+    name, path: targetDir, stage: stageId, mode: manifest.name,
+    bossVersion: bossVersion(), createdAt: stamp.createdAt,
+  });
+
+  console.log(`\n  ${ok('✦')} Adopted ${bold(name)} into BOSS — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
+  commitGuardLine(installCommitGuard(targetDir));
+  if (detected) {
+    console.log(`    ${dim('read from your repo:')} ${detected.why.join(' · ')}`);
+    if (detected.beyond) {
+      console.log(`    ${warn('▸')} this looks past MVP — shipped and tested. ${bold('boss unlock v1')} adds the design`);
+      console.log(`      system, db and board discipline ${dim("when you want it; BOSS won't climb there on its own.")}`);
+    }
+  }
+  // What stays held back, and what earns it — the line `boss unlock` prints, for the same reason.
+  for (const [s, groups] of Object.entries(deferred)) {
+    const m = readStageManifest(s);
+    for (const [group, sk] of Object.entries(groups)) {
+      const until = (m.earned || {})[group];
+      console.log(`    ${dim('·')} ${dim(`${sk.length} held back ${describeUntil(until)}:`)} ${skillsLine(sk, 3).replace(/ \(`boss map`\)$/, '')} ${dim(`— \`boss sync\` lays ${sk.length === 1 ? 'it' : 'them'} down then.`)}`);
+    }
+  }
+  // `skipped` counts COLLISIONS — files BOSS declined to overwrite because you already had them.
+  // Printing it unconditionally produced "0 of yours left untouched" on a clean adopt, which reads
+  // as "we touched everything" — the exact opposite of adopt's promise, at the moment of maximum
+  // trust anxiety. Nothing of yours is ever written; say that, and only count collisions when there
+  // were some.
+  const preserved = [
+    skipped.length ? `${skipped.length} of yours kept as-is` : null,
+    claudePreexisted ? 'CLAUDE.md preserved (BOSS block appended)' : null,
+    ignored.applied ? `.gitignore merged (${ignored.added.length} rule(s) added)` : null,
+  ].filter(Boolean);
+  console.log(`    ${copied.length} file(s) added · nothing of yours overwritten${preserved.length ? ` · ${preserved.join(' · ')}` : ''}`);
+  console.log(`    skills: ${skillsLine(stamp.skills)}`);
+  // `/read-repo` leads here, and `/welcome` follows it. The order is the point: someone adopting
+  // BOSS has already built the thing, so the first useful sentence BOSS can say is about THEIR
+  // repo, not about BOSS. `/welcome`'s own tour opens on an empty folder and walks the capture
+  // arc — read to someone with a working codebase, that is a tool that didn't bother to look.
+  console.log(`\n  ${bold('Next')}`);
+  console.log(`    claude              # open Claude Code here ${dim('(terminal)')}`);
+  if (!claudeInstalled()) console.log(dim(CLAUDE_MISSING));
+  console.log(`    > /read-repo            # start here — BOSS reads what you've built and says where you stand.`);
+  console.log(`                            #   Additive and reversible; diff or revert anything.`);
+  console.log(`    > /welcome              # then, if you want it: what BOSS added + how the conscience works`);
+  console.log(`    boss map                # what's available · boss unlock <mode> to grow ${dim('(terminal)')}`);
   console.log('');
 }
