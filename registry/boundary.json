@@ -15,22 +15,10 @@
       "why": "Ships at L0 and in library/. The other half of the loop."
     },
     {
-      "name": "deep-research",
-      "kind": "skill",
-      "verdict": "internal",
-      "why": "RETIRED 2026-10-06 into /scout (PROG-005): the finder is now /scout itself, which SHIPS at Quickstart — the method crossed whole, as `boss craft research` plus a verb, so a founder has what this did. What remains here is a redirect, kept until the work lands so a peer session that calls it is pointed somewhere rather than nowhere."
-    },
-    {
       "name": "designer",
       "kind": "agent",
       "verdict": "crossed",
       "why": "Ships at MVP as of v0.189.0 (DEC-005). The old reason — \"already held by ux-designer and ui-designer at L2\" — stopped being true when those two merged into this one and moved down a rung. ⚠️ UNRESOLVED: BOSS's internal .claude/agents/designer.md still shares this name, so this ledger row cannot distinguish the founder-facing designer from the one that designs BOSS's own CLI surface. DEC-005 rules that the INTERNAL one gets renamed (the founder-facing name is the one that has to be plain); the new name is not chosen yet and the rename touches 10 workspace files."
-    },
-    {
-      "name": "humane-refresh",
-      "kind": "skill",
-      "verdict": "internal",
-      "why": "RETIRED 2026-10-06 into `/scout humane` (PROG-005): docs/research/domains/humane.md. Keeping the dark-pattern canon current is still BOSS's job, not the founder's; the domain lives in BOSS's own docs/research/domains/, which no founder installs. Redirect until the work lands."
     },
     {
       "name": "mentor-architect",
@@ -129,22 +117,10 @@
       "why": "Reacts to BOSS, on BOSS's behalf. A founder gets /persona, which derives a user from THEIR idea — the right shape for them, and not this."
     },
     {
-      "name": "practice-refresh",
-      "kind": "skill",
-      "verdict": "internal",
-      "why": "RETIRED 2026-10-06 into `/scout craft` (PROG-005): BOSS's own domain file, docs/research/domains/craft.md, on the same shelf a founder's own domains use. The redirect stays until the work lands. The old re-open condition (a founder project with ~10 stale PRAC records) is moot: a founder who wants this writes a domain of their own."
-    },
-    {
       "name": "prompt-coach",
       "kind": "agent",
       "verdict": "crossed",
       "why": "Ships at Quickstart as of v0.236.0. Its own description had said \"outward-facing counterpart to voice-keeper\" — it was AUTHORED for founders and never left the workspace, so crossing it delivered something already written for them rather than adding something new. Landed at L0 rather than MVP because asking well is load-bearing from the first prompt, and the cohorts it helps most (`first-product`, `vibe-coder-newbie`) meet Claude on day one; L0 seated three agents. Two things were WRONG in the workspace copy and fixed on the way over: `tools: Read, Edit` could not create the pattern library the agent promises to \"create on first use\" (Edit needs an existing file) — now the house line, `Read, Grep, Glob, Edit, Write`; and it told the founder it does not replace `voice-keeper`, an agent that ships to nobody."
-    },
-    {
-      "name": "recalibrate",
-      "kind": "skill",
-      "verdict": "internal",
-      "why": "RETIRED 2026-10-06 into `/scout model` (PROG-005): docs/research/domains/model.md. BOSS pins no model names anywhere it ships, so there is still nothing in a founder's project to recalibrate. Redirect until the work lands."
     },
     {
       "name": "regrade",

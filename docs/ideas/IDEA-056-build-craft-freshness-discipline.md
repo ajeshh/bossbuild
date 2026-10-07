@@ -5,7 +5,7 @@ kind: capability
 owner: mentor-architect
 status: shipped (v0.135)
 program: standing-freshness
-proof: .claude/skills/practice-refresh
+proof: docs/research/domains/craft.md
 created: 2026-07-30
 source: Ajesh, 2026-07-30 — "lets review thru mentors, experts best practices around building with AI,
   that is now outdated in our approach. Lets also create a process way to check and update as needed
@@ -74,7 +74,7 @@ the ground under it moved.** So:
 - **`npm run check:freshness`** (`scripts/check-freshness.js`) — zero-dep, reuses `parseFrontmatter` +
   `BOSS_ROOT`. Reports overdue + owner. Errors only on *unreadable* metadata; overdue is information, not a
   ship-blocker. Wired into the release gate on the gate's own terms (it caught a real shipped defect).
-- **[`/practice-refresh`](../../.claude/skills/practice-refresh/SKILL.md)** — orchestrates what exists:
+- **[`/practice-refresh`](../research/domains/craft.md) (now `/scout craft`)** — orchestrates what exists:
   `check:freshness` schedules → `/deep-research` finds → `/vet` judges → `/boss-learn` routes → re-stamp.
 - **[`watchlists/build-craft.md`](../research/watchlists/build-craft.md)** — 10 domains, their taps, their
   event triggers, the standing query.

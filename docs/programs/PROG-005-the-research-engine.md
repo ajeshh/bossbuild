@@ -223,8 +223,12 @@ starter pack?"* The mechanism (proposed, part of T1):
     `/scout` (kept until this lands, so a peer calling one is pointed somewhere), with their full text
     kept locally at `docs/research/retired-skills/2026-10-06/`. Boundary rows, `check:freshness`
     owners, the two watchlists' headers and diagrams, `/vet`'s skeleton (G3–G5) updated.
-    - [ ] **Remove the four redirects** once this has landed and BOSS has synced `/scout` into its own
-      `.claude/skills/` (the boundary rows go with them).
+    - [x] **The four redirects removed** (2026-10-07). BOSS synced its own install first —
+      `boss sync --apply --keep-mine`, 27 files, its six tailored agents left alone, and its ignore rules
+      pre-marked as offered so BOSS's `.gitignore` stayed untouched (the T3 sync would otherwise have
+      added 13 template lines here: a self-hosted repo has no record of what it offered itself). Then
+      the stubs went, with their boundary rows; IDEA-042/056 prove the domain files now; the dead links
+      in IDEA-056, an old CHANGELOG entry and both watchlists point at the domains.
     - [x] **Tracking `/vet`** (2026-10-07) — `/.claude/` → `/.claude/*` + `!/.claude/skills/` +
       `/.claude/skills/*` + `!/.claude/skills/vet/`; in a symlink-free repo exactly one file becomes
       trackable. The feared hazard — an open worktree whose `.claude/skills` is a link failing to rebase

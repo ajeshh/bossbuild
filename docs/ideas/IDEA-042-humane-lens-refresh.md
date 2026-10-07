@@ -6,7 +6,7 @@ owner: product-lead
 status: shipped
 gist: The standing sweep that keeps the dark-pattern catalog from freezing at the date it was adopted. Dark patterns are an arms race; a snapshot rots.
 program: standing-freshness
-proof: .claude/skills/humane-refresh
+proof: docs/research/domains/humane.md
 created: 2026-06-21
 ---
 

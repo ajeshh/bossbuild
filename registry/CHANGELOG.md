@@ -12621,7 +12621,7 @@ you did NOT design for.** One real bug, and confirmation on the rest.
   surfaces nobody's named. So the catalog now has a **standing freshness discipline** instead of a one-time
   read. The staleness-twin of model recalibration ([IDEA-014](../docs/ideas/IDEA-014-model-recalibration-discipline.md));
   they share trigger events.
-  - **New skill [`.claude/skills/humane-refresh`](../.claude/skills/humane-refresh/SKILL.md)** (a
+  - **New skill `.claude/skills/humane-refresh` (retired 2026-10-06 into `/scout humane`)** (a
     BOSS-curating-BOSS meta-skill, sits with `/vet`/`/boss-learn`/`/boss-sync`). It *orchestrates skills that
     already exist* — `/deep-research` **finds** (scoped since last run) → diff against the live catalog →
     `/vet` **judges** (default NO) → `/boss-learn` **routes**. Three triggers: on-demand, quarterly via
