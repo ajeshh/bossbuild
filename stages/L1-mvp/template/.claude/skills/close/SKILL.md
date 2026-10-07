@@ -55,24 +55,25 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
    active FEAT's acceptance criteria, each with its evidence, and appending to its `## Build log`
    happen there (`/log` step 4), not here. If `/log` already ran this session, skip — don't duplicate.
 
-1b. **Compress `.claude/rules/feature-context.md` (the promise it makes).**
-   That file told every founder *"when the feature ships, `/close` will compress this to a one-line
-   outcome"* and `/close` had never opened it. It does now. Three passes, in this order:
+1b. **Tidy the working state in the records** — the active FEAT's *Found while building* and *Open
+   questions*, and its program's *Tasks* and *Open questions* (`program: PROG-NNN`). The next session
+   start reads these back, so what is left there is what the next session believes is in flight.
+   Three passes, in this order:
 
-   - **The `Found while building` list** — anything ticked, and anything that turned out not to
-     matter, goes. Anything still open **stays exactly as written**: that list is the reason the
-     next session doesn't begin by re-reading the diff to work out what was in flight.
+   - **Found while building** — anything ticked goes; anything that turned out not to matter goes,
+     named. Anything still open **stays exactly as written**: that list is the reason the next
+     session doesn't begin by re-reading the diff to work out what was in flight.
    - **Open questions** — read them back out loud. A question answered during the session gets its
      answer written next to it and then, if it was load-bearing, **routed to `/decide`** — the
      difference between "we discussed it" and a record with a falsifier is the whole point.
-   - **Local decisions and gotchas** — when the FEAT has shipped, compress the section to the one
-     line worth keeping and let the rest go. It is ephemeral by design; a working-context file that
-     accumulates forever becomes a second, worse changelog.
+   - **Anything found this session that is in no record yet** goes in now, sorted (task · `spun_to:`
+     new scope · open question). This is the last moment the chat still holds it.
 
    ⚠️ **Never silently discard an open item.** If something is being dropped, say which and why —
-   an item that disappears without being named is indistinguishable from one that was forgotten,
-   and this file exists precisely because that distinction was being lost. No file yet, or nothing
-   in flight? Skip it and say nothing.
+   an item that disappears without being named is indistinguishable from one that was forgotten.
+   A project still carrying the older `.claude/rules/feature-context.md` with open items: move them
+   into the FEAT (they are read back from there), then say the old file can go — never delete it
+   unasked. Nothing in flight? Skip it and say nothing.
 
 2. **Update `docs/RESUME.md`** (create if missing — template below). Rewrite, don't append —
    and **keep it inside its window: 200 lines.** `boss status` prints one line when it is past that;

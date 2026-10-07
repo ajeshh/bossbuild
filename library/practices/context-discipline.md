@@ -4,7 +4,7 @@ type: practice
 owner: product-lead
 status: active
 host: claude-code
-provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned. · **one citation added 2026-09-12 (v0.315.0, RVW-101), clock NOT moved** — Cai et al. 2606.12231 corroborates move #1's architecture-over-formatting line from mined rule files; preprint, before/after only. · **move 1b added 2026-09-12 (v0.318.0, RVW-102), clock NOT moved** — the tool list is always-on context; measured with `/skill-doctor` (45 resident, ~4.7k tokens/turn); the ` #` truncation found by the instrument. · **swept 2026-09-23 (`/practice-refresh agents`)** — the AGENTS.md line REVERSED: *"Claude Code reads `CLAUDE.md`, not `AGENTS.md`"* stopped being true at host v2.1.277 (reads `AGENTS.md` when no `CLAUDE.md`/`CLAUDE.local.md` exists); BOSS's import shape unaffected.
+provenance: vetted via /vet RVW-005 + RVW-010 (synthesizes RVW-002, RVW-009, RVW-012) — BOSS v0.42.0. AGENTS.md/CLAUDE.md split documented via /vet RVW-075 (2026-08-17), re-verified against code.claude.com/docs/en/memory — the practice had been silent about a scaffold BOSS shipped in v0.58.0, and was steering host-neutral rules into the Claude-only file. Session-lifecycle hooks (SessionStart/SessionEnd/PreCompact/PostCompact) added 2026-09-08, read out of the Claude Code 2.1.132 binary rather than the docs — the practice had been silent about the entire session lifecycle while being the doc BOSS points founders at for context discipline. Permission surface re-verified 2026-08-22 (BOSS v0.218.0, IDEA-071) against code.claude.com/docs/en/permission-modes, /permissions and /sandbox: the `defaultMode: auto` guidance added 2026-08-11 was WRONG for the file it recommended (v2.1.142+), and the practice had never named the sandbox — the host's largest prompt-reduction mechanism. Host-doc claims are now version-pinned, not date-pinned. · **one citation added 2026-09-12 (v0.315.0, RVW-101), clock NOT moved** — Cai et al. 2606.12231 corroborates move #1's architecture-over-formatting line from mined rule files; preprint, before/after only. · **move 1b added 2026-09-12 (v0.318.0, RVW-102), clock NOT moved** — the tool list is always-on context; measured with `/skill-doctor` (45 resident, ~4.7k tokens/turn); the ` #` truncation found by the instrument. · **swept 2026-09-23 (`/practice-refresh agents`)** — the AGENTS.md line REVERSED: *"Claude Code reads `CLAUDE.md`, not `AGENTS.md`"* stopped being true at host v2.1.277 (reads `AGENTS.md` when no `CLAUDE.md`/`CLAUDE.local.md` exists); BOSS's import shape unaffected. · **lifecycle section rewritten 2026-10-06 (IDEA-153), clock NOT moved** — compaction re-entry via `SessionStart: compact`, what a compaction keeps and drops, the working state moved into the records, steering lines, the 10,000-character hook cap, spec-then-fresh-session, lost in the middle, the AGENTS.md evaluation (arXiv 2602.11988); each checked at source that day.
 provenance_public: Vetted against BOSS's principles rather than adopted on popularity. The AGENTS.md / CLAUDE.md split is re-verified against the host's own memory documentation each time this is swept — that ground moves with the host, not with us, and the practice had once gone silent about a scaffold BOSS itself shipped.
 last_reviewed: 2026-09-23
 review_by: 2026-12-22
@@ -177,7 +177,7 @@ genuinely global rules. This is just-in-time support (Principle 2) applied to th
 **Shipped instance (BOSS FEAT-020 Phase 1, v0.45.0):** the L0 and L1 templates now ship a
 `.claude/rules/` example so every `boss new` project is JIT-by-construction, not just
 deny-by-construction — L0 `your-app-code.md` (the basic path-scoped pattern), L1 `feature-context.md`
-(the live feature's working notes, which `/close` will later compress — FEAT-020 Phases 2-3). The
+(the live feature's working notes — retired by IDEA-153: path-scoped rules are dropped at compaction, so the working state moved into the FEAT record). The
 durable-vs-working-state cut that decides what belongs here rather than in always-loaded memory is
 the table in move #1 above. Re-verified against the official Claude Code docs 2026-06-05: `paths:`
 is the correct key (not Cursor's `globs:`); path-scoped rules load when Claude reads a matching file,
@@ -394,16 +394,52 @@ moves with numbers and named failure modes:
   `SessionEnd`, `PreCompact` (`trigger: manual|auto`) and `PostCompact` (carrying the summary it
   produced). Everything above is advice a founder has to remember; these are the points at which a
   tool can act. **Verify against the host you are on** — this list is read out of Claude Code 2.1.132.
-  - **BOSS uses exactly one of them, and the restraint is the interesting part.** `SessionStart` runs
-    the re-entry read (v0.244.0). `SessionEnd` is deliberately unused: a hook cannot run `/close`, so
-    all that is left is a nag arriving as someone leaves. `PreCompact` is a real opportunity —
-    auto-compaction is when working state evaporates, and it is the one moment "write down what you'd
-    lose" is both possible and cheap — but **a hook that auto-writes on a schedule the founder does
-    not control is the accretion this section warns against**, so it stays unbuilt until someone has
-    actually lost work to it.
+  - **What a compaction keeps, and what it drops** (Claude Code docs, checked 2026-10-06). Kept: everything
+    that lives outside the message history — CLAUDE.md, auto memory — reloads; a structured summary of the
+    conversation; the files changed most recently; the body of each skill invoked, **capped at 5,000 tokens
+    per skill** (so a skill's load-bearing instructions go at the top of its SKILL.md). Dropped:
+    **path-scoped rules** (`.claude/rules/` with `paths:`) until a matching file is read again — a rule that
+    must survive goes in the root file or in a record; and **every task found mid-session that was never
+    written down**, which no summary can be trusted to keep.
+  - **The way back in is `SessionStart` with `source: compact`**, whose output is added to the compacted
+    context. `PreCompact` can block a compaction or add context to the conversation about to be summarised;
+    `PostCompact` only observes. **BOSS uses `SessionStart` for it (IDEA-153):** every session start —
+    compaction and `/clear` included — re-reads the work in flight from its records (the worktree's record,
+    else the building FEATs, each with its program; in Quickstart, the venture idea) and says the record
+    wins where the summary disagrees. It writes nothing; that is what separates it from the auto-writer
+    this section used to warn against, and why it ships on. `SessionEnd` stays unused: a hook cannot run
+    `/close`, so all that is left is a nag arriving as someone leaves.
+  - **The working state lives in the record, not beside it.** BOSS's first answer was a separate
+    `.claude/rules/feature-context.md`. It sat in the one place a compaction drops, and BOSS's own copy
+    described a feature from three weeks earlier because a second file is one more thing to keep. A FEAT's
+    *Found while building* / *Open questions* and a program's *Rules every change carries* / *Tasks* /
+    *Open questions* are now the working state, read back at every start.
+  - **Steer the summary.** A line in CLAUDE.md — *"When compacting, keep: the files changed and why, the
+    decisions made, every task or question not yet in a record"* — is followed by the host's compaction;
+    `/compact <focus>` does it once; `/rewind` → *Summarize from here / up to here* compacts part of a
+    session. A question that needn't stay in context at all: `/btw` (the answer never enters history).
+  - **Hook output has two limits a hook author must know.** Each injected string is **capped at 10,000
+    characters** — past it the host saves the text to a file and passes a path plus a 2,000-character
+    preview, so the rest never reaches the model unless it opens the file. BOSS's conscience hit this on 17
+    of its first 80 fires (10–13k chars) until IDEA-121 cut it to one voiced frame; a test now holds the
+    worst case under the cap. And a `UserPromptSubmit` injection is **inserted into the conversation and
+    stays there** until compaction — a per-turn reminder accumulates; fire once, keep it short.
   - **The founder-facing half is vocabulary.** `/resume`, `--continue`, `/clear`, `/compact`,
     `/context`, `/memory`. A founder who does not know `/compact` exists cannot practise "intentional
     compaction over accretion", however well this section argues for it.
+- **Spec, then a fresh session to build.** The host's own guidance (2026-10-06): once a spec is written,
+  start a fresh session to execute it — clean context focused on implementation, and the spec to
+  reference. `/spec` ends that way: the record carries everything the build needs and the session start
+  reads it back.
+- **Lost in the middle.** Models retrieve worst from the middle of a long context (Liu et al., TACL 2024):
+  what must be acted on goes first or last — a skill's rule at the top of SKILL.md, a handoff's next step
+  at the top of RESUME, never in paragraph nine.
+- **Context files cost more than they look.** Gloaguen et al., *Evaluating AGENTS.md* (arXiv 2602.11988,
+  v3 2026-09-29): context files "do not generally improve task success rates, while increasing inference
+  cost by over 20% on average"; the instructions in them are well followed, but repository overviews —
+  "although popular and recommended by model providers" — are not helpful. Keep the root file to rules
+  the model would otherwise break; leave the map to `boss map` and the code. The host's `/doctor` proposes
+  cuts for what it can derive from the codebase.
 - **Trajectory poisoning — restart, don't correct.** Once a session has gone wrong and the model starts
   agreeing with your corrections ("you're right to push back"), the trajectory is poisoned — the bad context
   is now load-bearing and steering it straight rarely works. Restart from the compacted state.

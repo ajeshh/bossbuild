@@ -48,6 +48,32 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
   status bar or your shell prompt.
 
+- **The work in flight survives a compaction.** When Claude Code compacts a long session, or you
+  `/clear` it, the next turn used to know only what the summary kept — and the tasks you'd spotted at
+  hour three were usually not in it. Now every session start reads the feature you're building back
+  from its record: the criteria still open, what you found while building, the open questions, and the
+  rules and tasks of the program it belongs to. Where the summary and the record disagree, the record
+  wins. Nothing is written for you; what you put in the record is what comes back.
+
+### Smaller improvements
+
+- **`/spec` ends by starting the build fresh.** Once the spec is written, it suggests clearing the
+  context and starting the build from the record — a clean window for the code, nothing lost — and an
+  approved plan is written into the feature's build log instead of living only in the chat.
+- **`/close` tidies the feature's own record** — ticked items out, open ones kept word for word,
+  anything found this session and not yet written down put in — so the next start reads back what is
+  really in flight.
+- **Your CLAUDE.md tells a compaction what to keep** — the files changed and why, the decisions made,
+  and any task or question not yet in a record. V1 and Scale add less to it: the inventory of what each
+  mode brings is `boss map`'s job, not something read on every turn.
+
+### Under the hood
+
+- **The working-state file is retired from new MVP projects.** `.claude/rules/feature-context.md`
+  lived where a compaction drops it; its two lists are now sections of the feature record (*Found while
+  building*, *Open questions*). A project that already has the file keeps it — BOSS reads its open items
+  and never moves or deletes it — and `/close` offers to move them into the record.
+
 ## 0.330.0 — 2026-10-05
 
 ### What you'll notice

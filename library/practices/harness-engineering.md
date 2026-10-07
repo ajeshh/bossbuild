@@ -33,6 +33,12 @@ capability. Four failure→fix pairs a founder can steal directly:
 - **Buggy handoffs → a progress log + a startup health check.** A fresh context window must be able to resume.
   Keep an append-then-compacted progress note (BOSS's `RESUME.md` / `/close`) and an `init.sh` that gets a
   clean checkout running in one command. The handoff note *is* the harness's memory.
+- **Who grades the stop.** The host (Claude Code docs, checked 2026-10-06) offers four strengths of gate on
+  "done": the check asked for in one prompt; a **`/goal` condition** — a separate evaluator re-checks it
+  after every turn and the session keeps working until it resolves (it sees only what surfaced in the
+  conversation, so the check's output has to be printed there); a **Stop hook** that blocks the turn until
+  a script passes; and a fresh-context reviewer. A FEAT's acceptance criteria are the natural `/goal` —
+  each one already names the evidence that settles it.
 - **Unvalidated features → self-verification before "done."** The agent should check its own work (run the
   tests, hit the endpoint, screenshot the page) before it claims completion — not hand you the first draft.
   **And don't take its report of that check as the record.** Asked to review a set of files, frontier

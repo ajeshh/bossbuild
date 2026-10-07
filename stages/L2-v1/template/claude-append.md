@@ -13,8 +13,8 @@
    **What `design-drift-loop` watches is raw hex codes in source, and that is all** — one regex.
    It cannot see near-duplicate components or a tokens file going stale while components grow.
    Those are component-shaped failures, and `/design-library` is what reads them.
-2. **You already have `/design-review`** (before code and after) — it arrived at MVP with `designer`
-   (v0.189.0), and the 5-state requirement has been non-optional since then. What V1 adds is the
+2. **You already have `/design-review`** (before code and after), and the 5-state requirement is
+   non-optional. What V1 adds is the
    half that needs a real component set to exist first: `/design-library` renders the system from
    your code — foundations, rule sets, every component in all five states — and reports the
    component-shaped drift the regex loop cannot reach.
@@ -35,19 +35,8 @@
 
 ## What V1 adds (alongside MVP)
 
-- **Skills:**
-  - `/board` — cross-FEAT sequencing surface (`planner`'s authoritative view)
-- **Mentor agents:** none new. V1 is a skills rung — `mentor-capital`'s remit widens instead (above).
-- **Loops:**
-  - `design-drift-loop` — V1-stage; emits the `coherence` moment when system-vs-code drift
-    exceeds threshold (raw hex codes appearing, near-duplicate components, tokens file
-    stale while components grow)
-- **Conventions:**
-  - `docs/design/DESIGN_TOKENS.md` is authoritative (created at MVP via `/design-tokens-init`;
-    enforced at V1)
-  - `docs/design/STYLE_GUIDE.md` documents how tokens compose into patterns
-  - `docs/architecture/` carries your schema decisions (shaped at `/spec` time, reviewed by
-    `mentor-architect`, guarded by `schema-guard`)
-  - `docs/board.md` (or live-state computed from FEAT frontmatter) drives `/board`
-- **Graduation:** when the team grows, the org gets real, and a product council needs to be a
-  thing — `boss unlock scale`.
+**Run `boss map`** for this rung's skills and loops, live from the install. In short: `/board` (the
+sequencing surface `planner` reads), `/design-library`, and `design-drift-loop` (raw hex in source →
+the `coherence` moment). No new mentor (rule 5). `docs/design/STYLE_GUIDE.md` says how tokens compose;
+`docs/architecture/` holds the schema decisions `/spec` shaped. When the team grows and the org gets
+real → `boss unlock scale`.

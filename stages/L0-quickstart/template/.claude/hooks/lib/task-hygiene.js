@@ -42,7 +42,7 @@
 // would do is turn it off. This compares TIMES, exactly like `outpaced_by` and `harvest-loop`. That
 // makes the signal a GATE, not a finding — the frame says so, and the model does the judgment.
 
-import { statSync } from 'node:fs';
+import { statSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 // The session has to have been going for this long before its record can be "trailing" it. Short
@@ -61,10 +61,13 @@ const MIN_STALE_MS = 45 * 60 * 1000;
 // has actually run.
 const MAX_IDLE_MS = 30 * 60 * 1000;
 
-// Where the emergent list is supposed to live, newest wins. `feature-context.md` is the designated
-// home (MVP). `docs/devlog.md` is the fallback and the fairness clause: a founder who is actively
-// writing things down should not be nudged about writing things down, whichever file they used.
+// Where the emergent list is supposed to live, newest wins. Since IDEA-153 the home is the record
+// itself — a FEAT's *Found while building*, a program's *Tasks* — so any record in `docs/ideas/` or
+// `docs/programs/` counts. `docs/devlog.md` is the fairness clause: a founder who is actively writing
+// things down should not be nudged about writing things down, whichever file they used. The old
+// `.claude/rules/feature-context.md` still counts in a project that has one.
 const DURABLE = ['.claude/rules/feature-context.md', 'docs/devlog.md'];
+const DURABLE_DIRS = ['docs/ideas', 'docs/programs'];
 
 // The transcript's own two times. `birthtimeMs` is 0 on filesystems that do not record creation
 // time; a session whose start cannot be read has no length, and silence is the answer.
@@ -88,6 +91,17 @@ function newestDurable(projectDir) {
       const m = statSync(join(projectDir, rel)).mtimeMs;
       if (m > newest) { newest = m; which = rel; }
     } catch { /* not every rung ships every file */ }
+  }
+  for (const dir of DURABLE_DIRS) {
+    let names = [];
+    try { names = readdirSync(join(projectDir, dir)); } catch { continue; }
+    for (const n of names) {
+      if (!n.endsWith('.md')) continue;
+      try {
+        const m = statSync(join(projectDir, dir, n)).mtimeMs;
+        if (m > newest) { newest = m; which = `${dir}/${n}`; }
+      } catch { /* raced away */ }
+    }
   }
   return { at: newest, path: which };
 }

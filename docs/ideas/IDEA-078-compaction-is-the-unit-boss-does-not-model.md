@@ -3,8 +3,11 @@ id: IDEA-078
 type: idea
 kind: capability
 owner: product-lead
-status: deferred
-proof: >
+status: shipped
+shipped_on: 2026-10-06
+shipped_as: IDEA-153
+proof: test/working-state.test.js
+finding_at_capture: >
   [VERIFIED] mechanically, both halves. (1) The shipped founder surface has ZERO mentions of
   compaction: `grep -rln -iE 'compact|/clear|context window' stages/` returns two design-token
   template files and nothing else — no skill, no rule file, no CLAUDE.md line. (2) The host has
@@ -36,6 +39,13 @@ source: >
 ---
 
 # Compaction is the unit BOSS does not model
+
+> **Re-opened and built 2026-10-06 as [IDEA-153](IDEA-153-context-that-survives-the-session.md).** The
+> second trigger below was met in BOSS's own tree — `feature-context.md` had content someone wrote, and
+> it was three weeks stale: the file rotted rather than staying empty. And the mechanism is not
+> `PreCompact` (it can only block, or add context to what is about to be summarised): it is
+> `SessionStart` with `source: compact`, which reads the records and writes nothing — the objection
+> below to an auto-writer does not apply to it. The working state moved into the FEAT and PROG records.
 
 ## The line BOSS draws, and where it breaks
 

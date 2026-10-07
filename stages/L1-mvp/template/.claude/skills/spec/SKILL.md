@@ -230,16 +230,13 @@ writing. Otherwise skip it entirely; it is not a checklist.
    The stamp goes on **both** records because the board ages a card by the column it is in, not
    by its type — and an idea sitting in Building is the shape that actually goes stale here
    (most ideas never earn a FEAT at all).
-6b. **Stamp the working context.** Set **Active FEAT** in
-   `.claude/rules/feature-context.md` to this one, and clear the previous feature's
-   `Found while building` and `Open questions` rows if they were left behind (`/close` should have
-   compressed them; it is not always run). Carry across the **Still unknown** lines you just wrote
-   into that file's Open questions block — **same content, two lifetimes**: the FEAT keeps the
-   record of what you didn't know when you specced it, and the working file is the copy that gets
-   worked on and answered during the build. If the FEAT's `program:` names a `docs/programs/PROG-NNN`
-   record, set **Program** too — and read that record's rules into the spec before you draft the
-   criteria: what was decided across its members binds this one, and the build agent only sees the
-   rules if this line points at them.
+6b. **The record is the working state.** No separate file: the FEAT's own *Found while building*
+   and *Open questions* are where the build's discoveries go, and every session start reads them
+   back — after a compaction or a `/clear` too — together with the program's rules and tasks when
+   `program:` names a `docs/programs/PROG-NNN` record. So carry the **Still unknown** lines you just
+   wrote into *Open questions* (the Assumptions block keeps what you didn't know at spec time; this
+   is the copy that gets answered during the build), and if there is a program, read its rules into
+   the spec before you draft the criteria: what was decided across its members binds this one.
 
 7. Nothing else to register — `boss board` picks the FEAT up from its frontmatter and shows it
    alongside the ideas.
@@ -275,7 +272,16 @@ writing. Otherwise skip it entirely; it is not a checklist.
    **`/spec` decides the destination; the plan picks the road.** Keep them separate: a route that
    arrives without a spec is a well-planned trip to nowhere, and an implementation plan is *not* a
    substitute for acceptance criteria — it can't tell you whether the thing was worth building.
-9. Hand off to `coder` (or the stack's coder, if specialized) with the FEAT as the brief —
+   **An approved plan goes into the record**, as one Build-log entry: the route in a few lines and
+   the files it names. A plan that lives only in the chat is gone at the first compaction, and the
+   next session re-plans from scratch.
+9. **Build in a fresh context.** Specifying fills the window with the exploring, the questions and
+   the drafts that the build doesn't need — and a window's reliability drops well before it is full.
+   Everything the build needs is now in the record, and the session start reads it back. So say,
+   in one line: *"The spec is written down. Clear the context (`/clear`) and say 'build FEAT-NNN' —
+   the session will start from the record, not from this conversation."* Small FEAT, short session?
+   Skip the clear and go on.
+10. Hand off to `coder` (or the stack's coder, if specialized) with the FEAT as the brief —
    plus the plan, if one was made. If this host has no plan mode, this step is unchanged: the FEAT
    alone is a complete brief.
 

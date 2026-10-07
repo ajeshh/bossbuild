@@ -21,9 +21,11 @@
 - **Memory:** durable facts about *you* go to Claude's auto-memory, which lives on **this machine**
   and travels to no cofounder — so anything the project depends on belongs in `docs/`. Working notes
   scoped to one area of the code go in `.claude/rules/`, which loads only when that code is opened.
-- **`/clear` and `/compact` drop working context**, and neither is `docs/RESUME.md` (that's the
-  project's state, which `boss status` reads back). Put anything you'd hate to re-derive into your
-  idea doc *before* you run them.
+- **`/clear` and `/compact` drop working context.** What survives is what's on disk: every session
+  start reads the work in flight back from its records (the idea doc; at MVP, the FEAT and its
+  program). Put anything you'd hate to re-derive into the record *before* you run them.
+- **When compacting, keep:** the files changed and why, the decisions made this session, and every
+  task or question found that is not yet written into a record.
 
 ### The Quickstart arc
 

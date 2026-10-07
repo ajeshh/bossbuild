@@ -28,7 +28,7 @@
 > | **Product** (`product-lead`) | Goal · `for:` · Acceptance criteria · Validated learning | `/spec`'s restraint + loud≠important | `focus-loop`, `canvas-drift-loop` |
 > | **Design** (`designer`) | Flow — decided here, in prose · the five states · the copy in them | `/design-review` before code and after | the design guards (tokens, contrast, reuse, boundary, terminology) |
 > | **Engineering** (`coder`, `tester`, `mentor-architect`) | Data shape (before the migration) · Paths that must not break · Smoke check | `/smoke` · `/evals` · `/red-team --paths` | `schema-guard` · `smoke-guard` |
-> | **Project** (`planner`) | `program:` · order and blockers via `boss board` · found tasks in `.claude/rules/feature-context.md` | `/log` ticks the criteria, with evidence | `reentry`, the WIP watch |
+> | **Project** (`planner`) | `program:` · order and blockers via `boss board` · found tasks and open questions in this record | `/log` ticks the criteria, with evidence | `reentry`, the WIP watch |
 >
 > And it closes back on itself: `/health` → `/roadmap` → the next `/spec`.
 
@@ -165,8 +165,21 @@ at least one failure-state path (e.g., "refusal routes to /support, not the spin
 _What this FEAT explicitly does NOT do. Future FEATs may; this one doesn't._
 - …
 
+## Found while building
+_The working state — what you discover at hour three. Until it is on a line here it exists only in
+the chat, and a compaction or a closed window takes it; every session start (compaction and `/clear`
+included) reads this section back. Sort each as you write it: a **task** stays here; **new scope**
+goes `spun_to:` a new id, never a criterion added mid-build; an **open question** goes below.
+Tick when done, un-tick freely. `/close` drops the ticked ones._
+- [ ] (task — what, in the words you'd use to pick it up cold)
+
+## Open questions
+_Things decided not to decide yet — what would settle each. An answered one that binds the code goes
+to `/decide`._
+- (the question · why it is still open · what would settle it)
+
 ## Notes
-_Open questions, links to the idea/canvas, anything the builder needs._
+_Links to the idea/canvas, anything else the builder needs._
 - Source idea: [IDEA-NNN](IDEA-NNN-<slug>.md)
 - Canvas (if any): [IDEA-NNN-canvas.md](IDEA-NNN-canvas.md)
 

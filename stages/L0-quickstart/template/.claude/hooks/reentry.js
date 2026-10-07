@@ -31,7 +31,7 @@
 //   · no `docs/devlog.md` at all — a Quickstart project has not gone quiet, it has not started,
 //     and this hook is silent by construction there until `/log` exists at MVP;
 //   · the session did not actually START — `source` is `clear` or `compact`, which are mid-session
-//     events. Firing there would be the over-fire the conscience spends its whole design avoiding;
+//     events. The away-read and the open-work list stay out of those (see the next section);
 //   · it already fired for this same devlog date — opening three sessions in an afternoon should
 //     not replay the same line three times. The marker lives in the per-person state dir (DEC-015),
 //     so it is keyed to you and this project and survives a worktree.
@@ -42,6 +42,14 @@
 // is the one place that reaches them. It writes only into a free slot (never over their own
 // pre-commit, never past `core.hooksPath`), and the session hears about it once — the write is to
 // their `.git/`, and a write nobody is told about is not one BOSS makes.
+//
+// THE WORK IN FLIGHT, ON EVERY SESSION START — compaction and /clear included (IDEA-153). A
+// compaction keeps the chat's summary and drops path-scoped rules and every task found mid-session
+// that was never written down; the host's own answer is a SessionStart hook on the `compact` source,
+// and this hook used to return early on exactly that source. Now every start re-loads the work in
+// flight from its records (`lib/working-state.js`: the worktree's record, else the building FEATs,
+// each with its program; else the venture idea). It reads; it writes nothing. Silent when no work is
+// in flight. After a compaction it also says the record wins where the summary disagrees.
 //
 // ⛔ IT NEVER FIRES AT SOMEONE WHO IS AWAY. It fires when they COME BACK, which is the only moment
 // it can observe and the only kind one — and per DEC-016 that is now a decision, not a limit.
@@ -92,9 +100,26 @@ const main = async () => {
     if (raw.trim()) source = JSON.parse(raw).source || 'startup';
   } catch { /* unparseable input — treat as a normal startup rather than going silent */ }
 
-  if (!ARRIVALS.has(source)) return;
-
   const lines = [];
+
+  // The work in flight — every source, because a compaction and a /clear are exactly when the chat's
+  // copy of it is gone (IDEA-153).
+  let current = null;
+  try {
+    const { openWork } = await import('./lib/open-work.js');
+    current = (openWork(projectDir) || {}).current || null;
+  } catch { /* fail-open */ }
+  try {
+    const { workingState } = await import('./lib/working-state.js');
+    const state = workingState(projectDir, { worktree: current });
+    if (state) lines.push(...workingStateLines(state, source));
+  } catch { /* fail-open */ }
+
+  if (!ARRIVALS.has(source)) {
+    if (lines.length) emit(lines);
+    return;
+  }
+
   // Dynamic and caught: a project mid-sync without the lib must still get its session start.
   try {
     const { installCommitGuard } = await import('./lib/commit-secrets.js');
@@ -120,14 +145,26 @@ const main = async () => {
   const read = reentryRead(projectDir);
   if (read && !alreadyGiven(read.date)) lines.push(...reentryLines(read));
   if (!lines.length) return;
+  emit(lines);
+};
 
+function emit(lines) {
   process.stdout.write(JSON.stringify({
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
       additionalContext: lines.join('\n'),
     },
   }));
-};
+}
+
+function workingStateLines(state, source) {
+  const why = source === 'compact'
+    ? 'The conversation was just compacted. This is the work in flight, read from its records rather than the summary — where the two disagree, the record is right. If this session found a task, a decision or a question that is in neither, write it into the record now (a FEAT\'s *Found while building* / *Open questions*, a program\'s *Tasks* / *Open questions*), before it is lost a second time.'
+    : source === 'clear'
+      ? 'The context was just cleared. This is the work in flight, read from its records; read the record itself before changing code.'
+      : 'The work in flight, read from its records. Use it to orient; do not recite it, and do not start on it unless the founder\'s first message does.';
+  return [why, '', state.text, ''];
+}
 
 function openWorkLines(open, describe) {
   const shown = open.items.slice(0, 6);

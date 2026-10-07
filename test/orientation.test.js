@@ -201,9 +201,10 @@ test('the hook is silent in a project that has not started', () => {
   assert.equal(hook(mvp()).trim(), '');
 });
 
-test('the hook does not fire mid-session on /clear or a compaction', () => {
-  // `clear` and `compact` are SessionStart sources, but the founder never left. Firing there is
-  // the over-fire the conscience spends its whole design avoiding.
+test('the away-read does not fire mid-session on /clear or a compaction', () => {
+  // `clear` and `compact` are SessionStart sources, but the founder never left: "back after N days"
+  // there is the over-fire the conscience spends its whole design avoiding. (The work in flight IS
+  // re-loaded on those sources since IDEA-153 — test/working-state.test.js; this fixture has none.)
   const dir = mvp({ 'docs/devlog.md': devlog(daysAgo(9)) });
   for (const source of ['clear', 'compact']) {
     assert.equal(hook(dir, source).trim(), '', `fired on ${source}`);

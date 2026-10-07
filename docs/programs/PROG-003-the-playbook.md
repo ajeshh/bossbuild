@@ -40,6 +40,12 @@ chapter), IDEA-140 (export one slide, or a hand-picked set).
 - [ ] **T3** · The Evidence ladder strip reads 100% for every 1-of-1 — revisit when a project has 20+
   records (a count axis, not a share) (same source).
 
+## Open questions
+
+- Does a founder's canvas ever carry revision history inside a cell, or only BOSS's own?
+- Where does BOSS's own `boss playbook` output go for the self-hosted tree — `.boss/` is gitignored
+  here too, so nowhere public; fine for now. (Both moved from the retired feature-context file, 2026-10-06.)
+
 ## Log
 
 - **2026-10-05** — graduated from `business-profile`; the demo rule moved here from RESUME; IDEA-134 joined

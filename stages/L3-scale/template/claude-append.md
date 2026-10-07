@@ -36,17 +36,10 @@
 - **No calendar reflection ceremony** — `/close` + the learning pulse already carry reflection at the
   honest grain.
 
-## What Scale adds (alongside V1) — authored slices 1–2
+## What Scale adds (alongside V1)
 
-- **Skills:**
-  - `/incident` — the blameless one-page outage post-mortem (fix-first, one systemic learning UP).
-  - `/idea --feedback` — the customer register on the existing `/idea` verb (bug / friction /
-    feature-request-as-`EVID` / churn), writing into the evidence ledger.
-- **Mentors:**
-  - `mentor-hiring` — the talent and org coach, and the one Scale's own bottleneck earns. First
-    hires, contractors vs employees, what to keep vs delegate, operating cadence. It **defaults to
-    *don't hire yet*** — often permanently, beyond a small core — so ask it before you post a role,
-    not after. Advisory only: it gives no binding employment, equity or labour advice.
-- **Trigger-gated, not yet authored** (each waits on a real project's symptom, same discipline as
-  ever): `/economics`, collaborator roles + an operations mentor + onboarding briefs, `/code-health`,
-  `/refactor-wave`, and the give-away-your-Legos conscience moment.
+**Run `boss map`** for the rung's skills, live from the install: `/incident` (the blameless one-page
+post-mortem) and `/idea --feedback` (the customer register, writing into the evidence ledger). One
+mentor arrives: **`mentor-hiring`** — first hires, contractors vs employees, what to keep vs delegate.
+It **defaults to *don't hire yet***, so ask it before you post a role; advisory only, never binding
+employment, equity or labour advice. Everything else waits on a real project's symptom.

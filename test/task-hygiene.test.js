@@ -101,6 +101,20 @@ test('feature-context.md counts as durable, and the newest durable file wins', (
     'the designated home was written two minutes ago — silence, whichever file the devlog says');
 });
 
+test('a record written in docs/ideas or docs/programs counts as durable (IDEA-153)', () => {
+  // The working state lives in the FEAT and the program now; writing a found task there is the
+  // behaviour this moment exists to encourage, so it must quiet it.
+  for (const dir of ['ideas', 'programs']) {
+    const { proj, transcript, now, last } = fixture();
+    mkdirSync(join(proj, 'docs', dir), { recursive: true });
+    const rec = join(proj, 'docs', dir, dir === 'ideas' ? 'FEAT-001-x.md' : 'PROG-001-x.md');
+    writeFileSync(rec, '# record\n');
+    const fresh = new Date(last - 2 * MIN);
+    utimesSync(rec, fresh, fresh);
+    assert.equal(detectTaskHygiene(proj, transcript, now), null, `docs/${dir}`);
+  }
+});
+
 test('fails silent and open on every unreadable input', () => {
   const { proj, now } = fixture();
   assert.equal(detectTaskHygiene(proj, null, now), null);
