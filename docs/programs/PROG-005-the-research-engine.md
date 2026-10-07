@@ -188,6 +188,26 @@ research, or api documentation, or other technical research. needs to be wide."*
   gets one line offering `/scout`. (A conscience moment; designed in T1, built after.)
 - D (compose the host) and E (a quick vs full depth flag) stand as written — no objection raised.
 
+### Domains are open, not a starter pack (Ajesh, 2026-10-06)
+
+*"the templates are for various types of research, but a user can add more, also we should be able to
+add more templates in, so that way whichever the end user wants they can use. and not restricted by the
+starter pack?"* The mechanism (proposed, part of T1):
+
+- **Two shelves, one lookup.** BOSS's domains ship in the skill (`.claude/skills/scout/domains/`) and
+  arrive or update through `boss sync` like any skill file. The founder's own live in
+  `docs/research/domains/` — sync never touches that folder. `/scout` reads both; **a founder's file
+  with the same name wins**, so a shipped domain can be replaced without being edited.
+- **Editing a shipped one is safe too.** Sync's provenance already protects an edited file — it is
+  reported, never overwritten.
+- **Adding one is a sentence.** `/scout` asked for a kind it has no domain for offers to write one from
+  a blank domain template (what to open first, how to verify, where it lands, how fast it ages) — every
+  domain has the same five fields, which is also what makes them comparable.
+- **BOSS grows the shelf over time** — a new domain is a new file in the skill and a CHANGELOG line;
+  nothing about the verb changes.
+- Open: a founder's domains across their own projects (copy, or a personal shelf in `~/.boss/`)?
+  Not now — note it, wait for someone with two projects to want it.
+
 ### Tasks this program now owns
 
 - [ ] **T1 · `/scout`** — the skill, the loop citing `boss craft research`, domains `rivals`
