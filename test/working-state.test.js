@@ -12,12 +12,12 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const HOOKS = join(ROOT, 'stages', 'L0-quickstart', 'template', '.claude', 'hooks');
-const { workingState, STATE_CAP } = await import(join(HOOKS, 'lib', 'working-state.js'));
-const { composeContext, MOMENT_PRIORITY } = await import(join(HOOKS, 'lib', 'loop-runtime.js'));
+const { workingState, STATE_CAP } = await import(pathToFileURL(join(HOOKS, 'lib', 'working-state.js')).href);
+const { composeContext, MOMENT_PRIORITY } = await import(pathToFileURL(join(HOOKS, 'lib', 'loop-runtime.js')).href);
 
 // The host's cap on a hook's injected string: past it, the text is swapped for a file path and a
 // 2,000-character preview (hooks reference, checked 2026-10-06).
