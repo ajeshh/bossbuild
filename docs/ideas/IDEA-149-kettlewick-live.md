@@ -62,8 +62,8 @@ Read from what every Quickstart and MVP skill writes (its SKILL.md paths), the e
   (the model provider is now a subprocessor).
 - [x] **S7 · Each MVP verb's record:** `/extract` (EXTR), `/red-team` (RT, incl. `--paths`),
   `/drift-deep` (DRIFT), `/roadmap` (ROADMAP + NO-LIST), `/onboard` (ONBOARD), `/money` (MONEY),
-  `/practice` (PRAC), `/design-review` (reviews/), `/design-tokens-init` (DESIGN_TOKENS.md,
-  library/manifest.json), `/prototype` (PROTOTYPES.md), `/pretotype` (its section in the idea),
+  `/practice` (PRAC), `/design-review` (reviews/), `/design-tokens-init` (tokens.json,
+  DESIGN_TOKENS.md), `/prototype` (PROTOTYPES.md), `/pretotype` (its section in the idea),
   `/smoke` and `/ship` (`.boss/smoke.json`), `/close` (`.boss/brain/read.md`, `relationship.md`).
   Devlog entries for the sessions that wrote them.
 - [x] **S8 · "Always": `check:demo` gains coverage.** Each Quickstart/MVP skill maps to the demo
@@ -77,9 +77,10 @@ Read from what every Quickstart and MVP skill writes (its SKILL.md paths), the e
   `extractions`, `practices`, `drift-audits`, `onboard`, `money`, `cost-reviews`, `design/reviews`.
   Add them, and add a test that every folder a shipped verb writes has a place, so the next one
   can't fall off. This one gets a CHANGELOG bullet (a founder sees it).
-- [ ] **S10 · Found at landing (2026-10-07):** S7 names `library/manifest.json` under
-  `/design-tokens-init`, but the demo has no `docs/design/library/`. Is it an MVP piece to add, or
-  V1's design library (below, waiting on `--at v1`) and S7's line should drop it?
+- [x] **S10 · Found at landing (2026-10-07):** S7 named `library/manifest.json` under
+  `/design-tokens-init`. That file is V1's `/design-library` output (`docs/design/library/`), which waits on
+  `--at v1` below; MVP's `/design-tokens-init` writes `tokens.json` + `DESIGN_TOKENS.md`, both on the demo. S7's
+  line corrected; nothing to add.
 - **Deliberately absent:** `docs/POSTMORTEM.md` (a whole-venture sunset; Kettlewick is alive),
   `.boss/feedback.log` (feedback to BOSS's makers, not the venture's), `.boss/backups/` (`boss-sync`'s
   undo). V1/Scale's `board`, `design-library`, `incident` and `design-drift-loop` wait for `--at v1`.
