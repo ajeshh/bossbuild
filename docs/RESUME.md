@@ -27,6 +27,10 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **Landed 2026-10-07: IDEA-148, IDEA-154, IDEA-149 — no worktrees open.** The CHANGELOG's double `## 0.331.0`
+  (a stray heading from PROG-005's rebase fix) is gone: Unreleased rebuilt, 0.331.0 = its stamp; site regenerated.
+  Found: in a worktree, `npm run check` stops at a stale-ledger row for the gitignored `regrade` skill, hiding every
+  check after it (IDEA-154's missing `proof:` only showed on main) — fix `check-boundary` or note it in CLAUDE.md.
 - **IDEA-160 (2026-10-07, shipped, pushed) — cli.js back to a dispatcher.** No rearchitecture; `cli.js`
   2,242 → 1,177 by moving handlers into the modules they call (new `fail.js`, `install.js`). Devlog has the
   entry. Left: IDEA-161 — `boss id` missed a peer worktree's record; reproduce in a test before any fix.
@@ -72,11 +76,6 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   `/revalidate IDEA-159`. Backlog B2–B8 in PROG-004.
 - **IDEA-132 (2026-10-04, Unreleased, not pushed) — the design system's manifest gets its edges.** `tokens` + `composes`,
   Composition on the usage page, a never-inside rule at the write. Devlog.
-- **Release (2026-10-04): 0.328.0 was published to npm on 2026-09-25 (its stamp sat uncommitted until
-  now); 0.329.0 is stamped and committed.** `npm publish` and `npm run deploy` are Ajesh's; the live
-  site was at 0.327.0. `check:published` / `check:deployed` say how far behind each is.
-- **Shipped 2026-09-12/13 — board pass, playbook (FEAT-026–029, 035, 036), the Kettlewick showcase
-  (FEAT-039), board dates, the design lane (FEAT-030–033).** The devlog holds each, with commits.
 - **IDEA-135 (2026-10-04, in 0.329.0) — the build outruns the evidence.** EVID-004: a third founder, AI
   building ten half-built features nobody tried. Shipped by composition, no new skill: the `unseen` loops
   read the code, the playbook shows *how we're learning*, the canvas line is *What we're testing next*,

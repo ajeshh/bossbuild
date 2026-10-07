@@ -23,7 +23,26 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > mechanism working, not a bug.
 
 
-## 2026-10-07 — IDEA-160: cli.js back to a dispatcher (shipped, not pushed)
+## 2026-10-07 — three worktrees landed: IDEA-148, IDEA-154, IDEA-149; the CHANGELOG's double 0.331.0
+
+- **Landed:** Ajesh: *"lets merge everything in"*. Each diff was read against its record by a fresh
+  reviewer before `land`. IDEA-148 (record only). IDEA-154: the MVP rule 1 line was rewritten into
+  IDEA-157's compact form by hand; T2's counts are marked stale (IDEA-157 cut part of it), and the record
+  now declares `proof: none`. IDEA-149: the rule-6 paragraph is now one line in CLAUDE.md; `check:demo`'s
+  coverage now maps `/inbox` and `/scout` (main had retired `/import` and `/comp-eval`); the demo was
+  regenerated; S10 is closed (S7 had named V1's `library/manifest.json` as an MVP output).
+- **Fixed:** the CHANGELOG had two `## 0.331.0` headings. PROG-005's rebase fix (`812b8ed1`) restored the
+  real stamp but left the stray heading over 17 unreleased bullets, 8 of them duplicated under Unreleased.
+  On landing, IDEA-154's bullet also slid into the stamp. Unreleased is rebuilt (25 bullets, no text
+  lost, checked by diff) and 0.331.0 equals its stamp commit `fb20e1ef` again. The site's What's new had
+  been showing that unreleased work as released; `gen:site` re-run.
+- **Surprises:** a worktree's `npm run check` stops at a stale-ledger finding for the gitignored `regrade`
+  skill (absent from worktrees), so the `&&` chain never reached `check:backlog`. IDEA-154's missing
+  `proof:` only surfaced on main. A stray bullet in a stamped block passes every check.
+- **Next:** IDEA-161, IDEA-154 T2 (re-measure first), and whether `check-boundary` should skip a
+  gitignored workspace skill inside a worktree.
+
+## 2026-10-07 — IDEA-160: cli.js back to a dispatcher (shipped, pushed)
 
 - **Landed:** Ajesh asked whether BOSS's own code needs a rearchitecture as it grows. Measured first:
   no — the seed decisions hold, and the known bends (the board↔playbook↔design cycle, the four missing
