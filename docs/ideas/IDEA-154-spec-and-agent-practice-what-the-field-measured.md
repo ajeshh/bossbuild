@@ -6,6 +6,8 @@ owner: product-lead
 status: building
 created: 2026-10-06
 relates: IDEA-150
+proof: none
+proof_note: what shipped is text (coder.md, the MVP rule 1 line), not a path; done when T2's always-loaded audit is re-measured after IDEA-157 and its words-per-mode before/after are written here.
 gist: A wider read of spec- and agent-driven practice found BOSS's loop mostly ahead of the field. Five small gaps go to /vet first (a sanctioned stop when a test and the spec disagree, less text always loaded, the one-sentence-diff line, each criterion naming its test, one question on an unclear ask), plus a NO-list.
 ---
 
