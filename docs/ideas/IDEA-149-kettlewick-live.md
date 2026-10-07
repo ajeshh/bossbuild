@@ -77,6 +77,9 @@ Read from what every Quickstart and MVP skill writes (its SKILL.md paths), the e
   `extractions`, `practices`, `drift-audits`, `onboard`, `money`, `cost-reviews`, `design/reviews`.
   Add them, and add a test that every folder a shipped verb writes has a place, so the next one
   can't fall off. This one gets a CHANGELOG bullet (a founder sees it).
+- [ ] **S10 · Found at landing (2026-10-07):** S7 names `library/manifest.json` under
+  `/design-tokens-init`, but the demo has no `docs/design/library/`. Is it an MVP piece to add, or
+  V1's design library (below, waiting on `--at v1`) and S7's line should drop it?
 - **Deliberately absent:** `docs/POSTMORTEM.md` (a whole-venture sunset; Kettlewick is alive),
   `.boss/feedback.log` (feedback to BOSS's makers, not the venture's), `.boss/backups/` (`boss-sync`'s
   undo). V1/Scale's `board`, `design-library`, `incident` and `design-drift-loop` wait for `--at v1`.
