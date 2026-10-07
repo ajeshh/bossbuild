@@ -47,7 +47,8 @@ all eight.
 4. **Write claims as rows** (below), one claim per row, as you read.
 5. **Try to kill the load-bearing ones — the way that kind of claim can die.** Only the claims that
    would change what you do. A claim about people or practice: put it to three independent skeptics
-   told to *refute* it — default to refuted when unsure, majority refute kills it — and give them
+   — separate reviewers (fresh agent runs that haven't seen your reasoning, or people) — told to
+   *refute* it — default to refuted when unsure, majority refute kills it — and give them
    different ways to fail it (*is the evidence real*, *did that person actually say it*, *does it hold
    in your context*; three identical skeptics are one skeptic). A technical claim: **run it** — a
    probe or a small test beats any document, including the vendor's own. A price or a feature: open
@@ -63,7 +64,7 @@ all eight.
 
 The unit of research is the claim, not the document. One row each:
 
-| # | Claim | Source | Read | Result | Checked |
+| # | Claim | Source | Read | Survived | Checked |
 |---|---|---|---|---|---|
 | C1 | *the thing asserted, in one line* | *who said it — a named person or publisher, with the URL* | fetched · snippet · not read | confirmed 3-0 · held 2-1 · killed · unverified | YYYY-MM-DD |
 
@@ -89,17 +90,12 @@ error this practice exists to stop.
 something committed (`/evidence`). An interview is not desk research and desk research is not an
 interview; grade each on its own scale.
 
-**Where the older labels land** — BOSS used many names for these axes before writing them down once:
+**Labels you may meet elsewhere in BOSS:**
 
 | You may see | It is |
 |---|---|
-| `[EVIDENCE]` / `[THOUGHT-LEAD]` | Kind: evidence / opinion |
-| fetched / snippet-only · *read at source* / *exists* | Read |
-| killed / confirmed · 3-0 · `unverified` | Survived |
-| `checked` date | the row's Checked |
-| attribution verified / partly / does not verify | Survived, on the *who said it* lens |
 | ADOPT / ADAPT / REJECT / NOT-YET | Fit — never Survived: a true claim that adds ceremony is still a NO |
-| stated-pain / observed-behavior / commitment | the person ladder — not these axes |
+| stated-pain / observed-behavior / commitment (`/evidence`) | the person ladder — not these axes |
 
 ## Standing — who to read first
 
@@ -111,7 +107,8 @@ Sources are ranked by **what has held up**, not by how well known they are.
 - **New voices get in by being right.** A source enters your list the first time one of their claims
   survives the skeptics — no reputation required. This is how you stop depending only on the names
   everyone already reads.
-- **Standing fades.** If nothing of a source's has held since their curve came round, they go back to
+- **Standing fades.** If nothing of a source's has held up in the time that kind of claim takes to go stale, they go
+  back to
   *no record* — not down, just unrated. A view from two model generations ago does not keep its rank
   by default.
 - **Rank decides where to look first, never what to believe.** A famous name's new claim gets the
@@ -125,7 +122,7 @@ Sources are ranked by **what has held up**, not by how well known they are.
   anything that isn't yours to publish (contracts, a deck someone shared with you), notes on rivals,
   and the raw material you bring in before it's sorted. A repo can go public in one click, and its
   history goes with it.
-- **Commits:** research about no one — API notes, build-vs-buy, how others solved a flow, public
+- **Commits:** research about no one — API notes, build-or-buy, how others solved a flow, public
   market figures with their sources. Your agents and a teammate need it in the repo.
 - **When unsure, keep it local and ask.** Moving something into the repo later is one step; taking it
   out of history is not.

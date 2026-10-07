@@ -30,7 +30,7 @@
 
 **capture → pressure-test · talk to one person (either order) → unlock MVP.**
 `/idea` captures (a living doc; re-run it as thoughts land) · `/canvas` pressure-tests and names the
-riskiest assumption · `/interview` preps a Mom-Test call and `/evidence` grades what you heard ·
+riskiest assumption (`/scout market rivals` answers its *who else sells a fix*, with sources) · `/interview` preps a Mom-Test call and `/evidence` grades what you heard ·
 `boss unlock mvp` when the canvas holds. `/prototype` is a legitimate start too. Capturing isn't
 validating — the conscience says so once, never as a gate.
 

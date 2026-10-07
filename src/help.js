@@ -49,7 +49,7 @@ export const HELP = {
   },
   inbox: {
     usage: 'boss inbox [<folder>] [--json]',
-    what: 'What came in through /inbox and where it went: new (not sorted yet — /scout sort <file>), held (legal or HR material, labelled and kept on this machine until the project has a home for it), sorted (with where each part was filed), and reference. Nothing moves; an item is sorted when /scout sort stamps it. Reads docs/source/ unless you name a folder.',
+    what: 'What came in through /inbox and where it went: new (not sorted yet — /inbox sorts them), held (legal or HR material, labelled and kept on this machine until the project has a home for it), sorted (with where each part was filed), and reference. Nothing moves; an item is sorted when /scout sort stamps it. Reads docs/source/ unless you name a folder.',
     examples: ['boss inbox', 'boss inbox --json'],
     see: ['playbook', 'status'],
   },

@@ -17,7 +17,7 @@ they are what breaks a build in week three. Note the version and the date on eve
 
 - **`api <name>`** — the reference docs, the changelog (what changed recently, what's deprecated),
   limits and pricing, auth. Then the smallest real call that proves the part you depend on. Use the
-  host's documentation tools if it has them; they're often fresher than search.
+  AI tool's documentation lookup if it has one; they're often fresher than search.
 - **`choose <need>`** — build or buy, and which. For each candidate: what it costs at your size *and*
   at ten times it, how you'd leave (export, lock-in), when it last shipped, how many open issues look
   like yours. **"Build it yourself" and "don't do this yet" are always rows.**

@@ -297,6 +297,21 @@ starter pack?"* The mechanism (proposed, part of T1):
   sort table (legal / HR / resumes / contracts **held** in `docs/source/`, labelled, never quoted into
   anything that commits), `boss inbox`'s held state, and the engine's *Where it lives*.
 
+## The label crosswalk (BOSS's own — moved out of the founder practice 2026-10-07)
+
+`library/practices/research.md` keeps only the labels a founder can meet. BOSS's own records used
+these names for the four axes before the engine wrote them down once:
+
+| You may see (BOSS records) | It is |
+|---|---|
+| `[EVIDENCE]` / `[THOUGHT-LEAD]` (SOURCES.md, watchlists) | Kind: evidence / opinion |
+| fetched / snippet-only · *read at source* / *exists* (sessions, the land read) | Read |
+| killed / confirmed · 3-0 · `unverified` | Survived |
+| `checked` date | the claim row's Checked |
+| attribution verified / partly / does not verify (`/vet`) | Survived, on the *who said it* lens |
+| ADOPT / ADAPT / REJECT / NOT-YET | Fit — never Survived |
+| stated-pain / observed-behavior / commitment | the person ladder — not these axes |
+
 ## Open questions (Q1–Q4 answered above; kept for the reasoning)
 - **Q5 · Does `/import` fold into `/scout`?** Ajesh 2026-10-06: *"scout is our intake of research,
   materials from outside… it can id if its research or something else."* **Pushed back — keep two

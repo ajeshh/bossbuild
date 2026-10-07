@@ -10,7 +10,7 @@ import { writeFileAtomic } from './atomic.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
-import { readInbox, INBOX_DIR } from './inbox.js';
+import { readInbox, inboxProblems, INBOX_DIR } from './inbox.js';
 import { share, unshare, shareStatus } from './share.js';
 import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
 import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
@@ -1148,7 +1148,7 @@ function cmdTeamShare(rest) {
   const dir = process.cwd();
   if (f.off) {
     const r = unshare(dir);
-    console.log(`\n  ${ok('✦')} Sharing off. Each linked folder is a local copy again of what the shared folder holds:`);
+    console.log(`\n  ${ok('✦')} Sharing off. Each folder is back on this machine, copied from the shared folder:`);
     for (const x of r) console.log(`    ${x.state === 'copied-back' ? ok('✓') : dim('·')} docs/${x.name}/${x.state === 'copied-back' ? `  ${dim(`← ${x.from}`)}` : `  ${dim('(was already local)')}`}`);
     console.log(`  ${dim('The shared folder is untouched; your teammates still have it.')}\n`);
     return;
@@ -1175,7 +1175,7 @@ function cmdTeamShare(rest) {
   console.log(`\n  ${ok('✦')} Shared through ${bold(root)}`);
   for (const r of results) {
     const extra = r.state === 'already' ? dim('already linked')
-      : `${dim('linked')}${r.copied ? dim(` · ${r.copied} file(s) copied in`) : ''}${r.conflicts?.length ? ` · ${warn(`${r.conflicts.length} kept apart`)}` : ''}`;
+      : `${dim('linked')}${r.copied ? dim(` · ${r.copied} file(s) copied in`) : ''}${r.conflicts?.length ? ` · ${warn(`${r.conflicts.length} differ — yours kept`)}` : ''}`;
     console.log(`    ${ok('✓')} docs/${r.name}/  ${extra}`);
     for (const c of r.conflicts || []) console.log(`        ${warn('≠')} ${c} ${dim('— the shared copy differs; yours is in')} ${r.backedUp}`);
   }
@@ -1594,6 +1594,11 @@ function cmdInbox(args) {
   const items = readInbox(dir);
   if (f.json) { console.log(JSON.stringify(items || [], null, 2)); return; }
   const rel = relative(process.cwd(), dir) || '.';
+  const trouble = inboxProblems(dir);
+  if (trouble.brokenLink) {
+    console.log(`\n  ${warn('!')} ${bold(`${rel}/`)} ${dim('points at')} ${trouble.brokenLink}${dim(", which isn't there — is the shared drive connected? Nothing is lost; it's just not reachable from here.")}\n`);
+    return;
+  }
   if (!items) {
     console.log(`\n  ${dim(`No inbox here yet (${rel}/).`)} ${bold('/inbox <file, link or paste>')} ${dim('starts one.')}\n`);
     return;
@@ -1602,13 +1607,15 @@ function cmdInbox(args) {
   const short = (t) => { const c = String(t).split(/ \(| — /)[0]; return c.length > 60 ? `${c.slice(0, 59)}…` : c; };
   const fresh = by('new'), held = by('held'), sorted = by('sorted'), ref = by('reference');
   console.log(`\n  ${bold('inbox')} ${dim(`— ${rel}/ · ${items.length} item(s)`)}`);
+  if (trouble.ledgerError) console.log(`    ${warn('!')} ${dim(`couldn't read ${rel}/.inbox.json — showing everything as new until it's fixed`)}`);
+  if (items.length && !fresh.length) console.log(`    ${ok('✓')} ${dim('Nothing waiting.')}`);
   if (!items.length) console.log(`    ${dim('empty —')} ${bold('/inbox <file, link or paste>')} ${dim('brings something in.')}`);
   if (fresh.length) {
-    console.log(`\n  ${bold(`New (${fresh.length})`)} ${dim('— not sorted yet:')} ${bold('/scout sort <file>')}`);
+    console.log(`\n  ${bold(`New (${fresh.length})`)} ${dim('— not sorted yet:')} ${bold('/inbox')} ${dim('sorts them')}`);
     for (const i of fresh) console.log(`    ${warn('•')} ${i.name}`);
   }
   if (held.length) {
-    console.log(`\n  ${bold(`Held (${held.length})`)} ${dim('— labelled, kept on this machine until the project has a home for it')}`);
+    console.log(`\n  ${bold(`Held (${held.length})`)} ${dim('— labelled, never committed, held until the project has a home for it')}`);
     for (const i of held) console.log(`    ${dim('◦')} ${i.name}  ${dim(i.kind)}`);
   }
   if (sorted.length) {

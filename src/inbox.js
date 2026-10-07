@@ -14,7 +14,7 @@
 // labelled and kept on this machine until the project has a home for it. Everything else unsorted
 // is new. The folder is gitignored (research about people stays local), so this ledger is too.
 
-import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, statSync, lstatSync, readlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const INBOX_DIR = join('docs', 'source');
@@ -40,16 +40,29 @@ function splitSorted(value) {
   return { date: date.trim() || null, to: rest.join(' → ').trim() || null };
 }
 
+// What can make the view wrong, said rather than swallowed: the folder is a link (`boss team share`)
+// whose drive isn't there, or the ledger can't be read — every sorted item would then show as new.
+export function inboxProblems(dir) {
+  let brokenLink = null;
+  try { if (lstatSync(dir).isSymbolicLink() && !existsSync(dir)) brokenLink = readlinkSync(dir); } catch { /* absent */ }
+  let ledgerError = false;
+  const lp = join(dir, LEDGER);
+  if (existsSync(lp)) { try { JSON.parse(readFileSync(lp, 'utf8')); } catch { ledgerError = true; } }
+  return { brokenLink, ledgerError };
+}
+
 export function readInbox(dir) {
   if (!existsSync(dir) || !statSync(dir).isDirectory()) return null;
   let ledger = {};
-  try { const v = JSON.parse(readFileSync(join(dir, LEDGER), 'utf8')); if (v && typeof v === 'object') ledger = v; } catch { /* none yet */ }
+  try { const v = JSON.parse(readFileSync(join(dir, LEDGER), 'utf8')); if (v && typeof v === 'object') ledger = v; } catch { /* none yet, or unreadable — inboxProblems says which */ }
   const items = [];
   for (const name of readdirSync(dir).sort()) {
     if (name.startsWith('.') || name === 'README.md') continue;
     const p = join(dir, name);
-    if (statSync(p).isDirectory()) continue;
-    const fm = name.endsWith('.md') ? frontmatter(readFileSync(p, 'utf8')) : {};
+    let st;
+    try { st = statSync(p); } catch { continue; } // a dangling link inside the folder: nothing to read
+    // A folder dropped in by hand is one item — the README invites it, and skipping it hid it.
+    const fm = !st.isDirectory() && name.endsWith('.md') ? frontmatter(readFileSync(p, 'utf8')) : {};
     const l = ledger[name] || {};
     const fromFm = splitSorted(fm.sorted);
     const sorted = l.sorted || fromFm.date || (fm.resolved ? 'resolved' : null);
@@ -59,7 +72,7 @@ export function readInbox(dir) {
     if (kind === 'reference') state = 'reference';
     else if (sorted) state = 'sorted';
     else if (HELD.has(kind)) state = 'held';
-    items.push({ name, state, kind, sorted, to });
+    items.push({ name: st.isDirectory() ? `${name}/` : name, state, kind, sorted, to });
   }
   return items;
 }

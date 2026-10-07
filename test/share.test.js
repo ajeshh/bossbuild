@@ -63,7 +63,7 @@ test('a file already in the shared folder is never overwritten; both copies are 
   mkdirSync(join(dir, 'docs', 'evidence'), { recursive: true });
   writeFileSync(join(dir, 'docs', 'evidence', 'EVID-001.md'), 'my local copy\n');
   const out = boss(['team', 'share', drive], dir, home);
-  assert.match(out, /kept apart/);
+  assert.match(out, /differ — yours kept/);
   assert.equal(readFileSync(join(drive, 'evidence', 'EVID-001.md'), 'utf8'), 'the team copy\n');
   const b = readdirSync(join(dir, '.boss', 'backups')).find((x) => x.startsWith('share-'));
   assert.equal(readFileSync(join(dir, '.boss', 'backups', b, 'evidence', 'EVID-001.md'), 'utf8'), 'my local copy\n');

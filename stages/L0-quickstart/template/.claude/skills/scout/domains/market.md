@@ -11,7 +11,7 @@ sensitive_when: always for rivals (it is intelligence); public figures with thei
 
 # `/scout market` — who else is solving this, how big it is, and why now
 
-The rivals half below was a skill of its own until 2026-10; it is here whole. The method is `boss craft research`;
+The method is `boss craft research`;
 this file is what the market domain adds to it.
 
 ## Rivals — who else is solving this, and what would make them win
@@ -40,7 +40,7 @@ products:
 - **Direct** — tools built for this exact job.
 - **Adjacent** — tools built for something else that people bend into this job.
 - **The unglamorous ones that actually win most often** — a spreadsheet, an agency, an intern, a
-  WhatsApp group, a paper form. *These beat software constantly and almost never appear on a
+  group chat, a paper form. *These beat software constantly and almost never appear on a
   competitive slide.*
 - **Doing nothing.** Always a row. Often the incumbent. If the pain is survivable, "nothing" is what
   you are really up against, and no feature list beats it.
@@ -52,7 +52,7 @@ complaints are the cheapest pain evidence you did not have to run an interview f
 in their own words, saying what the current fix fails at. That is the *Problem* cell's raw material
 and it is lying in the open. Quote two or three, dated and linked like everything else here, and
 resist the pull to read their **praise**: what their users love is a list of features to match,
-which is the parity trap this skill exists to keep you out of. Complaints tell you where the field
+which is the parity trap — building their feature list — this skill exists to keep you out of. Complaints tell you where the field
 is weak. Praise tells you what they built. Only one of those is yours to use.
 
 #### `add <name>` — the founder heard about one
@@ -83,8 +83,8 @@ just the new value: *"Beta was $29, is now $39"* is the signal; the current numb
 
 ### How deep to go — the research, not just the table
 
-Everything above says what to *write*. This says what to *open*, because a comp eval that reads one
-rival's homepage and fills a table is a table with a rival's marketing in it. **Per rival, in this
+Everything above says what to *write*. This says what to *open*, because a rival read that opens only
+the homepage and fills a table is a table with a rival's marketing in it. **Per rival, in this
 order, and stop when the founder's question is answered — not when the list is exhausted:**
 
 1. **Their own words first** — homepage, the positioning line, who they say it's for. Quote it;
@@ -96,15 +96,17 @@ order, and stop when the founder's question is answered — not when the list is
    edge cases they wrote a help article about because people hit them. **If you only open one
    thing beyond the pricing page, open this.** A "how they do it" entry written from marketing
    copy is a guess with a citation.
-4. **The changelog or release notes** — what they shipped in the last six months tells you what
+4. **Their public funding and size** — announcements, filings, dated. An exact-match rival with
+   fresh funding changes the question (see `add` above); find it out, don't guess it.
+5. **The changelog or release notes** — what they shipped in the last six months tells you what
    they are investing in, and how fast they move. A rival with monthly releases and one with a
    changelog last touched in 2024 are different rivals with the same feature list.
-5. **The product itself, if there's a free tier or a demo.** Sign up. Click through the thing you
+6. **The product itself, if there's a free tier or a demo.** Sign up. Click through the thing you
    care about. Ten minutes in the real product beats an hour of reading about it, and it is the
    only way to catch the gap between the docs and the build.
-6. **Reviews — 1–2★ for `where they're weak` and `## Where it breaks`.** The complaints are pain
-   evidence in the users' own words. (4–5★ reviews are read *only* under the rule in step 7.)
-7. **Their community, if any** — a forum, a Discord, GitHub issues if it's open. This is where
+7. **Reviews — 1–2★ for `where they're weak` and `## Where it breaks`.** The complaints are pain
+   evidence in the users' own words. (4–5★ reviews are read *only* for `## How they do it`, below.)
+8. **Their community, if any** — a forum, a chat server, the public issue tracker if the code is open. This is where
    the workarounds live, and a workaround is a feature request that already has a shape.
 
 **Then, for the features that matter — and only those — write `## How they do it`.** Not every
@@ -163,7 +165,7 @@ docs/competition/
 
 Each `<slug>.md` carries the depth a table can't: what they actually do, quotes from their own
 positioning, what changed at each recheck (dated, append-only — **the drift is the interesting part**),
-open questions, and — — two sections `/spec` opens:
+open questions, and two sections `/spec` opens:
 
 - **`## Where it breaks`** — the specific things their users complain about, dated and linked,
   one line each. Read into *what wrong looks like*. A rival's known breakages are the cheapest
@@ -216,7 +218,8 @@ does not go in the canvas** — not "approximately", not "industry estimates sug
 **Bottom-up before top-down.** Count the people or companies who have the problem, from a source you
 can name (a census table, a registry, a platform's own published count), times how many could
 plausibly buy, times what they'd pay. Show the arithmetic; every input carries its source and date.
-A top-down figure (*"a $40B market"*) from an analyst report you did not open is *not read* — record
+**And which group to start with** — the segment with the sharpest pain you can actually reach;
+a big total you can't reach is not your market yet. A top-down figure (*"a $40B market"*) from an analyst report you did not open is *not read* — record
 it as that, never as the answer. Bottom-up small and real beats top-down huge and borrowed.
 
 #### `why-now` — what changed that makes this possible or needed now
@@ -235,5 +238,7 @@ Communities, publications, marketplaces, search terms — each with a source sho
 *this* problem are actually there. Lands in the canvas's Channels cell.
 
 **Where these land:** `docs/research/market/<kind>.md` (commits — public figures about no one), with
-the canvas cell pointing at it. A figure that rests on someone's private deck stays in `docs/source/`
+the canvas cell pointing at it. **Except rivals' prices:** `pricing` that reads the competition table
+lands in `docs/competition/pricing.md`, which stays local like the rest of it; the committed file keeps
+substitutes and willingness-to-pay data and points there. A figure that rests on someone's private deck stays in `docs/source/`
 and is quoted only as *not public*.

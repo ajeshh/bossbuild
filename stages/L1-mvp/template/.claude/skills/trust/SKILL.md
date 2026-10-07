@@ -60,6 +60,12 @@ they attach to *what you built*, and naming the wrong ones is how a trust pass b
 > reference to shape at all** — the claim lived in the other skill's prose, which is exactly the
 > kind of contract this repo keeps finding: stated in one file, enforced in none.
 
+**Then check what's been waiting for this.** Run `boss inbox --json` and look for items with
+`kind: legal` and no `sorted:` — material brought in before the project had a home for it (a contract,
+a regulation, a platform's terms). Offer each in one line; read what the founder says yes to before
+the steps below, and stamp it sorted (`sort.md` in `/scout`) when it's been used. Never quote a
+contract into anything that commits.
+
 ## Step 1 — the data-minimization privacy policy (the one that's always load-bearing)
 
 The moment you collect PII or send user input to a model provider, you need a **privacy policy** — and the honest

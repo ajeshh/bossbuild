@@ -11,15 +11,16 @@ app, a PDF, a deck, a link. And later there's more: a research report someone se
 whitepaper, a regulation, a contract, a resume. **Point at it; BOSS pulls it in and puts each part
 where it belongs.** No retyping, no "where do I even put this."
 
-Two jobs, kept separate and run as one gesture: **this skill receives** (a dated copy, nothing
-interpreted away), and **`/scout sort` files it** (what kind of thing it is, what it claims, where each
+Two jobs, kept separate and run as one gesture: **this skill receives** (a dated copy on this machine —
+never *committed*, that is, never saved into the project's git history, which can be shared or made
+public — nothing interpreted away), and **`/scout sort` files it** (what kind of thing it is, what it claims, where each
 part goes). You don't run the second one yourself — this hands over in the same turn.
 
 `/boss` ingests during first spin-up; this is the door any time after.
 
 ## Bare `/inbox` — what's in it
 
-Run `boss inbox` and show what it prints: **new** (not sorted yet), **held** (legal or HR material,
+Run `boss inbox` (the same view, from a terminal) and show what it prints: **new** (not sorted yet), **held** (legal or HR material,
 labelled and kept on this machine until the project has a home for it), **sorted** (and where each
 went), **reference**. If anything is new, offer to sort it now. Nothing moves; a list of what isn't
 sorted is just the items with no stamp.
@@ -64,11 +65,14 @@ absent):
 - **A URL** → `docs/source/<YYYY-MM-DD>-<slug>.md` with the source URL on the first line, then the
   fetched text.
 
+**Already under `docs/source/`?** Skip the copy — it is already the project's — and go straight to
+sorting it.
+
 The date is part of the name on purpose: a figure from March is not a fact about today, and the
 playbook shows the date beside the file. A founder can also copy files into `docs/source/` by hand
 (the folder's README says so) — running `/inbox` on a file already there is how it gets sorted.
 
-This is the "create a dupe" the founder asked for: the idea survives if the original moves, changes, or
+The copy is the point: the idea survives if the original moves, changes, or
 goes offline. **Snapshot first, interpret second** — don't paraphrase away the source.
 
 **Record where it came from.** The original's path or URL goes on the snapshot's first line (a URL
@@ -81,7 +85,7 @@ local-only folder is a single copy. If the copy is lost, the line says where to 
 Read `/scout`'s `sort.md` and run it on what you just brought in. It decides what kind of thing each
 source is and files it: your own idea material into the idea doc, rivals into the competition table,
 market figures into the canvas with their source, a person's words to `/evidence`, a "you should" claim
-to `outside-claims`, technical material to `docs/research/technical/`, and legal or HR material **held**
+to `boss craft outside-claims`, technical material to `docs/research/technical/`, and legal or HR material **held**
 here, labelled, never quoted into anything that commits. It asks before writing any record, and stamps
 the item sorted when it's done.
 

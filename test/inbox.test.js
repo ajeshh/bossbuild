@@ -7,7 +7,7 @@
 
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync } from 'node:fs';
+import { readdirSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { BOSS_ROOT } from '../src/paths.js';
@@ -49,7 +49,7 @@ test('each item lands in exactly one state, from whichever stamp it carries', ()
 test('an unstamped item is new, and the view says how to sort it', () => {
   const dir = project({ 'docs/source/2026-10-06-report.md': '# report\n' });
   const out = boss(['inbox'], dir);
-  assert.match(out, /New \(1\).*\/scout sort <file>/s);
+  assert.match(out, /New \(1\).*\/inbox sorts them/s);
   assert.match(out, /2026-10-06-report\.md/);
 });
 
@@ -69,4 +69,26 @@ test('--json is machine-readable; no inbox yet is said, not an error', () => {
   const items = JSON.parse(boss(['inbox', '--json'], dir));
   assert.equal(items.length, 5);
   assert.match(boss(['inbox'], project({})), /No inbox here yet.*\/inbox <file, link or paste>/);
+});
+
+// A dangling link needs symlink rights Windows CI doesn't grant; the logic under test is platform-free.
+test('an unmounted shared drive is named, not reported as an empty inbox', { skip: process.platform === 'win32' && 'dangling symlinks need elevated rights on Windows' }, () => {
+  const dir = project({ 'docs/.keep': '' });
+  symlinkSync(join(dir, 'gone-drive', 'source'), join(dir, 'docs', 'source'), 'dir');
+  const out = boss(['inbox'], dir);
+  assert.match(out, /points at .*gone-drive.*isn't there — is the shared drive connected/);
+  assert.doesNotMatch(out, /No inbox here yet/);
+});
+
+test('an unreadable ledger is said; a folder dropped in is one item; nothing new says so', () => {
+  const dir = project({
+    'docs/source/.inbox.json': '{ not json',
+    'docs/source/2026-10-07-notes.md': '# notes\n',
+    'docs/source/board-pack/p1.md': '# page\n',
+  });
+  const out = boss(['inbox'], dir);
+  assert.match(out, /couldn't read .*\.inbox\.json — showing everything as new/);
+  assert.match(out, /• board-pack\//);
+  const calm = project({ 'docs/source/2026-10-01-a.md': '---\nsorted: 2026-10-02 → docs/ideas/IDEA-001\n---\n' });
+  assert.match(boss(['inbox'], calm), /Nothing waiting\./);
 });

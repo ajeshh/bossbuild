@@ -121,10 +121,10 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   `/comp-eval` is now `/scout market` — the same rival research, at Quickstart instead of MVP; `boss
   sync` says so and leaves your `docs/competition/` where it is.
 
-- **Research about people stays on your machine.** Interview notes, what you import before it's
+- **Research about people stays out of your repo.** Interview notes, what you import before it's
   sorted, and your notes on rivals (`docs/evidence/`, `docs/source/`, `docs/competition/`) are no
   longer committed: interview notes are other people's words, and a repo can go public in one click
-  with its whole history. Research about no one — API notes, build-vs-buy, public market figures — and
+  with its whole history. Research about no one — API notes, build-or-buy, public market figures — and
   your canvas, ideas and decisions still commit. New projects start this way; `boss sync` adds the lines
   to existing ones and lists each, and if any of those folders are already committed it says so
   plainly — ignoring stops new files, it does not take old ones out of your history — and gives the
@@ -139,6 +139,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   status bar or your shell prompt.
 
 ### Smaller improvements
+
+- **One way in for what you bring.** A deck you start with through `/boss` is now sorted the way
+  `/inbox` sorts anything — its rivals, its count of people and its tagline are offered to their
+  records, not left in a file. `/persona`'s web research runs through `/scout customer`, so it comes
+  back with sources and dates. `/trust` offers any legal material that's been waiting in your inbox.
+  And `boss inbox` says so when a shared drive isn't connected, instead of looking empty.
 
 - **A number about people on your canvas gets asked where it's from — once.** If the People cell says
   *"about 6,400 agencies"* with nothing beside it, BOSS asks one question and offers three doors: write

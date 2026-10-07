@@ -2,10 +2,10 @@
 
 Read after `/inbox` brings something in, or on any file the founder names. The routing table is in
 `SKILL.md` (what kind of thing it is → where it goes); this is how the two most common routes run —
-the founder's own idea material, and the questions a document can answer. They came whole from the skill that used to do both jobs, when receiving and sorting were split
-(PROG-005).
+the founder's own idea material, and the questions a document can answer.
 
-**Mark it sorted when you're done** — in `docs/source/.inbox.json`, keyed by the file's name:
+**Mark it sorted when you're done** — in `docs/source/.inbox.json`, keyed by the copy's name exactly as it sits in `docs/source/`,
+date prefix included (`2026-10-07-deck.pdf`, not `deck.pdf`):
 `{ "<file>": { "sorted": "YYYY-MM-DD", "to": "<where it went>", "kind": "<what it was>" } }`.
 `kind` is one of `idea`, `rivals`, `market`, `evidence`, `claim`, `technical`, `legal`, `hr`,
 `reference`. A `legal` or `hr` item with no home yet gets its `kind` and **no** `sorted` — it is held,
@@ -33,7 +33,7 @@ record, the specific bit, where it came from:
 
 > This speaks to three open questions —
 > · **People** (canvas): a count — *"6,400 registered agencies"*, p.4 · write it in with the source?
-> · **Competition**: two rivals named — Rotawise, CareSheet · add them to the table?
+> · **Competition**: two rivals named — Shiftwise, Coverly · add them to the table?
 > · **Brand**: a tagline on the cover · set it as `tagline:`?
 > Two things it says have no record in BOSS yet (who is on the team; money raised so far) — I've
 > left those. Yes to any of the three?
@@ -55,7 +55,7 @@ Four rules keep this honest:
   sentence from a transcript into a canvas cell as fact.
 - **Nothing is written without a yes**, and a record that already exists is **updated against what
   it holds** (*"People says 6,400; the new deck says 5,900 — update?"*), never overwritten quietly.
-- **Five lines, then stop.** More than that is the questionnaire this skill exists to avoid. What
+- **Five lines for everything brought in this turn — not per file — then stop.** More than that is the questionnaire this skill exists to avoid. What
   has no record yet — a bio, prior capital, the five-year line — is named as *no record holds this
   yet* and left; don't invent a home for it.
 

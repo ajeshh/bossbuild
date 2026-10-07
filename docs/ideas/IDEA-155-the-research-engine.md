@@ -231,6 +231,30 @@ two came from different needs (getting started, finding rivals). Nothing was eve
 system. That is this record's premise, and the reason to review the four against the core rather
 than one by one.
 
+**H · the review, run 2026-10-07 on the built engine** — three independent read-only passes:
+`designer` (interaction, 10 findings), `voice-keeper` (12) and `persona-non-tech-founder` (a
+rehearsal, not evidence). `/deep-research`, `/comp-eval` and `/import` no longer exist as reviewed —
+they became `/scout`, `/scout market` and `/inbox` — so the review read those, plus `/vet`.
+
+*Applied:* one way in — `/boss` on day one receives and sorts like `/inbox` (its deck's rivals and
+figures were never filed, and it showed as unsorted the next day) · `/scout` findable at Quickstart
+(the canvas still said MVP+; the description gained *competitors*) · the sort stamp keyed by the
+copy's exact name · `/scout` recognises material and receives it; `/inbox` skips re-copying what's
+already there · `boss inbox` teaches `/inbox`, not a second verb; five lines per turn, not per file ·
+rivals' pricing stays local · `boss inbox` names an unmounted drive and an unreadable ledger, lists
+dropped-in folders, skips broken entries, says *Nothing waiting* · `/trust` offers held legal
+material · bare `/scout` and no-search states · `/persona` web research runs through `/scout
+customer` · market `size` asks which segment first; rivals' funding is read · voice: vendor names out,
+internal history out of shipped text, one phrase (*never committed*) where sharing made *on this
+machine* false, *skeptics / curve / host* glossed, the BOSS-internal label table moved to PROG-005.
+
+*Not applied, on purpose:* `investors` and `partners` market kinds — wait for a founder who asks or
+the MVP business mentor · the persona's **one-screen answer after the first `/inbox`** (rivals found,
+which a real person named, the size that's real for you, what couldn't be verified) — genuinely good,
+and new scope: `sort.md` §3's wrap-up is where it would go; held for a decision · **sharing for a
+non-technical cofounder** — `boss team share` still asks for a path in a terminal; the persona would
+email the PDF instead. Open question, not a fix.
+
 - **H1** · `/deep-research` — expand, consolidate, rework or UX?
 - **H2** · `/vet` — same four questions.
 - **H3** · `/comp-eval` — same; it is the likely first shipped user of the core (E3).

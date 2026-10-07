@@ -42,7 +42,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/welcome` — First time using BOSS? Start here
 - `/boss` — The door, any day
 - `/inbox` — Bring something in - a file, a folder, a link, or text you paste
-- `/scout` — Find out what's true outside your own head, or sort what you were handed into the right place
+- `/scout` — Find out what's true outside your own head - competitors, market size, what customers say, what an API really does, whether a rule applies - or sort what you were handed into the right place
 - `/idea` — Capture an idea — and keep adding to it
 - `/prototype` — Get the idea onto the screen, fast (not /pretotype, which tests demand)
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them
@@ -57,7 +57,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/boss-sync` — Pull current BOSS practices into this project — bring the installed modes' skills/agents up to the latest version as a reviewed, narrated diff, then bump the project's BOSS pin
 
 **Agents:** product-lead, coder, mentor-founder, prompt-coach  
-**Loops:** capture-loop, canvas-loop, pretotype-loop, harvest-loop, sustaining-loop, unseen-loop, unseen-since-loop  
+**Loops:** capture-loop, canvas-loop, pretotype-loop, harvest-loop, sustaining-loop, unseen-loop, unseen-since-loop, unsourced-loop  
 **Hooks:** conscience, reentry  
 
 > _When to unlock next:_ When you're ready to actually build, switch to MVP mode: boss unlock mvp.

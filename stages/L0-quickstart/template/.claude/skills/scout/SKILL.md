@@ -1,6 +1,6 @@
 ---
 name: scout
-description: Find out what's true outside your own head, or sort what you were handed into the right place. Rivals and the market, customers, product, technical, legal, people - or any domain you add. Every claim says who said it, whether it was read, and when; anything about people stays on your machine. Usage - /scout [domain] [what] | sort <file>
+description: Find out what's true outside your own head - competitors, market size, what customers say, what an API really does, whether a rule applies - or sort what you were handed into the right place. Any domain you add too. Every claim says who said it, whether it was read, and when; anything about people stays on your machine. Usage - /scout [domain] [what] | sort <file>
 argument-hint: "[domain] [what] | sort <file>"
 ---
 
@@ -21,12 +21,21 @@ restating them. What this file adds is the routing: which domain, how deep, and 
 
 ## Step 0 — does it already exist, and is this the right rung?
 
-Any rung: a quick look belongs at Quickstart as much as anywhere. Has this already been asked? Check `docs/research/`, `docs/competition/` and the canvas cell the
+Has this already been asked? Check `docs/research/`, `docs/competition/` and the canvas cell the
 question feeds. If there is an answer, **work from it** — recheck it, add to it, or say it still
 holds. Never quietly generate a second one; the most common waste in a research record is the same
 question answered twice, weeks apart.
 
+## Bare `/scout`
+
+Ask what they want to find out, with three examples in their words — *who else sells a fix for this*,
+*how many people have this problem*, *what does this API actually do* — and say what is already on
+file and how old it is (Step 0, made visible).
+
 ## Step 1 — pick the domain (two shelves)
+
+**Handed a file, a folder, a link or a paste rather than a question?** That is material, not a
+question: receive it the way `/inbox` does (its steps 1–2), then sort it below.
 
 Domains are files, and there are two places they live:
 
@@ -64,9 +73,14 @@ research as procrastination.
 ## Step 3 — run it
 
 The loop is `boss craft research` steps 2–8, with the domain's own *open first* order and its own way
-to verify. **You bring the method and the landing places; the searching is the host's** — use its web
-search and fetch, and for an API, its documentation tools if it has them. Do not pretend to fetch
-what you can't: a page you could not open is *not read*, and says so.
+to verify. **You bring the method and the landing places; the searching is the AI tool's you're running in** —
+use its web search and page fetch, and for an API, its documentation tools if it has them. Do not pretend to fetch
+what you can't: a page you could not open is *not read*, and says so. **No web search in this
+session at all?** Say so in one line, and offer the two ways that still work: paste the page, or
+`/inbox` it.
+
+On `--deep`, name the angles before fanning out, so the founder can redirect a long pass before it
+starts.
 
 Write every finding as a claim row (who said it · read or not · survived or not · date). A number
 without a source does not go in. *"Approximately"* is not a source.
@@ -77,15 +91,15 @@ Each domain names its landing place. Two rules hold everywhere:
 
 - **Sensitive stays on this machine.** Anything about a person (interview notes, a resume, what
   someone told you), anything that isn't yours to publish (a contract, a deck shared with you), and
-  notes on rivals go only to folders this project keeps out of git — `docs/evidence/`,
+  notes on rivals go only to folders that are never committed to git — `docs/evidence/`,
   `docs/source/`, `docs/competition/`. Research about no one (API notes, build-or-buy, public market
   figures, a regulation's text) goes to `docs/research/<domain>/` and commits, so agents and a
   teammate can use it. **When unsure, keep it local and ask** — moving it into the repo later is one
   step; taking it out of history is not.
 - **Desk research is never evidence.** Nothing `/scout` finds becomes an `EVID` record, whatever it
   says — a rival's page did not tell you anything a person did. Evidence is what `/evidence` records
-  from real people. (A founder who googles their way to a higher evidence grade has quieted the one
-  nudge meant to send them to talk to someone.)
+  from real people. (Counted as evidence, desk research would quiet the one nudge meant to send you to talk
+  to someone.)
 
 Then point the canvas cell, the spec, or the decision at the file — cite it, don't copy it.
 
