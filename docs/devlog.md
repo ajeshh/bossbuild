@@ -194,7 +194,7 @@ describe rivals by their shape. `check:refs` stopped scanning other sessions' wo
   `check:demo` maps all 39 Quickstart+MVP skills (34 to a record, 5 to a reason) and fails an unmapped one. S9:
   `src/places.js` gained 11 folders the home page was silently dropping (CHANGELOG bullet).
 - **Next:** IDEA-147 C7.2 runs on it.
-  S3 (`--at v1`) when a check first needs that stage.
+  S3 (`--at quickstart`) when a check first needs that stage.
 - **Surprises / decisions:** a fresh lay-down had been holding 4 MVP skills back — the stubs gave `adopt` no styled screen
   and no model call; the demo now earns all 39. The new main guards compared a symlinked temp path, so the probe test passed
   by never running (the IDEA-095 shape again; fixed with `realpathSync`). Lanes disagreed on facts (7am vs 6:30, qualified
