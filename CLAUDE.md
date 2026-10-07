@@ -15,7 +15,7 @@
 5. **Every capability = a commit + a bullet under `## Unreleased` in `registry/CHANGELOG.md`**, beneath its weight heading (*What you'll notice* · *Smaller improvements* · *Under the hood*; IDEA-151). **VERSION does not move** (DEC-019) — Ajesh stamps at publish. A bullet written after a stamp goes under Unreleased, not the stamped version. BOSS-only plumbing gets no bullet.
    **The CHANGELOG never shows research** (Ajesh, 2026-10-04): no founder's or user's words, quoted or paraphrased; no EVID, interview or session content, grades or counts; no RVW verdicts or their sources. Product terms only — *"a founder couldn't tell where they were"* is the most it says. It is public and ships to every founder.
 6. **Test the CLI before claiming done**: a throwaway in `/tmp` with `BOSS_HOME=$(mktemp -d)`, exercise it, delete both. Without `BOSS_HOME`, prune the `~/.boss/registry.json` row by hand.
-7. **Small, reversible steps.** One concern per change. Don't break the working `boss` CLI.
+7. **Small, reversible steps.** One concern per change. Don't break the working `boss` CLI. Before `land`, a fresh subagent reads the diff against the record and names what no task names (IDEA-158); you decide what stays.
 8. **Reproduce before you fix or gate.** If the test passes on the old code, there is no bug: record that, ship nothing.
 
 ## Operating conditions of this tree

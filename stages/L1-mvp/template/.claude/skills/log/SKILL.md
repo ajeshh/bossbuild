@@ -79,10 +79,14 @@ If you only read one thing when picking the project back up, read the last devlo
    what would it cost — time, the team, other people's patience — and who has agreed to that? More
    work is a new FEAT, or a cost someone chose; never quiet polishing on a closed one.
 
-   **And say what got built that nobody asked for.** Hold what you built against the criteria. If
-   something is there that no criterion names (a setting, an extra screen, a refactor along the way),
-   say one line: what it is, and whether it goes to `spun_to:` or comes out. The founder decides;
-   never delete it on your own. Nothing extra, say nothing.
+   **And say what got built that nobody asked for — read by something that didn't build it.** The
+   session that built the feature is the worst judge of what it added. Hand a fresh subagent only two
+   things: the diff since the build began (the commits since `building_since:`) and the FEAT record.
+   Ask it for one thing: changes no criterion, *Found while building* item or Build-log decision names
+   — a setting, an extra screen, a refactor along the way, a deletion — one line each, anything that
+   crosses *Out of scope* first; not style, not quality. Then for each, say what it is and whether it
+   goes to `spun_to:` or comes out. The founder decides; never delete it on your own. No subagents on
+   this host? Do the same read yourself, from the diff, not from memory. Nothing extra, say nothing.
 
    > This step used to read *"flip its status to `shipped` — that one field is the whole update"*,
    > while `/spec` (which a founder reads once, months earlier) carried the other two. `/log` is
