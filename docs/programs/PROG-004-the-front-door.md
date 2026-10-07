@@ -59,6 +59,13 @@ which records are tracked, not the door. Left as is; move it if a pass wants it 
 - [ ] **B7 · A clig.dev pass over `boss`** — an audit against the Command Line Interface Guidelines,
   findings as lines here, not a build.
 - [ ] **B8 · Every other required-argument command** gets B-rule 4 (`unlock` was first, IDEA-152).
+- [ ] **B9 · A clash audit of BOSS's generic verbs** — *Ajesh 2026-10-06: "save a new todo for later so
+  we dont forget."* New and renamed verbs now get BOSS-specific names (`/scout`, `/inbox` — PROG-005)
+  so they don't collide with the host or another tool; the host already shipped its own
+  `deep-research`, colliding with BOSS's. Check the generic ones (`/log`, `/close`, `/ship`,
+  `/health`, `/money`, `/trust`, `/spec`, `/idea`…) against the host and common plugins; rename only
+  what clashes, each with a supersedes row. The rule: the name is BOSS's own, the first five words of
+  the description are plain English.
 
 ## Learned from (the shapes, not endorsements)
 

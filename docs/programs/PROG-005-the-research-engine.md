@@ -120,6 +120,41 @@ research skills get tracked.
 - **Not wayfinding.** `/boss` already answers *"where am I"*; making `/scout` that too would put two
   doors on one job (IDEA-086's lesson). `/scout` is the front door for the outside world.
 
+## Decided 2026-10-06 — Ajesh's answers, round 1
+
+- **`/scout` arrives whole at Quickstart** — sorting *and* searching from day one (not split by mode).
+- **The inbox verb is `/inbox`** — `/inbox <file>` adds, bare `/inbox` shows what isn't processed.
+- **Order: `/scout` first, hiding later** (the hide-by-default fix folds into the inbox work).
+- **Defaults approved:** `/vet` stays the separate judge · founders can add their own `/scout`
+  domains as files · processed is a view, files never move · **BOSS dogfoods it** — its own
+  `docs/research/inbox/` runs on the same mechanism (*"like dogfood ourselves, if so then yes"*).
+
+## Decided 2026-10-06 — round 2
+
+- **`/scout market` ships now, with `rivals`.** Ajesh's call overrides IDEA-066's founder trigger
+  (noted there).
+- **Legal / HR material at Quickstart: kept locally, labelled, waits** — offered to its home when the
+  mode that has one unlocks.
+- **Naming: new and renamed verbs are BOSS-specific now; the generic existing ones get a clash
+  audit later** — saved as PROG-004 B9 (*"save a new todo for later so we dont forget"*).
+- **Team sharing: explore all three, then decide** — a team-only drive folder, a private docs repo,
+  an internal MCP doc server. Task below.
+
+### Tasks this program now owns
+
+- [ ] **T1 · `/scout`** — the skill, the loop citing `boss craft research`, domains `rivals`
+  (absorbs `/comp-eval`) and `market` shipped at Quickstart; BOSS's `craft`/`humane`/`model` as
+  local domain files; supersedes rows for `/comp-eval`, `/deep-research`, `/practice-refresh`,
+  `/humane-refresh`, `/recalibrate`; `check:freshness` owners repointed; research skills tracked.
+- [ ] **T2 · `/inbox`** — `/import` renamed; local-only; the view (new / sorted / reference); hands to
+  `/scout` in the same turn; records the original's location; BOSS's own inbox on it.
+- [ ] **T3 · Hide by default** — founder template ignores research, the inbox and `docs/evidence/`;
+  sync adds the lines and says plainly it cannot un-commit history.
+- [ ] **T4 · Team sharing, compared** — the three options written up against BOSS's refusals (no
+  server so far, IDEA-037) before any choice.
+- [ ] **T5 · The sort's sensitivity rule** — resumes, HR, contracts land only in local places; unsure →
+  ask, default local.
+
 ## Open questions (Q1–Q4 answered above; kept for the reasoning)
 - **Q5 · Does `/import` fold into `/scout`?** Ajesh 2026-10-06: *"scout is our intake of research,
   materials from outside… it can id if its research or something else."* **Pushed back — keep two
@@ -172,6 +207,12 @@ research skills get tracked.
     else's sake"; founders get the opposite default with no decision on record. Possibly deliberate
     (a cofounder needs the evidence — IDEA-037), possibly not. Needs Ajesh's call; may be worth fixing
     ahead of this program.
+    **Decided, Ajesh 2026-10-06:** *"we should not commit research to git. it needs to get hidden.
+    founder's interviews should be hidden."* → research, the inbox and `docs/evidence/` are local by
+    default in a founder's project. **New open scope — team sharing:** *"If trying to share between team
+    mates, then we should have some approach for having a doc repo mcp that is just internally accessed
+    or someway to do file share. lets think about it."* Not git. To be explored (IDEA-037 is the team
+    record; DEC-001 says per-person state never travels — evidence is venture state, so it may).
 
 - **Q1 · The finder's name.** `/research` is taken in the supersedes ledger (retired into `/evidence`,
   v0.324.0) — reusing it would tell a syncing founder two different things.

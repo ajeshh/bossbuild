@@ -188,6 +188,14 @@ the refusal list above stands — no scraping, no analyst-report numbers, no uns
 **The gate is satisfied:** IDEA-066's re-open trigger was *a founder who can't answer the sharpen* —
 Ajesh asked for this directly while filling exactly that role. Building.
 
+## 📝 Note, 2026-10-06 — the trigger is overridden (Ajesh, PROG-005)
+
+Market research ships as `/scout market` (sizing, why-now, pricing) beside `/scout rivals`, at
+Quickstart, without waiting for the re-open trigger below. Ajesh's call, made with the trigger named
+(*"Ship it now with rivals"*). It ships as a domain inside one verb, not a new skill, and on the shared
+method (`boss craft research`) — which also answers this record's open Q2: desk findings land as claim
+rows with the four axes, never on the EVID ladder.
+
 ## Open questions
 
 1. **One verb or several?** A single `/analyze` covering tiers 1–2 risks becoming the interrogation
