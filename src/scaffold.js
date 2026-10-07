@@ -7,7 +7,8 @@ import {
 } from 'node:fs';
 import { join, basename } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { STAGES_DIR } from './paths.js';
+import { STAGES_DIR, bossVersion } from './paths.js';
+import { isoDay } from './clock.js';
 
 // A stage template may carry this file. Instead of being copied verbatim, its
 // (substituted) contents are APPENDED to the project's CLAUDE.md under an
@@ -336,4 +337,15 @@ export function applyStage(stageId, targetDir, vars, { skipSkills = [], skipHook
     rmSync(stray);
   }
   return { appendedClaude };
+}
+
+// The placeholders a stage template is filled with. Moved from cli.js (IDEA-160 S0).
+export function stageVars(name, stageId, mode) {
+  return {
+    PROJECT_NAME: name,
+    DATE: isoDay(),
+    BOSS_VERSION: bossVersion(),
+    STAGE: stageId,
+    MODE: mode || stageId,
+  };
 }

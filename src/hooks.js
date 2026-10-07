@@ -15,6 +15,7 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { writeFileAtomic } from './atomic.js';
 import { join, dirname } from 'node:path';
+import { dim } from './ui.js';
 import { STAGES_DIR, STAGE_ORDER } from './paths.js';
 import { readStageManifest, sameAsTemplate } from './scaffold.js';
 
@@ -135,4 +136,15 @@ export function disableHook(projectDir, name) {
   if (!ours) return { unregistered, removed: false, kept: true };
   rmSync(dest);
   return { unregistered, removed: true, kept: false };
+}
+
+// The commit guard's one line after `new`, `adopt` and `sync` install it. Moved from cli.js
+// (IDEA-160 S0).
+// IDEA-142 — one line, only when something changed or the founder's own hook holds the slot.
+export function commitGuardLine(r) {
+  if (r.state === 'installed') {
+    console.log(`    ${dim('commits are checked for keys before they reach git history (skip once: git commit --no-verify)')}`);
+  } else if (r.state === 'theirs' || r.state === 'hooks-path') {
+    console.log(`    ${dim(`your own pre-commit hook is kept; to check commits for keys, call .claude/hooks/lib/commit-secrets.js from it`)}`);
+  }
 }

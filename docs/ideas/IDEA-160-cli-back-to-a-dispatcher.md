@@ -55,9 +55,13 @@ bug from them, so they don't meet the bar for a new gate. The fix is to do the m
 
 ## Tasks
 
-- [ ] **S0** · Move the helpers the handlers share down out of `cli.js`: `readStamp`/`writeStamp`/
-  `stageVars`, `claudeInstalled`, `commitGuardLine`, and `fail`/`failJson`/`failNotAProject` (these
-  hold the `jsonErrors` switch: see Q1).
+- [x] **S0** · Move the helpers the handlers share down out of `cli.js` (2,242 → 2,193). `STAMP`/
+  `readStamp`/`writeStamp` → `registry.js` beside `readProjectStamp` (two readers kept, header says
+  why); `stageVars` → `scaffold.js`; `commitGuardLine` → `hooks.js`; `fail`/`failJson`/
+  `failNotAProject` → new `fail.js`, which owns the `--json` switch (`setJsonErrors`, set once by
+  `run()`). `claudeInstalled` stays: only `new`/`adopt` use it, so it moves with them (Q3).
+  Verified: 822 tests; `/tmp` new, status, sync, adopt, the not-a-project hint, and `board --json`
+  outside a project byte-identical to main.
 - [ ] **S1** · `cmdSync` (~171 lines) → `sync.js`. This is the doc's own example.
 - [ ] **S2** · `cmdRemove` (~112) → `remove.js`
 - [ ] **S3** · `cmdStatus` (~95) and its `print*` helpers → see Q2
@@ -72,9 +76,7 @@ command passes its `/tmp` exercise.
 
 ## Open questions
 
-- **Q1** · Where do `fail`/`failNotAProject` go? `failNotAProject` reads the registry, so it can't
-  be a leaf. Leaning toward a small state-reader module that owns the `--json` error switch, with a
-  setter `cli.js` calls once.
+- ~~**Q1**~~ · Answered in S0: `src/fail.js`, a state reader (it reads the registry), owns the switch.
 - **Q2** · Is `cmdStatus` a renderer (beside `orientation`/`readiness`) or does it need a home of
   its own? Read its `print*` helpers before choosing.
 - **Q3** · `new`/`adopt`/`unlock` all install a stage. `scaffold.js` sits in the state-reader layer

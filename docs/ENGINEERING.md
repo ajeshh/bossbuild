@@ -161,7 +161,7 @@ Never a big-bang split, which would collide with every open worktree. — **W** 
 |---|---|
 | Shipped hook lib (below `src/`) | `stages/L0-quickstart/template/.claude/hooks/lib/*` |
 | Leaves (no internal imports) | `args` `atomic` `clock` `paths` `ui` `frontmatter` `page-shell` `glossary` `gitdates` `detect` `managed` |
-| State readers | `config` `registry` `scaffold` `supersede` `modes` |
+| State readers | `config` `registry` `scaffold` `supersede` `modes` `fail` |
 | Domain | `board` (projection) `records` `earned` `ladder` `sync` `remove` `hooks` `learn` `team` `brain` `conscience` |
 | Renderers and verbs | `playbook` `design` `recap` `map` `help` `help-html` `craft` `patterns` `changelog` `update` `orientation` `readiness` `insights` `credit` |
 | Top | `cli` |
@@ -173,6 +173,7 @@ reaching into a command module); `earned → board` (the earned check computes t
 
 | You need | Use | Not |
 |---|---|---|
+| Fail a command (text, or JSON under `--json`) | `fail.fail`, `failNotAProject` | `console.error` + `process.exitCode` by hand |
 | Parse flags | `args.parseArgs` | a hand loop (brain.js had one; it got valueless flags wrong) |
 | Write a file another process reads | `atomic.writeFileAtomic`; read-modify-write: `withLock` | `writeFileSync` on settings, config, registry |
 | Any path to the package, stages, shelf or machine state | `paths.*` — `BOSS_ROOT`, `STAGES_DIR`, `PRACTICES_DIR`, `BOSS_HOME`, `REGISTRY_FILE` | `homedir()`, a local `ROOT` |

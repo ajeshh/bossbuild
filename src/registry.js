@@ -1,4 +1,4 @@
-import { readFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { REGISTRY_FILE } from './paths.js';
 import { writeFileAtomic, withLock } from './atomic.js';
@@ -54,6 +54,27 @@ export function registerProject(entry) {
 
 export function findByPath(absPath) {
   return load().projects.find((p) => p.path === absPath);
+}
+
+// The project's own copy of its stamp, as the commands that write it read it back. `readStamp`
+// THROWS on a manifest it cannot parse, where `readProjectStamp` (below) returns null: a command
+// acting on one project should stop and say so, a portfolio view should not. Two readers on
+// purpose (IDEA-136 F3) — moved here from cli.js (IDEA-160 S0), unchanged.
+export const STAMP = '.boss/manifest.json';
+
+export function writeStamp(targetDir, stamp) {
+  mkdirSync(join(targetDir, '.boss'), { recursive: true });
+  writeFileSync(join(targetDir, STAMP), JSON.stringify(stamp, null, 2) + '\n');
+}
+
+export function readStamp(dir) {
+  const file = join(dir, STAMP);
+  if (!existsSync(file)) return null;
+  const stamp = JSON.parse(readFileSync(file, 'utf8'));
+  // Every `boss new`/`adopt` writes `installedLayers`; a hand-edited manifest may not, and
+  // status/unlock read it bare. Same fallback sync, map and help-html already use.
+  if (!Array.isArray(stamp.installedLayers) && stamp.stage) stamp.installedLayers = [stamp.stage];
+  return stamp;
 }
 
 // ── WHICH COPY OF THE PIN IS TRUE ──────────────────────────────────────────────────────────

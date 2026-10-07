@@ -3,18 +3,18 @@
 // process.exit() — handlers set process.exitCode, and `bin/boss` is the one place that exits.
 
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
-import { join, resolve, basename, sep, delimiter, relative } from 'node:path';
+import { join, resolve, basename, delimiter, relative } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME, BOSS_ROOT } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
-import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
-import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
+import { stageVars, applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
+import { STAMP, readStamp, writeStamp, registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { readInbox, inboxProblems, INBOX_DIR } from './inbox.js';
 import { share, unshare, shareStatus } from './share.js';
 import { readClaims, standing, existingDirs, SOURCE_DIRS, NEW_DAYS, FADE_DAYS } from './sources.js';
 import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
-import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
+import { commitGuardLine, enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
 import { printCraft } from './craft.js';
 import { printChangelog, cmpVersion, versionLine } from './changelog.js';
@@ -38,6 +38,7 @@ import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentit
 import { printReentry, printEvidenceHeadway, printIntent, printResumeWindow } from './orientation.js';
 import { readiness, renderReadiness } from './readiness.js';
 import { dim, bold, ok, warn, err, shellArg } from './ui.js';
+import { fail, failNotAProject, setJsonErrors } from './fail.js';
 import { parseArgs, KNOWN_FLAGS } from './args.js';
 import { lookup, terms } from './glossary.js';
 import { HELP, SYMBOLS } from './help.js';
@@ -45,33 +46,6 @@ import { helpHtml } from './help-html.js';
 import { homeHtml, homeUrl } from './home.js';
 import { isoDay } from './clock.js';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
-
-const STAMP = '.boss/manifest.json';
-
-function stageVars(name, stageId, mode) {
-  return {
-    PROJECT_NAME: name,
-    DATE: isoDay(),
-    BOSS_VERSION: bossVersion(),
-    STAGE: stageId,
-    MODE: mode || stageId,
-  };
-}
-
-function writeStamp(targetDir, stamp) {
-  mkdirSync(join(targetDir, '.boss'), { recursive: true });
-  writeFileSync(join(targetDir, STAMP), JSON.stringify(stamp, null, 2) + '\n');
-}
-
-function readStamp(dir) {
-  const file = join(dir, STAMP);
-  if (!existsSync(file)) return null;
-  const stamp = JSON.parse(readFileSync(file, 'utf8'));
-  // Every `boss new`/`adopt` writes `installedLayers`; a hand-edited manifest may not, and
-  // status/unlock read it bare. Same fallback sync, map and help-html already use.
-  if (!Array.isArray(stamp.installedLayers) && stamp.stage) stamp.installedLayers = [stamp.stage];
-  return stamp;
-}
 
 // A mode's skill list is a wall the moment you adopt above Quickstart — MVP is 44 names, which is
 // the exact Principle #2 inversion v0.130.0 fixed for `boss map` (68 lines → 45). Name the few a
@@ -201,15 +175,6 @@ function cmdNew(args) {
 // "Lite BOSS" is the design, not a fallback (Principle 2): adopt at the lightest
 // register that matches where the app already is, then `boss unlock` upward on
 // evidence. ≈ a safe scaffold (copy-if-absent) + settings merge + stamp + register.
-// IDEA-142 — one line, only when something changed or the founder's own hook holds the slot.
-function commitGuardLine(r) {
-  if (r.state === 'installed') {
-    console.log(`    ${dim('commits are checked for keys before they reach git history (skip once: git commit --no-verify)')}`);
-  } else if (r.state === 'theirs' || r.state === 'hooks-path') {
-    console.log(`    ${dim(`your own pre-commit hook is kept; to check commits for keys, call .claude/hooks/lib/commit-secrets.js from it`)}`);
-  }
-}
-
 function cmdAdopt(args) {
   const flags = parseArgs(args);
   const targetDir = process.cwd();
@@ -1707,46 +1672,6 @@ async function cmdConscience(args) {
   }
 }
 
-// Set by run() when the caller asked for --json: a failure is then one JSON object on stderr and
-// nothing on stdout, so an agent parsing the output gets an error it can read, not prose.
-let jsonErrors = false;
-function failJson(error, hint) {
-  console.error(JSON.stringify(hint ? { error, hint } : { error }));
-  process.exitCode = 1;
-}
-
-function fail(msg) {
-  if (jsonErrors) return failJson(msg);
-  console.error(`  ${err('Error')} ${msg}`);
-  process.exitCode = 1;
-}
-
-// The most common error BOSS can produce, and it used to be a dead end. Ten commands each said
-// `not a BOSS project (no .boss/manifest.json here).` — which names an internal path a
-// non-technical founder has never heard of, states a fact, and stops. The overwhelmingly likely
-// cause is mundane and recoverable: they ran `boss new demo` and never `cd demo`, or they are one
-// directory up from the project they mean. BOSS already knows every project on this machine — it
-// keeps a registry and `boss list` reads it — so the recovery was always computable and simply
-// never offered. An error that knows the answer and withholds it is the least forgivable kind.
-function failNotAProject() {
-  if (jsonErrors) return failJson("this folder isn't a BOSS project.", 'run it inside a project: `boss list` shows where they are; `boss new <name>` or `boss adopt` starts one.');
-  console.error(`  ${err('Error')} this folder isn't a BOSS project.`);
-  let projects = [];
-  try { projects = (listProjects() || []).filter((p) => p && p.path && p.status !== 'retired'); } catch { /* registry optional */ }
-  if (projects.length) {
-    const here = projects.filter((p) => p.path.startsWith(process.cwd() + sep));
-    if (here.length) {
-      // The single likeliest case: they are standing one level above the project they mean.
-      console.error(dim(`  ${here.length === 1 ? 'It looks like it is' : 'They look like they are'} just below you:`));
-      for (const p of here.slice(0, 3)) console.error(`    cd ${shellArg(basename(p.path))}`);
-    } else {
-      console.error(dim(`  You have ${projects.length} project${projects.length === 1 ? '' : 's'} on this machine — \`boss list\` shows where.`));
-    }
-  }
-  console.error(dim('  Starting something new? `boss new <name>`. Already have a repo? `boss adopt` inside it.'));
-  process.exitCode = 1;
-}
-
 // --- Help (IDEA-055) ------------------------------------------------------
 // Grouped so a first-timer isn't handed a 20-line wall at uniform weight:
 // Start here / Everyday / Conscience / Keeping current. `boss help <command>`
@@ -2186,7 +2111,7 @@ function unknownFlag(cmd, args) {
 
 export async function run(argv) {
   const [cmd, ...args] = argv;
-  jsonErrors = args.includes('--json');
+  setJsonErrors(args.includes('--json'));
   if (KNOWN_COMMANDS.includes(cmd) && unknownFlag(cmd, args)) return;
   // Once per update, to a person at a terminal: never into piped or --json output, and not ahead
   // of `boss whatsnew`, which is already the answer (IDEA-151).
