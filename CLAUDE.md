@@ -1,108 +1,53 @@
 # CLAUDE.md — BOSS
 
-> BOSS is **self-hosted**: it's its own first project (mode: MVP). It eats the dogfood it serves.
-> Behavior rules first; reference below. What BOSS *is* lives in [`PRINCIPLES.md`](PRINCIPLES.md).
+> BOSS is **self-hosted**: its own first project (mode: MVP). What it *is*: [`PRINCIPLES.md`](PRINCIPLES.md)
+> (quote its one-line definition, don't rewrite it). How the code is built: [`docs/ENGINEERING.md`](docs/ENGINEERING.md).
+> Every rule below carries its record id; the history is in that record and the devlog.
 
-## Working rules (read first)
+## Working rules
 
-1. **Read [`docs/RESUME.md`](docs/RESUME.md) at the start of every session.** It carries state + next tasks + open decisions. Update it at session end.
-2. **Apply BOSS's own principles to BOSS** ([`PRINCIPLES.md`](PRINCIPLES.md)). Especially #1: when work pauses, sort patterns UP (BOSS practice) or DOWN (here, that's BOSS's own code/features).
-3. **Capture before building.** New ideas → `docs/ideas/IDEA-NNN`. Features being built → promote to a spec. Track in `docs/ideas/INDEX.md` — **grep it, never read it whole** (199 lines but ~168 KB, ~42k tokens). **Every IDEA in this repo is a `kind: capability`** — BOSS's *venture* idea is the canvas, not an IDEA record (`docs/IDS.md` § Two kinds; IDEA-114).
-3b. **Write a found task down before you act on it.** The things identified mid-session — "this also needs a rollback", "the adjacent rule is probably wrong too" — live only in the chat until something durable holds them, and a compaction takes them silently. Put them in the record of the work you're in as you find them — the IDEA's *Tasks* (a FEAT's *Found while building*), a program's *Tasks*, or *Open questions* — sorted three ways: a **task** stays on a list, genuinely **new scope** becomes its own id, and an **open question** gets written as a question rather than carried. Every session start, compaction and `/clear` included, reads those sections back from the worktree's record (IDEA-153); what is only in the chat is not read back. The conscience's `task-hygiene` moment fires on a **timestamp** — a reminder, never a referee.
+1. **Read [`docs/RESUME.md`](docs/RESUME.md) at session start; update it at session end.**
+2. **Apply BOSS's principles to BOSS.** Especially #1: when work pauses, sort patterns UP (BOSS practice) or DOWN (BOSS's own code).
+3. **Capture before building.** Ideas → `docs/ideas/IDEA-NNN`, tracked in `docs/ideas/INDEX.md` — **grep it, never read it whole** (~168 KB, ~42k tokens). Every IDEA here is `kind: capability`; BOSS's venture is the canvas (IDEA-114).
+3b. **Write a found task down before you act on it** — in the record of the work you're in: its *Tasks* (a FEAT's *Found while building*), a program's *Tasks*, or *Open questions*. A **task** stays on a list, **new scope** gets its own id, an **open question** is written as a question. Every session start, compaction and `/clear` included, reads those back (IDEA-153); what is only in the chat is not. `task-hygiene` fires on a timestamp — a reminder, never a referee.
 3c. **When compacting, keep:** the worktree and record id, the files changed and why, the decisions made, and every task or question not yet written into a record.
-4. **Zero-dependency CLI.** `src/` stays dependency-free (Node built-ins only). Machine state is JSON (`.boss/`, `registry/`). How the code is built — the principles, which rules anything enforces, and the helpers to find before writing one: [`docs/ENGINEERING.md`](docs/ENGINEERING.md).
-5. **Every capability = a commit + a bullet under `## Unreleased` in `registry/CHANGELOG.md`, beneath its weight heading (*What you'll notice* · *Smaller improvements* · *Under the hood* — the file's header says which; IDEA-151). VERSION does not move** (DEC-019). Ajesh stamps a version when they publish: `npm run stamp`, then `npm publish`. The CHANGELOG is what `boss sync` reads to tell projects what's new — stamped entries only.
-   **The CHANGELOG never shows research** (Ajesh, 2026-10-04): no founder's or user's words, quoted or paraphrased as theirs; no EVID, interview or session content, grades or counts; no research verdicts (RVW) or the outside sources behind them. Say what changed and why in product terms — *"a founder couldn't tell where they were"* is the most it says. The research stays in its own records. It is public, it ships to every founder's `boss sync`, and the people in the research never agreed to be in a release note.
-6. **Test the CLI before claiming done.** Scaffold a throwaway in `/tmp` with `BOSS_HOME` pointed at a temp dir (`BOSS_HOME=$(mktemp -d) boss new …`), exercise the command, then delete both. With `BOSS_HOME` set, nothing reaches the real `~/.boss/registry.json`, so there is no row to prune. Without it, prune the row by hand; the registry is per-machine and never in the repo.
+4. **Zero-dependency CLI.** `src/` uses Node built-ins only; machine state is JSON (`.boss/`, `registry/`).
+5. **Every capability = a commit + a bullet under `## Unreleased` in `registry/CHANGELOG.md`**, beneath its weight heading (*What you'll notice* · *Smaller improvements* · *Under the hood*; IDEA-151). **VERSION does not move** (DEC-019) — Ajesh stamps at publish. A bullet written after a stamp goes under Unreleased, not the stamped version. BOSS-only plumbing gets no bullet.
+   **The CHANGELOG never shows research** (Ajesh, 2026-10-04): no founder's or user's words, quoted or paraphrased; no EVID, interview or session content, grades or counts; no RVW verdicts or their sources. Product terms only — *"a founder couldn't tell where they were"* is the most it says. It is public and ships to every founder.
+6. **Test the CLI before claiming done**: a throwaway in `/tmp` with `BOSS_HOME=$(mktemp -d)`, exercise it, delete both. Without `BOSS_HOME`, prune the `~/.boss/registry.json` row by hand.
 7. **Small, reversible steps.** One concern per change. Don't break the working `boss` CLI.
-8. **Reproduce before you fix or gate.** Run the failure first. If the test you wrote passes on the old code, there is no bug: record that, ship nothing (2026-09-23 — a reviewer's CRLF bug, read from a regex, passed unchanged).
+8. **Reproduce before you fix or gate.** If the test passes on the old code, there is no bug: record that, ship nothing.
 
-## Operating conditions of this tree (standing — moved out of RESUME, IDEA-102)
+## Operating conditions of this tree
 
-- **Concurrent sessions are the norm, not an anomaly.** Six peer sessions were live on 2026-08-21;
-  it cost five version collisions before DEC-019 moved the unit: capabilities land under
-  `## Unreleased`, nobody bumps VERSION, and `npm run release` refuses a stale read.
-  `registry/CHANGELOG.md` is the only surface that can describe a tree with many writers.
-- **Each piece of work gets its own worktree; the main checkout only lands** (IDEA-120, 2026-10-05).
-  Chat windows can't see each other, so in one shared checkout any of them can commit another's
-  half-done change. `node scripts/worktree.js <ID>` creates the work's worktree at local HEAD — or
-  **joins** it, when another window is already on the same work — with the gitignored records
-  linked in, never copied. Everything inside is that work's, so committing all of it is right.
-  `land <ID>` rebases and fast-forwards main, and stops with nothing moved when the main checkout
-  holds a dirty copy of a file the work touched; `done <ID>` unlinks, then removes. A session start
-  names the open work once — say which you're part of. Never `git checkout` a branch in the main
-  checkout (it switches HEAD under every peer); never `git stash` anywhere (one stack, every
-  worktree). Editing in the main checkout is the fallback, not the way: there, `git log -1` and
-  `git status` before a commit, stage only your own hunks, and claim a lane by message.
-- **`docs/RESUME.md`, `devlog.md`, `CLAUDE.md`, `ideas/`, `extractions/`, `research/verdicts/` are
-  tracked since 2026-09-13 (IDEA-087 — two unrecoverable losses, duplicates from concurrent writes,
-  124 dead CHANGELOG citations).** Still gitignored, for someone else's sake: `evidence/` (real
-  people's words), `.boss/` (the brain), `research/inbox|sessions`, `source/`, `dossier/`,
-  `business/`, and `ideas/CANVAS.md` (Ajesh's own — their call, per file) — the full set is whatever
-  `.gitignore` says, which `scripts/worktree.js` derives (this list was missing seven areas on
-  2026-10-05; don't extend it by hand). The test for tracking is
-  *"fine public forever?"*, never *"is the repo private"* — history goes with the toggle. Read
-  before you write there all the same; git now saves you, but only what you committed.
-- 🔴 **Never open a file for writing before you have finished reading it.** `open(p,'w')` truncates on
-  open, so `open(p,'w').write(x + open(p).read())` reads as *prepend* and **is** *truncate*. Read fully,
-  close, then write — or compose to a new path and `mv`. A shape to recognise, not a lapse of care.
-- **Two incidents, both gitignored single-copy files, both unrecoverable:** 2026-08-21 an assistant
-  ran `boss remove --apply` in this checkout and destroyed `.boss/conscience-log.jsonl` (restored
-  EMPTY — frequency data restarts that day; v0.221.0 added the guard). 2026-09-09 the truncate-on-open
-  shape above destroyed `RESUME-ARCHIVE.md` (~600 lines of narrative for v0.223–0.254; the releases
-  themselves are all in the CHANGELOG). **Do not "restore" either by re-deriving from the CHANGELOG** —
-  that manufactures a record nobody wrote.
-- **`npm publish` and `npm run bump:formula` are Ajesh's.** Never run them for them. `check:published`
-  says how far npm is behind; that is their number, not a task.
-- **Every commit runs the STAGED tree through `npm run test:ci`** (`scripts/hooks/pre-commit`, ~9s: a
-  throwaway worktree at HEAD with the index copied over it, so peers' unstaged edits never count).
-  On per clone with `npm run hooks`; `git commit --no-verify` skips once. It is the CI half only —
-  `npm run check` still needs the gitignored records, so run it by hand as below.
-- **Verify with `npm run check`, never a hand-rolled loop over `npm run check:*`** — several print
-  errors and exit 0 without `--strict`. `npm run release` before every release; a red gate is not a
-  suggestion (v0.228.0: `package.json` sat six versions behind `VERSION` over a gate that checks
-  exactly that — two *generated* docs frozen at the same old version is the tell that a gate was
-  skipped). **`node scripts/release.js` is not read-only** — it regenerates `docs/CHEATSHEET.md`,
-  `docs/SKILLS.md` and `site/`; never run it to "just check" a tree someone else is releasing into.
-- **A new gate needs a bug that reached a user** (Ajesh, 2026-09-23) — not a near miss, not prose
-  disagreeing with prose. Name that bug in the gate's header.
-- **Site work is open** (Ajesh, 2026-10-05 — lifts the 2026-09-23 freeze, which waited on
-  `copy_install` traffic). The backlog and how the site is run live in `docs/programs/PROG-001`:
-  look at the whole site before adding anything, subtract before you add a page, and preview
-  the BUILT page (`site/`, or a worktree build), never `web/*.html`, which has no shell or CSS.
-- Commit with the GH noreply env-var: `NR=$(gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"')`.
-  After CLI changes: `npm i -g ~/Projects/bossbuild`, then test in `/tmp` with `BOSS_HOME` set to a
-  temp dir (rule 6). `npm run pack:preview` confirms only the package ships.
-- **Confirm the altitude before analysing.** BOSS is self-hosted: *BOSS's own practice* and *what BOSS
-  ships a founder* are the same file and look like the same question. Ask which one is meant.
+- **Concurrent sessions are the norm.** Each piece of work gets its own worktree; the main checkout only
+  lands (IDEA-120). `node scripts/worktree.js <ID>` creates it — or **joins** a peer already on that id,
+  so check `git log --all` for the id first. `land <ID>` rebases and fast-forwards main, and stops if
+  main holds a dirty copy of a file the work touched; `done <ID>` removes it. Never `git checkout` a
+  branch in the main checkout; never `git stash` anywhere. In the main checkout (the fallback): `git
+  status` first, stage only your own hunks.
+- **Tracked vs gitignored** (IDEA-087): `.gitignore` is the list. The test for tracking is *"fine public
+  forever?"*, never *"is the repo private"*. Real people's words (`evidence/`), the brain (`.boss/`),
+  research inbox/sessions, `ideas/CANVAS.md` (Ajesh's) stay out.
+- 🔴 **Never open a file for writing before you have finished reading it** — `open(p,'w')` truncates on
+  open. Read fully, close, then write, or compose to a new path and `mv`. Two gitignored single-copy
+  files were lost this way and to `boss remove --apply` in this checkout; **never "restore" a lost
+  record by re-deriving it** — that manufactures a record nobody wrote.
+- **`npm publish` and `npm run bump:formula` are Ajesh's.** `check:published` is their number, not a task.
+- **Every commit runs the staged tree through `npm run test:ci`** (`scripts/hooks/pre-commit`; `npm run
+  hooks` turns it on per clone). **Verify with `npm run check`**, never a loop over `check:*` (several
+  exit 0 without `--strict`). `node scripts/release.js` is not read-only — it regenerates docs and `site/`.
+- **A new gate needs a bug that reached a user** (Ajesh, 2026-09-23); name that bug in its header.
+- **Site work:** `docs/programs/PROG-001` — subtract before you add a page; preview the built `site/`,
+  never `web/*.html`.
+- **Commits** use the GitHub noreply env-var, never global config:
+  `NR=$(gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"')`. After CLI changes:
+  `npm i -g ~/Projects/bossbuild`; `npm run pack:preview` confirms only the package ships.
+- **Confirm the altitude before analysing**: *BOSS's own practice* and *what BOSS ships a founder* are the
+  same files. Ask which one is meant.
 
-## What BOSS is (one line)
+## Where things are
 
-**BOSS is the conscience that keeps you honest while you build fast.** It runs inside Claude Code,
-sets a project up with only the structure it has earned, says one thing when you're drifting, and
-stays quiet the rest of the time. (The home of that sentence is `PRINCIPLES.md` — quote it, don't
-rewrite it.) It scaffolds at the right level of ceremony (Quickstart → MVP → V1 → Scale) and mentors
-the founder from idea to a thing that stands on its own — a company, a co-op, or a commons. Which one
-is the founder's call; BOSS doesn't assume the venture ([[DEC-011]]).
-
-## Repo map
-
-- `bin/boss`, `src/` — the zero-dep CLI (cli, scaffold, registry, paths; loop = learn/sync when built)
-- `stages/L{0..3}-*/` — the modes. **Quickstart authored**; MVP being extracted from this repo's own practice.
-- `library/` — what BOSS *knows*: `practices/`, `sources.json`, `deceptive-patterns.json`, `help/`. Agents,
-  skills and hooks live only in `stages/` (the shelf mirror went in v0.246.0; `library/README.md` says why)
-- `registry/` — `CHANGELOG.md` (per-version notes) + `supersedes.json`, `surface-freshness.json`. The
-  project list is **not** here: it's per-machine at `~/.boss/registry.json` (pulled out of the repo — it carried a home path)
-- `docs/` — BOSS's own dogfooded docs: `ideas/`, `IDS.md`, `RESUME.md`, the canvas
-- `PRINCIPLES.md` — the six rules that define BOSS
-
-## Reference
-
-### Two classes of agents (see [`docs/MENTORS.md`](docs/MENTORS.md))
-- **Builders** — make the product (pm, coder, tester, designer…).
-- **Mentors** (`mentor-*`) — coach the founder (venture lead, business, architect, fundraising, talent, pitch).
-
-### Conventions
-- IDs: `IDEA-NNN` (ideas), `FEAT-NNN` (features in build). See `docs/IDS.md`.
-- Frontmatter on every doc: `id`, `type`, `owner`, `status`.
-- Git: small commits; commits use the GitHub noreply email (env-var, never global config) to avoid GH007.
+`bin/boss`, `src/` (the CLI) · `stages/L{0..3}-*/` (what each mode ships — agents, skills, hooks) ·
+`library/` (practices, sources) · `registry/` (CHANGELOG, supersedes) · `docs/` (ideas, programs,
+decisions, RESUME, devlog) · IDs and frontmatter: `docs/IDS.md` · agents: `docs/MENTORS.md`.
