@@ -301,6 +301,11 @@ starter pack?"* The mechanism (proposed, part of T1):
   sort table (legal / HR / resumes / contracts **held** in `docs/source/`, labelled, never quoted into
   anything that commits), `boss inbox`'s held state, and the engine's *Where it lives*.
 
+- [x] **The archive kept its links** (2026-10-07). The hand-copied `retired-skills/2026-10-06/` broke all 37
+  relative links (written for where each file lived); re-resolved from their original locations, a link
+  to another retired file now points at its archived copy. The next archive is `node scripts/archive.js
+  <dest> <files…>`, which does the same at copy time (`test/archive-script.test.js`).
+
 ## Decided 2026-10-07 — after the review (Ajesh)
 
 - **The one-screen answer** — yes, as `/scout sort`'s wrap-up (`sort.md` §3), no new verb: when the

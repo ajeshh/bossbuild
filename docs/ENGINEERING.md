@@ -194,6 +194,7 @@ reaching into a command module); `earned → board` (the earned check computes t
 | Re-entry or evidence context | `hooks/lib/reentry.js`, `loop-runtime.readEvidenceContext` | a `src/` copy |
 | A test fixture project | `test/helpers.project({path: body})`, `idea()`, `feat()`, `canvas()`, `cleanup` | an ad-hoc `mkdtempSync` tree |
 | Review dates in a script (local) | `scripts/lib/freshness.js` | a copy |
+| Keep a retired file's full text (an archive) | `node scripts/archive.js <dest> <files…>` — rewrites its links for where it now lives | `cp` (37 links broke that way, 2026-10-07) |
 
 **Helpers that don't exist yet, and should** (each replaces copies already in the tree — F3): the
 body under a heading (four implementations, different stop rules); a record's title without its id
