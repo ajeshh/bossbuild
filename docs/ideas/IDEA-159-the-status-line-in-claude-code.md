@@ -3,7 +3,8 @@ id: IDEA-159
 type: idea
 kind: capability
 owner: product-lead
-status: captured
+status: exploring
+proof: test/statusline.test.js
 created: 2026-10-07
 program: PROG-004
 relates: IDEA-152, IDEA-156
