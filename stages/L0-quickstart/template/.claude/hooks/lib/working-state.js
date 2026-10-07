@@ -67,6 +67,12 @@ function items(text) {
   }
   return out.filter((i) => i != null);
 }
+// The no-list (IDEA-158). A compaction summary keeps what was done and drops what was decided NOT to
+// do — and a session that has lost the "no" extends the work in good faith. So the out-of-scope lines,
+// the options considered and not adopted, and a program's refusals come back first, before the open
+// work: the item most likely to be acted on is the one read first.
+const NO_LIST = /out of scope|not adopted|not doing|won.t do|decided not|refuses/i;
+
 const unticked = (text) => items(text).filter((i) => /^\[ \][ \t]+/.test(i))
   .map((i) => i.replace(/^\[ \][ \t]+/, '')).filter((i) => !placeholder(i));
 const bullets = (text) => items(text).filter((i) => !/^\[[ xX]\]/.test(i)).filter((i) => !placeholder(i));
@@ -105,6 +111,7 @@ function workLines(r) {
   const head = `${r.title} — ${r.rel}${r.fm.status ? ` (${r.fm.status})` : ''}`;
   return [
     head,
+    ...listLines('Decided not to do', pick(secs, NO_LIST, bullets), r.rel),
     ...listLines('Open criteria', pick(secs, /acceptance criteria/i, unticked), r.rel),
     ...listLines('Open tasks', pick(secs, /^tasks\b/i, unticked), r.rel),
     ...listLines('Found while building', pick(secs, /found while building/i, unticked), r.rel),
@@ -117,6 +124,7 @@ function programLines(r) {
   const secs = sections(r.body);
   return [
     `Program ${r.title} — ${r.rel}`,
+    ...listLines('Decided not to do', pick(secs, NO_LIST, bullets), r.rel),
     ...listLines('Rules every change carries', pick(secs, /^rules every/i, bullets), r.rel),
     ...listLines('Open tasks', pick(secs, /^tasks\b/i, unticked), r.rel),
     ...listLines('Open questions', pick(secs, /open questions/i, (t) => [...unticked(t), ...bullets(t)]), r.rel),

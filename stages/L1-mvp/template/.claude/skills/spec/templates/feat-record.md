@@ -162,7 +162,9 @@ _Omit this section if no LLM in user-visible path. Acceptance criteria above sho
 at least one failure-state path (e.g., "refusal routes to /support, not the spinner")._
 
 ## Out of scope
-_What this FEAT explicitly does NOT do. Future FEATs may; this one doesn't._
+_What this FEAT explicitly does NOT do. Future FEATs may; this one doesn't. Every session start reads
+these back first — a summary keeps what was done and drops what was decided against, so a line here is
+what stops the build growing back into it._
 - …
 
 ## Found while building

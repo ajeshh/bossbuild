@@ -177,3 +177,15 @@ test('the conscience at its largest stays under the host cap', () => {
   }
   assert.ok(worst.n < HOST_CAP, `${worst.moment} × ${worst.cohort}: ${worst.n} chars`);
 });
+
+// IDEA-158: the "no" is what a summary drops, and a session without it extends the work in good faith.
+test('the no-list comes back first — out of scope, not adopted, a program\'s refusals', () => {
+  const feat = FEAT.replace('## Found while building', '## Out of scope\n\n- …\n- refunds — a later FEAT\n\n## Found while building');
+  const prog = PROG.replace('## Tasks', '## What this program refuses\n\n- a second payment provider\n\n## Tasks');
+  const d = proj({ 'docs/ideas/FEAT-001-checkout.md': feat, 'docs/programs/PROG-001-payments.md': prog });
+  const { text } = workingState(d);
+  assert.match(text, /Decided not to do:\n\s+- refunds — a later FEAT/);
+  assert.match(text, /a second payment provider/);
+  assert.doesNotMatch(text, /- …/, 'the template placeholder is not a decision');
+  assert.ok(text.indexOf('refunds') < text.indexOf('pay with a card'), 'the no comes before the open work');
+});
