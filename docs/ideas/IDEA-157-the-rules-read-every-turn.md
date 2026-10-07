@@ -43,7 +43,7 @@ where the rule is acted on (the reentry hook, the FEAT template's *Found while b
 ## Tasks
 
 - [x] T1 · MVP block (6,044 → 2,756 bytes) — rules in a line or two, the inventory folded
-- [ ] T2 · V1 and Scale blocks, same rule
+- [x] T2 · V1 (3,246 → 1,754) and Scale (3,439 → 2,185) blocks, same rule
 - [ ] T3 · Quickstart's CLAUDE.md + AGENTS.md — anything an overview, not a rule
 - [ ] T4 · Before/after table; existing projects get the shorter block through `boss sync` (untouched
   blocks only — a block the founder edited is left alone and named)
