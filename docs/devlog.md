@@ -94,6 +94,27 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
   declines to read. One line at the top of its steps fixed it.
 - **Next:** nothing owed. Harness lived in the session scratchpad; if bodies regrow, IDEA-156 has the method.
 
+## 2026-10-06 — IDEA-154 what the field measured on spec- and agent-driven practice (Unreleased)
+
+**Landed.** Ajesh asked how BOSS compares with the best spec- and agent-driven practice. `/deep-research`
+covered the seven angles IDEA-150 didn't: delta specs, task graphs, research→plan→implement,
+long-running harnesses, parallel agents, verification, and evidence. 19 claims were 3-vote verified:
+16 held, 2 were killed. The record is SESSION-2026-10-06 (gitignored). Then *"do what's best recommended
+but don't overdo it"*: RVW-150…153 gave three ADAPTs and one REJECT. `coder` now stops on a test/spec
+conflict and asks one question on a real fork. MVP rule 1 now defines non-trivial (one sentence, or a
+change to money, deletion or access).
+
+**Surprised by.** The field is converging on BOSS's shape rather than away from it:
+- The host withdrew its task tools.
+- A toolkit retired spec writing in favour of plan mode.
+- The delta-merge toolkit is questioning its merge.
+
+The one circulating number for spec benefit ("up to 50% fewer errors") traces to two articles that
+don't contain it.
+
+**Next.** IDEA-154 T2: audit what's always loaded (about 2,000 words at MVP; BOSS's own CLAUDE.md too).
+Its scope is Ajesh's call.
+
 ## 2026-10-05 — PROG-004 the front door; IDEA-152 quick wins (Unreleased)
 
 **Landed.** Ajesh asked what CLI tools people rave about and what BOSS could learn; then *"start with

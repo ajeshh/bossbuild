@@ -27,7 +27,7 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
-- **IDEA-160 (2026-10-07, shipped, not pushed) — cli.js back to a dispatcher.** No rearchitecture; `cli.js`
+- **IDEA-160 (2026-10-07, shipped, pushed) — cli.js back to a dispatcher.** No rearchitecture; `cli.js`
   2,242 → 1,177 by moving handlers into the modules they call (new `fail.js`, `install.js`). Devlog has the
   entry. Left: IDEA-161 — `boss id` missed a peer worktree's record; reproduce in a test before any fix.
 - **PROG-005 the research engine (2026-10-06/07, Unreleased, pushed).** `boss craft research` is the
@@ -39,6 +39,10 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   flight from its records, no-list first; the every-turn rules are ~40% smaller; `/log` names unasked work from a
   fresh reviewer; one home per fact (CLAUDE.md). Open: the old-CHANGELOG citation pass (IDEA-158 found list).
 - **Release:** 0.331.0 stamped and committed 2026-10-07, not published (`npm publish` is Ajesh's). IDEA-151 O1 open.
+- **IDEA-154 (2026-10-06, Unreleased) — spec and agent practice, what the field measured.**
+  `coder` stops on a test/spec conflict and asks one question on a real fork. MVP rule 1 now defines
+  non-trivial. RVW-150…153; sources in SESSION-2026-10-06. Open: T2, the always-loaded audit (waits on
+  Ajesh's scope call; IDEA-157 already cut part of it — re-measure first). Landed 2026-10-07.
 - **IDEA-144 (2026-10-05, Unreleased) — one home for the generated pages.** `.boss/index.html`: every page with its age, *Where things live* (folders + key files, Open / Copy path), a bookmark hint; every page command prints it as the one bookmark. Spaces ordered Board · Playbook · Design · Guide. Demo: "Organization" → *Where things live* (GitHub links), and the opening says what Kettlewick does. Each card says when its page is out of date (a file it reads changed since). No machine-wide home: each project has its own (Ajesh). Open: the home re-checks only on a page command.
 - **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
   principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
