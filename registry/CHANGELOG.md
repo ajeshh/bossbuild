@@ -62,6 +62,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   first `/evidence` record says the canvas can now be a two-minute one-pager. And `/red-team`'s menu
   hint now shows its `--paths` and `--humane` passes.
 
+- **Your session carries less on every turn.** The rules BOSS adds to CLAUDE.md now say each rule in a
+  line or two and where to look; the reasoning stays in the skill or guide you open when the rule
+  applies. The rules themselves are about 40% smaller at MVP and later, and everything a session reads
+  before you type anything about a fifth smaller.
+  Existing projects get the shorter rules with `boss sync`, unless you edited them yourself.
+
 ### Under the hood
 
 - **The working-state file is retired from new MVP projects.** `.claude/rules/feature-context.md`

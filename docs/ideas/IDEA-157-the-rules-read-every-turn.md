@@ -3,7 +3,9 @@ id: IDEA-157
 type: idea
 kind: capability
 owner: product-lead
-status: building
+status: shipped
+shipped_on: 2026-10-07
+proof: stages/L1-mvp/template/claude-append.md
 created: 2026-10-07
 relates: IDEA-153, IDEA-156, IDEA-085
 gist: The rules a founder's session reads on every turn say the rule and where to look; the reasoning moves to the file that is opened when the rule applies.
@@ -45,11 +47,26 @@ where the rule is acted on (the reentry hook, the FEAT template's *Found while b
 - [x] T1 · MVP block (6,044 → 2,756 bytes) — rules in a line or two, the inventory folded
 - [x] T2 · V1 (3,246 → 1,754) and Scale (3,439 → 2,185) blocks, same rule
 - [x] T3 · Quickstart CLAUDE.md 4,707 → 2,620 (the mode table and arc walkthrough folded into `boss status` / one line). New projects only — the base file is the founder's; sync refreshes only the later blocks. AGENTS.md (2.3 KB) is rules, left as is.
-- [ ] T4 · Before/after table; existing projects get the shorter block through `boss sync` (untouched
-  blocks only — a block the founder edited is left alone and named)
-- [ ] T5 · BOSS's own every-turn files: CLAUDE.md (~11 KB) and the memory index (~9.7 KB)
-- [ ] T6 · CHANGELOG bullet
+- [x] T4 · Before/after table (below); existing projects get the shorter MVP/V1/Scale blocks through
+  `boss sync` (untouched blocks only — a block the founder edited is left alone and named)
+- [x] T5 · BOSS's own every-turn files: CLAUDE.md 11,281 → 5,310 (rules keep their ids; history and
+  overview left to the records); the memory index 9,697 → 4,425 (outside the repo)
+- [x] T6 · CHANGELOG bullet
+
+## Result (2026-10-07, same measurement)
+
+| Mode | CLAUDE.md + AGENTS.md | Every turn |
+|---|---|---|
+| Quickstart | 6,954 → 4,867 (−30%) | ≈3.2k → 2.7k tokens |
+| MVP | 13,046 → 7,671 (−41%) | ≈6.4k → 5.1k |
+| V1 | 16,337 → 9,470 (−42%) | ≈7.4k → 5.7k |
+| Scale | 19,830 → 11,709 (−41%) | ≈8.5k → 6.4k |
+
+What is left on every turn is mostly the skill and agent descriptions (~5–6k bytes at MVP+), already
+under IDEA-085's per-description cap. The next cut there is fewer skills a rung loads, not shorter
+descriptions — a product decision, not a trim.
 
 ## Log
 
 - 2026-10-07 · captured with the measurement; built in worktree `idea-157`.
+- 2026-10-07 · built: MVP, V1, Scale blocks; Quickstart CLAUDE.md; BOSS's CLAUDE.md; the memory index.
