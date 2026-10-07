@@ -12,6 +12,7 @@ import { registerProject, listProjects, findByPath, retireProject, reviveProject
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { readInbox, inboxProblems, INBOX_DIR } from './inbox.js';
 import { share, unshare, shareStatus } from './share.js';
+import { readClaims, standing, existingDirs, SOURCE_DIRS, NEW_DAYS, FADE_DAYS } from './sources.js';
 import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
 import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
@@ -1586,6 +1587,30 @@ function cmdSync(args) {
   console.log('');
 }
 
+// Source standing (PROG-005 B5): who to read first, counted from the claim rows /scout writes. An
+// order with its reason — never a score — so a famous name gets no head start and a new voice that
+// held up gets in. src/sources.js says how it counts.
+function cmdSources(args) {
+  const f = parseArgs(args);
+  const dirs = f._.length ? f._.map((d) => resolve(process.cwd(), d)) : existingDirs(process.cwd(), SOURCE_DIRS);
+  const { rows, tilt } = standing(readClaims(dirs));
+  if (f.json) { console.log(JSON.stringify({ rows, tilt }, null, 2)); return; }
+  if (!rows.length) {
+    console.log(`\n  ${dim('No claim rows yet.')} ${bold('/scout')} ${dim('writes them — one per claim, with who said it and whether it held up.')}`);
+    console.log(`  ${dim('Standing is counted from those rows, so it starts with your first research pass.')}\n`);
+    return;
+  }
+  console.log(`\n  ${bold('Sources')} ${dim(`— who to read first, from what has held up · ${tilt.total} source(s), ${tilt.newThisYear} first seen this year`)}`);
+  const mark = { new: ok('+'), 'held up': ok('✓'), fading: warn('~'), 'no record yet': dim('·'), 'not held up': warn('×') };
+  for (const r of rows) {
+    const tally = `${r.held} held${r.killed ? ` · ${r.killed} didn't` : ''}${r.unverified ? ` · ${r.unverified} untested` : ''}`;
+    const when = r.lastHeld ? ` · last held ${r.lastHeld}` : '';
+    console.log(`    ${mark[r.label]} ${r.source}  ${dim(`${r.label} — ${tally}${when}`)}`);
+  }
+  console.log(`\n  ${dim(`new: first held in the last ${NEW_DAYS} days · fading: nothing held in ${FADE_DAYS}. An order to read in, not a verdict —`)}`);
+  console.log(`  ${dim('a high place never makes a new claim true; it still gets tested like a stranger\'s.')}\n`);
+}
+
 // The inbox view (PROG-005 T2): what came in, what is still unsorted, and where the rest went.
 // Read-only — nothing moves; /scout sort stamps an item, this only reads the stamps.
 function cmdInbox(args) {
@@ -1744,7 +1769,7 @@ function failNotAProject() {
 // actually exists, never from a hand-kept copy of it.) Flags are excluded on purpose: `--help` is
 // not a plausible typo for a bare word, and suggesting it would be noise.
 const KNOWN_COMMANDS = [
-  'new', 'adopt', 'unlock', 'status', 'board', 'playbook', 'design', 'recap', 'map', 'brain', 'insights', 'records', 'id', 'inbox',
+  'new', 'adopt', 'unlock', 'status', 'board', 'playbook', 'design', 'recap', 'map', 'brain', 'insights', 'records', 'id', 'inbox', 'sources',
   'team', 'list', 'retire', 'credit', 'remove', 'uninstall', 'sync', 'learn', 'craft',
   'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'hooks', 'version', 'help',
 ];
@@ -2138,7 +2163,7 @@ function nearestCommand(input) {
 
 // Commands that print JSON on --json. Anywhere else the flag used to be ignored and the command
 // printed prose to a caller that had asked for JSON, with nothing saying so.
-const JSON_COMMANDS = new Set(['board', 'inbox']);
+const JSON_COMMANDS = new Set(['board', 'inbox', 'sources']);
 
 // A flag no command reads is a typo: refuse it and name the nearest real one, rather than run the
 // command as if it weren't there (`boss board --nxt` printed the whole board and exited 0).
@@ -2184,6 +2209,7 @@ export async function run(argv) {
     case 'records': return cmdRecords(args);
     case 'id': return cmdId(args);
     case 'inbox': return cmdInbox(args);
+    case 'sources': return cmdSources(args);
     case 'team': return cmdTeam(args);
     case 'list': return cmdList(args);
     case 'retire': return cmdRetire(args);

@@ -33,6 +33,13 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### What you'll notice
 
+- **`boss sources` — who to read first, from what has held up.** For every person or publisher your
+  research cites, how many of their claims held up, how many didn't, and when one last held — counted
+  from the rows `/scout` writes, never typed in and never a score. Someone new who was right recently is
+  marked *new* and sits beside the established names; a source with nothing held in a year reads as
+  *fading*. A high place only says where to start reading: a new claim still gets tested like a
+  stranger's.
+
 - **The work in flight survives a compaction.** When Claude Code compacts a long session, or you
   `/clear` it, the next turn used to know only what the summary kept — and the tasks you'd spotted at
   hour three were usually not in it. Now every session start reads the feature you're building back
@@ -41,6 +48,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   wins. Nothing is written for you; what you put in the record is what comes back.
 
 ### Smaller improvements
+
+- **Bringing material in ends on the answer, not a receipt.** When what you dropped in touched rivals
+  or the market, `/inbox` finishes on one screen: the rivals found and which ones someone you spoke to
+  actually named, how many people there are and the part that's yours, what couldn't be verified, and
+  the next step. And to share your research folders with a cofounder, just ask — the agent sets it up
+  and writes the note to send them.
 
 - **`/spec` ends by starting the build fresh.** Once the spec is written, it suggests clearing the
   context and starting the build from the record — a clean window for the code, nothing lost — and an

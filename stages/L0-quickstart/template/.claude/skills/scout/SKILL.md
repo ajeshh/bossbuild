@@ -72,6 +72,9 @@ research as procrastination.
 
 ## Step 3 — run it
 
+**Who to read first:** `boss sources` lists the people and publishers whose claims have held up here,
+new voices included — start there, and test their new claims like anyone's.
+
 The loop is `boss craft research` steps 2–8, with the domain's own *open first* order and its own way
 to verify. **You bring the method and the landing places; the searching is the AI tool's you're running in** —
 use its web search and page fetch, and for an API, its documentation tools if it has them. Do not pretend to fetch

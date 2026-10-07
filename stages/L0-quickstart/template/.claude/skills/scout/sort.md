@@ -63,7 +63,24 @@ If the source fills nothing beyond the idea doc, skip this step without ceremony
 
 ## 3. Wrap up — and point at the next step
 
-No receipt of what was saved. Say only what they need: anything you couldn't read or skipped, and
+**When what came in touched rivals or the market, end on one screen** — the answer to the question
+they usually brought it for, not a list of what was filed. Eight lines at most, from the records this
+sort just wrote:
+
+> **Rivals:** 4 found — Shiftwise and Coverly were named by owners you spoke to; 2 are *watch* (nobody
+> has mentioned them yet).
+> **How many people:** about 6,400 agencies in England (register extract, 2026-06) — the part that's
+> yours is the ~1,900 run by the owner alone; that split is in the report, p.12.
+> **Couldn't verify:** the "$40B market" on the cover rests on a paid report I couldn't open — marked
+> *not read*.
+> **Next:** `/interview` one of the two owners — you have names, and the canvas's riskiest assumption is
+> still a guess.
+
+Say *not yet known* where the material doesn't say — never fill a line to complete the screen. Which
+rivals a real person named comes from `docs/evidence/`; if there's none, say so in four words, not a
+paragraph.
+
+Otherwise: no receipt of what was saved. Say only what they need: anything you couldn't read or skipped, and
 why; which idea it went into if that isn't obvious (by what it is, the `IDEA-NNN` alongside). **End with the single next step** — usually `/canvas <IDEA-NNN>` if the
 idea now has legs, or "keep adding with `/idea` or `/inbox`" if it's still forming. Close on the
 action, not the recap.

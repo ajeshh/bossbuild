@@ -35,7 +35,8 @@ shelf into real projects continuously; a wrong practice is worse than a missing 
 1. **Curate the taps before searching, and stamp `taps_reviewed:`.** Dead? (fetch every URL tap) ·
    quiet? (record the silence, lower the cadence — never widen the search to manufacture a finding) ·
    missing? (anything the last pass found outside the taps) · still the right person? (a name carried
-   on reputation; standing comes from what held up). A dead tap returns nothing and looks quiet.
+   on reputation; standing comes from what held up — `boss sources docs/research/sessions` counts it once
+   sessions write claim rows). A dead tap returns nothing and looks quiet.
 2. **Scope each pass `since` that practice's own `last_reviewed`** — practices are swept at different
    times, and that is the feature. **Ask for refutations and confirmations**, not only additions.
 3. **Diff against the live text, line by line, into four buckets** — *confirmed* (most findings; a

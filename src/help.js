@@ -47,6 +47,12 @@ export const HELP = {
     examples: ['boss design', 'boss design --open', 'boss design --questions'],
     see: ['playbook', 'design-tokens-init'],
   },
+  sources: {
+    usage: 'boss sources [<folder>...] [--json]',
+    what: 'Who to read first, counted from the claim rows /scout writes: for each person or publisher, how many of their claims held up, how many didn\'t, and when one last held. New voices that held up recently are marked new; sources with nothing held in a year are fading. An order with its reason, never a score — a high place never makes a new claim true. Reads docs/research/ and docs/competition/ unless you name folders.',
+    examples: ['boss sources', 'boss sources --json'],
+    see: ['inbox', 'craft'],
+  },
   inbox: {
     usage: 'boss inbox [<folder>] [--json]',
     what: 'What came in through /inbox and where it went: new (not sorted yet — /inbox sorts them), held (legal or HR material, labelled and kept on this machine until the project has a home for it), sorted (with where each part was filed), and reference. Nothing moves; an item is sorted when /scout sort stamps it. Reads docs/source/ unless you name a folder.',

@@ -297,6 +297,32 @@ starter pack?"* The mechanism (proposed, part of T1):
   sort table (legal / HR / resumes / contracts **held** in `docs/source/`, labelled, never quoted into
   anything that commits), `boss inbox`'s held state, and the engine's *Where it lives*.
 
+## Decided 2026-10-07 — after the review (Ajesh)
+
+- **The one-screen answer** — yes, as `/scout sort`'s wrap-up (`sort.md` §3), no new verb: when the
+  material touched rivals or the market, end on rivals found · which a real person named · the size
+  that's real for you · what couldn't be verified.
+- **Sharing for a non-technical cofounder** — the assistant runs `boss team share` for them: asked in
+  chat, it asks where the team's drive folder is, runs it, and writes the note to send the cofounder.
+- **Next engine piece: B5, source standing with dates** — Ajesh's original ask (rank by what held up,
+  an emerging lane), counted forward from claim rows.
+- **Housekeeping:** remove the four redirects (via BOSS syncing its own install — previewed first),
+  close the session, remove the idea-155 worktree.
+
+**Built 2026-10-07:**
+- [x] **The one-screen answer** — `scout/sort.md` §3: rivals found and which a real person named · how
+  many people and the part that's yours · what couldn't be verified · next step; *not yet known* rather
+  than a filled line.
+- [x] **Agent-run sharing** — the template `AGENTS.md`: ask in chat, the agent asks for the drive
+  folder, runs `boss team share`, writes the note.
+- [x] **B5 · `boss sources`** (`src/sources.js`, `test/sources.test.js`) — standing counted from claim
+  rows (`Survived`, or the older `Result`): held · didn't · untested · last held; labels *new* (first held
+  ≤90 days) · *held up* · *fading* (nothing held in 365) · *no record yet* · *not held up*; ordered by
+  where to look first, never a score; the tilt (new this year). Source = person or publisher, never the
+  link. On BOSS's own sessions it finds **0** rows today — as IDEA-155's measurement predicted; it
+  counts forward. **Still open from B5:** dates and backlinks on `library/sources.json`, and the 17
+  key sources without a URL.
+
 ## The label crosswalk (BOSS's own — moved out of the founder practice 2026-10-07)
 
 `library/practices/research.md` keeps only the labels a founder can meet. BOSS's own records used

@@ -25,6 +25,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 | `boss design [--open]` | the design space: tokens, parts, patterns, exceptions — read from docs/design/ |
 | `boss recap [--md]` | what happened this week, read back out of your own records |
 | `boss inbox` | what came in, what is still unsorted, and where the rest went |
+| `boss sources` | who to read first, counted from what has held up |
 | `boss craft [<name>]` | the practice shelf — how BOSS thinks about building with AI, one doc at a time |
 | `boss id [TYPE]` | the next free record number — computed, never counted by hand |
 | `boss records` | check the record set: duplicate IDs, off-vocabulary status, broken promotions |

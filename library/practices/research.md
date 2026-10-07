@@ -101,7 +101,7 @@ interview; grade each on its own scale.
 
 Sources are ranked by **what has held up**, not by how well known they are.
 
-- **A record, counted from claim rows.** How many of a source's claims survived, how many were killed,
+- **A record, counted from claim rows** (`boss sources` shows it). How many of a source's claims survived, how many were killed,
   and when one last held. Counted, never typed in. A source you've only seen once has no record yet —
   that is not a low one.
 - **New voices get in by being right.** A source enters your list the first time one of their claims
