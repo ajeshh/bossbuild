@@ -5,7 +5,7 @@
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, basename, delimiter, relative } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
-import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME, BOSS_ROOT } from './paths.js';
+import { bossVersion, STAGE_ORDER, resolveStageId, BOSS_HOME, BOSS_ROOT } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
 import { stageVars, applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
 import { STAMP, readStamp, writeStamp, registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
@@ -19,9 +19,9 @@ import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './le
 import { printCraft } from './craft.js';
 import { printChangelog, cmpVersion, versionLine } from './changelog.js';
 import { detectStage, inferSourceGlobs } from './detect.js';
-import { printUpdate, updateNote, installKind, uninstallCommand, versionChange, versionChangeLine } from './update.js';
+import { printUpdate, updateNote, versionChange, versionChangeLine, cmdRemoveGlobal } from './update.js';
 import { printCredit } from './credit.js';
-import { planRemove, applyRemove, machineState, removeMachineState } from './remove.js';
+import { cmdRemove } from './remove.js';
 import { built, nextSeam } from './ladder.js';
 import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
 import { board, boardHtml, collectBoard, computeNext } from './board.js';
@@ -1270,119 +1270,6 @@ function listPrune(ghosts, apply) {
   console.log(`  ${dim('A project you bring back re-registers on the next `boss adopt` or `boss sync --apply` there.')}\n`);
 }
 
-// `boss remove` — the exit. Preview by default; `--apply` is the consent.
-function cmdRemove(args) {
-  const f = parseArgs(args || []);
-
-  // `--global` is the OTHER exit: BOSS off the machine, not out of a project. Different act,
-  // different blast radius, so it never happens as a side effect of the project one.
-  if (f.global) {
-    const { dir, files } = machineState();
-    const cmd = uninstallCommand(installKind());
-    console.log(`\n  ${bold('Remove BOSS from this machine')}\n`);
-    console.log(`    ${bold(cmd)}   ${dim('— removes the CLI')}`);
-    console.log(`\n  ${dim('Machine-local state BOSS keeps outside any project:')} ${dim(dir)}`);
-    for (const x of files) console.log(`    ${dim('·')} ${x}`);
-    if (!files.length) console.log(`    ${dim('(none)')}`);
-    // The non-obvious, reassuring half.
-    console.log(`\n  ${dim('Your projects keep working either way — the conscience hook runs from the project')}`);
-    console.log(`  ${dim("(node .claude/hooks/conscience.js) and doesn't call this CLI. You'd lose the `boss`")}`);
-    console.log(`  ${dim('verbs, not the in-project experience. To take BOSS out of a project, run `boss remove` there.')}`);
-    if (files.length && !f.apply) {
-      console.log(`\n  ${dim('`boss remove --global --apply` deletes that state dir. The CLI itself is npm/brew\'s to remove.')}\n`);
-    } else if (files.length && f.apply) {
-      console.log(`\n  ${removeMachineState() ? ok('✦') + ` removed ${dir}` : err('✗') + ` could not remove ${dir}`}\n`);
-    } else console.log('');
-    return;
-  }
-
-  const stamp = readStamp(process.cwd());
-  if (!stamp) return failNotAProject();
-  // BOSS is self-hosted, so its own repo IS a BOSS project and `remove` works on it perfectly —
-  // which is the problem. On 2026-08-21 an assistant cleaning up after a throwaway test ran
-  // `--apply` here instead of in /tmp and took BOSS's own state dir with it. Nothing was wrong
-  // with the command; it was pointed one directory too far up.
-  const selfHosted = isBossRepo(process.cwd());
-  const plan = planRemove(process.cwd(), stamp);
-  const total = plan.files.length + plan.blocks.length + (plan.bossDir ? 1 : 0);
-
-  console.log(`\n  ${bold(stamp.name + ' — remove BOSS')}`);
-  console.log(`    ${dim('modes:')} ${plan.layers.map(modeWord).join(' → ')}\n`);
-
-  console.log(`  ${bold('Would remove')} ${dim(`— ${plan.files.length} file(s) BOSS wrote, unchanged since`)}`);
-  const head = plan.files.slice(0, 6).map((x) => x.rel);
-  for (const r of head) console.log(`    ${warn('−')} ${r}`);
-  if (plan.files.length > head.length) console.log(`    ${dim(`… +${plan.files.length - head.length} more`)}`);
-  if (plan.bossDir) console.log(`    ${warn('−')} .boss/   ${dim("(mode, config, the conscience's log)")}`);
-  if (plan.brainProse && plan.brainProse.length) {
-    console.log(`    ${ok('→')} docs/venture-brain.md   ${dim(`(the venture brain, exported first — ${plan.brainProse.length} file(s); it was yours to edit, so it leaves with you)`)}`);
-  }
-  for (const b of plan.blocks) console.log(`    ${warn('~')} ${b.rel}   ${dim('— BOSS block excised, the rest of the file kept')}`);
-  if (plan.settings?.drop) console.log(`    ${warn('−')} ${plan.settings.rel}   ${dim("— BOSS wrote it and you never changed it, so it goes with BOSS")}`);
-  else if (plan.settings) console.log(`    ${warn('~')} ${plan.settings.rel}   ${dim(`— ${plan.settings.removed} BOSS hook registration(s) only; your permissions, your own hooks and the secret-path deny floor all stay`)}`);
-
-  // The half that makes this safe to run: say what SURVIVES, by name.
-  console.log(`\n  ${bold('Would keep')}`);
-  console.log(`    ${ok('✓')} everything BOSS didn't write — your code, and anything you authored`);
-  if (plan.kept.length) {
-    console.log(`    ${ok('✓')} ${bold(String(plan.kept.length))} file(s) you made under docs/ and .claude/ — e.g. ${plan.kept.slice(0, 3).join(', ')}${plan.kept.length > 3 ? ' …' : ''}`);
-  }
-  if (plan.edited.length) {
-    console.log(`    ${ok('✓')} ${plan.edited.length} BOSS file(s) ${bold('you edited')} — yours now, never removed:`);
-    for (const e of plan.edited.slice(0, 4)) console.log(`        ${e.rel}`);
-    if (plan.edited.length > 4) console.log(`        ${dim(`… +${plan.edited.length - 4} more`)}`);
-  }
-
-  // The undo, stated accurately. This line used to promise that `git checkout .` "restores
-  // everything" — and it cannot restore `.boss/`, because the .gitignore BOSS itself ships tells
-  // git to forget the conscience log, the cost log, the trace, per-person brain state and the
-  // backups. A reassurance that is false about the one directory git cannot see is worse than none.
-  const sayUndo = () => {
-    console.log(`  ${dim('Commit first and `git checkout .` brings back every TRACKED file.')}`);
-    console.log(`  ${dim('It cannot bring back `.boss/` — BOSS gitignores its own logs and per-person state,')}`);
-    console.log(`  ${dim(`so git never saw them. --apply copies .boss/ to ${BOSS_HOME}/removed/ first;`)}`);
-    console.log(`  ${dim('that copy is the only undo those files have.')}`);
-  };
-
-  if (selfHosted) {
-    console.log(`\n  ${warn('!')} ${bold("This is BOSS's own source checkout")} ${dim('— the repo that ships BOSS, not a project')}`);
-    console.log(`    ${dim('BOSS was installed into. `--apply` here deletes BOSS\'s own state. It refuses')}`);
-    console.log(`    ${dim('without `--yes`, which is the same consent `boss learn` asks for when it is')}`);
-    console.log(`    ${dim('about to write to a checkout you are not standing in.')}`);
-  }
-
-  if (!f.apply) {
-    console.log(`\n  Preview only. ${bold('boss remove --apply')} does it.`);
-    sayUndo();
-    console.log(`  ${dim('Taking BOSS off the machine instead? `boss remove --global`.')}\n`);
-    return;
-  }
-
-  if (selfHosted && !f.yes) {
-    console.log(`\n  ${err('✗')} ${bold('Refusing')} ${dim('— that would remove BOSS from BOSS.')}`);
-    console.log(`    ${dim('If you meant a throwaway, you are one directory too far up: `cd` there first.')}`);
-    console.log(`    ${dim('If you really mean this repo, `boss remove --apply --yes`.')}\n`);
-    return;
-  }
-
-  const done = applyRemove(process.cwd(), plan);
-  // Deregister, never retire: `retire` is a VENTURE OUTCOME that `boss insights` reports on, and
-  // removing BOSS says nothing about whether the venture is alive. Marking it retired would have
-  // BOSS reporting a death that didn't happen.
-  try { deregisterProject(process.cwd()); } catch { /* registry is best-effort */ }
-  console.log(`\n  ${ok('✦')} BOSS removed — ${done.length} path(s). Your work is untouched.`);
-  if (plan.backup) {
-    console.log(`    ${ok('→')} ${plan.backup.files} file(s) from .boss/ copied to ${plan.backup.dir}`);
-    console.log(`      ${dim('git could not have restored those — delete the copy whenever you like.')}`);
-  } else if (plan.bossDir) {
-    // Said out loud rather than swallowed: a silent failure here is how you find out the net
-    // was missing only when you reach for it.
-    console.log(`    ${warn('!')} ${dim('.boss/ could not be copied aside — it is gone and git never had it.')}`);
-  }
-  console.log(`    ${dim('`git status` shows exactly what changed. `boss adopt` any time you want it back.')}\n`);
-  void total;
-}
-
 // Source standing (PROG-005 B5): who to read first, counted from the claim rows /scout writes. An
 // order with its reason — never a score — so a famous name gets no head start and a new voice that
 // held up gets in. src/sources.js says how it counts.
@@ -1970,7 +1857,7 @@ export async function run(argv) {
     case 'list': return cmdList(args);
     case 'retire': return cmdRetire(args);
     case 'credit': return void (process.exitCode = printCredit(args));
-    case 'remove': case 'uninstall': return cmdRemove(args);
+    case 'remove': case 'uninstall': return parseArgs(args).global ? cmdRemoveGlobal(args) : cmdRemove(args);
     case 'sync': return cmdSync(args);
     case 'learn': return cmdLearn(args);
     case 'craft': {

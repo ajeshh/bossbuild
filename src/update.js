@@ -21,6 +21,8 @@ import { homedir } from 'node:os';
 import { BOSS_ROOT, BOSS_HOME, bossVersion } from './paths.js';
 import { cmpVersion, newsBetween } from './changelog.js';
 import { dim, bold, ok, warn, err } from './ui.js';
+import { machineState, removeMachineState } from './remove.js';
+import { parseArgs } from './args.js';
 
 const CACHE = join(BOSS_HOME, 'update-check.json');
 // Renamed bossbuild → oyeboss (v0.177.0, BRAND.md). An install predating the rename keeps
@@ -204,4 +206,27 @@ export function versionChangeLine(change, news = change ? newsBetween(change.fro
   if (news.improve) parts.push(`${news.improve} smaller improvement${news.improve === 1 ? '' : 's'}`);
   const what = parts.length ? parts.join(', ') : 'nothing that changes how you work';
   return `  ${ok('✦')} BOSS updated ${change.from} → ${bold(change.to)}: ${what}.  ${dim(`boss whatsnew --since ${change.from}`)}`;
+}
+
+// `boss remove --global` — BOSS off the machine, not out of a project. Different act, different
+// blast radius, so it never happens as a side effect of the project one. Moved from cli.js's
+// cmdRemove (IDEA-160 S2); it lives here, beside the install facts it names.
+export function cmdRemoveGlobal(args) {
+  const f = parseArgs(args || []);
+  const { dir, files } = machineState();
+  const cmd = uninstallCommand(installKind());
+  console.log(`\n  ${bold('Remove BOSS from this machine')}\n`);
+  console.log(`    ${bold(cmd)}   ${dim('— removes the CLI')}`);
+  console.log(`\n  ${dim('Machine-local state BOSS keeps outside any project:')} ${dim(dir)}`);
+  for (const x of files) console.log(`    ${dim('·')} ${x}`);
+  if (!files.length) console.log(`    ${dim('(none)')}`);
+  // The non-obvious, reassuring half.
+  console.log(`\n  ${dim('Your projects keep working either way — the conscience hook runs from the project')}`);
+  console.log(`  ${dim("(node .claude/hooks/conscience.js) and doesn't call this CLI. You'd lose the `boss`")}`);
+  console.log(`  ${dim('verbs, not the in-project experience. To take BOSS out of a project, run `boss remove` there.')}`);
+  if (files.length && !f.apply) {
+    console.log(`\n  ${dim('`boss remove --global --apply` deletes that state dir. The CLI itself is npm/brew\'s to remove.')}\n`);
+  } else if (files.length && f.apply) {
+    console.log(`\n  ${removeMachineState() ? ok('✦') + ` removed ${dir}` : err('✗') + ` could not remove ${dir}`}\n`);
+  } else console.log('');
 }

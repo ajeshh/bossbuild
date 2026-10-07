@@ -65,7 +65,12 @@ bug from them, so they don't meet the bar for a new gate. The fix is to do the m
 - [x] **S1** · `cmdSync` (~171 lines) → `sync.js` (`cli.js` 2,193 → 2,024). Verified: 822 tests; one
   `/tmp` project (pin behind, a founder-edited skill, a deleted agent) through preview, `--apply
   --keep-mine`, re-preview and outside a project: main and this branch byte-identical (168 lines).
-- [ ] **S2** · `cmdRemove` (~112) → `remove.js`
+- [x] **S2** · `cmdRemove` (~112) → `remove.js` (`cli.js` 2,024 → 1,910). Split in two on the way, because
+  `remove.js` importing `update.js` would point an import up a layer: the project exit is
+  `remove.cmdRemove`, the machine exit (`--global`) is `update.cmdRemoveGlobal`, beside the install
+  facts it names, and the dispatch line picks on `--global`. Verified: 822 tests; `/tmp` preview,
+  `--apply`, the `uninstall` alias, the self-hosted refusal, outside a project, `--global` and
+  `--global --apply` — main and this branch identical except the backup folder's timestamp.
 - [ ] **S3** · `cmdStatus` (~95) and its `print*` helpers → see Q2
 - [ ] **S4** · `cmdUnlock` (~165) → see Q3
 - [ ] **S5** · `cmdNew` (~108) → see Q3
