@@ -56,9 +56,10 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   (a copy edit claws nothing back; diligence reads `LICENSE`). Next step is one call, not a build.
 - **PROG-004 the front door (2026-10-05, Unreleased) — graduated from `front-door`.** IDEA-152 shipped the quick
   wins: `argument-hint` on every skill, `boss unlock` with no mode previews the next rung, `boss status --line`,
-  bare `boss` in a project says where you are. **Next (Ajesh: "a bigger feature… more thinking, tomorrow"): B1,
-  the status line in Claude Code** — opt-in or default, reading the host's stdin `workspace.current_dir`, never
-  overwriting a founder's own `statusLine`, and what the line says when nothing is in flight. Backlog B2–B8 in PROG-004.
+  bare `boss` in a project says where you are. **B1, the status line, is PAUSED (2026-10-07)
+  as IDEA-159** — five recommendations and the plain-English offer are written; Ajesh wants a deeper think on
+  whether it's worth the cost before anything is built (the questions are in the record). Re-enter with
+  `/revalidate IDEA-159`. Backlog B2–B8 in PROG-004.
 - **IDEA-132 (2026-10-04, Unreleased, not pushed) — the design system's manifest gets its edges.** `tokens` + `composes`,
   Composition on the usage page, a never-inside rule at the write. Devlog.
 - **Release (2026-10-04): 0.328.0 was published to npm on 2026-09-25 (its stamp sat uncommitted until
