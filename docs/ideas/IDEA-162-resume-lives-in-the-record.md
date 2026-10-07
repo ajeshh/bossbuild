@@ -3,9 +3,10 @@ id: IDEA-162
 type: idea
 kind: capability
 owner: product-lead
-status: exploring
+status: building (S1–S3 built; S4–S5 to go; S6 after a run on this tree)
 created: 2026-10-07
 proof: test/resume-reading.test.js
+proof_note: the reading and its test land at S2; shipped is RESUME in its new shape and `/close` writing `next:` (S4–S5)
 relates: IDEA-102, IDEA-153, IDEA-158, IDEA-078, IDEA-120, IDEA-159
 gist: Each record carries its own resume point, and RESUME becomes a computed reading of the work in flight — how close each piece is, said in words a fraction can't fake — plus Ajesh's short priority list.
 ---
@@ -40,7 +41,7 @@ at every session start · the board's criteria count (`criteriaProgress`, `src/b
 
 | Record | The fraction says | What its history says |
 |---|---|---|
-| PROG-005 | 17/21 — nearly done | Open went 8 → 4 over two days while done went 8 → 17: **~9 tasks were found on the way**. Its **5 open questions never moved.** Closing, but still uphill. |
+| PROG-005 | 17/21 — nearly done | Created with 3 open, grew to 11, closed to 4 in two days: **16 tasks were found on the way**. One question (Q5) is still open. Closing, but still uphill. |
 | IDEA-154 | 4/5 — one to go | **Stuck on the last item since 10-06**, across three commits that touched it. Stalled, not close. |
 | PROG-004 | 0/9 — nothing done | Grew 8 → 9; B1 is paused. **A backlog, not a build** — its list isn't scope. |
 | IDEA-153 | shipped, 3 open | The three are *Found while building* after it shipped: never its scope. A fraction calls a done thing unfinished. |
@@ -94,27 +95,53 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
 
 ## Tasks
 
-- [ ] **S1 · `next:`** — one optional frontmatter line on IDEA / FEAT / PROG, dated; absent → the first
+- [x] **S1 · `next:`** — one optional frontmatter line on IDEA / FEAT / PROG, dated; absent → the first
   open task. Documented in `docs/IDS.md` beside `waiting_on:`.
-- [ ] **S2 · The reading** — a lib that, per in-flight record, derives unknowns, direction (replaying the
-  open count through its commits), in-scope left vs found/backlog, last worked, next. Test first against
-  the four cases above as fixtures (each must read the way the table says).
-- [ ] **S3 · Where it shows** — a command (`boss resume`, or a mode of `boss status`; settle the name in
-  S3 — the host's `/resume` collision is named in IDEA-078), and the top three *Pick up* lines at session
-  start beside IDEA-153's re-load.
+- [x] **S2 · The reading** — `stages/L0-quickstart/template/.claude/hooks/lib/resume-reading.js` (zero-dep,
+  shared by the CLI and the hooks, like `loop-runtime.js`): unknowns, direction, in-scope left vs
+  found/backlog, last worked, next. Three git calls in all (one log for the names, one `--raw` log + one
+  `cat-file --batch` for the history), ~0.1 s on this tree. `test/resume-reading.test.js` — the four
+  cases as fixtures, written first.
+- [x] **S3 · Where it shows** — no new verb or flag: **`boss board --next`** was already *"what should I
+  pick up?"*, so its *Finish* list became the reading (*Pick up*, then *Status looks stale*, *Backlogs,
+  not builds*, *Gone cold*); *Start / Pressure-test / Pick / Blocked* are unchanged. `boss status` adds
+  the reading's line under *Building now*; the session start in a main checkout carries the top three
+  (a worktree's session is already on its work).
+  `waiting_on:` and `revisit_by:` stay where they're read now (`boss board --blocked`, `boss status`) —
+  not repeated here.
 - [ ] **S4 · RESUME moves** — each *Now* / *Held* bullet to its record (move, don't copy; IDEA-158);
   RESUME rewritten to the shape above.
 - [ ] **S5 · `/close`** (BOSS's own) writes `next:` and the priority list, not a status page.
 - [ ] **S6 · The founder's side** — MVP's `/close` and `templates/resume.md` follow, once S1–S5 have run
   on this tree for a while. A founder's in-flight work is FEATs, so the reading covers them first.
 
+## Found while building
+
+- [x] **`land` re-stamps every commit's date.** It rebases, so the committer date is the landing time:
+  PROG-005's two days read as one, and IDEA-154's stall as a day late. The reading uses the author date
+  (when the work was written); a test fails on the committer date.
+- [x] **A young record grows before it closes.** PROG-005 went 3 → 11 → 4 open in two days; measured
+  from its first commit it read *"growing: 3 → 4"*. Closing is measured from the peak open count.
+- [ ] **The main board still prints `[n/m criteria]`** on a Building card (and `boss status` used to
+  lean on it). Acceptance criteria are written before the build, so that fraction moves less than a
+  task list's — but it is the same shape. Not changed here; Ajesh's call whether the board follows.
+- [ ] **`boss board --json` doesn't carry the reading** — the agent-readable view still has only the
+  columns. Add it when an agent needs it (`planner` reads `--next` as text today).
+- [x] **PROG-005's Q1–Q4 were answered only in the heading** — every reader counted five open. Each
+  line now says so (its own commit). The reading's *uphill* is also a cue to tidy a record's questions.
+
 ## Open questions
 
-- Should a record be able to say `hill: downhill` by hand when its open questions are really answered
-  but not yet removed, or is that the cue to clean the questions up?
-- How many days is "gone cold" — 14 for BOSS's pace, and a different number for a founder's?
-- Does a program read as one line (its tasks), or as its members (each IDEA/FEAT under it)?
-- Does *stalled* need a minimum number of touches, so one quiet day doesn't read as stuck?
+- ~~Should a record be able to say `hill: downhill` by hand?~~ **Decided: no.** When the questions are
+  answered, the record says so on each line (`~~…~~`, *answered*, *settled*); the uphill flag is the cue
+  to tidy, and a second field would be one more thing to keep honest.
+- ~~How many days is "gone cold"?~~ **Ajesh, 2026-10-07: 14.** One number for now (`COLD_DAYS`); a
+  founder's pace is S6's question.
+- ~~Does a program read as one line, or as its members?~~ **Decided (Ajesh: "whatever you decide"):
+  one line** — its own tasks and questions — naming its members in flight; each member also has its
+  own line, so nothing is counted twice.
+- ~~Does *stalled* need a minimum number of touches?~~ **Decided: two edits since the last tick, with
+  work left.** A quiet record isn't stalled; past 14 days it's cold.
 
 ## Considered, not adopted (and why)
 
@@ -129,3 +156,4 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
 ## Log
 
 - 2026-10-07 · captured after a reassessment of RESUME; the four cases replayed from git history the same day.
+- 2026-10-07 · open questions settled (cold = 14 days, Ajesh; the rest decided here); S2 built test-first.

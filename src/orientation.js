@@ -52,7 +52,8 @@ import { newlyEarned, describeEarned } from './earned.js';
 import { updateNote } from './update.js';
 import { built, nextSeam } from './ladder.js';
 import { statusConscience } from './conscience.js';
-import { collectBoard, computeNext } from './board.js';
+import { collectBoard, computeNext, readingFor } from './board.js';
+import { stateWords } from '../stages/L0-quickstart/template/.claude/hooks/lib/resume-reading.js';
 import { readPrograms } from './programs.js';
 import { renderLadder } from './map.js';
 import { modeWord, skillsLine } from './modes.js';
@@ -269,7 +270,7 @@ export function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
   console.log('');
   if (finish.length) {
     const f = finish[0];
-    const more = finish.length > 1 ? dim(`   (+${finish.length - 1} more in flight)`) : '';
+    const more = finish.length > 1 ? dim(`   (+${finish.length - 1} more in flight → boss board --next)`) : '';
     // Every other branch of this if-chain ends in a command, and this one — the branch a founder
     // in build hits every single day — used to end in a full stop. So the highest-priority line on
     // the surface was the only one with nothing to DO, while three lower-priority lines below it
@@ -278,6 +279,10 @@ export function printFocusAndHeadway(projectDir, { adopted = false } = {}) {
     // The card is the answer — goal, acceptance criteria, the paths that must not break — and it
     // is a read of a file that already exists, not a new surface.
     console.log(`    ▸ ${bold('Building now:')}    ${f.id} — ${f.title}${more}   ${dim(`→ boss board ${f.id}`)}`);
+    // How close it is, in words, and where to pick it up (IDEA-162) — never a fraction.
+    let here = null;
+    try { here = (readingFor(projectDir) || { pickup: [] }).pickup.find((e) => e.id === f.id) || null; } catch { here = null; }
+    if (here) console.log(`      ${dim(`${stateWords(here)}${here.next ? ` → next: ${here.next.length > 90 ? `${here.next.slice(0, 89).trimEnd()}…` : here.next}` : ''}`)}`);
     // Part of a program with a record? Say which, and where its shared rules are (IDEA-145 G5).
     let prog = null;
     const fc = cards.find((c) => c.id === f.id);   // computeNext's entries are trimmed; the card has it

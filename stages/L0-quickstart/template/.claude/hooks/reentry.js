@@ -140,6 +140,14 @@ const main = async () => {
     const { openWork, describe } = await import('./lib/open-work.js');
     const open = openWork(projectDir);
     if (open && open.items.length) lines.push(...openWorkLines(open, describe));
+    // Where the work in flight stands (IDEA-162): the top three to pick up, each in words — how close,
+    // which way it is going, what's next. In a worktree the session is already on its work, so only
+    // the main checkout gets this.
+    if (!(open && open.current)) {
+      const { resumeReading, readingLines } = await import('./lib/resume-reading.js');
+      const top = readingLines(resumeReading(projectDir, { worktrees: open ? open.items.map((i) => i.name) : [] }), { limit: 3 });
+      if (top.length) lines.push('Where the work in flight stands (read from the records and their history; `boss board --next` has the rest). Use it if the founder asks what to pick up; do not recite it.', ...top, '');
+    }
   } catch { /* fail-open */ }
 
   const read = reentryRead(projectDir);

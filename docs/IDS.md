@@ -244,6 +244,21 @@ once — *did it fire?* — and `outcome: held | fell | can't tell yet — <why>
 asks the same of a FEAT at the moment it ships. Not a score; nothing counts these. A superseded or
 dropped record is never asked.
 
+## `next:` — where to pick this back up, kept on the record it is about
+
+```
+next: reproduce with a real worktree fixture before touching boss id (2026-10-07)
+```
+
+One line, optional, written when work pauses (`/close` writes it). Without it, the next step is the
+record's first open question if it has one, else its first open task, so most records never need it.
+`boss board --next` reads it beside what it derives from the record and its history (IDEA-162):
+**uphill or downhill** (any unanswered *Open questions* line means it's still finding out what the
+work is), **closing, growing or stalled** (the open count across the commits that touched it, never
+a fraction), and **what's left inside the line** (findings and backlogs are shown beside the count
+and never enter it). A question answered says so on its own line (`~~…~~`, *answered*, *settled*) or
+it still counts as open.
+
 ## `waiting_on:` — a question someone owes, kept on the record it is about
 
 ```

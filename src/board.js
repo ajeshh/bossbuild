@@ -28,6 +28,8 @@ import { readBrand, hasVerb } from './playbook.js';
 import { readTokens, themeFromTokens } from './design.js';
 import { isoDay, isoMinute } from './clock.js';
 import { readPrograms, isGrown, workShape, programId, programDecisions } from './programs.js';
+import { resumeReading, stateWords, COLD_DAYS } from '../stages/L0-quickstart/template/.claude/hooks/lib/resume-reading.js';
+import { openWork } from '../stages/L0-quickstart/template/.claude/hooks/lib/open-work.js';
 
 // The flow, left to right. BOSS's own vocabulary, surfaced as plain words.
 const COLUMNS = ['Captured', 'Taking shape', 'Building', 'Shipped'];
@@ -1299,11 +1301,30 @@ export function computeStuck(allCards) {
   };
 }
 
-function renderBoardNext(projectName, { cards, hasIdeasDir }) {
+// The work in flight, read for picking back up (IDEA-162): each record's state in words — uphill or
+// downhill, closing / growing / stalled, what's left inside the line — and its next step. Replaces
+// the bare *Finish* list, which named a card and said "finish it" with no sense of how close it was.
+// Narrowed by `--program` to the program and its cards. Never throws: no reading → the old list.
+export function readingFor(projectDir, { cards = null, program = null } = {}) {
+  if (!projectDir) return null;
+  let worktrees = [];
+  try { worktrees = ((openWork(projectDir) || {}).items || []).map((i) => i.name); } catch { /* none */ }
+  const r = resumeReading(projectDir, { worktrees });
+  if (!program) return r;
+  const ids = new Set((cards || []).map((c) => c.id));
+  const keep = (e) => ids.has(e.id) || e.id === String(program).toUpperCase() || e.program === String(program).toUpperCase();
+  return Object.fromEntries(Object.entries(r).map(([k, v]) => [k, v.filter(keep)]));
+}
+
+function renderBoardNext(projectName, { cards, hasIdeasDir }, { projectDir = null, program = null } = {}) {
   const lines = ['', `  ${projectName} · next`];
   if (!hasIdeasDir) { lines.push('  (no docs/ideas/ here — is this a BOSS project?)', ''); return lines.join('\n'); }
   const { finish, start, unblock, pressure, pick } = computeNext(cards);
-  if (!finish.length && !start.length && !unblock.length && !pressure.length && !pick.length) {
+  const reading = readingFor(projectDir, { cards, program });
+  const blockedIds = new Set(unblock.map((u) => u.id));
+  const pickup = reading ? reading.pickup.filter((e) => !blockedIds.has(e.id)) : [];
+  const later = reading ? reading.stale.length + reading.backlogs.length + reading.cold.length : 0;
+  if (!finish.length && !pickup.length && !later && !start.length && !unblock.length && !pressure.length && !pick.length) {
     lines.push('  ▸ nothing in flight — `/idea` to capture or `/canvas` to pressure-test.', '');
     return lines.join('\n');
   }
@@ -1319,11 +1340,26 @@ function renderBoardNext(projectName, { cards, hasIdeasDir }) {
     }
     lines.push('');
   };
-  block('Finish — in build', finish, true);
+  const prioOf = new Map(cards.map((c) => [c.id, c.priority]));
+  const title = (t) => (t.length > 40 ? clip(t, 40) : t);
+  if (pickup.length) {
+    lines.push(`  Pick up — in flight (${pickup.length})`);
+    for (const e of pickup) {
+      lines.push(`  ${prioOf.get(e.id) === 'high' ? '⬆ ' : '  '}${e.id.padEnd(10)} ${stateWords(e)}`);
+      lines.push(`  ${' '.repeat(13)}${dim(`${title(e.title)}${e.next ? ` → next: ${clip(e.next, 90)}` : ''}`)}`);
+    }
+    lines.push('');
+  } else block('Finish — in build', finish, true);
   block('Start — pressure-tested, ready to build', start, false);
   block('Pressure-test — only captured so far', pressure, false);
   block('Pick — which does the venture need first', pick, false);
   block('Blocked — clear to move', unblock, false);
+  if (reading) {
+    const row = (e, words) => lines.push(`    ${e.id.padEnd(10)} ${title(e.title).padEnd(40)} ${dim(words)}`);
+    if (reading.stale.length) { lines.push(`  Status looks stale (${reading.stale.length})`); for (const e of reading.stale) row(e, `every task ticked, still \`${e.status}\``); lines.push(''); }
+    if (reading.backlogs.length) { lines.push(`  Backlogs, not builds (${reading.backlogs.length})`); for (const e of reading.backlogs) row(e, `${e.backlog} saved, none picked`); lines.push(''); }
+    if (reading.cold.length) { lines.push(`  Gone cold — no commit naming it in ${COLD_DAYS} days (${reading.cold.length})`); for (const e of reading.cold) row(e, `last worked ${e.lastWorked}`); lines.push(''); }
+  }
   return lines.join('\n');
 }
 
@@ -1536,7 +1572,7 @@ export function board(projectDir, projectName, opts = {}) {
   const narrowed = opts.program
     ? { ...data, cards: data.cards.filter((c) => c.program && c.program.toLowerCase() === opts.program.toLowerCase()) }
     : data;
-  if (opts.next) return console.log(renderBoardNext(projectName, narrowed));
+  if (opts.next) return console.log(renderBoardNext(projectName, narrowed, { projectDir, program: opts.program }));
   if (opts.blocked) return console.log(renderBoardBlocked(projectName, narrowed));
   if (opts.json) return console.log(JSON.stringify(boardJson(projectDir, projectName, { program: opts.program }), null, 2));
   console.log(renderBoardText(projectName, data, { all: opts.all, owners: opts.owners, mine: opts.mine, program: opts.program, detail: opts.detail, projectDir }));
