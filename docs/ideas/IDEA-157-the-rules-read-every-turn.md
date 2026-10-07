@@ -44,7 +44,7 @@ where the rule is acted on (the reentry hook, the FEAT template's *Found while b
 
 - [x] T1 · MVP block (6,044 → 2,756 bytes) — rules in a line or two, the inventory folded
 - [x] T2 · V1 (3,246 → 1,754) and Scale (3,439 → 2,185) blocks, same rule
-- [ ] T3 · Quickstart's CLAUDE.md + AGENTS.md — anything an overview, not a rule
+- [x] T3 · Quickstart CLAUDE.md 4,707 → 2,620 (the mode table and arc walkthrough folded into `boss status` / one line). New projects only — the base file is the founder's; sync refreshes only the later blocks. AGENTS.md (2.3 KB) is rules, left as is.
 - [ ] T4 · Before/after table; existing projects get the shorter block through `boss sync` (untouched
   blocks only — a block the founder edited is left alone and named)
 - [ ] T5 · BOSS's own every-turn files: CLAUDE.md (~11 KB) and the memory index (~9.7 KB)

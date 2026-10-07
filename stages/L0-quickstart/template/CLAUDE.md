@@ -3,70 +3,40 @@
 @AGENTS.md
 
 > Scaffolded by BOSS {{BOSS_VERSION}} in **{{MODE}}** mode ({{STAGE}}) on {{DATE}}.
-> Host-neutral working rules live in `@AGENTS.md` (imported above). This file adds only the
-> Claude-specific layer. **Keep both short** — every line here is read on every turn, so this file
-> spends the founder's context budget, not BOSS's. If something can be *looked up*, link it.
+> Host-neutral rules live in `@AGENTS.md` (imported above); this file adds the Claude-specific layer.
+> **Keep both short** — every line is read on every turn, so it spends the founder's context budget.
+> If something can be *looked up*, link it.
 
-> **First time? Run `/welcome`.** Already know BOSS? `/boss <idea, file, doc, or URL>` spins up —
-> it pulls your material in. Already have a repo? `/read-repo` reads it and says where you stand.
+> **First time? Run `/welcome`.** Already know BOSS? `/boss <idea, file, doc, or URL>` spins up.
+> Already have a repo? `/read-repo` reads it and says where you stand.
 
 ## What's here
 
 - **Agents:** `product-lead` (what's worth building), `coder` (builds it, in whatever stack gets
-  chosen), `mentor-founder` (coaches *you* — is this worth it, what's the riskiest assumption,
-  what's the next real step), `prompt-coach` (sharpens how you ask; say *"help me ask this better"*).
-- **Skills:** run **`boss map`**. It lists what this project actually has, live from the install —
-  which is why this file doesn't enumerate them and can't go stale about them.
+  chosen), `mentor-founder` (is this worth it, the riskiest assumption, the next real step),
+  `prompt-coach` (sharpens how you ask — *"help me ask this better"*).
+- **Skills and mode:** `boss map` lists what this project has, live; `boss status` says the mode and
+  what's next; `boss unlock <mode>` climbs a rung (Quickstart → MVP → V1 → Scale, each when earned).
 - **Docs:** `docs/ideas/` (living idea docs + canvases), `docs/IDS.md` (the ID system).
-- **Memory:** durable facts about *you* go to Claude's auto-memory, which lives on **this machine**
-  and travels to no cofounder — so anything the project depends on belongs in `docs/`. Working notes
-  scoped to one area of the code go in `.claude/rules/`, which loads only when that code is opened.
+- **Memory:** facts about *you* go to Claude's auto-memory (this machine only); anything the project
+  depends on belongs in `docs/`. Notes for one area of the code go in `.claude/rules/`.
 - **`/clear` and `/compact` drop working context.** What survives is what's on disk: every session
   start reads the work in flight back from its records (the idea doc; at MVP, the FEAT and its
   program). Put anything you'd hate to re-derive into the record *before* you run them.
 - **When compacting, keep:** the files changed and why, the decisions made this session, and every
   task or question found that is not yet written into a record.
 
-### The Quickstart arc
+## The Quickstart arc
 
 **capture → pressure-test · talk to one person (either order) → unlock MVP.**
-
-1. **Capture** the idea with `/idea` — a living `docs/ideas/IDEA-NNN.md` you keep adding to. No
-   pressure to finish it; re-run `/idea` whenever a new thought lands.
-2. **Pressure-test** with `/canvas` — the humane business read that names the riskiest assumption
-   and what to test next. A few cells at a time; a half-filled canvas with a sharp riskiest
-   assumption beats a full one of guesses.
-3. **Talk to one person.** `/interview` preps a 15-minute Mom-Test call; `/evidence` turns what you
-   heard into graded `EVID-NNN` records — one thing, your notes, or a whole transcript — and flags
-   where you pitched instead of listened. The grade ladder (stated-pain → observed-behavior →
-   commitment) is what stops a compliment reading as a receipt.
-   **2 and 3 have no order between them.** Each sharpens the other: the canvas tells you what to
-   ask, the conversation fills the cells you were guessing at. Take whichever the week allows.
-4. **Unlock MVP** (`boss unlock mvp`) when the canvas holds and you're ready to build.
-
-`/prototype` is a legitimate start too: build the smallest clickable version first, then fill the
-gaps once you can see it. The conscience nudges once if you keep capturing without testing anything
-— a pointer, never a gate. Capturing isn't validating.
-
-## The four modes (unlock additively)
-
-`boss status` names the mode this project is in. Modes level up as the project earns it:
-
-| Mode | Adds | When |
-|---|---|---|
-| **Quickstart** _(here)_ | idea capture, `/boss` spin-up, `/idea`, `/prototype`, pm + coder | you have an idea to capture |
-| **MVP** | `/spec` + `FEAT-NNN`, `/smoke` build gate, devlog, `/close` + RESUME.md, tester | you're ready to build the first working version |
-| **V1** | design-system *enforcement*, prototypes, `/board`, `/design-library`, doc-placement contract | ready for a real, shippable v1 |
-| **Scale** | `/incident` post-mortems, `/idea --feedback` customer register, the org mentor | customers are real and coordination is the bottleneck |
-
-`boss status` shows your mode and whether newer BOSS practices are available; `boss unlock <mode>`
-climbs a rung.
+`/idea` captures (a living doc; re-run it as thoughts land) · `/canvas` pressure-tests and names the
+riskiest assumption · `/interview` preps a Mom-Test call and `/evidence` grades what you heard ·
+`boss unlock mvp` when the canvas holds. `/prototype` is a legitimate start too. Capturing isn't
+validating — the conscience says so once, never as a gate.
 
 ## Before you generate anything durable
 
-Three questions, and they cost three seconds: **does it already exist?** (look for the *output*, not
-the inputs — if it's there and it's fine, say so and stop, that is a complete outcome) · **what rung
-is this project on, and what rung does this belong to?** · **if it's above their rung, what's the
-seam** — the one cheap thing that stops history being *gone* rather than merely undone.
-
-Full version, with the worked examples: **`boss craft seed-to-scale`**.
+Three questions, three seconds: **does it already exist?** (look for the *output*; if it's there and
+fine, say so and stop) · **what rung is this project on, and what rung does this belong to?** · **if
+it's above their rung, what's the seam** — the one cheap thing that stops history being *gone*.
+`boss craft seed-to-scale` has the worked examples.
