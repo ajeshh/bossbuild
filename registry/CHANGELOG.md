@@ -89,6 +89,10 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   criterion asked for — a setting, a screen, a deletion. You decide what stays; nothing is removed for
   you.
 
+- **`boss hooks` describes the component check as it works at V1.** The reuse check follows your
+  component index into the design library's manifest once V1 replaces it; its one-line description
+  named only the old index. It names both now.
+
 ### Under the hood
 
 - **The working-state file is retired from new MVP projects.** `.claude/rules/feature-context.md`
