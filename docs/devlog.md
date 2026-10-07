@@ -23,6 +23,28 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > mechanism working, not a bug.
 
 
+## 2026-10-07 — IDEA-160: cli.js back to a dispatcher (shipped, not pushed)
+
+- **Landed:** Ajesh asked whether BOSS's own code needs a rearchitecture as it grows. Measured first:
+  no — the seed decisions hold, and the known bends (the board↔playbook↔design cycle, the four missing
+  helpers) were each closed in IDEA-136 without a bug. One rule had stopped holding: ENGINEERING.md's
+  *"cli.js shrinks as it's touched"* — it grew 1,209 → 2,242 lines in seven weeks. Nine commits, each
+  landed alone and each byte-identical to main on a `/tmp` run of the commands it moved: S0 the shared
+  helpers down (new `fail.js` owns the `--json` switch), then `sync`, `remove` (its `--global` half to
+  `update.js`, to keep imports pointing down), `status` → `orientation.js`, `new`/`adopt`/`unlock` →
+  new `install.js` (Q2/Q3 answered by Ajesh), `conscience`. `cli.js` 2,242 → 1,177 (−47%).
+- **Found on the way:** `boss hooks` described the component-reuse check by the old index only (fixed,
+  with a bullet) — `check-refs` had missed it because a stray `manifest.json` in a `cmdNew` comment
+  counted as following the succession; three stale `src/cli.js` pointers; `boss id` offering a number a
+  peer worktree held (IDEA-161, to reproduce first).
+- **Surprises:** my handler sizes were wrong — the awk pass measured function-to-function, so
+  `cmdConscience` read ~167 lines and was 21. A pre-commit refusal went unseen because `git commit` was
+  piped into `tail`; `done` then unlinked the worktree with the work still staged (recovered, nothing
+  lost). A `[[ID]]` cite of a record created in the same commit always fails pre-commit: the staged
+  tree's `ls-files` doesn't list it yet.
+- **Next:** IDEA-161 (reproduce in a test, or close it). The small handlers left follow ENGINEERING.md
+  §3 as they're touched — no plan.
+
 ## 2026-10-06/07 — PROG-005 the research engine: /scout, /inbox, boss sources, team share (Unreleased, pushed)
 
 - **Landed:** Ajesh's ask — improve how BOSS researches, rank expertise including emerging voices, and

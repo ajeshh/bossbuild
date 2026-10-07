@@ -27,6 +27,9 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-160 (2026-10-07, shipped, not pushed) — cli.js back to a dispatcher.** No rearchitecture; `cli.js`
+  2,242 → 1,177 by moving handlers into the modules they call (new `fail.js`, `install.js`). Devlog has the
+  entry. Left: IDEA-161 — `boss id` missed a peer worktree's record; reproduce in a test before any fix.
 - **PROG-005 the research engine (2026-10-06/07, Unreleased, pushed).** `boss craft research` is the
   method; `/scout` (Quickstart, six domains + any a project adds) replaced five skills; `/inbox` +
   `/scout sort` + `boss inbox`; `boss sources` (standing from claim rows); `boss team share`; research
