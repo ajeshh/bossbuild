@@ -225,7 +225,7 @@ export function planIgnoreRules(stageIds, projectDir) {
   const { out, added } = freshIgnoreGroups(stageIds, existing, readIgnoreOffered(projectDir) || new Set());
   const tracked = [];
   for (const rule of added) {
-    if (!rule.endsWith('/') || /[*?[!]/.test(rule)) continue;
+    if (/[*?[!]/.test(rule) || !/^[\w.-]+(\/[\w.-]+)*\/?$/.test(rule)) continue; // a plain path: a folder, with or without its slash
     try {
       const files = execFileSync('git', ['ls-files', '--', rule], {
         cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],

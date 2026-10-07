@@ -43,7 +43,9 @@ secrets/
 # notes are other people's words, quoted; what you import is raw material you haven't sorted yet;
 # notes on rivals are intelligence. A repo can go public in one click, and its history goes with it.
 # Research about no one — API notes, build-vs-buy, public market figures — commits, so your agents
-# and a teammate can use it. To share these folders with a teammate, share them some other way.
-docs/evidence/
-docs/source/
-docs/competition/
+# and a teammate can use it. To share these with a teammate: `boss team share <shared folder>`.
+# No trailing slash, on purpose — `boss team share` turns each into a link, and `docs/evidence/`
+# would match only a real folder, so the link would be committed.
+docs/evidence
+docs/source
+docs/competition

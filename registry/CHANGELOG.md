@@ -94,6 +94,15 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   lists each, and if any of those folders are already committed it says so plainly — ignoring stops new
   files, it does not take old ones out of your history — and gives the one command that stops tracking
   them. Delete a line to commit a folder after all; sync won't put it back.
+- **Share interview notes with a cofounder without putting them in git.** `boss team share <folder>`
+  points your interview notes, your inbox and your notes on rivals at a folder your team already syncs
+  (a shared drive folder for this project); each teammate runs it once with their own path, and
+  everyone's agents read the same files. Nothing is deleted on the way in — your own copies go to
+  `.boss/backups/`, and a file already in the shared folder is never overwritten — and `--off` makes them
+  local again. Delete a file in the shared folder and it is gone for everyone, which is the point: the
+  people in those notes can actually be removed. Bare `boss team share` says what's shared, and says so
+  when the drive isn't connected.
+
 - **`/inbox` — bring anything in, and see what hasn't been dealt with.** A deck, a report, a
   regulation, a contract, a page, three paragraphs you paste: `/inbox` keeps a dated copy on your
   machine (never committed) with a note of where the original lives, then sorts it in the same turn —

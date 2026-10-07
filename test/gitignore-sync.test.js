@@ -28,7 +28,7 @@ function boss(args, cwd, home) {
 }
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
 
-const RESEARCH = ['docs/evidence/', 'docs/source/', 'docs/competition/'];
+const RESEARCH = ['docs/evidence', 'docs/source', 'docs/competition'];
 const rules = (dir) => readFileSync(join(dir, '.gitignore'), 'utf8').split('\n').map((l) => l.trim());
 const offered = join('.boss', 'ignore-offered.json');
 
@@ -58,7 +58,7 @@ test('sync brings the rules to a project scaffolded before them, and says which'
   const { home, dir } = olderProject();
   const preview = boss(['sync'], dir, home);
   for (const r of RESEARCH) assert.match(preview, new RegExp(`\\+ ignore\\s+${r}`));
-  assert.ok(!rules(dir).includes('docs/evidence/'), 'a preview writes nothing');
+  assert.ok(!rules(dir).includes('docs/evidence'), 'a preview writes nothing');
   boss(['sync', '--apply'], dir, home);
   for (const r of RESEARCH) assert.ok(rules(dir).includes(r), `${r} added on --apply`);
   assert.ok(existsSync(join(dir, offered)));
@@ -67,10 +67,10 @@ test('sync brings the rules to a project scaffolded before them, and says which'
 test('a line the founder deletes stays deleted', () => {
   const { home, dir } = fresh();
   const p = join(dir, '.gitignore');
-  writeFileSync(p, readFileSync(p, 'utf8').split('\n').filter((l) => l.trim() !== 'docs/competition/').join('\n'));
+  writeFileSync(p, readFileSync(p, 'utf8').split('\n').filter((l) => l.trim() !== 'docs/competition').join('\n'));
   const out = boss(['sync', '--apply'], dir, home);
-  assert.doesNotMatch(out, /\+ ignore\s+docs\/competition\//);
-  assert.ok(!rules(dir).includes('docs/competition/'), 'BOSS offered it once; removing it was a decision');
+  assert.doesNotMatch(out, /\+ ignore\s+docs\/competition\b/);
+  assert.ok(!rules(dir).includes('docs/competition'), 'BOSS offered it once; removing it was a decision');
 });
 
 test('already-committed interviews are named, and sync does not pretend to remove them', () => {
@@ -81,9 +81,9 @@ test('already-committed interviews are named, and sync does not pretend to remov
   git(dir, 'add', 'docs/evidence/EVID-001-a-call.md');
   git(dir, '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'evidence');
   const out = boss(['sync'], dir, home);
-  assert.match(out, /docs\/evidence\/.*already committed/);
+  assert.match(out, /docs\/evidence.*already committed/);
   assert.match(out, /does not take these out of your repository or its history/);
-  assert.match(out, /git rm -r --cached docs\/evidence\//);
+  assert.match(out, /git rm -r --cached docs\/evidence/);
   boss(['sync', '--apply'], dir, home);
   assert.ok(git(dir, 'ls-files', 'docs/evidence/').includes('EVID-001'), 'still tracked — the founder decides, not sync');
 });

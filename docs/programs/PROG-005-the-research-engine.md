@@ -255,7 +255,7 @@ starter pack?"* The mechanism (proposed, part of T1):
     "credited by role, never by name without their consent", on a yes — de-identified words with the
     founder's yes sit on the commit side of *hide by sensitivity*. `/persona` now says the same rule:
     a role, never a name, nothing that identifies; the EVID it cites stays local.
-- [ ] **T4 · Team sharing, compared** (written 2026-10-06 — **awaiting Ajesh's choice**). What has to
+- [x] **T4 · Team sharing** — **built 2026-10-07 as option A** (Ajesh: *"lets wrap up T1c and then t4"*, taken as the recommendation). `boss team share [<path> | --off]` (`src/share.js`, `test/share.test.js` 6/6): each folder becomes a link to `<path>/<name>`; copied in, never overwritten, the local folder moved to `.boss/backups/`; the path per person in `~/.boss/projects/<key>/share.json`; `--off` restores local copies; a missing drive is said. **The ignore rules lost their trailing slash** — verified: `docs/evidence/` leaves a link untracked-and-committable, `docs/evidence` ignores it. **A bug the test caught:** the in-repo guard compared raw paths and missed `/var` vs `/private/var` on macOS, so it linked the folders *into* the repo; it now compares real paths. The comparison as written: What has to
   travel between teammates is exactly what T3 kept out of git: interview notes (`docs/evidence/`),
   the inbox (`docs/source/`), rival notes (`docs/competition/`). The bar each option is held to:
   IDEA-037's refusal (*"no server, no accounts, no multiplayer state daemon — build the view, refuse

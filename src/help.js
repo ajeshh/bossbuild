@@ -96,9 +96,9 @@ export const HELP = {
     see: ['status', 'board'],
   },
   team: {
-    usage: 'boss team [add @user ["Name"] | remove @user]',
-    what: 'Who\'s on the venture. Solo by default and dormant — adding a cofounder lights up the team layer (shared decisions, the partnership mentor). Keyed on GitHub identity; never fabricated.',
-    examples: ['boss team', 'boss team add @octocat "Mona"'],
+    usage: 'boss team [add @user ["Name"] | remove @user | share [<path> | --off]]',
+    what: 'Who\'s on the venture. Solo by default and dormant — adding a cofounder lights up the team layer (shared decisions, the partnership mentor). Keyed on GitHub identity; never fabricated. `share` shares the folders that never go to git (interview notes, the inbox, rival notes) through a folder your team already syncs — each teammate runs it once with their own path; nothing is deleted, and --off makes them local again.',
+    examples: ['boss team', 'boss team add @octocat "Mona"', 'boss team share ~/Drive/acme-research', 'boss team share'],
     see: ['board', 'list'],
   },
   credit: {

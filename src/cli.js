@@ -11,6 +11,7 @@ import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, ap
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { readInbox, INBOX_DIR } from './inbox.js';
+import { share, unshare, shareStatus } from './share.js';
 import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
 import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
@@ -1127,13 +1128,60 @@ function cmdTeam(args) {
       if (!handle) return fail('usage: boss team remove <@github-username>');
       const r = removeCollaborator(process.cwd(), handle);
       console.log(r.removed ? `\n  ${ok('✦')} Removed from the venture.` : '\n  Not on the roster.');
+    } else if (sub === 'share') {
+      return cmdTeamShare(rest);
     } else if (sub && sub !== 'list') {
-      return fail(`unknown subcommand 'team ${sub}'. options: (none) | add | remove`);
+      return fail(`unknown subcommand 'team ${sub}'. options: (none) | add | remove | share`);
     }
     console.log(renderTeam(process.cwd()));
   } catch (e) {
     return fail(e.message);
   }
+}
+
+// `boss team share` (PROG-005 T4): the three folders that never go to git — interview notes, the
+// inbox, rival notes — shared with a team through a folder it already syncs. src/share.js says why
+// a drive and not a repo or a server, and how nothing gets deleted on the way.
+function cmdTeamShare(rest) {
+  const f = parseArgs(rest);
+  const where = f._[0];
+  const dir = process.cwd();
+  if (f.off) {
+    const r = unshare(dir);
+    console.log(`\n  ${ok('✦')} Sharing off. Each linked folder is a local copy again of what the shared folder holds:`);
+    for (const x of r) console.log(`    ${x.state === 'copied-back' ? ok('✓') : dim('·')} docs/${x.name}/${x.state === 'copied-back' ? `  ${dim(`← ${x.from}`)}` : `  ${dim('(was already local)')}`}`);
+    console.log(`  ${dim('The shared folder is untouched; your teammates still have it.')}\n`);
+    return;
+  }
+  if (!where) {
+    const st = shareStatus(dir);
+    console.log(`\n  ${bold('Shared with the team')} ${dim('— the folders that never go to git')}`);
+    for (const x of st.folders) {
+      const mark = x.state === 'linked' ? ok('✓') : x.state === 'broken' ? warn('!') : dim('·');
+      const note = x.state === 'linked' ? dim(`→ ${x.target}`)
+        : x.state === 'broken' ? `${warn('the shared folder is not there')} ${dim(`(${x.target}) — is the drive connected?`)}`
+          : dim(x.state === 'local' ? 'on this machine only' : 'not created yet');
+      console.log(`    ${mark} docs/${x.name}/  ${note}`);
+    }
+    if (!st.setting) {
+      console.log(`\n  ${dim('Not shared. To share with a cofounder, point at a folder your team already syncs:')}`);
+      console.log(`    ${bold('boss team share <path to the shared folder for this project>')}`);
+      console.log(`  ${dim('Each teammate runs it once, with their own path to the same folder.')}`);
+    }
+    console.log('');
+    return;
+  }
+  const { root, results } = share(dir, where);
+  console.log(`\n  ${ok('✦')} Shared through ${bold(root)}`);
+  for (const r of results) {
+    const extra = r.state === 'already' ? dim('already linked')
+      : `${dim('linked')}${r.copied ? dim(` · ${r.copied} file(s) copied in`) : ''}${r.conflicts?.length ? ` · ${warn(`${r.conflicts.length} kept apart`)}` : ''}`;
+    console.log(`    ${ok('✓')} docs/${r.name}/  ${extra}`);
+    for (const c of r.conflicts || []) console.log(`        ${warn('≠')} ${c} ${dim('— the shared copy differs; yours is in')} ${r.backedUp}`);
+  }
+  console.log(`\n  ${dim('Your own copies are in .boss/backups/ — nothing was deleted. These folders still never go to git;')}`);
+  console.log(`  ${dim('the drive is what shares them, and deleting a file there deletes it for everyone.')}`);
+  console.log(`  ${dim('Each teammate runs')} ${bold('boss team share <their path>')} ${dim('once.')} ${bold('boss team share --off')} ${dim('undoes it.')}\n`);
 }
 
 // `boss retire` (IDEA-044 — /sunset movement 3). Flips the current project to `retired`
