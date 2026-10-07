@@ -107,6 +107,10 @@ for (const a of onDisk) {
   }
 }
 for (const a of ledger.artifacts) {
+  // A crossed artifact that `boss sync` installed back into the workspace has finished crossing: it
+  // is filtered out of `onDisk` above as BOSS-installed, which is not the same as gone (2026-10-06 —
+  // `boss-sync` read as stale for every session after one sync, with nothing wrong).
+  if (a.verdict === 'crossed' && bossInstalled(a)) continue;
   if (!onDisk.some((d) => d.name === a.name)) {
     findings.stale.push([a.name, 'in the ledger, gone from the workspace — delete the row or restore the file']);
   }
