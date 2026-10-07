@@ -225,9 +225,17 @@ starter pack?"* The mechanism (proposed, part of T1):
     owners, the two watchlists' headers and diagrams, `/vet`'s skeleton (G3–G5) updated.
     - [ ] **Remove the four redirects** once this has landed and BOSS has synced `/scout` into its own
       `.claude/skills/` (the boundary rows go with them).
-    - [ ] **Tracking `/vet`** — `/.claude/` is ignored as a whole directory, so tracking one skill means
-      restructuring the pattern, and `scripts/worktree.js` derives its links from `.gitignore`. Its own
-      small change, tested against worktree creation; not folded in here.
+    - [x] **Tracking `/vet`** (2026-10-07) — `/.claude/` → `/.claude/*` + `!/.claude/skills/` +
+      `/.claude/skills/*` + `!/.claude/skills/vet/`; in a symlink-free repo exactly one file becomes
+      trackable. The feared hazard — an open worktree whose `.claude/skills` is a link failing to rebase
+      ("beyond a symbolic link") — **was tested and is not real**: through the link git finds main's own,
+      byte-identical file and has nothing to write. Not in `package.json` `files:`, so nothing ships.
+      Scanned for outside names and links before tracking: none.
+      **What tracking it broke, caught by the pre-commit hook and fixed:** `check-boundary` read any
+      `/.claude/` as the workspace, so a clone or CI tree holding only the tracked `vet` reported 25
+      rows "gone"; it now asks git whether anything under `/.claude/` is ignored. And worktrees now link
+      each skill individually, which its directory listing didn't follow; it does now. Probed:
+      `linkRecords` on a fresh worktree links 49 paths, keeps `vet` real, never links `worktrees/`.
   - [x] **T1c · the conscience line** (2026-10-06) — moment `unsourced` (`unsourced-loop`, L0): a
     **People** line on a canvas holding a count with no source marker on the line (link, path,
     `EVID`, date or year, *source*, `unverified`). Deliberately narrow — prices and goals are

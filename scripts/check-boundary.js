@@ -25,9 +25,10 @@
 //
 // Zero-dep by rule. Exit 1 on any finding so CI and `npm test` can gate on it.
 
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import { bold, dim, warn } from '../src/ui.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -37,7 +38,20 @@ const WORKSPACE = join(ROOT, '.claude');
 
 // The workspace is gitignored, so it is ABSENT in CI and in anyone else's clone. That is not a
 // failure — there is simply nothing to rule on. Saying so beats 26 phantom findings.
-if (!existsSync(WORKSPACE)) {
+//
+// Since 2026-10-07 one skill under /.claude/ is TRACKED (`skills/vet/`, PROG-005), so a clone or the
+// pre-commit hook's throwaway tree has a /.claude/ holding only that — and reading it as the
+// workspace turned every other ledger row into "gone from the workspace" (25 phantom findings, the
+// hook's first run). The workspace is what git IGNORES under /.claude/; tracked files are not it.
+function hasWorkspace() {
+  if (!existsSync(WORKSPACE)) return false;
+  try {
+    const out = execFileSync('git', ['ls-files', '--others', '--ignored', '--exclude-standard', '--directory', '--', '.claude'],
+      { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return out.trim().length > 0;
+  } catch { return true; } // not a git checkout: trust the folder, as before
+}
+if (!hasWorkspace()) {
   console.log(`\n  ${dim('Boundary: no /.claude/ workspace here — nothing to rule on.')}\n`);
   process.exit(0);
 }
@@ -45,8 +59,11 @@ if (!existsSync(WORKSPACE)) {
 const ledger = JSON.parse(readFileSync(join(ROOT, 'registry', 'boundary.json'), 'utf8'));
 const byName = new Map(ledger.artifacts.map((a) => [a.name, a]));
 
+// A worktree links each skill in individually once /.claude/skills/ holds a tracked one — follow links,
+// or every linked skill reads as gone.
 const dirsIn = (p) => (existsSync(p)
-  ? readdirSync(p, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name) : []);
+  ? readdirSync(p, { withFileTypes: true }).filter((e) => e.isDirectory()
+    || (e.isSymbolicLink() && (() => { try { return statSync(join(p, e.name)).isDirectory(); } catch { return false; } })())).map((e) => e.name) : []);
 const mdIn = (p) => (existsSync(p)
   ? readdirSync(p).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)) : []);
 
