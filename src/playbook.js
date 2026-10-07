@@ -1001,7 +1001,7 @@ function pitchChapters(data) {
   // 6 · Competition — the table as it is; key rivals with where they break; the watch list.
   let compInner;
   if (!competition) {
-    compInner = `<div class="blocks">${hole('competition-none', 'Who else fixes it', 'Who else sells a fix — including the spreadsheet, the agency, the intern and doing nothing — and for each real one, why they might win?', '/comp-eval', 'docs/competition — none')}</div>`;
+    compInner = `<div class="blocks">${hole('competition-none', 'Who else fixes it', 'Who else sells a fix — including the spreadsheet, the agency, the intern and doing nothing — and for each real one, why they might win?', '/scout market', 'docs/competition — none')}</div>`;
   } else {
     const rows = competition.rows;
     const table = `<div class="tscroll"><table class="rivals"><thead><tr>${competition.columns.map((c) => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map((r) => `<tr>${r.cells.map((c, j) => `<td>${inline(c)}${j === r.cells.length - 1 && r.stale ? ` <span class="chip stale">stale · ${r.ageDays} d</span>` : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
@@ -1640,9 +1640,9 @@ function playbookJs(brand) {
 // doesn't have yet is said so; when the hole is a record a document can fill (rivals, brand) it
 // points at /import instead — the record is ungated, only the deeper verb is. A FEAT or a mentor's
 // dossier is not something you drop in, so those just wait for the mode.
-const VERB_ORDER = ['/boss', '/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/comp-eval', '/landing', '/trust', '/consult'];
+const VERB_ORDER = ['/boss', '/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/scout market', '/landing', '/trust', '/consult'];
 // A gated verb with a door that exists: the record can still be filled the plain way.
-const ALT = { 'comp-eval': ['or drop what you know', 'import'], canvas: ['or drop what you know', 'import'], landing: ['or drop what you know', 'import'], log: ['or add it to the idea', 'idea'] };
+const ALT = { scout: ['or drop what you know', 'import'], canvas: ['or drop what you know', 'import'], landing: ['or drop what you know', 'import'], log: ['or add it to the idea', 'idea'] };
 // Is the verb's skill installed here? No skills folder at all (a bare adopt, a test tree) → nothing
 // can be said about gating, so yes. The readers that write a sentence rather than a list (recap,
 // the board's footer, the re-entry line) use this to phrase the wait themselves (IDEA-118).

@@ -348,18 +348,18 @@
     "board": "a reader over the project's own files",
     "design-review": "a check over an existing design"
   },
-  "comp-eval": {
+  "scout": {
     "stepZeroMarker": "## Step 0 — does it already exist, and is this the right rung?",
-    "rung": "MVP",
+    "rung": "Quickstart",
     "produces": {
-      "what": "the competitive field — a living set of rivals with sources and checked dates",
+      "what": "research with its sources — the competitive field, market figures, technical and product notes",
       "files": [
         "docs/competition/README.md",
-        "docs/competition/"
+        "docs/competition/",
+        "docs/research/"
       ]
     },
-    "seam": "When you notice a rival, write the name, what you saw, and TODAY'S DATE — one line, anywhere in docs/. That's it.",
-    "seamWhy": "Durable, and unusually so: the value is the DRIFT — what a rival charged in March versus what they charge now. The survey can always be run later; the observation cannot be recovered, because a pricing page carries no history and the Wayback Machine is not a plan. So the seam is the dated one-liner, and nothing more — a Quickstart founder who starts maintaining a matrix has taken on the practice two rungs early, which is the failure this boundary exists to prevent.",
-    "seamNot": "A competition folder, a comparison table, a feature matrix, pricing research, a file per rival, or a survey of the field."
+    "seam": null,
+    "seamWhy": "There is no rung below this one. A quick pass — one question, the primary source opened, one dated row — is the seed; the deep pass is the same verb with --deep."
   }
 }

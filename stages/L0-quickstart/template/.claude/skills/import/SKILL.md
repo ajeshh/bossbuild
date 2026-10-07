@@ -97,7 +97,7 @@ Then, for each **yes**, write the record **in the owning verb's shape** — neve
 - a persona line → `/persona`'s six fields (`who`, `context`, …); enrich the existing file if one
   exists, never a second persona for the same person.
 - a rival → a row in `docs/competition/README.md` and its `docs/competition/<slug>.md`, in
-  `/comp-eval`'s columns, with today as the `checked` date.
+  `/scout market`'s columns, with today as the `checked` date.
 - a tagline, a colour, a *what it is not* → the matching line in `docs/BRAND.md`.
 - a count, a price, a market figure → the canvas cell, written **with its source and date** in the
   cell (*"6,400 registered agencies — <the report>, 2026"*). If there is no canvas yet, it waits for

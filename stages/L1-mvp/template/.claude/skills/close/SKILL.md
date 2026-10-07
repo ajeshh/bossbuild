@@ -182,7 +182,7 @@ condition holds; reading them up front spends the context they are there to save
    > 3. *"Priya said she'd pay £40"* → a real person's words, worth recording as evidence?
 
    Each yes is written **in the owning verb's shape** — a canvas cell with its date, a rival row in
-   `/comp-eval`'s columns, an `EVID` through `/evidence`'s ladder, a persona line in `/persona`'s
+   `/scout market`'s columns, an `EVID` through `/evidence`'s ladder, a persona line in `/persona`'s
    six fields — and a record that already exists is *updated against what it holds*, never quietly
    overwritten. What someone else said is evidence, never a cell as fact. What has no record yet
    (a bio, prior capital) is named as *no record holds this yet* and left. **Nothing is written

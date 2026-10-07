@@ -278,7 +278,7 @@ export const METHODS = [
   ['metric', 'Product events · drop-off', 'observed', '/health — a few events, not ten'],
   ['pretotype', 'A pretotype (fake door · concierge)', 'observed', '/pretotype'],
   ['commitment-test', 'A commitment asked for', 'observed', '/money · the ask at the end of a call'],
-  ['desk', 'Desk · competitive', 'inferred', '/comp-eval'],
+  ['desk', 'Desk · competitive', 'inferred', '/scout market'],
   ['heuristic', 'Heuristic review', 'inferred', '/design-review'],
 ];
 export function readResearch(projectDir) {

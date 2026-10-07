@@ -228,6 +228,14 @@
       "replacedBy": "design-review",
       "why": "`/design-review` checked a design before the code and `/ux-check` walked it after, so you needed two commands for one review at two moments. `/design-review` now does both, and picks by what you point it at: a spec or an unbuilt feature gets the review of the plan; a route, a component or a shipped feature gets the walk of what shipped, with observed and inferred findings marked as before.",
       "migrate": "Run `/design-review after` (or point `/design-review` at the shipped screen) where you ran `/ux-check`. Its findings still go to `docs/design/ux-check-*.md`, so your earlier reviews read as before."
+    },
+    {
+      "since": "0.331.0",
+      "kind": "skill",
+      "removed": "comp-eval",
+      "replacedBy": "scout",
+      "why": "Researching rivals was one command, and every other kind of outside research had none, so each was done a different way or not at all. `/scout` is one way to find out what's true outside your own head: rivals and the market, customers, product, technical, legal and people, on one method, with every claim saying who said it, whether it was read, and when. Your rival research is `/scout market`, the same in substance, and it now arrives at Quickstart instead of MVP.",
+      "migrate": "Run `/scout market rivals <space>` where you ran `/comp-eval <space>`, and `/scout market add <name>` or `/scout market recheck` as before. Your `docs/competition/` is read as it is; nothing moves. It now stays out of git, because notes on rivals are intelligence; if it was already committed, `boss sync` says so and gives the command that stops tracking it."
     }
   ]
 }

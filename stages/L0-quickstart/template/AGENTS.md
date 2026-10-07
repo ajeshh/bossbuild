@@ -19,7 +19,7 @@
 - **IDs:** `IDEA-NNN` (raw ideas), `DEC-NNN` (load-bearing or one-way-door decisions). See `docs/IDS.md`; more types unlock with later modes.
 - **Decisions:** `/decide` writes the record — Context / Decision / Why / Consequences, who decided, how reversible. Supersede, don't edit.
 - **Frontmatter:** every new doc carries `id`, `type`, `owner`, `status`.
-- **Backup & share:** `docs/` commits with the repo, so **pushing backs up your thinking** and a cofounder who clones is in the loop. Only secrets and the conscience's private read stay local. `boss team add @handle "Name"` when someone joins — solo is the default.
+- **Backup & share:** `docs/` commits with the repo, so **pushing backs up your thinking** and a cofounder who clones is in the loop. Only secrets, the conscience's private read, and research about people — interview notes, what you import, notes on rivals — stay local. `boss team add @handle "Name"` when someone joins — solo is the default.
 - **Git:** small commits, present-tense messages, never force-push a shared branch without asking.
 
 ## Project overview

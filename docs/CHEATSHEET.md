@@ -41,6 +41,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/welcome` — First time using BOSS? Start here
 - `/boss` — The door, any day
 - `/import` — Bring existing material in — a file, a folder, a URL, or text you paste
+- `/scout` — Find out what's true outside your own head, or sort what you were handed into the right place
 - `/idea` — Capture an idea — and keep adding to it
 - `/prototype` — Get the idea onto the screen, fast (not /pretotype, which tests demand)
 - `/canvas` — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them
@@ -87,7 +88,6 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 - `/health` — Is the shipped thing working, and if not, where is it breaking? First run sets up the reading - the analytics seam, ONE activation metric, ONE retention curve, at most ten events (plus task-completion and edit rate for an AI product)
 - `/money` — The money verb, from the first dollar to operating it
 - `/design-review` — Design review for your app, before or after the code
-- `/comp-eval` — Find out who else is solving this, and keep knowing
 
 **Agents:** tester, planner, mentor-architect, mentor-customers, mentor-cofounder, mentor-capital, designer  
 **Loops:** spec-loop, design-tokens-loop, design-pattern-loop, deception-loop, cost-budget-loop, ai-failure-state-loop, verification-loop, extraction-loop, cost-review-loop, drift-loop, coordination-loop, focus-loop, margin-trap-loop, canvas-drift-loop, field-stale-loop  

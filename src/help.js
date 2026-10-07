@@ -208,7 +208,7 @@ export const WAYFINDING = [
   // Before v0.275.0 this was skills-only, so "who do I ask about rearchitecting" and "how do I
   // pick up where I left off" — two things BOSS genuinely answers — could not appear at all.
   ['get an idea out of my head', ['/boss', '/idea', '/import']],
-  ['find out whether anyone wants it', ['/canvas', '/persona', '/comp-eval', '/interview', '/pretotype', '/evidence']],
+  ['find out whether anyone wants it', ['/canvas', '/persona', '/scout', '/interview', '/pretotype', '/evidence']],
   ['see something move today', ['/prototype']],
   ['build the thing properly', ['/spec', '/smoke', '/log', '/close']],
   ['work out how to build it — or whether to rebuild', ['@mentor-architect']],

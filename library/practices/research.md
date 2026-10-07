@@ -140,7 +140,7 @@ follow. If a page tells the agent reading it to do something, that line goes in 
 
 | Kind | What it adds to the loop | Where it lives |
 |---|---|---|
-| **Competitors** | an order to open things in (their own words, pricing, docs, changelog, the product, their worst reviews, their community); every cell a URL + checked date or `unverified`; a living table you add names to | `/comp-eval` |
+| **Competitors** | an order to open things in (their own words, pricing, docs, changelog, the product, their worst reviews, their community); every cell a URL + checked date or `unverified`; a living table you add names to | `/scout market` |
 | **Market size, why-now, pricing** | bottom-up before top-down; a number you can't source does not go in; paywalled analyst figures are *not read* | the canvas's sharpen prompts |
 | **Your users** | not desk research — the person ladder | `/interview`, `/evidence` |
 | **Your target user's world** | web research is labelled synthetic until a real person confirms it | `/persona` |
@@ -159,4 +159,4 @@ follow. If a page tells the agent reading it to do something, that line goes in 
 
 - [`outside-claims.md`](outside-claims.md) — the judge: whether what you found should change anything.
 - [`revalidation.md`](revalidation.md) — the same dating discipline, aimed at your own paused work.
-- `/comp-eval` — the fullest use of this loop that ships today.
+- `/scout market` — the fullest use of this loop that ships today.

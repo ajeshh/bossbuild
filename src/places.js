@@ -26,7 +26,7 @@ export const WRITES = {
   'docs/personas': { verbs: ['/persona'], line: 'one persona per file: who, context, jobs, pains, values, what you don\'t know yet — and a ledger, synthetic vs real, that moves as evidence lands' },
   'docs/evidence': { verbs: ['/evidence', '/interview'], line: 'EVID-NNN — one signal per file, dated, graded stated-pain → observed-behavior → commitment, tied to the assumption it bears on' },
   'docs/team': { verbs: ['boss team add'], line: 'one person per file — the specific thing seen, built, sold or lived; what they bring and don\'t; a role you need and don\'t have, written plainly' },
-  'docs/competition': { verbs: ['/comp-eval'], line: 'the field as one table, one file per rival with where it breaks and how they do it, every row with a checked date' },
+  'docs/competition': { verbs: ['/scout market'], line: 'the field as one table, one file per rival with where it breaks and how they do it, every row with a checked date' },
   'docs/source': { verbs: ['/import'], line: 'your own material — a deck, a report, a saved page — dated in the name; /import reads it and offers the records it could fill' },
   'docs/dossier': { verbs: ['/consult'], line: 'the mentors\' positions, dated — the capital mentor\'s not-yet with its reason is what the playbook quotes as the ask' },
   'docs/brand': { verbs: ['/landing'], line: 'the mark, when there is a file — the brand doc itself lives beside the devlog' },

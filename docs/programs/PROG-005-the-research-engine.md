@@ -210,10 +210,19 @@ starter pack?"* The mechanism (proposed, part of T1):
 
 ### Tasks this program now owns
 
-- [ ] **T1 · `/scout`** — the skill, the loop citing `boss craft research`, domains `rivals`
-  (absorbs `/comp-eval`) and `market` shipped at Quickstart; BOSS's `craft`/`humane`/`model` as
-  local domain files; supersedes rows for `/comp-eval`, `/deep-research`, `/practice-refresh`,
-  `/humane-refresh`, `/recalibrate`; `check:freshness` owners repointed; research skills tracked.
+- [ ] **T1 · `/scout`**
+  - [x] **T1a · the shipped half** (2026-10-06) — `/scout` at Quickstart: the core (two shelves,
+    quick vs `--deep`, sort, sensitivity, desk research never `EVID`), six domains (`market` carries
+    `/comp-eval` whole, plus size · why-now · pricing · channels; `customer`, `product`, `technical`,
+    `legal`, `people`) and `_template.md`. `/comp-eval` retired with a supersedes row; ladder,
+    freshness, playbook, places, help, GUIDE and web repointed. Upgrade walked end to end: an MVP
+    project made by the old BOSS syncs to `/scout` and is told why.
+  - [ ] **T1b · BOSS's own half** — `craft`, `humane`, `model` as domains in BOSS's
+    `docs/research/domains/` (BOSS using the founder's shelf); `/deep-research`, `/practice-refresh`,
+    `/humane-refresh`, `/recalibrate` retire into `/scout` (boundary rows, `check:freshness` owners);
+    the research skills tracked (`!/.claude/skills/<name>/`); `/vet`'s skeleton (G3–G5).
+  - [ ] **T1c · the conscience line** — an unsourced number in the canvas gets one line offering
+    `/scout` (round 3, F).
 - [ ] **T2 · `/inbox`** — `/import` renamed; local-only; the view (new / sorted / reference); hands to
   `/scout` in the same turn; records the original's location; BOSS's own inbox on it.
 - [x] **T3 · Hide by default** (2026-10-06, done first at Ajesh's call) — the founder template ignores

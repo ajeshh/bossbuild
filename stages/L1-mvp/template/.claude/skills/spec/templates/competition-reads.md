@@ -11,7 +11,7 @@ simply also has this feature:* that rival's **`## Where it breaks`** section, re
 modes you will ever get, and they are the ones your first users will hit too.
 
 *And, for a feature you have already decided to build:* the rival's **`## How they do it`** entry
-for this feature, if `/comp-eval` captured one — the flow, the defaults, what they ask the user
+for this feature, if `/scout market` captured one — the flow, the defaults, what they ask the user
 for and what they do automatically, the limits. **This is design reference, not parity.** The
 decision to build X was made upstream, in `/roadmap` or by you; what you are reading now is how
 the people who already shipped X shaped it, and what their users therefore expect. Read it into

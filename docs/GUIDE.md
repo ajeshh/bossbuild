@@ -137,13 +137,17 @@ Capture an idea, shape it, pressure-test whether it's real. Almost no ceremony.
   your users' own words, the job they're hiring for, the workarounds they use today, what they *didn't*
   care about), and flags the spots where you led the witness. It analyzes what's actually there; it
   never invents a quote. The sibling of `/interview`, at transcript scale.
-- **Who else solves this?** `/comp-eval` surveys the field — including the rows that usually win and
+- **Who else solves this?** `/scout market` surveys the field — including the rows that usually win and
   never appear on a competitor grid: a spreadsheet, an agency, and doing nothing at all. Name a space
   and it goes looking; name a rival you heard about and it evaluates that one into the same table.
   **Every claim carries a source URL and the date it was checked, or it is marked unverified** —
   a confidently invented price is the failure mode here. It builds a *living* set under
   `docs/competition/` you add rivals to over time, never a scoreboard you win. And what it finds is
   context, not evidence: research can send you to `/interview`, it can never stand in for one.
+  The same verb goes wider: `/scout technical` for an API or a build-or-buy, `/scout legal` for the
+  rules that apply, `/scout product`, `/scout customer`, `/scout people` — and `/scout sort <file>`
+  files something you were handed into the right place. Add a domain of your own as a file under
+  `docs/research/domains/`; anything about people stays on your machine.
 - **Where evidence lives:** when you actually talk to someone (the conscience will tell you a
   15-minute call beats another canvas pass), the result lands in `docs/evidence/` as an `EVID-NNN`
   — one signal per file, graded `stated-pain` → `observed-behavior` → `commitment`. Capture one with

@@ -165,7 +165,7 @@ second's interests. Three rules keep that honest, and they are not optional:
 1. Read the venture canvas, `docs/ideas/IDEA-NNN-canvas.md` — Business Model, Promises and Risks & Harms as always, and when the
    raise question is live also **Cost Structure** (the margin under the model), **People** (who they
    are and *how many*, counted bottom-up), **Problem** (who else sells a fix, and why they might
-   win — and `docs/competition/` if `/comp-eval` has run, which is where the real answer lives), and **Modes of Engagement** (the unique advantage and what makes it credible). Those five
+   win — and `docs/competition/` if `/scout market` has run, which is where the real answer lives), and **Modes of Engagement** (the unique advantage and what makes it credible). Those five
    are most of what a data room asks for, already written by the founder — **read them before you ask
    for anything.** Also the recent RESUME for open decisions, and any prior `docs/business/` decisions.
 2. Ask one sharp question. *"What would the founder NOT do if they had to hit a revenue target

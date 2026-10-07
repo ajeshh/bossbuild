@@ -94,6 +94,16 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   lists each, and if any of those folders are already committed it says so plainly — ignoring stops new
   files, it does not take old ones out of your history — and gives the one command that stops tracking
   them. Delete a line to commit a folder after all; sync won't put it back.
+- **`/scout` — one way to find out what's true outside your own head, from day one.** Rivals and the
+  market, what customers say in public, how others solved a flow, what an API actually does,
+  build-or-buy, the rules that apply, who knows a topic best: `/scout market rivals <space>`,
+  `/scout technical api <name>`, `/scout legal regulation <area>`, or just ask it a question. Every
+  claim says who said it, whether it was read, and when; technical claims are checked by running them,
+  prices by opening the page. Hand it something you were given (`/scout sort <file>`) and it files each
+  part where it belongs. The domains are files you can add to or replace in `docs/research/domains/`.
+  `/comp-eval` is now `/scout market` — the same rival research, at Quickstart instead of MVP; `boss
+  sync` says so and leaves your `docs/competition/` where it is.
+
 - **Research about people stays on your machine.** Interview notes, what you import before it's
   sorted, and your notes on rivals (`docs/evidence/`, `docs/source/`, `docs/competition/`) are no
   longer committed: interview notes are other people's words, and a repo can go public in one click

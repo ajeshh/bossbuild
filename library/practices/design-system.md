@@ -206,7 +206,7 @@ genericness starts to cost.
 ### The tells move — a dated list, or last year's list (added v0.299.0)
 
 **The anti-slop catalog above was a 2024 list, and the fix it prescribed became the 2026 tell.**
-Found by running `/comp-eval` on the host vendor's own design skill (Apache-2.0, read at source
+Found by running a competitive read (now `/scout market`) on the host vendor's own design skill (Apache-2.0, read at source
 2026-09-11; BOSS's notes on it are kept locally): the "shadcn trap" (slate, Inter, 8px, indigo) was
 what generated UI converged on in 2024, and BOSS's first override — *warm the neutral scale* — is now
 the single commonest tell: **warm cream + high-contrast serif + terracotta.**
