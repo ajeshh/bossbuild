@@ -3,7 +3,7 @@ id: RESUME
 type: resume
 owner: product-lead
 status: active
-updated: 2026-10-05
+updated: 2026-10-07
 ---
 
 # RESUME — BOSS
@@ -27,14 +27,10 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
-- **IDEA-156 (2026-10-07, shipped, pushed) — skills load the branch they take.** 12 long skills keep the common
-  path in SKILL.md and open branch files on demand (~36% less per run); `/canvas` and `/evidence` offer the frames
-  just in time. 14 live runs verified. Nothing open.
-- **IDEA-151 (2026-10-05, landed in 0.330.0) — release notes weighed per bullet + a line after an update.**
-  0.330.0 is stamped with weights (13 notice · 33 smaller · 1 under the hood), not yet published. Before
-  `npm publish`: `npm run release` regenerates the site's What's new. Open: O1 (founders who never type `boss`).
-- **IDEA-150 (2026-10-05, shipped, pushed) — what the spec toolkits taught.** Devlog has the entry. Standing:
-  **no rival is named in tracked text** — `docs/competition/` is gitignored; names live in `docs/research/sessions/`.
+- **Context and guardrails (2026-10-06/07, pushed) — IDEA-153, 157, 158.** Every session start re-loads the work in
+  flight from its records, no-list first; the every-turn rules are ~40% smaller; `/log` names unasked work from a
+  fresh reviewer; one home per fact (CLAUDE.md). Open: the old-CHANGELOG citation pass (IDEA-158 found list).
+- **Release:** 0.331.0 stamped and committed 2026-10-07, not published (`npm publish` is Ajesh's). IDEA-151 O1 open.
 - **IDEA-144 (2026-10-05, Unreleased) — one home for the generated pages.** `.boss/index.html`: every page with its age, *Where things live* (folders + key files, Open / Copy path), a bookmark hint; every page command prints it as the one bookmark. Spaces ordered Board · Playbook · Design · Guide. Demo: "Organization" → *Where things live* (GitHub links), and the opening says what Kettlewick does. Each card says when its page is out of date (a file it reads changed since). No machine-wide home: each project has its own (Ajesh). Open: the home re-checks only on a page command.
 - **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
   principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
@@ -44,8 +40,6 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
   PROG-002 the ecosystems (IDEA-137 split: IDEA-146 deferred, IDEA-147 ready), PROG-003 the playbook (the demo rule
   moved out of here). Rules E1–E6 in IDEA-145; the board has *By stage | By program*; `/spec`, `coder`, `/decide`,
   `boss status` and `--json` carry the program. Open: G3, G6 (`/revalidate IDEA-072`), G7, G8; playbook block deferred.
-- **IDEA-121 (2026-09-23, closed)** — history in the devlog. One thing open: `boss sync --apply` in BOSS's own
-  install after the next stamp (it still carries /measure, /ai-first-init).
 - **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
   `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
   `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every

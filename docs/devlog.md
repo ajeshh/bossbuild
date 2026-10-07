@@ -22,6 +22,23 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+
+## 2026-10-07 — context and guardrails: IDEA-153, IDEA-157, IDEA-158 (Unreleased, pushed)
+
+- **Landed:** IDEA-153 — every session start, compaction and `/clear` included, re-loads the work in flight from
+  its records (`lib/working-state.js`); `feature-context.md` retired into the FEAT record; IDEA-078 closed into it.
+  IDEA-157 — the rules read every turn say the rule and where to look: MVP 13.0 → 7.7 KB, Scale 19.8 → 11.7 KB;
+  BOSS's own CLAUDE.md 11.3 → 5.9 KB. IDEA-158 — the no-list comes back first; `/log`'s unasked-work check runs
+  in a fresh reviewer; memory 33 → 27, two case logs moved to `docs/research/heuristics/`. Also: the 0.331.0
+  stamp committed (Ajesh's call), `boss sync --apply --keep-mine` here (six dev agents kept), traces on,
+  check-boundary's installed-artifact bug fixed with a reproduction.
+- **Surprises:** the 10k-char conscience overflow was real but already fixed on 2026-09-24 — dating the ledger
+  before fixing saved a wrong change. `worktree.js IDEA-154` silently JOINED a peer's work (CLAUDE.md now says
+  check `git log --all` first). The scope reviewer's first run named three unasked changes on its own branch;
+  all kept, all recorded. A chained `land` ran past a red `npm run check` — the red was RESUME's window, a peer's.
+- **Next:** the old-CHANGELOG citation pass (IDEA-158 found list); whether main-checkout starts should load
+  every building FEAT (IDEA-153 open question).
+
 ## 2026-10-07 — IDEA-156 skills load the branch they take (Unreleased, pushed)
 
 - **Landed:** asked whether BOSS should host its own model to cut cost — no: BOSS makes no model
