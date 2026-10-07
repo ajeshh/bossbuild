@@ -52,6 +52,17 @@ Rules this program keeps, from IDEA-137's decisions:
 - [ ] **N9** · Concentration at V1 — `/money` operate names one customer or channel carrying most revenue.
 - [ ] **B3** · Classify BOSS's own artifacts by pace layer and zone, from the trace, not by guessing.
 - [ ] **B4** · Name the ecosystems BOSS has and the candidates (data & trust, operations, money, team), each with its planting trigger.
+  The ladders still to plant, in order (moved from RESUME 2026-10-07; each follows `docs/ECOSYSTEMS.md` § steps,
+  modelled on IDEA-138; for Ajesh to review): claims ✅ (IDEA-138; left: the drift reader, until a founder's page
+  outlives its evidence) · AI behaviour ✅ (IDEA-139) · **data & trust next** — highest stakes, but BOSS has no
+  instance of its own: plant from `/trust` + `schema-guard` + the data-schema practice, or on a founder's first
+  personal-data table · operations · money (waits for a first dollar). Already living, never framed as ladders:
+  evidence (the grade ladder), product language (IDEA-093), outward docs (IDEA-089, parked). Not ladders: the
+  founder (governance pointed at a person is surveillance — H1; stays in IDEA-133), temple culture / team
+  (IDEA-004, parked).
+- [ ] **C11 left** · All four ladders are at revision 6 (`docs/ECOSYSTEMS.md` § Revisions, `anatomy: N` on each;
+  `npm run check:freshness` names one behind). Three lineage lenses — stigmergy, panarchy, calm tech — await a
+  read at source.
 - [ ] **A2** · The first guild to plant for a founder (lean: launch).
 - [ ] **R10** · The rest of the reading list feeds other ecosystems (culture, the founder's why, craft) — lens cards when one is built.
 - [ ] **R11** · Ten more lenses, sorted by what they would change — nothing quotable until read at source.

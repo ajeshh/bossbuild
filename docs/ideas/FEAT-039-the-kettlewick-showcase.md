@@ -118,6 +118,15 @@ the site. A founder-facing flow: none — this is BOSS's own surface.
   BOSS can't source (the rivals are fictional too).
 - What Ajesh verifies: the demo reads as *BOSS running*, not as a brochure; the Kettlewick name.
 
+## Found after shipping
+
+- [ ] **The showcase is weak overall — do it better** (Ajesh, 2026-10-04; its own pass, not IDEA-133). Later the
+  same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the
+  roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not
+  on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday
+  visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log.
+  Keep the roughness. (Moved from RESUME 2026-10-07.)
+
 ## Build log
 - 2026-09-13 — **landed** (playbook/board half + the generator + the gate). The demo forced two
   renderer changes: `role: missing` as a person record, and Vision listing the team. The design
