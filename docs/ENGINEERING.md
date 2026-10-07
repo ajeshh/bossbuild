@@ -70,7 +70,7 @@ Change one by the door in §8, not by working around it.
     (`src/config.js:34-44`) — writing over it would destroy what the person had.
   - An unknown shows as unknown (`src/playbook.js:11-13`: a hole is a hole). Detection reports
     candidates, never conclusions (`src/detect.js:11-15`, `src/ladder.js:9-14`).
-  - An error offers the recovery it can compute (`src/cli.js:1459-1465`).
+  - An error offers the recovery it can compute (`failNotAProject` in `src/fail.js`).
   - The reason lives in the code: a module, gate or test opens with **why it exists**, usually the
     incident that made it. A deliberate exception carries its reason beside it.
 - **Rules:**

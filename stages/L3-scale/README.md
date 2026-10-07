@@ -17,7 +17,7 @@ here is **symptom-gated**, and the unlock names its own evidence bar before you 
 - **`template/claude-append.md`** — the Scale working rules: high-risk paths (the human tier), DRI on
   decisions, the conscience's hard line (never fires at / evaluates / reports on a non-founder), and
   the demotions Scale *refuses* (no PM-org cosplay, no unearned IDs, no calendar ceremony).
-- **The unlock gate** (in `src/cli.js`) — names the three-legged bar (recurring revenue · a non-founder
+- **The unlock gate** (the bar in `src/readiness.js`, shown by `boss unlock`) — names the three-legged bar (recurring revenue · a non-founder
   in the work · a nameable coordination symptom). Never blocks; records the deviation as yours.
 - **The leader paragraph** at unlock (the role-shift ladder, IDEA-053).
 - **`/incident`** — the blameless one-page outage post-mortem (fix-first; one systemic learning UP).

@@ -78,9 +78,13 @@ bug from them, so they don't meet the bar for a new gate. The fix is to do the m
   Import cycles: the same three as main. Verified: 822 tests; `/tmp` Quickstart, MVP with a venture
   IDEA, an adopted repo, outside a project — `status`, `--line`, bare `boss` — identical to main
   (91 lines).
-- [ ] **S4** · `cmdUnlock` (~165) + `previewUnlock` → new `install.js` (Q3)
-  — and `stages/L3-scale/README.md:20` (shipped) says the unlock gate is *in `src/cli.js`*: move the
-  path with it.
+- [x] **S4** · `cmdUnlock` (~165) + `previewUnlock` + `ROLE_SHIFT` → new `install.js` (Q3)
+  (`cli.js` 1,685 → 1,511). Three stale pointers fixed with it: `stages/L3-scale/README.md` named
+  `src/cli.js` for the Scale bar, which has lived in `readiness.js` since IDEA-076; the orientation
+  help page now `covers:` `orientation.js`; ENGINEERING.md cited `cli.js:1459` for what S0 moved to
+  `fail.js`. S3 lost the blank line under `cli.js`'s header (a script's doing); restored. Verified:
+  824 tests; `/tmp` bare `unlock`, `mvp` twice, `v1`, `scale`, a skip, a bogus mode, outside a
+  project — identical to main (145 lines).
 - [ ] **S5** · `cmdNew` (~108) + `claudeInstalled` → `install.js`
 - [ ] **S6** · `cmdAdopt` (~186) → `install.js`
 - [ ] **S6b** · `cmdConscience` (~167) → `conscience.js`. Found 2026-10-07 while answering Q2/Q3: the
