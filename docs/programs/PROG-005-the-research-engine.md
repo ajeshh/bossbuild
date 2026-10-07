@@ -406,12 +406,12 @@ these names for the four axes before the engine wrote them down once:
     or someway to do file share. lets think about it."* Not git. To be explored (IDEA-037 is the team
     record; DEC-001 says per-person state never travels — evidence is venture state, so it may).
 
-- **Q1 · The finder's name.** `/research` is taken in the supersedes ledger (retired into `/evidence`,
+- *(answered above)* **Q1 · The finder's name.** `/research` is taken in the supersedes ledger (retired into `/evidence`,
   v0.324.0) — reusing it would tell a syncing founder two different things.
-- **Q2 · One `/refresh <domain>`, or keep three?** One file with domain sections vs three thin skills
+- *(answered above)* **Q2 · One `/refresh <domain>`, or keep three?** One file with domain sections vs three thin skills
   over the engine.
-- **Q3 · `/comp-eval`'s new name and scope** — widen to the market now (rivals as the first view) or
+- *(answered above)* **Q3 · `/comp-eval`'s new name and scope** — widen to the market now (rivals as the first view) or
   rename only, and widen when IDEA-066's trigger fires?
-- **Q4 · Tracking the internal skills.** `/.claude/` is gitignored wholesale. With the method in
+- *(answered above)* **Q4 · Tracking the internal skills.** `/.claude/` is gitignored wholesale. With the method in
   `library/`, what is left in each skill is thin — track it (`!/.claude/skills/<name>/`, passes the
   *"fine public forever?"* test) or keep it local?
