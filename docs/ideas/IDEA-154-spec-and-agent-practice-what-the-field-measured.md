@@ -63,6 +63,8 @@ small, and three of them are subtractions.
     before and after.
   - *BOSS's own:* this repo's `CLAUDE.md` is 1,705 words before memory. The same test applies; it's
     Ajesh's call whether it's in scope.
+  - *Stale (2026-10-07, at landing):* IDEA-157 has since cut the every-turn rules (MVP 13.0 → 7.7 KB;
+    this repo's CLAUDE.md 11.3 → 5.9 KB). Re-measure before starting; what's left may be small.
 - [x] **T3 — Replace "non-trivial" with the one-sentence-diff line.** `claude-append.md:7` says *"Any
   non-trivial change starts with `/spec`… Throwaway one-liners don't need it."* "Non-trivial" is
   undefined, and the middle is where ceremony bloats (a small bug once became four user stories with
