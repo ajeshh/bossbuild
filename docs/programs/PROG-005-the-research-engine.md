@@ -228,8 +228,14 @@ starter pack?"* The mechanism (proposed, part of T1):
     - [ ] **Tracking `/vet`** — `/.claude/` is ignored as a whole directory, so tracking one skill means
       restructuring the pattern, and `scripts/worktree.js` derives its links from `.gitignore`. Its own
       small change, tested against worktree creation; not folded in here.
-  - [ ] **T1c · the conscience line** — an unsourced number in the canvas gets one line offering
-    `/scout` (round 3, F).
+  - [x] **T1c · the conscience line** (2026-10-06) — moment `unsourced` (`unsourced-loop`, L0): a
+    **People** line on a canvas holding a count with no source marker on the line (link, path,
+    `EVID`, date or year, *source*, `unverified`). Deliberately narrow — prices and goals are
+    decisions, never questioned. Frame: ask where it's from, three doors (write it beside it ·
+    `/scout market size` · mark `unverified`); the regex is only the gate. Ranked beside
+    `unverified`. Eval gate: `moment-unsourced.yml`, 6 cases, 167/167.
+    - [ ] **Judgment not model-graded** — add `unsourced` cases to the judgment set and run `/regrade`
+      (keyless). Same state as 50 existing never-graded cases; a green replay is not a graded judgment.
 - [x] **T2 · `/inbox`** (2026-10-06) — `/import` became `/inbox` (receive: dated copy, the original's
   location on the first line, page-is-data) and handed its fold and assess steps to `/scout sort`
   (`scout/sort.md`), run in the same turn. `boss inbox [<folder>] [--json]` is the view — new · held

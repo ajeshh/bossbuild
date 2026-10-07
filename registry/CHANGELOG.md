@@ -131,6 +131,11 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### Smaller improvements
 
+- **A number about people on your canvas gets asked where it's from — once.** If the People cell says
+  *"about 6,400 agencies"* with nothing beside it, BOSS asks one question and offers three doors: write
+  the source next to it, `/scout market size` to find one, or mark it `unverified` so it never gets
+  quoted as fact. Your own prices and goals are never questioned; only a count of people is.
+
 - **A persona's quote never points back at a person.** When `/persona` keeps one line a real user
   said, it is credited by role, never by name, with nothing in it that would identify them — the same
   rule the brand doc already follows. The interview it came from stays on your machine.

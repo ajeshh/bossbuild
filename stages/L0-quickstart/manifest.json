@@ -57,7 +57,8 @@
     "harvest-loop",
     "sustaining-loop",
     "unseen-loop",
-    "unseen-since-loop"
+    "unseen-since-loop",
+    "unsourced-loop"
   ],
   "unlocksNext": "L1-mvp",
   "graduationHint": "When you're ready to actually build, switch to MVP mode: boss unlock mvp."

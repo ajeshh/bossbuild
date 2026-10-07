@@ -204,6 +204,18 @@ const FIXTURES = {
     `# Devlog\n\n- 2026-05-30 wired the importer\n- 2026-06-01 shipped it, tidied the README\n`,
   // A canvas answering the SECOND (non-revenue) branch of the Business Model cell — the
   // arrangement this moment exists to notice has quietly stopped being true.
+  // unsourced-loop fixtures (PROG-005 T1c). A People cell with a count and nothing saying where it
+  // came from fires; a source, a year, `unverified`, or no count at all stays silent.
+  canvas_people_unsourced:
+    `---\nid: canvas\ntype: canvas\n---\n\n| Cell | Answer |\n|---|---|\n| **People** | Owners of small home-care agencies, about 6,400 in England. |\n`,
+  canvas_people_unsourced_bullet:
+    `---\nid: canvas\ntype: canvas\n---\n\n- **People:** 12k independent bakers who sell at weekend markets.\n`,
+  canvas_people_sourced:
+    `---\nid: canvas\ntype: canvas\n---\n\n| Cell | Answer |\n|---|---|\n| **People** | About 6,400 agencies (register extract, 2026-06-02, docs/source). |\n`,
+  canvas_people_unverified:
+    `---\nid: canvas\ntype: canvas\n---\n\n| Cell | Answer |\n|---|---|\n| **People** | Roughly 6,400 agencies (unverified — from a deck someone shared). |\n`,
+  canvas_people_no_count:
+    `---\nid: canvas\ntype: canvas\n---\n\n| Cell | Answer |\n|---|---|\n| **People** | Owner-operators running 3 to 15 carers from a kitchen table. |\n| **Business Model** | 4,000 a month at 1,000 carers. |\n`,
   canvas_sustained_by_hours:
     `---\nid: canvas\ntype: canvas\n---\n\n# Canvas\n\n| Cell | Answer |\n|---|---|\n| **Business Model** | Not monetized. Sustained by me, a few hours a week, indefinitely. |\n`,
   // The same cell after the founder came back and revised it to what is actually true —

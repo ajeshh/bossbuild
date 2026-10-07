@@ -560,7 +560,7 @@ export function detectSignals(projectDir) {
 export const MOMENT_PRIORITY = [
   'deception',                                   // harm to the people the product touches
   'drift', 'caution', 'restraint', 'outpaced',   // building around the riskiest assumption
-  'unverified', 'focus', 'margin-trap', 'coordination',
+  'unverified', 'unsourced', 'focus', 'margin-trap', 'coordination',
   'failure-mode', 'cost',                        // AI-specific build discipline
   'sustaining', 'coherence', 'capture', 'harvest',
   'cost-stale', 'field-stale', 'task-hygiene',   // upkeep

@@ -1,0 +1,76 @@
+# Conscience eval set — moment: unsourced (unsourced-loop)
+# Loop spec: stages/L0-quickstart/template/.boss/loops/unsourced-loop.md
+# Detector: docs/architecture/conscience-evals/runner.js
+#
+# Entry is a People line on a canvas holding a count with no source marker on the same line.
+# Exit never comes true; the moment goes quiet when the entry stops matching — a source, a year,
+# `unverified`, or the count gone. Every other number on a canvas is the founder's own decision
+# (a price, a goal) and must stay silent: m-uns-104 pins that.
+
+# =============================================================================
+# SHOULD FIRE — a count of people with nowhere it came from
+# =============================================================================
+
+- id: m-uns-001
+  category: should-fire
+  scenario: "People cell (table row) says about 6,400 agencies, nothing beside it."
+  project_state:
+    docs_files:
+      - { path: docs/ideas/IDEA-001-canvas.md, fixture: canvas_people_unsourced }
+  expected_detection:
+    fires: true
+    moment: unsourced
+  why: "The cell's own rule: a number you cannot say the source of does not go in."
+
+- id: m-uns-002
+  category: should-fire
+  scenario: "People as a bullet line, '12k independent bakers', no source."
+  project_state:
+    docs_files:
+      - { path: docs/ideas/IDEA-001-canvas.md, fixture: canvas_people_unsourced_bullet }
+  expected_detection:
+    fires: true
+    moment: unsourced
+  why: "Both canvas shapes are read; 12k is a count."
+
+# =============================================================================
+# SHOULD NOT FIRE — sourced, marked, or not a count of people
+# =============================================================================
+
+- id: m-uns-101
+  category: should-not-fire
+  scenario: "The same count with its source, date and file beside it."
+  project_state:
+    docs_files:
+      - { path: docs/ideas/IDEA-001-canvas.md, fixture: canvas_people_sourced }
+  expected_detection:
+    fires: false
+  why: "Sourced. Writing the source beside the number is the cheapest way to close this."
+
+- id: m-uns-102
+  category: should-not-fire
+  scenario: "The count is marked unverified."
+  project_state:
+    docs_files:
+      - { path: docs/ideas/IDEA-001-canvas.md, fixture: canvas_people_unverified }
+  expected_detection:
+    fires: false
+  why: "Labelled honestly; nobody will quote it as fact. That is one of the three doors."
+
+- id: m-uns-103
+  category: should-not-fire
+  scenario: "No canvas at all."
+  project_state: {}
+  expected_detection:
+    fires: false
+  why: "Nothing to read."
+
+- id: m-uns-104
+  category: should-not-fire
+  scenario: "People has a range (3 to 15), and the Business Model holds the founder's own numbers."
+  project_state:
+    docs_files:
+      - { path: docs/ideas/IDEA-001-canvas.md, fixture: canvas_people_no_count }
+  expected_detection:
+    fires: false
+  why: "A price or a goal is a decision, not a claim about the world; small ranges are description. Only a count of people in the People cell needs a source."
