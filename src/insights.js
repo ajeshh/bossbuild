@@ -104,7 +104,7 @@ function assess(p, nowMs) {
   // Loop-closure signal — NOT activity. Where did the venture get stuck, if anywhere?
   let signal = 'flowing', note = '';
   if (t.ideas === 0 && t.features === 0) {
-    signal = 'empty'; note = 'nothing captured yet — point /boss or /import at your idea';
+    signal = 'empty'; note = 'nothing captured yet — point /boss or /inbox at your idea';
   } else if (t.canvassed === 0 && !t.projectCanvas && t.features === 0) {
     signal = 'untested';
     note = `captured, never pressure-tested${ageDays != null ? ` (${ageDays}d)` : ''} — try /canvas`;

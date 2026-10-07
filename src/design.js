@@ -395,7 +395,7 @@ export function readComponents(projectDir) {
   try { text = readFileSync(cPath, 'utf8'); } catch { return out; }
   out.updated = frontmatter(text).updated || null;
   for (const t of mdTables(text)) {
-    const iName = t.col(/^component/), iImport = t.col(/import/), iPurpose = t.col(/for|purpose/), iVar = t.col(/variant/), iMiss = t.col(/missing/), iStatus = t.col(/status/);
+    const iName = t.col(/^component/), iImport = t.col(/\bimport/), iPurpose = t.col(/for|purpose/), iVar = t.col(/variant/), iMiss = t.col(/missing/), iStatus = t.col(/status/);
     if (iName >= 0 && iImport >= 0) {
       for (const r of t.rows) {
         const name = clean(r[iName]); if (!name) continue;
@@ -923,7 +923,7 @@ function swatchHtml(t, decs) {
 export function renderDesignHtml(data, stampedAt) {
   const { brand, shape, tokens, decs, anchor, guide, color, type, space, radius, elevation, motion, pairs, slots, findings, projectName, personas, journey, research, components, patterns, flows, content, guards, icons, logo, exceptions, resources, divergence } = data;
   // The verb on a hole is gated the way the playbook gates it (verbLine): a skill the mode hasn't
-  // unlocked says so, and a droppable record points at /import — both spaces say the same thing.
+  // unlocked says so, and a droppable record points at /inbox — both spaces say the same thing.
   const hole = (id, title, body, verb, src) => holeRaw(id, title, body, verbLine(verb, data.projectDir), src);
   const filled = slots.filter(([, ok]) => ok).length;
   const ledger = `<b class="tab">${filled} of ${slots.length}</b> slots have something in them · <b class="tab">${pairs.length}</b> contrast pair${pairs.length === 1 ? '' : 's'} computed · <b class="tab">${findings}</b> finding${findings === 1 ? '' : 's'}${(data.questions || []).length ? ` · <b class="tab">${data.questions.length}</b> open · next: ${esc(data.questions[0].verb)}` : ''}`;

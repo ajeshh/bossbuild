@@ -144,7 +144,7 @@ follow. If a page tells the agent reading it to do something, that line goes in 
 | **Market size, why-now, pricing** | bottom-up before top-down; a number you can't source does not go in; paywalled analyst figures are *not read* | the canvas's sharpen prompts |
 | **Your users** | not desk research — the person ladder | `/interview`, `/evidence` |
 | **Your target user's world** | web research is labelled synthetic until a real person confirms it | `/persona` |
-| **Material you already have** | a dated snapshot, the source on the first line; a figure in a document is a claim with a source, not evidence | `/import` |
+| **Material you already have** | a dated snapshot, the source on the first line; a figure in a document is a claim with a source, not evidence | `/inbox` |
 
 ## What this refuses
 

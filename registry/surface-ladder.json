@@ -326,7 +326,7 @@
     "read-repo": "the assessor itself — reads the repo, never produces a competing artifact",
     "welcome": "orientation; writes nothing durable",
     "idea": "routes an input to the right verb",
-    "import": "pulls source material in; the source is the founder's, not BOSS's output",
+    "inbox": "receives source material; the source is the founder's, not BOSS's output — /scout sort files it",
     "decide": "append-only record (DEC-NNN) — every run adds one, never updates an existing",
     "evidence": "append-only record (EVID-NNN)",
     "feedback": "append-only record",

@@ -236,6 +236,14 @@
       "replacedBy": "scout",
       "why": "Researching rivals was one command, and every other kind of outside research had none, so each was done a different way or not at all. `/scout` is one way to find out what's true outside your own head: rivals and the market, customers, product, technical, legal and people, on one method, with every claim saying who said it, whether it was read, and when. Your rival research is `/scout market`, the same in substance, and it now arrives at Quickstart instead of MVP.",
       "migrate": "Run `/scout market rivals <space>` where you ran `/comp-eval <space>`, and `/scout market add <name>` or `/scout market recheck` as before. Your `docs/competition/` is read as it is; nothing moves. It now stays out of git, because notes on rivals are intelligence; if it was already committed, `boss sync` says so and gives the command that stops tracking it."
+    },
+    {
+      "since": "0.332.0",
+      "kind": "skill",
+      "removed": "import",
+      "replacedBy": "inbox",
+      "why": "`/import` both received what you brought in and decided what it meant. Those are now two jobs run as one gesture: `/inbox` keeps a dated copy on your machine, and `/scout sort` files each part where it belongs, from your idea doc to the rivals table. Bare `/inbox` (or `boss inbox`) shows what is new, held and sorted, so nothing you brought in gets lost in a folder.",
+      "migrate": "Run `/inbox <file, link or paste>` where you ran `/import`; it does what `/import` did and sorts in the same turn. Your `docs/source/` is read as it is; nothing moves. It now stays out of git; if it was already committed, `boss sync` says so and gives the command that stops tracking it."
     }
   ]
 }

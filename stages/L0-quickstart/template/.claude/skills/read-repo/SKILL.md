@@ -29,10 +29,10 @@ generic copy.
 In order of strength — use whatever exists, say what you used:
 1. **An adopted repo** (`boss adopt`) — read the code, README, structure, deps (use the wide
    context; this is the strongest signal). Infer what it is, who it's for, what stage it's at.
-2. **Captured idea + source** — `docs/ideas/*.md` + anything under `docs/source/` (`/import`/`/boss`
+2. **Captured idea + source** — `docs/ideas/*.md` + anything under `docs/source/` (`/inbox`/`/boss`
    pulled it in).
 3. **Nothing yet** — if there's no idea and no repo, say so and stop: *"Nothing to read yet —
-   run `/boss <your idea>` or `/import` first, then come back."* Don't invent understanding.
+   run `/boss <your idea>` or `/inbox` first, then come back."* Don't invent understanding.
 
 ## Position — the read you give BEFORE you write anything
 

@@ -125,7 +125,7 @@ Capture an idea, shape it, pressure-test whether it's real. Almost no ceremony.
   idea and hit go — BOSS builds the smallest clickable version so you can *see* it, not just argue
   with a blank page), `/canvas` (pressure-test it as a humane business — who's served, what's the bet,
   what could kill it), `/persona` (your target user as a consultable voice — guide *and* QA, never a
-  replacement for talking to a real one), `/import` (bring existing material in — a doc, a folder, or
+  replacement for talking to a real one), `/inbox` (bring existing material in — a doc, a folder, or
   a URL becomes durable context in `docs/source/` that BOSS builds from).
 - **Talk to someone:** `/interview` is the bridge the conscience keeps pointing at. Run it before a
   customer call and it hands you one printable page of Mom-Test questions (past behavior, their life,

@@ -24,6 +24,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 | `boss playbook [--open]` | the venture as sixteen chapters over your records — present it, export the PDF |
 | `boss design [--open]` | the design space: tokens, parts, patterns, exceptions — read from docs/design/ |
 | `boss recap [--md]` | what happened this week, read back out of your own records |
+| `boss inbox` | what came in, what is still unsorted, and where the rest went |
 | `boss craft [<name>]` | the practice shelf — how BOSS thinks about building with AI, one doc at a time |
 | `boss id [TYPE]` | the next free record number — computed, never counted by hand |
 | `boss records` | check the record set: duplicate IDs, off-vocabulary status, broken promotions |
@@ -40,7 +41,7 @@ removed, and a project that stays in Quickstart forever is a legitimate project.
 
 - `/welcome` — First time using BOSS? Start here
 - `/boss` — The door, any day
-- `/import` — Bring existing material in — a file, a folder, a URL, or text you paste
+- `/inbox` — Bring something in - a file, a folder, a link, or text you paste
 - `/scout` — Find out what's true outside your own head, or sort what you were handed into the right place
 - `/idea` — Capture an idea — and keep adding to it
 - `/prototype` — Get the idea onto the screen, fast (not /pretotype, which tests demand)

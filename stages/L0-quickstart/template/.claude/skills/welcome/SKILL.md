@@ -135,7 +135,7 @@ If cohort is `eng-builder`, `vibe-virtuoso`, `indie-hacker`, or `returning-found
 > folder has `CLAUDE.md` (project rules), `.boss/` (mode + config), `.claude/` (skills +
 > agents the project has access to). Run `/boss` to spin up — point it at your idea however it
 > exists (a sentence, a file, a Google Doc / Obsidian / PDF / deck, a URL, or several); it pulls
-> a copy into `docs/source/` and shapes it. `/import` adds more material to an idea later.
+> a copy into `docs/source/` and shapes it. `/inbox` adds more material to an idea later.
 > The conscience (`UserPromptSubmit` hook) will nudge if it sees drift; `boss conscience pause`
 > silences all of it, or you can turn down just the kind of nudge that keeps missing
 > (`boss conscience` lists them by name).*

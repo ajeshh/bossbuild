@@ -15,7 +15,7 @@ after(cleanup);
 
 const quickstart = {
   name: 'demo', stage: 'L0-quickstart', installedLayers: ['L0-quickstart'],
-  skills: ['welcome', 'boss', 'import', 'idea'], agents: ['product-lead', 'coder', 'mentor-founder'],
+  skills: ['welcome', 'boss', 'inbox', 'idea'], agents: ['product-lead', 'coder', 'mentor-founder'],
 };
 
 function want(html, intent) {
@@ -36,7 +36,7 @@ test('help --html: no token renders doubled, prefixed wrong or at an undefined r
 test('help --html: installed skills are yours, commands always are, the rest name their rung', () => {
   const html = readFileSync(helpHtml(project(), quickstart), 'utf8');
   const idea = want(html, 'get an idea out of my head');
-  assert.match(idea, /<span class="a"><code>\/boss<\/code> · <code>\/idea<\/code> · <code>\/import<\/code><\/span>/);
+  assert.match(idea, /<span class="a"><code>\/boss<\/code> · <code>\/idea<\/code> · <code>\/inbox<\/code><\/span>/);
   const resume = want(html, 'pick up where I left off');
   assert.doesNotMatch(resume, /class="soon"/, 'a boss command works in every mode');
   const mcp = want(html, 'hook my tools up to the AI');

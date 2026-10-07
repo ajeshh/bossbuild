@@ -9,8 +9,8 @@
 
 - **`/welcome`** — First time using BOSS? Start here  _(/welcome)_
 - **`/boss`** — The door, any day  _(/boss [idea | PRD | what you're trying to do])_
-- **`/import`** — Bring existing material in — a file, a folder, a URL, or text you paste  _(/import <path-or-url | pasted text> [more] [IDEA-NNN])_
-- **`/scout`** — Find out what's true outside your own head, or sort what you were handed into the right place  _(/scout [domain] [what] | /scout <question> | /scout sort <file>)_
+- **`/inbox`** — Bring something in - a file, a folder, a link, or text you paste  _(/inbox [<file, link or paste>] [more] [IDEA-NNN])_
+- **`/scout`** — Find out what's true outside your own head, or sort what you were handed into the right place  _(/scout [domain] [what] | sort <file>)_
 - **`/idea`** — Capture an idea — and keep adding to it  _(/idea <thought> (run again to add more) | /idea gist [ID] for the one line the board shows)_
 - **`/prototype`** — Get the idea onto the screen, fast (not /pretotype, which tests demand)  _(/prototype [IDEA-NNN | idea])_
 - **`/canvas`** — Pressure-test an idea as a humane business, and show the same answers to whoever needs to read them  _(/canvas [IDEA-NNN] [--frame humane|lean|bmc|onepager])_

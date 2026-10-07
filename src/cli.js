@@ -3,13 +3,14 @@
 // process.exit() — handlers set process.exitCode, and `bin/boss` is the one place that exits.
 
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
-import { join, resolve, basename, sep, delimiter } from 'node:path';
+import { join, resolve, basename, sep, delimiter, relative } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME, BOSS_ROOT } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
 import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
+import { readInbox, INBOX_DIR } from './inbox.js';
 import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
 import { enableHook, disableHook, isRegistered, optionalHooks as shippedOptionalHooks } from './hooks.js';
 import { learn, LEARN_CATEGORIES, SHIPPED_CLASSES, SHELF_CATEGORIES } from './learn.js';
@@ -187,7 +188,7 @@ function cmdNew(args) {
   if (!claudeInstalled()) console.log(dim(CLAUDE_MISSING));
   console.log(`    ${dim('then, inside Claude:')}`);
   console.log(`    > /boss <your idea>     # spin up — a sentence, a doc, a deck, or a link`);
-  console.log(`                            #   (first time? /welcome · already written it down? /import <file|url>)`);
+  console.log(`                            #   (first time? /welcome · already written it down? /inbox <file|url>)`);
   if (aiNative) {
     console.log(`    > /read-repo           # AI-native: tailor the scaffold to what BOSS understands (augments, never replaces)`);
   }
@@ -1537,6 +1538,42 @@ function cmdSync(args) {
   console.log('');
 }
 
+// The inbox view (PROG-005 T2): what came in, what is still unsorted, and where the rest went.
+// Read-only — nothing moves; /scout sort stamps an item, this only reads the stamps.
+function cmdInbox(args) {
+  const f = parseArgs(args);
+  const dir = resolve(process.cwd(), f._[0] || INBOX_DIR);
+  const items = readInbox(dir);
+  if (f.json) { console.log(JSON.stringify(items || [], null, 2)); return; }
+  const rel = relative(process.cwd(), dir) || '.';
+  if (!items) {
+    console.log(`\n  ${dim(`No inbox here yet (${rel}/).`)} ${bold('/inbox <file, link or paste>')} ${dim('starts one.')}\n`);
+    return;
+  }
+  const by = (st) => items.filter((i) => i.state === st);
+  const short = (t) => { const c = String(t).split(/ \(| — /)[0]; return c.length > 60 ? `${c.slice(0, 59)}…` : c; };
+  const fresh = by('new'), held = by('held'), sorted = by('sorted'), ref = by('reference');
+  console.log(`\n  ${bold('inbox')} ${dim(`— ${rel}/ · ${items.length} item(s)`)}`);
+  if (!items.length) console.log(`    ${dim('empty —')} ${bold('/inbox <file, link or paste>')} ${dim('brings something in.')}`);
+  if (fresh.length) {
+    console.log(`\n  ${bold(`New (${fresh.length})`)} ${dim('— not sorted yet:')} ${bold('/scout sort <file>')}`);
+    for (const i of fresh) console.log(`    ${warn('•')} ${i.name}`);
+  }
+  if (held.length) {
+    console.log(`\n  ${bold(`Held (${held.length})`)} ${dim('— labelled, kept on this machine until the project has a home for it')}`);
+    for (const i of held) console.log(`    ${dim('◦')} ${i.name}  ${dim(i.kind)}`);
+  }
+  if (sorted.length) {
+    console.log(`\n  ${bold(`Sorted (${sorted.length})`)}`);
+    for (const i of sorted) console.log(`    ${ok('✓')} ${i.name}${i.to ? `  ${dim('→')} ${short(i.to)}` : ''}${/^\d{4}-/.test(i.sorted || '') ? `  ${dim(i.sorted)}` : ''}`);
+  }
+  if (ref.length) {
+    console.log(`\n  ${bold(`Reference (${ref.length})`)} ${dim('— kept, nothing to file')}`);
+    for (const i of ref) console.log(`    ${dim('·')} ${i.name}`);
+  }
+  console.log('');
+}
+
 function cmdLearn(args) {
   const f = parseArgs(args);
   let res;
@@ -1652,7 +1689,7 @@ function failNotAProject() {
 // actually exists, never from a hand-kept copy of it.) Flags are excluded on purpose: `--help` is
 // not a plausible typo for a bare word, and suggesting it would be noise.
 const KNOWN_COMMANDS = [
-  'new', 'adopt', 'unlock', 'status', 'board', 'playbook', 'design', 'recap', 'map', 'brain', 'insights', 'records', 'id',
+  'new', 'adopt', 'unlock', 'status', 'board', 'playbook', 'design', 'recap', 'map', 'brain', 'insights', 'records', 'id', 'inbox',
   'team', 'list', 'retire', 'credit', 'remove', 'uninstall', 'sync', 'learn', 'craft',
   'changelog', 'whatsnew', 'update', 'outdated', 'conscience', 'hooks', 'version', 'help',
 ];
@@ -2046,7 +2083,7 @@ function nearestCommand(input) {
 
 // Commands that print JSON on --json. Anywhere else the flag used to be ignored and the command
 // printed prose to a caller that had asked for JSON, with nothing saying so.
-const JSON_COMMANDS = new Set(['board']);
+const JSON_COMMANDS = new Set(['board', 'inbox']);
 
 // A flag no command reads is a typo: refuse it and name the nearest real one, rather than run the
 // command as if it weren't there (`boss board --nxt` printed the whole board and exited 0).
@@ -2091,6 +2128,7 @@ export async function run(argv) {
     case 'insights': return cmdInsights();
     case 'records': return cmdRecords(args);
     case 'id': return cmdId(args);
+    case 'inbox': return cmdInbox(args);
     case 'team': return cmdTeam(args);
     case 'list': return cmdList(args);
     case 'retire': return cmdRetire(args);

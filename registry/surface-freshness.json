@@ -125,9 +125,9 @@
     {
       "kind": "skill",
       "stage": "L0-quickstart",
-      "rel": "stages/L0-quickstart/template/.claude/skills/import/SKILL.md",
+      "rel": "stages/L0-quickstart/template/.claude/skills/inbox/SKILL.md",
       "curve": "craft",
-      "last_reviewed": "2026-06-20"
+      "last_reviewed": "2026-10-06"
     },
     {
       "kind": "skill",

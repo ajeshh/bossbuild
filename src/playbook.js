@@ -993,8 +993,8 @@ function pitchChapters(data) {
 
   // 5 · Market — the count and how you know; what you imported. No arithmetic.
   const srcList = sources.length
-    ? block({ id: 'market-sources', title: 'Research you\'ve imported', sub: `${sources.length} item${sources.length === 1 ? '' : 's'} in docs/source/`, body: `<ul>${sources.map((f) => `<li>${esc(f.name)}${f.dir ? '/' : ''}${f.date ? ` <span class="date">${esc(f.date)}</span>` : ''}</li>`).join('')}</ul>`, chip: '<span class="chip asserted">imported · not read here</span>', src: 'docs/source/ · /import' })
-    : hole('market-sources', 'Research you\'ve imported', 'A market report, a regulator\'s figures, a survey — imported material lands here with its date.', '/import <file or url>', 'docs/source — empty');
+    ? block({ id: 'market-sources', title: 'Research you\'ve imported', sub: `${sources.length} item${sources.length === 1 ? '' : 's'} in docs/source/`, body: `<ul>${sources.map((f) => `<li>${esc(f.name)}${f.dir ? '/' : ''}${f.date ? ` <span class="date">${esc(f.date)}</span>` : ''}</li>`).join('')}</ul>`, chip: '<span class="chip asserted">imported · not read here</span>', src: 'docs/source/ · /inbox' })
+    : hole('market-sources', 'Research you\'ve imported', 'A market report, a regulator\'s figures, a survey — imported material lands here with its date.', '/inbox <file or url>', 'docs/source — empty');
   out.push(chapter('market', chapterHead(5, 'Market', line(cell('people'))),
     '<div class="blocks">' + cellBlock(cell('people'), canvas, 'market-people', 'How many, and how do you know', 'the People cell') + srcList + '</div>'));
 
@@ -1638,11 +1638,11 @@ function playbookJs(brand) {
 // chapter holes are what hole() drew, minus the canvas cells the chapters repeat. Nothing is computed
 // twice, so the terminal and the page can never disagree. A verb whose skill folder the project
 // doesn't have yet is said so; when the hole is a record a document can fill (rivals, brand) it
-// points at /import instead — the record is ungated, only the deeper verb is. A FEAT or a mentor's
+// points at /inbox instead — the record is ungated, only the deeper verb is. A FEAT or a mentor's
 // dossier is not something you drop in, so those just wait for the mode.
-const VERB_ORDER = ['/boss', '/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/import', '/spec', '/scout market', '/landing', '/trust', '/consult'];
+const VERB_ORDER = ['/boss', '/canvas', '/idea', '/log', '/decide', '/persona', '/evidence', '/inbox', '/spec', '/scout market', '/landing', '/trust', '/consult'];
 // A gated verb with a door that exists: the record can still be filled the plain way.
-const ALT = { scout: ['or drop what you know', 'import'], canvas: ['or drop what you know', 'import'], landing: ['or drop what you know', 'import'], log: ['or add it to the idea', 'idea'] };
+const ALT = { scout: ['or drop what you know', 'inbox'], canvas: ['or drop what you know', 'inbox'], landing: ['or drop what you know', 'inbox'], log: ['or add it to the idea', 'idea'] };
 // Is the verb's skill installed here? No skills folder at all (a bare adopt, a test tree) → nothing
 // can be said about gating, so yes. The readers that write a sentence rather than a list (recap,
 // the board's footer, the re-entry line) use this to phrase the wait themselves (IDEA-118).

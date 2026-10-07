@@ -94,6 +94,14 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   lists each, and if any of those folders are already committed it says so plainly — ignoring stops new
   files, it does not take old ones out of your history — and gives the one command that stops tracking
   them. Delete a line to commit a folder after all; sync won't put it back.
+- **`/inbox` — bring anything in, and see what hasn't been dealt with.** A deck, a report, a
+  regulation, a contract, a page, three paragraphs you paste: `/inbox` keeps a dated copy on your
+  machine (never committed) with a note of where the original lives, then sorts it in the same turn —
+  your own notes into your idea, rivals into the competition table, figures into the canvas with their
+  source, someone's words to `/evidence`, legal or HR material held and labelled. Bare `/inbox` or
+  `boss inbox` shows what's new, held and sorted, and where each item went; nothing gets moved, so
+  nothing gets lost. `/import` is now `/inbox`; `boss sync` says so.
+
 - **`/scout` — one way to find out what's true outside your own head, from day one.** Rivals and the
   market, what customers say in public, how others solved a flow, what an API actually does,
   build-or-buy, the rules that apply, who knows a topic best: `/scout market rivals <space>`,

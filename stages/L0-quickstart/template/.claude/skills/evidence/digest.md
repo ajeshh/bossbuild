@@ -1,6 +1,6 @@
 ## A digest — a whole transcript
 
-1. **Get it in.** Pasted, use it. A file or URL, pull it into `docs/source/` first (`/import` — a
+1. **Get it in.** Pasted, use it. A file or URL, pull it into `docs/source/` first (`/inbox` — a
    durable copy) and read from there. If it's long, read all of it before extracting — signals hide in
    the back half.
 2. **Extract graded evidence at scale** — each real signal a record as above. Batch, show, save on OK.

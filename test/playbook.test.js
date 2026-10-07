@@ -419,7 +419,7 @@ test('eight chapters, each line a substring of a record on disk or absent — BO
 test('first run of the chapters: no idea, personas, competition, sources or dossier → every chapter is questions and verbs', () => {
   const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS });
   const html = renderPlaybookHtml(collectPlaybook(dir, 'tidewell'), '2026-09-13 10:00');
-  for (const v of ['/idea', '/persona derive', '/scout market', '/import', '/consult · mentor-capital', '/interview']) assert.ok(html.includes(v), v);
+  for (const v of ['/idea', '/persona derive', '/scout market', '/inbox', '/consult · mentor-capital', '/interview']) assert.ok(html.includes(v), v);
   assert.ok(html.includes('id="persona-none"') && html.includes('id="competition-none"'));
 });
 
@@ -470,16 +470,16 @@ test('open questions are the page\'s holes, once each — every canvas hole and 
   assert.ok(qs.slice(0, firstOther).every((q) => q.verb === '/canvas'));
 });
 
-test('a verb the project does not have yet: droppable records point at /import, the rest wait for the mode; a verb it has is printed as is', () => {
-  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/import/SKILL.md': '# import', '.claude/skills/persona/SKILL.md': '# persona' });
+test('a verb the project does not have yet: droppable records point at /inbox, the rest wait for the mode; a verb it has is printed as is', () => {
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/inbox/SKILL.md': '# import', '.claude/skills/persona/SKILL.md': '# persona' });
   const data = collectPlaybook(dir, 'tidewell'); renderPlaybookHtml(data, '2026-09-13 10:00');
   const line = (id) => openQuestions(data, dir).find((q) => q.id === id).line;
-  assert.equal(line('competition-none'), '/scout market — or drop what you know: /import');
-  assert.equal(line('product-not'), '/canvas seeds docs/BRAND.md — or drop what you know: /import');
+  assert.equal(line('competition-none'), '/scout market — or drop what you know: /inbox');
+  assert.equal(line('product-not'), '/canvas seeds docs/BRAND.md — or drop what you know: /inbox');
   assert.equal(line('risks-trust'), '/trust — arrives with the next mode (boss unlock)');
   assert.equal(line('persona-none'), '/persona derive');
   assert.equal(line('team-none'), 'write docs/team/<you>.md — the README there has the shape; boss team add writes a cofounder\'s', 'a hole with no verb points at the record shape, without citing BOSS\'s own records');
-  // skills folder present but no /import → the gated verb just waits
+  // skills folder present but no /inbox → the gated verb just waits
   const noImport = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, '.claude/skills/canvas/SKILL.md': '# canvas' });
   const d2 = collectPlaybook(noImport, 'tidewell'); renderPlaybookHtml(d2, '2026-09-13 10:00');
   assert.equal(openQuestions(d2, noImport).find((q) => q.id === 'competition-none').line, '/scout market — arrives with the next mode (boss unlock)');
@@ -501,10 +501,10 @@ test('the terminal: one summary line grouped by verb, --questions lists each wit
 });
 
 test('the page says the same thing the terminal says: a gated hole\'s verb line matches, and the ledger carries the open count with the cheapest verb', () => {
-  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-app.md': IDEA, '.claude/skills/import/SKILL.md': '# import', '.claude/skills/canvas/SKILL.md': '# canvas' });
+  const dir = project({ ...stamp(), 'docs/ideas/IDEA-001-canvas.md': CANVAS, 'docs/ideas/IDEA-001-app.md': IDEA, '.claude/skills/inbox/SKILL.md': '# import', '.claude/skills/canvas/SKILL.md': '# canvas' });
   const data = collectPlaybook(dir, 'tidewell');
   const html = renderPlaybookHtml(data, '2026-09-13 10:00');
-  assert.ok(html.includes('not yet · /scout market — or drop what you know: /import'));
+  assert.ok(html.includes('not yet · /scout market — or drop what you know: /inbox'));
   assert.ok(html.includes('not yet · /trust — arrives with the next mode (boss unlock)'));
   assert.ok(html.includes(`<b class="tab">${data.questions.length}</b> open · start: /canvas</div>`), 'the open line closes the ledger');
 });

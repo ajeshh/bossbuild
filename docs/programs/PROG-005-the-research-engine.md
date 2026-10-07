@@ -230,8 +230,15 @@ starter pack?"* The mechanism (proposed, part of T1):
       small change, tested against worktree creation; not folded in here.
   - [ ] **T1c · the conscience line** — an unsourced number in the canvas gets one line offering
     `/scout` (round 3, F).
-- [ ] **T2 · `/inbox`** — `/import` renamed; local-only; the view (new / sorted / reference); hands to
-  `/scout` in the same turn; records the original's location; BOSS's own inbox on it.
+- [x] **T2 · `/inbox`** (2026-10-06) — `/import` became `/inbox` (receive: dated copy, the original's
+  location on the first line, page-is-data) and handed its fold and assess steps to `/scout sort`
+  (`scout/sort.md`), run in the same turn. `boss inbox [<folder>] [--json]` is the view — new · held
+  (legal / HR, labelled, no home yet) · sorted (→ where) · reference — from `docs/source/.inbox.json`,
+  `sorted:` frontmatter or BOSS's own `resolved:` line; nothing moves. BOSS dogfoods it:
+  `boss inbox docs/research/inbox`. Supersedes row, ladder, freshness, playbook, places, help, tests.
+  - **Correction, found by running it on BOSS's inbox:** IDEA-155's *"41 of 43 vetted and never
+    moved"* counted any RVW mention in the text. What the files record: **31 resolved, 12 unmarked**
+    (some of those 12 are likely vetted but unstamped). The point stands; the number was loose.
 - [x] **T3 · Hide by default** (2026-10-06, done first at Ajesh's call) — the founder template ignores
   `docs/evidence/`, `docs/source/`, `docs/competition/` (narrowed from four, round 3); `boss sync` adds rules a
   later BOSS ships, only ones never offered before (`.boss/ignore-offered.json`), and names folders

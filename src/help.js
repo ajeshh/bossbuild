@@ -47,6 +47,12 @@ export const HELP = {
     examples: ['boss design', 'boss design --open', 'boss design --questions'],
     see: ['playbook', 'design-tokens-init'],
   },
+  inbox: {
+    usage: 'boss inbox [<folder>] [--json]',
+    what: 'What came in through /inbox and where it went: new (not sorted yet — /scout sort <file>), held (legal or HR material, labelled and kept on this machine until the project has a home for it), sorted (with where each part was filed), and reference. Nothing moves; an item is sorted when /scout sort stamps it. Reads docs/source/ unless you name a folder.',
+    examples: ['boss inbox', 'boss inbox --json'],
+    see: ['playbook', 'status'],
+  },
   board: {
     usage: 'boss board [<ID>|PROG-NNN] [--detail] [--html] [--next|--blocked|--json] [--all] [--mine] [--program <name>]',
     what: 'A live read of what\'s in flight (Captured → Taking shape → Building → Shipped), derived from your files — never a document you maintain. Pass an ID for one card in full, or --detail for a line under every card. Deferred and dropped work is folded into Parked — decided, not queued. --html opens a visual kanban; --next/--blocked/--json are the agent-readable views.',
@@ -207,7 +213,7 @@ export const WAYFINDING = [
   //   `boss cmd`   — a terminal read; re-entry, the board and the weekly recap live here
   // Before v0.275.0 this was skills-only, so "who do I ask about rearchitecting" and "how do I
   // pick up where I left off" — two things BOSS genuinely answers — could not appear at all.
-  ['get an idea out of my head', ['/boss', '/idea', '/import']],
+  ['get an idea out of my head', ['/boss', '/idea', '/inbox']],
   ['find out whether anyone wants it', ['/canvas', '/persona', '/scout', '/interview', '/pretotype', '/evidence']],
   ['see something move today', ['/prototype']],
   ['build the thing properly', ['/spec', '/smoke', '/log', '/close']],

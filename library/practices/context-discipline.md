@@ -122,7 +122,7 @@ curve: host
   convention written into `CLAUDE.md` is invisible to every other tool you or a collaborator use.
   (A symlink works when there's no Claude-specific layer, but needs Admin/Developer Mode on Windows —
   prefer the import.) Adopting a repo that already has one: `/init` (with `CLAUDE_CODE_NEW_INIT=1`)
-  reads it, and `/import` appends a **one-time copy** — one-time means it can drift, so the live
+  reads it and appends a **one-time copy** — one-time means it can drift, so the live
   import is the better default.
 - **The split saves zero tokens.** `@path` imports are organizational only — every imported file,
   `AGENTS.md` included, still loads at startup. So the "keep it tight" budget above applies to

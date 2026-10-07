@@ -80,7 +80,7 @@ for a fresh project, name A and B and let the founder pick.
 > a stack and mode, and (with your OK) create a private GitHub repo. That's the **spin-up** flow.*
 >
 > *Living means what it says: the idea doc is somewhere you keep adding, not a form you filled in once.
-> `/idea <a thought>` adds to it whenever more lands; `/import` adds a whole document.*
+> `/idea <a thought>` adds to it whenever more lands; `/inbox` adds a whole document.*
 >
 > *Path B — you have a fragment, a hunch, or just a topic to noodle on. Run `/idea <one
 > sentence about it>`. I'll create a living idea doc you can keep adding to. Re-run `/idea`

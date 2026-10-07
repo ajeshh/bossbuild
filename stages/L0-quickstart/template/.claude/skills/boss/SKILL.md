@@ -90,7 +90,7 @@ deck, a URL — not just a tidy PRD. **Pull it in; don't make the founder retype
   question only if genuinely blocked.
 
 > If the founder is mid-flow and wants to *add* material to an already-captured idea later, that's
-> `/import` — same ingest, pointed at an existing `IDEA-NNN`.
+> `/inbox` — same ingest, pointed at an existing `IDEA-NNN`.
 
 ## 2. Shape it (product-lead lens)
 

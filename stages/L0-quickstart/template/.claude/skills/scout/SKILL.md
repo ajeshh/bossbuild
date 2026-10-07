@@ -91,12 +91,14 @@ Then point the canvas cell, the spec, or the decision at the file — cite it, d
 
 ## Sorting something you were handed — `/scout sort <file>`
 
-For material brought in with `/import` (it lands in `docs/source/`), or a path the founder names.
-Read it, decide what kind it is, and file each part:
+For material brought in with `/inbox` (it lands in `docs/source/`, which stays on this machine) — it
+hands over to this in the same turn — or a path the founder names. **Read `sort.md` beside this file**
+for how the two commonest routes run and how to stamp an item sorted. Decide what kind it is, and
+file each part:
 
 | It is | It goes |
 |---|---|
-| **Your own idea material** — notes, a PRD, a pitch draft | the idea doc, the way `/import` folds it |
+| **Your own idea material** — notes, a PRD, a pitch draft | the idea doc (`sort.md` §1) |
 | **About rivals** — their deck, a comparison someone made | `market` domain → `docs/competition/` |
 | **Market figures** — a sizing report, a trend deck | `market` → claim rows; the number goes in the canvas cell with its source, or as *not read* if it rests on a source you can't open |
 | **What a real person said** — call notes, a transcript, a survey | not desk research: hand it to `/evidence` |
@@ -105,9 +107,8 @@ Read it, decide what kind it is, and file each part:
 | **Legal, HR, a resume, a contract** | **stays in `docs/source/`, labelled** (`kind: legal` / `kind: hr`), and is offered to its home when this project has one (`/trust`, the team records). Never quoted into anything that commits. |
 | **Reference with no claim yet** | stays where it is, labelled `kind: reference` |
 
-**Mark it sorted on the item itself**, in its frontmatter — `sorted: YYYY-MM-DD → <where it went>`.
-The file never moves: a move breaks every link to it, and a list of what isn't sorted yet is just the
-items with no `sorted:` line.
+**Stamp it sorted** in `docs/source/.inbox.json` (`sort.md` says the shape). The file never moves: a
+move breaks every link to it, and `boss inbox` lists what isn't sorted yet from the stamps alone.
 
 ## Rules
 
