@@ -27,6 +27,9 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **IDEA-156 (2026-10-07, shipped, pushed) — skills load the branch they take.** 12 long skills keep the common
+  path in SKILL.md and open branch files on demand (~36% less per run); `/canvas` and `/evidence` offer the frames
+  just in time. 14 live runs verified. Nothing open.
 - **IDEA-151 (2026-10-05, landed in 0.330.0) — release notes weighed per bullet + a line after an update.**
   0.330.0 is stamped with weights (13 notice · 33 smaller · 1 under the hood), not yet published. Before
   `npm publish`: `npm run release` regenerates the site's What's new. Open: O1 (founders who never type `boss`).

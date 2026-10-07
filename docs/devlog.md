@@ -22,6 +22,18 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > Expect the conscience to start firing on BOSS once three entries accumulate. That is the
 > mechanism working, not a bug.
 
+## 2026-10-07 — IDEA-156 skills load the branch they take (Unreleased, pushed)
+
+- **Landed:** asked whether BOSS should host its own model to cut cost — no: BOSS makes no model
+  calls; its cost is context. Measured: always-on load is small (~3–6k, already capped by IDEA-085);
+  skill BODIES were the unsplit half. 12 of 21 large skills split (branch-only text moved verbatim
+  to sibling files) — a typical run loads ~36% less. Then the founder's half: `/canvas` offers the
+  matching frame when a reader comes up, the first `/evidence` points at the one-pager, `/red-team`'s
+  hint shows its flags. 14 live `claude -p` runs: every branch file opens when due and not otherwise.
+- **Surprise:** `/close` `cat`-ed all four branch files up front — a split only saves what the model
+  declines to read. One line at the top of its steps fixed it.
+- **Next:** nothing owed. Harness lived in the session scratchpad; if bodies regrow, IDEA-156 has the method.
+
 ## 2026-10-05 — PROG-004 the front door; IDEA-152 quick wins (Unreleased)
 
 **Landed.** Ajesh asked what CLI tools people rave about and what BOSS could learn; then *"start with
