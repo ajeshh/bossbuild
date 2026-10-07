@@ -23,6 +23,27 @@ Append-only. Newest at the top. Each entry: date, FEAT (if any), what landed, wh
 > mechanism working, not a bug.
 
 
+## 2026-10-06/07 — PROG-005 the research engine: /scout, /inbox, boss sources, team share (Unreleased, pushed)
+
+- **Landed:** Ajesh's ask — improve how BOSS researches, rank expertise including emerging voices, and
+  release it to founders — became PROG-005. The method is written once (`boss craft research`: the loop,
+  the claim row, four axes, standing by verification). `/scout` replaces five skills (`/deep-research`,
+  three refreshes, `/comp-eval`): six founder domains at Quickstart plus BOSS's own craft/humane/model on
+  the founder's shelf (`docs/research/domains/`). `/import` → `/inbox` (receives) with `/scout sort`
+  (files), `boss inbox` (the view), `boss sources` (standing counted from claim rows), `boss team share`
+  (the hidden folders through the team's drive). Research about people stays out of git by default.
+  The `unsourced` conscience moment, judged 8/8 keyless. `/vet` tracked. Reviewed by designer,
+  voice-keeper and a persona; most findings applied. BOSS synced its own install; the four retired
+  skills are gone.
+- **Surprises:** a trailing-slash ignore rule would have committed every `boss team share` link — caught
+  only by testing the link. The in-repo guard missed `/var` vs `/private/var` and linked folders INTO the
+  repo, caught by its own test. "41 of 43 inbox items never moved" was loose — the files say 31/12. The
+  feared worktree hazard from tracking `/vet` wasn't real (tested). The rebase put eight bullets inside
+  the stamped 0.331.0. A blind `/import` rename edited a regex and a line about the host's own command.
+- **Next:** C1 — a generated research index by question (agents/harness was researched four times in six
+  weeks); `library/sources.json` dates and backlinks; investor and partner market kinds wait for a
+  founder who asks.
+
 ## 2026-10-07 — context and guardrails: IDEA-153, IDEA-157, IDEA-158 (Unreleased, pushed)
 
 - **Landed:** IDEA-153 — every session start, compaction and `/clear` included, re-loads the work in flight from

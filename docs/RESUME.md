@@ -27,6 +27,11 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 
 ## Now
 
+- **PROG-005 the research engine (2026-10-06/07, Unreleased, pushed).** `boss craft research` is the
+  method; `/scout` (Quickstart, six domains + any a project adds) replaced five skills; `/inbox` +
+  `/scout sort` + `boss inbox`; `boss sources` (standing from claim rows); `boss team share`; research
+  about people stays out of git. Open in PROG-005: C1 the research index, `sources.json` dates (B5).
+
 - **Context and guardrails (2026-10-06/07, pushed) — IDEA-153, 157, 158.** Every session start re-loads the work in
   flight from its records, no-list first; the every-turn rules are ~40% smaller; `/log` names unasked work from a
   fresh reviewer; one home per fact (CLAUDE.md). Open: the old-CHANGELOG citation pass (IDEA-158 found list).
@@ -59,21 +64,8 @@ gh run list -L1          # CI — it sat red on Windows for ten days with nobody
 - **Release (2026-10-04): 0.328.0 was published to npm on 2026-09-25 (its stamp sat uncommitted until
   now); 0.329.0 is stamped and committed.** `npm publish` and `npm run deploy` are Ajesh's; the live
   site was at 0.327.0. `check:published` / `check:deployed` say how far behind each is.
-- **Shipped 2026-09-12/13, all under `## Unreleased` — the devlog holds each; RESUME keeps the pointer.**
-  · **Board pass** (`1b91586` → `5d87a12`): Building and Taking shape emptied by finishing and by reading;
-  the return path (`revisit-due`, `unticked-shipped`, `/log` stamps `outcome:` — first BOSS decision due
-  **2026-09-20**); five records flipped to `shipped`; 006/047/082/075/076 parked with triggers, 036 dropped.
-  · **Playbook** — FEAT-026/027/028/029 + the pull (`590748f`), FEAT-035 intake doors, FEAT-036 Company
-  chapters, RVW-103, the four never-asked fields, the BMC frame, the deck (`2d7563e`). Four slices done.
-  · **Showcase** — FEAT-039 Kettlewick (`6fe5942` → `a4187cc`, `e6b4cdf`): a fictional full record set,
-  `scripts/gen-demo.js` through the real renderers, `check:demo` red on a hole. The demo rule (a new chapter or
-  record type adds its demo record in the same commit) now lives in PROG-003. Board: 4 captured · 2 building · 88 shipped · 28 parked.
-  · **Board dates + the honest bar** (`3747bc9`): every card says `added <date>`, Shipped cards `shipped
-  <date>`; a Building FEAT's criteria bar renders at `0/N`, and no section at all renders as a hole.
-  Card shows **criteria, not todos** (the promise, fixed at spec time) — reasoning in the CHANGELOG entry.
-  · **Design lane** — FEAT-030/031/032/033 (`c2c63ea` → `c0b76fb`): `boss design`, seventeen sections, the
-  templates caught up. Open by design: IDEA-108 row 3 waits for a designer with a file; the data-viz
-  palette question (107 gap row 3) is still a question.
+- **Shipped 2026-09-12/13 — board pass, playbook (FEAT-026–029, 035, 036), the Kettlewick showcase
+  (FEAT-039), board dates, the design lane (FEAT-030–033).** The devlog holds each, with commits.
 - **IDEA-135 (2026-10-04, in 0.329.0) — the build outruns the evidence.** EVID-004: a third founder, AI
   building ten half-built features nobody tried. Shipped by composition, no new skill: the `unseen` loops
   read the code, the playbook shows *how we're learning*, the canvas line is *What we're testing next*,
