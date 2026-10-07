@@ -3,11 +3,11 @@
 // process.exit() — handlers set process.exitCode, and `bin/boss` is the one place that exits.
 
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
-import { join, resolve, basename, delimiter, relative } from 'node:path';
-import { execSync, spawn } from 'node:child_process';
+import { join, resolve, basename, relative } from 'node:path';
+import { spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, BOSS_HOME, BOSS_ROOT } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
-import { stageVars, applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
+import { stageVars, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
 import { STAMP, readStamp, writeStamp, registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { cmdSync, stampManaged, computeSettingsMerge } from './sync.js';
 import { readInbox, inboxProblems, INBOX_DIR } from './inbox.js';
@@ -34,9 +34,9 @@ import { insights } from './insights.js';
 import { gistWork, recordDrift, nextId, idCensus, timeline, programs, grownRecords } from './records.js';
 import { renderTeam, addCollaborator, removeCollaborator, isTeam, resolveIdentity } from './team.js';
 import { cmdStatus, statusLine } from './orientation.js';
-import { dim, bold, ok, warn, err, shellArg } from './ui.js';
+import { dim, bold, ok, warn, err } from './ui.js';
 import { fail, failNotAProject, setJsonErrors } from './fail.js';
-import { cmdUnlock } from './install.js';
+import { cmdNew, cmdUnlock, claudeInstalled, CLAUDE_MISSING } from './install.js';
 import { parseArgs, KNOWN_FLAGS } from './args.js';
 import { lookup, terms } from './glossary.js';
 import { HELP, SYMBOLS } from './help.js';
@@ -44,121 +44,6 @@ import { helpHtml } from './help-html.js';
 import { homeHtml, homeUrl } from './home.js';
 import { isoDay } from './clock.js';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
-
-// Is `claude` somewhere this shell would find it? `boss new` and `adopt` tell the founder to type it,
-// and when it isn't installed that line is a dead end. Also looks where Claude Code's local installer
-// puts it. Said only when it's missing (IDEA-150 A5).
-function claudeInstalled(env = process.env) {
-  const exts = process.platform === 'win32' ? ['.exe', '.cmd', '.ps1', ''] : [''];
-  const dirs = (env.PATH || '').split(delimiter).filter(Boolean);
-  const home = env.HOME || env.USERPROFILE || '';
-  if (home) dirs.push(join(home, '.claude', 'local'), join(home, '.claude', 'local', 'node_modules', '.bin'));
-  return dirs.some((d) => exts.some((x) => existsSync(join(d, 'claude' + x))));
-}
-const CLAUDE_MISSING = '                        # not installed yet? https://claude.com/claude-code';
-
-function cmdNew(args) {
-  const name = args.find((a) => !a.startsWith('--'));
-  const aiNative = args.includes('--ai'); // IDEA-022 Track 3 — additive, opt-in
-  if (!name) return fail('usage: boss new <project-name> [--ai]');
-  const targetDir = resolve(process.cwd(), name);
-  if (existsSync(targetDir)) return fail(`'${name}' already exists here. To bring BOSS into a folder you already have, run \`boss adopt\` inside it.`);
-
-  const stageId = STAGE_ORDER[0]; // L0-quickstart
-  const manifest = readStageManifest(stageId);
-  mkdirSync(targetDir, { recursive: true });
-  applyStage(stageId, targetDir, stageVars(name, stageId, manifest.name));
-  stampManaged(targetDir, [stageId]);   // provenance from the first write, not from the first sync
-  recordIgnoreOffered(targetDir, [stageId]); // so a line the founder deletes stays deleted at sync
-
-  const stamp = {
-    name,
-    bossVersion: bossVersion(),
-    stage: stageId,
-    mode: manifest.name,
-    installedLayers: [stageId],
-    agents: manifest.agents || [],
-    skills: manifest.skills || [],
-    hooks: manifest.hooks || [],
-    loops: manifest.loops || [],
-    createdAt: new Date().toISOString(),
-  };
-  writeStamp(targetDir, stamp);
-
-  // User-tunable defaults the /boss spin-up skill reads. Separate from manifest.json
-  // (the install record) so users can edit prefs without touching the layer ledger.
-  writeFileSync(
-    join(targetDir, '.boss', 'config.json'),
-    JSON.stringify({
-      github: 'ask',          // ask | always | never — create a remote when an idea lands
-      visibility: 'private',  // private | public — the STARTING state, not the answer. A repo minutes
-                              // old, before anyone has looked for a key in it, isn't published by reflex.
-                              // /boss offers public as a peer option at repo-creation time.
-      // null = UNDECIDED, and BOSS does not decide it (DEC-011). It used to scaffold as
-      // 'proprietary' on a correct argument — a permissive grant, once published, cannot be
-      // revoked — that was quietly doing a second job as the ANSWER. The argument survives in
-      // /boss's ask, next to its counterpart (a project never opened quietly stays closed).
-      // Options: MIT | Apache-2.0 | AGPL-3.0 | CC-BY-SA-4.0 | proprietary | "undecided" | null
-      // `null` means NOBODY HAS ASKED; "undecided" means they were asked at the moment it became
-      // real (`/ship`'s pre-flight) and chose to wait. Two states, because otherwise the question
-      // either never returns or returns forever. Same distinction as dropped-vs-deferred (v0.204.0).
-      license: null,
-      // Optional founder-cohort declaration (v0.20.0+). When set, the conscience
-      // hook includes the cohort in its additionalContext so Claude composes the
-      // voice appropriately for the cohort — first-product gets teaching;
-      // returning-founder gets a harder question; vibe-virtuoso gets sharper
-      // architecture. Options: vibe-coder-newbie | eng-builder | non-tech-founder
-      // | first-product | vibe-virtuoso | indie-hacker | returning-founder |
-      // domain-expert | null. /boss skill asks during spin-up; user can edit later.
-      cohort: null,
-      // 🔴 `shareUp` and `aiNative` were written here until v0.252.0 and read by NOTHING — not src/,
-      // not a hook, not one shipped skill. Two different reasons, and the first is the sharper:
-      //
-      // `shareUp: false` gated a share-up pipe that was subsequently REFUSED (IDEA-021 — only the
-      // opt-in *contract* could ever re-open, and the pipe stays refused regardless). It read to a
-      // founder as a privacy setting, and setting it `true` did nothing. **A pre-set opt-in flag for
-      // an unbuilt feature is a consent trap**: someone flipping it today consents to nothing
-      // specific, and a future version reading it would inherit an agreement nobody could have
-      // understood. The honest position is that BOSS sends nothing, which needs no field. When a
-      // share contract is genuinely built, it writes its own key and asks at that moment.
-      //
-      // `aiNative` recorded the `--ai` flag, and `adopt`'s comment claimed `/read-repo` read it
-      // back. `/read-repo` never mentioned it. The flag still does its job as a LOCAL — it prints
-      // the extra line below — but persisting it bought nothing.
-    }, null, 2) + '\n',
-  );
-
-  try {
-    execSync('git init -q', { cwd: targetDir });
-  } catch { /* git optional */ }
-  const guard = installCommitGuard(targetDir);
-
-  registerProject({
-    name,
-    path: targetDir,
-    stage: stageId,
-    mode: manifest.name,
-    bossVersion: bossVersion(),
-    createdAt: stamp.createdAt,
-  });
-
-  console.log(`\n  ${ok('✦')} Created ${bold(name)} — ${manifest.name} mode (${stageId}, BOSS ${bossVersion()})`);
-  console.log(`    agents: ${stamp.agents.join(', ') || '—'}`);
-  console.log(`    skills: ${skillsLine(stamp.skills)}`);
-  commitGuardLine(guard);
-  console.log(`\n  ${bold('Next')} ${dim('(these run in your terminal)')}`);
-  console.log(`    cd ${shellArg(name)}`);
-  console.log(`    code .              # or open the folder in your editor (Cursor, etc.)`);
-  console.log(`    claude              # open Claude Code (works in the terminal or the editor panel)`);
-  if (!claudeInstalled()) console.log(dim(CLAUDE_MISSING));
-  console.log(`    ${dim('then, inside Claude:')}`);
-  console.log(`    > /boss <your idea>     # spin up — a sentence, a doc, a deck, or a link`);
-  console.log(`                            #   (first time? /welcome · already written it down? /inbox <file|url>)`);
-  if (aiNative) {
-    console.log(`    > /read-repo           # AI-native: tailor the scaffold to what BOSS understands (augments, never replaces)`);
-  }
-  console.log('');
-}
 
 // boss adopt — bring BOSS into an ALREADY-STARTED repo, non-destructively.
 // "Lite BOSS" is the design, not a fallback (Principle 2): adopt at the lightest
