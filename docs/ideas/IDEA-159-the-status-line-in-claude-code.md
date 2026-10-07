@@ -40,6 +40,32 @@ touching their file, so they'd never find why. Opt-in through the door that exis
 (`boss hooks enable statusline`). Offered once, in one line, where orientation is the job: the end of
 `boss new` / `boss adopt`, and `/welcome`. Never re-offered after a no.
 
+**1b. The offer has to explain itself (Ajesh, 2026-10-07: *"it seems like a big change, and the user
+might not know or understand… explain it in plain english as an option"*).**
+Most founders don't know the strip has a name, or that it can show anything. So the offer is made
+**inside Claude Code**, where "the bottom of this screen" is something they can look at — `/welcome`,
+or the end of the first `/boss` — not at the end of `boss new` in a terminal they're about to leave.
+It shows the actual line for *their* project, says what changes and what doesn't, and a yes is acted
+on by the skill — the founder types nothing. Draft copy (cohort-aware, like every BOSS offer):
+
+> *Beginner, no line of their own:* One more thing, and it's optional. The strip along the bottom of
+> Claude Code is called the **status line**. BOSS can use it to show where you are, all the time —
+> for this project it would say:
+> `BOSS · Quickstart · next: /canvas`
+> It updates as you work, so you never have to ask what's next. It only changes this project, not
+> your other ones, and you can turn it off any time. Want it?
+
+> *They already have a line:* You already show something in that strip. BOSS won't replace it — it
+> can add one line underneath, so you'd see both:
+> `<their line, as it is now>`
+> `BOSS · MVP · building FEAT-003`
+> Add it underneath?
+
+> *Experienced:* Status line: `BOSS · MVP · building FEAT-003`, always on, this project only. Below
+> any line you already have. Want it? (`boss hooks disable statusline` undoes it.)
+
+A no is final: not asked again. A yes says in one line how to undo it.
+
 **2. Read the host's JSON, not the cwd? → Yes: `workspace.project_dir`, then walk up to `.boss/`.**
 `project_dir` is where the session started; `current_dir` moves when Claude `cd`s into `src/`. Read
 stdin only when it is piped (a founder typing `boss status --line` in a terminal must not hang), with
@@ -77,7 +103,7 @@ should be able to see that. No counts, no streaks, no nudges.
 - [ ] S1 · `--line` reads `workspace.project_dir` from piped stdin (timeout, cwd fallback) and names
   the next step when nothing is in flight; `conscience paused` when paused
 - [ ] S2 · `boss hooks enable statusline`: plant, or compose over an existing line; `disable` restores
-- [ ] S3 · the one-line offer at the end of `boss new` / `boss adopt` and in `/welcome`
+- [ ] S3 · the plain-English offer (1b) inside Claude Code: `/welcome` and the end of the first `/boss`
 - [ ] S4 · tests: never clobbers a user-level line; composed output carries both; disable round-trips;
   no stdin hang
 - [ ] S5 · a live check in a throwaway project in the terminal (and the panel, if Q above says yes)
