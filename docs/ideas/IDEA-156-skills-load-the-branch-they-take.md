@@ -98,7 +98,7 @@ ledger row), check-dogfood (`.boss/trace.jsonl` owed but exists), check-roster-c
 teach and let them know just in time?"* Two questions: does Claude open the branch file, and does
 the FOUNDER learn the branch exists at the moment it would help.
 
-- [ ] T7 · Claude's half is untested live. Each routing line sits in the step where the branch
+- [x] T7 · Claude's half is untested live. Each routing line sits in the step where the branch
   happens; most fire on something observable (a flag, a file, `adopted: true`), a few on judgment
   (`ship/confusion.md` "when you can name one", `design-library/handoff.md` "when a designer
   joins"). Run each split skill once in a throwaway with its branch condition true; record
@@ -110,6 +110,31 @@ the FOUNDER learn the branch exists at the moment it would help.
   in the `/` menu. (`--paths` IS offered JIT by /smoke, /spec, tester and a conscience moment;
   `--humane` by /landing and design-review's after half; `--self` is BOSS-internal.)
 - Already JIT: `/sunset FEAT-NNN` from /boss; `/idea gist` from the board and `boss` help.
+
+### T7 result (2026-10-07) — 14 live runs, all pass
+
+Headless `claude -p` (Sonnet) on throwaway projects, scored on which skill files were opened (Read
+or a shell `cat`) and, for the two offers, what the founder was told.
+
+- **Opens the branch when it should (9):** `--frame lean` → frames.md · `--frame onepager` →
+  onepager.md · `/idea gist` → gist.md · `/sunset IDEA-002` → sunset/idea.md · call notes →
+  debrief.md · adopted repo `/welcome` → reference/adopted.md · `/red-team --paths` → paths.md ·
+  `/close` with no RESUME → templates/resume.md (+ why-check.md, due because `why_checked:` was missing).
+- **Doesn't when it shouldn't (4):** plain `/canvas`, plain `/idea`, `/red-team` on an AI feature,
+  `/close` with a filled RESUME — none opened a branch file.
+- **The offers fire (2):** naming an advisor in `/canvas` → *"`/canvas --frame onepager` turns these
+  same answers into the two-minute prose version… unblocked since EVID-001 exists"*; a first
+  `/evidence` record → *"`/canvas --frame onepager` can now render the idea as a two-minute read."*
+
+What the runs changed:
+- `/close` read all four branch files in one `cat` before checking any condition. Fixed with one
+  line at the top of its steps (open a branch file only when its step says its condition holds), and
+  step 2's stale "template below" now links `templates/resume.md`. Re-run: only the due files open.
+- Two of my expectations were wrong, not the skills: `/red-team` with no flag on a NON-AI feature
+  correctly runs `--paths`/`--humane` (its own rule, line 17); a RESUME that is the raw template is
+  correctly rebuilt from it.
+- The scaffolded project's settings allow some shell, so `--allowedTools` didn't make the runs
+  shell-free; every command stayed in the throwaway folder.
 
 ## Known costs of the split (accepted)
 

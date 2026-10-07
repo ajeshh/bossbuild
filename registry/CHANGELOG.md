@@ -72,6 +72,10 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   `--self` pass only on that flag, `/close` reads the why-check only when a decision was reversed.
   A typical run of those twelve loads about a third less into Claude's context, so there's more
   room left for your code. Nothing was cut or reworded; `boss sync` brings the new files over.
+- **You hear about the other shapes of your canvas when you'd use one.** Mention who's going to read
+  it — an advisor, an investor — and `/canvas` names the version made for them, with the command. Your
+  first `/evidence` record says the canvas can now be a two-minute one-pager. And `/red-team`'s menu
+  hint now shows its `--paths` and `--humane` passes.
 
 ### Under the hood
 

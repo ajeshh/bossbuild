@@ -51,6 +51,9 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
 
 ## How to run it
 
+The other files in this folder are branches. Open one only when the step that names it says its
+condition holds; reading them up front spends the context they are there to save.
+
 1. **Append a devlog entry** by running the `/log` flow (FEAT, landed, next, surprises). Ticking the
    active FEAT's acceptance criteria, each with its evidence, and appending to its `## Build log`
    happen there (`/log` step 4), not here. If `/log` already ran this session, skip — don't duplicate.
@@ -75,7 +78,7 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
    into the FEAT (they are read back from there), then say the old file can go — never delete it
    unasked. Nothing in flight? Skip it and say nothing.
 
-2. **Update `docs/RESUME.md`** (create if missing — template below). Rewrite, don't append —
+2. **Update `docs/RESUME.md`** (create if missing — from [`templates/resume.md`](templates/resume.md)). Rewrite, don't append —
    and **keep it inside its window: 200 lines.** `boss status` prints one line when it is past that;
    the answer is never to trim, it is to *move*: anything that has shipped goes to the devlog (step 1
    already wrote the entry), anything durable goes to the record it belongs to (`/decide`, the IDEA,
