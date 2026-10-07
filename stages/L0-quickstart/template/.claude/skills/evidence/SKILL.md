@@ -117,6 +117,13 @@ Open [`debrief.md`](debrief.md) and follow it.
 
 Open [`digest.md`](digest.md) and follow it — and [`debrief.md`](debrief.md) too, for the pitched-instead-of-listened taxonomy and the brand-row shape it refers back to.
 
+## After the project's first record
+
+If this run wrote the first `EVID` in `docs/evidence/` and a canvas exists, end with one line: the
+canvas can now render as a one-pager that someone outside can read in two minutes —
+**`/canvas --frame onepager`**. Only on the first record; after that, `/canvas` offers it when a
+reader comes up.
+
 ## Guardrails
 
 - **Never fabricate.** Analysis, not invention. Verbatim is sacred: the moment you paraphrase a pain

@@ -92,6 +92,25 @@ follows `mentor-hiring` from health/SKILL.md to health/verdict.md.
 Pre-existing reds, not this work (also red in the main checkout): check-boundary (`boss-sync`
 ledger row), check-dogfood (`.boss/trace.jsonl` owed but exists), check-roster-claims (module not found).
 
+## Found after shipping — the founder's half (Ajesh, 2026-10-06)
+
+*"does it know when to seek more… rather than let the user guess if it exists or not, like do we
+teach and let them know just in time?"* Two questions: does Claude open the branch file, and does
+the FOUNDER learn the branch exists at the moment it would help.
+
+- [ ] T7 · Claude's half is untested live. Each routing line sits in the step where the branch
+  happens; most fire on something observable (a flag, a file, `adopted: true`), a few on judgment
+  (`ship/confusion.md` "when you can name one", `design-library/handoff.md` "when a designer
+  joins"). Run each split skill once in a throwaway with its branch condition true; record
+  whether the file was opened.
+- [x] T8 · `/canvas` frames are never offered: nothing says "this can be a one-pager now" when the
+  first EVID lands (`/evidence` is silent), or names Lean/BMC when the founder says who it's for.
+  Only the argument-hint shows them.
+- [x] T9 · `/red-team` argument-hint is `[FEAT-NNN]` — its `--paths` / `--humane` flags are invisible
+  in the `/` menu. (`--paths` IS offered JIT by /smoke, /spec, tester and a conscience moment;
+  `--humane` by /landing and design-review's after half; `--self` is BOSS-internal.)
+- Already JIT: `/sunset FEAT-NNN` from /boss; `/idea gist` from the board and `boss` help.
+
 ## Known costs of the split (accepted)
 
 - `/boss` on day 0 reads SKILL.md + `setup.md`: slightly more than before. Every later run is ~31% less.

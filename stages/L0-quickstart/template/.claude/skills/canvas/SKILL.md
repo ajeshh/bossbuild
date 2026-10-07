@@ -106,6 +106,11 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    them), **cite their ids in the riskiest-assumption cell** — the bet should argue from receipts, not
    vibes, and their grades (stated-pain → observed-behavior → commitment) show how far it's really been
    tested.
+   **When the founder names a reader** — an advisor, an investor, someone they're about to write to —
+   **say in one line that the same answers render for them**, with the command: `/canvas --frame
+   onepager` for someone outside (it needs one `EVID` first; say so if there are none), `--frame bmc`
+   for an operator or investor, `--frame lean` for someone who works in it. Once per pass, and only
+   when a reader comes up — they shouldn't have to know the frames exist to get one.
 6. When most of the **live** cells are filled + the top risk has a validation plan, mark it **Done!**
    (open [`done.md`](done.md) and follow it) — name
    what became real — then offer `boss unlock mvp`.
