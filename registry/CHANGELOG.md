@@ -68,6 +68,14 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   before you type anything about a fifth smaller.
   Existing projects get the shorter rules with `boss sync`, unless you edited them yourself.
 
+- **What you decided not to build stays decided.** After Claude Code compacts a long session, the
+  feature's *Out of scope* lines and the options you turned down now come back first, before the open
+  work — a summary keeps what was done and tends to drop what was decided against.
+- **Extra work is named by a reviewer that didn't build it.** When a feature's criteria are all met,
+  `/log` hands a fresh reviewer just the changes and the feature record, and it names anything no
+  criterion asked for — a setting, a screen, a deletion. You decide what stays; nothing is removed for
+  you.
+
 ### Under the hood
 
 - **The working-state file is retired from new MVP projects.** `.claude/rules/feature-context.md`

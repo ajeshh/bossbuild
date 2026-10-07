@@ -3,7 +3,9 @@ id: IDEA-158
 type: idea
 kind: capability
 owner: product-lead
-status: building
+status: shipped
+shipped_on: 2026-10-07
+proof: test/working-state.test.js
 created: 2026-10-07
 relates: IDEA-153, IDEA-157, IDEA-150
 gist: What was decided NOT to do survives a compaction, what got built beyond the record is named by a reviewer that didn't build it, and every fact has one home.
@@ -35,6 +37,10 @@ become case logs (53 KB, 19 KB, 10 KB). → T2.
 
 - [x] **T1 · The no-list comes back after a compaction.** `working-state.js` reads *Out of scope*,
   *Considered, not adopted* and a program's refusals, labelled *Decided not to do*.
+  Kept after the scope review named them as unasked: the heading match also takes *not doing*, *won't
+  do*, *decided not* (the same no, other words); the no-list reads back **before** the open work (the
+  first thing read is the one heeded); and the FEAT template's *Out of scope* now says it is read back
+  (a founder writing it should know it is load-bearing).
 - [x] **T2 · One home per fact.** Done 2026-10-07: 33 → 27 memories; the index 4,425 → 3,922 bytes,
   with the sort rule at its top. Retired (each read first; the only unique lines moved to CLAUDE.md):
   never-stash-pop, changelog-never-shows-research, internal-plumbing, confirm-the-altitude,
@@ -48,7 +54,8 @@ become case logs (53 KB, 19 KB, 10 KB). → T2.
 - [x] **T3 · A scope check that didn't build it.** `/log`'s "built that nobody asked for" runs in a fresh
   subagent that sees only the diff and the record, reports only what no criterion, task or found item
   names, and never deletes. BOSS's own land gets the same line.
-- [ ] **T4 · Tests, CHANGELOG, land, push.**
+- [x] **T4 · Tests, CHANGELOG, land, push.** The scope review ran on this branch before landing (a fresh
+  subagent, diff + record only): nothing crossed the no-list; three unasked items named, kept, recorded above.
 
 ## Found while building
 
@@ -59,3 +66,4 @@ become case logs (53 KB, 19 KB, 10 KB). → T2.
 ## Log
 
 - 2026-10-07 · captured; built in worktree `idea-158`.
+- 2026-10-07 · shipped: T1–T3; the scope check dogfooded on its own branch.
