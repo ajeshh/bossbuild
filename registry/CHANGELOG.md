@@ -33,21 +33,6 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### What you'll notice
 
-### Smaller improvements
-
-### Under the hood
-
-## 0.331.0 — 2026-10-05
-
-### What you'll notice
-
-- **Where you are, without asking, and what to type, without guessing.** Typing `/canvas ` in Claude
-  Code now shows what it takes, greyed, as you type — every skill that takes an argument says so. Bare
-  `boss` inside a project opens with where you are and the three commands you'd reach for, instead of
-  the whole manual. `boss unlock` with no mode names the next one and shows what it asks of you, rather
-  than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
-  status bar or your shell prompt.
-
 - **The work in flight survives a compaction.** When Claude Code compacts a long session, or you
   `/clear` it, the next turn used to know only what the summary kept — and the tasks you'd spotted at
   hour three were usually not in it. Now every session start reads the feature you're building back
@@ -83,6 +68,21 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   lived where a compaction drops it; its two lists are now sections of the feature record (*Found while
   building*, *Open questions*). A project that already has the file keeps it — BOSS reads its open items
   and never moves or deletes it — and `/close` offers to move them into the record.
+
+## 0.331.0 — 2026-10-05
+
+### What you'll notice
+
+- **Where you are, without asking, and what to type, without guessing.** Typing `/canvas ` in Claude
+  Code now shows what it takes, greyed, as you type — every skill that takes an argument says so. Bare
+  `boss` inside a project opens with where you are and the three commands you'd reach for, instead of
+  the whole manual. `boss unlock` with no mode names the next one and shows what it asks of you, rather
+  than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
+  status bar or your shell prompt.
+
+### Smaller improvements
+
+### Under the hood
 
 ## 0.330.0 — 2026-10-05
 
