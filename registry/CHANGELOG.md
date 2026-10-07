@@ -94,6 +94,15 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   lists each, and if any of those folders are already committed it says so plainly — ignoring stops new
   files, it does not take old ones out of your history — and gives the one command that stops tracking
   them. Delete a line to commit a folder after all; sync won't put it back.
+- **Research about people stays on your machine.** Interview notes, what you import before it's
+  sorted, and your notes on rivals (`docs/evidence/`, `docs/source/`, `docs/competition/`) are no
+  longer committed: interview notes are other people's words, and a repo can go public in one click
+  with its whole history. Research about no one — API notes, build-vs-buy, public market figures — and
+  your canvas, ideas and decisions still commit. New projects start this way; `boss sync` adds the lines
+  to existing ones and lists each, and if any of those folders are already committed it says so
+  plainly — ignoring stops new files, it does not take old ones out of your history — and gives the
+  one command that stops tracking them. Delete a line to commit a folder after all; sync won't put it
+  back.
 
 - **Where you are, without asking, and what to type, without guessing.** Typing `/canvas ` in Claude
   Code now shows what it takes, greyed, as you type — every skill that takes an argument says so. Bare

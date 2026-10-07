@@ -140,6 +140,54 @@ research skills get tracked.
 - **Team sharing: explore all three, then decide** — a team-only drive folder, a private docs repo,
   an internal MCP doc server. Task below.
 
+## How wide `/scout` goes — the research most companies do (draft, 2026-10-06)
+
+Ajesh: *"have we thought of everything scout can be, its not just rivals or market, its also product
+research, or api documentation, or other technical research. needs to be wide."*
+
+| Family | Kinds | Verified by | Ages in | Lands (founder) |
+|---|---|---|---|---|
+| **Market** | rivals · size and segments · pricing / WTP · why-now · channels · partners and ecosystem · investors in the space | open the primary page; bottom-up arithmetic | weeks (prices) – years (size) | competition table, canvas cells |
+| **Customer (desk)** | what people say in public — reviews, forums, communities, complaints | quotes with links; never graded as EVID | months | persona (synthetic side), problem cell |
+| **Product** | how others solved a flow · UX and design references · feature benchmarks | look at the thing itself | months | design / spec |
+| **Technical** | API and SDK docs · build-vs-buy and tool choice · feasibility and prior art · security advisories for what you depend on · standards | **run it** — a probe or a test beats a doc | days – weeks | spec, architecture, a decision |
+| **Legal and risk** | regulation and compliance · name / trademark / domain availability · platform terms you depend on | the authoritative text; never legal advice | months | trust, decisions |
+| **People** | experts and advisors (standing, emerging voices) · hiring market, roles, pay | track record from claim rows | months | team, sources list |
+| **BOSS only** | craft · humane · model | three skeptics | per curve | the library |
+
+### Architectural questions this raises
+
+- **A · Not every kind earns a domain file.** `/scout <question>` with no domain runs the general loop;
+  a domain earns a file only when it adds something real (an order of sources, a way to verify, a
+  landing place, a clock). Lean: ship families as domains, kinds as arguments.
+- **B · Verification is not one method.** Three skeptics suit claims; technical claims are settled by
+  running code; a price by opening the page; law by its text. The engine's step 5 must say *try to
+  kill it the way this kind can die*.
+- **C · "Research stays local" vs technical research.** API notes and build-vs-buy findings are about
+  no person, and the coder agent, a teammate and a fresh worktree all need them in the repo. Lean:
+  hide by **sensitivity** (people, confidential, rival intel), not by being research.
+- **D · Compose the host, don't rebuild it.** The host already searches, has research skills, and
+  can reach docs servers for APIs. `/scout` brings the method and the landing places; the fetching is
+  the host's.
+- **E · Depth.** A quick look (a price, one doc) vs a full pass (fan-out + skeptics). One flag, the
+  loop sized to the stakes.
+- **F · Does `/scout` ever speak first?** E.g. the conscience noticing an unsourced number in the
+  canvas and offering `/scout`. PRINCIPLES: say one thing when drifting, quiet otherwise.
+
+### Decided 2026-10-06 — round 3 (Ajesh)
+
+- **C → hide by sensitivity.** People, confidential material and rival intel stay local; research about
+  no one commits. T3 narrowed the same day before anything was stamped: `docs/research/` is NOT
+  ignored; `docs/evidence/`, `docs/source/`, `docs/competition/` are. The engine says so
+  (*Where it lives*).
+- **A → families as domains, kinds as arguments.** `market · customer · product · technical · legal ·
+  people` (+ BOSS's `craft · humane · model`); `/scout <question>` alone runs the general loop.
+- **B → verify the way that kind can die.** Engine step 5 rewritten: skeptics for claims, run it for
+  technical, open the page for a price, the authoritative text for law.
+- **F → speaks first only through the conscience, once** — e.g. an unsourced number in the canvas
+  gets one line offering `/scout`. (A conscience moment; designed in T1, built after.)
+- D (compose the host) and E (a quick vs full depth flag) stand as written — no objection raised.
+
 ### Tasks this program now owns
 
 - [ ] **T1 · `/scout`** — the skill, the loop citing `boss craft research`, domains `rivals`
@@ -149,7 +197,7 @@ research skills get tracked.
 - [ ] **T2 · `/inbox`** — `/import` renamed; local-only; the view (new / sorted / reference); hands to
   `/scout` in the same turn; records the original's location; BOSS's own inbox on it.
 - [x] **T3 · Hide by default** (2026-10-06, done first at Ajesh's call) — the founder template ignores
-  `docs/evidence/`, `docs/source/`, `docs/competition/`, `docs/research/`; `boss sync` adds rules a
+  `docs/evidence/`, `docs/source/`, `docs/competition/` (narrowed from four, round 3); `boss sync` adds rules a
   later BOSS ships, only ones never offered before (`.boss/ignore-offered.json`), and names folders
   already committed with the `git rm -r --cached` line. `test/gitignore-sync.test.js` (3 of 4 fail on
   the old code; the fourth guards the new behaviour). `docs/inbox/` joins when T2 creates it.

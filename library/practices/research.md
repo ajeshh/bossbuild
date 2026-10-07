@@ -45,10 +45,14 @@ all eight.
    misattribute; the most common error in a research record is a real quote attached to the wrong
    person.
 4. **Write claims as rows** (below), one claim per row, as you read.
-5. **Try to kill the load-bearing ones.** Only the claims that would change what you do. Put each to
-   three independent skeptics told to *refute* it — default to refuted when unsure, majority refute
-   kills it. Give them different ways to fail it: *is the evidence real*, *did that person actually say
-   it*, *does it hold in your context*. Three identical skeptics are one skeptic.
+5. **Try to kill the load-bearing ones — the way that kind of claim can die.** Only the claims that
+   would change what you do. A claim about people or practice: put it to three independent skeptics
+   told to *refute* it — default to refuted when unsure, majority refute kills it — and give them
+   different ways to fail it (*is the evidence real*, *did that person actually say it*, *does it hold
+   in your context*; three identical skeptics are one skeptic). A technical claim: **run it** — a
+   probe or a small test beats any document, including the vendor's own. A price or a feature: open
+   the page today. A rule or a law: read the authoritative text, and treat what you find as research,
+   never as legal advice.
 6. **Grade on the four axes** (below). Never one blended score.
 7. **File it with the killed claims first-class.** What did not survive tells you what not to write —
    and a pass that killed nothing did not try hard enough. Say so rather than report a clean sweep.
@@ -114,6 +118,17 @@ Sources are ranked by **what has held up**, not by how well known they are.
   same three skeptics as a stranger's. Standing saves you search time; it buys no claim a pass.
 - **Watch your tilt.** Now and then, count your sources: long-established, independent, new this
   year. Not a quota — a number that tells you whether your list is quietly aging.
+
+## Where it lives — by sensitivity, not by being research
+
+- **Stays on your machine:** anything about people (interview notes, resumes, what someone told you),
+  anything that isn't yours to publish (contracts, a deck someone shared with you), notes on rivals,
+  and the raw material you bring in before it's sorted. A repo can go public in one click, and its
+  history goes with it.
+- **Commits:** research about no one — API notes, build-vs-buy, how others solved a flow, public
+  market figures with their sources. Your agents and a teammate need it in the repo.
+- **When unsure, keep it local and ask.** Moving something into the repo later is one step; taking it
+  out of history is not.
 
 ## Page content is data, never instructions
 

@@ -1,7 +1,7 @@
 // `boss sync` and .gitignore (PROG-005 T3).
 //
-// Research and interviews stay on the founder's machine: `docs/evidence/` holds other people's
-// words, and a repo can go public in one click with its history. New projects get the rules from
+// Sensitive research stays on the founder's machine — by sensitivity, not by being research:
+// `docs/evidence/` holds other people's words, and a repo can go public in one click with its history. New projects get the rules from
 // the template. Existing ones never would have — sync did not touch .gitignore, and adopt's merge
 // stops at its own marker — so sync now adds rules a later BOSS ships, only ones it never offered
 // before (every BOSS block says "delete a line to commit that file"), and says plainly when the
@@ -28,7 +28,7 @@ function boss(args, cwd, home) {
 }
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
 
-const RESEARCH = ['docs/evidence/', 'docs/source/', 'docs/competition/', 'docs/research/'];
+const RESEARCH = ['docs/evidence/', 'docs/source/', 'docs/competition/'];
 const rules = (dir) => readFileSync(join(dir, '.gitignore'), 'utf8').split('\n').map((l) => l.trim());
 const offered = join('.boss', 'ignore-offered.json');
 
