@@ -675,12 +675,11 @@ const ENG_GROUPS = [
   // count. One practice, one group. Its founder-facing half is keeping-track.html.
   ['Design & interface', 'The failure modes that appear by default when AI writes your UI.',
    ['design-system', 'ai-ux-patterns', 'accessibility']],
-  // A group of one, deliberately, rather than filed under a heading it does not belong to. The
-  // alternative was "Testing & quality", whose own description is about code being right — and a
-  // practice about weighing somebody else's advice is not that. A thin honest group beats a
-  // plausible wrong one; the next practice of this kind has somewhere to land.
-  ['Judgment', 'What to do when a stranger tells you how to build.',
-   ['outside-claims']],
+  // Was a group of one ("Judgment", outside-claims alone) rather than filed under a heading it did
+  // not belong to. The next practice of this kind arrived 2026-10-06: research finds, outside-claims
+  // judges (PROG-005), so the pair shares a shelf.
+  ['Research & judgment', 'Finding out what is true outside your own head, and what to do when a stranger tells you how to build.',
+   ['research', 'outside-claims']],
 ];
 // The other three shelves. Until 2026-09-13 only ENG_GROUPS existed, so a product-shaped
 // practice had nowhere to be rendered — twelve of thirty-four were surfaced on no page, and

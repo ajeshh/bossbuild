@@ -4,7 +4,7 @@ type: idea
 kind: capability
 owner: product-lead
 status: exploring
-program: research-engine
+program: PROG-005
 created: 2026-10-06
 relates: IDEA-016, IDEA-042, IDEA-054, IDEA-066, IDEA-086
 gist: One research engine under every way BOSS researches — deep research, competitive eval, market research — with a shared core (find, fetch, verify, grade, cite, file) and per-domain customization, and sources ranked by what has held up, not by fame.

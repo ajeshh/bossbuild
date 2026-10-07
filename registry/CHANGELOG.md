@@ -96,6 +96,14 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### Smaller improvements
 
+- **`boss craft research` — one way to find out what's true outside your own head.** Competitors,
+  market size, why-now, the state of the craft: the same loop under each. Open the primary source,
+  not the summary; write one claim per row with who said it, whether you read it, and the date; try to
+  kill the claims that would change what you build; and grade on four separate axes instead of one
+  confident *"research says"*. Sources are ranked by what has held up, not by how well known they are,
+  so a new voice who measured the thing gets in by being right, and an old one fades if nothing of
+  theirs has held lately. It sits beside `boss craft outside-claims`: one finds, the other judges.
+
 ### Under the hood
 
 ## 0.330.0 — 2026-10-05

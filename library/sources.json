@@ -789,6 +789,7 @@
       "founder-pipeline-adrs"
     ],
     "outside-claims": [],
+    "research": [],
     "accessibility": [
       "w3c-wai",
       "aria-apg"
