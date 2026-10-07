@@ -114,13 +114,19 @@ test('/evidence is the one capture verb — and keeps the two halves a merge was
   // merged anyway — the founder could not tell the three apart from the menu — and the cost was
   // avoided by keeping both halves: prep stays the whole of /interview; synthesis is /evidence's
   // digest. This holds those two facts, so the merge can never quietly drop either.
-  const f = join(BOSS_ROOT, 'stages/L0-quickstart/template/.claude/skills/evidence/SKILL.md');
-  const s = readFileSync(f, 'utf8');
+  // IDEA-156: the synthesis half moved to digest.md, opened on a whole transcript — so the
+  // synthesis assertions read THAT file, not words that happen to remain in SKILL.md.
+  const dir = join(BOSS_ROOT, 'stages/L0-quickstart/template/.claude/skills/evidence');
+  const s = readFileSync(join(dir, 'SKILL.md'), 'utf8');
+  const digest = readFileSync(join(dir, 'digest.md'), 'utf8');
   assert.match(s, /\/interview/, 'the door for a conversation that has not happened yet is still named');
-  assert.doesNotMatch(s, /\/research\b/, '/research is retired; nothing points a founder at it');
-  assert.match(s, /verbatim/i, "the synthesis half — the pain in the founder's user's own words");
-  assert.match(s, /workarounds/i, 'the synthesis half — what they do today');
-  assert.match(s, /led the witness/i, 'the epistemics half at transcript scale');
+  assert.match(s, /\(digest\.md\)/, 'SKILL.md still routes a whole transcript to the digest');
+  for (const f of readdirSync(dir).filter((n) => n.endsWith('.md'))) {
+    assert.doesNotMatch(readFileSync(join(dir, f), 'utf8'), /\/research\b/, `/research is retired; ${f} points no founder at it`);
+  }
+  assert.match(digest, /verbatim/i, "the synthesis half — the pain in the founder's user's own words");
+  assert.match(digest, /workarounds/i, 'the synthesis half — what they do today');
+  assert.match(digest, /led the witness/i, 'the epistemics half at transcript scale');
   const prep = readFileSync(join(BOSS_ROOT, 'stages/L0-quickstart/template/.claude/skills/interview/SKILL.md'), 'utf8');
   assert.match(prep, /## PREP/, 'the prep half is still the whole of /interview');
   assert.doesNotMatch(prep, /## DEBRIEF/, 'and the debrief half no longer lives there');

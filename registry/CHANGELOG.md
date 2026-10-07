@@ -66,6 +66,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 - **Your CLAUDE.md tells a compaction what to keep** — the files changed and why, the decisions made,
   and any task or question not yet in a record. V1 and Scale add less to it: the inventory of what each
   mode brings is `boss map`'s job, not something read on every turn.
+- **A skill reads the part it needs, not all of it.** Twelve of the longest skills now keep the part
+  every run uses in one file and open the rest only when a run goes there: `/canvas` reads the Lean,
+  BMC or one-pager frame only when you ask for one, `/red-team` reads its `--paths`, `--humane` or
+  `--self` pass only on that flag, `/close` reads the why-check only when a decision was reversed.
+  A typical run of those twelve loads about a third less into Claude's context, so there's more
+  room left for your code. Nothing was cut or reworded; `boss sync` brings the new files over.
 
 ### Under the hood
 

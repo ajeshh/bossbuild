@@ -145,25 +145,7 @@ this: **the stack profile already exists and nothing deploys on push** — you a
 same thing a second time. Then, and not before, offer once: *"you've shipped this by hand twice; want a
 push to `main` to do it?"*
 
-If yes, the cheapest rung first:
-
-- **The host's own git integration** — most hosts deploy on push and build a preview per branch once
-  the repo is connected. One setting, nothing to maintain. Usually the whole answer.
-- **A CI job** — only when the host has no integration or the deploy needs a step it can't run. One job,
-  not a matrix.
-
-Either way, **two things travel with it, or it isn't safe to hand over:**
-
-1. **The smoke gates the deploy.** The command in `.boss/smoke.json` runs before the deploy, and a red
-   one stops it. Without that, every push is an unreviewed deploy.
-2. **Step 3b runs without you.** Nobody is at the keyboard to hit the live URL anymore, so the pipeline
-   does it after the deploy and fails loudly if it doesn't answer, or the step 3b channel is what
-   catches it. If 3b was answered `not yet`, say once: *from here, a broken deploy reaches users before
-   it reaches you.* Don't re-ask the 3am question.
-
-Write *"deploys on push"* into the stack profile so this is never offered again, and name the new
-rollback (usually the host's *redeploy previous*, or a revert commit). Declined is fine; record it and
-don't re-offer. `--preview` is the one-branch version of the same thing.
+If yes, open [`deploy-on-push.md`](deploy-on-push.md) and follow it.
 
 ### 4. Name the rollback path (every time)
 State the one command/click that restores the last-good build — and the honest caveat: **rollback restores
@@ -185,33 +167,8 @@ without a deploy — "flag the model, not just the feature." Full judgment + the
 `boss craft feature-flags`. Offer once, suggestive; a founder shipping a
 plain static page doesn't need it — skip.
 
-### 5. Capture the recipe (feed the loop)
-First ship of a new stack? The host + deploy command + rollback path + env boundary is a stack-profile
-output worth keeping — offer to save it as a deploy recipe (`/practice` writes it) so the next project of
-this kind starts from a known-good deploy instead of rediscovering it (Principle #4).
-
-### How a first ship lands (one message, not five turns)
-A first ship brings several one-time questions due at once: the licence (step 2), who hears at 3am
-(3b), deploy-on-push if earned, saving the recipe (5), and who the first real user is (6). Lead with
-what matters most: a leak or a failed live check if there is one, otherwise the reachable thing and
-its rollback. Then put **every question that needs their answer into one numbered list**, licence
-first because it becomes real the moment this is public. They answer by number; anything they skip is
-asked again only where the step says so. The quoted questions in each step are the intent, in words
-that fit this project, not lines to recite.
-
-### 6. One more thing — who finds it? (the demand voicing, once)
-Reachable is the line between a pseudo app and a real one — but **reachable isn't found.** This is the one
-leg of a real-value app the conscience otherwise never voices: *"will anyone pay?"* gets asked in the flow;
-*"will anyone ever find it?"* doesn't. So at the moment it goes live — and only then — name the cost once:
-
-> **It's reachable now. Who's the first real user, and how do they hit this?**
-
-Keep it the *demand* question, not a marketing checklist. Ask *who specifically* and *what's the one channel
-to them* — that's the n=0 risk itself. Do **not** turn it into "have you posted on Product Hunt?" (that's the
-growth-hacking nag that repels the founders BOSS most wants). **Describe the situation, never the person** —
-it's about the work's path to a user, never a judgment that the founder hasn't hustled. Say it once, point at
-`mentor-customers` for the depth, and drop it — a founder who's already got a first user or who's deliberately not
-distributing yet hears it and moves on. Never a gate.
+### 5–6. First ship of this stack?
+No stack profile when this run began? Open [`first-ship.md`](first-ship.md) and follow it: the recipe, how the first ship lands, and who finds it.
 
 ### 6b. Will they understand it? (only if the answer is already no)
 
@@ -224,14 +181,7 @@ state, a concept the product names but never explains, a step you had to talk th
 hand. If you can't name one, say nothing; a generic *"have you written docs?"* is the checklist nag
 this skill refuses everywhere else.
 
-When you can name one, name **the fix upstream first**: an empty state that explains itself, a clearer
-label, a worked example in the product. Those beat an article, and they're usually smaller. An article
-is right when the thing is genuinely complex or is reference material someone keeps open in another tab.
-
-If the founder does write docs, one line worth saying once: **publish clean markdown and keep the
-whole corpus small** — the assistants their users ask *"how do I do X in this product"* read those docs
-too, and a small current corpus beats a big one with good search. Depth is in `boss craft documentation`
-(§7). Never a gate.
+When you can name one, open [`confusion.md`](confusion.md) and follow it.
 
 ## Cohort-aware
 

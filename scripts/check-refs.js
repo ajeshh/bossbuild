@@ -528,8 +528,8 @@ const FORWARD_OK = new Map([
   // The mentor router. Naming who is seated at which rung IS its function.
   [join('stages', 'L1-mvp', 'template', '.claude', 'skills', 'consult', 'SKILL.md'),
     new Set(['mentor-fundraising', 'mentor-pitch', 'mentor-hiring'])],
-  // Post-PMF verdict: names the mentor AND the rung that seats it, which is the honest form.
-  [join('stages', 'L1-mvp', 'template', '.claude', 'skills', 'health', 'SKILL.md'),
+  // Post-PMF verdict (health/verdict.md since IDEA-156): names the mentor AND the rung that seats it.
+  [join('stages', 'L1-mvp', 'template', '.claude', 'skills', 'health', 'verdict.md'),
     new Set(['mentor-hiring'])],
 ]);
 const STAGE_IDS = readdirSync(join(ROOT, 'stages'), { withFileTypes: true })

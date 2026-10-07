@@ -33,115 +33,7 @@ a release note rather than by decision. So the answers live in one place and you
 **The founder never picks a framework.** They answer questions; the frame is a view they can switch,
 and switching never loses an answer or asks anything twice.
 
-### The floor — what a frame may and may not change
-
-A frame changes **layout and vocabulary**. It does **not** change which cells are required.
-
-> **Risks & Harms and Principles render in EVERY frame, including Lean and BMC.**
-
-Those two are the cells no conventional canvas has, and they are the reason this one is worth
-keeping. If a conventional frame could drop them, "humane" would become a preference a founder can
-decline — which is the argument BOSS already settled against an opt-in ethics mentor
-(`registry/boundary.json`: *an ethics advisor a founder can decline to open is weaker than a
-conscience they can't*). **A conventional frame is a different view of a humane canvas, never a way
-out of one.**
-
-When rendering `lean` or `bmc`, append the two cells under a plain heading — *"and two questions this
-canvas asks that Lean and BMC don't"* — rather than hiding them or apologising for them.
-
-### Mapping — where each answer shows up
-
-One answer, several homes. Nothing is asked twice:
-
-- **People** → Customer Segments (both) · the *who feels it worst* half → Early Adopters (Lean)
-- **Problem** → Problem (Lean) · its *what they use today* half → Existing Alternatives (Lean)
-- **Promises** → Unique Value Proposition (Lean) / Value Propositions (BMC)
-- **Story** → Solution (Lean); its *why now* half has no conventional home — **render it anyway**
-- **Modes of Engagement** → Customer Relationships (BMC) · its *unique advantage* half → Unfair Advantage (Lean)
-- **Business Model** → Revenue Streams (both) · its acquisition/ongoing-channel half → Channels (both).
-  **A project that won't earn still renders here** — *"not monetized; sustained by N hours a week and
-  two maintainers"* is a real answer to Revenue Streams, and a truer one than a blank. Never render a
-  non-commercial project's Revenue Streams as `_(not yet)_` when the founder has actually answered.
-- **Cost Structure** → Cost Structure (both)
-- **What it takes to deliver** → Key Resources + Key Activities (BMC)
-- **Key Partnerships** → Key Partnerships (BMC)
-- **Metrics** → Key Metrics (Lean)
-- **Risks & Harms**, **Principles** → **no conventional home; required in every frame anyway**
-
-**A cell with no answer renders as `_(not yet)_` in every frame.** Never quietly omit an empty cell
-to make a conventional view look complete — that is the same dishonesty as a filled-in guess, wearing
-a different layout.
-
-### The `onepager` frame — the smallest thing you can hand to someone outside
-
-The other three frames are for **you**. This one is for **someone else**, and that changes what
-honesty costs. It is the smallest shareable version of the venture: prose, one page, no grid.
-
-> ⚠️ **Say the one way it differs, don't hide it.** The other frames are pure projections — layout
-> and vocabulary over the same answers. **The one-pager adds one thing the canvas does not hold: the
-> evidence ledger.** That is deliberate, and it is the entire reason this frame is safe to hand
-> outside. A page of claims with no account of what is behind them is a pitch; the same page with the
-> account attached is a position. Do not quietly drop the ledger to make the page read better.
-
-**The gate — do not render this early.** It needs the canvas cells filled *and* **at least one
-`EVID-NNN`** in `docs/evidence/`. With zero evidence records, **do not produce a polished page.** Say
-what is missing in one line and point at the cheaper thing: *"There's a real shape here and nothing
-behind it yet. One 15-minute conversation would change that more than another canvas pass — `/interview`
-preps it."* A handsome page built entirely of assertions is the failure mode this frame exists inside.
-
-**What it renders, in this order:**
-
-1. **The promise**, one sentence — *Promises*.
-2. **Who it's for, and how many** — *People*, including the bottom-up count and where it came from.
-   No count in the cell means no count on the page. Never render a market size the canvas doesn't hold.
-3. **The tension, and what they do today** — *Problem* + existing alternatives, **including who else
-   sells a fix and why they might win.** A one-pager where every rival is dismissed reads as a page
-   that never looked.
-4. **How it shows up, and why now** — *Story*.
-5. **How it sustains itself** — *Business Model*, both branches. **A project that won't earn renders
-   plainly** (*"not monetized; sustained by N hours a week and two maintainers"*), never as a blank
-   and never as `_(not yet)_`.
-6. **What is actually known** — the evidence ledger (below).
-7. **What could sink it** — the riskiest assumption, plus **Risks & Harms**. The floor holds here like
-   everywhere else, and it is *more* load-bearing outside than in: a founder who names the harm before
-   a stranger asks is the one worth backing.
-8. **Principles** — the floor's other half.
-
-**The evidence ledger — countable facts, never a verdict, and never a manufactured ratio.**
-One short block near the top, built only from things you can point at:
-
-> *"Behind this page: **3 evidence records**, highest grade **`stated-pain`** (the lowest of three
-> rungs). Nobody has been observed using it and nobody has committed anything. Newest record:
-> **19 days old**. Two cells below are still open."*
-
-**Do NOT write "N of M claims are backed."** It reads as the most rigorous line on the page and it
-is the softest: **M is produced by deciding what counts as a claim**, so forgetting one shrinks the
-denominator and *raises* the backed fraction. A ratio that improves when you look less carefully is a
-comfort device wearing a lab coat. Count records, grades, ages and open cells — things that exist as
-files — never a fraction whose bottom half you invented while rendering.
-
-**Coverage is a fact; readiness is a verdict.** BOSS never renders a verdict about your venture —
-**position, never a grade.** **Never render an "investor-readiness: 62%", a letter grade, a traffic
-light, or a progress bar.** The test: *could this number go DOWN when the founder learns something
-true?* The record count can — supersede an `EVID` and it drops. A readiness score never does, which
-is exactly what makes it one.
-
-**Say how old the evidence is.** A page resting on six-month-old records says so on its face. The
-reader cannot tell a fresh position from a stale one, and they are the person it matters to.
-
-**Holes render as holes.** `_(not yet)_` survives into the page. Do not smooth a gap into a
-confident sentence because the audience is external — that is the exact pressure this frame has to
-resist, and the only thing that makes it worth more than a template anyone could fill.
-
-**Never invent.** No number, quote, logo, customer name, or testimonial that is not in a record. If
-the founder wants one on the page, the answer is *"make it true first"* — `/interview` and
-`/evidence` are how.
-
-**At n=0-past-the-gate, lead with what isn't known.** One EVID at `stated-pain` clears the gate and
-is still thin. The honest page opens with the promise and reaches the ledger fast; it does **not**
-open with enthusiasm. This is the conscience's voice in a document rather than a nudge, and it must
-never be softened into encouragement — a founder who hands out an over-confident page gets a warm
-meeting and no information, which costs more than the awkward version.
+**Rendering `lean` or `bmc`?** Open [`frames.md`](frames.md) and follow it — the floor (what a frame may and may not change) and where each answer shows up. **Rendering `onepager`?** Open [`onepager.md`](onepager.md) and follow it.
 
 ## Step 0 — does it already exist, and is this the right rung?
 
@@ -156,7 +48,7 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
 0. **If `--frame` is given and a canvas already exists, this is a RENDER, not an interview.** Read
    the answers, project them into the requested frame, and stop. Do not ask anything — the founder
    asked to see what they have in a different shape, not to fill more in. **`--frame onepager` also
-   reads `docs/evidence/` and is gated on at least one `EVID-NNN`** — see the one-pager section above
+   reads `docs/evidence/` and is gated on at least one `EVID-NNN`** — open [`onepager.md`](onepager.md) and follow it
    for what to do when there are none (it is not "render it anyway").
 1. Pick the idea: `[IDEA-NNN]` if given, else **the venture idea** — the record with
    `kind: venture` in its frontmatter (an older record that carries `motivation:` at all counts;
@@ -215,7 +107,7 @@ when it's fine (a complete outcome, not a failure to act), or name the *specific
    vibes, and their grades (stated-pain → observed-behavior → commitment) show how far it's really been
    tested.
 6. When most of the **live** cells are filled + the top risk has a validation plan, mark it **Done!**
-   (below) — name
+   (open [`done.md`](done.md) and follow it) — name
    what became real — then offer `boss unlock mvp`.
 
 ## The canvas template
@@ -342,43 +234,6 @@ find out. Don't manufacture a yes to look thorough.
 - **What we're testing next:** _(the smallest test to prove/disprove it, and who will see it — often a 15-minute call with the right person; `/interview` preps it and debriefs it into graded evidence)_
 - **What result would change the plan?** _(decide before you run it)_
 ```
-
-## Done! — the graduation moment
-
-When the canvas holds up — most of the **live** cells filled with real answers (not `_(not yet)_`
-placeholders) and the
-**riskiest assumption has a validation plan** (an experiment + what result would change the plan) — the
-idea has crossed a real threshold: it's *done enough to build*. Most founders blow right past this and
-just start coding. Don't. This is the conscience's **affirming** voice — the counterpart to "what does
-this prove?" — and you mark it in two beats:
-
-1. **Arrival.** Name what became real. Where did they start, and what's solid now — a specific person, a
-   real tension, a sharp promise, the one bet that could sink it *with* a way to test it? Say it plainly
-   and let it land. This isn't praise; it's acknowledging the idea grew up.
-2. **Next doorway.** Point at what's next without rushing: `boss unlock mvp` brings the build tools and
-   the next mentors (architect, GTM). The canvas keeps — they're free to sit with it.
-
-   **Say what the unlock is *for*, not just what it contains** — and name the thing that needs no
-   unlock at all. A sharp Promises cell is the first moment the idea can be shown to a stranger, and
-   **`/pretotype` is already here**: it can publish the promise as a real shareable page in one turn,
-   no host, no account, no unlock. (`/landing` builds the in-repo version when there's a product
-   behind it; that one is on the far side.) Naming only "the build tools" quietly teaches that the
-   unlock means *start building*, which is the one inversion this whole skill exists to prevent.
-   **The canvas earns the right to test the promise, not just to build it — and testing it is the
-   cheaper of the two, so offer it first.** Mention the page once, as an option, never as the next
-   task.
-
-In BOSS's voice (the warm register — still spare; tune by ear, don't paste verbatim):
-
-> *"Worth stopping here a second. You came in with 'an app that plans meals' — now there's a specific
-> person, a tension that's real, and the one bet that could sink it, with a way to test it this week.
-> That's the idea becoming real. Testing it doesn't need anything you don't already have — `/pretotype`
-> puts the promise in front of someone this afternoon. `boss unlock mvp` brings the build tools when
-> you want them. No rush — the canvas keeps."*
-
-A threshold, not a finish line: "done" here means *ready for the next thing*, and the canvas keeps
-evolving as you learn. Never force it — a half-filled canvas with a sharp riskiest assumption is a fine
-place to sit; mark it Done only when it's genuinely earned, not as a box to tick.
 
 ## Rules
 

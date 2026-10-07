@@ -423,9 +423,17 @@ test('no shared doc is read by a skill that nothing ships or writes', () => {
       for (const name of readdirSync(skillsDir)) {
         const dir = join(skillsDir, name);
         if (!statSync(dir).isDirectory()) continue;
-        const parts = [readFileSync(join(dir, 'SKILL.md'), 'utf8')];
-        const t = join(dir, 'templates');
-        if (existsSync(t)) for (const f of readdirSync(t)) parts.push(readFileSync(join(t, f), 'utf8'));
+        // The whole skill folder, not SKILL.md + templates/: since IDEA-156 a branch file
+        // (setup.md, digest.md, reference/…) can hold the sentence that writes or reads a doc.
+        const parts = [];
+        const gather = (d) => {
+          for (const f of readdirSync(d)) {
+            const full = join(d, f);
+            if (statSync(full).isDirectory()) gather(full);
+            else parts.push(readFileSync(full, 'utf8'));
+          }
+        };
+        gather(dir);
         const body = parts.join('\n');
         skills.push(body); bodies.push(body);
       }

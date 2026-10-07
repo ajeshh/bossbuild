@@ -116,12 +116,7 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
      retire stale lines** in the standing summary as you write the new dated block. The most dangerous
      brain isn't the empty one — it's the one citing yesterday's truth with today's confidence.
    - **Living memory, not infinite memory — compress when the read gets long.** If `boss brain` flags
-     that the read spans many sessions (the recency-window nudge), fold the *oldest* dated reads' lasting
-     conclusions into the standing summary at the **top** of `read.md` (the preamble, above the first
-     dated header), then drop those verbatim old blocks. Keep the recent ~8 dated reads as-is. Compression
-     is the model's job (you can summarize meaning); the founder can also evict directly with
-     `boss brain forget --before <date>`. The standing summary is what survives; the dated blocks are the
-     working history that ages out.
+     that the read spans many sessions (the recency-window nudge), open [`compress.md`](compress.md) and follow it.
    - **First-person, from the conscience.** "I'm noticing…", "Three sessions in, the pattern is…".
      It's a read, not a log.
    - **Interpretation across time, never facts or claims.** Facts live in the canvas/RESUME/devlog. The
@@ -147,21 +142,7 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
      `.boss/brain/read.md` directly.
 
 3b. **Update the relationship log** (`.boss/brain/relationship.md`) — *only if the conscience actually
-   said something this session.* This is the loop the frequency ledger only *counts*: did the nudge
-   **land**? Append a dated `## YYYY-MM-DD` entry recording, honestly and briefly:
-   - **What the conscience flagged** (which moment, in one line — "drift: named retention as the bet but
-     built onboarding").
-   - **What the founder did with it** — and tag the outcome plainly: *landed* (acted on it), *ignored*
-     (moved past without engaging), *overrode* (declined with a stated reason — note the reason; a good
-     override is data, not a failure), or *pushed back and was right* (the nudge was wrong — the most
-     valuable entry; it's how the conscience learns to fire better).
-   - **The must-nots carry over:** no scoring the founder, no "you should have listened." This is the
-     conscience being honest about *its own* hit rate, not grading the person.
-   - If the conscience stayed silent all session (nothing fired), write nothing here — an empty
-     relationship log is the honest state, not a gap to fill.
-   - **Stamp it:** `boss brain record --kind relationship --headline "<flagged X → they did Y>"`. The
-     conscience reads this next session (bounded) to *calibrate* — it won't re-nag a point you've
-     already answered, and it can build on a nudge that landed. View it: `boss brain --relationship`.
+   said something this session.* Open [`relationship.md`](relationship.md) and follow it.
 
 3c. **The learning pulse** — at most one question, and only when it can find something:
 
@@ -209,19 +190,7 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
    in their own words: the newest `— why: …` line in its capture log, else `success_looks_like:`. Ask
    about it **only when something happened**: a decision was reversed this session, a mode was
    unlocked, stopping was talked about. Otherwise ask only when `why_checked:` is missing or more than
-   about 30 days old. It is **one item** in the same numbered list, their sentence quoted, never
-   paraphrased:
-
-   > 4. You started this because *"every Monday I lose an hour to the cover call"*. Still true?
-
-   **Yes** → stamp `why_checked:` with today on the venture idea, and nothing else. **It's changed** →
-   append a dated `— why: <their new words>` line to its capture log (never edit the old one; a
-   changed why is the story's most important turn, not a mistake), restamp `why_checked:`, and if the
-   kind of reason moved, show the `motivation:` mapping in their words before saving. **Not any more**
-   → that's a real answer: write it the same way, say nothing more, and mention `/sunset` only if
-   they ask what now. **Remind, never push:** never use the why to argue for carrying on, never ask
-   it twice in a session, and leave it out of a close that opens with something live that can hurt
-   someone. They skipped the why at `/boss`, or skipped this question? Say nothing.
+   about 30 days old. When one of those holds, open [`why-check.md`](why-check.md) and follow it.
 
 3f. **Belongs together? Offered, never done.** Some work outgrows the record it was captured in. At
    most **one item** in the same numbered list, and only when one of these is true of the files:
@@ -232,13 +201,7 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
    - **A rule living in a to-do** — `CLAUDE.md` or `RESUME` sends people to an IDEA for standing
      rules (how something is run). An IDEA can ship and close; the rules can't.
 
-   > 5. IDEA-012 now holds three separate efforts (checkout, refunds, receipts). Give them one
-   > place — a program — so the pieces that could ship alone become their own ideas?
-
-   **Yes** → make `docs/programs/PROG-NNN-<slug>.md` (`boss id PROG`): what ties them, the shared
-   rules, the leftover tasks; point each member's `program:` at it. The grown record stays as the
-   history, with a line at its top saying where the work went. **No** → leave it, and don't offer the
-   same one again unless the record grows a new track. Never on a count of records; never moved unasked.
+   When one is true, open [`belongs-together.md`](belongs-together.md) and follow it.
 
    **Spread thin?** With no elevation to offer, one other line can take the item: when `boss board --json`
    shows work in flight (a card not yet shipped) in **three or more programs**, say once — *"Work is
@@ -259,47 +222,7 @@ in ends, and what comes next is a new decision with a cost. Don't do that here; 
 
 ## The RESUME template (used when none exists yet)
 
-```markdown
----
-id: RESUME
-type: resume
-owner: product-lead
-status: active
-updated: {{today}}
----
-
-# RESUME — {{PROJECT_NAME}}
-
-**Read this first each session.** State + next tasks + open decisions.
-**Window: 200 lines.** What has shipped lives in `docs/devlog.md` (history, append-only); what a
-command can compute is not written here; standing rules live in `CLAUDE.md`. `boss status` says
-when this file is past its window — move, don't trim.
-
-## What this project is
-_One paragraph. The current articulation — sharpen as the project sharpens._
-
-## State (current)
-- _What's real right now: shipped FEATs, the smoke command, the stack._
-- _Anything uncommitted worth knowing about._
-
-## Next tasks (in order)
-1. _Concrete. Single-session-shaped if possible._
-2. …
-
-## Open decisions
-- _Question — tentative lean — what would close it._
-
-## Prompt for the next session
-> _**Keep this evergreen** — a pointer + procedure, never a status report._
->
-> Continue {{PROJECT_NAME}}. Read `docs/RESUME.md` (this file — *State* + *Next tasks* +
-> *Open decisions*), `CLAUDE.md`, then `VERSION` + `CHANGELOG`. Cross-check `git log -3`
-> against what RESUME claims — if they disagree, RESUME is stale; re-establish ground truth
-> first. Then pick up *Next tasks* top down.
-
-## Working reminders
-- _Commands, env vars, things easy to forget._
-```
+No `docs/RESUME.md` yet? Open [`templates/resume.md`](templates/resume.md) and follow it.
 
 ## Rules
 
