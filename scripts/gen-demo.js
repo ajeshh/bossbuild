@@ -17,7 +17,8 @@
 
 import { markSvg } from './mark.js';
 import { isoDay } from '../src/clock.js';
-import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, cpSync, rmSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, cpSync, rmSync, readdirSync, statSync, existsSync, utimesSync } from 'node:fs';
+import { dateField } from '../src/frontmatter.js';
 import { join, dirname, relative, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
@@ -62,10 +63,25 @@ const RIBBON = `<div class="site-ribbon" role="banner">
 
 // Copy the record set to a temp project, stamp it, render the three spaces there (the family bar
 // looks for its siblings in the same .boss/), and hand back the paths.
+// A copy stamps every file with the moment it was copied, so the conscience's time predicates
+// (`outpaced_by` compares mtimes) read copy order, not the venture: on a fast CI runner the one
+// loop left open went quiet. Each file takes its record's own `created:`/`date:`, else the
+// venture's start, the rule `scripts/demo.js` dates the history by.
+function datedLikeTheRecords(dir, created) {
+  const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(d, e.name)) : [join(d, e.name)]));
+  for (const f of walk(dir)) {
+    let day = created;
+    if (f.endsWith('.md')) { const t = readFileSync(f, 'utf8'); day = dateField(t, 'created') || dateField(t, 'date') || created; }
+    const when = new Date(`${day}T10:00:00`);
+    utimesSync(f, when, when);
+  }
+}
+
 export function renderDemo() {
   const project = JSON.parse(readFileSync(join(DEMO, 'project.json'), 'utf8'));
   const dir = mkdtempSync(join(tmpdir(), 'boss-demo-'));
   cpSync(DEMO, dir, { recursive: true });
+  datedLikeTheRecords(dir, project.created);
   mkdirSync(join(dir, '.boss'), { recursive: true });
   // Stamped with the keys a real install writes (`boss new`/`adopt`), not a stand-in: `boss status`
   // run in this folder used to throw on the missing `installedLayers` and print "pinned: undefined".
