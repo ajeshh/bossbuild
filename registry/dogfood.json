@@ -29,8 +29,8 @@
     {
       "path": ".boss/trace.jsonl",
       "capability": "the auto-log substrate — read by /judge-traces",
-      "verdict": "owed",
-      "why": "Written by the `auto-log` hook, which `check:manifests` lists as DORMANT BY DESIGN — unregistered on purpose in the shipped manifests. So this is not the same failure as the others: the substrate is deliberately off, and /judge-traces has therefore never had real input anywhere, including in a founder's project. That is worth its own decision (turn it on for BOSS, or admit /judge-traces is unproven), not a silent 'owed'."
+      "verdict": "exercised",
+      "why": "Turned on for BOSS's own repo 2026-10-06 (IDEA-153: `boss hooks enable auto-log`); the first line landed the same day. Still dormant by design in the shipped manifests — a founder turns it on. Before: written by the `auto-log` hook, which `check:manifests` lists as DORMANT BY DESIGN — unregistered on purpose in the shipped manifests. So this is not the same failure as the others: the substrate is deliberately off, and /judge-traces has therefore never had real input anywhere, including in a founder's project. That is worth its own decision (turn it on for BOSS, or admit /judge-traces is unproven), not a silent 'owed'."
     },
     {
       "path": "docs/devlog.md",
