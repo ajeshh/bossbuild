@@ -3,7 +3,7 @@ id: IDEA-159
 type: idea
 kind: capability
 owner: product-lead
-status: exploring
+status: deferred
 proof: test/statusline.test.js
 created: 2026-10-07
 program: PROG-004
@@ -30,6 +30,21 @@ is built. **Nothing below is decided until Ajesh says so.**
 - **`boss status --line` today:** 0.04 s. On a fresh project it prints `BOSS · Quickstart` and
   nothing else. It reads the cwd only — run from `/` with the host's JSON on stdin, it prints nothing.
 - **The plugin** puts `boss` on PATH, so the command exists for plugin-only founders too.
+
+## Paused (2026-10-07) — is it worth it?
+
+Ajesh: *"is there a way we can pause this… i need a deeper think if this valuable or costly."*
+Nothing is built. Re-enter through `/revalidate IDEA-159`. The think, as questions:
+
+- **Value:** the founder evidence asks for orientation ("I forget what feature I'm building").
+  Does an always-on line answer that better than `boss status` and the session-start line, which
+  already exist — or is it a third place saying the same thing?
+- **Cost to the founder:** a slot on their screen every turn, a setting that outranks their own,
+  and one more thing to understand at the moment they're newest. Does the 1b offer make that
+  cheap enough, or is the explanation itself the cost?
+- **Reach:** if it doesn't show in the VS Code panel, it serves terminal users only.
+- **Cost to BOSS:** a settings writer that composes with someone else's command and must restore it
+  exactly — new code that touches a file the founder owns.
 
 ## The five questions
 

@@ -41,7 +41,7 @@ which records are tracked, not the door. Left as is; move it if a pass wants it 
 
 ## Backlog — saved for later passes (pick, cut or keep)
 
-- [ ] **B1 · Plant the status line** — *thought through as IDEA-159 (2026-10-07); waits on Ajesh.* Opt-in through `boss hooks enable statusline` (the optional-hooks
+- [ ] **B1 · Plant the status line** — *thought through as IDEA-159, then PAUSED (2026-10-07): is it worth it? Re-enter with `/revalidate IDEA-159`.* Opt-in through `boss hooks enable statusline` (the optional-hooks
   door that exists), writing `statusLine` into the project's `.claude/settings.json` with
   `boss status --line`. Never overwrite a founder's own `statusLine`.
 - [ ] **B2 · Shell completion.** `boss completion zsh|bash|fish` prints a script; it completes the
