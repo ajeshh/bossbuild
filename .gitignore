@@ -58,6 +58,7 @@ docs/red-team/SELF-*
 docs/competition/
 docs/research/*
 !docs/research/verdicts/
+!docs/research/domains/
 docs/source/
 docs/dossier/
 docs/design/

@@ -62,7 +62,7 @@ const EXCEPTIONS = {
   model: ['ai-cost', 'ai-failure-states', 'evals', 'judge-traces'],
   // Adversarial ground: the attack surface moves because someone is trying to move it.
   threat: ['red-team', 'ship', 'trust', 'secrets-guard'],
-  // Research + regulation keep naming new patterns; /humane-refresh owns the sweep.
+  // Research + regulation keep naming new patterns; /scout humane owns the sweep.
   humane: ['canvas'],
   // GTM patterns move with the cycle — slower than the host, faster than craft.
   market: ['landing', 'pretotype', 'health', 'money', 'onboard', 'roadmap', 'mentor-customers'],

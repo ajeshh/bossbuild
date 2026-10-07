@@ -6,7 +6,7 @@
 //                                       `npm run check`; a checker that always exits 0 in a gate
 //                                       chain is noise dressed as a gate)
 //   npm run check:patterns -- --matrix  the full shape x surface grid
-//   npm run check:patterns -- --json    machine-readable, for /humane-refresh to read
+//   npm run check:patterns -- --json    machine-readable, for /scout humane to read
 //
 // WHY THIS EXISTS: /humane-refresh sweeps for what is NEW since the last run. It has never
 // asked what is MISSING outright — and that is exactly how three sweeps in a row shipped a
@@ -98,4 +98,4 @@ if (!findings.length) {
 }
 
 console.log(`\n  ${dim('Coverage is the half a what\'s-new sweep cannot find. An empty cell is a research')}`);
-console.log(`  ${dim('question for /humane-refresh --coverage, not a row to invent.')}\n`);
+console.log(`  ${dim('question for /scout humane coverage, not a row to invent.')}\n`);

@@ -166,16 +166,18 @@ Each domain keeps what is genuinely its own and borrows the rest from A.
   name — it is history.
 - [x] **G2** · `SOURCES.md` fed `mentor-venture/business/gtm/talent`, none of which exist →
   `mentor-founder/capital/customers/hiring` (2026-10-06).
-- [ ] **G3** · `/practice-refresh` routes to `db-architect`, retired in v0.189.0. Proposed: *"mostly in
+- [x] **G3** · `/practice-refresh` routes to `db-architect`, retired in v0.189.0. Proposed: *"mostly in
   the `tester` prompt and `data-schema.md`"*.
-- [ ] **G4** · The humane watchlist's diagram diffs against `ai-ux-patterns.md`; the skill diffs against
+- [x] **G4** · The humane watchlist's diagram diffs against `ai-ux-patterns.md`; the skill diffs against
   `library/deceptive-patterns.json`. Proposed: name the JSON first.
-- [ ] **G5** · `/vet`'s skeleton has no `sources:` block although its own step 3 asks for one (105 of
+- [x] **G5** · `/vet`'s skeleton has no `sources:` block although its own step 3 asks for one (105 of
   149 RVWs lack it). Proposed: `sources:` under `route:`, URLs opened, vendor/outside-repo sources
   described with *"URL kept local"* (the shape RVW-085 already uses).
 
-  G3–G5 edit the shared dev-workspace skills and a watchlist every session reads; the permission
-  check held them on 2026-10-06. **Waiting on Ajesh's go-ahead.**
+  G3–G5 landed 2026-10-06 with PROG-005 T1b, once Ajesh said go: G3 dissolved (`/practice-refresh`
+  retired into `/scout craft`, whose domain routes to "an agent prompt", naming no agent); G4 in the
+  humane watchlist's diagram; G5 in `/vet`'s skeleton. Originals kept locally,
+  `docs/research/retired-skills/2026-10-06/`.
 
 ## Measured: can a track record be computed from what exists? (2026-10-06) — **no**
 

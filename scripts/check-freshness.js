@@ -35,18 +35,18 @@ const DAY = 86400000;
 // if a sweep keeps finding a backlog the cadence is too slow; if it keeps finding nothing,
 // too fast. Change it here and re-stamp, don't quietly let docs drift past their date.
 const CURVES = {
-  host:     { days: 90,  owner: '/practice-refresh', ground: 'the agent host ships changes continuously' },
-  protocol: { days: 90,  owner: '/practice-refresh', ground: 'tool/agent standards are still revising' },
-  threat:   { days: 90,  owner: '/practice-refresh', ground: 'the attack surface is adversarial' },
-  model:    { days: 90,  owner: '/recalibrate',      ground: 'the frontier-model curve moves under it' },
-  humane:   { days: 90,  owner: '/humane-refresh',   ground: 'research + regulation keep naming patterns' },
-  market:   { days: 180, owner: '/practice-refresh', ground: 'go-to-market patterns move with the cycle' },
+  host:     { days: 90,  owner: '/scout craft',      ground: 'the agent host ships changes continuously' },
+  protocol: { days: 90,  owner: '/scout craft',      ground: 'tool/agent standards are still revising' },
+  threat:   { days: 90,  owner: '/scout craft',      ground: 'the attack surface is adversarial' },
+  model:    { days: 90,  owner: '/scout model',      ground: 'the frontier-model curve moves under it' },
+  humane:   { days: 90,  owner: '/scout humane',     ground: 'research + regulation keep naming patterns' },
+  market:   { days: 180, owner: '/scout craft',      ground: 'go-to-market patterns move with the cycle' },
   // Added 2026-08-11. The gap the first two sweeps kept hitting: a practice can be *craft* in
   // substance (durable engineering judgment) while the half that describes WHAT AI TOOLS DO BY
   // DEFAULT rots on the tool curve. `craft` at 365d is too slow for those; `model` is the right
   // speed but routes to /recalibrate, which doesn't own design or testing. Hence a third tier.
-  'craft-ai': { days: 180, owner: '/practice-refresh', ground: 'durable craft whose AI-default half moves with the tools' },
-  craft:    { days: 365, owner: '/practice-refresh', ground: 'durable engineering + human craft' },
+  'craft-ai': { days: 180, owner: '/scout craft',      ground: 'durable craft whose AI-default half moves with the tools' },
+  craft:    { days: 365, owner: '/scout craft',      ground: 'durable engineering + human craft' },
 };
 
 const ORDER = ['UNREADABLE', 'OVERDUE', 'DUE SOON', 'FRESH', 'RETIRED'];

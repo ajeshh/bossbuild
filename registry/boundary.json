@@ -18,7 +18,7 @@
       "name": "deep-research",
       "kind": "skill",
       "verdict": "internal",
-      "why": "The finder behind BOSS's own refresh disciplines (/practice-refresh, /humane-refresh, /vet). Authored 2026-08-20 after the audit found four skills had been naming it as a runnable step while it existed nowhere — ten passes had been run by hand. It serves BOSS curating BOSS; a founder needs no skill for this, because their host already searches the web and /persona now says so directly."
+      "why": "RETIRED 2026-10-06 into /scout (PROG-005): the finder is now /scout itself, which SHIPS at Quickstart — the method crossed whole, as `boss craft research` plus a verb, so a founder has what this did. What remains here is a redirect, kept until the work lands so a peer session that calls it is pointed somewhere rather than nowhere."
     },
     {
       "name": "designer",
@@ -30,7 +30,7 @@
       "name": "humane-refresh",
       "kind": "skill",
       "verdict": "internal",
-      "why": "Keeping the dark-pattern canon current is BOSS's job, not the founder's — now stated in library/practices/ai-ux-patterns.md so the practice and this ledger agree."
+      "why": "RETIRED 2026-10-06 into `/scout humane` (PROG-005): docs/research/domains/humane.md. Keeping the dark-pattern canon current is still BOSS's job, not the founder's; the domain lives in BOSS's own docs/research/domains/, which no founder installs. Redirect until the work lands."
     },
     {
       "name": "mentor-architect",
@@ -131,8 +131,8 @@
     {
       "name": "practice-refresh",
       "kind": "skill",
-      "verdict": "not-yet",
-      "why": "Refreshes BOSS's shelf, which is BOSS's job — 32 practices behind a freshness gate. A founder's `/practice` PRAC records rot the same way, but a sweep discipline over three records is ceremony, and `/revalidate` (MVP) is already the founder-scale version of the instinct. RE-OPEN CONDITION, added v0.237.0 because a reason with no test gets re-read forever and can never resolve: a real project passes ~10 PRAC records AND one is found stale in practice — not predicted stale, found. Until both, this stays `not-yet` and nobody needs to re-argue it."
+      "verdict": "internal",
+      "why": "RETIRED 2026-10-06 into `/scout craft` (PROG-005): BOSS's own domain file, docs/research/domains/craft.md, on the same shelf a founder's own domains use. The redirect stays until the work lands. The old re-open condition (a founder project with ~10 stale PRAC records) is moot: a founder who wants this writes a domain of their own."
     },
     {
       "name": "prompt-coach",
@@ -144,7 +144,7 @@
       "name": "recalibrate",
       "kind": "skill",
       "verdict": "internal",
-      "why": "Since v0.135.0 BOSS pins no model names anywhere it ships (capability shapes, not names). There is nothing in a founder's project for this to recalibrate."
+      "why": "RETIRED 2026-10-06 into `/scout model` (PROG-005): docs/research/domains/model.md. BOSS pins no model names anywhere it ships, so there is still nothing in a founder's project to recalibrate. Redirect until the work lands."
     },
     {
       "name": "regrade",

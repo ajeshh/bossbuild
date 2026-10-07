@@ -217,10 +217,17 @@ starter pack?"* The mechanism (proposed, part of T1):
     `legal`, `people`) and `_template.md`. `/comp-eval` retired with a supersedes row; ladder,
     freshness, playbook, places, help, GUIDE and web repointed. Upgrade walked end to end: an MVP
     project made by the old BOSS syncs to `/scout` and is told why.
-  - [ ] **T1b · BOSS's own half** — `craft`, `humane`, `model` as domains in BOSS's
-    `docs/research/domains/` (BOSS using the founder's shelf); `/deep-research`, `/practice-refresh`,
-    `/humane-refresh`, `/recalibrate` retire into `/scout` (boundary rows, `check:freshness` owners);
-    the research skills tracked (`!/.claude/skills/<name>/`); `/vet`'s skeleton (G3–G5).
+  - [x] **T1b · BOSS's own half** (2026-10-06) — `craft`, `humane`, `model` are domain files in
+    BOSS's `docs/research/domains/`, now tracked (`!docs/research/domains/`): BOSS uses the founder's
+    shelf. `/deep-research`, `/practice-refresh`, `/humane-refresh`, `/recalibrate` are redirects to
+    `/scout` (kept until this lands, so a peer calling one is pointed somewhere), with their full text
+    kept locally at `docs/research/retired-skills/2026-10-06/`. Boundary rows, `check:freshness`
+    owners, the two watchlists' headers and diagrams, `/vet`'s skeleton (G3–G5) updated.
+    - [ ] **Remove the four redirects** once this has landed and BOSS has synced `/scout` into its own
+      `.claude/skills/` (the boundary rows go with them).
+    - [ ] **Tracking `/vet`** — `/.claude/` is ignored as a whole directory, so tracking one skill means
+      restructuring the pattern, and `scripts/worktree.js` derives its links from `.gitignore`. Its own
+      small change, tested against worktree creation; not folded in here.
   - [ ] **T1c · the conscience line** — an unsourced number in the canvas gets one line offering
     `/scout` (round 3, F).
 - [ ] **T2 · `/inbox`** — `/import` renamed; local-only; the view (new / sorted / reference); hands to
