@@ -230,7 +230,7 @@
       "migrate": "Run `/design-review after` (or point `/design-review` at the shipped screen) where you ran `/ux-check`. Its findings still go to `docs/design/ux-check-*.md`, so your earlier reviews read as before."
     },
     {
-      "since": "0.331.0",
+      "since": "0.332.0",
       "kind": "skill",
       "removed": "comp-eval",
       "replacedBy": "scout",
