@@ -9,7 +9,7 @@ import { join, dirname } from 'node:path';
 import {
   STAGES_DIR, bossVersion, resolveStageId,
 } from './paths.js';
-import { readStageManifest, sameAsTemplate } from './scaffold.js';
+import { readStageManifest, sameAsTemplate, planIgnoreRules, applyIgnoreRules } from './scaffold.js';
 import { readSupersedes, findSupersede } from './supersede.js';
 import { stillDeferred, newlyEarned, markLaidDown } from './earned.js';
 import { readLadder, assess } from './ladder.js';
@@ -636,6 +636,7 @@ export function planSync(projectDir, stamp) {
     drift: stamp.bossVersion !== current,
     settings: computeSettingsMerge(projectDir, layers),
     orphans: planOrphans(projectDir, stamp, layers),
+    ignore: planIgnoreRules(layers, projectDir),
   };
 }
 
@@ -723,6 +724,13 @@ export function applySync(projectDir, plan, stamp, opts = {}) {
     mkdirSync(dirname(dest), { recursive: true });
     writeFileAtomic(dest, JSON.stringify(plan.settings.merged, null, 2) + '\n');
     written.push({ kind: 'settings', name: 'settings.json', rel: plan.settings.rel });
+  }
+
+  // New ignore rules a later BOSS ships (PROG-005: research and interviews stay on the machine).
+  // Additive, and only rules never offered before — a line the founder deleted stays deleted.
+  if (plan.ignore) {
+    applyIgnoreRules(projectDir, plan.ignore, plan.layers, plan.current);
+    if (plan.ignore.added.length) written.push({ kind: 'gitignore', name: '.gitignore', rel: '.gitignore' });
   }
 
   // Reconcile the stamp to current canonical layers + the union of their

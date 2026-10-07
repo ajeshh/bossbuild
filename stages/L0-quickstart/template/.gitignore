@@ -26,8 +26,8 @@ secrets/
 
 # Per-person conscience state — stays local, never shared with a cofounder (DEC-001).
 # Everything else BOSS writes (docs/ ideas, canvas, decisions, RESUME, and the venture
-# brain's read.md) DOES commit — so pushing backs up your thinking AND keeps your
-# cofounder in the loop. But the conscience's relationship with YOU — what it said and
+# brain's read.md) DOES commit, except research (below) — so pushing backs up your
+# thinking AND keeps your cofounder in the loop. But the conscience's relationship with YOU — what it said and
 # what you did with it — is yours alone; it never travels to a teammate.
 #
 # DEC-015 moved the live copies OUT of the project entirely, to ~/.boss/projects/<key>/,
@@ -39,3 +39,11 @@ secrets/
 .boss/brain/relationship.md
 .boss/trace.jsonl
 
+# Research, and the people in it — stays on this machine. Interview notes are other people's
+# words, quoted; what you bring in and what you find about rivals and the market is research.
+# A repo can go public in one click, and its history goes with it. Your decisions, canvas and
+# ideas still commit; to share these with a teammate, share the folders some other way.
+docs/evidence/
+docs/source/
+docs/competition/
+docs/research/

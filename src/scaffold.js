@@ -6,6 +6,7 @@ import {
   cpSync, readdirSync, statSync, readFileSync, writeFileSync, existsSync, rmSync, mkdirSync,
 } from 'node:fs';
 import { join, basename } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { STAGES_DIR } from './paths.js';
 
 // A stage template may carry this file. Instead of being copied verbatim, its
@@ -142,19 +143,27 @@ export function appendGitignoreBlock(stageIds, targetDir) {
   const existing = existsSync(filePath) ? readFileSync(filePath, 'utf8') : '';
   if (existing.includes(startMark)) return { added: [], applied: false };
 
-  // Exact (trimmed) match. A near-miss — theirs `node_modules`, ours `node_modules/` — adds a
-  // harmless duplicate rather than guessing at gitignore semantics we'd get subtly wrong.
+  const { out, added } = freshIgnoreGroups(stageIds, existing);
+  if (!added.length) return { added: [], applied: false };
+  writeIgnoreBlock(filePath, existing, startMark, endMark, out);
+  recordIgnoreOffered(targetDir, stageIds);
+  return { added, applied: true };
+}
+
+// The template rules a .gitignore lacks, grouped with the comments that explain them.
+// Exact (trimmed) match. A near-miss — theirs `node_modules`, ours `node_modules/` — adds a
+// harmless duplicate rather than guessing at gitignore semantics we'd get subtly wrong.
+function freshIgnoreGroups(stageIds, existing, skip = new Set()) {
   const have = new Set(
     existing.split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !l.startsWith('#')),
   );
-
   const out = [];
   const added = [];
   for (const stageId of stageIds) {
     const src = join(STAGES_DIR, stageId, 'template', '.gitignore');
     if (!existsSync(src)) continue;
     for (const g of gitignoreGroups(readFileSync(src, 'utf8'))) {
-      const fresh = g.patterns.filter((p) => !have.has(p));
+      const fresh = g.patterns.filter((p) => !have.has(p) && !skip.has(p));
       if (!fresh.length) continue;       // they have all of it already — drop the comment too
       fresh.forEach((p) => have.add(p)); // a chain can repeat a rule across stages
       if (out.length) out.push('');
@@ -162,14 +171,80 @@ export function appendGitignoreBlock(stageIds, targetDir) {
       added.push(...fresh);
     }
   }
-  if (!added.length) return { added: [], applied: false };
+  return { out, added };
+}
 
-  const block = `${startMark}\n${out.join('\n')}\n${endMark}\n`;
+function writeIgnoreBlock(filePath, existing, startMark, endMark, lines) {
+  const block = `${startMark}\n${lines.join('\n')}\n${endMark}\n`;
   const sep = existing && !existing.endsWith('\n\n')
     ? (existing.endsWith('\n') ? '\n' : '\n\n')
     : '';
   writeFileSync(filePath, existing + sep + block);
-  return { added, applied: true };
+}
+
+// Every ignore rule the stage templates ship for these layers — what BOSS has OFFERED a project.
+export function templateIgnoreRules(stageIds) {
+  const rules = new Set();
+  for (const stageId of stageIds) {
+    const src = join(STAGES_DIR, stageId, 'template', '.gitignore');
+    if (!existsSync(src)) continue;
+    for (const g of gitignoreGroups(readFileSync(src, 'utf8'))) g.patterns.forEach((p) => rules.add(p));
+  }
+  return rules;
+}
+
+// Which rules BOSS has already offered this project. The header of every BOSS block says
+// "delete a line to commit that file", so a rule BOSS offered and the founder removed is a
+// decision — sync must not put it back. Kept beside the provenance ledger, not in it: the
+// ledger's keys are file paths, and other readers walk them as files. `null` = no record yet
+// (every project from before this file existed).
+const OFFERED = ['.boss', 'ignore-offered.json'];
+export function readIgnoreOffered(projectDir) {
+  const p = join(projectDir, ...OFFERED);
+  if (!existsSync(p)) return null;
+  try { const v = JSON.parse(readFileSync(p, 'utf8')); return Array.isArray(v) ? new Set(v) : null; } catch { return null; }
+}
+export function recordIgnoreOffered(projectDir, stageIds) {
+  const seen = readIgnoreOffered(projectDir) || new Set();
+  templateIgnoreRules(stageIds).forEach((r) => seen.add(r));
+  const p = join(projectDir, ...OFFERED);
+  mkdirSync(join(projectDir, '.boss'), { recursive: true });
+  writeFileSync(p, JSON.stringify([...seen].sort(), null, 2) + '\n');
+}
+
+// What `boss sync` adds to an existing project's .gitignore: rules a later BOSS ships that the
+// project lacks AND that BOSS never offered before. A project with no record gets every missing
+// rule once — each one is listed, and from then on a deleted line stays deleted.
+//
+// `tracked`: a rule for a folder whose files are ALREADY in git. Ignoring stops new ones; it does
+// not take these out of the repository or its history, and saying it did would be the lie that
+// matters most here — the rule exists because those files hold other people's words.
+export function planIgnoreRules(stageIds, projectDir) {
+  const filePath = join(projectDir, '.gitignore');
+  const existing = existsSync(filePath) ? readFileSync(filePath, 'utf8') : '';
+  const { out, added } = freshIgnoreGroups(stageIds, existing, readIgnoreOffered(projectDir) || new Set());
+  const tracked = [];
+  for (const rule of added) {
+    if (!rule.endsWith('/') || /[*?[!]/.test(rule)) continue;
+    try {
+      const files = execFileSync('git', ['ls-files', '--', rule], {
+        cwd: projectDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+      }).split('\n').filter(Boolean);
+      if (files.length) tracked.push({ rule, count: files.length });
+    } catch { /* not a git repo, or no git: nothing can be tracked */ }
+  }
+  return { rel: '.gitignore', lines: out, added, tracked };
+}
+
+export function applyIgnoreRules(projectDir, plan, stageIds, version) {
+  if (plan && plan.added.length) {
+    const filePath = join(projectDir, '.gitignore');
+    const existing = existsSync(filePath) ? readFileSync(filePath, 'utf8') : '';
+    writeIgnoreBlock(filePath, existing,
+      `# ── BOSS ${version} — more that stays on this machine (delete a line to commit that file) ──`,
+      '# ── end BOSS ──', plan.lines);
+  }
+  recordIgnoreOffered(projectDir, stageIds);
 }
 
 // Recursive copy-if-absent: copy every template file that doesn't already exist

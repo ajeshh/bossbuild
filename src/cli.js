@@ -7,7 +7,7 @@ import { join, resolve, basename, sep, delimiter } from 'node:path';
 import { execSync, spawn } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId, isBossRepo, BOSS_HOME, BOSS_ROOT } from './paths.js';
 import { writeFileAtomic } from './atomic.js';
-import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest } from './scaffold.js';
+import { applyStage, applyStageSafe, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock, readStageManifest, recordIgnoreOffered } from './scaffold.js';
 import { registerProject, listProjects, findByPath, retireProject, reviveProject, deregisterProject, projectPin, onDisk } from './registry.js';
 import { planSync, applySync, stampManaged, computeSettingsMerge } from './sync.js';
 import { earnedGroups, newlyEarned, describeUntil, describeEarned, holdAtAdopt } from './earned.js';
@@ -103,6 +103,7 @@ function cmdNew(args) {
   mkdirSync(targetDir, { recursive: true });
   applyStage(stageId, targetDir, stageVars(name, stageId, manifest.name));
   stampManaged(targetDir, [stageId]);   // provenance from the first write, not from the first sync
+  recordIgnoreOffered(targetDir, [stageId]); // so a line the founder deletes stays deleted at sync
 
   const stamp = {
     name,
@@ -296,6 +297,7 @@ function cmdAdopt(args) {
   //     a shared repo. Merge BOSS's rules in as a marked `#` block instead of shipping the
   //     guarantee in a file this path never installs. Only rules they lack are added.
   const ignored = gitignorePreexisted ? appendGitignoreBlock(chain, targetDir) : { added: [], applied: false };
+  if (!gitignorePreexisted) recordIgnoreOffered(targetDir, chain);
 
   // 3. Stamp .boss/ (mode + not-self-hosted) so it's a real BOSS project. Agents /
   //    skills / hooks / loops are the UNION across the installed chain.
@@ -1427,6 +1429,23 @@ function cmdSync(args) {
         console.log(`    ${dim(`               ${m}`)}`);
         console.log(`    ${dim('               your mode preference is yours again — set it in ~/.claude/settings.json')}`);
       }
+    }
+  }
+
+  // New ignore rules. When the folder is already in git, say what ignoring does NOT do: it stops
+  // new files, and leaves every committed one in the repository and its history.
+  const ign = plan.ignore;
+  if (ign?.added.length) {
+    console.log(`\n  ${bold('Stays on this machine')} ${dim('— new lines for .gitignore')}`);
+    for (const r of ign.added) console.log(`    ${ok('+ ignore')}   ${r}`);
+    console.log(`    ${dim('Delete a line later to commit that folder; BOSS will not add it back.')}`);
+    for (const t of ign.tracked) {
+      console.log(`    ${warn('!')} ${bold(t.rule)} ${dim(`— ${t.count} file(s) here are already committed.`)}`);
+    }
+    if (ign.tracked.length) {
+      console.log(`      ${dim('Ignoring stops new ones. It does not take these out of your repository or its history.')}`);
+      console.log(`      ${dim('To stop tracking them (they stay on disk):')} ${bold(`git rm -r --cached ${ign.tracked.map((t) => t.rule).join(' ')}`)}`);
+      console.log(`      ${dim('Anything already pushed is still in those commits — if the repo is public, treat it as published.')}`);
     }
   }
 

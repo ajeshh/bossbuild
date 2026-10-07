@@ -148,8 +148,13 @@ research skills get tracked.
   `/humane-refresh`, `/recalibrate`; `check:freshness` owners repointed; research skills tracked.
 - [ ] **T2 · `/inbox`** — `/import` renamed; local-only; the view (new / sorted / reference); hands to
   `/scout` in the same turn; records the original's location; BOSS's own inbox on it.
-- [ ] **T3 · Hide by default** — founder template ignores research, the inbox and `docs/evidence/`;
-  sync adds the lines and says plainly it cannot un-commit history.
+- [x] **T3 · Hide by default** (2026-10-06, done first at Ajesh's call) — the founder template ignores
+  `docs/evidence/`, `docs/source/`, `docs/competition/`, `docs/research/`; `boss sync` adds rules a
+  later BOSS ships, only ones never offered before (`.boss/ignore-offered.json`), and names folders
+  already committed with the `git rm -r --cached` line. `test/gitignore-sync.test.js` (3 of 4 fail on
+  the old code; the fourth guards the new behaviour). `docs/inbox/` joins when T2 creates it.
+  - [ ] **Found:** `/persona` copies one line a real person said from an EVID into
+    `docs/personas/` (`quote:`), which still commits. Cite the EVID id only, or keep the quote local.
 - [ ] **T4 · Team sharing, compared** — the three options written up against BOSS's refusals (no
   server so far, IDEA-037) before any choice.
 - [ ] **T5 · The sort's sensitivity rule** — resumes, HR, contracts land only in local places; unsure →
