@@ -88,7 +88,39 @@ writes the method **once**.
 - [ ] **P4 · Review the four** — `/deep-research`, `/vet`, `/comp-eval`, `/import` against the built
   engine (IDEA-155 § H), and which market-research items it makes cheap.
 
-## Open questions
+## Decided 2026-10-06 — one verb: `/scout <domain>`
+
+Ajesh, answering Q1–Q4: the finder is **`/scout`** (*"find could be taken by others… think about what
+may not clash"* — checked: not a host built-in, not in any installed plugin; and the old name now
+clashes, since the host ships its own `deep-research` skill). The refreshes merge (*"One /refresh
+<domain>"*), and then further: *"shd it be merged… /scout rival xyz brand, same with market. im also
+wondering if scout becomes our way finding main skill and then everything else is a sub domain?"* The
+research skills get tracked.
+
+**The shape this resolves to (proposed, awaiting go):**
+
+```
+/scout <domain> [subject] [--since DATE]      one door for everything OUTWARD
+   rivals  <name|space>   ← today's /comp-eval (ships, MVP)      ┐ domains in the shipped skill
+   market  size|why-now|pricing                                   ┘
+   craft · humane · model ← today's three refreshes (BOSS only)   ← project-local domain files
+   <yours>               ← a founder can add one (e.g. regulation)  docs/research/domains/<name>.md
+/vet      stays — find ≠ judge
+/import   stays — intake, not research
+/boss     stays the wayfinding door ("where am I, what next"); /scout is the door for "what's out there"
+```
+
+- **Domains are files, not skills.** The shipped `/scout` carries the loop (citing `boss craft
+  research`) and two domains; any project can add `docs/research/domains/<name>.md`. BOSS's own
+  craft / humane / model domains live there — so BOSS-only curation never ships, and BOSS uses the
+  same extension point a founder would. That *is* "customization where needed".
+- **Five skills become one**: `/deep-research`, `/practice-refresh`, `/humane-refresh`,
+  `/recalibrate` (internal) and `/comp-eval` (shipped). Supersedes rows for each, so `boss sync`
+  says what replaced `/comp-eval` and why. `check:freshness` owners → `/scout <domain>`.
+- **Not wayfinding.** `/boss` already answers *"where am I"*; making `/scout` that too would put two
+  doors on one job (IDEA-086's lesson). `/scout` is the front door for the outside world.
+
+## Open questions (Q1–Q4 answered above; kept for the reasoning)
 
 - **Q1 · The finder's name.** `/research` is taken in the supersedes ledger (retired into `/evidence`,
   v0.324.0) — reusing it would tell a syncing founder two different things.
