@@ -76,6 +76,9 @@ Each enrich pass: update the persona body, add a dated `Notable refactor` bullet
 When real research lands, this is also where `quote:` gets written — **one line a real person said,
 from an `EVID`, cited by id** (`quote: "every Monday I lose an hour to this" — the EVID id`). Never at
 `derive`: at 100% synthetic there is nobody to quote, and a quote nobody said is a fabricated EVID.
+**The persona commits; the person doesn't.** One short line, credited by role, never by name — and
+nothing in it (a place, an employer, a detail) that would let someone find who said it. The `EVID`
+it cites stays on this machine, so the id is the only link back.
 
 ### `consult <slug> "question"` — ask the voice (both directions)
 Answer **in the persona's voice**, and run in whichever direction fits:

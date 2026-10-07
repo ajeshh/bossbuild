@@ -131,6 +131,10 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### Smaller improvements
 
+- **A persona's quote never points back at a person.** When `/persona` keeps one line a real user
+  said, it is credited by role, never by name, with nothing in it that would identify them — the same
+  rule the brand doc already follows. The interview it came from stays on your machine.
+
 - **`boss craft research` — one way to find out what's true outside your own head.** Competitors,
   market size, why-now, the state of the craft: the same loop under each. Open the primary source,
   not the summary; write one claim per row with who said it, whether you read it, and the date; try to

@@ -244,12 +244,17 @@ starter pack?"* The mechanism (proposed, part of T1):
   later BOSS ships, only ones never offered before (`.boss/ignore-offered.json`), and names folders
   already committed with the `git rm -r --cached` line. `test/gitignore-sync.test.js` (3 of 4 fail on
   the old code; the fourth guards the new behaviour). `docs/inbox/` joins when T2 creates it.
-  - [ ] **Found:** `/persona` copies one line a real person said from an EVID into
-    `docs/personas/` (`quote:`), which still commits. Cite the EVID id only, or keep the quote local.
+  - [x] **Found → resolved 2026-10-06:** `/persona` copies one line a real person said into
+    `docs/personas/`, which commits. On reading, `/evidence` already routes words to `docs/BRAND.md`
+    "credited by role, never by name without their consent", on a yes — de-identified words with the
+    founder's yes sit on the commit side of *hide by sensitivity*. `/persona` now says the same rule:
+    a role, never a name, nothing that identifies; the EVID it cites stays local.
 - [ ] **T4 · Team sharing, compared** — the three options written up against BOSS's refusals (no
   server so far, IDEA-037) before any choice.
-- [ ] **T5 · The sort's sensitivity rule** — resumes, HR, contracts land only in local places; unsure →
-  ask, default local.
+- [x] **T5 · The sort's sensitivity rule** (2026-10-06) — carried by what T1–T3 built rather than a
+  separate piece: `/scout` Step 4 (sensitive → local folders only; unsure → keep local and ask), the
+  sort table (legal / HR / resumes / contracts **held** in `docs/source/`, labelled, never quoted into
+  anything that commits), `boss inbox`'s held state, and the engine's *Where it lives*.
 
 ## Open questions (Q1–Q4 answered above; kept for the reasoning)
 - **Q5 · Does `/import` fold into `/scout`?** Ajesh 2026-10-06: *"scout is our intake of research,
