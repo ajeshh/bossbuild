@@ -3,7 +3,9 @@ id: IDEA-155
 type: idea
 kind: capability
 owner: product-lead
-status: exploring
+status: building
+proof: library/practices/research.md
+proof_note: the engine, /scout, /inbox and team sharing are built (PROG-005); still open — a generated research index (C1), dates and standing on the source list (B5), and the three items the H review held for a decision.
 program: PROG-005
 created: 2026-10-06
 relates: IDEA-016, IDEA-042, IDEA-054, IDEA-066, IDEA-086

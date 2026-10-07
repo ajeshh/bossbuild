@@ -39,7 +39,7 @@
 - **`/revalidate`** — The 3-line gate before paused work re-enters the build — checks a deferred idea/feature against a world that moved (still relevant? still aligned? anything changed?) and routes it to revive / rescope / kill / re-pause, so you never build a zombie feature  _(/revalidate [ID or paused item])_
 - **`/judge-traces`** — Error analysis on your real session traces — Hamel/Shankar's discipline applied to your own work  _(/judge-traces [last N | all])_
 - **`/consult`** — Convene the mentor board on a cross-cutting question  _(/consult <question>)_
-- **`/red-team`** — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent against the Agentic ASI Top 10  _(/red-team [FEAT-NNN])_
+- **`/red-team`** — Adversarially test an AI-mediated FEAT against the OWASP LLM Top 10, and an agent against the Agentic ASI Top 10  _(/red-team [FEAT-NNN] [--paths | --humane])_
 - **`/practice`** — Capture a craft learning (a better way to build with AI) as a shared, attributed PRAC-NNN record your cofounder gets too  _(/practice <what you learned>)_
 - **`/ship`** — Put your app where a real user can hit it, and know when it stops answering  _(/ship [--preview | --rollback])_
 - **`/landing`** — Generate the founder's FIRST landing page - on-brand, honest, out the block fast  _(/landing [--demand | --product])_

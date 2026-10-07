@@ -131,12 +131,12 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   one command that stops tracking them. Delete a line to commit a folder after all; sync won't put it
   back.
 
-- **Where you are, without asking, and what to type, without guessing.** Typing `/canvas ` in Claude
-  Code now shows what it takes, greyed, as you type — every skill that takes an argument says so. Bare
-  `boss` inside a project opens with where you are and the three commands you'd reach for, instead of
-  the whole manual. `boss unlock` with no mode names the next one and shows what it asks of you, rather
-  than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
-  status bar or your shell prompt.
+- **The work in flight survives a compaction.** When Claude Code compacts a long session, or you
+  `/clear` it, the next turn used to know only what the summary kept — and the tasks you'd spotted at
+  hour three were usually not in it. Now every session start reads the feature you're building back
+  from its record: the criteria still open, what you found while building, the open questions, and the
+  rules and tasks of the program it belongs to. Where the summary and the record disagree, the record
+  wins. Nothing is written for you; what you put in the record is what comes back.
 
 ### Smaller improvements
 
@@ -162,6 +162,52 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   confident *"research says"*. Sources are ranked by what has held up, not by how well known they are,
   so a new voice who measured the thing gets in by being right, and an old one fades if nothing of
   theirs has held lately. It sits beside `boss craft outside-claims`: one finds, the other judges.
+
+- **`/spec` ends by starting the build fresh.** Once the spec is written, it suggests clearing the
+  context and starting the build from the record — a clean window for the code, nothing lost — and an
+  approved plan is written into the feature's build log instead of living only in the chat.
+- **`/close` tidies the feature's own record** — ticked items out, open ones kept word for word,
+  anything found this session and not yet written down put in — so the next start reads back what is
+  really in flight.
+- **Your CLAUDE.md tells a compaction what to keep** — the files changed and why, the decisions made,
+  and any task or question not yet in a record. V1 and Scale add less to it: the inventory of what each
+  mode brings is `boss map`'s job, not something read on every turn.
+- **A skill reads the part it needs, not all of it.** Twelve of the longest skills now keep the part
+  every run uses in one file and open the rest only when a run goes there: `/canvas` reads the Lean,
+  BMC or one-pager frame only when you ask for one, `/red-team` reads its `--paths`, `--humane` or
+  `--self` pass only on that flag, `/close` reads the why-check only when a decision was reversed.
+  A typical run of those twelve loads about a third less into Claude's context, so there's more
+  room left for your code. Nothing was cut or reworded; `boss sync` brings the new files over.
+- **You hear about the other shapes of your canvas when you'd use one.** Mention who's going to read
+  it — an advisor, an investor — and `/canvas` names the version made for them, with the command. Your
+  first `/evidence` record says the canvas can now be a two-minute one-pager. And `/red-team`'s menu
+  hint now shows its `--paths` and `--humane` passes.
+
+- **Your session carries less on every turn.** The rules BOSS adds to CLAUDE.md now say each rule in a
+  line or two and where to look; the reasoning stays in the skill or guide you open when the rule
+  applies. The rules themselves are about 40% smaller at MVP and later, and everything a session reads
+  before you type anything about a fifth smaller.
+  Existing projects get the shorter rules with `boss sync`, unless you edited them yourself.
+
+### Under the hood
+
+- **The working-state file is retired from new MVP projects.** `.claude/rules/feature-context.md`
+  lived where a compaction drops it; its two lists are now sections of the feature record (*Found while
+  building*, *Open questions*). A project that already has the file keeps it — BOSS reads its open items
+  and never moves or deletes it — and `/close` offers to move them into the record.
+
+## 0.331.0 — 2026-10-05
+
+### What you'll notice
+
+- **Where you are, without asking, and what to type, without guessing.** Typing `/canvas ` in Claude
+  Code now shows what it takes, greyed, as you type — every skill that takes an argument says so. Bare
+  `boss` inside a project opens with where you are and the three commands you'd reach for, instead of
+  the whole manual. `boss unlock` with no mode names the next one and shows what it asks of you, rather
+  than failing with the syntax. And `boss status --line` gives the same read in one plain line, for a
+  status bar or your shell prompt.
+
+### Smaller improvements
 
 ### Under the hood
 

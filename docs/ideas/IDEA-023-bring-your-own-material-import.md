@@ -5,7 +5,7 @@ kind: capability
 owner: product-lead
 status: shipped
 gist: The on-ramp from 'I jotted it somewhere' — point BOSS at a doc, a PDF, an Obsidian note or a deck and have it brought in, instead of retyping an idea that already exists.
-proof: stages/L0-quickstart/template/.claude/skills/import
+proof: stages/L0-quickstart/template/.claude/skills/inbox
 ---
 
 # IDEA-023 — Bring-your-own-material import (the on-ramp from "I jotted it somewhere")
