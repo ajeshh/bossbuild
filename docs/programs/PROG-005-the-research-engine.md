@@ -137,6 +137,41 @@ research skills get tracked.
     over (IDEA-086's routing line) — a URL to a rival handed to `/import` → `/scout rivals`; a doc
     handed to `/scout` → filed through `/import`'s snapshot. Both cite the engine's source rules, so
     an imported source and a scouted one carry the same row. Awaiting Ajesh.
+  - **Refined, in discussion (not built):** Ajesh — *"inbox import, so the inbox function is seperate,
+    but the organizing and bringing it in to the right places should be scout."* Split by function:
+    the inbox **receives** (dated snapshot, no judgment); `/scout` **sorts** (what kind is this, claim
+    rows, file it where it belongs) for material handed in and material it went and found. Conditions
+    raised: one gesture for the founder; the founder's own idea material still lands at L0; "processed"
+    is a stamp, not a folder move (41 of 43 BOSS inbox items were never moved). Open: mode placement,
+    the kinds the sort recognises.
+  - **Agreed 2026-10-06:** the picture (inbox receives → `/scout` sorts → lands), `/import` then
+    `/scout` in one gesture, "processed" is key. Ajesh: *"reorganizing it so it doesnt stay in inbox,
+    or the inbox has its own sorting mechanism so that its easy to spot what is not yet processed"*;
+    more kinds — **legal / regulatory, HR, team resumes**, other content; *"the inbox needs to grow into
+    its own program or feature… and it needs to work with scout."* → **new scope: an intake program**,
+    likely graduating from IDEA-111 / FEAT-035 (the three intake doors, shipped). 🔴 Resumes and
+    contracts are other people's personal or confidential data — the inbox needs a sensitivity rule
+    before it accepts them. Still talking; nothing built.
+  - **Naming, Ajesh 2026-10-06:** *"I like import, but im thinking of helping users slightly learn boss
+    specific terms like scout. so that it doesnt clash with another program."* The inbox verb may get a
+    BOSS-specific name. Evidence for the rule: the host now ships its own `deep-research`, colliding with
+    BOSS's — generic names get taken over time. A naming rule for every BOSS verb is PROG-004's (the
+    front door) to own; candidates for the inbox verb under discussion.
+  - **Decided, Ajesh 2026-10-06 — the inbox never leaves the machine.** *"we should know if its hr or
+    resume then to auto gitignore… maybe the docs inbox is never git submitted. it stays locally."*
+    Kinds agreed: legal / regulatory, HR / resumes. Consequences to design for: the risk point moves
+    from the inbox to **the sort** (what `/scout` copies out into tracked records — sensitive kinds land
+    only in ignored places, and when unsure, it asks and defaults to local); a local-only folder is a
+    single copy (keep the original's location, so a lost copy is recoverable — BOSS's own two losses
+    were single-copy gitignored files); existing projects may have already committed `docs/source/`,
+    and a sync can add the ignore line but cannot un-commit history — say so, don't imply it.
+  - 🔴 **Found while checking (2026-10-06), not yet acted on:** the founder template's `.gitignore`
+    (`stages/L0-quickstart/template/.gitignore`) ignores `.boss/` logs and generated pages but **not
+    `docs/source/`** (every `/import`) **nor `docs/evidence/`** (real people's words, verbatim). Neither
+    skill says whether committing them is intended. BOSS ignores its own `evidence/` "for someone
+    else's sake"; founders get the opposite default with no decision on record. Possibly deliberate
+    (a cofounder needs the evidence — IDEA-037), possibly not. Needs Ajesh's call; may be worth fixing
+    ahead of this program.
 
 - **Q1 · The finder's name.** `/research` is taken in the supersedes ledger (retired into `/evidence`,
   v0.324.0) — reusing it would tell a syncing founder two different things.
