@@ -249,8 +249,29 @@ starter pack?"* The mechanism (proposed, part of T1):
     "credited by role, never by name without their consent", on a yes — de-identified words with the
     founder's yes sit on the commit side of *hide by sensitivity*. `/persona` now says the same rule:
     a role, never a name, nothing that identifies; the EVID it cites stays local.
-- [ ] **T4 · Team sharing, compared** — the three options written up against BOSS's refusals (no
-  server so far, IDEA-037) before any choice.
+- [ ] **T4 · Team sharing, compared** (written 2026-10-06 — **awaiting Ajesh's choice**). What has to
+  travel between teammates is exactly what T3 kept out of git: interview notes (`docs/evidence/`),
+  the inbox (`docs/source/`), rival notes (`docs/competition/`). The bar each option is held to:
+  IDEA-037's refusal (*"no server, no accounts, no multiplayer state daemon — build the view, refuse
+  the app"*), DEC-001 (per-person conscience state never travels — evidence is *venture* state, so it
+  may), the non-tech cofounder (IDEA-037: *an interface problem, not a sync feature*), and the people
+  in the records: **an interviewee's words need a real way to be deleted.**
+
+  | | A · the team's existing shared drive | B · a private docs repo | C · an internal MCP doc server |
+  |---|---|---|---|
+  | **Shape** | `boss team share <path>` points the three folders at a folder the team already syncs; BOSS reads and writes there | a second, private git repo (`<name>-research`) beside the code repo, team-only | teammates' agents read shared records through a small server |
+  | **Server / accounts** | none — the drive has both | none new — the git host has both | **a server to run** — what IDEA-037 refuses |
+  | **Non-tech cofounder** | ✅ already uses the drive | ⚠️ git, for a non-tech person | ✅ via their agent, once someone runs it |
+  | **History, review** | ⚠️ the drive's own versions; conflicting copies happen | ✅ full history, diffs, review | depends on what's behind it |
+  | **Deleting someone's words** | ✅ delete the file — gone from the drive (after its trash) | 🔴 **in every clone's history** until rewritten — the agent-security practice's own line: *"a deleted commit is still in every clone and cache"* | ✅ if the store deletes |
+  | **Agents and worktrees** | ⚠️ needs the path resolved on each machine (a local setting, never committed) | ✅ clone it next to the code | ✅ |
+  | **What BOSS builds** | the setting, the reader, a check that the folder resolves | a scaffold for the second repo; sync for both | the server, auth, hosting |
+
+  **Recommendation: A**, with B as the opt-in for a team of engineers who want history and accept the
+  deletion cost knowingly. A is the only option that keeps every refusal, works for the non-tech
+  cofounder on day one, and lets an interviewee's words actually be deleted. C fails IDEA-037 outright;
+  revisit it only if a team that has A hits its limits. Per-person paths live in `~/.boss/`, never
+  in the repo.
 - [x] **T5 · The sort's sensitivity rule** (2026-10-06) — carried by what T1–T3 built rather than a
   separate piece: `/scout` Step 4 (sensitive → local folders only; unsure → keep local and ask), the
   sort table (legal / HR / resumes / contracts **held** in `docs/source/`, labelled, never quoted into
