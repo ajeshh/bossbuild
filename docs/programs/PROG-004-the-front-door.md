@@ -41,7 +41,7 @@ which records are tracked, not the door. Left as is; move it if a pass wants it 
 
 ## Backlog — saved for later passes (pick, cut or keep)
 
-- [ ] **B1 · Plant the status line** — *the next piece; Ajesh: a bigger feature, think it through first (2026-10-05).* Opt-in through `boss hooks enable statusline` (the optional-hooks
+- [ ] **B1 · Plant the status line** — *thought through as IDEA-159 (2026-10-07); waits on Ajesh.* Opt-in through `boss hooks enable statusline` (the optional-hooks
   door that exists), writing `statusLine` into the project's `.claude/settings.json` with
   `boss status --line`. Never overwrite a founder's own `statusLine`.
 - [ ] **B2 · Shell completion.** `boss completion zsh|bash|fish` prints a script; it completes the
@@ -83,3 +83,6 @@ refuses).
 - **2026-10-05 (close)** — paused before B1. Questions for it: opt-in or default; the host passes JSON on stdin
   (`workspace.current_dir`) — read that instead of the cwd; never overwrite a founder's own `statusLine`; what the
   line says when nothing is in flight; does it carry the conscience (paused, one ranked nudge) or stay position-only.
+- **2026-10-07** — B1 thought through as IDEA-159: five recommendations for Ajesh to react to. The
+  host check changed the plan — a project `statusLine` overrides the user's, so planting by default would
+  hide a founder's own line; compose instead. VS Code display unconfirmed.
