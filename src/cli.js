@@ -20,7 +20,7 @@ import { printChangelog, cmpVersion, versionLine } from './changelog.js';
 import { printUpdate, versionChange, versionChangeLine, cmdRemoveGlobal } from './update.js';
 import { printCredit } from './credit.js';
 import { cmdRemove } from './remove.js';
-import { statusConscience, consciencePause, conscienceResume, conscienceMute, conscienceUnmute, conscienceActivity } from './conscience.js';
+import { cmdConscience } from './conscience.js';
 import { board, boardHtml } from './board.js';
 import { playbookHtml, questionsLine, hasVerb } from './playbook.js';
 import { designHtml } from './design.js';
@@ -654,31 +654,6 @@ function cmdLearn(args) {
   console.log(`    Added under ${bold('## Unreleased')} in registry/CHANGELOG.md — VERSION does not move; the releaser stamps it.`);
   console.log(`    in ${res.root}   ${dim('(' + res.how + ')')}`);
   console.log('    Review, then commit. Connected projects pull it via `boss sync` / `/boss-sync`.\n');
-}
-
-// Async because the conscience surface now resolves the PROJECT's loop-runtime (§A4) —
-// `await` matters here: without it a thrown error becomes an unhandled rejection instead
-// of the clean one-line failure `boss conscience mute drfit` is supposed to produce.
-async function cmdConscience(args) {
-  const [sub, ...rest] = args;
-  const flags = parseArgs(rest);
-  try {
-    if (sub === 'pause') return consciencePause(flags);
-    if (sub === 'resume') return conscienceResume();
-    if (sub === 'mute') return await conscienceMute(flags);
-    if (sub === 'unmute') return conscienceUnmute(flags);
-    if (sub === 'activity') return conscienceActivity(process.cwd());
-    if (sub === 'cost') return conscienceActivity(process.cwd(), { asCost: true });
-    if (sub === 'status' || !sub) {
-      const stamp = readStamp(process.cwd());
-      if (!stamp) return failNotAProject();
-      console.log(`\n  ${bold(stamp.name)}`);
-      return await statusConscience(process.cwd(), { verbose: !!(flags.verbose || flags.v) });
-    }
-    return fail(`unknown subcommand 'conscience ${sub}'. options: pause | resume | mute | unmute | status | activity | cost`);
-  } catch (e) {
-    return fail(e.message);
-  }
 }
 
 // --- Help (IDEA-055) ------------------------------------------------------

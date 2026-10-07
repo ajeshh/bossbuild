@@ -24,6 +24,9 @@ import { readPauseState, readMuteState } from '../stages/L0-quickstart/template/
 import { dim, bold, ok, warn } from './ui.js';
 import { readConfigOrFail, writeConfig, readCohort, readSourceGlobs, DEFAULT_SOURCE_GLOBS } from './config.js';
 import { personStatePath } from '../stages/L0-quickstart/template/.claude/hooks/lib/person-state.js';
+import { readStamp } from './registry.js';
+import { fail, failNotAProject } from './fail.js';
+import { parseArgs } from './args.js';
 
 // What to SHOW a founder when a loop could not be evaluated. Prefers the running hook's own
 // default over this package's, so the globs named are the globs that actually ran — a project
@@ -484,4 +487,29 @@ export async function statusConscience(projectDir = process.cwd(), { verbose = f
     }
   }
   console.log('');
+}
+
+// Async because the conscience surface now resolves the PROJECT's loop-runtime (§A4) —
+// `await` matters here: without it a thrown error becomes an unhandled rejection instead
+// of the clean one-line failure `boss conscience mute drfit` is supposed to produce.
+export async function cmdConscience(args) {
+  const [sub, ...rest] = args;
+  const flags = parseArgs(rest);
+  try {
+    if (sub === 'pause') return consciencePause(flags);
+    if (sub === 'resume') return conscienceResume();
+    if (sub === 'mute') return await conscienceMute(flags);
+    if (sub === 'unmute') return conscienceUnmute(flags);
+    if (sub === 'activity') return conscienceActivity(process.cwd());
+    if (sub === 'cost') return conscienceActivity(process.cwd(), { asCost: true });
+    if (sub === 'status' || !sub) {
+      const stamp = readStamp(process.cwd());
+      if (!stamp) return failNotAProject();
+      console.log(`\n  ${bold(stamp.name)}`);
+      return await statusConscience(process.cwd(), { verbose: !!(flags.verbose || flags.v) });
+    }
+    return fail(`unknown subcommand 'conscience ${sub}'. options: pause | resume | mute | unmute | status | activity | cost`);
+  } catch (e) {
+    return fail(e.message);
+  }
 }

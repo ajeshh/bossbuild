@@ -152,10 +152,13 @@ TypeScript.
 **Direction.** Imports point down: shipped hook lib → leaves → state readers → domain → renderers →
 `cli.js`. Nothing imports `cli.js` except `bin/boss`.
 
-**`cli.js` shrinks as it's touched.** It holds 2,000+ lines and 23 `cmd*` handlers, and it's the file
-concurrent sessions collide on most. When you change a handler, move it into the domain module it
-already calls (`cmdSync` → `sync.js`, `cmdBoard` → `board.js`) and leave `cli.js` the dispatch line.
-Never a big-bang split, which would collide with every open worktree. — **W** (IDEA-150 D3)
+**`cli.js` is the dispatcher.** IDEA-160 moved the large handlers into the modules they call (2,242 →
+1,177 lines): `sync`, `remove` (`--global` → `update`), `status` → `orientation`, `new`/`adopt`/`unlock`
+→ `install`, `conscience`. What is left is the switch, help, its data tables and handlers under ~70
+lines. The rule stands for those: when you change one, move it into the domain module it already
+calls and leave `cli.js` the dispatch line. A moved handler never imports `cli.js` — what it needs
+moves down first. Never a big-bang split, which would collide with every open worktree. — **W**
+(IDEA-150 D3, IDEA-160)
 
 | Layer | Modules |
 |---|---|

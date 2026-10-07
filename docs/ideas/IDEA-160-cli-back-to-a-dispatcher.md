@@ -3,7 +3,8 @@ id: IDEA-160
 type: idea
 kind: capability
 owner: product-lead
-status: exploring
+status: shipped
+shipped_on: 2026-10-07
 created: 2026-10-07
 proof: none
 proof_note: a move, not a new file — done is `wc -l src/cli.js` near 1,300 and no `cmd` handler body left in it beyond dispatch
@@ -96,9 +97,13 @@ bug from them, so they don't meet the bar for a new gate. The fix is to do the m
   empty repo, a repo with code (detected as MVP), one with its own CLAUDE.md/.gitignore/settings and
   pre-commit hook, a folder with no git, each adopted twice, and `--mode mvp` — identical to main
   (663 lines).
-- [ ] **S6b** · `cmdConscience` (~167) → `conscience.js`. Found 2026-10-07 while answering Q2/Q3: the
-  original list ranked by an awk pass that missed it.
-- [ ] **S7** · ENGINEERING.md §3: the new line count and the map's layer table; the "shrinks as it's
+- [x] **S6b** · `cmdConscience` → `conscience.js` (`cli.js` 1,202 → 1,177). Found while answering Q2/Q3.
+  It is 21 lines, not ~167: the awk pass that sized every handler here measured from one function to
+  the next, so a handler followed by a data table (`OPTIONAL_HOOKS`, ~140 lines) read large. The
+  other sizes above carry the same error, smaller. Verified: 824 tests; `/tmp` bare, `status`,
+  `pause`/`resume`, `mute`/`unmute` (a real moment, a wrong one, a typo), `activity`, a bogus
+  subcommand, `--json`, outside a project — identical to main but the auto-unmute timestamp.
+- [x] **S7** · ENGINEERING.md §3: the new line count and the map's layer table; the "shrinks as it's
   touched" line says the handlers left, not that they will.
 
 **Done when:** `cli.js` is around 1,300 lines or fewer, `npm run check` is clean, and every moved
@@ -113,10 +118,17 @@ command passes its `/tmp` exercise.
   job and helpers; `scaffold.js` would have to import the domain (up a layer), and three modules
   would still need a shared home for `claudeInstalled`.
 
+## Result (2026-10-07)
+
+`cli.js` 2,242 → 1,177 lines (−47%) in nine commits, each landed alone and each byte-identical to
+main on a `/tmp` run of the commands it moved. New: `fail.js` (how a command fails) and `install.js`
+(new, adopt, unlock). Import cycles: the same three as before. What is left needs no plan: the rule in
+ENGINEERING.md §3 covers the small handlers as they are touched.
+
 ## Found while building
 
 - **`boss id` offers a number a peer's worktree already holds.** Reproduced 2026-10-07 10:36 from the
   main checkout: `node bin/boss id` answered `IDEA-159` while `work/idea-159` held
   `docs/ideas/IDEA-159-the-status-line-in-claude-code.md` in a commit (53da856a). The behaviour
   `test/id-sees-open-worktrees.test.js` pins does not happen here. Not this record's concern: it
-  needs its own id and a reproduction in a test.
+  needs its own id and a reproduction in a test. → **IDEA-161**.
