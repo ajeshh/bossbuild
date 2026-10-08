@@ -33,6 +33,14 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### What you'll notice
 
+### Smaller improvements
+
+### Under the hood
+
+## 0.332.0 — 2026-10-07
+
+### What you'll notice
+
 - **`boss board --next` says how close each piece of work is, in words, and where to pick it up.** It
   used to list what was in build and say "finish it". Now each piece says whether questions are still
   open (*uphill*) or only known work is left (*downhill*), and which way it has been going: *8 → 4 open

@@ -2,7 +2,7 @@
 
 > Your AI can build anything. BOSS keeps it building the one thing — inside Claude Code it finds the smallest version of a new idea, reads a drifting build back to you, and says one thing when you drift. Free, MIT, local.
 
-BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, agents and hooks for founders. It sets a project up with only the structure it has earned, grows it through four modes (Quickstart → MVP → V1 → Scale), and says one thing when the founder drifts. Everything stays on the founder's machine. MIT licensed, free, v0.331.0. Install: `npm install -g oyeboss` or `brew install ajeshh/boss/oyeboss`; needs Node 22+ and Claude Code.
+BOSS (Build Out Solid Stuff) is a zero-dependency CLI plus Claude Code skills, agents and hooks for founders. It sets a project up with only the structure it has earned, grows it through four modes (Quickstart → MVP → V1 → Scale), and says one thing when the founder drifts. Everything stays on the founder's machine. MIT licensed, free, v0.332.0. Install: `npm install -g oyeboss` or `brew install ajeshh/boss/oyeboss`; needs Node 22+ and Claude Code.
 
 ## Pages
 
