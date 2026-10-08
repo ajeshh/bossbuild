@@ -9,7 +9,7 @@ relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
-next: build — report every settings change, then the small wrong readings from dhun's check
+next: build — monorepo detection and identity from the remote, then agent overlap
 ---
 
 # IDEA-163 — Adopt shows its plan first
@@ -152,7 +152,7 @@ BOSS 0.332.0 adopted into a worktree of dhun (a monorepo with its own agents, sk
 worktree practice). Nothing of dhun's was overwritten — and dhun would still have behaved differently.
 **Reading the docs found none of these; installing found five.** Each is a task here until it ships.
 
-- [ ] **A quiet deletion.** The settings merge removed `defaultMode: "auto"` and adopt said nothing —
+- [x] **A quiet deletion.** The settings merge removed `defaultMode: "auto"` and adopt said nothing —
       `computeSettingsMerge` returns `migrated`, `boss sync` prints it, adopt drops it. The preview must
       say it too.
 - [ ] **Most of BOSS can't see a repo that keeps things elsewhere — and silence reads as fine.** The
@@ -281,12 +281,12 @@ same adopt ignores.
 **The preview, checked on dhun main (b228b2b): wrote nothing** (status, `BOSS_HOME`, hook hash unchanged);
 showed every side effect, the baseline, all 32 folder FEATs. Still wrong — each a task:
 
-- [ ] "N new files; none of yours is replaced" and "29 skills" while 18 files land in dhun's own skill
+- [x] "N new files; none of yours is replaced" and "29 skills" while 18 files land in dhun's own skill
       folders and five of the 29 are dhun's — the folder-level skip fixes both.
-- [ ] False positive: `docs/pm/labs/IDEA-009-RESUME.md` (a RESUME named after an idea) listed as a record.
-- [ ] `defaultMode` not mentioned, though dhun's settings has it.
-- [ ] The registry line says `~/.boss` with `BOSS_HOME` set — show the real path.
-- [ ] Layout gaps: the 9 `docs/ideas/IDEA-*.md` should read as *found*, not be left out.
+- [x] False positive: `docs/pm/labs/IDEA-009-RESUME.md` (a RESUME named after an idea) listed as a record.
+- [x] `defaultMode` not mentioned, though dhun's settings has it.
+- [x] The registry line says `~/.boss` with `BOSS_HOME` set — show the real path.
+- [x] Layout gaps: the 9 `docs/ideas/IDEA-*.md` should read as *found*, not be left out.
 
 ## Found while building
 

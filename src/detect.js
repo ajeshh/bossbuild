@@ -182,10 +182,16 @@ export function detectStage(dir) {
 const RECORD_HOME = { IDEA: 'docs/ideas', FEAT: 'docs/ideas', PROG: 'docs/programs', DEC: 'docs/decisions', EVID: 'docs/evidence', PRAC: 'docs/practices' };
 const RECORD_NAME = /^(IDEA|FEAT|PROG|DEC|EVID|PRAC)-\d+/i;
 
-// A file is a record when its frontmatter says so — a design review named after a FEAT is not one.
+// A file is a record when its frontmatter says so — a design review named after a FEAT is not one,
+// and neither is a RESUME named after the idea it resumes (`IDEA-009-RESUME.md`, `type: resume`).
 const isRecord = (file, kind) => {
-  try { return new RegExp(`^---\\r?\\n(?:[^\\n]*\\n)*?id:\\s*["']?${kind}-\\d+`, 'i').test(readFileSync(file, 'utf8').slice(0, 2000)); }
-  catch { return false; }
+  try {
+    const head = readFileSync(file, 'utf8').slice(0, 2000);
+    const fm = /^---\r?\n([\s\S]*?)\r?\n---/.exec(head);
+    if (!fm) return false;
+    if (/^type:\s*["']?(resume|handoff|reference)\b/im.test(fm[1])) return false;
+    return new RegExp(`^id:\\s*["']?${kind}-\\d+`, 'im').test(fm[1]);
+  } catch { return false; }
 };
 
 // Only `docs/` at the root: that is where a repo keeps its records, and a nested project

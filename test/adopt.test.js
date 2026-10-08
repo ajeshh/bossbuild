@@ -244,3 +244,22 @@ test('a skill the repo already has is skipped whole, not filled with BOSS siblin
   boss(['sync', '--apply'], dir);
   assert.deepEqual(readdirSync(join(dir, '.claude/skills/log')), ['SKILL.md'], 'and sync does not add them later');
 });
+
+test('the one settings line adopt removes is said, in the preview and on apply', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}', '.claude/settings.json': '{"permissions":{"defaultMode":"auto","allow":["Bash(npm test)"]}}' });
+  assert.match(boss(['adopt'], dir), /removes defaultMode: "auto"/);
+  assert.match(boss(['adopt', '--apply'], dir), /removed defaultMode: "auto"/);
+  assert.deepEqual(JSON.parse(readFileSync(join(dir, '.claude/settings.json'), 'utf8')).permissions.allow, ['Bash(npm test)']);
+});
+
+test('the preview says records found where BOSS looks, and a RESUME named after an idea is not a record', () => {
+  const dir = project({
+    'package.json': '{"name":"myapp"}',
+    'docs/ideas/IDEA-001-a.md': '---\nid: IDEA-001\nstatus: exploring\n---\n# A\n',
+    'docs/ideas/IDEA-002-b.md': '---\nid: IDEA-002\nstatus: exploring\n---\n# B\n',
+    'docs/pm/labs/IDEA-009-RESUME.md': '---\nid: IDEA-009-RESUME\ntype: resume\n---\n# resume\n',
+  });
+  const out = boss(['adopt'], dir);
+  assert.match(out, /docs\/ideas\/IDEA-\*\.md \(2\) — found where BOSS looks/);
+  assert.doesNotMatch(out, /docs\/pm\/labs/);
+});

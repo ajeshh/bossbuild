@@ -6,7 +6,8 @@
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, delimiter, basename, dirname, relative, sep } from 'node:path';
 import { execSync } from 'node:child_process';
-import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
+import { homedir } from 'node:os';
+import { bossVersion, STAGE_ORDER, resolveStageId, BOSS_HOME } from './paths.js';
 import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, planStageSafe, gitignoreRulesToAdd, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
 import { readStamp, writeStamp, registerProject, STAMP } from './registry.js';
 import { stampManaged, computeSettingsMerge } from './sync.js';
@@ -17,6 +18,7 @@ import { dim, bold, ok, warn, shellArg } from './ui.js';
 import { fail, failNotAProject } from './fail.js';
 import { commitGuardLine } from './hooks.js';
 import { installCommitGuard } from '../stages/L0-quickstart/template/.claude/hooks/lib/commit-secrets.js';
+import { recordFiles } from '../stages/L0-quickstart/template/.claude/hooks/lib/record-files.js';
 import { writeFileAtomic } from './atomic.js';
 import { detectStage, inferSourceGlobs, unreadRecords } from './detect.js';
 import { parseArgs } from './args.js';
@@ -138,20 +140,34 @@ function previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shi
     const count = (o) => Object.values(o?.hooks || {}).reduce((n, a) => n + a.length, 0);
     const perms = (o) => ['deny', 'ask'].reduce((n, k) => n + (o?.permissions?.[k] || []).length, 0);
     const parts = [`${count(settings.merged) - count(before)} hook registration(s)`, `${perms(settings.merged) - perms(before)} deny/ask rule(s)`];
-    touched.push(['.claude/settings.json', `${parts.join(' and ')} added; your permissions and hooks kept`]);
+    const removes = settings.migrated || [];
+    touched.push(['.claude/settings.json', `${parts.join(' and ')} added${removes.length ? '' : '; your permissions and hooks kept'}`]);
+    // The one line the merge takes OUT, said by name — adopt used to make it silently (IDEA-163).
+    for (const m of removes) touched.push(['', `${warn('−')} and removes ${m}`]);
   }
   if (existsSync(join(targetDir, '.git'))) touched.push(['.git/hooks', 'a pre-commit check for keys, unless you already have a pre-commit hook']);
-  touched.push(['~/.boss', 'this project registered, so `boss list` and `boss sync` find it']);
+  touched.push([BOSS_HOME === join(homedir(), '.boss') ? '~/.boss' : BOSS_HOME, 'this project registered, so `boss list` and `boss sync` find it']);
   for (const [f, what] of touched) line(f, what);
   for (const [f] of touched) kept.delete(f);   // merged into, and said so above — not "kept as-is"
   if (kept.size) console.log(`    ${dim(`kept as-is — you already have ${kept.size}: ${[...kept].slice(0, 3).join(', ')}${kept.size > 3 ? ' …' : ''}`)}`);
 
   const unread = unreadRecords(targetDir);
-  if (unread.length) {
+  // Records already where BOSS looks are found too — said, so silence never stands for "none".
+  const home = new Map();
+  for (const r of recordFiles(targetDir)) {
+    const flat = r.rel.endsWith(`/${r.name}`);
+    const dir = r.rel.slice(0, r.rel.lastIndexOf(`/${r.name}`));
+    const k = flat ? `${dir}/${r.kind}-*.md` : `${dir}/${r.kind}-*/${r.rel.split('/').pop()}`;
+    home.set(k, (home.get(k) || 0) + 1);
+  }
+  if (unread.length || home.size) {
     console.log(`\n  ${bold('Where you keep things')}`);
+    for (const [k, n] of home) console.log(`    ${k} ${dim(`(${n}) — found where BOSS looks`)}`);
     for (const u of unread) console.log(`    ${u.pattern} ${dim(`(${u.count})`)}`);
-    console.log(`    ${dim(`BOSS reads them where they are — the board, boss id and session start included — and`)}`);
-    console.log(`    ${dim(`notes the folder${unread.length > 1 ? 's' : ''} in .boss/config.json (layout.records). Nothing is moved.`)}`);
+    if (unread.length) {
+      console.log(`    ${dim(`BOSS reads them where they are — the board, boss id and session start included — and`)}`);
+      console.log(`    ${dim(`notes the folder${unread.length > 1 ? 's' : ''} in .boss/config.json (layout.records). Nothing is moved.`)}`);
+    }
   }
 
   console.log(`\n  ${bold('Taking less')}`);
@@ -571,6 +587,7 @@ export function cmdAdopt(args) {
   //    preserves the founder's permissions + any hooks they already wired).
   const settings = computeSettingsMerge(targetDir, chain);
   if (settings?.unparseable) console.log(`  ${warn('!')} ${settings.unparseable}`);
+  for (const m of settings?.migrated || []) console.log(`  ${warn('−')} .claude/settings.json: removed ${m}`);
   if (settings && settings.changed) {
     const dest = join(targetDir, settings.rel);
     mkdirSync(join(targetDir, '.claude'), { recursive: true });

@@ -62,7 +62,9 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   doesn't read yet, like `docs/features/FEAT-001-login/README.md`. It also says how to take less.
   Nothing is written until `boss adopt --apply`, the same way `boss sync` and `boss remove` already
   work. If you script adopt, add `--apply`. Adopt also records the commit it started from, so what you
-  had stays something you can compare against; the preview asks you to commit first if you haven't.
+  had stays something you can compare against; the preview asks you to commit first if you haven't. The
+  preview also names the one line adopt removes from `.claude/settings.json` (`defaultMode: "auto"`,
+  which does nothing in a project file), and lists the records it found where it already looks.
 - **BOSS reads your records where you keep them.** A repo that keeps each feature in its own folder,
   like `docs/features/FEAT-001-login/README.md`, used to show *nothing in flight* on the board and at
   session start, and `boss id` could hand out a number already taken. Now records are read flat or as
