@@ -333,4 +333,6 @@ showed every side effect, the baseline, all 32 folder FEATs. Still wrong — eac
   edge? And does Q7's bare `--apply` (the safety floor) become a room, or the floor every room above
   Mailroom carries? Seams already here: the plan is computed per file (`planStageSafe`) and can take a
   subset; the preview groups by part; take-stock is where a room would be suggested. Not built until
-  PROG-006's Q1 is decided.
+  PROG-006's Q1 is decided. *PROG-006 took both as proposed answers (its Q1 items 6–7, Q5 points here):
+  rooms are presets over these parts and `--take` adds or drops one; the safety floor is carried by every
+  room above the Mailroom. Ajesh decides them in one `/decide` (Q1+Q2, superseding part of DEC-009).*
