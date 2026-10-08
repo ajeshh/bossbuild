@@ -91,7 +91,7 @@ Lobby and `boss up`. IDEA-163 builds the Basement only after DEC-024 lands on ma
   so we need to communicate to users, that different ways to use boss"*). One explanation of the four
   rooms, written once, read by the site (PROG-001), the front door — `/welcome`, `/boss`, `boss help`
   (PROG-004) — and the README. Lands with the first room that ships, not before (no overclaiming).
-- [ ] **The site tells the building as a story** (Ajesh: *"storytelling using the names of each floor…
+- [ ] **The site tells the building as a story** — first draft: `docs/stories/2026-10-08-the-building.html` (Ajesh: *"storytelling using the names of each floor…
   make it relateable and which floor they want"*). Walk the building from the Basement up; each room
   says who it is for in their words; the reader leaves knowing which room they want. One page or one
   section, PROG-001's subtract-first rule applies.

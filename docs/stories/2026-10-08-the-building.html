@@ -1,0 +1,283 @@
+<title>The Building</title>
+<style>
+/* Layout: one reading column; the cross-section is the hero, each floor a section keyed to it. */
+:root {
+  --paper: #F6F6F3;
+  --ink: #14202B;
+  --slate: #4A5A68;
+  --rule: #A9CBE0;
+  --ice: #D7EFFF;
+  --ice-sunk: #C6E4F7;
+  --structure: #2A5BAD;   /* cornflower structures */
+  --point: #E0482A;       /* persimmon points */
+  --ground: #8A7A66;
+  --earth: #E9E3DA;
+  --raised: #FFFFFF;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1C28; --ink: #E6EEF4; --slate: #9DB4C6; --rule: #27404F;
+    --ice: #152636; --ice-sunk: #1B3346; --structure: #7FB0F5; --point: #FF8A6A;
+    --ground: #6E6253; --earth: #1A2027; --raised: #152636; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1C28; --ink: #E6EEF4; --slate: #9DB4C6; --rule: #27404F;
+  --ice: #152636; --ice-sunk: #1B3346; --structure: #7FB0F5; --point: #FF8A6A;
+  --ground: #6E6253; --earth: #1A2027; --raised: #152636; color-scheme: dark;
+}
+body { background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); padding-inline: 20px; padding-block: 40px 80px; }
+main { max-width: 44rem; margin: 0 auto; display: grid; gap: 2.5rem; }
+.eyebrow { font: 600 0.75rem/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); }
+h1 { font: 600 clamp(2.2rem, 1.6rem + 3vw, 3.4rem)/1.05 var(--display); margin: 0.4rem 0 0; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font: 600 1.6rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+h3 { font: 600 0.8rem/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); margin: 0; }
+p { margin: 0; }
+.lede { font-size: 1.15rem; color: var(--ink); }
+.stack { display: grid; gap: 1rem; }
+.status { font: 0.85rem/1.5 var(--mono); color: var(--slate); border-left: 3px solid var(--point); padding-left: 0.8rem; }
+figure { margin: 0; }
+.section-svg { overflow-x: auto; }
+svg { display: block; width: 100%; max-width: 100%; height: auto; }
+svg text { font-family: var(--sans); fill: var(--ink); }
+svg .label { font-weight: 650; font-size: 15px; }
+svg .say { font-size: 12px; fill: var(--slate); }
+svg .floor { fill: var(--ice); stroke: var(--structure); stroke-width: 1.5; transition: fill 200ms; }
+svg .floor.lit { fill: var(--point); }
+svg .floor.lit + text, svg g.lit text { fill: var(--paper); }
+svg .earth { fill: var(--earth); }
+svg .groundline { stroke: var(--ground); stroke-width: 2; }
+svg .shaft { fill: var(--paper); stroke: var(--structure); stroke-width: 1.5; }
+svg .car { fill: var(--point); }
+svg .lobby { fill: none; stroke: var(--structure); stroke-width: 1.5; stroke-dasharray: 5 4; }
+svg .lobby.lit { fill: var(--point); stroke-dasharray: none; }
+svg .roof { fill: none; stroke: var(--structure); stroke-width: 1.5; }
+svg .door { fill: var(--point); }
+figcaption { font-size: 0.85rem; color: var(--slate); margin-top: 0.6rem; }
+
+.floors { display: grid; gap: 1.25rem; }
+.floor-card { background: var(--raised); border: 1px solid var(--rule); border-radius: 6px; padding: 1.25rem 1.25rem 1.4rem; display: grid; gap: 0.9rem; }
+.floor-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.floor-head h2 { font-size: 1.45rem; }
+.level { font: 600 0.8rem/1 var(--mono); color: var(--structure); }
+.say-line { font-style: italic; color: var(--slate); }
+.rows { display: grid; gap: 0.7rem; }
+.row { display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.75rem; }
+.row > div { min-width: 0; }
+@media (max-width: 520px) { .row { grid-template-columns: 1fr; gap: 0.15rem; } }
+ul { margin: 0; padding-left: 1.1rem; }
+li + li { margin-top: 0.2rem; }
+code { font: 0.88em var(--mono); background: var(--ice); padding: 0.05em 0.3em; border-radius: 3px; }
+
+.picker { background: var(--ice); border-radius: 6px; padding: 1.25rem; display: grid; gap: 1rem; }
+.q { font-weight: 600; font-size: 1.1rem; }
+.btns { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+button { font: 600 0.95rem var(--sans); padding: 0.55rem 1.1rem; border-radius: 4px; border: 1.5px solid var(--structure); background: var(--paper); color: var(--ink); cursor: pointer; }
+button:hover { background: var(--ice-sunk); }
+button:focus-visible { outline: 3px solid var(--point); outline-offset: 2px; }
+.answer { font-size: 1.05rem; }
+.answer strong { color: var(--point); }
+.trail { font: 0.8rem var(--mono); color: var(--slate); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&display=swap">
+
+<main>
+  <header class="stack">
+    <div>
+      <div class="eyebrow">Story draft · internal · 2026-10-08</div>
+      <h1>The building</h1>
+    </div>
+    <p class="lede">Most people building with AI don't have one project. They have six: a real one, two side projects, a client's repo, something from last spring, and a thing they started on Sunday. The hard part isn't building any one of them. It's remembering which is which, where each one stands, and what you meant to do next.</p>
+    <p>And until now, BOSS came one way: the whole of it. A side project you wanted to keep track of got the same mentors, canvas and customer interviews as a startup. So we drew BOSS as a building. Every project lives on the floor that holds as much BOSS as it wants, and HQ shows all of them at once.</p>
+    <p class="status">Decided 2026-10-08 (DEC-024, PROG-006). Nothing on this page has shipped yet. The Mailroom is built first.</p>
+  </header>
+
+  <figure>
+    <div class="section-svg">
+      <svg id="building" viewBox="0 0 640 470" role="img" aria-labelledby="bt">
+        <title id="bt">A cross-section of the building: the Basement below ground; the Mailroom, Office, Studio and Boardroom stacked above it; an elevator up the right side; the Lobby outside the front door.</title>
+        <rect class="earth" x="0" y="350" width="640" height="120"></rect>
+        <line class="groundline" x1="0" y1="350" x2="640" y2="350"></line>
+        <path class="roof" d="M170 70 L370 30 L570 70"></path>
+
+        <g data-floor="boardroom"><rect class="floor" x="170" y="70" width="330" height="70"></rect>
+          <text class="label" x="186" y="100">Boardroom</text><text class="say" x="186" y="122">the whole venture</text></g>
+        <g data-floor="studio"><rect class="floor" x="170" y="140" width="330" height="70"></rect>
+          <text class="label" x="186" y="170">Studio</text><text class="say" x="186" y="192">help me build it</text></g>
+        <g data-floor="office"><rect class="floor" x="170" y="210" width="330" height="70"></rect>
+          <text class="label" x="186" y="240">Office</text><text class="say" x="186" y="262">help me hold the context</text></g>
+        <g data-floor="mailroom"><rect class="floor" x="170" y="280" width="330" height="70"></rect>
+          <text class="label" x="186" y="310">Mailroom</text><text class="say" x="186" y="332">hey, track this</text></g>
+        <g data-floor="basement"><rect class="floor" x="170" y="360" width="330" height="70"></rect>
+          <text class="label" x="186" y="390">Basement</text><text class="say" x="186" y="412">the safety floor, under all of it</text></g>
+
+        <rect class="shaft" x="500" y="70" width="70" height="360"></rect>
+        <rect class="car" x="512" y="292" width="46" height="46" rx="2"></rect>
+        <text class="say" x="535" y="455" text-anchor="middle">boss up</text>
+
+        <rect class="door" x="164" y="314" width="8" height="36"></rect>
+        <g data-floor="lobby"><rect class="lobby" x="20" y="270" width="130" height="80" rx="3"></rect>
+          <text class="label" x="34" y="300">Lobby</text><text class="say" x="34" y="320">seen, not touched</text><text class="say" x="34" y="338">outside the building</text></g>
+        <text class="say" x="168" y="368" text-anchor="end">the door</text>
+      </svg>
+    </div>
+    <figcaption>Each floor carries every floor below it. You come in through the door, and the elevator takes a project up when you decide it's ready.</figcaption>
+  </figure>
+
+  <section class="picker" aria-live="polite">
+    <h3>Which floor do you want?</h3>
+    <div id="pick"></div>
+  </section>
+
+  <section class="floors">
+    <article class="floor-card" id="lobby">
+      <div class="floor-head"><h2>Lobby</h2><span class="level">outside</span></div>
+      <p class="say-line">"This one isn't mine, but I still need to keep track of it."</p>
+      <div class="rows">
+        <div class="row"><h3>For</h3><div>A client's repo, your employer's, an open-source project you contribute to.</div></div>
+        <div class="row"><h3>You get</h3><div>A card in HQ: what it is, what's next, when you last touched it. Git supplies the rest. Nothing is written into the repo.</div></div>
+        <div class="row"><h3>Why</h3><div>You need to find your way back to it, but it isn't yours to change. A tool that drops files into someone else's repo has overstepped.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>The problem here is memory. One line of <em>what</em> and one line of <em>next</em> answer "what was I doing in there?"</div></div>
+      </div>
+    </article>
+
+    <article class="floor-card" id="basement">
+      <div class="floor-head"><h2>Basement</h2><span class="level">0 · under every floor</span></div>
+      <p class="say-line">You don't choose it. Every floor stands on it.</p>
+      <div class="rows">
+        <div class="row"><h3>You get</h3><div><ul>
+          <li>Rules for the AI: what it must never run, and what it asks you before running.</li>
+          <li>A secrets check on every commit, whoever makes it.</li>
+          <li>A <code>.gitignore</code> block that keeps keys and local files out of the repo.</li>
+        </ul></div></div>
+        <div class="row"><h3>Why</h3><div>AI writes fast. A key committed once stays in the history and in every clone, even after you delete the line. If you're going to build with AI, set up the right container first.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>These are the mistakes you can't take back. Everything else in BOSS can wait until you want it. This can't.</div></div>
+      </div>
+    </article>
+
+    <article class="floor-card" id="mailroom">
+      <div class="floor-head"><h2>Mailroom</h2><span class="level">1</span></div>
+      <p class="say-line">"Hey, track this."</p>
+      <div class="rows">
+        <div class="row"><h3>For</h3><div>The side project you touch once a month. The experiment you might come back to.</div></div>
+        <div class="row"><h3>You get</h3><div>The Basement, plus a card in HQ with <em>what this is</em> and <em>what's next</em>.</div></div>
+        <div class="row"><h3>Why</h3><div>For most side projects the problem isn't tooling. It's opening the folder after three weeks and not knowing why.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>Two lines and a safe repo. The card keeps you oriented, and nothing else gets in the way of a project that only wants to exist.</div></div>
+      </div>
+    </article>
+
+    <article class="floor-card" id="office">
+      <div class="floor-head"><h2>Office</h2><span class="level">2</span></div>
+      <p class="say-line">"Help me hold the context."</p>
+      <div class="rows">
+        <div class="row"><h3>For</h3><div>A project you come back to every week or so, with an AI session open.</div></div>
+        <div class="row"><h3>You get</h3><div><ul>
+          <li>Working rules the AI reads at the start of every session.</li>
+          <li>A resume of where you left off, read when a session opens and written when it closes.</li>
+          <li>A place for ideas and the decisions you made, with why.</li>
+        </ul></div></div>
+        <div class="row"><h3>Why</h3><div>The AI forgets everything between sessions, and so do you. The Office is where the project remembers for both of you.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>For a project you keep returning to, continuity is the whole problem. Here the HQ card updates itself, because every session ends by writing where you are.</div></div>
+      </div>
+    </article>
+
+    <article class="floor-card" id="studio">
+      <div class="floor-head"><h2>Studio</h2><span class="level">3</span></div>
+      <p class="say-line">"Help me build it. Skip the venture talk."</p>
+      <div class="rows">
+        <div class="row"><h3>For</h3><div>A tool, an open-source project, a gift, a thing for your friends. Anything you want built well that doesn't have to be a business.</div></div>
+        <div class="row"><h3>You get</h3><div><ul>
+          <li>The building team: a coder, a planner, a tester, a designer, an architecture mentor, a prompt coach.</li>
+          <li>Specs with acceptance criteria, a smoke check, design review, a way to ship it.</li>
+          <li>If it uses AI: evals, red-teaming, cost and failure planning.</li>
+        </ul></div></div>
+        <div class="row"><h3>Why</h3><div>Not every project is a business. A Studio project is never asked who pays for it, because nobody has to.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>It has everything about building the thing right, and nothing about whether to build it.</div></div>
+      </div>
+    </article>
+
+    <article class="floor-card" id="boardroom">
+      <div class="floor-head"><h2>Boardroom</h2><span class="level">4</span></div>
+      <p class="say-line">"This is a venture. Give me the whole thing."</p>
+      <div class="rows">
+        <div class="row"><h3>For</h3><div>A project that needs users, customers or money to work.</div></div>
+        <div class="row"><h3>You get</h3><div><ul>
+          <li>A board of mentors: founder, customers, capital, cofounder, and a humane lens that can overrule them.</li>
+          <li>The conscience, which watches for building around your riskiest assumption.</li>
+          <li>The canvas, evidence from real people, interviews, cheap demand tests, money.</li>
+          <li>The four stages: Quickstart, MVP, V1, Scale.</li>
+        </ul></div></div>
+        <div class="row"><h3>Why</h3><div>When it's a venture, the riskiest part is usually not the code. It's whether anyone wants it.</div></div>
+        <div class="row"><h3>Why it's enough</h3><div>It's all of BOSS.</div></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="stack">
+    <h2>The door and the elevator</h2>
+    <p>You come in through one door. <code>boss adopt</code> brings in a folder you already have; <code>boss new</code> starts one. Either way you enter at the Basement and ride to the floor you came for. Nothing puts you on the top floor by default.</p>
+    <p>Later, <code>boss up</code> is the elevator. It shows you what the next floor adds before it adds anything. When BOSS sees a project reaching a threshold, it says so once. Going up is your call.</p>
+  </section>
+
+  <section class="stack">
+    <h2>A floor is a home, not a rank</h2>
+    <p>A side project that lives in the Mailroom forever has done nothing wrong. HQ shows the projects you're working on loudly and lets the rest rest. No red badges, no streaks, no nudging upward. And if a project is done, putting it down is a choice BOSS offers, not a failure it counts.</p>
+  </section>
+
+  <section class="stack">
+    <h2>HQ</h2>
+    <p>HQ is the view across the whole building: every project on this machine, what it is, where it stands, what's next, and which window you have open on it. It reads what each floor already keeps, so it needs nothing new from any project. It's built last, once there's something on every floor to read.</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  var steps = [
+    { q: "Is this repo yours to change?", no: "lobby" },
+    { q: "Will you build in it with an AI session?", no: "mailroom" },
+    { q: "Do you want help building it: specs, tests, shipping?", no: "office" },
+    { q: "Is it a venture? Are you after users, customers or money?", no: "studio", yes: "boardroom" }
+  ];
+  var names = { lobby: "the Lobby", mailroom: "the Mailroom", office: "the Office", studio: "the Studio", boardroom: "the Boardroom" };
+  var pick = document.getElementById("pick");
+  var svg = document.getElementById("building");
+
+  function light(floor) {
+    svg.querySelectorAll("[data-floor]").forEach(function (g) {
+      var on = g.getAttribute("data-floor") === floor;
+      g.classList.toggle("lit", on);
+      var r = g.querySelector("rect"); if (r) r.classList.toggle("lit", on);
+    });
+  }
+  function button(label, fn) {
+    var b = document.createElement("button"); b.type = "button"; b.textContent = label; b.addEventListener("click", fn); return b;
+  }
+  function ask(i, trail) {
+    pick.innerHTML = "";
+    var s = steps[i];
+    var q = document.createElement("p"); q.className = "q"; q.textContent = s.q;
+    var row = document.createElement("div"); row.className = "btns";
+    row.appendChild(button("Yes", function () { s.yes ? done(s.yes, trail.concat("yes")) : ask(i + 1, trail.concat("yes")); }));
+    row.appendChild(button("No", function () { done(s.no, trail.concat("no")); }));
+    pick.appendChild(q); pick.appendChild(row);
+    if (trail.length) { var t = document.createElement("p"); t.className = "trail"; t.textContent = "Question " + (i + 1) + " of " + steps.length; pick.appendChild(t); }
+    light(null);
+  }
+  function done(floor, trail) {
+    pick.innerHTML = "";
+    var a = document.createElement("p"); a.className = "answer";
+    a.innerHTML = "Start in <strong>" + names[floor] + "</strong>." + (floor === "lobby" ? " It stays outside the building, so nothing is written into the repo." : " You can take the elevator up any time.");
+    var row = document.createElement("div"); row.className = "btns";
+    var go = document.createElement("a"); go.href = "#" + floor; go.textContent = "Read about " + names[floor]; go.style.alignSelf = "center"; go.style.color = "var(--structure)";
+    row.appendChild(button("Start over", function () { ask(0, []); }));
+    row.appendChild(go);
+    pick.appendChild(a); pick.appendChild(row);
+    light(floor);
+  }
+  ask(0, []);
+})();
+</script>
