@@ -218,3 +218,29 @@ test('boss id counts a folder-per-record anywhere under docs/, with no layout se
   writeFileSync(join(dir, '.boss', 'manifest.json'), JSON.stringify({ stage: 'L1-mvp', mode: 'MVP', installedLayers: ['L0-quickstart', 'L1-mvp'] }));
   assert.match(boss(['id', 'FEAT'], dir), /FEAT-002/);
 });
+
+// --- IDEA-163 — the founder's colliding files are theirs, not BOSS's ------------------------------
+test('REGRESSION: adopt then sync --apply leaves the founder\'s own agent and skill alone', () => {
+  const dir = project({
+    'package.json': '{"name":"myapp"}',
+    '.claude/agents/tester.md': '# MY OWN tester\n',
+    '.claude/skills/smoke/SKILL.md': '# MY OWN smoke\n',
+  });
+  boss(['adopt', '--apply', '--mode', 'mvp'], dir);
+  const preview = boss(['sync'], dir);
+  assert.doesNotMatch(preview, /(unclaimed|changed).*(tester|smoke)/, 'sync must not plan to change their files');
+  assert.match(preview, /2 of yours, left alone since adopt/);
+  boss(['sync', '--apply'], dir);
+  assert.equal(readFileSync(join(dir, '.claude/agents/tester.md'), 'utf8'), '# MY OWN tester\n');
+  assert.equal(readFileSync(join(dir, '.claude/skills/smoke/SKILL.md'), 'utf8'), '# MY OWN smoke\n');
+});
+
+test('a skill the repo already has is skipped whole, not filled with BOSS siblings', () => {
+  const dir = project({ 'package.json': '{"name":"myapp"}', '.claude/skills/log/SKILL.md': '# MY OWN log\n' });
+  const out = boss(['adopt', '--mode', 'mvp'], dir);
+  assert.doesNotMatch(out, /skills\s.*\blog\b/, 'their /log is not counted among the skills BOSS adds');
+  boss(['adopt', '--apply', '--mode', 'mvp'], dir);
+  assert.deepEqual(readdirSync(join(dir, '.claude/skills/log')), ['SKILL.md'], 'no BOSS files beside their SKILL.md');
+  boss(['sync', '--apply'], dir);
+  assert.deepEqual(readdirSync(join(dir, '.claude/skills/log')), ['SKILL.md'], 'and sync does not add them later');
+});

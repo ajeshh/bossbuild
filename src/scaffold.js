@@ -268,6 +268,9 @@ function cpSafeTree(srcDir, destDir, copied, skipped, held = new Set(), dry = fa
     const d = join(destDir, name);
     if (held.has(s)) continue;   // held back until earned or asked for — not copied at all
     if (statSync(s).isDirectory()) {
+      // A skill the repo already has is theirs, whole: BOSS's siblings dropped into their folder are
+      // files their SKILL.md never reads (one would have started a second devlog). IDEA-163.
+      if (basename(srcDir) === 'skills' && existsSync(join(d, 'SKILL.md'))) { skipped.push(d); continue; }
       cpSafeTree(s, d, copied, skipped, held, dry);
     } else if (existsSync(d)) {
       skipped.push(d);

@@ -4,7 +4,7 @@
 // copying itself is scaffold.js's; this is the part a founder reads.
 
 import { mkdirSync, existsSync, writeFileSync, readFileSync } from 'node:fs';
-import { join, resolve, delimiter, basename, relative, sep } from 'node:path';
+import { join, resolve, delimiter, basename, dirname, relative, sep } from 'node:path';
 import { execSync } from 'node:child_process';
 import { bossVersion, STAGE_ORDER, resolveStageId } from './paths.js';
 import { stageVars, applyStage, readStageManifest, recordIgnoreOffered, applyStageSafe, planStageSafe, gitignoreRulesToAdd, appendClaudeBlock, appendGitignoreBlock, appendMarkedBlock } from './scaffold.js';
@@ -462,13 +462,21 @@ export function cmdAdopt(args) {
   // first run, into a repo that already had its own way of working (IDEA-163, EVID-006).
   if (!flags.apply) return previewAdopt({ targetDir, name, stageId, manifest, chain, detected, shippedBefore, named: Boolean(flags.mode) });
   const baseline = gitBaseline(targetDir);   // read before anything is written
+  // The founder's files a template path collides with, read before anything is written. They are
+  // theirs, never BOSS's: stamping them as managed recorded their bytes as an unedited BOSS file, and
+  // the next `boss sync --apply` overwrote their own tester.md and smoke/SKILL.md (IDEA-163). A later
+  // mode's collision with an earlier mode's fresh copy is BOSS's own file and is still stamped.
+  const collided = [...new Set(chain.flatMap((s) => planStageSafe(s, targetDir).skipped))].map((f) => relative(targetDir, f));
+  const skillsDir = join('.claude', 'skills');
+  const theirSkills = collided.filter((r) => dirname(r) === skillsDir).map((r) => basename(r));
+  const theirs = collided.filter((r) => dirname(r) !== skillsDir);   // native separators, like the ledger's join()
   const deferred = {};
   const heldSkills = [];
   for (const s of chain) {
     const m = readStageManifest(s);
     const hold = holdAtAdopt(m, targetDir, { shippedBefore });
     const r = applyStageSafe(s, targetDir, stageVars(name, s, m.name), { skipSkills: hold.skip });
-    stampManaged(targetDir, [s]);
+    stampManaged(targetDir, [s], [...theirs, ...theirSkills.map((n) => join(skillsDir, n, 'SKILL.md'))]);
     copied.push(...r.copied);
     skipped.push(...r.skipped);
     if (Object.keys(hold.deferred).length) deferred[s] = hold.deferred;
@@ -534,6 +542,8 @@ export function cmdAdopt(args) {
     hooks: [...u.hooks], loops: [...u.loops],
     createdAt: new Date().toISOString(), adopted: true,
     ...(baseline ? { adoptedFrom: baseline.sha } : {}),
+    // What the repo already had where BOSS ships a file: theirs, so `boss sync` leaves it alone.
+    ...(theirs.length || theirSkills.length ? { theirs: { files: theirs.map((r) => r.split(sep).join('/')), skills: theirSkills } } : {}),
     ...(shippedBefore ? { shippedBefore: true } : {}),
     ...(Object.keys(deferred).length ? { deferred } : {}),
   };

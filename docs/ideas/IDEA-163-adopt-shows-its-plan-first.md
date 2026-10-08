@@ -9,7 +9,7 @@ relates: IDEA-005, IDEA-073, IDEA-118, IDEA-162, IDEA-153
 proof: test/adopt.test.js
 proof_note: S1 (the preview) ships with its test; S2 and choosing parts are still open
 gist: `boss adopt` says what it found and what it would change before it changes anything, and an adopted repo's own record layout is read instead of ignored.
-next: Ajesh confirms the finding shape and where findings live; then build the grouped preview + baseline
+next: build — report every settings change, then the small wrong readings from dhun's check
 ---
 
 # IDEA-163 — Adopt shows its plan first
@@ -188,7 +188,7 @@ slot, `boss map` shows the repo's own skill descriptions. New beyond the list ab
 - [ ] **More hard-wired paths:** `open-work.js` sees only `.claude/worktrees/` (misses sibling worktrees
       like `~/Projects/<app>-*`); the V1 `/board` skill reads `docs/ideas/FEAT-*`; `consult`, `drift-deep`,
       `extract`, `revalidate`, `sunset` hard-code `docs/devlog.md` and `docs/RESUME.md`.
-- [ ] **Collision is per file; it should be per skill.** Where the repo's `SKILL.md` was kept, 18 sibling
+- [x] **Collision is per file; it should be per skill.** *(The folder skip shipped with the overwrite fix; `assumes:` is still open.)* Where the repo's `SKILL.md` was kept, 18 sibling
       files still landed in those folders (dead; `log/scripts/entry.js` would start a second devlog). If
       `<skill>/SKILL.md` exists, skip the folder. Skills declare what they assume (`assumes: [log, spec]`);
       adopt holds or warns about a skill whose assumption is now the repo's own version — `sunset` writes
@@ -227,6 +227,21 @@ feature.
 
 Not BOSS's: dhun's own `/design-review` reads the old CLI's files. Practice UP (the eleven proposals,
 worktree-per-work and `land` shipping beyond bossbuild) belongs to their own records, not this one.
+
+## 🔴 Adopt then sync overwrote the founder's own files (reproduced 2026-10-08)
+
+Adopt stamps every template path that exists after it ran as BOSS-managed (`stampManaged(targetDir, [s])`,
+no exclude) — including the founder's own files it *skipped* as collisions. The ledger then holds their
+bytes as BOSS's, unedited, and `boss sync --apply` overwrites them. Repro: a repo with its own
+`.claude/agents/tester.md` and `.claude/skills/smoke/SKILL.md`; `adopt --apply --mode mvp`; `sync --apply`
+→ both replaced by BOSS's. dhun's report saw the symptom (remove calling them *BOSS files you edited*).
+
+- [x] Fixed forward: adopt records what the repo already had as `theirs` in `.boss/manifest.json`
+      (files and whole skill folders), keeps them out of the managed stamp, and `boss sync` never plans
+      them — it says *N of yours, left alone since adopt*. Was: adopt passes the skipped paths to `stampManaged`'s exclude (the mechanism sync already
+      uses for edited files). Test: adopt → sync preview does not list them; sync --apply leaves them.
+- [ ] Already-adopted repos carry the wrong stamps. Remediation needs its own reproduce: can sync tell a
+      stamp that never matched a BOSS template from a real one?
 
 ## dhun's answers, and its check of the preview (2026-10-08)
 
@@ -292,7 +307,8 @@ showed every side effect, the baseline, all 32 folder FEATs. Still wrong — eac
   each part hand to the skill that owns it (design system → `/design-review`, code → `mentor-architect`)?
 - **Q6** · How do parked code findings come back at the breakpoint — a conscience loop keyed on the
   paths a FEAT touches, or only when `/spec` writes the FEAT?
-- **Q7** · What does a bare `--apply` take? Answered Q4 as records, project management and session memory;
-  dhun's order is the safety floor first (no conflicts anywhere), session continuity second.
-- **Q8** · Is `boss layout` (point BOSS at where things live, after adopt) a verb, or is re-running the
+- **Q7** · ~~What does a bare `--apply` take?~~ — answered 2026-10-08 (Ajesh): **the safety floor** (deny/ask
+  rules, the secrets check, the `.gitignore` block) — *"just the right amount of safeguard, guardrails"*,
+  and the easiest win. Session continuity follows once the layout is confirmed. Supersedes Q4's default.
+- **Q8** · *(decide at the layout-map slice; Ajesh wants it explained then)* Is `boss layout` (point BOSS at where things live, after adopt) a verb, or is re-running the
   preview and editing `.boss/config.json` enough?

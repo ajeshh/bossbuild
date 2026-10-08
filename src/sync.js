@@ -5,7 +5,7 @@
 import {
   readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync,
 } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, sep } from 'node:path';
 import {
   STAGES_DIR, bossVersion, resolveStageId,
 } from './paths.js';
@@ -589,6 +589,13 @@ export function planSync(projectDir, stamp) {
   const skillGone = (name) => !existsSync(join(projectDir, '.claude', 'skills', name.split('/')[0]));
   const declined = (f) => !!ledger[f.rel] && (DECLINABLE.has(f.kind)
     || ((f.kind === 'skill' || f.kind === 'skill-resource') && skillGone(f.name)));
+  // What the repo already had when it was adopted (`stamp.theirs`, IDEA-163) is theirs: never planned.
+  // Recorded as BOSS's, their own tester.md and smoke/SKILL.md were overwritten on the first sync.
+  const theirFiles = new Set(((stamp.theirs || {}).files || []));
+  const theirSkills = new Set(((stamp.theirs || {}).skills || []));
+  const isTheirs = (f) => ((f.kind === 'skill' || f.kind === 'skill-resource') && theirSkills.has(f.name.split('/')[0]))
+    || theirFiles.has(f.rel.split(sep).join('/'));
+  const theirsKept = new Set();
   const entries = [];
   for (const stageId of layers) {
     let manifest;
@@ -599,6 +606,7 @@ export function planSync(projectDir, stamp) {
     }
     for (const f of managedFiles(stageId, manifest, projectDir)) {
       if (!existsSync(f.src)) continue; // manifest lists it but template lacks it
+      if (isTheirs(f)) { theirsKept.add(f.kind.startsWith('skill') ? `skill/${f.name.split('/')[0]}` : f.rel); continue; }
       if ((f.kind === 'skill' || f.kind === 'skill-resource') && held.has(f.name.split('/')[0])) continue;
       const next = substitute(readFileSync(f.src, 'utf8'), {
         ...vars, STAGE: stageId, MODE: manifest.name,
@@ -636,6 +644,7 @@ export function planSync(projectDir, stamp) {
 
   return {
     entries,
+    theirs: [...theirsKept],
     layers,
     pin: stamp.bossVersion,
     current,
@@ -815,6 +824,10 @@ export function cmdSync(args) {
   console.log(`    pin:    ${plan.pin || 'unknown'}${plan.drift ? `  →  current ${plan.current}` : '  (current)'}`);
   console.log(`    modes: ${plan.layers.map(modeWord).join(' → ')}\n`);
   if (plan.settings?.unparseable) console.log(`    ${warn('!')} ${plan.settings.unparseable}\n`);
+  if ((plan.theirs || []).length) {
+    const t = plan.theirs;
+    console.log(`    ${dim(`= ${t.length} of yours, left alone since adopt: ${t.slice(0, 4).join(', ')}${t.length > 4 ? ' …' : ''}`)}\n`);
+  }
 
   if (!changed.length && !settingsChanged) {
     console.log(`    ${ok('✓')} BOSS-managed skills/agents/hooks are up to date.`);
