@@ -205,6 +205,10 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
 
 ### Under the hood
 
+- **`boss board --json` carries the same reading for agents.** Under `next`: `pickup` (each piece in
+  flight with its state in words, which way it is going, what's left, its next step), plus `stale`,
+  `backlogs` and `cold`. Every field it already had is unchanged.
+
 - **The working-state file is retired from new MVP projects.** `.claude/rules/feature-context.md`
   lived where a compaction drops it; its two lists are now sections of the feature record (*Found while
   building*, *Open questions*). A project that already has the file keeps it — BOSS reads its open items
