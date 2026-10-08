@@ -326,3 +326,11 @@ showed every side effect, the baseline, all 32 folder FEATs. Still wrong — eac
   and the easiest win. Session continuity follows once the layout is confirmed. Supersedes Q4's default.
 - **Q8** · *(decide at the layout-map slice; Ajesh wants it explained then)* Is `boss layout` (point BOSS at where things live, after adopt) a verb, or is re-running the
   preview and editing `.boss/config.json` enough?
+- **Q9** · **PROG-006 (rooms) overlaps the parts work** (heads-up from its session, 2026-10-08). Rooms are
+  nested presets — Mailroom (registry row only) ⊂ Desk (context, RESUME, re-entry/memory-cue/secrets hooks,
+  /idea /inbox /decide /close /log) ⊂ Floor (+ build agents and skills) ⊂ Boardroom (today's BOSS) — chosen
+  at `new`/`adopt`. Are rooms the presets over this record's parts table, with `--take` as the à-la-carte
+  edge? And does Q7's bare `--apply` (the safety floor) become a room, or the floor every room above
+  Mailroom carries? Seams already here: the plan is computed per file (`planStageSafe`) and can take a
+  subset; the preview groups by part; take-stock is where a room would be suggested. Not built until
+  PROG-006's Q1 is decided.
