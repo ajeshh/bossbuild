@@ -228,6 +228,51 @@ feature.
 Not BOSS's: dhun's own `/design-review` reads the old CLI's files. Practice UP (the eleven proposals,
 worktree-per-work and `land` shipping beyond bossbuild) belongs to their own records, not this one.
 
+## dhun's answers, and its check of the preview (2026-10-08)
+
+Full text, local only: `docs/source/2026-10-08-dhun-adopt-answers.md`. **Context (Ajesh):** dhun predates
+BOSS — the first BOSS was built from dhun's practice, and BOSS has moved on since. So a dhun difference is
+one of three: **intentional** (keep, don't argue) · **older than BOSS's fix** (offer) · **ahead of BOSS**
+(sort UP — tiered smoke, ratchets). The reconcile cannot tell these apart from code: each finding asks
+*was this deliberate?*, or reads the repo's own decision log first.
+
+**What the answers settle, as proposals for Ajesh:**
+
+- **Layout: find, show, confirm once in the preview; ask only for what it couldn't find.** Always confirm
+  the devlog — its *format* changes how it's read (dhun's is YAML, latest date not last line, skip
+  `auto_logged` stubs). RESUMEs can be one per record (a glob, not a file). Worktrees can be siblings.
+- **Agents: hold, don't scope down** — a deferring router is an extra hop that still routes on BOSS's
+  description. Hold, say so, offer the held agent's distinctive section as an extension to the specialist.
+  Narrow triggers that over-reach (`prompt-coach` to prompting; `mentor-architect` drops bare "architecture").
+- **An extension is a marked block in their skill, in their words** (`killed`, `origin:`); deleting the
+  block leaves their skill exactly as before.
+- **Their parts order puts the safety floor first** (deny/ask, secrets check, `.gitignore` block — no
+  conflicts), session continuity second once it can read the layout, the CLAUDE.md rules last as a
+  pointer. ⚠️ Differs from Q4's answer (bare `--apply` = records, PM, session memory) — **Q7**.
+- **The finding shape, refined:** gates side by side (not two descriptions) · a verdict with one reason ·
+  cost of each addition in files and lines, and its undo · what it depends on before it does anything ·
+  **the bug behind each gate**, applied both ways.
+- **"Couldn't look": one combined line**, at adopt and the first session start, then only when it changes;
+  permanent in `boss status`.
+- **Identity:** git remote name → main worktree's folder → ask if they disagree; never `package.json`.
+
+**New, from the answers:** existing session-orientation hooks and memory (BOSS's reentry adds a second
+block; two memories of one person) · ID spaces BOSS doesn't know (date-based DEC, IDEA→FEAT renumbering
+with `git mv`) · a declared write contract (`AGENT_DOC_MAP.md`) that BOSS skills would break · frontmatter
+rules (`owner: "@you"` ships) · other worktrees and a dirty tree in the preview, and that `.git/hooks` is
+shared by all of them · CI that skips `.claude/**` and `docs/**` · README files written into folders the
+same adopt ignores.
+
+**The preview, checked on dhun main (b228b2b): wrote nothing** (status, `BOSS_HOME`, hook hash unchanged);
+showed every side effect, the baseline, all 32 folder FEATs. Still wrong — each a task:
+
+- [ ] "N new files; none of yours is replaced" and "29 skills" while 18 files land in dhun's own skill
+      folders and five of the 29 are dhun's — the folder-level skip fixes both.
+- [ ] False positive: `docs/pm/labs/IDEA-009-RESUME.md` (a RESUME named after an idea) listed as a record.
+- [ ] `defaultMode` not mentioned, though dhun's settings has it.
+- [ ] The registry line says `~/.boss` with `BOSS_HOME` set — show the real path.
+- [ ] Layout gaps: the 9 `docs/ideas/IDEA-*.md` should read as *found*, not be left out.
+
 ## Found while building
 
 - [ ] **Suspected, not reproduced:** `boss id` could hand out a FEAT number already used by a
@@ -247,3 +292,7 @@ worktree-per-work and `land` shipping beyond bossbuild) belongs to their own rec
   each part hand to the skill that owns it (design system → `/design-review`, code → `mentor-architect`)?
 - **Q6** · How do parked code findings come back at the breakpoint — a conscience loop keyed on the
   paths a FEAT touches, or only when `/spec` writes the FEAT?
+- **Q7** · What does a bare `--apply` take? Answered Q4 as records, project management and session memory;
+  dhun's order is the safety floor first (no conflicts anywhere), session continuity second.
+- **Q8** · Is `boss layout` (point BOSS at where things live, after adopt) a verb, or is re-running the
+  preview and editing `.boss/config.json` enough?
