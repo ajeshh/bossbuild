@@ -53,7 +53,8 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   it as BOSS's, and the next `boss sync --apply` replaced it with BOSS's version. Now adopt notes what
   was already yours, sync leaves it alone and says so, and a skill you already have is skipped whole
   instead of getting BOSS's extra files dropped into its folder. If you adopted before this release
-  and have run `boss sync --apply`, check your own agents and skills against `.boss/backups/`.
+  and have since run `boss sync --apply`, no backup was made: `git log -p -- .claude/agents .claude/skills`
+  shows whether any of yours were replaced, and `git checkout <commit> -- <file>` brings one back.
 - **`boss adopt` shows you the plan before it writes anything.** Run bare in a repo you already
   started, it now says where you stand and why, what it would add (skills, agents, hooks, docs), which
   of your own files it would append to and how (`CLAUDE.md`, `AGENTS.md`, `.gitignore`,
