@@ -75,6 +75,14 @@ since every room writes `room:`.
 
 ## Tasks — too small to ship alone
 
+**The seam with IDEA-163 (agreed with that session, 2026-10-08).** IDEA-163 builds the adopt side: the
+Basement as a bare `adopt --apply`, the install plan built from named parts, `--take <part>`, and the
+preview. It **exports the parts list**: each part is a name plus the files, hooks and settings it lays
+down, read from `stages/`, never copied. PROG-006 builds on top: the **floor presets** (each a list of
+part names), `--room <floor>` resolving to them, `room:` on the stamp, the registry's what/next, the
+Lobby and `boss up`. IDEA-163 builds the Basement only after DEC-024 lands on main.
+
+
 - [ ] `boss list` and `boss hq` overlap. Decide: does `hq` replace `list`, or does `list` stay the
   terse admin view (pins, ghosts, `--prune`)? Write the answer here.
 - [ ] Name the rooms in `docs/glossary` / `src/glossary.js` once Q1 is answered, so the words are
