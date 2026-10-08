@@ -49,6 +49,7 @@ const placeholder = (s) => /^\(.*\)$|^…$|^\.\.\.$/.test(s.trim());
 const FOUND = /\bfound\b|after shipping|while applying/i; // not "founder", not "foundations"
 const BACKLOG = /backlog|maybes|saved for later/i;
 const QUESTIONS = /open questions/i;
+const CHECKS = /smoke/i; // a FEAT's smoke list is a check to run each time, not work to finish
 // An answered question stays in the record for its reasoning; it is not open.
 const ANSWERED = /^(~~|\*?\(?(answered|settled|moot|decided|resolved)\b|\*\*(answered|settled|moot|decided|resolved)\b)/i;
 
@@ -88,6 +89,7 @@ export function readRecord(text) {
     const ticked = box[1] !== ' ';
     if (FOUND.test(heading)) { if (!ticked) out.found++; continue; }
     if (BACKLOG.test(heading)) { if (!ticked) out.backlog++; continue; }
+    if (CHECKS.test(heading)) continue;
     if (ticked) out.scope.done++;
     else { out.scope.open++; if (!out.firstOpen) out.firstOpen = clip(box[2]); }
   }

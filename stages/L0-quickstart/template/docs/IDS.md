@@ -101,7 +101,7 @@ dropped record is never asked.
 next: ask Sam which pilot pays first, then write the price in the canvas (2026-09-23)
 ```
 
-One optional line, written when the work pauses (`/close` writes it). Without it, the next step is the
+One optional line, written when the work pauses (from MVP, `/close` writes it). Without it, the next step is the
 record's first open question, else its first open task — so most records never need it.
 `boss board --next` reads it beside how close the work is, said in words: whether questions are still
 open (*uphill*) or only known work is left (*downhill*), and which way it has been going (*4 → 1 open

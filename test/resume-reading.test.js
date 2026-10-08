@@ -275,3 +275,8 @@ test('readRecord: a ~~~ fence is skipped like a ``` one', () => {
   const r = readRecord('# x\n## Tasks\n- [ ] real\n~~~\n- [ ] an example in a fence\n~~~\n');
   assert.deepEqual(r.scope, { open: 1, done: 0 });
 });
+
+test('readRecord: a FEAT\'s smoke list is a check to run, not scope', () => {
+  const r = readRecord('# x\n## Acceptance criteria\n- [ ] one\n## Smoke check\n- [ ] boots\n- [x] loads\n');
+  assert.deepEqual(r.scope, { open: 1, done: 0 });
+});
