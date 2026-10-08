@@ -658,9 +658,8 @@ function renderBoardText(projectName, data, opts = {}) {
   // open in-build item = the thing to finish. Silent when nothing's in build.
   const onNow = sortColumn(cards.filter((c) => c.column === 'Building' && !c.blocked), 'Building')[0];
   if (onNow) {
-    const p = onNow.progress
-      ? dim(onNow.progress.total ? `  [${onNow.progress.done}/${onNow.progress.total} criteria]` : '  [no acceptance criteria]')
-      : '';
+    const near = closeness(onNow, opts.projectDir ? readingMap(opts.projectDir) : null);
+    const p = near ? dim(`  [${near.words}]`) : '';
     lines.push(`  ${dim('▸ on now:')} ${bold(onNow.id)} — ${clip(onNow.title, TITLE_COLS)}${p}`);
   }
   lines.push('');
@@ -751,6 +750,7 @@ function renderBoardText(projectName, data, opts = {}) {
 const COLUMN_INDEX = Object.fromEntries(COLUMNS.map((c, i) => [c, i]));
 
 function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedAt, projectDir = process.cwd()) {
+  const near = readingMap(projectDir);
   // A graduated program is named by its record's title on cards and in the roll-up (IDEA-145).
   let progRecords = new Map();
   try { progRecords = readPrograms(projectDir); } catch { progRecords = new Map(); }
@@ -788,12 +788,13 @@ function renderBoardHtml(projectName, { cards: allCards, hasIdeasDir }, stampedA
     // No criteria at all is a different fact, and it is a hole in the spec, not a bar: the
     // shipped `/spec` template always writes the section, so its absence is a record that
     // skipped the step, and the card says so rather than staying blank like an idea.
-    const prog = !c.progress ? ''
-      : c.progress.total
-        ? `<div class="prog" title="${c.progress.done} of ${c.progress.total} acceptance criteria">`
-          + Array.from({ length: c.progress.total }, (_, i) => `<i${i < c.progress.done ? ' class="on"' : ''}></i>`).join('')
-          + `<b>${c.progress.done}/${c.progress.total}</b></div>`
-        : '<div class="prog none" title="no ## Acceptance criteria section in the record">no acceptance criteria</div>';
+    // IDEA-162: the segments and the `n/m` went — a count whose denominator grows as the work goes
+    // can't say how close it is. The card says it in words, from the record and its history.
+    const cl = c.column === 'Building' ? closeness(c, near) : null;
+    const prog = !cl ? ''
+      : cl.hole
+        ? '<div class="prog none" title="no ## Acceptance criteria section in the record">no acceptance criteria</div>'
+        : `<div class="prog" title="how close, read from the record and its history">${esc(cl.words)}</div>`;
     // Both dates, labelled, on every card that has them — "added" from `created:` or git, and
     // "shipped" only in the Shipped column (a `proof:` date exists for in-flight records too,
     // and printing it there claims the thing shipped). Absolute dates: the age flags already say
@@ -1205,10 +1206,7 @@ ${columnHtml}
   .card.is-review  { border-left-color: var(--caution); }
   .card.is-aging   { border-left-color: var(--caution); }
   .card.is-blocked { border-left-color: var(--stop); background: color-mix(in srgb, var(--stop) 6%, var(--panel)); }
-  .prog { display: flex; align-items: center; gap: 3px; margin-top: 9px; }
-  .prog i { width: 13px; height: 4px; background: var(--line); flex: none; }
-  .prog i.on { background: var(--hue); }
-  .prog b { font: 650 12px/1 var(--mono); color: var(--muted); margin-left: 5px; }
+  .prog { margin-top: 9px; font: 12px/1.35 var(--mono); color: var(--muted); }
   .prog.none { font: 12px/1 var(--mono); color: var(--caution); }
   .card .dates { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 9px;
                  font: 12px/1 var(--mono); color: var(--muted); }
@@ -1312,8 +1310,23 @@ export function readingFor(projectDir, { cards = null, program = null } = {}) {
   const r = resumeReading(projectDir, { worktrees });
   if (!program) return r;
   const ids = new Set((cards || []).map((c) => c.id));
-  const keep = (e) => ids.has(e.id) || e.id === String(program).toUpperCase() || e.program === String(program).toUpperCase();
+  const want = programId(program); // `prog-5` and `PROG-005` are one program
+  const keep = (e) => ids.has(e.id) || e.id === want || e.program === want;
   return Object.fromEntries(Object.entries(r).map(([k, v]) => [k, v.filter(keep)]));
+}
+
+// How close a Building card is, in words (IDEA-162) — never `n/m`: the denominator grows as the work
+// goes, so a ratio flatters and alarms in turn. A FEAT with no criteria section is still a named hole.
+// Without a reading (no projectDir, or the record isn't in flight), the open count alone.
+function readingMap(projectDir) {
+  try { const r = readingFor(projectDir); return r ? new Map([...r.pickup, ...r.cold, ...r.stale].map((e) => [e.id, e])) : new Map(); } catch { return new Map(); }
+}
+function closeness(c, map) {
+  if (c.progress && !c.progress.total) return { hole: true, words: 'no acceptance criteria' };
+  const e = map && map.get(c.id);
+  if (e && e.direction) return { hole: false, words: stateWords(e) };
+  if (c.progress) return { hole: false, words: `${c.progress.total - c.progress.done} left` };
+  return null;
 }
 
 function renderBoardNext(projectName, { cards, hasIdeasDir }, { projectDir = null, program = null } = {}) {
@@ -1473,7 +1486,7 @@ function programsJson(projectDir, cards) {
 // One card, in full — the terminal's answer to "let me hover over that." A founder who has lost
 // the thread on a single record should not have to open the file, and should not have to read the
 // whole board again to find the one line they wanted (EVID-001, facet 3).
-export function renderBoardCard(projectName, { cards, hasIdeasDir }, id) {
+export function renderBoardCard(projectName, { cards, hasIdeasDir }, id, projectDir = null) {
   const want = String(id || '').trim().toUpperCase();
   const lines = [''];
   if (!hasIdeasDir) return lines.concat('  (no docs/ideas/ here — is this a BOSS project?)', '').join('\n');
@@ -1497,7 +1510,9 @@ export function renderBoardCard(projectName, { cards, hasIdeasDir }, id) {
     ];
     if (c.program) facts.push(['program', c.program]);
     if (c.owner) facts.push(['owner', c.owner]);
-    if (c.progress) facts.push(['criteria', c.progress.total ? `${c.progress.done}/${c.progress.total} ticked` : 'none written']);
+    if (c.progress && !c.progress.total) facts.push(['criteria', 'none written']);
+    const cl = c.column === 'Building' ? closeness(c, projectDir ? readingMap(projectDir) : null) : null;
+    if (cl && !cl.hole) facts.push(['how close', cl.words]);
     if (c.addedOn) facts.push(['added', c.addedOn]);
     if (c.ageDays != null) facts.push([c.ageSource === 'authored' ? 'in build' : 'untouched', ageLabel(c.ageDays)]);
     // Only in the Shipped column. `shippedOn` is derived from the `proof:` artifact's first commit,
@@ -1567,7 +1582,7 @@ export function renderProgramView(projectName, { cards }, id, projectDir = proce
 export function board(projectDir, projectName, opts = {}) {
   const data = collectBoard(projectDir);
   if (opts.card && /^prog-\d+$/i.test(String(opts.card).trim())) return console.log(renderProgramView(projectName, data, opts.card, projectDir));
-  if (opts.card) return console.log(renderBoardCard(projectName, data, opts.card));
+  if (opts.card) return console.log(renderBoardCard(projectName, data, opts.card, projectDir));
   // `--program` narrows every view, not only the columns (IDEA-145 G2).
   const narrowed = opts.program
     ? { ...data, cards: data.cards.filter((c) => c.program && c.program.toLowerCase() === opts.program.toLowerCase()) }

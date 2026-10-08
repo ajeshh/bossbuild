@@ -71,6 +71,11 @@ condition holds; reading them up front spends the context they are there to save
      difference between "we discussed it" and a record with a falsifier is the whole point.
    - **Anything found this session that is in no record yet** goes in now, sorted (task · `spun_to:`
      new scope · open question). This is the last moment the chat still holds it.
+   - **Where to pick it back up** — on each record this session moved but did not finish, one line in
+     its frontmatter: `next: <the first thing to do on return> (YYYY-MM-DD)`. Skip it when the record's
+     first open question or task already says exactly that; `boss board --next` falls back to those.
+     A question answered this session says so on its own line (`~~…~~` **Answered:** …), or it still
+     reads as open.
 
    ⚠️ **Never silently discard an open item.** If something is being dropped, say which and why —
    an item that disappears without being named is indistinguishable from one that was forgotten.
@@ -87,16 +92,21 @@ condition holds; reading them up front spends the context they are there to save
    to be read next session: **facts a command computes** (versions, counts, what's published — write
    the command, not the number), **history** (that is the devlog), and **standing rules** (that is
    `CLAUDE.md`). They are the three things that make this file grow.
-   - **State (current):** the one paragraph someone re-entering the project needs. What's true *now*.
-   - **Next tasks (in order):** the 1–3 concrete things to pick up. Concrete = "wire `/foo` to call
-     bar()", not "improve the feature."
+   **Where each piece of work stands is never written here.** `boss board --next` reads it from the
+   records — how close each piece is, which way it is going, its `next:` — so a line here saying
+   "FEAT-012 is nearly done" is a second copy that goes stale. Anything with a record moves to it first.
+   - **State (current):** the one paragraph someone re-entering the project needs — what's true *now*
+     that no record says (the stack, what's uncommitted, what's live).
+   - **Priority (in order):** record ids, each with a few words of why — the order the founder wants,
+     which a command can't compute. One to five. Something with no record yet goes under *Found, no
+     record yet*, never here as prose.
    - **Open decisions:** things waiting on a call (yours or someone else's). Each with a tentative
      direction so you don't re-litigate from scratch.
      **A question about one record goes on that record** as `waiting_on: <who> — <question>`
      (`docs/IDS.md`); `boss board --blocked` lists them. This section keeps only the questions no
      record owns, so nothing is written down twice.
    - **Prompt for the next session:** keep it **evergreen** — a pointer + procedure, never a
-     status report. *State* and *Next tasks* already carry the current-state surface; restating
+     status report. *State* and *Priority* already carry the current-state surface; restating
      them here just doubles the drift surface. Save kickoff prompts somewhere stable — the
      `Prompt for the next session` block, or `.claude/commands/<name>.md`, which makes one a
      `/<name>` you can run and commits it with the repo — so they don't bit-rot against the

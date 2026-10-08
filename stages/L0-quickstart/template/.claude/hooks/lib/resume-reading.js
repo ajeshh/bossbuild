@@ -73,7 +73,7 @@ export function readRecord(text) {
     question = null;
   };
   for (const line of body.split('\n')) {
-    if (/^\s*```/.test(line)) { fenced = !fenced; continue; }
+    if (/^\s*(```|~~~)/.test(line)) { fenced = !fenced; continue; }
     if (fenced) continue;
     const h = /^#{2,3}\s+(.+)$/.exec(line);
     if (h) { closeQuestion(); heading = h[1]; continue; }

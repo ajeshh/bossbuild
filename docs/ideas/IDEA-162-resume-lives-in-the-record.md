@@ -3,8 +3,8 @@ id: IDEA-162
 type: idea
 kind: capability
 owner: product-lead
-status: building (S1–S5 built; S6 after a run on this tree)
-next: after a few `/close` runs here, carry `next:` and the RESUME shape into the shipped `/close` and `templates/resume.md` (S6) (2026-10-07)
+status: shipped
+shipped_on: 2026-10-07
 created: 2026-10-07
 proof: test/resume-reading.test.js
 proof_note: the reading and its test land at S2; shipped is RESUME in its new shape and `/close` writing `next:` (S4–S5)
@@ -120,8 +120,10 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
 - [x] **S5 · `/close`** (BOSS's own) writes `next:` and the priority list, not a status page. BOSS's `/close`
   is the shipped MVP file synced into gitignored `.claude/skills/close/` — so this edit lives in the main
   checkout's copy only (untracked), and **a `boss sync` would put the shipped text back** until S6 ships it.
-- [ ] **S6 · The founder's side** — MVP's `/close` and `templates/resume.md` follow, once S1–S5 have run
-  on this tree for a while. A founder's in-flight work is FEATs, so the reading covers them first.
+- [x] **S6 · The founder's side** — shipped the same day (Ajesh, 2026-10-07: *"lets fix any issues and lets
+  ship"*), which also ended the S5 split: MVP's `/close` writes `next:` and keeps RESUME to what no record
+  holds; `templates/resume.md` has *Priority* and *Found, no record yet* in place of *Next tasks*; the
+  founder's `docs/IDS.md` documents `next:`. BOSS's own copy is the shipped file again, so `boss sync` is safe.
 
 ## Found while building
 
@@ -130,9 +132,11 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
   (when the work was written); a test fails on the committer date.
 - [x] **A young record grows before it closes.** PROG-005 went 3 → 11 → 4 open in two days; measured
   from its first commit it read *"growing: 3 → 4"*. Closing is measured from the peak open count.
-- [ ] **The main board still prints `[n/m criteria]`** on a Building card (and `boss status` used to
+- [x] **The main board still prints `[n/m criteria]`** on a Building card (and `boss status` used to
   lean on it). Acceptance criteria are written before the build, so that fraction moves less than a
-  task list's — but it is the same shape. Not changed here; Ajesh's call whether the board follows.
+  task list's — but it is the same shape. Ajesh: *"solve for main board if needed"* — done: *on now*, the HTML
+  card (its segments and `n/m` removed) and the card view (*how close*) say it in words; *no acceptance
+  criteria* stays a named hole; `--json` keeps its counts (a machine contract).
 - [ ] **`boss board --json` doesn't carry the reading** — the agent-readable view still has only the
   columns. Add it when an agent needs it (`planner` reads `--next` as text today).
 - [x] **The pre-land review (a fresh reviewer, IDEA-158) found three bugs, each reproduced in a test first:** a
@@ -142,7 +146,7 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
   left out of *Pick up* (they're under *Blocked*), and `boss status`'s *+N more* pointing at `--next`.
 - [ ] **`git log --all` over a very large history** runs at every main-checkout session start (~0.1 s here). Cap
   it (`--since`) if a real tree shows it slow; past the cap, "no commit names it" is cold anyway.
-- [ ] **Small:** `~~~` fences aren't skipped; `--program prog-5` doesn't match `PROG-005` (use `programId()`);
+- [x] **Small:** `~~~` fences are skipped; `--program prog-5` matches `PROG-005` (`programId()`). Left as is:
   the lib's `ready` bucket and `readingLines`' full mode are only exercised by the test (the board renders its own).
 - [x] **PROG-005's Q1–Q4 were answered only in the heading** — every reader counted five open. Each
   line now says so (its own commit). The reading's *uphill* is also a cue to tidy a record's questions.

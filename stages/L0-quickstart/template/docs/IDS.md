@@ -95,6 +95,19 @@ once — *did it fire?* — and `outcome: held | fell | can't tell yet — <why>
 asks the same of a FEAT at the moment it ships. Not a score; nothing counts these. A superseded or
 dropped record is never asked.
 
+## `next:` — where to pick this back up
+
+```
+next: ask Sam which pilot pays first, then write the price in the canvas (2026-09-23)
+```
+
+One optional line, written when the work pauses (`/close` writes it). Without it, the next step is the
+record's first open question, else its first open task — so most records never need it.
+`boss board --next` reads it beside how close the work is, said in words: whether questions are still
+open (*uphill*) or only known work is left (*downhill*), and which way it has been going (*4 → 1 open
+since 09-20*, or *no tick since 09-21*). Never as a fraction — a list you keep adding to can't say how
+close you are. A question you've answered says so on its own line (`~~…~~` **Answered:** …).
+
 ## `waiting_on:` — a question someone owes, kept on the record it is about
 
 ```

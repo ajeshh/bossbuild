@@ -518,7 +518,10 @@ test('a Building FEAT shows its criteria count at ZERO, and a hole when none are
   assert.equal(by['IDEA-005'].progress, null, 'an idea carries no criteria');
 
   const html = readFileSync(boardHtml(dir, 'p'), 'utf8');
-  assert.ok(/0 of 2 acceptance criteria/.test(html), 'the 0/2 bar renders');
+  // IDEA-162: how close, in words — an unstarted spec still shows ("2 left"), never as a ratio.
+  assert.ok(/class="prog"[^>]*>2 left/.test(html), 'the unstarted FEAT says what is left');
+  assert.ok(!/class="prog"[^>]*>[^<]*\b\d+\s*\/\s*\d+/.test(html), 'no n/m on a card');
+  assert.match(renderBoardCard('p', { cards, hasIdeasDir: true }, 'FEAT-002', dir), /how close\s+2 left/);
   assert.ok(/no acceptance criteria/.test(html), 'the hole is named');
   const detail = renderBoardCard('p', { cards, hasIdeasDir: true }, 'FEAT-003');
   assert.ok(/criteria\s+none written/.test(detail), detail);

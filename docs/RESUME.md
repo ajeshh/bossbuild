@@ -36,17 +36,15 @@ observed using BOSS. The mandate holds: compose and **subtract**, never add a sk
 1. **PROG-002 — the ladders still to plant**, for Ajesh to review: data & trust next (B4 holds the order).
 2. **FEAT-039 — the Kettlewick showcase is weak overall; do it better.** Ajesh's words and where the story
    is are in its *Found after shipping*.
-3. **IDEA-162 — resume lives in the record.** S5 (BOSS's own `/close` writes `next:`) lands with this
-   file; S6 (the founder's `/close`) after it has run here a while.
 
 Everything else in flight — IDEA-135, IDEA-154 (T2 waits on Ajesh's scope call), PROG-003, PROG-005, the
 programs' backlogs — is in `boss board --next`, with its next step.
 
 ## Found, no record yet
 
-- **In a worktree, `npm run check` stops at a stale-ledger row for the gitignored `regrade` skill**, hiding
-  every check after it (IDEA-154's missing `proof:` only showed on main) — fix `check-boundary` or note it
-  in CLAUDE.md. (Found landing IDEA-148/149/154, 2026-10-07.)
+- **In a worktree, `npm run check` stopped at a stale-ledger row for the gitignored `regrade` skill**, hiding
+  every check after it (found landing IDEA-148/149/154, 2026-10-07). **Not reproduced** in a fresh worktree
+  the same day (`check-boundary` clean, every check ran) — nothing shipped (rule 8); re-open if seen again.
 - **`test/demo-live.test.js` failed once under the pre-commit's full run** (*invalid object* for
   `docs/evidence/EVID-002.md` in its temp repo) and passed 3/3 alone — a race, not reproduced. (2026-10-07.)
 

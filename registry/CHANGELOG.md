@@ -42,7 +42,15 @@ sees a number they cannot install. Write the bullet the way a stamped entry read
   whose status never moved, programs that are backlogs rather than builds, and work no commit has
   named in 14 days. There's no percentage, because a count that grows as you work can't say how close
   you are. `boss status` adds the same line under *Building now*, and a session that opens in your main
-  checkout knows the top three, so asking it what to pick up gets a real answer.
+  checkout knows the top three, so asking it what to pick up gets a real answer. The board's cards do
+  the same: `boss board`, a card's own view and the visual board say how close a piece is in words,
+  where they used to show `2/5` and a row of segments. A spec with no acceptance criteria is still
+  named as a hole.
+
+- **`/close` writes where to pick each piece back up on the record itself.** A `next:` line on each
+  record you moved but didn't finish, so the board can show it. Your RESUME keeps only what no record
+  holds: what's true now, your priority order, and what you found that has no record yet. It no longer
+  keeps a second copy of where each feature stands, which used to go stale.
 - **Your home page now shows every folder BOSS writes, not only the ones it started with.** *Where things
   live* (`.boss/index.html`) only knew the folders that existed when it was built. Your red-team
   passes, eval sets, roadmaps, programs, design reviews, drift audits, onboarding and money reads, AI

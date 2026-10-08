@@ -270,3 +270,8 @@ test('resumeReading: a project in a subfolder of its repo still reads its histor
     assert.deepEqual([e.direction.from, e.direction.to], [3, 1]);
   } finally { r.done(); }
 });
+
+test('readRecord: a ~~~ fence is skipped like a ``` one', () => {
+  const r = readRecord('# x\n## Tasks\n- [ ] real\n~~~\n- [ ] an example in a fence\n~~~\n');
+  assert.deepEqual(r.scope, { open: 1, done: 0 });
+});
