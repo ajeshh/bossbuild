@@ -280,3 +280,20 @@ test('readRecord: a FEAT\'s smoke list is a check to run, not scope', () => {
   const r = readRecord('# x\n## Acceptance criteria\n- [ ] one\n## Smoke check\n- [ ] boots\n- [x] loads\n');
   assert.deepEqual(r.scope, { open: 1, done: 0 });
 });
+
+test('boss board --json carries the reading for agents, beside the counts it always had', async () => {
+  const { boardJson } = await import(pathToFileURL(join(ROOT, 'src', 'board.js')).href);
+  const r = repo();
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    r.commit('docs/ideas/FEAT-001-swap.md', `${fm({ id: 'FEAT-001', type: 'feature', status: 'building', from: 'none' })}# FEAT-001 — swap\n## Acceptance criteria\n- [x] a\n- [ ] b\n`, today, 'FEAT-001 start');
+    const j = boardJson(r.dir, 'Swapper');
+    const e = j.next.pickup.find((x) => x.id === 'FEAT-001');
+    assert.ok(e, JSON.stringify(j.next));
+    assert.equal(e.state, '1 left · downhill');
+    assert.equal(e.left, 1);
+    assert.equal(e.next, 'b');
+    assert.deepEqual(j.cards.find((c) => c.id === 'FEAT-001').criteria, { done: 1, total: 2 }, 'the counts stay');
+    assert.deepEqual([j.next.stale, j.next.backlogs, j.next.cold], [[], [], []]);
+  } finally { r.done(); }
+});

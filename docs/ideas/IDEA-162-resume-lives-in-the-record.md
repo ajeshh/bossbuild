@@ -137,15 +137,18 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
   task list's — but it is the same shape. Ajesh: *"solve for main board if needed"* — done: *on now*, the HTML
   card (its segments and `n/m` removed) and the card view (*how close*) say it in words; *no acceptance
   criteria* stays a named hole; `--json` keeps its counts (a machine contract).
-- [ ] **`boss board --json` doesn't carry the reading** — the agent-readable view still has only the
-  columns. Add it when an agent needs it (`planner` reads `--next` as text today).
+- [x] **`boss board --json` doesn't carry the reading** — the agent-readable view still has only the
+  columns. Added (Ajesh, 2026-10-07: *"finish"*): `next.pickup` / `stale` / `backlogs` / `cold`, additive —
+  every field it had is unchanged.
 - [x] **The pre-land review (a fresh reviewer, IDEA-158) found three bugs, each reproduced in a test first:** a
   project in a subfolder of its repo lost its history (git paths are repo-root-relative); `found` matched
   *founder* / *foundations* headings; a ticked `- [x]` open question still counted. Fixed. Small things built
   beyond the tasks, kept: the `⬆` high-priority marker carried over from the old *Finish* list, blocked cards
   left out of *Pick up* (they're under *Blocked*), and `boss status`'s *+N more* pointing at `--next`.
-- [ ] **`git log --all` over a very large history** runs at every main-checkout session start (~0.1 s here). Cap
-  it (`--since`) if a real tree shows it slow; past the cap, "no commit names it" is cold anyway.
+- [x] **`git log --all` over a very large history** runs at every main-checkout session start (~0.1 s here). Cap
+  it (`--since`) if a real tree shows it slow; past the cap, "no commit names it" is cold anyway. Capped at the
+  newest 20,000 commits. Measured first: the scan is 13 ms on this tree, the whole reading ~93 ms of plain
+  `boss board`'s ~0.34 s — no cache built.
 - [x] **Small:** `~~~` fences are skipped; `--program prog-5` matches `PROG-005` (`programId()`). Left as is:
   the lib's `ready` bucket and `readingLines`' full mode are only exercised by the test (the board renders its own).
 - [x] **PROG-005's Q1–Q4 were answered only in the heading** — every reader counted five open. Each

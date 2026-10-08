@@ -28,7 +28,8 @@ import { parseFrontmatter } from './yaml.js';
 
 export const COLD_DAYS = 14;        // in flight with no commit naming it for this long → gone cold (Ajesh, 2026-10-07)
 const STALL_EDITS = 2;              // edited this many times since the last tick, with work left → stalled
-const HISTORY_DAYS = 60;            // how far back the open count is replayed
+const HISTORY_DAYS = 60;
+const NAMED_SCAN = 20000;           // commits searched for the newest one naming each id            // how far back the open count is replayed
 const NEXT_CAP = 140;
 const DAY = 86400000;
 
@@ -148,7 +149,9 @@ function lastNamed(projectDir, ids) {
   const found = new Map();
   if (!ids.length) return found;
   let log = '';
-  try { log = git(projectDir, ['log', '--all', '--format=%x00%as%x09%s%n%b']); } catch { return found; }
+  // Bounded: the newest NAMED_SCAN commits (13 ms for ~1k here). An id named only before that falls back
+  // to its file's date, which is what a record no commit names gets anyway.
+  try { log = git(projectDir, ['log', '--all', '-n', String(NAMED_SCAN), '--format=%x00%as%x09%s%n%b']); } catch { return found; }
   const want = new Set(ids);
   const re = /\b(?:IDEA|FEAT|PROG)-\d+\b/g;
   for (const entry of log.split('\0')) {

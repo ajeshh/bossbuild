@@ -1454,13 +1454,28 @@ export function boardJson(projectDir, projectName, opts = {}) {
     // Every program, with its record when it has one — the grouping an agent needs to find the rules a
     // card's program holds (IDEA-145 G2: the JSON carried no program at all, on 92 records that had one).
     programs: programsJson(projectDir, everyCard),
-    next: { finish, start, pressureTest: pressure, unblock },
+    // The reading (IDEA-162), additive: how close each piece in flight is, in words, and its next step.
+    next: { finish, start, pressureTest: pressure, unblock, ...readingJson(projectDir, allCards, opts.program) },
     stuck: {
       waiting: waiting.map((c) => ({ id: c.id, ...c.waitingOn })),
       blocked: blocked.map((c) => c.id),
       aging: aging.map((c) => ({ id: c.id, ageDays: c.ageDays, ageSource: c.ageSource ?? null })),
       reviewDue: reviewDue.map((c) => c.id),
     },
+  };
+}
+
+function readingJson(projectDir, cards, program) {
+  let r = null;
+  try { r = readingFor(projectDir, { cards, program }); } catch { r = null; }
+  if (!r) return { pickup: [], stale: [], backlogs: [], cold: [] };
+  const d = (e) => ({ kind: e.direction.kind, from: e.direction.from ?? null, to: e.direction.to ?? null, since: e.direction.since ?? null });
+  return {
+    pickup: r.pickup.map((e) => ({ id: e.id, title: e.title, state: stateWords(e), hill: e.hill, direction: d(e), left: e.scope.open,
+      found: e.found, questions: e.questions, next: e.next || null, lastWorked: e.lastWorked || null, worktree: !!e.worktree, members: e.members || [] })),
+    stale: r.stale.map((e) => ({ id: e.id, status: e.status })),
+    backlogs: r.backlogs.map((e) => ({ id: e.id, saved: e.backlog })),
+    cold: r.cold.map((e) => ({ id: e.id, lastWorked: e.lastWorked || null })),
   };
 }
 
