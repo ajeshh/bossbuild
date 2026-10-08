@@ -5,7 +5,7 @@ owner: product-lead
 status: active
 created: 2026-10-08
 gist: Every project on the machine in one building — HQ shows where each stands and what's next, and each project lives in the room that holds as much BOSS as it wants, from the Mailroom (just track it) to the Boardroom (the whole venture).
-next: answer Q1 (rooms vs modes) before IDEA-165 builds a new field on the registry (2026-10-08)
+next: Ajesh takes or changes the Q1 recommendation, then /decide it — it blocks phase 1, the Mailroom (2026-10-08)
 relates: IDEA-005, IDEA-049, IDEA-055, IDEA-067, IDEA-162
 ---
 
@@ -61,13 +61,17 @@ say which room a file belongs to.
 
 ## Phases
 
-1. **See them all** — [[IDEA-164]] `boss hq` (CLI + `--json`) and [[IDEA-165]] the Mailroom fields,
-   so any project, BOSS or not, has a card.
-2. **Keep them current** — [[IDEA-166]] the Desk: a project whose card writes itself.
-3. **Put a face on it** — HQ as a local page, then window awareness (IDEA-164's later rungs).
-4. **Rooms all the way up** — [[IDEA-167]] the Floor and [[IDEA-168]] the Boardroom, once Q1 is
-   answered.
-5. **The menubar** — a native app over `boss hq --json`, its own repo, only if the page gets used.
+**Rooms first, then HQ** (Ajesh, 2026-10-08: *"we build the floors, and then HQ"*). HQ reads what the
+rooms hold, so it is built once there is something to read. Q1 is decided before phase 1 starts,
+since every room writes `room:`.
+
+1. **The Mailroom** — [[IDEA-165]]: `room:` on the registry row, *what* and *next*, the portfolio inbox.
+   `boss list` shows the room meanwhile.
+2. **The Desk** — [[IDEA-166]]: the room list file, and a project whose RESUME keeps itself.
+3. **The Floor** — [[IDEA-167]].
+4. **The Boardroom** — [[IDEA-168]]: today's BOSS gets its `room:`, and moving up into it.
+5. **HQ** — [[IDEA-164]]: `boss hq` + `--json`, the local page, window awareness.
+6. **The menubar** — a native app over `boss hq --json`, its own repo, only if the page gets used.
 
 ## Tasks — too small to ship alone
 
@@ -77,6 +81,30 @@ say which room a file belongs to.
   defined in one place.
 
 ## Open questions
+
+**Answered 2026-10-08 (Ajesh):** **Q3 — yes**, Ajesh's own projects are warrant enough to build past
+Phase 1. **Q1 — recommendation below, awaiting Ajesh's call**; once taken it is a DEC (load-bearing,
+hard to reverse once projects carry a `room:`). **Q2 — explained to Ajesh, reading below, open.**
+
+**Q1 recommendation:**
+1. **Rooms are the outer axis; modes live only in the Boardroom.** A mode is a venture stage, and its
+   gate (the canvas, Quickstart→MVP) is a venture gate. A Desk or Floor project has no venture to
+   gate, so it has no mode. The Floor installs its whole build kit at once.
+2. **Room is declared, not derived.** One `room:` on the project's stamp (the Mailroom, which has no
+   stamp, is a registry row). Deriving it from the files present breaks the first time a founder
+   deletes a skill.
+3. **Rooms are lists, not copies.** One file names which skills, agents and hooks each room carries,
+   drawn from the existing `stages/`; Desk ⊂ Floor ⊂ Boardroom. Every file still has one home.
+4. **Moving into the Boardroom enters Quickstart**, keeping what the lower room installed; the mode
+   ladder unlocks from there as it does today.
+5. **No migration:** every existing project is a Boardroom project at its current mode.
+
+**Q2 reading:** IDEA-067 rung 2 is an `intent` field (*what is this for?*) that would gate canvas
+cells; rung 3 is a body of non-commercial support (maintainer burnout, succession). DEC-009 deferred
+both at n=0 and kept the positioning as *incubator*. The Floor is **neither**: it gates nothing and
+adds no support, it only leaves the venture half uninstalled. So DEC-009 does not need reversing. It
+does touch DEC-009 §5: the site must not start promising "BOSS for non-ventures" beyond what the Floor
+actually is. DEC-009's `revisit_by: 2026-11-21` is the natural place to look again.
 
 - **Q1. How do rooms meet modes?** Is the Boardroom simply "today's modes, all four", with the Floor
   and Desk as subsets? Or does each room carry its own mode ladder (a Floor project at MVP)? The file
