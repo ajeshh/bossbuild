@@ -5,8 +5,8 @@ owner: product-lead
 status: active
 created: 2026-10-08
 gist: Every project on the machine in one building — HQ shows where each stands and what's next, and each project lives in the room that holds as much BOSS as it wants, from the Mailroom (just track it) to the Boardroom (the whole venture).
-next: Ajesh takes or changes the Q1 recommendation, then /decide it — it blocks phase 1, the Mailroom (2026-10-08)
-relates: IDEA-005, IDEA-049, IDEA-055, IDEA-067, IDEA-162
+next: Ajesh takes or changes the Q1 recommendation, then one /decide for Q1+Q2 (supersedes part of DEC-009) — it blocks phase 1 (2026-10-08)
+relates: IDEA-005, IDEA-049, IDEA-055, IDEA-067, IDEA-162, IDEA-163, DEC-009, PROG-001, PROG-004
 ---
 
 # PROG-006 — HQ
@@ -79,12 +79,20 @@ since every room writes `room:`.
   terse admin view (pins, ghosts, `--prune`)? Write the answer here.
 - [ ] Name the rooms in `docs/glossary` / `src/glossary.js` once Q1 is answered, so the words are
   defined in one place.
+- [ ] **Tell people the ways to use BOSS** (Ajesh, 2026-10-08: *"this is also a new usecase for Boss,
+  so we need to communicate to users, that different ways to use boss"*). One explanation of the four
+  rooms, written once, read by the site (PROG-001), the front door — `/welcome`, `/boss`, `boss help`
+  (PROG-004) — and the README. Lands with the first room that ships, not before (no overclaiming).
+- [ ] **`boss new` and `boss adopt` ask which room** (Ajesh: *"it also applies when someone initiates
+  boss in a new or existing project"*). Coordinate with IDEA-163 (adopt shows its plan first), told
+  2026-10-08: keep its install step parameterizable by file set and its preview per part.
 
 ## Open questions
 
 **Answered 2026-10-08 (Ajesh):** **Q3 — yes**, Ajesh's own projects are warrant enough to build past
-Phase 1. **Q1 — recommendation below, awaiting Ajesh's call**; once taken it is a DEC (load-bearing,
-hard to reverse once projects carry a `room:`). **Q2 — explained to Ajesh, reading below, open.**
+Phase 1. **Q2 — the rooms are the answer to IDEA-067** (*"yes to 067… this solves 067"*), see below.
+**Q1 — recommendation below, awaiting Ajesh's call.** Q1 and Q2 go into **one DEC**: it is
+load-bearing, hard to reverse once projects carry a `room:`, and it supersedes part of DEC-009.
 
 **Q1 recommendation:**
 1. **Rooms are the outer axis; modes live only in the Boardroom.** A mode is a venture stage, and its
@@ -99,12 +107,17 @@ hard to reverse once projects carry a `room:`). **Q2 — explained to Ajesh, rea
    ladder unlocks from there as it does today.
 5. **No migration:** every existing project is a Boardroom project at its current mode.
 
-**Q2 reading:** IDEA-067 rung 2 is an `intent` field (*what is this for?*) that would gate canvas
-cells; rung 3 is a body of non-commercial support (maintainer burnout, succession). DEC-009 deferred
-both at n=0 and kept the positioning as *incubator*. The Floor is **neither**: it gates nothing and
-adds no support, it only leaves the venture half uninstalled. So DEC-009 does not need reversing. It
-does touch DEC-009 §5: the site must not start promising "BOSS for non-ventures" beyond what the Floor
-actually is. DEC-009's `revisit_by: 2026-11-21` is the natural place to look again.
+**Q2 — settled by Ajesh: the rooms solve IDEA-067.** IDEA-067 asked how BOSS serves a project that
+isn't a business. Its rung 2 was an `intent` field (*what is this for?*) and rung 3 a body of
+non-commercial support; DEC-009 deferred both at n=0 and kept the positioning as *incubator*. Ajesh's
+read: a project that isn't a venture simply lives on the Desk or the Floor, so the venture half is
+never asked of it — no `intent` field, no cell gating. What that changes, for the DEC to say:
+- **DEC-009 §3** (*no new declared axis*) — superseded in part: `room:` is a declared axis. It answers
+  *how much BOSS*, which carries *what this is for* without asking it.
+- **DEC-009 §5** (*the positioning does not change*) — superseded: BOSS now says there are different
+  ways to use it. The no-overclaiming rule stays: the site says what each room *is*, never a body of
+  non-commercial support that does not exist (rung 3 stays deferred).
+- IDEA-067's status moves when the Floor ships, pointing here.
 
 - **Q1. How do rooms meet modes?** Is the Boardroom simply "today's modes, all four", with the Floor
   and Desk as subsets? Or does each room carry its own mode ladder (a Floor project at MVP)? The file
