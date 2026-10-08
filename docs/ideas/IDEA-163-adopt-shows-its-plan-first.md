@@ -131,6 +131,10 @@ no new record type. Code findings carry their paths, so they come back at the br
 - [ ] **The Basement is the bare `adopt --apply`** (DEC-024, Q7): deny/ask rules, the secrets pre-commit
       check, the `.gitignore` block — nothing else. The plan is built from named parts; `--take <part>`
       adds one; the preview shows the plan for what was asked. Lands after DEC-024 reaches main.
+      **The seam with PROG-006 (agreed 2026-10-08):** IDEA-163 exports the parts — each a name plus the
+      files, hooks and settings it lays down, read from `stages/` (never copies) — and adopt's plan and
+      preview take a list of part names. PROG-006 adds `--room <floor>` (floor → its parts → this plan)
+      and owns `room:`'s stored value (name or level key, Ajesh to decide). Nothing here depends on it.
 
 - [x] S1: `boss adopt` previews; `--apply` writes. Callers moved: `scripts/demo.js`, tests, README,
       GUIDE, `web/index.html`, `web/start.html`, help. The preview's file count equals what `--apply` adds.
