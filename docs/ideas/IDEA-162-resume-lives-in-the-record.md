@@ -3,7 +3,8 @@ id: IDEA-162
 type: idea
 kind: capability
 owner: product-lead
-status: building (S1–S3 built; S4–S5 to go; S6 after a run on this tree)
+status: building (S1–S5 built; S6 after a run on this tree)
+next: after a few `/close` runs here, carry `next:` and the RESUME shape into the shipped `/close` and `templates/resume.md` (S6) (2026-10-07)
 created: 2026-10-07
 proof: test/resume-reading.test.js
 proof_note: the reading and its test land at S2; shipped is RESUME in its new shape and `/close` writing `next:` (S4–S5)
@@ -90,7 +91,9 @@ what *matters*, and both show.
 
 The *Ground truth* commands · a short **Priority** list (ids + a few words of why — the judgment, Ajesh's) ·
 the cross-cutting items with no record (publish, outreach) · the evergreen prompt · a pointer to the
-computed reading. Everything else moves to its record. ~200 lines → ~40. `/close` updates each touched
+computed reading. Everything else moves to its record. Projected ~200 lines → ~40; landed at 199 → 131
+lines, 18.2 → 9.5 KB (~4.6k → ~2.4k tokens) — *Waiting on Ajesh* and *Held* are most of what is left, and
+they have no record to move to. `/close` updates each touched
 record's `next:` and the priority list, instead of rewriting a page of prose.
 
 ## Tasks
@@ -109,9 +112,14 @@ record's `next:` and the priority list, instead of rewriting a page of prose.
   (a worktree's session is already on its work).
   `waiting_on:` and `revisit_by:` stay where they're read now (`boss board --blocked`, `boss status`) —
   not repeated here.
-- [ ] **S4 · RESUME moves** — each *Now* / *Held* bullet to its record (move, don't copy; IDEA-158);
-  RESUME rewritten to the shape above.
-- [ ] **S5 · `/close`** (BOSS's own) writes `next:` and the priority list, not a status page.
+- [x] **S4 · RESUME moves** — every *Now* / *Next* / *Held* item checked against its record: nearly all were
+  already there (RESUME was the copy). Two had their only copy in RESUME and moved first (the ladder order →
+  PROG-002 B4/C11; the showcase notes → FEAT-039). Two were stale (IDEA-114 "open: the board's split";
+  "0. Worktree trial" — IDEA-120 shipped). RESUME rewritten: Ground truth · Priority · Found, no record yet ·
+  Waiting on Ajesh · Held · the prompt.
+- [x] **S5 · `/close`** (BOSS's own) writes `next:` and the priority list, not a status page. BOSS's `/close`
+  is the shipped MVP file synced into gitignored `.claude/skills/close/` — so this edit lives in the main
+  checkout's copy only (untracked), and **a `boss sync` would put the shipped text back** until S6 ships it.
 - [ ] **S6 · The founder's side** — MVP's `/close` and `templates/resume.md` follow, once S1–S5 have run
   on this tree for a while. A founder's in-flight work is FEATs, so the reading covers them first.
 

@@ -8,11 +8,12 @@ updated: 2026-10-07
 
 # RESUME — BOSS
 
-**Read this first each session.** State + next tasks + open decisions.
-**Window: 200 lines.** What has shipped lives in `docs/devlog.md` (history, append-only, newest at
-top); every version is in `registry/CHANGELOG.md` (canonical, tracked); standing rules and the two
-incidents live in `CLAUDE.md`. Facts a command computes are not written here. `boss status` and
-`npm run check` both say when this file is past its window — **move, don't trim** (IDEA-102).
+**Read this first each session.** Where the work stands is read from the records, not from here
+(IDEA-162): `boss board --next` says, for each piece in flight, how close it is in words and what's
+next. This file keeps only what no record holds — the order Ajesh wants, the questions owed with no
+record to live on, and what's held. **Window: 200 lines** (IDEA-102). History is `docs/devlog.md`;
+versions are `registry/CHANGELOG.md`; standing rules are `CLAUDE.md`; facts a command computes are
+not written here. **Move, don't trim** — and move to a record before here.
 
 ## Ground truth — run these, never read them from here
 
@@ -20,105 +21,34 @@ Peer sessions write this tree; every number in this file is a floor. Before anyt
 
 ```
 cat VERSION && git log -3 --format='%h %ad %s' --date=format:%H:%M && git status --short
+boss board --next        # what's in flight, how close, what's next — read from the records
 npm run check            # zero findings = clean; check:published says how far npm is behind
 git rev-list --count origin/main..HEAD   # commits not pushed
 gh run list -L1          # CI — it sat red on Windows for ten days with nobody reading it
 ```
 
-## Now
+## Priority — Ajesh's order (the reading says what's close; this says what matters)
 
-- **Landed 2026-10-07: IDEA-148, IDEA-154, IDEA-149 — no worktrees open.** The CHANGELOG's double `## 0.331.0`
-  (a stray heading from PROG-005's rebase fix) is gone: Unreleased rebuilt, 0.331.0 = its stamp; site regenerated.
-  Found: in a worktree, `npm run check` stops at a stale-ledger row for the gitignored `regrade` skill, hiding every
-  check after it (IDEA-154's missing `proof:` only showed on main) — fix `check-boundary` or note it in CLAUDE.md.
-- **IDEA-160 (2026-10-07, shipped, pushed) — cli.js back to a dispatcher.** No rearchitecture; `cli.js`
-  2,242 → 1,177 by moving handlers into the modules they call (new `fail.js`, `install.js`). Devlog has the
-  entry. Left: IDEA-161 — `boss id` missed a peer worktree's record; reproduce in a test before any fix.
-- **PROG-005 the research engine (2026-10-06/07, Unreleased, pushed).** `boss craft research` is the
-  method; `/scout` (Quickstart, six domains + any a project adds) replaced five skills; `/inbox` +
-  `/scout sort` + `boss inbox`; `boss sources` (standing from claim rows); `boss team share`; research
-  about people stays out of git. Open in PROG-005: C1 the research index, `sources.json` dates (B5).
+**Above all, unchanged: publish (npm is behind — `npm run check:published`) and Phase 3 outreach. Both
+are Ajesh's.** The external evidence is n=4 signals / n=3 founders, all `stated-pain`; nobody has been
+observed using BOSS. The mandate holds: compose and **subtract**, never add a skill.
 
-- **Context and guardrails (2026-10-06/07, pushed) — IDEA-153, 157, 158.** Every session start re-loads the work in
-  flight from its records, no-list first; the every-turn rules are ~40% smaller; `/log` names unasked work from a
-  fresh reviewer; one home per fact (CLAUDE.md). Open: the old-CHANGELOG citation pass (IDEA-158 found list).
-- **Release:** 0.331.0 stamped and committed 2026-10-07, not published (`npm publish` is Ajesh's). IDEA-151 O1 open.
-- **IDEA-154 (2026-10-06, Unreleased) — spec and agent practice, what the field measured.**
-  `coder` stops on a test/spec conflict and asks one question on a real fork. MVP rule 1 now defines
-  non-trivial. RVW-150…153; sources in SESSION-2026-10-06. Open: T2, the always-loaded audit (waits on
-  Ajesh's scope call; IDEA-157 already cut part of it — re-measure first). Landed 2026-10-07.
-- **IDEA-149 (2026-10-05, landed 2026-10-07, Unreleased) — Kettlewick, live.** `npm run demo` lays the demo down as a
-  lived-in project (real `adopt`, dated history, own `BOSS_HOME`, `boss` = this checkout); use it instead of a throwaway
-  (CLAUDE.md rule 6). Kettlewick has every MVP piece; `check:demo` keeps every skill mapped. Open: S3 `--at quickstart`, S4.
-- **IDEA-144 (2026-10-05, Unreleased) — one home for the generated pages.** `.boss/index.html`: every page with its age, *Where things live* (folders + key files, Open / Copy path), a bookmark hint; every page command prints it as the one bookmark. Spaces ordered Board · Playbook · Design · Guide. Demo: "Organization" → *Where things live* (GitHub links), and the opening says what Kettlewick does. Each card says when its page is out of date (a file it reads changed since). No machine-wide home: each project has its own (Ajesh). Open: the home re-checks only on a page command.
-- **IDEA-136 (2026-10-04, Unreleased) — the engineering ecosystem, built.** BOSS's own (`docs/ENGINEERING.md`: five
-  principles, every rule marked E/P/W, the helpers map) → EXTR-003 → the practice `engineering-system` → `/smoke`
-  plants `.claude/rules/engineering.md` (founder-owned). 18 of 19 found tasks closed with reproductions — incl. the
-  suite leaking into an exported `BOSS_HOME` (`test/env-guard.js`). A5/A6/A9 built as opt-in guards (code reuse, declared layers, loosened tests); A7 stays a rule. Open: F11 (deferred).
-- **IDEA-145 (2026-10-05, shipped, Unreleased) — programs.** Three graduated: PROG-001 the website (was IDEA-143),
-  PROG-002 the ecosystems (IDEA-137 split: IDEA-146 deferred, IDEA-147 ready), PROG-003 the playbook (the demo rule
-  moved out of here). Rules E1–E6 in IDEA-145; the board has *By stage | By program*; `/spec`, `coder`, `/decide`,
-  `boss status` and `--json` carry the program. Open: G3, G6 (`/revalidate IDEA-072`), G7, G8; playbook block deferred.
-- **IDEA-114 slice 1 landed (2026-09-13, Unreleased) — an IDEA is `kind: venture` or `kind: capability`.**
-  `/boss` writes the venture (one; carries the venture fields); `/idea` writes capabilities (many; none).
-  `/canvas`, the playbook and `boss status` prefer the venture over the newest file. **In this repo every
-  IDEA is a capability; BOSS's venture is the canvas** (CLAUDE.md rule 3). Open: the board's split.
-- **IDEA-109 captured (2026-09-13) — the coach-in-residence positioning.** Ajesh: acquisition → acqui-hire →
-  *"an incubator would wanna hire me… their coach, but also leverage this kind of tool for their cohorts."*
-  Measured before opining: 0 stars, 196/196 commits his, riskiest assumption n=0 on a 2026-11-21 clock —
-  nothing to *sell* but the person, which is the acqui-hire's point. Licence: **keep MIT and the words**
-  (a copy edit claws nothing back; diligence reads `LICENSE`). Next step is one call, not a build.
-- **PROG-004 the front door (2026-10-05, Unreleased) — graduated from `front-door`.** IDEA-152 shipped the quick
-  wins: `argument-hint` on every skill, `boss unlock` with no mode previews the next rung, `boss status --line`,
-  bare `boss` in a project says where you are. **B1, the status line, is PAUSED (2026-10-07)
-  as IDEA-159** — five recommendations and the plain-English offer are written; Ajesh wants a deeper think on
-  whether it's worth the cost before anything is built (the questions are in the record). Re-enter with
-  `/revalidate IDEA-159`. Backlog B2–B8 in PROG-004.
-- **IDEA-132 (2026-10-04, Unreleased, not pushed) — the design system's manifest gets its edges.** `tokens` + `composes`,
-  Composition on the usage page, a never-inside rule at the write. Devlog.
-- **IDEA-135 (2026-10-04, in 0.329.0) — the build outruns the evidence.** EVID-004: a third founder, AI
-  building ten half-built features nobody tried. Shipped by composition, no new skill: the `unseen` loops
-  read the code, the playbook shows *how we're learning*, the canvas line is *What we're testing next*,
-  a FEAT that bloated is marked. Open: the receipt (private vs on the page). Devlog has the rest.
-- **The external evidence is n=4 signals / n=3 founders, all `stated-pain`.** Nobody has been
-  observed using BOSS, nobody has committed anything. The mandate holds: compose and **subtract**,
-  never add a skill. Detail: `docs/evidence/`, the memory note, and the devlog's moved block.
+1. **PROG-002 — the ladders still to plant**, for Ajesh to review: data & trust next (B4 holds the order).
+2. **FEAT-039 — the Kettlewick showcase is weak overall; do it better.** Ajesh's words and where the story
+   is are in its *Found after shipping*.
+3. **IDEA-162 — resume lives in the record.** S5 (BOSS's own `/close` writes `next:`) lands with this
+   file; S6 (the founder's `/close`) after it has run here a while.
 
-## Next (in order)
+Everything else in flight — IDEA-135, IDEA-154 (T2 waits on Ajesh's scope call), PROG-003, PROG-005, the
+programs' backlogs — is in `boss board --next`, with its next step.
 
-- **The ladders still to plant — for Ajesh to review** (order from IDEA-137 · B4; each follows `docs/ECOSYSTEMS.md` § steps, modelled on IDEA-138):
-  1. ✅ **Claims** — planted, IDEA-138 (2026-10-04). Left: the drift reader, until a founder's page outlives its evidence.
-  2. ✅ **AI behaviour** — planted as IDEA-139 (2026-10-05, Unreleased): `/evals` reads what already failed (red-team fails, STUB states, `docs/evals/seen/`); a widened loop now earns the skills it names (reproduced bug, AI and design-tokens). Since closed: the drift judgment re-graded (10/10, 0 stale), `--self` writes a `SELF-` record, `boss unlock` lays down what's already earned. Nothing open.
-  3. **Data & trust** — highest stakes, but BOSS has no instance of its own: plant from `/trust` + `schema-guard` + the data-schema practice, or on a founder's first personal-data table.
-  4. **Operations.** 5. **Money** — waits for a first dollar.
-  · **When the guide moves, the ladders follow (IDEA-137 · C11, 2026-10-05):** `docs/ECOSYSTEMS.md` § Revisions (now **6** — five lenses read at source, R11) + `anatomy: N` on each ladder; `npm run check:freshness` names one behind. **All four ladders at 6.** Left: three lineage lenses (stigmergy, panarchy, calm tech) await a read at source.
-  · **Already living, never framed as ladders:** evidence (the grade ladder) · product language (IDEA-093) · outward docs (IDEA-089, parked).
-  · **Not ladders:** the founder (governance pointed at a person is surveillance — H1; stays in IDEA-133) · temple culture / team (IDEA-004, parked).
-- **Future (Ajesh, 2026-10-04): the Kettlewick showcase is weak overall — do it better.** Its own pass on FEAT-039, not IDEA-133. Noted in IDEA-133's weave section.
-  Ajesh, later the same day: *"some of the copy language is a bit weak (not about features)… it seems incomplete. i like the roughness around it. But I couldnt quite get what kettlewick was about."* The story is in the records and not on the page: the pain (*"every Monday I lose an hour to the cover call"*), the proof (*"Marta covered a Monday visit from the school gate"*) and the name (*"before the kettle boils"*) all sit in IDEA-001's capture log. Keep the roughness.
+## Found, no record yet
 
-0. **Worktree trial (IDEA-120, Ajesh yes 09-23)** — the next session runs in its own worktree and records what broke.
-1. **Ajesh's browser read of the demo** — `npm run gen:site` → `site/demo/index.html`: does it read
-   as *BOSS running*; the Kettlewick name (palette settled 09-23: oat/copper, devlog). Their playbook hand-checks: Present → VC cut
-   (now also a filter), Export PDF in the sandbox, a removed slide after a re-render, the copy sheet,
-   a Keynote paste, `/import` on a real deck. The design lane's sweep of the token descriptions
-   still saying "blue" is theirs.
-2. **IDEA-106's kicked-up table is sorted** (2026-09-13); what's left waits on a trigger — #23 a
-   screenshot at ship (`/ship`), #27 channel per first user (`/measure`), #15 a series from an
-   import, #1 the matrix (three FEATs + two rivals with `## How they do it`), #10 which chapters
-   earn a visual. Previously it named: a person record + photos (#11), a `vision:` line (#12), prior capital (#18), the
-   compliance stance (#21), the AI-defensibility question (#20), a screenshot at ship (#23), a dated
-   `/import` (#13), the ask record (#17).
-5. **2026-09-20: the first `revisit-due` fires on BOSS's own tree.** Answer it with `outcome:`.
-9. **`/drift-deep` ran on this tree for the first time (2026-09-14) — verdict: drifting.**
-   `docs/drift-audits/DRIFT-2026-09-14.md`. The bet (*will a real founder return*) is sharp and its
-   experiment is written to the message; ~270 commits since 08-24 built what a returning founder
-   would read back, and the maintainer message drafted 08-23 is unsent. Smallest re-aim: send it.
-   Still open from the retro: `.claude/rules/feature-context.md` exists here; `docs/product/JOURNEY.md`
-   not written (every row would be `assumed`) — at the second flow.
-
-**Above all of these, unchanged: publish (npm is behind — `npm run check:published` says by how
-much) and Phase 3 outreach. Both are Ajesh's.**
+- **In a worktree, `npm run check` stops at a stale-ledger row for the gitignored `regrade` skill**, hiding
+  every check after it (IDEA-154's missing `proof:` only showed on main) — fix `check-boundary` or note it
+  in CLAUDE.md. (Found landing IDEA-148/149/154, 2026-10-07.)
+- **`test/demo-live.test.js` failed once under the pre-commit's full run** (*invalid object* for
+  `docs/evidence/EVID-002.md` in its temp repo) and passed 3/3 alone — a race, not reproduced. (2026-10-07.)
 
 ## Waiting on Ajesh — each is a yes/no; the work is done
 
@@ -127,8 +57,14 @@ much) and Phase 3 outreach. Both are Ajesh's.**
 were already settled in their records, IDEA-087 and IDEA-098, and stayed here for 11 and 13 days.)
 
 - 🔷 **What the site shares (for the 2026-10-14 read)** — marked share · hint · keep in `docs/business/SHARE-SORT-2026-10-04.md` (gitignored). Decide before the next `gen:site`: it renders the Done practice in full by default.
+- 🔷 **Ajesh's browser read of the demo** — `npm run gen:site` → `site/demo/index.html`: does it read
+  as *BOSS running*; the Kettlewick name (palette settled 09-23: oat/copper, devlog). Their playbook hand-checks: Present → VC cut
+  (now also a filter), Export PDF in the sandbox, a removed slide after a re-render, the copy sheet,
+  a Keynote paste, `/import` on a real deck. The design lane's sweep of the token descriptions
+  still saying "blue" is theirs.
 - 🔷 **`boss board --open`?** The playbook and design have `--open`, the board only `--html`; one line. Offered 09-23, unanswered.
 - 🔷 **The maintainer message — what holds it?** Drafted 08-23, still unsent. No gating rule (09-23); a date by which it's sent is the open ask.
+  `/drift-deep` (2026-09-14, `docs/drift-audits/DRIFT-2026-09-14.md`) read the tree as drifting and named sending it as the smallest re-aim.
 - 🔷 **The design space, by hand:** `boss design --open` on a real project; paste a component's *SVG*
   frame and the icon sprite into a design tool (they should land as editable layers); paste a block
   into Keynote/Slides; reject any assumption in FEAT-030/031/032/033 in a word. The lane has nothing
@@ -140,6 +76,8 @@ were already settled in their records, IDEA-087 and IDEA-098, and stayed here fo
   `docs/evidence/CANDIDATES-2026-08-23-maintainer-experiment.md`. The first message must not mention
   BOSS. Metric: activation, watched not asked. No features from this.
 - 🔷 **EVID-003's *did you come back?*** — still unasked.
+- 🔷 **DEC-018 — the ground moved from 43° to 210°** on the strength of a brief; `AI-suggested-ratified`.
+  Confirm or reverse. (Here because `boss board --blocked` doesn't read DECs.)
 - ⬜ **`venture` as the default noun** (19 template files + `docs/venture-brain.md`) — a rename with a
   migration cost, re-proposed four times as if cheap. Rename · leave · or stop proposing it.
 - ⬜ **The seven `building_since:` dates** — the CHANGELOG fallback clusters four on one day and the
@@ -148,21 +86,15 @@ were already settled in their records, IDEA-087 and IDEA-098, and stayed here fo
   `cd site && zip -r ../site.zip . -x '.*' -x '__MACOSX/*'`. Never describe the live site from this
   file — open the URL.
 - ⬜ *Optional:* scrub the old `registry/projects.json` from git history (force-push).
-- ⬜ **IDEA-047 re-aimed keyless (2026-09-13)** — the fake door: drop `pretotype/api/`, one labelled
-  recording, CTA = plugin install, count the click. Parked on a trigger: strangers exist (plugin listed / outreach live) and installs stay flat.
-  IDEA-036 dropped; IDEA-066 is the one owner of outward research (093 p7's trigger carried in).
-- 🔷 **DEC-018 — the ground moved from 43° to 210°** on the strength of a brief; `AI-suggested-ratified`.
-  Confirm or reverse.
 
 ## Held — not decisions; each has its re-open condition
 
-- **IDEA-130 design beyond the screen** — held by Ajesh 09-23; re-open when they revisit the idea. First step on the table: BOSS's own conversation and CLI pages before any `src/design.js` change.
+Held *records* (IDEA-047, 075, 076, 089, 130, 159 and the rest) carry their own triggers — `boss board`
+folds them into Parked. What's here has no record.
+
+- **IDEA-106's kicked-up table** is sorted (2026-09-13); what's left waits on a trigger (#23, #27, #15, #1, #10) — the table is in the record.
+- **`docs/product/JOURNEY.md`** — not written (every row would be `assumed`); at the second flow. (From the 2026-09-14 drift retro.)
 - **The two watchlist markers `check:freshness` flags** — deliberately unstamped (targeted passes, logged); stamp only after a full sweep.
-- **IDEA-076 position within a rung** — re-open on an OBSERVED session, not a third statement.
-- **IDEA-075 the scaffold has no way down** — n=0; add *"anything BOSS gave you that you've stopped
-  needing?"* to EVID-003's questions before building anything.
-- **IDEA-089 outward docs flatten after MVP** — re-open on the first founder who ships and asks about
-  their README.
 - **`/practice-refresh` boundary not-yet** — a real project past ~10 PRACs with one found stale.
 - **Parked from the comp-read batch** (unpark conditions in the competition record's table):
   assumptions-plural in `boss status` · `waiting_on:` · cohort re-fit · time-per-task-type · the
@@ -187,12 +119,13 @@ were already settled in their records, IDEA-087 and IDEA-098, and stayed here fo
 > **Keep this evergreen.** A pointer + procedure, never a status report.
 >
 > Continue BOSS (in `~/Projects/bossbuild`). **Read first, in order:** `docs/RESUME.md` (this file),
-> `CLAUDE.md`, `PRINCIPLES.md`. Then run the *Ground truth* block above — if `git log` disagrees with
-> *Now*, this file is stale; re-establish ground truth, then re-read. Then pick up *Next* top down.
+> `CLAUDE.md`, `PRINCIPLES.md`. Then run the *Ground truth* block above — `boss board --next` is where
+> the work stands. Pick up in *Priority* order unless Ajesh says otherwise; within it, the reading's
+> *Pick up* order (the cheapest finish first).
 >
 > **Per capability landed:** `npm run check` at zero → a bullet under `## Unreleased` in
 > `registry/CHANGELOG.md` (VERSION does not move — DEC-019) → `/tmp`-test the CLI and prune those
 > entries from `~/.boss/registry.json` → `npm run release` (the gate) → commit with the GH noreply
-> env-var → push when asked → `/close`, which rewrites *Now* and *Next* here and appends the
-> narrative to the devlog. **Stamping a version is Ajesh's:** `npm run stamp`, then `npm publish`.
-> If this file is past its window, move — don't trim.
+> env-var → push when asked → `/close`, which writes `next:` on each record it touched, updates
+> *Priority* here, and appends the narrative to the devlog. **Stamping a version is Ajesh's:**
+> `npm run stamp`, then `npm publish`. If this file is past its window, move — don't trim.
