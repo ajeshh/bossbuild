@@ -9,6 +9,7 @@ proof: none
 proof_note: done is a fresh agent building a cross-feature change better with a feature's generated card than without it (T1)
 relates: IDEA-154, IDEA-158, IDEA-163
 gist: Each named feature gets a short contract the rest of the app reads instead of its code, computed from the code so it can't quietly go stale; in general, every doc's link records the version of what it was last confirmed against, so any doc (PRD, research, design) flags when the thing under it moves.
+program: PROG-007
 ---
 
 # IDEA-169 — Feature contracts, computed from the code
@@ -196,8 +197,10 @@ you write one* table · the E/P/W marks.
 
 - [ ] **T1 — One feature, by hand, in a throwaway dhun branch.** Tag one feature's files, write its
   contract file, render its card by hand. Give a fresh agent a change that crosses into that feature,
-  with and without the card; compare files read, tokens, and whether it broke the feature. Test the
-  always-loaded index as its own arm: overviews didn't help agents find files in the AGENTS.md study.
+  and run it once per route from PROG-007 § How context reaches an agent: (a) nothing, search only;
+  (b) the index preloaded; (c) the card arriving when the agent first opens a tagged file; (d) the
+  contract types alone, the compiler as the only guide. Compare files read, tokens, and whether it broke
+  the feature. Several runs per arm; one run is an anecdote.
 - [ ] **Found while researching — IDEA-154 T2 overstates the context-file paper.** It says *"files help
   for non-standard practices"*; the paper (v3) recommends minimal requirements but shows no success gain
   for them, and reports developer-written +2.4% (not significant; v1 said +4%). Correct it in IDEA-154.
