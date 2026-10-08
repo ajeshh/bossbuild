@@ -103,11 +103,61 @@ slow rot. It cannot catch an EVENT."* A confirmed-against version on each link i
 **Not a knowledge graph** (declined 2026-08-20): no inferred edges, only declared ones, each with a
 check. **Not a skill:** the check rides links that already exist.
 
+## Prior art (T0, 2026-10-08)
+
+Three reads at source; the full reports, tables and every URL are in
+`docs/research/SESSION-2026-10-08-links-that-stay-true.md` (local). What they change:
+
+**Where this stands in the field.** Note tools (Obsidian, Logseq, Roam, Notion) keep a link
+*resolving* through renames, or transclude the target live, or expire trust on a timer; none detects
+that a target's *meaning* changed. Wikidata comes closest: each reference records a retrieved date and
+an archive snapshot. Requirements tools have done it for decades as "suspect links", and IBM's newer
+form keys a link's validity on *the contents of both ends*, not on an edit date. So the idea isn't new
+in kind. What's new is putting it in a solo founder's git repo, across code, docs and outside sources,
+lightly enough to live with.
+
+**Design rules the prior art hands us:**
+
+1. **Pin to a hash of the meaning, not the file, the commit or a date.** Hash the targeted section or
+   the contract, normalized (whitespace, formatting and names out, as Unison does), so a typo fix
+   doesn't move it. File modification time is the wrong signal everywhere it was tried.
+2. **Early cutoff.** From build systems: when a target is re-checked and its meaning-hash is unchanged,
+   nothing downstream goes unconfirmed. Without it, one edit spreads through every linked doc.
+3. **Confirmation belongs to the pair of contents** (IBM link validity, Pact). A revert or a branch
+   with the same content inherits "confirmed" for free.
+4. **Each kind of link declares which fields count, and its direction.** Every requirements tool ended
+   up here; one needed a plug-in to get there, which says the default was too noisy. Default: contract
+   fields only.
+5. **Fix mechanical changes, flag meaningful ones.** Renames and moves are repaired automatically (Swimm,
+   Obsidian); the rest is classified, breaking vs informational (oasdiff). A new dependency starts
+   *pending*, not red (Pact). No one-click "clear all", which teaches clearing without looking.
+6. **Declared links are the record; inference only proposes.** Without enforcement about 60% of commits
+   carry their link (Rath et al.); model-inferred requirement-to-code links score F1 ≈0.25–0.55 (LiSSA).
+   An inferred link can be suggested, never stored as fact. A dangling link fails loud.
+7. **Computed views are read-only; the confirmation is the one written field,** with who and when.
+8. **Outside sources keep a snapshot.** URL, content hash and what was read, so a changed page can be
+   compared, not just re-dated. Wikipedia puts a link's median lifespan at about a year.
+
+**What the research says about the cards themselves:**
+
+- **Signatures beat whole files.** A skeleton (signatures, fields, module comments) found the right
+  code more often than full files, at about a seventh of the cost (Agentless). Supports the contract
+  written as types.
+- **More context can hurt.** Expanding a code graph to ~10.5k tokens *lowered* success (RepoGraph).
+  Supports the ~500-token cap.
+- **⚠ Codebase overviews did not help agents reach the right files sooner** (the AGENTS.md study). The
+  always-loaded one-line index is the piece most at risk. T1 tests it separately from the cards.
+- **Drift is cheap to catch on names.** 28.9% of the top-1000 GitHub projects had docs naming a code
+  identifier that no longer existed (DOCER), found with plain identifier matching, no model.
+- **No published study** compares typed module contracts with full-code retrieval for cross-module
+  work. T1 would be first-hand evidence.
+
 ## Why this isn't the wiki BOSS already declined
 
-- **Context files mostly don't help** (IDEA-154 T2): no gain in task success, ~20% more cost,
-  machine-written prose slightly negative. They help only for what a model wouldn't do anyway. A
-  contract is exactly that: facts about this app no model can guess.
+- **Context files mostly don't help** (Gloaguen et al., arXiv 2602.11988, verified at source in T0): no
+  gain in task success, ~20% more cost, machine-written slightly negative (not significant). The
+  authors recommend keeping only minimal, repo-specific requirements, but show no success gain even for
+  those. A contract is repo-specific facts no model can guess; whether that helps is T1's to show.
 - **A knowledge graph over the docs was declined** (2026-08-20) as a second source of truth that goes
   stale while looking authoritative. Here the source of truth is the code; the card is a rendering.
 
@@ -134,7 +184,7 @@ you write one* table · the E/P/W marks.
 
 ## Tasks
 
-- [ ] **T0 — Prior art before design.** Ajesh: *"if we need to investigate other research to help us
+- [x] **T0 — Prior art before design.** Done 2026-10-08 → § Prior art. Ajesh: *"if we need to investigate other research to help us
   design this before we implement it lets do it."* Three reads, sources opened at source: note tools
   (Obsidian's links, backlinks, rename-updates and computed views; Logseq/Roam block refs; Notion's
   verified pages); engineering traceability (requirements tools' "suspect links", docs-coupled-to-code
@@ -146,4 +196,8 @@ you write one* table · the E/P/W marks.
 
 - [ ] **T1 — One feature, by hand, in a throwaway dhun branch.** Tag one feature's files, write its
   contract file, render its card by hand. Give a fresh agent a change that crosses into that feature,
-  with and without the card; compare files read, tokens, and whether it broke the feature.
+  with and without the card; compare files read, tokens, and whether it broke the feature. Test the
+  always-loaded index as its own arm: overviews didn't help agents find files in the AGENTS.md study.
+- [ ] **Found while researching — IDEA-154 T2 overstates the context-file paper.** It says *"files help
+  for non-standard practices"*; the paper (v3) recommends minimal requirements but shows no success gain
+  for them, and reports developer-written +2.4% (not significant; v1 said +4%). Correct it in IDEA-154.
